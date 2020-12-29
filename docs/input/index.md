@@ -7,11 +7,13 @@
 
 ---
 
-## 开发指南
+表单输入组件。
 
-### 何时使用
+## 何时使用
 
-表单输入，一般配合Form使用
+表单输入，一般配合 Form 使用。 
+
+- Input 不支持 Number 类型数字，如有需要使用 NumberPicker 支持数字选择
 
 ## API
 
@@ -26,7 +28,7 @@
 | onKeyDown       | 键盘按下的时候触发的回调<br><br>**签名**:<br>Function(e: Event, opts: Object) => void<br>**参数**:<br>_e_: {Event} DOM事件对象<br>_opts_: {Object} 可扩展的附加信息：<br> - opts.overMaxLength: {Boolean} 已超出最大长度<br> - opts.beTrimed: {Boolean} 输入的空格被清理 | Function         | func.noop |
 | disabled        | 禁用状态                                                                                                                                                                                                                         | Boolean          | false     |
 | maxLength       | 最大长度                                                                                                                                                                                                                         | Number           | null      |
-| hasLimitHint    | 是否展现最大长度样式                                                                                                                                                                                                                   | Boolean          | false     |
+| showLimitHint   | 是否展现最大长度样式                                                                                                                                                                                                                   | Boolean          | false     |
 | cutString       | 当设置了maxLength时，是否截断超出字符串                                                                                                                                                                                                     | Boolean          | true      |
 | readOnly        | 只读                                                                                                                                                                                                                           | Boolean          | false     |
 | trim            | onChange返回会自动去除头尾空字符                                                                                                                                                                                                         | Boolean          | false     |
@@ -64,7 +66,7 @@
 | onKeyDown      | 键盘按下的时候触发的回调<br><br>**签名**:<br>Function(e: Event, opts: Object) => void<br>**参数**:<br>_e_: {Event} DOM事件对象<br>_opts_: {Object} 可扩展的附加信息：<br> - opts.overMaxLength: {Boolean} 已超出最大长度<br> - opts.beTrimed: {Boolean} 输入的空格被清理 | Function       | func.noop |
 | disabled       | 禁用状态                                                                                                                                                                                                                         | Boolean        | false     |
 | maxLength      | 最大长度                                                                                                                                                                                                                         | Number         | null      |
-| hasLimitHint   | 是否展现最大长度样式                                                                                                                                                                                                                   | Boolean        | false     |
+| showLimitHint  | 是否展现最大长度样式                                                                                                                                                                                                                   | Boolean        | false     |
 | cutString      | 当设置了maxLength时，是否截断超出字符串                                                                                                                                                                                                     | Boolean        | true      |
 | readOnly       | 只读                                                                                                                                                                                                                           | Boolean        | false     |
 | trim           | onChange返回会自动去除头尾空字符                                                                                                                                                                                                         | Boolean        | false     |
@@ -98,7 +100,7 @@
 | getInputNode | 获取真正input节点                                                                                                                  | Function |     |
 | focus        | 获取焦点<br><br>**签名**:<br> Function(start:Number, end: Number)<br>**参数**:<br>_start_: {Number} 光标起始位置<br>_end_: {Number} 选择结束位置 | Function |     |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键    | 说明            |
 | :---- | :------------ |

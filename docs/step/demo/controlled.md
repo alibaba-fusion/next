@@ -1,12 +1,12 @@
-# 受控模式
+# 步骤切换
 
-- order: 6
+- order: 7
 
-默认情况下，Step 定义为展示型组件，上层组件可以通过修改传入的 current 属性值来修改当前的步骤，同时可以设置每个节点的 click 事件，来自定义回调。
+通常配合内容及按钮使用，表示一个流程的处理进度。
 
 :::lang=en-us
 
-# Controlled
+# Switch steps
 
 - order: 6
 
@@ -41,7 +41,7 @@ class Component extends React.Component {
         super(props);
 
         this.state = {
-            currentStep: 3,
+            currentStep: 1,
             stepType: 'circle',
             stepAnimation: true,
             labelPlacement: 'ver'
@@ -121,11 +121,12 @@ class Component extends React.Component {
                     <StepItem title="Step 5" onClick={this.onClick} content="Description" />
                     <StepItem title="Step 6" onClick={this.onClick} content="Description" />
                 </Step>
+                <div className="steps-content">{contents[currentStep]}</div>
                 <br />
                 <br />
                 <ButtonGroup>
                     <Button onClick={this.prev.bind(this)} type="primary" disabled={currentStep === 0}>Backward</Button>
-                    <Button onClick={this.next.bind(this)} type="primary" disabled={currentStep === 6}>Forward</Button>
+                    <Button onClick={this.next.bind(this)} type="primary" disabled={currentStep === 5}>Forward</Button>
                 </ButtonGroup>
             </div>
         );
@@ -145,44 +146,54 @@ ReactDOM.render(<Component />, mountNode);
 }
 .next-input-inner.next-before {
     margin-left: 8px;
-}.fusion-demo-item {
-     margin: 15px 0;
- }
- .custom-node1 {
-     height: 100%;
-     width: 100%;
-     border-radius: 20%;
-     border: 1px dashed #3E71F1;
-     text-align: center;
- }
- .custom-node1 span {
-     font-size: 12px;
- 
-     position: absolute;
-     top: 50%;
-     text-align: center;
-     width: 100%;
-     left: 0;
-     transform: translateY(-50%);
- }
- .custom-node2 {
-     height: 100%;
-     width: 100%;
-     border-radius: 20%;
-     border: 1px dashed #3E71F1;
-     text-align: center;
-     background: #3E71F1;
-     color: #fff;
-     position: relative;
- }
- 
- .custom-node2 span, .custom-node2 i {
-     position: absolute;
-     top: 50%;
-     transform: translateY(-50%);
-     left: 0;
-     width: 100%;
-     text-align: center;
- }
+}
+.fusion-demo-item {
+    margin: 15px 0;
+}
+.custom-node1 {
+    height: 100%;
+    width: 100%;
+    border-radius: 20%;
+    border: 1px dashed #3E71F1;
+    text-align: center;
+}
+.custom-node1 span {
+    font-size: 12px;
+
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    width: 100%;
+    left: 0;
+    transform: translateY(-50%);
+}
+.custom-node2 {
+    height: 100%;
+    width: 100%;
+    border-radius: 20%;
+    border: 1px dashed #3E71F1;
+    text-align: center;
+    background: #3E71F1;
+    color: #fff;
+    position: relative;
+}
+
+.custom-node2 span, .custom-node2 i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+.steps-content {
+  margin-top: 16px;
+  border: 1px dashed #e9e9e9;
+  border-radius: 2px;
+  background-color: #fafafa;
+  min-height: 200px;
+  text-align: center;
+  padding-top: 80px;
+}
 
 ````

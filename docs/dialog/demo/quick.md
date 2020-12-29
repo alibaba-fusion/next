@@ -1,21 +1,21 @@
 # 快捷调用
 
-- order: 5
+- order: 1
 
-Dialog 提供 alert 和 confirm 的快掉调用方式，以及更底层的 show 方式。
+`Dialog` 提供 `alert` 和 `confirm` 的快掉调用方式，以及更底层的 `show` 方式。
 
 :::lang=en-us
 # Quick call
 
-- order: 5
+- order: 1
 
-The Dialog provides quick methods called alert and confirm, as well as a lower-level show method.
+The `Dialog` provides quick methods called `alert` and `confirm`, as well as a lower-level `show` method.
 :::
 
 ---
 
 ````jsx
-import { Button, Dialog, ConfigProvider } from '@alifd/next';
+import { Button, Dialog, ConfigProvider, Box } from '@alifd/next';
 
 const popupAlert = () => {
     Dialog.alert({
@@ -61,12 +61,12 @@ const popupCustomIcon = () => {
 
 ReactDOM.render(
     <ConfigProvider locale={{ Dialog: { ok: 'OK', cancel: 'Cancel' } }}>
-        <span>
-            <Button onClick={popupAlert}>Alert</Button> &nbsp;
-            <Button onClick={popupConfirm}>Confirm</Button> &nbsp;
-            <Button onClick={popupShow}>Show</Button> &nbsp;
+        <Box direction="row" spacing={20}>
+            <Button onClick={popupAlert}>Alert</Button>
+            <Button onClick={popupConfirm}>Confirm</Button>
+            <Button onClick={popupShow}>Show</Button>
             <Button onClick={popupCustomIcon}>Custom Icon</Button>
-        </span>
+        </Box>
     </ConfigProvider>,
     mountNode
 );

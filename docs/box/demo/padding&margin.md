@@ -2,7 +2,7 @@
 
 - order: 2
 
-可以通过 `padding` `margin` 设置 `Box` 的内、外边距， `[10, 5]` 表示上下方向为10，左右方向为5
+可以通过 `padding` `margin` 设置 `Box` 的内、外边距， `[10, 5]` 表示上下方向为10，左右方向为5。
 
 :::lang=en-us
 # Padding&Margin

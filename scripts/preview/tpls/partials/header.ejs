@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>demos</title>
+  <link rel="dns-prefetch" href="//unpkg.com" />
+  <link rel="dns-prefetch" href="//g.alicdn.com" />
+
+  <!-- <link rel="stylesheet" href="http://127.0.0.1:8080/static.css"> -->
+  <link href="https://g.alicdn.com/code/lib/cropperjs/1.0.0-rc.3/cropper.min.css" rel="stylesheet">
+  <link href="https://alifd.alicdn.com/npm/@alife/theme-fusion-site-2-0/0.1.0/next.min.css" rel="stylesheet">
+  <script src="//shadow.elemecdn.com/npm/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
+  <script src="//shadow.elemecdn.com/npm/react@16.13.0/umd/react.development.js"></script>
+  <script src="//shadow.elemecdn.com/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+  <script src="//shadow.elemecdn.com/npm/moment@2.24.0/min/moment-with-locales.js"></script>
+
+  <script src="https://gw.alipayobjects.com/os/lib/react-dnd/7.7.0/dist/ReactDnD.min.js"></script>
+  <script
+    src="https://gw.alipayobjects.com/os/lib/react-dnd-html5-backend/7.7.0/dist/ReactDnDHTML5Backend.min.js"></script>
+
+  <script src="https://g.alicdn.com/code/lib/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/prop-types/15.7.2/prop-types.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/locale/zh-cn.js"></script>
+  <!-- <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/common.js"></script>
+  <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/demo-util.js"></script> -->
+  <link rel="stylesheet" href="https://g.alicdn.com/fusion-platform/material-center-static/0.4.1/pages/prism-theme-css/index.bundle.css">
+  <link rel="stylesheet" href="https://g.alicdn.com/fusion-platform/material-center-static/0.4.1/pages/demo-static-css/index.bundle.css">
+
+</head>
+
+<body>
+  <!-- <script>
+    (function() {
+        var toggleRtlBtn = document.querySelector('#toggle-rtl');
+
+        toggleRtlBtn.addEventListener('click', function (){
+            var mountNode = document.querySelector('#mount-node');
+            if (mountNode.dir === 'rtl') {
+                mountNode.dir = 'ltr';
+            } else {
+                mountNode.dir = 'rtl';
+            }
+        });
+
+        var langSelect = document.querySelector('.next-demo-lang');
+        langSelect.addEventListener('change', function(e) {
+          var newLang = e.target.value;
+          document.querySelector('.next-demo-change-lang-loading').style.display = 'block';
+          getJson({
+            url: '/changeLang.json',
+            data: { lang: newLang },
+            error: function(error) {
+              console.log('change language failed: ' + error);
+            }
+          });
+        });
+
+        var dirSelect = document.querySelector('.next-demo-dir');
+        dirSelect.addEventListener('change', function(e) {
+          var newDir = e.target.value;
+          document.querySelector('.next-demo-change-lang-loading').style.display = 'block';
+          getJson({
+            url: '/changeDir.json',
+            data: { dir: newDir },
+            error: function(error) {
+              console.log('change dir failed: ' + error);
+            }
+          });
+        });
+
+        function getJson(options) {
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+              if (xhr.status >= 200 && xhr.status < 400) {
+                if (options.success) {
+                  options.success(JSON.parse(xhr.responseText));
+                }
+              } else {
+                if (options.error) {
+                  var html = xhr.responseText;
+                  var div = document.createElement('div');
+                  div.innerHTML = html;
+                  var text = div.textContent.trim();
+                  options.error(text);
+                }
+              }
+            }
+          }
+          if (options.data) {
+            options.url += '?' + Object.keys(options.data).map(function(key) {
+             return key + '=' + options.data[key]
+            }).join('&');
+          }
+          xhr.open('GET', options.url, true);
+          xhr.send();
+        }
+      })();
+  </script> -->

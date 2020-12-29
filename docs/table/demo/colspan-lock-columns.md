@@ -57,7 +57,7 @@ const dataSource = [{
 }];
 
 ReactDOM.render(
-  <Table
+  <Table.StickyLock
     type="primary"
     dataSource={dataSource}
     cellProps={(rowIndex, colIndex) => {
@@ -81,7 +81,7 @@ ReactDOM.render(
             return <Table.Column key={i} {...col} />;
         })
    }
-  </Table>,
+  </Table.StickyLock>,
   mountNode
 );
 ````

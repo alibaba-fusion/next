@@ -1,13 +1,14 @@
 # 单选与多选
 
-- order: 4
+-   order: 2
 
-展示单选与多选的用法。
+通过设置`multiple`为`true`，支持节点多选。
 
 :::lang=en-us
+
 # Single and multiple selection
 
-- order: 4
+-   order: 2
 
 Demo single and multiple selection.
 :::
@@ -17,35 +18,40 @@ Demo single and multiple selection.
 ````jsx
 import { Checkbox, Tree } from '@alifd/next';
 
-const data = [{
-    key: '0-0',
-    label: '0-0',
-    children: [{
-        key: '0-0-0',
-        label: '0-0-0',
-        children: [{
-            key: '0-0-0-0',
-            label: '0-0-0-0',
-            children: [{
-                key: '0-0-0-0-0',
-                label: '0-0-0-0-0'
-            }]
-        }, {
-            key: '0-0-0-1',
-            label: '0-0-0-1'
-        }]
-    }, {
-        key: '0-0-1',
-        label: '0-0-1',
-        children: [{
-            key: '0-0-1-0',
-            label: '0-0-1-0'
-        }, {
-            key: '0-0-1-1',
-            label: '0-0-1-1'
-        }]
-    }]
-}];
+const data = [
+    {
+        label: 'Component',
+        key: '1',
+        children: [
+            {
+                label: 'Form',
+                key: '2',
+                selectable: false,
+                children: [
+                    {
+                        label: 'Input',
+                        key: '4',
+                    },
+                    {
+                        label: 'Select',
+                        key: '5',
+                        disabled: true,
+                    },
+                ],
+            },
+            {
+                label: 'Display',
+                key: '3',
+                children: [
+                    {
+                        label: 'Table',
+                        key: '6',
+                    },
+                ],
+            },
+        ],
+    },
+];
 
 class Demo extends React.Component {
     constructor(props) {
@@ -53,7 +59,7 @@ class Demo extends React.Component {
 
         this.state = {
             selectedKeys: [],
-            multiple: false
+            multiple: false,
         };
         this.handleSelect = this.handleSelect.bind(this);
         this.handleCheck = this.handleCheck.bind(this);
@@ -63,14 +69,14 @@ class Demo extends React.Component {
         console.log(keys, info);
 
         this.setState({
-            selectedKeys: keys
+            selectedKeys: keys,
         });
     }
 
     handleCheck() {
         this.setState({
             multiple: !this.state.multiple,
-            selectedKeys: []
+            selectedKeys: [],
         });
     }
 
@@ -81,9 +87,15 @@ class Demo extends React.Component {
             <div className="control-select-demo">
                 <label className="multiple-check">
                     <Checkbox checked={multiple} onChange={this.handleCheck} />
-                    <span className="multiple-text">Enable multiple</span>
+                    <span className="multiple-text">多选</span>
                 </label>
-                <Tree defaultExpandAll multiple={multiple} selectedKeys={selectedKeys} onSelect={this.handleSelect} dataSource={data} />
+                <Tree
+                    defaultExpandAll
+                    multiple={multiple}
+                    selectedKeys={selectedKeys}
+                    onSelect={this.handleSelect}
+                    dataSource={data}
+                />
             </div>
         );
     }

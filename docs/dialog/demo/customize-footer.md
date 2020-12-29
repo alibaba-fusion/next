@@ -2,14 +2,14 @@
 
 - order: 2
 
-默认的 footer 为确定取消两个按钮，你可以自定义 footer 的内容。
+默认的底部为确定取消两个按钮，可以通过 `okProps` 或 `cancelProps` 自定义按钮属性，或者通过 `footer` 属性完全自定义底部内容。
 
 :::lang=en-us
 # Customize footer
 
 - order: 2
 
-The default footer is ok and cancel buttons, you can customize footer content.
+The default `footer` is ok and cancel buttons, you can customize `footer` content.
 :::
 ---
 
@@ -51,7 +51,9 @@ class Demo extends React.Component {
             <div>
                 <Button onClick={this.onOpenFullyCustomized} type="primary">
                     Fully Customized Footer
-                </Button> &nbsp;
+                </Button>
+                <br/>
+                <br/>
                 <Dialog
                     title="Welcome to Alibaba.com"
                     footer={<Button warning type="primary" onClick={this.onCloseFullyCustomized}>Customize footer</Button>}

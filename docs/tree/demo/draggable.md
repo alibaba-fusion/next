@@ -1,13 +1,14 @@
-# 拖动
+# 实现拖动
 
-- order: 8
+-   order: 9
 
-将节点拖拽到其他节点内部或前后。
+实现节点的拖动逻辑。
 
 :::lang=en-us
+
 # Drag
 
-- order: 8
+-   order: 9
 
 Drag the node inside or around other nodes.
 :::
@@ -36,15 +37,18 @@ const generateData = (_level, _preKey, _tns) => {
             children.push(key);
         }
     }
+
     if (_level < 0) {
         return tns;
     }
+
     const level = _level - 1;
     children.forEach((key, index) => {
         tns[index].children = [];
         return generateData(level, key, tns[index].children);
     });
 };
+
 generateData(z);
 
 class Demo extends React.Component {
@@ -52,7 +56,7 @@ class Demo extends React.Component {
         super(props);
 
         this.state = {
-            gData
+            gData,
         };
     }
 
@@ -63,6 +67,7 @@ class Demo extends React.Component {
         const dragKey = info.dragNode.props.eventKey;
         const dropKey = info.node.props.eventKey;
         const dropPosition = info.dropPosition;
+
         const loop = (data, key, callback) => {
             data.forEach((item, index, arr) => {
                 if (item.key === key) {
@@ -73,14 +78,17 @@ class Demo extends React.Component {
                 }
             });
         };
+
         const data = [...this.state.gData];
         let dragObj;
+
         loop(data, dragKey, (item, index, arr) => {
             arr.splice(index, 1);
             dragObj = item;
         });
+
         if (info.dropPosition === 0) {
-            loop(data, dropKey, (item) => {
+            loop(data, dropKey, item => {
                 item.children = item.children || [];
                 item.children.push(dragObj);
             });
@@ -97,20 +105,32 @@ class Demo extends React.Component {
                 ar.splice(i + 1, 0, dragObj);
             }
         }
+
         this.setState({
-            gData: data
+            gData: data,
         });
     }
     render() {
-        const loop = data => data.map(item => {
-            if (item.children) {
-                return <TreeNode key={item.key} label={item.key}>{loop(item.children)}</TreeNode>;
-            }
-            return <TreeNode key={item.key} label={item.key} />;
-        });
+        const loop = data =>
+            data.map(item => {
+                if (item.children) {
+                    return (
+                        <TreeNode key={item.key} label={item.key}>
+                            {loop(item.children)}
+                        </TreeNode>
+                    );
+                }
+                return <TreeNode key={item.key} label={item.key} />;
+            });
 
         return (
-            <Tree draggable selectable={false} isLabelBlock defaultExpandedKeys={['0-0', '0-0-0', '0-0-0-0']} onDrop={this.onDrop.bind(this)}>
+            <Tree
+                draggable
+                selectable={false}
+                isLabelBlock
+                defaultExpandedKeys={['0-0', '0-0-0', '0-0-0-0']}
+                onDrop={this.onDrop.bind(this)}
+            >
                 {loop(this.state.gData)}
             </Tree>
         );

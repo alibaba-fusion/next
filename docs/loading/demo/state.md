@@ -1,15 +1,15 @@
-# 关闭加载
+# 受控关闭加载
 
-- order: 2
+- order: 4
 
-可切换加载状态。
+通过`visible`受控显示或关闭加载动画。
 
 :::lang=en-us
 # Loading State
 
-- order: 2
+- order: 4
 
-Loading state can be toggle。
+Loading state can be toggle by `visible`。
 
 :::
 ---
@@ -42,25 +42,34 @@ class App extends React.Component {
             visible
         });
     }
+    
     render() {
-        return (<div>
-            <Loading visible={this.state.visible} shape="fusion-reactor">
-                <Form style={{width: 500}}>
-                    <FormItem label="Username" {...layout} >
-                        <Input />
-                    </FormItem>
-                    <FormItem label="Password" {...layout} >
-                        <Input htmlType="password" placeholder="please input"/>
-                    </FormItem>
-                    <FormItem label="Detail" {...layout} >
-                        <Input multiple />
-                    </FormItem>
-                </Form>
-            </Loading>
+
+        const CustomForm = () => (
+            <Form style={{width: 500}}>
+                <FormItem label="Username" {...layout} >
+                    <Input />
+                </FormItem>
+                <FormItem label="Password" {...layout} >
+                    <Input htmlType="password" placeholder="please input"/>
+                </FormItem>
+                <FormItem label="Detail" {...layout} >
+                    <Input multiple />
+                </FormItem>
+            </Form>
+        );
+        const ControlButton = () => (        
             <div style={{paddingLeft: 80}}>
                 <Button onClick={this.setVisible.bind(this, true)} type="primary">Submit</Button>
                 <Button onClick={this.setVisible.bind(this, false)} style={{marginLeft: 5}}>Cancel</Button>
             </div>
+        );
+
+        return (<div>
+            <Loading visible={this.state.visible} shape="fusion-reactor">
+                <CustomForm />
+            </Loading>
+            <ControlButton />
         </div>);
     }
 }

@@ -10,19 +10,19 @@
     &-preview.#{$css-prefix}form-item {
         &.#{$css-prefix}medium {
             #{$form-prefix}-item-label {
-                font-size: $form-element-medium-preview-font-size;
+                font-size: $form-element-medium-preview-label-font-size;
                 line-height: $form-element-medium-preview-height;
             }
         }
         &.#{$css-prefix}small {
             #{$form-prefix}-item-label {
-                font-size: $form-element-small-preview-font-size;
+                font-size: $form-element-small-preview-label-font-size;
                 line-height: $form-element-small-preview-height;
             }
         }
         &.#{$css-prefix}large {
             #{$form-prefix}-item-label {
-                font-size: $form-element-large-preview-font-size;
+                font-size: $form-element-large-preview-label-font-size;
                 line-height: $form-element-large-preview-height;
             }
         }
@@ -92,13 +92,17 @@
 
     &-item {
         &.has-error {
-            #{$form-prefix}-item-help {
-                color: $form-error-color;
+            > #{$form-prefix}-item-control {
+                > #{$form-prefix}-item-help {
+                    color: $form-error-color;
+                }
             }
         }
         &.has-warning {
-            #{$form-prefix}-item-help {
-                color: $form-warning-color;
+            > #{$form-prefix}-item-control {
+                > #{$form-prefix}-item-help {
+                    color: $form-warning-color;
+                }
             }
         }
 
@@ -193,6 +197,13 @@
             content: "*";
             color: $form-error-color;
         }
+        &.has-colon label::after {
+            content: ":";
+            position: relative;
+            top: -.5px;
+            margin: 0 0 0 2px;
+        }
+
 
         &.#{$css-prefix}left {
             text-align: left;

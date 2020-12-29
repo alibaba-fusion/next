@@ -205,6 +205,10 @@ export default class Item extends React.Component {
          * 是否使用 label 替换校验信息的 name 字段
          */
         useLabelForErrorMessage: PropTypes.bool,
+        /**
+         * 表示是否显示 label 后面的冒号
+         */
+        colon: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -312,6 +316,7 @@ export default class Item extends React.Component {
             responsive,
             labelWidth,
             labelTextAlign,
+            colon,
         } = this.props;
 
         const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
@@ -328,6 +333,7 @@ export default class Item extends React.Component {
 
         const cls = classNames({
             [`${prefix}form-item-label`]: true,
+            'has-colon': colon,
             [`${prefix}left`]: labelTextAlign === 'left',
         });
 

@@ -15,7 +15,7 @@ class Loading extends React.Component {
          */
         prefix: PropTypes.string,
         /**
-         * 自定义内容
+         * 自定义内容，可以传入string或reactElement
          */
         tip: PropTypes.any,
         /**
@@ -27,6 +27,11 @@ class Loading extends React.Component {
          * loading 状态, 默认 true
          */
         visible: PropTypes.bool,
+        /**
+         * 全屏模式下，loading弹层请求关闭时触发的回调函数
+         * @param {String} type 弹层关闭的来源
+         * @param {Object} e DOM 事件
+         */
         onVisibleChange: PropTypes.func,
         /**
          * 自定义class
@@ -55,16 +60,19 @@ class Loading extends React.Component {
          */
         fullScreen: PropTypes.bool,
         /**
+         * 当点击 document 的时候，如果包含该节点则不会关闭弹层，
+         * 如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组
          * 是否禁用滚动，仅在 fullScreen 模式下生效
          */
         disableScroll: PropTypes.bool,
         /**
+         * 安全节点，fullScreen时有效，
+         */
+        safeNode: PropTypes.any,
+        /**
          * 子元素
          */
         children: PropTypes.any,
-        /**
-         * should loader be displayed inline
-         */
         inline: PropTypes.bool,
         rtl: PropTypes.bool,
     };
@@ -97,6 +105,7 @@ class Loading extends React.Component {
             size,
             inline,
             rtl,
+            safeNode,
         } = this.props;
 
         let indicatorDom = null;
@@ -148,6 +157,7 @@ class Loading extends React.Component {
                     key="overlay"
                     hasMask
                     align="cc cc"
+                    safeNode={safeNode}
                     disableScroll={disableScroll}
                     {...others}
                     className={className}

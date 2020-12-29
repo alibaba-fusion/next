@@ -100,9 +100,9 @@ function render(i18n) {
                 <Input value={i18n.clear} size="small" hasClear/>
             </DemoGroup>
             <DemoGroup label="Max Length">
-                <Input value={i18n.large} size="large" hasLimitHint maxLength={5}/>
-                <Input value={i18n.medium} hasLimitHint maxLength={5}/>
-                <Input value={i18n.small} size="small" hasLimitHint maxLength={5}/>
+                <Input value={i18n.large} size="large" showLimitHint maxLength={5}/>
+                <Input value={i18n.medium} showLimitHint maxLength={5}/>
+                <Input value={i18n.small} size="small" showLimitHint maxLength={5}/>
             </DemoGroup>
             <DemoGroup label="Label">
                 <Input label={i18n.label} id="label1" value={i18n.large} size="large" />
@@ -123,9 +123,9 @@ function render(i18n) {
                 <Input.TextArea disabled value={i18n.multiple} size="small"/>
             </DemoGroup>
             <DemoGroup label="Max Length">
-                <Input.TextArea value={i18n.multiple} hasLimitHint maxLength={20} size="large"/>
-                <Input.TextArea value={i18n.multiple} hasLimitHint maxLength={20}/>
-                <Input.TextArea value={i18n.multiple} hasLimitHint maxLength={20} size="small"/>
+                <Input.TextArea value={i18n.multiple} showLimitHint maxLength={20} size="large"/>
+                <Input.TextArea value={i18n.multiple} showLimitHint maxLength={20}/>
+                <Input.TextArea value={i18n.multiple} showLimitHint maxLength={20} size="small"/>
             </DemoGroup>
         </Demo>
         <Demo title="Addon" block>

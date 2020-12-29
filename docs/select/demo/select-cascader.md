@@ -51,8 +51,8 @@ class Demo extends React.Component {
         const {data, disabled, province, city} = this.state;
 
         return (
-            <div className="demo-container">
-                <Select placeholder="Select Province" dataSource={provinceData} value={province} onChange={this.handleProvinceChange} />
+            <div>
+                <Select placeholder="Select Province" dataSource={provinceData} value={province} onChange={this.handleProvinceChange} style={{marginRight: 8}}/>
                 <Select placeholder="Select City" dataSource={data} value={city} onChange={this.handleCityChange} disabled={disabled}/>
             </div>
         );
@@ -60,15 +60,4 @@ class Demo extends React.Component {
 }
 
 ReactDOM.render(<Demo/>, mountNode);
-````
-
-````css
-.next-select {
-    margin-right:10px;
-}
-
-.demo-container {
-    background-color: #F8F8F8;
-    padding: 16px;
-}
 ````

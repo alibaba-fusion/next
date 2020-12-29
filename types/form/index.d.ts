@@ -21,6 +21,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * label 标签的文本
      */
     label?: React.ReactNode;
+    colon?: boolean;
 
     /**
      * label 标签布局，通 `<Col>` 组件，设置 span offset 值，如 {span: 8, offset: 16}，该项仅在垂直表单有效
@@ -428,6 +429,7 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      */
     inline?: boolean;
     fullWidth?: boolean;
+    colon?: boolean;
 
     /**
      * 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。

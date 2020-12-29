@@ -79,6 +79,7 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
      * - hoz: 水平排列 (default)
      * - ver: 垂直排列
      */
+    direction?: 'hoz' | 'ver';
     itemDirection?: 'hoz' | 'ver';
 }
 

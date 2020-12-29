@@ -1,13 +1,13 @@
-# 使用Grid 布局
+# 使用Grid快速布局
 
-- order: 5
+- order: 7
 
 使用 `Grid` 布局 `RadioGroup` 中的选项。
 
 :::lang=en-us
 
 # Grid Layout
-- order: 5
+- order: 7
 Use the options in the `Grid` layout `RadioGroup`.
 
 :::
@@ -45,7 +45,8 @@ class ControlApp extends React.Component {
     render() {
         return (
             <div >
-                <h4>Grid Layout</h4>
+                <p style={{fontSize: 14}}>Grid Layout:</p>
+                <br/>
                 <RadioGroup onChange={this.onChange} style={{ width: '1000px'}} >
                     <Row>
                         <Col span="8">
@@ -58,6 +59,7 @@ class ControlApp extends React.Component {
                             <Radio value="banana1" onClick={this.onClick} >Banana</Radio>
                         </Col>
                     </Row>
+                    <br/>
                     <Row>
                         <Col span="8">
                             <Radio value="peach" onClick={this.onClick} >Peach</Radio>
@@ -69,7 +71,6 @@ class ControlApp extends React.Component {
                             <Radio value="strawberry" onClick={this.onClick} >Strawberry</Radio>
                         </Col>
                     </Row>
-                    <Row>Just simple context</Row>
                 </RadioGroup>
             </div>
         );

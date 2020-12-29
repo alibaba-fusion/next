@@ -2,7 +2,7 @@
 
 - order: 0
 
-简单的弹性布局展示，可以通过 `spacing` 控制子元素的间距
+简单的弹性布局展示，可以通过 `spacing` 控制子元素的间距。
 
 :::lang=en-us
 # Basic Usage
