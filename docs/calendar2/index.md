@@ -19,11 +19,20 @@
 
 由于 Calendar 组件内部使用 dayjs 对象来设置日期（请使用最新版 dayjs），部分 Locale 读取自 dayjs, [日期库`dayjs`的国际化](https://dayjs.gitee.io/docs/zh-CN/i18n/i18n)两部分。。
 
-```js
-import dayjs from 'dayjs';
+````js
+import { DatePicker2, ConfigProvider } from '@alifd/next';
+import 'dayjs/locale/en';
+import en from '@alifd/next/lib/locale/en-us';
 
-dayjs.locale('zh-cn');
-```
+function App() {
+    return (
+        <ConfigProvider locale={en}>
+          <DatePicker2 />
+        </ConfigProvider>
+    );
+}
+ReactDOM.render(<App />, mountNode);
+````
 
 ## API
 

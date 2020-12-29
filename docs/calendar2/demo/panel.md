@@ -16,7 +16,7 @@ A panel calendar is usually used for embedding in a popup container.
 
 ---
 
-```jsx
+````jsx
 import { Calendar2 } from '@alifd/next';
 import dayjs from 'dayjs';
 
@@ -26,4 +26,4 @@ ReactDOM.render(
     </div>,
     mountNode
 );
-```
+````

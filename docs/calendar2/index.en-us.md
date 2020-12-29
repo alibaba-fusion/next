@@ -19,11 +19,20 @@ Calendar could be used to display dates, such as schedules, timetables, price ca
 
 Calendar use dayjs as a core part to manipulate and display time values. For real usage, it could be used with the latest `dayjs` package. Setting dayjs's locale by:
 
-```js
-import dayjs from 'dayjs';
+````js
+import { DatePicker2, ConfigProvider } from '@alifd/next';
+import 'dayjs/locale/en';
+import en from '@alifd/next/lib/locale/en-us';
 
-dayjs.locale('zh-cn');
-```
+function App() {
+    return (
+        <ConfigProvider locale={en}>
+          <DatePicker2 />
+        </ConfigProvider>
+    );
+}
+ReactDOM.render(<App />, mountNode);
+````
 
 ## API
 
