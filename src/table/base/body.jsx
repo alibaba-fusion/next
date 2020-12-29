@@ -111,7 +111,7 @@ export default class Body extends React.Component {
                 <td colSpan={columns.length}>
                     <div
                         className={`${prefix}table-empty`}
-                        style={{ position: 'sticky', left: 0, overflow: 'hidden', width: tableOuterWidth - 2 }}
+                        style={{ position: 'sticky', left: 0, overflow: 'hidden', width: (tableOuterWidth || 0) - 2 }}
                     >
                         {empty}
                     </div>

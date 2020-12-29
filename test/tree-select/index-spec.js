@@ -658,6 +658,11 @@ describe('TreeSelect', () => {
         assert(document.querySelector('.next-tree-select-not-found').textContent.trim() === 'Not Found');
     });
 
+    it('fix issues use isPreview when value is empty', () => {
+        wrapper = mount(<TreeSelect isPreview dataSource={dataSource} />);
+        assert(wrapper.find('.next-form-preview').instance().textContent === '');
+    });
+
     it('should support keyboard', done => {
         wrapper = mount(
             <TreeSelect

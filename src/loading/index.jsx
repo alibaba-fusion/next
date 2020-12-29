@@ -60,9 +60,13 @@ class Loading extends React.Component {
          */
         fullScreen: PropTypes.bool,
         /**
-         * 安全节点，fullScreen时有效，
          * 当点击 document 的时候，如果包含该节点则不会关闭弹层，
          * 如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组
+         * 是否禁用滚动，仅在 fullScreen 模式下生效
+         */
+        disableScroll: PropTypes.bool,
+        /**
+         * 安全节点，fullScreen时有效，
          */
         safeNode: PropTypes.any,
         /**
@@ -81,6 +85,7 @@ class Loading extends React.Component {
         tipAlign: 'bottom',
         size: 'large',
         inline: true,
+        disableScroll: false,
     };
 
     render() {
@@ -94,6 +99,7 @@ class Loading extends React.Component {
             color,
             prefix,
             fullScreen,
+            disableScroll,
             onVisibleChange,
             tipAlign,
             size,
@@ -152,6 +158,7 @@ class Loading extends React.Component {
                     hasMask
                     align="cc cc"
                     safeNode={safeNode}
+                    disableScroll={disableScroll}
                     {...others}
                     className={className}
                     style={style}
