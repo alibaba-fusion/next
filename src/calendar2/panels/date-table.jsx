@@ -128,60 +128,70 @@ class DateTable extends React.Component {
         const { hoverValue } = this.state;
 
         const cellContent = [];
-        const prefixCls = `${this.prefixCls}-cell`;
+        const cellCls = `${this.prefixCls}-cell`;
 
         const now = datejs();
+        const rowLen = mode2Rows[mode];
 
         for (let i = 0; i < cellData.length; ) {
             const children = [];
 
-            for (let j = 0; j < mode2Rows[mode]; j++) {
+            let isCurrentWeek;
+            for (let j = 0; j < rowLen; j++) {
                 const { label, value, key, isCurrent } = cellData[i++];
+                const v = value.startOf(mode);
 
-                const isDisabled = props.disabledDate && props.disabledDate(value, mode);
+                const isDisabled = props.disabledDate && props.disabledDate(v, mode);
                 const hoverState = hoverValue && hoveredState && hoveredState(hoverValue);
-                const className = classnames(prefixCls, {
-                    [`${prefixCls}-current`]: isCurrent, // 是否属于当前面板值
-                    [`${prefixCls}-today`]:
-                        mode === WEEK ? this.isSame(value, now, DATE) : this.isSame(value, now, mode),
-                    [`${prefixCls}-selected`]: this.isSame(value, props.value, mode),
-                    [`${prefixCls}-disabled`]: isDisabled,
-                    [`${prefixCls}-range-hover`]: hoverState,
-                    ...(cellClassName && cellClassName(value)),
+                const className = classnames(cellCls, {
+                    [`${cellCls}-current`]: isCurrent, // 是否属于当前面板值
+                    [`${cellCls}-today`]: mode === WEEK ? this.isSame(value, now, DATE) : this.isSame(v, now, mode),
+                    [`${cellCls}-selected`]: this.isSame(v, props.value, mode),
+                    [`${cellCls}-disabled`]: isDisabled,
+                    [`${cellCls}-range-hover`]: hoverState,
+                    ...(cellClassName && cellClassName(v)),
                 });
 
                 let onEvents = null;
 
                 if (!isDisabled) {
                     onEvents = {
-                        onClick: e => this.handleSelect(value, e, { isCurrent, label }),
-                        onKeyDown: e => this.handleKeyDown(value, e, { isCurrent, label }),
-                        onMouseEnter: e => this.handleMouseEnter(value, e, { isCurrent, label }),
-                        onMouseLeave: e => this.handleMouseLeave(value, e, { isCurrent, label }),
+                        onClick: e => this.handleSelect(v, e, { isCurrent, label }),
+                        onKeyDown: e => this.handleKeyDown(v, e, { isCurrent, label }),
+                        onMouseEnter: e => this.handleMouseEnter(v, e, { isCurrent, label }),
+                        onMouseLeave: e => this.handleMouseLeave(v, e, { isCurrent, label }),
                     };
                 }
 
                 if (mode === WEEK && j === 0) {
-                    const week = value.week();
+                    const week = v.week();
+
                     children.push(
-                        <td key={`w-${week}`} className={`${prefixCls}-week ${prefixCls}-cell`}>
-                            <div className={`${prefixCls}-inner`}>{week}</div>
+                        <td key={`w-${week}`} className={`${cellCls}`}>
+                            <div className={`${cellCls}-inner`}>{week}</div>
                         </td>
                     );
+                    isCurrentWeek = isCurrent;
                 }
 
                 const customRender = this.getCustomRender(mode);
 
                 children.push(
                     <td key={key} title={key} {...onEvents} className={className}>
-                        <div className={`${prefixCls}-inner`}>
-                            {renderNode(customRender, <div className={`${prefixCls}-value`}>{label}</div>, [value])}
+                        <div className={`${cellCls}-inner`}>
+                            {renderNode(customRender, <div className={`${cellCls}-value`}>{label}</div>, [v])}
                         </div>
                     </td>
                 );
             }
+
+            let className;
+            if (mode === WEEK) {
+                className = classnames(`${this.prefixCls}-week`, { [`${this.prefixCls}-week-current`]: isCurrentWeek });
+            }
+
             cellContent.push(
-                <tr key={i} className="row">
+                <tr key={i} className={className}>
                     {children}
                 </tr>
             );
@@ -332,7 +342,7 @@ class DateTable extends React.Component {
         };
 
         return (
-            <table rtl="rtl" className={`${this.prefixCls}-table ${this.prefixCls}-table-${mode}`}>
+            <table className={`${this.prefixCls}-table ${this.prefixCls}-table-${mode}`}>
                 {[DATE, WEEK].includes(mode) ? this.renderWeekdaysHead() : null}
                 <tbody>{this.renderCellContent(mode2Data[mode]())}</tbody>
             </table>

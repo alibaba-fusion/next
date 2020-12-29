@@ -424,7 +424,7 @@ describe('Picker', () => {
                 .simulate('click');
 
             mode = 'date';
-            panelValue = '2020-11-12';
+            panelValue = '2020-11-01';
             clickDate('2020-11', 'month');
 
             mode = 'year';

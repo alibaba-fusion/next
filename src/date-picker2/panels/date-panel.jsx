@@ -67,9 +67,11 @@ class DatePanel extends React.Component {
         });
 
         let _disabledTime;
-
         if (showTime && mode === panelMode && disabledTime) {
             _disabledTime = typeof disabledTime === 'function' ? disabledTime(value) : disabledTime;
+            if (typeof _disabledTime !== 'object') {
+                _disabledTime = null;
+            }
         }
 
         return (
@@ -87,6 +89,7 @@ class DatePanel extends React.Component {
                 />
                 {showTime && mode === panelMode ? (
                     <TimePanel
+                        {...obj.pickProps(TimePanel.propTypes, restProps)}
                         prefix={prefix}
                         value={value}
                         onSelect={this.onTimeSelect}

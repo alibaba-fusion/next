@@ -54,14 +54,8 @@ class HeaderPanel extends React.PureComponent {
 
     createPanelBtns = ({ unit, num = 1, isSuper = true }) => {
         const value = this.props.panelValue.clone();
-
         const { prefixCls } = this;
-
-        let iconTypes = isSuper ? ['arrow-double-left', 'arrow-double-right'] : ['arrow-left', 'arrow-right'];
-
-        if (this.props.rtl) {
-            iconTypes = iconTypes.reverse();
-        }
+        const iconTypes = isSuper ? ['arrow-double-left', 'arrow-double-right'] : ['arrow-left', 'arrow-right'];
 
         return [
             <Button

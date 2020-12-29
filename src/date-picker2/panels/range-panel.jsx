@@ -295,14 +295,20 @@ class RangePanel extends React.Component {
         if (!this.hasModeChanged) {
             const edgeState = this.handleEdgeState(value, mode);
 
-            rangeClassName = {
-                [`${prefixCls}-range-begin`]: state === SELECTED_BEGIN,
-                [`${prefixCls}-range-end`]: state === SELECTED_END,
-                [`${prefixCls}-range-begin-single`]: state >= SELECTED && (!end || end.isSame(begin, unit)),
-                [`${prefixCls}-range-end-single`]: state >= SELECTED && (!begin || begin.isSame(end, unit)),
-                [`${prefixCls}-edge-begin`]: edgeState === 1,
-                [`${prefixCls}-edge-end`]: edgeState === 2,
-            };
+            rangeClassName =
+                mode === WEEK
+                    ? {
+                          [`${prefixCls}-week-range-begin`]: state === SELECTED_BEGIN,
+                          [`${prefixCls}-week-range-end`]: state === SELECTED_END,
+                      }
+                    : {
+                          [`${prefixCls}-range-begin`]: state === SELECTED_BEGIN,
+                          [`${prefixCls}-range-end`]: state === SELECTED_END,
+                          [`${prefixCls}-range-begin-single`]: state >= SELECTED && (!end || end.isSame(begin, unit)),
+                          [`${prefixCls}-range-end-single`]: state >= SELECTED && (!begin || begin.isSame(end, unit)),
+                          [`${prefixCls}-edge-begin`]: edgeState === 1,
+                          [`${prefixCls}-edge-end`]: edgeState === 2,
+                      };
         }
 
         return {

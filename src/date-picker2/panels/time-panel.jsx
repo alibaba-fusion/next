@@ -3,13 +3,15 @@ import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
 import TimePickerPanel from '../../time-picker2/panel';
 import SharedPT from '../prop-types';
-import { obj, func } from '../../util';
+import { func } from '../../util';
 
 const DECADE_TIME_FORMAT = 'HH:mm:ss';
 
 class TimePanel extends React.PureComponent {
     static propTypes = {
+        rtl: PT.bool,
         prefix: PT.string,
+        locale: PT.object,
         value: SharedPT.date,
         timePanelProps: PT.object,
         defaultValue: SharedPT.value,
@@ -63,24 +65,22 @@ class TimePanel extends React.PureComponent {
     };
 
     render() {
-        const { prefix, timePanelProps = {}, value } = this.props;
+        const { prefix, rtl, locale, timePanelProps = {}, value } = this.props;
         const { showHour, showMinute, showSecond } = this.getShow();
 
-        delete timePanelProps.value;
-        delete timePanelProps.defaultValue;
-
         return (
-            <div className={`${prefix}date-time-picker-wrapper ${prefix}calendar2-panel`}>
+            <div dir={rtl ? 'rtl' : undefined} className={`${prefix}date-time-picker-wrapper ${prefix}calendar2-panel`}>
                 <div className={`${prefix}calendar2-header`}>
                     <div className={`${prefix}calendar2-header-text-field`}>{value ? this.formater(value) : null}</div>
                 </div>
                 <TimePickerPanel
-                    value={value}
+                    locale={locale}
                     onSelect={this.onSelect}
                     showHour={showHour}
                     showSecond={showSecond}
                     showMinute={showMinute}
                     {...timePanelProps}
+                    value={value}
                 />
             </div>
         );

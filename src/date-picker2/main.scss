@@ -5,24 +5,13 @@
 @import "../input/scss/mixin.scss";
 @import "scss/variable";
 
+@import "./rtl.scss";
 
 #{$date-picker2-prefix} {
-
     outline: none;
     display: inline-table;
     position: relative;
     width: inherit;
-
-    &-body {
-        width: 272px;
-        padding: 8px 12px;
-        display: inline-flex;
-        flex-direction: column;
-        text-align: center;
-        background: $color-white;
-        border-radius: 2px;
-        outline: none;
-    }
 
     &-footer {
         width: min-content;
@@ -53,61 +42,11 @@
     &-overlay {
         vertical-align: top;
         border-radius: 2px;
-        padding: 4px 0;
+        padding: 4px 0px;
     }
 
     &-overlay-range {
-        padding: 12px 0;
-        #{$range-picker2-prefix}-panel:not(#{$range-picker2-prefix}-panel-single) #{$calendar2-prefix}-table-week {
-            tr td#{$calendar2-prefix}-cell-hover::after {
-                display: none;
-            }
-
-            tr td#{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
-                &::before,
-                & #{$calendar2-cell-inner} {
-                    @include calendar-initial;
-                }
-
-                &#{$calendar2-prefix}-cell-range-begin::before {
-                    left: -2px;
-                }
-                &#{$calendar2-prefix}-cell-range-begin:last-child::before {
-                    left: 2px;
-                }
-                &#{$calendar2-prefix}-cell-range-end:last-child::before {
-                    right: 2px;
-                }
-
-                &#{$calendar2-prefix}-cell-range-end::before {
-                    right: -2px;
-                }
-
-                &#{$calendar2-prefix}-cell-range-begin::before,
-                &#{$calendar2-prefix}-cell-range-end::before,
-                &#{$calendar2-prefix}-cell-range-begin #{$calendar2-cell-inner},
-                &#{$calendar2-prefix}-cell-range-end #{$calendar2-cell-inner} {
-                    color: $color-text1-3;
-                    background: $color-brand1-1;
-                }
-            }
-
-            tr #{$calendar2-prefix}-cell-week + #{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled)#{$calendar2-prefix}-cell-range-begin::before {
-                left: 2px;
-            }
-
-            tr td#{$calendar2-prefix}-cell-range-begin:last-child,
-            tr td#{$calendar2-prefix}-cell-range-end:last-child,
-            tr td#{$calendar2-prefix}-cell-week + #{$calendar2-prefix}-cell-range-begin,
-            tr td#{$calendar2-prefix}-cell-week + #{$calendar2-prefix}-cell-range-end {
-                &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
-                    &::before,
-                    & #{$calendar2-cell-inner} {
-                        @include calendar-selected;
-                    }
-                }
-            }
-        }
+        padding: 12px 0px;
     }
 
     &-wrapper {
@@ -115,6 +54,32 @@
         background-color: $color-white;
         border: 1px solid $color-line1-1;
         border-radius: $corner-1;
+
+        #{$calendar2-prefix} {
+            &-body {
+                width: 272px;
+            }
+            &-cell::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: 0px;
+                left: 0px;
+                z-index: 1;
+                height: 24px;
+                transform: translateY(-50%);
+            }
+            &-cell:last-child::before {
+                border-top-right-radius: 2px;
+                border-bottom-right-radius: 2px;
+                right: 8px;
+            }
+            &-cell:first-child::before {
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
+                left: 8px;
+            }
+        }
     }
 
     &-input {
@@ -197,20 +162,7 @@
         min-width: 12px;
         text-align: center;
     }
-
-    .#{$css-prefix}range-picker-right {
-        #{$date-picker2-prefix}-header-left-btn {
-            visibility: hidden;
-        }
-    }
-
-    .#{$css-prefix}range-picker-left {
-        #{$date-picker2-prefix}-header-right-btn {
-            visibility: hidden;
-        }
-    }
 }
-
 
 .#{$css-prefix} {
     &range-picker2-panel,
@@ -265,8 +217,8 @@
 .#{$css-prefix}date-time-picker-wrapper {
     border-left: 1px solid $color-line1-1;
     #{$calendar2-prefix}-body {
-        padding-right: 0;
-        padding-left: 0;
+        padding-right: 0px;
+        padding-left: 0px;
     }
 }
 
@@ -276,8 +228,9 @@
             @include calendar-disabled;
         }
     }
+
     #{$calendar2-prefix}-cell-current:not(#{$calendar2-prefix}-cell-disabled) {
-        &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-range-begin-single):not(#{$calendar2-prefix}-cell-range-end-single) {
+        &#{$calendar2-prefix}-cell-selected {
             &::before {
                 color: $color-text1-3;
                 background: $color-brand1-1;
@@ -287,18 +240,22 @@
                 background: transparent;
             }
 
-            &#{$calendar2-prefix}-cell-range-begin::before {
-                left: 8px;
-            }
-            &#{$calendar2-prefix}-cell-range-end::before {
-                right: 8px;
-            }
-
             &#{$calendar2-prefix}-cell-range-begin,
             &#{$calendar2-prefix}-cell-range-end {
                 #{$calendar2-cell-inner} {
                     @include calendar-selected;
                 }
+            }
+
+            &#{$calendar2-prefix}-cell-range-begin::before {
+                left: 50%;
+            }
+            &#{$calendar2-prefix}-cell-range-end::before {
+                right: 50%;
+            }
+            &#{$calendar2-prefix}-cell-range-begin-single::before,
+            &#{$calendar2-prefix}-cell-range-end-single::before {
+                display: none;
             }
         }
 
@@ -308,12 +265,13 @@
                 position: absolute;
                 top: 50%;
                 right: 0;
-                left: 2px;
+                left: 0;
                 z-index: 2;
                 height: 24px;
                 transform: translateY(-50%);
-                border-top: 1px dashed $color-brand1-9;
-                border-bottom: 1px dashed $color-brand1-9;
+                border-color: $color-brand1-9 transparent;
+                border-style: dashed;
+                border-width: 1px;
             }
 
             &#{$calendar2-prefix}-cell-hover-begin::after,
@@ -325,6 +283,16 @@
             &:last-child::after {
                 right: 8px;
             }
+
+            &#{$calendar2-prefix}-cell-selected {
+                &#{$calendar2-prefix}-cell-hover-begin::after {
+                    left: 7px;
+                }
+                &#{$calendar2-prefix}-cell-hover-end::after {
+                    right: 7px;
+                }
+            }
+
 
             &:first-of-type::after {
                 border-top-left-radius: 2px;
@@ -338,12 +306,13 @@
             }
         }
 
-        & + #{$calendar2-prefix}-cell-edge-end {
-            &::before,
-            &::after {
-                right: 4px;
+        &#{$calendar2-prefix}-cell-edge-end {
+            &::before {
+                right: 8px;
             }
-
+            &::after {
+                right: 8px;
+            }
             &#{$calendar2-prefix}-cell-hover {
                 &::after {
                     border-top-right-radius: 2px;
@@ -370,7 +339,7 @@
     #{$calendar2-prefix}-cell-edge-end + #{$calendar2-prefix}-cell-current:not(#{$calendar2-prefix}-cell-disabled) {
         &::before,
         &::after {
-            left: 4px;
+            left: 8px;
         }
 
         &#{$calendar2-prefix}-cell-hover {
@@ -378,6 +347,70 @@
                 border-top-left-radius: 2px;
                 border-bottom-left-radius: 2px;
                 border-left: 1px dashed $color-brand1-9;
+            }
+        }
+    }
+}
+
+#{$calendar2-prefix}-table-week {
+    #{$calendar2-prefix}-cell-hover::after {
+        display: none;
+    }
+
+    tr:hover #{$calendar2-prefix}-cell:not(.next-calendar2-cell-disabled):not(.next-calendar2-cell-selected)::before {
+        @include calendar-hover;
+    }
+
+    #{$calendar2-prefix}-week-current {
+        #{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected {
+            &::before,
+            #{$calendar2-cell-inner} {
+                color: $color-text1-3;
+                background-color: $color-brand1-1;
+            }
+
+            &:last-child,
+            &:nth-child(2) {
+                #{$calendar2-cell-inner} {
+                    @include calendar-selected;
+                }
+            }
+            &:nth-child(2)::before {
+                left: 50%;
+            }
+            &:last-child::before {
+                right: 50%;
+            }
+        }
+    }
+
+    tr:not(#{$calendar2-prefix}-week-current) {
+        td#{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected:not(.next-calendar2-cell-disabled) {
+            &::before,
+            #{$calendar2-cell-inner} {
+                background-color: transparent;
+                color: $color-text1-1;
+            }
+        }
+    }
+}
+
+#{$range-picker2-prefix}-panel #{$calendar2-prefix}-week-current {
+    #{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
+        &:last-child,
+        &:nth-child(2) {
+            #{$calendar2-cell-inner} {
+                background-color: $color-brand1-1;
+                color: $color-text1-3;
+            }
+        }
+        &#{$calendar2-prefix}-cell-week-range-begin,
+        &#{$calendar2-prefix}-cell-week-range-end {
+            &:last-child,
+            &:nth-child(2) {
+                #{$calendar2-cell-inner} {
+                    @include calendar-selected;
+                }
             }
         }
     }

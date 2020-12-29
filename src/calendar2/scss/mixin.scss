@@ -8,12 +8,11 @@
 }
 
 @mixin calendar-initial {
-    background-color: $color-white;
+    background-color: $color-transparent;
     color: $color-text1-3;
 }
 
 @mixin calendar-disabled {
-    // color: #C4C7CC;
     color: $color-text1-1;
     background: $color-fill1-1;
 }
@@ -25,7 +24,6 @@
 
 @mixin calendar-hover-fullscreen {
     background-color: $color-fill1-2;
-    // color: #414752;
 }
 
 @mixin calendar-current-fullscreen {
@@ -41,6 +39,5 @@
 
 @mixin calendar-disabled-fullscreen {
     color: $color-text1-1;
-    // background-color: #F5F7FA;
     background: $color-fill1-1;
 }

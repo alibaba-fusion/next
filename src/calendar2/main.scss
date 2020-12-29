@@ -6,12 +6,11 @@
 
 @import "./rtl.scss";
 
-// $calendar-cell-bg-hover: $color-brand1-1;
 
 #{$calendar2-prefix} {
     font-size: 12px;
     user-select: none;
-    background: #FFF;
+    background: $color-white;
 
     &-header {
         display: flex;
@@ -25,9 +24,7 @@
     &-cell {
         cursor: pointer;
         position: relative;
-        &::before {
-            transition: background-color .2s, border .2s;
-        }
+        transition: background-color .2s, border .2s;
     }
 
     #{$calendar2-cell-inner} {
@@ -35,7 +32,7 @@
         outline: none;
         min-width: 24px;
         position: relative;
-        transition: background-color .2s, border .2s;
+        border: 1px solid transparent;
     }
 
     &-cell-disabled {
@@ -48,12 +45,9 @@
     &-panel,
     &-card {
         #{$calendar2-prefix}-header {
-            // padding-top: 12px;
-            // padding-bottom: 12px;
             &-actions {
                 margin-left: auto;
             }
-
             &-ranges,
             &-actions {
                 & > *:not(:first-child) {
@@ -63,15 +57,15 @@
 
             &-select-year,
             &-select-month {
-                min-width: auto;
+                min-width: 88px;
                 .#{$css-prefix}input {
-                    min-width: 88px;
+                    min-width: auto;
                 }
             }
         }
 
         #{$calendar2-prefix}-body {
-            padding: 8px;
+            padding: 8px 0;
         }
     }
 
@@ -87,35 +81,6 @@
 
         #{$calendar2-prefix} {
             min-height: 150px;
-
-            &-cell::before {
-                content: "";
-                position: absolute;
-                top: 50%;
-                right: -2px;
-                left: -2px;
-                z-index: 1;
-                height: 24px;
-                transform: translateY(-50%);
-            }
-            &-cell:last-child::before {
-                border-top-right-radius: 2px;
-                border-bottom-right-radius: 2px;
-                right: 8px;
-                left: 2px;
-            }
-            &-cell:first-child::before {
-                border-top-left-radius: 2px;
-                border-bottom-left-radius: 2px;
-                left: 8px;
-            }
-            &-cell-week + #{$calendar2-prefix}-cell::before {
-                border-top-left-radius: 2px;
-                border-bottom-left-radius: 2px;
-                left: 8px;
-                right: 2px;
-            }
-
             &-table {
                 thead > tr {
                     height: 24px;
@@ -181,35 +146,6 @@
                 }
             }
         }
-
-        #{$calendar2-prefix}-table-week {
-            #{$calendar2-cell-inner},
-            #{$calendar2-prefix}-cell:before {
-                transition: none;
-            }
-            tr:hover #{$calendar2-prefix}-cell:not(#{$calendar2-prefix}-cell-disabled) {
-                &::before,
-                & #{$calendar2-cell-inner} {
-                    @include calendar-hover;
-                }
-            }
-            tr td#{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
-                &::before,
-                & #{$calendar2-cell-inner} {
-                    color: $color-text1-3;
-                    background: $color-brand1-1;
-                }
-            }
-            tr td#{$calendar2-prefix}-cell:last-child,
-            tr td#{$calendar2-prefix}-cell-week + #{$calendar2-prefix}-cell {
-                &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
-                    &::before,
-                    & #{$calendar2-cell-inner} {
-                        @include calendar-selected;
-                    }
-                }
-            }
-        }
     }
 
     &-fullscreen {
@@ -225,7 +161,7 @@
 
             &-cell-inner {
                 height: 80px;
-                border-top: 2px solid #DCDFE6;
+                border-top: 2px solid $color-line1-1;
                 margin: 0 4px;
                 padding: 4px 8px 0;
             }
@@ -233,7 +169,7 @@
 
         td #{$calendar2-prefix}-cell-inner {
             height: 80px;
-            border-top: 2px solid #DCDFE6;
+            border-top: 2px solid $color-line1-1;
         }
 
         #{$calendar2-prefix}-cell-disabled #{$calendar2-cell-inner} {
@@ -248,9 +184,6 @@
 
                 &:hover #{$calendar2-cell-inner} {
                     @include calendar-hover-fullscreen;
-                }
-                &:active #{$calendar2-cell-inner} {
-                    background-color: #EDEFF2;
                 }
             }
 
