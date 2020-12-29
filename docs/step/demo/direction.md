@@ -29,18 +29,18 @@ const Step1Content=()=>{
             type: 'null',
             fieldName: 'null',
         };
-        const newConditions = [...conditions,newType]
+        const newConditions = [...conditions,newType];
         setconditions(newConditions);
-    }
-return(
-  <div>
-             {conditions&&conditions.length>0&&
-             conditions.map((item,index)=>
-                           <div key={`step-content-${  index}`} style={{width:'100%', maxWidth: 200, height:20, background:'#2196f3', margin:'10px 0'}}/>
-                           )}
-             <Button onClick={createNewSelectItem}>add new div</Button>	
-           </div>	
-		)
+    };
+    return(<div>
+        {
+            conditions && conditions.length > 0 &&
+            conditions.map((item,index)=>
+                <div key={`step-content-${  index}`} style={{width:'100%', maxWidth: 200, height:20, background:'#2196f3', margin:'10px 0'}}/>
+            )
+        }
+        <Button onClick={createNewSelectItem}>add new div</Button>
+    </div>);
 };
 const CreateDemo=()=>{
     const [conditions, setconditions] = useState([]);

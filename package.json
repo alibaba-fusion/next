@@ -96,6 +96,7 @@
     "@alifd/validate": "~1.2.0",
     "babel-runtime": "^6.26.0",
     "classnames": "^2.2.3",
+    "dayjs": "^1.9.6",
     "hoist-non-react-statics": "^2.1.0",
     "lodash.clonedeep": "^4.5.0",
     "prop-types": "^15.6.0",

@@ -15,7 +15,7 @@ The simplest single select usage.
 
 ---
 
-````jsx
+```jsx
 import { TreeSelect } from '@alifd/next';
 
 const TreeNode = TreeSelect.Node;
@@ -33,7 +33,11 @@ class Demo extends React.Component {
 
     render() {
         return (
-            <TreeSelect treeDefaultExpandAll onChange={this.handleChange} style={{ width: 200 }}>
+            <TreeSelect
+                treeDefaultExpandAll
+                onChange={this.handleChange}
+                style={{ width: 200 }}
+            >
                 <TreeNode key="1" value="1" label="Component">
                     <TreeNode key="2" value="2" label="Form">
                         <TreeNode key="4" value="4" label="Input" />
@@ -49,4 +53,4 @@ class Demo extends React.Component {
 }
 
 ReactDOM.render(<Demo />, mountNode);
-````
+```

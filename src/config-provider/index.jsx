@@ -15,6 +15,7 @@ import {
 import Consumer from './consumer';
 import ErrorBoundary from './error-boundary';
 import Cache from './cache';
+import datejs from '../util/date';
 
 const childContextCache = new Cache();
 
@@ -30,6 +31,13 @@ const setMomentLocale = locale => {
         moment.locale(locale.momentLocale);
     }
 };
+
+const setDateLocale = locale => {
+    if (locale) {
+        datejs.locale(locale.dateLocale || locale.momentLocale);
+    }
+};
+
 /**
  * ConfigProvider
  * @propsExtends false
@@ -91,10 +99,7 @@ class ConfigProvider extends Component {
         nextWarning: PropTypes.bool,
         nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
         nextPopupContainer: PropTypes.any,
-        nextErrorBoundary: PropTypes.oneOfType([
-            PropTypes.bool,
-            PropTypes.object,
-        ]),
+        nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     };
 
     static childContextTypes = {
@@ -105,10 +110,7 @@ class ConfigProvider extends Component {
         nextWarning: PropTypes.bool,
         nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
         nextPopupContainer: PropTypes.any,
-        nextErrorBoundary: PropTypes.oneOfType([
-            PropTypes.bool,
-            PropTypes.object,
-        ]),
+        nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     };
 
     /**
@@ -128,11 +130,7 @@ class ConfigProvider extends Component {
      * @returns {Object} 新的 context props
      */
     static getContextProps = (props, displayName) => {
-        return getContextProps(
-            props,
-            childContextCache.root() || {},
-            displayName
-        );
+        return getContextProps(props, childContextCache.root() || {}, displayName);
     };
 
     static initLocales = initLocales;
@@ -171,16 +169,10 @@ class ConfigProvider extends Component {
 
     constructor(...args) {
         super(...args);
-        childContextCache.add(
-            this,
-            Object.assign(
-                {},
-                childContextCache.get(this, {}),
-                this.getChildContext()
-            )
-        );
+        childContextCache.add(this, Object.assign({}, childContextCache.get(this, {}), this.getChildContext()));
 
         setMomentLocale(this.props.locale);
+        setDateLocale(this.props.locale);
 
         this.state = {
             locale: this.props.locale,
@@ -188,16 +180,7 @@ class ConfigProvider extends Component {
     }
 
     getChildContext() {
-        const {
-            prefix,
-            locale,
-            pure,
-            warning,
-            rtl,
-            device,
-            popupContainer,
-            errorBoundary,
-        } = this.props;
+        const { prefix, locale, pure, warning, rtl, device, popupContainer, errorBoundary } = this.props;
 
         const {
             nextPrefix,
@@ -225,6 +208,7 @@ class ConfigProvider extends Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.locale !== prevState.locale) {
             setMomentLocale(nextProps.locale);
+            setDateLocale(nextProps.locale);
 
             return {
                 locale: nextProps.locale,
@@ -235,14 +219,7 @@ class ConfigProvider extends Component {
     }
 
     componentDidUpdate() {
-        childContextCache.add(
-            this,
-            Object.assign(
-                {},
-                childContextCache.get(this, {}),
-                this.getChildContext()
-            )
-        );
+        childContextCache.add(this, Object.assign({}, childContextCache.get(this, {}), this.getChildContext()));
     }
 
     componentWillUnmount() {

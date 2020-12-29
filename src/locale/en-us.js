@@ -32,7 +32,7 @@ export default {
         datetimePlaceholder: 'Select Date And Time',
         monthPlaceholder: 'Select Month',
         yearPlaceholder: 'Select Year',
-        weekPlaceholder: 'Select week',
+        weekPlaceholder: 'Select Week',
         now: 'Now',
         selectTime: 'Select Time',
         selectDate: 'Select Date',
