@@ -1,0 +1,207 @@
+{
+  "name": "Radio",
+  "props": {
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义类名",
+      "docblock": "自定义类名"
+    },
+    "id": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "组件input的id",
+      "docblock": "组件input的id"
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义内敛样式",
+      "docblock": "自定义内敛样式",
+      "properties": []
+    },
+    "checked": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "设置radio是否选中",
+      "docblock": "设置radio是否选中"
+    },
+    "defaultChecked": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "设置radio是否默认选中",
+      "docblock": "设置radio是否默认选中"
+    },
+    "label": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "通过属性配置label",
+      "docblock": "通过属性配置label"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "状态变化时触发的事件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "状态变化时触发的事件\n@param {Boolean} checked 是否选中\n@param {Event} e Dom 事件对象",
+      "params": [
+        {
+          "name": "checked",
+          "description": "是否选中",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "e",
+          "description": "Dom 事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onMouseEnter": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "鼠标进入enter事件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "鼠标进入enter事件\n@param {Event} e Dom 事件对象",
+      "params": [
+        {
+          "name": "e",
+          "description": "Dom 事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onMouseLeave": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "鼠标离开事件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "鼠标离开事件\n@param {Event} e Dom 事件对象",
+      "params": [
+        {
+          "name": "e",
+          "description": "Dom 事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "radio是否被禁用",
+      "docblock": "radio是否被禁用"
+    },
+    "value": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "number"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "radio 的value",
+      "docblock": "radio 的value"
+    },
+    "name": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "name",
+      "docblock": "name"
+    },
+    "isPreview": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为预览态",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为预览态"
+    },
+    "renderPreview": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "预览态模式下渲染的内容",
+      "docblock": "预览态模式下渲染的内容\n@param {Boolean} checked 是否选中\n@param {Object} props 所有传入的参数\n@returns {reactNode} Element 渲染内容",
+      "params": [
+        {
+          "name": "checked",
+          "description": "是否选中",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "props",
+          "description": "所有传入的参数",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "Element 渲染内容",
+        "type": {
+          "name": "reactNode"
+        }
+      }
+    }
+  },
+  "methods": [],
+  "order": 1,
+  "subComponents": []
+}
