@@ -30,7 +30,7 @@ function onChange(key) {
 const Demo = () => {
     const [shape, setShape] = React.useState('pure');
 
-    return <div>
+    return (<div>
         shape: <Radio.Group shape="button" value={shape} onChange={setShape}>
             <Radio value="pure">pure</Radio>
             <Radio value="wrapped">wrapped</Radio>
@@ -44,8 +44,8 @@ const Demo = () => {
             <Tab.Item key="api" title="API">This is api page</Tab.Item>
             <Tab.Item key="repo" title="Repo">This is repo link</Tab.Item>
         </Tab>
-    </div>
-}
+    </div>);
+};
 
 ReactDOM.render(<Demo/>, mountNode);
 ````

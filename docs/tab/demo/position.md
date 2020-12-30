@@ -35,7 +35,7 @@ const Demo = () => {
             <Tab.Item title="Tab 3" key="3">Tab 3 Content</Tab.Item>
         </Tab>
     </div>);
-}
+};
 
 ReactDOM.render(<Demo />, mountNode);
 ````

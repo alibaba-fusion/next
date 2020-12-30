@@ -7,19 +7,22 @@
 -   type: 展示
 
 ---
+
 展示行列数据。
 
 ## 何时使用
 
-- Table 负责将数据呈现为高度可定制和具备可访问性的 HTML 表格，其核心功能为将结构化的数据使用表格的方式展现；
-- 可以使用各种参数来向表格中加入一些特性，比如排序，过滤，滚动，锁列等。
+-   Table 负责将数据呈现为高度可定制和具备可访问性的 HTML 表格，其核心功能为将结构化的数据使用表格的方式展现；
+-   可以使用各种参数来向表格中加入一些特性，比如排序，过滤，滚动，锁列等。
 
 ### Table.StickyLock
+
 这是 `1.21` 版本推出的子组件，它与 `Table` 用法、API完全一样，只是优化了锁列的实现，推荐升级。
 
 区分如下：
-- 旧版本锁列通过两层dom来模拟左、右锁列的列，因此滚动、行高的同步等都需要额外逻辑的，逻辑较重;
-- 新版本 `Table.StickyLock` 通过 `position: sticky` 来实现锁列，滚动、行高等行为都通过浏览器实现，逻辑轻量;
+
+-   旧版本锁列通过两层dom来模拟左、右锁列的列，因此滚动、行高的同步等都需要额外逻辑的，逻辑较重;
+-   新版本 `Table.StickyLock` 通过 `position: sticky` 来实现锁列，滚动、行高等行为都通过浏览器实现，逻辑轻量;
 
 建议用户在新的页面中使用 `Table.StickyLock`，如果没有深度的样式定制（例如选择到 `.next-table-lock-left` 这一层级）,也可以把现有的 `Table` 升级到 `Table.StickyLock`
 
@@ -39,6 +42,7 @@ ReactDOM.render(
         <Table.Column title="Time" dataIndex="time"/>
     </Table.StickyLock>, mountNode);
 ```
+
 ### 列配置
 
 Table.Column 提供了非常多的配置属性用于自定义列，最常见的就是使用`cell`自定义单元格的渲染逻辑. 其他的配置选项可以参考下面的 Table.Column 的 API。
@@ -171,19 +175,25 @@ ReactDOM.render(
 | ---- | ------ | ------------------------------- | -------- |
 | cell | 行渲染的逻辑 | ReactElement/ReactNode/Function | () => '' |
 
-
 ## FAQ
 
 ### `rowSelection` 模式，选择任意一个都是全选？
+
 给定的数据源中的属性需要有一个唯一标示该条数据的主键，默认值为id，可通过 `primaryKey` 更改 e.g.`<Table primaryKey='myId'></Table>`。
+
 ### `rowSelection` 模式，如何设置默认选中/禁用？
+
 通过受控模式，设置 `rowSelection.selectedRowKeys` 可以默认选中选中；通过 `rowSelection.getProps` 可以自定义每一行checkbox的props，具体可搜索demo`选择可控`。
+
 ### `rowSelection` 模式，如何屏蔽全选按钮/自定义全选按钮?
+
 通过`rowSelection.titleProps` 可以自定义选择列的表头的props，可通过 `style: {display: 'none'}` 屏蔽全选按钮；此外还有 `rowSelection.titleAddons` `rowSelection.columnProps`等属性，具体用法可搜索demo `可选择`。
+
 ### 支持行的双击事件/设置每一行的样式？处理整行点击？
+
 通过 `rowProps` 属性，重写行支持的原生属性，比如`className style onDoubleClick`等；通过 `onRowClick` 处理整行点击。
 
 ### 已知问题
 
-- 分组 Table 不支持在 Hover 状态和选中状态下显示背景色，无法合并单元格；
-- Table 锁列特性下面无法使用合并单元格功能。
+-   分组 Table 不支持在 Hover 状态和选中状态下显示背景色，无法合并单元格；
+-   Table 锁列特性下面无法使用合并单元格功能。

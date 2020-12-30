@@ -22,7 +22,7 @@ const Demo = () => {
     const [valueInc, setValueInc] = React.useState(30);
 
     const colorCry = ``;
-    return <div style={{width: 400}}>
+    return (<div style={{width: 400}}>
         <div style={{display: 'flex'}}>
             <Range value={valueInc} onChange={setValueInc} min={0} max={100} step={5} style={{marginRight: 10}}/>
             <NumberPicker value={valueInc} onChange={setValueInc} min={0} max={100} step={5} /> 
@@ -32,8 +32,8 @@ const Demo = () => {
             <Range value={valueInc} onProcess={setValueInc} min={0} max={100} style={{marginRight: 10}}/>
             <Icon type="smile" style={{color: `rgba(50,50,50, ${valueInc/100})`}}/>
         </div>
-    </div>
-}
+    </div>);
+};
 
 
 ReactDOM.render(<Demo />, mountNode);

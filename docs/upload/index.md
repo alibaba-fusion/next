@@ -7,6 +7,7 @@
 -   type: 表单
 
 ---
+
 文件选择上传和拖拽上传控件。
 
 ## 何时使用
@@ -18,6 +19,7 @@
 ## 如何使用
 
 ### 跨域问题
+
 有些服务不支持 `X-Requested-With: XMLHttpRequest` 这个请求头导致不能跨域，可以通过设置 `<Upload headers={{'X-Requested-With':null}}>` 来解决。
 
 ### IE9兼容性
@@ -28,6 +30,7 @@
 
 假设你表单页面的域是：shop.taobao.com，而上传的服务器端路径却是 upload.taobao.com。服务端返回必须带额外script标签。
 iframe上传会额外传递参数 `_documentDomain` 方便你设置域名。
+
 ```jsx
   <script>document.domain="taobao.com";</script>
   {
@@ -42,43 +45,43 @@ iframe上传会额外传递参数 `_documentDomain` 方便你设置域名。
 
 ### Upload
 
-| 参数              | 说明                                                                                                                                                                                                                                              | 类型              | 默认值       |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | --------- |
-| action          | 上传的地址                                                                                                                                                                                                                                           | String          | -         |
-| shape           | 上传按钮形状<br><br>**可选值**:<br>'card'                                                                                                                                                                                                                | Enum            | -         |
-| accept          | 接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)                                                                                           | String          | -         |
-| data            | 上传额外传参                                                                                                                                                                                                                                          | Object/Function | -         |
-| headers         | 设置上传的请求头部                                                                                                                                                                                                                                       | Object          | -         |
-| withCredentials | 是否允许请求携带 cookie                                                                                                                                                                                                                                 | Boolean         | true      |
-| beforeUpload    | 可选参数, 详见 [beforeUpload](#beforeUpload)<br><br>**签名**:<br>Function(file: Object, options: Object) => Boolean/Object/Promise<br>**参数**:<br>_file_: {Object} 所有文件<br>_options_: {Object} 参数<br>**返回值**:<br>{Boolean/Object/Promise} 返回值作用见demo<br> | Function        | func.noop |
-| onProgress      | 上传中<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                        | Function        | func.noop |
-| onSuccess       | 可选参数，上传成功回调函数，参数为请求下响应信息以及文件<br><br>**签名**:<br>Function(file: Object, value: Array) => void<br>**参数**:<br>_file_: {Object} 文件<br>_value_: {Array} 值                                                                                             | Function        | func.noop |
-| onError         | 可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件<br><br>**签名**:<br>Function(file: Object, value: Array) => void<br>**参数**:<br>_file_: {Object} 出错的文件<br>_value_: {Array} 当前值                                                                                   | Function        | func.noop |
-| children        | 子元素                                                                                                                                                                                                                                             | ReactNode       | -         |
-| timeout         | 设置上传超时,单位ms                                                                                                                                                                                                                                     | Number          | -         |
-| method          | 上传方法<br><br>**可选值**:<br>'post', 'put'                                                                                                                                                                                                           | Enum            | 'post'    |
-| request         | 自定义上传方法<br><br>**签名**:<br>Function(option: Object) => Object<br>**参数**:<br>_option_: {Object} null<br>**返回值**:<br>{Object} object with abort method<br>                                                                                         | Function        | -         |
-| name            | 文件名字段                                                                                                                                                                                                                                           | String          | -         |
-| onSelect        | 选择文件回调<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                     | Function        | func.noop |
-| onDrop          | 放文件<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                        | Function        | func.noop |
-| value           | 文件列表                                                                                                                                                                                                                                            | Array           | -         |
-| defaultValue    | 默认文件列表                                                                                                                                                                                                                                          | Array           | -         |
-| listType        | 上传列表的样式<br><br>**可选值**:<br>'text'(文字)<br>'image'(图文)<br>'card'(卡片)                                                                                                                                                                              | Enum            | -         |
-| formatter       | 数据格式化函数，配合自定义 action 使用，参数为服务器的响应数据，详见 [formatter](#formater)<br><br>**签名**:<br>Function(response: Object, file: File) => void<br>**参数**:<br>_response_: {Object} 返回<br>_file_: {File} 文件对象                                                     | Function        | -         |
-| limit           | 最大文件上传个数                                                                                                                                                                                                                                        | Number          | Infinity  |
-| dragable        | 可选参数，是否支持拖拽上传，`ie10+` 支持。                                                                                                                                                                                                                       | Boolean         | -         |
-| useDataURL      | 可选参数，是否本地预览                                                                                                                                                                                                                                     | Boolean         | -         |
-| disabled        | 可选参数，是否禁用上传功能                                                                                                                                                                                                                                   | Boolean         | -         |
-| onChange        | 上传文件改变时的状态<br><br>**签名**:<br>Function(info: Object) => void<br>**参数**:<br>_info_: {Object} 文件事件对象                                                                                                                                               | Function        | func.noop |
-| afterSelect     | 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.<br><br>**签名**:<br>Function(file: Object) => Boolean<br>**参数**:<br>_file_: {Object} null<br>**返回值**:<br>{Boolean} 返回false会阻止上传,其他则表示正常<br>         | Function        | func.noop |
-| onRemove        | 移除文件回调函数<br><br>**签名**:<br>Function(file: Object) => Boolean/Promise<br>**参数**:<br>_file_: {Object} 文件<br>**返回值**:<br>{Boolean/Promise} 返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件删除<br>                                           | Function        | func.noop |
-| autoUpload      | 自动上传                                                                                                                                                                                                                                            | Boolean         | true      |
-| progressProps   | 透传给Progress props                                                                                                                                                                                                                               | Object          | -         |
-| isPreview       | 是否为预览态                                                                                                                                                                                                                                          | Boolean         | -         |
-| renderPreview   | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                                                                                                                               | Function        | -         |
-| fileKeyName     | 文件对象的 key name                                                                                                                                                                                                                                  | String          | -         |
-| fileNameRender  | list 的自定义文件名渲染<br><br>**签名**:<br>Function(file: Object) => Node<br>**参数**:<br>_file_: {Object} 文件<br>**返回值**:<br>{Node} react node<br>                                                                                                          | Function        | -         |
-| actionRender    | 操作区域额外渲染<br><br>**签名**:<br>Function(file: Object) => Node<br>**参数**:<br>_file_: {Object} 文件<br>**返回值**:<br>{Node} react node<br>                                                                                                                | Function        | -         |
+| 参数              | 说明                                                                                                                                                                                                                                              | 类型              | 默认值       | 版本支持 |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | --------- | ---- |
+| action          | 上传的地址                                                                                                                                                                                                                                           | String          | -         |      |
+| shape           | 上传按钮形状<br><br>**可选值**:<br>'card'                                                                                                                                                                                                                | Enum            | -         |      |
+| accept          | 接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)                                                                                           | String          | -         |      |
+| data            | 上传额外传参                                                                                                                                                                                                                                          | Object/Function | -         |      |
+| headers         | 设置上传的请求头部                                                                                                                                                                                                                                       | Object          | -         |      |
+| withCredentials | 是否允许请求携带 cookie                                                                                                                                                                                                                                 | Boolean         | true      |      |
+| beforeUpload    | 可选参数, 详见 [beforeUpload](#beforeUpload)<br><br>**签名**:<br>Function(file: Object, options: Object) => Boolean/Object/Promise<br>**参数**:<br>_file_: {Object} 所有文件<br>_options_: {Object} 参数<br>**返回值**:<br>{Boolean/Object/Promise} 返回值作用见demo<br> | Function        | func.noop |      |
+| onProgress      | 上传中<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                        | Function        | func.noop |      |
+| onSuccess       | 可选参数，上传成功回调函数，参数为请求下响应信息以及文件<br><br>**签名**:<br>Function(file: Object, value: Array) => void<br>**参数**:<br>_file_: {Object} 文件<br>_value_: {Array} 值                                                                                             | Function        | func.noop |      |
+| onError         | 可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件<br><br>**签名**:<br>Function(file: Object, value: Array) => void<br>**参数**:<br>_file_: {Object} 出错的文件<br>_value_: {Array} 当前值                                                                                   | Function        | func.noop |      |
+| children        | 子元素                                                                                                                                                                                                                                             | ReactNode       | -         |      |
+| timeout         | 设置上传超时,单位ms                                                                                                                                                                                                                                     | Number          | -         |      |
+| method          | 上传方法<br><br>**可选值**:<br>'post', 'put'                                                                                                                                                                                                           | Enum            | 'post'    |      |
+| request         | 自定义上传方法<br><br>**签名**:<br>Function(option: Object) => Object<br>**参数**:<br>_option_: {Object} null<br>**返回值**:<br>{Object} object with abort method<br>                                                                                         | Function        | -         |      |
+| name            | 文件名字段                                                                                                                                                                                                                                           | String          | -         |      |
+| onSelect        | 选择文件回调<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                     | Function        | func.noop |      |
+| onDrop          | 放文件<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                        | Function        | func.noop |      |
+| value           | 文件列表                                                                                                                                                                                                                                            | Array           | -         |      |
+| defaultValue    | 默认文件列表                                                                                                                                                                                                                                          | Array           | -         |      |
+| listType        | 上传列表的样式<br><br>**可选值**:<br>'text'(文字)<br>'image'(图文)<br>'card'(卡片)                                                                                                                                                                              | Enum            | -         |      |
+| formatter       | 数据格式化函数，配合自定义 action 使用，参数为服务器的响应数据，详见 [formatter](#formater)<br><br>**签名**:<br>Function(response: Object, file: File) => void<br>**参数**:<br>_response_: {Object} 返回<br>_file_: {File} 文件对象                                                     | Function        | -         |      |
+| limit           | 最大文件上传个数                                                                                                                                                                                                                                        | Number          | Infinity  |      |
+| dragable        | 可选参数，是否支持拖拽上传，`ie10+` 支持。                                                                                                                                                                                                                       | Boolean         | -         |      |
+| useDataURL      | 可选参数，是否本地预览                                                                                                                                                                                                                                     | Boolean         | -         |      |
+| disabled        | 可选参数，是否禁用上传功能                                                                                                                                                                                                                                   | Boolean         | -         |      |
+| onChange        | 上传文件改变时的状态<br><br>**签名**:<br>Function(info: Object) => void<br>**参数**:<br>_info_: {Object} 文件事件对象                                                                                                                                               | Function        | func.noop |      |
+| afterSelect     | 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.<br><br>**签名**:<br>Function(file: Object) => Boolean<br>**参数**:<br>_file_: {Object} null<br>**返回值**:<br>{Boolean} 返回false会阻止上传,其他则表示正常<br>         | Function        | func.noop |      |
+| onRemove        | 移除文件回调函数<br><br>**签名**:<br>Function(file: Object) => Boolean/Promise<br>**参数**:<br>_file_: {Object} 文件<br>**返回值**:<br>{Boolean/Promise} 返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件删除<br>                                           | Function        | func.noop |      |
+| autoUpload      | 自动上传                                                                                                                                                                                                                                            | Boolean         | true      |      |
+| progressProps   | 透传给Progress props                                                                                                                                                                                                                               | Object          | -         |      |
+| isPreview       | 是否为预览态                                                                                                                                                                                                                                          | Boolean         | -         |      |
+| renderPreview   | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                                                                                                                               | Function        | -         |      |
+| fileKeyName     | 文件对象的 key name                                                                                                                                                                                                                                  | String          | -         | 1.21 |
+| fileNameRender  | list 的自定义文件名渲染<br><br>**签名**:<br>Function(file: Object) => Node<br>**参数**:<br>_file_: {Object} 文件<br>**返回值**:<br>{Node} react node<br>                                                                                                          | Function        | -         |      |
+| actionRender    | 操作区域额外渲染<br><br>**签名**:<br>Function(file: Object) => Node<br>**参数**:<br>_file_: {Object} 文件<br>**返回值**:<br>{Node} react node<br>                                                                                                                | Function        | -         |      |
 
 ### Upload.Card
 
@@ -135,6 +138,7 @@ iframe上传会额外传递参数 `_documentDomain` 方便你设置域名。
 ### 自定义Request
 
 某些场景下需要自定义Request,例如对接AWS S3 jd-sdk or aliyun oss sdk,. Upload 支持 传入自定义的 request方法.
+
 ```jsx
 function customRequest(option) {
     /* coding here */
@@ -143,7 +147,9 @@ function customRequest(option) {
 
 <Upload request={customRequest}/>
 ```
+
 customRequest被传入一个 object,包含以下属性:
+
 -   onProgress: (event: { percent: number }): void
 -   onError: (event: Error, body?: Object): void
 -   onSuccess: (body: Object): void
@@ -173,6 +179,7 @@ request需要返回一个包含abort方法的对象,用于中断上传
 所有的值在`Upload.ErrorCode`.
 
 ### onChange 返回结构
+
 ```jsx
 {
   uid: 'uid',       // 文件唯一标识
@@ -184,7 +191,9 @@ request需要返回一个包含abort方法的对象,用于中断上传
   downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'   // 下载(可选)
 }
 ```
+
 ### 接口 response 返回数据格式要求
+
 ```jsx
 {
   "success": true,
@@ -194,6 +203,7 @@ request需要返回一个包含abort方法的对象,用于中断上传
   "downloadURL": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"    // 文件下载地址 (非必须)
 }
 ```
+
 ### 后端数据格式化
 
 通过 `formatter` 将来自后端的不规则数据转换为符合组件要求的数据格式
@@ -206,6 +216,7 @@ request需要返回一个包含abort方法的对象,用于中断上传
   "img_src": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",   // 图片链接
 }
 ```
+
 -   转换方法
 
 ```jsx
@@ -221,6 +232,7 @@ request需要返回一个包含abort方法的对象,用于中断上传
   }}
 />
 ```
+
 ### Upload 服务端代码样例
 
 Next Upload组件上传文件使用的`multipart/form-data`方式上传文件,具体实现是在支持`FormData`对象的浏览器中使用xhr对象发送formdata。在不支持`FormData`对象的浏览器如IE9, 使用iframe原生表单实现。

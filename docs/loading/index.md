@@ -33,9 +33,9 @@ Loading 默认使用 `display='inline-block'` 布局的方式包裹内部元素�
 | indicator       | 自定义动画                                                                                                                                                  | any      | -         |
 | color           | 动画颜色                                                                                                                                                   | String   | -         |
 | fullScreen      | 全屏展示                                                                                                                                                   | Boolean  | -         |
-| safeNode        | 安全节点，fullScreen时有效，<br>当点击 document 的时候，如果包含该节点则不会关闭弹层，<br>如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组                                  | any      | -         |
+| disableScroll   | 当点击 document 的时候，如果包含该节点则不会关闭弹层，<br>如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组<br>是否禁用滚动，仅在 fullScreen 模式下生效                           | Boolean  | false     |
+| safeNode        | 安全节点，fullScreen时有效，                                                                                                                                    | any      | -         |
 | children        | 子元素                                                                                                                                                    | any      | -         |
-| inline        | should loader be displayed inline                                | Boolean | true     |
 
 ## 无障碍键盘操作指南
 

@@ -39,7 +39,7 @@ function Demo() {
     const [size, setSize] = useState('medium');
     const onChange = val => console.log(val);
 
-    return <div>
+    return (<div>
         <RadioGroup
             shape="button"
             type="primary"
@@ -51,7 +51,7 @@ function Demo() {
         <br /><br />
         <RangePicker size={size} onChange={onChange} />
         <br /><br />
-    </div>;
+    </div>);
 }
 
 ReactDOM.render(<Demo />, mountNode);

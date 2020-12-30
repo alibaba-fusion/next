@@ -30,7 +30,7 @@ const App = () => {
     const labelAlign = inline? 'left' : field.getValue('labelAlign');
     const layout = inline? {} : formItemLayout;
 
-    return <Form field={field} inline={inline} labelAlign={labelAlign} {...layout}>
+    return (<Form field={field} inline={inline} labelAlign={labelAlign} {...layout}>
         <Form.Item label="Inline Layout" >
             <Switch name="inline"/>
         </Form.Item>
@@ -55,8 +55,8 @@ const App = () => {
         <Form.Item label=" ">
             <Form.Submit onClick={handleSubmit}>Submit</Form.Submit>
         </Form.Item>
-    </Form>
-}
+    </Form>);
+};
 
 ReactDOM.render(<App/>, mountNode);
 ````

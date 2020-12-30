@@ -57,7 +57,7 @@ const dataSource = [
 ];
 
 function itemRender(itemData) {
-    return `${itemData.label}(${itemData.value})`
+    return `${itemData.label}(${itemData.value})`;
 }
 
 ReactDOM.render(

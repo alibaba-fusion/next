@@ -18,14 +18,14 @@
 
 ### Badge
 
-| 参数            | 说明                                                                                                     | 类型            | 默认值   | 版本支持 |
-| ------------- | ------------------------------------------------------------------------------------------------------ | ------------- | ----- | ---- |
-| children      | 徽标依托的内容，一般显示在其右上方                                                                                      | ReactNode     | -     |      |
-| count         | 展示的数字，大于 `overflowCount` 时显示为 `${overflowCount}+`，为 `0` 时默认隐藏<br/><br/>**可选参数类型:** _Number_ / _String_ | Number/String | 0     |      |
-| showZero      | 当`count`为`0`时，是否显示count                                                                                | Boolean       | false | 1.16 |
-| content       | 自定义徽标中的内容                                                                                              | ReactNode     | -     |      |
-| overflowCount | 展示的封顶的数字<br/><br/>**可选参数类型:** _Number_ / _String_                                                      | Number/String | 99    |      |
-| dot           | 不展示数字，只展示一个小红点                                                                                         | Boolean       | false |      |
+| 参数            | 说明                                                            | 类型            | 默认值   | 版本支持 |
+| ------------- | ------------------------------------------------------------- | ------------- | ----- | ---- |
+| children      | 徽标依托的内容，一般显示在其右上方                                             | ReactNode     | -     |      |
+| count         | 展示的数字，大于 `overflowCount` 时显示为 `${overflowCount}+`，为 `0` 时默认隐藏 | Number/String | 0     |      |
+| showZero      | 当`count`为`0`时，是否显示count                                       | Boolean       | false | 1.16 |
+| content       | 自定义徽标中的内容                                                     | ReactNode     | -     |      |
+| overflowCount | 展示的封顶的数字                                                      | Number/String | 99    |      |
+| dot           | 不展示数字，只展示一个小红点                                                | Boolean       | false |      |
 
 ## 无障碍键盘操作指南
 
