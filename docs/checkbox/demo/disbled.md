@@ -32,7 +32,6 @@ class App extends React.Component {
         disabled:<Switch size="small" defaultChecked onChange={this.toggleDisabled} style={{verticalAlign: "middle"}}/>
         <br />
         <br />
-        <br />
         <Checkbox defaultChecked={false} disabled={this.state.disabled} style={{ marginRight: 10 }}>
           Disabled
         </Checkbox>

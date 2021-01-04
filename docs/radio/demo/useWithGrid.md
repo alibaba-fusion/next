@@ -46,7 +46,6 @@ class ControlApp extends React.Component {
         return (
             <div >
                 <p style={{fontSize: 14}}>Grid Layout:</p>
-                <br/>
                 <RadioGroup onChange={this.onChange} style={{ width: '1000px'}} >
                     <Row>
                         <Col span="8">
