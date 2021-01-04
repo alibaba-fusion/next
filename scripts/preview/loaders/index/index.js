@@ -21,8 +21,7 @@ module.exports = function(content) {
     this.addDependency(headerTplPath);
     this.addDependency(indexTplPath);
     this.addDependency(resourcePath);
-
-    let [demoInsertScript, demoMetas] = getDemos(demoPaths, lang, dir, this.context, resourcePath);
+    let [demoInsertScript, demoMetas] = getDemos(demoPaths, lang, dir, this.context, resourcePath, comp.name);
 
     const lines = content.split(/\n/g);
     const endIndex = lines.findIndex(line => /^-{3,}/.test(line));

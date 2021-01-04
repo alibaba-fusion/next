@@ -8,7 +8,7 @@ const { getLiveDemoOp, getDemoRenderScript } = require('../preview/loaders/index
 const docParser = createDocParser({});
 const EN_DOC_REG = /:{3}lang=en-us((.|\r|\n)*):{3}/;
 
-function getDemos(demoPaths) {
+function getDemos(demoPaths, componentName = null) {
     const demoResults = {};
     const demoListOrdered = [];
     const demoMetas = demoPaths.reduce((ret, demoPath) => {
@@ -44,7 +44,7 @@ function getDemos(demoPaths) {
         demoListOrdered.push(result.meta);
         ret = `
                 ${ret}
-                ${processDemoJS(result.js, result.css, result.body, demoPath)}`;
+                ${processDemoJS(result.js, result.css, result.body, demoPath, componentName)}`;
         return ret;
     }, '');
     return `
@@ -53,7 +53,7 @@ function getDemos(demoPaths) {
 }
 
 // eslint-disable-next-line max-params
-function processDemoJS(js, css, body, demoPath) {
+function processDemoJS(js, css, body, demoPath, componentName) {
     if (!js) {
         return '';
     }
@@ -109,8 +109,8 @@ import { Balloon, Message } from '@alifd/next';
 window.demoNames.push('${name}');
 ${importJs}
 ${rawCss ? `document.getElementById('${name}-style').innerHTML = \`${css}\`;` : ''}
-${getDemoRenderScript(js, name, body, noImportJs, rawCss, rawImportJs)}
-${getLiveDemoOp(name)}
+${getDemoRenderScript(js, name, body, noImportJs, rawCss, rawImportJs, componentName)}
+${getLiveDemoOp(name, componentName)}
 `;
 
     return hotReloadCode;

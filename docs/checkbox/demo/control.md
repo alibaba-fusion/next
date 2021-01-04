@@ -58,7 +58,6 @@ class ControlApp extends React.Component {
                 normal:   <Checkbox.Group dataSource={list} value={this.state.value} onChange={this.onChange} />
                 <br />
                 <br />
-                <br />
                 disabled:  <Checkbox.Group disabled dataSource={list} value={this.state.value} onChange={this.onChange} />
             </div>
         );

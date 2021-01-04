@@ -15,7 +15,7 @@ const IMPORT_LIB_REG = /import (.+) from ['"]@alifd\/next\/lib\/(.+)['"];?/;
 const IMPORT_LIB_REG_G = /^import .+ from ['"]@alifd\/next\/lib\/(.+)['"];?/gm;
 
 // TODO watch change
-function getDemos(demoPaths, lang, dir, context, resourcePath) {
+function getDemos(demoPaths, lang, dir, context, resourcePath, componentName) {
     const demoResults = {};
     const demoListOrdered = [];
     const demoMetas = demoPaths.reduce((ret, demoPath) => {
@@ -58,7 +58,7 @@ function getDemos(demoPaths, lang, dir, context, resourcePath) {
             ret = `
                 ${ret}
                 ${result.css ? getCSSRequireString(path.resolve(demoPath), context) : ''}
-                ${processDemoJS(result.js, result.css, result.body, demoPath, resourcePath)}`;
+                ${processDemoJS(result.js, result.css, result.body, demoPath, resourcePath, componentName)}`;
             return ret;
         }, '')
         .split('\n')
@@ -75,7 +75,7 @@ function getDemos(demoPaths, lang, dir, context, resourcePath) {
 
 // TODO add react-axe
 // eslint-disable-next-line max-params
-function processDemoJS(js, css, body, demoPath, resourcePath) {
+function processDemoJS(js, css, body, demoPath, resourcePath, componentName) {
     if (!js) {
         return '';
     }
@@ -125,7 +125,7 @@ ${css.replace(/`/g, '{backquote}').replace(/\$/g, '{dollar}')}
 window.demoNames.push('${name}');
 ${getDemoOp(name)}
 ${importJs}
-${getDemoRenderScript(js, name, body, noImportJs, rawCss, rawImportJs)}
+${getDemoRenderScript(js, name, body, noImportJs, rawCss, rawImportJs, componentName)}
 `;
 
     return hotReloadCode;

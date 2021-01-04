@@ -176,7 +176,7 @@ function* buildCompiledDocs(cwd) {
                 const cnDemoContent = docParser.parse(cnDoc);
                 cnDemoContent.name = name;
                 cnDemoContent.html = docParser.render(cnDemoContent.body);
-                cnDemoContent.renderScript = transformHTML(getOnlineDemos([demoFilePath]));
+                cnDemoContent.renderScript = transformHTML(getOnlineDemos([demoFilePath], getComponentName(folder)));
                 const cnDemoContentOutput = JSON.stringify(cnDemoContent);
                 const cnDemoFileTo = path.join(demoBaseTo, demoFile);
                 yield fs.writeFile(cnDemoFileTo, cnDemoContentOutput, 'utf8');
@@ -196,7 +196,9 @@ function* buildCompiledDocs(cwd) {
                     const enDemoContent = docParser.parse(enDoc);
                     enDemoContent.name = name;
                     enDemoContent.html = docParser.render(enDemoContent.body);
-                    enDemoContent.renderScript = transformHTML(getOnlineDemos([enDemoFilePath]));
+                    enDemoContent.renderScript = transformHTML(
+                        getOnlineDemos([enDemoFilePath], getComponentName(folder))
+                    );
                     const enDemoContentOutput = JSON.stringify(enDemoContent);
                     const enDemoFileTo = path.join(demoBaseTo, filename);
                     yield fs.writeFile(enDemoFileTo, enDemoContentOutput, 'utf8');
