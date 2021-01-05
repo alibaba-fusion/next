@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
@@ -137,6 +137,7 @@ describe('Picker', () => {
                     <Picker
                         showTime
                         defaultVisible
+                        defaultPanelValue={defaultVal}
                         disabledDate={v => v.isAfter(dayjs('2020-12-12'))}
                         disabledTime={{
                             disabledHours: v => v > 18,
