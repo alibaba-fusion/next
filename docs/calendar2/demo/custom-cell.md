@@ -20,9 +20,6 @@ import { Calendar2 } from '@alifd/next';
 import dayjs from 'dayjs';
 
 const currentDate = dayjs();
-const localeData = currentDate.clone().localeData();
-const monthLocale = localeData.monthsShort();
-
 
 function dateCellRender(date) {
     const dateNum = date.date();
@@ -67,11 +64,11 @@ function dateCellRender(date) {
 function monthCellRender(date) {
     if (currentDate.month() === date.month()) {
         return (<div>
-            <div>{monthLocale[date.month()]}</div>
+            <div>{date.month()}</div>
             <div>Events</div>
         </div>);
     }
-    return monthLocale[date.month()];
+    return date.month();
 }
 
 ReactDOM.render(<Calendar2 dateCellRender={dateCellRender} monthCellRender={monthCellRender} />, mountNode);
