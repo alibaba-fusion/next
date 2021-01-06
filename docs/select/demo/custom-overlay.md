@@ -77,11 +77,11 @@ class Demo extends React.Component {
     }
 
     render() {
-        const popupContent = <div style={{border: '1px solid', background: 'white'}}>
+        const popupContent = (<div style={{border: '1px solid', background: 'white'}}>
             <div style={{borderBottom: '1px solid', background: 'white', padding: 10, fontSize: '12px'}}>custom header</div>
             <CustomMenu onChange={this.handleSelect} onMouseDown={preventDefault}/>
             <div style={{borderTop: '1px solid', background: 'white', padding: 10, fontSize: '12px'}}>custom footer</div>
-        </div>;
+        </div>);
         const popupProps = {
             triggerClickKeycode: [13, 32, 40] // space, enter, down-arrow
         };

@@ -6,9 +6,11 @@
 -   type: 展示
 
 ---
+
 引导用户按照流程完成任务的导航条。
 
 ## 何时使用
+
 当任务复杂或者存在先后关系时，将其分解成一系列步骤，从而简化任务。
 
 ## API
@@ -41,15 +43,17 @@
 ## FAQ
 
 ### 为什么设置 Step 的展示方向不生效？
+
 `Step`组件有三种类型（shape） `shape?: 'arrow' | 'circle' | 'dot';`, 其中:
-- `shape='arrow'` 只有一种模式；
-- `shape='circle'` 有两种方向；
-    - `direction='ver'` 垂直方向
-    - `direction='hoz'` 水平方向，根据文案与图标位置的不同分为两种模式
-        - `labelPlacement='hoz'` 文案与图标 左右布局
-        - `labelPlacement='ver'` 文案与图标 上下布局
-- `shape='dot'` 有两种方向；
-    - `direction='ver'` 垂直方向
-    - `direction='hoz'` 水平方向
-    
+
+-   `shape='arrow'` 只有一种模式；
+-   `shape='circle'` 有两种方向；
+    -   `direction='ver'` 垂直方向
+    -   `direction='hoz'` 水平方向，根据文案与图标位置的不同分为两种模式
+        -   `labelPlacement='hoz'` 文案与图标 左右布局
+        -   `labelPlacement='ver'` 文案与图标 上下布局
+-   `shape='dot'` 有两种方向；
+    -   `direction='ver'` 垂直方向
+    -   `direction='hoz'` 水平方向
+
 如果发现 step 展示方向设置不生效，可先检查是否使用了正确的 API（比如`labelPlacement`就仅在`shape='circle'` `direction='hoz'`时才生效。

@@ -1,9 +1,9 @@
 # Tree
 
-- category: Components
-- family: DataDisplay
-- chinese: 树形控件
-- type: 基本
+-   category: Components
+-   family: DataDisplay
+-   chinese: 树形控件
+-   type: 基本
 
 ---
 

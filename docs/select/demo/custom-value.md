@@ -81,7 +81,7 @@ const DemoWithValueRender = () => {
     };
 
     return <Select mode="multiple" placeholder="Custom with valueRender" valueRender={valueRender} dataSource={dataSource} />;
-}
+};
 
 ReactDOM.render(<div>
     <DemoWithFillProps />

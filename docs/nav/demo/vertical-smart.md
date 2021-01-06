@@ -32,7 +32,7 @@ class App extends React.Component {
     onChange = (val) => {
         this.setState({
             collapse: val,
-        })
+        });
     }
 
     changeEmbeddable = (embeddable) => {

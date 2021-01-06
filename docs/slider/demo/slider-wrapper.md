@@ -45,7 +45,7 @@ const Demo = () => {
                 <div><h3 className="h3">4</h3></div>
             </Slider>
         </div>); 
-}
+};
 
 ReactDOM.render(<Demo />, mountNode);
 ````

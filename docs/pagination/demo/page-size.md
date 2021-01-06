@@ -32,11 +32,11 @@ class Demo extends React.Component {
     }
 
     handleChange = (pageSize) => {
-        this.setState({pageSize})
+        this.setState({pageSize});
     }
 
     render() {
-        return <div>
+        return (<div>
             <h3>Set page size</h3>
             <Pagination pageSize={20} />
             <h3>Hide page size selector</h3>
@@ -45,7 +45,7 @@ class Demo extends React.Component {
             <Pagination pageSizeSelector="dropdown" pageSizePosition="end" />
             <h3>Use pageSizeList to specify the number of records per page.</h3>
             <Pagination pageSize={this.state.pageSize} total={100} pageSizeSelector="filter" pageSizeList={[5, 10, 20]} onPageSizeChange={this.handleChange} />
-        </div>
+        </div>);
     }
 }
 
