@@ -240,8 +240,11 @@ function getLiveDemoOp(name, componentName) {
     return `
     function onRiddleOrCodePenClick(type){
         const time = new Date().getTime();
-        const url = \`http://gm.mmstat.com/fusion-inc-design.fusion-inc-react-live.riddle-codepen?demo=${name}&component=${componentName}&type=\${type}&t=\${time}\`;
-        fetch(url, {mode: 'no-cors'})
+        window.top.postMessage({
+            type: 'RiddleOrCodePenClick',
+            from: 'demo',
+            body: {name: '${name}', component: '${componentName}', type: type, time: time}
+          }, '*');
     }
     ReactDOM.render(${liveCodePen}, document.getElementById('${name}-CodePen'));
     ReactDOM.render(${liveRiddle}, document.getElementById('${name}-Riddle'));
@@ -350,8 +353,11 @@ window.${name}RenderScript = function ${name}RenderScript(liveDemo){
 
         onBlur = () => {
             const time = new Date().getTime();
-            const url = \`http://gm.mmstat.com/fusion-inc-design.fusion-inc-react-live.fusion-inc-demo?internal=\${/alibaba/g.test(location.href) ? true : false}&demo=${name}&component=${componentName}&t=\${time}\`;
-            fetch(url, {mode: 'no-cors'})
+            window.top.postMessage({
+                type: 'ReactLiveEdit',
+                from: 'demo',
+                body: {name: '${name}', component: '${componentName}', time: time}
+              }, '*');
         }
 
         render(){
