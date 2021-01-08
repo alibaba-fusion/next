@@ -39,7 +39,7 @@ class Base extends React.Component {
          */
         maxLength: PropTypes.number,
         /**
-         * 是否展现最大长度样式
+         * 是否展现最大长度样式，需配合 maxLength 一起使用
          */
         showLimitHint: PropTypes.bool,
         /**
