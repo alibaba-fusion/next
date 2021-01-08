@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Grid from '../grid';
 import RGrid from '../responsive-grid';
-import { obj } from '../util';
+import { obj, env } from '../util';
 import Error from './error';
 import { getFieldInitCfg } from './enhance';
 
@@ -11,6 +11,7 @@ const { Row, Col } = Grid;
 const { Cell } = RGrid;
 
 const { isNil } = obj;
+const isIE9 = env.ieVersion === 9;
 
 /** Form.Item
  *  @description 手动传递了 wrapCol labelCol 会使用 Grid 辅助布局; labelAlign='top' 会强制禁用 Grid
@@ -334,6 +335,7 @@ export default class Item extends React.Component {
         const cls = classNames({
             [`${prefix}form-item-label`]: true,
             'has-colon': colon,
+            [`${prefix}ie9`]: isIE9,
             [`${prefix}left`]: labelTextAlign === 'left',
         });
 

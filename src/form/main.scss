@@ -109,12 +109,21 @@
         /* medium */
         // TODO: REMOVE the lastchild's margin-bottom in 2.x version
         margin-bottom: $form-item-m-margin-b;
-        #{$form-prefix}-item-label, #{$form-prefix}-text-align, p {
-            line-height: $form-element-medium-height;
-        }
         #{$form-prefix}-text-align, p {
+            line-height: $form-element-medium-height;
             margin: 0;
         }
+        &.#{$css-prefix}left #{$form-prefix}-item-label>label {
+            display: inline-flex;
+            align-items: center;
+            height: $form-element-medium-height;
+            line-height: normal;
+        }
+
+        &.#{$css-prefix}left #{$form-prefix}-item-label.#{$css-prefix}ie9 > label {
+            line-height: $form-element-medium-height;
+        }
+
 
         @include form-enhance(calc(#{$form-element-medium-height} - 4px));
         @include form-preview($form-element-medium-preview-font-size, $form-element-medium-preview-height);
@@ -125,8 +134,14 @@
 
         &.#{$css-prefix}large {
             margin-bottom: $form-item-l-margin-b;
-            #{$form-prefix}-item-label, #{$form-prefix}-text-align, p {
+            #{$form-prefix}-text-align, p {
                 line-height: $form-element-large-height;
+            }
+            &.#{$css-prefix}left #{$form-prefix}-item-label {
+                line-height: 0;
+                >label {
+                    height: $form-element-large-height;
+                }
             }
 
             @include form-enhance(calc(#{$form-element-large-height} - 1px));
@@ -143,10 +158,12 @@
         &.#{$css-prefix}small {
             margin-bottom: $form-item-s-margin-b;
 
-            #{$form-prefix}-item-label, #{$form-prefix}-text-align, p {
+            #{$form-prefix}-text-align, p {
                 line-height: $form-element-small-height;
             }
-
+            &.#{$css-prefix}left #{$form-prefix}-item-label>label {
+                height: $form-element-small-height;
+            }
             @include form-enhance($form-element-small-height);
             @include form-preview($form-element-small-preview-font-size, $form-element-small-preview-height);
 
@@ -183,6 +200,10 @@
         > .#{$css-prefix}time-picker {
             width: 100%;
         }
+    }
+
+    &-item.#{$css-prefix}top #{$form-prefix}-item-label {
+        text-align: left;
     }
 
     &-item-label {

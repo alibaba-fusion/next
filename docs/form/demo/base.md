@@ -38,10 +38,10 @@ class Demo extends React.Component {
     render() {
         return (
             <Form style={{width: '60%'}} {...formItemLayout} colon>
-                <FormItem label="Username:" required requiredMessage="Please input your username!">
+                <FormItem label="Username" required requiredMessage="Please input your username!">
                     <Input name="baseUser" />
                 </FormItem>
-                <FormItem label="Password:" required requiredMessage="Please input your password!">
+                <FormItem label="Password" required requiredMessage="Please input your password!">
                     <Input.Password name="basePass" placeholder="Please Enter Password"/>
                 </FormItem>
                 <FormItem label=" "  colon={false}>

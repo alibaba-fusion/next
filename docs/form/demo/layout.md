@@ -30,7 +30,7 @@ const App = () => {
     const labelAlign = inline? 'left' : field.getValue('labelAlign');
     const layout = inline? {} : formItemLayout;
 
-    return (<Form field={field} inline={inline} labelAlign={labelAlign} {...layout}>
+    return (<Form field={field} inline={inline} labelAlign={labelAlign} {...layout} colon>
         <Form.Item label="Inline Layout" >
             <Switch name="inline"/>
         </Form.Item>
@@ -45,14 +45,14 @@ const App = () => {
         </Form.Item>
         }
 
-        <Form.Item label="Username:">
+        <Form.Item label="Username">
             <Input name="inlineUser"  placeholder="first"/>
         </Form.Item>
-        <Form.Item label="Password:" hasFeedback={false}>
+        <Form.Item label="Password" hasFeedback={false}>
             <Input.Password name="inlinePass" placeholder="Please enter your password!"/>
         </Form.Item>
 
-        <Form.Item label=" ">
+        <Form.Item label=" " colon={false}>
             <Form.Submit onClick={handleSubmit}>Submit</Form.Submit>
         </Form.Item>
     </Form>);
