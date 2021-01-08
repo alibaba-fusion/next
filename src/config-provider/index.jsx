@@ -15,6 +15,7 @@ import {
 import Consumer from './consumer';
 import ErrorBoundary from './error-boundary';
 import Cache from './cache';
+import datejs from '../util/date';
 
 const childContextCache = new Cache();
 
@@ -30,6 +31,13 @@ const setMomentLocale = locale => {
         moment.locale(locale.momentLocale);
     }
 };
+
+const setDateLocale = locale => {
+    if (locale) {
+        datejs.locale(locale.dateLocale || locale.momentLocale);
+    }
+};
+
 /**
  * ConfigProvider
  * @propsExtends false
@@ -172,6 +180,7 @@ class ConfigProvider extends Component {
         childContextCache.add(this, Object.assign({}, childContextCache.get(this, {}), this.getChildContext()));
 
         setMomentLocale(this.props.locale);
+        setDateLocale(this.props.locale);
 
         this.state = {
             locale: this.props.locale,
@@ -219,6 +228,7 @@ class ConfigProvider extends Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.locale !== prevState.locale) {
             setMomentLocale(nextProps.locale);
+            setDateLocale(nextProps.locale);
 
             return {
                 locale: nextProps.locale,

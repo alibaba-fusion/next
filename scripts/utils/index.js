@@ -2,6 +2,11 @@ const path = require('path');
 const _ = require('lodash');
 const { exec } = require('child_process');
 
+/**
+ *
+ * @param {String} component date-picker
+ * @return {String} DatePicker
+ */
 exports.getComponentName = function(component) {
     const camelCaseName = _.camelCase(component);
     return camelCaseName[0].toUpperCase() + camelCaseName.slice(1);

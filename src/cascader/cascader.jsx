@@ -289,7 +289,7 @@ class Cascader extends Component {
 
         const menusWidth = Math.ceil(
             menus.reduce((ret, menu) => {
-                return ret + getStyle(menu, 'width');
+                return ret + Math.ceil(menu.getBoundingClientRect().width);
             }, 0)
         );
 

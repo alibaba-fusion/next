@@ -32,4 +32,5 @@ if you want `wrap all the element`, please use `<Loading style={{display: 'block
 | indicator  | custom  animation                                                                      | any     | -        |
 | color      | animation color                                                                     | String  | -        |
 | fullScreen | fullscreen display                                                                       | Boolean | -        |
+| disableScroll | whether to disable page scrolling, only works when fullScreen is true                 | Boolean | false    |
 | children   | children elements                                                                        | any     | -        |
