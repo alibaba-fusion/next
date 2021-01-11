@@ -7,17 +7,15 @@
 
 ---
 
-## Guide
-
 按照日历形式展示数据的容器。
 
 ### 何时使用
 
 日历组件是一个偏向于展示与受控的基础组件，可用于日程、课表、价格日历、农历展示等。
 
-### 日期值的多语言
+### 国际化
 
-由于 Calendar 组件内部使用 dayjs 对象来设置日期（请使用最新版 dayjs），部分 Locale 读取自 dayjs, [日期库`dayjs`的国际化](https://dayjs.gitee.io/docs/zh-CN/i18n/i18n)两部分。。
+由于 `Calendar` 组件内部使用 `dayjs` 对象来设置日期（请使用最新版 dayjs），部分 `Locale` 读取自 [日期库`dayjs`的国际化](https://dayjs.gitee.io/docs/zh-CN/i18n/i18n)。
 
 ````js
 import { DatePicker2, ConfigProvider } from '@alifd/next';

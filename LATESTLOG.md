@@ -1,10 +1,10 @@
 # Latest Log 
 
-## [1.21.16](https://github.com/alibaba-fusion/next/compare/1.21.15...1.21.16) (2020-12-24)
+## [1.22.1](https://github.com/alibaba-fusion/next/compare/1.22.0...1.22.1) (2021-01-08)
 
 
 ### Bug Fixes
 
-* **Cascader:** width in IE, close [#2518](https://github.com/alibaba-fusion/next/issues/2518) ([e722e9f](https://github.com/alibaba-fusion/next/commit/e722e9f))
+* **Mask:** compile theme variables error ([#2599](https://github.com/alibaba-fusion/next/issues/2599)) ([471ca0f](https://github.com/alibaba-fusion/next/commit/471ca0f))
 
 

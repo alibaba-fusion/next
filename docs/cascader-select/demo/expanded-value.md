@@ -50,11 +50,11 @@ class Demo extends React.Component {
     }
 
     render() {
-        return <CascaderSelect
+        return (<CascaderSelect
             defaultExpandedValue={['2973','2980', '2981']}
             dataSource={this.state.data}
             onChange={this.handleChange}
-        />;
+        />);
     }
 }
 
