@@ -109,6 +109,7 @@
         /* medium */
         // TODO: REMOVE the lastchild's margin-bottom in 2.x version
         margin-bottom: $form-item-m-margin-b;
+
         #{$form-prefix}-text-align, p {
             line-height: $form-element-medium-height;
             margin: 0;
@@ -130,6 +131,7 @@
 
         #{$form-prefix}-item-label {
             font-size: $form-element-medium-font-size;
+            line-height: $font-lineheight-base;
         }
 
         &.#{$css-prefix}large {
