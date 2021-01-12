@@ -53,6 +53,10 @@ class ConfigProvider extends Component {
          */
         locale: PropTypes.object,
         /**
+         * 组件 API 的默认配置
+         */
+        defaultPropsConfig: PropTypes.object,
+        /**
          * 是否开启错误捕捉 errorBoundary
          * 如需自定义参数，请传入对象 对象接受参数列表如下：
          *
@@ -94,6 +98,7 @@ class ConfigProvider extends Component {
     static contextTypes = {
         nextPrefix: PropTypes.string,
         nextLocale: PropTypes.object,
+        nextDefaultPropsConfig: PropTypes.object,
         nextPure: PropTypes.bool,
         nextRtl: PropTypes.bool,
         nextWarning: PropTypes.bool,
@@ -105,6 +110,7 @@ class ConfigProvider extends Component {
     static childContextTypes = {
         nextPrefix: PropTypes.string,
         nextLocale: PropTypes.object,
+        nextDefaultPropsConfig: PropTypes.object,
         nextPure: PropTypes.bool,
         nextRtl: PropTypes.bool,
         nextWarning: PropTypes.bool,
@@ -147,6 +153,7 @@ class ConfigProvider extends Component {
         const {
             nextPrefix,
             nextLocale,
+            nextDefaultPropsConfig,
             nextPure,
             nextRtl,
             nextWarning,
@@ -158,6 +165,7 @@ class ConfigProvider extends Component {
         return {
             prefix: nextPrefix,
             locale: nextLocale,
+            defaultPropsConfig: nextDefaultPropsConfig,
             pure: nextPure,
             rtl: nextRtl,
             warning: nextWarning,
@@ -180,10 +188,21 @@ class ConfigProvider extends Component {
     }
 
     getChildContext() {
-        const { prefix, locale, pure, warning, rtl, device, popupContainer, errorBoundary } = this.props;
+        const {
+            prefix,
+            locale,
+            defaultPropsConfig,
+            pure,
+            warning,
+            rtl,
+            device,
+            popupContainer,
+            errorBoundary,
+        } = this.props;
 
         const {
             nextPrefix,
+            nextDefaultPropsConfig,
             nextLocale,
             nextPure,
             nextRtl,
@@ -195,6 +214,7 @@ class ConfigProvider extends Component {
 
         return {
             nextPrefix: prefix || nextPrefix,
+            nextDefaultPropsConfig: defaultPropsConfig || nextDefaultPropsConfig,
             nextLocale: locale || nextLocale,
             nextPure: typeof pure === 'boolean' ? pure : nextPure,
             nextRtl: typeof rtl === 'boolean' ? rtl : nextRtl,
