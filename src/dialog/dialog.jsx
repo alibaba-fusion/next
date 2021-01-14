@@ -173,7 +173,7 @@ export default class Dialog extends Component {
         afterClose: noop,
         hasMask: true,
         animation: {
-            in: 'fadeInDown',
+            in: 'fadeInUp',
             out: 'fadeOutUp',
         },
         autoFocus: false,
