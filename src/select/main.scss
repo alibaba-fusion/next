@@ -324,8 +324,7 @@
     }
 
     &-popup-wrap {
-        animation-duration: $motion-duration-standard;
-        animation-timing-function: $motion-ease;
+        padding: 4px 0;
     }
 
     &-menu-wrapper {

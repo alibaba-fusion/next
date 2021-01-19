@@ -363,18 +363,24 @@ class Overlay extends Component {
         switch (align[0]) {
             case 't':
                 return {
-                    in: 'expandInDown',
-                    out: 'expandOutUp',
+                    // in: 'expandInDown',
+                    // out: 'expandOutUp',
+                    in: 'fadeInDown',
+                    out: 'fadeOutUpSmall',
                 };
             case 'b':
                 return {
-                    in: 'expandInUp',
-                    out: 'expandOutDown',
+                    // in: 'expandInUp',
+                    // out: 'expandOutDown',
+                    in: 'fadeInUp',
+                    out: 'fadeOutDown',
                 };
             default:
                 return {
-                    in: 'expandInDown',
-                    out: 'expandOutUp',
+                    // in: 'expandInDown',
+                    // out: 'expandOutUp',
+                    in: 'fadeInDown',
+                    out: 'fadeOutUpSmall',
                 };
         }
     }

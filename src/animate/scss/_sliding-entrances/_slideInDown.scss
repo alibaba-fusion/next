@@ -9,7 +9,7 @@
     }
 }
 
-@mixin slideInDown($count: $countDefault, $duration: $durationDefault, $delay: $delayDefault, $function: $ease-in-out-quint, $fill: $fillDefault, $visibility: $visibilityDefault) {
+@mixin slideInDown($count: $countDefault, $duration: $durationBigDefault, $delay: $delayDefault, $function: $ease-in-out-quint, $fill: $fillDefault, $visibility: $visibilityDefault) {
     @include animation-name(slideInDown);
     @include count($count);
     @include duration($duration);

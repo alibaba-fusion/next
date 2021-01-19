@@ -9,7 +9,7 @@
     }
 }
 
-@mixin slideInLeft($count: $countDefault, $duration: $durationDefault, $delay: $delayDefault, $function: $ease-in-out-quint, $fill: $fillDefault, $visibility: $visibilityDefault) {
+@mixin slideInLeft($count: $countDefault, $duration: $durationBigDefault, $delay: $delayDefault, $function: $ease-in-out-quint, $fill: $fillDefault, $visibility: $visibilityDefault) {
     @include animation-name(slideInLeft);
     @include count($count);
     @include duration($duration);

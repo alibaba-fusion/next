@@ -39,8 +39,10 @@ class Mask extends React.Component {
         offset: [0, 30],
         hasMask: false,
         animation: {
-            in: 'pulse',
-            out: 'zoomOut',
+            // in: 'pulse',
+            // out: 'zoomOut',
+            in: 'fadeInDown',
+            out: 'fadeOutDown',
         },
         style: {},
         className: '',
