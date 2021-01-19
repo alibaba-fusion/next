@@ -76,7 +76,7 @@ class FunctionDemo extends React.Component {
             const content = types.map(type => {
                 const children = ['large', 'medium'].map(size => (
                     <Message type={type} title={title} shape={shape} size={size} closeable={closeable} key={`${shape}-${type}-${size}`}>
-                        <p style={style}>{i18n.content}</p>
+                        {i18n.content}
                     </Message>
                 ));
                 return (<DemoGroup label={toFirstUpperCase(type)} key={type}>{children}</DemoGroup>);
