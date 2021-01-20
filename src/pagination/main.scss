@@ -15,7 +15,9 @@
     }
 
     &-pages {
-        display: inline-block;
+        display: inline-block; /* for ie9 */
+        display: inline-flex;
+        align-items: center;
     }
 
     &-list {
@@ -32,6 +34,8 @@
     }
 
     & &-item {
+        transition: none;
+        margin-left: $s-1;
         &.#{$css-prefix}current {
             border-color: $pagination-item-current-border-color;
             background: $pagination-item-current-bg;
@@ -51,6 +55,7 @@
         display: inline-block;
         color: $pagination-ellipsis-color;
         vertical-align: top;
+        margin-right: $s-1;
     }
 
     &-display {
@@ -243,6 +248,14 @@
 
         &.#{$css-prefix}mini {
             @include mini-size($s-2);
+        }
+
+        #{$pagination-prefix}-ellipsis {
+            margin-right: $s-2;
+        }
+
+        #{$pagination-prefix}-item {
+            margin-left: $s-2;
         }
     }
 
