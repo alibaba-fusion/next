@@ -21,7 +21,6 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * label 标签的文本
      */
     label?: React.ReactNode;
-    colon?: boolean;
 
     /**
      * label 标签布局，通 `<Col>` 组件，设置 span offset 值，如 {span: 8, offset: 16}，该项仅在垂直表单有效
