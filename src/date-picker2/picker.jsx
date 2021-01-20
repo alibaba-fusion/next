@@ -9,12 +9,13 @@ import { func, datejs, KEYCODE, obj } from '../util';
 import { switchInputType } from './util';
 import { DATE_PICKER_TYPE, DATE_INPUT_TYPE, DATE_PICKER_MODE } from './constant';
 
-import { Popup } from '../overlay';
+import Overlay from '../overlay';
 import DateInput from './panels/date-input';
 import DatePanel from './panels/date-panel';
 import RangePanel from './panels/range-panel';
 import FooterPanel from './panels/footer-panel';
 
+const { Popup } = Overlay;
 const { renderNode } = func;
 const { pickProps, pickOthers } = obj;
 
