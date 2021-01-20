@@ -209,6 +209,10 @@ export default class Item extends React.Component {
          * 表示是否显示 label 后面的冒号
          */
         colon: PropTypes.bool,
+        /**
+         * 子元素的 value 名称
+         */
+        valueName: PropTypes.string,
     };
 
     static defaultProps = {
