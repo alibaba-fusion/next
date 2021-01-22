@@ -23,10 +23,12 @@ class Tag extends Component {
         prefix: PropTypes.string,
         /**
          * 标签的类型
+         * @enumdesc 普通, 主要
          */
         type: PropTypes.oneOf(['normal', 'primary']),
         /**
          * 标签的尺寸（large 尺寸为兼容表单场景 large = medium）
+         * @enumdesc 小, 中, 大
          */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
 
@@ -243,10 +245,8 @@ class Tag extends Component {
                 [`${prefix}tag-level-${type}`]: !color,
                 [`${prefix}tag-closable`]: closable,
                 [`${prefix}tag-body-pointer`]: closable && closeArea === 'tag',
-                [`${prefix}tag-${color}`]:
-                    color && isPresetColor && type === 'primary',
-                [`${prefix}tag-${color}-inverse`]:
-                    color && isPresetColor && type === 'normal',
+                [`${prefix}tag-${color}`]: color && isPresetColor && type === 'primary',
+                [`${prefix}tag-${color}-inverse`]: color && isPresetColor && type === 'normal',
             },
             className
         );

@@ -68,20 +68,11 @@ export function getDirection() {
 
 export function config(Component, options = {}) {
     // 非 forwardRef 创建的 class component
-    if (
-        obj.isClassComponent(Component) &&
-        Component.prototype.shouldComponentUpdate === undefined
-    ) {
+    if (obj.isClassComponent(Component) && Component.prototype.shouldComponentUpdate === undefined) {
         // class component: 通过定义 shouldComponentUpdate 改写成 pure component, 有refs
-        Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(
-            nextProps,
-            nextState
-        ) {
+        Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
             if (this.props.pure) {
-                return (
-                    !shallowEqual(this.props, nextProps) ||
-                    !shallowEqual(this.state, nextState)
-                );
+                return !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
             }
 
             return true;
@@ -93,28 +84,24 @@ export function config(Component, options = {}) {
             ...(Component.propTypes || {}),
             prefix: PropTypes.string,
             locale: PropTypes.object,
+            defaultPropsConfig: PropTypes.object,
             pure: PropTypes.bool,
             rtl: PropTypes.bool,
             device: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
             popupContainer: PropTypes.any,
-            errorBoundary: PropTypes.oneOfType([
-                PropTypes.bool,
-                PropTypes.object,
-            ]),
+            errorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         };
         static contextTypes = {
             ...(Component.contextTypes || {}),
             nextPrefix: PropTypes.string,
             nextLocale: PropTypes.object,
+            nextDefaultPropsConfig: PropTypes.object,
             nextPure: PropTypes.bool,
             nextRtl: PropTypes.bool,
             nextWarning: PropTypes.bool,
             nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
             nextPopupContainer: PropTypes.any,
-            nextErrorBoundary: PropTypes.oneOfType([
-                PropTypes.bool,
-                PropTypes.object,
-            ]),
+            nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         };
 
         constructor(props, context) {
@@ -153,6 +140,7 @@ export function config(Component, options = {}) {
             const {
                 prefix,
                 locale,
+                defaultPropsConfig,
                 pure,
                 rtl,
                 device,
@@ -163,6 +151,7 @@ export function config(Component, options = {}) {
             const {
                 nextPrefix,
                 nextLocale = {},
+                nextDefaultPropsConfig = {},
                 nextPure,
                 nextRtl,
                 nextDevice,
@@ -170,12 +159,12 @@ export function config(Component, options = {}) {
                 nextErrorBoundary,
             } = this.context;
 
-            const displayName =
-                options.componentName || getDisplayName(Component);
+            const displayName = options.componentName || getDisplayName(Component);
             const contextProps = getContextProps(
                 {
                     prefix,
                     locale,
+                    defaultPropsConfig,
                     pure,
                     device,
                     popupContainer,
@@ -185,64 +174,45 @@ export function config(Component, options = {}) {
                 {
                     nextPrefix,
                     nextLocale: { ...currentGlobalLocale, ...nextLocale },
+                    nextDefaultPropsConfig,
                     nextPure,
                     nextDevice,
                     nextPopupContainer,
-                    nextRtl:
-                        typeof nextRtl === 'boolean'
-                            ? nextRtl
-                            : currentGlobalRtl === true
-                            ? true
-                            : undefined,
+                    nextRtl: typeof nextRtl === 'boolean' ? nextRtl : currentGlobalRtl === true ? true : undefined,
                     nextErrorBoundary,
                 },
                 displayName
             );
 
             // errorBoundary is only for <ErrorBoundary>
-            const newContextProps = [
-                'prefix',
-                'locale',
-                'pure',
-                'rtl',
-                'device',
-                'popupContainer',
-            ].reduce((ret, name) => {
-                if (typeof contextProps[name] !== 'undefined') {
-                    ret[name] = contextProps[name];
-                }
-                return ret;
-            }, {});
+            const newContextProps = ['prefix', 'locale', 'pure', 'rtl', 'device', 'popupContainer'].reduce(
+                (ret, name) => {
+                    if (typeof contextProps[name] !== 'undefined') {
+                        ret[name] = contextProps[name];
+                    }
+                    return ret;
+                },
+                {}
+            );
 
             if ('pure' in newContextProps && newContextProps.pure) {
-                log.warning(
-                    'pure of ConfigProvider is deprecated, use Function Component or React.PureComponent'
-                );
+                log.warning('pure of ConfigProvider is deprecated, use Function Component or React.PureComponent');
             }
 
-            const newOthers = options.transform
-                ? options.transform(others, this._deprecated)
-                : others;
+            const newOthers = options.transform ? options.transform(others, this._deprecated) : others;
 
             const content = (
                 <Component
+                    {...contextProps.defaultPropsConfig[displayName]}
                     {...newOthers}
                     {...newContextProps}
-                    ref={
-                        obj.isClassComponent(Component)
-                            ? this._getInstance
-                            : null
-                    }
+                    ref={obj.isClassComponent(Component) ? this._getInstance : null}
                 />
             );
 
             const { open, ...othersBoundary } = contextProps.errorBoundary;
 
-            return open ? (
-                <ErrorBoundary {...othersBoundary}>{content}</ErrorBoundary>
-            ) : (
-                content
-            );
+            return open ? <ErrorBoundary {...othersBoundary}>{content}</ErrorBoundary> : content;
         }
     }
 

@@ -52,8 +52,11 @@ class Demo extends React.Component {
 
         return (
             <div>
-                <h3>Label Position</h3>
-                <Switch checkedChildren="left" unCheckedChildren="top" checked={this.state.labelAlign === 'left'} onChange={this.handleChange} />
+                <Form inline>
+                    <Form.Item label="label Position">
+                        <Switch checkedChildren="left" unCheckedChildren="top" checked={this.state.labelAlign === 'left'} onChange={this.handleChange} />
+                    </Form.Item>
+                </Form>
 
                 <Form style={style}>
                     <Row gutter="4">

@@ -1,8 +1,8 @@
-# 对齐方式
+# 弹出型子菜单的顶部对齐
 
 - order: 5
 
-当 Nav 的 mode="popup" 时，popAlign 可控制弹出子导航的对齐方式。
+通过 popupAlign 一键设置。用于菜单深度较浅，但子菜单内容较多的场景。
 
 :::lang=en-us
 # Popup alignment
@@ -21,7 +21,7 @@ const { Item, SubNav } = Nav;
 
 class App extends React.Component {
     state = {
-        popupAlign: 'follow'
+        popupAlign: 'outside'
     }
 
     setValue(popupAlign) {
@@ -41,7 +41,7 @@ class App extends React.Component {
                         <Radio value="outside">popupAlign="outside"</Radio>
                     </Radio.Group>
                 </div>
-                <Nav style={{ height: 400, width: 240 }} mode="popup" popupAlign={popupAlign} defaultOpenKeys={['sub-nav-2']}>
+                <Nav style={{ height: 400, width: 240 }} mode="popup" popupAlign={popupAlign}>
                     <SubNav key="sub-nav-1"label="Sub Nav 1">
                         <Item key="1">Item 1</Item>
                     </SubNav>

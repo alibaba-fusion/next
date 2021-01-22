@@ -86,6 +86,9 @@ class BalloonInner extends React.Component {
                 style={style}
                 {...obj.pickOthers(Object.keys(BalloonInner.propTypes), others)}
             >
+                <div className={`${prefix}balloon-arrow`}>
+                    <div className={`${prefix}balloon-arrow-content`} />
+                </div>
                 {children}
                 {closable ? (
                     <a

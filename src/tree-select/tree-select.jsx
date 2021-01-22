@@ -87,7 +87,10 @@ const isSearched = (label, searchedValue) => {
     };
     loop(label);
 
-    if (labelString.length >= searchedValue.length && labelString.indexOf(searchedValue) > -1) {
+    if (
+        labelString.length >= searchedValue.length &&
+        labelString.toLowerCase().indexOf(searchedValue.toLowerCase()) > -1
+    ) {
         return true;
     }
 
@@ -582,27 +585,6 @@ class TreeSelect extends Component {
         }
     }
 
-    isSearched(label, searchedValue) {
-        let labelString = '';
-
-        searchedValue = String(searchedValue);
-
-        const loop = arg => {
-            if (isValidElement(arg) && arg.props.children) {
-                Children.forEach(arg.props.children, loop);
-            } else {
-                labelString += arg;
-            }
-        };
-        loop(label);
-
-        if (labelString.length >= searchedValue.length && labelString.indexOf(searchedValue) > -1) {
-            return true;
-        }
-
-        return false;
-    }
-
     searchNodes(children) {
         const { searchedKeys, retainedKeys } = this.state;
 
@@ -784,11 +766,7 @@ class TreeSelect extends Component {
         const { prefix, className, renderPreview } = this.props;
 
         const previewCls = classNames(className, `${prefix}form-preview`);
-        let items = data;
-
-        if (data && !Array.isArray(data)) {
-            items = [data];
-        }
+        const items = data && !Array.isArray(data) ? [data] : data;
 
         if (typeof renderPreview === 'function') {
             return (
@@ -800,7 +778,7 @@ class TreeSelect extends Component {
 
         return (
             <p {...others} className={previewCls}>
-                {items.map(({ label }) => label).join(', ')}
+                {items && items.map(({ label }) => label).join(', ')}
             </p>
         );
     }

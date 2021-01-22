@@ -55,8 +55,11 @@ export default function stickyLock(BaseComponent) {
         }
 
         componentDidMount() {
+            const { dataSource } = this.props;
+            const isEmpty = !(dataSource && dataSource.length > 0);
+
             this.updateOffsetArr();
-            this.onLockBodyScroll({ currentTarget: this.bodyNode });
+            this.onLockBodyScroll(isEmpty ? { currentTarget: this.headerNode } : { currentTarget: this.bodyNode });
             this.forceUpdate();
         }
 
@@ -263,6 +266,7 @@ export default function stickyLock(BaseComponent) {
         };
 
         getStickyWidth = (lockChildren, dir, totalLen) => {
+            const { dataSource } = this.props;
             const offsetArr = [];
             const flatenChildren = this.getFlatenChildren(lockChildren);
             const len = flatenChildren.length;
@@ -280,8 +284,10 @@ export default function stickyLock(BaseComponent) {
                     return ret;
                 }
 
+                // header with no dataSource
+                const isEmpty = !(dataSource && dataSource.length > 0);
                 // no header
-                const node = this.getCellNode(0, nodeToGetWidth);
+                const node = isEmpty ? this.getHeaderCellNode(0, nodeToGetWidth) : this.getCellNode(0, nodeToGetWidth);
                 const colWidth = (node && parseFloat(getComputedStyle(node).width)) || 0;
 
                 ret[tag] = (ret[tagNext] || 0) + colWidth;

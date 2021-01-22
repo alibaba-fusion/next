@@ -44,7 +44,7 @@ Radio buttons allow the user to select a single option from data-set. User can u
 | disabled     | All the radios in group are  disable to be used                        | Boolean                             | -         |
 | dataSource   | The data of radio buttons, it can be a String or a Object. For example: `['apple', 'pear', 'orange']`                                                                                     | Array&lt;any>                       | \[]       |
 | children     | To set radio button by setting children components                   | Array&lt;ReactElement>/ReactElement | -         |
-| itemDirection    | The direction of item's aligning<br>- hoz: horizonal (default)<br>- ver: vertical<br><br>**Allowed values**:<br>'hoz', 'ver'                                                 | Enum                                | 'hoz' |
+| direction    | The direction of item's aligning<br>- hoz: horizonal (default)<br>- ver: vertical<br><br>**Allowed values**:<br>'hoz', 'ver'                                                 | Enum                                | 'hoz' |
 
 
 ## ARIA and KeyBoard

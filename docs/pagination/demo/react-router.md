@@ -1,13 +1,13 @@
 # 配合 react-router 使用
 
--   order: 8
+-   order: 11
 
 单页应用场景下，Pagination 组件可以使用外部跳转的方法来实现单页内部跳转。
 
 :::lang=en-us
 # Using With React-Router
 
--   order: 8
+-   order: 11
 
 In a single-page application scenario, the Pagination component can use external jump methods to implement single-page internal jumps.
 

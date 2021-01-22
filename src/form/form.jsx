@@ -19,7 +19,7 @@ function preventDefault(e) {
     e.preventDefault();
 }
 const getNewChildren = (children, props) => {
-    const { size, device, labelAlign, labelTextAlign, labelCol, wrapperCol, responsive } = props;
+    const { size, device, labelAlign, labelTextAlign, labelCol, wrapperCol, responsive, colon } = props;
 
     return React.Children.map(children, child => {
         if (obj.isReactFragment(child)) {
@@ -32,6 +32,7 @@ const getNewChildren = (children, props) => {
                 wrapperCol: child.props.wrapperCol ? child.props.wrapperCol : wrapperCol,
                 labelAlign: child.props.labelAlign ? child.props.labelAlign : device === 'phone' ? 'top' : labelAlign,
                 labelTextAlign: child.props.labelTextAlign ? child.props.labelTextAlign : labelTextAlign,
+                colon: 'colon' in child.props ? child.props.colon : colon,
                 size: child.props.size ? child.props.size : size,
                 responsive: responsive,
             };
@@ -128,16 +129,23 @@ export default class Form extends React.Component {
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
         /**
          * 是否开启内置的响应式布局 （使用ResponsiveGrid）
+         * @version 1.19
          */
         responsive: PropTypes.bool,
         /**
          * 是否开启预览态
+         * @version 1.19
          */
         isPreview: PropTypes.bool,
         /**
          * 是否使用 label 替换校验信息的 name 字段
+         * @version 1.20
          */
         useLabelForErrorMessage: PropTypes.bool,
+        /**
+         * 表示是否显示 label 后面的冒号
+         */
+        colon: PropTypes.bool,
         // 在 responsive模式下，透传给 ResponsiveGrid的， 表示 每个 cell 之间的间距， [bottom&top, right&left]
         gap: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number]),
     };
@@ -151,6 +159,7 @@ export default class Form extends React.Component {
         component: 'form',
         saveField: func.noop,
         device: 'desktop',
+        colon: false,
     };
 
     static childContextTypes = {
@@ -237,6 +246,7 @@ export default class Form extends React.Component {
             component: Tag,
             responsive,
             gap,
+            colon,
         } = this.props;
 
         const formClassName = classNames({

@@ -255,15 +255,15 @@
 @-moz-document url-prefix() {
     #{$number-picker-prefix}-normal {
         &.#{$css-prefix}small #{$number-picker-prefix}-handler {
-            height: $form-element-small-height - 2px;
+            height: calc(#{$form-element-small-height} - 2px);
         }
 
         &.#{$css-prefix}medium #{$number-picker-prefix}-handler {
-            height: $form-element-medium-height - 2px;
+            height: calc(#{$form-element-medium-height} - 2px);
         }
 
         &.#{$css-prefix}large #{$number-picker-prefix}-handler {
-            height: $form-element-large-height - 2px;
+            height: calc(#{$form-element-large-height} - 2px);
         }
     }
 }

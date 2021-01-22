@@ -38,7 +38,8 @@ const AppHeader = (props, context) => {
     return (<Header {...props}>
         <tr>
             <Cell colSpan={length}>
-                <a onClick={() => onChange(true)} href="javascript:;">Select all</a>&nbsp;
+                <a onClick={() => onChange(true)} href="javascript:;">Select all</a>
+                <span style={{marginRight:20}} />
                 <a onClick={() => onChange(false)} href="javascript:;">Unselect all</a>
             </Cell>
         </tr>

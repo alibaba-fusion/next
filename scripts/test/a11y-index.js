@@ -22,7 +22,7 @@ const runAllTestA11y = () => {
 };
 
 co(function*() {
-    if (process.env.TRAVIS) {
+    if (process.env.CI) {
         runAllTestA11y();
     } else {
         const allTest = yield inquirer.prompt([
@@ -31,9 +31,7 @@ co(function*() {
                 type: 'list',
                 choices: ['yes', 'no'],
                 default: 1,
-                message: logger.success(
-                    'This will run ALL components test cases, are you sure to run all?'
-                ),
+                message: logger.success('This will run ALL components test cases, are you sure to run all?'),
             },
         ]);
 

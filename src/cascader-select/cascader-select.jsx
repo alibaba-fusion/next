@@ -70,17 +70,11 @@ class CascaderSelect extends Component {
         /**
          * （非受控）默认值
          */
-        defaultValue: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.arrayOf(PropTypes.string),
-        ]),
+        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
         /**
          * （受控）当前值
          */
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.arrayOf(PropTypes.string),
-        ]),
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
         /**
          * 选中值改变时触发的回调函数
          * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
@@ -252,18 +246,28 @@ class CascaderSelect extends Component {
         checkStrictly: false,
         showSearch: false,
         filter: (searchValue, path) => {
-            return path.some(item => item.label.indexOf(searchValue) > -1);
+            return path.some(
+                item =>
+                    String(item.label)
+                        .toLowerCase()
+                        .indexOf(String(searchValue).toLowerCase()) > -1
+            );
         },
         resultRender: (searchValue, path) => {
             const parts = [];
             path.forEach((item, i) => {
-                const others = item.label.split(searchValue);
+                const reExp = searchValue.replace(/[-.+*?^$()[\]{}|\\]/g, v => `\\${v}`);
+
+                const re = new RegExp(reExp, 'gi');
+                const others = item.label.split(re);
+                const matches = item.label.match(re);
+
                 others.forEach((other, j) => {
                     if (other) {
                         parts.push(other);
                     }
                     if (j < others.length - 1) {
-                        parts.push(<em key={`${i}-${j}`}>{searchValue}</em>);
+                        parts.push(<em key={`${i}-${j}`}>{matches[j]}</em>);
                     }
                 });
                 if (i < path.length - 1) {
@@ -283,14 +287,9 @@ class CascaderSelect extends Component {
         super(props, context);
 
         this.state = {
-            value: normalizeValue(
-                'value' in props ? props.value : props.defaultValue
-            ),
+            value: normalizeValue('value' in props ? props.value : props.defaultValue),
             searchValue: '',
-            visible:
-                typeof props.visible === 'undefined'
-                    ? props.defaultVisible
-                    : props.visible,
+            visible: typeof props.visible === 'undefined' ? props.defaultVisible : props.visible,
         };
 
         bindCtx(this, [
@@ -352,13 +351,7 @@ class CascaderSelect extends Component {
 
         for (let i = 0; i < newValue.length; i++) {
             for (let j = 0; j < newValue.length; j++) {
-                if (
-                    i !== j &&
-                    this.isDescendantOrSelf(
-                        this.getPos(newValue[i]),
-                        this.getPos(newValue[j])
-                    )
-                ) {
+                if (i !== j && this.isDescendantOrSelf(this.getPos(newValue[i]), this.getPos(newValue[j]))) {
                     newValue.splice(j, 1);
                     j--;
                 }
@@ -420,8 +413,7 @@ class CascaderSelect extends Component {
         }
 
         const labelPath = this.getLabelPath(data);
-        const displayRender =
-            this.props.displayRender || (labels => labels.join(' / '));
+        const displayRender = this.props.displayRender || (labels => labels.join(' / '));
 
         return {
             ...data,
@@ -435,10 +427,9 @@ class CascaderSelect extends Component {
         }
 
         const { checkStrictly, canOnlyCheckLeaf, displayRender } = this.props;
-        let data = (checkStrictly || canOnlyCheckLeaf
-            ? value
-            : this.flatValue(value)
-        ).map(v => this._v2n[v] || { value: v });
+        let data = (checkStrictly || canOnlyCheckLeaf ? value : this.flatValue(value)).map(
+            v => this._v2n[v] || { value: v }
+        );
 
         if (displayRender) {
             data = data.map(item => {
@@ -507,10 +498,7 @@ class CascaderSelect extends Component {
     }
 
     isLeaf(data) {
-        return !(
-            (data.children && data.children.length) ||
-            (!!this.props.loadData && !data.isLeaf)
-        );
+        return !((data.children && data.children.length) || (!!this.props.loadData && !data.isLeaf));
     }
 
     handleVisibleChange(visible, type) {
@@ -588,10 +576,7 @@ class CascaderSelect extends Component {
         const { multiple, changeOnSelect } = this.props;
         const { visible, searchValue } = this.state;
 
-        if (
-            !multiple &&
-            (!changeOnSelect || this.isLeaf(data) || !!searchValue)
-        ) {
+        if (!multiple && (!changeOnSelect || this.isLeaf(data) || !!searchValue)) {
             this.handleVisibleChange(!visible, 'fromCascader');
         }
     }
@@ -706,23 +691,14 @@ class CascaderSelect extends Component {
     }
 
     filterItems() {
-        const {
-            multiple,
-            changeOnSelect,
-            canOnlyCheckLeaf,
-            filter,
-        } = this.props;
+        const { multiple, changeOnSelect, canOnlyCheckLeaf, filter } = this.props;
         const { searchValue } = this.state;
         let items = Object.keys(this._p2n).map(p => this._p2n[p]);
         if ((!multiple && !changeOnSelect) || (multiple && canOnlyCheckLeaf)) {
-            items = items.filter(
-                item => !item.children || !item.children.length
-            );
+            items = items.filter(item => !item.children || !item.children.length);
         }
 
-        return items
-            .map(item => this.getPath(item.pos))
-            .filter(path => filter(searchValue, path));
+        return items.map(item => this.getPath(item.pos)).filter(path => filter(searchValue, path));
     }
 
     renderNotFound() {
@@ -820,10 +796,7 @@ class CascaderSelect extends Component {
         const { prefix, multiple, className, renderPreview } = this.props;
         const { value } = this.state;
         const previewCls = classNames(className, `${prefix}form-preview`);
-        let items =
-            (multiple
-                ? this.getMultipleData(value)
-                : this.getSignleData(value)) || [];
+        let items = (multiple ? this.getMultipleData(value) : this.getSignleData(value)) || [];
 
         if (!Array.isArray(items)) {
             items = [items];
@@ -868,10 +841,7 @@ class CascaderSelect extends Component {
             resultAutoWidth,
         } = this.props;
         const { value, searchValue, visible } = this.state;
-        const others = pickOthers(
-            Object.keys(CascaderSelect.propTypes),
-            this.props
-        );
+        const others = pickOthers(Object.keys(CascaderSelect.propTypes), this.props);
 
         this.updateCache(dataSource);
 
@@ -895,9 +865,7 @@ class CascaderSelect extends Component {
             ref: this.saveSelectRef,
             autoWidth: false,
             mode: multiple ? 'multiple' : 'single',
-            value: multiple
-                ? this.getMultipleData(value)
-                : this.getSignleData(value),
+            value: multiple ? this.getMultipleData(value) : this.getSignleData(value),
             onChange: this.handleClear,
             onRemove: this.handleRemove,
             visible,

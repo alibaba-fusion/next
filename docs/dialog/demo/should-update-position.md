@@ -2,14 +2,14 @@
 
 - order: 3
 
-通过设置 shouldUpdatePosition 为 true 来及时更新对话框的位置，一般用于对话框内容发生变化但是仍然要保证原来对齐方式的情况
+通过设置 `shouldUpdatePosition` 为 `true` 来及时更新对话框的位置，一般用于对话框内容发生变化但是仍然要保证原来对齐方式的情况
 
 :::lang=en-us
 # Update position
 
 - order: 3
 
-Update the position of the dialog by setting shouldUpdatePosition to true. It is generally used to change the contents of the dialog but still ensure the original alignment.
+Update the position of the dialog by setting `shouldUpdatePosition` to `true`. It is generally used to change the contents of the dialog but still ensure the original alignment.
 :::
 
 ---
@@ -64,9 +64,9 @@ class App extends React.Component {
         return (
             <div>
                 <div style={{ display: 'block', marginBottom: '10px' }}>
-                    Whether to update the dialog position when the dialog height changes:
+                    Whether to update the dialog position when the dialog height changes
                 </div>
-                <Switch style={{ display: 'block', marginBottom: '10px' }} checked={shouldUpdatePosition} onChange={this.toggleShouldUpdatePosition} />
+                <Switch style={{ display: 'block', marginBottom: '10px', width: '60px' }} checked={shouldUpdatePosition} onChange={this.toggleShouldUpdatePosition} />
                 <Button onClick={this.onOpen} type="primary">
                     Open dialog
                 </Button>

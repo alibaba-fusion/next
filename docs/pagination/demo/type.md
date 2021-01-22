@@ -1,13 +1,13 @@
-# 分页类型
+# 简洁/迷你 风格
 
--   order: 3
+-   order: 7
 
-可以通过指定 `type` 属性来设置分页的类型。
+可以通过指定 `type` 属性来设置分页器的类型。
 
 :::lang=en-us
 # Type of Pagination
 
--   order: 3
+-   order: 7
 
 Set the component type by specifying the `type` property.
 

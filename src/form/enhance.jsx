@@ -21,9 +21,7 @@ function getValueName(props, displayName) {
 
     if (typeof displayName === 'string') {
         // Next Components are all wrappered by configProvider
-        const componentName = displayName
-            .replace(/Config\(/, '')
-            .replace(')', '');
+        const componentName = displayName.replace(/Config\(/g, '').replace(/\)/g, '');
         if (['Switch', 'Checkbox', 'Radio'].indexOf(componentName) !== -1) {
             return 'checked';
         }

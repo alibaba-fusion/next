@@ -1,13 +1,13 @@
-# onAffix
+# 固钉事件
 
-- order: 4
+- order: 1
 
-可以通过传入 `onAffix` 的事件回调函数来监听元素是否发生了固钉状态。该函数会在状态变化时返回固钉状态。
+`onAffix` 该函数会在状态变化时返回固钉状态。向下滚动查看效果
 
 :::lang=en-us
 # onAffix
 
-- order: 4
+- order: 1
 
 Listening the affix state by `onAffix`.
 
@@ -36,9 +36,9 @@ class Demo extends React.Component {
     render() {
         const state = this.state;
 
-        return (<div className="affix-demo-wrapper">
-            <Affix onAffix={this.onAffix}>
-                <Button type="secondary">{state.affixed ? 'Affixed Button' : 'Unaffixed Button'}</Button>
+        return (<div>
+            <Affix onAffix={this.onAffix} style={{display: 'inline-flex'}}>
+                <Button type="primary">{state.affixed ? 'Affixed Button' : 'Unaffixed Button'}</Button>
             </Affix>
         </div>);
     }
@@ -46,10 +46,4 @@ class Demo extends React.Component {
 
 
 ReactDOM.render(<Demo />, mountNode);
-````
-
-````css
-.affix-demo-wrapper {
-    padding: 40px 0;
-}
 ````

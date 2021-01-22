@@ -1,11 +1,15 @@
-# 基本
+# 面板嵌套
 
-- order: 6
+- order: 3
+
+嵌套折叠面板。
 
 :::lang=en-us
 # Nested Collapse
 
-- order: 6
+- order: 3
+
+Nested Collapse
 
 :::
 

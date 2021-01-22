@@ -8,6 +8,7 @@
 
 #{$checkbox-prefix}-wrapper {
     @include box-sizing;
+    display: inline-block;
 
     #{$checkbox-prefix} {
         display: inline-block;
@@ -159,8 +160,20 @@
                 }
             }
         }
+        &.checked.focused {
+            #{$checkbox-prefix}-inner {
+                border-color: $checkbox-disabled-border-color;
+                background: $checkbox-disabled-bg-color;
+
+                > .#{$css-prefix}icon {
+                    color: $checkbox-disabled-circle-color;
+                    opacity: 1;
+                }
+            }
+        }
         #{$checkbox-prefix}-label {
             color: $checkbox-disabled-label-color;
+            cursor: not-allowed;
         }
     }
 }
@@ -168,9 +181,9 @@
 #{$checkbox-prefix}-group {
     #{$checkbox-prefix}-wrapper {
         display: inline-block;
-        margin-left: 8px;
-        &:first-child {
-            margin-left: 0;
+        margin-right: 12px;
+        &:last-child {
+            margin-right: 0;
         }
     }
 
@@ -190,5 +203,7 @@
     vertical-align: middle;
     margin: 0;
     margin-left: $checkbox-margin-left;
+    /* 使用已存margin-left变量 */
+    margin-right: $checkbox-margin-left;
     line-height: 1;
 }

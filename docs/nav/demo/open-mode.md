@@ -1,8 +1,8 @@
-# 展开模式
+# 只展开当前父级菜单
 
 - order: 4
 
-当 Nav 的 mode="inline" 时，openMode 可控制同级内联子导航的展开数量。
+通过 openMode 一键开启。在内嵌模式下，保证最多只有一个同级菜单被展开，收起其他展开的所有菜单，保持菜单聚焦简洁。
 
 :::lang=en-us
 # Open mode
@@ -41,7 +41,7 @@ class App extends React.Component {
                         <Radio value="multiple">openMode="multiple"</Radio>
                     </Radio.Group>
                 </div>
-                <Nav style={{ width: 240 }} openMode={openMode}>
+                <Nav style={{ width: 240 }} openMode={openMode} defaultOpenKeys={['0-0']}>
                     <SubNav label="Sub Nav 1">
                         <Item>Item 1</Item>
                     </SubNav>

@@ -2,7 +2,7 @@
 
 - order: 0
 
-第一个对话框
+基本用法，打开和关闭。
 
 :::lang=en-us
 # Basic

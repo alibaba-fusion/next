@@ -68,7 +68,7 @@ ReactDOM.render(<div className="fusion-demo">
         }
     </Tab>
 
-    <div className="demo-item-title">Tabs with equal width</div>
+    <div className="demo-item-title">Tabs with same width</div>
     <Tab shape="capsule">
         {
             panes.map(pane => <Tab.Item title={pane.tab} key={pane.key} className="justify-tabs-tab">{pane.tab}</Tab.Item>)

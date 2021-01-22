@@ -1,13 +1,13 @@
 # 分页尺寸
 
--   order: 2
+-   order: 5
 
 可以通过指定 `size` 属性来设置分页的尺寸。
 
 :::lang=en-us
 # Page Size
 
--   order: 2
+-   order: 5
 
 You can set the paging size by specifying the `size` property.
 

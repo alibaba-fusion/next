@@ -1,11 +1,15 @@
-# 数据
+# 数据源
 
 - order: 1
+
+直接使用 dataSource 展示
 
 :::lang=en-us
 # Data Source
 
 - order: 1
+
+use dataSource to display
 
 :::
 

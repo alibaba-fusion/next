@@ -224,9 +224,38 @@
       box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.32);
       border-radius: 3px;
     }
+    .next-demo-mobile-menu {
+      display: none;
+    }
+    @media screen and (max-width: 750px) {
+      body {
+        padding: 0;
+      }
+      .next-demo-links {
+        display: none;
+        position: absolute;
+        width: auto;
+        left: 1em;
+        right: 1em;
+        top: 2.4em;
+        z-index: 1;
+      }
+      .next-demo-section {
+        margin-right: 0;
+      }
+      .next-demo-mobile-menu {
+        display: block;
+        position: absolute;
+        right: 8px;
+        top: 4px;
+        z-index: 1;
+      }
+    }
+
   </style>
 </head>
 <body>
+  <div class="next-demo-mobile-menu" id="mobile-menu"><svg style="width: 1.8em;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2595"><path d="M819.2 460.8c15.018667 0 27.306667 5.12 36.864 15.36S870.4 498.346667 870.4 512s-5.12 25.6-15.36 35.84-22.186667 15.36-35.84 15.36H204.8c-13.653333 0-25.6-5.12-35.84-15.36S153.6 525.653333 153.6 512s4.778667-25.6 14.336-35.84S189.781333 460.8 204.8 460.8h614.4zM204.8 358.4c-13.653333 0-25.6-5.12-35.84-15.36S153.6 320.853333 153.6 307.2s4.778667-25.6 14.336-35.84S189.781333 256 204.8 256h614.4c15.018667 0 27.306667 5.12 36.864 15.36S870.4 293.546667 870.4 307.2s-5.12 25.6-15.36 35.84-22.186667 15.36-35.84 15.36H204.8z m614.4 307.2c15.018667 0 27.306667 5.12 36.864 15.36S870.4 703.146667 870.4 716.8s-5.12 25.6-15.36 35.84-22.186667 15.36-35.84 15.36H204.8c-13.653333 0-25.6-5.12-35.84-15.36S153.6 730.453333 153.6 716.8s4.778667-25.6 14.336-35.84S189.781333 665.6 204.8 665.6h614.4z" p-id="2596"></path></svg></div>
   <ul class="next-demo-links">
   <% links.forEach(function(link) {%>
     <li class="<%= link.href ? '' : 'title' %>">
@@ -304,6 +333,18 @@
               console.log('change language failed: ' + error);
             }
           });
+        });
+
+        var toggleRtlBtn = document.querySelector('#mobile-menu');
+
+        toggleRtlBtn.addEventListener('click', function (){
+            var mountNode = document.querySelector('.next-demo-links');
+            const display = mountNode.style.display;
+            if (!display || display === 'none') {
+              mountNode.style.display = 'block';
+            } else {
+              mountNode.style.display = 'none';
+            }
         });
 
         var dirSelect = document.querySelector('.next-demo-dir');

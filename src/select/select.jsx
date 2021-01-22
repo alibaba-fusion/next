@@ -130,20 +130,24 @@ class Select extends Base {
         searchValue: PropTypes.string,
         /**
          * 是否一行显示，仅在 mode 为 multiple 的时候生效
+         * @version 1.15
          */
         tagInline: PropTypes.bool,
         /**
          * tag 是否可关闭
+         * @version 1.20
          */
         tagClosable: PropTypes.bool,
         /**
          * 最多显示多少个 tag
+         * @version 1.15
          */
         maxTagCount: PropTypes.number,
         /**
          * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
          * @param {object} selectedValues 当前已选中的元素
          * @param {object} totalValues 总待选元素
+         * @version 1.15
          */
         maxTagPlaceholder: PropTypes.func,
         /**
@@ -1052,12 +1056,23 @@ class Select extends Base {
             [`${prefix}input-text-field`]: true,
             [`${prefix}select-compact`]: !isSingle && tagInline,
         });
-
-        const searchInput = [isSingle && valueNodes ? <em key="select-value">{valueNodes}</em> : valueNodes];
+        const title = typeof valueNodes === 'string' ? valueNodes : '';
+        const searchInput = [
+            isSingle && valueNodes ? (
+                <em title={title} key="select-value">
+                    {valueNodes}
+                </em>
+            ) : (
+                valueNodes
+            ),
+        ];
         const triggerSearch = (
             <span key="trigger-search" className={`${prefix}select-trigger-search`}>
                 {inputEl}
-                <span aria-hidden>{mirrorText || placeholder}&nbsp;</span>
+                <span aria-hidden>
+                    <span>{mirrorText || placeholder}</span>
+                    <span>&nbsp;</span>
+                </span>
             </span>
         );
 

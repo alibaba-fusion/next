@@ -34,12 +34,12 @@ ReactDOM.render(<Form {...formItemLayout}>
     <FormItem id="control-input" label="Input Something：">
         <Row gutter="4">
             <Col>
-                <FormItem label="Nest" labelAlign="inset" {...insetLayout} required requiredTrigger="onBlur" asterisk={false}>
+                <FormItem style={{margin: 0}} label="Nest" labelAlign="inset" {...insetLayout} required requiredTrigger="onBlur" asterisk={false}>
                     <Input placeholder="Please enter..." name="firstname"/>
                 </FormItem>
             </Col>
             <Col>
-                <FormItem label="Nest" labelAlign="inset" {...insetLayout} required asterisk={false}>
+                <FormItem style={{margin: 0}} label="Nest" labelAlign="inset" {...insetLayout} required asterisk={false}>
                     <Input placeholder="need onChange" name="secondname" />
                 </FormItem>
             </Col>
@@ -70,7 +70,7 @@ ReactDOM.render(<Form {...formItemLayout}>
         </Row>
     </FormItem>
     <FormItem label=" ">
-        <Form.Submit onClick={(v) => console.log(v)}>Submit</Form.Submit>
+        <Form.Submit validate onClick={(v) => console.log(v)}>Submit</Form.Submit>
     </FormItem>
 </Form>, mountNode);
 ````

@@ -204,110 +204,119 @@
     $colorBorder,
     $colorBg
 ) {
-    // 小三角不需要阴影
-    $shadow-top: null;
-    $shadow-right: null;
-    $shadow-bottom: null;
-    $shadow-left: null;
-    &:after {
+    & .#{$css-prefix}balloon-arrow {
         position: absolute;
-        width: $width;
-        height: $height;
-        content: '';
-        transform: rotate(45deg);
-        box-sizing: content-box !important;
-        border: $balloon-tooltip-border-width $balloon-tooltip-border-style $colorBorder;
-        background-color: $colorBg;
-        z-index: -1;
+        display: block;
+        width: calc(#{$width} * 2);
+        height: calc(#{$height} * 2);
+        overflow: hidden;
+        background: 0 0;
+        pointer-events: none;
+        .#{$css-prefix}balloon-arrow-content {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: block;
+            width: $width;
+            height: $height;
+            margin: auto;
+            background-color: $colorBg;
+            border: $balloon-tooltip-border-width $balloon-tooltip-border-style $colorBorder;
+            pointer-events: auto;
+        }
     }
-    &-top:after {
-        top: $balloon-size-arrow-expose;
-        left: calc(50% + #{$balloon-size-arrow-expose});
-        border-right: none;
-        border-bottom: none;
-        box-shadow: $shadow-top;
+    &-top .#{$css-prefix}balloon-arrow {
+        top: calc(0px - (#{$width} * 2));
+        left: calc(50% - #{$width});
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY($width) rotate(45deg);
+        }
     }
-    &-right:after {
-        top: calc(50% + #{$balloon-size-arrow-expose});
-        right: $balloon-size-arrow-expose;
-        border-left: none;
-        border-bottom: none;
-        box-shadow: $shadow-right;
+    &-right .#{$css-prefix}balloon-arrow {
+        top: calc(50% - #{$width});
+        right: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(calc(#{$width} * -1)) rotate(45deg);
+        }
     }
-    &-bottom:after {
-        bottom: $balloon-size-arrow-expose;
-        left: calc(50% + #{$balloon-size-arrow-expose});
-        border-top: none;
-        border-left: none;
-        box-shadow: $shadow-bottom;
-    }
-    &-left:after {
-        top: calc(50% + #{$balloon-size-arrow-expose});
-        left: $balloon-size-arrow-expose;
-        border-top: none;
-        border-right: none;
-        box-shadow: $shadow-left;
-    }
-    &-left-top:after {
-        top: $balloon-size-arrow-margin;
-        left: $balloon-size-arrow-expose;
-        border-top: none;
-        border-right: none;
-        box-shadow: $shadow-left;
-    }
-    &-left-bottom:after {
-        bottom: $balloon-size-arrow-margin;
-        left: $balloon-size-arrow-expose;
-        border-top: none;
-        border-right: none;
-        box-shadow: $shadow-left;
+    &-bottom .#{$css-prefix}balloon-arrow {
+        left: calc(50% - #{$width});
+        bottom: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY(calc(#{$width} * -1)) rotate(45deg);
+        }
     }
 
-    &-right-top:after {
-        top: $balloon-size-arrow-margin;
-        right: $balloon-size-arrow-expose;
-        border-bottom: none;
-        border-left: none;
-        box-shadow: $shadow-right;
+    &-left .#{$css-prefix}balloon-arrow {
+        top: calc(50% - #{$width});
+        left: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+    &-left-top .#{$css-prefix}balloon-arrow {
+        top: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        left: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+    &-left-bottom .#{$css-prefix}balloon-arrow {
+        bottom: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        left: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
     }
 
-    &-right-bottom:after {
-        right: $balloon-size-arrow-expose;
-        bottom: $balloon-size-arrow-margin;
-        border-bottom: none;
-        border-left: none;
-        box-shadow: $shadow-right;
+    &-right-top .#{$css-prefix}balloon-arrow {
+        top: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        right: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(calc(#{$width} * -1)) rotate(45deg);
+        }
     }
 
-    &-top-left:after {
-        top: $balloon-size-arrow-expose;
-        left: $balloon-size-arrow-margin;
-        border-right: none;
-        border-bottom: none;
-        box-shadow: $shadow-top;
+    &-right-bottom .#{$css-prefix}balloon-arrow {
+        bottom: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        right: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(calc(#{$width} * -1)) rotate(45deg);
+        }
     }
 
-    &-top-right:after {
-        top: $balloon-size-arrow-expose;
-        right: $balloon-size-arrow-margin;
-        border-right: none;
-        border-bottom: none;
-        box-shadow: $shadow-top;
+    &-top-left .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        top: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY($width) rotate(45deg);
+        }
     }
 
-    &-bottom-left:after {
-        bottom: $balloon-size-arrow-expose;
-        left: $balloon-size-arrow-margin;
-        border-top: none;
-        border-left: none;
-        box-shadow: $shadow-bottom;
+    &-top-right .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        top: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY($width) rotate(45deg);
+        }
     }
 
-    &-bottom-right:after {
-        right: $balloon-size-arrow-margin;
-        bottom: $balloon-size-arrow-expose;
-        border-top: none;
-        border-left: none;
-        box-shadow: $shadow-bottom;
+    &-bottom-left .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        bottom: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY(calc(#{$width} * -1)) rotate(45deg);
+        }
+    }
+
+    &-bottom-right .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        bottom: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY(calc(#{$width} * -1)) rotate(45deg);
+        }
     }
 }

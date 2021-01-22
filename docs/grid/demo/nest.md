@@ -47,7 +47,7 @@ ReactDOM.render(
 ````
 
 ````css
-.nest-demo .demo-title {
+.nest-demo .grid-fixed-demo-title {
     margin-left: 20px;
 }
 

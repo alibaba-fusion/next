@@ -12,8 +12,10 @@
     font-weight: $balloon-content-font-weight;
     animation-duration: $motion-duration-standard;
     animation-timing-function: $motion-ease-in-out;
+    /* stylelint-disable */
     word-wrap: break-all;
     word-wrap: break-word;
+    /* stylelint-enable */
     z-index: 0;
     &:focus,
     & *:focus {
@@ -91,8 +93,10 @@
     font-size: $balloon-tooltip-content-font-size;
     font-weight: $balloon-tooltip-content-font-weight;
     z-index: 0;
+    /* stylelint-disable */
     word-wrap: break-all;
     word-wrap: break-word;
+    /* stylelint-enable */
 
     @include tooltip-state(
         $balloon-tooltip-color,

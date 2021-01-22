@@ -40,7 +40,7 @@ class App extends React.Component {
         const content = (<div>content</div>);
 
         return (
-            <div style={{marginBottom: '100px'}}>
+            <div>
                 <Balloon trigger={visibleTrigger}
                     triggerType="click"
                     visible={this.state.visible}

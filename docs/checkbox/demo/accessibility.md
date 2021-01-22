@@ -1,8 +1,8 @@
-# 无障碍
+# 无障碍支持
 
 - order: 8
 
-通过`aria-label`对`Checkbox`组件进行描述。关于键盘操作请参考`ARIA and KeyBoard`。
+通过`aria-label`对`Checkbox`组件进行描述。关于键盘操作请参考[#无障碍键盘操作指南](#无障碍键盘操作指南)。
 
 :::lang=en-us
 # Accessibility
@@ -20,7 +20,7 @@ import { Checkbox } from '@alifd/next';
 
 const CheckboxGroup = () => (
     <div>
-        <h4>Programming language：</h4>
+        <p>Programming language：</p>
         <Checkbox.Group aria-label="Please select a programming language">  
             <Checkbox value="python">python</Checkbox>
             <Checkbox value="java">java</Checkbox>
