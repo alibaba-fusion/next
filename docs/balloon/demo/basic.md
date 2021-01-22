@@ -18,8 +18,6 @@ Basic usage.
 ````jsx
 import { Button, Balloon } from '@alifd/next';
 
-
-
 const defaultTrigger = <Button className="btrigger" style={{margin: '5px'}}>default style</Button>;
 const disabledTrigger = <Button disabled className="btrigger" style={{margin: '5px'}}>default style</Button>;
 const primary = <Button className="btrigger" style={{margin: '5px'}}>primary style</Button>;

@@ -1,7 +1,7 @@
 @include keyframes(slideInDown) {
     0% {
         opacity: 0;
-        @include transform(translateY(-2000px));
+        @include transform(translateY(-100%));
     }
     100% {
         opacity: 1;
@@ -9,7 +9,7 @@
     }
 }
 
-@mixin slideInDown($count: $countDefault, $duration: $durationBigDefault, $delay: $delayDefault, $function: $ease-in-out-quint, $fill: $fillDefault, $visibility: $visibilityDefault) {
+@mixin slideInDown($count: $countDefault, $duration: $durationBigDefault, $delay: $delayDefault, $function: $motion-default, $fill: $fillDefault, $visibility: $visibilityDefault) {
     @include animation-name(slideInDown);
     @include count($count);
     @include duration($duration);

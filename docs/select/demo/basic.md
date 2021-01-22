@@ -14,8 +14,108 @@ simple usage, has clear, show search
 ---
 
 ````jsx
-import { Select, Button, Radio, TreeSelect, Drawer, Dialog, Message, DatePicker, DatePicker2, CascaderSelect } from '@alifd/next';
+import { Select, Button, Radio, Balloon, TreeSelect, Drawer, Dialog, Message, DatePicker, DatePicker2, CascaderSelect } from '@alifd/next';
 import 'whatwg-fetch';
+
+const Tooltip = Balloon.Tooltip;
+
+const top = <Button id="top" style={{margin: '5px'}} className="btrigger">top</Button>;
+const right = <Button id="right" style={{margin: '5px'}} className="btrigger">right</Button>;
+const bottom = <Button id="bottom" style={{margin: '5px'}} className="btrigger">bottom</Button>;
+const left = <Button id="left" style={{margin: '5px'}} className="btrigger">left</Button>;
+const topLeft = <Button id="topLeft" style={{margin: '5px'}} className="btrigger">top left</Button>;
+const topRight = <Button id="topRight" style={{margin: '5px'}} className="btrigger">top right</Button>;
+const rightTop = <Button id="rightTop" style={{margin: '5px'}} className="btrigger">right top</Button>;
+const rightBottom = <Button id="rightBottom" style={{margin: '5px'}} className="btrigger">right bottom</Button>;
+const bottomLeft = <Button id="bottomLeft" style={{margin: '5px'}} className="btrigger">bottom left</Button>;
+const bottomRight = <Button id="bottomRight" style={{margin: '5px'}} className="btrigger">bottom right</Button>;
+const leftTop = <Button id="leftTop" style={{margin: '5px'}} className="btrigger">left top</Button>;
+const leftBottom = <Button id="leftBottom" style={{margin: '5px'}} className="btrigger">left bottom</Button>;
+
+const Content = () => (
+    <div>
+        <h4 style={{marginTop: 0}}>balloon title</h4>
+        <hr/>
+        <p>
+            balloon content
+        </p>
+    </div>
+);
+
+const AppBalloon = () => (
+    <div style={{paddingLeft: 320 }}>
+        <div style={{marginLeft: 75}}>
+            <Balloon trigger={topLeft} align="tl" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+            <Balloon trigger={top} align="t" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+            <Balloon trigger={topRight} align="tr" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+        </div>
+        <div style={{width: 80, float: 'left'}}>
+            <Balloon trigger={leftTop} align="lt" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+            <Balloon trigger={left} align="l" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+            <Balloon trigger={leftBottom} align="lb" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+        </div>
+        <div style={{width: 80, marginLeft: 290}}>
+            <Balloon trigger={rightTop} align="rt" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+            <Balloon trigger={right} align="r" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+            <Balloon trigger={rightBottom} align="rb" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+        </div>
+        <div style={{marginLeft: 80, clear: 'both'}}>
+            <Balloon trigger={bottomLeft} align="bl" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+            <Balloon trigger={bottom} align="b" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+            <Balloon trigger={bottomRight} align="br" alignEdge triggerType="click" style={{width: 300}}>
+                <Content/>
+            </Balloon>
+        </div>
+    </div>
+);
+
+const AppTriggr = () => (
+    <div style={{paddingLeft: 220}}>
+        <div style={{marginLeft: 75}}>
+            <Tooltip trigger={topLeft} align="tl">text text</Tooltip>
+            <Tooltip trigger={top} align="t">text text</Tooltip>
+            <Tooltip trigger={topRight} align="tr">text text</Tooltip>
+        </div>
+        <div style={{width: 80, float: 'left'}}>
+            <Tooltip trigger={leftTop} align="lt">text text</Tooltip>
+            <Tooltip trigger={left} align="l">text text</Tooltip>
+            <Tooltip trigger={leftBottom} align="lb">text text</Tooltip>
+        </div>
+        <div style={{width: 80, marginLeft: 290}}>
+            <Tooltip trigger={rightTop} align="rt">text text</Tooltip>
+            <Tooltip trigger={right} align="r">text text</Tooltip>
+            <Tooltip trigger={rightBottom} align="rb">text text</Tooltip>
+        </div>
+        <div style={{marginLeft: 80, clear: 'both'}}>
+            <Tooltip trigger={bottomLeft} align="bl">text text</Tooltip>
+            <Tooltip trigger={bottom} align="b">text text</Tooltip>
+            <Tooltip trigger={bottomRight} align="br">text text</Tooltip>
+        </div>
+    </div>
+
+);
 
 const TreeNode = TreeSelect.Node;
 
@@ -209,6 +309,9 @@ ReactDOM.render(
     <br /><br />
     <Demo4 />
     <br /><br />
+    <AppBalloon />
+    <br /><br />
+    <AppTriggr />
 
   </div>,
   mountNode

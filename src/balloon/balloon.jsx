@@ -173,8 +173,8 @@ class Balloon extends React.Component {
         safeId: null,
         autoFocus: true,
         animation: {
-            in: 'zoomIn',
-            out: 'zoomOut',
+            in: 'fadeIn',
+            out: 'fadeOut',
         },
         cache: false,
         popupStyle: {},
