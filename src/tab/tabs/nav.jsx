@@ -6,7 +6,7 @@ import Icon from '../../icon';
 import Overlay from '../../overlay';
 import Menu from '../../menu';
 import Animate from '../../animate';
-import { events, KEYCODE, dom } from '../../util';
+import { events, KEYCODE, dom, obj } from '../../util';
 import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
 
 const floatRight = { float: 'right', zIndex: 1 };
@@ -341,8 +341,11 @@ class Nav extends React.Component {
                 };
             }
 
+            const dataProps = obj.pickAttrsWith(child.props, 'data-');
+
             rst.push(
                 <li
+                    {...dataProps}
                     role="tab"
                     key={child.key}
                     ref={active ? this.activeTabRefHandler : null}
