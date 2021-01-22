@@ -39,7 +39,7 @@ ReactDOM.render(
         </Tab>
         <br />
         <Tab size="small" shape="capsule">
-            {tabs.map(item => <Tab.TabPane key={item.key} title={item.tab}>{item.content}</Tab.TabPane>)}
+            {tabs.map(item => <Tab.Item key={item.key} title={item.tab}>{item.content}</Tab.Item>)}
         </Tab>
 
     </div>, mountNode);
