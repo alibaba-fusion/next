@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import simulateEvent from 'simulate-event';
@@ -9,6 +9,7 @@ import Overlay from '../../src/overlay/index';
 import Dialog from '../../src/dialog/index';
 import Balloon from '../../src/balloon/index';
 import Button from '../../src/button/index';
+import '../../src/button/style.js';
 import '../../src/overlay/style.js';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
@@ -581,6 +582,41 @@ describe('Overlay', () => {
         }
         document.body.append(container);
         ReactDOM.render(<Demo />, container);
+        container.remove();
+    });
+
+    it('fix bottom & left overflow', () => {
+        const container = document.createElement('div');
+
+        function Demo(props) {
+            const btnRef = useRef();
+
+            return (
+                <div>
+                    <Button style={{ width: '100%' }} ref={btnRef}>
+                        Toggle visible
+                    </Button>
+                    <Overlay visible target={() => btnRef.current} {...props}>
+                        <div
+                            style={{
+                                width: '200px',
+                                background: 'red',
+                            }}
+                        >
+                            Hello World From Overlay!
+                        </div>
+                    </Overlay>
+                </div>
+            );
+        }
+        document.body.append(container);
+        ReactDOM.render(<Demo align="tl tr" />, container);
+        assert(
+            document.querySelector('.next-overlay-inner').style.left ===
+                `${parseFloat(window.getComputedStyle(document.body).width) - 200 - 1}px` // Reason to subtract 1, see: Overly._isInViewport
+        );
+        container.remove();
+        document.querySelector('.next-overlay-wrapper').remove();
     });
 });
 

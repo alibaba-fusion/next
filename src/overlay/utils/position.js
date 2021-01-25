@@ -179,11 +179,11 @@ export default class Position {
                 pinElementParentScrollOffset.left;
             this._setPinElementPostion(pinElement, { left, top }, this.offset);
 
-            if (!firstPositionResult) {
-                firstPositionResult = { left, top };
-            }
             if (this._isInViewport(pinElement, align)) {
                 return align;
+            } else if (!firstPositionResult) {
+                const { right, bottom } = this._getViewportOffset(pinElement, align);
+                firstPositionResult = { left: right < 0 ? left + right : left, top: top < 0 ? top + bottom : top };
             }
         }
 
@@ -215,7 +215,6 @@ export default class Position {
                 offset[1] = -baseElementRect.top - (y === 't' ? baseElementRect.height : 0);
             }
         }
-
         return offset;
     };
 
@@ -440,6 +439,22 @@ export default class Position {
             elementRect.top + element.offsetHeight <= viewportHeight
         );
     }
+
+    _getViewportOffset(element, align) {
+        const viewportSize = _getViewportSize(this.container);
+        const elementRect = _getElementRect(element, this.container);
+
+        const viewportWidth = this._isRightAligned(align) ? viewportSize.width : viewportSize.width - 1;
+        const viewportHeight = this._isBottomAligned(align) ? viewportSize.height : viewportSize.height - 1;
+
+        return {
+            top: elementRect.top,
+            right: viewportWidth - (elementRect.left + element.offsetWidth),
+            bottom: viewportHeight - (elementRect.top + element.offsetHeight),
+            left: elementRect.left,
+        };
+    }
+
     // 在这里做RTL判断 top-left 定位转化为等效的 top-right定位
     _setPinElementPostion(pinElement, postion, offset = [0, 0]) {
         const { top, left } = postion;
