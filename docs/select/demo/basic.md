@@ -305,6 +305,8 @@ ReactDOM.render(
     <br /><br />
     <DatePicker2 />
     <br /><br />
+    <DatePicker2.RangePicker />
+    <br /><br />
     <Demo3 />
     <br /><br />
     <Demo4 />

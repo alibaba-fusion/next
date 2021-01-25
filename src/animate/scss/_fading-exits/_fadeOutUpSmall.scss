@@ -1,4 +1,4 @@
-@include keyframes(fadeOutUp) {
+@include keyframes(fadeOutUpSmall) {
     0% {
         opacity: 1;
         @include transform(translateY(0));
@@ -10,7 +10,7 @@
 }
 
 @mixin fadeOutUpSmall($count: $countDefault, $duration: $motion-duration-standard-out, $delay: $delayDefault, $function: $motion-default, $fill: $fillDefault, $visibility: $visibilityDefault) {
-    @include animation-name(fadeOutUp);
+    @include animation-name(fadeOutUpSmall);
     @include count($count);
     @include duration($duration);
     @include delay($delay);

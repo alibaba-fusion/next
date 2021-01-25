@@ -9,7 +9,7 @@
     }
 }
 
-@mixin fadeOutDown($count: $countDefault, $duration: $motion-duration-standard-out, $delay: $delayDefault, $function: $ease-in-quint, $fill: $fillDefault, $visibility: $visibilityDefault) {
+@mixin fadeOutDown($count: $countDefault, $duration: $motion-duration-standard-out, $delay: $delayDefault, $function: $motion-default, $fill: $fillDefault, $visibility: $visibilityDefault) {
     @include animation-name(fadeOutDown);
     @include count($count);
     @include duration($duration);

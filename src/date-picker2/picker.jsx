@@ -225,7 +225,7 @@ class Picker extends React.Component {
             if (visible) {
                 callback();
             } else {
-                this.timeoutId = setTimeout(callback, 150);
+                this.timeoutId = setTimeout(callback, 0);
             }
 
             func.invoke(this.props, 'onVisibleChange', [visible]);
