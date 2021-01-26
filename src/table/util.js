@@ -75,7 +75,7 @@ export const setStickyStyle = (lockChildren, flatenChildren, dir, offsetArr = []
         col.cellStyle = style;
     });
 
-    const setOffset = (col, index, dir) => {
+    const setOffset = (col, index, dir, isBorder) => {
         const style = {
             position: 'sticky',
         };
@@ -87,23 +87,48 @@ export const setStickyStyle = (lockChildren, flatenChildren, dir, offsetArr = []
 
         col.className = classnames(col.className, {
             [`${prefix}table-fix-${dir}`]: true,
-            [`${prefix}table-fix-left-last`]: dir === 'left',
-            [`${prefix}table-fix-right-first`]: dir === 'right',
+            [`${prefix}table-fix-left-last`]: dir === 'left' && isBorder,
+            [`${prefix}table-fix-right-first`]: dir === 'right' && isBorder,
         });
         col.style = { ...col.style, ...style };
         col.cellStyle = style;
     };
 
+    // 查看当前元素的叶子结点数量
+    const getLeafNodes = node => {
+        let nodesLen = 0;
+        const arrLen = (Array.isArray(node && node.children) && node.children.length) || 0;
+        if (arrLen > 0) {
+            nodesLen = node.children.reduce((ret, item, idx) => {
+                return ret + getLeafNodes(item.children);
+            }, 0);
+        } else {
+            nodesLen = 1;
+        }
+        return nodesLen;
+    };
+
+    const getPreNodes = (arr, idx) => {
+        return arr.reduce((ret, item, i) => {
+            if (i < idx) {
+                return ret + getLeafNodes(item);
+            }
+            return ret;
+        }, 0);
+    };
+
     // for multiple header
-    // const flatenlen = offsetArr.length;
+    // nodesLen 前序叶子结点数
     const loop = (arr, i) => {
         dir === 'right' && arr.reverse();
         arr.forEach((child, j) => {
-            const p = dir === 'right' ? i - j : i + j;
+            const p = dir === 'right' ? i - getPreNodes(arr, j) : i + getPreNodes(arr, j);
             if (child.children) {
                 // 合并单元格的节点
                 loop(child.children, p);
-                setOffset(child, p, dir);
+                // 查询当前元素下的 前序叶子结点数 比如为n
+                // const isBorder = (dir === 'right' && j === 0) || (dir === 'left' && j === (arr.length - 1));
+                setOffset(child, p, dir, j === arr.length - 1);
             }
         });
         dir === 'right' && arr.reverse();

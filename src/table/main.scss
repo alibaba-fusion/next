@@ -213,19 +213,19 @@
             & th:last-child {
                 border-right: 0;
             }
-            &-expanded-area:after {
-                position: absolute;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
-                content: "";
-            }
+            // &-expanded-area:after {
+            //     position: absolute;
+            //     top: 0;
+            //     right: 0;
+            //     bottom: 0;
+            //     border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+            //     content: "";
+            // }
         }
     }
-    &.only-bottom-border #{$table-prefix}-expanded-row #{$table-prefix}-expanded-area:after {
-        border-right: 0;
-    }
+    // &.only-bottom-border #{$table-prefix}-expanded-row #{$table-prefix}-expanded-area:after {
+    //     border-right: 0;
+    // }
     &-filter-footer {
         margin: 10px 10px 0;
         button {
