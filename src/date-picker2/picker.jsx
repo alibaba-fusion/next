@@ -34,6 +34,7 @@ class Picker extends React.Component {
         rtl: PT.bool,
         prefix: PT.string,
         locale: PT.object,
+        name: PT.string,
 
         // calendar
         mode: SharedPT.mode,
@@ -121,7 +122,6 @@ class Picker extends React.Component {
         if ('value' in props) {
             this.controlledValue = value;
         }
-
         this.state = {
             type: props.type,
             value,
@@ -325,12 +325,7 @@ class Picker extends React.Component {
         const { value } = this.state;
 
         if (isValueChanged(v, value)) {
-            if ('value' in this.props) {
-                this.setState({
-                    curValue: value,
-                    inputValue: this.getInputValue(value),
-                });
-            } else {
+            if (!('value' in this.props)) {
                 this.setState({
                     value: v,
                 });
