@@ -76,15 +76,11 @@ function _getViewportSize(container) {
     };
 }
 
-const getContainer = ({ container, autoFit, baseElement }) => {
+const getContainer = ({ container, baseElement }) => {
     let calcContainer = findNode(container, baseElement);
 
     if (!calcContainer) {
         calcContainer = document.body;
-    }
-
-    if (!autoFit) {
-        return calcContainer;
     }
 
     while (dom.getStyle(calcContainer, 'position') === 'static') {
