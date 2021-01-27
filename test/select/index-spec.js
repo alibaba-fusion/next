@@ -1115,6 +1115,26 @@ describe('AutoComplete', () => {
         // assert(wrapper.find('input').prop('value') === 'a');
     });
 
+    it('should remove highlightKey while value changed', () => {
+        const dataSource = [
+            { label: 'xxx', value: 'a' },
+            { label: 'empty', value: 'b' },
+        ];
+        wrapper.setProps({
+            dataSource,
+            visible: true,
+            autoHighlightFirstItem: false
+        });
+        wrapper.find('input').simulate('keydown', { keyCode: 40 });
+        wrapper.find('input').simulate('keydown', { keyCode: 40 });
+        wrapper.find('input').simulate('keydown', { keyCode: 13 });
+        wrapper.update();
+        assert( document.querySelectorAll('.next-menu-item.next-focused').length === 1 );
+        wrapper.find('input').simulate('change', { target: { value: '' } });
+        wrapper.update();
+        assert( document.querySelectorAll('.next-menu-item.next-focused').length === 0 );
+    });
+
     // simulate keydown not work in test event
     // it('should input keyCode space with popupContent', () => {
     //     wrapper.setProps({
