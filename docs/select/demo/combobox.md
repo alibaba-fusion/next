@@ -49,5 +49,5 @@ const onChange = (v) => {
     console.log(v);
 };
 
-ReactDOM.render(<Select.AutoComplete style={{width: 300}} onChange={onChange} dataSource={dataSource} />, mountNode);
+ReactDOM.render(<Select.AutoComplete autoHighlightFirstItem={false} style={{width: 300}} onChange={onChange} dataSource={dataSource} />, mountNode);
 ````
