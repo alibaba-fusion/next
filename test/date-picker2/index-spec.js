@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
@@ -537,6 +537,20 @@ describe('Picker', () => {
             ].forEach(([component, displayName]) => {
                 assert(component.displayName === displayName);
             });
+        });
+    });
+
+    describe('issues', () => {
+        // https://github.com/alibaba-fusion/next/issues/2641
+        it('value controlled issue', () => {
+            function App() {
+                const [value, setVal] = useState(defaultVal);
+                return <DatePicker visible value={value} onChange={setVal} />;
+            }
+            wrapper = mount(<App />);
+            clickDate('2020-12-13');
+            assert(getStrValue() === '2020-12-13');
+            debugger;
         });
     });
 });
