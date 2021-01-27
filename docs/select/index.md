@@ -11,8 +11,8 @@
 
 ## 何时使用
 
--   Select 用于替代原生 select，在原生能力的基础上支持 搜索、多选 等能力
--   AutoComplete 会保留用户输入的值，本质上是 Input 组件，扩展了 autocomplete 的能力，所以 Input 组件的属性可以直接透传。
+-   Select 用于替代原生 select，在限定的可选性内进行选择，核心能力是 `选择`
+-   AutoComplete 本质上是带输入提示的 Input 组件，核心能力是 `辅助输入`
 
 ## 如何使用
 
