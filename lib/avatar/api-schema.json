@@ -1,0 +1,127 @@
+{
+  "name": "Avatar",
+  "props": {
+    "size": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'small'",
+                "computed": false
+              },
+              {
+                "value": "'medium'",
+                "computed": false
+              },
+              {
+                "value": "'large'",
+                "computed": false
+              }
+            ]
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "头像的大小",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "头像的大小\n@enumdesc 小,中,大"
+    },
+    "shape": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'circle'",
+            "computed": false,
+            "description": "圆形"
+          },
+          {
+            "value": "'square'",
+            "computed": false,
+            "description": "方形"
+          }
+        ]
+      },
+      "required": false,
+      "description": "头像的形状",
+      "defaultValue": {
+        "value": "'circle'",
+        "computed": false
+      },
+      "docblock": "头像的形状\n@enumdesc 圆形,方形",
+      "value": [
+        {
+          "value": "'circle'",
+          "computed": false,
+          "description": "圆形"
+        },
+        {
+          "value": "'square'",
+          "computed": false,
+          "description": "方形"
+        }
+      ]
+    },
+    "icon": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "node"
+          },
+          {
+            "name": "string"
+          }
+        ]
+      },
+      "required": false,
+      "description": "icon 类头像的图标类型，可设为 Icon 的 `type` 或 `ReactNode`",
+      "docblock": "icon 类头像的图标类型，可设为 Icon 的 `type` 或 `ReactNode`"
+    },
+    "src": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "图片类头像的资源地址",
+      "docblock": "图片类头像的资源地址"
+    },
+    "onError": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "图片加载失败的事件，返回 false 会关闭组件默认的 fallback 行为",
+      "docblock": "图片加载失败的事件，返回 false 会关闭组件默认的 fallback 行为",
+      "params": [],
+      "returns": null
+    },
+    "alt": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "图像无法显示时的 alt 替代文本",
+      "docblock": "图像无法显示时的 alt 替代文本"
+    },
+    "srcSet": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "图片类头像响应式资源地址",
+      "docblock": "图片类头像响应式资源地址"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
