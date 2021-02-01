@@ -410,10 +410,10 @@ export default class Item extends React.Component {
                             ...getFieldInitCfg(this.props, child.type.displayName, labelForErrorMessage),
                             props: { ...child.props, ref: child.ref },
                         },
-                        childrenProps
+                        Object.assign({}, childrenProps, child.props)
                     );
                 } else {
-                    extraProps = Object.assign({}, child.props, extraProps);
+                    extraProps = Object.assign({}, extraProps, child.props);
                 }
 
                 return React.cloneElement(child, extraProps);
