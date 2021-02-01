@@ -59,7 +59,7 @@ describe('form', () => {
             assert(wrapper.find('.next-form-item-fullwidth').exists());
         });
 
-        it('should supoort Field', () => {
+        it('should support Field', () => {
             class Demo extends React.Component {
                 constructor(props) {
                     super(props);
@@ -96,7 +96,7 @@ describe('form', () => {
         });
     });
     describe('Form', () => {
-        it('should supoort labelAlign', () => {
+        it('should support labelAlign', () => {
             const wrapper = mount(
                 <Form labelAlign="inset">
                     <FormItem {...formItemLayout} label="test">
@@ -108,7 +108,7 @@ describe('form', () => {
             assert(wrapper.find('.next-inset').length !== 0);
             wrapper.find('form').simulate('submit');
         });
-        it('should supoort onSubmit', done => {
+        it('should support onSubmit', done => {
             const onSubmit = sinon.spy();
             const wrapper = mount(
                 <Form onSubmit={onSubmit}>
@@ -129,7 +129,7 @@ describe('form', () => {
         });
     });
     describe('FormItem', () => {
-        it('should supoort props', () => {
+        it('should support props', () => {
             const wrapper = mount(
                 <Form>
                     <FormItem onClick={() => {}}>
@@ -143,7 +143,7 @@ describe('form', () => {
             );
         });
 
-        it('should supoort component', () => {
+        it('should support component', () => {
             let wrapper = mount(<Form component="div">
                 <FormItem required type="email" format="email" label="email:" help="help msg" >
                     <Input name="email" />
@@ -162,7 +162,7 @@ describe('form', () => {
             assert(wrapper.find('div.func-tag'));
         });
 
-        it('should supoort wrapperCol & labelCol', () => {
+        it('should support wrapperCol & labelCol', () => {
             const wrapper = mount(
                 <Form>
                     <FormItem {...formItemLayout} label="email:">
@@ -176,7 +176,7 @@ describe('form', () => {
             );
         });
 
-        it('should supoort help', () => {
+        it('should support help', () => {
             const wrapper = mount(
                 <Form>
                     <FormItem
@@ -194,7 +194,7 @@ describe('form', () => {
             assert(wrapper.find('.next-form-item-help').text() === 'help msg');
         });
 
-        it('should supoort format', () => {
+        it('should support format', () => {
             class Demo extends React.Component {
                 constructor(props) {
                     super(props);
@@ -230,7 +230,7 @@ describe('form', () => {
             );
         });
 
-        it('should supoort validateState', () => {
+        it('should support validateState', () => {
             const wrapper = mount(
                 <Form>
                     <FormItem validateState="success" hasFeedback>
@@ -250,7 +250,7 @@ describe('form', () => {
             );
         });
 
-        it('should supoort responsive', () => {
+        it('should support responsive', () => {
             const wrapper = mount(
                 <Form responsive >
                     <FormItem colSpan={6} labelWidth={80}>
@@ -266,7 +266,7 @@ describe('form', () => {
             assert(wrapper.find('.next-form-responsive-grid'));
         });
 
-        it('should supoort responsive with react fragment', () => {
+        it('should support responsive with react fragment', () => {
             const wrapper = mount(
                 <Form responsive >
                     <FormItem colSpan={4} labelWidth={80}>
@@ -290,7 +290,7 @@ describe('form', () => {
             assert(wrapper.find('.next-form-responsive-grid'));
         });
 
-        it('should supoort required', () => {
+        it('should support required', () => {
             const wrapper = mount(
                 <Form>
                     <FormItem required label="test">
@@ -303,7 +303,7 @@ describe('form', () => {
                 wrapper.find('.next-form-item-label label').prop('required')
             );
         });
-        it('should supoort ref', () => {
+        it('should support ref', () => {
             const saveRef = sinon.spy();
             const wrapper = mount(
                 <Form>
@@ -315,7 +315,7 @@ describe('form', () => {
             assert(saveRef.calledOnce);
         });
 
-        it('should supoort defaultvalue', () => {
+        it('should support defaultvalue', () => {
             const value = {
                 'checkbox-1':true,
                 'radio-1': true,
@@ -334,7 +334,22 @@ describe('form', () => {
             assert(wrapper.find('input#radio-1').props().checked);
         });
 
-        it('should supoort function children', () => {
+        it('should support size', () => {
+            const wrapper = mount(
+                <Form size="small">
+                    <FormItem required label="test 1">
+                        <Input className="my-input-s" name="test1" />
+                    </FormItem>
+                    <FormItem required label="test 2">
+                        <Input className="my-input-l" name="test2" size="large" />
+                    </FormItem>
+                </Form>
+            );
+            assert(wrapper.find('.next-input.my-input-s').hasClass('next-small'));
+            assert(wrapper.find('.next-input.my-input-l').hasClass('next-large'));
+        });
+
+        it('should support function children', () => {
             const wrapper = mount(
                 <Form>
                     <FormItem required label="test">
