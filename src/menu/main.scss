@@ -200,7 +200,7 @@
         border-bottom: $menu-divider-width $menu-divider-style $menu-divider-color;
     }
 
-    & &-icon-selected {
+    & &-icon-selected.#{$css-prefix}icon {
         position: absolute;
         top: 0;
 
@@ -210,7 +210,7 @@
             right: $menu-icon-selected-right;
         }
     }
-    & &-symbol-icon-selected::before {
+    & &-symbol-icon-selected#{$menu-prefix}-icon-selected::before {
         content: $menu-select-icon-content;
     }
 
