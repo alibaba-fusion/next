@@ -244,9 +244,16 @@ class Nav extends React.Component {
         }
 
         if ((prev || next) !== this.state.showBtn) {
-            this.setState({
-                showBtn: prev || next,
-            });
+            this.setState(
+                {
+                    showBtn: prev || next,
+                },
+                () => {
+                    if (this.props.excessMode === 'dropdown') {
+                        this.getDropdownItems(this.props);
+                    }
+                }
+            );
         } else {
             this._setBtnStyle(prev, next);
         }
