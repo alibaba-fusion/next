@@ -550,7 +550,34 @@ describe('Picker', () => {
             wrapper = mount(<App />);
             clickDate('2020-12-13');
             assert(getStrValue() === '2020-12-13');
-            debugger;
+        });
+
+        // https://github.com/alibaba-fusion/next/issues/2664
+        it('value controlled issue2', () => {
+            const App = () => {
+                const [value, setValue] = React.useState(['2021-05', '2021-08']);
+                return (
+                    <div className="app">
+                        <button onClick={() => setValue([dayjs(), dayjs()])} />
+                        <RangePicker value={value} />
+                    </div>
+                );
+            };
+            wrapper = mount(<App />);
+            wrapper.find('button').simulate('click');
+            assert.deepEqual(getStrValue(), ['2021-02-03', '2021-02-03']);
+            wrapper
+                .find('input')
+                .at(0)
+                .simulate('click');
+            assert.deepEqual(getStrValue(), ['2021-02-03', '2021-02-03']);
+            clickDate('2021-02-04');
+            wrapper
+                .find('input')
+                .at(1)
+                .simulate('click');
+            clickDate('2021-02-05');
+            assert.deepEqual(getStrValue(), ['2021-02-03', '2021-02-03']);
         });
     });
 });
