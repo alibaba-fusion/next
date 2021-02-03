@@ -212,10 +212,7 @@ class DatePicker extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(
-            props.format,
-            props.showTime
-        );
+        const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(props.format, props.showTime);
 
         this.state = {
             value: formatDateValue(props.defaultValue, dateTimeFormat),
@@ -236,10 +233,7 @@ class DatePicker extends Component {
         const states = {};
 
         if ('value' in props) {
-            states.value = formatDateValue(
-                props.value,
-                formatStates.dateTimeFormat
-            );
+            states.value = formatDateValue(props.value, formatStates.dateTimeFormat);
             states.inputAsString = typeof props.value === 'string';
         }
 
@@ -254,10 +248,7 @@ class DatePicker extends Component {
     }
 
     onValueChange = (newValue, handler = 'onChange') => {
-        const ret =
-            this.state.inputAsString && newValue
-                ? newValue.format(this.state.dateTimeFormat)
-                : newValue;
+        const ret = this.state.inputAsString && newValue ? newValue.format(this.state.dateTimeFormat) : newValue;
         this.props[handler](ret);
     };
 
@@ -270,10 +261,7 @@ class DatePicker extends Component {
             if (!prevValue) {
                 // 第一次选择日期值时，如果设置了默认时间，则使用该默认时间
                 if (showTime.defaultValue) {
-                    const defaultTimeValue = formatDateValue(
-                        showTime.defaultValue,
-                        this.state.timeFormat
-                    );
+                    const defaultTimeValue = formatDateValue(showTime.defaultValue, this.state.timeFormat);
                     newValue = resetValueTime(value, defaultTimeValue);
                 }
             } else if (!resetTime) {
@@ -368,11 +356,7 @@ class DatePicker extends Component {
     onKeyDown = e => {
         const { format } = this.props;
         const { dateInputStr, value } = this.state;
-        const dateStr = onDateKeydown(
-            e,
-            { format, dateInputStr, value },
-            'day'
-        );
+        const dateStr = onDateKeydown(e, { format, dateInputStr, value }, 'day');
         if (!dateStr) return;
         this.onDateInputChange(dateStr);
     };
@@ -380,13 +364,8 @@ class DatePicker extends Component {
     onTimeKeyDown = e => {
         const { showTime } = this.props;
         const { timeInputStr, timeFormat, value } = this.state;
-        const {
-            disabledMinutes,
-            disabledSeconds,
-            hourStep = 1,
-            minuteStep = 1,
-            secondStep = 1,
-        } = typeof showTime === 'object' ? showTime : {};
+        const { disabledMinutes, disabledSeconds, hourStep = 1, minuteStep = 1, secondStep = 1 } =
+            typeof showTime === 'object' ? showTime : {};
         let unit = 'second';
 
         if (disabledSeconds) {
@@ -470,11 +449,11 @@ class DatePicker extends Component {
     };
 
     renderPreview(others) {
-        const { prefix, format, className, renderPreview } = this.props;
-        const { value } = this.state;
+        const { prefix, className, renderPreview } = this.props;
+        const { value, dateTimeFormat } = this.state;
         const previewCls = classnames(className, `${prefix}form-preview`);
 
-        const label = value ? value.format(format) : '';
+        const label = value ? value.format(dateTimeFormat) : '';
 
         if (typeof renderPreview === 'function') {
             return (
@@ -568,9 +547,7 @@ class DatePicker extends Component {
         }
 
         if (isPreview) {
-            return this.renderPreview(
-                obj.pickOthers(others, DatePicker.PropTypes)
-            );
+            return this.renderPreview(obj.pickOthers(others, DatePicker.PropTypes));
         }
 
         const sharedInputProps = {
@@ -583,10 +560,7 @@ class DatePicker extends Component {
             onKeyDown: this.onKeyDown,
         };
 
-        const dateInputValue =
-            inputing === 'date'
-                ? dateInputStr
-                : (value && value.format(format)) || '';
+        const dateInputValue = inputing === 'date' ? dateInputStr : (value && value.format(format)) || '';
         let triggerInputValue = dateInputValue;
 
         const dateInput = (
@@ -623,10 +597,7 @@ class DatePicker extends Component {
         let timePanel = null;
 
         if (showTime) {
-            const timeInputValue =
-                inputing === 'time'
-                    ? timeInputStr
-                    : (value && value.format(timeFormat)) || '';
+            const timeInputValue = inputing === 'time' ? timeInputStr : (value && value.format(timeFormat)) || '';
             triggerInputValue = (value && value.format(dateTimeFormat)) || '';
 
             const timePanelProps = typeof showTime === 'object' ? showTime : {};
@@ -697,18 +668,8 @@ class DatePicker extends Component {
                     role="combobox"
                     aria-expanded={visible}
                     readOnly
-                    placeholder={
-                        placeholder ||
-                        (showTime
-                            ? locale.datetimePlaceholder
-                            : locale.placeholder)
-                    }
-                    hint={
-                        <Icon
-                            type="calendar"
-                            className={`${prefix}date-picker-symbol-calendar-icon`}
-                        />
-                    }
+                    placeholder={placeholder || (showTime ? locale.datetimePlaceholder : locale.placeholder)}
+                    hint={<Icon type="calendar" className={`${prefix}date-picker-symbol-calendar-icon`} />}
                     hasClear={allowClear}
                     className={triggerInputCls}
                 />
@@ -717,10 +678,7 @@ class DatePicker extends Component {
         const PopupComponent = popupComponent ? popupComponent : Popup;
 
         return (
-            <div
-                {...obj.pickOthers(DatePicker.propTypes, others)}
-                className={datePickerCls}
-            >
+            <div {...obj.pickOthers(DatePicker.propTypes, others)} className={datePickerCls}>
                 <PopupComponent
                     autoFocus
                     align={popupAlign}
@@ -739,9 +697,7 @@ class DatePicker extends Component {
                         popupContent
                     ) : (
                         <div dir={others.dir} className={panelBodyClassName}>
-                            <div
-                                className={`${prefix}date-picker-panel-header`}
-                            >
+                            <div className={`${prefix}date-picker-panel-header`}>
                                 {dateInput}
                                 {timeInput}
                             </div>
