@@ -20,12 +20,44 @@ const { renderNode } = func;
 const { pickProps, pickOthers } = obj;
 
 function isValueChanged(newValue, oldValue) {
-    if (Array.isArray(newValue)) {
-        return newValue.some(
-            (val, idx) => val !== (oldValue && oldValue[idx]) && (val && !val.isSame(oldValue && oldValue[idx]))
-        );
+    return Array.isArray(newValue)
+        ? newValue.some((val, idx) => !datejs(val).isSame(oldValue && oldValue[idx]))
+        : !datejs(newValue).isSame(oldValue);
+}
+
+// 返回日期字符串
+function getInputValue(value, fmt) {
+    const formater = (v, idx) => {
+        if (Array.isArray(fmt)) {
+            fmt = fmt[idx];
+        }
+        return v ? (typeof fmt === 'function' ? fmt(v) : v.format(fmt)) : '';
+    };
+
+    return Array.isArray(value) ? value.map((v, idx) => formater(v, idx)) : formater(value);
+}
+
+function checkAndRectify(value, isRange) {
+    const check = v => {
+        // 因为datejs(undefined) === datejs()
+        // 但是这里期望的是一个空值
+        if (v === undefined) {
+            v = null;
+        }
+        v = datejs(v);
+        return v.isValid() ? v : null;
+    };
+
+    if (isRange) {
+        const [begin, end] = Array.isArray(value) ? [0, 1].map(i => check(value[i])) : [null, null];
+
+        if (begin && end && begin.isAfter(end)) {
+            return [null, null];
+        }
+
+        return [begin, end];
     } else {
-        return newValue !== oldValue && (newValue && !newValue.isSame(oldValue));
+        return check(value);
     }
 }
 
@@ -109,24 +141,22 @@ class Picker extends React.Component {
 
         this.prefixCls = `${props.prefix}date-picker2`;
 
-        const value = this.checkAndRectify(
+        const isRange = props.type === DATE_PICKER_TYPE.RANGE;
+        const value = checkAndRectify(
             'value' in props
                 ? props.value
                 : 'defaultValue' in props
                 ? props.defaultValue
-                : props.type === DATE_PICKER_TYPE.RANGE
+                : isRange
                 ? [null, null]
-                : null
+                : null,
+            isRange
         );
 
-        if ('value' in props) {
-            this.controlledValue = value;
-        }
         this.state = {
-            type: props.type,
             value,
             curValue: value, // 当前输入中的值
-            inputValue: this.getInputValue(value),
+            inputValue: getInputValue(value, props.format),
             visible: 'defaultVisible' in props ? props.defaultVisible : false,
             inputType: DATE_INPUT_TYPE.BEGIN,
             justBeginInput: true,
@@ -134,57 +164,27 @@ class Picker extends React.Component {
         };
     }
 
-    static getDerivedStateFromProps(props) {
-        return {
-            isRange: props.type === DATE_PICKER_TYPE.RANGE,
-            showOk: !!(props.showOk || props.showTime),
-        };
+    static getDerivedStateFromProps(props, state) {
+        const isRange = props.type === DATE_PICKER_TYPE.RANGE;
+        let newState = { isRange, showOk: !!(props.showOk || props.showTime) };
+
+        if ('value' in props && isValueChanged(props.value, state.value)) {
+            const value = checkAndRectify(props.value, isRange);
+
+            newState = {
+                ...newState,
+                value,
+                curValue: value,
+                inputValue: getInputValue(value, props.format),
+            };
+        }
+
+        return newState;
     }
 
     componentWillUnmount() {
         [this.clearTimeoutId, this.timeoutId].forEach(id => id && clearTimeout(id));
     }
-
-    // 返回日期字符串
-    getInputValue = value => {
-        return Array.isArray(value) ? value.map((v, idx) => this.formater(v, idx)) : this.formater(value);
-    };
-
-    formater = (v, idx) => {
-        let fmt = this.props.format;
-
-        if (Array.isArray(fmt)) {
-            fmt = fmt[idx];
-        }
-
-        return v ? (typeof fmt === 'function' ? fmt(v) : v.format(fmt)) : '';
-    };
-
-    // 校验日期数据，范围选择模式下为数组
-    // 不合法的日期重置null值
-    checkAndRectify = value => {
-        const check = v => {
-            // 因为datejs(undefined) === datejs()
-            // 但是这里期望的是一个空值
-            if (v === undefined) {
-                v = null;
-            }
-            v = datejs(v);
-            return v.isValid() ? v : null;
-        };
-
-        if (this.props.type === DATE_PICKER_TYPE.RANGE) {
-            const [begin, end] = Array.isArray(value) ? [0, 1].map(i => check(value[i])) : [null, null];
-
-            if (begin && end && begin.isAfter(end)) {
-                return [null, null];
-            }
-
-            return [begin, end];
-        } else {
-            return check(value);
-        }
-    };
 
     // 判断弹层是否显示
     handleVisibleChange = (visible, type) => {
@@ -280,12 +280,12 @@ class Picker extends React.Component {
     };
 
     handleChange = (v, eventType) => {
-        const { value, isRange, showOk } = this.state;
-        v = this.checkAndRectify(v, value);
+        const { isRange, showOk } = this.state;
+        v = checkAndRectify(v, isRange);
 
         this.setState({
             curValue: v,
-            inputValue: this.getInputValue(v),
+            inputValue: getInputValue(v, this.props.format),
         });
 
         if (
@@ -323,23 +323,29 @@ class Picker extends React.Component {
 
     onChange = v => {
         const { value } = this.state;
+        const { format } = this.props;
 
         if (isValueChanged(v, value)) {
-            if (!('value' in this.props)) {
+            // 受控
+            if ('value' in this.props) {
+                this.setState({
+                    curValue: value,
+                    inputValue: getInputValue(value, format),
+                });
+            } else if (!('value' in this.props)) {
                 this.setState({
                     value: v,
                 });
             }
-
-            func.invoke(this.props, 'onChange', [v, this.getInputValue(v)]);
+            func.invoke(this.props, 'onChange', [v, getInputValue(v, format)]);
         }
         this.onVisibleChange(false);
     };
 
     onOk = () => {
-        const { inputValue } = this.state;
+        const { inputValue, isRange } = this.state;
 
-        const result = func.invoke(this.props, 'onOk', [this.checkAndRectify(inputValue), inputValue]);
+        const result = func.invoke(this.props, 'onOk', [checkAndRectify(inputValue, isRange), inputValue]);
 
         result !== false && this.handleChange(inputValue, 'CLICK_OK');
     };
@@ -419,17 +425,7 @@ class Picker extends React.Component {
             ...restProps
         } = this.props;
         const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
-        let { inputValue, curValue } = this.state;
-
-        // 受控
-        if ('value' in this.props) {
-            const value = this.checkAndRectify(this.props.value);
-            if (isValueChanged(value, this.controlledValue)) {
-                curValue = value;
-                inputValue = this.getInputValue(curValue);
-                this.controlledValue = value;
-            }
-        }
+        const { inputValue, curValue } = this.state;
 
         // 预览态
         if (isPreview) {
@@ -444,7 +440,6 @@ class Picker extends React.Component {
 
         const visible = 'visible' in this.props ? this.props.visible : this.state.visible;
         const allDisabled = isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled;
-
         const sharedProps = {
             rtl,
             prefix,
