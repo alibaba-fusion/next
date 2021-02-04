@@ -178,8 +178,15 @@ export default class Position {
             if (this._isInViewport(pinElement, align)) {
                 return align;
             } else if (!firstPositionResult) {
-                const { right, bottom } = this._getViewportOffset(pinElement, align);
-                firstPositionResult = { left: right < 0 ? left + right : left, top: top < 0 ? top + bottom : top };
+                if (this.needAdjust && !this.autoFit) {
+                    const { right, bottom } = this._getViewportOffset(pinElement, align);
+                    firstPositionResult = {
+                        left: right < 0 ? left + right : left,
+                        top: bottom < 0 ? top + bottom : top,
+                    };
+                } else {
+                    firstPositionResult = { left, top };
+                }
             }
         }
 

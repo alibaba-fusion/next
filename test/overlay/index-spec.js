@@ -600,6 +600,7 @@ describe('Overlay', () => {
                         <div
                             style={{
                                 width: '200px',
+                                height: '100vh',
                                 background: 'red',
                             }}
                         >
@@ -615,6 +616,7 @@ describe('Overlay', () => {
             document.querySelector('.next-overlay-inner').style.left ===
                 `${parseFloat(window.getComputedStyle(document.body).width) - 200 - 1}px` // Reason to subtract 1, see: Overly._isInViewport
         );
+        assert(document.querySelector('.next-overlay-inner').style.top === '0px');
         container.remove();
         document.querySelector('.next-overlay-wrapper').remove();
     });
