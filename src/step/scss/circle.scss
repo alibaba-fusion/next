@@ -38,7 +38,8 @@
             $step-circle-item-tail-wait-color,
             $step-circle-item-tail-bg-color,
             $step-circle-item-node-wait-border-color,
-            $step-circle-item-title-wait-color
+            $step-circle-item-title-wait-color,
+            $step-circle-item-node-process-size
         );
     }
 
@@ -65,7 +66,8 @@
             $step-circle-item-tail-finish-color,
             $step-circle-item-tail-bg-color,
             $step-circle-item-node-finish-border-color,
-            $step-circle-item-title-finish-color
+            $step-circle-item-title-finish-color,
+            $step-circle-item-node-process-size
         );
     }
 
@@ -78,7 +80,8 @@
             $step-circle-item-tail-disabled-color,
             $step-circle-item-tail-bg-color,
             $step-circle-item-node-disabled-border-color,
-            $step-circle-item-title-disabled-color
+            $step-circle-item-title-disabled-color,
+            $step-circle-item-node-process-size
         );
 
         #{$step-prefix}-item-node-placeholder,
@@ -115,16 +118,16 @@
             }
         }
         & > #{$step-prefix}-item-wait {
-            @include state-node-size('hor', 'circle');
+            @include state-node-size('hor', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-process {
             @include state-node-size('hor', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-finish {
-            @include state-node-size('hor', 'circle');
+            @include state-node-size('hor', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-disabled {
-            @include state-node-size('hor', 'circle');
+            @include state-node-size('hor', 'circle', $step-circle-item-node-process-size);
         }
     }
 
@@ -133,16 +136,16 @@
             vertical-align: unset;
         }
         & > #{$step-prefix}-item-wait {
-            @include label-placement();
+            @include label-placement($step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-process {
             @include label-placement($step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-finish {
-            @include label-placement();
+            @include label-placement($step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-disabled {
-            @include label-placement();
+            @include label-placement($step-circle-item-node-process-size);
         }
     }
 
@@ -163,16 +166,16 @@
             }
         }
         & > #{$step-prefix}-item-wait {
-            @include state-node-size('ver', 'circle');
+            @include state-node-size('ver', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-process {
             @include state-node-size('ver', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-finish {
-            @include state-node-size('ver', 'circle');
+            @include state-node-size('ver', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-disabled {
-            @include state-node-size('ver', 'circle');
+            @include state-node-size('ver', 'circle', $step-circle-item-node-process-size);
         }
     }
 }

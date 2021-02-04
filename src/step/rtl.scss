@@ -207,31 +207,31 @@
     &#{$step-prefix}-horizontal {
 
         & > #{$step-prefix}-item-wait {
-            @include state-node-size-rtl('hor', 'circle');
+            @include state-node-size-rtl('hor', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-process {
             @include state-node-size-rtl('hor', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-finish {
-            @include state-node-size-rtl('hor', 'circle');
+            @include state-node-size-rtl('hor', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-disabled {
-            @include state-node-size-rtl('hor', 'circle');
+            @include state-node-size-rtl('hor', 'circle', $step-circle-item-node-process-size);
         }
     }
 
     &#{$step-prefix}-horizontal#{$step-prefix}-label-horizontal {
         & > #{$step-prefix}-item-wait {
-            @include label-placement-rtl();
+            @include label-placement-rtl($step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-process {
             @include label-placement-rtl($step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-finish {
-            @include label-placement-rtl();
+            @include label-placement-rtl($step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-disabled {
-            @include label-placement-rtl();
+            @include label-placement-rtl($step-circle-item-node-process-size);
         }
     }
 
@@ -240,16 +240,16 @@
     &#{$step-prefix}-vertical {
 
         & > #{$step-prefix}-item-wait {
-            @include state-node-size-rtl('ver', 'circle');
+            @include state-node-size-rtl('ver', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-process {
             @include state-node-size-rtl('ver', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-finish {
-            @include state-node-size-rtl('ver', 'circle');
+            @include state-node-size-rtl('ver', 'circle', $step-circle-item-node-process-size);
         }
         & > #{$step-prefix}-item-disabled {
-            @include state-node-size-rtl('ver', 'circle');
+            @include state-node-size-rtl('ver', 'circle', $step-circle-item-node-process-size);
         }
     }
 }
@@ -292,16 +292,16 @@
     // ----------------------------------------
     &#{$step-prefix}-horizontal {
         & > #{$step-prefix}-item-wait {
-            @include state-node-size-rtl('hor', 'dot', $s-3);
+            @include state-node-size-rtl('hor', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-process {
             @include state-node-size-rtl('hor', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-finish {
-            @include state-node-size-rtl('hor', 'dot', $s-3);
+            @include state-node-size-rtl('hor', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-disabled {
-            @include state-node-size-rtl('hor', 'dot', $s-3);
+            @include state-node-size-rtl('hor', 'dot', $step-dot-item-dot-process-size);
         }
     }
 
@@ -310,16 +310,16 @@
     &#{$step-prefix}-vertical {
         padding: 0 4px 0 0;
         & > #{$step-prefix}-item-wait {
-            @include state-node-size-rtl('ver', 'dot', $s-3);
+            @include state-node-size-rtl('ver', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-process {
             @include state-node-size-rtl('ver', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-finish {
-            @include state-node-size-rtl('ver', 'dot', $s-3);
+            @include state-node-size-rtl('ver', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-disabled {
-            @include state-node-size-rtl('ver', 'dot', $s-3);
+            @include state-node-size-rtl('ver', 'dot', $step-dot-item-dot-process-size);
         }
     }
 }
