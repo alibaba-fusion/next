@@ -558,7 +558,7 @@ describe('Picker', () => {
                 const [value, setValue] = React.useState(['2021-05', '2021-08']);
                 return (
                     <div className="app">
-                        <button onClick={() => setValue([dayjs(), dayjs()])} />
+                        <button onClick={() => setValue([dayjs('2021-02-03'), dayjs('2021-02-03')])} />
                         <RangePicker value={value} />
                     </div>
                 );
