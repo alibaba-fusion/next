@@ -54,7 +54,7 @@
             @include icon-size($checkbox-circle-size, 0px);
         }
         > .#{$css-prefix}icon::before {
-            vertical-align: top;
+            vertical-align: text-top;
             margin-top: 0;
         }
         > .#{$css-prefix}checkbox-select-icon::before {
