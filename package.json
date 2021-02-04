@@ -236,7 +236,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "peerDependencies": {
-    "@alifd/meet-react": "^1.0.0",
+    "@alifd/meet-react": "^2.0.0",
     "moment": "^2.22.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"

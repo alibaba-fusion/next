@@ -31,7 +31,7 @@ const SharedPT = {
         }
     },
     value(props, propName, componentName) {
-        if (props[propName] !== undefined) {
+        if (![undefined, null].includes(props[propName])) {
             let value = props[propName];
 
             if (props.type === DATE_PICKER_TYPE.RANGE && !Array.isArray(value)) {
