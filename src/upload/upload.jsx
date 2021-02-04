@@ -417,6 +417,7 @@ class Upload extends Base {
         Object.assign(targetItem, {
             state: 'error',
             error: err,
+            errorMsg: err && err.message,
             response,
         });
 
