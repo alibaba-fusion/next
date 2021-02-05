@@ -44,7 +44,6 @@
             position: absolute;
             top: 0;
             opacity: 0;
-            line-height: $checkbox-size;
             transition: all $motion-duration-immediately $motion-linear;
             color: $checkbox-checked-circle-color;
             left: calc((#{$checkbox-size} - #{$checkbox-circle-size}) / 2);
@@ -54,7 +53,6 @@
             @include icon-size($checkbox-circle-size, 0px);
         }
         > .#{$css-prefix}icon::before {
-            vertical-align: text-top;
             margin-top: 0;
         }
         > .#{$css-prefix}checkbox-select-icon::before {
