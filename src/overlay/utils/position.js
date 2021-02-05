@@ -182,7 +182,8 @@ export default class Position {
                     const { right, bottom } = this._getViewportOffset(pinElement, align);
                     firstPositionResult = {
                         left: right < 0 ? left + right : left,
-                        top: bottom < 0 ? top + bottom : top,
+                        top,
+                        // top: bottom < 0 ? top + bottom : top,
                     };
                 } else {
                     firstPositionResult = { left, top };

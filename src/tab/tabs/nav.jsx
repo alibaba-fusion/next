@@ -293,8 +293,8 @@ class Nav extends React.Component {
         }
     };
 
-    defaultTabTemplateRender = (key, { prefix, title, closeable }) => {
-        const { locale } = this.props;
+    defaultTabTemplateRender = (key, { title, closeable }) => {
+        const { locale, prefix } = this.props;
         const tail = closeable ? (
             <Icon
                 aria-label={locale.closeAriaLabel}
@@ -306,7 +306,7 @@ class Nav extends React.Component {
             />
         ) : null;
         return (
-            <div className={`${this.props.prefix}tabs-tab-inner`}>
+            <div className={`${prefix}tabs-tab-inner`}>
                 {title}
                 {tail}
             </div>
