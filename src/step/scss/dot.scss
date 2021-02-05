@@ -36,7 +36,7 @@
             $step-dot-item-tail-bg-color,
             $step-dot-item-node-wait-border-color,
             $step-dot-item-title-wait-color,
-            $s-3
+            $step-dot-item-dot-process-size
         );
     }
 
@@ -64,7 +64,7 @@
             $step-dot-item-tail-bg-color,
             $step-dot-item-node-finish-border-color,
             $step-dot-item-title-finish-color,
-            $s-3
+            $step-dot-item-dot-process-size
         );
     }
 
@@ -78,7 +78,7 @@
             $step-dot-item-tail-bg-color,
             $step-dot-item-node-disabled-border-color,
             $step-dot-item-title-disabled-color,
-            $s-3
+            $step-dot-item-dot-process-size
         );
 
         #{$step-prefix}-item-node-placeholder,
@@ -119,16 +119,16 @@
             }
         }
         & > #{$step-prefix}-item-wait {
-            @include state-node-size('hor', 'dot', $s-3);
+            @include state-node-size('hor', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-process {
             @include state-node-size('hor', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-finish {
-            @include state-node-size('hor', 'dot', $s-3);
+            @include state-node-size('hor', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-disabled {
-            @include state-node-size('hor', 'dot', $s-3);
+            @include state-node-size('hor', 'dot', $step-dot-item-dot-process-size);
         }
     }
 
@@ -150,16 +150,16 @@
         }
         position: relative;
         & > #{$step-prefix}-item-wait {
-            @include state-node-size('ver', 'dot', $s-3);
+            @include state-node-size('ver', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-process {
             @include state-node-size('ver', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-finish {
-            @include state-node-size('ver', 'dot', $s-3);
+            @include state-node-size('ver', 'dot', $step-dot-item-dot-process-size);
         }
         & > #{$step-prefix}-item-disabled {
-            @include state-node-size('ver', 'dot', $s-3);
+            @include state-node-size('ver', 'dot', $step-dot-item-dot-process-size);
         }
     }
 }
