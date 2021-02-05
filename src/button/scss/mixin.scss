@@ -23,9 +23,7 @@
     }
 
     &#{$btn-prefix}-loading {
-        padding-left: calc(#{$padding} + #{$icon-size} + #{$icon-margin});
-
-        &:after {
+        &:before {
             width: $icon-size;
             height: $icon-size;
             font-size: $icon-size;
@@ -33,7 +31,6 @@
             left: $padding;
             top: 50%;
             text-align: center;
-            margin-top: calc(0px - #{$icon-size} / 2);
             margin-right: $icon-margin;
         }
         > #{$btn-icon-prefix} {
