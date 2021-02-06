@@ -7,7 +7,9 @@
 
 ---
 
-## 使用指南
+提供下拉菜单的按钮。
+
+## 如何使用
 
 1.  通过触发按钮打开弹层菜单。支持透传所有的 Button 属性。
 2.  子组件 `Item`, `Group`, `Divider` 即 `Menu` 中对应的子组件，请参考 Menu 文档。
@@ -21,7 +23,7 @@
 | label               | 按钮上的文本内容                                               | ReactNode | -         |
 | autoWidth           | 弹层是否与按钮宽度相同                                            | Boolean   | true      |
 | popupTriggerType    | 弹层触发方式<br><br>**可选值**:<br>'click', 'hover'             | Enum      | 'click'   |
-| popupContainer      | 弹层容器<br><br>**签名**:<br>Function() => void              | Function  | -         |
+| popupContainer      | 弹层容器                                                   | any       | -         |
 | visible             | 弹层展开状态                                                 | Boolean   | -         |
 | defaultVisible      | 弹层默认是否展开                                               | Boolean   | -         |
 | onVisibleChange     | 弹层在显示和隐藏触发的事件<br><br>**签名**:<br>Function() => void     | Function  | func.noop |

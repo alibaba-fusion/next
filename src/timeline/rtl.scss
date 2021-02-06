@@ -2,12 +2,12 @@
     #{$timeline-prefix}-item {
         &-folder {
             padding-left: 0;
-            padding-right: $timeline-item-content-margin-left + $timeline-item-node-size;
+            padding-right: calc(#{$timeline-item-content-margin-left} + #{$timeline-item-node-size});
         }
 
         &-dot-tail {
             left: auto;
-            right: $timeline-item-node-size / 2;
+            right: calc(#{$timeline-item-node-size} / 2);
             border-left: none;
             border-right: $timeline-item-tail-size dotted $timeline-item-tail-color;
         }

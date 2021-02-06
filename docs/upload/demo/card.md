@@ -2,23 +2,11 @@
 
 - order: 3
 
-提醒: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload`接口:
-
-
-> 1. 该接口仅作为测试使用,业务请勿使用
-
-> 2. 该接口仅支持图片上传,其他文件类型接口请自备
-
 :::lang=en-us
 # Card
 
 - order: 3
 
-Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` API:
-
-> 1. only for test & develop, Never Use in production enviroments
-
-> 2. only support upload images
 :::
 ---
 
@@ -44,13 +32,27 @@ ReactDOM.render(
         }, {
             uid: '1',
             name: 'IMG.png',
+            state: 'done',
+            url: 'https://img.alicdn.com/tfs/TB1x4QlgxYaK1RjSZFnXXa80pXa-1400-742.png',
+            downloadURL: 'https://img.alicdn.com/tfs/TB1x4QlgxYaK1RjSZFnXXa80pXa-1400-742.png',
+            imgURL: 'https://img.alicdn.com/tfs/TB1x4QlgxYaK1RjSZFnXXa80pXa-1400-742.png'
+        }, {
+            uid: '2',
+            name: 'IMG.png',
+            state: 'done',
+            url: 'https://img.alicdn.com/tfs/TB1dcWosRjTBKNjSZFwXXcG4XXa-684-1000.png',
+            downloadURL: 'https://img.alicdn.com/tfs/TB1dcWosRjTBKNjSZFwXXcG4XXa-684-1000.png',
+            imgURL: 'https://img.alicdn.com/tfs/TB1dcWosRjTBKNjSZFwXXcG4XXa-684-1000.png'
+        }, {
+            uid: '3',
+            name: 'IMG.png',
             percent: 50,
             state: 'uploading',
             url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
             downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
             imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
         }, {
-            uid: '2',
+            uid: '4',
             name: 'IMG.png',
             state: 'error',
             url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',

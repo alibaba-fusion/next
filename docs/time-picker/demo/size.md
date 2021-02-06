@@ -16,12 +16,13 @@ Setting picker size by `size`.
 ---
 
 ````jsx
-import { TimePicker } from '@alifd/next';
+import { TimePicker, Box } from '@alifd/next';
 
 
-ReactDOM.render(<div>
-    <TimePicker size="large" />&nbsp;&nbsp;
-    <TimePicker />&nbsp;&nbsp;
+ReactDOM.render(
+    <Box direction="row" spacing={20}>
+    <TimePicker size="large" />
+    <TimePicker />
     <TimePicker size="small" />
-</div>, mountNode);
+</Box>, mountNode);
 ````

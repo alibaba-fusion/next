@@ -29,7 +29,7 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 分隔符，可以是文本或 Icon
      */
-    separator?: React.ReactNode;
+    separator?: string | React.ReactNode;
 
     /**
      * 设置标签类型

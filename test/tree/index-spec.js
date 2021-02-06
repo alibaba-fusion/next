@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
+import propTypes from 'prop-types';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
 import { dom, KEYCODE } from '../../src/util';
 import Tree from '../../src/tree/index';
+import Button from '../../src/button/index';
+import Icon from '../../src/icon/index';
 import '../../src/tree/style.js';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
@@ -12,39 +15,48 @@ import '../../src/tree/style.js';
 const TreeNode = Tree.Node;
 const { hasClass, getOffset } = dom;
 
-const dataSource = [
+const dataSource = freeze([
     {
         label: '服装',
         key: '1',
+        className: 'k-1',
+        icon: 'cry',
         children: [
             {
                 label: '男装',
                 key: '2',
+                className: 'k-2',
                 disabled: true,
+                icon: <Icon type="smile" />,
                 children: [
                     {
                         label: '外套',
+                        className: 'k-4',
+                        selectable: false,
                         key: '4',
                     },
                     {
                         label: '夹克',
+                        className: 'k-5',
                         key: '5',
                     },
                 ],
             },
             {
                 label: '女装',
+                className: 'k-3',
                 key: '3',
                 children: [
                     {
                         label: '裙子',
+                        className: 'k-6',
                         key: '6',
                     },
                 ],
             },
         ],
     },
-];
+]);
 const _k2n = createMap(dataSource);
 
 class ExpandDemo extends Component {
@@ -59,16 +71,9 @@ class ExpandDemo extends Component {
     };
 
     render() {
-        return (
-            <Tree
-                expandedKeys={this.state.expandedKeys}
-                dataSource={dataSource}
-                onExpand={this.handleExpand}
-            />
-        );
+        return <Tree expandedKeys={this.state.expandedKeys} dataSource={dataSource} onExpand={this.handleExpand} />;
     }
 }
-
 class SelectDemo extends Component {
     state = {
         selectedKeys: ['1'],
@@ -93,7 +98,6 @@ class SelectDemo extends Component {
         );
     }
 }
-
 class CheckDemo extends Component {
     state = {
         checkedKeys: ['4', '5', '6'],
@@ -112,7 +116,7 @@ class CheckDemo extends Component {
                 checkable
                 checkedKeys={this.state.checkedKeys}
                 dataSource={cloneData(dataSource, {
-                    2: { disabled: false }
+                    2: { disabled: false },
                 })}
                 onCheck={this.handleCheck}
                 {...this.props}
@@ -120,8 +124,15 @@ class CheckDemo extends Component {
         );
     }
 }
-
 class DragDemo extends React.Component {
+    static propTypes = {
+        canDrop: propTypes.func,
+    };
+
+    static defaultProps = {
+        canDrop: () => true,
+    };
+
     constructor(props) {
         super(props);
 
@@ -172,6 +183,7 @@ class DragDemo extends React.Component {
             gData: data,
         });
     }
+
     render() {
         return (
             <Tree
@@ -180,16 +192,17 @@ class DragDemo extends React.Component {
                 defaultExpandAll
                 dataSource={this.state.gData}
                 onDrop={this.onDrop.bind(this)}
+                canDrop={this.props.canDrop.bind(this)}
             />
         );
     }
 }
-
 class AsyncDemo extends Component {
     state = {
         data: [
             {
                 label: '服装',
+                className: 'k-1',
                 key: '1',
             },
         ],
@@ -202,10 +215,12 @@ class AsyncDemo extends Component {
                     data: [
                         {
                             label: '服装',
+                            className: 'k-1',
                             key: '1',
                             children: [
                                 {
                                     label: '男装',
+                                    className: 'k-2',
                                     key: '2',
                                     isLeaf: true,
                                 },
@@ -239,18 +254,39 @@ describe('Tree', () => {
     it('should render by children', () => {
         const loop = data =>
             data.map(item => {
-                // eslint-disable-next-line
                 return (
-                    <TreeNode {...item}>
+                    <TreeNode key={item.key} {...item} className={`k-${item.key}`}>
                         {item.children ? loop(item.children) : null}
                     </TreeNode>
                 );
             });
-
-        assertTree({ children: loop(dataSource) }, mountNode);
+        assertTree({ children: loop(dataSource), dataSource }, mountNode);
     });
 
     it('should ignore children contain null or string', () => {
+        ReactDOM.render(
+            <Tree checkable editable defaultExpandAll defaultSelectedKeys={['1']} defaultCheckedKeys={['3']}>
+                <TreeNode key="1" className="k-1" label="Component">
+                    <TreeNode key="2" className="k-2" label="Form" selectable={false}>
+                        <TreeNode key="4" className="k-4" label="Input" />
+                        <TreeNode aria-label="select one" key="5" className="k-5" label="Select" disabled />
+                    </TreeNode>
+                    <TreeNode key="3" className="k-3" label="Display">
+                        <TreeNode key="6" className="k-6" label="Table" />
+                    </TreeNode>
+                </TreeNode>
+            </Tree>,
+            mountNode
+        );
+
+        assert(hasClass(findTreeNodeByKey('5').querySelector('.next-checkbox-wrapper'), 'disabled'));
+    });
+
+    it('should render by dataSource', () => {
+        assertTree({ dataSource }, mountNode);
+    });
+
+    it('should support render child nodes', () => {
         ReactDOM.render(
             <Tree
                 checkable
@@ -258,30 +294,33 @@ describe('Tree', () => {
                 defaultExpandAll
                 defaultSelectedKeys={['1']}
                 defaultCheckedKeys={['3']}
+                renderChildNodes={nodes => {
+                    if (
+                        nodes.filter(node => !node.props.children || node.props.children.length === 0).length !==
+                        nodes.length
+                    ) {
+                        return (
+                            <ul role="group" className={`next-tree-child-tree`}>
+                                {nodes}
+                            </ul>
+                        );
+                    }
+                    return <ul className="custom-child-tree">{nodes}</ul>;
+                }}
             >
-                <TreeNode key="1" label="Component">
-                    <TreeNode key="2" label="Form" selectable={false}>
-                        <TreeNode key="4" label="Input" />
-                        <TreeNode aria-label="select one" key="5" label="Select" disabled />
+                <TreeNode key="1" className="k-1" label="Component">
+                    <TreeNode key="2" className="k-2" label="Form" selectable={false}>
+                        <TreeNode key="4" className="k-4" label="Input" />
+                        <TreeNode aria-label="select one" key="5" className="5-1" label="Select" disabled />
                     </TreeNode>
-                    <TreeNode key="3" label="Display">
-                        <TreeNode key="6" label="Table" />
+                    <TreeNode key="3" className="k-3" label="Display">
+                        <TreeNode key="6" className="k-6" label="Table" />
                     </TreeNode>
                 </TreeNode>
             </Tree>,
             mountNode
         );
-
-        assert(
-            hasClass(
-                findTreeNodeByKey('5').querySelector('.next-checkbox-wrapper'),
-                'disabled'
-            )
-        );
-    });
-
-    it('should render by dataSource', () => {
-        assertTree({ dataSource }, mountNode);
+        assert(!!document.querySelector('.custom-child-tree'));
     });
 
     it('should support defaultExpandedKeys and onExpand', () => {
@@ -294,11 +333,7 @@ describe('Tree', () => {
         };
 
         ReactDOM.render(
-            <Tree
-                defaultExpandedKeys={['2']}
-                dataSource={dataSource}
-                onExpand={handleExpand}
-            />,
+            <Tree defaultExpandedKeys={['2']} dataSource={dataSource} onExpand={handleExpand} />,
             mountNode
         );
         assertExpanded('2', true);
@@ -342,12 +377,7 @@ describe('Tree', () => {
             5: { selectable: false },
         });
         ReactDOM.render(
-            <Tree
-                defaultExpandAll
-                defaultSelectedKeys={['1']}
-                dataSource={newDataSource}
-                onSelect={handleSelect}
-            />,
+            <Tree defaultExpandAll defaultSelectedKeys={['1']} dataSource={newDataSource} onSelect={handleSelect} />,
             mountNode
         );
         assertSelected('1', true);
@@ -368,7 +398,7 @@ describe('Tree', () => {
         assertSelected('3', true);
 
         selectTreeNode('3');
-        assertSelected('3', true);
+        assertSelected('3', false);
     });
 
     it('should support selectedKeys and onSelect', () => {
@@ -380,10 +410,18 @@ describe('Tree', () => {
 
         selectTreeNode('3');
         assertSelected('3', true);
-
         selectTreeNode('4');
         assertSelected('3', true);
-        assertSelected('4', true);
+
+        ReactTestUtils.Simulate.keyDown(findTreeNodeByKey(3).querySelector('.next-tree-node-label'), {
+            keyCode: KEYCODE.ENTER,
+        });
+        assertSelected('3', false);
+
+        ReactTestUtils.Simulate.keyDown(findTreeNodeByKey(4).querySelector('.next-tree-node-label'), {
+            keyCode: KEYCODE.ENTER,
+        });
+        assertSelected('4', false);
     });
 
     it('should support defaultCheckedKeys and onCheck', () => {
@@ -415,12 +453,7 @@ describe('Tree', () => {
         assertChecked('6', true);
         assertChecked('1', true);
         assertIndeterminate('1', false);
-        assert(
-            hasClass(
-                findTreeNodeByKey('4').querySelector('.next-checkbox-wrapper'),
-                'disabled'
-            )
-        );
+        assert(hasClass(findTreeNodeByKey('4').querySelector('.next-checkbox-wrapper'), 'disabled'));
         assert(
             !findTreeNodeByKey('5')
                 .querySelector('.next-tree-node-inner')
@@ -455,7 +488,7 @@ describe('Tree', () => {
                 checkable
                 defaultExpandAll
                 dataSource={cloneData(dataSource, {
-                    2: { disabled: false }
+                    2: { disabled: false },
                 })}
                 onCheck={handleCheck}
             />,
@@ -479,7 +512,7 @@ describe('Tree', () => {
                 checkedStrategy="parent"
                 defaultExpandAll
                 dataSource={cloneData(dataSource, {
-                    2: { disabled: false }
+                    2: { disabled: false },
                 })}
                 onCheck={handleCheck}
             />,
@@ -498,13 +531,7 @@ describe('Tree', () => {
         };
 
         ReactDOM.render(
-            <Tree
-                checkable
-                checkedStrategy="child"
-                defaultExpandAll
-                dataSource={dataSource}
-                onCheck={handleCheck}
-            />,
+            <Tree checkable checkedStrategy="child" defaultExpandAll dataSource={dataSource} onCheck={handleCheck} />,
             mountNode
         );
 
@@ -517,9 +544,7 @@ describe('Tree', () => {
         ['1', '2', '3', '4', '5', '6'].forEach(key => assertChecked(key, true));
 
         checkTreeNode('1');
-        ['1', '2', '3', '4', '5', '6'].forEach(key =>
-            assertChecked(key, false)
-        );
+        ['1', '2', '3', '4', '5', '6'].forEach(key => assertChecked(key, false));
 
         checkTreeNode('5');
         assertChecked('5', true);
@@ -557,6 +582,88 @@ describe('Tree', () => {
         ['1', '5', '6'].forEach(key => assertChecked(key, true));
     });
 
+    it('should support setting indeterminate key when checkStrictly true', done => {
+        class Demo extends Component {
+            constructor() {
+                super();
+
+                setTimeout(() => {
+                    ['1', '2', '3'].forEach(key => assertChecked(key, true));
+                    ['4', '5', '6'].forEach(key => assertIndeterminate(key, true));
+
+                    this.setState({ checkedKeys: [] });
+                    ['4', '5', '6'].forEach(key => assertChecked(key, false));
+
+                    this.setState({
+                        checkedKeys: {
+                            checked: '1',
+                            indeterminate: '2',
+                        },
+                    });
+                    assertChecked('1', true);
+                    assertIndeterminate('2', true);
+
+                    done();
+                }, 100);
+            }
+
+            state = {
+                checkedKeys: {
+                    checked: ['1', '2', '3'],
+                    indeterminate: ['4', '5', '6'],
+                },
+            };
+
+            render() {
+                return (
+                    <Tree
+                        defaultExpandAll
+                        checkable
+                        checkStrictly
+                        checkedKeys={this.state.checkedKeys}
+                        dataSource={cloneData(dataSource, {
+                            2: { disabled: false },
+                        })}
+                    />
+                );
+            }
+        }
+
+        ReactDOM.render(<Demo />, mountNode);
+    });
+
+    it('should support update indeterminate key when dataSource change', done => {
+        class Demo extends Component {
+            constructor() {
+                super();
+
+                setTimeout(() => {
+                    ['1', '2', '3'].forEach(key => assertChecked(key, false));
+
+                    checkTreeNode('5');
+                    assertIndeterminate('2', true);
+
+                    this.state.data[0].children[0].children.length = 1;
+                    this.setState({ data: this.state.data });
+                    assertIndeterminate('2', false);
+
+                    done();
+                }, 100);
+            }
+
+            state = {
+                data: cloneData(dataSource, {
+                    2: { disabled: false },
+                }),
+            };
+
+            render() {
+                return <Tree defaultExpandAll checkable dataSource={this.state.data} />;
+            }
+        }
+        ReactDOM.render(<Demo />, mountNode);
+    });
+
     it('should support editing node', () => {
         let called = false;
         const handleEditFinish = (key, label, node) => {
@@ -571,12 +678,7 @@ describe('Tree', () => {
         });
 
         ReactDOM.render(
-            <Tree
-                defaultExpandAll
-                editable
-                dataSource={newDataSource}
-                onEditFinish={handleEditFinish}
-            />,
+            <Tree defaultExpandAll editable dataSource={newDataSource} onEditFinish={handleEditFinish} />,
             mountNode
         );
         const treeNode3 = findTreeNodeByKey('3');
@@ -600,6 +702,15 @@ describe('Tree', () => {
         ReactTestUtils.Simulate.blur(input);
     });
 
+    // fix： https://github.com/alibaba-fusion/next/issues/1942
+    it('should stop stopPropagation keyboard event when editing node', () => {
+        ReactDOM.render(<Tree defaultExpandAll editable dataSource={dataSource} />, mountNode);
+        editTreeNode('3');
+        const input = findTreeNodeByKey('3').querySelector('.next-tree-node-input input');
+        ReactTestUtils.Simulate.keyDown(input, { keyCode: KEYCODE.LEFT });
+        assert(findTreeNodeByKey(3) !== null);
+    });
+
     it('should support right clicking node', () => {
         let called = false;
         const handleRightClick = info => {
@@ -608,14 +719,7 @@ describe('Tree', () => {
             assert(info.node.props.eventKey === '3');
         };
 
-        ReactDOM.render(
-            <Tree
-                defaultExpandAll
-                dataSource={dataSource}
-                onRightClick={handleRightClick}
-            />,
-            mountNode
-        );
+        ReactDOM.render(<Tree defaultExpandAll dataSource={dataSource} onRightClick={handleRightClick} />, mountNode);
 
         rightClickTreeNode('2');
         assert(!called);
@@ -626,84 +730,89 @@ describe('Tree', () => {
     it('should support dragging node into dropNode', () => {
         ReactDOM.render(<DragDemo />, mountNode);
 
+        let labels = getAllLabels();
+        assert(labels[4] === '女装' && labels[5] === '裙子');
         dragTreeNode('6', '2', 0);
-        assert(
-            findChild(findTreeNodeByKey('2'), 'next-tree-child-tree')
-                .children[2].querySelector('.next-tree-node-label')
-                .textContent.trim() === '裙子'
-        );
+        labels = getAllLabels();
+        assert(labels[4] === '裙子' && labels[5] === '女装');
     });
 
-    it('should support dragging node before drop mode', () => {
+    it('should support dragging node before drop node', () => {
         ReactDOM.render(<DragDemo />, mountNode);
 
+        let labels = getAllLabels();
+
+        assert(labels[5] === '裙子');
+
         dragTreeNode('6', '2', -1);
-        assert(
-            findChild(findTreeNodeByKey('1'), 'next-tree-child-tree')
-                .children[0].querySelector('.next-tree-node-label')
-                .textContent.trim() === '裙子'
-        );
+
+        labels = getAllLabels();
+        assert(labels[1] === '裙子');
     });
 
     it('should support dragging node after drop node', () => {
         ReactDOM.render(<DragDemo />, mountNode);
 
+        let labels = getAllLabels();
+        assert(labels[5] === '裙子');
+
         dragTreeNode('6', '2', 1);
-        assert(
-            findChild(findTreeNodeByKey('1'), 'next-tree-child-tree')
-                .children[1].querySelector('.next-tree-node-label')
-                .textContent.trim() === '裙子'
-        );
+
+        labels = getAllLabels();
+        assert(labels[4] === '裙子');
+    });
+
+    it('should stop dragover event propagation whatever could drop or not', () => {
+        let isCanDrop = false;
+
+        function canDrop({ node }) {
+            assert(node.props.eventKey === '2');
+            return isCanDrop;
+        }
+        ReactDOM.render(<DragDemo canDrop={canDrop} />, mountNode);
+
+        // 禁止拖拽
+        dragTreeNode('6', '2', 1, isCanDrop);
+        // 允许拖拽
+        isCanDrop = true;
+        dragTreeNode('6', '2', 1, isCanDrop);
     });
 
     it('should load data asynchronously', done => {
         ReactDOM.render(<AsyncDemo />, mountNode);
+
         expandChildTree('1');
-        assert(
-            hasClass(
-                findTreeNodeByKey('1').querySelector('.next-tree-switcher'),
-                'next-loading'
-            )
-        );
+
+        assert(hasClass(findTreeNodeByKey('1').querySelector('.next-tree-switcher'), 'next-loading'));
 
         setTimeout(() => {
-            assert(
-                !hasClass(
-                    findTreeNodeByKey('1').querySelector('.next-tree-switcher'),
-                    'next-loading'
-                )
-            );
-            assertExpanded('1', true);
+            assert(!hasClass(findTreeNodeByKey('1').querySelector('.next-tree-switcher'), 'next-loading'));
+            assertExpanded('1', true, ['2']);
             done();
         }, 500);
     });
 
     it('should support showLine', () => {
         ReactDOM.render(<Tree showLine dataSource={dataSource} />, mountNode);
-        assert(
-            hasClass(document.querySelector('.next-tree'), 'next-show-line')
-        );
+        assert(hasClass(document.querySelector('.next-tree'), 'next-show-line'));
+    });
+
+    it('should support icon', () => {
+
+        ReactDOM.render(<Tree defaultExpandAll dataSource={dataSource} />, mountNode);
+
+        assert(document.querySelectorAll('.next-tree-node-label .next-icon').length === 2);
     });
 
     it('should support isLabelBlock and isNodeBlock', () => {
-        ReactDOM.render(
-            <Tree isLabelBlock isNodeBlock dataSource={dataSource} />,
-            mountNode
-        );
-        assert(
-            hasClass(document.querySelector('.next-tree'), 'next-node-block')
-        );
-        assert(
-            hasClass(document.querySelector('.next-tree'), 'next-label-block')
-        );
+        ReactDOM.render(<Tree isLabelBlock isNodeBlock dataSource={dataSource} />, mountNode);
+        assert(hasClass(document.querySelector('.next-tree'), 'next-node-block'));
+        assert(hasClass(document.querySelector('.next-tree'), 'next-label-block'));
     });
 
     it('should support filterTreeNode', () => {
         ReactDOM.render(
-            <Tree
-                dataSource={dataSource}
-                filterTreeNode={node => node.props.label === '服装'}
-            />,
+            <Tree dataSource={dataSource} filterTreeNode={node => node.props.label === '服装'} />,
             mountNode
         );
 
@@ -712,12 +821,7 @@ describe('Tree', () => {
 
     it('should support disabled', () => {
         ReactDOM.render(
-            <Tree
-                dataSource={dataSource}
-                defaultExpandAll
-                checkable
-                defaultCheckedKeys={['3']}
-            />,
+            <Tree dataSource={dataSource} defaultExpandAll checkable defaultCheckedKeys={['3']} />,
             mountNode
         );
 
@@ -726,7 +830,7 @@ describe('Tree', () => {
         checkTreeNode('4');
         ['1', '3', '6'].forEach(key => assertChecked(key, false));
         assertChecked('4', true);
-    })
+    });
 
     it('should support checkable = false', () => {
         ReactDOM.render(
@@ -734,8 +838,8 @@ describe('Tree', () => {
                 dataSource={cloneData(dataSource, {
                     2: {
                         disabled: false,
-                        checkable: false
-                    }
+                        checkable: false,
+                    },
                 })}
                 defaultExpandAll
                 checkable
@@ -751,17 +855,17 @@ describe('Tree', () => {
         assertIndeterminate('1', false);
     });
 
-    it('should test defaultCheckKeys in disabled node',  () => {
+    it('should test defaultCheckKeys in disabled node', () => {
         ReactDOM.render(
             <Tree
                 dataSource={cloneData(dataSource, {
                     2: {
                         disabled: false,
-                        checkable: true
+                        checkable: true,
                     },
                     5: {
-                        disabled: true
-                    }
+                        disabled: true,
+                    },
                 })}
                 defaultExpandAll
                 checkable
@@ -773,8 +877,8 @@ describe('Tree', () => {
         ['2', '4', '5'].forEach(key => assertChecked(key, true));
         checkTreeNode('4');
         ['2', '4'].forEach(key => assertChecked(key, false));
-        assertChecked('5', true)
-    })
+        assertChecked('5', true);
+    });
 
     it('should support keyboard', () => {
         ReactDOM.render(
@@ -787,14 +891,133 @@ describe('Tree', () => {
             />,
             mountNode
         );
-        const item00 = findRealItem(0, 0);
+        const item00 = findInnerNodeByKey('1');
         item00.focus();
         assert(document.activeElement === item00);
         const assertAE = assertActiveElement();
-        assertAE(KEYCODE.RIGHT, () => findRealItem(1, 0));
-        assertAE(KEYCODE.DOWN, () => findRealItem(1, 1));
-        assertAE(KEYCODE.DOWN, () => findRealItem(1, 0));
-        assertAE(KEYCODE.LEFT, () => findRealItem(0, 0));
+        assertAE(KEYCODE.RIGHT, () => findInnerNodeByKey('2'));
+        assertAE(KEYCODE.DOWN, () => findInnerNodeByKey('3'));
+        assertAE(KEYCODE.DOWN, () => findInnerNodeByKey('2'));
+        assertAE(KEYCODE.LEFT, () => findInnerNodeByKey('1'));
+    });
+
+    it('should support useVirtual', () => {
+        const height = 180;
+
+        ReactDOM.render(
+            <Tree
+                defaultExpandAll
+                useVirtual
+                style={{ height: `${height}px`, overflow: 'auto' }}
+                dataSource={createDataSource()}
+            />,
+            mountNode
+        );
+        const itemEls = document.querySelectorAll('.next-tree-node');
+
+        // 100px is virtual-list`s threshold
+        assert(itemEls.length === (height + 100) / itemEls[0].offsetHeight);
+
+        // node-indent-unit
+        itemEls.forEach(el => {
+            assert(el.getAttribute('level') - 1 === el.querySelectorAll('.next-tree-node-indent-unit').length);
+        });
+    });
+
+    it('should keep illegal node', () => {
+        ReactDOM.render(
+            <Tree defaultExpandAll className="my-tree">
+                <TreeNode label="Form" key="1" disabled>
+                    <TreeNode label="Select" key="2">
+                        <TreeNode label="TreeSelect" key="3" />
+                    </TreeNode>
+                    <TreeNode label="Input" key="4">
+                        dasdfa
+                        <div className="illegal-div" />
+                        <Button className="illegal-bt">dasd</Button>
+                    </TreeNode>
+                </TreeNode>
+            </Tree>,
+            mountNode
+        );
+        const myTree = document.querySelector('.my-tree');
+
+        assert(myTree.textContent.indexOf('dasdfa') === -1);
+        assert(myTree.querySelectorAll('.illegal-bt').length === 1);
+        assert(myTree.querySelectorAll('.illegal-div').length === 1);
+    });
+
+    // fix: https://github.com/alibaba-fusion/next/issues/1914
+    it('fix bug on isLeaf', () => {
+        [
+            <Tree key={0} defaultExpandAll loadData={() => Promise.resolve([])}>
+                <TreeNode label="Form" key="1">
+                    <TreeNode label="Input" key="2" isLeaf className="leaf-node" />
+                    <TreeNode label="TreeSelect" key="3" className="leaf-node" />
+                </TreeNode>
+            </Tree>,
+            <Tree
+                key={1}
+                defaultExpandAll
+                loadData={() => Promise.resolve([])}
+                dataSource={[
+                    {
+                        label: 'Form',
+                        key: '1',
+                        children: [
+                            {
+                                label: 'Input',
+                                key: '2',
+                                className: 'leaf-node',
+                                isLeaf: true,
+                            },
+                            {
+                                label: 'TreeSelect',
+                                key: '3',
+                                className: 'leaf-node',
+                                isLeaf: true,
+                            },
+                        ],
+                    },
+                ]}
+            />,
+        ].forEach(instance => {
+            ReactDOM.render(instance, mountNode);
+            assert(document.querySelectorAll('.leaf-node .tree-switcher-icon').length === 0);
+            ReactDOM.unmountComponentAtNode(mountNode);
+        });
+    });
+
+    it('fix bug on level', () => {
+        [
+            <Tree key="0" dataSource={dataSource} defaultExpandAll isNodeBlock useVirtual />,
+            <Tree key="1" defaultExpandAll isNodeBlock useVirtual>
+                {renderTreeNodeWithData(dataSource)}
+            </Tree>,
+        ].forEach(instance => {
+            ReactDOM.render(instance, mountNode);
+
+            walk(dataSource, (item, level) => {
+                assert(document.querySelector(`.${item.className}`).getAttribute('level') === String(level));
+            });
+            ReactDOM.unmountComponentAtNode(mountNode);
+        });
+    });
+
+    it('fix error when dataSource is empty', done => {
+        function App() {
+            const [dataSource, setDataSource] = useState([]);
+
+            setTimeout(() => {
+                setDataSource([]);
+            });
+            return <Tree defaultExpandAll className="my-tree" dataSource={dataSource} />;
+        }
+        ReactDOM.render(<App />, mountNode);
+
+        setTimeout(() => {
+            done();
+        }, 100);
     });
 
     it('should support rtl', () => {
@@ -813,65 +1036,71 @@ describe('Tree', () => {
     });
 });
 
+function createDataSource(level = 2, count = 3) {
+    const dataSource = [];
+
+    const drill = (children, _level, _count) => {
+        children.forEach(child => {
+            child.children = new Array(_count).fill(null).map((__, k) => {
+                const key = `${child.key}-${k}`;
+                return {
+                    key,
+                    label: key,
+                };
+            });
+            _level > 0 && drill(child.children, _level - 1, count);
+        });
+    };
+
+    dataSource.push({
+        label: '0-0',
+        key: '0-0',
+    });
+    drill(dataSource, level, count);
+    return freeze(dataSource);
+}
+
+function freeze(dataSource) {
+    return dataSource.map(item => {
+        const { children } = item;
+        children && freeze(children);
+        return Object.freeze(item);
+    });
+}
+
+function getAllLabels() {
+    return Array.prototype.map.call(
+        document.querySelectorAll('li.next-tree-node .next-tree-node-label'),
+        item => item.textContent
+    );
+}
+
+function flattenData(dataSource) {
+    const flattenList = [];
+    const drill = data => {
+        data.forEach(item => {
+            const { children, ...newItem } = item;
+            flattenList.push(newItem);
+            children && children.length && drill(children);
+        });
+    };
+
+    drill(dataSource);
+
+    return flattenList;
+}
+
 function assertTree(props, mountNode) {
     ReactDOM.render(
-        <Tree
-            checkable
-            editable
-            defaultExpandAll
-            defaultSelectedKeys={['1']}
-            defaultCheckedKeys={['3']}
-            {...props}
-        />,
+        <Tree checkable editable defaultExpandAll defaultSelectedKeys={['1']} defaultCheckedKeys={['3']} {...props} />,
         mountNode
     );
-
-    assertDataAndNodes(dataSource);
-    assert(
-        hasClass(
-            findTreeNodeByKey('2').querySelector('.next-tree-node-inner'),
-            'next-disabled'
-        )
-    );
-}
-
-function assertDataAndNodes(dataSource) {
-    const loop = (data, nodes) =>
-        data.forEach((item, index) => {
-            const node = nodes[index];
-            const labelElement = findChild(node, 'next-tree-node-inner');
-            assert(labelElement.textContent.trim() === item.label);
-
-            if (item.children) {
-                const childTree = findChild(node, 'next-tree-child-tree');
-                loop(item.children, childTree.children);
-            }
-        });
-    loop(dataSource, document.querySelector('.next-tree').children);
-}
-
-function findChild(node, className) {
-    for (let i = 0; i < node.children.length; i++) {
-        const child = node.children[i];
-        if (hasClass(child, className)) {
-            return child;
-        }
-    }
-}
-
-function findTreeNodeByPos(pos) {
-    return pos
-        .split('-')
-        .slice(1)
-        .reduce((ret, num, i) => {
-            return ret.querySelector(
-                i === 0 ? '.next-tree' : '.next-tree-child-tree'
-            ).children[num];
-        }, document);
+    assert.deepEqual(flattenData(props.dataSource).map(({ label }) => label), getAllLabels());
+    assert(hasClass(findTreeNodeByKey('2').querySelector('.next-tree-node-inner'), 'next-disabled'));
 }
 
 function findTreeNodeByKey(key) {
-    return findTreeNodeByPos(_k2n[key].pos);
+    return document.querySelector(`.k-${key}`);
 }
 
 function createMap(data) {
@@ -912,15 +1141,11 @@ function cloneData(data, keyMap = {}) {
 }
 
 function expandChildTree(key) {
-    ReactTestUtils.Simulate.click(
-        findTreeNodeByKey(key).querySelector('.next-tree-switcher')
-    );
+    ReactTestUtils.Simulate.click(findTreeNodeByKey(key).querySelector('.next-tree-switcher'));
 }
 
 function selectTreeNode(key) {
-    ReactTestUtils.Simulate.click(
-        findTreeNodeByKey(key).querySelector('.next-tree-node-label')
-    );
+    ReactTestUtils.Simulate.click(findTreeNodeByKey(key).querySelector('.next-tree-node-label'));
 }
 
 function checkTreeNode(key) {
@@ -931,67 +1156,47 @@ function checkTreeNode(key) {
 }
 
 function editTreeNode(key) {
-    ReactTestUtils.Simulate.doubleClick(
-        findTreeNodeByKey(key).querySelector('.next-tree-node-label')
-    );
+    ReactTestUtils.Simulate.doubleClick(findTreeNodeByKey(key).querySelector('.next-tree-node-label'));
 }
 
 function rightClickTreeNode(key) {
-    ReactTestUtils.Simulate.contextMenu(
-        findTreeNodeByKey(key).querySelector('.next-tree-node-label')
-    );
+    ReactTestUtils.Simulate.contextMenu(findTreeNodeByKey(key).querySelector('.next-tree-node-label'));
 }
 
-function dragTreeNode(dragKey, dropKey, dropPosition) {
-    const dragNodeLabel = findTreeNodeByKey(dragKey).querySelector(
-        '.next-tree-node-label'
-    );
+function dragTreeNode(dragKey, dropKey, dropPosition, isCanDrop = true) {
+    const dragNodeLabel = findTreeNodeByKey(dragKey).querySelector('.next-tree-node-label');
     const dropNode = findTreeNodeByKey(dropKey);
-    const dropNodeLabelWrapper = dropNode.querySelector(
-        '.next-tree-node-label-wrapper'
-    );
+    const dropNodeLabelWrapper = dropNode.querySelector('.next-tree-node-label-wrapper');
     const extra = dropPosition === -1 ? 0 : dropPosition === 0 ? 12 : 24;
     const pageY = getOffset(dropNodeLabelWrapper).top + extra;
 
     ReactTestUtils.Simulate.dragStart(dragNodeLabel);
     ReactTestUtils.Simulate.dragEnter(dropNode, { pageY });
     ReactTestUtils.Simulate.dragOver(dropNode);
-    ReactTestUtils.Simulate.drop(dropNode);
-    ReactTestUtils.Simulate.dragEnd(dragNodeLabel);
+    // 禁止拖拽的情况 不需要模拟drop dragEnd方法
+    if (isCanDrop) {
+        ReactTestUtils.Simulate.drop(dropNode);
+        ReactTestUtils.Simulate.dragEnd(dragNodeLabel);
+    }
 }
 
-function assertExpanded(key, expanded) {
-    assert(
-        !!findTreeNodeByKey(key).querySelector('.next-tree-child-tree') ===
-            expanded
-    );
+function assertExpanded(key, expanded, childrenKeys) {
+    const children = _k2n[key].children;
+    const keys = childrenKeys || (children && children.length && children.map(({ key }) => key)) || [];
+
+    assert(keys.every(key => !!findTreeNodeByKey(key) === expanded));
 }
 
 function assertSelected(key, selected) {
-    assert(
-        hasClass(
-            findTreeNodeByKey(key).querySelector('.next-tree-node-inner'),
-            'next-selected'
-        ) === selected
-    );
+    assert(hasClass(findTreeNodeByKey(key).querySelector('.next-tree-node-inner'), 'next-selected') === selected);
 }
 
 function assertChecked(key, checked) {
-    assert(
-        hasClass(
-            findTreeNodeByKey(key).querySelector('.next-checkbox-wrapper'),
-            'checked'
-        ) === checked
-    );
+    assert(hasClass(findTreeNodeByKey(key).querySelector('.next-checkbox-wrapper'), 'checked') === checked);
 }
 
 function assertIndeterminate(key, indeterminate) {
-    assert(
-        hasClass(
-            findTreeNodeByKey(key).querySelector('.next-checkbox-wrapper'),
-            'indeterminate'
-        ) === indeterminate
-    );
+    assert(hasClass(findTreeNodeByKey(key).querySelector('.next-checkbox-wrapper'), 'indeterminate') === indeterminate);
 }
 
 function assertEditing(key, editing) {
@@ -1000,9 +1205,7 @@ function assertEditing(key, editing) {
 
     if (editing) {
         const input = treeNode.querySelector('.next-tree-node-input input');
-        assert(
-            !!input && input.value === label && document.activeElement === input
-        );
+        assert(!!input && input.value === label && document.activeElement === input);
     } else {
         assert(findTreeNodeByKey(key).querySelector('.next-tree-node-label'));
     }
@@ -1019,19 +1222,29 @@ function assertActiveElement() {
     };
 }
 
-function getTreePath(listIndex, path = '') {
-    if (listIndex === 0) {
-        return `.next-tree ${path}`;
-    }
-
-    return getTreePath(
-        listIndex - 1,
-        ` > .next-tree-node > .next-tree-child-tree ${path}`
-    );
+function findInnerNodeByKey(key) {
+    return findTreeNodeByKey(key).querySelector('.next-tree-node-inner');
 }
 
-function findRealItem(listIndex, itemIndex) {
-    return document.querySelectorAll(
-        `${getTreePath(listIndex)} > .next-tree-node > .next-tree-node-inner`
-    )[itemIndex];
+function walk(dataSource, enter, level = 1, parent) {
+    dataSource.forEach((item, index) => {
+        enter(item, level, index, parent);
+        const { children } = item;
+        if (children && children.length) {
+            walk(children, enter, level + 1, parent);
+        }
+    });
+}
+
+function renderTreeNodeWithData(dataSource) {
+    const drill = items => {
+        if (items && items.length) {
+            return items.map(({ key, children, ...others }) => (
+                <TreeNode {...others} key={key}>
+                    {children && drill(children)}
+                </TreeNode>
+            ));
+        }
+    };
+    return drill(dataSource);
 }

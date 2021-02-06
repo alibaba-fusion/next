@@ -13,6 +13,8 @@ export interface CloseableProps extends HTMLAttributesWeak, CommonProps {
      */
     closeArea?: 'tag' | 'tail';
 
+    type?: 'normal' | 'primary';
+
     /**
      * 点击关闭按钮时的回调
      */
@@ -26,7 +28,7 @@ export interface CloseableProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击回调
      */
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler;
 
     /**
      * 标签的尺寸（large 尺寸为兼容表单场景 large = medium）
@@ -47,6 +49,7 @@ export interface SelectableProps extends HTMLAttributesWeak, CommonProps {
      */
     checked?: boolean;
 
+    type?: 'normal' | 'primary';
     /**
      * 标签是否默认被选中，非受控用法
      * tag checked or not by default, a uncontrolled way
@@ -73,7 +76,9 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onClick?: any;
 }
 
-export interface TagGroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {}
+export interface TagGroupProps
+    extends React.HTMLAttributes<HTMLElement>,
+        CommonProps {}
 
 export class TagGroup extends React.Component<TagGroupProps, any> {}
 
@@ -94,6 +99,11 @@ export interface TagProps extends HTMLAttributesWeak, CommonProps {
     size?: 'small' | 'medium' | 'large';
 
     /**
+     * 标签颜色, 目前支持：blue、 green、 orange、red、 turquoise、 yellow 和 hex 颜色值 （`color keywords`作为 Tag 组件的保留字，请勿直接使用 ）, `1.19.0` 以上版本生效
+     */
+    color?: string;
+
+    /**
      * 是否开启动效
      */
     animation?: boolean;
@@ -106,7 +116,7 @@ export interface TagProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击回调
      */
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler;
 }
 
 export default class Tag extends React.Component<TagProps, any> {

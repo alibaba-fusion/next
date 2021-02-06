@@ -5,7 +5,7 @@
 /// @family navigation
 /// @varPrefix $pagination-
 /// @classPrefix {prefix}-pagination
-/// @order {"size/item":10,"size/ellipsis":11,"size/display":12,"size/jump":13,"size/size selector":14,"statement/normal":10,"statement/normal/ellipsis":100,"statement/normal/display":101,"statement/normal/jump":102,"statement/normal/size selector":103,"statement/normal/arrow":104,"statement/normal/current item":105,"statement/hover/arrow":110,"statement/hover":11,"statement/hover/current item":110}
+/// @order {"size/item":10,"size/ellipsis":11,"size/display":12,"size/jump":13,"size/size selector":14,"statement/normal":10,"statement/normal/ellipsis":100,"statement/normal/display":101,"statement/normal/jump":102,"statement/normal/size selector":103,"statement/normal/arrow":104,"statement/normal/current item":105,"statement/normal/item":106,"statement/normal/icon":107,"statement/hover/arrow":110,"statement/hover":11,"statement/hover/current item":110}
 ////
 
 // pagination variables
@@ -229,6 +229,18 @@ $pagination-item-hover-bg: $color-fill1-2 !default;
 /// color
 /// @namespace statement/normal/arrow
 $pagination-arrow-color: $color-text1-3 !default;
+
+/// prev
+/// @namespace statement/normal/icon
+$pagination-icon-prev-content: $icon-content-arrow-left !default;
+
+/// next
+/// @namespace statement/normal/icon
+$pagination-icon-next-content: $icon-content-arrow-right !default;
+
+/// ellipsis
+/// @namespace statement/normal/icon
+$pagination-icon-ellipsis-content: $icon-content-ellipsis !default;
 
 // Statement:Hover
 // ----------------------------------------

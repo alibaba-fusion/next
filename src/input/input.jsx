@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
@@ -13,6 +13,7 @@ function preventDefault(e) {
 
 /** Input */
 export default class Input extends Base {
+    static getDerivedStateFromProps = Base.getDerivedStateFromProps;
     static propTypes = {
         ...Base.propTypes,
         /**
@@ -29,14 +30,9 @@ export default class Input extends Base {
         hasBorder: PropTypes.bool,
         /**
          * 状态
-         * @enumdesc 错误, 校验中, 成功
+         * @enumdesc 错误, 校验中, 成功, 警告
          */
-        state: PropTypes.oneOf(['error', 'loading', 'success']),
-        /**
-         * 尺寸
-         * @enumdesc 小, 中, 大
-         */
-        size: PropTypes.oneOf(['small', 'medium', 'large']),
+        state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
         /**
          * 按下回车的回调
          */
@@ -51,7 +47,7 @@ export default class Input extends Base {
         /**
          * 水印 (Icon的type类型，和hasClear占用一个地方)
          */
-        hint: PropTypes.string,
+        hint: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
         /**
          * 文字前附加内容
          */
@@ -88,13 +84,22 @@ export default class Input extends Base {
         extra: PropTypes.node,
         innerBeforeClassName: PropTypes.string,
         innerAfterClassName: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
         ...Base.defaultProps,
-        size: 'medium',
         autoComplete: 'off',
         hasBorder: true,
+        isPreview: false,
         onPressEnter: func.noop,
         inputRender: el => el,
     };
@@ -127,23 +132,17 @@ export default class Input extends Base {
     }
 
     renderControl() {
-        const {
-            hasClear,
-            readOnly,
-            state,
-            prefix,
-            hint,
-            extra,
-            locale,
-        } = this.props;
+        const { hasClear, readOnly, state, prefix, hint, extra, locale } = this.props;
 
         const lenWrap = this.renderLength();
 
         let stateWrap = null;
         if (state === 'success') {
-            stateWrap = <Icon type="success-filling" />;
+            stateWrap = <Icon type="success-filling" className={`${prefix}input-success-icon`} />;
         } else if (state === 'loading') {
-            stateWrap = <Icon type="loading" />;
+            stateWrap = <Icon type="loading" className={`${prefix}input-loading-icon`} />;
+        } else if (state === 'warning') {
+            stateWrap = <Icon type="warning" className={`${prefix}input-warning-icon`} />;
         }
 
         let clearWrap = null;
@@ -152,16 +151,22 @@ export default class Input extends Base {
         if (hint || showClear) {
             let hintIcon = null;
             if (hint) {
-                hintIcon = (
-                    <Icon type={hint} className={`${prefix}input-hint`} />
-                );
+                if (typeof hint === 'string') {
+                    hintIcon = <Icon type={hint} className={`${prefix}input-hint`} />;
+                } else if (isValidElement(hint)) {
+                    hintIcon = cloneElement(hint, {
+                        className: classNames(hint.props.className, `${prefix}input-hint`),
+                    });
+                } else {
+                    hintIcon = hint;
+                }
             } else {
                 hintIcon = (
                     <Icon
                         type="delete-filling"
                         role="button"
                         tabIndex="0"
-                        className={`${prefix}input-hint`}
+                        className={`${prefix}input-hint ${prefix}input-clear-icon`}
                         aria-label={locale.clear}
                         onClick={this.onClear.bind(this)}
                         onMouseDown={preventDefault}
@@ -177,7 +182,7 @@ export default class Input extends Base {
                             type="delete-filling"
                             role="button"
                             tabIndex="0"
-                            className={`${prefix}input-clear`}
+                            className={`${prefix}input-clear ${prefix}input-clear-icon`}
                             aria-label={locale.clear}
                             onClick={this.onClear.bind(this)}
                             onMouseDown={preventDefault}
@@ -261,6 +266,8 @@ export default class Input extends Base {
             className,
             hasBorder,
             prefix,
+            isPreview,
+            renderPreview,
             addonBefore,
             addonAfter,
             addonTextBefore,
@@ -269,13 +276,13 @@ export default class Input extends Base {
             rtl,
         } = this.props;
 
-        const hasAddon =
-            addonBefore || addonAfter || addonTextBefore || addonTextAfter;
+        const hasAddon = addonBefore || addonAfter || addonTextBefore || addonTextAfter;
         const cls = classNames(this.getClass(), {
             [`${prefix}${size}`]: true,
             [`${prefix}hidden`]: this.props.htmlType === 'hidden',
             [`${prefix}noborder`]: !hasBorder || this.props.htmlType === 'file',
             [`${prefix}input-group-auto-width`]: hasAddon,
+            [`${prefix}disabled`]: disabled,
             [className]: !!className && !hasAddon,
         });
 
@@ -290,6 +297,10 @@ export default class Input extends Base {
             [`${prefix}after`]: true,
             [innerAfterClassName]: innerAfterClassName,
         });
+        const previewCls = classNames({
+            [`${prefix}form-preview`]: true,
+            [className]: !!className,
+        });
 
         const props = this.getProps();
         // custom data attributes are assigned to the top parent node
@@ -297,10 +308,29 @@ export default class Input extends Base {
         const dataProps = obj.pickAttrsWith(this.props, 'data-');
         // Custom props are transparently transmitted to the core input node by default
         // 自定义属性默认透传到核心node节点：input
-        const others = obj.pickOthers(
-            Object.assign({}, dataProps, Input.propTypes),
-            this.props
-        );
+        const others = obj.pickOthers(Object.assign({}, dataProps, Input.propTypes), this.props);
+
+        if (isPreview) {
+            const { value } = props;
+            const { label } = this.props;
+            if (typeof renderPreview === 'function') {
+                return (
+                    <div {...others} className={previewCls}>
+                        {renderPreview(value, this.props)}
+                    </div>
+                );
+            }
+            return (
+                <div {...others} className={previewCls}>
+                    {addonBefore || addonTextBefore}
+                    {label}
+                    {innerBefore}
+                    {value}
+                    {innerAfter}
+                    {addonAfter || addonTextAfter}
+                </div>
+            );
+        }
 
         const inputEl = (
             <input
@@ -350,6 +380,7 @@ export default class Input extends Base {
                     {...dataProps}
                     className={className}
                     style={style}
+                    disabled={disabled}
                     addonBefore={addonBefore || addonTextBefore}
                     addonBeforeClassName={addonBeforeCls}
                     addonAfter={addonAfter || addonTextAfter}

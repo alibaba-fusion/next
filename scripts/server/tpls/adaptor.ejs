@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>主题 Demo</title>
+        <script src="//shadow.elemecdn.com/npm/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
+        <script src="//shadow.elemecdn.com/npm/react@16.x/umd/react.development.js"></script>
+        <script src="//shadow.elemecdn.com/npm/react-dom@16.x/umd/react-dom.development.js"></script>
+        <script src="//shadow.elemecdn.com/npm/moment@2.24.0/min/moment-with-locales.js"></script>
+        <script src="//unpkg.com/@alifd/adaptor-generate@0.2.3/umd/adaptor-generate.development.js"></script>
+    </head>
+    <body>
+        <div id="container"></div>
+        <div id="root"></div>
+        <% scripts.forEach(function(src) { %>
+        <script src="<%= src %>"></script>
+        <% })%>
+    </body>
+</html>

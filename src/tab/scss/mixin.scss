@@ -66,14 +66,14 @@
     &.active {
         &:before {
             @if $position == 'top' or $position == 'bottom' {
-                @if $border-radius == 0 {
+                @if get-compiling-value($border-radius) == 0 {
                     width: 100%;
                 } @else {
                     width: calc(100% - 2 * #{$border-radius});
                 }
                 left: $border-radius;
             } @else {
-                @if $border-radius == 0 {
+                @if get-compiling-value($border-radius) == 0 {
                     height: 100%;
                 } @else {
                     height: calc(100% - 2 * #{$border-radius});
@@ -96,6 +96,9 @@
 
         &:hover {
             color: $icon-color-hover;
+        }
+        &:focus {
+            outline: none;
         }
     }
 
@@ -166,7 +169,7 @@
         }
 
         .#{$css-prefix}tabs-tab-close {
-            padding-left: $close-icon-margin-left;
+            margin-left: $close-icon-margin-left;
             @include icon-size($close-icon-size);
         }
     }

@@ -1,6 +1,7 @@
 import ConfigProvider from '../config-provider';
 import { preFormatDateValue } from './utils';
 import Calendar from './calendar';
+import RangeCalendar from './range-calendar';
 
 /* istanbul ignore next */
 const transform = (props, deprecated) => {
@@ -75,6 +76,7 @@ const transform = (props, deprecated) => {
     return newProps;
 };
 
+Calendar.RangeCalendar = RangeCalendar;
 export default ConfigProvider.config(Calendar, {
     transform,
 });

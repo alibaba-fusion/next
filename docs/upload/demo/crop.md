@@ -2,23 +2,15 @@
 
 - order: 10
 
-提醒: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload`接口:
-
-
-> 1. 该接口仅作为测试使用,业务请勿使用
-
-> 2. 该接口仅支持图片上传,其他文件类型接口请自备
+通过转换 dataURL to Blob to File, 构造文件对象
 
 :::lang=en-us
 # Crop
 
 - order: 10
 
-Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` API:
+transfor dataURL to Blob to File
 
-> 1. only for test & develop, Never Use in production enviroments
-
-> 2. only support upload images
 :::
 ---
 
@@ -27,27 +19,44 @@ import { Upload, Button, Dialog } from '@alifd/next';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 
+// plan 1: [not work in IE/Edge] IE don't support File Constructor
+// function dataURL2File(dataURL, filename) { 
+//     const arr = dataURL.split(','),
+//         mime = arr[0].match(/:(.*?);/)[1],
+//         bstr = atob(arr[1]),
+//         u8arr = new Uint8Array(bstr.length);
+//     let n = bstr.length;
+//     while (n--) {
+//         u8arr[n] = bstr.charCodeAt(n);
+//     }
 
-function convertBase64UrlToFile(urlData) {
+//     // base64 -> File (File Constructor not work in IE/Edge)
+//     return new File([u8arr], filename, { type: mime });
+// }
 
-    const bytes = window.atob(urlData.split(',')[1]);
-
-    const ab = new ArrayBuffer(bytes.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < bytes.length; i++) {
-        ia[i] = bytes.charCodeAt(i);
+// plan 2: base64 -> Blob -> File, IE9+
+function dataURL2Blob2File(dataURL, fileName) {
+    const arr = dataURL.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        u8arr = new Uint8Array(bstr.length);
+    let n = bstr.length;
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
     }
-
-    const blob = new Blob([ab], {type: 'image/png'});
-
-    return new File([blob], 'test.png', {type: 'image/png'});
-}
+    const blob = new Blob([u8arr], { type: mime });
+    // Blob to File
+    // set lastModifiedDate and name
+    blob.lastModifiedDate = new Date();
+    blob.name = fileName;
+    return blob;
+};
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.uploader = new Upload.Uploader({
-            action: 'https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload',
+            action: 'http://127.0.0.1:6001/upload.do',
             onSuccess: this.onSuccess,
             name: 'file'
         });
@@ -86,9 +95,7 @@ class App extends React.Component {
     onOk = () => {
 
         const data = this.cropperRef.getCroppedCanvas().toDataURL();
-
-        const blob = convertBase64UrlToFile(data);
-        const file = new File([blob], 'test.png', {type: 'image/png'});
+        const file = dataURL2Blob2File(data, 'test.png');
 
         // start upload
         this.uploader.startUpload(file);

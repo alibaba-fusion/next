@@ -235,6 +235,10 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
      * 当前获得焦点的子菜单或菜单项 key 值
      */
     focusedKey?: string;
+    /**
+     * 渲染子节点
+     */
+    renderChildNodes?: (nodes: React.ReactNode) => React.ReactNode;
 }
 
 export default class Tree extends React.Component<TreeProps, any> {

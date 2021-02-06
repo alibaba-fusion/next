@@ -84,6 +84,74 @@ describe('number-picker', () => {
             done();
         });
 
+        it('should leave out digits larger than precision set', done => {
+            let wrapper = mount(
+                <NumberPicker defaultValue={0} precision={1}/>
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '0.34' } });
+            assert(wrapper.find('input').prop('value') === 0.3);
+
+            wrapper = mount(
+                <NumberPicker defaultValue={0} />
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '0.' } });
+            assert(wrapper.find('input').prop('value') === 0);
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '0.24' } });
+            assert(wrapper.find('input').prop('value') === 0);
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '0.2.4' } });
+            assert(wrapper.find('input').prop('value') === 0);
+
+            done();
+        })
+
+        it('should ignore more than one . or -, cut at second . or -', done => {
+            let wrapper = mount(
+                <NumberPicker defaultValue={0} precision={2}/>
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '0.3.4' } });
+            assert(wrapper.find('input').prop('value') === 0.3);
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '-0.3-4' } });
+            assert(wrapper.find('input').prop('value') === -0.3);
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '-1.345-4' } });
+            assert(wrapper.find('input').prop('value') === -1.34);
+
+            const onChange = value => {
+                assert(value === 0);
+            };
+            wrapper = mount(
+                <NumberPicker defaultValue={0} precision={2} onChange={onChange}/>
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '-0.-3.4' } });
+            assert(wrapper.find('input').prop('value') === '-0.');
+            assert(!onChange.calledOnce);
+
+            done();
+        })
+
         it('should work with value and onChange under control', done => {
             class App extends React.Component {
                 state = {
@@ -152,7 +220,7 @@ describe('number-picker', () => {
         it('should support input with -/-0/-0./0./0.0 ', () => {
             const onChange = sinon.spy();
             const wrapper = mount(
-                <NumberPicker defaultValue={0} onChange={onChange} />
+                <NumberPicker defaultValue={0} onChange={onChange} precision={1}/>
             );
 
             wrapper

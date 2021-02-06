@@ -7,11 +7,11 @@
 
 ---
 
-## 开发指南
+树型选择控件。
 
-### 何时使用
+## 何时使用
 
-类似 Select 的选择控件，可选择的数据结构是一个树形结构时，可以使用 TreeSelect，例如公司层级、学科系统、分类目录等等。
+类似 `Select` 的选择控件，可选择的数据结构是一个树形结构时，可以使用 `TreeSelect`，例如公司层级、学科系统、分类目录等等。
 
 ## API
 
@@ -42,16 +42,19 @@
 | treeCheckedStrategy     | 定义选中时回填的方式<br><br>**可选值**:<br>'all'(返回所有选中的节点)<br>'parent'(父子节点都选中时只返回父节点)<br>'child'(父子节点都选中时只返回子节点)                                                                                                                                                    | Enum                    | 'parent'    |
 | treeDefaultExpandAll    | 下拉框中的树是否默认展开所有节点                                                                                                                                                                                                                                         | Boolean                 | false       |
 | treeDefaultExpandedKeys | 下拉框中的树默认展开节点key的数组                                                                                                                                                                                                                                       | Array&lt;String>        | \[]         |
-| treeLoadData            | 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/component/tree)<br><br>**签名**:<br>Function(node: ReactElement) => void<br>**参数**:<br>_node_: {ReactElement} 被点击展开的节点                                                                        | Function                | -           |
+| treeLoadData            | 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/pc/component/basic/tree#%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE)<br><br>**签名**:<br>Function(node: ReactElement) => void<br>**参数**:<br>_node_: {ReactElement} 被点击展开的节点        | Function                | -           |
 | treeProps               | 透传到 Tree 的属性对象                                                                                                                                                                                                                                           | Object                  | {}          |
 | defaultVisible          | 初始下拉框是否显示                                                                                                                                                                                                                                                | Boolean                 | false       |
 | visible                 | 当前下拉框是否显示                                                                                                                                                                                                                                                | Boolean                 | -           |
 | onVisibleChange         | 下拉框显示或关闭时触发事件的回调函数<br><br>**签名**:<br>Function(visible: Boolean, type: String) => void<br>**参数**:<br>_visible_: {Boolean} 是否显示<br>_type_: {String} 触发显示关闭的操作类型                                                                                            | Function                | () => {}    |
 | popupStyle              | 下拉框自定义样式对象                                                                                                                                                                                                                                               | Object                  | -           |
 | popupClassName          | 下拉框样式自定义类名                                                                                                                                                                                                                                               | String                  | -           |
-| popupContainer          | 下拉框挂载的容器节点                                                                                                                                                                                                                                               | String/Function         | -           |
+| popupContainer          | 下拉框挂载的容器节点                                                                                                                                                                                                                                               | any                     | -           |
 | popupProps              | 透传到 Popup 的属性对象                                                                                                                                                                                                                                          | Object                  | -           |
 | followTrigger           | 是否跟随滚动                                                                                                                                                                                                                                                   | Boolean                 | -           |
+| isPreview               | 是否为预览态                                                                                                                                                                                                                                                   | Boolean                 | -           |
+| renderPreview           | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: Array) => void<br>**参数**:<br>_value_: {Array} 选择值 { label: , value:}                                                                                                                                       | Function                | -           |
+| useVirtual              | 是否开启虚拟滚动                                                                                                                                                                                                                                                 | Boolean                 | false       |
 
 <!-- api-extra-start -->
 
@@ -67,49 +70,59 @@
 | draggable        | 单独设置是否支持拖拽，覆盖 Tree 的 draggable  | Boolean   | -     |
 | disabled         | 是否禁止节点响应                        | Boolean   | false |
 | checkboxDisabled | 是否禁止勾选节点复选框                     | Boolean   | false |
-| isLeaf           | 是否是叶子节点，设置loadData时生效           | Boolean   | false |
+| isLeaf           | 是否是叶子节点，设置 loadData 时生效         | Boolean   | false |
 
 ### dataSource 数据结构
 
 ```js
-const dataSource = [{
-    label: '服装',
-    value: '1',
-    key: '1',
-    selectable: false,
-    children: [{
-        label: '男装',
-        value: '2',
-        key: '2',
-        children: [{
-            label: '外套',
-            value: '4',
-            key: '4',
-            disableCheckbox: true
-        }, {
-            label: '夹克',
-            value: '5',
-            key: '5',
-            disabled: true
-        }]
-    }, {
-        label: '女装',
-        value: '3',
-        key: '3',
-        children: [{
-            label: '裙子',
-            value: '6',
-            key: '6'
-        }]
-    }]
-}];
+const dataSource = [
+    {
+        label: '服装',
+        value: '1',
+        key: '1',
+        selectable: false,
+        children: [
+            {
+                label: '男装',
+                value: '2',
+                key: '2',
+                children: [
+                    {
+                        label: '外套',
+                        value: '4',
+                        key: '4',
+                        disableCheckbox: true,
+                    },
+                    {
+                        label: '夹克',
+                        value: '5',
+                        key: '5',
+                        disabled: true,
+                    },
+                ],
+            },
+            {
+                label: '女装',
+                value: '3',
+                key: '3',
+                children: [
+                    {
+                        label: '裙子',
+                        value: '6',
+                        key: '6',
+                    },
+                ],
+            },
+        ],
+    },
+];
 ```
 
 如果不传入 key，TreeSelect 会使用内部计算出来的位置字符串作为 key 值，如果你想指定诸如 treeDefaultExpandedKeys 这样的属性，请传入自定义的 key 值，让它和 value 是一个值，是一个很好的办法。
 
 <!-- api-extra-end -->
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键          | 说明                  |
 | :---------- | :------------------ |

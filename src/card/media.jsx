@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -12,7 +12,7 @@ const MEDIA_COMPONENTS = ['video', 'audio', 'picture', 'iframe', 'img'];
  * Card.Media
  * @order 1
  */
-class CardMedia extends PureComponent {
+class CardMedia extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -48,10 +48,11 @@ class CardMedia extends PureComponent {
             ...others
         } = this.props;
 
-        warning(
-            'children' in others || Boolean(image || src),
-            'either `children`, `image` or `src` prop must be specified.'
-        );
+        if (!('children' in others || Boolean(image || src))) {
+            warning(
+                'either `children`, `image` or `src` prop must be specified.'
+            );
+        }
 
         const isMediaComponent = MEDIA_COMPONENTS.indexOf(Component) !== -1;
         const composedStyle =

@@ -26,7 +26,8 @@ const onRowClick = function (record, index, e) {
             result.push({
                 title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
                 id: 100306660940 + i,
-                time: 2000 + i
+                year: i === 0 ? '-' : `2019-10-2${3 + i}`,
+                month: `16:39:${23 + i}`
             });
         }
         return result;
@@ -37,14 +38,15 @@ const onRowClick = function (record, index, e) {
     cellProps = (rowIndex, colIndex) => {
         if (rowIndex === 2 && colIndex === 1) {
             return {
-                colSpan: 2,
+                // take 3 rows's space
                 rowSpan: 3
             };
         }
-        if (rowIndex === 1 && colIndex === 2) {
+
+        if (rowIndex === 0 && colIndex === 2) {
             return {
-                colSpan: 2,
-                rowSpan: 1
+                // take 2 cols' space
+                colSpan: 2
             };
         }
     };
@@ -52,7 +54,7 @@ const onRowClick = function (record, index, e) {
 ReactDOM.render(<Table dataSource={dataSource()} onRowClick={onRowClick} cellProps={cellProps}>
     <Table.Column title="Id" dataIndex="id"/>
     <Table.Column title="Title" dataIndex="title.name" />
-    <Table.Column title="Time" dataIndex="time"/>
-    <Table.Column cell={render} width={200}/>
+    <Table.Column title="Time" colSpan={2} dataIndex="year"/>
+    <Table.Column colSpan={0} dataIndex="month"/>
 </Table>, mountNode);
 ````

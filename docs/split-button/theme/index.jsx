@@ -44,11 +44,19 @@ const i18nMap = {
 function renderButton(type, locale, props) {
     const menu = ['undo', 'redo', 'cut', 'copy', 'paste'].map(item => <SplitButton.Item key={item}>{locale[item]}</SplitButton.Item>);
     const cols = [locale.large, locale.medium, locale.small];
+    const newLabel = <div>
+        {locale.editDocument}
+        {/* --------- this is for config platform ----------- */}
+        <div style={{display: "none"}}>
+            <div className='next-split-btn-symbol-unfold'/>
+        </div>
+        {/* --------- this is for config platform ----------- */}
+    </div>;
 
     const commonProps = {
         ...props,
         type: type.toLowerCase(),
-        label: locale.editDocument
+        label: newLabel
     };
 
     let style;

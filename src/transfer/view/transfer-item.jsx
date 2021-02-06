@@ -150,10 +150,11 @@ export default class TransferItem extends Component {
             [`${prefix}simple`]: isSimple,
         });
 
+        const children = itemRender(item);
         const itemProps = {
             ref: this.getItemDOM,
             className: classNames,
-            children: itemRender(item),
+            children,
             disabled,
             draggable: draggable && !disabled,
             onDragStart: this.handleDragStart,
@@ -162,18 +163,23 @@ export default class TransferItem extends Component {
             onDrop: this.handleDrop,
             ...others,
         };
+        let title;
+        if (typeof children === 'string') {
+            title = children;
+        }
         if (isSimple) {
             if (!itemProps.disabled) {
                 itemProps.onClick = this.handleClick;
             }
 
-            return <Item {...itemProps} />;
+            return <Item title={title} {...itemProps} />;
         }
 
         return (
             <CheckboxItem
                 checked={checked}
                 onChange={onCheck.bind(this, item.value)}
+                title={title}
                 {...itemProps}
             />
         );

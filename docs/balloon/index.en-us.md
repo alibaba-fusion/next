@@ -11,7 +11,7 @@
 ### When To Use
 
 -   Balloon is used when you hope to show auxiliary or help message during users' interacting with the illustrated object (text, picture, input box, etc.).
--   Particularly, Balloon.Tooltip is a simplified Balloon for displaying tip when hovered.
+-   Particularly, Balloon.Tooltip is a simplified Balloon for displaying tip when hovered. If you want the content to be clickable, use `<Balloon.Tootip delay={100} />`
 
 ### Note
 
@@ -66,6 +66,7 @@
 | pure           | pure render or not                                                                                                                                                      | Boolean         | -                   |
 | popupContainer | popupContainer of the popup, being either dom id or a function to return the dom                                                                                                                                   | String/Function | -                   |
 | id             | id of popup. only when you set value, balloon will support accessibility                                                                                                                                                     | String          | -                   |
+| delay          | If you want the content of Tooltip to be clickable, set 100 for example                                                                                                                               | Number       | 0           |
 
 ## Known Issues
 

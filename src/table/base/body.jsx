@@ -27,7 +27,11 @@ export default class Body extends React.Component {
         onRowClick: PropTypes.func,
         onRowMouseEnter: PropTypes.func,
         onRowMouseLeave: PropTypes.func,
+        onBodyMouseOver: PropTypes.func,
+        onBodyMouseOut: PropTypes.func,
         locale: PropTypes.object,
+        crossline: PropTypes.bool,
+        tableWidth: PropTypes.number,
     };
     static defaultProps = {
         loading: false,
@@ -59,6 +63,14 @@ export default class Body extends React.Component {
         this.props.onRowMouseLeave(record, index, e);
     };
 
+    onBodyMouseOver = e => {
+        this.props.onBodyMouseOver(e);
+    };
+
+    onBodyMouseOut = e => {
+        this.props.onBodyMouseOut(e);
+    };
+
     render() {
         /*eslint-disable no-unused-vars */
         const {
@@ -80,23 +92,29 @@ export default class Body extends React.Component {
             onRowClick,
             onRowMouseEnter,
             onRowMouseLeave,
+            onBodyMouseOver,
+            onBodyMouseOut,
             locale,
             pure,
             expandedIndexSimulate,
+            tableOuterWidth,
             rtl,
+            crossline,
+            tableWidth,
             ...others
         } = this.props;
 
         const { Row = RowComponent, Cell = CellComponent } = components;
-        const empty = loading ? (
-            <span>&nbsp;</span>
-        ) : (
-            emptyContent || locale.empty
-        );
+        const empty = loading ? <span>&nbsp;</span> : emptyContent || locale.empty;
         let rows = (
             <tr>
                 <td colSpan={columns.length}>
-                    <div className={`${prefix}table-empty`}>{empty}</div>
+                    <div
+                        className={`${prefix}table-empty`}
+                        style={{ position: 'sticky', left: 0, overflow: 'hidden', width: (tableOuterWidth || 0) - 2 }}
+                    >
+                        {empty}
+                    </div>
                 </td>
             </tr>
         );
@@ -111,15 +129,10 @@ export default class Body extends React.Component {
             rows = dataSource.map((record, index) => {
                 let rowProps = {};
                 // record may be a string
-                const rowIndex =
-                    typeof record === 'object' && '__rowIndex' in record
-                        ? record.__rowIndex
-                        : index;
+                const rowIndex = typeof record === 'object' && '__rowIndex' in record ? record.__rowIndex : index;
 
                 if (expandedIndexSimulate) {
-                    rowProps = record.__expanded
-                        ? {}
-                        : getRowProps(record, index / 2);
+                    rowProps = record.__expanded ? {} : getRowProps(record, index / 2);
                 } else {
                     rowProps = getRowProps(record, rowIndex);
                 }
@@ -135,7 +148,7 @@ export default class Body extends React.Component {
                 const expanded = record.__expanded ? 'expanded' : '';
                 return (
                     <Row
-                        key={`${record[primaryKey] || rowIndex}${expanded}`}
+                        key={`${record[primaryKey] || (record[primaryKey] === 0 ? 0 : rowIndex)}${expanded}`}
                         {...rowProps}
                         ref={this.getRowRef.bind(this, rowIndex)}
                         colGroup={colGroup}
@@ -144,6 +157,7 @@ export default class Body extends React.Component {
                         primaryKey={primaryKey}
                         record={record}
                         rowIndex={rowIndex}
+                        __rowIndex={rowIndex}
                         prefix={prefix}
                         pure={pure}
                         cellRef={cellRef}
@@ -152,14 +166,21 @@ export default class Body extends React.Component {
                         Cell={Cell}
                         onClick={this.onRowClick}
                         locale={locale}
+                        tableOuterWidth={tableOuterWidth}
                         onMouseEnter={this.onRowMouseEnter}
                         onMouseLeave={this.onRowMouseLeave}
                     />
                 );
             });
         }
+        const event = crossline
+            ? {
+                  onMouseOver: this.onBodyMouseOver,
+                  onMouseOut: this.onBodyMouseOut,
+              }
+            : {};
         return (
-            <Tag className={className} {...others}>
+            <Tag className={className} {...others} {...event}>
                 {rows}
                 {children}
             </Tag>

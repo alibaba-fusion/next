@@ -7,11 +7,11 @@
 
 ---
 
-## 开发指南
+用于展示具有层级结构的数据。
 
-### 何时使用
+## 何时使用
 
-文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用`树控件`可以完整展现其中的层级关系，并具有展开收起选择等交互功能。
+`Tree`组件适用于大量、具有层级关系的数据展示场景中，并且利用组件的展开收起和关联选中等交互可以方便地对数据进行操作处理。
 
 ## API
 
@@ -36,7 +36,7 @@
 | expandedKeys        | （用于受控）当前展开的节点 key 的数组                                                                                                                                                                                                                                                                                                                                                                                            | Array&lt;String>        | -          |
 | defaultExpandedKeys | （用于非受控）默认展开的节点 key 的数组                                                                                                                                                                                                                                                                                                                                                                                           | Array&lt;String>        | \[]        |
 | defaultExpandAll    | 是否默认展开所有节点                                                                                                                                                                                                                                                                                                                                                                                                       | Boolean                 | false      |
-| autoExpandParent    | 是否自动展开父节点                                                                                                                                                                                                                                                                                                                                                                                                        | Boolean                 | true       |
+| autoExpandParent    | 是否自动展开父节点，建议受控时设置为false                                                                                                                                                                                                                                                                                                                                                                                          | Boolean                 | true       |
 | onExpand            | 展开或收起节点时触发的回调函数<br><br>**签名**:<br>Function(expandedKeys: Array, extra: Object) => void<br>**参数**:<br>_expandedKeys_: {Array} 展开的节点key的数组<br>_extra_: {Object} 额外参数<br>_extra.node_: {Object} 当前操作的节点<br>_extra.expanded_: {Boolean} 当前操作是否是展开                                                                                                                                                                    | Function                | func.noop  |
 | editable            | 是否支持编辑节点内容                                                                                                                                                                                                                                                                                                                                                                                                       | Boolean                 | false      |
 | onEditFinish        | 编辑节点内容完成时触发的回调函数<br><br>**签名**:<br>Function(key: String, label: String, node: Object) => void<br>**参数**:<br>_key_: {String} 编辑节点的 key<br>_label_: {String} 编辑节点完成时节点的文本<br>_node_: {Object} 当前编辑的节点                                                                                                                                                                                                              | Function                | func.noop  |
@@ -55,20 +55,23 @@
 | isNodeBlock         | 设置节点是否占满一行                                                                                                                                                                                                                                                                                                                                                                                                       | Boolean/Object          | false      |
 | animation           | 是否开启展开收起动画                                                                                                                                                                                                                                                                                                                                                                                                       | Boolean                 | true       |
 | focusedKey          | 当前获得焦点的子菜单或菜单项 key 值                                                                                                                                                                                                                                                                                                                                                                                             | String                  | -          |
+| renderChildNodes    | 渲染子节点<br><br>**签名**:<br>Function(nodes: Array) => ReactNode<br>**参数**:<br>_nodes_: {Array} 所有的子节点<br>**返回值**:<br>{ReactNode} 返回节点<br>                                                                                                                                                                                                                                                                            | Function                | -          |
+| useVirtual          | 是否开启虚拟滚动                                                                                                                                                                                                                                                                                                                                                                                                         | Boolean                 | false      |
 
 ### Tree.Node
 
-| 参数               | 说明                              | 类型        | 默认值   |
-| ---------------- | ------------------------------- | --------- | ----- |
-| children         | 树节点                             | ReactNode | -     |
-| label            | 节点文本内容                          | ReactNode | '---' |
-| selectable       | 单独设置是否支持选中，覆盖 Tree 的 selectable | Boolean   | -     |
-| checkable        | 单独设置是否出现复选框，覆盖 Tree 的 checkable | Boolean   | -     |
-| editable         | 单独设置是否支持编辑，覆盖 Tree 的 editable   | Boolean   | -     |
-| draggable        | 单独设置是否支持拖拽，覆盖 Tree 的 draggable  | Boolean   | -     |
-| disabled         | 是否禁止节点响应                        | Boolean   | false |
-| checkboxDisabled | 是否禁止勾选节点复选框                     | Boolean   | false |
-| isLeaf           | 是否是叶子节点，设置loadData时生效           | Boolean   | false |
+| 参数               | 说明                                                         | 类型               | 默认值   |
+| ---------------- | ---------------------------------------------------------- | ---------------- | ----- |
+| children         | 树节点                                                        | ReactNode        | -     |
+| label            | 节点文本内容                                                     | ReactNode        | '---' |
+| selectable       | 单独设置是否支持选中，覆盖 Tree 的 selectable                            | Boolean          | -     |
+| checkable        | 单独设置是否出现复选框，覆盖 Tree 的 checkable                            | Boolean          | -     |
+| editable         | 单独设置是否支持编辑，覆盖 Tree 的 editable                              | Boolean          | -     |
+| draggable        | 单独设置是否支持拖拽，覆盖 Tree 的 draggable                             | Boolean          | -     |
+| disabled         | 是否禁止节点响应                                                   | Boolean          | false |
+| checkboxDisabled | 是否禁止勾选节点复选框                                                | Boolean          | false |
+| isLeaf           | 是否是叶子节点，设置loadData时生效                                      | Boolean          | -     |
+| icon             | 自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type="icon type" />` | String/ReactNode | -     |
 
 <!-- api-extra-start -->
 

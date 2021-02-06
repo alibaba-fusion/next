@@ -43,7 +43,10 @@ module.exports = function(options) {
                     entryStylePath,
                     'utf8'
                 );
-                let newEntryStyleScss = entryStyleScss.match(PATTEN).join('\n');
+
+                let newEntryStyleScss = (
+                    entryStyleScss.match(PATTEN) || []
+                ).join('\n');
                 newEntryStyleScss = newEntryStyleScss.replace(
                     PATTEN,
                     (all, s1) => {

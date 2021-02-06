@@ -66,6 +66,7 @@ class Panel extends React.Component {
 
         const cls = classNames({
             [`${prefix}collapse-panel`]: true,
+            [`${prefix}collapse-panel-hidden`]: !isExpanded,
             [`${prefix}collapse-panel-expanded`]: isExpanded,
             [`${prefix}collapse-panel-disabled`]: disabled,
             [className]: className,
@@ -93,7 +94,7 @@ class Panel extends React.Component {
                     role="button"
                 >
                     <Icon
-                        type="arrow-up"
+                        type="arrow-right"
                         className={iconCls}
                         aria-hidden="true"
                     />

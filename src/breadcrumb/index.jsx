@@ -1,4 +1,4 @@
-import React, { Component, Children } from 'react';
+import React, { Component, Children, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import Icon from '../icon';
@@ -27,13 +27,11 @@ class Breadcrumb extends Component {
                 if (
                     !(
                         child &&
-                        typeof child.type === 'function' &&
+                        ['function', 'object'].indexOf(typeof child.type) > -1 &&
                         child.type._typeMark === 'breadcrumb_item'
                     )
                 ) {
-                    throw new Error(
-                        "Breadcrumb's children must be Breadcrumb.Item!"
-                    );
+                    throw new Error("Breadcrumb's children must be Breadcrumb.Item!");
                 }
             });
         },
@@ -41,14 +39,11 @@ class Breadcrumb extends Component {
         /**
          * 面包屑最多显示个数，超出部分会被隐藏, 设置为 auto 会自动根据父元素的宽度适配。
          */
-        maxNode: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.oneOf(['auto']),
-        ]),
+        maxNode: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['auto'])]),
         /**
          * 分隔符，可以是文本或 Icon
          */
-        separator: PropTypes.node,
+        separator: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
         /**
          * 设置标签类型
          */
@@ -59,7 +54,6 @@ class Breadcrumb extends Component {
     static defaultProps = {
         prefix: 'next-',
         maxNode: 100,
-        separator: <Icon type="arrow-right" />,
         component: 'nav',
     };
 
@@ -129,16 +123,11 @@ class Breadcrumb extends Component {
     };
 
     render() {
-        const {
-            prefix,
-            rtl,
-            className,
-            children,
-            separator,
-            component,
-            maxNode: maxNodeProp,
-            ...others
-        } = this.props;
+        const { prefix, rtl, className, children, component, maxNode: maxNodeProp, ...others } = this.props;
+
+        const separator = this.props.separator || (
+            <Icon type="arrow-right" className={`${prefix}breadcrumb-icon-sep`} />
+        );
 
         const { maxNode } = this.state;
 

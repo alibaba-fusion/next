@@ -1,9 +1,12 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Icon from '../../src/icon';
+import Button from '../../src/button/index';
 import Step from '../../src/step/index';
+import { mountReact } from '../util/a11y/validate';
+import '../../src/step/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -11,6 +14,17 @@ const StepItem = Step.Item;
 /* eslint-disable */
 describe('Step', () => {
     describe('render', () => {
+        it('should support rtl', () => {
+            const wrapper = mount(
+                <Step current={1} rtl>
+                    <StepItem title="步骤1" />
+                    <StepItem title="步骤2" />
+                    <StepItem title="步骤3" />
+                </Step>
+            );
+
+            assert(wrapper.find('.next-step-circle').at(0).instance().getAttribute('dir') === 'rtl');
+        });
         it('should render with default props', () => {
             const wrapper = mount(
                 <Step current={1}>
@@ -124,6 +138,23 @@ describe('Step', () => {
             );
             assert(wrapper.find('.next-step-label-vertical').length === 1);
             assert(wrapper2.find('.next-step-label-horizontal').length === 1);
+        });
+
+        it('should render when direction and labelPlacement are both hoz', () => {
+            const steps = [
+                "知道自己不懂",
+                "不知道自己懂",
+                "知道自己懂了"
+            ].map((item, index) => <Step.Item key={index} title={item} itemRender={() => (
+                <Icon type="smile" />
+            )} />);
+            const wrapper = mount(
+                <Step current={1} shape="circle" direction="hoz" labelPlacement="hoz">
+                    {steps}
+                </Step>
+            );
+            assert(wrapper.find('.next-step-horizontal').length === 1);
+            assert(wrapper.find('.next-step-label-horizontal').length === 1);
         });
 
         it('should render with icon ', () => {
@@ -285,7 +316,7 @@ describe('Step', () => {
                 // 重新设置为垂直居中 应该去掉 next-step-item-tail 的宽度值
                 wrapper.setProps({labelPlacement: 'ver'}, () => {
                     assert(
-                        $tail.length === 3 && 
+                        $tail.length === 3 &&
                         $tail.at(0).instance().style.width === ""
                     );
                 });
@@ -330,6 +361,61 @@ describe('Step', () => {
             assert(ret_2 === 0);
         });
 
+        it('should resize when content changed', async () => {
+
+            const StepContent=()=>{
+                const [conditions, setconditions] = useState([]);
+                const createNewSelectItem = () => {
+                     const newType = {
+                         type: 'null',
+                         fieldName: 'null',
+                     };
+                     const newConditions = [...conditions,newType]
+                     setconditions(newConditions);
+                 }
+                return(
+                    <div>
+                        {conditions&&conditions.length>0&&
+                        conditions.map((item,index)=>
+                                    <div key={`step-content-${index}`} id={`step-content-${index}`} style={{width:'100%', maxWidth: 200, height:20, background:'#2196f3', margin:'10px 0'}}/>
+                                    )}
+                        <Button id="add-content-btn" onClick={createNewSelectItem}>add new div</Button>	
+                    </div>	
+                );
+            };
+            const wrapper = await mountReact(
+                <Step current={1} shape="circle">
+                    <StepItem
+                        title="步骤1"
+                        content={<StepContent/>}
+                    />
+                    <StepItem title="步骤2" icon="smile" content="this is a description" />
+                    <StepItem title="步骤3" />
+                </Step>
+            );
+
+            const originHeight = parseFloat(wrapper.find('.next-step').at(0).instance().style.height.slice(0, -2));
+            wrapper
+                .find('.next-btn')
+                .simulate('click');
+            assert(document.querySelectorAll('[id^="step-content-"]').length === 1);
+            wrapper
+                .find('.next-btn')
+                .simulate('click');
+            
+            assert(document.querySelectorAll('[id^="step-content-"]').length === 2);
+            wrapper.setProps({ direction: 'ver' });
+            wrapper.setProps({ direction: 'hoz' });
+            const changedHeight = parseFloat(wrapper.find('.next-step').at(0).instance().style.height.slice(0, -2));
+            assert(changedHeight > originHeight);
+            wrapper.setProps({ direction: 'ver' });
+            wrapper
+                .find('.next-btn')
+                .simulate('click');
+            wrapper.setProps({ direction: 'hoz' });
+            wrapper.setProps({ direction: 'ver' });
+        });
+
         // it('should trigger keyboard event', () => {
         //     const wrapper = mount(
         //         <Step current={0}>
@@ -342,7 +428,7 @@ describe('Step', () => {
         //     wrapper
         //         .find('.next-step-item-first')
         //         .simulate('keydown', {keyCode: 40});
-            
+
         //     assert(wrapper.find('.next-step-item-body').at(1).instance().getAttribute('tabindex')==='0');
 
         //     wrapper
@@ -359,7 +445,7 @@ describe('Step', () => {
         //         .find('.next-step-item-first')
         //         .simulate('keydown', {keyCode: 37});
         //     assert(wrapper.find('.next-step-item-body').at(0).instance().getAttribute('tabindex')==='0');
-            
+
         // });
     });
 });

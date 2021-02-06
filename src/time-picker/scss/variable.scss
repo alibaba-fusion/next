@@ -100,3 +100,7 @@ $time-picker-menu-item-background-disabled: $color-white !default;
 /// font weight
 /// @namespace statement/selected/menu item
 $time-picker-menu-item-font-weight-selected: $font-weight-3 !default;
+
+/// timepicker icon
+/// @namespace statement/normal/header
+$time-picker-clock-icon: $icon-content-clock !default;

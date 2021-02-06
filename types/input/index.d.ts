@@ -45,6 +45,7 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
      * 是否展现最大长度样式
      */
     hasLimitHint?: boolean;
+    showLimitHint?: boolean;
 
     /**
      * 当设置了maxLength时，是否截断超出字符串
@@ -69,12 +70,12 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 获取焦点时候触发的回调
      */
-    onFocus?: () => void;
+    onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
 
     /**
      * 失去焦点时候触发的回调
      */
-    onBlur?: () => void;
+    onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
 
     /**
      * 自定义字符串计算长度方式
@@ -104,7 +105,7 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 状态
      */
-    state?: 'error';
+    state?: 'error' | 'warning';
 
     /**
      * 是否有边框
@@ -193,6 +194,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
      * 是否展现最大长度样式
      */
     hasLimitHint?: boolean;
+    showLimitHint?: boolean;
 
     /**
      * 当设置了maxLength时，是否截断超出字符串
@@ -217,12 +219,12 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 获取焦点时候触发的回调
      */
-    onFocus?: () => void;
+    onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 
     /**
      * 失去焦点时候触发的回调
      */
-    onBlur?: () => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 
     /**
      * 自定义字符串计算长度方式
@@ -252,7 +254,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 状态
      */
-    state?: 'error' | 'loading' | 'success';
+    state?: 'error' | 'loading' | 'success' | 'warning';
 
     /**
      * label
@@ -277,12 +279,12 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按下回车的回调
      */
-    onPressEnter?: () => void;
+    onPressEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 
     /**
      * 水印 (Icon的type类型，和hasClear占用一个地方)
      */
-    hint?: string;
+    hint?: string | React.ReactNode;
 
     /**
      * 文字前附加内容
@@ -324,8 +326,17 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
      */
     autoFocus?: boolean;
 }
+export interface PasswordProps extends InputProps {
+    /**
+     * 是否展示切换按钮
+     */
+    showToggle?: boolean;
+}
+export class Password extends React.Component<PasswordProps, any> {}
 
 export default class Input extends React.Component<InputProps, any> {
     static TextArea: typeof TextArea;
     static Group: typeof Group;
+    static Password: typeof Password;
 }
+

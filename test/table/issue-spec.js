@@ -80,6 +80,88 @@ describe('Issue', () => {
         });
     });
 
+    it('should support rowSelection without children and columns', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        class App extends React.Component {
+
+            render() {
+                return (
+                    <Table
+                        dataSource={dataSource}
+                        rowSelection={{ onChange: console.log }}
+                        expandedRowRender={(record) => record.title}
+                    >
+                    </Table>
+                );
+            }
+        }
+
+        ReactDOM.render(<App />, container, function() {
+            setTimeout(() => {
+                ReactDOM.unmountComponentAtNode(container);
+                document.body.removeChild(container);
+                done();
+            }, 10);
+        });
+    });
+
+    it('should support columns with lock', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        const columns = [{
+            title: "Title6",
+            dataIndex: "id",
+            width: 400,
+        }, {
+            title: "Title7",
+            dataIndex: "id",
+            width: 200,
+            lock: true
+        }, {
+            title: "Title7",
+            dataIndex: "id",
+            width: 200
+        }, {
+            title: "Title7",
+            dataIndex: "id",
+            width: 200
+        }];
+
+        class App extends React.Component {
+
+            render() {
+                return (
+                    <div>
+                        <Table
+                            id="normal-table"
+                            dataSource={dataSource}
+                            columns={columns}
+                            tableWidth={600}
+                        />
+                        <Table.StickyLock
+                            id="sticky-table"
+                            dataSource={dataSource}
+                            columns={columns}
+                            tableWidth={600}
+                        />
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<App />, container, function() {
+
+            assert(document.querySelectorAll('#normal-table .next-table-lock-left .next-table-body tbody tr').length === 2);
+            assert(document.querySelectorAll('#sticky-table .next-table-fix-left')[0].style.position === 'sticky');
+            setTimeout(() => {
+                ReactDOM.unmountComponentAtNode(container);
+                document.body.removeChild(container);
+                done();
+            }, 10);
+        });
+    });
+
     it('should fix onChange reRender bug', done => {
         const container = document.createElement('div');
         document.body.appendChild(container);
@@ -294,6 +376,7 @@ describe('Issue', () => {
             div.querySelectorAll('.next-table-lock-right')[0].children
                 .length === 0
         );
+        assert(div.querySelectorAll('div.next-table-lock.next-table-scrolling-to-right').length === 1);
 
         setTimeout(() => {
             assert(
@@ -325,7 +408,7 @@ describe('Issue', () => {
         assert(
             parseInt(
                 window.getComputedStyle(
-                    div.querySelectorAll('.next-table tr:first-child td')[0]
+                    div.querySelectorAll('.next-table')[0]
                 ).borderTopWidth,
                 10
             ) === 1
@@ -338,14 +421,16 @@ describe('Issue', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
         ReactDOM.render(
-            <Table dataSource={[{ id: 1 }, { id: 2 }]} hasHeader={false}>
+            <Table dataSource={[{ id: 1 }, { id: 2 }]}>
                 <Table.Column dataIndex="id" style={{ textAlign: 'left' }} />
             </Table>,
             div
         );
         assert(
-            div.querySelectorAll('.next-table table td')[0].style.textAlign ===
-                'left'
+            div.querySelectorAll('.next-table table td')[0].style.textAlign === ''
+        );
+        assert(
+            div.querySelectorAll('.next-table table th')[0].style.textAlign === 'left'
         );
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
@@ -519,6 +604,94 @@ describe('Issue', () => {
         document.body.removeChild(div);
     });
 
+    it('should support crossline hover', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        class App extends React.Component {
+            render() {
+                return (
+                    <Table
+                        dataSource={dataSource}
+                        crossline
+                    >
+                        <Table.Column dataIndex="id" />
+                        <Table.Column dataIndex="name" />
+                        <Table.Column dataIndex="name" cell={(val, i) => {
+                            return <a id={`name-${i}`} href="">val</a>
+                        }}/>
+                    </Table>
+                );
+            }
+        }
+
+        ReactDOM.render(<App />, container, function() {
+            const cell = container.querySelector(
+                'td[data-next-table-col="1"][data-next-table-row="1"]'
+            );
+            const mouseover = new MouseEvent('mouseover', {
+                'view': window,
+                'bubbles': true,
+                'cancelable': true
+            });
+
+            cell.dispatchEvent(mouseover);
+
+            assert(
+                document.querySelectorAll(
+                    'td.next-table-cell.hovered'
+                ).length === 2
+            );
+
+            assert(
+                document.querySelectorAll(
+                    'tr.next-table-row.hovered'
+                ).length === 1
+            );
+
+            const mouseout = new MouseEvent('mouseout', {
+                'view': window,
+                'bubbles': true,
+                'cancelable': true
+            });
+
+            cell.dispatchEvent(mouseout);
+
+            assert(
+                document.querySelectorAll(
+                    'td.next-table-cell.hovered'
+                ).length === 0
+            );
+
+            // target is in inner
+            const renderA = document.getElementById('name-0');
+            renderA.dispatchEvent(mouseover);
+
+            assert(
+                document.querySelectorAll(
+                    'td.next-table-cell.hovered'
+                ).length === 2
+            );
+
+            assert(
+                document.querySelectorAll(
+                    'tr.next-table-row.hovered'
+                ).length === 1
+            );
+
+            renderA.dispatchEvent(mouseout);
+
+            assert(
+                document.querySelectorAll(
+                    'td.next-table-cell.hovered'
+                ).length === 0
+            );
+
+            ReactDOM.unmountComponentAtNode(container);
+            document.body.removeChild(container);
+            done();
+        });
+    });
+
     it('should support useFirstLevelDataWhenNoChildren', () => {
         class App extends React.Component {
             render() {
@@ -580,5 +753,157 @@ describe('Issue', () => {
         );
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
+    });
+
+    it('should support multiple header lock', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = () => {
+            const result = [];
+            for (let i = 0; i < 5; i++) {
+                result.push({
+                    title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
+                    id: 100306660940 + i,
+                    time: 2000 + i
+                });
+            }
+            return result;
+        };
+        const render = (value, index, record) => {
+            return <a href="javascript:;">Remove({record.id})</a>;
+        };
+
+        const columns = [{
+            title: "Group2-7",
+            children: [{
+                title: "Title2",
+                dataIndex: "id",
+                lock: 'left',
+                width: 140,
+            }, {
+                title: "Title3",
+                lock: 'left',
+                dataIndex: "title.name",
+                width: 200
+            }]
+        },
+        {
+            title: "Title6",
+            dataIndex: "title.name",
+            width: 400,
+        },
+        {
+            title: "Title1",
+            dataIndex: "id",
+            width: 140,
+        }, {
+            title: '这行有错',
+            id: 'target-line',
+            cell: render,
+            lock: 'left',
+            width: 200
+        },{
+            title: "Time",
+            dataIndex: "time",
+            width: 500,
+        }];
+
+        ReactDOM.render(<Table.StickyLock dataSource={dataSource()} columns={columns} />, container, function() {
+            setTimeout(() => {
+                console.log(document.getElementById('target-line'))
+                assert(
+                    document.getElementById('target-line').style.left === '340px'
+                );
+                ReactDOM.unmountComponentAtNode(container);
+                document.body.removeChild(container);
+                done();
+            }, 10);
+        });
+    });
+
+    it('should set right offset, fix #2276', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = () => {
+            const result = [];
+            for (let i = 0; i < 5; i++) {
+                result.push({
+                    title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
+                    id: 100306660940 + i,
+                    time: 2000 + i
+                });
+            }
+            return result;
+        };
+        const render = (value, index, record) => {
+            return <a href="javascript:;">Remove({record.id})</a>;
+        };
+
+        const columns = [{
+            title: "Title1",
+            dataIndex: "id",
+            width: 140,
+        }, {
+            title: "Group2-7",
+            children: [{
+                title: "Title2",
+                dataIndex: "id",
+                lock: 'right',
+                width: 140,
+            }, {
+                title: "Title3",
+                dataIndex: "title.name",
+                lock: 'right',
+                width: 200
+            }, {
+                title: 'Group4-7',
+                children: [{
+                    title: "Title4",
+                    dataIndex: "title.name",
+                    width: 400,
+                }, {
+                    title: "Title5",
+                    dataIndex: "title.name",
+                    lock: true,
+                    width: 200
+                }, {
+                    title: 'tet',
+                    children: [{
+                        title: "Title6",
+                        dataIndex: "title.name",
+                        width: 400,
+                    }, {
+                        title: "Title7",
+                        dataIndex: "title.name",
+                        lock: true,
+                        width: 200
+                    }]
+                }]
+            }]
+        }, {
+            title: '',
+            children: [{
+                title: "Time",
+                dataIndex: "time",
+                width: 500,
+            }, {
+                cell: render,
+                width: 200
+            }]
+        }];
+
+
+        ReactDOM.render(<Table.StickyLock dataSource={dataSource()} columns={columns} />, container, function() {
+            setTimeout(() => {
+                assert(
+                    document.querySelectorAll('.next-table-cell.next-table-fix-right.next-table-fix-right-first')[3].style.right === '200px'
+                );
+                ReactDOM.unmountComponentAtNode(container);
+                document.body.removeChild(container);
+                done();
+            }, 10);
+        });
     });
 });

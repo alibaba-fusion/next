@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import { func, obj } from '../util';
 import Icon from '../icon';
 import Base from './base';
@@ -156,6 +158,32 @@ class Upload extends Base {
          */
         progressProps: PropTypes.object,
         rtl: PropTypes.bool,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
+         * 文件对象的 key name
+         * @version 1.21
+         */
+        fileKeyName: PropTypes.string,
+        /**
+         * list 的自定义文件名渲染
+         * @param {Object} file 文件
+         * @return {Node} react node
+         */
+        fileNameRender: PropTypes.func,
+        /**
+         * 操作区域额外渲染
+         * @param {Object} file 文件
+         * @return {Node} react node
+         */
+        actionRender: PropTypes.func,
     };
 
     static defaultProps = {
@@ -186,21 +214,20 @@ class Upload extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? [] : [].concat(value),
+            value: !Array.isArray(value) ? [] : value,
+            uploading: false,
         };
-
-        this.uploading = false;
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps && !this.uploading) {
-            this.setState({
-                value:
-                    typeof nextProps.value === 'undefined'
-                        ? []
-                        : [].concat(nextProps.value),
-            });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        // 上传中不允许做受控修改
+        if ('value' in nextProps && nextProps.value !== prevState.value && !prevState.uploading) {
+            return {
+                value: !Array.isArray(nextProps.value) ? [] : nextProps.value,
+            };
         }
+
+        return null;
     }
 
     onSelect = files => {
@@ -267,16 +294,14 @@ class Upload extends Base {
      * @param files
      */
     selectFiles(files) {
-        const filesArr = files.length
-            ? Array.prototype.slice.call(files)
-            : [files];
+        const filesArr = files.length ? Array.prototype.slice.call(files) : [files];
 
         this.onSelect(filesArr);
     }
 
     uploadFiles(files) {
         // NOTE: drag上传，当鼠标松开的时候回执行 onDrop，但此时onChange还没出发所以 value=[], 必须提前标识上传中
-        this.uploading = true;
+        this.state.uploading = true;
         const fileList = files
             .filter(file => {
                 if (file.state === 'selected') {
@@ -310,11 +335,11 @@ class Upload extends Base {
     }
 
     isUploading() {
-        return this.uploading;
+        return this.state.uploading;
     }
 
     onProgress = (e, file) => {
-        this.uploading = true;
+        this.state.uploading = true;
 
         const value = this.state.value;
         const targetItem = getFileItem(file, value);
@@ -336,8 +361,6 @@ class Upload extends Base {
     };
 
     onSuccess = (response, file) => {
-        this.uploading = false;
-
         const { formatter } = this.props;
 
         if (formatter) {
@@ -377,13 +400,13 @@ class Upload extends Base {
             targetItem.imgURL = response.imgURL || response.url; // 缩略图地址(可选)
         }
 
+        this.updateUploadingState();
+
         this.onChange(value, targetItem);
         this.props.onSuccess(targetItem, value);
     };
 
     onError = (err, response, file) => {
-        this.uploading = false;
-
         const value = this.state.value;
         const targetItem = getFileItem(file, value);
 
@@ -396,6 +419,8 @@ class Upload extends Base {
             error: err,
             response,
         });
+
+        this.updateUploadingState();
 
         this.onChange(value, targetItem);
         this.props.onError(targetItem, value);
@@ -416,6 +441,13 @@ class Upload extends Base {
         if (index !== -1) {
             fileList.splice(index, 1);
             this.onChange(fileList, targetItem);
+        }
+    };
+
+    updateUploadingState = () => {
+        const inProgress = this.state.value.some(i => i.state === 'uploading');
+        if (!inProgress) {
+            this.state.uploading = false;
         }
     };
 
@@ -463,6 +495,12 @@ class Upload extends Base {
             extraRender,
             progressProps,
             rtl,
+            isPreview,
+            renderPreview,
+            name,
+            fileKeyName = name,
+            fileNameRender,
+            actionRender,
             ...others
         } = this.props;
 
@@ -488,16 +526,34 @@ class Upload extends Base {
             });
             children = (
                 <div className={cardCls}>
-                    <Icon type="add" size="large" />
-                    <div
-                        tabIndex="0"
-                        role="button"
-                        className={`${prefix}upload-text`}
-                    >
+                    <Icon size="large" type="add" className={`${prefix}upload-add-icon`} />
+                    <div tabIndex="0" role="button" className={`${prefix}upload-text`}>
                         {children}
                     </div>
                 </div>
             );
+        }
+
+        if (isPreview) {
+            if (typeof renderPreview === 'function') {
+                const previewCls = classNames({
+                    [`${prefix}form-preview`]: true,
+                    [className]: !!className,
+                });
+                return (
+                    <div style={style} className={previewCls}>
+                        {renderPreview(this.state.value, this.props)}
+                    </div>
+                );
+            }
+
+            if (listType) {
+                return (
+                    <List isPreview listType={listType} style={style} className={className} value={this.state.value} />
+                );
+            }
+
+            return null;
         }
 
         // disabled 状态下把 remove函数替换成禁止 remove的函数
@@ -507,6 +563,7 @@ class Upload extends Base {
             <div className={cls} style={style} {...otherAttributes}>
                 <Uploader
                     {...others}
+                    name={fileKeyName}
                     beforeUpload={beforeUpload}
                     dragable={dragable}
                     disabled={disabled || isExceedLimit}
@@ -523,6 +580,8 @@ class Upload extends Base {
                 {listType || list ? (
                     <List
                         useDataURL={useDataURL}
+                        fileNameRender={fileNameRender}
+                        actionRender={actionRender}
                         uploader={this}
                         listType={listType}
                         value={this.state.value}
@@ -540,4 +599,4 @@ class Upload extends Base {
     }
 }
 
-export default Upload;
+export default polyfill(Upload);

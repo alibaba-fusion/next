@@ -14,7 +14,7 @@
     display: inline-block;
     border: $border-width-container solid transparent;
     width: $width;
-    height: $trigger-size + $border-width-container * 2;
+    height: calc(#{$trigger-size} + #{$border-width-container} * 2);
     border-radius: $container-radius;
 
     &:after {

@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Grid from '../grid';
+import RGrid from '../responsive-grid';
 import { obj } from '../util';
 import Error from './error';
 import { getFieldInitCfg } from './enhance';
 
 const { Row, Col } = Grid;
+const { Cell } = RGrid;
 
 const { isNil } = obj;
 
@@ -43,9 +45,9 @@ export default class Item extends React.Component {
         extra: PropTypes.node,
         /**
          * 校验状态，如不设置，则会根据校验规则自动生成
-         * @enumdesc 失败, 成功, 校验中
+         * @enumdesc 失败, 成功, 校验中, 警告
          */
-        validateState: PropTypes.oneOf(['error', 'success', 'loading']),
+        validateState: PropTypes.oneOf(['error', 'success', 'loading', 'warning']),
         /**
          * 配合 validateState 属性使用，是否展示 success/loading 的校验状态图标, 目前只有Input支持
          */
@@ -68,7 +70,7 @@ export default class Item extends React.Component {
          */
         fullWidth: PropTypes.bool,
         /**
-         * 标签的位置
+         * 标签的位置, 如果不设置 labelCol 和 wrapperCol 那么默认是标签在上
          * @enumdesc 上, 左, 内
          */
         labelAlign: PropTypes.oneOf(['top', 'left', 'inset']),
@@ -96,10 +98,7 @@ export default class Item extends React.Component {
         /**
          * required 自定义触发方式
          */
-        requiredTrigger: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.array,
-        ]),
+        requiredTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
          * [表单校验] 最小值
          */
@@ -131,10 +130,7 @@ export default class Item extends React.Component {
         /**
          * minLength/maxLength 自定义触发方式
          */
-        minmaxLengthTrigger: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.array,
-        ]),
+        minmaxLengthTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
          * [表单校验] 字符串精确长度 / 数组精确个数
          */
@@ -158,10 +154,7 @@ export default class Item extends React.Component {
         /**
          * pattern 自定义触发方式
          */
-        patternTrigger: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.array,
-        ]),
+        patternTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
          * [表单校验] 四种常用的 pattern
          */
@@ -181,10 +174,7 @@ export default class Item extends React.Component {
         /**
          * validator 自定义触发方式
          */
-        validatorTrigger: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.array,
-        ]),
+        validatorTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
          * 是否修改数据时自动触发校验
          */
@@ -193,17 +183,50 @@ export default class Item extends React.Component {
          * 预设屏幕宽度
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
+        responsive: PropTypes.bool,
+        /**
+         * 在响应式布局模式下，表单项占多少列
+         */
+        colSpan: PropTypes.number,
+        /**
+         * 在响应式布局下，且label在左边时，label的宽度是多少
+         */
+        labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        /**
+         * 是否开启预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {any} value 根据包裹的组件的 value 类型而决定
+         */
+        renderPreview: PropTypes.func,
+        /**
+         * 是否使用 label 替换校验信息的 name 字段
+         */
+        useLabelForErrorMessage: PropTypes.bool,
+        /**
+         * 表示是否显示 label 后面的冒号
+         */
+        colon: PropTypes.bool,
+        /**
+         * 子元素的 value 名称
+         */
+        valueName: PropTypes.string,
     };
 
     static defaultProps = {
         prefix: 'next-',
         hasFeedback: false,
+        labelWidth: 100,
     };
 
     static contextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.oneOf(['large', 'small', 'medium']),
+        _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
+        _formLabelForErrorMessage: PropTypes.bool,
     };
 
     static _typeMark = 'form_item';
@@ -227,10 +250,7 @@ export default class Item extends React.Component {
         const _formField = this.context._formField;
 
         return (
-            <Error
-                name={help === undefined ? this.getNames() : undefined}
-                field={_formField}
-            >
+            <Error name={help === undefined ? this.getNames() : undefined} field={_formField}>
                 {help}
             </Error>
         );
@@ -260,10 +280,32 @@ export default class Item extends React.Component {
         return this.props.size || this.context._formSize;
     }
 
+    getIsPreview() {
+        return 'isPreview' in this.props ? this.props.isPreview : this.context._formPreview;
+    }
+
     getFullWidth() {
-        return isNil(this.props.fullWidth)
-            ? !!this.context._formFullWidth
-            : this.props.fullWidth;
+        return isNil(this.props.fullWidth) ? !!this.context._formFullWidth : this.props.fullWidth;
+    }
+
+    getLabelForErrorMessage() {
+        let label = this.props.label;
+
+        if (!label || typeof label !== 'string') {
+            return null;
+        }
+
+        label = label.replace(':', '').replace('：', '');
+
+        const labelForErrorMessage =
+            'useLabelForErrorMessage' in this.props
+                ? this.props.useLabelForErrorMessage
+                : this.context._formLabelForErrorMessage;
+        if (labelForErrorMessage && label) {
+            return label;
+        }
+
+        return null;
     }
 
     getItemLabel() {
@@ -275,32 +317,37 @@ export default class Item extends React.Component {
             labelCol,
             wrapperCol,
             prefix,
+            responsive,
+            labelWidth,
             labelTextAlign,
+            colon,
         } = this.props;
 
-        const labelAlign = this.getLabelAlign(
-            this.props.labelAlign,
-            this.props.device
-        );
+        const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
 
         if (!label) {
             return null;
         }
 
         const ele = (
-            <label
-                htmlFor={id || this.getNames()[0]}
-                required={asterisk}
-                key="label"
-            >
+            <label htmlFor={id || this.getNames()[0]} required={asterisk} key="label">
                 {label}
             </label>
         );
 
         const cls = classNames({
             [`${prefix}form-item-label`]: true,
+            'has-colon': colon,
             [`${prefix}left`]: labelTextAlign === 'left',
         });
+
+        if (responsive && labelWidth && labelAlign !== 'top') {
+            return (
+                <div className={cls} style={{ width: labelWidth }}>
+                    {ele}
+                </div>
+            );
+        }
 
         if ((wrapperCol || labelCol) && labelAlign !== 'top') {
             return (
@@ -314,23 +361,25 @@ export default class Item extends React.Component {
     }
 
     getItemWrapper() {
-        const {
-            hasFeedback,
-            labelCol,
-            wrapperCol,
-            children,
-            extra,
-            prefix,
-        } = this.props;
+        const { hasFeedback, labelCol, wrapperCol, children, extra, prefix, renderPreview } = this.props;
 
-        const labelAlign = this.getLabelAlign(
-            this.props.labelAlign,
-            this.props.device
-        );
+        const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
 
         const state = this.getState();
 
-        const childrenProps = { size: this.getSize() };
+        const isPreview = this.getIsPreview();
+        const childrenProps = {
+            size: this.getSize(),
+        };
+
+        if (isPreview) {
+            childrenProps.isPreview = true;
+        }
+
+        if ('renderPreview' in this.props && typeof renderPreview === 'function') {
+            childrenProps.renderPreview = renderPreview;
+        }
+
         if (state && (state === 'error' || hasFeedback)) {
             childrenProps.state = state;
         }
@@ -344,26 +393,21 @@ export default class Item extends React.Component {
             childrenNode = children(this.context._formField.getValues());
         }
 
+        const labelForErrorMessage = this.getLabelForErrorMessage();
+
         const ele = React.Children.map(childrenNode, child => {
             if (
                 child &&
-                typeof child.type === 'function' &&
+                ['function', 'object'].indexOf(typeof child.type) > -1 &&
                 child.type._typeMark !== 'form_item' &&
                 child.type._typeMark !== 'form_error'
             ) {
                 let extraProps = childrenProps;
-                if (
-                    this.context._formField &&
-                    'name' in child.props &&
-                    !('data-meta' in child.props)
-                ) {
+                if (this.context._formField && 'name' in child.props && !('data-meta' in child.props)) {
                     extraProps = this.context._formField.init(
                         child.props.name,
                         {
-                            ...getFieldInitCfg(
-                                this.props,
-                                child.type.displayName
-                            ),
+                            ...getFieldInitCfg(this.props, child.type.displayName, labelForErrorMessage),
                             props: { ...child.props, ref: child.ref },
                         },
                         childrenProps
@@ -382,11 +426,7 @@ export default class Item extends React.Component {
 
         if ((wrapperCol || labelCol) && labelAlign !== 'top') {
             return (
-                <Col
-                    {...wrapperCol}
-                    className={`${prefix}form-item-control`}
-                    key="item"
-                >
+                <Col {...wrapperCol} className={`${prefix}form-item-control`} key="item">
                     {ele} {help} {extra}
                 </Col>
             );
@@ -408,16 +448,14 @@ export default class Item extends React.Component {
     }
 
     render() {
-        const { className, style, prefix, wrapperCol, labelCol } = this.props;
+        const { className, style, prefix, wrapperCol, labelCol, responsive } = this.props;
 
-        const labelAlign = this.getLabelAlign(
-            this.props.labelAlign,
-            this.props.device
-        );
+        const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
 
         const state = this.getState();
         const size = this.getSize();
         const fullWidth = this.getFullWidth();
+        const isPreview = this.getIsPreview();
 
         const itemClassName = classNames({
             [`${prefix}form-item`]: true,
@@ -426,19 +464,15 @@ export default class Item extends React.Component {
             [`${prefix}${size}`]: !!size,
             [`${prefix}form-item-fullwidth`]: fullWidth,
             [`${className}`]: !!className,
+            [`${prefix}form-preview`]: isPreview,
         });
 
         // 垂直模式并且左对齐才用到
-        const Tag =
-            (wrapperCol || labelCol) && labelAlign !== 'top' ? Row : 'div';
+        const Tag = responsive ? Cell : (wrapperCol || labelCol) && labelAlign !== 'top' ? Row : 'div';
         const label = labelAlign === 'inset' ? null : this.getItemLabel();
 
         return (
-            <Tag
-                {...obj.pickOthers(Item.propTypes, this.props)}
-                className={itemClassName}
-                style={style}
-            >
+            <Tag {...obj.pickOthers(Item.propTypes, this.props)} className={itemClassName} style={style}>
                 {label}
                 {this.getItemWrapper()}
             </Tag>

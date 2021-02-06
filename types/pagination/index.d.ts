@@ -2,16 +2,13 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
 export interface PaginationProps extends HTMLAttributesWeak, CommonProps {
-    /**
-     * 自定义国际化文案对象
-     */
-    locale?: {};
 
     /**
      * 分页组件类型
@@ -111,7 +108,7 @@ export interface PaginationProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层组件属性，透传给Popup
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 }
 
 export default class Pagination extends React.Component<PaginationProps, any> {}

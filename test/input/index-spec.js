@@ -1,13 +1,48 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
 import Input from '../../src/input/index';
+import Icon from '../../src/icon/index';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('input', () => {
+    describe('render', () => {
+        let parent;
+
+        beforeEach(() => {
+            parent = document.createElement('div');
+            document.body.appendChild(parent);
+        });
+
+        afterEach(() => {
+            document.body.removeChild(parent);
+            parent = null;
+        });
+
+        it('should isPreview', () => {
+            ReactDOM.render(<Input id="ispreview-input" isPreview defaultValue="abc"/>, parent);
+            assert(
+                document.querySelectorAll(
+                    '#ispreview-input'
+                )[0].innerText === 'abc'
+            );
+        });
+
+        it('should renderPreview', () => {
+            ReactDOM.render(<Input id="renderpreview-input" isPreview defaultValue="abc" renderPreview={() => 'ddd'}/>, parent);
+
+            assert(
+                document.querySelectorAll(
+                    '#renderpreview-input'
+                )[0].innerText === 'ddd'
+            );
+        });
+    });
+
     describe('render', () => {
         it('should accept defaultValue & value', () => {
             let wrapper = mount(<Input defaultValue="123" />),
@@ -16,7 +51,7 @@ describe('input', () => {
             assert(wrapper2.props().value === '123');
         });
         it('should accept addonBefore & addonAfter', () => {
-            let wrapper = mount(
+            const wrapper = mount(
                 <Input addonBefore="test" addonAfter="test2" />
             );
             assert(wrapper.find('span.next-input-group-addon').length === 2);
@@ -81,21 +116,35 @@ describe('input', () => {
         });
 
         it('should support placeholder', done => {
-            let wrapper = mount(<Input placeholder="holder" />);
+            const wrapper = mount(<Input placeholder="holder" />);
 
             assert(wrapper.props().placeholder === 'holder');
             done();
         });
 
         it('should support dsiabled', done => {
-            let wrapper = mount(<Input disabled />);
+            const wrapper = mount(<Input disabled />);
 
             assert(wrapper.find('input').prop('disabled'));
             done();
         });
 
+        it('should support string hint', done => {
+            const wrapper = mount(<Input hint="calendar" />);
+            assert(wrapper.find('input .next-icon-calendar'));
+
+            done();
+        });
+
+        it('should support node hint', done => {
+            const wrapper = mount(<Input hint={<Icon type="smile" />} />);
+            assert(wrapper.find('input .next-icon-smile'));
+
+            done();
+        });
+
         it('should support maxLength & hasLimitHint', done => {
-            let wrapper = mount(
+            const wrapper = mount(
                 <Input defaultValue={'abcd'} maxLength={10} hasLimitHint />
             );
             assert(!wrapper.find('.next-input-len').hasClass('next-error'));
@@ -105,7 +154,7 @@ describe('input', () => {
                 .simulate('change', { target: { value: '12345678901' } });
             assert(wrapper.find('.next-input-len').hasClass('next-error'));
 
-            let wrapper2 = mount(
+            const wrapper2 = mount(
                 <Input.TextArea maxLength={10} hasLimitHint />
             );
             wrapper2
@@ -119,14 +168,14 @@ describe('input', () => {
         });
 
         it('should support state', done => {
-            let wrapper = mount(<Input state="error" />);
+            const wrapper = mount(<Input state="error" />);
             assert(wrapper.find('.next-input').hasClass('next-error'));
 
-            let wrapper2 = mount(<Input state="success" />);
-            assert(wrapper2.find('.next-icon-success-filling').length === 1);
+            const wrapper2 = mount(<Input state="success" />);
+            assert(wrapper2.find('i.next-input-success-icon').length === 1);
 
-            let wrapper3 = mount(<Input state="loading" />);
-            assert(wrapper3.find('.next-icon-loading').length === 1);
+            const wrapper3 = mount(<Input state="loading" />);
+            assert(wrapper3.find('i.next-input-loading-icon').length === 1);
 
             done();
         });
@@ -140,7 +189,7 @@ describe('input', () => {
                 );
             wrapper.find('input').simulate('keydown', { keyCode: 13 });
 
-            let wrapper2 = mount(
+            const wrapper2 = mount(
                 <Input
                     defaultValue={'123'}
                     onFocus={e => {
@@ -150,7 +199,7 @@ describe('input', () => {
             );
             wrapper2.find('input').simulate('focus');
 
-            let wrapper3 = mount(
+            const wrapper3 = mount(
                 <Input
                     defaultValue={'123'}
                     onBlur={e => {
@@ -172,13 +221,13 @@ describe('input', () => {
                 );
 
             assert(
-                wrapper.find('.next-icon').hasClass('next-icon-delete-filling')
+                wrapper.find('.next-icon').hasClass('next-input-clear-icon')
             );
             wrapper.find('.next-icon').simulate('click');
             assert(wrapper.find('input').prop('value') === '');
 
             // hasClear with disabled
-            let wrapper2 = mount(
+            const wrapper2 = mount(
                 <Input defaultValue="abcdef" hasClear disabled />
             );
             wrapper2.find('.next-icon').simulate('click');
@@ -188,7 +237,7 @@ describe('input', () => {
         });
 
         it('should support getValueLength', done => {
-            let getValueLength = sinon.spy();
+            const getValueLength = sinon.spy();
             mount(
                 <Input
                     defaultValue="abcdef"
@@ -211,7 +260,7 @@ describe('input', () => {
                 );
             assert(wrapper.find('.next-input-len').text() === '1/10');
 
-            let wrapper2 = mount(
+            const wrapper2 = mount(
                 <Input.TextArea
                     defaultValue="abcdef"
                     maxLength={10}
@@ -242,7 +291,7 @@ describe('input', () => {
                     );
                 }
             }
-            let wrapper = mount(<App />);
+            const wrapper = mount(<App />);
 
             wrapper.find('input').simulate('focus');
         });
@@ -283,7 +332,7 @@ describe('input', () => {
     });
     describe('react api', () => {
         it('calls componentWillReceiveProps', done => {
-            let wrapper = mount(<Input defaultValue={19} />);
+            const wrapper = mount(<Input defaultValue={19} />);
             wrapper.setProps({ value: '30' });
             assert(wrapper.find('input').prop('value') === '30');
 
@@ -294,7 +343,7 @@ describe('input', () => {
         });
 
         it('support null to reset', done => {
-            let wrapper = mount(<Input defaultValue={19} />);
+            const wrapper = mount(<Input defaultValue={19} />);
 
             // value = null 时候清空数据
             wrapper.setProps({ value: null });

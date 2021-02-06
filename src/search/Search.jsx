@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
@@ -12,6 +12,7 @@ import zhCN from '../locale/zh-cn';
 
 const Group = Input.Group;
 const AutoComplete = Select.AutoComplete;
+const { noop } = func;
 
 /**
  * Search
@@ -126,6 +127,18 @@ class Search extends React.Component {
         disabled: PropTypes.bool,
         locale: PropTypes.object,
         rtl: PropTypes.bool,
+        /**
+         * 可配置的icons，包括 search 等
+         */
+        icons: PropTypes.object,
+        /**
+         * 是否自动高亮第一个元素
+         */
+        autoHighlightFirstItem: PropTypes.bool,
+        /**
+         * 上下箭头切换选项的回调
+         */
+        onToggleHighlightItem: PropTypes.func,
     };
 
     static defaultProps = {
@@ -137,43 +150,40 @@ class Search extends React.Component {
         filter: [],
         locale: zhCN.Search,
         buttonProps: {},
-        onChange: func.noop,
-        onSearch: func.noop,
-        onFilterChange: func.noop,
+        onChange: noop,
+        onSearch: noop,
+        onFilterChange: noop,
+        onToggleHighlightItem: noop,
         hasClear: false,
         disabled: false,
+        icons: {},
+        autoHighlightFirstItem: true,
     };
 
     constructor(props) {
         super(props);
 
         const value = 'value' in props ? props.value : props.defaultValue;
-        const filterValue =
-            'filterValue' in props
-                ? props.filterValue
-                : props.defaultFilterValue;
+        const filterValue = 'filterValue' in props ? props.filterValue : props.defaultFilterValue;
 
         this.state = {
             value: typeof value === 'undefined' ? '' : value,
             filterValue,
         };
+
+        this.highlightKey = null;
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
         const nextState = {};
         if ('value' in nextProps && nextProps.value !== prevState.value) {
             const value = nextProps.value;
-            nextState.value =
-                value === undefined || value === null ? '' : nextProps.value;
+            nextState.value = value === undefined || value === null ? '' : nextProps.value;
         }
 
-        if (
-            'filterValue' in nextProps &&
-            nextProps.filterValue !== prevState.filterValue
-        ) {
+        if ('filterValue' in nextProps && nextProps.filterValue !== prevState.filterValue) {
             const filterValue = nextProps.filterValue;
-            nextState.filterValue =
-                filterValue === undefined ? '' : filterValue;
+            nextState.filterValue = filterValue === undefined ? '' : filterValue;
         }
 
         if (Object.keys(nextState).length > 0) {
@@ -183,12 +193,27 @@ class Search extends React.Component {
         return null;
     }
 
-    onChange = (value, ...argv) => {
+    onChange = (value, type, ...argv) => {
+        if (this.props.disabled) {
+            return;
+        }
+
         if (!('value' in this.props)) {
             this.setState({ value });
         }
 
-        this.props.onChange(value, ...argv);
+        this.props.onChange(value, type, ...argv);
+        if (type === 'enter') {
+            this.highlightKey = '';
+            this.props.onSearch(value, this.state.filterValue);
+        }
+    };
+
+    onPressEnter = () => {
+        if (this.highlightKey) {
+            return;
+        }
+        this.onSearch();
     };
 
     onSearch = () => {
@@ -206,6 +231,12 @@ class Search extends React.Component {
         this.props.onFilterChange(filterValue);
     };
 
+    onToggleHighlightItem = (highlightKey, ...args) => {
+        this.highlightKey = highlightKey;
+
+        this.props.onToggleHighlightItem(highlightKey, ...args);
+    };
+
     onKeyDown = e => {
         if (this.props.disabled) {
             return;
@@ -215,6 +246,17 @@ class Search extends React.Component {
         }
         this.onSearch();
     };
+
+    saveInputRef = ref => {
+        if (ref && ref.getInstance()) {
+            this.inputRef = ref.getInstance();
+        }
+    };
+
+    focus(...args) {
+        this.inputRef.focus(...args);
+    }
+
     render() {
         const {
             shape,
@@ -237,6 +279,8 @@ class Search extends React.Component {
             visible,
             locale,
             rtl,
+            icons,
+            autoHighlightFirstItem,
             ...others
         } = this.props;
 
@@ -245,32 +289,35 @@ class Search extends React.Component {
             [`${prefix}search-${shape}`]: true,
             [`${prefix}${type}`]: type,
             [`${prefix}${size}`]: size,
+            [`${prefix}disabled`]: !!disabled,
             [className]: !!className,
         });
 
         let searchIcon = null,
             filterSelect = null,
-            searchBtn = null;
+            searchBtn = null,
+            iconsSearch = icons.search;
+
+        if (!isValidElement(icons.search) && icons.search) {
+            iconsSearch = <span>{icons.search}</span>;
+        }
 
         if (shape === 'simple') {
             const cls = classNames({
                 [`${prefix}search-icon`]: true,
                 [buttonProps.className]: !!buttonProps.className,
+                [`${prefix}search-symbol-icon`]: !iconsSearch,
             });
             hasIcon &&
-                (searchIcon = (
-                    <Icon
-                        type="search"
-                        tabIndex="0"
-                        role="button"
-                        aria-disabled={disabled}
-                        aria-label={locale.buttonText}
-                        {...buttonProps}
-                        className={cls}
-                        onClick={this.onSearch}
-                        onKeyDown={this.onKeyDown}
-                    />
-                ));
+                (searchIcon = React.cloneElement(iconsSearch || <Icon type="search" />, {
+                    role: 'button',
+                    'aria-disabled': disabled,
+                    'aria-label': locale.buttonText,
+                    ...buttonProps,
+                    className: cls,
+                    onClick: this.onSearch,
+                    onKeyDown: this.onKeyDown,
+                }));
         } else {
             const cls = classNames({
                 [`${prefix}search-btn`]: true,
@@ -287,12 +334,8 @@ class Search extends React.Component {
                     onClick={this.onSearch}
                     onKeyDown={this.onKeyDown}
                 >
-                    {hasIcon ? <Icon type="search" /> : null}
-                    {searchText ? (
-                        <span className={`${prefix}search-btn-text`}>
-                            {searchText}
-                        </span>
-                    ) : null}
+                    {hasIcon ? iconsSearch || <Icon type="search" className={`${prefix}search-symbol-icon`} /> : null}
+                    {searchText ? <span className={`${prefix}search-btn-text`}>{searchText}</span> : null}
                 </Button>
             );
         }
@@ -336,27 +379,21 @@ class Search extends React.Component {
                     placeholder={placeholder}
                     dataSource={dataSource}
                     innerAfter={searchIcon}
-                    onPressEnter={this.onSearch}
+                    onPressEnter={this.onPressEnter}
                     value={this.state.value}
                     onChange={this.onChange}
+                    onToggleHighlightItem={this.onToggleHighlightItem}
+                    autoHighlightFirstItem={autoHighlightFirstItem}
                     popupContent={popupContent}
                     disabled={disabled}
+                    ref={this.saveInputRef}
                 />
             </Group>
         );
 
         return (
-            <span
-                className={cls}
-                style={style}
-                {...dataAttr}
-                dir={rtl ? 'rtl' : undefined}
-            >
-                {searchBtn ? (
-                    <Group addonAfter={searchBtn}>{left}</Group>
-                ) : (
-                    left
-                )}
+            <span className={cls} style={style} {...dataAttr} dir={rtl ? 'rtl' : undefined}>
+                {searchBtn ? <Group addonAfter={searchBtn}>{left}</Group> : left}
             </span>
         );
     }

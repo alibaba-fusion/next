@@ -1,8 +1,9 @@
-import React, { Component, Children } from 'react';
+import React, { Children, Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { dom, events, func, support, focus, KEYCODE, guid } from '../util';
+import { polyfill } from 'react-lifecycles-compat';
+import { dom, events, focus, func, guid, KEYCODE, support } from '../util';
 import overlayManager from './manager';
 import Gateway from './gateway';
 import Position from './position';
@@ -13,14 +14,8 @@ const { makeChain, noop, bindCtx } = func;
 
 const isScrollDisplay = function(element) {
     try {
-        const scrollbarStyle = window.getComputedStyle(
-            element,
-            '::-webkit-scrollbar'
-        );
-        return (
-            !scrollbarStyle ||
-            scrollbarStyle.getPropertyValue('display') !== 'none'
-        );
+        const scrollbarStyle = window.getComputedStyle(element, '::-webkit-scrollbar');
+        return !scrollbarStyle || scrollbarStyle.getPropertyValue('display') !== 'none';
     } catch (e) {
         // ignore error for firefox
     }
@@ -50,12 +45,12 @@ const getStyleProperty = (node, name) => {
 };
 
 const modals = [];
-let bodyOverflowY, bodyPaddingRight;
+let bodyOverflow, bodyPaddingRight;
 
 /**
  * Overlay
  * */
-export default class Overlay extends Component {
+class Overlay extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -188,8 +183,10 @@ export default class Overlay extends Component {
         onClick: PropTypes.func,
         maskClass: PropTypes.string,
         isChildrenInMask: PropTypes.bool,
+        // 当 pin 元素（一般是弹层）是 fixed 布局的时候，pin 元素是否要跟随 base 元素（一般是trigger）
+        // 举例来说，dialog/drawer 这类组件弹层是不跟随trigger的，而 fixed 布局下的subNav是跟随trigger的
+        pinFollowBaseElementWhenFixed: PropTypes.bool,
     };
-
     static defaultProps = {
         prefix: 'next-',
         pure: false,
@@ -225,12 +222,6 @@ export default class Overlay extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            visible: props.visible,
-            status: 'none',
-            animation: this.getAnimation(props),
-        };
-
         this.lastAlign = props.align;
 
         bindCtx(this, [
@@ -243,94 +234,75 @@ export default class Overlay extends Component {
             'beforeClose',
         ]);
 
+        this.state = {
+            visible: false,
+            status: 'none',
+            animation: this.getAnimation(props),
+            beforeOpen: this.beforeOpen,
+            beforeClose: this.beforeClose,
+        };
+
         this.timeoutMap = {};
     }
 
-    componentWillMount() {
-        if (this.props.visible) {
-            this.beforeOpen();
-            this.props.beforeOpen();
-
-            if (this.state.animation && support.animation) {
-                this.enter();
-            }
-        }
-    }
-
-    componentDidMount() {
-        this.componentDidUpdate({ visible: false });
-        this.addDocumentEvents();
-
-        overlayManager.addOverlay(this);
-
-        if (this.state.visible) {
-            this._isMounted = true;
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (!this._isMounted && nextProps.visible) {
-            this._isMounted = true;
-        }
-
-        const willOpen = !this.props.visible && nextProps.visible;
-        const willClose = this.props.visible && !nextProps.visible;
-
-        if (nextProps.align !== this.props.align) {
-            this.lastAlign = this.props.align;
-        }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const willOpen = !prevState.visible && nextProps.visible;
+        const willClose = prevState.visible && !nextProps.visible;
 
         if (willOpen) {
-            this.beforeOpen();
+            prevState.beforeOpen();
             nextProps.beforeOpen();
         } else if (willClose) {
-            this.beforeClose();
+            prevState.beforeClose();
             nextProps.beforeClose();
         }
 
+        const nextState = {};
+
         if (nextProps.animation || nextProps.animation === false) {
-            this.setState({
-                animation: nextProps.animation,
-            });
+            nextState.animation = nextProps.animation;
         }
 
         if (nextProps.animation !== false && support.animation) {
             if (willOpen) {
-                this.enter();
+                nextState.visible = true;
+                nextState.status = 'mounting';
             } else if (willClose) {
-                this.leave();
+                // can not set visible=false directly, otherwise animation not work without dom
+                // nextState.visible = false;
+                nextState.status = 'leaving';
             }
-        } else {
-            this.setState({
-                visible: nextProps.visible,
-            });
+        } else if ('visible' in nextProps && nextProps.visible !== prevState.visible) {
+            nextState.visible = nextProps.visible;
         }
+
+        return nextState;
+    }
+
+    componentDidMount() {
+        if (this.state.visible) {
+            this.doAnimation(true, false);
+            this._isMounted = true;
+        }
+
+        this.addDocumentEvents();
+
+        overlayManager.addOverlay(this);
     }
 
     componentDidUpdate(prevProps) {
-        const open = !prevProps.visible && this.props.visible;
-        const close = prevProps.visible && !this.props.visible;
-        if (this.state.animation && support.animation) {
-            if (open || close) {
-                this.addAnimationEvents();
-            }
-        } else {
-            const wrapperNode = this.getWrapperNode();
-            if (open) {
-                setTimeout(() => {
-                    this.props.onOpen();
-                    this.props.afterOpen();
-                    dom.addClass(wrapperNode, 'opened');
-                    overlayManager.addOverlay(this);
-                });
-            } else if (close) {
-                this.props.onClose();
-                this.props.afterClose();
-                dom.removeClass(wrapperNode, 'opened');
-                overlayManager.removeOverlay(this);
-            }
-            this.setFocusNode();
+        if (!this._isMounted && this.props.visible) {
+            this._isMounted = true;
         }
+
+        if (this.props.align !== prevProps.align) {
+            this.lastAlign = prevProps.align;
+        }
+
+        const willOpen = !prevProps.visible && this.props.visible;
+        const willClose = prevProps.visible && !this.props.visible;
+
+        (willOpen || willClose) && this.doAnimation(willOpen, willClose);
     }
 
     componentWillUnmount() {
@@ -346,6 +318,33 @@ export default class Overlay extends Component {
             this._animation = null;
         }
         this.beforeClose();
+    }
+
+    doAnimation(open, close) {
+        if (this.state.animation && support.animation) {
+            if (open) {
+                this.onEntering();
+            } else if (close) {
+                this.onLeaving();
+            }
+            this.addAnimationEvents();
+        } else {
+            if (open) {
+                // fix https://github.com/alibaba-fusion/next/issues/1901
+                setTimeout(() => {
+                    this.props.onOpen();
+                    dom.addClass(this.getWrapperNode(), 'opened');
+                    overlayManager.addOverlay(this);
+                    this.props.afterOpen();
+                });
+            } else if (close) {
+                this.props.onClose();
+                dom.removeClass(this.getWrapperNode(), 'opened');
+                overlayManager.removeOverlay(this);
+                this.props.afterClose();
+            }
+            this.setFocusNode();
+        }
     }
 
     getAnimation(props) {
@@ -386,17 +385,10 @@ export default class Overlay extends Component {
             if (node) {
                 const id = guid();
 
-                this._animation = events.on(
-                    node,
-                    support.animation.end,
-                    this.handleAnimateEnd.bind(this, id)
-                );
+                this._animation = events.on(node, support.animation.end, this.handleAnimateEnd.bind(this, id));
 
-                const animationDelay =
-                    parseFloat(getStyleProperty(node, 'animation-delay')) || 0;
-                const animationDuration =
-                    parseFloat(getStyleProperty(node, 'animation-duration')) ||
-                    0;
+                const animationDelay = parseFloat(getStyleProperty(node, 'animation-delay')) || 0;
+                const animationDuration = parseFloat(getStyleProperty(node, 'animation-duration')) || 0;
                 const time = animationDelay + animationDuration;
                 if (time) {
                     this.timeoutMap[id] = setTimeout(() => {
@@ -410,11 +402,7 @@ export default class Overlay extends Component {
     handlePosition(config) {
         const align = config.align.join(' ');
 
-        if (
-            !('animation' in this.props) &&
-            this.props.needAdjust &&
-            this.lastAlign !== align
-        ) {
+        if (!('animation' in this.props) && this.props.needAdjust && this.lastAlign !== align) {
             this.setState({
                 animation: this.getAnimationByAlign(align),
             });
@@ -461,35 +449,17 @@ export default class Overlay extends Component {
         }
     }
 
-    enter() {
-        this.setState(
-            {
-                visible: true,
-                status: 'mounting',
-            },
-            () => {
-                // NOTE: setState callback (second argument) now fires immediately after componentDidMount / componentDidUpdate instead of after all components have rendered.
-                setTimeout(() => {
-                    if (!this._isDestroyed) {
-                        this.onEntering();
-                    }
-                });
-            }
-        );
-    }
-
-    leave() {
-        this.setState({
-            status: 'leaving',
-        });
-
-        this.onLeaving();
-    }
-
     onEntering() {
-        const wrapperNode = this.getWrapperNode();
-        dom.addClass(wrapperNode, 'opened');
-        this.props.onOpen();
+        if (this._isDestroyed) {
+            return;
+        }
+
+        // make sure overlay.ref has been called (eg: menu/popup-item called overlay.getInstance().getContentNode().)
+        setTimeout(() => {
+            const wrapperNode = this.getWrapperNode();
+            dom.addClass(wrapperNode, 'opened');
+            this.props.onOpen();
+        });
     }
 
     onLeaving() {
@@ -514,14 +484,13 @@ export default class Overlay extends Component {
         if (this.props.disableScroll) {
             if (modals.length === 0) {
                 const style = {
-                    overflowY: 'hidden',
+                    overflow: 'hidden',
                 };
                 const body = document.body;
-                bodyOverflowY = body.style.overflowY;
+                bodyOverflow = body.style.overflow;
                 if (hasScroll()) {
                     bodyPaddingRight = body.style.paddingRight;
-                    style.paddingRight = `${dom.getStyle(body, 'paddingRight') +
-                        dom.scrollbar().width}px`;
+                    style.paddingRight = `${dom.getStyle(body, 'paddingRight') + dom.scrollbar().width}px`;
                 }
 
                 dom.setStyle(body, style);
@@ -536,15 +505,15 @@ export default class Overlay extends Component {
             if (index > -1) {
                 if (modals.length === 1) {
                     const style = {
-                        overflowY: bodyOverflowY,
+                        overflow: bodyOverflow,
                     };
-                    if (hasScroll()) {
+                    if (bodyPaddingRight !== undefined) {
                         style.paddingRight = bodyPaddingRight;
                     }
 
                     dom.setStyle(document.body, style);
 
-                    bodyOverflowY = undefined;
+                    bodyOverflow = undefined;
                     bodyPaddingRight = undefined;
                 }
 
@@ -583,68 +552,85 @@ export default class Overlay extends Component {
     }
 
     getContentNode() {
-        return findDOMNode(this.contentRef);
+        try {
+            return findDOMNode(this.contentRef);
+        } catch (err) {
+            return null;
+        }
     }
 
     getWrapperNode() {
         return this.gatewayRef ? this.gatewayRef.getChildNode() : null;
     }
 
+    /**
+     * document global event
+     */
     addDocumentEvents() {
         if (this.props.canCloseByEsc) {
-            this._keydownEvents = events.on(
-                document,
-                'keydown',
-                this.handleDocumentKeyDown
-            );
+            this._keydownEvents = events.on(document, 'keydown', this.handleDocumentKeyDown);
         }
-        if (this.props.canCloseByOutSideClick) {
-            this._clickEvents = events.on(
-                document,
-                'click',
-                this.handleDocumentClick
-            );
 
-            this._touchEvents = events.on(
-                document,
-                'touchend',
-                this.handleDocumentClick
-            );
+        if (this.props.canCloseByOutSideClick) {
+            this._clickEvents = events.on(document, 'click', this.handleDocumentClick);
+            this._touchEvents = events.on(document, 'touchend', this.handleDocumentClick);
         }
     }
 
     removeDocumentEvents() {
-        if (this._keydownEvents) {
-            this._keydownEvents.off();
-            this._keydownEvents = null;
-        }
-        if (this._clickEvents) {
-            this._clickEvents.off();
-            this._clickEvents = null;
-        }
-
-        if (this._touchEvents) {
-            this._touchEvents.off();
-            this._touchEvents = null;
-        }
+        ['_keydownEvents', '_clickEvents', '_touchEvents'].forEach(event => {
+            if (this[event]) {
+                this[event].off();
+                this[event] = null;
+            }
+        });
     }
 
     handleDocumentKeyDown(e) {
-        if (
-            this.state.visible &&
-            e.keyCode === KEYCODE.ESC &&
-            overlayManager.isCurrentOverlay(this)
-        ) {
+        if (this.state.visible && e.keyCode === KEYCODE.ESC && overlayManager.isCurrentOverlay(this)) {
             this.props.onRequestClose('keyboard', e);
         }
+    }
+
+    isInShadowDOM(node) {
+        return node.getRootNode ? node.getRootNode().nodeType === 11 : false;
+    }
+
+    getEventPath(event) {
+        // 参考 https://github.com/spring-media/react-shadow-dom-retarget-events/blob/master/index.js#L29
+        return event.path || (event.composedPath && event.composedPath()) || this.composedPath(event.target);
+    }
+
+    composedPath(el) {
+        const path = [];
+        while (el) {
+            path.push(el);
+            if (el.tagName === 'HTML') {
+                path.push(document);
+                path.push(window);
+                return path;
+            }
+            el = el.parentElement;
+        }
+    }
+
+    matchInShadowDOM(node, e) {
+        if (this.isInShadowDOM(node)) {
+            // Shadow DOM 环境中，触发点击事件，监听 document click 事件获得的事件源
+            // 并非实际触发的 dom 节点，而是 Shadow DOM 的 host 节点
+            // 进而会导致如 Select 组件的下拉弹层打开后立即关闭等问题
+            // 因此额外增加 node 和 eventPath 的判断
+            const eventPath = this.getEventPath(e);
+            return node === eventPath[0] || node.contains(eventPath[0]);
+        }
+
+        return false;
     }
 
     handleDocumentClick(e) {
         if (this.state.visible) {
             const { safeNode } = this.props;
-            const safeNodes = Array.isArray(safeNode)
-                ? [...safeNode]
-                : [safeNode];
+            const safeNodes = Array.isArray(safeNode) ? [...safeNode] : [safeNode];
             safeNodes.unshift(() => this.getWrapperNode());
 
             for (let i = 0; i < safeNodes.length; i++) {
@@ -655,8 +641,8 @@ export default class Overlay extends Component {
                     node &&
                     (node === e.target ||
                         node.contains(e.target) ||
-                        (e.target !== document &&
-                            !document.documentElement.contains(e.target)))
+                        this.matchInShadowDOM(node, e) ||
+                        (e.target !== document && !document.documentElement.contains(e.target)))
                 ) {
                     return;
                 }
@@ -697,6 +683,7 @@ export default class Overlay extends Component {
             container,
             hasMask,
             needAdjust,
+            autoFit,
             beforePosition,
             onPosition,
             wrapperStyle,
@@ -708,18 +695,15 @@ export default class Overlay extends Component {
             onMaskMouseLeave,
             maskClass,
             isChildrenInMask,
+            pinFollowBaseElementWhenFixed,
         } = this.props;
         const { visible: stateVisible, status, animation } = this.state;
 
-        let children =
-            stateVisible || (cache && this._isMounted) ? propChildren : null;
+        let children = stateVisible || (cache && this._isMounted) ? propChildren : null;
         if (children) {
             let child = Children.only(children);
             // if chlild is a functional component wrap in a component to allow a ref to be set
-            if (
-                typeof child.type === 'function' &&
-                !(child.type.prototype instanceof Component)
-            ) {
+            if (typeof child.type === 'function' && !(child.type.prototype instanceof Component)) {
                 child = <div role="none">{child}</div>;
             }
             const childClazz = classnames({
@@ -730,9 +714,7 @@ export default class Overlay extends Component {
                 [className]: !!className,
             });
             if (typeof child.ref === 'string') {
-                throw new Error(
-                    'Can not set ref by string in Overlay, use function instead.'
-                );
+                throw new Error('Can not set ref by string in Overlay, use function instead.');
             }
 
             children = React.cloneElement(child, {
@@ -744,8 +726,7 @@ export default class Overlay extends Component {
             });
 
             if (align) {
-                const shouldUpdatePosition =
-                    status === 'leaving' ? false : propShouldUpdatePosition;
+                const shouldUpdatePosition = status === 'leaving' ? false : propShouldUpdatePosition;
                 children = (
                     <Position
                         {...{
@@ -753,12 +734,12 @@ export default class Overlay extends Component {
                             target,
                             align,
                             offset,
+                            autoFit,
+                            container,
                             needAdjust,
+                            pinFollowBaseElementWhenFixed,
                             beforePosition,
-                            onPosition: makeChain(
-                                this.handlePosition,
-                                onPosition
-                            ),
+                            onPosition: makeChain(this.handlePosition, onPosition),
                             shouldUpdatePosition,
                             rtl,
                         }}
@@ -766,10 +747,7 @@ export default class Overlay extends Component {
                 );
             }
 
-            const wrapperClazz = classnames([
-                `${prefix}overlay-wrapper`,
-                wrapperClassName,
-            ]);
+            const wrapperClazz = classnames([`${prefix}overlay-wrapper`, wrapperClassName]);
             const newWrapperStyle = Object.assign(
                 {},
                 {
@@ -784,11 +762,7 @@ export default class Overlay extends Component {
             });
 
             children = (
-                <div
-                    className={wrapperClazz}
-                    style={newWrapperStyle}
-                    dir={rtl ? 'rtl' : undefined}
-                >
+                <div className={wrapperClazz} style={newWrapperStyle} dir={rtl ? 'rtl' : undefined}>
                     {hasMask ? (
                         <div
                             className={maskClazz}
@@ -805,11 +779,8 @@ export default class Overlay extends Component {
             );
         }
 
-        return (
-            <Gateway
-                {...{ container, target, children }}
-                ref={this.saveGatewayRef}
-            />
-        );
+        return <Gateway {...{ container, target, children }} ref={this.saveGatewayRef} />;
     }
 }
+
+export default polyfill(Overlay);

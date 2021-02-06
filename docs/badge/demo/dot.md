@@ -2,7 +2,7 @@
 
 - order: 2
 
-没有具体的数字。
+没有具体的数字，仅展示小红点。
 
 :::lang=en-us
 # Red Dot
@@ -20,6 +20,9 @@ import { Badge, Icon } from '@alifd/next';
 ReactDOM.render(
     <div>
         <Badge dot>
+            <Icon type="email" />
+        </Badge>
+        <Badge count={0} dot>
             <Icon type="email" />
         </Badge>
         <Badge dot>

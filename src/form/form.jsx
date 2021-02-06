@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { obj, func } from '../util';
 import Field from '../field';
+import RGrid from '../responsive-grid';
 
 function pickerDefined(obj) {
     const newObj = {};
@@ -17,6 +18,29 @@ function pickerDefined(obj) {
 function preventDefault(e) {
     e.preventDefault();
 }
+const getNewChildren = (children, props) => {
+    const { size, device, labelAlign, labelTextAlign, labelCol, wrapperCol, responsive, colon } = props;
+
+    return React.Children.map(children, child => {
+        if (obj.isReactFragment(child)) {
+            return getNewChildren(child.props.children, props);
+        }
+
+        if (child && ['function', 'object'].indexOf(typeof child.type) > -1 && child.type._typeMark === 'form_item') {
+            const childrenProps = {
+                labelCol: child.props.labelCol ? child.props.labelCol : labelCol,
+                wrapperCol: child.props.wrapperCol ? child.props.wrapperCol : wrapperCol,
+                labelAlign: child.props.labelAlign ? child.props.labelAlign : device === 'phone' ? 'top' : labelAlign,
+                labelTextAlign: child.props.labelTextAlign ? child.props.labelTextAlign : labelTextAlign,
+                colon: 'colon' in child.props ? child.props.colon : colon,
+                size: child.props.size ? child.props.size : size,
+                responsive: responsive,
+            };
+            return React.cloneElement(child, pickerDefined(childrenProps));
+        }
+        return child;
+    });
+};
 
 /** Form */
 export default class Form extends React.Component {
@@ -39,7 +63,7 @@ export default class Form extends React.Component {
          */
         fullWidth: PropTypes.bool,
         /**
-         * 标签的位置
+         * 标签的位置, 如果不设置 labelCol 和 wrapperCol 那么默认是标签在上
          * @enumdesc 上, 左, 内
          */
         labelAlign: PropTypes.oneOf(['top', 'left', 'inset']),
@@ -103,6 +127,27 @@ export default class Form extends React.Component {
          * 预设屏幕宽度
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
+        /**
+         * 是否开启内置的响应式布局 （使用ResponsiveGrid）
+         * @version 1.19
+         */
+        responsive: PropTypes.bool,
+        /**
+         * 是否开启预览态
+         * @version 1.19
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 是否使用 label 替换校验信息的 name 字段
+         * @version 1.20
+         */
+        useLabelForErrorMessage: PropTypes.bool,
+        /**
+         * 表示是否显示 label 后面的冒号
+         */
+        colon: PropTypes.bool,
+        // 在 responsive模式下，透传给 ResponsiveGrid的， 表示 每个 cell 之间的间距， [bottom&top, right&left]
+        gap: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number]),
     };
 
     static defaultProps = {
@@ -114,12 +159,15 @@ export default class Form extends React.Component {
         component: 'form',
         saveField: func.noop,
         device: 'desktop',
+        colon: false,
     };
 
     static childContextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.string,
+        _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
+        _formLabelForErrorMessage: PropTypes.bool,
     };
 
     constructor(props) {
@@ -136,8 +184,7 @@ export default class Form extends React.Component {
                 this._formField = props.field;
                 const onChange = this._formField.options.onChange;
                 options.onChange = func.makeChain(onChange, this.onChange);
-                this._formField.setOptions &&
-                    this._formField.setOptions(options);
+                this._formField.setOptions && this._formField.setOptions(options);
             } else {
                 if ('value' in props) {
                     options.values = props.value;
@@ -153,17 +200,21 @@ export default class Form extends React.Component {
         return {
             _formField: this.props.field ? this.props.field : this._formField,
             _formSize: this.props.size,
+            _formPreview: this.props.isPreview,
             _formFullWidth: this.props.fullWidth,
+            _formLabelForErrorMessage: this.props.useLabelForErrorMessage,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
+        const props = this.props;
+
         if (this._formField) {
-            if ('value' in nextProps) {
-                this._formField.setValues(nextProps.value);
+            if ('value' in props && props.value !== prevProps.value) {
+                this._formField.setValues(props.value);
             }
-            if ('error' in nextProps) {
-                this._formField.setErrors(nextProps.error);
+            if ('error' in props && props.error !== prevProps.error) {
+                this._formField.setValues(props.error);
             }
         }
     }
@@ -191,15 +242,23 @@ export default class Form extends React.Component {
             style,
             prefix,
             rtl,
+            isPreview,
             component: Tag,
+            responsive,
+            gap,
+            colon,
         } = this.props;
 
         const formClassName = classNames({
             [`${prefix}form`]: true,
             [`${prefix}inline`]: inline, // 内联
             [`${prefix}${size}`]: size,
+            [`${prefix}form-responsive-grid`]: responsive,
+            [`${prefix}form-preview`]: isPreview,
             [className]: !!className,
         });
+
+        const newChildren = getNewChildren(children, this.props);
 
         return (
             <Tag
@@ -210,36 +269,7 @@ export default class Form extends React.Component {
                 dir={rtl ? 'rtl' : undefined}
                 onSubmit={onSubmit}
             >
-                {React.Children.map(children, child => {
-                    if (
-                        child &&
-                        typeof child.type === 'function' &&
-                        child.type._typeMark === 'form_item'
-                    ) {
-                        const childrenProps = {
-                            labelCol: child.props.labelCol
-                                ? child.props.labelCol
-                                : labelCol,
-                            wrapperCol: child.props.wrapperCol
-                                ? child.props.wrapperCol
-                                : wrapperCol,
-                            labelAlign: child.props.labelAlign
-                                ? child.props.labelAlign
-                                : device === 'phone'
-                                ? 'top'
-                                : labelAlign,
-                            labelTextAlign: child.props.labelTextAlign
-                                ? child.props.labelTextAlign
-                                : labelTextAlign,
-                            size: child.props.size ? child.props.size : size,
-                        };
-                        return React.cloneElement(
-                            child,
-                            pickerDefined(childrenProps)
-                        );
-                    }
-                    return child;
-                })}
+                {responsive ? <RGrid gap={gap}>{newChildren}</RGrid> : newChildren}
             </Tag>
         );
     }

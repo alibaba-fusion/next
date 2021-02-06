@@ -1,6 +1,7 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import Icon from '../icon';
 import { KEYCODE } from '../util';
 import RowComponent from './expanded/row';
@@ -9,7 +10,7 @@ import { statics } from './util';
 
 const noop = () => {};
 
-export default function expanded(BaseComponent) {
+export default function expanded(BaseComponent, stickyLock) {
     /** Table */
     class ExpandedTable extends React.Component {
         static ExpandedRow = RowComponent;
@@ -21,6 +22,13 @@ export default function expanded(BaseComponent) {
              * @returns {Element}
              */
             expandedRowRender: PropTypes.func,
+            /**
+             * 设置行是否可展开，设置 false 为不可展开
+             * @param {Object} record 该行所对应的数据
+             * @param {Number} index 该行所对应的序列
+             * @returns {Boolean} 是否可展开
+             */
+            rowExpandable: PropTypes.func,
             /**
              * 额外渲染行的缩进
              */
@@ -45,12 +53,6 @@ export default function expanded(BaseComponent) {
              * @param {Object} currentRecord 当前点击额外渲染行的记录
              */
             onRowOpen: PropTypes.func,
-            /**
-             * 点击额外渲染行触发的事件
-             * @param {Object} record 该行所对应的数据
-             * @param {Number} index 该行所对应的序列
-             * @param {Event} e DOM事件对象
-             */
             onExpandedRowClick: PropTypes.func,
             locale: PropTypes.object,
             ...BaseComponent.propTypes,
@@ -62,14 +64,16 @@ export default function expanded(BaseComponent) {
             onRowOpen: noop,
             hasExpandedRowCtrl: true,
             components: {},
-            expandedRowIndent: [1, 0],
+            expandedRowIndent: stickyLock ? [0, 0] : [1, 0],
             prefix: 'next-',
         };
 
         static childContextTypes = {
             openRowKeys: PropTypes.array,
             expandedRowRender: PropTypes.func,
+            rowExpandable: PropTypes.func,
             expandedIndexSimulate: PropTypes.bool,
+            expandedRowWidthEquals2Table: PropTypes.bool,
             expandedRowIndent: PropTypes.array,
         };
 
@@ -82,17 +86,19 @@ export default function expanded(BaseComponent) {
                 openRowKeys: this.state.openRowKeys,
                 expandedRowRender: this.props.expandedRowRender,
                 expandedIndexSimulate: this.props.expandedIndexSimulate,
-                expandedRowIndent: this.props.expandedRowIndent,
+                expandedRowWidthEquals2Table: stickyLock,
+                expandedRowIndent: stickyLock ? [0, 0] : this.props.expandedRowIndent,
             };
         }
 
-        componentWillReceiveProps(nextProps) {
+        static getDerivedStateFromProps(nextProps) {
             if ('openRowKeys' in nextProps) {
-                const { openRowKeys } = nextProps;
-                this.setState({
-                    openRowKeys,
-                });
+                return {
+                    openRowKeys: nextProps.openRowKeys || [],
+                };
             }
+
+            return null;
         }
 
         expandedKeydown = (value, record, index, e) => {
@@ -105,15 +111,19 @@ export default function expanded(BaseComponent) {
         };
 
         renderExpandedCell = (value, index, record) => {
-            const { getExpandedColProps, prefix, locale } = this.props;
+            const { getExpandedColProps, prefix, locale, rowExpandable } = this.props;
+
+            if (typeof rowExpandable === 'function' && !rowExpandable(record, index)) {
+                return '';
+            }
 
             const { openRowKeys } = this.state,
                 { primaryKey } = this.props,
                 hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1,
                 switchNode = hasExpanded ? (
-                    <Icon type="minus" size="xs" />
+                    <Icon type="minus" size="xs" className={`${prefix}table-expand-unfold`} />
                 ) : (
-                    <Icon type="add" size="xs" />
+                    <Icon type="add" size="xs" className={`${prefix}table-expand-fold`} />
                 ),
                 attrs = getExpandedColProps(record, index) || {};
             const cls = classnames({
@@ -123,24 +133,14 @@ export default function expanded(BaseComponent) {
             });
 
             if (!attrs.disabled) {
-                attrs.onClick = this.onExpandedClick.bind(
-                    this,
-                    value,
-                    record,
-                    index
-                );
+                attrs.onClick = this.onExpandedClick.bind(this, value, record, index);
             }
             return (
                 <span
                     {...attrs}
                     role="button"
                     tabIndex="0"
-                    onKeyDown={this.expandedKeydown.bind(
-                        this,
-                        value,
-                        record,
-                        index
-                    )}
+                    onKeyDown={this.expandedKeydown.bind(this, value, record, index)}
                     aria-label={hasExpanded ? locale.expanded : locale.folded}
                     aria-expanded={hasExpanded}
                     className={cls}
@@ -168,6 +168,21 @@ export default function expanded(BaseComponent) {
             this.props.onRowOpen(openRowKeys, id, index === -1, record);
             e.stopPropagation();
         }
+
+        addExpandCtrl = columns => {
+            const { prefix, size } = this.props;
+
+            if (!columns.find(record => record.key === 'expanded')) {
+                columns.unshift({
+                    key: 'expanded',
+                    title: '',
+                    cell: this.renderExpandedCell.bind(this),
+                    width: size === 'small' ? 34 : 50,
+                    className: `${prefix}table-expanded ${prefix}table-prerow`,
+                    __normalized: true,
+                });
+            }
+        };
 
         normalizeChildren(children) {
             const { prefix, size } = this.props;
@@ -205,28 +220,41 @@ export default function expanded(BaseComponent) {
                 components,
                 openRowKeys,
                 expandedRowRender,
+                rowExpandable,
                 hasExpandedRowCtrl,
                 children,
+                columns,
                 dataSource,
+                entireDataSource,
                 getExpandedColProps,
                 expandedRowIndent,
                 onRowOpen,
                 onExpandedRowClick,
                 ...others
             } = this.props;
+
             if (expandedRowRender && !components.Row) {
                 components = { ...components };
                 components.Row = RowComponent;
                 dataSource = this.normalizeDataSource(dataSource);
+                entireDataSource = this.normalizeDataSource(entireDataSource);
             }
             if (expandedRowRender && hasExpandedRowCtrl) {
-                children = this.normalizeChildren(children);
+                let useColumns = columns && !children;
+
+                if (useColumns) {
+                    this.addExpandCtrl(columns);
+                } else {
+                    children = this.normalizeChildren(children || []);
+                }
             }
 
             return (
                 <BaseComponent
                     {...others}
+                    columns={columns}
                     dataSource={dataSource}
+                    entireDataSource={entireDataSource}
                     components={components}
                 >
                     {children}
@@ -235,5 +263,5 @@ export default function expanded(BaseComponent) {
         }
     }
     statics(ExpandedTable, BaseComponent);
-    return ExpandedTable;
+    return polyfill(ExpandedTable);
 }

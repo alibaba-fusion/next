@@ -16,6 +16,5 @@
 
 // stylelint-disable-next-line
 .next-overlay-wrapper.opened .next-overlay-backdrop.next-mask {
-    background: $mask-background;
-    opacity: $mask-opacity;
+    background: rgba($mask-background, $mask-opacity);
 }

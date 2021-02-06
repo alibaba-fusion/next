@@ -14,6 +14,7 @@ export interface SwitchProps extends HTMLAttributesWeak, CommonProps {
      * 自定义类名
      */
     className?: string;
+    name?: string;
 
     /**
      * 自定义内敛样式
@@ -58,12 +59,12 @@ export interface SwitchProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 鼠标点击事件
      */
-    onClick?: (e: any) => void;
+    onClick?: React.MouseEventHandler;
 
     /**
      * 键盘按键事件
      */
-    onKeyDown?: (e: any) => void;
+    onKeyDown?: React.KeyboardEventHandler;
 }
 
 export default class Switch extends React.Component<SwitchProps, any> {}

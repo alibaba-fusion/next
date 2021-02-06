@@ -21,7 +21,7 @@
             );
             @include badge-size(
                 $width: $badge-size-count-width,
-                $minWidth: $badge-size-dot-min-width,
+                $minWidth: $badge-size-count-min-width,
                 $height: $badge-size-count-height,
                 $padding: $badge-size-count-padding,
                 $fontSize: $badge-size-count-font,

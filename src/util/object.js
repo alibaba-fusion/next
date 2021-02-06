@@ -28,11 +28,7 @@ export function isArrayLike(obj) {
     const length = !!obj && 'length' in obj && obj.length;
     const type = typeOf(obj);
 
-    return (
-        type === 'Array' ||
-        length === 0 ||
-        (typeof length === 'number' && length > 0 && length - 1 in obj)
-    );
+    return type === 'Array' || length === 0 || (typeof length === 'number' && length > 0 && length - 1 in obj);
 }
 
 /**
@@ -41,11 +37,7 @@ export function isArrayLike(obj) {
  * @return {Boolean}
  */
 export function isPromise(obj) {
-    return (
-        !!obj &&
-        (typeof obj === 'object' || typeof obj === 'function') &&
-        typeof obj.then === 'function'
-    );
+    return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
 }
 
 /**
@@ -177,8 +169,7 @@ export function each(obj, callback, direction) {
 }
 
 // @private 判断key是否在数组或对象中
-const _isInObj = (key, obj, isArray) =>
-    isArray ? obj.indexOf(key) > -1 : key in obj;
+const _isInObj = (key, obj, isArray) => (isArray ? obj.indexOf(key) > -1 : key in obj);
 
 /**
  * 过滤出其它属性
@@ -196,6 +187,29 @@ export function pickOthers(holdProps, props) {
 
     for (const key in props) {
         if (!_isInObj(key, holdProps, isArray)) {
+            others[key] = props[key];
+        }
+    }
+
+    return others;
+}
+
+/**
+ * 过滤出需要的属性
+ * @param  {Object|Array} holdProps 过滤的参照对象，最终的结果只保留在参照对象中的key
+ * @param  {Object} props     被过滤的对象
+ * @return {Object}           others
+ *
+ * @example
+ * object.pickProps(FooComponent.propTypes, this.props);
+ * object.pickProps(['className', 'onChange'], this.props);
+ */
+export function pickProps(holdProps, props) {
+    const others = {};
+    const isArray = typeOf(holdProps) === 'Array';
+
+    for (const key in props) {
+        if (_isInObj(key, holdProps, isArray)) {
             others[key] = props[key];
         }
     }
@@ -252,10 +266,7 @@ export function deepMerge(target, ...sources) {
     if (isPlainObject(target) && isPlainObject(source)) {
         for (const key in source) {
             // 如果是object 进行深拷贝
-            if (
-                isPlainObject(source[key]) &&
-                !React.isValidElement(source[key])
-            ) {
+            if (isPlainObject(source[key]) && !React.isValidElement(source[key])) {
                 if (!target[key]) Object.assign(target, { [key]: {} });
                 // fix {a: 'te'}, {a:{b:3}}
                 if (!isPlainObject(target[key])) {
@@ -278,8 +289,7 @@ export function deepMerge(target, ...sources) {
  */
 export function isFunctionComponent(component) {
     return (
-        typeOf(component) === 'Function' &&
-        component.prototype.isReactComponent === undefined
+        typeOf(component) === 'Function' && component.prototype && component.prototype.isReactComponent === undefined
     );
 }
 
@@ -289,7 +299,21 @@ export function isFunctionComponent(component) {
  */
 export function isClassComponent(component) {
     return (
-        typeOf(component) === 'Function' &&
-        component.prototype.isReactComponent !== undefined
+        typeOf(component) === 'Function' && component.prototype && component.prototype.isReactComponent !== undefined
     );
+}
+
+/**
+ * 判断是否为 ReactFragment
+ * @param {*} component  传入的组件
+ */
+export function isReactFragment(component) {
+    if (isNil(component)) {
+        return false;
+    }
+
+    if (component.type) {
+        return component.type === React.Fragment;
+    }
+    return component === React.Fragment;
 }

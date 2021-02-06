@@ -21,6 +21,7 @@ const i18nMap = {
         feedback: '反馈',
         loading: '加载中',
         success: '成功',
+        warning: '警告',
         clear: '清除',
         multiple: '多行',
         long: '比较长的字符串！',
@@ -38,6 +39,7 @@ const i18nMap = {
         feedback: 'feedback',
         loading: 'loading',
         success: 'success',
+        warning: 'warning',
         clear: 'clear',
         multiple: 'multiple line',
         long: 'long long string!',
@@ -52,10 +54,10 @@ function render(i18n) {
         <Demo title="Textfield" block>
             <DemoHead cols={['L', 'M', 'S']}/>
 
-            <DemoGroup label="Normal">
-                <Input placeholder={i18n.large} size="large"/>
-                <Input placeholder={i18n.medium}/>
-                <Input placeholder={i18n.small} size="small"/>
+            <DemoGroup label="Normal" id="test">
+                <Input placeholder={i18n.large} size="large" style={{pointerEvents: 'none'}}/>
+                <Input placeholder={i18n.medium} style={{pointerEvents: 'none'}}/>
+                <Input placeholder={i18n.small} size="small" style={{pointerEvents: 'none'}}/>
             </DemoGroup>
             <DemoGroup label="Focused">
                 <Input value={i18n.focus} size="large" className="next-focus"/>
@@ -77,6 +79,11 @@ function render(i18n) {
                 <Input htmlType="password" value={i18n.password}/>
                 <Input htmlType="password" value={i18n.password} size="small"/>
             </DemoGroup>
+            <DemoGroup label="Warning">
+                <Input state="warning" value={i18n.warning} size="large"/>
+                <Input state="warning" value={i18n.warning}/>
+                <Input state="warning" value={i18n.warning} size="small"/>
+            </DemoGroup>
             <DemoGroup label="Success">
                 <Input value={i18n.success} size="large" state="success"/>
                 <Input value={i18n.success} state="success"/>
@@ -93,9 +100,9 @@ function render(i18n) {
                 <Input value={i18n.clear} size="small" hasClear/>
             </DemoGroup>
             <DemoGroup label="Max Length">
-                <Input value={i18n.large} size="large" hasLimitHint maxLength={5}/>
-                <Input value={i18n.medium} hasLimitHint maxLength={5}/>
-                <Input value={i18n.small} size="small" hasLimitHint maxLength={5}/>
+                <Input value={i18n.large} size="large" showLimitHint maxLength={5}/>
+                <Input value={i18n.medium} showLimitHint maxLength={5}/>
+                <Input value={i18n.small} size="small" showLimitHint maxLength={5}/>
             </DemoGroup>
             <DemoGroup label="Label">
                 <Input label={i18n.label} id="label1" value={i18n.large} size="large" />
@@ -104,14 +111,21 @@ function render(i18n) {
             </DemoGroup>
         </Demo>
         <Demo title="Textarea" block>
+            <DemoHead cols={['L', 'M', 'S']}/>
             <DemoGroup label="Textarea">
-                <Input.TextArea placeholder={i18n.multiple}/>
+                <Input.TextArea placeholder={i18n.multiple} size="large"/>
+                <Input.TextArea placeholder={i18n.multiple} />
+                <Input.TextArea placeholder={i18n.multiple} size="small"/>
             </DemoGroup>
             <DemoGroup label="Disabled">
+                <Input.TextArea disabled value={i18n.multiple} size="large"/>
                 <Input.TextArea disabled value={i18n.multiple} />
+                <Input.TextArea disabled value={i18n.multiple} size="small"/>
             </DemoGroup>
             <DemoGroup label="Max Length">
-                <Input.TextArea value={i18n.multiple} hasLimitHint maxLength={20}/>
+                <Input.TextArea value={i18n.multiple} showLimitHint maxLength={20} size="large"/>
+                <Input.TextArea value={i18n.multiple} showLimitHint maxLength={20}/>
+                <Input.TextArea value={i18n.multiple} showLimitHint maxLength={20} size="small"/>
             </DemoGroup>
         </Demo>
         <Demo title="Addon" block>

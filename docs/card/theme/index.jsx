@@ -1,6 +1,7 @@
 import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
 import ConfigProvider from '../../../src/config-provider';
 import Card from '../../../src/card';
+import Button from '../../../src/button';
 import zhCN from '../../../src/locale/zh-cn';
 import enUS from '../../../src/locale/en-us';
 import '../../../src/demo-helper/style.js';
@@ -15,7 +16,7 @@ const i18nMap = {
         subTitle: '副标题',
         link: '链接',
         noUnderline: '无标题分隔线',
-        noExpand: '已展开',
+        bullet: '带标题标识',
     },
     'en-us': {
         card: 'Card',
@@ -24,17 +25,18 @@ const i18nMap = {
         subTile: 'Description',
         link: 'Link',
         noUnderline: 'No Header Line',
-        noExpand: 'Expanded',
+        bullet: 'Bullet',
     }
 };
 
 const cardStyle = {
-    width: 300,
+    width: 360,
 };
 
 const placeholderStyle = {
-    height: '250px',
-    textAlign: 'center'
+    textAlign: 'left',
+    fontSize: '14px',
+    color: '#666'
 };
 
 const extendPlaceholderStyle = {
@@ -42,29 +44,26 @@ const extendPlaceholderStyle = {
     textAlign: 'center'
 };
 
-function CardDemo({ locale, noBullet, noSubtitle, noLink, demoFunction, onFunctionChange }) {
+function CardDemo({ locale, divider, noSubtitle, noLink, demoFunction, onFunctionChange }) {
     const commonProps = {
-        style: cardStyle,
-        showTitleBullet: !noBullet,
         subTitle: noSubtitle ? '' : locale.subTile,
-        extra: noLink ? '' : locale.link,
+        extra: noLink ? '' : <Button text type="primary">{locale.link}</Button>,
     };
 
     return (
         <Demo title={locale.card} demoFunction={demoFunction} onFunctionChange={onFunctionChange}>
             <DemoGroup label={locale.normal}>
-                <Card {...commonProps} title={locale.title}>
-                    <div style={placeholderStyle}></div>
-                </Card>
-            </DemoGroup>
-            <DemoGroup label={locale.noUnderline}>
-                <Card {...commonProps} title={locale.title} showHeadDivider={false}>
-                    <div style={placeholderStyle}></div>
-                </Card>
-            </DemoGroup>
-            <DemoGroup label={locale.noExpand}>
-                <Card {...commonProps} title={locale.title} showHeadDivider={false} contentHeight="auto">
-                    <div style={extendPlaceholderStyle}></div>
+                <Card style={cardStyle} free>
+                    <Card.Header title={locale.title} {...commonProps} />
+                    {divider && <Card.Divider inset={divider === 'inset'} />}
+                    <Card.Content>
+                        Lorem ipsum dolor sit amet, est viderer iuvaret perfecto et. Ne petentium quaerendum nec, eos ex recteque mediocritatem, ex usu assum legendos temporibus. Ius feugiat pertinacia an, cu verterem praesent quo.
+                    </Card.Content>
+                    {divider && <Card.Divider inset={divider === 'inset'} />}
+                    <Card.Actions>
+                        <Button text type="primary">Action 1</Button>
+                        <Button text type="primary">Action 2</Button>
+                    </Card.Actions>
                 </Card>
             </DemoGroup>
         </Demo>
@@ -76,12 +75,13 @@ class FunctionDemo extends React.Component {
         super(props);
         this.state = {
             demoFunction: {
-                showBullet: {
-                    label: '标题标识',
+                divider: {
+                    label: '分割线',
                     value: 'false',
                     enum: [
                         { label: '显示', value: 'true' },
-                        { label: '隐藏', value: 'false' }
+                        { label: '隐藏', value: 'false' },
+                        { label: '内嵌', value: 'inset' }
                     ],
                 },
                 showSubTitle: {
@@ -114,12 +114,12 @@ class FunctionDemo extends React.Component {
         const { title, locale } = this.props;
         const { demoFunction } = this.state;
 
-        const noBullet = demoFunction.showBullet.value === 'false';
+        const divider = demoFunction.divider.value === 'false' ? '' : demoFunction.divider.value;
         const noSubtitle = demoFunction.showSubTitle.value === 'false';
         const noLink = demoFunction.showLink.value === 'false';
         const cardDemoProps = {
             locale,
-            noBullet,
+            divider,
             noSubtitle,
             noLink,
             demoFunction,

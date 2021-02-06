@@ -17,6 +17,8 @@ $month-picker-prefix: '.' + $css-prefix + 'month-picker';
 
 $year-picker-prefix: '.' + $css-prefix + 'year-picker';
 
+$week-picker-prefix: '.' + $css-prefix + 'week-picker';
+
 $date-picker-btn-prefix: '.' + $css-prefix + 'btn';
 
 $date-picker-input-prefix: '.' + $css-prefix  + 'input';
@@ -46,3 +48,7 @@ $date-picker-panel-background: $color-white !default;
 /// separator border
 /// @namespace statement/normal/panel
 $date-picker-panel-time-panel-separator-color: $color-line1-2 !default;
+
+/// calendar icon
+/// @namespace statement/normal/header
+$date-picker-calendar-icon: $icon-content-calendar !default;

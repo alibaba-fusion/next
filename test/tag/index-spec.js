@@ -7,7 +7,20 @@ import Tag from '../../src/tag';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const { Selectable: TagCheckable, Group: TagGroup, Closable: TagClosable } = Tag;
+const {
+    Selectable: TagCheckable,
+    Group: TagGroup,
+    Closable: TagClosable,
+} = Tag;
+
+const PRESET_COLORS = {
+    blue: '#4494F9',
+    green: '#46BC15',
+    orange: '#FF9300',
+    red: '#FF3000',
+    turquoise: '#01C1B2',
+    yellow: '#FCCC12',
+};
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it */
@@ -97,6 +110,64 @@ describe('Tag', () => {
             assert(willUnmount.callCount === 1);
         });
     });
+
+    describe('color', () => {
+        // 预设颜色值匹配
+        Object.entries(PRESET_COLORS).forEach(([name]) => {
+            it(`should render preset ${name} color when type is primay`, () => {
+                const wrapper = mount(
+                    <Tag closable type="primary" color={name} />
+                );
+
+                // 背景一致，且颜色是白色
+                assert(wrapper.find('.next-tag').hasClass(`next-tag-${name}`));
+                wrapper.unmount();
+            });
+        });
+
+        Object.entries(PRESET_COLORS).forEach(([name, color]) => {
+            it(`should render preset ${name} color when type is normal`, () => {
+                const wrapper = mount(<Tag color={name} />);
+                // 背景透明 25%， 字体颜色不变
+                assert(
+                    wrapper
+                        .find('.next-tag')
+                        .hasClass(`next-tag-${name}-inverse`)
+                );
+                wrapper.unmount();
+            });
+        });
+
+        it('should render custom color ', () => {
+            const wrapper = mount(<Tag color={'#ff0'} />);
+
+            const style = wrapper.find('.next-tag').prop('style');
+            const { backgroundColor, color, borderColor } = style;
+
+            assert(
+                backgroundColor === '#ff0' &&
+                    color === '#fff' &&
+                    borderColor === '#ff0'
+            );
+
+            wrapper.unmount();
+        });
+
+        it('should render as primary type when type is normal but custom color is set', () => {
+            const wrapper = mount(<Tag color={'#ff0'} type="normal" />);
+
+            const style = wrapper.find('.next-tag').prop('style');
+            const { backgroundColor, color, borderColor } = style;
+
+            assert(
+                backgroundColor === '#ff0' &&
+                    color === '#fff' &&
+                    borderColor === '#ff0'
+            );
+
+            wrapper.unmount();
+        });
+    });
 });
 
 describe('TagCheckable', () => {
@@ -107,12 +178,17 @@ describe('TagCheckable', () => {
         });
 
         it('should update `checked` state when new props', () => {
-            const wrapper = mount(<TagCheckable checked/>);
+            const wrapper = mount(<TagCheckable checked />);
 
             wrapper.setProps({
-                checked: false
-            })
-            assert(wrapper.children().first().state('checked') === false)
+                checked: false,
+            });
+            assert(
+                wrapper
+                    .children()
+                    .first()
+                    .state('checked') === false
+            );
         });
     });
 

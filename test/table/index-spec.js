@@ -3,7 +3,6 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
-import ReactTestUtils from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Loading from '../../src/loading';
 import Icon from '../../src/icon';
@@ -17,7 +16,10 @@ describe('Table', () => {
     let dataSource = [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }],
         table,
         wrapper,
-        timeout;
+        timeout,
+        stickyLock,
+        stickyLockWrapper,
+        timeoutStickyLock;
 
     beforeEach(() => {
         table = (
@@ -27,10 +29,27 @@ describe('Table', () => {
             </Table>
         );
 
+        stickyLock = (
+            <Table.StickyLock dataSource={dataSource}>
+                <Table.Column dataIndex="id" />
+                <Table.Column dataIndex="name" />
+            </Table.StickyLock>
+        );
+
         wrapper = mount(table);
+        stickyLockWrapper = mount(stickyLock);
         timeout = (props, callback) => {
             return new Promise(resolve => {
                 wrapper.setProps(props);
+                setTimeout(function() {
+                    resolve();
+                }, 10);
+            }).then(callback);
+        };
+
+        timeoutStickyLock = (props, callback) => {
+            return new Promise(resolve => {
+                stickyLockWrapper.setProps(props);
                 setTimeout(function() {
                     resolve();
                 }, 10);
@@ -40,6 +59,7 @@ describe('Table', () => {
 
     afterEach(() => {
         table = null;
+        stickyLockWrapper = null;
     });
 
     it('should mount table', () => {
@@ -90,6 +110,19 @@ describe('Table', () => {
                 assert(
                     wrapper.find('.next-checkbox-wrapper.checked').length === 1
                 );
+                done();
+            }
+        );
+    });
+
+    it('should render when dataSource is [] & children is null', done => {
+        timeout(
+            {
+                dataSource: [],
+                children: [],
+            },
+            () => {
+                assert(wrapper);
                 done();
             }
         );
@@ -220,6 +253,27 @@ describe('Table', () => {
                     '.next-table-header .next-table-sort'
                 );
                 sortNode.simulate('click');
+                done();
+            }
+        );
+    });
+
+    it('should support tableLayout&tableWidth', done => {
+        timeout(
+            {
+                children: [
+                    <Table.Column dataIndex="id" sortable />,
+                    <Table.Column dataIndex="name" />,
+                ],
+                tableLayout: 'fixed',
+                tableWidth: 1200
+            },
+            () => {
+                const tablewrapper = wrapper.find('.next-table');
+                const table = wrapper.find('.next-table table');
+
+                assert(tablewrapper.hasClass('next-table-layout-fixed'));
+                assert(table.at(0).props().style.width === 1200)
                 done();
             }
         );
@@ -466,6 +520,29 @@ describe('Table', () => {
         );
     });
 
+    it('should support rowExpandable', done => {
+        timeout(
+            {
+                dataSource: [
+                    { id: '1', name: 'test', expandable: false },
+                    { id: '2', name: 'test2', expandable: true, },
+                    { id: '3', name: 'test3', expandable: true },
+                ],
+                expandedRowRender: record => record.name,
+                rowExpandable: record => record.expandable
+            },
+            () => {
+                let expandedTotal = wrapper
+                    .find('.next-table-row');
+                let expandedIcon = wrapper
+                    .find('.next-table-prerow .next-table-cell-wrapper .next-icon');
+
+                assert(expandedTotal.length - expandedIcon.length === 1);
+                done();
+            }
+        );
+    });
+
     it('should support multiple header', done => {
         timeout(
             {
@@ -493,6 +570,7 @@ describe('Table', () => {
             }
         );
     });
+
     it('should support filter', () => {
         let id;
         const onFilter = (...args) => {
@@ -540,6 +618,9 @@ describe('Table', () => {
             onFilter,
             children: [<Table.Column dataIndex="id" filters={filters} />],
         });
+
+        assert(wrapper.find('next-table-filter-active').length === 0);
+
         wrapper.find('.next-icon-filter').simulate('click');
         wrapper
             .find('.next-btn')
@@ -558,6 +639,7 @@ describe('Table', () => {
             .simulate('click');
         assert.deepEqual(id, '3');
 
+        assert(wrapper.find('next-table-filter-active'));
         wrapper.setProps({
             filterParams: {
                 id: {
@@ -565,6 +647,7 @@ describe('Table', () => {
                 },
             },
         });
+        wrapper.find('.next-icon-filter').simulate('click');
         wrapper
             .find('.next-btn')
             .at(0)
@@ -669,6 +752,35 @@ describe('Table', () => {
                 done();
             }
         );
+    });
+
+    it('header should support colspan', done => {
+        wrapper.setProps({});
+
+        timeout(
+            {
+                children: [
+                    <Table.Column dataIndex="id" />,
+                    <Table.Column dataIndex="name" />,
+                ]
+            },
+            () => {
+                assert(wrapper.find('.next-table-header th').length === 2);
+            }
+        ).then(() => {
+            timeout(
+                {
+                    children: [
+                        <Table.Column dataIndex="id" colSpan="2" />,
+                        <Table.Column dataIndex="name" colSpan="0" />,
+                    ]
+                },
+                () => {
+                    assert(wrapper.find('.next-table-header th').length === 1);
+                    done();
+                }
+            )
+        });
     });
 
     it('should support colspan & rowspan', done => {
@@ -1021,22 +1133,81 @@ describe('Table', () => {
     });
 
     it('should support lock scroll x', () => {
+        const ds = new Array(30).fill(1).map((val, i) => {
+           return { id: i, name: 'test' + i }
+        });
         wrapper.setProps({
             children: [
                 <Table.Column dataIndex="id" lock width={200} />,
-                <Table.Column dataIndex="name" width={200} />,
-                <Table.Column dataIndex="id" lock="right" width={200} />,
+                <Table.Column dataIndex="name" width={500} />,
+                <Table.Column dataIndex="id" lock="right" width={700} />,
             ],
+            fixedHeader: true,
+            dataSource: ds,
         });
-        wrapper.debug();
+
         assert(wrapper.find('div.next-table-lock-left').length === 1);
         assert(wrapper.find('div.next-table-lock-right').length === 1);
 
-        const body = wrapper
-            .find('div.next-table-lock .next-table-body')
+        wrapper
+            .find('div.next-table-lock .next-table-inner .next-table-body')
             .at(1)
             .props()
-            .onWheel({ deltaY: 200, deltaX: 5 });
+            .onLockScroll({
+                target: {
+                    scrollLeft: 30,
+                    scrollTop: 20
+                }
+            });
+
+        wrapper
+            .find('div.next-table-lock-right .next-table-body')
+            .at(1)
+            .props()
+            .onLockScroll({
+                target: {
+                    scrollLeft: 30,
+                    scrollTop: 20
+                }
+            });
+    });
+
+    it('should support StickyLock', done => {
+        const ds = new Array(30).fill(1).map((val, i) => {
+           return { id: i, name: 'test' + i }
+        });
+        stickyLockWrapper.setProps({
+            children: [
+                <Table.Column dataIndex="id" lock width={200} />,
+                <Table.Column dataIndex="name" width={500} />,
+                <Table.Column dataIndex="id" lock="right" width={700} />,
+            ],
+            dataSource: ds,
+        });
+
+        wrapper.setProps({
+            children: [
+                <Table.Column dataIndex="id" lock width={200} />,
+                <Table.Column dataIndex="name" width={500} />,
+                <Table.Column dataIndex="name" width={500} />,
+                <Table.Column dataIndex="id" lock="right" width={700} />,
+            ],
+            dataSource: ds,
+            tableWidth: 1000,
+        });
+
+        assert(stickyLockWrapper.find('div.next-table-lock-left').length === 0);
+        assert(stickyLockWrapper.find('div.next-table-lock-right').length === 0);
+        assert(stickyLockWrapper.find('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last').at(0).instance().style.position === 'sticky');
+        wrapper.update();
+        stickyLockWrapper.update();
+
+        setTimeout(() => {
+            // assert(wrapper.find('div.next-table-lock.next-table-scrolling-to-right').length === 1);
+            // assert(stickyLockWrapper.find('div.next-table-lock.next-table-scrolling-to-right').length === 1);
+            assert(stickyLockWrapper.find('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last').length === ds.length);
+            done();
+        }, 500);
     });
 
     it('should support align alignHeader', () => {

@@ -10,7 +10,7 @@ Enzyme.configure({ adapter: new Adapter() });
 const Item = Timeline.Item;
 
 /* eslint-disable */
-describe('Button', () => {
+describe('Timeline', () => {
     describe('render', () => {
         it('should render a timeline', () => {
             const wrapper = mount(

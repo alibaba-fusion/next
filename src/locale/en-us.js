@@ -32,6 +32,7 @@ export default {
         datetimePlaceholder: 'Select Date And Time',
         monthPlaceholder: 'Select Month',
         yearPlaceholder: 'Select Year',
+        weekPlaceholder: 'Select Week',
         now: 'Now',
         selectTime: 'Select Time',
         selectDate: 'Select Date',
@@ -64,18 +65,21 @@ export default {
         labelPrev: 'Previous page, current page {current}',
         labelNext: 'Next page, current page {current}',
         inputAriaLabel: 'Please enter what page to skip to',
-        selectAriaLabel:
-            'Please select how many items are displayed on each page',
+        selectAriaLabel: 'Please select how many items are displayed on each page',
         pageSize: 'Items per page:',
     },
     Input: {
         clear: 'Clear',
+    },
+    List: {
+        empty: 'No Data',
     },
     Select: {
         selectPlaceholder: 'Please Select',
         autoCompletePlaceholder: 'Please Input',
         notFoundContent: 'No Options',
         maxTagPlaceholder: 'Selected {selected}/{total} Total',
+        selectAll: 'Select All',
     },
     Table: {
         empty: 'No Data',
@@ -112,8 +116,7 @@ export default {
         },
         drag: {
             text: 'Click or Drag the file to this area to upload',
-            hint:
-                'Support docx, xls, PDF, rar, zip, PNG, JPG and other files upload',
+            hint: 'Support docx, xls, PDF, rar, zip, PNG, JPG and other files upload',
         },
         upload: {
             delete: 'Delete',
@@ -127,5 +130,12 @@ export default {
     },
     Rating: {
         description: 'Rating Options',
+    },
+    Switch: {
+        on: 'on',
+        off: 'off',
+    },
+    Tab: {
+        closeAriaLabel: 'close',
     },
 };

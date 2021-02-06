@@ -8,6 +8,7 @@ import { func, obj } from '../../util';
 import Item from './item';
 import SelectabelItem from './selectable-item';
 import PopupItem from './popup-item';
+import { getChildSelected } from './util';
 
 const { Expand } = Animate;
 const { bindCtx } = func;
@@ -25,7 +26,6 @@ export default class SubMenu extends Component {
         level: PropTypes.number,
         inlineLevel: PropTypes.number,
         groupIndent: PropTypes.number,
-        noIcon: PropTypes.bool,
         /**
          * 标签内容
          */
@@ -40,6 +40,10 @@ export default class SubMenu extends Component {
          */
         mode: PropTypes.oneOf(['inline', 'popup']),
         /**
+         * 是否需要提示当前项可展开的 icon，默认是有的
+         */
+        noIcon: PropTypes.bool,
+        /**
          * 菜单项或下一级子菜单
          */
         children: PropTypes.node,
@@ -49,6 +53,7 @@ export default class SubMenu extends Component {
         triggerType: PropTypes.oneOf(['click', 'hover']),
         align: PropTypes.oneOf(['outside', 'follow']),
         parentMode: PropTypes.oneOf(['inline', 'popup']),
+        parent: PropTypes.any,
     };
 
     static defaultProps = {
@@ -60,13 +65,7 @@ export default class SubMenu extends Component {
     constructor(props) {
         super(props);
 
-        bindCtx(this, [
-            'handleMouseEnter',
-            'handleMouseLeave',
-            'handleClick',
-            'handleOpen',
-            'afterLeave',
-        ]);
+        bindCtx(this, ['handleMouseEnter', 'handleMouseLeave', 'handleClick', 'handleOpen', 'afterLeave']);
     }
 
     componentDidMount() {
@@ -86,21 +85,6 @@ export default class SubMenu extends Component {
         const { openKeys } = root.state;
 
         return openKeys.indexOf(_key) > -1;
-    }
-
-    getChildSelected() {
-        const { _key, root } = this.props;
-        const { selectMode } = root.props;
-        const { selectedKeys } = root.state;
-
-        const _keyPos = root.k2n[_key].pos;
-
-        return (
-            !!selectMode &&
-            selectedKeys.some(
-                key => root.k2n[key] && root.k2n[key].pos.indexOf(_keyPos) === 0
-            )
-        );
     }
 
     handleMouseEnter(e) {
@@ -172,12 +156,16 @@ export default class SubMenu extends Component {
         } = root.props;
         const triggerType = propsTriggerType || rootTriggerType;
         const open = this.getOpen();
-        const isChildSelected = this.getChildSelected();
 
-        const others = obj.pickOthers(
-            Object.keys(SubMenu.propTypes),
-            this.props
-        );
+        const { selectedKeys, _k2n } = root.state;
+        const isChildSelected = getChildSelected({
+            _key,
+            _k2n,
+            selectMode,
+            selectedKeys,
+        });
+
+        const others = obj.pickOthers(Object.keys(SubMenu.propTypes), this.props);
 
         const liProps = {
             className: cx({
@@ -200,15 +188,17 @@ export default class SubMenu extends Component {
                 [`${prefix}child-selected`]: isChildSelected,
             }),
         };
+
+        if (typeof label === 'string') {
+            itemProps.title = label;
+        }
+
         const arrorProps = {
-            type:
-                inlineArrowDirection === 'right' ? 'arrow-right' : 'arrow-down',
+            type: inlineArrowDirection === 'right' ? 'arrow-right' : 'arrow-down',
             className: cx({
                 [`${prefix}menu-icon-arrow`]: true,
-                [`${prefix}menu-icon-arrow-down`]:
-                    inlineArrowDirection === 'down',
-                [`${prefix}menu-icon-arrow-right`]:
-                    inlineArrowDirection === 'right',
+                [`${prefix}menu-icon-arrow-down`]: inlineArrowDirection === 'down',
+                [`${prefix}menu-icon-arrow-right`]: inlineArrowDirection === 'right',
                 [`${prefix}open`]: open,
             }),
         };
@@ -238,12 +228,7 @@ export default class SubMenu extends Component {
         }
 
         const subMenu = open ? (
-            <ul
-                role={roleMenu}
-                dir={rtl ? 'rtl' : undefined}
-                ref="subMenu"
-                className={newSubMenuContentClassName}
-            >
+            <ul role={roleMenu} dir={rtl ? 'rtl' : undefined} className={newSubMenuContentClassName}>
                 {this.passParentToChildren(children)}
             </ul>
         ) : null;
@@ -255,10 +240,7 @@ export default class SubMenu extends Component {
                     {noIcon ? null : <Icon {...arrorProps} />}
                 </NewItem>
                 {expandAnimation ? (
-                    <Expand
-                        animationAppear={false}
-                        afterLeave={this.afterLeave}
-                    >
+                    <Expand animationAppear={false} afterLeave={this.afterLeave}>
                         {subMenu}
                     </Expand>
                 ) : (
@@ -269,12 +251,7 @@ export default class SubMenu extends Component {
     }
 
     renderPopup() {
-        const {
-            children,
-            subMenuContentClassName,
-            noIcon,
-            ...others
-        } = this.props;
+        const { children, subMenuContentClassName, noIcon, ...others } = this.props;
         const root = this.props.root;
         const { prefix, popupClassName, popupStyle, rtl } = root.props;
 
@@ -289,12 +266,7 @@ export default class SubMenu extends Component {
 
         return (
             <PopupItem {...others} noIcon={noIcon} hasSubMenu>
-                <ul
-                    role="menu"
-                    dir={rtl ? 'rtl' : undefined}
-                    className={newClassName}
-                    style={popupStyle}
-                >
+                <ul role="menu" dir={rtl ? 'rtl' : undefined} className={newClassName} style={popupStyle}>
                     {this.passParentToChildren(children)}
                 </ul>
             </PopupItem>

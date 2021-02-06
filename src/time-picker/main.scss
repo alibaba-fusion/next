@@ -1,4 +1,4 @@
-@import "../core/index-noreset";
+@import "../core/index-noreset.scss";
 
 @import "scss/variable";
 @import './scss/menu.scss';
@@ -22,5 +22,9 @@
         border-radius: $time-picker-panel-corner;
         background: $time-picker-panel-background;
         box-shadow: $time-picker-panel-shadow;
+    }
+
+    &-symbol-clock-icon::before {
+        content: $time-picker-clock-icon;
     }
 }

@@ -97,11 +97,4 @@ ReactDOM.render(<App/>, mountNode);
     padding: 4px;
     display: inline-block;
 }
-.custom span {
-    border: 1px solid green;
-    padding: 0px 5px;
-    height: 24px;
-    display: inline-block;
-    margin-right: 2px;
-}
 ````

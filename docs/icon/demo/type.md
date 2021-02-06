@@ -1,6 +1,6 @@
 # 图标列表
 
-- order: 1
+- order: 0
 
 点击图标复制代码。
 
@@ -29,7 +29,7 @@ const types = [
     'calendar', 'ashbin', 'upload', 'download', 'set',
     'edit', 'refresh', 'filter', 'attachment', 'account',
     'email', 'atm', 'copy', 'exit', 'eye', 'eye-close', 'toggle-left', 'toggle-right',
-    'lock', 'unlock','chart-pie', 'chart-bar'
+    'lock', 'unlock','chart-pie', 'chart-bar', 'form', 'detail', 'list', 'dashboard',
 ];
 
 

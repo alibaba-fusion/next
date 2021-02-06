@@ -48,12 +48,12 @@ class Rating extends Component {
         allowHalf: PropTypes.bool,
         /**
          * 用户点击评分时触发的回调
-         * @param {String} value 评分值
+         * @param {Number} value 评分值
          */
         onChange: PropTypes.func,
         /**
          * 用户hover评分时触发的回调
-         * @param {String} value 评分值
+         * @param {Number} value 评分值
          */
         onHoverChange: PropTypes.func,
         /**
@@ -75,18 +75,32 @@ class Rating extends Component {
          * 自定义国际化文案对象
          */
         locale: PropTypes.object,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
+         * 是否为只读态，效果上同 disabeld
+         */
+        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
         prefix: 'next-',
         size: 'medium',
         disabled: false,
+        readOnly: false,
+        isPreview: false,
         count: 5,
         showGrade: false,
         defaultValue: 0,
         readAs: val => val,
         allowHalf: false,
-        iconType: 'favorites-filling',
         onChange: noop,
         onHoverChange: noop,
         locale: zhCN.Rating,
@@ -113,21 +127,26 @@ class Rating extends Component {
         };
         this.timer = null;
 
-        bindCtx(this, [
-            'handleClick',
-            'handleHover',
-            'handleLeave',
-            'onKeyDown',
-        ]);
+        bindCtx(this, ['handleClick', 'handleHover', 'handleLeave', 'onKeyDown']);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
+        const state = {};
         if ('value' in nextProps) {
-            return {
-                value: nextProps.value || 0,
-            };
+            state.value = nextProps.value || 0;
         }
-        return null;
+
+        if (
+            'disabled' in nextProps ||
+            'readOnly' in nextProps ||
+            'isPreview' in nextProps ||
+            'renderPreview' in nextProps
+        ) {
+            state.disabled =
+                nextProps.disabled || nextProps.readOnly || (nextProps.isPreview && !('renderPreview' in nextProps));
+        }
+
+        return state;
     }
 
     componentDidMount() {
@@ -149,13 +168,11 @@ class Rating extends Component {
     getRenderResult() {
         const { count } = this.props;
         const { iconSpace, iconSize } = this.state;
-        const icon = this.refs['rating-icon-0'];
+        const icon = this['refs-rating-icon-0'];
 
         if (icon && this.underlayNode) {
             const newIconSize = icon.offsetWidth;
-            const newIconSpace =
-                (this.underlayNode.offsetWidth - count * newIconSize) /
-                (count + 1);
+            const newIconSpace = (this.underlayNode.offsetWidth - count * newIconSize) / (count + 1);
 
             if (newIconSize !== iconSize || newIconSpace !== iconSpace) {
                 this.setState({
@@ -175,23 +192,16 @@ class Rating extends Component {
 
         const pos = e.pageX - this.underlayNode.getBoundingClientRect().left;
         const fullNum = Math.floor(pos / (iconSpace + iconSize));
-        const surplusNum =
-            (pos - fullNum * (iconSpace + iconSize) - iconSpace) / iconSize;
+        const surplusNum = (pos - fullNum * (iconSpace + iconSize) - iconSpace) / iconSize;
         let value = Number(fullNum) + Number(surplusNum.toFixed(1));
         if (value >= count) {
             value = count;
         } else if (allowHalf) {
             const floorValue = Math.floor(value);
             if (rtl) {
-                value =
-                    value - 0.5 >= floorValue
-                        ? floorValue + 1.5
-                        : floorValue + 1;
+                value = value - 0.5 >= floorValue ? floorValue + 1.5 : floorValue + 1;
             } else {
-                value =
-                    value - 0.5 >= floorValue
-                        ? floorValue + 1
-                        : floorValue + 0.5;
+                value = value - 0.5 >= floorValue ? floorValue + 1 : floorValue + 0.5;
             }
         } else {
             value = Math.floor(value) + 1;
@@ -201,6 +211,10 @@ class Rating extends Component {
     }
 
     handleHover(e) {
+        if (this.state.disabled) {
+            return;
+        }
+
         const value = this.getValue(e);
         const { onHoverChange } = this.props;
         if (value !== this.state.hoverValue) {
@@ -215,6 +229,10 @@ class Rating extends Component {
     }
 
     handleLeave() {
+        if (this.state.disabled) {
+            return;
+        }
+
         this.clearTimer();
 
         this.setState({
@@ -223,7 +241,12 @@ class Rating extends Component {
     }
 
     onKeyDown(e) {
-        const { disabled, onKeyDown, count } = this.props;
+        if (this.state.disabled) {
+            return;
+        }
+
+        const { onKeyDown, count } = this.props;
+        const { disabled } = this.state;
         if (disabled || supportKeys.indexOf(e.keyCode) < 0) {
             return !onKeyDown || onKeyDown(e);
         }
@@ -265,10 +288,17 @@ class Rating extends Component {
     }
 
     handleChecked(index) {
+        if (this.state.disabled) {
+            return;
+        }
+
         this.setState({ hoverValue: index });
     }
 
     handleClick(e) {
+        if (this.state.disabled) {
+            return;
+        }
         const value = this.getValue(e);
         if (value < 0) {
             return;
@@ -291,12 +321,7 @@ class Rating extends Component {
             return 'auto';
         }
 
-        const value = Rating.currentValue(
-            0,
-            this.props.count,
-            hoverValue,
-            this.state.value
-        );
+        const value = Rating.currentValue(0, this.props.count, hoverValue, this.state.value);
 
         const floorValue = Math.floor(value);
 
@@ -311,6 +336,10 @@ class Rating extends Component {
         return iconSize * (ceilValue - 1) + ceilValue * iconSpace;
     }
 
+    saveRef = (ref, i) => {
+        this[`refs-rating-icon-${i}`] = ref;
+    };
+
     render() {
         const {
             id,
@@ -321,11 +350,14 @@ class Rating extends Component {
             size,
             iconType,
             strokeMode,
-            disabled,
             readAs,
             rtl,
+            isPreview,
+            renderPreview,
             locale,
         } = this.props;
+
+        const { disabled } = this.state;
         const others = obj.pickOthers(Rating.propTypes, this.props);
         const { hoverValue, clicked } = this.state;
         const underlay = [],
@@ -334,12 +366,7 @@ class Rating extends Component {
         const enableA11y = !!id;
 
         // 获得Value
-        const value = Rating.currentValue(
-            0,
-            count,
-            hoverValue,
-            this.state.value
-        );
+        const value = Rating.currentValue(0, count, hoverValue, this.state.value);
 
         // icon的sizeMap
         const sizeMap = ICON_SIZE_MAP[size];
@@ -349,17 +376,20 @@ class Rating extends Component {
             const iconCls = classNames({
                 hover: hoverValue > 0 && isCurrent,
                 clicked: clicked && isCurrent,
+                [`${prefix}rating-symbol-icon`]: !iconType,
             });
-            const iconNode = (
+            const iconNode = iconType ? (
                 <Icon type={iconType} size={sizeMap} className={iconCls} />
+            ) : (
+                <Icon type="favorites-filling" size={sizeMap} className={iconCls} />
             );
 
+            const saveRefs = ref => {
+                this.saveRef(ref, i);
+            };
+
             underlay.push(
-                <span
-                    ref={`rating-icon-${i}`}
-                    key={`underlay-${i}`}
-                    className={`${prefix}rating-icon`}
-                >
+                <span ref={saveRefs} key={`underlay-${i}`} className={`${prefix}rating-icon`}>
                     {iconNode}
                 </span>
             );
@@ -385,11 +415,7 @@ class Rating extends Component {
                     className={`${prefix}rating-icon`}
                 >
                     {iconNode}
-                    {enableA11y ? (
-                        <span className={`${prefix}sr-only`}>
-                            {readAs(i + 1)}
-                        </span>
-                    ) : null}
+                    {enableA11y ? <span className={`${prefix}sr-only`}>{readAs(i + 1)}</span> : null}
                 </label>
             );
         }
@@ -407,6 +433,11 @@ class Rating extends Component {
 
         const baseCls = classNames(`${prefix}rating-base`, {
             [`${prefix}rating-base-disabled`]: disabled,
+        });
+
+        const previewCls = classNames({
+            [`${prefix}form-preview`]: true,
+            [className]: !!className,
         });
 
         const overlayStyle = {
@@ -430,9 +461,17 @@ class Rating extends Component {
             others.dir = 'rtl';
         }
 
+        if (isPreview && 'renderPreview' in this.props) {
+            return (
+                <div id={id} {...others} className={previewCls}>
+                    {renderPreview(value, this.props)}
+                </div>
+            );
+        }
+
         return (
             <div
-                id={id ? id : null}
+                id={id}
                 {...others}
                 className={ratingCls}
                 onKeyDown={this.onKeyDown}
@@ -441,17 +480,10 @@ class Rating extends Component {
                 aria-label={locale.description}
             >
                 <div className={baseCls} {...finalProps}>
-                    <div
-                        className={`${prefix}rating-underlay`}
-                        ref={n => (this.underlayNode = n)}
-                        aria-hidden
-                    >
+                    <div className={`${prefix}rating-underlay`} ref={n => (this.underlayNode = n)} aria-hidden>
                         {underlay}
                     </div>
-                    <div
-                        className={`${prefix}rating-overlay`}
-                        style={overlayStyle}
-                    >
+                    <div className={`${prefix}rating-overlay`} style={overlayStyle}>
                         {overlay}
                     </div>
                 </div>

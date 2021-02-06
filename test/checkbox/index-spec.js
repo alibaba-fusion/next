@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Enzyme, { shallow, mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
-import ReactTestUtils from 'react-dom/test-utils';
 import Checkbox from '../../src/checkbox/index';
 
 /* eslint-disable */
@@ -79,6 +78,12 @@ describe('Checkbox', () => {
             wrapper.find('input').simulate('change');
             assert(onChange.calledOnce);
         });
+        it('should return the passed value', () => {
+            const onChange = sinon.spy();
+            const wrapper = mount(<Checkbox onChange={onChange} value="banana" />);
+            wrapper.find('input').simulate('change');
+            assert(onChange.getCalls()[0].args[1].target.value === 'banana');
+        });
         it('should call `onMouseEnter`', () => {
             const onMouseEnter = sinon.spy();
             const wrapper1 = mount(<Checkbox onMouseEnter={onMouseEnter} />);
@@ -95,19 +100,33 @@ describe('Checkbox', () => {
 
     describe('[behavior] controlled', () => {
         it('should support controlled `checked` and `indeterminate`', () => {
-            const wrapper = shallow(<Checkbox checked={true} />).dive();
-            assert(wrapper.state().checked);
+            const wrapper = mount(<Checkbox checked />);
+            assert(wrapper.find('input').props().checked);
             assert(wrapper.find('.checked').length === 1);
 
             wrapper.setProps({
                 checked: false,
             });
-            assert(!wrapper.state().checked);
+            assert(!wrapper.find('input').props().checked);
             assert(wrapper.find('.checked').length === 0);
             wrapper.setProps({
                 indeterminate: true,
             });
             assert(wrapper.find('.indeterminate').length === 1);
+        });
+    });
+
+    describe('render in preview mode', () => {
+        it('should isPreview', () => {
+            const wrapper = mount(<Checkbox checked label="apple" isPreview />);
+            assert(wrapper.getDOMNode().innerText === 'apple');
+        });
+
+        it('should renderPreview', () => {
+            const wrapper = mount(
+                <Checkbox checked isPreview renderPreview={() => 'checked'} />
+            );
+            assert(wrapper.getDOMNode().innerText === 'checked');
         });
     });
 });

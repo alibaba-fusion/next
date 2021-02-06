@@ -15,7 +15,9 @@
     }
 
     &-pages {
-        display: inline-block;
+        display: inline-block; /* for ie9 */
+        display: inline-flex;
+        align-items: center;
     }
 
     &-list {
@@ -32,6 +34,8 @@
     }
 
     & &-item {
+        transition: none;
+        margin-left: $s-1;
         &.#{$css-prefix}current {
             border-color: $pagination-item-current-border-color;
             background: $pagination-item-current-bg;
@@ -51,6 +55,7 @@
         display: inline-block;
         color: $pagination-ellipsis-color;
         vertical-align: top;
+        margin-right: $s-1;
     }
 
     &-display {
@@ -151,7 +156,7 @@
         @include pagination-size(
             'ltr',
             $itemSplit: $pagination-small-item-split,
-            $itemPaddingLeftRight: $s-2 - 2px,
+            $itemPaddingLeftRight: calc(#{$s-2} - 2px),
             $itemBorderWidth: $pagination-small-item-border-width,
             $itemCorner: $pagination-small-item-corner,
             $ellipsisSize: $pagination-small-ellipsis-size,
@@ -184,7 +189,7 @@
         @include pagination-size(
             'ltr',
             $itemSplit: $pagination-item-split,
-            $itemPaddingLeftRight: $s-3 - 2px,
+            $itemPaddingLeftRight: calc(#{$s-3} - 2px),
             $itemBorderWidth: $pagination-item-border-width,
             $itemCorner: $pagination-item-corner,
             $ellipsisSize: $pagination-ellipsis-size,
@@ -217,7 +222,7 @@
         @include pagination-size(
             'ltr',
             $itemSplit: $pagination-large-item-split,
-            $itemPaddingLeftRight: $s-4 - 1px,
+            $itemPaddingLeftRight: calc(#{$s-4} - 1px),
             $itemBorderWidth: $pagination-large-item-border-width,
             $itemCorner: $pagination-large-item-corner,
             $ellipsisSize: $pagination-large-ellipsis-size,
@@ -244,5 +249,25 @@
         &.#{$css-prefix}mini {
             @include mini-size($s-2);
         }
+
+        #{$pagination-prefix}-ellipsis {
+            margin-right: $s-2;
+        }
+
+        #{$pagination-prefix}-item {
+            margin-left: $s-2;
+        }
+    }
+
+    &-icon-prev::before {
+        content: $pagination-icon-prev-content;
+    }
+
+    &-icon-next::before {
+        content: $pagination-icon-next-content;
+    }
+
+    &-icon-ellipsis::before {
+        content: $pagination-icon-ellipsis-content;
     }
 }

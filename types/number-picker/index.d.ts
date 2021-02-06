@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { ButtonProps } from '../button';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -23,7 +24,7 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 大小
      */
-    size?: 'large' | 'medium';
+    size?: 'large' | 'medium' | 'small';
 
     /**
      * 当前值
@@ -34,6 +35,11 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
      * 默认值
      */
     defaultValue?: number;
+
+    /**
+     * 文字后附加内容
+     */
+    innerAfter?: React.ReactNode;
 
     /**
      * 是否禁用
@@ -68,17 +74,17 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 键盘按下
      */
-    onKeyDown?: () => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 
     /**
      * 焦点获得
      */
-    onFocus?: () => void;
+    onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 
     /**
      * 焦点失去
      */
-    onBlur?: () => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 
     /**
      * 数值订正后的回调
@@ -113,15 +119,16 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 增加按钮的props
      */
-    upBtnProps?: {};
+    upBtnProps?: ButtonProps;
 
     /**
      * 减少按钮的props
      */
-    downBtnProps?: {};
+    downBtnProps?: ButtonProps;
+    /**
+     * 控制按钮一直显示、隐藏
+     */
+    alwaysShowTrigger?: boolean;
 }
 
-export default class NumberPicker extends React.Component<
-    NumberPickerProps,
-    any
-> {}
+export default class NumberPicker extends React.Component<NumberPickerProps, any> {}

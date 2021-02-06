@@ -41,6 +41,19 @@ describe('Button', () => {
             assert(wrapper3.find('.next-btn-dark').length === 1);
         });
 
+        it('should render loading button', () => {
+            const wrapper = mount(<Button ghost loading>确定</Button>);
+
+            assert(wrapper.find('.next-btn-loading').length === 1);
+        });
+
+        it('should render custom loading button', () => {
+            const wrapper = mount(<Button ghost loading icons={{ loading: <Icon type="loading" /> }}>确定</Button>);
+
+            assert(wrapper.find('Icon.next-btn-custom-loading-icon').length === 1);
+            assert(wrapper.find('.next-btn-loading').length === 0);
+        });
+
         it('should render button with icon', () => {
             const wrapper = mount(
                 <Button type="primary">
@@ -59,7 +72,7 @@ describe('Button', () => {
             assert(wrapper2.find('.next-icon').hasClass('next-icon-last'));
         });
 
-        it('should render button by diffrent htmlType', () => {
+        it('should render button by different htmlType', () => {
             const wrapper = mount(
                 <Button component="a" htmlType="submit">
                     按钮

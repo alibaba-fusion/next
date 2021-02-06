@@ -29,6 +29,8 @@ class Mask extends React.Component {
         overlayProps: PropTypes.object,
         onClose: PropTypes.func,
         timeoutId: PropTypes.string,
+        style: PropTypes.object,
+        className: PropTypes.string,
     };
 
     static defaultProps = {
@@ -40,6 +42,8 @@ class Mask extends React.Component {
             in: 'pulse',
             out: 'zoomOut',
         },
+        style: {},
+        className: '',
     };
 
     state = {
@@ -80,6 +84,8 @@ class Mask extends React.Component {
             animation,
             overlayProps,
             timeoutId,
+            className,
+            style,
             ...others
         } = this.props;
         /* eslint-enable */
@@ -102,7 +108,8 @@ class Mask extends React.Component {
                     type={type}
                     shape="toast"
                     title={title}
-                    className={`${prefix}message-wrapper`}
+                    style={style}
+                    className={`${prefix}message-wrapper ${className}`}
                     onClose={this.handleClose}
                 >
                     {content}
@@ -116,7 +123,7 @@ const NewMask = config(Mask);
 
 const create = props => {
     /* eslint-disable no-unused-vars */
-    const { duration, afterClose, ...others } = props;
+    const { duration, afterClose, contextConfig, ...others } = props;
     /* eslint-enable no-unused-vars */
 
     const div = document.createElement('div');
@@ -127,7 +134,8 @@ const create = props => {
         afterClose && afterClose();
     };
 
-    const newContext = ConfigProvider.getContext();
+    let newContext = contextConfig;
+    if (!newContext) newContext = ConfigProvider.getContext();
 
     let mask,
         myRef,
@@ -284,4 +292,29 @@ export default {
     help,
     loading,
     notice,
+};
+
+export const withContext = WrappedComponent => {
+    const HOC = props => {
+        return (
+            <ConfigProvider.Consumer>
+                {contextConfig => (
+                    <WrappedComponent
+                        {...props}
+                        contextMessage={{
+                            show: (config = {}) => show({ ...config, contextConfig }),
+                            hide,
+                            success: (config = {}) => success({ ...config, contextConfig }),
+                            warning: (config = {}) => warning({ ...config, contextConfig }),
+                            error: (config = {}) => error({ ...config, contextConfig }),
+                            help: (config = {}) => help({ ...config, contextConfig }),
+                            loading: (config = {}) => loading({ ...config, contextConfig }),
+                            notice: (config = {}) => notice({ ...config, contextConfig }),
+                        }}
+                    />
+                )}
+            </ConfigProvider.Consumer>
+        );
+    };
+    return HOC;
 };

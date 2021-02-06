@@ -69,7 +69,6 @@ class App extends React.Component {
                 onSort={this.onSort.bind(this)}
                 expandedRowRender={(record) => record.title}
                 onRowClick={() => console.log('rowClick')}
-                onExpandedRowClick={() => console.log('expandedRowClick')}
                 expandedRowIndent={this.state.expandedRowIndent}
             >
                 <Table.Column title="Id" dataIndex="id" sortable/>

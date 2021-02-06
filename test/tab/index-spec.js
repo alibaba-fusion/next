@@ -310,6 +310,19 @@ describe('Tab', () => {
             );
         });
 
+        it('should not change tabs with keyboard when keyboard event is disabled', () => {
+            wrapper = mount(<Tab disableKeyboard>{panes}</Tab>);
+            wrapper
+                .find('.next-tabs-tab.active')
+                .simulate('keyDown', { keyCode: KEYCODE.RIGHT });
+            assert(
+                wrapper
+                    .find('.next-tabs-tab')
+                    .at(0)
+                    .hasClass('active')
+            );
+        });
+
         it('should render with closeable tabs', () => {
             let tabKey;
             wrapper = mount(
@@ -400,7 +413,7 @@ describe('Tab', () => {
                 );
                 assert(wrapper.find('.next-tabs-btn-next').length === 1);
                 done();
-            }, 300);
+            }, 420);
         });
 
         it('should click prev/next to slide', done => {
@@ -432,7 +445,7 @@ describe('Tab', () => {
                     )
                 );
                 done();
-            }, 300);
+            }, 420);
         });
 
         it('should not render dropdown if not excessed', () => {

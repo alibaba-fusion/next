@@ -6,25 +6,36 @@ import selection from './selection';
 import expanded from './expanded';
 import virtual from './virtual';
 import lock from './lock';
+import stickyLock from './new-lock';
 import list from './list';
 import sticky from './sticky';
 import ListHeader from './list-header';
 import ListFooter from './list-footer';
+import { env } from '../util';
 
-const ORDER_LIST = [
-    fixed,
-    lock,
-    selection,
-    expanded,
-    tree,
-    virtual,
-    list,
-    sticky,
-];
+const { ieVersion } = env;
+
+const ORDER_LIST = [fixed, lock, selection, expanded, tree, virtual, list, sticky];
 const Table = ORDER_LIST.reduce((ret, current) => {
     ret = current(ret);
     return ret;
 }, Base);
+
+lock._typeMark = 'lock';
+expanded._typeMark = 'expanded';
+
+const StickyLockTable = ORDER_LIST.reduce((ret, current) => {
+    const newLock = !ieVersion;
+    if (current._typeMark === 'lock') {
+        ret = newLock ? stickyLock(ret) : lock(ret);
+    } else if (current._typeMark === 'expanded') {
+        ret = newLock ? expanded(ret, true) : expanded(ret);
+    } else {
+        ret = current(ret);
+    }
+    return ret;
+}, Base);
+
 Table.Base = Base;
 Table.fixed = fixed;
 Table.lock = lock;
@@ -37,6 +48,8 @@ Table.sticky = sticky;
 
 Table.GroupHeader = ListHeader;
 Table.GroupFooter = ListFooter;
+
+Table.StickyLock = StickyLockTable;
 
 export default ConfigProvider.config(Table, {
     componentName: 'Table',

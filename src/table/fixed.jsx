@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { findDOMNode } from 'react-dom';
 import classnames from 'classnames';
 import { dom } from '../util';
 import HeaderComponent from './fixed/header';
@@ -44,46 +45,36 @@ export default function fixed(BaseComponent) {
 
         static childContextTypes = {
             fixedHeader: PropTypes.bool,
+            getNode: PropTypes.func,
+            onFixedScrollSync: PropTypes.func,
+            getTableInstanceForFixed: PropTypes.func,
             maxBodyHeight: PropTypes.oneOfType([
                 PropTypes.number,
                 PropTypes.string,
             ]),
-            onBodyScroll: PropTypes.func,
-            getNode: PropTypes.func,
         };
+
+        state = {};
 
         getChildContext() {
             return {
                 fixedHeader: this.props.fixedHeader,
                 maxBodyHeight: this.props.maxBodyHeight,
-                onBodyScroll: this.onBodyScroll,
+                getTableInstanceForFixed: this.getTableInstance,
+                onFixedScrollSync: this.onFixedScrollSync,
                 getNode: this.getNode,
             };
         }
 
         componentDidMount() {
             this.adjustFixedHeaderSize();
+            this.scrollToRightEnd = undefined;
+            this.onFixedScrollSync({ currentTarget: this.bodyNode });
         }
 
         componentDidUpdate() {
             this.adjustFixedHeaderSize();
-        }
-
-        adjustFixedHeaderSize() {
-            const { hasHeader, fixedHeader, rtl } = this.props;
-            const paddingName = rtl ? 'paddingLeft' : 'paddingRight';
-
-            if (hasHeader && fixedHeader && !this.props.lockType) {
-                if (this.bodyNode.scrollHeight > this.bodyNode.clientHeight) {
-                    dom.setStyle(
-                        this.headerNode,
-                        paddingName,
-                        dom.scrollbar().width
-                    );
-                } else {
-                    dom.setStyle(this.headerNode, paddingName, 0);
-                }
-            }
+            this.onFixedScrollSync({ currentTarget: this.bodyNode });
         }
 
         getNode = (type, node, lockType) => {
@@ -91,18 +82,87 @@ export default function fixed(BaseComponent) {
                 ? lockType.charAt(0).toUpperCase() + lockType.substr(1)
                 : '';
             this[`${type}${lockType}Node`] = node;
-            if (type === 'header' && !lockType) {
-                this.innerHeaderNode = this.headerNode.querySelector('div');
+        };
+
+        getTableInstance = (type, instance) => {
+            type = '';
+            this[`table${type}Inc`] = instance;
+        };
+
+        getTableNode() {
+            const table = this.tableInc;
+            try {
+                // in case of finding an unmounted component due to cached data
+                // need to clear refs of table when dataSource Changed
+                // use try catch for temporary
+                return findDOMNode(table.tableEl);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        // for fixed header scroll left
+        onFixedScrollSync = (current = { currentTarget: {} }) => {
+            const currentTarget = current.currentTarget || {},
+                headerNode = this.headerNode,
+                bodyNode = this.bodyNode;
+
+            const { scrollLeft, scrollWidth, clientWidth } = currentTarget;
+            const scrollToRightEnd = !(scrollLeft < scrollWidth - clientWidth);
+
+            if (scrollToRightEnd !== this.scrollToRightEnd) {
+                this.scrollToRightEnd = scrollToRightEnd;
+                const { prefix } = this.props;
+                const table = this.getTableNode();
+
+                const leftFunc = scrollToRightEnd ? 'removeClass' : 'addClass';
+                dom[leftFunc](table, `${prefix}table-scrolling-to-right`);
+            }
+            if (current.currentTarget !== current.target) {
+                return;
+            }
+            if (currentTarget === bodyNode) {
+                if (headerNode && scrollLeft !== headerNode.scrollLeft) {
+                    headerNode.scrollLeft = scrollLeft;
+                }
+            } else if (currentTarget === headerNode) {
+                if (bodyNode && scrollLeft !== bodyNode.scrollLeft) {
+                    bodyNode.scrollLeft = scrollLeft;
+                }
             }
         };
 
-        onBodyScroll = () => {
-            this.scrollTo(this.bodyNode.scrollLeft, this.bodyNode.scrollTop);
-        };
+        adjustFixedHeaderSize() {
+            const { hasHeader, rtl } = this.props;
+            const paddingName = rtl ? 'paddingLeft' : 'paddingRight';
+            const marginName = rtl ? 'marginLeft' : 'marginRight';
+            const body = this.bodyNode;
 
-        scrollTo(x) {
-            if (this.innerHeaderNode) {
-                this.innerHeaderNode.scrollLeft = x;
+            if (hasHeader && !this.props.lockType && body) {
+                const scrollBarSize = +dom.scrollbar().width || 0;
+                const hasVerScroll = body.scrollHeight > body.clientHeight,
+                    hasHozScroll = body.scrollWidth > body.clientWidth;
+                const style = {
+                    [paddingName]: scrollBarSize,
+                    [marginName]: scrollBarSize,
+                };
+
+                if (!hasVerScroll) {
+                    style[paddingName] = 0;
+                    style[marginName] = 0;
+                }
+
+                if (+scrollBarSize) {
+                    style.marginBottom = -scrollBarSize;
+                    if (hasHozScroll) {
+                        style.paddingBottom = scrollBarSize;
+                    } else {
+                        style.paddingBottom = scrollBarSize;
+                        style[marginName] = 0;
+                    }
+                }
+
+                dom.setStyle(this.headerNode, style);
             }
         }
 
@@ -113,6 +173,8 @@ export default function fixed(BaseComponent) {
                 className,
                 prefix,
                 fixedHeader,
+                lockType,
+                dataSource,
                 maxBodyHeight,
                 ...others
             } = this.props;
@@ -129,12 +191,16 @@ export default function fixed(BaseComponent) {
                 }
                 className = classnames({
                     [`${prefix}table-fixed`]: true,
+                    [`${prefix}table-wrap-empty`]: !dataSource.length,
                     [className]: className,
                 });
             }
+
             return (
                 <BaseComponent
                     {...others}
+                    dataSource={dataSource}
+                    lockType={lockType}
                     components={components}
                     className={className}
                     prefix={prefix}

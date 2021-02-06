@@ -63,11 +63,6 @@ export interface CalendarProps extends HTMLAttributesWeak, CommonProps {
      * 不可选择的日期
      */
     disabledDate?: (calendarDate: {}, view: string) => boolean;
-
-    /**
-     * 国际化配置
-     */
-    locale?: {};
 }
 
 export default class Calendar extends React.Component<CalendarProps, any> {}

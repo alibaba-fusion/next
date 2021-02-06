@@ -23,7 +23,7 @@
         margin: 0;
         padding: 0;
         font-size: $time-picker-menu-item-font-size;
-        height: $time-picker-menu-item-height * 7;
+        height: calc(#{$time-picker-menu-item-height} * 7);
     }
 
     &-item {

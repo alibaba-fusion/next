@@ -1,4 +1,4 @@
-@import "../core/index-noreset";
+@import "../core/index-noreset.scss";
 @import "scss/variable";
 @import "scss/mixin";
 @import "./rtl.scss";
@@ -30,6 +30,18 @@
 
     &-base-disabled {
         cursor: not-allowed;
+
+        #{$rating-prefix}-underlay #{$rating-prefix}-icon {
+            cursor: not-allowed;
+        }
+
+        #{$rating-prefix}-overlay #{$rating-prefix}-icon {
+            cursor: not-allowed;
+        }
+    }
+
+    &-symbol-icon::before {
+        content: $rating-grade-icon-content;
     }
 
     &-underlay {

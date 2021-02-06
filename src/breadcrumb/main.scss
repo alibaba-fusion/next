@@ -31,5 +31,9 @@
             $breadcrumb-text-current-color-hover,
             $breadcrumb-text-keyword-color-hover
         );
+
+        &-icon-sep::before {
+            content: $breadcrumb-icon-sep-content;
+        }
     }
 }

@@ -11,7 +11,7 @@ import enUS from '../../../src/locale/en-us';
 const i18nMaps = {
     'en-us': {
         title: 'Title Here',
-        content: 'Start your business here by searching a popular product',
+        content: ':) Start your business here by searching a popular product',
     },
 
     'zh-cn': {

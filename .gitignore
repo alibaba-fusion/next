@@ -62,6 +62,8 @@ typings/
 .next
 next/
 
+.history
+
 # special demo file for locally reappear issue
 docs/**/demo/issues.md
 
@@ -81,8 +83,7 @@ coverage/
 docs-lang/
 gemini-report/
 .idea/
-.vscode/
 *.iml
 *.log
 .DS_Store
-
+src/core-temp

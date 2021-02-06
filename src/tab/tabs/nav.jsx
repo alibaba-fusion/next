@@ -6,16 +6,16 @@ import Icon from '../../icon';
 import Overlay from '../../overlay';
 import Menu from '../../menu';
 import Animate from '../../animate';
-import { events, KEYCODE, dom } from '../../util';
-import {
-    triggerEvents,
-    getOffsetLT,
-    getOffsetWH,
-    isTransformSupported,
-} from './utils';
+import { events, KEYCODE, dom, obj } from '../../util';
+import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
 
 const floatRight = { float: 'right', zIndex: 1 };
 const floatLeft = { float: 'left', zIndex: 1 };
+const iconTypeMap = {
+    dropdown: 'arrow-down',
+    prev: 'arrow-left',
+    next: 'arrow-right',
+};
 const { Popup } = Overlay;
 
 class Nav extends React.Component {
@@ -36,6 +36,8 @@ class Nav extends React.Component {
         onClose: PropTypes.func,
         style: PropTypes.object,
         className: PropTypes.string,
+        locale: PropTypes.object,
+        icons: PropTypes.object,
     };
 
     constructor(props, context) {
@@ -65,7 +67,7 @@ class Nav extends React.Component {
         clearTimeout(this.slideTimer);
         this.slideTimer = setTimeout(() => {
             this.setSlideBtn();
-        }, 200);
+        }, 410);
     }
 
     componentWillUnmount() {
@@ -91,16 +93,12 @@ class Nav extends React.Component {
         // target should not be great than 0, i.e. should not over slide to left-most
         target = target >= 0 ? 0 : target;
         // when need to slide, should not slide to exceed right-most
-        target =
-            target <= wrapperWH - navWH && wrapperWH - navWH < 0
-                ? wrapperWH - navWH
-                : target;
+        target = target <= wrapperWH - navWH && wrapperWH - navWH < 0 ? wrapperWH - navWH : target;
 
         const relativeOffset = target - this.offset;
         if (this.activeTab && this.props.excessMode === 'slide' && setActive) {
             const activeTabWH = getOffsetWH(this.activeTab);
-            const activeTabOffset =
-                getOffsetLT(this.activeTab) + relativeOffset;
+            const activeTabOffset = getOffsetLT(this.activeTab) + relativeOffset;
             const wrapperOffset = getOffsetLT(this.wrapper);
             target = this._adjustTarget({
                 wrapperOffset,
@@ -112,6 +110,15 @@ class Nav extends React.Component {
             });
         }
 
+        let scaleRate = 1;
+
+        if (this.nav && this.nav.offsetWidth) {
+            scaleRate = getOffsetWH(this.nav) / this.nav.offsetWidth;
+        }
+
+        const _ov = target / scaleRate;
+        const offsetValue = isNaN(_ov) ? target : _ov;
+
         if (this.offset !== target) {
             // needs move
             this.offset = target;
@@ -122,29 +129,29 @@ class Nav extends React.Component {
             if (tabPosition === 'left' || tabPosition === 'right') {
                 navOffset = canTransform
                     ? {
-                          value: `translate3d(0, ${target}px, 0)`,
+                          value: `translate3d(0, ${offsetValue}px, 0)`,
                       }
                     : {
                           name: 'top',
-                          value: `${target}px`,
+                          value: `${offsetValue}px`,
                       };
             } else if (!this.props.rtl) {
                 navOffset = canTransform
                     ? {
-                          value: `translate3d(${target}px, 0, 0)`,
+                          value: `translate3d(${offsetValue}px, 0, 0)`,
                       }
                     : {
                           name: 'left',
-                          value: `${target}px`,
+                          value: `${offsetValue}px`,
                       };
             } else {
                 navOffset = canTransform
                     ? {
-                          value: `translate3d(${-target}px, 0, 0)`,
+                          value: `translate3d(${-1 * offsetValue}px, 0, 0)`,
                       }
                     : {
                           name: 'right',
-                          value: `${target}px`,
+                          value: `${offsetValue}px`,
                       };
             }
 
@@ -164,28 +171,16 @@ class Nav extends React.Component {
         }
     }
 
-    _adjustTarget({
-        wrapperOffset,
-        wrapperWH,
-        activeTabWH,
-        activeTabOffset,
-        rtl,
-        target,
-    }) {
+    _adjustTarget({ wrapperOffset, wrapperWH, activeTabWH, activeTabOffset, rtl, target }) {
         if (
             // active tab covers wrapper right edge
             wrapperOffset + wrapperWH < activeTabOffset + activeTabWH &&
             activeTabOffset < wrapperOffset + wrapperWH
         ) {
             if (rtl) {
-                target += // Move more to make active tab totally in visible zone
-                    activeTabOffset + activeTabWH - (wrapperOffset + wrapperWH);
+                target += activeTabOffset + activeTabWH - (wrapperOffset + wrapperWH); // Move more to make active tab totally in visible zone
             } else {
-                target -=
-                    activeTabOffset +
-                    activeTabWH -
-                    (wrapperOffset + wrapperWH) +
-                    1;
+                target -= activeTabOffset + activeTabWH - (wrapperOffset + wrapperWH) + 1;
             }
 
             return target;
@@ -229,12 +224,11 @@ class Nav extends React.Component {
         // TEMP: 这里会受 Animate 影响，re-render 过程中 this.nav 实际上指向的是上次的 tabList 元素，建议暂时关闭 animation 解决
         const navWH = getOffsetWH(this.nav, tabPosition);
         const wrapperWH = getOffsetWH(this.wrapper, tabPosition);
-        const navbarWH = getOffsetWH(this.navbar, tabPosition);
         const minOffset = wrapperWH - navWH;
 
         let next;
         let prev;
-        if (minOffset >= 0 || navWH <= navbarWH) {
+        if (minOffset >= 0 || navWH <= wrapperWH) {
             next = false;
             prev = false;
             this.setOffset(0, false); // no need to check slide again since this call is invoked from inside setSlideBtn
@@ -248,6 +242,7 @@ class Nav extends React.Component {
             prev = true;
             next = true;
         }
+
         if ((prev || next) !== this.state.showBtn) {
             this.setState({
                 showBtn: prev || next,
@@ -298,9 +293,11 @@ class Nav extends React.Component {
         }
     };
 
-    defaultTabTemplateRender = (key, { prefix, title, closeable }) => {
+    defaultTabTemplateRender = (key, { title, closeable }) => {
+        const { locale, prefix } = this.props;
         const tail = closeable ? (
             <Icon
+                aria-label={locale.closeAriaLabel}
                 type="close"
                 tabIndex="0"
                 onKeyDown={e => this.onCloseKeyDown(key, e)}
@@ -309,7 +306,7 @@ class Nav extends React.Component {
             />
         ) : null;
         return (
-            <div className={`${this.props.prefix}tabs-tab-inner`}>
+            <div className={`${prefix}tabs-tab-inner`}>
                 {title}
                 {tail}
             </div>
@@ -322,14 +319,7 @@ class Nav extends React.Component {
 
         const rst = [];
         React.Children.forEach(tabs, child => {
-            const {
-                disabled,
-                className,
-                onClick,
-                onMouseEnter,
-                onMouseLeave,
-                style,
-            } = child.props;
+            const { disabled, className, onClick, onMouseEnter, onMouseLeave, style } = child.props;
 
             const active = activeKey === child.key;
             const cls = classnames(
@@ -346,21 +336,16 @@ class Nav extends React.Component {
             if (!disabled) {
                 events = {
                     onClick: this.onNavItemClick.bind(this, child.key, onClick),
-                    onMouseEnter: this.onNavItemMouseEnter.bind(
-                        this,
-                        child.key,
-                        onMouseEnter
-                    ),
-                    onMouseLeave: this.onNavItemMouseLeave.bind(
-                        this,
-                        child.key,
-                        onMouseLeave
-                    ),
+                    onMouseEnter: this.onNavItemMouseEnter.bind(this, child.key, onMouseEnter),
+                    onMouseLeave: this.onNavItemMouseLeave.bind(this, child.key, onMouseLeave),
                 };
             }
 
+            const dataProps = obj.pickAttrsWith(child.props, 'data-');
+
             rst.push(
                 <li
+                    {...dataProps}
                     role="tab"
                     key={child.key}
                     ref={active ? this.activeTabRefHandler : null}
@@ -379,24 +364,15 @@ class Nav extends React.Component {
     }
 
     scrollToActiveTab = () => {
-        if (
-            this.activeTab &&
-            ['slide', 'dropdown'].includes(this.props.excessMode)
-        ) {
+        if (this.activeTab && ['slide', 'dropdown'].includes(this.props.excessMode)) {
             const activeTabWH = getOffsetWH(this.activeTab);
             const wrapperWH = getOffsetWH(this.wrapper);
             const activeTabOffset = getOffsetLT(this.activeTab);
             const wrapperOffset = getOffsetLT(this.wrapper);
             const target = this.offset;
-            if (
-                activeTabOffset >= wrapperOffset + wrapperWH ||
-                activeTabOffset + activeTabWH <= wrapperOffset
-            ) {
-                this.setOffset(
-                    this.offset + wrapperOffset - activeTabOffset,
-                    true,
-                    true
-                );
+
+            if (activeTabOffset + activeTabWH >= wrapperOffset + wrapperWH || activeTabOffset < wrapperOffset) {
+                this.setOffset(this.offset + wrapperOffset - activeTabOffset, true, true);
                 return;
             }
             this.setOffset(target, true, true);
@@ -449,17 +425,26 @@ class Nav extends React.Component {
         }, 100);
     };
 
+    getIcon(type) {
+        const { prefix, icons, rtl } = this.props;
+        const iconType = iconTypeMap[type];
+        let icon = <Icon type={iconType} rtl={rtl} className={`${prefix}tab-icon-${type}`} />;
+        if (icons[type]) {
+            icon = typeof icons[type] === 'string' ? <Icon rtl={rtl} type={icons[type]} /> : icons[type];
+        }
+
+        return icon;
+    }
+
     renderDropdownTabs(tabs = []) {
         if (!tabs.length) {
             return null;
         }
 
         const { prefix, activeKey, triggerType, popupProps, rtl } = this.props;
-        const trigger = (
-            <button className={`${prefix}tabs-btn-down`}>
-                <Icon type="arrow-down" />
-            </button>
-        );
+        const dropdownIcon = this.getIcon('dropdown');
+
+        const trigger = <button className={`${prefix}tabs-btn-down`}>{dropdownIcon}</button>;
 
         return (
             <Popup
@@ -470,37 +455,15 @@ class Nav extends React.Component {
                 className={`${prefix}tabs-bar-popup`}
                 {...popupProps}
             >
-                <Menu
-                    rtl={rtl}
-                    selectedKeys={[activeKey]}
-                    onSelect={this.onSelectMenuItem}
-                    selectMode="single"
-                >
+                <Menu rtl={rtl} selectedKeys={[activeKey]} onSelect={this.onSelectMenuItem} selectMode="single">
                     {tabs.map(tab => {
-                        const {
-                            disabled,
-                            onClick,
-                            onMouseEnter,
-                            onMouseLeave,
-                        } = tab.props;
+                        const { disabled, onClick, onMouseEnter, onMouseLeave } = tab.props;
                         let events = {};
                         if (!disabled) {
                             events = {
-                                onClick: this.onNavItemClick.bind(
-                                    this,
-                                    tab.key,
-                                    onClick
-                                ),
-                                onMouseEnter: this.onNavItemMouseEnter.bind(
-                                    this,
-                                    tab.key,
-                                    onMouseEnter
-                                ),
-                                onMouseLeave: this.onNavItemMouseLeave.bind(
-                                    this,
-                                    tab.key,
-                                    onMouseLeave
-                                ),
+                                onClick: this.onNavItemClick.bind(this, tab.key, onClick),
+                                onMouseEnter: this.onNavItemMouseEnter.bind(this, tab.key, onMouseEnter),
+                                onMouseLeave: this.onNavItemMouseLeave.bind(this, tab.key, onMouseLeave),
                             };
                         }
                         return (
@@ -539,17 +502,7 @@ class Nav extends React.Component {
     };
 
     render() {
-        const {
-            prefix,
-            tabPosition,
-            excessMode,
-            extra,
-            onKeyDown,
-            animation,
-            style,
-            className,
-            rtl,
-        } = this.props;
+        const { prefix, tabPosition, excessMode, extra, onKeyDown, animation, style, className, rtl } = this.props;
         const state = this.state;
 
         let nextButton;
@@ -558,32 +511,22 @@ class Nav extends React.Component {
 
         const showNextPrev = state.showBtn;
 
-        if (
-            excessMode === 'dropdown' &&
-            showNextPrev &&
-            state.dropdownTabs.length
-        ) {
+        if (excessMode === 'dropdown' && showNextPrev && state.dropdownTabs.length) {
             restButton = this.renderDropdownTabs(state.dropdownTabs);
             prevButton = null;
             nextButton = null;
         } else if (showNextPrev) {
+            const prevIcon = this.getIcon('prev');
             prevButton = (
-                <button
-                    onClick={this.onPrevClick}
-                    className={`${prefix}tabs-btn-prev`}
-                    ref={this.prevBtnHandler}
-                >
-                    <Icon rtl={rtl} type="arrow-left" />
+                <button onClick={this.onPrevClick} className={`${prefix}tabs-btn-prev`} ref={this.prevBtnHandler}>
+                    {prevIcon}
                 </button>
             );
 
+            const nextIcon = this.getIcon('next');
             nextButton = (
-                <button
-                    onClick={this.onNextClick}
-                    className={`${prefix}tabs-btn-next`}
-                    ref={this.nextBtnHandler}
-                >
-                    <Icon rtl={rtl} type="arrow-right" />
+                <button onClick={this.onNextClick} className={`${prefix}tabs-btn-next`} ref={this.nextBtnHandler}>
+                    {nextIcon}
                 </button>
             );
             restButton = null;
@@ -602,15 +545,8 @@ class Nav extends React.Component {
         const tabList = this.renderTabList(this.props);
 
         const container = (
-            <div
-                className={containerCls}
-                onKeyDown={onKeyDown}
-                key="nav-container"
-            >
-                <div
-                    className={`${prefix}tabs-nav-wrap`}
-                    ref={this.wrapperRefHandler}
-                >
+            <div className={containerCls} onKeyDown={onKeyDown} key="nav-container">
+                <div className={`${prefix}tabs-nav-wrap`} ref={this.wrapperRefHandler}>
                     <div className={`${prefix}tabs-nav-scroll`}>
                         {animation ? (
                             <Animate
@@ -628,7 +564,7 @@ class Nav extends React.Component {
                         ) : (
                             <ul
                                 role="tablist"
-                                className={navCls}
+                                className={`${navCls} ${prefix}disable-animation`}
                                 ref={this.navRefHandler}
                             >
                                 {tabList}
@@ -661,19 +597,10 @@ class Nav extends React.Component {
             }
         }
 
-        const navbarCls = classnames(
-            {
-                [`${prefix}tabs-bar`]: true,
-            },
-            className
-        );
+        const navbarCls = classnames(`${prefix}tabs-bar`, className);
 
         return (
-            <div
-                className={navbarCls}
-                style={style}
-                ref={this.navbarRefHandler}
-            >
+            <div className={navbarCls} style={style} ref={this.navbarRefHandler}>
                 {navChildren}
             </div>
         );

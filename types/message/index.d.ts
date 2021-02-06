@@ -69,13 +69,15 @@ export interface MessageProps extends HTMLAttributesWeak, CommonProps {
     animation?: boolean;
 }
 
+type OpenProps = string | React.ReactElement | MessageProps;
+
 export default class Message extends React.Component<MessageProps, any> {
-    static show(props: {}): void;
+    static show(props: OpenProps): void;
     static hide(): void;
-    static success(props: {}): void;
-    static warning(props: {}): void;
-    static error(props: {}): void;
-    static help(props: {}): void;
-    static loading(props: {}): void;
-    static notice(props: {}): void;
+    static success(props: OpenProps): void;
+    static warning(props: OpenProps): void;
+    static error(props: OpenProps): void;
+    static help(props: OpenProps): void;
+    static loading(props: OpenProps): void;
+    static notice(props: OpenProps): void;
 }

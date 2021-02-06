@@ -8,7 +8,7 @@
 // 根据 Alibaba Base DPL 设计实现
 
 /// icon font path 字体路径
-$icon-font-path: "//at.alicdn.com/t/font_515771_7u6frotlpa6" !default;
+$icon-font-path: "//at.alicdn.com/t/font_515771_xjdbujl2iu" !default;
 
 /// icon font name 自定义的icon font 名称
 $icon-font-name: "icon" !default;
@@ -371,3 +371,34 @@ $icon-content-chart-bar: "\e612" !default;
 /// @export type
 /// @unconfigurable
 $icon-content-chart-pie: "\e613" !default;
+
+/// icon-content-form
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-form: "\e7fb" !default;
+
+/// icon-content-detail
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-detail: "\e7f8" !default;
+
+/// icon-content-list
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-list: "\e7f9" !default;
+
+/// icon-content-dashboard
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-dashboard: "\e7fa" !default;
+
+/// icon-reset
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-reset: "" !default;
+

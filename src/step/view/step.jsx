@@ -1,14 +1,15 @@
-import React, { Component, Children } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import React, { Component, Children } from 'react';
+import { polyfill } from 'react-lifecycles-compat';
 import { support, events, dom } from '../../util';
 
 const getHeight = el => dom.getStyle(el, 'height');
 const setHeight = (el, height) => dom.setStyle(el, 'height', height);
 
 /** Step */
-export default class Step extends Component {
+class Step extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -63,6 +64,14 @@ export default class Step extends Component {
         prefix: PropTypes.string,
     };
 
+    static getDerivedStateFromProps(newProps) {
+        if ('current' in newProps) {
+            return {
+                current: newProps.current,
+            };
+        }
+    }
+
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -82,14 +91,6 @@ export default class Step extends Component {
         this.adjustHeight();
     }
 
-    componentWillReceiveProps(newProps) {
-        if ('current' in newProps) {
-            this.setState({
-                current: newProps.current,
-            });
-        }
-    }
-
     componentDidUpdate() {
         this.adjustHeight();
     }
@@ -103,27 +104,23 @@ export default class Step extends Component {
 
     adjustHeight() {
         const { shape, direction, prefix, labelPlacement } = this.props;
+        const step = ReactDOM.findDOMNode(this.step);
         if (
             shape !== 'arrow' &&
             (direction === 'horizontal' || direction === 'hoz') &&
             (labelPlacement === 'vertical' || labelPlacement === 'ver')
         ) {
-            const step = ReactDOM.findDOMNode(this.step);
-            // just resize when init
-            if (step.style.height) return;
             const height = Array.prototype.slice
                 .call(step.getElementsByClassName(`${prefix}step-item`))
                 .reduce((ret, re) => {
                     const itemHeight =
-                        getHeight(re) +
-                        getHeight(
-                            re.getElementsByClassName(
-                                `${prefix}step-item-body`
-                            )[0]
-                        );
+                        getHeight(re.getElementsByClassName(`${prefix}step-item-container`)[0]) +
+                        getHeight(re.getElementsByClassName(`${prefix}step-item-body`)[0]);
                     return Math.max(itemHeight, ret);
                 }, 0);
             setHeight(step, height);
+        } else {
+            setHeight(step, '');
         }
     }
 
@@ -209,12 +206,7 @@ export default class Step extends Component {
 
         // 修改子节点属性
         const cloneChildren = Children.map(children, (child, index) => {
-            const status =
-                index < current
-                    ? 'finish'
-                    : index === current
-                    ? 'process'
-                    : 'wait';
+            const status = index < current ? 'finish' : index === current ? 'process' : 'wait';
 
             return React.cloneElement(child, {
                 prefix,
@@ -232,20 +224,15 @@ export default class Step extends Component {
                 tabIndex: 0,
                 // tabIndex: this.state.currentfocus === index ? '0' : '-1',
                 'aria-current': status === 'process' ? 'step' : null,
-                itemRender: child.props.itemRender
-                    ? child.props.itemRender
-                    : itemRender, // 优先使用Item的itemRender
+                itemRender: child.props.itemRender ? child.props.itemRender : itemRender, // 优先使用Item的itemRender
+                onResize: () => {
+                    this.step && this.adjustHeight();
+                },
             });
         });
 
-        const _direction =
-            direction === 'ver' || direction === 'vertical'
-                ? 'vertical'
-                : 'horizontal';
-        const _labelPlacement =
-            labelPlacement === 'ver' || labelPlacement === 'vertical'
-                ? 'vertical'
-                : 'horizontal';
+        const _direction = direction === 'ver' || direction === 'vertical' ? 'vertical' : 'horizontal';
+        const _labelPlacement = labelPlacement === 'ver' || labelPlacement === 'vertical' ? 'vertical' : 'horizontal';
         const stepCls = classNames({
             [`${prefix}step`]: true,
             [`${prefix}step-${shape}`]: shape,
@@ -267,3 +254,5 @@ export default class Step extends Component {
         );
     }
 }
+
+export default polyfill(Step);

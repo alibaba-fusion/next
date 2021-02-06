@@ -5,10 +5,7 @@ import { each } from './object';
  * 是否能使用 DOM 方法
  * @type {Boolean}
  */
-export const hasDOM =
-    typeof window !== 'undefined' &&
-    !!window.document &&
-    !!document.createElement;
+export const hasDOM = typeof window !== 'undefined' && !!window.document && !!document.createElement;
 
 /**
  * 节点是否包含指定 className
@@ -96,9 +93,7 @@ export function toggleClass(node, className) {
         return node.classList.toggle(className);
     } else {
         const flag = hasClass(node, className);
-        flag
-            ? removeClass(node, className, true)
-            : addClass(node, className, true);
+        flag ? removeClass(node, className, true) : addClass(node, className, true);
 
         return !flag;
     }
@@ -145,12 +140,10 @@ export const matches = (function() {
  * @return {Object}
  */
 function _getComputedStyle(node) {
-    return node && node.nodeType === 1
-        ? window.getComputedStyle(node, null)
-        : {};
+    return node && node.nodeType === 1 ? window.getComputedStyle(node, null) : {};
 }
 
-const PIXEL_PATTERN = /margin|padding|width|height|max|min|offset|size/i;
+const PIXEL_PATTERN = /margin|padding|width|height|max|min|offset|size|top/i;
 const removePixel = { left: 1, top: 1, right: 1, bottom: 1 };
 
 /**
@@ -201,17 +194,9 @@ export function getStyle(node, name) {
         return style;
     }
 
-    name = floatMap[name]
-        ? 'cssFloat' in node.style
-            ? 'cssFloat'
-            : 'styleFloat'
-        : name;
+    name = floatMap[name] ? ('cssFloat' in node.style ? 'cssFloat' : 'styleFloat') : name;
 
-    return _getStyleValue(
-        node,
-        name,
-        style.getPropertyValue(hyphenate(name)) || node.style[camelcase(name)]
-    );
+    return _getStyleValue(node, name, style.getPropertyValue(hyphenate(name)) || node.style[camelcase(name)]);
 }
 
 /**
@@ -239,11 +224,7 @@ export function setStyle(node, name, value) {
     if (typeof name === 'object' && arguments.length === 2) {
         each(name, (val, key) => setStyle(node, key, val));
     } else {
-        name = floatMap[name]
-            ? 'cssFloat' in node.style
-                ? 'cssFloat'
-                : 'styleFloat'
-            : name;
+        name = floatMap[name] ? ('cssFloat' in node.style ? 'cssFloat' : 'styleFloat') : name;
         if (typeof value === 'number' && PIXEL_PATTERN.test(name)) {
             value = `${value}px`;
         }
@@ -257,6 +238,7 @@ export function setStyle(node, name, value) {
  */
 export function scrollbar() {
     const scrollDiv = document.createElement('div');
+    scrollDiv.className += 'just-to-get-scrollbar-size';
 
     setStyle(scrollDiv, {
         position: 'absolute',
@@ -265,7 +247,7 @@ export function scrollbar() {
         overflow: 'scroll',
         top: '-9999px',
     });
-    document.body.appendChild(scrollDiv);
+    document.body && document.body.appendChild(scrollDiv);
     const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
     const scrollbarHeight = scrollDiv.offsetHeight - scrollDiv.clientHeight;
     document.body.removeChild(scrollDiv);
@@ -287,4 +269,81 @@ export function getOffset(node) {
         top: rect.top + win.pageYOffset,
         left: rect.left + win.pageXOffset,
     };
+}
+
+/**
+ * 获取不同单位转为 number 的长度
+ * @param {string|number} len 传入的长度
+ * @return {number} pixels
+ */
+export function getPixels(len) {
+    const win = document.defaultView;
+    if (typeof +len === 'number' && !isNaN(+len)) {
+        return +len;
+    }
+
+    if (typeof len === 'string') {
+        const PX_REG = /(\d+)px/;
+        const VH_REG = /(\d+)vh/;
+        if (Array.isArray(len.match(PX_REG))) {
+            return +len.match(PX_REG)[1] || 0;
+        }
+
+        if (Array.isArray(len.match(VH_REG))) {
+            const _1vh = win.innerHeight / 100;
+            return +(len.match(VH_REG)[1] * _1vh) || 0;
+        }
+    }
+
+    return 0;
+}
+
+/**
+ * 匹配特定选择器且离当前元素最近的祖先元素（也可以是当前元素本身），如果匹配不到，则返回 null
+ * @param {element} dom 待匹配的元素
+ * @param {string} selecotr 选择器
+ * @return {element} parent
+ */
+export function getClosest(dom, selector) {
+    /* istanbul ignore if */
+    if (!hasDOM || !dom) {
+        return null;
+    }
+
+    // ie9
+    /* istanbul ignore if */
+    if (!Element.prototype.closest) {
+        if (!document.documentElement.contains(dom)) return null;
+        do {
+            if (getMatches(dom, selector)) return dom;
+            dom = dom.parentElement;
+        } while (dom !== null);
+    } else {
+        return dom.closest(selector);
+    }
+    return null;
+}
+
+/**
+ * 如果元素被指定的选择器字符串选择，getMatches()  方法返回true; 否则返回false
+ * @param {element} dom 待匹配的元素
+ * @param {string} selecotr 选择器
+ * @return {element} parent
+ */
+export function getMatches(dom, selector) {
+    /* istanbul ignore if */
+    if (!hasDOM || !dom) {
+        return null;
+    }
+
+    /* istanbul ignore if */
+    if (Element.prototype.matches) {
+        return dom.matches(selector);
+    } else if (Element.prototype.msMatchesSelector) {
+        return dom.msMatchesSelector(selector);
+    } else if (Element.prototype.webkitMatchesSelector) {
+        return dom.webkitMatchesSelector(selector);
+    }
+
+    return null;
 }

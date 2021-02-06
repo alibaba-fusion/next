@@ -11,7 +11,7 @@ export interface ConfigProviderProps {
     /**
      * 国际化文案对象，属性为组件的 displayName
      */
-    locale?: {};
+    locale?: any;
 
     /**
      * 是否开启错误捕捉 errorBoundary
@@ -47,7 +47,7 @@ export interface ConfigProviderProps {
     /**
      * 组件树
      */
-    children?: React.ReactElement<any>;
+    children?: React.ReactNode;
     /**
      * 弹层挂载的容器节点
      */
@@ -58,6 +58,13 @@ export default class ConfigProvider extends React.Component<
     ConfigProviderProps,
     any
 > {
-    static config(Component: any, options: {}): any;
-    static getContextProps(props: {}, displayName: string): {};
+    static config(Component: any, options?: any): any;
+    static getContextProps(props: {}, displayName: string): any;
+    static initLocales(locales: any): any;
+    static setLanguage(language: string): any;
+    static setLocale(locale: any): any;
+    static setDirection(dir: string): any;
+    static getLocale(): any;
+    static getLanguage(): string;
+    static getDirection(): string;
 }

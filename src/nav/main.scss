@@ -7,7 +7,6 @@ $nav-icononly-width: 58px;
 #{$nav-prefix} {
     @include box-sizing;
     min-width: auto;
-    padding: 0;
     border-radius: 0;
 
     &-icon.#{$css-prefix}icon {
@@ -31,7 +30,7 @@ $nav-icononly-width: 58px;
             transition: opacity $motion-duration-immediately $motion-linear;
         }
 
-        a {
+        & .#{$css-prefix}menu-item-text > a {
             text-decoration: none;
             color: inherit;
         }
@@ -44,8 +43,8 @@ $nav-icononly-width: 58px;
             #{$menu-prefix}-hoz-icon-arrow.#{$css-prefix}icon,
             #{$menu-prefix}-icon-arrow.#{$css-prefix}icon {
                 color: inherit;
-                top: 2px;
-                transform-origin: center 47%;
+                top: 0;
+                transform-origin: center 50%;
             }
         }
     }
@@ -57,11 +56,12 @@ $nav-icononly-width: 58px;
     }
 
     &.#{$css-prefix}hoz {
-        height: $nav-hoz-height + 2 * $nav-hoz-item-margin-tb;
+        padding: 0;
+        height: calc(#{$nav-hoz-height} + 2 * #{$nav-hoz-item-margin-tb});
 
         @include nav-size(
             'hoz',
-            $nav-hoz-height - $popup-local-border-width * 2,
+            calc(#{$nav-hoz-height} - #{$popup-local-border-width} * 2),
             $nav-hoz-font-size,
             $nav-hoz-item-padding-lr,
             $nav-hoz-item-margin-tb,
@@ -77,12 +77,12 @@ $nav-icononly-width: 58px;
 
         #{$menu-prefix}-header {
             float: left;
-            height: $nav-hoz-height - $popup-local-border-width * 2;
+            height: calc(#{$nav-hoz-height} - #{$popup-local-border-width} * 2);
         }
 
         #{$menu-prefix}-footer {
             float: right;
-            height: $nav-hoz-height - $popup-local-border-width * 2;
+            height: calc(#{$nav-hoz-height} - #{$popup-local-border-width} * 2);
         }
 
         #{$nav-prefix}-item {
@@ -96,7 +96,8 @@ $nav-icononly-width: 58px;
                 height: $nav-hoz-item-hover-active-line;
             }
 
-            @if ($nav-hoz-item-hover-active-line != 0) {
+            @if (get-compiling-value($nav-hoz-item-hover-active-line) != 0 and
+            get-compiling-value($nav-hoz-item-hover-active-line) != 0px) {
                 &:hover:before {
                     width: 100%;
                     left: 0;
@@ -105,11 +106,11 @@ $nav-icononly-width: 58px;
         }
 
         &.#{$css-prefix}top #{$nav-prefix}-item:before {
-            top: - $popup-local-border-width;
+            top: calc(0px - #{$popup-local-border-width});
         }
 
         &.#{$css-prefix}bottom #{$nav-prefix}-item:before {
-            bottom: - $popup-local-border-width;
+            bottom: calc(0px - #{$popup-local-border-width});
         }
 
         .#{$css-prefix}selected#{$nav-prefix}-item:before {
@@ -120,6 +121,7 @@ $nav-icononly-width: 58px;
     }
 
     &.#{$css-prefix}ver {
+        padding: 0;
         transition: width $motion-duration-standard $motion-ease;
 
         @include nav-size(
@@ -148,9 +150,12 @@ $nav-icononly-width: 58px;
             margin-bottom: $nav-ver-item-margin-tb;
         }
 
+        #{$menu-prefix}-sub-menu {
+            line-height: $nav-ver-sub-nav-height;
+        }
+
         #{$menu-prefix}-sub-menu #{$menu-prefix}-item-inner {
             height: $nav-ver-sub-nav-height;
-            line-height: $nav-ver-sub-nav-height;
             font-size: $nav-ver-sub-nav-font-size;
         }
 
@@ -165,7 +170,8 @@ $nav-icononly-width: 58px;
                 width: $nav-ver-item-hover-active-line;
             }
 
-            @if ($nav-ver-item-hover-active-line != 0) {
+            @if (get-compiling-value($nav-ver-item-hover-active-line) != 0 and
+            get-compiling-value($nav-ver-item-hover-active-line) != 0px) {
                 &:hover:before {
                     height: 100%;
                     top: 0;
@@ -174,11 +180,11 @@ $nav-icononly-width: 58px;
         }
 
         &.#{$css-prefix}left #{$nav-prefix}-item:before {
-            left: - $popup-local-border-width;
+            left: calc(0px - #{$popup-local-border-width});
         }
 
         &.#{$css-prefix}right #{$nav-prefix}-item:before {
-            right: - $popup-local-border-width;
+            right: calc(0px - #{$popup-local-border-width});
         }
 
         .#{$css-prefix}selected#{$nav-prefix}-item:before {
@@ -347,50 +353,31 @@ $nav-icononly-width: 58px;
         // }
 
         &.#{$css-prefix}normal {
-            #{$nav-prefix}-icon.#{$css-prefix}icon {
-                @include icon-size(
-                    $size: $nav-icon-only-font-size,
-                    $marginLeft: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $popup-local-border-width,
-                    $marginRight: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $popup-local-border-width
-                );
-            }
+            @include icon-only-size($popup-local-border-width);
         }
 
         &.#{$css-prefix}primary {
-            #{$nav-prefix}-icon.#{$css-prefix}icon {
-                @include icon-size(
-                    $size: $nav-icon-only-font-size,
-                    $marginLeft: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width,
-                    $marginRight: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width
-                );
-            }
+            @include icon-only-size($nav-primary-border-width);
         }
         &.#{$css-prefix}secondary {
-            #{$nav-prefix}-icon.#{$css-prefix}icon {
-                @include icon-size(
-                    $size: $nav-icon-only-font-size,
-                    $marginLeft: ($nav-icononly-width - $nav-ver-item-padding-lr * 2 - $nav-secondary-border-width * 2 - $nav-icon-only-font-size) / 2,
-                    $marginRight: ($nav-icononly-width - $nav-ver-item-padding-lr * 2 - $nav-secondary-border-width * 2 - $nav-icon-only-font-size) / 2
-                );
-            }
+            @include icon-only-size($nav-secondary-border-width);
         }
-
 
         #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon {
             @include icon-size(
                 $size: $nav-icon-only-font-size,
-                $marginLeft: (18px - $nav-icon-only-font-size) / 2,
-                $marginRight: (18px - $nav-icon-only-font-size) / 2
+                $marginLeft: calc((18px - #{$nav-icon-only-font-size}) / 2),
+                $marginRight: calc((18px - #{$nav-icon-only-font-size}) / 2)
             );
             transition: all $motion-duration-immediately $motion-linear;
-            transform-origin: center 46%;
+            transform-origin: center 50%;
         }
 
         #{$nav-prefix}-item.#{$css-prefix}opened #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon-arrow-down {
             @include icon-size(
                 $size: $nav-icon-only-font-size,
-                $marginLeft: (18px - $nav-icon-only-font-size) / 2,
-                $marginRight: (18px - $nav-icon-only-font-size) / 2,
+                $marginLeft: calc((18px - #{$nav-icon-only-font-size}) / 2),
+                $marginRight: calc((18px - #{$nav-icon-only-font-size}) / 2),
                 $transform: rotate(180deg)
             );
         }
@@ -410,13 +397,17 @@ $nav-icononly-width: 58px;
         &.#{$css-prefix}secondary,
         &.#{$css-prefix}normal {
             height: 100%;
-            background: initial;
+            background: transparent;
             box-shadow: none;
             border: none;
 
             #{$menu-prefix}-sub-menu #{$menu-prefix}-item,
             #{$nav-prefix}-item#{$menu-prefix}-item {
-                background: initial;
+                background: transparent;
+            }
+
+            &.#{$css-prefix}icon-only {
+                @include icon-only-size(0px);
             }
         }
 
@@ -435,7 +426,7 @@ $nav-icononly-width: 58px;
     &-embeddable,
     &-embeddable &-item.#{$css-prefix}disabled,
     &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
-        background: initial;
+        background: transparent;
         border: none;
     }
 }

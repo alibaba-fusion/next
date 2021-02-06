@@ -79,9 +79,20 @@ export default class Html5Uploader extends Component {
         const options = this.getUploadOptions(props);
         this.uploader = new Uploader(options);
     }
-    componentWillReceiveProps(nextProps) {
-        const options = this.getUploadOptions(nextProps);
-        this.uploader.setOptions(options);
+
+    componentDidUpdate(prevProps) {
+        const preOptions = this.getUploadOptions(prevProps);
+        const options = this.getUploadOptions(this.props);
+
+        const keys = Object.keys(options);
+
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            if (options[key] !== preOptions[key]) {
+                this.uploader.setOptions(options);
+                return;
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -115,6 +126,7 @@ export default class Html5Uploader extends Component {
         const {
             accept,
             multiple,
+            webkitdirectory,
             children,
             id,
             disabled,
@@ -133,6 +145,7 @@ export default class Html5Uploader extends Component {
                 id={id}
                 accept={accept}
                 multiple={multiple}
+                webkitdirectory={webkitdirectory}
                 dragable={dragable}
                 disabled={disabled}
                 className={className}

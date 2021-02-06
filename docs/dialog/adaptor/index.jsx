@@ -1,6 +1,6 @@
 import React from 'react';
 import { Types } from '@alifd/adaptor-helper';
-import { Dialog, Message } from '@alifd/next';
+import { Dialog, Message, Button } from '@alifd/next';
 import locale from '../../../src/locale/en-us';
 
 
@@ -40,12 +40,22 @@ export default {
             name: 'title',
             type: Types.string,
             default: 'Welcome to Alibaba.com'
+        }, {
+            name: 'confirmButtonText',
+            label: 'Confirm Text',
+            type: Types.string,
+            default: 'OK'
+        }, {
+            name: 'cancelButtonText',
+            label: 'Cancel Text',
+            type: Types.string,
+            default: 'Cancel'
         }],
         data: {
             default: 'Start your business here by searching a popular product'
         }
     }),
-    adaptor: ({ level, footerAlign, okButtonPosition, mask, width, height, title, style, className, data, ...others}) => {
+    adaptor: ({ level, footerAlign, okButtonPosition, mask, width, height, title, style, className, confirmButtonText, cancelButtonText, data,  ...others}) => {
          const dialogStyle = {
             position: mask ? 'absolute' : 'relative',
             width: width,
@@ -64,7 +74,9 @@ export default {
             footerAlign: footerAlign,
             footerActions: okButtonPosition === 'left' ? ['ok', 'cancel'] : ['cancel', 'ok'],
             locale: locale.Dialog,
-            height: `${height}px`
+            height: `${height}px`,
+            footer: okButtonPosition === 'left' ? [<Button className="next-dialog-btn" type="primary">{confirmButtonText}</Button>, <Button className="next-dialog-btn">{cancelButtonText}</Button>]
+                : [<Button className="next-dialog-btn">{cancelButtonText}</Button>, <Button className="next-dialog-btn" type="primary">{confirmButtonText}</Button>],
         };
 
         let dialog;

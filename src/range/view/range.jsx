@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { events, func, KEYCODE, dom } from '../../util';
+import { polyfill } from 'react-lifecycles-compat';
+import { events, func, KEYCODE, dom, obj } from '../../util';
 import Balloon from '../../balloon';
 import { getPercent, getPrecision, isEqual, getDragging } from '../utils';
 import Scale from './scale';
@@ -13,6 +14,7 @@ import FixedSlider from './fixedSlider';
 
 const Tooltip = Balloon.Tooltip;
 const { noop, bindCtx } = func;
+const { pickOthers } = obj;
 
 function _isMultiple(slider, isFixedWidth) {
     return isFixedWidth || slider === 'double';
@@ -137,7 +139,7 @@ function pauseEvent(e) {
 }
 
 /** Range */
-export default class Range extends React.Component {
+class Range extends React.Component {
     static contextTypes = {
         prefix: PropTypes.string,
     };
@@ -247,6 +249,15 @@ export default class Range extends React.Component {
          * 是否已rtl模式展示
          */
         rtl: PropTypes.bool,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -267,6 +278,7 @@ export default class Range extends React.Component {
         pure: false,
         marksPosition: 'above',
         rtl: false,
+        isPreview: false,
     };
 
     constructor(props) {
@@ -293,21 +305,25 @@ export default class Range extends React.Component {
         ]);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { min } = this.props;
-        const initialValue = _isMultiple(nextProps.slider) ? [min, min] : min;
-        if ('value' in nextProps) {
-            let value = nextProps.value;
+    static getDerivedStateFromProps(props, state) {
+        if ('value' in props) {
+            const { min, slider, value } = props;
+            const { hasMovingClass } = state;
+            const newState = {
+                value,
+            };
 
             if (value === undefined) {
-                // value设置undefined,reset为初始值
-                value = initialValue;
+                newState.value = _isMultiple(slider) ? [min, min] : min;
             }
-            this.setState({
-                value,
-                tempValue: value,
-            });
+
+            if (!hasMovingClass) {
+                newState.tempValue = newState.value;
+            }
+
+            return newState;
         }
+        return null;
     }
 
     _marksToScales(marks) {
@@ -327,7 +343,6 @@ export default class Range extends React.Component {
     _calcScales() {
         const { min, max, marks } = this.props;
         const scales = this._marksToScales(marks);
-        // let scales = null;
 
         if (scales !== false) {
             if (Array.isArray(scales)) {
@@ -461,6 +476,7 @@ export default class Range extends React.Component {
             upperTooltipVisible: false,
             tooltipAnimation: true,
         });
+
         if (!isEqual(tempValue, startValue)) {
             // Not Controlled
             if (!('value' in this.props)) {
@@ -699,7 +715,12 @@ export default class Range extends React.Component {
             defaultValue,
             tooltipVisible,
             rtl,
+            isPreview,
+            renderPreview,
         } = this.props;
+
+        const others = pickOthers(Object.keys(Range.propTypes), this.props);
+
         const classes = classNames({
             [`${prefix}range`]: true,
             disabled: disabled,
@@ -740,11 +761,40 @@ export default class Range extends React.Component {
                 ? Array.isArray(defaultValue)
                 : false);
 
+        if (isPreview) {
+            const previewCls = classNames(className, `${prefix}form-preview`);
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div
+                        id={id}
+                        dir={rtl ? 'rtl' : 'ltr'}
+                        {...others}
+                        className={previewCls}
+                    >
+                        {renderPreview(value, this.props)}
+                    </div>
+                );
+            }
+
+            return (
+                <p
+                    id={id}
+                    dir={rtl ? 'rtl' : 'ltr'}
+                    {...others}
+                    className={previewCls}
+                >
+                    {Array.isArray(value) ? value.join('~') : value}
+                </p>
+            );
+        }
+
         return (
             <div
                 ref={dom => {
                     this.dom = dom;
                 }}
+                {...others}
                 style={style}
                 className={classes}
                 id={id}
@@ -820,3 +870,5 @@ export default class Range extends React.Component {
         );
     }
 }
+
+export default polyfill(Range);

@@ -3,9 +3,9 @@
 `@alifd/next` 组件库默认引用的图标字体文件来自 at.alicdn.com，robot 字体文件来自 i.alicdn.com，如果你站点的用户无法访问上述 cdn 或者想将这些字体资源部署到内部网络，可以采取以下的方案：
 
 ## 图标字体文件
-替换表示图标字体文件路径的变量：
+1. 替换表示图标字体文件路径的变量：
 
-1. 直接使用主题包的 index.scss 文件
+方法一、 直接使用主题包的 index.scss 文件
 
     在应用的 scss 入口处，引用主题包 index.scss 文件前，注入 $icon-font-path 变量：
 
@@ -14,7 +14,7 @@
     @import "~@alifd/theme-xxx/index.scss";
     ```
 
-2. 按需加载组件的 js/scss
+方法二、 按需加载组件的 js/scss
 
     使用 @alifd/next-theme-loader，进行以下配置(以 webpack 2+ 为例)：
 
@@ -39,9 +39,9 @@
     }
     ```
 
-上传字体文件到静态资源服务器或者 cdn 上，如
+2. 上传字体文件到静态资源服务器或者 cdn 上，如
 
-//g.alicdn.com/icon-font-path，其下应有以下4个文件：
+`//g.alicdn.com/icon-font-path`，其下应有以下4个文件：
 
 ```
 icon-font.eot
@@ -55,6 +55,9 @@ icon-font.svg
 ![](https://img.alicdn.com/tfs/TB1u.I8qtknBKNjSZKPXXX6OFXa-620-329.png)
 
 另外需要注意的是每次添加或替换图标，重新发布主题包后，该变量都会被更新，需要重新上传到自己的静态资源服务器。
+
+如果你用到了主题包并自定义了icon，请务必去上述 `variables.scss` 文件中找到文件并下载；如果你没有自定义icon，可以使用[icon-font.zip](
+https://alifd.oss-cn-hangzhou.aliyuncs.com/fonts/icon-font.zip)
 
 ## robot 字体文件
 替换表示 roboto 字体文件路径的变量：

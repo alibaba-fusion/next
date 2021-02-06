@@ -7,6 +7,7 @@ import Overlay from '../../overlay';
 import { func, obj, dom } from '../../util';
 import Item from './item';
 import SelectableItem from './selectable-item';
+import { getChildSelected } from './util';
 
 const { bindCtx } = func;
 const { setStyle } = dom;
@@ -49,12 +50,7 @@ export default class PopupItem extends Component {
     constructor(props) {
         super(props);
 
-        bindCtx(this, [
-            'handleOpen',
-            'handlePopupOpen',
-            'handlePopupClose',
-            'getPopup',
-        ]);
+        bindCtx(this, ['handleOpen', 'handlePopupOpen', 'handlePopupClose', 'getPopup']);
     }
 
     getPopup(ref) {
@@ -66,21 +62,6 @@ export default class PopupItem extends Component {
         const { openKeys } = root.state;
 
         return openKeys.indexOf(_key) > -1;
-    }
-
-    getChildSelected() {
-        const { _key, root } = this.props;
-        const { selectMode } = root.props;
-        const { selectedKeys } = root.state;
-
-        const _keyPos = root.k2n[_key].pos;
-
-        return (
-            !!selectMode &&
-            selectedKeys.some(
-                key => root.k2n[key] && root.k2n[key].pos.indexOf(_keyPos) === 0
-            )
-        );
     }
 
     getPopupProps() {
@@ -96,48 +77,42 @@ export default class PopupItem extends Component {
         root.handleOpen(_key, open, triggerType, e);
 
         const popupProps = this.popupProps;
-        popupProps.onVisibleChange &&
-            popupProps.onVisibleChange(open, triggerType, e);
+        popupProps.onVisibleChange && popupProps.onVisibleChange(open, triggerType, e);
     }
 
     handlePopupOpen() {
         const { root, level, align, autoWidth } = this.props;
-        const {
-            popupAutoWidth: rootPopupAutoWidth,
-            popupAlign: rootPopupAlign,
-            direction,
-        } = root.props;
+        const { popupAutoWidth: rootPopupAutoWidth, popupAlign: rootPopupAlign, direction } = root.props;
         const popupAlign = align || rootPopupAlign;
-        const popupAutoWidth =
-            'autoWidth' in this.props ? autoWidth : rootPopupAutoWidth;
-        const itemNode = findDOMNode(this);
-        const menuNode = itemNode.parentNode;
-        this.popupNode = this.popup
-            .getInstance()
-            .overlay.getInstance()
-            .getContentNode();
-        root.popupNodes.push(this.popupNode);
+        const popupAutoWidth = 'autoWidth' in this.props ? autoWidth : rootPopupAutoWidth;
+        try {
+            // avoid errors while dom removed and js executing
+            const itemNode = findDOMNode(this);
+            const menuNode = itemNode.parentNode;
+            this.popupNode = this.popup
+                .getInstance()
+                .overlay.getInstance()
+                .getContentNode();
+            root.popupNodes.push(this.popupNode);
 
-        if (popupAutoWidth) {
-            const targetNode =
-                direction === 'hoz' && level === 1 ? itemNode : menuNode;
+            if (popupAutoWidth) {
+                const targetNode = direction === 'hoz' && level === 1 ? itemNode : menuNode;
 
-            if (targetNode.offsetWidth > this.popupNode.offsetWidth) {
-                setStyle(
-                    this.popupNode,
-                    'width',
-                    `${targetNode.offsetWidth}px`
-                );
+                if (targetNode.offsetWidth > this.popupNode.offsetWidth) {
+                    setStyle(this.popupNode, 'width', `${targetNode.offsetWidth}px`);
+                }
             }
-        }
-        if (popupAlign === 'outside' && !(direction === 'hoz' && level === 1)) {
-            setStyle(this.popupNode, 'height', `${menuNode.offsetHeight}px`);
-            setStyle(this.popupNode, 'overflow-y', 'scroll');
-        }
-        // removeClass(this.popupNode, `${prefix}hide`);
+            if (popupAlign === 'outside' && !(direction === 'hoz' && level === 1)) {
+                setStyle(this.popupNode, 'height', `${menuNode.offsetHeight}px`);
+                setStyle(this.popupNode, 'overflow-y', 'scroll');
+            }
+            // removeClass(this.popupNode, `${prefix}hide`);
 
-        const popupProps = this.popupProps;
-        popupProps.onOpen && popupProps.onOpen();
+            const popupProps = this.popupProps;
+            popupProps.onOpen && popupProps.onOpen();
+        } catch (error) {
+            return null;
+        }
     }
 
     handlePopupClose() {
@@ -152,10 +127,17 @@ export default class PopupItem extends Component {
 
     renderItem(selectable, children, others) {
         const { _key, root, level, inlineLevel, label, className } = this.props;
-        const { prefix } = root.props;
+        const { prefix, selectMode } = root.props;
         const NewItem = selectable ? SelectableItem : Item;
         const open = this.getOpen();
-        const isChildSelected = this.getChildSelected();
+
+        const { selectedKeys, _k2n } = root.state;
+        const isChildSelected = getChildSelected({
+            _key,
+            _k2n,
+            selectMode,
+            selectedKeys,
+        });
 
         const itemProps = {
             'aria-haspopup': true,
@@ -200,6 +182,7 @@ export default class PopupItem extends Component {
                 trigger={trigger}
                 triggerType={triggerType}
                 visible={open}
+                pinFollowBaseElementWhenFixed
                 onVisibleChange={this.handleOpen}
                 onOpen={this.handlePopupOpen}
                 onClose={this.handlePopupClose}
@@ -221,20 +204,10 @@ export default class PopupItem extends Component {
             noIcon,
             rtl,
         } = this.props;
-        const others = obj.pickOthers(
-            Object.keys(PopupItem.propTypes),
-            this.props
-        );
-        const {
-            prefix,
-            selectMode,
-            direction,
-            popupAlign: rootPopupAlign,
-            triggerType: rootTriggerType,
-        } = root.props;
+        const others = obj.pickOthers(Object.keys(PopupItem.propTypes), this.props);
+        const { prefix, selectMode, direction, popupAlign: rootPopupAlign, triggerType: rootTriggerType } = root.props;
         const popupAlign = align || rootPopupAlign;
-        const newTriggerType =
-            triggerType || (hasSubMenu ? rootTriggerType : 'hover');
+        const newTriggerType = triggerType || (hasSubMenu ? rootTriggerType : 'hover');
         const newChildren = Array.isArray(children) ? children[0] : children;
         // let newChildren = Array.isArray(children) ? children[0] : children;
         // newChildren = cloneElement(newChildren, {
@@ -269,9 +242,7 @@ export default class PopupItem extends Component {
                 };
                 positionProps.align = 'tl tr';
 
-                rtl
-                    ? (positionProps.offset = [-2, 0])
-                    : (positionProps.offset = [2, 0]);
+                rtl ? (positionProps.offset = [-2, 0]) : (positionProps.offset = [2, 0]);
             } else {
                 if (triggerIsIcon) {
                     positionProps.target = () => {
@@ -280,29 +251,18 @@ export default class PopupItem extends Component {
                 }
                 positionProps.align = 'tl tr';
 
-                rtl
-                    ? (positionProps.offset = [2, -8])
-                    : (positionProps.offset = [-2, -8]);
+                rtl ? (positionProps.offset = [2, -8]) : (positionProps.offset = [-2, -8]);
             }
 
             arrowProps = {
                 type: 'arrow-right',
-                className: `${prefix}menu-icon-arrow`,
+                className: `${prefix}menu-icon-arrow ${prefix}menu-symbol-popupfold`,
             };
         }
 
         const arrow = <Icon {...arrowProps} />;
-        const trigger = triggerIsIcon
-            ? arrow
-            : this.renderItem(selectable, noIcon ? null : arrow, others);
-        const popup = this.renderPopup(
-            trigger,
-            newTriggerType,
-            positionProps,
-            newChildren
-        );
-        return triggerIsIcon
-            ? this.renderItem(selectable, popup, others)
-            : popup;
+        const trigger = triggerIsIcon ? arrow : this.renderItem(selectable, noIcon ? null : arrow, others);
+        const popup = this.renderPopup(trigger, newTriggerType, positionProps, newChildren);
+        return triggerIsIcon ? this.renderItem(selectable, popup, others) : popup;
     }
 }

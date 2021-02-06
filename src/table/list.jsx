@@ -28,6 +28,8 @@ export default function list(BaseComponent) {
             rowSelection: PropTypes.object,
         };
 
+        state = {};
+
         getChildContext() {
             return {
                 listHeader: this.listHeader,
@@ -54,18 +56,12 @@ export default function list(BaseComponent) {
 
         render() {
             /* eslint-disable prefer-const */
-            let {
-                components,
-                children,
-                className,
-                prefix,
-                ...others
-            } = this.props;
+            let { components, children, className, prefix, ...others } = this.props;
             let isList = false,
                 ret = [];
             Children.forEach(children, child => {
                 if (child) {
-                    if (typeof child.type === 'function') {
+                    if (['function', 'object'].indexOf(typeof child.type) > -1) {
                         if (child.type._typeMark === 'listHeader') {
                             this.listHeader = child.props;
                             isList = true;
@@ -95,7 +91,7 @@ export default function list(BaseComponent) {
                 <BaseComponent
                     {...others}
                     components={components}
-                    children={ret}
+                    children={ret.length > 0 ? ret : undefined}
                     className={className}
                     prefix={prefix}
                 />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -19,19 +19,23 @@ const { hasClass } = dom;
 const dataSource = [
     {
         label: '服装',
+        className: 'k-1',
         value: '1',
         children: [
             {
                 label: '男装',
                 value: '2',
+                className: 'k-2',
                 disabled: true,
                 children: [
                     {
                         label: '外套',
+                        className: 'k-4',
                         value: '4',
                     },
                     {
                         label: '夹克',
+                        className: 'k-5',
                         value: '5',
                     },
                 ],
@@ -39,9 +43,11 @@ const dataSource = [
             {
                 label: '女装',
                 value: '3',
+                className: 'k-3',
                 children: [
                     {
                         label: '裙子',
+                        className: 'k-6',
                         value: '6',
                     },
                 ],
@@ -56,9 +62,7 @@ describe('TreeSelect', () => {
     let wrapper;
 
     beforeEach(() => {
-        const nodeListArr = [].slice.call(
-            document.querySelectorAll('.next-overlay-wrapper')
-        );
+        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
 
         nodeListArr.forEach(node => {
             node.parentNode.removeChild(node);
@@ -94,7 +98,6 @@ describe('TreeSelect', () => {
                     </TreeNode>
                 );
             });
-
         wrapper = mount(
             <TreeSelect defaultVisible treeDefaultExpandAll>
                 {loop(dataSource)}
@@ -114,13 +117,7 @@ describe('TreeSelect', () => {
     });
 
     it('should render by dataSource', () => {
-        wrapper = mount(
-            <TreeSelect
-                defaultVisible
-                treeDefaultExpandAll
-                dataSource={dataSource}
-            />
-        );
+        wrapper = mount(<TreeSelect defaultVisible treeDefaultExpandAll dataSource={dataSource} />);
         assertDataAndNodes(dataSource);
 
         const newDataSource = [...dataSource];
@@ -135,14 +132,7 @@ describe('TreeSelect', () => {
     });
 
     it('should render by defaultValue', () => {
-        wrapper = mount(
-            <TreeSelect
-                defaultValue="4"
-                defaultVisible
-                treeDefaultExpandAll
-                dataSource={dataSource}
-            />
-        );
+        wrapper = mount(<TreeSelect defaultValue="4" defaultVisible treeDefaultExpandAll dataSource={dataSource} />);
         assertSelected('4', true);
 
         wrapper.setProps({ defaultValue: '6' });
@@ -173,13 +163,7 @@ describe('TreeSelect', () => {
 
     it('should render by defaultValue when enable treeCheckable', () => {
         wrapper = mount(
-            <TreeSelect
-                defaultValue="4"
-                defaultVisible
-                treeCheckable
-                treeDefaultExpandAll
-                dataSource={dataSource}
-            />
+            <TreeSelect defaultValue="4" defaultVisible treeCheckable treeDefaultExpandAll dataSource={dataSource} />
         );
         assertChecked('4', true);
 
@@ -220,12 +204,7 @@ describe('TreeSelect', () => {
         };
 
         wrapper = mount(
-            <TreeSelect
-                defaultVisible
-                treeDefaultExpandAll
-                dataSource={dataSource}
-                onChange={handleChange}
-            />
+            <TreeSelect defaultVisible treeDefaultExpandAll dataSource={dataSource} onChange={handleChange} />
         );
         selectTreeNode(expectValue);
         wrapper.update();
@@ -234,8 +213,7 @@ describe('TreeSelect', () => {
         setTimeout(() => {
             assert(
                 !document.querySelector('.next-overlay-wrapper') ||
-                    document.querySelector('.next-overlay-wrapper').style
-                        .display === 'none'
+                    document.querySelector('.next-overlay-wrapper').style.display === 'none'
             );
             done();
         }, 1000);
@@ -264,8 +242,7 @@ describe('TreeSelect', () => {
         setTimeout(() => {
             assert(
                 !document.querySelector('.next-overlay-wrapper') ||
-                    document.querySelector('.next-overlay-wrapper').style
-                        .display === 'none'
+                    document.querySelector('.next-overlay-wrapper').style.display === 'none'
             );
             done();
         }, 1000);
@@ -299,8 +276,7 @@ describe('TreeSelect', () => {
         setTimeout(() => {
             assert(
                 document.querySelector('.next-overlay-wrapper') &&
-                    document.querySelector('.next-overlay-wrapper').style
-                        .display !== 'none'
+                    document.querySelector('.next-overlay-wrapper').style.display !== 'none'
             );
             done();
         }, 1000);
@@ -322,7 +298,7 @@ describe('TreeSelect', () => {
                 treeCheckable
                 treeDefaultExpandAll
                 dataSource={cloneData(dataSource, {
-                    2: { disabled: false }
+                    2: { disabled: false },
                 })}
                 value={initValue}
                 onChange={handleChange}
@@ -363,7 +339,7 @@ describe('TreeSelect', () => {
             <TreeSelect
                 treeCheckable
                 dataSource={cloneData(dataSource, {
-                    2: { disabled: false }
+                    2: { disabled: false },
                 })}
                 defaultValue={['6']}
                 treeCheckedStrategy="parent"
@@ -374,12 +350,7 @@ describe('TreeSelect', () => {
 
     it('should render child tag when set treeCheckedStrategy to all', () => {
         wrapper = mount(
-            <TreeSelect
-                treeCheckable
-                dataSource={dataSource}
-                defaultValue={['6']}
-                treeCheckedStrategy="child"
-            />
+            <TreeSelect treeCheckable dataSource={dataSource} defaultValue={['6']} treeCheckedStrategy="child" />
         );
         assert.deepEqual(getLabels(wrapper), ['裙子']);
     });
@@ -391,7 +362,7 @@ describe('TreeSelect', () => {
                 treeDefaultExpandAll
                 treeCheckable
                 dataSource={cloneData(dataSource, {
-                    2: { disabled: false }
+                    2: { disabled: false },
                 })}
                 defaultValue={['6']}
                 treeCheckedStrategy="all"
@@ -406,6 +377,47 @@ describe('TreeSelect', () => {
             .simulate('click');
         wrapper.update();
         assert.deepEqual(getLabels(wrapper), []);
+    });
+
+    it('should support preview mode render', () => {
+        const dataSource = [
+            {
+                value: '2973',
+                label: '陕西',
+                children: [
+                    {
+                        value: '2974',
+                        label: '西安',
+                        children: [
+                            {
+                                value: '2975',
+                                label: '西安市',
+                            },
+                            {
+                                value: '2976',
+                                label: '高陵县',
+                            },
+                        ],
+                    },
+                    {
+                        value: '2980',
+                        label: '铜川',
+                    },
+                ],
+            },
+        ];
+
+        wrapper = mount(<TreeSelect dataSource={dataSource} isPreview defaultValue={'2975'} />);
+        assert(wrapper.find('.next-form-preview').length > 0);
+        assert(wrapper.find('.next-form-preview').text() === '西安市');
+        wrapper.setProps({
+            renderPreview: items => {
+                assert(items.length === 1);
+                assert(items[0].label === '西安市');
+                return 'Hello World';
+            },
+        });
+        assert(wrapper.find('.next-form-preview').text() === 'Hello World');
     });
 
     it('should trigger onChange when remove tag', () => {
@@ -449,9 +461,7 @@ describe('TreeSelect', () => {
                 onSearch={handleSearch}
             />
         );
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '外套' } });
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
         wrapper.update();
         assert(triggered);
     });
@@ -464,32 +474,74 @@ describe('TreeSelect', () => {
                         label={<i>react-element</i>}
                         value="react-element"
                         key="react-element"
+                        className="react-element"
                     />
                 </TreeNode>
             </TreeSelect>
         );
 
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: 'element' } });
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 'element' } });
         wrapper.update();
-
-        const node = findTreeNodeByPos('0-0-0');
+        const node = document.querySelector('.react-element');
         assert(hasClass(node, 'next-filtered'));
     });
 
+    it('should ignore case when search', () => {
+        const treeData = [
+            {
+                label: 'Component',
+                value: '1',
+                selectable: false,
+                children: [
+                    {
+                        label: 'Form',
+                        value: '2',
+                        children: [
+                            {
+                                label: 'Input',
+                                value: '4',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ];
+        wrapper = mount(<TreeSelect defaultVisible dataSource={treeData} treeDefaultExpandAll showSearch />);
+
+        ['INPUT', 'input'].forEach(kw => {
+            wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: kw } });
+            wrapper.update();
+
+            const node = document.querySelector('.next-filtered');
+            assert(node && node.querySelector('.next-tree-node-label') !== 'Input');
+        });
+    });
+
+    // https://github.com/alibaba-fusion/next/issues/2029
+    it('fix bug after setState onSearch', () => {
+        function Demo() {
+            const [data, setData] = useState([{ label: 'element', key: '0', className: 'react-element' }]);
+
+            function handleChange() {
+                setData([{ label: 'react-element-new', key: '1', className: 'react-element-new' }]);
+            }
+            return (
+                <TreeSelect defaultVisible treeDefaultExpandAll showSearch dataSource={data} onSearch={handleChange} />
+            );
+        }
+
+        wrapper = mount(<Demo />);
+
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 'element' } });
+        wrapper.update();
+
+        assert(!hasClass(document.querySelector('.react-element'), 'next-filtered'));
+        assert(hasClass(document.querySelector('.react-element-new'), 'next-filtered'));
+    });
+
     it('should only show matched node and its parent node when search some keyword', () => {
-        wrapper = mount(
-            <TreeSelect
-                defaultVisible
-                treeDefaultExpandAll
-                dataSource={dataSource}
-                showSearch
-            />
-        );
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '外套' } });
+        wrapper = mount(<TreeSelect defaultVisible treeDefaultExpandAll dataSource={dataSource} showSearch />);
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
         wrapper.update();
 
         const expectTreeData = [
@@ -512,36 +564,103 @@ describe('TreeSelect', () => {
         ];
         assertDataAndNodes(expectTreeData);
 
-        const hideNode3 = findTreeNodeByValue('3');
-        assert(hideNode3.style.display === 'none');
+        ['3', '5'].forEach(v => assert(findTreeNodeByValue(v).style.display === 'none'));
+    });
 
-        const hideNode5 = findTreeNodeByValue('5');
-        assert(hideNode5.style.display === 'none');
+    it('should support search well when use virtual', () => {
+        const data = cloneData(dataSource);
+
+        data[0].children = data[0].children.concat(
+            new Array(100).fill().map((__, index) => {
+                index = String(index);
+                return {
+                    value: index,
+                    label: index,
+                };
+            })
+        );
+        wrapper = mount(
+            <TreeSelect
+                defaultVisible
+                treeDefaultExpandAll
+                dataSource={data}
+                showSearch
+                style={{ width: 200 }}
+                useVirtual
+                treeProps={{
+                    style: { maxHeight: '100px', overflow: 'auto' },
+                }}
+            />
+        );
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 77 } });
+        wrapper.update();
+
+        const expectTreeData = [
+            {
+                label: '服装',
+                value: '1',
+                children: [
+                    {
+                        label: '77',
+                        value: '77',
+                    },
+                ],
+            },
+        ];
+        assertDataAndNodes(expectTreeData);
+    });
+
+    // https://github.com/alibaba-fusion/next/issues/2271
+    it('fix search bug when useVirtual', () => {
+        const data = cloneData(dataSource);
+
+        data[0].children = data[0].children.concat(
+            new Array(100).fill().map((__, index) => {
+                index = String(index);
+                return {
+                    value: index,
+                    label: index,
+                };
+            })
+        );
+        wrapper = mount(
+            <TreeSelect
+                defaultVisible
+                useVirtual
+                treeCheckable
+                treeDefaultExpandAll
+                dataSource={data}
+                showSearch
+                style={{ width: 200 }}
+                treeProps={{
+                    style: { maxHeight: '100px', overflow: 'auto' },
+                }}
+            />
+        );
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 77 } });
+
+        wrapper.find('.next-tree-node[value="77"] input').simulate('change');
+        wrapper.update();
+
+        assert(wrapper.find('.next-tree-node[value="1"] .indeterminate').length);
     });
 
     it('should render not found if dataSource is empty or there is no search result', () => {
-        wrapper = mount(
-            <TreeSelect showSearch defaultVisible dataSource={[]} />
-        );
-        assert(
-            document
-                .querySelector('.next-tree-select-not-found')
-                .textContent.trim() === 'Not Found'
-        );
+        wrapper = mount(<TreeSelect showSearch defaultVisible dataSource={[]} />);
+        assert(document.querySelector('.next-tree-select-not-found').textContent.trim() === 'Not Found');
 
         wrapper.setProps({ dataSource });
         wrapper.update();
         assert(document.querySelector('.next-tree'));
 
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '哈哈' } });
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '哈哈' } });
         wrapper.update();
-        assert(
-            document
-                .querySelector('.next-tree-select-not-found')
-                .textContent.trim() === 'Not Found'
-        );
+        assert(document.querySelector('.next-tree-select-not-found').textContent.trim() === 'Not Found');
+    });
+
+    it('fix issues use isPreview when value is empty', () => {
+        wrapper = mount(<TreeSelect isPreview dataSource={dataSource} />);
+        assert(wrapper.find('.next-form-preview').instance().textContent === '');
     });
 
     it('should support keyboard', done => {
@@ -558,14 +677,10 @@ describe('TreeSelect', () => {
 
         setTimeout(() => {
             assert(document.querySelector('.next-tree'));
-            wrapper
-                .find('.next-select-trigger-search input')
-                .simulate('keydown', { keyCode: KEYCODE.DOWN });
+            wrapper.find('.next-select-trigger-search input').simulate('keydown', { keyCode: KEYCODE.DOWN });
             assert(
                 document.activeElement ===
-                    document.querySelectorAll(
-                        '.next-tree  > .next-tree-node > .next-tree-node-inner'
-                    )[0]
+                    document.querySelectorAll('.next-tree  > .next-tree-node > .next-tree-node-inner')[0]
             );
             done();
         }, 2000);
@@ -592,43 +707,32 @@ function cloneData(data, valueMap = {}) {
     return loop(data);
 }
 
-function assertDataAndNodes(dataSource) {
-    const loop = (data, nodes) =>
-        data.forEach((item, index) => {
-            const node = nodes[index];
-            const labelElement = findChild(node, 'next-tree-node-inner');
-            assert(labelElement.textContent.trim() === item.label);
-
-            if (item.children) {
-                const childTree = findChild(node, 'next-tree-child-tree');
-                loop(item.children, childTree.children);
-            }
+function flattenData(dataSource) {
+    const flattenList = [];
+    const drill = data => {
+        data.forEach(item => {
+            const { children, ...newItem } = item;
+            flattenList.push(newItem);
+            children && children.length && drill(children);
         });
-    loop(dataSource, document.querySelector('.next-tree').children);
+    };
+
+    drill(dataSource);
+
+    return flattenList;
 }
 
-function findChild(node, className) {
-    for (let i = 0; i < node.children.length; i++) {
-        const child = node.children[i];
-        if (hasClass(child, className)) {
-            return child;
-        }
-    }
-}
+function assertDataAndNodes(dataSource) {
+    const labels = Array.prototype.map.call(
+        document.querySelectorAll('li.next-tree-node .next-tree-node-label'),
+        item => item.textContent
+    );
 
-function findTreeNodeByPos(pos) {
-    return pos
-        .split('-')
-        .slice(1)
-        .reduce((ret, num, i) => {
-            return ret.querySelector(
-                i === 0 ? '.next-tree' : '.next-tree-child-tree'
-            ).children[num];
-        }, document);
+    assert(flattenData(dataSource).every((item, index) => item.label === labels[index]));
 }
 
 function findTreeNodeByValue(value) {
-    return findTreeNodeByPos(_v2n[value].pos);
+    return document.querySelector(`.k-${value}`);
 }
 
 function createMap(data) {
@@ -649,36 +753,22 @@ function createMap(data) {
 }
 
 function selectTreeNode(value) {
-    ReactTestUtils.Simulate.click(
-        findTreeNodeByValue(value).querySelector('.next-tree-node-label')
-    );
+    ReactTestUtils.Simulate.click(findTreeNodeByValue(value).querySelector('.next-tree-node-label'));
 }
 
 function checkTreeNode(value) {
-    const input = findTreeNodeByValue(value).querySelector(
-        '.next-checkbox input'
-    );
+    const input = findTreeNodeByValue(value).querySelector('.next-checkbox input');
     ReactTestUtils.Simulate.change(input, {
         target: { checked: input.checked },
     });
 }
 
 function assertSelected(value, selected) {
-    assert(
-        hasClass(
-            findTreeNodeByValue(value).querySelector('.next-tree-node-inner'),
-            'next-selected'
-        ) === selected
-    );
+    assert(hasClass(findTreeNodeByValue(value).querySelector('.next-tree-node-inner'), 'next-selected') === selected);
 }
 
 function assertChecked(value, checked) {
-    assert(
-        hasClass(
-            findTreeNodeByValue(value).querySelector('.next-checkbox-wrapper'),
-            'checked'
-        ) === checked
-    );
+    assert(hasClass(findTreeNodeByValue(value).querySelector('.next-checkbox-wrapper'), 'checked') === checked);
 }
 
 function getLabels(wrapper) {

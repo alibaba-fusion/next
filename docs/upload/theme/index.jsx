@@ -271,6 +271,7 @@ class FunctionDemo extends React.Component {
                         defaultValue={[{
                             name: 'xxx.png',
                             state: 'error',
+                            errorMsg: getValue('demo1').errMsg.value === 'true' ? 'Error Messgae' : undefined 
                         }]}
                     />
                 </DemoGroup>

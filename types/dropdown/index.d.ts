@@ -137,12 +137,12 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
     /**
      * 弹层的根节点的内联样式
      */
-    wrapperStyle?: {};
+    wrapperStyle?: React.CSSProperties;
 
     /**
      * 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画
      */
-    animation?: {} | boolean;
+    animation?: any | boolean;
 
     /**
      * 触发弹层显示或者隐藏的元素

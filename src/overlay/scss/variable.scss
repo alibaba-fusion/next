@@ -1,1 +1,2 @@
-$color-calculate-mask-background: rgba($mask-background, $mask-opacity);
+// overlay
+$color-calculate-mask-background: rgba(get-compiling-value($mask-background), get-compiling-value($mask-opacity));

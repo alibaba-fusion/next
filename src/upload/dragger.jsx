@@ -66,16 +66,28 @@ class Dragger extends React.Component {
         this.props.onDrop(e);
     };
 
+    /* istanbul ignore next */
+    abort(file) {
+        /* istanbul ignore next */
+        this.uploaderRef.abort(file);
+    }
+    /* istanbul ignore next */
+    startUpload() {
+        /* istanbul ignore next */
+        this.uploaderRef.startUpload();
+    }
+
+    saveUploaderRef = ref => {
+        /* istanbul ignore if */
+        if (ref && typeof ref.getInstance === 'function') {
+            this.uploaderRef = ref.getInstance();
+        } else {
+            this.uploaderRef = ref;
+        }
+    };
+
     render() {
-        const {
-            className,
-            style,
-            shape,
-            locale,
-            prefix,
-            listType,
-            ...others
-        } = this.props;
+        const { className, style, shape, locale, prefix, listType, ...others } = this.props;
         const prefixCls = `${prefix}upload-drag`;
         const cls = classNames({
             [`${prefixCls}`]: true,

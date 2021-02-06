@@ -56,8 +56,11 @@ export default function upload(option) {
             formData.append(key, option.data[key]);
         });
     }
-
-    formData.append(option.filename, option.file);
+    if (option.file instanceof Blob) {
+        formData.append(option.filename, option.file, option.file.name);
+    } else {
+        formData.append(option.filename, option.file);
+    }
 
     xhr.onerror = function error(e) {
         option.onError(e);
@@ -73,6 +76,11 @@ export default function upload(option) {
         option.onSuccess(getBody(xhr), xhr);
     };
 
+    option.method = option.method || 'POST';
+    xhr.open(option.method, option.action, true);
+
+    // In Internet Explorer, the timeout property may be set only after calling the open() method and before calling the send() method.
+    // see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/timeout
     const { timeout } = option;
 
     if (typeof timeout === 'number' && timeout > 0) {
@@ -82,9 +90,6 @@ export default function upload(option) {
             option.onError(getError(option, xhr, msg), getBody(xhr));
         };
     }
-
-    option.method = option.method || 'POST';
-    xhr.open(option.method, option.action, true);
 
     // Has to be after `.open()`. See https://github.com/enyo/dropzone/issues/179
     if (option.withCredentials && 'withCredentials' in xhr) {

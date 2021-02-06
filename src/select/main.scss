@@ -52,7 +52,7 @@
 
         .#{$css-prefix}input.#{$css-prefix}disabled {
             em {
-                color: $color-text1-1;
+                color: $input-disabled-color;
             }
             #{$select-prefix}-arrow {
                 cursor: not-allowed;
@@ -86,6 +86,7 @@
             line-height: 1;
             margin-right: $select-tag-spacing-lr;
             margin-bottom: $select-tag-spacing-tb;
+            // TODO: removed next 2 line in next version
             padding-left: $select-tag-padding-lr;
             padding-right: $select-tag-padding-lr;
         }
@@ -153,11 +154,9 @@
             #{$select-prefix}-values > em + #{$select-prefix}-trigger-search {
                 width: 1px;
                 opacity: 0;
+                /* stylelint-disable */
                 filter: alpha(opacity=0); /* for IE 9 */
-            }
-
-            #{$select-prefix}-trigger-search input {
-                color: $color-transparent;
+                /* stylelint-enable */
             }
         }
 
@@ -188,15 +187,18 @@
                 z-index: 1;
                 padding: 0 4px 0 16px;
                 color: $input-text-color;
-                background: linear-gradient(90deg, rgba(255, 255, 255, 0), $input-bg-color 10px);
+                background: linear-gradient(90deg, transparent, $input-bg-color 10px);
             }
+        }
+        .#{$css-prefix}disabled #{$select-prefix}-tag-compact {
+            background: linear-gradient(90deg, transparent, $input-disabled-bg-color 10px);
         }
     }
 
     &-multiple, &-tag {
         #{$select-prefix}-values {
             /* Tag 有 3px 的 margin-bottom，所以包裹 Tag 的容器要作一下处理 */
-            margin-bottom: -$select-tag-spacing-tb;
+            margin-bottom: calc(0px - #{$select-tag-spacing-tb});
             height: auto !important;
         }
 
@@ -223,14 +225,14 @@
             }
             #{$tag-prefix} {
                 border: 0;
-                @include select-tag-size($select-s-lineheight, -1);
+                @include select-tag-size($select-s-lineheight, calc(0px - 1px));
 
                 &-body {
                     line-height: $select-s-lineheight;
                 }
             }
             .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
-                line-height: $form-element-small-height - 2;
+                line-height: calc(#{$form-element-small-height} - 2px);
             }
         }
 
@@ -245,7 +247,7 @@
                 @include select-tag-size($select-m-lineheight);
             }
             .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
-                line-height: $form-element-medium-height - 2;
+                line-height: calc(#{$form-element-medium-height} - 2px);
             }
         }
 
@@ -260,18 +262,21 @@
                 @include select-tag-size($select-l-lineheight);
             }
             .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
-                line-height: $form-element-large-height - 2;
+                line-height: calc(#{$form-element-large-height} - 2px);
             }
         }
     }
 
+
+    /* 在搜索框未激活时，将 input 的 color 置为透明 */
+    /* ISSUE: 在 IE11 中，<input readonly/> 仍然会显示光标, 要隐藏掉 */
+    /*
     &.#{$css-prefix}no-search {
-        /* 在搜索框未激活时，将 input 的 color 置为透明 */
-        /* ISSUE: 在 firefox 中，readonly 的 input 仍然会显示光标 */
         #{$select-prefix}-trigger-search input {
             color: $color-transparent;
         }
     }
+    */
 
     &-auto-complete {
         width: 160px;
@@ -289,9 +294,25 @@
     }
 
     &.#{$css-prefix}active {
-        #{$select-prefix}-arrow .#{$css-prefix}icon-arrow-down {
-            transform: rotate(180deg);
+        @if get-compiling-value($select-unfold-icon-content) != get-compiling-value($icon-reset) {
+            #{$select-prefix}-symbol-fold::before {
+                content: $select-unfold-icon-content;
+            }
+        } @else {
+            #{$select-prefix}-arrow .#{$css-prefix}icon-arrow-down {
+                transform: rotate(180deg);
+            }
         }
+    }
+
+    // --------- this is for config platform
+    #{$select-prefix}-unfold-icon::before {
+        content: $select-unfold-icon-content;
+    }
+    // --------- this is for config platform
+
+    &-symbol-fold::before {
+        content: $select-fold-icon-content;
     }
 
     &-arrow {
@@ -441,12 +462,10 @@
             &.#{$css-prefix}no-search,
             &.#{$css-prefix}inactive {
                 #{$select-prefix}-values > em + #{$select-prefix}-trigger-search {
+                    /* stylelint-disable */
                     filter: alpha(opacity=0); /* for IE 9 */
+                    /* stylelint-enable */
                     font-size: 0;
-                }
-
-                #{$select-prefix}-trigger-search input {
-                    color: inherit;
                 }
             }
         }
@@ -455,6 +474,20 @@
             #{$select-prefix}-trigger-search input {
                 color: inherit;
             }
+        }
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    #{$select-prefix}-multiple {
+        #{$select-prefix}-compact {
+            #{$select-prefix}-tag-compact {
+                background: linear-gradient(90deg, rgba(255, 255, 255, 0), $input-bg-color 10px);
+            }
+        }
+
+        .#{$css-prefix}disabled #{$select-prefix}-tag-compact {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), $input-disabled-bg-color 10px);
         }
     }
 }

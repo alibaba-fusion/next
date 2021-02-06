@@ -395,3 +395,15 @@ $tab-text-text-color-selected: $color-brand1-6 !default;
 /// text
 /// @namespace statement/disabled/tab
 $tab-text-text-color-disabled: $color-text1-1 !default;
+
+/// icon dropdown
+/// @namespace statement/normal/icon
+$tab-icon-dropdown-content: $icon-content-arrow-down !default;
+
+/// icon prev
+/// @namespace statement/normal/icon
+$tab-icon-prev-content: $icon-content-arrow-left !default;
+
+/// icon next
+/// @namespace statement/normal/icon
+$tab-icon-next-content: $icon-content-arrow-right !default;

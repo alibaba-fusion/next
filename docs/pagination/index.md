@@ -8,9 +8,9 @@
 
 ---
 
-## 开发指南
+分页器组件。
 
-### 何时使用
+## 何时使用
 
 在有大量内容展现需要进行分页加载处理的时候。
 
@@ -38,10 +38,10 @@
 | onPageSizeChange | 每页显示记录数量改变时的回调函数<br><br>**签名**:<br>Function(pageSize: Number) => void<br>**参数**:<br>_pageSize_: {Number} 改变后的每页显示记录数                                                          | Function                          | () => {}       |
 | hideOnlyOnePage  | 当分页数为1时，是否隐藏分页器                                                                                                                                                               | Boolean                           | false          |
 | showJump         | type 设置为 normal 时，在页码数超过5页后，会显示跳转输入框与按钮，当设置 showJump 为 false 时，不再显示该跳转区域                                                                                                      | Boolean                           | true           |
-| link             | 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：<http://www.taobao.com/{page}>                                                                                                           | String                            | -              |
+| link             | 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：<https://www.taobao.com/{page}>                                                                                                          | String                            | -              |
 | popupProps       | 弹层组件属性，透传给Popup                                                                                                                                                               | Object                            | -              |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键    | 说明   |
 | :---- | :--- |

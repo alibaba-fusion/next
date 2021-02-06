@@ -11,7 +11,8 @@ const { pickOthers } = obj;
 
 /**
  * Drawer
- */
+ * @description 继承 Overlay.Popup 的 API，除非特别说明
+ * */
 export default class Drawer extends Component {
     static displayName = 'Drawer';
 
@@ -32,7 +33,7 @@ export default class Drawer extends Component {
          */
         height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
-         * 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
+         * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
          * **close** 表示点击关闭按钮可以关闭对话框
          * **mask** 表示点击遮罩区域可以关闭对话框
          * **esc** 表示按下 esc 键可以关闭对话框
@@ -41,6 +42,17 @@ export default class Drawer extends Component {
          * 如果设置为 false，则以上关闭方式全部失效
          */
         closeable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        /**
+         * [推荐]控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：
+         * **close** 表示点击关闭按钮可以关闭对话框
+         * **mask** 表示点击遮罩区域可以关闭对话框
+         * **esc** 表示按下 esc 键可以关闭对话框
+         * 如 'close' 或 ['close','esc','mask'], []
+         */
+        closeMode: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.oneOf(['close', 'mask', 'esc'])),
+            PropTypes.oneOf(['close', 'mask', 'esc']),
+        ]),
         /**
          * 对话框关闭时触发的回调函数
          * @param {String} trigger 关闭触发行为的描述字符串
@@ -56,6 +68,10 @@ export default class Drawer extends Component {
          */
         title: PropTypes.node,
         /**
+         * header上的样式
+         */
+        headerStyle: PropTypes.object,
+        /**
          * body上的样式
          */
         bodyStyle: PropTypes.object,
@@ -70,12 +86,13 @@ export default class Drawer extends Component {
         // 受控模式下(没有 trigger 的时候)，只会在关闭时触发，相当于onClose
         onVisibleChange: PropTypes.func,
         /**
-         * 显示隐藏时动画的播放方式
-         * @property {String} in 进场动画
-         * @property {String} out 出场动画
+         * 显示隐藏时动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
+         * @default { in: 'expandInDown', out: 'expandOutUp' }
          */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         locale: PropTypes.object,
+        // for ConfigProvider
+        popupContainer: PropTypes.any,
     };
 
     static defaultProps = {
@@ -154,10 +171,7 @@ export default class Drawer extends Component {
     mapcloseableToConfig = closeable => {
         return ['esc', 'close', 'mask'].reduce((ret, option) => {
             const key = option.charAt(0).toUpperCase() + option.substr(1);
-            const value =
-                typeof closeable === 'boolean'
-                    ? closeable
-                    : closeable.split(',').indexOf(option) > -1;
+            const value = typeof closeable === 'boolean' ? closeable : closeable.split(',').indexOf(option) > -1;
 
             if (option === 'esc' || option === 'mask') {
                 ret[`canCloseBy${key}`] = value;
@@ -187,6 +201,7 @@ export default class Drawer extends Component {
             title,
             onClose,
             locale,
+            headerStyle,
             bodyStyle,
             placement,
             rtl,
@@ -202,6 +217,7 @@ export default class Drawer extends Component {
                 locale={locale}
                 closeable={closeable}
                 rtl={rtl}
+                headerStyle={headerStyle}
                 bodyStyle={bodyStyle}
                 placement={placement}
                 onClose={onClose.bind(this, 'closeClick')}
@@ -227,7 +243,9 @@ export default class Drawer extends Component {
             onClose,
             onVisibleChange,
             closeable,
+            closeMode,
             rtl,
+            popupContainer,
             ...others
         } = this.props;
 
@@ -237,10 +255,10 @@ export default class Drawer extends Component {
             ...style,
         };
 
-        const {
-            canCloseByCloseClick,
-            ...closeConfig
-        } = this.mapcloseableToConfig(closeable);
+        const newCloseable =
+            'closeMode' in this.props ? (Array.isArray(closeMode) ? closeMode.join(',') : closeMode) : closeable;
+
+        const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(newCloseable);
 
         const newPopupProps = {
             prefix,
@@ -259,6 +277,7 @@ export default class Drawer extends Component {
             target: 'viewport',
             style: newStyle,
             needAdjust: false,
+            container: popupContainer,
         };
 
         const inner = this.renderInner(canCloseByCloseClick);

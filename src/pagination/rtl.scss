@@ -57,7 +57,7 @@
         @include pagination-size(
             'rtl',
             $itemSplit: $pagination-small-item-split,
-            $itemPaddingLeftRight: $s-2 - 2px,
+            $itemPaddingLeftRight: calc(#{$s-2} - 2px),
             $itemBorderWidth: $pagination-small-item-border-width,
             $itemCorner: $pagination-small-item-corner,
             $ellipsisSize: $pagination-small-ellipsis-size,
@@ -74,7 +74,7 @@
         @include pagination-size(
             'rtl',
             $itemSplit: $pagination-item-split,
-            $itemPaddingLeftRight: $s-3 - 2px,
+            $itemPaddingLeftRight: calc(#{$s-3} - 2px),
             $itemBorderWidth: $pagination-item-border-width,
             $itemCorner: $pagination-item-corner,
             $ellipsisSize: $pagination-ellipsis-size,
@@ -91,7 +91,7 @@
         @include pagination-size(
             'rtl',
             $itemSplit: $pagination-large-item-split,
-            $itemPaddingLeftRight: $s-4 - 1px,
+            $itemPaddingLeftRight: calc(#{$s-4} - 1px),
             $itemBorderWidth: $pagination-large-item-border-width,
             $itemCorner: $pagination-large-item-corner,
             $ellipsisSize: $pagination-large-ellipsis-size,

@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { findDOMNode } from 'react-dom';
 import classnames from 'classnames';
 import shallowElementEquals from 'shallow-element-equals';
+import { polyfill } from 'react-lifecycles-compat';
 import Loading from '../loading';
 import ConfigProvider from '../config-provider';
 import zhCN from '../locale/zh-cn';
-import { log, obj } from '../util';
+import { log, obj, dom } from '../util';
 import BodyComponent from './base/body';
 import HeaderComponent from './base/header';
 import WrapperComponent from './base/wrapper';
@@ -28,7 +30,7 @@ const Children = React.Children,
 //</Table>
 
 /** Table */
-export default class Table extends React.Component {
+class Table extends React.Component {
     static Column = Column;
     static ColumnGroup = ColumnGroup;
     static Header = HeaderComponent;
@@ -47,6 +49,14 @@ export default class Table extends React.Component {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
+        /**
+         * 表格元素的 table-layout 属性，设为 fixed 表示内容不会影响列的布局
+         */
+        tableLayout: PropTypes.oneOf(['fixed', 'auto']),
+        /**
+         * 表格的总长度，可以这么用：设置表格总长度 、设置部分列的宽度，这样表格会按照剩余空间大小，自动其他列分配宽度
+         */
+        tableWidth: PropTypes.number,
         /**
          * 自定义类名
          */
@@ -137,7 +147,8 @@ export default class Table extends React.Component {
         /**
          * 自定义 Loading 组件
          * 请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
-         * @param {Object} props 当前点击行的key
+         * @param {LoadingProps} props 需要透传给组件的参数
+         * @return {React.ReactNode} 展示的组件
          */
         loadingComponent: PropTypes.func,
         /**
@@ -169,6 +180,9 @@ export default class Table extends React.Component {
          */
         locale: PropTypes.object,
         components: PropTypes.object,
+        /**
+         * 等同于写子组件 Table.Column ，子组件优先级更高
+         */
         columns: PropTypes.array,
         /**
          * 设置数据为空的时候的表格内容展现
@@ -177,7 +191,7 @@ export default class Table extends React.Component {
         /**
          * dataSource当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
          */
-        primaryKey: PropTypes.string,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         lockType: PropTypes.oneOf(['left', 'right']),
         wrapperContent: PropTypes.any,
         refs: PropTypes.object,
@@ -189,13 +203,16 @@ export default class Table extends React.Component {
          */
         expandedRowRender: PropTypes.func,
         /**
+         * 设置行是否可展开，设置 false 为不可展开
+         * @param {Object} record 该行所对应的数据
+         * @param {Number} index 该行所对应的序列
+         * @returns {Boolean} 是否可展开
+         */
+        rowExpandable: PropTypes.func,
+        /**
          * 额外渲染行的缩进
          */
         expandedRowIndent: PropTypes.array,
-        /**
-         * 默认情况下展开的渲染行或者Tree, 传入此属性为受控状态
-         */
-        openRowKeys: PropTypes.array,
         /**
          * 是否显示点击展开额外渲染行的+号按钮
          */
@@ -205,19 +222,17 @@ export default class Table extends React.Component {
          */
         getExpandedColProps: PropTypes.func,
         /**
-         * 在额外渲染行或者Tree展开或者收起的时候触发的事件
+         * 默认情况下展开的 Expand行 或者 Tree行 , 传入此属性为受控状态，一般配合 onRowOpen 使用
+         */
+        openRowKeys: PropTypes.array,
+        /**
+         * 在 Expand行 或者 Tree行 展开或者收起的时候触发的事件
          * @param {Array} openRowKeys 展开的渲染行的key
          * @param {String} currentRowKey 当前点击的渲染行的key
          * @param {Boolean} expanded 当前点击是展开还是收起
          * @param {Object} currentRecord 当前点击额外渲染行的记录
          */
         onRowOpen: PropTypes.func,
-        /**
-         * 点击额外渲染行触发的事件
-         * @param {Object} record 该行所对应的数据
-         * @param {Number} index 该行所对应的序列
-         * @param {Event} e DOM事件对象
-         */
         onExpandedRowClick: PropTypes.func,
         /**
          * 表头是否固定，该属性配合maxBodyHeight使用，当内容区域的高度超过maxBodyHeight的时候，在内容区域会出现滚动条
@@ -226,10 +241,7 @@ export default class Table extends React.Component {
         /**
          * 最大内容区域的高度,在`fixedHeader`为`true`的时候,超过这个高度会出现滚动条
          */
-        maxBodyHeight: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-        ]),
+        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 是否启用选择模式
          * @property {Function} getProps `Function(record, index)=>Object` 获取selection的默认属性
@@ -276,6 +288,11 @@ export default class Table extends React.Component {
          * 开启时，getExpandedColProps() / rowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
          */
         expandedIndexSimulate: PropTypes.bool,
+        /**
+         * 在 hover 时出现十字参考轴，适用于表头比较复杂，需要做表头分类的场景。
+         */
+        crossline: PropTypes.bool,
+        lengths: PropTypes.object,
     };
 
     static defaultProps = {
@@ -298,6 +315,7 @@ export default class Table extends React.Component {
         primaryKey: 'id',
         components: {},
         locale: zhCN.Table,
+        crossline: false,
     };
 
     static childContextTypes = {
@@ -307,15 +325,16 @@ export default class Table extends React.Component {
 
     static contextTypes = {
         getTableInstance: PropTypes.func,
+        getTableInstanceForFixed: PropTypes.func,
         getTableInstanceForVirtual: PropTypes.func,
     };
 
     constructor(props, context) {
         super(props, context);
-        const { getTableInstance, getTableInstanceForVirtual } = this.context;
+        const { getTableInstance, getTableInstanceForVirtual, getTableInstanceForFixed } = this.context;
         getTableInstance && getTableInstance(props.lockType, this);
-        getTableInstanceForVirtual &&
-            getTableInstanceForVirtual(props.lockType, this);
+        getTableInstanceForFixed && getTableInstanceForFixed(props.lockType, this);
+        getTableInstanceForVirtual && getTableInstanceForVirtual(props.lockType, this);
         this.notRenderCellIndex = [];
     }
 
@@ -325,17 +344,24 @@ export default class Table extends React.Component {
 
     getChildContext() {
         return {
-            notRenderCellIndex: this.notRenderCellIndex,
+            notRenderCellIndex: this.notRenderCellIndex || [],
             lockType: this.props.lockType,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (typeof this.props.sort !== 'undefined') {
-            this.setState({
-                sort: nextProps.sort,
-            });
+    static getDerivedStateFromProps(nextProps) {
+        const state = {};
+
+        if (typeof nextProps.sort !== 'undefined') {
+            state.sort = nextProps.sort;
         }
+
+        return state;
+    }
+
+    componentDidMount() {
+        this.notRenderCellIndex = [];
+        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -350,8 +376,9 @@ export default class Table extends React.Component {
         return true;
     }
 
-    componentWillUpdate() {
+    componentDidUpdate() {
         this.notRenderCellIndex = [];
+        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     normalizeChildrenState(props) {
@@ -374,14 +401,11 @@ export default class Table extends React.Component {
                     if (
                         !(
                             child &&
-                            typeof child.type === 'function' &&
-                            (child.type._typeMark === 'column' ||
-                                child.type._typeMark === 'columnGroup')
+                            ['function', 'object'].indexOf(typeof child.type) > -1 &&
+                            (child.type._typeMark === 'column' || child.type._typeMark === 'columnGroup')
                         )
                     ) {
-                        log.warning(
-                            'Use <Table.Column/>, <Table.ColumnGroup/> as child.'
-                        );
+                        log.warning('Use <Table.Column/>, <Table.ColumnGroup/> as child.');
                     }
                     ret.push(props);
                     if (child.props.children) {
@@ -401,7 +425,7 @@ export default class Table extends React.Component {
         let hasGroupHeader = false;
         const flatChildren = [],
             groupChildren = [],
-            getChildren = (propsChildren, level) => {
+            getChildren = (propsChildren = [], level) => {
                 groupChildren[level] = groupChildren[level] || [];
                 propsChildren.forEach(child => {
                     if (child.children) {
@@ -439,6 +463,10 @@ export default class Table extends React.Component {
                 }
             });
         });
+
+        const { lockType, lengths } = this.props;
+        const start = lockType === 'right' ? lengths.origin - lengths.right : 0;
+        this.addColIndex(flatChildren, start);
 
         return {
             flatChildren,
@@ -487,10 +515,7 @@ export default class Table extends React.Component {
 
     // 通过头部和扁平的结构渲染表格
     renderTable(groupChildren, flatChildren) {
-        if (
-            flatChildren.length ||
-            (!flatChildren.length && !this.props.lockType)
-        ) {
+        if (flatChildren.length || (!flatChildren.length && !this.props.lockType)) {
             const {
                 hasHeader,
                 components,
@@ -510,22 +535,16 @@ export default class Table extends React.Component {
                 expandedIndexSimulate,
                 pure,
                 rtl,
+                crossline,
                 sortIcons,
+                tableWidth,
             } = this.props;
             const { sort } = this.state;
-            const {
-                Header = HeaderComponent,
-                Wrapper = WrapperComponent,
-                Body = BodyComponent,
-            } = components;
+            const { Header = HeaderComponent, Wrapper = WrapperComponent, Body = BodyComponent } = components;
             const colGroup = this.renderColGroup(flatChildren);
 
             return (
-                <Wrapper
-                    colGroup={colGroup}
-                    ref={this.getWrapperRef}
-                    prefix={prefix}
-                >
+                <Wrapper colGroup={colGroup} ref={this.getWrapperRef} prefix={prefix} tableWidth={tableWidth}>
                     {hasHeader ? (
                         <Header
                             prefix={prefix}
@@ -544,12 +563,14 @@ export default class Table extends React.Component {
                             onResizeChange={this.onResizeChange}
                             onSort={this.onSort}
                             sortIcons={sortIcons}
+                            tableWidth={tableWidth}
                         />
                     ) : null}
                     <Body
                         prefix={prefix}
                         rtl={rtl}
                         pure={pure}
+                        crossline={crossline}
                         colGroup={colGroup}
                         className={`${prefix}table-body`}
                         components={components}
@@ -563,10 +584,14 @@ export default class Table extends React.Component {
                         cellRef={this.getCellRef}
                         onRowClick={onRowClick}
                         expandedIndexSimulate={expandedIndexSimulate}
+                        tableOuterWidth={this.tableOuterWidth}
                         onRowMouseEnter={onRowMouseEnter}
                         onRowMouseLeave={onRowMouseLeave}
                         dataSource={dataSource}
                         locale={locale}
+                        onBodyMouseOver={this.onBodyMouseOver}
+                        onBodyMouseOut={this.onBodyMouseOut}
+                        tableWidth={tableWidth}
                     />
                     {wrapperContent}
                 </Wrapper>
@@ -614,6 +639,94 @@ export default class Table extends React.Component {
         this[cellRef] = cell;
     };
 
+    handleColHoverClass = (rowIndex, colIndex, isAdd) => {
+        const { crossline } = this.props;
+        const funcName = isAdd ? 'addClass' : 'removeClass';
+        if (crossline) {
+            this.props.entireDataSource.forEach((val, index) => {
+                try {
+                    // in case of finding an unmounted component due to cached data
+                    // need to clear refs of this.tableInc when dataSource Changed
+                    // in virtual table
+                    const currentCol = findDOMNode(this.getCellRef(index, colIndex));
+                    currentCol && dom[funcName](currentCol, 'hovered');
+                } catch (error) {
+                    return null;
+                }
+            });
+        }
+    };
+
+    /**
+     * @param event
+     * @returns {Object} { rowIndex: string; colIndex: string }
+     */
+    findEventTarget = e => {
+        const { prefix } = this.props;
+        const target = dom.getClosest(e.target, `td.${prefix}table-cell`);
+        const colIndex = target && target.getAttribute('data-next-table-col');
+        const rowIndex = target && target.getAttribute('data-next-table-row');
+
+        try {
+            // in case of finding an unmounted component due to cached data
+            // need to clear refs of this.tableInc when dataSource Changed
+            // in virtual table
+            const currentCol = findDOMNode(this.getCellRef(rowIndex, colIndex));
+            if (currentCol === target) {
+                return {
+                    colIndex,
+                    rowIndex,
+                };
+            }
+        } catch (error) {
+            return {};
+        }
+
+        return {};
+    };
+
+    onBodyMouseOver = e => {
+        const { crossline } = this.props;
+        if (!crossline) {
+            return;
+        }
+
+        const { colIndex, rowIndex } = this.findEventTarget(e);
+        // colIndex, rowIndex are string
+        if (!colIndex || !rowIndex) {
+            return;
+        }
+        this.handleColHoverClass(rowIndex, colIndex, true);
+        this.colIndex = colIndex;
+        this.rowIndex = rowIndex;
+    };
+
+    onBodyMouseOut = e => {
+        const { crossline } = this.props;
+        if (!crossline) {
+            return;
+        }
+
+        const { colIndex, rowIndex } = this.findEventTarget(e);
+        // colIndex, rowIndex are string
+        if (!colIndex || !rowIndex) {
+            return;
+        }
+        this.handleColHoverClass(this.rowIndex, this.colIndex, false);
+        this.colIndex = -1;
+        this.rowIndex = -1;
+    };
+
+    addColIndex = (children, start = 0) => {
+        children.forEach((child, i) => {
+            child.__colIndex = start + i;
+        });
+    };
+
+    getTableEl = ref => {
+        this.tableEl = ref;
+    };
+
     render() {
         const ret = this.normalizeChildrenState(this.props);
         this.groupChildren = ret.groupChildren;
@@ -653,11 +766,15 @@ export default class Table extends React.Component {
                 columns,
                 sortIcons,
                 loadingComponent: LoadingComponent = Loading,
+                tableLayout,
+                tableWidth,
+                ref,
                 ...others
             } = this.props,
             cls = classnames({
                 [`${prefix}table`]: true,
                 [`${prefix}table-${size}`]: size,
+                [`${prefix}table-layout-${tableLayout}`]: tableLayout,
                 'only-bottom-border': !hasBorder,
                 'no-header': !hasHeader,
                 zebra: isZebra,
@@ -672,6 +789,7 @@ export default class Table extends React.Component {
             <div
                 className={cls}
                 style={style}
+                ref={ref || this.getTableEl}
                 {...obj.pickOthers(Object.keys(Table.propTypes), others)}
             >
                 {table}
@@ -679,12 +797,10 @@ export default class Table extends React.Component {
         );
         if (loading) {
             const loadingClassName = `${prefix}table-loading`;
-            return (
-                <LoadingComponent className={loadingClassName}>
-                    {content}
-                </LoadingComponent>
-            );
+            return <LoadingComponent className={loadingClassName}>{content}</LoadingComponent>;
         }
         return content;
     }
 }
+
+export default polyfill(Table);

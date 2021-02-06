@@ -17,8 +17,8 @@
     }
 
     #{$radio-prefix}-label {
-        height: $radio-button-height-large - 2;
-        line-height: $radio-button-height-large - 2;
+        height: calc(#{$radio-button-height-large} - 2px);
+        line-height: calc(#{$radio-button-height-large} - 2px);
         font-size: $radio-button-font-size-large;
     }
 }

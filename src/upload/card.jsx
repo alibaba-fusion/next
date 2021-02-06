@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import zhCN from '../locale/zh-cn.js';
 import { func, obj } from '../util';
 import Base from './base';
@@ -36,6 +38,16 @@ class Card extends Base {
          * 取消上传的回调
          */
         onCancel: PropTypes.func,
+        /**
+         * 自定义成功和失败的列表渲染方式
+         */
+        itemRender: PropTypes.func,
+        /**
+         * 上传中
+         */
+        onProgress: PropTypes.func,
+        isPreview: PropTypes.bool,
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -43,6 +55,7 @@ class Card extends Base {
         locale: zhCN.Upload,
         onChange: func.noop,
         onPreview: func.noop,
+        onProgress: func.noop,
     };
 
     constructor(props) {
@@ -57,10 +70,7 @@ class Card extends Base {
         }
 
         this.state = {
-            value:
-                typeof value === 'undefined'
-                    ? /* istanbul ignore next */ []
-                    : value,
+            value: !Array.isArray(value) ? [] : value,
             uploaderRef: this.uploaderRef,
         };
     }
@@ -69,22 +79,23 @@ class Card extends Base {
         this.setState({ uploaderRef: this.uploaderRef });
     }
 
-    componentWillReceiveProps(nextProps) {
-        /* istanbul ignore if */
-        if ('value' in nextProps) {
-            this.setState({
-                value:
-                    typeof nextProps.value === 'undefined'
-                        ? []
-                        : nextProps.value,
-            });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const isUploading = prevState.uploaderRef && prevState.uploaderRef.isUploading();
+        if ('value' in nextProps && nextProps.value !== prevState.value && !isUploading) {
+            return {
+                value: !Array.isArray(nextProps.value) ? [] : [].concat(nextProps.value),
+            };
         }
+
+        return null;
     }
 
-    onProgress = value => {
+    onProgress = (value, targetItem) => {
         this.setState({
             value,
         });
+
+        this.props.onProgress(value, targetItem);
     };
 
     onChange = (value, file) => {
@@ -117,6 +128,9 @@ class Card extends Base {
             onRemove,
             onCancel,
             timeout,
+            isPreview,
+            renderPreview,
+            itemRender,
         } = this.props;
 
         const isExceedLimit = this.state.value.length >= limit;
@@ -130,6 +144,21 @@ class Card extends Base {
         const onRemoveFunc = disabled ? func.prevent : onRemove;
         const othersForList = obj.pickOthers(Card.propTypes, this.props);
         const othersForUpload = obj.pickOthers(List.propTypes, othersForList);
+
+        if (isPreview) {
+            if (typeof renderPreview === 'function') {
+                const previewCls = classNames({
+                    [`${prefix}form-preview`]: true,
+                    [className]: !!className,
+                });
+                return (
+                    <div style={style} className={previewCls}>
+                        {renderPreview(this.state.value, this.props)}
+                    </div>
+                );
+            }
+        }
+
         return (
             <List
                 className={className}
@@ -141,15 +170,19 @@ class Card extends Base {
                 onRemove={onRemoveFunc}
                 onCancel={onCancel}
                 onPreview={onPreview}
+                itemRender={itemRender}
+                isPreview={isPreview}
                 uploader={this.state.uploaderRef}
                 {...othersForList}
             >
                 <Upload
                     {...othersForUpload}
                     shape="card"
+                    prefix={prefix}
                     disabled={disabled}
                     action={action}
                     timeout={timeout}
+                    isPreview={isPreview}
                     value={this.state.value}
                     onProgress={this.onProgress}
                     onChange={this.onChange}
@@ -163,4 +196,4 @@ class Card extends Base {
     }
 }
 
-export default Card;
+export default polyfill(Card);

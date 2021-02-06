@@ -20,7 +20,7 @@
 ) {
     width: $width;
     height: $height;
-    line-height: $height - 2;
+    line-height: calc(#{$height} - 2px);
     margin: $margin-tb auto;
     border-radius: $corner;
 }

@@ -1,5 +1,4 @@
 const path = require('path');
-const cp = require('child_process');
 const fs = require('fs-extra');
 const co = require('co');
 const ejs = require('ejs');
@@ -13,18 +12,7 @@ module.exports = function(context, componentName) {
     co(function*() {
         const locals = {
             componentName,
-            hasRubySass: true,
         };
-
-        try {
-            cp.execSync('sass --version');
-        } catch (e) {
-            locals.hasRubySass = false;
-            locals.error = false;
-            logger.warn(
-                '如果想调试配置平台Demo，请执行 `sudo gem install sass` 命令安装 ruby-sass.'
-            );
-        }
 
         try {
             Object.assign(
@@ -58,7 +46,7 @@ function* getVariableEnums() {
 }
 
 function* getTrackerJS() {
-    const trackerJSPath = require.resolve('@no-repeat/sass-tracker');
+    const trackerJSPath = require.resolve('@alifd/sass-tracker');
 
     return yield fs.readFile(trackerJSPath, 'utf8');
 }

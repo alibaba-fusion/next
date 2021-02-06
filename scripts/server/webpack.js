@@ -15,22 +15,13 @@ const cwd = process.cwd();
 
 module.exports = function getWebpackConfig(options) {
     const config = getConfig();
-    const {
-        componentName,
-        componentPath,
-        disableAnimation,
-        lang,
-        dir,
-        devA11y,
-    } = options;
+    const { componentName, componentPath, disableAnimation, lang, dir, devA11y, mode } = options;
 
-    const indexPath = path.join(
-        componentPath,
-        lang === 'zh' ? 'index.md' : 'index.en-us.md'
-    );
+    const indexPath = path.join(componentPath, lang === 'zh' ? 'index.md' : 'index.en-us.md');
     const demoPaths = glob.sync(path.join(componentPath, 'demo', '*.md'));
     const themePaths = glob.sync(path.resolve(componentPath, 'theme/**/*.jsx'));
-    const entry = getEntry([indexPath, ...demoPaths, ...themePaths]);
+    const adaptorPaths = glob.sync(path.resolve(componentPath, 'adaptor/*.jsx'));
+    const entry = getEntry([indexPath, ...demoPaths, ...themePaths, ...adaptorPaths], componentName, mode);
     config.entry = entry;
 
     config.output = {
@@ -77,26 +68,28 @@ module.exports = function getWebpackConfig(options) {
         if (componentName === 'core') {
             themePaths.forEach(themePath => {
                 links.push({
-                    href: path
-                        .relative(docsPath, themePath)
-                        .replace(/\.jsx$/, '.html'),
+                    href: path.relative(docsPath, themePath).replace(/\.jsx$/, '.html'),
                     title: path.basename(themePath, '.jsx'),
                 });
             });
         } else {
             links.push({
-                href: path
-                    .relative(docsPath, themePaths[0])
-                    .replace(/\.jsx$/, '.html'),
+                href: path.relative(docsPath, themePaths[0]).replace(/\.jsx$/, '.html'),
                 title: 'Theme Demo',
             });
             links.push({
-                href: path
-                    .relative(docsPath, themePaths[0])
-                    .replace(/index\.jsx$/, 'config.html'),
+                href: path.relative(docsPath, themePaths[0]).replace(/index\.jsx$/, 'config.html'),
                 title: 'Config Theme Demo',
             });
         }
+    }
+
+    if (adaptorPaths.length) {
+        const docsPath = path.join(cwd, 'docs');
+        links.push({
+            href: path.relative(docsPath, adaptorPaths[0]).replace(/\.jsx$/, '.html'),
+            title: 'Adaptor Demo',
+        });
     }
 
     config.module.rules.push({
@@ -156,10 +149,7 @@ module.exports = function getWebpackConfig(options) {
     config.plugins.push(
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
-            chunks: Object.keys(entry).filter(
-                entryPath =>
-                    !/docs\/[^/]+\/index\.((en-us)\.)?$/.test(entryPath)
-            ),
+            chunks: Object.keys(entry).filter(entryPath => !/docs\/[^/]+\/index\.((en-us)\.)?$/.test(entryPath)),
         })
     );
 
@@ -172,12 +162,29 @@ module.exports = function getWebpackConfig(options) {
     return config;
 };
 
-function getEntry(entryPaths) {
+function getEntry(entryPaths, componentName, mode) {
     const entry = entryPaths.reduce((ret, entryPath) => {
         const name = path.basename(entryPath, path.extname(entryPath));
         const pathWithoutExt = path.join(path.dirname(entryPath), name);
+        let cssArr = [];
+        // 通过 mode 判断引入的样式文件
+        if (mode === 'css') {
+            cssArr = [
+                path.join(process.cwd(), 'lib', componentName, 'variable.css'),
+                path.join(process.cwd(), 'lib', componentName, 'style2.js'),
+                path.join(process.cwd(), 'lib', 'core2', 'index.css'),
+            ];
+        } else if (componentName !== 'core') {
+            cssArr = [path.join(process.cwd(), 'src', componentName, 'style.js')];
+        }
         ret[pathWithoutExt] = [
             'react-dev-utils/webpackHotDevClient',
+            // css var should only be included once.
+            // import it from 'src/core/index-noreset.scss'
+            // will produce many duplicates,
+            // making dev app slow
+            // path.join(process.cwd(), 'src', 'core', 'css-var-def.scss'),
+            ...cssArr,
             entryPath,
         ];
         return ret;
@@ -205,13 +212,9 @@ function getLinks(demoPaths) {
         ret[demoPath] = order;
         return ret;
     }, {});
-    const orderedDemoPaths = demoPaths.sort(
-        (prev, next) => demoOrders[prev] - demoOrders[next]
-    );
+    const orderedDemoPaths = demoPaths.sort((prev, next) => demoOrders[prev] - demoOrders[next]);
     return orderedDemoPaths.map(demoPath => {
-        const href = path
-            .relative(path.join(cwd, 'docs'), demoPath)
-            .replace(/\.md$/, '.html');
+        const href = path.relative(path.join(cwd, 'docs'), demoPath).replace(/\.md$/, '.html');
         let title = (demoMetas[demoPath] || {}).title;
         if (!title) {
             title = path.basename(demoPath, '.md');

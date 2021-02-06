@@ -1,5 +1,6 @@
 import { Component, Children } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import getContextProps from './get-context-props';
 import {
     config,
@@ -14,8 +15,28 @@ import {
 import Consumer from './consumer';
 import ErrorBoundary from './error-boundary';
 import Cache from './cache';
+import datejs from '../util/date';
 
 const childContextCache = new Cache();
+
+const setMomentLocale = locale => {
+    let moment;
+    try {
+        moment = require('moment');
+    } catch (e) {
+        // ignore
+    }
+
+    if (moment && locale) {
+        moment.locale(locale.momentLocale);
+    }
+};
+
+const setDateLocale = locale => {
+    if (locale) {
+        datejs.locale(locale.dateLocale || locale.momentLocale);
+    }
+};
 
 /**
  * ConfigProvider
@@ -31,6 +52,10 @@ class ConfigProvider extends Component {
          * 国际化文案对象，属性为组件的 displayName
          */
         locale: PropTypes.object,
+        /**
+         * 组件 API 的默认配置
+         */
+        defaultPropsConfig: PropTypes.object,
         /**
          * 是否开启错误捕捉 errorBoundary
          * 如需自定义参数，请传入对象 对象接受参数列表如下：
@@ -62,7 +87,7 @@ class ConfigProvider extends Component {
         /**
          * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
     };
 
     static defaultProps = {
@@ -70,21 +95,28 @@ class ConfigProvider extends Component {
         errorBoundary: false,
     };
 
-    static childContextTypes = {
+    static contextTypes = {
         nextPrefix: PropTypes.string,
         nextLocale: PropTypes.object,
+        nextDefaultPropsConfig: PropTypes.object,
         nextPure: PropTypes.bool,
         nextRtl: PropTypes.bool,
         nextWarning: PropTypes.bool,
         nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
-        nextPopupContainer: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.func,
-        ]),
-        nextErrorBoundary: PropTypes.oneOfType([
-            PropTypes.bool,
-            PropTypes.object,
-        ]),
+        nextPopupContainer: PropTypes.any,
+        nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+    };
+
+    static childContextTypes = {
+        nextPrefix: PropTypes.string,
+        nextLocale: PropTypes.object,
+        nextDefaultPropsConfig: PropTypes.object,
+        nextPure: PropTypes.bool,
+        nextRtl: PropTypes.bool,
+        nextWarning: PropTypes.bool,
+        nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
+        nextPopupContainer: PropTypes.any,
+        nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     };
 
     /**
@@ -104,11 +136,7 @@ class ConfigProvider extends Component {
      * @returns {Object} 新的 context props
      */
     static getContextProps = (props, displayName) => {
-        return getContextProps(
-            props,
-            childContextCache.root() || {},
-            displayName
-        );
+        return getContextProps(props, childContextCache.root() || {}, displayName);
     };
 
     static initLocales = initLocales;
@@ -125,6 +153,7 @@ class ConfigProvider extends Component {
         const {
             nextPrefix,
             nextLocale,
+            nextDefaultPropsConfig,
             nextPure,
             nextRtl,
             nextWarning,
@@ -136,6 +165,7 @@ class ConfigProvider extends Component {
         return {
             prefix: nextPrefix,
             locale: nextLocale,
+            defaultPropsConfig: nextDefaultPropsConfig,
             pure: nextPure,
             rtl: nextRtl,
             warning: nextWarning,
@@ -147,20 +177,21 @@ class ConfigProvider extends Component {
 
     constructor(...args) {
         super(...args);
-        childContextCache.add(
-            this,
-            Object.assign(
-                {},
-                childContextCache.get(this, {}),
-                this.getChildContext()
-            )
-        );
+        childContextCache.add(this, Object.assign({}, childContextCache.get(this, {}), this.getChildContext()));
+
+        setMomentLocale(this.props.locale);
+        setDateLocale(this.props.locale);
+
+        this.state = {
+            locale: this.props.locale,
+        };
     }
 
     getChildContext() {
         const {
             prefix,
             locale,
+            defaultPropsConfig,
             pure,
             warning,
             rtl,
@@ -169,54 +200,50 @@ class ConfigProvider extends Component {
             errorBoundary,
         } = this.props;
 
+        const {
+            nextPrefix,
+            nextDefaultPropsConfig,
+            nextLocale,
+            nextPure,
+            nextRtl,
+            nextWarning,
+            nextDevice,
+            nextPopupContainer,
+            nextErrorBoundary,
+        } = this.context;
+
         return {
-            nextPrefix: prefix,
-            nextLocale: locale,
-            nextPure: pure,
-            nextRtl: rtl,
-            nextWarning: warning,
-            nextDevice: device,
-            nextPopupContainer: popupContainer,
-            nextErrorBoundary: errorBoundary,
+            nextPrefix: prefix || nextPrefix,
+            nextDefaultPropsConfig: defaultPropsConfig || nextDefaultPropsConfig,
+            nextLocale: locale || nextLocale,
+            nextPure: typeof pure === 'boolean' ? pure : nextPure,
+            nextRtl: typeof rtl === 'boolean' ? rtl : nextRtl,
+            nextWarning: typeof warning === 'boolean' ? warning : nextWarning,
+            nextDevice: device || nextDevice,
+            nextPopupContainer: popupContainer || nextPopupContainer,
+            nextErrorBoundary: errorBoundary || nextErrorBoundary,
         };
     }
 
-    componentWillMount() {
-        this.setMomentLocale(this.props.locale);
-    }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.locale !== prevState.locale) {
+            setMomentLocale(nextProps.locale);
+            setDateLocale(nextProps.locale);
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.locale !== nextProps.locale) {
-            this.setMomentLocale(nextProps.locale);
+            return {
+                locale: nextProps.locale,
+            };
         }
+
+        return null;
     }
 
     componentDidUpdate() {
-        childContextCache.add(
-            this,
-            Object.assign(
-                {},
-                childContextCache.get(this, {}),
-                this.getChildContext()
-            )
-        );
+        childContextCache.add(this, Object.assign({}, childContextCache.get(this, {}), this.getChildContext()));
     }
 
     componentWillUnmount() {
         childContextCache.remove(this);
-    }
-
-    setMomentLocale(locale) {
-        let moment;
-        try {
-            moment = require('moment');
-        } catch (e) {
-            // ignore
-        }
-
-        if (moment && locale) {
-            moment.locale(locale.momentLocale);
-        }
     }
 
     render() {
@@ -224,4 +251,4 @@ class ConfigProvider extends Component {
     }
 }
 
-export default ConfigProvider;
+export default polyfill(ConfigProvider);

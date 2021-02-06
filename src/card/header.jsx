@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -7,7 +7,7 @@ import ConfigProvider from '../config-provider';
  * Card.Header
  * @order 2
  */
-class CardHeader extends PureComponent {
+class CardHeader extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         /**

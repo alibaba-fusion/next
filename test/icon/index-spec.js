@@ -37,4 +37,15 @@ describe('Icon', () => {
         wrapper.setProps({ style: { color: 'red' } });
         assert(wrapper.find('.next-icon').prop('style').color === 'red');
     });
+
+    it('should receive style prop', () => {
+        const CustomIcon = Icon.createFromIconfontCN({
+            scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
+        });
+
+        const newWrapper = mount(<CustomIcon type="icon-pic"/>);
+        assert(newWrapper.find('.next-icon svg'));
+        newWrapper.setProps({ size: 'xl' });
+        assert(newWrapper.find('.next-icon').hasClass('next-xl'));
+    });
 });

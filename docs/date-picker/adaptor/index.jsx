@@ -45,9 +45,9 @@ export default {
     adaptor: ({ shape, state, size, type, width, label, placeholder = '', style = {}, ...others }) => {
         const now = moment();
         style = {
-            minWidth: width,
+            width,
             ...style,
-        }
+        };
 
         if (shape === 'range') {
             return  (

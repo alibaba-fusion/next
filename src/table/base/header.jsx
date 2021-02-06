@@ -25,6 +25,7 @@ export default class Header extends React.Component {
         sortIcons: PropTypes.object,
         onSort: PropTypes.func,
         onResizeChange: PropTypes.func,
+        tableWidth: PropTypes.number,
     };
     static defaultProps = {
         component: 'thead',
@@ -65,6 +66,7 @@ export default class Header extends React.Component {
             onResizeChange,
             pure,
             rtl,
+            tableWidth,
             ...others
         } = this.props;
 
@@ -95,6 +97,7 @@ export default class Header extends React.Component {
                     className,
                     __normalized,
                     lock,
+                    cellStyle,
                     ...others
                 } = col;
 
@@ -107,13 +110,16 @@ export default class Header extends React.Component {
                     sortElement,
                     filterElement,
                     resizeElement;
-                if (col.children && col.children.length) {
-                    attrs.colSpan = colSpan;
-                } else {
+
+                attrs.colSpan = colSpan;
+
+                // column.group doesn't have sort resize filter
+                if (!(col.children && col.children.length)) {
                     if (sortable) {
                         sortElement = (
                             <Sort
                                 prefix={prefix}
+                                className={`${prefix}table-header-icon`}
                                 dataIndex={dataIndex}
                                 onSort={this.onSort}
                                 sortIcons={sortIcons}
@@ -138,6 +144,7 @@ export default class Header extends React.Component {
                         filterElement = filters.length ? (
                             <Filter
                                 dataIndex={dataIndex}
+                                className={`${prefix}table-header-icon`}
                                 filters={filters}
                                 prefix={prefix}
                                 locale={locale}
@@ -152,6 +159,11 @@ export default class Header extends React.Component {
                     }
                     attrs.rowSpan = rowSpan - index;
                 }
+
+                if (+attrs.colSpan === 0) {
+                    return null;
+                }
+
                 return (
                     <Cell
                         {...others}

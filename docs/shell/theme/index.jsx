@@ -185,6 +185,8 @@ const renderShell = (type, i18n, demoFunction) => {
 class FunctionDemo extends React.Component {
     constructor(props) {
         super(props);
+        const navigationType = props.type === 'dark' ? 'primary' : 'normal';
+
         this.state = {
             demoFunction: {
                 'device': {
@@ -239,7 +241,7 @@ class FunctionDemo extends React.Component {
                 },
                 'navigationType': {
                     label: 'App Nav Type',
-                    value: 'normal',
+                    value: navigationType,
                     enum: [{
                         label: 'normal',
                         value: 'normal'

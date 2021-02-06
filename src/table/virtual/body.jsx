@@ -10,14 +10,13 @@ export default class VirtualBody extends React.Component {
         prefix: PropTypes.string,
         className: PropTypes.string,
         colGroup: PropTypes.any,
+        tableWidth: PropTypes.number,
     };
 
     static contextTypes = {
-        maxBodyHeight: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-        ]),
+        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         onBodyScroll: PropTypes.func,
+        onFixedScrollSync: PropTypes.func,
         onVirtualScroll: PropTypes.func,
         onLockBodyScroll: PropTypes.func,
         bodyHeight: PropTypes.number,
@@ -46,40 +45,38 @@ export default class VirtualBody extends React.Component {
         this.virtualScrollNode = virtualScroll;
     };
 
-    onScroll = () => {
+    onScroll = current => {
         // for fixed
-        this.context.onBodyScroll();
+        this.context.onFixedScrollSync(current);
         // for lock
-        this.context.onLockBodyScroll();
+        this.context.onLockBodyScroll(current);
         // for virtual
         this.context.onVirtualScroll();
     };
 
     render() {
-        const { prefix, className, colGroup, ...others } = this.props;
+        const { prefix, className, colGroup, tableWidth, ...others } = this.props;
         const { maxBodyHeight, bodyHeight, innerTop } = this.context;
+        const style = {
+            width: tableWidth,
+        };
         return (
-            <div
-                style={{ maxHeight: maxBodyHeight }}
-                className={className}
-                onScroll={this.onScroll}
-            >
+            <div style={{ maxHeight: maxBodyHeight }} className={className} onScroll={this.onScroll}>
                 <div
                     style={{
                         height: bodyHeight,
-                        overflow: 'hidden',
                         position: 'relative',
                     }}
                     ref={this.virtualScrollRef}
                 >
                     <div
                         style={{
-                            height: '100%',
                             position: 'relative',
                             transform: `translateY(${innerTop}px)`,
+                            willChange: 'transform',
                         }}
                     >
-                        <table ref={this.tableRef}>
+                        <table ref={this.tableRef} style={style}>
                             {colGroup}
                             <BodyComponent {...others} prefix={prefix} />
                         </table>

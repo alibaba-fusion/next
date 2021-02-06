@@ -5,10 +5,12 @@ import classNames from 'classnames';
 import { func, dom, events } from '../util';
 import Menu from '../menu';
 import Overlay from '../overlay';
+import Input from '../input';
+
 import zhCN from '../locale/zh-cn';
 import DataStore from './data-store';
 import VirtualList from '../virtual-list';
-import { isSingle, filter, isNull, valueToSelectKey } from './util';
+import { isSingle, filter, isNull, valueToSelectKey, getValueDataSource } from './util';
 
 const { Popup } = Overlay;
 const { Item: MenuItem, Group: MenuGroup } = Menu;
@@ -74,7 +76,7 @@ export default class Base extends React.Component {
         /**
          * 弹层挂载的容器节点
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 弹层的 className
          */
@@ -97,6 +99,7 @@ export default class Base extends React.Component {
         popupContent: PropTypes.node,
         /**
          * 添加到菜单上的属性
+         * @version 1.18
          */
         menuProps: PropTypes.object,
         /**
@@ -105,12 +108,27 @@ export default class Base extends React.Component {
         filterLocal: PropTypes.bool,
         /**
          * 本地过滤方法，返回一个 Boolean 值确定是否保留
+         * @param {String} key 搜索关键字
+         * @param {Object} item 渲染节点的item
+         * @return {Boolean} 是否匹配
          */
         filter: PropTypes.func,
+        /**
+         * 默认高亮的 key，不要和 autoHighlightFirstItem 同时使用
+         */
+        defaultHighlightKey: PropTypes.string,
+        /**
+         * 高亮 key，不要和 autoHighlightFirstItem 同时使用，用于受控模式
+         */
+        highlightKey: PropTypes.string,
         /**
          * 键盘上下键切换菜单高亮选项的回调
          */
         onToggleHighlightItem: PropTypes.func,
+        /**
+         * 自动高亮第一个元素
+         */
+        autoHighlightFirstItem: PropTypes.bool,
         /**
          * 是否开启虚拟滚动模式
          */
@@ -125,6 +143,16 @@ export default class Base extends React.Component {
         locale: PropTypes.object,
         rtl: PropTypes.bool,
         popupComponent: PropTypes.any,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        showDataSourceChildren: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -141,6 +169,9 @@ export default class Base extends React.Component {
             return item.label || item.value;
         },
         locale: zhCN.Select,
+        autoHighlightFirstItem: true,
+        showDataSourceChildren: true,
+        defaultHighlightKey: null,
     };
 
     constructor(props) {
@@ -149,15 +180,25 @@ export default class Base extends React.Component {
         this.dataStore = new DataStore({
             filter: props.filter,
             filterLocal: props.filterLocal,
+            showDataSourceChildren: props.showDataSourceChildren,
         });
 
+        const mode = props.mode;
+
+        let value = 'value' in props ? props.value : props.defaultValue;
+
+        // 多选情况下做 value 数组订正
+        if (props.mode !== 'single' && value && !Array.isArray(value)) {
+            value = [value];
+        }
+
         this.state = {
-            value: 'value' in props ? props.value : props.defaultValue,
+            dataStore: this.dataStore,
+            value,
             visible: 'visible' in props ? props.visible : props.defaultVisible,
-            dataSource: [],
+            dataSource: this.setDataSource(this.props),
             width: 100,
-            // current highlight key
-            highlightKey: null,
+            highlightKey: 'highlightKey' in props ? props.highlightKey : props.defaultHighlightKey,
             srReader: '',
         };
 
@@ -172,12 +213,6 @@ export default class Base extends React.Component {
         ]);
     }
 
-    componentWillMount() {
-        this.setState({
-            dataSource: this.setDataSource(this.props),
-        });
-    }
-
     componentDidMount() {
         // overlay 还没有完成 mount，所以需要滞后同步宽度
         setTimeout(() => this.syncWidth(), 0);
@@ -186,10 +221,7 @@ export default class Base extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (
-            prevProps.label !== this.props.label ||
-            prevState.value !== this.state.value
-        ) {
+        if (prevProps.label !== this.props.label || prevState.value !== this.state.value) {
             this.syncWidth();
         }
     }
@@ -205,10 +237,7 @@ export default class Base extends React.Component {
      */
     syncWidth() {
         const { popupStyle, popupProps } = this.props;
-        if (
-            (popupStyle && 'width' in popupStyle) ||
-            (popupProps && popupProps.style && 'width' in popupProps.style)
-        ) {
+        if ((popupStyle && 'width' in popupStyle) || (popupProps && popupProps.style && 'width' in popupProps.style)) {
             return;
         }
 
@@ -268,7 +297,8 @@ export default class Base extends React.Component {
      * @param {string} type trigger type
      */
     setVisible(visible, type) {
-        if (this.props.disabled || this.state.visible === visible) {
+        // disabled 状态下只允许关闭不允许打开
+        if ((this.props.disabled && visible) || this.state.visible === visible) {
             return;
         }
 
@@ -282,14 +312,17 @@ export default class Base extends React.Component {
     }
 
     setFirstHightLightKeyForMenu() {
+        if (!this.props.autoHighlightFirstItem) {
+            return;
+        }
+
         // 设置高亮 item key
-        if (
-            this.dataStore.getMenuDS().length &&
-            this.dataStore.getEnableDS().length
-        ) {
+        if (this.dataStore.getMenuDS().length && this.dataStore.getEnableDS().length) {
+            const highlightKey = `${this.dataStore.getEnableDS()[0].value}`;
             this.setState({
-                highlightKey: `${this.dataStore.getEnableDS()[0].value}`,
+                highlightKey,
             });
+            this.props.onToggleHighlightItem(highlightKey, 'autoFirstItem');
         }
     }
 
@@ -368,9 +401,7 @@ export default class Base extends React.Component {
         this.highlightTimer = setTimeout(() => {
             try {
                 const menuNode = findDOMNode(this.menuRef);
-                const itemNode = menuNode.querySelector(
-                    `.${prefix}select-menu-item.${prefix}focused`
-                );
+                const itemNode = menuNode.querySelector(`.${prefix}select-menu-item.${prefix}focused`);
                 itemNode && itemNode.scrollIntoViewIfNeeded();
             } catch (ex) {
                 // I don't care...
@@ -383,6 +414,12 @@ export default class Base extends React.Component {
      * @abstract
      */
     renderMenuHeader() {
+        const { menuProps } = this.props;
+
+        if (menuProps && 'header' in menuProps) {
+            return menuProps.header;
+        }
+
         return null;
     }
 
@@ -394,14 +431,7 @@ export default class Base extends React.Component {
      * @param {object} props
      */
     renderMenu() {
-        const {
-            prefix,
-            mode,
-            locale,
-            notFoundContent,
-            useVirtual,
-            menuProps,
-        } = this.props;
+        const { prefix, mode, locale, notFoundContent, useVirtual, menuProps } = this.props;
         const { dataSource, highlightKey } = this.state;
         const value = this.state.value;
         let selectedKeys;
@@ -444,15 +474,10 @@ export default class Base extends React.Component {
             onMouseDown: preventDefault,
             className: menuClassName,
         };
-        const menuStyle = this.shouldAutoWidth()
-            ? { width: this.width }
-            : { minWidth: this.width };
+        const menuStyle = this.shouldAutoWidth() ? { width: this.width } : { minWidth: this.width };
 
         return useVirtual && children.length ? (
-            <div
-                className={`${prefix}select-menu-wrapper`}
-                style={{ position: 'relative', ...menuStyle }}
-            >
+            <div className={`${prefix}select-menu-wrapper`} style={{ position: 'relative', ...menuStyle }}>
                 <VirtualList
                     itemsRenderer={(items, ref) => {
                         return (
@@ -461,6 +486,7 @@ export default class Base extends React.Component {
                                     ref(c);
                                     this.menuRef = c;
                                 }}
+                                flatenContent
                                 {...customProps}
                             >
                                 {items}
@@ -482,7 +508,7 @@ export default class Base extends React.Component {
      * @param {Array} dataSource
      */
     renderMenuItem(dataSource) {
-        const { prefix, itemRender } = this.props;
+        const { prefix, itemRender, showDataSourceChildren } = this.props;
         // If it has.
         let searchKey;
         if (this.isAutoComplete) {
@@ -496,7 +522,7 @@ export default class Base extends React.Component {
             if (!item) {
                 return null;
             }
-            if (Array.isArray(item.children)) {
+            if (Array.isArray(item.children) && showDataSourceChildren) {
                 return (
                     <MenuGroup key={index} label={item.label}>
                         {this.renderMenuItem(item.children)}
@@ -509,15 +535,12 @@ export default class Base extends React.Component {
                     className: `${prefix}select-menu-item`,
                     disabled: item.disabled,
                 };
-                if (item.title) {
+
+                if ('title' in item) {
                     itemProps.title = item.title;
                 }
 
-                return (
-                    <MenuItem {...itemProps}>
-                        {itemRender(item, searchKey)}
-                    </MenuItem>
-                );
+                return <MenuItem {...itemProps}>{itemRender(item, searchKey)}</MenuItem>;
             }
         });
     }
@@ -540,6 +563,10 @@ export default class Base extends React.Component {
         this.inputRef.focus();
     }
 
+    focus(...args) {
+        this.inputRef.focus(...args);
+    }
+
     beforeOpen() {
         const { value, highlightKey } = this.state;
         if (this.props.mode === 'single' && !value && !highlightKey) {
@@ -554,10 +581,7 @@ export default class Base extends React.Component {
 
     savePopupRef = ref => {
         this.popupRef = ref;
-        if (
-            this.props.popupProps &&
-            typeof this.props.popupProps.ref === 'function'
-        ) {
+        if (this.props.popupProps && typeof this.props.popupProps.ref === 'function') {
             this.props.popupProps.ref(ref);
         }
     };
@@ -583,20 +607,82 @@ export default class Base extends React.Component {
             followTrigger,
             cache,
             popupComponent,
+            isPreview,
+            renderPreview,
+            style,
+            className,
         } = props;
 
         const cls = classNames(
             {
-                [`${prefix}select-auto-complete-menu`]:
-                    !popupContent && this.isAutoComplete,
+                [`${prefix}select-auto-complete-menu`]: !popupContent && this.isAutoComplete,
                 [`${prefix}select-${mode}-menu`]: !popupContent && !!mode,
             },
             popupClassName || popupProps.className
         );
 
+        if (isPreview) {
+            if (this.isAutoComplete) {
+                return (
+                    <Input
+                        style={style}
+                        className={className}
+                        isPreview={isPreview}
+                        renderPreview={renderPreview}
+                        value={this.state.value}
+                    />
+                );
+            } else {
+                const value = this.state.value;
+                let valueDS = this.state.value;
+
+                if (!this.useDetailValue()) {
+                    if (value === this.valueDataSource.value) {
+                        valueDS = this.valueDataSource.valueDS;
+                    } else {
+                        valueDS = getValueDataSource(value, this.valueDataSource.mapValueDS, this.dataStore.getMapDS())
+                            .valueDS;
+                    }
+                }
+
+                if (typeof renderPreview === 'function') {
+                    const previewCls = classNames({
+                        [`${prefix}form-preview`]: true,
+                        [className]: !!className,
+                    });
+                    return (
+                        <div style={style} className={previewCls}>
+                            {renderPreview(valueDS, this.props)}
+                        </div>
+                    );
+                } else {
+                    const { fillProps } = this.props;
+                    if (mode === 'single') {
+                        return (
+                            <Input
+                                style={style}
+                                className={className}
+                                isPreview={isPreview}
+                                value={valueDS ? (fillProps ? valueDS[fillProps] : valueDS.label) : ''}
+                            />
+                        );
+                    } else {
+                        return (
+                            <Input
+                                style={style}
+                                className={className}
+                                isPreview={isPreview}
+                                value={(valueDS || []).map(i => i.label).join(', ')}
+                            />
+                        );
+                    }
+                }
+            }
+        }
+
         const _props = {
             triggerType: 'click',
-            autoFocus: false,
+            autoFocus: !!this.props.popupAutoFocus,
             cache: cache,
             // Put `popupProps` into here for covering above props.
             ...popupProps,
@@ -618,17 +704,11 @@ export default class Base extends React.Component {
         const Tag = popupComponent ? popupComponent : Popup;
 
         return (
-            <Tag
-                {..._props}
-                trigger={this.renderSelect()}
-                ref={this.savePopupRef}
-            >
+            <Tag {..._props} trigger={this.renderSelect()} ref={this.savePopupRef}>
                 {popupContent ? (
                     <div
                         className={`${prefix}select-popup-wrap`}
-                        style={
-                            this.shouldAutoWidth() ? { width: this.width } : {}
-                        }
+                        style={this.shouldAutoWidth() ? { width: this.width } : {}}
                     >
                         {popupContent}
                     </div>

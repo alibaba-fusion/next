@@ -23,9 +23,7 @@
     }
 
     &#{$btn-prefix}-loading {
-        padding-left: $padding + $icon-size + $icon-margin;
-
-        &:after {
+        &:before {
             width: $icon-size;
             height: $icon-size;
             font-size: $icon-size;
@@ -33,11 +31,22 @@
             left: $padding;
             top: 50%;
             text-align: center;
-            margin-top: -$icon-size/2;
             margin-right: $icon-margin;
         }
         > #{$btn-icon-prefix} {
             display: none;
+        }
+    }
+
+    & > #{$btn-prefix}-custom-loading-icon {
+        opacity: 0;
+        width: 0;
+
+        &.show {
+            width: $icon-size;
+            margin-right: $icon-margin;
+            opacity: 1;
+            transition: all $motion-duration-immediately $motion-linear;
         }
     }
 }

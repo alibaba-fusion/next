@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
+import classnames from 'classnames';
 import Dropdown from '../../dropdown';
 import Menu from '../../menu';
 import Button from '../../button';
@@ -7,7 +9,7 @@ import Icon from '../../icon';
 import { KEYCODE } from '../../util';
 
 // 共享状态的组件需要变成非受控组件
-export default class Filter extends React.Component {
+class Filter extends React.Component {
     static propTypes = {
         dataIndex: PropTypes.string,
         filters: PropTypes.array,
@@ -32,24 +34,34 @@ export default class Filter extends React.Component {
         this.state = {
             visible: filterConfig.visible || false,
             selectedKeys: filterConfig.selectedKeys || [],
+            selectedKeysChangedByInner: true,
         };
         this._selectedKeys = [...this.state.selectedKeys];
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (
-            nextProps.hasOwnProperty('filterParams') &&
-            typeof nextProps.filterParams !== 'undefined'
-        ) {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const state = {};
+        if (nextProps.hasOwnProperty('filterParams') && typeof nextProps.filterParams !== 'undefined') {
             const dataIndex = nextProps.dataIndex || this.props.dataIndex;
             const filterParams = nextProps.filterParams || {};
             const filterConfig = filterParams[dataIndex] || {};
-            const selectedKeys = filterConfig.selectedKeys || [];
-            this.setState({
-                selectedKeys,
-            });
-            this._selectedKeys = [...selectedKeys];
+            let selectedKeys;
+            if (prevState.selectedKeysChangedByInner) {
+                selectedKeys = prevState.selectedKeys || [];
+                state.selectedKeysChangedByInner = false;
+            } else {
+                selectedKeys = filterConfig.selectedKeys || [];
+            }
+
+            state.selectedKeys = selectedKeys;
         }
+
+        return state;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { selectedKeys } = prevState;
+        this._selectedKeys = [...selectedKeys];
     }
 
     filterKeydown = e => {
@@ -72,6 +84,7 @@ export default class Filter extends React.Component {
             const selectedKeys = [...this._selectedKeys];
 
             this.setState({
+                selectedKeysChangedByInner: true,
                 selectedKeys,
             });
         }
@@ -80,6 +93,7 @@ export default class Filter extends React.Component {
     onFilterSelect = selectedKeys => {
         this.setState({
             visible: true,
+            selectedKeysChangedByInner: true,
             selectedKeys,
         });
     };
@@ -96,6 +110,7 @@ export default class Filter extends React.Component {
         this._selectedKeys = [...selectedKeys];
         this.setState({
             visible: false,
+            selectedKeysChangedByInner: true,
         });
         // 兼容之前的格式
         this.props.onFilter(filterParams);
@@ -113,24 +128,20 @@ export default class Filter extends React.Component {
         this.setState({
             selectedKeys: [],
             visible: false,
+            selectedKeysChangedByInner: true,
         });
         // 兼容之前的格式
         this.props.onFilter(filterParams);
     };
 
     render() {
-        const {
-            filters,
-            prefix,
-            locale,
-            filterMode,
-            filterMenuProps,
-            filterProps,
-            rtl,
-        } = this.props;
+        const { filters, prefix, locale, className, filterMode, filterMenuProps, filterProps, rtl } = this.props;
 
+        const dropdownClassname = classnames(filterProps && filterProps.className, {
+            [`${prefix}table-filter-menu`]: true,
+        });
         const { visible, selectedKeys } = this.state;
-        const { subMenuSelectable, ...others } = filterMenuProps;
+        const { subMenuSelectable, ...others } = filterMenuProps || {};
 
         function renderMenuItem(item) {
             return <Menu.Item key={item.value}>{item.label}</Menu.Item>;
@@ -138,11 +149,7 @@ export default class Filter extends React.Component {
 
         function renderSubMenu(parent, children) {
             return (
-                <Menu.SubMenu
-                    label={parent.label}
-                    key={parent.value}
-                    selectable={subMenuSelectable}
-                >
+                <Menu.SubMenu label={parent.label} key={parent.value} selectable={subMenuSelectable}>
                     {renderMenuContent(children)}
                 </Menu.SubMenu>
             );
@@ -168,6 +175,15 @@ export default class Filter extends React.Component {
                 </div>
             );
 
+        const cls = classnames({
+            [`${prefix}table-filter`]: true,
+            [className]: className,
+        });
+
+        const filterIconCls = classnames({
+            [`${prefix}table-filter-active`]: selectedKeys && selectedKeys.length > 0,
+        });
+
         return (
             <Dropdown
                 trigger={
@@ -176,9 +192,9 @@ export default class Filter extends React.Component {
                         aria-label={locale.filter}
                         onKeyDown={this.filterKeydown}
                         tabIndex="0"
-                        className={`${prefix}table-filter`}
+                        className={cls}
                     >
-                        <Icon type="filter" size="small" />
+                        <Icon type="filter" size="small" className={filterIconCls} />
                     </span>
                 }
                 triggerType="click"
@@ -186,8 +202,8 @@ export default class Filter extends React.Component {
                 autoFocus
                 rtl={rtl}
                 needAdjust={false}
-                container={node => node.parentNode}
                 onVisibleChange={this.onFilterVisible}
+                className={dropdownClassname}
                 {...filterProps}
             >
                 <Menu
@@ -204,3 +220,5 @@ export default class Filter extends React.Component {
         );
     }
 }
+
+export default polyfill(Filter);

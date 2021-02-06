@@ -321,7 +321,7 @@ describe('Rating', () => {
             }, 100);
         });
 
-        it('should render readonly rating', () => {
+        it('should render disabled rating', () => {
             ReactDOM.render(
                 <Rating
                     value={3}
@@ -350,6 +350,57 @@ describe('Rating', () => {
                 document.querySelectorAll(
                     '#action-test-6 .next-rating-overlay'
                 )[0].style.width === '64px'
+            );
+        });
+
+        it('should render readonly rating', () => {
+            ReactDOM.render(
+                <Rating
+                    value={3}
+                    readOnly
+                    onChange={onChange}
+                    id="action-test-6"
+                />,
+                parent
+            );
+            rect = document
+                .querySelectorAll('#action-test-6 .next-rating-icon')[0]
+                .getBoundingClientRect();
+
+            ReactTestUtils.Simulate.click(
+                document.querySelectorAll(
+                    '#action-test-6 .next-rating-base'
+                )[0],
+                {
+                    pageX: rect.left + 8,
+                    pageY: rect.top + 8,
+                }
+            );
+
+            assert(ret === -1);
+            assert(
+                document.querySelectorAll(
+                    '#action-test-6 .next-rating-overlay'
+                )[0].style.width === '64px'
+            );
+        });
+
+        it('should renderPreview', () => {
+            ReactDOM.render(
+                <Rating
+                    defaultValue={3}
+                    onChange={onChange}
+                    isPreview
+                    id="action-preview"
+                    renderPreview={() => 'preview rating'}
+                />,
+                parent
+            );
+
+            assert(
+                document.querySelectorAll(
+                    '#action-preview'
+                )[0].innerText === 'preview rating'
             );
         });
 

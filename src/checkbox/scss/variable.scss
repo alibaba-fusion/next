@@ -54,7 +54,7 @@ $checkbox-checked-circle-color: $color-white !default;
 $checkbox-label-color: $color-text1-4 !default;
 /// text
 /// @namespace statement/disabled/label
-$checkbox-disabled-label-color: $color-text1-4 !default;
+$checkbox-disabled-label-color: $color-text1-1 !default;
 /// text
 /// @namespace statement/disabled/icon
 $checkbox-disabled-circle-color: $color-text1-1 !default;
@@ -84,3 +84,12 @@ $checkbox-font-size: $font-size-body-1 !default;
 /// margin(L)
 /// @namespace size/label
 $checkbox-margin-left: $s-1 !default;
+
+
+/// icon semi
+/// @namespace statement/normal
+$checkbox-semi-select-icon-content: $icon-content-semi-select !default;
+
+/// icon check
+/// @namespace statement/normal
+$checkbox-select-icon-content: $icon-content-select !default;

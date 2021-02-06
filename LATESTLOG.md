@@ -1,13 +1,19 @@
 # Latest Log 
 
-## [1.18.15](https://github.com/alibaba-fusion/next/compare/1.18.14...1.18.15) (2019-11-12)
+## [1.22.7](https://github.com/alibaba-fusion/next/compare/1.22.6...1.22.7) (2021-02-05)
 
 
 ### Bug Fixes
 
-* **Cascader:** disable can`t change checked ([0c63ae6](https://github.com/alibaba-fusion/next/commit/0c63ae6))
-* **Checkbox:** fix style display ([2801eb0](https://github.com/alibaba-fusion/next/commit/2801eb0))
-* **Table:** item of dataSource may be a string ([73760fb](https://github.com/alibaba-fusion/next/commit/73760fb))
-* **TreeSelect:** add max height ([f1d2f06](https://github.com/alibaba-fusion/next/commit/f1d2f06))
+* **Button:** text fluttered when toggle loading, close [#2691](https://github.com/alibaba-fusion/next/issues/2691) ([6afebd0](https://github.com/alibaba-fusion/next/commit/6afebd0))
+* **Overlay:** correct top for tab ([d88009f](https://github.com/alibaba-fusion/next/commit/d88009f))
+* **Tab:** prefix not work, close [#2692](https://github.com/alibaba-fusion/next/issues/2692) ([d8628ea](https://github.com/alibaba-fusion/next/commit/d8628ea))
+* **Transfer:** add onSelect callback, close [#2665](https://github.com/alibaba-fusion/next/issues/2665) ([918ccd7](https://github.com/alibaba-fusion/next/commit/918ccd7))
+* **Tree:** correct checkbox icon ([5a4e5b2](https://github.com/alibaba-fusion/next/commit/5a4e5b2))
+
+
+### Features
+
+* **Step:** add node size config ([e8609a4](https://github.com/alibaba-fusion/next/commit/e8609a4))
 
 

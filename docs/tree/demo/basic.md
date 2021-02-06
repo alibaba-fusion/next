@@ -1,13 +1,14 @@
 # 基本
 
-- order: 0
+-   order: 0
 
 最简单的用法，展示可展开，可选中，可勾选，可编辑，可右键，禁用，禁用勾选，默认展开，默认选中，默认勾选等功能。
 
 :::lang=en-us
+
 # Basic
 
-- order: 0
+-   order: 0
 
 the simplest usage: can be expanded, selectable, checkable, editable, can be right-clicked, disabled, disabled-checked, default expanded, selected by default, checked by default, etc.
 :::
@@ -15,7 +16,7 @@ the simplest usage: can be expanded, selectable, checkable, editable, can be rig
 ---
 
 ````jsx
-import { Tree } from '@alifd/next';
+import { Tree, Button, Icon } from '@alifd/next';
 
 const TreeNode = Tree.Node;
 
@@ -38,13 +39,16 @@ class Demo extends React.Component {
 
     render() {
         return (
-            <Tree checkable editable
+            <Tree
+                checkable
+                editable
                 defaultExpandedKeys={['2']}
                 defaultCheckedKeys={['2', '4', '5']}
                 onSelect={this.onSelect}
                 onCheck={this.onCheck}
                 onEditFinish={this.onEditFinish}
-                onRightClick={this.onRightClick}>
+                onRightClick={this.onRightClick}
+            >
                 <TreeNode key="1" label="Component">
                     <TreeNode key="2" label="Form" selectable={false}>
                         <TreeNode key="4" label="Input" />

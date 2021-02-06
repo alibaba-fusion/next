@@ -24,6 +24,7 @@
         /* remove autoFill yellow background */
         &:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 1000px $input-bg-color inset;
+            border-radius: $form-element-large-corner; // 一般大中小 radius 都相等，目前还没见过不一样的
         }
     }
 
@@ -59,30 +60,6 @@
     border: $input-border-width solid $input-border-color;
     background-color: $input-bg-color;
 
-    &#{$input-prefix}-textarea {
-        textarea {
-            color: $input-text-color;
-            padding: $input-multiple-padding-tb $input-multiple-padding-lr;
-            font-size: $input-multiple-font-size;
-            border-radius: $input-multiple-corner;
-        }
-
-        #{$input-prefix}-control {
-            display: block;
-            width: auto;
-            border-radius: $input-multiple-corner;
-        }
-
-        #{$input-prefix}-len {
-            padding: 0 $input-l-icon-padding-right 4px;
-            display: block;
-            text-align: right;
-            width: auto;
-        }
-        border-radius: $input-multiple-corner;
-        font-size: 0;
-    }
-
     &.#{$css-prefix}small {
         @include input-size($form-element-small-height, $input-s-padding, $form-element-small-font-size, $input-s-label-padding-left, $input-s-icon-padding-right);
         @include input-icon-size($form-element-small-icon-size);
@@ -101,6 +78,39 @@
         @include input-border-radius($form-element-large-corner);
     }
 
+    &#{$input-prefix}-textarea {
+        height: auto;
+
+        textarea {
+            color: $input-text-color;
+            padding: $input-multiple-padding-tb $input-multiple-padding-lr;
+            font-size: $input-multiple-font-size;
+            border-radius: $input-multiple-corner;
+        }
+
+        &.#{$css-prefix}small textarea {
+            font-size: $form-element-medium-font-size;
+        }
+        &.#{$css-prefix}large textarea {
+            font-size: $form-element-large-font-size;
+        }
+
+        #{$input-prefix}-control {
+            display: block;
+            width: auto;
+            border-radius: $input-multiple-corner;
+        }
+
+        #{$input-prefix}-len {
+            padding: 0 $input-l-icon-padding-right 4px;
+            display: block;
+            text-align: right;
+            width: auto;
+        }
+        border-radius: $input-multiple-corner;
+        font-size: 0;
+    }
+
     &-hint-wrap {
         color: $input-hint-color;
         position: relative;
@@ -115,7 +125,9 @@
         }
     }
 
-    .#{$css-prefix}icon-delete-filling, .#{$css-prefix}icon-eye, .#{$css-prefix}icon-eye-close {
+
+
+    #{$input-prefix}-clear-icon, .#{$css-prefix}icon-eye, .#{$css-prefix}icon-eye-close {
         &:hover {
             cursor: pointer;
             color: $input-hint-hover-color;
@@ -149,6 +161,20 @@
         box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-focus-shadow;
     }
 
+    &.#{$css-prefix}warning {
+        border-color: $input-feedback-warning-border-color;
+        background-color: $input-feedback-warning-bg-color;
+
+        &.#{$css-prefix}focus,
+        &:hover {
+            border-color: $input-feedback-warning-border-color;
+        }
+
+        &.#{$css-prefix}focus {
+            box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-feedback-warning-shadow;
+        }
+    }
+
     &.#{$css-prefix}error {
         border-color: $input-feedback-error-border-color;
         background-color: $input-feedback-error-bg-color;
@@ -169,6 +195,7 @@
 
     &.#{$css-prefix}noborder {
         border: none;
+        box-shadow: none;
     }
 
     &-control {
@@ -182,6 +209,10 @@
 
             &.#{$css-prefix}error {
                 color: $input-maxlen-error-color;
+            }
+
+            &.#{$css-prefix}warning {
+                color: $input-maxlen-warning-color;
             }
         }
 
@@ -200,11 +231,29 @@
             color: $input-hint-color;
         }
 
-        .#{$css-prefix}icon-success-filling {
-            color: $input-feedback-success-color;
+        #{$input-prefix}-warning-icon {
+            color: $input-feedback-warning-color;
+            &::before {
+                content: $input-feedback-warning-icon;
+            }
         }
-        .#{$css-prefix}icon-loading {
+        #{$input-prefix}-success-icon {
+            color: $input-feedback-success-color;
+            &::before {
+                content: $input-feedback-success-icon;
+            }
+        }
+        #{$input-prefix}-loading-icon {
             color: $input-feedback-loading-color;
+            &::before {
+                content: $input-feedback-loading-icon;
+                animation: loadingCircle 1s infinite linear;
+            }
+        }
+        #{$input-prefix}-clear-icon {
+            &::before {
+                content: $input-feedback-clear-icon;
+            }
         }
     }
 
@@ -221,6 +270,7 @@
         @include input-disabled();
 
         input, textarea {
+            color: $input-disabled-color;
             @include input-placeholder($input-disabled-color);
         }
 
@@ -229,12 +279,6 @@
         }
         #{$input-prefix}-len {
             color: $input-disabled-color;
-        }
-        background-color: $input-disabled-bg-color;
-
-        input,
-        textarea {
-            @include input-disabled();
         }
 
         #{$input-prefix}-hint-wrap {
@@ -247,7 +291,7 @@
 
             color: $input-disabled-color;
 
-            .#{$css-prefix}icon-delete-filling:hover {
+            #{$input-prefix}-clear-icon:hover {
                 cursor: not-allowed;
                 color: $input-disabled-color;
             }
@@ -334,7 +378,7 @@
             border-top-right-radius: 0 !important;
             //TODO: removed in 2.x
             > * {
-                margin-right: -$input-border-width;
+                margin-right: calc(0px - #{$input-border-width});
                 border-bottom-right-radius: 0 !important;
                 border-top-right-radius: 0 !important;
                 &.#{$css-prefix}focus {
@@ -356,7 +400,7 @@
             border-top-left-radius: 0 !important;
             //TODO: removed in 2.x
             > * {
-                margin-left: -$input-border-width;
+                margin-left: calc(0px - #{$input-border-width});
                 border-bottom-left-radius: 0 !important;
                 border-top-left-radius: 0 !important;
                 > #{$input-prefix} {

@@ -77,6 +77,9 @@ export interface CardBulletHeaderProps extends HTMLAttributesWeak, CommonProps {
 export interface CardCollaspeContentProps extends HTMLAttributesWeak, CommonProps {
     contentHeight?: string | number;
 }
+export interface CardCollapseContentProps extends HTMLAttributesWeak, CommonProps {
+    contentHeight?: string | number;
+}
 
 export interface CardHeaderProps extends HTMLAttributesWeak, CommonProps {
     /**
@@ -126,11 +129,16 @@ export interface CardActionsProps extends HTMLAttributesWeak, CommonProps {
 }
 
 export interface CardDividerProps extends HTMLAttributesWeak, CommonProps {
+    /**
+     * 分割线是否向内缩进
+     */
+    inset?: boolean;
 }
 
 export default class Card extends React.Component<CardProps, any> {
     static BulletHeader: React.ComponentType<CardBulletHeaderProps>;
     static CollaspeContent: React.ComponentType<CardCollaspeContentProps>;
+    static CollapseContent: React.ComponentType<CardCollapseContentProps>;
     static Header: React.ComponentType<CardHeaderProps>;
     static Content: React.ComponentType<CardContentProps>;
     static Media: React.ComponentType<CardMediaProps>;

@@ -1,6 +1,8 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import { obj } from '../../util';
 import ConfigProvider from '../../config-provider';
 import nextLocale from '../../locale/zh-cn';
@@ -43,12 +45,23 @@ class Timeline extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('fold' in nextProps) {
-            this.setState({
-                fold: nextProps.fold,
-            });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const { innerUpdate, fold } = prevState;
+
+        if (innerUpdate) {
+            return {
+                fold,
+                innerUpdate: false,
+            };
         }
+
+        if ('fold' in nextProps) {
+            return {
+                fold: nextProps.fold,
+            };
+        }
+
+        return null;
     }
 
     toggleFold(folderIndex, total) {
@@ -66,7 +79,7 @@ class Timeline extends Component {
                 }
             }
 
-            this.setState({ fold });
+            this.setState({ fold, innerUpdate: true });
         }
     }
 
@@ -138,4 +151,4 @@ class Timeline extends Component {
     }
 }
 
-export default ConfigProvider.config(Timeline);
+export default ConfigProvider.config(polyfill(Timeline));

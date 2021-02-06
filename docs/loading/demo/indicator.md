@@ -1,16 +1,16 @@
-# 自定义Loading动画
+# 自定义动画指示符
 
-- order: 1
+- order: 3
 
-你可以自定义动画，把自己的动画元素传进去, 需要自己写动画样式
+通过`indicator`自定义动画指示符，传入动画元素。
 
 
 :::lang=en-us
-# Custom Loading Animation
+# Custom Animation Indicator
 
-- order: 1
+- order: 3
 
-You can write an animation and put it in.
+Use custom animation indicator.
 :::
 
 ---
@@ -27,7 +27,7 @@ const indicator7 = (<div className="load-container load7">
 </div>);
 
 ReactDOM.render(<div>
-    <Loading tip="default animation">
+    <Loading tip="default">
         <div className="demo">test</div>
     </Loading>
     <Loading indicator={indicator1}>
@@ -41,8 +41,7 @@ ReactDOM.render(<div>
 
 ````css
 .demo {
-    width: 500px;
-    background-color: #F2F3F7;
+    width: 200px;
     text-align: center;
     padding:50px;
 }

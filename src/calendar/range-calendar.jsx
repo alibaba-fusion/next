@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import moment from 'moment';
 import ConfigProvider from '../config-provider';
@@ -49,8 +50,11 @@ class RangeCalendar extends React.Component {
         endValue: checkMomentObj,
         // 面板模式
         mode: PropTypes.oneOf(CALENDAR_MODES),
+        // 禁用更改面板模式，采用 dropdown 的方式切换显示日期 (暂不正式对外透出)
+        disableChangeMode: PropTypes.bool,
         // 日期值的格式（用于日期title显示的格式）
         format: PropTypes.string,
+        yearRange: PropTypes.arrayOf(PropTypes.number),
         /**
          * 是否显示非本月的日期
          */
@@ -96,6 +100,7 @@ class RangeCalendar extends React.Component {
         prefix: 'next-',
         rtl: false,
         mode: CALENDAR_MODE_DATE,
+        disableChangeMode: false,
         format: 'YYYY-MM-DD',
         dateCellRender: value => value.date(),
         onSelect: func.noop,
@@ -122,41 +127,33 @@ class RangeCalendar extends React.Component {
             startValue,
             endValue,
             mode: props.mode,
+            prevMode: props.mode,
             startVisibleMonth: visibleMonth,
             activePanel: undefined,
         };
         this.today = moment();
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('startValue' in nextProps) {
-            const startValue = formatDateValue(nextProps.startValue);
-            this.setState({
-                startValue,
-            });
-
-            if (
-                startValue &&
-                !startValue.isSame(this.state.startValue, 'day')
-            ) {
-                this.setState({
-                    startVisibleMonth: startValue,
-                });
+    static getDerivedStateFromProps(props, state) {
+        const st = {};
+        if ('startValue' in props) {
+            const startValue = formatDateValue(props.startValue);
+            st.startValue = startValue;
+            if (startValue && !startValue.isSame(state.startValue, 'day')) {
+                st.startVisibleMonth = startValue;
             }
         }
 
-        if ('endValue' in nextProps) {
-            const endValue = formatDateValue(nextProps.endValue);
-            this.setState({
-                endValue,
-            });
+        if ('endValue' in props) {
+            st.endValue = formatDateValue(props.endValue);
         }
 
-        if ('mode' in nextProps) {
-            this.setState({
-                mode: nextProps.mode,
-            });
+        if ('mode' in props && state.prevMode !== props.mode) {
+            st.prevMode = props.mode;
+            st.mode = props.mode;
         }
+
+        return st;
     }
 
     onSelectCell = (date, nextMode) => {
@@ -233,6 +230,8 @@ class RangeCalendar extends React.Component {
             locale,
             showOtherMonth,
             disabledDate,
+            disableChangeMode,
+            yearRange,
             ...others
         } = this.props;
         const {
@@ -268,7 +267,10 @@ class RangeCalendar extends React.Component {
             momentLocale: localeData,
             startVisibleMonth,
             endVisibleMonth,
+            changeVisibleMonth: this.changeVisibleMonth,
             changeMode: this.changeMode,
+            yearRange,
+            disableChangeMode,
         };
 
         const tableProps = {
@@ -397,6 +399,6 @@ class RangeCalendar extends React.Component {
     }
 }
 
-export default ConfigProvider.config(RangeCalendar, {
+export default ConfigProvider.config(polyfill(RangeCalendar), {
     componentName: 'Calendar',
 });

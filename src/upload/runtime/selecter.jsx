@@ -23,6 +23,10 @@ export default class Selecter extends React.Component {
          */
         multiple: PropTypes.bool,
         /**
+         * 是否支持上传文件夹，仅在 chorme 下生效
+         */
+        webkitdirectory: PropTypes.bool,
+        /**
          * 是否支持拖拽上传，`ie10+` 支持。
          */
         dragable: PropTypes.bool,
@@ -81,8 +85,9 @@ export default class Selecter extends React.Component {
         if (!el) {
             return;
         }
-        el.click();
+        // NOTE: 在 IE 下，el.value = '' 在 el.click() 之后，会触发 input[type=file] 两次 onChange
         el.value = '';
+        el.click();
     };
 
     /**
@@ -123,6 +128,7 @@ export default class Selecter extends React.Component {
         const {
             accept,
             multiple,
+            webkitdirectory,
             children,
             id,
             disabled,
@@ -166,6 +172,7 @@ export default class Selecter extends React.Component {
                     accept={accept}
                     aria-hidden
                     multiple={multiple}
+                    webkitdirectory={webkitdirectory ? '' : undefined}
                     onChange={this.onSelect}
                     disabled={disabled}
                 />

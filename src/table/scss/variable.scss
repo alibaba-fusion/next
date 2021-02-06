@@ -49,11 +49,14 @@ $table-cell-padding-top: $s-3 !default;
 /// @namespace size/cell
 $table-cell-padding-left: $s-4 !default;
 /// padding (t, b)
-/// @namespace size/header
+/// @namespace size/head
 $table-header-padding-top: $s-3 !default;
 /// padding (l, r)
-/// @namespace size/header
+/// @namespace size/head
 $table-header-padding-left: $s-4 !default;
+/// icon margin
+/// @namespace size/head
+$table-header-icon-margin-left: $s-2 !default;
 
 /// padding (t, b)
 /// @namespace size/cell
@@ -62,10 +65,10 @@ $table-size-s-cell-padding-top: $s-2 !default;
 /// @namespace size/cell
 $table-size-s-cell-padding-left: $s-2 !default;
 /// padding (t, b)
-/// @namespace size/header
+/// @namespace size/head
 $table-size-s-header-padding-top: $s-2 !default;
 /// padding (l, r)
-/// @namespace size/header
+/// @namespace size/head
 $table-size-s-header-padding-left: $s-2 !default;
 
 
@@ -137,3 +140,23 @@ $table-sort-color-current: $color-brand1-6 !default;
 /// expanded icon
 /// @namespace statement/disabled/body
 $table-expanded-ctrl-disabled-color: $color-text1-2 !default;
+
+/// tree fold icon
+/// @namespace statement/normal
+/// @type icon
+$table-tree-fold-icon-content: $icon-content-arrow-right !default;
+
+/// tree unfold icon
+/// @namespace statement/normal
+/// @type icon
+$table-tree-unfold-icon-content: $icon-content-arrow-down !default;
+
+/// expand fold icon
+/// @namespace statement/normal
+/// @type icon
+$table-expand-fold-icon-content: $icon-content-add !default;
+
+/// expand unfold icon
+/// @namespace statement/normal
+/// @type icon
+$table-expand-unfold-icon-content: $icon-content-minus !default;

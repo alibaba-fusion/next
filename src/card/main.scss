@@ -55,6 +55,7 @@
         height: 100%;
         color: $card-title-color;
         font-size: $card-title-font-size;
+        font-weight: $card-title-font-weight;
     }
 
     &-subtitle {
@@ -147,6 +148,7 @@
     &-header-title {
         color: $card-title-color;
         font-size: $card-title-font-size;
+        font-weight: $card-title-font-weight;
         line-height: 1.5;
     }
 
@@ -171,7 +173,16 @@
         border-style: none;
         width: 100%;
         margin: 0;
-        border-bottom: $card-head-bottom-border-width $card-border-style $card-head-bottom-border-color;
+        position: relative;
+        &::before {
+            content: '';
+            display: block;
+            border-bottom: $card-head-bottom-border-width $card-border-style $card-head-bottom-border-color;
+        }
+    }
+
+    &-divider--inset {
+        padding: 0 $card-padding-lr;
     }
 
     &-content-container {
@@ -179,5 +190,8 @@
         padding-bottom: $card-body-padding-bottom;
         padding-left: $card-padding-lr;
         padding-right: $card-padding-lr;
+        font-size: $card-content-font-size;
+        line-height: $card-content-line-height;
+        color: $card-content-color;
     }
 }

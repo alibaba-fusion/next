@@ -105,7 +105,7 @@ export default {
         };
 
         if (widget === 'length') {
-            props.hasLimitHint = true;
+            props.showLimitHint = true;
             props.maxLength = 15;
         } else if (widget === 'clear') {
             props.hasClear = true;

@@ -1,7 +1,9 @@
 /// <reference types="react" />
-
+import { Moment } from 'moment';
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
+import { InputProps } from '../input';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -9,6 +11,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */
@@ -47,7 +50,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -57,7 +60,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 日期值改变时的回调
      */
-    onChange?: (value: {} | string) => void;
+    onChange?: (value: any | string) => void;
 
     /**
      * 输入框尺寸
@@ -107,7 +110,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层自定义样式类
@@ -117,17 +120,17 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层其他属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 输入框其他属性
      */
-    inputProps?: {};
+    inputProps?: InputProps;
 
     /**
      * 自定义月份渲染函数
      */
-    monthCellRender?: (calendarDate: {}) => React.ReactNode;
+    monthCellRender?: (calendarDate: any) => React.ReactNode;
 
     /**
      * 日期输入框的 aria-label 属性
@@ -135,18 +138,28 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     dateInputAriaLabel?: string;
 }
 
+
 export class MonthPicker extends React.Component<MonthPickerProps, any> {}
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
+    placeholder?: any;
 }
 
 export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
+    type?: 'date' | 'month' | 'year',
+
     /**
      * 默认展示的起始月份
      */
     defaultVisibleMonth?: () => {};
+
+    /**
+     * 输入提示
+     */
+    placeholder?: Array<string> | string;
 
     /**
      * 日期范围值数组 [moment, moment]
@@ -166,7 +179,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否使用时间控件，支持传入 TimePicker 的属性
      */
-    showTime?: {} | boolean;
+    showTime?: any | boolean;
 
     /**
      * 每次选择是否重置时间（仅在 showTime 开启时有效）
@@ -176,7 +189,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -251,7 +264,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层自定义样式类
@@ -261,12 +274,12 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层其他属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 输入框其他属性
      */
-    inputProps?: {};
+    inputProps?: InputProps;
 
     /**
      * 自定义日期单元格渲染
@@ -302,6 +315,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */
@@ -335,7 +349,7 @@ export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -395,7 +409,7 @@ export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层自定义样式类
@@ -405,12 +419,12 @@ export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层其他属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 输入框其他属性
      */
-    inputProps?: {};
+    inputProps?: InputProps;
 
     /**
      * 日期输入框的 aria-label 属性
@@ -425,6 +439,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */
@@ -463,7 +478,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否使用时间控件，传入 TimePicker 的属性 { defaultValue, format, ... }
      */
-    showTime?: {} | boolean;
+    showTime?: any | boolean;
 
     /**
      * 每次选择日期时是否重置时间（仅在 showTime 开启时有效）
@@ -473,7 +488,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -538,7 +553,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层自定义样式类
@@ -548,12 +563,12 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层其他属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 输入框其他属性
      */
-    inputProps?: {};
+    inputProps?: InputProps;
 
     /**
      * 自定义日期渲染函数
@@ -580,4 +595,5 @@ export default class DatePicker extends React.Component<DatePickerProps, any> {
     static MonthPicker: typeof MonthPicker;
     static RangePicker: typeof RangePicker;
     static YearPicker: typeof YearPicker;
+    static WeekPicker: React.ComponentType<DatePickerProps>;
 }

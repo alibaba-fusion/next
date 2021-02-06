@@ -21,6 +21,7 @@ const i18nMap = {
         light: '浅色',
         dark: '深色',
         hover: '悬浮',
+        active: '激活',
         disabled: '禁用',
         goback: '后退',
         goforward: '前进',
@@ -37,6 +38,7 @@ const i18nMap = {
         light: 'Light',
         dark: 'Dark',
         hover: 'Hover',
+        active: 'Active',
         disabled: 'Disabled',
         goback: 'Go Back',
         goforward: 'Go Forward',
@@ -58,6 +60,11 @@ function renderButton(type, i18n, children) {
                 <Button type={type} size="large" className="hover">{children}</Button>
                 <Button type={type} size="medium" className="hover">{children}</Button>
                 <Button type={type} size="small" className="hover">{children}</Button>
+            </DemoGroup>
+            <DemoGroup label={i18n.active}>
+                <Button type={type} size="large" className="active">{children}</Button>
+                <Button type={type} size="medium" className="active">{children}</Button>
+                <Button type={type} size="small" className="active">{children}</Button>
             </DemoGroup>
             <DemoGroup label={i18n.disabled}>
                 <Button type={type} size="large" disabled>{children}</Button>
@@ -81,6 +88,11 @@ function renderWarningButton(type, i18n, children) {
                 <Button warning type={type} size="large" className="hover">{children}</Button>
                 <Button warning type={type} size="medium" className="hover">{children}</Button>
                 <Button warning type={type} size="small" className="hover">{children}</Button>
+            </DemoGroup>
+            <DemoGroup label={i18n.active}>
+                <Button warning type={type} size="large" className="active">{children}</Button>
+                <Button warning type={type} size="medium" className="active">{children}</Button>
+                <Button warning type={type} size="small" className="active">{children}</Button>
             </DemoGroup>
             <DemoGroup label={i18n.disabled}>
                 <Button warning type={type} size="large" disabled>{children}</Button>

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
@@ -13,6 +14,33 @@ import '../../src/nav/style.js';
 Enzyme.configure({ adapter: new Adapter() });
 const { Tooltip } = Balloon;
 const { Item, SubNav, PopupItem, Group } = Nav;
+
+const render = element => {
+    let inc;
+    const container = document.createElement('div');
+    container.className = 'container';
+    document.body.appendChild(container);
+    ReactDOM.render(element, container, function() {
+        inc = this;
+    });
+    return {
+        setProps: props => {
+            ReactDOM.unmountComponentAtNode(container);
+            const clonedElement = React.cloneElement(element, props);
+            ReactDOM.render(clonedElement, container);
+        },
+        unmount: () => {
+            ReactDOM.unmountComponentAtNode(container);
+            document.body.removeChild(container);
+        },
+        instance: () => {
+            return inc;
+        },
+        find: selector => {
+            return container.querySelectorAll(selector);
+        },
+    };
+};
 
 describe('Nav', () => {
     let wrapper;
@@ -252,6 +280,24 @@ describe('Nav', () => {
         assert(wrapper);
     });
 
+    it('should support iconOnly and mode="popup" switched and openKeys reset', () => {
+        wrapper = render(
+            <Nav defaultOpenAll>
+                <SubNav label="Group label">
+                    <Item key="1">First</Item>
+                    <Item key="2">Second</Item>
+                </SubNav>
+            </Nav>
+        );
+        assert(wrapper);
+        assert(wrapper.find('li.next-nav-sub-nav-item')[0].querySelector('.next-nav-item.next-opened'));
+        wrapper.setProps({
+            iconOnly: true,
+            mode: 'popup'
+        });
+        assert(!wrapper.find('li.next-nav-sub-nav-item')[0].querySelector('.next-nav-item.next-opened'));
+    });
+
     it('should support iconOnly', done => {
         wrapper = mount(
             <Nav iconOnly style={{ width: '200px' }}>
@@ -381,5 +427,76 @@ describe('Nav', () => {
             assert(wrapper.find(Tooltip).length);
             done();
         }, 500);
+    });
+
+    it('should support iconOnly switch state', (done) => {
+        wrapper = render(
+            <Nav iconOnly={false} mode={"inline"} style={{ width: '200px' }} openKeys="icononly-switch-subnav">
+                <SubNav icon="account" label="SubNav label" key="icononly-switch-subnav">
+                    <Item icon="account" key="1" id="icononly-switch-item-1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2" id="icononly-switch-item-2">
+                        Second
+                    </Item>
+                </SubNav>
+            </Nav>
+        );
+
+        assert(document.getElementById("icononly-switch-item-1").style.paddingLeft === '40px');
+        assert(document.getElementById("icononly-switch-item-2").style.paddingLeft === '40px');
+
+        wrapper.setProps({
+            iconOnly: true,
+            mode: "popup"
+        });
+
+        assert(document.getElementById("icononly-switch-item-1").style.paddingLeft === '');
+        assert(document.getElementById("icononly-switch-item-2").style.paddingLeft === '');
+
+        wrapper.setProps({
+            iconOnly: false,
+            mode: "inline"
+        });
+
+        assert(document.getElementById("icononly-switch-item-1").style.paddingLeft === '40px');
+        assert(document.getElementById("icononly-switch-item-2").style.paddingLeft === '40px');
+
+        done();
+    });
+
+    it('should support fixed', (done) => {
+        wrapper = render(
+            <Nav
+                style={{ left: 0, top: 0, position: 'fixed', width: 70}}
+                popupStyle={{position: 'fixed'}}
+                popupClassName="fixed-popup-sub3"
+                type="primary"
+                mode="popup"
+                defaultOpenKeys="sub3"
+                activeDirection="left"
+                triggerType="click"
+            >
+                <SubNav label="产品1">
+                    <Item>Item 1</Item>
+                </SubNav>
+                <SubNav label="产品2">
+                    <Item>Item 1</Item>
+                    <Item>Item 2</Item>
+                </SubNav>
+                <SubNav label="产品3" key="sub3">
+                    <Item>Item 1</Item>
+                    <Item>Item 2</Item>
+                    <Item>Item 3</Item>
+                </SubNav>
+                <Item>其他</Item>
+            </Nav>
+        );
+
+        const popup = document.querySelectorAll('.fixed-popup-sub3');
+        assert(popup[0].style.top === '80px');
+        assert(popup[0].style.left === '68px');
+
+        done();
     });
 });

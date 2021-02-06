@@ -52,7 +52,7 @@ export interface TransferProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 列表项渲染函数
      */
-    itemRender?: (data: {}) => React.ReactNode;
+    itemRender?: (data: any) => React.ReactNode;
 
     /**
      * 是否显示搜索框
@@ -62,7 +62,7 @@ export interface TransferProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义搜索函数
      */
-    filter?: (searchedValue: string, data: {}) => boolean;
+    filter?: (searchedValue: string, data: any) => boolean;
 
     /**
      * 搜索框输入时触发的回调函数
@@ -107,7 +107,7 @@ export interface TransferProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 左右面板列表自定义样式对象
      */
-    listStyle?: {};
+    listStyle?: React.CSSProperties;
 
     /**
      * 是否允许拖拽排序
@@ -118,11 +118,6 @@ export interface TransferProps extends HTMLAttributesWeak, CommonProps {
      * 拖拽排序时触发的回调函数
      */
     onSort?: (value: Array<any>, position: string) => void;
-
-    /**
-     * 自定义国际化文案对象
-     */
-    locale?: {};
 
     /**
      * 请设置 id 以保证transfer的可访问性

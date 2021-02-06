@@ -60,7 +60,7 @@ import '@alifd/next/lib/button/style';
 {
   // ...
   plugins: [
-    ['babel-plugin-import', {
+    ['import', {
       libraryName: '@alifd/next',
       style: true
     }]

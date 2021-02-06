@@ -1,10 +1,4 @@
-import {
-    filter,
-    parseDataSourceFromChildren,
-    normalizeDataSource,
-    flattingDataSource,
-    filterDataSource,
-} from './util';
+import { filter, parseDataSourceFromChildren, normalizeDataSource, flattingDataSource, filterDataSource } from './util';
 
 /**
  * manage dataSource for menu list
@@ -16,6 +10,7 @@ class DataStore {
             key: undefined,
             addonKey: false,
             filterLocal: true,
+            showDataSourceChildren: true,
             ...options,
         };
 
@@ -37,7 +32,7 @@ class DataStore {
     updateByDS(dataSource, isChildren = false) {
         this.dataSource = isChildren
             ? parseDataSourceFromChildren(dataSource)
-            : normalizeDataSource(dataSource);
+            : normalizeDataSource(dataSource, 0, this.options.showDataSourceChildren);
         return this.updateAll();
     }
 
@@ -71,24 +66,17 @@ class DataStore {
     }
 
     updateAll() {
-        const { key, filter, filterLocal } = this.options;
-        this.menuDataSource = filterDataSource(
-            this.dataSource,
-            filterLocal ? key : '',
-            filter,
-            this.options.addonKey
-        );
+        const { key, filter, filterLocal, showDataSourceChildren } = this.options;
+        this.menuDataSource = filterDataSource(this.dataSource, filterLocal ? key : '', filter, this.options.addonKey);
 
-        this.flattenDataSource = flattingDataSource(this.menuDataSource);
+        this.flattenDataSource = showDataSourceChildren ? flattingDataSource(this.menuDataSource) : this.menuDataSource;
 
         this.mapDataSource = {};
         this.flattenDataSource.forEach(item => {
             this.mapDataSource[`${item.value}`] = item;
         });
 
-        this.enabledDataSource = this.flattenDataSource.filter(
-            item => !item.disabled
-        );
+        this.enabledDataSource = this.flattenDataSource.filter(item => !item.disabled);
 
         return this.menuDataSource;
     }

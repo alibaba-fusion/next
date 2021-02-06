@@ -3,6 +3,7 @@ import DatePicker from './date-picker';
 import RangePicker from './range-picker';
 import MonthPicker from './month-picker';
 import YearPicker from './year-picker';
+import WeekPicker from './week-picker';
 
 /* istanbul ignore next */
 const transform = (props, deprecated) => {
@@ -67,6 +68,10 @@ DatePicker.MonthPicker = ConfigProvider.config(MonthPicker, {
 DatePicker.YearPicker = ConfigProvider.config(YearPicker, {
     componentName: 'DatePicker',
     transform,
+});
+
+DatePicker.WeekPicker = ConfigProvider.config(WeekPicker, {
+    componentName: 'DatePicker',
 });
 
 export default ConfigProvider.config(DatePicker, {

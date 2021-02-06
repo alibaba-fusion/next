@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Overlay from '../overlay';
 import zhCN from '../locale/zh-cn';
-import { focus, obj, func, events, dom } from '../util';
+import { focus, obj, func, events, dom, env } from '../util';
 import Inner from './inner';
 
 const noop = () => {};
@@ -10,6 +10,18 @@ const { limitTabRange } = focus;
 const { bindCtx } = func;
 const { pickOthers } = obj;
 const { getStyle, setStyle } = dom;
+
+// [fix issue #1609](https://github.com/alibaba-fusion/next/issues/1609)
+// https://stackoverflow.com/questions/19717907/getcomputedstyle-reporting-different-heights-between-chrome-safari-firefox-and-i
+function _getSize(dom, name) {
+    const boxSizing = getStyle(dom, 'boxSizing');
+
+    if (env.ieVersion && ['width', 'height'].indexOf(name) !== -1 && boxSizing === 'border-box') {
+        return parseFloat(dom.getBoundingClientRect()[name].toFixed(1));
+    } else {
+        return getStyle(dom, name);
+    }
+}
 
 /**
  * Dialog
@@ -68,7 +80,7 @@ export default class Dialog extends Component {
          */
         cancelProps: PropTypes.object,
         /**
-         * 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
+         * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
          * **close** 表示点击关闭按钮可以关闭对话框
          * **mask** 表示点击遮罩区域可以关闭对话框
          * **esc** 表示按下 esc 键可以关闭对话框
@@ -77,6 +89,17 @@ export default class Dialog extends Component {
          * 如果设置为 false，则以上关闭方式全部失效
          */
         closeable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        /**
+         * [推荐]控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：
+         * **close** 表示点击关闭按钮可以关闭对话框
+         * **mask** 表示点击遮罩区域可以关闭对话框
+         * **esc** 表示按下 esc 键可以关闭对话框
+         * 如 'close' 或 ['close','esc','mask'], []
+         */
+        closeMode: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.oneOf(['close', 'mask', 'esc'])),
+            PropTypes.oneOf(['close', 'mask', 'esc']),
+        ]),
         /**
          * 对话框关闭时触发的回调函数
          * @param {String} trigger 关闭触发行为的描述字符串
@@ -92,9 +115,8 @@ export default class Dialog extends Component {
          */
         hasMask: PropTypes.bool,
         /**
-         * 显示隐藏时动画的播放方式
-         * @property {String} in 进场动画
-         * @property {String} out 出场动画
+         * 显示隐藏时动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
+         * @default { in: 'expandInDown', out: 'expandOutUp' }
          */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         /**
@@ -131,6 +153,9 @@ export default class Dialog extends Component {
          * 对话框的高度样式属性
          */
         height: PropTypes.string,
+        // Do not remove this, it's for <ConfigProvider popupContainer={} />
+        // see https://github.com/alibaba-fusion/next/issues/1508
+        popupContainer: PropTypes.any,
     };
 
     static defaultProps = {
@@ -162,12 +187,7 @@ export default class Dialog extends Component {
 
     constructor(props, context) {
         super(props, context);
-        bindCtx(this, [
-            'onKeyDown',
-            'beforePosition',
-            'adjustPosition',
-            'getOverlayRef',
-        ]);
+        bindCtx(this, ['onKeyDown', 'beforePosition', 'adjustPosition', 'getOverlayRef']);
     }
 
     componentDidMount() {
@@ -198,7 +218,7 @@ export default class Dialog extends Component {
             const inner = this.getInner();
             if (inner) {
                 const node = this.getInnerNode();
-                if (this._lastDialogHeight !== getStyle(node, 'height')) {
+                if (this._lastDialogHeight !== _getSize(node, 'height')) {
                     this.revertSize(inner.bodyNode);
                 }
             }
@@ -218,12 +238,14 @@ export default class Dialog extends Component {
                     setStyle(node, 'top', `${minMargin}px`);
                 }
 
-                const height = getStyle(node, 'height');
-                const viewportHeight =
-                    window.innerHeight || document.documentElement.clientHeight;
-                if (viewportHeight < height + top * 2) {
-                    const expectHeight = viewportHeight - top * 2;
-                    this.adjustSize(inner, node, expectHeight);
+                const height = _getSize(node, 'height');
+                const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+                if (
+                    viewportHeight < height + top * 2 - 1 || // 分辨率和精确度的原因 高度计算的时候 可能会有1px内的偏差
+                    this.props.height
+                ) {
+                    this.adjustSize(inner, node, Math.min(height, viewportHeight - top * 2));
                 } else {
                     this.revertSize(inner.bodyNode);
                 }
@@ -235,24 +257,26 @@ export default class Dialog extends Component {
 
     adjustSize(inner, node, expectHeight) {
         const { headerNode, bodyNode, footerNode } = inner;
+        const [headerHeight, footerHeight] = [headerNode, footerNode].map(node =>
+            node ? _getSize(node, 'height') : 0
+        );
+        const padding = ['padding-top', 'padding-bottom'].reduce((sum, attr) => sum + getStyle(node, attr), 0);
 
-        const headerHeight = headerNode ? getStyle(headerNode, 'height') : 0;
-        const footerHeight = footerNode ? getStyle(footerNode, 'height') : 0;
-        const padding =
-            getStyle(node, 'padding-top') + getStyle(node, 'padding-bottom');
-        let maxBodyHeight =
-            expectHeight - headerHeight - footerHeight - padding;
+        let maxBodyHeight = expectHeight - headerHeight - footerHeight - padding;
+
         if (maxBodyHeight < 0) {
             maxBodyHeight = 1;
         }
 
-        this.dialogBodyStyleMaxHeight = bodyNode.style.maxHeight;
-        this.dialogBodyStyleOverflowY = bodyNode.style.overflowY;
+        if (bodyNode) {
+            this.dialogBodyStyleMaxHeight = bodyNode.style.maxHeight;
+            this.dialogBodyStyleOverflowY = bodyNode.style.overflowY;
 
-        setStyle(bodyNode, {
-            'max-height': `${maxBodyHeight}px`,
-            'overflow-y': 'auto',
-        });
+            setStyle(bodyNode, {
+                'max-height': `${maxBodyHeight}px`,
+                'overflow-y': 'auto',
+            });
+        }
     }
 
     revertSize(bodyNode) {
@@ -265,10 +289,7 @@ export default class Dialog extends Component {
     mapcloseableToConfig(closeable) {
         return ['esc', 'close', 'mask'].reduce((ret, option) => {
             const key = option.charAt(0).toUpperCase() + option.substr(1);
-            const value =
-                typeof closeable === 'boolean'
-                    ? closeable
-                    : closeable.split(',').indexOf(option) > -1;
+            const value = typeof closeable === 'boolean' ? closeable : closeable.split(',').indexOf(option) > -1;
 
             if (option === 'esc' || option === 'mask') {
                 ret[`canCloseBy${key}`] = value;
@@ -345,21 +366,23 @@ export default class Dialog extends Component {
             animation,
             autoFocus,
             closeable,
+            closeMode,
             onClose,
             afterClose,
             shouldUpdatePosition,
             align,
+            popupContainer,
             overlayProps,
             rtl,
         } = this.props;
 
         const useCSS = this.useCSSToPosition();
-        const {
-            canCloseByCloseClick,
-            ...closeConfig
-        } = this.mapcloseableToConfig(closeable);
+        const newCloseable =
+            'closeMode' in this.props ? (Array.isArray(closeMode) ? closeMode.join(',') : closeMode) : closeable;
+        const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(newCloseable);
         const newOverlayProps = {
             disableScroll: true,
+            container: popupContainer,
             ...overlayProps,
             prefix,
             visible,
@@ -391,10 +414,7 @@ export default class Dialog extends Component {
         return (
             <Overlay {...newOverlayProps}>
                 {useCSS && !hasMask ? (
-                    <div
-                        className={`${prefix}dialog-container`}
-                        dir={rtl ? 'rtl' : undefined}
-                    >
+                    <div className={`${prefix}dialog-container`} dir={rtl ? 'rtl' : undefined}>
                         {inner}
                     </div>
                 ) : (

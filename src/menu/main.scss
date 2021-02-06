@@ -13,7 +13,6 @@
 
     position: relative;
     min-width: $s-25;
-    padding: $menu-padding-vertical 0;
     margin: 0;
     list-style: none;
     border: $popup-local-border-width $popup-local-border-style $popup-local-border-color;
@@ -25,10 +24,22 @@
     animation-duration: $motion-duration-standard;
     animation-timing-function: $motion-ease;
 
+    &.#{$css-prefix}ver {
+        padding: $menu-padding-ver-padding-tb $menu-padding-ver-padding-lr;
+        #{$menu-prefix}-item {
+            padding: 0 $menu-item-padding-ver-padding-r 0 $menu-item-padding-ver-padding-l;
+        }
+    }
+    &.#{$css-prefix}hoz {
+        padding: $menu-padding-hoz-padding-tb $menu-padding-hoz-padding-lr;
+        #{$menu-prefix}-item {
+            padding: 0 $menu-item-padding-hoz-padding-lr;
+        }
+    }
     &-embeddable,
     &-embeddable &-item.#{$css-prefix}disabled,
     &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
-        background: initial;
+        background: transparent;
         border: none;
     }
 
@@ -69,7 +80,6 @@
 
     &-item {
         position: relative;
-        padding: 0 $menu-padding-horizontal;
         transition: background $motion-duration-immediately $motion-linear;
         color: $menu-color;
         cursor: pointer;
@@ -131,7 +141,7 @@
         word-wrap: normal;
     }
 
-    &-item-text {
+    &-item &-item-text {
         vertical-align: middle;
 
         & > a {
@@ -158,7 +168,6 @@
             white-space: nowrap;
 
             #{$menu-prefix}-more {
-                padding: 0;
                 text-align: center;
             }
         }
@@ -194,11 +203,15 @@
     & &-icon-selected.#{$css-prefix}icon {
         position: absolute;
         top: 0;
-        @include icon-size($menu-icon-selected-size, -($menu-padding-horizontal + $menu-icon-selected-size) / 2);
+
+        @include icon-size($menu-icon-selected-size, calc(0px - (#{$menu-item-padding-ver-padding-l} - #{$menu-icon-selected-right})));
 
         &#{$menu-prefix}-icon-right {
             right: $menu-icon-selected-right;
         }
+    }
+    & &-symbol-icon-selected#{$menu-prefix}-icon-selected::before {
+        content: $menu-select-icon-content;
     }
 
     & &-icon-arrow.#{$css-prefix}icon {
@@ -210,11 +223,25 @@
         transition: all $motion-duration-immediately $motion-linear;
     }
 
+    & &-icon-arrow-down::before {
+        content: $menu-fold-icon-content;
+    }
+
     & &-icon-arrow-down.#{$css-prefix}open {
-        @include icon-size(
-            $size: $menu-icon-size,
-            $transform: rotate(180deg)
-        );
+        @if get-compiling-value($menu-unfold-icon-content) != get-compiling-value($icon-reset) {
+            &::before {
+                content: $menu-unfold-icon-content;
+            }
+        } @else {
+            @include icon-size(
+                $size: $menu-icon-size,
+                $transform: rotate(180deg)
+            );
+        }
+    }
+
+    & &-symbol-popupfold::before {
+        content: $menu-popupfold-icon-content;
     }
 
     & &-icon-arrow-right.#{$css-prefix}open {
@@ -231,13 +258,31 @@
         @include icon-size($menu-hoz-icon-size);
         color: $menu-arrow-color;
         transition: all $motion-duration-immediately $motion-linear;
+
+        @if get-compiling-value($menu-fold-icon-content) != get-compiling-value($icon-reset) {
+            &::before {
+                content: $menu-fold-icon-content;
+            }
+        }
     }
 
+    // --------- this is for config platform
+    &-unfold-icon::before {
+        content: $menu-unfold-icon-content;
+    }
+    // --------- this is for config platform
+
     & &-hoz-icon-arrow.#{$css-prefix}open {
-        @include icon-size(
-            $size: $menu-hoz-icon-size,
-            $transform: rotate(180deg)
-        );
+        @if get-compiling-value($menu-unfold-icon-content) != get-compiling-value($icon-reset) {
+            &::before {
+                content: $menu-unfold-icon-content;
+            }
+        } @else {
+            @include icon-size(
+                $size: $menu-hoz-icon-size,
+                $transform: rotate(180deg)
+            );
+        }
     }
 
     &.#{$css-prefix}context {

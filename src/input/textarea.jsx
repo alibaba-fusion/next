@@ -41,6 +41,7 @@ const hiddenStyle = {
  * @order 2
  */
 export default class TextArea extends Base {
+    static getDerivedStateFromProps = Base.getDerivedStateFromProps;
     static propTypes = {
         ...Base.propTypes,
         /**
@@ -51,7 +52,7 @@ export default class TextArea extends Base {
          * 状态
          * @enumdesc 错误
          */
-        state: PropTypes.oneOf(['error']),
+        state: PropTypes.oneOf(['error', 'warning']),
         /**
          * 自动高度 true / {minRows: 2, maxRows: 4}
          */
@@ -60,11 +61,21 @@ export default class TextArea extends Base {
          * 多行文本框高度 <br />(不要直接用height设置多行文本框的高度, ie9 10会有兼容性问题)
          */
         rows: PropTypes.number,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
         ...Base.defaultProps,
         hasBorder: true,
+        isPreview: false,
         rows: 4,
         autoHeight: false,
     };
@@ -89,9 +100,7 @@ export default class TextArea extends Base {
         if (autoHeight) {
             if (typeof autoHeight === 'object') {
                 /* eslint-disable react/no-did-mount-set-state */
-                this.setState(
-                    this._getMinMaxHeight(autoHeight, this.state.value)
-                );
+                this.setState(this._getMinMaxHeight(autoHeight, this.state.value));
             } else {
                 this.setState({
                     height: this._getHeight(this.state.value),
@@ -109,6 +118,9 @@ export default class TextArea extends Base {
 
     _getMinMaxHeight({ minRows, maxRows }, value) {
         const node = ReactDOM.findDOMNode(this.helpRef);
+        if (!node) {
+            return {};
+        }
         node.setAttribute('rows', minRows);
         const minHeight = node.clientHeight;
 
@@ -128,6 +140,9 @@ export default class TextArea extends Base {
 
     _getHeight(value) {
         const node = ReactDOM.findDOMNode(this.helpRef);
+        if (!node) {
+            return 0;
+        }
         node.value = value;
 
         return node.scrollHeight;
@@ -139,9 +154,7 @@ export default class TextArea extends Base {
         }
         this.nextFrameActionId = onNextFrame(() => {
             const height = this._getHeight(value);
-            const maxHeight = this.state.maxHeight
-                ? this.state.maxHeight
-                : Infinity;
+            const maxHeight = this.state.maxHeight ? this.state.maxHeight : Infinity;
 
             this.setState({
                 height: this._getHeight(value),
@@ -207,12 +220,16 @@ export default class TextArea extends Base {
             style,
             className,
             autoHeight,
+            isPreview,
+            renderPreview,
             prefix,
             rtl,
             hasBorder,
+            size,
         } = this.props;
 
         const cls = classNames(this.getClass(), {
+            [`${prefix}${size}`]: size === 'large' || 'size' === 'small',
             [`${prefix}input-textarea`]: true,
             [`${prefix}noborder`]: !hasBorder,
             [className]: !!className,
@@ -224,10 +241,7 @@ export default class TextArea extends Base {
         const dataProps = obj.pickAttrsWith(this.props, 'data-');
         // Custom props are transparently transmitted to the core input node by default
         // 自定义属性默认透传到核心node节点：input
-        const others = obj.pickOthers(
-            Object.assign({}, dataProps, TextArea.propTypes),
-            this.props
-        );
+        const others = obj.pickOthers(Object.assign({}, dataProps, TextArea.propTypes), this.props);
 
         const textareStyle = {
             ...props.style,
@@ -237,17 +251,34 @@ export default class TextArea extends Base {
             overflowY: this.state.overflowY,
         };
 
-        const wrapStyle = autoHeight
-            ? { ...style, position: 'relative' }
-            : style;
+        const previewCls = classNames({
+            [`${prefix}input-textarea`]: true,
+            [`${prefix}form-preview`]: true,
+            [className]: !!className,
+        });
+
+        const wrapStyle = autoHeight ? { ...style, position: 'relative' } : style;
+
+        if (isPreview) {
+            const { value } = props;
+            if ('renderPreview' in this.props) {
+                return (
+                    <div {...others} className={previewCls}>
+                        {renderPreview(value, this.props)}
+                    </div>
+                );
+            }
+            return (
+                <div {...others} className={previewCls}>
+                    {value.split('\n').map((data, i) => (
+                        <p key={`p-${i}`}>{data}</p>
+                    ))}
+                </div>
+            );
+        }
 
         return (
-            <span
-                className={cls}
-                style={wrapStyle}
-                dir={rtl ? 'rtl' : undefined}
-                {...dataProps}
-            >
+            <span className={cls} style={wrapStyle} dir={rtl ? 'rtl' : undefined} {...dataProps}>
                 <textarea
                     {...others}
                     {...props}

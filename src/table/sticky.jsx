@@ -36,6 +36,8 @@ export default function sticky(BaseComponent) {
             affixProps: PropTypes.object,
         };
 
+        state = {};
+
         getChildContext() {
             return {
                 Header: this.props.components.Header || Header,

@@ -399,6 +399,8 @@
 }
 
 @mixin icon-size($size, $marginLeft: false, $marginRight: false, $transform: false) {
+    $size-static: get-compiling-value($size);
+    $icon-s-static: get-compiling-value($icon-s);
     @if ($transform) {
         transform: $transform;
     }
@@ -409,30 +411,31 @@
         margin-right: $marginRight;
     }
 
-    &:before {
+    &:before,
+    & .#{$css-prefix}icon-remote {
         width: $size;
         font-size: $size;
-        line-height: inherit;
+        line-height: 1em;
     }
 
     // Chrome不支持小于12px的字体，故采用缩放的方式缩小字体
-    @if (type-of($size) == 'number') {
-        @if ($size < 12) {
+    @if (type-of($size-static) == 'number') {
+        @if ($size-static < 12) {
             @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {
                 @if ($transform) {
-                    transform: scale($size / $icon-s) $transform;
+                    transform: scale($size-static / $icon-s-static) $transform;
                 } @else {
-                    transform: scale($size / $icon-s);
+                    transform: scale($size-static / $icon-s-static);
                 }
                 @if ($marginLeft) {
-                    margin-left: $marginLeft - ($icon-s - $size) / 2;
+                    margin-left: calc(#{$marginLeft} - (#{$icon-s} - #{$size}) / 2);
                 } @else {
-                    margin-left: -($icon-s - $size) / 2;
+                    margin-left: calc(0px - (#{$icon-s} - #{$size}) / 2);
                 }
                 @if ($marginRight) {
-                    margin-right: $marginRight - ($icon-s - $size) / 2;
+                    margin-right: calc(#{$marginRight} - (#{$icon-s} - #{$size}) / 2);
                 } @else {
-                    margin-right: -($icon-s - $size) / 2;
+                    margin-right: calc(0px - (#{$icon-s} - #{$size}) / 2);
                 }
 
                 &:before {
@@ -445,6 +448,8 @@
 }
 
 @mixin icon-square-size($size, $marginTop: false, $marginRight: false, $marginBottom: false, $marginLeft: false, $transform: false) {
+    $size-static: get-compiling-value($size);
+    $icon-s-static: get-compiling-value($icon-s);
     @if ($transform) {
         transform: $transform;
     }
@@ -463,60 +468,62 @@
 
     width: $size;
     height: $size;
-    line-height: $size;
+    line-height: 1em;
 
     &:before {
         width: $size;
         height: $size;
         font-size: $size;
-        line-height: $size;
+        line-height: 1em;
     }
 
     // Chrome不支持小于12px的字体，故采用缩放的方式缩小字体
-    @if ($size < 12) {
-        @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {
-            @if ($transform) {
-                transform: scale($size / $icon-s) $transform;
-            } @else {
-                transform: scale($size / $icon-s);
-            }
-            @if ($marginTop) {
-                margin-top: $marginTop - ($icon-s - $size) / 2;
-            } @else {
-                margin-top: -($icon-s - $size) / 2;
-            }
-            @if ($marginRight) {
-                margin-right: $marginRight - ($icon-s - $size) / 2;
-            } @else {
-                margin-right: -($icon-s - $size) / 2;
-            }
-            @if ($marginBottom) {
-                margin-bottom: $marginBottom - ($icon-s - $size) / 2;
-            } @else {
-                margin-bottom: -($icon-s - $size) / 2;
-            }
-            @if ($marginLeft) {
-                margin-left: $marginLeft - ($icon-s - $size) / 2;
-            } @else {
-                margin-left: -($icon-s - $size) / 2;
-            }
+    @if (type-of($size-static) == 'number') {
+        @if ($size-static < 12) {
+            @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {
+                @if ($transform) {
+                    transform: scale($size-static / $icon-s-static) $transform;
+                } @else {
+                    transform: scale($size-static / $icon-s-static);
+                }
+                @if ($marginTop) {
+                    margin-top: calc(#{$marginTop} - (#{$icon-s} - #{$size}) / 2);
+                } @else {
+                    margin-top: calc(0px - (#{$icon-s} - #{$size}) / 2);
+                }
+                @if ($marginRight) {
+                    margin-right: calc(#{$marginRight} - (#{$icon-s} - #{$size}) / 2);
+                } @else {
+                    margin-right: calc(0px - (#{$icon-s} - #{$size}) / 2);
+                }
+                @if ($marginBottom) {
+                    margin-bottom: calc(#{$marginBottom} - (#{$icon-s} - #{$size}) / 2);
+                } @else {
+                    margin-bottom: calc(0px - (#{$icon-s} - #{$size}) / 2);
+                }
+                @if ($marginLeft) {
+                    margin-left: calc(#{$marginLeft} - (#{$icon-s} - #{$size}) / 2);
+                } @else {
+                    margin-left: calc(0px - (#{$icon-s} - #{$size}) / 2);
+                }
 
-            width: $icon-s;
-            height: $icon-s;
-            line-height: $icon-s;
-
-            &:before {
                 width: $icon-s;
                 height: $icon-s;
-                font-size: $icon-s;
-                line-height: $icon-s;
+                line-height: 1em;
+
+                &:before {
+                    width: $icon-s;
+                    height: $icon-s;
+                    font-size: $icon-s;
+                    line-height: 1em;
+                }
             }
         }
     }
 }
 
 @mixin font-face-handler($name, $url) {
-    @if ($name != Roboto) {
+    @if ($name != Roboto) and ($name != "") {
         @font-face {
             font-family: "#{$name}";
             src: url("#{$url}");
@@ -528,11 +535,14 @@
 ///
 /// @param {String} $color 字体色
 /// @param {String} $color-hover 鼠标悬浮时的字体色
+/// @param {String} $color-active 鼠标按下时的字体色
 /// @param {String} $bg-color 背景色
 /// @param {String} $bg-color-hover 鼠标悬浮时的背景色
+/// @param {String} $bg-color-active 鼠标按下时的背景色
 /// @param {String} $border-color 边框色
 /// @param {String} $border-color-hover 鼠标悬浮时的边框色
-@mixin button-color($color, $color-hover, $bg-color: transparent, $bg-color-hover: transparent, $border-color: transparent, $border-color-hover: transparent) {
+/// @param {String} $border-color-active 鼠标按下时的边框色
+@mixin button-color($color, $color-hover, $color-active, $bg-color: transparent, $bg-color-hover: transparent, $bg-color-active: transparent, $border-color: transparent, $border-color-hover: transparent, $border-color-active: transparent) {
     background-color: $bg-color;
     border-color: $border-color;
 
@@ -545,12 +555,18 @@
 
     &:focus,
     &:hover,
-    &.hover,
-    &:active,
-    &.active {
+    &.hover {
         color: $color-hover;
         background-color: $bg-color-hover;
         border-color: $border-color-hover;
+        text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+        color: $color-active;
+        background-color: $bg-color-active;
+        border-color: $border-color-active;
         text-decoration: none;
     }
 }
@@ -564,7 +580,6 @@
 @mixin button-size($padding, $height, $font-size, $border-width) {
     padding: 0 $padding;
     height: $height;
-    line-height: $height - 2 * $border-width;
     font-size: $font-size;
     border-width: $border-width;
 }

@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
+import { TreeProps } from '../tree';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -77,7 +79,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中值改变时触发的回调函数
      */
-    onChange?: (value: string | Array<any>, data: {} | Array<any>) => void;
+    onChange?: (value: string | Array<any>, data: any | Array<any>) => void;
 
     /**
      * 是否显示搜索框
@@ -125,14 +127,14 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     treeDefaultExpandedKeys?: Array<any>;
 
     /**
-     * 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/component/tree)
+     * 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/pc/component/basic/tree#%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE)
      */
     treeLoadData?: (node: React.ReactElement<any>) => void;
 
     /**
      * 透传到 Tree 的属性对象
      */
-    treeProps?: {};
+    treeProps?: TreeProps;
 
     /**
      * 初始下拉框是否显示
@@ -152,7 +154,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 下拉框自定义样式对象
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 下拉框样式自定义类名
@@ -162,12 +164,15 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 下拉框挂载的容器节点
      */
-    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
+    popupContainer?:
+        | string
+        | HTMLElement
+        | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 透传到 Popup 的属性对象
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 }
 
 export default class TreeSelect extends React.Component<TreeSelectProps, any> {}

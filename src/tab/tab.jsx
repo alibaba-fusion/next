@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import { KEYCODE, obj } from '../util';
 import TabNav from './tabs/nav';
 import TabContent from './tabs/content';
-import TabItem from './tabs/tab-item';
 import { toArray } from './tabs/utils';
+import zhCN from '../locale/zh-cn';
 
 const noop = () => {};
 
 /** Tab */
-export default class Tab extends Component {
+class Tab extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -22,10 +23,7 @@ export default class Tab extends Component {
         /**
          * 初始化时被激活的选项卡的 key
          */
-        defaultActiveKey: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-        ]),
+        defaultActiveKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 外观形态
          */
@@ -51,7 +49,7 @@ export default class Tab extends Component {
          */
         triggerType: PropTypes.oneOf(['hover', 'click']),
         /**
-         * 是否延迟加载 TabPane 的内容, 默认开启, 即不提前渲染
+         * 是否延迟加载 TabItem 的内容, 默认开启, 即不提前渲染
          */
         lazyLoad: PropTypes.bool,
         /**
@@ -79,6 +77,10 @@ export default class Tab extends Component {
          */
         extra: PropTypes.node,
         /**
+         * 禁止键盘事件，设置后无法通过键盘的上下左右按键，切换当前选中的tab
+         */
+        disableKeyboard: PropTypes.bool,
+        /**
          * 点击单个选项卡时触发的回调
          */
         onClick: PropTypes.func,
@@ -105,6 +107,15 @@ export default class Tab extends Component {
         popupProps: PropTypes.object,
         children: PropTypes.any,
         className: PropTypes.string,
+        locale: PropTypes.object,
+        /**
+         * 自定义组件内 icon
+         */
+        icons: PropTypes.shape({
+            prev: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+            next: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+            dropdown: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+        }),
     };
 
     static defaultProps = {
@@ -117,9 +128,12 @@ export default class Tab extends Component {
         triggerType: 'click',
         lazyLoad: true,
         unmountInactiveTabs: false,
+        disableKeyboard: false,
         onClick: noop,
         onChange: noop,
         onClose: noop,
+        locale: zhCN.Tab,
+        icons: {},
     };
 
     constructor(props, context) {
@@ -129,22 +143,34 @@ export default class Tab extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(props, state) {
+        if (props.activeKey !== undefined && state.activeKey !== `${props.activeKey}`) {
+            return {
+                activeKey: `${props.activeKey}`,
+            };
+        }
+
+        return {};
+    }
+
+    componentDidUpdate(prevProps) {
         if (
-            nextProps.activeKey !== undefined &&
-            this.state.activeKey !== `${nextProps.activeKey}`
+            prevProps.children.length !== 0 &&
+            this.props.children.length !== 0 &&
+            !('activeKey' in this.props) & !this.isActiveKeyExist(this.state.activeKey)
         ) {
-            this.setState({
-                activeKey: `${nextProps.activeKey}`,
-            });
+            const activeKey = this.getDefaultActiveKey(this.props);
+            if (activeKey) {
+                // eslint-disable-next-line react/no-did-update-set-state
+                this.setState({
+                    activeKey,
+                });
+            }
         }
     }
 
     getDefaultActiveKey(props) {
-        let activeKey =
-            props.activeKey === undefined
-                ? props.defaultActiveKey
-                : props.activeKey;
+        let activeKey = props.activeKey === undefined ? props.defaultActiveKey : props.activeKey;
 
         if (activeKey === undefined) {
             React.Children.forEach(props.children, (child, index) => {
@@ -188,6 +214,22 @@ export default class Tab extends Component {
         return key;
     }
 
+    isActiveKeyExist(activeKey) {
+        let exist = false;
+        React.Children.forEach(this.props.children, (child, index) => {
+            if (exist) return;
+            if (React.isValidElement(child)) {
+                if (!child.props.disabled) {
+                    const key = child.key || index;
+                    if (activeKey === `${key}`) {
+                        exist = true;
+                    }
+                }
+            }
+        });
+        return exist;
+    }
+
     setActiveKey(key) {
         const { activeKey } = this.state;
 
@@ -213,9 +255,16 @@ export default class Tab extends Component {
 
     onNavKeyDown = e => {
         const keyCode = e.keyCode;
+        const { disableKeyboard } = this.props;
+
+        if (disableKeyboard) {
+            return;
+        }
+
         if (keyCode >= KEYCODE.LEFT && keyCode <= KEYCODE.DOWN) {
             e.preventDefault();
         }
+
         let newKey;
         if (keyCode === KEYCODE.RIGHT || keyCode === KEYCODE.DOWN) {
             newKey = this.getNextActiveKey(true);
@@ -249,6 +298,8 @@ export default class Tab extends Component {
             children,
             rtl,
             device,
+            locale,
+            icons,
             ...others
         } = this.props;
         const { activeKey } = this.state;
@@ -263,9 +314,7 @@ export default class Tab extends Component {
             {
                 [`${prefix}tabs`]: true,
                 [`${prefix}tabs-${shape}`]: shape,
-                [`${prefix}tabs-vertical`]:
-                    shape === 'wrapped' &&
-                    ['left', 'right'].indexOf(tabPosition) >= 0,
+                [`${prefix}tabs-vertical`]: shape === 'wrapped' && ['left', 'right'].indexOf(tabPosition) >= 0,
                 [`${prefix}tabs-scrollable`]: isTouchable,
                 [`${prefix}tabs-${newPosition}`]: shape === 'wrapped',
                 [`${prefix + size}`]: size,
@@ -290,6 +339,8 @@ export default class Tab extends Component {
             onKeyDown: this.onNavKeyDown,
             style: navStyle,
             className: navClassName,
+            locale,
+            icons,
         };
 
         const contentProps = {
@@ -313,15 +364,11 @@ export default class Tab extends Component {
         }
 
         return (
-            <div
-                dir={rtl ? 'rtl' : undefined}
-                className={classNames}
-                {...obj.pickOthers(Tab.propTypes, others)}
-            >
+            <div dir={rtl ? 'rtl' : undefined} className={classNames} {...obj.pickOthers(Tab.propTypes, others)}>
                 {tabChildren}
             </div>
         );
     }
 }
 
-Tab.Item = TabItem;
+export default polyfill(Tab);

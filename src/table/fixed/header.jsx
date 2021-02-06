@@ -10,10 +10,12 @@ export default class FixedHeader extends React.Component {
         prefix: PropTypes.string,
         className: PropTypes.string,
         colGroup: PropTypes.any,
+        tableWidth: PropTypes.number,
     };
 
     static contextTypes = {
         getNode: PropTypes.func,
+        onFixedScrollSync: PropTypes.func,
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
@@ -21,12 +23,24 @@ export default class FixedHeader extends React.Component {
         this.context.getNode('header', findDOMNode(this));
     }
 
+    //  这里的 style={{overflow: 'unset'}} 可以删掉，只是为了解决用户js升级但是样式没升级的情况
     render() {
-        const { prefix, className, colGroup, ...others } = this.props;
+        const {
+            prefix,
+            className,
+            colGroup,
+            tableWidth,
+            ...others
+        } = this.props;
+        const { onFixedScrollSync } = this.context;
+
         return (
-            <div className={className}>
-                <div className={`${prefix}table-header-inner`}>
-                    <table>
+            <div className={className} onScroll={onFixedScrollSync}>
+                <div
+                    className={`${prefix}table-header-inner`}
+                    style={{ overflow: 'unset' }}
+                >
+                    <table style={{ width: tableWidth }}>
                         {colGroup}
                         <HeaderComponent {...others} prefix={prefix} />
                     </table>

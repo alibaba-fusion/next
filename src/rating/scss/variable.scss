@@ -76,3 +76,7 @@ $rating-grade-high-overlay-color: $color-brand1-6 !default;
 /// high level background
 /// @namespace statement/hover/overlay
 $rating-grade-high-overlay-hover-color: $color-brand1-6 !default;
+
+/// rating icon
+/// @namespace statement/normal
+$rating-grade-icon-content: $icon-content-favorites-filling !default;
