@@ -190,7 +190,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
      * [表单校验] 自定义校验函数
      */
-    validator?: () => void;
+    validator?: (rule: any, value: any, callback: any) => void;
 
     /**
      * validator 自定义触发方式
