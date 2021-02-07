@@ -31,7 +31,7 @@ const SharedPT = {
         }
     },
     value(props, propName, componentName) {
-        if (![undefined, null].includes(props[propName])) {
+        if (props[propName]) {
             let value = props[propName];
 
             if (props.type === DATE_PICKER_TYPE.RANGE && !Array.isArray(value)) {
@@ -40,7 +40,7 @@ const SharedPT = {
                 value = [value];
             }
 
-            if (!value.every(v => datejs(v).isValid())) {
+            if (!value.every(v => !v || datejs(v).isValid())) {
                 throw error(propName, componentName);
             }
         }
