@@ -20,6 +20,7 @@
 | readOnly       | enable read-only mode                                                 | Boolean  | -            |
 | animation      | enable animation                              | Boolean  | true         |
 | itemRender     | custom node render function <br><br>**Function signature**:<br>Function(index: Number, status: String) => Node        | Function | -        |
+| stretch        | stretch width of step item | Boolean  | false |
 
 ### Step.Item
 
