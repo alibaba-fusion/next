@@ -5,11 +5,7 @@ import CommonProps from '../util';
 import { ButtonProps } from '../button';
 import { OverlayProps } from '../overlay';
 
-export interface CloseMode {
-    'close': string,
-    'mask': string,
-    'esc': string
-}
+export type CloseMode = 'close' | 'mask' | 'esc';
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
