@@ -26,6 +26,7 @@
 | readOnly       | 是否只读模式                                                                                                                                                                              | Boolean  | -        |
 | animation      | 是否开启动效                                                                                                                                                                              | Boolean  | true     |
 | itemRender     | StepItem 的自定义渲染<br><br>**签名**:<br>Function(index: Number, status: String) => Node<br>**参数**:<br>_index_: {Number} 节点索引<br>_status_: {String} 节点状态<br>**返回值**:<br>{Node} 节点的渲染结果<br> | Function | null     |
+| stretch        | 宽度横向拉伸                                                                                                                                                                              | Boolean  | false    |
 
 ### Step.Item
 

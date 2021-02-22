@@ -63,6 +63,7 @@ class StepItem extends Component {
         className: PropTypes.string,
         readOnly: PropTypes.bool,
         onResize: PropTypes.func,
+        stretch: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -70,6 +71,7 @@ class StepItem extends Component {
         index: 0,
         total: 1,
         onClick: () => {},
+        stretch: false,
     };
 
     constructor(props) {
@@ -91,7 +93,7 @@ class StepItem extends Component {
     }
 
     componentDidMount() {
-        const { shape, direction, labelPlacement, index, total } = this.props;
+        const { shape, direction, labelPlacement, index, total, stretch } = this.props;
         this.body && this.ro.observe(ReactDOM.findDOMNode(this.body));
         if (shape === 'arrow') {
             return;
@@ -108,10 +110,13 @@ class StepItem extends Component {
             // 调整横向Content
             this.adjustTail();
         }
+        if (stretch && (direction === 'horizontal' || direction === 'hoz')) {
+            this.adjustItemWidth();
+        }
     }
 
     componentDidUpdate() {
-        const { shape, direction, labelPlacement, index, total, rtl } = this.props;
+        const { shape, direction, labelPlacement, index, total, rtl, stretch } = this.props;
         if (shape === 'arrow') {
             return;
         }
@@ -141,6 +146,9 @@ class StepItem extends Component {
             } else {
                 resetTailStyle();
             }
+            if (stretch) {
+                this.adjustItemWidth();
+            }
         } else if (index !== total - 1) {
             resetTailStyle();
         }
@@ -148,6 +156,18 @@ class StepItem extends Component {
 
     componentWillUnmount() {
         this.eventHandler && this.eventHandler.off();
+    }
+
+    adjustItemWidth() {
+        const { index, total, labelPlacement } = this.props;
+        const lastNodeWidth =
+            labelPlacement === 'horizontal' || labelPlacement === 'hoz'
+                ? this.container.offsetWidth + this.body.offsetWidth
+                : this.title.offsetWidth;
+        const width = total - 1 !== index ? `calc((100% - ${lastNodeWidth}px)/${total - 1})` : 'auto';
+        dom.setStyle(this.step, {
+            width,
+        });
     }
 
     adjustTail() {
