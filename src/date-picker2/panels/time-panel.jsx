@@ -74,6 +74,7 @@ class TimePanel extends React.PureComponent {
                     <div className={`${prefix}calendar2-header-text-field`}>{value ? this.formater(value) : null}</div>
                 </div>
                 <TimePickerPanel
+                    prefix={prefix}
                     locale={locale}
                     onSelect={this.onSelect}
                     showHour={showHour}
