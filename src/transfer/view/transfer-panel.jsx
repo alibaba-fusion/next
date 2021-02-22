@@ -120,11 +120,16 @@ export default class TransferPanel extends Component {
     }
 
     handleAllCheck(allChecked) {
-        const { position, onChange } = this.props;
+        const { position, onChange, filter } = this.props;
+        const { searchedValue } = this.state;
 
         let newValue;
         if (allChecked) {
-            newValue = this.enabledDatasource.map(item => item.value);
+            if (searchedValue) {
+                newValue = this.enabledDatasource.filter(item => filter(searchedValue, item)).map(item => item.value);
+            } else {
+                newValue = this.enabledDatasource.map(item => item.value);
+            }
         } else {
             newValue = [];
         }
@@ -280,12 +285,20 @@ export default class TransferPanel extends Component {
             );
         }
 
-        const { value, dataSource } = this.props;
+        const { value, showSearch, filter, dataSource } = this.props;
+        const { searchedValue } = this.state;
+        let totalCount = dataSource.length;
+        let _dataSource = dataSource;
         const checkedCount = value.length;
-        const totalCount = dataSource.length;
-        const totalEnabledCount = this.enabledDatasource.length;
+        let _checkedCount = checkedCount;
+        if (showSearch && searchedValue) {
+            _dataSource = dataSource.filter(item => filter(searchedValue, item));
+            totalCount = _dataSource.length;
+            _checkedCount = _dataSource.filter(item => value.includes(item.value)).length;
+        }
+        const totalEnabledCount = Math.min(totalCount, this.enabledDatasource.length);
         const checked = checkedCount > 0 && checkedCount >= totalEnabledCount;
-        const indeterminate = checkedCount > 0 && checkedCount < totalEnabledCount;
+        const indeterminate = checkedCount > 0 && _checkedCount >= 0 && _checkedCount < totalEnabledCount;
         const items = totalCount > 1 ? locale.items : locale.item;
         const countLabel = checkedCount === 0 ? `${totalCount} ${items}` : `${checkedCount}/${totalCount} ${items}`;
 
@@ -308,19 +321,19 @@ export default class TransferPanel extends Component {
     }
 
     render() {
-        const { prefix, title, showSearch, filter } = this.props;
+        const { prefix, title, showSearch, filter, dataSource } = this.props;
         const { searchedValue } = this.state;
-        let dataSource = this.props.dataSource;
+        let _dataSource = this.props.dataSource;
         this.enabledDatasource = dataSource.filter(item => !item.disabled);
         if (showSearch && searchedValue) {
-            dataSource = dataSource.filter(item => filter(searchedValue, item));
+            _dataSource = dataSource.filter(item => filter(searchedValue, item));
         }
 
         return (
             <div className={`${prefix}transfer-panel`}>
                 {title ? this.renderHeader() : null}
                 {showSearch ? this.renderSearch() : null}
-                {this.renderList(dataSource)}
+                {this.renderList(_dataSource)}
                 {this.renderFooter()}
             </div>
         );
