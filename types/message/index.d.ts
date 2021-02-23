@@ -29,9 +29,13 @@ export interface MessageProps extends HTMLAttributesWeak, CommonProps {
     title?: React.ReactNode;
 
     /**
-     * 内容
+     * 内容，非函数式调用下使用
      */
     children?: React.ReactNode;
+    /**
+     * 内容，函数式调用下使用
+     */
+    content?: React.ReactNode;
 
     /**
      * 默认是否显示
