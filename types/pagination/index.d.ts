@@ -3,6 +3,7 @@
 import * as React from 'react';
 import CommonProps from '../util';
 import { PopupProps } from '../overlay';
+import { SelectProps } from '../select';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
@@ -109,6 +110,7 @@ export interface PaginationProps extends HTMLAttributesWeak, CommonProps {
      * 弹层组件属性，透传给Popup
      */
     popupProps?: PopupProps;
+    selectProps?: SelectProps;
 }
 
 export default class Pagination extends React.Component<PaginationProps, any> {}
