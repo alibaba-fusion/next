@@ -24,6 +24,18 @@
     animation-duration: $motion-duration-standard;
     animation-timing-function: $motion-ease;
 
+    &-spacing-lr {
+        padding: 0 $popup-spacing-lr;
+        &#{$menu-prefix}-outside > #{$menu-prefix} {
+            height: 100%;
+            overflow-y: auto;
+        }
+    }
+
+    &-spacing-tb {
+        padding: $popup-spacing-tb 0;
+    }
+
     &.#{$css-prefix}ver {
         padding: $menu-padding-ver-padding-tb $menu-padding-ver-padding-lr;
         #{$menu-prefix}-item {

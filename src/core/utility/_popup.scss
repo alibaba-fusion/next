@@ -10,6 +10,13 @@
 ////
 
 
+/// popup spacing (l, r)
+/// @semantic 左右留白
+$popup-spacing-lr: $s-1 !default;
+/// popup spacing (t, b)
+/// @semantic 上下留白
+$popup-spacing-tb: $s-1 !default;
+
 /// border width
 /// @semantic 边框宽度
 $popup-local-border-width: $line-1 !default;

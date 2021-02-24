@@ -326,6 +326,11 @@
     &-popup-wrap {
         animation-duration: $motion-duration-standard;
         animation-timing-function: $motion-ease;
+        padding: $popup-spacing-tb 0;
+    }
+
+    &-spacing-tb {
+        padding: $popup-spacing-tb 0;
     }
 
     &-menu-wrapper {
