@@ -243,9 +243,8 @@ class Nav extends Component {
                 [`${prefix}icon-only`]: newIconOnly && mode === 'inline',
                 [popupClassName]: !!popupClassName,
             }),
-            popupProps: popupItemProps => {
+            popupProps: () => {
                 return {
-                    offset: direction === 'hoz' && popupItemProps.level === 1 ? [0, 2] : [-2, 0],
                     ...popupProps,
                 };
             },

@@ -713,7 +713,7 @@ export default class Base extends React.Component {
                         {popupContent}
                     </div>
                 ) : (
-                    this.renderMenu()
+                    <div className={`${prefix}select-spacing-tb`}>{this.renderMenu()}</div>
                 )}
             </Tag>
         );
