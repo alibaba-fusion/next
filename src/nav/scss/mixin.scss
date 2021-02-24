@@ -70,7 +70,7 @@
         }
     }
     &.#{$css-prefix}ver {
-        &.#{$css-prefix}left #{$nav-prefix}-item:before {
+        &.#{$css-prefix}left #{$nav-prefix}-item:before, {
             left: 0;
             left: calc(0px - #{$border-width});
         }
@@ -99,7 +99,10 @@
     $openedBgColor,
     $openedColor,
     $groupColor,
-    $groupWeight
+    $groupWeight,
+    $childSelectedBgColor,
+    $childSelectedColor,
+    $childSelectedWeight,
 ) {
     background-color: $bgColor;
     border-color: $borderColor;
@@ -128,9 +131,19 @@
             background-color: $openedBgColor;
             color: $openedColor;
         }
+
         &.#{$css-prefix}child-selected {
-            background-color: $openedBgColor;
+            font-weight: $childSelectedWeight;
+            background-color: $childSelectedBgColor;
+            color: $childSelectedColor;
+        }
+
+        &.#{$css-prefix}opened.#{$css-prefix}nav-popup {
             color: $openedColor;
+        }
+
+        &.#{$css-prefix}child-selected.#{$css-prefix}nav-popup {
+            color: $childSelectedColor;
         }
 
         &:before {
