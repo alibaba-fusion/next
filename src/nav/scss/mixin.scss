@@ -70,7 +70,7 @@
         }
     }
     &.#{$css-prefix}ver {
-        &.#{$css-prefix}left #{$nav-prefix}-item:before, {
+        &.#{$css-prefix}left #{$nav-prefix}-item:before {
             left: 0;
             left: calc(0px - #{$border-width});
         }
