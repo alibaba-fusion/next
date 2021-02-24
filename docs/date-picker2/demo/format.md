@@ -17,7 +17,6 @@ Using attribute `format` to change the displayed dates, it will be also used to 
 ---
 
 ```jsx
-import { useState } from 'react';
 import { DatePicker2 } from '@alifd/next';
 
 const { RangePicker} = DatePicker2;

@@ -17,7 +17,6 @@ borderless style.
 ---
 
 ```jsx
-import { useState } from 'react';
 import { DatePicker2 } from '@alifd/next';
 
 const { RangePicker} = DatePicker2;
