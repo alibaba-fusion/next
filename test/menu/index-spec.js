@@ -797,7 +797,7 @@ describe('Menu', () => {
 
         setTimeout(() => {
             const subMenu = document.querySelector(
-                '.next-overlay-inner.next-menu'
+                '.next-overlay-inner .next-menu'
             );
             assert(subMenu);
 
@@ -838,7 +838,7 @@ describe('Menu', () => {
 
         setTimeout(() => {
             const subMenu = document.querySelector(
-                '.next-overlay-inner.next-menu'
+                '.next-overlay-inner'
             );
 
             assert(subMenu.style.width === '300px');
