@@ -415,7 +415,7 @@
     & .#{$css-prefix}icon-remote {
         width: $size;
         font-size: $size;
-        line-height: 1em;
+        line-height: inherit;
     }
 
     // Chrome不支持小于12px的字体，故采用缩放的方式缩小字体

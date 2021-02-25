@@ -641,6 +641,30 @@ describe('Transfer', () => {
         );
         wrapper.find('.next-checkbox').at(0).simulate('click');
     });
+    it('should onSelect work well', () => {
+        const onSelect = (sourceSelectedValue, targetSelectedValue, trigger) => {
+            assert(trigger === 'source', 'position should be source');
+            assert(sourceSelectedValue && (sourceSelectedValue[0] === '1'), 'checked value should be 1');
+        };
+        wrapper = mount(
+            <Transfer
+                defaultValue={['1']}
+                value={['2']}
+                dataSource={dataSource}
+                onSelect={onSelect}
+            />
+        );
+        compareDomAndDataSource(wrapper, 0, [
+            { label: '0', value: '0' },
+            { label: '1', value: '1' },
+            { label: '3', value: '3' },
+        ]);
+        compareDomAndDataSource(wrapper, 1, [{ label: '2', value: '2' }]);
+        assert(findFooterCount(wrapper, 0) === '3');
+        assert(findFooterCount(wrapper, 1) === '1');
+        wrapper.find('.next-checkbox').at(1).simulate('click');
+
+    });
     it('should support virtual list', () => {
         const dataSource = (() => {
             const dataSource = [];

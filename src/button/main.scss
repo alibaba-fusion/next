@@ -408,7 +408,7 @@
     /* ---------------------------------------- */
     &-loading {
         pointer-events: none;
-        &:after {
+        &:before {
             font-family: $icon-font-family;
             content: $icon-content-loading;
             opacity: 1;

@@ -49,7 +49,9 @@ Table.sticky = sticky;
 Table.GroupHeader = ListHeader;
 Table.GroupFooter = ListFooter;
 
-Table.StickyLock = StickyLockTable;
+Table.StickyLock = ConfigProvider.config(StickyLockTable, {
+    componentName: 'Table',
+});
 
 export default ConfigProvider.config(Table, {
     componentName: 'Table',

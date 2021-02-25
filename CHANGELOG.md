@@ -1,5 +1,87 @@
 # Change Log 
 
+## [1.22.10](https://github.com/alibaba-fusion/next/compare/1.22.9...1.22.10) (2021-02-25)
+
+
+### Bug Fixes
+
+* **DatePicker:** demo bug on riddle ([eb6cb07](https://github.com/alibaba-fusion/next/commit/eb6cb07))
+* **Datepicker2:** update demo ([93ee965](https://github.com/alibaba-fusion/next/commit/93ee965))
+* **DatePicker2:** ts issues ([c7d73d8](https://github.com/alibaba-fusion/next/commit/c7d73d8))
+* **Typescript:** update Message ([0a11978](https://github.com/alibaba-fusion/next/commit/0a11978))
+
+
+
+
+## [1.22.9](https://github.com/alibaba-fusion/next/compare/1.22.8...1.22.9) (2021-02-24)
+
+
+### Bug Fixes
+
+* **DatePicker:** wrong style import ([bfb5120](https://github.com/alibaba-fusion/next/commit/bfb5120))
+* **Icon:** line-height inherit ([a3af842](https://github.com/alibaba-fusion/next/commit/a3af842))
+* **Paginaton:** make autoWidth false, add selectProps, close [#2720](https://github.com/alibaba-fusion/next/issues/2720) ([7efb23d](https://github.com/alibaba-fusion/next/commit/7efb23d))
+* **Table:** prefix of Table.StickyLock not working, close [#2722](https://github.com/alibaba-fusion/next/issues/2722) ([0dfd0cd](https://github.com/alibaba-fusion/next/commit/0dfd0cd))
+* **Typescripts:** update message props ([8ac9d56](https://github.com/alibaba-fusion/next/commit/8ac9d56))
+
+
+
+
+## [1.22.8](https://github.com/alibaba-fusion/next/compare/1.22.7...1.22.8) (2021-02-23)
+
+
+### Bug Fixes
+
+* **DatePicker:** bug on isValueChanged ([2841951](https://github.com/alibaba-fusion/next/commit/2841951))
+* **DatePicker2:** time picker panel lost prefix prop ([c4d8786](https://github.com/alibaba-fusion/next/commit/c4d8786))
+* **Dialog:** closeMode types ([e40208a](https://github.com/alibaba-fusion/next/commit/e40208a))
+* **Transfer:** fix wrong behavior of check-all while using search ([1204592](https://github.com/alibaba-fusion/next/commit/1204592))
+
+
+### Features
+
+* **Select:** pass event to onSearch callback ([e134ca8](https://github.com/alibaba-fusion/next/commit/e134ca8))
+* **Step:** support stretch, close [#2651](https://github.com/alibaba-fusion/next/issues/2651) ([04db8bb](https://github.com/alibaba-fusion/next/commit/04db8bb))
+
+
+
+
+## [1.22.7](https://github.com/alibaba-fusion/next/compare/1.22.6...1.22.7) (2021-02-05)
+
+
+### Bug Fixes
+
+* **Button:** text fluttered when toggle loading, close [#2691](https://github.com/alibaba-fusion/next/issues/2691) ([6afebd0](https://github.com/alibaba-fusion/next/commit/6afebd0))
+* **Overlay:** correct top for tab ([d88009f](https://github.com/alibaba-fusion/next/commit/d88009f))
+* **Tab:** prefix not work, close [#2692](https://github.com/alibaba-fusion/next/issues/2692) ([d8628ea](https://github.com/alibaba-fusion/next/commit/d8628ea))
+* **Transfer:** add onSelect callback, close [#2665](https://github.com/alibaba-fusion/next/issues/2665) ([918ccd7](https://github.com/alibaba-fusion/next/commit/918ccd7))
+* **Tree:** correct checkbox icon ([5a4e5b2](https://github.com/alibaba-fusion/next/commit/5a4e5b2))
+
+
+### Features
+
+* **Step:** add node size config ([e8609a4](https://github.com/alibaba-fusion/next/commit/e8609a4))
+
+
+
+
+## [1.22.6](https://github.com/alibaba-fusion/next/compare/1.22.5...1.22.6) (2021-02-04)
+
+
+### Bug Fixes
+
+* correct version of @alifd/meet-react ([ea60d4a](https://github.com/alibaba-fusion/next/commit/ea60d4a))
+* **DatePicker:** bug on preview when showTime ([a9d166e](https://github.com/alibaba-fusion/next/commit/a9d166e))
+* **DatePicker2:** controlled bug ([9680106](https://github.com/alibaba-fusion/next/commit/9680106))
+* **Menu:** enhance robotness, close [#2680](https://github.com/alibaba-fusion/next/issues/2680) ([#2681](https://github.com/alibaba-fusion/next/issues/2681)) ([ffaa5f5](https://github.com/alibaba-fusion/next/commit/ffaa5f5))
+* **Checkbox:** icon vertical algin text top ([#2681](https://github.com/alibaba-fusion/next/issues/2681)) ([ffaa5f5](https://github.com/alibaba-fusion/next/commit/ffaa5f5))
+* **Balloon:** 0 => 0px  ([#2681](https://github.com/alibaba-fusion/next/issues/2681)) ([ffaa5f5](https://github.com/alibaba-fusion/next/commit/ffaa5f5))
+* **Nav:** fix compare 0 with 0px ([3f2444d](https://github.com/alibaba-fusion/next/commit/3f2444d))
+* **Overlay:** bug on postion when bottom overflow ([e2c1be9](https://github.com/alibaba-fusion/next/commit/e2c1be9))
+
+
+
+
 ## [1.22.5](https://github.com/alibaba-fusion/next/compare/1.22.4...1.22.5) (2021-01-28)
 
 

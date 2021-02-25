@@ -48,6 +48,10 @@ class Step extends Component {
          * @returns {Node} 节点的渲染结果
          */
         itemRender: PropTypes.func,
+        /**
+         * 宽度横向拉伸
+         */
+        stretch: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -58,6 +62,7 @@ class Step extends Component {
         shape: 'circle',
         animation: true,
         itemRender: null,
+        stretch: false,
     };
 
     static contextTypes = {
@@ -192,6 +197,7 @@ class Step extends Component {
             animation,
             itemRender,
             rtl,
+            stretch,
             ...others
         } = this.props;
         let { prefix, direction, children } = this.props;
@@ -228,6 +234,7 @@ class Step extends Component {
                 onResize: () => {
                     this.step && this.adjustHeight();
                 },
+                stretch,
             });
         });
 
@@ -246,7 +253,6 @@ class Step extends Component {
         }
 
         // others.onKeyDown = makeChain(this.handleKeyDown, others.onKeyDown);
-
         return (
             <ol {...others} className={stepCls} ref={this._stepRefHandler}>
                 {cloneChildren}
