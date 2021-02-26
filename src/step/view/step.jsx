@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React, { Component, Children } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
-import { support, events, dom } from '../../util';
+import { support, events, dom, obj } from '../../util';
 
 const getHeight = el => dom.getStyle(el, 'height');
 const setHeight = (el, height) => dom.setStyle(el, 'height', height);
@@ -188,18 +188,8 @@ class Step extends Component {
 
     render() {
         // eslint-disable-next-line
-        const {
-            className,
-            current,
-            labelPlacement,
-            shape,
-            readOnly,
-            animation,
-            itemRender,
-            rtl,
-            stretch,
-            ...others
-        } = this.props;
+        const { className, current, labelPlacement, shape, readOnly, animation, itemRender, rtl, stretch } = this.props;
+        const others = obj.pickOthers(Step.propTypes, this.props);
         let { prefix, direction, children } = this.props;
         prefix = this.context.prefix || prefix;
         const { parentWidth, parentHeight } = this.state;

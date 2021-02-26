@@ -6,7 +6,7 @@ import ResizeObserver from 'resize-observer-polyfill';
 import Icon from '../../icon';
 import Progress from '../../progress';
 import ConfigProvider from '../../config-provider';
-import { support, events, dom } from '../../util';
+import { support, events, dom, obj } from '../../util';
 
 /** Step.Item */
 class StepItem extends Component {
@@ -358,8 +358,9 @@ class StepItem extends Component {
             labelPlacement,
             rtl,
             onResize,
-            ...others
         } = this.props;
+
+        const others = obj.pickOthers(StepItem.propTypes, this.props);
 
         const stepCls = classNames({
             [`${prefix}step-item`]: true,
