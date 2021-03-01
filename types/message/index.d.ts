@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
-
+import { OverlayProps } from '../overlay';
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
@@ -29,7 +29,7 @@ export interface MessageProps extends HTMLAttributesWeak, CommonProps {
     title?: React.ReactNode;
 
     /**
-     * 内容
+     * 内容，非函数式调用下使用
      */
     children?: React.ReactNode;
 
@@ -69,13 +69,65 @@ export interface MessageProps extends HTMLAttributesWeak, CommonProps {
     animation?: boolean;
 }
 
+export interface MessageQuickProps extends HTMLAttributesWeak, CommonProps {
+    /**
+     * 反馈类型
+     */
+    type?: 'success' | 'warning' | 'error' | 'notice' | 'help' | 'loading';
+
+    /**
+     * 标题
+     */
+    title?: React.ReactNode;
+
+    /**
+     * 内容，函数式调用下使用
+     */
+    content?: React.ReactNode;
+    /**
+     * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
+     */
+    align?: string | boolean;
+
+    /**
+     * 弹层相对于参照元素定位的微调
+     */
+    offset?: Array<any>;
+    /**
+     * 是否显示遮罩
+     */
+    hasMask?: boolean;
+    duration?: number;
+    timeoutId?: string;
+    /**
+     * 关闭按钮的回调
+     */
+    onClose?: () => void;
+
+    /**
+     * 关闭之后调用的函数
+     */
+    afterClose?: () => void;
+
+    /**
+     * 是否开启展开收起动画
+     */
+    animation?: boolean;
+    /**
+     * 透传到弹层组件的属性对象
+     */
+    overlayProps?: OverlayProps;
+}
+
+type OpenProps = string | React.ReactElement | MessageQuickProps;
+
 export default class Message extends React.Component<MessageProps, any> {
-    static show(props: {}): void;
+    static show(props: OpenProps): void;
     static hide(): void;
-    static success(props: {}): void;
-    static warning(props: {}): void;
-    static error(props: {}): void;
-    static help(props: {}): void;
-    static loading(props: {}): void;
-    static notice(props: {}): void;
+    static success(props: OpenProps): void;
+    static warning(props: OpenProps): void;
+    static error(props: OpenProps): void;
+    static help(props: OpenProps): void;
+    static loading(props: OpenProps): void;
+    static notice(props: OpenProps): void;
 }

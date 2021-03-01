@@ -21,7 +21,6 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * label 标签的文本
      */
     label?: React.ReactNode;
-    colon?: boolean;
 
     /**
      * label 标签布局，通 `<Col>` 组件，设置 span offset 值，如 {span: 8, offset: 16}，该项仅在垂直表单有效
@@ -191,7 +190,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
      * [表单校验] 自定义校验函数
      */
-    validator?: () => void;
+    validator?: (rule: any, value: any, callback: any) => void;
 
     /**
      * validator 自定义触发方式
@@ -202,27 +201,42 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 是否修改数据时自动触发校验
      */
     autoValidate?: boolean;
+
     /**
      * 在响应式布局下，且label在左边时，label的宽度是多少
      */
     labelWidth?: number | string;
+
     /**
      * 在响应式布局模式下，表单项占多少列
      */
     colSpan?: number;
+
     /**
      * 是否开启预览态
      */
     isPreview?: boolean;
+
     /**
      * 预览态模式下渲染的内容
      * @param {any} value 根据包裹的组件的 value 类型而决定
      */
-    renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => any
+    renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => any;
+
     /**
      * 是否使用 label 替换校验信息的 name 字段
      */
-    useLabelForErrorMessage?: boolean
+    useLabelForErrorMessage?: boolean;
+
+    /**
+     * 表示是否显示 label 后面的冒号
+     */
+    colon?: boolean;
+
+    /**
+     * 子元素的 value 名称
+     */
+    valueName?: string;
 }
 
 export class Item extends React.Component<ItemProps, any> {}

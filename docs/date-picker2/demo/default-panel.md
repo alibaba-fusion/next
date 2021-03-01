@@ -16,7 +16,6 @@ Change default visible date by setting `defaultPanelValue`.
 ---
 
 ```jsx
-import { useState } from 'react';
 import { DatePicker2 } from '@alifd/next';
 import dayjs from 'dayjs';
 

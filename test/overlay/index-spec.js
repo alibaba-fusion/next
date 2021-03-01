@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import simulateEvent from 'simulate-event';
@@ -9,6 +9,7 @@ import Overlay from '../../src/overlay/index';
 import Dialog from '../../src/dialog/index';
 import Balloon from '../../src/balloon/index';
 import Button from '../../src/button/index';
+import '../../src/button/style.js';
 import '../../src/overlay/style.js';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
@@ -360,7 +361,8 @@ describe('Overlay', () => {
 
             simulateEvent.simulate(btn, 'click');
             assert(document.body.style.overflowY === 'hidden');
-            assert(document.body.style.paddingRight === `${scrollbarWidth}px`);
+            // paddingRight 有没有值取决于当前浏览器环境是否有滚动条（mac可以设置默认有，或默认没有）
+            // assert(document.body.style.paddingRight === `${scrollbarWidth}px`);
 
             simulateEvent.simulate(btn, 'click');
             yield delay(500);
@@ -581,6 +583,43 @@ describe('Overlay', () => {
         }
         document.body.append(container);
         ReactDOM.render(<Demo />, container);
+        container.remove();
+    });
+
+    it('fix left overflow', () => {
+        const container = document.createElement('div');
+
+        function Demo(props) {
+            const btnRef = useRef();
+
+            return (
+                <div>
+                    <Button style={{ width: '100%' }} ref={btnRef}>
+                        Toggle visible
+                    </Button>
+                    <Overlay visible target={() => btnRef.current} {...props}>
+                        <div
+                            style={{
+                                width: '200px',
+                                height: '100vh',
+                                background: 'red',
+                            }}
+                        >
+                            Hello World From Overlay!
+                        </div>
+                    </Overlay>
+                </div>
+            );
+        }
+        document.body.append(container);
+        ReactDOM.render(<Demo align="tl tr" />, container);
+        assert(
+            document.querySelector('.next-overlay-inner').style.left ===
+                `${parseFloat(window.getComputedStyle(document.body).width) - 200 - 1}px` // Reason to subtract 1, see: Overly._isInViewport
+        );
+        // assert(document.querySelector('.next-overlay-inner').style.top === '0px');
+        container.remove();
+        document.querySelector('.next-overlay-wrapper').remove();
     });
 });
 

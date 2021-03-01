@@ -107,6 +107,7 @@
 | renderPreview           | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: any) => void<br>**参数**:<br>_value_: {any} 根据包裹的组件的 value 类型而决定            | Function           | -     |
 | useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                              | Boolean            | -     |
 | colon                   | 表示是否显示 label 后面的冒号                                                                                                      | Boolean            | -     |
+| valueName               | 子元素的 value 名称                                                                                                           | String             | -     |
 
 ### Form.Submit
 

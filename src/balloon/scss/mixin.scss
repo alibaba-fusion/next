@@ -239,14 +239,14 @@
         top: calc(50% - #{$width});
         right: calc(0px - (#{$width} * 2));
         .#{$css-prefix}balloon-arrow-content {
-            transform: translateX(calc(#{$width} * -1)) rotate(45deg);
+            transform: translateX(calc(0px - #{$width})) rotate(45deg);
         }
     }
     &-bottom .#{$css-prefix}balloon-arrow {
         left: calc(50% - #{$width});
         bottom: calc(0px - (#{$width} * 2));
         .#{$css-prefix}balloon-arrow-content {
-            transform: translateY(calc(#{$width} * -1)) rotate(45deg);
+            transform: translateY(calc(0px - #{$width})) rotate(45deg);
         }
     }
 
@@ -276,7 +276,7 @@
         top: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
         right: calc(0px - (#{$width} * 2));
         .#{$css-prefix}balloon-arrow-content {
-            transform: translateX(calc(#{$width} * -1)) rotate(45deg);
+            transform: translateX(calc(0px - #{$width})) rotate(45deg);
         }
     }
 
@@ -284,7 +284,7 @@
         bottom: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
         right: calc(0px - (#{$width} * 2));
         .#{$css-prefix}balloon-arrow-content {
-            transform: translateX(calc(#{$width} * -1)) rotate(45deg);
+            transform: translateX(calc(0px - #{$width})) rotate(45deg);
         }
     }
 
@@ -308,7 +308,7 @@
         left: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
         bottom: calc(0px - (#{$width} * 2));
         .#{$css-prefix}balloon-arrow-content {
-            transform: translateY(calc(#{$width} * -1)) rotate(45deg);
+            transform: translateY(calc(0px - #{$width})) rotate(45deg);
         }
     }
 
@@ -316,7 +316,7 @@
         right: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
         bottom: calc(0px - (#{$width} * 2));
         .#{$css-prefix}balloon-arrow-content {
-            transform: translateY(calc(#{$width} * -1)) rotate(45deg);
+            transform: translateY(calc(0px - #{$width})) rotate(45deg);
         }
     }
 }

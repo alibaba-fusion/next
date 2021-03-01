@@ -32,7 +32,7 @@ ReactDOM.render(<div className="wrapped-calendar">
 ````css
 .wrapped-calendar {
     width: 300px;
-    border: 1px solid #C4C6CF;
+    border: 1px solid #f0f0f0;
     border-radius: 3px;
     padding: 8px;
 }

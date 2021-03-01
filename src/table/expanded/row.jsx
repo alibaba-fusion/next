@@ -76,7 +76,7 @@ export default class ExpandedRow extends React.Component {
 
             const expandedRowStyle = {
                 position: 'sticky',
-                width: tableOuterWidth,
+                width: (tableOuterWidth || 0) - 1,
                 left: 0,
             };
             // 暴露给用户的index

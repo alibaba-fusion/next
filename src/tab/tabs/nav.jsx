@@ -6,7 +6,7 @@ import Icon from '../../icon';
 import Overlay from '../../overlay';
 import Menu from '../../menu';
 import Animate from '../../animate';
-import { events, KEYCODE, dom } from '../../util';
+import { events, KEYCODE, dom, obj } from '../../util';
 import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
 
 const floatRight = { float: 'right', zIndex: 1 };
@@ -293,8 +293,8 @@ class Nav extends React.Component {
         }
     };
 
-    defaultTabTemplateRender = (key, { prefix, title, closeable }) => {
-        const { locale } = this.props;
+    defaultTabTemplateRender = (key, { title, closeable }) => {
+        const { locale, prefix } = this.props;
         const tail = closeable ? (
             <Icon
                 aria-label={locale.closeAriaLabel}
@@ -306,7 +306,7 @@ class Nav extends React.Component {
             />
         ) : null;
         return (
-            <div className={`${this.props.prefix}tabs-tab-inner`}>
+            <div className={`${prefix}tabs-tab-inner`}>
                 {title}
                 {tail}
             </div>
@@ -341,8 +341,11 @@ class Nav extends React.Component {
                 };
             }
 
+            const dataProps = obj.pickAttrsWith(child.props, 'data-');
+
             rst.push(
                 <li
+                    {...dataProps}
                     role="tab"
                     key={child.key}
                     ref={active ? this.activeTabRefHandler : null}
@@ -367,7 +370,8 @@ class Nav extends React.Component {
             const activeTabOffset = getOffsetLT(this.activeTab);
             const wrapperOffset = getOffsetLT(this.wrapper);
             const target = this.offset;
-            if (activeTabOffset >= wrapperOffset + wrapperWH || activeTabOffset + activeTabWH <= wrapperOffset) {
+
+            if (activeTabOffset + activeTabWH >= wrapperOffset + wrapperWH || activeTabOffset < wrapperOffset) {
                 this.setOffset(this.offset + wrapperOffset - activeTabOffset, true, true);
                 return;
             }
@@ -558,7 +562,11 @@ class Nav extends React.Component {
                                 {tabList}
                             </Animate>
                         ) : (
-                            <ul role="tablist" className={navCls} ref={this.navRefHandler}>
+                            <ul
+                                role="tablist"
+                                className={`${navCls} ${prefix}disable-animation`}
+                                ref={this.navRefHandler}
+                            >
                                 {tabList}
                             </ul>
                         )}

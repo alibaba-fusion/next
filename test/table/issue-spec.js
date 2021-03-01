@@ -755,6 +755,73 @@ describe('Issue', () => {
         document.body.removeChild(div);
     });
 
+    it('should support multiple header lock', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = () => {
+            const result = [];
+            for (let i = 0; i < 5; i++) {
+                result.push({
+                    title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
+                    id: 100306660940 + i,
+                    time: 2000 + i
+                });
+            }
+            return result;
+        };
+        const render = (value, index, record) => {
+            return <a href="javascript:;">Remove({record.id})</a>;
+        };
+
+        const columns = [{
+            title: "Group2-7",
+            children: [{
+                title: "Title2",
+                dataIndex: "id",
+                lock: 'left',
+                width: 140,
+            }, {
+                title: "Title3",
+                lock: 'left',
+                dataIndex: "title.name",
+                width: 200
+            }]
+        },
+        {
+            title: "Title6",
+            dataIndex: "title.name",
+            width: 400,
+        },
+        {
+            title: "Title1",
+            dataIndex: "id",
+            width: 140,
+        }, {
+            title: '这行有错',
+            id: 'target-line',
+            cell: render,
+            lock: 'left',
+            width: 200
+        },{
+            title: "Time",
+            dataIndex: "time",
+            width: 500,
+        }];
+
+        ReactDOM.render(<Table.StickyLock dataSource={dataSource()} columns={columns} />, container, function() {
+            setTimeout(() => {
+                console.log(document.getElementById('target-line'))
+                assert(
+                    document.getElementById('target-line').style.left === '340px'
+                );
+                ReactDOM.unmountComponentAtNode(container);
+                document.body.removeChild(container);
+                done();
+            }, 10);
+        });
+    });
+
     it('should set right offset, fix #2276', done => {
         const container = document.createElement('div');
         document.body.appendChild(container);

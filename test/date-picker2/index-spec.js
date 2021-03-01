@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import dayjs from 'dayjs';
 import moment from 'moment';
 import DatePicker from '../../src/date-picker2/index';
+import Form from '../../src/form/index';
+import Field from '../../src/field/index';
 import { DATE_PICKER_MODE } from '../../src/date-picker2/constant';
 import { KEYCODE } from '../../src/util';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 const { RangePicker, MonthPicker, YearPicker, WeekPicker, QuarterPicker } = DatePicker;
-
-const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PICKER_MODE;
+const FormItem = Form.Item;
 
 let wrapper;
+const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PICKER_MODE;
 const defaultVal = '2020-12-12';
 const defaultRangeVal = ['2020-12-12', '2020-12-13'];
 const onChange = (...args) => assert(checkOutput(...args));
@@ -537,6 +539,72 @@ describe('Picker', () => {
             ].forEach(([component, displayName]) => {
                 assert(component.displayName === displayName);
             });
+        });
+    });
+
+    describe('issues', () => {
+        // https://github.com/alibaba-fusion/next/issues/2641
+        it('value controlled issue', () => {
+            function App() {
+                const [value, setVal] = useState();
+                return <DatePicker visible defaultPanelValue={defaultVal} value={value} onChange={setVal} />;
+            }
+            wrapper = mount(<App />);
+            clickDate('2020-12-13');
+            assert(getStrValue() === '2020-12-13');
+        });
+
+        // https://github.com/alibaba-fusion/next/issues/2664
+        it('value controlled issue2', () => {
+            const App = () => {
+                const [value, setValue] = React.useState(['2021-05', '2021-08']);
+                return (
+                    <div className="app">
+                        <button onClick={() => setValue([dayjs('2021-02-03'), dayjs('2021-02-03')])} />
+                        <RangePicker value={value} />
+                    </div>
+                );
+            };
+            wrapper = mount(<App />);
+            wrapper.find('button').simulate('click');
+            assert.deepEqual(getStrValue(), ['2021-02-03', '2021-02-03']);
+            wrapper
+                .find('input')
+                .at(0)
+                .simulate('click');
+            assert.deepEqual(getStrValue(), ['2021-02-03', '2021-02-03']);
+            clickDate('2021-02-04');
+            wrapper
+                .find('input')
+                .at(1)
+                .simulate('click');
+            clickDate('2021-02-05');
+            assert.deepEqual(getStrValue(), ['2021-02-03', '2021-02-03']);
+        });
+
+        it('value controlled issue on Form', () => {
+            class App extends React.Component {
+                field = new Field(this);
+
+                render() {
+                    return (
+                        <Form field={this.field}>
+                            <FormItem label="RangePicker:">
+                                <DatePicker
+                                    format="YYYY-MM-DD"
+                                    defaultPanelValue="2020-12-13"
+                                    visible
+                                    showTime
+                                    name="rangeDate"
+                                />
+                            </FormItem>
+                        </Form>
+                    );
+                }
+            }
+            wrapper = mount(<App />);
+            clickDate('2020-12-13');
+            assert(getStrValue() === '2020-12-13');
         });
     });
 });

@@ -531,9 +531,10 @@ class Select extends Base {
 
     /**
      * Handle search input change event
+     * @param {String} value search text
      * @param {Event} e change Event
      */
-    handleSearch(value) {
+    handleSearch(value, e) {
         this.handleSearchValue(value);
 
         // inputing should trigger popup open
@@ -541,7 +542,7 @@ class Select extends Base {
             this.setVisible(true);
         }
 
-        this.props.onSearch(value);
+        this.props.onSearch(value, e);
     }
 
     handleSearchClear(triggerType) {
