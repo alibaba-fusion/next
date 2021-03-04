@@ -1,13 +1,12 @@
 # Latest Log 
 
-## [1.22.10](https://github.com/alibaba-fusion/next/compare/1.22.9...1.22.10) (2021-02-25)
+## [1.22.11](https://github.com/alibaba-fusion/next/compare/1.22.10...1.22.11) (2021-03-04)
 
 
 ### Bug Fixes
 
-* **DatePicker:** demo bug on riddle ([eb6cb07](https://github.com/alibaba-fusion/next/commit/eb6cb07))
-* **Datepicker2:** update demo ([93ee965](https://github.com/alibaba-fusion/next/commit/93ee965))
-* **DatePicker2:** ts issues ([c7d73d8](https://github.com/alibaba-fusion/next/commit/c7d73d8))
-* **Typescript:** update Message ([0a11978](https://github.com/alibaba-fusion/next/commit/0a11978))
+* **DatePicker2:** ts file lost name ([12887c9](https://github.com/alibaba-fusion/next/commit/12887c9))
+* **Step:** add stretch type ([0aaa574](https://github.com/alibaba-fusion/next/commit/0aaa574))
+* **Step:** stretch props warning ([5762d7d](https://github.com/alibaba-fusion/next/commit/5762d7d))
 
 
