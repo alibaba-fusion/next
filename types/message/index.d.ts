@@ -76,6 +76,10 @@ export interface MessageQuickProps extends HTMLAttributesWeak, CommonProps {
     type?: 'success' | 'warning' | 'error' | 'notice' | 'help' | 'loading';
 
     /**
+     * 反馈大小
+     */
+    size?: 'medium' | 'large';
+    /**
      * 标题
      */
     title?: React.ReactNode;
