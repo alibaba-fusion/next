@@ -487,10 +487,10 @@ class Pagination extends Component {
                 popupProps={popupProps}
                 aria-label={locale.selectAriaLabel}
                 autoWidth={false}
-                selectProps={selectProps}
                 size={size}
                 value={currentPageSize}
                 onChange={this.onSelectSize.bind(this)}
+                {...selectProps}
             >
                 {pageSizeList.map((item, index) => {
                     let label;
