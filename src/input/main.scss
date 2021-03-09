@@ -270,6 +270,7 @@
         @include input-disabled();
 
         input, textarea {
+            -webkit-text-fill-color: $input-disabled-color;
             color: $input-disabled-color;
             @include input-placeholder($input-disabled-color);
         }
