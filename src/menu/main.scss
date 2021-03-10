@@ -43,6 +43,10 @@
         border: none;
     }
 
+    &-embeddable {
+        box-shadow: none;
+    }
+
     &-embeddable &-item-inner {
         height: 100%;
     }
