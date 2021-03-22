@@ -518,14 +518,24 @@ class Nav extends React.Component {
         } else if (showNextPrev) {
             const prevIcon = this.getIcon('prev');
             prevButton = (
-                <button onClick={this.onPrevClick} className={`${prefix}tabs-btn-prev`} ref={this.prevBtnHandler}>
+                <button
+                    onClick={this.onPrevClick}
+                    className={`${prefix}tabs-btn-prev`}
+                    ref={this.prevBtnHandler}
+                    type="button"
+                >
                     {prevIcon}
                 </button>
             );
 
             const nextIcon = this.getIcon('next');
             nextButton = (
-                <button onClick={this.onNextClick} className={`${prefix}tabs-btn-next`} ref={this.nextBtnHandler}>
+                <button
+                    onClick={this.onNextClick}
+                    className={`${prefix}tabs-btn-next`}
+                    ref={this.nextBtnHandler}
+                    type="button"
+                >
                     {nextIcon}
                 </button>
             );
