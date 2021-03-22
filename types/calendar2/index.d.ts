@@ -11,20 +11,21 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface CalendarProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 默认选中的日期（dayjs 对象）
      */
-    defaultValue?: any;
+    defaultValue?: string | number | typeof dayjs;
 
     /**
      * 选中的日期值 (dayjs 对象)
      */
-    value?: any;
+    value?: string | number | typeof dayjs;
 
     /**
      * 面板默认显示的日期
      */
-    defaultPanelValue?: any;
+    defaultPanelValue?: string | number | typeof dayjs;
 
     /**
      * 展现形态

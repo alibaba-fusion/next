@@ -41,7 +41,8 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 export interface PickerProps extends HTMLAttributesWeak, CommonProps {
-    type: 'date';
+    type: 'date' | 'range';
+    name?: string;
     mode: 'date' | 'month' | 'week' | 'quarter' | 'year';
     value?: string | number | typeof dayjs;
     defaultValue?: string | number | typeof dayjs;
