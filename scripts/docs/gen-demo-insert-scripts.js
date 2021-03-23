@@ -3,7 +3,7 @@ const fs = require('fs');
 const _ = require('lodash');
 const createDocParser = require('@alifd/doc-parser');
 const { marked } = require('../utils');
-const { getLiveDemoOp, getDemoRenderScript } = require('../preview/loaders/index/render-creator');
+const { getLiveDemoOp, getDemoRenderScript } = require('./render-creator');
 
 const docParser = createDocParser({});
 const EN_DOC_REG = /:{3}lang=en-us((.|\r|\n)*):{3}/;

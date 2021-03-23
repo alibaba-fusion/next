@@ -9,8 +9,6 @@ const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const choosePort = require('react-dev-utils/WebpackDevServerUtils').choosePort;
 const chokidar = require('chokidar');
 const getWebpackConfig = require('./webpack');
-const getVariables = require('./middlewares/get-variables');
-const rebuildScss = require('./middlewares/rebuild-scss');
 const event = require('./event');
 const { logger } = require('../utils');
 
@@ -21,21 +19,15 @@ const argv = parseArgs(process.argv.slice(2), {
         host: '127.0.0.1',
         port: 3001,
         silent: false,
-        'disable-animation': false,
-        lang: 'zh',
-        dir: 'ltr',
-        mode: 'scss',
+        lang: 'zh-cn',
     },
 });
 
-const { host, silent, lang, dir, mode } = argv;
+const { host, silent, lang } = argv;
 const port = parseInt(argv.port, 10);
 
 const componentName = argv._[0];
 const componentPath = path.join(process.cwd(), 'docs', componentName);
-
-const disableAnimation = argv['disable-animation'];
-const devA11y = argv.a11y;
 
 choosePort(host, port).then(tryToRun);
 
@@ -52,21 +44,13 @@ function tryToRun(port) {
 function run(port) {
     logger.success('/******************************/');
     logger.success('componentName:', componentName);
-    logger.success('disableAnimation:', disableAnimation);
     logger.success('lang:', lang);
-    logger.success('dir:', dir);
-    logger.success('a11y:', devA11y);
-    logger.success('mode:', mode);
     logger.success('/*****************************/');
 
     const config = getWebpackConfig({
         componentName,
         componentPath,
-        disableAnimation,
         lang,
-        dir,
-        devA11y,
-        mode,
     });
     const compiler = webpack(config);
 
@@ -95,10 +79,6 @@ function run(port) {
         hot: true,
         quiet: true,
         publicPath: config.publicPath,
-        before: app => {
-            app.use(getVariables({ cwd }));
-            app.use(rebuildScss({ cwd }));
-        },
     });
 
     if (host === '127.0.0.1') {

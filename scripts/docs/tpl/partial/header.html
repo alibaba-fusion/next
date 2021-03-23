@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{comp.name}} Demos</title>
+    <link rel="dns-prefetch" href="//unpkg.com" />
+    <link rel="dns-prefetch" href="//g.alicdn.com" />
+
+    <link href="https://g.alicdn.com/code/lib/cropperjs/1.0.0-rc.3/cropper.min.css" rel="stylesheet">
+    <!-- 页面样式 -->
+    {% include "../css/demo-static.html" %}
+    <!-- 代码块样式 -->
+    {% include "../css/prism-theme.html" %}
+
+    <script>
+        var searchDict = {};
+        if (location.search) {
+            const query = location.search.substring(1);
+            const vars = query.split('&');
+            for (let i = 0; i < vars.length; i++) {
+                const pair = vars[i].split('=');
+                searchDict[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+            }
+        }
+
+        const env = searchDict['env'] || 'local';
+        var isAliEnv = env.indexOf('ali') > -1;
+        var { scope: themeScope, name: themeName, version: themeVersion, pkgname: themePkgname } = searchDict['theme'] ? parsePkgname(searchDict['theme']) : {};
+
+        const themeLink = document.createElement('link');
+        themeLink.rel = "stylesheet";
+        themeLink.onload = "handle404Error(this)";
+        themeLink.onerror = `handle404Error(this, true})`
+        themeLink.href = themePkgname
+            ? `https://alifd.alicdn.com/npm/${themePkgname}/${themeVersion}/next.min.css`
+            : isAliEnv
+                ? `https://unpkg.alibaba-inc.com/{{comp.groupName}}@{{comp.version}}/dist/next.min.css`
+                : "https://alifd.alicdn.com/npm/{{comp.groupName}}/{{comp.version}}/next.min.css";
+        document.head.appendChild(themeLink);
+
+        function parsePkgname(pkgInfo) {
+            let scope = '';
+            let name = '';
+            let version = '';
+            if (pkgInfo[0] === '@') {
+                [scope, name] = pkgInfo.split('/');
+            } else {
+                name = pkgInfo;
+            }
+            if (/@/.test(name)) {
+                [name, version] = name.split('@');
+            }
+            return { scope, name, version, pkgname: scope ? `${scope}/${name}` : name };
+        }
+
+        function getNextCompRiddleFormValue(jsx, css) {
+            return JSON.stringify({
+                js: jsx || '',
+                css: '@import \'~@alifd/next@1.x/dist/next.css\';\n' + (css || ''),
+            });
+        }
+
+        function getNextCompCodepenFormValue(title, jsx, css) {
+            const cssExternal = themePkgname && themePkgname.match(/^alife/) ?
+                `https://unpkg.com/${themePkgname}@${themeVersion}/dist/next.min.css` :
+                `https://unpkg.com/{{comp.groupName}}@{{comp.version}}/dist/next.min.css`;
+            const codePenFormValue = {
+                title: `${title} - Fusion Design Demo`,
+                html: '<div id="mountNode" style="padding: 24px"></div>\n<script>var mountNode = document.getElementById("mountNode");</' + 'script>',
+                js: jsx || '',
+                css: css || '',
+                editors: '0010',
+                css_external: cssExternal,
+                js_external: `https://unpkg.com/react@16.x/umd/react.development.js;https://unpkg.com/react-dom@16.x/umd/react-dom.development.js;https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js;https://unpkg.com/@alifd/next@{{comp.version}}/dist/next-with-locales.min.js;https://alifd.alicdn.com/assets/next-codepen-require-polyfill.js`,
+                js_pre_processor: 'babel',
+            };
+            const codePenFormValueJSON = JSON.stringify(codePenFormValue);
+            return codePenFormValueJSON;
+        }
+
+        function handle404Error(el, failed) {
+            if ((failed || (el.sheet.cssRules && !el.sheet.cssRules.length))) {
+                console.error('Get css error, redirect to default next.min.css from unpkg.com.')
+                el.href = "https://unpkg.com/{{comp.groupName}}@{{comp.version}}/dist/next.min.css"
+            }
+        }
+
+        function handleDevNextVersion(el, failed) {
+            console.error('Get {{comp.groupName}}@{{comp.version}} next-with-locales.min.js error, redirect to default next-with-locales.min.js from unpkg.com.')
+            if (failed) el.src = "https://unpkg.com/{{comp.groupName}}@{{comp.version}}/dist/next-with-locales.min.js";
+        }
+    </script>
+
+</head>

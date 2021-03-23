@@ -7,7 +7,7 @@ const glob = require('glob');
 const createDocParser = require('@alifd/doc-parser');
 const { logger, getComponentName, marked } = require('../utils');
 const { getOnlineDemos } = require('./gen-demo-insert-scripts');
-const { getGlobalControl } = require('../preview/loaders/index/render-creator');
+const { getGlobalControl } = require('./render-creator');
 
 const SRC_FOLDER = 'docs';
 const LANGDOC_FOLDER = 'docs-lang';
@@ -25,7 +25,7 @@ module.exports = function*() {
         // 编译文档
         yield buildCompiledDocs(cwd);
     } finally {
-        fs.remove(targetDir);
+        fs.removeSync(targetDir);
     }
 };
 
