@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import shallowElementEquals from 'shallow-element-equals';
-import { log, obj, dom } from '../util';
+import { log, obj, dom, events } from '../util';
 import LockRow from './lock/row';
 import LockBody from './lock/body';
 import LockHeader from './lock/header';
@@ -61,6 +61,8 @@ export default function stickyLock(BaseComponent) {
             this.updateOffsetArr();
             this.onLockBodyScroll(isEmpty ? { currentTarget: this.headerNode } : { currentTarget: this.bodyNode });
             this.forceUpdate();
+
+            events.on(window, 'resize', this.updateOffsetArr);
         }
 
         shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -74,6 +76,10 @@ export default function stickyLock(BaseComponent) {
 
         componentDidUpdate() {
             this.updateOffsetArr();
+        }
+
+        componentWillUnmount() {
+            events.off(window, 'resize', this.updateOffsetArr);
         }
 
         updateOffsetArr = () => {
