@@ -48,6 +48,7 @@ export default class Drawer extends Component {
          * **mask** 表示点击遮罩区域可以关闭对话框
          * **esc** 表示按下 esc 键可以关闭对话框
          * 如 'close' 或 ['close','esc','mask'], []
+         * @version 1.21
          */
         closeMode: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.oneOf(['close', 'mask', 'esc'])),

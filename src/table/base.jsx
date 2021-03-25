@@ -361,7 +361,6 @@ class Table extends React.Component {
 
     componentDidMount() {
         this.notRenderCellIndex = [];
-        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -378,7 +377,6 @@ class Table extends React.Component {
 
     componentDidUpdate() {
         this.notRenderCellIndex = [];
-        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     normalizeChildrenState(props) {
@@ -584,7 +582,7 @@ class Table extends React.Component {
                         cellRef={this.getCellRef}
                         onRowClick={onRowClick}
                         expandedIndexSimulate={expandedIndexSimulate}
-                        tableOuterWidth={this.tableOuterWidth}
+                        tableEl={this.tableEl}
                         onRowMouseEnter={onRowMouseEnter}
                         onRowMouseLeave={onRowMouseLeave}
                         dataSource={dataSource}

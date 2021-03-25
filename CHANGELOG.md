@@ -1,5 +1,58 @@
 # Change Log 
 
+## [1.22.14](https://github.com/alibaba-fusion/next/compare/1.22.13...1.22.14) (2021-03-25)
+
+
+### Bug Fixes
+
+* **Table:** empty width should change when screen resize, close [#2818](https://github.com/alibaba-fusion/next/issues/2818) ([71ca870](https://github.com/alibaba-fusion/next/commit/71ca870))
+* **Table:** get correct width after screen resize, close [#2399](https://github.com/alibaba-fusion/next/issues/2399) ([a75024f](https://github.com/alibaba-fusion/next/commit/a75024f))
+* **Table:** z-index issues, close [#2820](https://github.com/alibaba-fusion/next/issues/2820) ([522a19f](https://github.com/alibaba-fusion/next/commit/522a19f))
+
+
+
+
+## [1.22.13](https://github.com/alibaba-fusion/next/compare/1.22.12...1.22.13) (2021-03-23)
+
+
+### Bug Fixes
+
+* **Button:** loading button of <a> should vertical align center ([0e36fbc](https://github.com/alibaba-fusion/next/commit/0e36fbc))
+* **Checkbox:** fix tree checkbox disorder ([f328660](https://github.com/alibaba-fusion/next/commit/f328660))
+* **Tab:** should be type="button", close [#2812](https://github.com/alibaba-fusion/next/issues/2812) ([b6f8cd5](https://github.com/alibaba-fusion/next/commit/b6f8cd5))
+* **Table:** lock columns should be in topmost ([822ad61](https://github.com/alibaba-fusion/next/commit/822ad61))
+
+
+
+
+## [1.22.12](https://github.com/alibaba-fusion/next/compare/1.22.11...1.22.12) (2021-03-19)
+
+
+### Bug Fixes
+
+* **checkbox:** correct checkbox icon ([9b56b50](https://github.com/alibaba-fusion/next/commit/9b56b50))
+* **Input:** disabled color in safari fix [#2766](https://github.com/alibaba-fusion/next/issues/2766) ([1f2c88c](https://github.com/alibaba-fusion/next/commit/1f2c88c))
+* **Menu:** remove box-shadow in embeddable, close [#2781](https://github.com/alibaba-fusion/next/issues/2781) ([6c3b9c1](https://github.com/alibaba-fusion/next/commit/6c3b9c1))
+* **NumberPicker:** add size=small theme config fix [#1897](https://github.com/alibaba-fusion/next/issues/1897) ([241e02e](https://github.com/alibaba-fusion/next/commit/241e02e))
+* **Pagination:** button should align center, close [#2791](https://github.com/alibaba-fusion/next/issues/2791) ([8adc19c](https://github.com/alibaba-fusion/next/commit/8adc19c))
+* **Search:** remove shadow of input in type=simple fix [#2717](https://github.com/alibaba-fusion/next/issues/2717) ([e3e306f](https://github.com/alibaba-fusion/next/commit/e3e306f))
+* **Typescript:** update message quick props ([6648735](https://github.com/alibaba-fusion/next/commit/6648735))
+
+
+
+
+## [1.22.11](https://github.com/alibaba-fusion/next/compare/1.22.10...1.22.11) (2021-03-04)
+
+
+### Bug Fixes
+
+* **DatePicker2:** ts file lost name ([12887c9](https://github.com/alibaba-fusion/next/commit/12887c9))
+* **Step:** add stretch type ([0aaa574](https://github.com/alibaba-fusion/next/commit/0aaa574))
+* **Step:** stretch props warning ([5762d7d](https://github.com/alibaba-fusion/next/commit/5762d7d))
+
+
+
+
 ## [1.22.10](https://github.com/alibaba-fusion/next/compare/1.22.9...1.22.10) (2021-02-25)
 
 

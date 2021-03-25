@@ -66,7 +66,10 @@ export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 展示方向
      */
     direction?: 'hoz' | 'ver';
-
+    /**
+     * 宽度是否横向拉伸
+     */
+    stretch?: boolean;
     /**
      * 横向布局时的内容排列
      */

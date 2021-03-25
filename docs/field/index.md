@@ -194,7 +194,7 @@ let myfield = Field.useField([options]); // 要求 react 版本 > 16.8
 | onChange | 所有组件的change都会到达这里[setValue不会触发该函数] | Function(name,value) | |
 | parseName | 是否翻译`init(name)`中的`name`(getValues会把带`.`的字符串转换成对象) | Boolean | false|
 | forceUpdate | 仅建议PureComponent的组件打开此强制刷新功能，会带来性能问题(500个组件为例：打开的时候render花费700ms, 关闭时候render花费400ms) | Boolean  |false|
-| scrollToFirstError | field.validate的时候滚动到第一个出错的组件, 如果是整数会进行偏移 | Boolean/Number  |true|
+| scrollToFirstError | field.validate的时候滚动到第一个出错的组件, 如果是整数会进行偏移, 浏览器兼容性关注`scrollIntoViewIfNeeded` | Boolean/Number  |true|
 | autoUnmount | 自动删除Unmout元素，如果想保留数据可以设置为false | Boolean  |true|
 | autoValidate | 是否修改数据的时候就自动触发校验, 设为 false 后只能通过 validate() 来触发校验  | Boolean  |true|
 | values | 初始化数据 | Object |-|
@@ -290,6 +290,6 @@ componentWillReceiveProps(nextProps) {
     }
 }
 ```
-### 为何手动调用`this.field.validate`的时候进不了回调函数？ 
+### 为何手动调用`this.field.validate`的时候进不了回调函数？
 
 可能是自定义了validator方法，确保`callback`在任何分支下都能被执行到。
