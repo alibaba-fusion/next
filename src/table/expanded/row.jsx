@@ -42,8 +42,7 @@ export default class ExpandedRow extends React.Component {
 
     setExpandedWidth = () => {
         const { tableEl } = this.props;
-        const totalWidth = +(tableEl && tableEl.clientWidth) - 2 || '100%';
-
+        const totalWidth = +(tableEl && tableEl.clientWidth) - 1 || '100%';
         Object.keys(this.expandedRowRef || {}).forEach(key => {
             dom.setStyle(this.expandedRowRef[key], { width: totalWidth });
         });
