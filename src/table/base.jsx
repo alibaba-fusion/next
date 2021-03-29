@@ -750,6 +750,7 @@ class Table extends React.Component {
                 onFilter,
                 rowProps,
                 cellProps,
+                scrollToRow,
                 primaryKey,
                 components,
                 wrapperContent,
