@@ -23,6 +23,7 @@ const Table = ORDER_LIST.reduce((ret, current) => {
 
 lock._typeMark = 'lock';
 expanded._typeMark = 'expanded';
+fixed._typeMark = 'fixed';
 
 const StickyLockTable = ORDER_LIST.reduce((ret, current) => {
     const newLock = !ieVersion;
@@ -30,6 +31,8 @@ const StickyLockTable = ORDER_LIST.reduce((ret, current) => {
         ret = newLock ? stickyLock(ret) : lock(ret);
     } else if (current._typeMark === 'expanded') {
         ret = newLock ? expanded(ret, true) : expanded(ret);
+    } else if (current._typeMark === 'fixed') {
+        ret = newLock ? fixed(ret, true) : fixed(ret);
     } else {
         ret = current(ret);
     }
