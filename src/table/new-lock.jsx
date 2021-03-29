@@ -368,6 +368,7 @@ export default function stickyLock(BaseComponent) {
             components.Row = components.Row || LockRow;
             className = classnames({
                 [`${prefix}table-lock`]: true,
+                [`${prefix}table-stickylock`]: true,
                 [`${prefix}table-wrap-empty`]: !dataSource.length,
                 [className]: className,
             });
