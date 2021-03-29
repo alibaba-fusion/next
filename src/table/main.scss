@@ -72,8 +72,13 @@
         }
     }
     &-affix {
-        z-index: 10;
+        z-index: 1;
         overflow: hidden;
+    }
+    &-stickylock {
+        #{$table-prefix}-affix {
+            z-index: 10;
+        }
     }
     &-header-resizable {
         position: relative;
