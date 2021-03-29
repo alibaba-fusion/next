@@ -154,9 +154,11 @@ class Tab extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        const preChildLen = (prevProps.children && prevProps.children.length) || 0;
+        const curChildLen = (this.props.children && this.props.children.length) || 0;
         if (
-            prevProps.children.length !== 0 &&
-            this.props.children.length !== 0 &&
+            preChildLen !== 0 &&
+            curChildLen !== 0 &&
             !('activeKey' in this.props) & !this.isActiveKeyExist(this.state.activeKey)
         ) {
             const activeKey = this.getDefaultActiveKey(this.props);
