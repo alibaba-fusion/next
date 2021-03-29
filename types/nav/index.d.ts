@@ -132,7 +132,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 打开或关闭子菜单触发的回调函数
      */
-    onOpen?: (key: string, extra: {}) => void;
+    onOpen?: (key: string[], extra: { key: string; open: boolean }) => void;
 
     /**
      * 子导航打开的模式（水平导航只支持弹出）
