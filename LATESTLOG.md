@@ -1,18 +1,12 @@
 # Latest Log 
 
-## [1.22.15](https://github.com/alibaba-fusion/next/compare/1.22.14...1.22.15) (2021-03-29)
+## [1.22.16](https://github.com/alibaba-fusion/next/compare/1.22.15...1.22.16) (2021-03-30)
 
 
 ### Bug Fixes
 
-* **Tab:** children can be undefined, close [#2827](https://github.com/alibaba-fusion/next/issues/2827) ([c0cf38e](https://github.com/alibaba-fusion/next/commit/c0cf38e))
-* **Table:** lock right not work when useVirtual, close [#2807](https://github.com/alibaba-fusion/next/issues/2807) ([ead63c2](https://github.com/alibaba-fusion/next/commit/ead63c2))
-* **Table:** stickyLock right style disorder, close [#2806](https://github.com/alibaba-fusion/next/issues/2806) ([4342b25](https://github.com/alibaba-fusion/next/commit/4342b25))
-* **Typescript:** fix Nav, close [#2698](https://github.com/alibaba-fusion/next/issues/2698) ([5652325](https://github.com/alibaba-fusion/next/commit/5652325))
-
-
-### Features
-
-* **Table:** support scrollToRow for ordinary table ([e2dfc76](https://github.com/alibaba-fusion/next/commit/e2dfc76))
+* fix Radio.Group and Checkbox.Group api lost in demo, close [#2834](https://github.com/alibaba-fusion/next/issues/2834) ([6510882](https://github.com/alibaba-fusion/next/commit/6510882))
+* **Table:** z-index of stickyheader with lock columns, close [#2832](https://github.com/alibaba-fusion/next/issues/2832) ([7286429](https://github.com/alibaba-fusion/next/commit/7286429))
+* **Typescript:** add calendar2 ([f979f39](https://github.com/alibaba-fusion/next/commit/f979f39))
 
 
