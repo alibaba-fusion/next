@@ -264,15 +264,4 @@ class RadioGroup extends Component {
     }
 }
 
-export default ConfigProvider.config(polyfill(RadioGroup), {
-    transform: /* istanbul ignore next */ (props, deprecated) => {
-        if ('itemDirection' in props) {
-            deprecated('itemDirection', 'direction', 'Radio');
-            const { itemDirection, ...others } = props;
-
-            props = { direction: itemDirection, ...others };
-        }
-
-        return props;
-    },
-});
+export default polyfill(RadioGroup);
