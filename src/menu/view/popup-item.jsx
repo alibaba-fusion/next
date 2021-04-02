@@ -37,6 +37,9 @@ export default class PopupItem extends Component {
          */
         children: PropTypes.node,
         className: PropTypes.string,
+        /**
+         * 子菜单打开的触发行为
+         */
         triggerType: PropTypes.oneOf(['click', 'hover']),
         align: PropTypes.oneOf(['outside', 'follow']),
         autoWidth: PropTypes.bool,
