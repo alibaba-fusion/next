@@ -76,9 +76,15 @@ export default function stickyLock(BaseComponent) {
 
         componentDidUpdate() {
             this.updateOffsetArr();
+            this.onLockBodyScroll(
+                this.headerNode ? { currentTarget: this.headerNode } : { currentTarget: this.bodyNode },
+                true
+            );
         }
 
         componentWillUnmount() {
+            this.pingLeft = undefined;
+            this.pingRight = undefined;
             events.off(window, 'resize', this.updateOffsetArr);
         }
 
@@ -250,14 +256,14 @@ export default function stickyLock(BaseComponent) {
             }
         }
 
-        onLockBodyScroll = e => {
+        onLockBodyScroll = (e, forceSet) => {
             const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget || {};
             const { pingRight, pingLeft } = this;
 
             const pingLeftNext = scrollLeft > 0 && this.state.hasLockLeft;
             const pingRightNext = scrollLeft < scrollWidth - clientWidth && this.state.hasLockRight;
 
-            if (pingLeft !== pingLeftNext || pingRight !== pingRightNext) {
+            if (forceSet || pingLeft !== pingLeftNext || pingRight !== pingRightNext) {
                 const { prefix } = this.props;
                 const table = this.getTableNode();
 
