@@ -71,10 +71,11 @@
 
 ### Menu.PopupItem
 
-| 参数       | 说明      | 类型        | 默认值 |
-| -------- | ------- | --------- | --- |
-| label    | 标签内容    | ReactNode | -   |
-| children | 自定义弹层内容 | ReactNode | -   |
+| 参数          | 说明                                             | 类型        | 默认值 |
+| ----------- | ---------------------------------------------- | --------- | --- |
+| label       | 标签内容                                           | ReactNode | -   |
+| children    | 自定义弹层内容                                        | ReactNode | -   |
+| triggerType | 子菜单打开的触发行为<br><br>**可选值**:<br>'click', 'hover' | Enum      | -   |
 
 ### Menu.CheckboxItem
 
