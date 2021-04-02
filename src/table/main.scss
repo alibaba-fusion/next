@@ -77,7 +77,7 @@
     }
     &-stickylock {
         #{$table-prefix}-affix {
-            z-index: 10;
+            z-index: 9;
         }
     }
     &-header-resizable {
@@ -525,6 +525,8 @@
         background: inherit;
         position: sticky;
         z-index: 1;
+        // 修复旧ie内核下的 Edge，锁列边框消失的问题
+        background-clip: padding-box;
     }
     &-ping-left {
         #{$table-prefix}-expanded-area #{$table-prefix}-fix-left-last::after {
