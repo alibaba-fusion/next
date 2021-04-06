@@ -221,6 +221,12 @@ class NumberPicker extends React.Component {
 
                 // ignore when input start form '-'
                 if (value === '-' || this.state.value === '-') {
+                    if (this.props.min >= 0) {
+                        // trigger onCorrect when input - on min >= 0
+                        // trigger onChange when the result of correction is not state.value
+                        this.setInputValue(value, e);
+                        return;
+                    }
                     this.setState({
                         value,
                         reRender: false,
@@ -238,7 +244,7 @@ class NumberPicker extends React.Component {
                     return;
                 }
                 // ignore when value < min (because number is inputted one by one)
-                if (!isNaN(value) && Number(value) < this.props.min) {
+                if (!isNaN(value) && Number(value) > 0 && Number(value) < this.props.min) {
                     this.setState({
                         value,
                         reRender: false,
@@ -300,6 +306,8 @@ class NumberPicker extends React.Component {
             if (val > props.max) {
                 val = props.max;
             }
+        } else if (val === '-' && props.min >= 0) {
+            val = props.min;
         } else {
             val = this.state.value;
         }

@@ -433,6 +433,38 @@ describe('number-picker', () => {
             done();
         });
 
+        it('should avoid input - when min >= 0', done => {
+            let onChange = value => {
+                    assert(value === 0);
+                },
+                wrapper = mount(
+                    <NumberPicker
+                        min={0}
+                        onChange={onChange}
+                    />
+                );
+            wrapper
+            .find('input')
+            .simulate('change', { target: { value: '-' } });
+            wrapper
+            .find('input')
+            .simulate('change', { target: { value: '-2' } });
+            wrapper = mount(
+                <NumberPicker
+                    defaultValue={-2}
+                    min={0}
+                    onChange={onChange}
+                />
+            );
+            wrapper
+            .find('input')
+            .simulate('change', { target: { value: '-' } });
+            wrapper
+            .find('input')
+            .simulate('change', { target: { value: '-21' } });
+            done();
+
+        })
         it('should be equal min while next value < min by click +', done => {
             let onChange = value => {
                     assert(value === 30);
