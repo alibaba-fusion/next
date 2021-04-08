@@ -298,7 +298,7 @@ class NumberPicker extends React.Component {
         // blur 时将 -.2 展示值特例修正为 -0.2，触发onCorrect、onChange
         // 保留 onBlur 时 - 与 -. 等 非 number 类型不触发 onChange，此为当前线上逻辑，会导致target.value取出非数字，转为另一issue待修
         let value = this.getCurrentValidValue(e.target.value.trim());
-        if (!isNaN(value)) value = Number(value);
+        if (value !== '' && !isNaN(value)) value = Number(value);
         if (this.state.value !== value) {
             this.setValue(value, e);
         }
