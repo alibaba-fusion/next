@@ -21,6 +21,14 @@ describe('number-picker', () => {
             const wrapper = mount(<NumberPicker type="inline" />);
             assert(wrapper.props().type === 'inline');
         });
+        it('should not tab trigger ', () => {
+            const wrapper = mount(<NumberPicker />);
+            const wrapper1 = mount(<NumberPicker type="inline" />);
+            assert(wrapper.find('button').at(0).prop("tabIndex") === -1);
+            assert(wrapper.find('button').at(1).prop("tabIndex") === -1);
+            assert(wrapper1.find('button').at(0).prop("tabIndex") === -1);
+            assert(wrapper1.find('button').at(1).prop("tabIndex") === -1);
+        });
     });
 
     describe('behavior', () => {

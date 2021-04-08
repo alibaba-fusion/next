@@ -564,6 +564,7 @@ class NumberPicker extends React.Component {
                         disabled={disabled}
                         className={`${upBtnProps.className || ''} ${upDisabled ? 'disabled' : ''}`}
                         onClick={this.up.bind(this, upDisabled)}
+                        tabIndex={-1}
                     >
                         <Icon type="arrow-up" className={`${prefixCls}-up-icon`} />
                     </Button>
@@ -573,6 +574,7 @@ class NumberPicker extends React.Component {
                         disabled={disabled}
                         className={`${downBtnProps.className || ''} ${downDisabled ? 'disabled' : ''}`}
                         onClick={this.down.bind(this, downDisabled)}
+                        tabIndex={-1}
                     >
                         <Icon type="arrow-down" className={`${prefixCls}-down-icon`} />
                     </Button>
@@ -586,6 +588,7 @@ class NumberPicker extends React.Component {
                     disabled={disabled}
                     className={`${downBtnProps.className || ''} ${downDisabled ? 'disabled' : ''}`}
                     onClick={this.down.bind(this, downDisabled)}
+                    tabIndex={-1}
                 >
                     <Icon type="minus" className={`${prefixCls}-minus-icon`} />
                 </Button>
@@ -597,6 +600,7 @@ class NumberPicker extends React.Component {
                     disabled={disabled}
                     className={`${upBtnProps.className || ''} ${upDisabled ? 'disabled' : ''}`}
                     onClick={this.up.bind(this, upDisabled)}
+                    tabIndex={-1}
                 >
                     <Icon type="add" className={`${prefixCls}-add-icon`} />
                 </Button>
