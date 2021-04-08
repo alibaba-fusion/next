@@ -24,6 +24,7 @@ function isValueChanged(newVal, oldVal) {
 class Calendar extends React.Component {
     static propTypes = {
         rtl: PT.bool,
+        name: PT.string,
         prefix: PT.string,
         locale: PT.object,
         /**

@@ -493,9 +493,9 @@ describe('Nav', () => {
             </Nav>
         );
 
-        const popup = document.querySelectorAll('.fixed-popup-sub3');
+        const popup = document.querySelectorAll('.next-overlay-inner');
         assert(popup[0].style.top === '80px');
-        assert(popup[0].style.left === '68px');
+        assert(popup[0].style.left === '70px');
 
         done();
     });

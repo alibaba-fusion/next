@@ -76,6 +76,10 @@ export interface MessageQuickProps extends HTMLAttributesWeak, CommonProps {
     type?: 'success' | 'warning' | 'error' | 'notice' | 'help' | 'loading';
 
     /**
+     * 反馈大小
+     */
+    size?: 'medium' | 'large';
+    /**
      * 标题
      */
     title?: React.ReactNode;
@@ -97,8 +101,18 @@ export interface MessageQuickProps extends HTMLAttributesWeak, CommonProps {
      * 是否显示遮罩
      */
     hasMask?: boolean;
+
+    /**
+     * 显示持续时间，0表示一直存在，以毫秒为单位
+     */
     duration?: number;
     timeoutId?: string;
+
+    /**
+     * 显示关闭按钮
+     */
+    closeable?: boolean;
+
     /**
      * 关闭按钮的回调
      */
