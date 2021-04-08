@@ -15,7 +15,7 @@ Show the components that support internationalization in the current Next compon
 ---
 
 ````jsx
-import { ConfigProvider, Button, Radio, Calendar, Card, DatePicker, Dialog, Pagination, TimePicker, Timeline, Transfer, Select, Upload, Table } from '@alifd/next';
+import { ConfigProvider, Button, Radio, Calendar, Card, DatePicker, Dialog, Pagination, TimePicker, Timeline, Transfer, Select, Upload, Table , Form, Input, Field } from '@alifd/next';
 
 import enUS from '@alifd/next/lib/locale/en-us';
 import zhCN from '@alifd/next/lib/locale/zh-cn';
@@ -52,12 +52,18 @@ class Demo extends React.Component {
 
         this.changeLang = this.changeLang.bind(this);
         this.showDialog = this.showDialog.bind(this);
+        this.field = new Field(this);
+    }
+
+    componentDidMount() {
+        this.field.validate();
     }
 
     changeLang(lang) {
         this.setState({
             lang
         });
+        this.field.validate();
     }
 
     showDialog() {
@@ -87,6 +93,10 @@ class Demo extends React.Component {
                         <TimePicker />
                         <RangePicker />
                         <Calendar style={{ width: '350px', padding: '12px', border: '1px solid #C4C6CF', borderRadius: '3px' }} shape="card" />
+                        <Form field={this.field}>
+                            <Form.Item required><Input name="validate" readOnly style={{width: 350}} /></Form.Item>
+                        </Form>
+
                         <Pagination defaultCurrent={2} />
                         <Transfer dataSource={transferDataSource} defaultValue={['3']} defaultLeftChecked={['1']} titles={['Source', 'Target']} />
                         <Table style={{ width: '500px' }} dataSource={[]}>

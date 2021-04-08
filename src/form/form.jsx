@@ -189,7 +189,12 @@ export default class Form extends React.Component {
                 if ('value' in props) {
                     options.values = props.value;
                 }
+
                 this._formField = new Field(this, options);
+            }
+
+            if (props.locale && props.locale.Validate) {
+                this._formField.setOptions({ messages: props.locale.Validate });
             }
 
             props.saveField(this._formField);
@@ -216,6 +221,10 @@ export default class Form extends React.Component {
             if ('error' in props && props.error !== prevProps.error) {
                 this._formField.setValues(props.error);
             }
+            // 多语言切换会滞后
+            // if (prevProps.locale !== props.locale && typeof props.locale === 'object' && props.locale.Validate) {
+            //     this._formField.setOptions({messages: props.locale.Validate})
+            // }
         }
     }
 
