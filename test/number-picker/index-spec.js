@@ -185,6 +185,22 @@ describe('number-picker', () => {
             done();
         });
 
+        it('should not correct "" as 0 when blur', done => {
+            const onChange = value => {
+                assert(value === undefined);
+                done();
+            };
+            const wrapper = mount(
+                <NumberPicker defaultValue={0} onChange={onChange}/>
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '' } });
+            assert(wrapper.find('input').prop('value') === '');
+            wrapper.find('input').simulate('blur');
+        });
+
         it('should work with value and onChange and min under control', done => {
             class App extends React.Component {
                 state = {
