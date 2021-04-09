@@ -53,7 +53,10 @@ export interface LoadingProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 全屏展示
      */
     fullScreen?: boolean;
-
+    /**
+     * 是否禁用滚动，仅在 fullScreen 模式下生效
+     */
+    disableScroll?: boolean;
     /**
      * 子元素
      */

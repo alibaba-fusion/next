@@ -63,6 +63,10 @@
             animation: fadeOutLeft .2s cubic-bezier(.78, .14, .15, .86);
             animation-fill-mode: both;
         }
+
+        &.#{$css-prefix}disable-animation #{$tab-prefix}-tab:before {
+            transition: none;
+        }
     }
 
     &-tab {

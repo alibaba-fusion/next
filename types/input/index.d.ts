@@ -45,6 +45,7 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
      * 是否展现最大长度样式
      */
     hasLimitHint?: boolean;
+    showLimitHint?: boolean;
 
     /**
      * 当设置了maxLength时，是否截断超出字符串
@@ -193,6 +194,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
      * 是否展现最大长度样式
      */
     hasLimitHint?: boolean;
+    showLimitHint?: boolean;
 
     /**
      * 当设置了maxLength时，是否截断超出字符串

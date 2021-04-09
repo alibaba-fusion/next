@@ -12,6 +12,7 @@ import zhCN from '../locale/zh-cn';
 
 const Group = Input.Group;
 const AutoComplete = Select.AutoComplete;
+const { noop } = func;
 
 /**
  * Search
@@ -134,6 +135,10 @@ class Search extends React.Component {
          * 是否自动高亮第一个元素
          */
         autoHighlightFirstItem: PropTypes.bool,
+        /**
+         * 上下箭头切换选项的回调
+         */
+        onToggleHighlightItem: PropTypes.func,
     };
 
     static defaultProps = {
@@ -145,9 +150,10 @@ class Search extends React.Component {
         filter: [],
         locale: zhCN.Search,
         buttonProps: {},
-        onChange: func.noop,
-        onSearch: func.noop,
-        onFilterChange: func.noop,
+        onChange: noop,
+        onSearch: noop,
+        onFilterChange: noop,
+        onToggleHighlightItem: noop,
         hasClear: false,
         disabled: false,
         icons: {},
@@ -225,8 +231,10 @@ class Search extends React.Component {
         this.props.onFilterChange(filterValue);
     };
 
-    onToggleHighlightItem = highlightKey => {
+    onToggleHighlightItem = (highlightKey, ...args) => {
         this.highlightKey = highlightKey;
+
+        this.props.onToggleHighlightItem(highlightKey, ...args);
     };
 
     onKeyDown = e => {

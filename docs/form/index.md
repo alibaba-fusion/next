@@ -8,13 +8,13 @@
 
 ---
 
-## 开发指南
+表单组件。
 
-### 何时使用
+## 何时使用
 
 表单布局、校验、数据提交操作时用到。 组件的设计思想可以看这篇文章 <a href="https://zhuanlan.zhihu.com/p/56280821" target="_blank">https&#x3A;//zhuanlan.zhihu.com/p/56280821</a>
 
-### 注意事项
+## 如何使用
 
 -   组件不要使用关键字 `nodeName` 作为 name、id
 -   Form 默认使用 `size=medium`, 并且会控制 FormItem 内所有组件的size。 如果想修改组件的size `<FormItem size="small" >`
@@ -22,30 +22,41 @@
 -   必须是被 `<FormItem>`直接包裹的组件才能展示校验错误提示。如果界面不展示错误信息，请检查是否有多个层级。 比如 `<FormItem><div><Input/></div></FormItem>` 是无法展示校验信息的。
 -   可以通过 `<Form field={false}>` 来关闭数据获取，变成一个纯布局组件
 
+### 关于校验
+
+-   建议一个FormItem放一个组件, 方便错误提示跟随组件展示
+-   组件必须是FormItem的第一层子元素
+-   详细校验请查看 `Field` 组件文档的 rules
+
+### 复杂表单场景
+
+如果您的表单场景非常复杂，比如动态渲染，大量字段，复杂数据结构，复杂联动校验，可以考虑使用 [formily](https://github.com/alibaba/formily)，formily已经封装了所有fusion组件，保证您开箱即用
+
 ## API
 
 ### Form
 
-| 参数                      | 说明                                                                                                                                                                                                                                      | 类型              | 默认值                                                    |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ------------------------------------------------------ |
-| inline                  | 内联表单                                                                                                                                                                                                                                    | Boolean         | -                                                      |
-| size                    | 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。<br><br>**可选值**:<br>'large'(大)<br>'medium'(中)<br>'small'(小)                                                                                                    | Enum            | 'medium'                                               |
-| fullWidth               | 单个 Item 中表单类组件宽度是否是100%                                                                                                                                                                                                                 | Boolean         | -                                                      |
-| labelAlign              | 标签的位置, 如果不设置 labelCol 和 wrapperCol 那么默认是标签在上<br><br>**可选值**:<br>'top'(上)<br>'left'(左)<br>'inset'(内)                                                                                                                                     | Enum            | 'left'                                                 |
-| labelTextAlign          | 标签的左右对齐方式<br><br>**可选值**:<br>'left'(左)<br>'right'(右)                                                                                                                                                                                    | Enum            | -                                                      |
-| field                   | field 实例, 传 false 会禁用 field                                                                                                                                                                                                             | any             | -                                                      |
-| saveField               | 保存 Form 自动生成的 field 对象<br><br>**签名**:<br>Function() => void                                                                                                                                                                             | Function        | func.noop                                              |
-| labelCol                | 控制第一级 Item 的 labelCol                                                                                                                                                                                                                   | Object          | -                                                      |
-| wrapperCol              | 控制第一级 Item 的 wrapperCol                                                                                                                                                                                                                 | Object          | -                                                      |
-| onSubmit                | form内有 `htmlType="submit"` 的元素的时候会触发<br><br>**签名**:<br>Function() => void                                                                                                                                                               | Function        | function preventDefault(e) {     e.preventDefault(); } |
-| children                | 子元素                                                                                                                                                                                                                                     | any             | -                                                      |
-| value                   | 表单数值                                                                                                                                                                                                                                    | Object          | -                                                      |
-| onChange                | 表单变化回调<br><br>**签名**:<br>Function(values: Object, item: Object) => void<br>**参数**:<br>_values_: {Object} 表单数据<br>_item_: {Object} 详细<br>_item.name_: {String} 变化的组件名<br>_item.value_: {String} 变化的数据<br>_item.field_: {Object} field 实例 | Function        | func.noop                                              |
-| component               | 设置标签类型                                                                                                                                                                                                                                  | String/Function | 'form'                                                 |
-| device                  | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                                                                                                                                  | Enum            | 'desktop'                                              |
-| responsive              | 是否开启内置的响应式布局 （使用ResponsiveGrid）                                                                                                                                                                                                         | Boolean         | -                                                      |
-| isPreview               | 是否开启预览态                                                                                                                                                                                                                                 | Boolean         | -                                                      |
-| useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                                                                                                                                              | Boolean         | -                                                      |
+| 参数                      | 说明                                                                                                                                                                                                                                      | 类型              | 默认值                                                    | 版本支持 |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ------------------------------------------------------ | ---- |
+| inline                  | 内联表单                                                                                                                                                                                                                                    | Boolean         | -                                                      |      |
+| size                    | 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。<br><br>**可选值**:<br>'large'(大)<br>'medium'(中)<br>'small'(小)                                                                                                    | Enum            | 'medium'                                               |      |
+| fullWidth               | 单个 Item 中表单类组件宽度是否是100%                                                                                                                                                                                                                 | Boolean         | -                                                      |      |
+| labelAlign              | 标签的位置, 如果不设置 labelCol 和 wrapperCol 那么默认是标签在上<br><br>**可选值**:<br>'top'(上)<br>'left'(左)<br>'inset'(内)                                                                                                                                     | Enum            | 'left'                                                 |      |
+| labelTextAlign          | 标签的左右对齐方式<br><br>**可选值**:<br>'left'(左)<br>'right'(右)                                                                                                                                                                                    | Enum            | -                                                      |      |
+| field                   | field 实例, 传 false 会禁用 field                                                                                                                                                                                                             | any             | -                                                      |      |
+| saveField               | 保存 Form 自动生成的 field 对象<br><br>**签名**:<br>Function() => void                                                                                                                                                                             | Function        | func.noop                                              |      |
+| labelCol                | 控制第一级 Item 的 labelCol                                                                                                                                                                                                                   | Object          | -                                                      |      |
+| wrapperCol              | 控制第一级 Item 的 wrapperCol                                                                                                                                                                                                                 | Object          | -                                                      |      |
+| onSubmit                | form内有 `htmlType="submit"` 的元素的时候会触发<br><br>**签名**:<br>Function() => void                                                                                                                                                               | Function        | function preventDefault(e) {     e.preventDefault(); } |      |
+| children                | 子元素                                                                                                                                                                                                                                     | any             | -                                                      |      |
+| value                   | 表单数值                                                                                                                                                                                                                                    | Object          | -                                                      |      |
+| onChange                | 表单变化回调<br><br>**签名**:<br>Function(values: Object, item: Object) => void<br>**参数**:<br>_values_: {Object} 表单数据<br>_item_: {Object} 详细<br>_item.name_: {String} 变化的组件名<br>_item.value_: {String} 变化的数据<br>_item.field_: {Object} field 实例 | Function        | func.noop                                              |      |
+| component               | 设置标签类型                                                                                                                                                                                                                                  | String/Function | 'form'                                                 |      |
+| device                  | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                                                                                                                                  | Enum            | 'desktop'                                              |      |
+| responsive              | 是否开启内置的响应式布局 （使用ResponsiveGrid）                                                                                                                                                                                                         | Boolean         | -                                                      | 1.19 |
+| isPreview               | 是否开启预览态                                                                                                                                                                                                                                 | Boolean         | -                                                      | 1.19 |
+| useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                                                                                                                                              | Boolean         | -                                                      | 1.20 |
+| colon                   | 表示是否显示 label 后面的冒号                                                                                                                                                                                                                      | Boolean         | false                                                  |      |
 
 ### Form.Item
 
@@ -95,6 +106,8 @@
 | isPreview               | 是否开启预览态                                                                                                                 | Boolean            | -     |
 | renderPreview           | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: any) => void<br>**参数**:<br>_value_: {any} 根据包裹的组件的 value 类型而决定            | Function           | -     |
 | useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                              | Boolean            | -     |
+| colon                   | 表示是否显示 label 后面的冒号                                                                                                      | Boolean            | -     |
+| valueName               | 子元素的 value 名称                                                                                                           | String             | -     |
 
 ### Form.Submit
 
@@ -126,13 +139,3 @@
 | name     | 表单名                                          | String/Array       | -   |
 | field    | 自定义 field (在 Form 内不需要设置)                    | Object             | -   |
 | children | 自定义错误渲染, 可以是 node 或者 function(errors, state) | ReactNode/Function | -   |
-
-## 关于校验
-
--   建议一个FormItem放一个组件, 方便错误提示跟随组件展示
--   组件必须是FormItem的第一层子元素
--   详细校验请查看 `Field` 组件文档的 rules
-
-## 复杂表单场景
-
-如果您的表单场景非常复杂，比如动态渲染，大量字段，复杂数据结构，复杂联动校验，可以考虑使用 [formily](https://github.com/alibaba/formily)，formily已经封装了所有fusion组件，保证您开箱即用

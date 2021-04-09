@@ -67,6 +67,7 @@ next/
 # special demo file for locally reappear issue
 docs/**/demo/issues.md
 
+*.DS_Store
 precss.css
 .sass-cache/
 scripts/server-remote

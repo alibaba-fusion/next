@@ -1,6 +1,14 @@
-# 渲染 DataSource 中不存在的 value
+# 自定义值渲染
 
-- order: 8
+- order: 9
+通过`valueRender`自定值渲染。
+
+:::lang=en-us
+# Custom value render
+
+- order: 9
+Custom value render use `valueRender`.
+:::
 
 ---
 
@@ -15,7 +23,6 @@ class Demo extends React.Component {
         this.state = {
             data: []
         };
-
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -39,11 +46,11 @@ class Demo extends React.Component {
         }
 
         // value在 dataSouce里不存在时渲染。
-        return item.value === '432988' ? '不存在的' : item.value;
+        return item.value === '432988' ? '不存在的值' : item.value;
     };
 
     render() {
-        return <CascaderSelect valueRender={this.valueRender} defaultValue="432988" style={{ width: '302px' }} dataSource={this.state.data} onChange={this.handleChange} />;
+        return <CascaderSelect valueRender={this.valueRender} defaultValue="432988" dataSource={this.state.data} onChange={this.handleChange} />;
     }
 }
 ReactDOM.render(<Demo />, mountNode);

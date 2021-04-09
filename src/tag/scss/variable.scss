@@ -526,7 +526,7 @@ $tag-checkable-secondary-icon-color-selected-disabled: $color-white !default;
 $tag-closable-primary-fill-text-color: $color-text1-3 !default;
 /// border
 /// @namespace statement/normal/bounding
-$tag-closable-primary-fill-border-color: $color-fill1-3;
+$tag-closable-primary-fill-border-color: $color-fill1-3 !default;
 /// background
 /// @namespace statement/normal/bounding
 $tag-closable-primary-fill-bg-color: $color-fill1-3 !default;

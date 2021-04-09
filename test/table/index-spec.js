@@ -570,6 +570,7 @@ describe('Table', () => {
             }
         );
     });
+
     it('should support filter', () => {
         let id;
         const onFilter = (...args) => {

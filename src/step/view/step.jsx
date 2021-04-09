@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React, { Component, Children } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
-import { support, events, dom } from '../../util';
+import ConfigProvider from '../../config-provider';
+import { support, events, dom, obj } from '../../util';
 
 const getHeight = el => dom.getStyle(el, 'height');
 const setHeight = (el, height) => dom.setStyle(el, 'height', height);
@@ -11,6 +12,7 @@ const setHeight = (el, height) => dom.setStyle(el, 'height', height);
 /** Step */
 class Step extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -48,6 +50,10 @@ class Step extends Component {
          * @returns {Node} 节点的渲染结果
          */
         itemRender: PropTypes.func,
+        /**
+         * 宽度横向拉伸
+         */
+        stretch: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -58,6 +64,7 @@ class Step extends Component {
         shape: 'circle',
         animation: true,
         itemRender: null,
+        stretch: false,
     };
 
     static contextTypes = {
@@ -183,17 +190,8 @@ class Step extends Component {
 
     render() {
         // eslint-disable-next-line
-        const {
-            className,
-            current,
-            labelPlacement,
-            shape,
-            readOnly,
-            animation,
-            itemRender,
-            rtl,
-            ...others
-        } = this.props;
+        const { className, current, labelPlacement, shape, readOnly, animation, itemRender, rtl, stretch } = this.props;
+        const others = obj.pickOthers(Step.propTypes, this.props);
         let { prefix, direction, children } = this.props;
         prefix = this.context.prefix || prefix;
         const { parentWidth, parentHeight } = this.state;
@@ -225,6 +223,10 @@ class Step extends Component {
                 // tabIndex: this.state.currentfocus === index ? '0' : '-1',
                 'aria-current': status === 'process' ? 'step' : null,
                 itemRender: child.props.itemRender ? child.props.itemRender : itemRender, // 优先使用Item的itemRender
+                onResize: () => {
+                    this.step && this.adjustHeight();
+                },
+                stretch,
             });
         });
 
@@ -243,7 +245,6 @@ class Step extends Component {
         }
 
         // others.onKeyDown = makeChain(this.handleKeyDown, others.onKeyDown);
-
         return (
             <ol {...others} className={stepCls} ref={this._stepRefHandler}>
                 {cloneChildren}

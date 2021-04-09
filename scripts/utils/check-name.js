@@ -2,7 +2,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
 const minimist = require('minimist');
-const logger = require('./logger');
+const { logger, getComPathName } = require('./index');
 
 const cwd = process.cwd();
 
@@ -15,7 +15,7 @@ module.exports = function(runtest = false, withOtherArgs = false) {
 
     if (componentName) {
         // compatible with npm run dev -- Menu
-        componentName = _.kebabCase(componentName);
+        componentName = getComPathName(componentName);
         const file = runtest ? 'test' : 'docs';
         const components = fs.readdirSync(path.join(cwd, file));
         let name = componentName;
@@ -46,9 +46,7 @@ module.exports = function(runtest = false, withOtherArgs = false) {
     } else if (runtest) {
         return 'all';
     } else {
-        logger.error(
-            'Please input the component name, like: npm run [command] number-picker'
-        );
+        logger.error('Please input the component name, like: npm run [command] number-picker');
         process.exit(0);
         return false;
     }

@@ -19,18 +19,11 @@ const parseBoundary = input => {
 };
 
 export default function getContextProps(props, context, displayName) {
-    const {
-        prefix,
-        locale,
-        pure,
-        rtl,
-        device,
-        popupContainer,
-        errorBoundary,
-    } = props;
+    const { prefix, locale, defaultPropsConfig, pure, rtl, device, popupContainer, errorBoundary } = props;
     const {
         nextPrefix,
         nextLocale,
+        nextDefaultPropsConfig,
         nextPure,
         nextWarning,
         nextRtl,
@@ -51,12 +44,7 @@ export default function getContextProps(props, context, displayName) {
 
     let newLocale;
     if (locale) {
-        newLocale = obj.deepMerge(
-            {},
-            zhCN[displayName],
-            localeFromContext,
-            locale
-        );
+        newLocale = obj.deepMerge({}, zhCN[displayName], localeFromContext, locale);
     } else if (localeFromContext) {
         newLocale = obj.deepMerge({}, zhCN[displayName], localeFromContext);
     }
@@ -82,6 +70,7 @@ export default function getContextProps(props, context, displayName) {
         pure: newPure,
         rtl: newRtl,
         warning: nextWarning,
+        defaultPropsConfig: nextDefaultPropsConfig || {},
         device: device || nextDevice || undefined,
         popupContainer: popupContainer || nextPopupContainer,
         errorBoundary: newErrorBoundary,

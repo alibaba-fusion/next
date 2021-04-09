@@ -1,8 +1,8 @@
-# 菜单选择模式
+# 多选菜单
 
 - order: 3
 
-通过 selectMode 控制菜单的选择模式。
+通过 `selectMode` 控制菜单的选择模式。
 
 :::lang=en-us
 # selectMode
@@ -22,6 +22,20 @@ const { Item } = MenuButton;
 const menu = ['Undo', 'Redo', 'Cut', 'Copy', 'Paste'].map(item => <Item key={item}>{item}</Item>);
 
 ReactDOM.render(<div>
-    <MenuButton label="Document Edit" selectMode="single" onSelect={keys => console.log(keys)}>{menu}</MenuButton>
+    <MenuButton 
+        label="Single" 
+        selectMode="single" 
+        onSelect={keys => console.log(keys)} 
+        type="secondary" 
+        style={{marginRight: 20}}>
+        {menu}
+    </MenuButton>
+    <MenuButton 
+        label="Multiple" 
+        selectMode="multiple" 
+        onSelect={keys => console.log(keys)} 
+        type="secondary">
+        {menu}
+    </MenuButton>
 </div>, mountNode);
 ````

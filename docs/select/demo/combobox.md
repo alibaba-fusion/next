@@ -1,4 +1,4 @@
-# 自动完成
+# 输入框辅助完成
 
 - order: 9
 
@@ -7,7 +7,7 @@
 
 
 :::lang=en-us
-# Basic
+# autocomplete
 
 - order: 9
 
@@ -49,5 +49,5 @@ const onChange = (v) => {
     console.log(v);
 };
 
-ReactDOM.render(<Select.AutoComplete style={{width: 300}} onChange={onChange} dataSource={dataSource} />, mountNode);
+ReactDOM.render(<Select.AutoComplete autoHighlightFirstItem={false} style={{width: 300}} onChange={onChange} dataSource={dataSource} />, mountNode);
 ````

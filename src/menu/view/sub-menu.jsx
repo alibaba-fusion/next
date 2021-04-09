@@ -26,7 +26,6 @@ export default class SubMenu extends Component {
         level: PropTypes.number,
         inlineLevel: PropTypes.number,
         groupIndent: PropTypes.number,
-        noIcon: PropTypes.bool,
         /**
          * 标签内容
          */
@@ -40,6 +39,10 @@ export default class SubMenu extends Component {
          * @default Menu 的 mode 属性值
          */
         mode: PropTypes.oneOf(['inline', 'popup']),
+        /**
+         * 是否需要提示当前项可展开的 icon，默认是有的
+         */
+        noIcon: PropTypes.bool,
         /**
          * 菜单项或下一级子菜单
          */
@@ -62,13 +65,7 @@ export default class SubMenu extends Component {
     constructor(props) {
         super(props);
 
-        bindCtx(this, [
-            'handleMouseEnter',
-            'handleMouseLeave',
-            'handleClick',
-            'handleOpen',
-            'afterLeave',
-        ]);
+        bindCtx(this, ['handleMouseEnter', 'handleMouseLeave', 'handleClick', 'handleOpen', 'afterLeave']);
     }
 
     componentDidMount() {
@@ -168,10 +165,7 @@ export default class SubMenu extends Component {
             selectedKeys,
         });
 
-        const others = obj.pickOthers(
-            Object.keys(SubMenu.propTypes),
-            this.props
-        );
+        const others = obj.pickOthers(Object.keys(SubMenu.propTypes), this.props);
 
         const liProps = {
             className: cx({
@@ -200,14 +194,11 @@ export default class SubMenu extends Component {
         }
 
         const arrorProps = {
-            type:
-                inlineArrowDirection === 'right' ? 'arrow-right' : 'arrow-down',
+            type: inlineArrowDirection === 'right' ? 'arrow-right' : 'arrow-down',
             className: cx({
                 [`${prefix}menu-icon-arrow`]: true,
-                [`${prefix}menu-icon-arrow-down`]:
-                    inlineArrowDirection === 'down',
-                [`${prefix}menu-icon-arrow-right`]:
-                    inlineArrowDirection === 'right',
+                [`${prefix}menu-icon-arrow-down`]: inlineArrowDirection === 'down',
+                [`${prefix}menu-icon-arrow-right`]: inlineArrowDirection === 'right',
                 [`${prefix}open`]: open,
             }),
         };
@@ -237,11 +228,7 @@ export default class SubMenu extends Component {
         }
 
         const subMenu = open ? (
-            <ul
-                role={roleMenu}
-                dir={rtl ? 'rtl' : undefined}
-                className={newSubMenuContentClassName}
-            >
+            <ul role={roleMenu} dir={rtl ? 'rtl' : undefined} className={newSubMenuContentClassName}>
                 {this.passParentToChildren(children)}
             </ul>
         ) : null;
@@ -253,10 +240,7 @@ export default class SubMenu extends Component {
                     {noIcon ? null : <Icon {...arrorProps} />}
                 </NewItem>
                 {expandAnimation ? (
-                    <Expand
-                        animationAppear={false}
-                        afterLeave={this.afterLeave}
-                    >
+                    <Expand animationAppear={false} afterLeave={this.afterLeave}>
                         {subMenu}
                     </Expand>
                 ) : (
@@ -267,12 +251,7 @@ export default class SubMenu extends Component {
     }
 
     renderPopup() {
-        const {
-            children,
-            subMenuContentClassName,
-            noIcon,
-            ...others
-        } = this.props;
+        const { children, subMenuContentClassName, noIcon, ...others } = this.props;
         const root = this.props.root;
         const { prefix, popupClassName, popupStyle, rtl } = root.props;
 
@@ -287,12 +266,7 @@ export default class SubMenu extends Component {
 
         return (
             <PopupItem {...others} noIcon={noIcon} hasSubMenu>
-                <ul
-                    role="menu"
-                    dir={rtl ? 'rtl' : undefined}
-                    className={newClassName}
-                    style={popupStyle}
-                >
+                <ul role="menu" dir={rtl ? 'rtl' : undefined} className={newClassName} style={popupStyle}>
                     {this.passParentToChildren(children)}
                 </ul>
             </PopupItem>

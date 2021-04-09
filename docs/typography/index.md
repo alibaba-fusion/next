@@ -4,6 +4,7 @@
 -   family: General
 -   chinese: 排版
 -   type: 基本
+-   version: 1.18
 
 ---
 

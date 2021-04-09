@@ -15,7 +15,7 @@ Table header can be fixed, support sticky.
 ---
 
 ````jsx
-import { Table, Button, Select } from '@alifd/next';
+import { Table, Button, Select, Box } from '@alifd/next';
 
 const Option = Select.Option;
 const dataSource = (length) => {
@@ -64,11 +64,11 @@ class App extends React.Component {
     }
     render() {
         return (<div>
-            <p>
-                <Button onClick={this.onSwitch.bind(this, 'sticky')}>enable sticky</Button>  &nbsp;
-                <Button onClick={this.onSwitch.bind(this, 'lock')}>enable lock</Button>  &nbsp;
+            <Box direction="row" spacing={20}>
+                <Button onClick={this.onSwitch.bind(this, 'sticky')}>enable sticky</Button>
+                <Button onClick={this.onSwitch.bind(this, 'lock')}>enable lock</Button>
                 <Button onClick={this.onSwitch.bind(this, 'dataSource')}>toggle dataSource</Button>
-            </p>
+            </Box>
             <Table dataSource={this.state.dataSource} fixedHeader stickyHeader={this.state.sticky}>
                 <Table.Column title="Id" dataIndex="id" width={200} lock={this.state.lock}/>
                 <Table.Column title="Title" dataIndex="title.name" width={200}/>

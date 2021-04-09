@@ -2,6 +2,8 @@ import React from 'react';
 import assert from 'power-assert';
 import * as object from '../../src/util/object';
 
+/* eslint-disable */
+
 describe('src/object.js', function() {
     describe('#typeOf', function() {
         it('typeOf should return real type', function() {
@@ -82,23 +84,14 @@ describe('src/object.js', function() {
             assert(!object.shallowEqual({ foo: 'bar' }, null));
             assert(!object.shallowEqual({ foo: 'bar' }, { goo: 'bar' }));
             assert(!object.shallowEqual({ foo: 'bar' }, {}));
-            assert(
-                !object.shallowEqual(
-                    { foo: 'bar', ary: [1] },
-                    { foo: 'baz', ary: [1] }
-                )
-            );
+            assert(!object.shallowEqual({ foo: 'bar', ary: [1] }, { foo: 'baz', ary: [1] }));
         });
 
         it('shallowEqual support custom compare function', function() {
             assert(
-                object.shallowEqual(
-                    { foo: [100, 200] },
-                    { foo: [100, 200] },
-                    function(a, b) {
-                        return a === b || object.shallowEqual(a, b);
-                    }
-                )
+                object.shallowEqual({ foo: [100, 200] }, { foo: [100, 200] }, function(a, b) {
+                    return a === b || object.shallowEqual(a, b);
+                })
             );
         });
     });
@@ -148,6 +141,30 @@ describe('src/object.js', function() {
             assert('goo' in res);
         });
     });
+
+    describe('#pickProps', function() {
+        let obj;
+
+        beforeEach(() => {
+            obj = { foo: '100', bar: '200', baz: 999, goo: 0.01 };
+        });
+
+        it('pickProps support array', function() {
+            const res = object.pickProps(['foo', 'goo'], obj);
+            assert(Object.keys(res).length === 2);
+            assert('foo' in res);
+            assert('goo' in res);
+        });
+
+        it('pickProps support object', function() {
+            const hold = { bar: 'string', baz: 'number' };
+            const res = object.pickProps(hold, obj);
+            assert(Object.keys(res).length === 2);
+            assert('bar' in res);
+            assert('bar' in res);
+        });
+    });
+
     describe('#pickAttrsWith', function() {
         it('pickAttrsWith support object', function() {
             const hold = { bar: 'string', baz: 'number', 'data-cool': 'yes' };
@@ -162,9 +179,11 @@ describe('src/object.js', function() {
             const frag = React.Fragment;
             assert(object.isReactFragment(frag));
 
-            const frag2 = (<React.Fragment>
-                <div>abc</div>
-            </React.Fragment>);
+            const frag2 = (
+                <React.Fragment>
+                    <div>abc</div>
+                </React.Fragment>
+            );
             assert(object.isReactFragment(frag2));
         });
 
@@ -172,8 +191,8 @@ describe('src/object.js', function() {
             const frag = React.Component;
             const string = 'abc';
             const number = 321;
-            const obj = {a: 3};
-            const arr = [1,2,6];
+            const obj = { a: 3 };
+            const arr = [1, 2, 6];
             const n = null;
             assert(!object.isReactFragment(frag));
             assert(!object.isReactFragment(string));
@@ -186,17 +205,17 @@ describe('src/object.js', function() {
     });
 
     describe('#isClassComponent', function() {
-        it('is isClassComponent', function() {
-
-        });
+        it('is isClassComponent', function() {});
 
         it('not isClassComponent', function() {
             const frag = React.Fragment;
             assert(!object.isClassComponent(frag));
 
-            const frag2 = (<React.Fragment>
-                <div>abc</div>
-            </React.Fragment>);
+            const frag2 = (
+                <React.Fragment>
+                    <div>abc</div>
+                </React.Fragment>
+            );
             assert(!object.isClassComponent(frag2));
 
             const frag3 = () => {};
@@ -207,48 +226,27 @@ describe('src/object.js', function() {
         });
     });
 
-    describe('#isNil', function () {
-        it(
-            'should returns `true` if passing `null` or `undefined`',
-            function () {
-                const values = [null, undefined];
-                values.forEach(function (value) {
-                    assert(object.isNil(value) === true);
-                });
-            }
-        );
+    describe('#isNil', function() {
+        it('should returns `true` if passing `null` or `undefined`', function() {
+            const values = [null, undefined];
+            values.forEach(function(value) {
+                assert(object.isNil(value) === true);
+            });
+        });
 
-        it(
-            'should returns `false` if passing a falsy value ' +
-            'except `null` or `undefined`',
-            function () {
-                const values = ['', 0, false, NaN];
-                values.forEach(function (value) {
-                    assert(object.isNil(value) === false);
-                });
-            }
-        );
+        it('should returns `false` if passing a falsy value ' + 'except `null` or `undefined`', function() {
+            const values = ['', 0, false, NaN];
+            values.forEach(function(value) {
+                assert(object.isNil(value) === false);
+            });
+        });
 
-        it(
-            'should returns `false` if passing a truthy value',
-            function () {
-                const values = [
-                    'string',
-                    '0',
-                    'false',
-                    1,
-                    -1,
-                    Infinity,
-                    [],
-                    {},
-                    function(){},
-                    /.*/
-                ];
-                values.forEach(function (value) {
-                    assert(object.isNil(value) === false);
-                });
-            }
-        );
+        it('should returns `false` if passing a truthy value', function() {
+            const values = ['string', '0', 'false', 1, -1, Infinity, [], {}, function() {}, /.*/];
+            values.forEach(function(value) {
+                assert(object.isNil(value) === false);
+            });
+        });
     });
 
     describe('#deepMerge', function() {
@@ -261,32 +259,32 @@ describe('src/object.js', function() {
                 baz: {
                     a: 'test',
                     b: {
-                        a: 0
-                    }
-                }
+                        a: 0,
+                    },
+                },
             };
             obj2 = {
                 a: {
-                    ds: '3'
+                    ds: '3',
                 },
                 bar: {
-                    t: '2'
+                    t: '2',
                 },
                 baz: {
                     a: {
-                        sd: '3'
+                        sd: '3',
                     },
                     b: {
                         a: '6',
-                        ad: 4
+                        ad: 4,
                     },
-                    c: 's'
-                }
+                    c: 's',
+                },
             };
         });
 
         it('deepMerge support edge', function() {
-            const res = object.deepMerge(undefined, null, [], {}, '', NaN, 1, 'a', {a:3});
+            const res = object.deepMerge(undefined, null, [], {}, '', NaN, 1, 'a', { a: 3 });
 
             assert('a' in res);
             assert(res.a === 3);
@@ -294,44 +292,46 @@ describe('src/object.js', function() {
         });
 
         it('deepMerge support normal', function() {
-
-            const res = object.deepMerge({}, {a: 'te'}, {a: 4});
+            const res = object.deepMerge({}, { a: 'te' }, { a: 4 });
             assert(Object.keys(res).length === 1);
             assert(res.a === 4);
         });
 
         it('deepMerge support node', function() {
-            const res = object.deepMerge({}, {a: <span>ddd</span>}, {b: 3});
-            console.log(res)
+            const res = object.deepMerge({}, { a: <span>ddd</span> }, { b: 3 });
+            console.log(res);
             assert(Object.keys(res).length === 2);
         });
 
         it('deepMerge support deep', function() {
-
-            const res = object.deepMerge({}, {a: 'te'}, {a:{b:3}});
+            const res = object.deepMerge({}, { a: 'te' }, { a: { b: 3 } });
             console.log(res);
             assert(Object.keys(res).length === 1);
             assert(res.a.b === 3);
         });
 
         it('deepMerge support with arr', function() {
-            const res = object.deepMerge({}, {
-                name: 'Anon',
-                gender: 'Female',
-                hair: {
-                    color: 'brown',
-                    cut: 'long'
+            const res = object.deepMerge(
+                {},
+                {
+                    name: 'Anon',
+                    gender: 'Female',
+                    hair: {
+                        color: 'brown',
+                        cut: 'long',
+                    },
+                    eyes: 'blue',
+                    family: ['mom', 'dad'],
                 },
-                eyes: 'blue',
-                family: ['mom', 'dad']
-            }, {
-                name: 'David Walsh',
-                gender: 'Male',
-                hair: {
-                    cut: 'short'
-                },
-                family: ['wife', 'kids', 'dog']
-            });
+                {
+                    name: 'David Walsh',
+                    gender: 'Male',
+                    hair: {
+                        cut: 'short',
+                    },
+                    family: ['wife', 'kids', 'dog'],
+                }
+            );
 
             console.log(res);
             assert(Object.keys(res).length === 5);
@@ -340,7 +340,6 @@ describe('src/object.js', function() {
         });
 
         it('deepMerge support deep', function() {
-
             const res = object.deepMerge({}, obj1, obj2);
             console.log(res);
             assert(Object.keys(res).length === 4);
@@ -352,6 +351,5 @@ describe('src/object.js', function() {
             assert(res.baz.b.ad === 4);
             assert(res.baz.c === 's');
         });
-
     });
 });

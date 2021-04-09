@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { log } from '../../util';
+import { log, dom, events } from '../../util';
 import Row from '../lock/row';
 
 export default class ExpandedRow extends React.Component {
@@ -21,6 +21,33 @@ export default class ExpandedRow extends React.Component {
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
+    componentDidMount() {
+        events.on(window, 'resize', this.setExpandedWidth);
+    }
+
+    componentDidUpdate() {
+        this.setExpandedWidth();
+    }
+
+    componentWillUnmount() {
+        events.off(window, 'resize', this.setExpandedWidth);
+    }
+
+    getExpandedRow = (parentKey, ref) => {
+        if (!this.expandedRowRef) {
+            this.expandedRowRef = {};
+        }
+        this.expandedRowRef[parentKey] = ref;
+    };
+
+    setExpandedWidth = () => {
+        const { tableEl } = this.props;
+        const totalWidth = +(tableEl && tableEl.clientWidth) - 1 || '100%';
+        Object.keys(this.expandedRowRef || {}).forEach(key => {
+            dom.setStyle(this.expandedRowRef[key], { width: totalWidth });
+        });
+    };
+
     renderExpandedRow(record, rowIndex) {
         const {
             expandedRowRender,
@@ -30,10 +57,7 @@ export default class ExpandedRow extends React.Component {
             expandedIndexSimulate,
             expandedRowWidthEquals2Table,
         } = this.context;
-        const { tableOuterWidth } = this.props;
-        const expandedIndex = expandedIndexSimulate
-            ? (rowIndex - 1) / 2
-            : rowIndex;
+        const expandedIndex = expandedIndexSimulate ? (rowIndex - 1) / 2 : rowIndex;
 
         const { columns, cellRef } = this.props;
         const colSpan = columns.length;
@@ -48,10 +72,7 @@ export default class ExpandedRow extends React.Component {
                     const ret = [];
                     for (let i = 0; i < number; i++) {
                         ret.push(
-                            <td
-                                key={i}
-                                ref={cell => cellRef(rowIndex, i + start, cell)}
-                            >
+                            <td key={i} ref={cell => cellRef(rowIndex, i + start, cell)}>
                                 &nbsp;
                             </td>
                         );
@@ -61,30 +82,18 @@ export default class ExpandedRow extends React.Component {
             let content;
 
             if (totalIndent > colSpan && !lockType) {
-                log.warning(
-                    "It's not allowed expandedRowIndent is more than the number of columns."
-                );
+                log.warning("It's not allowed expandedRowIndent is more than the number of columns.");
             }
             if (leftIndent < columns.length && lockType === 'left') {
-                log.warning(
-                    'expandedRowIndent left is less than the number of left lock columns.'
-                );
+                log.warning('expandedRowIndent left is less than the number of left lock columns.');
             }
             if (rightIndent < columns.length && lockType === 'right') {
-                log.warning(
-                    'expandedRowIndent right is less than the number of right lock columns.'
-                );
+                log.warning('expandedRowIndent right is less than the number of right lock columns.');
             }
             if (lockType) {
                 return openRowKeys.indexOf(record[primaryKey]) > -1 ? (
-                    <tr
-                        className={`${prefix}table-expanded-row`}
-                        key={`expanded-${expandedIndex}`}
-                    >
-                        <td
-                            colSpan={colSpan}
-                            ref={cell => cellRef(rowIndex, expandedCols, cell)}
-                        >
+                    <tr className={`${prefix}table-expanded-row`} key={`expanded-${expandedIndex}`}>
+                        <td colSpan={colSpan} ref={cell => cellRef(rowIndex, expandedCols, cell)}>
                             &nbsp;
                         </td>
                     </tr>
@@ -93,7 +102,6 @@ export default class ExpandedRow extends React.Component {
 
             const expandedRowStyle = {
                 position: 'sticky',
-                width: tableOuterWidth,
                 left: 0,
             };
             // 暴露给用户的index
@@ -102,6 +110,7 @@ export default class ExpandedRow extends React.Component {
                 content = (
                     <div
                         className={`${prefix}table-cell-wrapper`}
+                        ref={this.getExpandedRow.bind(this, record[primaryKey])}
                         style={expandedRowWidthEquals2Table && expandedRowStyle}
                     >
                         {content}
@@ -109,7 +118,13 @@ export default class ExpandedRow extends React.Component {
                 );
             } else {
                 content = expandedRowWidthEquals2Table ? (
-                    <div style={expandedRowStyle}>{content}</div>
+                    <div
+                        className={`${prefix}table-expanded-area`}
+                        ref={this.getExpandedRow.bind(this, record[primaryKey])}
+                        style={expandedRowStyle}
+                    >
+                        {content}
+                    </div>
                 ) : (
                     content
                 );
@@ -120,10 +135,7 @@ export default class ExpandedRow extends React.Component {
                 col.lock === 'right' && rightStart--;
             });
             return openRowKeys.indexOf(record[primaryKey]) > -1 ? (
-                <tr
-                    className={`${prefix}table-expanded-row`}
-                    key={`expanded-${record[primaryKey] || expandedIndex}`}
-                >
+                <tr className={`${prefix}table-expanded-row`} key={`expanded-${record[primaryKey] || expandedIndex}`}>
                     {renderCols(leftIndent)}
                     <td colSpan={colSpan - totalIndent}>{content}</td>
                     {renderCols(rightIndent, rightStart)}
@@ -144,14 +156,6 @@ export default class ExpandedRow extends React.Component {
         }
 
         const newRowIndex = expandedIndexSimulate ? rowIndex / 2 : rowIndex;
-        return (
-            <Row
-                {...others}
-                record={record}
-                columns={columns}
-                __rowIndex={rowIndex}
-                rowIndex={newRowIndex}
-            />
-        );
+        return <Row {...others} record={record} columns={columns} __rowIndex={rowIndex} rowIndex={newRowIndex} />;
     }
 }

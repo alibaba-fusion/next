@@ -136,7 +136,8 @@ class App extends React.Component {
         };
         return (
             <span>
-                <p> <Button onClick={this.disabledExpandedCol.bind(this)}> disable fourth row </Button> &nbsp;
+                <p> <Button onClick={this.disabledExpandedCol.bind(this)}> disable fourth row </Button>
+                    <span style={{marginRight: 20}}/>
                     <Button onClick={this.toggleCol.bind(this)}> hide + </Button></p>
                 <Table dataSource={this.state.dataSource}
                     expandedIndexSimulate

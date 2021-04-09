@@ -47,16 +47,8 @@ export default class TransferPanel extends Component {
             dragValue: null,
             dragOverValue: null,
         };
-        this.footerId = props.baseId
-            ? htmlId.escapeForId(
-                  `${props.baseId}-panel-footer-${props.position}`
-              )
-            : '';
-        this.headerId = props.baseId
-            ? htmlId.escapeForId(
-                  `${props.baseId}-panel-header-${props.position}`
-              )
-            : '';
+        this.footerId = props.baseId ? htmlId.escapeForId(`${props.baseId}-panel-footer-${props.position}`) : '';
+        this.headerId = props.baseId ? htmlId.escapeForId(`${props.baseId}-panel-header-${props.position}`) : '';
 
         bindCtx(this, [
             'handleCheck',
@@ -76,10 +68,7 @@ export default class TransferPanel extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (
-            prevProps.dataSource.length !== this.props.dataSource.length &&
-            this.list
-        ) {
+        if (prevProps.dataSource.length !== this.props.dataSource.length && this.list) {
             if (this.list.scrollTop > 0) {
                 this.list.scrollTop = 0;
             }
@@ -93,16 +82,7 @@ export default class TransferPanel extends Component {
     }
 
     getListData(dataSource, disableHighlight) {
-        const {
-            prefix,
-            position,
-            mode,
-            value,
-            onMove,
-            disabled,
-            itemRender,
-            sortable,
-        } = this.props;
+        const { prefix, position, mode, value, onMove, disabled, itemRender, sortable } = this.props;
         const { dragPosition, dragValue, dragOverValue } = this.state;
         return dataSource.map(item => {
             const others =
@@ -122,9 +102,7 @@ export default class TransferPanel extends Component {
                     item={item}
                     onCheck={this.handleCheck}
                     onClick={onMove}
-                    needHighlight={
-                        !this.firstRender && !this.searched && !disableHighlight
-                    }
+                    needHighlight={!this.firstRender && !this.searched && !disableHighlight}
                     itemRender={itemRender}
                     draggable={sortable}
                     onDragStart={this.handleItemDragStart}
@@ -142,11 +120,16 @@ export default class TransferPanel extends Component {
     }
 
     handleAllCheck(allChecked) {
-        const { position, onChange } = this.props;
+        const { position, onChange, filter } = this.props;
+        const { searchedValue } = this.state;
 
         let newValue;
         if (allChecked) {
-            newValue = this.enabledDatasource.map(item => item.value);
+            if (searchedValue) {
+                newValue = this.enabledDatasource.filter(item => filter(searchedValue, item)).map(item => item.value);
+            } else {
+                newValue = this.enabledDatasource.map(item => item.value);
+            }
         } else {
             newValue = [];
         }
@@ -209,10 +192,7 @@ export default class TransferPanel extends Component {
         const { title, prefix } = this.props;
 
         return (
-            <div
-                id={this.headerId}
-                className={`${prefix}transfer-panel-header`}
-            >
+            <div id={this.headerId} className={`${prefix}transfer-panel-header`}>
                 {title}
             </div>
         );
@@ -232,13 +212,7 @@ export default class TransferPanel extends Component {
     }
 
     renderList(dataSource) {
-        const {
-            prefix,
-            listClassName,
-            listStyle,
-            customerList,
-            useVirtual,
-        } = this.props;
+        const { prefix, listClassName, listStyle, customerList, useVirtual } = this.props;
         const newClassName = cx({
             [`${prefix}transfer-panel-list`]: true,
             [listClassName]: !!listClassName,
@@ -247,11 +221,7 @@ export default class TransferPanel extends Component {
         const customerPanel = customerList && customerList(this.props);
         if (customerPanel) {
             return (
-                <div
-                    className={newClassName}
-                    style={listStyle}
-                    ref={this.getListDOM}
-                >
+                <div className={newClassName} style={listStyle} ref={this.getListDOM}>
                     {customerPanel}
                 </div>
             );
@@ -267,10 +237,7 @@ export default class TransferPanel extends Component {
 
         if (useVirtual) {
             return (
-                <div
-                    className={newClassName}
-                    style={{ position: 'relative', ...listStyle }}
-                >
+                <div className={newClassName} style={{ position: 'relative', ...listStyle }}>
                     <VirtualList
                         itemsRenderer={(items, ref) => (
                             <Menu style={{ border: 'none' }} ref={ref}>
@@ -285,11 +252,7 @@ export default class TransferPanel extends Component {
         }
 
         return (
-            <Menu
-                className={newClassName}
-                style={listStyle}
-                ref={this.getListDOM}
-            >
+            <Menu className={newClassName} style={listStyle} ref={this.getListDOM}>
                 {this.getListData(dataSource)}
             </Menu>
         );
@@ -300,22 +263,13 @@ export default class TransferPanel extends Component {
 
         return (
             <div className={`${prefix}transfer-panel-not-found-container`}>
-                <div className={`${prefix}transfer-panel-not-found`}>
-                    {notFoundContent}
-                </div>
+                <div className={`${prefix}transfer-panel-not-found`}>{notFoundContent}</div>
             </div>
         );
     }
 
     renderFooter() {
-        const {
-            prefix,
-            position,
-            mode,
-            disabled,
-            locale,
-            showCheckAll,
-        } = this.props;
+        const { prefix, position, mode, disabled, locale, showCheckAll } = this.props;
         if (mode === 'simple') {
             const { onMoveAll } = this.props;
             const classNames = cx({
@@ -324,31 +278,29 @@ export default class TransferPanel extends Component {
             });
             return (
                 <div className={`${prefix}transfer-panel-footer`}>
-                    <a
-                        className={classNames}
-                        onClick={onMoveAll.bind(
-                            this,
-                            position === 'left' ? 'right' : 'left'
-                        )}
-                    >
+                    <a className={classNames} onClick={onMoveAll.bind(this, position === 'left' ? 'right' : 'left')}>
                         {locale.moveAll}
                     </a>
                 </div>
             );
         }
 
-        const { value, dataSource } = this.props;
+        const { value, showSearch, filter, dataSource } = this.props;
+        const { searchedValue } = this.state;
+        let totalCount = dataSource.length;
+        let _dataSource = dataSource;
         const checkedCount = value.length;
-        const totalCount = dataSource.length;
-        const totalEnabledCount = this.enabledDatasource.length;
+        let _checkedCount = checkedCount;
+        if (showSearch && searchedValue) {
+            _dataSource = dataSource.filter(item => filter(searchedValue, item));
+            totalCount = _dataSource.length;
+            _checkedCount = _dataSource.filter(item => value.includes(item.value)).length;
+        }
+        const totalEnabledCount = Math.min(totalCount, this.enabledDatasource.length);
         const checked = checkedCount > 0 && checkedCount >= totalEnabledCount;
-        const indeterminate =
-            checkedCount > 0 && checkedCount < totalEnabledCount;
+        const indeterminate = checkedCount > 0 && _checkedCount >= 0 && _checkedCount < totalEnabledCount;
         const items = totalCount > 1 ? locale.items : locale.item;
-        const countLabel =
-            checkedCount === 0
-                ? `${totalCount} ${items}`
-                : `${checkedCount}/${totalCount} ${items}`;
+        const countLabel = checkedCount === 0 ? `${totalCount} ${items}` : `${checkedCount}/${totalCount} ${items}`;
 
         return (
             <div className={`${prefix}transfer-panel-footer`}>
@@ -361,10 +313,7 @@ export default class TransferPanel extends Component {
                         aria-labelledby={this.footerId}
                     />
                 )}
-                <span
-                    className={`${prefix}transfer-panel-count`}
-                    id={this.footerId}
-                >
+                <span className={`${prefix}transfer-panel-count`} id={this.footerId}>
                     {countLabel}
                 </span>
             </div>
@@ -372,19 +321,19 @@ export default class TransferPanel extends Component {
     }
 
     render() {
-        const { prefix, title, showSearch, filter } = this.props;
+        const { prefix, title, showSearch, filter, dataSource } = this.props;
         const { searchedValue } = this.state;
-        let dataSource = this.props.dataSource;
+        let _dataSource = this.props.dataSource;
         this.enabledDatasource = dataSource.filter(item => !item.disabled);
         if (showSearch && searchedValue) {
-            dataSource = dataSource.filter(item => filter(searchedValue, item));
+            _dataSource = dataSource.filter(item => filter(searchedValue, item));
         }
 
         return (
             <div className={`${prefix}transfer-panel`}>
                 {title ? this.renderHeader() : null}
                 {showSearch ? this.renderSearch() : null}
-                {this.renderList(dataSource)}
+                {this.renderList(_dataSource)}
                 {this.renderFooter()}
             </div>
         );

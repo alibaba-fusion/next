@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import shallowElementEquals from 'shallow-element-equals';
-import { log, obj, dom } from '../util';
+import { log, obj, dom, events } from '../util';
 import LockRow from './lock/row';
 import LockBody from './lock/body';
 import LockHeader from './lock/header';
@@ -55,9 +55,14 @@ export default function stickyLock(BaseComponent) {
         }
 
         componentDidMount() {
+            const { dataSource } = this.props;
+            const isEmpty = !(dataSource && dataSource.length > 0);
+
             this.updateOffsetArr();
-            this.onLockBodyScroll({ currentTarget: this.bodyNode });
+            this.onLockBodyScroll(isEmpty ? { currentTarget: this.headerNode } : { currentTarget: this.bodyNode });
             this.forceUpdate();
+
+            events.on(window, 'resize', this.updateOffsetArr);
         }
 
         shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -71,6 +76,16 @@ export default function stickyLock(BaseComponent) {
 
         componentDidUpdate() {
             this.updateOffsetArr();
+            this.onLockBodyScroll(
+                this.headerNode ? { currentTarget: this.headerNode } : { currentTarget: this.bodyNode },
+                true
+            );
+        }
+
+        componentWillUnmount() {
+            this.pingLeft = undefined;
+            this.pingRight = undefined;
+            events.off(window, 'resize', this.updateOffsetArr);
         }
 
         updateOffsetArr = () => {
@@ -241,14 +256,14 @@ export default function stickyLock(BaseComponent) {
             }
         }
 
-        onLockBodyScroll = e => {
+        onLockBodyScroll = (e, forceSet) => {
             const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget || {};
             const { pingRight, pingLeft } = this;
 
             const pingLeftNext = scrollLeft > 0 && this.state.hasLockLeft;
             const pingRightNext = scrollLeft < scrollWidth - clientWidth && this.state.hasLockRight;
 
-            if (pingLeft !== pingLeftNext || pingRight !== pingRightNext) {
+            if (forceSet || pingLeft !== pingLeftNext || pingRight !== pingRightNext) {
                 const { prefix } = this.props;
                 const table = this.getTableNode();
 
@@ -263,6 +278,7 @@ export default function stickyLock(BaseComponent) {
         };
 
         getStickyWidth = (lockChildren, dir, totalLen) => {
+            const { dataSource, scrollToRow } = this.props;
             const offsetArr = [];
             const flatenChildren = this.getFlatenChildren(lockChildren);
             const len = flatenChildren.length;
@@ -280,8 +296,12 @@ export default function stickyLock(BaseComponent) {
                     return ret;
                 }
 
+                // header with no dataSource
+                const isEmpty = !(dataSource && dataSource.length > 0);
                 // no header
-                const node = this.getCellNode(0, nodeToGetWidth);
+                const node = isEmpty
+                    ? this.getHeaderCellNode(0, nodeToGetWidth)
+                    : this.getCellNode(scrollToRow || 0, nodeToGetWidth);
                 const colWidth = (node && parseFloat(getComputedStyle(node).width)) || 0;
 
                 ret[tag] = (ret[tagNext] || 0) + colWidth;
@@ -343,7 +363,7 @@ export default function stickyLock(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let { children, columns, prefix, components, className, dataSource, ...others } = this.props;
+            let { children, columns, prefix, components, scrollToRow, className, dataSource, ...others } = this.props;
 
             const normalizedChildren = this.normalizeChildrenState(this.props);
 
@@ -354,6 +374,7 @@ export default function stickyLock(BaseComponent) {
             components.Row = components.Row || LockRow;
             className = classnames({
                 [`${prefix}table-lock`]: true,
+                [`${prefix}table-stickylock`]: true,
                 [`${prefix}table-wrap-empty`]: !dataSource.length,
                 [className]: className,
             });

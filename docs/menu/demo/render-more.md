@@ -1,13 +1,13 @@
 # 自定义渲染更多
 
-- order: 10
+- order: 6
 
-展示渲染更多 `renderMore` 用法
+复杂导航的例子，通过 `renderMore` 来展示更多
 
 :::lang=en-us
 # Menu render more
 
-- order: 10
+- order: 6
 
 Demo the usage of `renderMore`.
 :::

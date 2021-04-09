@@ -452,6 +452,21 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
      * 透传给Progress props
      */
     progressProps?: ProgressProps;
+
+    /**
+     * 是否为预览态
+     */
+    isPreview?: boolean;
+
+    /**
+     * 预览态模式下渲染的内容
+     */
+    renderPreview?: (value: number) => void;
+
+    /**
+     * 文件对象的 key name
+     */
+    fileKeyName?: string;
 }
 
 export default class Upload extends React.Component<UploadProps, any> {

@@ -1,13 +1,13 @@
 # 异步加载数据
 
-- order: 6
+- order: 4
 
-展示动态获取数据的用法。
+通过`loadData`动态获取数据，`isLeaf`属性用于标志是否是叶子节点。
 
 :::lang=en-us
 # Loading data asynchronously
 
-- order: 6
+- order: 4
 
 Demon loading data asynchronously.
 :::

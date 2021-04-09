@@ -1,4 +1,4 @@
-# 自定义 loading 样式
+# 自定义 loading
 
 - order: 3
 
@@ -15,7 +15,7 @@ Custom Loading component.
 ---
 
 ````jsx
-import { List, Avatar, Button, Loading, Icon } from '@alifd/next';
+import { List, Avatar, Button, Loading, Icon, Switch } from '@alifd/next';
 import { useState } from 'react';
 
 const data = [
@@ -58,7 +58,10 @@ const App = () => {
     const [loading, setLoading] = useState(false);
 
     return (<div style={{width: 288}}>
-        <Button onClick={() => setLoading(!loading)}>Toggle loading</Button>
+
+        <div style={{display: 'flex', alignItems: 'center', marginBottom: 4}}>
+            loading: <Switch style={{marginLeft: 8}} checked={loading} onChange={setLoading}/>
+        </div>
         <List
             size="small"
             loading={loading}

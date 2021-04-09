@@ -65,10 +65,20 @@
         &#{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
             padding: $s-3 $s-4;
         }
+
+        &#{$table-prefix}-fix-left,
+        &#{$table-prefix}-fix-right {
+            z-index: 1;
+        }
     }
     &-affix {
         z-index: 1;
         overflow: hidden;
+    }
+    &-stickylock {
+        #{$table-prefix}-affix {
+            z-index: 9;
+        }
     }
     &-header-resizable {
         position: relative;
@@ -135,14 +145,6 @@
         td {
             border-width: 0 0 $table-normal-border-width 0;
         }
-        #{$table-prefix}-expanded-row {
-            th {
-                border-width: 0 0 $table-normal-border-width 0;
-            }
-            td {
-                border-width: 0 0 $table-normal-border-width 0;
-            }
-        }
 
         table tr td:first-child,
         table tr th:first-child {
@@ -183,19 +185,52 @@
         > td {
             border-width: 0 0 $table-normal-border-width 0;
             &:first-child {
-                border-left-width: 1px;
+                border-left-width: $table-normal-border-width;
             }
             &:last-child {
-                border-right-width: 1px;
+                border-right-width: $table-normal-border-width;
             }
         }
-        &:last-child td {
-            border-bottom-width: 1px;
+
+
+        &:last-child > td {
+            border-bottom-width: $table-normal-border-width;
         }
-        #{$table-prefix} .last td {
-            border-bottom-width: 0;
+
+        #{$table-prefix} {
+            border-top: 0;
+            border-left: 0;
+
+            th, td {
+                border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+            }
+
+            &.only-bottom-border {
+                th, td {
+                    border-right: 0;
+                }
+            }
+
+            & .last td {
+                border-bottom: 0;
+            }
+            & td.last,
+            & th:last-child {
+                border-right: 0;
+            }
+            // &-expanded-area:after {
+            //     position: absolute;
+            //     top: 0;
+            //     right: 0;
+            //     bottom: 0;
+            //     border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+            //     content: "";
+            // }
         }
     }
+    // &.only-bottom-border #{$table-prefix}-expanded-row #{$table-prefix}-expanded-area:after {
+    //     border-right: 0;
+    // }
     &-filter-footer {
         margin: 10px 10px 0;
         button {
@@ -349,7 +384,7 @@
         }
     }
     > #{$table-prefix}-inner > #{$table-prefix}-body > table {
-        table-layout: auto;
+        table-layout: fixed;
     }
 }
 
@@ -490,8 +525,14 @@
         background: inherit;
         position: sticky;
         z-index: 1;
+        // 修复旧ie内核下的 Edge，锁列边框消失的问题
+        background-clip: padding-box;
     }
     &-ping-left {
+        #{$table-prefix}-expanded-area #{$table-prefix}-fix-left-last::after {
+            content: none;
+        }
+        #{$table-prefix}-expanded-area #{$table-prefix}-ping-left #{$table-prefix}-fix-left-last,
         #{$table-prefix}-fix-left-last {
             border-right-width: 0;
             &::after {
@@ -499,7 +540,7 @@
                 position: absolute;
                 top: 0;
                 right: 0;
-                bottom: -1px;
+                bottom: 0;
                 width: 30px;
                 content: '';
                 pointer-events: none;
@@ -510,12 +551,16 @@
     }
 
     &-ping-right {
+        #{$table-prefix}-expanded-area #{$table-prefix}-fix-right-first::after {
+            content: none;
+        }
+        #{$table-prefix}-expanded-area #{$table-prefix}-ping-right #{$table-prefix}-fix-right-first:after,
         #{$table-prefix}-fix-right-first:after {
             box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, .15);
             position: absolute;
             top: 0;
             left: 0;
-            bottom: -1px;
+            bottom: 0;
             width: 30px;
             content: '';
             pointer-events: none;
@@ -531,7 +576,7 @@
             position: absolute;
             top: 0;
             right: -30px;
-            bottom: -1px;
+            bottom: 0;
             width: 30px;
             content: '';
             pointer-events: none;

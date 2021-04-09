@@ -23,5 +23,6 @@ function* run() {
 }
 
 co(run).catch(err => {
-    logger.error(err);
+    logger.error(err.stack);
+    process.exitCode = 1;
 });

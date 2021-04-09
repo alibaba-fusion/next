@@ -8,11 +8,11 @@
 
 ---
 
-## 开发指南
+搜索组件。
 
-### 何时使用
+## 何时使用
 
-页面、表单数据搜索时使用
+页面、表单数据搜索时使用。
 
 ## API
 
@@ -46,6 +46,7 @@
 | disabled               | 是否禁用                                                                                                                                                  | Boolean       | false     |
 | icons                  | 可配置的icons，包括 search 等                                                                                                                                 | Object        | {}        |
 | autoHighlightFirstItem | 是否自动高亮第一个元素                                                                                                                                           | Boolean       | true      |
+| onToggleHighlightItem  | 上下箭头切换选项的回调<br><br>**签名**:<br>Function() => void                                                                                                      | Function      | func.noop |
 
 ## Search 内部函数(通过refs获取)
 
@@ -53,7 +54,7 @@
 | ----- | ---------------------------------------------------------------------------------------------------------------------------- | -------- | --- |
 | focus | 获取焦点<br><br>**签名**:<br> Function(start:Number, end: Number)<br>**参数**:<br>_start_: {Number} 光标起始位置<br>_end_: {Number} 选择结束位置 | Function |     |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键    | 说明           |     |
 | :---- | :----------- | --- |

@@ -1,28 +1,18 @@
 # 内容回填
 
 - order: 6
-
-提醒: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload`接口:
-
-
-> 1. 该接口仅作为测试使用,业务请勿使用
-
-> 2. 该接口仅支持图片上传,其他文件类型接口请自备
+- debug: true
+  
 :::lang=en-us
 # Content fill
 
 - order: 6
 
-Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` API:
-
-> 1. only for test & develop, Never Use in production enviroments
-
-> 2. only support upload images
 :::
 ---
 
 ````jsx
-import { Upload, Button, Field, Form } from '@alifd/next';
+import { Upload, Button, Field, Form, Box } from '@alifd/next';
 
 const FormItem = Form.Item;
 
@@ -65,12 +55,12 @@ class App extends React.Component {
                         <Button>Upload</Button>
                     </Upload>
                 </FormItem>
-                <div>
-                    <Button onClick={this.setValues} type="primary" style={{margin: '0 0 10px'}}>Set Data</Button>&nbsp;&nbsp;
-                    <Button onClick={this.getValues} type="primary" style={{margin: '0 0 10px'}}>Get Data</Button>&nbsp;&nbsp;
-                    <Button onClick={() => this.field.reset()} type="primary" style={{margin: '0 0 10px'}}>Reset</Button>&nbsp;&nbsp;
+                <Box direction="row" spacing={20}>
+                    <Button onClick={this.setValues} type="primary" style={{margin: '0 0 10px'}}>Set Data</Button>
+                    <Button onClick={this.getValues} type="primary" style={{margin: '0 0 10px'}}>Get Data</Button>
+                    <Button onClick={() => this.field.reset()} type="primary" style={{margin: '0 0 10px'}}>Reset</Button>
                     <Button onClick={() => this.field.validate()} type="primary" style={{margin: '0 0 10px'}}>Validate</Button>
-                </div>
+                </Box>
             </Form>
         );
     }

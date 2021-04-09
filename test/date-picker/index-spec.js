@@ -97,6 +97,7 @@ describe('DatePicker', () => {
                     .prop('aria-label') === 'Ho Ho Ho!'
             );
         });
+
         it('should support preview mode render', () => {
             wrapper = mount(<DatePicker defaultValue="2018-11-11" isPreview />);
             assert(wrapper.find('.next-form-preview').length > 0);
@@ -108,6 +109,12 @@ describe('DatePicker', () => {
                 },
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
+
+        it('should support preview mode render with showTime', () => {
+            wrapper = mount(<DatePicker defaultValue="2018-11-11" isPreview showTime />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2018-11-11 00:00:00');
         });
     });
 

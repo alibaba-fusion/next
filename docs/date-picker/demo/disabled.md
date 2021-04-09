@@ -1,13 +1,13 @@
-# 禁用日期选择
+# 禁用状态
 
-- order: 6
+- order: 8
 
 当开启 `disabled` 属性时，选择框处于完全禁用状态。
 
 :::lang=en-us
 # Disabled
 
-- order: 6
+- order: 8
 
 Disable the picker.
 
@@ -22,6 +22,9 @@ import { DatePicker } from '@alifd/next';
 const { RangePicker } = DatePicker;
 
 ReactDOM.render(<div>
-    <DatePicker disabled />&nbsp;&nbsp;<RangePicker disabled />
+    <DatePicker disabled />
+    <br/>
+    <br/>
+    <RangePicker disabled />
 </div>, mountNode);
 ````

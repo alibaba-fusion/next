@@ -1,14 +1,17 @@
+import ReactDOM from 'react-dom';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import ResizeObserver from 'resize-observer-polyfill';
 import Icon from '../../icon';
 import Progress from '../../progress';
 import ConfigProvider from '../../config-provider';
-import { support, events, dom } from '../../util';
+import { support, events, dom, obj } from '../../util';
 
 /** Step.Item */
 class StepItem extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -60,6 +63,8 @@ class StepItem extends Component {
          */
         className: PropTypes.string,
         readOnly: PropTypes.bool,
+        onResize: PropTypes.func,
+        stretch: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -67,6 +72,7 @@ class StepItem extends Component {
         index: 0,
         total: 1,
         onClick: () => {},
+        stretch: false,
     };
 
     constructor(props) {
@@ -74,14 +80,25 @@ class StepItem extends Component {
         this.removeClickedCls = this.removeClickedCls.bind(this);
         this._refHandlerCreator = this._refHandlerCreator.bind(this);
         this.resize = this.resize.bind(this);
+        this.ro = new ResizeObserver(() => {
+            const { shape, direction, onResize } = this.props;
+            if (!this.body || shape === 'arrow') {
+                return;
+            }
+            if (direction === 'vertical' || direction === 'ver') {
+                this.resize();
+            } else {
+                onResize && onResize();
+            }
+        });
     }
 
     componentDidMount() {
-        const { shape, direction, labelPlacement, index, total } = this.props;
+        const { shape, direction, labelPlacement, index, total, stretch } = this.props;
+        this.body && this.ro.observe(ReactDOM.findDOMNode(this.body));
         if (shape === 'arrow') {
             return;
         }
-
         if (direction === 'vertical' || direction === 'ver') {
             this.resize();
             this.forceUpdate(); // 解决Step嵌套的情况下，嵌套节点宽度为0的问题
@@ -94,10 +111,13 @@ class StepItem extends Component {
             // 调整横向Content
             this.adjustTail();
         }
+        if (stretch && (direction === 'horizontal' || direction === 'hoz')) {
+            this.adjustItemWidth();
+        }
     }
 
     componentDidUpdate() {
-        const { shape, direction, labelPlacement, index, total, rtl } = this.props;
+        const { shape, direction, labelPlacement, index, total, rtl, stretch } = this.props;
         if (shape === 'arrow') {
             return;
         }
@@ -127,6 +147,9 @@ class StepItem extends Component {
             } else {
                 resetTailStyle();
             }
+            if (stretch) {
+                this.adjustItemWidth();
+            }
         } else if (index !== total - 1) {
             resetTailStyle();
         }
@@ -134,6 +157,18 @@ class StepItem extends Component {
 
     componentWillUnmount() {
         this.eventHandler && this.eventHandler.off();
+    }
+
+    adjustItemWidth() {
+        const { index, total, labelPlacement } = this.props;
+        const lastNodeWidth =
+            labelPlacement === 'horizontal' || labelPlacement === 'hoz'
+                ? this.container.offsetWidth + this.body.offsetWidth
+                : this.title.offsetWidth;
+        const width = total - 1 !== index ? `calc((100% - ${lastNodeWidth}px)/${total - 1})` : 'auto';
+        dom.setStyle(this.step, {
+            width,
+        });
     }
 
     adjustTail() {
@@ -145,14 +180,21 @@ class StepItem extends Component {
     }
 
     resize() {
-        const stepWidth = dom.getStyle(this.step, 'width');
-        const { rtl } = this.props;
+        const { direction } = this.props;
+        if (direction === 'vertical' || direction === 'ver') {
+            const stepWidth = dom.getStyle(this.step, 'width');
+            const { rtl } = this.props;
 
-        rtl ? (this.body.style.right = `${stepWidth}px`) : (this.body.style.left = `${stepWidth}px`);
-        dom.setStyle(this.body, {
-            width: dom.getStyle(this.step.parentNode.parentNode, 'width') - stepWidth,
-        });
-        dom.setStyle(this.tail, 'height', dom.getStyle(this.body, 'height') - dom.getStyle(this.container, 'height'));
+            rtl ? (this.body.style.right = `${stepWidth}px`) : (this.body.style.left = `${stepWidth}px`);
+            dom.setStyle(this.body, {
+                width: dom.getStyle(this.step.parentNode.parentNode, 'width') - stepWidth,
+            });
+            dom.setStyle(
+                this.tail,
+                'height',
+                dom.getStyle(this.body, 'height') - dom.getStyle(this.container, 'height')
+            );
+        }
     }
 
     _getNode() {
@@ -316,8 +358,10 @@ class StepItem extends Component {
             parentWidth,
             labelPlacement,
             rtl,
-            ...others
+            onResize,
         } = this.props;
+
+        const others = obj.pickOthers(StepItem.propTypes, this.props);
 
         const stepCls = classNames({
             [`${prefix}step-item`]: true,

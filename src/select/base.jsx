@@ -99,6 +99,7 @@ export default class Base extends React.Component {
         popupContent: PropTypes.node,
         /**
          * 添加到菜单上的属性
+         * @version 1.18
          */
         menuProps: PropTypes.object,
         /**
@@ -401,7 +402,7 @@ export default class Base extends React.Component {
             try {
                 const menuNode = findDOMNode(this.menuRef);
                 const itemNode = menuNode.querySelector(`.${prefix}select-menu-item.${prefix}focused`);
-                itemNode && itemNode.scrollIntoViewIfNeeded();
+                itemNode && itemNode.scrollIntoViewIfNeeded && itemNode.scrollIntoViewIfNeeded();
             } catch (ex) {
                 // I don't care...
             }

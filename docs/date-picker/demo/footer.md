@@ -1,13 +1,13 @@
 # 自定义面板页脚
 
-- order: 11
+- order: 10
 
 可以通过 `footerRender` 自定义对面板页脚的定制。
 
 :::lang=en-us
 # Footer
 
-- order: 11
+- order: 10
 
 Passing custom footer with `footerRender`.
 
@@ -26,7 +26,9 @@ function footerRender() {
 }
 
 ReactDOM.render(<div>
-    <DatePicker footerRender={footerRender} />&nbsp;&nbsp;
+    <DatePicker footerRender={footerRender} />
+    <br/>
+    <br/>
     <RangePicker footerRender={footerRender} />
 </div>, mountNode);
 ````

@@ -15,13 +15,33 @@ $menu-prefix: '.#{$css-prefix}menu';
 // Size
 // ----------------------------------------
 
-/// padding (t, b)
-/// @namespace size/bounding
+
 $menu-padding-vertical: $s-2 !default;
+$menu-padding-horizontal: $s-5 !default;
 
 /// padding (l, r)
 /// @namespace size/bounding
-$menu-padding-horizontal: $s-5 !default;
+$menu-padding-ver-padding-lr: $s-zero !default;
+/// padding (t, b)
+/// @namespace size/bounding
+$menu-padding-ver-padding-tb: $s-2 !default;
+/// padding (l, r)
+/// @namespace size/bounding
+$menu-padding-hoz-padding-lr: $s-zero !default;
+/// padding (t, b)
+/// @namespace size/bounding
+$menu-padding-hoz-padding-tb: $s-2 !default;
+
+/// padding (l)
+/// @namespace size/item
+$menu-item-padding-ver-padding-l: $s-5 !default;
+/// padding (r)
+/// @namespace size/item
+$menu-item-padding-ver-padding-r: $s-5 !default;
+/// padding (l, r)
+/// @namespace size/item
+$menu-item-padding-hoz-padding-lr: $s-5 !default;
+
 
 /// item height
 /// @namespace size/item
@@ -55,7 +75,7 @@ $menu-divider-margin-hoz: $s-3 !default;
 /// @namespace size/selected icon
 $menu-icon-selected-size: $icon-xs !default;
 
-/// right
+/// space to frame
 /// @namespace size/selected icon
 $menu-icon-selected-right: $s-1 !default;
 

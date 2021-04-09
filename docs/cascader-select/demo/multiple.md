@@ -1,13 +1,13 @@
 # 多选
 
-- order: 2
+- order: 1
 
-展示基本的多选用法。
+设置`multiple`为`true`，开启多选，此时节点可勾选。
 
 :::lang=en-us
 # Multiple select
 
-- order: 2
+- order: 1
 
 Demo the basic multiple select usage.
 :::
@@ -33,8 +33,6 @@ class Demo extends React.Component {
         fetch('https://os.alipayobjects.com/rmsportal/ODDwqcDFTLAguOvWEolX.json')
             .then(response => response.json())
             .then(data => {
-                data[1].disabled = true;
-                data[2].checkboxDisabled = true;
                 this.setState({ data });
             })
             .catch(e => console.log(e));
@@ -45,7 +43,7 @@ class Demo extends React.Component {
     }
 
     render() {
-        return <CascaderSelect style={{ width: '302px' }} multiple dataSource={this.state.data} onChange={this.handleChange} />;
+        return <CascaderSelect multiple dataSource={this.state.data} onChange={this.handleChange} />;
     }
 }
 

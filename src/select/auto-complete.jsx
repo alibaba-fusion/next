@@ -78,11 +78,7 @@ class AutoComplete extends Base {
             dataSource: this.setDataSource(props),
         });
 
-        bindCtx(this, [
-            'handleTriggerKeyDown',
-            'handleMenuSelect',
-            'handleItemClick',
-        ]);
+        bindCtx(this, ['handleTriggerKeyDown', 'handleMenuSelect', 'handleItemClick']);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -125,10 +121,7 @@ class AutoComplete extends Base {
             });
         }
 
-        if (
-            prevProps.children !== props.children ||
-            prevProps.dataSource !== props.dataSource
-        ) {
+        if (prevProps.children !== props.children || prevProps.dataSource !== props.dataSource) {
             /* eslint-disable react/no-did-update-set-state */
             this.setState({
                 dataSource: this.setDataSource(props),
@@ -146,8 +139,7 @@ class AutoComplete extends Base {
     }
 
     shouldControlPopup(props = this.props, type) {
-        const hasPopup =
-            props.popupContent || this.dataStore.getMenuDS().length;
+        const hasPopup = props.popupContent || this.dataStore.getMenuDS().length;
         if (hasPopup) {
             this.setVisible(true, type);
         } else {
@@ -208,6 +200,13 @@ class AutoComplete extends Base {
             });
         }
 
+        // 不自动高亮的情况下, highlightKey 根据value精确值走，也就是被选中元素自动高亮，这样也不会影响不在选项内的用户搜索操作
+        if (!this.props.autoHighlightFirstItem) {
+            this.setState({
+                highlightKey: value,
+            });
+        }
+
         this.props.onChange(value, actionType, item);
 
         if (actionType === 'itemClick' || actionType === 'enter') {
@@ -217,12 +216,7 @@ class AutoComplete extends Base {
     };
 
     handleVisibleChange(visible, type) {
-        if (
-            !('visible' in this.props) &&
-            visible &&
-            !this.props.popupContent &&
-            !this.dataStore.getMenuDS().length
-        ) {
+        if (!('visible' in this.props) && visible && !this.props.popupContent && !this.dataStore.getMenuDS().length) {
             return;
         }
 
@@ -330,12 +324,7 @@ class AutoComplete extends Base {
 
         // trigger className
         const triggerClazz = classNames(
-            [
-                `${prefix}select`,
-                `${prefix}select-auto-complete`,
-                `${prefix}size-${size}`,
-                className,
-            ],
+            [`${prefix}select`, `${prefix}select-auto-complete`, `${prefix}size-${size}`, className],
             {
                 [`${prefix}active`]: visible,
                 [`${prefix}disabled`]: disabled,
@@ -344,10 +333,7 @@ class AutoComplete extends Base {
 
         // highlightKey into placeholder
         // compatible with selectPlaceHolder. TODO: removed in 2.0 version
-        let _placeholder =
-            placeholder ||
-            locale.autoCompletePlaceholder ||
-            locale.autoCompletePlaceHolder;
+        let _placeholder = placeholder || locale.autoCompletePlaceholder || locale.autoCompletePlaceHolder;
         if (highlightHolder && visible) {
             _placeholder = this.state.highlightKey || _placeholder;
         }
@@ -401,9 +387,7 @@ class AutoComplete extends Base {
             this.props.popupProps.safeNode = safeNodes;
         }
 
-        return super.render(
-            Object.assign({}, this.props, { canCloseByTrigger: false })
-        );
+        return super.render(Object.assign({}, this.props, { canCloseByTrigger: false }));
     }
 }
 

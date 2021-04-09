@@ -19,15 +19,12 @@ The simple usage is to wrap your components direcly with Affix component.
 ````jsx
 import { Affix, Button } from '@alifd/next';
 
-ReactDOM.render(<div className="custom-affix-wrapper">
-    <Affix>
-        <Button type="secondary">Affixed Button</Button>
-    </Affix>
-</div>, mountNode);
-````
-
-````css
-.custom-affix-wrapper {
-    padding: 40px 0;
-}
+ReactDOM.render(
+    <div>
+        <Affix>
+            <Button type="secondary">Basic Affixed Button</Button>
+        </Affix>
+        <br/>
+        <span>Scroll window to see button affixed.</span>
+    </div>, mountNode);
 ````

@@ -1,14 +1,15 @@
-# 无障碍
+# 无障碍支持
 
-- order: 9
+- order: 11
+- debug: true
 
-当聚焦在组件上时，通过`aria-labelledby`对组件进行描述。关于键盘操作请参考`ARIA and KeyBoard`。
- 
+当聚焦在组件上时，通过`aria-labelledby`对组件进行描述。关于键盘操作请参考[#无障碍键盘操作指南](#无障碍键盘操作指南)。
+
 
 :::lang=en-us
 # Accessibility
 
-- order: 8
+- order: 11
 
 When the developer presses the Enter key to select an item, the screen reader will reads the selection item, which is described by `aria-labelledby`.
 Please refer to `ARIA and KeyBoard` for keyboard operation.
@@ -64,7 +65,6 @@ class Demo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            label: '',
             data: []
         };
         this.handleChange = this.handleChange.bind(this);
@@ -74,17 +74,14 @@ class Demo extends React.Component {
     }
     handleChange(value, data, extra) {
         console.log(value, data, extra);
-
-        this.setState({
-            label: extra.selectedPath.map(d => d.label).join(' / '),       
-        });
     }
     render() {
         return (
-            <div>
-                <div id="a11y-cascader-select" >CascaderSelect: </div>
-                <CascaderSelect  dataSource={this.state.data} onChange={this.handleChange} listStyle={{ width: '200px', height: '256px' }} aria-labelledby="a11y-cascader-select"/>
-            </div>
+            <CascaderSelect
+                dataSource={this.state.data}
+                onChange={this.handleChange}
+                listStyle={{ width: '200px', height: '256px' }}
+                aria-labelledby="a11y-cascader-select"/>
         );
     }
 }

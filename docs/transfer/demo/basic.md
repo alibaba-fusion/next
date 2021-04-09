@@ -1,11 +1,11 @@
-# 基本
+# 基本用法
 
 - order: 0
 
 最简单的用法。
 
 :::lang=en-us
-# Basic
+# Basic usage
 
 - order: 0
 
@@ -42,9 +42,15 @@ class Demo extends React.Component {
         console.log(value, data, extra);
     }
 
+    handleSelect(sourceSelectedValue, targetSelectedValue, trigger) {
+        console.log('in panel: ', trigger);
+        console.log('sourceSelectedValue are: ', sourceSelectedValue);
+        console.log('targetSelectedValue are: ', targetSelectedValue);
+    }
+
     render() {
         return (
-            <Transfer defaultValue={['3']} dataSource={dataSource} defaultLeftChecked={['1']} onChange={this.handleChange} titles={['Title', 'Title']} />
+            <Transfer defaultValue={['3']} dataSource={dataSource} defaultLeftChecked={['1']} onChange={this.handleChange} titles={['Title', 'Title']} onSelect={this.handleSelect}/>
         );
     }
 }
