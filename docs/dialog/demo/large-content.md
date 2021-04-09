@@ -1,4 +1,4 @@
-# 滚动条&isFullScreen
+# 滚动条 isFullScreen
 
 当对话框内容超出视窗时候，对话框会限制内容高度，显示滚动条，可以通过设置 `isFullScreen` 为 `true`，让对话框全屏显示不出现滚动条。注意，该属性仅在对话框垂直水平居中时生效，即 `align` 被设置为 `cc cc` 时。
 
