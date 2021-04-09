@@ -141,7 +141,7 @@ export default {
     Form: {
         Validate: {
             default: '%s 校驗失敗',
-            required: '%s 是必填欄位',
+            required: '%s 是必填字段',
             format: {
                 number: '%s 不是合法的數位',
                 email: '%s 不是合法的email地址',
