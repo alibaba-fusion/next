@@ -139,4 +139,36 @@ export default {
     Tab: {
         closeAriaLabel: 'Chiudi',
     },
+    Form: {
+        Validate: {
+            default: 'Errore di convalida sul campo %s',
+            required: '%s è richiesto',
+            format: {
+                number: '%s non è un numero',
+                email: "%s non è un'email valida",
+                url: '%s non è un URL valido',
+                tel: '%s non è un numero di telefono valido',
+            },
+            number: {
+                length: '%s deve essere esattamente caratteri %s',
+                min: '%s non può essere inferiore a %s',
+                max: '%s non può essere maggiore di %s',
+                minLength: '%s deve essere almeno caratteri %s',
+                maxLength: '%s non può essere più lungo dei caratteri %s',
+            },
+            string: {
+                length: '%s deve essere esattamente caratteri %s',
+                min: '%s non può essere inferiore a %s',
+                max: '%s non può essere maggiore di %s',
+                minLength: '%s deve essere almeno caratteri %s',
+                maxLength: '%s non può essere più lungo dei caratteri %s',
+            },
+            array: {
+                length: '%s deve essere esattamente %s in lunghezza',
+                minLength: '%s non può essere inferiore a %s di lunghezza',
+                maxLength: '%s non può essere maggiore di %s di lunghezza',
+            },
+            pattern: '%s Value %s non corrisponde al modello %s',
+        },
+    },
 };
