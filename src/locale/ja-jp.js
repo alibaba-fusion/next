@@ -138,4 +138,36 @@ export default {
     Tab: {
         closeAriaLabel: '閉じられました',
     },
+    Form: {
+        Validate: {
+            default: 'フィールド%sの検証エラー',
+            required: '%sが必要です',
+            format: {
+                number: '%sは番号ではありません',
+                email: '%sは有効なEメールではありません',
+                url: '%sは有効なURLではありません',
+                tel: '%sは有効な電話番号ではありません',
+            },
+            number: {
+                length: '%sは正確に%s文字でなければなりません',
+                min: '%sは%sよりも小さいことはできません',
+                max: '%sは%sより大きくすることはできません',
+                minLength: '%sは少なくとも%s文字でなければなりません',
+                maxLength: '%sは%s文字より長くすることはできません',
+            },
+            string: {
+                length: '%sは正確に%s文字でなければなりません',
+                min: '%sは%sよりも小さいことはできません',
+                max: '%sは%sより大きくすることはできません',
+                minLength: '%sは少なくとも%s文字でなければなりません',
+                maxLength: '%sは%s文字より長くすることはできません',
+            },
+            array: {
+                length: '%sは長さの%sでなければなりません',
+                minLength: '%sは長さの%sよりも小さいことはできません',
+                maxLength: '%sは長さの%sより大きくすることはできません',
+            },
+            pattern: '%s値%sはパターン%sと一致しません',
+        },
+    },
 };
