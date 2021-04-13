@@ -153,7 +153,7 @@ export default {
                 min: '%s não pode ser menor que %s',
                 max: '%s não pode ser maior que %s',
                 minLength: '%s deve ter pelo menos %s caracteres',
-                maxLength: '%s não pode ter mais do que %s',
+                maxLength: '%s não pode ter mais do que %s caracteres',
             },
             string: {
                 length: '%s deve ter exatamente %s caracteres',
