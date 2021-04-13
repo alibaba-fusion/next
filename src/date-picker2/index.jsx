@@ -52,7 +52,10 @@ const transform = (props, deprecated) => {
     return newProps;
 };
 
-const ConfigPicker = ConfigProvider.config(Picker, { transform });
+const ConfigPicker = ConfigProvider.config(Picker, {
+    componentName: 'DatePicker2',
+    transform,
+});
 const generatePicker = mode => React.forwardRef((props, ref) => <ConfigPicker ref={ref} {...props} mode={mode} />);
 
 const DatePicker2 = generatePicker();
@@ -72,4 +75,5 @@ DatePicker2.QuarterPicker.displayName = 'QuarterPicker2';
 
 DatePicker2.RangePicker = React.forwardRef((props, ref) => <ConfigPicker ref={ref} {...props} type="range" />);
 DatePicker2.RangePicker.displayName = 'RangePicker2';
+
 export default DatePicker2;
