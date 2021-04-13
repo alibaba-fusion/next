@@ -236,6 +236,11 @@ export interface SelecterProps extends HTMLAttributesWeak, CommonProps {
      * 拖拽完成回调
      */
     onDrop?: () => void;
+    
+    /**
+     * 是否支持上传文件夹，仅在 chorme 下生效
+     */
+    webkitdirectory?: boolean;
 }
 
 export class Selecter extends React.Component<SelecterProps, any> {}
