@@ -9,5 +9,8 @@ next.locales['zh-tw'] = require('./lib/locale/zh-tw.js');
 next.locales['vi-vn'] = require('./lib/locale/vi-vn.js');
 next.locales['it-it'] = require('./lib/locale/it-it.js');
 next.locales['pt-pt'] = require('./lib/locale/pt-pt.js');
+next.locales['ko-kr'] = require('./lib/locale/ko-kr.js');
+next.locales['ms-my'] = require('./lib/locale/ms-my.js');
+next.locales['th-th'] = require('./lib/locale/th-th.js');
 
 module.exports = next;
