@@ -415,6 +415,14 @@
             visibility: visible;
             animation: loadingCircle 2s infinite linear;
         }
+        &:after {
+            content: '';
+            display: inline-block;
+            position: static;
+            height: 100%;
+            width: 0;
+            vertical-align: middle;
+        }
     }
 
     /* custom loading */

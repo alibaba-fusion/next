@@ -4,7 +4,7 @@
 -   family: DataEntry
 -   chinese: 日期选择框
 -   type: 表单
--   version: 1.23.0
+-   version: 1.22.0
 
 ---
 
@@ -12,6 +12,8 @@
 
 ## 开发指南
 ### 从 `DatePicker` 升级到 `DatePicker2`
+1.22版本增加当前组件
+
 功能变化：
 - 交互重构，面板和输入框分离，优化底部扩展等
 - 使用 `dayjs` 日期库替换了 `moment`

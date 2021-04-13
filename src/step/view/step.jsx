@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React, { Component, Children } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
+import ConfigProvider from '../../config-provider';
 import { support, events, dom, obj } from '../../util';
 
 const getHeight = el => dom.getStyle(el, 'height');
@@ -11,6 +12,7 @@ const setHeight = (el, height) => dom.setStyle(el, 'height', height);
 /** Step */
 class Step extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**

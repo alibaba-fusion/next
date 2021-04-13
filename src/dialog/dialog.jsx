@@ -90,11 +90,12 @@ export default class Dialog extends Component {
          */
         closeable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         /**
-         * [推荐]控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：
+         * [推荐]1.21.x 支持控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：
          * **close** 表示点击关闭按钮可以关闭对话框
          * **mask** 表示点击遮罩区域可以关闭对话框
          * **esc** 表示按下 esc 键可以关闭对话框
          * 如 'close' 或 ['close','esc','mask'], []
+         * @version 1.21
          */
         closeMode: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.oneOf(['close', 'mask', 'esc'])),
