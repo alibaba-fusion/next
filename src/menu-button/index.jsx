@@ -7,6 +7,7 @@ import Button from '../button';
 import Icon from '../icon';
 import Menu from '../menu';
 import Overlay from '../overlay';
+import ConfigProvider from '../config-provider';
 import { obj, func } from '../util';
 
 const { Popup } = Overlay;
@@ -206,13 +207,8 @@ class MenuButton extends React.Component {
         );
 
         const trigger = (
-            <Button
-                style={style}
-                className={classNames}
-                {...obj.pickOthers(MenuButton.propTypes, others)}
-            >
-                {label}{' '}
-                <Icon type="arrow-down" className={`${prefix}menu-btn-arrow`} />
+            <Button style={style} className={classNames} {...obj.pickOthers(MenuButton.propTypes, others)}>
+                {label} <Icon type="arrow-down" className={`${prefix}menu-btn-arrow`} />
             </Button>
         );
 
@@ -248,4 +244,6 @@ MenuButton.Item = Menu.Item;
 MenuButton.Group = Menu.Group;
 MenuButton.Divider = Menu.Divider;
 
-export default polyfill(MenuButton);
+export default ConfigProvider.config(polyfill(MenuButton), {
+    componentName: 'MenuButton',
+});
