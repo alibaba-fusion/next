@@ -1,7 +1,7 @@
 /// <reference types="react" />
 import * as React from 'react';
 import CommonProps from '../util';
-import * as dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { PopupProps } from '../overlay';
 import { InputProps } from '../input';
 
@@ -27,11 +27,11 @@ export class QuarterPicker extends React.Component<PickerProps, any> {
 }
 export class RangePicker extends React.Component<RangePickerProps, any> {
     type: 'range';
-    value?: Array<number> | Array<string> | Array<typeof dayjs>;
-    defaultValue?: Array<number> | Array<string> | Array<typeof dayjs>;
-    format?: string | ((value: typeof dayjs) => string) | Array<string> | Array<(value: typeof dayjs) => string>;
-    onOk?: (value: Array<typeof dayjs>, strVal: Array<string>) => void;
-    onChange?: (value: Array<typeof dayjs>, strVal: Array<string>) => void;
+    value?: Array<number> | Array<string> | Array<typeof Dayjs>;
+    defaultValue?: Array<number> | Array<string> | Array<typeof Dayjs>;
+    format?: string | ((value: typeof Dayjs) => string) | Array<string> | Array<(value: typeof Dayjs) => string>;
+    onOk?: (value: Array<typeof Dayjs>, strVal: Array<string>) => void;
+    onChange?: (value: Array<typeof Dayjs>, strVal: Array<string>) => void;
     placeholder?: string | Array<string>;
     dateInputAriaLabel?: Array<string> | string;
 }
@@ -44,23 +44,23 @@ export interface PickerProps extends HTMLAttributesWeak, CommonProps {
     type?: 'date' | 'range';
     name?: string;
     mode?: 'date' | 'month' | 'week' | 'quarter' | 'year';
-    value?: string | number | typeof dayjs;
-    defaultValue?: string | number | typeof dayjs;
-    defaultPanelValue?: typeof dayjs;
-    disabledDate?: (value: typeof dayjs, mode: 'date' | 'month' | 'week' | 'quarter' | 'year') => boolean;
+    value?: string | number | typeof Dayjs;
+    defaultValue?: string | number | typeof Dayjs;
+    defaultPanelValue?: typeof Dayjs;
+    disabledDate?: (value: typeof Dayjs, mode: 'date' | 'month' | 'week' | 'quarter' | 'year') => boolean;
     extraFooterRender?: () => React.ReactNode;
     preset?: object | Array<object>;
     showTime?: boolean;
     resetTime?: boolean;
     timePanelProps?: object;
-    disabledTime?: (value: typeof dayjs) => boolean;
+    disabledTime?: (value: typeof Dayjs) => boolean;
 
-    onOk?: (value: typeof dayjs, strVal: string) => void;
-    onChange?: (value: typeof dayjs, strVal: string) => void;
+    onOk?: (value: typeof Dayjs, strVal: string) => void;
+    onChange?: (value: typeof Dayjs, strVal: string) => void;
     onVisibleChange?: (visible: boolean) => void;
-    onPanelChange?: (panelValue: typeof dayjs, mode: 'date' | 'month' | 'week' | 'quarter' | 'year') => void;
+    onPanelChange?: (panelValue: typeof Dayjs, mode: 'date' | 'month' | 'week' | 'quarter' | 'year') => void;
 
-    format?: string | ((value: typeof dayjs) => string);
+    format?: string | ((value: typeof Dayjs) => string);
     disabled?: boolean;
     state?: 'success' | 'loading' | 'error';
     size?: 'small' | 'medium' | 'large';
@@ -80,11 +80,11 @@ export interface PickerProps extends HTMLAttributesWeak, CommonProps {
     popupProps?: PopupProps;
     followTrigger?: boolean;
     popupComponent?: React.Component;
-    dateCellRender?: (value: typeof dayjs) => React.ReactNode;
-    monthCellRender?: (value: typeof dayjs) => React.ReactNode;
+    dateCellRender?: (value: typeof Dayjs) => React.ReactNode;
+    monthCellRender?: (value: typeof Dayjs) => React.ReactNode;
     dateInputAriaLabel?: string;
     isPreview?: boolean;
-    renderPreview?: (value: typeof dayjs) => React.ReactNode;
+    renderPreview?: (value: typeof Dayjs) => React.ReactNode;
 }
 
 export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {}
