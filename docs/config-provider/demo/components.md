@@ -53,12 +53,18 @@ class Demo extends React.Component {
 
         this.changeLang = this.changeLang.bind(this);
         this.showDialog = this.showDialog.bind(this);
+        this.field = new Field(this);
+    }
+
+    componentDidMount() {
+        this.field.validate();
     }
 
     changeLang(lang) {
         this.setState({
             lang
         });
+        this.field.validate();
     }
 
     showDialog() {
@@ -91,6 +97,10 @@ class Demo extends React.Component {
                         <TimePicker2 />
                         <RangePicker2 />
                         <Calendar style={{ width: '350px', padding: '12px', border: '1px solid #C4C6CF', borderRadius: '3px' }} shape="card" />
+                        <Form field={this.field}>
+                            <Form.Item required><Input name="validate" readOnly style={{width: 350}} /></Form.Item>
+                        </Form>
+
                         <Pagination defaultCurrent={2} />
                         <Transfer dataSource={transferDataSource} defaultValue={['3']} defaultLeftChecked={['1']} titles={['Source', 'Target']} />
                         <Table style={{ width: '500px' }} dataSource={[]}>
