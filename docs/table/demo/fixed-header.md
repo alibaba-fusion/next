@@ -69,6 +69,7 @@ class App extends React.Component {
                 <Button onClick={this.onSwitch.bind(this, 'lock')}>enable lock</Button>
                 <Button onClick={this.onSwitch.bind(this, 'dataSource')}>toggle dataSource</Button>
             </Box>
+            <br />
             <Table dataSource={this.state.dataSource} fixedHeader stickyHeader={this.state.sticky}>
                 <Table.Column title="Id" dataIndex="id" width={200} lock={this.state.lock}/>
                 <Table.Column title="Title" dataIndex="title.name" width={200}/>
