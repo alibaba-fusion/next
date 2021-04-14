@@ -7,7 +7,7 @@
     }
 }
 
-@mixin fadeIn($count: $countDefault, $duration: $durationDefault, $delay: $delayDefault, $function: $ease-out-quint, $fill: $fillDefault, $visibility: $visibilityDefault) {
+@mixin fadeIn($count: $countDefault, $duration: $durationDefault, $delay: $delayDefault, $function: $motion-default, $fill: $fillDefault, $visibility: $visibilityDefault) {
     @include animation-name(fadeIn);
     @include count($count);
     @include duration($duration);
