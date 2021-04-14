@@ -122,8 +122,9 @@ export interface GroupFooterProps extends React.HTMLAttributes<HTMLElement>, Com
 }
 
 export class GroupFooter extends React.Component<GroupFooterProps, any> {}
-export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
-    /**
+
+export interface BaseTableProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+/**
      * 样式类名的品牌前缀
      */
     prefix?: string;
@@ -155,6 +156,53 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 表格展示的数据源
      */
     dataSource?: Array<any>;
+
+    /**
+     * 表格是否具有边框
+     */
+    hasBorder?: boolean;
+
+    /**
+     * 表格是否具有头部
+     */
+    hasHeader?: boolean;
+
+    /**
+     * 表格是否是斑马线
+     */
+    isZebra?: boolean;
+
+    /**
+     * 表格是否在加载中
+     */
+    loading?: boolean;
+
+    /**
+     * 自定义国际化文案对象
+     */
+    locale?: {
+        ok: string;
+        reset: string;
+        empty: string;
+        asc: string;
+        desc: string;
+        expanded: string;
+        folded: string;
+        filter: string;
+        selectAll: string;
+    };
+
+    /**
+     * 设置数据为空的时候的表格内容展现
+     */
+    emptyContent?: React.ReactNode;
+
+    /**
+     * dataSource当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
+     */
+    primaryKey?: string;
+}
+export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTableProps {
 
     /**
      * 点击表格每一行触发的事件
@@ -209,26 +257,6 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     ) => any;
 
     /**
-     * 表格是否具有边框
-     */
-    hasBorder?: boolean;
-
-    /**
-     * 表格是否具有头部
-     */
-    hasHeader?: boolean;
-
-    /**
-     * 表格是否是斑马线
-     */
-    isZebra?: boolean;
-
-    /**
-     * 表格是否在加载中
-     */
-    loading?: boolean;
-
-    /**
      * 自定义 Loading 组件
      * 请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
      */
@@ -251,31 +279,6 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 自定义排序按钮，例如上下排布的: `{desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="small" />, asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="small" />}`
      */
     sortIcons?: {desc?: React.ReactNode; asc?: React.ReactNode};
-
-    /**
-     * 自定义国际化文案对象
-     */
-    locale?: {
-        ok: string;
-        reset: string;
-        empty: string;
-        asc: string;
-        desc: string;
-        expanded: string;
-        folded: string;
-        filter: string;
-        selectAll: string;
-    };
-
-    /**
-     * 设置数据为空的时候的表格内容展现
-     */
-    emptyContent?: React.ReactNode;
-
-    /**
-     * dataSource当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
-     */
-    primaryKey?: string;
 
     /**
      * 额外渲染行的渲染函数
@@ -408,4 +411,5 @@ export default class Table extends React.Component<TableProps, any> {
     static GroupHeader: typeof GroupHeader;
     static GroupFooter: typeof GroupFooter;
     static StickyLock: typeof Table;
+    static Base: typeof Table;
 }
