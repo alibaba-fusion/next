@@ -571,10 +571,8 @@ class TreeSelect extends Component {
         }
     }
 
-    handleChange() {
-        // 单选时点击清空按钮
-        const { hasClear, multiple, treeCheckable } = this.props;
-        if (hasClear && (!multiple || !treeCheckable)) {
+    handleChange(value, triggerType) {
+        if (this.props.hasClear && triggerType === 'clear') {
             if (!('value' in this.props)) {
                 this.setState({
                     value: [],

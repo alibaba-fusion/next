@@ -15,7 +15,7 @@ Show the components that support internationalization in the current Next compon
 ---
 
 ````jsx
-import { ConfigProvider, Button, Radio, Calendar, Card, DatePicker, Dialog, Pagination, TimePicker, Timeline, Transfer, Select, Upload, Table , Form, Input, Field } from '@alifd/next';
+import { ConfigProvider, Button, Radio, Calendar, Card, DatePicker, DatePicker2, Dialog, Pagination, TimePicker2, TimePicker, Timeline, Transfer, Select, Upload, Table } from '@alifd/next';
 
 import enUS from '@alifd/next/lib/locale/en-us';
 import zhCN from '@alifd/next/lib/locale/zh-cn';
@@ -27,6 +27,7 @@ import zhCN from '@alifd/next/lib/locale/zh-cn';
 // const zhCN = locales['zh-cn'];
 
 const RangePicker = DatePicker.RangePicker;
+const RangePicker2 = DatePicker2.RangePicker;
 
 const transferDataSource = (() => {
     const dataSource = [];
@@ -92,6 +93,9 @@ class Demo extends React.Component {
                         <DatePicker />
                         <TimePicker />
                         <RangePicker />
+                        <DatePicker2 />
+                        <TimePicker2 />
+                        <RangePicker2 />
                         <Calendar style={{ width: '350px', padding: '12px', border: '1px solid #C4C6CF', borderRadius: '3px' }} shape="card" />
                         <Form field={this.field}>
                             <Form.Item required><Input name="validate" readOnly style={{width: 350}} /></Form.Item>

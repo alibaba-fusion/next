@@ -40,6 +40,15 @@ describe('Tab', () => {
             assert(wrapper.find('.next-tabs-tabpane').length === 1);
         });
 
+        it('should render tab with undefined children', done => {
+            wrapper = mount(<Tab shape="capsule">{undefined}</Tab>);
+            setTimeout(() => {
+                wrapper.setProps({ children: [1, 2] });
+                assert(wrapper);
+                done();
+            }, 100);
+        });
+
         it('should render tab without animation', () => {
             wrapper = mount(<Tab animation={false}>{panes}</Tab>);
             assert(wrapper.find('.next-tabs-nav-appear').length === 0);

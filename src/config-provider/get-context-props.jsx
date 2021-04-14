@@ -35,8 +35,24 @@ export default function getContextProps(props, context, displayName) {
     const newPrefix = prefix || nextPrefix;
 
     let localeFromContext;
+    let newDisplayName = displayName;
+
+    switch (displayName) {
+        case 'DatePicker2':
+            newDisplayName = 'DatePicker';
+            break;
+        case 'Calendar2':
+            newDisplayName = 'Calendar';
+            break;
+        case 'TimePicker2':
+            newDisplayName = 'TimePicker';
+            break;
+        default:
+            break;
+    }
+
     if (nextLocale) {
-        localeFromContext = nextLocale[displayName];
+        localeFromContext = nextLocale[newDisplayName];
         if (localeFromContext) {
             localeFromContext.momentLocale = nextLocale.momentLocale;
         }
@@ -44,9 +60,9 @@ export default function getContextProps(props, context, displayName) {
 
     let newLocale;
     if (locale) {
-        newLocale = obj.deepMerge({}, zhCN[displayName], localeFromContext, locale);
+        newLocale = obj.deepMerge({}, zhCN[newDisplayName], localeFromContext, locale);
     } else if (localeFromContext) {
-        newLocale = obj.deepMerge({}, zhCN[displayName], localeFromContext);
+        newLocale = obj.deepMerge({}, zhCN[newDisplayName], localeFromContext);
     }
 
     const newPure = typeof pure === 'boolean' ? pure : nextPure;

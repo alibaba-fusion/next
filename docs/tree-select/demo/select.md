@@ -85,6 +85,7 @@ class Demo extends React.Component {
                 </label>
                 <TreeSelect
                     treeDefaultExpandAll
+                    hasClear
                     multiple={multiple}
                     onSelect={this.handleSelect}
                     dataSource={dataSource}

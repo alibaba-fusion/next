@@ -163,7 +163,6 @@ class HeaderPanel extends React.PureComponent {
                 popupClassName={`${prefixCls}-select-year-popup`}
                 defaultValue={curYear}
                 dataSource={dataSource}
-                menuProps={{ hasSelectedIcon: false }}
                 onChange={v => onPanelValueChange(panelValue.year(v))}
             />
         );

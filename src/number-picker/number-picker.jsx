@@ -220,17 +220,26 @@ class NumberPicker extends React.Component {
                 }
 
                 // ignore when input start form '-'
-                if (value === '-' || this.state.value === '-') {
+                if (value === '-') {
+                    if (this.props.min >= 0) {
+                        // trigger onCorrect when input - on min >= 0
+                        // trigger onChange when the result of correction is not state.value
+                        this.setInputValue(value, e);
+                        return;
+                    }
                     this.setState({
                         value,
                         reRender: false,
                     });
                     return;
                 }
-                // ignore when input 0./0.0/0.00 to 0.001
-                // and input *.*0
+
+                // ignore
+                // (1) input 0./0.0/0.00 to 0.001
+                // (2) input *.*0
+                // (3) input -. or /^./
                 // but take care of Number('')=0;
-                if (value.match(/\.0*$/) || value.match(/\.[0-9]*0$/)) {
+                if (value.match(/\.0*$/) || value.match(/\.[0-9]*0$/) || value.match(/^-?\./)) {
                     this.setState({
                         value,
                         reRender: false,
@@ -238,7 +247,7 @@ class NumberPicker extends React.Component {
                     return;
                 }
                 // ignore when value < min (because number is inputted one by one)
-                if (!isNaN(value) && Number(value) < this.props.min) {
+                if (!isNaN(value) && Number(value) > 0 && Number(value) < this.props.min) {
                     this.setState({
                         value,
                         reRender: false,
@@ -252,6 +261,14 @@ class NumberPicker extends React.Component {
     }
 
     /**
+     * 触发时机：
+     * (1)不合法输入立即触发
+     * (2)在[min, max]之外立即触发
+     * (3)输入.或-时不触发onChange、onCorrect、render，用户取到的value为输入前的值
+     * (4)产生-.x时不触发onChange、onCorrect、render，用户取到的value为改变发生前的值
+     * (5)输入.后blur会触发onCorrect、onChang、render，因为合法值被Number()取掉了 . ，三者都触发，用户取到的value为新值
+     * (6)输入-后blur不会触发onCorrect、onChang、render，因为不是合法值，用户取到的value为输入前的值
+     * (7)产生-.x后blur触发onChange、onCorrect、render，用户取到的为-0.x
      * @param {Float} currentValue correct value
      * @param {String} oldValue input value
      */
@@ -278,7 +295,10 @@ class NumberPicker extends React.Component {
     }
 
     onBlur(e, ...args) {
-        const value = this.getCurrentValidValue(e.target.value.trim());
+        // blur 时将 -.2 展示值特例修正为 -0.2，触发onCorrect、onChange
+        // 保留 onBlur 时 - 与 -. 等 非 number 类型不触发 onChange，此为当前线上逻辑，会导致target.value取出非数字，转为另一issue待修
+        let value = this.getCurrentValidValue(e.target.value.trim());
+        if (value !== '' && !isNaN(value)) value = Number(value);
         if (this.state.value !== value) {
             this.setValue(value, e);
         }
@@ -300,6 +320,8 @@ class NumberPicker extends React.Component {
             if (val > props.max) {
                 val = props.max;
             }
+        } else if (val === '-' && props.min >= 0) {
+            val = props.min;
         } else {
             val = this.state.value;
         }
@@ -334,6 +356,7 @@ class NumberPicker extends React.Component {
         });
     }
 
+    // 设置展示值，展示值可为-0此种特例
     setInputValue(v, e) {
         const value = this.getCurrentValidValue(v);
         if (this.state.value !== value) {
@@ -454,7 +477,12 @@ class NumberPicker extends React.Component {
     renderValue() {
         const { value, hasFocused } = this.state;
         const { format } = this.props;
-        return typeof format === 'function' && !hasFocused ? format(value) : value;
+        // 避免原生input将number类型的-0，渲染为0
+        return typeof format === 'function' && !hasFocused
+            ? format(value)
+            : value !== '-0.' && 1 / value === -Infinity
+            ? '-0'
+            : value;
     }
 
     focus() {
@@ -536,6 +564,7 @@ class NumberPicker extends React.Component {
                         disabled={disabled}
                         className={`${upBtnProps.className || ''} ${upDisabled ? 'disabled' : ''}`}
                         onClick={this.up.bind(this, upDisabled)}
+                        tabIndex={-1}
                     >
                         <Icon type="arrow-up" className={`${prefixCls}-up-icon`} />
                     </Button>
@@ -545,6 +574,7 @@ class NumberPicker extends React.Component {
                         disabled={disabled}
                         className={`${downBtnProps.className || ''} ${downDisabled ? 'disabled' : ''}`}
                         onClick={this.down.bind(this, downDisabled)}
+                        tabIndex={-1}
                     >
                         <Icon type="arrow-down" className={`${prefixCls}-down-icon`} />
                     </Button>
@@ -558,6 +588,7 @@ class NumberPicker extends React.Component {
                     disabled={disabled}
                     className={`${downBtnProps.className || ''} ${downDisabled ? 'disabled' : ''}`}
                     onClick={this.down.bind(this, downDisabled)}
+                    tabIndex={-1}
                 >
                     <Icon type="minus" className={`${prefixCls}-minus-icon`} />
                 </Button>
@@ -569,6 +600,7 @@ class NumberPicker extends React.Component {
                     disabled={disabled}
                     className={`${upBtnProps.className || ''} ${upDisabled ? 'disabled' : ''}`}
                     onClick={this.up.bind(this, upDisabled)}
+                    tabIndex={-1}
                 >
                     <Icon type="add" className={`${prefixCls}-add-icon`} />
                 </Button>
