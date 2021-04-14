@@ -65,9 +65,9 @@ export default ${apiInfo.name};
             // tsgen(apiInfo).then(apiData => {
             //     fs.writeFileSync(exportDTSPath, apiData.message);
             // });
-        } else if (['field', 'shell', 'notification'].indexOf(shortName) > -1) {
+        } else if (['field', 'shell', 'notification', 'calendar2', 'date-picker2'].indexOf(shortName) > -1) {
             const exportName = getComponentName(shortName);
-            // hack Field / Shell / Typography
+            // hack Field / Shell / Typography / Calendar2 / DatePicker2
             logger.success(`generate lib/index.d.ts of ${shortName}`);
 
             fs.writeFileSync(

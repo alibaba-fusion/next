@@ -8,7 +8,7 @@
 - `direction` 为 `column` 时(默认值)， `justify` 控制垂直方向, `align` 控制水平方向。
 
 :::lang=en-us
-# align&justify
+# align and justify
 
 - order: 3
 

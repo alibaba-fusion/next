@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-import ConfigProvider from '../config-provider';
 import { obj } from '../util';
 import Checkbox from './checkbox';
 
@@ -238,15 +237,4 @@ class CheckboxGroup extends Component {
     }
 }
 
-export default ConfigProvider.config(polyfill(CheckboxGroup), {
-    transform: /* istanbul ignore next */ (props, deprecated) => {
-        if ('itemDirection' in props) {
-            deprecated('itemDirection', 'direction', 'Checkbox');
-            const { itemDirection, ...others } = props;
-
-            props = { direction: itemDirection, ...others };
-        }
-
-        return props;
-    },
-});
+export default polyfill(CheckboxGroup);
