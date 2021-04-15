@@ -123,6 +123,7 @@ class App extends React.Component {
                 onVisibleChange={this.onVisibleChange}
                 popupContent={this.renderMenu()}
                 visible={visible}
+                fillProps="label"
                 value={value}
                 onSearch={this.onSearch}
                 onChange={this.onChange}

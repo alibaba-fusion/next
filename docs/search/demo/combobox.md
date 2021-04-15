@@ -13,16 +13,16 @@
 import { Search } from '@alifd/next';
 
 const dataSource = [{
-    label: 'Recent',
+    label: 'Recent label',
     value: 'Recent'
 }, {
-    label: 'dress',
+    label: 'dress label',
     value: 'dress'
 }, {
-    label: 'sunglasses',
+    label: 'sunglasses label',
     value: 'sunglasses'
 }, {
-    label: 't-shirt',
+    label: 't-shirt label',
     value: 't-shirt'
 }];
 
@@ -43,13 +43,13 @@ class App extends React.Component {
             <div>
                 auto highlight first item
                 <br/>
-                <Search dataSource={dataSource} onChange={this.onChange.bind(this)}
+                <Search dataSource={dataSource} fillProps="label" onChange={this.onChange.bind(this)}
                     onSearch={this.onSearch.bind(this)}/>
                 <br/>
                 <br/>
                 no default highlight item, should use UP/DOWN
                 <br/>
-                <Search autoHighlightFirstItem={false}  dataSource={dataSource} onChange={this.onChange.bind(this)}
+                <Search autoHighlightFirstItem={false} fillProps="label" dataSource={dataSource} onChange={this.onChange.bind(this)}
                     onSearch={this.onSearch.bind(this)}/>
             </div>
         );
