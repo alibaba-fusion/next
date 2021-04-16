@@ -343,6 +343,10 @@ $nav-icononly-width: 58px;
     }
 
     &.#{$css-prefix}icon-only {
+        &.#{$css-prefix}custom-icon-only-width {
+            text-align: center;
+        }
+
         #{$menu-prefix}-item-inner {
             text-overflow: clip;
         }
@@ -366,8 +370,8 @@ $nav-icononly-width: 58px;
         #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon {
             @include icon-size(
                 $size: $nav-icon-only-font-size,
-                $marginLeft: calc((18px - #{$nav-icon-only-font-size}) / 2),
-                $marginRight: calc((18px - #{$nav-icon-only-font-size}) / 2)
+                $marginLeft: calc((#{$nav-icononly-width} - #{$nav-icon-only-font-size}) / 2 - #{$nav-ver-item-padding-lr}),
+                $marginRight: calc((#{$nav-icononly-width} - #{$nav-icon-only-font-size}) / 2 - #{$nav-ver-item-padding-lr})
             );
             transition: all $motion-duration-immediately $motion-linear;
             transform-origin: center 50%;
@@ -376,8 +380,8 @@ $nav-icononly-width: 58px;
         #{$nav-prefix}-item.#{$css-prefix}opened #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon-arrow-down {
             @include icon-size(
                 $size: $nav-icon-only-font-size,
-                $marginLeft: calc((18px - #{$nav-icon-only-font-size}) / 2),
-                $marginRight: calc((18px - #{$nav-icon-only-font-size}) / 2),
+                $marginLeft: calc((#{$nav-icononly-width} - #{$nav-icon-only-font-size}) / 2 - #{$nav-ver-item-padding-lr}),
+                $marginRight: calc((#{$nav-icononly-width} - #{$nav-icon-only-font-size}) / 2 - #{$nav-ver-item-padding-lr}),
                 $transform: rotate(180deg)
             );
         }
