@@ -11,6 +11,7 @@ import { support, events, dom, obj } from '../../util';
 /** Step.Item */
 class StepItem extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**

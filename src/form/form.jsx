@@ -189,7 +189,12 @@ export default class Form extends React.Component {
                 if ('value' in props) {
                     options.values = props.value;
                 }
+
                 this._formField = new Field(this, options);
+            }
+
+            if (props.locale && props.locale.Validate) {
+                this._formField.setOptions({ messages: props.locale.Validate });
             }
 
             props.saveField(this._formField);

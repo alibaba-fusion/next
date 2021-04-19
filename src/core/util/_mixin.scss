@@ -509,13 +509,13 @@
 
                 width: $icon-s;
                 height: $icon-s;
-                line-height: 1em;
+                line-height: $icon-s;
 
                 &:before {
                     width: $icon-s;
                     height: $icon-s;
                     font-size: $icon-s;
-                    line-height: 1em;
+                    line-height: $icon-s;
                 }
             }
         }

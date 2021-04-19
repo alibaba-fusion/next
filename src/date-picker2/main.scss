@@ -286,10 +286,10 @@
 
             &#{$calendar2-prefix}-cell-selected {
                 &#{$calendar2-prefix}-cell-hover-begin::after {
-                    left: 7px;
+                    left: 8px;
                 }
                 &#{$calendar2-prefix}-cell-hover-end::after {
-                    right: 7px;
+                    right: 8px;
                 }
             }
 

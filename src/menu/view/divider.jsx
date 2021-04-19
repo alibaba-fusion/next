@@ -15,7 +15,7 @@ export default class Divider extends Component {
     };
 
     render() {
-        const { root, className, ...others } = this.props;
+        const { root, className, parentMode, parent, ...others } = this.props;
         const { prefix } = root.props;
 
         const newClassName = cx({

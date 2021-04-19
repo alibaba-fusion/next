@@ -1,5 +1,6 @@
 @import "scss/mixin";
 @import "scss/variable";
+@import "../core/index-noreset.scss";
 @import "scss/_fading-entrances/_fadeIn.scss";
 @import "scss/_fading-entrances/_fadeInDown.scss";
 @import "scss/_fading-entrances/_fadeInLeft.scss";
@@ -10,6 +11,7 @@
 @import "scss/_fading-exits/_fadeOutLeft.scss";
 @import "scss/_fading-exits/_fadeOutRight.scss";
 @import "scss/_fading-exits/_fadeOutUp.scss";
+@import "scss/_fading-exits/_fadeOutUpSmall.scss";
 @import "scss/_sliding-exits/sliding-exits.scss";
 @import "scss/_sliding-entrances/sliding-entrances.scss";
 @import "scss/_zooming-entrances/_zoomIn.scss";
@@ -60,6 +62,10 @@
 
 .fadeOutUp {
     @include fadeOutUp();
+}
+
+.fadeOutUpSmall {
+    @include fadeOutUpSmall();
 }
 
 .slideInUp {
