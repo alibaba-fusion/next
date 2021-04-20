@@ -800,6 +800,14 @@ describe('WeekPicker', () => {
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
         });
+
+        // https://github.com/alibaba-fusion/next/issues/1491
+        it('fix format issue', () => {
+            wrapper = mount(<WeekPicker defaultValue={moment('2019-12-29')} isPreview />);
+
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2019-52nd');
+        });
     });
 
     describe('action', () => {
