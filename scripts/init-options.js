@@ -74,6 +74,7 @@ const options = {
                 'lib/ko-kr.js',
                 'lib/ms-my.js',
                 'lib/th-th.js',
+                'lib/id-id.js',
             ],
         },
         {
