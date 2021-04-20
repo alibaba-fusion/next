@@ -13,6 +13,14 @@ import '../../src/cascader-select/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+function freeze(dataSource) {
+    return dataSource.map(item => {
+        const { children } = item;
+        children && freeze(children);
+        return Object.freeze({ ...item });
+    });
+}
+
 const ChinaArea = [
     {
         value: '2973',
@@ -499,6 +507,19 @@ describe('CascaderSelect', () => {
             <CascaderSelect
                 popupProps={{ className: 'myCascaderSelect' }}
                 dataSource={ChinaArea}
+                expandedValue={['2973', '2974']}
+                defaultVisible
+            />
+        );
+        assert(findRealItem(document.querySelector('.myCascaderSelect'), 2, 1));
+    });
+
+    it('should support immutable data', () => {
+        wrapper = mount(
+            <CascaderSelect
+                immutable
+                popupProps={{ className: 'myCascaderSelect' }}
+                dataSource={freeze(ChinaArea)}
                 expandedValue={['2973', '2974']}
                 defaultVisible
             />

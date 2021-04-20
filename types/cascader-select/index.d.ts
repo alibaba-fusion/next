@@ -71,11 +71,7 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
     /**
      * 选中值改变时触发的回调函数
      */
-    onChange?: (
-        value: string | Array<string>,
-        data: data | Array<data>,
-        extra: extra
-    ) => void;
+    onChange?: (value: string | Array<string>, data: data | Array<data>, extra: extra) => void;
 
     /**
      * 默认展开值，如果不设置，组件内部会根据 defaultValue/value 进行自动设置
@@ -211,9 +207,11 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
      * 透传到 Popup 的属性对象
      */
     popupProps?: PopupProps;
+
+    /**
+     * 是否是不可变数据
+     */
+    immutable: boolean;
 }
 
-export default class CascaderSelect extends React.Component<
-    CascaderSelectProps,
-    any
-> {}
+export default class CascaderSelect extends React.Component<CascaderSelectProps, any> {}

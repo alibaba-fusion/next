@@ -15,7 +15,7 @@ type data = {
     checkboxDisabled?: boolean;
     children?: Array<data>;
     [propName: string]: any;
-}
+};
 
 type extra = {
     /**
@@ -38,7 +38,7 @@ type extra = {
      * 多选时半选的数据
      */
     indeterminateData?: Array<data>;
-}
+};
 
 export interface CascaderProps extends HTMLAttributesWeak, CommonProps {
     /**
@@ -59,11 +59,7 @@ export interface CascaderProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中值改变时触发的回调函数
      */
-    onChange?: (
-        value: string | Array<string>,
-        data: data | Array<data>,
-        extra: extra
-    ) => void;
+    onChange?: (value: string | Array<string>, data: data | Array<data>, extra: extra) => void;
 
     /**
      * （非受控）默认展开值，如果不设置，组件内部会根据 defaultValue/value 进行自动设置
@@ -129,6 +125,11 @@ export interface CascaderProps extends HTMLAttributesWeak, CommonProps {
      * 异步加载数据函数，source是原始对象
      */
     loadData?: (data: data, source: data) => void;
+
+    /**
+     * 是否是不可变数据
+     */
+    immutable: boolean;
 }
 
 export default class Cascader extends React.Component<CascaderProps, any> {}
