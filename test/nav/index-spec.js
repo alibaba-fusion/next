@@ -412,7 +412,6 @@ describe('Nav', () => {
         nav = wrapper.find('ul.next-nav');
         subNavItems = nav.find('li.next-nav-sub-nav-item');
         assert(subNavItems.at(0).find('i.next-nav-icon').length === 1);
-        debugger
         assert(
             subNavItems.at(1).find('.next-menu-item-text > span').length ===
                 1
