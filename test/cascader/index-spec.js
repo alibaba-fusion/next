@@ -4,6 +4,7 @@ import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
+import cloneDeep from 'lodash.clonedeep';
 import { KEYCODE } from '../../src/util';
 import Cascader from '../../src/cascader';
 import '../../src/cascader/style.js';
@@ -12,6 +13,14 @@ import '../../src/cascader/style.js';
 /* global describe it afterEach */
 
 Enzyme.configure({ adapter: new Adapter() });
+
+function freeze(dataSource) {
+    return dataSource.map(item => {
+        const { children } = item;
+        children && freeze(children);
+        return Object.freeze({ ...item });
+    });
+}
 
 const ChinaArea = [
     {
@@ -190,8 +199,11 @@ describe('Cascader', () => {
     });
 
     it('should support remove title', () => {
-        ChinaArea[0].title = '';
-        wrapper = mount(<Cascader dataSource={ChinaArea} />);
+        const data = cloneDeep(ChinaArea);
+
+        data[0].title = '';
+
+        wrapper = mount(<Cascader dataSource={data} />);
         assert(
             wrapper
                 .find('.next-menu-item')
@@ -206,7 +218,7 @@ describe('Cascader', () => {
                 .getDOMNode()
                 .getAttribute('title') === '四川'
         );
-        delete ChinaArea[0].title;
+        delete data[0].title;
     });
 
     it('could only select leaf item when set canOnlySelectLeaf to true', () => {
@@ -574,6 +586,10 @@ describe('Cascader', () => {
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
+    });
+
+    it('support immutable data source', () => {
+        wrapper = mount(<Cascader id="cascader-style" dataSource={freeze(ChinaArea)} immutable />);
     });
 
     it('should support rtl', () => {

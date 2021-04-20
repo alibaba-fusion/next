@@ -13,7 +13,15 @@ import '../../src/cascader-select/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const ChinaArea = [
+function freeze(dataSource) {
+    return dataSource.map(item => {
+        const { children } = item;
+        children && freeze(children);
+        return Object.freeze(item);
+    });
+}
+
+const ChinaArea = freeze([
     {
         value: '2973',
         label: '陕西',
@@ -34,7 +42,7 @@ const ChinaArea = [
         value: '3078',
         label: '四川',
     },
-];
+]);
 
 describe('CascaderSelect', () => {
     let wrapper;
@@ -505,6 +513,8 @@ describe('CascaderSelect', () => {
         );
         assert(findRealItem(document.querySelector('.myCascaderSelect'), 2, 1));
     });
+
+    it('should support immutable data', () => {});
 });
 
 function findItem(menuIndex, itemIndex) {
