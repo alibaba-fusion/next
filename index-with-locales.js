@@ -13,5 +13,6 @@ next.locales['pt-pt'] = require('./lib/locale/pt-pt.js');
 next.locales['ko-kr'] = require('./lib/locale/ko-kr.js');
 next.locales['ms-my'] = require('./lib/locale/ms-my.js');
 next.locales['th-th'] = require('./lib/locale/th-th.js');
+next.locales['id-id'] = require('./lib/locale/id-id.js');
 
 module.exports = next;

@@ -11,6 +11,7 @@ import PT from '../../src/locale/pt-pt';
 import KR from '../../src/locale/ko-kr';
 import MY from '../../src/locale/ms-my';
 import TH from '../../src/locale/th-th';
+import ID from '../../src/locale/id-id';
 
 describe('Locale', () => {
     it('should be the same keys', () => {
@@ -25,8 +26,9 @@ describe('Locale', () => {
         const krKeys = getKeys(KR);
         const myKeys = getKeys(MY);
         const thKeys = getKeys(TH);
+        const idKeys = getKeys(ID);
 
-        assert(usKeys === jpKeys && jpKeys === cnKeys && cnKeys === hkKeys && hkKeys === twKeys && twKeys === viKeys && viKeys === itKeys && itKeys === ptKeys && ptKeys === krKeys && ptKeys === myKeys && ptKeys === thKeys);
+        assert(usKeys === jpKeys && jpKeys === cnKeys && cnKeys === hkKeys && hkKeys === twKeys && twKeys === viKeys && viKeys === itKeys && itKeys === ptKeys && ptKeys === krKeys && krKeys === myKeys && myKeys === thKeys && thKeys === idKeys);
     });
 });
 
