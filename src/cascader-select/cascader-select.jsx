@@ -225,6 +225,11 @@ class CascaderSelect extends Component {
          * @param {Array<data>} value 选择值 { label: , value:}
          */
         renderPreview: PropTypes.func,
+        /**
+         * 是否是不可变数据
+         * @version 1.23
+         */
+        immutable: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -281,6 +286,7 @@ class CascaderSelect extends Component {
         defaultVisible: false,
         onVisibleChange: () => {},
         popupProps: {},
+        immutable: false,
     };
 
     constructor(props, context) {
@@ -742,6 +748,7 @@ class CascaderSelect extends Component {
             resultRender,
             readOnly,
             itemRender,
+            immutable,
         } = this.props;
         const { value } = this.state;
 
@@ -761,6 +768,7 @@ class CascaderSelect extends Component {
             listClassName,
             loadData,
             itemRender,
+            immutable,
         };
 
         if ('expandedValue' in this.props) {
@@ -871,7 +879,6 @@ class CascaderSelect extends Component {
             visible,
             onVisibleChange: this.handleVisibleChange,
             showSearch,
-            // searchValue,
             onSearch: this.handleSearch,
             onKeyDown: this.handleKeyDown,
             popupContent,
