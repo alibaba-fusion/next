@@ -253,9 +253,9 @@ class Picker extends React.Component {
         func.invoke(this.props, 'onPanelChange', [value, mode]);
     };
 
-    // 清空输入之后 input组件内部会让第二个输入框获得焦点
-    // 所以这里需要设置setTimeout才能让第一个input获得焦点
     handleClear = () => {
+        // 清空输入之后 input组件内部会让第二个输入框获得焦点
+        // 所以这里需要设置setTimeout才能让第一个input获得焦点
         this.clearTimeoutId = setTimeout(() => {
             this.handleInputFocus(0);
         });
@@ -272,6 +272,7 @@ class Picker extends React.Component {
         if (idx === -1 && justBeginInput) {
             idx = switchInputType(inputType);
         }
+
         if (idx !== -1) {
             this.onInputTypeChange(idx);
             this.handleInputFocus(idx);
@@ -282,27 +283,21 @@ class Picker extends React.Component {
     };
 
     handleChange = (v, eventType) => {
-        const { isRange, showOk } = this.state;
-        v = checkAndRectify(v, isRange);
+        const { isRange, showOk, value } = this.state;
+
+        v = showOk && eventType === 'VISIBLE_CHANGE' ? value : checkAndRectify(v, isRange);
 
         this.setState({
             curValue: v,
             inputValue: getInputValue(v, this.props.format),
         });
 
-        if (
-            !showOk ||
-            ['KEYDOWN_ENTER', 'CLICK_OK', 'CLICK_PRESET', 'VISIBLE_CHANGE', 'INPUT_CLEAR'].includes(eventType)
-        ) {
+        if (!showOk || ['KEYDOWN_ENTER', 'CLICK_OK', 'CLICK_PRESET', 'INPUT_CLEAR'].includes(eventType)) {
             if (isRange) {
                 if (eventType === 'INPUT_CLEAR') {
                     this.handleClear();
                 } else if (!['VISIBLE_CHANGE', 'CLICK_PRESET'].includes(eventType) && this.maySwitchInput(v)) {
                     return;
-                }
-
-                if (v.some(o => !o)) {
-                    v = [null, null];
                 }
             }
 
