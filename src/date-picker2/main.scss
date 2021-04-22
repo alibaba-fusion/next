@@ -41,7 +41,6 @@
 
     &-overlay {
         vertical-align: top;
-        border-radius: 2px;
         padding: 4px 0px;
     }
 
@@ -54,6 +53,7 @@
         background-color: $color-white;
         border: 1px solid $color-line1-1;
         border-radius: $corner-1;
+        overflow: hidden;
 
         #{$calendar2-prefix} {
             &-body {
