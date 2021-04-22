@@ -606,6 +606,29 @@ describe('Picker', () => {
             clickDate('2020-12-13');
             assert(getStrValue() === '2020-12-13');
         });
+
+        it('should reset value', () => {
+            const App = () => {
+                return (
+                    <div className="app">
+                        <RangePicker defaultPanelValue={defaultVal} showTime />
+                        <button className="btn" />
+                    </div>
+                );
+            };
+            wrapper = mount(<App />);
+            wrapper
+                .find('input')
+                .at(0)
+                .simulate('click');
+
+            clickDate('2020-12-12');
+
+            wrapper.find('button.btn').simulate('click');
+            document.dispatchEvent(new Event('click'));
+
+            assert.deepEqual(getStrValue(), ['', '']);
+        });
     });
 });
 
