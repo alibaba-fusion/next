@@ -60,6 +60,7 @@ export interface PickerProps extends HTMLAttributesWeak, CommonProps {
     inputProps?: InputProps;
     inputReadOnly?: boolean;
     hasClear?: boolean;
+    label?: React.ReactNode;
     placeholder?: string;
 
     visible?: boolean;
@@ -106,6 +107,7 @@ export interface RangePickerProps extends CommonProps {
     inputProps?: InputProps;
     inputReadOnly?: boolean;
     hasClear?: boolean;
+    label?: React.ReactNode;
     visible?: boolean;
     defaultVisible?: boolean;
     popupTriggerType?: 'click' | 'hover';

@@ -108,6 +108,7 @@ class Picker extends React.Component {
         disabled: SharedPT.disabled,
         inputReadOnly: SharedPT.readOnly,
         format: SharedPT.format,
+        label: PT.node,
 
         // popup
         followTrigger: PT.bool,
@@ -419,6 +420,7 @@ class Picker extends React.Component {
             className,
             defaultPanelValue,
             renderPreview,
+            label,
             ...restProps
         } = this.props;
         const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
@@ -452,6 +454,7 @@ class Picker extends React.Component {
             ...pickProps(DateInput.propTypes, restProps),
             ...sharedProps,
             value: inputValue,
+            label: label,
             isRange,
             disabled,
             placeholder,
