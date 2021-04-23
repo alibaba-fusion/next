@@ -19,7 +19,17 @@ import { ConfigProvider, Button, Radio, Calendar, Card, DatePicker, DatePicker2,
 
 import enUS from '@alifd/next/lib/locale/en-us';
 import zhCN from '@alifd/next/lib/locale/zh-cn';
+import jaJP from '@alifd/next/lib/locale/ja-jp';
+import viVN from '@alifd/next/lib/locale/vi-vn';
+import ptPT from '@alifd/next/lib/locale/pt-pt';
 
+const localeMap = {
+    'zh-cn': zhCN,
+    'en-us': enUS,
+    'ja-jp': jaJP,
+    'vi-vn': viVN,
+    'pt-pt': ptPT,
+};
 // If the application directly imports the next-with-locales.js file from cdn
 // it need to import locale file in the following way
 // import { locales } from '@alifd/next';
@@ -75,15 +85,18 @@ class Demo extends React.Component {
     }
 
     render() {
-        const locale = this.state.lang === 'en-us' ? enUS : zhCN;
+        const locale = localeMap[this.state.lang];
 
         return (
             <div>
                 <div className="change-locale">
                     <span style={{ marginRight: 16 }}>Change locale of components: </span>
                     <Radio.Group shape="button" size="large" defaultValue="en-us" onChange={this.changeLang}>
-                        <Radio key="en" value="en-us">English</Radio>
-                        <Radio key="cn" value="zh-cn">中文</Radio>
+                        <Radio value="en-us">English</Radio>
+                        <Radio value="zh-cn">中文</Radio>
+                        <Radio value="ja-jp">日本語</Radio>
+                        <Radio value="vi-vn">ViệtName</Radio>
+                        <Radio value="pt-pt">Português</Radio>
                     </Radio.Group>
                 </div>
                 <ConfigProvider locale={locale}>
