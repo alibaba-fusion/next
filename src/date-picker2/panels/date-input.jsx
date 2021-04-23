@@ -32,6 +32,7 @@ class DateInput extends React.Component {
         disabled: SharedPT.disabled,
         inputProps: PT.object,
         dateInputAriaLabel: SharedPT.ariaLabel,
+        label: PT.node,
     };
 
     static defaultProps = {
@@ -143,6 +144,7 @@ class DateInput extends React.Component {
             inputProps,
             dateInputAriaLabel,
             state,
+            label,
             ...restProps
         } = this.props;
 
@@ -195,6 +197,7 @@ class DateInput extends React.Component {
                     <React.Fragment>
                         <Input
                             {...rangeProps[0]}
+                            label={label}
                             autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus
                         />
                         <div className={`${prefixCls}-separator`}>{separator}</div>
@@ -208,6 +211,7 @@ class DateInput extends React.Component {
                 ) : (
                     <Input
                         {...sharedProps}
+                        label={label}
                         state={state}
                         disabled={disabled}
                         hasClear={!state && hasClear}
