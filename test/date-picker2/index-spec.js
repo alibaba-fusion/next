@@ -271,6 +271,13 @@ describe('Picker', () => {
             );
             wrapper.unmount();
         });
+
+        it('input label', () => {
+            [DatePicker, RangePicker].forEach(Picker => {
+                wrapper = mount(<Picker label="日期" />);
+                assert(wrapper.find('.next-input-label').length === 1);
+            });
+        });
     });
 
     describe('controlled', () => {
