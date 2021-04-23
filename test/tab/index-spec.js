@@ -195,13 +195,12 @@ describe('Tab', () => {
 
         it('should support device', () => {
             wrapper = mount(<Tab>{panes}</Tab>);
-            assert(wrapper.find('.next-tabs-scrollable').length === 0);
-            assert(wrapper.find(TabNav).prop('excessMode') === 'slide');
-            wrapper.setProps({
-                device: 'phone'
-            });
             assert(wrapper.find('.next-tabs-scrollable').length > 0);
             assert(wrapper.find(TabNav).prop('excessMode') === 'slide');
+            wrapper.setProps({
+                excessMode: 'dropdown'
+            });
+            assert(wrapper.find('.next-tabs-scrollable').length > 0);
         })
     });
 
