@@ -11,6 +11,7 @@
     text-align: left;
     transition: all $motion-duration-immediately $motion-linear;
     cursor: pointer;
+    vertical-align: middle;
 
     &-btn {
         transition: all $motion-duration-immediately $motion-linear;
