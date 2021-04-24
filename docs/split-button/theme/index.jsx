@@ -41,7 +41,7 @@ const i18nMap = {
     },
 };
 
-function renderButton(type, locale, props) {
+function renderButton(type, locale, model, props) {
     const menu = ['undo', 'redo', 'cut', 'copy', 'paste'].map(item => <SplitButton.Item key={item}>{locale[item]}</SplitButton.Item>);
     const cols = [locale.large, locale.medium, locale.small];
     const newLabel = <div>
@@ -56,6 +56,7 @@ function renderButton(type, locale, props) {
     const commonProps = {
         ...props,
         type: type.toLowerCase(),
+        model,
         label: newLabel
     };
 
@@ -77,6 +78,10 @@ function renderButton(type, locale, props) {
             }
         }
     }
+    if(commonProps.type === 'inverse')
+        style = {
+            backgroundColor: '#333',
+        };
 
     return (<Demo title={type} block style={style}>
         <DemoHead cols={cols} />
@@ -106,7 +111,7 @@ function render(locale, lang) {
             <Demo title={locale.splitButton}>
                 {renderButton('Normal', locale)}
                 {renderButton('Primary', locale)}
-                {renderButton('Secondary', locale)}
+                {renderButton('Inverse', locale)}
             </Demo>
             <Demo title={locale.ghostSplitButton}>
                 {renderButton('Normal', locale, { ghost: 'light' })}

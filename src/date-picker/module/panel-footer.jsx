@@ -32,13 +32,7 @@ class PanelFooter extends React.PureComponent {
                         onOk(momentValue);
                     };
                     return (
-                        <Button
-                            key={label}
-                            text
-                            size="small"
-                            type="primary"
-                            onClick={handleClick}
-                        >
+                        <Button key={label} model="text" size="small" type="primary" onClick={handleClick}>
                             {label}
                         </Button>
                     );
@@ -74,15 +68,11 @@ class PanelFooter extends React.PureComponent {
             <div className={`${prefix}date-picker-panel-footer`}>
                 {this.createRanges(ranges)}
                 {onPanelChange ? (
-                    <Button {...sharedBtnProps} text onClick={this.changePanel}>
+                    <Button {...sharedBtnProps} model="text" onClick={this.changePanel}>
                         {panelBtnLabel}
                     </Button>
                 ) : null}
-                <Button
-                    {...sharedBtnProps}
-                    disabled={disabledOk || !value}
-                    onClick={onClick}
-                >
+                <Button {...sharedBtnProps} disabled={disabledOk || !value} onClick={onClick}>
                     {locale.ok}
                 </Button>
             </div>

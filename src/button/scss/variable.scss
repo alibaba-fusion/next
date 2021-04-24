@@ -128,10 +128,10 @@ $btn-size-l-icon-split-size: $icon-s !default;
 /// @namespace size/normal
 $btn-size-l-corner: $corner-1 !default;
 
-// Pure
-// ----------------------------------------
 
-/// text
+// Pure normal = normal solid
+// ----------------------------------------
+/// text color
 /// @namespace statement/disabled
 $btn-pure-color-disabled: $color-text1-1 !default;
 /// background
@@ -141,15 +141,21 @@ $btn-pure-bg-disabled: $color-fill1-1 !default;
 /// @namespace statement/disabled
 $btn-pure-border-color-disabled: $color-line1-1 !default;
 
-/// text
+/// text opacity
+/// @namespace statement/disabled
+$btn-pure-normal-opacity-disabled: 1 !default;
+/// text color
 /// @namespace statement/disabled
 $btn-pure-normal-color-disabled: $color-text1-1 !default;
+$btn-pure-normal-color-opacity-disabled: rgba($btn-pure-normal-color-disabled, $btn-pure-normal-opacity-disabled) !default;
 /// background
 /// @namespace statement/disabled
 $btn-pure-normal-bg-disabled: $color-fill1-1 !default;
 /// border color
 /// @namespace statement/disabled
 $btn-pure-normal-border-color-disabled: $color-line1-1 !default;
+
+
 /// text
 /// @namespace statement/normal
 $btn-pure-normal-color: $color-text1-4 !default;
@@ -181,9 +187,9 @@ $btn-pure-normal-border-color-active: $color-line1-4 !default;
 /// @namespace statement/normal
 $btn-pure-normal-border-style: $line-solid !default;
 
-// Secondary
+// Secondary = primary outline
 // ----------------------------------------
-/// text
+/// text color
 /// @namespace statement/disabled
 $btn-pure-secondary-color-disabled: $color-text1-1 !default;
 /// background
@@ -192,6 +198,7 @@ $btn-pure-secondary-bg-disabled: $color-fill1-1 !default;
 /// border color
 /// @namespace statement/disabled
 $btn-pure-secondary-border-color-disabled: $color-line1-1 !default;
+
 /// text
 /// @namespace statement/normal
 $btn-pure-secondary-color: $color-brand1-6 !default;
@@ -223,17 +230,22 @@ $btn-pure-secondary-border-color-active: $color-brand1-9 !default;
 /// @namespace statement/normal
 $btn-pure-secondary-border-style: $line-solid !default;
 
-// Primary
+// Primary = primary solid
 // ----------------------------------------
-/// text
+/// text opacity
+/// @namespace statement/disabled
+$btn-pure-primary-opacity-disabled: 1 !default;
+/// text color
 /// @namespace statement/disabled
 $btn-pure-primary-color-disabled: $color-text1-1 !default;
+$btn-pure-primary-color-opacity-disabled: rgba($btn-pure-primary-color-disabled, $btn-pure-primary-opacity-disabled) !default;
 /// background
 /// @namespace statement/disabled
 $btn-pure-primary-bg-disabled: $color-fill1-1 !default;
 /// border color
 /// @namespace statement/disabled
 $btn-pure-primary-border-color-disabled: $color-line1-1 !default;
+
 /// text
 /// @namespace statement/normal
 $btn-pure-primary-color: $color-white !default;
@@ -264,6 +276,7 @@ $btn-pure-primary-border-color-active: $color-transparent !default;
 /// border style
 /// @namespace statement/normal
 $btn-pure-primary-border-style: $line-solid !default;
+
 
 // Ghost Dark
 // ----------------------------------------
@@ -371,7 +384,7 @@ $btn-ghost-light-bg-hover-rgb: $color-black !default;
 $btn-ghost-light-bg-hover-opacity: .92 !default;
 $btn-ghost-light-bg-hover: rgba($btn-ghost-light-bg-hover-rgb, $btn-ghost-light-bg-hover-opacity);
 
-/// text
+/// text color
 /// @namespace statement/disabled
 $btn-ghost-light-color-disabled-rgb: $color-black !default;
 
@@ -435,11 +448,11 @@ $btn-warning-primary-bg-hover: $color-error-4 !default;
 /// @namespace statement/active
 $btn-warning-primary-bg-active: $color-error-4 !default;
 
-/// text
+/// text color
 /// @namespace statement/disabled
 $btn-warning-primary-color-disabled: $color-text1-1 !default;
 
-/// border
+/// border color
 /// @namespace statement/disabled
 $btn-warning-primary-border-color-disabled: $color-line1-2 !default;
 
@@ -485,11 +498,11 @@ $btn-warning-normal-bg-hover: $color-error-4 !default;
 /// @namespace statement/active
 $btn-warning-normal-bg-active: $color-error-4 !default;
 
-/// text
+/// text color
 /// @namespace statement/disabled
 $btn-warning-normal-color-disabled: $color-text1-1 !default;
 
-/// border
+/// border color
 /// @namespace statement/disabled
 $btn-warning-normal-border-color-disabled: $color-line1-1 !default;
 
@@ -503,7 +516,6 @@ $btn-warning-normal-bg-disabled: $color-fill1-1 !default;
 /// text
 /// @namespace statement/normal
 $btn-text-primary-color: $color-link-1 !default;
-
 /// text
 /// @namespace statement/hover
 $btn-text-primary-color-hover: $color-brand1-9 !default;
@@ -545,7 +557,11 @@ $btn-text-normal-color-hover: $color-brand1-6 !default;
 /// @namespace size/bounding
 $btn-text-size-s-height: $s-4 !default;
 
-/// text
+/// padding
+/// @namespace size/bounding
+$btn-text-size-s-padding: $s-zero !default;
+
+/// size
 /// @namespace size/text
 $btn-text-size-s-font: $font-size-caption !default;
 
@@ -557,6 +573,14 @@ $btn-text-icon-size-s: $icon-s !default;
 /// @namespace size/icon
 $btn-text-icon-s-margin: $s-1 !default;
 
+/// corner
+/// @namespace size/normal
+$btn-text-size-s-corner: $corner-zero !default;
+
+/// border width
+/// @namespace size/bounding
+$btn-text-size-s-border-width: $line-1 !default;
+
 // Text medium
 // ----------------------------------------
 
@@ -564,7 +588,11 @@ $btn-text-icon-s-margin: $s-1 !default;
 /// @namespace size/bounding
 $btn-text-size-m-height: $s-5 !default;
 
-/// text
+/// padding
+/// @namespace size/bounding
+$btn-text-size-m-padding: $s-zero !default;
+
+/// size
 /// @namespace size/text
 $btn-text-size-m-font: $font-size-body-1 !default;
 
@@ -576,6 +604,14 @@ $btn-text-icon-size-m: $icon-m !default;
 /// @namespace size/icon
 $btn-text-icon-m-margin: $s-1 !default;
 
+/// corner
+/// @namespace size/normal
+$btn-text-size-m-corner: $corner-zero !default;
+
+/// border width
+/// @namespace size/bounding
+$btn-text-size-m-border-width: $line-1 !default;
+
 // Text large
 // ----------------------------------------
 
@@ -583,7 +619,11 @@ $btn-text-icon-m-margin: $s-1 !default;
 /// @namespace size/bounding
 $btn-text-size-l-height: $s-6 !default;
 
-/// text
+/// padding
+/// @namespace size/bounding
+$btn-text-size-l-padding: $s-zero !default;
+
+/// size
 /// @namespace size/text
 $btn-text-size-l-font: $font-size-body-2 !default;
 
@@ -594,3 +634,607 @@ $btn-text-icon-size-l: $icon-l !default;
 /// margin
 /// @namespace size/icon
 $btn-text-icon-l-margin: $s-1 !default;
+
+/// corner
+/// @namespace size/normal
+$btn-text-size-l-corner: $corner-zero !default;
+
+/// border width
+/// @namespace size/bounding
+$btn-text-size-l-border-width: $line-1 !default;
+
+
+
+// Normal
+// ----------------------------------------
+
+$btn-normal-solid-color-disabled: $btn-pure-normal-color-opacity-disabled !default;
+$btn-normal-solid-bg-disabled: $btn-pure-normal-bg-disabled !default;
+$btn-normal-solid-border-color-disabled: $btn-pure-normal-border-color-disabled !default;
+
+$btn-normal-solid-color: $btn-pure-normal-color !default;
+$btn-normal-solid-color-hover: $btn-pure-normal-color-hover !default;
+$btn-normal-solid-color-active: $btn-pure-normal-color-active !default;
+$btn-normal-solid-bg: $btn-pure-normal-bg !default;
+$btn-normal-solid-bg-hover: $btn-pure-normal-bg-hover !default;
+$btn-normal-solid-bg-active: $btn-pure-normal-bg-active !default;
+$btn-normal-solid-border-color: $btn-pure-normal-border-color !default;
+$btn-normal-solid-border-color-hover: $btn-pure-normal-border-color-hover !default;
+$btn-normal-solid-border-color-active: $btn-pure-normal-border-color-active !default;
+$btn-normal-solid-box-shadow-color-active: $color-brand1-6 !default;
+$btn-normal-solid-box-shadow-opacity-active: .2 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-normal-solid-box-shadow-spread-active: $line-3 !default;
+$btn-normal-solid-box-shadow-active: 0 0 0 $btn-normal-solid-box-shadow-spread-active rgba($btn-normal-solid-box-shadow-color-active, $btn-normal-solid-box-shadow-opacity-active) !default;
+$btn-normal-solid-border-style: $btn-pure-normal-border-style !default;
+
+
+
+/// text color
+/// @namespace statement/disabled
+$btn-normal-outline-color-disabled: $color-text1-1 !default;
+/// background
+/// @namespace statement/disabled
+$btn-normal-outline-bg-disabled: $color-white !default;
+/// border color
+/// @namespace statement/disabled
+$btn-normal-outline-border-color-disabled: $color-line1-1 !default;
+
+/// text
+/// @namespace statement/normal
+$btn-normal-outline-color: $color-text1-4 !default;
+/// text
+/// @namespace statement/hover
+$btn-normal-outline-color-hover: $color-brand1-6 !default;
+/// text
+/// @namespace statement/active
+$btn-normal-outline-color-active: $color-brand1-9 !default;
+/// background
+/// @namespace statement/normal
+$btn-normal-outline-bg: $color-white !default;
+/// background
+/// @namespace statement/hover
+$btn-normal-outline-bg-hover: $color-white !default;
+/// background
+/// @namespace statement/active
+$btn-normal-outline-bg-active: $color-white !default;
+/// border color
+/// @namespace statement/normal
+$btn-normal-outline-border-color: $color-line1-3 !default;
+/// border color
+/// @namespace statement/hover
+$btn-normal-outline-border-color-hover: $color-brand1-6 !default;
+/// border color
+/// @namespace statement/active
+$btn-normal-outline-border-color-active: $color-brand1-9 !default;
+$btn-normal-outline-box-shadow-color-active: $color-brand1-6 !default;
+$btn-normal-outline-box-shadow-opacity-active: .2 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-normal-outline-box-shadow-spread-active: $line-3 !default;
+$btn-normal-outline-box-shadow-active: 0 0 0 $btn-normal-outline-box-shadow-spread-active rgba($btn-normal-outline-box-shadow-color-active, $btn-normal-outline-box-shadow-opacity-active) !default;
+/// border style
+/// @namespace statement/normal
+$btn-normal-outline-border-style: $line-solid !default;
+
+
+
+/// text color
+/// @namespace statement/disabled
+$btn-normal-text-color-disabled: $color-text1-1 !default;
+/// background
+/// @namespace statement/disabled
+$btn-normal-text-bg-disabled: $color-transparent !default;
+/// border color
+/// @namespace statement/disabled
+$btn-normal-text-border-color-disabled: $color-transparent !default;
+
+$btn-normal-text-color: $btn-text-normal-color !default;
+$btn-normal-text-color-hover: $btn-text-normal-color-hover !default;
+/// text
+/// @namespace statement/active
+$btn-normal-text-color-active: $color-brand1-9 !default;
+/// background
+/// @namespace statement/normal
+$btn-normal-text-bg: $color-transparent !default;
+/// background
+/// @namespace statement/hover
+$btn-normal-text-bg-hover: $color-transparent !default;
+/// background
+/// @namespace statement/active
+$btn-normal-text-bg-active: $color-transparent !default;
+/// border color
+/// @namespace statement/normal
+$btn-normal-text-border-color: $color-transparent !default;
+/// border color
+/// @namespace statement/hover
+$btn-normal-text-border-color-hover: $color-transparent !default;
+/// border color
+/// @namespace statement/active
+$btn-normal-text-border-color-active: $color-transparent !default;
+$btn-normal-text-box-shadow-color-active: $color-transparent !default;
+$btn-normal-text-box-shadow-opacity-active: 0 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-normal-text-box-shadow-spread-active: $line-3 !default;
+$btn-normal-text-box-shadow-active: 0 0 0 $btn-normal-text-box-shadow-spread-active rgba($btn-normal-text-box-shadow-color-active, $btn-normal-text-box-shadow-opacity-active) !default;
+/// border style
+/// @namespace statement/normal
+$btn-normal-text-border-style: $line-solid !default;
+
+
+
+// Primary
+// ----------------------------------------
+
+$btn-primary-solid-color-disabled: $btn-pure-primary-color-opacity-disabled !default;
+$btn-primary-solid-bg-disabled: $btn-pure-primary-bg-disabled !default;
+$btn-primary-solid-border-color-disabled: $btn-pure-primary-border-color-disabled !default;
+
+$btn-primary-solid-color: $btn-pure-primary-color !default;
+$btn-primary-solid-color-hover: $btn-pure-primary-color-hover !default;
+$btn-primary-solid-color-active: $btn-pure-primary-color-active !default;
+$btn-primary-solid-bg: $btn-pure-primary-bg !default;
+$btn-primary-solid-bg-hover: $btn-pure-primary-bg-hover !default;
+$btn-primary-solid-bg-active: $btn-pure-primary-bg-active !default;
+$btn-primary-solid-border-color: $btn-pure-primary-border-color !default;
+$btn-primary-solid-border-color-hover: $btn-pure-primary-border-color-hover !default;
+$btn-primary-solid-border-color-active: $btn-pure-primary-border-color-active !default;
+$btn-primary-solid-box-shadow-color-active: $color-brand1-6 !default;
+$btn-primary-solid-box-shadow-opacity-active: .2 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-primary-solid-box-shadow-spread-active: $line-3 !default;
+$btn-primary-solid-box-shadow-active: 0 0 0 $btn-primary-solid-box-shadow-spread-active rgba($btn-primary-solid-box-shadow-color-active, $btn-primary-solid-box-shadow-opacity-active) !default;
+$btn-primary-solid-border-style: $btn-pure-primary-border-style !default;
+
+
+
+$btn-primary-outline-color-disabled: $btn-pure-secondary-color-disabled !default;
+$btn-primary-outline-bg-disabled: $btn-pure-secondary-bg-disabled !default;
+$btn-primary-outline-border-color-disabled: $btn-pure-secondary-border-color-disabled !default;
+
+$btn-primary-outline-color: $btn-pure-secondary-color !default;
+$btn-primary-outline-color-hover: $btn-pure-secondary-color-hover !default;
+$btn-primary-outline-color-active: $btn-pure-secondary-color-active !default;
+$btn-primary-outline-bg: $btn-pure-secondary-bg !default;
+$btn-primary-outline-bg-hover: $btn-pure-secondary-bg-hover !default;
+$btn-primary-outline-bg-active: $btn-pure-secondary-bg-active !default;
+$btn-primary-outline-border-color: $btn-pure-secondary-border-color !default;
+$btn-primary-outline-border-color-hover: $btn-pure-secondary-border-color-hover !default;
+$btn-primary-outline-border-color-active: $btn-pure-secondary-border-color-active !default;
+$btn-primary-outline-box-shadow-color-active: $color-brand1-6 !default;
+$btn-primary-outline-box-shadow-opacity-active: .2 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-primary-outline-box-shadow-spread-active: $line-3 !default;
+$btn-primary-outline-box-shadow-active: 0 0 0 $btn-primary-outline-box-shadow-spread-active rgba($btn-primary-outline-box-shadow-color-active, $btn-primary-outline-box-shadow-opacity-active) !default;
+$btn-primary-outline-border-style: $btn-pure-secondary-border-style !default;
+
+
+
+/// text color
+/// @namespace statement/disabled
+$btn-primary-text-color-disabled: $color-brand1-1 !default;
+/// border color
+/// @namespace statement/disabled
+$btn-primary-text-border-color-disabled: $color-transparent !default;
+/// background
+/// @namespace statement/disabled
+$btn-primary-text--bg-disabled: $color-transparent !default;
+
+$btn-primary-text-color: $btn-text-primary-color !default;
+$btn-primary-text-color-hover: $btn-text-primary-color-hover !default;
+/// text
+/// @namespace statement/active
+$btn-primary-text-color-active: $color-brand1-9 !default;
+/// background
+/// @namespace statement/normal
+$btn-primary-text-bg: $color-transparent !default;
+/// background
+/// @namespace statement/hover
+$btn-primary-text-bg-hover: $color-transparent !default;
+/// background
+/// @namespace statement/active
+$btn-primary-text-bg-active: $color-transparent !default;
+/// border color
+/// @namespace statement/normal
+$btn-primary-text-border-color: $color-transparent !default;
+/// border color
+/// @namespace statement/hover
+$btn-primary-text-border-color-hover: $color-transparent !default;
+/// border color
+/// @namespace statement/active
+$btn-primary-text-border-color-active: $color-transparent !default;
+$btn-primary-text-box-shadow-color-active: $color-transparent !default;
+$btn-primary-text-box-shadow-opacity-active: 0 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-primary-text-box-shadow-spread-active: $line-3 !default;
+$btn-primary-text-box-shadow-active: 0 0 0 $btn-primary-text-box-shadow-spread-active rgba($btn-primary-text-box-shadow-color-active, $btn-primary-text-box-shadow-opacity-active) !default;
+/// border style
+/// @namespace statement/normal
+$btn-primary-text-border-style: $line-solid !default;
+
+
+
+// Warning
+// ----------------------------------------
+
+
+$btn-warning-solid-color-full-disabled: $btn-warning-normal-color-disabled !default;
+/// text opacity
+/// @namespace statement/disabled
+$btn-warning-solid-color-opacity-disabled: 1 !default;
+$btn-warning-solid-color-disabled: rgba($btn-warning-solid-color-full-disabled, $btn-warning-solid-color-opacity-disabled) !default;
+$btn-warning-solid-bg-disabled: $btn-warning-normal-bg-disabled !default;
+$btn-warning-solid-border-color-disabled: $btn-warning-normal-border-color-disabled !default;
+
+$btn-warning-solid-color: $btn-warning-normal-color !default;
+$btn-warning-solid-color-hover: $btn-warning-normal-color-hover !default;
+$btn-warning-solid-color-active: $btn-warning-normal-color-active !default;
+$btn-warning-solid-bg: $btn-warning-normal-bg !default;
+$btn-warning-solid-bg-hover: $btn-warning-normal-bg-hover !default;
+$btn-warning-solid-bg-active: $btn-warning-normal-bg-active !default;
+$btn-warning-solid-border-color: $btn-warning-normal-border-color !default;
+$btn-warning-solid-border-color-hover: $btn-warning-normal-border-color-hover !default;
+$btn-warning-solid-border-color-active: $btn-warning-normal-border-color-active !default;
+$btn-warning-solid-box-shadow-color-active: $color-error-3 !default;
+$btn-warning-solid-box-shadow-opacity-active: .2 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-warning-solid-box-shadow-spread-active: $line-3 !default;
+$btn-warning-solid-box-shadow-active: 0 0 0 $btn-warning-solid-box-shadow-spread-active rgba($btn-warning-solid-box-shadow-color-active, $btn-warning-solid-box-shadow-opacity-active) !default;
+/// border style
+/// @namespace statement/normal
+$btn-warning-solid-border-style: $line-solid !default;
+
+
+
+$btn-warning-outline-color-disabled: $btn-warning-primary-color-disabled !default;
+$btn-warning-outline-bg-disabled: $btn-warning-primary-bg-disabled !default;
+$btn-warning-outline-border-color-disabled: $btn-warning-primary-border-color-disabled !default;
+
+$btn-warning-outline-color: $btn-warning-primary-color !default;
+$btn-warning-outline-color-hover: $btn-warning-primary-color-hover !default;
+$btn-warning-outline-color-active: $btn-warning-primary-color-active !default;
+$btn-warning-outline-bg: $btn-warning-primary-bg !default;
+$btn-warning-outline-bg-hover: $btn-warning-primary-bg-hover !default;
+$btn-warning-outline-bg-active: $btn-warning-primary-bg-active !default;
+$btn-warning-outline-border-color: $btn-warning-primary-border-color !default;
+$btn-warning-outline-border-color-hover: $btn-warning-primary-border-color-hover !default;
+$btn-warning-outline-border-color-active: $btn-warning-primary-border-color-active !default;
+$btn-warning-outline-box-shadow-color-active: $color-error-3 !default;
+$btn-warning-outline-box-shadow-opacity-active: .2 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-warning-outline-box-shadow-spread-active: $line-3 !default;
+$btn-warning-outline-box-shadow-active: 0 0 0 $btn-warning-outline-box-shadow-spread-active rgba($btn-warning-outline-box-shadow-color-active, $btn-warning-outline-box-shadow-opacity-active) !default;
+$btn-warning-outline-border-style: $btn-warning-border-style !default;
+
+
+
+/// text color
+/// @namespace statement/disabled
+$btn-warning-text-color-disabled: $color-error-1 !default;
+/// background
+/// @namespace statement/disabled
+$btn-warning-text-bg-disabled: $color-transparent !default;
+/// border color
+/// @namespace statement/disabled
+$btn-warning-text-border-color-disabled: $color-transparent !default;
+
+/// text
+/// @namespace statement/normal
+$btn-warning-text-color: $color-error-3 !default;
+/// text
+/// @namespace statement/hover
+$btn-warning-text-color-hover: $color-error-4 !default;
+/// text
+/// @namespace statement/active
+$btn-warning-text-color-active: $color-error-4 !default;
+/// background
+/// @namespace statement/normal
+$btn-warning-text-bg: $color-transparent !default;
+/// background
+/// @namespace statement/hover
+$btn-warning-text-bg-hover: $color-transparent !default;
+/// background
+/// @namespace statement/active
+$btn-warning-text-bg-active: $color-transparent !default;
+/// border color
+/// @namespace statement/normal
+$btn-warning-text-border-color: $color-transparent !default;
+/// border color
+/// @namespace statement/hover
+$btn-warning-text-border-color-hover: $color-transparent !default;
+/// border color
+/// @namespace statement/active
+$btn-warning-text-border-color-active: $color-transparent !default;
+$btn-warning-text-box-shadow-color-active: $color-transparent !default;
+$btn-warning-text-box-shadow-opacity-active: 0 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-warning-text-box-shadow-spread-active: $line-3 !default;
+$btn-warning-text-box-shadow-active: 0 0 0 $btn-warning-text-box-shadow-spread-active rgba($btn-warning-text-box-shadow-color-active, $btn-warning-text-box-shadow-opacity-active) !default;
+/// border style
+/// @namespace statement/normal
+$btn-warning-text-border-style: $line-solid !default;
+
+
+
+// Inverse
+// ----------------------------------------
+
+
+
+/// text color
+/// @namespace statement/disabled
+$btn-inverse-solid-color-full-active-disabled: $color-white !default;
+/// text opacity
+/// @namespace statement/disabled
+/// @type alpha
+$btn-inverse-solid-opacity-active-disabled: .26 !default;
+$btn-inverse-solid-color-disabled: rgba($btn-inverse-solid-color-full-active-disabled, $btn-inverse-solid-opacity-active-disabled) !default;
+/// background color
+/// @namespace statement/disabled
+$btn-inverse-solid-bg-color-full-disabled: $color-white !default;
+/// background opacity
+/// @namespace statement/disabled
+/// @type alpha
+$btn-inverse-solid-bg-opacity-disabled: .04 !default;
+$btn-inverse-solid-bg-disabled: rgba($btn-inverse-solid-bg-color-full-disabled, $btn-inverse-solid-bg-opacity-disabled) !default;
+/// border color
+/// @namespace statement/disabled
+$btn-inverse-solid-border-color-full-disabled: $color-transparent !default;
+/// border opacity
+/// @namespace statement/disabled
+/// @type alpha
+$btn-inverse-solid-border-opacity-disabled: 0 !default;
+$btn-inverse-solid-border-disabled: rgba($btn-inverse-solid-border-color-full-disabled, $btn-inverse-solid-border-opacity-disabled) !default;
+
+/// text
+/// @namespace statement/normal
+$btn-inverse-solid-color: $color-white !default;
+/// text
+/// @namespace statement/hover
+$btn-inverse-solid-color-hover: $color-white !default;
+/// text color
+/// @namespace statement/active
+$btn-inverse-solid-color-full-active: $color-white !default;
+/// text opacity
+/// @namespace statement/active
+/// @type alpha
+$btn-inverse-solid-opacity-active: .52 !default;
+$btn-inverse-solid-color-active: rgba($btn-inverse-solid-color-full-active, $btn-inverse-solid-opacity-active) !default;
+/// background color
+/// @namespace statement/normal
+$btn-inverse-solid-bg-color-full: $color-white !default;
+/// background opacity
+/// @namespace statement/normal
+/// @type alpha
+$btn-inverse-solid-bg-opacity: .12 !default;
+$btn-inverse-solid-bg: rgba($btn-inverse-solid-bg-color-full, $btn-inverse-solid-bg-opacity) !default;
+/// background color
+/// @namespace statement/hover
+$btn-inverse-solid-bg-color-full-hover: $color-white !default;
+/// background opacity
+/// @namespace statement/hover
+/// @type alpha
+$btn-inverse-solid-bg-opacity-hover: .26 !default;
+$btn-inverse-solid-bg-hover: rgba($btn-inverse-solid-bg-color-full-hover, $btn-inverse-solid-bg-opacity-hover) !default;
+/// background color
+/// @namespace statement/active
+$btn-inverse-solid-bg-color-full-acitve: $color-white !default;
+/// background opacity
+/// @namespace statement/active
+/// @type alpha
+$btn-inverse-solid-bg-opacity-active: .08 !default;
+$btn-inverse-solid-bg-active: rgba($btn-inverse-solid-bg-color-full-acitve, $btn-inverse-solid-bg-opacity-active) !default;
+/// border color
+/// @namespace statement/normal
+$btn-inverse-solid-border-color-full-hover: $color-transparent !default;
+/// border opacity
+/// @namespace statement/hover
+/// @type alpha
+$btn-inverse-solid-border-opacity-hover: 0 !default;
+$btn-inverse-solid-border-color-hover: rgba($btn-inverse-solid-border-color-full-hover, $btn-inverse-solid-border-opacity-hover) !default;
+/// border color
+/// @namespace statement/active
+$btn-inverse-solid-border-color-full-active: $color-transparent !default;
+/// border opacity
+/// @namespace statement/active
+/// @type alpha
+$btn-inverse-solid-border-opacity-active: 0 !default;
+$btn-inverse-solid-border-color-active: rgba($btn-inverse-solid-border-color-full-active, $btn-inverse-solid-border-opacity-active) !default;
+$btn-inverse-solid-box-shadow-color-full-acitve: $color-white !default;
+$btn-inverse-solid-box-shadow-opacity-active: .04 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-inverse-solid-box-shadow-spread-active: $line-3 !default;
+$btn-inverse-solid-box-shadow-active: 0 0 0 $btn-inverse-solid-box-shadow-spread-active rgba($btn-inverse-solid-box-shadow-color-full-acitve, $btn-inverse-solid-box-shadow-opacity-active) !default;
+/// border style
+/// @namespace statement/normal
+$btn-inverse-solid-border-style: $line-solid !default;
+
+
+
+/// text color
+/// @namespace statement/disabled
+$btn-inverse-outline-color-full-disabled: $color-white !default;
+/// text opacity
+/// @namespace statement/disabled
+/// @type alpha
+$btn-inverse-outline-opacity-disabled: .26 !default;
+$btn-inverse-outline-color-disabled: rgba($btn-inverse-outline-color-full-disabled, $btn-inverse-outline-opacity-disabled) !default;
+/// background
+/// @namespace statement/disabled
+$btn-inverse-outline-bg-disabled: $color-transparent !default;
+/// border color
+/// @namespace statement/disabled
+$btn-inverse-outline-border-color-full-disabled: $color-white !default;
+/// border opacity
+/// @namespace statement/disabled
+/// @type alpha
+$btn-inverse-outline-border-opacity-disabled: .08 !default;
+$btn-inverse-outline-border-color-disabled: rgba($btn-inverse-outline-border-color-full-disabled, $btn-inverse-outline-border-opacity-disabled) !default;
+
+/// text
+/// @namespace statement/normal
+$btn-inverse-outline-color: $color-white !default;
+/// text color
+/// @namespace statement/hover
+$btn-inverse-outline-color-full-hover: $color-white !default;
+/// text opacity
+/// @namespace statement/hover
+/// @type alpha
+$btn-inverse-outline-opacity-hover: .74 !default;
+$btn-inverse-outline-color-hover: rgba($btn-inverse-outline-color-full-hover, $btn-inverse-outline-opacity-hover) !default;
+/// text color
+/// @namespace statement/active
+$btn-inverse-outline-color-full-active: $color-white !default;
+/// text opacity
+/// @namespace statement/active
+/// @type alpha
+$btn-inverse-outline-opacity-active: .26 !default;
+$btn-inverse-outline-color-active: rgba($btn-inverse-outline-color-full-active, $btn-inverse-outline-opacity-active) !default;
+/// background
+/// @namespace statement/normal
+$btn-inverse-outline-bg: $color-transparent !default;
+/// background color
+/// @namespace statement/hover
+$btn-inverse-outline-bg-color-full-hover: $color-white !default;
+/// background opacity
+/// @namespace statement/hover
+/// @type alpha
+$btn-inverse-outline-bg-opacity-hover: .26 !default;
+$btn-inverse-outline-bg-hover: rgba($btn-inverse-outline-bg-color-full-hover, $btn-inverse-outline-bg-opacity-hover) !default;
+/// background color
+/// @namespace statement/active
+$btn-inverse-outline-bg-color-full-active: $color-white !default;
+/// background opacity
+/// @namespace statement/active
+/// @type alpha
+$btn-inverse-outline-bg-opacity-active: .08 !default;
+$btn-inverse-outline-bg-active: rgba($btn-inverse-outline-bg-color-full-active, $btn-inverse-outline-bg-opacity-active) !default;
+/// border color
+/// @namespace statement/normal
+$btn-inverse-outline-border-color: $color-white !default;
+/// border color
+/// @namespace statement/normal
+$btn-inverse-outline-border-color-full-hover: $color-white !default;
+/// border opacity
+/// @namespace statement/hover
+/// @type alpha
+$btn-inverse-outline-border-opacity-hover: .26 !default;
+$btn-inverse-outline-border-color-hover: rgba($btn-inverse-outline-border-color-full-hover, $btn-inverse-outline-border-opacity-hover) !default;
+/// border color
+/// @namespace statement/active
+$btn-inverse-outline-border-color-full-active: $color-white !default;
+/// border opacity
+/// @namespace statement/active
+/// @type alpha
+$btn-inverse-outline-border-opacity-active: .08 !default;
+$btn-inverse-outline-border-color-active: rgba($btn-inverse-outline-border-color-full-active, $btn-inverse-outline-border-opacity-active) !default;
+$btn-inverse-outline-box-shadow-color-full-active: $color-white !default;
+$btn-inverse-outline-box-shadow-opacity-active: .04 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-inverse-outline-box-shadow-spread-active: $line-3 !default;
+$btn-inverse-outline-box-shadow-active: 0 0 0 $btn-inverse-outline-box-shadow-spread-active rgba($btn-inverse-outline-box-shadow-color-full-active, $btn-inverse-outline-box-shadow-opacity-active) !default;
+/// border style
+/// @namespace statement/normal
+$btn-inverse-outline-border-style: $line-solid !default;
+
+
+
+/// text color
+/// @namespace statement/disabled
+$btn-inverse-text-color-full-disabled: $color-white !default;
+/// text opacity
+/// @namespace statement/disabled
+/// @type alpha
+$btn-inverse-text-opacity-disabled: .26 !default;
+$btn-inverse-text-color-disabled: rgba($btn-inverse-text-color-full-disabled, $btn-inverse-text-opacity-disabled) !default;
+/// background
+/// @namespace statement/disabled
+$btn-inverse-text-bg-disabled: $color-transparent !default;
+/// border color
+/// @namespace statement/disabled
+$btn-inverse-text-border-color-disabled: $color-transparent !default;
+
+/// text color
+/// @namespace statement/normal
+$btn-inverse-text-color-full: $color-white !default;
+/// text opacity
+/// @namespace statement/normal
+/// @type alpha
+$btn-inverse-text-opacity: .74 !default;
+$btn-inverse-text-color: rgba($btn-inverse-text-color-full, $btn-inverse-text-opacity) !default;
+/// text color
+/// @namespace statement/hover
+$btn-inverse-text-color-full-hover: $color-white !default;
+/// text opacity
+/// @namespace statement/hover
+/// @type alpha
+$btn-inverse-text-opacity-hover: 1 !default;
+$btn-inverse-text-color-hover: rgba($btn-inverse-text-color-full-hover, $btn-inverse-text-opacity-hover) !default;
+/// text color
+/// @namespace statement/active
+$btn-inverse-text-color-full-active: $color-white !default;
+/// text opacity
+/// @namespace statement/active
+/// @type alpha
+$btn-inverse-text-opacity-active: .52 !default;
+$btn-inverse-text-color-active: rgba($btn-inverse-text-color-full-active, $btn-inverse-text-opacity-active) !default;
+/// background
+/// @namespace statement/normal
+$btn-inverse-text-bg: $color-transparent !default;
+/// background color
+/// @namespace statement/hover
+$btn-inverse-text-bg-color-full-hover: $color-transparent !default;
+/// background opacity
+/// @namespace statement/hover
+/// @type alpha
+$btn-inverse-text-bg-opacity-hover: 0 !default;
+$btn-inverse-text-bg-hover: rgba($btn-inverse-text-bg-color-full-hover, $btn-inverse-text-bg-opacity-hover) !default;
+/// background color
+/// @namespace statement/active
+$btn-inverse-text-bg-color-full-active: $color-transparent !default;
+/// background opacity
+/// @namespace statement/active
+/// @type alpha
+$btn-inverse-text-bg-opacity-active: 0 !default;
+$btn-inverse-text-bg-active: rgba($btn-inverse-text-bg-color-full-active, $btn-inverse-text-bg-opacity-active) !default;
+/// border color
+/// @namespace statement/normal
+$btn-inverse-text-border-color: $color-transparent !default;
+/// border color
+/// @namespace statement/hover
+$btn-inverse-text-border-color-full-hover: $color-white !default;
+/// border opacity
+/// @namespace statement/hover
+/// @type alpha
+$btn-inverse-text-border-opacity-hover: 0 !default;
+$btn-inverse-text-border-color-hover: rgba($btn-inverse-text-border-color-full-hover, $btn-inverse-text-border-opacity-hover) !default;
+/// border color
+/// @namespace statement/active
+$btn-inverse-text-border-color-full-active: $color-transparent !default;
+/// border opacity
+/// @namespace statement/active
+/// @type alpha
+$btn-inverse-text-border-opacity-active: 0 !default;
+$btn-inverse-text-border-color-active: rgba($btn-inverse-text-border-color-full-active, $btn-inverse-text-border-opacity-active) !default;
+$btn-inverse-text-box-shadow-color-active: $color-transparent !default;
+$btn-inverse-text-box-shadow-opacity-active: 0 !default;
+/// box shadow spread
+/// @namespace statement/active
+$btn-inverse-text-box-shadow-spread-active: $line-3 !default;
+$btn-inverse-text-box-shadow-active: 0 0 0 $btn-inverse-text-box-shadow-spread-active rgba($btn-inverse-text-box-shadow-color-active, $btn-inverse-text-box-shadow-opacity-active) !default;
+/// border style
+/// @namespace statement/normal
+$btn-inverse-text-border-style: $line-solid !default;
+/// border style
+/// @namespace statement/normal
+$btn-inverse-text-border-style: $line-solid !default;

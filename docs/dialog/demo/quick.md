@@ -40,7 +40,7 @@ const popupShow = () => {
         title: 'Custom',
         content: 'custom content custom content...',
         footer: (
-            <Button warning type="primary" onClick={() => dialog.hide()}>
+            <Button model="solid" type="warning" onClick={() => dialog.hide()}>
                 Custom button
             </Button>
         )

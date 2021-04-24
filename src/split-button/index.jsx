@@ -22,7 +22,11 @@ class SplitButton extends React.Component {
         /**
          * 按钮的类型
          */
-        type: PropTypes.oneOf(['normal', 'primary', 'secondary']),
+        type: PropTypes.oneOf(['normal', 'primary', 'warning', 'inverse']),
+        /**
+         * 按钮的样式
+         */
+        model: PropTypes.oneOf(['solid', 'outline', 'text']),
         /**
          * 按钮组的尺寸
          */
@@ -124,6 +128,7 @@ class SplitButton extends React.Component {
     static defaultProps = {
         prefix: 'next-',
         type: 'normal',
+        model: 'solid',
         size: 'medium',
         autoWidth: true,
         popupTriggerType: 'click',
@@ -214,6 +219,7 @@ class SplitButton extends React.Component {
             label,
             size,
             type,
+            model,
             component,
             ghost,
             className,
@@ -245,6 +251,7 @@ class SplitButton extends React.Component {
 
         const sharedBtnProps = {
             type,
+            model,
             size,
             component,
             ghost,

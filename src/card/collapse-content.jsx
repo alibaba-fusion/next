@@ -121,7 +121,7 @@ class CardCollapseContent extends Component {
                 </div>
                 {needMore ? (
                     <div className={`${prefix}card-footer`} ref={this.saveFooter} onClick={this.handleToggle}>
-                        <Button text type="primary">
+                        <Button model="text" type="primary">
                             {expand ? locale.fold : locale.expand}
                             <Icon type="arrow-down" className={expand ? 'expand' : ''} />
                         </Button>

@@ -23,7 +23,8 @@ const menu = ['Undo', 'Redo', 'Cut', 'Copy', 'Paste'].map(item => <Item key={ite
 
 ReactDOM.render(<Box direction="row" spacing={20}>
     <SplitButton label="Edit Document">{menu}</SplitButton>
-    <SplitButton label="Edit Document" type="secondary">{menu}</SplitButton>
     <SplitButton label="Edit Document" type="primary">{menu}</SplitButton>
+    <SplitButton label="Edit Document" type="primary" model="outline">{menu}</SplitButton>
+    <SplitButton label="Edit Document" type="primary" model="text">{menu}</SplitButton>
 </Box>, mountNode);
 ````

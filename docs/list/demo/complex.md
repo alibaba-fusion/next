@@ -40,11 +40,11 @@ const data = [{
 }];
 const actions = (
     <Box direction="row" align="center" style={{whiteSpace: 'nowrap', height: '100%', paddingLeft: 100}}>
-        <Button text type="primary">编辑</Button>
+        <Button model="text" type="primary">编辑</Button>
         <Divider direction="ver" />
-        <Button text type="primary">订阅</Button>
+        <Button model="text" type="primary">订阅</Button>
         <Divider direction="ver" />
-        <Button text type="primary">删除</Button>
+        <Button model="text" type="primary">删除</Button>
     </Box>
 );
 

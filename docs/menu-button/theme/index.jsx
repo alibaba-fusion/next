@@ -79,6 +79,9 @@ function renderButton(type, locale, props) {
             }
         }
     }
+    if(commonProps.type === 'inverse')style = {
+        backgroundColor: '#333',
+    };
 
     return (<Demo title={type} block style={style}>
         <DemoHead cols={cols} />
@@ -106,11 +109,12 @@ function render(locale, lang) {
             <Demo title={locale.menuButton}>
                 {renderButton('Normal', locale)}
                 {renderButton('Primary', locale)}
-                {renderButton('Secondary', locale)}
+                {renderButton('Inverse', locale)}
             </Demo>
             <Demo title={locale.textMenuButton}>
-                {renderButton('Normal', locale, { text: true })}
-                {renderButton('Primary', locale, { text: true })}
+                {renderButton('Normal', locale, { model: 'text' })}
+                {renderButton('Primary', locale, { model: 'text' })}
+                {renderButton('Inverse', locale, { model: 'text' })}
             </Demo>
             <Demo title={locale.ghostMenuButton}>
                 {renderButton('Normal', locale, { ghost: 'light' })}

@@ -22,7 +22,7 @@ import { Affix, Button } from '@alifd/next';
 ReactDOM.render(
     <div>
         <Affix>
-            <Button type="secondary">Basic Affixed Button</Button>
+            <Button type="primary" model="outline">Basic Affixed Button</Button>
         </Affix>
         <br/>
         <span>Scroll window to see button affixed.</span>

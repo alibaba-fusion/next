@@ -50,7 +50,7 @@ class Demo extends React.Component {
     op = (value, index) => {
         return (<span>
             <Button type="primary" onClick={this.addItem.bind(this, index + 1)}>add</Button>
-            <Button warning onClick={this.removeItem.bind(this, index)} style={{marginLeft: 4}}>delete</Button>
+            <Button type="warning" onClick={this.removeItem.bind(this, index)} style={{marginLeft: 4}}>delete</Button>
         </span>);
     }
 

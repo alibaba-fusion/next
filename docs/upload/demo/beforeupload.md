@@ -61,7 +61,7 @@ ReactDOM.render([
         onChange={onChange}
         key="2"
     >
-        <Button type="secondary" style={{margin: '0 0 10px'}}>Async Call before Upload File</Button>
+        <Button type="primary" model="outline" style={{margin: '0 0 10px'}}>Async Call before Upload File</Button>
     </Upload>,
     <Upload
         listType="text"

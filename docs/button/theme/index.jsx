@@ -15,8 +15,13 @@ const i18nMap = {
         ghostButton: '幽灵按钮',
         groupButton: '按钮组合',
         textButton: '文字按钮',
-        normal: '普通',
-        primary: '主要',
+        normal: 'type="normal"',
+        primary: 'type="primary"',
+        warning: 'type="warning"',
+        inverse: 'type="inverse"',
+        solid: 'model="solid"',
+        outline: 'model="outline"',
+        text: 'model="text"',
         secondary: '次要',
         light: '浅色',
         dark: '深色',
@@ -32,9 +37,13 @@ const i18nMap = {
         ghostButton: 'Ghost Button',
         groupButton: 'Group Button',
         textButton: 'Text Button',
-        normal: 'Normal',
-        primary: 'Primary',
-        secondary: 'Secondary',
+        normal: 'type="normal"',
+        primary: 'type="primary"',
+        warning: 'type="warning"',
+        inverse: 'type="inverse"',
+        solid: 'model="solid"',
+        outline: 'model="outline"',
+        text: 'model="text"',
         light: 'Light',
         dark: 'Dark',
         hover: 'Hover',
@@ -47,29 +56,29 @@ const i18nMap = {
 
 const ButtonGroup = Button.Group;
 
-function renderButton(type, i18n, children) {
+function renderButton(type, i18n, children, model) {
     return (
-        <Demo title={i18n[type]} key={type}>
-            <DemoHead cols={['L', 'M', 'S']} />
+        <Demo title={i18n[type]} key={type} style={{backgroundColor: type === 'inverse' ? '#222' : ''}}>
+            <DemoHead cols={['L', 'M', 'S']}/>
             <DemoGroup label={i18n.normal}>
-                <Button type={type} size="large">{children}</Button>
-                <Button type={type} size="medium">{children}</Button>
-                <Button type={type} size="small">{children}</Button>
+                <Button type={type} size="large" model={model}>{children}</Button>
+                <Button type={type} size="medium" model={model}>{children}</Button>
+                <Button type={type} size="small" model={model}>{children}</Button>
             </DemoGroup>
             <DemoGroup label={i18n.hover}>
-                <Button type={type} size="large" className="hover">{children}</Button>
-                <Button type={type} size="medium" className="hover">{children}</Button>
-                <Button type={type} size="small" className="hover">{children}</Button>
+                <Button type={type} size="large" className="hover" model={model}>{children}</Button>
+                <Button type={type} size="medium" className="hover" model={model}>{children}</Button>
+                <Button type={type} size="small" className="hover" model={model}>{children}</Button>
             </DemoGroup>
             <DemoGroup label={i18n.active}>
-                <Button type={type} size="large" className="active">{children}</Button>
-                <Button type={type} size="medium" className="active">{children}</Button>
-                <Button type={type} size="small" className="active">{children}</Button>
+                <Button type={type} size="large" className="active" model={model}>{children}</Button>
+                <Button type={type} size="medium" className="active" model={model}>{children}</Button>
+                <Button type={type} size="small" className="active" model={model}>{children}</Button>
             </DemoGroup>
-            <DemoGroup label={i18n.disabled}>
-                <Button type={type} size="large" disabled>{children}</Button>
-                <Button type={type} size="medium" disabled>{children}</Button>
-                <Button type={type} size="small" disabled>{children}</Button>
+            <DemoGroup label={i18n.disabled} >
+                <Button type={type} size="large" disabled model={model}>{children}</Button>
+                <Button type={type} size="medium" disabled model={model}>{children}</Button>
+                <Button type={type} size="small" disabled model={model}>{children}</Button>
             </DemoGroup>
         </Demo>
     );
@@ -303,7 +312,7 @@ class FunctionDemo extends React.Component {
     }
 
     render() {
-        const { title, locale, types, buttonRender } = this.props;
+        const { title, locale, types, buttonRender, model } = this.props;
         const { demoFunction } = this.state;
         const iconType = demoFunction['arrow-type'].value;
         const iconPosition = ['arrow-right', 'arrow-up', 'arrow-down'].indexOf(iconType) > -1 ? 'after' : 'before';
@@ -320,7 +329,7 @@ class FunctionDemo extends React.Component {
 
         return (<Demo title={title} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
             {
-                types.map(type => buttonRender(type, locale, children))
+                types.map(type => buttonRender(type, locale, children, model))
             }
         </Demo>)
     }
@@ -329,9 +338,9 @@ class FunctionDemo extends React.Component {
 
 function render(i18n, lang) {
     return ReactDOM.render(<ConfigProvider lang={lang === 'en-us' ? enUS : zhCN}><div className="demo-container">
-        <FunctionDemo title={i18n.button} locale={i18n} buttonRender={renderButton} types={['normal', 'primary', 'secondary']} />
-        <FunctionDemo title={i18n.textButton} locale={i18n} buttonRender={renderTextButton} types={['normal', 'primary', 'secondary']} />
-        <FunctionDemo title={i18n.warningButton} locale={i18n} buttonRender={renderWarningButton} types={['normal', 'primary']} noArrow />
+    <FunctionDemo title={i18n.solid} locale={i18n} buttonRender={renderButton} types={['normal', 'primary', 'warning', 'inverse']} model="solid"/>
+        <FunctionDemo title={i18n.outline} locale={i18n} buttonRender={renderButton} types={['normal', 'primary', 'warning', 'inverse']} model="outline"/>
+        <FunctionDemo title={i18n.text} locale={i18n} buttonRender={renderButton} types={['normal', 'primary', 'warning', 'inverse']} model="text"/>
         <FunctionDemo title={i18n.ghostButton} locale={i18n} buttonRender={renderGhostButton} types={['light', 'dark']} />
         <FunctionGroupButton title={i18n.groupButton} locale={i18n} types={['normal', 'primary', 'secondary']} />
     </div></ConfigProvider>, document.getElementById('container'));

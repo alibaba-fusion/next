@@ -29,7 +29,7 @@ class Demo extends React.Component {
             <div className="custom-affix-container" ref={this._containerRefHandler.bind(this)}>
                 <div className="affix-wrapper">
                     <Affix container={() => this.container} offsetTop={0}>
-                        <Button type="secondary">Custom Container Affixed</Button>
+                        <Button type="primary" model="outline">Custom Container Affixed</Button>
                     </Affix>
                 </div>
             </div>

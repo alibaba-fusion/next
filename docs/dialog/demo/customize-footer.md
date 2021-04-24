@@ -56,7 +56,7 @@ class Demo extends React.Component {
                 <br/>
                 <Dialog
                     title="Welcome to Alibaba.com"
-                    footer={<Button warning type="primary" onClick={this.onCloseFullyCustomized}>Customize footer</Button>}
+                    footer={<Button type="warning" onClick={this.onCloseFullyCustomized}>Customize footer</Button>}
                     visible={this.state.fullyCustomizedVisible}
                     onOk={this.onCloseFullyCustomized}
                     onCancel={this.onCloseFullyCustomized}

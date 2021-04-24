@@ -13,6 +13,12 @@
 
 -   标记一个（或封装一组）操作命令，响应用户点击行为，触发相应的业务逻辑。
 
+## 如何使用
+
+### `@alifd/next 1.23`版本起，`type`、`warning`、`text`、`ghost`接口整合为`type`与`model`
+
+自`@alifd/next 1.23`起，`type`、`warning`、`text`、`ghost`逐步废弃，统一整合为`type`与`model`两个接口，详细参考[#按钮类型](#type-container)及[#API](#API)。
+
 ## API
 
 ### Button

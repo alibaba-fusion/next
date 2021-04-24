@@ -25,10 +25,10 @@ ReactDOM.render(<div>
         <Button type="primary" size="small"><Icon type="atm" />Small</Button>
     </Box>
     <br />
-    <Button.Group size="large">
-        <Button className="basic-button">Button</Button>
-        <Button className="basic-button">Button</Button>
-        <Button className="basic-button">Button</Button>
+    <Button.Group size="large" >
+        <Button model="outline">Button</Button>
+        <Button model="outline">Button</Button>
+        <Button model="outline">Button</Button>
     </Button.Group>
 </div>, mountNode);
 ````

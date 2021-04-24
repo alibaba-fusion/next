@@ -317,7 +317,7 @@ class List extends Component {
             img = (
                 <div className={`${prefixCls}-list-item-handler`}>
                     <Icon type="picture" />
-                    <Button text onClick={() => this.handleCancel(file)}>
+                    <Button model="text" onClick={() => this.handleCancel(file)}>
                         {locale.card.cancel}
                     </Button>
                 </div>
