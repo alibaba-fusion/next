@@ -278,6 +278,13 @@ describe('Picker', () => {
                 assert(wrapper.find('.next-input-label').length === 1);
             });
         });
+
+        it('input separator', () => {
+            ['~', <span>~</span>].forEach(separator => {
+                wrapper = mount(<RangePicker separator={separator} />);
+                assert(wrapper.find('.next-date-picker2-input-separator').text() === '~');
+            });
+        });
     });
 
     describe('controlled', () => {

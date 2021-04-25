@@ -161,7 +161,9 @@
 
     &-input-separator {
         color: $input-border-color;
-        min-width: 12px;
+        font-size: 12px;
+        display: inline-block;
+        min-width: 16px;
         text-align: center;
     }
 }
