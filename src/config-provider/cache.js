@@ -41,6 +41,10 @@ class Cache {
         }
     }
 
+    clear() {
+        this._store.clear();
+    }
+
     root() {
         return this._store.get(this._root);
     }
