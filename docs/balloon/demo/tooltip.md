@@ -28,7 +28,7 @@ const dataSource = [{
     name: 'William Shakespeare',
     intro: `William Shakespeare (bapt. 26 April 1564 – 23 April 1616) was an English playwright, poet, and actor, widely regarded as the greatest writer in the English language and the world's greatest dramatist. He is often called England's national poet and the "Bard of Avon" (or simply "the Bard").`,
     id: 100306660941,
-}]
+}];
 const render = (value, index, record) => {
     const intro = <div style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{value}</div>;
     return <Tooltip trigger={intro} align="br">{value}</Tooltip>;
