@@ -109,6 +109,7 @@ class Picker extends React.Component {
         inputReadOnly: SharedPT.readOnly,
         format: SharedPT.format,
         label: PT.node,
+        separator: PT.node,
 
         // popup
         followTrigger: PT.bool,
