@@ -108,6 +108,7 @@ export interface RangePickerProps extends CommonProps {
     inputReadOnly?: boolean;
     hasClear?: boolean;
     label?: React.ReactNode;
+    separator?: React.ReactNode;
     visible?: boolean;
     defaultVisible?: boolean;
     popupTriggerType?: 'click' | 'hover';
