@@ -39,7 +39,7 @@ class DateInput extends React.Component {
         autoFocus: false,
         readOnly: false,
         hasClear: true,
-        separator: <Icon size="xxs" type="minus" />,
+        separator: '-',
         hasBorder: true,
         size: 'medium',
     };
