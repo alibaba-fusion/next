@@ -13,14 +13,16 @@
     position: relative;
     display: inline-block;
     border: $border-width-container solid transparent;
-    width: $width;
+    min-width: $width;
     height: calc(#{$trigger-size} + #{$border-width-container} * 2);
     border-radius: $container-radius;
 
     &:after {
+        content: '';
+    }
+    > .#{$css-prefix}switch-btn {
         border: $border-width-trigger solid transparent;
         position: absolute;
-        // left: $width - $border-width-container * 2 - $trigger-size;
         left: 100%;
         transform: translateX(-100%);
         width: $trigger-size;
@@ -30,8 +32,6 @@
     }
     > .#{$css-prefix}switch-children {
         font-size: $font-size-body-1;
-        position: absolute;
-        // width: $trigger-size;
         height: $trigger-size;
         line-height: $trigger-size;
     }
