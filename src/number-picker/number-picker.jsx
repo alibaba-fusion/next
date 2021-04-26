@@ -11,6 +11,7 @@ import { func, obj } from '../util';
 
 const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
 const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER || -Math.pow(2, 53) + 1;
+const NUMBER_TYPES = ['normal', 'inline'];
 
 /** NumberPicker */
 class NumberPicker extends React.Component {
@@ -23,7 +24,7 @@ class NumberPicker extends React.Component {
          * 设置类型
          * @enumdesc 普通, 内联
          */
-        type: PropTypes.oneOf(['normal', 'inline']),
+        type: PropTypes.oneOf(NUMBER_TYPES),
         /**
          * 大小
          */
@@ -501,9 +502,18 @@ class NumberPicker extends React.Component {
         e.preventDefault();
     }
 
+    getType() {
+        const { device, type } = this.props;
+
+        if (NUMBER_TYPES.indexOf(type) > -1) {
+            return type;
+        }
+
+        return device === 'phone' || type === 'inline' ? 'inline' : 'normal';
+    }
+
     render() {
         const {
-            device,
             prefix,
             rtl,
             disabled,
@@ -524,9 +534,9 @@ class NumberPicker extends React.Component {
             hasTrigger,
             alwaysShowTrigger,
         } = this.props;
-        const type = device === 'phone' || this.props.type === 'inline' ? 'inline' : 'normal';
 
         const prefixCls = `${prefix}number-picker`;
+        const type = this.getType();
 
         const cls = classNames({
             [prefixCls]: true,
