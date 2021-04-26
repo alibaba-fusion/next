@@ -471,8 +471,11 @@ export default class Item extends React.Component {
         const Tag = responsive ? Cell : (wrapperCol || labelCol) && labelAlign !== 'top' ? Row : 'div';
         const label = labelAlign === 'inset' ? null : this.getItemLabel();
 
+        const otherProps = obj.pickOthers(Item.propTypes, this.props);
+        const dataProps = obj.pickAttrsWith(this.props, 'data-');
+
         return (
-            <Tag {...obj.pickOthers(Item.propTypes, this.props)} className={itemClassName} style={style}>
+            <Tag {...otherProps} {...dataProps} className={itemClassName} style={style}>
                 {label}
                 {this.getItemWrapper()}
             </Tag>
