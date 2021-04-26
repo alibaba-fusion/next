@@ -65,7 +65,7 @@ const CreateDemo=()=>{
             <Radio value={'hoz'}>hoz</Radio>
             <Radio value={'ver'}>ver</Radio>
         </Radio.Group>
-        <Step current={1} direction={direction} animation style={{ marginTop: 30 }}>
+        <Step current={1} direction={direction} stretch animation style={{ marginTop: 30 }}>
             <Step.Item title={"What would youlike to test?"} content={'test'} />
             <Step.Item title={"What would youlike to test?"} content={<Step1Content />} />
             <Step.Item title={"A bit more on the background"} content={'test'} />

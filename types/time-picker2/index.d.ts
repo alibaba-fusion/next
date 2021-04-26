@@ -18,9 +18,8 @@ export interface DatePreset extends ButtonProps {
     value: any;
 }
 
-
 export interface RangePreset {
-    [propName: string]: Dayjs[];
+    [propName: string]: (typeof Dayjs)[];
 }
 
 export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
@@ -149,12 +148,12 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框是否有边框
      */
-    hasBorder?: boolean,
+    hasBorder?: boolean;
 
     /**
      * 透传给 Input 的属性
      */
-    inputProps?: InputProps,
+    inputProps?: InputProps;
 
     /**
      * 预设值，会显示在时间面板下面
@@ -164,7 +163,7 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 时间值改变时的回调
      */
-    onChange?: (date: Dayjs, dateString: string) => void;
+    onChange?: (date: typeof Dayjs, dateString: string) => void;
 }
 
 export default class TimePicker extends React.Component<TimePickerProps, any> {}

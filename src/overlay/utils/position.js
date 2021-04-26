@@ -77,6 +77,11 @@ function _getViewportSize(container) {
 }
 
 const getContainer = ({ container, baseElement }) => {
+    // SSR下会有副作用
+    if (typeof document === undefined) {
+        return container;
+    }
+
     let calcContainer = findNode(container, baseElement);
 
     if (!calcContainer) {
@@ -178,8 +183,16 @@ export default class Position {
             if (this._isInViewport(pinElement, align)) {
                 return align;
             } else if (!firstPositionResult) {
-                const { right, bottom } = this._getViewportOffset(pinElement, align);
-                firstPositionResult = { left: right < 0 ? left + right : left, top: top < 0 ? top + bottom : top };
+                if (this.needAdjust && !this.autoFit) {
+                    const { right, bottom } = this._getViewportOffset(pinElement, align);
+                    firstPositionResult = {
+                        left: right < 0 ? left + right : left,
+                        top,
+                        // top: bottom < 0 ? top + bottom : top,
+                    };
+                } else {
+                    firstPositionResult = { left, top };
+                }
             }
         }
 

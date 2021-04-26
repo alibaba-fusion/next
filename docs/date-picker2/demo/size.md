@@ -16,10 +16,11 @@ Using attribute `size` to change the input size, `medium` as default.
 ---
 
 ````jsx
-import { useState } from 'react';
 import { DatePicker2, Radio } from '@alifd/next';
 
+const {useState} = React;
 const RadioGroup = Radio.Group;
+
 const dataSource = [
     {
         value: 'large',

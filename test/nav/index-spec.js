@@ -350,7 +350,7 @@ describe('Nav', () => {
 
         let nav = wrapper.find('ul.next-nav');
         assert(nav.hasClass('next-icon-only'));
-        assert(nav.prop('style').width === '58px');
+        assert(nav.prop('style').width === '58px' || nav.prop('style').width === 58);
 
         let items = nav.find('li.next-nav-item');
         assert(items.at(0).find('i.next-nav-icon').length === 1);

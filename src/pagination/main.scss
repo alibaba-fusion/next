@@ -22,6 +22,8 @@
 
     &-list {
         display: inline-block;
+        display: inline-flex;
+        align-items: center;
         vertical-align: top;
     }
     & &-item:not([disabled]) {

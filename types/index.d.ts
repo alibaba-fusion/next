@@ -5,6 +5,7 @@ export { default as Balloon } from './balloon';
 export { default as Breadcrumb } from './breadcrumb';
 export { default as Button } from './button';
 export { default as Calendar } from './calendar';
+export { default as Calendar2 } from './calendar2';
 export { default as Card } from './card';
 export { default as Cascader } from './cascader';
 export { default as CascaderSelect } from './cascader-select';

@@ -10,6 +10,7 @@ import { obj, func } from '../util';
 /** Loading */
 class Loading extends React.Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         /**
          * 样式前缀
          */

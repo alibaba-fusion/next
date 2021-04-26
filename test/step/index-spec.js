@@ -247,6 +247,19 @@ describe('Step', () => {
             );
             assert(wrapper.find('.next-icon-good').length === 2);
         });
+        it('should stretch work', () => {
+            const wrapper = mount(
+                <Step current={1} stretch shape="dot" labelPlacement="ver">
+                    <StepItem title="步骤1" />
+                    <StepItem title="步骤2" />
+                    <StepItem title="步骤3" />
+                </Step>
+            );
+
+            const item = wrapper.find('.next-step-item');
+            assert(item.at(0).instance().style.width.startsWith('calc((100%'));
+            assert(item.at(2).instance().style.width === 'auto');
+        });
     });
 
     describe('action', () => {

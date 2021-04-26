@@ -16,7 +16,7 @@ Nav could set the iconOnly property to reduce the footprint.
 ---
 
 ````jsx
-import { Nav, Radio } from '@alifd/next';
+import { Nav, Radio, Icon, Input } from '@alifd/next';
 
 
 const { Item, SubNav } = Nav;
@@ -25,7 +25,8 @@ class App extends React.Component {
     state = {
         iconOnly: false,
         hasTooltip: true,
-        hasArrow: true
+        hasArrow: true,
+        iconOnlyWidth: 58,
     }
 
     setValue(name, value) {
@@ -34,9 +35,14 @@ class App extends React.Component {
         });
     }
 
-    render() {
-        const { iconOnly, hasTooltip, hasArrow } = this.state;
+    setWidth(value) {
+        this.setState({
+            iconOnlyWidth: value
+        });
+    }
 
+    render() {
+        const { iconOnly, hasTooltip, hasArrow, iconOnlyWidth } = this.state;
         return (
             <div>
                 <div className="demo-ctl">
@@ -44,6 +50,11 @@ class App extends React.Component {
                         <Radio value="true">iconOnly=true</Radio>
                         <Radio value="false">iconOnly=false</Radio>
                     </Radio.Group>
+                    {iconOnly ?
+                        <Radio.Group shape="button" size="medium" value={iconOnlyWidth} onChange={this.setWidth.bind(this)}>
+                            <Radio value={58}>iconOnlyWidth=58</Radio>
+                            <Radio value={80}>iconOnlyWidth=80</Radio>
+                        </Radio.Group> : null}
                     {iconOnly ?
                         <Radio.Group shape="button" size="medium" value={hasArrow ? 'true' : 'false'} onChange={this.setValue.bind(this, 'hasArrow')}>
                             <Radio value="true">hasArrow=true</Radio>
@@ -55,12 +66,12 @@ class App extends React.Component {
                             <Radio value="false">hasTooltip=false</Radio>
                         </Radio.Group> : null}
                 </div>
-                <Nav style={{ width: '200px' }} iconOnly={iconOnly} hasArrow={hasArrow} hasTooltip={hasTooltip}>
+                <Nav style={{ width: '200px' }} iconOnlyWidth={this.state.iconOnlyWidth} iconOnly={iconOnly} hasArrow={hasArrow} hasTooltip={hasTooltip}>
                     <Item icon="account">Navigation One</Item>
                     <Item icon="account">Navigation Two</Item>
                     <Item icon="account">Navigation Three</Item>
-                    <Item icon="account">Navigation Four</Item>
-                    <Item icon="account">Navigation Five</Item>
+                    <Item icon={<Icon type="atm" className="custom-cls"/>}>Navigation Four</Item>
+                    <Item icon={<span>QAQ</span>}>Navigation Five</Item>
                     <SubNav icon="account" label="Sub Nav">
                         <Item icon="account">Item 1</Item>
                         <Item icon="account">Item 2</Item>

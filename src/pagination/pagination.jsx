@@ -133,6 +133,7 @@ class Pagination extends Component {
          * 弹层组件属性，透传给Popup
          */
         popupProps: PropTypes.object,
+        selectProps: PropTypes.object,
     };
 
     static defaultProps = {
@@ -476,7 +477,7 @@ class Pagination extends Component {
     }
 
     renderPageSizeDropdown() {
-        const { prefix, size, pageSizeList, locale, popupProps } = this.props;
+        const { prefix, size, pageSizeList, locale, popupProps, selectProps } = this.props;
         const { currentPageSize } = this.state;
 
         return (
@@ -485,10 +486,11 @@ class Pagination extends Component {
                 popupClassName={`${prefix}pagination-size-selector-popup`}
                 popupProps={popupProps}
                 aria-label={locale.selectAriaLabel}
-                autoWidth
+                autoWidth={false}
                 size={size}
                 value={currentPageSize}
                 onChange={this.onSelectSize.bind(this)}
+                {...selectProps}
             >
                 {pageSizeList.map((item, index) => {
                     let label;
@@ -540,6 +542,7 @@ class Pagination extends Component {
             link,
             onChange,
             popupProps,
+            selectProps,
             ...others
         } = this.props;
         /* eslint-enable */

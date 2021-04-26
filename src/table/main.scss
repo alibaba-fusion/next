@@ -75,6 +75,11 @@
         z-index: 1;
         overflow: hidden;
     }
+    &-stickylock {
+        #{$table-prefix}-affix {
+            z-index: 9;
+        }
+    }
     &-header-resizable {
         position: relative;
         #{$table-prefix}-resize-handler {
@@ -519,8 +524,15 @@
     &-fix-right {
         background: inherit;
         position: sticky;
+        z-index: 1;
+        // 修复旧ie内核下的 Edge，锁列边框消失的问题
+        background-clip: padding-box;
     }
     &-ping-left {
+        #{$table-prefix}-expanded-area #{$table-prefix}-fix-left-last::after {
+            content: none;
+        }
+        #{$table-prefix}-expanded-area #{$table-prefix}-ping-left #{$table-prefix}-fix-left-last,
         #{$table-prefix}-fix-left-last {
             border-right-width: 0;
             &::after {
@@ -539,6 +551,10 @@
     }
 
     &-ping-right {
+        #{$table-prefix}-expanded-area #{$table-prefix}-fix-right-first::after {
+            content: none;
+        }
+        #{$table-prefix}-expanded-area #{$table-prefix}-ping-right #{$table-prefix}-fix-right-first:after,
         #{$table-prefix}-fix-right-first:after {
             box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, .15);
             position: absolute;

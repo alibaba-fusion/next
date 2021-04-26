@@ -17,7 +17,6 @@ A basic usage case.
 ---
 
 ```jsx
-import { useState } from 'react';
 import { DatePicker2 } from '@alifd/next';
 
 const { MonthPicker, YearPicker, WeekPicker, QuarterPicker } = DatePicker2;

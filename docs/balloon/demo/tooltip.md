@@ -2,61 +2,44 @@
 
 - order: 7
 
-简化的Balloon, 只能设置align, trigger和children, 触发条件是hover.
+一般用于文字超长溢出等场景
 
 :::lang=en-us
 # tooltip
 
 - order: 7
 
-Simplified Balloon, which can only set align, trigger and children, and triggered by hovering.
+It is generally used in the scene of text overflow.
 
 :::
 
 ---
 
 ````jsx
-import { Button, Balloon } from '@alifd/next';
+import { Button, Balloon, Table } from '@alifd/next';
 
 const Tooltip = Balloon.Tooltip;
 
-const top = <Button style={{margin: '5px'}} id="top" className="btrigger">top</Button>;
-const right = <Button style={{margin: '5px'}}id="right" className="btrigger">right</Button>;
-const bottom = <Button style={{margin: '5px'}} id="bottom" className="btrigger">bottom</Button>;
-const left = <Button style={{margin: '5px'}} id="left" className="btrigger">left</Button>;
-const topLeft = <Button style={{margin: '5px'}} id="topLeft" className="btrigger">top left</Button>;
-const topRight = <Button style={{margin: '5px'}} id="topRight" className="btrigger">top right</Button>;
-const rightTop = <Button style={{margin: '5px'}} id="rightTop" className="btrigger">right top</Button>;
-const rightBottom = <Button style={{margin: '5px'}} id="rightBottom" className="btrigger">right bottom</Button>;
-const bottomLeft = <Button style={{margin: '5px'}} id="bottomLeft" className="btrigger">bottom left</Button>;
-const bottomRight = <Button style={{margin: '5px'}} id="bottomRight" className="btrigger">bottom right</Button>;
-const leftTop = <Button style={{margin: '5px'}} id="leftTop" className="btrigger">left top</Button>;
-const leftBottom = <Button style={{margin: '5px'}} id="leftBottom" className="btrigger">left bottom</Button>;
+const dataSource = [{
+    name: 'Li Bai',
+    intro: `Li Bai (Chinese: 李白; pinyin: Lǐ Bái; 701–762), also known as Li Bo, courtesy name Taibai (Chinese: 太白), art name Qinglian Jushi (Chinese: 青蓮居士), was a Chinese poet acclaimed from his own day to the present as a genius and a romantic figure who took traditional poetic forms to new heights.`,
+    id: 100306660940,
+}, {
+    name: 'William Shakespeare',
+    intro: `William Shakespeare (bapt. 26 April 1564 – 23 April 1616) was an English playwright, poet, and actor, widely regarded as the greatest writer in the English language and the world's greatest dramatist. He is often called England's national poet and the "Bard of Avon" (or simply "the Bard").`,
+    id: 100306660941,
+}];
+const render = (value, index, record) => {
+    const intro = <div style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{value}</div>;
+    return <Tooltip trigger={intro} align="br">{value}</Tooltip>;
+};
 
 const App = () => (
-    <div style={{paddingLeft: 220}}>
-        <div style={{marginLeft: 75}}>
-            <Tooltip trigger={topLeft} align="tl">text text</Tooltip>
-            <Tooltip trigger={top} align="t">text text</Tooltip>
-            <Tooltip trigger={topRight} align="tr">text text</Tooltip>
-        </div>
-        <div style={{width: 80, float: 'left'}}>
-            <Tooltip trigger={leftTop} align="lt">text text</Tooltip>
-            <Tooltip trigger={left} align="l">text text</Tooltip>
-            <Tooltip trigger={leftBottom} align="lb">text text</Tooltip>
-        </div>
-        <div style={{width: 80, marginLeft: 290}}>
-            <Tooltip trigger={rightTop} align="rt">text text</Tooltip>
-            <Tooltip trigger={right} align="r">text text</Tooltip>
-            <Tooltip trigger={rightBottom} align="rb">text text</Tooltip>
-        </div>
-        <div style={{marginLeft: 80, clear: 'both'}}>
-            <Tooltip trigger={bottomLeft} align="bl">text text</Tooltip>
-            <Tooltip trigger={bottom} align="b">text text</Tooltip>
-            <Tooltip trigger={bottomRight} align="br">text text</Tooltip>
-        </div>
-    </div>
-
+    <Table dataSource={dataSource} tableLayout="fixed">
+        <Table.Column title="ID" dataIndex="id" width={100}/>
+        <Table.Column title="Name" dataIndex="name" width={200}/>
+        <Table.Column title="Intro" dataIndex="intro" cell={render} width={400}/>
+    </Table>
 );
 
 ReactDOM.render(<App />, mountNode);

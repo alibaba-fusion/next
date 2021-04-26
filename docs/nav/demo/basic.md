@@ -18,26 +18,58 @@ The simplest way to use it.
 import { Nav } from '@alifd/next';
 
 
-const { Item, SubNav } = Nav;
+const { Item, SubNav, PopupItem, Group } = Nav;
 
 const header = <span className="fusion">FUSION</span>;
 const footer = <a className="login-in" href="javascript:;">Login in</a>;
 
 ReactDOM.render(
-    <Nav className="basic-nav" mode="popup" direction="hoz" type="primary" header={header} footer={footer} defaultSelectedKeys={['home']} triggerType="hover">
-        <Item key="home">Home</Item>
-        <SubNav label="Component" noIcon>
-            <SubNav label="Next">
-                <Item key="next-design">Design</Item>
-                <Item key="next-doc">Document</Item>
-            </SubNav>
-            <SubNav label="Meet">
-                <Item key="meet-design">Design</Item>
-                <Item key="meet-doc">Document</Item>
-            </SubNav>
-        </SubNav>
-        <Item key="document">Document</Item>
-    </Nav>
+    <Nav iconOnly style={{ width: '200px' }}>
+                <Item icon="account" key="1">
+                    First
+                </Item>
+                <Item key="2">Second</Item>
+                <SubNav icon="account" label="SubNav label">
+                    <Item icon="account" key="1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2">
+                        Second
+                    </Item>
+                </SubNav>
+                <SubNav label="SubNav label">
+                    <Item icon="account" key="1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2">
+                        Second
+                    </Item>
+                </SubNav>
+                <PopupItem icon="account" label="PopupItem label">
+                    <Item icon="account" key="1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2">
+                        Second
+                    </Item>
+                </PopupItem>
+                <PopupItem label="PopupItem label">
+                    <Item icon="account" key="1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2">
+                        Second
+                    </Item>
+                </PopupItem>
+                <Group icon="account" label="Group label">
+                    <Item icon="account" key="1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2">
+                        Second
+                    </Item>
+                </Group>
+            </Nav>
     , mountNode);
 ````
 

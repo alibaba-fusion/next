@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { log } from '../../util';
+import { log, dom, events } from '../../util';
 import Row from '../lock/row';
 
 export default class ExpandedRow extends React.Component {
@@ -21,6 +21,33 @@ export default class ExpandedRow extends React.Component {
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
+    componentDidMount() {
+        events.on(window, 'resize', this.setExpandedWidth);
+    }
+
+    componentDidUpdate() {
+        this.setExpandedWidth();
+    }
+
+    componentWillUnmount() {
+        events.off(window, 'resize', this.setExpandedWidth);
+    }
+
+    getExpandedRow = (parentKey, ref) => {
+        if (!this.expandedRowRef) {
+            this.expandedRowRef = {};
+        }
+        this.expandedRowRef[parentKey] = ref;
+    };
+
+    setExpandedWidth = () => {
+        const { tableEl } = this.props;
+        const totalWidth = +(tableEl && tableEl.clientWidth) - 1 || '100%';
+        Object.keys(this.expandedRowRef || {}).forEach(key => {
+            dom.setStyle(this.expandedRowRef[key], { width: totalWidth });
+        });
+    };
+
     renderExpandedRow(record, rowIndex) {
         const {
             expandedRowRender,
@@ -30,7 +57,6 @@ export default class ExpandedRow extends React.Component {
             expandedIndexSimulate,
             expandedRowWidthEquals2Table,
         } = this.context;
-        const { tableOuterWidth } = this.props;
         const expandedIndex = expandedIndexSimulate ? (rowIndex - 1) / 2 : rowIndex;
 
         const { columns, cellRef } = this.props;
@@ -76,7 +102,6 @@ export default class ExpandedRow extends React.Component {
 
             const expandedRowStyle = {
                 position: 'sticky',
-                width: (tableOuterWidth || 0) - 1,
                 left: 0,
             };
             // 暴露给用户的index
@@ -85,6 +110,7 @@ export default class ExpandedRow extends React.Component {
                 content = (
                     <div
                         className={`${prefix}table-cell-wrapper`}
+                        ref={this.getExpandedRow.bind(this, record[primaryKey])}
                         style={expandedRowWidthEquals2Table && expandedRowStyle}
                     >
                         {content}
@@ -92,7 +118,11 @@ export default class ExpandedRow extends React.Component {
                 );
             } else {
                 content = expandedRowWidthEquals2Table ? (
-                    <div className={`${prefix}table-expanded-area`} style={expandedRowStyle}>
+                    <div
+                        className={`${prefix}table-expanded-area`}
+                        ref={this.getExpandedRow.bind(this, record[primaryKey])}
+                        style={expandedRowStyle}
+                    >
                         {content}
                     </div>
                 ) : (
