@@ -67,4 +67,5 @@ export default class ConfigProvider extends React.Component<
     static getLocale(): any;
     static getLanguage(): string;
     static getDirection(): string;
+    static clearCache(): any;
 }

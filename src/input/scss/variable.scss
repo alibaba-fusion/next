@@ -38,7 +38,7 @@ $input-hover-bg-color: $color-white !default;
 /// border
 /// @namespace statement/focus
 $input-focus-border-color: $color-brand1-6 !default;
-$color-calculate-input-focus-shadow: rgba(get-compiling-value($input-focus-border-color), .2);
+$color-calculate-input-focus-shadow: rgba(get-compiling-value($input-focus-border-color), .2) !default;
 
 /// background
 /// @namespace statement/focus
@@ -156,7 +156,7 @@ $input-s-icon-padding-right: $s-1 !default;
 /// border
 /// @namespace statement/normal/warning
 $input-feedback-warning-border-color: $color-warning-3 !default;
-$color-calculate-input-feedback-warning-shadow: rgba(get-compiling-value($input-feedback-warning-border-color), .2);
+$color-calculate-input-feedback-warning-shadow: rgba(get-compiling-value($input-feedback-warning-border-color), .2) !default;
 /// background
 /// @namespace statement/normal/warning
 $input-feedback-warning-bg-color: $color-white !default;
@@ -185,7 +185,7 @@ $input-feedback-loading-icon: $icon-content-loading !default;
 /// border
 /// @namespace statement/error
 $input-feedback-error-border-color: $color-error-3 !default;
-$color-calculate-input-feedback-error-shadow: rgba(get-compiling-value($input-feedback-error-border-color), .2);
+$color-calculate-input-feedback-error-shadow: rgba(get-compiling-value($input-feedback-error-border-color), .2) !default;
 
 /// background
 /// @namespace statement/error
