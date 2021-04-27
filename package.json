@@ -45,7 +45,10 @@
     "dist/*",
     "es/**/style.js",
     "lib/**/style.js",
-    "*.scss"
+    "es/**/style2.js",
+    "lib/**/style2.js",
+    "*.scss",
+    "*.css"
   ],
   "scripts": {
     "report-coverage": "codecov",
