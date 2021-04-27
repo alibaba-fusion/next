@@ -164,15 +164,17 @@ class DateInput extends React.Component {
         let rangeProps;
         if (isRange) {
             rangeProps = [DATE_INPUT_TYPE.BEGIN, DATE_INPUT_TYPE.END].map(idx => {
+                const _disabled = Array.isArray(disabled) ? disabled[idx] : disabled;
+
                 return {
                     ...sharedProps,
                     autoFocus,
                     placeholder: placeholder[idx],
                     value: value[idx] || '',
                     'aria-label': Array.isArray(dateInputAriaLabel) ? dateInputAriaLabel[idx] : dateInputAriaLabel,
-                    disabled: Array.isArray(disabled) ? disabled[idx] : disabled,
+                    disabled: _disabled,
                     ref: ref => setInputRef(ref, idx),
-                    onFocus: () => handleTypeChange(idx),
+                    onFocus: _disabled ? undefined : () => handleTypeChange(idx),
                     className: classnames({
                         [`${prefixCls}-active`]: inputType === idx,
                     }),

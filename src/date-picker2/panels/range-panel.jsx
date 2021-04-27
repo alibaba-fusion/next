@@ -48,28 +48,33 @@ const isSamePanel = (a, b, mode) => {
     }
 };
 
-const getPanelValue = ({ mode, inputType, value, showTime }, oldPanelValue) => {
-    let panelValue = datejs(oldPanelValue);
+// 计算 面板日期
+const getPanelValue = ({ mode, value, inputType, showTime }, defaultValue) => {
+    const [begin, end] = value;
+    const { BEGIN, END } = DATE_INPUT_TYPE;
 
-    if (value && inputType !== null && value[inputType]) {
-        const [begin, end] = value;
+    let _inputType = inputType;
+    const otherType = inputType === BEGIN ? END : BEGIN;
 
-        panelValue = value[inputType];
+    if (!value[inputType] && value[otherType]) {
+        _inputType = otherType;
+    }
 
-        if (!showTime) {
-            if (begin && end && isSamePanel(begin, end, mode)) {
-                panelValue = begin;
-            } else if (inputType === END) {
-                panelValue = operate(mode, panelValue, 'subtract');
-            }
+    let panelValue = value[_inputType] || datejs(defaultValue);
+
+    // 不显示时间 所以是双日期面板模式
+    if (!showTime) {
+        // 如果开始时间结束时间可以在一个面板中显示
+        if (begin && end && isSamePanel(begin, end, mode)) {
+            panelValue = begin;
+        }
+        // 当前选择的是结束时间 要回退一个时间
+        else if (_inputType === END && panelValue) {
+            panelValue = operate(mode, panelValue, 'subtract');
         }
     }
 
-    if (!(panelValue && panelValue.isValid())) {
-        panelValue = datejs();
-    }
-
-    return panelValue;
+    return panelValue && panelValue.isValid() ? panelValue : datejs();
 };
 
 class RangePanel extends React.Component {
@@ -98,7 +103,7 @@ class RangePanel extends React.Component {
     constructor(props) {
         super(props);
 
-        const { mode, value, timePanelProps = {} } = props;
+        const { mode, value, defaultPanelValue, timePanelProps = {} } = props;
 
         let timeValue = (value && [...value]) || timePanelProps.defaultValue || [];
 
@@ -108,7 +113,7 @@ class RangePanel extends React.Component {
 
         this.state = {
             mode,
-            panelValue: getPanelValue(props, props.defaultPanelValue),
+            panelValue: getPanelValue(props, defaultPanelValue),
             inputType: props.inputType,
             curHoverValue: null,
             timeValue,
@@ -184,14 +189,8 @@ class RangePanel extends React.Component {
 
         if (inputType === BEGIN) {
             begin = setTime(v, timeVal);
-            if (end && end.isBefore(begin)) {
-                end = null;
-            }
         } else {
             end = setTime(v, timeVal);
-            if (begin && begin.isAfter(end)) {
-                begin = null;
-            }
         }
 
         func.invoke(this.props, 'onSelect', [[begin, end]]);

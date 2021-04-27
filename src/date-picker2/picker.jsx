@@ -37,28 +37,30 @@ function getInputValue(value, fmt) {
     return Array.isArray(value) ? value.map((v, idx) => formater(v, idx)) : formater(value);
 }
 
-function checkAndRectify(value, isRange) {
-    const check = v => {
-        // 因为datejs(undefined) === datejs()
-        // 但是这里期望的是一个空值
-        if (v === undefined) {
-            v = null;
-        }
-        v = datejs(v);
-        return v.isValid() ? v : null;
-    };
-
-    if (isRange) {
-        const [begin, end] = Array.isArray(value) ? [0, 1].map(i => check(value[i])) : [null, null];
-
-        if (begin && end && begin.isAfter(end)) {
-            return [null, null];
-        }
-
-        return [begin, end];
-    } else {
-        return check(value);
+// 无效值转为 null
+// undefined 值表示当前时间
+function checkDate(value) {
+    // 因为datejs(undefined) === datejs()
+    // 但是这里期望的是一个空值
+    if (value === undefined) {
+        value = null;
     }
+    value = datejs(value);
+    return value.isValid() ? value : null;
+}
+
+function checkRangeDate(value, inputType, disabled, strictly = true) {
+    const [begin, end] = Array.isArray(value) ? [0, 1].map(i => checkDate(value[i])) : [null, null];
+    const _disabled = Array.isArray(disabled) ? disabled : [disabled, disabled];
+
+    // 严格模式下
+    // 如果开始时间在结束时间之后 清空另一个时间
+    // 如果另一个时间处于禁用状态 清除当前时间
+    if (strictly && begin && end && begin.isAfter(end)) {
+        return inputType === DATE_INPUT_TYPE.BEGIN && !_disabled[1] ? [begin, null] : [null, end];
+    }
+
+    return [begin, end];
 }
 
 class Picker extends React.Component {
@@ -133,6 +135,7 @@ class Picker extends React.Component {
         rtl: false,
         prefix: 'next-',
         locale: defaultLocale.DatePicker,
+        defaultVisible: false,
         type: DATE_PICKER_TYPE.DATE,
         mode: DATE_PICKER_MODE.DATE,
         format: 'YYYY-MM-DD',
@@ -141,44 +144,54 @@ class Picker extends React.Component {
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}date-picker2`;
+        const { prefix, type, format, mode, defaultVisible } = props;
 
-        const isRange = props.type === DATE_PICKER_TYPE.RANGE;
-        const value = checkAndRectify(
-            'value' in props
-                ? props.value
-                : 'defaultValue' in props
-                ? props.defaultValue
-                : isRange
-                ? [null, null]
-                : null,
-            isRange
-        );
+        this.state = {
+            panelMode: mode,
+            visible: defaultVisible,
+        };
+
+        if (type === DATE_PICKER_TYPE.RANGE) {
+            const { inputType, justBeginInput } = this.getInitRangeInputState();
+
+            this.state = {
+                inputType,
+                justBeginInput,
+                ...this.state,
+            };
+        }
+
+        const value = this.getInitValue();
 
         this.state = {
             value,
-            curValue: value, // 当前输入中的值
-            inputValue: getInputValue(value, props.format),
-            visible: 'defaultVisible' in props ? props.defaultVisible : false,
-            inputType: DATE_INPUT_TYPE.BEGIN,
-            justBeginInput: true,
-            panelMode: props.mode,
+            inputValue: getInputValue(value, format),
+            curValue: value, // 当前状态值
+            ...this.state,
         };
+
+        this.prefixCls = `${prefix}date-picker2`;
     }
 
     static getDerivedStateFromProps(props, state) {
-        const isRange = props.type === DATE_PICKER_TYPE.RANGE;
-        let newState = { isRange, showOk: !!(props.showOk || props.showTime) };
+        const { type, showTime, showOk, disabled, format } = props;
+
+        const isRange = type === DATE_PICKER_TYPE.RANGE;
+
+        let newState = {
+            isRange,
+            showOk: !!(showOk || showTime),
+        };
 
         if ('value' in props) {
-            const value = checkAndRectify(props.value, isRange);
+            const value = isRange ? checkRangeDate(props.value, state.inputType, disabled) : checkDate(props.value);
 
             if (isValueChanged(value, state.value)) {
                 newState = {
                     ...newState,
                     value,
                     curValue: value,
-                    inputValue: getInputValue(value, props.format),
+                    inputValue: getInputValue(value, format),
                 };
             }
         }
@@ -190,6 +203,24 @@ class Picker extends React.Component {
         [this.clearTimeoutId, this.timeoutId].forEach(id => id && clearTimeout(id));
     }
 
+    getInitValue = () => {
+        const { props } = this;
+        const { type, value, defaultValue } = props;
+
+        let val = type === DATE_PICKER_TYPE.RANGE ? [null, null] : null;
+
+        val = 'value' in props ? value : 'defaultValue' in props ? defaultValue : val;
+
+        return this.checkValue(val);
+    };
+
+    getInitRangeInputState = () => {
+        return {
+            justBeginInput: this.isEnabled(),
+            inputType: this.isEnabled(0) ? DATE_INPUT_TYPE.BEGIN : DATE_INPUT_TYPE.END,
+        };
+    };
+
     // 判断弹层是否显示
     handleVisibleChange = (visible, type) => {
         if (type === 'docClick') {
@@ -197,6 +228,12 @@ class Picker extends React.Component {
 
             this.onVisibleChange(visible);
         }
+    };
+
+    checkValue = (value, strictly) => {
+        return this.props.type === DATE_PICKER_TYPE.RANGE
+            ? checkRangeDate(value, this.state.inputType, this.props.disabled, strictly)
+            : checkDate(value);
     };
 
     handleInputFocus = inputType => {
@@ -218,7 +255,7 @@ class Picker extends React.Component {
             const callback = () => {
                 this.setState({
                     visible,
-                    justBeginInput: true,
+                    justBeginInput: this.isEnabled(),
                 });
             };
 
@@ -264,18 +301,15 @@ class Picker extends React.Component {
 
         this.setState({
             inputType: DATE_INPUT_TYPE.BEGIN,
+            justBeginInput: this.isEnabled(),
         });
     };
 
-    maySwitchInput = value => {
+    shouldSwitchInput = value => {
         const { inputType, justBeginInput } = this.state;
-        let idx = value.indexOf(null);
+        const idx = justBeginInput ? switchInputType(inputType) : value.indexOf(null);
 
-        if (idx === -1 && justBeginInput) {
-            idx = switchInputType(inputType);
-        }
-
-        if (idx !== -1) {
+        if (idx !== -1 && this.isEnabled(idx)) {
             this.onInputTypeChange(idx);
             this.handleInputFocus(idx);
             return true;
@@ -284,21 +318,34 @@ class Picker extends React.Component {
         return false;
     };
 
+    isEnabled = idx => {
+        const { disabled } = this.props;
+
+        return Array.isArray(disabled)
+            ? idx === undefined
+                ? !disabled[0] && !disabled[1]
+                : !disabled[idx]
+            : !disabled;
+    };
+
     handleChange = (v, eventType) => {
+        const { format } = this.props;
         const { isRange, showOk, value } = this.state;
 
-        v = showOk && eventType === 'VISIBLE_CHANGE' ? value : checkAndRectify(v, isRange);
+        // 在显示确认按键 且 关闭弹层的时候 将当前值设置回状态值
+        // 在有确认按键的时候 需要点击确认 值才生效
+        v = showOk && eventType === 'VISIBLE_CHANGE' ? value : this.checkValue(v, false);
 
         this.setState({
             curValue: v,
-            inputValue: getInputValue(v, this.props.format),
+            inputValue: getInputValue(v, format),
         });
 
         if (!showOk || ['KEYDOWN_ENTER', 'CLICK_OK', 'CLICK_PRESET', 'INPUT_CLEAR'].includes(eventType)) {
             if (isRange) {
                 if (eventType === 'INPUT_CLEAR') {
                     this.handleClear();
-                } else if (!['VISIBLE_CHANGE', 'CLICK_PRESET'].includes(eventType) && this.maySwitchInput(v)) {
+                } else if (!['VISIBLE_CHANGE', 'CLICK_PRESET'].includes(eventType) && this.shouldSwitchInput(v)) {
                     return;
                 }
             }
@@ -331,31 +378,37 @@ class Picker extends React.Component {
                     curValue: value,
                     inputValue: getInputValue(value, format),
                 });
-            } else if (!('value' in this.props)) {
+            } else {
+                v = this.checkValue(v);
+
                 this.setState({
                     value: v,
+                    curValue: v,
+                    inputValue: getInputValue(v, format),
                 });
             }
+
             func.invoke(this.props, 'onChange', [v, getInputValue(v, format)]);
         }
+
         this.onVisibleChange(false);
     };
 
     onOk = () => {
-        const { inputValue, isRange } = this.state;
+        const { inputValue } = this.state;
 
-        const result = func.invoke(this.props, 'onOk', [checkAndRectify(inputValue, isRange), inputValue]);
+        const result = func.invoke(this.props, 'onOk', [this.checkValue(inputValue), inputValue]);
 
         result !== false && this.handleChange(inputValue, 'CLICK_OK');
     };
 
-    onInputTypeChange = v => {
+    onInputTypeChange = idx => {
         const { inputType, visible } = this.state;
 
-        if (v !== inputType) {
+        if (idx !== inputType) {
             this.setState({
-                inputType: v,
-                justBeginInput: !(v !== null && visible),
+                inputType: idx,
+                justBeginInput: !(idx !== null && visible),
             });
         }
     };
@@ -459,13 +512,18 @@ class Picker extends React.Component {
             isRange,
             disabled,
             placeholder,
-            focus: visible,
             onInputTypeChange,
+            focus: visible,
             onInput: handleInput,
             readOnly: inputReadOnly,
             inputProps: this.props.inputProps,
             ref: el => (this.dateInput = el),
         };
+
+        // 禁用状态下 不允许清空
+        if (!this.isEnabled()) {
+            inputProps.hasClear = false;
+        }
 
         const triggerNode = renderNode(trigger, <DateInput {...inputProps} />);
 
