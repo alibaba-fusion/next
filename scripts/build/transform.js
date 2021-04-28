@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const glob = require('glob');
-const babel = require('babel-core');
+const babel = require('@babel/core');
 const babelConfigCreator = require('@alifd/babel-preset-next');
 const { logger } = require('../utils');
 

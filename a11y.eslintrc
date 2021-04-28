@@ -1,5 +1,4 @@
 {
-    "parser": "babel-eslint",
     "plugins": ["jsx-a11y"],
     "env": {
         "browser": true,
