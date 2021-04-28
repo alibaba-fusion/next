@@ -36,15 +36,7 @@ class Item extends Component {
     render() {
         const { prefix, iconOnly, iconOnlyWidth, hasTooltip } = this.context;
         const { icon, children, ...others } = this.props;
-        const iconEl =
-            typeof icon === 'string' ? (
-                <Icon className={`${prefix}nav-icon`} type={icon} />
-            ) : (
-                icon &&
-                React.cloneElement(icon, {
-                    className: classNames(`${prefix}nav-icon`, icon && icon.props && icon.props.className),
-                })
-            );
+        const iconEl = typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;
 
         let title;
 
