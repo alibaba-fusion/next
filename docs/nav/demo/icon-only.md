@@ -70,7 +70,7 @@ class App extends React.Component {
                     <Item icon="account">Navigation One</Item>
                     <Item icon="account">Navigation Two</Item>
                     <Item icon="account">Navigation Three</Item>
-                    <Item icon={<Icon type="atm" className="custom-cls"/>}>Navigation Four</Item>
+                    <Item icon={"atm"}>Navigation Four</Item>
                     <Item icon={<span>QAQ</span>}>Navigation Five</Item>
                     <SubNav icon="account" label="Sub Nav">
                         <Item icon="account">Item 1</Item>
