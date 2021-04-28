@@ -617,6 +617,17 @@ describe('Picker', () => {
             // illegal value + disabled
             wrapper.setProps({ value: ['2021', '2020'], disabled: [false, true] });
             assert.deepEqual(getStrValue(), ['', '2020-01-01']);
+
+            wrapper.setProps({ value: ['2020-01-01', '2020-01-02'], disabled: false, visible: true });
+            clickDate('2020-01-03');
+            assert.deepEqual(getStrValue(), ['2020-01-03', '']);
+
+            // illegal value + showOk
+            wrapper.unmount();
+            wrapper = mount(<RangePicker value={['2020-01-01', '2020-01-02']} showTime visible />);
+            clickDate('2020-01-03');
+            assert(wrapper.find('.next-calendar2-cell-range-end-single').length);
+            assert(wrapper.find('.next-calendar2-cell-range-begin-single').length);
         });
     });
 
