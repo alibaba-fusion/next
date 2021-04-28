@@ -213,7 +213,9 @@ class Switch extends React.Component {
                 {...attrs}
                 aria-checked={checked}
             >
-                <div className={`${prefix}switch-btn`}>{loading && <Icon type="loading" size={size} />}</div>
+                <div className={`${prefix}switch-btn`}>
+                    {loading && <Icon type="loading" className={`${prefix}switch-inner-icon`} />}
+                </div>
                 <div className={`${prefix}switch-children`}>{children}</div>
             </div>
         );

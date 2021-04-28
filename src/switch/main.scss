@@ -26,7 +26,11 @@
         .#{$css-prefix}icon-loading {
             color: $color-brand1-6;
             text-align: center;
-            transform: translate(calc(0px - #{$switch-border-width-trigger}), calc(0px - #{$switch-border-width-trigger} - #{$switch-border-width-container}));
+            transform: translate(calc(0px - #{$switch-border-width-trigger}), calc(0px - #{$switch-border-width-trigger}));
+
+            &.#{$css-prefix}switch-inner-icon:before {
+                vertical-align: top;
+            }
         }
     }
 
@@ -42,9 +46,10 @@
         }
 
         &.#{$css-prefix}switch-loading .#{$css-prefix}icon-loading {
-            width: $switch-size-m-trigger;
-            height: $switch-size-m-trigger;
+            @include icon-size($switch-size-m-inner-icon);
             line-height: $switch-size-m-trigger;
+            height: $switch-size-m-trigger;
+            width: $switch-size-m-trigger;
         }
     }
 
@@ -59,15 +64,17 @@
             margin: 0 $switch-size-s-trigger-padding 0 calc(#{$switch-size-s-trigger} + #{$switch-size-s-trigger-padding});
         }
         &.#{$css-prefix}switch-loading .#{$css-prefix}icon-loading {
-            width: $switch-size-s-trigger;
-            height: $switch-size-s-trigger;
+            @include icon-size($switch-size-s-inner-icon);
             line-height: $switch-size-s-trigger;
+            height: $switch-size-s-trigger;
+            width: $switch-size-s-trigger;
         }
     }
 
     &-on {
         background-color: $switch-normal-on-bg-color;
         .#{$css-prefix}switch-btn {
+            transform: translateX(-100%);
             box-shadow: $switch-on-shadow;
             background-color: $switch-normal-on-trigger-bg-color;
             border-color: $switch-handle-on-border-color;
@@ -115,7 +122,6 @@
 
         .#{$css-prefix}switch-btn {
             left: 0;
-            transform: translateX(0);
             box-shadow: $switch-on-shadow;
             background-color: $switch-normal-off-trigger-bg-color;
             border-color: $switch-handle-off-border-color;
