@@ -331,17 +331,23 @@ class Picker extends React.Component {
     handleChange = (v, eventType) => {
         const { format } = this.props;
         const { isRange, showOk, value } = this.state;
+        const forceEvents = ['KEYDOWN_ENTER', 'CLICK_OK', 'CLICK_PRESET', 'INPUT_CLEAR'];
 
-        // 在显示确认按键 且 关闭弹层的时候 将当前值设置回状态值
-        // 在有确认按键的时候 需要点击确认 值才生效
-        v = showOk && eventType === 'VISIBLE_CHANGE' ? value : this.checkValue(v, false);
+        // 在显示确认按键且关闭弹层的时候 将当前值设置回确认值
+        // 在有确认按键的时候 需要点击确认值才生效
+        if (showOk && eventType === 'VISIBLE_CHANGE') {
+            v = value;
+        } else {
+            // 在显示确认按键
+            v = this.checkValue(v, !showOk || forceEvents.includes(eventType));
+        }
 
         this.setState({
             curValue: v,
             inputValue: getInputValue(v, format),
         });
 
-        if (!showOk || ['KEYDOWN_ENTER', 'CLICK_OK', 'CLICK_PRESET', 'INPUT_CLEAR'].includes(eventType)) {
+        if (!showOk || forceEvents.includes(eventType)) {
             if (isRange) {
                 if (eventType === 'INPUT_CLEAR') {
                     this.handleClear();
@@ -349,7 +355,6 @@ class Picker extends React.Component {
                     return;
                 }
             }
-
             this.onChange(v);
         }
     };
