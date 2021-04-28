@@ -513,7 +513,9 @@ export default function lock(BaseComponent) {
             if (this.isLock()) {
                 this.tableInc.props.dataSource.forEach((item, index) => {
                     // record may be a string
-                    const rowIndex = typeof item === 'object' && '__rowIndex' in item ? item.__rowIndex : index;
+                    const rowIndex = `${typeof item === 'object' && '__rowIndex' in item ? item.__rowIndex : index}${
+                        item.__expanded ? '_expanded' : ''
+                    }`;
 
                     // 同步左侧的锁列
                     this.setRowHeight(rowIndex, 'left');
