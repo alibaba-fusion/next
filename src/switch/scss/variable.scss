@@ -32,9 +32,13 @@ $switch-size-m-radius-trigger: $corner-3 !default;
 /// @namespace size/handle
 $switch-size-m-inner-icon: $s-4 !default;
 
-/// padding(l, r)
+/// padding(l)
 /// @namespace size/content
-$switch-size-m-trigger-padding: $s-2 !default;
+$switch-size-m-trigger-padding-l: $s-2 !default;
+
+/// padding(r)
+/// @namespace size/content
+$switch-size-m-trigger-padding-r: $s-2 !default;
 
 // Small
 // ----------------------------------------
@@ -57,9 +61,12 @@ $switch-size-s-radius-trigger: $corner-3 !default;
 /// @namespace size/handle
 $switch-size-s-inner-icon: $s-3 !default;
 
-/// padding(l, r)
+/// padding(l)
 /// @namespace size/content
-$switch-size-s-trigger-padding: $s-2 !default;
+$switch-size-s-trigger-padding-l: $s-2 !default;
+/// padding(r)
+/// @namespace size/content
+$switch-size-s-trigger-padding-r: $s-2 !default;
 
 /// border
 /// @namespace size/bounding

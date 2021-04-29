@@ -38,11 +38,11 @@
         @include bounding($switch-size-m-width, $switch-size-m-trigger, #{$switch-border-width-container}, $switch-border-width-trigger, $switch-size-m-radius-container, $switch-size-m-radius-trigger);
 
         &.#{$css-prefix}switch.#{$css-prefix}switch-on > .#{$css-prefix}switch-children {
-            margin: 0 calc(#{$switch-size-m-trigger} + #{$switch-size-m-trigger-padding}) 0 $switch-size-m-trigger-padding;
+            margin: 0 calc(#{$switch-size-m-trigger} + #{$switch-size-m-trigger-padding-r}) 0 $switch-size-m-trigger-padding-l;
         }
 
         &.#{$css-prefix}switch.#{$css-prefix}switch-off > .#{$css-prefix}switch-children {
-            margin: 0 $switch-size-m-trigger-padding 0 calc(#{$switch-size-m-trigger} + #{$switch-size-m-trigger-padding});
+            margin: 0 $switch-size-m-trigger-padding-r 0 calc(#{$switch-size-m-trigger} + #{$switch-size-m-trigger-padding-l});
         }
 
         &.#{$css-prefix}switch-loading .#{$css-prefix}icon-loading {
@@ -57,11 +57,11 @@
         @include bounding($switch-size-s-width, $switch-size-s-trigger, #{$switch-border-width-container}, $switch-border-width-trigger, $switch-size-s-radius-container, $switch-size-s-radius-trigger);
 
         &.#{$css-prefix}switch.#{$css-prefix}switch-on > .#{$css-prefix}switch-children {
-            margin: 0 calc(#{$switch-size-s-trigger} + #{$switch-size-s-trigger-padding}) 0 $switch-size-s-trigger-padding;
+            margin: 0 calc(#{$switch-size-s-trigger} + #{$switch-size-s-trigger-padding-r}) 0 $switch-size-s-trigger-padding-l;
         }
 
         &.#{$css-prefix}switch.#{$css-prefix}switch-off > .#{$css-prefix}switch-children {
-            margin: 0 $switch-size-s-trigger-padding 0 calc(#{$switch-size-s-trigger} + #{$switch-size-s-trigger-padding});
+            margin: 0 $switch-size-s-trigger-padding-r 0 calc(#{$switch-size-s-trigger} + #{$switch-size-s-trigger-padding-l});
         }
         &.#{$css-prefix}switch-loading .#{$css-prefix}icon-loading {
             @include icon-size($switch-size-s-inner-icon);
