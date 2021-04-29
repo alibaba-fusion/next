@@ -1333,6 +1333,19 @@ describe('RangePicker', () => {
             assert(ret[0].format('YYYY-MM-DD') === '2017-11-01');
         });
 
+        it('should select end month n, panel visible month should be from n-1 to n', () => {
+            let ret;
+            wrapper = mount(
+                <RangePicker defaultValue={[startValue, endValue]} defaultVisible onChange={val => (ret = val)} />
+            );
+            wrapper.find('.next-range-picker-panel-input-end-date input').simulate('focus');
+            wrapper.find('.next-calendar-panel-header-right .next-calendar-btn').at(0).simulate('click');
+
+            wrapper.find('.next-calendar-tbody tr td[title="Feb"]').simulate('click');
+
+            assert(wrapper.find('.next-calendar-panel-header-right .next-calendar-btn[title="February"]'));
+        });
+
         it('should select a startDay bigger than the previous endDay', () => {
             let ret;
             wrapper = mount(

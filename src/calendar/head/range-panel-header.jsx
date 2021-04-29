@@ -15,14 +15,19 @@ class RangePanelHeader extends React.PureComponent {
         return target.parentNode;
     };
 
-    onYearChange = (visibleMonth, year) => {
+    onYearChange = (visibleMonth, year, tag) => {
         const { changeVisibleMonth } = this.props;
-        changeVisibleMonth(visibleMonth.clone().year(year), 'yearSelect');
+        const startYear = visibleMonth
+            .clone()
+            .year(year)
+            .add(tag === 'end' ? -1 : 0, 'month');
+        changeVisibleMonth(startYear, 'yearSelect');
     };
 
-    changeVisibleMonth = (visibleMonth, month) => {
+    changeVisibleMonth = (visibleMonth, month, tag) => {
         const { changeVisibleMonth } = this.props;
-        changeVisibleMonth(visibleMonth.clone().month(month), 'monthSelect');
+        const startMonth = tag === 'end' ? month - 1 : month;
+        changeVisibleMonth(visibleMonth.clone().month(startMonth), 'monthSelect');
     };
 
     render() {
@@ -90,7 +95,7 @@ class RangePanelHeader extends React.PureComponent {
                                 prefix={prefix}
                                 value={startVisibleMonth.month()}
                                 dataSource={months}
-                                onChange={value => this.changeVisibleMonth(startVisibleMonth, value)}
+                                onChange={value => this.changeVisibleMonth(startVisibleMonth, value, 'start')}
                             />
                         </Dropdown>
                     ) : (
@@ -120,7 +125,7 @@ class RangePanelHeader extends React.PureComponent {
                                 prefix={prefix}
                                 value={startVisibleMonth.year()}
                                 dataSource={startYears}
-                                onChange={v => this.onYearChange(startVisibleMonth, v)}
+                                onChange={v => this.onYearChange(startVisibleMonth, v, 'start')}
                             />
                         </Dropdown>
                     ) : (
@@ -152,7 +157,7 @@ class RangePanelHeader extends React.PureComponent {
                                 prefix={prefix}
                                 value={endVisibleMonth.month()}
                                 dataSource={months}
-                                onChange={value => this.changeVisibleMonth(endVisibleMonth, value)}
+                                onChange={value => this.changeVisibleMonth(endVisibleMonth, value, 'end')}
                             />
                         </Dropdown>
                     ) : (
@@ -182,7 +187,7 @@ class RangePanelHeader extends React.PureComponent {
                                 prefix={prefix}
                                 value={endVisibleMonth.year()}
                                 dataSource={endYears}
-                                onChange={v => this.onYearChange(endVisibleMonth, v)}
+                                onChange={v => this.onYearChange(endVisibleMonth, v, 'end')}
                             />
                         </Dropdown>
                     ) : (
