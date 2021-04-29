@@ -77,6 +77,11 @@ function _getViewportSize(container) {
 }
 
 const getContainer = ({ container, baseElement }) => {
+    // SSR下会有副作用
+    if (typeof document === undefined) {
+        return container;
+    }
+
     let calcContainer = findNode(container, baseElement);
 
     if (!calcContainer) {

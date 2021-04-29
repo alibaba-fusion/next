@@ -1,11 +1,10 @@
 # Latest Log 
 
-## [1.22.18](https://github.com/alibaba-fusion/next/compare/1.22.17...1.22.18) (2021-04-09)
+## [1.22.23](https://github.com/alibaba-fusion/next/compare/1.22.22...1.22.23) (2021-04-28)
 
 
 ### Bug Fixes
 
-* avoid empty content being corrected as 0, close [#2856](https://github.com/alibaba-fusion/next/issues/2856) ([731da6f](https://github.com/alibaba-fusion/next/commit/731da6f))
-* **NumberPicker:** make trigger untabbable, close [#2794](https://github.com/alibaba-fusion/next/issues/2794) ([b1e12da](https://github.com/alibaba-fusion/next/commit/b1e12da))
+* **Nav:** remove next-nav-icon to 1.23 ([fe83639](https://github.com/alibaba-fusion/next/commit/fe83639))
 
 

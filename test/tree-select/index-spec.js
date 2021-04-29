@@ -444,6 +444,24 @@ describe('TreeSelect', () => {
         assert(triggered);
     });
 
+    it('should support multiple with hasClear', done => {
+
+        wrapper = mount(
+            <TreeSelect
+                multiple
+                hasClear
+                dataSource={dataSource}
+                value={['yyy', 'abcd']}
+                onChange={(value) => {
+                    assert(value === null);
+                    done();
+                }}
+            />
+        );
+
+        wrapper.find('i.next-icon-delete-filling').simulate('click');
+    });
+
     it('should trigger onSearch when search some keyword', () => {
         let triggered = false;
         const searchedValue = '外套';

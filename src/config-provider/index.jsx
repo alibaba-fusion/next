@@ -139,6 +139,10 @@ class ConfigProvider extends Component {
         return getContextProps(props, childContextCache.root() || {}, displayName);
     };
 
+    static clearCache = () => {
+        childContextCache.clear();
+    };
+
     static initLocales = initLocales;
     static setLanguage = setLanguage;
     static setLocale = setLocale;

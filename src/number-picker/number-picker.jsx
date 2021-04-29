@@ -20,7 +20,7 @@ class NumberPicker extends React.Component {
          */
         prefix: PropTypes.string,
         /**
-         * 设置类型
+         * 设置类型(当 device 为 phone 时，NumberPicker 的类型强制为 normal，不可通过 type 修改)
          * @enumdesc 普通, 内联
          */
         type: PropTypes.oneOf(['normal', 'inline']),

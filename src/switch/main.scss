@@ -12,6 +12,7 @@
     transition: all $motion-duration-immediately $motion-linear;
     overflow: hidden;
     cursor: pointer;
+    user-select: none;
 
     &:after {
         content: " ";

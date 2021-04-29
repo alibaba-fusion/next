@@ -5,7 +5,7 @@ import CommonProps from '../util';
 import { PopupProps } from '../overlay';
 import { InputProps } from '../input';
 import { ButtonProps } from '../button';
-import * as dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -19,7 +19,7 @@ export interface DatePreset extends ButtonProps {
 }
 
 export interface RangePreset {
-    [propName: string]: (typeof dayjs)[];
+    [propName: string]: (typeof Dayjs)[];
 }
 
 export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
@@ -163,7 +163,7 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 时间值改变时的回调
      */
-    onChange?: (date: typeof dayjs, dateString: string) => void;
+    onChange?: (date: typeof Dayjs, dateString: string) => void;
 }
 
 export default class TimePicker extends React.Component<TimePickerProps, any> {}
