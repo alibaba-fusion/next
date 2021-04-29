@@ -22,7 +22,7 @@ import { DatePicker2 } from '@alifd/next';
 const { RangePicker} = DatePicker2;
 
 const defaultVal = '2020-02-02';
-const defaultRangeVal = ['2020-01-01', '2020-02-02']
+const defaultRangeVal = ['2020-01-01', '2020-02-02'];
 function customizeFormatter(v) {
     return `DATE: ${v.format('YYYY/MM/DD')}`;
 }
