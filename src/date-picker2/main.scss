@@ -41,7 +41,6 @@
 
     &-overlay {
         vertical-align: top;
-        border-radius: 2px;
         padding: 4px 0px;
     }
 
@@ -56,6 +55,9 @@
         border-radius: $corner-1;
 
         #{$calendar2-prefix} {
+            &-panel {
+                border-radius: $corner-1;
+            }
             &-body {
                 width: 272px;
             }
@@ -180,37 +182,28 @@
 
 #{$range-picker2-prefix}-arrow {
     display: block;
-    transform: rotate(-45deg);
+    transform: translate(0, -50%) rotate(-45deg);
     position: absolute;
     z-index: 1;
     width: 10px;
     height: 10px;
     margin-left: 16.5px;
-    box-shadow: 2px -2px 6px rgba(0, 0, 0, .06);
+    border-color: $color-line1-1 $color-line1-1 transparent transparent;
+    border-style: solid;
+    border-width: 1px;
     transition: left .3s ease-out;
-    &:after {
-        content: "";
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        width: 11px;
-        height: 11px;
-        border-color: $color-line1-1 $color-line1-1 transparent transparent;
-        border-style: solid;
-        border-width: 1px;
-        background-color: $color-white;
-    }
+    background: $color-white;
 }
 
 #{$date-picker2-prefix}-tl-bl {
     #{$range-picker2-prefix}-arrow {
-        top: 6px;
+        top: 12.5px;
     }
 }
 #{$date-picker2-prefix}-bl-tl {
     #{$range-picker2-prefix}-arrow {
-        bottom: 6px;
-        transform: rotate(135deg);
+        bottom: 13px;
+        transform: translate(0, 50%) rotate(135deg);
     }
 }
 
