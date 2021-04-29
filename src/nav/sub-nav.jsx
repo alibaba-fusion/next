@@ -46,11 +46,12 @@ class SubNav extends Component {
         prefix: PropTypes.string,
         mode: PropTypes.string,
         iconOnly: PropTypes.bool,
+        iconOnlyWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         hasArrow: PropTypes.bool,
     };
 
     render() {
-        const { prefix, iconOnly, hasArrow, noIcon, mode } = this.context;
+        const { prefix, iconOnly, iconOnlyWidth, hasArrow, noIcon, mode } = this.context;
         const { className, icon, label, children, level, ...others } = this.props;
         const cls = classNames({
             [`${prefix}nav-sub-nav-item`]: true,
@@ -68,7 +69,14 @@ class SubNav extends Component {
                 />
             );
         }
-        const newLabel = [iconEl ? cloneElement(iconEl, { key: 'icon' }) : null, <span key="label">{label}</span>];
+
+        const newLabel = [iconEl ? cloneElement(iconEl, { key: 'icon' }) : null];
+
+        const showLabel = !iconOnly || (iconOnly && !iconOnlyWidth);
+
+        if (showLabel) {
+            newLabel.push(<span key="label">{label}</span>);
+        }
 
         let title;
 

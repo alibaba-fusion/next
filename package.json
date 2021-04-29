@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.22.19",
+  "version": "1.22.24",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -45,7 +45,10 @@
     "dist/*",
     "es/**/style.js",
     "lib/**/style.js",
-    "*.scss"
+    "es/**/style2.js",
+    "lib/**/style2.js",
+    "*.scss",
+    "*.css"
   ],
   "scripts": {
     "report-coverage": "codecov",

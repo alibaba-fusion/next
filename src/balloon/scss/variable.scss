@@ -110,10 +110,10 @@ $balloon-tooltip-size-padding-bottom: $s-2 !default;
 /// @namespace size/bounding
 $balloon-tooltip-size-padding-left: $s-2 !default;
 
-$balloon-size-padding: $balloon-size-padding-top $balloon-size-padding-right;
-$balloon-size-closable-padding: $balloon-size-padding-top $balloon-size-padding-closable-right $balloon-size-padding-top $balloon-size-padding-right;
-$balloon-size-arrow-expose: calc(0px - #{$balloon-size-arrow-size} / 2 - 1px);
-$balloon-size-arrow-expose-primary: calc(0px - #{$balloon-size-arrow-size} / 2 - #{$balloon-primary-border-width});
+$balloon-size-padding: $balloon-size-padding-top $balloon-size-padding-right !default;
+$balloon-size-closable-padding: $balloon-size-padding-top $balloon-size-padding-closable-right $balloon-size-padding-top $balloon-size-padding-right !default;
+$balloon-size-arrow-expose: calc(0px - #{$balloon-size-arrow-size} / 2 - 1px) !default;
+$balloon-size-arrow-expose-primary: calc(0px - #{$balloon-size-arrow-size} / 2 - #{$balloon-primary-border-width}) !default;
 
 // Common
 /// border style

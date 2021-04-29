@@ -94,6 +94,10 @@ class Nav extends Component {
          */
         iconOnly: PropTypes.bool,
         /**
+         * iconOnly 模式下的宽度（仅在 iconOnly=true 时生效） 如果传入了iconOnlyWidth，那么会隐藏文本，例如 Nav.Item 的 label
+         */
+        iconOnlyWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        /**
          * 是否显示右侧的箭头（仅在 iconOnly=true 时生效）
          */
         hasArrow: PropTypes.bool,
@@ -140,6 +144,7 @@ class Nav extends Component {
         prefix: PropTypes.string,
         mode: PropTypes.string,
         iconOnly: PropTypes.bool,
+        iconOnlyWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         hasTooltip: PropTypes.bool,
         hasArrow: PropTypes.bool,
     };
@@ -155,7 +160,7 @@ class Nav extends Component {
     }
 
     getChildContext() {
-        const { prefix, direction, mode, iconOnly, hasTooltip, hasArrow } = this.props;
+        const { prefix, direction, mode, iconOnly, iconOnlyWidth, hasTooltip, hasArrow } = this.props;
 
         const { isCollapse } = this.context;
 
@@ -163,6 +168,7 @@ class Nav extends Component {
             prefix,
             mode: direction === 'hoz' ? 'popup' : mode,
             iconOnly: 'iconOnly' in this.props ? iconOnly : isCollapse,
+            iconOnlyWidth: 'iconOnlyWidth' in this.props ? iconOnlyWidth : undefined,
             hasTooltip,
             hasArrow,
         };
@@ -189,6 +195,7 @@ class Nav extends Component {
             popupAlign,
             popupClassName,
             iconOnly,
+            iconOnlyWidth,
             hasArrow,
             hasTooltip,
             embeddable,
@@ -220,11 +227,12 @@ class Nav extends Component {
             [`${prefix}active`]: realActiveDirection,
             [`${prefix}${realActiveDirection}`]: realActiveDirection,
             [`${prefix}icon-only`]: newIconOnly,
+            [`${prefix}custom-icon-only-width`]: newIconOnly && 'iconOnlyWidth' in this.props,
             [`${prefix}no-arrow`]: !hasArrow,
             [`${prefix}nav-embeddable`]: embeddable,
             [className]: !!className,
         });
-        const newStyle = newIconOnly ? { ...style, width: '58px' } : style;
+        const newStyle = newIconOnly ? { ...style, width: iconOnlyWidth || 58 } : style;
 
         const props = {
             prefix,

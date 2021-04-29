@@ -32,13 +32,14 @@ class DateInput extends React.Component {
         disabled: SharedPT.disabled,
         inputProps: PT.object,
         dateInputAriaLabel: SharedPT.ariaLabel,
+        label: PT.node,
     };
 
     static defaultProps = {
         autoFocus: false,
         readOnly: false,
         hasClear: true,
-        separator: <Icon size="xxs" type="minus" />,
+        separator: '-',
         hasBorder: true,
         size: 'medium',
     };
@@ -143,6 +144,7 @@ class DateInput extends React.Component {
             inputProps,
             dateInputAriaLabel,
             state,
+            label,
             ...restProps
         } = this.props;
 
@@ -162,15 +164,17 @@ class DateInput extends React.Component {
         let rangeProps;
         if (isRange) {
             rangeProps = [DATE_INPUT_TYPE.BEGIN, DATE_INPUT_TYPE.END].map(idx => {
+                const _disabled = Array.isArray(disabled) ? disabled[idx] : disabled;
+
                 return {
                     ...sharedProps,
                     autoFocus,
                     placeholder: placeholder[idx],
                     value: value[idx] || '',
                     'aria-label': Array.isArray(dateInputAriaLabel) ? dateInputAriaLabel[idx] : dateInputAriaLabel,
-                    disabled: Array.isArray(disabled) ? disabled[idx] : disabled,
+                    disabled: _disabled,
                     ref: ref => setInputRef(ref, idx),
-                    onFocus: () => handleTypeChange(idx),
+                    onFocus: _disabled ? undefined : () => handleTypeChange(idx),
                     className: classnames({
                         [`${prefixCls}-active`]: inputType === idx,
                     }),
@@ -195,6 +199,7 @@ class DateInput extends React.Component {
                     <React.Fragment>
                         <Input
                             {...rangeProps[0]}
+                            label={label}
                             autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus
                         />
                         <div className={`${prefixCls}-separator`}>{separator}</div>
@@ -208,6 +213,7 @@ class DateInput extends React.Component {
                 ) : (
                     <Input
                         {...sharedProps}
+                        label={label}
                         state={state}
                         disabled={disabled}
                         hasClear={!state && hasClear}

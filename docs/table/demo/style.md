@@ -64,11 +64,12 @@ class App extends React.Component {
     render() {
         return (<span>
             <Box direction="row" spacing={20}>
-                <Button onClick={this.toggleZebra.bind(this)}> Toggle zebra </Button> 
-                <Button onClick={this.toggleBorder.bind(this)}> Toggle border</Button> 
-                <Button onClick={this.makeBeauty.bind(this)}> Make second column beauty </Button> 
-                <Button onClick={this.makeAlign.bind(this)}> Make first column align right </Button> 
+                <Button onClick={this.toggleZebra.bind(this)}> Toggle zebra </Button>
+                <Button onClick={this.toggleBorder.bind(this)}> Toggle border</Button>
+                <Button onClick={this.makeBeauty.bind(this)}> Make second column beauty </Button>
+                <Button onClick={this.makeAlign.bind(this)}> Make first column align right </Button>
             </Box>
+            <br />
             <Table dataSource={this.state.dataSource}
                 isZebra={this.state.isZebra}
                 hasBorder={this.state.hasBorder}>
