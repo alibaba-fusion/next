@@ -806,6 +806,7 @@ describe('WeekPicker', () => {
             wrapper = mount(<WeekPicker defaultValue={moment('2019-12-29')} isPreview />);
 
             assert(wrapper.find('.next-form-preview').length > 0);
+            assert(moment.locale() === 'en');
             assert(wrapper.find('.next-form-preview').text() === '2019-52nd');
         });
     });
