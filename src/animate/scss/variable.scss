@@ -15,6 +15,8 @@ $functionDefault: cubic-bezier(.23, 1, .32, 1) !default;
 $fillDefault: both;
 $visibilityDefault: hidden !default;
 
+$zoom-big-func: cubic-bezier(0, 0, .2, 1);
+
 $ease-in-quint: cubic-bezier(.755, .05, .855, .06);
 $ease-out-quint: cubic-bezier(.23, 1, .32, 1);
 $ease-in-out-quint: cubic-bezier(.86, 0, .07, 1);

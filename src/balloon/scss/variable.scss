@@ -20,17 +20,29 @@
 /// @namespace size/bounding
 $balloon-size-max-width: 300px !default;
 
-/// padding (t, b)
-/// @namespace size/content
-$balloon-size-padding-top: $s-4 !default;
-
-/// padding (r)
-/// @namespace size/content
+/// padding (l, r)
+/// @namespace size/bounding
 $balloon-size-padding-right: $s-4 !default;
 
-/// padding (l)
-/// @namespace size/content
+/// padding (r) closable
+/// @namespace size/bounding
 $balloon-size-padding-closable-right: $s-10 !default;
+
+/// padding (t, b)
+/// @namespace size/bounding
+$balloon-size-padding-top: $s-4 !default;
+
+/// margin (b)
+/// @namespace size/title
+$balloon-size-header-margin-bottom: $s-2 !default;
+
+/// text
+/// @namespace size/title
+$balloon-title-font-size: $font-size-subhead !default;
+
+/// text weight
+/// @namespace size/title
+$balloon-title-font-weight: $font-weight-3 !default;
 
 /// text
 /// @namespace size/content
@@ -63,6 +75,8 @@ $balloon-tooltip-content-font-weight: $font-weight-2 !default;
 /// size
 /// @namespace size/close icon
 $balloon-size-close: $icon-xs !default;
+
+// 这个变量没必要让用户配置，写死最好
 
 /// margin (t)
 /// @namespace size/close icon

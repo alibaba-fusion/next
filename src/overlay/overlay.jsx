@@ -446,7 +446,9 @@ class Overlay extends Component {
             });
 
             this.onLeaved();
-        } else if (this.state.status === 'entering') {
+            // dom结构首次出现 触发的是entering
+            // dom结构已经存在（例如设置了cache），触发的是mounting
+        } else if (this.state.status === 'entering' || this.state.status === 'mounting') {
             this.setState({
                 status: 'none',
             });

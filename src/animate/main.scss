@@ -16,6 +16,8 @@
 @import "scss/_sliding-entrances/sliding-entrances.scss";
 @import "scss/_zooming-entrances/_zoomIn.scss";
 @import "scss/_zooming-exits/_zoomOut.scss";
+@import "scss/_zooming-entrances/_zoomInBig.scss";
+@import "scss/_zooming-exits/_zoomOutBig.scss";
 @import "scss/_expand-entrances/_expandInDown.scss";
 @import "scss/_expand-entrances/_expandInUp.scss";
 @import "scss/_expand-entrances/_withFade.scss";
@@ -106,6 +108,14 @@
 
 .zoomOut {
     @include zoomOut();
+}
+
+.zoomInBig {
+    @include zoomInBig();
+}
+
+.zoomOutBig {
+    @include zoomOutBig();
 }
 
 .expandInDown {
