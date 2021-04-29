@@ -56,7 +56,7 @@ co(function*() {
     }
     yield pushPlatformDocsBranch();
     yield publishToNpm();
-    yield sendToDingTalk();
+    // yield sendToDingTalk();
 }).catch(err => {
     logger.error('Release failed', err.stack);
 });
@@ -215,7 +215,7 @@ function* publishToNpm() {
         yield runCommond(`npm publish --tag ${distTags.tag}`);
         yield runCommond(`tnpm sync @alifd/next`);
         yield publishToNextDocs();
-        triggerRelease();
+        // triggerRelease();
     } else {
         logger.success('publish abort.');
     }
