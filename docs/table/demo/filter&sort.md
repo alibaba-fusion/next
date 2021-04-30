@@ -2,7 +2,7 @@
 
 - order: 3
 
-示例演示了排序和过滤的特性
+示例演示了排序和过滤的特性。你可以通过设置 `sortDirections={['desc', 'asc', 'default']}` 来实现升序、降序、默认，三种状态的循环
 
 :::lang=en-us
 # Sorting and filtering
@@ -41,6 +41,7 @@ class App extends React.Component {
         };
     }
     onSort(dataIndex, order) {
+        console.log(dataIndex, order, '======');
         const dataSource = this.state.dataSource.sort(function(a, b) {
             const result = a[dataIndex] - b[dataIndex];
             return (order === 'asc') ? (result > 0 ? 1 : -1) : (result > 0 ? -1 : 1);
@@ -107,7 +108,7 @@ class App extends React.Component {
                 <Table dataSource={this.state.dataSource}
                     onSort={this.onSort.bind(this)}
                     onFilter={this.onFilter.bind(this)}>
-                    <Table.Column title="Id" dataIndex="id" sortable/>
+                    <Table.Column title="Id" dataIndex="id" sortable />
                     <Table.Column title="Title" dataIndex="title" filters={filters} filterMode={this.state.filterMode}/>
                     <Table.Column title="Time" dataIndex="time"/>
                     <Table.Column cell={render} width={200}/>
@@ -116,12 +117,12 @@ class App extends React.Component {
                 Customize sortIcons:
                 <br />
                 <Table dataSource={[]}
-                    onSort={() => {}}
+                    onSort={console.log}
                     sortIcons={{
-                        desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="small" />,
-                        asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="small" />
+                        desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="xs" />,
+                        asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="xs" />
                     }}>
-                    <Table.Column title="Id" dataIndex="id" sortable/>
+                    <Table.Column title="Id" dataIndex="id" sortable sortDirections={['desc', 'asc', 'default']}/>
                     <Table.Column title="Title" dataIndex="title" filters={filters} filterMode={this.state.filterMode}/>
                     <Table.Column title="Time" dataIndex="time"/>
                 </Table>
