@@ -85,6 +85,7 @@ export default class Header extends React.Component {
                     title,
                     colSpan,
                     sortable,
+                    sortDirections,
                     resizable,
                     dataIndex,
                     filters,
@@ -122,6 +123,7 @@ export default class Header extends React.Component {
                                 className={`${prefix}table-header-icon`}
                                 dataIndex={dataIndex}
                                 onSort={this.onSort}
+                                sortDirections={sortDirections}
                                 sortIcons={sortIcons}
                                 sort={sort}
                                 rtl={rtl}
@@ -131,12 +133,7 @@ export default class Header extends React.Component {
                     }
                     if (resizable) {
                         resizeElement = (
-                            <Resize
-                                prefix={prefix}
-                                rtl={rtl}
-                                dataIndex={dataIndex}
-                                onChange={onResizeChange}
-                            />
+                            <Resize prefix={prefix} rtl={rtl} dataIndex={dataIndex} onChange={onResizeChange} />
                         );
                     }
 

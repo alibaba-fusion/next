@@ -533,6 +533,47 @@ describe('Issue', () => {
         document.body.removeChild(div);
     });
 
+    it('should sortDirections work', () => {
+        class App extends React.Component {
+            render() {
+                return (
+                    <Table dataSource={generateDataSource(10)} scrollToRow={20}>
+                        <Table.Column
+                            title="Id1"
+                            dataIndex="id"
+                            width={100}
+                            sortable
+                            sortDirections={['desc', 'asc', 'default']}
+                        />
+                        <Table.Column
+                            title="Index"
+                            dataIndex="index"
+                            width={200}
+                        />
+                    </Table>
+                );
+            }
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        ReactDOM.render(<App />, div);
+
+        const sortBtn = div.querySelectorAll(
+            '.next-table-header .next-table-sort'
+        );
+        console.log(sortBtn)
+        sortBtn[0].click();
+        assert(div.querySelectorAll('a.current .next-icon-descending'));
+        sortBtn[0].click();
+        assert(div.querySelectorAll('a.current .next-icon-ascending'));
+        sortBtn[0].click();
+        assert(div.querySelectorAll('a.current').length === 0);
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
+
     it('sort should have only one empty when datasorce=[] && enough width', () => {
         class App extends React.Component {
             render() {
