@@ -33,6 +33,7 @@ export default class Column extends React.Component {
          * 排序的方向。
          * 设置 ['desc', 'asc']，表示降序、升序
          * 设置 ['desc', 'asc', 'default']，表示表示降序、升序、不排序
+         * @version 1.23
          */
         sortDirections: PropTypes.arrayOf(PropTypes.oneOf(['desc', 'asc', 'default'])),
         /**
