@@ -3,6 +3,7 @@
 @import "../core/index-noreset.scss";
 @import "scss/_fading-entrances/_fadeIn.scss";
 @import "scss/_fading-entrances/_fadeInDown.scss";
+@import "scss/_fading-entrances/_fadeInDownSmall.scss";
 @import "scss/_fading-entrances/_fadeInLeft.scss";
 @import "scss/_fading-entrances/_fadeInRight.scss";
 @import "scss/_fading-entrances/_fadeInUp.scss";
@@ -66,10 +67,6 @@
     @include fadeOutUp();
 }
 
-.fadeOutUpSmall {
-    @include fadeOutUpSmall();
-}
-
 .slideInUp {
     @include slideInUp();
 }
@@ -110,14 +107,6 @@
     @include zoomOut();
 }
 
-.zoomInBig {
-    @include zoomInBig();
-}
-
-.zoomOutBig {
-    @include zoomOutBig();
-}
-
 .expandInDown {
     @include expandInDown();
 }
@@ -132,6 +121,22 @@
 
 .expandOutDown {
     @include expandOutDown();
+}
+
+.fadeInDownSmall {
+    @include fadeInDownSmall();
+}
+
+.fadeOutUpSmall {
+    @include fadeOutUpSmall();
+}
+
+.zoomInBig {
+    @include zoomInBig();
+}
+
+.zoomOutBig {
+    @include zoomOutBig();
 }
 
 .pulse {
