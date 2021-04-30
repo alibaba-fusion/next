@@ -1,13 +1,13 @@
-# 按需加载的Tree表格
+# 树表格逐级加载
 
-- order: 20
+- order: 26
 
-演示 TreeTable 如何进行按需加载
+演示 TreeTable 如何进行逐级加载
 
 :::lang=en-us
 # Tree Table with load
 
-- order: 20
+- order: 26
 
 Tree Table with load.
 :::
@@ -65,17 +65,18 @@ class App extends React.Component {
                 } else {
                   currentRecord.children = [
                     {
-                      key: currentRowKey + '12',
-                      name: 'f',
-                      age: 33,
-                      address: 'ff',
+                      key: currentRowKey + '-a',
+                      name: `${currentRecord.name}-son`,
+                      age: 10,
+                      address: 'Earth',
+                      // 非叶子结点需要带着children，并且设置一条空数据先
                       children: [{ key: ' ' }],
                     },
                     {
-                      key: currentRowKey + '25',
-                      name: 'i',
-                      age: 32,
-                      address: 'ii',
+                      key: currentRowKey + '-b',
+                      name: `${currentRecord.name}-daughter`,
+                      age: 10,
+                      address: 'Earth',
                       isLeaf: true,
                     },
                   ];
