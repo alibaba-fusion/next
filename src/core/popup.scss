@@ -12,10 +12,10 @@
     box-shadow: $popup-local-shadow;
 }
 
-.next-select-popup-wrap {
+.next-popup.next-select-popup-wrap {
     padding: $popup-spacing-tb 0;
 }
 
-.next-menu-spacing-lr {
+.next-popup .next-menu-spacing-lr {
     padding: 0 $popup-spacing-lr;
 }

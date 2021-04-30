@@ -363,24 +363,21 @@ class Overlay extends Component {
         switch (align[0]) {
             case 't':
                 return {
-                    // in: 'expandInDown',
-                    // out: 'expandOutUp',
-                    in: 'fadeInDown',
-                    out: 'fadeOutUpSmall',
+                    // 为了防止有的用户 js升级了而css没升级，所以把两个动画都保留了。
+                    // 动画不会叠加，会替代，顺序根据 src/animate/main.scss 中的样式先后顺序遵循css覆盖原则
+                    // fadeInDownSmall fadeOutUpSmall 优先级更高
+                    in: 'expandInDown fadeInDownSmall',
+                    out: 'expandOutUp fadeOutUpSmall',
                 };
             case 'b':
                 return {
-                    // in: 'expandInUp',
-                    // out: 'expandOutDown',
                     in: 'fadeInUp',
                     out: 'fadeOutDown',
                 };
             default:
                 return {
-                    // in: 'expandInDown',
-                    // out: 'expandOutUp',
-                    in: 'fadeInDown',
-                    out: 'fadeOutUpSmall',
+                    in: 'expandInDown fadeInDownSmall',
+                    out: 'expandOutUp fadeOutUpSmall',
                 };
         }
     }

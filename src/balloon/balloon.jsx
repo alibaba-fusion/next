@@ -179,8 +179,8 @@ class Balloon extends React.Component {
         autoFocus: true,
         delay: 0,
         animation: {
-            in: 'zoomInBig',
-            out: 'zoomOutBig',
+            in: 'zoomIn zoomInBig',
+            out: 'zoomOut zoomOutBig',
         },
         cache: false,
         popupStyle: {},
