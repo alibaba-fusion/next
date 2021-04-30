@@ -1,4 +1,9 @@
-# Change Log
+# Change Log 
+
+# [1.23.0-beta.4](https://github.com/alibaba-fusion/next/compare/1.23.0-beta...1.23.0-beta.4) (2021-04-30)
+
+
+
 
 ## [1.22.24](https://github.com/alibaba-fusion/next/compare/1.22.23...1.22.24) (2021-04-29)
 

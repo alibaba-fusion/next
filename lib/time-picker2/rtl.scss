@@ -1,0 +1,9 @@
+#{$time-picker2-prefix}-wrapper[dir="rtl"] {
+    #{$time-picker2-prefix}-menu {
+        float: right;
+        &:not(:last-child) {
+            border-right: none;
+            border-left: $line-1 $line-solid $color-line1-2;
+        }
+    }
+}
