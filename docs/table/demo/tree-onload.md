@@ -17,6 +17,8 @@ Tree Table with load.
 ````jsx
 import { Table } from '@alifd/next';
 
+const generateRandomKey = () => Math.ceil(Math.random()*10000);
+
 const data = [
   {
     key: 1,
@@ -24,7 +26,7 @@ const data = [
     age: 32,
     address: 'Zhejiang Province, China',
     // 非叶子结点需要带着children，并且设置一条空数据先
-    children: [{ key: ' ' }],
+    children: [{ key: generateRandomKey() }],
   },
   {
     key: 2,
@@ -60,20 +62,20 @@ class App extends React.Component {
                 const success = true;
                 let keys = openRowKeys;
                 if (!success) {
-                  currentRecord.children = [{ key: ' ' }];
+                  currentRecord.children = [{ key: generateRandomKey() }];
                   keys = keys.filter(cu => cu !== currentRowKey);
                 } else {
                   currentRecord.children = [
                     {
-                      key: currentRowKey + '-a',
+                      key: `${currentRowKey  }-a`,
                       name: `${currentRecord.name}-son`,
                       age: 10,
                       address: 'Earth',
                       // 非叶子结点需要带着children，并且设置一条空数据先
-                      children: [{ key: ' ' }],
+                      children: [{ key: generateRandomKey() }],
                     },
                     {
-                      key: currentRowKey + '-b',
+                      key: `${currentRowKey  }-b`,
                       name: `${currentRecord.name}-daughter`,
                       age: 10,
                       address: 'Earth',
