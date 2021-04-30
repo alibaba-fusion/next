@@ -167,7 +167,7 @@ export default class PopupItem extends Component {
     }
 
     renderPopup(trigger, triggerType, positionProps, children) {
-        const { root, level, selectable } = this.props;
+        const { root, level, selectable, className: propCls } = this.props;
         const { direction } = root.props;
         this.popupProps = this.getPopupProps();
         const open = this.getOpen();
@@ -176,7 +176,8 @@ export default class PopupItem extends Component {
             positionProps.target = () => findDOMNode(this);
         }
 
-        const { className, ...otherPostion } = positionProps;
+        const { className: posCls, ...otherPostion } = positionProps;
+        const className = cx(propCls, posCls);
 
         return (
             <Popup
