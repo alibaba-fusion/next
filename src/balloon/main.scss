@@ -34,6 +34,9 @@
             }
         }
     }
+    &-content {
+        word-break: break-all;
+    }
 
     &-primary {
         @include balloon-state(

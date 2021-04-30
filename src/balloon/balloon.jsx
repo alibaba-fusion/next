@@ -177,6 +177,7 @@ class Balloon extends React.Component {
         safeNode: undefined,
         safeId: null,
         autoFocus: true,
+        delay: 0,
         animation: {
             in: 'zoomInBig',
             out: 'zoomOutBig',
