@@ -27,6 +27,7 @@ export default function expanded(BaseComponent, stickyLock) {
              * @param {Object} record 该行所对应的数据
              * @param {Number} index 该行所对应的序列
              * @returns {Boolean} 是否可展开
+             * @version 1.21
              */
             rowExpandable: PropTypes.func,
             /**
