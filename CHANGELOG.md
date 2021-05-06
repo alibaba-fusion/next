@@ -1,4 +1,9 @@
-# Change Log
+# Change Log 
+
+# [1.23.0-betea.6](https://github.com/alibaba-fusion/next/compare/1.23.0-beta.5...1.23.0-betea.6) (2021-05-06)
+
+
+
 
 ## [1.22.24](https://github.com/alibaba-fusion/next/compare/1.22.23...1.22.24) (2021-04-29)
 
