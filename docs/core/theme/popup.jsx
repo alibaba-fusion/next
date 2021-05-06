@@ -42,7 +42,7 @@ class PopupDemo extends React.Component {
                             </TreeSelect>
                         </td>
                         <td style={tdStyle}>
-                        <Menu style={style} mode="popup" openKeys={['sub-1']}>
+                        <Menu style={style} mode="popup" openKeys={['sub-1']} popupContainer={popupContainer}>
                             <Item key="1">Option 1</Item>
                             <Item key="2">Option 2</Item>
                             <Item key="3">Option 3</Item>
