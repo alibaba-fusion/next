@@ -30,6 +30,7 @@
 | checked           | 开关当前的值(针对受控组件)                                                                                                                                 | Boolean  | -        |
 | defaultChecked    | 开关默认值 (针对非受控组件)                                                                                                                                | Boolean  | false    |
 | disabled          | 表示开关被禁用                                                                                                                                        | Boolean  | false    |
+| loading           | loading                                                                                                                                        | Boolean  | false    |
 | onClick           | 鼠标点击事件<br><br>**签名**:<br>Function(e: Event) => void<br>**参数**:<br>_e_: {Event} DOM事件对象                                                         | Function | -        |
 | onKeyDown         | 键盘按键事件<br><br>**签名**:<br>Function(e: Event) => void<br>**参数**:<br>_e_: {Event} DOM事件对象                                                         | Function | -        |
 | isPreview         | 是否为预览态                                                                                                                                         | Boolean  | false    |
