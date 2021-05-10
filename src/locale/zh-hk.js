@@ -138,4 +138,36 @@ export default {
     Tab: {
         closeAriaLabel: '關閉',
     },
+    Form: {
+        Validate: {
+            default: '%s 校驗失敗',
+            required: '%s 是必填字段',
+            format: {
+                number: '%s 不是合法的數位',
+                email: '%s 不是合法的email地址',
+                url: '%s 不是合法的URL地址',
+                tel: '%s 不是合法的電話號碼',
+            },
+            number: {
+                length: '%s 長度必須是 %s',
+                min: '%s 不得小於 %s',
+                max: '%s 不得大於 %s',
+                minLength: '%s 長度不得少於 %s',
+                maxLength: '%s 長度不得超過 %s',
+            },
+            string: {
+                length: '%s 長度必須是 %s',
+                min: '%s 不得小於 %s',
+                max: '%s 不得大於 %s',
+                minLength: '%s 長度不得少於 %s',
+                maxLength: '%s 長度不得超過 %s',
+            },
+            array: {
+                length: '%s 個數必須是 %s',
+                minLength: '%s 個數不得少於 %s',
+                maxLength: '%s 個數不得超過 %s',
+            },
+            pattern: '%s 數值 %s 不匹配正則 %s',
+        },
+    },
 };

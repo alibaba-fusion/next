@@ -7,6 +7,10 @@
     display: inline-block;
     box-shadow: none;
 
+    &-spacing-tb {
+        padding: $popup-spacing-tb 0;
+    }
+
     .#{$css-prefix}icon {
         transition: transform $motion-duration-immediately $motion-linear;
     }

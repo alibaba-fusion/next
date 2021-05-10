@@ -139,4 +139,36 @@ export default {
     Tab: {
         closeAriaLabel: 'Đóng',
     },
+    Form: {
+        Validate: {
+            default: 'Lỗi xác thực trên trường %s',
+            required: '%s là bắt buộc',
+            format: {
+                number: '%s không phải là một số',
+                email: '%s không phải là một email hợp lệ',
+                url: '%s không phải là một URL hợp lệ',
+                tel: '%s không phải là số điện thoại hợp lệ',
+            },
+            number: {
+                length: '%s phải chính xác là các ký tự %s',
+                min: '%s không thể nhỏ hơn %s',
+                max: '%s không thể lớn hơn %s',
+                minLength: '%s phải có ít nhất các ký tự %s',
+                maxLength: '%s không thể dài hơn ký tự %s',
+            },
+            string: {
+                length: '%s phải chính xác là các ký tự %s',
+                min: '%s không thể nhỏ hơn %s',
+                max: '%s không thể lớn hơn %s',
+                minLength: '%s phải có ít nhất các ký tự %s',
+                maxLength: '%s không thể dài hơn ký tự %s',
+            },
+            array: {
+                length: '%s phải chính xác %s về chiều dài',
+                minLength: '%s không thể nhỏ hơn %s dài',
+                maxLength: '%s không thể lớn hơn %s có độ dài',
+            },
+            pattern: '%s GIÁ TRỊ %s không khớp với mẫu %s',
+        },
+    },
 };

@@ -8,7 +8,7 @@
     }
 }
 
-@mixin slideOutLeft($count: $countDefault, $duration: $durationDefault, $delay: $delayDefault, $function: $functionDefault, $fill: $fillDefault, $visibility: $visibilityDefault) {
+@mixin slideOutLeft($count: $countDefault, $duration: $durationDefault, $delay: $delayDefault, $function: $motion-default, $fill: $fillDefault, $visibility: $visibilityDefault) {
     @include animation-name(slideOutLeft);
     @include count($count);
     @include duration($duration);
