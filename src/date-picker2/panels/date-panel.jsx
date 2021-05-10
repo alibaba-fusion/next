@@ -30,16 +30,36 @@ class DatePanel extends React.Component {
         resetTime: false,
     };
 
-    onTimeSelect = v => {
-        const { value } = this.props;
+    constructor(props) {
+        super(props);
 
-        func.invoke(this.props, 'onSelect', [setTime(value || datejs(), v)]);
+        // 默认时间
+        const { timePanelProps = {} } = props;
+
+        let defaultTime = timePanelProps.defaultValue;
+        if (defaultTime) {
+            defaultTime = datejs(defaultTime, timePanelProps.format || 'HH:mm:ss');
+        }
+
+        this.state = {
+            defaultTime,
+        };
+    }
+
+    onTimeSelect = v => {
+        this.handleSelect(v, true);
     };
 
-    handleSelect = v => {
-        if (!this.props.resetTime) {
-            v = setTime(v, this.props.value || datejs());
+    handleSelect = (v, fromTimeChange) => {
+        const { defaultTime } = this.state;
+
+        let timeVal = null;
+
+        if (!this.props.resetTime && !fromTimeChange) {
+            timeVal = this.props.value || defaultTime || datejs();
         }
+
+        v = setTime(v, timeVal);
 
         func.invoke(this.props, 'onSelect', [v]);
     };
@@ -66,6 +86,7 @@ class DatePanel extends React.Component {
             [`${prefix}date-time-picker2-panel`]: showTime,
         });
 
+        // 禁用时间
         let _disabledTime;
         if (showTime && mode === panelMode && disabledTime) {
             _disabledTime = typeof disabledTime === 'function' ? disabledTime(value) : disabledTime;
@@ -91,7 +112,7 @@ class DatePanel extends React.Component {
                     <TimePanel
                         {...obj.pickProps(TimePanel.propTypes, restProps)}
                         prefix={prefix}
-                        value={value}
+                        value={value || this.state.defaultTime}
                         onSelect={this.onTimeSelect}
                         disabledTime={disabledTime}
                         timePanelProps={{ ..._disabledTime, ...timePanelProps }}

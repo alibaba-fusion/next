@@ -205,6 +205,42 @@ describe('Picker', () => {
             });
         });
 
+        it('disabledDate.defaultValue', () => {
+            const defaultTime = '00:12:13';
+
+            wrapper = mount(
+                <DatePicker
+                    showTime
+                    defaultVisible
+                    defaultPanelValue={defaultVal}
+                    timePanelProps={{ defaultValue: defaultTime }}
+                />
+            );
+
+            const selectedTimes = wrapper.find('.next-selected');
+            assert(['0', '12', '13'].every((v, idx) => selectedTimes.at(idx).text() === v));
+
+            clickDate('2020-12-12');
+            assert(getStrValue() === `2020-12-12 ${defaultTime}`);
+
+            wrapper.unmount();
+
+            wrapper = mount(
+                <RangePicker
+                    showTime
+                    defaultVisible
+                    defaultPanelValue={defaultVal}
+                    timePanelProps={{ defaultValue: defaultTime }}
+                />
+            );
+
+            clickDate('2020-12-12');
+            clickOk();
+            clickDate('2020-12-13');
+            clickOk();
+            assert.deepEqual(getStrValue(), [`2020-12-12 ${defaultTime}`, `2020-12-13 ${defaultTime}`]);
+        });
+
         it('placeholder', () => {
             // DatePicker
             wrapper = mount(<DatePicker placeholder="placeholder" />);
