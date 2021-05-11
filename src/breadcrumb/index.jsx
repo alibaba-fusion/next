@@ -167,7 +167,9 @@ class Breadcrumb extends Component {
                 container={popupContainer}
                 followTrigger={followTrigger}
             >
-                <Menu>{hiddenItems}</Menu>
+                <div className={`${prefix}breadcrumb-dropdown-wrapper`}>
+                    <Menu>{hiddenItems}</Menu>
+                </div>
             </Dropdown>
         );
     }
