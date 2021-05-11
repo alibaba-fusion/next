@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import Icon from '../icon';
 import ConfigProvider from '../config-provider';
+import Dropdown from '../dropdown';
+import Menu from '../menu';
 import Item from './item';
 import { events } from '../util';
 
@@ -41,6 +43,10 @@ class Breadcrumb extends Component {
          */
         maxNode: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['auto'])]),
         /**
+         * 当超过的项被隐藏时，是否可通过点击省略号展示菜单（包含被隐藏的项）
+         */
+        showHiddenItems: PropTypes.bool,
+        /**
          * 分隔符，可以是文本或 Icon
          */
         separator: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
@@ -54,6 +60,7 @@ class Breadcrumb extends Component {
     static defaultProps = {
         prefix: 'next-',
         maxNode: 100,
+        showHiddenItems: false,
         component: 'nav',
     };
 
@@ -122,8 +129,36 @@ class Breadcrumb extends Component {
         this.breadcrumbEl = ref;
     };
 
+    renderEllipsisNodeWithMenu(children, breakpointer) {
+        // 拿到被隐藏的项
+        const hiddenItems = [];
+        Children.forEach(children, (item, i) => {
+            const { link, children: itemChildren } = item.props;
+            if (i > 0 && i <= breakpointer) {
+                hiddenItems.push(
+                    <Menu.Item key={i}>{link ? <a href={link}>{itemChildren}</a> : itemChildren}</Menu.Item>
+                );
+            }
+        });
+
+        return (
+            <Dropdown trigger={<span>...</span>} triggerType={'click'}>
+                <Menu>{hiddenItems}</Menu>
+            </Dropdown>
+        );
+    }
+
     render() {
-        const { prefix, rtl, className, children, component, maxNode: maxNodeProp, ...others } = this.props;
+        const {
+            prefix,
+            rtl,
+            className,
+            children,
+            component,
+            showHiddenItems,
+            maxNode: maxNodeProp,
+            ...others
+        } = this.props;
 
         const separator = this.props.separator || (
             <Icon type="arrow-right" className={`${prefix}breadcrumb-icon-sep`} />
@@ -155,9 +190,11 @@ class Breadcrumb extends Component {
                                 key: i,
                                 activated: i === length - 1,
                                 ...ariaProps,
-                                className: `${prefix}breadcrumb-text-ellipsis`,
+                                className: showHiddenItems
+                                    ? `${prefix}breadcrumb-text-ellipsis-clickable`
+                                    : `${prefix}breadcrumb-text-ellipsis`,
                             },
-                            '...'
+                            showHiddenItems ? this.renderEllipsisNodeWithMenu(children, breakpointer) : '...'
                         )
                     );
                 } else if (!i || i > breakpointer) {

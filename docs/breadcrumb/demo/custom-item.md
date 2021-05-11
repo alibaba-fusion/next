@@ -1,12 +1,12 @@
 # 自定义节点
 
-- order: 4
+- order: 5
 
 可以自定义面包屑的节点，比如 react 路由。
 
 :::lang=en-us
 # Set Separator
-- order: 4
+- order: 5
 You can put your content in BreadCrumb.Item, like ReactRouter.
 :::
 ---
