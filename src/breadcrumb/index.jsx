@@ -48,6 +48,21 @@ class Breadcrumb extends Component {
          */
         showHiddenItems: PropTypes.bool,
         /**
+         * 弹层挂载的容器节点（在showHiddenItems为true时才有意义）
+         * @version 1.23
+         */
+        popupContainer: PropTypes.any,
+        /**
+         * 是否跟随trigger滚动（在showHiddenItems为true时才有意义）
+         * @version 1.23
+         */
+        followTrigger: PropTypes.bool,
+        /**
+         * 添加到弹层上的属性（在showHiddenItems为true时才有意义）
+         * @version 1.23
+         */
+        popupProps: PropTypes.object,
+        /**
          * 分隔符，可以是文本或 Icon
          */
         separator: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
@@ -142,8 +157,16 @@ class Breadcrumb extends Component {
             }
         });
 
+        const { followTrigger, popupContainer, popupProps } = this.props;
+
         return (
-            <Dropdown trigger={<span>...</span>} triggerType={'click'}>
+            <Dropdown
+                trigger={<span>...</span>}
+                triggerType={'click'}
+                {...popupProps}
+                container={popupContainer}
+                followTrigger={followTrigger}
+            >
                 <Menu>{hiddenItems}</Menu>
             </Dropdown>
         );
