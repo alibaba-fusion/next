@@ -44,6 +44,7 @@ class Breadcrumb extends Component {
         maxNode: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['auto'])]),
         /**
          * 当超过的项被隐藏时，是否可通过点击省略号展示菜单（包含被隐藏的项）
+         * @version 1.23
          */
         showHiddenItems: PropTypes.bool,
         /**
