@@ -29,7 +29,7 @@ const runCommond = function(cmd) {
 };
 
 co(function*() {
-    checkTags();
+    // checkTags();
     checkFiles();
 
     const publish = yield inquirer.prompt([
