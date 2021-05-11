@@ -12,7 +12,7 @@ Hidden items will be displayed when ellipses clicked.
 ---
 
 ````jsx
-import { Breadcrumb, Dropdown, Menu } from '@alifd/next';
+import { Breadcrumb } from '@alifd/next';
 
 ReactDOM.render(
     <Breadcrumb maxNode={5} showHiddenItems>
