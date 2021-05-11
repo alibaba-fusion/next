@@ -157,7 +157,7 @@ class Breadcrumb extends Component {
             }
         });
 
-        const { followTrigger, popupContainer, popupProps } = this.props;
+        const { prefix, followTrigger, popupContainer, popupProps } = this.props;
 
         return (
             <Dropdown
