@@ -106,7 +106,7 @@ describe('Breadcrumb', () => {
 
     it('should show hidden items menu when ellipsis clicked if showHiddenItems set true', () => {
         ReactDOM.render(
-            <Breadcrumb maxNode={5} showHiddenItems>
+            <Breadcrumb maxNode={5} showHiddenItems popupProps={{triggerType: 'click'}}>
                 <Item>Home 1</Item>
                 <Item>Whatever 2</Item>
                 <Item>All Categories 3</Item>
