@@ -9,7 +9,7 @@ function preventDefault(e) {
 }
 export default class Password extends Input {
     state = {
-        hint: 'eye',
+        hint: 'eye-close',
         htmlType: 'password',
     };
 
@@ -30,10 +30,10 @@ export default class Password extends Input {
     toggleEye = e => {
         e.preventDefault();
 
-        const eyeClose = this.state.hint === 'eye-close';
+        const eyeClose = this.state.hint === 'eye';
 
         this.setState({
-            hint: eyeClose ? 'eye' : 'eye-close',
+            hint: eyeClose ? 'eye-close' : 'eye',
             htmlType: eyeClose || !this.props.showToggle ? 'password' : 'text',
         });
     };
@@ -42,13 +42,7 @@ export default class Password extends Input {
         const { showToggle, ...others } = this.props;
         const { hint, htmlType } = this.state;
 
-        const extra = showToggle ? (
-            <Icon
-                type={hint}
-                onClick={this.toggleEye}
-                onMouseDown={preventDefault}
-            />
-        ) : null;
+        const extra = showToggle ? <Icon type={hint} onClick={this.toggleEye} onMouseDown={preventDefault} /> : null;
 
         return <Input {...others} extra={extra} htmlType={htmlType} />;
     }
