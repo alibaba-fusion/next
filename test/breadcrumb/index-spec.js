@@ -104,6 +104,31 @@ describe('Breadcrumb', () => {
         assert(ellipsisItem.textContent === '...');
     });
 
+    it('should show hidden items menu when ellipsis clicked if showHiddenItems set true', () => {
+        ReactDOM.render(
+            <Breadcrumb maxNode={5} showHiddenItems popupProps={{triggerType: 'click'}}>
+                <Item>Home 1</Item>
+                <Item>Whatever 2</Item>
+                <Item>All Categories 3</Item>
+                <Item>Women’s Clothing 4</Item>
+                <Item>Blouses & Shirts 5</Item>
+                <Item>T-shirts 6</Item>
+            </Breadcrumb>
+        , mountNode);
+        const ellipsisItem = mountNode.querySelectorAll('.next-breadcrumb-text-ellipsis-clickable span')[0];
+        assert.equal(ellipsisItem.textContent, '...');
+
+        ellipsisItem.click();
+        const menuItems = document.body.querySelectorAll('.next-menu-item');
+        assert.equal(menuItems.length, 2);
+
+        const menuItem1 = menuItems[0].querySelector('.next-menu-item-text');
+        assert.equal(menuItem1.textContent, 'Whatever 2');
+
+        const menuItem2 = menuItems[1].querySelector('.next-menu-item-text');
+        assert.equal(menuItem2.textContent, 'All Categories 3');
+    });
+
     it('should not render the separator of the last item', () => {
         const wrapper = mount(
             <Breadcrumb>
