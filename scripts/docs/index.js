@@ -3,6 +3,7 @@ const initOptions = require('../init-options');
 
 const generateDocs = require('./generate-docs');
 const buildDemos = require('./build-demos');
+const generateDemos = require('./generate-htmls');
 const exportVariables = require('./export-variables');
 
 const { logger } = require('../utils');
@@ -18,11 +19,16 @@ function* run() {
 
     logger.info('> export variables...');
     yield* exportVariables(options);
-
-    logger.success('Run docs successfully!');
 }
 
-co(run).catch(err => {
-    logger.error(err.stack);
-    process.exitCode = 1;
-});
+co(run)
+    .then(async () => {
+        logger.info('> generate demo html...');
+        await generateDemos();
+
+        logger.success('Run docs successfully!');
+    })
+    .catch(err => {
+        logger.error(err.stack);
+        process.exitCode = 1;
+    });

@@ -1,0 +1,401 @@
+{% include "./partial/header.html" %}
+
+<body>
+  <script src="https://g.alicdn.com/code/lib/react/16.13.0/umd/react.production.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/react-dom/16.13.0/umd/react-dom.production.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/babel-polyfill/6.26.0/polyfill.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/prop-types/15.7.2/prop-types.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/locale/zh-cn.js"></script>
+  <script src="https://gw.alipayobjects.com/os/lib/react-dnd/7.7.0/dist/ReactDnD.min.js"></script>
+  <script
+    src="https://gw.alipayobjects.com/os/lib/react-dnd-html5-backend/7.7.0/dist/ReactDnDHTML5Backend.min.js"></script>
+  <script src="https://alifd.alicdn.com/npm/{{comp.groupName}}/{{comp.version}}/next-with-locales.min.js"
+    onerror="handleDevNextVersion(this, true)" onload="handleDevNextVersion(this)"></script>
+  <script src="https://g.alicdn.com/next/fusion-deps/0.3.4/??common.js,next.js"></script>
+  <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/common.js"></script>
+  <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/demo-util.js"></script>
+  <script src="https://alifd.alicdn.com/fusion-demo/react-live.min.js"></script>
+  <script src="https://alifd.alicdn.com/fusion-demo/solarlunar.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/lib/react-router-dom/5.2.0/umd/react-router-dom.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/lib/dayjs/1.10.4/dayjs.min.js"></script>
+  <script>
+    window.react = window.React;
+    window['react-live'] = window.ReactLive;
+    window['dayjs'] = window.dayjs;
+    window['react-dom'] = window.ReactDOM;
+    window['react-router-dom'] = window.ReactRouterDOM;
+    window['prop-types'] = window.PropTypes;
+    window['react-dnd'] = window.ReactDnD;
+    window['react-dnd-html5-backend'] = window.ReactDnDHTML5Backend;
+    window['@alife/next'] = window.Next;
+    window['@alifd/next'] = window.Next;
+    window.ConfigProvider = window.Next.ConfigProvider;
+    window.customIcons = [];
+
+    // 展开所有代码
+    function expandAll(op) {
+      switch (op) {
+        case 'FOLD': {
+          window.localStorage.foldAll = 'false';
+          $('#all-expanded')[0].style.display = "none";
+          $('#all-not-expand')[0].style.display = "";
+          document.querySelectorAll('[id*="-icon-hide"]').forEach((el) => {
+            el.style.display = "none";
+          })
+          document.querySelectorAll('[id*="-icon-show"]').forEach((el) => {
+            el.style.display = "";
+          })
+          document.querySelectorAll('[id*="-body"]:not([id*="-live-body"])').forEach((el) => {
+            el.style.display = "none";
+          })
+          return;
+        }
+        case 'EXPAND': {
+          window.localStorage['foldAll'] = 'true';
+          $('#all-not-expand')[0].style.display = "none";
+          $('#all-expanded')[0].style.display = "";
+          document.querySelectorAll('[id*="-icon-show"]').forEach((el) => {
+            el.style.display = "none";
+          })
+          document.querySelectorAll('[id*="-icon-hide"]').forEach((el) => {
+            el.style.display = "";
+          })
+          document.querySelectorAll('[id*="-body"]').forEach((el) => {
+            el.style.display = "";
+          })
+          return;
+        }
+        default:
+          return;
+      }
+    }
+
+    // 切换react-live
+    function liveDemo(op, showMessage = true) {
+      function unmountAll() {
+        window.demoNames.forEach((demoName) => {
+          ReactDOM.unmountComponentAtNode(document.getElementById(`${demoName}-body`));
+          ReactDOM.unmountComponentAtNode(document.getElementById(`${demoName}-mount`));
+        })
+      }
+      switch (op) {
+        case "LIVE": {
+          window.localStorage.liveDemo = 'true';
+          unmountAll();
+          window.renderFuncs.forEach((demoRender) => {
+            demoRender("true");
+          });
+          $('#live-on')[0].style.display = "none";
+          $('#live-off')[0].style.display = "";
+          window.loadingStaticRenderScript(false, showMessage);
+          return;
+        }
+        case "READONLY": {
+          window.localStorage.liveDemo = 'false';
+          unmountAll();
+          window.renderFuncs.forEach((demoRender) => {
+            demoRender("false");
+          });
+          $('#live-off')[0].style.display = "none";
+          $('#live-on')[0].style.display = "";
+          window.loadingStaticRenderScript(false, showMessage);
+          return;
+        }
+        default:
+          return;
+      }
+    }
+
+    // copycode
+    function copyCode(name) {
+      let input = document.getElementById(`${name}-code-text`);
+      input.value = $("<div />").html(input.innerHTML).text();
+      input.select();
+      document.execCommand("copy"); // 执行浏览器复制命令
+    }
+
+    // // 设置 ConfigProvider 国际化语言
+    ConfigProvider.initLocales(window.Next.locales);
+    ConfigProvider.setLanguage(searchDict['locale'] || 'zh-cn');
+  </script>
+
+  <div class="demo-wrapper pc">
+
+    <div class="demo-title markdown">
+      <h1>
+        {{comp.name}}
+      </h1>
+    </div>
+
+    <div class="demo-index">
+      <span id="global-control" class="all-demo-box-controls">
+      </span>
+      <ul class="demo-index-list">
+        <li class="demo-index-item" data-id="demo-list"><a href="#demo-list">Example</a></li>
+        {%for demo in demosDoc%}
+        <li class="demo-index-item demo-index-item-sub" data-id="{{demo.name}}-container"
+          debug="{{'true' if demo.meta.debug and demo.meta.debug==='true' else 'false'}}"
+          style="{{'display: none' if demo.meta.debug and demo.meta.debug==='true' else ''}}">
+          <a href="#{{demo.name}}-container"
+            style="{{'color: #c41d7f' if demo.meta.debug and demo.meta.debug==='true' else ''}}">{{demo.meta.title}}</a>
+        </li>
+        {%endfor%}
+        <li class="demo-index-item" data-id="demo-api"><a href="#demo-api">API</a></li>
+      </ul>
+    </div>
+
+
+    <div class="demo-head">
+      <div id="demo-area" class="next-demo-section">
+        <div id="md-area-former" class="markdown-body markdown">
+          <div id="demo-guide" class=" scroll-count-item active" data-scroll-id="demo-guide"></div>
+          {{ readmeDoc.meta | safe }}
+          <h2 id="demo-list" data-scroll-id="demo-list" class="scroll-count-item with-global-control-right">
+            代码演示
+            <a href='#demo-list' class="header-anchor"># </a>
+          </h2>
+        </div>
+
+        <div id="demo-loading-state"></div>
+        {{ readmeDoc.renderHtml | safe}}
+        {% for demo in demosDoc %}
+        <div id="{{demo.name}}-container" class='next-demo-item scroll-count-item'
+          style="{{'display: none; border: 1px solid rgb(196, 29, 127, 0.45);' if demo.meta.debug and demo.meta.debug==='true' else ''}}"
+          debug="{{true if demo.meta.debug and demo.meta.debug==='true' else false}}"
+          data-scroll-id="{{demo.name}}-container">
+          <div id="{{demo.name}}-desc" class="demo-item-desc markdown">
+            <h3 class="demo-item-desc-title">
+              {{demo.meta.title}}
+              <a class="header-anchor" href='#{{demo.name}}-container'
+                style="{{'color: #c41d7f' if demo.meta.debug and demo.meta.debug==='true' else ''}}">
+                #
+              </a>
+            </h3>
+            {%if demo.meta.description.trim() %}
+            <div class="demo-item-desc-body markdown">{{demo.meta.description | safe }}</div>
+            {% endif %}
+          </div>
+          <div id="{{demo.name}}-mount" class="next-demo-mount"></div>
+          <script>
+            if (searchDict['bgColor']) {
+              document.getElementById("{{demo.name}}-mount").style.backgroundColor = searchDict['bgColor'];
+            }
+          </script>
+
+          <div id="{{demo.name}}-operations" class='demo-item-operations'>
+            <textarea tabindex=-1 id="{{demo.name}}-code-text"
+              style="opacity: 0;cursor:default; user-select: none;">{{demo.codes.jsx}}</textarea>
+            <form id="{{demo.name}}-riddle-op-container" class="code-box-code-action" action="https://riddle.alibaba-inc.com/riddles/define"
+              method="POST" target="_blank">
+              <input id="{{demo.name}}-Riddle-input" type="hidden" name="data" value="">
+
+              <button type="submit" class="preview-btn" id="{{demo.name}}-Riddle">
+              </button>
+            </form>
+            <form class="code-box-code-action" action="https://codepen.io/pen/define" method="POST" target="_blank">
+              <input id="{{demo.name}}-CodePen-input" type="hidden" name="data" value="">
+              <button type="submit" class="preview-btn" id="{{demo.name}}-CodePen">
+              </button>
+            </form>
+            <div id="{{demo.name}}-copy">
+              <button class="preview-btn" id="{{demo.name}}-copy-btn" onclick='copyCode("{{demo.name}}")'>
+              </button>
+            </div>
+            <div id="{{demo.name}}-fold-code"></div>
+          </div>
+          <div id="{{demo.name}}-body" class='next-demo-body' style="display: none">
+          </div>
+          <style id="{{demo.name}}-style"></style>
+          <script>
+            function temp(){
+              let jsxTemp = $("<textarea/>").html(document.getElementById("{{demo.name}}-code-text").innerHTML).text();
+              let cssTemp = $("<textarea/>").html(`${`{{demo.codes.css}}`}`).text();
+              document.getElementById("{{demo.name}}-CodePen-input").value = getNextCompCodepenFormValue("{{demo.meta.title}}", jsxTemp, cssTemp);
+              document.getElementById("{{demo.name}}-Riddle-input").value = getNextCompRiddleFormValue(jsxTemp, cssTemp);
+              if(!isAliEnv)document.getElementById("{{demo.name}}-riddle-op-container").style.display = "none";
+            }
+            temp();
+          </script>
+
+          {{ demo.renderScript | safe }}
+        </div>
+        {%endfor%}
+
+        <div id="md-area-latter" class="markdown-body markdown">
+          <div id="demo-api" data-scroll-id="demo-api" class=" scroll-count-item active">
+            {{ readmeDoc.api | safe }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      if (window.top !== window) {
+        window.addEventListener("hashchange", function () {
+          window.top.postMessage({
+            type: 'hashChange',
+            from: 'mc',
+            body: document.location.hash
+          }, '*');
+        }, false);
+        window.addEventListener("message", function (event) {
+          var data = event.data;
+          if (data && data.from === 'app' && data.type === 'hashChange' && data.body) {
+            changeHash(data.body);
+          }else if(data && data.from === 'app' && data.type === 'customIcon' && data.body){
+            window.customIcons = data.body.split(',').filter(key => !!key);
+            ReactDOM.unmountComponentAtNode(document.getElementById(`type-body`));
+            ReactDOM.unmountComponentAtNode(document.getElementById(`type-mount`));
+            window.typeRenderScript && window.typeRenderScript(window.localStorage.liveDemo);
+          }
+        }, false);
+      }
+
+      function changeHash(hash) {
+        window.location.hash = hash;
+      }
+
+    </script>
+    <script>
+      // 从localStorage读取是否使用react-live，若是，则同时切换所有代码
+      if (window.localStorage.liveDemo === 'false') {
+        liveDemo('READONLY', false);
+      } else {
+        liveDemo('LIVE', false);
+      }
+
+      // 从localStorage读取是否全部展开代码，若是，则同时切换所有展开按钮
+      if (window.localStorage.foldAll === 'true') {
+        expandAll('EXPAND');
+      }
+
+      function newLi({ anchor, level = 'H2' }) {
+        const li = document.createElement('li');
+        li.className = level === 'H2' ? 'demo-index-item' : 'demo-index-item demo-index-item-sub';
+        li.setAttribute('data-id', anchor);
+        li.innerHTML = `<a href="#${anchor}">${anchor}</a>`;
+        return li
+      }
+
+      function appendIndex(selector, parent, latter = null) {
+        const headers = Array.from(document.querySelectorAll(selector))
+          .map(el => ({ anchor: decodeURI(el.hash.replace('#', '')), level: el.parentElement.tagName }))
+          .filter(el => el.anchor !== 'demo-list' && el.anchor !== 'API');
+        if (latter) {
+          for (let i = 0; i < headers.length; ++i) {
+            parent.insertBefore(newLi(headers[i]), latter);
+          }
+        } else {
+          for (let i = 0; i < headers.length; ++i) {
+            parent.appendChild(newLi(headers[i]));
+          }
+        }
+      }
+
+      appendIndex(
+        '#md-area-former h2 .header-anchor, #md-area-former h3 .header-anchor',
+        document.getElementsByClassName('demo-index-list')[0],
+        document.querySelector('[data-id="demo-list"]'));
+      appendIndex(
+        '#md-area-latter h2 .header-anchor,#md-area-latter h3 .header-anchor',
+        document.getElementsByClassName('demo-index-list')[0],
+        null);
+
+      function switchDebugShow() {
+        document.querySelectorAll('[debug=true]').forEach((el) => el.style.display = el.style.display ? "" : "none");
+        const a = $('#debug-hide')[0].style.display;
+        $('#debug-hide')[0].style.display = $('#debug-show')[0].style.display;
+        $('#debug-show')[0].style.display = a;
+      }
+
+      const activeTargetInit = location.hash && !/#\//.test(location.hash) ? $(`${decodeURI(location.hash)}`) : null;
+      if (activeTargetInit && activeTargetInit[0]) {
+        if (activeTargetInit[0].getAttribute('debug') === 'true') switchDebugShow();
+        if (/next-demo-item/g.test(activeTargetInit[0].className)) activeTargetInit.addClass('active');
+      }
+
+      $('.header-anchor').on('click', function (event) {
+        const hash = event.target.href.split('#')[1];
+        $('.next-demo-item').removeClass('active');
+        const activeTarget = $(`#${decodeURI(hash)}`);
+        if (activeTarget && /next-demo-item/g.test(activeTarget[0].className)) activeTarget.addClass('active');
+      })
+
+      $('.demo-list-item-header a').on('click', function (event) {
+        const $target = $(event.currentTarget);
+        $('.demo-list-item').removeClass('active');
+        $target.parents('.demo-list-item').addClass('active');
+      });
+
+      $('.demo-index-item').on('click', function (event) {
+        const $target = $(event.currentTarget);
+        const id = $target.find('a').attr('href');
+        $('.next-demo-item').removeClass('active');
+        $(`${id}`).addClass('active');
+      });
+
+      $('.code-expand-icon-hide').on('click', function (event) {
+        const $target = $(event.currentTarget)[0];
+        const name = $target.id.replace('-icon-hide', '');
+        $(`#${name}-body`)[0].style.display = "none";
+        $(`#${name}-icon-hide`)[0].style.display = 'none';
+        $(`#${name}-icon-show`)[0].style.display = '';
+        $(`#${name}-operations`)[0].style.borderBottom = '';
+      });
+
+      $('.code-expand-icon-show').on('click', function (event) {
+        const $target = $(event.currentTarget)[0];
+        const name = $target.id.replace('-icon-show', '');
+        $(`#${name}-body`)[0].style.display = "";
+        $(`#${name}-icon-show`)[0].style.display = 'none';
+        $(`#${name}-icon-hide`)[0].style.display = '';
+        $(`#${name}-operations`)[0].style.borderBottom = 'dashed #EEE 1px';
+      });
+
+      $('#expand-all').on('click', function (event) {
+        if (window.localStorage.foldAll === 'true') {
+          expandAll("FOLD");
+          return;
+        }
+        expandAll('EXPAND');
+      });
+
+      $('#debug-demo').on('click', function (event) {
+        switchDebugShow();
+      });
+
+      $('#live-demo').on('click', function (event) {
+        window.loadingStaticRenderScript(true);
+        setTimeout(() => {
+          if (window.localStorage.liveDemo === 'true') {
+            liveDemo("READONLY");
+            return;
+          }
+          liveDemo('LIVE');
+        }, 500)
+      });
+
+      $(window).scroll(function () {
+        var $sections = $('.scroll-count-item:not([style*="display: none"])'); // 获取所有的内容块
+        var currentScroll = $(this).scrollTop();  // winodw滚动的高度
+        var $currentSection;   //   当前内容块
+        $sections.each(function () {
+          var divPosition = $(this).offset().top;  // 获取到当前内容块具体页面顶部的距离
+          if (divPosition - 1 < currentScroll) {  //  通过条件判断匹配到当前滚动内容块
+            $currentSection = $(this);
+          }
+          // 如果楼层最上端有其它的内容快需要加一个判断
+          if ($currentSection) {
+            var id = $currentSection.attr('data-scroll-id');
+            $('.demo-index-item').removeClass('active');
+            $('.demo-index-item[data-id="' + id + '"]:not([style*="display: none"])').addClass('active');
+          }
+        });
+      });
+    </script>
+</body>
+
+</html>

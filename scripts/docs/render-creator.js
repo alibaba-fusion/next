@@ -1,5 +1,5 @@
 const { transform } = require('@babel/core');
-const { marked, logger } = require('../../../utils');
+const { marked } = require('../utils');
 
 function getGlobalControl() {
     const liveDemo = `
@@ -384,7 +384,29 @@ window.${name}RenderScript = function ${name}RenderScript(liveDemo){
 window.renderFuncs.push(${name}RenderScript);`;
 }
 
+const globalControls = `
+import { Balloon } from '@alifd/next';
+import { Loading } from '@alifd/next';
+import { Message } from '@alifd/next';
+window.loadingStaticRenderScript = function(loading, showMessage=true){
+    try{
+        if(loading){
+            ReactDOM.render(<Loading visible={true} fullScreen/>, document.getElementById('demo-loading-state'));
+            return;
+        }
+        ReactDOM.unmountComponentAtNode(document.getElementById('demo-loading-state'));
+        showMessage && Message.success(window.localStorage.liveDemo === "true" ? "切换到在线编辑模式成功，点击代码区域即可编辑预览。" : "切换到预览模式成功，代码展示为只读模式。");
+    }catch(e){
+        Message.error(window.localStorage.liveDemo === "true" ? "切换到在线编辑模式失败，请联系管理员。" : "切换到预览模式失败，请联系管理员。")
+    }
+}
+
+window.demoNames = [];
+window.renderFuncs = [];
+${getGlobalControl()}`;
+
 module.exports.getGlobalControl = getGlobalControl;
 module.exports.getDemoOp = getDemoOp;
 module.exports.getDemoRenderScript = getDemoRenderScript;
 module.exports.getLiveDemoOp = getLiveDemoOp;
+module.exports.globalControls = globalControls;
