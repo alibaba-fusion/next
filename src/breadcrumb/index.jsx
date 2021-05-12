@@ -112,7 +112,7 @@ class Breadcrumb extends Component {
     }
 
     computeMaxNode = () => {
-        // 计算最大node节点，无法获取到 ... 节点的宽度，目前会有 nodeWidth - ellipsisNodeWidth 的误差
+        // 计算最大node节点，无法获取到 ... 节点的宽度，目前会有 nodeWidth - ellipsisNodeWidth 的误差
         if (this.props.maxNode !== 'auto' || !this.breadcrumbEl) return;
         const scrollWidth = this.breadcrumbEl.scrollWidth;
         const rect = this.breadcrumbEl.getBoundingClientRect();
@@ -162,7 +162,6 @@ class Breadcrumb extends Component {
         return (
             <Dropdown
                 trigger={<span>...</span>}
-                triggerType={'click'}
                 {...popupProps}
                 container={popupContainer}
                 followTrigger={followTrigger}
