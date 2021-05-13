@@ -1,6 +1,7 @@
 import { Component, Children } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
+import ResizeObserver from 'resize-observer-polyfill';
 import { func, dom, events } from '../util';
 import position from './utils/position';
 import findNode from './utils/find-node';
@@ -44,6 +45,8 @@ export default class Position extends Component {
         super(props);
 
         bindCtx(this, ['handleResize']);
+
+        this.resizeObserver = new ResizeObserver(this.handleResize);
     }
 
     componentDidMount() {
@@ -51,20 +54,20 @@ export default class Position extends Component {
 
         if (this.props.needListenResize) {
             events.on(window, 'resize', this.handleResize);
+            this.observe();
         }
     }
 
     componentDidUpdate(prevProps) {
         const { props } = this;
 
-        if (
-            ('align' in props && props.align !== prevProps.align) ||
-            props.shouldUpdatePosition
-        ) {
+        if (('align' in props && props.align !== prevProps.align) || props.shouldUpdatePosition) {
             this.shouldUpdatePosition = true;
         }
 
         if (this.shouldUpdatePosition) {
+            clearTimeout(this.resizeTimeout);
+
             this.setPosition();
             this.shouldUpdatePosition = false;
         }
@@ -73,10 +76,20 @@ export default class Position extends Component {
     componentWillUnmount() {
         if (this.props.needListenResize) {
             events.off(window, 'resize', this.handleResize);
+            this.unobserve();
         }
 
         clearTimeout(this.resizeTimeout);
     }
+
+    observe = () => {
+        const contentNode = this.getContentNode();
+        contentNode && this.resizeObserver.observe(contentNode);
+    };
+
+    unobserve = () => {
+        this.resizeObserver.disconnect();
+    };
 
     setPosition() {
         const {
@@ -133,9 +146,7 @@ export default class Position extends Component {
     getTargetNode() {
         const { target } = this.props;
 
-        return target === position.VIEWPORT
-            ? position.VIEWPORT
-            : findNode(target, this.props);
+        return target === position.VIEWPORT ? position.VIEWPORT : findNode(target, this.props);
     }
 
     handleResize() {
