@@ -17,11 +17,11 @@ function freeze(dataSource) {
     return dataSource.map(item => {
         const { children } = item;
         children && freeze(children);
-        return Object.freeze(item);
+        return Object.freeze({ ...item });
     });
 }
 
-const ChinaArea = freeze([
+const ChinaArea = [
     {
         value: '2973',
         label: '陕西',
@@ -42,7 +42,7 @@ const ChinaArea = freeze([
         value: '3078',
         label: '四川',
     },
-]);
+];
 
 describe('CascaderSelect', () => {
     let wrapper;
@@ -514,7 +514,18 @@ describe('CascaderSelect', () => {
         assert(findRealItem(document.querySelector('.myCascaderSelect'), 2, 1));
     });
 
-    it('should support immutable data', () => {});
+    it('should support immutable data', () => {
+        wrapper = mount(
+            <CascaderSelect
+                immutable
+                popupProps={{ className: 'myCascaderSelect' }}
+                dataSource={freeze(ChinaArea)}
+                expandedValue={['2973', '2974']}
+                defaultVisible
+            />
+        );
+        assert(findRealItem(document.querySelector('.myCascaderSelect'), 2, 1));
+    });
 });
 
 function findItem(menuIndex, itemIndex) {
