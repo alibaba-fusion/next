@@ -155,12 +155,20 @@ class BalloonDemo extends React.Component {
                         align={align} closable={closable}>
                         {content}
                     </Balloon.Inner>
+                    <Balloon.Inner  style={{position: 'relative'}}
+                        align={align} closable={closable} title={"Balloon Title"}>
+                        {content}
+                    </Balloon.Inner>
                 </DemoGroup>
             </Demo>
             <Demo title="Primary">
                 <DemoGroup label="Normal">
                     <Balloon.Inner style={{position: 'relative'}}
                         align={align} type="primary" closable={closable}>
+                        {content}
+                    </Balloon.Inner>
+                    <Balloon.Inner style={{position: 'relative'}}
+                        align={align} type="primary" closable={closable} title={"Balloon Title"}>
                         {content}
                     </Balloon.Inner>
                 </DemoGroup>

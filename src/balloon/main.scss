@@ -10,8 +10,6 @@
 
     font-size: $balloon-content-font-size;
     font-weight: $balloon-content-font-weight;
-    animation-duration: $motion-duration-standard;
-    animation-timing-function: $motion-ease-in-out;
     /* stylelint-disable */
     word-wrap: break-all;
     word-wrap: break-word;
@@ -20,6 +18,24 @@
     &:focus,
     & *:focus {
         outline: 0;
+    }
+
+    &-title {
+        margin-bottom: $balloon-size-header-margin-bottom;
+        font-size: $balloon-title-font-size;
+        font-weight: $balloon-title-font-weight;
+
+        &.#{$css-prefix}balloon-closable {
+            @include balloon-size(0, $balloon-size-padding-closable-right, 0, 0);
+            .#{$css-prefix}balloon-close {
+                top: -1px;
+                transform: translateY(calc(#{$balloon-size-padding-top} + (#{$balloon-title-font-size} - #{$balloon-size-close}) / 2));
+                right: $balloon-size-padding-right;
+            }
+        }
+    }
+    &-content {
+        word-break: break-all;
     }
 
     &-primary {

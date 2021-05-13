@@ -225,16 +225,18 @@ class MenuButton extends React.Component {
                 style={popupStyle}
                 className={popupClassNames}
             >
-                <Menu
-                    {...menuProps}
-                    ref={this._menuRefHandler}
-                    selectedKeys={state.selectedKeys}
-                    selectMode={selectMode}
-                    onSelect={this.selectMenu}
-                    onItemClick={this.clickMenuItem}
-                >
-                    {children}
-                </Menu>
+                <div className={`${prefix}menu-btn-spacing-tb`}>
+                    <Menu
+                        {...menuProps}
+                        ref={this._menuRefHandler}
+                        selectedKeys={state.selectedKeys}
+                        selectMode={selectMode}
+                        onSelect={this.selectMenu}
+                        onItemClick={this.clickMenuItem}
+                    >
+                        {children}
+                    </Menu>
+                </div>
             </Popup>
         );
     }

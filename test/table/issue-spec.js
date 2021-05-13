@@ -533,6 +533,47 @@ describe('Issue', () => {
         document.body.removeChild(div);
     });
 
+    it('should sortDirections work', () => {
+        class App extends React.Component {
+            render() {
+                return (
+                    <Table dataSource={generateDataSource(10)} scrollToRow={20}>
+                        <Table.Column
+                            title="Id1"
+                            dataIndex="id"
+                            width={100}
+                            sortable
+                            sortDirections={['desc', 'asc', 'default']}
+                        />
+                        <Table.Column
+                            title="Index"
+                            dataIndex="index"
+                            width={200}
+                        />
+                    </Table>
+                );
+            }
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        ReactDOM.render(<App />, div);
+
+        const sortBtn = div.querySelectorAll(
+            '.next-table-header .next-table-sort'
+        );
+        console.log(sortBtn)
+        sortBtn[0].click();
+        assert(div.querySelectorAll('a.current .next-icon-descending'));
+        sortBtn[0].click();
+        assert(div.querySelectorAll('a.current .next-icon-ascending'));
+        sortBtn[0].click();
+        assert(div.querySelectorAll('a.current').length === 0);
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
+
     it('sort should have only one empty when datasorce=[] && enough width', () => {
         class App extends React.Component {
             render() {
@@ -900,6 +941,74 @@ describe('Issue', () => {
                 assert(
                     document.querySelectorAll('.next-table-cell.next-table-fix-right.next-table-fix-right-first')[3].style.right === '200px'
                 );
+                ReactDOM.unmountComponentAtNode(container);
+                document.body.removeChild(container);
+                done();
+            }, 10);
+        });
+    });
+
+    it('should work with expanded virtual table, fix #2646', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = (n) => {
+            const result = [];
+            for (let i = 0; i < n; i++) {
+                result.push({
+                    title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
+                    id: 100306660940 + i,
+                    time: 2000 + i
+                });
+            }
+            return result;
+        };
+        const render = (value, index, record) => {
+            return <a href="javascript:;">Remove({record.id})</a>;
+        };
+
+        class App extends React.Component {
+            state = {
+                scrollToRow: 20
+            }
+            onBodyScroll = (start) => {
+                this.setState({
+                    scrollToRow: start
+                });
+            }
+            render() {
+                return (
+                <Table
+                    dataSource={dataSource(200)}
+                    maxBodyHeight={400}
+                    useVirtual
+                    scrollToRow={this.state.scrollToRow}
+                    onBodyScroll={this.onBodyScroll}
+                    expandedRowRender={() => (<div>adddd</div>)}
+                >
+                    <Table.Column title="Id1" dataIndex="id" width={100}/>
+                    <Table.Column title="Index" dataIndex="index" width={200}/>
+                    <Table.Column title="Time" dataIndex="time" width={200}/>
+                    <Table.Column title="Time" dataIndex="time" width={200}/>
+                    <Table.Column title="Time" dataIndex="time" width={200} lock="right"/>
+                    <Table.Column cell={render} width={200} />
+                </Table>
+                );
+            }
+        }
+
+
+        ReactDOM.render(<App />, container, function() {
+            setTimeout(() => {
+                const trCount = container.querySelectorAll('.next-table .next-table-body table tr.next-table-row').length;
+                assert(trCount > 10);
+                assert(trCount < 100);
+
+                const ctrl = container.querySelectorAll('.next-table .next-table-body table tr.next-table-row .next-table-expanded-ctrl')[0];
+                ctrl.click();
+
+                assert(container.querySelectorAll('.next-table .next-table-body table tr.next-table-expanded-row'));
+
                 ReactDOM.unmountComponentAtNode(container);
                 document.body.removeChild(container);
                 done();

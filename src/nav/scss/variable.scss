@@ -81,7 +81,7 @@ $nav-ver-sub-nav-font-size: $font-size-caption !default;
 $nav-group-height: $s-10 !default;
 /// text
 /// @namespace size/group
-$nav-group-font-size: $font-size-subhead !default;
+$nav-group-font-size: $font-size-body-1 !default;
 
 // Size:Common
 // ----------------------------------------
@@ -159,6 +159,15 @@ $nav-primary-item-selected-text-color: $color-white !default;
 /// text style
 /// @namespace statement/selected
 $nav-primary-item-selected-text-style: $font-weight-3 !default;
+/// background
+/// @namespace statement/child selected
+$nav-primary-item-childselected-bg-color: $color-transparent !default;
+/// text color
+/// @namespace statement/child selected
+$nav-primary-item-childselected-text-color: $color-white !default;
+/// text style
+/// @namespace statement/child selected
+$nav-primary-item-childselected-text-style: $font-weight-3 !default;
 /// active line color
 /// @namespace statement/selected
 $nav-primary-item-selected-active-color: $color-brand1-6 !default;
@@ -173,7 +182,7 @@ $nav-primary-sub-nav-selected-text-color: $color-white !default;
 $nav-primary-sub-nav-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/open
-$nav-primary-item-opened-bg-color: $color-black !default;
+$nav-primary-item-opened-bg-color: $color-transparent !default;
 /// text
 /// @namespace statement/open
 $nav-primary-item-opened-text-color: $color-white !default;
@@ -240,6 +249,15 @@ $nav-secondary-item-selected-text-color: $color-white !default;
 /// text style
 /// @namespace statement/selected
 $nav-secondary-item-selected-text-style: $font-weight-3 !default;
+/// background
+/// @namespace statement/child selected
+$nav-secondary-item-childselected-bg-color: $color-transparent !default;
+/// text color
+/// @namespace statement/child selected
+$nav-secondary-item-childselected-text-color: $color-white !default;
+/// text style
+/// @namespace statement/child selected
+$nav-secondary-item-childselected-text-style: $font-weight-3 !default;
 /// active line color
 /// @namespace statement/selected
 $nav-secondary-item-selected-active-color: $color-brand1-9 !default;
@@ -254,7 +272,7 @@ $nav-secondary-sub-nav-selected-text-color: $color-white !default;
 $nav-secondary-sub-nav-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/open
-$nav-secondary-item-opened-bg-color: $color-brand1-9 !default;
+$nav-secondary-item-opened-bg-color: $color-transparent !default;
 /// text
 /// @namespace statement/open
 $nav-secondary-item-opened-text-color: $color-white !default;
@@ -324,6 +342,15 @@ $nav-normal-item-selected-text-color: $color-brand1-6 !default;
 /// text style
 /// @namespace statement/selected
 $nav-normal-item-selected-text-style: $font-weight-3 !default;
+/// background
+/// @namespace statement/child selected
+$nav-normal-item-childselected-bg-color: $color-transparent !default;
+/// text color
+/// @namespace statement/child selected
+$nav-normal-item-childselected-text-color: $color-brand1-6 !default;
+/// text style
+/// @namespace statement/child selected
+$nav-normal-item-childselected-text-style: $font-weight-2 !default;
 /// active line color
 /// @namespace statement/selected
 $nav-normal-item-selected-active-color: $color-brand1-6 !default;
@@ -338,7 +365,7 @@ $nav-normal-sub-nav-selected-text-color: $color-brand1-6 !default;
 $nav-normal-sub-nav-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/open
-$nav-normal-item-opened-bg-color: $color-fill1-2 !default;
+$nav-normal-item-opened-bg-color: $color-transparent !default;
 /// text
 /// @namespace statement/open
 $nav-normal-item-opened-text-color: $color-brand1-6 !default;
@@ -399,6 +426,15 @@ $nav-line-item-selected-text-color: $color-brand1-6 !default;
 /// text style
 /// @namespace statement/selected
 $nav-line-item-selected-text-style: $font-weight-3 !default;
+/// background
+/// @namespace statement/child selected
+$nav-line-item-childselected-bg-color: $color-transparent !default;
+/// text color
+/// @namespace statement/child selected
+$nav-line-item-childselected-text-color: $color-brand1-6 !default;
+/// text style
+/// @namespace statement/child selected
+$nav-line-item-childselected-text-style: $font-weight-2 !default;
 /// active line color
 /// @namespace statement/selected
 $nav-line-item-selected-active-color: $color-brand1-6 !default;

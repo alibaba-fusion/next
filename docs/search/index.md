@@ -30,6 +30,7 @@
 | onChange               | 输入关键字时的回掉<br><br>**签名**:<br>Function(value: Object) => void<br>**参数**:<br>_value_: {Object} 输入值                                                       | Function      | func.noop |
 | onSearch               | 点击搜索按钮触发的回调<br><br>**签名**:<br>Function(value: String, filterValue: String) => void<br>**参数**:<br>_value_: {String} 输入值<br>_filterValue_: {String} 选项值 | Function      | func.noop |
 | defaultFilterValue     | 选择器默认值                                                                                                                                                | String        | -         |
+| fillProps              | 填充到输入框里的值的 key ，默认是value                                                                                                                            | String        | -         |
 | filter                 | 选择器                                                                                                                                                   | Array         | \[]       |
 | filterValue            | 选择器值                                                                                                                                                  | String        | -         |
 | onFilterChange         | 选择器发生变化时回调<br><br>**签名**:<br>Function(filter: Object) => void<br>**参数**:<br>_filter_: {Object} value                                                  | Function      | func.noop |

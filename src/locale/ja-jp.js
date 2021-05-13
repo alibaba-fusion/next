@@ -138,4 +138,36 @@ export default {
     Tab: {
         closeAriaLabel: '閉じられました',
     },
+    Form: {
+        Validate: {
+            default: '%sのコンテントは間違いです',
+            required: '%sが必要です',
+            format: {
+                number: '%sは番号ではありません',
+                email: '%sは有効なEメールではありません',
+                url: '%sは有効なURLではありません',
+                tel: '%sは有効な電話番号ではありません',
+            },
+            number: {
+                length: '%sは正確に%sキャラクターでなければなりません',
+                min: '%sはmin%sが必要です',
+                max: '%sはmax%sが必要です',
+                minLength: '%sはmin%sキャラクターが必要です',
+                maxLength: '%sはmax%sキャラクターが必要です',
+            },
+            string: {
+                length: '%sは正確に%sキャラクターでなければなりません',
+                min: '%sはmin%sが必要です',
+                max: '%sはmax%sが必要です',
+                minLength: '%sはmin%sキャラクターが必要です',
+                maxLength: '%sはmax%sキャラクターが必要です',
+            },
+            array: {
+                length: '%sの長さは%sでなければなりません',
+                minLength: '%sの長さはmin%sが必要です',
+                maxLength: '%sの長さはmax%sが必要です',
+            },
+            pattern: '%sの値%sはパターン%sと一致しません',
+        },
+    },
 };

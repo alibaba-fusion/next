@@ -55,6 +55,7 @@ class SubNav extends Component {
         const { className, icon, label, children, level, ...others } = this.props;
         const cls = classNames({
             [`${prefix}nav-sub-nav-item`]: true,
+            [`${prefix}nav-popup`]: mode === 'popup',
             [className]: !!className,
         });
         let iconEl = typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;

@@ -1180,7 +1180,7 @@ describe('AutoComplete', () => {
         setTimeout(() => {
             const rect = select.getBoundingClientRect();
             const left = parseFloat(
-                document.querySelector('.next-menu').style.left,
+                document.querySelector('.next-select-single-menu').style.left,
                 10
             );
             assert(rect.left === left);

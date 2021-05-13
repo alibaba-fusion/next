@@ -138,4 +138,36 @@ export default {
     Tab: {
         closeAriaLabel: 'close',
     },
+    Form: {
+        Validate: {
+            default: 'Validation error on field %s',
+            required: '%s is required',
+            format: {
+                number: '%s is not a number',
+                email: '%s is not a valid email',
+                url: '%s is not a valid url',
+                tel: '%s is not a valid phone number',
+            },
+            number: {
+                length: '%s must be exactly %s characters',
+                min: '%s cannot be less than %s',
+                max: '%s cannot be greater than %s',
+                minLength: '%s must be at least %s characters',
+                maxLength: '%s cannot be longer than %s characters',
+            },
+            string: {
+                length: '%s must be exactly %s characters',
+                min: '%s cannot be less than %s',
+                max: '%s cannot be greater than %s',
+                minLength: '%s must be at least %s characters',
+                maxLength: '%s cannot be longer than %s characters',
+            },
+            array: {
+                length: '%s must be exactly %s in length',
+                minLength: '%s cannot be less than %s in length',
+                maxLength: '%s cannot be greater than %s in length',
+            },
+            pattern: '%s value %s does not match pattern %s',
+        },
+    },
 };

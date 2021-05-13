@@ -43,7 +43,7 @@ export interface ColumnProps extends HTMLAttributesWeak, CommonProps {
      * 单元格的对齐方式
      */
     align?: 'left' | 'center' | 'right';
-
+    sortDirections?: Array<'desc' | 'asc' | 'default'>;
     /**
      * 单元格标题的对齐方式, 不配置默认读取align值
      */

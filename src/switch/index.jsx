@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import { KEYCODE } from '../util';
+import Icon from '../icon';
 import ConfigProvider from '../config-provider';
 import zhCN from '../locale/zh-cn';
 
@@ -50,6 +51,10 @@ class Switch extends React.Component {
          */
         disabled: PropTypes.bool,
         /**
+         * loading
+         */
+        loading: PropTypes.bool,
+        /**
          * switch的尺寸
          * @enumdesc 正常大小, 缩小版大小
          */
@@ -84,6 +89,7 @@ class Switch extends React.Component {
         disabled: false,
         defaultChecked: false,
         isPreview: false,
+        loading: false,
         readOnly: false,
         onChange: () => {},
         locale: zhCN.Switch,
@@ -136,6 +142,7 @@ class Switch extends React.Component {
             disabled,
             readOnly,
             size,
+            loading,
             checkedChildren,
             unCheckedChildren,
             rtl,
@@ -155,6 +162,7 @@ class Switch extends React.Component {
 
         const classes = classNames({
             [`${prefix}switch`]: true,
+            [`${prefix}switch-loading`]: loading,
             [`${prefix}switch-${status}`]: true,
             [`${prefix}switch-${_size}`]: true,
             [className]: className,
@@ -205,6 +213,9 @@ class Switch extends React.Component {
                 {...attrs}
                 aria-checked={checked}
             >
+                <div className={`${prefix}switch-btn`}>
+                    {loading && <Icon type="loading" className={`${prefix}switch-inner-icon`} />}
+                </div>
                 <div className={`${prefix}switch-children`}>{children}</div>
             </div>
         );

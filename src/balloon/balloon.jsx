@@ -41,6 +41,11 @@ class Balloon extends React.Component {
          */
         type: PropTypes.oneOf(['normal', 'primary']),
         /**
+         * 标题
+         * @version 1.23
+         */
+        title: PropTypes.node,
+        /**
          * 弹层当前显示的状态
          */
         visible: PropTypes.bool,
@@ -172,9 +177,10 @@ class Balloon extends React.Component {
         safeNode: undefined,
         safeId: null,
         autoFocus: true,
+        delay: 0,
         animation: {
-            in: 'zoomIn',
-            out: 'zoomOut',
+            in: 'zoomIn zoomInBig',
+            out: 'zoomOut zoomOutBig',
         },
         cache: false,
         popupStyle: {},
@@ -263,6 +269,7 @@ class Balloon extends React.Component {
             type,
             prefix,
             className,
+            title,
             alignEdge,
             trigger,
             triggerType,
@@ -312,6 +319,7 @@ class Balloon extends React.Component {
             <BalloonInner
                 {...obj.pickOthers(Object.keys(Balloon.propTypes), others)}
                 id={id}
+                title={title}
                 prefix={_prefix}
                 closable={closable}
                 onClose={this._onClose}

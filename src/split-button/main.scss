@@ -6,6 +6,10 @@
     display: inline-block;
     position: relative;
 
+    &-spacing-tb {
+        padding: $popup-spacing-tb 0;
+    }
+
     &-trigger {
         .#{$css-prefix}icon {
             transition: transform $motion-duration-immediately $motion-linear;
