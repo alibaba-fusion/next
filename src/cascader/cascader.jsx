@@ -52,9 +52,8 @@ function preHandleData(data, immutable) {
         if ((err.message || '').match('Cannot assign to read only property')) {
             // eslint-disable-next-line no-console
             console.error(err.message, 'try to set immutable to true to allow immutable dataSource');
-        } else {
-            throw err;
         }
+        throw err;
     }
 }
 
