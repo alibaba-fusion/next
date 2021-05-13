@@ -239,6 +239,10 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
      * 渲染子节点
      */
     renderChildNodes?: (nodes: React.ReactNode) => React.ReactNode;
+    /**
+     * 是否是不可变数据
+     */
+    immutable: boolean;
 }
 
 export default class Tree extends React.Component<TreeProps, any> {
