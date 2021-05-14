@@ -211,7 +211,7 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
     /**
      * 是否是不可变数据
      */
-    immutable: boolean;
+    immutable?: boolean;
 }
 
 export default class CascaderSelect extends React.Component<CascaderSelectProps, any> {}
