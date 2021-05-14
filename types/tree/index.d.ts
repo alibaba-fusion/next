@@ -242,7 +242,7 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否是不可变数据
      */
-    immutable: boolean;
+    immutable?: boolean;
 }
 
 export default class Tree extends React.Component<TreeProps, any> {
