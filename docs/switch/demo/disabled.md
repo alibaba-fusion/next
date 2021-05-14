@@ -27,7 +27,7 @@ const Demo = () => {
 
   return (
     <div>
-      <Switch disabled={disabled} defaultChecked />
+      <Switch autoWidth disabled={disabled} defaultChecked />
       <br />
       <Button type="primary" onClick={toggle}>
         Toggle disabled

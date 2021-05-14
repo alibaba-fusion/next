@@ -19,7 +19,7 @@ Switch with loading
 import { Switch } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Switch loading defaultChecked={false} /> <Switch loading defaultChecked />
+    <Switch autoWidth loading defaultChecked={false} /> <Switch loading defaultChecked />
 </div>,
 mountNode);
 ````

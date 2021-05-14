@@ -24,7 +24,7 @@ function onChange(checked) {
 }
 
 ReactDOM.render(<div>
-    <Switch defaultChecked={false} onChange={onChange} />
+    <Switch autoWidth defaultChecked={false} onChange={onChange} />
 </div>,
 mountNode);
 ````

@@ -17,6 +17,8 @@
 
 对于 checkChildren 和 unCheckedChildren 的自定义要考虑文字大小，因为 switch 的宽度有限，默认一个汉字大小。如果设置成多个字或者英文要注意宽度控制。
 
+## FAQ
+1.23 版本增加了 `autoWidth` API，我们推荐用户默认开启，同时在2.0里也会默认设置为true。开启后，原 `<Switch style={{display: 'block'}}>` 写法的用户可能会出现样式异常。
 ## API
 
 ### Switch

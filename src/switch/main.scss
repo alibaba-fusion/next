@@ -12,6 +12,7 @@
     cursor: pointer;
     vertical-align: middle;
     user-select: none;
+    overflow: hidden;
 
     &-btn {
         transition: all $motion-duration-immediately $motion-linear;

@@ -13,10 +13,15 @@
     position: relative;
     display: inline-block;
     border: $border-width-container solid transparent;
-    min-width: $width;
+    width: $width;
     height: calc(#{$trigger-size} + #{$border-width-container} * 2);
     border-radius: $container-radius;
 
+    &.#{$css-prefix}switch-auto-width {
+        min-width: $width;
+        width: auto;
+        overflow: initial;
+    }
     &:after {
         content: '';
     }
