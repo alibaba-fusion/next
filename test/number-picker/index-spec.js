@@ -240,7 +240,7 @@ describe('number-picker', () => {
             done();
         });
 
-        it('should support input with -.x or .x', () => {
+        it('should support input with -.x or .x or -0.0x', () => {
             let onChange = value => {
                 assert(value === -0.2);
             };
@@ -312,6 +312,26 @@ describe('number-picker', () => {
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') == '-0');
             assert(onChange.calledTwice);
+
+            wrapper = mount(
+                <NumberPicker defaultValue={0} precision={2} />
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '-0.0' } });
+            wrapper.find('input').simulate('blur');
+            assert(wrapper.find('input').prop('value') == '-0');
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '-0.0' } });
+            assert(wrapper.find('input').prop('value') == '-0.0');
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '-0.01' } });
+            wrapper.find('input').simulate('blur');
+            assert(wrapper.find('input').prop('value') == '-0.01');
+
         });
 
 
