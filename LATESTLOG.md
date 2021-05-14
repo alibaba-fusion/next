@@ -1,11 +1,10 @@
 # Latest Log 
 
-## [1.22.25](https://github.com/alibaba-fusion/next/compare/1.22.24...1.22.25) (2021-05-10)
+## [1.22.26](https://github.com/alibaba-fusion/next/compare/1.22.25...1.22.26) (2021-05-14)
 
 
 ### Bug Fixes
 
-* **DatePicker:** default format of WeekPicker, close [#1491](https://github.com/alibaba-fusion/next/issues/1491) ([94d4764](https://github.com/alibaba-fusion/next/commit/94d4764))
-* **DatePicker2:** default time don`t work ([bfd7743](https://github.com/alibaba-fusion/next/commit/bfd7743))
+* **NumberPicker:** enable input -0.0, close [#2989](https://github.com/alibaba-fusion/next/issues/2989) ([a92b42b](https://github.com/alibaba-fusion/next/commit/a92b42b))
 
 
