@@ -129,7 +129,7 @@ export interface CascaderProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否是不可变数据
      */
-    immutable: boolean;
+    immutable?: boolean;
 }
 
 export default class Cascader extends React.Component<CascaderProps, any> {}
