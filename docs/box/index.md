@@ -14,11 +14,13 @@
 
 -   用于弹性布局, 通过`display: flex`实现。
 -   受浏览器限制，本功能支持到IE10+，IE下[#参考文档](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/dev-guides/hh673531(v=vs.85>))。
+
 ## FAQ
 
 ### 为何嵌套自定义组件，间距没有生效？
 
 自定义组件的间距是 `Box` 算出来，同style透传给子组件的，因此子组件需要至少透传style属性；
+
 ```jsx
 // wrong
 function Foo () {

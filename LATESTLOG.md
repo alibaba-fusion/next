@@ -1,30 +1,22 @@
-# Latest Log
+# Latest Log 
 
-# [1.23.0](https://github.com/alibaba-fusion/next/compare/1.22.25...1.23.0) (2021-05-10)
+## [1.23.1](https://github.com/alibaba-fusion/next/compare/1.23.0...1.23.1) (2021-05-14)
+
 
 ### Bug Fixes
 
-* add spacing for popup of MenuButton, SplitButton ([fd5a18e](https://github.com/alibaba-fusion/next/commit/fd5a18e))
-* **Pagination:** add item padding config, close [#2822](https://github.com/alibaba-fusion/next/issues/2822) ([3f71889](https://github.com/alibaba-fusion/next/commit/3f71889))
-* fix some words ([cdad5f3](https://github.com/alibaba-fusion/next/commit/cdad5f3))
-* maxLength text ([593ed92](https://github.com/alibaba-fusion/next/commit/593ed92))
-* **Locale:** ja-ja should be ja-jp ([0f27ccf](https://github.com/alibaba-fusion/next/commit/0f27ccf))
-* modify some words of ja-jp lang ([2f6b286](https://github.com/alibaba-fusion/next/commit/2f6b286))
-* some pt words by @Andrey ([6c5b583](https://github.com/alibaba-fusion/next/commit/6c5b583))
-* **Dialog:** update dialog motion ([c6139f5](https://github.com/alibaba-fusion/next/commit/c6139f5))
+* **Cascader:** suport immutable dataSource, close [#1558](https://github.com/alibaba-fusion/next/issues/1558) ([c2f1927](https://github.com/alibaba-fusion/next/commit/c2f1927))
+* **Checkbox:** types ([be38adb](https://github.com/alibaba-fusion/next/commit/be38adb))
+* **Gateway:** document undefined on ssr ([#2982](https://github.com/alibaba-fusion/next/issues/2982)) ([bca6089](https://github.com/alibaba-fusion/next/commit/bca6089))
+* **Input:** eye close/open, close [#2193](https://github.com/alibaba-fusion/next/issues/2193) ([bd6b6be](https://github.com/alibaba-fusion/next/commit/bd6b6be))
+* **NumberPicker:** enable input -0.0, close [#2989](https://github.com/alibaba-fusion/next/issues/2989) ([9a93440](https://github.com/alibaba-fusion/next/commit/9a93440))
+* **SplitButton:** some api in triggerProps should work, close [#2977](https://github.com/alibaba-fusion/next/issues/2977) ([6ac8a14](https://github.com/alibaba-fusion/next/commit/6ac8a14))
+* **Tree:** support immutable prop ([ff97655](https://github.com/alibaba-fusion/next/commit/ff97655))
 
 
 ### Features
 
-* add balloon ([e0274e6](https://github.com/alibaba-fusion/next/commit/e0274e6))
-* upgrade motion of Drawer/Select ([50a5114](https://github.com/alibaba-fusion/next/commit/50a5114))
-* **Balloon:** add title & faster animation ([5b22a5a](https://github.com/alibaba-fusion/next/commit/5b22a5a))
-* **Form:** support i18n fix [#2829](https://github.com/alibaba-fusion/next/issues/2829) ([dff80ae](https://github.com/alibaba-fusion/next/commit/dff80ae))
-* **Locale:** add id-id ([1b221f9](https://github.com/alibaba-fusion/next/commit/1b221f9))
-* **Popup:** add spacing config ([7854561](https://github.com/alibaba-fusion/next/commit/7854561))
-* **Switch:** add loading & style refactor ([2472233](https://github.com/alibaba-fusion/next/commit/2472233))
-* add multiple language of validate ([813c691](https://github.com/alibaba-fusion/next/commit/813c691))
-* **Nav:** style refactor, close[#2725](https://github.com/alibaba-fusion/next/issues/2725) ([fa6ae9e](https://github.com/alibaba-fusion/next/commit/fa6ae9e))
-* **Table:** add sortDirections, close [#2882](https://github.com/alibaba-fusion/next/issues/2882) ([14d9c9f](https://github.com/alibaba-fusion/next/commit/14d9c9f))
-* **Button:** gradient background, close [#2970](https://github.com/alibaba-fusion/next/issues/2970) ([521fec0](https://github.com/alibaba-fusion/next/commit/521fec0))
+* **Breadcrumb:** add API showHiddenItems, close [#2968](https://github.com/alibaba-fusion/next/issues/2968) ([d9eec16](https://github.com/alibaba-fusion/next/commit/d9eec16))
+* **Switch:** add autoWidth, close [#2993](https://github.com/alibaba-fusion/next/issues/2993) ([4bf0b72](https://github.com/alibaba-fusion/next/commit/4bf0b72))
+
 

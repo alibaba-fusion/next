@@ -26,7 +26,6 @@
 
 建议用户在新的页面中使用 `Table.StickyLock`，如果没有深度的样式定制（例如选择到 `.next-table-lock-left` 这一层级）,也可以把现有的 `Table` 升级到 `Table.StickyLock`
 
-
 ## FAQ
 
 ### `rowSelection` 模式，选择任意一个都是全选？
@@ -50,7 +49,6 @@
 -   分组 Table 不支持在 Hover 状态和选中状态下显示背景色，无法合并单元格；
 -   分组 Table ，`<Table fixedHeader/>` 没有效果，header不会固定， `<Table fixedHeader stickyHeader />` 才有效果，header可以sticky到页面上
 
-
 ## 如何使用
 
 基本的 Table 包含行和列，使用 Table.Column 来定义列的信息，使用传入的 dataSource 属性数据来创建行。
@@ -67,6 +65,7 @@ ReactDOM.render(
         <Table.Column title="Time" dataIndex="time"/>
     </Table.StickyLock>, mountNode);
 ```
+
 ### 列配置
 
 Table.Column 提供了非常多的配置属性用于自定义列，最常见的就是使用`cell`自定义单元格的渲染逻辑. 其他的配置选项可以参考下面的 Table.Column 的 API。

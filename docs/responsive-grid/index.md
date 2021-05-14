@@ -21,6 +21,7 @@
 ### 为何嵌套自定义组件，间距没有生效？
 
 自定义组件的间距是 `ResponsiveGrid` 算出来，同style透传给子组件的，因此子组件需要至少透传style属性；
+
 ```jsx
 // wrong
 function Foo () {
@@ -32,6 +33,7 @@ function Foo ({style}) {
   return <div style={style} />;
 }
 ```
+
 ## API
 
 ### ResponsiveGrid
