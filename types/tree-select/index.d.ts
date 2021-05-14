@@ -173,6 +173,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      * 透传到 Popup 的属性对象
      */
     popupProps?: PopupProps;
+    immutable?: boolean;
 }
 
 export default class TreeSelect extends React.Component<TreeSelectProps, any> {}
