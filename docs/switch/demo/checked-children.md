@@ -24,11 +24,11 @@ function onChange(checked) {
 }
 
 ReactDOM.render(<div>
-    <Switch checkedChildren="on" unCheckedChildren="off" onChange={onChange} />
+    <Switch autoWidth checkedChildren="on" unCheckedChildren="off" onChange={onChange} />
     <br />
-    <Switch checkedChildren="已启用" unCheckedChildren="已关闭" onChange={onChange}/>
+    <Switch autoWidth checkedChildren="已启用" unCheckedChildren="已关闭" onChange={onChange}/>
     <br />
-    <Switch checkedChildren={<Icon type="select" size="xs"/>} unCheckedChildren={<Icon type="close" size="xs"/>}  onChange={onChange} />
+    <Switch autoWidth checkedChildren={<Icon type="select" size="xs"/>} unCheckedChildren={<Icon type="close" size="xs"/>}  onChange={onChange} />
 </div>,
 mountNode);
 ````

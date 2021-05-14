@@ -79,6 +79,11 @@ class Switch extends React.Component {
          */
         renderPreview: PropTypes.func,
         /**
+         * 开启后宽度根据内容自适应
+         * @version 1.23
+         */
+        autoWidth: PropTypes.bool,
+        /**
          * 国际化配置
          */
         locale: PropTypes.object,
@@ -91,6 +96,7 @@ class Switch extends React.Component {
         isPreview: false,
         loading: false,
         readOnly: false,
+        autoWidth: false,
         onChange: () => {},
         locale: zhCN.Switch,
     };
@@ -143,6 +149,7 @@ class Switch extends React.Component {
             readOnly,
             size,
             loading,
+            autoWidth,
             checkedChildren,
             unCheckedChildren,
             rtl,
@@ -165,6 +172,7 @@ class Switch extends React.Component {
             [`${prefix}switch-loading`]: loading,
             [`${prefix}switch-${status}`]: true,
             [`${prefix}switch-${_size}`]: true,
+            [`${prefix}switch-auto-width`]: autoWidth,
             [className]: className,
         });
         let attrs;
