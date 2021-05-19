@@ -301,7 +301,7 @@ export default function stickyLock(BaseComponent) {
                 // no header
                 const node = isEmpty
                     ? this.getHeaderCellNode(0, nodeToGetWidth)
-                    : this.getCellNode(scrollToRow || 0, nodeToGetWidth);
+                    : this.getCellNode(scrollToRow || (dataSource[0] && dataSource[0].__rowIndex) || 0, nodeToGetWidth);
                 const colWidth = (node && parseFloat(getComputedStyle(node).width)) || 0;
 
                 ret[tag] = (ret[tagNext] || 0) + colWidth;
