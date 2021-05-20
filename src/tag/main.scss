@@ -55,7 +55,7 @@
             /* 用户手动传的 icon 的大小也保持一致？ */
             .#{$css-prefix}icon {
                 line-height: 1;
-                vertical-align: middle;
+                vertical-align: baseline;
 
                 &:before {
                     font-size: inherit;
