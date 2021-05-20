@@ -727,7 +727,7 @@ class Overlay extends Component {
                 style: { ...child.props.style, ...style },
                 ref: makeChain(this.saveContentRef, child.ref),
                 'aria-hidden': !stateVisible && cache && this._isMounted,
-                onClick: this.props.onClick,
+                onClick: makeChain(this.props.onClick, child.props.onClick),
             });
 
             if (align) {
