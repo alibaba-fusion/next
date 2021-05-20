@@ -68,6 +68,11 @@ export default class Dropdown extends Component {
          */
         hasMask: PropTypes.bool,
         /**
+         * 开启后，children 不管是不是Menu，点击后都默认关掉弹层（2.x默认设置为true）
+         * @version 1.23
+         */
+        autoClose: PropTypes.bool,
+        /**
          * 隐藏时是否保留子节点
          */
         cache: PropTypes.bool,
@@ -81,6 +86,7 @@ export default class Dropdown extends Component {
         prefix: 'next-',
         pure: false,
         defaultVisible: false,
+        autoClose: false,
         onVisibleChange: noop,
         triggerType: 'hover',
         disabled: false,
@@ -96,14 +102,21 @@ export default class Dropdown extends Component {
         super(props);
 
         this.state = {
-            visible:
-                'visible' in props
-                    ? props.visible
-                    : props.defaultVisible || false,
+            visible: 'visible' in props ? props.visible : props.defaultVisible || false,
             autoFocus: 'autoFocus' in props ? props.autoFocus : false,
         };
 
         bindCtx(this, ['onTriggerKeyDown', 'onMenuClick', 'onVisibleChange']);
+    }
+
+    static getDerivedStateFromProps(nextProps) {
+        const state = {};
+
+        if ('visible' in nextProps) {
+            state.visible = nextProps.visible;
+        }
+
+        return state;
     }
 
     getVisible(props = this.props) {
@@ -111,6 +124,13 @@ export default class Dropdown extends Component {
     }
 
     onMenuClick() {
+        const { autoClose } = this.props;
+
+        if (!('visible' in this.props) && autoClose) {
+            this.setState({
+                visible: false,
+            });
+        }
         this.onVisibleChange(false, 'fromContent');
     }
 
@@ -133,22 +153,22 @@ export default class Dropdown extends Component {
     }
 
     render() {
-        let child = Children.only(this.props.children);
+        const { trigger, rtl, autoClose } = this.props;
+
+        const child = Children.only(this.props.children);
+        let content = child;
         if (typeof child.type === 'function' && child.type.isNextMenu) {
-            child = React.cloneElement(child, {
-                onItemClick: makeChain(
-                    this.onMenuClick,
-                    child.props.onItemClick
-                ),
+            content = React.cloneElement(child, {
+                onItemClick: makeChain(this.onMenuClick, child.props.onItemClick),
+            });
+        } else if (autoClose) {
+            content = React.cloneElement(child, {
+                onClick: makeChain(this.onMenuClick, child.props.onClick),
             });
         }
 
-        const { trigger, rtl } = this.props;
         const newTrigger = React.cloneElement(trigger, {
-            onKeyDown: makeChain(
-                this.onTriggerKeyDown,
-                trigger.props.onKeyDown
-            ),
+            onKeyDown: makeChain(this.onTriggerKeyDown, trigger.props.onKeyDown),
         });
 
         return (
@@ -161,7 +181,7 @@ export default class Dropdown extends Component {
                 onVisibleChange={this.onVisibleChange}
                 canCloseByOutSideClick
             >
-                {child}
+                {content}
             </Popup>
         );
     }
