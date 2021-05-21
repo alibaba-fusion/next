@@ -1015,4 +1015,86 @@ describe('Issue', () => {
             }, 10);
         });
     });
+    it('should set expanded row\'s  width after stickylock table toggle loading, close #3000', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = () => {
+            const result = [];
+            for (let i = 0; i < 5; i++) {
+                result.push({
+                    title: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`,
+                    id: 100306660940 + i,
+                    time: 2000 + i,
+                    expandable:  i !== 2
+                });
+            }
+            return result;
+        },
+        expandedRowRender = (record) => record.title,
+        render = (value, index, record) => {
+            return <a>Remove({record.id})</a>;
+        };
+
+        class App extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    dataSource: dataSource(),
+                    loading: false,
+                };
+            }
+
+            toggleLoading = () => {
+                this.setState({
+                    loading: !this.state.loading
+                })
+            }
+
+            render() {
+                return (<div style={{width: 500}}>
+                    <button id="sticky-expanded-row-width" onClick={this.toggleLoading}>Toggle Loading</button>
+                    <br /><br />
+                    <Table.StickyLock
+                        loading={this.state.loading}
+                        expandedIndexSimulate
+                        openRowKeys={[100306660940, 100306660941]}
+                        dataSource={this.state.dataSource}
+                        // expandedRowIndent 仅在IE下才会生效，非IE模式下为[0,0]且不可修改
+                        expandedRowIndent={[2, 0]}
+                        expandedRowRender={expandedRowRender}
+                    >
+                        <Table.Column title="Id" dataIndex="id" lock width={300}/>
+                        <Table.Column title="Title" dataIndex="title" width={300}/>
+                        <Table.Column title="Time" dataIndex="time" width={300}/>
+                        <Table.Column cell={render} width={300}/>
+                    </Table.StickyLock>
+                </div>);
+            }
+        }
+
+
+        ReactDOM.render(<App />, container, function() {
+            setTimeout(() => {
+                const expandedRows = container.querySelectorAll('.next-table-expanded-row .next-table-cell-wrapper');
+                expandedRows.forEach(row => {
+                    assert(row.style.width === '498px');
+                })
+
+                const btn = container.querySelector('#sticky-expanded-row-width');
+                btn.click();
+                setTimeout(() => {
+                    btn.click();
+
+                    expandedRows.forEach(row => {
+                        assert(row.style.width === '498px');
+                    });
+
+                    ReactDOM.unmountComponentAtNode(container);
+                    document.body.removeChild(container);
+                    done();
+                }, 100)
+            }, 100);
+        });
+    });
 });

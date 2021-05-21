@@ -51,13 +51,23 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: dataSource()
+            dataSource: dataSource(),
+            loading: false,
         };
+    }
+
+    toggleLoading = () => {
+        this.setState({
+            loading: !this.state.loading
+        })
     }
 
     render() {
         return (<div>
+            <Button onClick={this.toggleLoading}>Toggle Loading</Button>
+            <br /><br />
             <Table.StickyLock
+                loading={this.state.loading}
                 expandedIndexSimulate
                 dataSource={this.state.dataSource}
                 hasBorder={false}
