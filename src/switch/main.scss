@@ -13,9 +13,10 @@
     vertical-align: middle;
     user-select: none;
     overflow: hidden;
+    transition: background .1s $motion-default, border-color .1s $motion-default;
 
     &-btn {
-        transition: all $motion-duration-immediately $motion-linear;
+        transition: all .15s $motion-default;
         transform-origin: left center;
     }
     &:after {
@@ -75,7 +76,6 @@
     &-on {
         background-color: $switch-normal-on-bg-color;
         .#{$css-prefix}switch-btn {
-            transform: translateX(-100%);
             box-shadow: $switch-on-shadow;
             background-color: $switch-normal-on-trigger-bg-color;
             border-color: $switch-handle-on-border-color;
