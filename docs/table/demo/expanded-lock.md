@@ -59,7 +59,7 @@ class App extends React.Component {
     toggleLoading = () => {
         this.setState({
             loading: !this.state.loading
-        })
+        });
     }
 
     render() {

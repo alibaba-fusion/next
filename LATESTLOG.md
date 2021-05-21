@@ -1,22 +1,21 @@
 # Latest Log 
 
-## [1.23.1](https://github.com/alibaba-fusion/next/compare/1.23.0...1.23.1) (2021-05-14)
+## [1.23.2](https://github.com/alibaba-fusion/next/compare/1.23.1...1.23.2) (2021-05-21)
 
 
 ### Bug Fixes
 
-* **Cascader:** suport immutable dataSource, close [#1558](https://github.com/alibaba-fusion/next/issues/1558) ([c2f1927](https://github.com/alibaba-fusion/next/commit/c2f1927))
-* **Checkbox:** types ([be38adb](https://github.com/alibaba-fusion/next/commit/be38adb))
-* **Gateway:** document undefined on ssr ([#2982](https://github.com/alibaba-fusion/next/issues/2982)) ([bca6089](https://github.com/alibaba-fusion/next/commit/bca6089))
-* **Input:** eye close/open, close [#2193](https://github.com/alibaba-fusion/next/issues/2193) ([bd6b6be](https://github.com/alibaba-fusion/next/commit/bd6b6be))
-* **NumberPicker:** enable input -0.0, close [#2989](https://github.com/alibaba-fusion/next/issues/2989) ([9a93440](https://github.com/alibaba-fusion/next/commit/9a93440))
-* **SplitButton:** some api in triggerProps should work, close [#2977](https://github.com/alibaba-fusion/next/issues/2977) ([6ac8a14](https://github.com/alibaba-fusion/next/commit/6ac8a14))
-* **Tree:** support immutable prop ([ff97655](https://github.com/alibaba-fusion/next/commit/ff97655))
+* **Balloon:** popups disappear too fast, close [#3007](https://github.com/alibaba-fusion/next/issues/3007) ([950fed8](https://github.com/alibaba-fusion/next/commit/950fed8))
+* **Cascader:** set width auto, close [#3012](https://github.com/alibaba-fusion/next/issues/3012) ([f89a79c](https://github.com/alibaba-fusion/next/commit/f89a79c))
+* **Switch:** animation! close [#3016](https://github.com/alibaba-fusion/next/issues/3016) ([f1f06f9](https://github.com/alibaba-fusion/next/commit/f1f06f9))
+* **Table:** close [#3009](https://github.com/alibaba-fusion/next/issues/3009) ([d5c8201](https://github.com/alibaba-fusion/next/commit/d5c8201))
+* **Table:** correct ExpandedRow width after switch loading, close [#3000](https://github.com/alibaba-fusion/next/issues/3000) ([283ce7f](https://github.com/alibaba-fusion/next/commit/283ce7f))
+* **Tag:** close [#791](https://github.com/alibaba-fusion/next/issues/791) ([6af7c9a](https://github.com/alibaba-fusion/next/commit/6af7c9a))
+* **Tag:** style issue, close [#3015](https://github.com/alibaba-fusion/next/issues/3015) ([e6af3f9](https://github.com/alibaba-fusion/next/commit/e6af3f9))
 
 
 ### Features
 
-* **Breadcrumb:** add API showHiddenItems, close [#2968](https://github.com/alibaba-fusion/next/issues/2968) ([d9eec16](https://github.com/alibaba-fusion/next/commit/d9eec16))
-* **Switch:** add autoWidth, close [#2993](https://github.com/alibaba-fusion/next/issues/2993) ([4bf0b72](https://github.com/alibaba-fusion/next/commit/4bf0b72))
+* **Drodpown:** popup should disappear by default, close [#3004](https://github.com/alibaba-fusion/next/issues/3004) ([49f9a69](https://github.com/alibaba-fusion/next/commit/49f9a69))
 
 
