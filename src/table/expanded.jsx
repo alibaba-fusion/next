@@ -1,9 +1,10 @@
 import React, { Children } from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import Icon from '../icon';
-import { KEYCODE } from '../util';
+import { KEYCODE, dom, events } from '../util';
 import RowComponent from './expanded/row';
 import Col from './column';
 import { statics } from './util';
@@ -72,10 +73,11 @@ export default function expanded(BaseComponent, stickyLock) {
         static childContextTypes = {
             openRowKeys: PropTypes.array,
             expandedRowRender: PropTypes.func,
-            rowExpandable: PropTypes.func,
             expandedIndexSimulate: PropTypes.bool,
             expandedRowWidthEquals2Table: PropTypes.bool,
             expandedRowIndent: PropTypes.array,
+            getExpandedRowRef: PropTypes.func,
+            getTableInstanceForExpand: PropTypes.func,
         };
 
         state = {
@@ -88,6 +90,8 @@ export default function expanded(BaseComponent, stickyLock) {
                 expandedRowRender: this.props.expandedRowRender,
                 expandedIndexSimulate: this.props.expandedIndexSimulate,
                 expandedRowWidthEquals2Table: stickyLock,
+                getExpandedRowRef: this.saveExpandedRowRef,
+                getTableInstanceForExpand: this.getTableInstance,
                 expandedRowIndent: stickyLock ? [0, 0] : this.props.expandedRowIndent,
             };
         }
@@ -100,6 +104,50 @@ export default function expanded(BaseComponent, stickyLock) {
             }
 
             return null;
+        }
+
+        componentDidMount() {
+            this.setExpandedWidth();
+            events.on(window, 'resize', this.setExpandedWidth);
+        }
+
+        componentDidUpdate() {
+            this.setExpandedWidth();
+        }
+
+        componentWillUnmount() {
+            events.off(window, 'resize', this.setExpandedWidth);
+        }
+
+        saveExpandedRowRef = (key, rowRef) => {
+            if (!this.expandedRowRefs) {
+                this.expandedRowRefs = {};
+            }
+            this.expandedRowRefs[key] = rowRef;
+        };
+
+        setExpandedWidth = () => {
+            const tableEl = this.getTableNode();
+            const totalWidth = +(tableEl && tableEl.clientWidth) - 1 || '100%';
+            Object.keys(this.expandedRowRefs || {}).forEach(key => {
+                dom.setStyle(this.expandedRowRefs[key], { width: totalWidth });
+            });
+        };
+
+        getTableInstance = instance => {
+            this.tableInc = instance;
+        };
+
+        getTableNode() {
+            const table = this.tableInc;
+            try {
+                // in case of finding an unmounted component due to cached data
+                // need to clear refs of table when dataSource Changed
+                // use try catch for temporary
+                return findDOMNode(table.tableEl);
+            } catch (error) {
+                return null;
+            }
         }
 
         expandedKeydown = (value, record, index, e) => {
