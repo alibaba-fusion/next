@@ -45,11 +45,11 @@ class Card extends Base {
         itemRender: PropTypes.func,
         /**
          * 支持上传出错后重新上传
+         * @version 1.24
          */
         reUpload: PropTypes.bool,
         /**
          * 上传中
-         * @version 1.24
          */
         onProgress: PropTypes.func,
         isPreview: PropTypes.bool,
