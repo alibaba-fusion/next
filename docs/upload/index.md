@@ -87,14 +87,14 @@ iframe上传会额外传递参数 `_documentDomain` 方便你设置域名。
 
 > 继承 Upload 的 API，除非特别说明
 
-| 参数         | 说明                                                   | 类型       | 默认值       |
-| ---------- | ---------------------------------------------------- | -------- | --------- |
-| onPreview  | 点击图片回调<br><br>**签名**:<br>Function() => void          | Function | func.noop |
-| onChange   | 改变时候的回调<br><br>**签名**:<br>Function() => void         | Function | func.noop |
-| onRemove   | 点击移除的回调<br><br>**签名**:<br>Function() => void         | Function | -         |
-| onCancel   | 取消上传的回调<br><br>**签名**:<br>Function() => void         | Function | -         |
-| itemRender | 自定义成功和失败的列表渲染方式<br><br>**签名**:<br>Function() => void | Function | -         |
-| onProgress | 上传中<br><br>**签名**:<br>Function() => void             | Function | func.noop |
+| 参数         | 说明                                                   | 类型       | 默认值       | 版本支持 |
+| ---------- | ---------------------------------------------------- | -------- | --------- | ---- |
+| onPreview  | 点击图片回调<br><br>**签名**:<br>Function() => void          | Function | func.noop |      |
+| onChange   | 改变时候的回调<br><br>**签名**:<br>Function() => void         | Function | func.noop |      |
+| onRemove   | 点击移除的回调<br><br>**签名**:<br>Function() => void         | Function | -         |      |
+| onCancel   | 取消上传的回调<br><br>**签名**:<br>Function() => void         | Function | -         |      |
+| itemRender | 自定义成功和失败的列表渲染方式<br><br>**签名**:<br>Function() => void | Function | -         | 1.21 |
+| onProgress | 上传中<br><br>**签名**:<br>Function() => void             | Function | func.noop |      |
 
 ### Upload.Dragger
 

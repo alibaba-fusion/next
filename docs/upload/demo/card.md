@@ -16,12 +16,13 @@ import { Upload } from '@alifd/next';
 ReactDOM.render(
     <Upload.Card
         listType="card"
-        action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
+        action="http://127.0.0.1:6001/upload.do"
         accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
         onPreview={onPreview}
         onChange={onChange}
         onSuccess={onSuccess}
         onError={onError}
+        reUpload
         defaultValue={[{
             uid: '0',
             name: 'IMG.png',

@@ -40,10 +40,16 @@ class Card extends Base {
         onCancel: PropTypes.func,
         /**
          * 自定义成功和失败的列表渲染方式
+         * @version 1.21
          */
         itemRender: PropTypes.func,
         /**
+         * 支持上传出错后重新上传
+         */
+        reUpload: PropTypes.bool,
+        /**
          * 上传中
+         * @version 1.24
          */
         onProgress: PropTypes.func,
         isPreview: PropTypes.bool,
@@ -131,6 +137,7 @@ class Card extends Base {
             isPreview,
             renderPreview,
             itemRender,
+            reUpload,
         } = this.props;
 
         const isExceedLimit = this.state.value.length >= limit;
@@ -173,6 +180,8 @@ class Card extends Base {
                 itemRender={itemRender}
                 isPreview={isPreview}
                 uploader={this.state.uploaderRef}
+                disabled={disabled}
+                reUpload={reUpload}
                 {...othersForList}
             >
                 <Upload
