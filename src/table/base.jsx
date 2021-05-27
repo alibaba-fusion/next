@@ -159,7 +159,7 @@ class Table extends React.Component {
          */
         filterParams: PropTypes.object,
         /**
-         * 当前排序的字段,使用此属性可以控制表格的字段的排序,格式为{dataIndex: 'asc'}
+         * 当前排序的字段,使用此属性可以控制表格的字段的排序,格式为{[dataIndex]: 'asc' | 'desc' } , 例如  {id: 'desc'}
          */
         sort: PropTypes.object,
         /**
