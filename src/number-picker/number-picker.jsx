@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import BigNumber from 'bignumber.js';
 import { polyfill } from 'react-lifecycles-compat';
 
 import Icon from '../icon';
@@ -30,11 +31,11 @@ class NumberPicker extends React.Component {
         /**
          * 当前值
          */
-        value: PropTypes.number,
+        value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 默认值
          */
-        defaultValue: PropTypes.number,
+        defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 是否禁用
          */
@@ -57,20 +58,23 @@ class NumberPicker extends React.Component {
         autoFocus: PropTypes.bool,
         /**
          * 数值被改变的事件
-         * @param {Number} value 数据
+         * @param {Number|String} value 数据
          * @param {Event} e DOM事件对象
          */
         onChange: PropTypes.func,
         /**
          * 键盘按下
+         * @param {Event} e DOM事件对象
          */
         onKeyDown: PropTypes.func,
         /**
          * 焦点获得
+         * @param {Event} e DOM事件对象
          */
         onFocus: PropTypes.func,
         /**
          * 焦点失去
+         * @param {Event} e DOM事件对象
          */
         onBlur: PropTypes.func,
         /**
@@ -82,11 +86,11 @@ class NumberPicker extends React.Component {
         /**
          * 最大值
          */
-        max: PropTypes.number,
+        max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 最小值
          */
-        min: PropTypes.number,
+        min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 自定义class
          */
@@ -111,11 +115,11 @@ class NumberPicker extends React.Component {
          */
         downBtnProps: PropTypes.object,
         /**
-         * 内联 label
+         * 内联 左侧label
          */
         label: PropTypes.node,
         /**
-         * inner after
+         * 内联 右侧附加内容
          */
         innerAfter: PropTypes.node,
         rtl: PropTypes.bool,
@@ -125,7 +129,9 @@ class NumberPicker extends React.Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {number} value 评分值
+         * @param {Number|String} value 当前值
+         * @param {Object} props 传入的组件参数
+         * @returns {reactNode} Element 渲染内容
          */
         renderPreview: PropTypes.func,
         /**
@@ -140,6 +146,11 @@ class NumberPicker extends React.Component {
          * 是否一直显示点击按钮(无须hover)
          */
         alwaysShowTrigger: PropTypes.bool,
+        /**
+         * 开启大数支持，输入输出均为string类型
+         * @version 1.24
+         */
+        stringMode: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -159,24 +170,27 @@ class NumberPicker extends React.Component {
         onDisabled: func.noop,
         hasTrigger: true,
         alwaysShowTrigger: false,
+        stringMode: false,
     };
 
     constructor(props) {
         super(props);
+        const { defaultValue, max, min, stringMode } = props;
 
         let value;
         if ('value' in props) {
             value = props.value;
         } else {
-            value = props.defaultValue;
+            value = stringMode ? `${defaultValue}` : defaultValue;
         }
-        value = value === undefined || value === null ? '' : value;
-
+        value = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
         this.state = {
             value,
             hasFocused: false,
             onlyDisplay: false,
             displayValue: value,
+            max: max === MAX_SAFE_INTEGER && stringMode ? Infinity : max,
+            min: min === MIN_SAFE_INTEGER && stringMode ? -Infinity : min,
         };
     }
 
@@ -190,16 +204,30 @@ class NumberPicker extends React.Component {
             };
         }
         // 一般受控render逻辑
-        if ('value' in nextProps && nextProps.value !== prevState.value) {
-            let value = nextProps.value;
-            value = value === undefined || value === null ? '' : value;
+        if ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) {
+            let { value, max, min, stringMode } = nextProps;
+            value = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
+
             return {
                 value,
                 displayValue: value,
+                max: max !== MAX_SAFE_INTEGER ? max : prevState.max,
+                min: min !== MIN_SAFE_INTEGER ? min : prevState.min,
             };
         }
 
         return null;
+    }
+
+    isGreaterThan(v1, v2) {
+        const { stringMode } = this.props;
+        if (stringMode) return BigNumber(v1).isGreaterThan(BigNumber(v2));
+        return Number(v1) > Number(v2);
+    }
+
+    correctBoundary(value) {
+        const { max, min } = this.state;
+        return this.isGreaterThan(min, value) ? min : this.isGreaterThan(value, max) ? max : value;
     }
 
     setFocus(status) {
@@ -219,17 +247,21 @@ class NumberPicker extends React.Component {
     }
 
     onBlur(e, ...args) {
+        const { editable, stringMode } = this.props;
         const displayValue = `${this.state.displayValue}`;
         // 展示值合法但超出边界时，额外在Blur时触发onChange
         // 展示值非法时，回退前一个有效值
         if (
-            this.props.editable === true &&
-            !this.shouldFireOnChange(displayValue) &&
+            editable === true &&
             !isNaN(displayValue) &&
+            !this.shouldFireOnChange(displayValue) &&
             !this.withinMinMax(displayValue)
         ) {
             let valueCorrected = this.correctValue(displayValue);
-            this.state.value !== valueCorrected && this.setValue({ value: valueCorrected, e });
+            valueCorrected = stringMode ? BigNumber(valueCorrected).toFixed(this.getPrecision()) : valueCorrected;
+            if (this.state.value !== valueCorrected) {
+                this.setValue({ value: valueCorrected, e });
+            }
             this.setDisplayValue({ displayValue: valueCorrected });
         } else {
             this.setDisplayValue({ displayValue: this.state.value });
@@ -240,7 +272,13 @@ class NumberPicker extends React.Component {
     }
 
     withinMinMax(value) {
-        if (isNaN(value) || Number(value) > this.props.max || Number(value) < this.props.min) return false;
+        const { stringMode } = this.props;
+        const { max, min } = this.state;
+        if (stringMode) {
+            if (isNaN(value) || this.isGreaterThan(value, max) || this.isGreaterThan(min, value)) return false;
+            return true;
+        }
+        if (isNaN(value) || Number(value) > max || Number(value) < min) return false;
         return true;
     }
 
@@ -289,7 +327,6 @@ class NumberPicker extends React.Component {
 
     correctValue(value) {
         let val = value;
-        const props = this.props;
 
         // take care of isNaN('')=false
         if (val !== '') {
@@ -297,22 +334,19 @@ class NumberPicker extends React.Component {
             const precisionSet = this.getPrecision();
             const precisionCurrent = value.length - value.indexOf('.') - 1;
             const dotIndex = value.indexOf('.');
-            if (dotIndex > -1 && precisionCurrent > precisionSet) val = val.substr(0, dotIndex + 1 + precisionSet);
+            // precision === 0 should cut '.' for bigNumber
+            const cutPosition = precisionSet !== 0 ? dotIndex + 1 + precisionSet : dotIndex + precisionSet;
+            if (dotIndex > -1 && precisionCurrent > precisionSet) val = val.substr(0, cutPosition);
 
             // 边界订正：
-            val = Number(val);
-            if (val < props.min) {
-                val = props.min;
-            }
-            if (val > props.max) {
-                val = props.max;
-            }
+            val = this.correctBoundary(val);
+            val = this.props.stringMode ? val : Number(val);
         }
 
         if (isNaN(val)) val = this.state.value;
 
         if (`${val}` !== `${value}`) {
-            // .0 到 .00000* 不该触发onCorrect
+            // .0* 到 .x0* 不该触发onCorrect
             if (!/\.[0-9]*0+$/g.test(value)) {
                 this.props.onCorrect({
                     currentValue: val,
@@ -338,8 +372,7 @@ class NumberPicker extends React.Component {
     }
 
     getPrecision() {
-        const props = this.props;
-        const stepString = props.step.toString();
+        const stepString = this.props.step.toString();
         if (stepString.indexOf('e-') >= 0) {
             return parseInt(stepString.slice(stepString.indexOf('e-')), 10);
         }
@@ -378,59 +411,45 @@ class NumberPicker extends React.Component {
             e.preventDefault();
         }
 
-        const { onDisabled, min, max } = this.props;
+        const { onDisabled } = this.props;
         if (disabled) {
             return onDisabled(e);
         }
 
         const value = this.state.value;
+        // 受控下，可能强制回填非法值
         if (isNaN(value)) {
             return;
         }
 
         let val = this[`${type}Step`](value);
-        if (val > max) {
-            val = max;
-        }
-        if (val < min) {
-            val = min;
-        }
+        val = this.correctBoundary(val);
         this.setDisplayValue({ displayValue: val });
         this.setValue({ value: val, e, triggerType: type });
     }
 
     upStep(val) {
-        const { step, min } = this.props;
+        const { step, stringMode } = this.props;
         const precisionFactor = this.getPrecisionFactor();
-        let result;
-        if (typeof val === 'number') {
-            result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
-
-            result = this.hackChrome(result);
-        } else {
-            // use old value to calculate
-            result = (precisionFactor * this.state.value + precisionFactor * step) / precisionFactor;
-
-            result = this.hackChrome(result);
+        if (typeof val === 'number' && !stringMode) {
+            let result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
+            return this.hackChrome(result);
         }
-        return result;
+        return BigNumber(val)
+            .plus(step)
+            .toFixed(this.getPrecision());
     }
 
     downStep(val) {
-        const { step, min } = this.props;
+        const { step, stringMode } = this.props;
         const precisionFactor = this.getPrecisionFactor();
-        let result;
-        if (typeof val === 'number') {
-            result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
-
-            result = this.hackChrome(result);
-        } else {
-            // use old value to calculate
-            result = (precisionFactor * this.state.value - precisionFactor * step) / precisionFactor;
-
-            result = this.hackChrome(result);
+        if (typeof val === 'number' && !stringMode) {
+            let result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
+            return this.hackChrome(result);
         }
-        return result;
+        return BigNumber(val)
+            .minus(step)
+            .toFixed(this.getPrecision());
     }
 
     /**
@@ -472,8 +491,6 @@ class NumberPicker extends React.Component {
             style,
             className,
             size,
-            max,
-            min,
             autoFocus,
             editable,
             state,
@@ -486,6 +503,7 @@ class NumberPicker extends React.Component {
             hasTrigger,
             alwaysShowTrigger,
         } = this.props;
+        const { max, min } = this.state;
         const type = device === 'phone' || this.props.type === 'inline' ? 'inline' : 'normal';
 
         const prefixCls = `${prefix}number-picker`;
@@ -504,11 +522,10 @@ class NumberPicker extends React.Component {
         let downDisabled = false;
         const value = this.state.value;
         if (!isNaN(value)) {
-            const val = Number(value);
-            if (val >= max) {
+            if (!this.isGreaterThan(max, value)) {
                 upDisabled = true;
             }
-            if (val <= min) {
+            if (this.isGreaterThan(min, value) || min === value) {
                 downDisabled = true;
             }
         }

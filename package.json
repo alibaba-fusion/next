@@ -98,6 +98,7 @@
     "@alifd/field": "~1.5.0",
     "@alifd/validate": "~1.2.0",
     "babel-runtime": "^6.26.0",
+    "bignumber.js": "^9.0.1",
     "classnames": "^2.2.3",
     "dayjs": "^1.9.6",
     "hoist-non-react-statics": "^3.0.0",
