@@ -151,10 +151,10 @@
     }
 
     .#{$css-prefix}range-selected {
-        background-color: $selectedColor;
+        background: $selectedColor;
         //transition: all .4s cubic-bezier(0.23, 1, 0.32, 1);
         &:hover {
-            background-color: $selectedColorHover;
+            background: $selectedColorHover;
         }
     }
 

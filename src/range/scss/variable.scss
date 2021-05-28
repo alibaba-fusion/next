@@ -104,6 +104,7 @@ $range-normal-unselected-color-hover: $color-line1-3 !default;
 
 /// selected
 /// @level normal
+/// @supportGradient
 /// @namespace statement/hover/bar
 $range-normal-selected-color-hover: $color-brand1-6 !default;
 
@@ -145,6 +146,7 @@ $range-normal-unselected-color-disabled: $color-line1-3 !default;
 /// selected
 /// @level normal
 /// @state disabled
+/// @supportGradient
 /// @namespace statement/disabled/bar
 $range-normal-selected-color-disabled: $color-line1-4 !default;
 

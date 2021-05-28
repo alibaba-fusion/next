@@ -248,9 +248,11 @@ $btn-pure-primary-color-active: $color-white !default;
 /// @namespace statement/normal
 $btn-pure-primary-bg: $color-brand1-6 !default;
 /// background
+/// @supportGradient
 /// @namespace statement/hover
 $btn-pure-primary-bg-hover: $color-brand1-9 !default;
 /// background
+/// @supportGradient
 /// @namespace statement/active
 $btn-pure-primary-bg-active: $color-brand1-9 !default;
 /// border color
