@@ -35,7 +35,7 @@ const actionRender = (file) => {
     </span>);
 };
 
-const itemRender = (file) => {
+const itemRender = (file, {removeCallback}) => {
     console.log(file);
     return (<div>
         <img src={file.url} style={{maxWidth: '100%', maxHeight: '100%'}} />
@@ -45,9 +45,15 @@ const itemRender = (file) => {
             flexDirection: 'column',
             alignItems: 'center'
         }}>
-            <Icon type="eye" style={{marginTop: 40}}/>
-            <span style={{marginTop: 10}}>06:08</span>
+            <Icon type="eye" style={{marginTop: 40, cursor: 'pointer'}} onClick={() => showImg(file.url)}/>
+            <span style={{marginTop: 10, fontSize: 12}}>06:08</span>
         </div>
+        <Icon 
+            type="ashbin" 
+            size="xs" 
+            style={{position: 'absolute', right:2, top: 2, color: '#fff', cursor: 'pointer'}}
+            onClick={removeCallback}
+            />
     </div>);
 };
 
