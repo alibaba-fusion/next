@@ -49,6 +49,11 @@ class Card extends Base {
          */
         reUpload: PropTypes.bool,
         /**
+         * 展示下载按钮
+         * @version 1.24
+         */
+        showDownload: PropTypes.bool,
+        /**
          * 上传中
          */
         onProgress: PropTypes.func,
@@ -59,6 +64,7 @@ class Card extends Base {
     static defaultProps = {
         prefix: 'next-',
         locale: zhCN.Upload,
+        showDownload: true,
         onChange: func.noop,
         onPreview: func.noop,
         onProgress: func.noop,
@@ -138,6 +144,7 @@ class Card extends Base {
             renderPreview,
             itemRender,
             reUpload,
+            showDownload,
         } = this.props;
 
         const isExceedLimit = this.state.value.length >= limit;
@@ -182,6 +189,7 @@ class Card extends Base {
                 uploader={this.state.uploaderRef}
                 disabled={disabled}
                 reUpload={reUpload}
+                showDownload={showDownload}
                 {...othersForList}
             >
                 <Upload

@@ -59,6 +59,7 @@ class List extends Component {
         progressProps: PropTypes.object,
         children: PropTypes.node,
         uploader: PropTypes.any,
+        showDownload: PropTypes.bool,
         /**
          * 可选参数，是否本地预览
          */
@@ -74,6 +75,7 @@ class List extends Component {
         value: [],
         locale: zhCN.Upload,
         closable: false,
+        showDownload: true,
         onRemove: func.noop,
         onCancel: func.noop,
         extraRender: func.noop,
@@ -312,7 +314,7 @@ class List extends Component {
     };
 
     getPictureCardList(file, isPreview) {
-        const { locale, progressProps, fileNameRender, itemRender } = this.props;
+        const { locale, progressProps, fileNameRender, itemRender, showDownload } = this.props;
 
         const { prefixCls, downloadURL, imgURL, itemCls, alt } = this.getInfo(file);
         const state = isPreview ? '' : file.state;
@@ -366,7 +368,7 @@ class List extends Component {
         } else {
             /* eslint-disable no-lonely-if */
             if (typeof itemRender === 'function') {
-                item = itemRender(file);
+                item = itemRender(file, { removeCallback: onClose });
             } else {
                 const Uploader = this.props.uploader || { props: {} };
                 const UploaderProps = Uploader.props;
@@ -380,21 +382,23 @@ class List extends Component {
                         className={`${prefixCls}-tool ${!this.props.closable ? `${prefixCls}-noclose` : ''}`}
                     >
                         {state !== 'error' ? (
-                            <a
-                                href={downloadURL}
-                                target="_blank"
-                                tabIndex={downloadURL ? '0' : '-1'}
-                                className={`${prefixCls}-tool-download-link`}
-                                style={{
-                                    pointerEvents: downloadURL ? '' : 'none',
-                                }}
-                            >
-                                <Icon
-                                    type={downloadURL ? 'download' : ''}
-                                    aria-label={locale.card.download}
-                                    className={`${prefixCls}-tool-download-icon`}
-                                />
-                            </a>
+                            showDownload ? (
+                                <a
+                                    href={downloadURL}
+                                    target="_blank"
+                                    tabIndex={downloadURL ? '0' : '-1'}
+                                    className={`${prefixCls}-tool-download-link`}
+                                    style={{
+                                        pointerEvents: downloadURL ? '' : 'none',
+                                    }}
+                                >
+                                    <Icon
+                                        type={downloadURL ? 'download' : ''}
+                                        aria-label={locale.card.download}
+                                        className={`${prefixCls}-tool-download-icon`}
+                                    />
+                                </a>
+                            ) : null
                         ) : this.props.reUpload ? (
                             <Selecter
                                 className={`${prefixCls}-tool-reupload`}
