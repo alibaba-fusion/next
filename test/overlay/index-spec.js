@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import simulateEvent from 'simulate-event';
@@ -566,6 +566,7 @@ describe('Overlay', () => {
                         afterOpen() {
                             const myWrapper = document.querySelector('.myWrapper');
                             assert(myWrapper.classList.contains('opened'));
+                            ReactDOM.unmountComponentAtNode(container);
                             container.remove();
                             myWrapper.remove();
                             done();
@@ -928,5 +929,33 @@ describe('Popup', () => {
 
         const overlayInner = document.querySelector('.next-overlay-inner');
         assert(overlayInner.style.top !== '0px');
+    });
+
+    it('should set overflow hidden to container', () => {
+        function Demo() {
+            const [visible, setVisible] = useState(false);
+
+            return (
+                <div id="luodan">
+                    <button className="btn" onClick={() => setVisible(true)}>
+                        Open dialog
+                    </button>
+                    <Dialog visible={visible} popupContainer="luodan">
+                        Small Content in a fixed size Dialog
+                    </Dialog>
+                </div>
+            );
+        }
+
+        wrapper = render(<Demo />);
+        wrapper.find('.btn')[0].click();
+
+        const container = wrapper.find('#luodan')[0];
+
+        assert(container.style.overflow === 'hidden');
+        assert(container.style.paddingRight === '');
+
+        wrapper.find('.btn')[0].click();
+        ReactDOM.unmountComponentAtNode(container);
     });
 });
