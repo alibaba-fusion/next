@@ -273,7 +273,7 @@ export interface SubmitProps extends HTMLAttributesWeak, CommonProps {
         | 'xl'
         | 'xxl'
         | 'xxxl';
-fullWidth
+
     /**
      * 当 component = 'button' 时，设置 button 标签的 type 值
      */
