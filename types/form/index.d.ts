@@ -237,6 +237,11 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 子元素的 value 名称
      */
     valueName?: string;
+
+    /**
+     * 单个 Item 中表单类组件宽度是否是 100%
+     */
+    fullWidth?: boolean;
 }
 
 export class Item extends React.Component<ItemProps, any> {}
@@ -268,7 +273,7 @@ export interface SubmitProps extends HTMLAttributesWeak, CommonProps {
         | 'xl'
         | 'xxl'
         | 'xxxl';
-
+fullWidth
     /**
      * 当 component = 'button' 时，设置 button 标签的 type 值
      */
