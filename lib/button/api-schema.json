@@ -1,0 +1,307 @@
+{
+  "name": "Button",
+  "props": {
+    "type": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'primary'",
+            "computed": false
+          },
+          {
+            "value": "'secondary'",
+            "computed": false
+          },
+          {
+            "value": "'normal'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "按钮的类型",
+      "defaultValue": {
+        "value": "'normal'",
+        "computed": false
+      },
+      "docblock": "按钮的类型"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "按钮的尺寸",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "按钮的尺寸"
+    },
+    "icons": {
+      "type": {
+        "name": "shape",
+        "value": {
+          "loading": {
+            "name": "node",
+            "required": false
+          }
+        }
+      },
+      "required": false,
+      "description": "按钮中可配置的 Icon，格式为 { loading: <Icon type=\"loading\" /> }",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "按钮中可配置的 Icon，格式为 { loading: <Icon type=\"loading\" /> }",
+      "properties": []
+    },
+    "iconSize": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'xxs'",
+                "computed": false
+              },
+              {
+                "value": "'xs'",
+                "computed": false
+              },
+              {
+                "value": "'small'",
+                "computed": false
+              },
+              {
+                "value": "'medium'",
+                "computed": false
+              },
+              {
+                "value": "'large'",
+                "computed": false
+              },
+              {
+                "value": "'xl'",
+                "computed": false
+              },
+              {
+                "value": "'xxl'",
+                "computed": false
+              },
+              {
+                "value": "'xxxl'",
+                "computed": false
+              },
+              {
+                "value": "'inherit'",
+                "computed": false
+              }
+            ]
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "按钮中 Icon 的尺寸，用于替代 Icon 的默认大小",
+      "docblock": "按钮中 Icon 的尺寸，用于替代 Icon 的默认大小"
+    },
+    "htmlType": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'submit'",
+            "computed": false
+          },
+          {
+            "value": "'reset'",
+            "computed": false
+          },
+          {
+            "value": "'button'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "当 component = 'button' 时，设置 button 标签的 type 值",
+      "defaultValue": {
+        "value": "'button'",
+        "computed": false
+      },
+      "docblock": "当 component = 'button' 时，设置 button 标签的 type 值"
+    },
+    "component": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'button'",
+            "computed": false
+          },
+          {
+            "value": "'a'",
+            "computed": false
+          },
+          {
+            "value": "'div'",
+            "computed": false
+          },
+          {
+            "value": "'span'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置标签类型",
+      "defaultValue": {
+        "value": "'button'",
+        "computed": false
+      },
+      "docblock": "设置标签类型"
+    },
+    "loading": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "设置按钮的载入状态",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "设置按钮的载入状态"
+    },
+    "ghost": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "true",
+            "computed": false
+          },
+          {
+            "value": "false",
+            "computed": false
+          },
+          {
+            "value": "'light'",
+            "computed": false
+          },
+          {
+            "value": "'dark'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "是否为幽灵按钮",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为幽灵按钮"
+    },
+    "text": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为文本按钮",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为文本按钮"
+    },
+    "warning": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为警告按钮",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为警告按钮"
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否禁用",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否禁用"
+    },
+    "onClick": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "点击按钮的回调",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "点击按钮的回调\n@param {Object} e Event Object",
+      "params": [
+        {
+          "name": "e",
+          "description": "Event Object",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Group",
+      "props": {
+        "size": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "统一设置 Button 组件的按钮大小",
+          "defaultValue": {
+            "value": "'medium'",
+            "computed": false
+          },
+          "docblock": "统一设置 Button 组件的按钮大小"
+        }
+      },
+      "methods": []
+    }
+  ]
+}
