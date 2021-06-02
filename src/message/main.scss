@@ -11,6 +11,10 @@
     animation-duration: $motion-duration-standard;
     animation-timing-function: $motion-ease-in-out;
 
+    &-wrapper {
+        position: fixed;
+    }
+
     .#{$css-prefix}message-close {
         color: $message-close-icon-color;
         font-size: 0;
