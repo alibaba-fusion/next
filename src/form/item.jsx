@@ -96,7 +96,7 @@ export default class Item extends React.Component {
          */
         requiredMessage: PropTypes.string,
         /**
-         * required 自定义触发方式，可选值 'onChange' 'onBlur'
+         * required 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         requiredTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -112,7 +112,7 @@ export default class Item extends React.Component {
          */
         minmaxMessage: PropTypes.string,
         /**
-         * min/max 自定义触发方式，可选值 'onChange' 'onBlur'
+         * min/max 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         minmaxTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -128,7 +128,7 @@ export default class Item extends React.Component {
          */
         minmaxLengthMessage: PropTypes.string,
         /**
-         * minLength/maxLength 自定义触发方式，可选值 'onChange' 'onBlur'
+         * minLength/maxLength 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         minmaxLengthTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -140,7 +140,7 @@ export default class Item extends React.Component {
          */
         lengthMessage: PropTypes.string,
         /**
-         * length 自定义触发方式，可选值 'onChange' 'onBlur'
+         * length 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         lengthTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -152,7 +152,7 @@ export default class Item extends React.Component {
          */
         patternMessage: PropTypes.string,
         /**
-         * pattern 自定义触发方式，可选值 'onChange' 'onBlur'
+         * pattern 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         patternTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -164,7 +164,7 @@ export default class Item extends React.Component {
          */
         formatMessage: PropTypes.string,
         /**
-         * format 自定义触发方式，可选值 'onChange' 'onBlur'
+         * format 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         formatTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -172,7 +172,7 @@ export default class Item extends React.Component {
          */
         validator: PropTypes.func,
         /**
-         * validator 自定义触发方式，可选值 'onChange' 'onBlur'
+         * validator 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         validatorTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
