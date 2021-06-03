@@ -406,7 +406,7 @@ class List extends Component {
                                 name={UploaderProps.fileKeyName}
                                 onSelect={this.onSelect.bind(this, file)}
                             >
-                                <Icon type="refresh" className={`${prefixCls}-tool-reupload-icon`} />
+                                <Icon type="upload" className={`${prefixCls}-tool-reupload-icon`} />
                             </Selecter>
                         ) : null}
 
