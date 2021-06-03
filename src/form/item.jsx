@@ -96,7 +96,7 @@ export default class Item extends React.Component {
          */
         requiredMessage: PropTypes.string,
         /**
-         * required 自定义触发方式
+         * required 自定义触发方式，可选值 'onChange' 'onBlur'
          */
         requiredTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -112,7 +112,7 @@ export default class Item extends React.Component {
          */
         minmaxMessage: PropTypes.string,
         /**
-         * min/max 自定义触发方式
+         * min/max 自定义触发方式，可选值 'onChange' 'onBlur'
          */
         minmaxTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -128,7 +128,7 @@ export default class Item extends React.Component {
          */
         minmaxLengthMessage: PropTypes.string,
         /**
-         * minLength/maxLength 自定义触发方式
+         * minLength/maxLength 自定义触发方式，可选值 'onChange' 'onBlur'
          */
         minmaxLengthTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -140,7 +140,7 @@ export default class Item extends React.Component {
          */
         lengthMessage: PropTypes.string,
         /**
-         * length 自定义触发方式
+         * length 自定义触发方式，可选值 'onChange' 'onBlur'
          */
         lengthTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -152,7 +152,7 @@ export default class Item extends React.Component {
          */
         patternMessage: PropTypes.string,
         /**
-         * pattern 自定义触发方式
+         * pattern 自定义触发方式，可选值 'onChange' 'onBlur'
          */
         patternTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -164,7 +164,7 @@ export default class Item extends React.Component {
          */
         formatMessage: PropTypes.string,
         /**
-         * format 自定义触发方式
+         * format 自定义触发方式，可选值 'onChange' 'onBlur'
          */
         formatTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -172,7 +172,7 @@ export default class Item extends React.Component {
          */
         validator: PropTypes.func,
         /**
-         * validator 自定义触发方式
+         * validator 自定义触发方式，可选值 'onChange' 'onBlur'
          */
         validatorTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**

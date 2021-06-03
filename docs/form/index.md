@@ -79,26 +79,26 @@
 | required                | [表单校验] 不能为空                                                                                                             | Boolean            | -     |
 | asterisk                | required 的星号是否显示                                                                                                        | Boolean            | -     |
 | requiredMessage         | required 自定义错误信息                                                                                                        | String             | -     |
-| requiredTrigger         | required 自定义触发方式                                                                                                        | String/Array       | -     |
+| requiredTrigger         | required 自定义触发方式，可选值 'onChange' 'onBlur'                                                                                | String/Array       | -     |
 | min                     | [表单校验] 最小值                                                                                                              | Number             | -     |
 | max                     | [表单校验] 最大值                                                                                                              | Number             | -     |
 | minmaxMessage           | min/max 自定义错误信息                                                                                                         | String             | -     |
-| minmaxTrigger           | min/max 自定义触发方式                                                                                                         | String/Array       | -     |
+| minmaxTrigger           | min/max 自定义触发方式，可选值 'onChange' 'onBlur'                                                                                 | String/Array       | -     |
 | minLength               | [表单校验] 字符串最小长度 / 数组最小个数                                                                                                 | Number             | -     |
 | maxLength               | [表单校验] 字符串最大长度 / 数组最大个数                                                                                                 | Number             | -     |
 | minmaxLengthMessage     | minLength/maxLength 自定义错误信息                                                                                             | String             | -     |
-| minmaxLengthTrigger     | minLength/maxLength 自定义触发方式                                                                                             | String/Array       | -     |
+| minmaxLengthTrigger     | minLength/maxLength 自定义触发方式，可选值 'onChange' 'onBlur'                                                                     | String/Array       | -     |
 | length                  | [表单校验] 字符串精确长度 / 数组精确个数                                                                                                 | Number             | -     |
 | lengthMessage           | length 自定义错误信息                                                                                                          | String             | -     |
-| lengthTrigger           | length 自定义触发方式                                                                                                          | String/Array       | -     |
+| lengthTrigger           | length 自定义触发方式，可选值 'onChange' 'onBlur'                                                                                  | String/Array       | -     |
 | pattern                 | 正则校验                                                                                                                    | any                | -     |
 | patternMessage          | pattern 自定义错误信息                                                                                                         | String             | -     |
-| patternTrigger          | pattern 自定义触发方式                                                                                                         | String/Array       | -     |
+| patternTrigger          | pattern 自定义触发方式，可选值 'onChange' 'onBlur'                                                                                 | String/Array       | -     |
 | format                  | [表单校验] 四种常用的 pattern<br><br>**可选值**:<br>'number', 'email', 'url', 'tel'                                                 | Enum               | -     |
 | formatMessage           | format 自定义错误信息                                                                                                          | String             | -     |
-| formatTrigger           | format 自定义触发方式                                                                                                          | String/Array       | -     |
+| formatTrigger           | format 自定义触发方式，可选值 'onChange' 'onBlur'                                                                                  | String/Array       | -     |
 | validator               | [表单校验] 自定义校验函数<br><br>**签名**:<br>Function() => void                                                                     | Function           | -     |
-| validatorTrigger        | validator 自定义触发方式                                                                                                       | String/Array       | -     |
+| validatorTrigger        | validator 自定义触发方式，可选值 'onChange' 'onBlur'                                                                               | String/Array       | -     |
 | autoValidate            | 是否修改数据时自动触发校验                                                                                                           | Boolean            | -     |
 | device                  | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                  | Enum               | -     |
 | colSpan                 | 在响应式布局模式下，表单项占多少列                                                                                                       | Number             | -     |
