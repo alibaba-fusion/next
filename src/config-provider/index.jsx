@@ -23,7 +23,7 @@ const setMomentLocale = locale => {
     let moment;
     try {
         moment = require('moment');
-        if (moment.default && moment.default.isMoment) moment = moment.default;
+        if (moment && moment.default && moment.default.isMoment) moment = moment.default;
     } catch (e) {
         // ignore
     }
