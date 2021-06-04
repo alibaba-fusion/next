@@ -24,7 +24,7 @@
 
 3.  如果输入时没触发onChange，会在onBlur检测数据正确性并触发onChange
 
-4.  在 `1.24` 版本加入大数支持，通过 `stringMode` 开启大数或高精度小数支持，输入输出都变为 `String` 类型，具体参考[大数 与 高精度小数](#bignumber-container)
+4.  在 `1.24` 版本加入大数支持，通过 `stringMode` 开启大数或高精度小数支持，输入输出都变为 `String` 类型，具体参考[大数与高精度小数](#bignumber-container)
 
 ## API
 

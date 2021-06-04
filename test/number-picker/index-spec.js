@@ -32,7 +32,7 @@ describe('number-picker', () => {
         });
     });
 
-    describe('bigNumber', () => {
+    describe('stringMode', () => {
         it('should support big number not within [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER] in stringMode ', () => {
             const step = '0.000000000000000000000001';
             class App extends React.Component {
@@ -191,6 +191,16 @@ describe('number-picker', () => {
             assert(wrapper.find('input').prop('value') === BigNumber(20).toFixed(precision));
 
         });
+
+        it('should delete 0 at beginning when blur',() =>{
+            const wrapper = mount(<NumberPicker defaultValue={Number.MAX_SAFE_INTEGER} stringMode />);
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: `0${Number.MAX_SAFE_INTEGER}123` } });
+            assert(wrapper.find('input').prop('value') === `0${Number.MAX_SAFE_INTEGER}123`);
+            wrapper.find('input').simulate('blur');
+            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}123`);
+        })
     })
 
     describe('behavior', () => {
