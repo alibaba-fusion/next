@@ -1,21 +1,14 @@
 # Latest Log 
 
-## [1.23.2](https://github.com/alibaba-fusion/next/compare/1.23.1...1.23.2) (2021-05-21)
+## [1.23.4](https://github.com/alibaba-fusion/next/compare/1.23.3...1.23.4) (2021-06-02)
 
 
 ### Bug Fixes
 
-* **Balloon:** popups disappear too fast, close [#3007](https://github.com/alibaba-fusion/next/issues/3007) ([950fed8](https://github.com/alibaba-fusion/next/commit/950fed8))
-* **Cascader:** set width auto, close [#3012](https://github.com/alibaba-fusion/next/issues/3012) ([f89a79c](https://github.com/alibaba-fusion/next/commit/f89a79c))
-* **Switch:** animation! close [#3016](https://github.com/alibaba-fusion/next/issues/3016) ([f1f06f9](https://github.com/alibaba-fusion/next/commit/f1f06f9))
-* **Table:** close [#3009](https://github.com/alibaba-fusion/next/issues/3009) ([d5c8201](https://github.com/alibaba-fusion/next/commit/d5c8201))
-* **Table:** correct ExpandedRow width after switch loading, close [#3000](https://github.com/alibaba-fusion/next/issues/3000) ([283ce7f](https://github.com/alibaba-fusion/next/commit/283ce7f))
-* **Tag:** close [#791](https://github.com/alibaba-fusion/next/issues/791) ([6af7c9a](https://github.com/alibaba-fusion/next/commit/6af7c9a))
-* **Tag:** style issue, close [#3015](https://github.com/alibaba-fusion/next/issues/3015) ([e6af3f9](https://github.com/alibaba-fusion/next/commit/e6af3f9))
-
-
-### Features
-
-* **Drodpown:** popup should disappear by default, close [#3004](https://github.com/alibaba-fusion/next/issues/3004) ([49f9a69](https://github.com/alibaba-fusion/next/commit/49f9a69))
+* **Form.Item:** add fullWidth type ([fbd41ae](https://github.com/alibaba-fusion/next/commit/fbd41ae))
+* **Message:** quick mode should be fixed, close [#3059](https://github.com/alibaba-fusion/next/issues/3059) ([383c332](https://github.com/alibaba-fusion/next/commit/383c332))
+* **Overlay:** popupContainer won\'t work in Overlay&Popup ([3cd801b](https://github.com/alibaba-fusion/next/commit/3cd801b))
+* **Overlay:** should set overflow hidden to container ([9b8c8d3](https://github.com/alibaba-fusion/next/commit/9b8c8d3))
+* **Table:** custom header misses its scrollLeft while update,close [#3050](https://github.com/alibaba-fusion/next/issues/3050) ([926d81e](https://github.com/alibaba-fusion/next/commit/926d81e))
 
 

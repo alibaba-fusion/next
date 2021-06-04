@@ -22,15 +22,23 @@ const isScrollDisplay = function(element) {
 
     return true;
 };
-const hasScroll = () => {
-    const doc = document.documentElement;
+const hasScroll = containerNode => {
+    const parentNode = containerNode.parentNode;
+
     return (
-        doc.scrollHeight > doc.clientHeight &&
+        parentNode &&
+        parentNode.scrollHeight > parentNode.clientHeight &&
         dom.scrollbar().width > 0 &&
-        isScrollDisplay(document.documentElement) &&
-        isScrollDisplay(document.body)
+        isScrollDisplay(parentNode) &&
+        isScrollDisplay(containerNode)
     );
 };
+
+const getContainerNode = props => {
+    const targetNode = findNode(props.target);
+    return findNode(props.container, targetNode);
+};
+
 const prefixes = ['-webkit-', '-moz-', '-o-', 'ms-', ''];
 const getStyleProperty = (node, name) => {
     const style = window.getComputedStyle(node);
@@ -238,8 +246,8 @@ class Overlay extends Component {
             visible: false,
             status: 'none',
             animation: this.getAnimation(props),
-            beforeOpen: this.beforeOpen,
-            beforeClose: this.beforeClose,
+            willOpen: false,
+            willClose: false,
         };
 
         this.timeoutMap = {};
@@ -249,15 +257,16 @@ class Overlay extends Component {
         const willOpen = !prevState.visible && nextProps.visible;
         const willClose = prevState.visible && !nextProps.visible;
 
-        if (willOpen) {
-            prevState.beforeOpen();
-            nextProps.beforeOpen();
-        } else if (willClose) {
-            prevState.beforeClose();
-            nextProps.beforeClose();
-        }
+        const nextState = {
+            willOpen,
+            willClose,
+        };
 
-        const nextState = {};
+        if (willOpen) {
+            nextProps.beforeOpen && nextProps.beforeOpen();
+        } else if (willClose) {
+            nextProps.beforeClose && nextProps.beforeClose();
+        }
 
         if (nextProps.animation || nextProps.animation === false) {
             nextState.animation = nextProps.animation;
@@ -280,6 +289,12 @@ class Overlay extends Component {
     }
 
     componentDidMount() {
+        if (this.state.willOpen) {
+            this.beforeOpen();
+        } else if (this.state.willClose) {
+            this.beforeClose();
+        }
+
         if (this.state.visible) {
             this.doAnimation(true, false);
             this._isMounted = true;
@@ -291,6 +306,12 @@ class Overlay extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        if (this.state.willOpen) {
+            this.beforeOpen();
+        } else if (this.state.willClose) {
+            this.beforeClose();
+        }
+
         if (!this._isMounted && this.props.visible) {
             this._isMounted = true;
         }
@@ -491,14 +512,17 @@ class Overlay extends Component {
                 const style = {
                     overflow: 'hidden',
                 };
-                const body = document.body;
-                bodyOverflow = body.style.overflow;
-                if (hasScroll()) {
-                    bodyPaddingRight = body.style.paddingRight;
-                    style.paddingRight = `${dom.getStyle(body, 'paddingRight') + dom.scrollbar().width}px`;
+
+                this.containerNode = getContainerNode(this.props) || document.body;
+                bodyOverflow = this.containerNode.style.overflow;
+
+                if (hasScroll(this.containerNode)) {
+                    bodyPaddingRight = this.containerNode.style.paddingRight;
+                    style.paddingRight = `${dom.getStyle(this.containerNode, 'paddingRight') +
+                        dom.scrollbar().width}px`;
                 }
 
-                dom.setStyle(body, style);
+                dom.setStyle(this.containerNode, style);
             }
             modals.push(this);
         }
@@ -516,10 +540,11 @@ class Overlay extends Component {
                         style.paddingRight = bodyPaddingRight;
                     }
 
-                    dom.setStyle(document.body, style);
+                    this.containerNode && dom.setStyle(this.containerNode, style);
 
                     bodyOverflow = undefined;
                     bodyPaddingRight = undefined;
+                    this.containerNode = undefined;
                 }
 
                 modals.splice(index, 1);

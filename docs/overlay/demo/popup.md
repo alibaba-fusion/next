@@ -20,10 +20,6 @@ import { Overlay, Button, Input } from '@alifd/next';
 
 const { Popup } = Overlay;
 
-function App(props) {
-    return <input {...props} />;
-}
-
 ReactDOM.render(
     <div>
         <Popup trigger={<Button>Open</Button>} triggerType="click">

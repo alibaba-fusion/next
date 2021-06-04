@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { shallow } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { dom } from '../../src/util';
 import Button from '../../src/button';
@@ -67,11 +67,7 @@ class Demo extends React.Component {
         this.setState({
             content: new Array(40)
                 .fill('')
-                .map((__, index) => (
-                    <p key={index}>
-                        Start your business here by searching a popular product
-                    </p>
-                )),
+                .map((__, index) => <p key={index}>Start your business here by searching a popular product</p>),
         });
     };
 
@@ -96,11 +92,7 @@ class Demo extends React.Component {
                     onClose={this.onClose}
                     {...this.props}
                 >
-                    <Button
-                        className="contentChangeBt"
-                        onClick={this.onChangeContent}
-                        type="primary"
-                    >
+                    <Button className="contentChangeBt" onClick={this.onChangeContent} type="primary">
                         修改内容
                     </Button>
                     {this.state.content}
@@ -135,16 +127,12 @@ describe('inner', () => {
         assert(document.querySelector('.next-dialog'));
 
         ReactTestUtils.Simulate.click(btn);
-        const okBtn = document.querySelector(
-            '.next-btn-primary.next-dialog-btn'
-        );
+        const okBtn = document.querySelector('.next-btn-primary.next-dialog-btn');
         ReactTestUtils.Simulate.click(okBtn);
         assert(!document.querySelector('.next-dialog'));
 
         ReactTestUtils.Simulate.click(btn);
-        const cancelBtn = document.querySelector(
-            '.next-btn-normal.next-dialog-btn'
-        );
+        const cancelBtn = document.querySelector('.next-btn-normal.next-dialog-btn');
         ReactTestUtils.Simulate.click(cancelBtn);
         assert(!document.querySelector('.next-dialog'));
 
@@ -156,31 +144,16 @@ describe('inner', () => {
 
     it('should support footerAlign', () => {
         wrapper = render(<Dialog visible />);
-        assert(
-            hasClass(
-                document.querySelector('.next-dialog-footer'),
-                'next-align-right'
-            )
-        );
+        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-align-right'));
 
         wrapper.setProps({
             footerAlign: 'center',
         });
-        assert(
-            hasClass(
-                document.querySelector('.next-dialog-footer'),
-                'next-align-center'
-            )
-        );
+        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-align-center'));
         wrapper.setProps({
             footerAlign: 'left',
         });
-        assert(
-            hasClass(
-                document.querySelector('.next-dialog-footer'),
-                'next-align-left'
-            )
-        );
+        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-align-left'));
     });
 
     it('should support footerActions', () => {
@@ -224,11 +197,7 @@ describe('inner', () => {
                 </a>
             ),
         });
-        assert(
-            document
-                .querySelector('.next-dialog-footer a.custom')
-                .textContent.trim() === 'Link'
-        );
+        assert(document.querySelector('.next-dialog-footer a.custom').textContent.trim() === 'Link');
     });
 
     it('should support custom footer button text', () => {
@@ -242,14 +211,9 @@ describe('inner', () => {
                 }}
             />
         );
-        assert(
-            document.querySelector('.custom-ok').textContent.trim() === 'my ok'
-        );
+        assert(document.querySelector('.custom-ok').textContent.trim() === 'my ok');
 
-        assert(
-            document.querySelector('.custom-cancel').textContent.trim() ===
-                'my cancel'
-        );
+        assert(document.querySelector('.custom-cancel').textContent.trim() === 'my cancel');
     });
 
     it("should use css to position dialog if set isFullScreen to true and align to 'cc cc'", () => {
@@ -258,8 +222,7 @@ describe('inner', () => {
     });
 
     it('should adjust position and size if not use css to position', () => {
-        const viewportHeight =
-            window.innerHeight || document.documentElement.clientHeight;
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
         const dialogHeight = viewportHeight - 80 + 20;
 
         wrapper = render(<Demo height={`${dialogHeight}px`} />);
@@ -270,8 +233,7 @@ describe('inner', () => {
     });
 
     it('should update position and size when dailog content has been changed', () => {
-        const viewportHeight =
-            window.innerHeight || document.documentElement.clientHeight;
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
         wrapper = render(<Demo visible />);
         wrapper.setProps({
@@ -282,11 +244,7 @@ describe('inner', () => {
         ReactTestUtils.Simulate.click(contentChangeBt);
 
         const top = getStyle(document.querySelector('.next-dialog'), 'top');
-        const dailogHeight = [
-            '.next-dialog-body',
-            '.next-dialog-footer',
-            '.next-dialog-header',
-        ]
+        const dailogHeight = ['.next-dialog-body', '.next-dialog-footer', '.next-dialog-header']
             .map(sltor => getStyle(document.querySelector(sltor), 'height'))
             .reduce((sum, height) => sum + height, 0);
 
@@ -322,14 +280,8 @@ describe('inner', () => {
         });
 
         assert(document.querySelector('.next-dialog'));
-        assert(
-            document.querySelector('.next-dialog-header').textContent.trim() ===
-                'Title'
-        );
-        assert(
-            document.querySelector('.next-dialog-body').textContent.trim() ===
-                'Content'
-        );
+        assert(document.querySelector('.next-dialog-header').textContent.trim() === 'Title');
+        assert(document.querySelector('.next-dialog-body').textContent.trim() === 'Content');
 
         hide();
         assert(!document.querySelector('.next-dialog'));
@@ -344,22 +296,13 @@ describe('inner', () => {
         });
         assert(
             hasClass(
-                document.querySelector(
-                    '.next-dialog-message.next-message.next-addon.next-large'
-                ),
+                document.querySelector('.next-dialog-message.next-message.next-addon.next-large'),
                 'next-message-warning'
             )
         );
         assert(!document.querySelector('.next-dialog-header'));
-        assert(
-            document.querySelector('.next-message-title').textContent.trim() ===
-                'Title'
-        );
-        assert(
-            document
-                .querySelector('.next-message-content')
-                .textContent.trim() === 'Content'
-        );
+        assert(document.querySelector('.next-message-title').textContent.trim() === 'Title');
+        assert(document.querySelector('.next-message-content').textContent.trim() === 'Content');
         const btns = document.querySelectorAll('.next-dialog-btn');
         assert(btns.length === 1);
         assertOkBtn(btns[0]);
@@ -375,22 +318,13 @@ describe('inner', () => {
         });
         assert(
             hasClass(
-                document.querySelector(
-                    '.next-dialog-message.next-message.next-addon.next-large'
-                ),
+                document.querySelector('.next-dialog-message.next-message.next-addon.next-large'),
                 'next-message-help'
             )
         );
         assert(!document.querySelector('.next-dialog-header'));
-        assert(
-            document.querySelector('.next-message-title').textContent.trim() ===
-                'Title'
-        );
-        assert(
-            document
-                .querySelector('.next-message-content')
-                .textContent.trim() === 'Content'
-        );
+        assert(document.querySelector('.next-message-title').textContent.trim() === 'Title');
+        assert(document.querySelector('.next-message-content').textContent.trim() === 'Content');
         const btns = document.querySelectorAll('.next-dialog-btn');
         assert(btns.length === 2);
         assertOkBtn(btns[0]);
@@ -403,23 +337,13 @@ describe('inner', () => {
         wrapper = render(<Dialog visible />);
         assert(!document.querySelector('.next-dialog').style.height);
 
-        assert(
-            !hasClass(
-                document.querySelector('.next-dialog-footer'),
-                'next-dialog-footer-fixed-height'
-            )
-        );
+        assert(!hasClass(document.querySelector('.next-dialog-footer'), 'next-dialog-footer-fixed-height'));
 
         wrapper.setProps({
             height: '500px',
         });
         assert(document.querySelector('.next-dialog').style.height === '500px');
-        assert(
-            hasClass(
-                document.querySelector('.next-dialog-footer'),
-                'next-dialog-footer-fixed-height'
-            )
-        );
+        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-dialog-footer-fixed-height'));
     });
 
     it('should close dialog if click the ok button', () => {
@@ -429,9 +353,7 @@ describe('inner', () => {
             animation: false,
         });
 
-        ReactTestUtils.Simulate.click(
-            document.querySelector('.next-btn-primary')
-        );
+        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
         assert(!document.querySelector('.next-dialog'));
     });
 
@@ -443,9 +365,7 @@ describe('inner', () => {
             onOk: () => false,
         });
 
-        ReactTestUtils.Simulate.click(
-            document.querySelector('.next-btn-primary')
-        );
+        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
         assert(document.querySelector('.next-dialog'));
 
         hide();
@@ -463,16 +383,9 @@ describe('inner', () => {
             },
         });
 
-        ReactTestUtils.Simulate.click(
-            document.querySelector('.next-btn-primary')
-        );
+        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
         assert(document.querySelector('.next-dialog'));
-        assert(
-            hasClass(
-                document.querySelector('.next-btn-primary'),
-                'next-btn-loading'
-            )
-        );
+        assert(hasClass(document.querySelector('.next-btn-primary'), 'next-btn-loading'));
 
         setTimeout(() => {
             assert(!document.querySelector('.next-dialog'));
@@ -491,9 +404,7 @@ describe('inner', () => {
                 });
             },
         });
-        ReactTestUtils.Simulate.click(
-            document.querySelector('.next-btn-primary')
-        );
+        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
 
         setTimeout(() => {
             assert(document.querySelector('.next-dialog'));
@@ -505,10 +416,7 @@ describe('inner', () => {
     it('should work when set <ConfigProvider popupContainer/> ', () => {
         wrapper = render(
             <ConfigProvider popupContainer={'dialog-popupcontainer'}>
-                <div
-                    id="dialog-popupcontainer"
-                    style={{ height: 300, overflow: 'auto' }}
-                >
+                <div id="dialog-popupcontainer" style={{ height: 300, overflow: 'auto' }}>
                     <Dialog title="Welcome to Alibaba.com" visible>
                         Start your business here by searching a popular product
                     </Dialog>
@@ -516,9 +424,7 @@ describe('inner', () => {
             </ConfigProvider>
         );
 
-        const overlay = document.querySelector(
-            '#dialog-popupcontainer > .next-overlay-wrapper'
-        );
+        const overlay = document.querySelector('#dialog-popupcontainer > .next-overlay-wrapper');
         assert(overlay);
     });
 
@@ -534,17 +440,10 @@ describe('inner', () => {
             },
         });
 
-        ReactTestUtils.Simulate.click(
-            document.querySelector('.next-btn-primary')
-        );
+        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
 
         setTimeout(() => {
-            assert(
-                !hasClass(
-                    document.querySelector('.next-btn-primary'),
-                    'next-btn-loading'
-                )
-            );
+            assert(!hasClass(document.querySelector('.next-btn-primary'), 'next-btn-loading'));
             assert(document.querySelector('.next-dialog'));
             hide();
             done();
@@ -655,9 +554,7 @@ describe('inner', () => {
             content: 'Content',
         });
 
-        assert(
-            hasClass(document.querySelector('.test-dialog'), 'test-closeable')
-        );
+        assert(hasClass(document.querySelector('.test-dialog'), 'test-closeable'));
 
         hide();
     });
@@ -671,9 +568,7 @@ describe('inner', () => {
             },
         });
         try {
-            ReactTestUtils.Simulate.click(
-                document.querySelector('.next-btn-primary')
-            );
+            ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
             assert(false);
         } catch (e) {
             assert(true);
@@ -690,14 +585,41 @@ describe('inner', () => {
             },
         });
         try {
-            ReactTestUtils.Simulate.click(
-                document.querySelector('.next-btn-primary')
-            );
+            ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
             assert(false);
         } catch (e) {
             assert(true);
         }
         hide();
+    });
+
+    // https://github.com/alibaba-fusion/next/issues/2868
+    it('should resize after children size changed', done => {
+        function MyContent() {
+            const [height, setHeight] = useState(100);
+
+            return (
+                <div className="content">
+                    <div style={{ width: 400, height }} />
+                    <button onClick={() => setHeight(200)} />
+                </div>
+            );
+        }
+
+        wrapper = render(
+            <Dialog shouldUpdatePosition visible>
+                <MyContent />
+            </Dialog>
+        );
+        const { left, top } = document.querySelector('.next-dialog').style;
+
+        document.querySelector('.content button').click();
+
+        setTimeout(() => {
+            const { left: newLeft, top: newTop } = document.querySelector('.next-dialog').style;
+            assert.notDeepEqual([left, top], [newLeft, newTop]);
+            done();
+        }, 300);
     });
 });
 
