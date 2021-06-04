@@ -180,17 +180,15 @@ export default function virtual(BaseComponent) {
                 const { prefix } = this.props;
                 const headerNode = tableNode.querySelector(`.${prefix}table-header table`);
                 const headerClientWidth = headerNode && headerNode.clientWidth;
-
+                // todo 2.0 设置宽度这个可以去掉
                 if (clientWidth < headerClientWidth) {
                     dom.setStyle(virtualScrollNode, 'min-width', headerClientWidth);
                     const leftNode = this.bodyLeftNode;
                     const rightNode = this.bodyRightNode;
                     leftNode && dom.setStyle(leftNode, 'max-height', clientHeight);
                     rightNode && dom.setStyle(rightNode, 'max-height', clientHeight);
-                    this.hasScrollbar = true;
                 } else {
                     dom.setStyle(virtualScrollNode, 'min-width', 'auto');
-                    this.hasScrollbar = false;
                 }
             }
         }
