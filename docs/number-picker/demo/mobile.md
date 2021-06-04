@@ -1,13 +1,13 @@
 # 移动端
 
-- order: 9
+- order: 10
 
 device=phone 下会强制设置 type=normal
 
 :::lang=en-us
 # Basic Usage
 
-- order: 9
+- order: 10
 
 force set type=normal while device=phone
 

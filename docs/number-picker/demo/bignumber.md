@@ -1,14 +1,14 @@
-# 大数 与 高精度小数
+# 大数与高精度小数
 
-- order: 11
+- order: 8
 
-通过 `stringMode` 开启 大数 与 高精度小数 支持。
+通过 `stringMode` 开启 大数 与 高精度小数 支持，输入输出都变为 `String` 类型。
 
 
 :::lang=en-us
 # support big number
 
-- order: 11
+- order: 8
 
 get big number support via `stringMode`
 :::

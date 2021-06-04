@@ -181,7 +181,7 @@ class NumberPicker extends React.Component {
         if ('value' in props) {
             value = props.value;
         } else {
-            value = stringMode ? `${defaultValue}` : defaultValue;
+            value = defaultValue;
         }
         value = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
         this.state = {
@@ -272,13 +272,8 @@ class NumberPicker extends React.Component {
     }
 
     withinMinMax(value) {
-        const { stringMode } = this.props;
         const { max, min } = this.state;
-        if (stringMode) {
-            if (isNaN(value) || this.isGreaterThan(value, max) || this.isGreaterThan(min, value)) return false;
-            return true;
-        }
-        if (isNaN(value) || Number(value) > max || Number(value) < min) return false;
+        if (isNaN(value) || this.isGreaterThan(value, max) || this.isGreaterThan(min, value)) return false;
         return true;
     }
 
@@ -334,13 +329,13 @@ class NumberPicker extends React.Component {
             const precisionSet = this.getPrecision();
             const precisionCurrent = value.length - value.indexOf('.') - 1;
             const dotIndex = value.indexOf('.');
-            // precision === 0 should cut '.' for bigNumber
+            // precision === 0 should cut '.' for stringMode
             const cutPosition = precisionSet !== 0 ? dotIndex + 1 + precisionSet : dotIndex + precisionSet;
             if (dotIndex > -1 && precisionCurrent > precisionSet) val = val.substr(0, cutPosition);
 
             // 边界订正：
             val = this.correctBoundary(val);
-            val = this.props.stringMode ? val : Number(val);
+            val = this.props.stringMode ? BigNumber(val).toFixed() : Number(val);
         }
 
         if (isNaN(val)) val = this.state.value;
