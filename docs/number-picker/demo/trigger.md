@@ -1,6 +1,6 @@
 # 按钮控制
 
-- order: 11
+- order: 9
 
 控制按钮一致显示、隐藏
 
@@ -8,7 +8,7 @@
 :::lang=en-us
 # trigger controls
 
-- order: 3
+- order: 9
 
 control button trigger show without hover or hide
 :::
