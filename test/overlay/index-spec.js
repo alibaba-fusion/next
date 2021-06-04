@@ -19,7 +19,6 @@ import '../../src/overlay/style.js';
 const { hasClass } = dom;
 const { Popup } = Overlay;
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
-const scrollbarWidth = dom.scrollbar().width;
 
 const render = element => {
     let inc;
@@ -43,6 +42,7 @@ const render = element => {
             return inc;
         },
         find: selector => {
+            debugger;
             return container.querySelectorAll(selector);
         },
     };
@@ -614,13 +614,28 @@ describe('Overlay', () => {
         }
         document.body.append(container);
         ReactDOM.render(<Demo align="tl tr" />, container);
+
         assert(
             document.querySelector('.next-overlay-inner').style.left ===
                 `${parseFloat(window.getComputedStyle(document.body).width) - 200 - 1}px` // Reason to subtract 1, see: Overly._isInViewport
         );
-        // assert(document.querySelector('.next-overlay-inner').style.top === '0px');
         container.remove();
         document.querySelector('.next-overlay-wrapper').remove();
+    });
+
+    it('fix bug on position when target is a svg element', () => {
+        wrapper = render(
+            <div>
+                <Overlay target="lzy" visible align="cc cc">
+                    <Button className="overlay-btn">cc cc</Button>
+                </Overlay>
+                <svg id="ppc" width={200} height={200}>
+                    <rect id="lzy" width={200} height={200} fill="red" />
+                </svg>
+            </div>
+        );
+
+        assert(document.querySelector('.overlay-btn').style.left === '73.5px');
     });
 });
 
