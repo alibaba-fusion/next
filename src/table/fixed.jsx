@@ -153,7 +153,9 @@ export default function fixed(BaseComponent, stickyLock) {
                         style.paddingBottom = scrollBarSize;
                     } else {
                         style.paddingBottom = scrollBarSize;
-                        style[marginName] = 0;
+                    }
+                    if (hasVerScroll) {
+                        style[marginName] = scrollBarSize;
                     }
                 }
 
