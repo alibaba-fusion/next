@@ -234,9 +234,9 @@ export default class Item extends React.Component {
     /**
      * 从子元素里面提取表单组件
      */
-    getNames() {
-        const children = React.Children.toArray(this.props.children);
-        return children
+    getNames(children) {
+        const childrenList = React.Children.toArray(children);
+        return childrenList
             .filter(c => {
                 return c.props && ('name' in c.props || 'data-meta' in c.props);
             })
@@ -245,18 +245,18 @@ export default class Item extends React.Component {
             });
     }
 
-    getHelper() {
+    getHelper(children) {
         const help = this.props.help;
         const _formField = this.context._formField;
 
         return (
-            <Error name={help === undefined ? this.getNames() : undefined} field={_formField}>
+            <Error name={help === undefined ? this.getNames(children) : undefined} field={_formField}>
                 {help}
             </Error>
         );
     }
 
-    getState() {
+    getState(children) {
         const { validateState } = this.props;
         if (validateState) {
             return validateState;
@@ -264,7 +264,7 @@ export default class Item extends React.Component {
 
         if (this.context._formField) {
             const { getState } = this.context._formField;
-            const names = this.getNames();
+            const names = this.getNames(children);
             if (!names.length) {
                 return '';
             }
@@ -308,7 +308,7 @@ export default class Item extends React.Component {
         return null;
     }
 
-    getItemLabel() {
+    getItemLabel(children) {
         const {
             id,
             required,
@@ -330,7 +330,7 @@ export default class Item extends React.Component {
         }
 
         const ele = (
-            <label htmlFor={id || this.getNames()[0]} required={asterisk} key="label">
+            <label htmlFor={id || this.getNames(children)[0]} required={asterisk} key="label">
                 {label}
             </label>
         );
@@ -360,12 +360,12 @@ export default class Item extends React.Component {
         return <div className={cls}>{ele}</div>;
     }
 
-    getItemWrapper() {
-        const { hasFeedback, labelCol, wrapperCol, children, extra, prefix, renderPreview } = this.props;
+    getItemWrapper(children) {
+        const { hasFeedback, labelCol, wrapperCol, extra, prefix, renderPreview } = this.props;
 
         const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
 
-        const state = this.getState();
+        const state = this.getState(children);
 
         const isPreview = this.getIsPreview();
         const childrenProps = {
@@ -385,17 +385,12 @@ export default class Item extends React.Component {
         }
 
         if (labelAlign === 'inset') {
-            childrenProps.label = this.getItemLabel();
-        }
-
-        let childrenNode = children;
-        if (typeof children === 'function' && this.context._formField) {
-            childrenNode = children(this.context._formField.getValues());
+            childrenProps.label = this.getItemLabel(children);
         }
 
         const labelForErrorMessage = this.getLabelForErrorMessage();
 
-        const ele = React.Children.map(childrenNode, child => {
+        const ele = React.Children.map(children, child => {
             if (
                 child &&
                 ['function', 'object'].indexOf(typeof child.type) > -1 &&
@@ -422,7 +417,7 @@ export default class Item extends React.Component {
             return child;
         });
 
-        const help = this.getHelper();
+        const help = this.getHelper(children);
 
         if ((wrapperCol || labelCol) && labelAlign !== 'top') {
             return (
@@ -448,11 +443,16 @@ export default class Item extends React.Component {
     }
 
     render() {
-        const { className, style, prefix, wrapperCol, labelCol, responsive } = this.props;
+        const { className, style, prefix, wrapperCol, labelCol, responsive, children } = this.props;
 
         const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
 
-        const state = this.getState();
+        let childrenNode = children;
+        if (typeof children === 'function' && this.context._formField) {
+            childrenNode = children(this.context._formField.getValues());
+        }
+
+        const state = this.getState(childrenNode);
         const size = this.getSize();
         const fullWidth = this.getFullWidth();
         const isPreview = this.getIsPreview();
@@ -469,12 +469,12 @@ export default class Item extends React.Component {
 
         // 垂直模式并且左对齐才用到
         const Tag = responsive ? Cell : (wrapperCol || labelCol) && labelAlign !== 'top' ? Row : 'div';
-        const label = labelAlign === 'inset' ? null : this.getItemLabel();
+        const label = labelAlign === 'inset' ? null : this.getItemLabel(childrenNode);
 
         return (
             <Tag {...obj.pickOthers(Item.propTypes, this.props)} className={itemClassName} style={style}>
                 {label}
-                {this.getItemWrapper()}
+                {this.getItemWrapper(childrenNode)}
             </Tag>
         );
     }
