@@ -15,7 +15,6 @@ const event = require('./event');
 const { logger } = require('../utils');
 
 const cwd = process.cwd();
-
 const argv = parseArgs(process.argv.slice(2), {
     default: {
         host: '127.0.0.1',
@@ -32,6 +31,7 @@ const { host, silent, lang, dir, mode } = argv;
 const port = parseInt(argv.port, 10);
 
 const componentName = argv._[0];
+
 const componentPath = path.join(process.cwd(), 'docs', componentName);
 
 const disableAnimation = argv['disable-animation'];
@@ -68,10 +68,12 @@ function run(port) {
         devA11y,
         mode,
     });
+
     const compiler = webpack(config);
 
-    compiler.plugin('done', stats => {
+    compiler.hooks.done.tap('done', stats => {
         const rawMessages = stats.toJson({}, true);
+
         const messages = formatWebpackMessages(rawMessages);
         if (!messages.errors.length && !messages.warnings.length) {
             logger.success('Compiled successfully!');
@@ -90,16 +92,21 @@ function run(port) {
     const url = `http://${host}:${port}/${componentName}`;
     logger.warn(`Start server, listen to ${url}`);
 
-    const server = new WebpackDevServer(compiler, {
+    const options = {
         disableHostCheck: true,
         hot: true,
-        quiet: true,
+        quiet: false,
+        contentBase: './',
         publicPath: config.publicPath,
         before: app => {
             app.use(getVariables({ cwd }));
             app.use(rebuildScss({ cwd }));
         },
-    });
+    };
+
+    WebpackDevServer.addDevServerEntrypoints(config, options);
+
+    const server = new WebpackDevServer(compiler, options);
 
     if (host === '127.0.0.1') {
         server.listen(port);
@@ -110,6 +117,7 @@ function run(port) {
     if (!silent) {
         setTimeout(() => {
             openBrowser(url);
+
             const watcher = chokidar.watch(
                 [
                     path.join(cwd, 'docs', componentName, 'demo', '*.md'),
@@ -125,7 +133,6 @@ function run(port) {
                 watcher.close();
                 process.send('RESTART');
             };
-
             watcher.on('all', handler);
 
             event.on('CHANGE_LANG', lang => {
