@@ -7,7 +7,7 @@ export default class Cell extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
-        primaryKey: PropTypes.string,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         className: PropTypes.string,
         record: PropTypes.any,
         value: PropTypes.any,
