@@ -375,6 +375,7 @@ class List extends Component {
                 const Uploader = this.props.uploader || { props: {} };
                 const UploaderProps = Uploader.props;
 
+                // TODO: 2.x 中逻辑会修改为，只要有showDownload，那就有下载按钮（不管有没有downloadURL）
                 item = [
                     <div className={`${prefixCls}-list-item-thumbnail`} key="img">
                         {img}
