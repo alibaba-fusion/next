@@ -20,7 +20,7 @@ export default function virtual(BaseComponent) {
              */
             rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
             maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            primaryKey: PropTypes.string,
+            primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
             dataSource: PropTypes.array,
             /**
              * 在内容区域滚动的时候触发的函数
