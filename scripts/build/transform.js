@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const glob = require('glob');
 const babel = require('@babel/core');
-const babelConfigCreator = require('@alifd/babel-preset-next');
+const babelConfigCreator = require('../utils/babel7-preset-next.js');
 const { logger } = require('../utils');
 
 module.exports = function transform() {
