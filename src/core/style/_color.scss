@@ -305,16 +305,16 @@ $color-data1-8: #18B1F7 !default;
 /// gradient-1
 /// @group gradient
 /// @export
-$color-gradient-1: linear-gradient(270deg, #79E8C7 0%, #08C29E 100%) !default;
+$color-gradient-1: linear-gradient(270deg, rgb(121, 232, 199) 0%, rgb(8, 194, 158) 100%) !default;
 /// gradient-2
 /// @group gradient
 /// @export
-$color-gradient-2: linear-gradient(270deg, #A3F1FA 0%, #03C1FD 100%) !default;
+$color-gradient-2: linear-gradient(270deg, rgb(125, 238, 255) 0%, rgb(3, 193, 253) 100%) !default;
 /// gradient-3
 /// @group gradient
 /// @export
-$color-gradient-3: linear-gradient(270deg, #FFE7A3 0%, #F5CB22 100%) !default;
+$color-gradient-3: linear-gradient(270deg, rgb(255, 237, 117) 0%, rgb(245, 203, 34) 100%) !default;
 /// gradient-4
 /// @group gradient
 /// @export
-$color-gradient-4: linear-gradient(270deg, #FFCCCC 0%, #F52743 100%) !default;
+$color-gradient-4: linear-gradient(270deg, rgb(255, 163, 166) 0%, rgb(245, 39, 67) 100%) !default;
