@@ -5,12 +5,14 @@ import ConfigProvider from '../config-provider';
 import Progress from '../progress';
 import Icon from '../icon';
 import Button from '../button';
-import { func, obj, KEYCODE } from '../util';
+import { func, obj, KEYCODE, env } from '../util';
 import zhCN from '../locale/zh-cn.js';
 import { previewFile } from './util';
 import transform from './transform';
 import Item from '../menu/view/item';
 import Selecter from './runtime/selecter';
+
+const isIE9 = env.ieVersion === 9;
 
 class List extends Component {
     static propTypes = {
@@ -377,41 +379,34 @@ class List extends Component {
                     <div className={`${prefixCls}-list-item-thumbnail`} key="img">
                         {img}
                     </div>,
-                    <span
-                        key="tool"
-                        className={`${prefixCls}-tool ${!this.props.closable ? `${prefixCls}-noclose` : ''}`}
-                    >
-                        {state !== 'error' ? (
-                            showDownload ? (
-                                <a
-                                    href={downloadURL}
-                                    target="_blank"
-                                    tabIndex={downloadURL ? '0' : '-1'}
-                                    className={`${prefixCls}-tool-download-link`}
-                                    style={{
-                                        pointerEvents: downloadURL ? '' : 'none',
-                                    }}
-                                >
-                                    <Icon
-                                        type={downloadURL ? 'download' : ''}
-                                        aria-label={locale.card.download}
-                                        className={`${prefixCls}-tool-download-icon`}
-                                    />
-                                </a>
-                            ) : null
-                        ) : this.props.reUpload ? (
+                    <span key="tool" className={`${prefixCls}-tool`}>
+                        {state !== 'error' && showDownload && downloadURL ? (
+                            <a
+                                href={downloadURL}
+                                target="_blank"
+                                className={`${prefixCls}-tool-item ${prefixCls}-tool-download-link`}
+                            >
+                                <Icon
+                                    type="download"
+                                    aria-label={locale.card.download}
+                                    className={`${prefixCls}-tool-download-icon`}
+                                />
+                            </a>
+                        ) : null}
+
+                        {this.props.reUpload && !isPreview && !isIE9 ? (
                             <Selecter
-                                className={`${prefixCls}-tool-reupload`}
+                                className={`${prefixCls}-tool-item ${prefixCls}-tool-reupload`}
                                 accept={UploaderProps.accept}
                                 name={UploaderProps.fileKeyName}
                                 onSelect={this.onSelect.bind(this, file)}
                             >
-                                <Icon type="upload" className={`${prefixCls}-tool-reupload-icon`} />
+                                <Icon type="edit" className={`${prefixCls}-tool-reupload-icon`} />
                             </Selecter>
                         ) : null}
 
                         {this.props.closable && !isPreview ? (
-                            <span className={`${prefixCls}-tool-close`}>
+                            <span className={`${prefixCls}-tool-item ${prefixCls}-tool-close`}>
                                 <Icon
                                     type="ashbin"
                                     aria-label={locale.card.delete}
@@ -490,6 +485,7 @@ class List extends Component {
             {
                 [`${prefixCls}-list`]: true,
                 [`${prefixCls}-list-${_listType}`]: true,
+                [`${prefixCls}-ie9`]: isIE9,
             },
             className
         );

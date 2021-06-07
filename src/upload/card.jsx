@@ -46,7 +46,7 @@ class Card extends Base {
          */
         itemRender: PropTypes.func,
         /**
-         * 支持上传出错后重新上传
+         * 支持重新选择文件并替换已有文件
          * @version 1.24
          */
         reUpload: PropTypes.bool,

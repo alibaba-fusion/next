@@ -396,53 +396,39 @@
             height: $upload-select-card-tool-height;
             left: 0;
             bottom: 0;
-
-            > a > .#{$css-prefix}icon {
-                width: 49%;
-            }
-
-            .#{$css-prefix}upload-tool-close > .#{$css-prefix}icon {
-                width: 100%;
-            }
-            > a + .#{$css-prefix}upload-tool-close > .#{$css-prefix}icon,
-            > div + .#{$css-prefix}upload-tool-close > .#{$css-prefix}icon {
-                width: 49%;
-            }
+            display: flex;
 
             .#{$css-prefix}icon {
-                text-align: center;
                 line-height: $upload-select-card-tool-height;
                 color: $color-white;
-            }
-
-            .#{$css-prefix}icon {
                 @include icon-size($upload-select-card-tool-icon-size);
-            }
-
-            &.#{$css-prefix}noclose .#{$css-prefix}icon {
-                width: 100%;
-            }
-
-            &-close {
                 cursor: pointer;
             }
 
-            &-download-icon {
-                border-right: 1px solid $color-white;
+            &-item {
+                width: 100%;
+                text-align: center;
+
+                &:not(:last-child) {
+                    border-right: 1px solid $color-white;
+                }
             }
+
             &-reupload {
-                width: 49%;
                 display: inline-block;
-            }
-            .#{$css-prefix}upload-tool-reupload-icon {
-                width: 100%;
-                border-right: 1px solid $color-white;
-                cursor: pointer;
             }
         }
 
         &-error .#{$css-prefix}upload-list-item-wrapper {
             border-color: $upload-card-list-border-color-error;
+        }
+    }
+
+    &#{$upload-prefix}-ie9 .#{$css-prefix}upload-tool {
+        display: table;
+        &-item {
+            display: table-cell;
+            width: 1%;
         }
     }
 }
