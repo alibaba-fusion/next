@@ -94,7 +94,7 @@ iframe上传会额外传递参数 `_documentDomain` 方便你设置域名。
 | onRemove     | 点击移除的回调<br><br>**签名**:<br>Function() => void                                                                                                            | Function | -         |      |
 | onCancel     | 取消上传的回调<br><br>**签名**:<br>Function() => void                                                                                                            | Function | -         |      |
 | itemRender   | 自定义成功和失败的列表渲染方式<br><br>**签名**:<br>Function(file: File, obj: Object) => void<br>**参数**:<br>_file_: {File} 文件对象<br>_obj_: {Object} {removeCallback: 删除回调} | Function | -         | 1.21 |
-| reUpload     | 支持重新选择文件并替换已有文件                                                                                                                                         | Boolean  | -         | 1.24 |
+| reUpload     | 选择新文件上传并替换                                                                                                                                              | Boolean  | -         | 1.24 |
 | showDownload | 展示下载按钮                                                                                                                                                  | Boolean  | true      | 1.24 |
 | onProgress   | 上传中<br><br>**签名**:<br>Function() => void                                                                                                                | Function | func.noop |      |
 
