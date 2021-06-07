@@ -70,10 +70,12 @@ function run(port) {
         devA11y,
         mode,
     });
+
     const compiler = webpack(config);
 
-    compiler.plugin('done', stats => {
+    compiler.hooks.done.tap('done', stats => {
         const rawMessages = stats.toJson({}, true);
+
         const messages = formatWebpackMessages(rawMessages);
         if (!messages.errors.length && !messages.warnings.length) {
             logger.success('Compiled successfully!');
@@ -92,10 +94,11 @@ function run(port) {
     const url = `http://${host}:${port}/${componentName}`;
     logger.warn(`Start server, listen to ${url}`);
 
-    const server = new WebpackDevServer(compiler, {
+    const options = {
         disableHostCheck: true,
         hot: true,
         quiet: true,
+        contentBase: './',
         publicPath: config.publicPath,
         before: app => {
             app.use(getVariables({ cwd }));
@@ -103,7 +106,11 @@ function run(port) {
             app.use(changeLang());
             app.use(changeDir());
         },
-    });
+    };
+
+    WebpackDevServer.addDevServerEntrypoints(config, options);
+
+    const server = new WebpackDevServer(compiler, options);
 
     if (host === '127.0.0.1') {
         server.listen(port);
