@@ -1,6 +1,3 @@
-import { Switch as MeetSwitch } from '@alifd/meet-react';
-import NextSwitch from '../index';
-
-const Switch = MeetSwitch ? MeetSwitch : NextSwitch;
+import { Switch } from '@alifd/meet-react';
 
 export default Switch;

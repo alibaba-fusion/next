@@ -1,6 +1,3 @@
-import { Progress as MeetProgress } from '@alifd/meet-react';
-import NextProgress from '../index';
-
-const Progress = MeetProgress ? MeetProgress : NextProgress;
+import { Progress } from '@alifd/meet-react';
 
 export default Progress;

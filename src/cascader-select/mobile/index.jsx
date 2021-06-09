@@ -1,6 +1,3 @@
-import { CascaderSelect as MeetCascaderSelect } from '@alifd/meet-react';
-import NextCascaderSelect from '../index';
-
-const CascaderSelect = MeetCascaderSelect ? MeetCascaderSelect : NextCascaderSelect;
+import { CascaderSelect } from '@alifd/meet-react';
 
 export default CascaderSelect;

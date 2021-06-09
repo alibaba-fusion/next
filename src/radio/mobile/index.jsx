@@ -1,6 +1,3 @@
-import { Radio as MeetRadio } from '@alifd/meet-react';
-import NextRadio from '../index';
-
-const Radio = MeetRadio ? MeetRadio : NextRadio;
+import { Radio } from '@alifd/meet-react';
 
 export default Radio;

@@ -1,6 +1,3 @@
-import { Menu as MeetMenu } from '@alifd/meet-react';
-import NextMenu from '../index';
-
-const Menu = MeetMenu ? MeetMenu : NextMenu;
+import { Menu } from '@alifd/meet-react';
 
 export default Menu;

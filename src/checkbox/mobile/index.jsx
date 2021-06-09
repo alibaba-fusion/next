@@ -1,6 +1,3 @@
-import { Checkbox as MeetCheckbox } from '@alifd/meet-react';
-import NextCheckbox from '../index';
-
-const Checkbox = MeetCheckbox ? MeetCheckbox : NextCheckbox;
+import { Checkbox } from '@alifd/meet-react';
 
 export default Checkbox;
