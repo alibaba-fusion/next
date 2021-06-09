@@ -1,6 +1,3 @@
-import { Rating as MeetRating } from '@alifd/meet-react';
-import NextRating from '../index';
-
-const Rating = MeetRating ? MeetRating : NextRating;
+import { Rating } from '@alifd/meet-react';
 
 export default Rating;
