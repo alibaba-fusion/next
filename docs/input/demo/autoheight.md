@@ -2,7 +2,7 @@
 
 - order: 9
 
-设置 `Input` 为 多行文本域；
+根据内容自动调整 TextArea 的高度
 
 :::lang=en-us
 
@@ -10,7 +10,7 @@
 
 - order: 9
 
-Set `Input` as a TextArea
+auto set TextArea height by content
 :::
 
 ---
@@ -26,12 +26,12 @@ ReactDOM.render(
         <Input.TextArea
             autoHeight
             aria-label="auto height"
-            placeholder="autoHeight"
+            placeholder="try input Enter"
             onKeyDown={(e, opts) => {
                 console.log('onKeyDown', opts);
             }} /><br/><br/>
 
-        <Input.TextArea aria-label="auto height" autoHeight={{ minRows: 2, maxRows: 6 }} />
+        <Input.TextArea aria-label="auto height" autoHeight={{ minRows: 2, maxRows: 6 }} placeholder="try input Enter"/>
     </div>
     , mountNode);
 ````

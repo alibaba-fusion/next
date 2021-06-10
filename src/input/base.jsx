@@ -110,7 +110,7 @@ class Base extends React.Component {
         size: PropTypes.oneOf(['small', 'medium', 'large']),
         /**
          * 开启后会过滤输入法中间字母状态，文字输入完成后才会触发 onChange
-         * @version 1.24
+         * @version 1.23
          */
         composition: PropTypes.bool,
         onCompositionStart: PropTypes.func,
