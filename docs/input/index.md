@@ -14,6 +14,7 @@
 表单输入，一般配合 Form 使用。 
 
 -   Input 不支持 Number 类型数字，如有需要使用 NumberPicker 支持数字选择
+-   `1.23` 版本新增了 API `composition` , 开启后可以在输入法结束后再触发 onChange
 
 ## API
 
@@ -41,7 +42,7 @@
 | state           | 状态<br><br>**可选值**:<br>'error'(错误)<br>'loading'(校验中)<br>'success'(成功)<br>'warning'(警告)                                                                                                                                        | Enum             | -         |      |
 | isPreview       | 是否为预览态                                                                                                                                                                                                                       | Boolean          | false     |      |
 | renderPreview   | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                                                                                                            | Function         | -         |      |
-| composition     | 开启后会过滤输入法中间字母状态，文字输入完成后才会触发 onChange                                                                                                                                                                                         | Boolean          | false     | 1.24 |
+| composition     | 开启后会过滤输入法中间字母状态，文字输入完成后才会触发 onChange                                                                                                                                                                                         | Boolean          | false     | 1.23 |
 | label           | label                                                                                                                                                                                                                        | ReactNode        | -         |      |
 | hasClear        | 是否出现clear按钮                                                                                                                                                                                                                  | Boolean          | -         |      |
 | hasBorder       | 是否有边框                                                                                                                                                                                                                        | Boolean          | true      |      |
@@ -80,7 +81,7 @@
 | state          | 状态<br><br>**可选值**:<br>'error'(错误)<br>'warning'                                                                                                                                                                               | Enum           | -         |      |
 | isPreview      | 是否为预览态                                                                                                                                                                                                                       | Boolean        | false     |      |
 | renderPreview  | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                                                                                                            | Function       | -         |      |
-| composition    | 开启后会过滤输入法中间字母状态，文字输入完成后才会触发 onChange                                                                                                                                                                                         | Boolean        | false     | 1.24 |
+| composition    | 开启后会过滤输入法中间字母状态，文字输入完成后才会触发 onChange                                                                                                                                                                                         | Boolean        | false     | 1.23 |
 | hasBorder      | 是否有边框                                                                                                                                                                                                                        | Boolean        | true      |      |
 | autoHeight     | 自动高度 true / {minRows: 2, maxRows: 4}                                                                                                                                                                                         | Boolean/Object | false     |      |
 | rows           | 多行文本框高度 <br />(不要直接用height设置多行文本框的高度, ie9 10会有兼容性问题)                                                                                                                                                                         | Number         | 4         |      |

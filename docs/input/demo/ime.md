@@ -31,8 +31,8 @@ function Demo(props) {
     }
 
     return <div>
-        <Input value={value} onChange={handleChange} composition /> <br/><br/>
-        <Input.TextArea value={value} onChange={handleChange} composition />
+        <Input value={value} onChange={handleChange} composition placeholder="尝试输入中文" /> <br/><br/>
+        <Input.TextArea value={value} onChange={handleChange} composition placeholder="尝试输入中文" />
     </div>
 }
 
