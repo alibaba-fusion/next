@@ -15,7 +15,7 @@ import '../../src/tree/style.js';
 const TreeNode = Tree.Node;
 const { hasClass, getOffset } = dom;
 
-const dataSource = freeze([
+const dataSource = [
     {
         label: '服装',
         key: '1',
@@ -56,7 +56,7 @@ const dataSource = freeze([
             },
         ],
     },
-]);
+];
 const _k2n = createMap(dataSource);
 
 class ExpandDemo extends Component {
@@ -798,7 +798,6 @@ describe('Tree', () => {
     });
 
     it('should support icon', () => {
-
         ReactDOM.render(<Tree defaultExpandAll dataSource={dataSource} />, mountNode);
 
         assert(document.querySelectorAll('.next-tree-node-label .next-icon').length === 2);
@@ -1020,6 +1019,10 @@ describe('Tree', () => {
         }, 100);
     });
 
+    it('should support immutable', () => {
+        assertTree({ dataSource: freeze(dataSource), immutable: true }, mountNode);
+    });
+
     it('should support rtl', () => {
         ReactDOM.render(
             <Tree
@@ -1057,14 +1060,14 @@ function createDataSource(level = 2, count = 3) {
         key: '0-0',
     });
     drill(dataSource, level, count);
-    return freeze(dataSource);
+    return dataSource;
 }
 
 function freeze(dataSource) {
     return dataSource.map(item => {
         const { children } = item;
         children && freeze(children);
-        return Object.freeze(item);
+        return Object.freeze({ ...item });
     });
 }
 

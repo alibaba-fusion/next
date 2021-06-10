@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import Menu from '../menu';
 import Icon from '../icon';
 import Balloon from '../balloon';
@@ -28,18 +29,14 @@ class Item extends Component {
     static contextTypes = {
         prefix: PropTypes.string,
         iconOnly: PropTypes.bool,
+        iconOnlyWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         hasTooltip: PropTypes.bool,
     };
 
     render() {
-        const { prefix, iconOnly, hasTooltip } = this.context;
+        const { prefix, iconOnly, iconOnlyWidth, hasTooltip } = this.context;
         const { icon, children, ...others } = this.props;
-        const iconEl =
-            typeof icon === 'string' ? (
-                <Icon className={`${prefix}nav-icon`} type={icon} />
-            ) : (
-                icon
-            );
+        const iconEl = typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;
 
         let title;
 
@@ -47,10 +44,12 @@ class Item extends Component {
             title = children;
         }
 
+        const showChildren = !iconOnly || (iconOnly && !iconOnlyWidth);
+
         const item = (
             <Menu.Item title={title} {...others}>
                 {iconEl}
-                {children}
+                {showChildren && children}
             </Menu.Item>
         );
 

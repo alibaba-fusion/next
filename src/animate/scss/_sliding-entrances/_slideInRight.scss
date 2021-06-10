@@ -1,7 +1,7 @@
 @include keyframes(slideInRight) {
     0% {
         opacity: 0;
-        @include transform(translateX(2000px));
+        @include transform(translateX(100%));
     }
     100% {
         opacity: 1;
@@ -9,7 +9,7 @@
     }
 }
 
-@mixin slideInRight($count: $countDefault, $duration: $durationDefault, $delay: $delayDefault, $function: $ease-in-out-quint, $fill: $fillDefault, $visibility: $visibilityDefault) {
+@mixin slideInRight($count: $countDefault, $duration: $durationBigDefault, $delay: $delayDefault, $function: $motion-default, $fill: $fillDefault, $visibility: $visibilityDefault) {
     @include animation-name(slideInRight);
     @include count($count);
     @include duration($duration);

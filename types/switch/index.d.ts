@@ -40,6 +40,7 @@ export interface SwitchProps extends HTMLAttributesWeak, CommonProps {
      * 开关当前的值(针对受控组件)
      */
     checked?: boolean;
+    autoWidth?: boolean;
 
     /**
      * 开关默认值 (针对非受控组件)

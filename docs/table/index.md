@@ -26,6 +26,29 @@
 
 建议用户在新的页面中使用 `Table.StickyLock`，如果没有深度的样式定制（例如选择到 `.next-table-lock-left` 这一层级）,也可以把现有的 `Table` 升级到 `Table.StickyLock`
 
+## FAQ
+
+### `rowSelection` 模式，选择任意一个都是全选？
+
+给定的数据源中的属性需要有一个唯一标示该条数据的主键，默认值为id，可通过 `primaryKey` 更改 e.g.`<Table primaryKey='myId'></Table>`。
+
+### `rowSelection` 模式，如何设置默认选中/禁用？
+
+通过受控模式，设置 `rowSelection.selectedRowKeys` 可以默认选中选中；通过 `rowSelection.getProps` 可以自定义每一行checkbox的props，具体可搜索demo`选择可控`。
+
+### `rowSelection` 模式，如何屏蔽全选按钮/自定义全选按钮?
+
+通过`rowSelection.titleProps` 可以自定义选择列的表头的props，可通过 `style: {display: 'none'}` 屏蔽全选按钮；此外还有 `rowSelection.titleAddons` `rowSelection.columnProps`等属性，具体用法可搜索demo `可选择`。
+
+### 支持行的双击事件/设置每一行的样式？处理整行点击？
+
+通过 `rowProps` 属性，重写行支持的原生属性，比如`className style onDoubleClick`等；通过 `onRowClick` 处理整行点击。
+
+### 已知问题
+
+-   分组 Table 不支持在 Hover 状态和选中状态下显示背景色，无法合并单元格；
+-   分组 Table ，`<Table fixedHeader/>` 没有效果，header不会固定， `<Table fixedHeader stickyHeader />` 才有效果，header可以sticky到页面上
+
 ## 如何使用
 
 基本的 Table 包含行和列，使用 Table.Column 来定义列的信息，使用传入的 dataSource 属性数据来创建行。
@@ -138,22 +161,23 @@ ReactDOM.render(
 
 ### Table.Column
 
-| 参数              | 说明                                                                                                                                                                                                          | 类型                              | 默认值                               |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | --------------------------------- |
-| dataIndex       | 指定列对应的字段，支持`a.b`形式的快速取值                                                                                                                                                                                     | String                          | -                                 |
-| cell            | 行渲染的逻辑<br>value, rowIndex, record, context四个属性只可读不可被更改<br>Function(value, index, record) => Element                                                                                                         | ReactElement/ReactNode/Function | value => value                    |
-| title           | 表头显示的内容                                                                                                                                                                                                     | ReactElement/ReactNode/Function | -                                 |
-| htmlTitle       | 写到 header 单元格上的title属性                                                                                                                                                                                      | String                          | -                                 |
-| sortable        | 是否支持排序                                                                                                                                                                                                      | Boolean                         | -                                 |
-| width           | 列宽，注意在锁列的情况下一定需要配置宽度                                                                                                                                                                                        | Number/String                   | -                                 |
-| align           | 单元格的对齐方式<br><br>**可选值**:<br>'left', 'center', 'right'                                                                                                                                                       | Enum                            | -                                 |
-| alignHeader     | 单元格标题的对齐方式, 不配置默认读取align值<br><br>**可选值**:<br>'left', 'center', 'right'                                                                                                                                      | Enum                            | -                                 |
-| filters         | 生成标题过滤的菜单, 格式为`[{label:'xxx', value:'xxx'}]`                                                                                                                                                                | Array&lt;Object>                | -                                 |
-| filterMode      | 过滤的模式是单选还是多选<br><br>**可选值**:<br>'single', 'multiple'                                                                                                                                                        | Enum                            | 'multiple'                        |
-| filterMenuProps | filter 模式下传递给 Menu 菜单的属性， 默认继承 `Menu` 组件的API<br><br>**属性**:<br>_subMenuSelectable_: {Boolean} 默认为`false` subMenu是否可选择<br>_isSelectIconRight_: {Boolean} 默认为`false` 是否将选中图标居右。注意：SubMenu 上的选中图标一直居左，不受此API控制 | Object                          | {     subMenuSelectable: false, } |
-| lock            | 是否支持锁列,可选值为`left`,`right`, `true`                                                                                                                                                                           | Boolean/String                  | -                                 |
-| resizable       | 是否支持列宽调整, 当该值设为true，table的布局方式会修改为fixed.                                                                                                                                                                    | Boolean                         | false                             |
-| colSpan         | header cell 横跨的格数，设置为0表示不出现此 th                                                                                                                                                                             | Number                          | -                                 |
+| 参数              | 说明                                                                                                                                                                                                          | 类型                              | 默认值                               | 版本支持 |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | --------------------------------- | ---- |
+| dataIndex       | 指定列对应的字段，支持`a.b`形式的快速取值                                                                                                                                                                                     | String                          | -                                 |      |
+| cell            | 行渲染的逻辑<br>value, rowIndex, record, context四个属性只可读不可被更改<br>Function(value, index, record) => Element                                                                                                         | ReactElement/ReactNode/Function | value => value                    |      |
+| title           | 表头显示的内容                                                                                                                                                                                                     | ReactElement/ReactNode/Function | -                                 |      |
+| htmlTitle       | 写到 header 单元格上的title属性                                                                                                                                                                                      | String                          | -                                 |      |
+| sortable        | 是否支持排序                                                                                                                                                                                                      | Boolean                         | -                                 |      |
+| sortDirections  | 排序的方向。<br>设置 ['desc', 'asc']，表示降序、升序<br>设置 ['desc', 'asc', 'default']，表示表示降序、升序、不排序                                                                                                                         | Array&lt;Enum>                  | -                                 | 1.23 |
+| width           | 列宽，注意在锁列的情况下一定需要配置宽度                                                                                                                                                                                        | Number/String                   | -                                 |      |
+| align           | 单元格的对齐方式<br><br>**可选值**:<br>'left', 'center', 'right'                                                                                                                                                       | Enum                            | -                                 |      |
+| alignHeader     | 单元格标题的对齐方式, 不配置默认读取align值<br><br>**可选值**:<br>'left', 'center', 'right'                                                                                                                                      | Enum                            | -                                 |      |
+| filters         | 生成标题过滤的菜单, 格式为`[{label:'xxx', value:'xxx'}]`                                                                                                                                                                | Array&lt;Object>                | -                                 |      |
+| filterMode      | 过滤的模式是单选还是多选<br><br>**可选值**:<br>'single', 'multiple'                                                                                                                                                        | Enum                            | 'multiple'                        |      |
+| filterMenuProps | filter 模式下传递给 Menu 菜单的属性， 默认继承 `Menu` 组件的API<br><br>**属性**:<br>_subMenuSelectable_: {Boolean} 默认为`false` subMenu是否可选择<br>_isSelectIconRight_: {Boolean} 默认为`false` 是否将选中图标居右。注意：SubMenu 上的选中图标一直居左，不受此API控制 | Object                          | {     subMenuSelectable: false, } |      |
+| lock            | 是否支持锁列,可选值为`left`,`right`, `true`                                                                                                                                                                           | Boolean/String                  | -                                 |      |
+| resizable       | 是否支持列宽调整, 当该值设为true，table的布局方式会修改为fixed.                                                                                                                                                                    | Boolean                         | false                             |      |
+| colSpan         | header cell 横跨的格数，设置为0表示不出现此 th                                                                                                                                                                             | Number                          | -                                 |      |
 
 ### Table.ColumnGroup
 
@@ -175,26 +199,3 @@ ReactDOM.render(
 | 参数   | 说明     | 类型                              | 默认值      |
 | ---- | ------ | ------------------------------- | -------- |
 | cell | 行渲染的逻辑 | ReactElement/ReactNode/Function | () => '' |
-
-## FAQ
-
-### `rowSelection` 模式，选择任意一个都是全选？
-
-给定的数据源中的属性需要有一个唯一标示该条数据的主键，默认值为id，可通过 `primaryKey` 更改 e.g.`<Table primaryKey='myId'></Table>`。
-
-### `rowSelection` 模式，如何设置默认选中/禁用？
-
-通过受控模式，设置 `rowSelection.selectedRowKeys` 可以默认选中选中；通过 `rowSelection.getProps` 可以自定义每一行checkbox的props，具体可搜索demo`选择可控`。
-
-### `rowSelection` 模式，如何屏蔽全选按钮/自定义全选按钮?
-
-通过`rowSelection.titleProps` 可以自定义选择列的表头的props，可通过 `style: {display: 'none'}` 屏蔽全选按钮；此外还有 `rowSelection.titleAddons` `rowSelection.columnProps`等属性，具体用法可搜索demo `可选择`。
-
-### 支持行的双击事件/设置每一行的样式？处理整行点击？
-
-通过 `rowProps` 属性，重写行支持的原生属性，比如`className style onDoubleClick`等；通过 `onRowClick` 处理整行点击。
-
-### 已知问题
-
--   分组 Table 不支持在 Hover 状态和选中状态下显示背景色，无法合并单元格；
--   Table 锁列特性下面无法使用合并单元格功能。

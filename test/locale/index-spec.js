@@ -8,6 +8,10 @@ import TW from '../../src/locale/zh-tw';
 import VI from '../../src/locale/vi-vn';
 import IT from '../../src/locale/it-it';
 import PT from '../../src/locale/pt-pt';
+import KR from '../../src/locale/ko-kr';
+import MY from '../../src/locale/ms-my';
+import TH from '../../src/locale/th-th';
+import ID from '../../src/locale/id-id';
 
 describe('Locale', () => {
     it('should be the same keys', () => {
@@ -19,8 +23,12 @@ describe('Locale', () => {
         const viKeys = getKeys(VI);
         const itKeys = getKeys(IT);
         const ptKeys = getKeys(PT);
+        const krKeys = getKeys(KR);
+        const myKeys = getKeys(MY);
+        const thKeys = getKeys(TH);
+        const idKeys = getKeys(ID);
 
-        assert(usKeys === jpKeys && jpKeys === cnKeys && cnKeys === hkKeys && hkKeys === twKeys && twKeys === viKeys && viKeys === itKeys && itKeys ===ptKeys);
+        assert(usKeys === jpKeys && jpKeys === cnKeys && cnKeys === hkKeys && hkKeys === twKeys && twKeys === viKeys && viKeys === itKeys && itKeys === ptKeys && ptKeys === krKeys && krKeys === myKeys && myKeys === thKeys && thKeys === idKeys);
     });
 });
 

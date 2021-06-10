@@ -17,7 +17,7 @@ export default class Body extends React.Component {
         components: PropTypes.object,
         getCellProps: PropTypes.func,
         cellRef: PropTypes.func,
-        primaryKey: PropTypes.string,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         getRowProps: PropTypes.func,
         rowRef: PropTypes.func,
         dataSource: PropTypes.array,
@@ -181,7 +181,7 @@ export default class Body extends React.Component {
                     <Row
                         key={`${record[primaryKey] || (record[primaryKey] === 0 ? 0 : rowIndex)}${expanded}`}
                         {...rowProps}
-                        ref={this.getRowRef.bind(this, rowIndex)}
+                        ref={this.getRowRef.bind(this, expanded ? `${rowIndex}_expanded` : rowIndex)}
                         colGroup={colGroup}
                         rtl={rtl}
                         columns={columns}

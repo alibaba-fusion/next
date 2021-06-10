@@ -91,7 +91,11 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonP
 }
 
 export class Tooltip extends React.Component<TooltipProps, any> {}
-export interface BalloonProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+
+interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
+    title?: any;
+}
+export interface BalloonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义类名
      */
@@ -106,6 +110,8 @@ export interface BalloonProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 浮层的内容
      */
     children?: any;
+
+    title?: React.ReactNode;
 
     /**
      * 样式类型

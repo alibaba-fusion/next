@@ -31,18 +31,24 @@ class Gateway extends Component {
         };
     }
 
-    static getDerivedStateFromProps(nextProps) {
-        return {
-            containerNode: getContainerNode(nextProps),
-        };
+    componentDidMount() {
+        this.updateContainer();
     }
 
-    componentDidMount() {
-        // eslint-disable-next-line
-        this.setState({
-            containerNode: getContainerNode(this.props),
-        });
+    componentDidUpdate() {
+        this.updateContainer();
     }
+
+    updateContainer = () => {
+        const containerNode = getContainerNode(this.props);
+
+        if (containerNode !== this.state.containerNode) {
+            // eslint-disable-next-line
+            this.setState({
+                containerNode,
+            });
+        }
+    };
 
     getChildNode() {
         try {

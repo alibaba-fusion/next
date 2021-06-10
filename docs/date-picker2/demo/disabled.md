@@ -1,15 +1,15 @@
-# 禁止选择某些日期
+# 禁用
 
 - order: 3
 
-可以通过 `disabledDate` 属性来禁止用户选择或输入某些特定日期。
+选择框的不可用状态。你也可以通过数组单独禁用 `RangePicker` 的其中一项。
 
 :::lang=en-us
 # Disable dates
 
 - order: 3
 
-Disable date cells by `disabledDate`.
+A disabled state of the `DatePicker`. You can also set as array to disable one of input.
 
 :::
 
@@ -17,30 +17,12 @@ Disable date cells by `disabledDate`.
 
 ````jsx
 import { DatePicker2 } from '@alifd/next';
-import moment from 'moment';
 
-const { RangePicker, MonthPicker, YearPicker } = DatePicker2;
-const currentDate = moment();
-
-// Disable all dates before today
-const disabledDate = function (date, mode) {
-    switch (mode) {
-        case 'date':
-            return date.valueOf() <= currentDate.valueOf();
-        case 'year':
-            return date.year() < currentDate.year();
-        case 'month':
-            return date.year() * 100 + date.month() < currentDate.year() * 100 + currentDate.month();
-        default: return false;
-    }
-};
+const { RangePicker } = DatePicker2;
 
 ReactDOM.render(<div>
-    <DatePicker2 disabledDate={disabledDate} onChange={val => console.log(val)} /><br /><br />
-    <MonthPicker disabledDate={disabledDate} onChange={val => console.log(val)} /><br /><br />
-    <YearPicker disabledDate={disabledDate} onChange={val => console.log(val)} /><br /><br />
-    <RangePicker disabledDate={disabledDate} onChange={val => console.log(val)} /><br /><br />
-    <RangePicker mode='month' disabledDate={disabledDate} onChange={val => console.log(val)} /><br /><br />
-    <RangePicker mode='year' disabledDate={disabledDate} onChange={val => console.log(val)} />
+    <DatePicker2 disabled defaultValue="2021-02-12" /><br /><br />
+    <RangePicker disabled defaultValue={['2021-01-12', '2021-02-12']} /><br /><br />
+    <RangePicker disabled={[false, true]} defaultValue={['2021-01-12', '2021-02-12']} /><br /><br />
 </div>, mountNode);
 ````

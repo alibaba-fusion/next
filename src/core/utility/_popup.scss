@@ -9,6 +9,13 @@
 /// @classPrefix {prefix}-popup
 ////
 
+/// popup spacing (l, r)
+/// @semantic 左右留白
+$popup-spacing-lr: $s-zero !default;
+
+/// popup spacing (t, b)
+/// @semantic 上下留白
+$popup-spacing-tb: $s-zero !default;
 
 /// border width
 /// @semantic 边框宽度

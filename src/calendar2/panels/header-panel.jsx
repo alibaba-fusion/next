@@ -60,7 +60,6 @@ class HeaderPanel extends React.PureComponent {
         return [
             <Button
                 text
-                iconSize="xxs"
                 className={`${prefixCls}-btn  ${prefixCls}-left-btn`}
                 onClick={() => this.handleClick(value, { num, unit, isSuper, isNext: false })}
                 key={`prev-btn-${unit}`}
@@ -69,7 +68,6 @@ class HeaderPanel extends React.PureComponent {
             </Button>,
             <Button
                 text
-                iconSize="xxs"
                 className={`${prefixCls}-btn ${prefixCls}-right-btn`}
                 onClick={() => this.handleClick(value, { num, unit, isSuper, isNext: true })}
                 key={`next-btn-${unit}`}

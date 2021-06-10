@@ -174,19 +174,24 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      * 是否跟随滚动
      */
     followTrigger?: boolean;
+    
     /**
      * 是否为预览态
      */
     isPreview?: boolean;
+    
     /**
      * 预览态模式下渲染的内容
      * @param {Array<data>} value 选择值 { label: , value:}
      */
     renderPreview?: (data: string | Array<any>, props: any | Array<any>) => React.ReactNode;
+  
     /**
      * 是否开启虚拟滚动
      */
     useVirtual?: boolean;
+  
+    immutable?: boolean;
 }
 
 export default class TreeSelect extends React.Component<TreeSelectProps, any> {}

@@ -262,7 +262,7 @@ class SplitButton extends React.Component {
         });
 
         const trigger = (
-            <Button {...triggerProps} {...sharedBtnProps} className={triggerClassNames}>
+            <Button {...sharedBtnProps} {...triggerProps} className={triggerClassNames}>
                 <Icon type="arrow-down" className={iconCls} />
             </Button>
         );
@@ -293,16 +293,18 @@ class SplitButton extends React.Component {
                     className={popupClassName}
                     onOpen={this.onPopupOpen}
                 >
-                    <Menu
-                        {...menuProps}
-                        selectMode={selectMode}
-                        selectedKeys={state.selectedKeys}
-                        onSelect={this.selectMenuItem}
-                        onItemClick={this.clickMenuItem}
-                        ref={this._menuRefHandler}
-                    >
-                        {children}
-                    </Menu>
+                    <div className={`${prefix}split-btn-spacing-tb`}>
+                        <Menu
+                            {...menuProps}
+                            selectMode={selectMode}
+                            selectedKeys={state.selectedKeys}
+                            onSelect={this.selectMenuItem}
+                            onItemClick={this.clickMenuItem}
+                            ref={this._menuRefHandler}
+                        >
+                            {children}
+                        </Menu>
+                    </div>
                 </Popup>
             </Button.Group>
         );

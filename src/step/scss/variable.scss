@@ -21,7 +21,7 @@ $step-progress-prefix: '.' + $css-prefix + 'progress';
 /// height
 /// @namespace size/bounding
 $step-arrow-item-height: $s-8 !default;
-$step-arrow-item-border-width: calc(#{$step-arrow-item-height} / 2);
+$step-arrow-item-border-width: calc(#{$step-arrow-item-height} / 2) !default;
 
 /// font size
 /// @namespace size/text

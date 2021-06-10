@@ -335,14 +335,21 @@ class Table extends React.Component {
         getTableInstance: PropTypes.func,
         getTableInstanceForFixed: PropTypes.func,
         getTableInstanceForVirtual: PropTypes.func,
+        getTableInstanceForExpand: PropTypes.func,
     };
 
     constructor(props, context) {
         super(props, context);
-        const { getTableInstance, getTableInstanceForVirtual, getTableInstanceForFixed } = this.context;
+        const {
+            getTableInstance,
+            getTableInstanceForVirtual,
+            getTableInstanceForFixed,
+            getTableInstanceForExpand,
+        } = this.context;
         getTableInstance && getTableInstance(props.lockType, this);
         getTableInstanceForFixed && getTableInstanceForFixed(props.lockType, this);
         getTableInstanceForVirtual && getTableInstanceForVirtual(props.lockType, this);
+        getTableInstanceForExpand && getTableInstanceForExpand(this);
         this.notRenderCellIndex = [];
     }
 

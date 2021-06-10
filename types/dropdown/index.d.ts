@@ -165,6 +165,11 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
     defaultVisible?: boolean;
 
     /**
+     * 开启后，默认点击children弹窗就收起 0.x 2.x中默认是true
+     */
+    autoClose?: boolean;
+
+    /**
      * 弹层显示或隐藏时触发的回调函数
      */
     onVisibleChange?: (visible: boolean, type: string, e: {}) => void;

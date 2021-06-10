@@ -533,6 +533,47 @@ describe('Issue', () => {
         document.body.removeChild(div);
     });
 
+    it('should sortDirections work', () => {
+        class App extends React.Component {
+            render() {
+                return (
+                    <Table dataSource={generateDataSource(10)} scrollToRow={20}>
+                        <Table.Column
+                            title="Id1"
+                            dataIndex="id"
+                            width={100}
+                            sortable
+                            sortDirections={['desc', 'asc', 'default']}
+                        />
+                        <Table.Column
+                            title="Index"
+                            dataIndex="index"
+                            width={200}
+                        />
+                    </Table>
+                );
+            }
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        ReactDOM.render(<App />, div);
+
+        const sortBtn = div.querySelectorAll(
+            '.next-table-header .next-table-sort'
+        );
+        console.log(sortBtn)
+        sortBtn[0].click();
+        assert(div.querySelectorAll('a.current .next-icon-descending'));
+        sortBtn[0].click();
+        assert(div.querySelectorAll('a.current .next-icon-ascending'));
+        sortBtn[0].click();
+        assert(div.querySelectorAll('a.current').length === 0);
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
+
     it('sort should have only one empty when datasorce=[] && enough width', () => {
         class App extends React.Component {
             render() {
@@ -904,6 +945,156 @@ describe('Issue', () => {
                 document.body.removeChild(container);
                 done();
             }, 10);
+        });
+    });
+
+    it('should work with expanded virtual table, fix #2646', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = (n) => {
+            const result = [];
+            for (let i = 0; i < n; i++) {
+                result.push({
+                    title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
+                    id: 100306660940 + i,
+                    time: 2000 + i
+                });
+            }
+            return result;
+        };
+        const render = (value, index, record) => {
+            return <a href="javascript:;">Remove({record.id})</a>;
+        };
+
+        class App extends React.Component {
+            state = {
+                scrollToRow: 20
+            }
+            onBodyScroll = (start) => {
+                this.setState({
+                    scrollToRow: start
+                });
+            }
+            render() {
+                return (
+                <Table
+                    dataSource={dataSource(200)}
+                    maxBodyHeight={400}
+                    useVirtual
+                    scrollToRow={this.state.scrollToRow}
+                    onBodyScroll={this.onBodyScroll}
+                    expandedRowRender={() => (<div>adddd</div>)}
+                >
+                    <Table.Column title="Id1" dataIndex="id" width={100}/>
+                    <Table.Column title="Index" dataIndex="index" width={200}/>
+                    <Table.Column title="Time" dataIndex="time" width={200}/>
+                    <Table.Column title="Time" dataIndex="time" width={200}/>
+                    <Table.Column title="Time" dataIndex="time" width={200} lock="right"/>
+                    <Table.Column cell={render} width={200} />
+                </Table>
+                );
+            }
+        }
+
+
+        ReactDOM.render(<App />, container, function() {
+            setTimeout(() => {
+                const trCount = container.querySelectorAll('.next-table .next-table-body table tr.next-table-row').length;
+                assert(trCount > 10);
+                assert(trCount < 100);
+
+                const ctrl = container.querySelectorAll('.next-table .next-table-body table tr.next-table-row .next-table-expanded-ctrl')[0];
+                ctrl.click();
+
+                assert(container.querySelectorAll('.next-table .next-table-body table tr.next-table-expanded-row'));
+
+                ReactDOM.unmountComponentAtNode(container);
+                document.body.removeChild(container);
+                done();
+            }, 10);
+        });
+    });
+    it('should set expanded row\'s  width after stickylock table toggle loading, close #3000', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = () => {
+            const result = [];
+            for (let i = 0; i < 5; i++) {
+                result.push({
+                    title: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`,
+                    id: 100306660940 + i,
+                    time: 2000 + i,
+                    expandable:  i !== 2
+                });
+            }
+            return result;
+        },
+        expandedRowRender = (record) => record.title,
+        render = (value, index, record) => {
+            return <a>Remove({record.id})</a>;
+        };
+
+        class App extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    dataSource: dataSource(),
+                    loading: false,
+                };
+            }
+
+            toggleLoading = () => {
+                this.setState({
+                    loading: !this.state.loading
+                })
+            }
+
+            render() {
+                return (<div style={{width: 500}}>
+                    <button id="sticky-expanded-row-width" onClick={this.toggleLoading}>Toggle Loading</button>
+                    <br /><br />
+                    <Table.StickyLock
+                        loading={this.state.loading}
+                        expandedIndexSimulate
+                        openRowKeys={[100306660940, 100306660941]}
+                        dataSource={this.state.dataSource}
+                        // expandedRowIndent 仅在IE下才会生效，非IE模式下为[0,0]且不可修改
+                        expandedRowIndent={[2, 0]}
+                        expandedRowRender={expandedRowRender}
+                    >
+                        <Table.Column title="Id" dataIndex="id" lock width={300}/>
+                        <Table.Column title="Title" dataIndex="title" width={300}/>
+                        <Table.Column title="Time" dataIndex="time" width={300}/>
+                        <Table.Column cell={render} width={300}/>
+                    </Table.StickyLock>
+                </div>);
+            }
+        }
+
+
+        ReactDOM.render(<App />, container, function() {
+            setTimeout(() => {
+                const expandedRows = container.querySelectorAll('.next-table-expanded-row .next-table-cell-wrapper');
+                expandedRows.forEach(row => {
+                    assert(row.style.width === '499px');
+                })
+
+                const btn = container.querySelector('#sticky-expanded-row-width');
+                btn.click();
+                setTimeout(() => {
+                    btn.click();
+
+                    expandedRows.forEach(row => {
+                        assert(row.style.width === '499px');
+                    });
+
+                    ReactDOM.unmountComponentAtNode(container);
+                    document.body.removeChild(container);
+                    done();
+                }, 100)
+            }, 100);
         });
     });
 });

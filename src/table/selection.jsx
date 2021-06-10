@@ -46,7 +46,7 @@ export default function selection(BaseComponent) {
              * @property {Function} titleProps `Function()=>Object` 选择列 表头的props，仅在 `multiple` 模式下生效
              */
             rowSelection: PropTypes.object,
-            primaryKey: PropTypes.string,
+            primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
             dataSource: PropTypes.array,
             entireDataSource: PropTypes.array,
             ...BaseComponent.propTypes,

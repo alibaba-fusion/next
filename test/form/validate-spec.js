@@ -66,6 +66,9 @@ describe('Submit', () => {
                 <FormItem required>
                     <Input name="first" />
                 </FormItem>
+                <FormItem required>
+                   {values => <Input name="second" /> }
+                </FormItem>
                 <Submit validate onClick={onClick}>
                     click
                 </Submit>
@@ -82,6 +85,18 @@ describe('Submit', () => {
                 .first()
                 .text() === 'first 是必填字段'
         );
+
+        wrapper
+        .find('input#second')
+        .simulate('change', { target: { value: '' } });
+        wrapper.update();
+        assert(
+            wrapper
+                .find('.next-form-item-help')
+                .last()
+                .text() === 'second 是必填字段'
+        );
+
         wrapper.find('button').simulate('click');
     });
 

@@ -28,7 +28,6 @@ export class QuarterPicker extends React.Component<DatePickerProps, any> {
 export class RangePicker extends React.Component<RangePickerProps, any> {
     type: 'range';
 }
-
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
@@ -62,6 +61,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     inputProps?: InputProps;
     inputReadOnly?: boolean;
     hasClear?: boolean;
+    label?: React.ReactNode;
     placeholder?: string;
 
     visible?: boolean;

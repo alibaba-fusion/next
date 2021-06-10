@@ -20,9 +20,9 @@ import { Switch } from '@alifd/next';
 
 ReactDOM.render(
     <div>
-        <Switch />
+        <Switch autoWidth/>
         <br/>
-        <Switch size="small"/>
+        <Switch autoWidth size="small"/>
     </div>,
     mountNode
 );

@@ -179,11 +179,13 @@ $nav-icononly-width: 58px;
             }
         }
 
-        &.#{$css-prefix}left #{$nav-prefix}-item:before {
+        &.#{$css-prefix}left #{$nav-prefix}-item:before,
+        &.#{$css-prefix}top #{$nav-prefix}-item:before {
             left: calc(0px - #{$popup-local-border-width});
         }
 
-        &.#{$css-prefix}right #{$nav-prefix}-item:before {
+        &.#{$css-prefix}right #{$nav-prefix}-item:before,
+        &.#{$css-prefix}bottom #{$nav-prefix}-item:before {
             right: calc(0px - #{$popup-local-border-width});
         }
 
@@ -216,7 +218,10 @@ $nav-icononly-width: 58px;
             $nav-primary-item-opened-bg-color,
             $nav-primary-item-opened-text-color,
             $nav-primary-group-text-color,
-            $nav-primary-group-text-style
+            $nav-primary-group-text-style,
+            $nav-primary-item-childselected-bg-color,
+            $nav-primary-item-childselected-text-color,
+            $nav-primary-item-childselected-text-style,
         );
         @include sub-nav-statement(
             $nav-primary-sub-nav-text-color,
@@ -252,7 +257,10 @@ $nav-icononly-width: 58px;
             $nav-secondary-item-opened-bg-color,
             $nav-secondary-item-opened-text-color,
             $nav-secondary-group-text-color,
-            $nav-secondary-group-text-style
+            $nav-secondary-group-text-style,
+            $nav-secondary-item-childselected-bg-color,
+            $nav-secondary-item-childselected-text-color,
+            $nav-secondary-item-childselected-text-style,
         );
         @include sub-nav-statement(
             $nav-secondary-sub-nav-text-color,
@@ -284,7 +292,10 @@ $nav-icononly-width: 58px;
             $nav-normal-item-opened-bg-color,
             $nav-normal-item-opened-text-color,
             $nav-normal-group-text-color,
-            $nav-normal-group-text-style
+            $nav-normal-group-text-style,
+            $nav-normal-item-childselected-bg-color,
+            $nav-normal-item-childselected-text-color,
+            $nav-normal-item-childselected-text-style,
         );
         @include sub-nav-statement(
             $nav-normal-sub-nav-text-color,
@@ -328,7 +339,10 @@ $nav-icononly-width: 58px;
             $nav-line-item-opened-bg-color,
             $nav-line-item-opened-text-color,
             $nav-line-group-text-color,
-            $nav-line-group-text-style
+            $nav-line-group-text-style,
+            $nav-line-item-childselected-bg-color,
+            $nav-line-item-childselected-text-color,
+            $nav-line-item-childselected-text-style,
         );
         @include sub-nav-statement(
             $nav-line-sub-nav-text-color,
@@ -343,6 +357,10 @@ $nav-icononly-width: 58px;
     }
 
     &.#{$css-prefix}icon-only {
+        &.#{$css-prefix}custom-icon-only-width {
+            text-align: center;
+        }
+
         #{$menu-prefix}-item-inner {
             text-overflow: clip;
         }
@@ -366,8 +384,8 @@ $nav-icononly-width: 58px;
         #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon {
             @include icon-size(
                 $size: $nav-icon-only-font-size,
-                $marginLeft: calc((18px - #{$nav-icon-only-font-size}) / 2),
-                $marginRight: calc((18px - #{$nav-icon-only-font-size}) / 2)
+                $marginLeft: calc((#{$nav-icononly-width} - #{$nav-icon-only-font-size}) / 2 - #{$nav-ver-item-padding-lr}),
+                $marginRight: calc((#{$nav-icononly-width} - #{$nav-icon-only-font-size}) / 2 - #{$nav-ver-item-padding-lr})
             );
             transition: all $motion-duration-immediately $motion-linear;
             transform-origin: center 50%;
@@ -376,8 +394,8 @@ $nav-icononly-width: 58px;
         #{$nav-prefix}-item.#{$css-prefix}opened #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon-arrow-down {
             @include icon-size(
                 $size: $nav-icon-only-font-size,
-                $marginLeft: calc((18px - #{$nav-icon-only-font-size}) / 2),
-                $marginRight: calc((18px - #{$nav-icon-only-font-size}) / 2),
+                $marginLeft: calc((#{$nav-icononly-width} - #{$nav-icon-only-font-size}) / 2 - #{$nav-ver-item-padding-lr}),
+                $marginRight: calc((#{$nav-icononly-width} - #{$nav-icon-only-font-size}) / 2 - #{$nav-ver-item-padding-lr}),
                 $transform: rotate(180deg)
             );
         }

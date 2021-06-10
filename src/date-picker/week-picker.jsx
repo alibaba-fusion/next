@@ -161,7 +161,7 @@ class WeekPicker extends Component {
     static defaultProps = {
         prefix: 'next-',
         rtl: false,
-        format: 'GGGG-wo',
+        format: 'GGGG-Wo',
         size: 'medium',
         disabledDate: () => false,
         footerRender: () => null,

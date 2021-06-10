@@ -48,28 +48,33 @@ const isSamePanel = (a, b, mode) => {
     }
 };
 
-const getPanelValue = ({ mode, inputType, value, showTime }, oldPanelValue) => {
-    let panelValue = datejs(oldPanelValue);
+// 计算 面板日期
+const getPanelValue = ({ mode, value, inputType, showTime }, defaultValue) => {
+    const [begin, end] = value;
+    const { BEGIN, END } = DATE_INPUT_TYPE;
 
-    if (value && inputType !== null && value[inputType]) {
-        const [begin, end] = value;
+    let _inputType = inputType;
+    const otherType = inputType === BEGIN ? END : BEGIN;
 
-        panelValue = value[inputType];
+    if (!value[inputType] && value[otherType]) {
+        _inputType = otherType;
+    }
 
-        if (!showTime) {
-            if (begin && end && isSamePanel(begin, end, mode)) {
-                panelValue = begin;
-            } else if (inputType === END) {
-                panelValue = operate(mode, panelValue, 'subtract');
-            }
+    let panelValue = value[_inputType] || datejs(defaultValue);
+
+    // 不显示时间 所以是双日期面板模式
+    if (!showTime) {
+        // 如果开始时间结束时间可以在一个面板中显示
+        if (begin && end && isSamePanel(begin, end, mode)) {
+            panelValue = begin;
+        }
+        // 当前选择的是结束时间 要回退一个时间
+        else if (_inputType === END && panelValue) {
+            panelValue = operate(mode, panelValue, 'subtract');
         }
     }
 
-    if (!(panelValue && panelValue.isValid())) {
-        panelValue = datejs();
-    }
-
-    return panelValue;
+    return panelValue && panelValue.isValid() ? panelValue : datejs();
 };
 
 class RangePanel extends React.Component {
@@ -98,20 +103,21 @@ class RangePanel extends React.Component {
     constructor(props) {
         super(props);
 
-        const { mode, value, timePanelProps = {} } = props;
+        const { mode, defaultPanelValue, timePanelProps = {} } = props;
 
-        let timeValue = (value && [...value]) || timePanelProps.defaultValue || [];
-
-        if (!Array.isArray(timeValue)) {
-            timeValue = [timeValue.clone(), timeValue.clone()];
+        // 默认时间
+        let defaultTime = timePanelProps.defaultValue || [];
+        if (!Array.isArray(defaultTime)) {
+            defaultTime = [defaultTime, defaultTime];
         }
+        defaultTime = defaultTime.map(t => datejs(t, timePanelProps.format || 'HH:mm:ss'));
 
         this.state = {
             mode,
-            panelValue: getPanelValue(props, props.defaultPanelValue),
+            panelValue: getPanelValue(props, defaultPanelValue),
             inputType: props.inputType,
             curHoverValue: null,
-            timeValue,
+            defaultTime,
         };
     }
 
@@ -178,23 +184,24 @@ class RangePanel extends React.Component {
     handleSelect = (v, fromTimeChange) => {
         const { value, inputType, resetTime } = this.props;
         const otherType = switchInputType(inputType);
-        let [begin, end] = value;
+        const newValue = [...value];
 
-        const timeVal = fromTimeChange || resetTime ? null : value[inputType] || value[otherType] || datejs();
+        const defaultTime = this.state.defaultTime[inputType];
+        let timeVal = null;
 
-        if (inputType === BEGIN) {
-            begin = setTime(v, timeVal);
-            if (end && end.isBefore(begin)) {
-                end = null;
-            }
-        } else {
-            end = setTime(v, timeVal);
-            if (begin && begin.isAfter(end)) {
-                begin = null;
-            }
+        // 如果不是选择时间面板触发的时间改变或不需要重置时间
+        // 则需要设置时间值，优先级如下：
+        // - 目前这个日期时间
+        // - 默认时间
+        // - 另一日期时间
+        // - 当前时间
+        if (!fromTimeChange && !resetTime) {
+            timeVal = value[inputType] || defaultTime || value[otherType] || datejs();
         }
 
-        func.invoke(this.props, 'onSelect', [[begin, end]]);
+        newValue[inputType === BEGIN ? 0 : 1] = setTime(v, timeVal);
+
+        func.invoke(this.props, 'onSelect', [newValue]);
     };
 
     handlePanelChange = (v, mode, idx) => {
@@ -294,6 +301,7 @@ class RangePanel extends React.Component {
         let rangeClassName;
         if (!this.hasModeChanged) {
             const edgeState = this.handleEdgeState(value, mode);
+            const isIllegal = end && begin && begin.isAfter(end);
 
             rangeClassName =
                 mode === WEEK
@@ -304,8 +312,10 @@ class RangePanel extends React.Component {
                     : {
                           [`${prefixCls}-range-begin`]: state === SELECTED_BEGIN,
                           [`${prefixCls}-range-end`]: state === SELECTED_END,
-                          [`${prefixCls}-range-begin-single`]: state >= SELECTED && (!end || end.isSame(begin, unit)),
-                          [`${prefixCls}-range-end-single`]: state >= SELECTED && (!begin || begin.isSame(end, unit)),
+                          [`${prefixCls}-range-begin-single`]:
+                              state >= SELECTED && (!end || end.isSame(begin, unit) || isIllegal),
+                          [`${prefixCls}-range-end-single`]:
+                              state >= SELECTED && (!begin || begin.isSame(end, unit) || isIllegal),
                           [`${prefixCls}-edge-begin`]: edgeState === 1,
                           [`${prefixCls}-edge-end`]: edgeState === 2,
                       };
@@ -332,6 +342,7 @@ class RangePanel extends React.Component {
             [`${prefix}range-picker2-panel-single`]: this.hasModeChanged,
         });
 
+        // 禁用时间
         let _disabledTime;
         if (showTime && !this.hasModeChanged && disabledTime) {
             _disabledTime = typeof disabledTime === 'function' ? disabledTime(value, inputType) : disabledTime;
@@ -349,7 +360,7 @@ class RangePanel extends React.Component {
                     <TimePanel
                         prefix={prefix}
                         inputType={inputType}
-                        value={value[inputType]}
+                        value={value[inputType] || this.state.defaultTime[inputType]}
                         onSelect={this.onTimeSelect}
                         disabledTime={disabledTime}
                         timePanelProps={{ ..._disabledTime, ...timePanelProps }}

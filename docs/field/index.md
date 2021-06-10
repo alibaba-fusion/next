@@ -252,7 +252,7 @@ init(name, options, props)
 多个rule
 ```jsx
 {
-    rules:[{required:true,trigger:'onBlur'},{pattern:/abcd/,message:'abcd不能缺'},{validator:(rule, value, callback)=>{callback('出错了')}}]
+    rules:[{required:true,trigger:'onBlur'},{pattern:/abcd/,message:'abcd不能缺',trigger:'onChange'},{validator:(rule, value, callback)=>{callback('出错了')}}]
 }
 ```
 | 参数      | 说明                                     | 类型       |  可选值 | 使用类型 |
@@ -266,7 +266,7 @@ init(name, options, props)
 | max | 最大值 | Number | | String/Number |
 | format | 对常用 pattern 的总结	 | String | url、email、tel、number | String |
 | validator | 自定义校验, 校验的结果通过用户传递给 callback 的参数决定(校验成功的时候不要忘记执行 `callback()`,否则会校验不返回): <br/> - callback() 无参数表示校验成功 <br/> - callback('this is a error msg') 有参数表示校验失败，并且参数为错误信息 | Function(rule,value,callback) | | |
-| trigger | 触发校验的事件名称 | String/Array | onChange/onBlur/... | onChange |
+| trigger | 触发校验的事件名称 | String/Array | onChange/onBlur/onFocus/... | onChange |
 | message | 出错时候信息 | String | | |
 <!-- api-extra-end -->
 

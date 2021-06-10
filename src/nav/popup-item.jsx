@@ -33,36 +33,31 @@ class PopupItem extends Component {
     static contextTypes = {
         prefix: PropTypes.string,
         iconOnly: PropTypes.bool,
+        iconOnlyWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         hasArrow: PropTypes.bool,
     };
 
     render() {
-        const { prefix, iconOnly, hasArrow } = this.context;
+        const { prefix, iconOnly, iconOnlyWidth, hasArrow } = this.context;
         const { className, icon, label, children, ...others } = this.props;
         const cls = classNames({
             [`${prefix}nav-popup-item`]: true,
             [className]: !!className,
         });
-        let iconEl =
-            typeof icon === 'string' ? (
-                <Icon className={`${prefix}nav-icon`} type={icon} />
-            ) : (
-                icon
-            );
+
+        let iconEl = typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;
         if (iconOnly) {
             if (hasArrow) {
-                iconEl = (
-                    <Icon
-                        className={`${prefix}nav-icon-only-arrow`}
-                        type="arrow-right"
-                    />
-                );
+                iconEl = <Icon className={`${prefix}nav-icon-only-arrow`} type="arrow-right" />;
             }
         }
-        const newLabel = [
-            iconEl ? cloneElement(iconEl, { key: 'icon' }) : null,
-            <span key="label">{label}</span>,
-        ];
+        const newLabel = [iconEl ? cloneElement(iconEl, { key: 'icon' }) : null];
+
+        const showLabel = !iconOnly || (iconOnly && !iconOnlyWidth);
+
+        if (showLabel) {
+            newLabel.push(<span key="label">{label}</span>);
+        }
 
         return (
             <Menu.PopupItem className={cls} label={newLabel} {...others}>

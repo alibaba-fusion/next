@@ -215,8 +215,8 @@ const preHandleChildren = props => {
 };
 
 const getData = props => {
-    const { dataSource, renderChildNodes, children = [], useVirtual } = props;
-    let data = dataSource;
+    const { dataSource, renderChildNodes, children = [], useVirtual, immutable } = props;
+    let data = immutable ? cloneDeep(dataSource) : dataSource;
 
     if ((renderChildNodes || useVirtual) && !('dataSource' in props)) {
         data = convertChildren2Data(children);
@@ -226,9 +226,9 @@ const getData = props => {
         try {
             return preHandleData(data, props);
         } catch (err) {
-            // 对immutable数据进行深拷贝处理
             if ((err.message || '').match('object is not extensible')) {
-                return preHandleData(cloneDeep(data), props);
+                // eslint-disable-next-line no-console
+                console.error(err.message, 'try to set immutable to true to allow immutable dataSource');
             } else {
                 throw err;
             }
@@ -460,6 +460,11 @@ class Tree extends Component {
          * 是否开启虚拟滚动
          */
         useVirtual: PropTypes.bool,
+        /**
+         * 是否是不可变数据
+         * @version 1.23
+         */
+        immutable: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -499,6 +504,7 @@ class Tree extends Component {
         onItemFocus: noop,
         onItemKeyDown: noop,
         useVirtual: false,
+        immutable: false,
     };
 
     constructor(props) {

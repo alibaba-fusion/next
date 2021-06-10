@@ -70,6 +70,11 @@ const options = {
                 'lib/zh-tw.js',
                 'lib/vi-vn.js',
                 'lib/it-it.js',
+                'lib/pt-pt.js',
+                'lib/ko-kr.js',
+                'lib/ms-my.js',
+                'lib/th-th.js',
+                'lib/id-id.js',
             ],
         },
         {

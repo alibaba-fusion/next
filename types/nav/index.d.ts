@@ -266,6 +266,11 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     iconOnly?: boolean;
 
     /**
+     * iconOnly 模式下的宽度（仅在 iconOnly=true 时生效）
+     */
+    iconOnlyWidth?: number | string;
+
+    /**
      * 是否显示右侧的箭头（仅在 iconOnly=true 时生效）
      */
     hasArrow?: boolean;

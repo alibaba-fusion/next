@@ -79,14 +79,32 @@ class ThemeDemo extends Component {
                         <Switch checked={false} {...props} />
                         <Switch checked={false} {...props} size="small" />
                     </DemoGroup>
-                    <DemoGroup label="On">
-                        <Switch checked {...props} />
-                        <Switch checked {...props} size="small" />
+                    <DemoGroup label="Hover Off">
+                        <Switch checked={false} className="hover" {...props} />
+                        <Switch checked={false} className="hover" {...props} size="small" />
+                    </DemoGroup>
+                    <DemoGroup label="Loading Off">
+                        <Switch checked={false} loading {...props} />
+                        <Switch checked={false} loading {...props} size="small" />
                     </DemoGroup>
                     <DemoGroup label="Disabled Off">
                         <Switch checked={false} disabled {...props} />
                         <Switch checked={false} {...props} disabled size="small" />
                     </DemoGroup>
+
+                    <DemoGroup label="On">
+                        <Switch checked {...props} />
+                        <Switch checked {...props} size="small" />
+                    </DemoGroup>
+                    <DemoGroup label="Hover On">
+                        <Switch checked {...props} className="hover" />
+                        <Switch checked {...props} className="hover" size="small" />
+                    </DemoGroup>
+                    <DemoGroup label="On & Loading">
+                        <Switch checked loading {...props} />
+                        <Switch checked loading {...props} size="small" />
+                    </DemoGroup>
+
                     <DemoGroup label="Disabled On">
                         <Switch checked disabled {...props} />
                         <Switch checked disabled {...props} size="small" />

@@ -244,12 +244,15 @@ $btn-pure-primary-color-hover: $color-white !default;
 /// @namespace statement/active
 $btn-pure-primary-color-active: $color-white !default;
 /// background
+/// @supportGradient
 /// @namespace statement/normal
 $btn-pure-primary-bg: $color-brand1-6 !default;
 /// background
+/// @supportGradient
 /// @namespace statement/hover
 $btn-pure-primary-bg-hover: $color-brand1-9 !default;
 /// background
+/// @supportGradient
 /// @namespace statement/active
 $btn-pure-primary-bg-active: $color-brand1-9 !default;
 /// border color
@@ -292,7 +295,7 @@ $btn-ghost-dark-bg: $color-transparent !default;
 /// @namespace statement/normal
 /// @type alpha
 $btn-ghost-dark-bg-opacity: 0 !default;
-$btn-ghost-dark-bg-normal: rgba($btn-ghost-dark-bg, $btn-ghost-dark-bg-opacity);
+$btn-ghost-dark-bg-normal: rgba($btn-ghost-dark-bg, $btn-ghost-dark-bg-opacity) !default;
 
 /// background
 /// @namespace statement/hover
@@ -302,7 +305,7 @@ $btn-ghost-dark-bg-hover-rgb: $color-white !default;
 /// @namespace statement/hover
 /// @type alpha
 $btn-ghost-dark-bg-hover-opacity: .8 !default;
-$btn-ghost-dark-bg-hover: rgba($btn-ghost-dark-bg-hover-rgb, $btn-ghost-dark-bg-hover-opacity);
+$btn-ghost-dark-bg-hover: rgba($btn-ghost-dark-bg-hover-rgb, $btn-ghost-dark-bg-hover-opacity) !default;
 
 /// border
 /// @namespace statement/hover
@@ -316,7 +319,7 @@ $btn-ghost-dark-color-disabled-rgb: $color-white !default;
 /// @namespace statement/disabled
 /// @type alpha
 $btn-ghost-dark-color-disabled-opacity: .4 !default;
-$btn-ghost-dark-color-disabled: rgba($btn-ghost-dark-color-disabled-rgb, $btn-ghost-dark-color-disabled-opacity);
+$btn-ghost-dark-color-disabled: rgba($btn-ghost-dark-color-disabled-rgb, $btn-ghost-dark-color-disabled-opacity) !default;
 
 /// background
 /// @namespace statement/disabled
@@ -330,7 +333,7 @@ $btn-ghost-dark-border-color-disabled-rgb: $color-white !default;
 /// @namespace statement/disabled
 /// @type alpha
 $btn-ghost-dark-border-color-disabled-opacity: .4 !default;
-$btn-ghost-dark-border-color-disabled: rgba($btn-ghost-dark-border-color-disabled-rgb, $btn-ghost-dark-border-color-disabled-opacity);
+$btn-ghost-dark-border-color-disabled: rgba($btn-ghost-dark-border-color-disabled-rgb, $btn-ghost-dark-border-color-disabled-opacity) !default;
 
 // Ghost Light
 // ----------------------------------------
@@ -351,7 +354,7 @@ $btn-ghost-light-bg: $color-transparent !default;
 /// @namespace statement/normal
 /// @type alpha
 $btn-ghost-light-bg-opacity: 0 !default;
-$btn-ghost-light-bg-normal: rgba($btn-ghost-light-bg, $btn-ghost-light-bg-opacity);
+$btn-ghost-light-bg-normal: rgba($btn-ghost-light-bg, $btn-ghost-light-bg-opacity) !default;
 
 /// text
 /// @namespace statement/hover
@@ -369,7 +372,7 @@ $btn-ghost-light-bg-hover-rgb: $color-black !default;
 /// @namespace statement/hover
 /// @type alpha
 $btn-ghost-light-bg-hover-opacity: .92 !default;
-$btn-ghost-light-bg-hover: rgba($btn-ghost-light-bg-hover-rgb, $btn-ghost-light-bg-hover-opacity);
+$btn-ghost-light-bg-hover: rgba($btn-ghost-light-bg-hover-rgb, $btn-ghost-light-bg-hover-opacity) !default;
 
 /// text
 /// @namespace statement/disabled
@@ -379,7 +382,7 @@ $btn-ghost-light-color-disabled-rgb: $color-black !default;
 /// @namespace statement/disabled
 /// @type alpha
 $btn-ghost-light-color-disabled-opacity: .1 !default;
-$btn-ghost-light-color-disabled: rgba($btn-ghost-light-color-disabled-rgb, $btn-ghost-light-color-disabled-opacity);
+$btn-ghost-light-color-disabled: rgba($btn-ghost-light-color-disabled-rgb, $btn-ghost-light-color-disabled-opacity) !default;
 
 /// background
 /// @namespace statement/disabled
@@ -393,7 +396,7 @@ $btn-ghost-light-border-color-disabled-rgb: $color-black !default;
 /// @namespace statement/disabled
 /// @type alpha
 $btn-ghost-light-border-color-disabled-opacity: .1 !default;
-$btn-ghost-light-border-color-disabled: rgba($btn-ghost-light-border-color-disabled-rgb, $btn-ghost-light-border-color-disabled-opacity);
+$btn-ghost-light-border-color-disabled: rgba($btn-ghost-light-border-color-disabled-rgb, $btn-ghost-light-border-color-disabled-opacity) !default;
 
 // Warning Primary
 // ----------------------------------------
