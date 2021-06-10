@@ -833,6 +833,23 @@ describe('Picker', () => {
 
             assert.deepEqual(getStrValue(), ['', '']);
         });
+
+        // https://github.com/alibaba-fusion/next/issues/3086
+        it('fix issue on half disabled & showTime', () => {
+            wrapper = mount(
+                <RangePicker showTime disabled={[true, false]} value={['2021-01-12 10:00:00', '2021-01-12 09:00:00']} />
+            );
+            assert.deepEqual(getStrValue(), ['2021-01-12 10:00:00', '']);
+
+            wrapper.setProps({ disabled: [false, true] });
+            assert.deepEqual(getStrValue(), ['', '2021-01-12 09:00:00']);
+
+            wrapper.setProps({ disabled: true });
+            assert.deepEqual(getStrValue(), ['2021-01-12 10:00:00', '']);
+
+            wrapper.setProps({ disabled: false });
+            assert.deepEqual(getStrValue(), ['2021-01-12 10:00:00', '']);
+        });
     });
 });
 

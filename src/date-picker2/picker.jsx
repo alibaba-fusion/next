@@ -50,14 +50,14 @@ function checkDate(value) {
 }
 
 function checkRangeDate(value, inputType, disabled, strictly = true) {
-    const [begin, end] = Array.isArray(value) ? [0, 1].map(i => checkDate(value[i])) : [null, null];
-    const _disabled = Array.isArray(disabled) ? disabled : [disabled, disabled];
+    const [begin, end] = Array.isArray(value) ? [0, 1].map((i) => checkDate(value[i])) : [null, null];
+    const [disabledBegin, disabledEnd] = Array.isArray(disabled) ? disabled : [disabled, disabled];
 
-    // 严格模式下
-    // 如果开始时间在结束时间之后 清空另一个时间
-    // 如果另一个时间处于禁用状态 清除当前时间
+    // 严格模式下，不允许开始时间大于结束时间
+    // 否则，优先清空 beginDate
+    // 只有在 endDate 被 disabled 且 beginDate 没有被 disabled 的时候才清空 beginDate
     if (strictly && begin && end && begin.isAfter(end)) {
-        return inputType === DATE_INPUT_TYPE.BEGIN && !_disabled[1] ? [begin, null] : [null, end];
+        return !disabledBegin && disabledEnd ? [null, end] : [begin, null];
     }
 
     return [begin, end];
@@ -200,7 +200,7 @@ class Picker extends React.Component {
     }
 
     componentWillUnmount() {
-        [this.clearTimeoutId, this.timeoutId].forEach(id => id && clearTimeout(id));
+        [this.clearTimeoutId, this.timeoutId].forEach((id) => id && clearTimeout(id));
     }
 
     getInitValue = () => {
@@ -236,7 +236,7 @@ class Picker extends React.Component {
             : checkDate(value);
     };
 
-    handleInputFocus = inputType => {
+    handleInputFocus = (inputType) => {
         let inputEl = this.dateInput && this.dateInput.input;
 
         if (this.state.isRange) {
@@ -246,7 +246,7 @@ class Picker extends React.Component {
         inputEl && inputEl.focus();
     };
 
-    handleMouseDown = e => {
+    handleMouseDown = (e) => {
         e.preventDefault();
     };
 
@@ -305,7 +305,7 @@ class Picker extends React.Component {
         });
     };
 
-    shouldSwitchInput = value => {
+    shouldSwitchInput = (value) => {
         const { inputType, justBeginInput } = this.state;
         const idx = justBeginInput ? switchInputType(inputType) : value.indexOf(null);
 
@@ -318,7 +318,7 @@ class Picker extends React.Component {
         return false;
     };
 
-    isEnabled = idx => {
+    isEnabled = (idx) => {
         const { disabled } = this.props;
 
         return Array.isArray(disabled)
@@ -359,7 +359,7 @@ class Picker extends React.Component {
         }
     };
 
-    onKeyDown = e => {
+    onKeyDown = (e) => {
         switch (e.keyCode) {
             case KEYCODE.ENTER: {
                 const { inputValue } = this.state;
@@ -372,7 +372,7 @@ class Picker extends React.Component {
         }
     };
 
-    onChange = v => {
+    onChange = (v) => {
         const { value } = this.state;
         const { format } = this.props;
 
@@ -407,7 +407,7 @@ class Picker extends React.Component {
         result !== false && this.handleChange(inputValue, 'CLICK_OK');
     };
 
-    onInputTypeChange = idx => {
+    onInputTypeChange = (idx) => {
         const { inputType, visible } = this.state;
 
         if (idx !== inputType) {
@@ -497,7 +497,7 @@ class Picker extends React.Component {
         }
 
         const visible = 'visible' in this.props ? this.props.visible : this.state.visible;
-        const allDisabled = isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled;
+        const allDisabled = isRange && Array.isArray(disabled) ? disabled.every((v) => v) : disabled;
         const sharedProps = {
             rtl,
             prefix,
@@ -522,7 +522,7 @@ class Picker extends React.Component {
             onInput: handleInput,
             readOnly: inputReadOnly,
             inputProps: this.props.inputProps,
-            ref: el => (this.dateInput = el),
+            ref: (el) => (this.dateInput = el),
         };
 
         // 禁用状态下 不允许清空
