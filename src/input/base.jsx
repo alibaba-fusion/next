@@ -166,7 +166,7 @@ class Base extends React.Component {
         });
         this.props.onCompositionEnd(e);
 
-        let value = e.target.value;
+        const value = e.target.value;
         this.props.onChange(value, e);
     };
 
