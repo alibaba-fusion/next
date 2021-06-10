@@ -26,12 +26,12 @@ ReactDOM.render(
         <Input.TextArea
             autoHeight
             aria-label="auto height"
-            placeholder="try input Enter"
+            placeholder="Press the Enter button continuously"
             onKeyDown={(e, opts) => {
                 console.log('onKeyDown', opts);
             }} /><br/><br/>
 
-        <Input.TextArea aria-label="auto height" autoHeight={{ minRows: 2, maxRows: 6 }} placeholder="try input Enter"/>
+        <Input.TextArea aria-label="auto height" autoHeight={{ minRows: 2, maxRows: 6 }} placeholder="Press the Enter button continuously"/>
     </div>
     , mountNode);
 ````
