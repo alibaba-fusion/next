@@ -14,7 +14,7 @@
 表单输入，一般配合 Form 使用。 
 
 -   Input 不支持 Number 类型数字，如有需要使用 NumberPicker 支持数字选择
--   `1.23` 版本新增了 API `composition` , 开启后可以在输入法结束后再触发 onChange
+-   `1.23` 版本新增了 API `composition` , 开启后可以在输入法结束后再触发 onChange （包括中文输入法、日语输入法等）
 
 ## API
 
