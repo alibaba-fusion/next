@@ -189,7 +189,6 @@ class Card extends Base {
                 itemRender={itemRender}
                 isPreview={isPreview}
                 uploader={this.state.uploaderRef}
-                disabled={disabled}
                 reUpload={reUpload}
                 showDownload={showDownload}
                 {...othersForList}
