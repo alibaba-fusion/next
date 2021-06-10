@@ -37,27 +37,51 @@ function getInputValue(value, fmt) {
     return Array.isArray(value) ? value.map((v, idx) => formater(v, idx)) : formater(value);
 }
 
-// 无效值转为 null
-// undefined 值表示当前时间
+/**
+ * 日期检验：无效值返回 null
+ *
+ * @param {Dayjs.ConfigType} value
+ * @returns Dayjs | null
+ */
 function checkDate(value) {
-    // 因为datejs(undefined) === datejs()
-    // 但是这里期望的是一个空值
+    /**
+     * 因为 datejs(undefined) 表示当前时间
+     * 但是这里期望的是一个空值，即用户不输入值的时候显示为空
+     */
     if (value === undefined) {
         value = null;
     }
+
     value = datejs(value);
     return value.isValid() ? value : null;
 }
 
+/**
+ * Range 日期检验
+ * @param {dayjs.ConfigType[]} value 日期值
+ * @param {number} inputType 输入框类型：开始时间输入框/结束时间输入框
+ * @param {boolean} disabled 是否禁用
+ * @param {boolean} strictly 是否严格校验：严格模式下不允许开始时间大于结束时间，在显示确认按键的，用户输入过程可不严格校验
+ * @returns {Dayjs[] | null[]}
+ */
 function checkRangeDate(value, inputType, disabled, strictly = true) {
     const [begin, end] = Array.isArray(value) ? [0, 1].map((i) => checkDate(value[i])) : [null, null];
     const [disabledBegin, disabledEnd] = Array.isArray(disabled) ? disabled : [disabled, disabled];
 
-    // 严格模式下，不允许开始时间大于结束时间
-    // 否则，优先清空 beginDate
-    // 只有在 endDate 被 disabled 且 beginDate 没有被 disabled 的时候才清空 beginDate
+    /**
+     * 需要清除其中一个时间，优先清除结束时间，下面情况清除开始时间：
+     * 1. 结束时间被 disabled 而开始时间没有被 disabled
+     * 2. 开始时间和结束时间都没被 disabled 且当前正在输入是结束时间
+     */
     if (strictly && begin && end && begin.isAfter(end)) {
-        return !disabledBegin && disabledEnd ? [null, end] : [begin, null];
+        if (
+            (!disabledBegin && disabledEnd) ||
+            (!disabledBegin && !disabledBegin && inputType === DATE_INPUT_TYPE.END)
+        ) {
+            return [null, end];
+        }
+
+        return [begin, null];
     }
 
     return [begin, end];
@@ -175,13 +199,31 @@ class Picker extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         const { type, showTime, showOk, disabled, format } = props;
-
         const isRange = type === DATE_PICKER_TYPE.RANGE;
 
         let newState = {
             isRange,
             showOk: !!(showOk || showTime),
         };
+
+        /**
+         * 当前输入框可能被 disabled
+         * 如果另一个输入框非 disabled 则切换到另一个输入框
+         */
+        if (isRange) {
+            const _disabled = Array.isArray(disabled) ? disabled : [disabled, disabled];
+
+            let { inputType } = state;
+            if (_disabled[inputType]) {
+                const otherType = switchInputType(state.inputType);
+
+                if (_disabled[otherType]) {
+                    inputType = otherType;
+                }
+            }
+
+            newState.inputType = inputType;
+        }
 
         if ('value' in props) {
             const value = isRange ? checkRangeDate(props.value, state.inputType, disabled) : checkDate(props.value);
@@ -213,7 +255,6 @@ class Picker extends React.Component {
 
         return this.checkValue(val);
     };
-
     getInitRangeInputState = () => {
         return {
             justBeginInput: this.isEnabled(),
@@ -401,8 +442,10 @@ class Picker extends React.Component {
 
     onOk = () => {
         const { inputValue } = this.state;
+        const { format } = this.props;
+        const checkedValue = this.checkValue(inputValue);
 
-        const result = func.invoke(this.props, 'onOk', [this.checkValue(inputValue), inputValue]);
+        const result = func.invoke(this.props, 'onOk', [checkedValue, getInputValue(checkedValue, format)]);
 
         result !== false && this.handleChange(inputValue, 'CLICK_OK');
     };
