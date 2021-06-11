@@ -112,7 +112,7 @@ $balloon-tooltip-size-padding-left: $s-2 !default;
 
 $balloon-size-padding: $balloon-size-padding-top $balloon-size-padding-right !default;
 $balloon-size-closable-padding: $balloon-size-padding-top $balloon-size-padding-closable-right $balloon-size-padding-top $balloon-size-padding-right !default;
-$balloon-size-arrow-expose: calc(0px - #{$balloon-size-arrow-size} / 2 - 1px) !default;
+$balloon-size-arrow-expose: calc(0px - #{$balloon-size-arrow-size} / 2 - #{$balloon-normal-border-width}) !default;
 $balloon-size-arrow-expose-primary: calc(0px - #{$balloon-size-arrow-size} / 2 - #{$balloon-primary-border-width}) !default;
 
 // Common
