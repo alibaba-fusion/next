@@ -54,6 +54,14 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     onPanelChange?: (panelValue: Dayjs, mode: 'date' | 'month' | 'week' | 'quarter' | 'year') => void;
 
     format?: string | ((value: Dayjs) => string);
+    /**
+     * 输出格式：控制 onChange、onOk 事件的输出值格式
+     *  - string 类型：根据时间格式进行转换
+     *  - function 类型：((value: Dayjs, strVal: string) => any)
+     *
+     * @version 1.23.8
+     */
+    outputFormat?: string | ((value: Dayjs, strVal: string) => any);
     disabled?: boolean;
     state?: 'success' | 'loading' | 'error';
     size?: 'small' | 'medium' | 'large';
@@ -84,13 +92,29 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
 export interface RangePickerProps
     extends Omit<
         DatePickerProps,
-        'value' | 'placeholder' | 'defaultValue' | 'format' | 'onOk' | 'onChange' | 'dateInputAriaLabel' | 'disabled'
+        | 'value'
+        | 'placeholder'
+        | 'defaultValue'
+        | 'format'
+        | 'onOk'
+        | 'onChange'
+        | 'dateInputAriaLabel'
+        | 'disabled'
+        | 'outputFormat'
     > {
     value?: Array<ConfigType>;
     defaultValue?: Array<ConfigType>;
     format?: string | ((value: Dayjs) => string) | Array<string> | Array<(value: Dayjs) => string>;
     onOk?: (value: Array<Dayjs>, strVal: Array<string>) => void;
     onChange?: (value: Array<Dayjs>, strVal: Array<string>) => void;
+    /**
+     * 输出格式：控制 onChange、onOk 事件的输出值格式
+     *  - string 类型：根据时间格式进行转换
+     *  - function 类型：((value: Dayjs, strVal: string) => any)
+     *
+     * @version 1.23.7
+     */
+    outputFormat?: string | ((value: Array<Dayjs>, strVal: Array<string>) => any);
     placeholder?: string | Array<string>;
     dateInputAriaLabel?: Array<string> | string;
     disabled?: boolean | boolean[];

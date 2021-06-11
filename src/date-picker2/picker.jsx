@@ -19,14 +19,25 @@ const { Popup } = Overlay;
 const { renderNode } = func;
 const { pickProps, pickOthers } = obj;
 
+/**
+ * 判断值是否改变
+ * @param {dayjs.ConfigType}} newValue
+ * @param {dayjs.ConfigType} oldValue
+ * @returns {boolean}
+ */
 function isValueChanged(newValue, oldValue) {
     return Array.isArray(newValue)
         ? isValueChanged(newValue[0], oldValue && oldValue[0]) || isValueChanged(newValue[1], oldValue && oldValue[1])
         : newValue !== oldValue && !datejs(newValue).isSame(oldValue);
 }
 
-// 返回日期字符串
-function getInputValue(value, fmt) {
+/**
+ * 获取输入框值
+ * @param {*} value 日期值
+ * @param {string | funtion} fmt 日期格式
+ * @returns {string | string[]}
+ */
+function fmtValue(value, fmt) {
     const formater = (v, idx) => {
         if (Array.isArray(fmt)) {
             fmt = fmt[idx];
@@ -39,9 +50,8 @@ function getInputValue(value, fmt) {
 
 /**
  * 日期检验：无效值返回 null
- *
- * @param {Dayjs.ConfigType} value
- * @returns Dayjs | null
+ * @param {dayjs.ConfigType} value
+ * @returns {Dayjs | null}
  */
 function checkDate(value) {
     /**
@@ -65,7 +75,7 @@ function checkDate(value) {
  * @returns {Dayjs[] | null[]}
  */
 function checkRangeDate(value, inputType, disabled, strictly = true) {
-    const [begin, end] = Array.isArray(value) ? [0, 1].map((i) => checkDate(value[i])) : [null, null];
+    const [begin, end] = Array.isArray(value) ? [0, 1].map(i => checkDate(value[i])) : [null, null];
     const [disabledBegin, disabledEnd] = Array.isArray(disabled) ? disabled : [disabled, disabled];
 
     /**
@@ -133,9 +143,20 @@ class Picker extends React.Component {
         placeholder: SharedPT.placeholder,
         disabled: SharedPT.disabled,
         inputReadOnly: SharedPT.readOnly,
+        /**
+         * 日期显示格式
+         */
         format: SharedPT.format,
         label: PT.node,
         separator: PT.node,
+        /**
+         * 输出格式：控制 onChange、onOk 事件的输出值格式
+         *  - string 类型：根据时间格式进行转换
+         *  - function 类型：((date: Dayjs, dateStr: string) => any)
+         *
+         * @version 1.23.7
+         */
+        outputFormat: SharedPT.format,
 
         // popup
         followTrigger: PT.bool,
@@ -189,7 +210,7 @@ class Picker extends React.Component {
 
         this.state = {
             value,
-            inputValue: getInputValue(value, format),
+            inputValue: fmtValue(value, format),
             curValue: value, // 当前状态值
             ...this.state,
         };
@@ -207,17 +228,18 @@ class Picker extends React.Component {
         };
 
         /**
-         * 当前输入框可能被 disabled
-         * 如果另一个输入框非 disabled 则切换到另一个输入框
+         * 如果当前输入框可能被 disabled
+         * 且另一个输入框非 disabled 则切换到另一个输入框
          */
         if (isRange) {
+            let { inputType } = state;
+
             const _disabled = Array.isArray(disabled) ? disabled : [disabled, disabled];
 
-            let { inputType } = state;
             if (_disabled[inputType]) {
                 const otherType = switchInputType(state.inputType);
 
-                if (_disabled[otherType]) {
+                if (!_disabled[otherType]) {
                     inputType = otherType;
                 }
             }
@@ -233,7 +255,7 @@ class Picker extends React.Component {
                     ...newState,
                     value,
                     curValue: value,
-                    inputValue: getInputValue(value, format),
+                    inputValue: fmtValue(value, format),
                 };
             }
         }
@@ -242,9 +264,12 @@ class Picker extends React.Component {
     }
 
     componentWillUnmount() {
-        [this.clearTimeoutId, this.timeoutId].forEach((id) => id && clearTimeout(id));
+        [this.clearTimeoutId, this.timeoutId].forEach(id => id && clearTimeout(id));
     }
 
+    /**
+     * 获取初始值
+     */
     getInitValue = () => {
         const { props } = this;
         const { type, value, defaultValue } = props;
@@ -255,6 +280,13 @@ class Picker extends React.Component {
 
         return this.checkValue(val);
     };
+
+    /**
+     * 获取 RangePicker 输入框初始输入状态
+     * @returns {Object} inputState
+     * @returns {boolean} inputState.justBeginInput 是否初始输入
+     * @returns {number} inputState.inputType 当前输入框
+     */
     getInitRangeInputState = () => {
         return {
             justBeginInput: this.isEnabled(),
@@ -262,11 +294,17 @@ class Picker extends React.Component {
         };
     };
 
-    // 判断弹层是否显示
+    /**
+     * 处理点击文档区域导致的弹层收起逻辑
+     * @param {boolean} visible 是否可见
+     * @param {string} type 事件类型
+     */
     handleVisibleChange = (visible, type) => {
         if (type === 'docClick') {
-            visible || this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
-
+            // 弹层收起 触发 Change 逻辑
+            if (!visible) {
+                this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
+            }
             this.onVisibleChange(visible);
         }
     };
@@ -277,7 +315,7 @@ class Picker extends React.Component {
             : checkDate(value);
     };
 
-    handleInputFocus = (inputType) => {
+    handleInputFocus = inputType => {
         let inputEl = this.dateInput && this.dateInput.input;
 
         if (this.state.isRange) {
@@ -287,7 +325,7 @@ class Picker extends React.Component {
         inputEl && inputEl.focus();
     };
 
-    handleMouseDown = (e) => {
+    handleMouseDown = e => {
         e.preventDefault();
     };
 
@@ -334,8 +372,10 @@ class Picker extends React.Component {
     };
 
     handleClear = () => {
-        // 清空输入之后 input组件内部会让第二个输入框获得焦点
-        // 所以这里需要设置setTimeout才能让第一个input获得焦点
+        /**
+         * 清空输入之后 input 组件内部会让第二个输入框获得焦点
+         * 所以这里需要设置 setTimeout 才能让第一个 input 获得焦点
+         */
         this.clearTimeoutId = setTimeout(() => {
             this.handleInputFocus(0);
         });
@@ -346,7 +386,7 @@ class Picker extends React.Component {
         });
     };
 
-    shouldSwitchInput = (value) => {
+    shouldSwitchInput = value => {
         const { inputType, justBeginInput } = this.state;
         const idx = justBeginInput ? switchInputType(inputType) : value.indexOf(null);
 
@@ -359,7 +399,7 @@ class Picker extends React.Component {
         return false;
     };
 
-    isEnabled = (idx) => {
+    isEnabled = idx => {
         const { disabled } = this.props;
 
         return Array.isArray(disabled)
@@ -369,13 +409,28 @@ class Picker extends React.Component {
             : !disabled;
     };
 
+    onKeyDown = e => {
+        switch (e.keyCode) {
+            case KEYCODE.ENTER: {
+                const { inputValue } = this.state;
+                this.onClick();
+                this.handleChange(inputValue, 'KEYDOWN_ENTER');
+                break;
+            }
+            default:
+                return;
+        }
+    };
+
     handleChange = (v, eventType) => {
         const { format } = this.props;
         const { isRange, showOk, value } = this.state;
         const forceEvents = ['KEYDOWN_ENTER', 'CLICK_OK', 'CLICK_PRESET', 'INPUT_CLEAR'];
 
-        // 在显示确认按键且关闭弹层的时候 将当前值设置回确认值
-        // 在有确认按键的时候 需要点击确认值才生效
+        /**
+         * 在显示确认按键且关闭弹层的时候 将当前值设置回确认值
+         * 在有确认按键的时候 需要点击确认值才生效
+         */
         if (showOk && eventType === 'VISIBLE_CHANGE') {
             v = value;
         } else {
@@ -385,7 +440,7 @@ class Picker extends React.Component {
 
         this.setState({
             curValue: v,
-            inputValue: getInputValue(v, format),
+            inputValue: fmtValue(v, format),
         });
 
         if (!showOk || forceEvents.includes(eventType)) {
@@ -400,20 +455,7 @@ class Picker extends React.Component {
         }
     };
 
-    onKeyDown = (e) => {
-        switch (e.keyCode) {
-            case KEYCODE.ENTER: {
-                const { inputValue } = this.state;
-                this.onClick();
-                this.handleChange(inputValue, 'KEYDOWN_ENTER');
-                break;
-            }
-            default:
-                return;
-        }
-    };
-
-    onChange = (v) => {
+    onChange = v => {
         const { value } = this.state;
         const { format } = this.props;
 
@@ -422,7 +464,7 @@ class Picker extends React.Component {
             if ('value' in this.props) {
                 this.setState({
                     curValue: value,
-                    inputValue: getInputValue(value, format),
+                    inputValue: fmtValue(value, format),
                 });
             } else {
                 v = this.checkValue(v);
@@ -430,11 +472,11 @@ class Picker extends React.Component {
                 this.setState({
                     value: v,
                     curValue: v,
-                    inputValue: getInputValue(v, format),
+                    inputValue: fmtValue(v, format),
                 });
             }
 
-            func.invoke(this.props, 'onChange', [v, getInputValue(v, format)]);
+            func.invoke(this.props, 'onChange', this.getOutputArgs(v));
         }
 
         this.onVisibleChange(false);
@@ -442,15 +484,14 @@ class Picker extends React.Component {
 
     onOk = () => {
         const { inputValue } = this.state;
-        const { format } = this.props;
         const checkedValue = this.checkValue(inputValue);
 
-        const result = func.invoke(this.props, 'onOk', [checkedValue, getInputValue(checkedValue, format)]);
+        const result = func.invoke(this.props, 'onOk', this.getOutputArgs(checkedValue));
 
         result !== false && this.handleChange(inputValue, 'CLICK_OK');
     };
 
-    onInputTypeChange = (idx) => {
+    onInputTypeChange = idx => {
         const { inputType, visible } = this.state;
 
         if (idx !== inputType) {
@@ -468,6 +509,21 @@ class Picker extends React.Component {
             this.onVisibleChange(true);
             this.handleInputFocus(inputType);
         }
+    };
+
+    /**
+     * 获取 `onChange` 和 `onOk` 方法的输出参数
+     * @param {Dayjs} value
+     * @returns 默认返回 `Dayjs` 实例和 `format` 格式化的值
+     *          如果传了了 `outputFormat` 属性则返回 `outputFormat` 格式化的值
+     */
+    getOutputArgs = value => {
+        const { outputFormat, format } = this.props;
+
+        if (outputFormat) {
+            return [fmtValue(value, outputFormat)];
+        }
+        return [value, fmtValue(value, format)];
     };
 
     getCurrentAlign = ({ align }) => {
@@ -540,7 +596,7 @@ class Picker extends React.Component {
         }
 
         const visible = 'visible' in this.props ? this.props.visible : this.state.visible;
-        const allDisabled = isRange && Array.isArray(disabled) ? disabled.every((v) => v) : disabled;
+        const allDisabled = isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled;
         const sharedProps = {
             rtl,
             prefix,
@@ -565,7 +621,7 @@ class Picker extends React.Component {
             onInput: handleInput,
             readOnly: inputReadOnly,
             inputProps: this.props.inputProps,
-            ref: (el) => (this.dateInput = el),
+            ref: el => (this.dateInput = el),
         };
 
         // 禁用状态下 不允许清空

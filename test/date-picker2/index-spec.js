@@ -411,6 +411,46 @@ describe('Picker', () => {
                     .getAttribute('title') === '2020-11-01'
             );
         });
+
+        it('outputFormat', () => {
+            wrapper = mount(
+                <DatePicker
+                    defaultValue={defaultVal}
+                    defaultVisible
+                    outputFormat="x"
+                    onChange={v => assert(v === dayjs(defaultVal).format('x'))}
+                />
+            );
+            clickDate('2020-12-12');
+
+            wrapper.setProps({
+                showTime: true,
+                outputFormat(v) {
+                    return v.valueOf();
+                },
+                onOk: v => assert(v === dayjs(defaultVal).valueOf()),
+                onChange: v => assert(v === dayjs(defaultVal).valueOf()),
+            });
+
+            clickDate('2020-12-12');
+            clickOk();
+
+            wrapper.unmount();
+
+            // RangePicker
+            wrapper = mount(
+                <RangePicker
+                    defaultValue={defaultRangeVal}
+                    defaultVisible
+                    outputFormat="x"
+                    onChange={v =>
+                        assert.deepEqual(v, [dayjs('2020-12-12').format('x'), dayjs('2020-12-14').format('x')])
+                    }
+                />
+            );
+            clickDate('2020-12-12');
+            clickDate('2020-12-14');
+        });
     });
 
     describe('controlled', () => {
