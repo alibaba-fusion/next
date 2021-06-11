@@ -211,6 +211,9 @@ export default class Base extends React.Component {
             'afterClose',
             'handleResize',
         ]);
+
+        this.couldBlur = true;
+        this.couldFocus = true;
     }
 
     componentDidMount() {
@@ -341,7 +344,9 @@ export default class Base extends React.Component {
      * @param {Event} e click event
      */
     handleMenuBodyClick(e) {
-        this.focusInput(e);
+        if (!this.props.popupAutoFocus) {
+            this.focusInput(e);
+        }
     }
 
     /**
@@ -426,6 +431,16 @@ export default class Base extends React.Component {
     handleSelect() {}
 
     /**
+     * 防止 onBlur/onFocus 抖动
+     */
+
+    handleMouseDown = e => {
+        if (!this.props.popupAutoFocus) {
+            preventDefault(e);
+        }
+    };
+
+    /**
      * render popup children
      * @protected
      * @param {object} props
@@ -471,7 +486,7 @@ export default class Base extends React.Component {
             onItemClick: this.handleItemClick,
             header: this.renderMenuHeader(),
             onClick: this.handleMenuBodyClick,
-            onMouseDown: preventDefault,
+            onMouseDown: this.handleMouseDown,
             className: menuClassName,
         };
         const menuStyle = this.shouldAutoWidth() ? { width: this.width } : { minWidth: this.width };
