@@ -211,9 +211,6 @@ export default class Base extends React.Component {
             'afterClose',
             'handleResize',
         ]);
-
-        this.couldBlur = true;
-        this.couldFocus = true;
     }
 
     componentDidMount() {
