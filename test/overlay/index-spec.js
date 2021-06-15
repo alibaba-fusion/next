@@ -9,6 +9,7 @@ import Overlay from '../../src/overlay/index';
 import Dialog from '../../src/dialog/index';
 import Balloon from '../../src/balloon/index';
 import Button from '../../src/button/index';
+import ConfigProvider from '../../src/config-provider/index';
 import '../../src/button/style.js';
 import '../../src/overlay/style.js';
 
@@ -42,7 +43,6 @@ const render = element => {
             return inc;
         },
         find: selector => {
-            debugger;
             return container.querySelectorAll(selector);
         },
     };
@@ -971,6 +971,35 @@ describe('Popup', () => {
         assert(container.style.paddingRight === '');
 
         wrapper.find('.btn')[0].click();
+        ReactDOM.unmountComponentAtNode(container);
+    });
+
+    it('should configprovider work', () => {
+        const container = document.createElement('div');
+
+        function Demo() {
+            return (
+                <ConfigProvider popupContainer={() => document.getElementById('config-provider')}>
+                <div>
+                    <div id="config-provider"/>
+                    <div id="self"/>
+                    <Popup visible>
+                        <span id="test-popup">this is popup</span>
+                    </Popup>
+                    <Balloon visible popupContainer={() => document.getElementById('self')}>
+                        <span id="test-balloon">this is balloon</span>
+                    </Balloon>
+                </div>
+                </ConfigProvider>
+            );
+        }
+        wrapper = render(<Demo />, container);
+        const popupDom = wrapper.find('#config-provider #test-popup')[0];
+        const balloonDom = wrapper.find('#self #test-balloon')[0];
+
+        assert(balloonDom);
+        assert(popupDom);
+
         ReactDOM.unmountComponentAtNode(container);
     });
 });
