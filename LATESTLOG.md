@@ -1,15 +1,12 @@
 # Latest Log 
 
-## [1.23.6](https://github.com/alibaba-fusion/next/compare/1.23.5...1.23.6) (2021-06-10)
+## [1.23.7](https://github.com/alibaba-fusion/next/compare/1.23.6...1.23.7) (2021-06-16)
 
 
 ### Bug Fixes
 
-* **DatePicker2:** RangeDate check bug when set disabled, close [#3086](https://github.com/alibaba-fusion/next/issues/3086) ([91d4b70](https://github.com/alibaba-fusion/next/commit/91d4b70))
-
-
-### Features
-
-* **Input:** add api composition for call onChange after IME finished fix [#3032](https://github.com/alibaba-fusion/next/issues/3032) ([baf94db](https://github.com/alibaba-fusion/next/commit/baf94db))
+* **Balloon:** normal border issue, close [#3097](https://github.com/alibaba-fusion/next/issues/3097) ([6beb025](https://github.com/alibaba-fusion/next/commit/6beb025))
+* **ConfigProvider:** close [#3102](https://github.com/alibaba-fusion/next/issues/3102) ([e6e727f](https://github.com/alibaba-fusion/next/commit/e6e727f))
+* **Select:** item can selected in popupAutoFocus fix [#3038](https://github.com/alibaba-fusion/next/issues/3038) ([8f92f4c](https://github.com/alibaba-fusion/next/commit/8f92f4c))
 
 
