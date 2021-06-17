@@ -14,14 +14,13 @@
     $paddingLr,
     $fontSize,
     $iconSize,
-    $minWidth
+    $minWidth,
+    $spacing
 ) {
     height: $height;
     padding: 0;
     line-height: calc(#{$height} - #{$borderWidth} * 2);
     font-size: 0;
-
-    $_marginLeft: $iconSize;
 
     > .#{$css-prefix}tag-body {
         font-size: $fontSize;
@@ -31,21 +30,21 @@
 
     &.#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
         padding: 0 0 0 $paddingLr;
-        max-width: calc(100% - (#{$_marginLeft} + #{$iconSize} + #{$paddingLr}));
+        max-width: calc(100% - (#{$spacing} + #{$iconSize} + #{$paddingLr}));
     }
     &[dir=rtl].#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
         padding: 0 $paddingLr 0 0;
     }
 
     &.#{$css-prefix}tag-closable > .#{$css-prefix}tag-close-btn {
-        margin-left: $_marginLeft;
+        margin-left: $spacing;
         padding-right: $paddingLr;
         .#{$css-prefix}icon {
             @include icon-size($iconSize);
         }
     }
     &[dir=rtl] > .#{$css-prefix}tag-close-btn {
-        margin-right: $_marginLeft;
+        margin-right: $spacing;
         margin-left: 0;
         padding-right: 0;
         padding-left: $paddingLr;
