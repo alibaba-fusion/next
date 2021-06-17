@@ -9,6 +9,7 @@ import Overlay from '../../src/overlay/index';
 import Dialog from '../../src/dialog/index';
 import Balloon from '../../src/balloon/index';
 import Button from '../../src/button/index';
+import Drawer from '../../src/drawer/index';
 import ConfigProvider from '../../src/config-provider/index';
 import '../../src/button/style.js';
 import '../../src/overlay/style.js';
@@ -637,6 +638,67 @@ describe('Overlay', () => {
 
         assert(document.querySelector('.overlay-btn').style.left === '73.5px');
     });
+
+    it('should set overflow hidden to container', () => {
+        function Demo() {
+            const [visible, setVisible] = useState(false);
+
+            return (
+                <div id="luodan">
+                    <button className="btn" onClick={() => setVisible(true)}>
+                        Open dialog
+                    </button>
+                    <Dialog visible={visible} popupContainer="luodan">
+                        Small Content in a fixed size Dialog
+                    </Dialog>
+                </div>
+            );
+        }
+
+        wrapper = render(<Demo />);
+        wrapper.find('.btn')[0].click();
+
+        const container = wrapper.find('#luodan')[0];
+
+        assert(container.style.overflow === 'hidden');
+        assert(container.style.paddingRight === '');
+
+        wrapper.find('.btn')[0].click();
+    });
+
+    // https://github.com/alibaba-fusion/next/issues/3104
+    it('fix overflow bug with multiple overlay', () => {
+        function MyDrawer() {
+            const [visible, setVisible] = useState(false);
+            const onOpen = () => {
+                setVisible(true);
+            };
+
+            const onClose = () => {
+                Dialog.confirm({
+                    content: '确认关闭',
+                });
+            };
+
+            return (
+                <div>
+                    <Button className="btn-open" onClick={onOpen} />
+                    <Button className="btn-close" onClick={() => setVisible(false)} />
+                    <Drawer visible={visible} onClose={onClose} />
+                </div>
+            );
+        }
+
+        wrapper = render(<MyDrawer />);
+        simulateEvent.simulate(document.querySelector('.btn-open'), 'click');
+        assert(document.body.style.overflow === 'hidden');
+        simulateEvent.simulate(document.querySelector('.next-overlay-backdrop'), 'click');
+        simulateEvent.simulate(document.querySelector('.btn-close '), 'click');
+        assert(document.body.style.overflow === 'hidden');
+        simulateEvent.simulate(document.querySelector('.next-dialog-btn'), 'click');
+        document.body.style.overflow = undefined;
+        assert(document.body.style.overflow === '');
+    });
 });
 
 describe('Popup', () => {
@@ -946,50 +1008,22 @@ describe('Popup', () => {
         assert(overlayInner.style.top !== '0px');
     });
 
-    it('should set overflow hidden to container', () => {
-        function Demo() {
-            const [visible, setVisible] = useState(false);
-
-            return (
-                <div id="luodan">
-                    <button className="btn" onClick={() => setVisible(true)}>
-                        Open dialog
-                    </button>
-                    <Dialog visible={visible} popupContainer="luodan">
-                        Small Content in a fixed size Dialog
-                    </Dialog>
-                </div>
-            );
-        }
-
-        wrapper = render(<Demo />);
-        wrapper.find('.btn')[0].click();
-
-        const container = wrapper.find('#luodan')[0];
-
-        assert(container.style.overflow === 'hidden');
-        assert(container.style.paddingRight === '');
-
-        wrapper.find('.btn')[0].click();
-        ReactDOM.unmountComponentAtNode(container);
-    });
-
     it('should configprovider work', () => {
         const container = document.createElement('div');
 
         function Demo() {
             return (
                 <ConfigProvider popupContainer={() => document.getElementById('config-provider')}>
-                <div>
-                    <div id="config-provider"/>
-                    <div id="self"/>
-                    <Popup visible>
-                        <span id="test-popup">this is popup</span>
-                    </Popup>
-                    <Balloon visible popupContainer={() => document.getElementById('self')}>
-                        <span id="test-balloon">this is balloon</span>
-                    </Balloon>
-                </div>
+                    <div>
+                        <div id="config-provider" />
+                        <div id="self" />
+                        <Popup visible>
+                            <span id="test-popup">this is popup</span>
+                        </Popup>
+                        <Balloon visible popupContainer={() => document.getElementById('self')}>
+                            <span id="test-balloon">this is balloon</span>
+                        </Balloon>
+                    </div>
                 </ConfigProvider>
             );
         }
