@@ -207,7 +207,6 @@ class NumberPicker extends React.Component {
         if ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) {
             let { value, max, min, stringMode } = nextProps;
             value = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
-
             return {
                 value,
                 displayValue: value,
@@ -260,7 +259,7 @@ class NumberPicker extends React.Component {
             let valueCorrected = this.correctValue(displayValue);
             valueCorrected = stringMode ? BigNumber(valueCorrected).toFixed(this.getPrecision()) : valueCorrected;
             if (this.state.value !== valueCorrected) {
-                this.setValue({ value: valueCorrected, e });
+                this.setValue({ value: valueCorrected, e, prevValue: displayValue });
             }
             this.setDisplayValue({ displayValue: valueCorrected });
         } else {
@@ -308,7 +307,7 @@ class NumberPicker extends React.Component {
         if (this.props.editable === true && this.shouldFireOnChange(value)) {
             let valueCorrected = this.correctValue(value);
             if (this.state.value !== valueCorrected) {
-                this.setValue({ value: valueCorrected, e });
+                this.setValue({ value: valueCorrected, e, prevValue: value });
             }
         } else {
             onlyDisplay = true;
@@ -353,17 +352,28 @@ class NumberPicker extends React.Component {
         return val;
     }
 
-    setValue({ value, e, triggerType }) {
+    setValue({ value, e, triggerType, prevValue = null }) {
         if (!('value' in this.props) || value === this.props.value) {
             this.setState({
                 value,
             });
         }
 
-        this.props.onChange(isNaN(value) || value === '' ? undefined : value, {
-            ...e,
-            triggerType,
-        });
+        // 延迟onChange时机，绕过原生 input BUG https://github.com/alibaba-fusion/next/issues/3110
+        if (prevValue !== null && `0${value}` === `${prevValue}`) {
+            e.persist();
+            setTimeout(() => {
+                this.props.onChange(isNaN(value) || value === '' ? undefined : value, {
+                    ...e,
+                    triggerType,
+                });
+            }, 0);
+        } else {
+            this.props.onChange(isNaN(value) || value === '' ? undefined : value, {
+                ...e,
+                triggerType,
+            });
+        }
     }
 
     getPrecision() {
