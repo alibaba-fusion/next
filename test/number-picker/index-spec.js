@@ -64,12 +64,12 @@ describe('number-picker', () => {
                     <NumberPicker defaultValue={123} onChange={onChange} />
                 );
 
-            assert(wrapper.find('input').prop('value') === 123);
+            assert(wrapper.find('input').prop('value') === '123');
 
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '20' } });
-            assert(wrapper.find('input').prop('value') === 20);
+            assert(wrapper.find('input').prop('value') === '20');
 
             done();
         });
@@ -82,12 +82,12 @@ describe('number-picker', () => {
                     <NumberPicker value={123} onChange={onChange} />
                 );
 
-            assert(wrapper.find('input').prop('value') === 123);
+            assert(wrapper.find('input').prop('value') === '123');
 
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '20' } });
-            assert(wrapper.find('input').prop('value') === 123);
+            assert(wrapper.find('input').prop('value') === '123');
 
             done();
         });
@@ -100,7 +100,7 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '0.34' } });
-            assert(wrapper.find('input').prop('value') === 0.3);
+            assert(wrapper.find('input').prop('value') === '0.3');
 
             wrapper = mount(
                 <NumberPicker defaultValue={0} />
@@ -109,17 +109,17 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '0.' } });
-            assert(wrapper.find('input').prop('value') === 0);
+            assert(wrapper.find('input').prop('value') === '0');
 
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '0.24' } });
-            assert(wrapper.find('input').prop('value') === 0);
+            assert(wrapper.find('input').prop('value') === '0');
 
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '0.2.4' } });
-            assert(wrapper.find('input').prop('value') === 0);
+            assert(wrapper.find('input').prop('value') === '0');
 
             done();
         })
@@ -132,17 +132,17 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '0.3.4' } });
-            assert(wrapper.find('input').prop('value') === 0.3);
+            assert(wrapper.find('input').prop('value') === '0.3');
 
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '-0.3-4' } });
-            assert(wrapper.find('input').prop('value') === -0.3);
+            assert(wrapper.find('input').prop('value') === '-0.3');
 
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '-1.345-4' } });
-            assert(wrapper.find('input').prop('value') === -1.34);
+            assert(wrapper.find('input').prop('value') === '-1.34');
 
             const onChange = value => {
                 assert(value === 0);
@@ -183,12 +183,12 @@ describe('number-picker', () => {
 
             const wrapper = mount(<App />);
 
-            assert(wrapper.find('input').prop('value') === 123);
+            assert(wrapper.find('input').prop('value') === '123');
 
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '20' } });
-            assert(wrapper.find('input').prop('value') === 20);
+            assert(wrapper.find('input').prop('value') === '20');
 
             done();
         });
@@ -381,7 +381,7 @@ describe('number-picker', () => {
                 .find('input')
                 .simulate('change', { target: { value: '-0' } });
             assert(onChange.calledTwice);
-            assert(wrapper.find('input').prop('value') == '-0');
+            assert(wrapper.find('input').prop('value') === '-0');
         });
 
         // 特殊输入检测
@@ -437,7 +437,7 @@ describe('number-picker', () => {
                 .find('button')
                 .at(0)
                 .simulate('click');
-            assert(wrapper.find('input').prop('value') === 0);
+            assert(wrapper.find('input').prop('value') === '0');
         });
 
         it('should support click add && reduce', done => {
@@ -687,7 +687,7 @@ describe('number-picker', () => {
                 .at(0)
                 .simulate('click');
 
-            assert(wrapper.find('input').prop('value') === 0.141);
+            assert(wrapper.find('input').prop('value') === '0.141');
 
             done();
         });
@@ -700,7 +700,7 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '3。9' } });
-            assert(wrapper.find('input').prop('value') === 3.9);
+            assert(wrapper.find('input').prop('value') === '3.9');
 
             done();
         });
@@ -860,10 +860,10 @@ describe('number-picker', () => {
             const wrapper = mount(<NumberPicker defaultValue={19} />);
 
             wrapper.setProps({ defaultValue: 30 });
-            assert(wrapper.find('input').prop('value') === 19);
+            assert(wrapper.find('input').prop('value') === '19');
 
             wrapper.setProps({ value: 30 });
-            assert(wrapper.find('input').prop('value') === 30);
+            assert(wrapper.find('input').prop('value') === '30');
 
             wrapper.setProps({ value: undefined });
             assert(wrapper.find('input').prop('value') === '');

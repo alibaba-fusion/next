@@ -478,11 +478,14 @@ class NumberPicker extends React.Component {
         const { value, hasFocused } = this.state;
         const { format } = this.props;
         // 避免原生input将number类型的-0，渲染为0
-        return typeof format === 'function' && !hasFocused
-            ? format(value)
-            : typeof value === 'number' && 1 / value === -Infinity
-            ? '-0'
-            : value;
+        const displayValue =
+            typeof format === 'function' && !hasFocused
+                ? format(value)
+                : typeof value === 'number' && 1 / value === -Infinity
+                ? '-0'
+                : value;
+        // 绕过原生input BUG， 见https://github.com/alibaba-fusion/next/issues/3110
+        return String(displayValue);
     }
 
     focus() {
