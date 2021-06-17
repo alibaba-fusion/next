@@ -305,19 +305,33 @@
 
 @mixin range-hover (
     $sliderBgColorHover,
-    $range-size-m-slider-shadow-hover
+    $selectedColorHover,
+    $unselectedColorHover
 ) {
     &.simulation-hover > .#{$css-prefix}range-slider-inner {
-        background-color: $sliderBgColorHover;
-        // box-shadow: $range-size-m-slider-shadow-hover;
+        background: $sliderBgColorHover;
+        box-shadow: $range-size-m-slider-shadow-hover;
         transform: scale(1.2);
+    }
+    &.simulation-hover {
+        .#{$css-prefix}range-selected {
+            background: $selectedColorHover;
+        }
+        .#{$css-prefix}range-track {
+            background-color: $unselectedColorHover;
+        }
+        // .#{$css-prefix}range-scale {
+        .#{$css-prefix}range-scale-item {
+            border-color: $unselectedColorHover;
+            &.activated {
+                border-color: $selectedColorHover;
+            }
+        }
+        // }
     }
 }
 
-@mixin range-click (
-    $sliderBgColorHover,
-    $range-size-m-slider-shadow-hover
-) {
+@mixin range-click () {
     &.simulation-click > .#{$css-prefix}range-slider-inner {
         border: 2px solid $range-normal-selected-color;
         box-shadow: $range-size-m-slider-shadow-moving;
