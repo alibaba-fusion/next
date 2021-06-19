@@ -97,6 +97,52 @@ describe('CardUpload', () => {
             assert(wrapper.props().value.length === 1);
             assert(wrapper.find('div.next-upload-list-item').length === 2);
         });
+        it('should support showDownload', () => {
+            const wrapper = mount(<CardUpload value={[]} />);
+            wrapper.setProps({
+                value: [
+                    {
+                        name: 'IMG_20140109_121958.jpg',
+                        state: 'done',
+                        url:
+                            'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        imgURL:
+                            'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                    }
+                ],
+            });
+
+            assert(wrapper.find('i.next-upload-tool-download-icon').length === 1);
+
+            wrapper.setProps({
+                showDownload: false
+            });
+
+            assert(wrapper.find('i.next-upload-tool-download-icon').length === 0);
+        });
+        it('should support reUpload', () => {
+            const wrapper = mount(<CardUpload value={[]} />);
+            wrapper.setProps({
+                value: [
+                    {
+                        name: 'IMG_20140109_121958.jpg',
+                        state: 'error',
+                        url:
+                            'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        imgURL:
+                            'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                    }
+                ],
+            });
+
+            assert(wrapper.find('i.next-upload-tool-reupload-icon').length === 0);
+
+            wrapper.setProps({
+                reUpload: true
+            });
+
+            assert(wrapper.find('i.next-upload-tool-reupload-icon').length === 1);
+        });
     });
 
     describe('[request]', () => {

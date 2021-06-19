@@ -334,6 +334,26 @@ class Upload extends Base {
         targetItem.originFileObj = current;
     }
 
+    // 替换掉队列里面的文件
+    replaceWithNewFile = (old, current) => {
+        const newFile = fileToObject(current);
+        newFile.state = 'selected';
+
+        const matchKey = old.uid !== undefined ? 'uid' : 'name';
+
+        const fileList = this.state.value;
+        for (let i = 0; i < fileList.length; i++) {
+            const item = fileList[i];
+            if (item[matchKey] === old[matchKey]) {
+                fileList.splice(i, 1, newFile);
+                break;
+            }
+        }
+
+        this.uploadFiles([newFile]);
+        return newFile;
+    };
+
     isUploading() {
         return this.state.uploading;
     }

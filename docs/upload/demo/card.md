@@ -22,6 +22,7 @@ ReactDOM.render(
         onChange={onChange}
         onSuccess={onSuccess}
         onError={onError}
+        reUpload
         defaultValue={[{
             uid: '0',
             name: 'IMG.png',
