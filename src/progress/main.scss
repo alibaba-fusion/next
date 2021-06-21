@@ -21,7 +21,7 @@
             position: relative;
             overflow: hidden;
             width: 100%;
-            background-color: $progress-line-underlay-color;
+            background: $progress-line-underlay-color;
         }
 
         &-overlay {
@@ -31,27 +31,27 @@
             transition: all $motion-duration-standard $motion-ease;
 
             &-normal {
-                background-color: $progress-line-normal-color;
+                background: $progress-line-normal-color;
             }
 
             &-success {
-                background-color: $progress-line-success-color;
+                background: $progress-line-success-color;
             }
 
             &-error {
-                background-color: $progress-line-error-color;
+                background: $progress-line-error-color;
             }
 
             &-started {
-                background-color: $progress-line-started-color;
+                background: $progress-line-started-color;
             }
 
             &-middle {
-                background-color: $progress-line-middle-color;
+                background: $progress-line-middle-color;
             }
 
             &-finishing {
-                background-color: $progress-line-finishing-color;
+                background: $progress-line-finishing-color;
             }
         }
     }
