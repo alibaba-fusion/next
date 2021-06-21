@@ -154,7 +154,7 @@ class Picker extends React.Component {
          *  - string 类型：根据时间格式进行转换
          *  - function 类型：((date: Dayjs, dateStr: string) => any)
          *
-         * @version 1.23.7
+         * @version 1.23
          */
         outputFormat: SharedPT.format,
 
