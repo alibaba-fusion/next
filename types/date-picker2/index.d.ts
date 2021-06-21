@@ -59,7 +59,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
      *  - string 类型：根据时间格式进行转换
      *  - function 类型：((value: Dayjs, strVal: string) => any)
      *
-     * @version 1.23.8
+     * @version 1.23
      */
     outputFormat?: string | ((value: Dayjs, strVal: string) => any);
     disabled?: boolean;
