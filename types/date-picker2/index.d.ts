@@ -112,7 +112,7 @@ export interface RangePickerProps
      *  - string 类型：根据时间格式进行转换
      *  - function 类型：((value: Dayjs, strVal: string) => any)
      *
-     * @version 1.23.7
+     * @version 1.23.9
      */
     outputFormat?: string | ((value: Array<Dayjs>, strVal: Array<string>) => any);
     placeholder?: string | Array<string>;
