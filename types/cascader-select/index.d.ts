@@ -139,6 +139,11 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
     filter?: (searchValue: string, path: Array<any>) => boolean;
 
     /**
+     * 当搜索框值变化时回调
+     */
+    onSearch?: (value: string) => void;
+
+    /**
      * 搜索结果自定义渲染函数
      */
     resultRender?: (searchValue: string, path: Array<any>) => React.ReactNode;

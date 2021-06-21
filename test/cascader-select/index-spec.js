@@ -526,6 +526,67 @@ describe('CascaderSelect', () => {
         );
         assert(findRealItem(document.querySelector('.myCascaderSelect'), 2, 1));
     });
+
+    it('should support onSearch', () => {
+        wrapper = mount(
+            <CascaderSelect
+                dataSource={ChinaArea}
+                expandedValue={['2973', '2974']}
+                onSearch={v => assert(v === 'searchValue')}
+                defaultVisible
+            />
+        );
+
+        wrapper.find('input').simulate('change', { target: { value: 'searchValue' } });
+    });
+
+    it('keep value && label after dataSource updated', () => {
+        const newDataSource = [
+            {
+                value: '3478',
+                label: '浙江',
+                children: [
+                    {
+                        value: '3479',
+                        label: '杭州',
+                        children: [{ value: '3480', label: '杭州市' }, { value: '3481', label: '建德市' }],
+                    },
+                ],
+            },
+        ];
+
+        // 多选 multiple=true
+        wrapper = mount(<CascaderSelect visible multiple dataSource={ChinaArea} defaultValue={['2975']} />);
+
+        wrapper.setProps({
+            dataSource: newDataSource,
+        });
+        assert.deepEqual(getLabels(wrapper), ['西安市']);
+
+        wrapper
+            .find('.next-checkbox-input')
+            .at(0)
+            .simulate('change', { target: { checked: true } });
+
+        assert.deepEqual(getLabels(wrapper), ['西安市', '浙江']);
+
+        wrapper
+            .find('.next-tag-close-btn')
+            .at(0)
+            .simulate('click');
+
+        assert.deepEqual(getLabels(wrapper), ['浙江']);
+        wrapper.unmount();
+
+        // 单选 multiple=false
+        wrapper = mount(<CascaderSelect dataSource={ChinaArea} value="2975" />);
+
+        assert(wrapper.find('.next-input-text-field em').text() === '陕西 / 西安 / 西安市');
+        wrapper.setProps({
+            dataSource: newDataSource,
+        });
+        assert(wrapper.find('.next-input-text-field em').text() === '陕西 / 西安 / 西安市');
+    });
 });
 
 function findItem(menuIndex, itemIndex) {
