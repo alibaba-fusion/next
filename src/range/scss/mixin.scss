@@ -144,9 +144,9 @@
     $markColorActivatedHover
 ) {
     .#{$css-prefix}range-track {
-        background-color: $unselectedColor;
+        background: $unselectedColor;
         &:hover {
-            background-color: $unselectedColorHover;
+            background: $unselectedColorHover;
         }
     }
 
@@ -161,14 +161,14 @@
     .#{$css-prefix}range-scale {
         .#{$css-prefix}range-scale-item {
             border-color: $unselectedColor;
-            background-color: $unselectedColor;
+            background: $unselectedColor;
             &:hover {
                 border-color: $unselectedColorHover;
             }
 
             &.activated {
                 border-color: $selectedColor;
-                background-color: $selectedColor;
+                background: $selectedColor;
                 &:hover {
                     border-color: $selectedColorHover;
                 }
@@ -177,10 +177,10 @@
     }
 
     .#{$css-prefix}range-slider-inner {
-        background-color: $sliderBgColor;
+        background: $sliderBgColor;
         border-color: $sliderBorderColor;
         &:hover {
-            background-color: $sliderBgColorHover;
+            background: $sliderBgColorHover;
             box-shadow: $range-size-m-slider-shadow-hover;
             transform: scale(1.2);
         }
@@ -205,11 +205,11 @@
 
     &.disabled {
         .#{$css-prefix}range-track {
-            background-color: $unselectedColorDisabled;
+            background: $unselectedColorDisabled;
         }
 
         .#{$css-prefix}range-selected {
-            background-color: $selectedColorDisabled;
+            background: $selectedColorDisabled;
         }
 
         .#{$css-prefix}range-scale-item {
@@ -221,7 +221,7 @@
         }
 
         .#{$css-prefix}range-slider-inner {
-            background-color: $sliderBgColorDisabled;
+            background: $sliderBgColorDisabled;
             border-color: $sliderBorderColorDisabled;
             transform: none;
             box-shadow: none;
@@ -318,7 +318,7 @@
             background: $selectedColorHover;
         }
         .#{$css-prefix}range-track {
-            background-color: $unselectedColorHover;
+            background: $unselectedColorHover;
         }
         // .#{$css-prefix}range-scale {
         .#{$css-prefix}range-scale-item {
