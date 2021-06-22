@@ -139,6 +139,11 @@ class Select extends Base {
          */
         tagClosable: PropTypes.bool,
         /**
+         * 显示指定 tag 尺寸
+         * @version 1.24
+         */
+        tagSize: PropTypes.string,
+        /**
          * 最多显示多少个 tag
          * @version 1.15
          */
@@ -381,6 +386,14 @@ class Select extends Base {
     hasSearch() {
         const { showSearch, mode } = this.props;
         return showSearch || mode === 'tag';
+    }
+
+    getTagSize() {
+        const { size, tagSize } = this.props;
+        if (tagSize) {
+            return tagSize;
+        }
+        return size === 'large' ? 'medium' : 'small';
     }
 
     /**
@@ -772,7 +785,6 @@ class Select extends Base {
         const {
             prefix,
             mode,
-            size,
             valueRender,
             fillProps,
             disabled,
@@ -781,6 +793,7 @@ class Select extends Base {
             tagInline,
             tagClosable,
         } = this.props;
+        const tagSize = this.getTagSize();
         let value = this.state.value;
 
         if (isNull(value)) {
@@ -814,7 +827,7 @@ class Select extends Base {
             if (maxTagCount !== undefined && value.length > maxTagCount && !tagInline) {
                 limitedCountValue = limitedCountValue.slice(0, maxTagCount);
                 maxTagPlaceholderEl = (
-                    <Tag key="_count" type="primary" size={size === 'large' ? 'medium' : 'small'} animation={false}>
+                    <Tag key="_count" type="primary" size={tagSize} animation={false}>
                         {holder(value, totalValue)}
                     </Tag>
                 );
@@ -844,7 +857,7 @@ class Select extends Base {
                         key={v.value}
                         disabled={disabled || v.disabled}
                         type="primary"
-                        size={size === 'large' ? 'medium' : 'small'}
+                        size={tagSize}
                         animation={false}
                         onClose={this.handleTagClose.bind(this, v)}
                         closable={tagClosable}
