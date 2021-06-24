@@ -1181,7 +1181,7 @@ describe('AutoComplete', () => {
         class App extends React.Component {
             render() {
                 return (
-                    <Select placeholder="选择尺寸" style={{ cssFloat: 'right' }}>
+                    <Select placeholder="选择尺寸" style={{ float: 'right' }}>
                         <Option value="small">Small</Option>
                         <Option value="medium">
                             MediumMediumMediumMediumMedium
@@ -1245,7 +1245,7 @@ describe('virtual list', () => {
                 tagInline
                 mode="multiple"
                 showSearch
-                style={{ cssFloat: 'right' }}
+                style={{ float: 'right' }}
                 dataSource={dataSource}
             />
         );
