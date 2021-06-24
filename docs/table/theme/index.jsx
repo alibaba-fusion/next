@@ -69,6 +69,12 @@ class FunctionDemo extends React.Component {
                     name: 'sortable',
                     value: 'false',
                     enum: ['true', 'false']
+                },
+                {
+                    label: '表格有无竖线',
+                    name: 'hasBorder',
+                    value: 'false',
+                    enum: ['true', 'false']
                 }
             ])
         };
@@ -92,13 +98,17 @@ class FunctionDemo extends React.Component {
             mode: functions.rowSelection,
             selectedRowKeys: [4]
         };
-        let filters, sortable = false;
+        let filters, sortable = false, hasBorder = false;
         if (functions.filters === 'true') {
             filters = [{ label: 'Option1', value: 'Option1' }, { label: 'Option2', value: 'Option2' }];
         }
 
         if (functions.sortable === 'true') {
             sortable = true;
+        }
+
+        if (functions.hasBorder === 'true') {
+            hasBorder = true;
         }
 
         function productRender(product) {
@@ -209,34 +219,34 @@ class FunctionDemo extends React.Component {
             <Demo title="List" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <Demo title="List medium">
                     <DemoGroup label="Normal">
-                        <Table dataSource={listDataSource} hasBorder={false} onSort={()=>{}}>{cols}</Table>
+                        <Table dataSource={listDataSource} hasBorder={hasBorder} onSort={()=>{}}>{cols}</Table>
                     </DemoGroup>
                     <DemoGroup label="Selected">
-                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasBorder={false} rowProps={getSelectedRowProps} onSort={()=>{}}>{cols}</Table>
+                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasBorder={hasBorder} rowProps={getSelectedRowProps} onSort={()=>{}}>{cols}</Table>
                     </DemoGroup>
                     <DemoGroup label="No Data">
-                        <Table dataSource={[]} hasBorder={false} onSort={()=>{}}>{cols}</Table>
+                        <Table dataSource={[]} hasBorder={hasBorder} onSort={()=>{}}>{cols}</Table>
                     </DemoGroup>
                 </Demo>
                 <Demo title="List small">
                     <DemoGroup label="Normal">
-                        <Table size="small" dataSource={listDataSource} hasBorder={false} onSort={()=>{}}>{smallCols}</Table>
+                        <Table size="small" dataSource={listDataSource} hasBorder={hasBorder} onSort={()=>{}}>{smallCols}</Table>
                     </DemoGroup>
                 </Demo>
                 <Demo title="Group medium">
                     <DemoGroup label="Normal">
-                        <Table dataSource={listDataSource} onSort={()=>{}}>{groupCols}</Table>
+                        <Table dataSource={listDataSource} hasBorder={hasBorder} onSort={()=>{}}>{groupCols}</Table>
                     </DemoGroup>
                     <DemoGroup label="Selected">
-                        <Table rowSelection={rowSelection} dataSource={listDataSource} rowProps={getSelectedRowProps} onSort={()=>{}}>{groupCols}</Table>
+                        <Table rowSelection={rowSelection} dataSource={listDataSource} rowProps={getSelectedRowProps} hasBorder={hasBorder} onSort={()=>{}}>{groupCols}</Table>
                     </DemoGroup>
                     <DemoGroup label="No Data">
-                        <Table dataSource={[]} onSort={()=>{}}>{groupCols}</Table>
+                        <Table dataSource={[]} hasBorder={hasBorder} onSort={()=>{}}>{groupCols}</Table>
                     </DemoGroup>
                 </Demo>
                 <Demo title="Group small">
                     <DemoGroup label="Normal">
-                        <Table size="small" dataSource={listDataSource} onSort={()=>{}}>{smallGroupCols}</Table>
+                        <Table size="small" hasBorder={hasBorder} dataSource={listDataSource} onSort={()=>{}}>{smallGroupCols}</Table>
                     </DemoGroup>
                 </Demo>
             </Demo>
@@ -271,6 +281,12 @@ class TableFunctionDemo extends React.Component {
                 name: 'hasHeader',
                 value: 'true',
                 enum: ['true', 'false']
+            },
+            {
+                label: '表格有无竖线',
+                name: 'hasBorder',
+                value: 'false',
+                enum: ['true', 'false']
             }
         ];
 
@@ -303,6 +319,7 @@ class TableFunctionDemo extends React.Component {
             filters = [{ label: 'Option1', value: 'Option1' }, { label: 'Option2', value: 'Option2' }];
         }
         const hasHeader = functions.hasHeader === 'true';
+        const hasBorder = functions.hasBorder === 'true';
         const isZebra = functions.zebra === 'true';
         const align = functions.align;
         const listDataSource = [{
@@ -391,24 +408,24 @@ class TableFunctionDemo extends React.Component {
             <Demo title="Table" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <Demo title="Table medium">
                     <DemoGroup label="Normal">
-                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
+                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasBorder={hasBorder}  hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
                     <DemoGroup label="Selected">
-                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
+                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasBorder={hasBorder} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
                     <DemoGroup label="Selected & Expanded">
-                        <Table rowSelection={rowSelection} expandedRowRender={(record) => record.price} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
+                        <Table rowSelection={rowSelection} expandedRowRender={(record) => record.price} dataSource={listDataSource} hasBorder={hasBorder} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
                     <DemoGroup label="Tree">
-                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra} isTree>{cols.slice(1)}</Table>
+                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasBorder={hasBorder} hasHeader={hasHeader} isZebra={isZebra} isTree>{cols.slice(1)}</Table>
                     </DemoGroup>
                     <DemoGroup label="No Data">
-                        <Table rowSelection={rowSelection} dataSource={[]} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
+                        <Table rowSelection={rowSelection} dataSource={[]} hasBorder={hasBorder} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
                 </Demo>
                 <Demo title="Table small">
                     <DemoGroup label="Normal">
-                        <Table size="small" rowSelection={rowSelection} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra}>{smallCols}</Table>
+                        <Table size="small" rowSelection={rowSelection} dataSource={listDataSource} hasBorder={hasBorder} hasHeader={hasHeader} isZebra={isZebra}>{smallCols}</Table>
                     </DemoGroup>
                 </Demo>
 
