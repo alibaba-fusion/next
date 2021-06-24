@@ -1,6 +1,7 @@
 # 调整标签尺寸
 
 - order: 3
+- debug: true
 
 标签尺寸是否和`Select`尺寸保持一致（仅在`多选/标签`模式下生效），默认false。
 
@@ -8,6 +9,7 @@
 # Adjust Tag Size 
 
 - order: 3
+- debug: true
 
 Set if the size of tag should be the same as select when mode is `multiple` or `tag`
 
