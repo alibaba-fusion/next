@@ -1,18 +1,18 @@
 # Latest Log 
 
-## [1.23.9](https://github.com/alibaba-fusion/next/compare/1.23.8...1.23.9) (2021-06-21)
+## [1.23.10](https://github.com/alibaba-fusion/next/compare/1.23.9...1.23.10) (2021-06-24)
 
 
 ### Bug Fixes
 
-* **DatePicker2:** bug on checkRangeDate ([d011a72](https://github.com/alibaba-fusion/next/commit/d011a72))
-* **Overlay:** overflow bug with mulitple overlay ([ffa20f3](https://github.com/alibaba-fusion/next/commit/ffa20f3))
+* **Overlay:** should ignore hidden container ([0ede924](https://github.com/alibaba-fusion/next/commit/0ede924))
+* **Select:** invalid `cssFloat` due to stylelint autofix ([17b4dc3](https://github.com/alibaba-fusion/next/commit/17b4dc3))
 
 
 ### Features
 
-* **DatePicker2:** support outputFormat ([976d712](https://github.com/alibaba-fusion/next/commit/976d712))
-* **Progress:** bg can be gradient ([44d33a5](https://github.com/alibaba-fusion/next/commit/44d33a5))
-* **Table:** can get ref of Table.Column ([93e4446](https://github.com/alibaba-fusion/next/commit/93e4446))
+* **CascaderSelect:** support onSearch prop && async search ([ab4b7dd](https://github.com/alibaba-fusion/next/commit/ab4b7dd))
+* **Select:** add `adjustTagSize` prop ([6d28b37](https://github.com/alibaba-fusion/next/commit/6d28b37))
+* **Table:** make header corner configuaable ([cee6da5](https://github.com/alibaba-fusion/next/commit/cee6da5))
 
 

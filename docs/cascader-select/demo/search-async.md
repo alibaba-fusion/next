@@ -16,7 +16,7 @@ You can enable async search by onSearch prop.
 ---
 
 ````jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { CascaderSelect, Icon } from '@alifd/next';
 
@@ -34,7 +34,7 @@ function Demo() {
   }, []);
 
   let timeId;
-  let duration = 1000;
+  const duration = 1000;
   function handleSearch(searchVal) {
     setLoading(true);
 
@@ -44,8 +44,8 @@ function Demo() {
     timeId = setTimeout(() => {
       if (searchVal) {
         const item = { ...data[0].children[0].children[0] };
-        item.label = searchVal + '_' + item.label;
-        item.value = '' + Date.now();
+        item.label = `${searchVal  }_${  item.label}`;
+        item.value = `${  Date.now()}`;
 
         data[0].children[0].children[0] = item;
 
