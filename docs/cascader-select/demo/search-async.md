@@ -1,6 +1,7 @@
 # 异步搜索
 
 - order: 4
+- debug: true
 
 通过设置`onSearch`，实现异步搜索。
 
