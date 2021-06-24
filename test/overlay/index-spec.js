@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import simulateEvent from 'simulate-event';
@@ -664,6 +664,40 @@ describe('Overlay', () => {
         assert(container.style.paddingRight === '');
 
         wrapper.find('.btn')[0].click();
+    });
+
+    // https://codesandbox.io/s/next-overlay-overflow-2-fulpq?file=/src/App.js
+    it('fix overlay overflow hidden', done => {
+        function App() {
+            const appRef = useRef(null);
+
+            useEffect(() => {
+                appRef.current.style.overflow = 'hidden';
+                Dialog.show({
+                    popupContainer: 'app',
+                    content: 'Dialog Content',
+                    onOk() {
+                        appRef.current.style.overflow = '';
+
+                        setTimeout(() => {
+                            assert(appRef.current.style.overflow === '');
+                            done();
+                        });
+                    },
+                });
+                setTimeout(() => {
+                    simulateEvent.simulate(document.querySelector('.next-dialog-btn'), 'click');
+                });
+            }, []);
+
+            return (
+                <div id="app" ref={appRef} style={{ height: 1200 }}>
+                    Dialog Demo
+                </div>
+            );
+        }
+
+        wrapper = render(<App />);
     });
 
     // https://github.com/alibaba-fusion/next/issues/3104

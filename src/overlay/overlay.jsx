@@ -509,13 +509,18 @@ class Overlay extends Component {
     beforeOpen() {
         if (this.props.disableScroll) {
             const containerNode = getContainerNode(this.props) || document.body;
+            const { overflow, paddingRight } = containerNode.style;
+
             const cnInfo = containerNodeList.find(m => m.containerNode === containerNode) || {
                 containerNode,
                 count: 0,
             };
 
-            if (cnInfo.count === 0) {
-                const { overflow, paddingRight } = containerNode.style;
+            /**
+             * container 节点初始状态已经是 overflow=hidden 则忽略
+             * See {@link https://codesandbox.io/s/next-overlay-overflow-2-fulpq?file=/src/App.js}
+             */
+            if (cnInfo.count === 0 && overflow !== 'hidden') {
                 const style = {
                     overflow: 'hidden',
                 };
@@ -529,9 +534,11 @@ class Overlay extends Component {
 
                 dom.setStyle(containerNode, style);
                 containerNodeList.push(cnInfo);
+                cnInfo.count++;
+            } else if (cnInfo.count) {
+                cnInfo.count++;
             }
 
-            cnInfo.count++;
             this._containerNode = containerNode;
         }
     }
@@ -545,7 +552,8 @@ class Overlay extends Component {
                 const { overflow, paddingRight } = cnInfo;
 
                 // 最后一个 overlay 的时候再将样式重置回去
-                if (cnInfo.count === 1 && this._containerNode) {
+                // 此时 overflow 应该值在 beforeOpen 中设置的 hidden
+                if (cnInfo.count === 1 && this._containerNode && this._containerNode.style.overflow === 'hidden') {
                     const style = {
                         overflow,
                     };
@@ -555,7 +563,6 @@ class Overlay extends Component {
                     }
 
                     dom.setStyle(this._containerNode, style);
-                    this._containerNode = undefined;
                 }
 
                 cnInfo.count--;
@@ -564,6 +571,7 @@ class Overlay extends Component {
                     containerNodeList.splice(idx, 1);
                 }
             }
+            this._containerNode = undefined;
         }
     }
 
