@@ -1,5 +1,5 @@
 const path = require('path');
-const babel = require('babel-core');
+const babel = require('@babel/core');
 const fs = require('fs-extra');
 const cheerio = require('cheerio');
 const _ = require('lodash');

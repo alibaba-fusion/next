@@ -2,9 +2,11 @@ const path = require('path');
 const webpack = require('webpack');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-const babelConfig = require('@alifd/babel-preset-next')({ modules: false });
 const loaders = require('./loaders');
 
+const { getBabelConfig } = require('build-scripts-config');
+
+const babelConfig = getBabelConfig();
 module.exports = function(progress = true) {
     const conf = {
         output: {
@@ -33,18 +35,13 @@ module.exports = function(progress = true) {
         },
         plugins: [
             new CaseSensitivePathsPlugin(),
-            new WatchMissingNodeModulesPlugin(
-                path.resolve(process.cwd(), 'node_modules')
-            ),
+            new WatchMissingNodeModulesPlugin(path.resolve(process.cwd(), 'node_modules')),
             new webpack.optimize.ModuleConcatenationPlugin(),
         ],
     };
 
     if (progress) {
-        conf.plugins.concat([
-            new webpack.ProgressPlugin(),
-            new webpack.NamedModulesPlugin(),
-        ]);
+        conf.plugins.concat([new webpack.ProgressPlugin()]);
     }
     return conf;
 };

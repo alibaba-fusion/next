@@ -46,7 +46,17 @@ module.exports = function(content) {
     );
 
     const result = parseMD(content, resourcePath, lang, dir);
-    return processJS(result.js, result.css, result.meta.desc, result.body, resourcePath, this.context, dir, options);
+    const ret = processJS(
+        result.js,
+        result.css,
+        result.meta.desc,
+        result.body,
+        resourcePath,
+        this.context,
+        dir,
+        options
+    );
+    return ret;
 };
 
 // eslint-disable-next-line max-params

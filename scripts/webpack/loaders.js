@@ -1,12 +1,9 @@
-const babelConfig = require('@alifd/babel-preset-next')({}, { runtime: true });
-
 const js = (options = {}) => ({
     loader: 'babel-loader',
     options: Object.assign(
         {
             cacheDirectory: true,
         },
-        babelConfig,
         options
     ),
 });
