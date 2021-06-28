@@ -60,7 +60,6 @@
         background: transparent;
         &::before,
         &::after {
-            position: relative;
             top: 50%;
             display: table-cell;
             width: 50%;
