@@ -3,7 +3,7 @@
         "es6": true,
         "node": true
     },
-    "extends": ["@alifd/eslint-config-next", "./a11y.eslintrc", "prettier", "plugin:@typescript-eslint/recommended"],
+    "extends": ["@alifd/eslint-config-next", "./a11y.eslintrc", "prettier"],
     "rules": {
         "valid-jsdoc": "off",
         "max-statements": "off",
