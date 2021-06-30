@@ -6,7 +6,6 @@ import CommonProps from '../util';
 import { ButtonProps } from '../button';
 import { PopupProps } from '../overlay';
 
-// eslint-disable-next-line no-undef
 export interface MenuButtonProps extends Omit<ButtonProps, 'onSelect'>, CommonProps {
     /**
      * 按钮上的文本内容
