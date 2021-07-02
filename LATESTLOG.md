@@ -1,18 +1,17 @@
 # Latest Log 
 
-## [1.23.10](https://github.com/alibaba-fusion/next/compare/1.23.9...1.23.10) (2021-06-24)
+## [1.23.11](https://github.com/alibaba-fusion/next/compare/1.23.10...1.23.11) (2021-07-02)
 
 
 ### Bug Fixes
 
-* **Overlay:** should ignore hidden container ([0ede924](https://github.com/alibaba-fusion/next/commit/0ede924))
-* **Select:** invalid `cssFloat` due to stylelint autofix ([17b4dc3](https://github.com/alibaba-fusion/next/commit/17b4dc3))
+* **Core:** close [#3147](https://github.com/alibaba-fusion/next/issues/3147) ([4f4f22a](https://github.com/alibaba-fusion/next/commit/4f4f22a))
+* **Divider:** chrome style, close [#3142](https://github.com/alibaba-fusion/next/issues/3142) ([a491555](https://github.com/alibaba-fusion/next/commit/a491555))
+* **MenuButton:** fix typescript defination ([28c5025](https://github.com/alibaba-fusion/next/commit/28c5025))
 
 
 ### Features
 
-* **CascaderSelect:** support onSearch prop && async search ([ab4b7dd](https://github.com/alibaba-fusion/next/commit/ab4b7dd))
-* **Select:** add `adjustTagSize` prop ([6d28b37](https://github.com/alibaba-fusion/next/commit/6d28b37))
-* **Table:** make header corner configuaable ([cee6da5](https://github.com/alibaba-fusion/next/commit/cee6da5))
+* **Nav:** support item gradient bg color ([4e29c22](https://github.com/alibaba-fusion/next/commit/4e29c22))
 
 
