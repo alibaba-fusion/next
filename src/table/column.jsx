@@ -81,10 +81,12 @@ export default class Column extends React.Component {
          */
         colSpan: PropTypes.number,
         /**
-         * 设置该列单元格的word-break样式。
-         * 可选值为`all`, `word`。默认为`all`
+         * 设置该列单元格的word-break样式，对于id类、中文类适合用all，对于英文句子适合用word
+         * @enumdesc all, word
+         * @default all
+         * @version 1.23
          */
-        wordBreak: PropTypes.string,
+        wordBreak: PropTypes.oneOf(['all', 'word']),
     };
 
     static contextTypes = {
