@@ -80,6 +80,10 @@
         &#{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
             padding: $s-3 $s-4;
         }
+        // 用户通过Column参数配置word-break
+        &#{$table-prefix}-word-break-word #{$table-prefix}-cell-wrapper {
+            word-break: break-word;
+        }
 
         &#{$table-prefix}-fix-left,
         &#{$table-prefix}-fix-right {
@@ -140,6 +144,10 @@
         }
         &#{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
             padding: $s-3 $s-4;
+        }
+        // 用户通过Column参数配置word-break
+        &#{$table-prefix}-word-break-word #{$table-prefix}-cell-wrapper {
+            word-break: break-word;
         }
     }
 

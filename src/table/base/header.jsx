@@ -105,12 +105,14 @@ export default class Header extends React.Component {
                     __normalized,
                     lock,
                     cellStyle,
+                    wordBreak,
                     ...others
                 } = col;
 
                 className = classnames({
                     [`${prefix}table-header-node`]: true,
                     [`${prefix}table-header-resizable`]: resizable,
+                    [`${prefix}table-word-break-${wordBreak}`]: !!wordBreak,
                     [className]: className,
                 });
                 let attrs = {},
