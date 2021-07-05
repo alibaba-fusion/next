@@ -80,6 +80,11 @@ export default class Column extends React.Component {
          * header cell 横跨的格数，设置为0表示不出现此 th
          */
         colSpan: PropTypes.number,
+        /**
+         * 设置该列单元格的word-break样式。
+         * 可选值为`all`, `word`。默认为`all`
+         */
+        wordBreak: PropTypes.string,
     };
 
     static contextTypes = {
