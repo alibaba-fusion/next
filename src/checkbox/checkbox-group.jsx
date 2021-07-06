@@ -39,7 +39,7 @@ class CheckboxGroup extends Component {
         /**
          * 通过子元素方式设置内部 checkbox
          */
-        children: PropTypes.arrayOf(PropTypes.element),
+        children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.element), PropTypes.element]),
         /**
          * 选中值改变时的事件
          * @param {Array} value 选中项列表
@@ -107,8 +107,12 @@ class CheckboxGroup extends Component {
     }
 
     getChildContext() {
+        const { children, dataSource } = this.props;
+        const group =
+            (Array.isArray(this.props.children) && children.length > 1) ||
+            (Array.isArray(dataSource) && dataSource.length > 1);
         return {
-            __group__: true,
+            __group__: group,
             onChange: this.onChange,
             selectedValue: this.state.value,
             disabled: this.props.disabled,
