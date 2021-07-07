@@ -67,7 +67,7 @@ class App extends React.Component {
         this.setState((prevState) => {
             return {
                 wordBreak: prevState.wordBreak === 'word' ? 'all': 'word'
-            }
+            };
         });
     }
 
