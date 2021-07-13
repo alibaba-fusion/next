@@ -1,2 +1,4 @@
+@use "sass:math" as *;
+
 @import "./reset.scss";
-@import "./index-noreset.scss";
+@import "./components.scss";

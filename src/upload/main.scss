@@ -372,7 +372,7 @@
             .#{$css-prefix}progress-line-overlay {
                 border-radius: 0;
                 height: $upload-card-list-progressbar-height;
-                margin-top: calc(0px - #{($upload-card-list-progressbar-height / 2)});
+                margin-top: calc((0px - #{($upload-card-list-progressbar-height)} / 2));
             }
         }
 
