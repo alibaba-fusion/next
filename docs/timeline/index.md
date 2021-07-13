@@ -21,6 +21,7 @@
 | 参数   | 说明                                                                  | 类型    | 默认值 |
 | ---- | ------------------------------------------------------------------- | ----- | --- |
 | fold | 自定义折叠选项 示例`[{foldArea: [startIndex, endIndex], foldShow: boolean}]` | Array | \[] |
+| animation | 动画                                                               | Boolean   | true   |
 
 ### Timeline.Item
 
@@ -33,4 +34,3 @@
 | title     | 标题                                                               | ReactNode | -      |
 | timeLeft  | 左侧时间                                                             | ReactNode | -      |
 | content   | 右侧内容                                                             | ReactNode | -      |
-| animation | 动画                                                               | Boolean   | true   |
