@@ -48,9 +48,6 @@ class TimelineItem extends Component {
         toggleFold: PropTypes.func,
         className: PropTypes.string,
         locale: PropTypes.object,
-        /**
-         * 动画
-         */
         animation: PropTypes.bool,
     };
 
