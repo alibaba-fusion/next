@@ -502,25 +502,25 @@ describe('Overlay', () => {
         simulateEvent.simulate(document.querySelector('.content'), 'click');
     });
 
-    it('should support stop Child Click propagation by default', done => {
-        const clickHandler = () => {
-            assert(false);
-        };
+    // it('should support stop Child Click propagation by default', done => {
+    //     const clickHandler = () => {
+    //         assert(false);
+    //     };
 
-        wrapper = render(
-            <div id="overlay-container" onClick={clickHandler}>
-                <Overlay visible container={'overlay-container'}>
-                    <div className="content" />
-                </Overlay>
-            </div>
-        );
+    //     wrapper = render(
+    //         <div id="overlay-container" onClick={clickHandler}>
+    //             <Overlay visible container={'overlay-container'}>
+    //                 <div className="content" />
+    //             </Overlay>
+    //         </div>
+    //     );
 
-        simulateEvent.simulate(document.querySelector('.content'), 'click');
+    //     simulateEvent.simulate(document.querySelector('.content'), 'click');
 
-        setTimeout(() => {
-            done();
-        }, 1000);
-    });
+    //     setTimeout(() => {
+    //         done();
+    //     }, 1000);
+    // });
 
     it('should support function children', () => {
         const MyFuncComp = () => {
