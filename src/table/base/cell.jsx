@@ -89,6 +89,7 @@ export default class Cell extends React.Component {
             isIconLeft,
             type,
             htmlTitle,
+            wordBreak,
             ...others
         } = this.props;
         const tagStyle = { ...style };
@@ -107,6 +108,7 @@ export default class Cell extends React.Component {
         }
         const cls = classnames({
             [`${prefix}table-cell`]: true,
+            [`${prefix}table-word-break-${wordBreak}`]: !!wordBreak,
             [className]: className,
         });
 
