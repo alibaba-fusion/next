@@ -26,6 +26,9 @@ class Timeline extends Component {
         className: PropTypes.string,
         children: PropTypes.any,
         locale: PropTypes.object,
+        /**
+        * 有无展开收起的动画
+        */
         animation: PropTypes.bool,
     };
 
