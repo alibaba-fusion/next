@@ -223,7 +223,7 @@ class Overlay extends Component {
         disableScroll: false,
         cache: false,
         isChildrenInMask: false,
-        onClick: e => e.stopPropagation(),
+        onClick: noop,
         maskClass: '',
     };
 
