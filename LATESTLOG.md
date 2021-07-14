@@ -1,16 +1,15 @@
 # Latest Log 
 
-## [1.23.13](https://github.com/alibaba-fusion/next/compare/1.23.12...1.23.13) (2021-07-13)
+## [1.23.14](https://github.com/alibaba-fusion/next/compare/1.23.13...1.23.14) (2021-07-14)
 
 
 ### Bug Fixes
 
-* **DatePicker:** correct color of DatePicker2 ([0523bed](https://github.com/alibaba-fusion/next/commit/0523bed))
+* remove usage of [@use](https://github.com/use) ([#3185](https://github.com/alibaba-fusion/next/issues/3185)) ([6e00c2c](https://github.com/alibaba-fusion/next/commit/6e00c2c))
 
 
 ### Features
 
-* support react 17 ([#3180](https://github.com/alibaba-fusion/next/issues/3180)) ([256b054](https://github.com/alibaba-fusion/next/commit/256b054))
-* support sass 2.0 ([#3179](https://github.com/alibaba-fusion/next/issues/3179)) ([c000a6c](https://github.com/alibaba-fusion/next/commit/c000a6c))
+* **Rating:** add allowClear api ([#3174](https://github.com/alibaba-fusion/next/issues/3174)) ([92c7dee](https://github.com/alibaba-fusion/next/commit/92c7dee))
 
 
