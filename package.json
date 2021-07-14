@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.23.14",
+  "version": "1.23.15",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -28,6 +28,7 @@
     "index.scss",
     "reset.scss",
     "variables.scss",
+    "components.scss",
     "index.css",
     "index-noreset.css",
     "reset.css",
