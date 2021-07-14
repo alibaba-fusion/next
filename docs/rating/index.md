@@ -21,6 +21,7 @@
 | count         | 评分的总数                                                                                                      | Number   | 5          |
 | showGrade     | 是否显示 grade                                                                                                 | Boolean  | false      |
 | allowHalf     | 是否允许半星评分                                                                                                   | Boolean  | false      |
+| allowClear    | 是否允许再次点击后清除                                                                                                | Boolean  | false       |
 | onChange      | 用户点击评分时触发的回调<br/><br/>**签名**:<br/>Function(value: Number) => void<br/>**参数**:<br/>_value_: {Number} 评分值    | Function | func.noop  |
 | onHoverChange | 用户hover评分时触发的回调<br/><br/>**签名**:<br/>Function(value: Number) => void<br/>**参数**:<br/>_value_: {Number} 评分值 | Function | func.noop  |
 | disabled      | 是否禁用                                                                                                       | Boolean  | false      |

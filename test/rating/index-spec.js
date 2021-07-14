@@ -150,6 +150,83 @@ describe('Rating', () => {
             assert(ret === 1);
         });
 
+        it('should allowClear={false} work', () => {
+            ReactDOM.render(
+                <Rating
+                    defaultValue={3}
+                    onChange={onChange}
+                    id="action-test-1"
+                />,
+                parent
+            );
+            rect = document
+                .querySelectorAll('#action-test-1 .next-rating-icon')[0]
+                .getBoundingClientRect();
+
+            ReactTestUtils.Simulate.click(
+                document.querySelectorAll(
+                    '#action-test-1 .next-rating-base'
+                )[0],
+                {
+                    pageX: rect.left + 8,
+                    pageY: rect.top + 8,
+                }
+            );
+
+            assert(ret === 1);
+
+            ReactTestUtils.Simulate.click(
+                document.querySelectorAll(
+                    '#action-test-1 .next-rating-base'
+                )[0],
+                {
+                    pageX: rect.left + 8,
+                    pageY: rect.top + 8,
+                }
+            );
+
+            assert(ret === 1);
+        });
+
+        it('should allowClear={true} work', () => {
+            ReactDOM.render(
+                <Rating
+                    allowClear
+                    defaultValue={3}
+                    onChange={onChange}
+                    id="action-test-1"
+                />,
+                parent
+            );
+            rect = document
+                .querySelectorAll('#action-test-1 .next-rating-icon')[0]
+                .getBoundingClientRect();
+
+            ReactTestUtils.Simulate.click(
+                document.querySelectorAll(
+                    '#action-test-1 .next-rating-base'
+                )[0],
+                {
+                    pageX: rect.left + 8,
+                    pageY: rect.top + 8,
+                }
+            );
+
+            assert(ret === 1);
+
+            ReactTestUtils.Simulate.click(
+                document.querySelectorAll(
+                    '#action-test-1 .next-rating-base'
+                )[0],
+                {
+                    pageX: rect.left + 8,
+                    pageY: rect.top + 8,
+                }
+            );
+
+            assert(ret === 0);
+        });
+
         it('should trigger click event correct', () => {
             ReactDOM.render(
                 <Rating
