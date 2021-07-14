@@ -105,7 +105,7 @@ class Rating extends Component {
         defaultValue: 0,
         readAs: val => val,
         allowHalf: false,
-        allowClear: true,
+        allowClear: false,
         onChange: noop,
         onHoverChange: noop,
         locale: zhCN.Rating,
