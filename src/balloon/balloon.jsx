@@ -106,7 +106,7 @@ class Balloon extends React.Component {
          */
         afterClose: PropTypes.func,
         /**
-         * 强制更新定位信息
+         * 强制更新定位信息，在气泡内容宽、高发生变化后重新定位，推荐开启
          */
         shouldUpdatePosition: PropTypes.bool,
         /**
@@ -177,7 +177,6 @@ class Balloon extends React.Component {
         safeNode: undefined,
         safeId: null,
         autoFocus: true,
-        delay: 0,
         animation: {
             in: 'zoomIn zoomInBig',
             out: 'zoomOut zoomOutBig',

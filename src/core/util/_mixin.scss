@@ -423,9 +423,9 @@
         @if ($size-static < 12) {
             @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {
                 @if ($transform) {
-                    transform: scale($size-static / $icon-s-static) $transform;
+                    transform: scale(divide($size-static, $icon-s-static)) $transform;
                 } @else {
-                    transform: scale($size-static / $icon-s-static);
+                    transform: scale(divide($size-static, $icon-s-static));
                 }
                 @if ($marginLeft) {
                     margin-left: calc(#{$marginLeft} - (#{$icon-s} - #{$size}) / 2);
@@ -482,9 +482,9 @@
         @if ($size-static < 12) {
             @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {
                 @if ($transform) {
-                    transform: scale($size-static / $icon-s-static) $transform;
+                    transform: scale(divide($size-static, $icon-s-static)) $transform;
                 } @else {
-                    transform: scale($size-static / $icon-s-static);
+                    transform: scale(divide($size-static, $icon-s-static));
                 }
                 @if ($marginTop) {
                     margin-top: calc(#{$marginTop} - (#{$icon-s} - #{$size}) / 2);

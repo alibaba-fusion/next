@@ -60,15 +60,16 @@ export default class VirtualBody extends React.Component {
         const style = {
             width: tableWidth,
         };
+        const wrapperStyle = {
+            position: 'relative',
+        };
+        // todo 2.0 ，这里最好自己画滚动条
+        if (bodyHeight > maxBodyHeight) {
+            wrapperStyle.height = bodyHeight;
+        }
         return (
             <div style={{ maxHeight: maxBodyHeight }} className={className} onScroll={this.onScroll}>
-                <div
-                    style={{
-                        height: bodyHeight,
-                        position: 'relative',
-                    }}
-                    ref={this.virtualScrollRef}
-                >
+                <div style={wrapperStyle} ref={this.virtualScrollRef}>
                     <div
                         style={{
                             position: 'relative',

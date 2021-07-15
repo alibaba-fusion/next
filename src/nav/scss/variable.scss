@@ -119,6 +119,7 @@ $nav-primary-text-style: $font-weight-2 !default;
 $nav-primary-shadow: $shadow-2 !default;
 /// background
 /// @namespace statement/normal/sub nav
+/// @supportGradient
 $nav-primary-sub-nav-bg-color: $color-text1-4 !default;
 /// text
 /// @namespace statement/normal/sub nav
@@ -134,6 +135,7 @@ $nav-primary-group-text-color: $color-text1-2 !default;
 $nav-primary-group-text-style: $font-weight-2 !default;
 /// background
 /// @namespace statement/hover
+/// @supportGradient
 $nav-primary-item-hover-bg-color: $color-black !default;
 /// text
 /// @namespace statement/hover
@@ -146,12 +148,14 @@ $nav-primary-item-hover-text-style: $font-weight-2 !default;
 $nav-primary-item-hover-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/hover/sub nav
+/// @supportGradient
 $nav-primary-sub-nav-hover-bg-color: $color-black !default;
 /// text
 /// @namespace statement/hover/sub nav
 $nav-primary-sub-nav-hover-text-color: $color-white !default;
 /// background
 /// @namespace statement/selected
+/// @supportGradient
 $nav-primary-item-selected-bg-color: $color-black !default;
 /// text color
 /// @namespace statement/selected
@@ -161,6 +165,7 @@ $nav-primary-item-selected-text-color: $color-white !default;
 $nav-primary-item-selected-text-style: $font-weight-3 !default;
 /// background
 /// @namespace statement/child selected
+/// @supportGradient
 $nav-primary-item-childselected-bg-color: $color-transparent !default;
 /// text color
 /// @namespace statement/child selected
@@ -173,6 +178,7 @@ $nav-primary-item-childselected-text-style: $font-weight-3 !default;
 $nav-primary-item-selected-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/selected/sub nav
+/// @supportGradient
 $nav-primary-sub-nav-selected-bg-color: $color-black !default;
 /// text color
 /// @namespace statement/selected/sub nav
@@ -182,6 +188,7 @@ $nav-primary-sub-nav-selected-text-color: $color-white !default;
 $nav-primary-sub-nav-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/open
+/// @supportGradient
 $nav-primary-item-opened-bg-color: $color-transparent !default;
 /// text
 /// @namespace statement/open
@@ -209,6 +216,7 @@ $nav-secondary-text-style: $font-weight-2 !default;
 $nav-secondary-shadow: $shadow-2 !default;
 /// background
 /// @namespace statement/normal/sub nav
+/// @supportGradient
 $nav-secondary-sub-nav-bg-color: $color-brand1-6 !default;
 /// text
 /// @namespace statement/normal/sub nav
@@ -224,6 +232,7 @@ $nav-secondary-group-text-color: $color-white !default;
 $nav-secondary-group-text-style: $font-weight-2 !default;
 /// background
 /// @namespace statement/hover
+/// @supportGradient
 $nav-secondary-item-hover-bg-color: $color-brand1-9 !default;
 /// text
 /// @namespace statement/hover
@@ -236,12 +245,14 @@ $nav-secondary-item-hover-text-style: $font-weight-2 !default;
 $nav-secondary-item-hover-active-color: $color-brand1-9 !default;
 /// background
 /// @namespace statement/hover/sub nav
+/// @supportGradient
 $nav-secondary-sub-nav-hover-bg-color: $color-brand1-9 !default;
 /// text
 /// @namespace statement/hover/sub nav
 $nav-secondary-sub-nav-hover-text-color: $color-white !default;
 /// background
 /// @namespace statement/selected
+/// @supportGradient
 $nav-secondary-item-selected-bg-color: $color-brand1-9 !default;
 /// text color
 /// @namespace statement/selected
@@ -251,6 +262,7 @@ $nav-secondary-item-selected-text-color: $color-white !default;
 $nav-secondary-item-selected-text-style: $font-weight-3 !default;
 /// background
 /// @namespace statement/child selected
+/// @supportGradient
 $nav-secondary-item-childselected-bg-color: $color-transparent !default;
 /// text color
 /// @namespace statement/child selected
@@ -263,6 +275,7 @@ $nav-secondary-item-childselected-text-style: $font-weight-3 !default;
 $nav-secondary-item-selected-active-color: $color-brand1-9 !default;
 /// background
 /// @namespace statement/selected/sub nav
+/// @supportGradient
 $nav-secondary-sub-nav-selected-bg-color: $color-brand1-9 !default;
 /// text color
 /// @namespace statement/selected/sub nav
@@ -272,6 +285,7 @@ $nav-secondary-sub-nav-selected-text-color: $color-white !default;
 $nav-secondary-sub-nav-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/open
+/// @supportGradient
 $nav-secondary-item-opened-bg-color: $color-transparent !default;
 /// text
 /// @namespace statement/open
@@ -302,6 +316,7 @@ $nav-normal-border-line: $line-1 !default;
 $nav-normal-shadow: $shadow-2 !default;
 /// background
 /// @namespace statement/normal/sub nav
+/// @supportGradient
 $nav-normal-sub-nav-bg-color: $color-white !default;
 /// text
 /// @namespace statement/normal/sub nav
@@ -317,6 +332,7 @@ $nav-normal-group-text-color: $color-text1-2 !default;
 $nav-normal-group-text-style: $font-weight-2 !default;
 /// background
 /// @namespace statement/hover
+/// @supportGradient
 $nav-normal-item-hover-bg-color: $color-white !default;
 /// text
 /// @namespace statement/hover
@@ -329,12 +345,14 @@ $nav-normal-item-hover-text-style: $font-weight-2 !default;
 $nav-normal-item-hover-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/hover/sub nav
+/// @supportGradient
 $nav-normal-sub-nav-hover-bg-color: $color-fill1-2 !default;
 /// text
 /// @namespace statement/hover/sub nav
 $nav-normal-sub-nav-hover-text-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/selected
+/// @supportGradient
 $nav-normal-item-selected-bg-color: $color-fill1-2 !default;
 /// text color
 /// @namespace statement/selected
@@ -344,6 +362,7 @@ $nav-normal-item-selected-text-color: $color-brand1-6 !default;
 $nav-normal-item-selected-text-style: $font-weight-3 !default;
 /// background
 /// @namespace statement/child selected
+/// @supportGradient
 $nav-normal-item-childselected-bg-color: $color-transparent !default;
 /// text color
 /// @namespace statement/child selected
@@ -356,6 +375,7 @@ $nav-normal-item-childselected-text-style: $font-weight-2 !default;
 $nav-normal-item-selected-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/selected/sub nav
+/// @supportGradient
 $nav-normal-sub-nav-selected-bg-color: $color-fill1-2 !default;
 /// text color
 /// @namespace statement/selected/sub nav
@@ -365,6 +385,7 @@ $nav-normal-sub-nav-selected-text-color: $color-brand1-6 !default;
 $nav-normal-sub-nav-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/open
+/// @supportGradient
 $nav-normal-item-opened-bg-color: $color-transparent !default;
 /// text
 /// @namespace statement/open
@@ -392,6 +413,7 @@ $nav-line-border-color: $color-line1-2 !default;
 $nav-line-border-line: $line-1 !default;
 /// background
 /// @namespace statement/normal/sub nav
+/// @supportGradient
 $nav-line-sub-nav-bg-color: $color-transparent !default;
 /// text
 /// @namespace statement/normal/sub nav
@@ -401,6 +423,7 @@ $nav-line-sub-nav-text-color: $color-text1-4 !default;
 $nav-line-sub-nav-text-style: $font-weight-2 !default;
 /// background
 /// @namespace statement/hover
+/// @supportGradient
 $nav-line-item-hover-bg-color: $color-transparent !default;
 /// text
 /// @namespace statement/hover
@@ -413,12 +436,14 @@ $nav-line-item-hover-text-style: $font-weight-2 !default;
 $nav-line-item-hover-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/hover/sub nav
+/// @supportGradient
 $nav-line-sub-nav-hover-bg-color: $color-transparent !default;
 /// text
 /// @namespace statement/hover/sub nav
 $nav-line-sub-nav-hover-text-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/selected
+/// @supportGradient
 $nav-line-item-selected-bg-color: $color-transparent !default;
 /// text color
 /// @namespace statement/selected
@@ -428,6 +453,7 @@ $nav-line-item-selected-text-color: $color-brand1-6 !default;
 $nav-line-item-selected-text-style: $font-weight-3 !default;
 /// background
 /// @namespace statement/child selected
+/// @supportGradient
 $nav-line-item-childselected-bg-color: $color-transparent !default;
 /// text color
 /// @namespace statement/child selected
@@ -440,6 +466,7 @@ $nav-line-item-childselected-text-style: $font-weight-2 !default;
 $nav-line-item-selected-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/selected/sub nav
+/// @supportGradient
 $nav-line-sub-nav-selected-bg-color: $color-transparent !default;
 /// text color
 /// @namespace statement/selected/sub nav
@@ -449,6 +476,7 @@ $nav-line-sub-nav-selected-text-color: $color-brand1-6 !default;
 $nav-line-sub-nav-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/open
+/// @supportGradient
 $nav-line-item-opened-bg-color: $color-transparent !default;
 /// text
 /// @namespace statement/open

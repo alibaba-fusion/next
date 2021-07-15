@@ -411,6 +411,46 @@ describe('Picker', () => {
                     .getAttribute('title') === '2020-11-01'
             );
         });
+
+        it('outputFormat', () => {
+            wrapper = mount(
+                <DatePicker
+                    defaultValue={defaultVal}
+                    defaultVisible
+                    outputFormat="x"
+                    onChange={v => assert(v === dayjs(defaultVal).format('x'))}
+                />
+            );
+            clickDate('2020-12-12');
+
+            wrapper.setProps({
+                showTime: true,
+                outputFormat(v) {
+                    return v.valueOf();
+                },
+                onOk: v => assert(v === dayjs(defaultVal).valueOf()),
+                onChange: v => assert(v === dayjs(defaultVal).valueOf()),
+            });
+
+            clickDate('2020-12-12');
+            clickOk();
+
+            wrapper.unmount();
+
+            // RangePicker
+            wrapper = mount(
+                <RangePicker
+                    defaultValue={defaultRangeVal}
+                    defaultVisible
+                    outputFormat="x"
+                    onChange={v =>
+                        assert.deepEqual(v, [dayjs('2020-12-12').format('x'), dayjs('2020-12-14').format('x')])
+                    }
+                />
+            );
+            clickDate('2020-12-12');
+            clickDate('2020-12-14');
+        });
     });
 
     describe('controlled', () => {
@@ -832,6 +872,36 @@ describe('Picker', () => {
             document.dispatchEvent(new Event('click'));
 
             assert.deepEqual(getStrValue(), ['', '']);
+        });
+
+        // https://github.com/alibaba-fusion/next/issues/3086
+        it('fix issue on half disabled & showTime', () => {
+            wrapper = mount(
+                <RangePicker
+                    showTime
+                    visible
+                    disabled={[true, false]}
+                    value={['2021-01-12 10:00:00', '2021-01-12 09:00:00']}
+                />
+            );
+            assert.deepEqual(getStrValue(), ['2021-01-12 10:00:00', '']);
+
+            wrapper.setProps({ disabled: [false, true] });
+            assert.deepEqual(getStrValue(), ['', '2021-01-12 09:00:00']);
+
+            wrapper.setProps({ disabled: true });
+            assert.deepEqual(getStrValue(), ['2021-01-12 10:00:00', '']);
+
+            wrapper.setProps({ disabled: false });
+            assert.deepEqual(getStrValue(), ['2021-01-12 10:00:00', '']);
+
+            wrapper.setProps({ value: ['2021-01-12 10:00:00', '2021-01-12 10:00:00'] });
+            assert.deepEqual(getStrValue(), ['2021-01-12 10:00:00', '2021-01-12 10:00:00']);
+
+            findInput(1).simulate('focus');
+            changeInput('2021-01-12 09:00:00', 1);
+            clickOk();
+            assert.deepEqual(getStrValue(), ['', '2021-01-12 09:00:00']);
         });
     });
 });

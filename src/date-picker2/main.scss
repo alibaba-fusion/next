@@ -238,6 +238,7 @@
             &#{$calendar2-prefix}-cell-range-begin,
             &#{$calendar2-prefix}-cell-range-end {
                 #{$calendar2-cell-inner} {
+                    z-index: 10;
                     @include calendar-selected;
                 }
             }

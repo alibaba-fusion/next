@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { log, dom, events } from '../../util';
+import { log } from '../../util';
 import Row from '../lock/row';
 
 export default class ExpandedRow extends React.Component {
@@ -19,33 +19,12 @@ export default class ExpandedRow extends React.Component {
         expandedIndexSimulate: PropTypes.bool,
         expandedRowWidthEquals2Table: PropTypes.bool,
         lockType: PropTypes.oneOf(['left', 'right']),
+        getExpandedRowRef: PropTypes.func,
     };
-
-    componentDidMount() {
-        events.on(window, 'resize', this.setExpandedWidth);
-    }
-
-    componentDidUpdate() {
-        this.setExpandedWidth();
-    }
-
-    componentWillUnmount() {
-        events.off(window, 'resize', this.setExpandedWidth);
-    }
 
     getExpandedRow = (parentKey, ref) => {
-        if (!this.expandedRowRef) {
-            this.expandedRowRef = {};
-        }
-        this.expandedRowRef[parentKey] = ref;
-    };
-
-    setExpandedWidth = () => {
-        const { tableEl } = this.props;
-        const totalWidth = +(tableEl && tableEl.clientWidth) - 1 || '100%';
-        Object.keys(this.expandedRowRef || {}).forEach(key => {
-            dom.setStyle(this.expandedRowRef[key], { width: totalWidth });
-        });
+        const { getExpandedRowRef } = this.context;
+        getExpandedRowRef && getExpandedRowRef(parentKey, ref);
     };
 
     renderExpandedRow(record, rowIndex) {

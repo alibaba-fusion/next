@@ -480,7 +480,7 @@ class NumberPicker extends React.Component {
         // 避免原生input将number类型的-0，渲染为0
         return typeof format === 'function' && !hasFocused
             ? format(value)
-            : value !== '-0.' && 1 / value === -Infinity
+            : typeof value === 'number' && 1 / value === -Infinity
             ? '-0'
             : value;
     }

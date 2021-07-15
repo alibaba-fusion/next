@@ -44,6 +44,9 @@ export default function stickyLock(BaseComponent) {
                 hasLockLeft: true,
                 hasLockRight: true,
             };
+
+            this.pingLeft = false;
+            this.pingRight = false;
         }
 
         getChildContext() {
@@ -83,8 +86,8 @@ export default function stickyLock(BaseComponent) {
         }
 
         componentWillUnmount() {
-            this.pingLeft = undefined;
-            this.pingRight = undefined;
+            this.pingLeft = false;
+            this.pingRight = false;
             events.off(window, 'resize', this.updateOffsetArr);
         }
 
@@ -301,7 +304,7 @@ export default function stickyLock(BaseComponent) {
                 // no header
                 const node = isEmpty
                     ? this.getHeaderCellNode(0, nodeToGetWidth)
-                    : this.getCellNode(scrollToRow || 0, nodeToGetWidth);
+                    : this.getCellNode(scrollToRow || (dataSource[0] && dataSource[0].__rowIndex) || 0, nodeToGetWidth);
                 const colWidth = (node && parseFloat(getComputedStyle(node).width)) || 0;
 
                 ret[tag] = (ret[tagNext] || 0) + colWidth;

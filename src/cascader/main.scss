@@ -19,6 +19,7 @@ $cascader-menu-border: $cascader-menu-border-width $line-solid $cascader-menu-bo
         float: left;
         overflow: auto;
         width: $cascader-menu-width;
+        min-width: $cascader-menu-min-width;
         height: $cascader-menu-height;
         overflow-x: hidden;
         overflow-y: auto;

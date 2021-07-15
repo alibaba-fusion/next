@@ -107,6 +107,11 @@
         cursor: default;
     }
 
+    .#{$css-prefix}breadcrumb-text-ellipsis-clickable {
+        color: $ellipsisTextColor;
+        cursor: pointer;
+    }
+
     .#{$css-prefix}breadcrumb-separator {
         color: $iconColor;
     }

@@ -32,6 +32,11 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     disabled?: boolean;
 
     /**
+     * 是否为预览态
+     */
+    isPreview?: boolean;
+
+    /**
      * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`
      */
     dataSource?: Array<string> | Array<data> | Array<number>;
@@ -132,6 +137,11 @@ export interface CheckboxProps extends HTMLAttributesWeak, CommonProps {
      * Checkbox 的默认中间态，只会影响到 Checkbox 的样式，并不影响其 checked 属性
      */
     defaultIndeterminate?: boolean;
+
+    /**
+     * 是否为预览态
+     */
+     isPreview?: boolean;
 
     /**
      * 状态变化时触发的事件

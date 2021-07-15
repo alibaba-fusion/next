@@ -7,7 +7,7 @@ export default class Cell extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
-        primaryKey: PropTypes.string,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         className: PropTypes.string,
         record: PropTypes.any,
         value: PropTypes.any,
@@ -89,6 +89,7 @@ export default class Cell extends React.Component {
             isIconLeft,
             type,
             htmlTitle,
+            wordBreak,
             ...others
         } = this.props;
         const tagStyle = { ...style };
@@ -107,6 +108,7 @@ export default class Cell extends React.Component {
         }
         const cls = classnames({
             [`${prefix}table-cell`]: true,
+            [`${prefix}table-word-break-${wordBreak}`]: !!wordBreak,
             [className]: className,
         });
 

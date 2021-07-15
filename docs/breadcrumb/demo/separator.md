@@ -1,12 +1,12 @@
 # 设置分隔符
 
-- order: 3
+- order: 4
 
 也可以设置不同的分隔符。
 
 :::lang=en-us
 # Set Separator
-- order: 3
+- order: 4
 You can also set specific separators.
 :::
 ---

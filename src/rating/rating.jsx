@@ -47,6 +47,10 @@ class Rating extends Component {
          */
         allowHalf: PropTypes.bool,
         /**
+         * 是否允许再次点击后清除
+         */
+        allowClear: PropTypes.bool,
+        /**
          * 用户点击评分时触发的回调
          * @param {Number} value 评分值
          */
@@ -101,6 +105,7 @@ class Rating extends Component {
         defaultValue: 0,
         readAs: val => val,
         allowHalf: false,
+        allowClear: false,
         onChange: noop,
         onHoverChange: noop,
         locale: zhCN.Rating,
@@ -121,6 +126,7 @@ class Rating extends Component {
         this.state = {
             value: 'value' in props ? props.value : props.defaultValue,
             hoverValue: 0,
+            cleanedValue: null,
             iconSpace: 0,
             iconSize: 0,
             clicked: false, // 标记组件是否被点击过
@@ -217,11 +223,12 @@ class Rating extends Component {
 
         const value = this.getValue(e);
         const { onHoverChange } = this.props;
-        if (value !== this.state.hoverValue) {
+        const { cleanedValue } = this.state;
+        if (cleanedValue !== value) {
             this.clearTimer();
 
             this.timer = setTimeout(() => {
-                this.setState({ hoverValue: value }, () => {
+                this.setState({ hoverValue: value, cleanedValue: null }, () => {
                     onHoverChange(value);
                 });
             }, 0);
@@ -229,6 +236,7 @@ class Rating extends Component {
     }
 
     handleLeave() {
+        const { onHoverChange } = this.props;
         if (this.state.disabled) {
             return;
         }
@@ -237,7 +245,9 @@ class Rating extends Component {
 
         this.setState({
             hoverValue: 0,
+            cleanedValue: null,
         });
+        onHoverChange(undefined);
     }
 
     onKeyDown(e) {
@@ -299,19 +309,29 @@ class Rating extends Component {
         if (this.state.disabled) {
             return;
         }
-        const value = this.getValue(e);
-        if (value < 0) {
+        const { allowClear } = this.props;
+        const { value } = this.state;
+        const newValue = this.getValue(e);
+        let isReset = false;
+        if (allowClear) {
+            isReset = newValue === value;
+        }
+        this.handleLeave();
+        if (newValue < 0) {
             return;
         }
+
         if (!('value' in this.props)) {
-            this.setState({ value, clicked: true });
+            this.setState({ value: isReset ? 0 : newValue, clicked: true });
         }
 
-        this.props.onChange(value);
-
+        this.props.onChange(isReset ? 0 : newValue);
         setTimeout(() => {
             this.setState({ clicked: false });
         }, 100);
+        this.setState({
+            cleanedValue: isReset ? newValue : null,
+        });
     }
 
     getOverlayWidth() {

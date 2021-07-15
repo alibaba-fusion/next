@@ -85,6 +85,29 @@ describe('input', () => {
             wrapper.find('input').simulate('keydown', { keyCode: 13 });
             assert(onPressEnter.calledOnce);
         });
+
+        it('simulates onCompositionStart/onCompositionUpdate/onCompositionEnd events', () => {
+            const onCompositionStart = sinon.spy();
+            const onCompositionUpdate = sinon.spy();
+            const onCompositionEnd = sinon.spy();
+            const onChange = sinon.spy();
+            const wrapper = mount(
+                <Input
+                    composition
+                    onCompositionStart={onCompositionStart}
+                    onCompositionUpdate={onCompositionUpdate}
+                    onCompositionEnd={onCompositionEnd}
+                    onChange={onChange}
+                />
+            );
+            wrapper.find('input').simulate('compositionstart', { target: { value: 'zh' } });
+            assert(onCompositionStart.calledOnce);
+            wrapper.find('input').simulate('compositionupdate', { target: { value: 'zhon' } });
+            assert(onCompositionUpdate.calledOnce);
+            wrapper.find('input').simulate('compositionend', { target: { value: '中' } });
+            assert(onCompositionEnd.calledOnce);
+            assert(onChange.calledOnce);
+        });
         it('should support onChange', done => {
             let onChange = value => {
                     assert(value === '20');

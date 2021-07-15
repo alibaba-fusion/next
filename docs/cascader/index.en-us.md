@@ -3,7 +3,7 @@
 -   category: Components
 -   family: DataDisplay
 -   chinese: 级联
--   type: 基本
+-   type: Baisc
 
 ---
 
@@ -38,6 +38,7 @@
 | listClassName        | class name of list                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | String                  | -                  |
 | itemRender           | render function of item<br><br>**signatures**:<br>Function(data: Object) => ReactNode<br>**params**:<br>_data_: {Object} data<br>**returns**:<br>{ReactNode} content of item<br>                                                                                                                                                                                                                                                                                                                                                                                     | Function                | item => item.label |
 | loadData             | asynchronous data loading function<br><br>**signatures**:<br>Function(data: Object) => void<br>**params**:<br>_data_: {Object} clicked item                                                                                                                                                                                                                                                                                                                                                                                                                       | Function                | -                  |
+| immutable             | whether support immutable dataSource                                                                                        | Boolean                |  false                  |
 
 <!-- api-extra-start -->
 
