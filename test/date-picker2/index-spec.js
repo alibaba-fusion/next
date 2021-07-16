@@ -903,6 +903,14 @@ describe('Picker', () => {
             clickOk();
             assert.deepEqual(getStrValue(), ['', '2021-01-12 09:00:00']);
         });
+
+        // https://github.com/alibaba-fusion/next/issues/3186
+        it('fix panelValue', () => {
+            wrapper = mount(<RangePicker visible defaultPanelValue={defaultVal} />);
+            findInput(0).simulate('focus');
+            findInput(1).simulate('focus');
+            assert(findDate('2021-01-31').length);
+        });
     });
 });
 
