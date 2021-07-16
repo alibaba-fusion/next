@@ -706,7 +706,7 @@ class Overlay extends Component {
     }
 
     handleMaskClick(e) {
-        if (this.props.canCloseByMask) {
+        if (e.currentTarget === e.target && this.props.canCloseByMask) {
             this.props.onRequestClose('maskClick', e);
         }
     }
