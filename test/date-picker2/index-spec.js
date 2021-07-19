@@ -911,6 +911,22 @@ describe('Picker', () => {
             findInput(1).simulate('focus');
             assert(findDate('2021-01-31').length);
         });
+
+        it('should support value empty when showTime', () => {
+            wrapper = mount(
+                <div>
+                    <RangePicker visible showTime defaultPanelValue={defaultVal} />
+                    <button id="test">Blank Area</button>
+                </div>
+            );
+            findDate('2020-12-12').simulate('click');
+            clickTime('12');
+            clickTime('12', 'minute');
+            clickTime('12', 'second');
+            clickOk();
+            wrapper.find('#test').simulate('click');
+            assert.deepEqual(getStrValue(), ['2020-12-12 12:12:12', '']);
+        });
     });
 });
 
