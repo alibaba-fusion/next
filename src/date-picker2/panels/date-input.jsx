@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import SharedPT from '../prop-types';
 import { DATE_INPUT_TYPE, DATE_PICKER_MODE } from '../constant';
 import { func, datejs, obj } from '../../util';
+import { fmtValue } from '../util';
 
 import Input from '../../input';
 import Icon from '../../icon';
@@ -126,6 +127,26 @@ class DateInput extends React.Component {
         return holder;
     };
 
+    /**
+     * 根据 format 计算输入框 htmlSize
+     */
+    getHtmlSize = () => {
+        const { isRange, format, hasBorder } = this.props;
+        const value = '2020-12-12 12:12:12';
+        let size = 0;
+
+        if (isRange) {
+            const fmtStr = fmtValue([value, value].map(datejs), format);
+            size = Math.max(...fmtStr.map(s => (s && s.length) || 0));
+        } else {
+            const fmtStr = fmtValue(datejs(value), format);
+            fmtValue(datejs(value), format);
+            size = (fmtStr && fmtStr.length) || 0;
+        }
+
+        return String(Math.max(size, hasBorder ? 12 : 8));
+    };
+
     render() {
         const { onInput, setInputRef, handleTypeChange, prefixCls } = this;
         const {
@@ -149,7 +170,7 @@ class DateInput extends React.Component {
         } = this.props;
 
         const placeholder = this.getPlaceholder();
-        const htmlSize = String(Math.max(this.formatter(datejs('2020-12-12 24:00:00')).length, hasBorder ? 12 : 8));
+        const htmlSize = this.getHtmlSize();
 
         const sharedProps = {
             ...obj.pickProps(restProps, Input),
