@@ -70,6 +70,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     inputReadOnly?: boolean;
     hasClear?: boolean;
     label?: React.ReactNode;
+    separator?: React.ReactNode;
     placeholder?: string;
 
     visible?: boolean;
@@ -114,7 +115,7 @@ export interface RangePickerProps
      *
      * @version 1.23
      */
-    outputFormat?: string | ((value: Array<Dayjs>, strVal: Array<string>) => any);
+    outputFormat?: string | ((value: Dayjs) => string) | Array<string> | Array<(value: Dayjs) => string>;
     placeholder?: string | Array<string>;
     dateInputAriaLabel?: Array<string> | string;
     disabled?: boolean | boolean[];

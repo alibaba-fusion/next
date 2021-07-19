@@ -6,7 +6,7 @@ import * as PT from 'prop-types';
 import SharedPT from './prop-types';
 import defaultLocale from '../locale/zh-cn';
 import { func, datejs, KEYCODE, obj } from '../util';
-import { switchInputType } from './util';
+import { switchInputType, fmtValue, isValueChanged } from './util';
 import { DATE_PICKER_TYPE, DATE_INPUT_TYPE, DATE_PICKER_MODE } from './constant';
 
 import Overlay from '../overlay';
@@ -18,35 +18,6 @@ import FooterPanel from './panels/footer-panel';
 const { Popup } = Overlay;
 const { renderNode } = func;
 const { pickProps, pickOthers } = obj;
-
-/**
- * 判断值是否改变
- * @param {dayjs.ConfigType}} newValue
- * @param {dayjs.ConfigType} oldValue
- * @returns {boolean}
- */
-function isValueChanged(newValue, oldValue) {
-    return Array.isArray(newValue)
-        ? isValueChanged(newValue[0], oldValue && oldValue[0]) || isValueChanged(newValue[1], oldValue && oldValue[1])
-        : newValue !== oldValue && !datejs(newValue).isSame(oldValue);
-}
-
-/**
- * 获取输入框值
- * @param {*} value 日期值
- * @param {string | funtion} fmt 日期格式
- * @returns {string | string[]}
- */
-function fmtValue(value, fmt) {
-    const formater = (v, idx) => {
-        if (Array.isArray(fmt)) {
-            fmt = fmt[idx];
-        }
-        return v ? (typeof fmt === 'function' ? fmt(v) : v.format(fmt)) : '';
-    };
-
-    return Array.isArray(value) ? value.map((v, idx) => formater(v, idx)) : formater(value);
-}
 
 /**
  * 日期检验：无效值返回 null
