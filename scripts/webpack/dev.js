@@ -13,13 +13,13 @@ module.exports = function(progress = true) {
             filename: '[name].js',
         },
         resolve: {
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.tsx'],
         },
         devtool: 'inline-source-map',
         module: {
             rules: [
                 {
-                    test: /\.jsx?$/,
+                    test: /\.[tj]sx?$/,
                     use: loaders.js(babelConfig),
                     exclude: /node_modules/,
                 },

@@ -5,7 +5,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CssSplitWebpackPlugin = require('css-split-webpack-plugin').default;
 
 const loaders = require('./loaders');
+const { getBabelConfig } = require('build-scripts-config');
 
+const babelConfig = getBabelConfig();
 module.exports = function(options = {}) {
     const minimize = options.minimize;
     const packagePath = path.resolve('package.json');
@@ -14,13 +16,13 @@ module.exports = function(options = {}) {
     const config = {
         output: {},
         resolve: {
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.tsx'],
         },
         module: {
             rules: [
                 {
-                    test: /\.jsx?$/,
-                    use: loaders.js(),
+                    test: /\.[tj]sx?$/,
+                    use: loaders.js(babelConfig),
                     exclude: /node_modules/,
                 },
                 {
@@ -58,20 +60,21 @@ Licensed under MIT (https://github.com/alibaba-fusion/next/blob/master/LICENSE)`
     };
 
     if (minimize) {
+        config.optimization = {
+            minimize: true,
+        };
         config.output.filename = '[name].min.js';
         config.plugins.push(
-            new ExtractTextPlugin(options.extractTextName || '[name].min.css'),
-            new webpack.optimize.UglifyJsPlugin({
-                output: {
-                    ascii_only: true, // eslint-disable-line
-                },
-            })
+            new ExtractTextPlugin(options.extractTextName || '[name].min.css')
+            // new webpack.optimize.UglifyJsPlugin({
+            //     output: {
+            //         ascii_only: true, // eslint-disable-line
+            //     },
+            // })
         );
     } else {
         config.output.filename = '[name].js';
-        config.plugins.push(
-            new ExtractTextPlugin(options.extractTextName || '[name].css')
-        );
+        config.plugins.push(new ExtractTextPlugin(options.extractTextName || '[name].css'));
     }
 
     return config;

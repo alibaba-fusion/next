@@ -39,7 +39,8 @@ module.exports = function(config) {
         },
         files: [
             path.join(__dirname, 'animation-polyfill.js'),
-            require.resolve('babel-polyfill/dist/polyfill.js'),
+            // require.resolve('babel-polyfill/dist/polyfill.js'),
+            require.resolve('@babel/polyfill/dist/polyfill.js'),
             require.resolve('console-polyfill/index.js'),
             require.resolve('es5-shim/es5-shim.js'),
             require.resolve('es5-shim/es5-sham.js'),

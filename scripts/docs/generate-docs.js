@@ -262,11 +262,7 @@ function transformHTML(code, separate = true) {
             babel.transform(code, {
                 sourceMaps: false,
                 babelrc: false,
-                presets: [
-                    require.resolve('babel-preset-react'),
-                    require.resolve('babel-preset-env'),
-                    require.resolve('babel-preset-stage-0'),
-                ],
+                presets: [require.resolve('@babel/preset-react'), require.resolve('@babel/preset-env')],
             }).code
         }})()</script>`;
 
@@ -274,11 +270,7 @@ function transformHTML(code, separate = true) {
         babel.transform(code, {
             sourceMaps: false,
             babelrc: false,
-            presets: [
-                require.resolve('babel-preset-react'),
-                require.resolve('babel-preset-env'),
-                require.resolve('babel-preset-stage-0'),
-            ],
+            presets: [require.resolve('@babel/preset-react'), require.resolve('@babel/preset-env')],
         }).code
     }</script>`;
 }

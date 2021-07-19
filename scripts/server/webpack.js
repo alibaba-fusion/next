@@ -9,7 +9,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const { getBabelConfig } = require('build-scripts-config');
 
-const babelConfig = getBabelConfig({});
+const babelConfig = getBabelConfig();
 
 const babelLoader = loaders.js(babelConfig);
 const loadersPath = path.join(__dirname, 'loaders');
