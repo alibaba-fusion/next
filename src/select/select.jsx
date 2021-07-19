@@ -139,6 +139,11 @@ class Select extends Base {
          */
         tagClosable: PropTypes.bool,
         /**
+         * tag 尺寸是否和 select 保持一致(mode=multiple/tag 模式生效），默认false
+         * @version 1.24
+         */
+        adjustTagSize: PropTypes.bool,
+        /**
          * 最多显示多少个 tag
          * @version 1.15
          */
@@ -192,6 +197,7 @@ class Select extends Base {
         showSearch: false,
         cacheValue: true,
         tagInline: false,
+        adjustTagSize: false,
         onSearch: noop,
         onSearchClear: noop,
         hasArrow: true,
@@ -381,6 +387,14 @@ class Select extends Base {
     hasSearch() {
         const { showSearch, mode } = this.props;
         return showSearch || mode === 'tag';
+    }
+
+    getTagSize() {
+        const { size, adjustTagSize } = this.props;
+        if (adjustTagSize) {
+            return size;
+        }
+        return size === 'large' ? 'medium' : 'small';
     }
 
     /**
@@ -772,7 +786,6 @@ class Select extends Base {
         const {
             prefix,
             mode,
-            size,
             valueRender,
             fillProps,
             disabled,
@@ -781,6 +794,7 @@ class Select extends Base {
             tagInline,
             tagClosable,
         } = this.props;
+        const tagSize = this.getTagSize();
         let value = this.state.value;
 
         if (isNull(value)) {
@@ -814,7 +828,7 @@ class Select extends Base {
             if (maxTagCount !== undefined && value.length > maxTagCount && !tagInline) {
                 limitedCountValue = limitedCountValue.slice(0, maxTagCount);
                 maxTagPlaceholderEl = (
-                    <Tag key="_count" type="primary" size={size === 'large' ? 'medium' : 'small'} animation={false}>
+                    <Tag key="_count" type="primary" size={tagSize} animation={false}>
                         {holder(value, totalValue)}
                     </Tag>
                 );
@@ -844,7 +858,7 @@ class Select extends Base {
                         key={v.value}
                         disabled={disabled || v.disabled}
                         type="primary"
-                        size={size === 'large' ? 'medium' : 'small'}
+                        size={tagSize}
                         animation={false}
                         onClose={this.handleTagClose.bind(this, v)}
                         closable={tagClosable}

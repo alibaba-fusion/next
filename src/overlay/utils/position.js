@@ -8,6 +8,29 @@ const getPageX = () => window.pageXOffset || document.documentElement.scrollLeft
 const getPageY = () => window.pageYOffset || document.documentElement.scrollTop;
 
 /**
+ * @private get element size
+ * @param       {Element} element
+ * @return      {Object}
+ */
+function _getSize(element) {
+    // element like `svg` do not have offsetWidth and offsetHeight prop
+    // then getBoundingClientRect
+    if ('offsetWidth' in element && 'offsetHeight' in element) {
+        return {
+            width: element.offsetWidth,
+            height: element.offsetHeight,
+        };
+    } else {
+        const { width, height } = element.getBoundingClientRect();
+
+        return {
+            width,
+            height,
+        };
+    }
+}
+
+/**
  * @private get element rect
  * @param       {Element} elem
  * @return      {Object}
@@ -18,8 +41,7 @@ function _getElementRect(elem, container) {
         scrollTop = 0,
         scrollLeft = 0;
 
-    const offsetHeight = elem.offsetHeight;
-    const offsetWidth = elem.offsetWidth;
+    const { width, height } = _getSize(elem);
 
     do {
         if (!isNaN(elem.offsetTop)) {
@@ -51,8 +73,8 @@ function _getElementRect(elem, container) {
             offsetLeft -
             scrollLeft -
             (treatAsWindow ? document.documentElement.scrollLeft || document.body.scrollLeft : 0),
-        height: offsetHeight,
-        width: offsetWidth,
+        width,
+        height,
     };
 }
 
@@ -178,17 +200,17 @@ export default class Position {
                 pinElementParentOffset.left -
                 pinElementPoints.x +
                 pinElementParentScrollOffset.left;
+
             this._setPinElementPostion(pinElement, { left, top }, this.offset);
 
             if (this._isInViewport(pinElement, align)) {
                 return align;
             } else if (!firstPositionResult) {
                 if (this.needAdjust && !this.autoFit) {
-                    const { right, bottom } = this._getViewportOffset(pinElement, align);
+                    const { right } = this._getViewportOffset(pinElement, align);
                     firstPositionResult = {
                         left: right < 0 ? left + right : left,
                         top,
-                        // top: bottom < 0 ? top + bottom : top,
                     };
                 } else {
                     firstPositionResult = { left, top };
@@ -352,10 +374,7 @@ export default class Position {
                     height: docElement.clientHeight,
                 };
             } else {
-                return {
-                    width: element.offsetWidth,
-                    height: element.offsetHeight,
-                };
+                return _getSize(element);
             }
         };
 
@@ -427,6 +446,7 @@ export default class Position {
     _isInViewport(element, align) {
         const viewportSize = _getViewportSize(this.container);
         const elementRect = _getElementRect(element, this.container);
+        const elementSize = _getSize(element);
 
         // https://github.com/alibaba-fusion/next/issues/853
         // Equality causes issues in Chrome when pin element is off screen to right or bottom.
@@ -443,23 +463,24 @@ export default class Position {
         // Avoid animate problem that use offsetWidth instead of getBoundingClientRect.
         return (
             elementRect.left >= 0 &&
-            elementRect.left + element.offsetWidth <= viewportWidth &&
+            elementRect.left + elementSize.width <= viewportWidth &&
             elementRect.top >= 0 &&
-            elementRect.top + element.offsetHeight <= viewportHeight
+            elementRect.top + elementSize.height <= viewportHeight
         );
     }
 
     _getViewportOffset(element, align) {
         const viewportSize = _getViewportSize(this.container);
         const elementRect = _getElementRect(element, this.container);
+        const elementSize = _getSize(element);
 
         const viewportWidth = this._isRightAligned(align) ? viewportSize.width : viewportSize.width - 1;
         const viewportHeight = this._isBottomAligned(align) ? viewportSize.height : viewportSize.height - 1;
 
         return {
             top: elementRect.top,
-            right: viewportWidth - (elementRect.left + element.offsetWidth),
-            bottom: viewportHeight - (elementRect.top + element.offsetHeight),
+            right: viewportWidth - (elementRect.left + elementSize.width),
+            bottom: viewportHeight - (elementRect.top + elementSize.height),
             left: elementRect.left,
         };
     }

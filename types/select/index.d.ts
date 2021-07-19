@@ -392,6 +392,10 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
      */
     maxTagCount?: number;
     /**
+     * tag 尺寸是否和 select 尺寸保持一致，仅在 multiple/tag 模式下有用
+     */
+    adjustTagSize?: boolean;
+    /**
      * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
      * @param {object} selectedValues 当前已选中的元素
      * @param {object} totalValues 总待选元素

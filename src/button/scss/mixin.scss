@@ -13,14 +13,24 @@
     @include button-size($padding, $height, $font-size, $border-width);
 
     & > #{$btn-prefix}-icon#{$btn-icon-prefix}-first {
+        @if (get-compiling-value($icon-size) >= 12) {
+            transform: scale(1);
+        }
         @include icon-size($icon-size, 0, $icon-margin);
     }
     & > #{$btn-prefix}-icon#{$btn-icon-prefix}-last {
+        @if (get-compiling-value($icon-size) >= 12) {
+            transform: scale(1);
+        }
         @include icon-size($icon-size, $icon-margin, 0);
     }
     & > #{$btn-prefix}-icon#{$btn-icon-prefix}-alone {
+        @if (get-compiling-value($icon-size) >= 12) {
+            transform: scale(1);
+        }
         @include icon-size($icon-size);
     }
+
 
     &#{$btn-prefix}-loading {
         &:before {

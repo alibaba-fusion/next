@@ -106,6 +106,7 @@ function checkFiles() {
         'index.js',
         'index.scss',
         'reset.scss',
+        'components.scss',
         'variables.scss',
         '.fusion',
     ];

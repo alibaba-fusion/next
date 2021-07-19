@@ -43,6 +43,7 @@ $progress-line-font-m: $font-size-caption !default;
 $progress-line-font-s: $font-size-caption !default;
 
 /// background
+/// @supportGradient
 /// @namespace statement/normal/underlay
 $progress-line-underlay-color: $color-fill1-3 !default;
 
@@ -67,24 +68,30 @@ $progress-line-radius-s: $corner-3 !default;
 $progress-line-font-color: $color-text1-4 !default;
 
 /// background
+/// @supportGradient
 /// @namespace statement/normal/overlay
 $progress-line-normal-color: $color-brand1-6 !default;
 
 /// background
+/// @supportGradient
 /// @namespace statement/error/overlay
 $progress-line-error-color: $color-error-3 !default;
 
 /// background
+/// @supportGradient
 /// @namespace statement/success/overlay
 $progress-line-success-color: $color-success-3 !default;
 
 /// background
+/// @supportGradient
 /// @namespace statement/started/overlay
 $progress-line-started-color: $color-error-3 !default;
 /// background
+/// @supportGradient
 /// @namespace statement/middle/overlay
 $progress-line-middle-color: $color-warning-3 !default;
 /// background
+/// @supportGradient
 /// @namespace statement/finishing/overlay
 $progress-line-finishing-color: $color-success-3 !default;
 

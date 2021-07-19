@@ -226,6 +226,7 @@ export default class TextArea extends Base {
             rtl,
             hasBorder,
             size,
+            composition,
         } = this.props;
 
         const cls = classNames(this.getClass(), {
@@ -277,11 +278,18 @@ export default class TextArea extends Base {
             );
         }
 
+        const compositionProps = {};
+        if (composition) {
+            compositionProps.onCompositionStart = this.handleCompositionStart;
+            compositionProps.onCompositionEnd = this.handleCompositionEnd;
+        }
+
         return (
             <span className={cls} style={wrapStyle} dir={rtl ? 'rtl' : undefined} {...dataProps}>
                 <textarea
                     {...others}
                     {...props}
+                    {...compositionProps}
                     data-real
                     rows={rows}
                     style={textareStyle}

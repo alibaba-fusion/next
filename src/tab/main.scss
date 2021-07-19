@@ -452,7 +452,7 @@
                 content: '';
                 position: absolute;
                 right: 0;
-                top: calc(50% - #{$tab-text-item-sep-height / 2});
+                top: calc((100% - #{$tab-text-item-sep-height}) / 2);
                 width: $tab-text-item-sep-width;
                 height: $tab-text-item-sep-height;
                 background-color: $tab-text-item-sep-color;

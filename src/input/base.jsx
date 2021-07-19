@@ -108,6 +108,13 @@ class Base extends React.Component {
          * @enumdesc 小, 中, 大
          */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
+        /**
+         * 开启后会过滤输入法中间字母状态，文字输入完成后才会触发 onChange
+         * @version 1.23
+         */
+        composition: PropTypes.bool,
+        onCompositionStart: PropTypes.func,
+        onCompositionEnd: PropTypes.func,
     };
 
     static defaultProps = {
@@ -120,16 +127,19 @@ class Base extends React.Component {
         readOnly: false,
         isPreview: false,
         trim: false,
+        composition: false,
         onFocus: func.noop,
         onBlur: func.noop,
         onChange: func.noop,
         onKeyDown: func.noop,
         getValueLength: func.noop,
+        onCompositionStart: func.noop,
+        onCompositionEnd: func.noop,
         locale: zhCN.Input,
     };
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if ('value' in nextProps && nextProps.value !== prevState.value) {
+        if ('value' in nextProps && nextProps.value !== prevState.value && !prevState.composition) {
             const value = nextProps.value;
             return {
                 value: value === undefined || value === null ? '' : value,
@@ -142,6 +152,23 @@ class Base extends React.Component {
     ieHack(value) {
         return value;
     }
+
+    handleCompositionStart = e => {
+        this.setState({
+            composition: true,
+        });
+        this.props.onCompositionStart(e);
+    };
+
+    handleCompositionEnd = e => {
+        this.setState({
+            composition: false,
+        });
+        this.props.onCompositionEnd(e);
+
+        const value = e.target.value;
+        this.props.onChange(value, e);
+    };
 
     onChange(e) {
         if ('stopPropagation' in e) {
@@ -159,10 +186,14 @@ class Base extends React.Component {
         value = this.ieHack(value);
 
         // not controlled
-        if (!('value' in this.props)) {
+        if (!('value' in this.props) || this.state.composition) {
             this.setState({
                 value,
             });
+        }
+
+        if (this.state.composition) {
+            return;
         }
 
         // Number('') = 0

@@ -61,11 +61,17 @@ const helpers = {
     },
 
     getWidth(elem) {
-        return elem ? elem.getBoundingClientRect().width || elem.offsetWidth : undefined;
+        if ('clientWidth' in elem) {
+            return elem.clientWidth;
+        }
+        return elem && elem.getBoundingClientRect().width;
     },
 
     getHeight(elem) {
-        return elem ? elem.getBoundingClientRect().height || elem.offsetHeight : undefined;
+        if ('clientHeight' in elem) {
+            return elem.clientHeight;
+        }
+        return elem && elem.getBoundingClientRect().height;
     },
 
     adaptHeight() {

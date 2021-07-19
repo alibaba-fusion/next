@@ -15,6 +15,7 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
      * 选择框大小
      */
     size?: 'small' | 'medium' | 'large';
+    name?: string;
 
     /**
      * 选择框占位符
@@ -137,6 +138,11 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
      * 自定义搜索函数
      */
     filter?: (searchValue: string, path: Array<any>) => boolean;
+
+    /**
+     * 当搜索框值变化时回调
+     */
+    onSearch?: (value: string) => void;
 
     /**
      * 搜索结果自定义渲染函数

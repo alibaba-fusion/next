@@ -6,11 +6,7 @@ import CommonProps from '../util';
 import { ButtonProps } from '../button';
 import { PopupProps } from '../overlay';
 
-interface HTMLAttributesWeak extends ButtonProps {
-    onSelect?: any;
-}
-
-export interface MenuButtonProps extends HTMLAttributesWeak, CommonProps {
+export interface MenuButtonProps extends Omit<ButtonProps, 'onSelect'>, CommonProps {
     /**
      * 按钮上的文本内容
      */
@@ -62,6 +58,11 @@ export interface MenuButtonProps extends HTMLAttributesWeak, CommonProps {
     popupProps?: PopupProps;
 
     /**
+     * 菜单是否跟随滚动
+     */
+    followTrigger?: boolean;
+
+    /**
      * 默认激活的菜单项（用法同 Menu 非受控）
      */
     defaultSelectedKeys?: Array<any>;
@@ -69,12 +70,12 @@ export interface MenuButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 激活的菜单项（用法同 Menu 受控）
      */
-    selectedKeys?: Array<any>;
+    selectedKeys?: string | Array<any>;
 
     /**
      * 菜单的选择模式，同 Menu
      */
-    selectMode?: string;
+    selectMode?: 'single' | 'multiple';
 
     /**
      * 点击菜单项后的回调，同 Menu

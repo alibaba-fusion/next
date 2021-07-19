@@ -54,7 +54,8 @@ DatePicker are used to select a single date for an input.
 | defaultVisibleMonth | Default visible month <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} moment instance with specified month<br>                                                 | Function       | -            |
 | value               | Range value `[moment, moment]` | Array          | -            |
 | defaultValue        | Default range value `[moment, moment]`    | Array          | - |
-| format              | Date format    | String         | 'YYYY-MM-DD' |
+| format              | Date format    | String | Function        | 'YYYY-MM-DD' |
+| outputFormat              | Date output format    | String | ((date: Dayjs, dateStr: String) => any)        |  |
 | placeholder              | input hints:`['start date', 'end date']`    | Array         | - |
 | showTime            | Enable time picker  | Object/Boolean | false        |
 | resetTime           | If reset time for every select     | Boolean        | false        |

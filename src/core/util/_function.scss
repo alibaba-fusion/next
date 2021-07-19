@@ -2,6 +2,16 @@
 /// @group utils
 ////
 
+/// 1.33.0 sass 才引入了 div 方法
+/// 自建函数处理除法的差异
+@function divide($a, $b) {
+    @if function-exists(div) {
+        @return div($a, $b);
+    } @else {
+        @return $a / $b;
+    }
+}
+
 // 去除数值单位的方法
 //
 // @param {String} $value

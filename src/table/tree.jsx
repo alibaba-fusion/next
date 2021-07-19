@@ -27,7 +27,7 @@ export default function tree(BaseComponent) {
             /**
              * dataSource当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
              */
-            primaryKey: PropTypes.string,
+            primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
             /**
              * 在tree模式下的缩进尺寸， 仅在isTree为true时候有效
              */
@@ -167,13 +167,7 @@ export default function tree(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let {
-                components,
-                isTree,
-                dataSource,
-                indent,
-                ...others
-            } = this.props;
+            let { components, isTree, dataSource, indent, ...others } = this.props;
 
             if (isTree) {
                 components = { ...components };
@@ -186,13 +180,7 @@ export default function tree(BaseComponent) {
 
                 dataSource = this.normalizeDataSource(dataSource);
             }
-            return (
-                <BaseComponent
-                    {...others}
-                    dataSource={dataSource}
-                    components={components}
-                />
-            );
+            return <BaseComponent {...others} dataSource={dataSource} components={components} />;
         }
     }
     statics(TreeTable, BaseComponent);

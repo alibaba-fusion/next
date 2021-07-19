@@ -52,12 +52,12 @@ const getStyleProperty = (node, name) => {
     return ret;
 };
 
-const modals = [];
-let bodyOverflow, bodyPaddingRight;
+// 存 containerNode 信息
+const containerNodeList = [];
 
 /**
  * Overlay
- * */
+ */
 class Overlay extends Component {
     static propTypes = {
         prefix: PropTypes.string,
@@ -223,7 +223,7 @@ class Overlay extends Component {
         disableScroll: false,
         cache: false,
         isChildrenInMask: false,
-        onClick: e => e.stopPropagation(),
+        onClick: noop,
         maskClass: '',
     };
 
@@ -508,47 +508,70 @@ class Overlay extends Component {
 
     beforeOpen() {
         if (this.props.disableScroll) {
-            if (modals.length === 0) {
+            const containerNode = getContainerNode(this.props) || document.body;
+            const { overflow, paddingRight } = containerNode.style;
+
+            const cnInfo = containerNodeList.find(m => m.containerNode === containerNode) || {
+                containerNode,
+                count: 0,
+            };
+
+            /**
+             * container 节点初始状态已经是 overflow=hidden 则忽略
+             * See {@link https://codesandbox.io/s/next-overlay-overflow-2-fulpq?file=/src/App.js}
+             */
+            if (cnInfo.count === 0 && overflow !== 'hidden') {
                 const style = {
                     overflow: 'hidden',
                 };
 
-                this.containerNode = getContainerNode(this.props) || document.body;
-                bodyOverflow = this.containerNode.style.overflow;
+                cnInfo.overflow = overflow;
 
-                if (hasScroll(this.containerNode)) {
-                    bodyPaddingRight = this.containerNode.style.paddingRight;
-                    style.paddingRight = `${dom.getStyle(this.containerNode, 'paddingRight') +
-                        dom.scrollbar().width}px`;
+                if (hasScroll(containerNode)) {
+                    cnInfo.paddingRight = paddingRight;
+                    style.paddingRight = `${dom.getStyle(containerNode, 'paddingRight') + dom.scrollbar().width}px`;
                 }
 
-                dom.setStyle(this.containerNode, style);
+                dom.setStyle(containerNode, style);
+                containerNodeList.push(cnInfo);
+                cnInfo.count++;
+            } else if (cnInfo.count) {
+                cnInfo.count++;
             }
-            modals.push(this);
+
+            this._containerNode = containerNode;
         }
     }
 
     beforeClose() {
         if (this.props.disableScroll) {
-            const index = modals.indexOf(this);
-            if (index > -1) {
-                if (modals.length === 1) {
+            const idx = containerNodeList.findIndex(cn => cn.containerNode === this._containerNode);
+
+            if (idx !== -1) {
+                const cnInfo = containerNodeList[idx];
+                const { overflow, paddingRight } = cnInfo;
+
+                // 最后一个 overlay 的时候再将样式重置回去
+                // 此时 overflow 应该值在 beforeOpen 中设置的 hidden
+                if (cnInfo.count === 1 && this._containerNode && this._containerNode.style.overflow === 'hidden') {
                     const style = {
-                        overflow: bodyOverflow,
+                        overflow,
                     };
-                    if (bodyPaddingRight !== undefined) {
-                        style.paddingRight = bodyPaddingRight;
+
+                    if (paddingRight !== undefined) {
+                        style.paddingRight = paddingRight;
                     }
 
-                    this.containerNode && dom.setStyle(this.containerNode, style);
-
-                    bodyOverflow = undefined;
-                    bodyPaddingRight = undefined;
-                    this.containerNode = undefined;
+                    dom.setStyle(this._containerNode, style);
                 }
 
-                modals.splice(index, 1);
+                cnInfo.count--;
+
+                if (cnInfo.count === 0) {
+                    containerNodeList.splice(idx, 1);
+                }
             }
+            this._containerNode = undefined;
         }
     }
 
@@ -683,7 +706,7 @@ class Overlay extends Component {
     }
 
     handleMaskClick(e) {
-        if (this.props.canCloseByMask) {
+        if (e.currentTarget === e.target && this.props.canCloseByMask) {
             this.props.onRequestClose('maskClick', e);
         }
     }
