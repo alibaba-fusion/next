@@ -133,6 +133,7 @@
     "@no-repeat/sassdoc-parser": "^0.0.11",
     "@octokit/rest": "^18.0.9",
     "@types/react": "^16.8.13",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
     "@typescript-eslint/parser": "^4.28.3",
     "autoprefixer": "^7.1.4",
     "axe-core": "~3.2.0",
