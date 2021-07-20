@@ -259,7 +259,7 @@ class NumberPicker extends React.Component {
             let valueCorrected = this.correctValue(displayValue);
             valueCorrected = stringMode ? BigNumber(valueCorrected).toFixed(this.getPrecision()) : valueCorrected;
             if (this.state.value !== valueCorrected) {
-                this.setValue({ value: valueCorrected, e, prevValue: displayValue });
+                this.setValue({ value: valueCorrected, e });
             }
             this.setDisplayValue({ displayValue: valueCorrected });
         } else {
@@ -307,7 +307,7 @@ class NumberPicker extends React.Component {
         if (this.props.editable === true && this.shouldFireOnChange(value)) {
             let valueCorrected = this.correctValue(value);
             if (this.state.value !== valueCorrected) {
-                this.setValue({ value: valueCorrected, e, prevValue: value });
+                this.setValue({ value: valueCorrected, e });
             }
         } else {
             onlyDisplay = true;
@@ -352,28 +352,17 @@ class NumberPicker extends React.Component {
         return val;
     }
 
-    setValue({ value, e, triggerType, prevValue = null }) {
+    setValue({ value, e, triggerType }) {
         if (!('value' in this.props) || value === this.props.value) {
             this.setState({
                 value,
             });
         }
 
-        // 延迟onChange时机，绕过原生 input BUG https://github.com/alibaba-fusion/next/issues/3110
-        if (prevValue !== null && `0${value}` === `${prevValue}`) {
-            e.persist();
-            setTimeout(() => {
-                this.props.onChange(isNaN(value) || value === '' ? undefined : value, {
-                    ...e,
-                    triggerType,
-                });
-            }, 0);
-        } else {
-            this.props.onChange(isNaN(value) || value === '' ? undefined : value, {
-                ...e,
-                triggerType,
-            });
-        }
+        this.props.onChange(isNaN(value) || value === '' ? undefined : value, {
+            ...e,
+            triggerType,
+        });
     }
 
     getPrecision() {
@@ -440,7 +429,7 @@ class NumberPicker extends React.Component {
             let result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
             return this.hackChrome(result);
         }
-        return BigNumber(val)
+        return BigNumber(val || '0')
             .plus(step)
             .toFixed(this.getPrecision());
     }
@@ -452,7 +441,7 @@ class NumberPicker extends React.Component {
             let result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
             return this.hackChrome(result);
         }
-        return BigNumber(val)
+        return BigNumber(val || '0')
             .minus(step)
             .toFixed(this.getPrecision());
     }
@@ -637,6 +626,7 @@ class NumberPicker extends React.Component {
                     extra={hasTrigger ? extra : null}
                     addonBefore={addonBefore}
                     addonAfter={addonAfter}
+                    composition
                 />
             </span>
         );
