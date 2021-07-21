@@ -210,6 +210,9 @@ class FunctionDemoLine extends React.Component {
             <Demo title="ShowLine" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <DemoGroup label="Normal">
                     <Tree {...treeProps}>
+                        {/* --------- this is for config platform ----------- */}
+                        <TreeNode style={{display: "none"}} label={<div className='next-tree-switcher next-line'><i className="next-tree-switcher-fold-icon"></i></div>} key="0-extra"  />
+
                         <TreeNode label={i18n.trunk} key="0">
                             <TreeNode label={i18n.branch} disabled key="1">
                                 <TreeNode label={i18n.branch} key="2">
