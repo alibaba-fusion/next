@@ -17,10 +17,10 @@ Disable date cells by `disabledDate`.
 
 ````jsx
 import { DatePicker2 } from '@alifd/next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const { RangePicker, MonthPicker, YearPicker } = DatePicker2;
-const currentDate = moment();
+const currentDate = dayjs();
 
 // Disable all dates before today
 const disabledDate = function (date, mode) {

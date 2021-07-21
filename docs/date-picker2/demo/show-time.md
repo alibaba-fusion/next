@@ -17,21 +17,19 @@ Enable `showTime` to create a DatePicker2/RangePicker with time.
 
 ````jsx
 import { DatePicker2 } from '@alifd/next';
-import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker2;
 const onChange = (value) => console.log('onChange: ', value);
 const onOk = (value) => console.log('onOK: ', value.format('YYYY-MM-DD HH:mm:ss'));
 const onRangeOk = (value) => console.log('onOk: [%s, %s]', ...value);
 
-const defaultTimeValue = dayjs('09:00:00', 'HH:mm:ss', true);
-const defaultTimeValues = [dayjs('09:00:00', 'HH:mm:ss', true), dayjs('23:59:59', 'HH:mm:ss', true)];
+const defaultTimeValue = '09:00:00';
 
 ReactDOM.render(<div className="app">
   <div><DatePicker2 showTime onChange={onChange} onOk={onOk} /></div>
   <div><DatePicker2 showTime timePanelProps={{ defaultValue: defaultTimeValue, secondStep: 10 }} onChange={onChange} onOk={onOk} /></div>
   <div><RangePicker showTime onChange={onChange} onOk={onRangeOk} /></div>
-  <div><RangePicker showTime timePanelProps={{ defaultValue: defaultTimeValues, format: 'HH:mm', minuteStep: 15 }} onChange={onChange} onOk={onRangeOk} /></div>
+  <div><RangePicker showTime timePanelProps={{ defaultValue: ['09:00', '23:59'], format: 'HH:mm', minuteStep: 15 }} onChange={onChange} onOk={onRangeOk} /></div>
 </div>, mountNode);
 ````
 ```css
