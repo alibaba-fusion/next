@@ -331,6 +331,8 @@ class TreeNode extends Component {
         const iconCls = cx({
             [`${prefix}tree-switcher-icon`]: true,
             [`${prefix}tree-fold-icon`]: iconType === 'arrow-down',
+            [`${prefix}tree-switcher-fold-icon`]: showLine && !expanded,
+            [`${prefix}tree-switcher-unfold-icon`]: showLine && expanded,
         });
 
         return (
