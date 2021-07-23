@@ -306,7 +306,7 @@ class List extends Component {
     }
 
     getPictureCardList(file, isPreview) {
-        const { locale, progressProps, fileNameRender, itemRender } = this.props;
+        const { locale, progressProps, fileNameRender, itemRender, uploader } = this.props;
 
         const { prefixCls, downloadURL, imgURL, itemCls, alt } = this.getInfo(file);
         const state = isPreview ? '' : file.state;
@@ -360,7 +360,7 @@ class List extends Component {
         } else {
             /* eslint-disable no-lonely-if */
             if (typeof itemRender === 'function') {
-                item = itemRender(file);
+                item = itemRender(file, uploader);
             } else {
                 item = [
                     <div className={`${prefixCls}-list-item-thumbnail`} key="img">
