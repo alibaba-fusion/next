@@ -27,6 +27,7 @@ class Timeline extends Component {
         children: PropTypes.any,
         locale: PropTypes.object,
         animation: PropTypes.bool,
+        alternateMode: PropTypes.bool
     };
 
     static defaultProps = {
@@ -91,12 +92,20 @@ class Timeline extends Component {
             children,
             locale,
             animation,
+            alternateMode,
             ...others
         } = this.props;
         const { fold } = this.state;
 
         // 修改子节点属性
         const childrenCount = React.Children.count(children);
+        const getPositionCls = idx => {
+            if (alternateMode) {
+                return idx % 2 === 0 ? `${prefix}timeline-item-left` : `${prefix}timeline-item-right`;
+            }
+            return `${prefix}timeline-item-left`;
+        };
+
         const cloneChildren = Children.map(children, (child, i) => {
             let folderIndex = null;
             let foldNodeShow = false;
@@ -118,6 +127,7 @@ class Timeline extends Component {
                 prefix: prefix,
                 locale: locale,
                 total: childrenCount,
+                className: getPositionCls(i),
                 index: i,
                 folderIndex: folderIndex,
                 foldShow: foldNodeShow,
@@ -132,6 +142,7 @@ class Timeline extends Component {
         const timelineCls = classNames(
             {
                 [`${prefix}timeline`]: true,
+                [`${prefix}alternate`]: alternateMode
             },
             className
         );
