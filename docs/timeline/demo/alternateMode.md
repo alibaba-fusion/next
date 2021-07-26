@@ -8,7 +8,7 @@
 
 # alternate timeline node
 
-- order: 5
+- order: 6
 
 alternate timeline node.
 
