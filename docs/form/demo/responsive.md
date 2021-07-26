@@ -28,10 +28,10 @@ ReactDOM.render(<Form {...formItemLayout} >
     <FormItem label="userName:">
         <Input />
     </FormItem>
-    <FormItem label="password:">
-        <Input htmlType="password" name="resPass" placeholder="Please Enter Password"/>
+    <FormItem label="password:" name="resPass" >
+        <Input htmlType="password" placeholder="Please Enter Password"/>
     </FormItem>
-    <FormItem label="Country:">
+    <FormItem label="Country:" name="country" >
         <Select placeholder="Please select a country" style={{width: '100%'}}>
             <option value="china">China</option>
             <option value="use">United States</option>
@@ -40,8 +40,8 @@ ReactDOM.render(<Form {...formItemLayout} >
             <option value="Thailand">Thailand</option>
         </Select>
     </FormItem>
-    <FormItem label="Note:" help="something">
-        <Input.TextArea placeholder="something" name="resReremark" />
+    <FormItem label="Note:" help="something" name="resReremark" >
+        <Input.TextArea placeholder="something" />
     </FormItem>
     <FormItem label=" ">
         <Form.Submit>Submit</Form.Submit>

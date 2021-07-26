@@ -31,13 +31,13 @@ const App = () => {
     const layout = inline? {} : formItemLayout;
 
     return (<Form field={field} inline={inline} labelAlign={labelAlign} {...layout}>
-        <Form.Item label="Inline Layout" >
-            <Switch name="inline"/>
+        <Form.Item label="Inline Layout" name="inline">
+            <Switch />
         </Form.Item>
 
         {inline? null : 
-        <Form.Item label="Label align" >
-            <Radio.Group shape="button" name="labelAlign">
+        <Form.Item label="Label align" name="labelAlign">
+            <Radio.Group shape="button" >
                 <Radio value="left">left</Radio>
                 <Radio value="top">top</Radio>
                 <Radio value="inset">inset</Radio>
@@ -45,11 +45,11 @@ const App = () => {
         </Form.Item>
         }
 
-        <Form.Item label="Username:">
-            <Input name="inlineUser"  placeholder="first"/>
+        <Form.Item label="Username:" name="inlineUser">
+            <Input placeholder="first"/>
         </Form.Item>
-        <Form.Item label="Password:" hasFeedback={false}>
-            <Input.Password name="inlinePass" placeholder="Please enter your password!"/>
+        <Form.Item label="Password:" hasFeedback={false} name="inlinePass">
+            <Input.Password placeholder="Please enter your password!"/>
         </Form.Item>
 
         <Form.Item label=" ">

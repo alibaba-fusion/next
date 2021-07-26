@@ -17,8 +17,6 @@ Display other components related to the Form.
 ````jsx
 import { Form, Input, Button, Checkbox, Radio, Select, Range, Balloon, DatePicker, TimePicker, NumberPicker, Field, Switch, Upload, Grid } from '@alifd/next';
 
-
-
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
@@ -52,23 +50,24 @@ class Demo extends React.Component {
                     </Balloon>
                 </FormItem>
 
-                <FormItem label="NumberPicker:">
-                    <NumberPicker min={1} max={10} name="numberPicker" defaultValue={3} />
+                <FormItem label="NumberPicker:" name="numberPicker" >
+                    <NumberPicker min={1} max={10} defaultValue={3} />
                     <span>Something in here</span>
                 </FormItem>
 
                 <FormItem
+                    name="switch"
                     label="Switch:"
                     required>
-                    <Switch name="switch" defaultChecked />
+                    <Switch defaultChecked />
                 </FormItem>
 
-                <FormItem label="Range:" required>
-                    <Range defaultValue={30} scales={[0, 100]} marks={[0, 100]} name="range" />
+                <FormItem label="Range:" required  name="range">
+                    <Range defaultValue={30} scales={[0, 100]} marks={[0, 100]} />
                 </FormItem>
 
-                <FormItem label="Select:" required>
-                    <Select style={{width: 200}} name="select">
+                <FormItem label="Select:" required name="select">
+                    <Select style={{width: 200}} >
                         <Option value="jack">jack</Option>
                         <Option value="lucy">lucy</Option>
                         <Option value="disabled" disabled>disabled</Option>
@@ -81,27 +80,30 @@ class Demo extends React.Component {
                     labelCol={{span: 6}}
                     required>
                     <Row>
-                        <FormItem style={{marginRight: 10, marginBottom: 0}}><DatePicker name="startDate"/></FormItem>
-                        <FormItem style={{marginBottom: 0}}><DatePicker name="endDate" /></FormItem>
+                        <FormItem style={{marginRight: 10, marginBottom: 0}} name="startDate"><DatePicker /></FormItem>
+                        <FormItem style={{marginBottom: 0}} name="endDate"><DatePicker /></FormItem>
                     </Row>
                 </FormItem>
 
                 <FormItem
+                    name="rangeDate"
                     label="RangePicker:"
                     labelCol={{span: 6}}
                     required>
-                    <RangePicker name="rangeDate"/>
+                    <RangePicker />
                 </FormItem>
 
                 <FormItem
+                    name="time"
                     label="TimePicker:"
                     required>
-                    <TimePicker name="time" />
+                    <TimePicker />
                 </FormItem>
 
                 <FormItem
+                    name="checkbox"
                     label="Checkbox:">
-                    <Checkbox.Group name="checkbox">
+                    <Checkbox.Group >
                         <Checkbox value="a">option 1 </Checkbox>
                         <Checkbox value="b">option 2 </Checkbox>
                         <Checkbox disabled value="c">option 3（disabled）</Checkbox>
@@ -109,8 +111,9 @@ class Demo extends React.Component {
                 </FormItem>
 
                 <FormItem
+                    name="radio"
                     label="Radio:">
-                    <Radio.Group name="radio">
+                    <Radio.Group >
                         <Radio value="apple">apple</Radio>
                         <Radio value="banana">banana</Radio>
                         <Radio disabled value="cherry">cherry（disabled）</Radio>
@@ -119,8 +122,9 @@ class Demo extends React.Component {
 
                 <FormItem
                     label="Logo："
+                    name="upload"
                 >
-                    <Upload action="/upload.do" listType="text" name="upload" >
+                    <Upload action="/upload.do" listType="text" >
                         <Button type="primary" style={{margin: '0 0 10px'}}>Upload</Button>
                     </Upload>
                 </FormItem>

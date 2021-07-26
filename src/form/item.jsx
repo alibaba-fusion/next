@@ -40,6 +40,10 @@ export default class Item extends React.Component {
          */
         help: PropTypes.node,
         /**
+         * 字段名，默认赋值给第一个子元素
+         */
+        name: PropTypes.string,
+        /**
          * 额外的提示信息，和 help 类似，当需要错误信息和提示文案同时出现时，可以使用这个。 位于错误信息后面
          */
         extra: PropTypes.node,
@@ -224,6 +228,7 @@ export default class Item extends React.Component {
     static contextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.oneOf(['large', 'small', 'medium']),
+        _formDisabled: PropTypes.bool,
         _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
         _formLabelForErrorMessage: PropTypes.bool,
@@ -232,17 +237,26 @@ export default class Item extends React.Component {
     static _typeMark = 'form_item';
 
     /**
-     * 从子元素里面提取表单组件
+     * 从子元素里面提取表单组件. TODO: 2.x 中改为只获取一个元素
      */
     getNames(children) {
+        const { name } = this.props;
         const childrenList = React.Children.toArray(children);
-        return childrenList
+        const nameList = childrenList
             .filter(c => {
                 return c.props && ('name' in c.props || 'data-meta' in c.props);
             })
             .map(c => {
                 return c.props.name || c.props.id;
             });
+
+        if (nameList.length) {
+            return nameList;
+        } else if (name) {
+            return [name];
+        }
+
+        return [];
     }
 
     getHelper(children) {
@@ -278,6 +292,10 @@ export default class Item extends React.Component {
 
     getSize() {
         return this.props.size || this.context._formSize;
+    }
+
+    getDisabled() {
+        return this.context._formDisabled;
     }
 
     getIsPreview() {
@@ -361,7 +379,7 @@ export default class Item extends React.Component {
     }
 
     getItemWrapper(children) {
-        const { hasFeedback, labelCol, wrapperCol, extra, prefix, renderPreview } = this.props;
+        const { hasFeedback, labelCol, wrapperCol, extra, prefix, renderPreview, name } = this.props;
 
         const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
 
@@ -388,9 +406,13 @@ export default class Item extends React.Component {
             childrenProps.label = this.getItemLabel(children);
         }
 
+        if (this.getDisabled()) {
+            childrenProps.disabled = true;
+        }
+
         const labelForErrorMessage = this.getLabelForErrorMessage();
 
-        const ele = React.Children.map(children, child => {
+        const ele = React.Children.map(children, (child, idx) => {
             if (
                 child &&
                 ['function', 'object'].indexOf(typeof child.type) > -1 &&
@@ -398,9 +420,16 @@ export default class Item extends React.Component {
                 child.type._typeMark !== 'form_error'
             ) {
                 let extraProps = childrenProps;
-                if (this.context._formField && 'name' in child.props && !('data-meta' in child.props)) {
+                // 自己直接使用 field.init 会在 props 上面留下 data-meta
+                // name 挪到 FormItem 上面，默认把第一个元素当做 Form 组件
+                if (
+                    this.context._formField &&
+                    !('data-meta' in child.props) &&
+                    ('name' in child.props || (name && idx === 0)) //TODO：1.x 为了不BR, 2.x 中把优先级调换下，优先取 FormItem 的 name
+                ) {
+                    const initName = 'name' in child.props && child.props.name ? child.props.name : name;
                     extraProps = this.context._formField.init(
-                        child.props.name,
+                        initName,
                         {
                             ...getFieldInitCfg(this.props, child.type.displayName, labelForErrorMessage),
                             props: { ...child.props, ref: child.ref },
