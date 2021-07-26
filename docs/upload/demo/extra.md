@@ -35,7 +35,7 @@ const actionRender = (file) => {
     </span>);
 };
 
-const itemRender = (file, {removeCallback}) => {
+const itemRender = (file, {remove}) => {
     console.log(file);
     return (<div>
         <img src={file.url} style={{maxWidth: '100%', maxHeight: '100%'}} />
@@ -52,7 +52,7 @@ const itemRender = (file, {removeCallback}) => {
             type="ashbin" 
             size="xs" 
             style={{position: 'absolute', right:2, top: 2, color: '#fff', cursor: 'pointer'}}
-            onClick={removeCallback}
+            onClick={remove}
             />
     </div>);
 };

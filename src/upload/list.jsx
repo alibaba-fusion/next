@@ -54,6 +54,12 @@ class List extends Component {
          * 自定义操作渲染
          */
         actionRender: PropTypes.func,
+        /**
+         * 卡片自定义渲染（目前只支持 Card)
+         * @param {Object} file 文件对象
+         * @param {Object} {remove} remove:删除回调
+         * @retuns {ReactNode} React元素
+         */
         itemRender: PropTypes.func,
         /**
          * 透传给Progress props
@@ -370,7 +376,8 @@ class List extends Component {
         } else {
             /* eslint-disable no-lonely-if */
             if (typeof itemRender === 'function') {
-                item = itemRender(file, { removeCallback: onClose });
+                // 不处理上传态和选择态，太过复杂
+                item = itemRender(file, { remove: onClose });
             } else {
                 const Uploader = this.props.uploader || { props: {} };
                 const UploaderProps = Uploader.props;

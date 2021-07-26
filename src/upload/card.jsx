@@ -41,7 +41,8 @@ class Card extends Base {
         /**
          * 自定义成功和失败的列表渲染方式
          * @param {File} file 文件对象
-         * @param {Object} obj {removeCallback: 删除回调}
+         * @param {Object} obj {remove: 删除回调}
+         * @retuns {ReactNode} React元素
          * @version 1.21
          */
         itemRender: PropTypes.func,
