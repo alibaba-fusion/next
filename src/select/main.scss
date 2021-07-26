@@ -8,6 +8,7 @@
 #{$select-prefix} {
     @include box-sizing;
     display: inline-block;
+    position: relative;
     font-size: 0;
     vertical-align: middle;
 
