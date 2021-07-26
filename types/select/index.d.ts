@@ -151,6 +151,11 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
      * 填充到选择框里的值的 key，默认是 value
      */
     fillProps?: string;
+
+    /**
+     * 自动高亮第一个选项
+     */
+    autoHighlightFirstItem?: boolean;
 }
 
 export class AutoComplete extends React.Component<AutoCompleteProps, any> {}
@@ -426,6 +431,10 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
     isPreview?: boolean;
     renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => any;
+    /**
+     * 自动高亮第一个选项
+     */
+    autoHighlightFirstItem?: boolean;
 }
 
 export default class Select extends React.Component<SelectProps, any> {
