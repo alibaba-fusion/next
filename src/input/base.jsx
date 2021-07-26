@@ -274,7 +274,17 @@ class Base extends React.Component {
     }
 
     getProps() {
-        const { placeholder, inputStyle, disabled, readOnly, cutString, maxLength, name } = this.props;
+        const {
+            placeholder,
+            inputStyle,
+            disabled,
+            readOnly,
+            cutString,
+            maxLength,
+            name,
+            onCompositionStart,
+            onCompositionEnd,
+        } = this.props;
         const props = {
             style: inputStyle,
             placeholder,
@@ -286,6 +296,8 @@ class Base extends React.Component {
             onChange: this.onChange.bind(this),
             onBlur: this.onBlur.bind(this),
             onFocus: this.onFocus.bind(this),
+            onCompositionStart,
+            onCompositionEnd,
         };
 
         // fix accessibility：auto process status of aria disabled
