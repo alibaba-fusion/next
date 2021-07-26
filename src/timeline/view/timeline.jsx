@@ -27,6 +27,9 @@ class Timeline extends Component {
         children: PropTypes.any,
         locale: PropTypes.object,
         animation: PropTypes.bool,
+        /**
+         * 交替显示 示例`true`
+         */
         alternateMode: PropTypes.bool
     };
 
