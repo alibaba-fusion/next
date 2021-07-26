@@ -26,6 +26,7 @@ export default class Header extends React.Component {
         onSort: PropTypes.func,
         onResizeChange: PropTypes.func,
         tableWidth: PropTypes.number,
+        tableEl: PropTypes.any,
     };
     static defaultProps = {
         component: 'thead',
@@ -73,6 +74,7 @@ export default class Header extends React.Component {
             pure,
             rtl,
             tableWidth,
+            tableEl,
             ...others
         } = this.props;
 
@@ -141,7 +143,13 @@ export default class Header extends React.Component {
                     }
                     if (resizable) {
                         resizeElement = (
-                            <Resize prefix={prefix} rtl={rtl} dataIndex={dataIndex} onChange={onResizeChange} />
+                            <Resize
+                                tableEl={tableEl}
+                                prefix={prefix}
+                                rtl={rtl}
+                                dataIndex={dataIndex}
+                                onChange={onResizeChange}
+                            />
                         );
                     }
 
