@@ -11,7 +11,7 @@ export default class Row extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
-        primaryKey: PropTypes.string,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         className: PropTypes.string,
         columns: PropTypes.array,
         record: PropTypes.any,

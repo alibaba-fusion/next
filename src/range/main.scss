@@ -41,14 +41,12 @@
             );
 
             @include range-hover(
-                $range-normal-slider-bg-color,
-                $range-normal-slider-bg-color-hover
+                $range-normal-slider-bg-color-hover,
+                $range-normal-selected-color-hover,
+                $range-normal-unselected-color-hover
             );
 
-            @include range-click(
-                $range-normal-slider-bg-color,
-                $range-normal-slider-bg-color-hover
-            );
+            @include range-click();
         }
     }
 

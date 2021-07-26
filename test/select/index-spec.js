@@ -636,6 +636,25 @@ describe('Select', () => {
         done()
     });
 
+    it('should support adjustTagSize', done => {
+      const value = [
+          { label: 'xxx', value: '0' },
+          { label: 'empty', value: 1 },
+          { label: 'zzz', value: 1 },
+          { label: 'yyy', value: 1 },
+      ];
+      wrapper.setProps({
+          visible: true,
+          adjustTagSize: true,
+          mode: 'tag',
+          value
+      });
+      wrapper.update();
+
+      assert(wrapper.find('span.next-select span.next-select-values div.next-tag-medium').length === 4);
+      done()
+  });
+
     it('should support onChange with mode=single ', done => {
         const dataSource = [
             { label: 'xxx', value: '0' },

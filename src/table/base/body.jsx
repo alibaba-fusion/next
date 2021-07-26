@@ -17,7 +17,7 @@ export default class Body extends React.Component {
         components: PropTypes.object,
         getCellProps: PropTypes.func,
         cellRef: PropTypes.func,
-        primaryKey: PropTypes.string,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         getRowProps: PropTypes.func,
         rowRef: PropTypes.func,
         dataSource: PropTypes.array,

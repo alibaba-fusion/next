@@ -1078,7 +1078,7 @@ describe('Issue', () => {
             setTimeout(() => {
                 const expandedRows = container.querySelectorAll('.next-table-expanded-row .next-table-cell-wrapper');
                 expandedRows.forEach(row => {
-                    assert(row.style.width === '498px');
+                    assert(row.style.width === '499px');
                 })
 
                 const btn = container.querySelector('#sticky-expanded-row-width');
@@ -1087,7 +1087,7 @@ describe('Issue', () => {
                     btn.click();
 
                     expandedRows.forEach(row => {
-                        assert(row.style.width === '498px');
+                        assert(row.style.width === '499px');
                     });
 
                     ReactDOM.unmountComponentAtNode(container);

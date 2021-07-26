@@ -29,7 +29,7 @@ const runCommond = function(cmd) {
 };
 
 co(function*() {
-    // checkTags();
+    checkTags();
     checkFiles();
 
     const publish = yield inquirer.prompt([
@@ -106,6 +106,7 @@ function checkFiles() {
         'index.js',
         'index.scss',
         'reset.scss',
+        'components.scss',
         'variables.scss',
         '.fusion',
     ];

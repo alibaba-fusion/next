@@ -57,6 +57,12 @@ $table-header-padding-left: $s-4 !default;
 /// icon margin
 /// @namespace size/head
 $table-header-icon-margin-left: $s-2 !default;
+/// corner top
+/// @namespace size/head
+$table-header-corner-top: $corner-zero !default;
+/// corner bottom
+/// @namespace size/head
+$table-header-corner-bottom: $corner-zero !default;
 
 /// padding (t, b)
 /// @namespace size/cell
@@ -75,6 +81,20 @@ $table-size-s-header-padding-left: $s-2 !default;
 /// margin (t, b)
 /// @namespace size/group list
 $table-group-split: $s-2 !default;
+
+/// corner top
+/// @namespace size/group header
+$table-group-header-corner-top: $corner-zero !default;
+/// corner bottom
+/// @namespace size/group header
+$table-group-header-corner-bottom: $corner-zero !default;
+
+/// corner(t)
+/// @namespace size/group footer
+$table-group-footer-corner-top: $corner-zero !default;
+/// corner(b)
+/// @namespace size/group footer
+$table-group-footer-corner-bottom: $corner-zero !default;
 
 /// border
 /// @namespace statement/normal/bounding
@@ -97,6 +117,8 @@ $table-group-th-bg: $color-fill1-3 !default;
 /// text
 /// @namespace statement/normal/group header
 $table-group-th-color: $color-text1-4 !default;
+
+
 /// background
 /// @namespace statement/normal/body
 $table-row-bg: $color-white !default;

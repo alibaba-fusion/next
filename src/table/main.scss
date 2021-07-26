@@ -9,6 +9,21 @@
     border-top: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
     border-left: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
 
+    #{$table-prefix}-header tr:first-child th:first-child {
+        border-top-left-radius: $table-header-corner-top;
+    }
+    #{$table-prefix}-header tr:first-child th:last-child {
+        border-top-right-radius: $table-header-corner-top;
+    }
+
+    #{$table-prefix}-header tr:last-child th:first-child {
+        border-bottom-left-radius: $table-header-corner-bottom;
+    }
+    #{$table-prefix}-header tr:last-child th:last-child {
+        border-bottom-right-radius: $table-header-corner-bottom;
+    }
+
+
     &#{$table-prefix}-layout-fixed {
         overflow: auto;
         table {
@@ -64,6 +79,10 @@
 
         &#{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
             padding: $s-3 $s-4;
+        }
+        // 用户通过Column参数配置word-break
+        &#{$table-prefix}-word-break-word #{$table-prefix}-cell-wrapper {
+            word-break: break-word;
         }
 
         &#{$table-prefix}-fix-left,
@@ -126,6 +145,10 @@
         &#{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
             padding: $s-3 $s-4;
         }
+        // 用户通过Column参数配置word-break
+        &#{$table-prefix}-word-break-word #{$table-prefix}-cell-wrapper {
+            word-break: break-word;
+        }
     }
 
     #{$table-prefix}-expanded,
@@ -150,7 +173,6 @@
         table tr th:first-child {
             border-left-width: 0;
         }
-
         @include table-last-child-border(0);
     }
     &-loading {
@@ -323,6 +345,24 @@
 
 #{$table-prefix}-group {
     border-width: 0;
+
+    &.only-bottom-border {
+        #{$table-prefix}-body table,
+        #{$table-prefix}-header table {
+            border-left: 0;
+        }
+
+        #{$table-prefix}-header table,
+        #{$table-prefix}-body table,
+        #{$table-prefix}-body table#{$table-prefix}-row {
+            border-top: 0;
+        }
+
+        #{$table-prefix}-body table > tbody > tr:nth-last-child(2) td,
+        #{$table-prefix}-body #{$table-prefix}-group-footer td {
+            border-bottom: 0;
+        }
+    }
     #{$table-prefix}-body {
         margin-top: $table-group-split;
         table {
@@ -347,12 +387,28 @@
         td {
             background: $table-group-th-bg;
             color: $table-group-th-color;
+            &:first-child {
+                border-top-left-radius: $table-group-header-corner-top;
+                border-bottom-left-radius: $table-group-header-corner-bottom;
+            }
+            &:last-child {
+                border-top-right-radius: $table-group-header-corner-top;
+                border-bottom-right-radius: $table-group-header-corner-bottom;
+            }
         }
     }
     #{$table-prefix}-group-footer {
         td {
             background: $table-group-footer-bg;
             color: $table-group-footer-color;
+            &:first-child {
+                border-top-left-radius: $table-group-footer-corner-top;
+                border-bottom-left-radius: $table-group-footer-corner-bottom;
+            }
+            &:last-child {
+                border-top-right-radius: $table-group-footer-corner-top;
+                border-bottom-right-radius: $table-group-footer-corner-bottom;
+            }
         }
     }
     #{$table-prefix}-row.hovered,

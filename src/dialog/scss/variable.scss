@@ -85,7 +85,8 @@ $dialog-close-width: $s-4 !default;
 /// @namespace size/close
 $dialog-close-size: $icon-xs !default;
 
-$dialog-part-padding-right-closeable: $dialog-close-width + $dialog-close-right + ($dialog-close-width - $dialog-close-size) / 2;
+// 这一行2.0可以删掉，没有代码在用，担心有用户用到了，先保留
+$dialog-part-padding-right-closeable: $dialog-close-width + $dialog-close-right + calc((#{$dialog-close-width - $dialog-close-size}) / 2);
 
 // Statement:Normal
 // ----------------------------------------

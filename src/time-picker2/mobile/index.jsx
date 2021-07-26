@@ -1,6 +1,3 @@
-import { TimePicker as MeetTimePicker } from '@alifd/meet-react';
-import NextTimePicker from '../index';
+import { TimePicker } from '@alifd/meet-react';
 
-const TimePicker2 = MeetTimePicker ? MeetTimePicker : NextTimePicker;
-
-export default TimePicker2;
+export default TimePicker;

@@ -38,11 +38,20 @@ class Demo extends React.Component {
     render() {
         return (
             <Form style={{width: '60%'}} {...formItemLayout} colon>
-                <FormItem label="Username:" required requiredMessage="Please input your username!">
+                <FormItem label="Username" required requiredMessage="Please input your username!">
                     <Input name="baseUser" />
                 </FormItem>
-                <FormItem label="Password:" required requiredMessage="Please input your password!">
+                <FormItem label="Password" required requiredMessage="Please input your password!">
                     <Input.Password name="basePass" placeholder="Please Enter Password"/>
+                </FormItem>
+                <FormItem label="Email" format="email" requiredMessage="Please input your email!">
+                    <Input name="email" placeholder="Please Enter Email"/>
+                </FormItem>
+                <FormItem label="Phone Number" format="tel">
+                    <Input name="phone" placeholder="Please Enter phone number"/>
+                </FormItem>
+                <FormItem label="Homepage" format="url">
+                    <Input name="homepage" defaultValue="https://" placeholder="e.g. https://www.taobao.com"/>
                 </FormItem>
                 <FormItem label=" "  colon={false}>
                     <Checkbox name="agreement" defaultChecked>Agree</Checkbox>

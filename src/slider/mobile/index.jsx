@@ -1,6 +1,3 @@
-import { Slider as MeetSlider } from '@alifd/meet-react';
-import NextSlider from '../index';
-
-const Slider = MeetSlider ? MeetSlider : NextSlider;
+import { Slider } from '@alifd/meet-react';
 
 export default Slider;

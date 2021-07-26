@@ -1,6 +1,3 @@
-import { Breadcrumb as MeetBreadcrumb } from '@alifd/meet-react';
-import NextBreadcrumb from '../index';
-
-const Breadcrumb = MeetBreadcrumb ? MeetBreadcrumb : NextBreadcrumb;
+import { Breadcrumb } from '@alifd/meet-react';
 
 export default Breadcrumb;

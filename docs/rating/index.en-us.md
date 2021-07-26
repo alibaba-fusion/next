@@ -23,6 +23,7 @@ Rating component is usually used for customer feedback.
 | count        | full mark of rating                                                                                              | Number   | 5         |
 | showGrade    | display grade or not                                                                                         | Boolean  | false     |
 | allowHalf    | allow half start or not                                                                                         | Boolean  | false     |
+| allowClear    | Whether to allow clear when click again                                                                                                | Boolean  | false       |
 | onChange     | callback function on click star<br><br>**signatures**:<br>Function(value: String) => void<br>**params**:<br>_value_: {String} score | Function | func.noop |
 | onHoverChange     | callback function on hover star<br><br>**signatures**:<br>Function(value: String) => void<br>**params**:<br>_value_: {String} score | Function | func.noop |
 | disabled     | disabled rate or not                                                                                               | Boolean  | false     |

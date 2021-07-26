@@ -29,12 +29,16 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 当前值
      */
-    value?: number;
+    value?: number | string;
 
     /**
      * 默认值
      */
-    defaultValue?: number;
+    defaultValue?: number | string;
+    /**
+     * 内联 左侧label
+     */
+    label?: React.ReactNode;
 
     /**
      * 文字后附加内容
@@ -89,17 +93,17 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 数值订正后的回调
      */
-    onCorrect?: (obj: {}) => void;
+    onCorrect?: (obj: object) => void;
 
     /**
      * 最大值
      */
-    max?: number;
+    max?: number | string;
 
     /**
      * 最小值
      */
-    min?: number;
+    min?: number | string;
 
     /**
      * 自定义class
@@ -129,6 +133,26 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
      * 控制按钮一直显示、隐藏
      */
     alwaysShowTrigger?: boolean;
+    /**
+     * 是否为预览态
+     */
+    isPreview?: boolean;
+    /**
+     * 预览态模式下渲染的内容
+     */
+    renderPreview?: (value: number | string, props: object) => React.ReactNode;
+    /**
+     * 预设屏幕宽度
+     */
+    device?: 'phone' | 'tablet' | 'desktop';
+    /**
+     * 是否展示点击按钮
+     */
+    hasTrigger?: boolean;
+    /**
+     * 开启大数支持，输入输出均为string类型
+     */
+    stringMode?: boolean;
 }
 
 export default class NumberPicker extends React.Component<NumberPickerProps, any> {}

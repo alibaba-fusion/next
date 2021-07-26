@@ -46,6 +46,15 @@ class ThemeDemo extends Component {
                     }, {
                         label: '否', value: 'false'
                     }]
+                },
+                autoWidth: {
+                    label: '宽度根据内容自适应',
+                    value: 'false',
+                    enum: [{
+                        label: '是', value: 'true'
+                    }, {
+                        label: '否', value: 'false'
+                    }]
                 }
             }
         };
@@ -63,6 +72,7 @@ class ThemeDemo extends Component {
         const { demoFunction } = this.state;
         const {i18n} = this.props;
         const showText = demoFunction.showText.value;
+        const autoWidth = demoFunction.autoWidth.value;
         let props = {};
         if (showText === 'true') {
             props = {
@@ -70,6 +80,8 @@ class ThemeDemo extends Component {
                 unCheckedChildren: i18n.unCheckedChildren
             };
         }
+
+        props.autoWidth = autoWidth === 'true';
 
         return (
             <Demo title="Normal" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>

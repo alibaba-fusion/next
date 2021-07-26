@@ -1,6 +1,3 @@
-import { Step as MeetStep } from '@alifd/meet-react';
-import NextStep from '../index';
-
-const Step = MeetStep ? MeetStep : NextStep;
+import { Step } from '@alifd/meet-react';
 
 export default Step;
