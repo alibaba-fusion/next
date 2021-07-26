@@ -8,6 +8,13 @@
     @include box-sizing;
 
     &-preview.#{$css-prefix}form-item {
+        #{$form-prefix}-item-label {
+            color: $form-element-preview-label-color;
+        }
+        #{$form-prefix}-preview {
+            color: $form-element-preview-text-color;
+        }
+
         &.#{$css-prefix}medium {
             #{$form-prefix}-item-label {
                 font-size: $form-element-medium-preview-label-font-size;
