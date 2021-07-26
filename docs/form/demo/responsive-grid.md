@@ -58,7 +58,7 @@ class Demo extends React.Component {
             <ConfigProvider device={this.state.device}>
                 <div>
                     <h3>Label Position</h3>
-                    <Switch checkedChildren="left" unCheckedChildren="top" checked={this.state.labelAlign === 'left'} onChange={this.handleChange} />
+                    <Switch checkedChildren="left" unCheckedChildren="top" checked={this.state.labelAlign === 'left'} onChange={this.handleChange} autoWidth/>
                     <Button onClick={this.btn.bind(this,'desktop')}>desktop</Button>
                     <Button onClick={this.btn.bind(this,'tablet')}>tablet</Button>
                     <Button onClick={this.btn.bind(this,'phone')}>phone</Button>
