@@ -571,6 +571,7 @@ class Table extends React.Component {
                             colGroup={colGroup}
                             className={`${prefix}table-header`}
                             filterParams={filterParams}
+                            tableEl={this.tableEl}
                             columns={groupChildren}
                             locale={locale}
                             headerCellRef={this.getHeaderCellRef}

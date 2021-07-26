@@ -103,12 +103,25 @@
         position: relative;
         #{$table-prefix}-resize-handler {
             position: absolute;
-            right: 0;
+            right: -5px;
             top: 0;
             bottom: 0;
-            width: 3px;
+            width: 10px;
             background: transparent;
             cursor: ew-resize;
+            &::after {
+                position: absolute;
+                display: block;
+                content: ' ';
+                width: $line-2;
+                height: 100%;
+                right: 50%;
+            }
+            &.resizing::after,
+            &:hover::after {
+                z-index: 1;
+                background: $color-brand1-6;
+            }
         }
     }
     td {
