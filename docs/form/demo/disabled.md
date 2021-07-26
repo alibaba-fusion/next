@@ -1,16 +1,16 @@
 
-# 预览态
+# 禁用
 
-- order: 17
+- order: 18
 
-可以通过Form切换表单元素的预览态，切换前后布局结构相同
+一键切换元素为禁用态
 
 :::lang=en-us
-# Preview
+# Disabled
 
 - order: 17
 
-You can switch to preview state. Preview state and editor state share the same layout.
+You can switch to disabled state.
 
 :::
 
@@ -54,25 +54,21 @@ const fileList = [{
 
 class Demo extends React.Component {
     state = {
-        preview: false,
+        disabled: false,
     };
-    submitHandler = (e) => {
-        console.log(e);
-    };
-    onPreviewChange = (checked) => {
+
+    onDisabledChange = (checked) => {
         this.setState({
-            preview: checked
+            disabled: checked
         });
     };
-    ratingPreview = (value) => {
-        return <p>{value} {value > 2.5 ? <Icon type="smile" /> : <Icon type="cry"/>}</p>;
-    };
+
     render() {
         return (
             <div>
-                <Form {...formItemLayout} isPreview={this.state.preview} style={{maxWidth: '800px'}}>
-                    <FormItem label="preview: " isPreview={false} style={{marginBottom: 0}}>
-                        <Switch size="large" onChange={this.onPreviewChange} />
+                <Form {...formItemLayout} disabled={this.state.disabled} style={{maxWidth: '800px'}}>
+                    <FormItem label="disabled: " disabled={false} style={{marginBottom: 0}}>
+                        <Switch size="large" onChange={this.onDisabledChange} />
                     </FormItem>
                     <div style={{height: 1, width: '100%', margin: '20px 0'}}/>
                     <FormItem name="username" required label="Username:">
@@ -105,7 +101,7 @@ class Demo extends React.Component {
                         <Rating defaultValue={4.5} aria-label="what's the rate score" />
                     </FormItem>
 
-                    <FormItem name="rate2" required label="Custom Render Rating:" renderPreview={this.ratingPreview}>
+                    <FormItem name="rate2" required label="Custom Render Rating:" >
                         <Rating defaultValue={4.5} aria-label="what's the rate2 score" />
                     </FormItem>
 
@@ -136,11 +132,8 @@ class Demo extends React.Component {
                     <FormItem label="Upload:">
                         <Upload name="upload" defaultValue={fileList} listType="text" />
                     </FormItem>
-                    <FormItem label="Upload:">
-                        <Upload name="upload2" defaultValue={fileList} listType="image" />
-                    </FormItem>
                     <FormItem wrapperCol={{offset: 7}}>
-                        <Form.Submit validate type="primary" onClick={this.submitHandler}>Submit</Form.Submit>
+                        <Form.Submit validate type="primary" >Submit</Form.Submit>
                         <Form.Reset style={{marginLeft: 10}}>Reset</Form.Reset>
                     </FormItem>
                 </Form>

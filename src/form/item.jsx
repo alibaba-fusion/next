@@ -214,6 +214,10 @@ export default class Item extends React.Component {
          */
         colon: PropTypes.bool,
         /**
+         * 是否禁用表单
+         */
+        disabled: PropTypes.bool,
+        /**
          * 子元素的 value 名称
          */
         valueName: PropTypes.string,
@@ -295,7 +299,7 @@ export default class Item extends React.Component {
     }
 
     getDisabled() {
-        return this.context._formDisabled;
+        return 'disabled' in this.props ? this.props.disabled : this.context._formDisabled;
     }
 
     getIsPreview() {
