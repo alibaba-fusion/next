@@ -58,11 +58,11 @@ class Demo extends React.Component {
 
         return (
             <Form style={{ width: 400 }} {...formItemLayout} labelTextAlign="left" size="large" labelAlign="inset" >
-                <FormItem label="name" required asterisk={false}>
-                    <Input name="username" trim defaultValue="frank" />
+                <FormItem name="username" label="name" required asterisk={false}>
+                    <Input trim defaultValue="frank" />
                 </FormItem>
-                <FormItem label="phone" format="tel" required asterisk={false}>
-                    <Input name="phone" trim innerAfter={
+                <FormItem name="phone" label="phone" format="tel" required asterisk={false}>
+                    <Input trim innerAfter={
                         <Form.Submit
                             text
                             type="primary"
@@ -76,8 +76,8 @@ class Demo extends React.Component {
                     } />
                 </FormItem>
                 {
-                    this.state.code ? <FormItem label="code" required asterisk={false}>
-                        <Input name="code" trim defaultValue={this.state.code} />
+                    this.state.code ? <FormItem name="code" label="code" required asterisk={false}>
+                        <Input trim defaultValue={this.state.code} />
                     </FormItem> : null
                 }
 

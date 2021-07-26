@@ -75,62 +75,62 @@ class Demo extends React.Component {
                         <Switch size="large" onChange={this.onPreviewChange} />
                     </FormItem>
                     <div style={{height: 1, width: '100%', margin: '20px 0'}}/>
-                    <FormItem required label="Username:">
-                        <Input defaultValue="Fusion" placeholder="Please enter your username" id="username" name="username" aria-required="true"   />
+                    <FormItem name="username" required label="Username:">
+                        <Input defaultValue="Fusion" placeholder="Please enter your username" id="username" aria-required="true"   />
                     </FormItem>
-                    <FormItem required label="Password:">
-                        <Input defaultValue="Fusion@2019" htmlType="password" placeholder="Please enter your password" id="password" name="password" aria-required="true" />
-                    </FormItem>
-
-                    <FormItem required label="Link:">
-                        <Input name="link" addonTextBefore="http://" addonTextAfter=".com" defaultValue="alibaba" aria-label="input with config of addonTextBefore and addonTextAfter" />
+                    <FormItem name="password" required label="Password:">
+                        <Input defaultValue="Fusion@2019" htmlType="password" placeholder="Please enter your password" id="password"  aria-required="true" />
                     </FormItem>
 
-                    <FormItem required label="Number:">
-                        <NumberPicker name="number" defaultValue={1} />
+                    <FormItem name="link" required label="Link:">
+                        <Input addonTextBefore="http://" addonTextAfter=".com" defaultValue="alibaba" aria-label="input with config of addonTextBefore and addonTextAfter" />
                     </FormItem>
 
-                    <FormItem required label="autoComplete:">
-                        <Select.AutoComplete name="autoComplete" defaultValue="selected" />
+                    <FormItem name="number" required label="Number:">
+                        <NumberPicker defaultValue={1} />
                     </FormItem>
 
-                    <FormItem required label="multiple Select:">
-                        <Select name="select" defaultValue={["apple", "banana"]} mode="multiple" >
+                    <FormItem name="autoComplete" required label="autoComplete:">
+                        <Select.AutoComplete defaultValue="selected" />
+                    </FormItem>
+
+                    <FormItem name="select" required label="multiple Select:">
+                        <Select defaultValue={["apple", "banana"]} mode="multiple" >
                             <Select.Option value="apple">Apple</Select.Option>
                             <Select.Option value="banana">Banana</Select.Option>
                         </Select>
                     </FormItem>
 
-                    <FormItem required label="Rating:">
-                        <Rating defaultValue={4.5} name="rate" aria-label="what's the rate score" />
+                    <FormItem name="rate" required label="Rating:">
+                        <Rating defaultValue={4.5} aria-label="what's the rate score" />
                     </FormItem>
 
-                    <FormItem required label="Custom Render Rating:" renderPreview={this.ratingPreview}>
-                        <Rating defaultValue={4.5} name="rate2" aria-label="what's the rate2 score" />
+                    <FormItem name="rate2" required label="Custom Render Rating:" renderPreview={this.ratingPreview}>
+                        <Rating defaultValue={4.5} aria-label="what's the rate2 score" />
                     </FormItem>
 
-                    <FormItem required label="Checkbox:">
-                        <Checkbox.Group name="checkbox" defaultValue={['react', 'vue']}>
+                    <FormItem name="checkbox" required label="Checkbox:">
+                        <Checkbox.Group defaultValue={['react', 'vue']}>
                             <Checkbox value="react">React</Checkbox>
                             <Checkbox value="vue">Vue</Checkbox>
                             <Checkbox value="angular">Angular</Checkbox>
                         </Checkbox.Group>
                     </FormItem>
 
-                    <FormItem required label="Radio:">
-                        <Radio.Group name="radio" defaultValue={'react'} >
+                    <FormItem name="radio" required label="Radio:">
+                        <Radio.Group defaultValue={'react'} >
                             <Radio value="react">React</Radio>
                             <Radio value="vue">Vue</Radio>
                             <Radio value="angular">Angular</Radio>
                         </Radio.Group>
                     </FormItem>
 
-                    <FormItem required label="Range:">
-                        <Range name="range" slider="double" defaultValue={[10, 80]} />
+                    <FormItem name="range" required label="Range:">
+                        <Range slider="double" defaultValue={[10, 80]} />
                     </FormItem>
 
-                    <FormItem label="Note:">
-                        <Input.TextArea placeholder="description" name="a11yRemark" defaultValue="Fusion 是一套企业级中后台UI的解决方案，致力于解决设计师与前端在产品体验一致性、工作协同、开发效率方面的问题。通过协助业务线构建设计系统，提供系统化工具协助设计师前端使用设计系统，下游提供一站式设计项目协作平台；打通互联网产品从设计到开发的工作流。" />
+                    <FormItem name="a11yRemark" label="Note:">
+                        <Input.TextArea placeholder="description" defaultValue="Fusion 是一套企业级中后台UI的解决方案，致力于解决设计师与前端在产品体验一致性、工作协同、开发效率方面的问题。通过协助业务线构建设计系统，提供系统化工具协助设计师前端使用设计系统，下游提供一站式设计项目协作平台；打通互联网产品从设计到开发的工作流。" />
                     </FormItem>
 
                     <FormItem label="Upload:">
