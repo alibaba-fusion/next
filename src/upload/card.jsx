@@ -40,8 +40,22 @@ class Card extends Base {
         onCancel: PropTypes.func,
         /**
          * 自定义成功和失败的列表渲染方式
+         * @param {File} file 文件对象
+         * @param {Object} obj {remove: 删除回调}
+         * @retuns {ReactNode} React元素
+         * @version 1.21
          */
         itemRender: PropTypes.func,
+        /**
+         * 选择新文件上传并替换
+         * @version 1.24
+         */
+        reUpload: PropTypes.bool,
+        /**
+         * 展示下载按钮
+         * @version 1.24
+         */
+        showDownload: PropTypes.bool,
         /**
          * 上传中
          */
@@ -53,6 +67,7 @@ class Card extends Base {
     static defaultProps = {
         prefix: 'next-',
         locale: zhCN.Upload,
+        showDownload: true,
         onChange: func.noop,
         onPreview: func.noop,
         onProgress: func.noop,
@@ -131,6 +146,8 @@ class Card extends Base {
             isPreview,
             renderPreview,
             itemRender,
+            reUpload,
+            showDownload,
         } = this.props;
 
         const isExceedLimit = this.state.value.length >= limit;
@@ -173,6 +190,8 @@ class Card extends Base {
                 itemRender={itemRender}
                 isPreview={isPreview}
                 uploader={this.state.uploaderRef}
+                reUpload={reUpload}
+                showDownload={showDownload}
                 {...othersForList}
             >
                 <Upload
