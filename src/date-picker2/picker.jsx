@@ -6,7 +6,7 @@ import * as PT from 'prop-types';
 import SharedPT from './prop-types';
 import defaultLocale from '../locale/zh-cn';
 import { func, datejs, KEYCODE, obj } from '../util';
-import { switchInputType } from './util';
+import { switchInputType, fmtValue, isValueChanged } from './util';
 import { DATE_PICKER_TYPE, DATE_INPUT_TYPE, DATE_PICKER_MODE } from './constant';
 
 import Overlay from '../overlay';
@@ -18,35 +18,6 @@ import FooterPanel from './panels/footer-panel';
 const { Popup } = Overlay;
 const { renderNode } = func;
 const { pickProps, pickOthers } = obj;
-
-/**
- * 判断值是否改变
- * @param {dayjs.ConfigType}} newValue
- * @param {dayjs.ConfigType} oldValue
- * @returns {boolean}
- */
-function isValueChanged(newValue, oldValue) {
-    return Array.isArray(newValue)
-        ? isValueChanged(newValue[0], oldValue && oldValue[0]) || isValueChanged(newValue[1], oldValue && oldValue[1])
-        : newValue !== oldValue && !datejs(newValue).isSame(oldValue);
-}
-
-/**
- * 获取输入框值
- * @param {*} value 日期值
- * @param {string | funtion} fmt 日期格式
- * @returns {string | string[]}
- */
-function fmtValue(value, fmt) {
-    const formater = (v, idx) => {
-        if (Array.isArray(fmt)) {
-            fmt = fmt[idx];
-        }
-        return v ? (typeof fmt === 'function' ? fmt(v) : v.format(fmt)) : '';
-    };
-
-    return Array.isArray(value) ? value.map((v, idx) => formater(v, idx)) : formater(value);
-}
 
 /**
  * 日期检验：无效值返回 null
@@ -209,9 +180,10 @@ class Picker extends React.Component {
         const value = this.getInitValue();
 
         this.state = {
-            value,
+            value, // 确定值
+            curValue: value, // 临时值
+            preValue: value, // 上个值
             inputValue: fmtValue(value, format),
-            curValue: value, // 当前状态值
             ...this.state,
         };
 
@@ -250,11 +222,12 @@ class Picker extends React.Component {
         if ('value' in props) {
             const value = isRange ? checkRangeDate(props.value, state.inputType, disabled) : checkDate(props.value);
 
-            if (isValueChanged(value, state.value)) {
+            if (isValueChanged(value, state.preValue)) {
                 newState = {
                     ...newState,
                     value,
                     curValue: value,
+                    preValue: value,
                     inputValue: fmtValue(value, format),
                 };
             }
@@ -356,6 +329,10 @@ class Picker extends React.Component {
     handleInput = (v, eventType) => {
         if (eventType === 'clear') {
             this.handleChange(v, 'INPUT_CLEAR');
+
+            if (this.state.isRange) {
+                this.handleClear();
+            }
         } else {
             this.setState({
                 inputValue: v,
@@ -399,6 +376,11 @@ class Picker extends React.Component {
         return false;
     };
 
+    /**
+     * 获取输入框的禁用状态
+     * @param {Number} idx
+     * @returns {Boolean}
+     */
     isEnabled = idx => {
         const { disabled } = this.props;
 
@@ -424,71 +406,68 @@ class Picker extends React.Component {
 
     handleChange = (v, eventType) => {
         const { format } = this.props;
-        const { isRange, showOk, value } = this.state;
-        const forceEvents = ['KEYDOWN_ENTER', 'CLICK_OK', 'CLICK_PRESET', 'INPUT_CLEAR'];
+        const { isRange, showOk, value, preValue } = this.state;
+        const forceEvents = ['KEYDOWN_ENTER', 'CLICK_PRESET', 'CLICK_OK', 'INPUT_CLEAR', 'VISIBLE_CHANGE'];
+        const isTemporary = showOk && !forceEvents.includes(eventType);
 
-        /**
-         * 在显示确认按键且关闭弹层的时候 将当前值设置回确认值
-         * 在有确认按键的时候 需要点击确认值才生效
-         */
-        if (showOk && eventType === 'VISIBLE_CHANGE') {
-            v = value;
-        } else {
-            // 在显示确认按键
-            v = this.checkValue(v, !showOk || forceEvents.includes(eventType));
-        }
+        // 面板收起时候，将值设置为确认值
+        v = eventType === 'VISIBLE_CHANGE' ? value : this.checkValue(v, !isTemporary);
 
         this.setState({
             curValue: v,
             inputValue: fmtValue(v, format),
         });
 
-        if (!showOk || forceEvents.includes(eventType)) {
-            if (isRange) {
-                if (eventType === 'INPUT_CLEAR') {
-                    this.handleClear();
-                } else if (!['VISIBLE_CHANGE', 'CLICK_PRESET'].includes(eventType) && this.shouldSwitchInput(v)) {
-                    return;
+        if (!isTemporary) {
+            this.setState(
+                {
+                    value: v,
+                },
+                () => {
+                    // 判断当前选择结束，收起面板：
+                    // 1. 非 Range 选择
+                    // 2. 非 选择预设时间、面板收起、清空输入 操作
+                    // 3. 不需要切换输入框
+                    const shouldHidePanel =
+                        !isRange ||
+                        ['CLICK_PRESET', 'VISIBLE_CHANGE', 'INPUT_CLEAR'].includes(eventType) ||
+                        !this.shouldSwitchInput(v);
+
+                    if (shouldHidePanel) {
+                        this.onVisibleChange(false);
+
+                        if (isValueChanged(v, preValue)) {
+                            this.onChange();
+                        }
+                    }
                 }
-            }
-            this.onChange(v);
+            );
         }
     };
 
-    onChange = v => {
-        const { value } = this.state;
-        const { format } = this.props;
+    onChange = () => {
+        const { state, props } = this;
+        const { format } = props;
 
-        if (isValueChanged(v, value)) {
-            // 受控
-            if ('value' in this.props) {
-                this.setState({
-                    curValue: value,
-                    inputValue: fmtValue(value, format),
-                });
-            } else {
-                v = this.checkValue(v);
+        const value = this.checkValue('value' in props ? props.value : state.value);
 
-                this.setState({
-                    value: v,
-                    curValue: v,
-                    inputValue: fmtValue(v, format),
-                });
-            }
+        this.setState({
+            curValue: value,
+            preValue: value,
+            inputValue: fmtValue(value, format),
+        });
 
-            func.invoke(this.props, 'onChange', this.getOutputArgs(v));
-        }
-
-        this.onVisibleChange(false);
+        func.invoke(this.props, 'onChange', this.getOutputArgs(state.value));
     };
 
     onOk = () => {
         const { inputValue } = this.state;
         const checkedValue = this.checkValue(inputValue);
 
-        const result = func.invoke(this.props, 'onOk', this.getOutputArgs(checkedValue));
+        func.invoke(this.props, 'onOk', this.getOutputArgs(checkedValue));
 
-        result !== false && this.handleChange(inputValue, 'CLICK_OK');
+        this.setState({ value: checkedValue });
+        this.handleChange(checkedValue, 'CLICK_OK');
     };
 
     onInputTypeChange = idx => {
@@ -653,7 +632,7 @@ class Picker extends React.Component {
         );
 
         // 底部节点
-        const oKable = !!(isRange ? curValue && curValue[inputType] : curValue);
+        const oKable = !!(isRange ? inputValue && inputValue[inputType] : inputValue);
         const shouldShowFooter = showOk || preset || extraFooterRender;
 
         const footerNode = shouldShowFooter ? (

@@ -18,9 +18,10 @@
 
 ### Timeline
 
-| 参数   | 说明                                                                  | 类型    | 默认值 |
-| ---- | ------------------------------------------------------------------- | ----- | --- |
-| fold | 自定义折叠选项 示例`[{foldArea: [startIndex, endIndex], foldShow: boolean}]` | Array | \[] |
+| 参数   | 说明                                                                  | 类型     | 默认值    |
+| ---- | ------------------------------------------------------------------- | ------ | ------ |
+| fold | 自定义折叠选项 示例`[{foldArea: [startIndex, endIndex], foldShow: boolean}]` | Array  | \[]    |
+| mode | 显示模式 示例`left`，可选值为`left` 和 `alternate`                              | String | 'left' |
 
 ### Timeline.Item
 

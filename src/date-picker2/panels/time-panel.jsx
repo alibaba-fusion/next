@@ -14,7 +14,6 @@ class TimePanel extends React.PureComponent {
         locale: PT.object,
         value: SharedPT.date,
         timePanelProps: PT.object,
-        defaultValue: SharedPT.value,
         onSelect: PT.func,
     };
 

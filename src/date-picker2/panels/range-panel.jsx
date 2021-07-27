@@ -51,10 +51,8 @@ const isSamePanel = (a, b, mode) => {
 // 计算 面板日期
 const getPanelValue = ({ mode, value, inputType, showTime }, defaultValue) => {
     const [begin, end] = value;
-    const { BEGIN, END } = DATE_INPUT_TYPE;
-
-    let _inputType = inputType;
     const otherType = inputType === BEGIN ? END : BEGIN;
+    let _inputType = inputType;
 
     if (!value[inputType] && value[otherType]) {
         _inputType = otherType;
@@ -62,16 +60,9 @@ const getPanelValue = ({ mode, value, inputType, showTime }, defaultValue) => {
 
     let panelValue = value[_inputType] || datejs(defaultValue);
 
-    // 不显示时间 所以是双日期面板模式
-    if (!showTime) {
-        // 如果开始时间结束时间可以在一个面板中显示
-        if (begin && end && isSamePanel(begin, end, mode)) {
-            panelValue = begin;
-        }
-        // 当前选择的是结束时间 要回退一个时间
-        else if (_inputType === END && panelValue) {
-            panelValue = operate(mode, panelValue, 'subtract');
-        }
+    // https://github.com/alibaba-fusion/next/issues/3186
+    if (!showTime && _inputType === END && end && ((begin && !isSamePanel(begin, end, mode)) || !begin)) {
+        panelValue = operate(mode, panelValue, 'subtract');
     }
 
     return panelValue && panelValue.isValid() ? panelValue : datejs();
