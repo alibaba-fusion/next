@@ -69,6 +69,22 @@ describe('Timeline', () => {
             );
             assert(wrapper.find('.next-timeline-item-folder').length === 2);
         });
+
+        it('should render a alternate timeline', () => {
+            const wrapper = mount(
+                <Timeline
+                    mode="alternate"
+                >
+                    <Item content="2016-10-06" />
+                    <Item content="2016-10-05" />
+                    <Item content="2016-10-04" />
+                    <Item content="2016-10-03" />
+                    <Item content="2016-10-02" />
+                    <Item content="2016-10-01" />
+                </Timeline>
+            );
+            assert(wrapper.find('.next-timeline-item-left').length === wrapper.find('.next-timeline-item-right').length);
+        });
     });
 
     describe('action', () => {
