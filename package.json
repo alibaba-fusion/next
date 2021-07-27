@@ -96,7 +96,7 @@
     ]
   },
   "dependencies": {
-    "@alifd/field": "^1.5.5",
+    "@alifd/field": "~1.5.5",
     "@alifd/validate": "~1.2.0",
     "babel-runtime": "^6.26.0",
     "bignumber.js": "^9.0.1",
