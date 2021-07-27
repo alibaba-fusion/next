@@ -28,9 +28,10 @@ class Timeline extends Component {
         locale: PropTypes.object,
         animation: PropTypes.bool,
         /**
-         * 显示模式 示例`left`，可选值为`left` 和 `alternate`
-         */
-        mode: PropTypes.string,
+         * 展示的模式
+         * @enumdesc 左, 交错显示
+        */
+        mode: PropTypes.oneOf(['left', 'alternate']),
     };
 
     static defaultProps = {
