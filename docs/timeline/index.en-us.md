@@ -23,7 +23,7 @@ Vertical display of time flow information.
 | Param | Descripiton  | Type  | Default Value |
 | ---- | ------------------------------------------------------------------- | ----- | --- |
 | fold | custom folding options, eg: `[{foldArea: [startIndex, endIndex], foldShow: boolean}]` | Array | \[] |
-| alternateMode | alternate show, eg: `true`                                                       | Boolean | -   |
+| mode | mode show, eg: `left`.optional `left`, `alternate`                                    | Boolean | -   |
 
 ### Timeline.Item
 
