@@ -1,4 +1,4 @@
-# 交替显示节点
+# 时间轴显示方式
 
 - order: 6
 
@@ -6,7 +6,7 @@
 
 :::lang=en-us
 
-# alternate timeline node
+# display of time axis
 
 - order: 6
 
@@ -26,24 +26,24 @@ class Demo extends React.Component {
         super(props);
 
         this.state = {
-            alternateMode: false
+            mode: 'alternate'
         };
     }
 
     onTimelineMode = (value) => {
-        this.setState({ alternateMode: value });
+        this.setState({ mode: value });
     }
 
     render() {
         return (<div>
             <div className="custom-step-option">
-                <Select placeholder="Whether to start animation" onChange={this.onTimelineMode} className="custom-select" defaultValue={false}>
+                <Select placeholder="please choose timeline mode" onChange={this.onTimelineMode} className="custom-select" defaultValue="alternate">
                     {
-                        [true, false].map((item, index) => <Select.Option value={item} key={index}>{item ? 'alternateMode on' : 'alternateMode off'}</Select.Option>)
+                        ['left', 'alternate'].map((item, index) => <Select.Option value={item} key={index}>{item}</Select.Option>)
                     }
                 </Select>
             </div>
-            <Timeline alternateMode={this.state.alternateMode} fold={[{ foldArea: [1, 2], foldShow: false }, { foldArea: [5], foldShow: false }]}>
+            <Timeline mode={this.state.mode} fold={[{ foldArea: [1, 2], foldShow: false }, { foldArea: [5], foldShow: false }]}>
                 <TimelineItem  title="Sign" timeLeft="2020-09-09"  content="[Hangzhou] has received the sign, the signer is Alibaba Post Office, thank you for using STO, looking forward to serving you again" time={'2016-06-10 10:30:00'} state="process" />
                 <TimelineItem title="Delivery" timeLeft="2020-09-09" content="[Hangzhou] has received the sign, the signer is Alibaba Post Office, thank you for using STO, looking forward to serving you again" time={'2016-06-10 09:30:00'} />
                 <TimelineItem title="Delivery" timeLeft="2020-09-09"  content="[Hangzhou] Zhejiang Hangzhou Binjiang Company dispatches members for you" time={'2016-06-10 09:03:00'} />

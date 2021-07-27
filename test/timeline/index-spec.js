@@ -73,7 +73,7 @@ describe('Timeline', () => {
         it('should render a alternate timeline', () => {
             const wrapper = mount(
                 <Timeline
-                    alternateMode={true}
+                    mode="alternate"
                 >
                     <Item content="2016-10-06" />
                     <Item content="2016-10-05" />
