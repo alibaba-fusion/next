@@ -797,20 +797,20 @@ describe('Tree', () => {
 
         assert(hasClass(document.querySelector('.next-tree'), 'next-show-line'));
 
-        // icon '-'
+        // icon '+'
         assert(
             window
                 .getComputedStyle(document.querySelector('.next-tree-switcher-fold-icon'), '::before')
                 .content.replace('"', '')
-                .charCodeAt() === 58881
+                .charCodeAt() === 58965
         );
 
-        // icon '+'
+        // icon '-'
         assert(
             window
                 .getComputedStyle(document.querySelector('.next-tree-switcher-unfold-icon'), '::before')
                 .content.replace('"', '')
-                .charCodeAt() === 58965
+                .charCodeAt() === 58881
         );
     });
 
