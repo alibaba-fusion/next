@@ -56,7 +56,8 @@
 | responsive              | 是否开启内置的响应式布局 （使用ResponsiveGrid）                                                                                                                                                                                                                  | Boolean         | -                                                      | 1.19 |
 | isPreview               | 是否开启预览态                                                                                                                                                                                                                                          | Boolean         | -                                                      | 1.19 |
 | useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                                                                                                                                                       | Boolean         | -                                                      | 1.20 |
-| colon                   | 表示是否显示 label 后面的冒号                                                                                                                                                                                                                               | Boolean         | false                                                  |      |
+| colon                   | 表示是否显示 label 后面的冒号                                                                                                                                                                                                                               | Boolean         | false                                                  | 1.22 |
+| disabled                | 是否禁用表单                                                                                                                                                                                                                                           | Boolean         | false                                                  |      |
 
 ### Form.Item
 
@@ -69,6 +70,7 @@
 | labelCol                | label 标签布局，通 `<Col>` 组件，设置 span offset 值，如 {span: 8, offset: 16}，该项仅在垂直表单有效                                                | Object             | -     |
 | wrapperCol              | 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol                                                                                          | Object             | -     |
 | help                    | 自定义提示信息，如不设置，则会根据校验规则自动生成.                                                                                                 | ReactNode          | -     |
+| name                    | 字段名，默认赋值给第一个子元素                                                                                                            | String             | -     |
 | extra                   | 额外的提示信息，和 help 类似，当需要错误信息和提示文案同时出现时，可以使用这个。 位于错误信息后面                                                                       | ReactNode          | -     |
 | validateState           | 校验状态，如不设置，则会根据校验规则自动生成<br/><br/>**可选值**:<br/>'error'(失败)<br/>'success'(成功)<br/>'loading'(校验中)<br/>'warning'(警告)            | Enum               | -     |
 | hasFeedback             | 配合 validateState 属性使用，是否展示 success/loading 的校验状态图标, 目前只有Input支持                                                            | Boolean            | false |
@@ -107,6 +109,7 @@
 | renderPreview           | 预览态模式下渲染的内容<br/><br/>**签名**:<br/>Function(value: any) => void<br/>**参数**:<br/>_value_: {any} 根据包裹的组件的 value 类型而决定          | Function           | -     |
 | useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                                 | Boolean            | -     |
 | colon                   | 表示是否显示 label 后面的冒号                                                                                                         | Boolean            | -     |
+| disabled                | 是否禁用表单                                                                                                                     | Boolean            | -     |
 | valueName               | 子元素的 value 名称                                                                                                              | String             | -     |
 
 ### Form.Submit
