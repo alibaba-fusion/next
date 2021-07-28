@@ -71,7 +71,6 @@ class BasicDemo extends React.Component {
                     label="Email:"
                     hasFeedback
                     required
-                    requiredTrigger="onBlur"
                     format="email"
                 >
                     <Input placeholder="Both trigget onBlur and onChange" name="valEmail" />

@@ -50,7 +50,7 @@ export default class Base extends React.Component {
         /**
          * 校验状态
          */
-        state: PropTypes.oneOf(['error', 'loading']),
+        state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
         /**
          * 是否只读，只读模式下可以展开弹层但不能选
          */
