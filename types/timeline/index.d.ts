@@ -47,6 +47,7 @@ export interface ItemProps extends HTMLAttributesWeak, CommonProps {
      * 动画
      */
     animation?: boolean;
+    mode?: 'left' | 'alternate';
 }
 
 export class Item extends React.Component<ItemProps, any> {}

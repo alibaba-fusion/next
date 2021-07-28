@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from '../../select';
 import Radio from '../../radio';
+import ConfigProvider from '../../config-provider';
 
-class CardHeader extends React.PureComponent {
+class CardHeader extends React.Component {
     static propTypes = {
         yearRange: PropTypes.arrayOf(PropTypes.number),
         yearRangeOffset: PropTypes.number,
@@ -15,6 +16,10 @@ class CardHeader extends React.PureComponent {
     };
 
     selectContainerHandler = target => {
+        const { device } = this.props;
+        if (device === 'phone') {
+            return document.body;
+        }
         return target.parentNode;
     };
 
@@ -91,15 +96,9 @@ class CardHeader extends React.PureComponent {
         const { prefix, mode, locale, visibleMonth } = this.props;
 
         const yearSelect = this.getYearSelect(visibleMonth.year());
-        const monthSelect =
-            mode === 'month' ? null : this.getMonthSelect(visibleMonth.month());
+        const monthSelect = mode === 'month' ? null : this.getMonthSelect(visibleMonth.month());
         const panelSelect = (
-            <Radio.Group
-                shape="button"
-                size="medium"
-                value={mode}
-                onChange={this.onModePanelChange}
-            >
+            <Radio.Group shape="button" size="medium" value={mode} onChange={this.onModePanelChange}>
                 <Radio value="date">{locale.month}</Radio>
                 <Radio value="month">{locale.year}</Radio>
             </Radio.Group>
@@ -115,4 +114,4 @@ class CardHeader extends React.PureComponent {
     }
 }
 
-export default CardHeader;
+export default ConfigProvider.config(CardHeader);
