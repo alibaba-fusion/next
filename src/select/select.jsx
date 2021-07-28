@@ -577,12 +577,17 @@ class Select extends Base {
             disabled,
         } = this.props;
 
+        const hasSearch = this.hasSearch();
+
         if (popupContent) {
+            // 搜索的时候不阻止冒泡会无法输入
+            if (hasSearch && e.keyCode === KEYCODE.SPACE) {
+                e.stopPropagation();
+            }
             return onKeyDown(e);
         }
 
         const proxy = 'search';
-        const hasSearch = this.hasSearch();
 
         switch (e.keyCode) {
             case KEYCODE.UP:
