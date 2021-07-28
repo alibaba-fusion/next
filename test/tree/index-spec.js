@@ -793,8 +793,25 @@ describe('Tree', () => {
     });
 
     it('should support showLine', () => {
-        ReactDOM.render(<Tree showLine dataSource={dataSource} />, mountNode);
+        ReactDOM.render(<Tree showLine defaultExpandedKeys={['1']} dataSource={dataSource} />, mountNode);
+
         assert(hasClass(document.querySelector('.next-tree'), 'next-show-line'));
+
+        // icon '+'
+        assert(
+            window
+                .getComputedStyle(document.querySelector('.next-tree-switcher-fold-icon'), '::before')
+                .content.replace('"', '')
+                .charCodeAt() === 58965
+        );
+
+        // icon '-'
+        assert(
+            window
+                .getComputedStyle(document.querySelector('.next-tree-switcher-unfold-icon'), '::before')
+                .content.replace('"', '')
+                .charCodeAt() === 58881
+        );
     });
 
     it('should support icon', () => {

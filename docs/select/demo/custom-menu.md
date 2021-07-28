@@ -75,7 +75,7 @@ const itemRender2 = (item, searchKey) => {
 ReactDOM.render(
     <div className="demo-container">
         <Select dataSource={dataSource} itemRender={itemRender} valueRender={valueRender} placeholder="pick your color" />
-        <Select showSearch dataSource={dataSource2} itemRender={itemRender2} placeholder="highlight keywords" style={{minWidth: 200}} />
+        <Select showSearch dataSource={dataSource2} itemRender={itemRender2} placeholder="highlight keywords" style={{minWidth: 200, marginLeft: 8}} />
     </div>,
     mountNode
 );

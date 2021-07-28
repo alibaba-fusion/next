@@ -72,7 +72,6 @@ class BasicDemo extends React.Component {
                     label="Email:"
                     hasFeedback
                     required
-                    requiredTrigger="onBlur"
                     format="email"
                     name="valEmail" 
                 >
