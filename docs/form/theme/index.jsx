@@ -8,16 +8,12 @@ import Input from '../../../src/input';
 import Field from '../../../src/field';
 import Form from '../../../src/form';
 import Select from '../../../src/select';
-import Rating from '../../../src/rating';
-import Range from '../../../src/range';
 
 import Grid from '../../../src/grid';
 import '../../../src/demo-helper/style.js';
 import '../../../src/form/style.js';
 import '../../../src/input/style.js';
 import '../../../src/select/style.js';
-import '../../../src/rating/style.js';
-import '../../../src/range/style.js';
 
 // import form
 
