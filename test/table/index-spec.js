@@ -682,6 +682,32 @@ describe('Table', () => {
         assert(wrapper.find('div.next-table-empty').length !== 0);
     });
 
+    it('should support async virtual', () => {
+        wrapper.setProps({
+            dataSource: [],
+            useVirtual: true,
+            children: [
+                <Table.Column dataIndex="id" lock width={200} />,
+                <Table.Column dataIndex="id" lock="right" width={200} />,
+            ],
+        });
+        assert(wrapper.find('div.next-table-empty').length !== 0);
+
+        const dataSource = new Array(40).fill(i => {
+            return {
+                id: i + '',
+                name: `test${i}`
+            }
+        })
+        wrapper.setProps({
+            useVirtual: true,
+            dataSource,
+        });
+
+        assert(wrapper.find('div.next-table-empty').length === 0);
+        assert(wrapper.find('tr.next-table-row').length < 40);
+    });
+
     it('should support lock row mouseEnter mouseLeave', done => {
         wrapper.setProps({
             children: [
