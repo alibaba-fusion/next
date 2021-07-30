@@ -642,6 +642,7 @@ class Picker extends React.Component {
                 showOk={showOk}
                 onChange={handleChange}
                 preset={preset}
+                locale={locale}
                 prefix={prefix}
                 extraRender={extraFooterRender}
             />
