@@ -80,7 +80,7 @@ export default function stickyLock(BaseComponent) {
         componentDidUpdate() {
             this.updateOffsetArr();
             this.onLockBodyScroll(
-                this.headerNode ? { currentTarget: this.headerNode } : { currentTarget: this.bodyNode },
+                this.bodyNode ? { currentTarget: this.bodyNode } : { currentTarget: this.headerNode },
                 true
             );
         }
