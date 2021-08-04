@@ -13,40 +13,27 @@ export default class Sort extends React.Component {
         sort: PropTypes.object,
         sortIcons: PropTypes.object,
         onSort: PropTypes.func,
+        sortDirections: PropTypes.arrayOf(PropTypes.oneOf(['desc', 'asc', 'default'])),
         dataIndex: PropTypes.string,
         locale: PropTypes.object,
     };
     static defaultProps = {
         sort: {},
+        sortDirections: ['desc', 'asc'],
     };
     // 渲染排序
     renderSort() {
-        const {
-                prefix,
-                sort,
-                sortIcons,
-                className,
-                dataIndex,
-                locale,
-                rtl,
-            } = this.props,
+        const { prefix, sort, sortIcons, className, dataIndex, locale, sortDirections, rtl } = this.props,
             sortStatus = sort[dataIndex],
             map = {
                 desc: 'descending',
                 asc: 'ascending',
             };
 
-        const icons = ['asc', 'desc'].map(sortOrder => {
-            return (
-                <a
-                    key={sortOrder}
-                    className={sortStatus === sortOrder ? 'current' : ''}
-                >
-                    {sortIcons ? (
-                        sortIcons[sortOrder]
-                    ) : (
-                        <Icon rtl={rtl} type={map[sortOrder]} size="xs" />
-                    )}
+        const icons = sortDirections.map(sortOrder => {
+            return sortOrder === 'default' ? null : (
+                <a key={sortOrder} className={sortStatus === sortOrder ? 'current' : ''}>
+                    {sortIcons ? sortIcons[sortOrder] : <Icon rtl={rtl} type={map[sortOrder]} size="xs" />}
                 </a>
             );
         });
@@ -71,8 +58,21 @@ export default class Sort extends React.Component {
     }
 
     handleClick = () => {
-        const { sort, dataIndex } = this.props;
-        this.onSort(dataIndex, sort[dataIndex] === 'desc' ? 'asc' : 'desc');
+        const { sort, dataIndex, sortDirections } = this.props;
+
+        let nextSortType = '';
+
+        sortDirections.forEach((dir, i) => {
+            if (sort[dataIndex] === dir) {
+                nextSortType = sortDirections.length - 1 > i ? sortDirections[i + 1] : sortDirections[0];
+            }
+        });
+
+        if (!sort[dataIndex]) {
+            nextSortType = sortDirections[0];
+        }
+
+        this.onSort(dataIndex, nextSortType);
     };
 
     keydownHandler = e => {

@@ -5,7 +5,7 @@ import CommonProps from '../util';
 import { PopupProps } from '../overlay';
 import { InputProps } from '../input';
 import { ButtonProps } from '../button';
-import * as dayjs from 'dayjs';
+import { Dayjs, ConfigType } from 'dayjs';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -19,7 +19,7 @@ export interface DatePreset extends ButtonProps {
 }
 
 export interface RangePreset {
-    [propName: string]: (typeof dayjs)[];
+    [propName: string]: (Dayjs)[];
 }
 
 export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
@@ -42,12 +42,12 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 时间值（dayjs 对象或时间字符串，受控状态使用）
      */
-    value?: any;
+    value?: ConfigType;
 
     /**
      * 时间初值（dayjs 对象或时间字符串，非受控状态使用）
      */
-    defaultValue?: any;
+    defaultValue?: ConfigType;
 
     /**
      * 时间选择框的尺寸
@@ -163,7 +163,7 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 时间值改变时的回调
      */
-    onChange?: (date: typeof dayjs, dateString: string) => void;
+    onChange?: (date: Dayjs, dateString: string) => void;
 }
 
 export default class TimePicker extends React.Component<TimePickerProps, any> {}

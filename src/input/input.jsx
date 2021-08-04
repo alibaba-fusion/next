@@ -274,6 +274,7 @@ export default class Input extends Base {
             addonTextAfter,
             inputRender,
             rtl,
+            composition,
         } = this.props;
 
         const hasAddon = addonBefore || addonAfter || addonTextBefore || addonTextAfter;
@@ -332,10 +333,17 @@ export default class Input extends Base {
             );
         }
 
+        const compositionProps = {};
+        if (composition) {
+            compositionProps.onCompositionStart = this.handleCompositionStart;
+            compositionProps.onCompositionEnd = this.handleCompositionEnd;
+        }
+
         const inputEl = (
             <input
                 {...others}
                 {...props}
+                {...compositionProps}
                 height="100%"
                 type={htmlType}
                 size={htmlSize}
@@ -347,12 +355,7 @@ export default class Input extends Base {
         );
 
         const inputWrap = (
-            <span
-                {...dataProps}
-                dir={rtl ? 'rtl' : undefined}
-                className={cls}
-                style={hasAddon ? undefined : style}
-            >
+            <span {...dataProps} dir={rtl ? 'rtl' : undefined} className={cls} style={hasAddon ? undefined : style}>
                 {this.renderLabel()}
                 {this.renderInner(innerBefore, innerBeforeCls)}
                 {inputRender(inputEl)}

@@ -243,12 +243,12 @@ export default function lock(BaseComponent) {
 
         scroll() {
             const { scrollToCol = 0, scrollToRow = 0 } = this.props;
-            if (!scrollToCol && !scrollToRow) {
+            if ((!scrollToCol && !scrollToRow) || !this.bodyNode) {
                 return;
             }
             const colCellNode = this.getCellNode(0, scrollToCol);
             const rowCellNode = this.getCellNode(scrollToRow, 0);
-            const bodyNodeOffset = this.bodyNode.getBoundingClientRect();
+            const bodyNodeOffset = this.bodyNode.getBoundingClientRect() || {};
             if (colCellNode) {
                 const cellNodeoffset = colCellNode.getBoundingClientRect();
                 const scrollLeft = cellNodeoffset.left - bodyNodeOffset.left;
@@ -513,7 +513,9 @@ export default function lock(BaseComponent) {
             if (this.isLock()) {
                 this.tableInc.props.dataSource.forEach((item, index) => {
                     // record may be a string
-                    const rowIndex = typeof item === 'object' && '__rowIndex' in item ? item.__rowIndex : index;
+                    const rowIndex = `${typeof item === 'object' && '__rowIndex' in item ? item.__rowIndex : index}${
+                        item.__expanded ? '_expanded' : ''
+                    }`;
 
                     // 同步左侧的锁列
                     this.setRowHeight(rowIndex, 'left');

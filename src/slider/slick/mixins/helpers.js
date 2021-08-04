@@ -6,21 +6,18 @@ const helpers = {
     initialize(props) {
         const slickList = ReactDOM.findDOMNode(this.list);
         const slideCount = React.Children.count(props.children);
-        const listWidth = this.getWidth(slickList);
-        const trackWidth = this.getWidth(ReactDOM.findDOMNode(this.track));
+        const listWidth = this.getWidth(slickList) || 0;
+        const trackWidth = this.getWidth(ReactDOM.findDOMNode(this.track)) || 0;
         let slideWidth;
 
         if (!props.vertical) {
-            const centerPaddingAdj =
-                props.centerMode && parseInt(props.centerPadding) * 2;
+            const centerPaddingAdj = props.centerMode && parseInt(props.centerPadding) * 2;
             slideWidth = (listWidth - centerPaddingAdj) / props.slidesToShow;
         } else {
             slideWidth = listWidth;
         }
 
-        const slideHeight = this.getHeight(
-            slickList.querySelector('[data-index="0"]')
-        );
+        const slideHeight = this.getHeight(slickList.querySelector('[data-index="0"]')) || 0;
         const listHeight = slideHeight * props.slidesToShow;
 
         const slidesToShow = props.slidesToShow || 1;
@@ -64,11 +61,17 @@ const helpers = {
     },
 
     getWidth(elem) {
-        return elem.getBoundingClientRect().width || elem.offsetWidth;
+        if ('clientWidth' in elem) {
+            return elem.clientWidth;
+        }
+        return elem && elem.getBoundingClientRect().width;
     },
 
     getHeight(elem) {
-        return elem.getBoundingClientRect().height || elem.offsetHeight;
+        if ('clientHeight' in elem) {
+            return elem.clientHeight;
+        }
+        return elem && elem.getBoundingClientRect().height;
     },
 
     adaptHeight() {
@@ -76,8 +79,7 @@ const helpers = {
             const selector = `[data-index="${this.state.currentSlide}"]`;
             if (this.list) {
                 const slickList = ReactDOM.findDOMNode(this.list);
-                const listHeight = slickList.querySelector(selector)
-                    .offsetHeight;
+                const listHeight = slickList.querySelector(selector).offsetHeight;
                 slickList.style.height = `${listHeight}px`;
             }
         }
@@ -116,10 +118,7 @@ const helpers = {
             currentSlide = this.state.currentSlide;
 
             // don't change slide if it's not infinite and current slide is the first or last slide'
-            if (
-                this.props.infinite === false &&
-                (index < 0 || index >= this.state.slideCount)
-            ) {
+            if (this.props.infinite === false && (index < 0 || index >= this.state.slideCount)) {
                 return;
             }
 
@@ -132,14 +131,9 @@ const helpers = {
                 targetSlide = index;
             }
 
-            if (
-                this.props.lazyLoad &&
-                this.state.lazyLoadedList.indexOf(targetSlide) < 0
-            ) {
+            if (this.props.lazyLoad && this.state.lazyLoadedList.indexOf(targetSlide) < 0) {
                 this.setState({
-                    lazyLoadedList: this.state.lazyLoadedList.concat(
-                        targetSlide
-                    ),
+                    lazyLoadedList: this.state.lazyLoadedList.concat(targetSlide),
                 });
             }
 
@@ -159,10 +153,7 @@ const helpers = {
                     currentSlide: targetSlide,
                 },
                 function() {
-                    this.animationEndCallback = setTimeout(
-                        callback,
-                        this.props.speed + 20
-                    );
+                    this.animationEndCallback = setTimeout(callback, this.props.speed + 20);
                 }
             );
 
@@ -176,14 +167,10 @@ const helpers = {
             if (targetSlide < 0) {
                 if (this.props.infinite === false) {
                     currentSlide = 0;
-                } else if (
-                    this.state.slideCount % this.props.slidesToScroll !==
-                    0
-                ) {
+                } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
                     if (targetSlide + this.props.slidesToScroll <= 0) {
                         currentSlide = this.state.slideCount + targetSlide;
-                        targetSlide =
-                            this.state.slideCount - this.props.slidesToScroll;
+                        targetSlide = this.state.slideCount - this.props.slidesToScroll;
                     } else {
                         currentSlide = targetSlide = 0;
                     }
@@ -193,12 +180,8 @@ const helpers = {
                 }
             } else if (targetSlide >= this.state.slideCount) {
                 if (this.props.infinite === false) {
-                    currentSlide =
-                        this.state.slideCount - this.props.slidesToShow;
-                } else if (
-                    this.state.slideCount % this.props.slidesToScroll !==
-                    0
-                ) {
+                    currentSlide = this.state.slideCount - this.props.slidesToShow;
+                } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
                     currentSlide = 0;
                 } else {
                     currentSlide = targetSlide - this.state.slideCount;
@@ -209,23 +192,15 @@ const helpers = {
         } else if (targetSlide < 0) {
             if (this.props.infinite === false) {
                 currentSlide = 0;
-            } else if (
-                this.state.slideCount % this.props.slidesToScroll !==
-                0
-            ) {
-                currentSlide =
-                    this.state.slideCount -
-                    (this.state.slideCount % this.props.slidesToScroll);
+            } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
+                currentSlide = this.state.slideCount - (this.state.slideCount % this.props.slidesToScroll);
             } else {
                 currentSlide = this.state.slideCount + targetSlide;
             }
         } else if (targetSlide >= this.state.slideCount) {
             if (this.props.infinite === false) {
                 currentSlide = this.state.slideCount - this.props.slidesToShow;
-            } else if (
-                this.state.slideCount % this.props.slidesToScroll !==
-                0
-            ) {
+            } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
                 currentSlide = 0;
             } else {
                 currentSlide = targetSlide - this.state.slideCount;
@@ -257,31 +232,20 @@ const helpers = {
             const slidesToLoad = [];
             const slidesLen = this.state.slideCount;
 
-            const sliderIndex =
-                targetSlide < 0 ? slidesLen + targetSlide : currentSlide;
+            const sliderIndex = targetSlide < 0 ? slidesLen + targetSlide : currentSlide;
 
-            for (
-                let i = sliderIndex;
-                i < sliderIndex + this.props.slidesToShow;
-                i++
-            ) {
+            for (let i = sliderIndex; i < sliderIndex + this.props.slidesToShow; i++) {
                 let k = i;
                 if (rtl) {
-                    k =
-                        i >= slidesLen
-                            ? slidesLen * 2 - i - 1
-                            : slidesLen - i - 1;
+                    k = i >= slidesLen ? slidesLen * 2 - i - 1 : slidesLen - i - 1;
                 }
 
                 const pre = k - 1 < 0 ? slidesLen - 1 : k - 1;
                 const next = k + 1 >= slidesLen ? 0 : k + 1;
 
-                this.state.lazyLoadedList.indexOf(k) < 0 &&
-                    slidesToLoad.push(k);
-                this.state.lazyLoadedList.indexOf(pre) < 0 &&
-                    slidesToLoad.push(pre);
-                this.state.lazyLoadedList.indexOf(next) < 0 &&
-                    slidesToLoad.push(next);
+                this.state.lazyLoadedList.indexOf(k) < 0 && slidesToLoad.push(k);
+                this.state.lazyLoadedList.indexOf(pre) < 0 && slidesToLoad.push(pre);
+                this.state.lazyLoadedList.indexOf(next) < 0 && slidesToLoad.push(next);
             }
 
             slidesToLoad.forEach(i => {
@@ -292,9 +256,7 @@ const helpers = {
 
             if (!loaded) {
                 this.setState({
-                    lazyLoadedList: this.state.lazyLoadedList.concat(
-                        slidesToLoad
-                    ),
+                    lazyLoadedList: this.state.lazyLoadedList.concat(slidesToLoad),
                 });
             }
         }
@@ -349,10 +311,7 @@ const helpers = {
                     }),
                 },
                 function() {
-                    this.animationEndCallback = setTimeout(
-                        callback,
-                        this.props.speed + 20
-                    );
+                    this.animationEndCallback = setTimeout(callback, this.props.speed + 20);
                 }
             );
         }
@@ -405,10 +364,7 @@ const helpers = {
             swipeAngle = 360 - Math.abs(swipeAngle);
         }
         /* istanbul ignore next */
-        if (
-            (swipeAngle <= 45 && swipeAngle >= 0) ||
-            (swipeAngle <= 360 && swipeAngle >= 315)
-        ) {
+        if ((swipeAngle <= 45 && swipeAngle >= 0) || (swipeAngle <= 360 && swipeAngle >= 315)) {
             return this.props.rtl === false ? 'left' : 'right';
         }
         /* istanbul ignore next */
@@ -450,10 +406,7 @@ const helpers = {
         }
         if (this.props.autoplay) {
             this.setState({
-                autoPlayTimer: setTimeout(
-                    this.play.bind(this),
-                    this.props.autoplaySpeed
-                ),
+                autoPlayTimer: setTimeout(this.play.bind(this), this.props.autoplaySpeed),
             });
         }
     },

@@ -72,6 +72,16 @@ $tree-node-title-border-radius: $corner-1 !default;
 /// @namespace statement/normal/arrow
 $tree-switch-arrow-color: $color-text1-2 !default;
 
+/// fold icon
+/// @namespace statement/normal/switch
+/// @type icon
+$tree-switcher-fold-icon-content: $icon-content-add !default;
+
+/// unfold icon
+/// @namespace statement/normal/switch
+/// @type icon
+$tree-switcher-unfold-icon-content: $icon-content-minus !default;
+
 /// icon color
 /// @namespace statement/normal/switch
 $tree-switch-icon-color: $color-text1-3 !default;

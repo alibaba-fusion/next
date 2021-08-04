@@ -154,6 +154,12 @@ class CascaderSelect extends Component {
          */
         filter: PropTypes.func,
         /**
+         * 当搜索框值变化时回调
+         * @param {String} value 数据
+         * @version 1.23
+         */
+        onSearch: PropTypes.func,
+        /**
          * 搜索结果自定义渲染函数
          * @param {String} searchValue 搜索的关键字
          * @param {Array} path 匹配到的节点路径
@@ -225,6 +231,11 @@ class CascaderSelect extends Component {
          * @param {Array<data>} value 选择值 { label: , value:}
          */
         renderPreview: PropTypes.func,
+        /**
+         * 是否是不可变数据
+         * @version 1.23
+         */
+        immutable: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -281,16 +292,20 @@ class CascaderSelect extends Component {
         defaultVisible: false,
         onVisibleChange: () => {},
         popupProps: {},
+        immutable: false,
     };
 
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
 
         this.state = {
             value: normalizeValue('value' in props ? props.value : props.defaultValue),
             searchValue: '',
             visible: typeof props.visible === 'undefined' ? props.defaultVisible : props.visible,
         };
+
+        // 缓存选中值数据
+        this._valueDataCache = {};
 
         bindCtx(this, [
             'handleVisibleChange',
@@ -386,7 +401,7 @@ class CascaderSelect extends Component {
     }
 
     getData(value) {
-        return value.map(v => this._v2n[v]);
+        return value.map(v => this._v2n[v] || this._valueDataCache[v]);
     }
 
     getLabelPath(data) {
@@ -398,27 +413,35 @@ class CascaderSelect extends Component {
         }, []);
     }
 
-    getSignleData(value) {
+    getSingleData(value) {
         if (!value.length) {
             return null;
         }
 
         if (Array.isArray(value)) value = value[0];
 
-        const data = this._v2n[value];
-        if (!data) {
-            return {
-                value,
+        let data = this._v2n[value];
+
+        if (data) {
+            const labelPath = this.getLabelPath(data);
+            const displayRender = this.props.displayRender || (labels => labels.join(' / '));
+
+            data = {
+                ...data,
+                label: displayRender(labelPath, data),
             };
+
+            this._valueDataCache[value] = data;
+            this.refreshValueDataCache(value);
+        } else {
+            data = this._valueDataCache[value];
         }
 
-        const labelPath = this.getLabelPath(data);
-        const displayRender = this.props.displayRender || (labels => labels.join(' / '));
-
-        return {
-            ...data,
-            label: displayRender(labelPath, data),
-        };
+        return (
+            data || {
+                value,
+            }
+        );
     }
 
     getMultipleData(value) {
@@ -427,21 +450,34 @@ class CascaderSelect extends Component {
         }
 
         const { checkStrictly, canOnlyCheckLeaf, displayRender } = this.props;
-        let data = (checkStrictly || canOnlyCheckLeaf ? value : this.flatValue(value)).map(
-            v => this._v2n[v] || { value: v }
-        );
+        const flatValue = checkStrictly || canOnlyCheckLeaf ? value : this.flatValue(value);
+        let data = flatValue.map(v => {
+            let item = this._v2n[v];
+
+            if (item) {
+                this._valueDataCache[v] = item;
+            } else {
+                item = this._valueDataCache[v];
+            }
+
+            return item || { value: v };
+        });
 
         if (displayRender) {
             data = data.map(item => {
-                if (!item.pos) {
+                if (!item.pos || !(item.value in this._v2n)) {
                     return item;
                 }
-                const labelPath = this.getLabelPath(item);
 
-                return {
+                const labelPath = this.getLabelPath(item);
+                const newItem = {
                     ...item,
                     label: displayRender(labelPath, item),
                 };
+
+                this._valueDataCache[item.value] = newItem;
+
+                return newItem;
             });
         }
 
@@ -581,6 +617,25 @@ class CascaderSelect extends Component {
         }
     }
 
+    /**
+     * 刷新值数据缓存，删除无效值
+     * @param {Arrary | String} curValue 当前值
+     */
+    refreshValueDataCache = curValue => {
+        if (curValue) {
+            const valueArr = Array.isArray(curValue) ? curValue : [curValue];
+
+            valueArr.length &&
+                Object.keys(this._valueDataCache).forEach(v => {
+                    if (!valueArr.includes(v)) {
+                        delete this._valueDataCache[v];
+                    }
+                });
+        } else {
+            this._valueDataCache = {};
+        }
+    };
+
     handleChange(value, data, extra) {
         const { multiple, onChange } = this.props;
         const { searchValue, value: stateValue } = this.state;
@@ -588,7 +643,14 @@ class CascaderSelect extends Component {
         const st = {};
 
         if (multiple && stateValue && Array.isArray(stateValue)) {
-            value = [...stateValue.filter(v => !this._v2n[v]), ...value];
+            const noExistedValues = stateValue.filter(v => !this._v2n[v]);
+
+            value = [...noExistedValues, ...value];
+            // onChange 中的 data 参数也应该保留不存在的 value 的数据
+            data = [...noExistedValues.map(v => this._valueDataCache[v]).filter(v => v), ...data];
+
+            // 更新缓存
+            this.refreshValueDataCache(value);
         }
 
         if (!('value' in this.props)) {
@@ -666,12 +728,16 @@ class CascaderSelect extends Component {
                 value,
             });
         }
+
+        this.refreshValueDataCache(value);
     }
 
     handleSearch(searchValue) {
         this.setState({
             searchValue,
         });
+
+        this.props.onSearch && this.props.onSearch(searchValue);
     }
 
     getPath(pos) {
@@ -719,6 +785,7 @@ class CascaderSelect extends Component {
 
         const { searchValue } = this.state;
         let filteredPaths = [];
+
         if (searchValue) {
             filteredPaths = this.filterItems();
             if (filteredPaths.length === 0) {
@@ -742,6 +809,7 @@ class CascaderSelect extends Component {
             resultRender,
             readOnly,
             itemRender,
+            immutable,
         } = this.props;
         const { value } = this.state;
 
@@ -761,6 +829,7 @@ class CascaderSelect extends Component {
             listClassName,
             loadData,
             itemRender,
+            immutable,
         };
 
         if ('expandedValue' in this.props) {
@@ -796,7 +865,7 @@ class CascaderSelect extends Component {
         const { prefix, multiple, className, renderPreview } = this.props;
         const { value } = this.state;
         const previewCls = classNames(className, `${prefix}form-preview`);
-        let items = (multiple ? this.getMultipleData(value) : this.getSignleData(value)) || [];
+        let items = (multiple ? this.getMultipleData(value) : this.getSingleData(value)) || [];
 
         if (!Array.isArray(items)) {
             items = [items];
@@ -865,13 +934,12 @@ class CascaderSelect extends Component {
             ref: this.saveSelectRef,
             autoWidth: false,
             mode: multiple ? 'multiple' : 'single',
-            value: multiple ? this.getMultipleData(value) : this.getSignleData(value),
+            value: multiple ? this.getMultipleData(value) : this.getSingleData(value),
             onChange: this.handleClear,
             onRemove: this.handleRemove,
             visible,
             onVisibleChange: this.handleVisibleChange,
             showSearch,
-            // searchValue,
             onSearch: this.handleSearch,
             onKeyDown: this.handleKeyDown,
             popupContent,

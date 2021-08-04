@@ -85,7 +85,7 @@ class Demo extends React.Component {
         for (k in ctrlDataSources) {
             if (ctrlDataSources.hasOwnProperty(k)) {
                 ctrlNodes.push(
-                    <Select key={k}
+                    <Select key={k} style={{marginRight: 8}}
                         label={`${k}: `}
                         value={state[k]}
                         dataSource={ctrlDataSources[k]}
@@ -100,8 +100,10 @@ class Demo extends React.Component {
     render() {
 
         return (
-            <div className="demo-container">
-                <div className="demo-controller">{this.renderCtrlNodes(this.state)}</div>
+            <div style={{padding: 16, background: '#F8F8F8'}}>
+                <div style={{padding: 12, marginBottom: 16, border: '2px dashed #ddd'}}>
+                    {this.renderCtrlNodes(this.state)}
+                </div>
                 <AutoComplete
                     {...this.state}
                     style={{maxWidth: 300}}
@@ -113,22 +115,4 @@ class Demo extends React.Component {
 }
 
 ReactDOM.render(<Demo />, mountNode);
-````
-
-````css
-.demo-container {
-    padding: 16px;
-    background-color: #F8F8F8;
-}
-
-.demo-controller {
-    padding: 12px 12px 4px;
-    margin-bottom: 16px;
-    border: 2px dashed #ddd;
-}
-
-.next-select {
-    margin-right: 8px;
-    margin-bottom: 8px;
-}
 ````

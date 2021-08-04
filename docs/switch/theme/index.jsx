@@ -46,6 +46,15 @@ class ThemeDemo extends Component {
                     }, {
                         label: '否', value: 'false'
                     }]
+                },
+                autoWidth: {
+                    label: '宽度根据内容自适应',
+                    value: 'false',
+                    enum: [{
+                        label: '是', value: 'true'
+                    }, {
+                        label: '否', value: 'false'
+                    }]
                 }
             }
         };
@@ -63,6 +72,7 @@ class ThemeDemo extends Component {
         const { demoFunction } = this.state;
         const {i18n} = this.props;
         const showText = demoFunction.showText.value;
+        const autoWidth = demoFunction.autoWidth.value;
         let props = {};
         if (showText === 'true') {
             props = {
@@ -70,6 +80,8 @@ class ThemeDemo extends Component {
                 unCheckedChildren: i18n.unCheckedChildren
             };
         }
+
+        props.autoWidth = autoWidth === 'true';
 
         return (
             <Demo title="Normal" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
@@ -79,14 +91,32 @@ class ThemeDemo extends Component {
                         <Switch checked={false} {...props} />
                         <Switch checked={false} {...props} size="small" />
                     </DemoGroup>
-                    <DemoGroup label="On">
-                        <Switch checked {...props} />
-                        <Switch checked {...props} size="small" />
+                    <DemoGroup label="Hover Off">
+                        <Switch checked={false} className="hover" {...props} />
+                        <Switch checked={false} className="hover" {...props} size="small" />
+                    </DemoGroup>
+                    <DemoGroup label="Loading Off">
+                        <Switch checked={false} loading {...props} />
+                        <Switch checked={false} loading {...props} size="small" />
                     </DemoGroup>
                     <DemoGroup label="Disabled Off">
                         <Switch checked={false} disabled {...props} />
                         <Switch checked={false} {...props} disabled size="small" />
                     </DemoGroup>
+
+                    <DemoGroup label="On">
+                        <Switch checked {...props} />
+                        <Switch checked {...props} size="small" />
+                    </DemoGroup>
+                    <DemoGroup label="Hover On">
+                        <Switch checked {...props} className="hover" />
+                        <Switch checked {...props} className="hover" size="small" />
+                    </DemoGroup>
+                    <DemoGroup label="On & Loading">
+                        <Switch checked loading {...props} />
+                        <Switch checked loading {...props} size="small" />
+                    </DemoGroup>
+
                     <DemoGroup label="Disabled On">
                         <Switch checked disabled {...props} />
                         <Switch checked disabled {...props} size="small" />

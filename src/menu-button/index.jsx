@@ -7,6 +7,7 @@ import Button from '../button';
 import Icon from '../icon';
 import Menu from '../menu';
 import Overlay from '../overlay';
+import ConfigProvider from '../config-provider';
 import { obj, func } from '../util';
 
 const { Popup } = Overlay;
@@ -206,13 +207,8 @@ class MenuButton extends React.Component {
         );
 
         const trigger = (
-            <Button
-                style={style}
-                className={classNames}
-                {...obj.pickOthers(MenuButton.propTypes, others)}
-            >
-                {label}{' '}
-                <Icon type="arrow-down" className={`${prefix}menu-btn-arrow`} />
+            <Button style={style} className={classNames} {...obj.pickOthers(MenuButton.propTypes, others)}>
+                {label} <Icon type="arrow-down" className={`${prefix}menu-btn-arrow`} />
             </Button>
         );
 
@@ -229,16 +225,18 @@ class MenuButton extends React.Component {
                 style={popupStyle}
                 className={popupClassNames}
             >
-                <Menu
-                    {...menuProps}
-                    ref={this._menuRefHandler}
-                    selectedKeys={state.selectedKeys}
-                    selectMode={selectMode}
-                    onSelect={this.selectMenu}
-                    onItemClick={this.clickMenuItem}
-                >
-                    {children}
-                </Menu>
+                <div className={`${prefix}menu-btn-spacing-tb`}>
+                    <Menu
+                        {...menuProps}
+                        ref={this._menuRefHandler}
+                        selectedKeys={state.selectedKeys}
+                        selectMode={selectMode}
+                        onSelect={this.selectMenu}
+                        onItemClick={this.clickMenuItem}
+                    >
+                        {children}
+                    </Menu>
+                </div>
             </Popup>
         );
     }
@@ -248,4 +246,6 @@ MenuButton.Item = Menu.Item;
 MenuButton.Group = Menu.Group;
 MenuButton.Divider = Menu.Divider;
 
-export default polyfill(MenuButton);
+export default ConfigProvider.config(polyfill(MenuButton), {
+    componentName: 'MenuButton',
+});

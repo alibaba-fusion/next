@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import RowComponent from './row';
 import CellComponent from './cell';
+import { dom, events } from '../../util';
 
 const noop = () => {};
 
@@ -10,12 +11,13 @@ export default class Body extends React.Component {
     static propTypes = {
         loading: PropTypes.bool,
         emptyContent: PropTypes.any,
+        tableEl: PropTypes.any,
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         components: PropTypes.object,
         getCellProps: PropTypes.func,
         cellRef: PropTypes.func,
-        primaryKey: PropTypes.string,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         getRowProps: PropTypes.func,
         rowRef: PropTypes.func,
         dataSource: PropTypes.array,
@@ -47,6 +49,18 @@ export default class Body extends React.Component {
         columns: [],
     };
 
+    componentDidMount() {
+        events.on(window, 'resize', this.setEmptyDomStyle);
+    }
+
+    componentDidUpdate() {
+        this.setEmptyDomStyle();
+    }
+
+    componentWillUnmount() {
+        events.off(window, 'resize', this.setEmptyDomStyle);
+    }
+
     getRowRef = (i, row) => {
         this.props.rowRef(i, row);
     };
@@ -69,6 +83,20 @@ export default class Body extends React.Component {
 
     onBodyMouseOut = e => {
         this.props.onBodyMouseOut(e);
+    };
+
+    getEmptyNode = ref => {
+        this.emptyNode = ref;
+    };
+
+    setEmptyDomStyle = () => {
+        const { tableEl } = this.props;
+        // clientWidth获取的是除margin、border之外的内容区，会四舍五入，为了防止宽度超过实际table宽，所以 -1 处理
+        // getboundingclientRect 获取的是除 margin 之外的内容区，虽然不四舍五入，但是有border，表格有hasBorder参数，处理起来比较麻烦
+        // 所以直接用clientWidth - 1
+        const totalWidth = +(tableEl && tableEl.clientWidth) - 1 || '100%';
+
+        dom.setStyle(this.emptyNode, { width: totalWidth });
     };
 
     render() {
@@ -97,12 +125,14 @@ export default class Body extends React.Component {
             locale,
             pure,
             expandedIndexSimulate,
-            tableOuterWidth,
+            tableEl,
             rtl,
             crossline,
             tableWidth,
             ...others
         } = this.props;
+
+        const totalWidth = +(tableEl && tableEl.clientWidth) - 1 || '100%';
 
         const { Row = RowComponent, Cell = CellComponent } = components;
         const empty = loading ? <span>&nbsp;</span> : emptyContent || locale.empty;
@@ -110,8 +140,9 @@ export default class Body extends React.Component {
             <tr>
                 <td colSpan={columns.length}>
                     <div
+                        ref={this.getEmptyNode}
                         className={`${prefix}table-empty`}
-                        style={{ position: 'sticky', left: 0, overflow: 'hidden', width: (tableOuterWidth || 0) - 2 }}
+                        style={{ position: 'sticky', left: 0, overflow: 'hidden', width: totalWidth }}
                     >
                         {empty}
                     </div>
@@ -150,7 +181,7 @@ export default class Body extends React.Component {
                     <Row
                         key={`${record[primaryKey] || (record[primaryKey] === 0 ? 0 : rowIndex)}${expanded}`}
                         {...rowProps}
-                        ref={this.getRowRef.bind(this, rowIndex)}
+                        ref={this.getRowRef.bind(this, expanded ? `${rowIndex}_expanded` : rowIndex)}
                         colGroup={colGroup}
                         rtl={rtl}
                         columns={columns}
@@ -164,14 +195,17 @@ export default class Body extends React.Component {
                         getCellProps={getCellProps}
                         className={className}
                         Cell={Cell}
+                        tableEl={tableEl}
                         onClick={this.onRowClick}
                         locale={locale}
-                        tableOuterWidth={tableOuterWidth}
                         onMouseEnter={this.onRowMouseEnter}
                         onMouseLeave={this.onRowMouseLeave}
                     />
                 );
             });
+        } else {
+            // 异步设置空数据时的宽度
+            this.setEmptyDomStyle();
         }
         const event = crossline
             ? {

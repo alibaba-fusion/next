@@ -83,7 +83,7 @@ class Demo extends React.Component {
             <div style={{borderTop: '1px solid', background: 'white', padding: 10, fontSize: '12px'}}>custom footer</div>
         </div>);
         const popupProps = {
-            triggerClickKeycode: [13, 32, 40] // space, enter, down-arrow
+            triggerClickKeycode: [13, 32, 40] // enter, space, down-arrow
         };
 
         return (

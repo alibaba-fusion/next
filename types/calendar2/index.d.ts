@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
-import * as dayjs from 'dayjs';
+import { Dayjs, ConfigType } from 'dayjs';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -15,17 +15,17 @@ export interface CalendarProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 默认选中的日期（dayjs 对象）
      */
-    defaultValue?: string | number | typeof dayjs;
+    defaultValue?: ConfigType;
 
     /**
      * 选中的日期值 (dayjs 对象)
      */
-    value?: string | number | typeof dayjs;
+    value?: ConfigType;
 
     /**
      * 面板默认显示的日期
      */
-    defaultPanelValue?: string | number | typeof dayjs;
+    defaultPanelValue?: ConfigType;
 
     /**
      * 展现形态
@@ -35,17 +35,17 @@ export interface CalendarProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选择日期单元格时的回调
      */
-    onSelect?: (value: typeof dayjs, strVal: string) => void;
+    onSelect?: (value: Dayjs, strVal: string) => void;
 
     /**
      * 值改变时的回调
      */
-    onChange?: (value: typeof dayjs, strVal: string) => void;
+    onChange?: (value: Dayjs, strVal: string) => void;
 
     /**
      * 日期面板变化回调
      */
-    onPanelChange?: (value: typeof dayjs, mode: string) => void;
+    onPanelChange?: (value: Dayjs, mode: string) => void;
 
     /**
      * 自定义样式类
@@ -55,22 +55,22 @@ export interface CalendarProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义日期渲染
      */
-    dateCellRender?: (value: typeof dayjs) => React.ReactNode;
+    dateCellRender?: (value: Dayjs) => React.ReactNode;
 
     /**
      * 自定义月份渲染函数
      */
-    monthCellRender?: (value: typeof dayjs) => React.ReactNode;
+    monthCellRender?: (value: Dayjs) => React.ReactNode;
 
     /**
      * 自定义年份渲染函数
      */
-    yearCellRender?: (value: typeof dayjs) => React.ReactNode;
+    yearCellRender?: (value: Dayjs) => React.ReactNode;
 
     /**
      * 不可选择的日期
      */
-    disabledDate?: (value: typeof dayjs, mode: string) => boolean;
+    disabledDate?: (value: Dayjs, mode: string) => boolean;
 }
 
 export default class Calendar extends React.Component<CalendarProps, any> {}

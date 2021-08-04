@@ -21,6 +21,11 @@ $pagination-prefix: ".#{$css-prefix}pagination";
 /// @namespace size/item
 $pagination-item-split: $s-1 !default;
 
+/// padding (l,r)
+/// @namespace size/item
+/// @type number
+$pagination-item-padding: 10px !default;
+
 /// border style
 /// @namespace size/item
 $pagination-item-border-style: $line-solid !default;
@@ -76,6 +81,11 @@ $pagination-size-selector-number-padding: $s-3 !default;
 /// @namespace size/item
 $pagination-large-item-split: $s-2 !default;
 
+/// padding (l,r)
+/// @namespace size/item
+/// @type number
+$pagination-large-item-padding: 15px !default;
+
 /// border width
 /// @namespace size/item
 $pagination-large-item-border-width: $line-1 !default;
@@ -114,6 +124,11 @@ $pagination-large-size-selector-number-padding: $s-4 !default;
 /// margin (l, r)
 /// @namespace size/item
 $pagination-small-item-split: $s-1 !default;
+
+/// padding (l,r)
+/// @namespace size/item
+/// @type number
+$pagination-small-item-padding: 6px !default;
 
 /// border width
 /// @namespace size/item

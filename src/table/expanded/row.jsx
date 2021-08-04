@@ -19,6 +19,12 @@ export default class ExpandedRow extends React.Component {
         expandedIndexSimulate: PropTypes.bool,
         expandedRowWidthEquals2Table: PropTypes.bool,
         lockType: PropTypes.oneOf(['left', 'right']),
+        getExpandedRowRef: PropTypes.func,
+    };
+
+    getExpandedRow = (parentKey, ref) => {
+        const { getExpandedRowRef } = this.context;
+        getExpandedRowRef && getExpandedRowRef(parentKey, ref);
     };
 
     renderExpandedRow(record, rowIndex) {
@@ -30,7 +36,6 @@ export default class ExpandedRow extends React.Component {
             expandedIndexSimulate,
             expandedRowWidthEquals2Table,
         } = this.context;
-        const { tableOuterWidth } = this.props;
         const expandedIndex = expandedIndexSimulate ? (rowIndex - 1) / 2 : rowIndex;
 
         const { columns, cellRef } = this.props;
@@ -76,7 +81,6 @@ export default class ExpandedRow extends React.Component {
 
             const expandedRowStyle = {
                 position: 'sticky',
-                width: (tableOuterWidth || 0) - 1,
                 left: 0,
             };
             // 暴露给用户的index
@@ -85,6 +89,7 @@ export default class ExpandedRow extends React.Component {
                 content = (
                     <div
                         className={`${prefix}table-cell-wrapper`}
+                        ref={this.getExpandedRow.bind(this, record[primaryKey])}
                         style={expandedRowWidthEquals2Table && expandedRowStyle}
                     >
                         {content}
@@ -92,7 +97,11 @@ export default class ExpandedRow extends React.Component {
                 );
             } else {
                 content = expandedRowWidthEquals2Table ? (
-                    <div className={`${prefix}table-expanded-area`} style={expandedRowStyle}>
+                    <div
+                        className={`${prefix}table-expanded-area`}
+                        ref={this.getExpandedRow.bind(this, record[primaryKey])}
+                        style={expandedRowStyle}
+                    >
                         {content}
                     </div>
                 ) : (

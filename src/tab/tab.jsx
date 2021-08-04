@@ -154,9 +154,11 @@ class Tab extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        const preChildLen = (prevProps.children && prevProps.children.length) || 0;
+        const curChildLen = (this.props.children && this.props.children.length) || 0;
         if (
-            prevProps.children.length !== 0 &&
-            this.props.children.length !== 0 &&
+            preChildLen !== 0 &&
+            curChildLen !== 0 &&
             !('activeKey' in this.props) & !this.isActiveKeyExist(this.state.activeKey)
         ) {
             const activeKey = this.getDefaultActiveKey(this.props);
@@ -305,7 +307,6 @@ class Tab extends Component {
         const { activeKey } = this.state;
 
         const tabs = toArray(children);
-        const isTouchable = ['phone', 'tablet'].indexOf(device) !== -1;
         let newPosition = tabPosition;
         if (rtl && ['left', 'right'].indexOf(tabPosition) >= 0) {
             newPosition = tabPosition === 'left' ? 'right' : 'left';
@@ -315,7 +316,7 @@ class Tab extends Component {
                 [`${prefix}tabs`]: true,
                 [`${prefix}tabs-${shape}`]: shape,
                 [`${prefix}tabs-vertical`]: shape === 'wrapped' && ['left', 'right'].indexOf(tabPosition) >= 0,
-                [`${prefix}tabs-scrollable`]: isTouchable,
+                [`${prefix}tabs-scrollable`]: true,
                 [`${prefix}tabs-${newPosition}`]: shape === 'wrapped',
                 [`${prefix + size}`]: size,
             },
@@ -327,7 +328,7 @@ class Tab extends Component {
             rtl,
             animation,
             activeKey,
-            excessMode: isTouchable ? 'slide' : excessMode,
+            excessMode,
             extra,
             tabs,
             tabPosition,

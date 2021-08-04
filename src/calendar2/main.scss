@@ -136,7 +136,7 @@
 
             &#{$calendar2-prefix}-cell-today:not(#{$calendar2-prefix}-cell-disabled) {
                 #{$calendar2-cell-inner} {
-                    color: $color-brand1-9;
+                    color: $color-brand1-6;
                 }
             }
 
@@ -189,7 +189,7 @@
 
             &#{$calendar2-prefix}-cell-today {
                 #{$calendar2-cell-inner} {
-                    color: $color-brand1-9;
+                    color: $color-brand1-6;
                 }
             }
 
@@ -241,7 +241,7 @@
 
             &-btn:hover,
             &-btn:hover > span {
-                color: $color-brand1-9;
+                color: $color-brand1-6;
             }
 
             &-right-btn:hover,

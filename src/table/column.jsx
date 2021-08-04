@@ -16,19 +16,11 @@ export default class Column extends React.Component {
          * value, rowIndex, record, context四个属性只可读不可被更改
          * Function(value, index, record) => Element
          */
-        cell: PropTypes.oneOfType([
-            PropTypes.element,
-            PropTypes.node,
-            PropTypes.func,
-        ]),
+        cell: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
         /**
          * 表头显示的内容
          */
-        title: PropTypes.oneOfType([
-            PropTypes.element,
-            PropTypes.node,
-            PropTypes.func,
-        ]),
+        title: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
         /**
          * 写到 header 单元格上的title属性
          */
@@ -37,6 +29,13 @@ export default class Column extends React.Component {
          * 是否支持排序
          */
         sortable: PropTypes.bool,
+        /**
+         * 排序的方向。
+         * 设置 ['desc', 'asc']，表示降序、升序
+         * 设置 ['desc', 'asc', 'default']，表示表示降序、升序、不排序
+         * @version 1.23
+         */
+        sortDirections: PropTypes.arrayOf(PropTypes.oneOf(['desc', 'asc', 'default'])),
         /**
          * 列宽，注意在锁列的情况下一定需要配置宽度
          */
@@ -81,6 +80,13 @@ export default class Column extends React.Component {
          * header cell 横跨的格数，设置为0表示不出现此 th
          */
         colSpan: PropTypes.number,
+        /**
+         * 设置该列单元格的word-break样式，对于id类、中文类适合用all，对于英文句子适合用word
+         * @enumdesc all, word
+         * @default all
+         * @version 1.23
+         */
+        wordBreak: PropTypes.oneOf(['all', 'word']),
     };
 
     static contextTypes = {

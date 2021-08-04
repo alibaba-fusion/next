@@ -121,6 +121,11 @@
 
         #{$form-prefix}-item-label {
             font-size: $form-element-medium-font-size;
+
+            > label {
+                display: inline-block;
+                line-height: $font-lineheight-2;
+            }
         }
 
         &.#{$css-prefix}large {

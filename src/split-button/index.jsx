@@ -102,6 +102,10 @@ class SplitButton extends React.Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 弹层容器
+         */
+        popupContainer: PropTypes.any,
+        /**
          * 是否跟随滚动
          */
         followTrigger: PropTypes.bool,
@@ -221,6 +225,7 @@ class SplitButton extends React.Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupContainer,
             followTrigger,
             selectMode,
             menuProps,
@@ -257,11 +262,7 @@ class SplitButton extends React.Component {
         });
 
         const trigger = (
-            <Button
-                {...triggerProps}
-                {...sharedBtnProps}
-                className={triggerClassNames}
-            >
+            <Button {...sharedBtnProps} {...triggerProps} className={triggerClassNames}>
                 <Icon type="arrow-down" className={iconCls} />
             </Button>
         );
@@ -285,22 +286,25 @@ class SplitButton extends React.Component {
                     trigger={trigger}
                     triggerType={popupTriggerType}
                     align={popupAlign}
+                    container={popupContainer}
                     target={() => this.wrapper}
                     style={popupStyle}
                     shouldUpdatePosition
                     className={popupClassName}
                     onOpen={this.onPopupOpen}
                 >
-                    <Menu
-                        {...menuProps}
-                        selectMode={selectMode}
-                        selectedKeys={state.selectedKeys}
-                        onSelect={this.selectMenuItem}
-                        onItemClick={this.clickMenuItem}
-                        ref={this._menuRefHandler}
-                    >
-                        {children}
-                    </Menu>
+                    <div className={`${prefix}split-btn-spacing-tb`}>
+                        <Menu
+                            {...menuProps}
+                            selectMode={selectMode}
+                            selectedKeys={state.selectedKeys}
+                            onSelect={this.selectMenuItem}
+                            onItemClick={this.clickMenuItem}
+                            ref={this._menuRefHandler}
+                        >
+                            {children}
+                        </Menu>
+                    </div>
                 </Popup>
             </Button.Group>
         );

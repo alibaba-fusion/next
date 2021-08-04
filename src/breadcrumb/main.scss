@@ -35,5 +35,9 @@
         &-icon-sep::before {
             content: $breadcrumb-icon-sep-content;
         }
+
+        &-dropdown-wrapper {
+            padding: $s-1 0;
+        }
     }
 }

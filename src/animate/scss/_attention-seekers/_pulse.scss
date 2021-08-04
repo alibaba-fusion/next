@@ -10,7 +10,7 @@
     }
 }
 
-@mixin pulse($count: $countDefault, $duration: $durationDefault, $delay: $delayDefault, $function: $functionDefault, $fill: $fillDefault, $visibility: $visibilityDefault) {
+@mixin pulse($count: $countDefault, $duration: $durationDefault, $delay: $delayDefault, $function: $motion-default, $fill: $fillDefault, $visibility: $visibilityDefault) {
     @include animation-name(pulse);
     @include count($count);
     @include duration($duration);

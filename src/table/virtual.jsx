@@ -19,11 +19,8 @@ export default function virtual(BaseComponent) {
              * 设置行高
              */
             rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-            maxBodyHeight: PropTypes.oneOfType([
-                PropTypes.number,
-                PropTypes.string,
-            ]),
-            primaryKey: PropTypes.string,
+            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
             dataSource: PropTypes.array,
             /**
              * 在内容区域滚动的时候触发的函数
@@ -55,8 +52,7 @@ export default function virtual(BaseComponent) {
             super(props, context);
             const { useVirtual, dataSource } = props;
 
-            this.hasVirtualData =
-                useVirtual && dataSource && dataSource.length > 0;
+            this.hasVirtualData = useVirtual && dataSource && dataSource.length > 0;
         }
 
         state = {
@@ -169,8 +165,7 @@ export default function virtual(BaseComponent) {
         adjustScrollTop() {
             if (this.hasVirtualData) {
                 this.bodyNode.scrollTop =
-                    (this.lastScrollTop % this.state.rowHeight) +
-                    this.state.rowHeight * this.state.scrollToRow;
+                    (this.lastScrollTop % this.state.rowHeight) + this.state.rowHeight * this.state.scrollToRow;
             }
         }
 
@@ -183,27 +178,17 @@ export default function virtual(BaseComponent) {
                 const tableInc = this.tableInc;
                 const tableNode = findDOMNode(tableInc);
                 const { prefix } = this.props;
-                const headerNode = tableNode.querySelector(
-                    `.${prefix}table-header table`
-                );
+                const headerNode = tableNode.querySelector(`.${prefix}table-header table`);
                 const headerClientWidth = headerNode && headerNode.clientWidth;
-
+                // todo 2.0 设置宽度这个可以去掉
                 if (clientWidth < headerClientWidth) {
-                    dom.setStyle(
-                        virtualScrollNode,
-                        'min-width',
-                        headerClientWidth
-                    );
+                    dom.setStyle(virtualScrollNode, 'min-width', headerClientWidth);
                     const leftNode = this.bodyLeftNode;
                     const rightNode = this.bodyRightNode;
-                    leftNode &&
-                        dom.setStyle(leftNode, 'max-height', clientHeight);
-                    rightNode &&
-                        dom.setStyle(rightNode, 'max-height', clientHeight);
-                    this.hasScrollbar = true;
+                    leftNode && dom.setStyle(leftNode, 'max-height', clientHeight);
+                    rightNode && dom.setStyle(rightNode, 'max-height', clientHeight);
                 } else {
                     dom.setStyle(virtualScrollNode, 'min-width', 'auto');
-                    this.hasScrollbar = false;
                 }
             }
         }
@@ -232,9 +217,7 @@ export default function virtual(BaseComponent) {
         }
 
         getBodyNode = (node, lockType) => {
-            lockType = lockType
-                ? lockType.charAt(0).toUpperCase() + lockType.substr(1)
-                : '';
+            lockType = lockType ? lockType.charAt(0).toUpperCase() + lockType.substr(1) : '';
             this[`body${lockType}Node`] = node;
         };
 
@@ -274,9 +257,7 @@ export default function virtual(BaseComponent) {
             if (this.hasVirtualData) {
                 newDataSource = [];
                 components = { ...components };
-                const { start, end } = this.getVisibleRange(
-                    this.state.scrollToRow
-                );
+                const { start, end } = this.getVisibleRange(this.state.scrollToRow);
                 dataSource.forEach((current, index, record) => {
                     if (index >= start && index < end) {
                         current.__rowIndex = index;
@@ -293,6 +274,7 @@ export default function virtual(BaseComponent) {
             return (
                 <BaseComponent
                     {...others}
+                    scrollToRow={scrollToRow}
                     dataSource={newDataSource}
                     entireDataSource={entireDataSource}
                     components={components}

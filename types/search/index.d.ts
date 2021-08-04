@@ -140,7 +140,7 @@ export interface SearchProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入关键字时的回掉
      */
-    onChange?: (value: string) => void;
+    onChange?: (value: any, actionType: string, item: any) => void;
 
     /**
      * 填充到选择框里的值的 key，默认是 value

@@ -1,13 +1,18 @@
 # Latest Log 
 
-## [1.22.13](https://github.com/alibaba-fusion/next/compare/1.22.12...1.22.13) (2021-03-23)
+## [1.23.18](https://github.com/alibaba-fusion/next/compare/1.23.17...1.23.18) (2021-07-27)
 
 
 ### Bug Fixes
 
-* **Button:** loading button of <a> should vertical align center ([0e36fbc](https://github.com/alibaba-fusion/next/commit/0e36fbc))
-* **Checkbox:** fix tree checkbox disorder ([f328660](https://github.com/alibaba-fusion/next/commit/f328660))
-* **Tab:** should be type="button", close [#2812](https://github.com/alibaba-fusion/next/issues/2812) ([b6f8cd5](https://github.com/alibaba-fusion/next/commit/b6f8cd5))
-* **Table:** lock columns should be in topmost ([822ad61](https://github.com/alibaba-fusion/next/commit/822ad61))
+* **Calendar:** select in calendar can't show in h5 ([5cb9f42](https://github.com/alibaba-fusion/next/commit/5cb9f42))
+* **Select:** native onCompositionStart onCompositionEnd fix [#3181](https://github.com/alibaba-fusion/next/issues/3181) ([0b24e3a](https://github.com/alibaba-fusion/next/commit/0b24e3a))
+* **Select:** position relative to warper fix [#3149](https://github.com/alibaba-fusion/next/issues/3149) ([c4c9a6c](https://github.com/alibaba-fusion/next/commit/c4c9a6c))
+* **Tree:** change unfold icon content ([4416c62](https://github.com/alibaba-fusion/next/commit/4416c62))
+
+
+### Features
+
+* **Timeline:** add mode?: 'alternate' | 'left', close [#3183](https://github.com/alibaba-fusion/next/issues/3183)  ([439e9e4](https://github.com/alibaba-fusion/next/commit/439e9e4))
 
 

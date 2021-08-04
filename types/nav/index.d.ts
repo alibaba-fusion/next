@@ -132,7 +132,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 打开或关闭子菜单触发的回调函数
      */
-    onOpen?: (key: string, extra: {}) => void;
+    onOpen?: (key: string[], extra: { key: string; open: boolean }) => void;
 
     /**
      * 子导航打开的模式（水平导航只支持弹出）
@@ -264,6 +264,11 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * 是否只显示图标
      */
     iconOnly?: boolean;
+
+    /**
+     * iconOnly 模式下的宽度（仅在 iconOnly=true 时生效）
+     */
+    iconOnlyWidth?: number | string;
 
     /**
      * 是否显示右侧的箭头（仅在 iconOnly=true 时生效）

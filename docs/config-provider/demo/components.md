@@ -15,11 +15,21 @@ Show the components that support internationalization in the current Next compon
 ---
 
 ````jsx
-import { ConfigProvider, Button, Radio, Calendar, Card, DatePicker, Dialog, Pagination, TimePicker, Timeline, Transfer, Select, Upload, Table } from '@alifd/next';
+import { ConfigProvider, Button, Radio, Calendar, Card, DatePicker, DatePicker2, Dialog, Pagination, TimePicker2, TimePicker, Timeline, Transfer, Select, Upload, Table } from '@alifd/next';
 
 import enUS from '@alifd/next/lib/locale/en-us';
 import zhCN from '@alifd/next/lib/locale/zh-cn';
+import jaJP from '@alifd/next/lib/locale/ja-jp';
+import viVN from '@alifd/next/lib/locale/vi-vn';
+import ptPT from '@alifd/next/lib/locale/pt-pt';
 
+const localeMap = {
+    'zh-cn': zhCN,
+    'en-us': enUS,
+    'ja-jp': jaJP,
+    'vi-vn': viVN,
+    'pt-pt': ptPT,
+};
 // If the application directly imports the next-with-locales.js file from cdn
 // it need to import locale file in the following way
 // import { locales } from '@alifd/next';
@@ -27,6 +37,7 @@ import zhCN from '@alifd/next/lib/locale/zh-cn';
 // const zhCN = locales['zh-cn'];
 
 const RangePicker = DatePicker.RangePicker;
+const RangePicker2 = DatePicker2.RangePicker;
 
 const transferDataSource = (() => {
     const dataSource = [];
@@ -54,6 +65,9 @@ class Demo extends React.Component {
         this.showDialog = this.showDialog.bind(this);
     }
 
+    componentDidMount() {
+    }
+
     changeLang(lang) {
         this.setState({
             lang
@@ -68,15 +82,18 @@ class Demo extends React.Component {
     }
 
     render() {
-        const locale = this.state.lang === 'en-us' ? enUS : zhCN;
+        const locale = localeMap[this.state.lang];
 
         return (
             <div>
                 <div className="change-locale">
                     <span style={{ marginRight: 16 }}>Change locale of components: </span>
                     <Radio.Group shape="button" size="large" defaultValue="en-us" onChange={this.changeLang}>
-                        <Radio key="en" value="en-us">English</Radio>
-                        <Radio key="cn" value="zh-cn">中文</Radio>
+                        <Radio value="en-us">English</Radio>
+                        <Radio value="zh-cn">中文</Radio>
+                        <Radio value="ja-jp">日本語</Radio>
+                        <Radio value="vi-vn">ViệtName</Radio>
+                        <Radio value="pt-pt">Português</Radio>
                     </Radio.Group>
                 </div>
                 <ConfigProvider locale={locale}>
@@ -86,7 +103,11 @@ class Demo extends React.Component {
                         <DatePicker />
                         <TimePicker />
                         <RangePicker />
+                        <DatePicker2 />
+                        <TimePicker2 />
+                        <RangePicker2 />
                         <Calendar style={{ width: '350px', padding: '12px', border: '1px solid #C4C6CF', borderRadius: '3px' }} shape="card" />
+
                         <Pagination defaultCurrent={2} />
                         <Transfer dataSource={transferDataSource} defaultValue={['3']} defaultLeftChecked={['1']} titles={['Source', 'Target']} />
                         <Table style={{ width: '500px' }} dataSource={[]}>

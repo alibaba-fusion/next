@@ -22,15 +22,23 @@ const isScrollDisplay = function(element) {
 
     return true;
 };
-const hasScroll = () => {
-    const doc = document.documentElement;
+const hasScroll = containerNode => {
+    const parentNode = containerNode.parentNode;
+
     return (
-        doc.scrollHeight > doc.clientHeight &&
+        parentNode &&
+        parentNode.scrollHeight > parentNode.clientHeight &&
         dom.scrollbar().width > 0 &&
-        isScrollDisplay(document.documentElement) &&
-        isScrollDisplay(document.body)
+        isScrollDisplay(parentNode) &&
+        isScrollDisplay(containerNode)
     );
 };
+
+const getContainerNode = props => {
+    const targetNode = findNode(props.target);
+    return findNode(props.container, targetNode);
+};
+
 const prefixes = ['-webkit-', '-moz-', '-o-', 'ms-', ''];
 const getStyleProperty = (node, name) => {
     const style = window.getComputedStyle(node);
@@ -44,12 +52,12 @@ const getStyleProperty = (node, name) => {
     return ret;
 };
 
-const modals = [];
-let bodyOverflow, bodyPaddingRight;
+// 存 containerNode 信息
+const containerNodeList = [];
 
 /**
  * Overlay
- * */
+ */
 class Overlay extends Component {
     static propTypes = {
         prefix: PropTypes.string,
@@ -215,7 +223,7 @@ class Overlay extends Component {
         disableScroll: false,
         cache: false,
         isChildrenInMask: false,
-        onClick: e => e.stopPropagation(),
+        onClick: noop,
         maskClass: '',
     };
 
@@ -238,8 +246,8 @@ class Overlay extends Component {
             visible: false,
             status: 'none',
             animation: this.getAnimation(props),
-            beforeOpen: this.beforeOpen,
-            beforeClose: this.beforeClose,
+            willOpen: false,
+            willClose: false,
         };
 
         this.timeoutMap = {};
@@ -249,15 +257,16 @@ class Overlay extends Component {
         const willOpen = !prevState.visible && nextProps.visible;
         const willClose = prevState.visible && !nextProps.visible;
 
-        if (willOpen) {
-            prevState.beforeOpen();
-            nextProps.beforeOpen();
-        } else if (willClose) {
-            prevState.beforeClose();
-            nextProps.beforeClose();
-        }
+        const nextState = {
+            willOpen,
+            willClose,
+        };
 
-        const nextState = {};
+        if (willOpen) {
+            nextProps.beforeOpen && nextProps.beforeOpen();
+        } else if (willClose) {
+            nextProps.beforeClose && nextProps.beforeClose();
+        }
 
         if (nextProps.animation || nextProps.animation === false) {
             nextState.animation = nextProps.animation;
@@ -280,6 +289,12 @@ class Overlay extends Component {
     }
 
     componentDidMount() {
+        if (this.state.willOpen) {
+            this.beforeOpen();
+        } else if (this.state.willClose) {
+            this.beforeClose();
+        }
+
         if (this.state.visible) {
             this.doAnimation(true, false);
             this._isMounted = true;
@@ -291,6 +306,12 @@ class Overlay extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        if (this.state.willOpen) {
+            this.beforeOpen();
+        } else if (this.state.willClose) {
+            this.beforeClose();
+        }
+
         if (!this._isMounted && this.props.visible) {
             this._isMounted = true;
         }
@@ -363,18 +384,21 @@ class Overlay extends Component {
         switch (align[0]) {
             case 't':
                 return {
-                    in: 'expandInDown',
-                    out: 'expandOutUp',
+                    // 为了防止有的用户 js升级了而css没升级，所以把两个动画都保留了。
+                    // 动画不会叠加，会替代，顺序根据 src/animate/main.scss 中的样式先后顺序遵循css覆盖原则
+                    // fadeInDownSmall fadeOutUpSmall 优先级更高
+                    in: 'expandInDown fadeInDownSmall',
+                    out: 'expandOutUp fadeOutUpSmall',
                 };
             case 'b':
                 return {
-                    in: 'expandInUp',
-                    out: 'expandOutDown',
+                    in: 'fadeInUp',
+                    out: 'fadeOutDown',
                 };
             default:
                 return {
-                    in: 'expandInDown',
-                    out: 'expandOutUp',
+                    in: 'expandInDown fadeInDownSmall',
+                    out: 'expandOutUp fadeOutUpSmall',
                 };
         }
     }
@@ -440,7 +464,9 @@ class Overlay extends Component {
             });
 
             this.onLeaved();
-        } else if (this.state.status === 'entering') {
+            // dom结构首次出现 触发的是entering
+            // dom结构已经存在（例如设置了cache），触发的是mounting
+        } else if (this.state.status === 'entering' || this.state.status === 'mounting') {
             this.setState({
                 status: 'none',
             });
@@ -482,43 +508,70 @@ class Overlay extends Component {
 
     beforeOpen() {
         if (this.props.disableScroll) {
-            if (modals.length === 0) {
+            const containerNode = getContainerNode(this.props) || document.body;
+            const { overflow, paddingRight } = containerNode.style;
+
+            const cnInfo = containerNodeList.find(m => m.containerNode === containerNode) || {
+                containerNode,
+                count: 0,
+            };
+
+            /**
+             * container 节点初始状态已经是 overflow=hidden 则忽略
+             * See {@link https://codesandbox.io/s/next-overlay-overflow-2-fulpq?file=/src/App.js}
+             */
+            if (cnInfo.count === 0 && overflow !== 'hidden') {
                 const style = {
                     overflow: 'hidden',
                 };
-                const body = document.body;
-                bodyOverflow = body.style.overflow;
-                if (hasScroll()) {
-                    bodyPaddingRight = body.style.paddingRight;
-                    style.paddingRight = `${dom.getStyle(body, 'paddingRight') + dom.scrollbar().width}px`;
+
+                cnInfo.overflow = overflow;
+
+                if (hasScroll(containerNode)) {
+                    cnInfo.paddingRight = paddingRight;
+                    style.paddingRight = `${dom.getStyle(containerNode, 'paddingRight') + dom.scrollbar().width}px`;
                 }
 
-                dom.setStyle(body, style);
+                dom.setStyle(containerNode, style);
+                containerNodeList.push(cnInfo);
+                cnInfo.count++;
+            } else if (cnInfo.count) {
+                cnInfo.count++;
             }
-            modals.push(this);
+
+            this._containerNode = containerNode;
         }
     }
 
     beforeClose() {
         if (this.props.disableScroll) {
-            const index = modals.indexOf(this);
-            if (index > -1) {
-                if (modals.length === 1) {
+            const idx = containerNodeList.findIndex(cn => cn.containerNode === this._containerNode);
+
+            if (idx !== -1) {
+                const cnInfo = containerNodeList[idx];
+                const { overflow, paddingRight } = cnInfo;
+
+                // 最后一个 overlay 的时候再将样式重置回去
+                // 此时 overflow 应该值在 beforeOpen 中设置的 hidden
+                if (cnInfo.count === 1 && this._containerNode && this._containerNode.style.overflow === 'hidden') {
                     const style = {
-                        overflow: bodyOverflow,
+                        overflow,
                     };
-                    if (bodyPaddingRight !== undefined) {
-                        style.paddingRight = bodyPaddingRight;
+
+                    if (paddingRight !== undefined) {
+                        style.paddingRight = paddingRight;
                     }
 
-                    dom.setStyle(document.body, style);
-
-                    bodyOverflow = undefined;
-                    bodyPaddingRight = undefined;
+                    dom.setStyle(this._containerNode, style);
                 }
 
-                modals.splice(index, 1);
+                cnInfo.count--;
+
+                if (cnInfo.count === 0) {
+                    containerNodeList.splice(idx, 1);
+                }
             }
+            this._containerNode = undefined;
         }
     }
 
@@ -653,7 +706,7 @@ class Overlay extends Component {
     }
 
     handleMaskClick(e) {
-        if (this.props.canCloseByMask) {
+        if (e.currentTarget === e.target && this.props.canCloseByMask) {
             this.props.onRequestClose('maskClick', e);
         }
     }
@@ -722,7 +775,7 @@ class Overlay extends Component {
                 style: { ...child.props.style, ...style },
                 ref: makeChain(this.saveContentRef, child.ref),
                 'aria-hidden': !stateVisible && cache && this._isMounted,
-                onClick: this.props.onClick,
+                onClick: makeChain(this.props.onClick, child.props.onClick),
             });
 
             if (align) {

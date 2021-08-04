@@ -8,7 +8,7 @@ import BodyComponent from './fixed/body';
 import WrapperComponent from './fixed/wrapper';
 import { statics } from './util';
 
-export default function fixed(BaseComponent) {
+export default function fixed(BaseComponent, stickyLock) {
     /** Table */
     class FixedTable extends React.Component {
         static FixedHeader = HeaderComponent;
@@ -26,10 +26,7 @@ export default function fixed(BaseComponent) {
             /**
              * 最大内容区域的高度,在`fixedHeader`为`true`的时候,超过这个高度会出现滚动条
              */
-            maxBodyHeight: PropTypes.oneOfType([
-                PropTypes.number,
-                PropTypes.string,
-            ]),
+            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
             ...BaseComponent.propTypes,
         };
 
@@ -48,10 +45,7 @@ export default function fixed(BaseComponent) {
             getNode: PropTypes.func,
             onFixedScrollSync: PropTypes.func,
             getTableInstanceForFixed: PropTypes.func,
-            maxBodyHeight: PropTypes.oneOfType([
-                PropTypes.number,
-                PropTypes.string,
-            ]),
+            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         };
 
         state = {};
@@ -69,18 +63,16 @@ export default function fixed(BaseComponent) {
         componentDidMount() {
             this.adjustFixedHeaderSize();
             this.scrollToRightEnd = undefined;
-            this.onFixedScrollSync({ currentTarget: this.bodyNode });
+            this.onFixedScrollSync({ currentTarget: this.bodyNode, target: this.bodyNode });
         }
 
         componentDidUpdate() {
             this.adjustFixedHeaderSize();
-            this.onFixedScrollSync({ currentTarget: this.bodyNode });
+            this.onFixedScrollSync({ currentTarget: this.bodyNode, target: this.bodyNode });
         }
 
         getNode = (type, node, lockType) => {
-            lockType = lockType
-                ? lockType.charAt(0).toUpperCase() + lockType.substr(1)
-                : '';
+            lockType = lockType ? lockType.charAt(0).toUpperCase() + lockType.substr(1) : '';
             this[`${type}${lockType}Node`] = node;
         };
 
@@ -143,9 +135,12 @@ export default function fixed(BaseComponent) {
                 const hasVerScroll = body.scrollHeight > body.clientHeight,
                     hasHozScroll = body.scrollWidth > body.clientWidth;
                 const style = {
-                    [paddingName]: scrollBarSize,
                     [marginName]: scrollBarSize,
                 };
+
+                if (!stickyLock) {
+                    style[paddingName] = scrollBarSize;
+                }
 
                 if (!hasVerScroll) {
                     style[paddingName] = 0;
@@ -158,7 +153,9 @@ export default function fixed(BaseComponent) {
                         style.paddingBottom = scrollBarSize;
                     } else {
                         style.paddingBottom = scrollBarSize;
-                        style[marginName] = 0;
+                    }
+                    if (hasVerScroll) {
+                        style[marginName] = scrollBarSize;
                     }
                 }
 

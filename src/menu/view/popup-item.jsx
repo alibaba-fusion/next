@@ -37,6 +37,9 @@ export default class PopupItem extends Component {
          */
         children: PropTypes.node,
         className: PropTypes.string,
+        /**
+         * 子菜单打开的触发行为
+         */
         triggerType: PropTypes.oneOf(['click', 'hover']),
         align: PropTypes.oneOf(['outside', 'follow']),
         autoWidth: PropTypes.bool,
@@ -104,7 +107,7 @@ export default class PopupItem extends Component {
             }
             if (popupAlign === 'outside' && !(direction === 'hoz' && level === 1)) {
                 setStyle(this.popupNode, 'height', `${menuNode.offsetHeight}px`);
-                setStyle(this.popupNode, 'overflow-y', 'scroll');
+                this.popupNode.firstElementChild && setStyle(this.popupNode.firstElementChild, 'overflow-y', 'auto');
             }
             // removeClass(this.popupNode, `${prefix}hide`);
 
@@ -164,7 +167,7 @@ export default class PopupItem extends Component {
     }
 
     renderPopup(trigger, triggerType, positionProps, children) {
-        const { root, level, selectable } = this.props;
+        const { root, level, selectable, className: propCls } = this.props;
         const { direction } = root.props;
         this.popupProps = this.getPopupProps();
         const open = this.getOpen();
@@ -173,10 +176,13 @@ export default class PopupItem extends Component {
             positionProps.target = () => findDOMNode(this);
         }
 
+        const { className: posCls, ...otherPostion } = positionProps;
+        const className = cx(propCls, posCls);
+
         return (
             <Popup
                 ref={this.getPopup}
-                {...positionProps}
+                {...otherPostion}
                 {...this.popupProps}
                 canCloseByEsc={false}
                 trigger={trigger}
@@ -187,7 +193,7 @@ export default class PopupItem extends Component {
                 onOpen={this.handlePopupOpen}
                 onClose={this.handlePopupClose}
             >
-                {children}
+                <div className={className}>{children}</div>
             </Popup>
         );
     }
@@ -226,7 +232,7 @@ export default class PopupItem extends Component {
 
         if (direction === 'hoz' && level === 1) {
             positionProps.align = 'tl bl';
-            positionProps.offset = [0, 0];
+            positionProps.className = `${prefix}menu-spacing-tb`;
 
             arrowProps = {
                 type: 'arrow-down',
@@ -242,7 +248,7 @@ export default class PopupItem extends Component {
                 };
                 positionProps.align = 'tl tr';
 
-                rtl ? (positionProps.offset = [-2, 0]) : (positionProps.offset = [2, 0]);
+                positionProps.className = `${prefix}menu-spacing-lr ${prefix}menu-outside`;
             } else {
                 if (triggerIsIcon) {
                     positionProps.target = () => {
@@ -250,8 +256,7 @@ export default class PopupItem extends Component {
                     };
                 }
                 positionProps.align = 'tl tr';
-
-                rtl ? (positionProps.offset = [2, -8]) : (positionProps.offset = [-2, -8]);
+                positionProps.className = `${prefix}menu-spacing-lr`;
             }
 
             arrowProps = {

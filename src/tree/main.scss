@@ -138,6 +138,14 @@
             color: $tree-switch-icon-color;
         }
 
+        .#{$css-prefix}tree-switcher-fold-icon::before {
+            content: $tree-switcher-fold-icon-content;
+        }
+
+        .#{$css-prefix}tree-switcher-unfold-icon::before {
+            content: $tree-switcher-unfold-icon-content;
+        }
+
         &:not(.#{$css-prefix}disabled):hover {
             border-color: $tree-switch-hover-border-color;
             background-color: $tree-switch-hover-bg-color;

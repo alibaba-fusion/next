@@ -88,18 +88,19 @@ git checkout -b fix-issue-100
 ## 开发注意事项
 
 1. Fusion Next 作为前端组件库支持 SSR 因此需要做到：
-    - 尽量避免使用 window 等客户端变量 ( server端没有window对象，如果使用需要从window开始逐级判断是否存在 )
-    - 客户端端对象的判断用typeof
+    - 尽量避免在 `constructor` `getDerivedStateFromProps` `componentWillMount (deprecated)` 这些生命周期中，使用 `window` `localStorage` `sessionStorage` `document` `navigator` 等客户端变量；
+    - 必须使用的话，客户端端对象的判断用typeof
         ```
         if(window && window.autoScroll)
         =>
         if(typeof window != undefined && window.autoScroll) )
         ```
-    - 避免往window等全局对象挂载定时器 (可能内存泄漏)
+    - 避免往window等全局对象挂载定时器
     - 避免random()等不确定性输出(输出结果可预期，不依赖于环境等)
 2. sass 颜色变量计算的结果，需要以 `$color-calcualte-` 开头，写到组件的 variable.scss 中(不能写到main.scss中)，参考`Search`组件，[#1029](https://github.com/alibaba-fusion/next/issues/1029)
 3. 所有sass计算需要被calc包裹
 
+> 《Tips for server-side rendering with React》 https://itnext.io/tips-for-server-side-rendering-with-react-e42b1b7acd57
 
 ## 发布周期
 

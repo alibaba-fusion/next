@@ -1,5 +1,9 @@
 {
   "color.default": {
+    "$color-gradient-1": "gradient-1",
+    "$color-gradient-2": "gradient-2",
+    "$color-gradient-3": "gradient-3",
+    "$color-gradient-4": "gradient-4",
     "$color-brand1-1": "brand1-1",
     "$color-brand1-6": "brand1-6",
     "$color-brand1-9": "brand1-9",
@@ -173,6 +177,7 @@
   },
   "size.length": {
     "$s-zero": "s-zero",
+    "$s-auto": "s-auto",
     "$s-1": "s-1",
     "$s-2": "s-2",
     "$s-3": "s-3",

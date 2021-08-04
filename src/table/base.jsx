@@ -219,6 +219,9 @@ class Table extends React.Component {
         hasExpandedRowCtrl: PropTypes.bool,
         /**
          * 设置额外渲染行的属性
+         * @param {Object} record 该行所对应的数据
+         * @param {Number} index 该行所对应的序列
+         * @returns {Object} 额外渲染行的属性
          */
         getExpandedColProps: PropTypes.func,
         /**
@@ -281,6 +284,11 @@ class Table extends React.Component {
         useVirtual: PropTypes.bool,
         rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
         /**
+         * 滚动到第几行，需要保证行高相同。1.22.15 版本之前仅在虚拟滚动场景下生效，之后在所有情况下生效
+         * @version 1.22.15
+         */
+        scrollToRow: PropTypes.number,
+        /**
          * 在内容区域滚动的时候触发的函数
          */
         onBodyScroll: PropTypes.func,
@@ -327,14 +335,21 @@ class Table extends React.Component {
         getTableInstance: PropTypes.func,
         getTableInstanceForFixed: PropTypes.func,
         getTableInstanceForVirtual: PropTypes.func,
+        getTableInstanceForExpand: PropTypes.func,
     };
 
     constructor(props, context) {
         super(props, context);
-        const { getTableInstance, getTableInstanceForVirtual, getTableInstanceForFixed } = this.context;
+        const {
+            getTableInstance,
+            getTableInstanceForVirtual,
+            getTableInstanceForFixed,
+            getTableInstanceForExpand,
+        } = this.context;
         getTableInstance && getTableInstance(props.lockType, this);
         getTableInstanceForFixed && getTableInstanceForFixed(props.lockType, this);
         getTableInstanceForVirtual && getTableInstanceForVirtual(props.lockType, this);
+        getTableInstanceForExpand && getTableInstanceForExpand(this);
         this.notRenderCellIndex = [];
     }
 
@@ -361,7 +376,6 @@ class Table extends React.Component {
 
     componentDidMount() {
         this.notRenderCellIndex = [];
-        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -378,7 +392,6 @@ class Table extends React.Component {
 
     componentDidUpdate() {
         this.notRenderCellIndex = [];
-        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     normalizeChildrenState(props) {
@@ -397,6 +410,10 @@ class Table extends React.Component {
             Children.forEach(children, child => {
                 if (child) {
                     const props = { ...child.props };
+
+                    if (child.ref) {
+                        props.ref = child.ref;
+                    }
 
                     if (
                         !(
@@ -554,6 +571,7 @@ class Table extends React.Component {
                             colGroup={colGroup}
                             className={`${prefix}table-header`}
                             filterParams={filterParams}
+                            tableEl={this.tableEl}
                             columns={groupChildren}
                             locale={locale}
                             headerCellRef={this.getHeaderCellRef}
@@ -584,7 +602,7 @@ class Table extends React.Component {
                         cellRef={this.getCellRef}
                         onRowClick={onRowClick}
                         expandedIndexSimulate={expandedIndexSimulate}
-                        tableOuterWidth={this.tableOuterWidth}
+                        tableEl={this.tableEl}
                         onRowMouseEnter={onRowMouseEnter}
                         onRowMouseLeave={onRowMouseLeave}
                         dataSource={dataSource}
@@ -752,6 +770,7 @@ class Table extends React.Component {
                 onFilter,
                 rowProps,
                 cellProps,
+                scrollToRow,
                 primaryKey,
                 components,
                 wrapperContent,

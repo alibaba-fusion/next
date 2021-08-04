@@ -120,13 +120,16 @@ class Tag extends Component {
     // 标签体点击
     handleBodyClick(e) {
         const { closable, closeArea, onClick } = this.props;
+        const node = e.currentTarget;
 
-        if (closable && closeArea === 'tag') {
-            this.handleClose('tag');
-        }
+        if (node && (node === e.target || node.contains(e.target))) {
+            if (closable && closeArea === 'tag') {
+                this.handleClose('tag');
+            }
 
-        if (typeof onClick === 'function') {
-            return onClick(e);
+            if (typeof onClick === 'function') {
+                return onClick(e);
+            }
         }
     }
 

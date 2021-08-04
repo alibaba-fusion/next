@@ -34,6 +34,28 @@ describe('Submit', () => {
             .simulate('change', { target: { value: 'test' } });
         wrapper.find('button').simulate('click');
     });
+    it('[name on FormItem] should support defaultValue & defaultChecked', done => {
+        const onClick = v => {
+            assert(v.first === 'test');
+            done();
+        };
+        const wrapper = mount(
+            <Form>
+                <FormItem name="first" >
+                    <Input />
+                </FormItem>
+                <FormItem name="second" >
+                    <Input />
+                </FormItem>
+                <Submit onClick={onClick}>click</Submit>
+            </Form>
+        );
+
+        wrapper
+            .find('input#first')
+            .simulate('change', { target: { value: 'test' } });
+        wrapper.find('button').simulate('click');
+    });
     it('Submit', done => {
         const onClick = v => {
             assert(v.first === 'test');
@@ -56,6 +78,28 @@ describe('Submit', () => {
             .simulate('change', { target: { value: 'test' } });
         wrapper.find('button').simulate('click');
     });
+    it('[name on FormItem] Submit', done => {
+        const onClick = v => {
+            assert(v.first === 'test');
+            done();
+        };
+        const wrapper = mount(
+            <Form>
+                <FormItem name="first" >
+                    <Input />
+                </FormItem>
+                <FormItem name="second" >
+                    <Input />
+                </FormItem>
+                <Submit onClick={onClick}>click</Submit>
+            </Form>
+        );
+
+        wrapper
+            .find('input#first')
+            .simulate('change', { target: { value: 'test' } });
+        wrapper.find('button').simulate('click');
+    });
     it('Submit && validate', done => {
         const onClick = v => {
             assert(v.first === '');
@@ -65,6 +109,9 @@ describe('Submit', () => {
             <Form>
                 <FormItem required>
                     <Input name="first" />
+                </FormItem>
+                <FormItem required>
+                   {values => <Input name="second" /> }
                 </FormItem>
                 <Submit validate onClick={onClick}>
                     click
@@ -82,6 +129,18 @@ describe('Submit', () => {
                 .first()
                 .text() === 'first 是必填字段'
         );
+
+        wrapper
+        .find('input#second')
+        .simulate('change', { target: { value: '' } });
+        wrapper.update();
+        assert(
+            wrapper
+                .find('.next-form-item-help')
+                .last()
+                .text() === 'second 是必填字段'
+        );
+
         wrapper.find('button').simulate('click');
     });
 
@@ -144,6 +203,79 @@ describe('Submit', () => {
                 .text() === 'min length is 10'
         );
         wrapper.find('button').simulate('click');
+    });
+
+    it('should supoort format', () => {
+        class Demo extends React.Component {
+            constructor(props) {
+                super(props);
+                this.field = new Field(this);
+            }
+
+            render() {
+                return (
+                    <Form field={this.field}>
+                        <FormItem
+                            label="test"
+                            type="email"
+                            format="email"
+                            hasFeedback
+                        >
+                            <Input name="email" />
+                        </FormItem>
+                    </Form>
+                );
+            }
+        }
+
+        const wrapper = mount(<Demo />);
+        wrapper
+            .find('input#email')
+            .simulate('change', { target: { value: '123' } });
+        assert(
+            wrapper
+                .find('.next-form-item-help')
+                .at(0)
+                .hostNodes()
+                .text() === 'email 不是合法的 email 地址'
+        );
+    });
+
+    it('[name on FormItem]should supoort format', () => {
+        class Demo extends React.Component {
+            constructor(props) {
+                super(props);
+                this.field = new Field(this);
+            }
+
+            render() {
+                return (
+                    <Form field={this.field}>
+                        <FormItem
+                            label="test"
+                            type="email"
+                            format="email"
+                            hasFeedback
+                            name="email" 
+                        >
+                            <Input />
+                        </FormItem>
+                    </Form>
+                );
+            }
+        }
+
+        const wrapper = mount(<Demo />);
+        wrapper
+            .find('input#email')
+            .simulate('change', { target: { value: '123' } });
+        assert(
+            wrapper
+                .find('.next-form-item-help')
+                .at(0)
+                .hostNodes()
+                .text() === 'email 不是合法的 email 地址'
+        );
     });
 
     it('Submit && validate (array)', done => {

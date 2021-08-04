@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
+import cloneDeep from 'lodash.clonedeep';
 import cx from 'classnames';
 import Menu from '../menu';
 import { func, obj, dom } from '../util';
@@ -19,12 +20,15 @@ const { bindCtx } = func;
 const { pickOthers } = obj;
 const { addClass, removeClass, setStyle, getStyle } = dom;
 
+// 数据打平
 const flatDataSource = (data, prefix = '0', v2n = {}, p2n = {}) => {
     data.forEach((item, index) => {
         const { value, children } = item;
         const pos = `${prefix}-${index}`;
         const newValue = String(value);
+
         item.value = newValue;
+
         v2n[newValue] = p2n[pos] = {
             ...item,
             pos,
@@ -38,6 +42,20 @@ const flatDataSource = (data, prefix = '0', v2n = {}, p2n = {}) => {
 
     return { v2n, p2n };
 };
+
+function preHandleData(data, immutable) {
+    const _data = immutable ? cloneDeep(data) : data;
+
+    try {
+        return flatDataSource(_data);
+    } catch (err) {
+        if ((err.message || '').match('Cannot assign to read only property')) {
+            // eslint-disable-next-line no-console
+            console.error(err.message, 'try to set immutable to true to allow immutable dataSource');
+        }
+        throw err;
+    }
+}
 
 const getExpandedValue = (v, _v2n, _p2n) => {
     if (!v || !_v2n[v]) {
@@ -169,6 +187,11 @@ class Cascader extends Component {
         filteredPaths: PropTypes.array,
         filteredListStyle: PropTypes.object,
         resultRender: PropTypes.func,
+        /**
+         * 是否是不可变数据
+         * @version 1.23
+         */
+        immutable: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -184,6 +207,7 @@ class Cascader extends Component {
         useVirtual: false,
         checkStrictly: false,
         itemRender: item => item.label,
+        immutable: false,
     };
 
     constructor(props, context) {
@@ -199,9 +223,10 @@ class Cascader extends Component {
             checkStrictly,
             canOnlyCheckLeaf,
             loadData,
+            immutable,
         } = props;
 
-        const { v2n, p2n } = flatDataSource(dataSource);
+        const { v2n, p2n } = preHandleData(dataSource, immutable);
 
         let normalizedValue = normalizeValue(typeof value === 'undefined' ? defaultValue : value);
 
@@ -234,7 +259,7 @@ class Cascader extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { v2n, p2n } = flatDataSource(props.dataSource);
+        const { v2n, p2n } = preHandleData(props.dataSource, props.immutable);
         const states = {};
 
         if ('value' in props) {

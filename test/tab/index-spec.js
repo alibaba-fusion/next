@@ -40,6 +40,15 @@ describe('Tab', () => {
             assert(wrapper.find('.next-tabs-tabpane').length === 1);
         });
 
+        it('should render tab with undefined children', done => {
+            wrapper = mount(<Tab shape="capsule">{undefined}</Tab>);
+            setTimeout(() => {
+                wrapper.setProps({ children: [1, 2] });
+                assert(wrapper);
+                done();
+            }, 100);
+        });
+
         it('should render tab without animation', () => {
             wrapper = mount(<Tab animation={false}>{panes}</Tab>);
             assert(wrapper.find('.next-tabs-nav-appear').length === 0);
@@ -186,13 +195,12 @@ describe('Tab', () => {
 
         it('should support device', () => {
             wrapper = mount(<Tab>{panes}</Tab>);
-            assert(wrapper.find('.next-tabs-scrollable').length === 0);
-            assert(wrapper.find(TabNav).prop('excessMode') === 'slide');
-            wrapper.setProps({
-                device: 'phone'
-            });
             assert(wrapper.find('.next-tabs-scrollable').length > 0);
             assert(wrapper.find(TabNav).prop('excessMode') === 'slide');
+            wrapper.setProps({
+                excessMode: 'dropdown'
+            });
+            assert(wrapper.find('.next-tabs-scrollable').length > 0);
         })
     });
 

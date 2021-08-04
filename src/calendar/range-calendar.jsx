@@ -112,16 +112,9 @@ class RangeCalendar extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        const startValue = formatDateValue(
-            props.startValue || props.defaultStartValue
-        );
-        const endValue = formatDateValue(
-            props.endValue || props.defaultEndValue
-        );
-        const visibleMonth = getVisibleMonth(
-            props.defaultVisibleMonth,
-            startValue
-        );
+        const startValue = formatDateValue(props.startValue || props.defaultStartValue);
+        const endValue = formatDateValue(props.endValue || props.defaultEndValue);
+        const visibleMonth = getVisibleMonth(props.defaultVisibleMonth, startValue);
 
         this.state = {
             startValue,
@@ -130,6 +123,8 @@ class RangeCalendar extends React.Component {
             prevMode: props.mode,
             startVisibleMonth: visibleMonth,
             activePanel: undefined,
+            lastMode: undefined,
+            lastPanelType: 'start', // enum, 包括 start end
         };
         this.today = moment();
     }
@@ -167,18 +162,29 @@ class RangeCalendar extends React.Component {
     };
 
     changeMode = (mode, activePanel) => {
+        const { lastMode, lastPanelType } = this.state;
+
+        const state = {
+            lastMode: mode,
+            // rangePicker的panel下，选 year -> month ，从当前函数的activePanel传来的数据已经拿不到 start end panel的状态了，需要根据 lastMode 来判断
+            lastPanelType: lastMode === 'year' ? lastPanelType : activePanel,
+        };
         if (typeof mode === 'string' && mode !== this.state.mode) {
-            this.setState({ mode });
+            state.mode = mode;
         }
         if (activePanel && activePanel !== this.state.activePanel) {
-            this.setState({ activePanel });
+            state.activePanel = activePanel;
         }
+
+        this.setState(state);
     };
 
     changeVisibleMonth = (date, reason) => {
+        const { lastPanelType } = this.state;
         if (!isSameYearMonth(date, this.state.startVisibleMonth)) {
-            this.setState({ startVisibleMonth: date });
-            this.props.onVisibleMonthChange(date, reason);
+            const startVisibleMonth = lastPanelType === 'end' ? date.clone().add(-1, 'month') : date;
+            this.setState({ startVisibleMonth });
+            this.props.onVisibleMonthChange(startVisibleMonth, reason);
         }
     };
 
@@ -188,9 +194,7 @@ class RangeCalendar extends React.Component {
      * @param {String} type 日期偏移类型 days, months, years
      */
     changeVisibleMonthByOffset = (offset, type) => {
-        const offsetDate = this.state.startVisibleMonth
-            .clone()
-            .add(offset, type);
+        const offsetDate = this.state.startVisibleMonth.clone().add(offset, type);
         this.changeVisibleMonth(offsetDate, 'buttonClick');
     };
 
@@ -234,13 +238,7 @@ class RangeCalendar extends React.Component {
             yearRange,
             ...others
         } = this.props;
-        const {
-            startValue,
-            endValue,
-            mode,
-            startVisibleMonth,
-            activePanel,
-        } = this.state;
+        const { startValue, endValue, mode, startVisibleMonth, activePanel } = this.state;
 
         // reset moment locale
         if (locale.momentLocale) {
@@ -252,10 +250,7 @@ class RangeCalendar extends React.Component {
         if (rtl) {
             others.dir = 'rtl';
         }
-        const localeData = getLocaleData(
-            locale.format || {},
-            startVisibleMonth.localeData()
-        );
+        const localeData = getLocaleData(locale.format || {}, startVisibleMonth.localeData());
 
         const endVisibleMonth = startVisibleMonth.clone().add(1, 'months');
 
@@ -304,10 +299,7 @@ class RangeCalendar extends React.Component {
         switch (mode) {
             case CALENDAR_MODE_DATE: {
                 table = [
-                    <div
-                        className={`${prefix}calendar-body-left`}
-                        key="left-panel"
-                    >
+                    <div className={`${prefix}calendar-body-left`} key="left-panel">
                         <DateTable
                             format={format}
                             {...tableProps}
@@ -315,10 +307,7 @@ class RangeCalendar extends React.Component {
                             onSelectDate={this.onSelectCell}
                         />
                     </div>,
-                    <div
-                        className={`${prefix}calendar-body-right`}
-                        key="right-panel"
-                    >
+                    <div className={`${prefix}calendar-body-right`} key="right-panel">
                         <DateTable
                             format={format}
                             {...tableProps}
@@ -339,13 +328,7 @@ class RangeCalendar extends React.Component {
                 break;
             }
             case CALENDAR_MODE_MONTH: {
-                table = (
-                    <MonthTable
-                        {...tableProps}
-                        visibleMonth={visibleMonth}
-                        onSelectMonth={this.onSelectCell}
-                    />
-                );
+                table = <MonthTable {...tableProps} visibleMonth={visibleMonth} onSelectMonth={this.onSelectCell} />;
                 header = (
                     <MonthPanelHeader
                         {...headerProps}
@@ -388,10 +371,7 @@ class RangeCalendar extends React.Component {
         );
 
         return (
-            <div
-                {...obj.pickOthers(RangeCalendar.propTypes, others)}
-                className={classNames}
-            >
+            <div {...obj.pickOthers(RangeCalendar.propTypes, others)} className={classNames}>
                 {header}
                 <div className={`${prefix}calendar-body`}>{table}</div>
             </div>

@@ -99,50 +99,63 @@
     $openedBgColor,
     $openedColor,
     $groupColor,
-    $groupWeight
+    $groupWeight,
+    $childSelectedBgColor,
+    $childSelectedColor,
+    $childSelectedWeight,
 ) {
-    background-color: $bgColor;
+    background: $bgColor;
     border-color: $borderColor;
     color: $textColor;
     font-weight: $textWeight;
     box-shadow: $shadow;
 
     #{$nav-prefix}-item#{$menu-prefix}-item {
-        background-color: $bgColor;
+        background: $bgColor;
         color: $textColor;
 
         &.#{$css-prefix}focused,
         &:hover {
-            background-color: $hoverBgColor;
+            background: $hoverBgColor;
             color: $hoverColor;
             font-weight: $hoverWeight;
         }
 
         &.#{$css-prefix}selected {
-            background-color: $selectedBgColor;
+            background: $selectedBgColor;
             color: $selectedColor;
             font-weight: $selectedWeight;
         }
 
         &.#{$css-prefix}opened {
-            background-color: $openedBgColor;
-            color: $openedColor;
-        }
-        &.#{$css-prefix}child-selected {
-            background-color: $openedBgColor;
+            background: $openedBgColor;
             color: $openedColor;
         }
 
+        &.#{$css-prefix}child-selected {
+            font-weight: $childSelectedWeight;
+            background: $childSelectedBgColor;
+            color: $childSelectedColor;
+        }
+
+        &.#{$css-prefix}opened.#{$css-prefix}nav-popup {
+            color: $openedColor;
+        }
+
+        &.#{$css-prefix}child-selected.#{$css-prefix}nav-popup {
+            color: $childSelectedColor;
+        }
+
         &:before {
-            background-color: $activeColor;
+            background: $activeColor;
         }
         &:hover:before {
-            background-color: $hoverLineColor;
+            background: $hoverLineColor;
         }
     }
 
     #{$menu-prefix}-sub-menu #{$menu-prefix}-item.#{$css-prefix}opened {
-        background-color: $openedBgColor;
+        background: $openedBgColor;
         color: $openedColor;
     }
 
@@ -163,18 +176,18 @@
     $activeColor
 ) {
     #{$menu-prefix}-sub-menu #{$menu-prefix}-item {
-        background-color: $bgColor;
+        background: $bgColor;
         color: $textColor;
         font-weight: $textWeight;
 
         &.#{$css-prefix}focused,
         &:hover {
-            background-color: $hoverBgColor;
+            background: $hoverBgColor;
             color: $hoverColor;
         }
 
         &.#{$css-prefix}selected {
-            background-color: $selectedBgColor;
+            background: $selectedBgColor;
             color: $selectedColor;
         }
     }

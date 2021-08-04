@@ -11,7 +11,7 @@ export default class Row extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
-        primaryKey: PropTypes.string,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         className: PropTypes.string,
         columns: PropTypes.array,
         record: PropTypes.any,
@@ -106,24 +106,13 @@ export default class Row extends React.Component {
         const { lockType } = this.context;
         return columns.map((child, index) => {
             /* eslint-disable no-unused-vars, prefer-const */
-            const {
-                dataIndex,
-                align,
-                alignHeader,
-                width,
-                colSpan,
-                style,
-                cellStyle,
-                __colIndex,
-                ...others
-            } = child;
+            const { dataIndex, align, alignHeader, width, colSpan, style, cellStyle, __colIndex, ...others } = child;
             const colIndex = '__colIndex' in child ? __colIndex : index;
             // colSpan should show in body td by the way of <Table.Column colSpan={2} />
             // tbody's cell merge should only by the way of <Table cellProps={} />
 
             const value = fetchDataByPath(record, dataIndex);
-            const attrs =
-                getCellProps(rowIndex, colIndex, dataIndex, record) || {};
+            const attrs = getCellProps(rowIndex, colIndex, dataIndex, record) || {};
 
             if (this.context.notRenderCellIndex) {
                 const matchCellIndex = this.context.notRenderCellIndex
@@ -134,16 +123,8 @@ export default class Row extends React.Component {
                     return null;
                 }
             }
-            if (
-                (attrs.colSpan && attrs.colSpan > 1) ||
-                (attrs.rowSpan && attrs.rowSpan > 1)
-            ) {
-                this._getNotRenderCellIndex(
-                    colIndex,
-                    rowIndex,
-                    attrs.colSpan || 1,
-                    attrs.rowSpan || 1
-                );
+            if ((attrs.colSpan && attrs.colSpan > 1) || (attrs.rowSpan && attrs.rowSpan > 1)) {
+                this._getNotRenderCellIndex(colIndex, rowIndex, attrs.colSpan || 1, attrs.rowSpan || 1);
             }
 
             const cellClass = attrs.className;
@@ -151,8 +132,7 @@ export default class Row extends React.Component {
                 first: lockType !== 'right' && colIndex === 0,
                 last:
                     lockType !== 'left' &&
-                    (colIndex === columns.length - 1 ||
-                        colIndex + attrs.colSpan === columns.length), // 考虑合并单元格的情况
+                    (colIndex === columns.length - 1 || colIndex + attrs.colSpan === columns.length), // 考虑合并单元格的情况
                 [child.className]: child.className,
                 [cellClass]: cellClass,
             });
@@ -218,7 +198,7 @@ export default class Row extends React.Component {
             pure,
             locale,
             expandedIndexSimulate,
-            tableOuterWidth,
+            tableEl,
             rtl,
             wrapper,
             ...others

@@ -57,6 +57,11 @@ export interface PopupItemProps extends React.HTMLAttributes<HTMLElement>, Commo
      * 自定义弹层内容
      */
     children?: React.ReactNode;
+
+    /**
+     * 子菜单打开的触发行为
+     */
+    triggerType?: 'click' | 'hover';
 }
 
 export class PopupItem extends React.Component<PopupItemProps, any> {}

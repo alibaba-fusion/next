@@ -3,7 +3,7 @@
 @mixin make-offset-rtl() {
     @for $i from 1 through $grid-columns {
         .#{$css-prefix}col-offset-#{$i}[dir="rtl"] {
-            margin-right: percentage($i / $grid-columns);
+            margin-right: percentage(divide($i, $grid-columns));
             margin-left: auto;
         }
     }
@@ -12,7 +12,7 @@
         @include breakpoint($name) {
             @for $j from 1 through $grid-columns {
                 .#{$css-prefix}col-#{$name}-offset-#{$j}[dir="rtl"] {
-                    margin-right: percentage($j / $grid-columns);
+                    margin-right: percentage(divide($j, $grid-columns));
                     margin-left: auto;
                 }
             }

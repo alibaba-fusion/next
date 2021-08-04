@@ -23,6 +23,7 @@ const setMomentLocale = locale => {
     let moment;
     try {
         moment = require('moment');
+        if (moment && moment.default && moment.default.isMoment) moment = moment.default;
     } catch (e) {
         // ignore
     }
@@ -137,6 +138,10 @@ class ConfigProvider extends Component {
      */
     static getContextProps = (props, displayName) => {
         return getContextProps(props, childContextCache.root() || {}, displayName);
+    };
+
+    static clearCache = () => {
+        childContextCache.clear();
     };
 
     static initLocales = initLocales;

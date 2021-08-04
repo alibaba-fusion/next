@@ -1,11 +1,11 @@
 /// <reference types="react" />
 import * as React from 'react';
 import CommonProps from '../util';
-import * as dayjs from 'dayjs';
+import { Dayjs, ConfigType } from 'dayjs';
 import { PopupProps } from '../overlay';
 import { InputProps } from '../input';
 
-export default class DatePicker extends React.Component<PickerProps, any> {
+export default class DatePicker extends React.Component<DatePickerProps, any> {
     static RangePicker: typeof RangePicker;
     static MonthPicker: typeof MonthPicker;
     static YearPicker: typeof YearPicker;
@@ -13,61 +13,64 @@ export default class DatePicker extends React.Component<PickerProps, any> {
     static QuarterPicker: typeof QuarterPicker;
 }
 
-export class YearPicker extends React.Component<PickerProps, any> {
+export class YearPicker extends React.Component<DatePickerProps, any> {
     mode: 'year';
 }
-export class MonthPicker extends React.Component<PickerProps, any> {
+export class MonthPicker extends React.Component<DatePickerProps, any> {
     mode: 'month';
 }
-export class WeekPicker extends React.Component<PickerProps, any> {
+export class WeekPicker extends React.Component<DatePickerProps, any> {
     mode: 'week';
 }
-export class QuarterPicker extends React.Component<PickerProps, any> {
+export class QuarterPicker extends React.Component<DatePickerProps, any> {
     mode: 'quarter';
 }
 export class RangePicker extends React.Component<RangePickerProps, any> {
     type: 'range';
-    value?: Array<number> | Array<string> | Array<typeof dayjs>;
-    defaultValue?: Array<number> | Array<string> | Array<typeof dayjs>;
-    format?: string | ((value: typeof dayjs) => string) | Array<string> | Array<(value: typeof dayjs) => string>;
-    onOk?: (value: Array<typeof dayjs>, strVal: Array<string>) => void;
-    onChange?: (value: Array<typeof dayjs>, strVal: Array<string>) => void;
-    placeholder: string | Array<string>;
-    dateInputAriaLabel: Array<string> | string;
 }
-
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
-export interface PickerProps extends HTMLAttributesWeak, CommonProps {
-    type: 'date' | 'range';
+export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
+    type?: 'date' | 'range';
     name?: string;
-    mode: 'date' | 'month' | 'week' | 'quarter' | 'year';
-    value?: string | number | typeof dayjs;
-    defaultValue?: string | number | typeof dayjs;
-    defaultPanelValue?: typeof dayjs;
-    disabledDate?: (value: typeof dayjs, mode: 'date' | 'month' | 'week' | 'quarter' | 'year') => boolean;
-    extraFooterRender?: () => React.ReactNode;
-    preset: object | Array<object>;
+    mode?: 'date' | 'month' | 'week' | 'quarter' | 'year';
+    value?: ConfigType;
+    defaultValue?: ConfigType;
+    defaultPanelValue?: Dayjs;
+    disabledDate?: (value: Dayjs, mode: 'date' | 'month' | 'week' | 'quarter' | 'year') => boolean;
+    extraFooterRender?: React.ReactNode | (() => React.ReactNode);
+    preset?: object | Array<object>;
     showTime?: boolean;
+    showOk?: boolean;
     resetTime?: boolean;
-    timePanelProps: object;
-    disabledTime: (value: typeof dayjs) => boolean;
+    timePanelProps?: object;
+    disabledTime?: object;
 
-    onOk?: (value: typeof dayjs, strVal: string) => void;
-    onChange?: (value: typeof dayjs, strVal: string) => void;
+    onOk?: (value: Dayjs, strVal: string) => void;
+    onChange?: (value: Dayjs, strVal: string) => void;
     onVisibleChange?: (visible: boolean) => void;
-    onPanelChange?: (panelValue: typeof dayjs, mode: 'date' | 'month' | 'week' | 'quarter' | 'year') => void;
+    onPanelChange?: (panelValue: Dayjs, mode: 'date' | 'month' | 'week' | 'quarter' | 'year') => void;
 
-    format?: string | ((value: typeof dayjs) => string);
+    format?: string | ((value: Dayjs) => string);
+    /**
+     * 输出格式：控制 onChange、onOk 事件的输出值格式
+     *  - string 类型：根据时间格式进行转换
+     *  - function 类型：((value: Dayjs, strVal: string) => any)
+     *
+     * @version 1.23
+     */
+    outputFormat?: string | ((value: Dayjs, strVal: string) => any);
     disabled?: boolean;
     state?: 'success' | 'loading' | 'error';
     size?: 'small' | 'medium' | 'large';
-    hasBorder: boolean;
+    hasBorder?: boolean;
     inputProps?: InputProps;
     inputReadOnly?: boolean;
     hasClear?: boolean;
+    label?: React.ReactNode;
+    separator?: React.ReactNode;
     placeholder?: string;
 
     visible?: boolean;
@@ -80,11 +83,40 @@ export interface PickerProps extends HTMLAttributesWeak, CommonProps {
     popupProps?: PopupProps;
     followTrigger?: boolean;
     popupComponent?: React.Component;
-    dateCellRender?: (value: typeof dayjs) => React.ReactNode;
-    monthCellRender?: (value: typeof dayjs) => React.ReactNode;
+    dateCellRender?: (value: Dayjs) => React.ReactNode;
+    monthCellRender?: (value: Dayjs) => React.ReactNode;
     dateInputAriaLabel?: string;
-    isPreview: boolean;
-    renderPreview: (value: typeof dayjs) => React.ReactNode;
+    isPreview?: boolean;
+    renderPreview?: (value: Dayjs) => React.ReactNode;
 }
 
-export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {}
+export interface RangePickerProps
+    extends Omit<
+        DatePickerProps,
+        | 'value'
+        | 'placeholder'
+        | 'defaultValue'
+        | 'format'
+        | 'onOk'
+        | 'onChange'
+        | 'dateInputAriaLabel'
+        | 'disabled'
+        | 'outputFormat'
+    > {
+    value?: Array<ConfigType>;
+    defaultValue?: Array<ConfigType>;
+    format?: string | ((value: Dayjs) => string) | Array<string> | Array<(value: Dayjs) => string>;
+    onOk?: (value: Array<Dayjs>, strVal: Array<string>) => void;
+    onChange?: (value: Array<Dayjs>, strVal: Array<string>) => void;
+    /**
+     * 输出格式：控制 onChange、onOk 事件的输出值格式
+     *  - string 类型：根据时间格式进行转换
+     *  - function 类型：((value: Dayjs, strVal: string) => any)
+     *
+     * @version 1.23
+     */
+    outputFormat?: string | ((value: Dayjs) => string) | Array<string> | Array<(value: Dayjs) => string>;
+    placeholder?: string | Array<string>;
+    dateInputAriaLabel?: Array<string> | string;
+    disabled?: boolean | boolean[];
+}

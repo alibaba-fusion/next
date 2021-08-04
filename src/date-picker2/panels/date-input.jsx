@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import SharedPT from '../prop-types';
 import { DATE_INPUT_TYPE, DATE_PICKER_MODE } from '../constant';
 import { func, datejs, obj } from '../../util';
+import { fmtValue } from '../util';
 
 import Input from '../../input';
 import Icon from '../../icon';
@@ -32,13 +33,14 @@ class DateInput extends React.Component {
         disabled: SharedPT.disabled,
         inputProps: PT.object,
         dateInputAriaLabel: SharedPT.ariaLabel,
+        label: PT.node,
     };
 
     static defaultProps = {
         autoFocus: false,
         readOnly: false,
         hasClear: true,
-        separator: <Icon size="xxs" type="minus" />,
+        separator: '-',
         hasBorder: true,
         size: 'medium',
     };
@@ -125,6 +127,26 @@ class DateInput extends React.Component {
         return holder;
     };
 
+    /**
+     * 根据 format 计算输入框 htmlSize
+     */
+    getHtmlSize = () => {
+        const { isRange, format, hasBorder } = this.props;
+        const value = '2020-12-12 12:12:12';
+        let size = 0;
+
+        if (isRange) {
+            const fmtStr = fmtValue([value, value].map(datejs), format);
+            size = Math.max(...fmtStr.map(s => (s && s.length) || 0));
+        } else {
+            const fmtStr = fmtValue(datejs(value), format);
+            fmtValue(datejs(value), format);
+            size = (fmtStr && fmtStr.length) || 0;
+        }
+
+        return String(Math.max(size, hasBorder ? 12 : 8));
+    };
+
     render() {
         const { onInput, setInputRef, handleTypeChange, prefixCls } = this;
         const {
@@ -143,11 +165,12 @@ class DateInput extends React.Component {
             inputProps,
             dateInputAriaLabel,
             state,
+            label,
             ...restProps
         } = this.props;
 
         const placeholder = this.getPlaceholder();
-        const htmlSize = String(Math.max(this.formatter(datejs('2020-12-12 24:00:00')).length, hasBorder ? 12 : 8));
+        const htmlSize = this.getHtmlSize();
 
         const sharedProps = {
             ...obj.pickProps(restProps, Input),
@@ -162,15 +185,17 @@ class DateInput extends React.Component {
         let rangeProps;
         if (isRange) {
             rangeProps = [DATE_INPUT_TYPE.BEGIN, DATE_INPUT_TYPE.END].map(idx => {
+                const _disabled = Array.isArray(disabled) ? disabled[idx] : disabled;
+
                 return {
                     ...sharedProps,
                     autoFocus,
                     placeholder: placeholder[idx],
                     value: value[idx] || '',
                     'aria-label': Array.isArray(dateInputAriaLabel) ? dateInputAriaLabel[idx] : dateInputAriaLabel,
-                    disabled: Array.isArray(disabled) ? disabled[idx] : disabled,
+                    disabled: _disabled,
                     ref: ref => setInputRef(ref, idx),
-                    onFocus: () => handleTypeChange(idx),
+                    onFocus: _disabled ? undefined : () => handleTypeChange(idx),
                     className: classnames({
                         [`${prefixCls}-active`]: inputType === idx,
                     }),
@@ -195,6 +220,7 @@ class DateInput extends React.Component {
                     <React.Fragment>
                         <Input
                             {...rangeProps[0]}
+                            label={label}
                             autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus
                         />
                         <div className={`${prefixCls}-separator`}>{separator}</div>
@@ -208,6 +234,7 @@ class DateInput extends React.Component {
                 ) : (
                     <Input
                         {...sharedProps}
+                        label={label}
                         state={state}
                         disabled={disabled}
                         hasClear={!state && hasClear}

@@ -42,42 +42,45 @@ class Demo extends React.Component {
         return (
             <div>
                 <Form {...formItemLayout} size={this.state.size} style={{maxWidth: '800px'}}>
-                    <FormItem required label="username:">
-                        <Input placeholder="Please enter your username" id="a11yUsername" name="a11yUsername" aria-required="true"   />
+                    <FormItem required label="username:" name="a11yUsername" >
+                        <Input placeholder="Please enter your username" id="a11yUsername" aria-required="true"   />
                     </FormItem>
-                    <FormItem required label="Password:">
-                        <Input htmlType="password" placeholder="Please enter your password" id="a11yPassword" name="a11yPassword" aria-required="true" />
+                    <FormItem required label="Password:" name="a11yPassword">
+                        <Input htmlType="password" placeholder="Please enter your password" id="a11yPassword"  aria-required="true" />
                     </FormItem>
                     <FormItem  
                         id="myDateInput-1"
                         required
                         label="Accessible Date 1 (YYYY/MM/DD):"
                         requiredMessage="Please select your date"
+                        name="a11yDate" 
                     >
-                        <DatePicker name="a11yDate" format="YYYY/MM/DD" inputProps={{"aria-required": "true", "id": "myDateInput-1"}}/> 
+                        <DatePicker format="YYYY/MM/DD" inputProps={{"aria-required": "true", "id": "myDateInput-1"}}/> 
                     </FormItem>
                     <FormItem  
                         required
                         label="Accessible Date 2 (YYYY/MM/DD):"
                         requiredMessage="Please select your date"
+                        name="a11yOtherDate" 
                     >
-                        <DatePicker name="a11yOtherDate" format="YYYY/MM/DD" dateInputAriaLabel="Date input format YYYY/MM/DD" inputProps={{"aria-required": "true", "aria-label": "Accessible Date 2"}}/> 
+                        <DatePicker format="YYYY/MM/DD" dateInputAriaLabel="Date input format YYYY/MM/DD" inputProps={{"aria-required": "true", "aria-label": "Accessible Date 2"}}/> 
                     </FormItem>
-                    <FormItem label="Switch:">
-                        <Switch name="a11ySwitch" aria-label="Accessible Switch" defaultChecked/>
+                    <FormItem label="Switch:" name="a11ySwitch">
+                        <Switch aria-label="Accessible Switch" defaultChecked/>
                     </FormItem>
                     <FormItem
                         required
                         label="gender:"
                         requiredMessage="Please select your gender"
+                        name="a11ySex"
                     >
-                        <RadioGroup name="a11ySex">
+                        <RadioGroup>
                             <Radio value="male" aria-required="true">Male</Radio>
                             <Radio value="female" aria-required="true">Female</Radio>
                         </RadioGroup>
                     </FormItem>
-                    <FormItem label="Language:">
-                        <Checkbox.Group name="a11yLangs" aria-label="Please select a programming language">
+                    <FormItem label="Language:" name="a11yLangs">
+                        <Checkbox.Group aria-label="Please select a programming language">
                             <Checkbox value="python">python</Checkbox>
                             <Checkbox value="java">java</Checkbox>
                             <Checkbox value="angular">angular</Checkbox>
@@ -85,18 +88,17 @@ class Demo extends React.Component {
                             <Checkbox value="other">other</Checkbox>
                         </Checkbox.Group>
                     </FormItem>
-                    <FormItem label="upload:">
+                    <FormItem label="upload:" name="a11yUpload">
                         <Upload.Card
                             listType="card"
                             action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
                             accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
                             defaultValue={[]}
                             limit={2}
-                            name="a11yUpload"
                         />
                     </FormItem>
-                    <FormItem label="Note:">
-                        <Input.TextArea placeholder="description" name="a11yRemark"/>
+                    <FormItem label="Note:" name="a11yRemark">
+                        <Input.TextArea placeholder="description"/>
                     </FormItem>
                     <FormItem wrapperCol={{offset: 7}}>
                         <Form.Submit validate type="primary" onClick={this.submitHandle} style={{marginRight: 10}}>Submit</Form.Submit>

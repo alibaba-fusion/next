@@ -61,6 +61,10 @@ class Search extends React.Component {
          */
         defaultFilterValue: PropTypes.string,
         /**
+         * 填充到输入框里的值的 key ，默认是value
+         */
+        fillProps: PropTypes.string,
+        /**
          * 选择器
          */
         filter: PropTypes.array,
@@ -273,6 +277,7 @@ class Search extends React.Component {
             dataSource,
             filterProps,
             buttonProps,
+            fillProps,
             popupContent,
             followTrigger,
             hasClear,
@@ -376,6 +381,7 @@ class Search extends React.Component {
                     hasClear={hasClear}
                     className={`${prefix}search-input`}
                     size={size}
+                    fillProps={fillProps}
                     placeholder={placeholder}
                     dataSource={dataSource}
                     innerAfter={searchIcon}

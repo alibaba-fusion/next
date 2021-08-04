@@ -80,6 +80,16 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
      * - ver: 垂直排列
      */
     direction?: 'hoz' | 'ver';
+
+    /**
+     * 是否开启预览态
+     */
+    isPreview?: boolean;
+
+    /**
+     * 预览态模式下渲染的内容
+     */
+    renderPreview?: (previewed: { label: string | React.ReactNode; value: string | number | boolean }, props: any) => React.ReactNode;
     itemDirection?: 'hoz' | 'ver';
 }
 
@@ -150,6 +160,16 @@ export interface RadioProps extends HTMLAttributesWeak, CommonProps {
      * name
      */
     name?: string;
+
+    /**
+     * 是否开启预览态
+     */
+    isPreview?: boolean;
+
+    /**
+     * 预览态模式下渲染的内容
+     */
+    renderPreview?: (values: string | number | boolean, props: any) => React.ReactNode;
 }
 
 export default class Radio extends React.Component<RadioProps, any> {

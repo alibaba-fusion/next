@@ -19,7 +19,11 @@ $cascader-menu-border-width: $line-1 !default;
 
 /// width
 /// @namespace size/menu
-$cascader-menu-width: $s-25 !default;
+$cascader-menu-width: $s-auto !default;
+
+/// min-width
+/// @namespace size/menu
+$cascader-menu-min-width: $s-25 !default;
 
 /// height
 /// @namespace size/menu

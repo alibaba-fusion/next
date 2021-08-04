@@ -1,6 +1,3 @@
-import { DatePicker as MeetDatePicker } from '@alifd/meet-react';
-import NextDatePicker from '../index';
-
-const DatePicker = MeetDatePicker ? MeetDatePicker : NextDatePicker;
+import { DatePicker } from '@alifd/meet-react';
 
 export default DatePicker;

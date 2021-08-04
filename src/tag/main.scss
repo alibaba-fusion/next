@@ -55,7 +55,7 @@
             /* 用户手动传的 icon 的大小也保持一致？ */
             .#{$css-prefix}icon {
                 line-height: 1;
-                vertical-align: middle;
+                vertical-align: baseline;
 
                 &:before {
                     font-size: inherit;
@@ -89,7 +89,8 @@
             $tag-size-l-padding-lr,
             $tag-size-l-text-size,
             $tag-size-l-icon-font,
-            $tag-size-l-content-min-width
+            $tag-size-l-content-min-width,
+            $tag-size-l-spacing
         );
     }
 
@@ -101,7 +102,8 @@
             $tag-size-m-padding-lr,
             $tag-size-m-text-size,
             $tag-size-m-icon-font,
-            $tag-size-m-content-min-width
+            $tag-size-m-content-min-width,
+            $tag-size-m-spacing
         );
     }
 
@@ -113,7 +115,8 @@
             $tag-size-s-padding-lr,
             $tag-size-s-text-size,
             $tag-size-s-icon-font,
-            $tag-size-s-content-min-width
+            $tag-size-s-content-min-width,
+            $tag-size-s-spacing
         );
     }
 

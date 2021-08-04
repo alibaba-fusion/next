@@ -21,6 +21,7 @@ class BalloonInner extends React.Component {
         rtl: PropTypes.bool,
         closable: PropTypes.bool,
         children: PropTypes.any,
+        title: PropTypes.node,
         className: PropTypes.string,
         alignEdge: PropTypes.bool,
         onClose: PropTypes.func,
@@ -50,6 +51,7 @@ class BalloonInner extends React.Component {
             style,
             isTooltip,
             align,
+            title,
             type,
             onClose,
             alignEdge,
@@ -68,14 +70,28 @@ class BalloonInner extends React.Component {
             _prefix = `${_prefix}balloon`;
         }
 
+        const closableInTitle = closable && title !== undefined;
+        const closableInContent = closable && title === undefined;
+
         const classes = classNames({
             [`${_prefix}`]: true,
             [`${_prefix}-${type}`]: type,
             [`${_prefix}-medium`]: true,
             [`${_prefix}-${alignMap[align].arrow}`]: alignMap[align],
-            [`${_prefix}-closable`]: closable,
+            [`${_prefix}-closable`]: closableInContent,
             [className]: className,
         });
+
+        const titleCls = classNames({
+            [`${prefix}balloon-title`]: true,
+            [`${_prefix}-closable`]: closableInTitle,
+        });
+
+        const closeIcon = (
+            <a role="button" aria-label={locale.close} tabIndex="0" className={`${_prefix}-close`} onClick={onClose}>
+                <Icon type="close" size="small" />
+            </a>
+        );
 
         return (
             <div
@@ -89,18 +105,14 @@ class BalloonInner extends React.Component {
                 <div className={`${prefix}balloon-arrow`}>
                     <div className={`${prefix}balloon-arrow-content`} />
                 </div>
-                {children}
-                {closable ? (
-                    <a
-                        role="button"
-                        aria-label={locale.close}
-                        tabIndex="0"
-                        className={`${_prefix}-close`}
-                        onClick={onClose}
-                    >
-                        <Icon type="close" size="small" />
-                    </a>
-                ) : null}
+                {title && (
+                    <div className={titleCls}>
+                        {title}
+                        {closableInTitle && closeIcon}
+                    </div>
+                )}
+                <div className={`${prefix}balloon-content`}>{children}</div>
+                {closableInContent && closeIcon}
             </div>
         );
     }

@@ -9,7 +9,7 @@
     }
 }
 
-@mixin fadeOutRightBig($count: $countDefault, $duration: $durationDefault, $delay: $delayDefault, $function: $ease-in-quint, $fill: $fillDefault, $visibility: $visibilityDefault) {
+@mixin fadeOutRightBig($count: $countDefault, $duration: $motion-duration-standard-out, $delay: $delayDefault, $function: $motion-default, $fill: $fillDefault, $visibility: $visibilityDefault) {
     @include animation-name(fadeOutRightBig);
     @include count($count);
     @include duration($duration);

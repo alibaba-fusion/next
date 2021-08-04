@@ -6,27 +6,18 @@ const EventHandlers = {
     // Event handler for previous and next
     changeSlide(options) {
         let slideOffset, targetSlide;
-        const unevenOffset =
-            this.state.slideCount % this.props.slidesToScroll !== 0;
+        const unevenOffset = this.state.slideCount % this.props.slidesToScroll !== 0;
         const indexOffset = unevenOffset
             ? 0
-            : (this.state.slideCount - this.state.currentSlide) %
-              this.props.slidesToScroll;
+            : (this.state.slideCount - this.state.currentSlide) % this.props.slidesToScroll;
 
         if (options.message === 'previous') {
-            slideOffset =
-                indexOffset === 0
-                    ? this.props.slidesToScroll
-                    : this.props.slidesToShow - indexOffset;
+            slideOffset = indexOffset === 0 ? this.props.slidesToScroll : this.props.slidesToShow - indexOffset;
             targetSlide = this.state.currentSlide - slideOffset;
         } else if (options.message === 'next') {
-            slideOffset =
-                indexOffset === 0 ? this.props.slidesToScroll : indexOffset;
+            slideOffset = indexOffset === 0 ? this.props.slidesToScroll : indexOffset;
             targetSlide = this.state.currentSlide + slideOffset;
-        } else if (
-            options.message === 'dots' ||
-            options.message === 'children'
-        ) {
+        } else if (options.message === 'dots' || options.message === 'children') {
             // Click on dots
             targetSlide = options.index * options.slidesToScroll;
             if (targetSlide === options.currentSlide) {
@@ -63,15 +54,9 @@ const EventHandlers = {
     },
 
     swipeStart(e) {
-        if (
-            this.props.swipe === false ||
-            ('ontouchend' in document && this.props.swipe === false)
-        ) {
+        if (this.props.swipe === false || ('ontouchend' in document && this.props.swipe === false)) {
             return;
-        } else if (
-            this.props.draggable === false &&
-            e.type.indexOf('mouse') !== -1
-        ) {
+        } else if (this.props.draggable === false && e.type.indexOf('mouse') !== -1) {
             return;
         }
         const posX = e.touches !== undefined ? e.touches[0].pageX : e.clientX;
@@ -105,25 +90,17 @@ const EventHandlers = {
 
         touchObject.curX = e.touches ? e.touches[0].pageX : e.clientX;
         touchObject.curY = e.touches ? e.touches[0].pageY : e.clientY;
-        touchObject.swipeLength = Math.round(
-            Math.sqrt(Math.pow(touchObject.curX - touchObject.startX, 2))
-        );
+        touchObject.swipeLength = Math.round(Math.sqrt(Math.pow(touchObject.curX - touchObject.startX, 2)));
 
-        let positionOffset =
-            (this.props.rtl === false ? 1 : -1) *
-            (touchObject.curX > touchObject.startX ? 1 : -1);
+        let positionOffset = (this.props.rtl === false ? 1 : -1) * (touchObject.curX > touchObject.startX ? 1 : -1);
 
         if (this.props.verticalSwiping === true) {
-            touchObject.swipeLength = Math.round(
-                Math.sqrt(Math.pow(touchObject.curY - touchObject.startY, 2))
-            );
+            touchObject.swipeLength = Math.round(Math.sqrt(Math.pow(touchObject.curY - touchObject.startY, 2)));
             positionOffset = touchObject.curY > touchObject.startY ? 1 : -1;
         }
 
         const currentSlide = this.state.currentSlide;
-        const dotCount = Math.ceil(
-            this.state.slideCount / this.props.slidesToScroll
-        );
+        const dotCount = Math.ceil(this.state.slideCount / this.props.slidesToScroll);
         const swipeDirection = this.swipeDirection(this.state.touchObject);
         let touchSwipeLength = touchObject.swipeLength;
 
@@ -132,8 +109,7 @@ const EventHandlers = {
                 (currentSlide === 0 && swipeDirection === 'right') ||
                 (currentSlide + 1 >= dotCount && swipeDirection === 'left')
             ) {
-                touchSwipeLength =
-                    touchObject.swipeLength * this.props.edgeFriction;
+                touchSwipeLength = touchObject.swipeLength * this.props.edgeFriction;
 
                 if (this.state.edgeDragged === false && this.props.edgeEvent) {
                     this.props.edgeEvent(swipeDirection);
@@ -158,10 +134,7 @@ const EventHandlers = {
             }),
         });
 
-        if (
-            Math.abs(touchObject.curX - touchObject.startX) <
-            Math.abs(touchObject.curY - touchObject.startY) * 0.8
-        ) {
+        if (Math.abs(touchObject.curX - touchObject.startX) < Math.abs(touchObject.curY - touchObject.startY) * 0.8) {
             return;
         }
         if (touchObject.swipeLength > 4) {
@@ -224,34 +197,22 @@ const EventHandlers = {
             let swipedSlide;
             const slickList = findDOMNode(this.list);
 
-            const slides = slickList.querySelectorAll(
-                `${this.props.prefix}slick-slide`
-            );
+            const slides = slickList.querySelectorAll(`${this.props.prefix}slick-slide`);
 
             Array.from(slides).every(slide => {
                 if (!this.props.vertical) {
-                    if (
-                        slide.offsetLeft -
-                            centerOffset +
-                            this.getWidth(slide) / 2 >
-                        this.state.swipeLeft * -1
-                    ) {
+                    if (slide.offsetLeft - centerOffset + (this.getWidth(slide) || 0) / 2 > this.state.swipeLeft * -1) {
                         swipedSlide = slide;
                         return false;
                     }
-                } else if (
-                    slide.offsetTop + this.getHeight(slide) / 2 >
-                    this.state.swipeLeft * -1
-                ) {
+                } else if (slide.offsetTop + (this.getHeight(slide) || 0) / 2 > this.state.swipeLeft * -1) {
                     swipedSlide = slide;
                     return false;
                 }
 
                 return true;
             });
-            const slidesTraversed =
-                Math.abs(swipedSlide.dataset.index - this.state.currentSlide) ||
-                1;
+            const slidesTraversed = Math.abs(swipedSlide.dataset.index - this.state.currentSlide) || 1;
             return slidesTraversed;
         } else {
             return this.props.slidesToScroll;
@@ -296,17 +257,13 @@ const EventHandlers = {
                 case 'left':
                 case 'down':
                     newSlide = this.state.currentSlide + this.getSlideCount();
-                    slideCount = this.props.swipeToSlide
-                        ? this.checkNavigable(newSlide)
-                        : newSlide;
+                    slideCount = this.props.swipeToSlide ? this.checkNavigable(newSlide) : newSlide;
                     this.setState({ currentDirection: 0 });
                     break;
                 case 'right':
                 case 'up':
                     newSlide = this.state.currentSlide - this.getSlideCount();
-                    slideCount = this.props.swipeToSlide
-                        ? this.checkNavigable(newSlide)
-                        : newSlide;
+                    slideCount = this.props.swipeToSlide ? this.checkNavigable(newSlide) : newSlide;
                     this.setState({ currentDirection: 1 });
                     break;
                 default:

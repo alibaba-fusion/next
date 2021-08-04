@@ -56,6 +56,16 @@ const dataSource = [
     },
 ];
 
+function freeze(dataSource) {
+    return Object.freeze([
+        ...dataSource.map(item => {
+            const { children } = item;
+            item.children = children && freeze(children);
+            return Object.freeze({ ...item });
+        }),
+    ]);
+}
+
 const _v2n = createMap(dataSource);
 
 describe('TreeSelect', () => {
@@ -444,6 +454,23 @@ describe('TreeSelect', () => {
         assert(triggered);
     });
 
+    it('should support multiple with hasClear', done => {
+        wrapper = mount(
+            <TreeSelect
+                multiple
+                hasClear
+                dataSource={dataSource}
+                value={['yyy', 'abcd']}
+                onChange={value => {
+                    assert(value === null);
+                    done();
+                }}
+            />
+        );
+
+        wrapper.find('i.next-icon-delete-filling').simulate('click');
+    });
+
     it('should trigger onSearch when search some keyword', () => {
         let triggered = false;
         const searchedValue = '外套';
@@ -661,6 +688,11 @@ describe('TreeSelect', () => {
     it('fix issues use isPreview when value is empty', () => {
         wrapper = mount(<TreeSelect isPreview dataSource={dataSource} />);
         assert(wrapper.find('.next-form-preview').instance().textContent === '');
+    });
+
+    it('should support immutable ', () => {
+        wrapper = mount(<TreeSelect defaultVisible treeDefaultExpandAll dataSource={freeze(dataSource)} />);
+        assertDataAndNodes(dataSource);
     });
 
     it('should support keyboard', done => {

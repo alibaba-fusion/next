@@ -298,3 +298,23 @@ $color-data1-7: #4DDE6D !default;
 /// @group data
 /// @export
 $color-data1-8: #18B1F7 !default;
+
+
+// ----------- 渐变色值 ----------- //
+
+/// gradient-1
+/// @group gradient
+/// @export
+$color-gradient-1: linear-gradient(270deg, rgb(121, 232, 199) 0%, rgb(8, 194, 158) 100%) !default;
+/// gradient-2
+/// @group gradient
+/// @export
+$color-gradient-2: linear-gradient(270deg, rgb(125, 238, 255) 0%, rgb(3, 193, 253) 100%) !default;
+/// gradient-3
+/// @group gradient
+/// @export
+$color-gradient-3: linear-gradient(270deg, rgb(255, 237, 117) 0%, rgb(245, 203, 34) 100%) !default;
+/// gradient-4
+/// @group gradient
+/// @export
+$color-gradient-4: linear-gradient(270deg, rgb(255, 163, 166) 0%, rgb(245, 39, 67) 100%) !default;

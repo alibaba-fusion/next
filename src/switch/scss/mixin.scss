@@ -17,12 +17,26 @@
     height: calc(#{$trigger-size} + #{$border-width-container} * 2);
     border-radius: $container-radius;
 
+    &:not([disabled]):active .#{$css-prefix}switch-btn {
+        width: calc(#{$trigger-size} * 1.3);
+    }
+
+    &.#{$css-prefix}switch-on:not([disabled]):active .#{$css-prefix}switch-btn {
+        left: calc(100% - (#{$trigger-size} * 1.3));
+    }
+
+    &.#{$css-prefix}switch-auto-width {
+        min-width: $width;
+        width: auto;
+        overflow: initial;
+    }
     &:after {
+        content: '';
+    }
+    > .#{$css-prefix}switch-btn {
         border: $border-width-trigger solid transparent;
         position: absolute;
-        // left: $width - $border-width-container * 2 - $trigger-size;
-        left: 100%;
-        transform: translateX(-100%);
+        left: calc(100% - #{$trigger-size});
         width: $trigger-size;
         height: $trigger-size;
         border-radius: $trigger-radius;
@@ -30,8 +44,6 @@
     }
     > .#{$css-prefix}switch-children {
         font-size: $font-size-body-1;
-        position: absolute;
-        // width: $trigger-size;
         height: $trigger-size;
         line-height: $trigger-size;
     }

@@ -1,24 +1,23 @@
-# 基本
+# 类型
 
 - order: 0
 
-最简单的用法。
+常见气泡使用类型
 
 :::lang=en-us
-# Basic
+# Style Type
 
 - order: 0
 
-Basic usage.
+Common types of Balloon
 
 :::
 
 ---
 
+
 ````jsx
 import { Button, Balloon } from '@alifd/next';
-
-
 
 const defaultTrigger = <Button className="btrigger" style={{margin: '5px'}}>default style</Button>;
 const disabledTrigger = <Button disabled className="btrigger" style={{margin: '5px'}}>default style</Button>;

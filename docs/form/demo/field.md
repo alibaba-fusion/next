@@ -82,8 +82,9 @@ class BasicDemo extends React.Component {
                     required
                     validator={this.userExists.bind(this)}
                     help={getState('username') === 'loading' ? 'Checking ...' : getError('username')}
+                    name="username" 
                 >
-                    <Input placeholder="Input frank" name="username" />
+                    <Input placeholder="Input frank" />
                     <p>Hello {getValue('username')}</p>
                 </FormItem>
 
@@ -93,8 +94,9 @@ class BasicDemo extends React.Component {
                     required
                     requiredMessage="Please enter password"
                     validator={this.checkPass.bind(this)}
+                    name="passwd" 
                 >
-                    <Input htmlType="password" name="passwd" />
+                    <Input htmlType="password" />
                 </FormItem>
 
                 <FormItem
@@ -103,8 +105,9 @@ class BasicDemo extends React.Component {
                     required
                     requiredMessage="Enter your password again"
                     validator={this.checkPass2.bind(this)}
+                    name="rePasswd"
                 >
-                    <Input htmlType="password" placeholder="Enter the same password twice" name="rePasswd" />
+                    <Input htmlType="password" placeholder="Enter the same password twice" />
                 </FormItem>
 
                 <FormItem
@@ -112,8 +115,9 @@ class BasicDemo extends React.Component {
                     hasFeedback
                     required
                     requiredMessage="Please select your gender"
+                    name="sex"
                 >
-                    <RadioGroup name="sex" >
+                    <RadioGroup >
                         <Radio value="male">Male</Radio>
                         <Radio value="female">Female</Radio>
                     </RadioGroup>

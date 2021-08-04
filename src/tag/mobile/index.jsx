@@ -1,6 +1,3 @@
-import { Tag as MeetTag } from '@alifd/meet-react';
-import NextTag from '../index';
-
-const Tag = MeetTag ? MeetTag : NextTag;
+import { Tag } from '@alifd/meet-react';
 
 export default Tag;

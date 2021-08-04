@@ -41,7 +41,7 @@
 @mixin make-columns() {
     @for $i from 1 through $grid-columns {
         .#{$css-prefix}col-#{$i} {
-            $width: percentage($i / $grid-columns);
+            $width: percentage(divide($i, $grid-columns));
             flex: 0 0 $width;
             width: $width;
             max-width: $width;
@@ -53,7 +53,7 @@
         @include breakpoint($name) {
             @for $j from 1 through $grid-columns {
                 .#{$css-prefix}col-#{$name}-#{$j} {
-                    $width: percentage($j / $grid-columns);
+                    $width: percentage(divide($j, $grid-columns));
                     flex: 0 0 $width;
                     width: $width;
                     max-width: $width;
@@ -67,7 +67,7 @@
 @mixin make-5columns() {
     @for $i from 1 through $grid-columns-5p {
         .#{$css-prefix}col-#{$i}p#{$grid-columns-5p} {
-            $width: percentage($i / $grid-columns-5p);
+            $width: percentage(divide($i, $grid-columns-5p));
             flex: 0 0 $width;
             width: $width;
             max-width: $width;
@@ -78,7 +78,7 @@
         @include breakpoint($name) {
             @for $j from 1 through $grid-columns-5p {
                 .#{$css-prefix}col-#{$name}-#{$j}p#{$grid-columns-5p} {
-                    $width: percentage($j / $grid-columns-5p);
+                    $width: percentage(divide($j, $grid-columns-5p));
                     flex: 0 0 $width;
                     width: $width;
                     max-width: $width;
@@ -104,7 +104,7 @@
 @mixin make-offset() {
     @for $i from 1 through $grid-columns {
         .#{$css-prefix}col-offset-#{$i} {
-            margin-left: percentage($i / $grid-columns);
+            margin-left: percentage(divide($i, $grid-columns));
         }
     }
     @each $breakpoint in $breakpoints {
@@ -112,7 +112,7 @@
         @include breakpoint($name) {
             @for $j from 1 through $grid-columns {
                 .#{$css-prefix}col-#{$name}-offset-#{$j} {
-                    margin-left: percentage($j / $grid-columns);
+                    margin-left: percentage(divide($j, $grid-columns));
                 }
             }
         }

@@ -151,6 +151,11 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
      * 填充到选择框里的值的 key，默认是 value
      */
     fillProps?: string;
+
+    /**
+     * 自动高亮第一个选项
+     */
+    autoHighlightFirstItem?: boolean;
 }
 
 export class AutoComplete extends React.Component<AutoCompleteProps, any> {}
@@ -392,6 +397,10 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
      */
     maxTagCount?: number;
     /**
+     * tag 尺寸是否和 select 尺寸保持一致，仅在 multiple/tag 模式下有用
+     */
+    adjustTagSize?: boolean;
+    /**
      * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
      * @param {object} selectedValues 当前已选中的元素
      * @param {object} totalValues 总待选元素
@@ -422,6 +431,10 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
     isPreview?: boolean;
     renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => any;
+    /**
+     * 自动高亮第一个选项
+     */
+    autoHighlightFirstItem?: boolean;
 }
 
 export default class Select extends React.Component<SelectProps, any> {

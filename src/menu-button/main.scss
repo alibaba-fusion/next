@@ -7,6 +7,10 @@
     display: inline-block;
     box-shadow: none;
 
+    &-spacing-tb {
+        padding: $popup-spacing-tb 0;
+    }
+
     .#{$css-prefix}icon {
         transition: transform $motion-duration-immediately $motion-linear;
     }
@@ -30,32 +34,70 @@
     }
     // --------- this is for config platform
 
-    &.#{$css-prefix}btn-normal .#{$css-prefix}menu-btn-arrow {
-        color: $menu-btn-pure-text-normal-icon-color;
+    &.#{$css-prefix}btn-normal {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-pure-text-normal-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-pure-normal-color-hover;
+        }
     }
 
-    &.#{$css-prefix}btn-secondary .#{$css-prefix}menu-btn-arrow {
-        color: $menu-btn-pure-text-secondary-icon-color;
+    &.#{$css-prefix}btn-secondary {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-pure-text-secondary-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-pure-secondary-color-hover;
+        }
+        &.#{$css-prefix}btn-text:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-text-secondary-color-hover;
+        }
     }
 
-    &.#{$css-prefix}btn-primary .#{$css-prefix}menu-btn-arrow {
-        color: $menu-btn-pure-text-primary-icon-color;
+    &.#{$css-prefix}btn-primary {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-pure-text-primary-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-pure-primary-color-hover;
+        }
     }
 
-    &.#{$css-prefix}btn-text.#{$css-prefix}btn-normal .#{$css-prefix}menu-btn-arrow {
-        color: $menu-btn-text-text-normal-icon-color;
+    &.#{$css-prefix}btn-text.#{$css-prefix}btn-normal {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-text-text-normal-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-text-normal-color-hover;
+        }
     }
 
-    &.#{$css-prefix}btn-text.#{$css-prefix}btn-primary .#{$css-prefix}menu-btn-arrow {
-        color: $menu-btn-text-text-primary-icon-color;
+    &.#{$css-prefix}btn-text.#{$css-prefix}btn-primary {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-text-text-primary-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-text-primary-color-hover;
+        }
     }
 
-    &.#{$css-prefix}btn-ghost.#{$css-prefix}btn-light .#{$css-prefix}menu-btn-arrow {
-        color: $menu-btn-ghost-light-icon-color;
+    &.#{$css-prefix}btn-ghost.#{$css-prefix}btn-light {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-ghost-light-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-ghost-light-color-hover;
+        }
     }
 
-    &.#{$css-prefix}btn-ghost.#{$css-prefix}btn-dark .#{$css-prefix}menu-btn-arrow {
-        color: $menu-btn-ghost-dark-icon-color;
+    &.#{$css-prefix}btn-ghost.#{$css-prefix}btn-dark {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-ghost-dark-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-ghost-dark-color-hover;
+        }
     }
 
     &.disabled .#{$css-prefix}menu-btn-arrow,

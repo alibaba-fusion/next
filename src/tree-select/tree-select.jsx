@@ -30,6 +30,7 @@ const flatDataSource = props => {
                 const { value, children } = item;
                 const pos = `${prefix}-${index}`;
                 const key = item.key || pos;
+
                 const newItem = { ...item, key, pos };
                 if (children && children.length) {
                     newItem.children = loop(children, pos);
@@ -39,16 +40,7 @@ const flatDataSource = props => {
                 return newItem;
             });
 
-        try {
-            loop(props.dataSource);
-        } catch (err) {
-            // 对immutable数据进行深拷贝处理
-            if ((err.message || '').match('object is not extensible')) {
-                loop(cloneDeep(props.dataSource));
-            } else {
-                throw err;
-            }
-        }
+        loop(props.dataSource);
     } else if ('children' in props) {
         const loop = (children, prefix = '0') =>
             Children.map(children, (node, index) => {
@@ -282,6 +274,11 @@ class TreeSelect extends Component {
          * 是否开启虚拟滚动
          */
         useVirtual: PropTypes.bool,
+        /**
+         * 是否是不可变数据
+         * @version 1.23
+         */
+        immutable: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -571,10 +568,8 @@ class TreeSelect extends Component {
         }
     }
 
-    handleChange() {
-        // 单选时点击清空按钮
-        const { hasClear, multiple, treeCheckable } = this.props;
-        if (hasClear && (!multiple || !treeCheckable)) {
+    handleChange(value, triggerType) {
+        if (this.props.hasClear && triggerType === 'clear') {
             if (!('value' in this.props)) {
                 this.setState({
                     value: [],

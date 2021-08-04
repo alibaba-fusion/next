@@ -1,6 +1,3 @@
-import { Button as MeetButton } from '@alifd/meet-react';
-import NextButton from '../index';
-
-const Button = MeetButton ? MeetButton : NextButton;
+import { Button } from '@alifd/meet-react';
 
 export default Button;

@@ -1,6 +1,3 @@
-import { Message as MeetMessage } from '@alifd/meet-react';
-import NextMessage from '../index';
-
-const Message = MeetMessage ? MeetMessage : NextMessage;
+import { Message } from '@alifd/meet-react';
 
 export default Message;

@@ -7,7 +7,7 @@ export default class Cell extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
-        primaryKey: PropTypes.string,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         className: PropTypes.string,
         record: PropTypes.any,
         value: PropTypes.any,
@@ -19,11 +19,7 @@ export default class Cell extends React.Component {
         title: PropTypes.any,
         width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         context: PropTypes.any,
-        cell: PropTypes.oneOfType([
-            PropTypes.element,
-            PropTypes.node,
-            PropTypes.func,
-        ]),
+        cell: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
         align: PropTypes.oneOf(['left', 'center', 'right']),
         component: PropTypes.oneOf(['td', 'th', 'div']),
         children: PropTypes.any,
@@ -34,6 +30,7 @@ export default class Cell extends React.Component {
         filterProps: PropTypes.object,
         filters: PropTypes.array,
         sortable: PropTypes.bool,
+        sortDirections: PropTypes.arrayOf(PropTypes.oneOf(['desc', 'asc', 'default'])),
         lock: PropTypes.any,
         type: PropTypes.oneOf(['header', 'body']),
         resizable: PropTypes.bool,
@@ -83,6 +80,7 @@ export default class Cell extends React.Component {
             filterProps,
             filters,
             sortable,
+            sortDirections,
             lock,
             pure,
             locale,
@@ -91,6 +89,7 @@ export default class Cell extends React.Component {
             isIconLeft,
             type,
             htmlTitle,
+            wordBreak,
             ...others
         } = this.props;
         const tagStyle = { ...style };
@@ -104,16 +103,12 @@ export default class Cell extends React.Component {
         if (align) {
             tagStyle.textAlign = align;
             if (rtl) {
-                tagStyle.textAlign =
-                    align === 'left'
-                        ? 'right'
-                        : align === 'right'
-                        ? 'left'
-                        : align;
+                tagStyle.textAlign = align === 'left' ? 'right' : align === 'right' ? 'left' : align;
             }
         }
         const cls = classnames({
             [`${prefix}table-cell`]: true,
+            [`${prefix}table-word-break-${wordBreak}`]: !!wordBreak,
             [className]: className,
         });
 
