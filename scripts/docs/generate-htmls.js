@@ -11,7 +11,7 @@ const nunjucks = require('nunjucks');
 
 const SRC_FOLDER = 'docs';
 const LANGDOC_FOLDER = 'docs-lang';
-const COMPILED_FOLDER = 'compiled_html';
+const COMPILED_FOLDER = 'build';
 
 const cwd = process.cwd();
 const tplPath = path.resolve(__dirname, './tpl/demo.html');
@@ -106,10 +106,10 @@ async function buildCompiledDocs(cwd) {
 
         await fs.mkdirp(path.join(to, folder));
 
-        nunjuckRender(pName, folder, pVersion, readmeDoc, demosDoc, to, 'zh-cn.html');
+        nunjuckRender(pName, folder, pVersion, readmeDoc, demosDoc, to, 'index.html');
 
         if (enReadmeDoc && enDemosDoc.length) {
-            nunjuckRender(pName, folder, pVersion, enReadmeDoc, enDemosDoc, to, 'en-us.html');
+            nunjuckRender(pName, folder, pVersion, enReadmeDoc, enDemosDoc, to, 'index.en-us.html');
         }
     }
 }

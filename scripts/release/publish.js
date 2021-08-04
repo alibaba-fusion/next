@@ -36,7 +36,7 @@ module.exports = function*() {
     }
 }`;
         currentDir.forEach(file => {
-            if (['compiled_docs', 'compiled_html', '.fusion', 'demos', 'dist', 'lib'].indexOf(file) > -1) {
+            if (['compiled_docs', 'build', '.fusion', 'demos', 'dist', 'lib'].indexOf(file) > -1) {
                 fs.copySync(path.join(cwd, file), path.join(docs, file));
             }
         });

@@ -73,12 +73,12 @@ precss.css
 scripts/server-remote
 __html/
 dist/
+build/
 es/
 lib/
 test/coverage/
 test/**/coverage/
 compiled_docs/
-compiled_html/
 demos/
 platform-docs/
 coverage/
