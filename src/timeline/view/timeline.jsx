@@ -30,7 +30,8 @@ class Timeline extends Component {
         /**
          * 展示的模式
          * @enumdesc 左, 交错显示
-        */
+         * @version 1.23.18
+         */
         mode: PropTypes.oneOf(['left', 'alternate']),
     };
 
