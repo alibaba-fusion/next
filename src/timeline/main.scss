@@ -67,7 +67,7 @@
     @include node-state('ltr', $timeline-item-error-background, $timeline-item-error-color, $timeline-item-error-dot-size);
 }
 
-#{$timeline-prefix}.next-alternate {
+#{$timeline-prefix}.#{$css-prefix}alternate {
     #{$timeline-prefix}-item-left,   #{$timeline-prefix}-item-right {
         #{$timeline-prefix}-item-left-content {
             width: 50%;
@@ -135,7 +135,7 @@
     }
 }
 
-#{$timeline-prefix}[dir='rtl'].next-alternate {
+#{$timeline-prefix}[dir='rtl'].#{$css-prefix}alternate {
     #{$timeline-prefix}-item-left,   #{$timeline-prefix}-item-right {
         #{$timeline-prefix}-item-left-content {
             width: 50%;
