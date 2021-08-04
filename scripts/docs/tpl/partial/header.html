@@ -79,6 +79,42 @@
             return codePenFormValueJSON;
         }
 
+
+        function getNextCompO2FromValue(title, jsx, css) {
+            return JSON.stringify({
+                name: title,
+                tags: ['fusion'],
+                files: [
+                    {
+                        path: 'src/index.js',
+                        content:
+                            encodeURIComponent((jsx &&
+                                'import React from "react";\nimport ReactDOM from "react-dom";\nimport "./index.css";\nconst mountNode = document.getElementById("root");\n' +
+                                jsx) ||
+                                ''),
+                    },
+                    {
+                        path: 'src/index.css',
+                        content: encodeURIComponent("@import '~@alifd/next/dist/next.css';\n" + (css || '')),
+                    },
+                    {
+                        path: 'package.json',
+                        content: encodeURIComponent(`{
+  "name": "fusion-template",
+  "version": "0.1.0",
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "moment": "*",
+    "@alifd/next": "*"
+  }
+}
+`),
+                    },
+                ],
+            });
+        }
+
         function handle404Error(el, failed) {
             if ((failed || (el.sheet.cssRules && !el.sheet.cssRules.length))) {
                 console.error('Get css error, redirect to default next.min.css from unpkg.com.')

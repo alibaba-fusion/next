@@ -187,6 +187,15 @@
           <div id="{{demo.name}}-operations" class='demo-item-operations'>
             <textarea tabindex=-1 id="{{demo.name}}-code-text"
               style="opacity: 0;cursor:default; user-select: none;">{{demo.codes.jsx}}</textarea>
+
+            <form id="{{demo.name}}-o2-op-container" class="code-box-code-action" action="https://o2.alibaba-inc.com/sandbox/define" method="POST"
+              target="_blank">
+              <input id="{{demo.name}}-O2-input"  type="hidden" name="data" value="">
+
+              <button type="submit" class="preview-btn" id="{{demo.name}}-O2">
+             </button>
+            </form>
+
             <form id="{{demo.name}}-riddle-op-container" class="code-box-code-action" action="https://riddle.alibaba-inc.com/riddles/define"
               method="POST" target="_blank">
               <input id="{{demo.name}}-Riddle-input" type="hidden" name="data" value="">
@@ -213,8 +222,12 @@
               let jsxTemp = $("<textarea/>").html(document.getElementById("{{demo.name}}-code-text").innerHTML).text();
               let cssTemp = $("<textarea/>").html(`${`{{demo.codes.css}}`}`).text();
               document.getElementById("{{demo.name}}-CodePen-input").value = getNextCompCodepenFormValue("{{demo.meta.title}}", jsxTemp, cssTemp);
+              document.getElementById("{{demo.name}}-O2-input").value = getNextCompO2FromValue("{{demo.meta.title}}", jsxTemp, cssTemp);
               document.getElementById("{{demo.name}}-Riddle-input").value = getNextCompRiddleFormValue(jsxTemp, cssTemp);
-              if(!isAliEnv)document.getElementById("{{demo.name}}-riddle-op-container").style.display = "none";
+              if(!isAliEnv){
+                document.getElementById("{{demo.name}}-riddle-op-container").style.display = "none";
+                document.getElementById("{{demo.name}}-o2-op-container").style.display = "none";
+              }
             }
             temp();
           </script>
