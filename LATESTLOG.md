@@ -1,12 +1,16 @@
 # Latest Log 
 
-## [1.23.21](https://github.com/alibaba-fusion/next/compare/1.23.20...1.23.21) (2021-08-04)
+## [1.23.22](https://github.com/alibaba-fusion/next/compare/1.23.21...1.23.22) (2021-08-05)
 
 
 ### Bug Fixes
 
-* prefix of timeline&datepicker2 ([b59e6d1](https://github.com/alibaba-fusion/next/commit/b59e6d1))
-* **Input:** prefix to group ([22629f2](https://github.com/alibaba-fusion/next/commit/22629f2))
-* **Table:** style issue, close [#3238](https://github.com/alibaba-fusion/next/issues/3238) ([4545da7](https://github.com/alibaba-fusion/next/commit/4545da7))
+* **Slider:** activeIndex not work when resize, close [#3245](https://github.com/alibaba-fusion/next/issues/3245) ([f53a36a](https://github.com/alibaba-fusion/next/commit/f53a36a))
+* **Table:** bug when list table with useVirtal ([856a352](https://github.com/alibaba-fusion/next/commit/856a352))
+
+
+### Features
+
+* **Table:** add defaultOpenRowKeys, close [#521](https://github.com/alibaba-fusion/next/issues/521) ([1f9fabf](https://github.com/alibaba-fusion/next/commit/1f9fabf))
 
 
