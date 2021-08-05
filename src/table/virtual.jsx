@@ -94,7 +94,7 @@ export default function virtual(BaseComponent) {
         }
 
         componentDidMount() {
-            if (this.state.hasVirtualData) {
+            if (this.state.hasVirtualData && this.bodyNode) {
                 this.lastScrollTop = this.bodyNode.scrollTop;
             }
 
@@ -168,14 +168,14 @@ export default function virtual(BaseComponent) {
         }
 
         adjustScrollTop() {
-            if (this.state.hasVirtualData) {
+            if (this.state.hasVirtualData && this.bodyNode) {
                 this.bodyNode.scrollTop =
                     (this.lastScrollTop % this.state.rowHeight) + this.state.rowHeight * this.state.scrollToRow;
             }
         }
 
         adjustSize() {
-            if (this.state.hasVirtualData) {
+            if (this.state.hasVirtualData && this.bodyNode) {
                 const body = this.bodyNode;
                 const virtualScrollNode = body.querySelector('div');
                 const { clientHeight, clientWidth } = body;
