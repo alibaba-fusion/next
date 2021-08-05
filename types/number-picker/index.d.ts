@@ -67,6 +67,11 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     autoFocus?: boolean;
 
     /**
+     * 是否展示点击按钮
+     */
+     hasTrigger?: boolean;
+
+    /**
      * 数值被改变的事件
      */
     onChange?: (value: number, e: any) => void;
