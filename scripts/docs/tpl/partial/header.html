@@ -123,8 +123,10 @@
         }
 
         function handleDevNextVersion(el, failed) {
-            console.error('Get {{comp.groupName}}@{{comp.version}} next-with-locales.min.js error, redirect to default next-with-locales.min.js from unpkg.com.')
-            if (failed) el.src = "https://unpkg.com/{{comp.groupName}}@{{comp.version}}/dist/next-with-locales.min.js";
+            if (failed) {
+                console.error('Get {{comp.groupName}}@{{comp.version}} next-with-locales.min.js error, redirect to default next-with-locales.min.js from unpkg.com.')
+                el.src = "https://unpkg.com/{{comp.groupName}}@{{comp.version}}/dist/next-with-locales.min.js";
+            }
         }
     </script>
 
