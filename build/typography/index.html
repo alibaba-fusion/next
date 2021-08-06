@@ -1,0 +1,3637 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Typography Demos</title>
+    <link rel="dns-prefetch" href="//unpkg.com" />
+    <link rel="dns-prefetch" href="//g.alicdn.com" />
+
+    <link href="https://g.alicdn.com/code/lib/cropperjs/1.0.0-rc.3/cropper.min.css" rel="stylesheet">
+    <!-- 页面样式 -->
+    <style>
+    @function css-function($function, $values...) {
+        @return $function+unquote('(')+$values+unquote(')');
+    }
+
+    @function css-max($values...) {
+        @return css-function(max, $values);
+    }
+
+    body {
+        margin: 56px 56px auto !important;
+        font-size: 14px !important;
+    }
+
+    .markdown {
+        color: #666;
+        word-wrap: break-word;
+        line-height: 24px;
+        letter-spacing: .2px
+    }
+
+    .markdown img {
+        vertical-align: middle;
+        max-width: 100%
+    }
+
+    .markdown h1 {
+        color: #222;
+        margin-top: 8px;
+        margin-bottom: 24px;
+        font-size: 32px;
+        font-family: Roboto-Bold;
+        line-height: 32px;
+        font-weight: 500;
+    }
+
+    .markdown h2,
+    .markdown h3,
+    .markdown h4,
+    .markdown h5,
+    .markdown h6 {
+        position: relative;
+        color: #222;
+        font-weight: 500;
+        clear: both;
+    }
+
+    .markdown h2 {
+        margin: 56px 0 20px 0;
+        font-size: 24px;
+        min-height: 20px;
+        line-height: 20px;
+    }
+
+    .markdown h3 {
+        margin: 24px 0 12px 0;
+        font-size: 16px;
+        min-height: 22px;
+        line-height: 22px;
+    }
+
+    .markdown h4 {
+        margin: 12px 0 8px 0;
+        font-size: 14px;
+        min-height: 20px;
+        line-height: 20px;
+    }
+
+    .markdown .header-anchor {
+        margin-left: 8px;
+        opacity: 0;
+        -webkit-transition: opacity .3s;
+        transition: opacity .3s;
+        touch-action: manipulation;
+    }
+
+    .markdown h1:hover .header-anchor,
+    .markdown h2:hover .header-anchor,
+    .markdown h3:hover .header-anchor,
+    .markdown h4:hover .header-anchor,
+    .markdown h5:hover .header-anchor,
+    .markdown h6:hover .header-anchor {
+        display: inline-block;
+        opacity: 1;
+    }
+
+    .markdown hr {
+        height: 1px;
+        border: 0;
+        background: #e9e9e9;
+        margin: 16px 0;
+        clear: both
+    }
+
+    .markdown p {
+        margin-bottom: 12px;
+        font-family: Roboto-Regular;
+        font-size: 14px;
+        color: #666666;
+        letter-spacing: 0;
+        min-height: 24px;
+        line-height: 24px;
+    }
+
+    .markdown ol,
+    .markdown ul {
+        padding-left: 1em
+    }
+
+    .markdown ul>li {
+        list-style-type: circle;
+    }
+
+    .markdown>ul li,
+    .markdown blockquote ul>li {
+        margin-left: 20px;
+        padding-left: 4px
+    }
+
+
+    .markdown ol>li {
+        list-style: decimal
+    }
+
+    .markdown>ol li,
+    .markdown blockquote ol>li {
+        margin-left: 20px;
+        padding-left: 4px
+    }
+
+    .markdown code:not([class*="language-"]) {
+        margin: 0 1px;
+        font-size: .9em;
+        background-color: #f9f2f4;
+        color: #c7254e;
+        border: 1px solid #f0f0f0;
+        border-radius: 3px;
+    }
+
+    .markdown p code {
+        background-color: #f9f2f4;
+        color: #c7254e;
+        padding: 2px 4px
+    }
+
+    .markdown b,
+    .markdown strong {
+        font-weight: 600
+    }
+
+    .markdown>table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: show;
+        border: 1px solid #e9e9e9;
+        width: 100%;
+        margin: 16px 0
+    }
+
+    .markdown>table th {
+        white-space: nowrap;
+        color: #5c6b77;
+        font-weight: 600
+    }
+
+    .markdown>table td,
+    .markdown>table th {
+        border: 1px solid #e9e9e9;
+        padding: 8px 16px;
+        text-align: left
+    }
+
+    .markdown>table th {
+        background: #f7f7f7
+    }
+
+    .markdown blockquote {
+        color: #999;
+        border-left: 4px solid #e9e9e9;
+        padding-left: .8em;
+        margin: 1em 0;
+        font-style: italic
+    }
+
+    .markdown blockquote p {
+        margin: 0
+    }
+
+    .post .anchor {
+        margin-left: 0;
+        position: absolute;
+        left: -18px
+    }
+
+    .markdown .waiting {
+        color: #ccc;
+        cursor: not-allowed
+    }
+
+    .markdown>br,
+    .markdown>p>br {
+        clear: both
+    }
+
+    .markdown .anchor {
+        line-height: unset;
+        float: left;
+        margin-left: -15px;
+        color: transparent
+    }
+
+    .markdown .anchor:hover {
+        color: #108ee9;
+        text-decoration: none
+    }
+
+    .markdown .anchor>span {
+        color: #222
+    }
+
+    #demo-api .anchor,
+    .demo-list .markdown .anchor {
+        float: unset;
+        color: transparent
+    }
+
+    #demo-api .anchor:hover,
+    .demo-list .markdown .anchor:hover {
+        color: #108ee9;
+        text-decoration: none
+    }
+
+    code {
+        font-family: Lucida Console, Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace
+    }
+
+    .js-focus-visible :focus:not(.focus-visible) {
+        outline: none
+    }
+
+    .js-focus-visible .focus-visible:focus {
+        outline: 2px dashed orange
+    }
+
+    .demo-item-desc-body:empty {
+        display: none;
+    }
+
+    .demo-index-list {
+        box-sizing: content-box;
+        top: 92px;
+        width: calc(20% - 56px);
+        position: fixed;
+        overflow: auto;
+        max-height: calc(100vh - 200px);
+        min-height: 150px;
+    }
+
+    .demo-index-list .demo-index-item {
+        border-left: 1px solid #dcdee3;
+        max-width: 100%;
+        font-size: 12px;
+        line-height: 1.5;
+        padding-left: 10px;
+        font-family: Roboto-Regular;
+        color: #666666;
+        letter-spacing: 0;
+        min-height: 20px;
+    }
+
+    .demo-index-list .demo-index-item a {
+        display: block;
+        padding: 0;
+        color: #666;
+        letter-spacing: 0;
+        line-height: 1.5;
+        min-height: 20px;
+        text-decoration: none;
+        font-family: Roboto-Regular;
+        font-size: 12px;
+    }
+
+    .demo-index-list .demo-index-item.demo-index-item-sub {
+        padding-left: 20px;
+        line-height: 1.2;
+        font-family: Roboto-Regular;
+        font-size: 12px;
+        color: #666666;
+        letter-spacing: 0;
+    }
+
+    .demo-index-list .demo-index-item.demo-index-item-sub a {
+        display: block;
+        font-family: Roboto-Regular;
+        font-size: 12px;
+        color: #666666;
+        letter-spacing: 0;
+        line-height: 1.5;
+        text-decoration: none;
+    }
+
+    .demo-index-list .demo-index-item.active {
+        border-left: 1px solid #222;
+        font-family: Roboto-Bold;
+        font-size: 12px;
+        color: #222222;
+        letter-spacing: 0;
+        line-height: 1.5;
+        font-weight: 900;
+        min-height: 20px;
+    }
+
+    .next-demo-item.scroll-count-item.active {
+        border: 1px solid #3B9AFF !important;
+    }
+
+    .demo-index-list .demo-index-item.active a {
+        font-family: Roboto-Bold;
+        font-size: 12px;
+        color: #222222;
+        letter-spacing: 0;
+        line-height: 1.5;
+        min-height: 20px;
+        text-decoration: none
+    }
+
+    .demo-title {
+        font-size: 32px;
+        font-weight: 400;
+        line-height: 32px;
+        height: 32px;
+        margin: 26px 0 16px 0;
+    }
+
+    .demo-head {
+        margin-bottom: 20px
+    }
+
+    .demo-list-item-code {
+        position: relative
+    }
+
+    .demo-list-item-code .demo-code-previews {
+        position: absolute;
+        top: 15px;
+        right: 10px;
+        text-align: right
+    }
+
+    .demo-list-item-code .demo-code-previews .demo-code-preview-item {
+        display: inline-block;
+        margin-left: 5px
+    }
+
+    .demo-list-item-code .demo-code-previews .demo-code-preview-item .preview-paltform-icon {
+        width: 1em;
+        height: 1em;
+        margin-top: 1px;
+        vertical-align: text-top
+    }
+
+    .demo-list-item-code .demo-code-previews .demo-code-preview-item .preview-paltform-icon path {
+        fill: #fff
+    }
+
+    .demo-list-item-header {
+        margin: 10px 0
+    }
+
+    .demo-list-item-control {
+        text-align: center
+    }
+
+    .demo-list-item-control-img {
+        display: inline-block;
+        transition: transform .5s;
+        transform: rotate(180deg)
+    }
+
+    .demo-list-item-body .demo-list-item-code {
+        height: 0;
+        transform-origin: center top;
+        transform: scaleY(0);
+        transition: all .3s ease;
+        overflow: hidden
+    }
+
+    .demo-list-item-body.expand .demo-list-item-code {
+        height: auto;
+        transform: scaleY(1);
+        transition: all .3s ease
+    }
+
+    .demo-list-item-body.expand .demo-list-item-control-img {
+        transform: rotate(0)
+    }
+
+    .demo-api .title {
+        font-size: 20px;
+        margin: 1.5em 0 .5em;
+        color: #333
+    }
+
+    .with-global-control-right {
+        display: inline-flex;
+    }
+
+    html::-webkit-scrollbar {
+        display: none
+    }
+
+    #cnzz_stat_icon_1262003581 {
+        display: none
+    }
+
+    /* code hightlight */
+
+    /* markdown table */
+
+    .markdown table li p.first {
+        display: inline-block;
+    }
+
+    .markdown table ul,
+    ol {
+        padding-left: 30px;
+    }
+
+    .markdown table ul :first-child,
+    ol :first-child {
+        margin-top: 0;
+    }
+
+    .markdown table ul :last-child,
+    ol :last-child {
+        margin-bottom: 0;
+    }
+
+    .markdown table dl {
+        padding: 0;
+    }
+
+    .markdown table dl dt {
+        font-size: 14px;
+        font-weight: bold;
+        font-style: italic;
+        padding: 0;
+        margin: 15px 0 5px;
+    }
+
+    .markdown table dl dt:first-child {
+        padding: 0;
+    }
+
+    .markdown table dl dt> :first-child {
+        margin-top: 0;
+    }
+
+    .markdown table dl dt> :last-child {
+        margin-bottom: 0;
+    }
+
+    .markdown table dl dd {
+        margin: 0 0 15px;
+        padding: 0 15px;
+    }
+
+    .markdown table dl dd> :first-child {
+        margin-top: 0;
+    }
+
+    .markdown table dl dd> :last-child {
+        margin-bottom: 0;
+    }
+
+    .markdown table blockquote {
+        padding: 0 15px;
+        color: #777777;
+    }
+
+    .markdown table blockquote> :first-child {
+        margin-top: 0;
+    }
+
+    .markdown table blockquote> :last-child {
+        margin-bottom: 0;
+    }
+
+    .markdown table {
+        padding: 0;
+        border-spacing: 0;
+        width: 100%;
+    }
+
+    .markdown table em {
+        color: rgba(155, 4, 152, 0.8);
+        margin-right: 4px;
+    }
+
+    .markdown table tr {
+        border-top: 1px solid #cccccc;
+        background-color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    .markdown table tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    .markdown table tr th {
+        font-weight: bold;
+        border-bottom: 2px solid #333;
+        text-align: left;
+        margin: 0;
+        padding: 16px 0 10px 0;
+        color: #000;
+        line-height: 16px;
+        min-height: 16px;
+    }
+
+    .markdown table tr td {
+        border-bottom: 1px solid #ccc;
+        text-align: left;
+        margin: 0;
+        padding: 18px 18px 18px 0;
+    }
+
+    .markdown table thead tr th:first-child {
+        padding-left: 8px;
+    }
+
+    .markdown table td:first-child {
+        width: 14%;
+        color: #595959;
+        font-weight: 600;
+        white-space: nowrap;
+        padding-left: 8px;
+    }
+
+    .markdown table td:nth-child(2) {
+        width: 47%;
+    }
+
+    .markdown table td:nth-child(3) {
+        width: 16%;
+        /* color: #c41d7f; */
+        font-size: 13px;
+    }
+
+    .markdown table td:nth-child(4) {
+        width: 15%;
+        font-size: 13px;
+    }
+
+    .markdown table td:nth-child(5) {
+        width: 8%;
+        font-size: 13px;
+    }
+
+    .react-live-error {
+        background-color: #0A0C18;
+        color: #fff;
+        margin-top: 30px !important;
+    }
+
+    .next-demo-links {
+        margin: 0;
+        padding: 0;
+        width: 300px;
+        list-style: none;
+        position: fixed;
+        top: 50px;
+        right: 50px;
+        background: #FFF;
+        border: 1px solid #C4C6Cf;
+        border-radius: 3px;
+        overflow-y: auto;
+        max-height: 500px;
+    }
+
+    .next-demo-links li {
+        min-height: 30px;
+        padding: 0 10px;
+    }
+
+    .next-demo-links li.title {
+        background: #7F00E0;
+        color: #fff;
+    }
+
+    .next-demo-links li.title+li {
+        border-top: none;
+    }
+
+    .next-demo-links li+li {
+        border-top: 1px solid #C4C6Cf;
+    }
+
+    .next-demo-links a {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .next-demo-links a.current {
+        color: #7F00E0;
+    }
+
+    .next-demo-dir {
+        position: absolute;
+        top: 20px;
+        right: 160px;
+        width: 100px;
+        min-height: 20px;
+        background: #fff;
+        border: 1px solid #C4C6Cf;
+    }
+
+    .next-demo-lang {
+        position: absolute;
+        top: 20px;
+        right: 50px;
+        width: 100px;
+        min-height: 20px;
+        background: #fff;
+        border: 1px solid #C4C6Cf;
+    }
+
+    .react-live-body {
+        font-size: 14px;
+        line-height: 1.5;
+        padding: 0 5px 0 5px;
+    }
+
+    .react-live-body pre {
+        font-family: Monaco, 'Andale Mono', 'Ubuntu Mono', monospace !important;
+    }
+
+    .react-live-body .token.plain {
+        color: #585d66;
+    }
+
+    .react-live-body textarea {
+        color: #333;
+        caret-color: red;
+    }
+
+    @supports (-webkit-mask: none) and (not (caret-color: red)) {
+        textarea {
+            color: red;
+        }
+
+        intextareaput::first-line {
+            color: #333;
+        }
+    }
+
+    .react-live-body textarea:focus {
+        outline: none;
+        border: 1px dashed rgba(59, 154, 255, .5) !important;
+    }
+
+    [id*="-live-import"] pre .language-jsx .hljs {
+        font-family: Roboto, Helvetica Neue, Helvetica, Tahoma, Arial, PingFang SC, Microsoft YaHei;
+        background-color: #F5F5FB !important;
+        border-radius: 10px;
+        padding: 20px;
+        font-size: 12px;
+    }
+
+    [id*="-live-css"] pre .language-css .hljs {
+        font-family: Roboto, Helvetica Neue, Helvetica, Tahoma, Arial, PingFang SC, Microsoft YaHei;
+        background-color: #F5F5FB !important;
+        border-radius: 10px;
+        padding: 20px;
+        font-size: 12px;
+    }
+
+    #toggle-rtl {
+        position: absolute;
+        top: 20px;
+        right: 280px;
+        min-height: 20px;
+        background: #fff;
+    }
+
+    .next-demo-item {
+        border: 1px solid #EEE;
+        margin-bottom: 20px;
+    }
+
+    .next-demo-playground {
+        margin-top: 40px;
+    }
+
+    .next-demo-mount {
+        padding: 24px 24px;
+        border-bottom: 1px solid #EEE;
+    }
+
+    .next-demo-body {
+        background: #f5f7fa;
+        padding: 4px 20px !important;
+        max-height: 400px;
+        overflow: scroll;
+    }
+
+    [id*='-live-import'] pre.language-jsx {
+        margin: 0 0;
+        padding-bottom: 0;
+    }
+
+    [id*='-live-css'] pre.language-css {
+        margin: 0 0;
+        padding-top: 0;
+    }
+
+    .next-demo-body pre {
+        margin: 14px 0;
+    }
+
+    .demo-item-desc {
+        padding: 24px 24px;
+        border-bottom: dashed #EEE 1px;
+
+    }
+
+    .demo-item-desc h3 {
+        margin: 0 0 8px 0;
+        line-height: 1;
+    }
+
+    .demo-item-desc p {
+        margin: 0 0 0 0;
+        line-height: 20px;
+        min-height: 20px;
+    }
+
+    .markdown h4+p {
+        margin-top: 0;
+    }
+
+    .next-demo-mount p {
+        margin: 0 0 12px 0;
+    }
+
+    .demo-item-desc .demo-item-desc-title {
+        min-height: 19px;
+        font-family: Roboto-Bold;
+        font-size: 16px;
+        color: #333333;
+        letter-spacing: 0;
+    }
+
+    .demo-item-desc .demo-item-desc-body {
+        font-family: Roboto-Regular;
+        font-size: 14px;
+        color: #666666;
+        letter-spacing: 0;
+        min-height: 20px;
+    }
+
+    .demo-item-desc-body markdown {
+        margin: 0 0;
+    }
+
+    .demo-item-operations {
+        height: 41px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: flex-end;
+        padding: 11px 12px 12px 12px;
+        opacity: .7;
+        -webkit-transition: opacity .3s;
+        transition: opacity .3s;
+    }
+
+    .code-box-code-action {
+        height: 20px;
+        width: 20px;
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin-left: 24px;
+        color: rgba(0, 0, 0, .45);
+        cursor: pointer;
+        -webkit-transition: all .24s;
+        transition: all .24s;
+    }
+
+    .op-icon,
+    .code-expand-icon-hide,
+    .code-expand-icon-show,
+    .code-box-code-action svg {
+        height: 20px;
+        width: 20px;
+    }
+
+    .all-demo-box-controls {
+        position: fixed;
+        display: flex;
+        align-items: center;
+    }
+
+    .all-demo-box-controls svg {
+        height: 20px;
+        width: 20px;
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        color: rgba(0, 0, 0, .45);
+        fill: rgba(0, 0, 0, .45);
+        cursor: pointer;
+        -webkit-transition: all .24s;
+        transition: all .24s;
+        margin: 8px;
+        left: -3px;
+        top: -4px;
+    }
+
+    .op-icon:hover,
+    .code-expand-icon-hide:hover,
+    .code-expand-icon-show:hover,
+    .code-box-code-action svg:hover,
+    .code-box-expand-trigger svg:hover {
+        color: #03C1FD;
+        fill: #03C1FD;
+        background-color: rgba(3, 193, 253, 0.12);
+        box-shadow: 0px 0px 2px 2px rgba(3, 193, 253, 0.12);
+        border-radius: 2px;
+    }
+
+    .op-icon:active,
+    .code-expand-icon-hide:active,
+    .code-expand-icon-show:active,
+    .code-box-code-action svg:active,
+    .code-box-expand-trigger svg:active {
+        color: #009DD6;
+        fill: #009DD6;
+        background-color: rgba(3, 193, 253, 0.12);
+        box-shadow: 0px 0px 2px 2px rgba(3, 193, 253, 0.12);
+        border-radius: 2px;
+    }
+
+    .all-demo-box-controls svg[id='debug-show'],
+    .all-demo-box-controls svg[id='all-expanded'],
+    .all-demo-box-controls svg[id='live-off'] {
+        color: #FFF;
+        fill: #FFF;
+        background-color: #03C1FD;
+        ;
+        box-shadow: 0px 0px 0px 2px #03C1FD;
+        border-radius: 2px;
+    }
+
+    .preview-btn {
+        margin: 0;
+        padding: 0;
+        border: none;
+        outline: none;
+        background-color: inherit;
+        color: inherit;
+        cursor: pointer;
+    }
+
+    /* #demo-guide + h2 {
+    margin-top: 0;
+} */
+
+    h2#demo-list {
+        margin-bottom: 20px;
+    }
+
+    .markdown h2+h3 {
+        margin-top: 0;
+    }
+
+    .markdown h3+table tr th {
+        padding: 4px 0 10px 0;
+    }
+
+    .markdown table+h3 {
+        margin: 41px 0 8px 0;
+    }
+
+    .markdown p+p {
+        margin-top: 12px;
+    }
+
+    pre[class*="language-"]+h2 {
+        margin-top: 36px;
+    }
+
+    p {
+        margin: 12px 0 12px 0;
+    }
+
+    .demo-wrapper .demo-comment-list,
+    .demo-wrapper .demo-list-item-body {
+        background: #fff;
+        border: 1px solid #e6e7eb;
+        border-radius: 4px;
+        padding: 20px
+    }
+
+    .demo-wrapper {
+        width: 80%;
+    }
+
+    .demo-index {
+        position: fixed;
+        top: 56px;
+        right: 56px;
+        width: calc(0.2*(100% - 112px));
+        padding-left: 40px;
+        max-height: calc(100vh - 200px);
+        min-height: 150px;
+        overflow: auto;
+    }
+
+    @media screen and (max-width:1000px) {
+        body {
+            margin: 0 20px
+        }
+
+        .demo-wrapper {
+            width: 100%;
+        }
+
+        .demo-index {
+            display: none
+        }
+    }
+</style>
+    <!-- 代码块样式 -->
+    <style>
+    /* Generated with http://k88hudson.github.io/syntax-highlighting-theme-generator/www */
+    /* http://k88hudson.github.io/react-markdocs */
+    /**
+ * @author k88hudson
+ *
+ * Based on prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+    /*********************************************************
+* General
+*/
+    pre[class*="language-"],
+    code[class*="language-"] {
+        color: #585d66;
+        font-size: 14px;
+        text-shadow: none;
+        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        direction: ltr;
+        text-align: left;
+        white-space: pre;
+        word-spacing: normal;
+        word-break: normal;
+        line-height: 1.5;
+        -moz-tab-size: 4;
+        -o-tab-size: 4;
+        tab-size: 4;
+        -webkit-hyphens: none;
+        -moz-hyphens: none;
+        -ms-hyphens: none;
+        hyphens: none;
+    }
+
+    pre[class*="language-"]::selection,
+    code[class*="language-"]::selection,
+    pre[class*="language-"]::mozselection,
+    code[class*="language-"]::mozselection {
+        text-shadow: none;
+        background: #b3d4fc;
+    }
+
+    @media print {
+
+        pre[class*="language-"],
+        code[class*="language-"] {
+            text-shadow: none;
+        }
+    }
+
+    pre[class*="language-"] {
+        padding: 1em;
+        margin: 1em 0 3em 0;
+        overflow: auto;
+        background: #f5f7fa;
+    }
+
+    :not(pre)>code[class*="language-"] {
+        padding: .1em .3em;
+        border-radius: .3em;
+        color: #db4c69;
+        background: #f9f2f4;
+    }
+
+    /*********************************************************
+* Tokens
+*/
+    .namespace {
+        opacity: .7;
+    }
+
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+        color: #93a1a1;
+    }
+
+    .token.punctuation {
+        color: #999999;
+    }
+
+    .token.property,
+    .token.tag,
+    .token.boolean,
+    .token.number,
+    .token.constant,
+    .token.symbol,
+    .token.deleted {
+        color: #b81880;
+    }
+
+    .token.selector,
+    .token.attr-name,
+    .token.string,
+    .token.char,
+    .token.builtin,
+    .token.inserted {
+        color: #08c29e;
+    }
+
+    .token.operator,
+    .token.entity,
+    .token.url,
+    .language-css .token.string,
+    .style .token.string {
+        color: #a67f59;
+    }
+
+    .token.atrule,
+    .token.attr-value,
+    .token.keyword {
+        color: #009dd6;
+    }
+
+    .token.function {
+        color: #ed4c62;
+    }
+
+    .token.regex,
+    .token.important,
+    .token.variable {
+        color: #f57315;
+    }
+
+    .token.important,
+    .token.bold {
+        font-weight: bold;
+    }
+
+    .token.italic {
+        font-style: italic;
+    }
+
+    .token.entity {
+        cursor: help;
+    }
+
+    /*********************************************************
+* Line highlighting
+*/
+    pre[data-line] {
+        position: relative;
+    }
+
+    pre[class*="language-"]>code[class*="language-"] {
+        position: relative;
+        z-index: 1;
+    }
+
+    .line-highlight {
+        position: absolute;
+        left: 0;
+        right: 0;
+        padding: inherit 0;
+        margin-top: 1em;
+        background: #f7f2cf;
+        box-shadow: inset 5px 0 0 #f7d87c;
+        z-index: 0;
+        pointer-events: none;
+        line-height: inherit;
+        white-space: pre;
+    }
+</style>
+
+    <script>
+        var searchDict = {};
+        if (location.search) {
+            const query = location.search.substring(1);
+            const vars = query.split('&');
+            for (let i = 0; i < vars.length; i++) {
+                const pair = vars[i].split('=');
+                searchDict[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+            }
+        }
+
+        const env = searchDict['env'] || 'local';
+        var isAliEnv = env.indexOf('ali') > -1;
+        var { scope: themeScope, name: themeName, version: themeVersion, pkgname: themePkgname } = searchDict['theme'] ? parsePkgname(searchDict['theme']) : {};
+
+        const themeLink = document.createElement('link');
+        themeLink.rel = "stylesheet";
+        themeLink.onload = "handle404Error(this)";
+        themeLink.onerror = `handle404Error(this, true})`
+        themeLink.href = themePkgname
+            ? `https://alifd.alicdn.com/npm/${themePkgname}/${themeVersion}/next.min.css`
+            : isAliEnv
+                ? `https://unpkg.alibaba-inc.com/@alifd/next@1.24.0-beta.5/dist/next.min.css`
+                : "https://alifd.alicdn.com/npm/@alifd/next/1.24.0-beta.5/next.min.css";
+        document.head.appendChild(themeLink);
+
+        function parsePkgname(pkgInfo) {
+            let scope = '';
+            let name = '';
+            let version = '';
+            if (pkgInfo[0] === '@') {
+                [scope, name] = pkgInfo.split('/');
+            } else {
+                name = pkgInfo;
+            }
+            if (/@/.test(name)) {
+                [name, version] = name.split('@');
+            }
+            return { scope, name, version, pkgname: scope ? `${scope}/${name}` : name };
+        }
+
+        function getNextCompRiddleFormValue(jsx, css) {
+            return JSON.stringify({
+                js: jsx || '',
+                css: '@import \'~@alifd/next@1.x/dist/next.css\';\n' + (css || ''),
+            });
+        }
+
+        function getNextCompCodepenFormValue(title, jsx, css) {
+            const cssExternal = themePkgname && themePkgname.match(/^alife/) ?
+                `https://unpkg.com/${themePkgname}@${themeVersion}/dist/next.min.css` :
+                `https://unpkg.com/@alifd/next@1.24.0-beta.5/dist/next.min.css`;
+            const codePenFormValue = {
+                title: `${title} - Fusion Design Demo`,
+                html: '<div id="mountNode" style="padding: 24px"></div>\n<script>var mountNode = document.getElementById("mountNode");</' + 'script>',
+                js: jsx || '',
+                css: css || '',
+                editors: '0010',
+                css_external: cssExternal,
+                js_external: `https://unpkg.com/react@16.x/umd/react.development.js;https://unpkg.com/react-dom@16.x/umd/react-dom.development.js;https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js;https://unpkg.com/@alifd/next@1.24.0-beta.5/dist/next-with-locales.min.js;https://alifd.alicdn.com/assets/next-codepen-require-polyfill.js`,
+                js_pre_processor: 'babel',
+            };
+            const codePenFormValueJSON = JSON.stringify(codePenFormValue);
+            return codePenFormValueJSON;
+        }
+
+
+        function getNextCompO2FromValue(title, jsx, css) {
+            return JSON.stringify({
+                name: title,
+                tags: ['fusion'],
+                files: [
+                    {
+                        path: 'src/index.js',
+                        content:
+                            encodeURIComponent((jsx &&
+                                'import React from "react";\nimport ReactDOM from "react-dom";\nimport "./index.css";\nconst mountNode = document.getElementById("root");\n' +
+                                jsx) ||
+                                ''),
+                    },
+                    {
+                        path: 'src/index.css',
+                        content: encodeURIComponent("@import '~@alifd/next/dist/next.css';\n" + (css || '')),
+                    },
+                    {
+                        path: 'package.json',
+                        content: encodeURIComponent(`{
+  "name": "fusion-template",
+  "version": "0.1.0",
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "moment": "*",
+    "@alifd/next": "*"
+  }
+}
+`),
+                    },
+                ],
+            });
+        }
+
+        function handle404Error(el, failed) {
+            if ((failed || (el.sheet.cssRules && !el.sheet.cssRules.length))) {
+                console.error('Get css error, redirect to default next.min.css from unpkg.com.')
+                el.href = "https://unpkg.com/@alifd/next@1.24.0-beta.5/dist/next.min.css"
+            }
+        }
+
+        function handleDevNextVersion(el, failed) {
+            console.error('Get @alifd/next@1.24.0-beta.5 next-with-locales.min.js error, redirect to default next-with-locales.min.js from unpkg.com.')
+            if (failed) el.src = "https://unpkg.com/@alifd/next@1.24.0-beta.5/dist/next-with-locales.min.js";
+        }
+    </script>
+
+</head>
+
+<body>
+  <script src="https://g.alicdn.com/code/lib/react/16.13.0/umd/react.production.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/react-dom/16.13.0/umd/react-dom.production.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/babel-polyfill/6.26.0/polyfill.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/prop-types/15.7.2/prop-types.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/locale/zh-cn.js"></script>
+  <script src="https://gw.alipayobjects.com/os/lib/react-dnd/7.7.0/dist/ReactDnD.min.js"></script>
+  <script
+    src="https://gw.alipayobjects.com/os/lib/react-dnd-html5-backend/7.7.0/dist/ReactDnDHTML5Backend.min.js"></script>
+  <script src="https://alifd.alicdn.com/npm/@alifd/next/1.24.0-beta.5/dist/next-with-locales.min.js"
+    onerror="handleDevNextVersion(this, true)" onload="handleDevNextVersion(this)"></script>
+  <script src="https://g.alicdn.com/next/fusion-deps/0.3.4/??common.js,next.js"></script>
+  <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/common.js"></script>
+  <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/demo-util.js"></script>
+  <script src="https://alifd.alicdn.com/fusion-demo/react-live.min.js"></script>
+  <script src="https://alifd.alicdn.com/fusion-demo/solarlunar.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/lib/react-router-dom/5.2.0/umd/react-router-dom.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/lib/dayjs/1.10.4/dayjs.min.js"></script>
+  <script>
+    window.react = window.React;
+    window['react-live'] = window.ReactLive;
+    window['dayjs'] = window.dayjs;
+    window['react-dom'] = window.ReactDOM;
+    window['react-router-dom'] = window.ReactRouterDOM;
+    window['prop-types'] = window.PropTypes;
+    window['react-dnd'] = window.ReactDnD;
+    window['react-dnd-html5-backend'] = window.ReactDnDHTML5Backend;
+    window['@alife/next'] = window.Next;
+    window['@alifd/next'] = window.Next;
+    window.ConfigProvider = window.Next.ConfigProvider;
+    window.customIcons = [];
+
+    // 展开所有代码
+    function expandAll(op) {
+      switch (op) {
+        case 'FOLD': {
+          window.localStorage.foldAll = 'false';
+          $('#all-expanded')[0].style.display = "none";
+          $('#all-not-expand')[0].style.display = "";
+          document.querySelectorAll('[id*="-icon-hide"]').forEach((el) => {
+            el.style.display = "none";
+          })
+          document.querySelectorAll('[id*="-icon-show"]').forEach((el) => {
+            el.style.display = "";
+          })
+          document.querySelectorAll('[id*="-body"]:not([id*="-live-body"])').forEach((el) => {
+            el.style.display = "none";
+          })
+          return;
+        }
+        case 'EXPAND': {
+          window.localStorage['foldAll'] = 'true';
+          $('#all-not-expand')[0].style.display = "none";
+          $('#all-expanded')[0].style.display = "";
+          document.querySelectorAll('[id*="-icon-show"]').forEach((el) => {
+            el.style.display = "none";
+          })
+          document.querySelectorAll('[id*="-icon-hide"]').forEach((el) => {
+            el.style.display = "";
+          })
+          document.querySelectorAll('[id*="-body"]').forEach((el) => {
+            el.style.display = "";
+          })
+          return;
+        }
+        default:
+          return;
+      }
+    }
+
+    // 切换react-live
+    function liveDemo(op, showMessage = true) {
+      function unmountAll() {
+        window.demoNames.forEach((demoName) => {
+          ReactDOM.unmountComponentAtNode(document.getElementById(`${demoName}-body`));
+          ReactDOM.unmountComponentAtNode(document.getElementById(`${demoName}-mount`));
+        })
+      }
+      switch (op) {
+        case "LIVE": {
+          window.localStorage.liveDemo = 'true';
+          unmountAll();
+          window.renderFuncs.forEach((demoRender) => {
+            demoRender("true");
+          });
+          $('#live-on')[0].style.display = "none";
+          $('#live-off')[0].style.display = "";
+          window.loadingStaticRenderScript(false, showMessage);
+          return;
+        }
+        case "READONLY": {
+          window.localStorage.liveDemo = 'false';
+          unmountAll();
+          window.renderFuncs.forEach((demoRender) => {
+            demoRender("false");
+          });
+          $('#live-off')[0].style.display = "none";
+          $('#live-on')[0].style.display = "";
+          window.loadingStaticRenderScript(false, showMessage);
+          return;
+        }
+        default:
+          return;
+      }
+    }
+
+    // copycode
+    function copyCode(name) {
+      let input = document.getElementById(`${name}-code-text`);
+      input.value = $("<div />").html(input.innerHTML).text();
+      input.select();
+      document.execCommand("copy"); // 执行浏览器复制命令
+    }
+
+    // // 设置 ConfigProvider 国际化语言
+    ConfigProvider.initLocales(window.Next.locales);
+    ConfigProvider.setLanguage(searchDict['locale'] || 'zh-cn');
+  </script>
+
+  <div class="demo-wrapper pc">
+
+    <div class="demo-title markdown">
+      <h1>
+        Typography
+      </h1>
+    </div>
+
+    <div class="demo-index">
+      <span id="global-control" class="all-demo-box-controls">
+      </span>
+      <ul class="demo-index-list">
+        <li class="demo-index-item" data-id="demo-list"><a href="#demo-list">Example</a></li>
+        
+        <li class="demo-index-item demo-index-item-sub" data-id="basic-container"
+          debug="false"
+          style="">
+          <a href="#basic-container"
+            style="">基本</a>
+        </li>
+        
+        <li class="demo-index-item demo-index-item-sub" data-id="title-container"
+          debug="false"
+          style="">
+          <a href="#title-container"
+            style="">标题</a>
+        </li>
+        
+        <li class="demo-index-item demo-index-item-sub" data-id="text-container"
+          debug="false"
+          style="">
+          <a href="#text-container"
+            style="">文本</a>
+        </li>
+        
+        <li class="demo-index-item demo-index-item-sub" data-id="paragraph-container"
+          debug="false"
+          style="">
+          <a href="#paragraph-container"
+            style="">段落</a>
+        </li>
+        
+        <li class="demo-index-item" data-id="demo-api"><a href="#demo-api">API</a></li>
+      </ul>
+    </div>
+
+
+    <div class="demo-head">
+      <div id="demo-area" class="next-demo-section">
+        <div id="md-area-former" class="markdown-body markdown">
+          <div id="demo-guide" class=" scroll-count-item active" data-scroll-id="demo-guide"></div>
+          <p>文本的基本格式。</p>
+<h2 id="何时使用">何时使用 <a class="header-anchor scroll-count-item" href="#何时使用" data-scroll-id="何时使用">#</a></h2>
+<ul>
+<li>当需要展示标题、段落、列表内容时使用，如文章/博客/日志的文本样式。</li>
+</ul>
+
+          <h2 id="demo-list" data-scroll-id="demo-list" class="scroll-count-item with-global-control-right">
+            代码演示
+            <a href='#demo-list' class="header-anchor"># </a>
+          </h2>
+        </div>
+
+        <div id="demo-loading-state"></div>
+        <script>(function(){'use strict';
+
+var _next = require('@alifd/next');
+
+window.loadingStaticRenderScript = function (loading) {
+    var showMessage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+    try {
+        if (loading) {
+            ReactDOM.render(React.createElement(_next.Loading, { visible: true, fullScreen: true }), document.getElementById('demo-loading-state'));
+            return;
+        }
+        ReactDOM.unmountComponentAtNode(document.getElementById('demo-loading-state'));
+        showMessage && _next.Message.success(window.localStorage.liveDemo === "true" ? "切换到在线编辑模式成功，点击代码区域即可编辑预览。" : "切换到预览模式成功，代码展示为只读模式。");
+    } catch (e) {
+        _next.Message.error(window.localStorage.liveDemo === "true" ? "切换到在线编辑模式失败，请联系管理员。" : "切换到预览模式失败，请联系管理员。");
+    }
+};
+
+window.demoNames = [];
+window.renderFuncs = [];
+ReactDOM.render(React.createElement(
+    React.Fragment,
+    null,
+    React.createElement(
+        'span',
+        { id: 'live-demo', role: 'img', 'aria-label': 'edit', className: 'code-box-expand-trigger' },
+        React.createElement(
+            _next.Balloon.Tooltip,
+            {
+                align: 'b',
+                style: { maxWidth: 320, marginTop: 24 },
+                trigger: React.createElement(
+                    'svg',
+                    { id: 'live-on', viewBox: '0 0 16 16', focusable: 'false', className: '', 'data-icon': 'edit',
+                        width: '1em', height: '1em', fill: 'currentColor', 'aria-hidden': 'true',
+                        style: { boxSizing: 'border-box', border: '1.8 solid rgba(0, 0, 0, .45)', width: 20, height: 20, padding: 2 } },
+                    React.createElement('path', { d: 'M9.69559557,3.62666667 L2.20866223,11.1146667 L1.8673289,12.3562667 L3.1153289,12.0181333 L10.6011956,4.53226667 L9.69559557,3.62666667 Z M10.4497289,2.87253333 L11.3553289,3.77813333 L12.2673289,2.86613333 C12.4290988,2.70436348 12.4922771,2.46857876 12.4330652,2.24759702 C12.3738533,2.02661528 12.201247,1.85400889 11.9802652,1.79479701 C11.7592835,1.73558513 11.5234988,1.79876346 11.3617289,1.96053333 L10.4497289,2.87253333 L10.4497289,2.87253333 Z M13.0203956,1.20639113 C13.3405419,1.52647328 13.5204044,1.96062968 13.5204044,2.41333333 C13.5204044,2.86603699 13.3405419,3.30019339 13.0203956,3.62026667 L3.6689289,12.9728 L0.346262232,13.8741333 L1.25506223,10.5589333 L10.6075956,1.20639113 C10.9276688,0.886253633 11.3618252,0.706391131 11.8145289,0.706391131 C12.2672326,0.706391131 12.701389,0.886253633 13.0214622,1.20639113 L13.0203956,1.20639113 Z M1,15 L11,15 L11,16 L1,16 L1,15 Z' })
+                )
+            },
+            React.createElement(
+                'span',
+                null,
+                '\u4F7F\u7528\u5728\u7EBF\u7F16\u8F91\u6A21\u5F0F'
+            )
+        ),
+        React.createElement(
+            _next.Balloon.Tooltip,
+            {
+                align: 'b',
+                style: { maxWidth: 320, marginTop: 24 },
+                trigger: React.createElement(
+                    'svg',
+                    { id: 'live-off', viewBox: '0 0 16 16', focusable: 'false', className: '', 'data-icon': 'edit',
+                        width: '1em', height: '1em', 'aria-hidden': 'true',
+                        style: { boxSizing: 'border-box', border: '1.8 solid rgba(0, 0, 0, .45)', width: 20, height: 20, padding: 2, display: 'none' } },
+                    React.createElement('path', { d: 'M9.69559557,3.62666667 L2.20866223,11.1146667 L1.8673289,12.3562667 L3.1153289,12.0181333 L10.6011956,4.53226667 L9.69559557,3.62666667 Z M10.4497289,2.87253333 L11.3553289,3.77813333 L12.2673289,2.86613333 C12.4290988,2.70436348 12.4922771,2.46857876 12.4330652,2.24759702 C12.3738533,2.02661528 12.201247,1.85400889 11.9802652,1.79479701 C11.7592835,1.73558513 11.5234988,1.79876346 11.3617289,1.96053333 L10.4497289,2.87253333 L10.4497289,2.87253333 Z M13.0203956,1.20639113 C13.3405419,1.52647328 13.5204044,1.96062968 13.5204044,2.41333333 C13.5204044,2.86603699 13.3405419,3.30019339 13.0203956,3.62026667 L3.6689289,12.9728 L0.346262232,13.8741333 L1.25506223,10.5589333 L10.6075956,1.20639113 C10.9276688,0.886253633 11.3618252,0.706391131 11.8145289,0.706391131 C12.2672326,0.706391131 12.701389,0.886253633 13.0214622,1.20639113 L13.0203956,1.20639113 Z M1,15 L11,15 L11,16 L1,16 L1,15 Z' })
+                )
+            },
+            React.createElement(
+                'span',
+                null,
+                '\u4F7F\u7528\u9884\u89C8\u6A21\u5F0F'
+            )
+        )
+    ),
+    React.createElement(
+        _next.Balloon.Tooltip,
+        {
+            align: 'b',
+            style: { maxWidth: 320 },
+            trigger: React.createElement(
+                'span',
+                { id: 'expand-all', role: 'img', 'aria-label': 'code', className: 'code-box-expand-trigger' },
+                React.createElement(
+                    'svg',
+                    { id: 'all-not-expand', viewBox: '0 0 16 16', focusable: 'false', className: '', 'data-icon': 'code',
+                        fill: 'currentColor', 'aria-hidden': 'true', style: { padding: '2px 0' } },
+                    React.createElement('path', { d: 'M16,0 L16,16 L0,16 L0,0 L16,0 Z M15,1 L1,1 L1,15 L15,15 L15,1 Z M13,11 L13,12 L8,12 L8,11 L13,11 Z M3.33419059,3.86073652 L7.22040532,7.74695124 L3.33419127,11.6331801 L2.62708313,10.9260747 L5.806,7.747 L2.62708313,4.5678433 L3.33419059,3.86073652 Z' })
+                ),
+                React.createElement(
+                    'svg',
+                    { id: 'all-expanded', viewBox: '0 0 16 16', focusable: 'false', className: '', 'data-icon': 'code',
+                        width: '1em', height: '1em', 'aria-hidden': 'true', style: { display: 'none', padding: '2px 0' } },
+                    React.createElement('path', { d: 'M16,0 L16,16 L0,16 L0,0 L16,0 Z M15,1 L1,1 L1,15 L15,15 L15,1 Z M13,11 L13,12 L8,12 L8,11 L13,11 Z M3.33419059,3.86073652 L7.22040532,7.74695124 L3.33419127,11.6331801 L2.62708313,10.9260747 L5.806,7.747 L2.62708313,4.5678433 L3.33419059,3.86073652 Z' })
+                )
+            )
+        },
+        React.createElement(
+            'span',
+            null,
+            '\u5C55\u5F00\u6240\u6709\u4EE3\u7801'
+        )
+    ),
+    React.createElement(
+        _next.Balloon.Tooltip,
+        {
+            align: 'b',
+            style: { maxWidth: 320 },
+            trigger: React.createElement(
+                'span',
+                { id: 'debug-demo', role: 'img', 'aria-label': 'debug', className: 'code-box-expand-trigger' },
+                React.createElement(
+                    'svg',
+                    { id: 'debug-hide', width: '20px', height: '20px', viewBox: '0 0 20 20', fill: 'currentColor' },
+                    React.createElement('path', { d: 'M16.413,5.123 L17.497,5.125 L17.4938579,5.24712566 C17.4124011,6.50550853 16.4031377,7.52061238 15.1270346,7.59281941 L15.1270346,7.59281941 L14.7841667,7.60199902 L14.7841667,9.95 L17.834,9.95 L17.831,10.959 L14.7841667,10.9566667 L14.7841667,13.0316667 L14.7801982,13.2199617 L14.7627557,13.5369659 L14.8923079,13.5922729 L15.0760387,13.6769401 C16.2193459,14.2436639 16.9714896,15.3821922 17.0442066,16.6561778 L17.0442066,16.6561778 L17.049,16.817 L16.041,16.815 L16.0369034,16.6766262 C15.977166,15.8346669 15.5050511,15.0825334 14.7825181,14.6606226 L14.7825181,14.6606226 L14.5732891,14.538447 L14.4929745,14.7670366 L14.3977548,15.0175969 C13.9586581,16.0904742 13.1783448,16.9922153 12.1738893,17.5807743 C11.3678119,18.0526063 10.4502591,18.3006331 9.5161454,18.2991922 C8.58163819,18.3008405 7.66433888,18.0528072 6.8585976,17.5807666 C5.77722924,16.9468191 4.95575892,15.9497869 4.54036671,14.767059 L4.54036671,14.767059 L4.46020284,14.5388119 L4.25109728,14.6604582 L4.09864344,14.7565156 C3.45588133,15.1940269 3.04845604,15.9027194 2.99379785,16.67833 L2.99379785,16.67833 L2.988,16.817 L1.981,16.815 L1.98660477,16.6560529 C2.06302813,15.314598 2.89278604,14.1232567 4.13931435,13.5914585 L4.13931435,13.5914585 L4.26860859,13.5362986 L4.24966701,13.2084637 L4.24663589,13.0264918 L4.24666666,10.955 L1.197,10.955 L1.2,9.946 L4.24666666,9.94916666 L4.24666666,7.59660523 L4.04660524,7.59666667 L3.84744418,7.58883329 C3.25325975,7.54182361 2.6925671,7.28480262 2.2680489,6.86028442 L2.2680489,6.86028442 L2.13280475,6.71387571 C1.78900766,6.31075438 1.58128642,5.80905308 1.53950003,5.28088914 L1.53950003,5.28088914 L1.533,5.123 L2.618,5.125 L2.62315839,5.21874346 C2.68759515,5.89583723 3.22449438,6.44084418 3.90945934,6.5057741 L3.90945934,6.5057741 L4.03681945,6.51225743 L14.9841667,6.5125 L15.1220431,6.50595782 C15.8026115,6.44103331 16.3435021,5.90036306 16.4084549,5.21958988 L16.4084549,5.21958988 L16.413,5.123 Z M13.7,7.59664574 L5.33083334,7.59752091 L5.33083334,13.0325 L5.33809023,13.2809236 C5.37672347,13.9404662 5.56904731,14.574915 5.90158405,15.1427371 C6.4707333,16.1166781 7.40862559,16.8201762 8.50312303,17.0940194 L8.50312303,17.0940194 L8.97333334,17.1966415 L8.973,9.244 L10.061,9.247 L10.0583333,17.1899644 L10.2957078,17.1448102 L10.5315479,17.0928761 C11.6216842,16.8196938 12.5603581,16.1186245 13.1309897,15.1426111 C13.4628207,14.5757511 13.6554534,13.9381428 13.6930063,13.2822658 L13.6930063,13.2822658 L13.7,13.0380922 L13.7,7.59664574 Z M9.67166666,1.2 L9.94946991,1.20765814 C10.5902009,1.24335099 11.1774701,1.40349507 11.6876465,1.68145803 C12.2650485,1.99511049 12.7390562,2.46911818 13.0525889,3.04630002 L13.0525889,3.04630002 L13.1645227,3.26967079 C13.3738758,3.72555777 13.495913,4.2354958 13.5265083,4.78469633 L13.5265083,4.78469633 L13.533,5.021 L12.527,5.019 L12.5208902,4.8181819 C12.4911588,4.33711391 12.3726061,3.90241819 12.1697037,3.53081905 C11.9481223,3.12205789 11.6121088,2.78604432 11.2028132,2.56417225 C10.828898,2.35743243 10.3832897,2.23842323 9.88647544,2.21195 L9.88647544,2.21195 L9.67656315,2.20672661 L9.35916666,2.20666666 L9.11516207,2.2140909 C8.63471889,2.24374606 8.20055659,2.3619904 7.82860231,2.56430863 C7.41544155,2.79041125 7.08700404,3.11884877 6.86198002,3.5307879 L6.86198002,3.5307879 L6.76748586,3.72015117 C6.62182946,4.04481669 6.53549448,4.41405034 6.51076216,4.81686753 L6.51076216,4.81686753 L6.504,5.021 L5.497,5.019 L5.5043248,4.78469675 C5.54001765,4.1439658 5.70016173,3.55669654 5.97812469,3.04652017 C6.29196922,2.46904388 6.76626177,1.99502471 7.34373435,1.68161345 C7.86205179,1.39947142 8.45947065,1.23827271 9.11167854,1.20558259 L9.11167854,1.20558259 L9.36451498,1.19994903 L9.67166666,1.2 Z' })
+                ),
+                React.createElement(
+                    'svg',
+                    { id: 'debug-show', width: '20px', height: '20px', viewBox: '0 0 20 20', style: { display: 'none' } },
+                    React.createElement('path', { d: 'M16.413,5.123 L17.497,5.125 L17.4938579,5.24712566 C17.4124011,6.50550853 16.4031377,7.52061238 15.1270346,7.59281941 L15.1270346,7.59281941 L14.7841667,7.60199902 L14.7841667,9.95 L17.834,9.95 L17.831,10.959 L14.7841667,10.9566667 L14.7841667,13.0316667 L14.7801982,13.2199617 L14.7627557,13.5369659 L14.8923079,13.5922729 L15.0760387,13.6769401 C16.2193459,14.2436639 16.9714896,15.3821922 17.0442066,16.6561778 L17.0442066,16.6561778 L17.049,16.817 L16.041,16.815 L16.0369034,16.6766262 C15.977166,15.8346669 15.5050511,15.0825334 14.7825181,14.6606226 L14.7825181,14.6606226 L14.5732891,14.538447 L14.4929745,14.7670366 L14.3977548,15.0175969 C13.9586581,16.0904742 13.1783448,16.9922153 12.1738893,17.5807743 C11.3678119,18.0526063 10.4502591,18.3006331 9.5161454,18.2991922 C8.58163819,18.3008405 7.66433888,18.0528072 6.8585976,17.5807666 C5.77722924,16.9468191 4.95575892,15.9497869 4.54036671,14.767059 L4.54036671,14.767059 L4.46020284,14.5388119 L4.25109728,14.6604582 L4.09864344,14.7565156 C3.45588133,15.1940269 3.04845604,15.9027194 2.99379785,16.67833 L2.99379785,16.67833 L2.988,16.817 L1.981,16.815 L1.98660477,16.6560529 C2.06302813,15.314598 2.89278604,14.1232567 4.13931435,13.5914585 L4.13931435,13.5914585 L4.26860859,13.5362986 L4.24966701,13.2084637 L4.24663589,13.0264918 L4.24666666,10.955 L1.197,10.955 L1.2,9.946 L4.24666666,9.94916666 L4.24666666,7.59660523 L4.04660524,7.59666667 L3.84744418,7.58883329 C3.25325975,7.54182361 2.6925671,7.28480262 2.2680489,6.86028442 L2.2680489,6.86028442 L2.13280475,6.71387571 C1.78900766,6.31075438 1.58128642,5.80905308 1.53950003,5.28088914 L1.53950003,5.28088914 L1.533,5.123 L2.618,5.125 L2.62315839,5.21874346 C2.68759515,5.89583723 3.22449438,6.44084418 3.90945934,6.5057741 L3.90945934,6.5057741 L4.03681945,6.51225743 L14.9841667,6.5125 L15.1220431,6.50595782 C15.8026115,6.44103331 16.3435021,5.90036306 16.4084549,5.21958988 L16.4084549,5.21958988 L16.413,5.123 Z M13.7,7.59664574 L5.33083334,7.59752091 L5.33083334,13.0325 L5.33809023,13.2809236 C5.37672347,13.9404662 5.56904731,14.574915 5.90158405,15.1427371 C6.4707333,16.1166781 7.40862559,16.8201762 8.50312303,17.0940194 L8.50312303,17.0940194 L8.97333334,17.1966415 L8.973,9.244 L10.061,9.247 L10.0583333,17.1899644 L10.2957078,17.1448102 L10.5315479,17.0928761 C11.6216842,16.8196938 12.5603581,16.1186245 13.1309897,15.1426111 C13.4628207,14.5757511 13.6554534,13.9381428 13.6930063,13.2822658 L13.6930063,13.2822658 L13.7,13.0380922 L13.7,7.59664574 Z M9.67166666,1.2 L9.94946991,1.20765814 C10.5902009,1.24335099 11.1774701,1.40349507 11.6876465,1.68145803 C12.2650485,1.99511049 12.7390562,2.46911818 13.0525889,3.04630002 L13.0525889,3.04630002 L13.1645227,3.26967079 C13.3738758,3.72555777 13.495913,4.2354958 13.5265083,4.78469633 L13.5265083,4.78469633 L13.533,5.021 L12.527,5.019 L12.5208902,4.8181819 C12.4911588,4.33711391 12.3726061,3.90241819 12.1697037,3.53081905 C11.9481223,3.12205789 11.6121088,2.78604432 11.2028132,2.56417225 C10.828898,2.35743243 10.3832897,2.23842323 9.88647544,2.21195 L9.88647544,2.21195 L9.67656315,2.20672661 L9.35916666,2.20666666 L9.11516207,2.2140909 C8.63471889,2.24374606 8.20055659,2.3619904 7.82860231,2.56430863 C7.41544155,2.79041125 7.08700404,3.11884877 6.86198002,3.5307879 L6.86198002,3.5307879 L6.76748586,3.72015117 C6.62182946,4.04481669 6.53549448,4.41405034 6.51076216,4.81686753 L6.51076216,4.81686753 L6.504,5.021 L5.497,5.019 L5.5043248,4.78469675 C5.54001765,4.1439658 5.70016173,3.55669654 5.97812469,3.04652017 C6.29196922,2.46904388 6.76626177,1.99502471 7.34373435,1.68161345 C7.86205179,1.39947142 8.45947065,1.23827271 9.11167854,1.20558259 L9.11167854,1.20558259 L9.36451498,1.19994903 L9.67166666,1.2 Z' })
+                )
+            )
+        },
+        React.createElement(
+            'span',
+            null,
+            '\u663E\u793A\u8C03\u8BD5demo'
+        )
+    )
+), document.getElementById('global-control'));})()</script>
+        
+        <div id="basic-container" class='next-demo-item scroll-count-item'
+          style=""
+          debug="false"
+          data-scroll-id="basic-container">
+          <div id="basic-desc" class="demo-item-desc markdown">
+            <h3 class="demo-item-desc-title">
+              基本
+              <a class="header-anchor" href='#basic-container'
+                style="">
+                #
+              </a>
+            </h3>
+            
+            <div class="demo-item-desc-body markdown">
+<p>最简单的用法。</p>
+</div>
+            
+          </div>
+          <div id="basic-mount" class="next-demo-mount"></div>
+          <script>
+            if (searchDict['bgColor']) {
+              document.getElementById("basic-mount").style.backgroundColor = searchDict['bgColor'];
+            }
+          </script>
+
+          <div id="basic-operations" class='demo-item-operations'>
+            <textarea tabindex=-1 id="basic-code-text"
+              style="opacity: 0;cursor:default; user-select: none;">import { Typography } from &#39;@alifd/next&#39;;
+
+const { H1, H2, Paragraph, Text } = Typography;
+
+ReactDOM.render(
+  &lt;Typography&gt;
+    &lt;H1&gt;Fusion 简介&lt;/H1&gt;
+    &lt;Paragraph&gt;
+      Fusion 是一套企业级中后台UI的解决方案，致力于解决设计师与前端在产品体验一致性、工作协同、开发效率方面的问题。通过协助业务线构建设计系统，提供系统化工具协助设计师前端使用设计系统，下游提供一站式设计项目协作平台；打通互联网产品从设计到开发的工作流。
+    &lt;/Paragraph&gt;
+    &lt;Paragraph&gt;
+      Fusion Design 产品创建于2015年底，阿里巴巴集团中台战略背景下，由国际UED（现国际用户体验事业部）与B2B技术部成立中台DPL项目。从国际UED，天猫，商家等各类业务形态中抽象解构，通过一套设计系统协议提升&lt;Text mark&gt;设计与开发效率&lt;/Text&gt;，以统一的物料分发工具提升团队协同能力，借助灵活的在线样式配置支撑业务的设计创新。
+    &lt;/Paragraph&gt;
+    &lt;H2&gt;Fusion 的能力&lt;/H2&gt;
+    &lt;Paragraph&gt;
+      我们提供完善的设计原则、最佳实践和设计资源文件（&lt;Text code&gt;Sketch&lt;/Text&gt; 和{&#39; &#39;}
+      &lt;Text code&gt;Axure&lt;/Text&gt;），来帮助业务快速设计出高质量的产品原型。
+    &lt;/Paragraph&gt;
+
+    &lt;Paragraph component=&quot;div&quot;&gt;
+      &lt;ul&gt;
+        &lt;li&gt;
+          通过构建一套标准化中后台体验设计原则，提升中后台产品体验一致性问题。
+        &lt;/li&gt;
+        &lt;li&gt;
+          通过Fusion平台的主题配置能力，线上优化品牌样式并同步物料给设计师与开发使用，做到品牌样式迭代0成本。节省了大量的设计师和开发工作量。
+        &lt;/li&gt;
+        &lt;li&gt;
+          设计可直接在&lt;Text code&gt;sketch&lt;/Text&gt;（通过插件&lt;Text code&gt;FusionCool&lt;/Text&gt;）使用配好的组件画设计稿；开发可在本地工程里面使用配好的主题开发项目，不需要关心组件样式（未来甚至页面样式）；从而打破协作壁垒，让合作更加顺畅。
+        &lt;/li&gt;
+        &lt;li&gt;
+          通过 &lt;Text code&gt;FusionCool&lt;/Text&gt; 可以直接方便的沉淀模块模板；通过脚手架工具可以方便的沉淀业务组件、代码端； 让项目更快落地。
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/Paragraph&gt;
+  &lt;/Typography&gt;,
+  mountNode,
+);
+</textarea>
+
+            <form id="basic-o2-op-container" class="code-box-code-action" action="https://o2.alibaba-inc.com/sandbox/define" method="POST"
+              target="_blank">
+              <input id="basic-O2-input"  type="hidden" name="data" value="">
+
+              <button type="submit" class="preview-btn" id="basic-O2">
+             </button>
+            </form>
+
+            <form id="basic-riddle-op-container" class="code-box-code-action" action="https://riddle.alibaba-inc.com/riddles/define"
+              method="POST" target="_blank">
+              <input id="basic-Riddle-input" type="hidden" name="data" value="">
+
+              <button type="submit" class="preview-btn" id="basic-Riddle">
+              </button>
+            </form>
+            <form class="code-box-code-action" action="https://codepen.io/pen/define" method="POST" target="_blank">
+              <input id="basic-CodePen-input" type="hidden" name="data" value="">
+              <button type="submit" class="preview-btn" id="basic-CodePen">
+              </button>
+            </form>
+            <div id="basic-copy">
+              <button class="preview-btn" id="basic-copy-btn" onclick='copyCode("basic")'>
+              </button>
+            </div>
+            <div id="basic-fold-code"></div>
+          </div>
+          <div id="basic-body" class='next-demo-body' style="display: none">
+          </div>
+          <style id="basic-style"></style>
+          <script>
+            function temp(){
+              let jsxTemp = $("<textarea/>").html(document.getElementById("basic-code-text").innerHTML).text();
+              let cssTemp = $("<textarea/>").html(`${``}`).text();
+              document.getElementById("basic-CodePen-input").value = getNextCompCodepenFormValue("基本", jsxTemp, cssTemp);
+              document.getElementById("basic-O2-input").value = getNextCompO2FromValue("基本", jsxTemp, cssTemp);
+              document.getElementById("basic-Riddle-input").value = getNextCompRiddleFormValue(jsxTemp, cssTemp);
+              if(!isAliEnv){
+                document.getElementById("basic-riddle-op-container").style.display = "none";
+                document.getElementById("basic-o2-op-container").style.display = "none";
+              }
+            }
+            temp();
+          </script>
+
+          <script>(function(){'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactLive = require('react-live');
+
+var _next = require('@alifd/next');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+window.demoNames.push('basic');
+
+
+window.basicRenderScript = function basicRenderScript(liveDemo) {
+    var mountNode = document.getElementById('basic-mount');
+    if (liveDemo === "false") {
+        document.getElementById('basic-body').innerHTML = '<pre class="language-jsx"><code class="language-jsx"><span class="token keyword">import</span> <span class="token punctuation">{</span> Typography <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">\'@alifd/next\'</span><span class="token punctuation">;</span>\n\n<span class="token keyword">const</span> <span class="token punctuation">{</span> <span class="token constant">H1</span><span class="token punctuation">,</span> <span class="token constant">H2</span><span class="token punctuation">,</span> Paragraph<span class="token punctuation">,</span> Text <span class="token punctuation">}</span> <span class="token operator">=</span> Typography<span class="token punctuation">;</span>\n\nReactDOM<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span>\n  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Typography</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">H1</span></span><span class="token punctuation">></span></span><span class="token plain-text">Fusion \u7B80\u4ECB</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">H1</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Paragraph</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n      Fusion \u662F\u4E00\u5957\u4F01\u4E1A\u7EA7\u4E2D\u540E\u53F0UI\u7684\u89E3\u51B3\u65B9\u6848\uFF0C\u81F4\u529B\u4E8E\u89E3\u51B3\u8BBE\u8BA1\u5E08\u4E0E\u524D\u7AEF\u5728\u4EA7\u54C1\u4F53\u9A8C\u4E00\u81F4\u6027\u3001\u5DE5\u4F5C\u534F\u540C\u3001\u5F00\u53D1\u6548\u7387\u65B9\u9762\u7684\u95EE\u9898\u3002\u901A\u8FC7\u534F\u52A9\u4E1A\u52A1\u7EBF\u6784\u5EFA\u8BBE\u8BA1\u7CFB\u7EDF\uFF0C\u63D0\u4F9B\u7CFB\u7EDF\u5316\u5DE5\u5177\u534F\u52A9\u8BBE\u8BA1\u5E08\u524D\u7AEF\u4F7F\u7528\u8BBE\u8BA1\u7CFB\u7EDF\uFF0C\u4E0B\u6E38\u63D0\u4F9B\u4E00\u7AD9\u5F0F\u8BBE\u8BA1\u9879\u76EE\u534F\u4F5C\u5E73\u53F0\uFF1B\u6253\u901A\u4E92\u8054\u7F51\u4EA7\u54C1\u4ECE\u8BBE\u8BA1\u5230\u5F00\u53D1\u7684\u5DE5\u4F5C\u6D41\u3002\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Paragraph</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Paragraph</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n      Fusion Design \u4EA7\u54C1\u521B\u5EFA\u4E8E2015\u5E74\u5E95\uFF0C\u963F\u91CC\u5DF4\u5DF4\u96C6\u56E2\u4E2D\u53F0\u6218\u7565\u80CC\u666F\u4E0B\uFF0C\u7531\u56FD\u9645UED\uFF08\u73B0\u56FD\u9645\u7528\u6237\u4F53\u9A8C\u4E8B\u4E1A\u90E8\uFF09\u4E0EB2B\u6280\u672F\u90E8\u6210\u7ACB\u4E2D\u53F0DPL\u9879\u76EE\u3002\u4ECE\u56FD\u9645UED\uFF0C\u5929\u732B\uFF0C\u5546\u5BB6\u7B49\u5404\u7C7B\u4E1A\u52A1\u5F62\u6001\u4E2D\u62BD\u8C61\u89E3\u6784\uFF0C\u901A\u8FC7\u4E00\u5957\u8BBE\u8BA1\u7CFB\u7EDF\u534F\u8BAE\u63D0\u5347</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span> <span class="token attr-name">mark</span><span class="token punctuation">></span></span><span class="token plain-text">\u8BBE\u8BA1\u4E0E\u5F00\u53D1\u6548\u7387</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text">\uFF0C\u4EE5\u7EDF\u4E00\u7684\u7269\u6599\u5206\u53D1\u5DE5\u5177\u63D0\u5347\u56E2\u961F\u534F\u540C\u80FD\u529B\uFF0C\u501F\u52A9\u7075\u6D3B\u7684\u5728\u7EBF\u6837\u5F0F\u914D\u7F6E\u652F\u6491\u4E1A\u52A1\u7684\u8BBE\u8BA1\u521B\u65B0\u3002\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Paragraph</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">H2</span></span><span class="token punctuation">></span></span><span class="token plain-text">Fusion \u7684\u80FD\u529B</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">H2</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Paragraph</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n      \u6211\u4EEC\u63D0\u4F9B\u5B8C\u5584\u7684\u8BBE\u8BA1\u539F\u5219\u3001\u6700\u4F73\u5B9E\u8DF5\u548C\u8BBE\u8BA1\u8D44\u6E90\u6587\u4EF6\uFF08</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span> <span class="token attr-name">code</span><span class="token punctuation">></span></span><span class="token plain-text">Sketch</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text"> \u548C</span><span class="token punctuation">{</span><span class="token string">\' \'</span><span class="token punctuation">}</span><span class="token plain-text">\n      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span> <span class="token attr-name">code</span><span class="token punctuation">></span></span><span class="token plain-text">Axure</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text">\uFF09\uFF0C\u6765\u5E2E\u52A9\u4E1A\u52A1\u5FEB\u901F\u8BBE\u8BA1\u51FA\u9AD8\u8D28\u91CF\u7684\u4EA7\u54C1\u539F\u578B\u3002\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Paragraph</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Paragraph</span></span> <span class="token attr-name">component</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>div<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span><span class="token plain-text">\n        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">></span></span><span class="token plain-text">\n          \u901A\u8FC7\u6784\u5EFA\u4E00\u5957\u6807\u51C6\u5316\u4E2D\u540E\u53F0\u4F53\u9A8C\u8BBE\u8BA1\u539F\u5219\uFF0C\u63D0\u5347\u4E2D\u540E\u53F0\u4EA7\u54C1\u4F53\u9A8C\u4E00\u81F4\u6027\u95EE\u9898\u3002\n        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><span class="token plain-text">\n        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">></span></span><span class="token plain-text">\n          \u901A\u8FC7Fusion\u5E73\u53F0\u7684\u4E3B\u9898\u914D\u7F6E\u80FD\u529B\uFF0C\u7EBF\u4E0A\u4F18\u5316\u54C1\u724C\u6837\u5F0F\u5E76\u540C\u6B65\u7269\u6599\u7ED9\u8BBE\u8BA1\u5E08\u4E0E\u5F00\u53D1\u4F7F\u7528\uFF0C\u505A\u5230\u54C1\u724C\u6837\u5F0F\u8FED\u4EE30\u6210\u672C\u3002\u8282\u7701\u4E86\u5927\u91CF\u7684\u8BBE\u8BA1\u5E08\u548C\u5F00\u53D1\u5DE5\u4F5C\u91CF\u3002\n        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><span class="token plain-text">\n        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">></span></span><span class="token plain-text">\n          \u8BBE\u8BA1\u53EF\u76F4\u63A5\u5728</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span> <span class="token attr-name">code</span><span class="token punctuation">></span></span><span class="token plain-text">sketch</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text">\uFF08\u901A\u8FC7\u63D2\u4EF6</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span> <span class="token attr-name">code</span><span class="token punctuation">></span></span><span class="token plain-text">FusionCool</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text">\uFF09\u4F7F\u7528\u914D\u597D\u7684\u7EC4\u4EF6\u753B\u8BBE\u8BA1\u7A3F\uFF1B\u5F00\u53D1\u53EF\u5728\u672C\u5730\u5DE5\u7A0B\u91CC\u9762\u4F7F\u7528\u914D\u597D\u7684\u4E3B\u9898\u5F00\u53D1\u9879\u76EE\uFF0C\u4E0D\u9700\u8981\u5173\u5FC3\u7EC4\u4EF6\u6837\u5F0F\uFF08\u672A\u6765\u751A\u81F3\u9875\u9762\u6837\u5F0F\uFF09\uFF1B\u4ECE\u800C\u6253\u7834\u534F\u4F5C\u58C1\u5792\uFF0C\u8BA9\u5408\u4F5C\u66F4\u52A0\u987A\u7545\u3002\n        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><span class="token plain-text">\n        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">></span></span><span class="token plain-text">\n          \u901A\u8FC7 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span> <span class="token attr-name">code</span><span class="token punctuation">></span></span><span class="token plain-text">FusionCool</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text"> \u53EF\u4EE5\u76F4\u63A5\u65B9\u4FBF\u7684\u6C89\u6DC0\u6A21\u5757\u6A21\u677F\uFF1B\u901A\u8FC7\u811A\u624B\u67B6\u5DE5\u5177\u53EF\u4EE5\u65B9\u4FBF\u7684\u6C89\u6DC0\u4E1A\u52A1\u7EC4\u4EF6\u3001\u4EE3\u7801\u7AEF\uFF1B \u8BA9\u9879\u76EE\u66F4\u5FEB\u843D\u5730\u3002\n        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><span class="token plain-text">\n      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Paragraph</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n  </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Typography</span></span><span class="token punctuation">></span></span><span class="token punctuation">,</span>\n  mountNode<span class="token punctuation">,</span>\n<span class="token punctuation">)</span><span class="token punctuation">;</span>\n</code></pre>\n'.replace(/{backquote}/g, '`').replace(/{dollar}/g, '$');
+
+        var H1 = _next.Typography.H1,
+            H2 = _next.Typography.H2,
+            Paragraph = _next.Typography.Paragraph,
+            Text = _next.Typography.Text;
+
+
+        ReactDOM.render(React.createElement(
+            _next.Typography,
+            null,
+            React.createElement(
+                H1,
+                null,
+                'Fusion \u7B80\u4ECB'
+            ),
+            React.createElement(
+                Paragraph,
+                null,
+                'Fusion \u662F\u4E00\u5957\u4F01\u4E1A\u7EA7\u4E2D\u540E\u53F0UI\u7684\u89E3\u51B3\u65B9\u6848\uFF0C\u81F4\u529B\u4E8E\u89E3\u51B3\u8BBE\u8BA1\u5E08\u4E0E\u524D\u7AEF\u5728\u4EA7\u54C1\u4F53\u9A8C\u4E00\u81F4\u6027\u3001\u5DE5\u4F5C\u534F\u540C\u3001\u5F00\u53D1\u6548\u7387\u65B9\u9762\u7684\u95EE\u9898\u3002\u901A\u8FC7\u534F\u52A9\u4E1A\u52A1\u7EBF\u6784\u5EFA\u8BBE\u8BA1\u7CFB\u7EDF\uFF0C\u63D0\u4F9B\u7CFB\u7EDF\u5316\u5DE5\u5177\u534F\u52A9\u8BBE\u8BA1\u5E08\u524D\u7AEF\u4F7F\u7528\u8BBE\u8BA1\u7CFB\u7EDF\uFF0C\u4E0B\u6E38\u63D0\u4F9B\u4E00\u7AD9\u5F0F\u8BBE\u8BA1\u9879\u76EE\u534F\u4F5C\u5E73\u53F0\uFF1B\u6253\u901A\u4E92\u8054\u7F51\u4EA7\u54C1\u4ECE\u8BBE\u8BA1\u5230\u5F00\u53D1\u7684\u5DE5\u4F5C\u6D41\u3002'
+            ),
+            React.createElement(
+                Paragraph,
+                null,
+                'Fusion Design \u4EA7\u54C1\u521B\u5EFA\u4E8E2015\u5E74\u5E95\uFF0C\u963F\u91CC\u5DF4\u5DF4\u96C6\u56E2\u4E2D\u53F0\u6218\u7565\u80CC\u666F\u4E0B\uFF0C\u7531\u56FD\u9645UED\uFF08\u73B0\u56FD\u9645\u7528\u6237\u4F53\u9A8C\u4E8B\u4E1A\u90E8\uFF09\u4E0EB2B\u6280\u672F\u90E8\u6210\u7ACB\u4E2D\u53F0DPL\u9879\u76EE\u3002\u4ECE\u56FD\u9645UED\uFF0C\u5929\u732B\uFF0C\u5546\u5BB6\u7B49\u5404\u7C7B\u4E1A\u52A1\u5F62\u6001\u4E2D\u62BD\u8C61\u89E3\u6784\uFF0C\u901A\u8FC7\u4E00\u5957\u8BBE\u8BA1\u7CFB\u7EDF\u534F\u8BAE\u63D0\u5347',
+                React.createElement(
+                    Text,
+                    { mark: true },
+                    '\u8BBE\u8BA1\u4E0E\u5F00\u53D1\u6548\u7387'
+                ),
+                '\uFF0C\u4EE5\u7EDF\u4E00\u7684\u7269\u6599\u5206\u53D1\u5DE5\u5177\u63D0\u5347\u56E2\u961F\u534F\u540C\u80FD\u529B\uFF0C\u501F\u52A9\u7075\u6D3B\u7684\u5728\u7EBF\u6837\u5F0F\u914D\u7F6E\u652F\u6491\u4E1A\u52A1\u7684\u8BBE\u8BA1\u521B\u65B0\u3002'
+            ),
+            React.createElement(
+                H2,
+                null,
+                'Fusion \u7684\u80FD\u529B'
+            ),
+            React.createElement(
+                Paragraph,
+                null,
+                '\u6211\u4EEC\u63D0\u4F9B\u5B8C\u5584\u7684\u8BBE\u8BA1\u539F\u5219\u3001\u6700\u4F73\u5B9E\u8DF5\u548C\u8BBE\u8BA1\u8D44\u6E90\u6587\u4EF6\uFF08',
+                React.createElement(
+                    Text,
+                    { code: true },
+                    'Sketch'
+                ),
+                ' \u548C',
+                ' ',
+                React.createElement(
+                    Text,
+                    { code: true },
+                    'Axure'
+                ),
+                '\uFF09\uFF0C\u6765\u5E2E\u52A9\u4E1A\u52A1\u5FEB\u901F\u8BBE\u8BA1\u51FA\u9AD8\u8D28\u91CF\u7684\u4EA7\u54C1\u539F\u578B\u3002'
+            ),
+            React.createElement(
+                Paragraph,
+                { component: 'div' },
+                React.createElement(
+                    'ul',
+                    null,
+                    React.createElement(
+                        'li',
+                        null,
+                        '\u901A\u8FC7\u6784\u5EFA\u4E00\u5957\u6807\u51C6\u5316\u4E2D\u540E\u53F0\u4F53\u9A8C\u8BBE\u8BA1\u539F\u5219\uFF0C\u63D0\u5347\u4E2D\u540E\u53F0\u4EA7\u54C1\u4F53\u9A8C\u4E00\u81F4\u6027\u95EE\u9898\u3002'
+                    ),
+                    React.createElement(
+                        'li',
+                        null,
+                        '\u901A\u8FC7Fusion\u5E73\u53F0\u7684\u4E3B\u9898\u914D\u7F6E\u80FD\u529B\uFF0C\u7EBF\u4E0A\u4F18\u5316\u54C1\u724C\u6837\u5F0F\u5E76\u540C\u6B65\u7269\u6599\u7ED9\u8BBE\u8BA1\u5E08\u4E0E\u5F00\u53D1\u4F7F\u7528\uFF0C\u505A\u5230\u54C1\u724C\u6837\u5F0F\u8FED\u4EE30\u6210\u672C\u3002\u8282\u7701\u4E86\u5927\u91CF\u7684\u8BBE\u8BA1\u5E08\u548C\u5F00\u53D1\u5DE5\u4F5C\u91CF\u3002'
+                    ),
+                    React.createElement(
+                        'li',
+                        null,
+                        '\u8BBE\u8BA1\u53EF\u76F4\u63A5\u5728',
+                        React.createElement(
+                            Text,
+                            { code: true },
+                            'sketch'
+                        ),
+                        '\uFF08\u901A\u8FC7\u63D2\u4EF6',
+                        React.createElement(
+                            Text,
+                            { code: true },
+                            'FusionCool'
+                        ),
+                        '\uFF09\u4F7F\u7528\u914D\u597D\u7684\u7EC4\u4EF6\u753B\u8BBE\u8BA1\u7A3F\uFF1B\u5F00\u53D1\u53EF\u5728\u672C\u5730\u5DE5\u7A0B\u91CC\u9762\u4F7F\u7528\u914D\u597D\u7684\u4E3B\u9898\u5F00\u53D1\u9879\u76EE\uFF0C\u4E0D\u9700\u8981\u5173\u5FC3\u7EC4\u4EF6\u6837\u5F0F\uFF08\u672A\u6765\u751A\u81F3\u9875\u9762\u6837\u5F0F\uFF09\uFF1B\u4ECE\u800C\u6253\u7834\u534F\u4F5C\u58C1\u5792\uFF0C\u8BA9\u5408\u4F5C\u66F4\u52A0\u987A\u7545\u3002'
+                    ),
+                    React.createElement(
+                        'li',
+                        null,
+                        '\u901A\u8FC7 ',
+                        React.createElement(
+                            Text,
+                            { code: true },
+                            'FusionCool'
+                        ),
+                        ' \u53EF\u4EE5\u76F4\u63A5\u65B9\u4FBF\u7684\u6C89\u6DC0\u6A21\u5757\u6A21\u677F\uFF1B\u901A\u8FC7\u811A\u624B\u67B6\u5DE5\u5177\u53EF\u4EE5\u65B9\u4FBF\u7684\u6C89\u6DC0\u4E1A\u52A1\u7EC4\u4EF6\u3001\u4EE3\u7801\u7AEF\uFF1B \u8BA9\u9879\u76EE\u66F4\u5FEB\u843D\u5730\u3002'
+                    )
+                )
+            )
+        ), mountNode);
+
+        return;
+    }
+
+    var basicLiveScript = 'const { H1, H2, Paragraph, Text } = Typography;\n\nReactDOM.render(\n  <Typography>\n    <H1>Fusion \u7B80\u4ECB</H1>\n    <Paragraph>\n      Fusion\n      \u662F\u4E00\u5957\u4F01\u4E1A\u7EA7\u4E2D\u540E\u53F0UI\u7684\u89E3\u51B3\u65B9\u6848\uFF0C\u81F4\u529B\u4E8E\u89E3\u51B3\u8BBE\u8BA1\u5E08\u4E0E\u524D\u7AEF\u5728\u4EA7\u54C1\u4F53\u9A8C\u4E00\u81F4\u6027\u3001\u5DE5\u4F5C\u534F\u540C\u3001\u5F00\u53D1\u6548\u7387\u65B9\u9762\u7684\u95EE\u9898\u3002\u901A\u8FC7\u534F\u52A9\u4E1A\u52A1\u7EBF\u6784\u5EFA\u8BBE\u8BA1\u7CFB\u7EDF\uFF0C\u63D0\u4F9B\u7CFB\u7EDF\u5316\u5DE5\u5177\u534F\u52A9\u8BBE\u8BA1\u5E08\u524D\u7AEF\u4F7F\u7528\u8BBE\u8BA1\u7CFB\u7EDF\uFF0C\u4E0B\u6E38\u63D0\u4F9B\u4E00\u7AD9\u5F0F\u8BBE\u8BA1\u9879\u76EE\u534F\u4F5C\u5E73\u53F0\uFF1B\u6253\u901A\u4E92\u8054\u7F51\u4EA7\u54C1\u4ECE\u8BBE\u8BA1\u5230\u5F00\u53D1\u7684\u5DE5\u4F5C\u6D41\u3002\n    </Paragraph>\n    <Paragraph>\n      Fusion Design\n      \u4EA7\u54C1\u521B\u5EFA\u4E8E2015\u5E74\u5E95\uFF0C\u963F\u91CC\u5DF4\u5DF4\u96C6\u56E2\u4E2D\u53F0\u6218\u7565\u80CC\u666F\u4E0B\uFF0C\u7531\u56FD\u9645UED\uFF08\u73B0\u56FD\u9645\u7528\u6237\u4F53\u9A8C\u4E8B\u4E1A\u90E8\uFF09\u4E0EB2B\u6280\u672F\u90E8\u6210\u7ACB\u4E2D\u53F0DPL\u9879\u76EE\u3002\u4ECE\u56FD\u9645UED\uFF0C\u5929\u732B\uFF0C\u5546\u5BB6\u7B49\u5404\u7C7B\u4E1A\u52A1\u5F62\u6001\u4E2D\u62BD\u8C61\u89E3\u6784\uFF0C\u901A\u8FC7\u4E00\u5957\u8BBE\u8BA1\u7CFB\u7EDF\u534F\u8BAE\u63D0\u5347\n      <Text mark>\u8BBE\u8BA1\u4E0E\u5F00\u53D1\u6548\u7387</Text>\n      \uFF0C\u4EE5\u7EDF\u4E00\u7684\u7269\u6599\u5206\u53D1\u5DE5\u5177\u63D0\u5347\u56E2\u961F\u534F\u540C\u80FD\u529B\uFF0C\u501F\u52A9\u7075\u6D3B\u7684\u5728\u7EBF\u6837\u5F0F\u914D\u7F6E\u652F\u6491\u4E1A\u52A1\u7684\u8BBE\u8BA1\u521B\u65B0\u3002\n    </Paragraph>\n    <H2>Fusion \u7684\u80FD\u529B</H2>\n    <Paragraph>\n      \u6211\u4EEC\u63D0\u4F9B\u5B8C\u5584\u7684\u8BBE\u8BA1\u539F\u5219\u3001\u6700\u4F73\u5B9E\u8DF5\u548C\u8BBE\u8BA1\u8D44\u6E90\u6587\u4EF6\uFF08<Text code>Sketch</Text>{" "}\n      \u548C <Text code>Axure</Text>\uFF09\uFF0C\u6765\u5E2E\u52A9\u4E1A\u52A1\u5FEB\u901F\u8BBE\u8BA1\u51FA\u9AD8\u8D28\u91CF\u7684\u4EA7\u54C1\u539F\u578B\u3002\n    </Paragraph>\n\n    <Paragraph component="div">\n      <ul>\n        <li>\n          \u901A\u8FC7\u6784\u5EFA\u4E00\u5957\u6807\u51C6\u5316\u4E2D\u540E\u53F0\u4F53\u9A8C\u8BBE\u8BA1\u539F\u5219\uFF0C\u63D0\u5347\u4E2D\u540E\u53F0\u4EA7\u54C1\u4F53\u9A8C\u4E00\u81F4\u6027\u95EE\u9898\u3002\n        </li>\n        <li>\n          \u901A\u8FC7Fusion\u5E73\u53F0\u7684\u4E3B\u9898\u914D\u7F6E\u80FD\u529B\uFF0C\u7EBF\u4E0A\u4F18\u5316\u54C1\u724C\u6837\u5F0F\u5E76\u540C\u6B65\u7269\u6599\u7ED9\u8BBE\u8BA1\u5E08\u4E0E\u5F00\u53D1\u4F7F\u7528\uFF0C\u505A\u5230\u54C1\u724C\u6837\u5F0F\u8FED\u4EE30\u6210\u672C\u3002\u8282\u7701\u4E86\u5927\u91CF\u7684\u8BBE\u8BA1\u5E08\u548C\u5F00\u53D1\u5DE5\u4F5C\u91CF\u3002\n        </li>\n        <li>\n          \u8BBE\u8BA1\u53EF\u76F4\u63A5\u5728<Text code>sketch</Text>\uFF08\u901A\u8FC7\u63D2\u4EF6\n          <Text code>FusionCool</Text>\n          \uFF09\u4F7F\u7528\u914D\u597D\u7684\u7EC4\u4EF6\u753B\u8BBE\u8BA1\u7A3F\uFF1B\u5F00\u53D1\u53EF\u5728\u672C\u5730\u5DE5\u7A0B\u91CC\u9762\u4F7F\u7528\u914D\u597D\u7684\u4E3B\u9898\u5F00\u53D1\u9879\u76EE\uFF0C\u4E0D\u9700\u8981\u5173\u5FC3\u7EC4\u4EF6\u6837\u5F0F\uFF08\u672A\u6765\u751A\u81F3\u9875\u9762\u6837\u5F0F\uFF09\uFF1B\u4ECE\u800C\u6253\u7834\u534F\u4F5C\u58C1\u5792\uFF0C\u8BA9\u5408\u4F5C\u66F4\u52A0\u987A\u7545\u3002\n        </li>\n        <li>\n          \u901A\u8FC7 <Text code>FusionCool</Text>{" "}\n          \u53EF\u4EE5\u76F4\u63A5\u65B9\u4FBF\u7684\u6C89\u6DC0\u6A21\u5757\u6A21\u677F\uFF1B\u901A\u8FC7\u811A\u624B\u67B6\u5DE5\u5177\u53EF\u4EE5\u65B9\u4FBF\u7684\u6C89\u6DC0\u4E1A\u52A1\u7EC4\u4EF6\u3001\u4EE3\u7801\u7AEF\uFF1B\n          \u8BA9\u9879\u76EE\u66F4\u5FEB\u843D\u5730\u3002\n        </li>\n      </ul>\n    </Paragraph>\n  </Typography>,\n  mountNode\n);';
+    var emptyTheme = {
+        plain: {},
+        styles: [{
+            types: [],
+            styles: {}
+        }]
+    };
+
+    function renderAfter() {
+        ReactDOM.render(React.createElement(
+            _next.Balloon.Tooltip,
+            {
+                align: 't',
+                style: { maxWidth: 320 },
+                trigger: React.createElement('div', {
+                    dangerouslySetInnerHTML: {
+                        __html: '<pre class="language-jsx"><code class="language-jsx"><span class="token keyword">import</span> <span class="token punctuation">{</span> Typography <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">\'@alifd/next\'</span><span class="token punctuation">;</span>\n</code></pre>\n'
+                    }
+                })
+            },
+            '\u7F16\u8F91\u6A21\u5F0F\u6682\u4E0D\u652F\u6301\u4FEE\u6539\u4F9D\u8D56\u5F15\u5165'
+        ), document.getElementById('basic-live-import'));
+    }
+
+    var LiveRenderer = function (_React$Component) {
+        _inherits(LiveRenderer, _React$Component);
+
+        function LiveRenderer(props) {
+            _classCallCheck(this, LiveRenderer);
+
+            var _this = _possibleConstructorReturn(this, (LiveRenderer.__proto__ || Object.getPrototypeOf(LiveRenderer)).call(this, props));
+
+            _this.onBlur = function () {
+                var time = new Date().getTime();
+                window.top.postMessage({
+                    type: 'ReactLiveEdit',
+                    from: 'demo',
+                    body: { name: 'basic', component: 'Typography', time: time }
+                }, '*');
+            };
+
+            return _this;
+        }
+
+        _createClass(LiveRenderer, [{
+            key: 'componentDidMount',
+            value: function componentDidMount() {
+                renderAfter();
+            }
+        }, {
+            key: 'render',
+            value: function render() {
+                return React.createElement(
+                    _reactLive.LiveProvider,
+                    {
+                        code: basicLiveScript,
+                        scope: { Typography: _next.Typography, mountNode: mountNode },
+                        noInline: true },
+                    React.createElement(
+                        'div',
+                        { id: 'basic-live-editor' },
+                        React.createElement(_reactLive.LiveError, { id: 'basic-live-error', className: 'react-live-error' }),
+                        React.createElement('div', { id: 'basic-live-import' }),
+                        React.createElement(
+                            'div',
+                            { id: 'basic-live-body', className: 'react-live-body' },
+                            React.createElement(_reactLive.LiveEditor, { theme: emptyTheme, onBlur: this.onBlur })
+                        ),
+                        React.createElement('div', { id: 'basic-live-css' })
+                    ),
+                    React.createElement(_reactLive.LivePreview, null)
+                );
+            }
+        }]);
+
+        return LiveRenderer;
+    }(React.Component);
+
+    ReactDOM.render(React.createElement(LiveRenderer, null), document.getElementById('basic-body'));
+    return;
+};
+
+window.renderFuncs.push(basicRenderScript);
+
+function onRiddleOrCodePenClick(type) {
+    var time = new Date().getTime();
+    window.top.postMessage({
+        type: 'RiddleOrCodePenClick',
+        from: 'demo',
+        body: { name: 'basic', component: 'Typography', type: type, time: time }
+    }, '*');
+}
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('O2');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 18 18', version: '1.1' },
+                React.createElement(
+                    'g',
+                    { id: '\u9875\u9762-1', stroke: 'none', 'stroke-width': '1', fill: 'none', 'fill-rule': 'evenodd', 'stroke-opacity': '0.45' },
+                    React.createElement(
+                        'g',
+                        { id: '\u7F16\u7EC4-16', transform: 'translate(1.000000, 1.031385)', 'fill-rule': 'nonzero', stroke: '#000000', 'stroke-width': '1' },
+                        React.createElement('path', { d: 'M7.99320628,15.9864125 C3.58572657,15.9864125 2.27373675e-13,12.400686 2.27373675e-13,7.99320627 C2.27373675e-13,3.58572655 3.58572657,-1.70530257e-13 7.99320628,-1.70530257e-13 C12.400686,-1.70530257e-13 15.9864126,3.58572655 15.9864126,7.99320627 C15.9864126,8.42039157 15.6400618,8.76674238 15.2128765,8.76674238 C14.7856912,8.76674238 14.4393404,8.42039157 14.4393404,7.99320627 C14.4393404,4.43880793 11.5476691,1.54707218 7.99320628,1.54707218 C4.43874348,1.54707218 1.54707218,4.43880793 1.54707218,7.99320627 C1.54707218,11.5476691 4.43874348,14.4393404 7.99320628,14.4393404 C8.43115662,14.4393404 8.86852684,14.3952488 9.29313367,14.3084194 C9.7112944,14.2223635 10.1204305,14.492521 10.2060352,14.9110685 C10.2917043,15.3296804 10.0218692,15.7383653 9.60338611,15.82397 C9.07686588,15.9317494 8.53513277,15.9864125 7.99320628,15.9864125', id: 'path-2' }),
+                        React.createElement('path', { d: 'M14.8745616,14.4162764 C15.3159789,14.440487 15.5487088,14.6453304 15.5721741,15.0302087 C15.5487088,15.4398955 15.3394443,15.6441411 14.9442844,15.6441411 L11.9445701,15.6441411 C11.5025757,15.6441411 11.2817709,15.4398955 11.2817709,15.0302087 C11.2584018,14.9100526 11.3166804,14.7536303 11.4562221,14.5606432 C11.6420213,14.3439436 11.8279166,14.127244 12.0142928,13.9105444 C12.7817242,13.0680563 13.339795,12.369935 13.6886012,11.8156822 C13.8978657,11.5267494 14.002498,11.2378167 14.002498,10.9488839 C13.9556635,10.5154847 13.746399,10.2751724 13.3746083,10.226552 C13.0024329,10.226552 12.7347936,10.5036285 12.5724598,11.0572835 C12.432918,11.5148932 12.2350015,11.7315928 11.9793834,11.7073822 C11.537389,11.7073822 11.3167766,11.4906827 11.3167766,11.0572835 C11.4176783,9.98807895 11.9602374,9.32514076 12.9424518,9.05442834 C13.5415272,8.88931453 14.2250594,9.11615024 14.4346419,9.22243967 C15.0292798,9.52400928 15.3502647,10.075465 15.3976267,10.8766507 C15.3976267,11.5510596 14.8744655,12.5019474 13.8280468,13.7300113 C13.5489633,14.0674648 13.3625871,14.2960206 13.2698799,14.4162764 L14.8745616,14.4162764 Z', id: 'path-7' })
+                    )
+                )
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728O2\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('basic-O2'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('CodePen');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', fill: 'currentColor' },
+                React.createElement('path', {
+                    d: 'M17.7207447,7.0537234 L10.2739362,2.0893617 C10.0952128,1.97021277 9.86223404,1.97021277 9.68404255,2.0893617 L2.23723404,7.0537234 C2.0893617,7.15212766 2.00053191,7.31861702 2.00053191,7.4962766 L2.00053191,12.4606383 C2.00053191,12.6382979 2.0893617,12.8047872 2.23723404,12.9031915 L9.68404255,17.8675532 C9.77340426,17.9271277 9.87606383,17.9569149 9.97925532,17.9569149 C10.0824468,17.9569149 10.1851064,17.9271277 10.2744681,17.8675532 L17.7212766,12.9031915 C17.8691489,12.8047872 17.9579787,12.6382979 17.9579787,12.4606383 L17.9579787,7.4962766 C17.9579787,7.31861702 17.8691489,7.15212766 17.7212766,7.0537234 L17.7207447,7.0537234 Z M9.9787234,11.8218085 L7.2143617,9.9787234 L9.9787234,8.1356383 L12.7430851,9.9787234 L9.9787234,11.8218085 Z M10.5106383,7.21170213 L10.5106383,3.52553191 L16.4664894,7.4962766 L13.7021277,9.3393617 L10.5106383,7.21170213 Z M9.44680851,7.21170213 L6.25531915,9.3393617 L3.49095745,7.4962766 L9.44680851,3.52553191 L9.44680851,7.21170213 Z M5.2962766,9.9787234 L3.06382979,11.4670213 L3.06382979,8.49042553 L5.2962766,9.9787234 Z M6.25531915,10.6180851 L9.44680851,12.7457447 L9.44680851,16.4319149 L3.49095745,12.4611702 L6.25531915,10.6180851 Z M10.5106383,12.7457447 L13.7021277,10.6180851 L16.4664894,12.4611702 L10.5106383,16.4319149 L10.5106383,12.7457447 Z M14.6611702,9.9787234 L16.893617,8.49042553 L16.893617,11.4670213 L14.6611702,9.9787234 Z' })
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728CodePen\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('basic-CodePen'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('Riddle');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', fill: 'currentColor' },
+                React.createElement('path', {
+                    d: 'M12.0135981,2 C14.9585189,2 17.345849,4.38716704 17.345849,7.33333333 C17.345849,9.38478693 16.1882418,11.1657179 14.4903288,12.0578577 L17.2084049,16.7658872 C17.2378708,16.8169235 17.2591949,16.8704263 17.2727803,16.9248914 C17.3474476,17.0262914 17.3916465,17.1520943 17.3916465,17.2882205 C17.3916465,17.628088 17.1161295,17.9036051 16.7762619,17.9036051 L2.81174505,17.9048498 C2.75007855,17.9255976 2.68404472,17.9368421 2.61538462,17.9368421 C2.27551708,17.9368421 2,17.661325 2,17.3214575 L2,4.90050552 C2,4.44767651 2.36696407,4.08058607 2.8201909,4.08058607 L2.8201909,4.08058607 L4.598,4.08 L4.59829061,3.64037695 C4.59829061,2.78210363 5.25867561,2.07778272 6.09736436,2.00602116 L6.23871411,2 Z M11.9839597,3.23076923 L6.23745245,3.23076923 C6.01143198,3.23076923 5.82905984,3.41419855 5.82905984,3.64047008 L5.82905984,3.64047008 L5.829,4.08 L11.5615101,4.08058607 C13.3089935,4.08058607 14.7370181,5.4476011 14.8334247,7.17082808 L14.8386124,7.35677655 C14.8386124,9.16616658 13.3721154,10.632967 11.5615101,10.632967 L11.5615101,10.632967 L10.299,10.632 L12.6155561,14.6429723 C12.7020335,14.7927556 12.7183875,14.9637818 12.6748043,15.1180362 C12.6779184,15.1342067 12.6786336,15.1513556 12.6786336,15.1686715 C12.6786336,15.508539 12.4031165,15.7840561 12.063249,15.7840561 L5.39477011,15.7840561 C5.33908357,15.7840561 5.28512459,15.7766596 5.23382202,15.7627953 L5.21367522,15.7639098 L5.21367522,15.7639098 C4.87380768,15.7639098 4.59829061,15.4883927 4.59829061,15.1485252 L4.598,5.323 L3.23076923,5.32307709 L3.23,16.672 L15.733,16.672 L13.0769083,12.0713449 C12.9069827,11.7770252 13.0078241,11.40068 13.3021438,11.2307544 C13.3538063,11.200927 13.4079962,11.1794424 13.4631533,11.1658825 C14.9972153,10.5673738 16.0854701,9.07745387 16.0854701,7.33333333 C16.0854701,5.06705157 14.2491614,3.23076923 11.9839597,3.23076923 L11.9839597,3.23076923 Z M11.7212434,5.32867389 L11.5688942,5.32307709 L5.829,5.323 L5.82905984,11.0261966 C5.82905984,11.0464748 5.83052125,11.0664018 5.83334393,11.0858783 L5.84579569,11.1428571 L5.829,11.142 L5.829,14.553 L11.142,14.553 L8.71393544,10.3467056 C8.54400168,10.0523717 8.64484792,9.67600839 8.93918185,9.50607462 C9.01663814,9.46135521 9.09977514,9.43538787 9.18333591,9.42676402 L9.18350929,9.40512829 L11.5688942,9.40512829 C12.6982428,9.40512829 13.6102561,8.49132999 13.6102561,7.36410269 C13.6102561,6.23662753 12.6963072,5.32307709 11.5688942,5.32307709 Z' })
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728Riddle\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('basic-Riddle'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 320 },
+        trigger: React.createElement(
+            'span',
+            { className: 'code-box-code-action', onClick: function onClick() {
+                    _next.Message.success('复制成功');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', focusable: 'false', 'data-icon': 'snippets', width: '20px', height: '20px', fill: 'currentColor', 'aria-hidden': 'true' },
+                React.createElement('path', { d: 'M15,5 L15,18 L2,18 L2,5 L15,5 Z M14,6 L3,6 L3,17 L14,17 L14,6 Z M18,2 L18,15 L16,15 L16,13.999 L17,14 L17,3 L6,3 L6,4 L5,4 L5,2 L18,2 Z M9,8 L9,11 L12,11 L12,12 L9,12 L9,15 L8,15 L8,12 L5,12 L5,11 L8,11 L8,8 L9,8 Z' })
+            )
+        )
+    },
+    React.createElement(
+        'span',
+        null,
+        '\u590D\u5236\u4EE3\u7801'
+    )
+), document.getElementById('basic-copy-btn'));
+ReactDOM.render(React.createElement(
+    React.Fragment,
+    null,
+    React.createElement(
+        _next.Balloon.Tooltip,
+        {
+            align: 'b',
+            style: { maxWidth: 400 },
+            trigger: React.createElement(
+                'span',
+                { id: 'basic-icon-show', className: 'code-box-code-action code-expand-icon-show' },
+                React.createElement(
+                    'svg',
+                    { alt: 'expand code', width: '20px', height: '20px', viewBox: '0 0 20 20', fill: 'currentColor' },
+                    React.createElement('path', {
+                        d: 'M14.4307124,13.5667899 L15.1349452,14.276759 L10.7473676,18.6288871 L6.42783259,14.2738791 L7.13782502,13.5696698 L10.7530744,17.2147744 L14.4307124,13.5667899 Z M4.79130753,8.067524 L16.3824174,11.1733525 L16.1235984,12.1392784 L4.53248848,9.03344983 L4.79130753,8.067524 Z M10.8154102,1.57503552 L15.1349452,5.93004351 L14.4249528,6.63425282 L10.809949,2.98914817 L7.13206544,6.6371327 L6.42783259,5.92716363 L10.8154102,1.57503552 Z',
+                        transform: 'translate(10.457453, 10.101961) rotate(90.000000) translate(-10.457453, -10.101961) ' })
+                )
+            ) },
+        React.createElement(
+            'span',
+            null,
+            '\u5C55\u5F00\u4EE3\u7801',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '\u5C0F\u63D0\u793A: ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            ' 1. \u70B9\u51FB\u4E00\u4E0B\u4EE3\u7801\uFF0C\u8BD5\u4E00\u8BD5\u5728\u7EBF\u7F16\u8F91\u9884\u89C8\u5427\uFF01 ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '2. \u9875\u9762\u53F3\u4E0A\u65B9 \u6709 ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5168\u5C40\u4EE3\u7801\u5C55\u5F00'
+            ),
+            ' \u53CA ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5F00\u542F\u5728\u7EBF\u7F16\u8F91'
+            ),
+            ' \u6A21\u5F0F\u54DF\uFF5E'
+        )
+    ),
+    React.createElement(
+        _next.Balloon.Tooltip,
+        {
+            align: 'b',
+            style: { maxWidth: 400 },
+            trigger: React.createElement(
+                'span',
+                { id: 'basic-icon-hide', className: 'code-box-code-action code-expand-icon-hide', style: { display: 'none' } },
+                React.createElement(
+                    'svg',
+                    { alt: 'expand code', width: '20px', height: '20px', viewBox: '0 0 20 20', style: { fill: '#3B9AFF' } },
+                    React.createElement('path', {
+                        d: 'M14.4307124,13.5667899 L15.1349452,14.276759 L10.7473676,18.6288871 L6.42783259,14.2738791 L7.13782502,13.5696698 L10.7530744,17.2147744 L14.4307124,13.5667899 Z M4.79130753,8.067524 L16.3824174,11.1733525 L16.1235984,12.1392784 L4.53248848,9.03344983 L4.79130753,8.067524 Z M10.8154102,1.57503552 L15.1349452,5.93004351 L14.4249528,6.63425282 L10.809949,2.98914817 L7.13206544,6.6371327 L6.42783259,5.92716363 L10.8154102,1.57503552 Z',
+                        transform: 'translate(10.457453, 10.101961) rotate(90.000000) translate(-10.457453, -10.101961) ' })
+                )
+            ) },
+        React.createElement(
+            'span',
+            null,
+            '\u6536\u8D77\u4EE3\u7801',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '\u5C0F\u63D0\u793A: ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            ' 1. \u70B9\u51FB\u4E00\u4E0B\u4EE3\u7801\uFF0C\u8BD5\u4E00\u8BD5\u5728\u7EBF\u7F16\u8F91\u9884\u89C8\u5427\uFF01 ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '2. \u9875\u9762\u53F3\u4E0A\u65B9 \u6709 ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5168\u5C40\u4EE3\u7801\u5C55\u5F00'
+            ),
+            ' \u53CA ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5F00\u542F\u5728\u7EBF\u7F16\u8F91'
+            ),
+            ' \u6A21\u5F0F\u54DF\uFF5E'
+        )
+    )
+), document.getElementById('basic-fold-code'));})()</script>
+        </div>
+        
+        <div id="title-container" class='next-demo-item scroll-count-item'
+          style=""
+          debug="false"
+          data-scroll-id="title-container">
+          <div id="title-desc" class="demo-item-desc markdown">
+            <h3 class="demo-item-desc-title">
+              标题
+              <a class="header-anchor" href='#title-container'
+                style="">
+                #
+              </a>
+            </h3>
+            
+            <div class="demo-item-desc-body markdown">
+<p>展示不同级别的标题。</p>
+</div>
+            
+          </div>
+          <div id="title-mount" class="next-demo-mount"></div>
+          <script>
+            if (searchDict['bgColor']) {
+              document.getElementById("title-mount").style.backgroundColor = searchDict['bgColor'];
+            }
+          </script>
+
+          <div id="title-operations" class='demo-item-operations'>
+            <textarea tabindex=-1 id="title-code-text"
+              style="opacity: 0;cursor:default; user-select: none;">import { Typography } from &#39;@alifd/next&#39;;
+
+const { H1, H2, H3, H4, H5, H6 } = Typography;
+
+ReactDOM.render(
+  &lt;div&gt;
+    &lt;H1&gt;h1. Fusion Design&lt;/H1&gt;
+    &lt;H2&gt;h2. Fusion Design&lt;/H2&gt;
+    &lt;H3&gt;h3. Fusion Design&lt;/H3&gt;
+    &lt;H4&gt;h4. Fusion Design&lt;/H4&gt;
+    &lt;H5&gt;h5. Fusion Design&lt;/H5&gt;
+    &lt;H6&gt;h6. Fusion Design&lt;/H6&gt;
+  &lt;/div&gt;,
+  mountNode,
+);
+</textarea>
+
+            <form id="title-o2-op-container" class="code-box-code-action" action="https://o2.alibaba-inc.com/sandbox/define" method="POST"
+              target="_blank">
+              <input id="title-O2-input"  type="hidden" name="data" value="">
+
+              <button type="submit" class="preview-btn" id="title-O2">
+             </button>
+            </form>
+
+            <form id="title-riddle-op-container" class="code-box-code-action" action="https://riddle.alibaba-inc.com/riddles/define"
+              method="POST" target="_blank">
+              <input id="title-Riddle-input" type="hidden" name="data" value="">
+
+              <button type="submit" class="preview-btn" id="title-Riddle">
+              </button>
+            </form>
+            <form class="code-box-code-action" action="https://codepen.io/pen/define" method="POST" target="_blank">
+              <input id="title-CodePen-input" type="hidden" name="data" value="">
+              <button type="submit" class="preview-btn" id="title-CodePen">
+              </button>
+            </form>
+            <div id="title-copy">
+              <button class="preview-btn" id="title-copy-btn" onclick='copyCode("title")'>
+              </button>
+            </div>
+            <div id="title-fold-code"></div>
+          </div>
+          <div id="title-body" class='next-demo-body' style="display: none">
+          </div>
+          <style id="title-style"></style>
+          <script>
+            function temp(){
+              let jsxTemp = $("<textarea/>").html(document.getElementById("title-code-text").innerHTML).text();
+              let cssTemp = $("<textarea/>").html(`${``}`).text();
+              document.getElementById("title-CodePen-input").value = getNextCompCodepenFormValue("标题", jsxTemp, cssTemp);
+              document.getElementById("title-O2-input").value = getNextCompO2FromValue("标题", jsxTemp, cssTemp);
+              document.getElementById("title-Riddle-input").value = getNextCompRiddleFormValue(jsxTemp, cssTemp);
+              if(!isAliEnv){
+                document.getElementById("title-riddle-op-container").style.display = "none";
+                document.getElementById("title-o2-op-container").style.display = "none";
+              }
+            }
+            temp();
+          </script>
+
+          <script>(function(){'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactLive = require('react-live');
+
+var _next = require('@alifd/next');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+window.demoNames.push('title');
+
+
+window.titleRenderScript = function titleRenderScript(liveDemo) {
+    var mountNode = document.getElementById('title-mount');
+    if (liveDemo === "false") {
+        document.getElementById('title-body').innerHTML = '<pre class="language-jsx"><code class="language-jsx"><span class="token keyword">import</span> <span class="token punctuation">{</span> Typography <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">\'@alifd/next\'</span><span class="token punctuation">;</span>\n\n<span class="token keyword">const</span> <span class="token punctuation">{</span> <span class="token constant">H1</span><span class="token punctuation">,</span> <span class="token constant">H2</span><span class="token punctuation">,</span> <span class="token constant">H3</span><span class="token punctuation">,</span> <span class="token constant">H4</span><span class="token punctuation">,</span> <span class="token constant">H5</span><span class="token punctuation">,</span> <span class="token constant">H6</span> <span class="token punctuation">}</span> <span class="token operator">=</span> Typography<span class="token punctuation">;</span>\n\nReactDOM<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span>\n  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">H1</span></span><span class="token punctuation">></span></span><span class="token plain-text">h1. Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">H1</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">H2</span></span><span class="token punctuation">></span></span><span class="token plain-text">h2. Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">H2</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">H3</span></span><span class="token punctuation">></span></span><span class="token plain-text">h3. Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">H3</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">H4</span></span><span class="token punctuation">></span></span><span class="token plain-text">h4. Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">H4</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">H5</span></span><span class="token punctuation">></span></span><span class="token plain-text">h5. Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">H5</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">H6</span></span><span class="token punctuation">></span></span><span class="token plain-text">h6. Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">H6</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n  </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span class="token punctuation">,</span>\n  mountNode<span class="token punctuation">,</span>\n<span class="token punctuation">)</span><span class="token punctuation">;</span>\n</code></pre>\n'.replace(/{backquote}/g, '`').replace(/{dollar}/g, '$');
+
+        var H1 = _next.Typography.H1,
+            H2 = _next.Typography.H2,
+            H3 = _next.Typography.H3,
+            H4 = _next.Typography.H4,
+            H5 = _next.Typography.H5,
+            H6 = _next.Typography.H6;
+
+
+        ReactDOM.render(React.createElement(
+            'div',
+            null,
+            React.createElement(
+                H1,
+                null,
+                'h1. Fusion Design'
+            ),
+            React.createElement(
+                H2,
+                null,
+                'h2. Fusion Design'
+            ),
+            React.createElement(
+                H3,
+                null,
+                'h3. Fusion Design'
+            ),
+            React.createElement(
+                H4,
+                null,
+                'h4. Fusion Design'
+            ),
+            React.createElement(
+                H5,
+                null,
+                'h5. Fusion Design'
+            ),
+            React.createElement(
+                H6,
+                null,
+                'h6. Fusion Design'
+            )
+        ), mountNode);
+
+        return;
+    }
+
+    var titleLiveScript = 'const { H1, H2, H3, H4, H5, H6 } = Typography;\n\nReactDOM.render(\n  <div>\n    <H1>h1. Fusion Design</H1>\n    <H2>h2. Fusion Design</H2>\n    <H3>h3. Fusion Design</H3>\n    <H4>h4. Fusion Design</H4>\n    <H5>h5. Fusion Design</H5>\n    <H6>h6. Fusion Design</H6>\n  </div>,\n  mountNode\n);';
+    var emptyTheme = {
+        plain: {},
+        styles: [{
+            types: [],
+            styles: {}
+        }]
+    };
+
+    function renderAfter() {
+        ReactDOM.render(React.createElement(
+            _next.Balloon.Tooltip,
+            {
+                align: 't',
+                style: { maxWidth: 320 },
+                trigger: React.createElement('div', {
+                    dangerouslySetInnerHTML: {
+                        __html: '<pre class="language-jsx"><code class="language-jsx"><span class="token keyword">import</span> <span class="token punctuation">{</span> Typography <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">\'@alifd/next\'</span><span class="token punctuation">;</span>\n</code></pre>\n'
+                    }
+                })
+            },
+            '\u7F16\u8F91\u6A21\u5F0F\u6682\u4E0D\u652F\u6301\u4FEE\u6539\u4F9D\u8D56\u5F15\u5165'
+        ), document.getElementById('title-live-import'));
+    }
+
+    var LiveRenderer = function (_React$Component) {
+        _inherits(LiveRenderer, _React$Component);
+
+        function LiveRenderer(props) {
+            _classCallCheck(this, LiveRenderer);
+
+            var _this = _possibleConstructorReturn(this, (LiveRenderer.__proto__ || Object.getPrototypeOf(LiveRenderer)).call(this, props));
+
+            _this.onBlur = function () {
+                var time = new Date().getTime();
+                window.top.postMessage({
+                    type: 'ReactLiveEdit',
+                    from: 'demo',
+                    body: { name: 'title', component: 'Typography', time: time }
+                }, '*');
+            };
+
+            return _this;
+        }
+
+        _createClass(LiveRenderer, [{
+            key: 'componentDidMount',
+            value: function componentDidMount() {
+                renderAfter();
+            }
+        }, {
+            key: 'render',
+            value: function render() {
+                return React.createElement(
+                    _reactLive.LiveProvider,
+                    {
+                        code: titleLiveScript,
+                        scope: { Typography: _next.Typography, mountNode: mountNode },
+                        noInline: true },
+                    React.createElement(
+                        'div',
+                        { id: 'title-live-editor' },
+                        React.createElement(_reactLive.LiveError, { id: 'title-live-error', className: 'react-live-error' }),
+                        React.createElement('div', { id: 'title-live-import' }),
+                        React.createElement(
+                            'div',
+                            { id: 'title-live-body', className: 'react-live-body' },
+                            React.createElement(_reactLive.LiveEditor, { theme: emptyTheme, onBlur: this.onBlur })
+                        ),
+                        React.createElement('div', { id: 'title-live-css' })
+                    ),
+                    React.createElement(_reactLive.LivePreview, null)
+                );
+            }
+        }]);
+
+        return LiveRenderer;
+    }(React.Component);
+
+    ReactDOM.render(React.createElement(LiveRenderer, null), document.getElementById('title-body'));
+    return;
+};
+
+window.renderFuncs.push(titleRenderScript);
+
+function onRiddleOrCodePenClick(type) {
+    var time = new Date().getTime();
+    window.top.postMessage({
+        type: 'RiddleOrCodePenClick',
+        from: 'demo',
+        body: { name: 'title', component: 'Typography', type: type, time: time }
+    }, '*');
+}
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('O2');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 18 18', version: '1.1' },
+                React.createElement(
+                    'g',
+                    { id: '\u9875\u9762-1', stroke: 'none', 'stroke-width': '1', fill: 'none', 'fill-rule': 'evenodd', 'stroke-opacity': '0.45' },
+                    React.createElement(
+                        'g',
+                        { id: '\u7F16\u7EC4-16', transform: 'translate(1.000000, 1.031385)', 'fill-rule': 'nonzero', stroke: '#000000', 'stroke-width': '1' },
+                        React.createElement('path', { d: 'M7.99320628,15.9864125 C3.58572657,15.9864125 2.27373675e-13,12.400686 2.27373675e-13,7.99320627 C2.27373675e-13,3.58572655 3.58572657,-1.70530257e-13 7.99320628,-1.70530257e-13 C12.400686,-1.70530257e-13 15.9864126,3.58572655 15.9864126,7.99320627 C15.9864126,8.42039157 15.6400618,8.76674238 15.2128765,8.76674238 C14.7856912,8.76674238 14.4393404,8.42039157 14.4393404,7.99320627 C14.4393404,4.43880793 11.5476691,1.54707218 7.99320628,1.54707218 C4.43874348,1.54707218 1.54707218,4.43880793 1.54707218,7.99320627 C1.54707218,11.5476691 4.43874348,14.4393404 7.99320628,14.4393404 C8.43115662,14.4393404 8.86852684,14.3952488 9.29313367,14.3084194 C9.7112944,14.2223635 10.1204305,14.492521 10.2060352,14.9110685 C10.2917043,15.3296804 10.0218692,15.7383653 9.60338611,15.82397 C9.07686588,15.9317494 8.53513277,15.9864125 7.99320628,15.9864125', id: 'path-2' }),
+                        React.createElement('path', { d: 'M14.8745616,14.4162764 C15.3159789,14.440487 15.5487088,14.6453304 15.5721741,15.0302087 C15.5487088,15.4398955 15.3394443,15.6441411 14.9442844,15.6441411 L11.9445701,15.6441411 C11.5025757,15.6441411 11.2817709,15.4398955 11.2817709,15.0302087 C11.2584018,14.9100526 11.3166804,14.7536303 11.4562221,14.5606432 C11.6420213,14.3439436 11.8279166,14.127244 12.0142928,13.9105444 C12.7817242,13.0680563 13.339795,12.369935 13.6886012,11.8156822 C13.8978657,11.5267494 14.002498,11.2378167 14.002498,10.9488839 C13.9556635,10.5154847 13.746399,10.2751724 13.3746083,10.226552 C13.0024329,10.226552 12.7347936,10.5036285 12.5724598,11.0572835 C12.432918,11.5148932 12.2350015,11.7315928 11.9793834,11.7073822 C11.537389,11.7073822 11.3167766,11.4906827 11.3167766,11.0572835 C11.4176783,9.98807895 11.9602374,9.32514076 12.9424518,9.05442834 C13.5415272,8.88931453 14.2250594,9.11615024 14.4346419,9.22243967 C15.0292798,9.52400928 15.3502647,10.075465 15.3976267,10.8766507 C15.3976267,11.5510596 14.8744655,12.5019474 13.8280468,13.7300113 C13.5489633,14.0674648 13.3625871,14.2960206 13.2698799,14.4162764 L14.8745616,14.4162764 Z', id: 'path-7' })
+                    )
+                )
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728O2\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('title-O2'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('CodePen');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', fill: 'currentColor' },
+                React.createElement('path', {
+                    d: 'M17.7207447,7.0537234 L10.2739362,2.0893617 C10.0952128,1.97021277 9.86223404,1.97021277 9.68404255,2.0893617 L2.23723404,7.0537234 C2.0893617,7.15212766 2.00053191,7.31861702 2.00053191,7.4962766 L2.00053191,12.4606383 C2.00053191,12.6382979 2.0893617,12.8047872 2.23723404,12.9031915 L9.68404255,17.8675532 C9.77340426,17.9271277 9.87606383,17.9569149 9.97925532,17.9569149 C10.0824468,17.9569149 10.1851064,17.9271277 10.2744681,17.8675532 L17.7212766,12.9031915 C17.8691489,12.8047872 17.9579787,12.6382979 17.9579787,12.4606383 L17.9579787,7.4962766 C17.9579787,7.31861702 17.8691489,7.15212766 17.7212766,7.0537234 L17.7207447,7.0537234 Z M9.9787234,11.8218085 L7.2143617,9.9787234 L9.9787234,8.1356383 L12.7430851,9.9787234 L9.9787234,11.8218085 Z M10.5106383,7.21170213 L10.5106383,3.52553191 L16.4664894,7.4962766 L13.7021277,9.3393617 L10.5106383,7.21170213 Z M9.44680851,7.21170213 L6.25531915,9.3393617 L3.49095745,7.4962766 L9.44680851,3.52553191 L9.44680851,7.21170213 Z M5.2962766,9.9787234 L3.06382979,11.4670213 L3.06382979,8.49042553 L5.2962766,9.9787234 Z M6.25531915,10.6180851 L9.44680851,12.7457447 L9.44680851,16.4319149 L3.49095745,12.4611702 L6.25531915,10.6180851 Z M10.5106383,12.7457447 L13.7021277,10.6180851 L16.4664894,12.4611702 L10.5106383,16.4319149 L10.5106383,12.7457447 Z M14.6611702,9.9787234 L16.893617,8.49042553 L16.893617,11.4670213 L14.6611702,9.9787234 Z' })
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728CodePen\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('title-CodePen'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('Riddle');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', fill: 'currentColor' },
+                React.createElement('path', {
+                    d: 'M12.0135981,2 C14.9585189,2 17.345849,4.38716704 17.345849,7.33333333 C17.345849,9.38478693 16.1882418,11.1657179 14.4903288,12.0578577 L17.2084049,16.7658872 C17.2378708,16.8169235 17.2591949,16.8704263 17.2727803,16.9248914 C17.3474476,17.0262914 17.3916465,17.1520943 17.3916465,17.2882205 C17.3916465,17.628088 17.1161295,17.9036051 16.7762619,17.9036051 L2.81174505,17.9048498 C2.75007855,17.9255976 2.68404472,17.9368421 2.61538462,17.9368421 C2.27551708,17.9368421 2,17.661325 2,17.3214575 L2,4.90050552 C2,4.44767651 2.36696407,4.08058607 2.8201909,4.08058607 L2.8201909,4.08058607 L4.598,4.08 L4.59829061,3.64037695 C4.59829061,2.78210363 5.25867561,2.07778272 6.09736436,2.00602116 L6.23871411,2 Z M11.9839597,3.23076923 L6.23745245,3.23076923 C6.01143198,3.23076923 5.82905984,3.41419855 5.82905984,3.64047008 L5.82905984,3.64047008 L5.829,4.08 L11.5615101,4.08058607 C13.3089935,4.08058607 14.7370181,5.4476011 14.8334247,7.17082808 L14.8386124,7.35677655 C14.8386124,9.16616658 13.3721154,10.632967 11.5615101,10.632967 L11.5615101,10.632967 L10.299,10.632 L12.6155561,14.6429723 C12.7020335,14.7927556 12.7183875,14.9637818 12.6748043,15.1180362 C12.6779184,15.1342067 12.6786336,15.1513556 12.6786336,15.1686715 C12.6786336,15.508539 12.4031165,15.7840561 12.063249,15.7840561 L5.39477011,15.7840561 C5.33908357,15.7840561 5.28512459,15.7766596 5.23382202,15.7627953 L5.21367522,15.7639098 L5.21367522,15.7639098 C4.87380768,15.7639098 4.59829061,15.4883927 4.59829061,15.1485252 L4.598,5.323 L3.23076923,5.32307709 L3.23,16.672 L15.733,16.672 L13.0769083,12.0713449 C12.9069827,11.7770252 13.0078241,11.40068 13.3021438,11.2307544 C13.3538063,11.200927 13.4079962,11.1794424 13.4631533,11.1658825 C14.9972153,10.5673738 16.0854701,9.07745387 16.0854701,7.33333333 C16.0854701,5.06705157 14.2491614,3.23076923 11.9839597,3.23076923 L11.9839597,3.23076923 Z M11.7212434,5.32867389 L11.5688942,5.32307709 L5.829,5.323 L5.82905984,11.0261966 C5.82905984,11.0464748 5.83052125,11.0664018 5.83334393,11.0858783 L5.84579569,11.1428571 L5.829,11.142 L5.829,14.553 L11.142,14.553 L8.71393544,10.3467056 C8.54400168,10.0523717 8.64484792,9.67600839 8.93918185,9.50607462 C9.01663814,9.46135521 9.09977514,9.43538787 9.18333591,9.42676402 L9.18350929,9.40512829 L11.5688942,9.40512829 C12.6982428,9.40512829 13.6102561,8.49132999 13.6102561,7.36410269 C13.6102561,6.23662753 12.6963072,5.32307709 11.5688942,5.32307709 Z' })
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728Riddle\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('title-Riddle'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 320 },
+        trigger: React.createElement(
+            'span',
+            { className: 'code-box-code-action', onClick: function onClick() {
+                    _next.Message.success('复制成功');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', focusable: 'false', 'data-icon': 'snippets', width: '20px', height: '20px', fill: 'currentColor', 'aria-hidden': 'true' },
+                React.createElement('path', { d: 'M15,5 L15,18 L2,18 L2,5 L15,5 Z M14,6 L3,6 L3,17 L14,17 L14,6 Z M18,2 L18,15 L16,15 L16,13.999 L17,14 L17,3 L6,3 L6,4 L5,4 L5,2 L18,2 Z M9,8 L9,11 L12,11 L12,12 L9,12 L9,15 L8,15 L8,12 L5,12 L5,11 L8,11 L8,8 L9,8 Z' })
+            )
+        )
+    },
+    React.createElement(
+        'span',
+        null,
+        '\u590D\u5236\u4EE3\u7801'
+    )
+), document.getElementById('title-copy-btn'));
+ReactDOM.render(React.createElement(
+    React.Fragment,
+    null,
+    React.createElement(
+        _next.Balloon.Tooltip,
+        {
+            align: 'b',
+            style: { maxWidth: 400 },
+            trigger: React.createElement(
+                'span',
+                { id: 'title-icon-show', className: 'code-box-code-action code-expand-icon-show' },
+                React.createElement(
+                    'svg',
+                    { alt: 'expand code', width: '20px', height: '20px', viewBox: '0 0 20 20', fill: 'currentColor' },
+                    React.createElement('path', {
+                        d: 'M14.4307124,13.5667899 L15.1349452,14.276759 L10.7473676,18.6288871 L6.42783259,14.2738791 L7.13782502,13.5696698 L10.7530744,17.2147744 L14.4307124,13.5667899 Z M4.79130753,8.067524 L16.3824174,11.1733525 L16.1235984,12.1392784 L4.53248848,9.03344983 L4.79130753,8.067524 Z M10.8154102,1.57503552 L15.1349452,5.93004351 L14.4249528,6.63425282 L10.809949,2.98914817 L7.13206544,6.6371327 L6.42783259,5.92716363 L10.8154102,1.57503552 Z',
+                        transform: 'translate(10.457453, 10.101961) rotate(90.000000) translate(-10.457453, -10.101961) ' })
+                )
+            ) },
+        React.createElement(
+            'span',
+            null,
+            '\u5C55\u5F00\u4EE3\u7801',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '\u5C0F\u63D0\u793A: ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            ' 1. \u70B9\u51FB\u4E00\u4E0B\u4EE3\u7801\uFF0C\u8BD5\u4E00\u8BD5\u5728\u7EBF\u7F16\u8F91\u9884\u89C8\u5427\uFF01 ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '2. \u9875\u9762\u53F3\u4E0A\u65B9 \u6709 ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5168\u5C40\u4EE3\u7801\u5C55\u5F00'
+            ),
+            ' \u53CA ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5F00\u542F\u5728\u7EBF\u7F16\u8F91'
+            ),
+            ' \u6A21\u5F0F\u54DF\uFF5E'
+        )
+    ),
+    React.createElement(
+        _next.Balloon.Tooltip,
+        {
+            align: 'b',
+            style: { maxWidth: 400 },
+            trigger: React.createElement(
+                'span',
+                { id: 'title-icon-hide', className: 'code-box-code-action code-expand-icon-hide', style: { display: 'none' } },
+                React.createElement(
+                    'svg',
+                    { alt: 'expand code', width: '20px', height: '20px', viewBox: '0 0 20 20', style: { fill: '#3B9AFF' } },
+                    React.createElement('path', {
+                        d: 'M14.4307124,13.5667899 L15.1349452,14.276759 L10.7473676,18.6288871 L6.42783259,14.2738791 L7.13782502,13.5696698 L10.7530744,17.2147744 L14.4307124,13.5667899 Z M4.79130753,8.067524 L16.3824174,11.1733525 L16.1235984,12.1392784 L4.53248848,9.03344983 L4.79130753,8.067524 Z M10.8154102,1.57503552 L15.1349452,5.93004351 L14.4249528,6.63425282 L10.809949,2.98914817 L7.13206544,6.6371327 L6.42783259,5.92716363 L10.8154102,1.57503552 Z',
+                        transform: 'translate(10.457453, 10.101961) rotate(90.000000) translate(-10.457453, -10.101961) ' })
+                )
+            ) },
+        React.createElement(
+            'span',
+            null,
+            '\u6536\u8D77\u4EE3\u7801',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '\u5C0F\u63D0\u793A: ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            ' 1. \u70B9\u51FB\u4E00\u4E0B\u4EE3\u7801\uFF0C\u8BD5\u4E00\u8BD5\u5728\u7EBF\u7F16\u8F91\u9884\u89C8\u5427\uFF01 ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '2. \u9875\u9762\u53F3\u4E0A\u65B9 \u6709 ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5168\u5C40\u4EE3\u7801\u5C55\u5F00'
+            ),
+            ' \u53CA ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5F00\u542F\u5728\u7EBF\u7F16\u8F91'
+            ),
+            ' \u6A21\u5F0F\u54DF\uFF5E'
+        )
+    )
+), document.getElementById('title-fold-code'));})()</script>
+        </div>
+        
+        <div id="text-container" class='next-demo-item scroll-count-item'
+          style=""
+          debug="false"
+          data-scroll-id="text-container">
+          <div id="text-desc" class="demo-item-desc markdown">
+            <h3 class="demo-item-desc-title">
+              文本
+              <a class="header-anchor" href='#text-container'
+                style="">
+                #
+              </a>
+            </h3>
+            
+            <div class="demo-item-desc-body markdown">
+<p>内置不同样式的文本。</p>
+</div>
+            
+          </div>
+          <div id="text-mount" class="next-demo-mount"></div>
+          <script>
+            if (searchDict['bgColor']) {
+              document.getElementById("text-mount").style.backgroundColor = searchDict['bgColor'];
+            }
+          </script>
+
+          <div id="text-operations" class='demo-item-operations'>
+            <textarea tabindex=-1 id="text-code-text"
+              style="opacity: 0;cursor:default; user-select: none;">import { Typography } from &#39;@alifd/next&#39;;
+
+const { Text } = Typography;
+
+ReactDOM.render(
+  &lt;div&gt;
+    &lt;Text&gt;Fusion Design&lt;/Text&gt;
+    &lt;br /&gt;
+    &lt;Text mark&gt;Fusion Design&lt;/Text&gt;
+    &lt;br /&gt;
+    &lt;Text code&gt;Fusion Design&lt;/Text&gt;
+    &lt;br /&gt;
+    &lt;Text underline&gt;Fusion Design&lt;/Text&gt;
+    &lt;br /&gt;
+    &lt;Text delete&gt;Fusion Design&lt;/Text&gt;
+    &lt;br /&gt;
+    &lt;Text strong&gt;Fusion Design&lt;/Text&gt;
+  &lt;/div&gt;,
+  mountNode,
+);
+</textarea>
+
+            <form id="text-o2-op-container" class="code-box-code-action" action="https://o2.alibaba-inc.com/sandbox/define" method="POST"
+              target="_blank">
+              <input id="text-O2-input"  type="hidden" name="data" value="">
+
+              <button type="submit" class="preview-btn" id="text-O2">
+             </button>
+            </form>
+
+            <form id="text-riddle-op-container" class="code-box-code-action" action="https://riddle.alibaba-inc.com/riddles/define"
+              method="POST" target="_blank">
+              <input id="text-Riddle-input" type="hidden" name="data" value="">
+
+              <button type="submit" class="preview-btn" id="text-Riddle">
+              </button>
+            </form>
+            <form class="code-box-code-action" action="https://codepen.io/pen/define" method="POST" target="_blank">
+              <input id="text-CodePen-input" type="hidden" name="data" value="">
+              <button type="submit" class="preview-btn" id="text-CodePen">
+              </button>
+            </form>
+            <div id="text-copy">
+              <button class="preview-btn" id="text-copy-btn" onclick='copyCode("text")'>
+              </button>
+            </div>
+            <div id="text-fold-code"></div>
+          </div>
+          <div id="text-body" class='next-demo-body' style="display: none">
+          </div>
+          <style id="text-style"></style>
+          <script>
+            function temp(){
+              let jsxTemp = $("<textarea/>").html(document.getElementById("text-code-text").innerHTML).text();
+              let cssTemp = $("<textarea/>").html(`${``}`).text();
+              document.getElementById("text-CodePen-input").value = getNextCompCodepenFormValue("文本", jsxTemp, cssTemp);
+              document.getElementById("text-O2-input").value = getNextCompO2FromValue("文本", jsxTemp, cssTemp);
+              document.getElementById("text-Riddle-input").value = getNextCompRiddleFormValue(jsxTemp, cssTemp);
+              if(!isAliEnv){
+                document.getElementById("text-riddle-op-container").style.display = "none";
+                document.getElementById("text-o2-op-container").style.display = "none";
+              }
+            }
+            temp();
+          </script>
+
+          <script>(function(){'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactLive = require('react-live');
+
+var _next = require('@alifd/next');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+window.demoNames.push('text');
+
+
+window.textRenderScript = function textRenderScript(liveDemo) {
+    var mountNode = document.getElementById('text-mount');
+    if (liveDemo === "false") {
+        document.getElementById('text-body').innerHTML = '<pre class="language-jsx"><code class="language-jsx"><span class="token keyword">import</span> <span class="token punctuation">{</span> Typography <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">\'@alifd/next\'</span><span class="token punctuation">;</span>\n\n<span class="token keyword">const</span> <span class="token punctuation">{</span> Text <span class="token punctuation">}</span> <span class="token operator">=</span> Typography<span class="token punctuation">;</span>\n\nReactDOM<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span>\n  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text">Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span> <span class="token punctuation">/></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span> <span class="token attr-name">mark</span><span class="token punctuation">></span></span><span class="token plain-text">Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span> <span class="token punctuation">/></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span> <span class="token attr-name">code</span><span class="token punctuation">></span></span><span class="token plain-text">Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span> <span class="token punctuation">/></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span> <span class="token attr-name">underline</span><span class="token punctuation">></span></span><span class="token plain-text">Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span> <span class="token punctuation">/></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span> <span class="token attr-name">delete</span><span class="token punctuation">></span></span><span class="token plain-text">Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span> <span class="token punctuation">/></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Text</span></span> <span class="token attr-name">strong</span><span class="token punctuation">></span></span><span class="token plain-text">Fusion Design</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Text</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n  </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span class="token punctuation">,</span>\n  mountNode<span class="token punctuation">,</span>\n<span class="token punctuation">)</span><span class="token punctuation">;</span>\n</code></pre>\n'.replace(/{backquote}/g, '`').replace(/{dollar}/g, '$');
+
+        var Text = _next.Typography.Text;
+
+
+        ReactDOM.render(React.createElement(
+            'div',
+            null,
+            React.createElement(
+                Text,
+                null,
+                'Fusion Design'
+            ),
+            React.createElement('br', null),
+            React.createElement(
+                Text,
+                { mark: true },
+                'Fusion Design'
+            ),
+            React.createElement('br', null),
+            React.createElement(
+                Text,
+                { code: true },
+                'Fusion Design'
+            ),
+            React.createElement('br', null),
+            React.createElement(
+                Text,
+                { underline: true },
+                'Fusion Design'
+            ),
+            React.createElement('br', null),
+            React.createElement(
+                Text,
+                { 'delete': true },
+                'Fusion Design'
+            ),
+            React.createElement('br', null),
+            React.createElement(
+                Text,
+                { strong: true },
+                'Fusion Design'
+            )
+        ), mountNode);
+
+        return;
+    }
+
+    var textLiveScript = 'const { Text } = Typography;\n\nReactDOM.render(\n  <div>\n    <Text>Fusion Design</Text>\n    <br />\n    <Text mark>Fusion Design</Text>\n    <br />\n    <Text code>Fusion Design</Text>\n    <br />\n    <Text underline>Fusion Design</Text>\n    <br />\n    <Text delete>Fusion Design</Text>\n    <br />\n    <Text strong>Fusion Design</Text>\n  </div>,\n  mountNode\n);';
+    var emptyTheme = {
+        plain: {},
+        styles: [{
+            types: [],
+            styles: {}
+        }]
+    };
+
+    function renderAfter() {
+        ReactDOM.render(React.createElement(
+            _next.Balloon.Tooltip,
+            {
+                align: 't',
+                style: { maxWidth: 320 },
+                trigger: React.createElement('div', {
+                    dangerouslySetInnerHTML: {
+                        __html: '<pre class="language-jsx"><code class="language-jsx"><span class="token keyword">import</span> <span class="token punctuation">{</span> Typography <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">\'@alifd/next\'</span><span class="token punctuation">;</span>\n</code></pre>\n'
+                    }
+                })
+            },
+            '\u7F16\u8F91\u6A21\u5F0F\u6682\u4E0D\u652F\u6301\u4FEE\u6539\u4F9D\u8D56\u5F15\u5165'
+        ), document.getElementById('text-live-import'));
+    }
+
+    var LiveRenderer = function (_React$Component) {
+        _inherits(LiveRenderer, _React$Component);
+
+        function LiveRenderer(props) {
+            _classCallCheck(this, LiveRenderer);
+
+            var _this = _possibleConstructorReturn(this, (LiveRenderer.__proto__ || Object.getPrototypeOf(LiveRenderer)).call(this, props));
+
+            _this.onBlur = function () {
+                var time = new Date().getTime();
+                window.top.postMessage({
+                    type: 'ReactLiveEdit',
+                    from: 'demo',
+                    body: { name: 'text', component: 'Typography', time: time }
+                }, '*');
+            };
+
+            return _this;
+        }
+
+        _createClass(LiveRenderer, [{
+            key: 'componentDidMount',
+            value: function componentDidMount() {
+                renderAfter();
+            }
+        }, {
+            key: 'render',
+            value: function render() {
+                return React.createElement(
+                    _reactLive.LiveProvider,
+                    {
+                        code: textLiveScript,
+                        scope: { Typography: _next.Typography, mountNode: mountNode },
+                        noInline: true },
+                    React.createElement(
+                        'div',
+                        { id: 'text-live-editor' },
+                        React.createElement(_reactLive.LiveError, { id: 'text-live-error', className: 'react-live-error' }),
+                        React.createElement('div', { id: 'text-live-import' }),
+                        React.createElement(
+                            'div',
+                            { id: 'text-live-body', className: 'react-live-body' },
+                            React.createElement(_reactLive.LiveEditor, { theme: emptyTheme, onBlur: this.onBlur })
+                        ),
+                        React.createElement('div', { id: 'text-live-css' })
+                    ),
+                    React.createElement(_reactLive.LivePreview, null)
+                );
+            }
+        }]);
+
+        return LiveRenderer;
+    }(React.Component);
+
+    ReactDOM.render(React.createElement(LiveRenderer, null), document.getElementById('text-body'));
+    return;
+};
+
+window.renderFuncs.push(textRenderScript);
+
+function onRiddleOrCodePenClick(type) {
+    var time = new Date().getTime();
+    window.top.postMessage({
+        type: 'RiddleOrCodePenClick',
+        from: 'demo',
+        body: { name: 'text', component: 'Typography', type: type, time: time }
+    }, '*');
+}
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('O2');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 18 18', version: '1.1' },
+                React.createElement(
+                    'g',
+                    { id: '\u9875\u9762-1', stroke: 'none', 'stroke-width': '1', fill: 'none', 'fill-rule': 'evenodd', 'stroke-opacity': '0.45' },
+                    React.createElement(
+                        'g',
+                        { id: '\u7F16\u7EC4-16', transform: 'translate(1.000000, 1.031385)', 'fill-rule': 'nonzero', stroke: '#000000', 'stroke-width': '1' },
+                        React.createElement('path', { d: 'M7.99320628,15.9864125 C3.58572657,15.9864125 2.27373675e-13,12.400686 2.27373675e-13,7.99320627 C2.27373675e-13,3.58572655 3.58572657,-1.70530257e-13 7.99320628,-1.70530257e-13 C12.400686,-1.70530257e-13 15.9864126,3.58572655 15.9864126,7.99320627 C15.9864126,8.42039157 15.6400618,8.76674238 15.2128765,8.76674238 C14.7856912,8.76674238 14.4393404,8.42039157 14.4393404,7.99320627 C14.4393404,4.43880793 11.5476691,1.54707218 7.99320628,1.54707218 C4.43874348,1.54707218 1.54707218,4.43880793 1.54707218,7.99320627 C1.54707218,11.5476691 4.43874348,14.4393404 7.99320628,14.4393404 C8.43115662,14.4393404 8.86852684,14.3952488 9.29313367,14.3084194 C9.7112944,14.2223635 10.1204305,14.492521 10.2060352,14.9110685 C10.2917043,15.3296804 10.0218692,15.7383653 9.60338611,15.82397 C9.07686588,15.9317494 8.53513277,15.9864125 7.99320628,15.9864125', id: 'path-2' }),
+                        React.createElement('path', { d: 'M14.8745616,14.4162764 C15.3159789,14.440487 15.5487088,14.6453304 15.5721741,15.0302087 C15.5487088,15.4398955 15.3394443,15.6441411 14.9442844,15.6441411 L11.9445701,15.6441411 C11.5025757,15.6441411 11.2817709,15.4398955 11.2817709,15.0302087 C11.2584018,14.9100526 11.3166804,14.7536303 11.4562221,14.5606432 C11.6420213,14.3439436 11.8279166,14.127244 12.0142928,13.9105444 C12.7817242,13.0680563 13.339795,12.369935 13.6886012,11.8156822 C13.8978657,11.5267494 14.002498,11.2378167 14.002498,10.9488839 C13.9556635,10.5154847 13.746399,10.2751724 13.3746083,10.226552 C13.0024329,10.226552 12.7347936,10.5036285 12.5724598,11.0572835 C12.432918,11.5148932 12.2350015,11.7315928 11.9793834,11.7073822 C11.537389,11.7073822 11.3167766,11.4906827 11.3167766,11.0572835 C11.4176783,9.98807895 11.9602374,9.32514076 12.9424518,9.05442834 C13.5415272,8.88931453 14.2250594,9.11615024 14.4346419,9.22243967 C15.0292798,9.52400928 15.3502647,10.075465 15.3976267,10.8766507 C15.3976267,11.5510596 14.8744655,12.5019474 13.8280468,13.7300113 C13.5489633,14.0674648 13.3625871,14.2960206 13.2698799,14.4162764 L14.8745616,14.4162764 Z', id: 'path-7' })
+                    )
+                )
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728O2\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('text-O2'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('CodePen');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', fill: 'currentColor' },
+                React.createElement('path', {
+                    d: 'M17.7207447,7.0537234 L10.2739362,2.0893617 C10.0952128,1.97021277 9.86223404,1.97021277 9.68404255,2.0893617 L2.23723404,7.0537234 C2.0893617,7.15212766 2.00053191,7.31861702 2.00053191,7.4962766 L2.00053191,12.4606383 C2.00053191,12.6382979 2.0893617,12.8047872 2.23723404,12.9031915 L9.68404255,17.8675532 C9.77340426,17.9271277 9.87606383,17.9569149 9.97925532,17.9569149 C10.0824468,17.9569149 10.1851064,17.9271277 10.2744681,17.8675532 L17.7212766,12.9031915 C17.8691489,12.8047872 17.9579787,12.6382979 17.9579787,12.4606383 L17.9579787,7.4962766 C17.9579787,7.31861702 17.8691489,7.15212766 17.7212766,7.0537234 L17.7207447,7.0537234 Z M9.9787234,11.8218085 L7.2143617,9.9787234 L9.9787234,8.1356383 L12.7430851,9.9787234 L9.9787234,11.8218085 Z M10.5106383,7.21170213 L10.5106383,3.52553191 L16.4664894,7.4962766 L13.7021277,9.3393617 L10.5106383,7.21170213 Z M9.44680851,7.21170213 L6.25531915,9.3393617 L3.49095745,7.4962766 L9.44680851,3.52553191 L9.44680851,7.21170213 Z M5.2962766,9.9787234 L3.06382979,11.4670213 L3.06382979,8.49042553 L5.2962766,9.9787234 Z M6.25531915,10.6180851 L9.44680851,12.7457447 L9.44680851,16.4319149 L3.49095745,12.4611702 L6.25531915,10.6180851 Z M10.5106383,12.7457447 L13.7021277,10.6180851 L16.4664894,12.4611702 L10.5106383,16.4319149 L10.5106383,12.7457447 Z M14.6611702,9.9787234 L16.893617,8.49042553 L16.893617,11.4670213 L14.6611702,9.9787234 Z' })
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728CodePen\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('text-CodePen'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('Riddle');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', fill: 'currentColor' },
+                React.createElement('path', {
+                    d: 'M12.0135981,2 C14.9585189,2 17.345849,4.38716704 17.345849,7.33333333 C17.345849,9.38478693 16.1882418,11.1657179 14.4903288,12.0578577 L17.2084049,16.7658872 C17.2378708,16.8169235 17.2591949,16.8704263 17.2727803,16.9248914 C17.3474476,17.0262914 17.3916465,17.1520943 17.3916465,17.2882205 C17.3916465,17.628088 17.1161295,17.9036051 16.7762619,17.9036051 L2.81174505,17.9048498 C2.75007855,17.9255976 2.68404472,17.9368421 2.61538462,17.9368421 C2.27551708,17.9368421 2,17.661325 2,17.3214575 L2,4.90050552 C2,4.44767651 2.36696407,4.08058607 2.8201909,4.08058607 L2.8201909,4.08058607 L4.598,4.08 L4.59829061,3.64037695 C4.59829061,2.78210363 5.25867561,2.07778272 6.09736436,2.00602116 L6.23871411,2 Z M11.9839597,3.23076923 L6.23745245,3.23076923 C6.01143198,3.23076923 5.82905984,3.41419855 5.82905984,3.64047008 L5.82905984,3.64047008 L5.829,4.08 L11.5615101,4.08058607 C13.3089935,4.08058607 14.7370181,5.4476011 14.8334247,7.17082808 L14.8386124,7.35677655 C14.8386124,9.16616658 13.3721154,10.632967 11.5615101,10.632967 L11.5615101,10.632967 L10.299,10.632 L12.6155561,14.6429723 C12.7020335,14.7927556 12.7183875,14.9637818 12.6748043,15.1180362 C12.6779184,15.1342067 12.6786336,15.1513556 12.6786336,15.1686715 C12.6786336,15.508539 12.4031165,15.7840561 12.063249,15.7840561 L5.39477011,15.7840561 C5.33908357,15.7840561 5.28512459,15.7766596 5.23382202,15.7627953 L5.21367522,15.7639098 L5.21367522,15.7639098 C4.87380768,15.7639098 4.59829061,15.4883927 4.59829061,15.1485252 L4.598,5.323 L3.23076923,5.32307709 L3.23,16.672 L15.733,16.672 L13.0769083,12.0713449 C12.9069827,11.7770252 13.0078241,11.40068 13.3021438,11.2307544 C13.3538063,11.200927 13.4079962,11.1794424 13.4631533,11.1658825 C14.9972153,10.5673738 16.0854701,9.07745387 16.0854701,7.33333333 C16.0854701,5.06705157 14.2491614,3.23076923 11.9839597,3.23076923 L11.9839597,3.23076923 Z M11.7212434,5.32867389 L11.5688942,5.32307709 L5.829,5.323 L5.82905984,11.0261966 C5.82905984,11.0464748 5.83052125,11.0664018 5.83334393,11.0858783 L5.84579569,11.1428571 L5.829,11.142 L5.829,14.553 L11.142,14.553 L8.71393544,10.3467056 C8.54400168,10.0523717 8.64484792,9.67600839 8.93918185,9.50607462 C9.01663814,9.46135521 9.09977514,9.43538787 9.18333591,9.42676402 L9.18350929,9.40512829 L11.5688942,9.40512829 C12.6982428,9.40512829 13.6102561,8.49132999 13.6102561,7.36410269 C13.6102561,6.23662753 12.6963072,5.32307709 11.5688942,5.32307709 Z' })
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728Riddle\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('text-Riddle'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 320 },
+        trigger: React.createElement(
+            'span',
+            { className: 'code-box-code-action', onClick: function onClick() {
+                    _next.Message.success('复制成功');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', focusable: 'false', 'data-icon': 'snippets', width: '20px', height: '20px', fill: 'currentColor', 'aria-hidden': 'true' },
+                React.createElement('path', { d: 'M15,5 L15,18 L2,18 L2,5 L15,5 Z M14,6 L3,6 L3,17 L14,17 L14,6 Z M18,2 L18,15 L16,15 L16,13.999 L17,14 L17,3 L6,3 L6,4 L5,4 L5,2 L18,2 Z M9,8 L9,11 L12,11 L12,12 L9,12 L9,15 L8,15 L8,12 L5,12 L5,11 L8,11 L8,8 L9,8 Z' })
+            )
+        )
+    },
+    React.createElement(
+        'span',
+        null,
+        '\u590D\u5236\u4EE3\u7801'
+    )
+), document.getElementById('text-copy-btn'));
+ReactDOM.render(React.createElement(
+    React.Fragment,
+    null,
+    React.createElement(
+        _next.Balloon.Tooltip,
+        {
+            align: 'b',
+            style: { maxWidth: 400 },
+            trigger: React.createElement(
+                'span',
+                { id: 'text-icon-show', className: 'code-box-code-action code-expand-icon-show' },
+                React.createElement(
+                    'svg',
+                    { alt: 'expand code', width: '20px', height: '20px', viewBox: '0 0 20 20', fill: 'currentColor' },
+                    React.createElement('path', {
+                        d: 'M14.4307124,13.5667899 L15.1349452,14.276759 L10.7473676,18.6288871 L6.42783259,14.2738791 L7.13782502,13.5696698 L10.7530744,17.2147744 L14.4307124,13.5667899 Z M4.79130753,8.067524 L16.3824174,11.1733525 L16.1235984,12.1392784 L4.53248848,9.03344983 L4.79130753,8.067524 Z M10.8154102,1.57503552 L15.1349452,5.93004351 L14.4249528,6.63425282 L10.809949,2.98914817 L7.13206544,6.6371327 L6.42783259,5.92716363 L10.8154102,1.57503552 Z',
+                        transform: 'translate(10.457453, 10.101961) rotate(90.000000) translate(-10.457453, -10.101961) ' })
+                )
+            ) },
+        React.createElement(
+            'span',
+            null,
+            '\u5C55\u5F00\u4EE3\u7801',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '\u5C0F\u63D0\u793A: ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            ' 1. \u70B9\u51FB\u4E00\u4E0B\u4EE3\u7801\uFF0C\u8BD5\u4E00\u8BD5\u5728\u7EBF\u7F16\u8F91\u9884\u89C8\u5427\uFF01 ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '2. \u9875\u9762\u53F3\u4E0A\u65B9 \u6709 ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5168\u5C40\u4EE3\u7801\u5C55\u5F00'
+            ),
+            ' \u53CA ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5F00\u542F\u5728\u7EBF\u7F16\u8F91'
+            ),
+            ' \u6A21\u5F0F\u54DF\uFF5E'
+        )
+    ),
+    React.createElement(
+        _next.Balloon.Tooltip,
+        {
+            align: 'b',
+            style: { maxWidth: 400 },
+            trigger: React.createElement(
+                'span',
+                { id: 'text-icon-hide', className: 'code-box-code-action code-expand-icon-hide', style: { display: 'none' } },
+                React.createElement(
+                    'svg',
+                    { alt: 'expand code', width: '20px', height: '20px', viewBox: '0 0 20 20', style: { fill: '#3B9AFF' } },
+                    React.createElement('path', {
+                        d: 'M14.4307124,13.5667899 L15.1349452,14.276759 L10.7473676,18.6288871 L6.42783259,14.2738791 L7.13782502,13.5696698 L10.7530744,17.2147744 L14.4307124,13.5667899 Z M4.79130753,8.067524 L16.3824174,11.1733525 L16.1235984,12.1392784 L4.53248848,9.03344983 L4.79130753,8.067524 Z M10.8154102,1.57503552 L15.1349452,5.93004351 L14.4249528,6.63425282 L10.809949,2.98914817 L7.13206544,6.6371327 L6.42783259,5.92716363 L10.8154102,1.57503552 Z',
+                        transform: 'translate(10.457453, 10.101961) rotate(90.000000) translate(-10.457453, -10.101961) ' })
+                )
+            ) },
+        React.createElement(
+            'span',
+            null,
+            '\u6536\u8D77\u4EE3\u7801',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '\u5C0F\u63D0\u793A: ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            ' 1. \u70B9\u51FB\u4E00\u4E0B\u4EE3\u7801\uFF0C\u8BD5\u4E00\u8BD5\u5728\u7EBF\u7F16\u8F91\u9884\u89C8\u5427\uFF01 ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '2. \u9875\u9762\u53F3\u4E0A\u65B9 \u6709 ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5168\u5C40\u4EE3\u7801\u5C55\u5F00'
+            ),
+            ' \u53CA ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5F00\u542F\u5728\u7EBF\u7F16\u8F91'
+            ),
+            ' \u6A21\u5F0F\u54DF\uFF5E'
+        )
+    )
+), document.getElementById('text-fold-code'));})()</script>
+        </div>
+        
+        <div id="paragraph-container" class='next-demo-item scroll-count-item'
+          style=""
+          debug="false"
+          data-scroll-id="paragraph-container">
+          <div id="paragraph-desc" class="demo-item-desc markdown">
+            <h3 class="demo-item-desc-title">
+              段落
+              <a class="header-anchor" href='#paragraph-container'
+                style="">
+                #
+              </a>
+            </h3>
+            
+            <div class="demo-item-desc-body markdown">
+<p>一段文字</p>
+</div>
+            
+          </div>
+          <div id="paragraph-mount" class="next-demo-mount"></div>
+          <script>
+            if (searchDict['bgColor']) {
+              document.getElementById("paragraph-mount").style.backgroundColor = searchDict['bgColor'];
+            }
+          </script>
+
+          <div id="paragraph-operations" class='demo-item-operations'>
+            <textarea tabindex=-1 id="paragraph-code-text"
+              style="opacity: 0;cursor:default; user-select: none;">import { Typography } from &#39;@alifd/next&#39;;
+
+const { Paragraph } = Typography;
+
+const content = &#39;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#39;;
+
+ReactDOM.render(&lt;div&gt;
+    &lt;Paragraph&gt;{content}&lt;/Paragraph&gt;
+&lt;/div&gt;, mountNode);
+</textarea>
+
+            <form id="paragraph-o2-op-container" class="code-box-code-action" action="https://o2.alibaba-inc.com/sandbox/define" method="POST"
+              target="_blank">
+              <input id="paragraph-O2-input"  type="hidden" name="data" value="">
+
+              <button type="submit" class="preview-btn" id="paragraph-O2">
+             </button>
+            </form>
+
+            <form id="paragraph-riddle-op-container" class="code-box-code-action" action="https://riddle.alibaba-inc.com/riddles/define"
+              method="POST" target="_blank">
+              <input id="paragraph-Riddle-input" type="hidden" name="data" value="">
+
+              <button type="submit" class="preview-btn" id="paragraph-Riddle">
+              </button>
+            </form>
+            <form class="code-box-code-action" action="https://codepen.io/pen/define" method="POST" target="_blank">
+              <input id="paragraph-CodePen-input" type="hidden" name="data" value="">
+              <button type="submit" class="preview-btn" id="paragraph-CodePen">
+              </button>
+            </form>
+            <div id="paragraph-copy">
+              <button class="preview-btn" id="paragraph-copy-btn" onclick='copyCode("paragraph")'>
+              </button>
+            </div>
+            <div id="paragraph-fold-code"></div>
+          </div>
+          <div id="paragraph-body" class='next-demo-body' style="display: none">
+          </div>
+          <style id="paragraph-style"></style>
+          <script>
+            function temp(){
+              let jsxTemp = $("<textarea/>").html(document.getElementById("paragraph-code-text").innerHTML).text();
+              let cssTemp = $("<textarea/>").html(`${``}`).text();
+              document.getElementById("paragraph-CodePen-input").value = getNextCompCodepenFormValue("段落", jsxTemp, cssTemp);
+              document.getElementById("paragraph-O2-input").value = getNextCompO2FromValue("段落", jsxTemp, cssTemp);
+              document.getElementById("paragraph-Riddle-input").value = getNextCompRiddleFormValue(jsxTemp, cssTemp);
+              if(!isAliEnv){
+                document.getElementById("paragraph-riddle-op-container").style.display = "none";
+                document.getElementById("paragraph-o2-op-container").style.display = "none";
+              }
+            }
+            temp();
+          </script>
+
+          <script>(function(){'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactLive = require('react-live');
+
+var _next = require('@alifd/next');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+window.demoNames.push('paragraph');
+
+
+window.paragraphRenderScript = function paragraphRenderScript(liveDemo) {
+    var mountNode = document.getElementById('paragraph-mount');
+    if (liveDemo === "false") {
+        document.getElementById('paragraph-body').innerHTML = '<pre class="language-jsx"><code class="language-jsx"><span class="token keyword">import</span> <span class="token punctuation">{</span> Typography <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">\'@alifd/next\'</span><span class="token punctuation">;</span>\n\n<span class="token keyword">const</span> <span class="token punctuation">{</span> Paragraph <span class="token punctuation">}</span> <span class="token operator">=</span> Typography<span class="token punctuation">;</span>\n\n<span class="token keyword">const</span> content <span class="token operator">=</span> <span class="token string">\'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\'</span><span class="token punctuation">;</span>\n\nReactDOM<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token plain-text">\n    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Paragraph</span></span><span class="token punctuation">></span></span><span class="token punctuation">{</span>content<span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Paragraph</span></span><span class="token punctuation">></span></span><span class="token plain-text">\n</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span class="token punctuation">,</span> mountNode<span class="token punctuation">)</span><span class="token punctuation">;</span>\n</code></pre>\n'.replace(/{backquote}/g, '`').replace(/{dollar}/g, '$');
+
+        var Paragraph = _next.Typography.Paragraph;
+
+
+        var content = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+
+        ReactDOM.render(React.createElement(
+            'div',
+            null,
+            React.createElement(
+                Paragraph,
+                null,
+                content
+            )
+        ), mountNode);
+
+        return;
+    }
+
+    var paragraphLiveScript = 'const { Paragraph } = Typography;\n\nconst content =\n  "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";\n\nReactDOM.render(\n  <div>\n    <Paragraph>{content}</Paragraph>\n  </div>,\n  mountNode\n);';
+    var emptyTheme = {
+        plain: {},
+        styles: [{
+            types: [],
+            styles: {}
+        }]
+    };
+
+    function renderAfter() {
+        ReactDOM.render(React.createElement(
+            _next.Balloon.Tooltip,
+            {
+                align: 't',
+                style: { maxWidth: 320 },
+                trigger: React.createElement('div', {
+                    dangerouslySetInnerHTML: {
+                        __html: '<pre class="language-jsx"><code class="language-jsx"><span class="token keyword">import</span> <span class="token punctuation">{</span> Typography <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">\'@alifd/next\'</span><span class="token punctuation">;</span>\n</code></pre>\n'
+                    }
+                })
+            },
+            '\u7F16\u8F91\u6A21\u5F0F\u6682\u4E0D\u652F\u6301\u4FEE\u6539\u4F9D\u8D56\u5F15\u5165'
+        ), document.getElementById('paragraph-live-import'));
+    }
+
+    var LiveRenderer = function (_React$Component) {
+        _inherits(LiveRenderer, _React$Component);
+
+        function LiveRenderer(props) {
+            _classCallCheck(this, LiveRenderer);
+
+            var _this = _possibleConstructorReturn(this, (LiveRenderer.__proto__ || Object.getPrototypeOf(LiveRenderer)).call(this, props));
+
+            _this.onBlur = function () {
+                var time = new Date().getTime();
+                window.top.postMessage({
+                    type: 'ReactLiveEdit',
+                    from: 'demo',
+                    body: { name: 'paragraph', component: 'Typography', time: time }
+                }, '*');
+            };
+
+            return _this;
+        }
+
+        _createClass(LiveRenderer, [{
+            key: 'componentDidMount',
+            value: function componentDidMount() {
+                renderAfter();
+            }
+        }, {
+            key: 'render',
+            value: function render() {
+                return React.createElement(
+                    _reactLive.LiveProvider,
+                    {
+                        code: paragraphLiveScript,
+                        scope: { Typography: _next.Typography, mountNode: mountNode },
+                        noInline: true },
+                    React.createElement(
+                        'div',
+                        { id: 'paragraph-live-editor' },
+                        React.createElement(_reactLive.LiveError, { id: 'paragraph-live-error', className: 'react-live-error' }),
+                        React.createElement('div', { id: 'paragraph-live-import' }),
+                        React.createElement(
+                            'div',
+                            { id: 'paragraph-live-body', className: 'react-live-body' },
+                            React.createElement(_reactLive.LiveEditor, { theme: emptyTheme, onBlur: this.onBlur })
+                        ),
+                        React.createElement('div', { id: 'paragraph-live-css' })
+                    ),
+                    React.createElement(_reactLive.LivePreview, null)
+                );
+            }
+        }]);
+
+        return LiveRenderer;
+    }(React.Component);
+
+    ReactDOM.render(React.createElement(LiveRenderer, null), document.getElementById('paragraph-body'));
+    return;
+};
+
+window.renderFuncs.push(paragraphRenderScript);
+
+function onRiddleOrCodePenClick(type) {
+    var time = new Date().getTime();
+    window.top.postMessage({
+        type: 'RiddleOrCodePenClick',
+        from: 'demo',
+        body: { name: 'paragraph', component: 'Typography', type: type, time: time }
+    }, '*');
+}
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('O2');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 18 18', version: '1.1' },
+                React.createElement(
+                    'g',
+                    { id: '\u9875\u9762-1', stroke: 'none', 'stroke-width': '1', fill: 'none', 'fill-rule': 'evenodd', 'stroke-opacity': '0.45' },
+                    React.createElement(
+                        'g',
+                        { id: '\u7F16\u7EC4-16', transform: 'translate(1.000000, 1.031385)', 'fill-rule': 'nonzero', stroke: '#000000', 'stroke-width': '1' },
+                        React.createElement('path', { d: 'M7.99320628,15.9864125 C3.58572657,15.9864125 2.27373675e-13,12.400686 2.27373675e-13,7.99320627 C2.27373675e-13,3.58572655 3.58572657,-1.70530257e-13 7.99320628,-1.70530257e-13 C12.400686,-1.70530257e-13 15.9864126,3.58572655 15.9864126,7.99320627 C15.9864126,8.42039157 15.6400618,8.76674238 15.2128765,8.76674238 C14.7856912,8.76674238 14.4393404,8.42039157 14.4393404,7.99320627 C14.4393404,4.43880793 11.5476691,1.54707218 7.99320628,1.54707218 C4.43874348,1.54707218 1.54707218,4.43880793 1.54707218,7.99320627 C1.54707218,11.5476691 4.43874348,14.4393404 7.99320628,14.4393404 C8.43115662,14.4393404 8.86852684,14.3952488 9.29313367,14.3084194 C9.7112944,14.2223635 10.1204305,14.492521 10.2060352,14.9110685 C10.2917043,15.3296804 10.0218692,15.7383653 9.60338611,15.82397 C9.07686588,15.9317494 8.53513277,15.9864125 7.99320628,15.9864125', id: 'path-2' }),
+                        React.createElement('path', { d: 'M14.8745616,14.4162764 C15.3159789,14.440487 15.5487088,14.6453304 15.5721741,15.0302087 C15.5487088,15.4398955 15.3394443,15.6441411 14.9442844,15.6441411 L11.9445701,15.6441411 C11.5025757,15.6441411 11.2817709,15.4398955 11.2817709,15.0302087 C11.2584018,14.9100526 11.3166804,14.7536303 11.4562221,14.5606432 C11.6420213,14.3439436 11.8279166,14.127244 12.0142928,13.9105444 C12.7817242,13.0680563 13.339795,12.369935 13.6886012,11.8156822 C13.8978657,11.5267494 14.002498,11.2378167 14.002498,10.9488839 C13.9556635,10.5154847 13.746399,10.2751724 13.3746083,10.226552 C13.0024329,10.226552 12.7347936,10.5036285 12.5724598,11.0572835 C12.432918,11.5148932 12.2350015,11.7315928 11.9793834,11.7073822 C11.537389,11.7073822 11.3167766,11.4906827 11.3167766,11.0572835 C11.4176783,9.98807895 11.9602374,9.32514076 12.9424518,9.05442834 C13.5415272,8.88931453 14.2250594,9.11615024 14.4346419,9.22243967 C15.0292798,9.52400928 15.3502647,10.075465 15.3976267,10.8766507 C15.3976267,11.5510596 14.8744655,12.5019474 13.8280468,13.7300113 C13.5489633,14.0674648 13.3625871,14.2960206 13.2698799,14.4162764 L14.8745616,14.4162764 Z', id: 'path-7' })
+                    )
+                )
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728O2\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('paragraph-O2'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('CodePen');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', fill: 'currentColor' },
+                React.createElement('path', {
+                    d: 'M17.7207447,7.0537234 L10.2739362,2.0893617 C10.0952128,1.97021277 9.86223404,1.97021277 9.68404255,2.0893617 L2.23723404,7.0537234 C2.0893617,7.15212766 2.00053191,7.31861702 2.00053191,7.4962766 L2.00053191,12.4606383 C2.00053191,12.6382979 2.0893617,12.8047872 2.23723404,12.9031915 L9.68404255,17.8675532 C9.77340426,17.9271277 9.87606383,17.9569149 9.97925532,17.9569149 C10.0824468,17.9569149 10.1851064,17.9271277 10.2744681,17.8675532 L17.7212766,12.9031915 C17.8691489,12.8047872 17.9579787,12.6382979 17.9579787,12.4606383 L17.9579787,7.4962766 C17.9579787,7.31861702 17.8691489,7.15212766 17.7212766,7.0537234 L17.7207447,7.0537234 Z M9.9787234,11.8218085 L7.2143617,9.9787234 L9.9787234,8.1356383 L12.7430851,9.9787234 L9.9787234,11.8218085 Z M10.5106383,7.21170213 L10.5106383,3.52553191 L16.4664894,7.4962766 L13.7021277,9.3393617 L10.5106383,7.21170213 Z M9.44680851,7.21170213 L6.25531915,9.3393617 L3.49095745,7.4962766 L9.44680851,3.52553191 L9.44680851,7.21170213 Z M5.2962766,9.9787234 L3.06382979,11.4670213 L3.06382979,8.49042553 L5.2962766,9.9787234 Z M6.25531915,10.6180851 L9.44680851,12.7457447 L9.44680851,16.4319149 L3.49095745,12.4611702 L6.25531915,10.6180851 Z M10.5106383,12.7457447 L13.7021277,10.6180851 L16.4664894,12.4611702 L10.5106383,16.4319149 L10.5106383,12.7457447 Z M14.6611702,9.9787234 L16.893617,8.49042553 L16.893617,11.4670213 L14.6611702,9.9787234 Z' })
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728CodePen\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('paragraph-CodePen'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 400 },
+        trigger: React.createElement(
+            'span',
+            { role: 'img', className: 'op-icon', onClick: function onClick() {
+                    return onRiddleOrCodePenClick('Riddle');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', fill: 'currentColor' },
+                React.createElement('path', {
+                    d: 'M12.0135981,2 C14.9585189,2 17.345849,4.38716704 17.345849,7.33333333 C17.345849,9.38478693 16.1882418,11.1657179 14.4903288,12.0578577 L17.2084049,16.7658872 C17.2378708,16.8169235 17.2591949,16.8704263 17.2727803,16.9248914 C17.3474476,17.0262914 17.3916465,17.1520943 17.3916465,17.2882205 C17.3916465,17.628088 17.1161295,17.9036051 16.7762619,17.9036051 L2.81174505,17.9048498 C2.75007855,17.9255976 2.68404472,17.9368421 2.61538462,17.9368421 C2.27551708,17.9368421 2,17.661325 2,17.3214575 L2,4.90050552 C2,4.44767651 2.36696407,4.08058607 2.8201909,4.08058607 L2.8201909,4.08058607 L4.598,4.08 L4.59829061,3.64037695 C4.59829061,2.78210363 5.25867561,2.07778272 6.09736436,2.00602116 L6.23871411,2 Z M11.9839597,3.23076923 L6.23745245,3.23076923 C6.01143198,3.23076923 5.82905984,3.41419855 5.82905984,3.64047008 L5.82905984,3.64047008 L5.829,4.08 L11.5615101,4.08058607 C13.3089935,4.08058607 14.7370181,5.4476011 14.8334247,7.17082808 L14.8386124,7.35677655 C14.8386124,9.16616658 13.3721154,10.632967 11.5615101,10.632967 L11.5615101,10.632967 L10.299,10.632 L12.6155561,14.6429723 C12.7020335,14.7927556 12.7183875,14.9637818 12.6748043,15.1180362 C12.6779184,15.1342067 12.6786336,15.1513556 12.6786336,15.1686715 C12.6786336,15.508539 12.4031165,15.7840561 12.063249,15.7840561 L5.39477011,15.7840561 C5.33908357,15.7840561 5.28512459,15.7766596 5.23382202,15.7627953 L5.21367522,15.7639098 L5.21367522,15.7639098 C4.87380768,15.7639098 4.59829061,15.4883927 4.59829061,15.1485252 L4.598,5.323 L3.23076923,5.32307709 L3.23,16.672 L15.733,16.672 L13.0769083,12.0713449 C12.9069827,11.7770252 13.0078241,11.40068 13.3021438,11.2307544 C13.3538063,11.200927 13.4079962,11.1794424 13.4631533,11.1658825 C14.9972153,10.5673738 16.0854701,9.07745387 16.0854701,7.33333333 C16.0854701,5.06705157 14.2491614,3.23076923 11.9839597,3.23076923 L11.9839597,3.23076923 Z M11.7212434,5.32867389 L11.5688942,5.32307709 L5.829,5.323 L5.82905984,11.0261966 C5.82905984,11.0464748 5.83052125,11.0664018 5.83334393,11.0858783 L5.84579569,11.1428571 L5.829,11.142 L5.829,14.553 L11.142,14.553 L8.71393544,10.3467056 C8.54400168,10.0523717 8.64484792,9.67600839 8.93918185,9.50607462 C9.01663814,9.46135521 9.09977514,9.43538787 9.18333591,9.42676402 L9.18350929,9.40512829 L11.5688942,9.40512829 C12.6982428,9.40512829 13.6102561,8.49132999 13.6102561,7.36410269 C13.6102561,6.23662753 12.6963072,5.32307709 11.5688942,5.32307709 Z' })
+            )
+        ) },
+    React.createElement(
+        'span',
+        null,
+        '\u5728Riddle\u4E2D\u6253\u5F00'
+    )
+), document.getElementById('paragraph-Riddle'));
+ReactDOM.render(React.createElement(
+    _next.Balloon.Tooltip,
+    {
+        align: 'b',
+        style: { maxWidth: 320 },
+        trigger: React.createElement(
+            'span',
+            { className: 'code-box-code-action', onClick: function onClick() {
+                    _next.Message.success('复制成功');
+                } },
+            React.createElement(
+                'svg',
+                { viewBox: '0 0 20 20', focusable: 'false', 'data-icon': 'snippets', width: '20px', height: '20px', fill: 'currentColor', 'aria-hidden': 'true' },
+                React.createElement('path', { d: 'M15,5 L15,18 L2,18 L2,5 L15,5 Z M14,6 L3,6 L3,17 L14,17 L14,6 Z M18,2 L18,15 L16,15 L16,13.999 L17,14 L17,3 L6,3 L6,4 L5,4 L5,2 L18,2 Z M9,8 L9,11 L12,11 L12,12 L9,12 L9,15 L8,15 L8,12 L5,12 L5,11 L8,11 L8,8 L9,8 Z' })
+            )
+        )
+    },
+    React.createElement(
+        'span',
+        null,
+        '\u590D\u5236\u4EE3\u7801'
+    )
+), document.getElementById('paragraph-copy-btn'));
+ReactDOM.render(React.createElement(
+    React.Fragment,
+    null,
+    React.createElement(
+        _next.Balloon.Tooltip,
+        {
+            align: 'b',
+            style: { maxWidth: 400 },
+            trigger: React.createElement(
+                'span',
+                { id: 'paragraph-icon-show', className: 'code-box-code-action code-expand-icon-show' },
+                React.createElement(
+                    'svg',
+                    { alt: 'expand code', width: '20px', height: '20px', viewBox: '0 0 20 20', fill: 'currentColor' },
+                    React.createElement('path', {
+                        d: 'M14.4307124,13.5667899 L15.1349452,14.276759 L10.7473676,18.6288871 L6.42783259,14.2738791 L7.13782502,13.5696698 L10.7530744,17.2147744 L14.4307124,13.5667899 Z M4.79130753,8.067524 L16.3824174,11.1733525 L16.1235984,12.1392784 L4.53248848,9.03344983 L4.79130753,8.067524 Z M10.8154102,1.57503552 L15.1349452,5.93004351 L14.4249528,6.63425282 L10.809949,2.98914817 L7.13206544,6.6371327 L6.42783259,5.92716363 L10.8154102,1.57503552 Z',
+                        transform: 'translate(10.457453, 10.101961) rotate(90.000000) translate(-10.457453, -10.101961) ' })
+                )
+            ) },
+        React.createElement(
+            'span',
+            null,
+            '\u5C55\u5F00\u4EE3\u7801',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '\u5C0F\u63D0\u793A: ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            ' 1. \u70B9\u51FB\u4E00\u4E0B\u4EE3\u7801\uFF0C\u8BD5\u4E00\u8BD5\u5728\u7EBF\u7F16\u8F91\u9884\u89C8\u5427\uFF01 ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '2. \u9875\u9762\u53F3\u4E0A\u65B9 \u6709 ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5168\u5C40\u4EE3\u7801\u5C55\u5F00'
+            ),
+            ' \u53CA ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5F00\u542F\u5728\u7EBF\u7F16\u8F91'
+            ),
+            ' \u6A21\u5F0F\u54DF\uFF5E'
+        )
+    ),
+    React.createElement(
+        _next.Balloon.Tooltip,
+        {
+            align: 'b',
+            style: { maxWidth: 400 },
+            trigger: React.createElement(
+                'span',
+                { id: 'paragraph-icon-hide', className: 'code-box-code-action code-expand-icon-hide', style: { display: 'none' } },
+                React.createElement(
+                    'svg',
+                    { alt: 'expand code', width: '20px', height: '20px', viewBox: '0 0 20 20', style: { fill: '#3B9AFF' } },
+                    React.createElement('path', {
+                        d: 'M14.4307124,13.5667899 L15.1349452,14.276759 L10.7473676,18.6288871 L6.42783259,14.2738791 L7.13782502,13.5696698 L10.7530744,17.2147744 L14.4307124,13.5667899 Z M4.79130753,8.067524 L16.3824174,11.1733525 L16.1235984,12.1392784 L4.53248848,9.03344983 L4.79130753,8.067524 Z M10.8154102,1.57503552 L15.1349452,5.93004351 L14.4249528,6.63425282 L10.809949,2.98914817 L7.13206544,6.6371327 L6.42783259,5.92716363 L10.8154102,1.57503552 Z',
+                        transform: 'translate(10.457453, 10.101961) rotate(90.000000) translate(-10.457453, -10.101961) ' })
+                )
+            ) },
+        React.createElement(
+            'span',
+            null,
+            '\u6536\u8D77\u4EE3\u7801',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '\u5C0F\u63D0\u793A: ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            ' 1. \u70B9\u51FB\u4E00\u4E0B\u4EE3\u7801\uFF0C\u8BD5\u4E00\u8BD5\u5728\u7EBF\u7F16\u8F91\u9884\u89C8\u5427\uFF01 ',
+            React.createElement('br', null),
+            React.createElement('br', null),
+            '2. \u9875\u9762\u53F3\u4E0A\u65B9 \u6709 ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5168\u5C40\u4EE3\u7801\u5C55\u5F00'
+            ),
+            ' \u53CA ',
+            React.createElement(
+                'strong',
+                null,
+                '\u5F00\u542F\u5728\u7EBF\u7F16\u8F91'
+            ),
+            ' \u6A21\u5F0F\u54DF\uFF5E'
+        )
+    )
+), document.getElementById('paragraph-fold-code'));})()</script>
+        </div>
+        
+
+        <div id="md-area-latter" class="markdown-body markdown">
+          <div id="demo-api" data-scroll-id="demo-api" class=" scroll-count-item active">
+            <h2 id="API">API <a class="header-anchor scroll-count-item" href="#API" data-scroll-id="API">#</a></h2>
+<h3 id="Typography">Typography <a class="header-anchor scroll-count-item" href="#Typography" data-scroll-id="Typography">#</a></h3>
+<blockquote>
+<p>继承 Typography.Text API</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>component</td>
+<td>设置标签类型</td>
+<td>custom</td>
+<td>'article'</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Typography Paragraph">Typography.Paragraph <a class="header-anchor scroll-count-item" href="#Typography Paragraph" data-scroll-id="Typography Paragraph">#</a></h3>
+<blockquote>
+<p>继承 Typography.Text 的 API</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>component</td>
+<td>设置标签类型</td>
+<td>custom</td>
+<td>'p'</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Typography Text">Typography.Text <a class="header-anchor scroll-count-item" href="#Typography Text" data-scroll-id="Typography Text">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>delete</td>
+<td>添加删除线样式</td>
+<td>Boolean</td>
+<td>false</td>
+</tr>
+<tr>
+<td>mark</td>
+<td>添加标记样式</td>
+<td>Boolean</td>
+<td>false</td>
+</tr>
+<tr>
+<td>underline</td>
+<td>添加下划线样式</td>
+<td>Boolean</td>
+<td>false</td>
+</tr>
+<tr>
+<td>strong</td>
+<td>是否加粗</td>
+<td>Boolean</td>
+<td>false</td>
+</tr>
+<tr>
+<td>code</td>
+<td>添加代码样式</td>
+<td>Boolean</td>
+<td>false</td>
+</tr>
+<tr>
+<td>component</td>
+<td>设置标签类型</td>
+<td>custom</td>
+<td>'span'</td>
+</tr>
+</tbody>
+</table>
+<!-- api-extra-start -->
+<h3 id="Typography Title">Typography.Title <a class="header-anchor scroll-count-item" href="#Typography Title" data-scroll-id="Typography Title">#</a></h3>
+<blockquote>
+<p>分为 H1, H2, H3, H4, H5, H6 组件，代表不同层级的标题
+继承 Typography.Text 的 API</p>
+</blockquote>
+<!-- api-extra-end -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      if (window.top !== window) {
+        window.addEventListener("hashchange", function () {
+          window.top.postMessage({
+            type: 'hashChange',
+            from: 'mc',
+            body: document.location.hash
+          }, '*');
+        }, false);
+        window.addEventListener("message", function (event) {
+          var data = event.data;
+          if (data && data.from === 'app' && data.type === 'hashChange' && data.body) {
+            changeHash(data.body);
+          }else if(data && data.from === 'app' && data.type === 'customIcon' && data.body){
+            window.customIcons = data.body.split(',').filter(key => !!key);
+            ReactDOM.unmountComponentAtNode(document.getElementById(`type-body`));
+            ReactDOM.unmountComponentAtNode(document.getElementById(`type-mount`));
+            window.typeRenderScript && window.typeRenderScript(window.localStorage.liveDemo);
+          }
+        }, false);
+      }
+
+      function changeHash(hash) {
+        window.location.hash = hash;
+      }
+
+    </script>
+    <script>
+      // 从localStorage读取是否使用react-live，若是，则同时切换所有代码
+      if (window.localStorage.liveDemo === 'false') {
+        liveDemo('READONLY', false);
+      } else {
+        liveDemo('LIVE', false);
+      }
+
+      // 从localStorage读取是否全部展开代码，若是，则同时切换所有展开按钮
+      if (window.localStorage.foldAll === 'true') {
+        expandAll('EXPAND');
+      }
+
+      function newLi({ anchor, level = 'H2' }) {
+        const li = document.createElement('li');
+        li.className = level === 'H2' ? 'demo-index-item' : 'demo-index-item demo-index-item-sub';
+        li.setAttribute('data-id', anchor);
+        li.innerHTML = `<a href="#${anchor}">${anchor}</a>`;
+        return li
+      }
+
+      function appendIndex(selector, parent, latter = null) {
+        const headers = Array.from(document.querySelectorAll(selector))
+          .map(el => ({ anchor: decodeURI(el.hash.replace('#', '')), level: el.parentElement.tagName }))
+          .filter(el => el.anchor !== 'demo-list' && el.anchor !== 'API');
+        if (latter) {
+          for (let i = 0; i < headers.length; ++i) {
+            parent.insertBefore(newLi(headers[i]), latter);
+          }
+        } else {
+          for (let i = 0; i < headers.length; ++i) {
+            parent.appendChild(newLi(headers[i]));
+          }
+        }
+      }
+
+      appendIndex(
+        '#md-area-former h2 .header-anchor, #md-area-former h3 .header-anchor',
+        document.getElementsByClassName('demo-index-list')[0],
+        document.querySelector('[data-id="demo-list"]'));
+      appendIndex(
+        '#md-area-latter h2 .header-anchor,#md-area-latter h3 .header-anchor',
+        document.getElementsByClassName('demo-index-list')[0],
+        null);
+
+      function switchDebugShow() {
+        document.querySelectorAll('[debug=true]').forEach((el) => el.style.display = el.style.display ? "" : "none");
+        const a = $('#debug-hide')[0].style.display;
+        $('#debug-hide')[0].style.display = $('#debug-show')[0].style.display;
+        $('#debug-show')[0].style.display = a;
+      }
+
+      const activeTargetInit = location.hash && !/#\//.test(location.hash) ? $(`${decodeURI(location.hash)}`) : null;
+      if (activeTargetInit && activeTargetInit[0]) {
+        if (activeTargetInit[0].getAttribute('debug') === 'true') switchDebugShow();
+        if (/next-demo-item/g.test(activeTargetInit[0].className)) activeTargetInit.addClass('active');
+      }
+
+      $('.header-anchor').on('click', function (event) {
+        const hash = event.target.href.split('#')[1];
+        $('.next-demo-item').removeClass('active');
+        const activeTarget = $(`#${decodeURI(hash)}`);
+        if (activeTarget && /next-demo-item/g.test(activeTarget[0].className)) activeTarget.addClass('active');
+      })
+
+      $('.demo-list-item-header a').on('click', function (event) {
+        const $target = $(event.currentTarget);
+        $('.demo-list-item').removeClass('active');
+        $target.parents('.demo-list-item').addClass('active');
+      });
+
+      $('.demo-index-item').on('click', function (event) {
+        const $target = $(event.currentTarget);
+        const id = $target.find('a').attr('href');
+        $('.next-demo-item').removeClass('active');
+        $(`${id}`).addClass('active');
+      });
+
+      $('.code-expand-icon-hide').on('click', function (event) {
+        const $target = $(event.currentTarget)[0];
+        const name = $target.id.replace('-icon-hide', '');
+        $(`#${name}-body`)[0].style.display = "none";
+        $(`#${name}-icon-hide`)[0].style.display = 'none';
+        $(`#${name}-icon-show`)[0].style.display = '';
+        $(`#${name}-operations`)[0].style.borderBottom = '';
+      });
+
+      $('.code-expand-icon-show').on('click', function (event) {
+        const $target = $(event.currentTarget)[0];
+        const name = $target.id.replace('-icon-show', '');
+        $(`#${name}-body`)[0].style.display = "";
+        $(`#${name}-icon-show`)[0].style.display = 'none';
+        $(`#${name}-icon-hide`)[0].style.display = '';
+        $(`#${name}-operations`)[0].style.borderBottom = 'dashed #EEE 1px';
+      });
+
+      $('#expand-all').on('click', function (event) {
+        if (window.localStorage.foldAll === 'true') {
+          expandAll("FOLD");
+          return;
+        }
+        expandAll('EXPAND');
+      });
+
+      $('#debug-demo').on('click', function (event) {
+        switchDebugShow();
+      });
+
+      $('#live-demo').on('click', function (event) {
+        window.loadingStaticRenderScript(true);
+        setTimeout(() => {
+          if (window.localStorage.liveDemo === 'true') {
+            liveDemo("READONLY");
+            return;
+          }
+          liveDemo('LIVE');
+        }, 500)
+      });
+
+      $(window).scroll(function () {
+        var $sections = $('.scroll-count-item:not([style*="display: none"])'); // 获取所有的内容块
+        var currentScroll = $(this).scrollTop();  // winodw滚动的高度
+        var $currentSection;   //   当前内容块
+        $sections.each(function () {
+          var divPosition = $(this).offset().top;  // 获取到当前内容块具体页面顶部的距离
+          if (divPosition - 1 < currentScroll) {  //  通过条件判断匹配到当前滚动内容块
+            $currentSection = $(this);
+          }
+          // 如果楼层最上端有其它的内容快需要加一个判断
+          if ($currentSection) {
+            var id = $currentSection.attr('data-scroll-id');
+            $('.demo-index-item').removeClass('active');
+            $('.demo-index-item[data-id="' + id + '"]:not([style*="display: none"])').addClass('active');
+          }
+        });
+      });
+    </script>
+</body>
+
+</html>
