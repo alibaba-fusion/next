@@ -101,11 +101,11 @@ class Demo extends React.Component {
                         <Button type="primary" onClick={this.showDialog}>Show Dialog</Button>
                         <Select style={{ width: '150px' }} dataSource={['hello', 'bye']} />
                         <DatePicker />
-                        <TimePicker />
+                        <TimePicker  />
                         <RangePicker />
-                        <DatePicker2 />
+                        <DatePicker2 showTime />
                         <TimePicker2 />
-                        <RangePicker2 />
+                        <RangePicker2 showTime />
                         <Calendar style={{ width: '350px', padding: '12px', border: '1px solid #C4C6CF', borderRadius: '3px' }} shape="card" />
 
                         <Pagination defaultCurrent={2} />

@@ -1,18 +1,16 @@
 # Latest Log 
 
-## [1.23.18](https://github.com/alibaba-fusion/next/compare/1.23.17...1.23.18) (2021-07-27)
+## [1.23.22](https://github.com/alibaba-fusion/next/compare/1.23.21...1.23.22) (2021-08-05)
 
 
 ### Bug Fixes
 
-* **Calendar:** select in calendar can't show in h5 ([5cb9f42](https://github.com/alibaba-fusion/next/commit/5cb9f42))
-* **Select:** native onCompositionStart onCompositionEnd fix [#3181](https://github.com/alibaba-fusion/next/issues/3181) ([0b24e3a](https://github.com/alibaba-fusion/next/commit/0b24e3a))
-* **Select:** position relative to warper fix [#3149](https://github.com/alibaba-fusion/next/issues/3149) ([c4c9a6c](https://github.com/alibaba-fusion/next/commit/c4c9a6c))
-* **Tree:** change unfold icon content ([4416c62](https://github.com/alibaba-fusion/next/commit/4416c62))
+* **Slider:** activeIndex not work when resize, close [#3245](https://github.com/alibaba-fusion/next/issues/3245) ([f53a36a](https://github.com/alibaba-fusion/next/commit/f53a36a))
+* **Table:** bug when list table with useVirtal ([856a352](https://github.com/alibaba-fusion/next/commit/856a352))
 
 
 ### Features
 
-* **Timeline:** add mode?: 'alternate' | 'left', close [#3183](https://github.com/alibaba-fusion/next/issues/3183)  ([439e9e4](https://github.com/alibaba-fusion/next/commit/439e9e4))
+* **Table:** add defaultOpenRowKeys, close [#521](https://github.com/alibaba-fusion/next/issues/521) ([1f9fabf](https://github.com/alibaba-fusion/next/commit/1f9fabf))
 
 

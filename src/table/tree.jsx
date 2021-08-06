@@ -17,6 +17,11 @@ export default function tree(BaseComponent) {
              */
             openRowKeys: PropTypes.array,
             /**
+             * 默认情况下展开的 Expand行 或者 Tree行，非受控模式
+             * @version 1.23.22
+             */
+            defaultOpenRowKeys: PropTypes.array,
+            /**
              * 点击tree展开或者关闭的时候触发的事件
              * @param {Array} openRowKeys tree模式下展开的key
              * @param {String} currentRowKey 当前点击行的key
@@ -59,7 +64,7 @@ export default function tree(BaseComponent) {
         constructor(props, context) {
             super(props, context);
             this.state = {
-                openRowKeys: props.openRowKeys || [],
+                openRowKeys: props.openRowKeys || props.defaultOpenRowKeys || [],
             };
         }
 

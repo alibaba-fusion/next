@@ -21,9 +21,9 @@ const helpers = {
         const listHeight = slideHeight * props.slidesToShow;
 
         const slidesToShow = props.slidesToShow || 1;
-        const currentSlide = props.rtl
-            ? slideCount - 1 - (slidesToShow - 1) - props.defaultActiveIndex
-            : props.defaultActiveIndex;
+
+        const activeIndex = 'activeIndex' in props ? props.activeIndex : props.defaultActiveIndex;
+        const currentSlide = props.rtl ? slideCount - 1 - (slidesToShow - 1) - activeIndex : activeIndex;
 
         this.setState(
             {
