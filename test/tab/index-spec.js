@@ -201,7 +201,19 @@ describe('Tab', () => {
                 excessMode: 'dropdown'
             });
             assert(wrapper.find('.next-tabs-scrollable').length > 0);
-        })
+        });
+
+        it('should still render with no errors without Tab.Item', () => {
+
+            function App() {
+                return <Tab>1234</Tab>;
+            }
+
+            wrapper = mount(<App/>);
+            wrapper.setProps({activeKey: "3"});
+
+            assert(wrapper.find('.next-tabs').length === 1);
+        });
     });
 
     describe('with action', () => {
