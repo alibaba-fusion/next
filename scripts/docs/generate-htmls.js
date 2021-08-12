@@ -45,6 +45,7 @@ async function buildCompiledDocs(cwd) {
     const { name: pName, version: pVersion } = pkgInfo;
     const from = path.join(cwd, LANGDOC_FOLDER);
     const to = path.join(cwd, COMPILED_FOLDER);
+    const componentListPath = path.join(to, 'category.json');
     const docParser = createDocParser({});
 
     // 1. clear cache
@@ -54,7 +55,7 @@ async function buildCompiledDocs(cwd) {
 
     // 2. compile demos (index.md && demo/*.md) into html
     const ignoreFolders = ['core'];
-    const ComponentList = [];
+    const componentList = [];
     const folders = await fs.readdir(from);
 
     for (const folder of folders) {
@@ -71,7 +72,7 @@ async function buildCompiledDocs(cwd) {
         // 2.1 compile apiFrom
         const apiFileExists = await fs.exists(apiFrom);
         if (apiFileExists) {
-            readmeDoc = await getReadmeDoc(apiFrom, docParser);
+            readmeDoc = await getReadmeDoc(apiFrom, docParser, componentList);
         } else {
             logger.warn(`${folder} does not has index.md`);
         }
@@ -112,6 +113,7 @@ async function buildCompiledDocs(cwd) {
             nunjuckRender(pName, folder, pVersion, enReadmeDoc, enDemosDoc, to, 'index.en-us.html');
         }
     }
+    await fs.writeFile(componentListPath, JSON.stringify(componentList));
 }
 
 function nunjuckRender(pName, folder, pVersion, readmeDoc, demosDoc, to, post) {
@@ -126,20 +128,26 @@ function nunjuckRender(pName, folder, pVersion, readmeDoc, demosDoc, to, post) {
             readmeDoc,
             demosDoc: demosDoc.sort((a, b) => parseInt(a.meta.order, 10) - parseInt(b.meta.order, 10)),
         },
-        (err, html) => {
+        async (err, html) => {
             if (err) {
                 logger.error(`Render index.html failed: ${err}`);
                 process.exitCode = 1;
             } else {
                 const htmlPath = path.join(to, folder, post);
-                fs.writeFile(htmlPath, html);
+                await fs.writeFile(htmlPath, html);
             }
         }
     );
 }
 
-async function getReadmeDoc(apiFrom, docParser) {
-    const { apiMdRendered } = await compileApiFrom(apiFrom, docParser);
+async function getReadmeDoc(apiFrom, docParser, componentList = null) {
+    const { apiMdParsed, apiMdRendered } = await compileApiFrom(apiFrom, docParser);
+    componentList &&
+        componentList.push({
+            english: apiMdParsed.meta.title,
+            chinese: apiMdParsed.meta.chinese,
+            category: apiMdParsed.meta.family,
+        });
     apiMdRendered.renderHtml = transformHTML(globalControls);
     return apiMdRendered;
 }
