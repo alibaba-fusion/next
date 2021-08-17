@@ -1,16 +1,11 @@
 # Latest Log 
 
-## [1.23.22](https://github.com/alibaba-fusion/next/compare/1.23.21...1.23.22) (2021-08-05)
+## [1.23.23](https://github.com/alibaba-fusion/next/compare/1.23.22...1.23.23) (2021-08-17)
 
 
 ### Bug Fixes
 
-* **Slider:** activeIndex not work when resize, close [#3245](https://github.com/alibaba-fusion/next/issues/3245) ([f53a36a](https://github.com/alibaba-fusion/next/commit/f53a36a))
-* **Table:** bug when list table with useVirtal ([856a352](https://github.com/alibaba-fusion/next/commit/856a352))
-
-
-### Features
-
-* **Table:** add defaultOpenRowKeys, close [#521](https://github.com/alibaba-fusion/next/issues/521) ([1f9fabf](https://github.com/alibaba-fusion/next/commit/1f9fabf))
+* **Overlay:** resolve crash when Popup receives an empty node, close [#3233](https://github.com/alibaba-fusion/next/issues/3233) ([c1f5765](https://github.com/alibaba-fusion/next/commit/c1f5765))
+* **Tab:** Maximum update depth on didUpdate fix [#2981](https://github.com/alibaba-fusion/next/issues/2981) ([c511de7](https://github.com/alibaba-fusion/next/commit/c511de7))
 
 
