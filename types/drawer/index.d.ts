@@ -28,7 +28,10 @@ export interface DrawerProps extends HTMLAttributesWeak, CommonProps {
      * 如 'close' 或 ['close','esc','mask'], []
      */
     closeMode?: CloseMode[] | 'close' | 'mask' | 'esc';
-
+    /**
+     * 隐藏时是否保留子节点，不销毁
+     */
+    cache?: boolean;
     /**
      * 标题
      */
