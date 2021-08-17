@@ -91,10 +91,10 @@ export default class Body extends React.Component {
 
     setEmptyDomStyle = () => {
         const { tableEl } = this.props;
-        // clientWidth获取的是除margin、border之外的内容区，会四舍五入，为了防止宽度超过实际table宽，所以 -1 处理
-        // getboundingclientRect 获取的是除 margin 之外的内容区，虽然不四舍五入，但是有border，表格有hasBorder参数，处理起来比较麻烦
-        // 所以直接用clientWidth - 1
-        const totalWidth = +(tableEl && tableEl.clientWidth) - 1 || '100%';
+        // getboundingclientRect 获取的是除 margin 之外的内容区，可能带小数点，不四舍五入
+        const borderLeftWidth = dom.getStyle(tableEl, 'borderLeftWidth');
+        const tableWidth = tableEl && tableEl.getBoundingClientRect().width;
+        const totalWidth = tableWidth - borderLeftWidth - 1 || '100%';
 
         dom.setStyle(this.emptyNode, { width: totalWidth });
     };

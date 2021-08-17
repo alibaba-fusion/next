@@ -46,6 +46,11 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     footerActions?: Array<string>;
 
     /**
+     * 隐藏时是否保留子节点，不销毁
+     */
+    cache?: boolean;
+
+    /**
      * 在点击确定按钮时触发的回调函数
      */
     onOk?: (event: React.MouseEvent) => void;
