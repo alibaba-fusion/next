@@ -1,8 +1,8 @@
-# 无限滚动
+# 大数据
 
 - order: 15
 
-select 配合无限滚动
+select 开启无限滚动可支持大数据的 dataSource，保证性能
 
 :::lang=en-us
 # virtual-select
