@@ -344,3 +344,22 @@
 }
 
 @import "./rtl.scss";
+
+.#{$css-prefix}message-wrapper-v2 {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    left: 0;
+    z-index: 1001;
+    width: 100%;
+    pointer-events: none;
+}
+.#{$css-prefix}message-list {
+    padding: 8px;
+    text-align: center;
+
+    .#{$css-prefix}message {
+        display: inline-block;
+        pointer-events: all;
+    }
+}

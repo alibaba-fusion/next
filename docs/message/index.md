@@ -87,6 +87,30 @@ Message.success({
 
 1.21.6加入，建议通过这个HOC来获得命令式调起Message的API，而尽量不使用 `Message.[success|error|notice|help|loading|show|hide]`，能避免fusion config错误的bug，详细原因参考 `Dialog.withContext` 的文档。
 
+### Message.config 配置多实例
+
+`@alifd/next@1.24.0` 加入，配置后会采用多实例的方式
+
+```js
+Message.config({
+  top: 100,
+  duration: 2000,
+  maxCount: 3,
+});
+```
+
+| 参数         | 说明                    | 类型        | 默认值       |
+| ------------ | --------------------- | --------- | --------- |
+| duration     | 默认自动关闭延时，单位秒  | Number    | 3000      |
+| top          | 消息距离顶部的位置	      | Number    | 8         |
+| maxCount     | 最多同时出现的个数, 默认不限制 | Number | - |  |
+
+```js
+const instance = Message.success('this is a message');
+
+instance.close(); // 可以用 close 直接关闭弹窗
+```
+
 <!-- api-extra-end -->
 
 ## 无障碍键盘操作指南
