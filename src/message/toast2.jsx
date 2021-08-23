@@ -37,7 +37,7 @@ const MessageWrapper = props => {
                 animation={{
                     appear: 'pulse',
                     enter: 'pulse',
-                    leave: 'fadeOutUp',
+                    leave: `${prefix}message-fade-leave`,
                 }}
                 singleMode={false}
             >

@@ -26,6 +26,8 @@
 
 4.  在 `1.24` 版本加入大数支持，通过 `stringMode` 开启大数或高精度小数支持，输入输出都变为 `String` 类型，具体参考[大数与高精度小数](#bignumber-container)
 
+5.  如果需要输入小数，需设置 `precision` 小数点位数
+
 ## API
 
 ### NumberPicker
