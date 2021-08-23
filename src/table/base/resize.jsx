@@ -43,12 +43,10 @@ class Resize extends React.Component {
         this.select();
     }
     unSelect() {
-        const height = dom.getStyle(this.props.tableEl, 'height');
         dom.setStyle(document.body, {
             userSelect: 'none',
             cursor: 'ew-resize',
         });
-        dom.setStyle(this.resizeRef, { height });
         document.body.setAttribute('unselectable', 'on');
         dom.addClass(this.resizeRef, 'resizing');
     }
@@ -57,7 +55,6 @@ class Resize extends React.Component {
             userSelect: '',
             cursor: '',
         });
-        dom.setStyle(this.resizeRef, { height: '100%' });
         document.body.removeAttribute('unselectable');
         dom.removeClass(this.resizeRef, 'resizing');
     }
