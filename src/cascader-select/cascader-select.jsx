@@ -647,8 +647,12 @@ class CascaderSelect extends Component {
 
             value = [...noExistedValues, ...value];
             // onChange 中的 data 参数也应该保留不存在的 value 的数据
-            data = [...noExistedValues.map(v => this._valueDataCache[v]).filter(v => v), ...data];
-
+            // 在 dataSource 异步加载的情况下，会出现value重复的现象，需要去重
+            data = [...noExistedValues.map(v => this._valueDataCache[v]).filter(v => v), ...data].filter(
+                (current, index, arr) => {
+                    return index === arr.indexOf(current);
+                }
+            );
             // 更新缓存
             this.refreshValueDataCache(value);
         }

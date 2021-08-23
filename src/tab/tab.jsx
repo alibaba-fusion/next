@@ -185,7 +185,7 @@ class Tab extends Component {
             });
         }
 
-        return `${activeKey}`;
+        return activeKey !== undefined ? `${activeKey}` : undefined;
     }
 
     getNextActiveKey(isNext) {

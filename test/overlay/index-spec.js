@@ -1070,4 +1070,17 @@ describe('Popup', () => {
 
         ReactDOM.unmountComponentAtNode(container);
     });
+
+    // https://github.com/alibaba-fusion/next/issues/3233
+    it('fix crash when Popup receives an empty node', () => {
+        wrapper = render(
+            <div>
+                <Popup trigger={<Button className="btn">Open</Button>} triggerType="click" />
+                <br />
+            </div>
+        )
+        const buttonDom = wrapper.find(".btn");
+
+        assert(buttonDom);
+    })
 });

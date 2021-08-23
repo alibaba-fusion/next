@@ -29,10 +29,7 @@ class Popup extends Component {
          * 当 triggerType 为 click 时才生效，可自定义触发弹层显示的键盘码
          */
 
-        triggerClickKeycode: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.array,
-        ]),
+        triggerClickKeycode: PropTypes.oneOfType([PropTypes.number, PropTypes.array]),
         /**
          * 弹层当前是否显示
          */
@@ -95,10 +92,7 @@ class Popup extends Component {
         super(props);
 
         this.state = {
-            visible:
-                typeof props.visible === 'undefined'
-                    ? props.defaultVisible
-                    : props.visible,
+            visible: typeof props.visible === 'undefined' ? props.defaultVisible : props.visible,
         };
 
         bindCtx(this, [
@@ -154,9 +148,7 @@ class Popup extends Component {
 
     handleTriggerKeyDown(e) {
         const { triggerClickKeycode } = this.props;
-        const keycodes = Array.isArray(triggerClickKeycode)
-            ? triggerClickKeycode
-            : [triggerClickKeycode];
+        const keycodes = Array.isArray(triggerClickKeycode) ? triggerClickKeycode : [triggerClickKeycode];
         if (keycodes.includes(e.keyCode)) {
             e.preventDefault();
             this.handleTriggerClick(e);
@@ -246,48 +238,22 @@ class Popup extends Component {
 
         if (!disabled) {
             const { triggerType } = this.props;
-            const triggerTypes = Array.isArray(triggerType)
-                ? triggerType
-                : [triggerType];
-            const {
-                onClick,
-                onKeyDown,
-                onMouseEnter,
-                onMouseLeave,
-                onFocus,
-                onBlur,
-            } = (trigger && trigger.props) || {};
+            const triggerTypes = Array.isArray(triggerType) ? triggerType : [triggerType];
+            const { onClick, onKeyDown, onMouseEnter, onMouseLeave, onFocus, onBlur } =
+                (trigger && trigger.props) || {};
             triggerTypes.forEach(triggerType => {
                 switch (triggerType) {
                     case 'click':
-                        props.onClick = makeChain(
-                            this.handleTriggerClick,
-                            onClick
-                        );
-                        props.onKeyDown = makeChain(
-                            this.handleTriggerKeyDown,
-                            onKeyDown
-                        );
+                        props.onClick = makeChain(this.handleTriggerClick, onClick);
+                        props.onKeyDown = makeChain(this.handleTriggerKeyDown, onKeyDown);
                         break;
                     case 'hover':
-                        props.onMouseEnter = makeChain(
-                            this.handleTriggerMouseEnter,
-                            onMouseEnter
-                        );
-                        props.onMouseLeave = makeChain(
-                            this.handleTriggerMouseLeave,
-                            onMouseLeave
-                        );
+                        props.onMouseEnter = makeChain(this.handleTriggerMouseEnter, onMouseEnter);
+                        props.onMouseLeave = makeChain(this.handleTriggerMouseLeave, onMouseLeave);
                         break;
                     case 'focus':
-                        props.onFocus = makeChain(
-                            this.handleTriggerFocus,
-                            onFocus
-                        );
-                        props.onBlur = makeChain(
-                            this.handleTriggerBlur,
-                            onBlur
-                        );
+                        props.onFocus = makeChain(this.handleTriggerFocus, onFocus);
+                        props.onBlur = makeChain(this.handleTriggerBlur, onBlur);
                         break;
                     default:
                         break;
@@ -300,9 +266,7 @@ class Popup extends Component {
 
     renderContent() {
         const { children, triggerType } = this.props;
-        const triggerTypes = Array.isArray(triggerType)
-            ? triggerType
-            : [triggerType];
+        const triggerTypes = Array.isArray(triggerType) ? triggerType : [triggerType];
         const content = Children.only(children);
         const { onMouseDown, onMouseEnter, onMouseLeave } = content.props;
         const props = {
@@ -312,20 +276,11 @@ class Popup extends Component {
         triggerTypes.forEach(triggerType => {
             switch (triggerType) {
                 case 'focus':
-                    props.onMouseDown = makeChain(
-                        this.handleContentMouseDown,
-                        onMouseDown
-                    );
+                    props.onMouseDown = makeChain(this.handleContentMouseDown, onMouseDown);
                     break;
                 case 'hover':
-                    props.onMouseEnter = makeChain(
-                        this.handleContentMouseEnter,
-                        onMouseEnter
-                    );
-                    props.onMouseLeave = makeChain(
-                        this.handleContentMouseLeave,
-                        onMouseLeave
-                    );
+                    props.onMouseEnter = makeChain(this.handleContentMouseEnter, onMouseEnter);
+                    props.onMouseLeave = makeChain(this.handleContentMouseLeave, onMouseLeave);
                     break;
                 default:
                     break;
@@ -336,15 +291,7 @@ class Popup extends Component {
     }
 
     renderPortal() {
-        const {
-            target,
-            safeNode,
-            followTrigger,
-            triggerType,
-            hasMask,
-            wrapperStyle,
-            ...others
-        } = this.props;
+        const { target, safeNode, followTrigger, triggerType, hasMask, wrapperStyle, ...others } = this.props;
         let { container } = this.props;
         const findTriggerNode = () => findDOMNode(this);
         const safeNodes = Array.isArray(safeNode) ? [...safeNode] : [safeNode];
@@ -376,7 +323,7 @@ class Popup extends Component {
                 hasMask={hasMask}
                 onRequestClose={this.handleRequestClose}
             >
-                {this.renderContent()}
+                {this.props.children && this.renderContent()}
             </Overlay>
         );
     }

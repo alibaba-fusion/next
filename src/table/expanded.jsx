@@ -40,6 +40,11 @@ export default function expanded(BaseComponent, stickyLock) {
              */
             openRowKeys: PropTypes.array,
             /**
+             * 默认情况下展开的 Expand行 或者 Tree行，非受控模式
+             * @version 1.23.22
+             */
+            defaultOpenRowKeys: PropTypes.array,
+            /**
              * 是否显示点击展开额外渲染行的+号按钮
              */
             hasExpandedRowCtrl: PropTypes.bool,
@@ -81,7 +86,7 @@ export default function expanded(BaseComponent, stickyLock) {
         };
 
         state = {
-            openRowKeys: this.props.openRowKeys || [],
+            openRowKeys: this.props.openRowKeys || this.props.defaultOpenRowKeys || [],
         };
 
         getChildContext() {

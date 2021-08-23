@@ -102,6 +102,11 @@ export default class Dialog extends Component {
             PropTypes.oneOf(['close', 'mask', 'esc']),
         ]),
         /**
+         * 隐藏时是否保留子节点，不销毁 （低版本通过 overlayProps 实现）
+         * @version 1.23
+         */
+        cache: PropTypes.bool,
+        /**
          * 对话框关闭时触发的回调函数
          * @param {String} trigger 关闭触发行为的描述字符串
          * @param {Object} event 关闭时事件对象
@@ -167,6 +172,7 @@ export default class Dialog extends Component {
         footerActions: ['ok', 'cancel'],
         onOk: noop,
         onCancel: noop,
+        cache: false,
         okProps: {},
         cancelProps: {},
         closeable: 'esc,close',
@@ -373,6 +379,7 @@ export default class Dialog extends Component {
             shouldUpdatePosition,
             align,
             popupContainer,
+            cache,
             overlayProps,
             rtl,
         } = this.props;
@@ -384,6 +391,7 @@ export default class Dialog extends Component {
         const newOverlayProps = {
             disableScroll: true,
             container: popupContainer,
+            cache,
             ...overlayProps,
             prefix,
             visible,

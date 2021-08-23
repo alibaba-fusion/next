@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { obj } from '../../util';
+import { obj, pickAttrs } from '../../util';
 
 export default class Cell extends React.Component {
     static propTypes = {
@@ -113,7 +113,7 @@ export default class Cell extends React.Component {
         });
 
         return (
-            <Tag {...others} className={cls} style={tagStyle} role="gridcell">
+            <Tag {...pickAttrs(others)} className={cls} style={tagStyle} role="gridcell">
                 <div
                     className={`${prefix}table-cell-wrapper`}
                     style={innerStyle}

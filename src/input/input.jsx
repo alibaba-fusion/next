@@ -381,6 +381,7 @@ export default class Input extends Base {
             return (
                 <Group
                     {...dataProps}
+                    prefix={prefix}
                     className={className}
                     style={style}
                     disabled={disabled}

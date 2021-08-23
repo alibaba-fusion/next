@@ -225,9 +225,14 @@ class Table extends React.Component {
          */
         getExpandedColProps: PropTypes.func,
         /**
-         * 默认情况下展开的 Expand行 或者 Tree行 , 传入此属性为受控状态，一般配合 onRowOpen 使用
+         * 当前展开的 Expand行 或者 Tree行 , 传入此属性为受控状态，一般配合 onRowOpen 使用
          */
         openRowKeys: PropTypes.array,
+        /**
+         * 默认情况下展开的 Expand行 或者 Tree行，非受控模式
+         * @version 1.23.22
+         */
+        defaultOpenRowKeys: PropTypes.array,
         /**
          * 在 Expand行 或者 Tree行 展开或者收起的时候触发的事件
          * @param {Array} openRowKeys 展开的渲染行的key

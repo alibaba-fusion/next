@@ -11,6 +11,7 @@ import * as _htmlId from './htmlId';
 import _guid from './guid';
 import _KEYCODE from './keycode';
 import _date from './date';
+import _pickAttrs from './pick-attrs';
 
 export const dom = _dom;
 export const env = _env;
@@ -25,3 +26,4 @@ export const guid = _guid;
 export const KEYCODE = _KEYCODE;
 export const htmlId = _htmlId;
 export const datejs = _date;
+export const pickAttrs = _pickAttrs;

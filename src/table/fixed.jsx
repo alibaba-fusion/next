@@ -101,10 +101,10 @@ export default function fixed(BaseComponent, stickyLock) {
 
             const { scrollLeft, scrollWidth, clientWidth } = currentTarget;
             const scrollToRightEnd = !(scrollLeft < scrollWidth - clientWidth);
+            const { prefix, loading } = this.props;
 
-            if (scrollToRightEnd !== this.scrollToRightEnd) {
+            if (!loading && scrollToRightEnd !== this.scrollToRightEnd) {
                 this.scrollToRightEnd = scrollToRightEnd;
-                const { prefix } = this.props;
                 const table = this.getTableNode();
 
                 const leftFunc = scrollToRightEnd ? 'removeClass' : 'addClass';
