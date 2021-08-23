@@ -1,11 +1,11 @@
 # Latest Log 
 
-## [1.23.23](https://github.com/alibaba-fusion/next/compare/1.23.22...1.23.23) (2021-08-17)
+## [1.23.24](https://github.com/alibaba-fusion/next/compare/1.23.23...1.23.24) (2021-08-23)
 
 
 ### Bug Fixes
 
-* **Overlay:** resolve crash when Popup receives an empty node, close [#3233](https://github.com/alibaba-fusion/next/issues/3233) ([c1f5765](https://github.com/alibaba-fusion/next/commit/c1f5765))
-* **Tab:** Maximum update depth on didUpdate fix [#2981](https://github.com/alibaba-fusion/next/issues/2981) ([c511de7](https://github.com/alibaba-fusion/next/commit/c511de7))
+* **CascaderSelect:** deduplicate value ([3c86c31](https://github.com/alibaba-fusion/next/commit/3c86c31))
+* **Table:** filter invalid dom attributes ([1a40ac6](https://github.com/alibaba-fusion/next/commit/1a40ac6))
 
 
