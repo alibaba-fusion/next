@@ -99,11 +99,11 @@ Message.config({
 });
 ```
 
-| 参数         | 说明                    | 类型        | 默认值       |
-| ------------ | --------------------- | --------- | --------- |
-| duration     | 默认自动关闭延时，单位秒  | Number    | 3000      |
-| top          | 消息距离顶部的位置	      | Number    | 8         |
-| maxCount     | 最多同时出现的个数, 默认不限制 | Number | - |  |
+| 参数       | 说明               | 类型     | 默认值  |     |
+| -------- | ---------------- | ------ | ---- | --- |
+| duration | 默认自动关闭延时，单位秒     | Number | 3000 |     |
+| top      | 消息距离顶部的位置        | Number | 8    |     |
+| maxCount | 最多同时出现的个数, 默认不限制 | Number | -    |     |
 
 ```js
 const instance = Message.success('this is a message');

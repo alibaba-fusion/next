@@ -125,6 +125,12 @@ import '@alifd/next/lib/button/style';
 
 ## 🌈 Contributing
 
+Use Gitpod, a free online dev environment for GitHub.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/alibaba-fusion/next)
+
+Or clone locally:
+
 -   [Contributing](./site/en-us/contributing.md)
 
 ## 📣 Join Group

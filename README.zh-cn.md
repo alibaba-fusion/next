@@ -135,8 +135,13 @@ babel 配置：
 -   [国际化](./site/zh-cn/i18n.md)
 -   [字体文件私有化部署](./site/zh-cn/font-deploy.md)
 
-## 🌈 贡献代码
 
+## 🌈 贡献代码
+推荐在线编辑：使用 Gitpod, 一个源自 GitHub 的免费在线代码编辑工具：
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/alibaba-fusion/next)
+
+具体步骤可参考：
 -   [贡献代码](./site/zh-cn/contributing.md)
 
 ## 📣 加入社区
