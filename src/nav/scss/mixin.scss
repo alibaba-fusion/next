@@ -13,7 +13,7 @@
     line-height: $height;
     font-size: $fontSize;
 
-    #{$menu-prefix}-item {
+    #{$menu-prefix}-item#{$nav-prefix}-item {
         margin-left: $marginLR;
         margin-right: $marginLR;
         padding: 0 $padding;
