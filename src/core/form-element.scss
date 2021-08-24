@@ -37,6 +37,9 @@
 }
 
 .next-form-element {
+    .next-form-item-label {
+        color: $form-element-preview-label-color;
+    }
     &.next-small {
         @include form-preview($form-element-small-preview-font-size, $form-element-small-preview-height);
     }
