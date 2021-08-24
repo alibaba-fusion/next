@@ -293,7 +293,7 @@ describe('toast', done => {
         }, 1000);
     });
 
-    it.only('should support config to open multiple instance', (done) => {
+    it('should support config to open multiple instance', (done) => {
         Message.config({});
         const instance1 = Message.show('content');
         const instance2 = Message.success('content');
