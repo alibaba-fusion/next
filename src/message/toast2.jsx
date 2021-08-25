@@ -161,6 +161,15 @@ function open(type) {
     };
 }
 
+function destory() {
+    if (!messageRootNode) return;
+    if (messageRootNode) {
+        ReactDOM.unmountComponentAtNode(messageRootNode);
+        messageRootNode.parentNode.removeChild(messageRootNode);
+        messageRootNode = null;
+    }
+}
+
 export default {
     open: open(),
     success: open('success'),
@@ -170,6 +179,7 @@ export default {
     loading: open('loading'),
     notice: open('notice'),
     close,
+    destory,
     config(...args) {
         if (!useState) {
             log.warning('need react version > 16.8.0');
