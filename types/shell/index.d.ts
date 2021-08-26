@@ -20,23 +20,23 @@ export interface ShellNavigationProps extends ShellCommonProps {
     align?: 'left' | 'right' | 'center';
     fixed?: boolean;
     trigger?: any;
-    onCollapseChange?: (collapse?: boolean) => {};
+    onCollapseChange?: (collapse?: boolean) => void;
 }
 
 export interface ShellLocalNavigationProps extends ShellCommonProps {
     collapse?: boolean;
-    onCollapseChange?: (collapse?: boolean) => {};
+    onCollapseChange?: (collapse?: boolean) => void;
 }
 
 export interface ShellToolDockProps extends ShellCommonProps {
     collapse?: boolean;
     fixed?: boolean;
-    onCollapseChange?: (collapse?: boolean) => {};
+    onCollapseChange?: (collapse?: boolean) => void;
 }
 
 export interface ShellAncillaryProps extends ShellCommonProps {
     collapse?: boolean;
-    onCollapseChange?: (collapse?: boolean) => {};
+    onCollapseChange?: (collapse?: boolean) => void;
 }
 
 export default class Shell extends Component<ShellProps, any> {
