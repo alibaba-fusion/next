@@ -41,5 +41,11 @@ ReactDOM.render(
         <Button type="primary" onClick={showNotice} style={style}>notice</Button>
         <Button type="primary" onClick={showHelp} style={style}>help</Button>
         <Button type="primary" onClick={showLoading} style={style}>loading</Button>
+
+        <Button type="primary" onClick={()=> {
+        console.log(Message, Message.destory)
+            Message.destory()
+        }} style={style}>destory</Button>
+
     </div>, mountNode);
 ````
