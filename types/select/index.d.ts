@@ -113,6 +113,11 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     popupContent?: React.ReactNode;
 
     /**
+     * 是否跟随滚动
+    */
+    followTrigger?: boolean;
+
+    /**
      * 是否使用本地过滤，在数据源为远程的时候需要关闭此项
      */
     filterLocal?: boolean;
