@@ -30,7 +30,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 默认展现的年
      */
-    defaultVisibleYear?: () => {};
+    defaultVisibleYear?: () => void;
 
     /**
      * 日期值（受控）moment 对象
@@ -154,7 +154,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 默认展示的起始月份
      */
-    defaultVisibleMonth?: () => {};
+    defaultVisibleMonth?: () => void;
 
     /**
      * 输入提示
@@ -458,7 +458,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 默认展现的月
      */
-    defaultVisibleMonth?: () => {};
+    defaultVisibleMonth?: () => void;
 
     /**
      * 日期值（受控）moment 对象
