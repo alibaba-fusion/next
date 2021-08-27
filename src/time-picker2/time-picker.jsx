@@ -4,18 +4,20 @@ import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import ConfigProvider from '../config-provider';
 import Input from '../input';
-import Icon from '../icon';
 import Button from '../button';
 import Overlay from '../overlay';
 import nextLocale from '../locale/zh-cn';
-import { func, obj, datejs } from '../util';
+import { func, obj, datejs, KEYCODE } from '../util';
 import TimePickerPanel from './panel';
-import { checkDateValue, formatDateValue } from './utils';
-import { onTimeKeydown } from '../date-picker/util';
+import { checkDateValue } from './utils';
+import { switchInputType, fmtValue, isValueChanged } from '../date-picker2/util';
+import SharedPT from './prop-types';
 import FooterPanel from '../date-picker2/panels/footer-panel';
+import DateInput from './module/date-input';
+import { TIME_PICKER_TYPE, TIME_INPUT_TYPE } from './constant';
 
 const { Popup } = Overlay;
-const { noop } = func;
+const { noop, checkDate, checkRangeDate } = func;
 const timePickerLocale = nextLocale.TimePicker;
 
 const presetPropType = PropTypes.shape({
@@ -24,9 +26,6 @@ const presetPropType = PropTypes.shape({
     ...Button.propTypes,
 });
 
-/**
- * TimePicker2
- */
 class TimePicker2 extends Component {
     static propTypes = {
         ...ConfigProvider.propTypes,
@@ -43,15 +42,15 @@ class TimePicker2 extends Component {
         /**
          * 输入框提示
          */
-        placeholder: PropTypes.string,
+        placeholder: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.string]),
         /**
          * 时间值，dayjs格式或者2020-01-01字符串格式，受控状态使用
          */
-        value: checkDateValue,
+        value: SharedPT.value,
         /**
          * 时间初值，dayjs格式或者2020-01-01字符串格式，非受控状态使用
          */
-        defaultValue: checkDateValue,
+        defaultValue: SharedPT.value,
         /**
          * 时间选择框的尺寸
          */
@@ -182,6 +181,7 @@ class TimePicker2 extends Component {
         preset: PropTypes.oneOfType([PropTypes.arrayOf(presetPropType), presetPropType]),
         inputProps: PropTypes.shape(Input.propTypes),
         popupComponent: PropTypes.elementType,
+        type: PropTypes.oneOf(['time', 'range']),
     };
 
     static defaultProps = {
@@ -193,6 +193,7 @@ class TimePicker2 extends Component {
         hasClear: true,
         disabled: false,
         hasBorder: true,
+        type: 'time',
         popupAlign: 'tl bl',
         popupTriggerType: 'click',
         onChange: noop,
@@ -201,21 +202,52 @@ class TimePicker2 extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const value = formatDateValue(props.value || props.defaultValue, props.format);
+        const isRange = props.type === TIME_PICKER_TYPE.RANGE;
+
+        this.state = {};
+        if (isRange) {
+            const { inputType, justBeginInput } = this.getInitRangeInputState();
+            this.state = {
+                inputType,
+                justBeginInput,
+            };
+        }
+
+        const { format, visible, defaultVisible, prefix } = this.props;
+
+        const value = this.getInitValue();
+
+        // const value = formatInputTimeValue(props.value || props.defaultValue, props.format, isRange);
         this.state = {
-            value,
-            inputStr: '',
+            ...this.state,
+            isRange,
+            inputStr: '', // 输入框的输入值， string类型
+            value, // 确定值 dayjs类型
+            curValue: value, // 临时值 dayjs类型
+            preValue: value, // 上个值 dayjs类型
+            inputValue: fmtValue(value, format),
             inputing: false,
-            visible: props.visible || props.defaultVisible,
+            visible: 'visible' in this.props ? visible : defaultVisible,
         };
-        this.prefixCls = `${this.props.prefix}time-picker2`;
+        this.prefixCls = `${prefix}time-picker2`;
     }
 
     static getDerivedStateFromProps(props) {
-        const state = {};
+        const { disabled, type } = props;
+        const isRange = type === TIME_PICKER_TYPE.RANGE;
+        let state = {
+            isRange,
+        };
 
         if ('value' in props) {
-            state.value = formatDateValue(props.value, props.format);
+            const value = isRange ? checkRangeDate(props.value, state.inputType, disabled) : checkDate(props.value);
+            if (isValueChanged(value, state.preValue)) {
+                state = {
+                    ...state,
+                    value,
+                    preValue: value,
+                };
+            }
         }
 
         if ('visible' in props) {
@@ -225,98 +257,43 @@ class TimePicker2 extends Component {
         return state;
     }
 
-    onValueChange = newValue => {
-        let nextValue = newValue;
-        if (nextValue !== null && !datejs.isSelf(nextValue)) {
-            nextValue = datejs(nextValue);
-        }
-        const ret = nextValue ? nextValue.format(this.props.format) : '';
-        this.props.onChange(nextValue, ret);
+    /**
+     * 获取初始值
+     */
+    getInitValue = () => {
+        const { props } = this;
+        const { type, value, defaultValue } = props;
+
+        let val = type === TIME_PICKER_TYPE.RANGE ? [null, null] : null;
+
+        val = 'value' in props ? value : 'defaultValue' in props ? defaultValue : val;
+
+        return this.checkValue(val);
     };
 
-    onClearValue = () => {
-        this.setState({
-            value: null,
-        });
-        if (this.state.value) {
-            this.onValueChange(null);
-        }
+    /**
+     * 获取 RangePicker 输入框初始输入状态
+     * @returns {Object} inputState
+     * @returns {boolean} inputState.justBeginInput 是否初始输入
+     * @returns {number} inputState.inputType 当前输入框
+     */
+    getInitRangeInputState = () => {
+        return {
+            justBeginInput: this.isEnabled(),
+            inputType: this.isEnabled(0) ? TIME_INPUT_TYPE.BEGIN : TIME_INPUT_TYPE.END,
+        };
     };
 
-    onInputChange = (inputValue, e, eventType) => {
-        if (!('value' in this.props)) {
-            if (eventType === 'clear' || !inputValue) {
-                e.stopPropagation();
-                this.onClearValue();
+    onKeyDown = e => {
+        switch (e.keyCode) {
+            case KEYCODE.ENTER: {
+                const { inputValue } = this.state;
+                this.handleChange(inputValue, 'KEYDOWN_ENTER');
+                this.onClick();
+                break;
             }
-
-            this.setState({
-                inputStr: inputValue,
-                inputing: true,
-            });
-        } else if (eventType === 'clear') {
-            // 受控状态下用户点击 clear
-            e.stopPropagation();
-            this.onValueChange(null);
-        }
-    };
-
-    onInputBlur = () => {
-        const { inputStr } = this.state;
-        if (inputStr) {
-            const { format } = this.props;
-            const parsed = datejs(inputStr, format, true);
-            if (parsed.isValid()) {
-                this.setState({
-                    value: parsed,
-                    inputStr: '',
-                });
-                this.onValueChange(parsed);
-            }
-            this.setState({
-                inputing: false,
-            });
-        }
-    };
-
-    onKeyown = e => {
-        const { value, inputStr } = this.state;
-        const { format, hourStep = 1, minuteStep = 1, secondStep = 1, disabledMinutes, disabledSeconds } = this.props;
-
-        let unit = 'second';
-
-        if (disabledSeconds) {
-            unit = disabledMinutes ? 'hour' : 'minute';
-        }
-        const timeStr = onTimeKeydown(
-            e,
-            {
-                format,
-                timeInputStr: inputStr,
-                steps: {
-                    hour: hourStep,
-                    minute: minuteStep,
-                    second: secondStep,
-                },
-                value,
-            },
-            unit
-        );
-
-        if (!timeStr) return;
-
-        this.onInputChange(timeStr);
-    };
-
-    onTimePanelSelect = value => {
-        if (!('value' in this.props)) {
-            this.setState({
-                value,
-                inputing: false,
-            });
-        }
-        if (!this.state.value || value.valueOf() !== this.state.value.valueOf()) {
-            this.onValueChange(value);
+            default:
+                return;
         }
     };
 
@@ -327,6 +304,205 @@ class TimePicker2 extends Component {
             });
         }
         this.props.onVisibleChange(visible, type);
+    };
+
+    onClick = () => {
+        const { visible, inputType } = this.state;
+
+        if (!visible) {
+            this.onVisibleChange(true);
+            this.handleInputFocus(inputType);
+        }
+    };
+    /**
+     * 处理点击文档区域导致的弹层收起逻辑
+     * @param {boolean} visible 是否可见
+     * @param {string} type 事件类型
+     */
+    handleVisibleChange = (visible, type) => {
+        if (type === 'docClick') {
+            // 弹层收起 触发 Change 逻辑
+            if (!visible) {
+                this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
+            }
+            this.onVisibleChange(visible);
+        }
+    };
+
+    handleInputFocus = inputType => {
+        let inputEl = this.dateInput && this.dateInput.input;
+
+        if (this.state.isRange) {
+            inputEl = inputEl && inputEl[inputType];
+        }
+
+        inputEl && inputEl.focus();
+    };
+
+    onOk = () => {
+        const { curValue } = this.state;
+        const checkedValue = this.checkValue(curValue);
+
+        func.invoke(this.props, 'onOk', this.getOutputArgs(checkedValue));
+
+        this.setState({ value: checkedValue });
+        this.handleChange(checkedValue, 'CLICK_OK');
+    };
+
+    onInputTypeChange = idx => {
+        const { inputType, visible } = this.state;
+
+        if (idx !== inputType) {
+            this.setState({
+                inputType: idx,
+                justBeginInput: !(idx !== null && visible),
+            });
+        }
+    };
+
+    checkValue = (value, strictly) => {
+        const { inputType } = this.state;
+        const formatter = v => (typeof v === 'string' ? datejs(v, 'HH:mm:ss') : v);
+        const formattedValue = Array.isArray(value) ? value.map(v => formatter(v)) : formatter(value);
+
+        return this.props.type === TIME_PICKER_TYPE.RANGE
+            ? checkRangeDate(formattedValue, inputType, this.props.disabled, strictly)
+            : checkDate(formattedValue);
+    };
+
+    /**
+     * 获取 `onChange` 和 `onOk` 方法的输出参数
+     * @param {Dayjs} value
+     * @returns 默认返回 `Dayjs` 实例和 `format` 格式化的值
+     *          如果传了了 `outputFormat` 属性则返回 `outputFormat` 格式化的值
+     */
+    getOutputArgs = value => {
+        const { format } = this.props;
+        return [value, fmtValue(value, format)];
+    };
+
+    onChange = v => {
+        const { state, props } = this;
+        const { format } = props;
+
+        const nextValue = v === undefined ? state.value : v;
+        const value = this.checkValue(nextValue);
+
+        this.setState({
+            curValue: value,
+            preValue: value,
+            inputStr: fmtValue(value, format),
+            inputValue: fmtValue(value, format),
+        });
+
+        func.invoke(this.props, 'onChange', this.getOutputArgs(nextValue));
+    };
+
+    shouldSwitchInput = value => {
+        const { inputType, justBeginInput } = this.state;
+        const idx = justBeginInput ? switchInputType(inputType) : value.indexOf(null);
+
+        if (idx !== -1 && this.isEnabled(idx)) {
+            this.onInputTypeChange(idx);
+            this.handleInputFocus(idx);
+            return true;
+        }
+
+        return false;
+    };
+
+    handleChange = (v, eventType) => {
+        const { format } = this.props;
+        const { isRange, value, preValue } = this.state;
+        const forceEvents = ['KEYDOWN_ENTER', 'CLICK_PRESET', 'CLICK_OK', 'INPUT_CLEAR', 'VISIBLE_CHANGE'];
+        const isTemporary = isRange && !forceEvents.includes(eventType);
+
+        // 面板收起时候，将值设置为确认值
+        v = eventType === 'VISIBLE_CHANGE' ? value : this.checkValue(v, !isTemporary);
+
+        const stringV = fmtValue(v, format);
+
+        this.setState({
+            curValue: v,
+            inputStr: stringV,
+            inputValue: stringV,
+            inputing: false,
+        });
+
+        if (!isTemporary) {
+            this.setState(
+                {
+                    value: v,
+                },
+                () => {
+                    // 判断当前选择结束，收起面板：
+                    // 1. 非 Range 选择
+                    // 2. 非 选择预设时间、面板收起、清空输入 操作
+                    // 3. 不需要切换输入框
+                    const shouldHidePanel =
+                        ['CLICK_PRESET', 'VISIBLE_CHANGE', 'KEYDOWN_ENTER', 'INPUT_CLEAR', 'CLICK_OK'].includes(
+                            eventType
+                        ) ||
+                        (isRange && !this.shouldSwitchInput(v));
+                    if (shouldHidePanel) {
+                        this.onVisibleChange(false);
+                    }
+
+                    if (isValueChanged(v, preValue)) {
+                        this.onChange(v);
+                    }
+                }
+            );
+        }
+    };
+
+    /**
+     * 获取输入框的禁用状态
+     * @param {Number} idx
+     * @returns {Boolean}
+     */
+    isEnabled = idx => {
+        const { disabled } = this.props;
+
+        return Array.isArray(disabled)
+            ? idx === undefined
+                ? !disabled[0] && !disabled[1]
+                : !disabled[idx]
+            : !disabled;
+    };
+
+    handleClear = () => {
+        /**
+         * 清空输入之后 input 组件内部会让第二个输入框获得焦点
+         * 所以这里需要设置 setTimeout 才能让第一个 input 获得焦点
+         */
+        this.clearTimeoutId = setTimeout(() => {
+            this.handleInputFocus(0);
+        });
+
+        this.setState({
+            inputType: TIME_INPUT_TYPE.BEGIN,
+            justBeginInput: this.isEnabled(),
+        });
+    };
+
+    handleInput = (v, eventType) => {
+        const { isRange } = this.state;
+        if (eventType === 'clear') {
+            this.handleChange(v, 'INPUT_CLEAR');
+
+            if (isRange) {
+                this.handleClear();
+            }
+        } else {
+            this.setState({
+                inputStr: v,
+                inputValue: v,
+                curValue: this.checkValue(v),
+                inputing: true,
+                visible: true,
+            });
+        }
     };
 
     renderPreview(others) {
@@ -386,8 +562,7 @@ class TimePicker2 extends Component {
             ...others
         } = this.props;
 
-        const { value, inputStr, inputing, visible } = this.state;
-
+        const { value, inputStr, inputValue, curValue, inputing, visible, isRange, inputType } = this.state;
         const triggerCls = classnames({
             [`${this.prefixCls}-trigger`]: true,
         });
@@ -400,26 +575,32 @@ class TimePicker2 extends Component {
             return this.renderPreview(obj.pickOthers(others, TimePicker2.PropTypes));
         }
 
-        const inputValue = inputing ? inputStr : (value && value.format(format)) || '';
         const sharedInputProps = {
+            prefix,
+            locale,
+            label,
+            state,
+            placeholder,
             ...inputProps,
             size,
             disabled,
-            value: inputValue,
+            value: inputing ? inputStr : isRange ? inputValue : fmtValue(value, format) || '',
             hasClear: value && hasClear,
-            onChange: this.onInputChange,
-            onBlur: this.onInputBlur,
-            onPressEnter: this.onInputBlur,
-            onKeyDown: this.onKeyown,
-            hint: <Icon type="clock" className={`${this.prefixCls}-symbol-clock-icon`} />,
+            inputType,
+            isRange,
+            onInputTypeChange: this.onInputTypeChange,
+            onInput: this.handleInput,
+            onKeyDown: this.onKeyDown,
+            ref: el => (this.dateInput = el),
         };
 
         const triggerInput = (
             <div className={triggerCls}>
-                <Input
+                <DateInput
                     {...sharedInputProps}
                     label={label}
                     state={state}
+                    onClick={this.onClick}
                     hasBorder={hasBorder}
                     placeholder={placeholder || locale.placeholder}
                     className={classnames(`${this.prefixCls}-input`)}
@@ -430,7 +611,9 @@ class TimePicker2 extends Component {
         const panelProps = {
             prefix,
             locale,
-            value,
+            value: inputing ? this.checkValue(inputStr) : curValue,
+            // value: curValue,
+            isRange,
             disabled,
             showHour: format.indexOf('H') > -1,
             showSecond: format.indexOf('s') > -1,
@@ -442,7 +625,7 @@ class TimePicker2 extends Component {
             disabledMinutes,
             disabledSeconds,
             renderTimeMenuItems,
-            onSelect: this.onTimePanelSelect,
+            onSelect: this.handleChange,
         };
 
         const classNames = classnames(
@@ -455,16 +638,16 @@ class TimePicker2 extends Component {
         );
 
         const PopupComponent = popupComponent ? popupComponent : Popup;
+        const oKable = !!(isRange ? inputValue && inputValue[inputType] : inputValue);
 
         return (
             <div {...obj.pickOthers(TimePicker2.propTypes, others)} className={classNames}>
                 <PopupComponent
-                    autoFocus
                     align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     visible={visible}
-                    onVisibleChange={this.onVisibleChange}
+                    onVisibleChange={this.handleVisibleChange}
                     trigger={triggerInput}
                     container={popupContainer}
                     disabled={disabled}
@@ -475,13 +658,15 @@ class TimePicker2 extends Component {
                     <div dir={others.dir} className={`${this.prefixCls}-wrapper`}>
                         <div className={`${this.prefixCls}-body`}>
                             <TimePickerPanel {...panelProps} />
-                            {preset ? (
+                            {preset || isRange ? (
                                 <FooterPanel
                                     prefix={prefix}
                                     className={`${this.prefixCls}-footer`}
                                     showTime
-                                    showOk={false}
-                                    onChange={this.onValueChange}
+                                    oKable={oKable}
+                                    showOk={isRange}
+                                    onOk={this.onOk}
+                                    onChange={this.handleChange}
                                     preset={preset}
                                 />
                             ) : null}

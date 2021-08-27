@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import nextLocale from '../locale/zh-cn';
 import { func, datejs } from '../util';
 import TimeMenu from './module/time-menu';
-import { checkDayjsObj } from './utils';
+import SharedPT from './prop-types';
 
 const { noop } = func;
 
@@ -14,7 +14,7 @@ class TimePickerPanel extends Component {
         /**
          * 时间值（dayjs 对象）
          */
-        value: checkDayjsObj,
+        value: SharedPT.value,
         /**
          * 是否显示小时
          */
@@ -74,6 +74,7 @@ class TimePickerPanel extends Component {
          * @param {Object} 选中后的日期值
          */
         onSelect: PropTypes.func,
+        isRange: PropTypes.bool,
         locale: PropTypes.object,
         disabled: PropTypes.bool,
         className: PropTypes.string,
@@ -89,14 +90,24 @@ class TimePickerPanel extends Component {
         disabledSeconds: noop,
         onSelect: noop,
         disabled: false,
+        isRange: false,
         locale: nextLocale.TimePicker,
     };
 
     prefixCls = `${this.props.prefix}time-picker2`;
 
-    onSelectMenuItem = (index, type) => {
-        const { value } = this.props;
-        const clonedValue = value ? value.clone() : datejs('00:00:00', 'HH:mm:ss', true);
+    /**
+     *
+     * @param {enum} panelType 'start' | 'end' | 'panel'
+     * @param {*} index
+     * @param {*} type 'hour' | 'minute' | 'second'
+     */
+    onSelectMenuItem = (panelType, index, type) => {
+        const { value, isRange } = this.props;
+        const valueArr = Array.isArray(value) ? value : [value];
+        const val = panelType === 'end' ? valueArr[1] : valueArr[0];
+
+        const clonedValue = val ? val.clone() : datejs('00:00:00', 'HH:mm:ss', true);
         let newValue;
         switch (type) {
             case 'hour':
@@ -109,13 +120,58 @@ class TimePickerPanel extends Component {
                 newValue = clonedValue.second(index);
                 break;
         }
-        this.props.onSelect(newValue);
+
+        if (isRange) {
+            const nextValueArray = [];
+            if (panelType === 'start') {
+                nextValueArray[0] = newValue;
+                nextValueArray[1] = value[1];
+            } else if (panelType === 'end') {
+                nextValueArray[0] = value[0];
+                nextValueArray[1] = newValue;
+            }
+
+            this.props.onSelect(nextValueArray, panelType);
+        } else {
+            this.props.onSelect(newValue, 'panel');
+        }
+    };
+
+    getDisabledItems = () => {
+        const { disabledHours, disabledMinutes, disabledSeconds, value, isRange } = this.props;
+
+        const disableds = {
+            newDisabledHours: [disabledHours],
+            newDisabledMinutes: [disabledMinutes],
+            newDisabledSeconds: [disabledSeconds],
+        };
+        if (!isRange) {
+            return disableds;
+        }
+
+        const dHours = disabledHours() || [];
+        const dMinutes = disabledMinutes() || [];
+        const dSeconds = disabledSeconds() || [];
+
+        const v0 = value[0];
+        const v1 = value[1];
+
+        disableds.newDisabledHours[0] = h => (v1 && h > v1.hour()) || dHours.indexOf(h) > -1;
+        disableds.newDisabledMinutes[0] = m => (v1 && m > v1.minute()) || dMinutes.indexOf(m) > -1;
+        disableds.newDisabledSeconds[0] = s => (v1 && s > v1.second()) || dSeconds.indexOf(s) > -1;
+
+        disableds.newDisabledHours[1] = h => (v0 && h < v0.hour()) || dHours.indexOf(h) > -1;
+        disableds.newDisabledMinutes[1] = m => (v0 && m < v0.minute()) || dMinutes.indexOf(m) > -1;
+        disableds.newDisabledSeconds[1] = s => (v0 && s < v0.second()) || dSeconds.indexOf(s) > -1;
+
+        return disableds;
     };
 
     render() {
         const {
             prefix,
             value,
+            isRange,
             locale,
             className,
             disabled,
@@ -125,66 +181,96 @@ class TimePickerPanel extends Component {
             hourStep,
             minuteStep,
             secondStep,
-            disabledHours,
-            disabledMinutes,
-            disabledSeconds,
             renderTimeMenuItems,
             ...others
         } = this.props;
 
         const colLen = [showHour, showMinute, showSecond].filter(v => v).length;
-        const classNames = classnames(`${this.prefixCls}-panel`, `${this.prefixCls}-panel-col-${colLen}`, className);
+        const classNames = classnames(
+            `${this.prefixCls}-panel`,
+            {
+                [`${this.prefixCls}-panel-col-${colLen}`]: !isRange,
+                [`${this.prefixCls}-panel-range`]: isRange,
+            },
+            className
+        );
+
+        const activeHour = [];
+        const activeMinute = [];
+        const activeSecond = [];
+
+        const valueArr = Array.isArray(value) ? value : [value];
+        valueArr.forEach((val, i) => {
+            if (val && datejs.isSelf(val)) {
+                activeHour[i] = val.hour();
+                activeMinute[i] = val.minute();
+                activeSecond[i] = val.second();
+            }
+        });
 
         const commonProps = {
             prefix,
             disabled,
-            onSelect: this.onSelectMenuItem,
             renderTimeMenuItems,
-            value,
         };
 
-        let activeHour;
-        let activeMinute;
-        let activeSecond;
+        const { newDisabledHours, newDisabledMinutes, newDisabledSeconds } = this.getDisabledItems();
 
-        if (value && datejs.isSelf(value)) {
-            activeHour = value.hour();
-            activeMinute = value.minute();
-            activeSecond = value.second();
-        }
-
-        return (
-            <div {...others} className={classNames}>
+        const generatePanel = index => (
+            <React.Fragment>
                 {showHour ? (
                     <TimeMenu
                         {...commonProps}
-                        activeIndex={activeHour}
+                        value={valueArr[index]}
+                        activeIndex={activeHour[index]}
                         title={locale.hour}
                         mode="hour"
                         step={hourStep}
-                        disabledItems={disabledHours}
+                        onSelect={this.onSelectMenuItem.bind(this, `${index === 0 ? 'start' : 'end'}`)}
+                        disabledItems={newDisabledHours[index]}
                     />
                 ) : null}
                 {showMinute ? (
                     <TimeMenu
                         {...commonProps}
-                        activeIndex={activeMinute}
+                        value={valueArr[index]}
+                        activeIndex={activeMinute[index]}
                         title={locale.minute}
                         mode="minute"
                         step={minuteStep}
-                        disabledItems={disabledMinutes}
+                        onSelect={this.onSelectMenuItem.bind(this, `${index === 0 ? 'start' : 'end'}`)}
+                        disabledItems={newDisabledMinutes[index]}
                     />
                 ) : null}
                 {showSecond ? (
                     <TimeMenu
                         {...commonProps}
-                        activeIndex={activeSecond}
+                        value={valueArr[index]}
+                        activeIndex={activeSecond[index]}
                         title={locale.second}
                         step={secondStep}
                         mode="second"
-                        disabledItems={disabledSeconds}
+                        onSelect={this.onSelectMenuItem.bind(this, `${index === 0 ? 'start' : 'end'}`)}
+                        disabledItems={newDisabledSeconds[index]}
                     />
                 ) : null}
+            </React.Fragment>
+        );
+
+        const singlePanel = generatePanel(0);
+
+        const panelClassNames = classnames(`${this.prefixCls}-panel-col-${colLen}`, `${this.prefixCls}-panel-list`);
+
+        const doublePanel = (
+            <React.Fragment>
+                <div className={panelClassNames}>{generatePanel(0)}</div>
+                <div className={panelClassNames}>{generatePanel(1)}</div>
+            </React.Fragment>
+        );
+
+        return (
+            <div {...others} className={classNames}>
+                {isRange ? doublePanel : singlePanel}
             </div>
         );
     }
