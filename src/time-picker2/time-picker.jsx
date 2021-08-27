@@ -9,9 +9,9 @@ import Overlay from '../overlay';
 import nextLocale from '../locale/zh-cn';
 import { func, obj, datejs, KEYCODE } from '../util';
 import TimePickerPanel from './panel';
-import { checkDateValue } from './utils';
-import { switchInputType, fmtValue, isValueChanged } from '../date-picker2/util';
+import { checkDateValue, onTimeKeydown } from './utils';
 import SharedPT from './prop-types';
+import { switchInputType, fmtValue, isValueChanged } from '../date-picker2/util';
 import FooterPanel from '../date-picker2/panels/footer-panel';
 import DateInput from './module/date-input';
 import { TIME_PICKER_TYPE, TIME_INPUT_TYPE } from './constant';
@@ -285,16 +285,45 @@ class TimePicker2 extends Component {
     };
 
     onKeyDown = e => {
-        switch (e.keyCode) {
-            case KEYCODE.ENTER: {
-                const { inputValue } = this.state;
-                this.handleChange(inputValue, 'KEYDOWN_ENTER');
-                this.onClick();
-                break;
-            }
-            default:
-                return;
+        if (e.keyCode === KEYCODE.ENTER) {
+            const { inputValue } = this.state;
+            this.handleChange(inputValue, 'KEYDOWN_ENTER');
+            this.onClick();
+            return;
         }
+
+        const { value, inputStr, inputType, isRange } = this.state;
+        const { format, hourStep = 1, minuteStep = 1, secondStep = 1, disabledMinutes, disabledSeconds } = this.props;
+
+        let unit = 'second';
+
+        if (disabledSeconds) {
+            unit = disabledMinutes ? 'hour' : 'minute';
+        }
+
+        const timeStr = onTimeKeydown(
+            e,
+            {
+                format,
+                timeInputStr: isRange ? inputStr[inputType] : inputStr,
+                steps: {
+                    hour: hourStep,
+                    minute: minuteStep,
+                    second: secondStep,
+                },
+                value,
+            },
+            unit
+        );
+
+        if (!timeStr) return;
+        let newInputStr = timeStr;
+        if (isRange) {
+            newInputStr = inputStr;
+            newInputStr[inputType] = timeStr;
+        }
+
+        this.handleChange(newInputStr, 'KEYDOWN_CODE');
     };
 
     onVisibleChange = (visible, type) => {
