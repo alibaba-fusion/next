@@ -17,4 +17,10 @@
     #{$time-picker2-prefix}-menu {
         flex: 1;
     }
+
+    &-range {
+        #{$time-picker2-prefix}-panel-list:last-of-type {
+            margin-left: $s-5;
+        }
+    }
 }
