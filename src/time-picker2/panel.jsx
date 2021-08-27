@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import nextLocale from '../locale/zh-cn';
-import { func, datejs } from '../util';
+import { func, datejs, pickAttrs } from '../util';
 import TimeMenu from './module/time-menu';
 import SharedPT from './prop-types';
 
@@ -269,7 +269,7 @@ class TimePickerPanel extends Component {
         );
 
         return (
-            <div {...others} className={classNames}>
+            <div {...pickAttrs(others)} className={classNames}>
                 {isRange ? doublePanel : singlePanel}
             </div>
         );
