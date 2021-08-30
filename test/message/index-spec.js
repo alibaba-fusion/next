@@ -426,3 +426,13 @@ describe('toast quick-calling', () => {
         });
     }
 });
+describe('Message v2', () => {
+    it('should support config to open multiple instance', (done) => {
+        Message.config({});
+        const instance1 = Message.show('content');
+        const instance2 = Message.success('content');
+        assert(document.querySelectorAll('.next-message-wrapper-v2 .next-message').length === 2);
+        Message.destory();
+        setTimeout(done, 500);
+    });
+});

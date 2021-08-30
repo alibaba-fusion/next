@@ -20,7 +20,7 @@ export default function virtual(BaseComponent) {
              */
             rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
             maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            primaryKey: PropTypes.string,
+            primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
             dataSource: PropTypes.array,
             /**
              * 在内容区域滚动的时候触发的函数
@@ -52,14 +52,15 @@ export default function virtual(BaseComponent) {
             super(props, context);
             const { useVirtual, dataSource } = props;
 
-            this.hasVirtualData = useVirtual && dataSource && dataSource.length > 0;
-        }
+            const hasVirtualData = useVirtual && dataSource && dataSource.length > 0;
 
-        state = {
-            rowHeight: this.props.rowHeight,
-            scrollToRow: this.props.scrollToRow,
-            height: this.props.maxBodyHeight,
-        };
+            this.state = {
+                rowHeight: this.props.rowHeight,
+                scrollToRow: this.props.scrollToRow,
+                height: this.props.maxBodyHeight,
+                hasVirtualData,
+            };
+        }
 
         getChildContext() {
             return {
@@ -85,11 +86,15 @@ export default function virtual(BaseComponent) {
                 state.scrollToRow = nextProps.scrollToRow;
             }
 
+            if (prevState.useVirtual !== nextProps.useVirtual || prevState.dataSource !== nextProps.dataSource) {
+                state.hasVirtualData = nextProps.useVirtual && nextProps.dataSource && nextProps.dataSource.length > 0;
+            }
+
             return state;
         }
 
         componentDidMount() {
-            if (this.hasVirtualData) {
+            if (this.state.hasVirtualData && this.bodyNode) {
                 this.lastScrollTop = this.bodyNode.scrollTop;
             }
 
@@ -105,8 +110,8 @@ export default function virtual(BaseComponent) {
         }
 
         reComputeSize() {
-            const { rowHeight } = this.state;
-            if (typeof rowHeight === 'function' && this.hasVirtualData) {
+            const { rowHeight, hasVirtualData } = this.state;
+            if (typeof rowHeight === 'function' && hasVirtualData) {
                 const row = this.getRowNode();
                 const rowClientHeight = row && row.clientHeight;
                 if (rowClientHeight !== this.state.rowHeight) {
@@ -163,14 +168,14 @@ export default function virtual(BaseComponent) {
         }
 
         adjustScrollTop() {
-            if (this.hasVirtualData) {
+            if (this.state.hasVirtualData && this.bodyNode) {
                 this.bodyNode.scrollTop =
                     (this.lastScrollTop % this.state.rowHeight) + this.state.rowHeight * this.state.scrollToRow;
             }
         }
 
         adjustSize() {
-            if (this.hasVirtualData) {
+            if (this.state.hasVirtualData && this.bodyNode) {
                 const body = this.bodyNode;
                 const virtualScrollNode = body.querySelector('div');
                 const { clientHeight, clientWidth } = body;
@@ -180,17 +185,15 @@ export default function virtual(BaseComponent) {
                 const { prefix } = this.props;
                 const headerNode = tableNode.querySelector(`.${prefix}table-header table`);
                 const headerClientWidth = headerNode && headerNode.clientWidth;
-
+                // todo 2.0 设置宽度这个可以去掉
                 if (clientWidth < headerClientWidth) {
                     dom.setStyle(virtualScrollNode, 'min-width', headerClientWidth);
                     const leftNode = this.bodyLeftNode;
                     const rightNode = this.bodyRightNode;
                     leftNode && dom.setStyle(leftNode, 'max-height', clientHeight);
                     rightNode && dom.setStyle(rightNode, 'max-height', clientHeight);
-                    this.hasScrollbar = true;
                 } else {
                     dom.setStyle(virtualScrollNode, 'min-width', 'auto');
-                    this.hasScrollbar = false;
                 }
             }
         }
@@ -256,7 +259,7 @@ export default function virtual(BaseComponent) {
             let newDataSource = dataSource;
 
             this.rowSelection = this.props.rowSelection;
-            if (this.hasVirtualData) {
+            if (this.state.hasVirtualData) {
                 newDataSource = [];
                 components = { ...components };
                 const { start, end } = this.getVisibleRange(this.state.scrollToRow);

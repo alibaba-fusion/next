@@ -1,6 +1,3 @@
-import { Input as MeetInput } from '@alifd/meet-react';
-import NextInput from '../index';
-
-const Input = MeetInput ? MeetInput : NextInput;
+import { Input } from '@alifd/meet-react';
 
 export default Input;

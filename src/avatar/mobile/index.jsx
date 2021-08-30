@@ -1,6 +1,3 @@
-import { Avatar as MeetAvatar } from '@alifd/meet-react';
-import NextAvatar from '../index';
-
-const Avatar = MeetAvatar ? MeetAvatar : NextAvatar;
+import { Avatar } from '@alifd/meet-react';
 
 export default Avatar;

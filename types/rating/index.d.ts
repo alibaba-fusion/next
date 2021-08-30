@@ -40,6 +40,11 @@ export interface RatingProps extends HTMLAttributesWeak, CommonProps {
     allowHalf?: boolean;
 
     /**
+     * 是否允许再次点击后清除
+     */
+    allowClear?: boolean;
+
+    /**
      * 用户点击评分时触发的回调
      */
     onChange?: (value: number) => void;

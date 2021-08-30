@@ -94,6 +94,41 @@ describe('form', () => {
                     .text() === 'cant be null'
             );
         });
+        it('should supoort Field With name on FormItem', () => {
+            class Demo extends React.Component {
+                constructor(props) {
+                    super(props);
+                    this.field = new Field(this);
+                }
+
+                render() {
+                    return (
+                        <Form field={this.field}>
+                            <FormItem name="input1" label="test" hasFeedback>
+                                <Input />
+                            </FormItem>
+                            <FormItem name="input2" required requiredMessage="cant be null">
+                                <Input />
+                            </FormItem>
+                            <FormItem label="test">
+                                <Input />
+                            </FormItem>
+                        </Form>
+                    );
+                }
+            }
+
+            const wrapper = mount(<Demo />);
+            wrapper
+                .find('input#input2')
+                .simulate('change', { target: { value: '' } });
+            assert(
+                wrapper
+                    .find('.next-form-item-help')
+                    .hostNodes()
+                    .text() === 'cant be null'
+            );
+        });
     });
     describe('Form', () => {
         it('should supoort labelAlign', () => {
@@ -162,6 +197,25 @@ describe('form', () => {
             assert(wrapper.find('div.func-tag'));
         });
 
+        it('should supoort component with name on FormItem', () => {
+            let wrapper = mount(<Form component="div">
+                <FormItem name="email" required type="email" format="email" label="email:" help="help msg" >
+                    <Input />
+                </FormItem>
+            </Form>);
+            assert(wrapper.find('div.next-form'));
+
+            const Tag = (props) => {
+                return <div className="func-tag">{props.children}</div>;
+            };
+            wrapper = mount(<Form component={Tag}>
+                <FormItem name="email" required type="email" format="email" label="email:" help="help msg" >
+                    <Input />
+                </FormItem>
+            </Form>);
+            assert(wrapper.find('div.func-tag'));
+        });
+
         it('should supoort wrapperCol & labelCol', () => {
             const wrapper = mount(
                 <Form>
@@ -192,42 +246,6 @@ describe('form', () => {
             );
 
             assert(wrapper.find('.next-form-item-help').text() === 'help msg');
-        });
-
-        it('should supoort format', () => {
-            class Demo extends React.Component {
-                constructor(props) {
-                    super(props);
-                    this.field = new Field(this);
-                }
-
-                render() {
-                    return (
-                        <Form field={this.field}>
-                            <FormItem
-                                label="test"
-                                type="email"
-                                format="email"
-                                hasFeedback
-                            >
-                                <Input name="email" />
-                            </FormItem>
-                        </Form>
-                    );
-                }
-            }
-
-            const wrapper = mount(<Demo />);
-            wrapper
-                .find('input#email')
-                .simulate('change', { target: { value: '123' } });
-            assert(
-                wrapper
-                    .find('.next-form-item-help')
-                    .at(0)
-                    .hostNodes()
-                    .text() === 'email 不是合法的 email 地址'
-            );
         });
 
         it('should supoort validateState', () => {

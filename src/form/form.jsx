@@ -144,8 +144,13 @@ export default class Form extends React.Component {
         useLabelForErrorMessage: PropTypes.bool,
         /**
          * 表示是否显示 label 后面的冒号
+         * @version 1.22
          */
         colon: PropTypes.bool,
+        /**
+         * 是否禁用表单
+         */
+        disabled: PropTypes.bool,
         // 在 responsive模式下，透传给 ResponsiveGrid的， 表示 每个 cell 之间的间距， [bottom&top, right&left]
         gap: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number]),
     };
@@ -160,11 +165,13 @@ export default class Form extends React.Component {
         saveField: func.noop,
         device: 'desktop',
         colon: false,
+        disabled: false,
     };
 
     static childContextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.string,
+        _formDisabled: PropTypes.bool,
         _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
         _formLabelForErrorMessage: PropTypes.bool,
@@ -205,6 +212,7 @@ export default class Form extends React.Component {
         return {
             _formField: this.props.field ? this.props.field : this._formField,
             _formSize: this.props.size,
+            _formDisabled: this.props.disabled,
             _formPreview: this.props.isPreview,
             _formFullWidth: this.props.fullWidth,
             _formLabelForErrorMessage: this.props.useLabelForErrorMessage,

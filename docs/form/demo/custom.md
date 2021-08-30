@@ -54,7 +54,7 @@ class Demo extends React.Component {
             <div>
                 <Form inline>
                     <Form.Item label="label Position">
-                        <Switch checkedChildren="left" unCheckedChildren="top" checked={this.state.labelAlign === 'left'} onChange={this.handleChange} />
+                        <Switch checkedChildren="left" unCheckedChildren="top" checked={this.state.labelAlign === 'left'} onChange={this.handleChange} autoWidth/>
                     </Form.Item>
                 </Form>
 

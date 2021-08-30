@@ -1,4 +1,5 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import T from 'prop-types';
 import { events, dom } from '../../util';
 
@@ -8,6 +9,7 @@ class Resize extends React.Component {
         rtl: T.bool,
         onChange: T.func,
         dataIndex: T.string,
+        tableEl: T.any,
     };
     static defaultProps = {
         onChange: () => {},
@@ -46,6 +48,7 @@ class Resize extends React.Component {
             cursor: 'ew-resize',
         });
         document.body.setAttribute('unselectable', 'on');
+        dom.addClass(this.resizeRef, 'resizing');
     }
     select() {
         dom.setStyle(document.body, {
@@ -53,12 +56,16 @@ class Resize extends React.Component {
             cursor: '',
         });
         document.body.removeAttribute('unselectable');
+        dom.removeClass(this.resizeRef, 'resizing');
     }
     render() {
         const { prefix } = this.props;
         return (
             <a
                 className={`${prefix}table-resize-handler`}
+                ref={r => {
+                    this.resizeRef = r;
+                }}
                 onMouseDown={this.onMouseDown}
             />
         );

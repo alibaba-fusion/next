@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import simulateEvent from 'simulate-event';
@@ -9,6 +9,8 @@ import Overlay from '../../src/overlay/index';
 import Dialog from '../../src/dialog/index';
 import Balloon from '../../src/balloon/index';
 import Button from '../../src/button/index';
+import Drawer from '../../src/drawer/index';
+import ConfigProvider from '../../src/config-provider/index';
 import '../../src/button/style.js';
 import '../../src/overlay/style.js';
 
@@ -19,7 +21,6 @@ import '../../src/overlay/style.js';
 const { hasClass } = dom;
 const { Popup } = Overlay;
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
-const scrollbarWidth = dom.scrollbar().width;
 
 const render = element => {
     let inc;
@@ -501,25 +502,25 @@ describe('Overlay', () => {
         simulateEvent.simulate(document.querySelector('.content'), 'click');
     });
 
-    it('should support stop Child Click propagation by default', done => {
-        const clickHandler = () => {
-            assert(false);
-        };
+    // it('should support stop Child Click propagation by default', done => {
+    //     const clickHandler = () => {
+    //         assert(false);
+    //     };
 
-        wrapper = render(
-            <div id="overlay-container" onClick={clickHandler}>
-                <Overlay visible container={'overlay-container'}>
-                    <div className="content" />
-                </Overlay>
-            </div>
-        );
+    //     wrapper = render(
+    //         <div id="overlay-container" onClick={clickHandler}>
+    //             <Overlay visible container={'overlay-container'}>
+    //                 <div className="content" />
+    //             </Overlay>
+    //         </div>
+    //     );
 
-        simulateEvent.simulate(document.querySelector('.content'), 'click');
+    //     simulateEvent.simulate(document.querySelector('.content'), 'click');
 
-        setTimeout(() => {
-            done();
-        }, 1000);
-    });
+    //     setTimeout(() => {
+    //         done();
+    //     }, 1000);
+    // });
 
     it('should support function children', () => {
         const MyFuncComp = () => {
@@ -566,6 +567,7 @@ describe('Overlay', () => {
                         afterOpen() {
                             const myWrapper = document.querySelector('.myWrapper');
                             assert(myWrapper.classList.contains('opened'));
+                            ReactDOM.unmountComponentAtNode(container);
                             container.remove();
                             myWrapper.remove();
                             done();
@@ -613,13 +615,123 @@ describe('Overlay', () => {
         }
         document.body.append(container);
         ReactDOM.render(<Demo align="tl tr" />, container);
+
         assert(
             document.querySelector('.next-overlay-inner').style.left ===
                 `${parseFloat(window.getComputedStyle(document.body).width) - 200 - 1}px` // Reason to subtract 1, see: Overly._isInViewport
         );
-        // assert(document.querySelector('.next-overlay-inner').style.top === '0px');
         container.remove();
         document.querySelector('.next-overlay-wrapper').remove();
+    });
+
+    it('fix bug on position when target is a svg element', () => {
+        wrapper = render(
+            <div>
+                <Overlay target="lzy" visible align="cc cc">
+                    <Button className="overlay-btn">cc cc</Button>
+                </Overlay>
+                <svg id="ppc" width={200} height={200}>
+                    <rect id="lzy" width={200} height={200} fill="red" />
+                </svg>
+            </div>
+        );
+
+        assert(document.querySelector('.overlay-btn').style.left === '73.5px');
+    });
+
+    it('should set overflow hidden to container', () => {
+        function Demo() {
+            const [visible, setVisible] = useState(false);
+
+            return (
+                <div id="luodan">
+                    <button className="btn" onClick={() => setVisible(true)}>
+                        Open dialog
+                    </button>
+                    <Dialog visible={visible} popupContainer="luodan">
+                        Small Content in a fixed size Dialog
+                    </Dialog>
+                </div>
+            );
+        }
+
+        wrapper = render(<Demo />);
+        wrapper.find('.btn')[0].click();
+
+        const container = wrapper.find('#luodan')[0];
+
+        assert(container.style.overflow === 'hidden');
+        assert(container.style.paddingRight === '');
+
+        wrapper.find('.btn')[0].click();
+    });
+
+    // https://codesandbox.io/s/next-overlay-overflow-2-fulpq?file=/src/App.js
+    it('fix overlay overflow hidden', done => {
+        function App() {
+            const appRef = useRef(null);
+
+            useEffect(() => {
+                appRef.current.style.overflow = 'hidden';
+                Dialog.show({
+                    popupContainer: 'app',
+                    content: 'Dialog Content',
+                    onOk() {
+                        appRef.current.style.overflow = '';
+
+                        setTimeout(() => {
+                            assert(appRef.current.style.overflow === '');
+                            done();
+                        });
+                    },
+                });
+                setTimeout(() => {
+                    simulateEvent.simulate(document.querySelector('.next-dialog-btn'), 'click');
+                });
+            }, []);
+
+            return (
+                <div id="app" ref={appRef} style={{ height: 1200 }}>
+                    Dialog Demo
+                </div>
+            );
+        }
+
+        wrapper = render(<App />);
+    });
+
+    // https://github.com/alibaba-fusion/next/issues/3104
+    it('fix overflow bug with multiple overlay', () => {
+        function MyDrawer() {
+            const [visible, setVisible] = useState(false);
+            const onOpen = () => {
+                setVisible(true);
+            };
+
+            const onClose = () => {
+                Dialog.confirm({
+                    content: '确认关闭',
+                });
+            };
+
+            return (
+                <div>
+                    <Button className="btn-open" onClick={onOpen} />
+                    <Button className="btn-close" onClick={() => setVisible(false)} />
+                    <Drawer visible={visible} onClose={onClose} />
+                </div>
+            );
+        }
+
+        wrapper = render(<MyDrawer />);
+        simulateEvent.simulate(document.querySelector('.btn-open'), 'click');
+        assert(document.body.style.overflow === 'hidden');
+        simulateEvent.simulate(document.querySelector('.next-overlay-backdrop'), 'click');
+        simulateEvent.simulate(document.querySelector('.btn-close '), 'click');
+        assert(document.body.style.overflow === 'hidden');
+        simulateEvent.simulate(document.querySelector('.next-dialog-btn'), 'click');
+        document.body.style.overflow = undefined;
+        assert(document.body.style.overflow === '');
     });
 });
 
@@ -929,4 +1041,46 @@ describe('Popup', () => {
         const overlayInner = document.querySelector('.next-overlay-inner');
         assert(overlayInner.style.top !== '0px');
     });
+
+    it('should configprovider work', () => {
+        const container = document.createElement('div');
+
+        function Demo() {
+            return (
+                <ConfigProvider popupContainer={() => document.getElementById('config-provider')}>
+                    <div>
+                        <div id="config-provider" />
+                        <div id="self" />
+                        <Popup visible>
+                            <span id="test-popup">this is popup</span>
+                        </Popup>
+                        <Balloon visible popupContainer={() => document.getElementById('self')}>
+                            <span id="test-balloon">this is balloon</span>
+                        </Balloon>
+                    </div>
+                </ConfigProvider>
+            );
+        }
+        wrapper = render(<Demo />, container);
+        const popupDom = wrapper.find('#config-provider #test-popup')[0];
+        const balloonDom = wrapper.find('#self #test-balloon')[0];
+
+        assert(balloonDom);
+        assert(popupDom);
+
+        ReactDOM.unmountComponentAtNode(container);
+    });
+
+    // https://github.com/alibaba-fusion/next/issues/3233
+    it('fix crash when Popup receives an empty node', () => {
+        wrapper = render(
+            <div>
+                <Popup trigger={<Button className="btn">Open</Button>} triggerType="click" />
+                <br />
+            </div>
+        )
+        const buttonDom = wrapper.find(".btn");
+
+        assert(buttonDom);
+    })
 });

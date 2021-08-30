@@ -57,14 +57,14 @@ class Demo extends React.Component {
                     <FormItem label="Username:">
                         <p>Fixed Name</p>
                     </FormItem>
-                    <FormItem label="password:">
-                        <Input htmlType="password" name="basePass" placeholder="Please Enter Password"/>
+                    <FormItem label="password:" name="basePass" >
+                        <Input htmlType="password" placeholder="Please Enter Password"/>
                     </FormItem>
-                    <FormItem label="Note:" help="something">
-                        <Input.TextArea placeholder="something" name="baseRemark" />
+                    <FormItem label="Note:" help="something" name="baseRemark" >
+                        <Input.TextArea placeholder="something" />
                     </FormItem>
-                    <FormItem label="Agreement:">
-                        <Checkbox name="baseAgreement" defaultChecked>Agree</Checkbox>
+                    <FormItem label="Agreement:" name="baseAgreement">
+                        <Checkbox defaultChecked>Agree</Checkbox>
                     </FormItem>
                     <FormItem label=" ">
                         <Form.Submit >Confirm</Form.Submit>

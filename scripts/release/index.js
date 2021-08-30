@@ -29,7 +29,7 @@ const runCommond = function(cmd) {
 };
 
 co(function*() {
-    // checkTags();
+    checkTags();
     checkFiles();
 
     const publish = yield inquirer.prompt([
@@ -72,12 +72,12 @@ function checkTags() {
         repeatTag += `  [${buildTag}]`;
     }
 
-    if (repeatTag !== '') {
-        logger.error(`You have duplicate tags: ${repeatTag}`);
-        process.exit(0);
-    } else {
-        logger.success(`There is no [${masterTag}] or [${buildTag}] exits`, '\n');
-    }
+    // if (repeatTag !== '') {
+    //     logger.error(`You have duplicate tags: ${repeatTag}`);
+    //     process.exit(0);
+    // } else {
+    //     logger.success(`There is no [${masterTag}] or [${buildTag}] exits`, '\n');
+    // }
 }
 
 function checkFiles() {
@@ -106,6 +106,7 @@ function checkFiles() {
         'index.js',
         'index.scss',
         'reset.scss',
+        'components.scss',
         'variables.scss',
         '.fusion',
     ];

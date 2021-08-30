@@ -682,6 +682,63 @@ describe('Table', () => {
         assert(wrapper.find('div.next-table-empty').length !== 0);
     });
 
+    it('should support async virtual', () => {
+        wrapper.setProps({
+            dataSource: [],
+            useVirtual: true,
+            children: [
+                <Table.Column dataIndex="id" lock width={200} />,
+                <Table.Column dataIndex="id" lock="right" width={200} />,
+            ],
+        });
+        assert(wrapper.find('div.next-table-empty').length !== 0);
+
+        const dataSource = new Array(40).fill(i => {
+            return {
+                id: i + '',
+                name: `test${i}`
+            }
+        })
+        wrapper.setProps({
+            useVirtual: true,
+            dataSource,
+        });
+
+        assert(wrapper.find('div.next-table-empty').length === 0);
+        assert(wrapper.find('tr.next-table-row').length < 40);
+    });
+
+    it('should support virtual + list table', () => {
+        timeout({
+            children: [
+                <Table.GroupHeader cell={<div>header</div>} />,
+                <Table.Column dataIndex="id" />,
+                <Table.GroupFooter cell={<div>footer</div>} />,
+            ],
+            useVirtual: true,
+            dataSource: [
+                {
+                    id: '1',
+                    name: 'test',
+                    children: [
+                        {
+                            id: '12',
+                            name: '12test',
+                        },
+                    ],
+                },
+                {
+                    id: '2',
+                    name: 'test2',
+                },
+            ],
+        }).then(() => {
+            assert(wrapper.find('tr.next-table-group-header').length === 2);
+            assert(wrapper.find('tr.next-table-group-footer').length === 2);
+            done();
+        });
+    });
+
     it('should support lock row mouseEnter mouseLeave', done => {
         wrapper.setProps({
             children: [

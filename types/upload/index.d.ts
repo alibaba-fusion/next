@@ -80,7 +80,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义上传方法
      */
-    request?: (option: {}) => {};
+    request?: (option: {}) => void;
 
     /**
      * 文件名字段

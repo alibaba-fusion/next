@@ -21,9 +21,9 @@ const helpers = {
         const listHeight = slideHeight * props.slidesToShow;
 
         const slidesToShow = props.slidesToShow || 1;
-        const currentSlide = props.rtl
-            ? slideCount - 1 - (slidesToShow - 1) - props.defaultActiveIndex
-            : props.defaultActiveIndex;
+
+        const activeIndex = 'activeIndex' in props ? props.activeIndex : props.defaultActiveIndex;
+        const currentSlide = props.rtl ? slideCount - 1 - (slidesToShow - 1) - activeIndex : activeIndex;
 
         this.setState(
             {
@@ -61,11 +61,17 @@ const helpers = {
     },
 
     getWidth(elem) {
-        return elem ? elem.getBoundingClientRect().width || elem.offsetWidth : undefined;
+        if ('clientWidth' in elem) {
+            return elem.clientWidth;
+        }
+        return elem && elem.getBoundingClientRect().width;
     },
 
     getHeight(elem) {
-        return elem ? elem.getBoundingClientRect().height || elem.offsetHeight : undefined;
+        if ('clientHeight' in elem) {
+            return elem.clientHeight;
+        }
+        return elem && elem.getBoundingClientRect().height;
     },
 
     adaptHeight() {

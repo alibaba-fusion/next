@@ -35,6 +35,8 @@ async function resolveSassValue(entryScss, varNames) {
     const data = `
 @use "sass:string";
 @use "sass:meta";
+@use "sass:math" as *;
+
 @mixin exportValue($name, $variable) {
     @if type-of($variable) != bool {
         .theScssCompileResultIwant .#{$name} { color:$variable; }

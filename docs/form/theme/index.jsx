@@ -8,6 +8,7 @@ import Input from '../../../src/input';
 import Field from '../../../src/field';
 import Form from '../../../src/form';
 import Select from '../../../src/select';
+
 import Grid from '../../../src/grid';
 import '../../../src/demo-helper/style.js';
 import '../../../src/form/style.js';
@@ -79,6 +80,20 @@ const demo1 = {
             label: '隐藏',
             value: 'false'
         }]
+    },
+    size: {
+        label: '大小',
+        value: 'medium',
+        enum: [{
+            label: '大',
+            value: 'large'
+        }, {
+            label: '中',
+            value: 'medium'
+        }, {
+            label: '小',
+            value: 'small'
+        }]
     }
 };
 
@@ -105,6 +120,20 @@ const demo2 = {
             label: '左对齐',
             value: 'left'
         }]
+    },
+    size: {
+        label: '大小',
+        value: 'medium',
+        enum: [{
+            label: '大',
+            value: 'large'
+        }, {
+            label: '中',
+            value: 'medium'
+        }, {
+            label: '小',
+            value: 'small'
+        }]
     }
 };
 
@@ -128,9 +157,9 @@ class FunctionDemo extends React.Component {
                     valueName: 'demoFunction',
                     trigger: 'onFunctionChange'
                 })}>
-                    <Demo title="Form Inline - Large">
+                    <Demo title="Form Inline">
                         <DemoGroup label="Label Left" >
-                            <Form inline size="large" style={{width: 700}}>
+                            <Form inline style={{width: 700}} size={getValue('demo1').size.value}>
                                 <FormItem label={i18n.labels.username}
                                     help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
                                     <Row gutter="4">
@@ -162,7 +191,7 @@ class FunctionDemo extends React.Component {
                             </Form>
                         </DemoGroup>
                         <DemoGroup label="Label Top" >
-                            <Form inline labelAlign="top" size="large"  style={{minWidth: 500}}>
+                            <Form inline labelAlign="top" size={getValue('demo1').size.value} style={{minWidth: 500}}>
                                 <FormItem
                                     label={i18n.labels.username}
                                     help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
@@ -181,141 +210,7 @@ class FunctionDemo extends React.Component {
                             </Form>
                         </DemoGroup>
                         <DemoGroup label="Label Inset" >
-                            <Form inline labelAlign="inset" size="large" style={{minWidth: 500}}>
-                                <FormItem
-                                    label={i18n.labels.username}
-                                    help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
-                                    <Input />
-                                </FormItem>
-                                <FormItem
-                                    label={i18n.labels.password}
-                                    validateState="error" help={getValue('demo1').help.value === 'true' ? i18n.help.password : null}>
-                                    <Input />
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                    </Demo>
-                    <Demo title="Form Inline - Medium">
-                        <DemoGroup label="Label Left" >
-                            <Form inline size="medium" style={{width: 700}}>
-                                <FormItem label={i18n.labels.username}
-                                    help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
-                                    <Row gutter="4">
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.firstName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.lastName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                    </Row>
-                                </FormItem>
-                                <FormItem label={i18n.labels.password}  validateState="error" help={getValue('demo1').help.value === 'true' ? i18n.help.password : null}>
-                                    <Input />
-                                </FormItem>
-                                <FormItem label={i18n.labels.username}
-                                    help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
-                                    <Row gutter="4">
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.firstName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.lastName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                    </Row>
-                                </FormItem>
-                                <FormItem label={i18n.labels.password}  validateState="error" help={getValue('demo1').help.value === 'true' ? i18n.help.password : null}>
-                                    <Input />
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                        <DemoGroup label="Label Top" >
-                            <Form inline labelAlign="top" size="medium"  style={{minWidth: 500}}>
-                                <FormItem
-                                    label={i18n.labels.username}
-                                    help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
-                                    <Row gutter="4">
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.firstName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.lastName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                    </Row>
-                                </FormItem>
-                                <FormItem label={i18n.labels.password} validateState="error" help={getValue('demo1').help.value === 'true' ? i18n.help.password : null}>
-                                    <Input />
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                        <DemoGroup label="Label Inset" size="medium">
-                            <Form inline labelAlign="inset" size="medium" style={{minWidth: 500}}>
-                                <FormItem
-                                    label={i18n.labels.username}
-                                    help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
-                                    <Input />
-                                </FormItem>
-                                <FormItem
-                                    label={i18n.labels.password}
-                                    validateState="error" help={getValue('demo1').help.value === 'true' ? i18n.help.password : null}>
-                                    <Input />
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                    </Demo>
-                    <Demo title="Form Inline - Small">
-                        <DemoGroup label="Label Left" >
-                            <Form inline size="small" style={{width: 700}}>
-                                <FormItem label={i18n.labels.username}
-                                    help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
-                                    <Row gutter="4">
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.firstName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.lastName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                    </Row>
-                                </FormItem>
-                                <FormItem label={i18n.labels.password}  validateState="error" help={getValue('demo1').help.value === 'true' ? i18n.help.password : null}>
-                                    <Input />
-                                </FormItem>
-                                <FormItem label={i18n.labels.username}
-                                    help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
-                                    <Row gutter="4">
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.firstName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.lastName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                    </Row>
-                                </FormItem>
-                                <FormItem label={i18n.labels.password}  validateState="error" help={getValue('demo1').help.value === 'true' ? i18n.help.password : null}>
-                                    <Input />
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                        <DemoGroup label="Label Top" >
-                            <Form inline labelAlign="top" size="small"  style={{minWidth: 500}}>
-                                <FormItem
-                                    label={i18n.labels.username}
-                                    help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
-                                    <Row gutter="4">
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.firstName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.lastName} style={{width: 120}}/></FormItem>
-                                        </Col>
-                                    </Row>
-                                </FormItem>
-                                <FormItem label={i18n.labels.password} validateState="error" help={getValue('demo1').help.value === 'true' ? i18n.help.password : null}>
-                                    <Input />
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                        <DemoGroup label="Label Inset" >
-                            <Form inline labelAlign="inset" size="small" style={{minWidth: 500}}>
+                            <Form inline labelAlign="inset" size={getValue('demo1').size.value} style={{minWidth: 500}}>
                                 <FormItem
                                     label={i18n.labels.username}
                                     help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
@@ -335,9 +230,9 @@ class FunctionDemo extends React.Component {
                     valueName: 'demoFunction',
                     trigger: 'onFunctionChange'
                 })}>
-                    <Demo title="Form Vertical - large">
+                    <Demo title="Form Vertical">
                         <DemoGroup label="Normal">
-                            <Form labelAlign="left" style={{minWidth: 500}} size="large">
+                            <Form labelAlign="left" style={{minWidth: 500}} size={getValue('demo2').size.value}>
                                 <FormItem {...formItemLayout}
                                     label={i18n.labels.username}
                                     help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
@@ -368,7 +263,7 @@ class FunctionDemo extends React.Component {
                             </Form>
                         </DemoGroup>
                         <DemoGroup label="Label Top">
-                            <Form labelAlign="top" style={{minWidth: 500}} size="large" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
+                            <Form labelAlign="top" style={{minWidth: 500}}  size={getValue('demo2').size.value} help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
                                 <FormItem
                                     {...formItemLayout}
                                     label={i18n.labels.username}>
@@ -416,7 +311,7 @@ class FunctionDemo extends React.Component {
                             </Form>
                         </DemoGroup>
                         <DemoGroup label="Label Inset" >
-                            <Form labelAlign="inset" labelTextAlign={getValue('demo2').insetAlign.value} style={{minWidth: 500}} size="large" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
+                            <Form labelAlign="inset" labelTextAlign={getValue('demo2').insetAlign.value} style={{minWidth: 500}} size={getValue('demo2').size.value} help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
                                 <FormItem
                                     {...formItemLayoutLarge}
                                     label={i18n.labels.username}
@@ -448,232 +343,7 @@ class FunctionDemo extends React.Component {
                             </Form>
                         </DemoGroup>
                     </Demo>
-                    <Demo title="Form Vertical - Medium">
-                        <DemoGroup label="Normal">
-                            <Form labelAlign="left" style={{minWidth: 500}} size="medium">
-                                <FormItem {...formItemLayout}
-                                    label={i18n.labels.username}
-                                    help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
-                                    <Row gutter="8">
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.firstName}/></FormItem>
-                                        </Col>
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.lastName}/></FormItem>
-                                        </Col>
-                                    </Row>
-                                </FormItem>
-                                <FormItem {...formItemLayout} label={i18n.labels.password} hasFeedback required>
-                                    <Input />
-                                </FormItem>
-                                <FormItem {...formItemLayout} label={i18n.labels.others} validateState="error" hasFeedback>
-                                    <Select style={{width: '100%'}}>
-                                        <Option value="top">top</Option>
-                                        <Option value="left">left</Option>
-                                    </Select>
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label={i18n.labels.address}
-                                    hasFeedback>
-                                    <Input.TextArea/>
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                        <DemoGroup label="Label Top">
-                            <Form labelAlign="top" style={{minWidth: 500}} size="medium" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label={i18n.labels.username}
-                                    help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
-                                    <Row gutter="8">
-                                        <Col>
-                                            <FormItem style={style}>
-                                                <Input placeholder={i18n.labels.firstName} style={{minWidth: '100%'}}/>
-                                            </FormItem>
-                                        </Col>
-                                        <Col>
-                                            <FormItem style={style}>
-                                                <Input placeholder={i18n.labels.lastName} style={{minWidth: '100%'}}/>
-                                            </FormItem>
-                                        </Col>
-                                    </Row>
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label={i18n.labels.password}
-                                    hasFeedback
-                                    validateState="success">
-                                    <Input placeholder={i18n.help.password}/>
-                                </FormItem>
-                                <FormItem {...formItemLayout} label={i18n.labels.others}>
-                                    <FormItem validateState="error">
-                                        <Select style={{minWidth: '100%'}}>
-                                            <Option value="top">top</Option>
-                                            <Option value="left">left</Option>
-                                        </Select>
-                                    </FormItem>
-                                    <FormItem>
-                                        <Select style={{minWidth: '100%'}}>
-                                            <Option value="top">top</Option>
-                                            <Option value="left">left</Option>
-                                        </Select>
-                                    </FormItem>
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label={i18n.labels.address}
-                                    hasFeedback>
-                                    <Input.TextArea/>
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                        <DemoGroup label="Label Inset" >
-                            <Form labelAlign="inset" labelTextAlign={getValue('demo2').insetAlign.value} style={{minWidth: 500}} size="medium" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
-                                <FormItem
-                                    {...formItemLayout2}
-                                    label={i18n.labels.username}>
-                                    <Input />
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout2}
-                                    label={i18n.labels.password}
-                                    hasFeedback
-                                    validateState="success">
-                                    <Input placeholder={i18n.help.password}/>
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout2}
-                                    label={i18n.labels.address}
-                                    hasFeedback>
-                                    <Input />
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout2}
-                                    label={i18n.labels.others}
-                                    validateState="error">
-                                    <Select style={{minWidth: '100%'}}>
-                                        <Option value="top">top</Option>
-                                        <Option value="left">left</Option>
-                                    </Select>
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                    </Demo>
-                    <Demo title="Form Vertical - small">
-                        <DemoGroup label="Normal">
-                            <Form labelAlign="left" style={{minWidth: 500}} size="small">
-                                <FormItem {...formItemLayout}
-                                    label={i18n.labels.username}
-                                    help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
-                                    <Row gutter="8">
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.firstName}/></FormItem>
-                                        </Col>
-                                        <Col>
-                                            <FormItem style={style}><Input placeholder={i18n.labels.lastName}/></FormItem>
-                                        </Col>
-                                    </Row>
-                                </FormItem>
-                                <FormItem {...formItemLayout} label={i18n.labels.password} hasFeedback required>
-                                    <Input />
-                                </FormItem>
-                                <FormItem {...formItemLayout} label={i18n.labels.others} validateState="error" hasFeedback>
-                                    <Select style={{width: '100%'}}>
-                                        <Option value="top">top</Option>
-                                        <Option value="left">left</Option>
-                                    </Select>
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label={i18n.labels.address}
-                                    hasFeedback>
-                                    <Input.TextArea/>
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                        <DemoGroup label="Label Top">
-                            <Form labelAlign="top" style={{minWidth: 500}} size="small" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label={i18n.labels.username}
-                                    help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
-                                    <Row gutter="8">
-                                        <Col>
-                                            <FormItem style={style}>
-                                                <Input placeholder={i18n.labels.firstName} style={{minWidth: '100%'}}/>
-                                            </FormItem>
-                                        </Col>
-                                        <Col>
-                                            <FormItem style={style}>
-                                                <Input placeholder={i18n.labels.lastName} style={{minWidth: '100%'}}/>
-                                            </FormItem>
-                                        </Col>
-                                    </Row>
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label={i18n.labels.password}
-                                    hasFeedback
-                                    validateState="success">
-                                    <Input placeholder={i18n.help.password}/>
-                                </FormItem>
-                                <FormItem {...formItemLayout} label={i18n.labels.others}>
-                                    <FormItem validateState="error">
-                                        <Select style={{minWidth: '100%'}}>
-                                            <Option value="top">top</Option>
-                                            <Option value="left">left</Option>
-                                        </Select>
-                                    </FormItem>
-                                    <FormItem>
-                                        <Select style={{minWidth: '100%'}}>
-                                            <Option value="top">top</Option>
-                                            <Option value="left">left</Option>
-                                        </Select>
-                                    </FormItem>
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label={i18n.labels.address}
-                                    hasFeedback>
-                                    <Input.TextArea/>
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                        <DemoGroup label="Label Inset" >
-                            <Form labelAlign="inset" labelTextAlign={getValue('demo2').insetAlign.value} style={{minWidth: 500}} size="small" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
-                                <FormItem
-                                    {...formItemLayout2}
-                                    label={i18n.labels.username}
-                                    hasFeedback>
-                                    <Input />
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout2}
-                                    label={i18n.labels.password}
-                                    hasFeedback
-                                    validateState="success">
-                                    <Input placeholder={i18n.help.password}/>
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout2}
-                                    label={i18n.labels.address}
-                                    hasFeedback>
-                                    <Input />
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout2}
-                                    label={i18n.labels.others}
-                                    validateState="error">
-                                    <Select style={{minWidth: '100%'}}>
-                                        <Option value="top">top</Option>
-                                        <Option value="left">left</Option>
-                                    </Select>
-                                </FormItem>
-                            </Form>
-                        </DemoGroup>
-                    </Demo>
-                </Demo>
+               </Demo>
             </div>
         </ConfigProvider>);
     }

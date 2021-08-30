@@ -63,12 +63,12 @@ export default function fixed(BaseComponent, stickyLock) {
         componentDidMount() {
             this.adjustFixedHeaderSize();
             this.scrollToRightEnd = undefined;
-            this.onFixedScrollSync({ currentTarget: this.bodyNode });
+            this.onFixedScrollSync({ currentTarget: this.bodyNode, target: this.bodyNode });
         }
 
         componentDidUpdate() {
             this.adjustFixedHeaderSize();
-            this.onFixedScrollSync({ currentTarget: this.bodyNode });
+            this.onFixedScrollSync({ currentTarget: this.bodyNode, target: this.bodyNode });
         }
 
         getNode = (type, node, lockType) => {
@@ -101,10 +101,10 @@ export default function fixed(BaseComponent, stickyLock) {
 
             const { scrollLeft, scrollWidth, clientWidth } = currentTarget;
             const scrollToRightEnd = !(scrollLeft < scrollWidth - clientWidth);
+            const { prefix, loading } = this.props;
 
-            if (scrollToRightEnd !== this.scrollToRightEnd) {
+            if (!loading && scrollToRightEnd !== this.scrollToRightEnd) {
                 this.scrollToRightEnd = scrollToRightEnd;
-                const { prefix } = this.props;
                 const table = this.getTableNode();
 
                 const leftFunc = scrollToRightEnd ? 'removeClass' : 'addClass';
@@ -153,7 +153,9 @@ export default function fixed(BaseComponent, stickyLock) {
                         style.paddingBottom = scrollBarSize;
                     } else {
                         style.paddingBottom = scrollBarSize;
-                        style[marginName] = 0;
+                    }
+                    if (hasVerScroll) {
+                        style[marginName] = scrollBarSize;
                     }
                 }
 

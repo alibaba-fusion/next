@@ -62,10 +62,7 @@ class InnerSlider extends React.Component {
             autoPlayTimer: null,
             currentDirection: 0,
             currentLeft: null,
-            currentSlide:
-                'activeIndex' in props
-                    ? props.activeIndex
-                    : props.defaultActiveIndex,
+            currentSlide: 'activeIndex' in props ? props.activeIndex : props.defaultActiveIndex,
             direction: 1,
             listWidth: null,
             listHeight: null,
@@ -110,6 +107,10 @@ class InnerSlider extends React.Component {
         const { lazyLoad, children, slidesToShow, activeIndex } = nextProps;
         const { currentSlide } = prevState;
         const lazyLoadedList = [];
+
+        if (children !== prevState.children) {
+            state.children = children;
+        }
 
         if (lazyLoad) {
             for (let i = 0, j = React.Children.count(children); i < j; i++) {
@@ -161,11 +162,7 @@ class InnerSlider extends React.Component {
                 currentSlide: this.state.currentSlide,
             });
         } else {
-            const others = ['children'];
-            const update = !obj.shallowEqual(
-                obj.pickOthers(others, prevProps),
-                obj.pickOthers(others, this.props)
-            );
+            const update = !obj.shallowEqual(prevProps, this.props);
             if (update) {
                 this.update(this.props);
             }
@@ -324,12 +321,8 @@ class InnerSlider extends React.Component {
                     type="prev"
                     aria-label="Previous"
                     ref={this._instanceRefHandler.bind(this, 'pArrow')}
-                    onMouseEnter={
-                        animation ? this.onEnterArrow.bind(this, 'prev') : noop
-                    }
-                    onMouseLeave={
-                        animation ? this.onLeaveArrow.bind(this, 'prev') : noop
-                    }
+                    onMouseEnter={animation ? this.onEnterArrow.bind(this, 'prev') : noop}
+                    onMouseLeave={animation ? this.onLeaveArrow.bind(this, 'prev') : noop}
                 >
                     {this.props.prevArrow}
                 </Arrow>
@@ -341,12 +334,8 @@ class InnerSlider extends React.Component {
                     type="next"
                     aria-label="Next"
                     ref={this._instanceRefHandler.bind(this, 'nArrow')}
-                    onMouseEnter={
-                        animation ? this.onEnterArrow.bind(this, 'next') : noop
-                    }
-                    onMouseLeave={
-                        animation ? this.onLeaveArrow.bind(this, 'next') : noop
-                    }
+                    onMouseEnter={animation ? this.onEnterArrow.bind(this, 'next') : noop}
+                    onMouseLeave={animation ? this.onLeaveArrow.bind(this, 'next') : noop}
                 >
                     {this.props.nextArrow}
                 </Arrow>
@@ -361,9 +350,7 @@ class InnerSlider extends React.Component {
 
         let centerPaddingStyle;
         if (centerMode) {
-            centerPaddingStyle = vertical
-                ? { padding: `${centerPadding} 0px` }
-                : { padding: `0px ${centerPadding}` };
+            centerPaddingStyle = vertical ? { padding: `${centerPadding} 0px` } : { padding: `0px ${centerPadding}` };
         }
 
         return (
@@ -385,10 +372,7 @@ class InnerSlider extends React.Component {
                     onTouchMove={dragging ? this.swipeMove : null}
                     onTouchCancel={dragging ? this.swipeEnd : null}
                 >
-                    <Track
-                        ref={this._instanceRefHandler.bind(this, 'track')}
-                        {...trackProps}
-                    >
+                    <Track ref={this._instanceRefHandler.bind(this, 'track')} {...trackProps}>
                         {children}
                     </Track>
                 </div>

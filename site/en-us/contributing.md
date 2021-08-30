@@ -41,10 +41,17 @@ Chore|ci|docs|feat|fix|perf|refactor|revert|style|test|temp; `scope` is required
 ## Development Workflow
 
 1. Fork this repo to your own github account (step in the page https://github.com/alibaba-fusion/next , click on the fork button in the upper right cornor)
-2. Download the code you just forked on https://github.com/[your account]/next
+2. Use Gitpod, a free online dev environment for GitHub.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/alibaba-fusion/next)
+
+Or clone locally:
+
+Download the code you just forked on https://github.com/[your account]/next
 ```
 git clone git@github.com:[your account]/next.git
 ```
+
 3. Step in the files, create a new branch and start your work
 ```
 cd next

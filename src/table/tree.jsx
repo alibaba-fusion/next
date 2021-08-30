@@ -17,6 +17,11 @@ export default function tree(BaseComponent) {
              */
             openRowKeys: PropTypes.array,
             /**
+             * 默认情况下展开的 Expand行 或者 Tree行，非受控模式
+             * @version 1.23.22
+             */
+            defaultOpenRowKeys: PropTypes.array,
+            /**
              * 点击tree展开或者关闭的时候触发的事件
              * @param {Array} openRowKeys tree模式下展开的key
              * @param {String} currentRowKey 当前点击行的key
@@ -27,7 +32,7 @@ export default function tree(BaseComponent) {
             /**
              * dataSource当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
              */
-            primaryKey: PropTypes.string,
+            primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
             /**
              * 在tree模式下的缩进尺寸， 仅在isTree为true时候有效
              */
@@ -59,7 +64,7 @@ export default function tree(BaseComponent) {
         constructor(props, context) {
             super(props, context);
             this.state = {
-                openRowKeys: props.openRowKeys || [],
+                openRowKeys: props.openRowKeys || props.defaultOpenRowKeys || [],
             };
         }
 
@@ -167,13 +172,7 @@ export default function tree(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let {
-                components,
-                isTree,
-                dataSource,
-                indent,
-                ...others
-            } = this.props;
+            let { components, isTree, dataSource, indent, ...others } = this.props;
 
             if (isTree) {
                 components = { ...components };
@@ -186,13 +185,7 @@ export default function tree(BaseComponent) {
 
                 dataSource = this.normalizeDataSource(dataSource);
             }
-            return (
-                <BaseComponent
-                    {...others}
-                    dataSource={dataSource}
-                    components={components}
-                />
-            );
+            return <BaseComponent {...others} dataSource={dataSource} components={components} />;
         }
     }
     statics(TreeTable, BaseComponent);

@@ -40,6 +40,11 @@ export default function expanded(BaseComponent, stickyLock) {
              */
             openRowKeys: PropTypes.array,
             /**
+             * 默认情况下展开的 Expand行 或者 Tree行，非受控模式
+             * @version 1.23.22
+             */
+            defaultOpenRowKeys: PropTypes.array,
+            /**
              * 是否显示点击展开额外渲染行的+号按钮
              */
             hasExpandedRowCtrl: PropTypes.bool,
@@ -81,7 +86,7 @@ export default function expanded(BaseComponent, stickyLock) {
         };
 
         state = {
-            openRowKeys: this.props.openRowKeys || [],
+            openRowKeys: this.props.openRowKeys || this.props.defaultOpenRowKeys || [],
         };
 
         getChildContext() {
@@ -127,10 +132,13 @@ export default function expanded(BaseComponent, stickyLock) {
         };
 
         setExpandedWidth = () => {
+            const { prefix } = this.props;
             const tableEl = this.getTableNode();
             const totalWidth = +(tableEl && tableEl.clientWidth) - 1 || '100%';
+            const bodyNode = tableEl && tableEl.querySelector(`.${prefix}table-body`);
+
             Object.keys(this.expandedRowRefs || {}).forEach(key => {
-                dom.setStyle(this.expandedRowRefs[key], { width: totalWidth });
+                dom.setStyle(this.expandedRowRefs[key], { width: (bodyNode && bodyNode.clientWidth) || totalWidth });
             });
         };
 

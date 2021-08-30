@@ -2,7 +2,7 @@
 
 - order: 13
 
-使用 `useVirtual` 开启虚拟滚动，`scrollToRow` 滚动到指定列
+使用 `useVirtual` 开启虚拟滚动，`scrollToRow` 滚动到指定行
 
 :::lang=en-us
 # Virtual scroll

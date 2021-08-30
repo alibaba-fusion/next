@@ -10,5 +10,16 @@
         "max-len": "off",
         "no-unused-vars": 1,
         "import/prefer-default-export": 0
-    }
+    },
+    "overrides": [
+        {
+          "files": ["*.js", "*.jsx"],
+          "parser": "babel-eslint"
+        },
+        {
+          "files": ["*.ts", "*.tsx"],
+          "parser": "@typescript-eslint/parser",
+          "plugins": ["@typescript-eslint/eslint-plugin"]
+        }
+      ]
 }

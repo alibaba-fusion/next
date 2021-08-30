@@ -18,20 +18,20 @@
 
 ### Message
 
-| 参数             | 说明                                                                                 | 类型        | 默认值       |
-| -------------- | ---------------------------------------------------------------------------------- | --------- | --------- |
-| size           | 反馈大小<br><br>**可选值**:<br>'medium', 'large'                                          | Enum      | 'medium'  |
-| type           | 反馈类型<br><br>**可选值**:<br>'success', 'warning', 'error', 'notice', 'help', 'loading' | Enum      | 'success' |
-| shape          | 反馈外观<br><br>**可选值**:<br>'inline', 'addon', 'toast'                                 | Enum      | 'inline'  |
-| title          | 标题                                                                                 | ReactNode | -         |
-| children       | 内容                                                                                 | ReactNode | -         |
-| defaultVisible | 默认是否显示                                                                             | Boolean   | true      |
-| visible        | 当前是否显示                                                                             | Boolean   | -         |
-| iconType       | 显示的图标类型，会覆盖内部设置的IconType                                                           | String    | -         |
-| closeable      | 显示关闭按钮                                                                             | Boolean   | false     |
-| onClose        | 关闭按钮的回调<br><br>**签名**:<br>Function() => void                                       | Function  | () => {}  |
-| afterClose     | 关闭之后调用的函数<br><br>**签名**:<br>Function() => void                                     | Function  | () => {}  |
-| animation      | 是否开启展开收起动画                                                                         | Boolean   | true      |
+| 参数             | 说明                                                                                    | 类型        | 默认值       |
+| -------------- | ------------------------------------------------------------------------------------- | --------- | --------- |
+| size           | 反馈大小<br/><br/>**可选值**:<br/>'medium', 'large'                                          | Enum      | 'medium'  |
+| type           | 反馈类型<br/><br/>**可选值**:<br/>'success', 'warning', 'error', 'notice', 'help', 'loading' | Enum      | 'success' |
+| shape          | 反馈外观<br/><br/>**可选值**:<br/>'inline', 'addon', 'toast'                                 | Enum      | 'inline'  |
+| title          | 标题                                                                                    | ReactNode | -         |
+| children       | 内容                                                                                    | ReactNode | -         |
+| defaultVisible | 默认是否显示                                                                                | Boolean   | true      |
+| visible        | 当前是否显示                                                                                | Boolean   | -         |
+| iconType       | 显示的图标类型，会覆盖内部设置的IconType                                                              | String    | -         |
+| closeable      | 显示关闭按钮                                                                                | Boolean   | false     |
+| onClose        | 关闭按钮的回调<br/><br/>**签名**:<br/>Function() => void                                       | Function  | () => {}  |
+| afterClose     | 关闭之后调用的函数<br/><br/>**签名**:<br/>Function() => void                                     | Function  | () => {}  |
+| animation      | 是否开启展开收起动画                                                                            | Boolean   | true      |
 
 <!-- api-extra-start -->
 
@@ -86,6 +86,30 @@ Message.success({
 ### Message.withContext
 
 1.21.6加入，建议通过这个HOC来获得命令式调起Message的API，而尽量不使用 `Message.[success|error|notice|help|loading|show|hide]`，能避免fusion config错误的bug，详细原因参考 `Dialog.withContext` 的文档。
+
+### Message.config 配置多实例
+
+`@alifd/next@1.24.0` 加入，配置后会采用多实例的方式
+
+```js
+Message.config({
+  top: 100,
+  duration: 2000,
+  maxCount: 3,
+});
+```
+
+| 参数       | 说明               | 类型     | 默认值  |     |
+| -------- | ---------------- | ------ | ---- | --- |
+| duration | 默认自动关闭延时，单位秒     | Number | 3000 |     |
+| top      | 消息距离顶部的位置        | Number | 8    |     |
+| maxCount | 最多同时出现的个数, 默认不限制 | Number | -    |     |
+
+```js
+const instance = Message.success('this is a message');
+
+instance.close(); // 可以用 close 直接关闭弹窗
+```
 
 <!-- api-extra-end -->
 

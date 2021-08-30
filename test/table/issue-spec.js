@@ -491,6 +491,43 @@ describe('Issue', () => {
         document.body.removeChild(div);
     });
 
+    it('should support defaultOpenRowKeys', () => {
+        class App extends React.Component {
+            render() {
+                return (
+                    <Table dataSource={generateDataSource(3)} defaultOpenRowKeys={['1003066609400', '1003066609401']} expandedRowRender={record => record.name}>
+                        <Table.Column
+                            title="Id1"
+                            dataIndex="id"
+                            width={100}
+                            sortable
+                        />
+                        <Table.Column
+                            title="Index"
+                            dataIndex="index"
+                            width={200}
+                        />
+                        <Table.Column
+                            title="Time"
+                            dataIndex="id"
+                            width={200}
+                        />
+                    </Table>
+                );
+            }
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        ReactDOM.render(<App />, div);
+
+        let expandedTotal = div.querySelectorAll('tbody tr');
+        assert(expandedTotal.length === 5);
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
+
     it('sort should be singleton', () => {
         class App extends React.Component {
             render() {
@@ -1078,7 +1115,7 @@ describe('Issue', () => {
             setTimeout(() => {
                 const expandedRows = container.querySelectorAll('.next-table-expanded-row .next-table-cell-wrapper');
                 expandedRows.forEach(row => {
-                    assert(row.style.width === '498px');
+                    assert(row.style.width === '499px');
                 })
 
                 const btn = container.querySelector('#sticky-expanded-row-width');
@@ -1087,7 +1124,7 @@ describe('Issue', () => {
                     btn.click();
 
                     expandedRows.forEach(row => {
-                        assert(row.style.width === '498px');
+                        assert(row.style.width === '499px');
                     });
 
                     ReactDOM.unmountComponentAtNode(container);

@@ -1,6 +1,3 @@
-import { Calendar as MeetCalendar } from '@alifd/meet-react';
-import NextCalendar from '../index';
+import { Calendar } from '@alifd/meet-react';
 
-const Calendar2 = MeetCalendar ? MeetCalendar : NextCalendar;
-
-export default Calendar2;
+export default Calendar;

@@ -151,12 +151,12 @@ export function normalizeDataSource(dataSource, deep = 0, showDataSourceChildren
 
     dataSource.forEach((item, index) => {
         // enable array of basic type
-        if (/string|boolean|number/.test(typeof item)) {
+        if (/string|boolean|number/.test(typeof item) || item === null || item === undefined) {
             item = { label: `${item}`, value: item };
         }
 
         // filter off addon item
-        if (item.__isAddon) {
+        if (item && item.__isAddon) {
             return;
         }
 
@@ -169,7 +169,8 @@ export function normalizeDataSource(dataSource, deep = 0, showDataSourceChildren
             item2.children = normalizeDataSource(item.children, deep + 1);
         } else {
             const { value, label, disabled, title, ...others } = item;
-            item2.value = !isNull(value) ? value : `${index}`;
+            // undefined 认为是没传取 index 值替代
+            item2.value = typeof value !== 'undefined' ? value : `${index}`;
             item2.label = label || `${item2.value}`;
             if ('title' in item) {
                 item2.title = title;

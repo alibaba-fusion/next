@@ -37,16 +37,18 @@ class Demo extends React.Component {
                 <FormItem
                     label="Account"
                     required
+                    name="valUsername" 
                 >
-                    <Input placeholder="Input frank" name="valUsername" />
+                    <Input placeholder="Input frank" />
                 </FormItem>
                 <FormItem
                     label="Email"
                     required
                     requiredTrigger="onBlur"
                     format="email"
+                    name="valEmail" 
                 >
-                    <Input placeholder="Both trigget onBlur and onChange" name="valEmail" />
+                    <Input placeholder="Both trigget onBlur and onChange" />
                 </FormItem>
 
                 <FormItem
@@ -54,8 +56,9 @@ class Demo extends React.Component {
                     hasFeedback
                     required
                     requiredMessage="Please enter password"
+                    name="valPasswd" 
                 >
-                    <Input htmlType="password" name="valPasswd" />
+                    <Input htmlType="password" />
                 </FormItem>
 
                 <FormItem
@@ -63,8 +66,9 @@ class Demo extends React.Component {
                     hasFeedback
                     required
                     requiredMessage="Please select your gender"
+                    name="valSex" 
                 >
-                    <RadioGroup name="valSex" >
+                    <RadioGroup >
                         <Radio value="male">Male</Radio>
                         <Radio value="female">Female</Radio>
                     </RadioGroup>
@@ -74,8 +78,9 @@ class Demo extends React.Component {
                     label="Remarks"
                     required
                     requiredMessage="Really do not intend to write anything?"
+                    name="valTextarea" 
                 >
-                    <Input.TextArea maxLength={20} showLimitHint placeholder="Everything is ok!" name="valTextarea" />
+                    <Input.TextArea maxLength={20} showLimitHint placeholder="Everything is ok!" />
                 </FormItem>
 
                 <FormItem wrapperCol={{ offset: 6 }} >

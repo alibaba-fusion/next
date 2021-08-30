@@ -44,6 +44,9 @@ export default function stickyLock(BaseComponent) {
                 hasLockLeft: true,
                 hasLockRight: true,
             };
+
+            this.pingLeft = false;
+            this.pingRight = false;
         }
 
         getChildContext() {
@@ -77,14 +80,14 @@ export default function stickyLock(BaseComponent) {
         componentDidUpdate() {
             this.updateOffsetArr();
             this.onLockBodyScroll(
-                this.headerNode ? { currentTarget: this.headerNode } : { currentTarget: this.bodyNode },
+                this.bodyNode ? { currentTarget: this.bodyNode } : { currentTarget: this.headerNode },
                 true
             );
         }
 
         componentWillUnmount() {
-            this.pingLeft = undefined;
-            this.pingRight = undefined;
+            this.pingLeft = false;
+            this.pingRight = false;
             events.off(window, 'resize', this.updateOffsetArr);
         }
 

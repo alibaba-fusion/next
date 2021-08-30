@@ -199,6 +199,16 @@ export function config(Component, options = {}) {
                 log.warning('pure of ConfigProvider is deprecated, use Function Component or React.PureComponent');
             }
 
+            // 对于两个真正消费 popupContainer 的组件来说，正确的名字是 container,
+            if (
+                'popupContainer' in newContextProps &&
+                !('container' in this.props) &&
+                ['Overlay', 'Popup'].indexOf(displayName) > -1
+            ) {
+                newContextProps.container = newContextProps.popupContainer;
+                delete newContextProps.popupContainer;
+            }
+
             const newOthers = options.transform ? options.transform(others, this._deprecated) : others;
 
             const content = (

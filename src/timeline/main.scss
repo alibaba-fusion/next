@@ -67,6 +67,134 @@
     @include node-state('ltr', $timeline-item-error-background, $timeline-item-error-color, $timeline-item-error-dot-size);
 }
 
+#{$timeline-prefix}.#{$css-prefix}alternate {
+    #{$timeline-prefix}-item-left,   #{$timeline-prefix}-item-right {
+        #{$timeline-prefix}-item-left-content {
+            width: 50%;
+            padding-right: $timeline-item-content-margin-left;
+        }
+        #{$timeline-prefix}-item-timeline {
+            margin-left: 50%;
+        }
+        #{$timeline-prefix}-item-content {
+            margin-left: calc(50% + #{$timeline-item-content-margin-left} + #{$timeline-item-node-size});
+        }
+    }
+    #{$timeline-prefix}-item-folder {
+        margin-left: 50%;
+    }
+    #{$timeline-prefix}-item-right {
+        #{$timeline-prefix}-item-title {
+            margin: 0;
+            margin-top: 4px;
+            font-size: $timeline-item-title-font-size;
+            font-weight: $timeline-item-title-font-weight;
+            line-height: calc(#{$timeline-item-title-font-size} + 4px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: $timeline-item-title-color;
+            text-align: right;
+        }
+
+        #{$timeline-prefix}-item-body {
+            margin: 0;
+            margin-top: 8px;
+            font-size: $timeline-item-body-font-size;
+            line-height: calc(#{$timeline-item-body-font-size} + 4px);
+            color: $timeline-item-body-color;
+            text-align: right;
+        }
+
+        #{$timeline-prefix}-item-time {
+            margin: 0;
+            margin-top: $timeline-item-time-margin-top;
+            margin-bottom: $timeline-item-time-margin-bottom;
+            font-size: $timeline-item-time-font-size;
+            color: $timeline-item-time-color;
+            text-align: right;
+        }
+    }
+
+    #{$timeline-prefix}-item-right {
+        #{$timeline-prefix}-item-left-content {
+            display: inline-block;
+            position: relative;
+            #{$timeline-prefix}-item-title {
+                margin-top: 0;
+            }
+        }
+        #{$timeline-prefix}-item-content {
+            margin-left: calc(#{$timeline-item-content-margin-left} + #{$timeline-item-node-size});
+            position: absolute;
+            #{$timeline-prefix}-item-body {
+                margin-top: 4px;
+                color: $timeline-item-left-body-color;
+            }
+        }
+    }
+}
+
+#{$timeline-prefix}[dir='rtl'].#{$css-prefix}alternate {
+    #{$timeline-prefix}-item-left,   #{$timeline-prefix}-item-right {
+        #{$timeline-prefix}-item-left-content {
+            width: 50%;
+            padding-left: $timeline-item-content-margin-left;
+        }
+        #{$timeline-prefix}-item-timeline {
+            margin-right: 50%;
+        }
+        #{$timeline-prefix}-item-content {
+            width: 50%;
+            margin-right: calc(50% + #{$timeline-item-content-margin-left} + #{$timeline-item-node-size});
+        }
+    }
+    #{$timeline-prefix}-item-folder {
+        margin-right: 50%;
+    }
+    #{$timeline-prefix}-item-right {
+        #{$timeline-prefix}-item-title {
+            margin: 0;
+            font-size: $timeline-item-title-font-size;
+            font-weight: $timeline-item-title-font-weight;
+            line-height: calc(#{$timeline-item-title-font-size} + 4px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: $timeline-item-title-color;
+            text-align: left;
+        }
+
+        #{$timeline-prefix}-item-body {
+            margin: 0;
+            font-size: $timeline-item-body-font-size;
+            line-height: calc(#{$timeline-item-body-font-size} + 4px);
+            color: $timeline-item-body-color;
+            text-align: left;
+        }
+
+        #{$timeline-prefix}-item-time {
+            margin: 0;
+            margin-top: $timeline-item-time-margin-top;
+            margin-bottom: $timeline-item-time-margin-bottom;
+            font-size: $timeline-item-time-font-size;
+            color: $timeline-item-time-color;
+            text-align: left;
+        }
+        #{$timeline-prefix}-item-left-content {
+            display: inline-block;
+            position: relative;
+        }
+        #{$timeline-prefix}-item-content {
+            margin-right: calc(#{$timeline-item-content-margin-left} + #{$timeline-item-node-size});
+            position: absolute;
+            #{$timeline-prefix}-item-body {
+                text-align: right;
+            }
+        }
+    }
+}
+
 #{$timeline-prefix}-item-last {
     #{$timeline-prefix}-item-tail {
         display: none;

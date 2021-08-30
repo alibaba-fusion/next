@@ -238,6 +238,7 @@
             &#{$calendar2-prefix}-cell-range-begin,
             &#{$calendar2-prefix}-cell-range-end {
                 #{$calendar2-cell-inner} {
+                    z-index: 10;
                     @include calendar-selected;
                 }
             }
@@ -352,7 +353,7 @@
         display: none;
     }
 
-    tr:hover #{$calendar2-prefix}-cell:not(.next-calendar2-cell-disabled):not(.next-calendar2-cell-selected)::before {
+    tr:hover #{$calendar2-prefix}-cell:not(#{$calendar2-prefix}-cell-disabled):not(#{$calendar2-prefix}-cell-selected)::before {
         @include calendar-hover;
     }
 
@@ -380,7 +381,7 @@
     }
 
     tr:not(#{$calendar2-prefix}-week-current) {
-        td#{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected:not(.next-calendar2-cell-disabled) {
+        td#{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
             &::before,
             #{$calendar2-cell-inner} {
                 background-color: transparent;

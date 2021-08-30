@@ -40,6 +40,10 @@ export default class Item extends React.Component {
          */
         help: PropTypes.node,
         /**
+         * 字段名，默认赋值给第一个子元素
+         */
+        name: PropTypes.string,
+        /**
          * 额外的提示信息，和 help 类似，当需要错误信息和提示文案同时出现时，可以使用这个。 位于错误信息后面
          */
         extra: PropTypes.node,
@@ -96,7 +100,7 @@ export default class Item extends React.Component {
          */
         requiredMessage: PropTypes.string,
         /**
-         * required 自定义触发方式
+         * required 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         requiredTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -112,7 +116,7 @@ export default class Item extends React.Component {
          */
         minmaxMessage: PropTypes.string,
         /**
-         * min/max 自定义触发方式
+         * min/max 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         minmaxTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -128,7 +132,7 @@ export default class Item extends React.Component {
          */
         minmaxLengthMessage: PropTypes.string,
         /**
-         * minLength/maxLength 自定义触发方式
+         * minLength/maxLength 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         minmaxLengthTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -140,7 +144,7 @@ export default class Item extends React.Component {
          */
         lengthMessage: PropTypes.string,
         /**
-         * length 自定义触发方式
+         * length 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         lengthTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -152,7 +156,7 @@ export default class Item extends React.Component {
          */
         patternMessage: PropTypes.string,
         /**
-         * pattern 自定义触发方式
+         * pattern 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         patternTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -164,7 +168,7 @@ export default class Item extends React.Component {
          */
         formatMessage: PropTypes.string,
         /**
-         * format 自定义触发方式
+         * format 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         formatTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -172,7 +176,7 @@ export default class Item extends React.Component {
          */
         validator: PropTypes.func,
         /**
-         * validator 自定义触发方式
+         * validator 校验何时触发，默认值 onChange, 原生事件均可使用 onChange/onBlur/onFocus/...
          */
         validatorTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -210,6 +214,10 @@ export default class Item extends React.Component {
          */
         colon: PropTypes.bool,
         /**
+         * 是否禁用表单
+         */
+        disabled: PropTypes.bool,
+        /**
          * 子元素的 value 名称
          */
         valueName: PropTypes.string,
@@ -224,6 +232,7 @@ export default class Item extends React.Component {
     static contextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.oneOf(['large', 'small', 'medium']),
+        _formDisabled: PropTypes.bool,
         _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
         _formLabelForErrorMessage: PropTypes.bool,
@@ -232,31 +241,40 @@ export default class Item extends React.Component {
     static _typeMark = 'form_item';
 
     /**
-     * 从子元素里面提取表单组件
+     * 从子元素里面提取表单组件. TODO: 2.x 中改为只获取一个元素
      */
-    getNames() {
-        const children = React.Children.toArray(this.props.children);
-        return children
+    getNames(children) {
+        const { name } = this.props;
+        const childrenList = React.Children.toArray(children);
+        const nameList = childrenList
             .filter(c => {
                 return c.props && ('name' in c.props || 'data-meta' in c.props);
             })
             .map(c => {
                 return c.props.name || c.props.id;
             });
+
+        if (nameList.length) {
+            return nameList;
+        } else if (name) {
+            return [name];
+        }
+
+        return [];
     }
 
-    getHelper() {
+    getHelper(children) {
         const help = this.props.help;
         const _formField = this.context._formField;
 
         return (
-            <Error name={help === undefined ? this.getNames() : undefined} field={_formField}>
+            <Error name={help === undefined ? this.getNames(children) : undefined} field={_formField}>
                 {help}
             </Error>
         );
     }
 
-    getState() {
+    getState(children) {
         const { validateState } = this.props;
         if (validateState) {
             return validateState;
@@ -264,7 +282,7 @@ export default class Item extends React.Component {
 
         if (this.context._formField) {
             const { getState } = this.context._formField;
-            const names = this.getNames();
+            const names = this.getNames(children);
             if (!names.length) {
                 return '';
             }
@@ -278,6 +296,10 @@ export default class Item extends React.Component {
 
     getSize() {
         return this.props.size || this.context._formSize;
+    }
+
+    getDisabled() {
+        return 'disabled' in this.props ? this.props.disabled : this.context._formDisabled;
     }
 
     getIsPreview() {
@@ -308,7 +330,7 @@ export default class Item extends React.Component {
         return null;
     }
 
-    getItemLabel() {
+    getItemLabel(children) {
         const {
             id,
             required,
@@ -330,7 +352,7 @@ export default class Item extends React.Component {
         }
 
         const ele = (
-            <label htmlFor={id || this.getNames()[0]} required={asterisk} key="label">
+            <label htmlFor={id || this.getNames(children)[0]} required={asterisk} key="label">
                 {label}
             </label>
         );
@@ -360,12 +382,12 @@ export default class Item extends React.Component {
         return <div className={cls}>{ele}</div>;
     }
 
-    getItemWrapper() {
-        const { hasFeedback, labelCol, wrapperCol, children, extra, prefix, renderPreview } = this.props;
+    getItemWrapper(children) {
+        const { hasFeedback, labelCol, wrapperCol, extra, prefix, renderPreview, name } = this.props;
 
         const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
 
-        const state = this.getState();
+        const state = this.getState(children);
 
         const isPreview = this.getIsPreview();
         const childrenProps = {
@@ -385,17 +407,16 @@ export default class Item extends React.Component {
         }
 
         if (labelAlign === 'inset') {
-            childrenProps.label = this.getItemLabel();
+            childrenProps.label = this.getItemLabel(children);
         }
 
-        let childrenNode = children;
-        if (typeof children === 'function' && this.context._formField) {
-            childrenNode = children(this.context._formField.getValues());
+        if (this.getDisabled()) {
+            childrenProps.disabled = true;
         }
 
         const labelForErrorMessage = this.getLabelForErrorMessage();
 
-        const ele = React.Children.map(childrenNode, child => {
+        const ele = React.Children.map(children, (child, idx) => {
             if (
                 child &&
                 ['function', 'object'].indexOf(typeof child.type) > -1 &&
@@ -403,9 +424,16 @@ export default class Item extends React.Component {
                 child.type._typeMark !== 'form_error'
             ) {
                 let extraProps = childrenProps;
-                if (this.context._formField && 'name' in child.props && !('data-meta' in child.props)) {
+                // 自己直接使用 field.init 会在 props 上面留下 data-meta
+                // name 挪到 FormItem 上面，默认把第一个元素当做 Form 组件
+                if (
+                    this.context._formField &&
+                    !('data-meta' in child.props) &&
+                    ('name' in child.props || (name && idx === 0)) //TODO：1.x 为了不BR, 2.x 中把优先级调换下，优先取 FormItem 的 name
+                ) {
+                    const initName = 'name' in child.props && child.props.name ? child.props.name : name;
                     extraProps = this.context._formField.init(
-                        child.props.name,
+                        initName,
                         {
                             ...getFieldInitCfg(this.props, child.type.displayName, labelForErrorMessage),
                             props: { ...child.props, ref: child.ref },
@@ -422,7 +450,7 @@ export default class Item extends React.Component {
             return child;
         });
 
-        const help = this.getHelper();
+        const help = this.getHelper(children);
 
         if ((wrapperCol || labelCol) && labelAlign !== 'top') {
             return (
@@ -448,11 +476,16 @@ export default class Item extends React.Component {
     }
 
     render() {
-        const { className, style, prefix, wrapperCol, labelCol, responsive } = this.props;
+        const { className, style, prefix, wrapperCol, labelCol, responsive, children } = this.props;
 
         const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
 
-        const state = this.getState();
+        let childrenNode = children;
+        if (typeof children === 'function' && this.context._formField) {
+            childrenNode = children(this.context._formField.getValues());
+        }
+
+        const state = this.getState(childrenNode);
         const size = this.getSize();
         const fullWidth = this.getFullWidth();
         const isPreview = this.getIsPreview();
@@ -469,12 +502,12 @@ export default class Item extends React.Component {
 
         // 垂直模式并且左对齐才用到
         const Tag = responsive ? Cell : (wrapperCol || labelCol) && labelAlign !== 'top' ? Row : 'div';
-        const label = labelAlign === 'inset' ? null : this.getItemLabel();
+        const label = labelAlign === 'inset' ? null : this.getItemLabel(childrenNode);
 
         return (
             <Tag {...obj.pickOthers(Item.propTypes, this.props)} className={itemClassName} style={style}>
                 {label}
-                {this.getItemWrapper()}
+                {this.getItemWrapper(childrenNode)}
             </Tag>
         );
     }

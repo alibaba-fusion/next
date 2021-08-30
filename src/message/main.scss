@@ -344,3 +344,50 @@
 }
 
 @import "./rtl.scss";
+
+.#{$css-prefix}message-wrapper-v2 {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    left: 0;
+    z-index: 1001;
+    width: 100%;
+    pointer-events: none;
+}
+.#{$css-prefix}message-list {
+    padding: 8px;
+    text-align: center;
+
+    .#{$css-prefix}message {
+        display: inline-block;
+        pointer-events: all;
+    }
+}
+
+
+.#{$css-prefix}message-fade-leave {
+    animation-duration: 300ms;
+    animation-play-state: paused;
+    animation-fill-mode: both;
+    animation-timing-function: ease;
+}
+
+.#{$css-prefix}message-fade-leave.#{$css-prefix}message-fade-leave-active {
+    animation-name: MessageFadeOut;
+    animation-play-state: running;
+}
+
+@keyframes MessageFadeOut {
+    0% {
+        max-height: 150px;
+        margin-bottom: 16px;
+        opacity: 1;
+    }
+    100% {
+        max-height: 0;
+        margin-bottom: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        opacity: 0;
+    }
+}

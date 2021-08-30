@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { obj } from '../../util';
+import { obj, pickAttrs } from '../../util';
 
 export default class Cell extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
-        primaryKey: PropTypes.string,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         className: PropTypes.string,
         record: PropTypes.any,
         value: PropTypes.any,
@@ -89,6 +89,7 @@ export default class Cell extends React.Component {
             isIconLeft,
             type,
             htmlTitle,
+            wordBreak,
             ...others
         } = this.props;
         const tagStyle = { ...style };
@@ -107,11 +108,12 @@ export default class Cell extends React.Component {
         }
         const cls = classnames({
             [`${prefix}table-cell`]: true,
+            [`${prefix}table-word-break-${wordBreak}`]: !!wordBreak,
             [className]: className,
         });
 
         return (
-            <Tag {...others} className={cls} style={tagStyle} role="gridcell">
+            <Tag {...pickAttrs(others)} className={cls} style={tagStyle} role="gridcell">
                 <div
                     className={`${prefix}table-cell-wrapper`}
                     style={innerStyle}

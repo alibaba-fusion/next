@@ -35,10 +35,14 @@ class DatePanel extends React.Component {
 
         // 默认时间
         const { timePanelProps = {} } = props;
-
         let defaultTime = timePanelProps.defaultValue;
+
         if (defaultTime) {
-            defaultTime = datejs(defaultTime, timePanelProps.format || 'HH:mm:ss');
+            // fix: https://github.com/alibaba-fusion/next/issues/3203
+            defaultTime = datejs(
+                defaultTime,
+                typeof defaultTime === 'string' ? timePanelProps.format || 'HH:mm:ss' : undefined
+            );
         }
 
         this.state = {

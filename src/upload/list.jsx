@@ -5,11 +5,14 @@ import ConfigProvider from '../config-provider';
 import Progress from '../progress';
 import Icon from '../icon';
 import Button from '../button';
-import { func, obj, KEYCODE } from '../util';
+import { func, obj, KEYCODE, env } from '../util';
 import zhCN from '../locale/zh-cn.js';
 import { previewFile } from './util';
 import transform from './transform';
 import Item from '../menu/view/item';
+import Selecter from './runtime/selecter';
+
+const isIE9 = env.ieVersion === 9;
 
 class List extends Component {
     static propTypes = {
@@ -51,6 +54,12 @@ class List extends Component {
          * 自定义操作渲染
          */
         actionRender: PropTypes.func,
+        /**
+         * 卡片自定义渲染（目前只支持 Card)
+         * @param {Object} file 文件对象
+         * @param {Object} {remove} remove:删除回调
+         * @retuns {ReactNode} React元素
+         */
         itemRender: PropTypes.func,
         /**
          * 透传给Progress props
@@ -58,6 +67,7 @@ class List extends Component {
         progressProps: PropTypes.object,
         children: PropTypes.node,
         uploader: PropTypes.any,
+        showDownload: PropTypes.bool,
         /**
          * 可选参数，是否本地预览
          */
@@ -73,6 +83,7 @@ class List extends Component {
         value: [],
         locale: zhCN.Upload,
         closable: false,
+        showDownload: true,
         onRemove: func.noop,
         onCancel: func.noop,
         extraRender: func.noop,
@@ -305,8 +316,13 @@ class List extends Component {
         );
     }
 
+    onSelect = (oldfile, files) => {
+        const uploader = this.props.uploader;
+        uploader && files.length && uploader.replaceWithNewFile(oldfile, files[0]);
+    };
+
     getPictureCardList(file, isPreview) {
-        const { locale, progressProps, fileNameRender, itemRender } = this.props;
+        const { locale, progressProps, fileNameRender, itemRender, showDownload } = this.props;
 
         const { prefixCls, downloadURL, imgURL, itemCls, alt } = this.getInfo(file);
         const state = isPreview ? '' : file.state;
@@ -360,34 +376,45 @@ class List extends Component {
         } else {
             /* eslint-disable no-lonely-if */
             if (typeof itemRender === 'function') {
-                item = itemRender(file);
+                // 不处理上传态和选择态，太过复杂
+                item = itemRender(file, { remove: onClose });
             } else {
+                const Uploader = this.props.uploader || { props: {} };
+                const UploaderProps = Uploader.props;
+
+                // TODO: 2.x 中逻辑会修改为，只要有showDownload，那就有下载按钮（不管有没有downloadURL）
                 item = [
                     <div className={`${prefixCls}-list-item-thumbnail`} key="img">
                         {img}
                     </div>,
-                    <span
-                        key="tool"
-                        className={`${prefixCls}-tool ${!this.props.closable ? `${prefixCls}-noclose` : ''}`}
-                    >
-                        <a
-                            href={downloadURL}
-                            target="_blank"
-                            tabIndex={downloadURL ? '0' : '-1'}
-                            className={`${prefixCls}-tool-download-link`}
-                            style={{
-                                pointerEvents: downloadURL ? '' : 'none',
-                            }}
-                        >
-                            <Icon
-                                type={downloadURL ? 'download' : ''}
-                                aria-label={locale.card.download}
-                                className={`${prefixCls}-tool-download-icon`}
-                            />
-                        </a>
+                    <span key="tool" className={`${prefixCls}-tool`}>
+                        {state !== 'error' && showDownload && downloadURL ? (
+                            <a
+                                href={downloadURL}
+                                target="_blank"
+                                className={`${prefixCls}-tool-item ${prefixCls}-tool-download-link`}
+                            >
+                                <Icon
+                                    type="download"
+                                    aria-label={locale.card.download}
+                                    className={`${prefixCls}-tool-download-icon`}
+                                />
+                            </a>
+                        ) : null}
+
+                        {this.props.reUpload && !isPreview && !isIE9 ? (
+                            <Selecter
+                                className={`${prefixCls}-tool-item ${prefixCls}-tool-reupload`}
+                                accept={UploaderProps.accept}
+                                name={UploaderProps.fileKeyName}
+                                onSelect={this.onSelect.bind(this, file)}
+                            >
+                                <Icon type="edit" className={`${prefixCls}-tool-reupload-icon`} />
+                            </Selecter>
+                        ) : null}
 
                         {this.props.closable && !isPreview ? (
-                            <span className={`${prefixCls}-tool-close`}>
+                            <span className={`${prefixCls}-tool-item ${prefixCls}-tool-close`}>
                                 <Icon
                                     type="ashbin"
                                     aria-label={locale.card.delete}
@@ -466,6 +493,7 @@ class List extends Component {
             {
                 [`${prefixCls}-list`]: true,
                 [`${prefixCls}-list-${_listType}`]: true,
+                [`${prefixCls}-ie9`]: isIE9,
             },
             className
         );

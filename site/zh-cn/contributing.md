@@ -41,10 +41,16 @@ chore|ci|docs|feat|fix|perf|refactor|revert|style|test|temp；`scope` 必填，�
 ## 开发流程
 
 1. 将代码 fork 到自己的 github 仓库 (在 https://github.com/alibaba-fusion/next 上，点击右上角 fork 按钮)
-2. 下载这份被 fork 的代码，你可以在 https://github.com/[your account]/next 找到刚 fork 的代码
+2. 使用 Gitpod, 一个源自 GitHub 的免费在线代码编辑工具
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/alibaba-fusion/next)
+
+或者下载代码到本地:
+   你可以在 https://github.com/[your account]/next 找到刚 fork 的代码
 ```
 git clone git@github.com:[your account]/next.git
 ```
+
 3. 进入刚克隆的目录，为了后续开发、同步主仓库，先设置 upstream
 ```
 cd next

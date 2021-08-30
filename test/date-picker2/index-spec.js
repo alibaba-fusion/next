@@ -411,6 +411,112 @@ describe('Picker', () => {
                     .getAttribute('title') === '2020-11-01'
             );
         });
+
+        it('format', () => {
+            wrapper = mount(
+                <DatePicker
+                    defaultValue={defaultVal}
+                    defaultVisible
+                    format={v => `Custom: ${v.format('YYYY/MM/DD')}`}
+                    onChange={(v, vStr) => assert(vStr === 'Custom: 2020/12/14')}
+                />
+            );
+            assert(getStrValue() === 'Custom: 2020/12/12');
+            clickDate('2020-12-14');
+            assert(getStrValue() === 'Custom: 2020/12/14');
+            wrapper.unmount();
+
+            // RangePicker
+            wrapper = mount(
+                <RangePicker
+                    defaultValue={defaultRangeVal}
+                    defaultVisible
+                    format="x"
+                    onChange={(v, strVal) =>
+                        assert.deepEqual(strVal, [dayjs('2020-12-12').format('x'), dayjs('2020-12-14').format('x')])
+                    }
+                />
+            );
+            clickDate('2020-12-12');
+            clickDate('2020-12-14');
+            assert.deepEqual(getStrValue(), [dayjs('2020-12-12').format('x'), dayjs('2020-12-14').format('x')]);
+            wrapper.unmount();
+
+            // RangePicker outputFormat array
+            wrapper = mount(
+                <RangePicker
+                    showTime
+                    defaultValue={defaultRangeVal}
+                    defaultVisible
+                    format={['YYYY', v => v.valueOf()]}
+                    onChange={(v, strVal) =>
+                        assert.deepEqual(strVal, [dayjs('2020-12-12').format('YYYY'), dayjs('2020-12-14').format('x')])
+                    }
+                />
+            );
+            clickDate('2020-12-12');
+            clickOk();
+            clickDate('2020-12-14');
+            clickOk();
+            wrapper.unmount();
+        });
+
+        it('outputFormat', () => {
+            wrapper = mount(
+                <DatePicker
+                    defaultValue={defaultVal}
+                    defaultVisible
+                    outputFormat="x"
+                    onChange={v => assert(v === dayjs(defaultVal).format('x'))}
+                />
+            );
+            clickDate('2020-12-12');
+
+            wrapper.setProps({
+                showTime: true,
+                outputFormat(v) {
+                    return v.valueOf();
+                },
+                onOk: v => assert(v === dayjs(defaultVal).valueOf()),
+                onChange: v => assert(v === dayjs(defaultVal).valueOf()),
+            });
+
+            clickDate('2020-12-12');
+            clickOk();
+            wrapper.unmount();
+
+            // RangePicker
+            wrapper = mount(
+                <RangePicker
+                    defaultValue={defaultRangeVal}
+                    defaultVisible
+                    outputFormat="x"
+                    onChange={v =>
+                        assert.deepEqual(v, [dayjs('2020-12-12').format('x'), dayjs('2020-12-14').format('x')])
+                    }
+                />
+            );
+            clickDate('2020-12-12');
+            clickDate('2020-12-14');
+            wrapper.unmount();
+
+            // RangePicker outputFormat array
+            wrapper = mount(
+                <RangePicker
+                    showTime
+                    defaultValue={defaultRangeVal}
+                    defaultVisible
+                    outputFormat={['YYYY', v => v.valueOf()]}
+                    onChange={v =>
+                        assert.deepEqual(v, [dayjs('2020-12-12').format('YYYY'), dayjs('2020-12-14').format('x')])
+                    }
+                />
+            );
+            clickDate('2020-12-12');
+            clickOk();
+            clickDate('2020-12-14');
+            clickOk();
+        });
     });
 
     describe('controlled', () => {
@@ -832,6 +938,60 @@ describe('Picker', () => {
             document.dispatchEvent(new Event('click'));
 
             assert.deepEqual(getStrValue(), ['', '']);
+        });
+
+        // https://github.com/alibaba-fusion/next/issues/3086
+        it('fix issue on half disabled & showTime', () => {
+            wrapper = mount(
+                <RangePicker
+                    showTime
+                    visible
+                    disabled={[true, false]}
+                    value={['2021-01-12 10:00:00', '2021-01-12 09:00:00']}
+                />
+            );
+            assert.deepEqual(getStrValue(), ['2021-01-12 10:00:00', '']);
+
+            wrapper.setProps({ disabled: [false, true] });
+            assert.deepEqual(getStrValue(), ['', '2021-01-12 09:00:00']);
+
+            wrapper.setProps({ disabled: true });
+            assert.deepEqual(getStrValue(), ['2021-01-12 10:00:00', '']);
+
+            wrapper.setProps({ disabled: false });
+            assert.deepEqual(getStrValue(), ['2021-01-12 10:00:00', '']);
+
+            wrapper.setProps({ value: ['2021-01-12 10:00:00', '2021-01-12 10:00:00'] });
+            assert.deepEqual(getStrValue(), ['2021-01-12 10:00:00', '2021-01-12 10:00:00']);
+
+            findInput(1).simulate('focus');
+            changeInput('2021-01-12 09:00:00', 1);
+            clickOk();
+            assert.deepEqual(getStrValue(), ['', '2021-01-12 09:00:00']);
+        });
+
+        // https://github.com/alibaba-fusion/next/issues/3186
+        it('fix panelValue', () => {
+            wrapper = mount(<RangePicker visible defaultPanelValue={defaultVal} />);
+            findInput(0).simulate('focus');
+            findInput(1).simulate('focus');
+            assert(findDate('2021-01-31').length);
+        });
+
+        it('should support value empty when showTime', () => {
+            wrapper = mount(
+                <div>
+                    <RangePicker visible showTime defaultPanelValue={defaultVal} />
+                    <button id="test">Blank Area</button>
+                </div>
+            );
+            findDate('2020-12-12').simulate('click');
+            clickTime('12');
+            clickTime('12', 'minute');
+            clickTime('12', 'second');
+            clickOk();
+            wrapper.find('#test').simulate('click');
+            assert.deepEqual(getStrValue(), ['2020-12-12 12:12:12', '']);
         });
     });
 });

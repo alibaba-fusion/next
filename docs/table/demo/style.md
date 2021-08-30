@@ -2,7 +2,9 @@
 
 - order: 16
 
-自定义表格边框
+自定义表格样式：
+- 在`Table`上，你可以通过API来设置斑马线、是否显示边框等；
+- 在 `Table.Column` 上，你可以通过 `align` 设置内容居左中右，`wordBreak` 设置内容换行模式（默认是任意位置均可换行，可以为英文句子类设置值`word`）
 
 :::lang=en-us
 # Style
@@ -21,7 +23,7 @@ const dataSource = () => {
         const result = [];
         for (let i = 0; i < 5; i++) {
             result.push({
-                title: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`,
+                title: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible. `.repeat(3),
                 id: 100306660940 + i,
                 time: 2000 + i
             });
@@ -61,21 +63,30 @@ class App extends React.Component {
             align: 'right'
         });
     }
+    toggleWordBreak() {
+        this.setState((prevState) => {
+            return {
+                wordBreak: prevState.wordBreak === 'word' ? 'all': 'word'
+            };
+        });
+    }
+
     render() {
         return (<span>
-            <Box direction="row" spacing={20}>
+            <div className="style-table-action">
                 <Button onClick={this.toggleZebra.bind(this)}> Toggle zebra </Button>
                 <Button onClick={this.toggleBorder.bind(this)}> Toggle border</Button>
                 <Button onClick={this.makeBeauty.bind(this)}> Make second column beauty </Button>
-                <Button onClick={this.makeAlign.bind(this)}> Make first column align right </Button>
-            </Box>
+                <Button onClick={this.makeAlign.bind(this)}> Make second column align right </Button>
+                <Button onClick={this.toggleWordBreak.bind(this)}> Toggle second column's wordBreak </Button>
+            </div>
             <br />
             <Table dataSource={this.state.dataSource}
                 isZebra={this.state.isZebra}
                 hasBorder={this.state.hasBorder}>
-                <Table.Column title="Id" dataIndex="id" alignHeader="center"/>
-                <Table.Column title="Title" dataIndex="title" align={this.state.align} className={this.state.className}/>
-                <Table.Column title="Time" dataIndex="time"/>
+                <Table.Column title="Id" dataIndex="id" alignHeader="center" width={100}/>
+                <Table.Column title="Title" dataIndex="title" align={this.state.align} className={this.state.className} wordBreak={this.state.wordBreak} width={340} />
+                <Table.Column title="Time" dataIndex="time" width={200}/>
                 <Table.Column cell={render} width={200}/>
             </Table>
         </span>);
@@ -86,6 +97,9 @@ ReactDOM.render(<App/>, mountNode);
 ````
 
 ````css
+.style-table-action > * {
+    margin-right: 20px;
+}
 .beauty{
   background: #f7f7f7;
 }
