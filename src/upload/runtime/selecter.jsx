@@ -27,6 +27,10 @@ export default class Selecter extends React.Component {
          */
         webkitdirectory: PropTypes.bool,
         /**
+         * 调用系统设备媒体
+         */
+        capture: PropTypes.string,
+        /**
          * 是否支持拖拽上传，`ie10+` 支持。
          */
         dragable: PropTypes.bool,
@@ -65,9 +69,7 @@ export default class Selecter extends React.Component {
 
     onSelect = e => {
         const files = e.target.files;
-        const filesArr = files.length
-            ? Array.prototype.slice.call(files)
-            : [files];
+        const filesArr = files.length ? Array.prototype.slice.call(files) : [files];
 
         filesArr.forEach(file => {
             file.uid = uid();
@@ -128,6 +130,7 @@ export default class Selecter extends React.Component {
         const {
             accept,
             multiple,
+            capture,
             webkitdirectory,
             children,
             id,
@@ -156,14 +159,18 @@ export default class Selecter extends React.Component {
             );
         }
 
+        const otherProps = {};
+        if (webkitdirectory) {
+            otherProps.webkitdirectory = '';
+        }
+        if (capture) {
+            otherProps.capture = capture;
+        }
+
         return (
-            <div
-                role="application"
-                style={style}
-                className={className}
-                {...events}
-            >
+            <div role="application" style={style} className={className} {...events}>
                 <input
+                    {...otherProps}
                     type="file"
                     name={name}
                     id={id}
@@ -172,7 +179,6 @@ export default class Selecter extends React.Component {
                     accept={accept}
                     aria-hidden
                     multiple={multiple}
-                    webkitdirectory={webkitdirectory ? '' : undefined}
                     onChange={this.onSelect}
                     disabled={disabled}
                 />
