@@ -29,12 +29,14 @@ MessageProvider.config = config => {
         MessageProvider.open = message.open;
         MessageProvider.hide = message.close; // 兼容 hide 用法, 后续计划都改成 open（ Notification 已经用了 close)
         MessageProvider.close = message.close;
+        MessageProvider.destory = message.destory;
         MessageProvider.success = message.success;
         MessageProvider.warning = message.warning;
         MessageProvider.error = message.error;
         MessageProvider.notice = message.notice;
         MessageProvider.help = message.help;
         MessageProvider.loading = message.loading;
+
         openV2 = true;
     }
 };
