@@ -34,6 +34,7 @@ export default class Cell extends React.Component {
         lock: PropTypes.any,
         type: PropTypes.oneOf(['header', 'body']),
         resizable: PropTypes.bool,
+        asyncResizable: PropTypes.bool,
         __normalized: PropTypes.bool,
     };
 
@@ -61,6 +62,7 @@ export default class Cell extends React.Component {
             cell,
             value,
             resizable,
+            asyncResizable,
             colIndex,
             rowIndex,
             __colIndex,

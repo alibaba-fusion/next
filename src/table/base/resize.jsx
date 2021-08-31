@@ -10,6 +10,8 @@ class Resize extends React.Component {
         onChange: T.func,
         dataIndex: T.string,
         tableEl: T.any,
+        resizeProxyDomRef: T.any,
+        asyncResizable: T.bool,
     };
     static defaultProps = {
         onChange: () => {},
@@ -17,8 +19,24 @@ class Resize extends React.Component {
     componentWillUnmount() {
         this.destory();
     }
+    showResizeProxy = () => {
+        const tLeft = this.props.tableEl.getBoundingClientRect().left;
+        this.proxtStartLeft = this.lastPageX - tLeft;
+        this.props.resizeProxyDomRef.style.cssText = `display:block;left:${this.proxtStartLeft}px;`;
+    };
+    moveResizeProxy = () => {
+        this.props.resizeProxyDomRef.style.cssText = `left:${this.proxtStartLeft + this.changedPageX}px;display:block;`;
+    };
+    resetResizeProxy = () => {
+        this.props.onChange(this.props.dataIndex, this.changedPageX);
+        this.changedPageX = 0;
+        this.proxtStartLeft = 0;
+        this.props.resizeProxyDomRef.style.cssText = `display:none;`;
+    };
     onMouseDown = e => {
         this.lastPageX = e.pageX;
+        this.proxtStartLeft = 0;
+        if (this.props.asyncResizable) this.showResizeProxy();
         events.on(document, 'mousemove', this.onMouseMove);
         events.on(document, 'mouseup', this.onMouseUp);
         this.unSelect();
@@ -31,10 +49,19 @@ class Resize extends React.Component {
             changedPageX = -changedPageX;
         }
 
+        // stop at here when async
+        if (this.props.asyncResizable) {
+            this.changedPageX = changedPageX;
+            this.moveResizeProxy();
+            return;
+        }
         this.props.onChange(this.props.dataIndex, changedPageX);
         this.lastPageX = pageX;
     };
     onMouseUp = () => {
+        if (this.props.asyncResizable) {
+            this.resetResizeProxy();
+        }
         this.destory();
     };
     destory() {

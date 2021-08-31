@@ -75,6 +75,7 @@ export default class Header extends React.Component {
             rtl,
             tableWidth,
             tableEl,
+            resizeProxyDomRef,
             ...others
         } = this.props;
 
@@ -95,6 +96,7 @@ export default class Header extends React.Component {
                     sortable,
                     sortDirections,
                     resizable,
+                    asyncResizable,
                     dataIndex,
                     filters,
                     filterMode,
@@ -113,7 +115,7 @@ export default class Header extends React.Component {
 
                 className = classnames({
                     [`${prefix}table-header-node`]: true,
-                    [`${prefix}table-header-resizable`]: resizable,
+                    [`${prefix}table-header-resizable`]: resizable || asyncResizable,
                     [`${prefix}table-word-break-${wordBreak}`]: !!wordBreak,
                     [className]: className,
                 });
@@ -141,13 +143,15 @@ export default class Header extends React.Component {
                             />
                         );
                     }
-                    if (resizable) {
+                    if (asyncResizable || resizable) {
                         resizeElement = (
                             <Resize
+                                asyncResizable={asyncResizable}
                                 tableEl={tableEl}
                                 prefix={prefix}
                                 rtl={rtl}
                                 dataIndex={dataIndex}
+                                resizeProxyDomRef={resizeProxyDomRef}
                                 onChange={onResizeChange}
                             />
                         );

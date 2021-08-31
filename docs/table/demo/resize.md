@@ -48,7 +48,8 @@ const onChange = function(...args) {
 class App extends React.Component {
     state = {
         widths: {
-            id: 100
+            'title.name': 400,
+            time: 600
         }
     }
     onResizeChange = (dataIndex, value) => {
@@ -59,11 +60,12 @@ class App extends React.Component {
         });
     }
     render() {
+        const titleDataIndex = "title.name"
         return (<Table dataSource={dataSource()}
             rowSelection={rowSelection} onResizeChange={this.onResizeChange}>
-            <Table.Column title="Id" dataIndex="id" resizable width={this.state.widths.id}/>
-            <Table.Column title="Title" dataIndex="title.name" width={400}/>
-            <Table.Column title="Time" dataIndex="time" width={600}/>
+            <Table.Column title="Id" dataIndex="id" lock width={100}/>
+            <Table.Column title="Title" resizable dataIndex={titleDataIndex} width={this.state.widths[titleDataIndex]}/>
+            <Table.Column title="Time" dataIndex="time" asyncResizable width={this.state.widths.time}/>
             <Table.Column cell={render} width={200}/>
         </Table>);
     }
