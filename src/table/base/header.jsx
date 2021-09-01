@@ -37,6 +37,38 @@ export default class Header extends React.Component {
         onSort: noop,
         onResizeChange: noop,
     };
+    constructor() {
+        super();
+
+        this.hasLock = false;
+    }
+
+    componentDidMount() {
+        this.checkHasLock();
+    }
+
+    componentDidUpdate() {
+        this.checkHasLock();
+    }
+
+    checkHasLock = () => {
+        const { columns } = this.props;
+        let hasLock = false;
+        for (let i = 0; i < columns.length; i++) {
+            const cols = columns[i];
+            for (let j = 0; j < cols.length; j++) {
+                const col = cols[j];
+                if (col.lock) {
+                    hasLock = true;
+                    break;
+                }
+            }
+            if (hasLock) {
+                break;
+            }
+        }
+        this.hasLock = hasLock;
+    };
 
     getCellRef = (i, j, cell) => {
         this.props.headerCellRef(i, j, cell);
@@ -96,20 +128,6 @@ export default class Header extends React.Component {
         } = components;
         const rowSpan = columns.length;
 
-        let hasLock = false;
-        for (let i = 0; i < columns.length; i++) {
-            const cols = columns[i];
-            for (let j = 0; j < cols.length; j++) {
-                const col = cols[j];
-                if (col.lock) {
-                    hasLock = true;
-                    break;
-                }
-            }
-            if (hasLock) {
-                break;
-            }
-        }
         const header = columns.map((cols, index) => {
             const col = cols.map((col, j) => {
                 const cellRefKey = this.getCellDomRefKey(index, j);
@@ -171,7 +189,7 @@ export default class Header extends React.Component {
                         resizeElement = (
                             <Resize
                                 asyncResizable={asyncResizable}
-                                hasLock={hasLock}
+                                hasLock={this.hasLock}
                                 col={col}
                                 tableEl={tableEl}
                                 prefix={prefix}

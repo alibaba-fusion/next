@@ -76,12 +76,13 @@ class Resize extends React.Component {
         }
     };
     onMouseDown = e => {
+        const { left: tableLeft, width: tableWidth } = this.props.tableEl.getBoundingClientRect();
+        const { left: cellDomLeft } = this.props.cellDomRef.getBoundingClientRect();
         this.lastPageX = e.pageX;
-        this.tLeft = this.props.tableEl.getBoundingClientRect().left;
         this.startLeft = this.lastPageX - this.tLeft;
-        this.tRight = this.props.tableEl.getBoundingClientRect().width;
-        const cellDom = this.props.cellDomRef;
-        this.cellLeft = cellDom.getBoundingClientRect().left - this.tLeft;
+        this.tLeft = tableLeft;
+        this.tRight = tableWidth;
+        this.cellLeft = cellDomLeft - this.tLeft;
 
         if (this.props.asyncResizable) this.showResizeProxy();
         events.on(document, 'mousemove', this.onMouseMove);
