@@ -11,8 +11,25 @@ class Resize extends React.Component {
         dataIndex: T.string,
         tableEl: T.any,
         resizeProxyDomRef: T.any,
+        cellDomRef: T.any,
+        col: T.any,
+        hasLock: T.bool,
         asyncResizable: T.bool,
     };
+    constructor() {
+        super();
+
+        this.cellMinWidth = 40;
+
+        this.lastPageX = 0;
+        this.tRight = 0;
+        this.tLeft = 0;
+        this.cellLeft = 0;
+        this.startLeft = 0;
+        this.changedPageX = 0;
+
+        this.asyncResizeFlag = false;
+    }
     static defaultProps = {
         onChange: () => {},
     };
@@ -20,22 +37,52 @@ class Resize extends React.Component {
         this.destory();
     }
     showResizeProxy = () => {
-        const tLeft = this.props.tableEl.getBoundingClientRect().left;
-        this.proxtStartLeft = this.lastPageX - tLeft;
-        this.props.resizeProxyDomRef.style.cssText = `display:block;left:${this.proxtStartLeft}px;`;
+        this.props.resizeProxyDomRef.style.cssText = `display:block;left:${this.startLeft}px;`;
     };
     moveResizeProxy = () => {
-        this.props.resizeProxyDomRef.style.cssText = `left:${this.proxtStartLeft + this.changedPageX}px;display:block;`;
+        const moveLeft = this.startLeft + this.changedPageX;
+        this.props.resizeProxyDomRef.style.cssText = `left:${moveLeft}px;display:block;`;
     };
     resetResizeProxy = () => {
-        this.props.onChange(this.props.dataIndex, this.changedPageX);
+        // when the mouse was not moved,don't change cell width
+        if (this.asyncResizeFlag) {
+            this.props.onChange(this.props.dataIndex, this.changedPageX);
+        }
         this.changedPageX = 0;
-        this.proxtStartLeft = 0;
+        this.tRight = 0;
+        this.asyncResizeFlag = false;
         this.props.resizeProxyDomRef.style.cssText = `display:none;`;
+    };
+    movingLimit = () => {
+        // table right limit
+        let moveLeft = this.startLeft + this.changedPageX;
+        if (moveLeft > this.tRight) {
+            moveLeft = this.tRight;
+            this.changedPageX = this.tRight - this.startLeft;
+        }
+
+        // cell left limit
+        if (moveLeft - this.cellLeft < this.cellMinWidth) {
+            this.changedPageX = this.cellLeft + this.cellMinWidth - this.startLeft;
+        }
+
+        // table left limit
+        if (moveLeft < 0) {
+            this.changedPageX = 0 - this.startLeft;
+        }
+
+        if (this.props.col.width + this.changedPageX < this.cellMinWidth) {
+            this.changedPageX = this.cellMinWidth - this.props.col.width;
+        }
     };
     onMouseDown = e => {
         this.lastPageX = e.pageX;
-        this.proxtStartLeft = 0;
+        this.tLeft = this.props.tableEl.getBoundingClientRect().left;
+        this.startLeft = this.lastPageX - this.tLeft;
+        this.tRight = this.props.tableEl.getBoundingClientRect().width;
+        const cellDom = this.props.cellDomRef;
+        this.cellLeft = cellDom.getBoundingClientRect().left - this.tLeft;
+
         if (this.props.asyncResizable) this.showResizeProxy();
         events.on(document, 'mousemove', this.onMouseMove);
         events.on(document, 'mouseup', this.onMouseUp);
@@ -43,25 +90,35 @@ class Resize extends React.Component {
     };
     onMouseMove = e => {
         const pageX = e.pageX;
-        let changedPageX = pageX - this.lastPageX;
+        this.changedPageX = pageX - this.lastPageX;
 
         if (this.props.rtl) {
-            changedPageX = -changedPageX;
+            this.changedPageX = -this.changedPageX;
         }
+
+        if (this.props.hasLock) {
+            if (!this.props.asyncResizable) {
+                // when hasn't lock attribute, cellLeft will change
+                this.cellLeft = this.props.cellDomRef.getBoundingClientRect().left - this.tLeft;
+            }
+        }
+        this.movingLimit();
 
         // stop at here when async
         if (this.props.asyncResizable) {
-            this.changedPageX = changedPageX;
+            // asyncResizeFlag use to prevent just click without mouse move
+            this.asyncResizeFlag = true;
             this.moveResizeProxy();
             return;
         }
-        this.props.onChange(this.props.dataIndex, changedPageX);
+        this.props.onChange(this.props.dataIndex, this.changedPageX);
         this.lastPageX = pageX;
     };
     onMouseUp = () => {
         if (this.props.asyncResizable) {
             this.resetResizeProxy();
         }
+        this.startLeft = 0;
         this.destory();
     };
     destory() {

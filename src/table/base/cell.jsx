@@ -118,6 +118,7 @@ export default class Cell extends React.Component {
             <Tag {...pickAttrs(others)} className={cls} style={tagStyle} role="gridcell">
                 <div
                     className={`${prefix}table-cell-wrapper`}
+                    ref={this.props.getCellDomRef}
                     style={innerStyle}
                     title={htmlTitle}
                     data-next-table-col={__colIndex}

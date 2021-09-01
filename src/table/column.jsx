@@ -77,7 +77,8 @@ export default class Column extends React.Component {
          */
         resizable: PropTypes.bool,
         /**
-         * 是否支持异步列宽调整, 当该值设为true，table的布局方式会修改为fixed.
+         * （推荐使用）是否支持异步列宽调整, 当该值设为true，table的布局方式会修改为fixed.
+         * @version 1.24
          */
         asyncResizable: PropTypes.bool,
         /**

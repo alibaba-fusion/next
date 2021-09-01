@@ -48,8 +48,7 @@ const onChange = function(...args) {
 class App extends React.Component {
     state = {
         widths: {
-            'title.name': 400,
-            time: 600
+            time: 300
         }
     }
     onResizeChange = (dataIndex, value) => {
@@ -60,11 +59,10 @@ class App extends React.Component {
         });
     }
     render() {
-        const titleDataIndex = "title.name"
         return (<Table dataSource={dataSource()}
             rowSelection={rowSelection} onResizeChange={this.onResizeChange}>
-            <Table.Column title="Id" dataIndex="id" lock width={100}/>
-            <Table.Column title="Title" resizable dataIndex={titleDataIndex} width={this.state.widths[titleDataIndex]}/>
+            <Table.Column lock title="Id" dataIndex="id" width={100}/>
+            <Table.Column title="Title" dataIndex={'title.name'} width={300}/>
             <Table.Column title="Time" dataIndex="time" asyncResizable width={this.state.widths.time}/>
             <Table.Column cell={render} width={200}/>
         </Table>);

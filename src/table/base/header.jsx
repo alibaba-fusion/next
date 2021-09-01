@@ -48,6 +48,15 @@ export default class Header extends React.Component {
         }
     };
 
+    getCellDomRef = (i, j, cellDom) => {
+        const cellRefKey = this.getCellDomRefKey(i, j);
+        this[cellRefKey] = cellDom;
+    };
+
+    getCellDomRefKey = (i, j) => {
+        return `header_cell_${i}_${j}`;
+    };
+
     onSort = (dataIndex, order, sort) => {
         this.props.onSort(dataIndex, order, sort);
     };
@@ -87,8 +96,23 @@ export default class Header extends React.Component {
         } = components;
         const rowSpan = columns.length;
 
+        let hasLock = false;
+        for (let i = 0; i < columns.length; i++) {
+            const cols = columns[i];
+            for (let j = 0; j < cols.length; j++) {
+                const col = cols[j];
+                if (col.lock) {
+                    hasLock = true;
+                    break;
+                }
+            }
+            if (hasLock) {
+                break;
+            }
+        }
         const header = columns.map((cols, index) => {
             const col = cols.map((col, j) => {
+                const cellRefKey = this.getCellDomRefKey(index, j);
                 /* eslint-disable no-unused-vars, prefer-const */
                 let {
                     title,
@@ -147,11 +171,14 @@ export default class Header extends React.Component {
                         resizeElement = (
                             <Resize
                                 asyncResizable={asyncResizable}
+                                hasLock={hasLock}
+                                col={col}
                                 tableEl={tableEl}
                                 prefix={prefix}
                                 rtl={rtl}
                                 dataIndex={dataIndex}
                                 resizeProxyDomRef={resizeProxyDomRef}
+                                cellDomRef={this[cellRefKey]}
                                 onChange={onResizeChange}
                             />
                         );
@@ -194,6 +221,7 @@ export default class Header extends React.Component {
                         align={alignHeader ? alignHeader : align}
                         className={className}
                         ref={this.getCellRef.bind(this, index, j)}
+                        getCellDomRef={this.getCellDomRef.bind(this, index, j)}
                         type="header"
                     >
                         {sortElement}

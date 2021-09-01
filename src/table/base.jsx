@@ -565,64 +565,72 @@ class Table extends React.Component {
             const { Header = HeaderComponent, Wrapper = WrapperComponent, Body = BodyComponent } = components;
             const colGroup = this.renderColGroup(flatChildren);
 
-            return (
-                <React.Fragment>
-                    <div ref={this.getResizeProxyDomRef} className={`${prefix}table__column-resize-proxy`} />
-                    <Wrapper colGroup={colGroup} ref={this.getWrapperRef} prefix={prefix} tableWidth={tableWidth}>
-                        {hasHeader ? (
-                            <Header
-                                prefix={prefix}
-                                rtl={rtl}
-                                pure={pure}
-                                affixRef={this.getAffixRef}
-                                colGroup={colGroup}
-                                className={`${prefix}table-header`}
-                                filterParams={filterParams}
-                                tableEl={this.tableEl}
-                                columns={groupChildren}
-                                locale={locale}
-                                headerCellRef={this.getHeaderCellRef}
-                                components={components}
-                                onFilter={this.onFilter}
-                                sort={sort}
-                                onResizeChange={this.onResizeChange}
-                                onSort={this.onSort}
-                                sortIcons={sortIcons}
-                                tableWidth={tableWidth}
-                                resizeProxyDomRef={this.resizeProxyDomRef}
-                            />
-                        ) : null}
-                        <Body
+            return [
+                <div
+                    key={`${prefix}table-column-resize-proxy`}
+                    ref={this.getResizeProxyDomRef}
+                    className={`${prefix}table-column-resize-proxy`}
+                />,
+                <Wrapper
+                    key={`${prefix}table-wrapper`}
+                    colGroup={colGroup}
+                    ref={this.getWrapperRef}
+                    prefix={prefix}
+                    tableWidth={tableWidth}
+                >
+                    {hasHeader ? (
+                        <Header
                             prefix={prefix}
                             rtl={rtl}
                             pure={pure}
-                            crossline={crossline}
+                            affixRef={this.getAffixRef}
                             colGroup={colGroup}
-                            className={`${prefix}table-body`}
-                            components={components}
-                            loading={loading}
-                            emptyContent={emptyContent}
-                            getCellProps={cellProps}
-                            primaryKey={primaryKey}
-                            getRowProps={rowProps}
-                            columns={flatChildren}
-                            rowRef={this.getRowRef}
-                            cellRef={this.getCellRef}
-                            onRowClick={onRowClick}
-                            expandedIndexSimulate={expandedIndexSimulate}
+                            className={`${prefix}table-header`}
+                            filterParams={filterParams}
                             tableEl={this.tableEl}
-                            onRowMouseEnter={onRowMouseEnter}
-                            onRowMouseLeave={onRowMouseLeave}
-                            dataSource={dataSource}
+                            columns={groupChildren}
                             locale={locale}
-                            onBodyMouseOver={this.onBodyMouseOver}
-                            onBodyMouseOut={this.onBodyMouseOut}
+                            headerCellRef={this.getHeaderCellRef}
+                            components={components}
+                            onFilter={this.onFilter}
+                            sort={sort}
+                            onResizeChange={this.onResizeChange}
+                            onSort={this.onSort}
+                            sortIcons={sortIcons}
                             tableWidth={tableWidth}
+                            resizeProxyDomRef={this.resizeProxyDomRef}
                         />
-                        {wrapperContent}
-                    </Wrapper>
-                </React.Fragment>
-            );
+                    ) : null}
+                    <Body
+                        prefix={prefix}
+                        rtl={rtl}
+                        pure={pure}
+                        crossline={crossline}
+                        colGroup={colGroup}
+                        className={`${prefix}table-body`}
+                        components={components}
+                        loading={loading}
+                        emptyContent={emptyContent}
+                        getCellProps={cellProps}
+                        primaryKey={primaryKey}
+                        getRowProps={rowProps}
+                        columns={flatChildren}
+                        rowRef={this.getRowRef}
+                        cellRef={this.getCellRef}
+                        onRowClick={onRowClick}
+                        expandedIndexSimulate={expandedIndexSimulate}
+                        tableEl={this.tableEl}
+                        onRowMouseEnter={onRowMouseEnter}
+                        onRowMouseLeave={onRowMouseLeave}
+                        dataSource={dataSource}
+                        locale={locale}
+                        onBodyMouseOver={this.onBodyMouseOver}
+                        onBodyMouseOut={this.onBodyMouseOut}
+                        tableWidth={tableWidth}
+                    />
+                    {wrapperContent}
+                </Wrapper>,
+            ];
         } else {
             return null;
         }
