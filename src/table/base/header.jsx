@@ -43,14 +43,6 @@ export default class Header extends React.Component {
         this.hasLock = false;
     }
 
-    componentDidMount() {
-        this.checkHasLock();
-    }
-
-    componentDidUpdate() {
-        this.checkHasLock();
-    }
-
     checkHasLock = () => {
         const { columns } = this.props;
         let hasLock = false;
@@ -119,6 +111,8 @@ export default class Header extends React.Component {
             resizeProxyDomRef,
             ...others
         } = this.props;
+
+        this.checkHasLock();
 
         const {
             Cell = CellComponent,
