@@ -182,6 +182,12 @@ $input-feedback-loading-color: $color-notice-3 !default;
 /// @type icon
 $input-feedback-loading-icon: $icon-content-loading !default;
 
+/// text
+/// @namespace statement/error
+/// @type enum
+/// @enum color.default
+$input-feedback-error-color: $input-text-color !default;
+
 /// border
 /// @namespace statement/error
 $input-feedback-error-border-color: $color-error-3 !default;

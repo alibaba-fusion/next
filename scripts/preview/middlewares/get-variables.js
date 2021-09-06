@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const co = require('co');
-const parse = require('@no-repeat/sassdoc-parser');
+const parse = require('@alifd/sassdoc-parser');
 const generate = require('@alifd/sass-mapper');
 const { logger } = require('../../utils');
 
