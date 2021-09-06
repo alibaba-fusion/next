@@ -27,6 +27,7 @@ class App extends React.Component {
                 // mock ajax to get host/OSSAccessKeyId/policy/signature/key
                 const dataFormAjaxResponse = {
                     host: 'post-test.oss-cn-hangzhou.aliyuncs.com',
+                    domain: 'post-test.oss-cn-hangzhou.aliyuncs.com',
                     OSSAccessKeyId:'6MKO******4AUk44',
                     policy:'eyJleHBpcmF0aW9uIjoiMjAxNS0xMS0wNVQyMDoyMzoyM1oiLCJjxb25kaXRpb25zIjpbWyJjcb250ZW50LWxlbmd0aC1yYW5nZSIsMCwxMDQ4NTc2MDAwXSxbInN0YXJ0cy13aXRoIiwiJGtleSIsInVzZXItZGlyXC8iXV19',
                     signature:'I2u57FWjTKqX/AE6doIdyff151E=',
