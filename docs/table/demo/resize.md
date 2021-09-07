@@ -2,7 +2,7 @@
 
 - order: 18
 
-通过onResizeChange来让列宽可以调整
+推荐使用 `asyncResizable` 和 `onResizeChange` 调整列宽。如果左右锁列的列宽需要调整，请使用 `Table.StickyLock`.
 
 :::lang=en-us
 # Resize the column
@@ -34,7 +34,7 @@ const onChange = function(...args) {
         return result;
     },
     render = (value, index, record) => {
-        return <a>Remove({record.id})</a>;
+        return <a href={`#${index}`} >Remove({record.id})</a>;
     },
     rowSelection = {
         onChange: onChange,
@@ -48,7 +48,8 @@ const onChange = function(...args) {
 class App extends React.Component {
     state = {
         widths: {
-            id: 100
+            time: 300,
+            [`title.name`]: 300
         }
     }
     onResizeChange = (dataIndex, value) => {
@@ -59,11 +60,15 @@ class App extends React.Component {
         });
     }
     render() {
+        const { widths } = this.state;
+        const time = widths.time;
+        const name = widths[`title.name`];
+
         return (<Table dataSource={dataSource()}
             rowSelection={rowSelection} onResizeChange={this.onResizeChange}>
-            <Table.Column title="Id" dataIndex="id" resizable width={this.state.widths.id}/>
-            <Table.Column title="Title" dataIndex="title.name" width={400}/>
-            <Table.Column title="Time" dataIndex="time" width={600}/>
+            <Table.Column lock title="Id" dataIndex="id" width={100}/>
+            <Table.Column title="Title" dataIndex={'title.name'} asyncResizable width={name}/>
+            <Table.Column title="Time" dataIndex="time" asyncResizable width={time}/>
             <Table.Column cell={render} width={200}/>
         </Table>);
     }
