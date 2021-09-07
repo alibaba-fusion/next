@@ -77,12 +77,15 @@ class Resize extends React.Component {
     };
     onMouseDown = e => {
         const { left: tableLeft, width: tableWidth } = this.props.tableEl.getBoundingClientRect();
+        if (!this.props.cellDomRef) {
+            return;
+        }
         const { left: cellDomLeft } = this.props.cellDomRef.getBoundingClientRect();
         this.lastPageX = e.pageX;
-        this.startLeft = this.lastPageX - this.tLeft;
         this.tLeft = tableLeft;
         this.tRight = tableWidth;
-        this.cellLeft = cellDomLeft - this.tLeft;
+        this.startLeft = e.pageX - tableLeft;
+        this.cellLeft = cellDomLeft - tableLeft;
 
         if (this.props.asyncResizable) this.showResizeProxy();
         events.on(document, 'mousemove', this.onMouseMove);
@@ -124,7 +127,7 @@ class Resize extends React.Component {
     };
     destory() {
         events.off(document, 'mousemove', this.onMouseMove);
-        events.off(document, 'mouseup', this.onMouseMove);
+        events.off(document, 'mouseup', this.onMouseUp);
         this.select();
     }
     unSelect() {
@@ -133,7 +136,6 @@ class Resize extends React.Component {
             cursor: 'ew-resize',
         });
         document.body.setAttribute('unselectable', 'on');
-        dom.addClass(this.resizeRef, 'resizing');
     }
     select() {
         dom.setStyle(document.body, {
@@ -141,19 +143,10 @@ class Resize extends React.Component {
             cursor: '',
         });
         document.body.removeAttribute('unselectable');
-        dom.removeClass(this.resizeRef, 'resizing');
     }
     render() {
         const { prefix } = this.props;
-        return (
-            <a
-                className={`${prefix}table-resize-handler`}
-                ref={r => {
-                    this.resizeRef = r;
-                }}
-                onMouseDown={this.onMouseDown}
-            />
-        );
+        return <a className={`${prefix}table-resize-handler`} onMouseDown={this.onMouseDown} />;
     }
 }
 
