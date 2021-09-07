@@ -117,10 +117,18 @@
                 height: 100%;
                 right: 50%;
             }
-            &.resizing::after,
             &:hover::after {
                 z-index: 1;
                 background: $color-brand1-6;
+            }
+        }
+    }
+    & &-lock-right, &-header-resizable,
+    & &-lock-right, &-header-resizable {
+        #{$table-prefix}-resize-handler {
+            cursor: initial;
+            &:hover::after {
+                z-index: -1;
             }
         }
     }
