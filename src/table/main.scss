@@ -123,8 +123,8 @@
             }
         }
     }
-    & &-lock-right, &-header-resizable,
-    & &-lock-right, &-header-resizable {
+    &#{$table-prefix}-lock-left &-header-resizable,
+    &#{$table-prefix}-lock-right &-header-resizable {
         #{$table-prefix}-resize-handler {
             cursor: initial;
             &:hover::after {
