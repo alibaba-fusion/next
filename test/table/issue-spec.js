@@ -369,8 +369,8 @@ describe('Issue', () => {
         document.body.appendChild(div);
         ReactDOM.render(<App />, div);
         assert(
+            div.querySelectorAll('.next-table-lock-left')[0].children.length !== 0
             div.querySelectorAll('.next-table-lock-left')[0].children.length ===
-                1
         );
         assert(
             div.querySelectorAll('.next-table-lock-right')[0].children
