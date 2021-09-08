@@ -25,26 +25,18 @@ export default class FixedHeader extends React.Component {
 
     //  这里的 style={{overflow: 'unset'}} 可以删掉，只是为了解决用户js升级但是样式没升级的情况
     render() {
-        const {
-            prefix,
-            className,
-            colGroup,
-            tableWidth,
-            ...others
-        } = this.props;
-        const { onFixedScrollSync } = this.context;
+        const { prefix, className, colGroup, tableWidth, ...others } = this.props;
+        const { onFixedScrollSync, lockType } = this.context;
 
         return (
             <div className={className} onScroll={onFixedScrollSync}>
-                <div
-                    className={`${prefix}table-header-inner`}
-                    style={{ overflow: 'unset' }}
-                >
+                <div className={`${prefix}table-header-inner`} style={{ overflow: 'unset' }}>
                     <table style={{ width: tableWidth }}>
                         {colGroup}
                         <HeaderComponent {...others} prefix={prefix} />
                     </table>
                 </div>
+                {!lockType && <div className={`${prefix}table-header-fixer`} />}
             </div>
         );
     }
