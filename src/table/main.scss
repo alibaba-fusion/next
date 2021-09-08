@@ -351,7 +351,7 @@
 }
 
 #{$table-prefix}-fixed {
-    // border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+    border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
     border-bottom: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
     table {
         table-layout: fixed;
@@ -360,10 +360,12 @@
         background: $table-th-bg;
     }
     @include table-border(0);
-    @include table-last-child-border($table-normal-border-width);
 
     &#{$table-prefix}-group {
         @include table-border($table-normal-border-width);
+    }
+    &#{$table-prefix}-lock-left {
+        @include table-last-child-border($table-normal-border-width);
     }
 }
 
@@ -458,6 +460,16 @@
 
 #{$table-prefix}-header-inner {
     overflow: unset;
+}
+
+#{$table-prefix}-header-fixer {
+    content: " ";
+    width: 15px;
+    background: $table-th-bg;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    top: 0;
 }
 
 #{$table-prefix}-wrap-empty {
@@ -670,14 +682,14 @@
             transition: box-shadow .3s, -webkit-box-shadow .3s;
             transform: translateX(-100%);
         }
-        #{$table-prefix}-lock-right {
-            border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
-        }
+        // #{$table-prefix}-lock-right {
+        //     border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+        // }
     }
 
-    &-fixed#{$table-prefix}-ping-right,
+    // &-fixed#{$table-prefix}-ping-right,
     &-fixed.only-bottom-border,
-    &-lock#{$table-prefix}-ping-right,
+    // &-lock#{$table-prefix}-ping-right,
     &-lock.only-bottom-border {
         border-right: 0;
     }
