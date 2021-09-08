@@ -12,6 +12,16 @@ const createContent = (list = []) => {
     });
 };
 
+const _propsValue = ({ shape, level, size, data, ...others })=>{
+  return {
+    ...others,
+    type: shape === 'ghost' ? 'normal' : level,
+    warning: shape === 'warning',
+    text: shape === 'text',
+    ghost: shape === 'ghost' ? level : false,
+  };
+};
+
 export default {
   name: 'Button',
   shape: ['normal', 'text', 'warning', 'ghost', 'group'],
@@ -43,19 +53,15 @@ export default {
       }
     };
   },
+  propsValue: _propsValue,
   adaptor: ({ shape, level, size, data, ...others }) => {
     const list = parseData(data, { parseContent: true });
 
-    const buttonProps = {
-      type: shape === 'ghost' ? 'normal' : level,
-      warning: shape === 'warning',
-      text: shape === 'text',
-      ghost: shape === 'ghost' ? level : false,
-    };
+    const buttonProps = _propsValue({ shape, level, size, data, ...others });
 
     if (list.length === 1) {
       const className = (others.className || '');
-      return <Button {...others} disabled={list[0].state === 'disabled'} className={list[0].state === 'hover' ? ['hover', className].join(' ') : className } size={size} {...buttonProps}>{createContent(list[0].value)}</Button>
+      return <Button {...others} disabled={list[0].state === 'disabled'} className={list[0].state === 'hover' ? ['hover', className].join(' ') : className} size={size} {...buttonProps}>{createContent(list[0].value)}</Button>;
     }
 
     return (

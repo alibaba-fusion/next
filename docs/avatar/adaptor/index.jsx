@@ -2,6 +2,14 @@ import React from 'react';
 import { Avatar } from '@alifd/next';
 import { Types } from '@alifd/adaptor-helper';
 
+const _propsValue = ({ size, shape, src, ...others }) => {
+    return {
+        size,
+        shape,
+        ...others
+    };
+};
+
 export default {
     name: 'Avatar',
     editor: () => ({
@@ -23,8 +31,10 @@ export default {
             default: ''
         }],
     }),
-    adaptor: ({ size, shape, src, ...others }) => {
-        return <Avatar size={size} shape={shape} src={src} {...others}/>;
+    propsValue: _propsValue,
+    adaptor: (args) => {
+        const props = _propsValue(args);
+        return <Avatar {...props} />;
     },
     content: () => ({
     })
