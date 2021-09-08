@@ -158,10 +158,11 @@ export default function fixed(BaseComponent, stickyLock) {
             if (hasHeader && !this.props.lockType && this.headerNode) {
                 const fixer = this.headerNode.querySelector(`.${prefix}table-header-fixer`);
                 const height = dom.getStyle(this.headerNode, 'height');
+                const paddingBottom = dom.getStyle(this.headerNode, 'paddingBottom');
 
                 dom.setStyle(fixer, {
                     width: scrollBarSize,
-                    height,
+                    height: height - paddingBottom,
                 });
             }
         }
