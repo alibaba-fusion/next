@@ -16,6 +16,10 @@
         overflow: hidden;
     }
 
+    &-noborder {
+        border: 0;
+    }
+
     &-head {
         background: $card-header-background;
         padding-left: $card-padding-lr;
