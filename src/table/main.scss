@@ -6,6 +6,10 @@
 #{$table-prefix} {
     @include box-sizing;
     position: relative;
+    border-top-left-radius: $table-header-corner-top;
+    border-top-right-radius: $table-header-corner-top;
+    border-bottom-left-radius: $table-header-corner-bottom;
+    border-bottom-right-radius: $table-header-corner-bottom;
     border-top: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
     border-left: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
 
@@ -57,6 +61,10 @@
         border-spacing: 0;
         width: 100%;
         background: $table-row-bg;
+        border-top-left-radius: $table-header-corner-top;
+        border-top-right-radius: $table-header-corner-top;
+        border-bottom-left-radius: $table-header-corner-bottom;
+        border-bottom-right-radius: $table-header-corner-bottom;
         tr:first-child td {
             border-top-width: 0;
         }
@@ -337,6 +345,10 @@
 #{$table-prefix}-header {
     margin-bottom: -20px;
     padding-bottom: 20px;
+    border-top-left-radius: $table-header-corner-top;
+    border-top-right-radius: $table-header-corner-top;
+    border-bottom-left-radius: $table-header-corner-bottom;
+    border-bottom-right-radius: $table-header-corner-bottom;
     overflow: -moz-scrollbars-none;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -464,6 +476,8 @@
 
 #{$table-prefix}-header-fixer {
     content: " ";
+    border-top-right-radius: $table-header-corner-top;
+    border-bottom-right-radius: $table-header-corner-bottom;
     width: 15px;
     background: $table-th-bg;
     position: absolute;
