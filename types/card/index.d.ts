@@ -51,7 +51,8 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否开启自由模式，开启后card 将使用子组件配合使用, 设置此项后 title, subtitle, 等等属性都将失效
      */
-    free?: boolean,
+    free?: boolean;
+    hasBorder?: boolean;
 }
 
 export interface CardBulletHeaderProps extends HTMLAttributesWeak, CommonProps {
