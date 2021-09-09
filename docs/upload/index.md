@@ -111,6 +111,7 @@ iframe上传会额外传递参数 `_documentDomain` 方便你设置域名。
 | disabled        | 是否禁用上传功能                                                                                                                                              | Boolean  | -         |
 | multiple        | 是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件                                                                                                                | Boolean  | false     |
 | webkitdirectory | 是否支持上传文件夹，仅在 chorme 下生效                                                                                                                               | Boolean  | -         |
+| capture         | 调用系统设备媒体                                                                                                                                              | String   | -         |
 | dragable        | 是否支持拖拽上传，`ie10+` 支持。                                                                                                                                  | Boolean  | -         |
 | accept          | 接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept) | String   | -         |
 | onSelect        | 文件选择回调<br/><br/>**签名**:<br/>Function() => void                                                                                                        | Function | func.noop |
