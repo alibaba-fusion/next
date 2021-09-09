@@ -135,6 +135,10 @@ class ConfigProvider extends Component {
         );
     };
 
+    static clearCache = () => {
+        childContextCache.clear();
+    };
+
     static initLocales = initLocales;
     static setLanguage = setLanguage;
     static setLocale = setLocale;

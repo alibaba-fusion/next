@@ -34,6 +34,10 @@ class Cache {
         this._store.delete(key);
     }
 
+    clear() {
+        this._store.clear();
+    }
+
     root() {
         return this._store.get(this._root);
     }
