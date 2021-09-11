@@ -1,12 +1,7 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import DateTableHead from './date-table-head';
-import {
-    isDisabledDate,
-    DAYS_OF_WEEK,
-    CALENDAR_TABLE_COL_COUNT,
-    CALENDAR_TABLE_ROW_COUNT,
-} from '../utils';
+import { isDisabledDate, DAYS_OF_WEEK, CALENDAR_TABLE_COL_COUNT, CALENDAR_TABLE_ROW_COUNT } from '../utils';
 
 function isSameDay(a, b) {
     return a && b && a.isSame(b, 'day');
@@ -53,12 +48,14 @@ class DateTable extends PureComponent {
 
         const firstDayOfMonth = visibleMonth.clone().startOf('month'); // 该月的 1 号
         const firstDayOfMonthInWeek = firstDayOfMonth.day(); // 星期几
+        let rowCount = CALENDAR_TABLE_ROW_COUNT;
+        if (firstDayOfMonthInWeek < 5 || firstDayOfMonthInWeek > 6) {
+            rowCount = 5;
+        }
 
         const firstDayOfWeek = momentLocale.firstDayOfWeek();
 
-        const datesOfLastMonthCount =
-            (firstDayOfMonthInWeek + DAYS_OF_WEEK - firstDayOfWeek) %
-            DAYS_OF_WEEK;
+        const datesOfLastMonthCount = (firstDayOfMonthInWeek + DAYS_OF_WEEK - firstDayOfWeek) % DAYS_OF_WEEK;
 
         const lastMonthDate = firstDayOfMonth.clone();
         lastMonthDate.add(0 - datesOfLastMonthCount, 'days');
@@ -66,7 +63,7 @@ class DateTable extends PureComponent {
         let counter = 0;
         let currentDate;
         const dateList = [];
-        for (let i = 0; i < CALENDAR_TABLE_ROW_COUNT; i++) {
+        for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < CALENDAR_TABLE_COL_COUNT; j++) {
                 currentDate = lastMonthDate;
                 if (counter) {
@@ -80,7 +77,7 @@ class DateTable extends PureComponent {
 
         counter = 0; // reset counter
         const monthElements = [];
-        for (let i = 0; i < CALENDAR_TABLE_ROW_COUNT; i++) {
+        for (let i = 0; i < rowCount; i++) {
             const weekElements = [];
             for (let j = 0; j < CALENDAR_TABLE_COL_COUNT; j++) {
                 currentDate = dateList[counter];
@@ -88,19 +85,11 @@ class DateTable extends PureComponent {
                 const isNextMonth = isNextMonthDate(currentDate, visibleMonth);
                 const isCurrentMonth = !isLastMonth && !isNextMonth;
 
-                const isDisabled = isDisabledDate(
-                    currentDate,
-                    disabledDate,
-                    'date'
-                );
-                const isToday =
-                    !isDisabled &&
-                    isSameDay(currentDate, today) &&
-                    isCurrentMonth;
+                const isDisabled = isDisabledDate(currentDate, disabledDate, 'date');
+                const isToday = !isDisabled && isSameDay(currentDate, today) && isCurrentMonth;
                 const isSelected =
                     !isDisabled &&
-                    (isSameDay(currentDate, startValue) ||
-                        isSameDay(currentDate, endValue)) &&
+                    (isSameDay(currentDate, startValue) || isSameDay(currentDate, endValue)) &&
                     isCurrentMonth;
                 const isInRange =
                     !isDisabled &&
@@ -109,10 +98,7 @@ class DateTable extends PureComponent {
                     isRangeDate(currentDate, startValue, endValue) &&
                     isCurrentMonth;
 
-                const cellContent =
-                    !showOtherMonth && !isCurrentMonth
-                        ? null
-                        : dateCellRender(currentDate);
+                const cellContent = !showOtherMonth && !isCurrentMonth ? null : dateCellRender(currentDate);
 
                 const elementCls = classNames({
                     [`${prefix}calendar-cell`]: true,
@@ -128,19 +114,13 @@ class DateTable extends PureComponent {
                     <td
                         key={counter}
                         title={currentDate.format(format)}
-                        onClick={
-                            isDisabled
-                                ? undefined
-                                : onSelectDate.bind(null, currentDate)
-                        }
+                        onClick={isDisabled ? undefined : onSelectDate.bind(null, currentDate)}
                         className={elementCls}
                         role="cell"
                         aria-disabled={isDisabled ? 'true' : 'false'}
                         aria-selected={isSelected ? 'true' : 'false'}
                     >
-                        <div className={`${prefix}calendar-date`}>
-                            {cellContent}
-                        </div>
+                        <div className={`${prefix}calendar-date`}>{cellContent}</div>
                     </td>
                 );
                 counter++;
