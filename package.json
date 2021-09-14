@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.24.1",
+  "version": "1.24.3",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -125,7 +125,7 @@
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-syntax-jsx": "^7.12.1",
     "@commitlint/cli": "^7.0.0",
-    "@no-repeat/sassdoc-parser": "^0.0.11",
+    "@alifd/sassdoc-parser": "^1.0.x",
     "@octokit/rest": "^18.0.9",
     "@types/react": "^16.8.13",
     "autoprefixer": "^7.1.4",

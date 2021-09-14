@@ -58,6 +58,11 @@ export default class Card extends React.Component {
          * 是否开启自由模式，开启后card 将使用子组件配合使用, 设置此项后 title, subtitle, 等等属性都将失效
          */
         free: PropTypes.bool,
+        /**
+         * 是否带边框
+         * @version 1.24
+         */
+        hasBorder: PropTypes.bool,
         className: PropTypes.string,
         children: PropTypes.node,
     };
@@ -67,6 +72,7 @@ export default class Card extends React.Component {
         free: false,
         showTitleBullet: true,
         showHeadDivider: true,
+        hasBorder: true,
         contentHeight: 120,
     };
 
@@ -84,6 +90,7 @@ export default class Card extends React.Component {
             contentHeight,
             free,
             actions,
+            hasBorder,
             media,
         } = this.props;
 
@@ -91,6 +98,7 @@ export default class Card extends React.Component {
             {
                 [`${prefix}card`]: true,
                 [`${prefix}card-free`]: free,
+                [`${prefix}card-noborder`]: !hasBorder,
                 [`${prefix}card-show-divider`]: showHeadDivider,
                 [`${prefix}card-hide-divider`]: !showHeadDivider,
             },

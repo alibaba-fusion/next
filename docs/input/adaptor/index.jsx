@@ -2,6 +2,75 @@ import React from 'react';
 import { Types } from '@alifd/adaptor-helper';
 import { Input  } from '@alifd/next';
 
+
+const _propsValue = ({
+    shape,
+    size,
+    state,
+    widget,
+    width,
+    rows,
+    border,
+    label,
+    placeholder,
+    prefix = '',
+    suffix = '',
+    style = {},
+    className = '',
+    data,
+    ...others
+}) =>{
+    const props = {
+        ...others,
+        label,
+        hasBorder: border,
+        placeholder,
+        className,
+        style: {
+            width,
+            ...style
+        },
+        value: data
+    };
+
+    if (widget === 'length') {
+        props.showLimitHint = true;
+        props.maxLength = 15;
+    } else if (widget === 'clear') {
+        props.hasClear = true;
+    }
+
+    if (size) {
+        props.size = size;
+    }
+
+    switch(state) {
+        case 'focused':
+            props.className = `${className} next-focus`;
+            break;
+        case 'disabled':
+            props.disabled = true;
+            break;
+        case 'error':
+        case 'loading':
+        case 'success':
+            props.state = state;
+            break;
+        default: break;
+    }
+
+
+    if (rows && rows > 0) {
+        props.rows = rows;
+    }
+
+    if (shape === 'addon') {
+        props.addonTextAfter = suffix;
+        props.addonTextBefore = prefix;
+    }
+    return props;
+};
+
 export default {
     name: 'Input',
     shape: [{
@@ -74,73 +143,10 @@ export default {
             }
         };
     },
-    adaptor: ({
-        shape,
-        size,
-        state,
-        widget,
-        width,
-        rows,
-        border,
-        label,
-        placeholder,
-        prefix = '',
-        suffix = '',
-        style = {},
-        className = '',
-        data,
-        ...others
-    }) => {
-        const props = {
-            ...others,
-            label,
-            hasBorder: border,
-            placeholder,
-            className,
-            style: {
-                width,
-                ...style
-            },
-            value: data
-        };
-
-        if (widget === 'length') {
-            props.showLimitHint = true;
-            props.maxLength = 15;
-        } else if (widget === 'clear') {
-            props.hasClear = true;
-        }
-
-        if (size) {
-            props.size = size;
-        }
-
-        switch(state) {
-            case 'focused':
-                props.className = `${className} next-focus`;
-                break;
-            case 'disabled':
-                props.disabled = true;
-                break;
-            case 'error':
-            case 'loading':
-            case 'success':
-                props.state = state;
-                break;
-            default: break;
-        }
-
-
-        if (rows && rows > 0) {
-            props.rows = rows;
-        }
-
-        if (shape === 'addon') {
-            props.addonTextAfter = suffix;
-            props.addonTextBefore = prefix;
-        }
-
-        if (shape === 'textarea') {
+    propsValue: _propsValue, 
+    adaptor: (args) => {
+        const props = _propsValue(args);
+        if (args.shape === 'textarea') {
             return <Input.TextArea {...props}/>;
         }
 

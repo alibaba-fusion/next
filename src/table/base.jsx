@@ -159,7 +159,7 @@ class Table extends React.Component {
          */
         filterParams: PropTypes.object,
         /**
-         * 当前排序的字段,使用此属性可以控制表格的字段的排序,格式为{dataIndex: 'asc'}
+         * 当前排序的字段,使用此属性可以控制表格的字段的排序,格式为{[dataIndex]: 'asc' | 'desc' } , 例如  {id: 'desc'}
          */
         sort: PropTypes.object,
         /**
@@ -565,8 +565,19 @@ class Table extends React.Component {
             const { Header = HeaderComponent, Wrapper = WrapperComponent, Body = BodyComponent } = components;
             const colGroup = this.renderColGroup(flatChildren);
 
-            return (
-                <Wrapper colGroup={colGroup} ref={this.getWrapperRef} prefix={prefix} tableWidth={tableWidth}>
+            return [
+                <div
+                    key={`${prefix}table-column-resize-proxy`}
+                    ref={this.getResizeProxyDomRef}
+                    className={`${prefix}table-column-resize-proxy`}
+                />,
+                <Wrapper
+                    key={`${prefix}table-wrapper`}
+                    colGroup={colGroup}
+                    ref={this.getWrapperRef}
+                    prefix={prefix}
+                    tableWidth={tableWidth}
+                >
                     {hasHeader ? (
                         <Header
                             prefix={prefix}
@@ -587,6 +598,7 @@ class Table extends React.Component {
                             onSort={this.onSort}
                             sortIcons={sortIcons}
                             tableWidth={tableWidth}
+                            resizeProxyDomRef={this.resizeProxyDomRef}
                         />
                     ) : null}
                     <Body
@@ -617,12 +629,19 @@ class Table extends React.Component {
                         tableWidth={tableWidth}
                     />
                     {wrapperContent}
-                </Wrapper>
-            );
+                </Wrapper>,
+            ];
         } else {
             return null;
         }
     }
+
+    getResizeProxyDomRef = resizeProxyDom => {
+        if (!resizeProxyDom) {
+            return this.resizeProxyDomRef;
+        }
+        this.resizeProxyDomRef = resizeProxyDom;
+    };
 
     getWrapperRef = wrapper => {
         if (!wrapper) {
