@@ -45,14 +45,12 @@ class DateTable extends PureComponent {
             onSelectDate,
         } = this.props;
         const startValue = this.props.startValue || this.props.value;
-
         const firstDayOfMonth = visibleMonth.clone().startOf('month'); // 该月的 1 号
         const firstDayOfMonthInWeek = firstDayOfMonth.day(); // 星期几
-        let rowCount = CALENDAR_TABLE_ROW_COUNT;
-        if (firstDayOfMonthInWeek < 5 || firstDayOfMonthInWeek > 6) {
-            rowCount = 5;
-        }
-
+        // let rowCount = 5;
+        // if (firstDayOfMonthInWeek > 4 && endDayOfMonthInWeek < 2 && endDayOfMonthInWeek !== 0) {
+        //     rowCount = 6;
+        // }
         const firstDayOfWeek = momentLocale.firstDayOfWeek();
 
         const datesOfLastMonthCount = (firstDayOfMonthInWeek + DAYS_OF_WEEK - firstDayOfWeek) % DAYS_OF_WEEK;
@@ -61,11 +59,39 @@ class DateTable extends PureComponent {
         lastMonthDate.add(0 - datesOfLastMonthCount, 'days');
 
         let counter = 0;
+
+        // confirm row count
+        // let sum = 0;
+        // for (let i = 0; i < CALENDAR_TABLE_ROW_COUNT; i++) {
+        //     for (let j = 0; j < CALENDAR_TABLE_COL_COUNT; j++) {
+        //         let cr = lastMonthDate;
+
+        //         if (counter) {
+        //             cr = cr.clone();
+        //             cr.add(counter, 'days');
+        //         }
+        //         counter++;
+        //         if(firstDayOfMonth.format("M") * 1 < cr.clone().startOf('month').format("M") * 1 ) {
+        //             sum += 1;
+        //         }
+        //     }
+        // }
+        // let rowCount = CALENDAR_TABLE_ROW_COUNT;
+        // if(sum >= 7) {
+        //     rowCount -= 1;
+        //     if(sum > 13) {
+        //         rowCount -= 2;
+        //     }
+        // }
+
         let currentDate;
         const dateList = [];
-        for (let i = 0; i < rowCount; i++) {
+
+        counter = 0;
+        for (let i = 0; i < CALENDAR_TABLE_ROW_COUNT; i++) {
             for (let j = 0; j < CALENDAR_TABLE_COL_COUNT; j++) {
                 currentDate = lastMonthDate;
+
                 if (counter) {
                     currentDate = currentDate.clone();
                     currentDate.add(counter, 'days');
@@ -77,7 +103,7 @@ class DateTable extends PureComponent {
 
         counter = 0; // reset counter
         const monthElements = [];
-        for (let i = 0; i < rowCount; i++) {
+        for (let i = 0; i < CALENDAR_TABLE_ROW_COUNT; i++) {
             const weekElements = [];
             for (let j = 0; j < CALENDAR_TABLE_COL_COUNT; j++) {
                 currentDate = dateList[counter];
@@ -125,11 +151,20 @@ class DateTable extends PureComponent {
                 );
                 counter++;
             }
-            monthElements.push(
-                <tr key={i} role="row">
-                    {weekElements}
-                </tr>
-            );
+
+            if (showOtherMonth) {
+                monthElements.push(
+                    <tr key={i} role="row">
+                        {weekElements}
+                    </tr>
+                );
+            } else if (firstDayOfMonth.format('M') * 1 === currentDate.clone().startOf('month').format('M') * 1) {
+                monthElements.push(
+                    <tr key={i} role="row">
+                        {weekElements}
+                    </tr>
+                );
+            }
         }
 
         return (

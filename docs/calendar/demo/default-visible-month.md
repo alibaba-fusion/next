@@ -27,5 +27,5 @@ function onVisibleMonthChange(value, reason) {
     console.log('Visible month changed to %s from <%s>', value.format('YYYY-MM'), reason);
 }
 
-ReactDOM.render(<Calendar showOtherMonth={false} onSelect={onSelect} defaultVisibleMonth={() => moment('2018-01', 'YYYY-MM', true)} onVisibleMonthChange={onVisibleMonthChange} />, mountNode);
+ReactDOM.render(<Calendar showOtherMonth={true} onSelect={onSelect} defaultVisibleMonth={() => moment('2018-01', 'YYYY-MM', true)} onVisibleMonthChange={onVisibleMonthChange} />, mountNode);
 ````
