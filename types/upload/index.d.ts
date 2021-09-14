@@ -191,6 +191,10 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
      * 取消上传的回调
      */
     onCancel?: () => void;
+    /**
+     * 调用系统设备媒体
+     */
+     capture?: string;
 }
 
 export class Card extends React.Component<CardProps, any> {}

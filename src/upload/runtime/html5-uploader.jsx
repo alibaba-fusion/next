@@ -138,10 +138,12 @@ export default class Html5Uploader extends Component {
             onDragLeave,
             onDrop,
             name,
+            ...others
         } = this.props;
 
         return (
             <Selecter
+                {...others}
                 id={id}
                 accept={accept}
                 multiple={multiple}

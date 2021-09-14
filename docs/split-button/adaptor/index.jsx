@@ -112,6 +112,30 @@ const createContents = (array = []) => {
     });
 };
 
+const _propsValue = ({ shape, level, size, data, ...others}) =>{
+    const list = parseData(data, { parseContent: true });
+    const buttonItem = list[0] ? list[0] : { value: []};
+    const keys = { selected: [], expanded: [] };
+    if (buttonItem.type !== 'node') return null;
+    const label = buttonItem.value.map(({ type, value}) => {
+        if (type === 'icon') return <Icon type={value} />;
+        return value;
+    });
+
+    return {
+        ...others,
+        size,
+        disabled: buttonItem.state === 'disabled',
+        visible: buttonItem.state === 'active',
+        type: shape === 'ghost' ? 'normal' : level,
+        popupProps: { needAdjust: false, container: node => node },
+        ghost: shape === 'ghost' ? level : false,
+        selectMode: "multiple",
+        menuProps: { openKeys: keys.expanded, style: { textAlign: 'left' } },
+        selectedKeys: keys.selected,
+        label: label
+    };
+};
 export default {
     name: 'SplitButton',
     shape: ['normal', 'ghost'],
@@ -134,33 +158,15 @@ export default {
             default: 'Edit Document\n\tUndo\n\t*Redo\n\tCut\n\tCopy\n\tPaste'
         }
     }),
-    adaptor: ({ shape, level, size, data, ...others}) => {
-        const list = parseData(data, { parseContent: true });
-        const buttonItem = list[0] ? list[0] : { value: []};
-
-        if (buttonItem.type !== 'node') return null;
-
+    propsValue: _propsValue,
+    adaptor: (args) => {
+        const list = parseData(args.data, { parseContent: true });
         const keys = { selected: [], expanded: [] };
         const dataSouce = createDataSouce(list[0] ? list[0].children : [], keys);
-
-        const label = buttonItem.value.map(({ type, value}) => {
-            if (type === 'icon') return <Icon type={value} />;
-            return value;
-        });
-
+        const props = _propsValue(args);
         return (
             <SplitButton
-                {...others}
-                size={size}
-                disabled={buttonItem.state === 'disabled'}
-                visible={buttonItem.state === 'active'}
-                type={shape === 'ghost' ? 'normal' : level}
-                popupProps={{ needAdjust: false, container: node => node }}
-                ghost={shape === 'ghost' ? level : false}
-                selectMode="multiple"
-                menuProps={{ openKeys: keys.expanded, style: { textAlign: 'left' } }}
-                selectedKeys={keys.selected}
-                label={label}
+                {...props}
             >
                 {createContents(dataSouce)}
             </SplitButton>

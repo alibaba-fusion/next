@@ -502,6 +502,9 @@
                             '">';
                     } else {
                         var varType = varEnumsMap[item.value];
+                        if (!varType && item.attrs.type === 'enum' && item.attrs.enum) {
+                            varType = item.attrs.enum;
+                        }
                         if (varType) {
                             html +=
                                 '<select class="eidtor-item-input" name="' +

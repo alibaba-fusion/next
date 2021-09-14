@@ -144,4 +144,5 @@ export default class Message extends React.Component<MessageProps, any> {
     static help(props: OpenProps): void;
     static loading(props: OpenProps): void;
     static notice(props: OpenProps): void;
+    static config(props: OpenProps): void;
 }

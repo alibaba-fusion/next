@@ -37,6 +37,30 @@ export default class Header extends React.Component {
         onSort: noop,
         onResizeChange: noop,
     };
+    constructor() {
+        super();
+
+        this.hasLock = false;
+    }
+
+    checkHasLock = () => {
+        const { columns } = this.props;
+        let hasLock = false;
+        for (let i = 0; i < columns.length; i++) {
+            const cols = columns[i];
+            for (let j = 0; j < cols.length; j++) {
+                const col = cols[j];
+                if (col.lock) {
+                    hasLock = true;
+                    break;
+                }
+            }
+            if (hasLock) {
+                break;
+            }
+        }
+        this.hasLock = hasLock;
+    };
 
     getCellRef = (i, j, cell) => {
         this.props.headerCellRef(i, j, cell);
@@ -46,6 +70,15 @@ export default class Header extends React.Component {
         if (columnProps && columnProps.ref && typeof columnProps.ref === 'function') {
             columnProps.ref(cell);
         }
+    };
+
+    getCellDomRef = (i, j, cellDom) => {
+        const cellRefKey = this.getCellDomRefKey(i, j);
+        this[cellRefKey] = cellDom;
+    };
+
+    getCellDomRefKey = (i, j) => {
+        return `header_cell_${i}_${j}`;
     };
 
     onSort = (dataIndex, order, sort) => {
@@ -75,8 +108,11 @@ export default class Header extends React.Component {
             rtl,
             tableWidth,
             tableEl,
+            resizeProxyDomRef,
             ...others
         } = this.props;
+
+        this.checkHasLock();
 
         const {
             Cell = CellComponent,
@@ -88,6 +124,7 @@ export default class Header extends React.Component {
 
         const header = columns.map((cols, index) => {
             const col = cols.map((col, j) => {
+                const cellRefKey = this.getCellDomRefKey(index, j);
                 /* eslint-disable no-unused-vars, prefer-const */
                 let {
                     title,
@@ -95,6 +132,7 @@ export default class Header extends React.Component {
                     sortable,
                     sortDirections,
                     resizable,
+                    asyncResizable,
                     dataIndex,
                     filters,
                     filterMode,
@@ -113,7 +151,7 @@ export default class Header extends React.Component {
 
                 className = classnames({
                     [`${prefix}table-header-node`]: true,
-                    [`${prefix}table-header-resizable`]: resizable,
+                    [`${prefix}table-header-resizable`]: resizable || asyncResizable,
                     [`${prefix}table-word-break-${wordBreak}`]: !!wordBreak,
                     [className]: className,
                 });
@@ -141,13 +179,18 @@ export default class Header extends React.Component {
                             />
                         );
                     }
-                    if (resizable) {
+                    if (asyncResizable || resizable) {
                         resizeElement = (
                             <Resize
+                                asyncResizable={asyncResizable}
+                                hasLock={this.hasLock}
+                                col={col}
                                 tableEl={tableEl}
                                 prefix={prefix}
                                 rtl={rtl}
                                 dataIndex={dataIndex}
+                                resizeProxyDomRef={resizeProxyDomRef}
+                                cellDomRef={this[cellRefKey]}
                                 onChange={onResizeChange}
                             />
                         );
@@ -190,6 +233,7 @@ export default class Header extends React.Component {
                         align={alignHeader ? alignHeader : align}
                         className={className}
                         ref={this.getCellRef.bind(this, index, j)}
+                        getCellDomRef={this.getCellDomRef.bind(this, index, j)}
                         type="header"
                     >
                         {sortElement}

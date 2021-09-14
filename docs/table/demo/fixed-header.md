@@ -72,7 +72,7 @@ class App extends React.Component {
             <br />
             <Table dataSource={this.state.dataSource} fixedHeader stickyHeader={this.state.sticky}>
                 <Table.Column title="Id" dataIndex="id" width={200} lock={this.state.lock}/>
-                <Table.Column title="Title" dataIndex="title.name" width={200}/>
+                <Table.Column title="Title" dataIndex="title.name"  width={200}/>
                 <Table.Column title="Time" dataIndex="time" width={200}/>
                 <Table.Column title="test" cell={render} width={200}/>
             </Table>

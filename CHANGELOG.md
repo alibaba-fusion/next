@@ -1,5 +1,41 @@
 # Change Log 
 
+## [1.24.3](https://github.com/alibaba-fusion/next/compare/1.24.2...1.24.3) (2021-09-14)
+
+
+### Bug Fixes
+
+* **Dialog:** node-sass upgrade fix [#3338](https://github.com/alibaba-fusion/next/issues/3338) ([119976c](https://github.com/alibaba-fusion/next/commit/119976c))
+* **Table:** noBorder with round corner should work, close [#3329](https://github.com/alibaba-fusion/next/issues/3329) ([cd5d61f](https://github.com/alibaba-fusion/next/commit/cd5d61f))
+* **Table:** scroll alwaysshow + fixedHeader, close [#3328](https://github.com/alibaba-fusion/next/issues/3328) ([90d4f74](https://github.com/alibaba-fusion/next/commit/90d4f74))
+
+
+### Features
+
+* **Card:** add hasBorder ([14de219](https://github.com/alibaba-fusion/next/commit/14de219))
+
+
+
+
+## [1.24.2](https://github.com/alibaba-fusion/next/compare/1.24.1...1.24.2) (2021-09-09)
+
+
+### Bug Fixes
+
+* **Dialog:** add font weight for dialog ([8dfd031](https://github.com/alibaba-fusion/next/commit/8dfd031))
+* **Typescript:** dialog ([772a2e6](https://github.com/alibaba-fusion/next/commit/772a2e6))
+* **Upload:** support capture ([3dbfb97](https://github.com/alibaba-fusion/next/commit/3dbfb97))
+
+
+### Features
+
+* expose componet props for adapter ([0f2ca58](https://github.com/alibaba-fusion/next/commit/0f2ca58))
+* **Input:** add $input-feedback-error-color=$input-text-color ([2167b08](https://github.com/alibaba-fusion/next/commit/2167b08))
+* **Table:** add asyncResizable for table ([0955927](https://github.com/alibaba-fusion/next/commit/0955927))
+
+
+
+
 ## [1.24.1](https://github.com/alibaba-fusion/next/compare/1.24.0...1.24.1) (2021-08-26)
 
 
