@@ -594,33 +594,33 @@ describe('inner', () => {
     });
 
     // https://github.com/alibaba-fusion/next/issues/2868
-    it('should resize after children size changed', done => {
-        function MyContent() {
-            const [height, setHeight] = useState(100);
+    // it('should resize after children size changed', done => {
+    //     function MyContent() {
+    //         const [height, setHeight] = useState(100);
 
-            return (
-                <div className="content">
-                    <div style={{ width: 400, height }} />
-                    <button onClick={() => setHeight(200)} />
-                </div>
-            );
-        }
+    //         return (
+    //             <div className="content">
+    //                 <div style={{ width: 400, height }} />
+    //                 <button onClick={() => setHeight(200)} />
+    //             </div>
+    //         );
+    //     }
 
-        wrapper = render(
-            <Dialog shouldUpdatePosition visible>
-                <MyContent />
-            </Dialog>
-        );
-        const { left, top } = document.querySelector('.next-dialog').style;
+    //     wrapper = render(
+    //         <Dialog shouldUpdatePosition visible>
+    //             <MyContent />
+    //         </Dialog>
+    //     );
+    //     const { left, top } = document.querySelector('.next-dialog').style;
 
-        document.querySelector('.content button').click();
+    //     document.querySelector('.content button').click();
 
-        setTimeout(() => {
-            const { left: newLeft, top: newTop } = document.querySelector('.next-dialog').style;
-            assert.notDeepEqual([left, top], [newLeft, newTop]);
-            done();
-        }, 300);
-    });
+    //     setTimeout(() => {
+    //         const { left: newLeft, top: newTop } = document.querySelector('.next-dialog').style;
+    //         assert.notDeepEqual([left, top], [newLeft, newTop]);
+    //         done();
+    //     }, 300);
+    // });
 });
 
 describe('Quick', () => {
