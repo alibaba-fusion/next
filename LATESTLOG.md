@@ -1,11 +1,10 @@
 # Latest Log 
 
-## [1.23.24](https://github.com/alibaba-fusion/next/compare/1.23.23...1.23.24) (2021-08-23)
+## [1.23.25](https://github.com/alibaba-fusion/next/compare/1.23.24...1.23.25) (2021-09-15)
 
 
 ### Bug Fixes
 
-* **CascaderSelect:** deduplicate value ([3c86c31](https://github.com/alibaba-fusion/next/commit/3c86c31))
-* **Table:** filter invalid dom attributes ([1a40ac6](https://github.com/alibaba-fusion/next/commit/1a40ac6))
+* **Dialog:** remove sass ([217f9bc](https://github.com/alibaba-fusion/next/commit/217f9bc))
 
 

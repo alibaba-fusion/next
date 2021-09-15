@@ -29,7 +29,7 @@ const runCommond = function(cmd) {
 };
 
 co(function*() {
-    checkTags();
+    // checkTags();
     checkFiles();
 
     const publish = yield inquirer.prompt([
@@ -148,8 +148,8 @@ function* pushMaster() {
 
 function* pushPlatformDocsBranch() {
     const docs = path.join(cwd, 'platform-docs');
-    yield runCommond(`git tag ${masterTag}`);
-    yield runCommond(`git push origin ${masterTag}`);
+    // yield runCommond(`git tag ${masterTag}`);
+    // yield runCommond(`git push origin ${masterTag}`);
 
     try {
         yield fs.ensureDir(docs);
