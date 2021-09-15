@@ -830,23 +830,23 @@ class TreeSelect extends Component {
                 label={label}
                 readOnly={readOnly}
                 ref={this.saveSelectRef}
-                mode={treeCheckable || multiple ? 'multiple' : 'single'}
                 value={data}
-                onRemove={this.handleRemove}
                 onChange={this.handleChange}
                 visible={visible}
                 onVisibleChange={this.handleVisibleChange}
                 showSearch={showSearch}
                 onSearch={this.handleSearch}
                 onSearchClear={this.handleSearchClear}
-                onKeyDown={this.handleKeyDown}
-                popupContent={this.renderPopupContent()}
                 popupContainer={popupContainer}
                 popupStyle={popupStyle}
                 popupClassName={popupClassName}
                 popupProps={popupProps}
                 followTrigger={followTrigger}
                 {...others}
+                onRemove={this.handleRemove}
+                onKeyDown={this.handleKeyDown}
+                popupContent={this.renderPopupContent()}
+                mode={treeCheckable || multiple ? 'multiple' : 'single'}
             />
         );
     }
