@@ -131,3 +131,30 @@
         padding: 0;
     }
 }
+
+#{$dialog-prefix} {
+    &-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        overflow: auto;
+    }
+    &-inner-wrapper {
+        display: flex;
+        position: relative;
+        top: 100px;
+        pointer-events: none;
+        padding-bottom: 24px;
+    }
+
+    &-v2 {
+        pointer-events: auto;
+        margin: 0 auto;
+    }
+
+    &#{$dialog-prefix}-v2 {
+        position: relative;
+    }
+}

@@ -28,6 +28,7 @@ export default class Inner extends Component {
         locale: PropTypes.object,
         role: PropTypes.string,
         rtl: PropTypes.bool,
+        width: PropTypes.number,
         // set value for a fixed height dialog. Passing a value will absolutely position the footer to the bottom.
         height: PropTypes.string,
     };
@@ -73,10 +74,7 @@ export default class Inner extends Component {
         const { prefix, children } = this.props;
         if (children) {
             return (
-                <div
-                    className={`${prefix}dialog-body`}
-                    ref={this.getNode.bind(this, 'bodyNode')}
-                >
+                <div className={`${prefix}dialog-body`} ref={this.getNode.bind(this, 'bodyNode')}>
                     {children}
                 </div>
             );
@@ -85,14 +83,7 @@ export default class Inner extends Component {
     }
 
     renderFooter() {
-        const {
-            prefix,
-            footer,
-            footerAlign,
-            footerActions,
-            locale,
-            height,
-        } = this.props;
+        const { prefix, footer, footerAlign, footerActions, locale, height } = this.props;
 
         if (footer === false) {
             return null;
@@ -110,15 +101,9 @@ export default class Inner extends Component {
                       const newBtnProps = {
                           ...btnProps,
                           prefix,
-                          className: cx(
-                              `${prefix}dialog-btn`,
-                              btnProps.className
-                          ),
+                          className: cx(`${prefix}dialog-btn`, btnProps.className),
                           onClick: makeChain(
-                              this.props[
-                                  `on${action[0].toUpperCase() +
-                                      action.slice(1)}`
-                              ],
+                              this.props[`on${action[0].toUpperCase() + action.slice(1)}`],
                               btnProps.onClick
                           ),
                           children: btnProps.children || locale[action],
@@ -132,10 +117,7 @@ export default class Inner extends Component {
                 : footer;
 
         return (
-            <div
-                className={newClassName}
-                ref={this.getNode.bind(this, 'footerNode')}
-            >
+            <div className={newClassName} ref={this.getNode.bind(this, 'footerNode')}>
                 {footerContent}
             </div>
         );
@@ -146,16 +128,8 @@ export default class Inner extends Component {
 
         if (closeable) {
             return (
-                <a
-                    role="button"
-                    aria-label={locale.close}
-                    className={`${prefix}dialog-close`}
-                    onClick={onClose}
-                >
-                    <Icon
-                        className={`${prefix}dialog-close-icon`}
-                        type="close"
-                    />
+                <a role="button" aria-label={locale.close} className={`${prefix}dialog-close`} onClick={onClose}>
+                    <Icon className={`${prefix}dialog-close-icon`} type="close" />
                 </a>
             );
         }
@@ -164,15 +138,7 @@ export default class Inner extends Component {
     }
 
     render() {
-        const {
-            prefix,
-            className,
-            closeable,
-            title,
-            role,
-            rtl,
-            height,
-        } = this.props;
+        const { prefix, className, closeable, title, role, rtl, height, width } = this.props;
         const others = pickOthers(Object.keys(Inner.propTypes), this.props);
         const newClassName = cx({
             [`${prefix}dialog`]: true,
@@ -193,15 +159,10 @@ export default class Inner extends Component {
             ariaProps['aria-labelledby'] = this.titleId;
         }
 
-        others.style = Object.assign({}, others.style, { height });
+        others.style = Object.assign({}, others.style, { height, width });
 
         return (
-            <div
-                {...ariaProps}
-                className={newClassName}
-                {...others}
-                dir={rtl ? 'rtl' : undefined}
-            >
+            <div {...ariaProps} className={newClassName} {...others} dir={rtl ? 'rtl' : undefined}>
                 {header}
                 {body}
                 {footer}

@@ -1,8 +1,22 @@
+import React from 'react';
 import ConfigProvider from '../config-provider';
 import { log } from '../util';
-import Dialog from './dialog';
+import Dialog1 from './dialog';
+import Dialog2 from './dialog-v2';
+
 import Inner from './inner';
 import { show, alert, confirm, withContext } from './show';
+
+class Dialog extends React.Component {
+    render() {
+        const { v2, ...others } = this.props;
+        if (v2) {
+            return <Dialog2 {...others} />;
+        } else {
+            return <Dialog1 {...others} />;
+        }
+    }
+}
 
 Dialog.Inner = Inner;
 Dialog.show = config => {
@@ -30,6 +44,10 @@ Dialog.withContext = withContext;
 
 /* istanbul ignore next */
 function processProps(props, deprecated) {
+    if ('v2' in props) {
+        return props;
+    }
+
     if ('closable' in props) {
         deprecated('closable', 'closeable', 'Dialog');
         const { closable, ...others } = props;
