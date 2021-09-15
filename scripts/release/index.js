@@ -32,28 +32,28 @@ co(function*() {
     // checkTags();
     checkFiles();
 
-    const publish = yield inquirer.prompt([
-        {
-            name: 'normal',
-            type: 'list',
-            choices: [
-                {
-                    name: 'Normal publish',
-                    value: 'yes',
-                },
-                {
-                    name: 'Beta / pre minor fix',
-                    value: 'no',
-                },
-            ],
-            default: 0,
-            message: 'Is this a normal publish?',
-        },
-    ]);
+    // const publish = yield inquirer.prompt([
+    //     {
+    //         name: 'normal',
+    //         type: 'list',
+    //         choices: [
+    //             {
+    //                 name: 'Normal publish',
+    //                 value: 'yes',
+    //             },
+    //             {
+    //                 name: 'Beta / pre minor fix',
+    //                 value: 'no',
+    //             },
+    //         ],
+    //         default: 0,
+    //         message: 'Is this a normal publish?',
+    //     },
+    // ]);
 
-    if (publish.normal === 'yes') {
-        yield pushMaster();
-    }
+    // if (publish.normal === 'yes') {
+    //     yield pushMaster();
+    // }
     yield pushPlatformDocsBranch();
     yield publishToNpm();
     yield sendToDingTalk();
