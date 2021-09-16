@@ -160,6 +160,8 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
      */
     ranges?: RangePreset | DatePreset[];
 
+    isPreview: boolean;
+
     /**
      * 时间值改变时的回调
      */

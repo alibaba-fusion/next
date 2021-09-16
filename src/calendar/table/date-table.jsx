@@ -47,10 +47,6 @@ class DateTable extends PureComponent {
         const startValue = this.props.startValue || this.props.value;
         const firstDayOfMonth = visibleMonth.clone().startOf('month'); // 该月的 1 号
         const firstDayOfMonthInWeek = firstDayOfMonth.day(); // 星期几
-        // let rowCount = 5;
-        // if (firstDayOfMonthInWeek > 4 && endDayOfMonthInWeek < 2 && endDayOfMonthInWeek !== 0) {
-        //     rowCount = 6;
-        // }
         const firstDayOfWeek = momentLocale.firstDayOfWeek();
 
         const datesOfLastMonthCount = (firstDayOfMonthInWeek + DAYS_OF_WEEK - firstDayOfWeek) % DAYS_OF_WEEK;
@@ -59,30 +55,6 @@ class DateTable extends PureComponent {
         lastMonthDate.add(0 - datesOfLastMonthCount, 'days');
 
         let counter = 0;
-
-        // confirm row count
-        // let sum = 0;
-        // for (let i = 0; i < CALENDAR_TABLE_ROW_COUNT; i++) {
-        //     for (let j = 0; j < CALENDAR_TABLE_COL_COUNT; j++) {
-        //         let cr = lastMonthDate;
-
-        //         if (counter) {
-        //             cr = cr.clone();
-        //             cr.add(counter, 'days');
-        //         }
-        //         counter++;
-        //         if(firstDayOfMonth.format("M") * 1 < cr.clone().startOf('month').format("M") * 1 ) {
-        //             sum += 1;
-        //         }
-        //     }
-        // }
-        // let rowCount = CALENDAR_TABLE_ROW_COUNT;
-        // if(sum >= 7) {
-        //     rowCount -= 1;
-        //     if(sum > 13) {
-        //         rowCount -= 2;
-        //     }
-        // }
 
         let currentDate;
         const dateList = [];
@@ -158,7 +130,14 @@ class DateTable extends PureComponent {
                         {weekElements}
                     </tr>
                 );
-            } else if (firstDayOfMonth.format('M') * 1 === currentDate.clone().startOf('month').format('M') * 1) {
+            } else if (
+                firstDayOfMonth.format('M') * 1 ===
+                currentDate
+                    .clone()
+                    .startOf('month')
+                    .format('M') *
+                    1
+            ) {
                 monthElements.push(
                     <tr key={i} role="row">
                         {weekElements}

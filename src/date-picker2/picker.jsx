@@ -276,10 +276,12 @@ class Picker extends React.Component {
         if (type === 'docClick') {
             // 弹层收起 触发 Change 逻辑
             if (!visible) {
+                // console.log('关闭触发');
                 this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
             }
             this.onVisibleChange(visible);
         }
+        // console.log('触发');
     };
 
     checkValue = (value, strictly) => {
@@ -303,6 +305,8 @@ class Picker extends React.Component {
     };
 
     onVisibleChange(visible) {
+        console.log('visiblechange');
+        console.log(visible);
         if (visible !== this.state.visible) {
             const callback = () => {
                 this.setState({
@@ -533,8 +537,9 @@ class Picker extends React.Component {
             onInputTypeChange,
             onPanelChange,
             onKeyDown,
+            
         } = this;
-
+        
         const {
             rtl,
             locale,
@@ -649,6 +654,7 @@ class Picker extends React.Component {
         ) : null;
 
         let triggerProps;
+        console.log(allDisabled);
         if (!allDisabled) {
             triggerProps = { onKeyDown, onClick };
         }
@@ -671,6 +677,9 @@ class Picker extends React.Component {
             [`${prefixCls}-overlay-range`]: isRange,
         });
         const PopupComp = popupComponent || Popup;
+
+        console.log(popupTriggerType);
+        console.log(visible);
 
         return (
             <div

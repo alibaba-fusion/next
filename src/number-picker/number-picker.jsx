@@ -174,6 +174,7 @@ class NumberPicker extends React.Component {
     };
 
     constructor(props) {
+        console.log(props);
         super(props);
         const { defaultValue, max, min, stringMode } = props;
 
@@ -302,14 +303,18 @@ class NumberPicker extends React.Component {
 
     onChange(value, e) {
         // ignore space & Compatible Chinese Input Method
+        console.log(value);
         value = value.replace('。', '.').trim();
         let onlyDisplay = false;
         if (this.props.editable === true && this.shouldFireOnChange(value)) {
+            console.log(value);
             let valueCorrected = this.correctValue(value);
             if (this.state.value !== valueCorrected) {
+                console.log(valueCorrected);
                 this.setValue({ value: valueCorrected, e });
             }
         } else {
+            console.log(value);
             onlyDisplay = true;
         }
 

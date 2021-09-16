@@ -27,6 +27,6 @@ ReactDOM.render(<div>
 
     <Input placeholder="Small" size="small" label="SIZE :" id="J_InputSmall" /><br /><br />
 
-    <Input.TextArea placeholder="TextArea" aria-label="TextArea" />
+    <Input.TextArea placeholder="TextArea" showLimitHint maxLength={20} rows={4} aria-label="TextArea" />
 </div>, mountNode);
 ````
