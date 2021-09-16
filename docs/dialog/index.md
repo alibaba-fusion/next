@@ -43,6 +43,8 @@
 | minMargin            | 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效                                                                                                                                                                   | Number              | 40                                                                                |      |
 | overlayProps         | 透传到弹层组件的属性对象                                                                                                                                                                                                                           | Object              | {}                                                                                |      |
 | height               | 对话框的高度样式属性                                                                                                                                                                                                                             | String              | -                                                                                 |      |
+| v2               | v2 版本对话框 | Boolean              | - |      |
+| width               | 对话框宽度 (v2开启有效) | Number              | - |      |
 
 <!-- api-extra-start -->
 

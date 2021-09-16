@@ -6,7 +6,6 @@ import Inner from './inner';
 import Animate from '../animate';
 import zhCN from '../locale/zh-cn';
 import { log, func, dom } from '../util';
-import { hasScroll, getScrollbarWidth } from './util';
 
 const noop = func.noop;
 
@@ -90,8 +89,8 @@ const Dialog = props => {
             originStyle.current = document.body.getAttribute('style');
             dom.setStyle(document.body, 'overflow', 'hidden');
 
-            if (hasScroll(document.body)) {
-                const scrollWidth = getScrollbarWidth();
+            if (dom.hasScroll(document.body)) {
+                const scrollWidth = dom.scrollbar().width;
                 if (scrollWidth) {
                     dom.setStyle(
                         document.body,

@@ -12,28 +12,6 @@ import findNode from './utils/find-node';
 const { saveLastFocusNode, getFocusNodeList, backLastFocusNode } = focus;
 const { makeChain, noop, bindCtx } = func;
 
-const isScrollDisplay = function(element) {
-    try {
-        const scrollbarStyle = window.getComputedStyle(element, '::-webkit-scrollbar');
-        return !scrollbarStyle || scrollbarStyle.getPropertyValue('display') !== 'none';
-    } catch (e) {
-        // ignore error for firefox
-    }
-
-    return true;
-};
-const hasScroll = containerNode => {
-    const parentNode = containerNode.parentNode;
-
-    return (
-        parentNode &&
-        parentNode.scrollHeight > parentNode.clientHeight &&
-        dom.scrollbar().width > 0 &&
-        isScrollDisplay(parentNode) &&
-        isScrollDisplay(containerNode)
-    );
-};
-
 const getContainerNode = props => {
     const targetNode = findNode(props.target);
     return findNode(props.container, targetNode);
@@ -527,7 +505,7 @@ class Overlay extends Component {
 
                 cnInfo.overflow = overflow;
 
-                if (hasScroll(containerNode)) {
+                if (dom.hasScroll(containerNode)) {
                     cnInfo.paddingRight = paddingRight;
                     style.paddingRight = `${dom.getStyle(containerNode, 'paddingRight') + dom.scrollbar().width}px`;
                 }
