@@ -42,6 +42,9 @@ The dialog is used to provide the user with an auxiliary window for quickly perf
 | minMargin            | the minimum distance between the dialog box at the top and bottom of the browser, it will not work if set align to 'cc cc' and set isFullScreen to true                                                                                                                                                                               | Number            | 40                                                                                |
 | overlayProps         | properties of Overlay                                                                                                                                                                                                                                        | Object            | {}                                                                                |
 | height               | height style attribute for dialog                                                                                                                                                                                | String            | -                                                                                 |
+| v2               | v2 version dialog | Boolean              | - |      |
+| width               | dialog width (used while v2=true) | Number              | - |      |
+
 
 <!-- api-extra-start -->
 
