@@ -33,9 +33,6 @@ class Demo extends React.Component {
             visible: false
         });
     }
-    afteropen = () => {
-        console.log('hah')
-    }
 
     render() {
         return (
@@ -44,7 +41,6 @@ class Demo extends React.Component {
                 <Drawer
                     title="标题"
                     placement="right"
-                    afterOpen={this.afteropen}
                     visible={this.state.visible}
                     onClose={this.onClose}>
                     Start your business here by searching a popular product

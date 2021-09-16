@@ -226,7 +226,7 @@ export default class Drawer extends Component {
                 bodyStyle={bodyStyle}
                 placement={placement}
                 onClose={onClose.bind(this, 'closeClick')}
-                {...others}
+                // {...others}  // 里面只有个afterOpen方法 没必要挂载dom（挂载dom报警告）
             >
                 {children}
             </Inner>
