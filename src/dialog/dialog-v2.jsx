@@ -40,6 +40,7 @@ const Dialog = props => {
         cache,
         wrapperStyle,
         popupContainer = document.body,
+        dialogRender,
         ...others
     } = props;
 
@@ -192,6 +193,48 @@ const Dialog = props => {
         [className]: !!className,
     });
 
+    let inner = (
+        <Animate.OverlayAnimate
+            visible={visible}
+            animation={animation}
+            timeout={{
+                appear: 500,
+                enter: 300,
+                exit: 500,
+            }}
+            onEnter={handleEnter}
+            onExited={handleExited}
+        >
+            <Inner
+                {...others}
+                v2
+                ref={dialogRef}
+                prefix={prefix}
+                className={dialogCls}
+                title={title}
+                footer={footer}
+                footerAlign={footerAlign}
+                footerActions={footerActions}
+                onOk={visible ? onOk : noop}
+                onCancel={visible ? onCancel : noop}
+                okProps={okProps}
+                cancelProps={cancelProps}
+                locale={locale}
+                closeable={closeable}
+                rtl={rtl}
+                onClose={(...args) => handleClose('closeClick', ...args)}
+                height={height}
+                width={width}
+            >
+                {children}
+            </Inner>
+        </Animate.OverlayAnimate>
+    );
+
+    if (typeof dialogRender === 'function') {
+        inner = dialogRender(inner);
+    }
+
     return ReactDOM.createPortal(
         <div className={wrapperCls} style={wrapperStyle} ref={wrapperRef}>
             <Animate.OverlayAnimate
@@ -203,43 +246,7 @@ const Dialog = props => {
                 <div className={`${prefix}overlay-backdrop`} />
             </Animate.OverlayAnimate>
             <div className={`${prefix}overlay-inner ${prefix}dialog-wrapper`} onClick={handleMaskClick}>
-                <div className={`${prefix}dialog-inner-wrapper`}>
-                    <Animate.OverlayAnimate
-                        visible={visible}
-                        animation={animation}
-                        timeout={{
-                            appear: 500,
-                            enter: 300,
-                            exit: 500,
-                        }}
-                        onEnter={handleEnter}
-                        onExited={handleExited}
-                    >
-                        <Inner
-                            {...others}
-                            v2
-                            ref={dialogRef}
-                            prefix={prefix}
-                            className={dialogCls}
-                            title={title}
-                            footer={footer}
-                            footerAlign={footerAlign}
-                            footerActions={footerActions}
-                            onOk={visible ? onOk : noop}
-                            onCancel={visible ? onCancel : noop}
-                            okProps={okProps}
-                            cancelProps={cancelProps}
-                            locale={locale}
-                            closeable={closeable}
-                            rtl={rtl}
-                            onClose={(...args) => handleClose('closeClick', ...args)}
-                            height={height}
-                            width={width}
-                        >
-                            {children}
-                        </Inner>
-                    </Animate.OverlayAnimate>
-                </div>
+                <div className={`${prefix}dialog-inner-wrapper`}>{inner}</div>
             </div>
         </div>,
         container
