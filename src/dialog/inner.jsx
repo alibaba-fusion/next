@@ -28,9 +28,9 @@ export default class Inner extends Component {
         locale: PropTypes.object,
         role: PropTypes.string,
         rtl: PropTypes.bool,
-        width: PropTypes.number,
+        width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         // set value for a fixed height dialog. Passing a value will absolutely position the footer to the bottom.
-        height: PropTypes.number,
+        height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         v2: PropTypes.bool,
     };
 
@@ -49,8 +49,9 @@ export default class Inner extends Component {
     };
 
     componentDidUpdate() {
-        const { height, v2 } = this.props;
-        if (this.bodyNode && v2 && height && height !== 'auto') {
+        const { height: pheight, v2 } = this.props;
+        if (this.bodyNode && v2 && pheight && pheight !== 'auto') {
+            const height = typeof pheight === 'string' ? parseInt(pheight) : pheight;
             const style = {};
             let headerHeight = 0,
                 footerHeight = 0;
