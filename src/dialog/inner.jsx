@@ -49,27 +49,25 @@ export default class Inner extends Component {
     };
 
     componentDidUpdate() {
-        const { height, width, v2 } = this.props;
-        if (this.bodyNode && v2) {
+        const { height, v2 } = this.props;
+        if (this.bodyNode && v2 && height && height !== 'auto') {
             const style = {};
-            if (height) {
-                let headerHeight = 0,
-                    footerHeight = 0;
-                if (this.headerNode) {
-                    headerHeight = this.headerNode.getBoundingClientRect().height;
-                }
-                if (this.footerNode) {
-                    footerHeight = this.footerNode.getBoundingClientRect().height;
-                }
-                const minHeight = headerHeight + footerHeight;
-                style.minHeight = minHeight;
-                if (height > minHeight) {
-                    style.maxHeight = height - minHeight;
-                    style.overflowY = 'auto';
-                }
-
-                dom.setStyle(this.bodyNode, style);
+            let headerHeight = 0,
+                footerHeight = 0;
+            if (this.headerNode) {
+                headerHeight = this.headerNode.getBoundingClientRect().height;
             }
+            if (this.footerNode) {
+                footerHeight = this.footerNode.getBoundingClientRect().height;
+            }
+            const minHeight = headerHeight + footerHeight;
+            style.minHeight = minHeight;
+            if (height > minHeight) {
+                style.maxHeight = height - minHeight;
+                style.overflowY = 'auto';
+            }
+
+            dom.setStyle(this.bodyNode, style);
         }
     }
 
