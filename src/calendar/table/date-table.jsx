@@ -110,7 +110,6 @@ class DateTable extends PureComponent {
                     <td
                         key={counter}
                         title={currentDate.format(format)}
-                        month={currentDate.format('M')}
                         onClick={isDisabled ? undefined : onSelectDate.bind(null, currentDate)}
                         className={elementCls}
                         role="cell"
@@ -123,9 +122,14 @@ class DateTable extends PureComponent {
                 counter++;
             }
 
-            let pageFirstMonth = weekElements[0].props.month;
-            if (pageFirstMonth === '12' && firstDayOfMonth.format('M') !== '11') {
-                pageFirstMonth = '0';
+            let initDate = weekElements[0].props.title;
+            let reg = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
+            let data = initDate.match(reg);
+            let pageFirstMonth = data[2] * 1;
+            if (pageFirstMonth === 12 && firstDayOfMonth.format('M') !== '11') {
+                pageFirstMonth = 0;
+            } else {
+                pageFirstMonth = data[2];
             }
             if (showOtherMonth) {
                 monthElements.push(
@@ -133,7 +137,7 @@ class DateTable extends PureComponent {
                         {weekElements}
                     </tr>
                 );
-            } else if (firstDayOfMonth.format('M') >= pageFirstMonth) {
+            } else if (firstDayOfMonth.format('M') * 1 >= pageFirstMonth) {
                 monthElements.push(
                     <tr key={i} role="row">
                         {weekElements}
