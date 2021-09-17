@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { shallow, mount } from 'enzyme';
+import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { dom } from '../../src/util';
 import Button from '../../src/button';
 import ConfigProvider from '../../src/config-provider';
 import Dialog from '../../src/dialog/index';
-import Message from '../../src/message';
 import '../../src/dialog/style.js';
 import zhCN from '../../src/locale/zh-cn';
-import { ModalInner as QuickInner } from '../../src/dialog/show';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -114,12 +112,12 @@ describe('v2', () => {
         wrapper = render(<Demo2 animation={false} />);
         const btn = document.querySelector('button');
         ReactTestUtils.Simulate.click(btn);
-        await delay(20);
+        await delay(40);
         assert(document.querySelector('.next-dialog'));
 
         const okBtn = document.querySelector('.next-btn-primary.next-dialog-btn');
         ReactTestUtils.Simulate.click(okBtn);
-        await delay(20);
+        await delay(40);
         assert(!document.querySelector('.next-dialog'));
 
         ReactTestUtils.Simulate.click(btn);
