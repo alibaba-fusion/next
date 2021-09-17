@@ -1,12 +1,7 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import DateTableHead from './date-table-head';
-import {
-    isDisabledDate,
-    DAYS_OF_WEEK,
-    CALENDAR_TABLE_COL_COUNT,
-    CALENDAR_TABLE_ROW_COUNT,
-} from '../utils';
+import { isDisabledDate, DAYS_OF_WEEK, CALENDAR_TABLE_COL_COUNT, CALENDAR_TABLE_ROW_COUNT } from '../utils';
 
 function isSameDay(a, b) {
     return a && b && a.isSame(b, 'day');
@@ -56,9 +51,7 @@ class DateTable extends PureComponent {
 
         const firstDayOfWeek = momentLocale.firstDayOfWeek();
 
-        const datesOfLastMonthCount =
-            (firstDayOfMonthInWeek + DAYS_OF_WEEK - firstDayOfWeek) %
-            DAYS_OF_WEEK;
+        const datesOfLastMonthCount = (firstDayOfMonthInWeek + DAYS_OF_WEEK - firstDayOfWeek) % DAYS_OF_WEEK;
 
         const lastMonthDate = firstDayOfMonth.clone();
         lastMonthDate.add(0 - datesOfLastMonthCount, 'days');
@@ -88,19 +81,11 @@ class DateTable extends PureComponent {
                 const isNextMonth = isNextMonthDate(currentDate, visibleMonth);
                 const isCurrentMonth = !isLastMonth && !isNextMonth;
 
-                const isDisabled = isDisabledDate(
-                    currentDate,
-                    disabledDate,
-                    'date'
-                );
-                const isToday =
-                    !isDisabled &&
-                    isSameDay(currentDate, today) &&
-                    isCurrentMonth;
+                const isDisabled = isDisabledDate(currentDate, disabledDate, 'date');
+                const isToday = !isDisabled && isSameDay(currentDate, today) && isCurrentMonth;
                 const isSelected =
                     !isDisabled &&
-                    (isSameDay(currentDate, startValue) ||
-                        isSameDay(currentDate, endValue)) &&
+                    (isSameDay(currentDate, startValue) || isSameDay(currentDate, endValue)) &&
                     isCurrentMonth;
                 const isInRange =
                     !isDisabled &&
@@ -109,10 +94,7 @@ class DateTable extends PureComponent {
                     isRangeDate(currentDate, startValue, endValue) &&
                     isCurrentMonth;
 
-                const cellContent =
-                    !showOtherMonth && !isCurrentMonth
-                        ? null
-                        : dateCellRender(currentDate);
+                const cellContent = !showOtherMonth && !isCurrentMonth ? null : dateCellRender(currentDate);
 
                 const elementCls = classNames({
                     [`${prefix}calendar-cell`]: true,
@@ -128,28 +110,36 @@ class DateTable extends PureComponent {
                     <td
                         key={counter}
                         title={currentDate.format(format)}
-                        onClick={
-                            isDisabled
-                                ? undefined
-                                : onSelectDate.bind(null, currentDate)
-                        }
+                        month={currentDate.format('M')}
+                        onClick={isDisabled ? undefined : onSelectDate.bind(null, currentDate)}
                         className={elementCls}
                         role="cell"
                         aria-disabled={isDisabled ? 'true' : 'false'}
                         aria-selected={isSelected ? 'true' : 'false'}
                     >
-                        <div className={`${prefix}calendar-date`}>
-                            {cellContent}
-                        </div>
+                        <div className={`${prefix}calendar-date`}>{cellContent}</div>
                     </td>
                 );
                 counter++;
             }
-            monthElements.push(
-                <tr key={i} role="row">
-                    {weekElements}
-                </tr>
-            );
+
+            let pageFirstMonth = weekElements[0].props.month;
+            if (pageFirstMonth === '12' && firstDayOfMonth.format('M') !== '11') {
+                pageFirstMonth = '0';
+            }
+            if (showOtherMonth) {
+                monthElements.push(
+                    <tr key={i} role="row">
+                        {weekElements}
+                    </tr>
+                );
+            } else if (firstDayOfMonth.format('M') >= pageFirstMonth) {
+                monthElements.push(
+                    <tr key={i} role="row">
+                        {weekElements}
+                    </tr>
+                );
+            }
         }
 
         return (
