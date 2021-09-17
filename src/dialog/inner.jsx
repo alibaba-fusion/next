@@ -30,7 +30,7 @@ export default class Inner extends Component {
         rtl: PropTypes.bool,
         width: PropTypes.number,
         // set value for a fixed height dialog. Passing a value will absolutely position the footer to the bottom.
-        height: PropTypes.string,
+        height: PropTypes.number,
     };
 
     static defaultProps = {
