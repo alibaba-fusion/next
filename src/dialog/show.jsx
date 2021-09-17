@@ -160,7 +160,11 @@ class Modal extends Component {
         const newOnClose = this.wrapper(onClose, this.close);
 
         const { visible, loading } = this.state;
-        okProps.loading = loading;
+        // 不能直接改，这里修改相当于改了全局 okProps
+        // okProps.loading = loading;
+
+        const newOkProps = { ...okProps };
+        newOkProps.loading = loading;
 
         const classNames = cx(`${prefix}dialog-quick`, className);
 
@@ -178,7 +182,7 @@ class Modal extends Component {
                 onOk={this.state.loading ? noop : newOnOk}
                 onCancel={newOnCancel}
                 onClose={newOnClose}
-                okProps={okProps}
+                okProps={newOkProps}
                 className={classNames}
                 width={v2 ? width : undefined}
             >
