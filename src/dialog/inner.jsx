@@ -4,7 +4,7 @@ import cx from 'classnames';
 import Button from '../button';
 import Icon from '../icon';
 import zhCN from '../locale/zh-cn';
-import { func, obj, guid } from '../util';
+import { func, obj, guid, dom } from '../util';
 
 const { makeChain } = func;
 const { pickOthers } = obj;
@@ -31,6 +31,7 @@ export default class Inner extends Component {
         width: PropTypes.number,
         // set value for a fixed height dialog. Passing a value will absolutely position the footer to the bottom.
         height: PropTypes.number,
+        v2: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -46,6 +47,31 @@ export default class Inner extends Component {
         locale: zhCN.Dialog,
         role: 'dialog',
     };
+
+    componentDidUpdate() {
+        const { height, width, v2 } = this.props;
+        if (this.bodyNode && v2) {
+            const style = {};
+            if (height) {
+                let headerHeight = 0,
+                    footerHeight = 0;
+                if (this.headerNode) {
+                    headerHeight = this.headerNode.getBoundingClientRect().height;
+                }
+                if (this.footerNode) {
+                    footerHeight = this.footerNode.getBoundingClientRect().height;
+                }
+                const minHeight = headerHeight + footerHeight;
+                style.minHeight = minHeight;
+                if (height > minHeight) {
+                    style.maxHeight = height - minHeight;
+                    style.overflowY = 'auto';
+                }
+
+                dom.setStyle(this.bodyNode, style);
+            }
+        }
+    }
 
     getNode(name, ref) {
         this[name] = ref;

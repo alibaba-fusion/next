@@ -217,6 +217,7 @@ const Dialog = props => {
                     >
                         <Inner
                             {...others}
+                            v2
                             ref={dialogRef}
                             prefix={prefix}
                             className={dialogCls}
