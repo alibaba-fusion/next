@@ -122,6 +122,9 @@ class DateTable extends PureComponent {
                 counter++;
             }
 
+            /* 
+                日历默认渲染六行日期，如果showOtherMonth为false则需要判断具体要渲染几行
+            */
             let initDate = weekElements[0].props.title;
             let reg = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
             let data = initDate.match(reg);
@@ -138,6 +141,11 @@ class DateTable extends PureComponent {
                     </tr>
                 );
             } else if (firstDayOfMonth.format('M') * 1 >= pageFirstMonth) {
+                /*  
+                    pageFirstMonth为当前页面显示的每一周第一天的月份
+                    firstDayOfMonth.format('M')为当前需要显示的月份
+                    筛选出第一天的月份是否为下个月，这样可以避免页面的多余渲染         
+                */
                 monthElements.push(
                     <tr key={i} role="row">
                         {weekElements}
