@@ -217,6 +217,7 @@
     "react-dev-utils": "^4.2.1",
     "react-dnd": "^7.0.0",
     "react-dnd-html5-backend": "^7.0.0",
+    "react-draggable": "^4.4.4",
     "react-dom": "^16.0.0",
     "react-live": "^2.2.3",
     "react-redux": "^5.0.7",
