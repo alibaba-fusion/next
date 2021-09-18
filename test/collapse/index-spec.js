@@ -14,6 +14,12 @@ const Panel = Collapse.Panel;
 
 describe('Collapse', () => {
     describe('render', () => {
+        it('[normal] Should render null', () => {
+            const wrapper = mount(
+                <Collapse></Collapse>
+            );
+            assert(wrapper.find(Collapse).length === 1);
+        });
         it('[normal] Should render from children', () => {
             const wrapper = mount(
                 <Collapse>
