@@ -65,6 +65,10 @@ export default class Drawer extends Component {
          */
         onClose: PropTypes.func,
         /**
+         * 对话框打开后的回调函数
+         */
+        afterOpen: PropTypes.func,
+        /**
          * 位于页面的位置
          */
         placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
@@ -211,10 +215,7 @@ export default class Drawer extends Component {
             placement,
             rtl,
         } = this.props;
-
         const others = pickOthers(Object.keys(Drawer.propTypes), this.props);
-        // afterOpen没必要挂载dom，所以应清除该属性解决warning问题
-        delete others.afterOpen;
 
         return (
             <Inner
