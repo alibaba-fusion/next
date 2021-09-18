@@ -150,7 +150,7 @@ describe('Breadcrumb', () => {
         let flag = false;
         const wrapper = mount(
             <Breadcrumb>
-                {flag && (<Item>Home</Item>)}
+                {flag && (<Item>Default Not Show</Item>)}
                 <Item>Whatever</Item>
                 <Item>All Categories</Item>
             </Breadcrumb>
