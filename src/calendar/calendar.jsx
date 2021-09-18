@@ -175,17 +175,19 @@ class Calendar extends Component {
     onSelectCell = (date, nextMode) => {
         const { shape, showOtherMonth } = this.props;
 
-        if (showOtherMonth) {
-            this.changeVisibleMonth(date, 'cellClick');
+        if (!showOtherMonth) {
+            return;
+        }
 
-            // 当用户所在的面板为初始化面板时，则选择动作为触发 onSelect 回调
-            if (this.state.mode === this.MODES[0]) {
-                this.props.onSelect(date);
-            }
+        this.changeVisibleMonth(date, 'cellClick');
 
-            if (shape === 'panel') {
-                this.changeMode(nextMode);
-            }
+        // 当用户所在的面板为初始化面板时，则选择动作为触发 onSelect 回调
+        if (this.state.mode === this.MODES[0]) {
+            this.props.onSelect(date);
+        }
+
+        if (shape === 'panel') {
+            this.changeMode(nextMode);
         }
     };
 
