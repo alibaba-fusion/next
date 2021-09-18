@@ -48,8 +48,11 @@ export default class Inner extends Component {
         role: 'dialog',
     };
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         const { height: pheight, v2 } = this.props;
+        if (prevProps.height === pheight) {
+            return;
+        }
         if (this.bodyNode && v2 && pheight && pheight !== 'auto') {
             const height = typeof pheight === 'string' ? parseInt(pheight) : pheight;
             const style = {};
