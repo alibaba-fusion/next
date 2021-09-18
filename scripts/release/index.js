@@ -72,12 +72,12 @@ function checkTags() {
         repeatTag += `  [${buildTag}]`;
     }
 
-    // if (repeatTag !== '') {
-    //     logger.error(`You have duplicate tags: ${repeatTag}`);
-    //     process.exit(0);
-    // } else {
-    //     logger.success(`There is no [${masterTag}] or [${buildTag}] exits`, '\n');
-    // }
+    if (repeatTag !== '') {
+        logger.error(`You have duplicate tags: ${repeatTag}`);
+        process.exit(0);
+    } else {
+        logger.success(`There is no [${masterTag}] or [${buildTag}] exits`, '\n');
+    }
 }
 
 function checkFiles() {
