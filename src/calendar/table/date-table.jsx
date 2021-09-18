@@ -130,14 +130,16 @@ class DateTable extends PureComponent {
                 );
                 counter++;
             }
-
-            if ((!showOtherMonth && (lastDayOfWeekInCurrentMonth || firstDayOfWeekInCurrentMonth)) || showOtherMonth) {
-                monthElements.push(
-                    <tr key={i} role="row">
-                        {weekElements}
-                    </tr>
-                );
+            
+            if (!showOtherMonth && !lastDayOfWeekInCurrentMonth && !firstDayOfWeekInCurrentMonth) {
+                break;
             }
+
+            monthElements.push(
+                <tr key={i} role="row">
+                    {weekElements}
+                </tr>
+            );
         }
 
         return (
