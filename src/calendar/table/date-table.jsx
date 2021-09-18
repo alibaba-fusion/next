@@ -70,13 +70,22 @@ class DateTable extends PureComponent {
                 counter++;
             }
         }
-
         counter = 0; // reset counter
         const monthElements = [];
         for (let i = 0; i < CALENDAR_TABLE_ROW_COUNT; i++) {
             const weekElements = [];
+            let firstDayOfWeekInCurrentMonth = true;
+            let lastDayOfWeekInCurrentMonth = true;
             for (let j = 0; j < CALENDAR_TABLE_COL_COUNT; j++) {
                 currentDate = dateList[counter];
+                if (j === 0) {
+                    // currentDate 的month 是否等于当前月 firstDayOfMonth
+                    firstDayOfWeekInCurrentMonth = currentDate.format('M') === firstDayOfMonth.format('M');
+                }
+                if (j === CALENDAR_TABLE_COL_COUNT - 1) {
+                    // currentDate 的month 是否等于当前月 firstDayOfMonth
+                    lastDayOfWeekInCurrentMonth = currentDate.format('M') === firstDayOfMonth.format('M');
+                }
                 const isLastMonth = isLastMonthDate(currentDate, visibleMonth);
                 const isNextMonth = isNextMonthDate(currentDate, visibleMonth);
                 const isCurrentMonth = !isLastMonth && !isNextMonth;
@@ -122,30 +131,7 @@ class DateTable extends PureComponent {
                 counter++;
             }
 
-            /* 
-                日历默认渲染六行日期，如果showOtherMonth为false则需要判断具体要渲染几行
-            */
-            let initDate = weekElements[0].props.title;
-            let reg = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
-            let data = initDate.match(reg);
-            let pageFirstMonth = data[2] * 1;
-            if (pageFirstMonth === 12 && firstDayOfMonth.format('M') !== '11') {
-                pageFirstMonth = 0;
-            } else {
-                pageFirstMonth = data[2];
-            }
-            if (showOtherMonth) {
-                monthElements.push(
-                    <tr key={i} role="row">
-                        {weekElements}
-                    </tr>
-                );
-            } else if (firstDayOfMonth.format('M') * 1 >= pageFirstMonth) {
-                /*  
-                    pageFirstMonth为当前页面显示的每一周第一天的月份
-                    firstDayOfMonth.format('M')为当前需要显示的月份
-                    筛选出第一天的月份是否为下个月，这样可以避免页面的多余渲染         
-                */
+            if ((!showOtherMonth && (lastDayOfWeekInCurrentMonth || firstDayOfWeekInCurrentMonth)) || showOtherMonth) {
                 monthElements.push(
                     <tr key={i} role="row">
                         {weekElements}
