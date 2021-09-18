@@ -213,6 +213,8 @@ export default class Drawer extends Component {
         } = this.props;
 
         const others = pickOthers(Object.keys(Drawer.propTypes), this.props);
+        // afterOpen没必要挂载dom，所以应清除该属性解决warning问题
+        delete others.afterOpen;
 
         return (
             <Inner
