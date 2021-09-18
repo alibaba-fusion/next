@@ -146,6 +146,24 @@ describe('Breadcrumb', () => {
         wrapper.unmount();
     });
 
+    it('should not render the item of null', () => {
+        let flag = false;
+        const wrapper = mount(
+            <Breadcrumb>
+                {flag && (<Item>Default Not Show</Item>)}
+                <Item>Whatever</Item>
+                <Item>All Categories</Item>
+            </Breadcrumb>
+        );
+        assert(
+            wrapper
+                .find('.next-breadcrumb-item')
+                .at(2)
+                .find('.next-breadcrumb-separator').length === 0
+        );
+        wrapper.unmount();
+    });
+
     it('should be set component to change element tag', () => {
         const wrapper = mount(
             <Breadcrumb>
