@@ -39,12 +39,12 @@ class Demo extends React.Component {
                     Open dialog
                 </Button>
                 <Dialog
+                    v2
                     title="Welcome to Alibaba.com"
                     visible={this.state.visible}
                     autoFocus
                     onOk={this.onClose.bind(this, 'okClick')}
                     onCancel={this.onClose.bind(this, 'cancelClick')}
-                    onClose={this.onClose}
                     cancelProps={{'aria-label':'cancel'}}
                     okProps={{'aria-label':'ok'}}>
                     <p tabIndex="0">  Start your business here by searching a popular product</p>

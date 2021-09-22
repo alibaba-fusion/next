@@ -168,4 +168,22 @@
     &#{$dialog-prefix}-v2 {
         position: relative;
     }
+
+    &-centered {
+        text-align: center;
+
+        &::before {
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+            content: '';
+        }
+        #{$dialog-prefix}-v2 {
+            margin: 40px 0;
+            display: inline-block;
+            text-align: left;
+            vertical-align: middle;
+        }
+    }
 }

@@ -67,8 +67,8 @@ export default class Dialog extends Component {
          */
         onOk: PropTypes.func,
         /**
-         * 在点击取消按钮时触发的回调函数
-         * @param {Object} event 点击事件对象
+         * 在点击取消/关闭按钮时触发的回调函数
+         * @param {Object} event 点击事件对象, event.triggerType=esc|closeIcon 可区分点击来源
          */
         onCancel: PropTypes.func,
         /**
@@ -79,16 +79,6 @@ export default class Dialog extends Component {
          * 应用于取消按钮的属性对象
          */
         cancelProps: PropTypes.object,
-        /**
-         * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
-         * **close** 表示点击关闭按钮可以关闭对话框
-         * **mask** 表示点击遮罩区域可以关闭对话框
-         * **esc** 表示按下 esc 键可以关闭对话框
-         * 如 'close' 或 'close,esc,mask'
-         * 如果设置为 true，则以上关闭方式全部生效
-         * 如果设置为 false，则以上关闭方式全部失效
-         */
-        closeable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         /**
          * [推荐]1.21.x 支持控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：
          * **close** 表示点击关闭按钮可以关闭对话框
@@ -107,12 +97,6 @@ export default class Dialog extends Component {
          */
         cache: PropTypes.bool,
         /**
-         * 对话框关闭时触发的回调函数
-         * @param {String} trigger 关闭触发行为的描述字符串
-         * @param {Object} event 关闭时事件对象
-         */
-        onClose: PropTypes.func,
-        /**
          * 对话框关闭后触发的回调函数, 如果有动画，则在动画结束后触发
          */
         afterClose: PropTypes.func,
@@ -130,22 +114,6 @@ export default class Dialog extends Component {
          */
         autoFocus: PropTypes.bool,
         /**
-         * 对话框对齐方式, 具体见Overlay文档
-         */
-        align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-        /**
-         * 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
-         */
-        isFullScreen: PropTypes.bool,
-        /**
-         * 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
-         */
-        shouldUpdatePosition: PropTypes.bool,
-        /**
-         * 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
-         */
-        minMargin: PropTypes.number,
-        /**
          * 透传到弹层组件的属性对象
          */
         overlayProps: PropTypes.object,
@@ -155,13 +123,74 @@ export default class Dialog extends Component {
          * @property {String} cancel 取消按钮文案
          */
         locale: PropTypes.object,
+        // Do not remove this, it's for <ConfigProvider popupContainer={} />
+        // see https://github.com/alibaba-fusion/next/issues/1508
+        popupContainer: PropTypes.any,
         /**
          * 对话框的高度样式属性
          */
         height: PropTypes.string,
-        // Do not remove this, it's for <ConfigProvider popupContainer={} />
-        // see https://github.com/alibaba-fusion/next/issues/1508
-        popupContainer: PropTypes.any,
+        /**
+         * 开启 v2 版本弹窗
+         */
+        v2: PropTypes.bool,
+        /**
+         * 弹窗宽度 v2 生效
+         * @version 1.25
+         */
+        width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        /**
+         * 弹窗最大高度 v2 生效
+         * @version 1.25
+         */
+        maxHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        /**
+         * 弹窗距离顶部间距
+         * @version 1.25
+         */
+        top: PropTypes.number,
+        /**
+         * 弹窗距离底部最小间距
+         * @version 1.25
+         */
+        bottom: PropTypes.number,
+        /**
+         * 弹窗距离底部最小间距
+         * @version 1.25
+         */
+        closeIcon: PropTypes.node,
+        /**
+         * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
+         * **close** 表示点击关闭按钮可以关闭对话框
+         * **mask** 表示点击遮罩区域可以关闭对话框
+         * **esc** 表示按下 esc 键可以关闭对话框
+         * 如 'close' 或 'close,esc,mask'
+         * 如果设置为 true，则以上关闭方式全部生效
+         * 如果设置为 false，则以上关闭方式全部失效
+         */
+        closeable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        /**
+         * [v2废弃] 对话框关闭时触发的回调函数
+         * @param {String} trigger 关闭触发行为的描述字符串
+         * @param {Object} event 关闭时事件对象
+         */
+        onClose: PropTypes.func,
+        /**
+         * [v2废弃] 对话框对齐方式, 具体见Overlay文档
+         */
+        align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        /**
+         * [v2废弃] 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+         */
+        isFullScreen: PropTypes.bool,
+        /**
+         * [v2废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
+         */
+        shouldUpdatePosition: PropTypes.bool,
+        /**
+         * [v2废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
+         */
+        minMargin: PropTypes.number,
     };
 
     static defaultProps = {

@@ -19,6 +19,7 @@ import { Button, Dialog, ConfigProvider, Box } from '@alifd/next';
 
 const popupAlert = () => {
     Dialog.alert({
+        v2: true,
         title: 'Alert',
         content: 'alert content alert content...',
         okProps: {children: 'Custom OK' },
@@ -28,6 +29,7 @@ const popupAlert = () => {
 
 const popupConfirm = () => {
     Dialog.confirm({
+        v2: true,
         title: 'Confirm',
         content: 'confirm content confirm content...',
         onOk: () => console.log('ok'),
@@ -37,6 +39,7 @@ const popupConfirm = () => {
 
 const popupShow = () => {
     const dialog = Dialog.show({
+        v2: true,
         title: 'Custom',
         content: 'custom content custom content...',
         footer: (
@@ -49,6 +52,7 @@ const popupShow = () => {
 
 const popupCustomIcon = () => {
     Dialog.confirm({
+        v2: true,
         title: 'Confirm',
         content: 'set icon as "warning" ',
         messageProps:{

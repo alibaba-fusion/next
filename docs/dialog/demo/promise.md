@@ -60,12 +60,13 @@ class Demo extends React.Component {
                     Dialog Promise
                 </Button>
                 <Dialog
+                    v2
                     title="Welcome to Alibaba.com"
                     visible={this.state.visible}
                     okProps={okProps}
                     onOk={this.onOk}
                     onCancel={this.onClose}
-                    onClose={this.onClose}>
+                >
                     Start your business here by searching a popular product
                 </Dialog>
             </div>
@@ -75,6 +76,7 @@ class Demo extends React.Component {
 
 const popupConfirm = () => {
     Dialog.confirm({
+        v2: true,
         title: 'Confirm',
         content: 'Do you confirm deleting this content?',
         onOk: () => {

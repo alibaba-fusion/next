@@ -44,14 +44,37 @@ Dialog.withContext = withContext;
 
 /* istanbul ignore next */
 function processProps(props, deprecated) {
-    if ('v2' in props) {
-        return props;
-    }
-
     if ('closable' in props) {
         deprecated('closable', 'closeable', 'Dialog');
         const { closable, ...others } = props;
         props = { closeable: closable, ...others };
+    }
+
+    if ('v2' in props) {
+        const nProps = { ...props };
+        if ('align' in props) {
+            delete nProps.align;
+            deprecated('align', 'centered', '<Dialog v2 />');
+        }
+        if ('shouldUpdatePosition' in props) {
+            delete nProps.shouldUpdatePosition;
+            log.warning(`Warning: [ shouldUpdatePosition ] is deprecated at [ <Dialog v2 /> ]`);
+        }
+        if ('onClose' in props) {
+            // delete nProps.onClose;
+            deprecated('onClose', 'onCancel', '<Dialog v2 />');
+        }
+        if ('minMargin' in props) {
+            // delete nProps.minMargin;
+            deprecated('minMargin', 'top/bottom', '<Dialog v2 />');
+        }
+        if ('isFullScreen' in props) {
+            props.overFlowScroll = !props.isFullScreen;
+            delete nProps.isFullScreen;
+            deprecated('isFullScreen', 'overFlowScroll', '<Dialog v2 />');
+        }
+
+        return nProps;
     }
 
     const overlayPropNames = [

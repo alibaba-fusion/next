@@ -1,6 +1,6 @@
 # 固定高度
 
-- order: 8
+- order: 5
 
 使用 `height` 属性设置 `Dialog` 整体高度。
 :::lang=en-us
