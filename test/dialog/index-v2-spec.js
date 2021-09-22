@@ -106,6 +106,7 @@ describe('v2', () => {
             wrapper.unmount();
             wrapper = null;
         }
+        document.body.style='';
     });
 
     it('should show and hide', async () => {
