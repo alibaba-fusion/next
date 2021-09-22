@@ -140,11 +140,6 @@ export default class Dialog extends Component {
          */
         width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         /**
-         * 弹窗最大高度 v2 生效
-         * @version 1.25
-         */
-        maxHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        /**
          * 弹窗距离顶部间距
          * @version 1.25
          */
@@ -180,9 +175,13 @@ export default class Dialog extends Component {
          */
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         /**
-         * [v2废弃] 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+         * [v2废弃] 改用 overflowScroll
          */
         isFullScreen: PropTypes.bool,
+        /**
+         * 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+         */
+        overflowScroll: PropTypes.bool,
         /**
          * [v2废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
          */
