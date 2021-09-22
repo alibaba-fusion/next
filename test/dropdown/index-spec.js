@@ -242,41 +242,42 @@ describe('Dropdown', () => {
         }, 200);
     });
 
-    it('autoFocus=true should have any activeElement when triggered by keyboard', done => {
-        const mountNode = document.createElement('div');
-        document.body.appendChild(mountNode);
+    // 官网 demo 已经不生效了，不知道为啥单测能过, Overlay v2 需要确认下
+    // it('autoFocus=true should have any activeElement when triggered by keyboard', done => {
+    //     const mountNode = document.createElement('div');
+    //     document.body.appendChild(mountNode);
 
-        ReactDOM.render(
-            <Dropdown
-                autoFocus
-                triggerType="click"
-                trigger={<button className="trigger">Hello dropdown</button>}
-                animation={false}
-            >
-                <Menu>
-                    <Menu.Item>Option 1</Menu.Item>
-                    <Menu.Item>Option 2</Menu.Item>
-                    <Menu.Item>Option 3</Menu.Item>
-                    <Menu.Item>Option 4</Menu.Item>
-                </Menu>
-            </Dropdown>,
-            mountNode
-        );
+    //     ReactDOM.render(
+    //         <Dropdown
+    //             autoFocus
+    //             triggerType="click"
+    //             trigger={<button className="trigger">Hello dropdown</button>}
+    //             animation={false}
+    //         >
+    //             <Menu>
+    //                 <Menu.Item>Option 1</Menu.Item>
+    //                 <Menu.Item>Option 2</Menu.Item>
+    //                 <Menu.Item>Option 3</Menu.Item>
+    //                 <Menu.Item>Option 4</Menu.Item>
+    //             </Menu>
+    //         </Dropdown>,
+    //         mountNode
+    //     );
 
-        const trigger = document.querySelector('.trigger');
+    //     const trigger = document.querySelector('.trigger');
 
-        trigger.click();
+    //     trigger.click();
 
-        setTimeout(() => {
-            assert(
-                document.activeElement ===
-                    document.querySelectorAll('.next-menu-item')[0]
-            );
+    //     setTimeout(() => {
+    //         assert(
+    //             document.activeElement ===
+    //                 document.querySelectorAll('.next-menu-item')[0]
+    //         );
 
-            ReactDOM.unmountComponentAtNode(mountNode);
-            document.body.removeChild(mountNode);
+    //         ReactDOM.unmountComponentAtNode(mountNode);
+    //         document.body.removeChild(mountNode);
 
-            done();
-        }, 200);
-    });
+    //         done();
+    //     }, 200);
+    // });
 });
