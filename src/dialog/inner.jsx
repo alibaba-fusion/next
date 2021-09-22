@@ -31,7 +31,10 @@ export default class Inner extends Component {
         width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         // set value for a fixed height dialog. Passing a value will absolutely position the footer to the bottom.
         height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        maxHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         v2: PropTypes.bool,
+        closeIcon: PropTypes.node,
+        pure: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -48,13 +51,9 @@ export default class Inner extends Component {
         role: 'dialog',
     };
 
-    componentDidUpdate(prevProps) {
-        const { height: pheight, v2 } = this.props;
-        if (prevProps.height === pheight) {
-            return;
-        }
+    componentDidUpdate() {
+        const { maxHeight, height: pheight = maxHeight, v2 } = this.props;
         if (this.bodyNode && v2 && pheight && pheight !== 'auto') {
-            const height = typeof pheight === 'string' ? parseInt(pheight) : pheight;
             const style = {};
             let headerHeight = 0,
                 footerHeight = 0;
@@ -66,7 +65,18 @@ export default class Inner extends Component {
             }
             const minHeight = headerHeight + footerHeight;
             style.minHeight = minHeight;
-            if (height > minHeight) {
+
+            let height = pheight;
+            if (pheight && typeof pheight === 'string') {
+                if (height.match(/calc|vh/)) {
+                    style.maxHeight = `calc(${pheight} - ${minHeight}px)`;
+                    style.overflowY = 'auto';
+                } else {
+                    height = parseInt(pheight);
+                }
+            }
+
+            if (typeof height === 'number' && height > minHeight) {
                 style.maxHeight = height - minHeight;
                 style.overflowY = 'auto';
             }
@@ -152,12 +162,12 @@ export default class Inner extends Component {
     }
 
     renderCloseLink() {
-        const { prefix, closeable, onClose, locale } = this.props;
+        const { prefix, closeable, onClose, locale, closeIcon } = this.props;
 
         if (closeable) {
             return (
                 <a role="button" aria-label={locale.close} className={`${prefix}dialog-close`} onClick={onClose}>
-                    <Icon className={`${prefix}dialog-close-icon`} type="close" />
+                    {closeIcon ? closeIcon : <Icon className={`${prefix}dialog-close-icon`} type="close" />}
                 </a>
             );
         }
@@ -166,7 +176,7 @@ export default class Inner extends Component {
     }
 
     render() {
-        const { prefix, className, closeable, title, role, rtl, height, width } = this.props;
+        const { prefix, className, closeable, title, role, rtl, height, maxHeight, width } = this.props;
         const others = pickOthers(Object.keys(Inner.propTypes), this.props);
         const newClassName = cx({
             [`${prefix}dialog`]: true,
@@ -187,7 +197,7 @@ export default class Inner extends Component {
             ariaProps['aria-labelledby'] = this.titleId;
         }
 
-        others.style = Object.assign({}, others.style, { height, width });
+        others.style = Object.assign({}, others.style, { height, maxHeight, width });
 
         return (
             <div {...ariaProps} className={newClassName} {...others} dir={rtl ? 'rtl' : undefined}>

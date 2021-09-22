@@ -28,9 +28,8 @@ class Demo extends React.Component {
         });
     };
 
-    onClose = reason => {
-        console.log(reason);
-
+    onClose = e => {
+        console.log(e.triggerType)
         this.setState({
             visible: false
         });
@@ -43,12 +42,13 @@ class Demo extends React.Component {
                     Open dialog
                 </Button>
                 <Dialog
+                    v2
                     title="Welcome to Alibaba.com"
                     visible={this.state.visible}
-                    onOk={this.onClose.bind(this, 'okClick')}
-                    onCancel={this.onClose.bind(this, 'cancelClick')}
-                    onClose={this.onClose}>
-                    Start your business here by searching a popular product
+                    onOk={this.onClose}
+                    onCancel={this.onClose}
+                >
+                    <p>Start your business here by searching a popular product</p>
                 </Dialog>
             </div>
         );

@@ -1,6 +1,7 @@
 # 更新位置
 
 - order: 3
+- debug: true
 
 通过设置 `shouldUpdatePosition` 为 `true` 来及时更新对话框的位置，一般用于对话框内容发生变化但是仍然要保证原来对齐方式的情况
 

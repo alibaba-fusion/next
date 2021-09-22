@@ -32,19 +32,27 @@ const Dialog = props => {
         cancelProps,
         locale = zhCN.Dialog,
         rtl,
-        width = 520,
-        height,
         visible: pvisible,
         closeMode = ['close', 'esc'],
+        closeIcon,
         animation = { in: 'fadeInUp', out: 'fadeOutUp' },
         cache,
         wrapperStyle,
         popupContainer = document.body,
         dialogRender,
+        centered,
+        top = centered ? 40 : 100,
+        bottom = 40,
+        width = 520,
+        height,
+        overflowScroll = true,
+        minMargin,
+        onClose,
+        style,
         ...others
     } = props;
 
-    const [firstVisible, setFirst] = useState(pvisible);
+    const [firstVisible, setFirst] = useState(pvisible || false);
     const [visible, setVisible] = useState(pvisible);
     const [isAnimationEnd, markAnimationEnd] = useState(false);
 
@@ -150,7 +158,8 @@ const Dialog = props => {
     };
 
     const handleClose = (triggerType, e) => {
-        // typeof onClose === 'function' && onClose(triggerType, e);
+        // deprecated in 2.x
+        typeof onClose === 'function' && onClose(triggerType, e);
 
         e.triggerType = triggerType;
         handleCancel(e);
@@ -176,11 +185,13 @@ const Dialog = props => {
         markAnimationEnd(false);
         dom.setStyle(wrapperRef.current, 'display', '');
     };
+    const handleExiting = () => {
+        setTimeout(() => document.body.setAttribute('style', originStyle.current || ''), animation === null ? 0 : 100);
+    };
 
     const handleExited = () => {
         markAnimationEnd(true);
         dom.setStyle(wrapperRef.current, 'display', 'none');
-        document.body.setAttribute('style', originStyle.current || '');
         afterClose();
     };
 
@@ -193,6 +204,26 @@ const Dialog = props => {
         [className]: !!className,
     });
 
+    const topStyle = {};
+    if (centered) {
+        // 兼容 minMargin
+        if (!top && !bottom && minMargin) {
+            topStyle.marginTop = minMargin;
+            topStyle.marginBottom = minMargin;
+        } else {
+            top && (topStyle.marginTop = top);
+            bottom && (topStyle.marginBottom = bottom);
+        }
+    } else {
+        top && (topStyle.top = top);
+        bottom && (topStyle.paddingBottom = bottom);
+    }
+
+    let maxHeight;
+    if (overflowScroll) {
+        maxHeight = `calc(100vh - ${top + bottom}px)`;
+    }
+
     let inner = (
         <Animate.OverlayAnimate
             visible={visible}
@@ -203,10 +234,12 @@ const Dialog = props => {
                 exit: 500,
             }}
             onEnter={handleEnter}
+            onExiting={handleExiting}
             onExited={handleExited}
         >
             <Inner
                 {...others}
+                style={centered ? { ...topStyle, ...style } : style}
                 v2
                 ref={dialogRef}
                 prefix={prefix}
@@ -223,7 +256,9 @@ const Dialog = props => {
                 closeable={closeable}
                 rtl={rtl}
                 onClose={(...args) => handleClose('closeClick', ...args)}
+                closeIcon={closeIcon}
                 height={height}
+                maxHeight={maxHeight}
                 width={width}
             >
                 {children}
@@ -235,6 +270,12 @@ const Dialog = props => {
         inner = dialogRender(inner);
     }
 
+    const innerWrapperCls = classNames({
+        [`${prefix}overlay-inner`]: true,
+        [`${prefix}dialog-wrapper`]: true,
+        [`${prefix}dialog-centered`]: centered,
+    });
+
     return ReactDOM.createPortal(
         <div className={wrapperCls} style={wrapperStyle} ref={wrapperRef}>
             <Animate.OverlayAnimate
@@ -245,8 +286,15 @@ const Dialog = props => {
             >
                 <div className={`${prefix}overlay-backdrop`} />
             </Animate.OverlayAnimate>
-            <div className={`${prefix}overlay-inner ${prefix}dialog-wrapper`} onClick={handleMaskClick}>
-                <div className={`${prefix}dialog-inner-wrapper`}>{inner}</div>
+
+            <div className={innerWrapperCls} onClick={handleMaskClick}>
+                {centered ? (
+                    inner
+                ) : (
+                    <div style={topStyle} className={`${prefix}dialog-inner-wrapper`}>
+                        {inner}
+                    </div>
+                )}
             </div>
         </div>,
         container

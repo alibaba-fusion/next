@@ -193,6 +193,11 @@ describe('v2', () => {
         assert(document.querySelector('.next-dialog-footer a.custom').textContent.trim() === 'Link');
     });
 
+    it('should support closeIcon', () => {
+        wrapper = render(<Dialog v2 visible closeIcon={<span className="closeicon">x</span>} />);
+        assert(document.querySelector('.closeicon').textContent.trim() === 'x');
+    });
+
     it('should support custom footer button text', () => {
         wrapper = render(
             <Dialog v2
