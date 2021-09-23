@@ -5,6 +5,7 @@
 
 @mixin balloon-bounding($border-style) {
     position: absolute;
+    top: 0;
     max-width: $balloon-size-max-width;
     border-style: $border-style;
     border-radius: $balloon-corner;
