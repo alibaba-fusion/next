@@ -491,6 +491,25 @@ class Picker extends React.Component {
     };
 
     /**
+     * 添加鼠标光标悬停事件
+     * 如果满足条件，则打开相应的时间选择
+     */
+    onMouseOver = () => {
+        if (this.props.popupTriggerType === 'hover') {
+            this.onClick();
+        }
+    };
+
+    /**
+     * 添加光标移出事件，关闭时间选择
+     */
+    onMouseLeave = () => {
+        if (this.props.popupTriggerType === 'hover') {
+            this.onVisibleChange(false);
+        }
+    };
+
+    /**
      * 获取 `onChange` 和 `onOk` 方法的输出参数
      * @param {Dayjs} value
      * @returns 默认返回 `Dayjs` 实例和 `format` 格式化的值
@@ -677,6 +696,8 @@ class Picker extends React.Component {
                 {...pickOthers(Picker.propTypes, restProps)}
                 dir={rtl ? 'rtl' : undefined}
                 className={classnames(className, prefixCls)}
+                onMouseOver={this.onMouseOver}
+                onMouseLeave={this.onMouseLeave}
             >
                 <PopupComp
                     rtl={rtl}

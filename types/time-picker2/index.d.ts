@@ -115,6 +115,8 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
      */
     popupAlign?: string;
 
+    isPreview?: boolean;
+    
     /**
      * 弹层触发方式
      */
