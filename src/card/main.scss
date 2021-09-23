@@ -178,6 +178,7 @@
         width: 100%;
         margin: 0;
         position: relative;
+        overflow: visible;
         &::before {
             content: '';
             display: block;
