@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import dayjs from 'dayjs';
+import co from 'co';
 import moment from 'moment';
 import DatePicker from '../../src/date-picker2/index';
 import Form from '../../src/form/index';
 import Field from '../../src/field/index';
 import { DATE_PICKER_MODE } from '../../src/date-picker2/constant';
 import { KEYCODE } from '../../src/util';
+import '../../src/date-picker2/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -20,6 +24,34 @@ const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PICKER_MODE;
 const defaultVal = '2020-12-12';
 const defaultRangeVal = ['2020-12-12', '2020-12-13'];
 const onChange = (...args) => assert(checkOutput(...args));
+const delay = time => new Promise(resolve => setTimeout(resolve, time));
+
+const render = element => {
+    let inc;
+    const container = document.createElement('div');
+    container.className = 'container';
+    document.body.appendChild(container);
+    ReactDOM.render(element, container, function() {
+        inc = this;
+    });
+    return {
+        setProps: props => {
+            ReactDOM.unmountComponentAtNode(container);
+            const clonedElement = React.cloneElement(element, props);
+            ReactDOM.render(clonedElement, container);
+        },
+        unmount: () => {
+            ReactDOM.unmountComponentAtNode(container);
+            document.body.removeChild(container);
+        },
+        instance: () => {
+            return inc;
+        },
+        find: selector => {
+            return container.querySelectorAll(selector);
+        },
+    };
+};
 
 /* eslint-disable */
 describe('Picker', () => {
@@ -853,6 +885,20 @@ describe('Picker', () => {
     });
 
     describe('issues', () => {
+        beforeEach(() => {
+            const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
+
+            nodeListArr.forEach(node => {
+                node.parentNode.removeChild(node);
+            });
+        });
+
+        afterEach(() => {
+            if (wrapper) {
+                wrapper.unmount();
+                wrapper = null;
+            }
+        });
         // https://github.com/alibaba-fusion/next/issues/2641
         it('value controlled issue', () => {
             function App() {
@@ -915,6 +961,28 @@ describe('Picker', () => {
             wrapper = mount(<App />);
             clickDate('2020-12-13');
             assert(getStrValue() === '2020-12-13');
+        });
+
+        it('should support triggerType', () => {
+            return co(function*() {
+                wrapper = render(
+                    <DatePicker popupTriggerType={"hover"} />
+                );
+                const btn = document.querySelector('.next-date-picker2 > div');
+
+                ReactTestUtils.Simulate.mouseEnter(btn);
+                yield delay(300);
+                assert(document.querySelector('.next-overlay-wrapper'));
+
+                ReactTestUtils.Simulate.mouseLeave(btn);
+                ReactTestUtils.Simulate.mouseEnter(document.querySelector('.next-calendar2-body'));
+                yield delay(300);
+                assert(document.querySelector('.next-overlay-wrapper'));
+
+                ReactTestUtils.Simulate.mouseLeave(document.querySelector('.next-calendar2-body'));
+                yield delay(500);
+                assert(!document.querySelector('.next-overlay-wrapper'));
+            });
         });
 
         it('should reset value', () => {
