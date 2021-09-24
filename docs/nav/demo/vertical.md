@@ -47,10 +47,10 @@ class App extends React.Component {
                 <Nav style={{ width: '200px' }} type={type} defaultOpenAll>
                     <Item icon="account">Navigation One</Item>
                     <Item icon="account">Navigation Two</Item>
-                    <Item icon="account">Navigation Three</Item>
+                    <Item disabled icon="account">Navigation Three</Item>
                     <Item icon="account">Navigation Four</Item>
                     <Item icon="account">Navigation Five</Item>
-                    <SubNav icon="account" label="Sub Nav">
+                    <SubNav disabled icon="account" label="Sub Nav">
                         <Item icon="account">Item 1</Item>
                         <Item icon="account">Item 2</Item>
                         <Item icon="account">Item 3</Item>
