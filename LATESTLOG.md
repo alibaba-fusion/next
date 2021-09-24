@@ -1,20 +1,15 @@
 # Latest Log 
 
-## [1.24.4](https://github.com/alibaba-fusion/next/compare/1.24.3...1.24.4) (2021-09-18)
+## [1.24.5](https://github.com/alibaba-fusion/next/compare/1.24.4...1.24.5) (2021-09-24)
 
 
 ### Bug Fixes
 
-* **Breadcrumb:** empty node, close [#2699](https://github.com/alibaba-fusion/next/issues/2699) ([ed57bdc](https://github.com/alibaba-fusion/next/commit/ed57bdc))
-* **Calendar:** showOtherMonth=false style, close [#3321](https://github.com/alibaba-fusion/next/issues/3321) ([2997a17](https://github.com/alibaba-fusion/next/commit/2997a17))
-* **Collapse:** enhace empty node ([bc6564d](https://github.com/alibaba-fusion/next/commit/bc6564d))
-* **DatePicker:** style issue, close [#3353](https://github.com/alibaba-fusion/next/issues/3353) ([#3354](https://github.com/alibaba-fusion/next/issues/3354)) ([860ec8f](https://github.com/alibaba-fusion/next/commit/860ec8f))
-* **Input:** disabled mutual hasClear, drawer repair afterOpen warning, close [#2933](https://github.com/alibaba-fusion/next/issues/2933) [#3145](https://github.com/alibaba-fusion/next/issues/3145) ([39daa7c](https://github.com/alibaba-fusion/next/commit/39daa7c))
-* move some props to behind others ([58cf157](https://github.com/alibaba-fusion/next/commit/58cf157))
-
-
-### Features
-
-* add main.scss for only main style ([97814ec](https://github.com/alibaba-fusion/next/commit/97814ec))
+* **Balloon:** close [#3357](https://github.com/alibaba-fusion/next/issues/3357) ([85f6b9b](https://github.com/alibaba-fusion/next/commit/85f6b9b))
+* **Card:** hr should be visible, close [#3281](https://github.com/alibaba-fusion/next/issues/3281) ([a7936a5](https://github.com/alibaba-fusion/next/commit/a7936a5))
+* **ConfigProvider:** popupContainer should work when container set undefined, close [#3368](https://github.com/alibaba-fusion/next/issues/3368) ([716ddc7](https://github.com/alibaba-fusion/next/commit/716ddc7))
+* **DatePicker2:** popupTriggerType hover should work, close [#3366](https://github.com/alibaba-fusion/next/issues/3366) ([ac4baac](https://github.com/alibaba-fusion/next/commit/ac4baac))
+* **Nav:** add disabled style ([4e06f71](https://github.com/alibaba-fusion/next/commit/4e06f71))
+* **Select:** useVirtual when children > 10 ([cedf011](https://github.com/alibaba-fusion/next/commit/cedf011))
 
 
