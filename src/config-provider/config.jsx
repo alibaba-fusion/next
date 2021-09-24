@@ -202,7 +202,7 @@ export function config(Component, options = {}) {
             // 对于两个真正消费 popupContainer 的组件来说，正确的名字是 container,
             if (
                 'popupContainer' in newContextProps &&
-                !('container' in this.props) &&
+                this.props.container === undefined &&
                 ['Overlay', 'Popup'].indexOf(displayName) > -1
             ) {
                 newContextProps.container = newContextProps.popupContainer;
