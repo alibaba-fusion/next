@@ -209,3 +209,21 @@
         );
     }
 }
+
+@mixin nav-disabled-statement($color) {
+    #{$nav-prefix}-item.#{$css-prefix}menu-item {
+        &.#{$css-prefix}disabled,
+        &.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
+            color: $color;
+            cursor: not-allowed;
+
+            #{$menu-prefix}-icon-arrow {
+                color: $color;
+            }
+
+            #{$menu-prefix}-icon-selected {
+                color: $color;
+            }
+        }
+    }
+}

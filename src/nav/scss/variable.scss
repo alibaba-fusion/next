@@ -186,6 +186,9 @@ $nav-primary-sub-nav-selected-text-color: $color-white !default;
 /// active line color
 /// @namespace statement/selected/sub nav
 $nav-primary-sub-nav-active-color: $color-brand1-6 !default;
+/// text
+/// @namespace statement/disabled
+$nav-primary-item-disabled-text-color: $color-text1-1 !default;
 /// background
 /// @namespace statement/open
 /// @supportGradient
@@ -283,6 +286,9 @@ $nav-secondary-sub-nav-selected-text-color: $color-white !default;
 /// active line color
 /// @namespace statement/selected/sub nav
 $nav-secondary-sub-nav-active-color: $color-brand1-6 !default;
+/// text
+/// @namespace statement/disabled
+$nav-secondary-item-disabled-text-color: $color-brand1-1 !default;
 /// background
 /// @namespace statement/open
 /// @supportGradient
@@ -383,6 +389,9 @@ $nav-normal-sub-nav-selected-text-color: $color-brand1-6 !default;
 /// active line color
 /// @namespace statement/selected/sub nav
 $nav-normal-sub-nav-active-color: $color-brand1-6 !default;
+/// text
+/// @namespace statement/disabled
+$nav-normal-item-disabled-text-color: $color-text1-2 !default;
 /// background
 /// @namespace statement/open
 /// @supportGradient
@@ -474,6 +483,9 @@ $nav-line-sub-nav-selected-text-color: $color-brand1-6 !default;
 /// active line color
 /// @namespace statement/selected/sub nav
 $nav-line-sub-nav-active-color: $color-brand1-6 !default;
+/// text
+/// @namespace statement/disabled
+$nav-line-item-disabled-text-color: $color-text1-2 !default;
 /// background
 /// @namespace statement/open
 /// @supportGradient
