@@ -4,6 +4,7 @@ import cx from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import { findDOMNode } from 'react-dom';
 import { events } from '../util';
+// import ScrollBar from './scrollbar';
 
 const NOOP = () => {};
 const MAX_SYNC_UPDATES = 40;
@@ -421,15 +422,31 @@ class VirtualList extends Component {
         });
 
         return (
-            <div
-                className={cls}
-                style={style}
-                ref={c => {
-                    this.el = c;
-                    return this.el;
-                }}
-            >
-                <div style={listStyle}>{items}</div>
+            <div style={{ position: 'relative' }}>
+                <div
+                    className={cls}
+                    style={style}
+                    ref={c => {
+                        this.el = c;
+                        return this.el;
+                    }}
+                >
+                    <div style={listStyle}>{items}</div>
+                </div>
+                <div
+                // ref={scrollBarRef}
+                // scrollTop={scrollTop}
+                // height={height}
+                // scrollHeight={scrollHeight}
+                // count={mergedData.length}
+                // onScroll={onScrollBar}
+                // onStartMove={() => {
+                //     setScrollMoving(true);
+                // }}
+                // onStopMove={() => {
+                //     setScrollMoving(false);
+                // }}
+                />
             </div>
         );
     }
