@@ -838,11 +838,20 @@ class Table extends React.Component {
                 {table}
             </div>
         );
-        if (loading) {
-            const loadingClassName = `${prefix}table-loading`;
-            return <LoadingComponent className={loadingClassName}>{content}</LoadingComponent>;
+        // if (loading) {
+        //     const loadingClassName = `${prefix}table-loading`;
+        //     return <LoadingComponent className={loadingClassName}>{content}</LoadingComponent>;
+        // }
+
+        if (cls.includes('lock-left') || cls.includes('lock-right')) {
+            return content;
         }
-        return content;
+
+        return (
+            <LoadingComponent visible={loading} inline={false}>
+                {content}
+            </LoadingComponent>
+        );
     }
 }
 
