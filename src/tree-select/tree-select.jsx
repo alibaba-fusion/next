@@ -2,6 +2,7 @@ import React, { Component, Children, isValidElement, cloneElement } from 'react'
 import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash.clonedeep';
+import uniqBy from 'lodash.uniqby';
 import classNames from 'classnames';
 import Select from '../select';
 import Tree from '../tree';
@@ -13,6 +14,7 @@ import {
     isDescendantOrSelf,
 } from '../tree/view/util';
 import { func, obj, KEYCODE } from '../util';
+import { getValueDataSource } from '../select/util';
 
 const noop = () => {};
 const { Node: TreeNode } = Tree;
@@ -312,6 +314,12 @@ class TreeSelect extends Component {
         super(props, context);
 
         const { defaultVisible, visible, defaultValue, value } = props;
+
+        this.valueDataSource = {
+            valueDS: [], // [{value,label}]
+            mapValueDS: {}, // {value: {value,label}}
+        };
+
         this.state = {
             visible: typeof visible === 'undefined' ? defaultVisible : visible,
             value: normalizeToArray(typeof value === 'undefined' ? defaultValue : value),
@@ -322,6 +330,12 @@ class TreeSelect extends Component {
             autoExpandParent: false,
             ...flatDataSource(props),
         };
+
+        if (typeof this.state.value !== 'undefined') {
+            this.valueDataSource = getValueDataSource(this.state.value, this.valueDataSource.mapValueDS);
+
+            this.state.value = this.valueDataSource.value;
+        }
 
         bindCtx(this, [
             'handleSelect',
@@ -400,7 +414,7 @@ class TreeSelect extends Component {
     }
 
     getData(value, forSelect) {
-        return value.reduce((ret, v) => {
+        const ret = value.reduce((ret, v) => {
             const k = this.state._v2n[v] && this.state._v2n[v].key;
             if (k) {
                 const { label, pos, disabled, checkboxDisabled } = this.state._k2n[k];
@@ -417,8 +431,20 @@ class TreeSelect extends Component {
                 ret.push(d);
             }
 
+            //treeCheckedStrategy: all 处理 dataSource 中不存在的情况
+            const { treeCheckedStrategy } = this.props;
+            if (treeCheckedStrategy === 'all') {
+                const item = this.valueDataSource.mapValueDS[v];
+                if (item) {
+                    ret.push(item);
+                }
+            }
+
             return ret;
         }, []);
+
+        // dataSource 和 valueDataSource 有重复的情况，去重
+        return uniqBy(ret, 'value');
     }
 
     saveTreeRef(ref) {
@@ -467,8 +493,12 @@ class TreeSelect extends Component {
 
     handleCheck(checkedKeys) {
         const { onChange } = this.props;
+        const { value: stateValue } = this.state;
 
-        const value = this.getValueByKeys(checkedKeys);
+        let value = this.getValueByKeys(checkedKeys);
+        const noExistedValues = stateValue.filter(v => !this.state._v2n[v]);
+        value = [...noExistedValues, ...value];
+
         if (!('value' in this.props)) {
             this.setState({
                 value,
@@ -804,9 +834,14 @@ class TreeSelect extends Component {
             isPreview,
         } = this.props;
         const others = pickOthers(Object.keys(TreeSelect.propTypes), this.props);
-        const { value, visible } = this.state;
+        const { visible } = this.state;
+
+        let value = this.state.value;
+
+        value = getValueDataSource(value, this.valueDataSource.mapValueDS).value || [];
 
         const valueForSelect = treeCheckable && !treeCheckStrictly ? this.getValueForSelect(value) : value;
+
         let data = this.getData(valueForSelect, true);
         if (!multiple && !treeCheckable) {
             data = data[0];
