@@ -559,7 +559,6 @@ describe('inner', () => {
         hide();
     });
 
-    // 影响报错的罪魁祸首
     it('should throw error (async)', () => {
         const { hide } = Dialog.show({
             title: 'Title',
