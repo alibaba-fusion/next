@@ -560,39 +560,39 @@ describe('inner', () => {
     });
 
     // 影响报错的罪魁祸首
-    // it('should throw error (async)', () => {
-    //     const { hide } = Dialog.show({
-    //         title: 'Title',
-    //         content: 'Content',
-    //         onOk: async () => {
-    //             throw Error();
-    //         },
-    //     });
-    //     try {
-    //         ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
-    //         assert(false);
-    //     } catch (e) {
-    //         assert(true);
-    //     }
-    //     hide();
-    // });
+    it('should throw error (async)', () => {
+        const { hide } = Dialog.show({
+            title: 'Title',
+            content: 'Content',
+            onOk: async () => {
+                throw Error();
+            },
+        });
+        try {
+            ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+            assert(false);
+        } catch (e) {
+            assert(true);
+        }
+        hide();
+    });
 
-    // it('should throw error', () => {
-    //     const { hide } = Dialog.show({
-    //         title: 'Title',
-    //         content: 'Content',
-    //         onOk: () => {
-    //             throw Error();
-    //         },
-    //     });
-    //     try {
-    //         ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
-    //         assert(false);
-    //     } catch (e) {
-    //         assert(true);
-    //     }
-    //     hide();
-    // });
+    it('should throw error', () => {
+        const { hide } = Dialog.show({
+            title: 'Title',
+            content: 'Content',
+            onOk: () => {
+                throw Error();
+            },
+        });
+        try {
+            ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+            assert(false);
+        } catch (e) {
+            assert(true);
+        }
+        hide();
+    });
 
     // https://github.com/alibaba-fusion/next/issues/2868
     it('should resize after children size changed', done => {
