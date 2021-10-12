@@ -977,10 +977,20 @@ class Tree extends Component {
     }
 
     handleDragOver(e, node) {
+        const dragOverNodeKey = node.props.eventKey;
+        if (this.state.dragOverNodeKey !== dragOverNodeKey) {
+            this.setState({
+                dragOverNodeKey,
+            });
+        }
+
         this.props.onDragOver({ event: e, node: node });
     }
 
     handleDragLeave(e, node) {
+        this.setState({
+            dragOverNodeKey: null,
+        });
         this.props.onDragLeave({ event: e, node: node });
     }
 
