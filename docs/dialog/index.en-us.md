@@ -13,6 +13,25 @@
 
 The dialog is used to provide the user with an auxiliary window for quickly performing a simple operation, confirming user information, or providing a feedback prompt without leaving the main path.
 
+### `v2` update
+
+version 1.25 add api `v2` to support open new version Dialog, feature as list:
+
+feature：
+
+-   use css (not js) to compute position, will easier 
+-   add `closeIcon` to controll icon display
+-   add `width` to fix width of dialog, or you can set `width=auto` to follow content width
+-   add `dialogRender` use with `react-draggable` support draggable
+
+changes：
+
+-   deprecated `align` `shouldUpdatePosition`, Dialog will update position autoly
+-   deprecated `minMargin` , use `top` `bottom` insteaded
+-   deprecated `isFullScreen` , use `overflowScroll` insteaded
+-   merge `onClose(triggerType, e)` triggerType to `onClose(e)` e.triggerType.
+
+
 ## API
 
 ### Dialog

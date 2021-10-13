@@ -73,7 +73,7 @@ class Demo extends React.Component {
                     footerActions={footerActions}
                     footerAlign={footerAlign}
                     onOk={this.onClose}
-                    onCancel={this.onClose}
+                    onClose={this.onClose}
                     okProps={okProps}
                     >
                     <div className="demo-content">

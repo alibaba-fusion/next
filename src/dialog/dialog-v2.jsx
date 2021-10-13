@@ -27,7 +27,7 @@ const Dialog = props => {
         footerAlign,
         footerActions,
         onOk = noop,
-        onCancel = noop,
+        onCancel,
         okProps,
         cancelProps,
         locale = zhCN.Dialog,
@@ -111,9 +111,14 @@ const Dialog = props => {
         }
     }, [visible && hasMask]);
 
+    const handleClose = (triggerType, e) => {
+        e.triggerType = triggerType;
+        typeof onClose === 'function' && onClose(e);
+    };
+
     const keydownEvent = e => {
         if (e.keyCode === 27 && canCloseByEsc) {
-            onCancel(e);
+            handleClose('esc', e);
         }
     };
 
@@ -150,19 +155,11 @@ const Dialog = props => {
     }
 
     const handleCancel = e => {
-        if (!e.triggerType && e.type === 'kendown') {
-            e.triggerType = 'esc';
+        if (typeof onCancel === 'function') {
+            onCancel(e);
+        } else {
+            handleClose('cancelBtn', e);
         }
-
-        onCancel(e);
-    };
-
-    const handleClose = (triggerType, e) => {
-        // deprecated in 2.x
-        typeof onClose === 'function' && onClose(triggerType, e);
-
-        e.triggerType = triggerType;
-        handleCancel(e);
     };
 
     const handleMaskClick = e => {
@@ -178,7 +175,7 @@ const Dialog = props => {
         }
 
         e.triggerType = 'mask';
-        handleCancel(e);
+        handleClose(e.triggerType, e);
     };
 
     const handleEnter = e => {
@@ -249,7 +246,7 @@ const Dialog = props => {
                 footerAlign={footerAlign}
                 footerActions={footerActions}
                 onOk={visible ? onOk : noop}
-                onCancel={visible ? onCancel : noop}
+                onCancel={visible ? handleCancel : noop}
                 okProps={okProps}
                 cancelProps={cancelProps}
                 locale={locale}

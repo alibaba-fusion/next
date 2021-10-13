@@ -46,7 +46,7 @@ class Demo extends React.Component {
                     title="Welcome to Alibaba.com"
                     visible={this.state.visible}
                     onOk={this.onClose}
-                    onCancel={this.onClose}
+                    onClose={this.onClose}
                 >
                     <p>Start your business here by searching a popular product</p>
                 </Dialog>

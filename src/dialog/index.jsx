@@ -60,10 +60,6 @@ function processProps(props, deprecated) {
             delete nProps.shouldUpdatePosition;
             log.warning(`Warning: [ shouldUpdatePosition ] is deprecated at [ <Dialog v2 /> ]`);
         }
-        if ('onClose' in props) {
-            // delete nProps.onClose;
-            deprecated('onClose', 'onCancel', '<Dialog v2 />');
-        }
         if ('minMargin' in props) {
             // delete nProps.minMargin;
             deprecated('minMargin', 'top/bottom', '<Dialog v2 />');

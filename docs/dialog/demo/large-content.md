@@ -67,7 +67,7 @@ class Demo extends React.Component {
                     width={600}
                     overflowScroll={overflowScroll}
                     onOk={this.onClose}
-                    onCancel={this.onClose}
+                    onClose={this.onClose}
                 >
                     {Array(count).fill().map((_, index) => 
                         <p key={index}>a long long content here 
