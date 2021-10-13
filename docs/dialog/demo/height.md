@@ -45,7 +45,6 @@ class Demo extends React.Component {
                     visible={visible}
                     height="400px"
                     onOk={this.onClose}
-                    onCancel={this.onClose}
                     onClose={this.onClose}
                     >
                     Small Content in a fixed size Dialog

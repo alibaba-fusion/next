@@ -60,7 +60,7 @@ class Demo extends React.Component {
                     footer={<Button warning type="primary" onClick={this.onCloseFullyCustomized}>Customize footer</Button>}
                     visible={this.state.fullyCustomizedVisible}
                     onOk={this.onCloseFullyCustomized}
-                    onCancel={this.onCloseFullyCustomized}>
+                    onClose={this.onCloseFullyCustomized}>
                     Start your business here by searching a popular product
                 </Dialog>
                 <Button onClick={this.onOpenTextCustomized} type="primary">
@@ -71,7 +71,7 @@ class Demo extends React.Component {
                     title="Welcome to Alibaba.com"
                     visible={this.state.textCustomizedVisible}
                     onOk={this.onCloseTextCustomized}
-                    onCancel={this.onCloseTextCustomized}
+                    onClose={this.onCloseTextCustomized}
                     okProps={{children: 'Custom OK', className: 'asdf'}}
                     cancelProps={{children: 'Custom Cancel'}}
                     >

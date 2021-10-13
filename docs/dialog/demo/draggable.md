@@ -75,7 +75,7 @@ class App extends React.Component {
           }
           visible={visible}
           onOk={this.handleCancel}
-          onCancel={this.handleCancel}
+          onClose={this.handleCancel}
           v2
           cache
           dialogRender={modal => (
