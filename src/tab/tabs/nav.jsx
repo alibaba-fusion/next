@@ -122,22 +122,14 @@ class Nav extends React.Component {
         if (this.offset !== target) {
             // needs move
             this.offset = target;
-            const navStyle = this.nav.style;
             const divScroll = this.nav.parentElement;
 
-            const canTransform = isTransformSupported(navStyle);
             if (tabPosition === 'left' || tabPosition === 'right') {
-                canTransform
-                    ? divScroll.scrollTo({ top: 0, left: -offsetValue, behavior: 'smooth' })
-                    : (navStyle.top = `${offsetValue}px`);
+                divScroll.scrollTo({ top: -offsetValue, left: 0, behavior: 'smooth' });
             } else if (!this.props.rtl) {
-                canTransform
-                    ? divScroll.scrollTo({ top: 0, left: -offsetValue, behavior: 'smooth' })
-                    : (navStyle.top = `${offsetValue}px`);
+                divScroll.scrollTo({ top: 0, left: -offsetValue, behavior: 'smooth' });
             } else {
-                canTransform
-                    ? divScroll.scrollTo({ top: 0, left: offsetValue, behavior: 'smooth' })
-                    : (navStyle.right = `${offsetValue}px`);
+                divScroll.scrollTo({ top: 0, left: offsetValue, behavior: 'smooth' });
             }
 
             if (checkSlideBtn) {
