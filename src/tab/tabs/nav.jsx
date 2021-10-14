@@ -602,6 +602,17 @@ class Nav extends React.Component {
                         {extra}
                     </div>
                 );
+                setTimeout(() => {
+                    // 根据extra的宽度大小留出相应的位置
+                    if (this.nav) {
+                        let extraWidth = this.nav.parentElement.parentElement.parentElement.previousElementSibling
+                            .offsetWidth;
+                        let navScrollStyle = this.nav.parentElement.parentElement.parentElement.style;
+                        Object.assign(navScrollStyle, {
+                            marginRight: extraWidth + 'px',
+                        });
+                    }
+                }, 100);
             } else {
                 navChildren.push(<div {...extraProps}>{extra}</div>);
             }
