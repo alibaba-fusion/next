@@ -16,7 +16,7 @@ Set the `aria-label` attribute via `okProps` and `cancelProps`, The screen reade
 
 ````jsx
 
-import { Button, Dialog } from '@alifd/next';
+import { Button, Dialog, Input } from '@alifd/next';
 
 class Demo extends React.Component {
     state = {
@@ -47,7 +47,7 @@ class Demo extends React.Component {
                     onClose={this.onClose.bind(this, 'cancelClick')}
                     cancelProps={{'aria-label':'cancel'}}
                     okProps={{'aria-label':'ok'}}>
-                    <p tabIndex="0">  Start your business here by searching a popular product</p>
+                    <Input placeholder="should autofocus here"/>
                 </Dialog>
             </div>
         );

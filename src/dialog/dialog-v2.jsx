@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Inner from './inner';
 import Animate from '../animate';
 import zhCN from '../locale/zh-cn';
-import { log, func, dom } from '../util';
+import { log, func, dom, focus } from '../util';
 
 const noop = func.noop;
 
@@ -66,6 +66,7 @@ const Dialog = props => {
     const dialogRef = useRef(null);
     const wrapperRef = useRef(null);
     const originStyle = useRef('');
+    const lastFocus = useRef(null);
 
     let canCloseByEsc = false;
     let canCloseByMask = false;
@@ -178,9 +179,18 @@ const Dialog = props => {
         handleClose(e.triggerType, e);
     };
 
-    const handleEnter = e => {
+    const handleEnter = () => {
         markAnimationEnd(false);
         dom.setStyle(wrapperRef.current, 'display', '');
+    };
+    const handleEntered = () => {
+        if (autoFocus && dialogRef.current && dialogRef.current.bodyNode) {
+            const focusableNodes = focus.getFocusNodeList(dialogRef.current.bodyNode);
+            if (focusableNodes.length > 0 && focusableNodes[0]) {
+                lastFocus.current = document.activeElement;
+                focusableNodes[0].focus();
+            }
+        }
     };
     const handleExiting = () => {
         setTimeout(() => document.body.setAttribute('style', originStyle.current || ''), animation === null ? 0 : 100);
@@ -189,6 +199,14 @@ const Dialog = props => {
     const handleExited = () => {
         markAnimationEnd(true);
         dom.setStyle(wrapperRef.current, 'display', 'none');
+        if (autoFocus && lastFocus.current) {
+            try {
+                lastFocus.current.focus();
+            } finally {
+                // ignore ...
+            }
+            lastFocus.current = null;
+        }
         afterClose();
     };
 
@@ -231,6 +249,7 @@ const Dialog = props => {
                 exit: 500,
             }}
             onEnter={handleEnter}
+            onEntered={handleEntered}
             onExiting={handleExiting}
             onExited={handleExited}
         >
