@@ -150,7 +150,7 @@ export default class Dialog extends Component {
          */
         bottom: PropTypes.number,
         /**
-         * 弹窗距离底部最小间距
+         * 定制关闭按钮 icon
          * @version 1.25
          */
         closeIcon: PropTypes.node,
@@ -165,7 +165,7 @@ export default class Dialog extends Component {
          */
         closeable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         /**
-         * [v2废弃] 对话框关闭时触发的回调函数
+         * 对话框关闭时触发的回调函数
          * @param {String} trigger 关闭触发行为的描述字符串
          * @param {Object} event 关闭时事件对象
          */
