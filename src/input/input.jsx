@@ -200,7 +200,7 @@ export default class Input extends Base {
         }
 
         return clearWrap || lenWrap || stateWrap || extra ? (
-            <span className={`${prefix}input-control`}>
+            <span onClick={() => this.focus()} className={`${prefix}input-control`}>
                 {clearWrap}
                 {lenWrap}
                 {stateWrap}
