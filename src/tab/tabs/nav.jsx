@@ -553,6 +553,9 @@ class Nav extends React.Component {
 
         const navCls = `${prefix}tabs-nav`;
         const tabList = this.renderTabList(this.props);
+        const extraProps = {
+            key: 'nav-extra',
+        };
 
         const container = (
             <div className={containerCls} onKeyDown={onKeyDown} key="nav-container">
@@ -585,38 +588,11 @@ class Nav extends React.Component {
                 {prevButton}
                 {nextButton}
                 {restButton}
+                {extra && <div {...extraProps}>{extra}</div>}
             </div>
         );
 
         const navChildren = [container];
-
-        if (extra) {
-            const extraProps = {
-                className: `${prefix}tabs-nav-extra`,
-                key: 'nav-extra',
-            };
-            if (tabPosition === 'top' || tabPosition === 'bottom') {
-                const style = rtl ? floatLeft : floatRight;
-                navChildren.unshift(
-                    <div {...extraProps} style={style}>
-                        {extra}
-                    </div>
-                );
-                setTimeout(() => {
-                    // 根据extra的宽度大小留出相应的位置
-                    if (this.nav) {
-                        let extraWidth = this.nav.parentElement.parentElement.parentElement.previousElementSibling
-                            .offsetWidth;
-                        let navScrollStyle = this.nav.parentElement.parentElement.parentElement.style;
-                        Object.assign(navScrollStyle, {
-                            marginRight: extraWidth + 'px',
-                        });
-                    }
-                }, 100);
-            } else {
-                navChildren.push(<div {...extraProps}>{extra}</div>);
-            }
-        }
 
         const navbarCls = classnames(`${prefix}tabs-bar`, className);
 
