@@ -165,6 +165,11 @@ export default class Header extends React.Component {
                 // column.group doesn't have sort resize filter
                 if (!(col.children && col.children.length)) {
                     if (sortable) {
+                        const order = sort ? sort[dataIndex] : '';
+                        className = classnames({
+                            [`${prefix}table-header-sort-${order}`]: order,
+                            [className]: className,
+                        });
                         sortElement = (
                             <Sort
                                 prefix={prefix}
