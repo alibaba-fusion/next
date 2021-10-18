@@ -52,6 +52,10 @@ export interface ConfigProviderProps {
      * 弹层挂载的容器节点
      */
     popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
+    /**
+     * 弹层自定义样式类
+     */
+    popupClassName?: string;
 }
 
 export default class ConfigProvider extends React.Component<

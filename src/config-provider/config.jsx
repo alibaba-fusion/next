@@ -89,6 +89,7 @@ export function config(Component, options = {}) {
             rtl: PropTypes.bool,
             device: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
             popupContainer: PropTypes.any,
+            popupClassName: PropTypes.string,
             errorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         };
         static contextTypes = {
@@ -101,6 +102,7 @@ export function config(Component, options = {}) {
             nextWarning: PropTypes.bool,
             nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
             nextPopupContainer: PropTypes.any,
+            nextPopupClassName: PropTypes.string,
             nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         };
 
@@ -145,6 +147,7 @@ export function config(Component, options = {}) {
                 rtl,
                 device,
                 popupContainer,
+                popupClassName,
                 errorBoundary,
                 ...others
             } = this.props;
@@ -156,6 +159,7 @@ export function config(Component, options = {}) {
                 nextRtl,
                 nextDevice,
                 nextPopupContainer,
+                nextPopupClassName,
                 nextErrorBoundary,
             } = this.context;
 
@@ -168,6 +172,7 @@ export function config(Component, options = {}) {
                     pure,
                     device,
                     popupContainer,
+                    popupClassName,
                     rtl,
                     errorBoundary,
                 },
@@ -178,6 +183,7 @@ export function config(Component, options = {}) {
                     nextPure,
                     nextDevice,
                     nextPopupContainer,
+                    nextPopupClassName,
                     nextRtl: typeof nextRtl === 'boolean' ? nextRtl : currentGlobalRtl === true ? true : undefined,
                     nextErrorBoundary,
                 },
@@ -185,15 +191,20 @@ export function config(Component, options = {}) {
             );
 
             // errorBoundary is only for <ErrorBoundary>
-            const newContextProps = ['prefix', 'locale', 'pure', 'rtl', 'device', 'popupContainer'].reduce(
-                (ret, name) => {
-                    if (typeof contextProps[name] !== 'undefined') {
-                        ret[name] = contextProps[name];
-                    }
-                    return ret;
-                },
-                {}
-            );
+            const newContextProps = [
+                'prefix',
+                'locale',
+                'pure',
+                'rtl',
+                'device',
+                'popupContainer',
+                'popupClassName',
+            ].reduce((ret, name) => {
+                if (typeof contextProps[name] !== 'undefined') {
+                    ret[name] = contextProps[name];
+                }
+                return ret;
+            }, {});
 
             if ('pure' in newContextProps && newContextProps.pure) {
                 log.warning('pure of ConfigProvider is deprecated, use Function Component or React.PureComponent');
