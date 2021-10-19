@@ -112,7 +112,7 @@
         .#{$css-prefix}icon {
             transition: all $motion-duration-immediately $motion-linear;
 
-            &.expand {
+            &.#{$css-prefix}icon-arrow-down.expand {
                 transform-origin: 50% 47%;
                 transform: rotate(180deg);
             }
@@ -178,6 +178,7 @@
         width: 100%;
         margin: 0;
         position: relative;
+        overflow: visible;
         &::before {
             content: '';
             display: block;

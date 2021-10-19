@@ -201,6 +201,10 @@ class Breadcrumb extends Component {
             Children.forEach(children, (item, i) => {
                 const ariaProps = {};
 
+                // 增加空值判断
+                if (!item) {
+                    return;
+                }
                 if (i === length - 1) {
                     ariaProps['aria-current'] = 'page';
                 }
@@ -237,7 +241,10 @@ class Breadcrumb extends Component {
         } else {
             items = Children.map(children, (item, i) => {
                 const ariaProps = {};
-
+                // 增加空值判断
+                if (!item) {
+                    return;
+                }
                 if (i === length - 1) {
                     ariaProps['aria-current'] = 'page';
                 }

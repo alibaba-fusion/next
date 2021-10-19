@@ -269,13 +269,6 @@ describe('input', () => {
             wrapper.find('.next-icon').simulate('click');
             assert(wrapper.find('input').prop('value') === '');
 
-            // hasClear with disabled
-            const wrapper2 = mount(
-                <Input defaultValue="abcdef" hasClear disabled />
-            );
-            wrapper2.find('.next-icon').simulate('click');
-            assert(wrapper2.find('input').prop('value') === 'abcdef');
-
             done();
         });
 

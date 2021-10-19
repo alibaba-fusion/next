@@ -195,6 +195,10 @@
         > .#{$css-prefix}time-picker {
             width: 100%;
         }
+
+        > .#{$css-prefix}date-picker2 .#{$css-prefix}date-picker2-input input {
+            width: inherit;
+        }
     }
 
     &-item-label {

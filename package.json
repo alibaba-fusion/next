@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.24.3",
+  "version": "1.24.9",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -77,7 +77,7 @@
     "precommit": "lint-staged",
     "changelog": "node ./scripts/changelog.js",
     "mix": "node ./scripts/mix.js",
-    "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run tslint && npm run check && npm run docs && npm run clear-dist && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
+    "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check && npm run docs && npm run clear-dist && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
   },
   "lint-staged": {
     "types/**/*.d.ts": [
@@ -245,8 +245,8 @@
   "peerDependencies": {
     "@alifd/meet-react": "^2.0.0",
     "moment": "^2.22.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0"
   },
   "publishConfig": {
     "access": "public"

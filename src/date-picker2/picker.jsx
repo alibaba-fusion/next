@@ -101,6 +101,7 @@ class Picker extends React.Component {
     static defaultProps = {
         rtl: false,
         prefix: 'next-',
+        popupTriggerType: 'click',
         locale: defaultLocale.DatePicker,
         defaultVisible: false,
         type: DATE_PICKER_TYPE.DATE,
@@ -224,7 +225,7 @@ class Picker extends React.Component {
      * @param {string} type 事件类型
      */
     handleVisibleChange = (visible, type) => {
-        if (type === 'docClick') {
+        if (['docClick', 'fromTrigger'].indexOf(type) > -1) {
             // 弹层收起 触发 Change 逻辑
             if (!visible) {
                 this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
@@ -436,7 +437,6 @@ class Picker extends React.Component {
         const { visible, inputType } = this.state;
 
         if (!visible) {
-            this.onVisibleChange(true);
             this.handleInputFocus(inputType);
         }
     };
