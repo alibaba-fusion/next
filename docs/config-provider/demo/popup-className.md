@@ -25,7 +25,7 @@ class Demo extends React.Component {
 
     render() {
         return (
-            <ConfigProvider popupClassName="customer1 customer2">
+            <ConfigProvider popupClassName="custom1 custom2">
                 <div>
                     <div className="panel">
                         <Select>
