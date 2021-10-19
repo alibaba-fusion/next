@@ -45,12 +45,7 @@ export default class Inner extends Component {
         });
 
         return (
-            <div
-                className={headerCls}
-                style={headerStyle}
-                role="heading"
-                aria-level="1"
-            >
+            <div className={headerCls} style={headerStyle} role="heading" aria-level="1" id="title-drawer">
                 {title}
                 {closeLink}
             </div>
@@ -59,12 +54,18 @@ export default class Inner extends Component {
 
     renderBody() {
         const { prefix, children, bodyStyle } = this.props;
-        if (children) {
-            return (
-                <div className={`${prefix}drawer-body`} style={bodyStyle}>
-                    {children}
-                </div>
-            );
+        if (document.getElementById('title-drawer')) {
+            const marHeight = document.getElementById('title-drawer').offsetHeight;
+            let style = bodyStyle || {};
+            style.marginTop = marHeight + 'px';
+
+            if (children) {
+                return (
+                    <div className={`${prefix}drawer-body`} style={style}>
+                        {children}
+                    </div>
+                );
+            }
         }
         return null;
     }
@@ -74,16 +75,8 @@ export default class Inner extends Component {
 
         if (closeable) {
             return (
-                <a
-                    role="button"
-                    aria-label={locale.close}
-                    className={`${prefix}drawer-close`}
-                    onClick={onClose}
-                >
-                    <Icon
-                        className={`${prefix}drawer-close-icon`}
-                        type="close"
-                    />
+                <a role="button" aria-label={locale.close} className={`${prefix}drawer-close`} onClick={onClose}>
+                    <Icon className={`${prefix}drawer-close-icon`} type="close" />
                 </a>
             );
         }
@@ -92,14 +85,7 @@ export default class Inner extends Component {
     }
 
     render() {
-        const {
-            prefix,
-            className,
-            closeable,
-            placement,
-            role,
-            rtl,
-        } = this.props;
+        const { prefix, className, closeable, placement, role, rtl } = this.props;
 
         const others = pickOthers(Object.keys(Inner.propTypes), this.props);
         const newClassName = cx({
@@ -118,12 +104,7 @@ export default class Inner extends Component {
         const body = this.renderBody();
 
         return (
-            <div
-                {...ariaProps}
-                className={newClassName}
-                {...others}
-                dir={rtl ? 'rtl' : undefined}
-            >
+            <div {...ariaProps} className={newClassName} {...others} dir={rtl ? 'rtl' : undefined}>
                 <div style={{ height: '100%', overflow: 'auto' }}>
                     {header}
                     {body}
