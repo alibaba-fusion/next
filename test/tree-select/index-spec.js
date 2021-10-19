@@ -350,8 +350,7 @@ describe('TreeSelect', () => {
             defaultValue={[{ label: 'test1', value: '123'}]}
             treeDefaultExpandAll
             treeCheckable
-            treeCheckStrictly
-            treeCheckedStrategy="all"
+            preserveNonExistentValue
             dataSource={dataSource} />);
 
         assert.deepEqual(getLabels(wrapper), ['test1']);

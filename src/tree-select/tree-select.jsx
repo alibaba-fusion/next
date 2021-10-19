@@ -1,8 +1,6 @@
 import React, { Component, Children, isValidElement, cloneElement } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
-import uniqBy from 'lodash.uniqby';
 import classNames from 'classnames';
 import Select from '../select';
 import Tree from '../tree';
@@ -168,6 +166,10 @@ class TreeSelect extends Component {
          */
         dataSource: PropTypes.arrayOf(PropTypes.object),
         /**
+         * value/defaultValue 在 dataSource 中不存在时，是否展示
+         */
+        preserveNonExistentValue: PropTypes.bool,
+        /**
          * （受控）当前值
          */
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -308,6 +310,11 @@ class TreeSelect extends Component {
         defaultVisible: false,
         onVisibleChange: noop,
         useVirtual: false,
+        /**
+         * TODO
+         * 目前 select/cascade select 是默认支持的，在 2.x 版本中 tree-select 也将默认支持
+         */
+        preserveNonExistentValue: false,
     };
 
     constructor(props, context) {
@@ -384,7 +391,6 @@ class TreeSelect extends Component {
             if (k) {
                 ret.push(k);
             }
-
             return ret;
         }, []);
     }
@@ -395,6 +401,7 @@ class TreeSelect extends Component {
 
     getValueForSelect(value) {
         const { treeCheckedStrategy } = this.props;
+        const nonExistentValueKeys = this.getNonExistentValueKeys();
 
         let keys = this.getKeysByValue(value);
         keys = getAllCheckedKeys(keys, this.state._k2n, this.state._p2n);
@@ -410,10 +417,14 @@ class TreeSelect extends Component {
                 break;
         }
 
-        return this.getValueByKeys(keys);
+        const values = this.getValueByKeys(keys);
+
+        return [...values, ...nonExistentValueKeys];
     }
 
     getData(value, forSelect) {
+        const { preserveNonExistentValue } = this.props;
+
         const ret = value.reduce((ret, v) => {
             const k = this.state._v2n[v] && this.state._v2n[v].key;
             if (k) {
@@ -429,22 +440,35 @@ class TreeSelect extends Component {
                     d.key = k;
                 }
                 ret.push(d);
-            }
-
-            //treeCheckedStrategy: all 处理 dataSource 中不存在的情况
-            const { treeCheckedStrategy } = this.props;
-            if (treeCheckedStrategy === 'all') {
+            } else if (preserveNonExistentValue) {
+                // 需要保留 dataSource 中不存在的 value
                 const item = this.valueDataSource.mapValueDS[v];
                 if (item) {
                     ret.push(item);
                 }
             }
-
             return ret;
         }, []);
 
-        // dataSource 和 valueDataSource 有重复的情况，去重
-        return uniqBy(ret, 'value');
+        return ret;
+    }
+
+    getNonExistentValues() {
+        const { preserveNonExistentValue } = this.props;
+        const { value } = this.state;
+
+        if (!preserveNonExistentValue) {
+            return [];
+        }
+        const nonExistentValues = value.filter(v => !this.state._v2n[v]);
+        return nonExistentValues;
+    }
+
+    getNonExistentValueKeys() {
+        const nonExistentValues = this.getNonExistentValues();
+        return nonExistentValues.map(v => {
+            return v.value || v;
+        });
     }
 
     saveTreeRef(ref) {
@@ -474,7 +498,10 @@ class TreeSelect extends Component {
         const { selected } = extra;
 
         if (multiple || selected) {
-            const value = this.getValueByKeys(selectedKeys);
+            let value = this.getValueByKeys(selectedKeys);
+            const nonExistentValues = this.getNonExistentValues();
+            value = [...nonExistentValues, ...value];
+
             if (!('value' in this.props)) {
                 this.setState({
                     value,
@@ -493,11 +520,10 @@ class TreeSelect extends Component {
 
     handleCheck(checkedKeys) {
         const { onChange } = this.props;
-        const { value: stateValue } = this.state;
 
         let value = this.getValueByKeys(checkedKeys);
-        const noExistedValues = stateValue.filter(v => !this.state._v2n[v]);
-        value = [...noExistedValues, ...value];
+        const nonExistentValues = this.getNonExistentValues();
+        value = [...nonExistentValues, ...value];
 
         if (!('value' in this.props)) {
             this.setState({
@@ -840,6 +866,7 @@ class TreeSelect extends Component {
 
         value = getValueDataSource(value, this.valueDataSource.mapValueDS).value || [];
 
+        // if (non-leaf 节点可选 & 父子节点选中状态需要联动)，需要额外计算父子节点间的联动关系
         const valueForSelect = treeCheckable && !treeCheckStrictly ? this.getValueForSelect(value) : value;
 
         let data = this.getData(valueForSelect, true);
