@@ -1151,10 +1151,16 @@ class Tree extends Component {
                     ...this.getNodeProps(`${key}`),
                     _key: key,
                 };
+                if (this.props && this.props.titleRender) {
+                    props.label = this.props.titleRender(item);
+                }
+
                 if (children && children.length) {
                     props.children = drill(children, pos);
                 }
+
                 const node = <TreeNode rtl={rtl} key={key} size={data.length} {...props} />;
+
                 // eslint-disable-next-line
                 this.state._k2n[key].node = node;
                 return node;
