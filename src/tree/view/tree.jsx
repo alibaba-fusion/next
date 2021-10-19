@@ -982,14 +982,8 @@ class Tree extends Component {
 
     handleDragOver(e, node) {
         const dragOverNodeKey = node.props.eventKey;
-        const { _keyList } = this.state;
-        const firstKey = _keyList[0];
-        const lastKey = _keyList[_keyList.length - 1];
         // 只针对树的边界节点（第一个和最后一个）做处理
-        if (
-            this.state.dragOverNodeKey !== dragOverNodeKey &&
-            (dragOverNodeKey === firstKey || dragOverNodeKey === lastKey)
-        ) {
+        if (this.state.dragOverNodeKey !== dragOverNodeKey) {
             this.setState({
                 dragOverNodeKey,
             });
