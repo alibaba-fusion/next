@@ -17,7 +17,7 @@ import { getValueDataSource } from '../select/util';
 const noop = () => {};
 const { Node: TreeNode } = Tree;
 const { bindCtx } = func;
-const { pickOthers } = obj;
+const { pickOthers, isNil } = obj;
 
 const flatDataSource = props => {
     const _k2n = {};
@@ -467,7 +467,10 @@ class TreeSelect extends Component {
     getNonExistentValueKeys() {
         const nonExistentValues = this.getNonExistentValues();
         return nonExistentValues.map(v => {
-            return v.value || v;
+            if (typeof v === 'object' && v.hasOwnProperty('value')) {
+                return v.value;
+            }
+            return v;
         });
     }
 
