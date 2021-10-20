@@ -91,11 +91,11 @@ class Overlay extends Component {
          */
         canCloseByMask: PropTypes.bool,
         /**
-         * 弹层打开前触发事件的回调函数
+         * [v2废弃] 弹层打开前触发事件的回调函数
          */
         beforeOpen: PropTypes.func,
         /**
-         * 弹层打开时触发事件的回调函数
+         * [v2废弃] 弹层打开时触发事件的回调函数
          */
         onOpen: PropTypes.func,
         /**
@@ -103,11 +103,11 @@ class Overlay extends Component {
          */
         afterOpen: PropTypes.func,
         /**
-         * 弹层关闭前触发事件的回调函数
+         * [v2废弃] 弹层关闭前触发事件的回调函数
          */
         beforeClose: PropTypes.func,
         /**
-         * 弹层关闭时触发事件的回调函数
+         * [v2废弃] 弹层关闭时触发事件的回调函数
          */
         onClose: PropTypes.func,
         /**
@@ -128,7 +128,7 @@ class Overlay extends Component {
          */
         onPosition: PropTypes.func,
         /**
-         * 是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式
+         * [v2废弃] 是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式
          */
         shouldUpdatePosition: PropTypes.bool,
         /**
@@ -136,7 +136,7 @@ class Overlay extends Component {
          */
         autoFocus: PropTypes.bool,
         /**
-         * 当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域
+         * [v2废弃] 当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域
          */
         needAdjust: PropTypes.bool,
         /**

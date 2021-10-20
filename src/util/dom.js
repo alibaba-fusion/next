@@ -370,3 +370,18 @@ export function getMatches(dom, selector) {
 
     return null;
 }
+
+export function saveRef(ref) {
+    if (!ref) {
+        return null;
+    }
+    return element => {
+        if (typeof ref === 'string') {
+            throw new Error(`can not set ref string for ${ref}`);
+        } else if (typeof ref === 'function') {
+            ref(element);
+        } else if (Object.prototype.hasOwnProperty.call(ref, 'current')) {
+            ref.current = element;
+        }
+    };
+}

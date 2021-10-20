@@ -2,7 +2,8 @@
 # 遮罩层
 
 - order: 1
-
+- debug: true
+  
 带有遮罩的弹层。
 
 :::lang=en-us
@@ -47,7 +48,9 @@ class Demo extends React.Component {
                 }}>
                     Open
                 </Button>
-                <Overlay visible={this.state.visible}
+                <Overlay 
+                    v2
+                    visible={this.state.visible}
                     safeNode={() => this.btn}
                     align="cc cc"
                     hasMask

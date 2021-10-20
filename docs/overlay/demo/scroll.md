@@ -1,8 +1,10 @@
-# 弹层跟随滚动
+# 更换弹窗挂载容器
 
 - order: 7
 
-弹层默认参照 `document.body` 绝对定位，如果弹层显示隐藏的触发元素所在容器（一般为父节点）有滚动条，那么当容器滚动时，会发生触发元素与弹层相分离的情况，解决的办法是将弹层渲染到触发元素所在的容器中。（触发元素所在的容器，必须设置 `position` 样式，以完成弹层的绝对定位。）
+遇到有父元素有 overflow 滚动的情况，可以通过更换弹窗的挂载容器到父节点，获得更好性能。
+
+
 
 :::lang=en-us
 # Overlay follows the container scroll
@@ -36,7 +38,7 @@ ReactDOM.render(
 
 ````css
 .overlay-demo {
-    width: 300px;
+    width: 400px;
     height: 100px;
     padding: 10px;
     border: 1px solid #eee;

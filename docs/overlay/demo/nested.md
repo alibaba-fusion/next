@@ -20,10 +20,10 @@ import { Overlay, Button } from '@alifd/next';
 const { Popup } = Overlay;
 
 ReactDOM.render(
-    <Popup trigger={<Button>Open first overlay</Button>}
+    <Popup v2 trigger={<button>Open first overlay</button>}
         triggerType="click">
         <div className="overlay-demo">
-            <Popup trigger={<Button>Open second overlay</Button>}
+            <Popup v2 trigger={<button>Open second overlay</button>}
                 triggerType="click"
                 container={trigger => trigger.parentNode}>
                 <div className="overlay-demo">
