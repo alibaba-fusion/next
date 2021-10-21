@@ -1169,7 +1169,7 @@ class Tree extends Component {
                     props.children = drill(children, pos);
                 }
 
-                const node = <TreeNode rtl={rtl} key={key} size={data.length} {...props} />;
+                const node = this.renderTreeNode(props);
 
                 // eslint-disable-next-line
                 this.state._k2n[key].node = node;
