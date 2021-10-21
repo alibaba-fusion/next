@@ -459,6 +459,12 @@ class Tree extends Component {
         onBlur: PropTypes.func,
         onItemKeyDown: PropTypes.func,
         /**
+         * 自定义渲染单个子节点
+         * @param node 节点数据
+         * @return ReactNode
+         */
+        labelRender: PropTypes.func,
+        /**
          * 是否开启虚拟滚动
          */
         useVirtual: PropTypes.bool,
@@ -1071,6 +1077,10 @@ class Tree extends Component {
             ...this.getNodeProps(key),
         };
 
+        if (this.props && this.props.labelRender) {
+            nodeProps.label = this.props.labelRender(props);
+        }
+
         return (
             <TreeNode rtl={rtl} key={key} {...nodeProps}>
                 {childNodes}
@@ -1151,8 +1161,8 @@ class Tree extends Component {
                     ...this.getNodeProps(`${key}`),
                     _key: key,
                 };
-                if (this.props && this.props.titleRender) {
-                    props.label = this.props.titleRender(item);
+                if (this.props && this.props.labelRender) {
+                    props.label = this.props.labelRender(item);
                 }
 
                 if (children && children.length) {

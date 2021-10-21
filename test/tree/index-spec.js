@@ -287,7 +287,7 @@ describe('Tree', () => {
     });
 
     it('should support render child node', () => {
-        ReactDOM.render(<Tree defaultExpandedKeys={['2']} dataSource={dataSource} titleRender={(nodeData) => {
+        ReactDOM.render(<Tree defaultExpandedKeys={['2']} dataSource={dataSource} labelRender={(nodeData) => {
             return <div className='custom-child-title'>{nodeData.label}</div>
         }} />,
             mountNode

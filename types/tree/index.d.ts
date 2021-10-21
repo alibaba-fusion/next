@@ -240,6 +240,10 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
      */
     renderChildNodes?: (nodes: React.ReactNode) => React.ReactNode;
     /**
+     * 渲染单个子节点
+     */
+    labelRender?: (node: {}) => React.ReactNode;
+    /**
      * 是否是不可变数据
      */
     immutable?: boolean;
