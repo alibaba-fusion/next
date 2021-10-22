@@ -173,9 +173,11 @@ class Calendar extends Component {
     }
 
     onSelectCell = (date, nextMode) => {
+        const { visibleMonth } = this.state;
         const { shape, showOtherMonth } = this.props;
 
-        if (!showOtherMonth) {
+        // 点击其他月份日期不生效
+        if (!showOtherMonth && !moment(date).isSame(visibleMonth, 'month')) {
             return;
         }
 
