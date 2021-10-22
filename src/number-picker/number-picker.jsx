@@ -215,6 +215,14 @@ class NumberPicker extends React.Component {
             };
         }
 
+        if (nextProps.max !== prevState.max || nextProps.min !== prevState.min) {
+            let { max, min } = nextProps;
+            return {
+                max: max !== MAX_SAFE_INTEGER ? max : nextProps.max,
+                min: min !== MIN_SAFE_INTEGER ? min : nextProps.min,
+            };
+        }
+
         return null;
     }
 
