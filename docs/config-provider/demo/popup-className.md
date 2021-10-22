@@ -1,11 +1,11 @@
-# 弹层
+# 自定义弹层的类名
 
 - order: 0
 
-展示如何使用ConfigProvider设置popupClassName。
+展示如何使用 ConfigProvider 设置 popupClassName.
 
 :::lang=en-us
-# OverLay
+# popupClassName
 
 - order: 0
 
@@ -27,19 +27,19 @@ class Demo extends React.Component {
         return (
             <ConfigProvider popupClassName="custom1 custom2">
                 <div>
-                    <div className="panel">
+                    <div className="popup-class-name-demo-panel">
                         <Select>
                             <Option value="Jack">Jack</Option>
                             <Option value="Rose">Rose</Option>
                         </Select>
                     </div>
-                    <div className="panel">
+                    <div className="popup-class-name-demo-panel">
                         <MenuButton label="Menu">
                             <Item value="Jack">Jack</Item>
                             <Item value="Rose">Rose</Item>
                         </MenuButton>
                     </div>
-                    <div className="panel">
+                    <div className="popup-class-name-demo-panel">
                         <Range defaultValue={30} />
                     </div>
                 </div>
@@ -52,7 +52,7 @@ ReactDOM.render(<Demo />, mountNode);
 ````
 
 ```` css
-.panel {
+.popup-class-name-demo-panel {
     margin-bottom: 10px;
 }
 ````
