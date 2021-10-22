@@ -175,7 +175,8 @@ class Calendar extends Component {
     onSelectCell = (date, nextMode) => {
         const { shape, showOtherMonth } = this.props;
 
-        if (!showOtherMonth) {
+        // 点击其他月份日期不生效
+        if (!showOtherMonth && !moment(date).isSame(new Date(), 'month')) {
             return;
         }
 
