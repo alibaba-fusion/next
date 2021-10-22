@@ -390,7 +390,7 @@ describe('ConfigProvider', () => {
       const toast = document.querySelector('.toast');
       assert(toast.className.indexOf('custom-class') > -1);
       // 清空页面上的 dom 信息
-      document.querySelector('.toast button').click();
+      toast.firstElementChild.click();
   });
 
     it('should change moment locale', () => {
