@@ -101,10 +101,12 @@ class Toast extends Component {
     static propTypes = {
         locale: PropTypes.object,
         afterClose: PropTypes.func,
+        popupClassName: PropTypes.string
     };
 
     static defaultProps = {
         locale: locales['zh-cn'].Toast,
+        popupClassName: '',
         afterClose: () => {},
     };
 
@@ -127,7 +129,7 @@ class Toast extends Component {
 
     render() {
         return (
-            <div className="toast">
+            <div className={`toast ${this.props.popupClassName}`}>
                 <button onClick={this.handleClose}>
                     {this.props.locale.close}
                 </button>
@@ -145,9 +147,10 @@ Toast.create = (props = {}) => {
     };
 
     const newLocale = getContextProps(props, 'Toast').locale;
+    const newPopupClassName = getContextProps(props, 'Toast').popupClassName;
 
     ReactDOM.render(
-        <Toast afterClose={closeChain} locale={newLocale} />,
+        <Toast afterClose={closeChain} locale={newLocale} popupClassName={newPopupClassName}/>,
         mountNode
     );
 };
@@ -195,6 +198,28 @@ class Demo extends Component {
             </ConfigProvider>
         );
     }
+}
+
+class PopDemo extends Component {
+  constructor(props) {
+      super(props);
+      this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+      NewToast.create();
+  }
+
+  render() {
+
+      return (
+          <ConfigProvider popupClassName="custom-class">
+              <div>
+                  <NewClickMe onClick={this.handleClick} />
+              </div>
+          </ConfigProvider>
+      );
+  }
 }
 
 class TestMoment extends Component {
@@ -281,6 +306,7 @@ describe('ConfigProvider', () => {
             <ConfigProvider
                 prefix="context-"
                 locale={{ Output: { hello: 'context' } }}
+                popupClassName="context"
                 pure
             >
                 <NewOutput />
@@ -289,6 +315,7 @@ describe('ConfigProvider', () => {
         const output = wrapper.find(Output);
         assert(output.prop('prefix') === 'context-');
         assert(output.prop('locale').hello === 'context');
+        assert(output.prop('popupClassName') === 'context');
         assert(output.prop('pure'));
     });
 
@@ -297,14 +324,16 @@ describe('ConfigProvider', () => {
             <ConfigProvider
                 prefix="context-"
                 locale={{ Output: { hello: 'context' } }}
+                popupClassName="context"
                 pure
             >
-                <NewOutput prefix="my-" locale={{ hello: 'my' }} pure={false} />
+                <NewOutput prefix="my-" locale={{ hello: 'my' }} popupClassName="my" pure={false} />
             </ConfigProvider>
         );
         const output = wrapper.find(Output);
         assert(output.prop('prefix') === 'my-');
         assert(output.prop('locale').hello === 'my');
+        assert(output.prop('popupClassName') === 'my');
         assert(!output.prop('pure'));
     });
 
@@ -352,6 +381,17 @@ describe('ConfigProvider', () => {
         assert(toast.innerHTML.trim() === 'close');
         toast.click();
     });
+
+    it('should find the popup with custom class', () => {
+      wrapper = mount(<PopDemo />);
+
+      const clickMe = wrapper.find('.click-me');
+      clickMe.simulate('click');
+      const toast = document.querySelector('.toast');
+      assert(toast.className.indexOf('custom-class') > -1);
+      // 清空页面上的 dom 信息
+      toast.firstElementChild.click();
+  });
 
     it('should change moment locale', () => {
         wrapper = mount(<TestMoment locale={{ momentLocale: 'zh-cn' }} />);

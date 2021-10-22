@@ -89,6 +89,10 @@ class ConfigProvider extends Component {
          * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数
          */
         popupContainer: PropTypes.any,
+        /**
+         * 弹层自定义样式类
+         */
+        popupClassName: PropTypes.string,
     };
 
     static defaultProps = {
@@ -105,6 +109,7 @@ class ConfigProvider extends Component {
         nextWarning: PropTypes.bool,
         nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
         nextPopupContainer: PropTypes.any,
+        nextPopupClassName: PropTypes.string,
         nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     };
 
@@ -117,6 +122,7 @@ class ConfigProvider extends Component {
         nextWarning: PropTypes.bool,
         nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
         nextPopupContainer: PropTypes.any,
+        nextPopupClassName: PropTypes.string,
         nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     };
 
@@ -164,6 +170,7 @@ class ConfigProvider extends Component {
             nextWarning,
             nextDevice,
             nextPopupContainer,
+            nextPopupClassName,
             nextErrorBoundary,
         } = childContextCache.root() || {};
 
@@ -176,6 +183,7 @@ class ConfigProvider extends Component {
             warning: nextWarning,
             device: nextDevice,
             popupContainer: nextPopupContainer,
+            popupClassName: nextPopupClassName,
             errorBoundary: nextErrorBoundary,
         };
     };
@@ -202,6 +210,7 @@ class ConfigProvider extends Component {
             rtl,
             device,
             popupContainer,
+            popupClassName,
             errorBoundary,
         } = this.props;
 
@@ -214,6 +223,7 @@ class ConfigProvider extends Component {
             nextWarning,
             nextDevice,
             nextPopupContainer,
+            nextPopupClassName,
             nextErrorBoundary,
         } = this.context;
 
@@ -226,6 +236,7 @@ class ConfigProvider extends Component {
             nextWarning: typeof warning === 'boolean' ? warning : nextWarning,
             nextDevice: device || nextDevice,
             nextPopupContainer: popupContainer || nextPopupContainer,
+            nextPopupClassName: popupClassName || nextPopupClassName,
             nextErrorBoundary: errorBoundary || nextErrorBoundary,
         };
     }
