@@ -204,7 +204,11 @@ class NumberPicker extends React.Component {
             };
         }
         // 一般受控render逻辑
-        if ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) {
+        if (
+            ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) ||
+            nextProps.max !== prevState.max ||
+            nextProps.min !== prevState.min
+        ) {
             let { value, max, min, stringMode } = nextProps;
             value = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
             return {
@@ -212,14 +216,6 @@ class NumberPicker extends React.Component {
                 displayValue: value,
                 max: max !== MAX_SAFE_INTEGER ? max : prevState.max,
                 min: min !== MIN_SAFE_INTEGER ? min : prevState.min,
-            };
-        }
-
-        if (nextProps.max !== prevState.max || nextProps.min !== prevState.min) {
-            let { max, min } = nextProps;
-            return {
-                max: max !== MAX_SAFE_INTEGER ? max : nextProps.max,
-                min: min !== MIN_SAFE_INTEGER ? min : nextProps.min,
             };
         }
 
