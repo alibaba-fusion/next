@@ -1,7 +1,6 @@
 import React, { Component, Children, isValidElement, cloneElement } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
 import classNames from 'classnames';
 import Select from '../select';
 import Tree from '../tree';
@@ -12,12 +11,13 @@ import {
     filterParentKey,
     isDescendantOrSelf,
 } from '../tree/view/util';
-import { func, obj, KEYCODE } from '../util';
+import { func, obj, KEYCODE, str } from '../util';
+import zhCN from '../locale/zh-cn';
 
 const noop = () => {};
 const { Node: TreeNode } = Tree;
 const { bindCtx } = func;
-const { pickOthers } = obj;
+const { pickOthers, values } = obj;
 
 const flatDataSource = props => {
     const _k2n = {};
@@ -120,6 +120,7 @@ class TreeSelect extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        locale: PropTypes.object,
         className: PropTypes.string,
         /**
          * 树节点
@@ -179,6 +180,16 @@ class TreeSelect extends Component {
          * @param {Object|Array} data 选中的数据，包括 value, label, pos, key属性，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点
          */
         onChange: PropTypes.func,
+        /**
+         * 是否一行显示，仅在 multiple 和 treeCheckable 为 true 时生效
+         */
+        tagInline: PropTypes.bool,
+        /**
+         * 隐藏多余 tag 时显示的内容，在 tagInline 生效时起作用
+         * @param {Object[]} selectedValues 当前已选中的元素
+         * @param {Object[]} totalValues 总待选元素
+         */
+        maxTagPlaceholder: PropTypes.func,
         /**
          * 是否显示搜索框
          */
@@ -284,6 +295,7 @@ class TreeSelect extends Component {
     static defaultProps = {
         prefix: 'next-',
         pure: false,
+        locale: zhCN.TreeSelect,
         size: 'medium',
         disabled: false,
         hasArrow: true,
@@ -292,6 +304,7 @@ class TreeSelect extends Component {
         autoWidth: true,
         defaultValue: null,
         onChange: noop,
+        tagInline: false,
         showSearch: false,
         onSearch: noop,
         onSearchClear: noop,
@@ -335,6 +348,7 @@ class TreeSelect extends Component {
             'handleKeyDown',
             'saveTreeRef',
             'saveSelectRef',
+            'renderMaxTagPlaceholder',
         ]);
     }
 
@@ -778,6 +792,54 @@ class TreeSelect extends Component {
         );
     }
 
+    /**
+     * TreeSelect 无法直接使用 Select 的 maxTagPlaceholder 逻辑
+     * Select 的 totalValue 是所有 leaf 节点，TreeSelect 的 totalValue 受 treeCheckedStrategy 和 treeCheckStrictly 影响
+     *
+     * treeCheckStrictly = true: totalValue 为所有节点
+     *
+     * treeCheckStrictly = false: 根据 treeCheckedStrategy 判断
+     *   treeCheckedStrategy = 'all': totalValue 为所有节点
+     *   treeCheckedStrategy = 'parent': totalValue 无意义，不返回
+     *   treeCheckedStrategy = 'child': totalValue 为所有 leaf 节点
+     */
+    renderMaxTagPlaceholder(value, totalValue) {
+        // 这里的 totalValue 为所有 leaf 节点
+        const { treeCheckStrictly, maxTagPlaceholder, treeCheckedStrategy, locale } = this.props;
+        const { _v2n } = this.state;
+
+        let treeSelectTotalValue = totalValue; // all the leaf nodes
+
+        // calculate total value
+        if (treeCheckStrictly) {
+            // all the nodes
+            treeSelectTotalValue = values(_v2n);
+        } else if (treeCheckedStrategy === 'all') {
+            // all
+            treeSelectTotalValue = values(_v2n);
+        } else if (treeCheckedStrategy === 'parent') {
+            // totalValue is pointless when treeCheckedStrategy = 'parent'
+            treeSelectTotalValue = undefined;
+        }
+
+        // custom render function
+        if (maxTagPlaceholder) {
+            return maxTagPlaceholder(value, treeSelectTotalValue);
+        }
+
+        // default render function
+        if (treeCheckedStrategy === 'parent') {
+            // don't show totalValue when treeCheckedStrategy = 'parent'
+            return `${str.template(locale.shortMaxTagPlaceholder, {
+                selected: value.length,
+            })}`;
+        }
+        return `${str.template(locale.maxTagPlaceholder, {
+            selected: value.length,
+            total: treeSelectTotalValue.length,
+        })}`;
+    }
+
     /*eslint-enable*/
     render() {
         const {
@@ -802,6 +864,8 @@ class TreeSelect extends Component {
             popupProps,
             followTrigger,
             isPreview,
+            dataSource,
+            tagInline,
         } = this.props;
         const others = pickOthers(Object.keys(TreeSelect.propTypes), this.props);
         const { value, visible } = this.state;
@@ -830,6 +894,7 @@ class TreeSelect extends Component {
                 label={label}
                 readOnly={readOnly}
                 ref={this.saveSelectRef}
+                dataSource={dataSource}
                 value={data}
                 onChange={this.handleChange}
                 visible={visible}
@@ -842,6 +907,8 @@ class TreeSelect extends Component {
                 popupClassName={popupClassName}
                 popupProps={popupProps}
                 followTrigger={followTrigger}
+                tagInline={tagInline}
+                maxTagPlaceholder={this.renderMaxTagPlaceholder}
                 {...others}
                 onRemove={this.handleRemove}
                 onKeyDown={this.handleKeyDown}
