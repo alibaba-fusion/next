@@ -82,6 +82,10 @@ export default {
         maxTagPlaceholder: 'Đã chọn {selected}/{total}',
         selectAll: 'Chọn tất cả',
     },
+    TreeSelect: {
+        maxTagPlaceholder: 'Đã chọn {selected}/{total}',
+        shortMaxTagPlaceholder: 'Đã chọn {selected}',
+    },
     Table: {
         empty: 'Không có dữ liệu',
         ok: 'OK',
