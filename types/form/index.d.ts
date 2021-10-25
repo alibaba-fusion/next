@@ -83,6 +83,11 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     className?: string;
 
     /**
+     * 是否禁用
+     */
+     disabled?: boolean;
+
+    /**
      * [表单校验] 不能为空
      */
     required?: boolean;
@@ -499,6 +504,11 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      * 扩展class
      */
     className?: string;
+
+    /**
+     * 是否禁用
+     */
+     disabled?: boolean;
 
     /**
      * 自定义内联样式
