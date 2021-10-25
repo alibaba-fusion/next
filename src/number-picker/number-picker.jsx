@@ -203,20 +203,34 @@ class NumberPicker extends React.Component {
                 onlyDisplay: false,
             };
         }
+
+        const state = {};
         // 一般受控render逻辑
-        if (
-            ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) ||
-            nextProps.max !== prevState.max ||
-            nextProps.min !== prevState.min
-        ) {
-            let { value, max, min, stringMode } = nextProps;
+        if ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) {
+            let { value, stringMode } = nextProps;
             value = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
-            return {
-                value,
+            Object.assign(state, {
+                value: value,
                 displayValue: value,
-                max: max !== MAX_SAFE_INTEGER ? max : prevState.max,
-                min: min !== MIN_SAFE_INTEGER ? min : prevState.min,
-            };
+            });
+        }
+
+        if ('max' in nextProps && nextProps.max !== prevState.max) {
+            const max = nextProps.max;
+            Object.assign(state, {
+                max: max === MAX_SAFE_INTEGER ? prevState.max : max,
+            });
+        }
+
+        if ('min' in nextProps && nextProps.min !== prevState.min) {
+            const min = nextProps.min;
+            Object.assign(state, {
+                min: min === MIN_SAFE_INTEGER ? prevState.min : min,
+            });
+        }
+
+        if (Object.keys(state).length) {
+            return state;
         }
 
         return null;
