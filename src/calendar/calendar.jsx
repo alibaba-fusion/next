@@ -177,7 +177,7 @@ class Calendar extends Component {
         const { shape, showOtherMonth } = this.props;
 
         // 点击其他月份日期不生效
-        if (!showOtherMonth && !moment(date).isSame(visibleMonth, 'month')) {
+        if (!showOtherMonth && !isSameYearMonth(visibleMonth, date)) {
             return;
         }
 
