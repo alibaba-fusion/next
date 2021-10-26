@@ -1,6 +1,7 @@
 # close按钮事件，手动控制visible
 
 - order: 5
+- debug: true
 
 使用 `visible`,属性控制浮层显示, 使balloon变为受限组件。
 
@@ -41,7 +42,7 @@ class App extends React.Component {
 
         return (
             <div>
-                <Balloon trigger={visibleTrigger}
+                <Balloon v2 trigger={visibleTrigger}
                     triggerType="click"
                     visible={this.state.visible}
                     onClose={this.onClose.bind(this)} >

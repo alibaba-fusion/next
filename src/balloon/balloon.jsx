@@ -64,6 +64,10 @@ class Balloon extends React.Component {
          */
         alignEdge: PropTypes.bool,
         /**
+         * 【v2] 箭头是否指向目标元素的中心
+         */
+        arrowPointToCenter: PropTypes.bool,
+        /**
          * 是否显示关闭按钮
          */
         closable: PropTypes.bool,
@@ -166,6 +170,7 @@ class Balloon extends React.Component {
         defaultVisible: false,
         size: 'medium',
         alignEdge: false,
+        arrowPointToCenter: false,
         align: 'b',
         offset: [0, 0],
         trigger: <span />,
@@ -204,7 +209,12 @@ class Balloon extends React.Component {
             nextState.visible = nextProps.visible;
         }
 
-        if (!prevState.innerAlign && 'align' in nextProps && alignList.includes(nextProps.align)) {
+        if (
+            !prevState.innerAlign &&
+            'align' in nextProps &&
+            alignList.includes(nextProps.align) &&
+            nextProps.align !== prevState.align
+        ) {
             nextState.align = nextProps.align;
             nextState.innerAlign = false;
         }
@@ -262,6 +272,41 @@ class Balloon extends React.Component {
         }
     }
 
+    beforePosition = (result, obj) => {
+        const { placement } = result.config;
+        if (placement !== this.state.align) {
+            this.setState({
+                align: placement,
+                innerAlign: true,
+            });
+        }
+
+        if (this.props.arrowPointToCenter) {
+            const { width, height } = obj.target;
+            if (placement.length === 2) {
+                const offset = normalMap[placement].offset;
+                switch (placement[0]) {
+                    case 'b':
+                    case 't':
+                        {
+                            const plus = offset[0] > 0 ? 1 : -1;
+                            result.style.left = result.style.left + (plus * width) / 2 - offset[0];
+                        }
+                        break;
+                    case 'l':
+                    case 'r':
+                        {
+                            const plus = offset[0] > 0 ? 1 : -1;
+                            result.style.top = result.style.top + (plus * height) / 2 - offset[1];
+                        }
+                        break;
+                }
+            }
+        }
+
+        return result;
+    };
+
     render() {
         const {
             id,
@@ -293,6 +338,8 @@ class Balloon extends React.Component {
             popupProps,
             followTrigger,
             rtl,
+            v2,
+            arrowPointToCenter,
             ...others
         } = this.props;
 
@@ -302,7 +349,7 @@ class Balloon extends React.Component {
 
         const { align } = this.state;
 
-        alignMap = alignEdge ? edgeMap : normalMap;
+        alignMap = alignEdge || v2 ? edgeMap : normalMap;
         const _prefix = this.context.prefix || prefix;
 
         let trOrigin = 'trOrigin';
@@ -328,6 +375,7 @@ class Balloon extends React.Component {
                 type={type}
                 rtl={rtl}
                 alignEdge={alignEdge}
+                v2={v2}
             >
                 {children}
             </BalloonInner>
@@ -343,32 +391,53 @@ class Balloon extends React.Component {
             React.isValidElement(ariaTrigger) ? ariaTrigger : <span>{ariaTrigger}</span>
         );
 
+        const otherProps = {
+            delay: delay,
+            shouldUpdatePosition: shouldUpdatePosition,
+            needAdjust: needAdjust,
+            align: alignMap[align].align,
+            offset: _offset,
+            safeId,
+            onHover,
+            onPosition: this._onPosition,
+        };
+
+        if (v2) {
+            delete otherProps.align;
+            delete otherProps.shouldUpdatePosition;
+            delete otherProps.needAdjust;
+            delete otherProps.offset;
+            delete otherProps.safeId;
+            delete otherProps.onHover;
+            delete otherProps.onPosition;
+
+            Object.assign(otherProps, {
+                placement: align,
+                placementOffset: 12,
+                v2: true,
+                beforePosition: this.beforePosition,
+            });
+        }
+
         return (
             <Popup
                 {...popupProps}
                 followTrigger={followTrigger}
                 trigger={newTrigger}
                 cache={cache}
-                safeId={safeId}
                 triggerType={triggerType}
-                align={alignMap[align].align}
-                offset={_offset}
                 visible={this.state.visible}
-                onPosition={this._onPosition}
                 onClick={onClick}
-                onHover={onHover}
                 afterClose={this.props.afterClose}
                 onVisibleChange={this._onVisibleChange}
-                shouldUpdatePosition={shouldUpdatePosition}
-                needAdjust={needAdjust}
                 animation={animation}
-                delay={delay}
                 autoFocus={triggerType === 'focus' ? false : autoFocus}
                 safeNode={safeNode}
                 container={popupContainer || container}
                 className={popupClassName}
                 style={popupStyle}
                 rtl={rtl}
+                {...otherProps}
             >
                 {content}
             </Popup>

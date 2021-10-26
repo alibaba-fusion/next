@@ -444,7 +444,7 @@ describe('Overlay v2', async () => {
         );
 
         await delay(200);
-        assert(document.querySelector('.overlay-btn').style.left === '73px');
+        assert(document.querySelector('.overlay-btn').style.left === '74px');
     });
 });
 
@@ -485,7 +485,7 @@ describe('Popup v2', async () => {
 
     it('should support triggerType=hover', async () => {
         wrapper = render(
-            <Popup v2 trigger={<button>Open</button>}>
+            <Popup animation={false} v2 trigger={<button>Open</button>}>
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
@@ -508,7 +508,7 @@ describe('Popup v2', async () => {
 
     it('should still open when click overlay with triggerType = focus', async () => {
         wrapper = render(
-            <Popup v2 trigger={<button>Open</button>} triggerType="focus">
+            <Popup v2 animation={false} trigger={<button>Open</button>} triggerType="focus">
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
@@ -548,7 +548,7 @@ describe('Popup v2', async () => {
 
     it('should support setting triggerType to click with custom triggerClickKeycode', async () => {
         wrapper = render(
-            <Popup v2  trigger={<button>Open</button>} triggerType="click" triggerClickKeycode={KEYCODE.DOWN_ARROW}>
+            <Popup v2 animation={false} trigger={<button>Open</button>} triggerType="click" triggerClickKeycode={KEYCODE.DOWN_ARROW}>
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
@@ -569,6 +569,28 @@ describe('Popup v2', async () => {
         // triggerClickKeycode 具备开/关功能
         ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.DOWN_ARROW });
         await delay(20);
+        assert(!document.querySelector('.next-overlay-wrapper'));
+    });
+
+    it('should support onClick on trigger while triggerType=click', async () => {
+        const onClick = sinon.spy();
+
+        wrapper = render(
+            <Popup v2 animation={false} trigger={<button onClick={onClick}>Open</button>} triggerType="click">
+                <span className="content">Hello World From Popup!</span>
+            </Popup>
+        );
+        await delay(20);
+        const btn = document.querySelector('button');
+        assert(btn);
+        ReactTestUtils.Simulate.click(btn);
+        await delay(20);
+        assert(onClick.calledOnce);
+        assert(document.querySelector('.next-overlay-wrapper'));
+
+        ReactTestUtils.Simulate.click(btn);
+        await delay(20);
+        assert(onClick.calledTwice);
         assert(!document.querySelector('.next-overlay-wrapper'));
     });
 
@@ -657,7 +679,7 @@ describe('Popup v2', async () => {
     it('should support setting custom container', async () => {
         wrapper = render(
             <div id="myContainer">
-                <Popup v2 
+                <Popup v2 animation={false}
                     trigger={<button>Open</button>}
                     triggerType="click"
                     container={'myContainer'}
@@ -672,8 +694,8 @@ describe('Popup v2', async () => {
         ReactTestUtils.Simulate.click(btn);
         await delay(20);
         assert(document.querySelector('.next-overlay-wrapper').parentElement.id === 'myContainer');
-        ReactTestUtils.Simulate.click(btn);
 
+        ReactTestUtils.Simulate.click(btn);
         await delay(200);
         assert(!document.querySelector('.next-overlay-wrapper'));
     });

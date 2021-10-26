@@ -1,8 +1,8 @@
-# 边缘对齐设置
+# 位置
 
 - order: 3
 
-位置有十二个方向。可以通过设置 `needAdjust` 让气泡被遮盖的情况下，选择合适的位置。
+位置有十二个方向。
 
 
 :::lang=en-us
@@ -45,46 +45,46 @@ const Content = () => (
 const App = () => (
     <div style={{paddingLeft: 320 }}>
         <div style={{marginLeft: 75}}>
-            <Balloon needAdjust trigger={topLeft} align="tl" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={topLeft} align="tl" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
-            <Balloon needAdjust trigger={top} align="t" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={top} align="t" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
-            <Balloon needAdjust trigger={topRight} align="tr" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={topRight} align="tr" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
         </div>
         <div style={{width: 80, float: 'left'}}>
-            <Balloon needAdjust trigger={leftTop} align="lt" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={leftTop} align="lt" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
-            <Balloon needAdjust trigger={left} align="l" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={left} align="l" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
-            <Balloon needAdjust trigger={leftBottom} align="lb" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={leftBottom} align="lb" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
         </div>
         <div style={{width: 80, marginLeft: 290}}>
-            <Balloon needAdjust trigger={rightTop} align="rt" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={rightTop} align="rt" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
-            <Balloon needAdjust trigger={right} align="r" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={right} align="r" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
-            <Balloon needAdjust trigger={rightBottom} align="rb" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={rightBottom} align="rb" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
         </div>
         <div style={{marginLeft: 80, clear: 'both'}}>
-            <Balloon needAdjust trigger={bottomLeft} align="bl" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={bottomLeft} align="bl" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
-            <Balloon needAdjust trigger={bottom} align="b" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={bottom} align="b" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
-            <Balloon needAdjust trigger={bottomRight} align="br" alignEdge triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={bottomRight} align="br" triggerType="click" style={{width: 300}}>
                 <Content/>
             </Balloon>
         </div>
@@ -92,6 +92,4 @@ const App = () => (
 );
 
 ReactDOM.render(<App />, mountNode);
-
 ````
-

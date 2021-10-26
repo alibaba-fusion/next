@@ -22,27 +22,40 @@ const Overlay2 = props => {
         onPosition,
         children,
         wrapperClassName,
+        cache,
 
-        // 兼容 1.x 而已，其实这几个api没啥用
         beforeOpen,
         onOpen,
+        afterOpen,
         beforeClose,
         onClose,
+        afterClose,
 
         ...others
     } = props;
 
+    const [isAnimationEnd, markAnimationEnd] = useState(true);
+    const overlayRef = useRef(null);
+
     const handleEnter = () => {
-        typeof beforeOpen === 'function' && beforeOpen();
+        markAnimationEnd(false);
+        typeof beforeOpen === 'function' && beforeOpen(overlayRef.current);
     };
     const handleEntering = () => {
-        typeof onOpen === 'function' && onOpen();
+        typeof onOpen === 'function' && onOpen(overlayRef.current);
+    };
+    const handleEntered = () => {
+        typeof afterOpen === 'function' && afterOpen(overlayRef.current);
     };
     const handleExit = () => {
-        typeof beforeClose === 'function' && beforeClose();
+        typeof beforeClose === 'function' && beforeClose(overlayRef.current);
+    };
+    const handleExiting = () => {
+        typeof onClose === 'function' && onClose(overlayRef.current);
     };
     const handleExited = () => {
-        typeof onClose === 'function' && onClose();
+        markAnimationEnd(true);
+        typeof afterClose === 'function' && afterClose(overlayRef.current);
     };
 
     const childrenNode = (
@@ -51,13 +64,16 @@ const Overlay2 = props => {
             animation={animation}
             onEnter={handleEnter}
             onEntering={handleEntering}
+            onEntered={handleEntered}
             onExit={handleExit}
+            onExiting={handleExiting}
             onExited={handleExited}
             timeout={{
                 appear: 500,
                 enter: 300,
                 exit: 500,
             }}
+            ref={overlayRef}
         >
             {children ? (
                 cloneElement(children, {
@@ -80,8 +96,7 @@ const Overlay2 = props => {
 
     const handlePosition = result => {
         // 兼容 1.x, 2.x 可去除这段逻辑
-        const points = result.config.points;
-        Object.assign(result, { align: points.join(' ') });
+        Object.assign(result, { align: result.config.points });
 
         typeof onPosition === 'function' && onPosition(result);
     };
@@ -90,6 +105,7 @@ const Overlay2 = props => {
         <Overlay
             {...others}
             visible={visible}
+            isAnimationEnd={isAnimationEnd}
             hasMask={hasMask}
             wrapperClassName={wraperCls}
             maskClassName={`${prefix}overlay-backdrop`}

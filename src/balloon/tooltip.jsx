@@ -73,20 +73,83 @@ export default class Tooltip extends React.Component {
          * 如果需要让 Tooltip 内容可被点击，可以设置这个参数，例如 100
          */
         delay: PropTypes.number,
+        /**
+         * 开启 v2 版本
+         */
+        v2: PropTypes.bool,
+        /**
+         * 【v2] 箭头是否指向目标元素的中心
+         */
+        arrowPointToCenter: PropTypes.bool,
     };
     static defaultProps = {
         triggerType: 'hover',
         prefix: 'next-',
         align: 'b',
-        delay: 0,
+        delay: 50,
         trigger: <span />,
+        arrowPointToCenter: true,
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            align: props.align,
+            innerAlign: false,
+        };
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.v2 && !prevState.innerAlign && 'align' in nextProps && nextProps.align !== prevState.align) {
+            return {
+                align: nextProps.align,
+                innerAlign: false,
+            };
+        }
+
+        return null;
+    }
+
+    beforePosition = (result, obj) => {
+        const { placement } = result.config;
+        if (placement !== this.state.align) {
+            this.setState({
+                align: placement,
+                innerAlign: true,
+            });
+        }
+
+        if (this.props.arrowPointToCenter) {
+            const { width, height } = obj.target;
+            if (placement.length === 2) {
+                const offset = normalMap[placement].offset;
+                switch (placement[0]) {
+                    case 'b':
+                    case 't':
+                        {
+                            const plus = offset[0] > 0 ? 1 : -1;
+                            result.style.left = result.style.left + (plus * width) / 2 - offset[0];
+                        }
+                        break;
+                    case 'l':
+                    case 'r':
+                        {
+                            const plus = offset[0] > 0 ? 1 : -1;
+                            result.style.top = result.style.top + (plus * height) / 2 - offset[1];
+                        }
+                        break;
+                }
+            }
+        }
+
+        return result;
     };
 
     render() {
         const {
             id,
             className,
-            align,
+            align: palign,
             style,
             prefix,
             trigger,
@@ -101,6 +164,8 @@ export default class Tooltip extends React.Component {
             alignEdge,
             rtl,
             delay,
+            v2,
+            arrowPointToCenter,
             ...others
         } = this.props;
 
@@ -110,7 +175,8 @@ export default class Tooltip extends React.Component {
             trOrigin = 'rtlTrOrigin';
         }
 
-        alignMap = alignEdge ? edgeMap : normalMap;
+        alignMap = alignEdge || v2 ? edgeMap : normalMap;
+        const align = v2 ? this.state.align : palign;
 
         const transformOrigin = alignMap[align][trOrigin];
         const _offset = alignMap[align].offset;
@@ -128,6 +194,7 @@ export default class Tooltip extends React.Component {
                 align={align}
                 rtl={rtl}
                 alignEdge={alignEdge}
+                v2={v2}
             >
                 {children}
             </BalloonInner>
@@ -149,26 +216,44 @@ export default class Tooltip extends React.Component {
             React.isValidElement(ariaTrigger) ? ariaTrigger : <span>{ariaTrigger}</span>
         );
 
+        const otherProps = {
+            delay: delay,
+            shouldUpdatePosition: true,
+            needAdjust: false,
+            align: alignMap[align].align,
+            offset: _offset,
+        };
+
+        if (v2) {
+            delete otherProps.align;
+            delete otherProps.shouldUpdatePosition;
+            delete otherProps.needAdjust;
+            delete otherProps.offset;
+
+            Object.assign(otherProps, {
+                placement: align,
+                placementOffset: 12,
+                v2: true,
+                beforePosition: this.beforePosition,
+            });
+        }
+
         return (
             <Popup
                 role="tooltip"
-                container={popupContainer}
-                followTrigger={followTrigger}
-                trigger={newTrigger}
-                triggerType={newTriggerType}
-                align={alignMap[align].align}
-                offset={_offset}
-                delay={delay}
-                className={popupClassName}
-                style={popupStyle}
-                rtl={rtl}
-                autoFocus={triggerType === 'focus' ? false : autoFocus}
-                shouldUpdatePosition
-                needAdjust={false}
                 animation={{
                     in: 'zoomIn',
                     out: 'zoomOut',
                 }}
+                className={popupClassName}
+                container={popupContainer}
+                followTrigger={followTrigger}
+                trigger={newTrigger}
+                triggerType={newTriggerType}
+                style={popupStyle}
+                rtl={rtl}
+                autoFocus={triggerType === 'focus' ? false : autoFocus}
+                {...otherProps}
                 {...popupProps}
             >
                 {content}

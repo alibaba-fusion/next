@@ -25,13 +25,13 @@ const primary = <Button className="btrigger" style={{margin: '5px'}}>primary sty
 
 const Demo = () => (
     <div className="container">
-        <Balloon trigger={defaultTrigger} closable={false}>
+        <Balloon v2 trigger={defaultTrigger} closable={false}>
             default
         </Balloon>
-        <Balloon type="primary" trigger={primary} triggerType="click">
+        <Balloon v2 type="primary" trigger={primary} triggerType="click">
             primary
         </Balloon>
-        <Balloon trigger={disabledTrigger} closable={false}>
+        <Balloon v2 trigger={disabledTrigger} closable={false}>
             disabeled default
         </Balloon>
     </div>

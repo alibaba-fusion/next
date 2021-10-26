@@ -29,28 +29,28 @@ const FocusInputTarget = <Input placeholder="focus" />;
 
 const App = () => (
     <div>
-        <Balloon trigger={MoveTarget} triggerType="hover">
+        <Balloon v2 trigger={MoveTarget} triggerType="hover">
             {content}
         </Balloon>
 
-        <Balloon trigger={ClickTarget} triggerType="click">
+        <Balloon v2 trigger={ClickTarget} triggerType="click">
             {content}
         </Balloon>
 
-        <Balloon trigger={FocusTarget} triggerType="focus">
+        <Balloon v2 trigger={FocusTarget} triggerType="focus">
             {content}
         </Balloon>
 
         <br/>
         <br/>
 
-        <Balloon trigger={HoverInputTarget} triggerType="hover">
+        <Balloon v2 trigger={HoverInputTarget} triggerType="hover">
             {content}
         </Balloon>
-        <Balloon trigger={ClickInputTarget} triggerType="click">
+        <Balloon v2 trigger={ClickInputTarget} triggerType="click">
             {content}
         </Balloon>
-        <Balloon trigger={FocusInputTarget} triggerType="focus">
+        <Balloon v2 trigger={FocusInputTarget} triggerType="focus">
             {content}
         </Balloon>
     </div>

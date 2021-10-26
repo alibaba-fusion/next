@@ -51,20 +51,20 @@ class App extends React.Component {
         const clickTrigger = <Button type="primary" style={{margin: '5px'}}>hover to popup the card</Button>;
 
         const content = (<div>
-            click the button<br/>
-            <a style={{right: 0}} id="confirmBtn" onClick={this.hide.bind(this)}>confirm</a>
-            <a style={{marginLeft: '4px'}} id="cancelBtn" onClick={this.hide.bind(this)}>cancel</a>
+            <p>click the button</p>
+            <Button style={{right: 0}} id="confirmBtn" onClick={this.hide.bind(this)}>confirm</Button>
+            <Button style={{marginLeft: '4px'}} id="cancelBtn" onClick={this.hide.bind(this)}>cancel</Button>
         </div>);
         return (
             <div>
-                <Balloon trigger={visibleTrigger}
+                <Balloon v2 trigger={visibleTrigger}
                     triggerType="click"
                     visible={this.state.visible}
                     onVisibleChange={this.handleVisibleChange.bind(this)}
                 >
                     {content}
                 </Balloon>
-                <Balloon trigger={clickTrigger}
+                <Balloon v2 trigger={clickTrigger}
                     triggerType="hover"
                     onClose={this.onClose.bind(this)}
                     afterClose={this.afterClose.bind(this)}>

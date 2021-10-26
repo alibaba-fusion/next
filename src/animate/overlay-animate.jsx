@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Transition } from 'react-transition-group';
 import classNames from 'classnames';
 import { func, dom } from '../util';
@@ -62,6 +62,9 @@ const OverlayAnimate = React.forwardRef((props, ref) => {
         animateClsMap.exiting = '';
     }
 
+    const childStyle =
+        style && children.props && children.props.style ? Object.assign({}, children.props.style, style) : undefined;
+
     return (
         <Transition {...animateProps} in={visible} timeout={animation ? timeout : 0} appear>
             {state => {
@@ -73,10 +76,7 @@ const OverlayAnimate = React.forwardRef((props, ref) => {
                 const childProps = {
                     ...others,
                     className: cls,
-                    style:
-                        children.props && children.props.style
-                            ? Object.assign({}, children.props.style, style)
-                            : undefined,
+                    style: childStyle,
                     ref: childRef,
                 };
 

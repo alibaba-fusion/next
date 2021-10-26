@@ -26,16 +26,19 @@ const Popup = props => {
         triggerClickKeycode,
         align,
 
-        // 兼容 1.x 而已，其实这几个api没啥用
         beforeOpen,
         onOpen,
+        afterOpen,
         beforeClose,
         onClose,
+        afterClose,
 
         ...others
     } = props;
 
     const [visible, setVisible] = useState(defaultVisible);
+    const [isAnimationEnd, markAnimationEnd] = useState(true);
+    const overlayRef = useRef(null);
 
     useEffect(() => {
         if ('visible' in props) {
@@ -55,16 +58,24 @@ const Popup = props => {
     let overlayNode = overlay ? overlay : children;
 
     const handleEnter = () => {
-        typeof beforeOpen === 'function' && beforeOpen();
+        markAnimationEnd(false);
+        typeof beforeOpen === 'function' && beforeOpen(overlayRef.current);
     };
     const handleEntering = () => {
-        typeof onOpen === 'function' && onOpen();
+        typeof onOpen === 'function' && onOpen(overlayRef.current);
+    };
+    const handleEntered = () => {
+        typeof afterOpen === 'function' && afterOpen(overlayRef.current);
     };
     const handleExit = () => {
-        typeof beforeClose === 'function' && beforeClose();
+        typeof beforeClose === 'function' && beforeClose(overlayRef.current);
+    };
+    const handleExiting = () => {
+        typeof onClose === 'function' && onClose(overlayRef.current);
     };
     const handleExited = () => {
-        typeof onClose === 'function' && onClose();
+        markAnimationEnd(true);
+        typeof afterClose === 'function' && afterClose(overlayRef.current);
     };
 
     overlayNode = (
@@ -78,8 +89,11 @@ const Popup = props => {
             }}
             onEnter={handleEnter}
             onEntering={handleEntering}
+            onEntered={handleEntered}
             onExit={handleExit}
+            onExiting={handleExiting}
             onExited={handleExited}
+            ref={overlayRef}
         >
             {overlayNode ? (
                 cloneElement(overlayNode, {
@@ -96,8 +110,7 @@ const Popup = props => {
 
     const handlePosition = result => {
         // 兼容 1.x, 2.x 可去除这段逻辑
-        const points = result.config.points;
-        Object.assign(result, { align: points.join(' ') });
+        Object.assign(result, { align: result.config.points });
 
         typeof onPosition === 'function' && onPosition(result);
     };
@@ -121,6 +134,7 @@ const Popup = props => {
             wrapperClassName={wraperCls}
             overlay={overlayNode}
             visible={visible}
+            isAnimationEnd={isAnimationEnd}
             triggerType={triggerType}
             onVisibleChange={handleVisibleChange}
             onPosition={handlePosition}

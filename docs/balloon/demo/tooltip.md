@@ -31,7 +31,7 @@ const dataSource = [{
 }];
 const render = (value, index, record) => {
     const intro = <div style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{value}</div>;
-    return <Tooltip trigger={intro} align="br">{value}</Tooltip>;
+    return <Tooltip v2 trigger={intro} align="br" arrowPointToCenter>{value}</Tooltip>;
 };
 
 const App = () => (
