@@ -155,8 +155,8 @@ class NumberPicker extends React.Component {
 
     static defaultProps = {
         prefix: 'next-',
-        max: MAX_SAFE_INTEGER,
-        min: MIN_SAFE_INTEGER,
+        // max: MAX_SAFE_INTEGER,
+        // min: MIN_SAFE_INTEGER,
         type: 'normal',
         size: 'medium',
         step: 1,
@@ -175,7 +175,7 @@ class NumberPicker extends React.Component {
 
     constructor(props) {
         super(props);
-        const { defaultValue, max, min, stringMode } = props;
+        const { defaultValue, stringMode } = props;
 
         let value;
         if ('value' in props) {
@@ -189,8 +189,8 @@ class NumberPicker extends React.Component {
             hasFocused: false,
             onlyDisplay: false,
             displayValue: value,
-            max: max === MAX_SAFE_INTEGER && stringMode ? Infinity : max,
-            min: min === MIN_SAFE_INTEGER && stringMode ? -Infinity : min,
+            max: stringMode ? Infinity : MAX_SAFE_INTEGER,
+            min: stringMode ? -Infinity : MIN_SAFE_INTEGER,
         };
     }
 
@@ -203,16 +203,26 @@ class NumberPicker extends React.Component {
                 onlyDisplay: false,
             };
         }
+
+        const state = {};
         // 一般受控render逻辑
         if ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) {
-            let { value, max, min, stringMode } = nextProps;
-            value = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
-            return {
-                value,
-                displayValue: value,
-                max: max !== MAX_SAFE_INTEGER ? max : prevState.max,
-                min: min !== MIN_SAFE_INTEGER ? min : prevState.min,
-            };
+            const { value, stringMode } = nextProps;
+            const newValue = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
+            state.value = newValue;
+            state.displayValue = newValue;
+        }
+        const { min, max } = nextProps;
+        if ('min' in nextProps && min !== prevState.min) {
+            state.min = min;
+        }
+
+        if ('max' in nextProps && max !== prevState.max) {
+            state.max = max;
+        }
+
+        if (Object.keys(state).length) {
+            return state;
         }
 
         return null;
@@ -608,8 +618,8 @@ class NumberPicker extends React.Component {
                 <Input
                     {...others}
                     hasClear={false}
-                    aria-valuemax={max !== MAX_SAFE_INTEGER ? max : MAX_SAFE_INTEGER}
-                    aria-valuemin={min !== MIN_SAFE_INTEGER ? min : MIN_SAFE_INTEGER}
+                    aria-valuemax={max}
+                    aria-valuemin={min}
                     state={state === 'error' ? 'error' : null}
                     onBlur={this.onBlur.bind(this)}
                     onFocus={this.onFocus.bind(this)}
