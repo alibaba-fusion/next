@@ -220,7 +220,7 @@ class NumberPicker extends React.Component {
 
         if ('min' in nextProps && nextProps.min !== prevState.min) {
             const min = nextProps.min;
-            state.min = MIN_SAFE_INTEGER ? prevState.min : min;
+            state.min = min === MIN_SAFE_INTEGER ? prevState.min : min;
         }
 
         if (Object.keys(state).length) {
