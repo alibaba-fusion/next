@@ -213,14 +213,13 @@ class NumberPicker extends React.Component {
             state.displayValue = value;
         }
 
-        if ('max' in nextProps && nextProps.max !== prevState.max) {
-            const max = nextProps.max;
-            state.max = max === MAX_SAFE_INTEGER ? prevState.max : max;
+        const { min, max } = nextProps;
+        if ('max' in nextProps && max !== prevState.max) {
+            state.max = max;
         }
 
-        if ('min' in nextProps && nextProps.min !== prevState.min) {
-            const min = nextProps.min;
-            state.min = min === MIN_SAFE_INTEGER ? prevState.min : min;
+        if ('min' in nextProps && min !== prevState.min) {
+            state.min = min;
         }
 
         if (Object.keys(state).length) {
