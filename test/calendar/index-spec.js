@@ -270,6 +270,42 @@ describe('Calendar', () => {
             );
             wrapper.find('td[title="2017-10-02"]').simulate('click');
         });
+
+        it('should hide cell for other month', () => {
+            let isClicked = false;
+            const onSelect = val => { // handle click from this month
+                assert(val.format('YYYY-MM-DD') === '2017-10-02');
+                isClicked = true;
+            };
+            wrapper = mount(
+                <Calendar 
+                    showOtherMonth={false}
+                    defaultVisibleMonth={() => defaultVal}
+                    onSelect={onSelect}
+                />
+            );
+
+            // hide cell for other month
+            assert(wrapper.find('.next-calendar-cell-next-month[title="2017-11-01"]').text() === '')
+            wrapper.find('td[title="2017-10-02"]').simulate('click');
+            assert(isClicked === true);
+        })
+
+        it('should block click event from other month', () => {
+            let isClicked = false;
+            wrapper = mount(
+                <Calendar 
+                    showOtherMonth={false}
+                    defaultVisibleMonth={() => defaultVal}
+                    onSelect={() => {
+                        isClicked = true;
+                    }}
+                />
+            );
+
+            wrapper.find('.next-calendar-cell-next-month[title="2017-11-01"]').simulate('click');
+            assert(isClicked === false);
+        })
     });
 });
 
