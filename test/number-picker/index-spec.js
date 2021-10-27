@@ -31,16 +31,47 @@ describe('number-picker', () => {
             assert(wrapper1.find('button').at(1).prop("tabIndex") === -1);
         });
         it('should compare max or min the changes', () => {
-            let wrapper = mount(<NumberPicker max={10} defaultValue={10} />);
+            class App extends React.Component {
+                state = {
+                    value: 10,
+                    max: 8,
+                };
 
-            wrapper.setProps({value: 20});
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 10);
+                setMax = () => {
+                    this.setState({
+                        max: 5,
+                    })
+                }
 
-            wrapper.setProps({max: 15});
-            wrapper.find('input').simulate('click');
+                onChange = value => {
+                    this.setState({
+                        value,
+                    });
+                };
+
+                render() {
+                    return (
+                        <div>
+                            <button onClick={this.setMax}>setMax to 15</button>
+                            <NumberPicker
+                                value={this.state.value}
+                                onChange={this.onChange}
+                                max={this.state.max}
+                            />
+                        </div>
+                    );
+                }
+            }
+
+            let wrapper = mount(<App />);
+
             wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 15);
+            assert(wrapper.find('input').prop('value') === 8);
+
+            wrapper.find('button').at(0).simulate('click');
+            wrapper.find('input').simulate('blur');
+            assert(wrapper.find('input').prop('value') === 5);
+
         });
     });
 
