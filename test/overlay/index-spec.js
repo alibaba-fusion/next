@@ -379,7 +379,7 @@ describe('Overlay', () => {
             document.body.appendChild(outerInput);
             outerInput.focus();
             wrapper = render(
-                <OverlayControlDemo autoFocus>
+                <OverlayControlDemo animation={false} autoFocus>
                     <input id="inner" />
                 </OverlayControlDemo>
             );

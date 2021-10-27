@@ -22,6 +22,8 @@ const Popup = props => {
         overlay,
         onPosition,
         children,
+        className,
+        style,
         wrapperClassName,
         triggerClickKeycode,
         align,
@@ -99,6 +101,7 @@ const Popup = props => {
                 cloneElement(overlayNode, {
                     className: classNames([
                         `${prefix}overlay-inner`,
+                        className,
                         overlayNode && overlayNode.props && overlayNode.props.className,
                     ]),
                 })
@@ -127,6 +130,17 @@ const Popup = props => {
         v1Props.points = align.split(' ');
     }
 
+    const maskRender = node => (
+        <Animate.OverlayAnimate
+            visible={visible}
+            animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}
+            timeout={300}
+            unmountOnExit
+        >
+            {node}
+        </Animate.OverlayAnimate>
+    );
+
     return (
         <Overlay.Popup
             {...others}
@@ -139,6 +153,7 @@ const Popup = props => {
             onVisibleChange={handleVisibleChange}
             onPosition={handlePosition}
             triggerClickKeyCode={triggerClickKeycode}
+            maskRender={maskRender}
         >
             {triggerNode}
         </Overlay.Popup>

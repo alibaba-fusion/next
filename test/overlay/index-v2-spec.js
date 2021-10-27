@@ -308,11 +308,11 @@ describe('Overlay v2', async () => {
         const btn = document.querySelector('button');
 
         simulateEvent.simulate(btn, 'click');
-        await delay(20);
+        await delay(200);
         assert(document.activeElement === document.querySelector('#inner'));
 
         simulateEvent.simulate(btn, 'click');
-        await delay(20);
+        await delay(200);
         // ie9/ie10 document.activeElement === document.body
         if (env.ieVersion > 10) {
             assert(document.activeElement === document.querySelector('#outer'));
@@ -329,7 +329,7 @@ describe('Overlay v2', async () => {
         await delay(20);
 
         simulateEvent.simulate(btn, 'click');
-        await delay(20);
+        await delay(200);
 
         assert(document.querySelector('.overlay-cache-test.next-overlay-wrapper').style.display === 'none');
     });

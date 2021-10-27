@@ -47,7 +47,7 @@ class Demo extends React.Component {
             hasArrow: undefined,
             hasBorder: undefined,
             showSearch: undefined,
-            hasClear: undefined
+            hasClear: undefined,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -94,6 +94,7 @@ class Demo extends React.Component {
                     {this.renderCtrlNodes(this.state)}
                 </div>
                 <Select
+                    popupProps={{v2: true}}
                     {...this.state}
                     onChange={this.handleChange}
                     dataSource={dataSource} />

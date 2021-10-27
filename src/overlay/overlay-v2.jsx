@@ -22,7 +22,6 @@ const Overlay2 = props => {
         onPosition,
         children,
         wrapperClassName,
-        cache,
 
         beforeOpen,
         onOpen,
@@ -101,6 +100,17 @@ const Overlay2 = props => {
         typeof onPosition === 'function' && onPosition(result);
     };
 
+    const maskRender = node => (
+        <Animate.OverlayAnimate
+            visible={visible}
+            animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}
+            timeout={300}
+            unmountOnExit
+        >
+            {node}
+        </Animate.OverlayAnimate>
+    );
+
     return (
         <Overlay
             {...others}
@@ -109,6 +119,7 @@ const Overlay2 = props => {
             hasMask={hasMask}
             wrapperClassName={wraperCls}
             maskClassName={`${prefix}overlay-backdrop`}
+            maskRender={maskRender}
             points={points}
             onPosition={handlePosition}
         >

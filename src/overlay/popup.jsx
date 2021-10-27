@@ -72,6 +72,11 @@ class Popup extends Component {
         hasMask: PropTypes.bool,
         wrapperStyle: PropTypes.object,
         rtl: PropTypes.bool,
+        /**
+         * 开启 v2 版本
+         */
+        v2: PropTypes.bool,
+        placement: PropTypes.string,
     };
 
     static defaultProps = {
