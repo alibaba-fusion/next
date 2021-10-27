@@ -43,6 +43,11 @@ describe('number-picker', () => {
             wrapper.find('input').simulate('click');
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === 3);
+            wrapper.setProps({max: 5, min: 2});
+            wrapper.setProps({value: 1});
+            wrapper.find('input').simulate('click');
+            wrapper.find('input').simulate('blur');
+            assert(wrapper.find('input').prop('value') === 2);
         })
     });
 
