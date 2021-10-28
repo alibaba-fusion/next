@@ -212,13 +212,15 @@ class NumberPicker extends React.Component {
             state.value = newValue;
             state.displayValue = newValue;
         }
+
+        // 如果是undefined或null，应该不限制最大最小值
         const { min, max } = nextProps;
         if ('min' in nextProps && min !== prevState.min) {
-            state.min = min;
+            state.min = min ? min : MIN_SAFE_INTEGER;
         }
 
         if ('max' in nextProps && max !== prevState.max) {
-            state.max = max;
+            state.max = max ? max : MAX_SAFE_INTEGER;
         }
 
         if (Object.keys(state).length) {
