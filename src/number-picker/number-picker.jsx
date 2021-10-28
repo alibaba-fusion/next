@@ -12,7 +12,7 @@ import { func, obj } from '../util';
 const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
 const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER || -Math.pow(2, 53) + 1;
 
-const { isNil } from 'obj';
+const { isNil } = obj;
 /** NumberPicker */
 class NumberPicker extends React.Component {
     static propTypes = {
