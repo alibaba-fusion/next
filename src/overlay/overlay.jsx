@@ -749,6 +749,7 @@ class Overlay extends Component {
             maskClass,
             isChildrenInMask,
             pinFollowBaseElementWhenFixed,
+            popupClassName,
         } = this.props;
         const { visible: stateVisible, status, animation } = this.state;
 
@@ -800,7 +801,7 @@ class Overlay extends Component {
                 );
             }
 
-            const wrapperClazz = classnames([`${prefix}overlay-wrapper`, wrapperClassName]);
+            const wrapperClazz = classnames([`${prefix}overlay-wrapper`, wrapperClassName, popupClassName]);
             const newWrapperStyle = Object.assign(
                 {},
                 {

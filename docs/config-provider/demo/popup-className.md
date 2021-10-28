@@ -15,16 +15,32 @@ Demo how to use ConfigProvider to set popupClassName.
 ---
 
 ````jsx
-import { ConfigProvider, Select, MenuButton, Range } from '@alifd/next';
+import { ConfigProvider, Select, MenuButton, Range, Dialog, Button, Overlay } from '@alifd/next';
 import PropTypes from 'prop-types';
 
 const { Option } = Select;
 const { Item } = MenuButton;
 
 class Demo extends React.Component {
+    state = {
+      visible: false
+    }
+
+    onOpen = () => {
+        this.setState({
+            visible: true
+        });
+    };
+
+    onClose = reason => {
+        this.setState({
+            visible: false
+        });
+    };
 
     render() {
         return (
+          <div>
             <ConfigProvider popupClassName="custom1 custom2">
                 <div>
                     <div className="popup-class-name-demo-panel">
@@ -42,8 +58,26 @@ class Demo extends React.Component {
                     <div className="popup-class-name-demo-panel">
                         <Range defaultValue={30} />
                     </div>
+                    <div className="popup-class-name-demo-panel">
+                        <Button onClick={this.onOpen} type="primary">
+                            Open dialog
+                        </Button>
+                        <Dialog
+                            visible={this.state.visible}
+                            onOk={this.onClose}
+                            onCancel={this.onClose}
+                            onClose={this.onClose}
+                        >
+                            Content
+                        </Dialog>
+                    </div>
+                    <Overlay.Popup trigger={<Button>Open Overlay</Button>}>
+                        <div>Content</div>
+                    </Overlay.Popup>
                 </div>
             </ConfigProvider>
+            <div id="muzi"/>
+          </div>
         );
     }
 }
