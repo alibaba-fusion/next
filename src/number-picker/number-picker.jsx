@@ -12,6 +12,7 @@ import { func, obj } from '../util';
 const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
 const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER || -Math.pow(2, 53) + 1;
 
+const { isNil } from 'obj';
 /** NumberPicker */
 class NumberPicker extends React.Component {
     static propTypes = {
@@ -205,9 +206,9 @@ class NumberPicker extends React.Component {
         }
 
         const state = {};
+        const { value, stringMode } = nextProps;
         // 一般受控render逻辑
         if ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) {
-            const { value, stringMode } = nextProps;
             const newValue = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
             state.value = newValue;
             state.displayValue = newValue;
@@ -216,11 +217,11 @@ class NumberPicker extends React.Component {
         // 如果是undefined或null，应该不限制最大最小值
         const { min, max } = nextProps;
         if ('min' in nextProps && min !== prevState.min) {
-            state.min = min === undefined || min === null ? MIN_SAFE_INTEGER : min;
+            state.min = !isNil(min) ? min : stringMode ? Infinity : MIN_SAFE_INTEGER;
         }
 
         if ('max' in nextProps && max !== prevState.max) {
-            state.max = max === undefined || max === null ? MAX_SAFE_INTEGER : max;
+            state.max = !isNil(max) ? max : stringMode ? Infinity : MAX_SAFE_INTEGER;
         }
 
         if (Object.keys(state).length) {
