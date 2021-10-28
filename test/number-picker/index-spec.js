@@ -73,6 +73,17 @@ describe('number-picker', () => {
             assert(wrapper.find('input').prop('value') === 5);
 
         });
+        it('if max or min were undefined or null should infinity', () => {
+            const wrapper = mount(<NumberPicker max={10} min={3}/>);
+            wrapper.setProps({ max: undefined, min: undefined });
+            wrapper.find('input').simulate('blur');
+            assert(wrapper.find('input').prop('aria-valuemax') === Number.MAX_SAFE_INTEGER)
+            assert(wrapper.find('input').prop('aria-valuemin') === Number.MIN_SAFE_INTEGER)
+            wrapper.setProps({ max: 99, min: 1 });
+            wrapper.find('input').simulate('blur');
+            assert(wrapper.find('input').prop('aria-valuemax') === 99)
+            assert(wrapper.find('input').prop('aria-valuemin') === 1)
+        })
     });
 
     describe('stringMode', () => {
