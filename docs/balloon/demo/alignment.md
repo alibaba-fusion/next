@@ -34,18 +34,14 @@ const leftBottom = <Button id="leftBottom" style={{margin: '5px'}} className="bt
 
 const Content = () => (
     <div>
-        <h4 style={{marginTop: 0}}>balloon title</h4>
-        <hr/>
-        <p>
-            balloon content
-        </p>
+        <p> balloon content balloon content balloon content balloon content balloon content </p>
     </div>
 );
 
 const App = () => (
     <div style={{paddingLeft: 320 }}>
         <div style={{marginLeft: 75}}>
-            <Balloon v2 trigger={topLeft} align="tl" triggerType="click" style={{width: 300}}>
+            <Balloon v2 trigger={topLeft} align="tl" triggerType="click" style={{width: 300}} closable={false}>
                 <Content/>
             </Balloon>
             <Balloon v2 trigger={top} align="t" triggerType="click" style={{width: 300}}>

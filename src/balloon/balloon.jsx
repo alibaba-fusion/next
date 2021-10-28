@@ -322,6 +322,7 @@ class Balloon extends React.Component {
             shouldUpdatePosition,
             delay,
             needAdjust,
+            autoAdjust,
             safeId,
             autoFocus,
             safeNode,
@@ -416,6 +417,7 @@ class Balloon extends React.Component {
                 placementOffset: 12,
                 v2: true,
                 beforePosition: this.beforePosition,
+                autoAdjust,
             });
         }
 

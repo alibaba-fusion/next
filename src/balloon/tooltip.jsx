@@ -88,7 +88,7 @@ export default class Tooltip extends React.Component {
         align: 'b',
         delay: 50,
         trigger: <span />,
-        arrowPointToCenter: true,
+        arrowPointToCenter: false,
     };
 
     constructor(props) {
@@ -162,6 +162,7 @@ export default class Tooltip extends React.Component {
             triggerType,
             autoFocus,
             alignEdge,
+            autoAdjust,
             rtl,
             delay,
             v2,
@@ -235,6 +236,7 @@ export default class Tooltip extends React.Component {
                 placementOffset: 12,
                 v2: true,
                 beforePosition: this.beforePosition,
+                autoAdjust,
             });
         }
 

@@ -18,7 +18,7 @@ Hover, focus and click.
 ````jsx
 import { Button, Balloon, Input } from '@alifd/next';
 
-const content = (<div><p>content</p></div>);
+const content = (<div><p>content content content content content</p></div>);
 const MoveTarget = <Button style={{margin: '5px'}}>hover</Button>;
 const ClickTarget = <Button style={{margin: '5px'}}>click</Button>;
 const FocusTarget = <Button style={{margin: '5px'}}>focus</Button>;
@@ -29,28 +29,28 @@ const FocusInputTarget = <Input placeholder="focus" />;
 
 const App = () => (
     <div>
-        <Balloon v2 trigger={MoveTarget} triggerType="hover">
+        <Balloon v2 trigger={MoveTarget} triggerType="hover" title="Balloon Title" >
             {content}
         </Balloon>
 
-        <Balloon v2 trigger={ClickTarget} triggerType="click">
+        <Balloon v2 trigger={ClickTarget} triggerType="click" title="Balloon Title" >
             {content}
         </Balloon>
 
-        <Balloon v2 trigger={FocusTarget} triggerType="focus">
+        <Balloon v2 trigger={FocusTarget} triggerType="focus" title="Balloon Title" >
             {content}
         </Balloon>
 
         <br/>
         <br/>
 
-        <Balloon v2 trigger={HoverInputTarget} triggerType="hover">
+        <Balloon v2 trigger={HoverInputTarget} triggerType="hover" title="Balloon Title" >
             {content}
         </Balloon>
-        <Balloon v2 trigger={ClickInputTarget} triggerType="click">
+        <Balloon v2 trigger={ClickInputTarget} triggerType="click" title="Balloon Title" >
             {content}
         </Balloon>
-        <Balloon v2 trigger={FocusInputTarget} triggerType="focus">
+        <Balloon v2 trigger={FocusInputTarget} triggerType="focus" title="Balloon Title" >
             {content}
         </Balloon>
     </div>
