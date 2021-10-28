@@ -156,7 +156,6 @@ export default config(Component);
 | warning  | whether to display the warning prompt for component properties being deprecated in development mode        | Boolean      | true  |
 | children | component tree                                 | ReactElement | -   |
 | popupContainer | shell container node | String/Function | - |
-| popupClassName | shell container class name | String | - |
 
 <!-- api-extra-start -->
 
