@@ -9,6 +9,7 @@ import Position from './position';
 
 import Popup1 from './popup';
 import Popup2 from './popup-v2';
+import { log } from '../util';
 
 class Overlay extends React.Component {
     constructor(props) {
@@ -40,6 +41,11 @@ class Overlay extends React.Component {
     render() {
         const { v2, ...others } = this.props;
         if (v2) {
+            if ('needAdjust' in others) {
+                log.deprecated('needAdjust', 'needAdjust', 'Overlay v2');
+                others.autoAdjust = others.needAdjust;
+                delete others.needAdjust;
+            }
             return <Overlay2 {...others} />;
         } else {
             return <Overlay1 {...others} ref={this.saveRef} />;
@@ -61,6 +67,12 @@ class Popup extends React.Component {
     render() {
         const { v2, ...others } = this.props;
         if (v2) {
+            if ('needAdjust' in others) {
+                log.deprecated('needAdjust', 'needAdjust', 'Popup v2');
+                others.autoAdjust = others.needAdjust;
+                delete others.needAdjust;
+            }
+
             return <Popup2 {...others} />;
         } else {
             return <Popup1 {...others} ref={this.saveRef} />;

@@ -136,7 +136,7 @@ class Overlay extends Component {
          */
         autoFocus: PropTypes.bool,
         /**
-         * [v2废弃] 当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域
+         * [v2废弃] 改用 autoAdjust。当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域
          */
         needAdjust: PropTypes.bool,
         /**
@@ -172,6 +172,10 @@ class Overlay extends Component {
         // 当 pin 元素（一般是弹层）是 fixed 布局的时候，pin 元素是否要跟随 base 元素（一般是trigger）
         // 举例来说，dialog/drawer 这类组件弹层是不跟随trigger的，而 fixed 布局下的subNav是跟随trigger的
         pinFollowBaseElementWhenFixed: PropTypes.bool,
+        /**
+         * 开启 v2 版本
+         */
+        v2: PropTypes.bool,
     };
     static defaultProps = {
         prefix: 'next-',

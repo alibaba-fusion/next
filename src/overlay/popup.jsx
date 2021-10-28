@@ -76,6 +76,9 @@ class Popup extends Component {
          * 开启 v2 版本
          */
         v2: PropTypes.bool,
+        /**
+         * 快捷位置，包含 'tl' | 't' | 'tr' | 'rt' | 'r' | 'rb' | 'bl' | 'b' | 'br' | 'lt' | 'l' | 'lb'
+         */
         placement: PropTypes.string,
     };
 
