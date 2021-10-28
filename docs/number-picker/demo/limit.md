@@ -31,7 +31,7 @@ function onCorrect(obj) {
 }
 ReactDOM.render(
     <div>
-        <NumberPicker type="inline" step={3} min={6} max={30} defaultValue={6}
+        <NumberPicker type="inline" step={3} min={6} max={null} defaultValue={6}
             onChange={onChange} onCorrect={onCorrect}/>
     </div>,
     mountNode
