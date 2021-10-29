@@ -223,7 +223,7 @@ class Overlay extends Component {
         disableScroll: false,
         cache: false,
         isChildrenInMask: false,
-        onClick: noop,
+        onClick: event => event.stopPropagation(),
         maskClass: '',
     };
 
@@ -620,13 +620,15 @@ class Overlay extends Component {
      * document global event
      */
     addDocumentEvents() {
+        // use capture phase listener to be compatible with react17
+        // https://reactjs.org/blog/2020/08/10/react-v17-rc.html#fixing-potential-issues
         if (this.props.canCloseByEsc) {
-            this._keydownEvents = events.on(document, 'keydown', this.handleDocumentKeyDown);
+            this._keydownEvents = events.on(document, 'keydown', this.handleDocumentKeyDown, true);
         }
 
         if (this.props.canCloseByOutSideClick) {
-            this._clickEvents = events.on(document, 'click', this.handleDocumentClick);
-            this._touchEvents = events.on(document, 'touchend', this.handleDocumentClick);
+            this._clickEvents = events.on(document, 'click', this.handleDocumentClick, true);
+            this._touchEvents = events.on(document, 'touchend', this.handleDocumentClick, true);
         }
     }
 
