@@ -217,6 +217,10 @@
             align-items: start;
         }
 
+        #{$select-prefix}-inner {
+            align-items: center;
+        }
+
         &.#{$css-prefix}small {
             #{$select-prefix}-values {
                 @include select-size($form-element-small-height, $select-s-lineheight);
