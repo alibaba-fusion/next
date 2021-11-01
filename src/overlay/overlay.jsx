@@ -64,7 +64,7 @@ class Overlay extends Component {
         /**
          * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
          */
-        align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        align: PropTypes.string,
         /**
          * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量
          * e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
@@ -91,11 +91,11 @@ class Overlay extends Component {
          */
         canCloseByMask: PropTypes.bool,
         /**
-         * [v2废弃] 弹层打开前触发事件的回调函数
+         * 弹层打开前触发事件的回调函数
          */
         beforeOpen: PropTypes.func,
         /**
-         * [v2废弃] 弹层打开时触发事件的回调函数
+         * 弹层打开时触发事件的回调函数
          */
         onOpen: PropTypes.func,
         /**
@@ -103,11 +103,11 @@ class Overlay extends Component {
          */
         afterOpen: PropTypes.func,
         /**
-         * [v2废弃] 弹层关闭前触发事件的回调函数
+         * 弹层关闭前触发事件的回调函数
          */
         beforeClose: PropTypes.func,
         /**
-         * [v2废弃] 弹层关闭时触发事件的回调函数
+         * 弹层关闭时触发事件的回调函数
          */
         onClose: PropTypes.func,
         /**
@@ -127,17 +127,11 @@ class Overlay extends Component {
          * @param {Object} node 定位参照的容器节点
          */
         onPosition: PropTypes.func,
-        /**
-         * [v2废弃] 是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式
-         */
         shouldUpdatePosition: PropTypes.bool,
         /**
          * 弹层打开时是否让其中的元素自动获取焦点
          */
         autoFocus: PropTypes.bool,
-        /**
-         * [v2废弃] 改用 autoAdjust。当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域
-         */
         needAdjust: PropTypes.bool,
         /**
          * 是否禁用页面滚动
@@ -174,8 +168,14 @@ class Overlay extends Component {
         pinFollowBaseElementWhenFixed: PropTypes.bool,
         /**
          * 开启 v2 版本
+         * @version 1.25
          */
         v2: PropTypes.bool,
+        /**
+         * align 的数组形式，和 align 互斥使用
+         * @version 1.25
+         */
+        points: PropTypes.array,
     };
     static defaultProps = {
         prefix: 'next-',

@@ -28,7 +28,6 @@ class Popup extends Component {
         /**
          * 当 triggerType 为 click 时才生效，可自定义触发弹层显示的键盘码
          */
-
         triggerClickKeycode: PropTypes.oneOfType([PropTypes.number, PropTypes.array]),
         /**
          * 弹层当前是否显示
