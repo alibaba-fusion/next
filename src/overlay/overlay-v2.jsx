@@ -21,6 +21,8 @@ const Overlay2 = props => {
         points = align ? align.split(' ') : undefined,
         onPosition,
         children,
+        className,
+        style,
         wrapperClassName,
 
         beforeOpen,
@@ -73,11 +75,13 @@ const Overlay2 = props => {
                 exit: 500,
             }}
             ref={overlayRef}
+            style={style}
         >
             {children ? (
                 cloneElement(children, {
                     className: classNames([
                         `${prefix}overlay-inner`,
+                        className,
                         children && children.props && children.props.className,
                     ]),
                 })

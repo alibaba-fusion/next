@@ -1,6 +1,7 @@
 # 从浮层内关闭, 事件回调
 
 - order: 4
+- debug: true
 
 使用 `visible` ,属性控制浮层显示, 使 balloon 变为受限组件。
 

@@ -18,7 +18,7 @@ Hover, focus and click.
 ````jsx
 import { Button, Balloon, Input } from '@alifd/next';
 
-const content = (<div><p>content content content content content</p></div>);
+const content = (<div>content content content content content</div>);
 const MoveTarget = <Button style={{margin: '5px'}}>hover</Button>;
 const ClickTarget = <Button style={{margin: '5px'}}>click</Button>;
 const FocusTarget = <Button style={{margin: '5px'}}>focus</Button>;

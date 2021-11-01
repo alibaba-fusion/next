@@ -62,9 +62,6 @@ const OverlayAnimate = React.forwardRef((props, ref) => {
         animateClsMap.exiting = '';
     }
 
-    const childStyle =
-        style && children.props && children.props.style ? Object.assign({}, children.props.style, style) : undefined;
-
     return (
         <Transition {...animateProps} in={visible} timeout={animation ? timeout : 0} appear>
             {state => {
@@ -76,9 +73,12 @@ const OverlayAnimate = React.forwardRef((props, ref) => {
                 const childProps = {
                     ...others,
                     className: cls,
-                    style: childStyle,
                     ref: childRef,
                 };
+
+                if (style && children.props && children.props.style) {
+                    childProps.style = Object.assign({}, children.props.style, style);
+                }
 
                 return React.cloneElement(children, childProps);
             }}

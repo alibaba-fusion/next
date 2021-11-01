@@ -96,6 +96,7 @@ const Popup = props => {
             onExiting={handleExiting}
             onExited={handleExited}
             ref={overlayRef}
+            style={style}
         >
             {overlayNode ? (
                 cloneElement(overlayNode, {

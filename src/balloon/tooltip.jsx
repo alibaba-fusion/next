@@ -78,7 +78,7 @@ export default class Tooltip extends React.Component {
          */
         v2: PropTypes.bool,
         /**
-         * 【v2] 箭头是否指向目标元素的中心
+         * [v2] 箭头是否指向目标元素的中心
          */
         arrowPointToCenter: PropTypes.bool,
     };

@@ -13,6 +13,8 @@ const defaultTrigger = (
     </span>
 );
 
+const delay = time => new Promise(resolve => setTimeout(resolve, time));
+
 describe('Balloon', () => {
     let defaultWrapper = null;
 
@@ -110,18 +112,16 @@ describe('Balloon', () => {
         });
 
         //此处异步验证
-        it('triggerType can set hover', done => {
+        it('triggerType can set hover', async () => {
             defaultWrapper.setProps({
                 triggerType: 'hover',
             });
             defaultWrapper.find('span').simulate('mouseenter');
-            setTimeout(function() {
-                assert(document.querySelector('.next-balloon') !== null);
-                done();
-            }, 500);
+            await delay(500);
+            assert(document.querySelector('.next-balloon') !== null);
         });
 
-        it('trigger is disabled button, hover enter and leave, popup should resolve', done => {
+        it('trigger is disabled button, hover enter and leave, popup should resolve', async () => {
             defaultWrapper.setProps({
                 trigger: (
                     <Button disabled id="balloon-btn" style={{ color: 'red' }}>
@@ -132,28 +132,23 @@ describe('Balloon', () => {
             });
             // hover on the <span> which is specially added for disabled pattern
             defaultWrapper.find('span').at(0).simulate('mouseenter');
-            setTimeout(function() {
-                assert(document.querySelector('.next-balloon') !== null);
 
-                defaultWrapper.find('span').at(0).simulate('mouseleave');
+            await delay(500);
+            assert(document.querySelector('.next-balloon') !== null);
 
-                setTimeout(function() {
-                    assert(document.querySelector('.next-balloon') === null);
-                    done();
-                }, 600);
-            }, 500);
+            defaultWrapper.find('span').at(0).simulate('mouseleave');
+            await delay(600);
+            assert(document.querySelector('.next-balloon') === null);
         });
 
-        it('trigger can be string', done => {
+        it('trigger can be string', async () => {
             defaultWrapper.setProps({
                 trigger: 'trigger',
                 triggerType: 'hover',
             });
             defaultWrapper.find('span').simulate('mouseenter');
-            setTimeout(function() {
-                assert(document.querySelector('.next-balloon') !== null);
-                done();
-            }, 300);
+            await delay(300);
+            assert(document.querySelector('.next-balloon') !== null);
         });
 
         // trigger不传,默认用空的<span></span>填充
@@ -162,24 +157,6 @@ describe('Balloon', () => {
                 <Balloon triggerType="click">trigger</Balloon>
             );
             assert(wrapper.find('span').length === 1);
-        });
-    });
-
-    describe('onPosition', done => {
-        it('should update on position updated', () => {
-            const instance = defaultWrapper
-                .find('Balloon')
-                .at(0)
-                .instance();
-            instance._onPosition({
-                left: 0,
-                top: 12,
-                align: ['tr', 'bc'],
-            });
-            setTimeout(function() {
-                assert(defaultWrapper.state().align === 'bl');
-                done();
-            }, 0);
         });
     });
 
@@ -340,7 +317,7 @@ describe('Balloon', () => {
         });
     });
     describe('onClose ComponentWillReceiveProps closeIcon', () => {
-        it('onClose ComponentWillReceiveProps closeIcon', () => {
+        it('onClose ComponentWillReceiveProps closeIcon', async () => {
             //function afterCloseCallback(e){//afterClose无法测
             //    time++;
             //}
@@ -413,11 +390,8 @@ describe('Balloon', () => {
             wrapper.find('button').simulate('click');
             assert(document.querySelector('.next-balloon') !== null);
             document.querySelector('.next-balloon-close').click();
-            setTimeout(function() {
-                //TODO:此处测试有问题,单测里,浮层关闭后overlay元素没有去掉
-                assert(document.querySelector('.next-balloon') === null);
-                // done();
-            }, 1000);
+            await delay(1000);
+            assert(document.querySelector('.next-balloon') === null);
         });
     });
 });
