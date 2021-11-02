@@ -43,7 +43,7 @@ class Demo extends React.Component {
                     placement="right"
                     visible={this.state.visible}
                     onClose={this.onClose}>
-                    <div style={{height:1000}}>Start your business here by searching a popular product</div>
+                    Start your business here by searching a popular product
                 </Drawer>
             </div>
         );
