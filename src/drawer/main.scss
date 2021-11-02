@@ -42,6 +42,10 @@
         font-size: $drawer-title-font-size;
         background: $drawer-title-bg-color;
         color: $drawer-title-color;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
     }
 
     &-no-title {
