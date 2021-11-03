@@ -121,6 +121,13 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
      * 多行文本框高度 <br />(不要直接用height设置多行文本框的高度, ie9 10会有兼容性问题)
      */
     rows?: number;
+
+    /**
+     * 是否为预览态
+     */
+    isPreview?: boolean;
+
+    renderPreview?: (value: number ) => React.ReactNode;
 }
 
 export class TextArea extends React.Component<TextAreaProps, any> {}
@@ -325,6 +332,13 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
      * 自动聚焦(原生input支持)
      */
     autoFocus?: boolean;
+
+    /**
+     * 是否为预览态
+     */
+     isPreview?: boolean;
+
+    renderPreview?: (value: number ) => React.ReactNode;
 }
 export interface PasswordProps extends InputProps {
     /**
