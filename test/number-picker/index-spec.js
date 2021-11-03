@@ -74,15 +74,18 @@ describe('number-picker', () => {
 
         });
         it('if max or min were undefined or null should infinity', () => {
-            const wrapper = mount(<NumberPicker max={10} min={3}/>);
-            wrapper.setProps({ max: undefined, min: undefined });
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('aria-valuemax') === Number.MAX_SAFE_INTEGER)
-            assert(wrapper.find('input').prop('aria-valuemin') === Number.MIN_SAFE_INTEGER)
-            wrapper.setProps({ max: 99, min: 1 });
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('aria-valuemax') === 99)
-            assert(wrapper.find('input').prop('aria-valuemin') === 1)
+            const wrapper = mount(<NumberPicker max={10} value={10} min={8}/>);
+            wrapper.find('button').at(0).simulate('click');
+            assert(wrapper.find('input').props('value').value === 10);
+            wrapper.setProps({ max: undefined });
+            wrapper.find('button').at(0).simulate('click');
+            assert(wrapper.find('input').props('value').value === 11);
+            wrapper.setProps({ value: 8 });
+            wrapper.find('button').at(1).simulate('click');
+            assert(wrapper.find('input').props('value').value === 8);
+            wrapper.setProps({ min: undefined });
+            wrapper.find('button').at(1).simulate('click');
+            assert(wrapper.find('input').props('value').value === 7);
         })
     });
 
