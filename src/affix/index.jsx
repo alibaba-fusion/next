@@ -101,17 +101,29 @@ class Affix extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.container() !== this.props.container()) {
+            this._clearContainerEvent();
+
+            this.timeout = setTimeout(() => {
+                this._setEventHandlerForContainer(this.props.container);
+            });
+        }
+
         setTimeout(this._updateNodePosition);
     }
 
     componentWillUnmount() {
+        this._clearContainerEvent();
+    }
+
+    _clearContainerEvent = () => {
         if (this.timeout) {
             clearTimeout(this.timeout);
             this.timeout = null;
         }
         const { container } = this.props;
         this._removeEventHandlerForContainer(container);
-    }
+    };
 
     _setEventHandlerForContainer(getContainer) {
         const container = getContainer();
@@ -157,15 +169,11 @@ class Affix extends React.Component {
             width: affixOffset.width,
             height: affixChildHeight,
         };
-        if (
-            affixMode.top &&
-            containerScrollTop > affixOffset.top - affixMode.offset
-        ) {
+        if (affixMode.top && containerScrollTop > affixOffset.top - affixMode.offset) {
             // affix top
             if (useAbsolute) {
                 affixStyle.position = 'absolute';
-                affixStyle.top =
-                    containerScrollTop - (affixOffset.top - affixMode.offset);
+                affixStyle.top = containerScrollTop - (affixOffset.top - affixMode.offset);
                 containerStyle.position = 'relative';
             } else {
                 affixStyle.position = 'fixed';
@@ -175,22 +183,14 @@ class Affix extends React.Component {
             this._setContainerStyle(containerStyle);
         } else if (
             affixMode.bottom &&
-            containerScrollTop <
-                affixOffset.top +
-                    affixHeight +
-                    affixMode.offset -
-                    containerHeight
+            containerScrollTop < affixOffset.top + affixHeight + affixMode.offset - containerHeight
         ) {
             // affix bottom
             affixStyle.height = affixHeight;
             if (useAbsolute) {
                 affixStyle.position = 'absolute';
                 affixStyle.top =
-                    containerScrollTop -
-                    (affixOffset.top +
-                        affixHeight +
-                        affixMode.offset -
-                        containerHeight);
+                    containerScrollTop - (affixOffset.top + affixHeight + affixMode.offset - containerHeight);
                 containerStyle.position = 'relative';
             } else {
                 affixStyle.position = 'fixed';
@@ -265,11 +265,7 @@ class Affix extends React.Component {
 
         return (
             <div ref={this._affixNodeRefHandler} style={combinedStyle}>
-                <div
-                    ref={this._affixChildNodeRefHandler}
-                    className={classNames}
-                    style={state.style}
-                >
+                <div ref={this._affixChildNodeRefHandler} className={classNames} style={state.style}>
                     {children}
                 </div>
             </div>
