@@ -161,6 +161,7 @@ describe('balloon v2', () => {
         //top
         const wrapperT = mount(
             <Balloon v2
+                autoAdjust={false}
                 trigger={<span>trigger</span>}
                 align="t"
                 triggerType="click"

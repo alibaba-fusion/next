@@ -35,6 +35,15 @@ describe('Tooltip v2', () => {
             node.parentNode.removeChild(node);
         });
     });
+    after(function() {
+        const nodeListArr = [].slice.call(
+            document.querySelectorAll('.next-overlay-wrapper')
+        );
+        nodeListArr.forEach((node, index) => {
+            node.parentNode.removeChild(node);
+        });
+    });
+
     // trigger不传,默认用空的<span></span>填充
     it('trigger default is span', () => {
         const wrapper = mount(<Tooltip v2>test</Tooltip>);
