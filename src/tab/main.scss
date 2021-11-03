@@ -22,6 +22,10 @@
     &-nav-container {
         position: relative;
         @include clearfix;
+        display: flex;
+        flex: auto;
+        align-items: center;
+        padding-right: 0% !important;
     }
 
     &-nav-wrap {
@@ -35,7 +39,7 @@
 
     &-scrollable #{$tab-prefix}-nav-scroll {
         overflow-x: auto;
-        overflow-y: hidden;
+        overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         &::-webkit-scrollbar {
             display: none !important;
@@ -125,8 +129,8 @@
     &-btn-down,
     &-btn-prev,
     &-btn-next {
-        position: absolute;
-        top: 0;
+        // position: absolute;
+        // top: 0;
         cursor: pointer;
         padding: 0;
         border: 0;

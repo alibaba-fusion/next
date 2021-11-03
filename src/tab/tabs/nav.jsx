@@ -521,8 +521,23 @@ class Nav extends React.Component {
         const navCls = `${prefix}tabs-nav`;
         const tabList = this.renderTabList(this.props);
 
+        // 改进用定位作extra问题（浮动会导致节点覆盖）
+        let extraBoolean = false;
+        let rtlBoolean = false;
+        if (extra) {
+            extraBoolean = true;
+            if (tabPosition === 'top' || tabPosition === 'bottom') {
+                rtlBoolean = rtl;
+            }
+        }
+
         const container = (
-            <div className={containerCls} onKeyDown={onKeyDown} key="nav-container">
+            <div style={{ paddingLeft: 0 }} className={containerCls} onKeyDown={onKeyDown} key="nav-container">
+                {extraBoolean && rtlBoolean && (
+                    <div style={{ order: 1 }} key={'nav-extra'}>
+                        {extra}
+                    </div>
+                )}
                 <div className={`${prefix}tabs-nav-wrap`} ref={this.wrapperRefHandler}>
                     <div className={`${prefix}tabs-nav-scroll`}>
                         {animation ? (
@@ -552,27 +567,11 @@ class Nav extends React.Component {
                 {prevButton}
                 {nextButton}
                 {restButton}
+                {extraBoolean && !rtlBoolean && <div key={'nav-extra'}>{extra}</div>}
             </div>
         );
 
         const navChildren = [container];
-
-        if (extra) {
-            const extraProps = {
-                className: `${prefix}tabs-nav-extra`,
-                key: 'nav-extra',
-            };
-            if (tabPosition === 'top' || tabPosition === 'bottom') {
-                const style = rtl ? floatLeft : floatRight;
-                navChildren.unshift(
-                    <div {...extraProps} style={style}>
-                        {extra}
-                    </div>
-                );
-            } else {
-                navChildren.push(<div {...extraProps}>{extra}</div>);
-            }
-        }
 
         const navbarCls = classnames(`${prefix}tabs-bar`, className);
 
