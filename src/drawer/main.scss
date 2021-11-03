@@ -53,6 +53,8 @@
         padding: $drawer-content-padding-top $drawer-content-padding-left-right $drawer-content-padding-bottom $drawer-content-padding-left-right;
         font-size: $drawer-content-font-size;
         color: $drawer-content-color;
+        flex: 1;
+        overflow-x: hidden;
     }
 
     &-close {
