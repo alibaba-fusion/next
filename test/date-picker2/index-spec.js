@@ -9,6 +9,7 @@ import Form from '../../src/form/index';
 import Field from '../../src/field/index';
 import { DATE_PICKER_MODE } from '../../src/date-picker2/constant';
 import { KEYCODE } from '../../src/util';
+import { delay } from '../util';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -600,7 +601,7 @@ describe('Picker', () => {
             assert.deepEqual(getStrValue(), ['2020-12-12 12:12:12', '2020-12-13 12:12:35']);
         });
 
-        it('RangePicker cell class names', done => {
+        it('RangePicker cell class names', async () => {
             wrapper = mount(<RangePicker defaultPanelValue={defaultVal} defaultVisible />);
 
             clickDate('2020-12-13');
@@ -613,20 +614,17 @@ describe('Picker', () => {
             assert(hasClassNames(findDate('2020-12-12'), 'next-calendar2-cell-disabled'));
 
             findDate('2020-12-15').simulate('mouseenter');
-            setTimeout(() => {
-                ['2020-12-13', '2020-12-14', '2020-12-15'].every(v =>
-                    assert(hasClassNames(findDate(v), 'next-calendar2-cell-hover'))
-                );
-                assert(hasClassNames(findDate('2020-12-15'), 'next-calendar2-cell-hover-end'));
+            await delay(20);
+            ['2020-12-13', '2020-12-14', '2020-12-15'].every(v =>
+                assert(hasClassNames(findDate(v), 'next-calendar2-cell-hover'))
+            );
+            assert(hasClassNames(findDate('2020-12-15'), 'next-calendar2-cell-hover-end'));
 
-                findDate('2020-12-15').simulate('mouseleave');
-                setTimeout(() => {
-                    ['2020-12-13', '2020-12-14', '2020-12-15'].every(v =>
-                        assert(!hasClassNames(findDate(v), 'next-calendar2-cell-hover'))
-                    );
-                    done();
-                });
-            });
+            findDate('2020-12-15').simulate('mouseleave');
+            await delay(20);
+            ['2020-12-13', '2020-12-14', '2020-12-15'].every(v =>
+                assert(!hasClassNames(findDate(v), 'next-calendar2-cell-hover'))
+            );
         });
 
         it('RangePicker panelValue', () => {
