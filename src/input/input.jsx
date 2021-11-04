@@ -95,8 +95,9 @@ export default class Input extends Base {
         renderPreview: PropTypes.func,
         /**
          * hover展示clear (配合 hasClear=true使用)
+         * @version 1.24
          */
-        hoverShowClear: PropTypes.func,
+        hoverShowClear: PropTypes.bool,
     };
 
     static defaultProps = {

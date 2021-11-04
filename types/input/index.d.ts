@@ -325,6 +325,11 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
      * 自动聚焦(原生input支持)
      */
     autoFocus?: boolean;
+    /**
+     * hover展示clear (配合 hasClear=true使用)
+     * @version 1.24
+     */
+    hoverShowClear?: boolean,
 }
 export interface PasswordProps extends InputProps {
     /**

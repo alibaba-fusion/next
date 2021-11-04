@@ -49,6 +49,7 @@ Form Input, use it with Form components usually.
 | addonTextAfter  | text appended  before input                              | ReactNode     | -         |
 | autoComplete    | require browser support                                            | String        | 'off'     |
 | autoFocus       | require browser support                         | Boolean       | -         |
+| hoverShowClear  | show clear while hover (use while hasClear=true)                                                                                                                                                                                                  | Boolean          | false     | 1.24 |
 
 ### Input.TextArea
 
