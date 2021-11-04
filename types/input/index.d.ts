@@ -127,7 +127,7 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
      */
     isPreview?: boolean;
 
-    renderPreview?: (value: string | number ) => React.ReactNode;
+    renderPreview?: (value: string | number) => React.ReactNode;
 }
 
 export class TextArea extends React.Component<TextAreaProps, any> {}
@@ -338,7 +338,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
      */
      isPreview?: boolean;
 
-    renderPreview?: (value: string | number ) => React.ReactNode;
+    renderPreview?: (value: string | number) => React.ReactNode;
 }
 export interface PasswordProps extends InputProps {
     /**

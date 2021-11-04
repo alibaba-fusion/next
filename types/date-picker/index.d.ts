@@ -2,7 +2,6 @@
 import { Moment } from 'moment';
 import * as React from 'react';
 import CommonProps from '../util';
-import { Dayjs } from 'dayjs';
 import { PopupProps } from '../overlay';
 import { InputProps } from '../input';
 
