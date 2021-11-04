@@ -131,8 +131,6 @@
         }
     }
 
-
-
     #{$input-prefix}-clear-icon, .#{$css-prefix}icon-eye, .#{$css-prefix}icon-eye-close {
         &:hover {
             cursor: pointer;
@@ -148,12 +146,20 @@
         }
     }
 
+    #{$input-prefix}-hover-show {
+        opacity: 0;
+    }
+
     &:hover, &.#{$css-prefix}focus {
         border-color: $input-hover-border-color;
         background-color: $input-hover-bg-color;
 
         #{$input-prefix}-clear {
             @include clear-icon-visible;
+        }
+
+        #{$input-prefix}-hover-show {
+            opacity: 1;
         }
     }
 

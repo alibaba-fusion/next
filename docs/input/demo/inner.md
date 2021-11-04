@@ -55,6 +55,14 @@ class App extends React.Component {
             /><br /><br />
 
             <Input
+                label="total"
+                innerAfter="¥"
+                placeholder="search"
+                value={this.state.v}
+                onChange={this.onChange}
+            /><br /><br />
+
+            <Input
                 disabled
                 defaultValue="hi"
                 innerAfter={<Icon type="calendar" style={{margin: 4}}/>}
