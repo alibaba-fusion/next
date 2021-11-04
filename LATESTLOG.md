@@ -1,12 +1,16 @@
 # Latest Log 
 
-## [1.24.13](https://github.com/alibaba-fusion/next/compare/1.24.12...1.24.13) (2021-11-03)
+## [1.24.14](https://github.com/alibaba-fusion/next/compare/1.24.13...1.24.14) (2021-11-04)
 
 
 ### Bug Fixes
 
-* **DatePicker2:** use flex-basis instead width to be compiable with safari, close [#3463](https://github.com/alibaba-fusion/next/issues/3463) ([b13021e](https://github.com/alibaba-fusion/next/commit/b13021e))
-* **Select:** select maxcount demo dataSource should string, close [#3462](https://github.com/alibaba-fusion/next/issues/3462) ([64f27ea](https://github.com/alibaba-fusion/next/commit/64f27ea))
-* **Select:** set innerAfter element line-height, close [#2830](https://github.com/alibaba-fusion/next/issues/2830) ([#3469](https://github.com/alibaba-fusion/next/issues/3469)) ([f5899a5](https://github.com/alibaba-fusion/next/commit/f5899a5))
+* **Affix:** container can update, close [#3473](https://github.com/alibaba-fusion/next/issues/3473) ([66e084f](https://github.com/alibaba-fusion/next/commit/66e084f))
+* **Input:** ts add isPreview and renderPreview, close [#3478](https://github.com/alibaba-fusion/next/issues/3478) ([74c664a](https://github.com/alibaba-fusion/next/commit/74c664a))
+
+
+### Features
+
+* **Input:** add hoverShowClear api to show clear icon only when hover, resolve [#3441](https://github.com/alibaba-fusion/next/issues/3441) ([aee2c67](https://github.com/alibaba-fusion/next/commit/aee2c67))
 
 
