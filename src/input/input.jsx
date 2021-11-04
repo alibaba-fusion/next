@@ -297,6 +297,7 @@ export default class Input extends Base {
         const innerAfterCls = classNames({
             [innerCls]: true,
             [`${prefix}after`]: true,
+            [`${prefix}input-inner-text`]: typeof innerAfter === 'string',
             [innerAfterClassName]: innerAfterClassName,
         });
         const previewCls = classNames({
