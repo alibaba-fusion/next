@@ -339,6 +339,11 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
      isPreview?: boolean;
 
     renderPreview?: (value: string | number) => React.ReactNode;
+    /**
+     * hover展示clear (配合 hasClear=true使用)
+     * @version 1.24
+     */
+    hoverShowClear?: boolean;
 }
 export interface PasswordProps extends InputProps {
     /**
