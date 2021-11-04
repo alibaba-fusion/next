@@ -596,7 +596,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
      */
     isPreview?: boolean;
 
-    renderPreview?: (value: Dayjs) => React.ReactNode;
+    renderPreview?: (value: any) => React.ReactNode;
 }
 
 export default class DatePicker extends React.Component<DatePickerProps, any> {
