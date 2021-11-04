@@ -67,11 +67,6 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
     dataSource?: Array<any>;
 
     /**
-     * value/defaultValue 在 dataSource 中不存在时，是否展示
-     */
-     preserveNonExistentValue?: boolean;
-
-    /**
      * 是否显示树的线
      */
     showLine?: boolean;

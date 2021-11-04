@@ -12,12 +12,12 @@ import {
     isDescendantOrSelf,
 } from '../tree/view/util';
 import { func, obj, KEYCODE } from '../util';
-import { getValueDataSource } from '../select/util';
+import { getValueDataSource, valueToSelectKey } from '../select/util';
 
 const noop = () => {};
 const { Node: TreeNode } = Tree;
 const { bindCtx } = func;
-const { pickOthers, isNil } = obj;
+const { pickOthers } = obj;
 
 const flatDataSource = props => {
     const _k2n = {};
@@ -172,11 +172,11 @@ class TreeSelect extends Component {
         /**
          * （受控）当前值
          */
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.any)]),
         /**
          * （非受控）默认值
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.any)]),
         /**
          * 选中值改变时触发的回调函数
          * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
@@ -322,11 +322,6 @@ class TreeSelect extends Component {
 
         const { defaultVisible, visible, defaultValue, value } = props;
 
-        this.valueDataSource = {
-            valueDS: [], // [{value,label}]
-            mapValueDS: {}, // {value: {value,label}}
-        };
-
         this.state = {
             visible: typeof visible === 'undefined' ? defaultVisible : visible,
             value: normalizeToArray(typeof value === 'undefined' ? defaultValue : value),
@@ -335,13 +330,17 @@ class TreeSelect extends Component {
             searchedKeys: [],
             retainedKeys: [],
             autoExpandParent: false,
+            // map of value => item, includes value not exist in dataSource
+            mapValueDS: {},
             ...flatDataSource(props),
         };
 
-        if (typeof this.state.value !== 'undefined') {
-            this.valueDataSource = getValueDataSource(this.state.value, this.valueDataSource.mapValueDS);
-
-            this.state.value = this.valueDataSource.value;
+        // init value/mapValueDS when defaultValue is not undefined
+        if (this.state.value !== undefined) {
+            this.state.mapValueDS = getValueDataSource(this.state.value, this.state.mapValueDS).mapValueDS;
+            this.state.value = this.state.value.map(v => {
+                return valueToSelectKey(v);
+            });
         }
 
         bindCtx(this, [
@@ -363,7 +362,13 @@ class TreeSelect extends Component {
         const st = {};
 
         if ('value' in props) {
-            st.value = normalizeToArray(props.value);
+            const valueArray = normalizeToArray(props.value);
+            // convert value to string[]
+            st.value = valueArray.map(v => {
+                return valueToSelectKey(v);
+            });
+            // re-calculate map
+            st.mapValueDS = getValueDataSource(props.value, state.mapValueDS).mapValueDS;
         }
         if ('visible' in props) {
             st.visible = props.visible;
@@ -424,6 +429,7 @@ class TreeSelect extends Component {
 
     getData(value, forSelect) {
         const { preserveNonExistentValue } = this.props;
+        const { mapValueDS } = this.state;
 
         const ret = value.reduce((ret, v) => {
             const k = this.state._v2n[v] && this.state._v2n[v].key;
@@ -442,7 +448,7 @@ class TreeSelect extends Component {
                 ret.push(d);
             } else if (preserveNonExistentValue) {
                 // 需要保留 dataSource 中不存在的 value
-                const item = this.valueDataSource.mapValueDS[v];
+                const item = mapValueDS[v];
                 if (item) {
                     ret.push(item);
                 }
@@ -542,7 +548,14 @@ class TreeSelect extends Component {
         const { treeCheckable, treeCheckStrictly, treeCheckedStrategy, onChange } = this.props;
 
         let value;
-        if (treeCheckable && !treeCheckStrictly && ['parent', 'all'].indexOf(treeCheckedStrategy) !== -1) {
+        if (
+            // there's linkage relationship among nodes
+            treeCheckable &&
+            !treeCheckStrictly &&
+            ['parent', 'all'].indexOf(treeCheckedStrategy) !== -1 &&
+            // value exits in datasource
+            this.state._v2n[removedValue]
+        ) {
             const removedPos = this.state._v2n[removedValue].pos;
             value = this.state.value.filter(v => {
                 const p = this.state._v2n[v].pos;
@@ -863,11 +876,7 @@ class TreeSelect extends Component {
             isPreview,
         } = this.props;
         const others = pickOthers(Object.keys(TreeSelect.propTypes), this.props);
-        const { visible } = this.state;
-
-        let value = this.state.value;
-
-        value = getValueDataSource(value, this.valueDataSource.mapValueDS).value || [];
+        const { visible, value } = this.state;
 
         // if (non-leaf 节点可选 & 父子节点选中状态需要联动)，需要额外计算父子节点间的联动关系
         const valueForSelect = treeCheckable && !treeCheckStrictly ? this.getValueForSelect(value) : value;
