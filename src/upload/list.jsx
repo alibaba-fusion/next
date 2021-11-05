@@ -43,9 +43,13 @@ class List extends Component {
          */
         onImageError: PropTypes.func,
         /**
-         * listType=card时点击图片回调
+         * 点击图片回调
          */
         onPreview: PropTypes.func,
+        /**
+         * 点击文件名时触发 onPreview
+         */
+        previewOnFileName: PropTypes.bool,
         /**
          * 自定义额外渲染
          */
@@ -89,9 +93,9 @@ class List extends Component {
         extraRender: func.noop,
         actionRender: func.noop,
         onImageError: func.noop,
-        onPreview: func.noop,
         progressProps: {},
         fileNameRender: file => file.name,
+        previewOnFileName: false,
     };
 
     componentDidUpdate() {
@@ -144,9 +148,15 @@ class List extends Component {
         this.props.onImageError(obj, file);
     };
 
-    onPreview = (file, e) => {
-        this.props.onPreview(file, e);
-    };
+    onPreview(file, e) {
+        const { onPreview } = this.props;
+
+        if (!onPreview) {
+            return;
+        }
+        // e.preventDefault();
+        return onPreview(file, e);
+    }
 
     getInfo(file) {
         const prefixCls = `${this.props.prefix}upload`;
@@ -185,7 +195,7 @@ class List extends Component {
         return `${fileSize}${suffix}`;
     }
     getTextList(file) {
-        const { locale, extraRender, actionRender, progressProps, rtl, fileNameRender } = this.props;
+        const { locale, extraRender, actionRender, progressProps, rtl, fileNameRender, previewOnFileName } = this.props;
 
         const { prefixCls, downloadURL, size, itemCls } = this.getInfo(file);
         const onClick = () => (file.state === 'uploading' ? this.handleCancel(file) : this.handleClose(file));
@@ -198,6 +208,7 @@ class List extends Component {
             <div className={itemCls} key={file.uid || file.name}>
                 <div className={`${prefixCls}-list-item-name-wrap`}>
                     <a
+                        onClick={previewOnFileName ? this.onPreview.bind(this, file) : func.noop}
                         href={downloadURL}
                         target="_blank"
                         style={{ pointerEvents: downloadURL ? '' : 'none' }}
@@ -245,7 +256,7 @@ class List extends Component {
     }
 
     getImageList(file) {
-        const { extraRender, actionRender, progressProps, rtl, fileNameRender } = this.props;
+        const { extraRender, actionRender, progressProps, rtl, fileNameRender, previewOnFileName } = this.props;
 
         const { prefixCls, downloadURL, imgURL, size, itemCls, alt } = this.getInfo(file);
 
@@ -291,6 +302,7 @@ class List extends Component {
                     ) : null}
                 </span>
                 <a
+                    onClick={previewOnFileName ? this.onPreview.bind(this, file) : func.noop}
                     href={downloadURL}
                     target="_blank"
                     style={{ pointerEvents: downloadURL ? '' : 'none' }}
