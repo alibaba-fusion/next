@@ -25,7 +25,6 @@
         display: flex;
         flex: auto;
         align-items: center;
-        padding-right: 0% !important;
     }
 
     &-nav-wrap {
@@ -129,8 +128,6 @@
     &-btn-down,
     &-btn-prev,
     &-btn-next {
-        // position: absolute;
-        // top: 0;
         cursor: pointer;
         padding: 0;
         border: 0;
@@ -193,7 +190,6 @@
             $tab-nav-tab-icon-size-m,
             $tab-nav-close-icon-size-m,
             $tab-nav-close-icon-padding-l-size-m,
-            $tab-nav-scroll-padding-right-m
         );
     }
 
@@ -205,7 +201,6 @@
             $tab-nav-tab-icon-size-s,
             $tab-nav-close-icon-size-s,
             $tab-nav-close-icon-padding-l-size-s,
-            $tab-nav-scroll-padding-right-s
         );
     }
 

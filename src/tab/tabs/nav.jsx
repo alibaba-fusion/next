@@ -522,18 +522,18 @@ class Nav extends React.Component {
         const tabList = this.renderTabList(this.props);
 
         // 改进用定位作extra问题（浮动会导致节点覆盖）
-        let extraBoolean = false;
-        let rtlBoolean = false;
+        let isExtra = false;
+        let isRtl = false;
         if (extra) {
-            extraBoolean = true;
+            isExtra = true;
             if (tabPosition === 'top' || tabPosition === 'bottom') {
-                rtlBoolean = rtl;
+                isRtl = rtl;
             }
         }
 
         const container = (
-            <div style={{ paddingLeft: 0 }} className={containerCls} onKeyDown={onKeyDown} key="nav-container">
-                {extraBoolean && rtlBoolean && (
+            <div className={containerCls} onKeyDown={onKeyDown} key="nav-container">
+                {isExtra && isRtl && (
                     <div style={{ order: 1 }} key={'nav-extra'}>
                         {extra}
                     </div>
@@ -567,7 +567,7 @@ class Nav extends React.Component {
                 {prevButton}
                 {nextButton}
                 {restButton}
-                {extraBoolean && !rtlBoolean && <div key={'nav-extra'}>{extra}</div>}
+                {isExtra && !isRtl && <div key={'nav-extra'}>{extra}</div>}
             </div>
         );
 
