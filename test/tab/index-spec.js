@@ -665,23 +665,5 @@ describe('Tab', () => {
             wrapper = null;
             target = null;
         });
-        it('should render extra content in left', () => {
-            wrapper = mount(
-                <Tab rtl extra={<span id="test-extra">hello</span>}>
-                    <Tab.Item title="Home" key="1">
-                        Home content
-                    </Tab.Item>
-                    <Tab.Item title="Documentation" key="2">
-                        Doc content
-                    </Tab.Item>
-                    <Tab.Item title="Help" key="3">
-                        Help Content
-                    </Tab.Item>
-                </Tab>,
-                { attachTo: target }
-            );
-            const el = wrapper.find('#test-extra').getDOMNode().parentElement;
-            assert(el.style.getPropertyValue('float') === 'left');
-        });
     });
 });
