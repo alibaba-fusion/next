@@ -94,7 +94,7 @@ export default class Tooltip extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            align: props.align,
+            align: props.placement || props.align,
             innerAlign: false,
         };
     }

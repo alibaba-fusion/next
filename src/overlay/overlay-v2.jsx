@@ -92,7 +92,7 @@ const Overlay2 = props => {
     );
 
     const wraperCls = classNames({
-        [`${prefix}overlay-wrapper`]: true,
+        [`${prefix}overlay-wrapper v2`]: true,
         [wrapperClassName]: wrapperClassName,
         opened: visible,
     });

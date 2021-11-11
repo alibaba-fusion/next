@@ -224,7 +224,9 @@ class Picker extends React.Component {
      * @param {string} type 事件类型
      */
     handleVisibleChange = (visible, type) => {
-        if (type === 'docClick') {
+        // 兼容 v2 overlay 写法
+        const targetType = typeof type === 'object' && type.targetType ? type.targetType : type;
+        if (targetType === 'docClick' || targetType === 'doc') {
             // 弹层收起 触发 Change 逻辑
             if (!visible) {
                 this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
