@@ -112,9 +112,26 @@ const createContents = (array = []) => {
     });
 };
 
+const _propsValue = ({ shape, level, size, data, ...others}) => {
+    const list = parseData(data, { parseContent: true });
+    const buttonItem = list[0] ? list[0] : { value: []};
+    
+    return {
+        ...others,
+        size,
+        disabled: buttonItem.state === 'disabled',
+        visible: buttonItem.state === 'active',
+        type: shape === 'ghost' ? 'normal' : level,
+        popupProps: { needAdjust: false },
+        ghost: shape === 'ghost' ? level : false,
+        selectMode: "multiple",
+    };
+};
+
 export default {
     name: 'MenuButton',
     shape: ['normal', 'text', 'ghost'],
+    propsValue: _propsValue,
     editor: (shape = 'normal') => ({
         props: [{
             name: 'level',
@@ -148,17 +165,12 @@ export default {
             return value;
         });
 
+        const props = _propsValue({ shape, level, size, data, ...others});
+
         return (
             <MenuButton
-                {...others}
-                size={size}
-                disabled={buttonItem.state === 'disabled'}
-                visible={buttonItem.state === 'active'}
-                type={shape === 'ghost' ? 'normal' : level}
-                popupProps={{ needAdjust: false }}
+                {...props}
                 popupContainer={node => node}
-                ghost={shape === 'ghost' ? level : false}
-                selectMode="multiple"
                 text={shape === 'text'}
                 menuProps={{ openKeys: keys.expanded, style: { textAlign: 'left' } }}
                 selectedKeys={keys.selected}
