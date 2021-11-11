@@ -1,8 +1,8 @@
 const path = require('path');
 const fs = require('fs-extra');
 const glob = require('glob');
-const babel = require('babel-core');
-const babelConfigCreator = require('@alifd/babel-preset-next');
+const babel = require('@babel/core');
+const babelConfigCreator = require('../utils/babel7-preset-next.js');
 const { logger } = require('../utils');
 
 module.exports = function transform() {
@@ -20,10 +20,7 @@ module.exports = function transform() {
 
     const relativePaths = glob.sync('**/*.*', { cwd: srcPath });
     relativePaths.forEach(relaticePath => {
-        const content = fs.readFileSync(
-            path.join(srcPath, relaticePath),
-            'utf8'
-        );
+        const content = fs.readFileSync(path.join(srcPath, relaticePath), 'utf8');
         let libContent, esContent;
         libContent = esContent = content;
         if (PATTERN_ES6.test(relaticePath)) {

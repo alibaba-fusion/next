@@ -17,10 +17,10 @@ DemoPlugin.prototype.apply = function(compiler) {
 
     compiler.plugin('emit', (compilation, callback) => {
         const assets = compilation.assets;
-
         // cache common
         const commons = {};
-        compilation.namedChunks[commonName].files.forEach(file => {
+
+        compilation.namedChunks.get(commonName).files.forEach(file => {
             if (path.extname(file) === '.js') {
                 commons.js = this._cut(file, assets);
             } else if (path.extname(file) === '.css') {
@@ -29,7 +29,7 @@ DemoPlugin.prototype.apply = function(compiler) {
         });
 
         // every chunk create a html & delete no used files
-        _.forEach(compilation.namedChunks, (chunk, name) => {
+        compilation.namedChunks.forEach((chunk, name) => {
             if (name === commonName) {
                 return;
             }
@@ -39,10 +39,7 @@ DemoPlugin.prototype.apply = function(compiler) {
                 chunk: chunk,
             });
             const files = chunk.files;
-            const js = this._cut(
-                _.find(files, file => path.extname(file) === '.js'),
-                assets
-            );
+            const js = this._cut(_.find(files, file => path.extname(file) === '.js'), assets);
 
             assets[pathname] = {
                 source: () => {

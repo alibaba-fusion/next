@@ -5,10 +5,12 @@ const webpack = require('webpack');
 const getConfig = require('../webpack/dev');
 const loaders = require('../webpack/loaders');
 const { parseMD } = require('../utils');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const babelConfig = require('@alifd/babel-preset-next')({ runtime: true });
+const { getBabelConfig } = require('build-scripts-config');
 
-babelConfig.babelrc = false;
+const babelConfig = getBabelConfig();
+
 const babelLoader = loaders.js(babelConfig);
 const loadersPath = path.join(__dirname, 'loaders');
 const cwd = process.cwd();
@@ -23,10 +25,14 @@ module.exports = function getWebpackConfig(options) {
     const adaptorPaths = glob.sync(path.resolve(componentPath, 'adaptor/*.jsx'));
     const entry = getEntry([indexPath, ...demoPaths, ...themePaths, ...adaptorPaths], componentName, mode);
     config.entry = entry;
+    config.mode = 'development';
 
     config.output = {
+        path: path.resolve(__dirname, '/'),
         publicPath: '/',
-        filename: '[name].js',
+        filename: pathData => {
+            return '[name].js';
+        },
     };
 
     config.resolveLoader = {
@@ -145,13 +151,26 @@ module.exports = function getWebpackConfig(options) {
         ],
     });
 
-    config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
-    config.plugins.push(
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common',
-            chunks: Object.keys(entry).filter(entryPath => !/docs\/[^/]+\/index\.((en-us)\.)?$/.test(entryPath)),
+    config.plugins.unshift(
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
         })
     );
+    config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
+
+    config.plugins.unshift(new MiniCssExtractPlugin());
+
+    config.optimization = {
+        splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+                common: {
+                    name: 'common',
+                    chunks: 'all',
+                },
+            },
+        },
+    };
 
     config.externals = {
         react: 'var window.React',
@@ -165,7 +184,7 @@ module.exports = function getWebpackConfig(options) {
 function getEntry(entryPaths, componentName, mode) {
     const entry = entryPaths.reduce((ret, entryPath) => {
         const name = path.basename(entryPath, path.extname(entryPath));
-        const pathWithoutExt = path.join(path.dirname(entryPath), name);
+        const entryName = path.join(path.dirname(path.relative(process.cwd(), entryPath)), name);
         let cssArr = [];
         // 通过 mode 判断引入的样式文件
         if (mode === 'css') {
@@ -177,8 +196,9 @@ function getEntry(entryPaths, componentName, mode) {
         } else if (componentName !== 'core') {
             cssArr = [path.join(process.cwd(), 'src', componentName, 'style.js')];
         }
-        ret[pathWithoutExt] = [
-            'react-dev-utils/webpackHotDevClient',
+
+        ret[entryName] = [
+            'webpack/hot/dev-server',
             // css var should only be included once.
             // import it from 'src/core/index-noreset.scss'
             // will produce many duplicates,

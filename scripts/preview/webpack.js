@@ -6,8 +6,11 @@ const getConfig = require('../webpack/dev');
 const loaders = require('../webpack/loaders');
 const { parseMD } = require('../utils');
 const _ = require('lodash');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const babelConfig = getWebpackPreset({ runtime: true });
+const { getBabelConfig } = require('build-scripts-config');
+
+const babelConfig = getBabelConfig();
 
 babelConfig.babelrc = false;
 const babelLoader = loaders.js(babelConfig);
@@ -23,10 +26,14 @@ module.exports = function getWebpackConfig(options) {
 
     const entry = getEntry([indexPath], componentName, mode);
     config.entry = entry;
+    config.mode = 'development';
 
     config.output = {
+        path: path.resolve(__dirname, '/'),
         publicPath: '/',
-        filename: '[name].js',
+        filename: pathData => {
+            return '[name].js';
+        },
     };
 
     config.resolveLoader = {
@@ -66,12 +73,25 @@ module.exports = function getWebpackConfig(options) {
     });
 
     config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
-    config.plugins.push(
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common',
-            chunks: Object.keys(entry).filter(entryPath => !/docs\/[^/]+\/index\.((en-us)\.)?$/.test(entryPath)),
+    config.plugins.unshift(
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
         })
     );
+
+    config.plugins.unshift(new MiniCssExtractPlugin());
+
+    config.optimization = {
+        splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+                common: {
+                    name: 'common',
+                    chunks: 'all',
+                },
+            },
+        },
+    };
 
     config.externals = {
         react: 'var window.React',
@@ -85,19 +105,21 @@ module.exports = function getWebpackConfig(options) {
 function getEntry(entryPaths, componentName, mode) {
     const entry = entryPaths.reduce((ret, entryPath) => {
         const name = path.basename(entryPath, path.extname(entryPath));
-        const pathWithoutExt = path.join(path.dirname(entryPath), name);
+        const entryName = path.join(path.dirname(path.relative(process.cwd(), entryPath)), name);
         let cssArr = [];
-        // preview 不需要next样式默认值
         // 通过 mode 判断引入的样式文件
-        // if (mode === 'css') {
-        //     cssArr = [
-        //         path.join(process.cwd(), 'lib', componentName, 'variable.css'),
-        //         path.join(process.cwd(), 'lib', componentName, 'style2.js'),
-        //         path.join(process.cwd(), 'lib', 'core2', 'index.css'),
-        //     ];
-        // } else cssArr = [path.join(process.cwd(), 'src', componentName, 'style.js')];
-        ret[pathWithoutExt] = [
-            'react-dev-utils/webpackHotDevClient',
+        if (mode === 'css') {
+            cssArr = [
+                path.join(process.cwd(), 'lib', componentName, 'variable.css'),
+                path.join(process.cwd(), 'lib', componentName, 'style2.js'),
+                path.join(process.cwd(), 'lib', 'core2', 'index.css'),
+            ];
+        } else if (componentName !== 'core') {
+            cssArr = [path.join(process.cwd(), 'src', componentName, 'style.js')];
+        }
+
+        ret[entryName] = [
+            'webpack/hot/dev-server',
             // css var should only be included once.
             // import it from 'src/core/index-noreset.scss'
             // will produce many duplicates,
@@ -133,7 +155,6 @@ function getLinks(demoPaths) {
     }, {});
     const orderedDemoPaths = demoPaths.sort((prev, next) => demoOrders[prev] - demoOrders[next]);
     return orderedDemoPaths.map(demoPath => {
-        // TODO change to anchor
         const href = path.relative(path.join(cwd, 'docs'), demoPath).replace(/\.md$/, '.html');
         let title = (demoMetas[demoPath] || {}).title;
         if (!title) {
@@ -142,34 +163,4 @@ function getLinks(demoPaths) {
 
         return { href, title, filename: path.basename(demoPath, '.md') };
     });
-}
-
-function getWebpackPreset(context, options) {
-    options = options || {};
-
-    const preset = {
-        presets: [
-            require('babel-preset-react'),
-            [require('babel-preset-env'), { modules: options.modules, loose: true }],
-            require('babel-preset-stage-0'),
-        ],
-        plugins: [
-            require('babel-plugin-transform-react-es6-displayname'),
-            require('babel-plugin-transform-decorators-legacy').default,
-        ],
-    };
-    if (options.runtime) {
-        preset.plugins.unshift([
-            require('babel-plugin-transform-runtime'),
-            {
-                polyfill: false,
-                regenerator: false,
-            },
-        ]);
-    }
-    if (typeof options.modules === 'undefined' || options.modules) {
-        preset.plugins.push(require('babel-plugin-add-module-exports'));
-    }
-
-    return preset;
 }

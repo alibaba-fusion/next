@@ -30,12 +30,23 @@ module.exports = function(options) {
         'react-dom': 'var window.ReactDOM',
         moment: 'var window.moment',
     };
-    config.plugins.push(
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'commons',
-            chunks: Object.keys(entry),
-        })
-    );
+    config.optimization = {
+        splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+                common: {
+                    name: 'commons',
+                    chunks: 'all',
+                },
+            },
+        },
+    };
+    // config.plugins.push(
+    //     new webpack.optimize.CommonsChunkPlugin({
+    //         name: 'commons',
+    //         chunks: Object.keys(entry),
+    //     })
+    // );
     config.plugins.push(
         new DemoPlugin({
             commonName: 'commons',
