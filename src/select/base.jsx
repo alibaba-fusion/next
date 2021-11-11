@@ -312,12 +312,15 @@ export default class Base extends React.Component {
     }
 
     setFirstHightLightKeyForMenu() {
+        // 如果有value or highlightKey不应该执行自动高亮第一个元素
+        const { value, highlightKey } = this.state;
+
         if (!this.props.autoHighlightFirstItem) {
             return;
         }
 
         // 设置高亮 item key
-        if (this.dataStore.getMenuDS().length && this.dataStore.getEnableDS().length) {
+        if (this.dataStore.getMenuDS().length && this.dataStore.getEnableDS().length && !value && !highlightKey) {
             const highlightKey = `${this.dataStore.getEnableDS()[0].value}`;
             this.setState({
                 highlightKey,
