@@ -583,8 +583,7 @@ export default class Base extends React.Component {
     }
 
     beforeOpen() {
-        const { value, highlightKey } = this.state;
-        if (this.props.mode === 'single' && !value && !highlightKey) {
+        if (this.props.mode === 'single') {
             this.setFirstHightLightKeyForMenu();
         }
         this.syncWidth();
