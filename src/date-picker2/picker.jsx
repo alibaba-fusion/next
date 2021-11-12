@@ -101,6 +101,7 @@ class Picker extends React.Component {
     static defaultProps = {
         rtl: false,
         prefix: 'next-',
+        popupTriggerType: 'click',
         locale: defaultLocale.DatePicker,
         defaultVisible: false,
         type: DATE_PICKER_TYPE.DATE,
@@ -224,9 +225,9 @@ class Picker extends React.Component {
      * @param {string} type 事件类型
      */
     handleVisibleChange = (visible, type) => {
-        // 兼容 v2 overlay 写法
+        // 兼容 v2 overlay e.targetType 写法, trigger/doc
         const targetType = typeof type === 'object' && type.targetType ? type.targetType : type;
-        if (targetType === 'docClick' || targetType === 'doc') {
+        if (['docClick', 'fromTrigger', 'trigger', 'doc'].indexOf(targetType) > -1) {
             // 弹层收起 触发 Change 逻辑
             if (!visible) {
                 this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
@@ -438,7 +439,6 @@ class Picker extends React.Component {
         const { visible, inputType } = this.state;
 
         if (!visible) {
-            this.onVisibleChange(true);
             this.handleInputFocus(inputType);
         }
     };

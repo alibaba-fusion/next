@@ -23,7 +23,8 @@ export default class FixedHeader extends React.Component {
         this.context.getNode('header', findDOMNode(this));
     }
 
-    //  这里的 style={{overflow: 'unset'}} 可以删掉，只是为了解决用户js升级但是样式没升级的情况
+    // 这里的 style={{overflow: 'unset'}} 可以删掉，只是为了解决用户js升级但是样式没升级的情况
+    // 这里的 style={{position: 'absolute', right: 0}} 也可以删掉，是为了兼容用户js升级但是样式没升级的情况
     render() {
         const { prefix, className, colGroup, tableWidth, ...others } = this.props;
         const { onFixedScrollSync, lockType } = this.context;
@@ -36,7 +37,9 @@ export default class FixedHeader extends React.Component {
                         <HeaderComponent {...others} prefix={prefix} />
                     </table>
                 </div>
-                {!lockType && <div className={`${prefix}table-header-fixer`} />}
+                {!lockType && (
+                    <div className={`${prefix}table-header-fixer`} style={{ position: 'absolute', right: 0 }} />
+                )}
             </div>
         );
     }

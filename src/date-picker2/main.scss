@@ -92,6 +92,7 @@
         border: $input-border-width solid $input-border-color;
         vertical-align: middle;
         width: inherit;
+        background-color: $input-bg-color;
 
         #{$input-prefix} {
             border: none;
@@ -99,6 +100,7 @@
             height: 100%;
             input {
                 height: 100%;
+                width: auto;
             }
         }
 
@@ -162,6 +164,7 @@
     &-input-separator {
         color: $input-border-color;
         font-size: 12px;
+        line-height: 12px;
         display: inline-block;
         min-width: 16px;
         text-align: center;

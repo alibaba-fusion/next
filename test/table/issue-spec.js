@@ -1133,4 +1133,42 @@ describe('Issue', () => {
             }, 100);
         });
     });
+    it('Different sorts have different className of table header , close #3386', done => {
+
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        class App extends React.Component {
+            render() {
+                return (
+                    <Table
+                        dataSource={dataSource}
+                    >
+                        <Table.Column dataIndex="id" sortable/>
+                        <Table.Column dataIndex="name" />
+                    </Table>
+                );
+            }
+        }
+
+        ReactDOM.render(<App />, container, function() {
+            const input = container.querySelector(
+                '.next-table-header .next-table-sort'
+            );
+            input.click();
+            setTimeout(() => {
+                assert(
+                    document.querySelectorAll(`.next-table-header-node.next-table-header-sort-desc`).length === 1
+                );
+                input.click();
+                setTimeout(() => {
+                    assert(
+                        document.querySelectorAll(`.next-table-header-node.next-table-header-sort-asc`).length === 1
+                    );
+                    ReactDOM.unmountComponentAtNode(container);
+                    document.body.removeChild(container);
+                    done();
+                }, 10);
+            }, 10);
+        });
+    });
 });

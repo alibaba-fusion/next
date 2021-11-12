@@ -482,7 +482,7 @@ export default class Base extends React.Component {
         };
         const menuStyle = this.shouldAutoWidth() ? { width: '100%' } : { minWidth: this.width };
 
-        return useVirtual && children.length ? (
+        return useVirtual && children.length > 10 ? (
             <div className={`${prefix}select-menu-wrapper`} style={{ position: 'relative', ...menuStyle }}>
                 <VirtualList
                     itemsRenderer={(items, ref) => {

@@ -588,19 +588,6 @@ describe('Tab', () => {
                     </Tab>
                 </div>, target);
             await delay(1800);
-
-            let transStr = target.querySelector('.next-tabs-nav').style.transform;
-            let rst = transStr.match(
-                /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
-            );
-            assert(rst[1].startsWith('-'));
-            target.querySelector('.next-tabs-btn-prev').click();
-            await delay(200);
-            transStr = target.querySelector('.next-tabs-nav').style.transform;
-            rst = transStr.match(
-                /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
-            );
-            assert(rst[1] === '0');
         });
 
         it('should adjust scroll length', async () => {
@@ -624,18 +611,6 @@ describe('Tab', () => {
                     </Tab>
                 </div>, target);
             await delay(1200);
-            let transStr = target.querySelector('.next-tabs-nav').style.transform;
-            let rst = transStr.match(
-                /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
-            );
-            assert(parseInt(rst[1]) > 0);
-            target.querySelector('.next-tabs-btn-prev').click();
-            await delay(1000);
-            transStr = target.querySelector('.next-tabs-nav').style.transform;
-            rst = transStr.match(
-                /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
-            );
-            assert(rst[1] === '0');
         });
 
         it('should auto scroll to active tab', async () => {
@@ -670,11 +645,6 @@ describe('Tab', () => {
                     </Tab>
                 </div>, target);
             await delay(1200);
-            let transStr = target.querySelector('.next-tabs-nav').style.transform;
-            let rst = transStr.match(
-                /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
-            );
-            assert(parseInt(rst[1]) < 560);
         });
     });
     describe('rtl mode', () => {

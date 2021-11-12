@@ -112,8 +112,8 @@ const Dialog = props => {
         }
     }, [visible && hasMask]);
 
-    const handleClose = (triggerType, e) => {
-        e.triggerType = triggerType;
+    const handleClose = (targetType, e) => {
+        e.targetType = targetType;
         typeof onClose === 'function' && onClose(e);
     };
 
@@ -175,8 +175,8 @@ const Dialog = props => {
             }
         }
 
-        e.triggerType = 'mask';
-        handleClose(e.triggerType, e);
+        e.targetType = 'mask';
+        handleClose(e.targetType, e);
     };
 
     const handleEnter = () => {

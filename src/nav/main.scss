@@ -233,6 +233,9 @@ $nav-icononly-width: 58px;
             $nav-primary-sub-nav-selected-text-color,
             $nav-primary-sub-nav-active-color
         );
+        @include nav-disabled-statement(
+            $nav-primary-item-disabled-text-color
+        );
     }
 
     &.#{$css-prefix}secondary {
@@ -272,6 +275,9 @@ $nav-icononly-width: 58px;
             $nav-secondary-sub-nav-selected-text-color,
             $nav-secondary-sub-nav-active-color
         );
+        @include nav-disabled-statement(
+            $nav-secondary-item-disabled-text-color
+        );
     }
 
     &.#{$css-prefix}normal {
@@ -306,6 +312,9 @@ $nav-icononly-width: 58px;
             $nav-normal-sub-nav-selected-bg-color,
             $nav-normal-sub-nav-selected-text-color,
             $nav-normal-sub-nav-active-color
+        );
+        @include nav-disabled-statement(
+            $nav-normal-item-disabled-text-color
         );
     }
 
@@ -353,6 +362,9 @@ $nav-icononly-width: 58px;
             $nav-line-sub-nav-selected-bg-color,
             $nav-line-sub-nav-selected-text-color,
             $nav-line-sub-nav-active-color
+        );
+        @include nav-disabled-statement(
+            $nav-line-item-disabled-text-color
         );
     }
 

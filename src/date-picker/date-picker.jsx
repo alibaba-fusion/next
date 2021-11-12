@@ -89,7 +89,7 @@ class DatePicker extends Component {
         onChange: PropTypes.func,
         /**
          * 点击确认按钮时的回调
-         * @return {MomentObject|String} 日期值
+         * @param {MomentObject|String} value 日期值
          */
         onOk: PropTypes.func,
         /**

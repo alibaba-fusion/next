@@ -132,7 +132,7 @@ export default class Input extends Base {
     }
 
     renderControl() {
-        const { hasClear, readOnly, state, prefix, hint, extra, locale } = this.props;
+        const { hasClear, readOnly, state, prefix, hint, extra, locale, disabled } = this.props;
 
         const lenWrap = this.renderLength();
 
@@ -146,7 +146,8 @@ export default class Input extends Base {
         }
 
         let clearWrap = null;
-        const showClear = hasClear && !readOnly && !!`${this.state.value}`;
+        // showClear属性应该与disable属性为互斥状态
+        const showClear = hasClear && !readOnly && !!`${this.state.value}` && !disabled;
 
         if (hint || showClear) {
             let hintIcon = null;
@@ -199,7 +200,7 @@ export default class Input extends Base {
         }
 
         return clearWrap || lenWrap || stateWrap || extra ? (
-            <span className={`${prefix}input-control`}>
+            <span onClick={() => this.focus()} className={`${prefix}input-control`}>
                 {clearWrap}
                 {lenWrap}
                 {stateWrap}

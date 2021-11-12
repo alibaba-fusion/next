@@ -16,7 +16,7 @@ When there is a overlay nesting requirement, use the container property to rende
 
 ````jsx
 import { useState } from 'react';
-import { Overlay, Button, Select, Switch, Balloon, DatePicker, DatePicker2, Table } from '@alifd/next';
+import { Overlay, Button, Select, Switch, Balloon, DatePicker, DatePicker2, TimePicker2 } from '@alifd/next';
 
 const { Popup } = Overlay;
 const { Tooltip } = Balloon;
@@ -60,6 +60,8 @@ const Demo = () => {
                 />
                 <DatePicker2 popupProps={{v2: true}} style={{width: 120, marginLeft: 10}}/>
                 <DatePicker2.RangePicker popupProps={{v2: true}} style={{width: 220, marginLeft: 10}}/>
+                <TimePicker2 popupProps={{v2: true}} style={{width: 220, marginLeft: 10}}/>
+                
             </div>
         </Popup>
     </div>);

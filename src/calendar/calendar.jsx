@@ -155,7 +155,6 @@ class Calendar extends Component {
         };
     }
 
-
     static getDerivedStateFromProps(props, state) {
         const st = {};
         if ('value' in props) {
@@ -174,7 +173,11 @@ class Calendar extends Component {
     }
 
     onSelectCell = (date, nextMode) => {
-        const { shape } = this.props;
+        const { shape, showOtherMonth } = this.props;
+
+        if (!showOtherMonth) {
+            return;
+        }
 
         this.changeVisibleMonth(date, 'cellClick');
 
@@ -189,11 +192,7 @@ class Calendar extends Component {
     };
 
     changeMode = nextMode => {
-        if (
-            nextMode &&
-            this.MODES.indexOf(nextMode) > -1 &&
-            nextMode !== this.state.mode
-        ) {
+        if (nextMode && this.MODES.indexOf(nextMode) > -1 && nextMode !== this.state.mode) {
             this.setState({ mode: nextMode });
             this.props.onModeChange(nextMode);
         }
@@ -280,10 +279,7 @@ class Calendar extends Component {
             visibleMonth.locale(locale.momentLocale);
         }
 
-        const localeData = getLocaleData(
-            locale.format || {},
-            visibleMonth.localeData()
-        );
+        const localeData = getLocaleData(locale.format || {}, visibleMonth.localeData());
 
         const headerProps = {
             prefix,
@@ -323,23 +319,9 @@ class Calendar extends Component {
         };
 
         const tables = {
-            [CALENDAR_MODE_DATE]: (
-                <DateTable
-                    format={format}
-                    {...tableProps}
-                    onSelectDate={this.onSelectCell}
-                />
-            ),
-            [CALENDAR_MODE_MONTH]: (
-                <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />
-            ),
-            [CALENDAR_MODE_YEAR]: (
-                <YearTable
-                    {...tableProps}
-                    rtl={rtl}
-                    onSelectYear={this.onSelectCell}
-                />
-            ),
+            [CALENDAR_MODE_DATE]: <DateTable format={format} {...tableProps} onSelectDate={this.onSelectCell} />,
+            [CALENDAR_MODE_MONTH]: <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />,
+            [CALENDAR_MODE_YEAR]: <YearTable {...tableProps} rtl={rtl} onSelectYear={this.onSelectCell} />,
         };
 
         const panelHeaders = {
@@ -349,15 +331,8 @@ class Calendar extends Component {
         };
 
         return (
-            <div
-                {...obj.pickOthers(Calendar.propTypes, others)}
-                className={classNames}
-            >
-                {shape === 'panel' ? (
-                    panelHeaders[state.mode]
-                ) : (
-                    <CardHeader {...headerProps} />
-                )}
+            <div {...obj.pickOthers(Calendar.propTypes, others)} className={classNames}>
+                {shape === 'panel' ? panelHeaders[state.mode] : <CardHeader {...headerProps} />}
                 {tables[state.mode]}
             </div>
         );

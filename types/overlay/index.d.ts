@@ -166,9 +166,9 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     defaultVisible?: boolean;
 
     /**
-     * 弹层显示或隐藏时触发的回调函数
+     * 弹层显示或隐藏时触发的回调函数, v2 版本第二个参数是 event
      */
-    onVisibleChange?: (visible: boolean, type: string, e: {}) => void;
+    onVisibleChange?: (visible: boolean, type: string | object, e?: {}) => void;
 
     /**
      * 设置此属性，弹层无法显示或隐藏
@@ -209,9 +209,9 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
     visible?: boolean;
 
     /**
-     * 弹层请求关闭时触发事件的回调函数
+     * 弹层请求关闭时触发事件的回调函数, v2 版本第一个参数是 event
      */
-    onRequestClose?: (type: string, e: React.MouseEvent) => void;
+    onRequestClose?: (type: string | object, e: React.MouseEvent) => void;
 
     /**
      * 弹层定位的参照元素
