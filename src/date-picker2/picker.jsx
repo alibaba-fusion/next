@@ -630,6 +630,7 @@ class Picker extends React.Component {
                 {...pickOthers(Picker.propTypes, restProps)}
                 dir={rtl ? 'rtl' : undefined}
                 className={classnames(className, prefixCls)}
+                style={this.props.style}
             >
                 <PopupComp
                     rtl={rtl}
@@ -642,7 +643,7 @@ class Picker extends React.Component {
                     style={popupStyle}
                     onVisibleChange={handleVisibleChange}
                     trigger={
-                        <div {...triggerProps} role="button" tabIndex="0" style={this.props.style}>
+                        <div {...triggerProps} role="button" tabIndex="0" style={{ width: '100%' }}>
                             {triggerNode}
                         </div>
                     }
