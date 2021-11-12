@@ -16,31 +16,74 @@ simple usage, has clear, show search
 ````jsx
 import { Select } from '@alifd/next';
 
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-
 const Option = Select.Option;
 
-const Demo = () => {
-  const [value, setValue] = useState('jack');
-  return <div>
+const onChange = function (value) {
+    console.log(value);
+};
+
+const onToggleHighlightItem = function (item, type) {
+    console.log(item, type);
+};
+
+const onFocus = () => {
+  console.log('focus');
+};
+
+const onBlur = () => {
+  console.log('blur');
+};
+
+ReactDOM.render(
+  <div>
     <Select
-      value={value}
-      onChange={(value) => {
-        setValue(value);
-      }}
-      style={{ marginRight: 8 }}
+      id="basic-demo"
+      onChange={onChange}
+      onToggleHighlightItem={onToggleHighlightItem}
+      defaultValue="jack"
+      onFocus={onFocus}
+      onBlur={onBlur}
+      aria-label="name is"
+      style={{marginRight: 8}}
     >
       <Option value="jack">Jack</Option>
       <Option value="frank">Frank</Option>
       <Option value="hugo">Hugo</Option>
     </Select>
-  </div>
-}
 
-ReactDOM.render(
-  <Demo />,
+
+    <Select
+      defaultValue="clear"
+      hasClear
+      style={{marginRight: 8}}
+    >
+      <Option value="jack">Jack</Option>
+      <Option value="frank">Frank</Option>
+      <Option value="clear">clear</Option>
+    </Select>
+
+    <Select
+      placeholder="show search"
+      showSearch
+      hasClear
+      style={{marginRight: 8}}
+    >
+      <Option value="jack">Jack</Option>
+      <Option value="frank">Frank</Option>
+      <Option value="hugo">Hugo</Option>
+    </Select>
+
+    <Select
+      disabled
+      defaultValue="frank"
+      style={{marginRight: 8}}
+    >
+      <Option value="jack">Jack</Option>
+      <Option value="frank">Frank</Option>
+      <Option value="hugo">Hugo</Option>
+    </Select>
+
+  </div>,
   mountNode
 );
-
 ````
