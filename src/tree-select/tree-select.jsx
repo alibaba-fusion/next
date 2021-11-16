@@ -182,12 +182,15 @@ class TreeSelect extends Component {
         onChange: PropTypes.func,
         /**
          * 是否一行显示，仅在 multiple 和 treeCheckable 为 true 时生效
+         * @version 1.25
          */
         tagInline: PropTypes.bool,
         /**
          * 隐藏多余 tag 时显示的内容，在 tagInline 生效时起作用
          * @param {Object[]} selectedValues 当前已选中的元素
          * @param {Object[]} totalValues 总待选元素
+         * @returns {reactNode}
+         * @version 1.25
          */
         maxTagPlaceholder: PropTypes.func,
         /**
