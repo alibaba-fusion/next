@@ -192,7 +192,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface SelectProps extends HTMLAttributesWeak, CommonProps {
+export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, CommonProps {
     /**
      * 选择器尺寸
      */

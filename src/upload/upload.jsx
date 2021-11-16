@@ -184,6 +184,11 @@ class Upload extends Base {
          * @return {Node} react node
          */
         actionRender: PropTypes.func,
+        /**
+         * 点击文件名时触发 onPreview
+         * @version 1.24
+         */
+        previewOnFileName: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -201,6 +206,7 @@ class Upload extends Base {
         onDrop: noop,
         beforeUpload: noop,
         afterSelect: noop,
+        previewOnFileName: false,
     };
 
     constructor(props) {
@@ -521,6 +527,7 @@ class Upload extends Base {
             fileKeyName = name,
             fileNameRender,
             actionRender,
+            previewOnFileName,
             ...others
         } = this.props;
 
@@ -612,6 +619,7 @@ class Upload extends Base {
                         onPreview={onPreview}
                         extraRender={extraRender}
                         rtl={rtl}
+                        previewOnFileName={previewOnFileName}
                     />
                 ) : null}
             </div>

@@ -93,6 +93,11 @@ export default class Input extends Base {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
+        /**
+         * hover展示clear (配合 hasClear=true使用)
+         * @version 1.24
+         */
+        hoverShowClear: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -100,6 +105,7 @@ export default class Input extends Base {
         autoComplete: 'off',
         hasBorder: true,
         isPreview: false,
+        hoverShowClear: false,
         onPressEnter: func.noop,
         inputRender: el => el,
     };
@@ -132,7 +138,7 @@ export default class Input extends Base {
     }
 
     renderControl() {
-        const { hasClear, readOnly, state, prefix, hint, extra, locale, disabled } = this.props;
+        const { hasClear, readOnly, state, prefix, hint, extra, locale, disabled, hoverShowClear } = this.props;
 
         const lenWrap = this.renderLength();
 
@@ -162,12 +168,17 @@ export default class Input extends Base {
                     hintIcon = hint;
                 }
             } else {
+                const cls = classNames({
+                    [`${prefix}input-hint`]: true,
+                    [`${prefix}input-clear-icon`]: true,
+                    [`${prefix}input-hover-show`]: hoverShowClear,
+                });
                 hintIcon = (
                     <Icon
                         type="delete-filling"
                         role="button"
                         tabIndex="0"
-                        className={`${prefix}input-hint ${prefix}input-clear-icon`}
+                        className={cls}
                         aria-label={locale.clear}
                         onClick={this.onClear.bind(this)}
                         onMouseDown={preventDefault}
@@ -297,6 +308,7 @@ export default class Input extends Base {
         const innerAfterCls = classNames({
             [innerCls]: true,
             [`${prefix}after`]: true,
+            [`${prefix}input-inner-text`]: typeof innerAfter === 'string',
             [innerAfterClassName]: innerAfterClassName,
         });
         const previewCls = classNames({
