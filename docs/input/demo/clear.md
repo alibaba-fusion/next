@@ -46,6 +46,7 @@ ReactDOM.render(
             defaultValue="clear by click"
             size="large"
             aria-label="input with config of hasClear"
+            hoverShowClear
             onChange={onChange} /><br/><br/>
     </div>
     , mountNode);

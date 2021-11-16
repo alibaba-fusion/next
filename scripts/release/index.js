@@ -62,18 +62,13 @@ co(function*() {
 });
 
 function checkTags() {
-    const stdout = execSync('git tag').toString();
     let repeatTag = '';
 
-    if (stdout.match(masterTag)) {
-        repeatTag += `[${masterTag}]`;
-    }
-    if (stdout.match(`${buildTag}`)) {
-        repeatTag += `  [${buildTag}]`;
-    }
+    repeatTag += execSync(`git tag -l ${masterTag}`).toString();
+    repeatTag += ` ${execSync(`git tag -l ${buildTag}`).toString()}`;
 
-    if (repeatTag !== '') {
-        logger.error(`You have duplicate tags: ${repeatTag}`);
+    if (repeatTag.trim() !== '') {
+        logger.error(`You have duplicate tags: \n ${repeatTag}`);
         process.exit(0);
     } else {
         logger.success(`There is no [${masterTag}] or [${buildTag}] exits`, '\n');
