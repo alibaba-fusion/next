@@ -293,6 +293,7 @@ describe('Select', () => {
             value: [{ label: 'xxx', value: '0' }],
             onChange: function(value) {
                 assert(value.length === 2);
+                done();
             },
             onSearchClear: function(value) {
                 done();
