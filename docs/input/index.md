@@ -56,6 +56,7 @@
 | addonTextAfter  | 输入框后附加文字                                                                                                                                                                                                                           | ReactNode        | -         |      |
 | autoComplete    | (原生input支持)                                                                                                                                                                                                                        | String           | 'off'     |      |
 | autoFocus       | 自动聚焦(原生input支持)                                                                                                                                                                                                                    | Boolean          | -         |      |
+| hoverShowClear  | hover展示clear (配合 hasClear=true使用)                                                                                                                                                                                                  | Boolean          | false     | 1.24 |
 
 ### Input.TextArea
 

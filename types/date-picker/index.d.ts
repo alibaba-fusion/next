@@ -589,6 +589,13 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
      * 时间输入框的 aria-label 属性
      */
     timeInputAriaLabel?: string;
+
+    /**
+     * 是否为预览态
+     */
+    isPreview?: boolean;
+
+    renderPreview?: (value: any) => React.ReactNode;
 }
 
 export default class DatePicker extends React.Component<DatePickerProps, any> {

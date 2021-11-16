@@ -1,12 +1,15 @@
 # Latest Log 
 
-## [1.24.10](https://github.com/alibaba-fusion/next/compare/1.24.9...1.24.10) (2021-10-19)
+## [1.24.15](https://github.com/alibaba-fusion/next/compare/1.24.14...1.24.15) (2021-11-09)
 
 
 ### Bug Fixes
 
-* **Input:** password compatible edge, close [#3289](https://github.com/alibaba-fusion/next/issues/3289) ([29b17e9](https://github.com/alibaba-fusion/next/commit/29b17e9))
-* **Table:** Different sorts have different className of table header, close [#3386](https://github.com/alibaba-fusion/next/issues/3386) ([a03f292](https://github.com/alibaba-fusion/next/commit/a03f292))
-* **Tree:** reduce rerender caused by onDrageLeave ([21049f4](https://github.com/alibaba-fusion/next/commit/21049f4))
+* correct style order of next.var.css, close [#3493](https://github.com/alibaba-fusion/next/issues/3493) ([6b8ff04](https://github.com/alibaba-fusion/next/commit/6b8ff04))
+
+
+### Features
+
+* **Upload:** new api previewOnFileName to set onPreview on filename. fix [#3455](https://github.com/alibaba-fusion/next/issues/3455) ([fd3d04a](https://github.com/alibaba-fusion/next/commit/fd3d04a))
 
 

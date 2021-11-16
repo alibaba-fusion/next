@@ -2,9 +2,25 @@ import React from 'react';
 import { Types } from '@alifd/adaptor-helper';
 import { Progress } from '@alifd/next';
 
+const _propsValue = ({ shape, level, size, mode, border, width, style, ...others }) => {
+    return {
+        ...others,
+        style: {
+            width: width || '',
+            ...style
+        },
+        shape,
+        size,
+        state: level,
+        hasBorder: border,
+        progressive: mode === 'staging', 
+
+    };
+};
 export default {
     name: 'Progress',
     shape: ['line', 'circle'],
+    propsValue:_propsValue,
     editor: (shape = 'line') => {
         return {
             props: [{
@@ -50,11 +66,9 @@ export default {
         };
     },
     adaptor: ({ shape, level, size, mode, text, border, width, percent, style, ...others }) => {
+        const props = _propsValue({ shape, level, size, mode, border, width,  style, ...others });
         return (
-            <Progress {...others} style={{
-                width: width || '',
-                ...style,
-            }} shape={shape} size={size} textRender={(percent) => text ? `${Math.floor(percent)}%` : false} percent={percent} state={level} progressive={mode === 'staging'} hasBorder={border} />
+            <Progress {...props} textRender={(percent) => text ? `${Math.floor(percent)}%` : false} percent={percent} />
         );
     },
     content: (shape = 'line') => ({
