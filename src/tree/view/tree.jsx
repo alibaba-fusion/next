@@ -460,8 +460,9 @@ class Tree extends Component {
         onItemKeyDown: PropTypes.func,
         /**
          * 自定义渲染单个子节点
-         * @param node 节点数据
-         * @return ReactNode
+         * @param {Object} node 节点数据
+         * @return {ReactNode} 返回节点
+         * @version 1.25
          */
         labelRender: PropTypes.func,
         /**
@@ -1069,7 +1070,7 @@ class Tree extends Component {
     }
 
     renderTreeNode(props, childNodes) {
-        const { rtl } = this.props;
+        const { rtl, labelRender } = this.props;
         const { key } = props;
         const nodeProps = {
             _key: key,
@@ -1077,8 +1078,8 @@ class Tree extends Component {
             ...this.getNodeProps(key),
         };
 
-        if (this.props && this.props.labelRender) {
-            nodeProps.label = this.props.labelRender(props);
+        if (labelRender) {
+            nodeProps.label = labelRender(props);
         }
 
         return (
@@ -1147,7 +1148,6 @@ class Tree extends Component {
     }
 
     renderByDataSource(dataSource) {
-        const { rtl } = this.props;
         const drill = (data, prefix = '0') => {
             return data.map((item, index) => {
                 // 为了兼容之前的实现 保留非法节点
@@ -1157,19 +1157,18 @@ class Tree extends Component {
                 const pos = `${prefix}-${index}`;
                 const { key = pos, children, ...others } = item;
                 const props = {
+                    size: data.length,
                     ...others,
                     ...this.getNodeProps(`${key}`),
                     _key: key,
+                    key,
                 };
-                if (this.props && this.props.labelRender) {
-                    props.label = this.props.labelRender(item);
-                }
 
                 if (children && children.length) {
                     props.children = drill(children, pos);
                 }
 
-                const node = this.renderTreeNode(props);
+                const node = this.renderTreeNode(props, props.children);
 
                 // eslint-disable-next-line
                 this.state._k2n[key].node = node;
