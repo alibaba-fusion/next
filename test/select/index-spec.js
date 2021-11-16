@@ -293,7 +293,6 @@ describe('Select', () => {
             value: [{ label: 'xxx', value: '0' }],
             onChange: function(value) {
                 assert(value.length === 2);
-                done();
             },
             onSearchClear: function(value) {
                 done();
@@ -301,7 +300,6 @@ describe('Select', () => {
         });
         wrapper.update();
         assert(wrapper.find('span.next-select div.next-tag').length === 1);
-
         wrapper.simulate('click');
         const input = wrapper.find('input').instance();
         input.value = 'e';

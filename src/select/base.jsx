@@ -312,21 +312,26 @@ export default class Base extends React.Component {
     }
 
     setFirstHightLightKeyForMenu() {
-        // 如果有value or highlightKey不应该执行自动高亮第一个元素
+        // 判断value/highlightKey解决受控后，默认高亮第一个元素问题。(当搜索值时，搜索后应执行默认选择第一个元素)
         const { value, highlightKey } = this.state;
-
         if (!this.props.autoHighlightFirstItem) {
             return;
         }
 
         // 设置高亮 item key
-        if (this.dataStore.getMenuDS().length && this.dataStore.getEnableDS().length && !value && !highlightKey) {
-            const highlightKey = `${this.dataStore.getEnableDS()[0].value}`;
-            this.setState({
-                highlightKey,
-            });
-            this.props.onToggleHighlightItem(highlightKey, 'autoFirstItem');
-        }
+        setTimeout(() => {
+            if (
+                this.dataStore.getMenuDS().length &&
+                this.dataStore.getEnableDS().length &&
+                ((!value && !highlightKey) || this.state.searchValue)
+            ) {
+                const highlightKey = `${this.dataStore.getEnableDS()[0].value}`;
+                this.setState({
+                    highlightKey,
+                });
+                this.props.onToggleHighlightItem(highlightKey, 'autoFirstItem');
+            }
+        }, 100);
     }
 
     handleChange(value, ...args) {
