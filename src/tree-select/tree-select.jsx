@@ -167,6 +167,7 @@ class TreeSelect extends Component {
         dataSource: PropTypes.arrayOf(PropTypes.object),
         /**
          * value/defaultValue 在 dataSource 中不存在时，是否展示
+         * @version 1.25
          */
         preserveNonExistentValue: PropTypes.bool,
         /**
