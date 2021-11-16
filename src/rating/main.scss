@@ -119,7 +119,7 @@
         }
     }
 
-    &:focus,
+    &:focus #{$rating-prefix}-base:not(#{$rating-prefix}-base-disabled),
     &.hover {
         outline: none;
         #{$rating-prefix}-overlay {

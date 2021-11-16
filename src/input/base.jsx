@@ -258,7 +258,11 @@ class Base extends React.Component {
     renderControl() {
         const lenWrap = this.renderLength();
 
-        return lenWrap ? <span className={`${this.props.prefix}input-control`}>{lenWrap}</span> : null;
+        return lenWrap ? (
+            <span onClick={() => this.focus()} className={`${this.props.prefix}input-control`}>
+                {lenWrap}
+            </span>
+        ) : null;
     }
 
     getClass() {
