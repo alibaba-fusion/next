@@ -166,6 +166,11 @@ class Overlay extends Component {
          */
         disableScroll: PropTypes.bool,
         /**
+         * 是否在捕获阶段监听，适配 react 17 事件模型变更
+         * @version 1.25
+         */
+        useCapture: PropTypes.bool,
+        /**
          * 隐藏时是否保留子节点
          */
         cache: PropTypes.bool,
@@ -225,6 +230,7 @@ class Overlay extends Component {
         isChildrenInMask: false,
         onClick: event => event.stopPropagation(),
         maskClass: '',
+        useCapture: false,
     };
 
     constructor(props) {
@@ -620,15 +626,16 @@ class Overlay extends Component {
      * document global event
      */
     addDocumentEvents() {
+        const { useCapture } = this.props;
         // use capture phase listener to be compatible with react17
         // https://reactjs.org/blog/2020/08/10/react-v17-rc.html#fixing-potential-issues
         if (this.props.canCloseByEsc) {
-            this._keydownEvents = events.on(document, 'keydown', this.handleDocumentKeyDown, true);
+            this._keydownEvents = events.on(document, 'keydown', this.handleDocumentKeyDown, useCapture);
         }
 
         if (this.props.canCloseByOutSideClick) {
-            this._clickEvents = events.on(document, 'click', this.handleDocumentClick, true);
-            this._touchEvents = events.on(document, 'touchend', this.handleDocumentClick, true);
+            this._clickEvents = events.on(document, 'click', this.handleDocumentClick, useCapture);
+            this._touchEvents = events.on(document, 'touchend', this.handleDocumentClick, useCapture);
         }
     }
 
