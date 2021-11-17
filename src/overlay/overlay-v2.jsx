@@ -69,11 +69,7 @@ const Overlay2 = props => {
             onExit={handleExit}
             onExiting={handleExiting}
             onExited={handleExited}
-            timeout={{
-                appear: 500,
-                enter: 300,
-                exit: 500,
-            }}
+            timeout={300}
             ref={overlayRef}
             style={style}
         >

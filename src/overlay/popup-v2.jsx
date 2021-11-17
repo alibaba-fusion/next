@@ -135,7 +135,7 @@ const Popup = props => {
         <Animate.OverlayAnimate
             visible={visible}
             animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}
-            timeout={300}
+            timeout={200}
             unmountOnExit
         >
             {node}
