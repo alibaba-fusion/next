@@ -6,7 +6,7 @@ const { getComPathName } = require('../utils');
 process.env.CHROME_BIN = require('puppeteer').executablePath();
 
 module.exports = function(config) {
-    const { runAll, a11y } = config;
+    const { runAll, a11y, v2 } = config;
     const componentName = config.component ? getComPathName(config.component) : config.component;
     const singleRun = runAll;
     const coveragePath = resolveCwd('coverage');
@@ -18,6 +18,8 @@ module.exports = function(config) {
 
     if (runAll && a11y) {
         specPath = resolveCwd('scripts/test/a11y-allinone.js');
+    } else if (v2) {
+        specPath = resolveCwd('scripts/test/v2-allinone.js');
     } else if (runAll) {
         specPath = resolveCwd('scripts/test/allinone.js');
     } else {
