@@ -1,7 +1,6 @@
 import React, { Component, Children, isValidElement, cloneElement } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
 import classNames from 'classnames';
 import Select from '../select';
 import Tree from '../tree';
@@ -13,6 +12,7 @@ import {
     isDescendantOrSelf,
 } from '../tree/view/util';
 import { func, obj, KEYCODE } from '../util';
+import { getValueDataSource, valueToSelectKey } from '../select/util';
 
 const noop = () => {};
 const { Node: TreeNode } = Tree;
@@ -166,13 +166,18 @@ class TreeSelect extends Component {
          */
         dataSource: PropTypes.arrayOf(PropTypes.object),
         /**
+         * value/defaultValue 在 dataSource 中不存在时，是否展示
+         * @version 1.25
+         */
+        preserveNonExistentValue: PropTypes.bool,
+        /**
          * （受控）当前值
          */
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.any)]),
         /**
          * （非受控）默认值
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.any)]),
         /**
          * 选中值改变时触发的回调函数
          * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
@@ -306,12 +311,18 @@ class TreeSelect extends Component {
         defaultVisible: false,
         onVisibleChange: noop,
         useVirtual: false,
+        /**
+         * TODO
+         * 目前 select/cascade select 是默认支持的，在 2.x 版本中 tree-select 也将默认支持
+         */
+        preserveNonExistentValue: false,
     };
 
     constructor(props, context) {
         super(props, context);
 
         const { defaultVisible, visible, defaultValue, value } = props;
+
         this.state = {
             visible: typeof visible === 'undefined' ? defaultVisible : visible,
             value: normalizeToArray(typeof value === 'undefined' ? defaultValue : value),
@@ -320,8 +331,18 @@ class TreeSelect extends Component {
             searchedKeys: [],
             retainedKeys: [],
             autoExpandParent: false,
+            // map of value => item, includes value not exist in dataSource
+            mapValueDS: {},
             ...flatDataSource(props),
         };
+
+        // init value/mapValueDS when defaultValue is not undefined
+        if (this.state.value !== undefined) {
+            this.state.mapValueDS = getValueDataSource(this.state.value, this.state.mapValueDS).mapValueDS;
+            this.state.value = this.state.value.map(v => {
+                return valueToSelectKey(v);
+            });
+        }
 
         bindCtx(this, [
             'handleSelect',
@@ -342,7 +363,13 @@ class TreeSelect extends Component {
         const st = {};
 
         if ('value' in props) {
-            st.value = normalizeToArray(props.value);
+            const valueArray = normalizeToArray(props.value);
+            // convert value to string[]
+            st.value = valueArray.map(v => {
+                return valueToSelectKey(v);
+            });
+            // re-calculate map
+            st.mapValueDS = getValueDataSource(props.value, state.mapValueDS).mapValueDS;
         }
         if ('visible' in props) {
             st.visible = props.visible;
@@ -370,7 +397,6 @@ class TreeSelect extends Component {
             if (k) {
                 ret.push(k);
             }
-
             return ret;
         }, []);
     }
@@ -381,6 +407,7 @@ class TreeSelect extends Component {
 
     getValueForSelect(value) {
         const { treeCheckedStrategy } = this.props;
+        const nonExistentValueKeys = this.getNonExistentValueKeys();
 
         let keys = this.getKeysByValue(value);
         keys = getAllCheckedKeys(keys, this.state._k2n, this.state._p2n);
@@ -396,11 +423,16 @@ class TreeSelect extends Component {
                 break;
         }
 
-        return this.getValueByKeys(keys);
+        const values = this.getValueByKeys(keys);
+
+        return [...values, ...nonExistentValueKeys];
     }
 
     getData(value, forSelect) {
-        return value.reduce((ret, v) => {
+        const { preserveNonExistentValue } = this.props;
+        const { mapValueDS } = this.state;
+
+        const ret = value.reduce((ret, v) => {
             const k = this.state._v2n[v] && this.state._v2n[v].key;
             if (k) {
                 const { label, pos, disabled, checkboxDisabled } = this.state._k2n[k];
@@ -415,10 +447,38 @@ class TreeSelect extends Component {
                     d.key = k;
                 }
                 ret.push(d);
+            } else if (preserveNonExistentValue) {
+                // 需要保留 dataSource 中不存在的 value
+                const item = mapValueDS[v];
+                if (item) {
+                    ret.push(item);
+                }
             }
-
             return ret;
         }, []);
+
+        return ret;
+    }
+
+    getNonExistentValues() {
+        const { preserveNonExistentValue } = this.props;
+        const { value } = this.state;
+
+        if (!preserveNonExistentValue) {
+            return [];
+        }
+        const nonExistentValues = value.filter(v => !this.state._v2n[v]);
+        return nonExistentValues;
+    }
+
+    getNonExistentValueKeys() {
+        const nonExistentValues = this.getNonExistentValues();
+        return nonExistentValues.map(v => {
+            if (typeof v === 'object' && v.hasOwnProperty('value')) {
+                return v.value;
+            }
+            return v;
+        });
     }
 
     saveTreeRef(ref) {
@@ -448,7 +508,10 @@ class TreeSelect extends Component {
         const { selected } = extra;
 
         if (multiple || selected) {
-            const value = this.getValueByKeys(selectedKeys);
+            let value = this.getValueByKeys(selectedKeys);
+            const nonExistentValues = this.getNonExistentValues();
+            value = [...nonExistentValues, ...value];
+
             if (!('value' in this.props)) {
                 this.setState({
                     value,
@@ -468,7 +531,10 @@ class TreeSelect extends Component {
     handleCheck(checkedKeys) {
         const { onChange } = this.props;
 
-        const value = this.getValueByKeys(checkedKeys);
+        let value = this.getValueByKeys(checkedKeys);
+        const nonExistentValues = this.getNonExistentValues();
+        value = [...nonExistentValues, ...value];
+
         if (!('value' in this.props)) {
             this.setState({
                 value,
@@ -483,7 +549,14 @@ class TreeSelect extends Component {
         const { treeCheckable, treeCheckStrictly, treeCheckedStrategy, onChange } = this.props;
 
         let value;
-        if (treeCheckable && !treeCheckStrictly && ['parent', 'all'].indexOf(treeCheckedStrategy) !== -1) {
+        if (
+            // there's linkage relationship among nodes
+            treeCheckable &&
+            !treeCheckStrictly &&
+            ['parent', 'all'].indexOf(treeCheckedStrategy) !== -1 &&
+            // value exits in datasource
+            this.state._v2n[removedValue]
+        ) {
             const removedPos = this.state._v2n[removedValue].pos;
             value = this.state.value.filter(v => {
                 const p = this.state._v2n[v].pos;
@@ -804,9 +877,11 @@ class TreeSelect extends Component {
             isPreview,
         } = this.props;
         const others = pickOthers(Object.keys(TreeSelect.propTypes), this.props);
-        const { value, visible } = this.state;
+        const { visible, value } = this.state;
 
+        // if (non-leaf 节点可选 & 父子节点选中状态需要联动)，需要额外计算父子节点间的联动关系
         const valueForSelect = treeCheckable && !treeCheckStrictly ? this.getValueForSelect(value) : value;
+
         let data = this.getData(valueForSelect, true);
         if (!multiple && !treeCheckable) {
             data = data[0];

@@ -52,6 +52,7 @@ Like Select, TreeSelect can be used when the selected data structure is a tree s
 | popupProps              | properties of Popup                                                                                                                                                                                                                                          | Object                  | -           |
 | followTrigger           | follow Trigger or not                | Boolean         | -                                         |
 | useVirtual          | whether use virtual scroll                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Boolean         | false         |
+| preserveNonExistentValue | if reserve value when value/defaultValue not exist in dataSource  | Boolean                     | false       | 1.25 |
 
 <!-- api-extra-start -->
 
