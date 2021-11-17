@@ -169,8 +169,8 @@ class TimePicker2 extends Component {
         renderPreview: PropTypes.func,
         /**
          * 时间值改变时的回调
-         * @param {Object|String} dateString 时间对象或时间字符串
          * @param {DayjsObject} date dayjs时间对象
+         * @param {Object|String} dateString 时间对象或时间字符串
          */
         onChange: PropTypes.func,
         className: PropTypes.string,

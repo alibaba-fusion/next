@@ -232,7 +232,7 @@
                     line-height: $select-s-lineheight;
                 }
             }
-            .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
+            .#{$css-prefix}input-label, .#{$css-prefix}input-inner, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
                 line-height: calc(#{$form-element-small-height} - 2px);
             }
         }
@@ -247,7 +247,7 @@
             #{$tag-prefix} {
                 @include select-tag-size($select-m-lineheight);
             }
-            .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
+            .#{$css-prefix}input-label, .#{$css-prefix}input-inner, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
                 line-height: calc(#{$form-element-medium-height} - 2px);
             }
         }
@@ -262,7 +262,7 @@
             #{$tag-prefix} {
                 @include select-tag-size($select-l-lineheight);
             }
-            .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
+            .#{$css-prefix}input-label, .#{$css-prefix}input-inner, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
                 line-height: calc(#{$form-element-large-height} - 2px);
             }
         }

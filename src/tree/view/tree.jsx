@@ -141,6 +141,7 @@ const getCheckedKeys = (props, willReceiveProps, _k2n, _p2n) => {
 const preHandleData = (dataSource, props) => {
     const k2n = {};
     const p2n = {};
+    const keyList = [];
 
     const drill = (data = [], level = 1, prefix = '0', parent) =>
         data.map((item, index) => {
@@ -169,7 +170,7 @@ const preHandleData = (dataSource, props) => {
             if (key === undefined || key === null) {
                 item.key = key = pos;
             }
-
+            keyList.push(key);
             !item.isLeaf && drill(children, level + 1, pos, item);
 
             k2n[key] = p2n[pos] = { ...item };
@@ -177,12 +178,13 @@ const preHandleData = (dataSource, props) => {
             return item;
         });
 
-    return { dataSource: drill(dataSource), k2n, p2n };
+    return { dataSource: drill(dataSource), k2n, p2n, keyList };
 };
 
 const preHandleChildren = props => {
     const k2n = {};
     const p2n = {};
+    const keyList = [];
 
     const loop = (children, prefix = '0', level = 1) =>
         Children.map(children, (node, index) => {
@@ -201,7 +203,7 @@ const preHandleChildren = props => {
             if (!('isLeaf' in item)) {
                 item.isLeaf = !(hasChildren || props.loadData);
             }
-
+            keyList.push(key);
             if (hasChildren) {
                 item.children = loop(children, pos, level + 1);
             }
@@ -211,7 +213,7 @@ const preHandleChildren = props => {
         });
     loop(props.children);
 
-    return { k2n, p2n };
+    return { k2n, p2n, keyList };
 };
 
 const getData = props => {
@@ -510,7 +512,7 @@ class Tree extends Component {
     constructor(props) {
         super(props);
 
-        const { dataSource = [], k2n, p2n } = getData(props);
+        const { dataSource = [], k2n, p2n, keyList } = getData(props);
         const { focusable, autoFocus, focusedKey } = this.props;
         const willReceiveProps = false;
         const { checkedKeys, indeterminateKeys = [] } = getCheckedKeys(props, willReceiveProps, k2n, p2n);
@@ -518,6 +520,7 @@ class Tree extends Component {
         this.state = {
             _k2n: k2n,
             _p2n: p2n,
+            _keyList: keyList,
             dataSource,
             willReceiveProps,
             expandedKeys: getExpandedKeys(props, willReceiveProps, k2n, p2n),
@@ -540,7 +543,7 @@ class Tree extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { dataSource = [], k2n, p2n } = getData(props);
+        const { dataSource = [], k2n, p2n, keyList } = getData(props);
         const st = {};
 
         if (!state.willReceiveProps) {
@@ -548,6 +551,7 @@ class Tree extends Component {
                 willReceiveProps: true,
                 _k2n: k2n,
                 _p2n: p2n,
+                _keyList: keyList,
             };
         }
 
@@ -988,9 +992,16 @@ class Tree extends Component {
     }
 
     handleDragLeave(e, node) {
-        this.setState({
-            dragOverNodeKey: null,
-        });
+        const eventKey = node.props.eventKey;
+        const { _keyList } = this.state;
+        const firstKey = _keyList[0];
+        const lastKey = _keyList[_keyList.length - 1];
+        // 只针对树的边界节点（第一个和最后一个）做处理
+        if (eventKey === firstKey || eventKey === lastKey) {
+            this.setState({
+                dragOverNodeKey: null,
+            });
+        }
         this.props.onDragLeave({ event: e, node: node });
     }
 

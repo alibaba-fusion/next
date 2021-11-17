@@ -22,12 +22,10 @@ Overlay 提供了一系列组件用于创建弹层。其中包含：
 -   自动位置调整：根据空间的大小自动调整位置
 -   彻底解决在滚动容器中 trigger 和 弹窗会分离的问题，新版本会自动调整位置。使用者不再需要去研究怎么用 container 修改弹窗挂载位置
 -   彻底解决多层弹窗嵌套，点击子弹窗可能导致父弹窗消失的问题。
-  
+
 API变化：
 
 -   合并 `onVisibleChange(visible, targetType, e)` targetType 属性到 `onVisibleChange(visible, e)`. 可以通过 e.targetType 区分来源
-
-
 
 ### Overlay
 
@@ -83,6 +81,7 @@ Popup 是对 Overlay 的封装，它接收某个节点作为触发节点，弹�
 | onPosition             | 弹层定位完成时触发的事件<br/><br/>**签名**:<br/>Function(config: Object, node: Object) => void<br/>**参数**:<br/>_config_: {Object} 定位的参数<br/>_config.align_: {Array} 对齐方式，如 ['cc', 'cc']（如果开启 needAdjust，可能和预先设置的 align 不同）<br/>_config.top_: {Number} 距离视口顶部距离<br/>_config.left_: {Number} 距离视口左侧距离<br/>_node_: {Object} 定位参照的容器节点 | Function       | func.noop                                  |      |
 | autoFocus              | 弹层打开时是否让其中的元素自动获取焦点                                                                                                                                                                                                                                                                                                  | Boolean        | false                                      |      |
 | disableScroll          | 是否禁用页面滚动                                                                                                                                                                                                                                                                                                             | Boolean        | false                                      |      |
+| useCapture             | 是否在捕获阶段监听，适配 react 17 事件模型变更                                                                                                                                                                                                                                                                                         | Boolean        | false                                      | 1.25 |
 | cache                  | 隐藏时是否保留子节点                                                                                                                                                                                                                                                                                                           | Boolean        | false                                      |      |
 | safeNode               | 安全节点，当点击 document 的时候，如果包含该节点则不会关闭弹层，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组                                                                                                                                                                                                                      | any            | -                                          |      |
 | wrapperClassName       | 弹层的根节点的样式类                                                                                                                                                                                                                                                                                                           | String         | -                                          |      |

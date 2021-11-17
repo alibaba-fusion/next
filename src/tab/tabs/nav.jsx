@@ -119,7 +119,7 @@ class Nav extends React.Component {
         const _ov = target / scaleRate;
         const offsetValue = isNaN(_ov) ? target : _ov;
 
-        if (this.offset !== target) {
+        if (this.offset !== target && this.nav) {
             // needs move
             this.offset = target;
             const divScroll = this.nav.parentElement;

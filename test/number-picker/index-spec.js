@@ -30,6 +30,63 @@ describe('number-picker', () => {
             assert(wrapper1.find('button').at(0).prop("tabIndex") === -1);
             assert(wrapper1.find('button').at(1).prop("tabIndex") === -1);
         });
+        it('should compare max or min the changes', () => {
+            class App extends React.Component {
+                state = {
+                    value: 10,
+                    max: 8,
+                };
+
+                setMax = () => {
+                    this.setState({
+                        max: 5,
+                    })
+                }
+
+                onChange = value => {
+                    this.setState({
+                        value,
+                    });
+                };
+
+                render() {
+                    return (
+                        <div>
+                            <button onClick={this.setMax}>setMax to 15</button>
+                            <NumberPicker
+                                value={this.state.value}
+                                onChange={this.onChange}
+                                max={this.state.max}
+                            />
+                        </div>
+                    );
+                }
+            }
+
+            let wrapper = mount(<App />);
+
+            wrapper.find('input').simulate('blur');
+            assert(wrapper.find('input').prop('value') === 8);
+
+            wrapper.find('button').at(0).simulate('click');
+            wrapper.find('input').simulate('blur');
+            assert(wrapper.find('input').prop('value') === 5);
+
+        });
+        it('if max or min were undefined or null should infinity', () => {
+            const wrapper = mount(<NumberPicker max={10} value={10} min={8}/>);
+            wrapper.find('button').at(0).simulate('click');
+            assert(wrapper.find('input').props('value').value === 10);
+            wrapper.setProps({ max: undefined });
+            wrapper.find('button').at(0).simulate('click');
+            assert(wrapper.find('input').props('value').value === 11);
+            wrapper.setProps({ value: 8 });
+            wrapper.find('button').at(1).simulate('click');
+            assert(wrapper.find('input').props('value').value === 8);
+            wrapper.setProps({ min: undefined });
+            wrapper.find('button').at(1).simulate('click');
+            assert(wrapper.find('input').props('value').value === 7);
+        })
     });
 
     describe('stringMode', () => {

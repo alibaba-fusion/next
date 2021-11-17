@@ -141,6 +141,7 @@ describe('TreeSelect', () => {
         assertDataAndNodes(newDataSource);
     });
 
+
     it('should render by defaultValue', () => {
         wrapper = mount(<TreeSelect defaultValue="4" defaultVisible treeDefaultExpandAll dataSource={dataSource} />);
         assertSelected('4', true);
@@ -342,6 +343,17 @@ describe('TreeSelect', () => {
         checkTreeNode(appendValue);
         wrapper.update();
         assert(triggered);
+    });
+
+    it('should render tag when defaultValue [{ label, value}]', () => {
+        wrapper = mount(<TreeSelect
+            defaultValue={[{ label: 'test1', value: '123'}]}
+            treeDefaultExpandAll
+            treeCheckable
+            preserveNonExistentValue
+            dataSource={dataSource} />);
+
+        assert.deepEqual(getLabels(wrapper), ['test1']);
     });
 
     it('should render parent tag when set treeCheckedStrategy to all', () => {
@@ -717,6 +729,7 @@ describe('TreeSelect', () => {
             done();
         }, 2000);
     });
+
 });
 
 function cloneData(data, valueMap = {}) {

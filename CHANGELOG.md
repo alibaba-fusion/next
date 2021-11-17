@@ -1,5 +1,87 @@
 # Change Log 
 
+## [1.24.15](https://github.com/alibaba-fusion/next/compare/1.24.14...1.24.15) (2021-11-09)
+
+
+### Bug Fixes
+
+* correct style order of next.var.css, close [#3493](https://github.com/alibaba-fusion/next/issues/3493) ([6b8ff04](https://github.com/alibaba-fusion/next/commit/6b8ff04))
+
+
+### Features
+
+* **Upload:** new api previewOnFileName to set onPreview on filename. fix [#3455](https://github.com/alibaba-fusion/next/issues/3455) ([fd3d04a](https://github.com/alibaba-fusion/next/commit/fd3d04a))
+
+
+
+
+## [1.24.14](https://github.com/alibaba-fusion/next/compare/1.24.13...1.24.14) (2021-11-04)
+
+
+### Bug Fixes
+
+* **Affix:** container can update, close [#3473](https://github.com/alibaba-fusion/next/issues/3473) ([66e084f](https://github.com/alibaba-fusion/next/commit/66e084f))
+* **Input:** ts add isPreview and renderPreview, close [#3478](https://github.com/alibaba-fusion/next/issues/3478) ([74c664a](https://github.com/alibaba-fusion/next/commit/74c664a))
+
+
+### Features
+
+* **Input:** add hoverShowClear api to show clear icon only when hover, resolve [#3441](https://github.com/alibaba-fusion/next/issues/3441) ([aee2c67](https://github.com/alibaba-fusion/next/commit/aee2c67))
+
+
+
+
+## [1.24.13](https://github.com/alibaba-fusion/next/compare/1.24.12...1.24.13) (2021-11-03)
+
+
+### Bug Fixes
+
+* **DatePicker2:** use flex-basis instead width to be compiable with safari, close [#3463](https://github.com/alibaba-fusion/next/issues/3463) ([b13021e](https://github.com/alibaba-fusion/next/commit/b13021e))
+* **Select:** select maxcount demo dataSource should string, close [#3462](https://github.com/alibaba-fusion/next/issues/3462) ([64f27ea](https://github.com/alibaba-fusion/next/commit/64f27ea))
+* **Select:** set innerAfter element line-height, close [#2830](https://github.com/alibaba-fusion/next/issues/2830) ([#3469](https://github.com/alibaba-fusion/next/issues/3469)) ([f5899a5](https://github.com/alibaba-fusion/next/commit/f5899a5))
+
+
+
+
+## [1.24.12](https://github.com/alibaba-fusion/next/compare/1.24.11...1.24.12) (2021-10-28)
+
+
+### Bug Fixes
+
+* **NumberPicker:** if max or min were undefined or null should be infinity, close [#3456](https://github.com/alibaba-fusion/next/issues/3456) ([eb8887c](https://github.com/alibaba-fusion/next/commit/eb8887c))
+
+
+
+
+## [1.24.11](https://github.com/alibaba-fusion/next/compare/1.24.10...1.24.11) (2021-10-27)
+
+
+### Bug Fixes
+
+* **Calendar:** fix showOtherMonth bug close[#3436](https://github.com/alibaba-fusion/next/issues/3436) ([261b900](https://github.com/alibaba-fusion/next/commit/261b900))
+* **Form:** add disabled props for d.ts ([eae8449](https://github.com/alibaba-fusion/next/commit/eae8449))
+* **NumberPicker:** min max can be async, close [#3450](https://github.com/alibaba-fusion/next/issues/3450) ([bf41b9b](https://github.com/alibaba-fusion/next/commit/bf41b9b))
+
+
+### Features
+
+* **ConfigProvider:** support popupClassName ([#3422](https://github.com/alibaba-fusion/next/issues/3422)) ([975b163](https://github.com/alibaba-fusion/next/commit/975b163))
+
+
+
+
+## [1.24.10](https://github.com/alibaba-fusion/next/compare/1.24.9...1.24.10) (2021-10-19)
+
+
+### Bug Fixes
+
+* **Input:** password compatible edge, close [#3289](https://github.com/alibaba-fusion/next/issues/3289) ([29b17e9](https://github.com/alibaba-fusion/next/commit/29b17e9))
+* **Table:** Different sorts have different className of table header, close [#3386](https://github.com/alibaba-fusion/next/issues/3386) ([a03f292](https://github.com/alibaba-fusion/next/commit/a03f292))
+* **Tree:** reduce rerender caused by onDrageLeave ([21049f4](https://github.com/alibaba-fusion/next/commit/21049f4))
+
+
+
+
 ## [1.24.9](https://github.com/alibaba-fusion/next/compare/1.24.8...1.24.9) (2021-10-15)
 
 

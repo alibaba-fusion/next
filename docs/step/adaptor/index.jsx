@@ -2,6 +2,14 @@ import React from 'react';
 import { Types, parseData, NodeType, ContentType } from '@alifd/adaptor-helper';
 import { Step } from '@alifd/next';
 
+const _propsValue = ({ shape, level,  location }) => {
+    return {
+        shape: shape,
+        direction: level,
+        labelPlacement: location === 'right' ? 'hoz' : 'ver',
+    };
+};
+
 export default {
     name: 'Step',
     shape: ['circle', 'arrow', 'dot'],
@@ -68,6 +76,7 @@ export default {
             }
         };
     },
+    propsValue:_propsValue,
     adaptor: ({ shape, level, state, location, width, height, data, style, ...others }) => {
         const list = parseData(data, { parseContent: true }).filter(({ type }) => type === NodeType.node);
         const dataSouce = [];
@@ -108,7 +117,7 @@ export default {
                     }
                 </Step>
             </div>
-        )
+        );
     },
     demoOptions: (demo) => {
         if (demo.node.props.level === 'hoz') {
