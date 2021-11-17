@@ -93,9 +93,9 @@ class Affix extends React.Component {
 
     componentDidMount() {
         const { container } = this.props;
-        this._updateNodePosition();
         // wait for parent rendered
         this.timeout = setTimeout(() => {
+            this._updateNodePosition();
             this._setEventHandlerForContainer(container);
         });
     }
