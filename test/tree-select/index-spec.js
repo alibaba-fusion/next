@@ -730,6 +730,21 @@ describe('TreeSelect', () => {
         }, 2000);
     });
 
+    it('should support single line display', () => {
+        wrapper = mount(
+            <TreeSelect
+                dataSource={dataSource}
+                treeCheckable
+                treeCheckStrictly
+                treeCheckedStrategy="all"
+                tagInline
+                value={['1', '2', '3']}
+            />
+        )
+
+        assert(wrapper.find('.next-select-tag-compact').length > 0);
+        assert(wrapper.find('.next-select-tag-compact').text().includes('3/6'));
+    })
 });
 
 function cloneData(data, valueMap = {}) {

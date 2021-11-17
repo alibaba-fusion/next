@@ -81,6 +81,10 @@ export default {
         maxTagPlaceholder: 'Selected {selected}/{total} Total',
         selectAll: 'Select All',
     },
+    TreeSelect: {
+        maxTagPlaceholder: 'Selected {selected}/{total} Total',
+        shortMaxTagPlaceholder: 'Selected {selected}',
+    },
     Table: {
         empty: 'No Data',
         ok: 'OK',

@@ -81,6 +81,10 @@ export default {
         maxTagPlaceholder: '已选择 {selected}/{total} 项',
         selectAll: '全选',
     },
+    TreeSelect: {
+        maxTagPlaceholder: '已选择 {selected}/{total} 项',
+        shortMaxTagPlaceholder: '已选择 {selected} 项',
+    },
     Table: {
         empty: '没有数据',
         ok: '确认',

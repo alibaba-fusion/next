@@ -81,6 +81,10 @@ export default {
         maxTagPlaceholder: '{selected} / {total}',
         selectAll: 'เลือกทั้งหมด',
     },
+    TreeSelect: {
+        maxTagPlaceholder: '{selected} / {total}',
+        shortMaxTagPlaceholder: '{selected}',
+    },
     Table: {
         empty: 'ไม่มีข้อมูล',
         ok: 'ยืนยัน',

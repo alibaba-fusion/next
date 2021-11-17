@@ -81,6 +81,10 @@ export default {
         maxTagPlaceholder: '기 선택  {selected}/{total} 항',
         selectAll: '전부 선택',
     },
+    TreeSelect: {
+        maxTagPlaceholder: '기 선택  {selected}/{total} 항',
+        shortMaxTagPlaceholder: '기 선택  {selected} 항',
+    },
     Table: {
         empty: '데이터 없음',
         ok: '확인',
