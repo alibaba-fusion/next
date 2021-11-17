@@ -17,7 +17,6 @@ import zhCN from '../locale/zh-cn';
 const noop = () => {};
 const { Node: TreeNode } = Tree;
 const { bindCtx } = func;
-const { pickOthers, values } = obj;
 
 const flatDataSource = props => {
     const _k2n = {};
@@ -816,10 +815,10 @@ class TreeSelect extends Component {
         // calculate total value
         if (treeCheckStrictly) {
             // all the nodes
-            treeSelectTotalValue = values(_v2n);
+            treeSelectTotalValue = obj.values(_v2n);
         } else if (treeCheckedStrategy === 'all') {
             // all
-            treeSelectTotalValue = values(_v2n);
+            treeSelectTotalValue = obj.values(_v2n);
         } else if (treeCheckedStrategy === 'parent') {
             // totalValue is pointless when treeCheckedStrategy = 'parent'
             treeSelectTotalValue = undefined;
@@ -870,7 +869,7 @@ class TreeSelect extends Component {
             dataSource,
             tagInline,
         } = this.props;
-        const others = pickOthers(Object.keys(TreeSelect.propTypes), this.props);
+        const others = obj.pickOthers(Object.keys(TreeSelect.propTypes), this.props);
         const { value, visible } = this.state;
 
         const valueForSelect = treeCheckable && !treeCheckStrictly ? this.getValueForSelect(value) : value;
