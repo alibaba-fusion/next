@@ -140,6 +140,8 @@ class Picker extends React.Component {
         };
 
         this.prefixCls = `${prefix}date-picker2`;
+
+        this.popupRef = React.createRef();
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -462,13 +464,37 @@ class Picker extends React.Component {
         });
     };
 
-    renderArrow = () => {
+    getRangeInputOffsetLeft = () => {
         const left =
             this.dateInput &&
             this.dateInput.input &&
             this.dateInput.input[this.state.inputType] &&
             this.dateInput.input[this.state.inputType].getInputNode().offsetLeft;
 
+        return left;
+    };
+
+    getPopupOffsetLeft = () => {
+        const inputOffsetLeft = this.getRangeInputOffsetLeft();
+        const popupElement = this.popupRef.current;
+        const popupElementWidth = popupElement ? popupElement.offsetWidth : 0;
+
+        // 弹层宽度大于输入元素长度，只偏移 arrow
+        if (popupElementWidth > 1.2 * inputOffsetLeft) {
+            return {
+                arrowLeft: inputOffsetLeft,
+                panelLeft: 0,
+            };
+        } else {
+            // 否则 panel 整体偏移，arrow 随 panel 整体偏移
+            return {
+                arrowLeft: 0,
+                panelLeft: inputOffsetLeft,
+            };
+        }
+    };
+
+    renderArrow = left => {
         return <div key="arrow" className={`${this.props.prefix}range-picker2-arrow`} style={{ left }} />;
     };
 
@@ -513,6 +539,8 @@ class Picker extends React.Component {
         } = this.props;
         const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
         const { inputValue, curValue } = this.state;
+
+        const { arrowLeft, panelLeft } = this.getPopupOffsetLeft();
 
         // 预览态
         if (isPreview) {
@@ -649,9 +677,9 @@ class Picker extends React.Component {
                     className={popupCls}
                 >
                     {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                    <div onMouseDown={handleMouseDown}>
-                        <div dir={rtl ? 'rtl' : undefined} className={`${prefixCls}-wrapper`}>
-                            {isRange ? this.renderArrow() : null}
+                    <div onMouseDown={handleMouseDown} style={{ marginLeft: panelLeft }}>
+                        <div dir={rtl ? 'rtl' : undefined} className={`${prefixCls}-wrapper`} ref={this.popupRef}>
+                            {isRange ? this.renderArrow(arrowLeft) : null}
                             {DateNode}
                             {this.state.panelMode !== this.props.mode ? null : footerNode}
                         </div>
