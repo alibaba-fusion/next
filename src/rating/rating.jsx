@@ -503,7 +503,7 @@ class Rating extends Component {
                     <div className={`${prefix}rating-underlay`} ref={n => (this.underlayNode = n)} aria-hidden>
                         {underlay}
                     </div>
-                    <div className={`${prefix}rating-overlay`} style={overlayStyle}>
+                    <div className={`${prefix}rating-overlay`} style={overlayStyle} onClick={e => e.preventDefault()}>
                         {overlay}
                     </div>
                 </div>
