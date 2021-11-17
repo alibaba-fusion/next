@@ -6,8 +6,10 @@ import ConfigProvider from '../config-provider';
 import Message from '../message';
 import zhCN from '../locale/zh-cn';
 import dialog from './dialog';
+import dialog2 from './dialog-v2';
 
 const Dialog = ConfigProvider.config(dialog);
+const Dialog2 = ConfigProvider.config(dialog2);
 
 const noop = () => {};
 const MESSAGE_TYPE = {
@@ -131,6 +133,8 @@ class Modal extends Component {
             needWrapper,
             rtl,
             className,
+            v2,
+            width = 420,
             ...others
         } = this.props;
         const newTitle = needWrapper && type ? null : title;
@@ -156,12 +160,18 @@ class Modal extends Component {
         const newOnClose = this.wrapper(onClose, this.close);
 
         const { visible, loading } = this.state;
-        okProps.loading = loading;
+        // 不能直接改，这里修改相当于改了全局 okProps
+        // okProps.loading = loading;
+
+        const newOkProps = { ...okProps };
+        newOkProps.loading = loading;
 
         const classNames = cx(`${prefix}dialog-quick`, className);
 
+        const Tag = v2 ? Dialog2 : Dialog;
+
         return (
-            <Dialog
+            <Tag
                 prefix={prefix}
                 role="alertdialog"
                 {...others}
@@ -172,11 +182,12 @@ class Modal extends Component {
                 onOk={this.state.loading ? noop : newOnOk}
                 onCancel={newOnCancel}
                 onClose={newOnClose}
-                okProps={okProps}
+                okProps={newOkProps}
                 className={classNames}
+                width={v2 ? width : undefined}
             >
                 {newContent}
-            </Dialog>
+            </Tag>
         );
     }
 }

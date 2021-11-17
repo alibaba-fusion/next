@@ -166,7 +166,7 @@ describe('TimePicker2', () => {
                 />
             );
             wrapper.find('.next-time-picker2-input input').simulate('change', { target: { value: '20:00:00' } });
-            wrapper.find('.next-time-picker2-input input').simulate('blur');
+            wrapper.find('.next-time-picker2-input input').simulate('keydown', { keyCode: KEYCODE.ENTER });
             assert(wrapper.find('.next-time-picker2-input input').instance().value === '20:00:00');
             assert(ret === '20:00:00');
         });

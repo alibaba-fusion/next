@@ -69,12 +69,17 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * （受控）当前值
      */
-    value?: string | Array<any>;
+    value?: string | object | Array<any>;
 
     /**
      * （非受控）默认值
      */
-    defaultValue?: string | Array<any>;
+    defaultValue?: string | object | Array<any>;
+
+     /**
+     * value/defaultValue 在 dataSource 中不存在时，是否展示
+     */
+    preserveNonExistentValue?: boolean;
 
     /**
      * 选中值改变时触发的回调函数

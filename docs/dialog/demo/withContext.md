@@ -27,6 +27,7 @@ const NormalDialog = () => {
       <Button
         onClick={() => {
           Dialog.confirm({
+            v2: true,
             title: "Dialog.confirm 命令式弹窗",
           });
         }}
@@ -43,6 +44,7 @@ const DialogWitchContext = Dialog.withContext(({ contextDialog }) => {
       <Button
         onClick={() => {
           contextDialog.confirm({
+            v2: true,
             title: "Dialog.withContext 命令式弹窗",
           });
         }}

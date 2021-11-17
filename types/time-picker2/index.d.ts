@@ -7,6 +7,10 @@ import { InputProps } from '../input';
 import { ButtonProps } from '../button';
 import { Dayjs, ConfigType } from 'dayjs';
 
+interface IPresetType {
+    label?: string;
+    value?: ConfigType | (() => ConfigType);
+}
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
@@ -166,4 +170,31 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     onChange?: (date: Dayjs, dateString: string) => void;
 }
 
-export default class TimePicker extends React.Component<TimePickerProps, any> {}
+
+export interface RangePickerProps
+    extends Omit<
+    TimePickerProps,
+        | 'value'
+        | 'placeholder'
+        | 'defaultValue'
+        | 'onOk'
+        | 'disabled'
+        | 'onChange'
+        | 'preset'
+    > {
+    value?: Array<ConfigType>;
+    defaultValue?: Array<ConfigType>;
+    onOk?: (value: Array<Dayjs>, strVal: Array<string>) => void;
+    onChange?: (value: Array<Dayjs>, strVal: Array<string>) => void;
+    placeholder?: string | Array<string>;
+    disabled?: boolean | boolean[];
+    preset?: IPresetType | IPresetType[];
+}
+
+export class RangePicker extends React.Component<RangePickerProps, any> {
+    type: 'range';
+}
+
+export default class TimePicker extends React.Component<TimePickerProps, any> {
+    static RangePicker: typeof RangePicker;
+}
