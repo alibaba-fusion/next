@@ -50,7 +50,7 @@ export function toArray(children) {
  */
 
 export function tabsArrayShallowEqual(arrA, arrB) {
-    // 此处先比较不是数组也可筛选。数组与数组直接比较一定是false：([1,2,3] === [1,2,3] // false)
+    // 相同地址的返回true，不需要更新数据（更新数据的基础是props数据与当前获取的值不同）
     if (arrA === arrB) {
         return true;
     }
