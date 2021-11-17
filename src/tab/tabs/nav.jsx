@@ -58,17 +58,6 @@ class Nav extends React.Component {
     }
 
     componentDidUpdate(_, prevState) {
-        // 更改tabs后如果有dropdown属性，应该重新执行getDropdownItems函数更新dropdown数据
-        if (this.props.excessMode === 'dropdown' && prevState.dropdownTabs.length) {
-            for (let i in this.props.tabs) {
-                if (this.props.tabs.length !== prevState.dropdownTabs.length) {
-                    this.getDropdownItems(this.props);
-                } else if (this.props.tabs[i].key !== prevState.dropdownTabs[i].key) {
-                    this.getDropdownItems(this.props);
-                }
-            }
-        }
-
         // 此处通过延时处理，屏蔽动画带来的定位不准确问题（由于要支持ie9，因此无法使用transitionend）
         clearTimeout(this.scrollTimer);
         this.scrollTimer = setTimeout(() => {
@@ -79,6 +68,21 @@ class Nav extends React.Component {
         this.slideTimer = setTimeout(() => {
             this.setSlideBtn();
         }, 410);
+
+        // 更改tabs后如果有dropdown属性，应该重新执行getDropdownItems函数更新dropdown数据
+        if (this.props.excessMode === 'dropdown' && prevState.dropdownTabs.length) {
+            let propsTabs = this.props.tabs;
+            let prevTabs = prevState.dropdownTabs;
+            if (this.props.tabs.length !== prevState.dropdownTabs.length) {
+                this.getDropdownItems(this.props);
+                return;
+            }
+            for (let i = 0; i < this.props.tabs.length; i++) {
+                if (propsTabs[i].key !== prevTabs[i].key || propsTabs[i].props.title !== prevTabs[i].props.title) {
+                    this.getDropdownItems(this.props);
+                }
+            }
+        }
     }
 
     componentWillUnmount() {
