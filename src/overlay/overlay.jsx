@@ -177,7 +177,7 @@ class Overlay extends Component {
          */
         v2: PropTypes.bool,
         /**
-         * align 的数组形式，和 align 互斥使用
+         * [v2] align 的数组形式，不能和 align 同时使用
          * @version 1.25
          */
         points: PropTypes.array,
