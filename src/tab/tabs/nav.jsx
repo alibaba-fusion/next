@@ -7,7 +7,7 @@ import Overlay from '../../overlay';
 import Menu from '../../menu';
 import Animate from '../../animate';
 import { events, KEYCODE, dom, obj } from '../../util';
-import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
+import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported, tabsArrayShallowEqual } from './utils';
 
 const floatRight = { float: 'right', zIndex: 1 };
 const floatLeft = { float: 'left', zIndex: 1 };
@@ -71,16 +71,8 @@ class Nav extends React.Component {
 
         // 更改tabs后如果有dropdown属性，应该重新执行getDropdownItems函数更新dropdown数据
         if (this.props.excessMode === 'dropdown' && prevState.dropdownTabs.length) {
-            let propsTabs = this.props.tabs;
-            let prevTabs = prevState.dropdownTabs;
-            if (this.props.tabs.length !== prevState.dropdownTabs.length) {
+            if (!tabsArrayShallowEqual(this.props.tabs, prevState.dropdownTabs)) {
                 this.getDropdownItems(this.props);
-                return;
-            }
-            for (let i = 0; i < this.props.tabs.length; i++) {
-                if (propsTabs[i].key !== prevTabs[i].key || propsTabs[i].props.title !== prevTabs[i].props.title) {
-                    this.getDropdownItems(this.props);
-                }
             }
         }
     }
