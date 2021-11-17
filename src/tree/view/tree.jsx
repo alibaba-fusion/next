@@ -25,7 +25,7 @@ const { getOffset } = dom;
 const { pickOthers, pickProps, isPlainObject } = obj;
 
 export const treeNodeProps = [
-    'children',
+    'key',
     'label',
     'selectable',
     'checkable',
