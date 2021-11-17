@@ -286,6 +286,16 @@ describe('Tree', () => {
         assertTree({ dataSource }, mountNode);
     });
 
+    it('should support render child node', () => {
+        ReactDOM.render(<Tree defaultExpandedKeys={['2']} dataSource={dataSource} labelRender={(nodeData) => {
+            return <div className='custom-child-title'>{nodeData.label}</div>
+        }} />,
+            mountNode
+        );
+
+        assert(!!document.querySelector('.custom-child-title'));
+    });
+
     it('should support render child nodes', () => {
         ReactDOM.render(
             <Tree
