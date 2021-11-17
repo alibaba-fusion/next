@@ -22,7 +22,20 @@ import {
 
 const { bindCtx, noop } = func;
 const { getOffset } = dom;
-const { pickOthers, isPlainObject } = obj;
+const { pickOthers, pickProps, isPlainObject } = obj;
+
+export const treeNodeProps = [
+    'children',
+    'label',
+    'selectable',
+    'checkable',
+    'editable',
+    'draggable',
+    'disabled',
+    'checkboxDisabled',
+    'isLeaf',
+    'icon',
+];
 
 const getExpandedKeys = (props, willReceiveProps, _k2n, _p2n) => {
     let expandedKeys;
@@ -1079,7 +1092,7 @@ class Tree extends Component {
         };
 
         if (labelRender) {
-            nodeProps.label = labelRender(props);
+            nodeProps.label = labelRender(pickProps(treeNodeProps, props));
         }
 
         return (
