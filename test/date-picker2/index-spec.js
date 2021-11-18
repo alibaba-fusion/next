@@ -713,6 +713,12 @@ describe('Picker', () => {
                 .find('.next-calendar2-header-text-field button')
                 .at(0)
                 .simulate('click');
+
+            mode = 'decade';
+            wrapper
+                .find('.next-calendar2-header-text-field button')
+                .at(0)
+                .simulate('click');
             wrapper.unmount();
 
             // RangePicker
