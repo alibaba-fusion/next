@@ -13,6 +13,11 @@ type SpanOffset = {
 
 export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
+    * 表单名
+    */
+    name?: string | Array<any>;
+
+    /**
      * 样式前缀
      */
     prefix?: string;
@@ -443,6 +448,11 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface FormProps extends HTMLAttributesWeak, CommonProps {
+    /**
+    * 表单名
+    */
+    name?: string;
+
     /**
      * 样式前缀
      */
