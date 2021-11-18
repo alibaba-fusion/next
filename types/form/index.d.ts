@@ -15,7 +15,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
     * 表单名
     */
-    name?: string | Array<any>;
+    name?: string;
 
     /**
      * 样式前缀
@@ -448,11 +448,6 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface FormProps extends HTMLAttributesWeak, CommonProps {
-    /**
-    * 表单名
-    */
-    name?: string;
-
     /**
      * 样式前缀
      */
