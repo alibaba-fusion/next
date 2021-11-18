@@ -56,6 +56,9 @@ jobs:
       - name: test
         run: npm test
 
+      - name: test_v2
+        run: npm run test:v2
+
       - name: coverage
         run: bash <(curl -s https://codecov.io/bash)
     needs: setup
