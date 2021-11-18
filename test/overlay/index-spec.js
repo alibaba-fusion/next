@@ -379,7 +379,7 @@ describe('Overlay', () => {
             document.body.appendChild(outerInput);
             outerInput.focus();
             wrapper = render(
-                <OverlayControlDemo autoFocus>
+                <OverlayControlDemo animation={false} autoFocus>
                     <input id="inner" />
                 </OverlayControlDemo>
             );
@@ -636,7 +636,7 @@ describe('Overlay', () => {
             </div>
         );
 
-        assert(document.querySelector('.overlay-btn').style.left === '73.5px');
+        assert(document.querySelector('.overlay-btn').style.left.match('73'));
     });
 
     it('should set overflow hidden to container', () => {
@@ -762,55 +762,51 @@ describe('Popup', () => {
         });
     });
 
-    it('should support triggerType', () => {
-        return co(function*() {
-            wrapper = render(
-                <Popup trigger={<button>Open</button>}>
-                    <span className="content">Hello World From Popup!</span>
-                </Popup>
-            );
-            const btn = document.querySelector('button');
+    it('should support triggerType', async () => {
+        wrapper = render(
+            <Popup trigger={<button>Open</button>}>
+                <span className="content">Hello World From Popup!</span>
+            </Popup>
+        );
+        const btn = document.querySelector('button');
 
-            ReactTestUtils.Simulate.mouseEnter(btn);
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
+        ReactTestUtils.Simulate.mouseEnter(btn);
+        await delay(300);
+        assert(document.querySelector('.next-overlay-wrapper'));
 
-            ReactTestUtils.Simulate.mouseLeave(btn);
-            ReactTestUtils.Simulate.mouseEnter(document.querySelector('.content'));
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
+        ReactTestUtils.Simulate.mouseLeave(btn);
+        ReactTestUtils.Simulate.mouseEnter(document.querySelector('.content'));
+        await delay(300);
+        assert(document.querySelector('.next-overlay-wrapper'));
 
-            ReactTestUtils.Simulate.mouseLeave(document.querySelector('.content'));
-            yield delay(500);
-            assert(!document.querySelector('.next-overlay-wrapper'));
-        });
+        ReactTestUtils.Simulate.mouseLeave(document.querySelector('.content'));
+        await delay(600);
+        assert(!document.querySelector('.next-overlay-wrapper'));
     });
 
-    it('should support setting triggerType to click', () => {
-        return co(function*() {
-            wrapper = render(
-                <Popup trigger={<button>Open</button>} triggerType="click">
-                    <span className="content">Hello World From Popup!</span>
-                </Popup>
-            );
-            const btn = document.querySelector('button');
+    it('should support setting triggerType to click', async () => {
+        wrapper = render(
+            <Popup trigger={<button>Open</button>} triggerType="click">
+                <span className="content">Hello World From Popup!</span>
+            </Popup>
+        );
+        const btn = document.querySelector('button');
 
-            ReactTestUtils.Simulate.click(btn);
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
+        ReactTestUtils.Simulate.click(btn);
+        await delay(300);
+        assert(document.querySelector('.next-overlay-wrapper'));
 
-            ReactTestUtils.Simulate.click(btn);
-            yield delay(300);
-            assert(!document.querySelector('.next-overlay-wrapper'));
+        ReactTestUtils.Simulate.click(btn);
+        await delay(300);
+        assert(!document.querySelector('.next-overlay-wrapper'));
 
-            ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.SPACE });
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
+        ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.SPACE });
+        await delay(300);
+        assert(document.querySelector('.next-overlay-wrapper'));
 
-            ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.ENTER });
-            yield delay(300);
-            assert(!document.querySelector('.next-overlay-wrapper'));
-        });
+        ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.ENTER });
+        await delay(300);
+        assert(!document.querySelector('.next-overlay-wrapper'));
     });
 
     it('should support setting triggerType to focus', () => {

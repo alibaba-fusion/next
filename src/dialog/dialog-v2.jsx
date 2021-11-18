@@ -112,8 +112,8 @@ const Dialog = props => {
         }
     }, [visible && hasMask]);
 
-    const handleClose = (triggerType, e) => {
-        e.triggerType = triggerType;
+    const handleClose = (targetType, e) => {
+        e.targetType = targetType;
         typeof onClose === 'function' && onClose(e);
     };
 
@@ -175,8 +175,8 @@ const Dialog = props => {
             }
         }
 
-        e.triggerType = 'mask';
-        handleClose(e.triggerType, e);
+        e.targetType = 'mask';
+        handleClose(e.targetType, e);
     };
 
     const handleEnter = () => {
@@ -239,15 +239,17 @@ const Dialog = props => {
         maxHeight = `calc(100vh - ${top + bottom}px)`;
     }
 
+    const timeout = {
+        appear: 300,
+        enter: 300,
+        exit: 250,
+    };
+
     let inner = (
         <Animate.OverlayAnimate
             visible={visible}
             animation={animation}
-            timeout={{
-                appear: 500,
-                enter: 300,
-                exit: 500,
-            }}
+            timeout={timeout}
             onEnter={handleEnter}
             onEntered={handleEntered}
             onExiting={handleExiting}
@@ -297,7 +299,7 @@ const Dialog = props => {
             <Animate.OverlayAnimate
                 visible={visible}
                 animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}
-                timeout={300}
+                timeout={timeout}
                 unmountOnExit
             >
                 <div className={`${prefix}overlay-backdrop`} />

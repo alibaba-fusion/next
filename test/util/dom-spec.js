@@ -142,7 +142,7 @@ describe('src/dom.js', function() {
             assert(dom.getPixels('100') === 100);
             assert(dom.getPixels(100) === 100);
             assert(dom.getPixels('60px') === 60);
-            assert(dom.getPixels('100vh') === document.defaultView.innerHeight);
+            assert(parseInt(dom.getPixels('100vh')) === document.defaultView.innerHeight);
         });
     });
 

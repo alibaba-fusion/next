@@ -29,7 +29,7 @@ API变化：
 -   移除了 `align` `shouldUpdatePosition`, Dialog 会自动调整位置
 -   移除了 `minMargin` , 改用 `top` `bottom`
 -   移除了 `isFullScreen` ，改用 `overflowScroll` 默认开启超出滚动
--   合并 `onClose(triggerType, e)` triggerType 属性到 `onClose(e)`. 可以通过 e.triggerType 区分来源
+-   合并 `onClose(targetType, e)` targetType 属性到 `onClose(e)`. 可以通过 e.targetType 区分来源
 
 ## API
 

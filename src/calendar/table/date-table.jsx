@@ -130,7 +130,7 @@ class DateTable extends PureComponent {
                 );
                 counter++;
             }
-            
+
             if (!showOtherMonth && !lastDayOfWeekInCurrentMonth && !firstDayOfWeekInCurrentMonth) {
                 break;
             }

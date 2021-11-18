@@ -16,6 +16,7 @@ script:
   - npm run eslint
   - npm run stylelint
   - npm run test:a11y
+  - npm run test:v2
   - npm test
   - codecov
 

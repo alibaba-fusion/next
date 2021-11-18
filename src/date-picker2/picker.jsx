@@ -227,7 +227,9 @@ class Picker extends React.Component {
      * @param {string} type 事件类型
      */
     handleVisibleChange = (visible, type) => {
-        if (['docClick', 'fromTrigger'].indexOf(type) > -1) {
+        // 兼容 v2 overlay e.targetType 写法, trigger/doc
+        const targetType = typeof type === 'object' && type.targetType ? type.targetType : type;
+        if (['docClick', 'fromTrigger', 'trigger', 'doc'].indexOf(targetType) > -1) {
             // 弹层收起 触发 Change 逻辑
             if (!visible) {
                 this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
@@ -656,6 +658,7 @@ class Picker extends React.Component {
                 {...pickOthers(Picker.propTypes, restProps)}
                 dir={rtl ? 'rtl' : undefined}
                 className={classnames(className, prefixCls)}
+                style={this.props.style}
             >
                 <PopupComp
                     rtl={rtl}
@@ -668,7 +671,7 @@ class Picker extends React.Component {
                     style={popupStyle}
                     onVisibleChange={handleVisibleChange}
                     trigger={
-                        <div {...triggerProps} role="button" tabIndex="0" style={this.props.style}>
+                        <div {...triggerProps} role="button" tabIndex="0" style={{ width: '100%' }}>
                             {triggerNode}
                         </div>
                     }

@@ -44,7 +44,9 @@ class Demo extends React.Component {
         return (
             <div>
                 <div>
-                    <Popup trigger={<Button>Open</Button>}
+                    <Popup 
+                        v2
+                        trigger={<Button>Open</Button>}
                         triggerType="click"
                         visible={this.state.visible}
                         onVisibleChange={this.onVisibleChange}>
@@ -55,7 +57,9 @@ class Demo extends React.Component {
                 </div>
                 <br />
                 <div>
-                    <Popup trigger={<Button style={{"marginRight": "50px"}} ref={ref => {this.btn1 = ref;}}>Paired Popup 1</Button>}
+                    <Popup 
+                        v2
+                        trigger={<Button style={{"marginRight": "50px"}} ref={ref => {this.btn1 = ref;}}>Paired Popup 1</Button>}
                         triggerType="click"
                         visible={this.state.groupVisible}
                         safeNode={[() => this.btn2, () => this.overlay2]}
@@ -64,7 +68,9 @@ class Demo extends React.Component {
                             Hello World From Popup!
                         </span>
                     </Popup>
-                    <Popup trigger={<Button ref={ref => {this.btn2 = ref;}}>Paired Popup 2</Button>}
+                    <Popup 
+                        v2
+                        trigger={<Button ref={ref => {this.btn2 = ref;}}>Paired Popup 2</Button>}
                         triggerType="click"
                         visible={this.state.groupVisible}
                         safeNode={[() => this.btn1, () => this.overlay1]}

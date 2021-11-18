@@ -122,17 +122,17 @@ describe('v2', () => {
         assert(!document.querySelector('.next-dialog'));
 
         ReactTestUtils.Simulate.click(btn);
-        await delay(20);
+        await delay(40);
         const cancelBtn = document.querySelector('.next-btn-normal.next-dialog-btn');
         ReactTestUtils.Simulate.click(cancelBtn);
-        await delay(20);
+        await delay(40);
         assert(!document.querySelector('.next-dialog'));
 
         ReactTestUtils.Simulate.click(btn);
-        await delay(20);
+        await delay(40);
         const closeLink = document.querySelector('.next-dialog-close');
         ReactTestUtils.Simulate.click(closeLink);
-        await delay(20);
+        await delay(40);
         assert(!document.querySelector('.next-dialog'));
     });
 

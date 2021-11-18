@@ -64,7 +64,7 @@ class Overlay extends Component {
         /**
          * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
          */
-        align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        align: PropTypes.string,
         /**
          * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量
          * e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
@@ -127,17 +127,11 @@ class Overlay extends Component {
          * @param {Object} node 定位参照的容器节点
          */
         onPosition: PropTypes.func,
-        /**
-         * 是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式
-         */
         shouldUpdatePosition: PropTypes.bool,
         /**
          * 弹层打开时是否让其中的元素自动获取焦点
          */
         autoFocus: PropTypes.bool,
-        /**
-         * 当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域
-         */
         needAdjust: PropTypes.bool,
         /**
          * 是否禁用页面滚动
@@ -177,6 +171,16 @@ class Overlay extends Component {
         // 当 pin 元素（一般是弹层）是 fixed 布局的时候，pin 元素是否要跟随 base 元素（一般是trigger）
         // 举例来说，dialog/drawer 这类组件弹层是不跟随trigger的，而 fixed 布局下的subNav是跟随trigger的
         pinFollowBaseElementWhenFixed: PropTypes.bool,
+        /**
+         * 开启 v2 版本
+         * @version 1.25
+         */
+        v2: PropTypes.bool,
+        /**
+         * [v2] align 的数组形式，不能和 align 同时使用
+         * @version 1.25
+         */
+        points: PropTypes.array,
     };
     static defaultProps = {
         prefix: 'next-',

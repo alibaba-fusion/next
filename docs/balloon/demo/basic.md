@@ -19,24 +19,22 @@ Common types of Balloon
 ````jsx
 import { Button, Balloon } from '@alifd/next';
 
-const defaultTrigger = <Button className="btrigger" style={{margin: '5px'}}>default style</Button>;
-const disabledTrigger = <Button disabled className="btrigger" style={{margin: '5px'}}>default style</Button>;
-const primary = <Button className="btrigger" style={{margin: '5px'}}>primary style</Button>;
-
 const Demo = () => (
-    <div className="container">
-        <Balloon trigger={defaultTrigger} closable={false}>
-            default
+    <div className="balloon-container">
+        <Balloon v2 triggerType="click" title="Balloon Title" trigger={<Button>Default</Button>} align="br">
+            First performed around 1600, Hamlet tells the story of a prince whose duty to revenge his father's death entangles him in philosophical problems he can't solve.
         </Balloon>
-        <Balloon type="primary" trigger={primary} triggerType="click">
-            primary
-        </Balloon>
-        <Balloon trigger={disabledTrigger} closable={false}>
-            disabeled default
+        <Balloon v2 type="primary" triggerType="click"  title="Balloon Title" trigger={<Button>Primary</Button>} align="br" closable={false}>
+            First performed around 1600, Hamlet tells the story of a prince whose duty to revenge his father's death entangles him in philosophical problems he can't solve.
         </Balloon>
     </div>
 );
 
 ReactDOM.render(<Demo />, mountNode);
+````
 
+````css
+.balloon-container > * {
+    margin-right: 20px;
+}
 ````

@@ -36,24 +36,24 @@ const leftBottom = <Button style={{margin: '5px'}} id="leftBottom" className="bt
 const App = () => (
     <div style={{paddingLeft: 220}}>
         <div style={{marginLeft: 75}}>
-            <Tooltip trigger={topLeft} align="tl">text text</Tooltip>
-            <Tooltip trigger={top} align="t">text text</Tooltip>
-            <Tooltip trigger={topRight} align="tr">text text</Tooltip>
+            <Tooltip v2 trigger={topLeft} align="tl">text text</Tooltip>
+            <Tooltip v2 trigger={top} align="t">text text</Tooltip>
+            <Tooltip v2 trigger={topRight} align="tr">text text</Tooltip>
         </div>
         <div style={{width: 80, float: 'left'}}>
-            <Tooltip trigger={leftTop} align="lt">text text</Tooltip>
-            <Tooltip trigger={left} align="l">text text</Tooltip>
-            <Tooltip trigger={leftBottom} align="lb">text text</Tooltip>
+            <Tooltip v2 popupProps={{cache:true}} trigger={leftTop} align="lt">text text</Tooltip>
+            <Tooltip v2 trigger={left} align="l">text text</Tooltip>
+            <Tooltip v2 trigger={leftBottom} align="lb">text text</Tooltip>
         </div>
         <div style={{width: 80, marginLeft: 290}}>
-            <Tooltip trigger={rightTop} align="rt">text text</Tooltip>
-            <Tooltip trigger={right} align="r">text text</Tooltip>
-            <Tooltip trigger={rightBottom} align="rb">text text</Tooltip>
+            <Tooltip v2 trigger={rightTop} align="rt">text text</Tooltip>
+            <Tooltip v2 trigger={right} align="r">text text</Tooltip>
+            <Tooltip v2 trigger={rightBottom} align="rb">text text</Tooltip>
         </div>
         <div style={{marginLeft: 80, clear: 'both'}}>
-            <Tooltip trigger={bottomLeft} align="bl">text text</Tooltip>
-            <Tooltip trigger={bottom} align="b">text text</Tooltip>
-            <Tooltip trigger={bottomRight} align="br">text text</Tooltip>
+            <Tooltip v2 trigger={bottomLeft} align="bl">text text</Tooltip>
+            <Tooltip v2 trigger={bottom} align="b">text text</Tooltip>
+            <Tooltip v2 trigger={bottomRight} align="br">text text</Tooltip>
         </div>
     </div>
 
