@@ -1,15 +1,11 @@
 # Latest Log 
 
-## [1.24.15](https://github.com/alibaba-fusion/next/compare/1.24.14...1.24.15) (2021-11-09)
+## [1.24.16](https://github.com/alibaba-fusion/next/compare/1.24.15...1.24.16) (2021-11-17)
 
 
 ### Bug Fixes
 
-* correct style order of next.var.css, close [#3493](https://github.com/alibaba-fusion/next/issues/3493) ([6b8ff04](https://github.com/alibaba-fusion/next/commit/6b8ff04))
-
-
-### Features
-
-* **Upload:** new api previewOnFileName to set onPreview on filename. fix [#3455](https://github.com/alibaba-fusion/next/issues/3455) ([fd3d04a](https://github.com/alibaba-fusion/next/commit/fd3d04a))
+* **Rating:** prevent default for a11y input, close [#3526](https://github.com/alibaba-fusion/next/issues/3526) ([#3527](https://github.com/alibaba-fusion/next/issues/3527)) ([0ad9e36](https://github.com/alibaba-fusion/next/commit/0ad9e36))
+* **Tab:** enhance robustness, close [#3515](https://github.com/alibaba-fusion/next/issues/3515) ([6a3b41e](https://github.com/alibaba-fusion/next/commit/6a3b41e))
 
 
