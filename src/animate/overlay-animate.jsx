@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React, { useCallback, useEffect, useState } from 'react';
 import { Transition } from 'react-transition-group';
 import classNames from 'classnames';

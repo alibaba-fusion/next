@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
