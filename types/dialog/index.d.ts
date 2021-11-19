@@ -92,7 +92,7 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 对话框关闭时触发的回调函数
      */
-    onClose?: (trigger: string, event: React.MouseEvent) => void;
+    onClose?: (trigger: string | React.MouseEvent, event: React.MouseEvent) => void;
 
     /**
      * 对话框关闭后触发的回调函数, 如果有动画，则在动画结束后触发
