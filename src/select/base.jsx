@@ -311,27 +311,25 @@ export default class Base extends React.Component {
         this.props.onVisibleChange(visible, type);
     }
 
-    setFirstHightLightKeyForMenu() {
+    setFirstHightLightKeyForMenu(searchValue) {
         // 判断value/highlightKey解决受控后，默认高亮第一个元素问题。(当搜索值时，搜索后应执行默认选择第一个元素)
-        const { value, highlightKey } = this.state;
+        const { highlightKey } = this.state;
         if (!this.props.autoHighlightFirstItem) {
             return;
         }
 
         // 设置高亮 item key
-        setTimeout(() => {
-            if (
-                this.dataStore.getMenuDS().length &&
-                this.dataStore.getEnableDS().length &&
-                ((!value && !highlightKey) || this.state.searchValue)
-            ) {
-                const highlightKey = `${this.dataStore.getEnableDS()[0].value}`;
-                this.setState({
-                    highlightKey,
-                });
-                this.props.onToggleHighlightItem(highlightKey, 'autoFirstItem');
-            }
-        }, 100);
+        if (
+            this.dataStore.getMenuDS().length &&
+            this.dataStore.getEnableDS().length &&
+            (!highlightKey || searchValue)
+        ) {
+            const highlightKey = `${this.dataStore.getEnableDS()[0].value}`;
+            this.setState({
+                highlightKey,
+            });
+            this.props.onToggleHighlightItem(highlightKey, 'autoFirstItem');
+        }
     }
 
     handleChange(value, ...args) {
