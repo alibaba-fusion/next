@@ -5,7 +5,7 @@ import Dialog1 from './dialog';
 import Dialog2 from './dialog-v2';
 
 import Inner from './inner';
-import { show, alert, confirm, withContext } from './show';
+import { show, alert, confirm, withContext, success, error, notice, warning, help } from './show';
 
 class Dialog extends React.Component {
     render() {
@@ -40,6 +40,12 @@ Dialog.confirm = config => {
     }
     return confirm(config);
 };
+Dialog.success = config => success(config);
+Dialog.error = config => error(config);
+Dialog.notice = config => notice(config);
+Dialog.warning = config => warning(config);
+Dialog.help = config => help(config);
+
 Dialog.withContext = withContext;
 
 /* istanbul ignore next */
