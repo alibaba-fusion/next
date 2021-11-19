@@ -1,11 +1,11 @@
 # Latest Log 
 
-## [1.24.16](https://github.com/alibaba-fusion/next/compare/1.24.15...1.24.16) (2021-11-17)
+## [1.24.17](https://github.com/alibaba-fusion/next/compare/1.24.16...1.24.17) (2021-11-19)
 
 
 ### Bug Fixes
 
-* **Rating:** prevent default for a11y input, close [#3526](https://github.com/alibaba-fusion/next/issues/3526) ([#3527](https://github.com/alibaba-fusion/next/issues/3527)) ([0ad9e36](https://github.com/alibaba-fusion/next/commit/0ad9e36))
-* **Tab:** enhance robustness, close [#3515](https://github.com/alibaba-fusion/next/issues/3515) ([6a3b41e](https://github.com/alibaba-fusion/next/commit/6a3b41e))
+* **Affix:** suport resize container width fix [#3536](https://github.com/alibaba-fusion/next/issues/3536) ([218c07d](https://github.com/alibaba-fusion/next/commit/218c07d))
+* **Affix:** update container async to wait ref called ([62c3ba7](https://github.com/alibaba-fusion/next/commit/62c3ba7))
 
 
