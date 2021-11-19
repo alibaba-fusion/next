@@ -59,6 +59,8 @@ const Demo = () => {
                     popupProps={{v2: true}} 
                 />
                 <DatePicker2 popupProps={{v2: true}} style={{width: 120, marginLeft: 10}}/>
+                <br/><br/>
+                <DatePicker2.RangePicker popupProps={{v2: true}} style={{width: 240}}/>
             </div>
         </Popup>
     </div>);

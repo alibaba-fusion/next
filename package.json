@@ -98,7 +98,7 @@
   },
   "dependencies": {
     "@alifd/field": "~1.5.5",
-    "@alifd/overlay": "^0.1.8",
+    "@alifd/overlay": "^0.2.0",
     "@alifd/validate": "~1.2.0",
     "babel-runtime": "^6.26.0",
     "bignumber.js": "^9.0.1",
@@ -120,7 +120,6 @@
     "@alifd/doc-parser": "^1.0.0",
     "@alifd/dts-generator": "^1.0.3",
     "@alifd/eslint-config-next": "^2.0.0",
-    "@alifd/overlay": "^0.1.7",
     "@alifd/sass-mapper": "^2.0.2",
     "@alifd/sass-tracker": "^0.1.0",
     "@alifd/sassdoc-parser": "^2.0.0",

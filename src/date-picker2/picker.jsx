@@ -226,10 +226,8 @@ class Picker extends React.Component {
      * @param {boolean} visible 是否可见
      * @param {string} type 事件类型
      */
-    handleVisibleChange = (visible, type) => {
-        // 兼容 v2 overlay e.targetType 写法, trigger/doc
-        const targetType = typeof type === 'object' && type.targetType ? type.targetType : type;
-        if (['docClick', 'fromTrigger', 'trigger', 'doc'].indexOf(targetType) > -1) {
+    handleVisibleChange = (visible, targetType) => {
+        if (['docClick', 'fromTrigger'].indexOf(targetType) > -1) {
             // 弹层收起 触发 Change 逻辑
             if (!visible) {
                 this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');

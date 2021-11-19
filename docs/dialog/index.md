@@ -29,7 +29,6 @@ API变化：
 -   移除了 `align` `shouldUpdatePosition`, Dialog 会自动调整位置
 -   移除了 `minMargin` , 改用 `top` `bottom`
 -   移除了 `isFullScreen` ，改用 `overflowScroll` 默认开启超出滚动
--   合并 `onClose(targetType, e)` targetType 属性到 `onClose(e)`. 可以通过 e.targetType 区分来源
 
 ## API
 
@@ -61,7 +60,7 @@ API变化：
 | bottom               | 弹窗距离底部最小间距                                                                                                                                                                                                                             | Number              | -                                                                                 | 1.25     |
 | closeIcon            | 定制关闭按钮 icon                                                                                                                                                                                                                            | ReactNode           | -                                                                                 | 1.25     |
 | closeable            | [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：<br/>**close** 表示点击关闭按钮可以关闭对话框<br/>**mask** 表示点击遮罩区域可以关闭对话框<br/>**esc** 表示按下 esc 键可以关闭对话框<br/>如 'close' 或 'close,esc,mask'<br/>如果设置为 true，则以上关闭方式全部生效<br/>如果设置为 false，则以上关闭方式全部失效 | String/Boolean      | 'esc,close'                                                                       |          |
-| onClose              | 点击对话框关闭按钮时触发的回调函数<br/><br/>**签名**:<br/>Function(trigger: String/Event, event: Object) => void<br/>**参数**:<br/>_trigger_: {String/Event} 关闭触发行为的描述字符串， v2 是 Event, 可通过 Event.targetType 取到<br/>_event_: {Object} 关闭时事件对象                | Function            | () => {}                                                                          |          |
+| onClose              | 点击对话框关闭按钮时触发的回调函数<br/><br/>**签名**:<br/>Function(trigger: String, event: Object) => void<br/>**参数**:<br/>_trigger_: {String} 关闭触发行为的描述字符串<br/>_event_: {Object} 关闭时事件对象                                                                 | Function            | () => {}                                                                          |          |
 | align                | [v2废弃] 对话框对齐方式, 具体见Overlay文档                                                                                                                                                                                                           | String/Boolean      | 'cc cc'                                                                           |          |
 | isFullScreen         | [v2废弃] 改用 overflowScroll                                                                                                                                                                                                               | Boolean             | false                                                                             |          |
 | overflowScroll       | 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时                                                                                                                                            | Boolean             | -                                                                                 |          |

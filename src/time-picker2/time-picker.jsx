@@ -348,10 +348,8 @@ class TimePicker2 extends Component {
      * @param {boolean} visible 是否可见
      * @param {string} type 事件类型
      */
-    handleVisibleChange = (visible, type) => {
-        // 兼容 v2 overlay e.targetType=doc 写法
-        const targetType = typeof type === 'object' && type.targetType ? type.targetType : type;
-        if (['docClick', 'doc'].indexOf(targetType) > -1) {
+    handleVisibleChange = (visible, targetType) => {
+        if (targetType === 'docClick') {
             // 弹层收起 触发 Change 逻辑
             if (!visible) {
                 this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
