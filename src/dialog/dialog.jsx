@@ -165,8 +165,8 @@ export default class Dialog extends Component {
          */
         closeable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         /**
-         * 对话框关闭时触发的回调函数
-         * @param {String} trigger 关闭触发行为的描述字符串
+         * 点击对话框关闭按钮时触发的回调函数
+         * @param {String|Event} trigger 关闭触发行为的描述字符串， v2 是 Event, 可通过 Event.targetType 取到
          * @param {Object} event 关闭时事件对象
          */
         onClose: PropTypes.func,
