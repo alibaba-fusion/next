@@ -49,12 +49,12 @@ const Popup = props => {
         }
     }, [props.visible]);
 
-    const handleVisibleChange = (visible, e) => {
+    const handleVisibleChange = (visible, ...args) => {
         if (!('visible' in props)) {
             setVisible(visible);
         }
 
-        onVisibleChange(visible, e);
+        onVisibleChange(visible, ...args);
     };
 
     const triggerNode = overlay ? children : trigger;
@@ -85,11 +85,7 @@ const Popup = props => {
         <Animate.OverlayAnimate
             visible={visible}
             animation={animation}
-            timeout={{
-                appear: 500,
-                enter: 300,
-                exit: 500,
-            }}
+            timeout={200}
             onEnter={handleEnter}
             onEntering={handleEntering}
             onEntered={handleEntered}

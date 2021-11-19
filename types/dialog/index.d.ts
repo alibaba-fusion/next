@@ -92,7 +92,7 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 对话框关闭时触发的回调函数
      */
-    onClose?: (trigger: string | React.MouseEvent, event: React.MouseEvent) => void;
+    onClose?: (trigger: string, event: React.MouseEvent) => void;
 
     /**
      * 对话框关闭后触发的回调函数, 如果有动画，则在动画结束后触发
@@ -196,4 +196,9 @@ export default class Dialog extends React.Component<DialogProps, any> {
     static show(config: QuickShowConfig): QuickShowRet;
     static alert(config: QuickShowConfig): QuickShowRet;
     static confirm(config: QuickShowConfig): QuickShowRet;
+    static success(config: QuickShowConfig): QuickShowRet;
+    static error(config: QuickShowConfig): QuickShowRet;
+    static warning(config: QuickShowConfig): QuickShowRet;
+    static notice(config: QuickShowConfig): QuickShowRet;
+    static help(config: QuickShowConfig): QuickShowRet;
 }

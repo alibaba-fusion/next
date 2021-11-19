@@ -114,8 +114,7 @@ const Dialog = props => {
     }, [visible && hasMask]);
 
     const handleClose = (targetType, e) => {
-        e.targetType = targetType;
-        typeof onClose === 'function' && onClose(e);
+        typeof onClose === 'function' && onClose(targetType, e);
     };
 
     const keydownEvent = e => {
@@ -176,8 +175,7 @@ const Dialog = props => {
             }
         }
 
-        e.targetType = 'mask';
-        handleClose(e.targetType, e);
+        handleClose('maskClick', e);
     };
 
     const handleEnter = () => {
