@@ -674,6 +674,7 @@ class Picker extends React.Component {
                         </div>
                     }
                     onPosition={this.getCurrentAlign}
+                    canCloseByTrigger={false}
                     {...popupProps}
                     className={popupCls}
                 >
