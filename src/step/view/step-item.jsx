@@ -183,11 +183,16 @@ class StepItem extends Component {
         const { direction } = this.props;
         if (direction === 'vertical' || direction === 'ver') {
             const stepWidth = dom.getStyle(this.step, 'width');
+            const stepHozWhitespace = dom.getNodeHozWhitespace(this.step.parentNode);
+            const stepBodyHozWhitespace = dom.getNodeHozWhitespace(this.body);
             const { rtl } = this.props;
-
             rtl ? (this.body.style.right = `${stepWidth}px`) : (this.body.style.left = `${stepWidth}px`);
             dom.setStyle(this.body, {
-                width: dom.getStyle(this.step.parentNode.parentNode, 'width') - stepWidth,
+                width:
+                    dom.getStyle(this.step.parentNode.parentNode, 'width') -
+                    stepWidth -
+                    stepHozWhitespace -
+                    stepBodyHozWhitespace,
             });
             dom.setStyle(
                 this.tail,
