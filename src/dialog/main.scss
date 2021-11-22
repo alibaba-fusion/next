@@ -155,10 +155,10 @@
 
         #{$dialog-prefix}-header {
             word-break: break-word;
-            padding-right: $dialog-close-right * 2 + $dialog-close-width;
+            padding-right: calc(#{$dialog-close-right} * 2 + #{$dialog-close-width});
         }
         #{$dialog-prefix}-body {
-            padding-right: $dialog-close-right * 2 + $dialog-close-width;
+            padding-right: calc(#{$dialog-close-right} * 2 + #{$dialog-close-width});
         }
         #{$dialog-prefix}-header + #{$dialog-prefix}-body {
             padding: $dialog-content-padding-top $dialog-content-padding-left-right $dialog-content-padding-bottom $dialog-content-padding-left-right;
