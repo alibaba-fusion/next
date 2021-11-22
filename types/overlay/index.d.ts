@@ -166,9 +166,9 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     defaultVisible?: boolean;
 
     /**
-     * 弹层显示或隐藏时触发的回调函数
+     * 弹层显示或隐藏时触发的回调函数, v2 版本第二个参数是 event
      */
-    onVisibleChange?: (visible: boolean, type: string, e: {}) => void;
+    onVisibleChange?: (visible: boolean, type: string | object, e?: {}) => void;
 
     /**
      * 设置此属性，弹层无法显示或隐藏
@@ -189,6 +189,11 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 是否跟随trigger滚动
      */
     followTrigger?: boolean;
+
+    /**
+     * 开启 v2 版本
+     */
+    v2?: boolean;
 }
 
 export class Popup extends React.Component<PopupProps, any> {}
@@ -204,9 +209,9 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
     visible?: boolean;
 
     /**
-     * 弹层请求关闭时触发事件的回调函数
+     * 弹层请求关闭时触发事件的回调函数, v2 版本第一个参数是 event
      */
-    onRequestClose?: (type: string, e: React.MouseEvent) => void;
+    onRequestClose?: (type: string | object, e: React.MouseEvent) => void;
 
     /**
      * 弹层定位的参照元素
@@ -327,11 +332,18 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 弹层的根节点的内联样式
      */
     wrapperStyle?: React.CSSProperties;
-
     /**
      * 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
      */
     animation?: { in: string; out: string;} | boolean;
+    /**
+     * 开启 v2 版本
+     */
+    v2?: boolean;
+    /**
+     * 是否在捕获阶段监听，适配 react 17 事件模型变更
+     */
+    useCapture?: boolean;
 }
 
 export default class Overlay extends React.Component<OverlayProps, any> {

@@ -15,23 +15,24 @@ Use `triggerType` prop.
 ---
 
 ````jsx
-import { Overlay, Button, Input } from '@alifd/next';
+import { Overlay } from '@alifd/next';
 
 const { Popup } = Overlay;
 
+const style ={ marginLeft: 10}
 ReactDOM.render(
     <div>
-        <Popup trigger={<Button>click</Button>} triggerType="click">
+        <Popup v2 trigger={<button style={style}>click</button>} triggerType="click">
             <span className="overlay-demo">
                 Click to open Popup!
             </span>
         </Popup>
-        <Popup trigger={<Button>hover</Button>} triggerType="hover">
+        <Popup v2 trigger={<button style={style}>hover</button>} triggerType="hover">
             <span className="overlay-demo">
                 Hover to open Popup!
             </span>
         </Popup>
-        <Popup trigger={<Button>focus</Button>} triggerType="focus">
+        <Popup v2 trigger={<button style={style}>focus</button>} triggerType="focus" autoFocus={false}>
             <span className="overlay-demo">
                 Focus to open Popup!
             </span>
@@ -48,8 +49,5 @@ ReactDOM.render(
     border: 1px solid #eee;
     background: #FFFFFF;
     box-shadow: 2px 2px 20px rgba(0,0,0,0.15);
-}
-.next-btn:not(last-child) {
-    margin-right: 20px;
 }
 ````

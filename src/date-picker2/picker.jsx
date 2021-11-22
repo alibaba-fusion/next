@@ -5,7 +5,7 @@ import * as PT from 'prop-types';
 
 import SharedPT from './prop-types';
 import defaultLocale from '../locale/zh-cn';
-import { func, datejs, KEYCODE, obj } from '../util';
+import { func, KEYCODE, obj } from '../util';
 import { switchInputType, fmtValue, isValueChanged } from './util';
 import { DATE_PICKER_TYPE, DATE_INPUT_TYPE, DATE_PICKER_MODE } from './constant';
 
@@ -16,57 +16,8 @@ import RangePanel from './panels/range-panel';
 import FooterPanel from './panels/footer-panel';
 
 const { Popup } = Overlay;
-const { renderNode } = func;
 const { pickProps, pickOthers } = obj;
-
-/**
- * 日期检验：无效值返回 null
- * @param {dayjs.ConfigType} value
- * @returns {Dayjs | null}
- */
-function checkDate(value) {
-    /**
-     * 因为 datejs(undefined) 表示当前时间
-     * 但是这里期望的是一个空值，即用户不输入值的时候显示为空
-     */
-    if (value === undefined) {
-        value = null;
-    }
-
-    value = datejs(value);
-    return value.isValid() ? value : null;
-}
-
-/**
- * Range 日期检验
- * @param {dayjs.ConfigType[]} value 日期值
- * @param {number} inputType 输入框类型：开始时间输入框/结束时间输入框
- * @param {boolean} disabled 是否禁用
- * @param {boolean} strictly 是否严格校验：严格模式下不允许开始时间大于结束时间，在显示确认按键的，用户输入过程可不严格校验
- * @returns {Dayjs[] | null[]}
- */
-function checkRangeDate(value, inputType, disabled, strictly = true) {
-    const [begin, end] = Array.isArray(value) ? [0, 1].map(i => checkDate(value[i])) : [null, null];
-    const [disabledBegin, disabledEnd] = Array.isArray(disabled) ? disabled : [disabled, disabled];
-
-    /**
-     * 需要清除其中一个时间，优先清除结束时间，下面情况清除开始时间：
-     * 1. 结束时间被 disabled 而开始时间没有被 disabled
-     * 2. 开始时间和结束时间都没被 disabled 且当前正在输入是结束时间
-     */
-    if (strictly && begin && end && begin.isAfter(end)) {
-        if (
-            (!disabledBegin && disabledEnd) ||
-            (!disabledBegin && !disabledBegin && inputType === DATE_INPUT_TYPE.END)
-        ) {
-            return [null, end];
-        }
-
-        return [begin, null];
-    }
-
-    return [begin, end];
-}
+const { renderNode, checkDate, checkRangeDate } = func;
 
 class Picker extends React.Component {
     static propTypes = {
@@ -189,6 +140,8 @@ class Picker extends React.Component {
         };
 
         this.prefixCls = `${prefix}date-picker2`;
+
+        this.popupRef = React.createRef();
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -273,8 +226,8 @@ class Picker extends React.Component {
      * @param {boolean} visible 是否可见
      * @param {string} type 事件类型
      */
-    handleVisibleChange = (visible, type) => {
-        if (['docClick', 'fromTrigger'].indexOf(type) > -1) {
+    handleVisibleChange = (visible, targetType) => {
+        if (['docClick', 'fromTrigger'].indexOf(targetType) > -1) {
             // 弹层收起 触发 Change 逻辑
             if (!visible) {
                 this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
@@ -511,13 +464,37 @@ class Picker extends React.Component {
         });
     };
 
-    renderArrow = () => {
+    getRangeInputOffsetLeft = () => {
         const left =
             this.dateInput &&
             this.dateInput.input &&
             this.dateInput.input[this.state.inputType] &&
             this.dateInput.input[this.state.inputType].getInputNode().offsetLeft;
 
+        return left;
+    };
+
+    getPopupOffsetLeft = () => {
+        const inputOffsetLeft = this.getRangeInputOffsetLeft();
+        const popupElement = this.popupRef.current;
+        const popupElementWidth = popupElement ? popupElement.offsetWidth : 0;
+
+        // 弹层宽度大于输入元素长度，只偏移 arrow
+        if (popupElementWidth > 1.2 * inputOffsetLeft) {
+            return {
+                arrowLeft: inputOffsetLeft,
+                panelLeft: 0,
+            };
+        } else {
+            // 否则 panel 整体偏移，arrow 随 panel 整体偏移
+            return {
+                arrowLeft: 0,
+                panelLeft: inputOffsetLeft,
+            };
+        }
+    };
+
+    renderArrow = left => {
         return <div key="arrow" className={`${this.props.prefix}range-picker2-arrow`} style={{ left }} />;
     };
 
@@ -562,6 +539,8 @@ class Picker extends React.Component {
         } = this.props;
         const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
         const { inputValue, curValue } = this.state;
+
+        const { arrowLeft, panelLeft } = this.getPopupOffsetLeft();
 
         // 预览态
         if (isPreview) {
@@ -677,6 +656,7 @@ class Picker extends React.Component {
                 {...pickOthers(Picker.propTypes, restProps)}
                 dir={rtl ? 'rtl' : undefined}
                 className={classnames(className, prefixCls)}
+                style={this.props.style}
             >
                 <PopupComp
                     rtl={rtl}
@@ -689,18 +669,19 @@ class Picker extends React.Component {
                     style={popupStyle}
                     onVisibleChange={handleVisibleChange}
                     trigger={
-                        <div {...triggerProps} role="button" tabIndex="0" style={this.props.style}>
+                        <div {...triggerProps} role="button" tabIndex="0" style={{ width: '100%' }}>
                             {triggerNode}
                         </div>
                     }
                     onPosition={this.getCurrentAlign}
+                    canCloseByTrigger={false}
                     {...popupProps}
                     className={popupCls}
                 >
                     {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                    <div onMouseDown={handleMouseDown}>
-                        <div dir={rtl ? 'rtl' : undefined} className={`${prefixCls}-wrapper`}>
-                            {isRange ? this.renderArrow() : null}
+                    <div onMouseDown={handleMouseDown} style={{ marginLeft: panelLeft }}>
+                        <div dir={rtl ? 'rtl' : undefined} className={`${prefixCls}-wrapper`} ref={this.popupRef}>
+                            {isRange ? this.renderArrow(arrowLeft) : null}
                             {DateNode}
                             {this.state.panelMode !== this.props.mode ? null : footerNode}
                         </div>

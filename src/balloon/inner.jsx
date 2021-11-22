@@ -31,6 +31,7 @@ class BalloonInner extends React.Component {
         isTooltip: PropTypes.bool,
         locale: PropTypes.object,
         pure: PropTypes.bool,
+        v2: PropTypes.bool,
     };
     static defaultProps = {
         prefix: 'next-',
@@ -55,13 +56,14 @@ class BalloonInner extends React.Component {
             type,
             onClose,
             alignEdge,
+            v2,
             children,
             rtl,
             locale,
             ...others
         } = this.props;
 
-        const alignMap = alignEdge ? edgeMap : normalMap;
+        const alignMap = alignEdge || v2 ? edgeMap : normalMap;
         let _prefix = prefix;
 
         if (isTooltip) {

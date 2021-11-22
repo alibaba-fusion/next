@@ -317,3 +317,29 @@ export function isReactFragment(component) {
     }
     return component === React.Fragment;
 }
+
+/**
+ * Creates an array of the own enumerable string keyed property values of object.
+ *
+ * @param {Object} obj
+ * @returns {Array}
+ *
+ * @example
+ * // returns [1, 2]
+ * values({a: 1, b: 2})
+ */
+export function values(obj) {
+    if (Object.values) {
+        return Object.values(obj);
+    }
+
+    const vals = [];
+
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            vals.push(obj[key]);
+        }
+    }
+
+    return vals;
+}

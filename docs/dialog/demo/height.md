@@ -1,6 +1,6 @@
 # 固定高度
 
-- order: 8
+- order: 5
 
 使用 `height` 属性设置 `Dialog` 整体高度。
 :::lang=en-us
@@ -45,7 +45,6 @@ class Demo extends React.Component {
                     visible={visible}
                     height="400px"
                     onOk={this.onClose}
-                    onCancel={this.onClose}
                     onClose={this.onClose}
                     >
                     Small Content in a fixed size Dialog

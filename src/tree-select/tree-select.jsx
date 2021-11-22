@@ -1,7 +1,6 @@
 import React, { Component, Children, isValidElement, cloneElement } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
 import classNames from 'classnames';
 import Select from '../select';
 import Tree from '../tree';
@@ -12,12 +11,13 @@ import {
     filterParentKey,
     isDescendantOrSelf,
 } from '../tree/view/util';
-import { func, obj, KEYCODE } from '../util';
+import { func, obj, KEYCODE, str } from '../util';
+import zhCN from '../locale/zh-cn';
+import { getValueDataSource, valueToSelectKey } from '../select/util';
 
 const noop = () => {};
 const { Node: TreeNode } = Tree;
 const { bindCtx } = func;
-const { pickOthers } = obj;
 
 const flatDataSource = props => {
     const _k2n = {};
@@ -120,6 +120,7 @@ class TreeSelect extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        locale: PropTypes.object,
         className: PropTypes.string,
         /**
          * 树节点
@@ -166,19 +167,37 @@ class TreeSelect extends Component {
          */
         dataSource: PropTypes.arrayOf(PropTypes.object),
         /**
+         * value/defaultValue 在 dataSource 中不存在时，是否展示
+         * @version 1.25
+         */
+        preserveNonExistentValue: PropTypes.bool,
+        /**
          * （受控）当前值
          */
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.any)]),
         /**
          * （非受控）默认值
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.any)]),
         /**
          * 选中值改变时触发的回调函数
          * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
          * @param {Object|Array} data 选中的数据，包括 value, label, pos, key属性，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点
          */
         onChange: PropTypes.func,
+        /**
+         * 是否一行显示，仅在 multiple 和 treeCheckable 为 true 时生效
+         * @version 1.25
+         */
+        tagInline: PropTypes.bool,
+        /**
+         * 隐藏多余 tag 时显示的内容，在 tagInline 生效时起作用
+         * @param {Object[]} selectedValues 当前已选中的元素
+         * @param {Object[]} totalValues 总待选元素
+         * @returns {reactNode}
+         * @version 1.25
+         */
+        maxTagPlaceholder: PropTypes.func,
         /**
          * 是否显示搜索框
          */
@@ -284,6 +303,7 @@ class TreeSelect extends Component {
     static defaultProps = {
         prefix: 'next-',
         pure: false,
+        locale: zhCN.TreeSelect,
         size: 'medium',
         disabled: false,
         hasArrow: true,
@@ -292,6 +312,7 @@ class TreeSelect extends Component {
         autoWidth: true,
         defaultValue: null,
         onChange: noop,
+        tagInline: false,
         showSearch: false,
         onSearch: noop,
         onSearchClear: noop,
@@ -306,12 +327,18 @@ class TreeSelect extends Component {
         defaultVisible: false,
         onVisibleChange: noop,
         useVirtual: false,
+        /**
+         * TODO
+         * 目前 select/cascade select 是默认支持的，在 2.x 版本中 tree-select 也将默认支持
+         */
+        preserveNonExistentValue: false,
     };
 
     constructor(props, context) {
         super(props, context);
 
         const { defaultVisible, visible, defaultValue, value } = props;
+
         this.state = {
             visible: typeof visible === 'undefined' ? defaultVisible : visible,
             value: normalizeToArray(typeof value === 'undefined' ? defaultValue : value),
@@ -320,8 +347,18 @@ class TreeSelect extends Component {
             searchedKeys: [],
             retainedKeys: [],
             autoExpandParent: false,
+            // map of value => item, includes value not exist in dataSource
+            mapValueDS: {},
             ...flatDataSource(props),
         };
+
+        // init value/mapValueDS when defaultValue is not undefined
+        if (this.state.value !== undefined) {
+            this.state.mapValueDS = getValueDataSource(this.state.value, this.state.mapValueDS).mapValueDS;
+            this.state.value = this.state.value.map(v => {
+                return valueToSelectKey(v);
+            });
+        }
 
         bindCtx(this, [
             'handleSelect',
@@ -335,6 +372,7 @@ class TreeSelect extends Component {
             'handleKeyDown',
             'saveTreeRef',
             'saveSelectRef',
+            'renderMaxTagPlaceholder',
         ]);
     }
 
@@ -342,7 +380,13 @@ class TreeSelect extends Component {
         const st = {};
 
         if ('value' in props) {
-            st.value = normalizeToArray(props.value);
+            const valueArray = normalizeToArray(props.value);
+            // convert value to string[]
+            st.value = valueArray.map(v => {
+                return valueToSelectKey(v);
+            });
+            // re-calculate map
+            st.mapValueDS = getValueDataSource(props.value, state.mapValueDS).mapValueDS;
         }
         if ('visible' in props) {
             st.visible = props.visible;
@@ -370,7 +414,6 @@ class TreeSelect extends Component {
             if (k) {
                 ret.push(k);
             }
-
             return ret;
         }, []);
     }
@@ -381,6 +424,7 @@ class TreeSelect extends Component {
 
     getValueForSelect(value) {
         const { treeCheckedStrategy } = this.props;
+        const nonExistentValueKeys = this.getNonExistentValueKeys();
 
         let keys = this.getKeysByValue(value);
         keys = getAllCheckedKeys(keys, this.state._k2n, this.state._p2n);
@@ -396,11 +440,16 @@ class TreeSelect extends Component {
                 break;
         }
 
-        return this.getValueByKeys(keys);
+        const values = this.getValueByKeys(keys);
+
+        return [...values, ...nonExistentValueKeys];
     }
 
     getData(value, forSelect) {
-        return value.reduce((ret, v) => {
+        const { preserveNonExistentValue } = this.props;
+        const { mapValueDS } = this.state;
+
+        const ret = value.reduce((ret, v) => {
             const k = this.state._v2n[v] && this.state._v2n[v].key;
             if (k) {
                 const { label, pos, disabled, checkboxDisabled } = this.state._k2n[k];
@@ -415,10 +464,38 @@ class TreeSelect extends Component {
                     d.key = k;
                 }
                 ret.push(d);
+            } else if (preserveNonExistentValue) {
+                // 需要保留 dataSource 中不存在的 value
+                const item = mapValueDS[v];
+                if (item) {
+                    ret.push(item);
+                }
             }
-
             return ret;
         }, []);
+
+        return ret;
+    }
+
+    getNonExistentValues() {
+        const { preserveNonExistentValue } = this.props;
+        const { value } = this.state;
+
+        if (!preserveNonExistentValue) {
+            return [];
+        }
+        const nonExistentValues = value.filter(v => !this.state._v2n[v]);
+        return nonExistentValues;
+    }
+
+    getNonExistentValueKeys() {
+        const nonExistentValues = this.getNonExistentValues();
+        return nonExistentValues.map(v => {
+            if (typeof v === 'object' && v.hasOwnProperty('value')) {
+                return v.value;
+            }
+            return v;
+        });
     }
 
     saveTreeRef(ref) {
@@ -448,7 +525,10 @@ class TreeSelect extends Component {
         const { selected } = extra;
 
         if (multiple || selected) {
-            const value = this.getValueByKeys(selectedKeys);
+            let value = this.getValueByKeys(selectedKeys);
+            const nonExistentValues = this.getNonExistentValues();
+            value = [...nonExistentValues, ...value];
+
             if (!('value' in this.props)) {
                 this.setState({
                     value,
@@ -468,7 +548,10 @@ class TreeSelect extends Component {
     handleCheck(checkedKeys) {
         const { onChange } = this.props;
 
-        const value = this.getValueByKeys(checkedKeys);
+        let value = this.getValueByKeys(checkedKeys);
+        const nonExistentValues = this.getNonExistentValues();
+        value = [...nonExistentValues, ...value];
+
         if (!('value' in this.props)) {
             this.setState({
                 value,
@@ -483,7 +566,14 @@ class TreeSelect extends Component {
         const { treeCheckable, treeCheckStrictly, treeCheckedStrategy, onChange } = this.props;
 
         let value;
-        if (treeCheckable && !treeCheckStrictly && ['parent', 'all'].indexOf(treeCheckedStrategy) !== -1) {
+        if (
+            // there's linkage relationship among nodes
+            treeCheckable &&
+            !treeCheckStrictly &&
+            ['parent', 'all'].indexOf(treeCheckedStrategy) !== -1 &&
+            // value exits in datasource
+            this.state._v2n[removedValue]
+        ) {
             const removedPos = this.state._v2n[removedValue].pos;
             value = this.state.value.filter(v => {
                 const p = this.state._v2n[v].pos;
@@ -778,6 +868,54 @@ class TreeSelect extends Component {
         );
     }
 
+    /**
+     * TreeSelect 无法直接使用 Select 的 maxTagPlaceholder 逻辑
+     * Select 的 totalValue 是所有 leaf 节点，TreeSelect 的 totalValue 受 treeCheckedStrategy 和 treeCheckStrictly 影响
+     *
+     * treeCheckStrictly = true: totalValue 为所有节点
+     *
+     * treeCheckStrictly = false: 根据 treeCheckedStrategy 判断
+     *   treeCheckedStrategy = 'all': totalValue 为所有节点
+     *   treeCheckedStrategy = 'parent': totalValue 无意义，不返回
+     *   treeCheckedStrategy = 'child': totalValue 为所有 leaf 节点
+     */
+    renderMaxTagPlaceholder(value, totalValue) {
+        // 这里的 totalValue 为所有 leaf 节点
+        const { treeCheckStrictly, maxTagPlaceholder, treeCheckedStrategy, locale } = this.props;
+        const { _v2n } = this.state;
+
+        let treeSelectTotalValue = totalValue; // all the leaf nodes
+
+        // calculate total value
+        if (treeCheckStrictly) {
+            // all the nodes
+            treeSelectTotalValue = obj.values(_v2n);
+        } else if (treeCheckedStrategy === 'all') {
+            // all
+            treeSelectTotalValue = obj.values(_v2n);
+        } else if (treeCheckedStrategy === 'parent') {
+            // totalValue is pointless when treeCheckedStrategy = 'parent'
+            treeSelectTotalValue = undefined;
+        }
+
+        // custom render function
+        if (maxTagPlaceholder) {
+            return maxTagPlaceholder(value, treeSelectTotalValue);
+        }
+
+        // default render function
+        if (treeCheckedStrategy === 'parent') {
+            // don't show totalValue when treeCheckedStrategy = 'parent'
+            return `${str.template(locale.shortMaxTagPlaceholder, {
+                selected: value.length,
+            })}`;
+        }
+        return `${str.template(locale.maxTagPlaceholder, {
+            selected: value.length,
+            total: treeSelectTotalValue.length,
+        })}`;
+    }
+
     /*eslint-enable*/
     render() {
         const {
@@ -802,11 +940,15 @@ class TreeSelect extends Component {
             popupProps,
             followTrigger,
             isPreview,
+            dataSource,
+            tagInline,
         } = this.props;
-        const others = pickOthers(Object.keys(TreeSelect.propTypes), this.props);
+        const others = obj.pickOthers(Object.keys(TreeSelect.propTypes), this.props);
         const { value, visible } = this.state;
 
+        // if (non-leaf 节点可选 & 父子节点选中状态需要联动)，需要额外计算父子节点间的联动关系
         const valueForSelect = treeCheckable && !treeCheckStrictly ? this.getValueForSelect(value) : value;
+
         let data = this.getData(valueForSelect, true);
         if (!multiple && !treeCheckable) {
             data = data[0];
@@ -830,6 +972,7 @@ class TreeSelect extends Component {
                 label={label}
                 readOnly={readOnly}
                 ref={this.saveSelectRef}
+                dataSource={dataSource}
                 value={data}
                 onChange={this.handleChange}
                 visible={visible}
@@ -842,6 +985,8 @@ class TreeSelect extends Component {
                 popupClassName={popupClassName}
                 popupProps={popupProps}
                 followTrigger={followTrigger}
+                tagInline={tagInline}
+                maxTagPlaceholder={this.renderMaxTagPlaceholder}
                 {...others}
                 onRemove={this.handleRemove}
                 onKeyDown={this.handleKeyDown}

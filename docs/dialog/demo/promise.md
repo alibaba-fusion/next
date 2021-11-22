@@ -1,6 +1,6 @@
-# 延迟关闭
+# 确认对话框/延迟关闭
 
-- order: 6
+- order: 2
 
 在使用 `Dialog.alert`，`Dialog.confirm` 以及 `Dialog.show` 时，如果 `onOk` 返回 `Promise`，对话框会在 `Promise` resolve 时关闭，除非调用 `resolve(false)`。
 
@@ -15,66 +15,69 @@ When using `Dialog.alert`, `Dialog.confirm`, and `Dialog.show`, if `onOk` return
 ---
 
 ````jsx
+import { useState } from 'react';
 import { Button, Message, Dialog } from '@alifd/next';
 
-class Demo extends React.Component {
-    state = {
-        visible: false,
-        loading: false,
-    };
+const Demo = () => {
+    const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    onOpen = () => {
-        this.setState({
-            visible: true
-        });
-    };
-
-    onOk = () => {
+    const handleOpen = () => setVisible(true);
+    const handleClose = () => setVisible(false);
+    const handleOk = () => {
         return new Promise(resolve => {
-            this.setState({
-                loading: true
-            });
+            setLoading(true);
             setTimeout(resolve, 2000);
         }).then(() => {
             Message.success('Deleted successfully!');
-            this.setState({
-                loading: false,
-                visible: false
-            });
+             setLoading(false);
+             setVisible(false);
         });
     };
 
-    onClose = () => {
-        this.setState({
-            visible: false
-        });
-    };
-
-    render() {
-        const okProps = {
-            loading: this.state.loading
-        };
-        return (
-            <div>
-                <Button onClick={this.onOpen} type="primary">
-                    Dialog Promise
-                </Button>
-                <Dialog
-                    title="Welcome to Alibaba.com"
-                    visible={this.state.visible}
-                    okProps={okProps}
-                    onOk={this.onOk}
-                    onCancel={this.onClose}
-                    onClose={this.onClose}>
-                    Start your business here by searching a popular product
-                </Dialog>
-            </div>
-        );
-    }
+    return (<div style={{marginTop: 8}}>
+        <Button onClick={handleOpen} type="primary">
+            Dialog Promise
+        </Button>
+        <Dialog
+            v2
+            title="Welcome to Alibaba.com"
+            visible={visible}
+            okProps={{loading}}
+            onOk={handleOk}
+            onCancel={handleClose}
+        >
+            Start your business here by searching a popular product
+        </Dialog>
+    </div>);
 }
 
 const popupConfirm = () => {
     Dialog.confirm({
+        v2: true,
+        title: 'Confirm',
+        content: 'confirm content confirm content...',
+        onOk: () => console.log('ok'),
+        onCancel: () => console.log('cancel')
+    });
+};
+
+const popupCustomIcon = () => {
+    Dialog.confirm({
+        v2: true,
+        title: 'Confirm',
+        content: 'set icon as "warning" ',
+        messageProps:{
+            type: 'warning'
+        },
+        onOk: () => console.log('ok'),
+        onCancel: () => console.log('cancel')
+    });
+};
+
+const popupConfirmPromise = () => {
+    Dialog.confirm({
+        v2: true,
         title: 'Confirm',
         content: 'Do you confirm deleting this content?',
         onOk: () => {
@@ -87,10 +90,17 @@ const popupConfirm = () => {
     });
 };
 
+const style = {marginLeft: 8};
+
 ReactDOM.render(<div>
+    <Button onClick={popupConfirm}>Confirm</Button>
+    <Button onClick={popupCustomIcon} style={style}>Custom Icon</Button>
+
+    <br/><br/>
+    <Button onClick={popupConfirmPromise}>Confirm Promise</Button>
+
     <Demo />
     <br/>
-    <Button type="primary" warning onClick={popupConfirm}>Quick Confirm Promise</Button>
 </div>
 , mountNode);
 ````

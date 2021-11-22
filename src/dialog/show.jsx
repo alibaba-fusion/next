@@ -6,13 +6,21 @@ import ConfigProvider from '../config-provider';
 import Message from '../message';
 import zhCN from '../locale/zh-cn';
 import dialog from './dialog';
+import dialog2 from './dialog-v2';
 
 const Dialog = ConfigProvider.config(dialog);
+const Dialog2 = ConfigProvider.config(dialog2);
 
 const noop = () => {};
 const MESSAGE_TYPE = {
-    alert: 'warning',
+    alert: 'warning', // deprecated in 2.x
     confirm: 'help',
+
+    success: 'success',
+    error: 'error',
+    warning: 'warning',
+    notice: 'notice',
+    help: 'help',
 };
 
 export const ModalInner = function({ type, messageProps = {}, title, rtl, prefix = 'next-', content }) {
@@ -36,7 +44,7 @@ class Modal extends Component {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
-        type: PropTypes.oneOf(['alert', 'confirm']),
+        type: PropTypes.oneOf(['alert', 'confirm', 'success', 'error', 'notice', 'warning', 'help']),
         title: PropTypes.node,
         content: PropTypes.node,
         messageProps: PropTypes.object,
@@ -131,6 +139,8 @@ class Modal extends Component {
             needWrapper,
             rtl,
             className,
+            v2,
+            width = 420,
             ...others
         } = this.props;
         const newTitle = needWrapper && type ? null : title;
@@ -150,18 +160,29 @@ class Modal extends Component {
             );
 
         const newFooterActions =
-            footerActions || (type === 'alert' ? ['ok'] : type === 'confirm' ? ['ok', 'cancel'] : undefined);
+            footerActions ||
+            (type === 'confirm'
+                ? ['ok', 'cancel']
+                : ['alert', 'success', 'error', 'notice', 'warning', 'help'].indexOf(type) > -1
+                ? ['ok']
+                : undefined);
         const newOnOk = this.wrapper(onOk, this.close);
         const newOnCancel = this.wrapper(onCancel, this.close);
         const newOnClose = this.wrapper(onClose, this.close);
 
         const { visible, loading } = this.state;
-        okProps.loading = loading;
+        // 不能直接改，这里修改相当于改了全局 okProps
+        // okProps.loading = loading;
+
+        const newOkProps = { ...okProps };
+        newOkProps.loading = loading;
 
         const classNames = cx(`${prefix}dialog-quick`, className);
 
+        const Tag = v2 ? Dialog2 : Dialog;
+
         return (
-            <Dialog
+            <Tag
                 prefix={prefix}
                 role="alertdialog"
                 {...others}
@@ -172,11 +193,12 @@ class Modal extends Component {
                 onOk={this.state.loading ? noop : newOnOk}
                 onCancel={newOnCancel}
                 onClose={newOnClose}
-                okProps={okProps}
+                okProps={newOkProps}
                 className={classNames}
+                width={v2 ? width : undefined}
             >
                 {newContent}
-            </Dialog>
+            </Tag>
         );
     }
 }
@@ -187,7 +209,7 @@ const ConfigModal = ConfigProvider.config(Modal, { componentName: 'Dialog' });
  * 创建对话框
  * @exportName show
  * @param {Object} config 配置项
- * @returns {Object} 包含有 hide 方法，可用来关闭对话框
+ * @returns {Object} 包含有 hide 方法，可用来关闭对话框
  */
 export const show = (config = {}) => {
     const container = document.createElement('div');
@@ -237,15 +259,21 @@ const methodFactory = type => (config = {}) => {
  * 创建警示对话框
  * @exportName alert
  * @param {Object} config 配置项
- * @returns {Object} 包含有 hide 方法，可用来关闭对话框
+ * @returns {Object} 包含有 hide 方法，可用来关闭对话框
  */
 export const alert = methodFactory('alert');
+
+export const success = methodFactory('success');
+export const error = methodFactory('error');
+export const notice = methodFactory('notice');
+export const warning = methodFactory('warning');
+export const help = methodFactory('help');
 
 /**
  * 创建确认对话框
  * @exportName confirm
  * @param {Object} config 配置项
- * @returns {Object} 包含有 hide 方法，可用来关闭对话框
+ * @returns {Object} 包含有 hide 方法，可用来关闭对话框
  */
 export const confirm = methodFactory('confirm');
 
@@ -260,6 +288,11 @@ export const withContext = WrappedComponent => {
                             show: (config = {}) => show({ ...config, contextConfig }),
                             alert: (config = {}) => alert({ ...config, contextConfig }),
                             confirm: (config = {}) => confirm({ ...config, contextConfig }),
+                            success: (config = {}) => success({ ...config, contextConfig }),
+                            error: (config = {}) => error({ ...config, contextConfig }),
+                            warning: (config = {}) => warning({ ...config, contextConfig }),
+                            notice: (config = {}) => notice({ ...config, contextConfig }),
+                            help: (config = {}) => help({ ...config, contextConfig }),
                         }}
                     />
                 )}

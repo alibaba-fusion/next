@@ -22,7 +22,20 @@ import {
 
 const { bindCtx, noop } = func;
 const { getOffset } = dom;
-const { pickOthers, isPlainObject } = obj;
+const { pickOthers, pickProps, isPlainObject } = obj;
+
+export const treeNodeProps = [
+    'key',
+    'label',
+    'selectable',
+    'checkable',
+    'editable',
+    'draggable',
+    'disabled',
+    'checkboxDisabled',
+    'isLeaf',
+    'icon',
+];
 
 const getExpandedKeys = (props, willReceiveProps, _k2n, _p2n) => {
     let expandedKeys;
@@ -458,6 +471,13 @@ class Tree extends Component {
         onItemFocus: PropTypes.func,
         onBlur: PropTypes.func,
         onItemKeyDown: PropTypes.func,
+        /**
+         * 自定义渲染单个子节点
+         * @param {Object} node 节点数据
+         * @return {ReactNode} 返回节点
+         * @version 1.25
+         */
+        labelRender: PropTypes.func,
         /**
          * 是否开启虚拟滚动
          */
@@ -1063,13 +1083,17 @@ class Tree extends Component {
     }
 
     renderTreeNode(props, childNodes) {
-        const { rtl } = this.props;
+        const { rtl, labelRender } = this.props;
         const { key } = props;
         const nodeProps = {
             _key: key,
             ...props,
             ...this.getNodeProps(key),
         };
+
+        if (labelRender) {
+            nodeProps.label = labelRender(pickProps(treeNodeProps, props));
+        }
 
         return (
             <TreeNode rtl={rtl} key={key} {...nodeProps}>
@@ -1137,7 +1161,6 @@ class Tree extends Component {
     }
 
     renderByDataSource(dataSource) {
-        const { rtl } = this.props;
         const drill = (data, prefix = '0') => {
             return data.map((item, index) => {
                 // 为了兼容之前的实现 保留非法节点
@@ -1147,14 +1170,19 @@ class Tree extends Component {
                 const pos = `${prefix}-${index}`;
                 const { key = pos, children, ...others } = item;
                 const props = {
+                    size: data.length,
                     ...others,
                     ...this.getNodeProps(`${key}`),
                     _key: key,
+                    key,
                 };
+
                 if (children && children.length) {
                     props.children = drill(children, pos);
                 }
-                const node = <TreeNode rtl={rtl} key={key} size={data.length} {...props} />;
+
+                const node = this.renderTreeNode(props, props.children);
+
                 // eslint-disable-next-line
                 this.state._k2n[key].node = node;
                 return node;

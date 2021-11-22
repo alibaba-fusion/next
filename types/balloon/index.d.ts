@@ -88,6 +88,14 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonP
      */
     id?: string;
     followTrigger?: boolean;
+    /**
+     * 开启 v2
+     */
+    v2?: boolean;
+    /**
+     * [v2] 箭头是否指向目标元素的中心
+     */
+    arrowPointToCenter?: boolean,
 }
 
 export class Tooltip extends React.Component<TooltipProps, any> {}

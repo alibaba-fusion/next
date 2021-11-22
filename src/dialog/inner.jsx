@@ -4,7 +4,7 @@ import cx from 'classnames';
 import Button from '../button';
 import Icon from '../icon';
 import zhCN from '../locale/zh-cn';
-import { func, obj, guid } from '../util';
+import { func, obj, guid, dom } from '../util';
 
 const { makeChain } = func;
 const { pickOthers } = obj;
@@ -28,8 +28,13 @@ export default class Inner extends Component {
         locale: PropTypes.object,
         role: PropTypes.string,
         rtl: PropTypes.bool,
+        width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         // set value for a fixed height dialog. Passing a value will absolutely position the footer to the bottom.
-        height: PropTypes.string,
+        height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        maxHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        v2: PropTypes.bool,
+        closeIcon: PropTypes.node,
+        pure: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -45,6 +50,40 @@ export default class Inner extends Component {
         locale: zhCN.Dialog,
         role: 'dialog',
     };
+
+    componentDidUpdate() {
+        const { maxHeight, height: pheight = maxHeight, v2 } = this.props;
+        if (this.bodyNode && v2 && pheight && pheight !== 'auto') {
+            const style = {};
+            let headerHeight = 0,
+                footerHeight = 0;
+            if (this.headerNode) {
+                headerHeight = this.headerNode.getBoundingClientRect().height;
+            }
+            if (this.footerNode) {
+                footerHeight = this.footerNode.getBoundingClientRect().height;
+            }
+            const minHeight = headerHeight + footerHeight;
+            style.minHeight = minHeight;
+
+            let height = pheight;
+            if (pheight && typeof pheight === 'string') {
+                if (height.match(/calc|vh/)) {
+                    style.maxHeight = `calc(${pheight} - ${minHeight}px)`;
+                    style.overflowY = 'auto';
+                } else {
+                    height = parseInt(pheight);
+                }
+            }
+
+            if (typeof height === 'number' && height > minHeight) {
+                style.maxHeight = height - minHeight;
+                style.overflowY = 'auto';
+            }
+
+            dom.setStyle(this.bodyNode, style);
+        }
+    }
 
     getNode(name, ref) {
         this[name] = ref;
@@ -73,10 +112,7 @@ export default class Inner extends Component {
         const { prefix, children } = this.props;
         if (children) {
             return (
-                <div
-                    className={`${prefix}dialog-body`}
-                    ref={this.getNode.bind(this, 'bodyNode')}
-                >
+                <div className={`${prefix}dialog-body`} ref={this.getNode.bind(this, 'bodyNode')}>
                     {children}
                 </div>
             );
@@ -85,14 +121,7 @@ export default class Inner extends Component {
     }
 
     renderFooter() {
-        const {
-            prefix,
-            footer,
-            footerAlign,
-            footerActions,
-            locale,
-            height,
-        } = this.props;
+        const { prefix, footer, footerAlign, footerActions, locale, height } = this.props;
 
         if (footer === false) {
             return null;
@@ -110,15 +139,9 @@ export default class Inner extends Component {
                       const newBtnProps = {
                           ...btnProps,
                           prefix,
-                          className: cx(
-                              `${prefix}dialog-btn`,
-                              btnProps.className
-                          ),
+                          className: cx(`${prefix}dialog-btn`, btnProps.className),
                           onClick: makeChain(
-                              this.props[
-                                  `on${action[0].toUpperCase() +
-                                      action.slice(1)}`
-                              ],
+                              this.props[`on${action[0].toUpperCase() + action.slice(1)}`],
                               btnProps.onClick
                           ),
                           children: btnProps.children || locale[action],
@@ -132,30 +155,19 @@ export default class Inner extends Component {
                 : footer;
 
         return (
-            <div
-                className={newClassName}
-                ref={this.getNode.bind(this, 'footerNode')}
-            >
+            <div className={newClassName} ref={this.getNode.bind(this, 'footerNode')}>
                 {footerContent}
             </div>
         );
     }
 
     renderCloseLink() {
-        const { prefix, closeable, onClose, locale } = this.props;
+        const { prefix, closeable, onClose, locale, closeIcon } = this.props;
 
         if (closeable) {
             return (
-                <a
-                    role="button"
-                    aria-label={locale.close}
-                    className={`${prefix}dialog-close`}
-                    onClick={onClose}
-                >
-                    <Icon
-                        className={`${prefix}dialog-close-icon`}
-                        type="close"
-                    />
+                <a role="button" aria-label={locale.close} className={`${prefix}dialog-close`} onClick={onClose}>
+                    {closeIcon ? closeIcon : <Icon className={`${prefix}dialog-close-icon`} type="close" />}
                 </a>
             );
         }
@@ -164,15 +176,7 @@ export default class Inner extends Component {
     }
 
     render() {
-        const {
-            prefix,
-            className,
-            closeable,
-            title,
-            role,
-            rtl,
-            height,
-        } = this.props;
+        const { prefix, className, closeable, title, role, rtl, height, maxHeight, width } = this.props;
         const others = pickOthers(Object.keys(Inner.propTypes), this.props);
         const newClassName = cx({
             [`${prefix}dialog`]: true,
@@ -193,15 +197,10 @@ export default class Inner extends Component {
             ariaProps['aria-labelledby'] = this.titleId;
         }
 
-        others.style = Object.assign({}, others.style, { height });
+        others.style = Object.assign({}, others.style, { height, maxHeight, width });
 
         return (
-            <div
-                {...ariaProps}
-                className={newClassName}
-                {...others}
-                dir={rtl ? 'rtl' : undefined}
-            >
+            <div {...ariaProps} className={newClassName} {...others} dir={rtl ? 'rtl' : undefined}>
                 {header}
                 {body}
                 {footer}

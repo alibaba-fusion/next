@@ -10,6 +10,8 @@ import { KEYCODE } from '../../src/util';
 Enzyme.configure({ adapter: new Adapter() });
 const defaultValue = dayjs('11:12:13', 'HH:mm:ss', true);
 
+const TimeRangePicker = TimePicker2.RangePicker;
+
 /* eslint-disable */
 describe('TimePicker2', () => {
     describe('render', () => {
@@ -166,7 +168,7 @@ describe('TimePicker2', () => {
                 />
             );
             wrapper.find('.next-time-picker2-input input').simulate('change', { target: { value: '20:00:00' } });
-            wrapper.find('.next-time-picker2-input input').simulate('blur');
+            wrapper.find('.next-time-picker2-input input').simulate('keydown', { keyCode: KEYCODE.ENTER });
             assert(wrapper.find('.next-time-picker2-input input').instance().value === '20:00:00');
             assert(ret === '20:00:00');
         });
@@ -249,4 +251,55 @@ describe('TimePicker2', () => {
             assert(instance.state.inputStr === '00:00:00');
         });
     });
+
+    describe('range', () => {
+        let wrapper;
+        let ret;
+
+        afterEach(() => {
+            wrapper.unmount();
+            wrapper = null;
+            ret = null;
+        });
+
+        it('should support default value', () => {
+            wrapper = mount(
+                <TimeRangePicker defaultValue={[defaultValue, defaultValue.add(1, 'hours')]}></TimeRangePicker>
+            )
+
+            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13'])
+        })
+
+        it('should select value', async () => {
+            wrapper = mount(
+                <TimeRangePicker defaultValue={[defaultValue, ]}></TimeRangePicker>
+            )
+
+            findInput(wrapper, 0).simulate('click');
+            assert(findTime(wrapper, 12, 'hour').length === 2);
+            findTime(wrapper, 12, 'hour').at(1).simulate('click');
+            clickOk(wrapper);
+
+            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:00:00'])
+        })
+    })
 });
+
+function getStrValue(wrapper) {
+    const inputEl = wrapper.find('.next-time-picker2-input input');
+    return inputEl.length === 1 ? inputEl.instance().value : inputEl.map(el => el.instance().value);
+}
+
+function findInput(wrapper, idx) {
+    const input = wrapper.find('.next-input > input');
+    return idx !== undefined ? input.at(idx) : input;
+}
+
+function findTime(wrapper, strVal, mode = 'hour'){
+    return wrapper.find(`.next-time-picker2-menu-${mode}>li[title=${strVal}]`);
+}
+
+function clickOk(wrapper) {
+    wrapper.find('button.next-date-picker2-footer-ok').simulate('click');
+}
+

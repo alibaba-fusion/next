@@ -80,6 +80,7 @@ class TreeNode extends Component {
         isLastChild: PropTypes.arrayOf(PropTypes.bool),
         /**
          * 自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type="icon type" />`
+         * @version 1.21
          */
         icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     };

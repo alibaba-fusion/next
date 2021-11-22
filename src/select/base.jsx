@@ -248,15 +248,9 @@ export default class Base extends React.Component {
             if (this.popupRef && this.shouldAutoWidth()) {
                 // overy 的 node 节点可能没有挂载完成，所以这里需要异步
                 setTimeout(() => {
-                    if (this.popupRef && this.popupRef.getInstance().overlay) {
-                        dom.setStyle(
-                            this.popupRef
-                                .getInstance()
-                                .overlay.getInstance()
-                                .getContentNode(),
-                            'width',
-                            this.width
-                        );
+                    if (this.popupRef) {
+                        dom.setStyle(this.popupRef, 'width', this.width);
+                        return;
                     }
                 }, 0);
             }
@@ -492,7 +486,7 @@ export default class Base extends React.Component {
             onMouseDown: this.handleMouseDown,
             className: menuClassName,
         };
-        const menuStyle = this.shouldAutoWidth() ? { width: this.width } : { minWidth: this.width };
+        const menuStyle = this.shouldAutoWidth() ? { width: '100%' } : { minWidth: this.width };
 
         return useVirtual && children.length > 10 ? (
             <div className={`${prefix}select-menu-wrapper`} style={{ position: 'relative', ...menuStyle }}>
@@ -598,9 +592,6 @@ export default class Base extends React.Component {
 
     savePopupRef = ref => {
         this.popupRef = ref;
-        if (this.props.popupProps && typeof this.props.popupProps.ref === 'function') {
-            this.props.popupProps.ref(ref);
-        }
     };
 
     shouldAutoWidth() {
@@ -718,19 +709,30 @@ export default class Base extends React.Component {
             style: popupStyle || popupProps.style,
         };
 
+        if (popupProps.v2) {
+            delete _props.shouldUpdatePosition;
+        }
+
         const Tag = popupComponent ? popupComponent : Popup;
 
         return (
-            <Tag {..._props} trigger={this.renderSelect()} ref={this.savePopupRef}>
+            <Tag {..._props} trigger={this.renderSelect()}>
                 {popupContent ? (
                     <div
                         className={`${prefix}select-popup-wrap`}
                         style={this.shouldAutoWidth() ? { width: this.width } : {}}
+                        ref={this.savePopupRef}
                     >
                         {popupContent}
                     </div>
                 ) : (
-                    <div className={`${prefix}select-spacing-tb`}>{this.renderMenu()}</div>
+                    <div
+                        className={`${prefix}select-spacing-tb`}
+                        style={this.shouldAutoWidth() ? { width: this.width } : {}}
+                        ref={this.savePopupRef}
+                    >
+                        {this.renderMenu()}
+                    </div>
                 )}
             </Tag>
         );

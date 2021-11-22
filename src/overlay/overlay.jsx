@@ -12,28 +12,6 @@ import findNode from './utils/find-node';
 const { saveLastFocusNode, getFocusNodeList, backLastFocusNode } = focus;
 const { makeChain, noop, bindCtx } = func;
 
-const isScrollDisplay = function(element) {
-    try {
-        const scrollbarStyle = window.getComputedStyle(element, '::-webkit-scrollbar');
-        return !scrollbarStyle || scrollbarStyle.getPropertyValue('display') !== 'none';
-    } catch (e) {
-        // ignore error for firefox
-    }
-
-    return true;
-};
-const hasScroll = containerNode => {
-    const parentNode = containerNode.parentNode;
-
-    return (
-        parentNode &&
-        parentNode.scrollHeight > parentNode.clientHeight &&
-        dom.scrollbar().width > 0 &&
-        isScrollDisplay(parentNode) &&
-        isScrollDisplay(containerNode)
-    );
-};
-
 const getContainerNode = props => {
     const targetNode = findNode(props.target);
     return findNode(props.container, targetNode);
@@ -86,7 +64,7 @@ class Overlay extends Component {
         /**
          * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
          */
-        align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        align: PropTypes.string,
         /**
          * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量
          * e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
@@ -149,22 +127,21 @@ class Overlay extends Component {
          * @param {Object} node 定位参照的容器节点
          */
         onPosition: PropTypes.func,
-        /**
-         * 是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式
-         */
         shouldUpdatePosition: PropTypes.bool,
         /**
          * 弹层打开时是否让其中的元素自动获取焦点
          */
         autoFocus: PropTypes.bool,
-        /**
-         * 当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域
-         */
         needAdjust: PropTypes.bool,
         /**
          * 是否禁用页面滚动
          */
         disableScroll: PropTypes.bool,
+        /**
+         * 是否在捕获阶段监听，适配 react 17 事件模型变更
+         * @version 1.25
+         */
+        useCapture: PropTypes.bool,
         /**
          * 隐藏时是否保留子节点
          */
@@ -194,6 +171,16 @@ class Overlay extends Component {
         // 当 pin 元素（一般是弹层）是 fixed 布局的时候，pin 元素是否要跟随 base 元素（一般是trigger）
         // 举例来说，dialog/drawer 这类组件弹层是不跟随trigger的，而 fixed 布局下的subNav是跟随trigger的
         pinFollowBaseElementWhenFixed: PropTypes.bool,
+        /**
+         * 开启 v2 版本
+         * @version 1.25
+         */
+        v2: PropTypes.bool,
+        /**
+         * [v2] align 的数组形式，不能和 align 同时使用
+         * @version 1.25
+         */
+        points: PropTypes.array,
     };
     static defaultProps = {
         prefix: 'next-',
@@ -223,8 +210,9 @@ class Overlay extends Component {
         disableScroll: false,
         cache: false,
         isChildrenInMask: false,
-        onClick: noop,
+        onClick: event => event.stopPropagation(),
         maskClass: '',
+        useCapture: false,
     };
 
     constructor(props) {
@@ -527,7 +515,7 @@ class Overlay extends Component {
 
                 cnInfo.overflow = overflow;
 
-                if (hasScroll(containerNode)) {
+                if (dom.hasScroll(containerNode)) {
                     cnInfo.paddingRight = paddingRight;
                     style.paddingRight = `${dom.getStyle(containerNode, 'paddingRight') + dom.scrollbar().width}px`;
                 }
@@ -620,13 +608,16 @@ class Overlay extends Component {
      * document global event
      */
     addDocumentEvents() {
+        const { useCapture } = this.props;
+        // use capture phase listener to be compatible with react17
+        // https://reactjs.org/blog/2020/08/10/react-v17-rc.html#fixing-potential-issues
         if (this.props.canCloseByEsc) {
-            this._keydownEvents = events.on(document, 'keydown', this.handleDocumentKeyDown);
+            this._keydownEvents = events.on(document, 'keydown', this.handleDocumentKeyDown, useCapture);
         }
 
         if (this.props.canCloseByOutSideClick) {
-            this._clickEvents = events.on(document, 'click', this.handleDocumentClick);
-            this._touchEvents = events.on(document, 'touchend', this.handleDocumentClick);
+            this._clickEvents = events.on(document, 'click', this.handleDocumentClick, useCapture);
+            this._touchEvents = events.on(document, 'touchend', this.handleDocumentClick, useCapture);
         }
     }
 

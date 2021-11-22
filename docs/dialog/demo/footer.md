@@ -68,11 +68,11 @@ class Demo extends React.Component {
                     Open dialog
                 </Button>
                 <Dialog title="Customize buttons of footer"
+                    v2
                     visible={visible}
                     footerActions={footerActions}
                     footerAlign={footerAlign}
                     onOk={this.onClose}
-                    onCancel={this.onClose}
                     onClose={this.onClose}
                     okProps={okProps}
                     >
