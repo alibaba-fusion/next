@@ -143,7 +143,7 @@ function handleConfig(config, type) {
 
     if (typeof config === 'string' || React.isValidElement(config)) {
         newConfig.title = config;
-    } else if (obj.typeof(config) === 'Object') {
+    } else if (obj.typeOf(config) === 'Object') {
         newConfig = { ...config };
     }
 
