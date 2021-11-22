@@ -311,13 +311,19 @@ export default class Base extends React.Component {
         this.props.onVisibleChange(visible, type);
     }
 
-    setFirstHightLightKeyForMenu() {
+    setFirstHightLightKeyForMenu(searchValue) {
+        // 判断value/highlightKey解决受控后，默认高亮第一个元素问题。(当搜索值时，搜索后应执行默认选择第一个元素)
+        const { highlightKey } = this.state;
         if (!this.props.autoHighlightFirstItem) {
             return;
         }
 
         // 设置高亮 item key
-        if (this.dataStore.getMenuDS().length && this.dataStore.getEnableDS().length) {
+        if (
+            this.dataStore.getMenuDS().length &&
+            this.dataStore.getEnableDS().length &&
+            (!highlightKey || searchValue)
+        ) {
             const highlightKey = `${this.dataStore.getEnableDS()[0].value}`;
             this.setState({
                 highlightKey,
@@ -580,8 +586,7 @@ export default class Base extends React.Component {
     }
 
     beforeOpen() {
-        const { value, highlightKey } = this.state;
-        if (this.props.mode === 'single' && !value && !highlightKey) {
+        if (this.props.mode === 'single') {
             this.setFirstHightLightKeyForMenu();
         }
         this.syncWidth();
