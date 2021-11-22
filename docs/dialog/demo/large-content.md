@@ -70,7 +70,7 @@ class Demo extends React.Component {
                     onClose={this.onClose}
                 >
                     {Array(count).fill().map((_, index) => 
-                        <p key={index}>a long long content here 
+                        (<p key={index}>a long long content here 
                             <Button
                                 text
                                 type="primary"
@@ -78,7 +78,7 @@ class Demo extends React.Component {
                                 onClick={() => this.setState({count: count - 1})}>
                                 <Icon type="ashbin" />
                             </Button>
-                        </p>
+                        </p>)
                     )}
                 </Dialog>
             </div>

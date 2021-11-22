@@ -55,7 +55,7 @@ class App extends React.Component {
     if (disabled === this.state.disabled) {
       return;
     }
-    this.setState({disabled})
+    this.setState({disabled});
   }
 
   render() {

@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { Overlay, Button } from '@alifd/next';
 
 const { Popup } = Overlay;
-const style ={ marginLeft: 10}
+const style ={ marginLeft: 10};
 
 const top = <Button style={{margin: '5px'}} id="top" className="btrigger">top</Button>;
 const right = <Button style={{margin: '5px'}}id="right" className="btrigger">right</Button>;

@@ -29,7 +29,7 @@ class Demo extends React.Component {
     };
 
     onClose = e => {
-        console.log(e.triggerType)
+        console.log(e.triggerType);
         this.setState({
             visible: false
         });

@@ -62,18 +62,18 @@
 
 ### Tree.Node
 
-| 参数               | 说明                                                         | 类型               | 默认值   |
-| ---------------- | ---------------------------------------------------------- | ---------------- | ----- |
-| children         | 树节点                                                        | ReactNode        | -     |
-| label            | 节点文本内容                                                     | ReactNode        | '---' |
-| selectable       | 单独设置是否支持选中，覆盖 Tree 的 selectable                            | Boolean          | -     |
-| checkable        | 单独设置是否出现复选框，覆盖 Tree 的 checkable                            | Boolean          | -     |
-| editable         | 单独设置是否支持编辑，覆盖 Tree 的 editable                              | Boolean          | -     |
-| draggable        | 单独设置是否支持拖拽，覆盖 Tree 的 draggable                             | Boolean          | -     |
-| disabled         | 是否禁止节点响应                                                   | Boolean          | false |
-| checkboxDisabled | 是否禁止勾选节点复选框                                                | Boolean          | false |
-| isLeaf           | 是否是叶子节点，设置loadData时生效                                      | Boolean          | -     |
-| icon             | 自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type="icon type" />` | String/ReactNode | -     |
+| 参数               | 说明                                                         | 类型               | 默认值   | 版本支持 |
+| ---------------- | ---------------------------------------------------------- | ---------------- | ----- | ---- |
+| children         | 树节点                                                        | ReactNode        | -     |      |
+| label            | 节点文本内容                                                     | ReactNode        | '---' |      |
+| selectable       | 单独设置是否支持选中，覆盖 Tree 的 selectable                            | Boolean          | -     |      |
+| checkable        | 单独设置是否出现复选框，覆盖 Tree 的 checkable                            | Boolean          | -     |      |
+| editable         | 单独设置是否支持编辑，覆盖 Tree 的 editable                              | Boolean          | -     |      |
+| draggable        | 单独设置是否支持拖拽，覆盖 Tree 的 draggable                             | Boolean          | -     |      |
+| disabled         | 是否禁止节点响应                                                   | Boolean          | false |      |
+| checkboxDisabled | 是否禁止勾选节点复选框                                                | Boolean          | false |      |
+| isLeaf           | 是否是叶子节点，设置loadData时生效                                      | Boolean          | -     |      |
+| icon             | 自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type="icon type" />` | String/ReactNode | -     | 1.21 |
 
 <!-- api-extra-start -->
 

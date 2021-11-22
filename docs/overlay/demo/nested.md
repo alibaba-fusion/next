@@ -49,12 +49,12 @@ const Demo = () => {
                 <Select 
                     dataSource={["apple", "banana", "orange", "grape"]} 
                     itemRender={(d) => 
-                        <Tooltip v2 trigger={<div style={{width: '100%'}}>{d.value}</div>} align="r" 
+                        (<Tooltip v2 trigger={<div style={{width: '100%'}}>{d.value}</div>} align="r" 
                             onMouseDown={e => e.stopPropagation()} 
                             onClick={e => e.stopPropagation()}
                         >
                             <span>{d.value}</span>
-                        </Tooltip>
+                        </Tooltip>)
                     }
                     popupProps={{v2: true}} 
                 />
@@ -64,7 +64,7 @@ const Demo = () => {
             </div>
         </Popup>
     </div>);
-}
+};
 
 ReactDOM.render(<Demo/>, mountNode);
 ````

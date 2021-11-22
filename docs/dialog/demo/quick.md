@@ -21,7 +21,7 @@ const config = {
     v2: true,
     title: 'Quick',
     content: 'content content content...'
-}
+};
 const popupError = () => {
   const dialog = Dialog.error({
     title: "Error",

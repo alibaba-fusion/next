@@ -36,7 +36,7 @@ const App  = () => {
     const [position13, setPosition13] = useState({});
     const [position2, setPosition2] = useState({});
 
-    return <div style={{
+    return (<div style={{
         position: 'relative',
         height: 150,
         padding: 50,
@@ -93,8 +93,8 @@ const App  = () => {
             <button style={{marginTop: 200}}>Open2</button>
         </Popup>
         <div style={{ height: 300, width: 1200 }} />
-    </div>
-}
+    </div>);
+};
 
 ReactDOM.render( <App/>, mountNode);
 ````

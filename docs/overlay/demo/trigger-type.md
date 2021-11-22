@@ -19,7 +19,7 @@ import { Overlay } from '@alifd/next';
 
 const { Popup } = Overlay;
 
-const style ={ marginLeft: 10}
+const style ={ marginLeft: 10};
 ReactDOM.render(
     <div>
         <Popup v2 trigger={<button style={style}>click</button>} triggerType="click">

@@ -50,7 +50,7 @@ const Demo = () => {
             Start your business here by searching a popular product
         </Dialog>
     </div>);
-}
+};
 
 const popupConfirm = () => {
     Dialog.confirm({
