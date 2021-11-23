@@ -612,6 +612,7 @@ class NumberPicker extends React.Component {
             return (
                 <p {...others} style={{ style }} className={previewCls}>
                     {this.getDisplayValue()}
+                    &nbsp;{innerAfter}
                 </p>
             );
         }
