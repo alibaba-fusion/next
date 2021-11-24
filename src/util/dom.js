@@ -175,6 +175,14 @@ function _getStyleValue(node, type, value) {
 
 const floatMap = { cssFloat: 1, styleFloat: 1, float: 1 };
 
+export function getNodeHozWhitespace(node) {
+    const paddingLeft = getStyle(node, 'paddingLeft');
+    const paddingRight = getStyle(node, 'paddingRight');
+    const marginLeft = getStyle(node, 'marginLeft');
+    const marginRight = getStyle(node, 'marginRight');
+    return paddingLeft + paddingRight + marginLeft + marginRight;
+}
+
 /**
  * 获取元素计算后的样式
  * @param  {Element} node DOM 节点
