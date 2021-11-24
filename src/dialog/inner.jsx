@@ -176,7 +176,7 @@ export default class Inner extends Component {
     }
 
     render() {
-        const { prefix, className, closeable, title, role, rtl, height, maxHeight, width } = this.props;
+        const { prefix, className, closeable, title, role, rtl } = this.props;
         const others = pickOthers(Object.keys(Inner.propTypes), this.props);
         const newClassName = cx({
             [`${prefix}dialog`]: true,
@@ -197,7 +197,7 @@ export default class Inner extends Component {
             ariaProps['aria-labelledby'] = this.titleId;
         }
 
-        others.style = Object.assign({}, others.style, { height, maxHeight, width });
+        others.style = Object.assign({}, others.style, obj.pickProps(['height', 'maxHeight', 'width'], this.props));
 
         return (
             <div {...ariaProps} className={newClassName} {...others} dir={rtl ? 'rtl' : undefined}>

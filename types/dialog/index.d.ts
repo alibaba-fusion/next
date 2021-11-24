@@ -156,23 +156,23 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
      */
     v2?: boolean;
     /**
-     * 定制关闭按钮 icon
+     * [v2] 定制关闭按钮 icon
      */
     closeIcon?: React.ReactNode;
     /**
-     * 弹窗宽度 v2 生效
+     * [v2] 弹窗宽度 v2 生效
      */
     width?: string | number,
     /**
-     * 弹窗距离顶部间距
+     * [v2] 弹窗上边距。默认 100，设置 centered=true 后默认 40
      */
     top?: number,
     /**
-     * 弹窗距离底部最小间距
+     * [v2] 弹窗下边距, 默认 40
      */
     bottom?: number,
     /**
-     * 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+     * [v2] 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
      */
     overflowScroll?: boolean,
 }
