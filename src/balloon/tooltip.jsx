@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Overlay from '../overlay';
 import BalloonInner from './inner';
 import { normalMap, edgeMap } from './alignMap';
-import { getDisabledCompatibleTrigger, log } from './util';
+import { getDisabledCompatibleTrigger } from './util';
 
 const { Popup } = Overlay;
 
