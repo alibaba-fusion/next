@@ -145,7 +145,7 @@ export default class Dialog extends Component {
          */
         top: PropTypes.number,
         /**
-         * [v2] 弹窗下边距, 默认 40
+         * [v2] 弹窗下边距
          * @version 1.25
          */
         bottom: PropTypes.number,
@@ -184,7 +184,7 @@ export default class Dialog extends Component {
          */
         isFullScreen: PropTypes.bool,
         /**
-         * 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+         * [v2] 当对话框高度超过浏览器视口高度时，是否显示滚动条
          */
         overflowScroll: PropTypes.bool,
         /**
