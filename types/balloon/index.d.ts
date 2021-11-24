@@ -28,19 +28,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 弹出层位置
      */
-    align?:
-        | 't'
-        | 'r'
-        | 'b'
-        | 'l'
-        | 'tl'
-        | 'tr'
-        | 'bl'
-        | 'br'
-        | 'lt'
-        | 'lb'
-        | 'rt'
-        | 'rb';
+    align?: 't' | 'r' | 'b' | 'l' | 'tl' | 'tr' | 'bl' | 'br' | 'lt' | 'lb' | 'rt' | 'rb';
 
     /**
      * 触发元素
@@ -68,7 +56,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonP
      */
     popupProps?: PopupProps;
 
-     /**
+    /**
      * 弹层在触发以后的延时显示, 单位毫秒 ms
      */
     delay?: number;
@@ -95,7 +83,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * [v2] 箭头是否指向目标元素的中心
      */
-    arrowPointToCenter?: boolean,
+    arrowPointToCenter?: boolean;
 }
 
 export class Tooltip extends React.Component<TooltipProps, any> {}
@@ -154,19 +142,7 @@ export interface BalloonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹出层位置
      */
-    align?:
-        | 't'
-        | 'r'
-        | 'b'
-        | 'l'
-        | 'tl'
-        | 'tr'
-        | 'bl'
-        | 'br'
-        | 'lt'
-        | 'lb'
-        | 'rt'
-        | 'rb';
+    align?: 't' | 'r' | 'b' | 'l' | 'tl' | 'tr' | 'bl' | 'br' | 'lt' | 'lb' | 'rt' | 'rb';
 
     /**
      * 弹层相对于trigger的定位的微调
@@ -259,6 +235,18 @@ export interface BalloonProps extends HTMLAttributesWeak, CommonProps {
      */
     id?: string;
     followTrigger?: boolean;
+    /**
+     * 开启 v2
+     */
+    v2?: boolean;
+    /**
+     * [v2] 箭头是否指向目标元素的中心
+     */
+    arrowPointToCenter?: boolean;
+    /**
+     * 	[v2] 是否进行自动位置调整，默认自动开启
+     */
+    autoAdjust?: boolean;
 }
 
 export default class Balloon extends React.Component<BalloonProps, any> {
