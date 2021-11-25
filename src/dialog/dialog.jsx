@@ -160,7 +160,7 @@ export default class Dialog extends Component {
          */
         centered: PropTypes.bool,
         /**
-         * [v2] 对话框高度超过浏览器视口高度时：打开则显示对话框的滚动条，关闭则撑开页面
+         * [v2] 对话框高度超过浏览器视口高度时，对话框是否展示滚动条。关闭此功后对话框会随高度撑开页面
          * @version 1.25
          */
         overflowScroll: PropTypes.bool,
