@@ -46,12 +46,20 @@ const Dialog = props => {
         bottom = 40,
         width = 520,
         height,
-        overflowScroll = true,
+        isFullScreen,
+        overflowScroll = !isFullScreen,
         minMargin,
         onClose,
         style,
         ...others
     } = props;
+
+    if ('isFullScreen' in props) {
+        log.deprecated('isFullScreen', 'overflowScroll', 'Dialog v2');
+    }
+    if ('minMargin' in props) {
+        log.deprecated('minMargin', 'top/bottom', 'Dialog v2');
+    }
 
     const [firstVisible, setFirst] = useState(pvisible || false);
     const [visible, setVisible] = useState(pvisible);
@@ -191,13 +199,12 @@ const Dialog = props => {
             }
         }
     };
-    const handleExiting = () => {
-        setTimeout(() => document.body.setAttribute('style', originStyle.current || ''), animation === null ? 0 : 100);
-    };
 
     const handleExited = () => {
         markAnimationEnd(true);
         dom.setStyle(wrapperRef.current, 'display', 'none');
+        document.body.setAttribute('style', originStyle.current || '');
+
         if (autoFocus && lastFocus.current) {
             try {
                 lastFocus.current.focus();
@@ -251,7 +258,6 @@ const Dialog = props => {
             timeout={timeout}
             onEnter={handleEnter}
             onEntered={handleEntered}
-            onExiting={handleExiting}
             onExited={handleExited}
         >
             <Inner

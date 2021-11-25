@@ -172,7 +172,7 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
      */
     bottom?: number,
     /**
-     * [v2] 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+     * [v2废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
      */
     overflowScroll?: boolean,
 }
