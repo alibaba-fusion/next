@@ -24,6 +24,7 @@ const config = {
 };
 const popupError = () => {
   const dialog = Dialog.error({
+    v2: true,
     title: "Error",
     content: "custom content custom content...",
     footer: (
@@ -36,6 +37,7 @@ const popupError = () => {
 
 const popupShow = () => {
   const dialog = Dialog.show({
+    v2: true,
     title: "Custom",
     content: "custom content custom content..."
   });

@@ -42,6 +42,7 @@ class Demo extends React.Component {
                     Open dialog
                 </Button>
                 <Dialog title="Fixed Height"
+                    v2
                     visible={visible}
                     height="400px"
                     onOk={this.onClose}

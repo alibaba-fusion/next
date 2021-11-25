@@ -135,25 +135,30 @@ export default class Dialog extends Component {
          */
         v2: PropTypes.bool,
         /**
-         * 弹窗宽度 v2 生效
+         * [v2] 弹窗宽度
          * @version 1.25
          */
         width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         /**
-         * 弹窗距离顶部间距
+         * [v2] 弹窗上边距。默认 100，设置 centered=true 后默认 40
          * @version 1.25
          */
         top: PropTypes.number,
         /**
-         * 弹窗距离底部最小间距
+         * [v2] 弹窗下边距
          * @version 1.25
          */
         bottom: PropTypes.number,
         /**
-         * 定制关闭按钮 icon
+         * [v2] 定制关闭按钮 icon
          * @version 1.25
          */
         closeIcon: PropTypes.node,
+        /**
+         * [v2] 弹窗居中对齐
+         * @version 1.25
+         */
+        centered: PropTypes.bool,
         /**
          * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
          * **close** 表示点击关闭按钮可以关闭对话框
@@ -179,7 +184,7 @@ export default class Dialog extends Component {
          */
         isFullScreen: PropTypes.bool,
         /**
-         * 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+         * [v2] 当对话框高度超过浏览器视口高度时，是否显示滚动条
          */
         overflowScroll: PropTypes.bool,
         /**
@@ -206,6 +211,7 @@ export default class Dialog extends Component {
         closeable: 'esc,close',
         onClose: noop,
         afterClose: noop,
+        centered: false,
         hasMask: true,
         animation: {
             in: 'fadeInUp',
@@ -216,6 +222,7 @@ export default class Dialog extends Component {
         isFullScreen: false,
         shouldUpdatePosition: false,
         minMargin: 40,
+        bottom: 40,
         overlayProps: {},
         locale: zhCN.Dialog,
     };
