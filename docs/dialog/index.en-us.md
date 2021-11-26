@@ -29,7 +29,6 @@ changes：
 -   deprecated `align` `shouldUpdatePosition`, Dialog will update position autoly
 -   deprecated `minMargin` , use `top` `bottom` insteaded
 -   deprecated `isFullScreen` , use `overflowScroll` insteaded
--   merge `onClose(triggerType, e)` triggerType to `onClose(e)` e.triggerType.
 
 
 ## API
@@ -55,6 +54,7 @@ changes：
 | bottom | [v2] margin bottom align | Number  | 40 | 1.25     |
 | closeIcon | [v2] custom close icon  | ReactNode     | -  | 1.25     |
 | centered  | [v2] dialog centened  | Boolean | -  | 1.25     |
+| overflowScroll | [v2] dialog height overflow browser view, dialog will show scrollbar | Boolean | true | 1.25 |
 | closeable | [deprecated]controls how the dialog is closed. The value can be either a String or Boolean, where the string consists of the following values: <br>**close** clicking the close button can close the dialog <br>**mask** clicking the mask can close the dialog <br>**esc** pressing the esc key can close the dialog <br> such as 'close' or 'close,esc,mask'<br>If set to true, all of the above close methods take effect <br>If set to false, all of the above close methods will fail | String/Boolean    | 'esc,close'                                    |
 | closeMode            | [recommand]controls how the dialog is closed. The value can be either a String or Array:<br>**close** clicking the close button can close the dialog <br>**mask** clicking the mask can close the dialog <br>**esc** pressing the esc key can close the dialog <br> for example 'close' or ['close','esc','mask']                                                  | Array&lt;Enum>/Enum | -                                                                                 |
 | onClose              | callback function triggered when the dialog closes<br><br>**signatures**:<br>Function(trigger: String, event: Object) => void<br>**params**:<br>_trigger_: {String} behavior triggered closed<br>_event_: {Object} closed event                                                                                        | Function          | () => {}                                                                          |

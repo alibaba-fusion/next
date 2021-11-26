@@ -116,23 +116,26 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
 
     /**
      * [v2废弃] 对话框对齐方式, 具体见Overlay文档
+     * @deprecated
      */
     align?: string | boolean;
     /**
      * [v2废弃] 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+     * @deprecated
      */
     isFullScreen?: boolean;
 
     /**
      * [v2废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
+     * @deprecated
      */
     shouldUpdatePosition?: boolean;
 
     /**
      * [v2废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
+     * @deprecated
      */
     minMargin?: number;
-
     /**
      * 透传到弹层组件的属性对象
      */
@@ -162,19 +165,23 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     /**
      * [v2] 弹窗宽度 v2 生效
      */
-    width?: string | number,
+    width?: string | number;
     /**
      * [v2] 弹窗上边距。默认 100，设置 centered=true 后默认 40
      */
-    top?: number,
+    top?: number;
     /**
      * [v2] 弹窗下边距, 默认 40
      */
-    bottom?: number,
+    bottom?: number;
     /**
-     * [v2] 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+     * [v2] 对话框高度超过浏览器视口高度时，对话框是否展示滚动条。关闭此功后对话框会随高度撑开页面
      */
-    overflowScroll?: boolean,
+    overflowScroll?: boolean;
+    /**
+     * [v2] 弹窗居中对齐
+     */
+    centered?: boolean;
 }
 
 export interface QuickShowConfig extends DialogProps {

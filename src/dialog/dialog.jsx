@@ -160,6 +160,11 @@ export default class Dialog extends Component {
          */
         centered: PropTypes.bool,
         /**
+         * [v2] 对话框高度超过浏览器视口高度时，对话框是否展示滚动条。关闭此功后对话框会随高度撑开页面
+         * @version 1.25
+         */
+        overflowScroll: PropTypes.bool,
+        /**
          * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
          * **close** 表示点击关闭按钮可以关闭对话框
          * **mask** 表示点击遮罩区域可以关闭对话框
@@ -180,13 +185,9 @@ export default class Dialog extends Component {
          */
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         /**
-         * [v2废弃] 改用 overflowScroll
+         * [v2废弃] 是否撑开页面。 v2 改用 overflowScroll
          */
         isFullScreen: PropTypes.bool,
-        /**
-         * [v2] 当对话框高度超过浏览器视口高度时，是否显示滚动条
-         */
-        overflowScroll: PropTypes.bool,
         /**
          * [v2废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
          */
@@ -220,6 +221,7 @@ export default class Dialog extends Component {
         autoFocus: false,
         align: 'cc cc',
         isFullScreen: false,
+        overflowScroll: true,
         shouldUpdatePosition: false,
         minMargin: 40,
         bottom: 40,
