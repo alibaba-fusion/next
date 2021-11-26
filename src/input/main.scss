@@ -273,7 +273,7 @@
         }
     }
 
-    &-label {
+    &-label, &-inner-text {
         color: $input-label-color;
     }
 
@@ -291,7 +291,7 @@
             @include input-placeholder($input-disabled-color);
         }
 
-        #{$input-prefix}-label {
+        #{$input-prefix}-label, #{$input-prefix}-inner-text {
             color: $input-disabled-color;
         }
         #{$input-prefix}-len {
