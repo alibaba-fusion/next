@@ -324,6 +324,14 @@ export default class Base extends React.Component {
             });
             this.props.onToggleHighlightItem(highlightKey, 'autoFirstItem');
         }
+
+        // 当有搜索值且搜索条件与dataSource不匹配时(搜索条件不满足不会出现可选择的列表，所以高亮key应为null)
+        if (searchValue && !this.dataStore.getEnableDS().length) {
+            this.setState({
+                highlightKey: null,
+            });
+            this.props.onToggleHighlightItem(null, 'highlightKeyToNull');
+        }
     }
 
     handleChange(value, ...args) {
