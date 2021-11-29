@@ -190,7 +190,7 @@ class AutoComplete extends Base {
             });
 
             this.shouldControlPopup(this.props, actionType);
-            this.setFirstHightLightKeyForMenu();
+            this.setFirstHightLightKeyForMenu(value);
         }
 
         // 非受控模式清空内部数据
