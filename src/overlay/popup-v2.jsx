@@ -92,7 +92,6 @@ const Popup = props => {
             onExit={handleExit}
             onExiting={handleExiting}
             onExited={handleExited}
-            ref={overlayRef}
             style={style}
         >
             {overlayNode ? (
@@ -152,6 +151,7 @@ const Popup = props => {
             onPosition={handlePosition}
             triggerClickKeyCode={triggerClickKeycode}
             maskRender={maskRender}
+            ref={overlayRef}
         >
             {triggerNode}
         </Overlay.Popup>
