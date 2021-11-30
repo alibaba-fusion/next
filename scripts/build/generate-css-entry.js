@@ -87,7 +87,8 @@ module.exports = async function() {
                         .use(postcssCalc())
                         .process(css).css;
 
-                    const indexContent = output;
+                    // 去除 @charset，避免合并的时候重复
+                    const indexContent = output.replace('@charset "UTF-8";', '');
 
                     fs.outputFileSync(path.join(libBasePath, 'index.css'), indexContent);
                     fs.outputFileSync(path.join(esBasePath, 'index.css'), indexContent);
@@ -105,6 +106,7 @@ module.exports = async function() {
 /**
  * 要把 main.scss 中，对core的引用换成core-temp、
  * 把对variable.scss的引用换成scss-var-to-css-var.scss
+ * 去除 '@charset "UTF-8"'
  */
 function replaceScssImport(scssCode) {
     return scssCode
