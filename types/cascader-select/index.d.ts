@@ -223,6 +223,8 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
      * 	是否为预览态
      */
     isPreview?: boolean;
+
+    renderPreview?: (value: string | Array<string>) => React.ReactNode;
 }
 
 export default class CascaderSelect extends React.Component<CascaderSelectProps, any> {}
