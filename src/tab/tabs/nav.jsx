@@ -57,7 +57,7 @@ class Nav extends React.Component {
         events.on(window, 'resize', this.onWindowResized);
     }
 
-    componentDidUpdate(updateState) {
+    componentDidUpdate(prevProps) {
         // 此处通过延时处理，屏蔽动画带来的定位不准确问题（由于要支持ie9，因此无法使用transitionend）
         clearTimeout(this.scrollTimer);
         this.scrollTimer = setTimeout(() => {
@@ -71,7 +71,7 @@ class Nav extends React.Component {
 
         // 更改tabs后如果有dropdown属性，应该重新执行getDropdownItems函数更新dropdown数据
         if (this.props.excessMode === 'dropdown') {
-            if (!tabsArrayShallowEqual(this.props.tabs, updateState.tabs)) {
+            if (!tabsArrayShallowEqual(this.props.tabs, prevProps.tabs)) {
                 this.getDropdownItems(this.props);
             }
         }
