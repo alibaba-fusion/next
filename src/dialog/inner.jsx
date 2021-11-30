@@ -197,7 +197,12 @@ export default class Inner extends Component {
             ariaProps['aria-labelledby'] = this.titleId;
         }
 
+        const width = others.style && others.style.width;
         others.style = Object.assign({}, others.style, obj.pickProps(['height', 'maxHeight', 'width'], this.props));
+        // 兼容 v1 style={width} 用法, 这里增加了 width api， 导致 style.width 优先级低了
+        if (width) {
+            others.style.width = width;
+        }
 
         return (
             <div {...ariaProps} className={newClassName} {...others} dir={rtl ? 'rtl' : undefined}>
