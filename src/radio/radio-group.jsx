@@ -7,7 +7,7 @@ import { obj } from '../util';
 import Radio from './radio';
 
 const { pickOthers } = obj;
-Type ValueType = PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]);
+const ValueType = PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]);
 
 /**
  * Radio.Group
