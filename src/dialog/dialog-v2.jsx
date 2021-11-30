@@ -81,7 +81,8 @@ const Dialog = props => {
     let canCloseByMask = false;
     let closeable = false;
 
-    closeMode.forEach(mode => {
+    const closeModeArray = Array.isArray(closeMode) ? closeMode : [closeMode];
+    closeModeArray.forEach(mode => {
         switch (mode) {
             case 'esc':
                 canCloseByEsc = true;
