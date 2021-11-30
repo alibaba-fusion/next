@@ -7,6 +7,7 @@ import { obj } from '../util';
 import Radio from './radio';
 
 const { pickOthers } = obj;
+Type ValueType = PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]);
 
 /**
  * Radio.Group
@@ -34,11 +35,11 @@ class RadioGroup extends Component {
         /**
          * radio group的选中项的值
          */
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        value: ValueType,
         /**
          * radio group的默认值
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        defaultValue: ValueType,
         /**
          * 设置标签类型
          */
