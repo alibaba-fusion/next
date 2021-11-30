@@ -218,6 +218,11 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
      * 是否是不可变数据
      */
     immutable?: boolean;
+
+    /**
+     * 	是否为预览态
+     */
+    isPreview?: boolean;
 }
 
 export default class CascaderSelect extends React.Component<CascaderSelectProps, any> {}
