@@ -1,5 +1,5 @@
 import { camelcase, hyphenate } from './string';
-import { each } from './object';
+import { each, isPlainObject } from './object';
 
 /**
  * 是否能使用 DOM 方法
@@ -200,6 +200,11 @@ export function getStyle(node, name) {
     // 如果不指定属性名，则返回全部值
     if (arguments.length === 1) {
         return style;
+    }
+
+    // if style is {}(e.g. node isn't a element node), return null
+    if (isPlainObject(style)) {
+        return null;
     }
 
     name = floatMap[name] ? ('cssFloat' in node.style ? 'cssFloat' : 'styleFloat') : name;
