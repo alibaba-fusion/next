@@ -87,7 +87,8 @@ module.exports = async function() {
                         .use(postcssCalc())
                         .process(css).css;
 
-                    const indexContent = output;
+                    // 去除 @charset，避免合并的时候重复
+                    const indexContent = output.replace('@charset "UTF-8";', '');
 
                     fs.outputFileSync(path.join(libBasePath, 'index.css'), indexContent);
                     fs.outputFileSync(path.join(esBasePath, 'index.css'), indexContent);
