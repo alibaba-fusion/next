@@ -2,9 +2,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Transition } from 'react-transition-group';
 import classNames from 'classnames';
-import { func, dom } from '../util';
 
-const OverlayAnimate = React.forwardRef((props, ref) => {
+const OverlayAnimate = props => {
     const {
         animation,
         visible,
@@ -47,8 +46,6 @@ const OverlayAnimate = React.forwardRef((props, ref) => {
         }
     });
 
-    const childRef = useCallback(func.makeChain(dom.saveRef(ref), dom.saveRef(children.ref)), []);
-
     const animationMap = typeof animation === 'string' ? { in: animation, out: animation } : animation;
 
     const animateClsMap = animation
@@ -74,7 +71,6 @@ const OverlayAnimate = React.forwardRef((props, ref) => {
                 const childProps = {
                     ...others,
                     className: cls,
-                    ref: childRef,
                 };
 
                 if (style && children.props && children.props.style) {
@@ -85,6 +81,6 @@ const OverlayAnimate = React.forwardRef((props, ref) => {
             }}
         </Transition>
     );
-});
+};
 
 export default OverlayAnimate;

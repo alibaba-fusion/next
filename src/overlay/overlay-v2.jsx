@@ -71,7 +71,6 @@ const Overlay2 = props => {
             onExiting={handleExiting}
             onExited={handleExited}
             timeout={300}
-            ref={overlayRef}
             style={style}
         >
             {children ? (
@@ -123,6 +122,7 @@ const Overlay2 = props => {
             maskRender={maskRender}
             points={points}
             onPosition={handlePosition}
+            ref={overlayRef}
         >
             {childrenNode}
         </Overlay>
