@@ -300,6 +300,12 @@ describe('v2', () => {
         assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-dialog-footer-fixed-height'));
     });
 
+    it('should support style.width compcat with v1', async () => {
+        wrapper = render(<Dialog v2 visible style={{width: 345}}/>);
+        await delay(20);
+        assert(document.querySelector('.next-dialog').style.width === '345px');
+    });
+
     it('should close dialog if click the ok button', async () => {
         Dialog.show({
             v2: true,
