@@ -748,7 +748,7 @@ class Tree extends Component {
 
     handleBlur(e) {
         this.setState({
-            focusedKey: '',
+            focusedKey: null,
         });
 
         this.props.onBlur && this.props.onBlur(e);
