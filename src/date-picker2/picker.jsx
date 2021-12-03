@@ -668,6 +668,7 @@ class Picker extends React.Component {
                     triggerType={popupTriggerType}
                     style={popupStyle}
                     onVisibleChange={handleVisibleChange}
+                    disabled={allDisabled}
                     trigger={
                         <div {...triggerProps} role="button" tabIndex="0" style={{ width: '100%' }}>
                             {triggerNode}
