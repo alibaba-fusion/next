@@ -130,6 +130,11 @@ describe('Transfer', () => {
         wrapper = mount(
             <Transfer
                 showSearch
+                searchProps={
+                    {
+                        hasClear: true
+                    }
+                }
                 searchPlaceholder="input something..."
                 dataSource={dataSource}
             />

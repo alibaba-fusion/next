@@ -114,6 +114,10 @@ class Transfer extends Component {
          */
         showSearch: PropTypes.bool,
         /**
+         * 搜索框配置项，同 Search 组件 props
+         */
+        searchProps: PropTypes.object,
+        /**
          * 自定义搜索函数
          * @param {String} searchedValue 搜索的内容
          * @param {Object} data 数据
@@ -503,6 +507,7 @@ class Transfer extends Component {
             dataSource,
             locale,
             showSearch,
+            searchProps,
             filter,
             onSearch,
             leftDisabled,
@@ -529,6 +534,7 @@ class Transfer extends Component {
             mode,
             locale,
             showSearch,
+            searchProps,
             filter,
             onSearch,
             searchPlaceholder,

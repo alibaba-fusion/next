@@ -43,7 +43,9 @@ class Demo extends React.Component {
     }
 
     render() {
-        return <Transfer showSearch defaultValue={['3']} dataSource={dataSource} defaultLeftChecked={['1']} onChange={this.handleChange} titles={['Searchable', 'Searchable']} />;
+        return (<Transfer showSearch searchProps={{
+            hasClear: true
+        }} defaultValue={['3']} dataSource={dataSource} defaultLeftChecked={['1']} onChange={this.handleChange} titles={['Searchable', 'Searchable']} />);
     }
 }
 

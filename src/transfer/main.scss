@@ -25,7 +25,7 @@
         padding: 0 $transfer-panel-search-margin-left-right;
         margin-top: $transfer-panel-search-margin-top;
         margin-bottom: $transfer-panel-search-margin-bottom;
-        width: 100%;
+        width: $transfer-panel-list-width;
     }
 
     & &-panel-list {
