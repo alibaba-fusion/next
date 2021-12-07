@@ -8,6 +8,7 @@
             url("#{$font-custom-path}#{$font-name-thin}.woff") format("woff"),
             url("#{$font-custom-path}#{$font-name-thin}.ttf") format("truetype");
         font-weight: 200;
+        font-display: swap;
     }
 
     @font-face {
@@ -19,6 +20,7 @@
             url("#{$font-custom-path}#{$font-name-light}.woff") format("woff"),
             url("#{$font-custom-path}#{$font-name-light}.ttf") format("truetype");
         font-weight: 300;
+        font-display: swap;
     }
 
     @font-face {
@@ -30,6 +32,7 @@
             url("#{$font-custom-path}#{$font-name-regular}.woff") format("woff"),
             url("#{$font-custom-path}#{$font-name-regular}.ttf") format("truetype");
         font-weight: 400;
+        font-display: swap;
     }
 
     @font-face {
@@ -41,6 +44,7 @@
             url("#{$font-custom-path}#{$font-name-medium}.woff") format("woff"),
             url("#{$font-custom-path}#{$font-name-medium}.ttf") format("truetype");
         font-weight: 500;
+        font-display: swap;
     }
 
     @font-face {
@@ -52,6 +56,7 @@
             url("#{$font-custom-path}#{$font-name-bold}.woff") format("woff"),
             url("#{$font-custom-path}#{$font-name-bold}.ttf") format("truetype");
         font-weight: 700;
+        font-display: swap;
     }
 }
 

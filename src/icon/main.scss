@@ -10,6 +10,7 @@
         url('#{$icon-font-path}.woff') format('woff'),
         url('#{$icon-font-path}.ttf') format('truetype'),
         url('#{$icon-font-path}.svg#NextIcon') format('svg');
+    font-display: swap;
 }
 
 .#{$icon-prefix} {
