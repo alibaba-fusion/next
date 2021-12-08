@@ -24,6 +24,7 @@ export default class TransferPanel extends Component {
         locale: PropTypes.object,
         title: PropTypes.node,
         showSearch: PropTypes.bool,
+        searchProps: PropTypes.object,
         filter: PropTypes.func,
         onSearch: PropTypes.func,
         searchPlaceholder: PropTypes.string,
@@ -199,11 +200,12 @@ export default class TransferPanel extends Component {
     }
 
     renderSearch() {
-        const { prefix, searchPlaceholder, locale } = this.props;
+        const { prefix, searchPlaceholder, locale, searchProps = {} } = this.props;
         return (
             <Search
                 aria-labelledby={this.headerId}
                 shape="simple"
+                {...searchProps}
                 className={`${prefix}transfer-panel-search`}
                 placeholder={searchPlaceholder || locale.searchPlaceholder}
                 onChange={this.handleSearch}
