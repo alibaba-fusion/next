@@ -1,12 +1,21 @@
 # Latest Log 
 
-## [1.25.4](https://github.com/alibaba-fusion/next/compare/1.25.3...1.25.4) (2021-12-03)
+## [1.25.5](https://github.com/alibaba-fusion/next/compare/1.25.4...1.25.5) (2021-12-08)
 
 
 ### Bug Fixes
 
-* **DatePicker2:** prevent show popup when disabled, fix [#3583](https://github.com/alibaba-fusion/next/issues/3583) ([003cc0d](https://github.com/alibaba-fusion/next/commit/003cc0d))
-* **Tab:** should realtime update dropdown, close [#3516](https://github.com/alibaba-fusion/next/issues/3516) ([#3517](https://github.com/alibaba-fusion/next/issues/3517)) ([3705db3](https://github.com/alibaba-fusion/next/commit/3705db3))
-* **Tree:** fix auto focus when key is empty string, close [#3566](https://github.com/alibaba-fusion/next/issues/3566) ([d53c170](https://github.com/alibaba-fusion/next/commit/d53c170))
+* **Button:** sass of rgba in css var fix [#3584](https://github.com/alibaba-fusion/next/issues/3584) ([6747d75](https://github.com/alibaba-fusion/next/commit/6747d75))
+* using // sass comments in scss ([6058d3f](https://github.com/alibaba-fusion/next/commit/6058d3f))
+
+
+### Features
+
+* **Transfer:** add searchProps for Transfer ([#3596](https://github.com/alibaba-fusion/next/issues/3596)), fix [#3552](https://github.com/alibaba-fusion/next/issues/3552) ([ba90525](https://github.com/alibaba-fusion/next/commit/ba90525))
+
+
+### Performance Improvements
+
+* add font-display ([693795f](https://github.com/alibaba-fusion/next/commit/693795f))
 
 
