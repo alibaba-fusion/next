@@ -5,6 +5,7 @@
 @import "../input/scss/mixin.scss";
 @import "scss/variable";
 
+@import "scss/footer.scss";
 @import "./rtl.scss";
 
 #{$date-picker2-prefix} {
@@ -12,32 +13,6 @@
     display: inline-table;
     position: relative;
     width: inherit;
-
-    &-footer {
-        width: min-content;
-        min-width: 100%;
-        box-sizing: border-box;
-        text-align: center;
-        border-top: 1px solid $color-line1-1;
-        padding: 4px 12px;
-        display: flex;
-        min-height: 40px;
-        align-items: center;
-        flex-wrap: wrap;
-        position: relative;
-
-        &-preset > .#{$css-prefix}btn {
-            margin-right: $s-2;
-        }
-
-        &-actions {
-            margin-left: auto;
-        }
-
-        &-preset-only {
-            width: 100%;
-        }
-    }
 
     &-overlay {
         vertical-align: top;
