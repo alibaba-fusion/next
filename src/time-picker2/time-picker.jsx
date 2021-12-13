@@ -233,14 +233,21 @@ class TimePicker2 extends Component {
     }
 
     static getDerivedStateFromProps(props) {
-        const { disabled, type } = props;
+        const { disabled, type, format, value: propsValue } = props;
         const isRange = type === TIME_PICKER_TYPE.RANGE;
         let state = {
             isRange,
         };
 
         if ('value' in props) {
-            const value = isRange ? checkRangeDate(props.value, state.inputType, disabled) : checkDate(props.value);
+            // checkDate function doesn't support hh:mm:ss format, convert to valid dayjs value in advance
+            const formatter = v => (typeof v === 'string' ? datejs(v, format) : v);
+            const formattedValue = Array.isArray(propsValue)
+                ? propsValue.map(v => formatter(v))
+                : formatter(propsValue);
+            const value = isRange
+                ? checkRangeDate(formattedValue, state.inputType, disabled)
+                : checkDate(formattedValue);
             if (isValueChanged(value, state.preValue)) {
                 state = {
                     ...state,
