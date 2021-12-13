@@ -121,6 +121,12 @@ describe('TimePicker2', () => {
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
         });
+
+        it('should support string value', () => {
+            wrapper = mount(<TimePicker2 defaultValue="12:00:00" isPreview />);
+
+            assert(getStrValue(wrapper), '12:00:00')
+        })
     });
 
     describe('action', () => {
