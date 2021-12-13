@@ -13,7 +13,7 @@ export default {
         }, {
             name: 'size',
             type: Types.enum,
-            options: ['large', 'medium'],
+            options: ['large', 'medium', 'small'],
             default: 'medium'
         }, {
             name: 'state',
