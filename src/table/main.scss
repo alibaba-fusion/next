@@ -203,6 +203,7 @@
             border-left-width: 0;
         }
         @include table-last-child-border(0);
+        @include table-border($table-normal-border-width);
     }
     &-loading {
         display: block;
