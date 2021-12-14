@@ -858,6 +858,37 @@ describe('Tree', () => {
         assertChecked('4', true);
     });
 
+    it('should auto set parent checked', () => {
+        ReactDOM.render(
+            <Tree
+                checkable
+                defaultCheckedKeys={[
+                    "2062867",
+                    "1068832",
+                ]}  
+                dataSource={
+                    [{
+                        "children": [
+                            {
+                            "label": "来访目的",
+                            "key": "1068832"
+                            }
+                        ],
+                        "label": "系统设置",
+                        "key": "106638",
+                        "className": 'k-106638'
+                    },{
+                        "label": "来访人员管理",
+                        "key": "2062867"
+                    }]
+                }
+                />,
+                mountNode
+        );
+
+        assertChecked('106638', true);
+    });
+
     it('should support checkable = false', () => {
         ReactDOM.render(
             <Tree
