@@ -364,8 +364,8 @@ class VirtualList extends Component {
         }
 
         if (!this.defaultItemHeight && jumpIndex > -1) {
-            const keysMap = Object.keys(this.cache);
-            const len = keysMap.length;
+            const keysList = Object.keys(this.cache);
+            const len = keysList.length;
             const height = this.cache[len - 1];
             this.defaultItemHeight = height;
         }
