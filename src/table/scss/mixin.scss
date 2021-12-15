@@ -38,3 +38,9 @@
         }
     }
 }
+
+@mixin table-last-child-bottom-border($border-width) {
+    tr:last-child td {
+        border-bottom-width: $border-width;
+    }
+}
