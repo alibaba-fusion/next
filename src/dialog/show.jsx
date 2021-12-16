@@ -175,7 +175,9 @@ class Modal extends Component {
         // okProps.loading = loading;
 
         const newOkProps = { ...okProps };
-        newOkProps.loading = loading;
+        if (!('loading' in okProps)) {
+            newOkProps.loading = loading;
+        }
 
         const classNames = cx(`${prefix}dialog-quick`, className);
 
