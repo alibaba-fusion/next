@@ -545,7 +545,6 @@ describe('v2', () => {
     it('should throw error (async)', () => {
         const { hide } = Dialog.show({
             v2: true,
-            v2: true,
             title: 'Title',
             content: 'Content',
             onOk: async () => {
@@ -576,6 +575,20 @@ describe('v2', () => {
         } catch (e) {
             assert(true);
         }
+        hide();
+    });
+
+    it('should support okProps={loading:true} ', () => {
+        const { hide } = Dialog.show({
+            v2: true,
+            title: 'Title',
+            content: 'Content',
+            okProps: {
+                loading: true
+            }
+        });
+
+        assert(document.querySelector('.next-btn-loading'));
         hide();
     });
 });
