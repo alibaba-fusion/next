@@ -26,6 +26,7 @@
     &-body {
         padding: $dialog-content-padding-top $dialog-content-padding-left-right $dialog-content-padding-bottom $dialog-content-padding-left-right;
         font-size: $dialog-content-font-size;
+        line-height: $font-lineheight-2;
         color: $dialog-content-color;
     }
 
