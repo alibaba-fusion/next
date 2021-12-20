@@ -33,7 +33,7 @@
 
     &-panel-title {
         position: relative;
-        line-height: $collapse-title-height;
+        line-height: $font-lineheight-2;
         background: $collapse-title-bg-color;
         font-size: $collapse-title-font-size;
         font-weight: $collapse-title-font-weight;
@@ -55,6 +55,7 @@
 
     &-panel-content {
         height: 0;
+        line-height: $font-lineheight-2;
         padding: 0 $collapse-content-padding-x;
         background: $collapse-content-bg-color;
         font-size: $collapse-content-font-size;
