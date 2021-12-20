@@ -1,6 +1,7 @@
 # 无障碍支持
 
 - order: 10
+- debug: true
 
 通过`Enter`键点击`button`时，自动聚焦到`Message`上读取信息。
 

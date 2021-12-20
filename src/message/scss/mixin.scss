@@ -37,7 +37,7 @@
         margin-top: $contentMarginTop;
         padding: $contentPadding;
         font-size: $contentFontSize;
-        line-height: $contentFontSize;
+        line-height: $font-lineheight-2;
     }
 
     .#{$css-prefix}message-symbol + .#{$css-prefix}message-content {
