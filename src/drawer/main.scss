@@ -52,6 +52,7 @@
     &-body {
         padding: $drawer-content-padding-top $drawer-content-padding-left-right $drawer-content-padding-bottom $drawer-content-padding-left-right;
         font-size: $drawer-content-font-size;
+        line-height: $font-lineheight-2;
         color: $drawer-content-color;
     }
 
