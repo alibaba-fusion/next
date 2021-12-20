@@ -326,7 +326,7 @@ class Select extends Base {
             });
 
             if (!props.popupContent) {
-                this.setFirstHightLightKeyForMenu();
+                this.setFirstHightLightKeyForMenu(this.state.searchValue);
             }
         }
 
