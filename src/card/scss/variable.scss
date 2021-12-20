@@ -90,6 +90,7 @@ $card-body-hide-divider-padding-top: $s-zero !default;
 /// @namespace size/content
 $card-content-font-size: $font-size-body-1 !default;
 
+// [deprecated in 2.x] should fix to linehgiht-2,  do not need to config
 /// line height
 /// @namespace size/content
 $card-content-line-height: $font-lineheight-2 !default;
