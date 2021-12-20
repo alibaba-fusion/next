@@ -48,9 +48,10 @@ $timeline-item-left-content-width: $s-20 !default;
 /// @namespace size/content
 $timeline-item-content-margin-left: $s-3 !default;
 
+// will [depreacated] in 2.x, fixed to $s-1;
 /// margin (t)
 /// @namespace size/content
-$timeline-item-body-margin-top: $s-2 !default;
+$timeline-item-body-margin-top: $s-1 !default;
 
 /// title text
 /// @namespace size/content
