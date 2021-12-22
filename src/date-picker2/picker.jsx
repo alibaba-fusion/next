@@ -345,11 +345,38 @@ class Picker extends React.Component {
             : !disabled;
     };
 
+    /**
+     * check if value has disabled value
+     *
+     * @param {string|string[]|Dayjs|Dayjs[]} val
+     * @returns {Boolean}
+     */
+    checkValueDisabled = val => {
+        const { disabledDate } = this.props;
+        const { panelMode } = this.state;
+        const values = (Array.isArray(val) ? val : [val]).map(value => {
+            return checkDate(value);
+        });
+
+        if (!disabledDate) {
+            return false;
+        }
+
+        return values.some(value => {
+            return disabledDate(value, panelMode);
+        });
+    };
+
     onKeyDown = e => {
         switch (e.keyCode) {
             case KEYCODE.ENTER: {
                 const { inputValue } = this.state;
                 this.onClick();
+                if (this.checkValueDisabled(inputValue)) {
+                    // reset inputValue when current inputValue is disabled
+                    this.handleChange(inputValue, 'VISIBLE_CHANGE');
+                    return;
+                }
                 this.handleChange(inputValue, 'KEYDOWN_ENTER');
                 break;
             }

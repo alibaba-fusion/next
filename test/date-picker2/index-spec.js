@@ -1067,6 +1067,30 @@ describe('Picker', () => {
             wrapper.find('#test').simulate('click');
             assert.deepEqual(getStrValue(), ['2020-12-12 12:12:12', '']);
         });
+
+        it('should reset to previous value when input a disableValue', () => {
+            const currentDate = dayjs(defaultVal);
+            // Disable all dates before currentDate: 2020-12-12
+            const disabledDate = function (date, mode) {
+                switch (mode) {
+                    case 'date':
+                        return date.valueOf() <= currentDate.valueOf();
+                    case 'year':
+                        return date.year() < currentDate.year();
+                    case 'month':
+                        return date.year() * 100 + date.month() < currentDate.year() * 100 + currentDate.month();
+                    default: return false;
+                }
+            };
+
+            wrapper = mount(
+                <DatePicker disabledDate={disabledDate} defaultValue="2020-12-25" />
+            );
+
+            changeInput('2020-11-11');
+            findInput().simulate('keydown', { keyCode: KEYCODE.ENTER });
+            assert(getStrValue(wrapper) === '2020-12-25')
+        })
     });
 });
 
