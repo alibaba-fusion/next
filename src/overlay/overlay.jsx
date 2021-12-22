@@ -212,7 +212,7 @@ class Overlay extends Component {
         isChildrenInMask: false,
         onClick: event => event.stopPropagation(),
         maskClass: '',
-        useCapture: false,
+        useCapture: true,
     };
 
     constructor(props) {
