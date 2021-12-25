@@ -12,7 +12,7 @@ import ColumnGroup from './column-group';
 import Table from './baseTable';
 
 function HOC(WrappedComponent) {
-    return class extends React.Component {
+    class Enhance extends React.Component {
         static Column = Column;
         static ColumnGroup = ColumnGroup;
         static Header = HeaderComponent;
@@ -30,14 +30,18 @@ function HOC(WrappedComponent) {
                 const loadingClassName = `${prefix}table-loading`;
                 return (
                     <LoadingComponent className={loadingClassName}>
-                        <WrappedComponent {...props} />
+                        <WrappedComponent ref={props.forwardedRef} {...props} />
                     </LoadingComponent>
                 );
             } else {
-                return <WrappedComponent {...props} />;
+                return <WrappedComponent ref={props.forwardedRef} {...props} />;
             }
         }
-    };
+    }
+
+    return React.forwardRef((props, ref) => {
+        return <Enhance {...props} forwardedRef={ref} />;
+    });
 }
 
 export default HOC(Table);
