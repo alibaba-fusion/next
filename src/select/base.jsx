@@ -248,15 +248,9 @@ export default class Base extends React.Component {
             if (this.popupRef && this.shouldAutoWidth()) {
                 // overy 的 node 节点可能没有挂载完成，所以这里需要异步
                 setTimeout(() => {
-                    if (this.popupRef && this.popupRef.getInstance().overlay) {
-                        dom.setStyle(
-                            this.popupRef
-                                .getInstance()
-                                .overlay.getInstance()
-                                .getContentNode(),
-                            'width',
-                            this.width
-                        );
+                    if (this.popupRef) {
+                        dom.setStyle(this.popupRef, 'width', this.width);
+                        return;
                     }
                 }, 0);
             }
@@ -311,18 +305,32 @@ export default class Base extends React.Component {
         this.props.onVisibleChange(visible, type);
     }
 
-    setFirstHightLightKeyForMenu() {
+    setFirstHightLightKeyForMenu(searchValue) {
+        // 判断value/highlightKey解决受控后，默认高亮第一个元素问题。(当搜索值时，搜索后应执行默认选择第一个元素)
+        const { highlightKey } = this.state;
         if (!this.props.autoHighlightFirstItem) {
             return;
         }
 
         // 设置高亮 item key
-        if (this.dataStore.getMenuDS().length && this.dataStore.getEnableDS().length) {
+        if (
+            this.dataStore.getMenuDS().length &&
+            this.dataStore.getEnableDS().length &&
+            (!highlightKey || searchValue)
+        ) {
             const highlightKey = `${this.dataStore.getEnableDS()[0].value}`;
             this.setState({
                 highlightKey,
             });
             this.props.onToggleHighlightItem(highlightKey, 'autoFirstItem');
+        }
+
+        // 当有搜索值且搜索条件与dataSource不匹配时(搜索条件不满足不会出现可选择的列表，所以高亮key应为null)
+        if (searchValue && !this.dataStore.getEnableDS().length) {
+            this.setState({
+                highlightKey: null,
+            });
+            this.props.onToggleHighlightItem(null, 'highlightKeyToNull');
         }
     }
 
@@ -486,7 +494,7 @@ export default class Base extends React.Component {
             onMouseDown: this.handleMouseDown,
             className: menuClassName,
         };
-        const menuStyle = this.shouldAutoWidth() ? { width: this.width } : { minWidth: this.width };
+        const menuStyle = this.shouldAutoWidth() ? { width: '100%' } : { minWidth: this.width };
 
         return useVirtual && children.length > 10 ? (
             <div className={`${prefix}select-menu-wrapper`} style={{ position: 'relative', ...menuStyle }}>
@@ -580,8 +588,7 @@ export default class Base extends React.Component {
     }
 
     beforeOpen() {
-        const { value, highlightKey } = this.state;
-        if (this.props.mode === 'single' && !value && !highlightKey) {
+        if (this.props.mode === 'single') {
             this.setFirstHightLightKeyForMenu();
         }
         this.syncWidth();
@@ -593,9 +600,6 @@ export default class Base extends React.Component {
 
     savePopupRef = ref => {
         this.popupRef = ref;
-        if (this.props.popupProps && typeof this.props.popupProps.ref === 'function') {
-            this.props.popupProps.ref(ref);
-        }
     };
 
     shouldAutoWidth() {
@@ -713,19 +717,30 @@ export default class Base extends React.Component {
             style: popupStyle || popupProps.style,
         };
 
+        if (popupProps.v2) {
+            delete _props.shouldUpdatePosition;
+        }
+
         const Tag = popupComponent ? popupComponent : Popup;
 
         return (
-            <Tag {..._props} trigger={this.renderSelect()} ref={this.savePopupRef}>
+            <Tag {..._props} trigger={this.renderSelect()}>
                 {popupContent ? (
                     <div
                         className={`${prefix}select-popup-wrap`}
                         style={this.shouldAutoWidth() ? { width: this.width } : {}}
+                        ref={this.savePopupRef}
                     >
                         {popupContent}
                     </div>
                 ) : (
-                    <div className={`${prefix}select-spacing-tb`}>{this.renderMenu()}</div>
+                    <div
+                        className={`${prefix}select-spacing-tb`}
+                        style={this.shouldAutoWidth() ? { width: this.width } : {}}
+                        ref={this.savePopupRef}
+                    >
+                        {this.renderMenu()}
+                    </div>
                 )}
             </Tag>
         );

@@ -311,7 +311,6 @@
             $contentFontSize: $message-size-l-content-font,
             $iconSize: $message-size-l-icon
         );
-        line-height: 18px;
 
         &.#{$css-prefix}title-content {
             @include vertial-align-middle(

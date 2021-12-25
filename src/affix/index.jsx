@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { findDOMNode } from 'react-dom';
 import { polyfill } from 'react-lifecycles-compat';
+import ResizeObserver from 'resize-observer-polyfill';
 
 import { obj, events, func } from '../util';
 import ConfigProvider from '../config-provider';
@@ -78,8 +79,10 @@ class Affix extends React.Component {
         this.state = {
             style: null,
             containerStyle: null,
+            positionStyle: null,
             affixMode: Affix._getAffixMode(props),
         };
+        this.resizeObserver = new ResizeObserver(this._updateNodePosition);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -93,25 +96,37 @@ class Affix extends React.Component {
 
     componentDidMount() {
         const { container } = this.props;
-        this._updateNodePosition();
         // wait for parent rendered
         this.timeout = setTimeout(() => {
+            this._updateNodePosition();
             this._setEventHandlerForContainer(container);
         });
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.container() !== this.props.container()) {
+            this._clearContainerEvent();
+
+            this.timeout = setTimeout(() => {
+                this._setEventHandlerForContainer(this.props.container);
+            });
+        }
+
         setTimeout(this._updateNodePosition);
     }
 
     componentWillUnmount() {
+        this._clearContainerEvent();
+    }
+
+    _clearContainerEvent = () => {
         if (this.timeout) {
             clearTimeout(this.timeout);
             this.timeout = null;
         }
         const { container } = this.props;
         this._removeEventHandlerForContainer(container);
-    }
+    };
 
     _setEventHandlerForContainer(getContainer) {
         const container = getContainer();
@@ -119,14 +134,14 @@ class Affix extends React.Component {
             return;
         }
         events.on(container, 'scroll', this._updateNodePosition, false);
-        events.on(container, 'resize', this._updateNodePosition, false);
+        this.resizeObserver.observe(this.affixNode);
     }
 
     _removeEventHandlerForContainer(getContainer) {
         const container = getContainer();
         if (container) {
             events.off(container, 'scroll', this._updateNodePosition);
-            events.off(container, 'resize', this._updateNodePosition);
+            this.resizeObserver.disconnect();
         }
     }
 
@@ -157,16 +172,13 @@ class Affix extends React.Component {
             width: affixOffset.width,
             height: affixChildHeight,
         };
-        if (
-            affixMode.top &&
-            containerScrollTop > affixOffset.top - affixMode.offset
-        ) {
+        let positionStyle = null;
+        if (affixMode.top && containerScrollTop > affixOffset.top - affixMode.offset) {
             // affix top
             if (useAbsolute) {
                 affixStyle.position = 'absolute';
-                affixStyle.top =
-                    containerScrollTop - (affixOffset.top - affixMode.offset);
-                containerStyle.position = 'relative';
+                affixStyle.top = containerScrollTop - (affixOffset.top - affixMode.offset);
+                positionStyle = 'relative';
             } else {
                 affixStyle.position = 'fixed';
                 affixStyle.top = affixMode.offset + containerRect.top;
@@ -175,23 +187,15 @@ class Affix extends React.Component {
             this._setContainerStyle(containerStyle);
         } else if (
             affixMode.bottom &&
-            containerScrollTop <
-                affixOffset.top +
-                    affixHeight +
-                    affixMode.offset -
-                    containerHeight
+            containerScrollTop < affixOffset.top + affixHeight + affixMode.offset - containerHeight
         ) {
             // affix bottom
             affixStyle.height = affixHeight;
             if (useAbsolute) {
                 affixStyle.position = 'absolute';
                 affixStyle.top =
-                    containerScrollTop -
-                    (affixOffset.top +
-                        affixHeight +
-                        affixMode.offset -
-                        containerHeight);
-                containerStyle.position = 'relative';
+                    containerScrollTop - (affixOffset.top + affixHeight + affixMode.offset - containerHeight);
+                positionStyle = 'relative';
             } else {
                 affixStyle.position = 'fixed';
                 affixStyle.bottom = affixMode.offset;
@@ -201,6 +205,10 @@ class Affix extends React.Component {
         } else {
             this._setAffixStyle(null);
             this._setContainerStyle(null);
+        }
+
+        if (this.state.positionStyle !== positionStyle) {
+            this.setState({ positionStyle });
         }
     };
 
@@ -244,15 +252,15 @@ class Affix extends React.Component {
     }
 
     _affixNodeRefHandler = ref => {
-        this.affixNode = findDOMNode(ref);
+        this.affixNode = ref;
     };
 
     _affixChildNodeRefHandler = ref => {
-        this.affixChildNode = findDOMNode(ref);
+        this.affixChildNode = ref;
     };
 
     render() {
-        const { affixMode } = this.state;
+        const { affixMode, positionStyle } = this.state;
         const { prefix, className, style, children } = this.props;
         const state = this.state;
         const classNames = classnames({
@@ -261,15 +269,12 @@ class Affix extends React.Component {
             [`${prefix}affix-bottom`]: !state.style && affixMode.bottom,
             [className]: className,
         });
-        const combinedStyle = { ...state.containerStyle, ...style };
+        const wrapperStyle = { ...style, position: positionStyle };
 
         return (
-            <div ref={this._affixNodeRefHandler} style={combinedStyle}>
-                <div
-                    ref={this._affixChildNodeRefHandler}
-                    className={classNames}
-                    style={state.style}
-                >
+            <div ref={this._affixNodeRefHandler} style={wrapperStyle}>
+                {state.style && <div style={state.containerStyle} aria-hidden="true" />}
+                <div ref={this._affixChildNodeRefHandler} className={classNames} style={state.style}>
                     {children}
                 </div>
             </div>

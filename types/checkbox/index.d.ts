@@ -36,6 +36,8 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
      */
     isPreview?: boolean;
 
+    renderPreview?: (checked: boolean, props: object) => React.ReactNode;
+
     /**
      * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`
      */

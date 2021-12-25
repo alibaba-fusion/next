@@ -1,5 +1,5 @@
 import { camelcase, hyphenate } from './string';
-import { each } from './object';
+import { each, isPlainObject } from './object';
 
 /**
  * 是否能使用 DOM 方法
@@ -175,6 +175,14 @@ function _getStyleValue(node, type, value) {
 
 const floatMap = { cssFloat: 1, styleFloat: 1, float: 1 };
 
+export function getNodeHozWhitespace(node) {
+    const paddingLeft = getStyle(node, 'paddingLeft');
+    const paddingRight = getStyle(node, 'paddingRight');
+    const marginLeft = getStyle(node, 'marginLeft');
+    const marginRight = getStyle(node, 'marginRight');
+    return paddingLeft + paddingRight + marginLeft + marginRight;
+}
+
 /**
  * 获取元素计算后的样式
  * @param  {Element} node DOM 节点
@@ -192,6 +200,11 @@ export function getStyle(node, name) {
     // 如果不指定属性名，则返回全部值
     if (arguments.length === 1) {
         return style;
+    }
+
+    // if style is {}(e.g. node isn't a element node), return null
+    if (isPlainObject(style)) {
+        return null;
     }
 
     name = floatMap[name] ? ('cssFloat' in node.style ? 'cssFloat' : 'styleFloat') : name;
@@ -232,6 +245,17 @@ export function setStyle(node, name, value) {
     }
 }
 
+const isScrollDisplay = function(element) {
+    try {
+        const scrollbarStyle = window.getComputedStyle(element, '::-webkit-scrollbar');
+        return !scrollbarStyle || scrollbarStyle.getPropertyValue('display') !== 'none';
+    } catch (e) {
+        // ignore error for firefox
+    }
+
+    return true;
+};
+
 /**
  * 获取默认的滚动条大小
  * @return {Object} width, height
@@ -256,6 +280,18 @@ export function scrollbar() {
         width: scrollbarWidth,
         height: scrollbarHeight,
     };
+}
+
+export function hasScroll(containerNode) {
+    const parentNode = containerNode.parentNode;
+
+    return (
+        parentNode &&
+        parentNode.scrollHeight > parentNode.clientHeight &&
+        scrollbar().width > 0 &&
+        isScrollDisplay(parentNode) &&
+        isScrollDisplay(containerNode)
+    );
 }
 
 /**
@@ -346,4 +382,19 @@ export function getMatches(dom, selector) {
     }
 
     return null;
+}
+
+export function saveRef(ref) {
+    if (!ref) {
+        return null;
+    }
+    return element => {
+        if (typeof ref === 'string') {
+            throw new Error(`can not set ref string for ${ref}`);
+        } else if (typeof ref === 'function') {
+            ref(element);
+        } else if (Object.prototype.hasOwnProperty.call(ref, 'current')) {
+            ref.current = element;
+        }
+    };
 }

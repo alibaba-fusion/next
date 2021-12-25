@@ -149,10 +149,12 @@ export default class Header extends React.Component {
                     ...others
                 } = col;
 
+                const order = sort ? sort[dataIndex] : '';
                 className = classnames({
                     [`${prefix}table-header-node`]: true,
                     [`${prefix}table-header-resizable`]: resizable || asyncResizable,
                     [`${prefix}table-word-break-${wordBreak}`]: !!wordBreak,
+                    [`${prefix}table-header-sort-${order}`]: sortable && order,
                     [className]: className,
                 });
                 let attrs = {},

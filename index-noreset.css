@@ -1,15 +1,16 @@
 @import "lib/affix/index.css";
 @import "lib/animate/index.css";
-@import "lib/badge/index.css";
-@import "lib/overlay/index.css";
 @import "lib/icon/index.css";
+@import "lib/overlay/index.css";
+@import "lib/loading/index.css";
+@import "lib/radio/index.css";
+@import "lib/badge/index.css";
 @import "lib/balloon/index.css";
 @import "lib/menu/index.css";
 @import "lib/dropdown/index.css";
 @import "lib/breadcrumb/index.css";
 @import "lib/button/index.css";
-@import "lib/radio/index.css";
-@import "lib/select/index.css";
+@import "lib/input/index.css";
 @import "lib/calendar/index.css";
 @import "lib/card/index.css";
 @import "lib/cascader/index.css";
@@ -17,7 +18,6 @@
 @import "lib/checkbox/index.css";
 @import "lib/collapse/index.css";
 @import "lib/config-provider/index.css";
-@import "lib/input/index.css";
 @import "lib/time-picker/index.css";
 @import "lib/date-picker/index.css";
 @import "lib/message/index.css";
@@ -28,7 +28,7 @@
 @import "lib/responsive-grid/index.css";
 @import "lib/form/index.css";
 @import "lib/avatar/index.css";
-@import "lib/loading/index.css";
+@import "lib/select/index.css";
 @import "lib/list/index.css";
 @import "lib/menu-button/index.css";
 @import "lib/nav/index.css";

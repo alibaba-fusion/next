@@ -300,7 +300,6 @@ describe('Select', () => {
         });
         wrapper.update();
         assert(wrapper.find('span.next-select div.next-tag').length === 1);
-
         wrapper.simulate('click');
         const input = wrapper.find('input').instance();
         input.value = 'e';

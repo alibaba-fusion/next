@@ -69,17 +69,34 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * （受控）当前值
      */
-    value?: string | Array<any>;
+    value?: string | object | Array<any>;
 
     /**
      * （非受控）默认值
      */
-    defaultValue?: string | Array<any>;
+    defaultValue?: string | object | Array<any>;
+
+     /**
+     * value/defaultValue 在 dataSource 中不存在时，是否展示
+     */
+    preserveNonExistentValue?: boolean;
 
     /**
      * 选中值改变时触发的回调函数
      */
     onChange?: (value: string | Array<any>, data: any | Array<any>) => void;
+
+    /**
+     * 是否一行显示，仅在 multiple 和 treeCheckable 为 true 时生效
+     */
+     tagInline?: boolean;
+
+     /**
+     * 隐藏多余 tag 时显示的内容，在 tagInline 生效时起作用
+     * @param {Object[]} selectedValues 当前已选中的元素
+     * @param {Object[]} [totalValues] 总待选元素，treeCheckedStrategy = 'parent' 时为 undefined
+     */
+    maxTagPlaceholder?: (selectedValues: any[], totalValues?: any[]) => React.ReactNode | HTMLElement;
 
     /**
      * 是否显示搜索框

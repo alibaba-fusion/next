@@ -21,6 +21,9 @@
     #{$input-prefix}-control {
         padding-right: $iconPadding;
     }
+    #{$input-prefix}-inner-text {
+        padding-right: $iconPadding;
+    }
     input {
         height: calc(#{$height} - #{$input-border-width} * 2);
         line-height: calc((#{$height} - #{$input-border-width}*2))\0; // ie9 support

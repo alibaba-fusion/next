@@ -5,21 +5,21 @@
 ////
 
 
-/**
- * 尺寸 基础尺寸
- * 命名能在语义的前提下简单就尽量简单, 这里可以是 size-2x, space-2x, size-base ...
- * 不过可以在语义的前提下做的更精简一些, 于是用了s2, s1等
- * 可用变量: `$s1 - $s8`
- * @example scss - 使用
- *   .element {
- *     padding: $s1 !default;
- *   }
- *
- * @example css - CSS 输出
- *   .element {
- *     padding: 4px !default;
- *   }
- */
+///
+/// 尺寸 基础尺寸
+/// 命名能在语义的前提下简单就尽量简单, 这里可以是 size-2x, space-2x, size-base ...
+/// 不过可以在语义的前提下做的更精简一些, 于是用了s2, s1等
+/// 可用变量: `$s1 - $s8`
+/// @example scss - 使用
+///   .element {
+///     padding: $s1 !default;
+///   }
+///
+/// @example css - CSS 输出
+///   .element {
+///     padding: 4px !default;
+///   }
+///
 
 /// size-base
 /// @semantic 基础尺寸

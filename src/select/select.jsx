@@ -326,7 +326,7 @@ class Select extends Base {
             });
 
             if (!props.popupContent) {
-                this.setFirstHightLightKeyForMenu();
+                this.setFirstHightLightKeyForMenu(this.state.searchValue);
             }
         }
 
@@ -534,7 +534,7 @@ class Select extends Base {
                     searchValue: value,
                     dataSource: this.dataStore.updateByKey(value),
                 });
-                this.setFirstHightLightKeyForMenu();
+                this.setFirstHightLightKeyForMenu(value);
             }
         } else if (!('searchValue' in this.props)) {
             this.setState({

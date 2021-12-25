@@ -1,8 +1,22 @@
+import React from 'react';
 import ConfigProvider from '../config-provider';
 import { log } from '../util';
-import Dialog from './dialog';
+import Dialog1 from './dialog';
+import Dialog2 from './dialog-v2';
+
 import Inner from './inner';
-import { show, alert, confirm, withContext } from './show';
+import { show, alert, confirm, withContext, success, error, notice, warning, help } from './show';
+
+class Dialog extends React.Component {
+    render() {
+        const { v2, ...others } = this.props;
+        if (v2) {
+            return <Dialog2 {...others} />;
+        } else {
+            return <Dialog1 {...others} />;
+        }
+    }
+}
 
 Dialog.Inner = Inner;
 Dialog.show = config => {
@@ -26,6 +40,12 @@ Dialog.confirm = config => {
     }
     return confirm(config);
 };
+Dialog.success = config => success(config);
+Dialog.error = config => error(config);
+Dialog.notice = config => notice(config);
+Dialog.warning = config => warning(config);
+Dialog.help = config => help(config);
+
 Dialog.withContext = withContext;
 
 /* istanbul ignore next */
@@ -34,6 +54,29 @@ function processProps(props, deprecated) {
         deprecated('closable', 'closeable', 'Dialog');
         const { closable, ...others } = props;
         props = { closeable: closable, ...others };
+    }
+
+    if ('v2' in props) {
+        const nProps = { ...props };
+        if ('align' in props) {
+            delete nProps.align;
+            deprecated('align', 'centered', '<Dialog v2 />');
+        }
+        if ('shouldUpdatePosition' in props) {
+            delete nProps.shouldUpdatePosition;
+            log.warning(`Warning: [ shouldUpdatePosition ] is deprecated at [ <Dialog v2 /> ]`);
+        }
+        if ('minMargin' in props) {
+            // delete nProps.minMargin;
+            deprecated('minMargin', 'top/bottom', '<Dialog v2 />');
+        }
+        if ('isFullScreen' in props) {
+            props.overFlowScroll = !props.isFullScreen;
+            delete nProps.isFullScreen;
+            deprecated('isFullScreen', 'overFlowScroll', '<Dialog v2 />');
+        }
+
+        return nProps;
     }
 
     const overlayPropNames = [

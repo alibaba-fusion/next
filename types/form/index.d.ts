@@ -13,6 +13,11 @@ type SpanOffset = {
 
 export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
+    * 表单名
+    */
+    name?: string;
+
+    /**
      * 样式前缀
      */
     prefix?: string;
@@ -81,6 +86,11 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 扩展class
      */
     className?: string;
+
+    /**
+     * 是否禁用
+     */
+     disabled?: boolean;
 
     /**
      * [表单校验] 不能为空
@@ -499,6 +509,11 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      * 扩展class
      */
     className?: string;
+
+    /**
+     * 是否禁用
+     */
+     disabled?: boolean;
 
     /**
      * 自定义内联样式

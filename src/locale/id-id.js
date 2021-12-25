@@ -82,6 +82,10 @@ export default {
         maxTagPlaceholder: 'Terpilih sebanyak{selected} / {total}.',
         selectAll: 'Pilih Semua',
     },
+    TreeSelect: {
+        maxTagPlaceholder: 'Terpilih sebanyak{selected} / {total}.',
+        shortMaxTagPlaceholder: 'Terpilih sebanyak{selected}.',
+    },
     Table: {
         empty: 'tidak ada data',
         ok: 'Konfirmasi',

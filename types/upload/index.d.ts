@@ -470,6 +470,11 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
      * 文件对象的 key name
      */
     fileKeyName?: string;
+    /**
+     * 点击文件名时触发 onPreview
+     * @version 1.24
+     */
+    previewOnFileName?: boolean,
 }
 
 export default class Upload extends React.Component<UploadProps, any> {

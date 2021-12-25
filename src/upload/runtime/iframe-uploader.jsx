@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
@@ -46,10 +47,7 @@ class IframeUploader extends React.Component {
 
     constructor(props) {
         super(props);
-        this.domain =
-            typeof document !== 'undefined' && document.domain
-                ? document.domain
-                : '';
+        this.domain = typeof document !== 'undefined' && document.domain ? document.domain : '';
         this.uid = uid();
     }
 
@@ -83,9 +81,7 @@ class IframeUploader extends React.Component {
             response = doc.body.innerHTML;
             props.onSuccess(response, file);
         } catch (err) {
-            log.warning(
-                'cross domain error for Upload. Maybe server should return document.domain script.'
-            );
+            log.warning('cross domain error for Upload. Maybe server should return document.domain script.');
             response = 'cross-domain';
             props.onError(err, null, file);
         }
@@ -222,14 +218,7 @@ class IframeUploader extends React.Component {
     };
 
     render() {
-        const {
-            disabled,
-            className,
-            children,
-            accept,
-            name,
-            style,
-        } = this.props;
+        const { disabled, className, children, accept, name, style } = this.props;
         const { uid } = this;
         const iframeName = `${name}-${uid}-iframe`;
 
@@ -258,11 +247,7 @@ class IframeUploader extends React.Component {
                     encType="multipart/form-data"
                     target={iframeName}
                 >
-                    <input
-                        name="_documentDomain"
-                        value={this.domain}
-                        type="hidden"
-                    />
+                    <input name="_documentDomain" value={this.domain} type="hidden" />
                     <span ref={this.saveDataRef} />
                     <input
                         ref={this.saveInputRef}

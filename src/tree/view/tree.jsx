@@ -22,7 +22,20 @@ import {
 
 const { bindCtx, noop } = func;
 const { getOffset } = dom;
-const { pickOthers, isPlainObject } = obj;
+const { pickOthers, pickProps, isPlainObject } = obj;
+
+export const treeNodeProps = [
+    'key',
+    'label',
+    'selectable',
+    'checkable',
+    'editable',
+    'draggable',
+    'disabled',
+    'checkboxDisabled',
+    'isLeaf',
+    'icon',
+];
 
 const getExpandedKeys = (props, willReceiveProps, _k2n, _p2n) => {
     let expandedKeys;
@@ -141,6 +154,7 @@ const getCheckedKeys = (props, willReceiveProps, _k2n, _p2n) => {
 const preHandleData = (dataSource, props) => {
     const k2n = {};
     const p2n = {};
+    const keyList = [];
 
     const drill = (data = [], level = 1, prefix = '0', parent) =>
         data.map((item, index) => {
@@ -169,7 +183,7 @@ const preHandleData = (dataSource, props) => {
             if (key === undefined || key === null) {
                 item.key = key = pos;
             }
-
+            keyList.push(key);
             !item.isLeaf && drill(children, level + 1, pos, item);
 
             k2n[key] = p2n[pos] = { ...item };
@@ -177,12 +191,13 @@ const preHandleData = (dataSource, props) => {
             return item;
         });
 
-    return { dataSource: drill(dataSource), k2n, p2n };
+    return { dataSource: drill(dataSource), k2n, p2n, keyList };
 };
 
 const preHandleChildren = props => {
     const k2n = {};
     const p2n = {};
+    const keyList = [];
 
     const loop = (children, prefix = '0', level = 1) =>
         Children.map(children, (node, index) => {
@@ -201,7 +216,7 @@ const preHandleChildren = props => {
             if (!('isLeaf' in item)) {
                 item.isLeaf = !(hasChildren || props.loadData);
             }
-
+            keyList.push(key);
             if (hasChildren) {
                 item.children = loop(children, pos, level + 1);
             }
@@ -211,7 +226,7 @@ const preHandleChildren = props => {
         });
     loop(props.children);
 
-    return { k2n, p2n };
+    return { k2n, p2n, keyList };
 };
 
 const getData = props => {
@@ -457,6 +472,13 @@ class Tree extends Component {
         onBlur: PropTypes.func,
         onItemKeyDown: PropTypes.func,
         /**
+         * 自定义渲染单个子节点
+         * @param {Object} node 节点数据
+         * @return {ReactNode} 返回节点
+         * @version 1.25
+         */
+        labelRender: PropTypes.func,
+        /**
          * 是否开启虚拟滚动
          */
         useVirtual: PropTypes.bool,
@@ -510,7 +532,7 @@ class Tree extends Component {
     constructor(props) {
         super(props);
 
-        const { dataSource = [], k2n, p2n } = getData(props);
+        const { dataSource = [], k2n, p2n, keyList } = getData(props);
         const { focusable, autoFocus, focusedKey } = this.props;
         const willReceiveProps = false;
         const { checkedKeys, indeterminateKeys = [] } = getCheckedKeys(props, willReceiveProps, k2n, p2n);
@@ -518,6 +540,7 @@ class Tree extends Component {
         this.state = {
             _k2n: k2n,
             _p2n: p2n,
+            _keyList: keyList,
             dataSource,
             willReceiveProps,
             expandedKeys: getExpandedKeys(props, willReceiveProps, k2n, p2n),
@@ -540,7 +563,7 @@ class Tree extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { dataSource = [], k2n, p2n } = getData(props);
+        const { dataSource = [], k2n, p2n, keyList } = getData(props);
         const st = {};
 
         if (!state.willReceiveProps) {
@@ -548,6 +571,7 @@ class Tree extends Component {
                 willReceiveProps: true,
                 _k2n: k2n,
                 _p2n: p2n,
+                _keyList: keyList,
             };
         }
 
@@ -724,7 +748,7 @@ class Tree extends Component {
 
     handleBlur(e) {
         this.setState({
-            focusedKey: '',
+            focusedKey: null,
         });
 
         this.props.onBlur && this.props.onBlur(e);
@@ -977,10 +1001,27 @@ class Tree extends Component {
     }
 
     handleDragOver(e, node) {
+        const dragOverNodeKey = node.props.eventKey;
+        if (this.state.dragOverNodeKey !== dragOverNodeKey) {
+            this.setState({
+                dragOverNodeKey,
+            });
+        }
+
         this.props.onDragOver({ event: e, node: node });
     }
 
     handleDragLeave(e, node) {
+        const eventKey = node.props.eventKey;
+        const { _keyList } = this.state;
+        const firstKey = _keyList[0];
+        const lastKey = _keyList[_keyList.length - 1];
+        // 只针对树的边界节点（第一个和最后一个）做处理
+        if (eventKey === firstKey || eventKey === lastKey) {
+            this.setState({
+                dragOverNodeKey: null,
+            });
+        }
         this.props.onDragLeave({ event: e, node: node });
     }
 
@@ -1042,13 +1083,17 @@ class Tree extends Component {
     }
 
     renderTreeNode(props, childNodes) {
-        const { rtl } = this.props;
+        const { rtl, labelRender } = this.props;
         const { key } = props;
         const nodeProps = {
             _key: key,
             ...props,
             ...this.getNodeProps(key),
         };
+
+        if (labelRender) {
+            nodeProps.label = labelRender(pickProps(treeNodeProps, props));
+        }
 
         return (
             <TreeNode rtl={rtl} key={key} {...nodeProps}>
@@ -1116,7 +1161,6 @@ class Tree extends Component {
     }
 
     renderByDataSource(dataSource) {
-        const { rtl } = this.props;
         const drill = (data, prefix = '0') => {
             return data.map((item, index) => {
                 // 为了兼容之前的实现 保留非法节点
@@ -1126,14 +1170,19 @@ class Tree extends Component {
                 const pos = `${prefix}-${index}`;
                 const { key = pos, children, ...others } = item;
                 const props = {
+                    size: data.length,
                     ...others,
                     ...this.getNodeProps(`${key}`),
                     _key: key,
+                    key,
                 };
+
                 if (children && children.length) {
                     props.children = drill(children, pos);
                 }
-                const node = <TreeNode rtl={rtl} key={key} size={data.length} {...props} />;
+
+                const node = this.renderTreeNode(props, props.children);
+
                 // eslint-disable-next-line
                 this.state._k2n[key].node = node;
                 return node;

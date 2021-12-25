@@ -56,23 +56,24 @@
 | animation           | 是否开启展开收起动画                                                                                                                                                                                                                                                                                                                                                                                                                  | Boolean                 | true       |      |
 | focusedKey          | 当前获得焦点的子菜单或菜单项 key 值                                                                                                                                                                                                                                                                                                                                                                                                        | String                  | -          |      |
 | renderChildNodes    | 渲染子节点<br/><br/>**签名**:<br/>Function(nodes: Array) => ReactNode<br/>**参数**:<br/>_nodes_: {Array} 所有的子节点<br/>**返回值**:<br/>{ReactNode} 返回节点<br/>                                                                                                                                                                                                                                                                               | Function                | -          |      |
+| labelRender         | 自定义渲染单个子节点<br/><br/>**签名**:<br/>Function(node: Object) => ReactNode<br/>**参数**:<br/>_node_: {Object} 节点数据<br/>**返回值**:<br/>{ReactNode} 返回节点<br/>                                                                                                                                                                                                                                                                            | Function                | -          | 1.25 |
 | useVirtual          | 是否开启虚拟滚动                                                                                                                                                                                                                                                                                                                                                                                                                    | Boolean                 | false      |      |
 | immutable           | 是否是不可变数据                                                                                                                                                                                                                                                                                                                                                                                                                    | Boolean                 | false      | 1.23 |
 
 ### Tree.Node
 
-| 参数               | 说明                                                         | 类型               | 默认值   |
-| ---------------- | ---------------------------------------------------------- | ---------------- | ----- |
-| children         | 树节点                                                        | ReactNode        | -     |
-| label            | 节点文本内容                                                     | ReactNode        | '---' |
-| selectable       | 单独设置是否支持选中，覆盖 Tree 的 selectable                            | Boolean          | -     |
-| checkable        | 单独设置是否出现复选框，覆盖 Tree 的 checkable                            | Boolean          | -     |
-| editable         | 单独设置是否支持编辑，覆盖 Tree 的 editable                              | Boolean          | -     |
-| draggable        | 单独设置是否支持拖拽，覆盖 Tree 的 draggable                             | Boolean          | -     |
-| disabled         | 是否禁止节点响应                                                   | Boolean          | false |
-| checkboxDisabled | 是否禁止勾选节点复选框                                                | Boolean          | false |
-| isLeaf           | 是否是叶子节点，设置loadData时生效                                      | Boolean          | -     |
-| icon             | 自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type="icon type" />` | String/ReactNode | -     |
+| 参数               | 说明                                                         | 类型               | 默认值   | 版本支持 |
+| ---------------- | ---------------------------------------------------------- | ---------------- | ----- | ---- |
+| children         | 树节点                                                        | ReactNode        | -     |      |
+| label            | 节点文本内容                                                     | ReactNode        | '---' |      |
+| selectable       | 单独设置是否支持选中，覆盖 Tree 的 selectable                            | Boolean          | -     |      |
+| checkable        | 单独设置是否出现复选框，覆盖 Tree 的 checkable                            | Boolean          | -     |      |
+| editable         | 单独设置是否支持编辑，覆盖 Tree 的 editable                              | Boolean          | -     |      |
+| draggable        | 单独设置是否支持拖拽，覆盖 Tree 的 draggable                             | Boolean          | -     |      |
+| disabled         | 是否禁止节点响应                                                   | Boolean          | false |      |
+| checkboxDisabled | 是否禁止勾选节点复选框                                                | Boolean          | false |      |
+| isLeaf           | 是否是叶子节点，设置loadData时生效                                      | Boolean          | -     |      |
+| icon             | 自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type="icon type" />` | String/ReactNode | -     | 1.21 |
 
 <!-- api-extra-start -->
 

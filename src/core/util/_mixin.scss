@@ -527,6 +527,7 @@
         @font-face {
             font-family: "#{$name}";
             src: url("#{$url}");
+            font-display: swap;
         }
     }
 }

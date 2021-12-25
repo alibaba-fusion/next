@@ -23,7 +23,7 @@
         padding-top: $timeline-item-folder-margin-top;
         padding-bottom: $timeline-item-folder-margin-bottom;
         font-size: $timeline-item-folder-font-size;
-        line-height: calc(#{$timeline-item-folder-font-size} + 4px);
+        line-height: $font-lineheight-2;
         position: relative;
         /* min-height: auto !important; */
     }
@@ -89,7 +89,7 @@
             margin-top: 4px;
             font-size: $timeline-item-title-font-size;
             font-weight: $timeline-item-title-font-weight;
-            line-height: calc(#{$timeline-item-title-font-size} + 4px);
+            line-height: $font-lineheight-2;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -99,9 +99,9 @@
 
         #{$timeline-prefix}-item-body {
             margin: 0;
-            margin-top: 8px;
+            margin-top: 4px;
             font-size: $timeline-item-body-font-size;
-            line-height: calc(#{$timeline-item-body-font-size} + 4px);
+            line-height: $font-lineheight-2;
             color: $timeline-item-body-color;
             text-align: right;
         }
@@ -157,7 +157,7 @@
             margin: 0;
             font-size: $timeline-item-title-font-size;
             font-weight: $timeline-item-title-font-weight;
-            line-height: calc(#{$timeline-item-title-font-size} + 4px);
+            line-height: $font-lineheight-2;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -168,7 +168,7 @@
         #{$timeline-prefix}-item-body {
             margin: 0;
             font-size: $timeline-item-body-font-size;
-            line-height: calc(#{$timeline-item-body-font-size} + 4px);
+            line-height: $font-lineheight-2;
             color: $timeline-item-body-color;
             text-align: left;
         }

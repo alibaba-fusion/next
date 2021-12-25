@@ -72,6 +72,7 @@
     #{$step-prefix}-item-content {
         color: $title-color;
         font-size: $step-circle-item-content-font-size;
+        line-height: $font-lineheight-2;
         word-break: break-word;
     }
 
@@ -247,7 +248,7 @@
                     min-height: $s-2;
                     text-align: left;
                     font-size: $step-circle-item-content-font-size;
-                    line-height: calc(#{$step-circle-item-content-font-size} + 4px);
+                    line-height: $font-lineheight-2;
                 }
             }
         }
@@ -286,7 +287,7 @@
                     min-height: $s-2;
                     text-align: left;
                     font-size: $step-dot-item-content-font-size;
-                    line-height: calc(#{$step-dot-item-content-font-size} + 4px);
+                    line-height: $font-lineheight-2;
                 }
             }
         }

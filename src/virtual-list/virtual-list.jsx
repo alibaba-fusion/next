@@ -363,10 +363,10 @@ class VirtualList extends Component {
             return itemSizeGetter(index);
         }
 
-        const height = Object.keys(this.cache)
-            .map(key => this.cache[key])
-            .pop();
-        if (!this.defaultItemHeight && jumpIndex > -1 && height) {
+        if (!this.defaultItemHeight && jumpIndex > -1) {
+            const keysList = Object.keys(this.cache);
+            const len = keysList.length;
+            const height = this.cache[len - 1];
             this.defaultItemHeight = height;
         }
 
@@ -402,7 +402,7 @@ class VirtualList extends Component {
 
         const style = { position: 'relative' };
 
-        const size = this.getSpaceBefore(length, this.cacheAdd);
+        const size = this.getSpaceBefore(length, {});
 
         if (size) {
             style.height = size;

@@ -81,6 +81,10 @@ export default {
         maxTagPlaceholder: 'Escolher {selected}/{total} Total',
         selectAll: 'Selecionar Tudo',
     },
+    TreeSelect: {
+        maxTagPlaceholder: 'Escolher {selected}/{total} Total',
+        shortMaxTagPlaceholder: 'Escolher {selected}',
+    },
     Table: {
         empty: 'Vazio',
         ok: 'OK',

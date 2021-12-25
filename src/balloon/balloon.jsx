@@ -59,10 +59,17 @@ class Balloon extends React.Component {
          * @param {String} type 触发弹层显示或隐藏的来源， closeClick 表示由自带的关闭按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
-        /**
-         * 弹出层对齐方式, 是否为边缘对齐
-         */
         alignEdge: PropTypes.bool,
+        /**
+         * 开启 v2 版本
+         * @version 1.25
+         */
+        v2: PropTypes.bool,
+        /**
+         * [v2] 箭头是否指向目标元素的中心
+         * @version 1.25
+         */
+        arrowPointToCenter: PropTypes.bool,
         /**
          * 是否显示关闭按钮
          */
@@ -94,8 +101,10 @@ class Balloon extends React.Component {
         onClose: PropTypes.func,
         onHover: PropTypes.func,
         /**
-         * 是否进行自动位置调整
+         * [v2] 是否进行自动位置调整，默认自动开启。
+         * @version 1.25
          */
+        autoAdjust: PropTypes.bool,
         needAdjust: PropTypes.bool,
         /**
          * 弹层在触发以后的延时显示, 单位毫秒 ms
@@ -105,9 +114,6 @@ class Balloon extends React.Component {
          * 浮层关闭后触发的事件, 如果有动画，则在动画结束后触发
          */
         afterClose: PropTypes.func,
-        /**
-         * 强制更新定位信息，在气泡内容宽、高发生变化后重新定位，推荐开启
-         */
         shouldUpdatePosition: PropTypes.bool,
         /**
          * 弹层出现后是否自动focus到内部第一个元素
@@ -166,6 +172,7 @@ class Balloon extends React.Component {
         defaultVisible: false,
         size: 'medium',
         alignEdge: false,
+        arrowPointToCenter: false,
         align: 'b',
         offset: [0, 0],
         trigger: <span />,
@@ -204,7 +211,12 @@ class Balloon extends React.Component {
             nextState.visible = nextProps.visible;
         }
 
-        if (!prevState.innerAlign && 'align' in nextProps && alignList.includes(nextProps.align)) {
+        if (
+            !prevState.innerAlign &&
+            'align' in nextProps &&
+            alignList.includes(nextProps.align) &&
+            nextProps.align !== prevState.align
+        ) {
             nextState.align = nextProps.align;
             nextState.innerAlign = false;
         }
@@ -262,6 +274,41 @@ class Balloon extends React.Component {
         }
     }
 
+    beforePosition = (result, obj) => {
+        const { placement } = result.config;
+        if (placement !== this.state.align) {
+            this.setState({
+                align: placement,
+                innerAlign: true,
+            });
+        }
+
+        if (this.props.arrowPointToCenter) {
+            const { width, height } = obj.target;
+            if (placement.length === 2) {
+                const offset = normalMap[placement].offset;
+                switch (placement[0]) {
+                    case 'b':
+                    case 't':
+                        {
+                            const plus = offset[0] > 0 ? 1 : -1;
+                            result.style.left = result.style.left + (plus * width) / 2 - offset[0];
+                        }
+                        break;
+                    case 'l':
+                    case 'r':
+                        {
+                            const plus = offset[0] > 0 ? 1 : -1;
+                            result.style.top = result.style.top + (plus * height) / 2 - offset[1];
+                        }
+                        break;
+                }
+            }
+        }
+
+        return result;
+    };
+
     render() {
         const {
             id,
@@ -277,6 +324,7 @@ class Balloon extends React.Component {
             shouldUpdatePosition,
             delay,
             needAdjust,
+            autoAdjust,
             safeId,
             autoFocus,
             safeNode,
@@ -293,6 +341,8 @@ class Balloon extends React.Component {
             popupProps,
             followTrigger,
             rtl,
+            v2,
+            arrowPointToCenter,
             ...others
         } = this.props;
 
@@ -302,7 +352,7 @@ class Balloon extends React.Component {
 
         const { align } = this.state;
 
-        alignMap = alignEdge ? edgeMap : normalMap;
+        alignMap = alignEdge || v2 ? edgeMap : normalMap;
         const _prefix = this.context.prefix || prefix;
 
         let trOrigin = 'trOrigin';
@@ -328,6 +378,7 @@ class Balloon extends React.Component {
                 type={type}
                 rtl={rtl}
                 alignEdge={alignEdge}
+                v2={v2}
             >
                 {children}
             </BalloonInner>
@@ -343,32 +394,54 @@ class Balloon extends React.Component {
             React.isValidElement(ariaTrigger) ? ariaTrigger : <span>{ariaTrigger}</span>
         );
 
+        const otherProps = {
+            delay: delay,
+            shouldUpdatePosition: shouldUpdatePosition,
+            needAdjust: needAdjust,
+            align: alignMap[align].align,
+            offset: _offset,
+            safeId,
+            onHover,
+            onPosition: this._onPosition,
+        };
+
+        if (v2) {
+            delete otherProps.align;
+            delete otherProps.shouldUpdatePosition;
+            delete otherProps.needAdjust;
+            delete otherProps.offset;
+            delete otherProps.safeId;
+            delete otherProps.onHover;
+            delete otherProps.onPosition;
+
+            Object.assign(otherProps, {
+                placement: align,
+                placementOffset: 12,
+                v2: true,
+                beforePosition: this.beforePosition,
+                autoAdjust,
+            });
+        }
+
         return (
             <Popup
                 {...popupProps}
                 followTrigger={followTrigger}
                 trigger={newTrigger}
                 cache={cache}
-                safeId={safeId}
                 triggerType={triggerType}
-                align={alignMap[align].align}
-                offset={_offset}
                 visible={this.state.visible}
-                onPosition={this._onPosition}
                 onClick={onClick}
-                onHover={onHover}
                 afterClose={this.props.afterClose}
                 onVisibleChange={this._onVisibleChange}
-                shouldUpdatePosition={shouldUpdatePosition}
-                needAdjust={needAdjust}
                 animation={animation}
-                delay={delay}
                 autoFocus={triggerType === 'focus' ? false : autoFocus}
                 safeNode={safeNode}
                 container={popupContainer || container}
                 className={popupClassName}
                 style={popupStyle}
                 rtl={rtl}
+                {...otherProps}
             >
                 {content}
             </Popup>

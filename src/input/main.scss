@@ -26,6 +26,12 @@
             -webkit-box-shadow: 0 0 0 1000px $input-bg-color inset;
             border-radius: $form-element-large-corner; // 一般大中小 radius 都相等，目前还没见过不一样的
         }
+
+        &[type="password"] {
+            &::-ms-reveal {
+                display: none;
+            }
+        }
     }
 
     textarea {
@@ -125,8 +131,6 @@
         }
     }
 
-
-
     #{$input-prefix}-clear-icon, .#{$css-prefix}icon-eye, .#{$css-prefix}icon-eye-close {
         &:hover {
             cursor: pointer;
@@ -142,12 +146,20 @@
         }
     }
 
+    #{$input-prefix}-hover-show {
+        opacity: 0;
+    }
+
     &:hover, &.#{$css-prefix}focus {
         border-color: $input-hover-border-color;
         background-color: $input-hover-bg-color;
 
         #{$input-prefix}-clear {
             @include clear-icon-visible;
+        }
+
+        #{$input-prefix}-hover-show {
+            opacity: 1;
         }
     }
 
@@ -261,7 +273,7 @@
         }
     }
 
-    &-label {
+    &-label, &-inner-text {
         color: $input-label-color;
     }
 
@@ -279,7 +291,7 @@
             @include input-placeholder($input-disabled-color);
         }
 
-        #{$input-prefix}-label {
+        #{$input-prefix}-label, #{$input-prefix}-inner-text {
             color: $input-disabled-color;
         }
         #{$input-prefix}-len {

@@ -115,25 +115,27 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     autoFocus?: boolean;
 
     /**
-     * 对话框对齐方式, 具体见Overlay文档
+     * [v2废弃] 对话框对齐方式, 具体见Overlay文档
+     * @deprecated
      */
     align?: string | boolean;
-
     /**
-     * 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+     * [v2废弃] 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+     * @deprecated
      */
     isFullScreen?: boolean;
 
     /**
-     * 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
+     * [v2废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
+     * @deprecated
      */
     shouldUpdatePosition?: boolean;
 
     /**
-     * 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
+     * [v2废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
+     * @deprecated
      */
     minMargin?: number;
-
     /**
      * 透传到弹层组件的属性对象
      */
@@ -152,6 +154,34 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
      */
     height?: string;
     popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
+    /**
+     * 开启 v2 版本弹窗
+     */
+    v2?: boolean;
+    /**
+     * [v2] 定制关闭按钮 icon
+     */
+    closeIcon?: React.ReactNode;
+    /**
+     * [v2] 弹窗宽度 v2 生效
+     */
+    width?: string | number;
+    /**
+     * [v2] 弹窗上边距。默认 100，设置 centered=true 后默认 40
+     */
+    top?: number;
+    /**
+     * [v2] 弹窗下边距, 默认 40
+     */
+    bottom?: number;
+    /**
+     * [v2] 对话框高度超过浏览器视口高度时，对话框是否展示滚动条。关闭此功后对话框会随高度撑开页面
+     */
+    overflowScroll?: boolean;
+    /**
+     * [v2] 弹窗居中对齐
+     */
+    centered?: boolean;
 }
 
 export interface QuickShowConfig extends DialogProps {
@@ -173,4 +203,9 @@ export default class Dialog extends React.Component<DialogProps, any> {
     static show(config: QuickShowConfig): QuickShowRet;
     static alert(config: QuickShowConfig): QuickShowRet;
     static confirm(config: QuickShowConfig): QuickShowRet;
+    static success(config: QuickShowConfig): QuickShowRet;
+    static error(config: QuickShowConfig): QuickShowRet;
+    static warning(config: QuickShowConfig): QuickShowRet;
+    static notice(config: QuickShowConfig): QuickShowRet;
+    static help(config: QuickShowConfig): QuickShowRet;
 }

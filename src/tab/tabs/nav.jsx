@@ -7,7 +7,7 @@ import Overlay from '../../overlay';
 import Menu from '../../menu';
 import Animate from '../../animate';
 import { events, KEYCODE, dom, obj } from '../../util';
-import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
+import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported, tabsArrayShallowEqual } from './utils';
 
 const floatRight = { float: 'right', zIndex: 1 };
 const floatLeft = { float: 'left', zIndex: 1 };
@@ -57,7 +57,7 @@ class Nav extends React.Component {
         events.on(window, 'resize', this.onWindowResized);
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         // 此处通过延时处理，屏蔽动画带来的定位不准确问题（由于要支持ie9，因此无法使用transitionend）
         clearTimeout(this.scrollTimer);
         this.scrollTimer = setTimeout(() => {
@@ -68,6 +68,13 @@ class Nav extends React.Component {
         this.slideTimer = setTimeout(() => {
             this.setSlideBtn();
         }, 410);
+
+        // 更改tabs后如果有dropdown属性，应该重新执行getDropdownItems函数更新dropdown数据
+        if (this.props.excessMode === 'dropdown') {
+            if (!tabsArrayShallowEqual(this.props.tabs, prevProps.tabs)) {
+                this.getDropdownItems(this.props);
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -119,50 +126,17 @@ class Nav extends React.Component {
         const _ov = target / scaleRate;
         const offsetValue = isNaN(_ov) ? target : _ov;
 
-        if (this.offset !== target) {
+        if (this.offset !== target && this.nav) {
             // needs move
             this.offset = target;
-            let navOffset = {};
-            const navStyle = this.nav.style;
+            const divScroll = this.nav.parentElement;
 
-            const canTransform = isTransformSupported(navStyle);
             if (tabPosition === 'left' || tabPosition === 'right') {
-                navOffset = canTransform
-                    ? {
-                          value: `translate3d(0, ${offsetValue}px, 0)`,
-                      }
-                    : {
-                          name: 'top',
-                          value: `${offsetValue}px`,
-                      };
+                divScroll.scrollTo({ top: -offsetValue, left: 0, behavior: 'smooth' });
             } else if (!this.props.rtl) {
-                navOffset = canTransform
-                    ? {
-                          value: `translate3d(${offsetValue}px, 0, 0)`,
-                      }
-                    : {
-                          name: 'left',
-                          value: `${offsetValue}px`,
-                      };
+                divScroll.scrollTo({ top: 0, left: -offsetValue, behavior: 'smooth' });
             } else {
-                navOffset = canTransform
-                    ? {
-                          value: `translate3d(${-1 * offsetValue}px, 0, 0)`,
-                      }
-                    : {
-                          name: 'right',
-                          value: `${offsetValue}px`,
-                      };
-            }
-
-            if (canTransform) {
-                Object.assign(navStyle, {
-                    transform: navOffset.value,
-                    webkitTransform: navOffset.value,
-                    mozTransform: navOffset.value,
-                });
-            } else {
-                navStyle[navOffset.name] = navOffset.value;
+                divScroll.scrollTo({ top: 0, left: offsetValue, behavior: 'smooth' });
             }
 
             if (checkSlideBtn) {
@@ -504,7 +478,6 @@ class Nav extends React.Component {
     render() {
         const { prefix, tabPosition, excessMode, extra, onKeyDown, animation, style, className, rtl } = this.props;
         const state = this.state;
-
         let nextButton;
         let prevButton;
         let restButton;
@@ -529,6 +502,7 @@ class Nav extends React.Component {
             );
 
             const nextIcon = this.getIcon('next');
+
             nextButton = (
                 <button
                     onClick={this.onNextClick}

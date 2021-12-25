@@ -47,7 +47,9 @@ class Demo extends React.Component {
                 }}>
                     Toggle visible
                 </Button>
-                <Overlay visible={this.state.visible}
+                <Overlay 
+                    v2
+                    visible={this.state.visible}
                     target={() => this.btn}
                     safeNode={() => this.btn}
                     onRequestClose={this.onClose}>

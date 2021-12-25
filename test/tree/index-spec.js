@@ -286,6 +286,16 @@ describe('Tree', () => {
         assertTree({ dataSource }, mountNode);
     });
 
+    it('should support render child node', () => {
+        ReactDOM.render(<Tree defaultExpandedKeys={['2']} dataSource={dataSource} labelRender={(nodeData) => {
+            return <div className='custom-child-title'>{nodeData.label}</div>
+        }} />,
+            mountNode
+        );
+
+        assert(!!document.querySelector('.custom-child-title'));
+    });
+
     it('should support render child nodes', () => {
         ReactDOM.render(
             <Tree
@@ -846,6 +856,37 @@ describe('Tree', () => {
         checkTreeNode('4');
         ['1', '3', '6'].forEach(key => assertChecked(key, false));
         assertChecked('4', true);
+    });
+
+    it('should auto set parent checked', () => {
+        ReactDOM.render(
+            <Tree
+                checkable
+                defaultCheckedKeys={[
+                    "2062867",
+                    "1068832",
+                ]}  
+                dataSource={
+                    [{
+                        "children": [
+                            {
+                            "label": "来访目的",
+                            "key": "1068832"
+                            }
+                        ],
+                        "label": "系统设置",
+                        "key": "106638",
+                        "className": 'k-106638'
+                    },{
+                        "label": "来访人员管理",
+                        "key": "2062867"
+                    }]
+                }
+                />,
+                mountNode
+        );
+
+        assertChecked('106638', true);
     });
 
     it('should support checkable = false', () => {

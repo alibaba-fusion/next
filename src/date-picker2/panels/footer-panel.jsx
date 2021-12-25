@@ -57,18 +57,23 @@ class FooterPanel extends React.PureComponent {
         return preset.map(({ label, value, ...restProps }, index) => {
             const buttonProps = obj.pickProps(Button.propTypes, restProps);
 
+            const handleClick = () => {
+                const date = typeof value === 'function' ? value() : value;
+                this.props.onChange(date, 'CLICK_PRESET');
+            };
             return (
                 <Button
                     text={preset.length === 1}
                     size="small"
                     type={preset.length === 1 ? 'primary' : 'secondary'}
                     key={`${label}-${index}`}
-                    onClick={() =>
-                        func.invoke(this.props, 'onChange', [
-                            typeof value === 'function' ? value() : value,
-                            'CLICK_PRESET',
-                        ])
-                    }
+                    // onClick={() =>
+                    //     func.invoke(this.props, 'onChange', [
+                    //         typeof value === 'function' ? value() : value,
+                    //         'CLICK_PRESET',
+                    //     ])
+                    // }
+                    onClick={handleClick}
                     {...buttonProps}
                 >
                     {label}

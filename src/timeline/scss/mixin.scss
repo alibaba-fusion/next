@@ -109,7 +109,7 @@
             margin: 0;
             font-size: $timeline-item-title-font-size;
             font-weight: $timeline-item-title-font-weight;
-            line-height: calc(#{$timeline-item-title-font-size} + 4px);
+            line-height: $font-lineheight-2;
             margin-top: $timeline-item-title-margin-top;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -126,7 +126,7 @@
             margin: 0;
             margin-top: $timeline-item-body-margin-top;
             font-size: $timeline-item-body-font-size;
-            line-height: calc(#{$timeline-item-body-font-size} + 4px);
+            line-height: $font-lineheight-2;
             color: $timeline-item-body-color;
             @if $direction == 'rtl' {
                 text-align: right;
@@ -157,7 +157,7 @@
             display: inline-block;
             font-size: $timeline-item-left-body-font-size;
             color: $timeline-item-left-body-color;
-            line-height: calc(#{$timeline-item-left-body-font-size} + 4px);
+            line-height: $font-lineheight-2;
             margin-top: $timeline-item-title-margin-top;
             @if $direction == 'rtl' {
                 text-align: left;

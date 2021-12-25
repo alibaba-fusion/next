@@ -26,16 +26,16 @@ const dateValue = moment('2018-01-01', 'YYYY-MM-DD', true);
 
 const App = () => (
     <div>
-        <Balloon type="primary" autoFocus trigger={showSelect} closable={false} triggerType="click">
+        <Balloon v2 type="primary" autoFocus trigger={showSelect} closable={false} triggerType="click">
             <Select dataSource={['apple', 'banana', 'orange']} followTrigger />
         </Balloon>
         <span style={{marginRight: 20}} />
-        <Balloon type="primary" autoFocus trigger={showDatePicker} closable={false} triggerType="click">
+        <Balloon v2 type="primary" autoFocus trigger={showDatePicker} closable={false} triggerType="click">
             <DatePicker defaultValue={dateValue} followTrigger />
         </Balloon>
         <span style={{marginRight: 20}} />
-        <Balloon type="primary" autoFocus trigger={innerButton} closable={false} triggerType="click">
-            <Balloon trigger={<Button type="primary">please click</Button>} followTrigger triggerType="click">
+        <Balloon v2 type="primary" autoFocus trigger={innerButton} closable={false} triggerType="click">
+            <Balloon v2 trigger={<Button type="primary">please click</Button>} followTrigger triggerType="click">
                 nesting balloon content
             </Balloon>
         </Balloon>
