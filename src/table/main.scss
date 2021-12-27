@@ -407,7 +407,6 @@
             border-top: 0;
         }
 
-        #{$table-prefix}-body table > tbody > tr:nth-last-child(2) td,
         #{$table-prefix}-body #{$table-prefix}-group-footer td {
             border-bottom: 0;
         }
