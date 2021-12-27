@@ -15,7 +15,7 @@ const Popup = props => {
 
     const {
         prefix = 'next-',
-        animation = { in: 'expandInDown', out: 'expandOutUp' },
+        animation: panimation = { in: 'expandInDown', out: 'expandOutUp' },
         defaultVisible,
         onVisibleChange = () => {},
         trigger,
@@ -40,6 +40,7 @@ const Popup = props => {
     } = props;
 
     const [visible, setVisible] = useState(defaultVisible);
+    const [animation, setAnimation] = useState(panimation);
     const [isAnimationEnd, markAnimationEnd] = useState(true);
     const overlayRef = useRef(null);
 
@@ -48,6 +49,12 @@ const Popup = props => {
             setVisible(props.visible);
         }
     }, [props.visible]);
+
+    useEffect(() => {
+        if ('animation' in props && animation !== panimation) {
+            setAnimation(panimation);
+        }
+    }, [panimation]);
 
     const handleVisibleChange = (visible, ...args) => {
         if (!('visible' in props)) {
@@ -111,6 +118,21 @@ const Popup = props => {
     const handlePosition = result => {
         // 兼容 1.x, 2.x 可去除这段逻辑
         Object.assign(result, { align: result.config.points });
+
+        const placement = result.config.placement;
+        if (placement && typeof placement === 'string') {
+            if (animation.in === 'expandInDown' && animation.out === 'expandOutUp' && placement.match(/t/)) {
+                setAnimation({
+                    in: 'expandInUp',
+                    out: 'expandOutDown',
+                });
+            } else if (animation.in === 'expandInUp' && animation.out === 'expandOutDown' && placement.match(/b/)) {
+                setAnimation({
+                    in: 'expandInDown',
+                    out: 'expandOutUp',
+                });
+            }
+        }
 
         typeof onPosition === 'function' && onPosition(result);
     };
