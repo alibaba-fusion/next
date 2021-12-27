@@ -373,6 +373,10 @@
     }
     @include table-border(0);
 
+    &.only-bottom-border #{$table-prefix}-body tr:last-child td {
+        border-bottom-width: $table-normal-border-width;
+    }
+
     &#{$table-prefix}-group {
         @include table-border($table-normal-border-width);
     }
@@ -403,7 +407,6 @@
             border-top: 0;
         }
 
-        #{$table-prefix}-body table > tbody > tr:nth-last-child(2) td,
         #{$table-prefix}-body #{$table-prefix}-group-footer td {
             border-bottom: 0;
         }
@@ -479,7 +482,7 @@
     border-top-right-radius: $table-header-corner-top;
     border-bottom-right-radius: $table-header-corner-bottom;
     width: 15px;
-    background: $table-th-bg;
+    background: inherit;
     position: absolute;
     right: 0;
     height: 100%;
