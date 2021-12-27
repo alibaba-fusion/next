@@ -39,13 +39,13 @@ function HOC(WrappedComponent) {
         }
     }
 
-    // 当前版本大于 16.3.0 （有forwardRef的那个版本）
+    // 当前版本大于 16.6.3 （有forwardRef的那个版本）
     if (semver.gt(React.version, '16.6.3')) {
         return React.forwardRef((props, ref) => {
             return <PreTable {...props} forwardedRef={ref} />;
         });
     }
-    // 如果需要用底层的ref，推荐名字为 forwardedRef
+    // 对于没有低版本用户来说，获取底层Table的ref，可以通过 forwardedRef 这个props获取
     return PreTable;
 }
 
