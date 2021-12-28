@@ -591,6 +591,27 @@ describe('v2', () => {
         assert(document.querySelector('.next-btn-loading'));
         hide();
     });
+    it('should support hasMask={false}', async () => {
+        const overlays = document.querySelectorAll('.next-overlay-wrapper');
+        overlays.forEach(o => o.parentElement.removeChild(o));
+        
+        const { hide } = Dialog.show({
+            v2: true,
+            hasMask: false,
+            title: 'Title',
+            content: 'Content'
+        });
+
+        await delay(40);
+        assert(!document.querySelector('.next-overlay-backdrop'));
+        hide();
+
+        wrapper = render(<Demo2 animation={false} hasMask={false}/>);
+        const btn = document.querySelector('button');
+        ReactTestUtils.Simulate.click(btn);
+        await delay(40);
+        assert(!document.querySelector('.next-overlay-backdrop'));
+    });
 });
 
 
