@@ -1,0 +1,3 @@
+:root {
+--breakpoints: "xxs", "(min-width: 320px)", "(max-width: 479px)", "xs", "(min-width: 480px)", "(max-width: 719px)", "s", "(min-width: 720px)", "(max-width: 989px)", "m", "(min-width: 990px)", "(max-width: 1199px)", "l", "(min-width: 1200px)", "(max-width: 1499px)", "xl", "(min-width: 1500px)", "";
+}
