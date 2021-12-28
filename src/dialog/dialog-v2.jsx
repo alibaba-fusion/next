@@ -302,14 +302,16 @@ const Dialog = props => {
 
     return ReactDOM.createPortal(
         <div className={wrapperCls} style={wrapperStyle} ref={wrapperRef}>
-            <Animate.OverlayAnimate
-                visible={visible}
-                animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}
-                timeout={timeout}
-                unmountOnExit
-            >
-                <div className={`${prefix}overlay-backdrop`} />
-            </Animate.OverlayAnimate>
+            {hasMask ? (
+                <Animate.OverlayAnimate
+                    visible={visible}
+                    animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}
+                    timeout={timeout}
+                    unmountOnExit
+                >
+                    <div className={`${prefix}overlay-backdrop`} />
+                </Animate.OverlayAnimate>
+            ) : null}
 
             <div className={innerWrapperCls} onClick={handleMaskClick}>
                 {centered ? (
