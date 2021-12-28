@@ -161,6 +161,11 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
      * 自动高亮第一个选项
      */
     autoHighlightFirstItem?: boolean;
+
+    /**
+     * 高亮key
+     */
+    highlightKey?: string;
 }
 
 export class AutoComplete extends React.Component<AutoCompleteProps, any> {}
@@ -440,6 +445,11 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
      * 自动高亮第一个选项
      */
     autoHighlightFirstItem?: boolean;
+
+    /**
+     * 高亮key
+     */
+    highlightKey?: string;
 }
 
 export default class Select extends React.Component<SelectProps, any> {
