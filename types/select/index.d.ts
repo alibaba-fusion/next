@@ -305,6 +305,16 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     filter?: (key:string, item: any) => boolean;
 
     /**
+     * 默认高亮的 key，不要和 autoHighlightFirstItem 同时使用
+     */
+    defaultHighlightKey?: string | number;
+
+    /**
+     * 高亮 key，不要和 autoHighlightFirstItem 同时使用，用于受控模式
+     */
+    highlightKey?: string | number;
+
+    /**
      * 键盘上下键切换菜单高亮选项的回调
      */
     onToggleHighlightItem?: () => void;
