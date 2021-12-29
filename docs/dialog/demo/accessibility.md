@@ -16,7 +16,7 @@ Set the `aria-label` attribute via `okProps` and `cancelProps`, The screen reade
 
 ````jsx
 
-import { Button, Dialog, Input } from '@alifd/next';
+import { Button, Dialog, Input, Select } from '@alifd/next';
 
 class Demo extends React.Component {
     state = {
@@ -48,6 +48,10 @@ class Demo extends React.Component {
                     cancelProps={{'aria-label':'cancel'}}
                     okProps={{'aria-label':'ok'}}>
                     <Input placeholder="should autofocus here"/>
+                    <Select popupProps={{v2: true}} style={{marginLeft: 8}}>
+                        <Select.Option value="1">1</Select.Option>
+                        <Select.Option value="12">12</Select.Option>
+                    </Select>
                 </Dialog>
             </div>
         );
