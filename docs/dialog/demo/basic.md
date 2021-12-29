@@ -16,31 +16,43 @@ First dialog
 ````jsx
 import { Button, Dialog } from '@alifd/next';
 
+class Demo extends React.Component {
+    state = {
+        visible: false
+    };
+    
+    onOpen = () => {
+        this.setState({
+            visible: true
+        });
+    };
 
-const config = {
-  v2: true,
-  title: 'Quick',
-  animation: false,
-  content: 'content content content...',
+    onClose = e => {
+        console.log(e.triggerType);
+        this.setState({
+            visible: false
+        });
+    };
 
-  onOk: () => {
-    Dialog.success({
-      v2: true,
-      title: 'inner',
-      content: 'content content content...'
-    });
-  },
+    render() {
+        return (
+            <div>
+                <Button onClick={this.onOpen} type="primary">
+                    Open dialog
+                </Button>
+                <Dialog
+                    v2
+                    title="Welcome to Alibaba.com"
+                    visible={this.state.visible}
+                    onOk={this.onClose}
+                    onClose={this.onClose}
+                >
+                    <p>Start your business here by searching a popular product</p>
+                </Dialog>
+            </div>
+        );
+    }
+}
 
-};
-
-ReactDOM.render((
-  <div>
-    <div direction="row" spacing={8} style={{ height: '120vh' }}>
-      <Button onClick={() => Dialog.success(config)}>Succes11s</Button>
-    </div>
-    <h1>我在下面呢。。。。。。</h1>
-  </div>
-),
-  mountNode
-);
+ReactDOM.render(<Demo />, mountNode);
 ````
