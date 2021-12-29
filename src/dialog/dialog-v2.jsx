@@ -7,6 +7,7 @@ import Inner from './inner';
 import Animate from '../animate';
 import zhCN from '../locale/zh-cn';
 import { log, func, dom, focus } from '../util';
+import scrollLocker from './scroll-locker';
 
 const noop = func.noop;
 
@@ -74,7 +75,7 @@ const Dialog = props => {
     const [container, setContainer] = useState(getContainer());
     const dialogRef = useRef(null);
     const wrapperRef = useRef(null);
-    const originStyle = useRef('');
+    const lockerUuid = useRef(null);
     const lastFocus = useRef(null);
 
     let canCloseByEsc = false;
@@ -106,19 +107,17 @@ const Dialog = props => {
     // 打开遮罩后 document.body 滚动处理
     useEffect(() => {
         if (visible && hasMask) {
-            originStyle.current = document.body.getAttribute('style');
-            dom.setStyle(document.body, 'overflow', 'hidden');
+            const style = {
+                overflow: 'hidden',
+            };
 
             if (dom.hasScroll(document.body)) {
                 const scrollWidth = dom.scrollbar().width;
                 if (scrollWidth) {
-                    dom.setStyle(
-                        document.body,
-                        'paddingRight',
-                        `${dom.getStyle(document.body, 'paddingRight') + dom.scrollbar().width}px`
-                    );
+                    style.paddingRight = `${dom.getStyle(document.body, 'paddingRight') + dom.scrollbar().width}px`;
                 }
             }
+            lockerUuid.current = scrollLocker.lock(document.body, style);
         }
     }, [visible && hasMask]);
 
@@ -204,7 +203,7 @@ const Dialog = props => {
     const handleExited = () => {
         markAnimationEnd(true);
         dom.setStyle(wrapperRef.current, 'display', 'none');
-        document.body.setAttribute('style', originStyle.current || '');
+        scrollLocker.unlock(document.body, lockerUuid.current);
 
         if (autoFocus && lastFocus.current) {
             try {
