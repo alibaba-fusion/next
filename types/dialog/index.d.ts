@@ -182,6 +182,10 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
      * [v2] 弹窗居中对齐
      */
     centered?: boolean;
+    /**
+     * [v2] 自定义渲染弹窗
+     */
+    dialogRender?: (modal: React.ReactNode) => React.ReactNode;
 }
 
 export interface QuickShowConfig extends DialogProps {
