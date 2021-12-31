@@ -79,7 +79,7 @@ const Dialog = props => {
     const lastFocus = useRef(null);
     const locker = useRef(null);
     const [uuid] = useState(guid());
-    const { getChildrenVisibleState: setParentVisibleState, ...otherContext } = useContext(OverlayContext);
+    const { setVisibleOverlayToParent, ...otherContext } = useContext(OverlayContext);
     const childIDMap = useRef(new Map());
 
     let canCloseByEsc = false;
@@ -126,7 +126,7 @@ const Dialog = props => {
     }, [visible && hasMask]);
 
     const handleClose = (targetType, e) => {
-        setParentVisibleState(uuid, null);
+        setVisibleOverlayToParent(uuid, null);
         typeof onClose === 'function' && onClose(targetType, e);
     };
 
@@ -203,7 +203,7 @@ const Dialog = props => {
                 focusableNodes[0].focus();
             }
         }
-        setParentVisibleState(uuid, dialogRef.current);
+        setVisibleOverlayToParent(uuid, dialogRef.current);
     };
 
     const handleExited = () => {
@@ -305,21 +305,21 @@ const Dialog = props => {
         [`${prefix}dialog-centered`]: centered,
     });
 
-    const getChildrenVisibleState = (id, node) => {
+    const getVisibleOverlayFromChild = (id, node) => {
         if (node) {
             childIDMap.current.set(id, node);
         } else {
             childIDMap.current.delete(id);
         }
         // 让父级也感知
-        setParentVisibleState(id, node);
+        setVisibleOverlayToParent(id, node);
     };
 
     return (
         <OverlayContext.Provider
             value={{
                 ...otherContext,
-                getChildrenVisibleState,
+                setVisibleOverlayToParent: getVisibleOverlayFromChild,
             }}
         >
             {ReactDOM.createPortal(
