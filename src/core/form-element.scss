@@ -3,6 +3,10 @@
 @import "../input/scss/mixin.scss";
 @import "../form/scss/mixin.scss";
 
+// 这里写样式只是为了配置的时候能够读取到变量，必须 next-form-element 开头的样式才能被读到
+// 以下样式对组件没有作用
+// TODO: 耦合太重，不应该把配置平台样式放在这里
+
 .demo-body table {
     width: 100%;
 }
@@ -41,12 +45,21 @@
         color: $form-element-preview-label-color;
     }
     &.next-small {
+        .next-form-item-label {
+            font-size: $form-element-small-preview-label-font-size;
+        }
         @include form-preview($form-element-small-preview-font-size, $form-element-small-preview-height);
     }
     &.next-medium {
+        .next-form-item-label {
+            font-size: $form-element-medium-preview-label-font-size;
+        }
         @include form-preview($form-element-medium-preview-font-size, $form-element-medium-preview-height);
     }
     &.next-large {
+        .next-form-item-label {
+            font-size: $form-element-large-preview-label-font-size;
+        }
         @include form-preview($form-element-large-preview-font-size, $form-element-large-preview-height);
     }
 }
