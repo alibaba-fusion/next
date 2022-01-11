@@ -85,7 +85,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层显示或隐藏时触发的回调
      */
-    onVisibleChange?: (visible: boolean) => void;
+    onVisibleChange?: (visible: boolean, type: string) => void;
 
     /**
      * 弹层挂载的容器节点
