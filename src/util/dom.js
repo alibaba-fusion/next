@@ -257,7 +257,7 @@ const isScrollDisplay = function(element) {
 };
 
 /**
- * 获取默认的滚动条大小
+ * 获取默认的滚动条大小（通过创造一个滚动元素，读取滚动元素的滚动条信息）
  * @return {Object} width, height
  */
 export function scrollbar() {
@@ -283,6 +283,12 @@ export function scrollbar() {
 }
 
 export function hasScroll(containerNode) {
+    // 当元素带有 overflow: hidden 一定没有滚动条
+    const overflow = getStyle(containerNode, 'overflow');
+    if (overflow === 'hidden') {
+        return false;
+    }
+
     const parentNode = containerNode.parentNode;
 
     return (
