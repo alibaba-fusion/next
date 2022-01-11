@@ -43,6 +43,7 @@ function unlock(container, uuid) {
         }
 
         container.setAttribute('style', item.originStyle || '');
+        lockcache.pop();
     }
 }
 
