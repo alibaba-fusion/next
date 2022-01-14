@@ -646,6 +646,39 @@ describe('Tab', () => {
                 </div>, target);
             await delay(1200);
         });
+        it('should support showAdd', async () => {
+            const tabs = [
+                { tab: 'Home', key: 1 },
+                { tab: 'Documnet', key: 2 },
+                { tab: 'Setting', key: 3 },
+                { tab: 'Help', key: 4 },
+                { tab: 'Admin', key: 5 },
+                { tab: 'More More More 1', key: 6 },
+                { tab: 'More 2', key: 7 },
+                { tab: 'More 3', key: 8 },
+                { tab: 'More 4', key: 9 },
+                { tab: 'More 5', key: 10 },
+                { tab: 'More 6', key: 11 },
+                { tab: 'More 7', key: 12 },
+                { tab: 'More 8', key: 13 },
+                { tab: 'More 9', key: 14 },
+                { tab: 'More 10', key: 15 },
+                { tab: 'More 11', key: 16 },
+                { tab: 'More 12', key: 17 },
+                { tab: 'More 13', key: 18 },
+                { tab: 'More More More', key: 19 }
+            ];
+            ReactDOM.render(
+                <div className="fusion-demo" style={{ width: '520px' }}>
+                    <Tab showAdd shape="wrapped">
+                        {
+                            tabs.map(item => <Tab.Item key={item.key} title={item.tab}>{item.tab} content, content, content</Tab.Item>)
+                        }
+                    </Tab>
+                </div>, target);
+            await delay(1000);
+            assert(document.querySelectorAll('.next-tabs-nav-operations').length === 1);
+        });
     });
     describe('rtl mode', () => {
         let wrapper, target;
