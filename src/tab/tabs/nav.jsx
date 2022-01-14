@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import Icon from '../../icon';
 import Overlay from '../../overlay';
 import Menu from '../../menu';
+import Button from '../../button';
 import Animate from '../../animate';
 import { events, KEYCODE, dom, obj } from '../../util';
 import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported, tabsArrayShallowEqual } from './utils';
@@ -287,8 +288,8 @@ class Nav extends React.Component {
         );
     };
 
-    renderTabList(props) {
-        const { prefix, tabs, activeKey, tabRender } = props;
+    renderTabList(props, hideAdd) {
+        const { prefix, tabs, activeKey, tabRender, showAdd, onAdd } = props;
         const tabTemplateFn = tabRender || this.defaultTabTemplateRender;
 
         const rst = [];
@@ -334,6 +335,16 @@ class Nav extends React.Component {
                 </li>
             );
         });
+
+        if (!hideAdd && showAdd) {
+            rst.push(
+                <li role="button" className={`${prefix}tabs-tab ${prefix}tabs-add`} onClick={onAdd} key="add">
+                    <div className={`${prefix}tabs-tab-inner`}>
+                        <Icon type="add" />
+                    </div>
+                </li>
+            );
+        }
         return rst;
     }
 
@@ -422,6 +433,7 @@ class Nav extends React.Component {
 
         return (
             <Popup
+                key="down"
                 rtl={rtl}
                 triggerType={triggerType}
                 trigger={trigger}
@@ -476,7 +488,19 @@ class Nav extends React.Component {
     };
 
     render() {
-        const { prefix, tabPosition, excessMode, extra, onKeyDown, animation, style, className, rtl } = this.props;
+        const {
+            prefix,
+            tabPosition,
+            excessMode,
+            extra,
+            onKeyDown,
+            animation,
+            style,
+            className,
+            showAdd,
+            onAdd,
+            rtl,
+        } = this.props;
         const state = this.state;
         let nextButton;
         let prevButton;
@@ -496,6 +520,7 @@ class Nav extends React.Component {
                     className={`${prefix}tabs-btn-prev`}
                     ref={this.prevBtnHandler}
                     type="button"
+                    key="prev"
                 >
                     {prevIcon}
                 </button>
@@ -509,6 +534,7 @@ class Nav extends React.Component {
                     className={`${prefix}tabs-btn-next`}
                     ref={this.nextBtnHandler}
                     type="button"
+                    key="next"
                 >
                     {nextIcon}
                 </button>
@@ -523,10 +549,16 @@ class Nav extends React.Component {
         const containerCls = classnames({
             [`${prefix}tabs-nav-container`]: true,
             [`${prefix}tabs-nav-container-scrolling`]: showNextPrev,
+            [`${prefix}tabs-show-add`]: showAdd,
         });
 
+        const hasExtra = restButton || prevButton || nextButton;
         const navCls = `${prefix}tabs-nav`;
-        const tabList = this.renderTabList(this.props);
+        const tabList = this.renderTabList(this.props, hasExtra);
+        const wrapCls = classnames({
+            [`${prefix}tabs-nav-wrap`]: true,
+            [`${prefix}tabs-nav-has-add`]: showAdd,
+        });
 
         const container = (
             <div className={containerCls} onKeyDown={onKeyDown} key="nav-container">
@@ -556,9 +588,20 @@ class Nav extends React.Component {
                         )}
                     </div>
                 </div>
-                {prevButton}
-                {nextButton}
-                {restButton}
+                {showAdd && hasExtra ? (
+                    <div className={`${navCls}-operations`}>
+                        {prevButton}
+                        {nextButton}
+                        {restButton}
+                        <li className={`${prefix}tabs-tab ${prefix}tabs-add`} onClick={onAdd} key="add">
+                            <div className={`${prefix}tabs-tab-inner`}>
+                                <Icon type="add" />
+                            </div>
+                        </li>
+                    </div>
+                ) : (
+                    [prevButton, nextButton, restButton]
+                )}
             </div>
         );
 

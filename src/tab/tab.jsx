@@ -116,6 +116,14 @@ class Tab extends Component {
             next: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
             dropdown: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
         }),
+        /**
+         * 新增按钮
+         */
+        showAdd: PropTypes.bool,
+        /**
+         * 新增的事件回调
+         */
+        onAdd: PropTypes.func,
     };
 
     static defaultProps = {
@@ -302,6 +310,8 @@ class Tab extends Component {
             device,
             locale,
             icons,
+            showAdd,
+            onAdd,
             ...others
         } = this.props;
         const { activeKey } = this.state;
@@ -342,6 +352,8 @@ class Tab extends Component {
             className: navClassName,
             locale,
             icons,
+            showAdd,
+            onAdd,
         };
 
         const contentProps = {
