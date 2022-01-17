@@ -74,18 +74,20 @@ describe('number-picker', () => {
 
         });
         it('if max or min were undefined or null should infinity', () => {
-            const wrapper = mount(<NumberPicker max={10} value={10} min={8}/>);
+            const wrapper = mount(<NumberPicker max={10} defaultValue={10} min={10}/>);
             wrapper.find('button').at(0).simulate('click');
+            assert(wrapper.find('input').props('value').value === 10);
+            wrapper.find('button').at(1).simulate('click');
             assert(wrapper.find('input').props('value').value === 10);
             wrapper.setProps({ max: undefined });
             wrapper.find('button').at(0).simulate('click');
             assert(wrapper.find('input').props('value').value === 11);
-            wrapper.setProps({ value: 8 });
             wrapper.find('button').at(1).simulate('click');
-            assert(wrapper.find('input').props('value').value === 8);
+            wrapper.find('button').at(1).simulate('click');
+            assert(wrapper.find('input').props('value').value === 10);
             wrapper.setProps({ min: undefined });
             wrapper.find('button').at(1).simulate('click');
-            assert(wrapper.find('input').props('value').value === 7);
+            assert(wrapper.find('input').props('value').value === 9);
         })
     });
 
@@ -176,7 +178,7 @@ describe('number-picker', () => {
                 render() {
                     return (
                         <NumberPicker
-                            value={this.state.value}
+                            defaultValue={this.state.value}
                             onChange={this.onChange}
                             step={step}
                             stringMode
