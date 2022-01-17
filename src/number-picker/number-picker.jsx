@@ -425,7 +425,7 @@ class NumberPicker extends React.Component {
 
         const value = this.state.value;
         // 受控下，可能强制回填非法值/受控模式下应该不受点击按钮来控制改变
-        if (isNaN(value) || this.props.value) {
+        if (isNaN(value) || 'value' in this.props) {
             return;
         }
 
