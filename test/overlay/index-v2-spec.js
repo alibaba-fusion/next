@@ -128,6 +128,7 @@ describe('Overlay v2', async () => {
             wrapper.unmount();
             wrapper = null;
         }
+        document.body.style='';
     });
 
     it('should support rendering overlay', async () => {

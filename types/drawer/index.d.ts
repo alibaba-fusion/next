@@ -18,6 +18,7 @@ export interface DrawerProps extends HTMLAttributesWeak, CommonProps {
      * 如 'mask' 或 'esc,mask'
      * 如果设置为 true，则以上关闭方式全部生效
      * 如果设置为 false，则以上关闭方式全部失效
+     * @deprecated
      */
     closeable?: 'close' | 'mask' | 'esc' | boolean | 'close,mask' | 'close,esc' | 'mask,esc';
     /**
@@ -59,15 +60,30 @@ export interface DrawerProps extends HTMLAttributesWeak, CommonProps {
      */
     height?: number | string;
     /**
-     * 受控模式下(没有 trigger 的时候)，只会在关闭时触发，相当于onClose
+     * [v2 废弃] 受控模式下(没有 trigger 的时候)，只会在关闭时触发，相当于onClose
+     * @deprecated
      */
     onVisibleChange?: (visible: boolean, reason: string) => void;
+    /**
+     * [v2] 弹窗关闭后的回调
+     */
+    afterClose?: () => void;
     onClose?: (reason: string, e: React.MouseEvent) => void;
     /**
      * 位于页面的位置
      */
     placement?: 'top' | 'right' | 'bottom' | 'left';
+    /**
+     * 开启v2版本
+     */
+    v2?: boolean;
+}
+
+
+export interface QuickShowRet {
+    hide: () => void;
 }
 
 export default class Drawer extends React.Component<DrawerProps, any> {
+    static show(config: DrawerProps): QuickShowRet;
 }

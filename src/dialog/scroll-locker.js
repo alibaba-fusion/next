@@ -38,7 +38,6 @@ function unlock(container, uuid) {
             // 下一个 dialog 解锁的时候直接替换为
             list[idx + 1].originStyle = originStyle;
             lockcache.splice(lockcache.indexOf(item), 1);
-
             return;
         }
 
