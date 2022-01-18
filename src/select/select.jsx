@@ -909,8 +909,8 @@ class Select extends Base {
 
     handleClear = e => {
         e.stopPropagation();
-        this.handleChange(undefined, 'clear');
         this.selectAllYet = false;
+        this.handleChange(undefined, 'clear');
     };
 
     hasClear() {
