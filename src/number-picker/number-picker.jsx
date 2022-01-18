@@ -431,7 +431,11 @@ class NumberPicker extends React.Component {
 
         let val = this[`${type}Step`](value);
         val = this.correctBoundary(val);
-        this.setDisplayValue({ displayValue: val });
+        // 受控下，显示的值应为受控value
+        if (!('value' in this.props)) {
+            this.setDisplayValue({ displayValue: val });
+        }
+
         this.setValue({ value: val, e, triggerType: type });
     }
 
