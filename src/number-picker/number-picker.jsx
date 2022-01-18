@@ -431,7 +431,7 @@ class NumberPicker extends React.Component {
 
         let val = this[`${type}Step`](value);
         val = this.correctBoundary(val);
-        this.setDisplayValue({ displayValue: val });
+        this.setDisplayValue({ displayValue: 'value' in this.props ? this.props.value : val });
         this.setValue({ value: val, e, triggerType: type });
     }
 
