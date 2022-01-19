@@ -443,15 +443,16 @@ class Select extends Base {
 
         this.setVisible(false, triggerType);
 
+        // 应在return之前传出highlightKey
+        this.setState({
+            highlightKey: key,
+        });
+
         if (this.useDetailValue()) {
             return this.handleChange(itemObj.valueDS, triggerType);
         } else {
             this.handleChange(itemObj.value, triggerType, itemObj.valueDS);
         }
-
-        this.setState({
-            highlightKey: key,
-        });
 
         // 清空搜索
         if (!('searchValue' in this.props) && this.state.searchValue) {
