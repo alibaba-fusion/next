@@ -1,0 +1,25 @@
+:root {
+--form-element-small-height: 20px;
+--form-element-medium-height: 28px;
+--form-element-large-height: 40px;
+--form-element-small-font-size: 12px;
+--form-element-medium-font-size: 12px;
+--form-element-large-font-size: 16px;
+--form-element-small-preview-height: 20px;
+--form-element-medium-preview-height: 28px;
+--form-element-large-preview-height: 40px;
+--form-element-small-preview-label-font-size: 12px;
+--form-element-small-preview-font-size: 12px;
+--form-element-medium-preview-label-font-size: 12px;
+--form-element-medium-preview-font-size: 12px;
+--form-element-large-preview-label-font-size: 16px;
+--form-element-large-preview-font-size: 16px;
+--form-element-small-icon-size: 12px;
+--form-element-medium-icon-size: 12px;
+--form-element-large-icon-size: 16px;
+--form-element-small-corner: 3px;
+--form-element-medium-corner: 3px;
+--form-element-large-corner: 3px;
+--form-element-preview-label-color: #666666;
+--form-element-preview-text-color: #333333;
+}
