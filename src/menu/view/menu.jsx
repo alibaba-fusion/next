@@ -51,7 +51,7 @@ const getIndicatorsItem = (items, isPlaceholder, prefix = '', renderMore) => {
 const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
     const arr = [];
 
-    children.forEach((child, index) => {
+    React.Children.forEach(children, (child, index) => {
         if (!child) {
             return;
         }
