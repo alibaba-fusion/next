@@ -88,11 +88,10 @@ describe('Menu', () => {
         wrapper = mount(
             <Menu hozInLine direction="hoz" mode="popup">
                 <Item key="1" className="popup-menu-item">First</Item>
-                <Item key="2" className="popup-menu-item">secoond</Item>
             </Menu>
         );
         const item = wrapper.find('.next-menu-item');
-        assert(item.find('.popup-menu-item').length === 2);
+        assert(item.find('.popup-menu-item').length === 1);
     });
 
     it('Group/SubMenu should accepct string/number/node', () => {
