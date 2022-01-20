@@ -322,6 +322,22 @@ describe('number-picker', () => {
             done();
         });
 
+        it('if Interception last character[translate] === . should onBlur once onChange', done => {
+            const onChange = (value) => {
+                assert(value === 0)
+                done();
+            };
+            let wrapper = mount(
+                <NumberPicker defaultValue={0.9} onChange={onChange} precision={1} />
+            );
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '0.' } });
+            assert(wrapper.find('input').prop('value') === "0.");
+            wrapper.find('input').simulate('blur');
+            assert(wrapper.find('input').prop('value') === 0);
+        })
+
         it('should leave out digits larger than precision set', done => {
             let wrapper = mount(
                 <NumberPicker defaultValue={0} precision={1} />
@@ -584,11 +600,11 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '-0.' } });
-            assert(onChange.calledOnce);
+            // 值实际无变化，不触发onChange
+            assert(onChange.notCalled);
             assert(wrapper.find('input').prop('value') == '-0.');
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') == '-0');
-            // 值实际无变化，不触发onChange
             assert(onChange.calledOnce);
 
             wrapper = mount(
@@ -640,7 +656,8 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '-0.' } });
-            assert(onChange.calledOnce);
+            // 值实际无变化，不触发onChange
+            assert(onChange.notCalled);
             assert(wrapper.find('input').prop('value') == '-0.');
             wrapper.find('input').simulate('blur');
             assert(onChange.calledOnce);
@@ -688,7 +705,8 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '-0.' } });
-            assert(onChange.calledTwice);
+            // '-0.'，不触发onChange
+            assert(onChange.calledOnce);
 
             // 以下 实际值无变化，不触发onChange
             wrapper

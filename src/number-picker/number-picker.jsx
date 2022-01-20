@@ -261,13 +261,13 @@ class NumberPicker extends React.Component {
     onBlur(e, ...args) {
         const { editable, stringMode } = this.props;
         const displayValue = `${this.state.displayValue}`;
-        // 展示值合法但超出边界时，额外在Blur时触发onChange
+        // 展示值合法但超出边界时，额外在Blur时触发onChange / 因最后字符为.设定为不合法Focus时拦截onChange触发，当Blur时应触发一次onChange
         // 展示值非法时，回退前一个有效值
         if (
-            editable === true &&
-            !isNaN(displayValue) &&
-            !this.shouldFireOnChange(displayValue) &&
-            !this.withinMinMax(displayValue)
+            (editable === true &&
+                !isNaN(displayValue) &&
+                (!this.shouldFireOnChange(displayValue) && !this.withinMinMax(displayValue))) ||
+            displayValue.charAt(displayValue.length - 1) === '.'
         ) {
             let valueCorrected = this.correctValue(displayValue);
             valueCorrected = stringMode ? BigNumber(valueCorrected).toFixed(this.getPrecision()) : valueCorrected;
@@ -278,6 +278,7 @@ class NumberPicker extends React.Component {
         } else {
             this.setDisplayValue({ displayValue: this.state.value });
         }
+
         this.setFocus(false);
         const { onBlur } = this.props;
         onBlur && onBlur(e, ...args);
@@ -306,8 +307,8 @@ class NumberPicker extends React.Component {
     }
 
     shouldFireOnChange(value) {
-        // 不触发onChange：a.非数字  b.超出边界的数字输入
-        if (isNaN(value) || !this.withinMinMax(value)) {
+        // 不触发onChange：a.非数字  b.超出边界的数字输入 c.最后一个字符为 . 是非法输入字符
+        if (isNaN(value) || !this.withinMinMax(value) || value.charAt(value.length - 1) === '.') {
             return false;
         }
         return true;
