@@ -475,7 +475,7 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '20' } });
-            assert(wrapper.find('input').prop('value') === 20);
+            assert(wrapper.find('input').prop('value') === '20');
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === 20);
 
@@ -600,8 +600,7 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '-0.' } });
-            // 值实际无变化，不触发onChange
-            assert(onChange.notCalled);
+            assert(onChange.calledOnce);
             assert(wrapper.find('input').prop('value') == '-0.');
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') == '-0');
@@ -656,8 +655,7 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '-0.' } });
-            // 值实际无变化，不触发onChange
-            assert(onChange.notCalled);
+            assert(onChange.calledOnce);
             assert(wrapper.find('input').prop('value') == '-0.');
             wrapper.find('input').simulate('blur');
             assert(onChange.calledOnce);
@@ -705,8 +703,7 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '-0.' } });
-            // '-0.'，不触发onChange
-            assert(onChange.calledOnce);
+            assert(onChange.calledTwice);
 
             // 以下 实际值无变化，不触发onChange
             wrapper
