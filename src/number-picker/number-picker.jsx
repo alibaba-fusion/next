@@ -309,7 +309,7 @@ class NumberPicker extends React.Component {
     }
 
     shouldFireOnChange(value) {
-        // 不触发onChange：a.非数字  b.超出边界的数字输入 c.最后一个字符为 . 是非法输入字符
+        // 不触发onChange：a.非数字  b.超出边界的数字输入
         if (isNaN(value) || !this.withinMinMax(value)) {
             return false;
         }
