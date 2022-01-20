@@ -203,7 +203,7 @@ const Dialog = props => {
                 focusableNodes[0].focus();
             }
         }
-        setVisibleOverlayToParent(uuid, dialogRef.current);
+        setVisibleOverlayToParent(uuid, wrapperRef.current);
     };
 
     const handleExited = () => {
