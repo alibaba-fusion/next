@@ -211,7 +211,9 @@ class NumberPicker extends React.Component {
         if ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) {
             const newValue = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
             state.value = newValue;
-            state.displayValue = newValue;
+            if (Number(prevState.displayValue) !== nextProps.value) {
+                state.displayValue = newValue;
+            }
         }
 
         // 如果是undefined或null，应该不限制最大最小值
@@ -278,6 +280,7 @@ class NumberPicker extends React.Component {
         } else {
             this.setDisplayValue({ displayValue: this.state.value });
         }
+
         this.setFocus(false);
         const { onBlur } = this.props;
         onBlur && onBlur(e, ...args);
@@ -431,7 +434,11 @@ class NumberPicker extends React.Component {
 
         let val = this[`${type}Step`](value);
         val = this.correctBoundary(val);
-        this.setDisplayValue({ displayValue: val });
+        // 受控下，显示的值应为受控value
+        if (!('value' in this.props)) {
+            this.setDisplayValue({ displayValue: val });
+        }
+
         this.setValue({ value: val, e, triggerType: type });
     }
 

@@ -74,18 +74,18 @@ describe('number-picker', () => {
 
         });
         it('if max or min were undefined or null should infinity', () => {
-            const wrapper = mount(<NumberPicker max={10} value={10} min={8}/>);
+            const wrapper = mount(<NumberPicker max={10} defaultValue={10} min={10}/>);
             wrapper.find('button').at(0).simulate('click');
             assert(wrapper.find('input').props('value').value === 10);
             wrapper.setProps({ max: undefined });
             wrapper.find('button').at(0).simulate('click');
             assert(wrapper.find('input').props('value').value === 11);
-            wrapper.setProps({ value: 8 });
             wrapper.find('button').at(1).simulate('click');
-            assert(wrapper.find('input').props('value').value === 8);
+            wrapper.find('button').at(1).simulate('click');
+            assert(wrapper.find('input').props('value').value === 10);
             wrapper.setProps({ min: undefined });
             wrapper.find('button').at(1).simulate('click');
-            assert(wrapper.find('input').props('value').value === 7);
+            assert(wrapper.find('input').props('value').value === 9);
         })
     });
 
@@ -322,6 +322,24 @@ describe('number-picker', () => {
             done();
         });
 
+        it('onChange value 1.9 -> 1. should input displayValue === 1. onchange value === 1', done => {
+            const onChange = (value) => {
+                assert(value === 1)
+                done();
+            };
+            let wrapper = mount(
+                <NumberPicker value={1.9} onChange={onChange} precision={1} />
+            );
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '1.' } });
+            assert(wrapper.find('input').prop('value') === "1.");
+            wrapper.setProps({value: 1});
+            assert(wrapper.find('input').prop('value') === "1.");
+            wrapper.find('input').simulate('blur');
+            assert(wrapper.find('input').prop('value') === 1);
+        })
+
         it('should leave out digits larger than precision set', done => {
             let wrapper = mount(
                 <NumberPicker defaultValue={0} precision={1} />
@@ -459,7 +477,7 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: '20' } });
-            assert(wrapper.find('input').prop('value') === 20);
+            assert(wrapper.find('input').prop('value') === '20');
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === 20);
 
@@ -588,7 +606,6 @@ describe('number-picker', () => {
             assert(wrapper.find('input').prop('value') == '-0.');
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') == '-0');
-            // 值实际无变化，不触发onChange
             assert(onChange.calledOnce);
 
             wrapper = mount(
