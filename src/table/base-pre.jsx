@@ -1,5 +1,4 @@
 import React from 'react';
-import semver from 'semver';
 import Loading from '../loading';
 import BodyComponent from './base/body';
 import HeaderComponent from './base/header';
@@ -11,6 +10,7 @@ import SortComponent from './base/sort';
 import Column from './column';
 import ColumnGroup from './column-group';
 import Table from './base';
+import { statics } from './util';
 
 function HOC(WrappedComponent) {
     class PreTable extends React.Component {
@@ -24,27 +24,31 @@ function HOC(WrappedComponent) {
         static Filter = FilterComponent;
         static Sort = SortComponent;
         render() {
-            const { prefix, forwardedRef, LoadingComponent, loading, ...others } = this.props;
-            const LComponent = LoadingComponent || Loading;
+            const { prefix, forwardedRef, loadingComponent, loading, ...others } = this.props;
+            const LComponent = loadingComponent || Loading;
             if (loading) {
                 const loadingClassName = `${prefix}table-loading`;
                 return (
                     <LComponent className={loadingClassName}>
-                        <WrappedComponent ref={forwardedRef} {...others} />
+                        <WrappedComponent ref={forwardedRef} loading={loading} {...others} />
                     </LComponent>
                 );
             } else {
-                return <WrappedComponent ref={forwardedRef} {...others} />;
+                return <WrappedComponent ref={forwardedRef} loading={loading} {...others} />;
             }
         }
     }
 
     // 当前版本大于 16.6.3 （有forwardRef的那个版本）
-    if (semver.gt(React.version, '16.6.3')) {
-        return React.forwardRef((props, ref) => {
+    if (typeof React.forwardRef === 'function') {
+        const HocTable = React.forwardRef((props, ref) => {
             return <PreTable {...props} forwardedRef={ref} />;
         });
+        statics(HocTable, WrappedComponent);
+        return HocTable;
     }
+
+    statics(PreTable, WrappedComponent);
     // 对于没有低版本用户来说，获取底层Table的ref，可以通过 forwardedRef 这个props获取
     return PreTable;
 }
