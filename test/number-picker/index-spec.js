@@ -322,20 +322,20 @@ describe('number-picker', () => {
             done();
         });
 
-        it('if Interception last character[translate] === . should onBlur once onChange', done => {
+        it('onChange value 1.9 -> 1. should input displayValue === 1. onchange value === 1', done => {
             const onChange = (value) => {
-                assert(value === 0)
+                assert(value === 1)
                 done();
             };
             let wrapper = mount(
-                <NumberPicker defaultValue={0.9} onChange={onChange} precision={1} />
+                <NumberPicker value={1.9} onChange={onChange} precision={1} />
             );
             wrapper
                 .find('input')
-                .simulate('change', { target: { value: '0.' } });
-            assert(wrapper.find('input').prop('value') === "0.");
+                .simulate('change', { target: { value: '1.' } });
+            assert(wrapper.find('input').prop('value') === "1.");
             wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 0);
+            assert(wrapper.find('input').prop('value') === 1);
         })
 
         it('should leave out digits larger than precision set', done => {
