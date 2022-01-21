@@ -334,6 +334,8 @@ describe('number-picker', () => {
                 .find('input')
                 .simulate('change', { target: { value: '1.' } });
             assert(wrapper.find('input').prop('value') === "1.");
+            wrapper.setProps({value: 1});
+            assert(wrapper.find('input').prop('value') === "1.");
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === 1);
         })
