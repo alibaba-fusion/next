@@ -22,12 +22,12 @@ const show = () => {
         title: 'quick',
         hasMask: false,
         content: <span>hello world</span>
-    })
-}
+    });
+};
 const hide = () => {
     instance && instance.hide();
     instance = null;
-}
+};
 
 ReactDOM.render(<div>
     <Button type="primary" onClick={show}> open </Button>
