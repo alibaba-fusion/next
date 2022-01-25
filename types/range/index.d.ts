@@ -72,12 +72,12 @@ export interface RangeProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 当 Range 的值发生改变后，会触发 onChange 事件，并把改变后的值作为参数传入, 如果设置了value, 要配合此函数做受控使用
      */
-    onChange?: (value: string) => void;
+    onChange?: (value: number) => void;
 
     /**
      * 滑块拖动的时候触发的事件,不建议在这里setState, 一般情况下不需要用, 滑动时有特殊需求时使用
      */
-    onProcess?: (value: string) => void;
+    onProcess?: (value: number) => void;
 
     /**
      * 是否显示 tip
