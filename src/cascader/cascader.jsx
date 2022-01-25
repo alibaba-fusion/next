@@ -772,12 +772,13 @@ class Cascader extends Component {
     }
 
     renderFilteredList() {
-        const { prefix, filteredListStyle, filteredPaths } = this.props;
+        const { prefix, filteredListStyle, filteredPaths, focusable = false } = this.props;
         const { focusedValue } = this.state;
         return (
             <Menu
-                // 如果不设置为false， CascaderSelect 开启 showSearch后，弹窗展开时，光标无法到input上去，也无法输入
-                focusable={false}
+                // 如果不设置为false， CascaderSelect 开启 showSearch后，弹窗展开时，光标无法到input上去，也无法输入.
+                // TODO: set focusable=true in 2.x
+                focusable={focusable}
                 focusedKey={focusedValue}
                 onItemFocus={this.handleFocus}
                 className={`${prefix}cascader-filtered-list`}
