@@ -814,6 +814,7 @@ class CascaderSelect extends Component {
             readOnly,
             itemRender,
             immutable,
+            menuProps = {},
         } = this.props;
         const { value } = this.state;
 
@@ -851,7 +852,7 @@ class CascaderSelect extends Component {
             props.filteredListStyle = { height: this.cascaderHeight };
         }
 
-        return <Cascader {...props} />;
+        return <Cascader {...props} {...menuProps} />;
     }
 
     renderPopupContent() {
