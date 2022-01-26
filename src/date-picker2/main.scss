@@ -204,7 +204,7 @@
         }
     }
 
-    #{$calendar2-prefix}-cell-current:not(#{$calendar2-prefix}-cell-disabled) {
+    #{$calendar2-prefix}-cell-current {
         &#{$calendar2-prefix}-cell-selected {
             &::before {
                 color: $color-text1-3;
