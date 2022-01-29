@@ -1,5 +1,109 @@
 # Change Log 
 
+## [1.25.17](https://github.com/alibaba-fusion/next/compare/1.25.13...1.25.17) (2022-01-27)
+
+
+### Bug Fixes
+
+* **CascaderSelect:** could pass menuProps={{focusable: true}} to cascader fix [#3685](https://github.com/alibaba-fusion/next/issues/3685) ([607a30c](https://github.com/alibaba-fusion/next/commit/607a30c))
+* **CascaderSelect:** focus to input after select ([#3712](https://github.com/alibaba-fusion/next/issues/3712)) ([6a2537d](https://github.com/alibaba-fusion/next/commit/6a2537d))
+* **DatePicker2:** fix selected value display when disabled ([#3706](https://github.com/alibaba-fusion/next/issues/3706)), close [#3705](https://github.com/alibaba-fusion/next/issues/3705) ([667a11b](https://github.com/alibaba-fusion/next/commit/667a11b))
+* **Dialog:** could disappear one by one while click mask ([e1fd08e](https://github.com/alibaba-fusion/next/commit/e1fd08e))
+* **Dialog:** lockcache pop ([04e471c](https://github.com/alibaba-fusion/next/commit/04e471c))
+* **Menu:** bug of mode=popup with only 1 children Item ([4426f30](https://github.com/alibaba-fusion/next/commit/4426f30))
+* **NumberPicker:** optimize delete value from `1.x` to  `1.` while under control, close [#3698](https://github.com/alibaba-fusion/next/issues/3698) ([#3700](https://github.com/alibaba-fusion/next/issues/3700)) ([148d713](https://github.com/alibaba-fusion/next/commit/148d713))
+* **NumberPicker:** update displayValue, close [#3666](https://github.com/alibaba-fusion/next/issues/3666) ([#3689](https://github.com/alibaba-fusion/next/issues/3689)) ([dc412e2](https://github.com/alibaba-fusion/next/commit/dc412e2))
+* **Range:** fix onChange/onProgress types ([04559e1](https://github.com/alibaba-fusion/next/commit/04559e1))
+* **Select:** handleClear should selectAllYet is false ([#3690](https://github.com/alibaba-fusion/next/issues/3690)) ([593483c](https://github.com/alibaba-fusion/next/commit/593483c))
+* **Select:** select useDetailValue optimize highlightkey, close [#3693](https://github.com/alibaba-fusion/next/issues/3693) ([420cb22](https://github.com/alibaba-fusion/next/commit/420cb22))
+
+
+### Features
+
+* optimize id-ID language copy writer ([985cb21](https://github.com/alibaba-fusion/next/commit/985cb21))
+
+
+
+
+## [1.25.16](https://github.com/alibaba-fusion/next/compare/1.25.15...1.25.16) (2022-01-25)
+
+
+### Bug Fixes
+
+* **CascaderSelect:** could pass menuProps={{focusable: true}} to cascader fix [#3685](https://github.com/alibaba-fusion/next/issues/3685) ([607a30c](https://github.com/alibaba-fusion/next/commit/607a30c))
+* **NumberPicker:** optimize delete value from `1.x` to  `1.` while under control, close [#3698](https://github.com/alibaba-fusion/next/issues/3698) ([#3700](https://github.com/alibaba-fusion/next/issues/3700)) ([148d713](https://github.com/alibaba-fusion/next/commit/148d713))
+
+
+### Features
+
+* optimize id-ID language copy writer ([985cb21](https://github.com/alibaba-fusion/next/commit/985cb21))
+
+
+
+
+## [1.25.15](https://github.com/alibaba-fusion/next/compare/1.25.14...1.25.15) (2022-01-20)
+
+
+### Bug Fixes
+
+* **Dialog:** could disappear one by one while click mask ([e1fd08e](https://github.com/alibaba-fusion/next/commit/e1fd08e))
+* **Select:** select useDetailValue optimize highlightkey, close [#3693](https://github.com/alibaba-fusion/next/issues/3693) ([420cb22](https://github.com/alibaba-fusion/next/commit/420cb22))
+
+
+
+
+## [1.25.14](https://github.com/alibaba-fusion/next/compare/1.25.13...1.25.14) (2022-01-19)
+
+
+### Bug Fixes
+
+* **Dialog:** lockcache pop ([04e471c](https://github.com/alibaba-fusion/next/commit/04e471c))
+* **Menu:** bug of mode=popup with only 1 children Item ([4426f30](https://github.com/alibaba-fusion/next/commit/4426f30))
+* **NumberPicker:** update displayValue, close [#3666](https://github.com/alibaba-fusion/next/issues/3666) ([#3689](https://github.com/alibaba-fusion/next/issues/3689)) ([dc412e2](https://github.com/alibaba-fusion/next/commit/dc412e2))
+* **Select:** handleClear should selectAllYet is false ([#3690](https://github.com/alibaba-fusion/next/issues/3690)) ([593483c](https://github.com/alibaba-fusion/next/commit/593483c))
+
+
+
+
+## [1.25.13](https://github.com/alibaba-fusion/next/compare/1.25.11...1.25.13) (2022-01-11)
+
+
+### Bug Fixes
+
+* **Dialog:** add dialogRender types fix [#3648](https://github.com/alibaba-fusion/next/issues/3648) ([#3655](https://github.com/alibaba-fusion/next/issues/3655)) ([1e4790b](https://github.com/alibaba-fusion/next/commit/1e4790b))
+* **Dialog:** hasMask not work for v2 fix [#3647](https://github.com/alibaba-fusion/next/issues/3647) ([987deb8](https://github.com/alibaba-fusion/next/commit/987deb8))
+* **Dialog:** key ESC can close overlay one by one fix [#3606](https://github.com/alibaba-fusion/next/issues/3606) ([04adf1b](https://github.com/alibaba-fusion/next/commit/04adf1b))
+* **Dialog:** rollback body.style in order fix [#3638](https://github.com/alibaba-fusion/next/issues/3638) ([689ed35](https://github.com/alibaba-fusion/next/commit/689ed35))
+* **Form:** theme config for preview label font-size ([604d1c9](https://github.com/alibaba-fusion/next/commit/604d1c9))
+* **Util:** take iframe in consider ([791305b](https://github.com/alibaba-fusion/next/commit/791305b))
+
+
+
+
+## [1.25.12](https://github.com/alibaba-fusion/next/compare/1.25.11...1.25.12) (2022-01-05)
+
+
+### Bug Fixes
+
+* **Dialog:** add dialogRender types fix [#3648](https://github.com/alibaba-fusion/next/issues/3648) ([#3655](https://github.com/alibaba-fusion/next/issues/3655)) ([1e4790b](https://github.com/alibaba-fusion/next/commit/1e4790b))
+* **Form:** theme config for preview label font-size ([604d1c9](https://github.com/alibaba-fusion/next/commit/604d1c9))
+
+
+
+
+## [1.25.11](https://github.com/alibaba-fusion/next/compare/1.25.10...1.25.11) (2021-12-28)
+
+
+### Bug Fixes
+
+* **Popup:** set animation position while placement adjust to top ([0b9c313](https://github.com/alibaba-fusion/next/commit/0b9c313))
+* **Select:** add highlightKey for ts ([#3650](https://github.com/alibaba-fusion/next/issues/3650)) ([18b9e56](https://github.com/alibaba-fusion/next/commit/18b9e56))
+* **Select:** select ts add defaultHighlightKey ([bafaf75](https://github.com/alibaba-fusion/next/commit/bafaf75))
+* **Table:** border issue, close [#3610](https://github.com/alibaba-fusion/next/issues/3610) ([#3642](https://github.com/alibaba-fusion/next/issues/3642)) ([08ce3ee](https://github.com/alibaba-fusion/next/commit/08ce3ee))
+
+
+
+
 ## [1.25.10](https://github.com/alibaba-fusion/next/compare/1.25.9...1.25.10) (2021-12-23)
 
 

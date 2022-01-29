@@ -13,13 +13,11 @@ import { each } from './object';
  */
 function _isVisible(node) {
     while (node) {
-        if (node === document.body || node === document.documentElement) {
+        const { nodeName } = node;
+        if (nodeName === 'BODY' || nodeName === 'HTML') {
             break;
         }
-        if (
-            node.style.display === 'none' ||
-            node.style.visibility === 'hidden'
-        ) {
+        if (node.style.display === 'none' || node.style.visibility === 'hidden') {
             return false;
         }
         node = node.parentNode;
@@ -63,9 +61,7 @@ export function getFocusNodeList(node) {
 
     each(nodeList, item => {
         if (_isFocusable(item)) {
-            const method = item.getAttribute('data-auto-focus')
-                ? 'unshift'
-                : 'push';
+            const method = item.getAttribute('data-auto-focus') ? 'unshift' : 'push';
             res[method](item);
         }
     });

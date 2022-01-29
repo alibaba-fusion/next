@@ -591,6 +591,64 @@ describe('v2', () => {
         assert(document.querySelector('.next-btn-loading'));
         hide();
     });
+    it('should support hasMask={false}', async () => {
+        const overlays = document.querySelectorAll('.next-overlay-wrapper');
+        overlays.forEach(o => {
+           try {
+            o.parentElement.removeChild(o)
+           } catch(e) {}
+        });
+        
+        const { hide } = Dialog.show({
+            v2: true,
+            hasMask: false,
+            title: 'Title',
+            content: 'Content'
+        });
+
+        await delay(40);
+        assert(!document.querySelector('.next-overlay-backdrop'));
+        hide();
+
+        wrapper = render(<Demo2 animation={false} hasMask={false}/>);
+        const btn = document.querySelector('button');
+        ReactTestUtils.Simulate.click(btn);
+        await delay(40);
+        assert(!document.querySelector('.next-overlay-backdrop'));
+    });
+    // 测试环境隔离问题一直搞不定，先注释
+    // it('should rollback document.body.style in order', async () => {
+    //     document.body.setAttribute('style', '');
+    //     const config = {
+    //         v2: true,
+    //         animation: false,
+    //         title: 'First',
+    //         content: 'content content content...',
+    //         onOk: () => {
+    //             Dialog.success({
+    //                 v2: true,
+    //                 animation: false,
+    //                 title: 'Second',
+    //                 content: 'content content content...'
+    //             });
+    //         },    
+    //     };
+        
+    //     Dialog.success(config);
+
+    //     await delay(40);
+    //     assert(document.body.getAttribute('style').match('overflow: hidden'));
+        
+    //     assert(document.querySelectorAll('.next-btn-primary').length == 1);
+    //     ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+    //     await delay(40);
+    //     assert(document.body.getAttribute('style').match('overflow: hidden'));
+    //     assert(document.querySelectorAll('.next-btn-primary').length === 1);
+
+    //     ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+    //     await delay(40);
+    //     assert(document.body.getAttribute('style') === '');
+    // });
 });
 
 

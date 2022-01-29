@@ -84,6 +84,16 @@ describe('Menu', () => {
         assert(item.find('.next-menu-item-helper').text() === 'helper');
     });
 
+    it('should render menu item with mode=popup && only 1 item', () => {
+        wrapper = mount(
+            <Menu hozInLine direction="hoz" mode="popup">
+                <Item key="1" className="popup-menu-item">First</Item>
+            </Menu>
+        );
+        const item = wrapper.find('.next-menu-item');
+        assert(item.find('.popup-menu-item').length === 1);
+    });
+
     it('Group/SubMenu should accepct string/number/node', () => {
         wrapper = mount(
             <Menu defaultOpenKeys={['sub-menu']}>

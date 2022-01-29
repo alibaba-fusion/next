@@ -552,7 +552,8 @@ class CascaderSelect extends Component {
         }
 
         if (['fromCascader', 'keyboard'].indexOf(type) !== -1 && !visible) {
-            this.select.focusInput();
+            // 这里需要延迟下，showSearch 的情况下通过手动设置 menuProps={{focusable: true}} 回车 focus 会有延迟
+            setTimeout(() => this.select.focusInput(), 0);
         }
 
         this.props.onVisibleChange(visible, type);
@@ -814,6 +815,7 @@ class CascaderSelect extends Component {
             readOnly,
             itemRender,
             immutable,
+            menuProps = {},
         } = this.props;
         const { value } = this.state;
 
@@ -851,7 +853,7 @@ class CascaderSelect extends Component {
             props.filteredListStyle = { height: this.cascaderHeight };
         }
 
-        return <Cascader {...props} />;
+        return <Cascader {...props} {...menuProps} />;
     }
 
     renderPopupContent() {

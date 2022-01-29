@@ -16,12 +16,11 @@ First dialog
 ````jsx
 import { Button, Dialog } from '@alifd/next';
 
-
 class Demo extends React.Component {
     state = {
         visible: false
     };
-
+    
     onOpen = () => {
         this.setState({
             visible: true

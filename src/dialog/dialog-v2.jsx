@@ -1,13 +1,16 @@
 /* istanbul ignore file */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
+import Overlay from '@alifd/overlay';
 
 import Inner from './inner';
 import Animate from '../animate';
 import zhCN from '../locale/zh-cn';
-import { log, func, dom, focus } from '../util';
+import { log, func, dom, focus, guid } from '../util';
+import scrollLocker from './scroll-locker';
 
+const { OverlayContext } = Overlay;
 const noop = func.noop;
 
 const Dialog = props => {
@@ -64,7 +67,6 @@ const Dialog = props => {
     const [firstVisible, setFirst] = useState(pvisible || false);
     const [visible, setVisible] = useState(pvisible);
     const [isAnimationEnd, markAnimationEnd] = useState(false);
-
     const getContainer =
         typeof popupContainer === 'string'
             ? () => document.getElementById(popupContainer)
@@ -74,8 +76,11 @@ const Dialog = props => {
     const [container, setContainer] = useState(getContainer());
     const dialogRef = useRef(null);
     const wrapperRef = useRef(null);
-    const originStyle = useRef('');
     const lastFocus = useRef(null);
+    const locker = useRef(null);
+    const [uuid] = useState(guid());
+    const { setVisibleOverlayToParent, ...otherContext } = useContext(OverlayContext);
+    const childIDMap = useRef(new Map());
 
     let canCloseByEsc = false;
     let canCloseByMask = false;
@@ -106,28 +111,27 @@ const Dialog = props => {
     // 打开遮罩后 document.body 滚动处理
     useEffect(() => {
         if (visible && hasMask) {
-            originStyle.current = document.body.getAttribute('style');
-            dom.setStyle(document.body, 'overflow', 'hidden');
+            const style = {
+                overflow: 'hidden',
+            };
 
             if (dom.hasScroll(document.body)) {
                 const scrollWidth = dom.scrollbar().width;
                 if (scrollWidth) {
-                    dom.setStyle(
-                        document.body,
-                        'paddingRight',
-                        `${dom.getStyle(document.body, 'paddingRight') + dom.scrollbar().width}px`
-                    );
+                    style.paddingRight = `${dom.getStyle(document.body, 'paddingRight') + dom.scrollbar().width}px`;
                 }
             }
+            locker.current = scrollLocker.lock(document.body, style);
         }
     }, [visible && hasMask]);
 
     const handleClose = (targetType, e) => {
+        setVisibleOverlayToParent(uuid, null);
         typeof onClose === 'function' && onClose(targetType, e);
     };
 
     const keydownEvent = e => {
-        if (e.keyCode === 27 && canCloseByEsc) {
+        if (e.keyCode === 27 && canCloseByEsc && !childIDMap.current.size) {
             handleClose('esc', e);
         }
     };
@@ -199,12 +203,13 @@ const Dialog = props => {
                 focusableNodes[0].focus();
             }
         }
+        setVisibleOverlayToParent(uuid, wrapperRef.current);
     };
 
     const handleExited = () => {
         markAnimationEnd(true);
         dom.setStyle(wrapperRef.current, 'display', 'none');
-        document.body.setAttribute('style', originStyle.current || '');
+        scrollLocker.unlock(document.body, locker.current);
 
         if (autoFocus && lastFocus.current) {
             try {
@@ -300,28 +305,49 @@ const Dialog = props => {
         [`${prefix}dialog-centered`]: centered,
     });
 
-    return ReactDOM.createPortal(
-        <div className={wrapperCls} style={wrapperStyle} ref={wrapperRef}>
-            <Animate.OverlayAnimate
-                visible={visible}
-                animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}
-                timeout={timeout}
-                unmountOnExit
-            >
-                <div className={`${prefix}overlay-backdrop`} />
-            </Animate.OverlayAnimate>
+    const getVisibleOverlayFromChild = (id, node) => {
+        if (node) {
+            childIDMap.current.set(id, node);
+        } else {
+            childIDMap.current.delete(id);
+        }
+        // 让父级也感知
+        setVisibleOverlayToParent(id, node);
+    };
 
-            <div className={innerWrapperCls} onClick={handleMaskClick}>
-                {centered ? (
-                    inner
-                ) : (
-                    <div style={topStyle} className={`${prefix}dialog-inner-wrapper`}>
-                        {inner}
+    return (
+        <OverlayContext.Provider
+            value={{
+                ...otherContext,
+                setVisibleOverlayToParent: getVisibleOverlayFromChild,
+            }}
+        >
+            {ReactDOM.createPortal(
+                <div className={wrapperCls} style={wrapperStyle} ref={wrapperRef}>
+                    {hasMask ? (
+                        <Animate.OverlayAnimate
+                            visible={visible}
+                            animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}
+                            timeout={timeout}
+                            unmountOnExit
+                        >
+                            <div className={`${prefix}overlay-backdrop`} />
+                        </Animate.OverlayAnimate>
+                    ) : null}
+
+                    <div className={innerWrapperCls} onClick={handleMaskClick}>
+                        {centered ? (
+                            inner
+                        ) : (
+                            <div style={topStyle} className={`${prefix}dialog-inner-wrapper`}>
+                                {inner}
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
-        </div>,
-        container
+                </div>,
+                container
+            )}
+        </OverlayContext.Provider>
     );
 };
 
