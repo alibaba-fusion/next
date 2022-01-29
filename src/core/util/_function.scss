@@ -2,11 +2,15 @@
 /// @group utils
 ////
 
-/// 1.33.0 sass 才引入了 div 方法
 /// 自建函数处理除法的差异
+/// div 方法只有 Dart Sass 有实现，而 Lib Sass 和 Ruby Sass 都没有实现
+/// 考虑到需要兼容三种编译器的情况，使用 calc 更加稳妥
+/// calc 在 Dart Sass 和 Ruby Sass 中都表现为除法返回值为数字(50px 或者 0.5 在 sass 中都为数字)，在 Lib Sass 中表现为不处理返回原字符串
+/// 因此可以根据这一特点来判断是否可以使用 calc 来代替除法，并且这种用法官方是认可的。
+/// 参考：https://sass-lang.com/documentation/breaking-changes/slash-div
 @function divide($a, $b) {
-    @if function-exists(div) {
-        @return div($a, $b);
+    @if type-of(calc(1 / 2)) == 'number' {
+        @return calc($a / $b);
     } @else {
         @return $a / $b;
     }
