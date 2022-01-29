@@ -15,7 +15,7 @@ Resize the column by onResizeChange.
 ---
 
 ````jsx
-import { Table } from '@alifd/next';
+import { Table, Button } from '@alifd/next';
 
 const onChange = function(...args) {
         console.log(...args);
@@ -60,17 +60,27 @@ class App extends React.Component {
         });
     }
     render() {
-        const { widths } = this.state;
+        const { widths, loading } = this.state;
         const time = widths.time;
         const name = widths[`title.name`];
 
-        return (<Table dataSource={dataSource()}
-            rowSelection={rowSelection} onResizeChange={this.onResizeChange}>
-            <Table.Column lock title="Id" dataIndex="id" width={100}/>
-            <Table.Column title="Title" dataIndex={'title.name'} asyncResizable width={name}/>
-            <Table.Column title="Time" dataIndex="time" asyncResizable width={time}/>
-            <Table.Column cell={render} width={200}/>
-        </Table>);
+        return (
+            <React.Fragment>
+               <Button 
+                    onClick={() => {
+                        this.setState({ loading: !loading });
+                }}>
+                    toggle loading
+                </Button>
+                <Table loading={loading} dataSource={dataSource()}
+                rowSelection={rowSelection} onResizeChange={this.onResizeChange}>
+                    <Table.Column lock title="Id" dataIndex="id" width={100}/>
+                    <Table.Column title="Title" dataIndex={'title.name'} asyncResizable width={name}/>
+                    <Table.Column title="Time" dataIndex="time" asyncResizable width={time}/>
+                    <Table.Column cell={render} width={200}/>
+                </Table>
+            </React.Fragment>
+        );
     }
 }
 

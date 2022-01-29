@@ -587,7 +587,7 @@ class Table extends React.Component {
                             colGroup={colGroup}
                             className={`${prefix}table-header`}
                             filterParams={filterParams}
-                            tableEl={this.tableEl}
+                            tableEl={this.state.tableEl}
                             columns={groupChildren}
                             locale={locale}
                             headerCellRef={this.getHeaderCellRef}
@@ -619,7 +619,7 @@ class Table extends React.Component {
                         cellRef={this.getCellRef}
                         onRowClick={onRowClick}
                         expandedIndexSimulate={expandedIndexSimulate}
-                        tableEl={this.tableEl}
+                        tableEl={this.state.tableEl}
                         onRowMouseEnter={onRowMouseEnter}
                         onRowMouseLeave={onRowMouseLeave}
                         dataSource={dataSource}
@@ -766,7 +766,11 @@ class Table extends React.Component {
     };
 
     getTableEl = ref => {
-        this.tableEl = ref;
+        if (ref) {
+            this.setState({
+                tableEl: ref,
+            });
+        }
     };
 
     render() {
@@ -832,16 +836,12 @@ class Table extends React.Component {
             <div
                 className={cls}
                 style={style}
-                ref={ref || this.getTableEl}
+                ref={this.getTableEl}
                 {...obj.pickOthers(Object.keys(Table.propTypes), others)}
             >
                 {table}
             </div>
         );
-        // if (loading) {
-        //     const loadingClassName = `${prefix}table-loading`;
-        //     return <LoadingComponent className={loadingClassName}>{content}</LoadingComponent>;
-        // }
         return content;
     }
 }
