@@ -9,9 +9,9 @@ const blackList = [
     'getDerivedStateFromProps',
 ];
 
-export const statics = (Target, Component) => {
+export const statics = (Target, Component, selfBlackList) => {
     Object.keys(Component).forEach(property => {
-        if (blackList.indexOf(property) === -1) {
+        if ((selfBlackList || blackList).indexOf(property) === -1) {
             Target[property] = Component[property];
         }
     });
