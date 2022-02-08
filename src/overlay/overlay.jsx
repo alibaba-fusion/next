@@ -210,6 +210,9 @@ class Overlay extends Component {
         disableScroll: false,
         cache: false,
         isChildrenInMask: false,
+        onTouchEnd: event => {
+            event.stopPropagation();
+        },
         onClick: event => event.stopPropagation(),
         maskClass: '',
         useCapture: true,
@@ -767,6 +770,7 @@ class Overlay extends Component {
                 ref: makeChain(this.saveContentRef, child.ref),
                 'aria-hidden': !stateVisible && cache && this._isMounted,
                 onClick: makeChain(this.props.onClick, child.props.onClick),
+                onTouchEnd: makeChain(this.props.onTouchEnd, child.props.onTouchEnd),
             });
 
             if (align) {
