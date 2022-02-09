@@ -110,13 +110,13 @@ class Transfer extends Component {
          */
         itemRender: PropTypes.func,
         /**
-         * 是否显示搜索框
+         * 左右面板是否显示搜索框
          */
-        showSearch: PropTypes.bool,
+        showSearch: PropTypes.bool | PropTypes.arrayOf(PropTypes.bool),
         /**
-         * 搜索框配置项，同 Search 组件 props
+         * 左右面板搜索框配置项，同 Search 组件 props
          */
-        searchProps: PropTypes.object,
+        searchProps: PropTypes.object | PropTypes.arrayOf(PropTypes.object),
         /**
          * 自定义搜索函数
          * @param {String} searchedValue 搜索的内容
@@ -138,7 +138,7 @@ class Transfer extends Component {
         /**
          * 列表为空显示内容
          */
-        notFoundContent: PropTypes.node,
+        notFoundContent: PropTypes.node | PropTypes.arrayOf(PropTypes.node),
         /**
          * 左右面板标题
          */
@@ -506,8 +506,8 @@ class Transfer extends Component {
             className,
             dataSource,
             locale,
-            showSearch,
-            searchProps,
+            showSearch = false,
+            searchProps = {},
             filter,
             onSearch,
             leftDisabled,
@@ -533,12 +533,9 @@ class Transfer extends Component {
             prefix,
             mode,
             locale,
-            showSearch,
-            searchProps,
             filter,
             onSearch,
             searchPlaceholder,
-            notFoundContent,
             listClassName,
             listStyle,
             itemRender,
@@ -557,6 +554,9 @@ class Transfer extends Component {
         if (rtl) {
             others.dir = 'rtl';
         }
+        const _showSearch = Array.isArray(showSearch) ? showSearch : [showSearch, showSearch];
+        const _searchProps = Array.isArray(searchProps) ? searchProps : [searchProps, searchProps];
+        const _notFoundContent = Array.isArray(notFoundContent) ? notFoundContent : [notFoundContent, notFoundContent];
         return (
             <div className={cx(`${prefix}transfer`, className)} id={id} {...others}>
                 <TransferPanel
@@ -565,6 +565,9 @@ class Transfer extends Component {
                     dataSource={leftDatasource}
                     disabled={leftDisabled || disabled}
                     value={leftCheckedValue}
+                    showSearch={_showSearch[0]}
+                    searchProps={_searchProps[0]}
+                    notFoundContent={_notFoundContent[0]}
                     title={titles[0]}
                 />
                 {this.renderCenter()}
@@ -574,6 +577,9 @@ class Transfer extends Component {
                     dataSource={rightDatasource}
                     disabled={rightDisabled || disabled}
                     value={rightCheckedValue}
+                    showSearch={_showSearch[1]}
+                    searchProps={_searchProps[1]}
+                    notFoundContent={_notFoundContent[1]}
                     title={titles[1]}
                 />
             </div>
