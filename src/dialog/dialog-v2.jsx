@@ -66,7 +66,6 @@ const Dialog = props => {
 
     const [firstVisible, setFirst] = useState(pvisible || false);
     const [visible, setVisible] = useState(pvisible);
-    const [isAnimationEnd, markAnimationEnd] = useState(false);
     const getContainer =
         typeof popupContainer === 'string'
             ? () => document.getElementById(popupContainer)
@@ -81,6 +80,13 @@ const Dialog = props => {
     const [uuid] = useState(guid());
     const { setVisibleOverlayToParent, ...otherContext } = useContext(OverlayContext);
     const childIDMap = useRef(new Map());
+    const isAnimationEnd = useRef(false);
+    const [, forceUpdate] = useState();
+
+    const markAnimationEnd = state => {
+        isAnimationEnd.current = state;
+        forceUpdate({});
+    };
 
     let canCloseByEsc = false;
     let canCloseByMask = false;
@@ -160,11 +166,35 @@ const Dialog = props => {
         }
     }, [container]);
 
+    const handleExited = () => {
+        if (!isAnimationEnd.current) {
+            markAnimationEnd(true);
+            dom.setStyle(wrapperRef.current, 'display', 'none');
+            scrollLocker.unlock(document.body, locker.current);
+
+            if (autoFocus && lastFocus.current) {
+                try {
+                    lastFocus.current.focus();
+                } finally {
+                    // ignore ...
+                }
+                lastFocus.current = null;
+            }
+            afterClose();
+        }
+    };
+
+    useEffect(() => {
+        return () => {
+            handleExited();
+        };
+    }, []);
+
     if (firstVisible === false || !container) {
         return null;
     }
 
-    if (!visible && !cache && isAnimationEnd) {
+    if (!visible && !cache && isAnimationEnd.current) {
         return null;
     }
 
@@ -204,22 +234,6 @@ const Dialog = props => {
             }
         }
         setVisibleOverlayToParent(uuid, wrapperRef.current);
-    };
-
-    const handleExited = () => {
-        markAnimationEnd(true);
-        dom.setStyle(wrapperRef.current, 'display', 'none');
-        scrollLocker.unlock(document.body, locker.current);
-
-        if (autoFocus && lastFocus.current) {
-            try {
-                lastFocus.current.focus();
-            } finally {
-                // ignore ...
-            }
-            lastFocus.current = null;
-        }
-        afterClose();
     };
 
     const wrapperCls = classNames({
