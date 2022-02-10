@@ -109,7 +109,7 @@ describe('v2', () => {
         document.body.style='';
     });
 
-    it('should show and hide', async () => {
+    it('should show and hide with no cache', async () => {
         wrapper = render(<Demo2 animation={false} />);
         const btn = document.querySelector('button');
         ReactTestUtils.Simulate.click(btn);
@@ -119,6 +119,7 @@ describe('v2', () => {
         const okBtn = document.querySelector('.next-btn-primary.next-dialog-btn');
         ReactTestUtils.Simulate.click(okBtn);
         await delay(40);
+        // no cache should unmount
         assert(!document.querySelector('.next-dialog'));
 
         ReactTestUtils.Simulate.click(btn);
