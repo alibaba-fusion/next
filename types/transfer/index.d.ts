@@ -55,9 +55,14 @@ export interface TransferProps extends HTMLAttributesWeak, CommonProps {
     itemRender?: (data: any) => React.ReactNode;
 
     /**
-     * 是否显示搜索框
+     * 左右面板是否显示搜索框
      */
-    showSearch?: boolean;
+    showSearch?: boolean | boolean[];
+
+    /**
+     * 左右面板搜索框配置
+     */
+    searchProps?: Record<string, any> | Record<string, any>[];
 
     /**
      * 自定义搜索函数
@@ -70,6 +75,11 @@ export interface TransferProps extends HTMLAttributesWeak, CommonProps {
     onSearch?: (searchedValue: string, position: string) => void;
 
     /**
+     * 是否开启虚拟滚动
+     */
+    useVirtual?: boolean,
+
+    /**
      * 搜索框占位符
      */
     searchPlaceholder?: string;
@@ -77,7 +87,7 @@ export interface TransferProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 列表为空显示内容
      */
-    notFoundContent?: React.ReactNode;
+    notFoundContent?: React.ReactNode | React.ReactNode[];
 
     /**
      * 左右面板标题

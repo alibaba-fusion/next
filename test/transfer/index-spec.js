@@ -153,6 +153,42 @@ describe('Transfer', () => {
         assert(findItemText(wrapper, 0, 1) === 'abc');
     });
 
+    it('should render search box when set showSearch（array）', () => {
+        const dataSource = [
+            { label: 'a', value: '0' },
+            { label: 'b', value: '1' },
+            { label: <i>abc</i>, value: '2' },
+        ];
+
+        wrapper = mount(
+            <Transfer
+                showSearch={[true, false]}
+                searchProps={[
+                    {
+                        hasClear: true
+                    },
+                    {
+                        size: 'large'
+                    }
+                ]}
+                searchPlaceholder="input something..."
+                dataSource={dataSource}
+            />
+        );
+
+        assert(wrapper.find('span.next-search').length === 1);
+        const search = findPanel(wrapper, 0).find('span.next-search');
+        const input = search.find('input');
+        if (input.instance().placeholder) {
+            assert(input.instance().placeholder === 'input something...');
+        }
+        input.simulate('change', { target: { value: 'a' } });
+
+        assert(findItems(wrapper, 0).length === 2);
+        assert(findItemText(wrapper, 0, 0) === 'a');
+        assert(findItemText(wrapper, 0, 1) === 'abc');
+    });
+
     it('should custom style and text', () => {
         const dataSource = [
             {
