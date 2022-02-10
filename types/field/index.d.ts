@@ -1,6 +1,6 @@
 /// <reference types="react" />
 
-import { ValidateResults, FieldOption } from '@alifd/field';
+import { FieldOption } from '@alifd/field';
 import innerField from '@alifd/field';
 
 export * from '@alifd/field';
@@ -16,7 +16,7 @@ export default class Field extends innerField{
      * 校验
      * @param callback
      */
-    validate(callback?: (errors: object[], values: ValidateResults) => void): void;
+    validate(callback?: (errors: object[], values: object) => void): void;
 
     /**
      * 校验
@@ -25,7 +25,7 @@ export default class Field extends innerField{
      */
     validate(
         names?: string[] | string,
-        callback?: (errors: object[], values: ValidateResults) => void
+        callback?: (errors: object[], values: object) => void
     ): void;
 
     /**
