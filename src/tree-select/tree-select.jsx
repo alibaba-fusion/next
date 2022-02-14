@@ -540,6 +540,9 @@ class TreeSelect extends Component {
 
             const data = this.getData(value);
             multiple ? onChange(value, data) : onChange(value[0], data[0]);
+
+            // clear search value manually
+            this.select.handleSearchClear('select');
         } else {
             this.handleVisibleChange(false, 'fromTree');
         }
@@ -559,6 +562,9 @@ class TreeSelect extends Component {
         }
 
         onChange(value, this.getData(value));
+
+        // clear search value manually
+        this.select.handleSearchClear('select');
     }
 
     handleRemove(removedItem) {
