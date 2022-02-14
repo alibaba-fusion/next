@@ -59,7 +59,7 @@ const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
 
         if (index > lastVisibleIndex) {
             child = React.cloneElement(child, {
-                key: `more-${index}`,
+                key: child.key || `more-${index}`,
                 style: { display: 'none' },
                 className: `${(child && child.className) || ''} ${MENUITEM_OVERFLOWED_CLASSNAME}`,
             });
@@ -68,7 +68,7 @@ const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
         if (index === lastVisibleIndex + 1) {
             overflowedItems = children.slice(lastVisibleIndex + 1).map((c, i) => {
                 return React.cloneElement(c, {
-                    key: `more-${index}-${i}`,
+                    key: c.key || `more-${index}-${i}`,
                 });
             });
             arr.push(getIndicatorsItem(overflowedItems, false, prefix, renderMore));
