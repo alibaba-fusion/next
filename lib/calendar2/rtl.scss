@@ -1,0 +1,32 @@
+div[dir="rtl"]#{$calendar2-prefix} {
+    &-fullscreen,
+    &-panel,
+    &-card {
+        #{$calendar2-prefix}-header {
+            &-actions {
+                margin-right: auto;
+                margin-left: 0;
+            }
+
+            &-ranges,
+            &-actions {
+                & > *:not(:first-child) {
+                    margin-right: 8px;
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+
+    &-fullscreen #{$calendar2-prefix} {
+        &-cell-value,
+        &-table th {
+            text-align: left;
+        }
+
+        &-table th {
+            padding: 0 0 5px 12px;
+        }
+    }
+}
+
