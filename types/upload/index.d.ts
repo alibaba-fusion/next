@@ -21,6 +21,11 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
      * 是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件
      */
     multiple?: boolean;
+ 
+    /**
+     * 展示下载按钮
+     */
+    showDownload?: boolean;
 
     /**
      * 接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)
