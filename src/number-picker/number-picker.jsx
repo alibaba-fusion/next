@@ -211,7 +211,8 @@ class NumberPicker extends React.Component {
         if ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) {
             const newValue = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
             state.value = newValue;
-            if (Number(prevState.displayValue) !== nextProps.value) {
+            // 因为 Number('') === 0，所以会导致value=0赋值不生效
+            if (prevState.displayValue === '' || Number(prevState.displayValue) !== nextProps.value) {
                 state.displayValue = newValue;
             }
         }
