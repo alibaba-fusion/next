@@ -196,6 +196,7 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     v2?: boolean;
 
     /**
+     * [v2可用]
      * 快捷位置
      */
     placement?: string;
