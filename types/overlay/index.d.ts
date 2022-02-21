@@ -198,7 +198,7 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 快捷位置
      */
-    placement: string;
+    placement?: string;
 }
 
 export class Popup extends React.Component<PopupProps, any> {}
