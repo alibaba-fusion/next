@@ -1,0 +1,6 @@
+/*!
+ * @alifd/next@1.25.20 (https://fusion.design)
+ * Copyright 2018-present Alibaba Group,
+ * Licensed under MIT (https://github.com/alibaba-fusion/next/blob/master/LICENSE)
+ */
+.next-sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;top:0;margin:-1px}.next-responsive-grid{display:grid}.next-responsive-grid,.next-responsive-grid *,.next-responsive-grid :after,.next-responsive-grid :before{-webkit-box-sizing:border-box;box-sizing:border-box}.next-responsive-grid-ie{display:block}
