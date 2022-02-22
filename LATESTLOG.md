@@ -1,12 +1,12 @@
 # Latest Log 
 
-## [1.25.19](https://github.com/alibaba-fusion/next/compare/1.25.18...1.25.19) (2022-02-15)
+## [1.25.20](https://github.com/alibaba-fusion/next/compare/1.25.19...1.25.20) (2022-02-22)
 
 
 ### Bug Fixes
 
-* **Dialog:** rollback body style while unmount fix [#3725](https://github.com/alibaba-fusion/next/issues/3725) ([93fffc4](https://github.com/alibaba-fusion/next/commit/93fffc4))
-* **Menu:** keys of more, close [#3733](https://github.com/alibaba-fusion/next/issues/3733) ([2ca8af2](https://github.com/alibaba-fusion/next/commit/2ca8af2))
-* **TreeSelect:** clear search value when select, close [#3738](https://github.com/alibaba-fusion/next/issues/3738) ([93ce487](https://github.com/alibaba-fusion/next/commit/93ce487))
+* **NumberPicker:** repair field setValues 0 numberPicker unread, clos… ([#3752](https://github.com/alibaba-fusion/next/issues/3752)) ([53c6feb](https://github.com/alibaba-fusion/next/commit/53c6feb))
+* **Overlay:** ts add placement ([#3753](https://github.com/alibaba-fusion/next/issues/3753)) ([6de9d6b](https://github.com/alibaba-fusion/next/commit/6de9d6b))
+* **Upload:** card add ts ([78d3bb6](https://github.com/alibaba-fusion/next/commit/78d3bb6))
 
 
