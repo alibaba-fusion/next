@@ -7,7 +7,7 @@
 /// @family navigation
 /// @varPrefix $tab-
 /// @classPrefix {prefix}-tab
-/// @order {"size/nav scroll":10,"size/nav":11,"size/tab":12,"size/content":13,"statement/normal":10,"statement/normal/nav":100,"statement/normal/tab":101,"statement/normal/content":102,"statement/hover":11,"statement/hover/nav":110,"statement/hover/tab":111,"statement/selected":12,"statement/selected/nav":120,"statement/selected/tab":121,"statement/disabled":13,"statement/disabled/nav":130,"statement/disabled/tab":131}
+/// @order {"size/nav scroll":10,"size/tab":11,"size/close icon":12,"size/close cion":13,"size/nav":14,"size/content":15,"statement/normal":10,"statement/normal/close icon":100,"statement/normal/nav":101,"statement/normal/tab":102,"statement/normal/content":103,"statement/normal/icon":104,"statement/hover":11,"statement/hover/close icon":110,"statement/hover/nav":111,"statement/hover/tab":112,"statement/selected":12,"statement/selected/close icon":120,"statement/selected/tab":121,"statement/disabled":13,"statement/disabled/close icon":130,"statement/disabled/nav":131,"statement/disabled/tab":132}
 ////
 
 // tab variables
@@ -41,7 +41,7 @@ $tab-nav-tab-icon-size-s: $icon-xs !default;
 $tab-nav-close-icon-size-m: $icon-xs !default;
 
 /// icon
-/// @namespace size/close cion
+/// @namespace size/close icon
 $tab-nav-close-icon-size-s: $icon-xxs !default;
 
 /// padding (l)
@@ -136,6 +136,10 @@ $tab-pure-divider-line-width: $line-1 !default;
 /// @namespace size/tab
 $tab-pure-ink-bar-width: $line-2 !default;
 
+/// active line padding(l,r)
+/// @namespace size/tab
+$tab-pure-ink-bar-padding-l: $s-zero !default;
+
 // Statement
 
 /// text
@@ -218,6 +222,10 @@ $tab-wrapped-tab-margin-bottom: $s-1 !default;
 /// active line
 /// @namespace size/tab
 $tab-wrapped-ink-bar-width: $line-2 !default;
+
+/// active line padding(l,r)
+/// @namespace size/tab
+$tab-wrapped-ink-bar-padding-l: $s-zero !default;
 
 /// background
 /// @namespace statement/normal/nav

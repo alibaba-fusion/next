@@ -36,7 +36,7 @@
     }
 }
 
-@mixin tabs-tab-inkbar($inkbar-width, $inkbar-color, $position-offset, $border-radius, $position: 'bottom') {
+@mixin tabs-tab-inkbar($inkbar-width, $inkbar-color, $position-offset, $border-radius, $line-padding-l, $position: 'bottom') {
     &:before {
         border-radius: $border-radius;
 
@@ -66,12 +66,8 @@
     &.active {
         &:before {
             @if $position == 'top' or $position == 'bottom' {
-                @if get-compiling-value($border-radius) == 0 {
-                    width: 100%;
-                } @else {
-                    width: calc(100% - 2 * #{$border-radius});
-                }
-                left: $border-radius;
+                width: calc(100% - 2 * #{$border-radius} - 2 * #{$line-padding-l});
+                left: calc(0px + #{$border-radius} + #{$line-padding-l});
             } @else {
                 @if get-compiling-value($border-radius) == 0 {
                     height: 100%;
