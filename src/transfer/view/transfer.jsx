@@ -110,14 +110,6 @@ class Transfer extends Component {
          */
         itemRender: PropTypes.func,
         /**
-         * 左右面板是否显示搜索框
-         */
-        showSearch: PropTypes.bool | PropTypes.arrayOf(PropTypes.bool),
-        /**
-         * 左右面板搜索框配置项，同 Search 组件 props
-         */
-        searchProps: PropTypes.object | PropTypes.arrayOf(PropTypes.object),
-        /**
          * 自定义搜索函数
          * @param {String} searchedValue 搜索的内容
          * @param {Object} data 数据
@@ -136,9 +128,17 @@ class Transfer extends Component {
          */
         searchPlaceholder: PropTypes.string,
         /**
+         * 左右面板是否显示搜索框
+         */
+        showSearch: PropTypes.oneOfType([PropTypes.bool, PropTypes.arrayOf(PropTypes.bool)]),
+        /**
+         * 左右面板搜索框配置项，同 Search 组件 props
+         */
+        searchProps: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
+        /**
          * 列表为空显示内容
          */
-        notFoundContent: PropTypes.node | PropTypes.arrayOf(PropTypes.node),
+        notFoundContent: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
         /**
          * 左右面板标题
          */
