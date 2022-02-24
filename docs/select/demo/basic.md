@@ -40,7 +40,7 @@ ReactDOM.render(
       id="basic-demo"
       onChange={onChange}
       onToggleHighlightItem={onToggleHighlightItem}
-      defaultValue="jack"
+      defaultValue="frank"
       onFocus={onFocus}
       onBlur={onBlur}
       aria-label="name is"
