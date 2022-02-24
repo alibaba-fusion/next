@@ -21,15 +21,7 @@ function _isMultiple(slider, isFixedWidth) {
 }
 
 function LowerSlider(props) {
-    const {
-        hasTip,
-        value,
-        tipRender,
-        slider,
-        tooltipVisible,
-        onTooltipVisibleChange,
-        tooltipAnimation,
-    } = props;
+    const { hasTip, value, tipRender, slider, tooltipVisible, onTooltipVisibleChange, tooltipAnimation } = props;
 
     if (_isMultiple(slider)) {
         return hasTip ? (
@@ -58,25 +50,14 @@ LowerSlider.propTypes = {
     tooltipVisible: PropTypes.bool,
     onTooltipVisibleChange: PropTypes.func,
     tooltipAnimation: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-    value: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.arrayOf(PropTypes.number),
-    ]),
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
     tipRender: PropTypes.func,
     slider: PropTypes.oneOf(['single', 'double']),
 };
 
 function UpperSlider(props) {
     const newprop = Object.assign({}, props);
-    const {
-        hasTip,
-        value,
-        tipRender,
-        slider,
-        tooltipVisible,
-        onTooltipVisibleChange,
-        tooltipAnimation,
-    } = newprop;
+    const { hasTip, value, tipRender, slider, tooltipVisible, onTooltipVisibleChange, tooltipAnimation } = newprop;
     if (_isMultiple(slider)) {
         delete newprop.onKeyDown;
         return hasTip ? (
@@ -125,10 +106,7 @@ UpperSlider.propTypes = {
     tooltipVisible: PropTypes.bool,
     onTooltipVisibleChange: PropTypes.func,
     tooltipAnimation: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-    value: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.arrayOf(PropTypes.number),
-    ]),
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
     tipRender: PropTypes.func,
     slider: PropTypes.oneOf(['single', 'double']),
 };
@@ -176,21 +154,12 @@ class Range extends React.Component {
         /**
          * 设置当前取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`
          */
-        value: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number),
-        ]),
-        tempValue: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number),
-        ]),
+        value: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
+        tempValue: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
         /**
          * 设置初始取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`
          */
-        defaultValue: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number),
-        ]),
+        defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
         /**
          * 刻度数值显示逻辑（false 代表不显示，array 枚举显示的值，number 代表按 number 平分，object 表示按 key 划分，value 值显示）
          */
@@ -285,8 +254,7 @@ class Range extends React.Component {
         super(props);
         const { min } = props;
         const initialValue = _isMultiple(props.slider) ? [min, min] : min;
-        const defaultValue =
-            'defaultValue' in props ? props.defaultValue : initialValue;
+        const defaultValue = 'defaultValue' in props ? props.defaultValue : initialValue;
         const value = props.value !== undefined ? props.value : defaultValue;
 
         this.state = {
@@ -298,11 +266,7 @@ class Range extends React.Component {
             tooltipAnimation: true,
         };
 
-        bindCtx(this, [
-            'handleLowerTooltipVisibleChange',
-            'handleUpperTooltipVisibleChange',
-            'onKeyDown',
-        ]);
+        bindCtx(this, ['handleLowerTooltipVisibleChange', 'handleUpperTooltipVisibleChange', 'onKeyDown']);
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -409,10 +373,7 @@ class Range extends React.Component {
     onKeyDown(e) {
         if (this.props.disabled) return;
 
-        if (
-            e.keyCode === KEYCODE.LEFT_ARROW ||
-            e.keyCode === KEYCODE.RIGHT_ARROW
-        ) {
+        if (e.keyCode === KEYCODE.LEFT_ARROW || e.keyCode === KEYCODE.RIGHT_ARROW) {
             e.stopPropagation();
             e.preventDefault();
             let newValue;
@@ -495,8 +456,7 @@ class Range extends React.Component {
     }
 
     _move(e) {
-        const position =
-            e.type === 'mousemove' ? e.pageX : e.targetTouches[0].pageX;
+        const position = e.type === 'mousemove' ? e.pageX : e.targetTouches[0].pageX;
         this._onProcess(position);
     }
 
@@ -521,18 +481,12 @@ class Range extends React.Component {
                 upperTooltipVisible: this._moving.dragging === 'upper',
                 tooltipAnimation: false,
             });
-        } else if (
-            this.oldDragging === 'lower' &&
-            this._moving.dragging === 'upper'
-        ) {
+        } else if (this.oldDragging === 'lower' && this._moving.dragging === 'upper') {
             this.setState({
                 upperTooltipVisible: true,
                 lowerTooltipVisible: false,
             });
-        } else if (
-            this.oldDragging === 'upper' &&
-            this._moving.dragging === 'lower'
-        ) {
+        } else if (this.oldDragging === 'upper' && this._moving.dragging === 'lower') {
             this.setState({
                 upperTooltipVisible: false,
                 lowerTooltipVisible: true,
@@ -541,12 +495,7 @@ class Range extends React.Component {
 
         this.oldDragging = this._moving.dragging;
 
-        const nextValue = this._currentToValue(
-            current,
-            tempValue,
-            this.lastPosition,
-            this.isFixedWidth
-        ); //计算range的新value,可能是数组,可能是单个值
+        const nextValue = this._currentToValue(current, tempValue, this.lastPosition, this.isFixedWidth); //计算range的新value,可能是数组,可能是单个值
         this.lastPosition = current;
 
         if (!isEqual(nextValue, tempValue)) {
@@ -558,29 +507,13 @@ class Range extends React.Component {
     }
 
     _addDocumentMouseEvents() {
-        this._onMouseMoveListener = events.on(
-            document,
-            'mousemove',
-            this._move.bind(this)
-        );
-        this._onMouseUpListener = events.on(
-            document,
-            'mouseup',
-            this._end.bind(this)
-        );
+        this._onMouseMoveListener = events.on(document, 'mousemove', this._move.bind(this));
+        this._onMouseUpListener = events.on(document, 'mouseup', this._end.bind(this));
     }
 
     _addDocumentTouchEvents() {
-        this._onTouchMoveListener = events.on(
-            document,
-            'touchmove',
-            this._move.bind(this)
-        );
-        this._onTouchEndListener = events.on(
-            document,
-            'touchend',
-            this._end.bind(this)
-        );
+        this._onTouchMoveListener = events.on(document, 'touchmove', this._move.bind(this));
+        this._onTouchEndListener = events.on(document, 'touchend', this._end.bind(this));
     }
 
     _removeDocumentEvents() {
@@ -619,12 +552,11 @@ class Range extends React.Component {
         percent = rtl ? 100 - percent : percent;
         // reset by step
         const newValue = parseFloat(
-            (Math.round(((percent / 100) * (max - min)) / step) * step).toFixed(
-                getPrecision(step)
-            )
+            (Math.round(((percent / 100) * (max - min)) / step) * step).toFixed(getPrecision(step))
         );
+        const currentValue = (min + newValue).toFixed(getPrecision(step));
 
-        return min + newValue;
+        return Number(currentValue);
     }
 
     _currentToValue(current, preValue, lastPosition, isFixedWidth) {
@@ -641,12 +573,8 @@ class Range extends React.Component {
             const newLeft = +(+preValue[0] + diff).toFixed(precision);
             const newRight = +(+preValue[1] + diff).toFixed(precision);
 
-            const newMaxLeft = +(max - preValue[1] + preValue[0]).toFixed(
-                precision
-            );
-            const newMinRight = +(min + preValue[1] - preValue[0]).toFixed(
-                precision
-            );
+            const newMaxLeft = +(max - preValue[1] + preValue[0]).toFixed(precision);
+            const newMinRight = +(min + preValue[1] - preValue[0]).toFixed(precision);
 
             if (isFixedWidth) {
                 if (newLeft < min) {
@@ -754,36 +682,21 @@ class Range extends React.Component {
         };
 
         this.isFixedWidth =
-            fixedWidth &&
-            (value
-                ? Array.isArray(value)
-                : defaultValue
-                ? Array.isArray(defaultValue)
-                : false);
+            fixedWidth && (value ? Array.isArray(value) : defaultValue ? Array.isArray(defaultValue) : false);
 
         if (isPreview) {
             const previewCls = classNames(className, `${prefix}form-preview`);
 
             if ('renderPreview' in this.props) {
                 return (
-                    <div
-                        id={id}
-                        dir={rtl ? 'rtl' : 'ltr'}
-                        {...others}
-                        className={previewCls}
-                    >
+                    <div id={id} dir={rtl ? 'rtl' : 'ltr'} {...others} className={previewCls}>
                         {renderPreview(value, this.props)}
                     </div>
                 );
             }
 
             return (
-                <p
-                    id={id}
-                    dir={rtl ? 'rtl' : 'ltr'}
-                    {...others}
-                    className={previewCls}
-                >
+                <p id={id} dir={rtl ? 'rtl' : 'ltr'} {...others} className={previewCls}>
                     {Array.isArray(value) ? value.join('~') : value}
                 </p>
             );
@@ -816,17 +729,10 @@ class Range extends React.Component {
                             <LowerSlider
                                 {...commonProps}
                                 hasMovingClass={
-                                    this.state.hasMovingClass &&
-                                    this._moving &&
-                                    this._moving.dragging === 'lower'
+                                    this.state.hasMovingClass && this._moving && this._moving.dragging === 'lower'
                                 }
-                                tooltipVisible={
-                                    tooltipVisible ||
-                                    this.state.lowerTooltipVisible
-                                }
-                                onTooltipVisibleChange={
-                                    this.handleLowerTooltipVisibleChange
-                                }
+                                tooltipVisible={tooltipVisible || this.state.lowerTooltipVisible}
+                                onTooltipVisibleChange={this.handleLowerTooltipVisibleChange}
                                 tooltipAnimation={
                                     this.state.tooltipAnimation
                                         ? {
@@ -840,17 +746,10 @@ class Range extends React.Component {
                                 {...commonProps}
                                 onKeyDown={this.onKeyDown}
                                 hasMovingClass={
-                                    this.state.hasMovingClass &&
-                                    this._moving &&
-                                    this._moving.dragging === 'upper'
+                                    this.state.hasMovingClass && this._moving && this._moving.dragging === 'upper'
                                 }
-                                tooltipVisible={
-                                    tooltipVisible ||
-                                    this.state.upperTooltipVisible
-                                }
-                                onTooltipVisibleChange={
-                                    this.handleUpperTooltipVisibleChange
-                                }
+                                tooltipVisible={tooltipVisible || this.state.upperTooltipVisible}
+                                onTooltipVisibleChange={this.handleUpperTooltipVisibleChange}
                                 tooltipAnimation={
                                     this.state.tooltipAnimation
                                         ? {
