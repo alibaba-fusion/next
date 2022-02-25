@@ -24,12 +24,13 @@
         tr:last-child td {
             border-bottom-width: $border-width;
         }
-        tr td:last-child {
-            border-left-width: $border-width;
-            // border-right-width: 0;
-            // border-right-width: $border-width;
-        }
+        // tr td:last-child {
+        //     border-left-width: $border-width;
+        //     // border-right-width: 0;
+        //     // border-right-width: $border-width;
+        // }
         tr td.last {
+            border-left-width: $border-width;
             border-right-width: 0;
         }
     }
