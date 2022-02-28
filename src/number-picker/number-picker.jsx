@@ -184,7 +184,7 @@ class NumberPicker extends React.Component {
         } else {
             value = defaultValue;
         }
-        value = value === undefined || value === null ? 0 : stringMode ? `${value}` : value;
+        value = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
         this.state = {
             value,
             hasFocused: false,
@@ -438,6 +438,10 @@ class NumberPicker extends React.Component {
         // 受控下，显示的值应为受控value
         if (!('value' in this.props)) {
             this.setDisplayValue({ displayValue: val });
+        }
+
+        if (!this.props.stringMode) {
+            val = Number(val);
         }
 
         this.setValue({ value: val, e, triggerType: type });
