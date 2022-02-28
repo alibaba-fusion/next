@@ -184,7 +184,7 @@ class NumberPicker extends React.Component {
         } else {
             value = defaultValue;
         }
-        value = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
+        value = value === undefined || value === null ? 0 : stringMode ? `${value}` : value;
         this.state = {
             value,
             hasFocused: false,
