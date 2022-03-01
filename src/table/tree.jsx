@@ -89,13 +89,22 @@ export default function tree(BaseComponent) {
         }
 
         normalizeDataSource(dataSource) {
+            const { openRowKeys } = this.state;
+            const { primaryKey } = this.props;
             const ret = [],
-                loop = function(dataSource, level) {
+                loop = function(dataSource, level, parentId = null) {
                     dataSource.forEach(item => {
                         item.__level = level;
+
+                        if (level === 0 || openRowKeys.indexOf(parentId) > -1) {
+                            item.hidden = false;
+                        } else {
+                            item.hidden = true;
+                        }
                         ret.push(item);
+
                         if (item.children) {
-                            loop(item.children, level + 1);
+                            loop(item.children, level + 1, item[primaryKey]);
                         }
                     });
                 };
