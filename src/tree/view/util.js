@@ -173,19 +173,19 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
     }
 
     // 重新选中所有 child nodes
-    const newKeys = [];
+    const newKeys = new Set();
     flatKeys.forEach(key => {
         if (_k2n[key].disabled || _k2n[key].checkboxDisabled) {
-            newKeys.push(key);
+            newKeys.add(key);
             return;
         }
         forEachEnableNode(_k2n[key], node => {
             if (node.checkable === false) return;
-            newKeys.push(node.key);
+            newKeys.add(node.key);
         });
     });
 
-    return newKeys;
+    return Array.from(newKeys);
 }
 
 /**
