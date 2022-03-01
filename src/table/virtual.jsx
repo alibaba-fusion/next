@@ -128,7 +128,13 @@ export default function virtual(BaseComponent) {
             if (typeof rowHeight === 'function') {
                 return 0;
             }
-            return dataSource.length * rowHeight;
+            let count = 0;
+            dataSource.forEach(item => {
+                if (!item.hidden) {
+                    count += 1;
+                }
+            });
+            return count * rowHeight;
         }
 
         computeInnerTop() {
@@ -263,11 +269,15 @@ export default function virtual(BaseComponent) {
                 newDataSource = [];
                 components = { ...components };
                 const { start, end } = this.getVisibleRange(this.state.scrollToRow);
+                let count = -1;
                 dataSource.forEach((current, index, record) => {
-                    if (index >= start && index < end) {
-                        current.__rowIndex = index;
-                        newDataSource.push(current);
+                    if (!current.hidden) {
+                        count += 1;
+                        if (count >= start && count < end) {
+                            newDataSource.push(current);
+                        }
                     }
+                    current.__rowIndex = index;
                 });
 
                 if (!components.Body) {
