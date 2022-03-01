@@ -427,10 +427,14 @@ class NumberPicker extends React.Component {
             return onDisabled(e);
         }
 
-        const value = this.state.value;
+        let value = this.state.value;
         // 受控下，可能强制回填非法值
         if (isNaN(value)) {
             return;
+        }
+
+        if (value === '' && !this.props.stringMode) {
+            value = 0;
         }
 
         let val = this[`${type}Step`](value);
