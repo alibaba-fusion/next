@@ -1,0 +1,83 @@
+#{$time-picker2-prefix}-menu {
+    float: left;
+    text-align: center;
+    padding: $s-2 0;
+
+    &:not(:last-child) {
+        border-right: $line-1 $line-solid $color-line1-2;
+    }
+
+    &-title {
+        cursor: default;
+        height: $s-7;
+        line-height: $s-7;
+        font-size: $font-size-caption;
+        font-weight: $font-weight-2;
+        color: $color-text1-2;
+        background: $color-white;
+    }
+
+    ul {
+        position: relative;
+        overflow-y: hidden;
+        overflow-x: auto;
+        list-style: none;
+        margin: 0;
+        width: 54px;
+        padding: 0;
+        font-size: $font-size-caption;
+        height: calc(#{$s-8} * 7);
+        scrollbar-width: none; // firefox
+        -ms-overflow-style: none; // ie
+        &::-webkit-scrollbar {
+            width: 0;
+        }
+        &:hover {
+            overflow-y: auto;
+        }
+        &:after {
+            display: block;
+            height: calc(#{$s-8} * 6);
+            content: "";
+        }
+        // &:before {
+        //     display: block;
+        //     height: calc(#{$s-8} * 3);
+        //     content: "";
+        // }
+    }
+
+    &-item {
+        cursor: pointer;
+        height: $s-8;
+        line-height: $s-8;
+        transition: background $motion-duration-immediately $motion-linear;
+        color: $color-text1-3;
+        background: $color-white;
+        outline: none;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        &:hover {
+            color: $color-text1-4;
+            background: $color-fill1-2;
+        }
+
+        &.#{$css-prefix}selected {
+            // font-weight: $font-weight-3;
+            color: $color-text1-3;
+            background: $color-brand1-1;
+        }
+
+        &.#{$css-prefix}disabled {
+            cursor: not-allowed;
+            color: $color-text1-1;
+            background: $color-fill1-1;
+        }
+    }
+}
