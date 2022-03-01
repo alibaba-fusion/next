@@ -15,7 +15,7 @@ import { env } from '../util';
 
 const { ieVersion } = env;
 
-const ORDER_LIST = [fixed, lock, selection, expanded, tree, virtual, list, sticky];
+const ORDER_LIST = [fixed, lock, selection, expanded, virtual, tree, list, sticky];
 const Table = ORDER_LIST.reduce((ret, current) => {
     ret = current(ret);
     return ret;
