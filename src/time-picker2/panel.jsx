@@ -156,13 +156,16 @@ class TimePickerPanel extends Component {
         const v0 = value[0];
         const v1 = value[1];
 
+        const hoursEqual = () => v0 && v1 && v0.hour() === v1.hour();
+        const minutesEqual = () => v0 && v1 && v0.hour() === v1.hour() && v0.minute() === v1.minute();
+
         disableds.newDisabledHours[0] = h => (v1 && h > v1.hour()) || dHours.indexOf(h) > -1;
-        disableds.newDisabledMinutes[0] = m => (v1 && m > v1.minute()) || dMinutes.indexOf(m) > -1;
-        disableds.newDisabledSeconds[0] = s => (v1 && s > v1.second()) || dSeconds.indexOf(s) > -1;
+        disableds.newDisabledMinutes[0] = m => (v1 && (hoursEqual() && m > v1.minute())) || dMinutes.indexOf(m) > -1;
+        disableds.newDisabledSeconds[0] = s => (v1 && (minutesEqual() && s > v1.second())) || dSeconds.indexOf(s) > -1;
 
         disableds.newDisabledHours[1] = h => (v0 && h < v0.hour()) || dHours.indexOf(h) > -1;
-        disableds.newDisabledMinutes[1] = m => (v0 && m < v0.minute()) || dMinutes.indexOf(m) > -1;
-        disableds.newDisabledSeconds[1] = s => (v0 && s < v0.second()) || dSeconds.indexOf(s) > -1;
+        disableds.newDisabledMinutes[1] = m => (v0 && m < (hoursEqual() && v0.minute())) || dMinutes.indexOf(m) > -1;
+        disableds.newDisabledSeconds[1] = s => (v0 && (minutesEqual() && s < v0.second())) || dSeconds.indexOf(s) > -1;
 
         return disableds;
     };
