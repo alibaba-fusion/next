@@ -66,8 +66,13 @@
     &.active {
         &:before {
             @if $position == 'top' or $position == 'bottom' {
-                width: calc(100% - 2 * #{$border-radius} - 2 * #{$line-padding-l});
-                left: calc(0px + #{$border-radius} + #{$line-padding-l});
+                @if get-compiling-value($border-radius) == 0 {
+                    width: calc(100% - 2 * #{$line-padding-l});
+                    left: calc(0px + #{$line-padding-l});
+                } @else {
+                    width: calc(100% - 2 * #{$border-radius} - 2 * #{$line-padding-l});
+                    left: calc(0px + #{$border-radius} + #{$line-padding-l});
+                }
             } @else {
                 @if get-compiling-value($border-radius) == 0 {
                     height: 100%;
