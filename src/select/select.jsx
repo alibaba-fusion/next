@@ -1093,7 +1093,8 @@ class Select extends Base {
                 {inputEl}
                 <span aria-hidden>
                     <span>{mirrorText || placeholder}</span>
-                    <span>&nbsp;</span>
+                    {/* fix https://github.com/alibaba-fusion/next/issues/3781 */}
+                    <span style={{ display: 'inline-block', width: 1 }}>&nbsp;</span>
                 </span>
             </span>
         );
