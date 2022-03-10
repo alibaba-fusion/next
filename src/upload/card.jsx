@@ -89,9 +89,16 @@ class Card extends Base {
             uploaderRef: this.uploaderRef,
         };
     }
-    /* eslint react/no-did-mount-set-state: [0] */
+
     componentDidMount() {
-        this.setState({ uploaderRef: this.uploaderRef });
+        this.updateUploaderRef(this.uploaderRef);
+    }
+
+    componentDidUpdate() {
+        const { uploaderRef } = this.state;
+        if (!uploaderRef && this.uploaderRef) {
+            this.updateUploaderRef(this.uploaderRef);
+        }
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -123,11 +130,15 @@ class Card extends Base {
     };
 
     isUploading() {
-        return this.state.uploaderRef.isUploading();
+        return this.uploaderRef.isUploading();
     }
 
     saveRef(ref) {
         this.saveUploaderRef(ref);
+    }
+
+    updateUploaderRef(uploaderRef) {
+        this.setState({ uploaderRef });
     }
 
     render() {
@@ -189,7 +200,7 @@ class Card extends Base {
                 onPreview={onPreview}
                 itemRender={itemRender}
                 isPreview={isPreview}
-                uploader={this.state.uploaderRef}
+                uploader={this.uploaderRef}
                 reUpload={reUpload}
                 showDownload={showDownload}
                 {...othersForList}
