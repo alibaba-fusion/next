@@ -29,7 +29,7 @@ export default class Password extends Input {
 
     toggleEye = e => {
         e.preventDefault();
-
+        if (this.props.disabled) return;
         const eyeClose = this.state.hint === 'eye';
 
         this.setState({
