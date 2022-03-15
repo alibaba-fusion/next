@@ -1,10 +1,10 @@
 const path = require('path');
 const fs = require('fs-extra');
 const semver = require('semver');
-const request = require('request');
 const inquirer = require('inquirer');
 const conventionalChangelog = require('conventional-changelog');
 const config = require('conventional-changelog-alifd');
+const { execSync } = require('child_process');
 const { logger } = require('../utils');
 
 const changelogPath = 'CHANGELOG.md';
@@ -16,15 +16,10 @@ module.exports = function* changelog() {
 
     const packageInfo = require(packagePath);
 
-    const npmInfo = yield getRemotePkgInfo();
+    // const npmInfo = yield getRemotePkgInfo();
 
-    const npmVersion = npmInfo['dist-tags'].latest;
-
-    logger.success(
-        `[提示] [local:${
-            packageInfo.version
-        }] [npm:${npmVersion}] 请为本次提交指定新的版本号:`
-    );
+    const npmVersion = execSync(`npm show ${packageInfo.name} version`).toString();
+    logger.success(`[提示] [local:${packageInfo.version}] [npm:${npmVersion}] 请为本次提交指定新的版本号:`);
 
     const current = yield inquirer.prompt([
         {
@@ -34,9 +29,7 @@ module.exports = function* changelog() {
             message: '请输入待发布的版本号：',
             validate: function(value) {
                 if (!semver.valid(value) || semver.lte(value, npmVersion)) {
-                    return logger.warn(
-                        '请输入正确的版本号，并且大于基线版本号！'
-                    );
+                    return logger.warn('请输入正确的版本号，并且大于基线版本号！');
                 }
                 return true;
             },
@@ -47,30 +40,23 @@ module.exports = function* changelog() {
 
     yield fs.writeJson(packagePath, packageInfo, { spaces: 2 });
 
-    logger.success(
-        `[提示] 回写版本号 ${packageInfo.version} 到 package.json success`
-    );
+    logger.success(`[提示] 回写版本号 ${packageInfo.version} 到 package.json success`);
 
     logger.info(`正在生成 ${changelogPath} 文件,请稍等几秒钟...`);
 
     conventionalChangelog({
         config,
     }).on('data', chunk => {
-        const log = chunk
-            .toString()
-            .replace(/(\n## [.\d\w]+ )\(([\d-]+)\)\n/g, (all, s1, s2) => {
-                return `${s1}/ ${s2}\n`;
-            });
+        const log = chunk.toString().replace(/(\n## [.\d\w]+ )\(([\d-]+)\)\n/g, (all, s1, s2) => {
+            return `${s1}/ ${s2}\n`;
+        });
 
         let changelogContent = fs.readFileSync(changelogPath, 'utf8');
         changelogContent = changelogContent
             .split('\n')
             .slice(1)
             .join('\n');
-        fs.writeFileSync(
-            changelogPath,
-            `# Change Log \n\n${log}${changelogContent}`
-        );
+        fs.writeFileSync(changelogPath, `# Change Log \n\n${log}${changelogContent}`);
 
         const lines = log.split(/\n/g);
         let firstIndex = -1,
@@ -90,42 +76,13 @@ module.exports = function* changelog() {
 
         if (firstIndex > -1) {
             secondIndex = secondIndex === -1 ? lines.length : secondIndex;
-            const latestedLog = lines
-                .slice(firstIndex, secondIndex - 1)
-                .join('\n');
-            fs.writeFileSync(
-                latestedLogPath,
-                `# Latest Log \n\n${latestedLog}`
-            );
+            const latestedLog = lines.slice(firstIndex, secondIndex - 1).join('\n');
+            fs.writeFileSync(latestedLogPath, `# Latest Log \n\n${latestedLog}`);
         }
     });
 
     logger.success(`成功将 ${changelogPath} 文件生成到 ${cwd} 目录下`);
 };
-
-function getRemotePkgInfo() {
-    return new Promise(function(resolve) {
-        const requestUrl = 'https://registry.npmjs.org/@alifd/next';
-
-        try {
-            request(
-                {
-                    url: requestUrl,
-                    timeout: 5000,
-                    json: true,
-                },
-                function(error, response, body) {
-                    resolve(body);
-                }
-            );
-        } catch (err) {
-            logger.error(
-                'Failed to reach: https://registry.npmjs.org/@alifd/next'
-            );
-            resolve();
-        }
-    });
-}
 
 /**
  * 升级版本号，如果是非语义化版本号，则不做处理，直接返回原值
