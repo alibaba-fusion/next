@@ -250,7 +250,7 @@ export default function selection(BaseComponent) {
         selectOneRow(index, record, checked, e) {
             let selectedRowKeys = [...this.state.selectedRowKeys],
                 i;
-            const { primaryKey, rowSelection, dataSource } = this.props,
+            const { primaryKey, rowSelection, dataSource, entireDataSource } = this.props,
                 mode = rowSelection.mode ? rowSelection.mode : 'multiple',
                 id = record[primaryKey];
             if (!id) {
@@ -266,10 +266,11 @@ export default function selection(BaseComponent) {
             } else if (checked) {
                 selectedRowKeys = [id];
             }
-            const records = unique(
-                dataSource.filter(item => selectedRowKeys.indexOf(item[primaryKey]) > -1),
-                primaryKey
-            );
+            let totalDS = dataSource;
+            if (Array.isArray(entireDataSource) && entireDataSource.length > dataSource.length) {
+                totalDS = entireDataSource;
+            }
+            const records = unique(totalDS.filter(item => selectedRowKeys.indexOf(item[primaryKey]) > -1), primaryKey);
             if (typeof rowSelection.onSelect === 'function') {
                 rowSelection.onSelect(checked, record, records);
             }
