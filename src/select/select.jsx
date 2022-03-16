@@ -425,9 +425,13 @@ class Select extends Base {
         }
     }
 
-    handleItemClick() {
+    handleItemClick(key) {
         if (!this.props.popupAutoFocus) {
             this.focusInput();
+        }
+
+        if (this.props.mode === 'single' && key === this.state.value) {
+            this.setVisible(false, 'itemClick');
         }
     }
 

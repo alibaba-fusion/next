@@ -114,7 +114,7 @@ export default class Dialog extends Component {
          */
         autoFocus: PropTypes.bool,
         /**
-         * 透传到弹层组件的属性对象
+         * [v2废弃] 透传到弹层组件的属性对象
          */
         overlayProps: PropTypes.object,
         /**
@@ -125,6 +125,9 @@ export default class Dialog extends Component {
         locale: PropTypes.object,
         // Do not remove this, it's for <ConfigProvider popupContainer={} />
         // see https://github.com/alibaba-fusion/next/issues/1508
+        /**
+         * 自定义弹窗挂载位置
+         */
         popupContainer: PropTypes.any,
         /**
          * 对话框的高度样式属性
