@@ -30,6 +30,13 @@
         color: $dialog-content-color;
     }
 
+    &-body-no-footer {
+        padding: $dialog-content-padding-top $dialog-content-padding-left-right $dialog-content-padding-bottom-no-footer $dialog-content-padding-left-right;
+        font-size: $dialog-content-font-size;
+        line-height: $font-lineheight-2;
+        color: $dialog-content-color;
+    }
+
     /* 让用户自己设置 */
     /* &.#{$css-prefix}closeable &-header, */
     /* &.#{$css-prefix}closeable &-body, { */
@@ -163,6 +170,9 @@
         }
         #{$dialog-prefix}-header + #{$dialog-prefix}-body {
             padding: $dialog-content-padding-top $dialog-content-padding-left-right $dialog-content-padding-bottom $dialog-content-padding-left-right;
+        }
+        #{$dialog-prefix}-header + #{$dialog-prefix}-body-no-footer {
+            padding: $dialog-content-padding-top $dialog-content-padding-left-right $dialog-content-padding-bottom-no-footer $dialog-content-padding-left-right;
         }
     }
 
