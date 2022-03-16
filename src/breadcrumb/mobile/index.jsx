@@ -1,3 +1,3 @@
-import { Breadcrumb } from '@alifd/meet-react';
+import { BreadCrumb } from '@alifd/meet-react';
 
-export default Breadcrumb;
+export default BreadCrumb;
