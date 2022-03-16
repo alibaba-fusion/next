@@ -260,6 +260,13 @@ class Select extends Base {
     static getDerivedStateFromProps(nextProps, prevState) {
         const state = {};
 
+        // 受控value应赋值给 highlightKey
+        if ('value' in nextProps) {
+            Object.assign(state, {
+                highlightKey: nextProps.value,
+            });
+        }
+
         if ('value' in nextProps && nextProps.value !== prevState.value) {
             Object.assign(state, {
                 value: nextProps.value,
