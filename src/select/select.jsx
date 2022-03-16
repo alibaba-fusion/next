@@ -270,6 +270,10 @@ class Select extends Base {
             Object.assign(state, {
                 highlightKey: nextProps.highlightKey,
             });
+        } else if ('value' in nextProps && nextProps.value !== prevState.value && nextProps.mode === 'single') {
+            Object.assign(state, {
+                highlightKey: nextProps.value,
+            });
         }
 
         if ('searchValue' in nextProps && nextProps.searchValue !== prevState.searchValue) {
