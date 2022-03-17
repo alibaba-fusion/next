@@ -54,6 +54,17 @@ class FunctionDemo extends Component {
                     value: 'false'
                 }]
             },
+            footer: {
+                label: '按钮',
+                value: 'true',
+                enum: [{
+                    label: '显示',
+                    value: 'true'
+                }, {
+                    label: '隐藏',
+                    value: 'false'
+                }]
+            },
             footerAlign: {
                 label: '按钮对齐方式',
                 value: 'right',
