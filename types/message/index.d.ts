@@ -44,9 +44,9 @@ export interface MessageProps extends HTMLAttributesWeak, CommonProps {
     visible?: boolean;
 
     /**
-     * 显示的图标类型，会覆盖内部设置的IconType
+     * 显示的图标类型，会覆盖内部设置的IconType，传false不显示图标
      */
-    iconType?: string;
+    iconType?: string | false;
 
     /**
      * 显示关闭按钮
