@@ -152,7 +152,7 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 对话框的高度样式属性
      */
-    height?: string;
+    height?: string | number;
     popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
     /**
      * 开启 v2 版本弹窗
