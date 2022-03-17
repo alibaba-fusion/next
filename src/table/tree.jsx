@@ -97,9 +97,9 @@ export default function tree(BaseComponent) {
                         item.__level = level;
 
                         if (level === 0 || openRowKeys.indexOf(parentId) > -1) {
-                            item.hidden = false;
+                            item.__hidden = false;
                         } else {
-                            item.hidden = true;
+                            item.__hidden = true;
                         }
                         ret.push(item);
 
