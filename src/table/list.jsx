@@ -42,10 +42,11 @@ export default function list(BaseComponent) {
             const ret = [];
             const loop = function(dataSource, level) {
                 dataSource.forEach(item => {
-                    item.__level = level;
-                    ret.push(item);
-                    if (item.children) {
-                        loop(item.children, level + 1);
+                    const itemCopy = { ...item };
+                    itemCopy.__level = level;
+                    ret.push(itemCopy);
+                    if (itemCopy.children) {
+                        loop(itemCopy.children, level + 1);
                     }
                 });
             };
