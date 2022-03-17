@@ -16,6 +16,12 @@ $dialog-prefix: ".#{$css-prefix}dialog";
 // Size
 // ----------------------------------------
 
+/// padding (t)
+/// @namespace size/bounding
+$dialog-title-padding-top: $s-0 !default;
+/// padding (b)
+/// @namespace size/bounding
+$dialog-title-padding-bottom: $s-0 !default;
 /// border width
 /// @namespace size/bounding
 $dialog-border-width: $line-1 !default;

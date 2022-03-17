@@ -6,6 +6,8 @@
     @include box-sizing;
     position: fixed;
     z-index: 1001;
+    padding-top: $dialog-title-padding-top;
+    padding-bottom: $dialog-title-padding-bottom;
     background: $dialog-bg;
     border: $dialog-border-width $dialog-border-style $dialog-border-color;
     border-radius: $dialog-corner;
