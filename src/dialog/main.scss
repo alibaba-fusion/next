@@ -6,6 +6,8 @@
     @include box-sizing;
     position: fixed;
     z-index: 1001;
+    display: flex;
+    flex-direction: column;
     background: $dialog-bg;
     border: $dialog-border-width $dialog-border-style $dialog-border-color;
     border-radius: $dialog-corner;
@@ -28,6 +30,7 @@
         font-size: $dialog-content-font-size;
         line-height: $font-lineheight-2;
         color: $dialog-content-color;
+        flex: 1 1 auto;
     }
 
     &-body-no-footer {
