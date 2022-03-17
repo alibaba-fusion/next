@@ -5,6 +5,8 @@
 #{$dialog-prefix} {
     @include box-sizing;
     position: fixed;
+    display: flex;
+    flex-direction: column;
     z-index: 1001;
     padding-top: $dialog-title-padding-top;
     padding-bottom: $dialog-title-padding-bottom;
@@ -26,6 +28,7 @@
     }
 
     &-body {
+        flex: 1 1 auto;
         padding: $dialog-content-padding-top $dialog-content-padding-left-right $dialog-content-padding-bottom $dialog-content-padding-left-right;
         font-size: $dialog-content-font-size;
         line-height: $font-lineheight-2;
