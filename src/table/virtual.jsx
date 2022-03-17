@@ -131,7 +131,7 @@ export default function virtual(BaseComponent) {
             }
             let count = 0;
             dataSource.forEach(item => {
-                if (!item.hidden) {
+                if (!item.__hidden) {
                     count += 1;
                 }
             });
@@ -274,7 +274,7 @@ export default function virtual(BaseComponent) {
                 const { start, end } = this.getVisibleRange(this.state.scrollToRow);
                 let count = -1;
                 dataSource.forEach((current, index, record) => {
-                    if (!current.hidden) {
+                    if (!current.__hidden) {
                         count += 1;
                         if (count >= Math.max(start - THRESHOLD, 0) && count < end) {
                             newDataSource.push(current);
