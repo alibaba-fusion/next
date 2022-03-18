@@ -77,7 +77,7 @@ export interface RangeProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 滑块拖动的时候触发的事件,不建议在这里setState, 一般情况下不需要用, 滑动时有特殊需求时使用
      */
-    onProcess?: (value: number) => void;
+    onProcess?: (value: number | [number, number]) => void;
 
     /**
      * 是否显示 tip
