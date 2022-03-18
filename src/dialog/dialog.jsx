@@ -132,7 +132,7 @@ export default class Dialog extends Component {
         /**
          * 对话框的高度样式属性
          */
-        height: PropTypes.string,
+        height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         /**
          * 开启 v2 版本弹窗
          */
