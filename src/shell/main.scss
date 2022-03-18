@@ -156,8 +156,6 @@
 
 
         &#{$shell-prefix}-navigation {
-            overflow-x: visible;
-            overflow-y: hidden;
             display: flex;
             flex-direction: column;
             justify-self: flex-start;
@@ -165,8 +163,6 @@
         }
 
         &#{$shell-prefix}-tooldock {
-            overflow-x: visible;
-            overflow-y: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
