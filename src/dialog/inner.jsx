@@ -109,10 +109,15 @@ export default class Inner extends Component {
     }
 
     renderBody() {
-        const { prefix, children } = this.props;
+        const { prefix, children, footer } = this.props;
         if (children) {
             return (
-                <div className={`${prefix}dialog-body`} ref={this.getNode.bind(this, 'bodyNode')}>
+                <div
+                    className={cx(`${prefix}dialog-body`, {
+                        [`${prefix}dialog-body-no-footer`]: footer === false
+                    })}
+                    ref={this.getNode.bind(this, 'bodyNode')}
+                >
                     {children}
                 </div>
             );

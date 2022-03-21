@@ -30,6 +30,10 @@
         color: $dialog-content-color;
     }
 
+    &-body-no-footer {
+        margin-bottom: $dialog-content-margin-bottom-no-footer;
+    }
+
     /* 让用户自己设置 */
     /* &.#{$css-prefix}closeable &-header, */
     /* &.#{$css-prefix}closeable &-body, { */
@@ -163,6 +167,9 @@
         }
         #{$dialog-prefix}-header + #{$dialog-prefix}-body {
             padding: $dialog-content-padding-top $dialog-content-padding-left-right $dialog-content-padding-bottom $dialog-content-padding-left-right;
+        }
+        #{$dialog-prefix}-header + #{$dialog-prefix}-body-no-footer {
+            margin-bottom: $dialog-content-margin-bottom-no-footer;
         }
     }
 

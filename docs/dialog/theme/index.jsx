@@ -54,6 +54,17 @@ class FunctionDemo extends Component {
                     value: 'false'
                 }]
             },
+            footer: {
+                label: '按钮',
+                value: 'true',
+                enum: [{
+                    label: '显示',
+                    value: 'true'
+                }, {
+                    label: '隐藏',
+                    value: 'false'
+                }]
+            },
             footerAlign: {
                 label: '按钮对齐方式',
                 value: 'right',
@@ -102,6 +113,7 @@ class FunctionDemo extends Component {
         const locale = (lang === 'en-us' ? enUS : zhCN).Dialog;
         const hasTitle = this.state.demoFunction.hasTitle.value === 'true';
         const hasMask = this.state.demoFunction.hasMask.value === 'true';
+        const footer = this.state.demoFunction.footer.value === 'true';
         const footerAlign = this.state.demoFunction.footerAlign.value;
         const okIsLeft = this.state.demoFunction.okPosition.value === 'left';
         const style = hasMask ?
@@ -111,6 +123,7 @@ class FunctionDemo extends Component {
             <Dialog.Inner
                 style={style}
                 title={hasTitle ? i18n.title : null}
+                footer={footer}
                 footerAlign={footerAlign}
                 footerActions={okIsLeft ? ['ok', 'cancel'] : ['cancel', 'ok']}
                 locale={locale}>
@@ -122,6 +135,7 @@ class FunctionDemo extends Component {
             <Dialog.Inner
                 className="next-dialog-quick"
                 style={style}
+                footer={footer}
                 footerAlign={footerAlign}
                 footerActions={okIsLeft ? ['ok', 'cancel'] : ['cancel', 'ok']}
                 locale={locale}>
@@ -137,6 +151,7 @@ class FunctionDemo extends Component {
             <Dialog.Inner
                 className="next-dialog-quick"
                 style={style}
+                footer={footer}
                 footerAlign={footerAlign}
                 footerActions={okIsLeft ? ['ok', 'cancel'] : ['cancel', 'ok']}
                 locale={locale}>
