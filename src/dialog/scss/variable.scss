@@ -60,6 +60,9 @@ $dialog-content-padding-bottom: $s-5 !default;
 /// padding (l, r)
 /// @namespace size/content
 $dialog-content-padding-left-right: $s-5 !default;
+/// margin (b) no footer
+/// @namespace size/content
+$dialog-content-margin-bottom-no-footer: $s-0 !default;
 /// divider
 /// @namespace size/footer
 $dialog-footer-border-width: $line-zero !default;
