@@ -47,12 +47,12 @@ export interface RangeProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 设置当前取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`
      */
-    value?: number | Array<number>;
+    value?: number | [number, number];
 
     /**
      * 设置初始取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`
      */
-    defaultValue?: number | Array<number>;
+    defaultValue?: number | [number, number];
 
     /**
      * 刻度数值显示逻辑（false 代表不显示，array 枚举显示的值，number 代表按 number 平分，object 表示按 key 划分，value 值显示）
@@ -72,12 +72,12 @@ export interface RangeProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 当 Range 的值发生改变后，会触发 onChange 事件，并把改变后的值作为参数传入, 如果设置了value, 要配合此函数做受控使用
      */
-    onChange?: (value: number) => void;
+    onChange?: (value: number | [number, number]) => void;
 
     /**
      * 滑块拖动的时候触发的事件,不建议在这里setState, 一般情况下不需要用, 滑动时有特殊需求时使用
      */
-    onProcess?: (value: number) => void;
+    onProcess?: (value: number | [number, number]) => void;
 
     /**
      * 是否显示 tip
