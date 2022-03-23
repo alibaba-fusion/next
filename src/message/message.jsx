@@ -55,9 +55,9 @@ class Message extends Component {
          */
         visible: PropTypes.bool,
         /**
-         * 显示的图标类型，会覆盖内部设置的IconType
+         * 显示的图标类型，会覆盖内部设置的IconType，传false不显示图标
          */
-        iconType: PropTypes.string,
+        iconType: PropTypes.string | false,
         /**
          * 显示关闭按钮
          */
@@ -175,11 +175,13 @@ class Message extends Component {
                         <Icon type="close" />
                     </a>
                 ) : null}
-                <Icon
-                    className={`${messagePrefix}-symbol ${!icon &&
-                        `${messagePrefix}-symbol-icon`}`}
-                    type={icon}
-                />
+                {icon !== false ? (
+                    <Icon
+                        className={`${messagePrefix}-symbol ${!icon &&
+                            `${messagePrefix}-symbol-icon`}`}
+                        type={icon}
+                    />
+                ) : null}
                 {title ? (
                     <div className={`${messagePrefix}-title`}>{title}</div>
                 ) : null}
