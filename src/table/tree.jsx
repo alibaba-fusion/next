@@ -94,18 +94,17 @@ export default function tree(BaseComponent) {
             const ret = [],
                 loop = function(dataSource, level, parentId = null) {
                     dataSource.forEach(item => {
-                        const itemCopy = { ...item };
-                        itemCopy.__level = level;
+                        item.__level = level;
 
                         if (level === 0 || openRowKeys.indexOf(parentId) > -1) {
-                            itemCopy.__hidden = false;
+                            item.__hidden = false;
                         } else {
-                            itemCopy.__hidden = true;
+                            item.__hidden = true;
                         }
-                        ret.push(itemCopy);
+                        ret.push(item);
 
-                        if (itemCopy.children) {
-                            loop(itemCopy.children, level + 1, itemCopy[primaryKey]);
+                        if (item.children) {
+                            loop(item.children, level + 1, item[primaryKey]);
                         }
                     });
                 };
