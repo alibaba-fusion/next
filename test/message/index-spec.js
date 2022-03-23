@@ -105,6 +105,12 @@ describe('Message', () => {
         wrapper.unmount();
     });
 
+    it('should not show icon if set iconType to false', () => {
+        const wrapper = mount(<Message iconType={false} />);
+        assert(wrapper.find(Icon).length === 0);
+        wrapper.unmount();
+    });
+
     it('should custom icon type', () => {
         const wrapper = mount(<Message iconType="smile" />);
         assert(wrapper.find(Icon).prop('type') === 'smile');
