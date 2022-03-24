@@ -206,13 +206,13 @@ class FunctionDemo extends React.Component {
                                 </DemoGroup>
                                 <DemoGroup label="Expand" height={220}>
                                     <Select mode="multiple" showSearch size="large" value={['United States']}
-                                        className="next-focus" visible
+                                        className="next-focus next-select-highlight" visible
                                         searchValue="C" {...comboboxProps} />
                                     <Select mode="multiple" showSearch size="medium" value={['United States']}
-                                        className="next-focus" visible
+                                        className="next-focus next-select-highlight" visible
                                         searchValue="C" {...comboboxProps} />
                                     <Select mode="multiple" showSearch size="small" value={['United States']}
-                                        className="next-focus" visible
+                                        className="next-focus next-select-highlight" visible
                                         searchValue="C" {...comboboxProps} />
                                 </DemoGroup>
                                 <DemoGroup label="Selected">
