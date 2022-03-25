@@ -27,7 +27,7 @@
 | children       | 内容                                                                                    | ReactNode | -         |
 | defaultVisible | 默认是否显示                                                                                | Boolean   | true      |
 | visible        | 当前是否显示                                                                                | Boolean   | -         |
-| iconType       | 显示的图标类型，会覆盖内部设置的IconType，传false不显示图标                                                              | String \| false   | -         |
+| iconType       | 显示的图标类型，会覆盖内部设置的IconType，传false不显示图标                                                  | custom    | -         |
 | closeable      | 显示关闭按钮                                                                                | Boolean   | false     |
 | onClose        | 关闭按钮的回调<br/><br/>**签名**:<br/>Function() => void                                       | Function  | () => {}  |
 | afterClose     | 关闭之后调用的函数<br/><br/>**签名**:<br/>Function() => void                                     | Function  | () => {}  |
