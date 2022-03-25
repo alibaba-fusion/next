@@ -1,6 +1,7 @@
 import React, { Component, Children, cloneElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
+import { has } from 'lodash';
 import cx from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import SubMenu from './sub-menu';
@@ -167,6 +168,16 @@ const getNewChildren = ({ children, root, mode, lastVisibleIndex, hozInLine, pre
                 }
 
                 return newChild;
+            }
+
+            if (typeof child === 'string') {
+                return;
+            }
+            if (
+                has(child, 'props.children') &&
+                (child.props.children instanceof Array || React.isValidElement(child.props.children))
+            ) {
+                return loop(child.props.children, '0');
             }
 
             return child;
