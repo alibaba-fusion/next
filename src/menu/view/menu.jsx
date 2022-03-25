@@ -1,5 +1,6 @@
 import React, { Component, Children, cloneElement } from 'react';
 import { findDOMNode } from 'react-dom';
+import { has } from 'lodash';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
@@ -169,12 +170,22 @@ const getNewChildren = ({ children, root, mode, lastVisibleIndex, hozInLine, pre
                 return newChild;
             }
 
+            // 如果Menu组件内设置了文本节点， 那么直接就退出
+            if (typeof child === 'string') {
+                return;
+            }
+            if (
+                has(child, 'props.children') &&
+                (child.props.children instanceof Array || React.isValidElement(child.props.children))
+            ) {
+                return loop(child.props.children, '0');
+            }
+
             return child;
         });
     };
 
     const newChildren = loop(arr, '0');
-
     return {
         newChildren,
         _k2n: k2n,
