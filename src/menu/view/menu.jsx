@@ -169,9 +169,6 @@ const getNewChildren = ({ children, root, mode, lastVisibleIndex, hozInLine, pre
                 return newChild;
             }
 
-            if (typeof child === 'string') {
-                return;
-            }
             if (
                 has(child, 'props.children') &&
                 (child.props.children instanceof Array || React.isValidElement(child.props.children))
