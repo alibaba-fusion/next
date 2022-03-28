@@ -1,13 +1,12 @@
 import React, { Component, Children, cloneElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import { has } from 'lodash';
 import cx from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import SubMenu from './sub-menu';
 import ConfigProvider from '../../config-provider';
 import { func, obj, dom, events, KEYCODE } from '../../util';
-import { getWidth, normalizeToArray, isSibling, isAncestor, isAvailablePos, getFirstAvaliablelChildKey } from './util';
+import { getWidth, normalizeToArray, isSibling, isAncestor, isAvailablePos, getFirstAvaliablelChildKey, has } from './util';
 
 const { bindCtx } = func;
 const { pickOthers, isNil } = obj;
