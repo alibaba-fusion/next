@@ -94,9 +94,10 @@ const Drawer = props => {
     const [uuid] = useState(guid());
     const { setVisibleOverlayToParent, ...otherContext } = useContext(OverlayContext);
     const childIDMap = useRef(new Map());
-    const isAnimationEnd = useRef(false);
+    const isAnimationEnd = useRef(false); // 动效是否结束, 因为时机非常快用 state 太慢
     const [, forceUpdate] = useState();
 
+    // 动效结束，强制重新渲染
     const markAnimationEnd = state => {
         isAnimationEnd.current = state;
         forceUpdate({});
@@ -180,6 +181,7 @@ const Drawer = props => {
         }
     }, [container]);
 
+    // Drawer 关闭时候的处理。1. 结束的时候不管动效是不是已经结束都要隐藏弹窗；2. 需要把focus态还原到触发节点
     const handleExited = () => {
         if (!isAnimationEnd.current) {
             markAnimationEnd(true);
@@ -198,6 +200,7 @@ const Drawer = props => {
         }
     };
 
+    // visible? <Drawer/>: null; 这种写法会触发卸载
     useEffect(() => {
         return () => {
             handleExited();
