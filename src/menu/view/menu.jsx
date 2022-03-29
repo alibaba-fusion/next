@@ -5,8 +5,8 @@ import cx from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import SubMenu from './sub-menu';
 import ConfigProvider from '../../config-provider';
-import { func, obj, dom, events, KEYCODE } from '../../util';
-import { getWidth, normalizeToArray, isSibling, isAncestor, isAvailablePos, getFirstAvaliablelChildKey, has } from './util';
+import { func, obj, dom, events, KEYCODE, has } from '../../util';
+import { getWidth, normalizeToArray, isSibling, isAncestor, isAvailablePos, getFirstAvaliablelChildKey } from './util';
 
 const { bindCtx } = func;
 const { pickOthers, isNil } = obj;

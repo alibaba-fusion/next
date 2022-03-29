@@ -71,22 +71,3 @@ export const getChildSelected = ({ selectMode, selectedKeys, _k2n, _key }) => {
 
     return !!selectMode && selectedKeys.some(key => _k2n[key] && _k2n[key].pos.indexOf(_keyPos) === 0);
 };
-
-
-/**
- * objectData代表的是原始对象
- * keyChain代表的是key的链，比如a.b.c
- *
- * @return bool  原始对象上是否有key链对应的值
- */
-
-export const  has = (objectData, keyChain) => {
-    let _objectData = objectData;
-    const keys = keyChain.split('.');
-    for (let i = 0; i < keys.length; i++) {
-        const res = _objectData[keys[i]]
-        if(!res) return false;
-        if(i === keys.length - 1) return true;
-        _objectData = res;
-    }
-}
