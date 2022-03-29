@@ -123,7 +123,7 @@ class HeaderPanel extends React.PureComponent {
             <Select
                 className={`${prefixCls}-select-month`}
                 popupClassName={`${prefixCls}-select-month-popup`}
-                defaultValue={curMonth}
+                value={curMonth}
                 dataSource={dataSource}
                 onChange={v => onPanelValueChange(panelValue.month(v))}
             />
@@ -159,7 +159,7 @@ class HeaderPanel extends React.PureComponent {
                 key="year-select"
                 className={`${prefixCls}-select-year`}
                 popupClassName={`${prefixCls}-select-year-popup`}
-                defaultValue={curYear}
+                value={curYear}
                 dataSource={dataSource}
                 onChange={v => onPanelValueChange(panelValue.year(v))}
             />
