@@ -42,7 +42,6 @@ class Demo extends React.Component {
 
     render() {
         const drawerProps = {
-            v2: true,
             placement: this.state.placement,
             closeMode: 'mask',
             bodyStyle: {padding: 0}

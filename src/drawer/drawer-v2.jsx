@@ -55,6 +55,7 @@ const Drawer = props => {
     const {
         prefix = 'next-',
         hasMask = true,
+        autoFocus = false,
         className,
         title,
         children,
@@ -79,7 +80,6 @@ const Drawer = props => {
 
     const [firstVisible, setFirst] = useState(pvisible || false);
     const [visible, setVisible] = useState(pvisible);
-    const [isAnimationEnd, markAnimationEnd] = useState(false);
     const getContainer =
         typeof popupContainer === 'string'
             ? () => document.getElementById(popupContainer)
@@ -89,10 +89,19 @@ const Drawer = props => {
     const [container, setContainer] = useState(getContainer());
     const drawerRef = useRef(null);
     const wrapperRef = useRef(null);
+    const lastFocus = useRef(null);
     const locker = useRef(null);
     const [uuid] = useState(guid());
     const { setVisibleOverlayToParent, ...otherContext } = useContext(OverlayContext);
     const childIDMap = useRef(new Map());
+    const isAnimationEnd = useRef(false); // 动效是否结束, 因为时机非常快用 state 太慢
+    const [, forceUpdate] = useState();
+
+    // 动效结束，强制重新渲染
+    const markAnimationEnd = state => {
+        isAnimationEnd.current = state;
+        forceUpdate({});
+    };
 
     let canCloseByEsc = false;
     let canCloseByMask = false;
@@ -172,11 +181,37 @@ const Drawer = props => {
         }
     }, [container]);
 
+    // Drawer 关闭时候的处理。1. 结束的时候不管动效是不是已经结束都要隐藏弹窗；2. 需要把focus态还原到触发节点
+    const handleExited = () => {
+        if (!isAnimationEnd.current) {
+            markAnimationEnd(true);
+            dom.setStyle(wrapperRef.current, 'display', 'none');
+            scrollLocker.unlock(document.body, locker.current);
+
+            if (autoFocus && lastFocus.current) {
+                try {
+                    lastFocus.current.focus();
+                } finally {
+                    // ignore ...
+                }
+                lastFocus.current = null;
+            }
+            afterClose();
+        }
+    };
+
+    // visible? <Drawer/>: null; 这种写法会触发卸载
+    useEffect(() => {
+        return () => {
+            handleExited();
+        };
+    }, []);
+
     if (firstVisible === false || !container) {
         return null;
     }
 
-    if (!visible && !cache && isAnimationEnd) {
+    if (!visible && !cache && isAnimationEnd.current) {
         return null;
     }
 
@@ -193,14 +228,14 @@ const Drawer = props => {
         dom.setStyle(wrapperRef.current, 'display', '');
     };
     const handleEntered = () => {
+        if (autoFocus && drawerRef.current && drawerRef.current.bodyNode) {
+            const focusableNodes = focus.getFocusNodeList(drawerRef.current.bodyNode);
+            if (focusableNodes.length > 0 && focusableNodes[0]) {
+                lastFocus.current = document.activeElement;
+                focusableNodes[0].focus();
+            }
+        }
         setVisibleOverlayToParent(uuid, drawerRef.current);
-    };
-
-    const handleExited = () => {
-        markAnimationEnd(true);
-        dom.setStyle(wrapperRef.current, 'display', 'none');
-        scrollLocker.unlock(document.body, locker.current);
-        afterClose();
     };
 
     const wrapperCls = classNames({
