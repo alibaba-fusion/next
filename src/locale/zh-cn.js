@@ -46,7 +46,7 @@ export default {
     },
     Dialog: {
         close: '关闭',
-        ok: '确认',
+        ok: '确定',
         cancel: '取消',
     },
     Drawer: {
