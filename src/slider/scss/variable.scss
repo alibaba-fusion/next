@@ -115,7 +115,7 @@ $slick-dots-background-color-normal: $color-black !default;
 
 /// background
 /// @namespace statement/hover/dot
-$slick-dots-background-color-hover: $color-black !default;
+$slick-dots-background-color-hover: $color-white !default;
 
 /// background
 /// @namespace statement/selected/dot
@@ -129,7 +129,7 @@ $slick-dots-background-opacity-normal: .32 !default;
 /// background opacity
 /// @type alpha
 /// @namespace statement/hover/dot
-$slick-dots-background-opacity-hover: .32 !default;
+$slick-dots-background-opacity-hover: .5 !default;
 
 /// background opacity
 /// @type alpha

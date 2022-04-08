@@ -130,6 +130,7 @@
                 border-radius: $slick-dots-border-radius;
                 background: rgba(get-compiling-value($slick-dots-background-color-normal), get-compiling-value($slick-dots-background-opacity-normal));
 
+                &:focus,
                 &:hover {
                     background-color: rgba(get-compiling-value($slick-dots-background-color-hover), get-compiling-value($slick-dots-background-opacity-hover));
                     /* border-width: $slick-dots-border-width-hover; */
@@ -137,10 +138,6 @@
                 }
             }
 
-            & button:focus,
-            & button:hover {
-                background: rgba(get-compiling-value($color-white), .5);
-            }
             &.active button {
                 background: rgba(get-compiling-value($slick-dots-background-color-selected), get-compiling-value($slick-dots-background-opacity-selected));
                 /* border-width: $slick-dots-border-width-selected; */
