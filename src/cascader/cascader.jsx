@@ -704,12 +704,16 @@ class Cascader extends Component {
                         props.onSelect = this.handleSelect.bind(this, item.value, canExpand);
                     }
 
+                    const itemContent = itemRender(item, props);
+                    if (itemContent === null) {
+                        return null;
+                    }
                     return (
                         <CascaderMenuItem key={item.value} {...props}>
-                            {itemRender(item)}
+                            {itemContent}
                         </CascaderMenuItem>
                     );
-                })}
+                }).filter(v => v)}
             </CascaderMenu>
         );
     }
