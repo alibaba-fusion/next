@@ -15,15 +15,22 @@ module.exports = function transform() {
     const libConfig = babelConfigCreator({}, { runtime: true });
     const esConfig = babelConfigCreator({}, { runtime: true, modules: false });
 
+    libConfig.plugins.unshift([
+        require('babel-plugin-import').default,
+        {
+            libraryName: '@alifd/meet-react',
+            style: () => {
+                return '@alifd/meet-react/lib/core/index.css';
+            },
+        },
+    ]);
+
     fs.emptyDirSync(libPath);
     fs.emptyDirSync(esPath);
 
     const relativePaths = glob.sync('**/*.*', { cwd: srcPath });
     relativePaths.forEach(relaticePath => {
-        const content = fs.readFileSync(
-            path.join(srcPath, relaticePath),
-            'utf8'
-        );
+        const content = fs.readFileSync(path.join(srcPath, relaticePath), 'utf8');
         let libContent, esContent;
         libContent = esContent = content;
         if (PATTERN_ES6.test(relaticePath)) {
