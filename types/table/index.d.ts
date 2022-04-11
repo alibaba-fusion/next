@@ -20,13 +20,13 @@ export interface ColumnProps extends HTMLAttributesWeak, CommonProps {
      * value, rowIndex, record, context四个属性只可读不可被更改
      * Function(value, index, record) => Element
      */
-    cell?: React.ReactElement<any> | React.ReactNode | (() => void);
+    cell?: React.ReactElement<any> | React.ReactNode | (() => any);
 
     /**
      * 表头显示的内容
      * value, rowIndex, record, context四个属性只可读不可被更改
      */
-    title?: React.ReactElement<any> | React.ReactNode | (() => void);
+    title?: React.ReactElement<any> | React.ReactNode | (() => any);
 
     htmlTitle?: string;
     /**
@@ -89,7 +89,7 @@ export interface ColumnGroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 表头显示的内容
      */
-    title?: React.ReactElement<any> | React.ReactNode | (() => void);
+    title?: React.ReactElement<any> | React.ReactNode | (() => any);
 }
 
 export class ColumnGroup extends React.Component<ColumnGroupProps, any> {}
@@ -98,7 +98,7 @@ export interface GroupHeaderProps extends React.HTMLAttributes<HTMLElement>, Com
     /**
      * 行渲染的逻辑
      */
-    cell?: React.ReactElement<any> | React.ReactNode | (() => void);
+    cell?: React.ReactElement<any> | React.ReactNode | (() => any);
 
     /**
      * 是否在Children上面渲染selection
@@ -122,7 +122,7 @@ export interface GroupFooterProps extends React.HTMLAttributes<HTMLElement>, Com
     /**
      * 行渲染的逻辑
      */
-    cell?: React.ReactElement<any> | React.ReactNode | (() => void);
+    cell?: React.ReactElement<any> | React.ReactNode | (() => any);
 }
 
 export class GroupFooter extends React.Component<GroupFooterProps, any> {}
@@ -392,7 +392,7 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTable
     /**
      * 设置行高
      */
-    rowHeight?: number | (() => void);
+    rowHeight?: number | (() => any);
 
     /**
      * 在内容区域滚动的时候触发的函数
