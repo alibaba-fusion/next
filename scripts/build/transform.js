@@ -15,15 +15,23 @@ module.exports = function transform() {
     const libConfig = babelConfigCreator({}, { runtime: true });
     const esConfig = babelConfigCreator({}, { runtime: true, modules: false });
 
+    // 只对 commonjs 格式的构建开启 babel-import-plugin 按需引入，es module 格式可以使用 tree shaking 做到按需引入
+    libConfig.plugins.unshift([
+        require('babel-plugin-import').default,
+        {
+            libraryName: '@alifd/meet-react',
+            style: () => {
+                return '@alifd/meet-react/lib/core/index.css';
+            },
+        },
+    ]);
+
     fs.emptyDirSync(libPath);
     fs.emptyDirSync(esPath);
 
     const relativePaths = glob.sync('**/*.*', { cwd: srcPath });
     relativePaths.forEach(relaticePath => {
-        const content = fs.readFileSync(
-            path.join(srcPath, relaticePath),
-            'utf8'
-        );
+        const content = fs.readFileSync(path.join(srcPath, relaticePath), 'utf8');
         let libContent, esContent;
         libContent = esContent = content;
         if (PATTERN_ES6.test(relaticePath)) {
