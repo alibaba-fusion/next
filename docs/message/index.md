@@ -18,20 +18,20 @@
 
 ### Message
 
-| 参数             | 说明                                                                                    | 类型        | 默认值       |
-| -------------- | ------------------------------------------------------------------------------------- | --------- | --------- |
-| size           | 反馈大小<br/><br/>**可选值**:<br/>'medium', 'large'                                          | Enum      | 'medium'  |
-| type           | 反馈类型<br/><br/>**可选值**:<br/>'success', 'warning', 'error', 'notice', 'help', 'loading' | Enum      | 'success' |
-| shape          | 反馈外观<br/><br/>**可选值**:<br/>'inline', 'addon', 'toast'                                 | Enum      | 'inline'  |
-| title          | 标题                                                                                    | ReactNode | -         |
-| children       | 内容                                                                                    | ReactNode | -         |
-| defaultVisible | 默认是否显示                                                                                | Boolean   | true      |
-| visible        | 当前是否显示                                                                                | Boolean   | -         |
-| iconType       | 显示的图标类型，会覆盖内部设置的IconType，传false不显示图标                                                  | custom    | -         |
-| closeable      | 显示关闭按钮                                                                                | Boolean   | false     |
-| onClose        | 关闭按钮的回调<br/><br/>**签名**:<br/>Function() => void                                       | Function  | () => {}  |
-| afterClose     | 关闭之后调用的函数<br/><br/>**签名**:<br/>Function() => void                                     | Function  | () => {}  |
-| animation      | 是否开启展开收起动画                                                                            | Boolean   | true      |
+| 参数             | 说明                                                                                    | 类型             | 默认值       |
+| -------------- | ------------------------------------------------------------------------------------- | -------------- | --------- |
+| size           | 反馈大小<br/><br/>**可选值**:<br/>'medium', 'large'                                          | Enum           | 'medium'  |
+| type           | 反馈类型<br/><br/>**可选值**:<br/>'success', 'warning', 'error', 'notice', 'help', 'loading' | Enum           | 'success' |
+| shape          | 反馈外观<br/><br/>**可选值**:<br/>'inline', 'addon', 'toast'                                 | Enum           | 'inline'  |
+| title          | 标题                                                                                    | ReactNode      | -         |
+| children       | 内容                                                                                    | ReactNode      | -         |
+| defaultVisible | 默认是否显示                                                                                | Boolean        | true      |
+| visible        | 当前是否显示                                                                                | Boolean        | -         |
+| iconType       | 显示的图标类型，会覆盖内部设置的IconType，传false不显示图标                                                  | String/Boolean | -         |
+| closeable      | 显示关闭按钮                                                                                | Boolean        | false     |
+| onClose        | 关闭按钮的回调<br/><br/>**签名**:<br/>Function() => void                                       | Function       | () => {}  |
+| afterClose     | 关闭之后调用的函数<br/><br/>**签名**:<br/>Function() => void                                     | Function       | () => {}  |
+| animation      | 是否开启展开收起动画                                                                            | Boolean        | true      |
 
 <!-- api-extra-start -->
 
