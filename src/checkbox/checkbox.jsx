@@ -170,7 +170,7 @@ class Checkbox extends UIState {
 
     onChange(e) {
         const { context, value } = this.props;
-        const checked = e.target.checked;
+        const checked = !this.state.checked;
 
         if (this.disabled) {
             return;
@@ -231,7 +231,7 @@ class Checkbox extends UIState {
                 disabled={disabled}
                 checked={checked}
                 type="checkbox"
-                onChange={this.onChange}
+                onClick={this.onChange}
                 aria-checked={indeterminate ? 'mixed' : checked}
                 className={`${prefix}checkbox-input`}
             />
