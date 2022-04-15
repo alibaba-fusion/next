@@ -1205,15 +1205,30 @@ function expandChildTree(key) {
     ReactTestUtils.Simulate.click(findTreeNodeByKey(key).querySelector('.next-tree-switcher'));
 }
 
+// 这里在 React Element 上监听的 click 事件，React Event 和 Dom Event 机制不一样
+// 这里模拟下 React Event 触发
+// https://stackoverflow.com/questions/40091000/simulate-click-event-on-react-element
+const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
+function simulateMouseClick(element){
+  mouseClickEvents.forEach(mouseEventType =>
+    element.dispatchEvent(
+      new MouseEvent(mouseEventType, {
+          view: window,
+          bubbles: true,
+          cancelable: true,
+          buttons: 1
+      })
+    )
+  );
+}
+
 function selectTreeNode(key) {
     ReactTestUtils.Simulate.click(findTreeNodeByKey(key).querySelector('.next-tree-node-label'));
 }
 
 function checkTreeNode(key) {
-    const input = findTreeNodeByKey(key).querySelector('.next-checkbox input');
-    ReactTestUtils.Simulate.change(input, {
-        target: { checked: input.checked },
-    });
+    const checkbox = findTreeNodeByKey(key).querySelector('.next-checkbox-wrapper');
+    simulateMouseClick(checkbox);
 }
 
 function editTreeNode(key) {
