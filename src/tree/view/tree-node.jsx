@@ -375,7 +375,8 @@ class TreeNode extends Component {
                 tabIndex={-1}
                 indeterminate={indeterminate}
                 disabled={disabled || checkboxDisabled}
-                onChange={this.handleCheck}
+                // don't use onChange, fix https://github.com/alibaba-fusion/next/issues/3850
+                onClick={this.handleCheck}
             />
         );
     }
