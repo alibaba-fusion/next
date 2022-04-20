@@ -233,7 +233,7 @@
     & &-icon-arrow.#{$css-prefix}icon {
         position: absolute;
         top: 0;
-        right: 10px;
+        right: $menu-arrow-right;
         @include icon-size($menu-icon-size);
         color: $menu-arrow-color;
         transition: all $motion-duration-immediately $motion-linear;
