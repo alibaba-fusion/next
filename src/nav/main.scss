@@ -369,6 +369,10 @@ $nav-icononly-width: 58px;
     }
 
     &.#{$css-prefix}icon-only {
+        &.#{$css-prefix}icon-only-text {
+            padding-top: $s-1;
+            padding-bottom: $s-1;
+        }
         &.#{$css-prefix}custom-icon-only-width {
             text-align: center;
         }
