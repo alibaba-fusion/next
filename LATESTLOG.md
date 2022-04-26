@@ -1,10 +1,10 @@
 # Latest Log 
 
-## [1.25.32](https://github.com/alibaba-fusion/next/compare/1.25.31...1.25.32) (2022-04-21)
+## [1.25.33-beta](https://github.com/alibaba-fusion/next/compare/1.25.32...1.25.33-beta) (2022-04-26)
 
 
-### Bug Fixes
+### Features
 
-* **Menu:** add variable for icon right fix [#3862](https://github.com/alibaba-fusion/next/issues/3862) ([00a3d43](https://github.com/alibaba-fusion/next/commit/00a3d43))
+* **Nav:** add iconTextOnly, close [#3834](https://github.com/alibaba-fusion/next/issues/3834) ([b7d1a5d](https://github.com/alibaba-fusion/next/commit/b7d1a5d))
 
 
