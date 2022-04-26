@@ -42,6 +42,7 @@ class App extends React.Component {
             props.iconOnly = true;
         } else {
             props.iconOnly = value === 'true';
+            props.iconTextOnly = false;
         }
         this.setState(props);
     }
@@ -57,7 +58,7 @@ class App extends React.Component {
         return (
             <div>
                 <div className="demo-ctl">
-                    <Radio.Group shape="button" size="medium" value={iconOnly ? 'true' : 'false'} onChange={this.iconfontChange.bind(this)}>
+                    <Radio.Group shape="button" size="medium" value={iconOnly && iconTextOnly ? 'trueText' : iconOnly ? 'true' : 'false'} onChange={this.iconfontChange.bind(this)}>
                         <Radio value="true">iconOnly=true</Radio>
                         <Radio value="trueText">iconOnly=true iconTextOnly=true</Radio>
                         <Radio value="false">iconOnly=false</Radio>
