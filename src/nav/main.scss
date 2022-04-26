@@ -416,9 +416,9 @@ $nav-icononly-width: 58px;
             );
         }
 
-        #{$nav-prefix}-item.#{$css-prefix}selected #{$nav-prefix}-icon.#{$css-prefix}icon {
-            animation: pulse .3s cubic-bezier(.23, 1, .32, 1);
-        }
+        // #{$nav-prefix}-item.#{$css-prefix}selected #{$nav-prefix}-icon.#{$css-prefix}icon {
+        //     animation: pulse .3s cubic-bezier(.23, 1, .32, 1);
+        // }
 
         #{$menu-prefix}-hoz-icon-arrow,
         #{$menu-prefix}-icon-arrow {
