@@ -51,10 +51,18 @@ class Item extends Component {
             [className]: !!className,
         });
 
+        const newChildren = showChildren ? (
+            iconTextOnly ? (
+                <span className={`${prefix}nav-text`}>{children}</span>
+            ) : (
+                children
+            )
+        ) : null;
+
         const item = (
             <Menu.Item title={title} className={cls} {...others}>
                 {iconEl}
-                {showChildren && <span className={`${prefix}nav-text`}>{children}</span>}
+                {newChildren}
             </Menu.Item>
         );
 
