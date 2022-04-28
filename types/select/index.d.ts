@@ -460,6 +460,11 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
      *  默认高亮key
      */
     defaultHighlightKey?: string;
+
+    /**
+     * 展开下拉菜单时是否自动焦点到弹层	
+     */
+    popupAutoFocus?: boolean;
 }
 
 export default class Select extends React.Component<SelectProps, any> {
