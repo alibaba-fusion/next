@@ -71,6 +71,10 @@ class Balloon extends React.Component {
          */
         arrowPointToCenter: PropTypes.bool,
         /**
+         * [v2] 弹层偏离触发元素的像素值
+         */
+        placementOffset: PropTypes.number,
+        /**
          * 是否显示关闭按钮
          */
         closable: PropTypes.bool,
@@ -343,6 +347,7 @@ class Balloon extends React.Component {
             rtl,
             v2,
             arrowPointToCenter,
+            placementOffset = 0,
             ...others
         } = this.props;
 
@@ -416,7 +421,7 @@ class Balloon extends React.Component {
 
             Object.assign(otherProps, {
                 placement: align,
-                placementOffset: 12,
+                placementOffset: placementOffset + 12,
                 v2: true,
                 beforePosition: this.beforePosition,
                 autoAdjust,
