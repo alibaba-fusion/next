@@ -26,7 +26,9 @@
 /// @type Length
 $size-base: 4px !default;
 
-// @deprecated
+/// s-auto
+/// @export
+/// @unconfigurable
 $s-auto: auto;
 
 /// s-zero
