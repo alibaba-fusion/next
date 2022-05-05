@@ -3,6 +3,7 @@
 import * as React from 'react';
 import CommonProps from '../util';
 import { ButtonProps } from '../button';
+import Input from '../input';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -155,4 +156,6 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     stringMode?: boolean;
 }
 
-export default class NumberPicker extends React.Component<NumberPickerProps, any> {}
+export default class NumberPicker extends React.Component<NumberPickerProps, any> {
+    getInputNode: () => Input;
+}
