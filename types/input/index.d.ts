@@ -362,5 +362,6 @@ export default class Input extends React.Component<InputProps, any> {
     static TextArea: typeof TextArea;
     static Group: typeof Group;
     static Password: typeof Password;
+    getInputNode: () => HTMLInputElement;
 }
 
