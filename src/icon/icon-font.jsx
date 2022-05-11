@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import ConfigProvider from '../config-provider';
-import Icon from './index';
+import Icon from './icon';
 
 const customCache = new Set();
 
@@ -39,14 +39,7 @@ export default function createFromIconfontCN(options = {}) {
     }
 
     const Iconfont = props => {
-        const {
-            type,
-            size,
-            children,
-            className,
-            prefix = 'next-',
-            ...others
-        } = props;
+        const { type, size, children, className, prefix = 'next-', ...others } = props;
 
         // component > children > type
         let content = null;
@@ -66,12 +59,7 @@ export default function createFromIconfontCN(options = {}) {
 
         return (
             <Icon size={size}>
-                <svg
-                    className={classes}
-                    focusable={false}
-                    {...others}
-                    {...extraCommonProps}
-                >
+                <svg className={classes} focusable={false} {...others} {...extraCommonProps}>
                     {content}
                 </svg>
             </Icon>
