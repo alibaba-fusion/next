@@ -272,6 +272,11 @@ const Drawer = props => {
         setVisibleOverlayToParent(id, node);
     };
 
+    const nstyle = {
+        ...{ width, height },
+        ...style,
+    };
+
     return (
         <OverlayContext.Provider
             value={{
@@ -292,7 +297,7 @@ const Drawer = props => {
                         </Animate.OverlayAnimate>
                     ) : null}
 
-                    <div className={innerWrapperCls} style={{ width, height }} ref={drawerRef}>
+                    <div className={innerWrapperCls} style={nstyle} ref={drawerRef}>
                         <Animate.OverlayAnimate
                             visible={visible}
                             animation={newAnimation}
