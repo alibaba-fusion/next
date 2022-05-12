@@ -256,7 +256,7 @@ class TimePicker2 extends Component {
                 };
                 if (isRange && !prevState.selecting) {
                     state.inputValue = fmtValue(value, format);
-                    state.curValue = formattedValue;
+                    state.curValue = formattedValue || [];
                 }
             }
         }
