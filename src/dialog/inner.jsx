@@ -52,8 +52,13 @@ export default class Inner extends Component {
     };
 
     componentDidUpdate() {
-        const { maxHeight, height: pheight = maxHeight, v2 } = this.props;
-        if (this.bodyNode && v2 && pheight && pheight !== 'auto') {
+        // style 作为第一优先级
+        const {
+            height: pheight,
+            style: { maxHeight, height: sheight = maxHeight || pheight },
+            v2,
+        } = this.props;
+        if (this.bodyNode && v2 && sheight && sheight !== 'auto') {
             const style = {};
             let headerHeight = 0,
                 footerHeight = 0;
@@ -64,15 +69,14 @@ export default class Inner extends Component {
                 footerHeight = this.footerNode.getBoundingClientRect().height;
             }
             const minHeight = headerHeight + footerHeight;
-            style.minHeight = minHeight;
 
-            let height = pheight;
-            if (pheight && typeof pheight === 'string') {
+            let height = sheight;
+            if (sheight && typeof sheight === 'string') {
                 if (height.match(/calc|vh/)) {
-                    style.maxHeight = `calc(${pheight} - ${minHeight}px)`;
+                    style.maxHeight = `calc(${sheight} - ${minHeight}px)`;
                     style.overflowY = 'auto';
                 } else {
-                    height = parseInt(pheight);
+                    height = parseInt(sheight);
                 }
             }
 
@@ -114,7 +118,7 @@ export default class Inner extends Component {
             return (
                 <div
                     className={cx(`${prefix}dialog-body`, {
-                        [`${prefix}dialog-body-no-footer`]: footer === false
+                        [`${prefix}dialog-body-no-footer`]: footer === false,
                     })}
                     ref={this.getNode.bind(this, 'bodyNode')}
                 >
@@ -202,12 +206,7 @@ export default class Inner extends Component {
             ariaProps['aria-labelledby'] = this.titleId;
         }
 
-        const width = others.style && others.style.width;
-        others.style = Object.assign({}, others.style, obj.pickProps(['height', 'maxHeight', 'width'], this.props));
-        // 兼容 v1 style={width} 用法, 这里增加了 width api， 导致 style.width 优先级低了
-        if (width) {
-            others.style.width = width;
-        }
+        others.style = Object.assign({}, obj.pickProps(['height', 'maxHeight', 'width'], this.props), others.style);
 
         return (
             <div {...ariaProps} className={newClassName} {...others} dir={rtl ? 'rtl' : undefined}>
