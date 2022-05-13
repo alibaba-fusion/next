@@ -260,9 +260,9 @@ const Dialog = props => {
         bottom && (topStyle.paddingBottom = bottom);
     }
 
-    let maxHeight;
-    if (overflowScroll) {
-        maxHeight = `calc(100vh - ${top + bottom}px)`;
+    const nstyle = style || {};
+    if (overflowScroll && !nstyle.maxHeight) {
+        nstyle.maxHeight = `calc(100vh - ${top + bottom}px)`;
     }
 
     const timeout = {
@@ -282,7 +282,7 @@ const Dialog = props => {
         >
             <Inner
                 {...others}
-                style={centered ? { ...topStyle, ...style } : style}
+                style={centered ? { ...topStyle, ...nstyle } : nstyle}
                 v2
                 ref={dialogRef}
                 prefix={prefix}
@@ -301,7 +301,6 @@ const Dialog = props => {
                 onClose={(...args) => handleClose('closeClick', ...args)}
                 closeIcon={closeIcon}
                 height={height}
-                maxHeight={maxHeight}
                 width={width}
             >
                 {children}
