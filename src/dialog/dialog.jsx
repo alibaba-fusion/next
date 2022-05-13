@@ -168,6 +168,11 @@ export default class Dialog extends Component {
          */
         overflowScroll: PropTypes.bool,
         /**
+         * [v2] 最外包裹层 className
+         * @version 1.26
+         */
+        wrapperClassName: PropTypes.string,
+        /**
          * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
          * **close** 表示点击关闭按钮可以关闭对话框
          * **mask** 表示点击遮罩区域可以关闭对话框
