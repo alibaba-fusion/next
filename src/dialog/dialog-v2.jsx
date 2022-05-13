@@ -54,6 +54,7 @@ const Dialog = props => {
         minMargin,
         onClose,
         style,
+        wrapperClassName,
         ...others
     } = props;
 
@@ -238,6 +239,7 @@ const Dialog = props => {
 
     const wrapperCls = classNames({
         [`${prefix}overlay-wrapper`]: true,
+        [`${wrapperClassName}`]: !!wrapperClassName,
         opened: visible,
     });
     const dialogCls = classNames({
