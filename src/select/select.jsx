@@ -929,6 +929,7 @@ class Select extends Base {
         return (
             typeof value !== 'undefined' &&
             value !== null &&
+            (Array.isArray(value) ? value.length > 0 : true) &&
             hasClear &&
             !readOnly &&
             !disabled &&
