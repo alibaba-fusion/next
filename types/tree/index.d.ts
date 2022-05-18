@@ -251,7 +251,7 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否开启虚拟滚动
      */
-    useVirtual: boolean;
+    useVirtual?: boolean;
 }
 
 export default class Tree extends React.Component<TreeProps, any> {
