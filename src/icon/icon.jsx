@@ -79,4 +79,4 @@ class Icon extends Component {
     }
 }
 
-export default Icon;
+export default ConfigProvider.config(Icon);
