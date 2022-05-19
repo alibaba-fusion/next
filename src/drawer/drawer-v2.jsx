@@ -273,7 +273,8 @@ const Drawer = props => {
     };
 
     const nstyle = {
-        ...{ width, height },
+        width,
+        height,
         ...style,
     };
 

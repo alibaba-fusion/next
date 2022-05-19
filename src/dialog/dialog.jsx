@@ -199,7 +199,6 @@ export default class Dialog extends Component {
          * [v2废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
          */
         minMargin: PropTypes.number,
-
         /**
          * 去除body内间距
          * @version 1.26
@@ -236,6 +235,7 @@ export default class Dialog extends Component {
         bottom: 40,
         overlayProps: {},
         locale: zhCN.Dialog,
+        noPadding: false,
     };
 
     constructor(props, context) {
