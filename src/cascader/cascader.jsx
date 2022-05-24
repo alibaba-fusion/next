@@ -262,7 +262,10 @@ class Cascader extends Component {
         const { v2n, p2n } = preHandleData(props.dataSource, props.immutable);
         const states = {};
 
-        if ('value' in props) {
+        // fix https://github.com/alibaba-fusion/next/issues/3903
+        // avoid expensive unnecessary calculate when props.value not changed 
+        if ('value' in props && props.value !== state.prevPropsValue) {
+            state.prevPropsValue = props.value;
             states.value = normalizeValue(props.value);
             if (!props.loadData) {
                 states.value = states.value.filter(v => v2n[v]);
