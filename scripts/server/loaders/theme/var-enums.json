@@ -177,7 +177,6 @@
   },
   "size.length": {
     "$s-zero": "s-zero",
-    "$s-auto": "s-auto",
     "$s-1": "s-1",
     "$s-2": "s-2",
     "$s-3": "s-3",
