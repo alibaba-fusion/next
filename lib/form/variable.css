@@ -1,0 +1,16 @@
+:root {
+--form-label-padding-r: 12px;
+--form-item-m-margin-b: 16px;
+--form-item-l-margin-b: 20px;
+--form-item-s-margin-b: 12px;
+--form-inline-l-item-margin-r: 24px;
+--form-inline-m-item-margin-r: 20px;
+--form-inline-s-item-margin-r: 16px;
+--form-help-margin-top: 4px;
+--form-help-font-size: 12px;
+--form-help-color: #999999;
+--form-error-color: #FF3000;
+--form-warning-color: #FF9300;
+--form-top-label-margin-b: 2px;
+--form-label-color: #666666;
+}
