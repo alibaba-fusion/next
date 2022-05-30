@@ -35,6 +35,7 @@ export default class Inner extends Component {
         v2: PropTypes.bool,
         closeIcon: PropTypes.node,
         pure: PropTypes.bool,
+        noPadding: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -113,12 +114,13 @@ export default class Inner extends Component {
     }
 
     renderBody() {
-        const { prefix, children, footer } = this.props;
+        const { prefix, children, footer, noPadding } = this.props;
         if (children) {
             return (
                 <div
                     className={cx(`${prefix}dialog-body`, {
                         [`${prefix}dialog-body-no-footer`]: footer === false,
+                        [`${prefix}dialog-body-no-padding`]: noPadding === true,
                     })}
                     ref={this.getNode.bind(this, 'bodyNode')}
                 >

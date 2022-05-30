@@ -33,6 +33,9 @@
     &-body-no-footer {
         margin-bottom: $dialog-content-margin-bottom-no-footer;
     }
+    &-body-no-padding {
+        padding: 0;
+    }
 
     /* 让用户自己设置 */
     /* &.#{$css-prefix}closeable &-header, */
@@ -170,6 +173,9 @@
         }
         #{$dialog-prefix}-header + #{$dialog-prefix}-body-no-footer {
             margin-bottom: $dialog-content-margin-bottom-no-footer;
+        }
+        #{$dialog-prefix}-body#{$dialog-prefix}-body-no-padding {
+            padding: 0;
         }
     }
 
