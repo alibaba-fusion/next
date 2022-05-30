@@ -35,6 +35,18 @@ class App extends React.Component {
         });
     }
 
+    iconfontChange(value) {
+        const props = {};
+        if (value === 'trueText') {
+            props.iconTextOnly = true;
+            props.iconOnly = true;
+        } else {
+            props.iconOnly = value === 'true';
+            props.iconTextOnly = false;
+        }
+        this.setState(props);
+    }
+
     setWidth(value) {
         this.setState({
             iconOnlyWidth: value
@@ -42,12 +54,13 @@ class App extends React.Component {
     }
 
     render() {
-        const { iconOnly, hasTooltip, hasArrow, iconOnlyWidth } = this.state;
+        const { iconOnly, hasTooltip, hasArrow, iconOnlyWidth, iconTextOnly } = this.state;
         return (
             <div>
                 <div className="demo-ctl">
-                    <Radio.Group shape="button" size="medium" value={iconOnly ? 'true' : 'false'} onChange={this.setValue.bind(this, 'iconOnly')}>
+                    <Radio.Group shape="button" size="medium" value={iconOnly && iconTextOnly ? 'trueText' : iconOnly ? 'true' : 'false'} onChange={this.iconfontChange.bind(this)}>
                         <Radio value="true">iconOnly=true</Radio>
+                        <Radio value="trueText">iconOnly=true iconTextOnly=true</Radio>
                         <Radio value="false">iconOnly=false</Radio>
                     </Radio.Group>
                     {iconOnly ?
@@ -66,12 +79,12 @@ class App extends React.Component {
                             <Radio value="false">hasTooltip=false</Radio>
                         </Radio.Group> : null}
                 </div>
-                <Nav style={{ width: '200px' }} iconOnlyWidth={this.state.iconOnlyWidth} iconOnly={iconOnly} hasArrow={hasArrow} hasTooltip={hasTooltip}>
-                    <Item icon="account">Navigation One</Item>
-                    <Item icon="account">Navigation Two</Item>
-                    <Item icon="account">Navigation Three</Item>
-                    <Item icon={"atm"}>Navigation Four</Item>
-                    <Item icon={<span>QAQ</span>}>Navigation Five</Item>
+                <Nav style={{ width: '200px' }} iconOnlyWidth={this.state.iconOnlyWidth} iconOnly={iconOnly} iconTextOnly={iconTextOnly} hasArrow={hasArrow} hasTooltip={hasTooltip}>
+                    <Item icon="account">三个字</Item>
+                    <Item icon="account">四个字的</Item>
+                    <Item icon="account">五个字导航</Item>
+                    <Item icon={"atm"}>六个字的导航</Item>
+                    <Item icon={<span>QAQ</span>}>七个字的长导航</Item>
                     <SubNav icon="account" label="Sub Nav">
                         <Item icon="account">Item 1</Item>
                         <Item icon="account">Item 2</Item>

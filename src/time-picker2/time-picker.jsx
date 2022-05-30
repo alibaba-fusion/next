@@ -232,7 +232,7 @@ class TimePicker2 extends Component {
         this.prefixCls = `${prefix}time-picker2`;
     }
 
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(props, prevState) {
         const { disabled, type, format, value: propsValue } = props;
         const isRange = type === TIME_PICKER_TYPE.RANGE;
         let state = {
@@ -254,6 +254,10 @@ class TimePicker2 extends Component {
                     value,
                     preValue: value,
                 };
+                if (isRange && !prevState.selecting) {
+                    state.inputValue = fmtValue(value, format);
+                    state.curValue = formattedValue || [];
+                }
             }
         }
 
@@ -463,6 +467,7 @@ class TimePicker2 extends Component {
             inputStr: stringV,
             inputValue: stringV,
             inputing: false,
+            selecting: eventType === 'start' || eventType === 'end',
         });
 
         if (!isTemporary) {
@@ -620,6 +625,7 @@ class TimePicker2 extends Component {
             ...inputProps,
             size,
             disabled,
+            // RangePicker 有临时输入态在 inputValue 里面
             value: inputing ? inputStr : isRange ? inputValue : fmtValue(value, format) || '',
             hasClear: value && hasClear,
             inputType,

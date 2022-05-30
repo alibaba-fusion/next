@@ -1,5 +1,122 @@
 # Change Log 
 
+## [1.25.39](https://github.com/alibaba-fusion/next/compare/1.25.38...1.25.39) (2022-05-26)
+
+
+### Bug Fixes
+
+* **Core:** remove s-auto for sass-build error ([41b5f84](https://github.com/alibaba-fusion/next/commit/41b5f84))
+* **Menu:** repair menu focusedKey type warning, close [#3817](https://github.com/alibaba-fusion/next/issues/3817) ([a673175](https://github.com/alibaba-fusion/next/commit/a673175))
+
+
+
+
+## [1.25.38](https://github.com/alibaba-fusion/next/compare/1.25.37...1.25.38) (2022-05-19)
+
+
+### Bug Fixes
+
+* **Icon:** prefix of customIcon fix [#3906](https://github.com/alibaba-fusion/next/issues/3906) ([4e8fb51](https://github.com/alibaba-fusion/next/commit/4e8fb51))
+
+
+
+
+## [1.25.37](https://github.com/alibaba-fusion/next/compare/1.25.36...1.25.37) (2022-05-19)
+
+
+### Bug Fixes
+
+* **Icon:** remove circular dependency ([694ffb5](https://github.com/alibaba-fusion/next/commit/694ffb5))
+* **Select:** dont show clear while value=[] fix [#3896](https://github.com/alibaba-fusion/next/issues/3896) ([#3899](https://github.com/alibaba-fusion/next/issues/3899)) ([4ae4d81](https://github.com/alibaba-fusion/next/commit/4ae4d81))
+* **TimePicker2:** fix case of value=undefiend, fix [#3891](https://github.com/alibaba-fusion/next/issues/3891) ([#3894](https://github.com/alibaba-fusion/next/issues/3894)) ([7d6e649](https://github.com/alibaba-fusion/next/commit/7d6e649))
+* **Tree:** add types definition for useVirtual ([#3904](https://github.com/alibaba-fusion/next/issues/3904)) ([b94b840](https://github.com/alibaba-fusion/next/commit/b94b840))
+
+
+
+
+## [1.25.36](https://github.com/alibaba-fusion/next/compare/1.25.35...1.25.36) (2022-05-10)
+
+
+### Bug Fixes
+
+* **TimePicker2:** value under control on RangePicker ([9a4a517](https://github.com/alibaba-fusion/next/commit/9a4a517))
+
+
+
+
+## [1.25.35](https://github.com/alibaba-fusion/next/compare/1.25.32...1.25.35) (2022-05-10)
+
+
+### Bug Fixes
+
+* **Balloon:** api placementOffset to Balloon ([#3881](https://github.com/alibaba-fusion/next/issues/3881)) ([6712175](https://github.com/alibaba-fusion/next/commit/6712175))
+* **Input:** Add getInputNode signature, close [#3878](https://github.com/alibaba-fusion/next/issues/3878) ([267dffa](https://github.com/alibaba-fusion/next/commit/267dffa))
+* **NumberPicker:** Add getInputNode signature, related to [#3878](https://github.com/alibaba-fusion/next/issues/3878) ([affdea2](https://github.com/alibaba-fusion/next/commit/affdea2))
+* **Select:** repair multiple highlightKey and ts add popupAutoFocus, close [#3876](https://github.com/alibaba-fusion/next/issues/3876) [#3869](https://github.com/alibaba-fusion/next/issues/3869) ([c8edfb9](https://github.com/alibaba-fusion/next/commit/c8edfb9))
+
+
+### Features
+
+* **Nav:** add iconTextOnly, close [#3834](https://github.com/alibaba-fusion/next/issues/3834) ([b7d1a5d](https://github.com/alibaba-fusion/next/commit/b7d1a5d))
+* **Upload:** add var card-border-radius ([af46a0f](https://github.com/alibaba-fusion/next/commit/af46a0f))
+
+
+
+
+## [1.25.34](https://github.com/alibaba-fusion/next/compare/1.25.33...1.25.34) (2022-04-27)
+
+
+
+
+## [1.25.33](https://github.com/alibaba-fusion/next/compare/1.26.0-beta.2...1.25.33) (2022-04-26)
+
+
+
+
+## [1.25.32](https://github.com/alibaba-fusion/next/compare/1.25.31...1.25.32) (2022-04-21)
+
+
+### Bug Fixes
+
+* **Menu:** add variable for icon right fix [#3862](https://github.com/alibaba-fusion/next/issues/3862) ([00a3d43](https://github.com/alibaba-fusion/next/commit/00a3d43))
+
+
+
+
+## [1.25.31](https://github.com/alibaba-fusion/next/compare/1.25.30...1.25.31) (2022-04-19)
+
+
+### Bug Fixes
+
+* **Tree:** fix onCheck not working when use isNodeBlock, close [#3850](https://github.com/alibaba-fusion/next/issues/3850) ([#3858](https://github.com/alibaba-fusion/next/issues/3858)) ([cf2c54e](https://github.com/alibaba-fusion/next/commit/cf2c54e))
+
+
+
+
+## [1.25.30](https://github.com/alibaba-fusion/next/compare/1.25.29...1.25.30) (2022-04-12)
+
+
+### Bug Fixes
+
+* **Cascader:** do not render Menu Item when itemRender return null ([#3838](https://github.com/alibaba-fusion/next/issues/3838)) ([3da6cd2](https://github.com/alibaba-fusion/next/commit/3da6cd2))
+* **Message:** repair message iconType warning, close [#3843](https://github.com/alibaba-fusion/next/issues/3843) ([86c7def](https://github.com/alibaba-fusion/next/commit/86c7def))
+* **Slider:** config for hover on dot, fix [#3839](https://github.com/alibaba-fusion/next/issues/3839) ([#3840](https://github.com/alibaba-fusion/next/issues/3840)) ([bb3f704](https://github.com/alibaba-fusion/next/commit/bb3f704))
+* **Typescript:** update Table cell props ([7c235b7](https://github.com/alibaba-fusion/next/commit/7c235b7))
+
+
+
+
+## [1.25.29](https://github.com/alibaba-fusion/next/compare/1.25.28...1.25.29) (2022-03-31)
+
+
+### Bug Fixes
+
+* **Calendar2:** update header panel display value when panel value changed, close [#3831](https://github.com/alibaba-fusion/next/issues/3831) ([b33e0ba](https://github.com/alibaba-fusion/next/commit/b33e0ba))
+* **Dialog:** use "确定" instead of "确认" for zh-cn ([201cacf](https://github.com/alibaba-fusion/next/commit/201cacf))
+
+
+
+
 ## [1.25.28](https://github.com/alibaba-fusion/next/compare/1.25.25...1.25.28) (2022-03-25)
 
 

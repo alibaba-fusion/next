@@ -22,14 +22,7 @@ class Message extends Component {
         /**
          * 反馈类型
          */
-        type: PropTypes.oneOf([
-            'success',
-            'warning',
-            'error',
-            'notice',
-            'help',
-            'loading',
-        ]),
+        type: PropTypes.oneOf(['success', 'warning', 'error', 'notice', 'help', 'loading']),
         /**
          * 反馈外观
          */
@@ -57,7 +50,7 @@ class Message extends Component {
         /**
          * 显示的图标类型，会覆盖内部设置的IconType，传false不显示图标
          */
-        iconType: PropTypes.string | false,
+        iconType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         /**
          * 显示关闭按钮
          */
@@ -93,10 +86,7 @@ class Message extends Component {
     };
 
     state = {
-        visible:
-            typeof this.props.visible === 'undefined'
-                ? this.props.defaultVisible
-                : this.props.visible,
+        visible: typeof this.props.visible === 'undefined' ? this.props.defaultVisible : this.props.visible,
     };
 
     static getDerivedStateFromProps(props) {
@@ -158,13 +148,7 @@ class Message extends Component {
         });
 
         const newChildren = visible ? (
-            <div
-                role="alert"
-                style={style}
-                {...others}
-                className={classes}
-                dir={rtl ? 'rtl' : undefined}
-            >
+            <div role="alert" style={style} {...others} className={classes} dir={rtl ? 'rtl' : undefined}>
                 {closeable ? (
                     <a
                         role="button"
@@ -177,17 +161,12 @@ class Message extends Component {
                 ) : null}
                 {icon !== false ? (
                     <Icon
-                        className={`${messagePrefix}-symbol ${!icon &&
-                            `${messagePrefix}-symbol-icon`}`}
+                        className={`${messagePrefix}-symbol ${!icon && `${messagePrefix}-symbol-icon`}`}
                         type={icon}
                     />
                 ) : null}
-                {title ? (
-                    <div className={`${messagePrefix}-title`}>{title}</div>
-                ) : null}
-                {children ? (
-                    <div className={`${messagePrefix}-content`}>{children}</div>
-                ) : null}
+                {title ? <div className={`${messagePrefix}-title`}>{title}</div> : null}
+                {children ? <div className={`${messagePrefix}-content`}>{children}</div> : null}
             </div>
         ) : null;
 

@@ -30,12 +30,13 @@ class Item extends Component {
         prefix: PropTypes.string,
         iconOnly: PropTypes.bool,
         iconOnlyWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        iconTextOnly: PropTypes.bool,
         hasTooltip: PropTypes.bool,
     };
 
     render() {
-        const { prefix, iconOnly, iconOnlyWidth, hasTooltip } = this.context;
-        const { icon, children, ...others } = this.props;
+        const { prefix, iconOnly, iconOnlyWidth, hasTooltip, iconTextOnly } = this.context;
+        const { icon, children, className, ...others } = this.props;
         const iconEl = typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;
 
         let title;
@@ -44,12 +45,24 @@ class Item extends Component {
             title = children;
         }
 
-        const showChildren = !iconOnly || (iconOnly && !iconOnlyWidth);
+        const showChildren = !iconOnly || (iconOnly && !iconOnlyWidth) || iconTextOnly;
+        const cls = classNames({
+            [`${prefix}nav-with-title`]: iconOnly && iconTextOnly,
+            [className]: !!className,
+        });
+
+        const newChildren = showChildren ? (
+            iconTextOnly ? (
+                <span className={`${prefix}nav-text`}>{children}</span>
+            ) : (
+                children
+            )
+        ) : null;
 
         const item = (
-            <Menu.Item title={title} {...others}>
+            <Menu.Item title={title} className={cls} {...others}>
                 {iconEl}
-                {showChildren && children}
+                {newChildren}
             </Menu.Item>
         );
 

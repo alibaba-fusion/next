@@ -168,6 +168,9 @@ $upload-card-add-icon-size: $icon-l !default;
 /// text
 /// @namespace size/add
 $upload-card-add-text-size: $font-size-body-1 !default;
+/// corner
+/// @namespace size/bounding
+$upload-card-border-radius: $corner-zero !default;
 /// text margin (t)
 /// @namespace size/add
 $upload-card-add-text-margin-top: $s-3 !default;

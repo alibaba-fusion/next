@@ -678,7 +678,7 @@ describe('TreeSelect', () => {
         );
         wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 77 } });
 
-        wrapper.find('.next-tree-node[value="77"] input').simulate('change');
+        wrapper.find('.next-tree-node[value="77"] input').simulate('click');
         wrapper.update();
 
         assert(wrapper.find('.next-tree-node[value="1"] .indeterminate').length);
@@ -818,9 +818,7 @@ function selectTreeNode(value) {
 
 function checkTreeNode(value) {
     const input = findTreeNodeByValue(value).querySelector('.next-checkbox input');
-    ReactTestUtils.Simulate.change(input, {
-        target: { checked: input.checked },
-    });
+    ReactTestUtils.Simulate.click(input);
 }
 
 function assertSelected(value, selected) {

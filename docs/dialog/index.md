@@ -21,7 +21,7 @@
 
 -   位置不再通过 js 计算，通过 css 完成，响应式性能更好
 -   新增 `closeIcon` 可定制关闭按钮 icon
--   新增 `width` 固定弹窗宽度, 或者设置 auto 跟随内容变化
+-   新增 `width` 固定弹窗宽度，默认值为520px, 或者设置 auto 跟随内容变化。
 -   新增 `dialogRender` 配合 `react-draggable` 以支持拖拽弹窗
 
 API变化：

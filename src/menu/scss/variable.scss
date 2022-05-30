@@ -152,6 +152,11 @@ $menu-color-hover: $color-text1-4 !default;
 /// @namespace statement/hover/arrow
 $menu-arrow-color-hover: $color-text1-4 !default;
 
+/// right
+/// @type number
+/// @namespace size/arrow
+$menu-arrow-right: 10px !default;
+
 /// color
 /// @namespace statement/hover/selected icon
 $menu-icon-selected-hover-color: $color-brand1-6 !default;

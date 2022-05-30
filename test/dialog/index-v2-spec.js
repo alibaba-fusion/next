@@ -655,7 +655,7 @@ describe('v2', () => {
 
 function assertOkBtn(btn) {
     assert(hasClass(btn, 'next-btn-primary'));
-    assert(btn.textContent.trim() === '确认');
+    assert(btn.textContent.trim() === '确定');
 }
 
 function assertCancelBtn(btn) {
