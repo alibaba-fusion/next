@@ -42,6 +42,23 @@
         height: $height;
         font-size: $fontSize;
     }
+
+    #{$menu-prefix}-item#{$nav-prefix}-item#{$nav-prefix}-with-title {
+        line-height: 1;
+        padding: $s-3 $s-2;
+
+        #{$menu-prefix}-item-inner {
+            height: auto;
+            min-height: $height;
+        }
+        #{$nav-prefix}-text {
+            display: block;
+            line-height: 1;
+            margin-top: $s-2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
 }
 
 @mixin nav-border-fix($height, $border-width) {

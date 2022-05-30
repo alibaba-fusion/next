@@ -288,6 +288,24 @@ describe('TimePicker2', () => {
 
             assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:00:00'])
         })
+        it.only('should render with value controlled', () => {
+            wrapper = mount(<TimeRangePicker value={[defaultValue, defaultValue.add(1, 'hours')]} />);
+
+            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13'])
+
+            findInput(wrapper, 0).simulate('click');
+            assert(findTime(wrapper, 12, 'hour').length === 2);
+            findTime(wrapper, 13, 'hour').at(1).simulate('click');
+            clickOk(wrapper);
+
+            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13'])
+
+            const first = dayjs('11:13:00', 'HH:mm:ss', true);
+            const second = dayjs('12:22:22', 'HH:mm:ss', true);
+            wrapper.setProps({ value: [first, second] });
+
+            assert.deepEqual(getStrValue(wrapper), ['11:13:00', '12:22:22'])
+        });
     })
 });
 

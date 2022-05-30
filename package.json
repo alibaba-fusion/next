@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.25.28",
+  "version": "1.25.39",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -151,7 +151,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "chalk": "^2.3.2",
-    "cheerio": "^1.0.0-rc.2",
+    "cheerio": "1.0.0-rc.3",
     "chokidar": "^2.0.4",
     "chrome-launcher": "^0.10.2",
     "co": "^4.6.0",
@@ -253,5 +253,11 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "overrides": {
+    "cheerio": "1.0.0-rc.3"
+  },
+  "resolutions": {
+    "cheerio": "1.0.0-rc.3"
   }
 }

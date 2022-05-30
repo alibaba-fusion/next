@@ -98,6 +98,10 @@ class Nav extends Component {
          */
         iconOnlyWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         /**
+         * iconOnly模式下是否展示文字（仅在 iconOnly=true 时生效）
+         */
+        iconTextOnly: PropTypes.bool,
+        /**
          * 是否显示右侧的箭头（仅在 iconOnly=true 时生效）
          */
         hasArrow: PropTypes.bool,
@@ -145,6 +149,7 @@ class Nav extends Component {
         mode: PropTypes.string,
         iconOnly: PropTypes.bool,
         iconOnlyWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        iconTextOnly: PropTypes.bool,
         hasTooltip: PropTypes.bool,
         hasArrow: PropTypes.bool,
     };
@@ -160,7 +165,7 @@ class Nav extends Component {
     }
 
     getChildContext() {
-        const { prefix, direction, mode, iconOnly, iconOnlyWidth, hasTooltip, hasArrow } = this.props;
+        const { prefix, direction, mode, iconOnly, iconOnlyWidth, iconTextOnly, hasTooltip, hasArrow } = this.props;
 
         const { isCollapse } = this.context;
 
@@ -169,6 +174,7 @@ class Nav extends Component {
             mode: direction === 'hoz' ? 'popup' : mode,
             iconOnly: 'iconOnly' in this.props ? iconOnly : isCollapse,
             iconOnlyWidth: 'iconOnlyWidth' in this.props ? iconOnlyWidth : undefined,
+            iconTextOnly,
             hasTooltip,
             hasArrow,
         };
@@ -196,6 +202,7 @@ class Nav extends Component {
             popupClassName,
             iconOnly,
             iconOnlyWidth,
+            iconTextOnly,
             hasArrow,
             hasTooltip,
             embeddable,
@@ -227,6 +234,7 @@ class Nav extends Component {
             [`${prefix}active`]: realActiveDirection,
             [`${prefix}${realActiveDirection}`]: realActiveDirection,
             [`${prefix}icon-only`]: newIconOnly,
+            [`${prefix}icon-only-text`]: newIconOnly && iconTextOnly,
             [`${prefix}custom-icon-only-width`]: newIconOnly && 'iconOnlyWidth' in this.props,
             [`${prefix}no-arrow`]: !hasArrow,
             [`${prefix}nav-embeddable`]: embeddable,

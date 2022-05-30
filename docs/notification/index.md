@@ -60,7 +60,7 @@ Notification.config({
 
 | 参数 | 说明 | 类型 | 默认值 | 版本 |
 | --- | --- | --- | --- | --- |
-| duration | 默认自动关闭延时，单位秒 | Number | 4500 |  |
+| duration | 默认自动关闭延时，单位毫秒 | Number | 4500 |  |
 | maxCount | 最多同时出现的个数, 默认不限制 | Number | - |  |
 | getContainer | 配置渲染节点的输出位置 | () => HTMLNode | () => document.body |  |
 | offset | 对齐之后的偏移 [x, y] | Array | [30, 30] |  |

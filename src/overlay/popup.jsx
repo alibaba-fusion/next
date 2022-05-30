@@ -79,6 +79,10 @@ class Popup extends Component {
          * [v2] 快捷位置，包含 'tl' | 't' | 'tr' | 'rt' | 'r' | 'rb' | 'bl' | 'b' | 'br' | 'lt' | 'l' | 'lb'
          */
         placement: PropTypes.string,
+        /**
+         * [v2] 弹层偏离触发元素的像素值
+         */
+        placementOffset: PropTypes.number,
     };
 
     static defaultProps = {

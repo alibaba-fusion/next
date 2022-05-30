@@ -198,10 +198,13 @@ export default class Base extends React.Component {
             visible: 'visible' in props ? props.visible : props.defaultVisible,
             dataSource: this.setDataSource(this.props),
             width: 100,
+            // highlightKey应为String 多选初始化只赋值受控highlightKey/defaultHighlightKey
             highlightKey:
                 'highlightKey' in props
                     ? props.highlightKey
-                    : props.value || props.defaultHighlightKey || props.defaultValue,
+                    : props.mode === 'single'
+                    ? props.value || props.defaultHighlightKey || props.defaultValue
+                    : props.defaultHighlightKey,
             srReader: '',
         };
 
