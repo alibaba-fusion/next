@@ -54,6 +54,7 @@ const Dialog = props => {
         minMargin,
         onClose,
         style,
+        wrapperClassName,
         ...others
     } = props;
 
@@ -238,6 +239,7 @@ const Dialog = props => {
 
     const wrapperCls = classNames({
         [`${prefix}overlay-wrapper`]: true,
+        [wrapperClassName]: !!wrapperClassName,
         opened: visible,
     });
     const dialogCls = classNames({
@@ -260,9 +262,9 @@ const Dialog = props => {
         bottom && (topStyle.paddingBottom = bottom);
     }
 
-    let maxHeight;
-    if (overflowScroll) {
-        maxHeight = `calc(100vh - ${top + bottom}px)`;
+    const innerStyle = style || {};
+    if (overflowScroll && !innerStyle.maxHeight) {
+        innerStyle.maxHeight = `calc(100vh - ${top + bottom}px)`;
     }
 
     const timeout = {
@@ -282,7 +284,7 @@ const Dialog = props => {
         >
             <Inner
                 {...others}
-                style={centered ? { ...topStyle, ...style } : style}
+                style={centered ? { ...topStyle, ...innerStyle } : innerStyle}
                 v2
                 ref={dialogRef}
                 prefix={prefix}
@@ -301,7 +303,6 @@ const Dialog = props => {
                 onClose={(...args) => handleClose('closeClick', ...args)}
                 closeIcon={closeIcon}
                 height={height}
-                maxHeight={maxHeight}
                 width={width}
             >
                 {children}

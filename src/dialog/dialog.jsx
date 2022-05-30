@@ -163,10 +163,15 @@ export default class Dialog extends Component {
          */
         centered: PropTypes.bool,
         /**
-         * [v2] 对话框高度超过浏览器视口高度时，对话框是否展示滚动条。关闭此功后对话框会随高度撑开页面
+         * [v2] 对话框高度超过浏览器视口高度时，对话框是否展示滚动条。关闭此功后对话框会随高度撑开页面。
          * @version 1.25
          */
         overflowScroll: PropTypes.bool,
+        /**
+         * [v2] 最外包裹层 className
+         * @version 1.26
+         */
+        wrapperClassName: PropTypes.string,
         /**
          * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
          * **close** 表示点击关闭按钮可以关闭对话框
