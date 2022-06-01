@@ -105,6 +105,7 @@ class Demo extends React.Component {
                         <RangePicker />
                         <DatePicker2 showTime />
                         <TimePicker2 />
+                        <TimePicker2.RangePicker />
                         <RangePicker2 showTime />
                         <Calendar style={{ width: '350px', padding: '12px', border: '1px solid #C4C6CF', borderRadius: '3px' }} shape="card" />
 

@@ -102,6 +102,7 @@ export default {
         hour: '时',
         minute: '分',
         second: '秒',
+        ok: '确定',
     },
     Transfer: {
         items: '项',
