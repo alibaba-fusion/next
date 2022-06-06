@@ -327,7 +327,7 @@ class Menu extends Component {
         /**
          * 当前获得焦点的子菜单或菜单项 key 值
          */
-        focusedKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        focusedKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
         focusable: PropTypes.bool,
         onItemFocus: PropTypes.func,
         onBlur: PropTypes.func,
