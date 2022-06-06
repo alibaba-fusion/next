@@ -51,7 +51,20 @@
 }
 ```
 
-优先级顺序为: 组件自身 locale > 最近 ConfigProvider 的 locale > 更远父级 ConfigProvider 的 locale
+以 locale 为例（其他属性如prefix等，同理），被 ConfigProvider.config() 设置过的组件（基础组件默认都被设置过），生效的 locale 优先级顺序为:
+
+props 方式的 locale > 最近 ConfigProvider 的 locale > 更远父级 ConfigProvider 的 locale
+
+以下面伪代码为例，即：CLocale > BLocale > ALocale
+
+```jsx
+<ConfigProvider locale={ALocale}>
+    <ConfigProvider locale={BLocale}>
+        <Button locale={CLocale}/>
+    </ConfigProvider>
+</ConfigProvider>
+
+```
 
 (注： 由于`Dialog.show()` `Message.show()` 等函数式方法的特殊性，他们的将默认读取页面上的root context。当页面上有多个包含`<ConfigProvider/>` 的 `ReactDOM.render()`方法调用时，由第一个渲染的决定root context)
 
@@ -246,7 +259,7 @@ Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextP
 
 ### ConfigProvider.getContext()
 
-通过该方法可以获取到 ConfigProvider 的上下文，格式如下。若有多层级 ConfigProvider 嵌套，会返回merge后的结果，关系近的优先。
+通过该方法可以获取到 ConfigProvider 的上下文，格式如下。若有多层级 ConfigProvider 嵌套，会返回第一次注册时所设置的内容。
 
 ```jsx
 {
