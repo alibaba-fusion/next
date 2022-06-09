@@ -288,7 +288,7 @@ describe('TimePicker2', () => {
 
             assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:00:00'])
         })
-        it.only('should render with value controlled', () => {
+        it('should render with value controlled', () => {
             wrapper = mount(<TimeRangePicker value={[defaultValue, defaultValue.add(1, 'hours')]} />);
 
             assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13'])
