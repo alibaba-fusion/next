@@ -428,6 +428,11 @@ class TreeSelect extends Component {
 
         let keys = this.getKeysByValue(value);
 
+        if (treeCheckedStrategy !== 'child') {
+            // there's no need to calculate all checked value when treeCheckedStrategy=child, close #3936
+            keys = getAllCheckedKeys(keys, this.state._k2n, this.state._p2n);
+        }
+
         switch (treeCheckedStrategy) {
             case 'parent':
                 keys = filterChildKey(keys, this.state._k2n, this.state._p2n);
@@ -436,8 +441,6 @@ class TreeSelect extends Component {
                 keys = filterParentKey(keys, this.state._k2n, this.state._p2n);
                 break;
             default:
-                // calculate all checked value only when treeCheckedStrategy=all, close #3936
-                keys = getAllCheckedKeys(keys, this.state._k2n, this.state._p2n);
                 break;
         }
 
