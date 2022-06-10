@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import BigNumber from 'bignumber.js';
+import BigNumber from 'big.js';
 import { polyfill } from 'react-lifecycles-compat';
 
 import Icon from '../icon';
@@ -236,7 +236,7 @@ class NumberPicker extends React.Component {
 
     isGreaterThan(v1, v2) {
         const { stringMode } = this.props;
-        if (stringMode) return BigNumber(v1).isGreaterThan(BigNumber(v2));
+        if (stringMode) return BigNumber(v1).gt(v2);
         return Number(v1) > Number(v2);
     }
 

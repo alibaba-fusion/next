@@ -5,7 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
 import NumberPicker from '../../src/number-picker/index';
-import BigNumber from "bignumber.js";
+import BigNumber from "big.js";
 
 Enzyme.configure({ adapter: new Adapter() });
 
