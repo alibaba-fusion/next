@@ -162,6 +162,11 @@ export interface SliderProps extends HTMLAttributesWeak, CommonProps {
      * 多图轮播时，点击选中后自动居中
      */
     focusOnSelect?: boolean;
+
+    /**
+     * 鼠标经过时停止播放
+     */
+    pauseOnHover?: boolean;
 }
 
 export default class Slider extends React.Component<SliderProps, any> {}
