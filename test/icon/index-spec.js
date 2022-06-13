@@ -3,6 +3,7 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Icon from '../../src/icon';
+
 import ConfigProvider from '../../src/config-provider';
 
 Enzyme.configure({ adapter: new Adapter() });
