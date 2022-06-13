@@ -60,6 +60,9 @@ export default function createFromIconfontCN(options = {}) {
         );
 
         return (
+            // FIXME: 这里理论上优先级是 props 中的 prefix 优先级更高，不过之前的行为一直是取上层 ConfigProvider 中的 prefix，
+            // 先兼容之前的表现，will be fixed in 2.x
+            // https://github.com/alibaba-fusion/next/issues/3906
             <ConfigIcon size={size}>
                 <svg className={classes} focusable={false} {...others} {...extraCommonProps}>
                     {content}
