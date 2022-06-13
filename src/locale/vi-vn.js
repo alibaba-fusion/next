@@ -103,6 +103,7 @@ export default {
         hour: 'Giờ',
         minute: 'Phút',
         second: 'Giây',
+        ok: 'OK',
     },
     Transfer: {
         items: 'mục',

@@ -8,6 +8,8 @@ import Affix from '../../src/affix/index';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+
+
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp, react/prop-types, react/prefer-stateless-function */
 /* global describe, it, beforeEach, afterEach */
 
