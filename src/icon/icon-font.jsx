@@ -5,6 +5,8 @@ import Icon from './icon';
 
 const customCache = new Set();
 
+const ConfigIcon = ConfigProvider.config(Icon);
+
 /** Icon.createFromIconfontCN
  *  @description 通过自定义 iconfont源来使用使用svg格式的图片
  *  @order 1
@@ -58,11 +60,11 @@ export default function createFromIconfontCN(options = {}) {
         );
 
         return (
-            <Icon size={size}>
+            <ConfigIcon size={size}>
                 <svg className={classes} focusable={false} {...others} {...extraCommonProps}>
                     {content}
                 </svg>
-            </Icon>
+            </ConfigIcon>
         );
     };
 
