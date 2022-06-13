@@ -206,6 +206,10 @@ export default class Item extends React.Component {
          */
         renderPreview: PropTypes.func,
         /**
+         * 替代校验信息的 name 字段，useLabelForErrorMessage 开启的情况下比 label 优先级高
+         */
+        errorMessageName: PropTypes.string,
+        /**
          * 是否使用 label 替换校验信息的 name 字段
          */
         useLabelForErrorMessage: PropTypes.bool,
@@ -311,20 +315,21 @@ export default class Item extends React.Component {
     }
 
     getLabelForErrorMessage() {
-        let label = this.props.label;
+        const { errorMessageName, label, useLabelForErrorMessage } = this.props;
+
+        if (errorMessageName) {
+            return errorMessageName;
+        }
 
         if (!label || typeof label !== 'string') {
             return null;
         }
 
-        label = label.replace(':', '').replace('：', '');
+        const newLabel = label.replace(':', '').replace('：', '');
 
-        const labelForErrorMessage =
-            'useLabelForErrorMessage' in this.props
-                ? this.props.useLabelForErrorMessage
-                : this.context._formLabelForErrorMessage;
-        if (labelForErrorMessage && label) {
-            return label;
+        const labelForErrorMessage = useLabelForErrorMessage || this.context._formLabelForErrorMessage;
+        if (labelForErrorMessage && newLabel) {
+            return newLabel;
         }
 
         return null;
