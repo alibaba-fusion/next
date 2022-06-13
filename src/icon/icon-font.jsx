@@ -5,8 +5,6 @@ import Icon from './icon';
 
 const customCache = new Set();
 
-const ConfigIcon = ConfigProvider.config(Icon);
-
 /** Icon.createFromIconfontCN
  *  @description 通过自定义 iconfont源来使用使用svg格式的图片
  *  @order 1
@@ -60,14 +58,11 @@ export default function createFromIconfontCN(options = {}) {
         );
 
         return (
-            // FIXME: 这里理论上优先级是 props 中的 prefix 优先级更高，不过之前的行为一直是取上层 ConfigProvider 中的 prefix，
-            // 先兼容之前的表现，will be fixed in 2.x
-            // https://github.com/alibaba-fusion/next/issues/3906
-            <ConfigIcon size={size}>
+            <Icon size={size}>
                 <svg className={classes} focusable={false} {...others} {...extraCommonProps}>
                     {content}
                 </svg>
-            </ConfigIcon>
+            </Icon>
         );
     };
 
