@@ -4,6 +4,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Icon from '../../src/icon';
 
+import ConfigProvider from '../../src/config-provider';
+
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Icon', () => {
@@ -47,5 +49,17 @@ describe('Icon', () => {
         assert(newWrapper.find('.next-icon svg'));
         newWrapper.setProps({ size: 'xl' });
         assert(newWrapper.find('.next-icon').hasClass('next-xl'));
+    });
+
+    it('createFromIconfontCN should support prefix', () => {
+        const CustomIcon = Icon.createFromIconfontCN({
+            scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
+        });
+
+        const newWrapper = mount( <ConfigProvider prefix="abcd-">
+            <CustomIcon type="icon-pic" prefix="efg-"/>
+        </ConfigProvider>);
+        assert(newWrapper.find('.abcd-icon > svg'));
+        assert(newWrapper.find('.abcd-icon > efg-icon-remote'));
     });
 });
