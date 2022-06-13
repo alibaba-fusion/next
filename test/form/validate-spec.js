@@ -356,6 +356,26 @@ describe('Submit', () => {
                 .text() === '姓名 是必填字段'
         );
     });
+    it('validate errorMessageName', () => {
+        const wrapper = mount(
+            <Form useLabelForErrorMessage>
+                <FormItem required label="姓名:" errorMessageName="我的姓名">
+                    <Input name="first" />
+                </FormItem>
+            </Form>
+        );
+
+        wrapper
+            .find('input#first')
+            .simulate('change', { target: { value: '' } });
+        wrapper.update();
+        assert(
+            wrapper
+                .find('.next-form-item-help')
+                .first()
+                .text() === '我的姓名 是必填字段'
+        );
+    });
 });
 
 describe('Reset', () => {
