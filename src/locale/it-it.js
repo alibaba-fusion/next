@@ -103,6 +103,7 @@ export default {
         hour: 'H',
         minute: 'M',
         second: 'S',
+        ok: 'OK',
     },
     Transfer: {
         items: 'articoli',
