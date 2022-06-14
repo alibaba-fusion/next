@@ -102,6 +102,7 @@ export default {
         hour: 'Masa',
         minute: 'Minit',
         second: 'kedua',
+        ok: 'tentukan',
     },
     Transfer: {
         items: 'Item',
