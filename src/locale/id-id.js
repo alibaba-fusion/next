@@ -103,6 +103,7 @@ export default {
         hour: 'Jam',
         minute: 'Menit',
         second: 'Detik',
+        ok: 'OK',
     },
     Transfer: {
         items: 'barang',

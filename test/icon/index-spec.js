@@ -3,9 +3,14 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Icon from '../../src/icon';
+
 import ConfigProvider from '../../src/config-provider';
 
 Enzyme.configure({ adapter: new Adapter() });
+
+/* eslint-disable react/jsx-filename-extension */
+/* global describe it afterEach */
+/* global describe it beforeEach */
 
 describe('Icon', () => {
     let wrapper;
@@ -44,10 +49,13 @@ describe('Icon', () => {
             scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
         });
 
-        const newWrapper = mount(<CustomIcon type="icon-pic"/>);
+        let newWrapper = mount(<CustomIcon type="icon-pic"/>);
         assert(newWrapper.find('.next-icon svg'));
         newWrapper.setProps({ size: 'xl' });
         assert(newWrapper.find('.next-icon').hasClass('next-xl'));
+
+        newWrapper.unmount();
+        newWrapper = null;
     });
 
     it('createFromIconfontCN should support prefix', () => {
@@ -55,10 +63,13 @@ describe('Icon', () => {
             scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
         });
 
-        const newWrapper = mount( <ConfigProvider prefix="abcd-">
+        let newWrapper = mount( <ConfigProvider prefix="abcd-">
             <CustomIcon type="icon-pic" prefix="efg-"/>
         </ConfigProvider>);
         assert(newWrapper.find('.abcd-icon > svg'));
         assert(newWrapper.find('.abcd-icon > efg-icon-remote'));
+
+        newWrapper.unmount();
+        newWrapper = null;
     });
 });
