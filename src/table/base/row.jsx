@@ -141,7 +141,7 @@ export default class Row extends React.Component {
 
             return (
                 <Cell
-                    key={`${__rowIndex}-${colIndex}`}
+                    key={`${colIndex}`}
                     {...others}
                     {...attrs}
                     style={newStyle}
