@@ -427,7 +427,11 @@ class TreeSelect extends Component {
         const nonExistentValueKeys = this.getNonExistentValueKeys();
 
         let keys = this.getKeysByValue(value);
-        keys = getAllCheckedKeys(keys, this.state._k2n, this.state._p2n);
+
+        if (treeCheckedStrategy !== 'child') {
+            // there's no need to calculate all checked value when treeCheckedStrategy=child, close #3936
+            keys = getAllCheckedKeys(keys, this.state._k2n, this.state._p2n);
+        }
 
         switch (treeCheckedStrategy) {
             case 'parent':

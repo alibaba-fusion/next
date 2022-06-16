@@ -705,6 +705,7 @@ class TimePicker2 extends Component {
                                     prefix={prefix}
                                     className={`${this.prefixCls}-footer`}
                                     showTime
+                                    locale={locale}
                                     oKable={oKable}
                                     showOk={isRange}
                                     onOk={this.onOk}

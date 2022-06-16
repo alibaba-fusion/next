@@ -98,15 +98,14 @@ class Calendar extends React.Component {
         locale: defaultLocale.Calendar,
         shape: CALENDAR_SHAPE.FULLSCREEN,
         mode: CALENDAR_MODE.MONTH,
-        defaultPanelValue: datejs(),
     };
 
     constructor(props) {
         super(props);
 
-        const { defaultValue, mode } = props;
+        const { defaultValue, mode, defaultPanelValue = datejs() } = props;
         const value = 'value' in props ? props.value : defaultValue;
-        const panelValue = datejs('panelValue' in props ? props.panelValue : value || props.defaultPanelValue);
+        const panelValue = datejs('panelValue' in props ? props.panelValue : value || defaultPanelValue);
         const panelMode = props.panelMode || getPanelMode(mode) || DATE_PANEL_MODE.DATE;
 
         this.state = {

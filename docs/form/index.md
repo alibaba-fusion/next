@@ -107,6 +107,7 @@
 | labelWidth              | 在响应式布局下，且label在左边时，label的宽度是多少                                                                                             | String/Number      | 100   |
 | isPreview               | 是否开启预览态                                                                                                                    | Boolean            | -     |
 | renderPreview           | 预览态模式下渲染的内容<br/><br/>**签名**:<br/>Function(value: any) => void<br/>**参数**:<br/>_value_: {any} 根据包裹的组件的 value 类型而决定          | Function           | -     |
+| errorMessageName        | 替代校验信息的 name 字段，useLabelForErrorMessage 开启的情况下比 label 优先级高                                                                 | String             | -     |
 | useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                                 | Boolean            | -     |
 | colon                   | 表示是否显示 label 后面的冒号                                                                                                         | Boolean            | -     |
 | disabled                | 是否禁用表单                                                                                                                     | Boolean            | -     |

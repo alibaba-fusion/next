@@ -102,6 +102,7 @@ export default {
         hour: 'เวลา',
         minute: 'นาที',
         second: 'ครั้งที่สอง',
+        ok: 'กำหนด',
     },
     Transfer: {
         items: 'สิ่งของ',

@@ -436,7 +436,7 @@ describe('Overlay v2', async () => {
         wrapper = render(
             <div>
                 <Overlay v2 target="lzy" visible align="cc cc">
-                    <Button className="overlay-btn">cc cc</Button>
+                    <Button className="overlay-btn" style={{width: 50}}>cc cc</Button>
                 </Overlay>
                 <svg id="ppc" width={200} height={200}>
                     <rect id="lzy" width={200} height={200} fill="red" />
@@ -445,7 +445,7 @@ describe('Overlay v2', async () => {
         );
 
         await delay(200);
-        assert(document.querySelector('.overlay-btn').style.left === '74px');
+        assert(document.querySelector('.overlay-btn').style.left ===  `${(200 - 50)/2}px`);
     });
 });
 

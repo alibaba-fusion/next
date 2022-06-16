@@ -102,6 +102,7 @@ export default {
         hour: '시',
         minute: '분',
         second: '초',
+        ok: '확정',
     },
     Transfer: {
         items: '항',
