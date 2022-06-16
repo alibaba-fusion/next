@@ -137,4 +137,4 @@ Or clone locally:
 
 Use [Dingtalk App](https://www.dingtalk.com/en) scan the Qrcode to join in _Dingtalk Group_ :
 
-<img alt="Join the chat at dingtalk" src="https://img.alicdn.com/tfs/TB1r2GoU6DpK1RjSZFrXXa78VXa-620-818.png" width="300">
+<img alt="Join the chat at dingtalk" src="https://img.alicdn.com/imgextra/i4/O1CN01tU6PeE1EIj4H0LvpC_!!6000000000329-0-tps-859-1184.jpg" width="300">
