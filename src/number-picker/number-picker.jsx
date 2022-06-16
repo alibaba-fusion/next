@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import BigNumber from 'bignumber.js';
+import Big from 'big.js';
 import { polyfill } from 'react-lifecycles-compat';
 
 import Icon from '../icon';
@@ -236,7 +236,14 @@ class NumberPicker extends React.Component {
 
     isGreaterThan(v1, v2) {
         const { stringMode } = this.props;
-        if (stringMode) return BigNumber(v1).isGreaterThan(BigNumber(v2));
+        if (stringMode) {
+            try {
+            return Big(v1).gt(v2);
+            } catch (e) {
+                // big.js 遇到 Infinity 和 NaN 异常回退到 Number
+                return Number(v1) > Number(v2);
+            }
+        }
         return Number(v1) > Number(v2);
     }
 
@@ -273,7 +280,7 @@ class NumberPicker extends React.Component {
             !this.withinMinMax(displayValue)
         ) {
             let valueCorrected = this.correctValue(displayValue);
-            valueCorrected = stringMode ? BigNumber(valueCorrected).toFixed(this.getPrecision()) : valueCorrected;
+            valueCorrected = stringMode ? Big(valueCorrected).toFixed(this.getPrecision()) : valueCorrected;
             if (this.state.value !== valueCorrected) {
                 this.setValue({ value: valueCorrected, e });
             }
@@ -351,7 +358,7 @@ class NumberPicker extends React.Component {
 
             // 边界订正：
             val = this.correctBoundary(val);
-            val = this.props.stringMode ? BigNumber(val).toFixed() : Number(val);
+            val = this.props.stringMode ? Big(val).toFixed() : Number(val);
         }
 
         if (isNaN(val)) val = this.state.value;
@@ -454,7 +461,7 @@ class NumberPicker extends React.Component {
             let result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
             return this.hackChrome(result);
         }
-        return BigNumber(val || '0')
+        return Big(val || '0')
             .plus(step)
             .toFixed(this.getPrecision());
     }
@@ -466,7 +473,7 @@ class NumberPicker extends React.Component {
             let result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
             return this.hackChrome(result);
         }
-        return BigNumber(val || '0')
+        return Big(val || '0')
             .minus(step)
             .toFixed(this.getPrecision());
     }
