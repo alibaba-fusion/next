@@ -77,6 +77,11 @@ export interface ColumnProps extends HTMLAttributesWeak, CommonProps {
      * header cell 横跨的格数，设置为0表示不出现此 th
      */
     colSpan?: number;
+
+    /**
+     * 设置该列单元格的word-break样式，对于id类、中文类适合用all，对于英文句子适合用word
+     */
+    wordBreak?: 'all' | 'word';
 }
 
 export class Column extends React.Component<ColumnProps, any> {}
