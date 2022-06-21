@@ -207,6 +207,11 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      * 是否开启虚拟滚动
      */
     useVirtual?: boolean;
+
+    /**
+     * 是否关闭本地搜索
+     */
+    filterLocal?: boolean;
   
     immutable?: boolean;
 }
