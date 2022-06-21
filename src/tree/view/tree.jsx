@@ -147,18 +147,6 @@ const getCheckedKeys = (props, willReceiveProps, _k2n, _p2n) => {
             checkedKeys = getAllCheckedKeys(checkedKeys, _k2n, _p2n);
         }
 
-        switch (checkedStrategy) {
-            case 'parent':
-                checkedKeys = filterChildKey(checkedKeys, _k2n, _p2n);
-                break;
-            case 'child':
-                checkedKeys = filterParentKey(checkedKeys, _k2n, _p2n);
-                break;
-            default:
-                // checkedKeys = checkedKeys;
-                break;
-        }
-
         checkedKeys = checkedKeys.filter(key => !!_k2n[key]);
 
         indeterminateKeys = getIndeterminateKeys(checkedKeys, props.checkStrictly, _k2n, _p2n);
