@@ -1,18 +1,12 @@
 # Latest Log 
 
-## [1.25.42](https://github.com/alibaba-fusion/next/compare/1.25.41...1.25.42) (2022-06-14)
+## [1.25.44](https://github.com/alibaba-fusion/next/compare/1.25.43...1.25.44) (2022-06-21)
 
 
 ### Bug Fixes
 
-* **Menu:** focuseKey type contain obj, close [#3929](https://github.com/alibaba-fusion/next/issues/3929) ([086937b](https://github.com/alibaba-fusion/next/commit/086937b))
-* **Slider:** add pauseOnHover on d.ts  ([#3950](https://github.com/alibaba-fusion/next/issues/3950)) ([fc8d20f](https://github.com/alibaba-fusion/next/commit/fc8d20f))
-* **TreeSelect:** calculate all checked value only when treeCheckedStrategy=all, close[#3936](https://github.com/alibaba-fusion/next/issues/3936) ([35ff149](https://github.com/alibaba-fusion/next/commit/35ff149))
-* **TreeSelect:** fix treeCheckedStrategy issue ([2558ce7](https://github.com/alibaba-fusion/next/commit/2558ce7))
-
-
-### Features
-
-* **Form:** new api errorMessageName for replace validate name fix [#3937](https://github.com/alibaba-fusion/next/issues/3937) ([ed0915d](https://github.com/alibaba-fusion/next/commit/ed0915d))
+* **Table:** table d.ts add wordBreak props ([#3960](https://github.com/alibaba-fusion/next/issues/3960)) ([5163641](https://github.com/alibaba-fusion/next/commit/5163641))
+* **Tree:** not calculate all checked value when checkedStrategy is child ([#3961](https://github.com/alibaba-fusion/next/issues/3961)) ([5e2c577](https://github.com/alibaba-fusion/next/commit/5e2c577))
+* **TreeSelect:** support turn off local filter, close [#3939](https://github.com/alibaba-fusion/next/issues/3939) ([#3959](https://github.com/alibaba-fusion/next/issues/3959)) ([6f6b3f1](https://github.com/alibaba-fusion/next/commit/6f6b3f1))
 
 

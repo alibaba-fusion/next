@@ -148,4 +148,4 @@ babel 配置：
 
 扫码*钉钉群* 加入即刻交流与反馈：
 
-<img alt="Join the chat at dingtalk" src="https://img.alicdn.com/tfs/TB1r2GoU6DpK1RjSZFrXXa78VXa-620-818.png" width="300">
+<img alt="Join the chat at dingtalk" src="https://img.alicdn.com/imgextra/i4/O1CN01tU6PeE1EIj4H0LvpC_!!6000000000329-0-tps-859-1184.jpg" width="300">

@@ -697,6 +697,28 @@ describe('TreeSelect', () => {
         assert(document.querySelector('.next-tree-select-not-found').textContent.trim() === 'Not Found');
     });
 
+    it('should turn off local search when filterLocal is false', () => {
+        wrapper = mount( 
+            <TreeSelect
+                defaultVisible
+                filterLocal={false}
+                treeDefaultExpandAll
+                dataSource={dataSource}
+                showSearch
+                style={{ width: 200 }}
+                useVirtual
+                treeProps={{
+                    style: { maxHeight: '100px', overflow: 'auto' },
+                }}
+            />
+        )
+
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
+        wrapper.update();
+
+        assertDataAndNodes(dataSource);
+    })
+
     it('fix issues use isPreview when value is empty', () => {
         wrapper = mount(<TreeSelect isPreview dataSource={dataSource} />);
         assert(wrapper.find('.next-form-preview').instance().textContent === '');

@@ -9,12 +9,12 @@ type SpanOffset = {
     span?: string | number;
     offset?: string | number;
     [propName: string]: any;
-}
+};
 
 export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
-    * 表单名
-    */
+     * 表单名
+     */
     name?: string;
 
     /**
@@ -90,7 +90,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
      * 是否禁用
      */
-     disabled?: boolean;
+    disabled?: boolean;
 
     /**
      * [表单校验] 不能为空
@@ -274,15 +274,7 @@ export interface SubmitProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
      */
-    iconSize?:
-        | 'xxs'
-        | 'xs'
-        | 'small'
-        | 'medium'
-        | 'large'
-        | 'xl'
-        | 'xxl'
-        | 'xxxl';
+    iconSize?: 'xxs' | 'xs' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'xxxl';
 
     /**
      * 当 component = 'button' 时，设置 button 标签的 type 值
@@ -355,17 +347,7 @@ export interface ResetProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
      */
-    iconSize?:
-        | number
-        | 'xxs'
-        | 'xs'
-        | 'small'
-        | 'medium'
-        | 'large'
-        | 'xl'
-        | 'xxl'
-        | 'xxxl'
-        | 'inherit';
+    iconSize?: number | 'xxs' | 'xs' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'xxxl' | 'inherit';
 
     /**
      * 当 component = 'button' 时，设置 button 标签的 type 值
@@ -498,7 +480,7 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
     /**
      * form内有 `htmlType="submit"` 的元素的时候会触发
      */
-    onSubmit?: () => void;
+    onSubmit?: React.FormEventHandler<HTMLFormElement>;
 
     /**
      * 子元素
@@ -513,7 +495,7 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否禁用
      */
-     disabled?: boolean;
+    disabled?: boolean;
 
     /**
      * 自定义内联样式
@@ -547,7 +529,7 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否使用 label 替换校验信息的 name 字段
      */
-    useLabelForErrorMessage?: boolean
+    useLabelForErrorMessage?: boolean;
 }
 
 export default class Form extends React.Component<FormProps, any> {
