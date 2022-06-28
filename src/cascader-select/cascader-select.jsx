@@ -646,6 +646,12 @@ class CascaderSelect extends Component {
         if (multiple && stateValue && Array.isArray(stateValue)) {
             const noExistedValues = stateValue.filter(v => !this._v2n[v]);
 
+            if (noExistedValues.length > 0) {
+                value = value.filter(v => {
+                    return !(noExistedValues.indexOf(v) >= 0);
+                });
+            }
+
             value = [...noExistedValues, ...value];
             // onChange 中的 data 参数也应该保留不存在的 value 的数据
             // 在 dataSource 异步加载的情况下，会出现value重复的现象，需要去重
