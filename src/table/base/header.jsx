@@ -71,10 +71,22 @@ export default class Header extends React.Component {
             columnProps.ref(cell);
         }
     };
-
-    getCellDomRef = (i, j, cellDom) => {
+    
+    createCellDomRef = (i, j) => {
         const cellRefKey = this.getCellDomRefKey(i, j);
-        this[cellRefKey] = cellDom;
+        if (!this[cellRefKey]) {
+            this[cellRefKey] = {};
+        }
+
+        return this[cellRefKey];
+    };
+
+    getCellDomRef = (cellRef, cellDom) => {
+        if (!cellRef) {
+            return;
+        }
+
+        cellRef.current = cellDom;
     };
 
     getCellDomRefKey = (i, j) => {
@@ -124,7 +136,7 @@ export default class Header extends React.Component {
 
         const header = columns.map((cols, index) => {
             const col = cols.map((col, j) => {
-                const cellRefKey = this.getCellDomRefKey(index, j);
+                const cellRef = this.createCellDomRef(index, j);
                 /* eslint-disable no-unused-vars, prefer-const */
                 let {
                     title,
@@ -192,7 +204,7 @@ export default class Header extends React.Component {
                                 rtl={rtl}
                                 dataIndex={dataIndex}
                                 resizeProxyDomRef={resizeProxyDomRef}
-                                cellDomRef={this[cellRefKey]}
+                                cellDomRef={cellRef}
                                 onChange={onResizeChange}
                             />
                         );
@@ -235,7 +247,7 @@ export default class Header extends React.Component {
                         align={alignHeader ? alignHeader : align}
                         className={className}
                         ref={this.getCellRef.bind(this, index, j)}
-                        getCellDomRef={this.getCellDomRef.bind(this, index, j)}
+                        getCellDomRef={this.getCellDomRef.bind(this, cellRef)}
                         type="header"
                     >
                         {sortElement}

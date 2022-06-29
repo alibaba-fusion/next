@@ -53,6 +53,7 @@ class Demo extends React.Component {
                 <br/>
                 <Button type="primary" onClick={this.onOpen}> open </Button>
                 <Drawer
+                    v2
                     title="标题"
                     visible={this.state.visible}
                     placement={this.state.placement}

@@ -65,7 +65,7 @@ export default class Drawer extends Component {
          */
         onClose: PropTypes.func,
         /**
-         * 对话框打开后的回调函数
+         * [v2废弃]对话框打开后的回调函数
          */
         afterOpen: PropTypes.func,
         /**
@@ -102,6 +102,14 @@ export default class Drawer extends Component {
         locale: PropTypes.object,
         // for ConfigProvider
         popupContainer: PropTypes.any,
+        /**
+         * 开启 v2
+         */
+        v2: PropTypes.bool,
+        /**
+         * [v2] 弹窗关闭后的回调
+         */
+        afterClose: PropTypes.func,
     };
 
     static defaultProps = {

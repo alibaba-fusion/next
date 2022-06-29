@@ -1,5 +1,4 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import T from 'prop-types';
 import { events, dom } from '../../util';
 
@@ -77,10 +76,10 @@ class Resize extends React.Component {
     };
     onMouseDown = e => {
         const { left: tableLeft, width: tableWidth } = this.props.tableEl.getBoundingClientRect();
-        if (!this.props.cellDomRef) {
+        if (!this.props.cellDomRef || !this.props.cellDomRef.current) {
             return;
         }
-        const { left: cellDomLeft } = this.props.cellDomRef.getBoundingClientRect();
+        const { left: cellDomLeft } = this.props.cellDomRef.current.getBoundingClientRect();
         this.lastPageX = e.pageX;
         this.tLeft = tableLeft;
         this.tRight = tableWidth;

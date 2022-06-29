@@ -26,6 +26,7 @@ export default class Inner extends Component {
         beforeClose: PropTypes.func,
         cache: PropTypes.bool,
         shouldUpdatePosition: PropTypes.bool,
+        v2: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -45,12 +46,7 @@ export default class Inner extends Component {
         });
 
         return (
-            <div
-                className={headerCls}
-                style={headerStyle}
-                role="heading"
-                aria-level="1"
-            >
+            <div className={headerCls} style={headerStyle} role="heading" aria-level="1">
                 {title}
                 {closeLink}
             </div>
@@ -74,16 +70,8 @@ export default class Inner extends Component {
 
         if (closeable) {
             return (
-                <a
-                    role="button"
-                    aria-label={locale.close}
-                    className={`${prefix}drawer-close`}
-                    onClick={onClose}
-                >
-                    <Icon
-                        className={`${prefix}drawer-close-icon`}
-                        type="close"
-                    />
+                <a role="button" aria-label={locale.close} className={`${prefix}drawer-close`} onClick={onClose}>
+                    <Icon className={`${prefix}drawer-close-icon`} type="close" />
                 </a>
             );
         }
@@ -92,19 +80,12 @@ export default class Inner extends Component {
     }
 
     render() {
-        const {
-            prefix,
-            className,
-            closeable,
-            placement,
-            role,
-            rtl,
-        } = this.props;
+        const { prefix, className, closeable, placement, role, rtl, v2 } = this.props;
 
         const others = pickOthers(Object.keys(Inner.propTypes), this.props);
         const newClassName = cx({
             [`${prefix}drawer`]: true,
-            [`${prefix}drawer-${placement}`]: true,
+            [`${prefix}drawer-${placement}`]: !v2,
             [`${prefix}closeable`]: closeable,
             [className]: !!className,
         });
@@ -118,16 +99,18 @@ export default class Inner extends Component {
         const body = this.renderBody();
 
         return (
-            <div
-                {...ariaProps}
-                className={newClassName}
-                {...others}
-                dir={rtl ? 'rtl' : undefined}
-            >
-                <div style={{ height: '100%', overflow: 'auto' }}>
-                    {header}
-                    {body}
-                </div>
+            <div {...ariaProps} className={newClassName} {...others} dir={rtl ? 'rtl' : undefined}>
+                {v2 ? (
+                    <div className={`${prefix}drawer-content`}>
+                        {header}
+                        {body}
+                    </div>
+                ) : (
+                    <div style={{ height: '100%', overflow: 'auto' }}>
+                        {header}
+                        {body}
+                    </div>
+                )}
             </div>
         );
     }
