@@ -205,6 +205,69 @@
         );
     }
 
+    &-show-add {
+        position: relative;
+        display: flex;
+        flex: none;
+        align-items: center;
+        padding-right: 0 !important;
+
+        #{$tab-prefix}-nav-wrap {
+            position: relative;
+            display: flex;
+            flex: auto;
+            align-self: stretch;
+            overflow: hidden;
+            white-space: nowrap;
+            &::after {
+                position: absolute;
+                height: 100%;
+                width: 1px;
+                right: 0;
+                content: "";
+                pointer-events: none;
+                box-shadow: -2px 0 3px 0px  rgba(0, 0, 0, .12);
+                z-index: 1;
+            }
+        }
+
+        #{$tab-prefix}-nav-operations {
+            display: flex;
+            align-self: stretch;
+
+            #{$tab-prefix}-btn-prev {
+                position: initial;
+                right: auto;
+            }
+            #{$tab-prefix}-btn-next {
+                position: initial;
+                margin-left: $s-2;
+                right: auto;
+            }
+            #{$tab-prefix}-btn-down {
+                margin-left: $s-2;
+                position: initial;
+                right: auto;
+            }
+        }
+    }
+    &.#{$css-prefix}small #{$tab-prefix}-nav-operations {
+        #{$tab-prefix}-btn-prev {
+            margin-left: $s-2;
+        }
+        #{$tab-prefix}-btn-next {
+            margin-right: $s-2;;
+        }
+    }
+    &.#{$css-prefix}medium #{$tab-prefix}-nav-operations {
+        #{$tab-prefix}-btn-prev {
+            margin-left: $s-3;
+        }
+        #{$tab-prefix}-btn-next {
+            margin-right: $s-3;
+        }
+    }
+
     /* shape: pure */
     /* ----------------- */
     &-pure > #{$tab-prefix}-bar {
@@ -289,7 +352,10 @@
         }
 
         #{$tab-prefix}-tab {
-            margin-right: $tab-wrapped-tab-margin-right;
+            + #{$tab-prefix}-tab {
+                margin-left: $tab-wrapped-tab-margin-right;
+            }
+
             @include tabs-tab-border(
                 $tab-wrapped-bar-border,
                 null,
@@ -403,6 +469,7 @@
             &:last-child {
                 border-radius: 0 $tab-capsule-corner-radius $tab-capsule-corner-radius 0;
                 border-right: $tab-capsule-tab-border;
+                margin-right: 0;
             }
 
             &.active {

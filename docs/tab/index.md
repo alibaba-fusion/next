@@ -52,6 +52,8 @@ Fusion 提供了三级选项卡，分别用于不同的场景。
 | tabRender           | 自定义选项卡模板渲染函数<br/><br/>**签名**:<br/>Function(key: String, props: Object) => ReactNode<br/>**参数**:<br/>_key_: {String} 当前 Tab.Item 的 key 值<br/>_props_: {Object} 传给 Tab.Item 的所有属性键值对<br/>**返回值**:<br/>{ReactNode} 返回自定义组件<br/> | Function      | -        |
 | popupProps          | 弹层属性透传, 只有当 excessMode 为 dropdown 时生效                                                                                                                                                                                        | Object        | -        |
 | icons               | 自定义组件内 icon                                                                                                                                                                                                                  | Object        | {}       |
+| showAdd             | 新增按钮                                                                                                                                                                                                                         | Boolean       | -        |
+| onAdd               | 新增的事件回调<br/><br/>**签名**:<br/>Function() => void                                                                                                                                                                              | Function      | -        |
 
 ### Tab.Item
 

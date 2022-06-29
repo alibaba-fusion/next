@@ -170,7 +170,12 @@
         }
 
         .#{$css-prefix}tabs-tab-close {
-            margin-left: $close-icon-margin-left;
+            @include icon-size($close-icon-size);
+            &.#{$css-prefix}icon {
+                margin-left: $close-icon-margin-left;
+            }
+        }
+        .#{$css-prefix}icon-add {
             @include icon-size($close-icon-size);
         }
     }

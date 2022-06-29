@@ -5,7 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
 import NumberPicker from '../../src/number-picker/index';
-import BigNumber from "bignumber.js";
+import Big from "big.js";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -191,18 +191,18 @@ describe('number-picker', () => {
             assert(wrapper2.find('input').prop('value') === `${Number.MIN_SAFE_INTEGER}`);
 
             wrapper.find('button').at(0).simulate('click');
-            assert(wrapper.find('input').prop('value') === BigNumber(Number.MAX_SAFE_INTEGER).plus(1).toFixed(0));
+            assert(wrapper.find('input').prop('value') === Big(Number.MAX_SAFE_INTEGER).plus(1).toFixed(0));
             wrapper.find('button').at(1).simulate('click');
-            assert(wrapper.find('input').prop('value') === BigNumber(Number.MAX_SAFE_INTEGER).toFixed(0));
+            assert(wrapper.find('input').prop('value') === Big(Number.MAX_SAFE_INTEGER).toFixed(0));
             wrapper.find('button').at(1).simulate('click');
-            assert(wrapper.find('input').prop('value') === BigNumber(Number.MAX_SAFE_INTEGER).minus(1).toFixed(0));
+            assert(wrapper.find('input').prop('value') === Big(Number.MAX_SAFE_INTEGER).minus(1).toFixed(0));
 
             wrapper2.find('button').at(0).simulate('click');
-            assert(wrapper2.find('input').prop('value') === BigNumber(Number.MIN_SAFE_INTEGER).plus(step).toFixed(precision));
+            assert(wrapper2.find('input').prop('value') === Big(Number.MIN_SAFE_INTEGER).plus(step).toFixed(precision));
             wrapper2.find('button').at(1).simulate('click');
-            assert(wrapper2.find('input').prop('value') === BigNumber(Number.MIN_SAFE_INTEGER).toFixed(precision));
+            assert(wrapper2.find('input').prop('value') === Big(Number.MIN_SAFE_INTEGER).toFixed(precision));
             wrapper2.find('button').at(1).simulate('click');
-            assert(wrapper2.find('input').prop('value') === BigNumber(Number.MIN_SAFE_INTEGER).minus(step).toFixed(precision));
+            assert(wrapper2.find('input').prop('value') === Big(Number.MIN_SAFE_INTEGER).minus(step).toFixed(precision));
         });
 
         it('should support max & min props change', () => {
@@ -245,7 +245,7 @@ describe('number-picker', () => {
             wrapper.find('input').simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}000` } });
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}000`);
             wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === BigNumber(20).toFixed(precision));
+            assert(wrapper.find('input').prop('value') === Big(20).toFixed(precision));
 
         });
 

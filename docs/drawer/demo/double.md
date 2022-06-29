@@ -50,9 +50,9 @@ class App extends React.Component {
           Open drawer
         </Button>
         <Drawer
+            v2
             title="Multi-level drawer"
             width={520}
-            closeMode={'mask'}
             onClose={this.onClose}
             visible={this.state.visible}
         >
@@ -63,9 +63,9 @@ class App extends React.Component {
             <div style={{ marginBottom: 40}}>底部的内容</div>
 
             <Drawer
+                v2
                 title="Two-level Drawer"
                 width={320}
-                closeMode={'mask'}
                 onClose={this.onChildrenDrawerClose}
                 visible={this.state.childrenDrawer}
             >

@@ -8,12 +8,45 @@ import Inner from './inner';
 import Animate from '../animate';
 import zhCN from '../locale/zh-cn';
 import { log, func, dom, focus, guid } from '../util';
-import scrollLocker from './scroll-locker';
+import scrollLocker from '../dialog/scroll-locker';
 
 const { OverlayContext } = Overlay;
 const noop = func.noop;
 
-const Dialog = props => {
+const getAnimation = placement => {
+    let animation;
+    switch (placement) {
+        case 'top':
+            animation = {
+                in: 'slideInDown',
+                out: 'slideOutUp',
+            };
+            break;
+        case 'bottom':
+            animation = {
+                in: 'slideInUp',
+                out: 'slideOutDown',
+            };
+            break;
+        case 'left':
+            animation = {
+                in: 'slideInLeft',
+                out: 'slideOutLeft',
+            };
+            break;
+        case 'right':
+        default:
+            animation = {
+                in: 'slideInRight',
+                out: 'slideOutRight',
+            };
+            break;
+    }
+
+    return animation;
+};
+
+const Drawer = props => {
     if (!useState || !useRef || !useEffect) {
         log.warning('need react version > 16.8.0');
         return null;
@@ -21,49 +54,29 @@ const Dialog = props => {
 
     const {
         prefix = 'next-',
-        afterClose = noop,
         hasMask = true,
         autoFocus = false,
         className,
         title,
         children,
-        footer,
-        footerAlign,
-        footerActions,
-        onOk = noop,
-        onCancel,
-        okProps,
-        cancelProps,
-        locale = zhCN.Dialog,
-        rtl,
-        visible: pvisible,
-        closeMode = ['close', 'esc'],
-        closeIcon,
-        animation = { in: 'fadeInUp', out: 'fadeOutUp' },
         cache,
+        closeMode = ['close', 'mask', 'esc'],
+        width,
+        height,
+        onClose,
+        placement = 'right',
+        headerStyle,
+        bodyStyle,
+        visible: pvisible,
+        afterClose = noop,
+        locale = zhCN.Drawer,
+        rtl,
+        animation,
         wrapperStyle,
         popupContainer = document.body,
-        dialogRender,
-        centered,
-        top = centered ? 40 : 100,
-        bottom = 40,
-        width = 520,
-        height,
-        isFullScreen,
-        overflowScroll = !isFullScreen,
-        minMargin,
-        onClose,
         style,
-        wrapperClassName,
         ...others
     } = props;
-
-    if ('isFullScreen' in props) {
-        log.deprecated('isFullScreen', 'overflowScroll', 'Dialog v2');
-    }
-    if ('minMargin' in props) {
-        log.deprecated('minMargin', 'top/bottom', 'Dialog v2');
-    }
 
     const [firstVisible, setFirst] = useState(pvisible || false);
     const [visible, setVisible] = useState(pvisible);
@@ -74,16 +87,17 @@ const Dialog = props => {
             ? () => popupContainer
             : popupContainer;
     const [container, setContainer] = useState(getContainer());
-    const dialogRef = useRef(null);
+    const drawerRef = useRef(null);
     const wrapperRef = useRef(null);
     const lastFocus = useRef(null);
     const locker = useRef(null);
     const [uuid] = useState(guid());
     const { setVisibleOverlayToParent, ...otherContext } = useContext(OverlayContext);
     const childIDMap = useRef(new Map());
-    const isAnimationEnd = useRef(false);
+    const isAnimationEnd = useRef(false); // 动效是否结束, 因为时机非常快用 state 太慢
     const [, forceUpdate] = useState();
 
+    // 动效结束，强制重新渲染
     const markAnimationEnd = state => {
         isAnimationEnd.current = state;
         forceUpdate({});
@@ -167,6 +181,7 @@ const Dialog = props => {
         }
     }, [container]);
 
+    // Drawer 关闭时候的处理。1. 结束的时候不管动效是不是已经结束都要隐藏弹窗；2. 需要把focus态还原到触发节点
     const handleExited = () => {
         if (!isAnimationEnd.current) {
             markAnimationEnd(true);
@@ -185,6 +200,7 @@ const Dialog = props => {
         }
     };
 
+    // visible? <Drawer/>: null; 这种写法会触发卸载
     useEffect(() => {
         return () => {
             handleExited();
@@ -199,24 +215,9 @@ const Dialog = props => {
         return null;
     }
 
-    const handleCancel = e => {
-        if (typeof onCancel === 'function') {
-            onCancel(e);
-        } else {
-            handleClose('cancelBtn', e);
-        }
-    };
-
     const handleMaskClick = e => {
         if (!canCloseByMask) {
             return;
-        }
-
-        if (e.type === 'click' && dialogRef.current) {
-            const dialogNode = ReactDOM.findDOMNode(dialogRef.current);
-            if (dialogNode && dialogNode.contains(e.target)) {
-                return;
-            }
         }
 
         handleClose('maskClick', e);
@@ -227,98 +228,39 @@ const Dialog = props => {
         dom.setStyle(wrapperRef.current, 'display', '');
     };
     const handleEntered = () => {
-        if (autoFocus && dialogRef.current && dialogRef.current.bodyNode) {
-            const focusableNodes = focus.getFocusNodeList(dialogRef.current.bodyNode);
+        if (autoFocus && drawerRef.current && drawerRef.current.bodyNode) {
+            const focusableNodes = focus.getFocusNodeList(drawerRef.current.bodyNode);
             if (focusableNodes.length > 0 && focusableNodes[0]) {
                 lastFocus.current = document.activeElement;
                 focusableNodes[0].focus();
             }
         }
-        setVisibleOverlayToParent(uuid, wrapperRef.current);
+        setVisibleOverlayToParent(uuid, drawerRef.current);
     };
 
     const wrapperCls = classNames({
         [`${prefix}overlay-wrapper`]: true,
-        [wrapperClassName]: !!wrapperClassName,
         opened: visible,
     });
-    const dialogCls = classNames({
-        [`${prefix}dialog-v2`]: true,
+    const innerWrapperCls = classNames({
+        [`${prefix}overlay-inner`]: true,
+        [`${prefix}drawer-wrapper`]: true,
+        [`${prefix}drawer-${placement}`]: true,
+        [className]: !!className,
+    });
+    const drawerCls = classNames({
+        [`${prefix}drawer-v2`]: true,
         [className]: !!className,
     });
 
-    const topStyle = {};
-    if (centered) {
-        // 兼容 minMargin
-        if (!top && !bottom && minMargin) {
-            topStyle.marginTop = minMargin;
-            topStyle.marginBottom = minMargin;
-        } else {
-            top && (topStyle.marginTop = top);
-            bottom && (topStyle.marginBottom = bottom);
-        }
-    } else {
-        top && (topStyle.top = top);
-        bottom && (topStyle.paddingBottom = bottom);
-    }
-
-    const innerStyle = style || {};
-    if (overflowScroll && !innerStyle.maxHeight) {
-        innerStyle.maxHeight = `calc(100vh - ${top + bottom}px)`;
-    }
+    const newAnimation =
+        animation === null || animation === false ? null : animation ? animation : getAnimation(placement);
 
     const timeout = {
         appear: 300,
         enter: 300,
         exit: 250,
     };
-
-    let inner = (
-        <Animate.OverlayAnimate
-            visible={visible}
-            animation={animation}
-            timeout={timeout}
-            onEnter={handleEnter}
-            onEntered={handleEntered}
-            onExited={handleExited}
-        >
-            <Inner
-                {...others}
-                style={centered ? { ...topStyle, ...innerStyle } : innerStyle}
-                v2
-                ref={dialogRef}
-                prefix={prefix}
-                className={dialogCls}
-                title={title}
-                footer={footer}
-                footerAlign={footerAlign}
-                footerActions={footerActions}
-                onOk={visible ? onOk : noop}
-                onCancel={visible ? handleCancel : noop}
-                okProps={okProps}
-                cancelProps={cancelProps}
-                locale={locale}
-                closeable={closeable}
-                rtl={rtl}
-                onClose={(...args) => handleClose('closeClick', ...args)}
-                closeIcon={closeIcon}
-                height={height}
-                width={width}
-            >
-                {children}
-            </Inner>
-        </Animate.OverlayAnimate>
-    );
-
-    if (typeof dialogRender === 'function') {
-        inner = dialogRender(inner);
-    }
-
-    const innerWrapperCls = classNames({
-        [`${prefix}overlay-inner`]: true,
-        [`${prefix}dialog-wrapper`]: true,
-        [`${prefix}dialog-centered`]: centered,
-    });
 
     const getVisibleOverlayFromChild = (id, node) => {
         if (node) {
@@ -328,6 +270,12 @@ const Dialog = props => {
         }
         // 让父级也感知
         setVisibleOverlayToParent(id, node);
+    };
+
+    const nstyle = {
+        width,
+        height,
+        ...style,
     };
 
     return (
@@ -342,22 +290,39 @@ const Dialog = props => {
                     {hasMask ? (
                         <Animate.OverlayAnimate
                             visible={visible}
-                            animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}
+                            animation={newAnimation ? { in: 'fadeIn', out: 'fadeOut' } : false}
                             timeout={timeout}
                             unmountOnExit
                         >
-                            <div className={`${prefix}overlay-backdrop`} />
+                            <div className={`${prefix}overlay-backdrop`} onClick={handleMaskClick} />
                         </Animate.OverlayAnimate>
                     ) : null}
 
-                    <div className={innerWrapperCls} onClick={handleMaskClick}>
-                        {centered ? (
-                            inner
-                        ) : (
-                            <div style={topStyle} className={`${prefix}dialog-inner-wrapper`}>
-                                {inner}
-                            </div>
-                        )}
+                    <div className={innerWrapperCls} style={nstyle} ref={drawerRef}>
+                        <Animate.OverlayAnimate
+                            visible={visible}
+                            animation={newAnimation}
+                            timeout={timeout}
+                            onEnter={handleEnter}
+                            onEntered={handleEntered}
+                            onExited={handleExited}
+                        >
+                            <Inner
+                                {...others}
+                                v2
+                                prefix={prefix}
+                                title={title}
+                                className={drawerCls}
+                                locale={locale}
+                                closeable={closeable}
+                                rtl={rtl}
+                                headerStyle={headerStyle}
+                                bodyStyle={bodyStyle}
+                                onClose={(...args) => handleClose('closeClick', ...args)}
+                            >
+                                {children}
+                            </Inner>
+                        </Animate.OverlayAnimate>
                     </div>
                 </div>,
                 container
@@ -366,4 +331,4 @@ const Dialog = props => {
     );
 };
 
-export default Dialog;
+export default Drawer;

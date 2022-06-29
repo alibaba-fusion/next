@@ -1,5 +1,5 @@
 import ConfigProvider from '../config-provider';
-import Base from './base';
+import Base from './base-pre';
 import tree from './tree';
 import fixed from './fixed';
 import selection from './selection';
