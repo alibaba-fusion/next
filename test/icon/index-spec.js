@@ -5,8 +5,6 @@ import assert from 'power-assert';
 import Icon from '../../src/icon';
 import ConfigProvider from '../../src/config-provider';
 
-import ConfigProvider from '../../src/config-provider';
-
 Enzyme.configure({ adapter: new Adapter() });
 
 /* eslint-disable react/jsx-filename-extension */
