@@ -77,10 +77,13 @@ describe('Icon', () => {
             scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
         });
 
-        const newWrapper = mount( <ConfigProvider prefix="abcd-">
+        let newWrapper = mount( <ConfigProvider prefix="abcd-">
             <CustomIcon type="icon-pic" prefix="efg-"/>
         </ConfigProvider>);
         assert(newWrapper.find('.abcd-icon > svg'));
         assert(newWrapper.find('.abcd-icon > efg-icon-remote'));
+
+        newWrapper.unmount();
+        newWrapper = null;
     });
 });
