@@ -26,11 +26,11 @@ function HOC(WrappedComponent) {
         render() {
             const { prefix, forwardedRef, loadingComponent, loading, ...others } = this.props;
             const LComponent = loadingComponent || Loading;
-            if (loading) {
+            if (loading && loadingComponent) {
                 const loadingClassName = `${prefix}table-loading`;
                 return (
                     <LComponent className={loadingClassName}>
-                        <WrappedComponent ref={forwardedRef} loading={loading} {...others} />
+                        <WrappedComponent ref={forwardedRef} {...others} />
                     </LComponent>
                 );
             } else {
