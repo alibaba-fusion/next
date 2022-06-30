@@ -11,6 +11,39 @@
     width: 100%;
     display: inline-block;
 
+    &#{$search-prefix}-focus {
+        box-shadow: $search-focus-shadow-spread;
+
+        .#{$css-prefix}input {
+            background-color: $search-focus-bg-color;
+        }
+
+        // normal
+        &#{$search-prefix}-normal.#{$css-prefix}primary  #{$search-prefix}-left {
+            border-color: $search-foucs-normal-primary-border-color;
+        }
+
+        &#{$search-prefix}-normal.#{$css-prefix}secondary  #{$search-prefix}-left {
+            border-color: $search-foucs-normal-secondary-border-color;
+        }
+
+        &#{$search-prefix}-normal.#{$css-prefix}normal  #{$search-prefix}-left {
+            border-color: $search-foucs-normal-normal-border-color;
+        }
+
+        &#{$search-prefix}-normal.#{$css-prefix}dark  #{$search-prefix}-left {
+            border-color: $search-foucs-normal-dark-border-color;
+        }
+
+        // simple
+        &#{$search-prefix}-simple.#{$css-prefix}dark  #{$search-prefix}-left {
+            border-color: $search-foucs-simple-dark-border-color;
+        }
+        &#{$search-prefix}-simple.#{$css-prefix}normal  #{$search-prefix}-left {
+            border-color: $search-foucs-simple-normal-border-color;
+        }
+    }
+
     .#{$css-prefix}input,
     .#{$css-prefix}select {
         border: none;

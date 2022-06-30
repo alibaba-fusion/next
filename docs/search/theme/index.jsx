@@ -122,6 +122,14 @@ class FunctionDemo extends React.Component {
                         <Search filter={filter} searchText={i18n.title} type="normal" size="medium" shape="simple" style={style}   />
                     </DemoGroup>
                 </Demo>
+                <Demo title="Focused" block>
+                    <DemoHead cols={['L', 'M']}/>
+
+                    <DemoGroup label="Normal">
+                        <Search className="next-search-focus"  searchText={i18n.title} type="normal" size="large" shape="simple" style={style}   />
+                        <Search className="next-search-focus" searchText={i18n.title} type="normal" size="medium" shape="simple" style={style}   />
+                    </DemoGroup>
+                </Demo>
                 <div>
                     <Demo title="Dark" block defaultBackground="dark">
                         <DemoHead cols={['L', 'M']}/>
