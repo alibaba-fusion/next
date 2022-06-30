@@ -173,9 +173,13 @@ class Search extends React.Component {
         this.state = {
             value: typeof value === 'undefined' ? '' : value,
             filterValue,
+            ifFocus: false,
         };
 
         this.highlightKey = null;
+
+        this.handleBlur = this.handleBlur.bind(this);
+        this.handleFocus = this.handleFocus.bind(this);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -261,6 +265,20 @@ class Search extends React.Component {
         this.inputRef.focus(...args);
     }
 
+    handleFocus(...args) {
+        this.setState({
+            ifFocus: true,
+        });
+        this.props.onFocus && this.props.onFocus(...args);
+    }
+
+    handleBlur(...args) {
+        this.setState({
+            ifFocus: false,
+        });
+        this.props.onBlur && this.props.onBlur(...args);
+    }
+
     render() {
         const {
             shape,
@@ -289,12 +307,15 @@ class Search extends React.Component {
             ...others
         } = this.props;
 
+        const { ifFocus } = this.state;
+
         const cls = classNames({
             [`${prefix}search`]: true,
             [`${prefix}search-${shape}`]: true,
             [`${prefix}${type}`]: type,
             [`${prefix}${size}`]: size,
             [`${prefix}disabled`]: !!disabled,
+            [`${prefix}search-focus`]: ifFocus,
             [className]: !!className,
         });
 
@@ -393,6 +414,8 @@ class Search extends React.Component {
                     popupContent={popupContent}
                     disabled={disabled}
                     ref={this.saveInputRef}
+                    onFocus={this.handleFocus}
+                    onBlur={this.handleBlur}
                 />
             </Group>
         );
