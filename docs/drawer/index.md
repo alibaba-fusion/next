@@ -49,14 +49,15 @@
 | afterClose  | [v2] 弹窗关闭后的回调<br/><br/>**签名**:<br/>Function() => void                                                                                                                                                                                  | Function            | -                                          |      |
 
 <!-- api-extra-start -->
+
 ### Drawer.show
 
 以下只列举 config 可以传入的常用属性，Drawer 组件其他属性也可以传入
 
-| 属性       | 说明              | 类型        | 默认值      |
-| :------- | :-------------- | :-------- | :------- |
-| title    | 标题              | ReactNode | ''       |
-| content  | 内容              | ReactNode | ''       |
+| 属性      | 说明  | 类型        | 默认值 |
+| :------ | :-- | :-------- | :-- |
+| title   | 标题  | ReactNode | ''  |
+| content | 内容  | ReactNode | ''  |
 
 ### Drawer.withContext
 
@@ -66,7 +67,6 @@
 对于要使用命令式API的组件，使用`Drawer.withContext`HOC来包裹一下。然后你就可以在你的组件props.contextDrawer拿到 `show` 命令式方法。
 
 <!-- api-extra-end -->
-
 
 ## 无障碍键盘操作指南
 
