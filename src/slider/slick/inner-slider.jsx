@@ -162,9 +162,20 @@ class InnerSlider extends React.Component {
                 currentSlide: this.state.currentSlide,
             });
         } else {
-            const update = !obj.shallowEqual(prevProps, this.props);
-            if (update) {
-                this.update(this.props);
+            const diffKeys = [];
+            Object.keys(prevProps).forEach(key => {
+                if (key in this.props && prevProps[key] !== this.props[key]) {
+                    diffKeys.push(key);
+                }
+            });
+            // children 每次都会不同，所以不需要检测
+            if (diffKeys.length === 1 && diffKeys[0] === 'children') {
+                // do nothing;
+            } else {
+                const update = !obj.shallowEqual(prevProps, this.props);
+                if (update) {
+                    this.update(this.props);
+                }
             }
         }
 
