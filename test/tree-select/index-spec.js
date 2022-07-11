@@ -719,6 +719,24 @@ describe('TreeSelect', () => {
         assertDataAndNodes(dataSource);
     })
 
+    it('should not clear search value when autoClearSearch is false', () => {
+        wrapper = mount( 
+            <TreeSelect
+                dataSource={dataSource}
+                showSearch
+                autoClearSearch={false}
+                style={{ width: 200 }}
+            />
+        )
+
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
+        wrapper.find('.next-tree-node[value="4"]').simulate('click');
+        wrapper.update();
+
+        assert( wrapper.find('.next-select-trigger-search input').prop('value') === '外套');
+
+    })
+
     it('fix issues use isPreview when value is empty', () => {
         wrapper = mount(<TreeSelect isPreview dataSource={dataSource} />);
         assert(wrapper.find('.next-form-preview').instance().textContent === '');

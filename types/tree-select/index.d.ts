@@ -99,6 +99,11 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     maxTagPlaceholder?: (selectedValues: any[], totalValues?: any[]) => React.ReactNode | HTMLElement;
 
     /**
+     * 是否自动清除 searchValue
+     */
+    autoClearSearch?: boolean;
+
+    /**
      * 是否显示搜索框
      */
     showSearch?: boolean;
