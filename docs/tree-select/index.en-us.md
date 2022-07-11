@@ -55,6 +55,7 @@ Like Select, TreeSelect can be used when the selected data structure is a tree s
 | tagInline               | if display in one line                                                                                                                                                                 | Boolean                 | false       | 1.25 |
 | maxTagPlaceholder       | return custom content when hide extra tags, valid when tagInline is true <br/><br/>**signature**:<br/>Function(selectedValues: Array, totalValues: Array) => reactNode<br/>**params**:<br/>_selectedValues_: {Array} current selected values<br/>_totalValues_: {Array} all avaliable values<br/>**returns**:<br/>{reactNode} null<br/>            | Function                | -           | 1.25 |
 | preserveNonExistentValue | if reserve value when value/defaultValue not exist in dataSource  | Boolean                     | false       | 1.25 |
+| autoClearSearch          | auto clear search value when choose item                                                                                                                                                                                                                                      | Boolean                     | true        | 1.26 |
 
 <!-- api-extra-start -->
 

@@ -199,6 +199,11 @@ class TreeSelect extends Component {
          */
         maxTagPlaceholder: PropTypes.func,
         /**
+         * 选择时是否自动清空 searchValue
+         * @version 1.26
+         */
+        autoClearSearch: PropTypes.bool,
+        /**
          * 是否显示搜索框
          */
         showSearch: PropTypes.bool,
@@ -317,6 +322,7 @@ class TreeSelect extends Component {
         defaultValue: null,
         onChange: noop,
         tagInline: false,
+        autoClearSearch: true,
         showSearch: false,
         filterLocal: true,
         onSearch: noop,
@@ -530,7 +536,7 @@ class TreeSelect extends Component {
     }
 
     handleSelect(selectedKeys, extra) {
-        const { multiple, onChange } = this.props;
+        const { multiple, onChange, autoClearSearch } = this.props;
         const { selected } = extra;
 
         if (multiple || selected) {
@@ -551,14 +557,16 @@ class TreeSelect extends Component {
             multiple ? onChange(value, data) : onChange(value[0], data[0]);
 
             // clear search value manually
-            this.select.handleSearchClear('select');
+            if (autoClearSearch) {
+                this.select.handleSearchClear('select');
+            }
         } else {
             this.handleVisibleChange(false, 'fromTree');
         }
     }
 
     handleCheck(checkedKeys) {
-        const { onChange } = this.props;
+        const { onChange, autoClearSearch } = this.props;
 
         let value = this.getValueByKeys(checkedKeys);
         const nonExistentValues = this.getNonExistentValues();
@@ -573,7 +581,9 @@ class TreeSelect extends Component {
         onChange(value, this.getData(value));
 
         // clear search value manually
-        this.select.handleSearchClear('select');
+        if (autoClearSearch) {
+            this.select.handleSearchClear('select');
+        }
     }
 
     handleRemove(removedItem) {
