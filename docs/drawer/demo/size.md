@@ -50,7 +50,7 @@ const Demo = () => {
             </Drawer>
         </div>
     );
-}
+};
 
 ReactDOM.render(<Demo />, mountNode);
 ````

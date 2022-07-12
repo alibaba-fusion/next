@@ -61,13 +61,13 @@ class CloseableTab extends React.Component {
 
     addTabpane = () => {
         const panes = this.state.panes;
-        const newItem = { tab: 'new tab', key: Math.random(), closeable: true }
+        const newItem = { tab: 'new tab', key: Math.random(), closeable: true };
         panes.push(newItem);
 
         this.setState({
             panes: [...panes],
             activeKey: newItem.key
-        })
+        });
     }
 
     render() {
