@@ -19,7 +19,7 @@
                 @if ($name == 'xl') {
                     $query: $minQuery;
                 } @else {
-                    $query: $minQuery + "and" + $maxQuery;
+                    $query: $minQuery + " and " + $maxQuery;
                 }
                 @media #{$query} { @content; }
             }
