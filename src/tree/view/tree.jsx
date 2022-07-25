@@ -130,7 +130,7 @@ const getCheckedKeys = (props, willReceiveProps, _k2n, _p2n) => {
         checkedKeys = [];
     }
 
-    const { checkStrictly, checkedStrategy } = props; // TODO TEST
+    const { checkStrictly } = props; // TODO TEST
     if (checkStrictly) {
         if (isPlainObject(checkedKeys)) {
             const { checked, indeterminate } = checkedKeys;
@@ -142,10 +142,7 @@ const getCheckedKeys = (props, willReceiveProps, _k2n, _p2n) => {
 
         checkedKeys = checkedKeys.filter(key => !!_k2n[key]);
     } else {
-        if (checkedStrategy !== 'child') {
-            // checkedStrategy 为 child 时不需要计算所有可选值
-            checkedKeys = getAllCheckedKeys(checkedKeys, _k2n, _p2n);
-        }
+        checkedKeys = getAllCheckedKeys(checkedKeys, _k2n, _p2n);
 
         checkedKeys = checkedKeys.filter(key => !!_k2n[key]);
 
