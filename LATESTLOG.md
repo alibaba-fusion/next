@@ -1,10 +1,10 @@
 # Latest Log 
 
-## [1.25.45](https://github.com/alibaba-fusion/next/compare/1.25.44...1.25.45) (2022-06-28)
+## [1.25.46](https://github.com/alibaba-fusion/next/compare/1.25.45...1.25.46) (2022-07-25)
 
 
 ### Bug Fixes
 
-* **CascaderSelect:** filter duplicated non-existent value, close [#3921](https://github.com/alibaba-fusion/next/issues/3921) ([#3968](https://github.com/alibaba-fusion/next/issues/3968)) ([7b8ab75](https://github.com/alibaba-fusion/next/commit/7b8ab75))
+* fix sass build error ([7438bff](https://github.com/alibaba-fusion/next/commit/7438bff))
 
 
