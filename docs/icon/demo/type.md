@@ -114,6 +114,9 @@ ReactDOM.render(
     margin-top: 10px;
     text-align: center;
     font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .icon-list-custom-title {
