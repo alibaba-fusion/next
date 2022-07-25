@@ -356,6 +356,22 @@ describe('TreeSelect', () => {
         assert.deepEqual(getLabels(wrapper), ['test1']);
     });
 
+    it('should set parent node checked if all child nodes is checked even treeCheckedStrategy is "child"', () => {
+        wrapper = mount(
+            <TreeSelect
+                defaultVisible
+                treeCheckable
+                treeDefaultExpandAll
+                dataSource={dataSource}
+                style={{ width: 200 }}
+                treeCheckedStrategy="child"
+                value={['6']}
+            />
+        )
+
+        assertChecked('3', true);
+    })
+
     it('should render parent tag when set treeCheckedStrategy to all', () => {
         wrapper = mount(
             <TreeSelect
