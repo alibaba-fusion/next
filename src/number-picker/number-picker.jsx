@@ -320,6 +320,9 @@ class NumberPicker extends React.Component {
     onChange(value, e) {
         // ignore space & Compatible Chinese Input Method
         value = value.replace('。', '.').trim();
+        // 过滤非数字
+        value = value.replace(/[^-.\d]/g, '');
+
         let onlyDisplay = false;
         if (this.props.editable === true && this.shouldFireOnChange(value)) {
             let valueCorrected = this.correctValue(value);
