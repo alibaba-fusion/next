@@ -1,5 +1,100 @@
 # Change Log 
 
+# [1.26.0-beta.4](https://github.com/alibaba-fusion/next/compare/1.25.45...1.26.0-beta.4) (2022-06-30)
+
+
+### Bug Fixes
+
+* **Table:** prevent loading crash, fix [#3369](https://github.com/alibaba-fusion/next/issues/3369) ([#3973](https://github.com/alibaba-fusion/next/issues/3973)) ([aaa332c](https://github.com/alibaba-fusion/next/commit/aaa332c))
+* cellDomRef is undefined ([654dcae](https://github.com/alibaba-fusion/next/commit/654dcae))
+* some pc h5 cross issue ([bbf871c](https://github.com/alibaba-fusion/next/commit/bbf871c))
+* **CascaderSelect:** could pass menuProps={{focusable: true}} to cascader fix [#3685](https://github.com/alibaba-fusion/next/issues/3685) ([3a5c056](https://github.com/alibaba-fusion/next/commit/3a5c056))
+* **CascaderSelect:** focus to input after select ([#3712](https://github.com/alibaba-fusion/next/issues/3712)) ([bd1d44f](https://github.com/alibaba-fusion/next/commit/bd1d44f))
+* **Core:** division deprecation warning when using dart-sass ([001a21f](https://github.com/alibaba-fusion/next/commit/001a21f))
+* **DatePicker2:** fix selected value display when disabled ([#3706](https://github.com/alibaba-fusion/next/issues/3706)), close [#3705](https://github.com/alibaba-fusion/next/issues/3705) ([ca84bc9](https://github.com/alibaba-fusion/next/commit/ca84bc9))
+* **Dialog:** could custom margin-bottom when no footer fix [#3799](https://github.com/alibaba-fusion/next/issues/3799) ([#3809](https://github.com/alibaba-fusion/next/issues/3809)) ([a407931](https://github.com/alibaba-fusion/next/commit/a407931))
+* **Dialog:** height type can be either number or string ([#3807](https://github.com/alibaba-fusion/next/issues/3807)) ([600efaf](https://github.com/alibaba-fusion/next/commit/600efaf))
+* **Dialog:** rollback body style while unmount fix [#3725](https://github.com/alibaba-fusion/next/issues/3725) ([2447585](https://github.com/alibaba-fusion/next/commit/2447585))
+* **Dialog:** style higher than props fix [#3797](https://github.com/alibaba-fusion/next/issues/3797) ([a7ee53c](https://github.com/alibaba-fusion/next/commit/a7ee53c))
+* **Drawer:** rollback body style while unmount fix [#3725](https://github.com/alibaba-fusion/next/issues/3725) ([#3829](https://github.com/alibaba-fusion/next/issues/3829)) ([9155964](https://github.com/alibaba-fusion/next/commit/9155964))
+* **Field:** fix field.validate function signature ([#3723](https://github.com/alibaba-fusion/next/issues/3723)) ([96f36ef](https://github.com/alibaba-fusion/next/commit/96f36ef))
+* **Input:** 修复密码输入框在禁用态的时候仍然可以点击右侧的眼睛来切换显隐的问题 ([44a2d12](https://github.com/alibaba-fusion/next/commit/44a2d12))
+* **Menu:** keys of more, close [#3733](https://github.com/alibaba-fusion/next/issues/3733) ([189b21f](https://github.com/alibaba-fusion/next/commit/189b21f))
+* **NumberPicker:** repair field setValues 0 numberPicker unread, clos… ([#3752](https://github.com/alibaba-fusion/next/issues/3752)) ([47462eb](https://github.com/alibaba-fusion/next/commit/47462eb))
+* **NumberPicker:** repair numberPicker log string, close [#3768](https://github.com/alibaba-fusion/next/issues/3768) ([#3769](https://github.com/alibaba-fusion/next/issues/3769)) ([d68df7f](https://github.com/alibaba-fusion/next/commit/d68df7f))
+* **Overlay:** onTouchEnd stopPropagation by default ([#3714](https://github.com/alibaba-fusion/next/issues/3714)) ([8b0735a](https://github.com/alibaba-fusion/next/commit/8b0735a))
+* **Overlay:** ts add placement ([#3753](https://github.com/alibaba-fusion/next/issues/3753)) ([504cca5](https://github.com/alibaba-fusion/next/commit/504cca5))
+* **Range:** fix onChange/onProgress types ([3eb78e3](https://github.com/alibaba-fusion/next/commit/3eb78e3))
+* **Range:** onProcess&onChange props type error fix [#2769](https://github.com/alibaba-fusion/next/issues/2769) ([#3816](https://github.com/alibaba-fusion/next/issues/3816)) ([3768a0d](https://github.com/alibaba-fusion/next/commit/3768a0d))
+* **Range:** repair browser count float issue, close [#3652](https://github.com/alibaba-fusion/next/issues/3652) ([59c8d08](https://github.com/alibaba-fusion/next/commit/59c8d08))
+* **Select:** could select item already selected fix [#3791](https://github.com/alibaba-fusion/next/issues/3791) ([a2640b0](https://github.com/alibaba-fusion/next/commit/a2640b0))
+* **Select:** make highlight color configurable ([fce8a91](https://github.com/alibaba-fusion/next/commit/fce8a91))
+* **Select:** make width stable ([2962edf](https://github.com/alibaba-fusion/next/commit/2962edf))
+* **Select:** optimize controlled highlightKey question, close [#3795](https://github.com/alibaba-fusion/next/issues/3795) ([#3798](https://github.com/alibaba-fusion/next/issues/3798)) ([dfbd657](https://github.com/alibaba-fusion/next/commit/dfbd657))
+* **Switch:** set children text size to form-element-font-size, fix [#3710](https://github.com/alibaba-fusion/next/issues/3710) ([#3711](https://github.com/alibaba-fusion/next/issues/3711)) ([5e63dc5](https://github.com/alibaba-fusion/next/commit/5e63dc5))
+* **Tab:** config active line padding ([b818e6e](https://github.com/alibaba-fusion/next/commit/b818e6e))
+* **Tab:** style compile fail ([d266f85](https://github.com/alibaba-fusion/next/commit/d266f85))
+* **Table:** data should be mutable for async load ([3653a02](https://github.com/alibaba-fusion/next/commit/3653a02))
+* **Table:** do not change dataSource ([#3811](https://github.com/alibaba-fusion/next/issues/3811)) ([0a52fc3](https://github.com/alibaba-fusion/next/commit/0a52fc3))
+* **Table:** fix memory leak ([c04fb68](https://github.com/alibaba-fusion/next/commit/c04fb68))
+* **Table:** hidden to __hidden ([6c3e54a](https://github.com/alibaba-fusion/next/commit/6c3e54a))
+* **Table:** tree table support virtual ([5e7c865](https://github.com/alibaba-fusion/next/commit/5e7c865))
+* **Table:** virtual table with selection should tell all records, fix [#3792](https://github.com/alibaba-fusion/next/issues/3792) ([62b4591](https://github.com/alibaba-fusion/next/commit/62b4591))
+* 修复从只读态切换到输入态时无法删除已上传的问题 ([7f889d5](https://github.com/alibaba-fusion/next/commit/7f889d5))
+* **TimePicker2:** fix RangePicker wrong minutes and seconds disabled ([#3771](https://github.com/alibaba-fusion/next/issues/3771)), close [#3766](https://github.com/alibaba-fusion/next/issues/3766) ([ecfc2d6](https://github.com/alibaba-fusion/next/commit/ecfc2d6))
+* use Set to avoid duplication keys ([#3772](https://github.com/alibaba-fusion/next/issues/3772)),close [#3773](https://github.com/alibaba-fusion/next/issues/3773) ([2877a88](https://github.com/alibaba-fusion/next/commit/2877a88))
+* **Transfer:** fix some wrong prop-types of transfer ([f1a5209](https://github.com/alibaba-fusion/next/commit/f1a5209))
+* **TreeSelect:** clear search value when select, close [#3738](https://github.com/alibaba-fusion/next/issues/3738) ([f47e25e](https://github.com/alibaba-fusion/next/commit/f47e25e))
+* **Upload:** card add ts ([b0e66af](https://github.com/alibaba-fusion/next/commit/b0e66af))
+
+
+### Features
+
+* **Avatar:** theme support config border ([#3967](https://github.com/alibaba-fusion/next/issues/3967)) ([c83fffc](https://github.com/alibaba-fusion/next/commit/c83fffc))
+* **Badge:** theme support config border, close [#3963](https://github.com/alibaba-fusion/next/issues/3963) ([#3966](https://github.com/alibaba-fusion/next/issues/3966)) ([812e0f2](https://github.com/alibaba-fusion/next/commit/812e0f2))
+* **Dialog:** add api wrapperClassName for v2 fix [#3703](https://github.com/alibaba-fusion/next/issues/3703) ([266d55f](https://github.com/alibaba-fusion/next/commit/266d55f))
+* **Dialog:** new api noPadding for Dialog body padding fix [#3892](https://github.com/alibaba-fusion/next/issues/3892) ([#3893](https://github.com/alibaba-fusion/next/issues/3893)) ([ffb274f](https://github.com/alibaba-fusion/next/commit/ffb274f))
+* **Search:** theme support config focus status, close [#3965](https://github.com/alibaba-fusion/next/issues/3965) ([#3970](https://github.com/alibaba-fusion/next/issues/3970)) ([f16f16f](https://github.com/alibaba-fusion/next/commit/f16f16f))
+* use big.js instead of bignumber.js, for smaller bundle size ([#3946](https://github.com/alibaba-fusion/next/issues/3946)) ([88147bd](https://github.com/alibaba-fusion/next/commit/88147bd))
+* **Drawer:** v2 version fix [#3330](https://github.com/alibaba-fusion/next/issues/3330), fix [#3258](https://github.com/alibaba-fusion/next/issues/3258), fix [#3045](https://github.com/alibaba-fusion/next/issues/3045), fix [#2618](https://github.com/alibaba-fusion/next/issues/2618), fix [#2419](https://github.com/alibaba-fusion/next/issues/2419) ([23309cd](https://github.com/alibaba-fusion/next/commit/23309cd))
+* **Message:** can remove icon by iconType: false ([b0f732e](https://github.com/alibaba-fusion/next/commit/b0f732e))
+* **Tab:** add api showAdd fix [#3632](https://github.com/alibaba-fusion/next/issues/3632), fix [#3661](https://github.com/alibaba-fusion/next/issues/3661), fix [#2869](https://github.com/alibaba-fusion/next/issues/2869), fix [#2848](https://github.com/alibaba-fusion/next/issues/2848) ([44bd710](https://github.com/alibaba-fusion/next/commit/44bd710))
+* **Transfer:** transfer support different search config between panels ([#3724](https://github.com/alibaba-fusion/next/issues/3724)), close [#3664](https://github.com/alibaba-fusion/next/issues/3664) ([3a3e4ed](https://github.com/alibaba-fusion/next/commit/3a3e4ed))
+* optimize id-ID language copy writer ([3847b6b](https://github.com/alibaba-fusion/next/commit/3847b6b))
+
+
+
+
+# [1.26.0-beta.5](https://github.com/alibaba-fusion/next/compare/1.26.0-beta.4...1.26.0-beta.5) (2022-07-06)
+
+
+### Bug Fixes
+
+* **Slider:** activeIndex changes while rerender fix [#3722](https://github.com/alibaba-fusion/next/issues/3722) ([76b8284](https://github.com/alibaba-fusion/next/commit/76b8284))
+
+
+
+
+# [1.26.0-beta.6](https://github.com/alibaba-fusion/next/compare/1.26.0-beta.5...1.26.0-beta.6) (2022-07-12)
+
+
+### Bug Fixes
+
+* **CascaderSelect:** filter duplicated non-existent value, close [#3921](https://github.com/alibaba-fusion/next/issues/3921) ([#3968](https://github.com/alibaba-fusion/next/issues/3968)) ([a9960a2](https://github.com/alibaba-fusion/next/commit/a9960a2))
+
+
+### Features
+
+* **TreeSelect:** support not clear search value when choose item, close [#3985](https://github.com/alibaba-fusion/next/issues/3985) ([3f09e6b](https://github.com/alibaba-fusion/next/commit/3f09e6b))
+
+
+
+
+# [1.26.0-beta.7](https://github.com/alibaba-fusion/next/compare/1.25.48...1.26.0-beta.7) (2022-07-28)
+
+
+
+
 ## [1.25.48](https://github.com/alibaba-fusion/next/compare/1.25.47...1.25.48) (2022-07-28)
 
 

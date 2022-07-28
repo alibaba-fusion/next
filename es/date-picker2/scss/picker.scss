@@ -1,0 +1,41 @@
+
+#{$picker} {
+    & &-body {
+        padding: 8px 12px;
+        display: inline-flex;
+        flex-direction: column;
+        text-align: center;
+        background: #FFF;
+        border-radius: 2px;
+        outline: none;
+    }
+
+    & &-footer {
+        width: min-content;
+        min-width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        border-top: 1px solid #F0F0F0;
+        padding: 4px 12px;
+        display: flex;
+        min-height: 40px;
+        align-items: center;
+        flex-wrap: wrap;
+
+        &-ranges > .#{$css-prefix}btn {
+            margin-right: $s-2;
+        }
+        &-actions {
+            margin-left: auto;
+        }
+    }
+}
+
+#{$calendar2-prefix}-cell {
+    &#{$calendar2-prefix}-cell-range-begin-single:before {
+        transform: translate(-50%, -50%);
+    }
+    &#{$calendar2-prefix}-cell-range-end-single:before {
+        transform: translate(50%, -50%);
+    }
+}
