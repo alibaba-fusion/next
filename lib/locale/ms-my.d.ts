@@ -1,0 +1,1 @@
+export * from '../../types/locale/ms-my';

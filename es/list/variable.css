@@ -1,0 +1,26 @@
+:root {
+--list-size-s-title-font-size: 16px;
+--list-size-s-title-font-weight: bold;
+--list-size-s-item-padding-lr: 0px;
+--list-size-s-item-padding-tb: 8px;
+--list-size-s-item-media-margin: 8px;
+--list-size-s-item-content-font-size: 12px;
+--list-size-s-item-content-line-height: 1.3;
+--list-size-s-item-title-font-weight: normal;
+--list-size-s-item-title-font-size: 14px;
+--list-size-s-item-title-line-height: 1.5;
+--list-size-m-title-font-size: 20px;
+--list-size-m-title-font-weight: bold;
+--list-size-m-item-padding-lr: 0px;
+--list-size-m-item-padding-tb: 16px;
+--list-size-m-item-media-margin: 8px;
+--list-size-m-item-content-font-size: 14px;
+--list-size-m-item-content-line-height: 1.5;
+--list-size-m-item-title-font-size: 16px;
+--list-size-m-item-title-line-height: 1.5;
+--list-size-m-item-title-font-weight: normal;
+--list-divider-color: #DCDEE3;
+--list-title-color: #333333;
+--list-content-color: #666666;
+--list-extra-color: #999999;
+}
