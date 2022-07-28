@@ -52,14 +52,7 @@ export default class TreeCell extends React.Component {
                     [paddingType]: indent * (record.__level + 1),
                 };
                 treeArrowNode = (
-                    <Icon
-                        size="xs"
-                        rtl={rtl}
-                        // className={`${prefix}table-tree-placeholder`}
-                        className={`${prefix}table-tree-arrow`}
-                        type="arrow-right"
-                        style={{ visibility: 'hidden' }}
-                    />
+                    <Icon size="xs" rtl={rtl} className={`${prefix}table-tree-placeholder`} type="arrow-right" />
                 );
                 if (record.children && record.children.length) {
                     const hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1;
