@@ -1,10 +1,10 @@
 # Latest Log 
 
-## [1.25.45](https://github.com/alibaba-fusion/next/compare/1.25.44...1.25.45) (2022-06-28)
+## [1.25.47](https://github.com/alibaba-fusion/next/compare/1.25.46...1.25.47) (2022-07-26)
 
 
 ### Bug Fixes
 
-* **CascaderSelect:** filter duplicated non-existent value, close [#3921](https://github.com/alibaba-fusion/next/issues/3921) ([#3968](https://github.com/alibaba-fusion/next/issues/3968)) ([7b8ab75](https://github.com/alibaba-fusion/next/commit/7b8ab75))
+* **Tree:** fix select-all bug on parent node when treeCheckedStrategy set as "child", close [#3984](https://github.com/alibaba-fusion/next/issues/3984), [#3936](https://github.com/alibaba-fusion/next/issues/3936) ([7a86713](https://github.com/alibaba-fusion/next/commit/7a86713))
 
 

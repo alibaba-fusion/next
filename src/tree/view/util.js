@@ -163,7 +163,15 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
             const parent = _p2n[parentPos];
             if (parent.checkable === false || parent.disabled || parent.checkboxDisabled) continue;
             const parentChecked = parent.children.every(child => isNodeChecked(child, flatKeys));
-            if (parentChecked) {
+
+            const isAllChildrenDisabled = parent.children.every(child => {
+                return child.disabled;
+            });
+
+            // don't auto select parent when all children are disabled,
+            // fix https://github.com/alibaba-fusion/next/issues/3936
+
+            if (parentChecked && !isAllChildrenDisabled) {
                 parent.children.forEach(removeKey);
                 addParentKey(i, parent);
             } else {

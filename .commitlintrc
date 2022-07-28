@@ -1,6 +1,6 @@
 {
   "rules": {
-    "header-max-length": [2, "always", 90],
+    "header-max-length": [2, "always", 120],
     "scope-empty": [2, "never"],
     "scope-case": [2, "always", "pascal-case"],
     "subject-empty": [2, "never"],
