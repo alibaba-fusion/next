@@ -127,7 +127,7 @@ describe('number-picker', () => {
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}a2333` } });
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}a2333`);
+            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
             wrapper
@@ -148,7 +148,7 @@ describe('number-picker', () => {
             wrapper2
                 .find('input')
                 .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}a2333` } });
-            assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}a2333`);
+            assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
             wrapper2.find('input').simulate('blur');
             assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
             wrapper2
@@ -322,6 +322,18 @@ describe('number-picker', () => {
             done();
         });
 
+        it('should only input -.1234567890', () => {
+            let wrapper = mount(
+                <NumberPicker />
+            );
+            wrapper.find('input').simulate('change', { target: { value: '-1.' } });
+            assert(wrapper.find('input').prop('value') === "-1.");
+            wrapper.find('input').simulate('change', { target: { value: '-1.a' } });
+            assert(wrapper.find('input').prop('value') === "-1.");
+            wrapper.find('input').simulate('change', { target: { value: '-1.13a2' } });
+            assert(wrapper.find('input').prop('value') === "-1.132");
+        });
+        
         it('onChange value 1.9 -> 1. should input displayValue === 1. onchange value === 1', done => {
             const onChange = (value) => {
                 assert(value === 1)
@@ -969,7 +981,17 @@ describe('number-picker', () => {
                 .at(1)
                 .simulate('click');
         });
-
+        
+        it('should not input number large then max', () => {
+            let wrapper = mount(
+                <NumberPicker max={10} />
+            );
+            wrapper.find('input').simulate('change', { target: { value: '100' } });
+            assert(wrapper.find('input').prop('value') === "10");
+            wrapper.find('input').simulate('change', { target: { value: '5' } });
+            assert(wrapper.find('input').prop('value') === "5");
+        });
+        
         it('should support precision', done => {
             const wrapper = mount(
                 <NumberPicker defaultValue={0.121} step={0.01} precision={3} />

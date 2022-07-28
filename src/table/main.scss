@@ -328,8 +328,10 @@
         }
     }
     &-tree-placeholder {
-        display: inline-block;
-        width: 12px;
+        @include icon-size($table-tree-expanded-icon-size);
+        visibility: hidden;
+        // display: inline-block;
+        // width: 12px;
     }
 }
 

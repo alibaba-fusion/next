@@ -238,7 +238,7 @@ class NumberPicker extends React.Component {
         const { stringMode } = this.props;
         if (stringMode) {
             try {
-            return Big(v1).gt(v2);
+                return Big(v1).gt(v2);
             } catch (e) {
                 // big.js 遇到 Infinity 和 NaN 异常回退到 Number
                 return Number(v1) > Number(v2);
@@ -273,12 +273,7 @@ class NumberPicker extends React.Component {
         const displayValue = `${this.state.displayValue}`;
         // 展示值合法但超出边界时，额外在Blur时触发onChange
         // 展示值非法时，回退前一个有效值
-        if (
-            editable === true &&
-            !isNaN(displayValue) &&
-            !this.shouldFireOnChange(displayValue) &&
-            !this.withinMinMax(displayValue)
-        ) {
+        if (editable === true && !isNaN(displayValue) && !this.withinMinMax(displayValue)) {
             let valueCorrected = this.correctValue(displayValue);
             valueCorrected = stringMode ? Big(valueCorrected).toFixed(this.getPrecision()) : valueCorrected;
             if (this.state.value !== valueCorrected) {
@@ -300,6 +295,12 @@ class NumberPicker extends React.Component {
         return true;
     }
 
+    withinMin(value) {
+        const { min } = this.state;
+        if (isNaN(value) || this.isGreaterThan(min, value)) return false;
+        return true;
+    }
+
     setDisplayValue({ displayValue, onlyDisplay = false }) {
         this.setState({ displayValue, onlyDisplay });
     }
@@ -316,9 +317,13 @@ class NumberPicker extends React.Component {
             : displayValue;
     }
 
+    /**
+     * 输入时判断是否要触发onChange
+     * 正常触发: 合法数字 (eg: -0 -0. 0.1)；超出最大值
+     * 不触发: 1. 非数字（eg: - ）, 2. 小于最小值(输入需要过程由小变大)
+     */
     shouldFireOnChange(value) {
-        // 不触发onChange：a.非数字  b.超出边界的数字输入
-        if (isNaN(value) || !this.withinMinMax(value)) {
+        if (isNaN(value) || !this.withinMin(value)) {
             return false;
         }
         return true;
@@ -327,11 +332,17 @@ class NumberPicker extends React.Component {
     onChange(value, e) {
         // ignore space & Compatible Chinese Input Method
         value = value.replace('。', '.').trim();
+        // 过滤非数字
+        value = value.replace(/[^-.\d]/g, '');
+
         let onlyDisplay = false;
         if (this.props.editable === true && this.shouldFireOnChange(value)) {
-            let valueCorrected = this.correctValue(value);
+            const valueCorrected = this.correctValue(value);
             if (this.state.value !== valueCorrected) {
                 this.setValue({ value: valueCorrected, e });
+            }
+            if (typeof this.props.max !== 'undefined' && this.isGreaterThan(value, this.state.max)) {
+                value = String(valueCorrected);
             }
         } else {
             onlyDisplay = true;

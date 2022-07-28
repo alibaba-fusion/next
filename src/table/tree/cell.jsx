@@ -40,21 +40,8 @@ export default class TreeCell extends React.Component {
     };
 
     render() {
-        const {
-            colIndex,
-            record,
-            prefix,
-            primaryKey,
-            locale,
-            rtl,
-            children,
-        } = this.props;
-        const {
-            openTreeRowKeys: openRowKeys,
-            indent,
-            isTree,
-            rowSelection,
-        } = this.context;
+        const { colIndex, record, prefix, primaryKey, locale, rtl, children } = this.props;
+        const { openTreeRowKeys: openRowKeys, indent, isTree, rowSelection } = this.context;
         const treeArrowNodeIndex = rowSelection ? 1 : 0;
         let firstCellStyle, treeArrowNode;
         if (colIndex === treeArrowNodeIndex) {
@@ -65,15 +52,10 @@ export default class TreeCell extends React.Component {
                     [paddingType]: indent * (record.__level + 1),
                 };
                 treeArrowNode = (
-                    <Icon
-                        size="xs"
-                        rtl={rtl}
-                        className={`${prefix}table-tree-placeholder`}
-                    />
+                    <Icon size="xs" rtl={rtl} className={`${prefix}table-tree-placeholder`} type="arrow-right" />
                 );
                 if (record.children && record.children.length) {
-                    const hasExpanded =
-                        openRowKeys.indexOf(record[primaryKey]) > -1;
+                    const hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1;
 
                     treeArrowType = hasExpanded ? 'arrow-down' : 'arrow-right';
 
@@ -88,20 +70,14 @@ export default class TreeCell extends React.Component {
                             role="button"
                             tabIndex="0"
                             aria-expanded={hasExpanded}
-                            aria-label={
-                                hasExpanded ? locale.expanded : locale.folded
-                            }
+                            aria-label={hasExpanded ? locale.expanded : locale.folded}
                         />
                     );
                 }
             }
         }
         return (
-            <CellComponent
-                {...this.props}
-                innerStyle={firstCellStyle}
-                isIconLeft={!!treeArrowNode}
-            >
+            <CellComponent {...this.props} innerStyle={firstCellStyle} isIconLeft={!!treeArrowNode}>
                 {children}
                 {treeArrowNode}
             </CellComponent>

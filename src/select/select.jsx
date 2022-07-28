@@ -430,7 +430,8 @@ class Select extends Base {
             this.focusInput();
         }
 
-        if (this.props.mode === 'single' && key === this.state.value) {
+        // key is string type here, fix https://github.com/alibaba-fusion/next/issues/4004
+        if (this.props.mode === 'single' && key === String(this.state.value)) {
             this.setVisible(false, 'itemClick');
         }
     }
