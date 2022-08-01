@@ -103,6 +103,10 @@ class Calendar extends React.Component {
     constructor(props) {
         super(props);
 
+        // fix https://github.com/alibaba-fusion/next/issues/4013
+        const { momentLocale = 'zh-cn' } = props.locale;
+        datejs.locale(momentLocale);
+
         const { defaultValue, mode, defaultPanelValue = datejs() } = props;
         const value = 'value' in props ? props.value : defaultValue;
         const panelValue = datejs('panelValue' in props ? props.panelValue : value || defaultPanelValue);

@@ -192,6 +192,7 @@ class ConfigProvider extends Component {
         };
     }
 
+    // TODO: refactor with new context api
     getChildContext() {
         const {
             prefix,

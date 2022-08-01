@@ -8,10 +8,13 @@ import dayjs from 'dayjs';
 import co from 'co';
 import moment from 'moment';
 import DatePicker from '../../src/date-picker2/index';
+import ConfigProvider from '../../src/config-provider';
 import Form from '../../src/form/index';
 import Field from '../../src/field/index';
 import { DATE_PICKER_MODE } from '../../src/date-picker2/constant';
 import { KEYCODE } from '../../src/util';
+import zhCN from '../../src/locale/zh-cn';
+import en from '../../src/locale/en-us';
 import '../../src/date-picker2/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -1091,6 +1094,22 @@ describe('Picker', () => {
             findInput().simulate('keydown', { keyCode: KEYCODE.ENTER });
             assert(getStrValue(wrapper) === '2020-12-25')
         })
+
+        // https://github.com/alibaba-fusion/next/issues/4013
+        it('should behave normally when use 2 ConfigProvider', () => {
+            wrapper = mount(
+                <div className="app">
+                    <ConfigProvider locale={en}><div><DatePicker visible locale={en}/></div></ConfigProvider>
+                    <ConfigProvider locale={zhCN}>
+                        <div>
+                            <DatePicker locale={zhCN} />
+                        </div>
+                    </ConfigProvider>
+                </div>
+            )
+
+            assert(document.querySelectorAll('.next-btn-helper')[1].innerText.includes('月') === false)
+        }) 
     });
 });
 
