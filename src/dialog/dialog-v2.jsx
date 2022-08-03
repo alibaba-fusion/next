@@ -42,6 +42,7 @@ const Dialog = props => {
         animation = { in: 'fadeInUp', out: 'fadeOutUp' },
         cache,
         wrapperStyle,
+        wrapperClassName,
         popupContainer = document.body,
         dialogRender,
         centered,
@@ -238,6 +239,7 @@ const Dialog = props => {
 
     const wrapperCls = classNames({
         [`${prefix}overlay-wrapper`]: true,
+        [wrapperClassName]: !!wrapperClassName,
         opened: visible,
     });
     const dialogCls = classNames({
