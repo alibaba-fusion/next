@@ -210,7 +210,7 @@ class Table extends React.Component {
          */
         rowExpandable: PropTypes.func,
         /**
-         * 额外渲染行的缩进
+         * 额外渲染行的缩进, 是个二维数组(eg:[1,1]) 分别表示左右两边的缩进
          */
         expandedRowIndent: PropTypes.array,
         /**
