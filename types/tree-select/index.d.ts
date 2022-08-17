@@ -214,6 +214,11 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     filterLocal?: boolean;
   
     immutable?: boolean;
+
+    /**
+     * 填充到选择框里的值的 key，默认是 value
+     */
+    fillProps?: string;
 }
 
 export default class TreeSelect extends React.Component<TreeSelectProps, any> {}
