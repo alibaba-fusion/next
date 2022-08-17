@@ -142,6 +142,11 @@
             background: $selectedBgColor;
             color: $selectedColor;
             font-weight: $selectedWeight;
+
+            &.#{$css-prefix}nav-item {
+                background: $selectedBgColor;
+                color: $selectedColor;
+            }
         }
 
         &.#{$css-prefix}opened {
@@ -206,6 +211,13 @@
         &.#{$css-prefix}selected {
             background: $selectedBgColor;
             color: $selectedColor;
+
+            // fix https://github.com/alibaba-fusion/next/issues/4050
+            // 这里冗余一下样式，避免影响之前生效的选择器样式
+            &.#{$css-prefix}nav-item {
+                background: $selectedBgColor;
+                color: $selectedColor;
+            }
         }
     }
 }
