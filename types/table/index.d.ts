@@ -296,9 +296,9 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTable
     rowExpandable?: (record: any) => boolean;
 
     /**
-     * 额外渲染行的缩进
+     * 额外渲染行的缩进，包含两个数字，第一个数字为左侧缩进，第二个数字为右侧缩进
      */
-    expandedRowIndent?: Array<any>;
+    expandedRowIndent?: [number, number];
 
     /**
      * 默认情况下展开的渲染行或者Tree, 传入此属性为受控状态
