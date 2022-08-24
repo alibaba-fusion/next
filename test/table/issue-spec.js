@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -1171,4 +1171,71 @@ describe('Issue', () => {
             }, 10);
         });
     });
+
+    it('should not modify columns props passed from outside, close #4062', () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const columns = [
+            {
+              title: '商品编码',
+              dataIndex: 'barcode',
+            },
+            {
+              title: '商品名称',
+              dataIndex: 'itemName',
+            },
+        ];
+          
+        function DemoTable() {
+            const dataSource = [
+                {
+                "barcode": "Bar16858180524079952",
+                "itemCode": "code16858180524079952",
+                "itemId": 128581419,
+                "itemName": "测试商品16858180524065799",
+                "ownerId": 624144,
+                "ownerName": "快消-商家测试帐号86"
+                },
+                {
+                "barcode": "Bar16858755068847002",
+                "itemCode": "code16858755068847002",
+                "itemId": 128581770,
+                "itemName": "测试商品16858755068835325",
+                "ownerId": 624144,
+                "ownerName": "快消-商家测试帐号86"
+                }
+            ];
+            const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+            return (
+                <Table
+                size='small'
+                columns={columns}
+                dataSource={dataSource}
+                fixedHeader
+                maxBodyHeight={300}
+                primaryKey='itemId'
+                rowSelection={{
+                    mode: 'single',
+                    selectedRowKeys: selectedRowKeys,
+                    onChange: (newSelectedRowKeys) => {
+                    setSelectedRowKeys(newSelectedRowKeys);
+                    },
+                }}
+                />
+            );
+        }
+          
+          
+        function App() {
+            return (
+                <div>
+                <DemoTable />
+                </div>
+            );
+        }
+        ReactDOM.render(<App />, container);
+
+        assert(columns.length === 2);
+    })
 });
