@@ -120,6 +120,12 @@ export interface SplitButtonProps extends HTMLAttributesWeak, CommonProps {
      * 透传给 左侧按钮 的属性
      */
     leftButtonProps?: ButtonProps;
+
+    /**
+     * 是否跟随滚动
+     */
+    followTrigger?: boolean;
+
 }
 
 export default class SplitButton extends React.Component<SplitButtonProps, any> {

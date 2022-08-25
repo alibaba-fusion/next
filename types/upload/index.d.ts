@@ -200,6 +200,16 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
      * 调用系统设备媒体
      */
      capture?: string;
+
+    /**
+     * 自定义成功和失败的列表渲染方式
+     */
+    itemRender?: (file: File, obj: { remove?: () => void }) => React.ReactNode;
+
+    /**
+     * 选择新文件上传并替换
+     */
+    reUpload?: boolean;
 }
 
 export class Card extends React.Component<CardProps, any> {}
@@ -480,6 +490,16 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
      * @version 1.24
      */
     previewOnFileName?: boolean,
+
+    /**
+     * 自定义成功和失败的列表渲染方式
+     */
+    itemRender?: (file: File, obj: { remove?: () => void }) => React.ReactNode;
+
+    /**
+     * 选择新文件上传并替换
+     */
+    reUpload?: boolean;
 }
 
 export default class Upload extends React.Component<UploadProps, any> {
