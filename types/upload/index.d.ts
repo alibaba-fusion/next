@@ -204,7 +204,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义成功和失败的列表渲染方式
      */
-    itemRender?: (file: File, obj: { remove?: () => {} }) => React.ReactNode;
+    itemRender?: (file: File, obj: { remove?: () => void }) => React.ReactNode;
 
     /**
      * 选择新文件上传并替换
@@ -494,7 +494,7 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义成功和失败的列表渲染方式
      */
-    itemRender?: (file: File, obj: { remove?: () => {} }) => React.ReactNode;
+    itemRender?: (file: File, obj: { remove?: () => void }) => React.ReactNode;
 
     /**
      * 选择新文件上传并替换
