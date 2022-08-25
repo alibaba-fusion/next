@@ -57,7 +57,7 @@ export interface ConfigProviderProps {
     /**
      * 组件 API 的默认配置
      */
-    defaultPropsConfig: Record<string, any>;
+    defaultPropsConfig?: Record<string, any>;
 }
 
 export default class ConfigProvider extends React.Component<ConfigProviderProps, any> {
