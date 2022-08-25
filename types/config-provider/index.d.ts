@@ -20,10 +20,12 @@ export interface ConfigProviderProps {
      * fallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示
      * afterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为, 比如埋点上传
      */
-    errorBoundary?: boolean | {
-        afterCatch?: (error: Error, errorInfo: React.ErrorInfo) => void;
-        fallbackUI?: (error: Error, errorInfo: React.ErrorInfo) => React.ReactElement<any>;
-    };
+    errorBoundary?:
+        | boolean
+        | {
+              afterCatch?: (error: Error, errorInfo: React.ErrorInfo) => void;
+              fallbackUI?: (error: Error, errorInfo: React.ErrorInfo) => React.ReactElement<any>;
+          };
 
     /**
      * 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用
@@ -52,12 +54,13 @@ export interface ConfigProviderProps {
      * 弹层挂载的容器节点
      */
     popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
+    /**
+     * 组件 API 的默认配置
+     */
+    defaultPropsConfig?: Record<string, any>;
 }
 
-export default class ConfigProvider extends React.Component<
-    ConfigProviderProps,
-    any
-> {
+export default class ConfigProvider extends React.Component<ConfigProviderProps, any> {
     static config(Component: any, options?: any): any;
     static getContextProps(props: {}, displayName: string): any;
     static initLocales(locales: any): any;
