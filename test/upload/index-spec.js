@@ -18,8 +18,7 @@ const defaultValue = [
         name: 'IMG.png',
         state: 'done',
         size: 1024,
-        url:
-            'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+        url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
     },
 ];
 
@@ -156,6 +155,21 @@ describe('Upload', () => {
             );
         });
 
+        it('should support onPreview events when listType is set to card and isPreview is set to true', done => {
+            const onPreview = sinon.spy();
+            const wrapper = mount(
+                <Upload
+                    listType="card"
+                    isPreview
+                    defaultValue={defaultValue}
+                    onPreview={onPreview}
+                />
+            );
+            wrapper.find('.next-upload-list-item-thumbnail > img').at(0).simulate('click');
+            assert(onPreview.calledOnce);
+            done();
+        });
+
         it('should support onChange/onRemove events', done => {
             const onChange = sinon.spy();
             const onRemove = sinon.spy();
@@ -167,7 +181,6 @@ describe('Upload', () => {
                     onRemove={onRemove}
                 />
             );
-
             wrapper
                 .find('i.next-icon-close')
                 .at(0)

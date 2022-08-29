@@ -576,7 +576,14 @@ class Upload extends Base {
 
             if (listType) {
                 return (
-                    <List isPreview listType={listType} style={style} className={className} value={this.state.value} />
+                    <List
+                        isPreview
+                        listType={listType}
+                        style={style}
+                        className={className}
+                        value={this.state.value}
+                        onPreview={onPreview}
+                    />
                 );
             }
 
