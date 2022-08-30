@@ -55,7 +55,7 @@
             padding-left: $badge-size-custom-padding-lr;
             padding-right: $badge-size-custom-padding-lr;
             border-radius: $badge-size-custom-border-radius;
-            transform: translateX(-50%);
+            transform: translateX(50%);
 
             > * {
                 line-height: 1;
@@ -77,6 +77,7 @@
             z-index: 10;
             overflow: hidden;
             transform-origin: left center;
+            right: 0;
         }
 
         &-scroll-number-only {
