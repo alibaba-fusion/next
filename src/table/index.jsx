@@ -59,6 +59,17 @@ Table.StickyLock = ConfigProvider.config(StickyLockTable, {
 export default ConfigProvider.config(Table, {
     componentName: 'Table',
     transform: /* istanbul ignore next */ (props, deprecated) => {
+        // fix https://github.com/alibaba-fusion/next/issues/4062
+        if ('columns' in props) {
+            const { columns, ...others } = props;
+            const newColumns = [...columns];
+
+            props = {
+                columns: newColumns,
+                ...others,
+            };
+        }
+
         if ('expandedRowKeys' in props) {
             deprecated('expandedRowKeys', 'openRowKeys', 'Table');
 
