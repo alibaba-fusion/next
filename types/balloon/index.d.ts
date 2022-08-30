@@ -127,7 +127,7 @@ export interface BalloonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层在显示和隐藏触发的事件
      */
-    onVisibleChange?: (visible: boolean) => void;
+    onVisibleChange?: (visible: boolean,type: string) => void;
 
     /**
      * 弹出层对齐方式
