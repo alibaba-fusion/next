@@ -69,6 +69,7 @@ API变化：
 | isFullScreen         | [v2废弃] 是否撑开页面。 v2 改用 overflowScroll                                                                                                                                                                                                    | Boolean             | false                                                                             |          |
 | shouldUpdatePosition | [v2废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式                                                                                                                                                                                   | Boolean             | false                                                                             |          |
 | minMargin            | [v2废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效                                                                                                                                                            | Number              | 40                                                                                |          |
+| noPadding            | 去除body内间距                                                                                                                                                                                                                              | Boolean             | false                                                                             | 1.26     |
 
 <!-- api-extra-start -->
 

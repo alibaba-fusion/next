@@ -76,7 +76,7 @@ class RenderBadge extends React.Component {
             </Demo>
             <Demo title={i18nMap.unreadText}>
                 <DemoGroup label={i18nMap.normal}>
-                    <Badge count={25} >
+                    <Badge showZero count={0} >
                         {
                             unreadTextChild
                         }

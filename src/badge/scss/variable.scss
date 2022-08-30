@@ -34,6 +34,13 @@ $badge-size-custom-padding-lr: $s-1 !default;
 /// size
 /// @namespace size/text
 $badge-size-count-font: $font-size-caption !default;
+/// border
+/// @namespace size/bounding
+$badge-size-count-border-width: $line-zero !default;
+/// border color
+/// @namespace statement/normal
+$badge-normal-count-border-color: $color-white !default;
+
 
 // unconfigurable
 $badge-size-count-width: auto !default;

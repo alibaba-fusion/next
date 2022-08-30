@@ -1,15 +1,15 @@
-# 可关闭选项卡
+# 可关闭/新增选项卡
 
 - order: 6
 
-可关闭选项卡，可以通过在 `Tab.Item` 上设置 `closeable` 属性设置该选项卡是否可关闭。
+可关闭选项卡，可以通过在 `Tab.Item` 上设置 `closeable` 属性设置该选项卡是否可关闭。可以通过 `showAdd` 开启新增功能
 
 :::lang=en-us
 # Closeable
 
 - order: 6
 
-Creating closeable tabs by pass attribute `closeable` to `Tab.Item`.
+Creating closeable tabs by pass attribute `closeable` to `Tab.Item`. use `showAdd` use add
 
 :::
 
@@ -60,26 +60,32 @@ class CloseableTab extends React.Component {
     }
 
     addTabpane = () => {
-        this.setState(prevState => {
-            const { panes } = prevState;
-            panes.push({ tab: 'new tab', key: Math.random(), closeable: true });
-            return { panes };
-        });
+        const panes = this.state.panes;
+        const newItem = { tab: 'new tab', key: Math.random(), closeable: true }
+        panes.push(newItem);
+
+        this.setState({
+            panes: [...panes],
+            activeKey: newItem.key
+        })
     }
 
     render() {
-        const state = this.state;
+        const {panes, activeKey} = this.state;
         return (
             <div>
                 <Button onClick={this.addTabpane} type="primary"><Icon type="add"/> New Tab</Button>
 
                 <Tab
                     shape="wrapped"
-                    activeKey={state.activeKey}
+                    activeKey={activeKey}
                     onChange={this.onChange}
                     onClose={this.onClose}
-                    className="custom-tab">
-                    {state.panes.map(item => <Tab.Item title={item.tab} key={item.key} closeable={item.closeable}>{item.tab} content</Tab.Item>)}
+                    onAdd={this.addTabpane}
+                    style={{marginTop: 10}}
+                    showAdd
+                >
+                    {panes.map(item => <Tab.Item title={item.tab} key={item.key} closeable={item.closeable}>{item.tab} content</Tab.Item>)}
                 </Tab>
             </div>
         );
@@ -90,10 +96,6 @@ ReactDOM.render(<CloseableTab />, mountNode);
 ````
 
 ````css
-.custom-tab {
-    margin-top: 14px;
-}
-
 .next-tabs-content {
     color: #333;
     font-size: 12px;

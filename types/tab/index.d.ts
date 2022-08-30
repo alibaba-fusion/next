@@ -145,6 +145,14 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
         prev?: string | React.ReactNode;
         next?: string | React.ReactNode;
     };
+    /**
+     * 展示新增按钮
+     */
+    showAdd?: boolean,
+    /**
+     * 新增的事件回调
+     */
+    onAdd?: () => void,
 }
 
 export default class Tab extends React.Component<TabProps, any> {

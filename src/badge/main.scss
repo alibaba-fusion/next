@@ -28,6 +28,7 @@
                 $lineHeight: $badge-size-count-lineheight
             );
             top: -.5em;
+            border: $badge-size-count-border-width solid $badge-normal-count-border-color;
         }
 
         .#{$css-prefix}badge-dot {

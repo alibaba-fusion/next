@@ -163,12 +163,13 @@ export default class Dialog extends Component {
          */
         centered: PropTypes.bool,
         /**
-         * [v2] 对话框高度超过浏览器视口高度时，对话框是否展示滚动条。关闭此功后对话框会随高度撑开页面
+         * [v2] 对话框高度超过浏览器视口高度时，对话框是否展示滚动条。关闭此功后对话框会随高度撑开页面。
          * @version 1.25
          */
         overflowScroll: PropTypes.bool,
         /**
-         * [v2] 弹窗最外包裹层 classname
+         * [v2] 最外包裹层 className
+         * @version 1.26
          */
         wrapperClassName: PropTypes.string,
         /**
@@ -203,6 +204,11 @@ export default class Dialog extends Component {
          * [v2废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
          */
         minMargin: PropTypes.number,
+        /**
+         * 去除body内间距
+         * @version 1.26
+         */
+        noPadding: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -234,6 +240,7 @@ export default class Dialog extends Component {
         bottom: 40,
         overlayProps: {},
         locale: zhCN.Dialog,
+        noPadding: false,
     };
 
     constructor(props, context) {
@@ -382,6 +389,7 @@ export default class Dialog extends Component {
             visible,
             rtl,
             height,
+            noPadding,
         } = this.props;
         const others = pickOthers(Object.keys(Dialog.propTypes), this.props);
 
@@ -402,6 +410,7 @@ export default class Dialog extends Component {
                 rtl={rtl}
                 onClose={onClose.bind(this, 'closeClick')}
                 height={height}
+                noPadding={noPadding}
                 {...others}
             >
                 {children}
