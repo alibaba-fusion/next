@@ -2,6 +2,7 @@ const path = require('path');
 const _ = require('lodash');
 const ejs = require('ejs');
 const { logger, replaceExt, getComPathName } = require('../../../utils');
+const os = require('os');
 
 const cwd = process.cwd();
 const IMPORT_REG = /import {(.+)} from ['"]@alifd\/next['"];?/;
@@ -21,11 +22,15 @@ function fixImport(code, resourcePath) {
         const importStrings = components
             .map(component => {
                 const componentPath = path.join(cwd, 'src', getComPathName(component));
-                const relativePath = path.relative(path.dirname(resourcePath), componentPath);
-
+                let relativePath = path.relative(path.dirname(resourcePath), componentPath);
+                let stylePath = path.join(relativePath, 'style.js');
+                if (os.type() === 'Windows_NT') {
+                    relativePath = relativePath.replace(/\\/g, '/');
+                    stylePath = stylePath.replace(/\\/g, '/');
+                }
                 return `
 import ${component} from '${relativePath}';
-import '${path.join(relativePath, 'style.js')}';
+import '${stylePath}';
 `;
             })
             .join('\n');
@@ -38,7 +43,11 @@ import '${path.join(relativePath, 'style.js')}';
             const component = element.match(IMPORT_LIB_REG)[1].replace(/\s/g, '');
             const afterLib = element.match(IMPORT_LIB_REG)[2].replace(/\s/g, '');
             const libPath = path.join(cwd, 'src', afterLib);
-            const newLibPath = path.relative(path.dirname(resourcePath), libPath);
+            let newLibPath = path.relative(path.dirname(resourcePath), libPath);
+            if (os.type() === 'Windows_NT') {
+                newLibPath = newLibPath.replace(/\\/g, '/');
+            }
+
             const newLibStr = `
 import ${component} from'${newLibPath}'`;
 

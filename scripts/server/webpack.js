@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const getConfig = require('../webpack/dev');
 const loaders = require('../webpack/loaders');
 const { parseMD } = require('../utils');
+const os = require('os');
 
 const babelConfig = require('@alifd/babel-preset-next')({ runtime: true });
 
@@ -91,9 +92,12 @@ module.exports = function getWebpackConfig(options) {
             title: 'Adaptor Demo',
         });
     }
-
+    let indexReg = /docs\/[^/]+\/index\.(en-us\.)?md$/;
+    if (os.type() === 'Windows_NT') {
+        indexReg = /\\docs\\[^\\]+\\index\.(en-us\.)?md$/;
+    }
     config.module.rules.push({
-        test: /docs\/[^/]+\/index\.(en-us\.)?md$/,
+        test: indexReg,
         use: [
             {
                 loader: 'index-loader',
@@ -105,8 +109,12 @@ module.exports = function getWebpackConfig(options) {
             },
         ],
     });
+    let demoReg = /docs\/[^/]+\/demo\/.+\.md$/;
+    if (os.type() === 'Windows_NT') {
+        demoReg = /docs\\[^\\]+\\demo\\.+\.md$/;
+    }
     config.module.rules.push({
-        test: /docs\/[^/]+\/demo\/.+\.md$/,
+        test: demoReg,
         use: [
             babelLoader,
             {
@@ -121,8 +129,12 @@ module.exports = function getWebpackConfig(options) {
             },
         ],
     });
+    let themeReg = /theme\/.+\.jsx$/;
+    if (os.type() === 'Windows_NT') {
+        themeReg = /\\theme\\.+\.jsx$/;
+    }
     config.module.rules.push({
-        test: /theme\/.+\.jsx$/,
+        test: themeReg,
         use: [
             babelLoader,
             {
@@ -134,8 +146,12 @@ module.exports = function getWebpackConfig(options) {
             },
         ],
     });
+    let adaptorReg = /adaptor\/.+\.jsx$/;
+    if (os.type() === 'Windows_NT') {
+        adaptorReg = /adaptor\\.+\.jsx$/;
+    }
     config.module.rules.push({
-        test: /adaptor\/.+\.jsx$/,
+        test: adaptorReg,
         use: [
             babelLoader,
             {
