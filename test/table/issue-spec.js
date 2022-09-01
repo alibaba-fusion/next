@@ -5,6 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
 import Table from '../../src/table/index';
+import ConfigProvider from '../../src/config-provider';
 import '../../src/table/style.js';
 
 /* eslint-disable */
@@ -1237,5 +1238,33 @@ describe('Issue', () => {
         ReactDOM.render(<App />, container);
 
         assert(columns.length === 2);
+    })
+
+    it('should support ConfigProvider prefix, close #4073', () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = () => {
+            const result = [];
+            for (let i = 0; i < 5; i++) {
+                result.push({
+                    title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
+                    id: 100306660940 + i,
+                    time: 2000 + i
+                });
+            }
+            return result;
+        };
+        
+        ReactDOM.render(
+            <ConfigProvider prefix="my-">
+                <Table dataSource={dataSource()}>
+                    <Table.Column title="Id" htmlTitle="Unique Id" dataIndex="id"/>
+                    <Table.Column title="Title" dataIndex="title.name" />
+                    <Table.Column title="Time" dataIndex="time"/>
+                </Table>
+          </ConfigProvider>, container);
+
+        assert(container.querySelectorAll('.my-table').length >= 1);
     })
 });
