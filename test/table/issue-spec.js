@@ -1267,4 +1267,17 @@ describe('Issue', () => {
 
         assert(container.querySelectorAll('.my-table').length >= 1);
     })
+
+    it('should not crash when dataSource is undefined, close #4073', () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        ReactDOM.render(<Table >
+            <Table.Column title="Id" lock htmlTitle="Unique Id" dataIndex="id"/>
+            <Table.Column title="Title" dataIndex="title.name" />
+            <Table.Column title="Time" dataIndex="time"/>
+        </Table>, container);
+
+        assert(container.querySelector('.next-table-empty'))
+    })
 });
