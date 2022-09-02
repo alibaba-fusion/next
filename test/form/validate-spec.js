@@ -356,6 +356,46 @@ describe('Submit', () => {
                 .text() === '姓名 是必填字段'
         );
     });
+    it('the useLabelForErrorMessage of FormItem should have a higher priority', () => {
+        const wrapper = mount(
+            <Form useLabelForErrorMessage>
+                <FormItem useLabelForErrorMessage={false} required label="姓名" >
+                    <Input name="first" />
+                </FormItem>
+            </Form>
+        );
+
+        wrapper
+            .find('input#first')
+            .simulate('change', { target: { value: '' } });
+        wrapper.update();
+        assert(
+            wrapper
+                .find('.next-form-item-help')
+                .first()
+                .text() === 'first 是必填字段'
+        );
+    });
+    it('the useLabelForErrorMessage of FormItem should have a higher priority', () => {
+        const wrapper = mount(
+            <Form useLabelForErrorMessage={false}>
+                <FormItem useLabelForErrorMessage required label="姓名" >
+                    <Input name="first" />
+                </FormItem>
+            </Form>
+        );
+
+        wrapper
+            .find('input#first')
+            .simulate('change', { target: { value: '' } });
+        wrapper.update();
+        assert(
+            wrapper
+                .find('.next-form-item-help')
+                .first()
+                .text() === '姓名 是必填字段'
+        );
+    });
     it('validate errorMessageName', () => {
         const wrapper = mount(
             <Form useLabelForErrorMessage>
