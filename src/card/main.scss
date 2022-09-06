@@ -84,17 +84,17 @@
     }
 
     &-show-divider {
-        #{$card-prefix}-head-main {
+        > #{$card-prefix}-head > #{$card-prefix}-head-main {
             border-bottom: $card-head-bottom-border-width $card-border-style $card-head-bottom-border-color;
         }
 
-        #{$card-prefix}-body {
+        > #{$card-prefix}-body {
             padding-top: $card-body-show-divider-padding-top;
         }
     }
 
     &-hide-divider {
-        #{$card-prefix}-body {
+        > #{$card-prefix}-body {
             padding-top: $card-body-hide-divider-padding-top;
         }
     }
