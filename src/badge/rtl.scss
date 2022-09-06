@@ -8,5 +8,7 @@
     .#{$css-prefix}badge-scroll-number {
         left: 0;
         transform-origin: right center;
+        right: auto;
+        transform: translateX(-50%);
     }
 }
