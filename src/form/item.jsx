@@ -327,7 +327,8 @@ export default class Item extends React.Component {
 
         const newLabel = label.replace(':', '').replace('：', '');
 
-        const labelForErrorMessage = useLabelForErrorMessage || this.context._formLabelForErrorMessage;
+        const labelForErrorMessage =
+            useLabelForErrorMessage !== undefined ? useLabelForErrorMessage : this.context._formLabelForErrorMessage;
         if (labelForErrorMessage && newLabel) {
             return newLabel;
         }
