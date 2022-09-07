@@ -40,7 +40,7 @@ config 参数如下：
 | type | 通知类型，`Notification.open`可选参数，可选值：`success`\|`error`\|`warning`\|`notice`\|`help` | String | `success` |  |
 | content | 通知提醒内容，必选 | String\|ReactNode | - |  |
 | duration | 默认 4.5 秒后自动关闭，配置为 0 则不自动关闭 | Number | 4.5 |  |
-| icon | 自定义图标 | ReactNode | - |  |
+| icon | 自定义图标 | String | - |  |
 | style | 自定义内联样式 | [React.CSSProperties](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e434515761b36830c3e58a970abf5186f005adac/types/react/index.d.ts#L794) | - |  |
 | className | 自定义 CSS class | String | - |  |
 | onClose | 点击默认关闭按钮时触发的回调函数 | Function | - |  |
