@@ -829,7 +829,11 @@ class Table extends React.Component {
             others.dir = 'rtl';
         }
 
-        const content = (
+        const loadingcls = classnames({
+            [`${prefix}table-loading-content`]: true,
+        });
+
+        return (
             <div
                 className={cls}
                 style={style}
@@ -837,13 +841,9 @@ class Table extends React.Component {
                 {...obj.pickOthers(Object.keys(Table.propTypes), others)}
             >
                 {table}
+                {loading ? <LoadingComponent className={loadingcls} /> : null}
             </div>
         );
-        if (loading) {
-            const loadingClassName = `${prefix}table-loading`;
-            return <LoadingComponent className={loadingClassName}>{content}</LoadingComponent>;
-        }
-        return content;
     }
 }
 
