@@ -42,7 +42,7 @@ class Overlay extends React.Component {
         const { v2, ...others } = this.props;
         if (v2) {
             if ('needAdjust' in others) {
-                log.deprecated('needAdjust', 'needAdjust', 'Overlay v2');
+                log.deprecated('needAdjust', 'autoAdjust', 'Overlay v2');
                 others.autoAdjust = others.needAdjust;
                 delete others.needAdjust;
             }

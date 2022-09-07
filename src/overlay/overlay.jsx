@@ -121,7 +121,7 @@ class Overlay extends Component {
         /**
          * 弹层定位完成时触发的事件
          * @param {Object} config 定位的参数
-         * @param {Array} config.align 对齐方式，如 ['cc', 'cc']（如果开启 needAdjust，可能和预先设置的 align 不同）
+         * @param {Array} config.align 对齐方式，如 ['cc', 'cc']（如果开启 autoAdjust，可能和预先设置的 align 不同）
          * @param {Number} config.top 距离视口顶部距离
          * @param {Number} config.left 距离视口左侧距离
          * @param {Object} node 定位参照的容器节点

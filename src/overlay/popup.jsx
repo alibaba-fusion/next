@@ -83,6 +83,10 @@ class Popup extends Component {
          * [v2] 弹层偏离触发元素的像素值
          */
         placementOffset: PropTypes.number,
+        /**
+         * [v2] 浮窗被遮挡时是否自动调整位置
+         */
+        autoAdjust: PropTypes.bool,
     };
 
     static defaultProps = {

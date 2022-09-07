@@ -311,8 +311,14 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
 
     /**
      * 当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域
+     * @depreacted in v2
      */
     needAdjust?: boolean;
+
+    /**
+     * 浮窗被遮挡时是否自动调整位置
+     */
+    autoAdjust?: boolean;
 
     /**
      * 是否禁用页面滚动
