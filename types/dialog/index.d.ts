@@ -90,6 +90,11 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     closeMode?: CloseMode[] | 'close' | 'mask' | 'esc';
 
     /**
+     * esc 关闭弹框时，keydown 监听是否加载 wrapper 上
+     */
+    addKeyDownEventOnWrapper
+
+    /**
      * 对话框关闭时触发的回调函数
      */
     onClose?: (trigger: string, event: React.MouseEvent) => void;

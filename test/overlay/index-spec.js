@@ -733,6 +733,65 @@ describe('Overlay', () => {
         document.body.style.overflow = undefined;
         assert(document.body.style.overflow === '');
     });
+
+    it('should support addKeyDownEventOnWrapper', async () => {
+        let called = false;
+        const handle = e => {
+            if (e.keyCode === 27) {
+                called = true;
+            }
+        };
+        document.body.addEventListener('keydown', handle, false);
+
+        simulateEvent.simulate(document.body, 'keydown', { keyCode: KEYCODE.ESC });
+        assert(called);
+        called = false;
+
+        wrapper = render(
+            <Overlay
+                visible
+                addKeyDownEventOnWrapper
+                onRequestClose={(reason, e) => {
+                    if (reason === 'keyboard' && e.keyCode === 27) {
+                        e.stopPropagation();
+                    }
+                }}
+            >
+                <p>content</p>
+            </Overlay>
+        );
+        assert(document.querySelector('.next-overlay-wrapper'));
+
+        simulateEvent.simulate(document.querySelector('.next-overlay-wrapper'), 'keydown', { keyCode: KEYCODE.ESC });
+        assert(!called);
+
+        document.body.removeEventListener('keydown', handle, false);
+    });
+
+    it('should support closeByOutSideClickEvents', async () => {
+        let called = false;
+
+        wrapper = render(
+            <Overlay
+                visible
+                onRequestClose={(reason, e) => {
+                    called = true;
+                }}
+                closeByOutSideClickEvents={[
+                    { eventName: 'mousedown', useCapture: false },
+                  ]}
+            >
+                <p>content</p>
+            </Overlay>
+        );
+        assert(document.querySelector('.next-overlay-wrapper'));
+
+        simulateEvent.simulate(document, 'touchend');
+        assert(!called);
+
+        simulateEvent.simulate(document, 'mousedown');
+        assert(called);
+    });
 });
 
 describe('Popup', () => {
@@ -1074,9 +1133,9 @@ describe('Popup', () => {
                 <Popup trigger={<Button className="btn">Open</Button>} triggerType="click" />
                 <br />
             </div>
-        )
-        const buttonDom = wrapper.find(".btn");
+        );
+        const buttonDom = wrapper.find('.btn');
 
         assert(buttonDom);
-    })
+    });
 });

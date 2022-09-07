@@ -55,6 +55,7 @@ const Dialog = props => {
         onClose,
         style,
         wrapperClassName,
+        addKeyDownEventOnWrapper = false,
         ...others
     } = props;
 
@@ -145,10 +146,12 @@ const Dialog = props => {
 
     // esc 键盘事件处理
     useEffect(() => {
+        const wrapper = wrapperRef.current && addKeyDownEventOnWrapper ? wrapperRef.current : document.body;
+
         if (visible && canCloseByEsc) {
-            document.body.addEventListener('keydown', keydownEvent, false);
+            wrapper.addEventListener('keydown', keydownEvent, false);
             return () => {
-                document.body.removeEventListener('keydown', keydownEvent, false);
+                wrapper.removeEventListener('keydown', keydownEvent, false);
             };
         }
     }, [visible && canCloseByEsc]);
@@ -338,7 +341,7 @@ const Dialog = props => {
             }}
         >
             {ReactDOM.createPortal(
-                <div className={wrapperCls} style={wrapperStyle} ref={wrapperRef}>
+                <div className={wrapperCls} style={wrapperStyle} ref={wrapperRef} tabIndex={-1}>
                     {hasMask ? (
                         <Animate.OverlayAnimate
                             visible={visible}

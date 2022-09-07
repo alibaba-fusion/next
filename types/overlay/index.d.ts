@@ -250,9 +250,19 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
     canCloseByEsc?: boolean;
 
     /**
+     * esc 关闭弹框时，keydown 监听是否加载 wrapper 上
+     */
+    addKeyDownEventOnWrapper
+
+    /**
      * 点击弹层外的区域是否关闭弹层，不显示遮罩时生效
      */
     canCloseByOutSideClick?: boolean;
+
+    /**
+     * 点击弹层外的区域关闭弹层生效的事件
+     */
+    closeByOutSideClickEvents?: string[] | { eventName: string, useCapture: boolean }[];
 
     /**
      * 点击遮罩区域是否关闭弹层，显示遮罩时生效

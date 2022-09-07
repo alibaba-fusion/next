@@ -3,6 +3,8 @@ import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
+import isString from 'lodash/isString';
+import isBoolean from 'lodash/isBoolean';
 import { dom, events, focus, func, guid, KEYCODE, support } from '../util';
 import overlayManager from './manager';
 import Gateway from './gateway';
@@ -181,6 +183,7 @@ class Overlay extends Component {
          * @version 1.25
          */
         points: PropTypes.array,
+        closeByOutSideClickEvents: PropTypes.array,
     };
     static defaultProps = {
         prefix: 'next-',
@@ -193,6 +196,8 @@ class Overlay extends Component {
         hasMask: false,
         canCloseByEsc: true,
         canCloseByOutSideClick: true,
+        // ['click', 'touchend'] 直接兼容以前的逻辑，还可以配置 [{ eventName: 'mousedown', useCapture: false }, { eventName: 'touchend', useCapture: false }]
+        closeByOutSideClickEvents: ['click', 'touchend'],
         canCloseByMask: true,
         beforeOpen: noop,
         onOpen: noop,
@@ -222,6 +227,8 @@ class Overlay extends Component {
         super(props);
 
         this.lastAlign = props.align;
+        // 使用 bindListeners 统一管理监听，具体见 addDocumentEvents/removeDocumentEvents
+        this.bindListeners = [];
 
         bindCtx(this, [
             'handlePosition',
@@ -611,26 +618,49 @@ class Overlay extends Component {
      * document global event
      */
     addDocumentEvents() {
-        const { useCapture } = this.props;
+        const { useCapture, addKeyDownEventOnWrapper, closeByOutSideClickEvents } = this.props;
         // use capture phase listener to be compatible with react17
         // https://reactjs.org/blog/2020/08/10/react-v17-rc.html#fixing-potential-issues
+
         if (this.props.canCloseByEsc) {
-            this._keydownEvents = events.on(document, 'keydown', this.handleDocumentKeyDown, useCapture);
+            const wrapper = addKeyDownEventOnWrapper ? getContainerNode(this.props) || document : document;
+            const keydownEvents = events.on(wrapper, 'keydown', this.handleDocumentKeyDown, useCapture);
+            this.bindListeners.push(keydownEvents);
         }
 
         if (this.props.canCloseByOutSideClick) {
-            this._clickEvents = events.on(document, 'click', this.handleDocumentClick, useCapture);
-            this._touchEvents = events.on(document, 'touchend', this.handleDocumentClick, useCapture);
+            // this._clickEvents = events.on(document, 'mousedown', this.handleDocumentClick, useCapture);
+            // this._touchEvents = events.on(document, 'touchend', this.handleDocumentClick, useCapture);
+
+            // closeByOutSideClickEvents: [{eventName: 'mousedown', useCapture: true}]
+            const clickEvents = closeByOutSideClickEvents.map(item => {
+                if (isString(item)) {
+                    return {
+                        eventName: item,
+                        useCapture,
+                    };
+                }
+                return {
+                    eventName: item.eventName,
+                    useCapture: isBoolean(item.useCapture) ? item.useCapture : useCapture,
+                };
+            });
+            clickEvents.forEach(ev => {
+                const bindEv = events.on(document, ev.eventName, this.handleDocumentClick, ev.useCapture);
+                this.bindListeners.push(bindEv);
+            });
         }
     }
 
     removeDocumentEvents() {
-        ['_keydownEvents', '_clickEvents', '_touchEvents'].forEach(event => {
-            if (this[event]) {
-                this[event].off();
-                this[event] = null;
-            }
-        });
+        // ['_keydownEvents', '_clickEvents', '_touchEvents'].forEach(event => {
+        //     if (this[event]) {
+        //         this[event].off();
+        //         this[event] = null;
+        //     }
+        // });
+        this.bindListeners.forEach(ev => ev.off());
+        this.bindListeners = [];
     }
 
     handleDocumentKeyDown(e) {
