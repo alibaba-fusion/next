@@ -193,7 +193,7 @@ export interface BalloonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 安全节点:对于triggetType为click的浮层,会在点击除了浮层外的其它区域时关闭浮层.safeNode用于添加不触发关闭的节点, 值可以是dom节点的id或者是节点的dom对象
      */
-    safeNode?: string;
+    safeNode?: any;
 
     /**
      * 用来指定safeNode节点的id，和safeNode配合使用
