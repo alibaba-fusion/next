@@ -713,8 +713,8 @@ describe('Tab', () => {
                 </Tab>,
                 { attachTo: target }
             );
-            const el = wrapper.find('#test-extra').getDOMNode().parentElement;
-            assert(el.style.getPropertyValue('float') === 'left');
+            const el = wrapper.find('.next-tabs-bar').getDOMNode().parentElement;
+            assert(el.style.getPropertyValue('float') === '');
         });
     });
 });
