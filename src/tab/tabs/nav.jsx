@@ -612,22 +612,28 @@ class Nav extends React.Component {
                 className: `${prefix}tabs-nav-extra`,
                 key: 'nav-extra',
             };
-            if (tabPosition === 'top' || tabPosition === 'bottom') {
-                const style = rtl ? floatLeft : floatRight;
-                navChildren.unshift(
-                    <div {...extraProps} style={style}>
-                        {extra}
-                    </div>
-                );
-            } else {
-                navChildren.push(<div {...extraProps}>{extra}</div>);
-            }
+            // if (tabPosition === 'top' || tabPosition === 'bottom') {
+            //     const style = rtl ? floatLeft : floatRight;
+            //     navChildren.unshift(
+            //         <div {...extraProps} style={style}>
+            //             {extra}
+            //         </div>
+            //     );
+            // } else {
+            //     navChildren.push(<div {...extraProps}>{extra}</div>);
+            // }
+            navChildren.push(<div {...extraProps}>{extra}</div>);
+        }
+        const positionStyle = {
+            flexDirection: tabPosition === 'left' || tabPosition === 'right' ? 'column' : 'row',
+        };
+        const navbarCls = classnames(`${prefix}tabs-bar`, className);
+        if (style) {
+            Object.assign(style, positionStyle);
         }
 
-        const navbarCls = classnames(`${prefix}tabs-bar`, className);
-
         return (
-            <div className={navbarCls} style={style} ref={this.navbarRefHandler}>
+            <div className={navbarCls} style={style || positionStyle} ref={this.navbarRefHandler}>
                 {navChildren}
             </div>
         );

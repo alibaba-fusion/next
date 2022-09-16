@@ -13,6 +13,9 @@
 
     &-bar {
         outline: none;
+        display: flex;
+        flex: none;
+        align-items: center;
         &-popup {
             overflow-y: auto;
             max-height: 480px;
@@ -21,6 +24,11 @@
 
     &-nav-container {
         position: relative;
+        display: flex;
+        flex: auto;
+        align-self: stretch;
+        max-width: 100%;
+        white-space: nowrap;
         @include clearfix;
     }
 
@@ -208,7 +216,7 @@
     &-show-add {
         position: relative;
         display: flex;
-        flex: none;
+        flex: auto;
         align-items: center;
         padding-right: 0 !important;
 
@@ -344,12 +352,12 @@
     /* Shape: wrapped(top) */
     &-wrapped#{$tab-prefix}-top > #{$tab-prefix}-bar {
         position: relative;
-        #{$tab-prefix}-nav-extra {
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-        }
+        // #{$tab-prefix}-nav-extra {
+        //     position: absolute;
+        //     top: 50%;
+        //     right: 0;
+        //     transform: translateY(-50%);
+        // }
 
         #{$tab-prefix}-tab {
             + #{$tab-prefix}-tab {
@@ -396,12 +404,12 @@
     /* Shape: wrapped(bottom) */
     &-wrapped#{$tab-prefix}-bottom > #{$tab-prefix}-bar {
         position: relative;
-        #{$tab-prefix}-nav-extra {
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-        }
+        // #{$tab-prefix}-nav-extra {
+        //     position: absolute;
+        //     top: 50%;
+        //     right: 0;
+        //     transform: translateY(-50%);
+        // }
 
         #{$tab-prefix}-tab {
             margin-right: $tab-wrapped-tab-margin-right;
@@ -531,32 +539,32 @@
 
     &-pure > #{$tab-prefix}-bar {
         position: relative;
-        #{$tab-prefix}-nav-extra {
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-        }
+        // #{$tab-prefix}-nav-extra {
+        //     position: absolute;
+        //     top: 50%;
+        //     right: 0;
+        //     transform: translateY(-50%);
+        // }
     }
 
     &-capsule > #{$tab-prefix}-bar {
         position: relative;
-        #{$tab-prefix}-nav-extra {
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-        }
+        // #{$tab-prefix}-nav-extra {
+        //     position: absolute;
+        //     top: 50%;
+        //     right: 0;
+        //     transform: translateY(-50%);
+        // }
     }
 
     &-text > #{$tab-prefix}-bar {
         position: relative;
-        #{$tab-prefix}-nav-extra {
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-        }
+        // #{$tab-prefix}-nav-extra {
+        //     position: absolute;
+        //     top: 50%;
+        //     right: 0;
+        //     transform: translateY(-50%);
+        // }
     }
 }
 
