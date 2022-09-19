@@ -124,6 +124,10 @@ class Tab extends Component {
          * 新增的事件回调
          */
         onAdd: PropTypes.func,
+        /**
+         * 自定义添加按钮
+         */
+        addIcon: PropTypes.node,
     };
 
     static defaultProps = {
@@ -312,6 +316,7 @@ class Tab extends Component {
             icons,
             showAdd,
             onAdd,
+            addIcon,
             ...others
         } = this.props;
         const { activeKey } = this.state;
@@ -353,6 +358,7 @@ class Tab extends Component {
             locale,
             icons,
             showAdd,
+            addIcon,
             onAdd,
         };
 
