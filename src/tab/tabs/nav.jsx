@@ -289,7 +289,7 @@ class Nav extends React.Component {
     };
 
     renderTabList(props, hideAdd) {
-        const { prefix, tabs, activeKey, tabRender, showAdd, onAdd } = props;
+        const { prefix, tabs, activeKey, tabRender, showAdd, onAdd, addIcon } = props;
         const tabTemplateFn = tabRender || this.defaultTabTemplateRender;
 
         const rst = [];
@@ -339,9 +339,7 @@ class Nav extends React.Component {
         if (!hideAdd && showAdd) {
             rst.push(
                 <li role="button" className={`${prefix}tabs-tab ${prefix}tabs-add`} onClick={onAdd} key="add">
-                    <div className={`${prefix}tabs-tab-inner`}>
-                        <Icon type="add" />
-                    </div>
+                    <div className={`${prefix}tabs-tab-inner`}>{addIcon ? addIcon : <Icon type="add" />}</div>
                 </li>
             );
         }
@@ -499,6 +497,7 @@ class Nav extends React.Component {
             className,
             showAdd,
             onAdd,
+            addIcon,
             rtl,
         } = this.props;
         const state = this.state;
@@ -594,9 +593,7 @@ class Nav extends React.Component {
                         {nextButton}
                         {restButton}
                         <li className={`${prefix}tabs-tab ${prefix}tabs-add`} onClick={onAdd} key="add">
-                            <div className={`${prefix}tabs-tab-inner`}>
-                                <Icon type="add" />
-                            </div>
+                            <div className={`${prefix}tabs-tab-inner`}>{addIcon ? addIcon : <Icon type="add" />}</div>
                         </li>
                     </div>
                 ) : (

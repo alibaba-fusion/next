@@ -53,6 +53,7 @@ Fusion 提供了三级选项卡，分别用于不同的场景。
 | popupProps          | 弹层属性透传, 只有当 excessMode 为 dropdown 时生效                                                                                                                                                                                        | Object        | -        |
 | icons               | 自定义组件内 icon                                                                                                                                                                                                                  | Object        | {}       |
 | showAdd             | 新增按钮                                                                                                                                                                                                                         | Boolean       | -        |
+| addIcon             | 自定义添加按钮                                                                                                                                                                                                                         | ReactNode       | -        |
 | onAdd               | 新增的事件回调<br/><br/>**签名**:<br/>Function() => void                                                                                                                                                                              | Function      | -        |
 
 ### Tab.Item
