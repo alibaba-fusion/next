@@ -204,7 +204,7 @@ class Select extends Base {
         onRemove: noop,
         // highlightFirstItem: true,
         valueRender: item => {
-            return item.label || item.value;
+            return item && (item.label || item.value);
         },
         onKeyDown: noop,
         onFocus: noop,
