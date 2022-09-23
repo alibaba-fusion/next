@@ -35,12 +35,12 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 被激活的选项卡的 key, 赋值则tab为受控组件, 用户无法切换
      */
-    activeKey?: number | string;
+    activeKey?: string;
 
     /**
      * 初始化时被激活的选项卡的 key
      */
-    defaultActiveKey?: number | string;
+    defaultActiveKey?: string;
 
     /**
      * 外观形态
@@ -115,17 +115,17 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击单个选项卡时触发的回调
      */
-    onClick?: (key: string | number) => void;
+    onClick?: (key: string) => void;
 
     /**
      * 选项卡发生切换时的事件回调
      */
-    onChange?: (key: string | number) => void;
+    onChange?: (key: string) => void;
 
     /**
      * 选项卡被关闭时的事件回调
      */
-    onClose?: (key: string | number) => void;
+    onClose?: (key: string) => void;
 
     /**
      * 自定义选项卡模板渲染函数
@@ -153,7 +153,7 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
      * 新增的事件回调
      */
     onAdd?: () => void,
-     
+
     /**
      * 自定义添加按钮
      */
