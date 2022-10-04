@@ -38,7 +38,7 @@ export const fetchDataByPath = (object, path) => {
         if (val) {
             for (let colIndex = 1; colIndex < field.length; colIndex++) {
                 val = val[field[colIndex]];
-                if (typeof val === 'undefined') {
+                if (typeof val === 'undefined' || val === null) {
                     break;
                 }
             }
