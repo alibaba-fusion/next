@@ -91,7 +91,7 @@ export default class TextArea extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? '' : value,
+            value: typeof value === 'undefined' || value === null ? '' : value,
         };
     }
 
