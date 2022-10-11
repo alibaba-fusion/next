@@ -1,16 +1,12 @@
 # Latest Log 
 
-## [1.26.2](https://github.com/alibaba-fusion/next/compare/1.26.1...1.26.2) (2022-09-20)
+## [1.26.3](https://github.com/alibaba-fusion/next/compare/1.26.2...1.26.3) (2022-10-11)
 
 
 ### Bug Fixes
 
-* **Balloon:** update safeNode ts ([b7b6bc6](https://github.com/alibaba-fusion/next/commit/b7b6bc6))
-
-
-### Features
-
-* **Tab:** feat addIcon func, close [#4109](https://github.com/alibaba-fusion/next/issues/4109) ([df84688](https://github.com/alibaba-fusion/next/commit/df84688))
-* **Theme:** update theme style ([#4113](https://github.com/alibaba-fusion/next/issues/4113)) ([5e64dec](https://github.com/alibaba-fusion/next/commit/5e64dec))
+* **Input:** add displayName for input-like compoennt, fix [#4128](https://github.com/alibaba-fusion/next/issues/4128) ([7c31288](https://github.com/alibaba-fusion/next/commit/7c31288))
+* **Input:** prevent crash when pass nullish value, close [#4127](https://github.com/alibaba-fusion/next/issues/4127) ([#4130](https://github.com/alibaba-fusion/next/issues/4130)) ([59bc640](https://github.com/alibaba-fusion/next/commit/59bc640))
+* **Select:** fix preview display when use valueRender, close [#4116](https://github.com/alibaba-fusion/next/issues/4116) ([#4117](https://github.com/alibaba-fusion/next/issues/4117)) ([a9c85ec](https://github.com/alibaba-fusion/next/commit/a9c85ec))
 
 
