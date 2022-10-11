@@ -31,6 +31,15 @@ describe('TextArea', () => {
             );
         });
 
+        it('should textarea isPreview compatible value null', () => {
+            ReactDOM.render(<Input.TextArea id="ispreview-input-null" isPreview value={null} />, parent);
+            assert(
+                document.querySelectorAll(
+                    '#ispreview-input-null'
+                )[0].innerText === ''
+            );
+        });
+
         it('should textarea renderPreview', () => {
             ReactDOM.render(<Input.TextArea id="renderpreview-input" isPreview defaultValue="abc" renderPreview={() => 'ddd'}/>, parent);
 
