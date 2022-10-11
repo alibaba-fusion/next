@@ -6,8 +6,11 @@ import sinon from 'sinon';
 import assert from 'power-assert';
 import Input from '../../src/input/index';
 import Icon from '../../src/icon/index';
+import ConfigProvider from '../../src/config-provider';
 
 Enzyme.configure({ adapter: new Adapter() });
+
+/* eslint-disable no-undef, react/jsx-filename-extension */
 
 describe('input', () => {
     describe('render', () => {
@@ -365,6 +368,21 @@ describe('input', () => {
 
             wrapper.find('input').simulate('change', { target: { value: '' } });
         });
+
+        it.only('should support ConfigProvider defaultProps', () => {
+            const config = {
+                Input: {
+                    disabled: true,
+                },
+            };
+            const wrapper = mount(
+                <ConfigProvider defaultPropsConfig={config}>
+                    <Input />
+                </ConfigProvider>
+            );
+
+            assert( wrapper.find('input').prop('disabled') === true);
+        })
     });
     describe('react api', () => {
         it('calls componentWillReceiveProps', done => {

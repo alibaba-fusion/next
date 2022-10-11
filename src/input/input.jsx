@@ -12,7 +12,8 @@ function preventDefault(e) {
 }
 
 /** Input */
-export default class Input extends Base {
+class Input extends Base {
+    static displayName = 'Input';
     static getDerivedStateFromProps = Base.getDerivedStateFromProps;
     static propTypes = {
         ...Base.propTypes,
@@ -411,3 +412,5 @@ export default class Input extends Base {
         return inputWrap;
     }
 }
+
+export default Input;
