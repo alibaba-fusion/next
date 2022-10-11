@@ -369,7 +369,7 @@ describe('input', () => {
             wrapper.find('input').simulate('change', { target: { value: '' } });
         });
 
-        it.only('should support ConfigProvider defaultProps', () => {
+        it('should support ConfigProvider defaultProps', () => {
             const config = {
                 Input: {
                     disabled: true,
