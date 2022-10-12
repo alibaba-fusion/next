@@ -12,6 +12,10 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 
 export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     /**
+     * 是否在捕获阶段监听，适配 react 17 事件模型变更
+     */
+     useCapture?: boolean;
+    /**
      * 是否显示
      */
     visible?: boolean;

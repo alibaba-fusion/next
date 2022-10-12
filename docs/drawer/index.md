@@ -47,6 +47,7 @@
 | animation   | 显示隐藏时动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名                                                                                                                          | Object/Boolean      | { in: 'expandInDown', out: 'expandOutUp' } |      |
 | v2          | 开启 v2                                                                                                                                                                                                                                  | Boolean             | -                                          |      |
 | afterClose  | [v2] 弹窗关闭后的回调<br/><br/>**签名**:<br/>Function() => void                                                                                                                                                                                  | Function            | -                                          |      |
+| useCapture          | [v2]	是否在捕获阶段监听，适配 react 17 事件模型变更                                                                                                                                                                                                                        | Boolean             | false                                       |    1.26  |
 
 <!-- api-extra-start -->
 

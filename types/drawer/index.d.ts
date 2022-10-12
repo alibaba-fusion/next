@@ -30,6 +30,10 @@ export interface DrawerProps extends HTMLAttributesWeak, CommonProps {
      */
     closeMode?: CloseMode[] | 'close' | 'mask' | 'esc';
     /**
+     * 是否在捕获阶段监听，适配 react 17 事件模型变更
+     */
+     useCapture?: boolean;
+    /**
      * 隐藏时是否保留子节点，不销毁
      */
     cache?: boolean;

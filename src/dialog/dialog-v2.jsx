@@ -55,6 +55,7 @@ const Dialog = props => {
         onClose,
         style,
         wrapperClassName,
+        useCapture = false,
         ...others
     } = props;
 
@@ -146,9 +147,9 @@ const Dialog = props => {
     // esc 键盘事件处理
     useEffect(() => {
         if (visible && canCloseByEsc) {
-            document.body.addEventListener('keydown', keydownEvent, false);
+            document.body.addEventListener('keydown', keydownEvent, useCapture);
             return () => {
-                document.body.removeEventListener('keydown', keydownEvent, false);
+                document.body.removeEventListener('keydown', keydownEvent, useCapture);
             };
         }
     }, [visible && canCloseByEsc]);
