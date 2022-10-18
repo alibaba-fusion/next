@@ -682,10 +682,10 @@ export default class Base extends React.Component {
                     const { fillProps } = this.props;
                     if (mode === 'single') {
                         const renderPreview = valueDS => {
-                            if (valueRender) {
-                                return valueRender(valueDS, this.props);
-                            } else if (fillProps) {
+                            if (fillProps) {
                                 return valueDS[fillProps];
+                            } else if (valueRender) {
+                                return valueRender(valueDS, this.props);
                             } else {
                                 return valueDS.label;
                             }
