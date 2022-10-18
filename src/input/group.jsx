@@ -7,6 +7,8 @@ import ConfigProvider from '../config-provider';
  * Input.Group
  */
 class Group extends React.Component {
+    static displayName = 'Group';
+
     static propTypes = {
         /**
          * 样式前缀

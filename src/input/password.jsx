@@ -13,6 +13,8 @@ export default class Password extends Input {
         htmlType: 'password',
     };
 
+    static displayName = 'Password';
+
     static getDerivedStateFromProps = Input.getDerivedStateFromProps;
 
     static propTypes = {

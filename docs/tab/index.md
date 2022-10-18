@@ -54,6 +54,7 @@ Fusion 提供了三级选项卡，分别用于不同的场景。
 | icons               | 自定义组件内 icon                                                                                                                                                                                                                  | Object        | {}       |
 | showAdd             | 新增按钮                                                                                                                                                                                                                         | Boolean       | -        |
 | onAdd               | 新增的事件回调<br/><br/>**签名**:<br/>Function() => void                                                                                                                                                                              | Function      | -        |
+| addIcon             | 自定义添加按钮                                                                                                                                                                                                                      | ReactNode     | -        |
 
 ### Tab.Item
 

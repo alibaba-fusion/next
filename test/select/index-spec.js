@@ -337,6 +337,69 @@ describe('Select', () => {
         assert(wrapper.getDOMNode().innerText === '');
     });
 
+    // <span style={{ display: 'inline-block', width: 1 }}>&nbsp;</span>
+    // 非预览态会多一个空格
+    it('preview and edit should keep same content', () => {
+        const wrapper1 = mount(
+            <Select
+                dataSource={[]}
+                value={1}
+            />
+        );
+
+        const wrapper2 = mount(
+            <Select
+                isPreview
+                dataSource={[]}
+                value={1}
+            />
+        );
+        assert(wrapper1.getDOMNode().innerText.slice(0, -1) === wrapper2.getDOMNode().innerText);
+    });
+
+
+    // <span style={{ display: 'inline-block', width: 1 }}>&nbsp;</span>
+    // 非预览态会多一个空格
+    it('preview and edit should keep same content', () => {
+        const wrapper1 = mount(
+            <Select
+                dataSource={[{label: "test", value: '1'}]}
+                valueRender={v => v.value}
+                value={1}
+            />
+        );
+
+        const wrapper2 = mount(
+            <Select
+                isPreview
+                dataSource={[{label: "test", value: '1'}]}
+                valueRender={v => v.value}
+                value={1}
+            />
+        );
+        assert(wrapper1.getDOMNode().innerText.slice(0, -1)=== wrapper2.getDOMNode().innerText);
+    });
+
+    // <span style={{ display: 'inline-block', width: 1 }}>&nbsp;</span>
+    // 非预览态会多一个空格
+    it('preview and edit should keep same content', () => {
+        const wrapper1 = mount(
+            <Select
+                dataSource={[{label: "test", value: '1'}]}
+                value={1}
+            />
+        );
+
+        const wrapper2 = mount(
+            <Select
+                isPreview
+                dataSource={[{label: "test", value: '1'}]}
+                value={1}
+            />
+        );
+        assert(wrapper1.getDOMNode().innerText.slice(0, -1) === wrapper2.getDOMNode().innerText);
+    });
+
     it('should renderPreview mode="tag"', () => {
         const wrapper = mount(
             <Select
@@ -346,7 +409,6 @@ describe('Select', () => {
                 value={null}
             />
         );
-
         assert(wrapper.getDOMNode().innerText === '');
     });
 

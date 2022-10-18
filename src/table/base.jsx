@@ -841,7 +841,7 @@ class Table extends React.Component {
                 {...obj.pickOthers(Object.keys(Table.propTypes), others)}
             >
                 {table}
-                {loading ? <Loading className={loadingcls} /> : null}
+                {loading ? <LoadingComponent className={loadingcls} /> : null}
             </div>
         );
     }

@@ -633,6 +633,7 @@ export default class Base extends React.Component {
             renderPreview,
             style,
             className,
+            valueRender,
         } = props;
 
         const cls = classNames(
@@ -667,14 +668,16 @@ export default class Base extends React.Component {
                     }
                 }
 
-                if (typeof renderPreview === 'function') {
+                const renderPreviewExec = renderPreview || valueRender;
+
+                if (typeof renderPreviewExec === 'function') {
                     const previewCls = classNames({
                         [`${prefix}form-preview`]: true,
                         [className]: !!className,
                     });
                     return (
                         <div style={style} className={previewCls}>
-                            {renderPreview(valueDS, this.props)}
+                            {renderPreviewExec(valueDS, this.props)}
                         </div>
                     );
                 } else {

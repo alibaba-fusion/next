@@ -1,5 +1,52 @@
 # Change Log 
 
+## [1.26.3](https://github.com/alibaba-fusion/next/compare/1.26.2...1.26.3) (2022-10-11)
+
+
+### Bug Fixes
+
+* **Input:** add displayName for input-like compoennt, fix [#4128](https://github.com/alibaba-fusion/next/issues/4128) ([7c31288](https://github.com/alibaba-fusion/next/commit/7c31288))
+* **Input:** prevent crash when pass nullish value, close [#4127](https://github.com/alibaba-fusion/next/issues/4127) ([#4130](https://github.com/alibaba-fusion/next/issues/4130)) ([59bc640](https://github.com/alibaba-fusion/next/commit/59bc640))
+* **Select:** fix preview display when use valueRender, close [#4116](https://github.com/alibaba-fusion/next/issues/4116) ([#4117](https://github.com/alibaba-fusion/next/issues/4117)) ([a9c85ec](https://github.com/alibaba-fusion/next/commit/a9c85ec))
+
+
+
+
+## [1.26.2](https://github.com/alibaba-fusion/next/compare/1.26.1...1.26.2) (2022-09-20)
+
+
+### Bug Fixes
+
+* **Balloon:** update safeNode ts ([b7b6bc6](https://github.com/alibaba-fusion/next/commit/b7b6bc6))
+
+
+### Features
+
+* **Tab:** feat addIcon func, close [#4109](https://github.com/alibaba-fusion/next/issues/4109) ([df84688](https://github.com/alibaba-fusion/next/commit/df84688))
+* **Theme:** update theme style ([#4113](https://github.com/alibaba-fusion/next/issues/4113)) ([5e64dec](https://github.com/alibaba-fusion/next/commit/5e64dec))
+
+
+
+
+## [1.26.1](https://github.com/alibaba-fusion/next/compare/1.26.0...1.26.1) (2022-09-08)
+
+
+### Bug Fixes
+
+* **Card:** limit show/hide divider selector ([cd8e782](https://github.com/alibaba-fusion/next/commit/cd8e782))
+* **Form:** useLabelForErrorMessage of Form.Item  have a higher priority than Form  ([#4088](https://github.com/alibaba-fusion/next/issues/4088)) ([b0aec62](https://github.com/alibaba-fusion/next/commit/b0aec62))
+* **Notification:** update notfication icon api and form labelAlign api document, close [#4087](https://github.com/alibaba-fusion/next/issues/4087) [#3917](https://github.com/alibaba-fusion/next/issues/3917) ([ae4413e](https://github.com/alibaba-fusion/next/commit/ae4413e))
+* **Table:** optimize table loding ([e215a92](https://github.com/alibaba-fusion/next/commit/e215a92))
+* **Table:** prevent crash when dataSource is undefined, close [#4073](https://github.com/alibaba-fusion/next/issues/4073) ([cc1817a](https://github.com/alibaba-fusion/next/commit/cc1817a))
+
+
+### Features
+
+* ballon-onVisibleChange add args ([64777e1](https://github.com/alibaba-fusion/next/commit/64777e1))
+
+
+
+
 # [1.26.0-beta.4](https://github.com/alibaba-fusion/next/compare/1.25.45...1.26.0-beta.4) (2022-06-30)
 
 
