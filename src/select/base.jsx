@@ -668,27 +668,35 @@ export default class Base extends React.Component {
                     }
                 }
 
-                const renderPreviewExec = renderPreview || valueRender;
-
-                if (typeof renderPreviewExec === 'function') {
+                if (typeof renderPreview === 'function') {
                     const previewCls = classNames({
                         [`${prefix}form-preview`]: true,
                         [className]: !!className,
                     });
                     return (
                         <div style={style} className={previewCls}>
-                            {renderPreviewExec(valueDS, this.props)}
+                            {renderPreview(valueDS, this.props)}
                         </div>
                     );
                 } else {
                     const { fillProps } = this.props;
                     if (mode === 'single') {
+                        const renderPreview = valueDS => {
+                            if (fillProps) {
+                                return valueDS[fillProps];
+                            } else if (valueRender) {
+                                return valueRender(valueDS, this.props);
+                            } else {
+                                return valueDS.label;
+                            }
+                        };
+
                         return (
                             <Input
                                 style={style}
                                 className={className}
                                 isPreview={isPreview}
-                                value={valueDS ? (fillProps ? valueDS[fillProps] : valueDS.label) : ''}
+                                value={valueDS ? renderPreview(valueDS) : ''}
                             />
                         );
                     } else {
