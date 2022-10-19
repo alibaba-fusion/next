@@ -55,6 +55,8 @@ const Dialog = props => {
         onClose,
         style,
         wrapperClassName,
+        delegateDom,
+        ifStopBubbling,
         ...others
     } = props;
 
@@ -140,15 +142,21 @@ const Dialog = props => {
     const keydownEvent = e => {
         if (e.keyCode === 27 && canCloseByEsc && !childIDMap.current.size) {
             handleClose('esc', e);
+            if (ifStopBubbling) {
+                e.stopPropagation();
+            }
         }
     };
 
     // esc 键盘事件处理
     useEffect(() => {
         if (visible && canCloseByEsc) {
-            document.body.addEventListener('keydown', keydownEvent, false);
+            const dom =
+                (typeof delegateDom === 'string' ? document.getElementById(delegateDom) : delegateDom) || document.body;
+
+            dom.addEventListener('keydown', keydownEvent, false);
             return () => {
-                document.body.removeEventListener('keydown', keydownEvent, false);
+                dom.removeEventListener('keydown', keydownEvent, false);
             };
         }
     }, [visible && canCloseByEsc]);
