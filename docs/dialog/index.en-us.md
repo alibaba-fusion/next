@@ -19,7 +19,7 @@ version 1.25 add api `v2` to support open new version Dialog, feature as list:
 
 feature：
 
--   use css (not js) to compute position, will easier 
+-   use css (not js) to compute position, will easier
 -   add `closeIcon` to controll icon display
 -   add `width` to fix width of dialog, or you can set `width=auto` to follow content width
 -   add `dialogRender` use with `react-draggable` support draggable
@@ -70,6 +70,8 @@ changes：
 | height               | height style attribute for dialog                                                                                                                                                                                | String            | -                                                                                 |
 | v2               | v2 version dialog | Boolean              | - |      |
 | width               | dialog width (used while v2=true) | Number              | - |      |
+| delegateDom         | add keydown event listener on custom dom              | document.body |      |
+| ifStopBubbling      | stop event bubble when popup close by esc | boolean              | false |      |
 
 
 <!-- api-extra-start -->

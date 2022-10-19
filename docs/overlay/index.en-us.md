@@ -74,6 +74,8 @@ Popup is the wrapper of Overlay. It receives a node as a trigger node and pops u
 | wrapperStyle           | inline stylesheet of the overlay's wrapper node                                                                                                                                                                                                                                                                                                | Object         | -                                          |
 | animation              | configure animation, support the {in: 'enter-class', out: 'leave-class' } object parameters, if set to false, do not play the animation. Refer to `Animate` component documentation for available animations.                                                                                                                                                                                                                             | Object/Boolean | { in: 'expandInDown', out: 'expandOutUp' } |
 | useCapture             | add listener in capture phase, compatible with react 17                                                                                                                                                                                                                                                                        | Boolean        | false                                      | 1.25 |
+| delegateDom            | add keydown event listener on custom dom | string/HTMLElement              | document.body |      |
+| ifStopBubbling         | stop event bubble when popup close by esc | boolean              | false |      |
 
 ### Overlay.Popup
 
