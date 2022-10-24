@@ -126,7 +126,7 @@ const Popup = props => {
                     in: 'expandInUp',
                     out: 'expandOutDown',
                 });
-            } else if (animation.in === 'expandInUp' && animation.out === 'expandOutDown' && placement.match(/b/)) {
+            } else if (placement.match(/b/)) {
                 setAnimation({
                     in: 'expandInDown',
                     out: 'expandOutUp',
