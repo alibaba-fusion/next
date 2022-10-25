@@ -308,6 +308,11 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     icons?: {
         select?: React.ReactNode;
     };
+
+    /**
+     * 横向菜单模式下，是否维持在一行，即超出一行折叠成 SubMenu 显示
+     */
+    hozInLine?: boolean;
 }
 
 export default class Menu extends React.Component<MenuProps, any> {

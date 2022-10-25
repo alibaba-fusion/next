@@ -279,6 +279,11 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * 是否有 ToolTips （仅在 iconOnly=true 时生效）
      */
     hasTooltip?: boolean;
+
+    /**
+     * 横向菜单模式下，是否维持在一行，即超出一行折叠成 SubMenu 显示
+     */
+    hozInLine?: boolean;
 }
 
 export default class Nav extends React.Component<NavProps, any> {
