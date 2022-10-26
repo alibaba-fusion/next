@@ -181,6 +181,14 @@ class Overlay extends Component {
          * @version 1.25
          */
         points: PropTypes.array,
+        /**
+         * 自定义监听 keydown 事件 dom
+         */
+        delegateDom: PropTypes.any,
+        /**
+         * esc 触发关闭后是否阻止事件冒泡
+         */
+        ifStopBubbling: PropTypes.bool,
     };
     static defaultProps = {
         prefix: 'next-',

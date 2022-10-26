@@ -361,7 +361,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      */
      delegateDom?: string | HTMLElement;
      /**
-      * esc 触发关闭后是否组织事件冒泡
+      * esc 触发关闭后是否阻止事件冒泡
       */
      ifStopBubbling?: boolean;
 }

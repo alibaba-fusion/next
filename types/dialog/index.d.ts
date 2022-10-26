@@ -191,7 +191,7 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
      */
     delegateDom?: string | HTMLElement;
     /**
-     * [v2] esc 触发关闭后是否组织事件冒泡
+     * [v2] esc 触发关闭后是否阻止事件冒泡
      */
     ifStopBubbling?: boolean;
 }
