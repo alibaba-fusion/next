@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import assert from 'power-assert';
@@ -90,6 +91,46 @@ class Demo2 extends React.Component {
         );
     }
 }
+class CustomDeligateDomDemo extends React.Component {
+    state = {
+        visible: true,
+    };
+
+    onOpen = () => {
+        this.setState({
+            visible: true,
+        });
+    };
+
+    onClose = () => {
+        this.setState({
+            visible: false,
+        });
+    };
+
+    render() {
+        return (
+            <div id="dialog-popupcontainer" style={{ height: 300, overflow: 'auto' }}>
+                <Dialog
+                    v2
+                    popupContainer='dialog-popupcontainer'
+                    delegateDom='dialog-popupcontainer'
+                    title="Welcome to Alibaba.com"
+                    visible={this.state.visible}
+                    ifStopBubbling
+                    onOk={this.onClose}
+                    onCancel={this.onClose}
+                    onClose={this.onClose}
+                >
+                    Start your business here by searching a popular product
+                    <input id='focus-input' />
+                </Dialog>
+            </div>
+        );
+    }
+}
+
+
 
 describe('v2', () => {
     let wrapper;
@@ -120,32 +161,18 @@ describe('v2', () => {
         }
         document.body.addEventListener('keydown', handle, false);
 
-        simulateEvent.simulate(document.body, 'keydown', { keyCode: KEYCODE.ESC });
-        assert(called);
-        called = false;
-
         wrapper = render(
-            <div id="dialog-popupcontainer" style={{ height: 300, overflow: 'auto' }}>
-                <Dialog
-                    v2
-                    popupContainer='dialog-popupcontainer'
-                    delegateDom='dialog-popupcontainer'
-                    title="Welcome to Alibaba.com"
-                    visible
-                    ifStopBubbling
-                >
-                    Start your business here by searching a popular product
-                    <input id='focus-input' />
-                </Dialog>
-            </div>
+            <CustomDeligateDomDemo />
         );
 
         await delay(200);
         assert(document.querySelector('.next-dialog'));
 
         simulateEvent.simulate(document.getElementById('focus-input'), 'keydown', { keyCode: KEYCODE.ESC });
-        await delay(100);
+        await delay(500);
         assert(!called);
+        // dialog already closed
+        assert(!document.querySelector('.next-dialog'))
 
         document.body.removeEventListener('keydown', handle, false);
     })
