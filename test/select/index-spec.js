@@ -400,6 +400,19 @@ describe('Select', () => {
         assert(wrapper1.getDOMNode().innerText.slice(0, -1) === wrapper2.getDOMNode().innerText);
     });
 
+    it('render preview content when use multiple select', () => {
+        const wrapper = mount(
+            <Select
+                dataSource={[{label: '测试111', value: 1}]}
+                value={[1]}
+                mode='multiple'
+                isPreview
+            />
+        )
+
+        assert(wrapper.find('.next-form-preview').text() === '测试111');
+    })
+
     it('should renderPreview mode="tag"', () => {
         const wrapper = mount(
             <Select
