@@ -186,6 +186,14 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
      * [v2] 自定义渲染弹窗
      */
     dialogRender?: (modal: React.ReactNode) => React.ReactNode;
+    /**
+     * [v2] 自定义监听 keydown 事件 dom
+     */
+    delegateDom?: string | HTMLElement;
+    /**
+     * [v2] esc 触发关闭后是否阻止事件冒泡
+     */
+    ifStopBubbling?: boolean;
 }
 
 export interface QuickShowConfig extends DialogProps {

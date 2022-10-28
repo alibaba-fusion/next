@@ -733,6 +733,43 @@ describe('Overlay', () => {
         document.body.style.overflow = undefined;
         assert(document.body.style.overflow === '');
     });
+
+    it('should support delegateDom and ifStopBubbling', async () => {
+        let called = false;
+        const handle = e => {
+            if (e.keyCode === 27) {
+                called = true;
+            }
+        }
+        document.body.addEventListener('keydown', handle, false);
+
+        simulateEvent.simulate(document.body, 'keydown', { keyCode: KEYCODE.ESC });
+        assert(called);
+        called = false;
+
+        wrapper = render(
+            <div id="dialog-popupcontainer" style={{ height: 300, overflow: 'auto' }}>
+                <Drawer
+                    popupContainer='dialog-popupcontainer'
+                    delegateDom='dialog-popupcontainer'
+                    visible
+                    ifStopBubbling
+                >
+                    Start your business here by searching a popular product
+                    <input id='focus-input' />
+                </Drawer>
+            </div>
+        );
+
+        await delay(200);
+        assert(document.querySelector('.next-overlay-wrapper'));
+
+        simulateEvent.simulate(document.getElementById('focus-input'), 'keydown', { keyCode: KEYCODE.ESC });
+        await delay(100);
+        assert(!called);
+
+        document.body.removeEventListener('keydown', handle, false);
+    })
 });
 
 describe('Popup', () => {

@@ -41,6 +41,7 @@ const hiddenStyle = {
  * @order 2
  */
 export default class TextArea extends Base {
+    static displayName = 'TextArea';
     static getDerivedStateFromProps = Base.getDerivedStateFromProps;
     static propTypes = {
         ...Base.propTypes,
@@ -91,7 +92,7 @@ export default class TextArea extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? '' : value,
+            value: typeof value === 'undefined' || value === null ? '' : value,
         };
     }
 

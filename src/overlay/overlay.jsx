@@ -181,6 +181,14 @@ class Overlay extends Component {
          * @version 1.25
          */
         points: PropTypes.array,
+        /**
+         * 自定义监听 keydown 事件 dom
+         */
+        delegateDom: PropTypes.any,
+        /**
+         * esc 触发关闭后是否阻止事件冒泡
+         */
+        ifStopBubbling: PropTypes.bool,
     };
     static defaultProps = {
         prefix: 'next-',
@@ -611,11 +619,13 @@ class Overlay extends Component {
      * document global event
      */
     addDocumentEvents() {
-        const { useCapture } = this.props;
+        const { useCapture, delegateDom } = this.props;
+        const dom = (typeof delegateDom === 'string' ? document.getElementById(delegateDom) : delegateDom) || document;
+
         // use capture phase listener to be compatible with react17
         // https://reactjs.org/blog/2020/08/10/react-v17-rc.html#fixing-potential-issues
         if (this.props.canCloseByEsc) {
-            this._keydownEvents = events.on(document, 'keydown', this.handleDocumentKeyDown, useCapture);
+            this._keydownEvents = events.on(dom, 'keydown', this.handleDocumentKeyDown, useCapture);
         }
 
         if (this.props.canCloseByOutSideClick) {
@@ -636,6 +646,9 @@ class Overlay extends Component {
     handleDocumentKeyDown(e) {
         if (this.state.visible && e.keyCode === KEYCODE.ESC && overlayManager.isCurrentOverlay(this)) {
             this.props.onRequestClose('keyboard', e);
+            if (this.props.ifStopBubbling) {
+                e.stopPropagation();
+            }
         }
     }
 

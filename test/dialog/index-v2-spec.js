@@ -1,10 +1,12 @@
+/* eslint-disable react/no-multi-comp */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
+import simulateEvent from 'simulate-event';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { dom } from '../../src/util';
+import { dom, KEYCODE } from '../../src/util';
 import Button from '../../src/button';
 import ConfigProvider from '../../src/config-provider';
 import Dialog from '../../src/dialog/index';
@@ -60,7 +62,7 @@ class Demo2 extends React.Component {
             visible: false,
         });
     };
-    
+
     render() {
         return (
             <div>
@@ -89,6 +91,46 @@ class Demo2 extends React.Component {
         );
     }
 }
+class CustomDeligateDomDemo extends React.Component {
+    state = {
+        visible: true,
+    };
+
+    onOpen = () => {
+        this.setState({
+            visible: true,
+        });
+    };
+
+    onClose = () => {
+        this.setState({
+            visible: false,
+        });
+    };
+
+    render() {
+        return (
+            <div id="dialog-popupcontainer" style={{ height: 300, overflow: 'auto' }}>
+                <Dialog
+                    v2
+                    popupContainer='dialog-popupcontainer'
+                    delegateDom='dialog-popupcontainer'
+                    title="Welcome to Alibaba.com"
+                    visible={this.state.visible}
+                    ifStopBubbling
+                    onOk={this.onClose}
+                    onCancel={this.onClose}
+                    onClose={this.onClose}
+                >
+                    Start your business here by searching a popular product
+                    <input id='focus-input' />
+                </Dialog>
+            </div>
+        );
+    }
+}
+
+
 
 describe('v2', () => {
     let wrapper;
@@ -108,6 +150,32 @@ describe('v2', () => {
         }
         document.body.style='';
     });
+
+
+    it('should support delegateDom and ifStopBubbling', async () => {
+        let called = false;
+        const handle = e => {
+            if (e.keyCode === 27) {
+                called = true;
+            }
+        }
+        document.body.addEventListener('keydown', handle, false);
+
+        wrapper = render(
+            <CustomDeligateDomDemo />
+        );
+
+        await delay(200);
+        assert(document.querySelector('.next-dialog'));
+
+        simulateEvent.simulate(document.getElementById('focus-input'), 'keydown', { keyCode: KEYCODE.ESC });
+        await delay(500);
+        assert(!called);
+        // dialog already closed
+        assert(!document.querySelector('.next-dialog'))
+
+        document.body.removeEventListener('keydown', handle, false);
+    })
 
     it('should show and hide with no cache', async () => {
         wrapper = render(<Demo2 animation={false} />);
@@ -365,7 +433,7 @@ describe('v2', () => {
 
         assert(document.querySelector('.next-dialog'));
         assert(hasClass(document.querySelector('.next-btn-primary'), 'next-btn-loading'));
-        
+
         await delay(100);
         assert(!document.querySelector('.next-dialog'));
     });
@@ -599,7 +667,7 @@ describe('v2', () => {
             o.parentElement.removeChild(o)
            } catch(e) {}
         });
-        
+
         const { hide } = Dialog.show({
             v2: true,
             hasMask: false,
@@ -617,6 +685,7 @@ describe('v2', () => {
         await delay(40);
         assert(!document.querySelector('.next-overlay-backdrop'));
     });
+
     // 测试环境隔离问题一直搞不定，先注释
     // it('should rollback document.body.style in order', async () => {
     //     document.body.setAttribute('style', '');
@@ -632,14 +701,14 @@ describe('v2', () => {
     //                 title: 'Second',
     //                 content: 'content content content...'
     //             });
-    //         },    
+    //         },
     //     };
-        
+
     //     Dialog.success(config);
 
     //     await delay(40);
     //     assert(document.body.getAttribute('style').match('overflow: hidden'));
-        
+
     //     assert(document.querySelectorAll('.next-btn-primary').length == 1);
     //     ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
     //     await delay(40);

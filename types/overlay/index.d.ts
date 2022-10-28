@@ -356,6 +356,14 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 是否在捕获阶段监听，适配 react 17 事件模型变更
      */
     useCapture?: boolean;
+    /**
+     * 自定义监听 keydown 事件 dom
+     */
+     delegateDom?: string | HTMLElement;
+     /**
+      * esc 触发关闭后是否阻止事件冒泡
+      */
+     ifStopBubbling?: boolean;
 }
 
 export default class Overlay extends React.Component<OverlayProps, any> {

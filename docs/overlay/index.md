@@ -41,7 +41,7 @@ Overlay 提供了点击弹层外文档中节点隐藏该弹层的功能，如果
 
 2.  align 支持的 Boolean 值仅为 false，在设置为 false 时，不使用 JS 定位，这样你可以根据你的需要传入 style 或者 className 进行 CSS 定位。
 
-3.  rtl情况下会自动翻转 r(right)与 l(left), 
+3.  rtl情况下会自动翻转 r(right)与 l(left),
 
 ### Popup
 
@@ -82,6 +82,8 @@ Popup 是对 Overlay 的封装，它接收某个节点作为触发节点，弹�
 | animation              | 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名                                                                                                                                                                                                           | Object/Boolean | { in: 'expandInDown', out: 'expandOutUp' } |      |
 | v2                     | 开启 v2 版本                                                                                                                                                                                                                                                                                                             | Boolean        | -                                          | 1.25 |
 | points                 | [v2] align 的数组形式，不能和 align 同时使用                                                                                                                                                                                                                                                                                      | Array          | -                                          | 1.25 |
+| delegateDom            | 自定义keydown监听位置                                                                                                                                                                                                                              | string/HTMLElement             | document.body                                                                             | 1.27     |
+| ifStopBubbling         | esc 关闭popup是否阻止事件传递                                                                                                                                                                                                                             | Boolean             | false                                                                             | 1.27     |
 
 ### Overlay.Popup
 
