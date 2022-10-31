@@ -110,6 +110,7 @@ class InnerSlider extends React.Component {
 
         if (children !== prevState.children) {
             state.children = children;
+            state.slideCount = React.Children.count(children);
         }
 
         if (lazyLoad) {
