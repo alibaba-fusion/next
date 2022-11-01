@@ -77,6 +77,11 @@ export interface DrawerProps extends HTMLAttributesWeak, CommonProps {
      * 开启v2版本
      */
     v2?: boolean;
+
+    /**
+     * 内容
+     */
+    content?: React.ReactNode;
 }
 
 
