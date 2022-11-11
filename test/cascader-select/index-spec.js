@@ -592,8 +592,7 @@ describe('CascaderSelect', () => {
         wrapper = mount(<CascaderSelect dataSource={ChinaArea} popupProps={{ v2: true }} showSearch />);
         wrapper.find('.next-select').simulate('click');
         setTimeout(() => {
-            assert(document.querySelector('.next-cascader-select-dropdown'));
-            done();
+            assert(wrapper.find('.next-cascader-select-dropdown').length === 1);
         }, 500);
     });
 });
