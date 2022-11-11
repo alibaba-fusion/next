@@ -587,6 +587,15 @@ describe('CascaderSelect', () => {
         });
         assert(wrapper.find('.next-input-text-field em').text() === '陕西 / 西安 / 西安市');
     });
+
+    it('should support popup v2', () => {
+        wrapper = mount(<CascaderSelect dataSource={ChinaArea} popupProps={{ v2: true }} showSearch />);
+        wrapper.find('.next-select').simulate('click');
+        setTimeout(() => {
+            assert(document.querySelector('.next-cascader-select-dropdown'));
+            done();
+        }, 500);
+    });
 });
 
 function findItem(menuIndex, itemIndex) {
