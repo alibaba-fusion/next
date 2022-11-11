@@ -402,7 +402,7 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTable
     /**
      * 在内容区域滚动的时候触发的函数
      */
-    onBodyScroll?: () => void;
+    onBodyScroll?: (start: number) => void;
 
     /**
      * 开启时，getExpandedColProps() / getRowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
