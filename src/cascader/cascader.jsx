@@ -318,7 +318,7 @@ class Cascader extends Component {
             }, 0)
         );
 
-        if (getStyle(this.cascaderInner, 'width') !== menusWidth) {
+        if (getStyle(this.cascaderInner, 'width') !== menusWidth || !this.cascaderInner.getAttribute('style')) {
             setStyle(this.cascaderInner, 'width', menusWidth);
         }
 
