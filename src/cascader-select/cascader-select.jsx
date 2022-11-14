@@ -595,13 +595,16 @@ class CascaderSelect extends Component {
         }
 
         const { prefix, popupProps } = this.props;
-        const dropDownNode = this.popup
-            .getInstance()
-            .overlay.getInstance()
-            .getContentNode();
-        const cascaderNode = dropDownNode.querySelector(`.${prefix}cascader`);
-        if (cascaderNode) {
-            this.cascaderHeight = getStyle(cascaderNode, 'height');
+        const { v2 = false } = popupProps;
+        if (!v2) {
+            const dropDownNode = this.popup
+                .getInstance()
+                .overlay.getInstance()
+                .getContentNode();
+            const cascaderNode = dropDownNode.querySelector(`.${prefix}cascader`);
+            if (cascaderNode) {
+                this.cascaderHeight = getStyle(cascaderNode, 'height');
+            }
         }
 
         if (typeof popupProps.afterOpen === 'function') {

@@ -21,6 +21,8 @@ function freeze(dataSource) {
     });
 }
 
+const delay = time => new Promise(resolve => setTimeout(resolve, time));
+
 const ChinaArea = [
     {
         value: '2973',
@@ -586,6 +588,13 @@ describe('CascaderSelect', () => {
             dataSource: newDataSource,
         });
         assert(wrapper.find('.next-input-text-field em').text() === '陕西 / 西安 / 西安市');
+    });
+
+    it('should support popup v2', async () => {
+        wrapper = mount(<CascaderSelect dataSource={ChinaArea} popupProps={{ v2: true }} showSearch />);
+        wrapper.find('.next-select').simulate('click');
+        await delay(300);
+        assert(document.querySelector('.next-cascader-select-dropdown'));
     });
 });
 
