@@ -318,7 +318,11 @@ class Cascader extends Component {
             }, 0)
         );
 
-        if (getStyle(this.cascaderInner, 'width') !== menusWidth || !this.cascaderInner.getAttribute('style')) {
+        if (
+            getStyle(this.cascaderInner, 'width') !== menusWidth ||
+            // 搜索后清空会导致元素的宽度样式丢失，此时需要重新设置样式属性
+            !this.cascaderInner.getAttribute('style')
+        ) {
             setStyle(this.cascaderInner, 'width', menusWidth);
         }
 
