@@ -995,6 +995,10 @@ class Select extends Base {
             rtl,
         } = this.props;
         const others = obj.pickOthers(Select.propTypes, this.props);
+        // select不是输入框，应过滤掉addonTextAfter
+        if ('addonTextAfter' in others) {
+            delete others.addonTextAfter;
+        }
         const othersData = obj.pickAttrsWith(others, 'data-');
 
         const visible = this.state.visible;
