@@ -53,7 +53,6 @@ class Demo extends React.Component {
       <div className="search-demo">
         <CascaderSelect
           showSearch
-          popupProps={{ v2: true }}
           style={{ width: '240px' }}
           dataSource={this.state.data}
           placeholder="搜索名字"
@@ -63,7 +62,6 @@ class Demo extends React.Component {
         <br />
         <CascaderSelect
           showSearch
-          popupProps={{ v2: true }}
           filter={this.filter}
           style={{ width: '240px' }}
           multiple={this.state.multiple}
