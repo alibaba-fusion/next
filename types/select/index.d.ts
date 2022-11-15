@@ -60,7 +60,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 校验状态
      */
-    state?: 'error' | 'loading';
+    state?: 'error' | 'loading' | 'success' | 'warning';
 
     /**
      * 是否只读，只读模式下可以展开弹层但不能选
@@ -246,7 +246,7 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     /**
      * 校验状态
      */
-    state?: 'error' | 'loading';
+    state?: 'error' | 'loading' | 'success' | 'warning';
 
     /**
      * 是否只读，只读模式下可以展开弹层但不能选
