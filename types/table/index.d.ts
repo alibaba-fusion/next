@@ -20,7 +20,7 @@ export interface ColumnProps extends HTMLAttributesWeak, CommonProps {
      * value, rowIndex, record, context四个属性只可读不可被更改
      * Function(value, index, record) => Element
      */
-    cell?: React.ReactElement<any> | React.ReactNode | ((value: any, index: string, record: any) => any);
+    cell?: React.ReactElement<any> | React.ReactNode | ((value: any, index: number, record: any) => any);
 
     /**
      * 表头显示的内容
@@ -103,7 +103,7 @@ export interface GroupHeaderProps extends React.HTMLAttributes<HTMLElement>, Com
     /**
      * 行渲染的逻辑
      */
-    cell?: React.ReactElement<any> | React.ReactNode | ((value: any, index: string, record: any) => any);
+    cell?: React.ReactElement<any> | React.ReactNode | ((value: any, index: number, record: any) => any);
 
     /**
      * 是否在Children上面渲染selection
@@ -127,7 +127,7 @@ export interface GroupFooterProps extends React.HTMLAttributes<HTMLElement>, Com
     /**
      * 行渲染的逻辑
      */
-    cell?: React.ReactElement<any> | React.ReactNode | ((value: any, index: string, record: any) => any);
+    cell?: React.ReactElement<any> | React.ReactNode | ((value: any, index: number, record: any) => any);
 }
 
 export class GroupFooter extends React.Component<GroupFooterProps, any> {}
