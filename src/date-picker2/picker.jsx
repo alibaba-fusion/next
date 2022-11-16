@@ -151,6 +151,7 @@ class Picker extends React.Component {
         let newState = {
             isRange,
             showOk: !!(showOk || showTime),
+            showTime: !!showTime,
         };
 
         /**
@@ -182,6 +183,13 @@ class Picker extends React.Component {
                     value,
                     curValue: value,
                     preValue: value,
+                    inputValue: fmtValue(value, format),
+                };
+            }
+
+            if (!state.showTime || newState.showTime !== state.showTime) {
+                newState = {
+                    ...newState,
                     inputValue: fmtValue(value, format),
                 };
             }
