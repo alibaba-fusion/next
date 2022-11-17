@@ -185,6 +185,16 @@ class Picker extends React.Component {
                     inputValue: fmtValue(value, format),
                 };
             }
+
+            if ('showTime' in props) {
+                if (showTime !== state.showTime) {
+                    newState = {
+                        ...newState,
+                        showTime: !!showTime,
+                        inputValue: fmtValue(value, format),
+                    };
+                }
+            }
         }
 
         return newState;
