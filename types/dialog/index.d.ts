@@ -186,6 +186,10 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
      * [v2] 自定义渲染弹窗
      */
     dialogRender?: (modal: React.ReactNode) => React.ReactNode;
+    /**
+     * [v2] 最外包裹层 className
+     */
+    wrapperClassName?: string;
 }
 
 export interface QuickShowConfig extends DialogProps {
