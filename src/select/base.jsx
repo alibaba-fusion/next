@@ -251,7 +251,7 @@ export default class Base extends React.Component {
         if (width && this.width !== width) {
             this.width = width;
 
-            if (this.popupRef && this.shouldAutoWidth()) {
+            if (this.shouldAutoWidth()) {
                 // overy 的 node 节点可能没有挂载完成，所以这里需要异步
                 setTimeout(() => {
                     if (this.popupRef) {
