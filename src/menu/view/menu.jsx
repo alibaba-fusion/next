@@ -59,7 +59,8 @@ const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
 
         if (index > lastVisibleIndex) {
             child = React.cloneElement(child, {
-                key: child.key || `more-${index}`,
+                // 别折叠不显示的 item，不占用真实的用户传入的 key
+                key: `more-${index}`,
                 style: { display: 'none' },
                 className: `${(child && child.className) || ''} ${MENUITEM_OVERFLOWED_CLASSNAME}`,
             });
