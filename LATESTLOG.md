@@ -1,10 +1,10 @@
 # Latest Log 
 
-## [1.26.11](https://github.com/alibaba-fusion/next/compare/1.26.10...1.26.11) (2022-12-27)
+## [1.26.12](https://github.com/alibaba-fusion/next/compare/1.26.11...1.26.12) (2023-01-11)
 
 
 ### Bug Fixes
 
-* **Select:** fix select popup autowidth, close [#4216](https://github.com/alibaba-fusion/next/issues/4216) ([#4217](https://github.com/alibaba-fusion/next/issues/4217)) ([120f897](https://github.com/alibaba-fusion/next/commit/120f897))
+* **Menu:** fix hozInLine mode popup bug when subMenu has a specified key, close [#4222](https://github.com/alibaba-fusion/next/issues/4222) ([#4226](https://github.com/alibaba-fusion/next/issues/4226)) ([7c747b0](https://github.com/alibaba-fusion/next/commit/7c747b0))
 
 
