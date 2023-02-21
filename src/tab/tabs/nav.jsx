@@ -93,15 +93,18 @@ class Nav extends React.Component {
      * @param {bool} checkSlideBtn need to check the slide button status or not
      * @param {bool} setActive need to check the active status or not
      */
-    setOffset(target, checkSlideBtn = true, setActive = true) {
+    setOffset(target, checkSlideBtn = true, setActive = true, setOffsetKey = '') {
         const { tabPosition, rtl } = this.props;
         const navWH = getOffsetWH(this.nav, tabPosition);
         const wrapperWH = getOffsetWH(this.wrapper);
 
         // target should not be great than 0, i.e. should not over slide to left-most
-        target = target >= 0 ? 0 : target;
+        target = target >= 0 && setOffsetKey !== 'isScrollToActive' ? 0 : target;
         // when need to slide, should not slide to exceed right-most
-        target = target <= wrapperWH - navWH && wrapperWH - navWH < 0 ? wrapperWH - navWH : target;
+        target =
+            target <= wrapperWH - navWH && wrapperWH - navWH < 0 && setOffsetKey !== 'isScrollToActive'
+                ? wrapperWH - navWH
+                : target;
 
         const relativeOffset = target - this.offset;
         if (this.activeTab && this.props.excessMode === 'slide' && setActive) {
@@ -133,11 +136,17 @@ class Nav extends React.Component {
             const divScroll = this.nav.parentElement;
 
             if (tabPosition === 'left' || tabPosition === 'right') {
-                divScroll.scrollTo({ top: -offsetValue, left: 0, behavior: 'smooth' });
+                setOffsetKey === 'isScrollToActive'
+                    ? divScroll.scrollBy({ top: offsetValue, left: 0, behavior: 'smooth' })
+                    : divScroll.scrollTo({ top: -offsetValue, left: 0, behavior: 'smooth' });
             } else if (!this.props.rtl) {
-                divScroll.scrollTo({ top: 0, left: -offsetValue, behavior: 'smooth' });
+                setOffsetKey === 'isScrollToActive'
+                    ? divScroll.scrollBy({ top: 0, left: offsetValue, behavior: 'smooth' })
+                    : divScroll.scrollTo({ top: 0, left: -offsetValue, behavior: 'smooth' });
             } else {
-                divScroll.scrollTo({ top: 0, left: offsetValue, behavior: 'smooth' });
+                setOffsetKey === 'isScrollToActive'
+                    ? divScroll.scrollBy({ top: 0, left: -offsetValue, behavior: 'smooth' })
+                    : divScroll.scrollTo({ top: 0, left: offsetValue, behavior: 'smooth' });
             }
 
             if (checkSlideBtn) {
@@ -353,11 +362,22 @@ class Nav extends React.Component {
             const activeTabOffset = getOffsetLT(this.activeTab);
             const wrapperOffset = getOffsetLT(this.wrapper);
             const target = this.offset;
-
-            if (activeTabOffset + activeTabWH >= wrapperOffset + wrapperWH || activeTabOffset < wrapperOffset) {
-                this.setOffset(this.offset + wrapperOffset - activeTabOffset, true, true);
+            // 计算左、上 && 右、下 activeTab是否遮盖
+            const targetOffset =
+                activeTabOffset + activeTabWH >= wrapperOffset + wrapperWH
+                    ? activeTabOffset - wrapperWH
+                    : activeTabOffset < wrapperOffset
+                    ? activeTabOffset - activeTabWH
+                    : null;
+            if (targetOffset) {
+                this.setOffset(targetOffset, true, true, 'isScrollToActive');
                 return;
             }
+            // active scrollTo 无法监听用户的实时滚动，滚动距离不正确情况较多
+            // if (activeTabOffset + activeTabWH >= wrapperOffset + wrapperWH || activeTabOffset < wrapperOffset) {
+            //     this.setOffset(this.offset + wrapperOffset - activeTabOffset, true, true);
+            //     return;
+            // }
             this.setOffset(target, true, true);
         }
     };

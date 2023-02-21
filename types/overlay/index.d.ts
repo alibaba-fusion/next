@@ -200,6 +200,11 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 快捷位置
      */
     placement?: string;
+
+    /**
+     * 是否在捕获阶段监听，适配 react 17 事件模型变更
+     */
+    useCapture?: boolean;
 }
 
 export class Popup extends React.Component<PopupProps, any> {}
