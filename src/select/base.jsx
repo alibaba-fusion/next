@@ -705,7 +705,7 @@ export default class Base extends React.Component {
                                 style={style}
                                 className={className}
                                 isPreview={isPreview}
-                                value={(valueDS || []).map(i => i.label).join(', ')}
+                                value={(Array.isArray(valueDS) ? valueDS : []).map(i => i.label).join(', ')}
                             />
                         );
                     }
