@@ -325,7 +325,9 @@ class Rating extends Component {
             this.setState({ value: isReset ? 0 : newValue, clicked: true });
         }
 
-        this.props.onChange(isReset ? 0 : newValue);
+        if (newValue !== value || isReset) {
+            this.props.onChange(isReset ? 0 : newValue);
+        }
         setTimeout(() => {
             this.setState({ clicked: false });
         }, 100);
