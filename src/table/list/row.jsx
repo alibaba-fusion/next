@@ -34,6 +34,7 @@ export default class GroupListRow extends Row {
             locale,
             wrapper,
             rtl,
+            tableEl,
             ...others
         } = this.props;
         const cls = classnames({
