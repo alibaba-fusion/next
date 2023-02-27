@@ -45,6 +45,10 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@master
+        
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
 
       - name: restore cache from package-lock.json
         uses: actions/cache@v2
