@@ -35,7 +35,7 @@ div[dir="rtl"] {
 
     .#{$css-prefix}date-time-picker-wrapper {
         border-right: 1px solid $color-line1-1;
-        border-left: node;
+        border-left: none;
 
         .#{$css-prefix}time-picker2-menu:not(:last-child) {
             border-left: 1px solid #DCDEE3;
