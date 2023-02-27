@@ -9,7 +9,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface ColumnProps<RecordType = unknown> extends HTMLAttributesWeak, CommonProps {
+export interface ColumnProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 指定列对应的字段，支持`a.b`形式的快速取值
      */
@@ -20,7 +20,7 @@ export interface ColumnProps<RecordType = unknown> extends HTMLAttributesWeak, C
      * value, rowIndex, record, context四个属性只可读不可被更改
      * Function(value, index, record) => Element
      */
-    cell?: React.ReactElement<any> | React.ReactNode | ((value: any, index: number, record: RecordType) => any);
+    cell?: React.ReactElement<any> | React.ReactNode | ((value: any, index: number, record: any) => any);
 
     /**
      * 表头显示的内容
@@ -84,7 +84,7 @@ export interface ColumnProps<RecordType = unknown> extends HTMLAttributesWeak, C
     wordBreak?: 'all' | 'word';
 }
 
-export class Column<RecordType> extends React.Component<ColumnProps<RecordType>, any> {}
+export class Column extends React.Component<ColumnProps, any> {}
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
@@ -132,7 +132,7 @@ export interface GroupFooterProps extends React.HTMLAttributes<HTMLElement>, Com
 
 export class GroupFooter extends React.Component<GroupFooterProps, any> {}
 
-export interface BaseTableProps<RecordType> extends React.HTMLAttributes<HTMLElement>, CommonProps {
+export interface BaseTableProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
 /**
      * 样式类名的品牌前缀
      */
@@ -152,7 +152,7 @@ export interface BaseTableProps<RecordType> extends React.HTMLAttributes<HTMLEle
      * 自定义内联样式
      */
     style?: React.CSSProperties;
-    columns?: ColumnProps<RecordType>[];
+    columns?: Array<any>;
     /**
      * 表格元素的 table-layout 属性，设为 fixed 表示内容不会影响列的布局
      */
@@ -164,7 +164,7 @@ export interface BaseTableProps<RecordType> extends React.HTMLAttributes<HTMLEle
     /**
      * 表格展示的数据源
      */
-    dataSource?: readonly RecordType[];
+    dataSource?: Array<any>;
 
     /**
      * 表格是否具有边框
@@ -211,7 +211,7 @@ export interface BaseTableProps<RecordType> extends React.HTMLAttributes<HTMLEle
      */
     primaryKey?: string;
 }
-export interface TableProps<RecordType> extends React.HTMLAttributes<HTMLElement>, BaseTableProps<RecordType> {
+export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTableProps {
 
     /**
      * 点击表格每一行触发的事件
@@ -414,7 +414,7 @@ export interface TableProps<RecordType> extends React.HTMLAttributes<HTMLElement
     crossline?: boolean;
 }
 
-export default class Table<RecordType extends object = any> extends React.Component<TableProps<RecordType>, any> {
+export default class Table extends React.Component<TableProps, any> {
     static Column: typeof Column;
     static ColumnGroup: typeof ColumnGroup;
     static GroupHeader: typeof GroupHeader;
