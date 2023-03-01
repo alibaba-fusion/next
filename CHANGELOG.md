@@ -1,5 +1,78 @@
 # Change Log 
 
+## [1.26.14](https://github.com/alibaba-fusion/next/compare/1.26.13...1.26.14) (2023-02-27)
+
+
+
+
+## [1.26.13](https://github.com/alibaba-fusion/next/compare/1.26.12...1.26.13) (2023-02-27)
+
+
+### Bug Fixes
+
+* **Card:** fix css style naming,close [#3930](https://github.com/alibaba-fusion/next/issues/3930) ([#4237](https://github.com/alibaba-fusion/next/issues/4237)) ([5f8d6e8](https://github.com/alibaba-fusion/next/commit/5f8d6e8))
+* **Rating:** prevent triggering onChange when value not changed,close [#3639](https://github.com/alibaba-fusion/next/issues/3639) ([#4251](https://github.com/alibaba-fusion/next/issues/4251)) ([410454a](https://github.com/alibaba-fusion/next/commit/410454a))
+* **Select:** improve code robustness, close [#3901](https://github.com/alibaba-fusion/next/issues/3901) ([#4263](https://github.com/alibaba-fusion/next/issues/4263)) ([0abbfaa](https://github.com/alibaba-fusion/next/commit/0abbfaa))
+* **Table:** improve locking-column table scroll performance,close [#4058](https://github.com/alibaba-fusion/next/issues/4058) ([#4268](https://github.com/alibaba-fusion/next/issues/4268)) ([67ac494](https://github.com/alibaba-fusion/next/commit/67ac494))
+* **Table:** optimize ts suggestion for cell function, close [#4196](https://github.com/alibaba-fusion/next/issues/4196),[#3743](https://github.com/alibaba-fusion/next/issues/3743) ([#4260](https://github.com/alibaba-fusion/next/issues/4260)) ([2252834](https://github.com/alibaba-fusion/next/commit/2252834))
+* **Table:** prevent wanring on unknown tableEl prop on DOM element, close [#4118](https://github.com/alibaba-fusion/next/issues/4118) ([#4250](https://github.com/alibaba-fusion/next/issues/4250)) ([320cddb](https://github.com/alibaba-fusion/next/commit/320cddb))
+
+
+
+
+## [1.26.12](https://github.com/alibaba-fusion/next/compare/1.26.11...1.26.12) (2023-01-11)
+
+
+### Bug Fixes
+
+* **Menu:** fix hozInLine mode popup bug when subMenu has a specified key, close [#4222](https://github.com/alibaba-fusion/next/issues/4222) ([#4226](https://github.com/alibaba-fusion/next/issues/4226)) ([7c747b0](https://github.com/alibaba-fusion/next/commit/7c747b0))
+
+
+
+
+## [1.26.11](https://github.com/alibaba-fusion/next/compare/1.26.10...1.26.11) (2022-12-27)
+
+
+### Bug Fixes
+
+* **Select:** fix select popup autowidth, close [#4216](https://github.com/alibaba-fusion/next/issues/4216) ([#4217](https://github.com/alibaba-fusion/next/issues/4217)) ([120f897](https://github.com/alibaba-fusion/next/commit/120f897))
+
+
+
+
+## [1.26.10](https://github.com/alibaba-fusion/next/compare/1.26.9...1.26.10) (2022-12-20)
+
+
+### Bug Fixes
+
+* **Tree:** clear dragNode when drag is over ([#4208](https://github.com/alibaba-fusion/next/issues/4208)) ([e200422](https://github.com/alibaba-fusion/next/commit/e200422))
+
+
+
+
+## [1.26.9](https://github.com/alibaba-fusion/next/compare/1.26.8...1.26.9) (2022-12-06)
+
+
+### Bug Fixes
+
+* **ConfigProvider:** support using ref on function component, close [#4203](https://github.com/alibaba-fusion/next/issues/4203)([#4204](https://github.com/alibaba-fusion/next/issues/4204)) ([7f69703](https://github.com/alibaba-fusion/next/commit/7f69703))
+* **Dialog:** add TS definition for wrapperClassName props, close [#4155](https://github.com/alibaba-fusion/next/issues/4155) ([#4198](https://github.com/alibaba-fusion/next/issues/4198)) ([2791f70](https://github.com/alibaba-fusion/next/commit/2791f70))
+
+
+
+
+## [1.26.8](https://github.com/alibaba-fusion/next/compare/1.26.7...1.26.8) (2022-11-17)
+
+
+### Bug Fixes
+
+* **DatePicker2:** support config state props, close [#3750](https://github.com/alibaba-fusion/next/issues/3750) ([#4189](https://github.com/alibaba-fusion/next/issues/4189)) ([6fc1474](https://github.com/alibaba-fusion/next/commit/6fc1474))
+* **DatePicker2:** update display value when toggle showTime props  ([#4190](https://github.com/alibaba-fusion/next/issues/4190)) ([fe7f913](https://github.com/alibaba-fusion/next/commit/fe7f913))
+* **Table:** optimize cell props ts signature  ([#4188](https://github.com/alibaba-fusion/next/issues/4188)) ([1a86a5b](https://github.com/alibaba-fusion/next/commit/1a86a5b))
+
+
+
+
 ## [1.26.7](https://github.com/alibaba-fusion/next/compare/1.26.6...1.26.7) (2022-11-15)
 
 

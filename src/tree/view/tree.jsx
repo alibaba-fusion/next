@@ -1033,6 +1033,8 @@ class Tree extends Component {
         });
 
         this.props.onDragEnd({ event: e, node: node });
+
+        this.dragNode = null;
     }
 
     handleDrop(e, node) {
@@ -1055,6 +1057,8 @@ class Tree extends Component {
             event: e,
             ...params,
         });
+
+        this.dragNode = null;
     }
 
     canDrop(node) {

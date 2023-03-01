@@ -216,7 +216,7 @@ export function config(Component, options = {}) {
                     {...contextProps.defaultPropsConfig[displayName]}
                     {...newOthers}
                     {...newContextProps}
-                    ref={obj.isClassComponent(Component) ? this._getInstance : null}
+                    ref={this._getInstance}
                 />
             );
 

@@ -110,16 +110,25 @@ export default function fixed(BaseComponent, stickyLock) {
                 const leftFunc = scrollToRightEnd ? 'removeClass' : 'addClass';
                 dom[leftFunc](table, `${prefix}table-scrolling-to-right`);
             }
-            if (current.currentTarget !== current.target) {
-                return;
-            }
-            if (currentTarget === bodyNode) {
-                if (headerNode && scrollLeft !== headerNode.scrollLeft) {
-                    headerNode.scrollLeft = scrollLeft;
-                }
-            } else if (currentTarget === headerNode) {
-                if (bodyNode && scrollLeft !== bodyNode.scrollLeft) {
-                    bodyNode.scrollLeft = scrollLeft;
+
+            // 通过定时器避免重复设置表格的左滚动距离
+            if (!this.scrollTarget || this.scrollTarget === currentTarget) {
+                this.scrollTarget = currentTarget;
+                window.clearTimeout(this.timeoutId);
+
+                this.timeoutId = window.setTimeout(() => {
+                    this.scrollTarget = null;
+                    this.timeoutId = undefined;
+                }, 100);
+
+                if (currentTarget === bodyNode) {
+                    if (headerNode && scrollLeft !== headerNode.scrollLeft) {
+                        headerNode.scrollLeft = scrollLeft;
+                    }
+                } else if (currentTarget === headerNode) {
+                    if (bodyNode && scrollLeft !== bodyNode.scrollLeft) {
+                        bodyNode.scrollLeft = scrollLeft;
+                    }
                 }
             }
         };

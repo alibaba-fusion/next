@@ -1091,6 +1091,11 @@ describe('Picker', () => {
             findInput().simulate('keydown', { keyCode: KEYCODE.ENTER });
             assert(getStrValue(wrapper) === '2020-12-25')
         })
+
+        it('should support state', () => {
+            wrapper = mount(<DatePicker state="loading" />);
+            assert(wrapper.find('.next-icon-loading').length === 1);
+        });
     });
 });
 

@@ -34,6 +34,7 @@ class DateInput extends React.Component {
         inputProps: PT.object,
         dateInputAriaLabel: SharedPT.ariaLabel,
         label: PT.node,
+        state: PT.string,
     };
 
     static defaultProps = {
