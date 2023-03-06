@@ -156,7 +156,7 @@ export default class Body extends React.Component {
                 </table>
             );
         }
-        if (dataSource.length) {
+        if (dataSource && dataSource.length && dataSource.indexOf(undefined || null) === -1) {
             rows = dataSource.map((record, index) => {
                 let rowProps = {};
                 // record may be a string
