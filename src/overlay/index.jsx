@@ -73,6 +73,10 @@ class Popup extends React.Component {
                 delete others.needAdjust;
             }
 
+            if ('shouldUpdatePosition' in others) {
+                delete others.shouldUpdatePosition;
+            }
+
             return <Popup2 {...others} />;
         } else {
             return <Popup1 {...others} ref={this.saveRef} />;
