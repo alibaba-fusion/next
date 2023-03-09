@@ -24,7 +24,7 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 发生改变的时候触发的回调
      */
-    onChange?: (value: string, e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    onChange?: (value: string, e: React.ChangeEvent<HTMLTextAreaElement>, type?: string) => void;
 
     /**
      * 键盘按下的时候触发的回调
@@ -185,7 +185,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 发生改变的时候触发的回调
      */
-    onChange?: (value: string, e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (value: string, e: React.ChangeEvent<HTMLInputElement>, type?: string) => void;
 
     /**
      * 键盘按下的时候触发的回调
