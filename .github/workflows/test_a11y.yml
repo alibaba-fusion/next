@@ -12,7 +12,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v2
         with: 
-          node-version: '14'
+          node-version: 16
 
       - name: cache package-lock.json
         uses: actions/cache@v2
@@ -48,7 +48,7 @@ jobs:
         
       - uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
 
       - name: restore cache from package-lock.json
         uses: actions/cache@v2
