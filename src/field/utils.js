@@ -1,5 +1,6 @@
 import { isValidElement, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
+import scrollIntoView from 'scroll-into-view-if-needed';
 
 export function cloneAndAddKey(element) {
     if (element && isValidElement(element)) {
@@ -41,8 +42,8 @@ export function scrollToFirstError({ errorsGroup, options, instance }) {
                     offsetLeft,
                     firstTop + options.scrollToFirstError
                 );
-            } else if (firstNode.scrollIntoViewIfNeeded) {
-                firstNode.scrollIntoViewIfNeeded(true);
+            } else {
+                scrollIntoView(firstNode, { block: 'center' });
             }
         }
     }
