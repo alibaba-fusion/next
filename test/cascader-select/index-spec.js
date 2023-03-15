@@ -596,6 +596,31 @@ describe('CascaderSelect', () => {
         await delay(300);
         assert(document.querySelector('.next-cascader-select-dropdown'));
     });
+    it('should support showCheckedStrategy', () => {
+        wrapper = mount(<CascaderSelect visible multiple dataSource={ChinaArea} defaultValue={['2975']} />);
+
+        wrapper
+            .find('.next-checkbox-input')
+            .at(0)
+            .simulate('change', { target: { checked: true } });
+        assert.deepEqual(getLabels(wrapper), ["陕西"]);
+        wrapper.setProps({
+            showCheckedStrategy: 'showAll',
+        });
+        wrapper
+            .find('.next-checkbox-input')
+            .at(0)
+            .simulate('change', { target: { checked: true } });
+        assert.deepEqual(getLabels(wrapper), ["陕西","西安","西安市","高陵县","铜川","铜川市","宜君县"]);
+        wrapper.setProps({
+            showCheckedStrategy: 'showChild',
+        });
+        wrapper
+            .find('.next-checkbox-input')
+            .at(0)
+            .simulate('change', { target: { checked: true } });
+        assert.deepEqual(getLabels(wrapper), ["西安","西安市","高陵县","铜川","铜川市","宜君县"]);
+      });
 });
 
 function findItem(menuIndex, itemIndex) {

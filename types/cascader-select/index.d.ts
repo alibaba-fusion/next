@@ -225,6 +225,14 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
     isPreview?: boolean;
 
     renderPreview?: (value: string | Array<string>) => React.ReactNode;
+
+    /**
+     * 定义选中项回填的方式(当父节点下的所有子节点都选中)
+     * 'showParent' 默认值，显示父节点
+     * 'showChild'  只显示选中的子节点
+     * 'showAll'    显示所有选中节点
+     */
+    showCheckedStrategy?: 'showParent' | 'showChild' | 'showAll';
 }
 
 export default class CascaderSelect extends React.Component<CascaderSelectProps, any> {}

@@ -236,6 +236,13 @@ class CascaderSelect extends Component {
          * @version 1.23
          */
         immutable: PropTypes.bool,
+        /**
+         * 定义选中项回填的方式(当父节点下的所有子节点都选中)
+         * - showParent: 默认值，显示父节点
+         * - showChild:  只显示选中的子节点
+         * - showAll:    显示所有选中节点
+         */
+        showCheckedStrategy: PropTypes.oneOf(['showParent', 'showChild', 'showAll']),
     };
 
     static defaultProps = {
@@ -293,6 +300,7 @@ class CascaderSelect extends Component {
         onVisibleChange: () => {},
         popupProps: {},
         immutable: false,
+        showCheckedStrategy: 'showParent',
     };
 
     constructor(props) {
@@ -449,8 +457,9 @@ class CascaderSelect extends Component {
             return null;
         }
 
-        const { checkStrictly, canOnlyCheckLeaf, displayRender } = this.props;
-        const flatValue = checkStrictly || canOnlyCheckLeaf ? value : this.flatValue(value);
+        const { checkStrictly, canOnlyCheckLeaf, displayRender, showCheckedStrategy } = this.props;
+        const flatValue =
+            checkStrictly || canOnlyCheckLeaf || showCheckedStrategy !== 'showParent' ? value : this.flatValue(value);
         let data = flatValue.map(v => {
             let item = this._v2n[v];
 
@@ -641,7 +650,7 @@ class CascaderSelect extends Component {
     };
 
     handleChange(value, data, extra) {
-        const { multiple, onChange } = this.props;
+        const { multiple, onChange, showCheckedStrategy, checkStrictly, canOnlyCheckLeaf } = this.props;
         const { searchValue, value: stateValue } = this.state;
 
         const st = {};
@@ -653,6 +662,34 @@ class CascaderSelect extends Component {
                 value = value.filter(v => {
                     return !(noExistedValues.indexOf(v) >= 0);
                 });
+            }
+
+            const checkedData = extra.checkedData.map(item => item.value);
+            const parentValues = data.filter(v => v.children).map(item => item.value);
+            if (
+                showCheckedStrategy !== 'showParent' &&
+                parentValues &&
+                parentValues.length &&
+                !checkStrictly &&
+                !canOnlyCheckLeaf
+            ) {
+                switch (showCheckedStrategy) {
+                    case 'showAll':
+                        value = checkedData;
+                        break;
+                    case 'showChild':
+                        parentValues.forEach(item => {
+                            for (let i = 0; i < checkedData.length; i++) {
+                                if (checkedData[i] === item) {
+                                    checkedData.splice(i, 1);
+                                }
+                            }
+                        });
+                        value = checkedData;
+                        break;
+                    default:
+                        break;
+                }
             }
 
             value = [...noExistedValues, ...value];

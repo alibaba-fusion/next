@@ -28,6 +28,11 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 不展示数字，只展示一个小红点
      */
     dot?: boolean;
+
+    /**
+     * 当count为0时，是否显示count
+     */
+    showZero?: boolean;
 }
 
 export default class Badge extends React.Component<BadgeProps, any> {}
