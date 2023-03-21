@@ -465,6 +465,11 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
      * 展开下拉菜单时是否自动焦点到弹层	
      */
     popupAutoFocus?: boolean;
+
+    /**
+     * 	tag 是否可关闭
+     */
+    tagClosable?: boolean;
 }
 
 export default class Select extends React.Component<SelectProps, any> {
