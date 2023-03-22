@@ -180,6 +180,7 @@ export default class Form extends React.Component {
         _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
         _formLabelForErrorMessage: PropTypes.bool,
+        _formOptimization: PropTypes.bool,
     };
 
     constructor(props) {
@@ -221,6 +222,7 @@ export default class Form extends React.Component {
             _formPreview: this.props.isPreview,
             _formFullWidth: this.props.fullWidth,
             _formLabelForErrorMessage: this.props.useLabelForErrorMessage,
+            _formOptimization: this.props.optimization,
         };
     }
 

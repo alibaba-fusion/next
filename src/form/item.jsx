@@ -240,22 +240,20 @@ export default class Item extends React.Component {
         _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
         _formLabelForErrorMessage: PropTypes.bool,
+        _formOptimization: PropTypes.bool,
     };
 
     static _typeMark = 'form_item';
 
     shouldComponentUpdate() {
-        const _formField = this.context._formField;
-        if (_formField) {
-            const formProps = _formField.com.props;
-            if (formProps.optimization) {
-                const fieldValue = _formField.getValue(this.props.name);
-                if (this.itemValue === fieldValue) {
-                    return false;
-                }
-                this.itemValue = fieldValue;
-                return true;
+        const { _formOptimization, _formField } = this.context;
+        if (_formOptimization && _formField) {
+            const fieldValue = _formField.getValue(this.props.name);
+            if (this.itemValue === fieldValue) {
+                return false;
             }
+            this.itemValue = fieldValue;
+            return true;
         }
         return true;
     }
