@@ -42,6 +42,7 @@ Form layout, validation, data submission operations used.
 | onChange       | Callback fuction trigget on form changed<br><br>**signatures**:<br>Function() => void | Function | func.noop |
 | component      | The html tag to be rendered | String   | 'form' |
 | responsive     | use ResponsiveGrid                                                                                                                                                                                                         | Boolean         | -                                                      |
+| optimization      | Optimized for form items | Boolean   | false |
 
 ### Form.Item
 

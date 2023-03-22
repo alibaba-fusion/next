@@ -530,6 +530,10 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      * 是否使用 label 替换校验信息的 name 字段
      */
     useLabelForErrorMessage?: boolean;
+    /**
+     * 是否开启优化
+     */
+    optimization?: boolean;
 }
 
 export default class Form extends React.Component<FormProps, any> {

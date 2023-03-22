@@ -58,6 +58,7 @@
 | useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                                                                                                                                                       | Boolean         | -                                                      | 1.20 |
 | colon                   | 表示是否显示 label 后面的冒号                                                                                                                                                                                                                               | Boolean         | false                                                  | 1.22 |
 | disabled                | 是否禁用表单                                                                                                                                                                                                                                           | Boolean         | false                                                  |      |
+| optimization            | 是否开启表单优化，开启此项可减少表单子项不必要的重渲染                                                                                                                                                                                                                                           | Boolean         | false                                                  |  1.27   |
 
 ### Form.Item
 

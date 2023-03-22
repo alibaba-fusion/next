@@ -153,6 +153,10 @@ export default class Form extends React.Component {
         disabled: PropTypes.bool,
         // 在 responsive模式下，透传给 ResponsiveGrid的， 表示 每个 cell 之间的间距， [bottom&top, right&left]
         gap: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number]),
+        /**
+         * 是否开启优化
+         */
+        optimization: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -166,6 +170,7 @@ export default class Form extends React.Component {
         device: 'desktop',
         colon: false,
         disabled: false,
+        optimization: false,
     };
 
     static childContextTypes = {

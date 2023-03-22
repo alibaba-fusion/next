@@ -244,6 +244,22 @@ export default class Item extends React.Component {
 
     static _typeMark = 'form_item';
 
+    shouldComponentUpdate() {
+        const _formField = this.context._formField;
+        if (_formField) {
+            const formProps = _formField.com.props;
+            if (formProps.optimization) {
+                const fieldValue = _formField.getValue(this.props.name);
+                if (this.itemValue === fieldValue) {
+                    return false;
+                }
+                this.itemValue = fieldValue;
+                return true;
+            }
+        }
+        return true;
+    }
+
     /**
      * 从子元素里面提取表单组件. TODO: 2.x 中改为只获取一个元素
      */
