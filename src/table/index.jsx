@@ -62,12 +62,15 @@ export default ConfigProvider.config(Table, {
         // fix https://github.com/alibaba-fusion/next/issues/4062
         if ('columns' in props) {
             const { columns, ...others } = props;
-            const newColumns = [...columns];
-
-            props = {
-                columns: newColumns,
-                ...others,
-            };
+            if (columns && columns.length && columns.indexOf(undefined) !== -1) {
+                delete props.columns;
+            } else {
+                const newColumns = [...columns];
+                props = {
+                    columns: newColumns,
+                    ...others,
+                };
+            }
         }
 
         if ('expandedRowKeys' in props) {
