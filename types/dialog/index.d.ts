@@ -4,6 +4,7 @@ import * as React from 'react';
 import CommonProps from '../util';
 import { ButtonProps } from '../button';
 import { OverlayProps } from '../overlay';
+import { MessageProps } from '../message';
 
 export type CloseMode = 'close' | 'mask' | 'esc';
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
@@ -195,11 +196,10 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
 export interface QuickShowConfig extends DialogProps {
     prefix?: string;
     type?: 'alert' | 'confirm';
-    messageProps?: object;
+    messageProps?: MessageProps;
     content?: React.ReactNode;
     onOk?: () => void;
     onCancel?: () => void;
-    okProps?: object;
     needWrapper?: boolean;
 }
 
