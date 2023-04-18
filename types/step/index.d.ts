@@ -8,7 +8,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onClick?: any;
 }
 
-export interface ItemProps extends HTMLAttributesWeak, CommonProps {
+export interface ItemProps extends Omit<HTMLAttributesWeak, 'content'>, CommonProps {
     /**
      * 步骤的状态，如不传，会根据外层的 Step 的 current 属性生成，可选值为 `wait`, `process`, `finish`
      */

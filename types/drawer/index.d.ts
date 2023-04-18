@@ -10,7 +10,7 @@ interface HTMLAttributesWeak extends PopupProps {
     onClose?: any;
 }
 
-export interface DrawerProps extends HTMLAttributesWeak, CommonProps {
+export interface DrawerProps extends Omit<HTMLAttributesWeak, 'content'>, CommonProps {
     /**
      * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
      * **mask** 表示点击遮罩区域可以关闭对话框

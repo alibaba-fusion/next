@@ -69,7 +69,7 @@ export interface MessageProps extends HTMLAttributesWeak, CommonProps {
     animation?: boolean;
 }
 
-export interface MessageQuickProps extends HTMLAttributesWeak, CommonProps {
+export interface MessageQuickProps extends Omit<HTMLAttributesWeak, 'content'>, CommonProps {
     /**
      * 反馈类型
      */

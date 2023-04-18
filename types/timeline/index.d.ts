@@ -7,7 +7,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface ItemProps extends HTMLAttributesWeak, CommonProps {
+export interface ItemProps extends Omit<HTMLAttributesWeak, 'content'>, CommonProps {
     /**
      * 节点状态
      */
