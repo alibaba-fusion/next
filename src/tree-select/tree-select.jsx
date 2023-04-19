@@ -537,9 +537,9 @@ class TreeSelect extends Component {
         const { selected } = extra;
 
         if (multiple || selected) {
-            let value = this.getValueByKeys(selectedKeys);
+            const selectedValue = this.getValueByKeys(selectedKeys);
             const nonExistentValues = this.getNonExistentValues();
-            value = [...nonExistentValues, ...value];
+            const value = [...nonExistentValues, ...selectedValue];
 
             if (!('value' in this.props)) {
                 this.setState({
@@ -551,7 +551,9 @@ class TreeSelect extends Component {
             }
 
             const data = this.getData(value);
-            multiple ? onChange(value, data) : onChange(value[0], data[0]);
+            const selectedData = this.getData(selectedValue);
+            // 单选情况下，不返回 nonExistentValue，直接返回当前选择值，避免无法改选的问题
+            multiple ? onChange(value, data) : onChange(selectedValue[0], selectedData[0]);
 
             // clear search value manually
             if (autoClearSearch) {
