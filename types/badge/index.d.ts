@@ -3,7 +3,7 @@
 import * as React from 'react';
 import CommonProps from '../util';
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLElement>, 'content'>, CommonProps {
     /**
      * 徽章依托的内容
      */
