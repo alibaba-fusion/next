@@ -66,7 +66,7 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中值改变时的事件
      */
-    onChange?: (value: Array<number | string>, e?: any) => void;
+    onChange?: (value: Array<string>, e: any) => void;
 
     /**
      * 子项目的排列方式
@@ -148,7 +148,7 @@ export interface CheckboxProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 状态变化时触发的事件
      */
-    onChange?: (checked: boolean, e?: any) => void;
+    onChange?: (checked: boolean, e: any) => void;
 
     /**
      * 鼠标进入enter事件
