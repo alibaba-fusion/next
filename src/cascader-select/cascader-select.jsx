@@ -6,6 +6,7 @@ import Select from '../select';
 import Cascader from '../cascader';
 import Menu from '../menu';
 import { func, obj, dom, KEYCODE } from '../util';
+import zhCN from '../locale/zh-cn';
 
 const { bindCtx } = func;
 const { pickOthers } = obj;
@@ -176,6 +177,10 @@ class CascaderSelect extends Component {
          */
         notFoundContent: PropTypes.node,
         /**
+         * 国际化
+         */
+        locale: PropTypes.object,
+        /**
          * 异步加载数据函数
          * @param {Object} data 当前点击异步加载的数据
          */
@@ -288,11 +293,11 @@ class CascaderSelect extends Component {
             return <span>{parts}</span>;
         },
         resultAutoWidth: true,
-        notFoundContent: '无选项',
         defaultVisible: false,
         onVisibleChange: () => {},
         popupProps: {},
         immutable: false,
+        locale: zhCN.Select,
     };
 
     constructor(props) {
@@ -782,11 +787,10 @@ class CascaderSelect extends Component {
     }
 
     renderNotFound() {
-        const { prefix, notFoundContent } = this.props;
-
+        const { prefix, notFoundContent, locale } = this.props;
         return (
             <Menu className={`${prefix}cascader-select-not-found`}>
-                <Menu.Item>{notFoundContent}</Menu.Item>
+                <Menu.Item>{notFoundContent || locale.notFoundContent}</Menu.Item>
             </Menu>
         );
     }
