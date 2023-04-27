@@ -288,7 +288,7 @@ class CascaderSelect extends Component {
             return <span>{parts}</span>;
         },
         resultAutoWidth: true,
-        notFoundContent: 'Not Found',
+        notFoundContent: '无选项',
         defaultVisible: false,
         onVisibleChange: () => {},
         popupProps: {},
