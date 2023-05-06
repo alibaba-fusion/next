@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import VirtualListProps from '../virtual-list'
 
 export interface NodeProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -252,6 +253,11 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
      * 是否开启虚拟滚动
      */
     useVirtual?: boolean;
+
+    /**
+     * VirtualList透传参数
+     */
+    VirtualListProps: VirtualListProps
 }
 
 export default class Tree extends React.Component<TreeProps, any> {

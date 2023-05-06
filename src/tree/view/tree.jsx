@@ -488,6 +488,10 @@ class Tree extends Component {
          * @version 1.23
          */
         immutable: PropTypes.bool,
+        /**
+         * VirtualList透传参数
+         */
+        VirtualListProps: PropTypes.object,
     };
 
     static defaultProps = {
@@ -528,6 +532,7 @@ class Tree extends Component {
         onItemKeyDown: noop,
         useVirtual: false,
         immutable: false,
+        VirtualListProps: {},
     };
 
     constructor(props) {
@@ -1238,6 +1243,7 @@ class Tree extends Component {
             multiple,
             useVirtual,
             renderChildNodes,
+            VirtualListProps,
         } = this.props;
         const { dataSource } = this.state;
         const { style, ...others } = pickOthers(Object.keys(Tree.propTypes), this.props);
@@ -1274,7 +1280,7 @@ class Tree extends Component {
         const virtualTreeRender = dataSource => {
             return (
                 <div className={`${prefix}virtual-tree-container`} style={style}>
-                    <VirtualList itemsRenderer={(items, ref) => treeRender(items, ref)}>
+                    <VirtualList {...{ itemsRenderer: (items, ref) => treeRender(items, ref), ...VirtualListProps }}>
                         {this.renderNodeList(dataSource)}
                     </VirtualList>
                 </div>
