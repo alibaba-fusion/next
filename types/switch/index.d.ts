@@ -66,6 +66,11 @@ export interface SwitchProps extends HTMLAttributesWeak, CommonProps {
      * 键盘按键事件
      */
     onKeyDown?: React.KeyboardEventHandler;
+
+    /**
+     * loading
+     */
+    loading?: boolean;
 }
 
 export default class Switch extends React.Component<SwitchProps, any> {}
