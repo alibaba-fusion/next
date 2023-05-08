@@ -364,11 +364,11 @@ export default class Dialog extends Component {
     }
 
     getInner() {
-        return this.overlay.getInstance().getContent();
+        return this.overlay?.getInstance().getContent();
     }
 
     getInnerNode() {
-        return this.overlay.getInstance().getContentNode();
+        return this.overlay?.getInstance().getContentNode();
     }
 
     renderInner(closeable) {
