@@ -7,6 +7,7 @@ import cx from 'classnames';
 import { func, dom, obj, KEYCODE } from '../../util';
 import TreeNode from './tree-node';
 import VirtualList from '../../virtual-list';
+
 import {
     normalizeToArray,
     isDescendantOrSelf,
@@ -1280,7 +1281,7 @@ class Tree extends Component {
         const virtualTreeRender = dataSource => {
             return (
                 <div className={`${prefix}virtual-tree-container`} style={style}>
-                    <VirtualList {...{ itemsRenderer: (items, ref) => treeRender(items, ref), ...VirtualListProps }}>
+                    <VirtualList itemsRenderer={(items, ref) => treeRender(items, ref)} {...VirtualListProps}>
                         {this.renderNodeList(dataSource)}
                     </VirtualList>
                 </div>
