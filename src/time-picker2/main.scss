@@ -110,6 +110,10 @@
         &#{$time-picker2-prefix}-input-disabled {
             @include input-disabled();
         }
+
+        &#{$time-picker2-prefix}-input-error {
+            border-color: #FF3000;
+        }
     }
 
     &-input-separator {
