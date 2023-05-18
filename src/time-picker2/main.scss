@@ -112,7 +112,7 @@
         }
 
         &#{$time-picker2-prefix}-input-error {
-            border-color: #FF3000;
+            border-color: $input-feedback-error-border-color;
         }
     }
 
