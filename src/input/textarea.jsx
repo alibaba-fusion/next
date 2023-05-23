@@ -71,6 +71,10 @@ export default class TextArea extends Base {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
+        /**
+         * 是否出现clear按钮
+         */
+        hasClear: PropTypes.bool,
     };
 
     static defaultProps = {

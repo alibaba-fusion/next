@@ -241,7 +241,22 @@ class Base extends React.Component {
         this.props.onBlur(e);
     }
 
-    renderLength() {
+    onClear(e) {
+        if (this.props.disabled) {
+            return;
+        }
+
+        // 非受控模式清空内部数据
+        if (!('value' in this.props)) {
+            this.setState({
+                value: '',
+            });
+        }
+        this.props.onChange('', e, 'clear');
+        this.focus();
+    }
+
+    renderLength(showAreaClear) {
         const { maxLength, showLimitHint, prefix, rtl } = this.props;
         const len = maxLength > 0 && this.state.value ? this.getValueLength(this.state.value) : 0;
 
@@ -251,12 +266,30 @@ class Base extends React.Component {
         });
 
         const content = rtl ? `${maxLength}/${len}` : `${len}/${maxLength}`;
-
-        return maxLength && showLimitHint ? <span className={classesLenWrap}>{content}</span> : null;
+        if (showAreaClear) {
+            return maxLength && showLimitHint ? (
+                <span className={classesLenWrap}>
+                    {content}
+                    <span style={{ margin: '0 8px' }}>|</span>
+                    <span style={{ cursor: 'pointer' }} onClick={this.onClear.bind(this)}>
+                        清空
+                    </span>
+                </span>
+            ) : (
+                <span className={classesLenWrap} style={{ cursor: 'pointer' }} onClick={this.onClear.bind(this)}>
+                    清空
+                </span>
+            );
+        } else {
+            return maxLength && showLimitHint ? <span className={classesLenWrap}>{content}</span> : null;
+        }
     }
 
     renderControl() {
-        const lenWrap = this.renderLength();
+        // textarea renderControl
+        const { hasClear, disabled } = this.props;
+        const showAreaClear = hasClear && !!`${this.state.value}` && !disabled;
+        const lenWrap = this.renderLength(showAreaClear);
 
         return lenWrap ? (
             <span onClick={() => this.focus()} className={`${this.props.prefix}input-control`}>

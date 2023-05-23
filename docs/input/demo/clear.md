@@ -24,7 +24,7 @@ const onChange = (value) => {
 const onBlur = (e) => {
     console.log(e);
 };
-
+ 
 ReactDOM.render(
     <div>
         <Input
@@ -48,6 +48,13 @@ ReactDOM.render(
             aria-label="input with config of hasClear"
             hoverShowClear
             onChange={onChange} /><br/><br/>
+        <Input.TextArea
+            defaultValue="clear by click"
+            aria-label="TextArea"
+            hasClear
+            maxLength={20}
+            showLimitHint
+            onChange={onChange}/>
     </div>
     , mountNode);
 ````
