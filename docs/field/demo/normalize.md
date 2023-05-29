@@ -35,7 +35,7 @@ class App extends React.Component {
                 })}/>
             <br/>
             <DatePicker {...init('time', { 
-                getValueFormatter: (value) => value.format('YYYY-MM-DD'),
+                getValueFormatter: (value) => value && value.format('YYYY-MM-DD'),
                 setValueFormatter: (value) => moment(value, 'YYYY-MM-DD')
                 })} />
             <br/>
