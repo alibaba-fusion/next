@@ -1,0 +1,8 @@
+$varMap: ();
+@function get-compiling-value($cssVarRepresentation) {
+    @if map-has-key($varMap, $cssVarRepresentation) {
+        @return map-get($varMap, $cssVarRepresentation);
+    }
+    // @warn "get-compiling-value miss: " $cssVarRepresentation;
+    @return $cssVarRepresentation;
+}
