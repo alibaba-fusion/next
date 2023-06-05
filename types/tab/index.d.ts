@@ -130,7 +130,7 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义选项卡模板渲染函数
      */
-    tabRender?: (key: string, props: object) => React.ReactNode;
+    tabRender?: (key: string, props: any) => React.ReactNode;
 
     /**
      * 弹层属性透传, 只有当 excessMode 为 dropdown 时生效
