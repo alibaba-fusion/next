@@ -1,12 +1,13 @@
 # Latest Log 
 
-## [1.26.18](https://github.com/alibaba-fusion/next/compare/1.26.17...1.26.18) (2023-05-08)
+## [1.26.19](https://github.com/alibaba-fusion/next/compare/1.26.18...1.26.19) (2023-06-05)
 
 
 ### Bug Fixes
 
-* **Button:** add types support for react-router Link as component ([#4329](https://github.com/alibaba-fusion/next/issues/4329)) ([e9e956d](https://github.com/alibaba-fusion/next/commit/e9e956d))
-* **CascaderSelect:** optimize default not-found text, close [#4325](https://github.com/alibaba-fusion/next/issues/4325) ([4199601](https://github.com/alibaba-fusion/next/commit/4199601))
-* **switch:** add type definition for loading props ([#4324](https://github.com/alibaba-fusion/next/issues/4324)), close [#4323](https://github.com/alibaba-fusion/next/issues/4323) ([45554d8](https://github.com/alibaba-fusion/next/commit/45554d8))
+* **Badge:** add type definition for showZero props ([#4344](https://github.com/alibaba-fusion/next/issues/4344)) ([f9e252a](https://github.com/alibaba-fusion/next/commit/f9e252a))
+* **DatePicker2:** fix error state display, close [#3410](https://github.com/alibaba-fusion/next/issues/3410) ([#4340](https://github.com/alibaba-fusion/next/issues/4340)) ([e2eb732](https://github.com/alibaba-fusion/next/commit/e2eb732))
+* **Rating:** update readAS function signature, close [#4350](https://github.com/alibaba-fusion/next/issues/4350) ([#4351](https://github.com/alibaba-fusion/next/issues/4351)) ([00a9e0c](https://github.com/alibaba-fusion/next/commit/00a9e0c))
+* **TimePicker2:** fix error state display ([#4339](https://github.com/alibaba-fusion/next/issues/4339)) ([bd00439](https://github.com/alibaba-fusion/next/commit/bd00439))
 
 
