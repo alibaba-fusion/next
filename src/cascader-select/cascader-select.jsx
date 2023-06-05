@@ -930,6 +930,10 @@ class CascaderSelect extends Component {
         } = this.props;
         const { value, searchValue, visible } = this.state;
         const others = pickOthers(Object.keys(CascaderSelect.propTypes), this.props);
+        // mode应与multiple api保持一致
+        if (multiple && 'mode' in others && others.mode !== 'multiple') {
+            delete others.mode;
+        }
 
         this.updateCache(dataSource);
 
