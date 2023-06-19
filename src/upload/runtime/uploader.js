@@ -39,7 +39,9 @@ export default class Uploader {
                 uid = file.uid;
             }
             if (reqs[uid]) {
-                reqs[uid].abort();
+                if (reqs[uid].abort) {
+                    reqs[uid].abort();
+                }
                 delete reqs[uid];
             }
         } else {
