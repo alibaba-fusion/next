@@ -38,12 +38,10 @@ export default class Uploader {
             if (file && file.uid) {
                 uid = file.uid;
             }
-            if (reqs[uid]) {
-                if (reqs[uid].abort) {
-                    reqs[uid].abort();
-                }
-                delete reqs[uid];
+            if (reqs[uid] && reqs[uid].abort) {
+                reqs[uid].abort();
             }
+            delete reqs[uid];
         } else {
             Object.keys(reqs).forEach(uid => {
                 if (reqs[uid] && reqs[uid].abort) {
