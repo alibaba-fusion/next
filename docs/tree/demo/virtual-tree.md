@@ -84,7 +84,7 @@ class Demo extends React.Component {
                 onSelect={this.onSelect}
                 onCheck={this.onCheck}
                 dataSource={dataSource}
-                VirtualListProps={{jumpIndex:40, itemSizeGetter:() => 20}}
+                virtualListProps={{jumpIndex:40, itemSizeGetter:() => 20}}
             />
         ) : null;
     }

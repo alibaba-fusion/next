@@ -1097,7 +1097,7 @@ describe('Tree', () => {
         assert(document.querySelector('.next-tree').dir === 'rtl');
     });
 
-    it('should support VirtualListProps', () => {
+    it('should support virtualListProps', () => {
         const height = 180;
 
         ReactDOM.render(
@@ -1106,7 +1106,7 @@ describe('Tree', () => {
                 useVirtual
                 style={{ height: `${height}px`, overflow: 'auto' }}
                 dataSource={createDataSource()}
-                VirtualListProps={{jumpIndex:40, itemSizeGetter:() => 20}}
+                virtualListProps={{jumpIndex:40, itemSizeGetter:() => 20}}
             />,
             mountNode
         );

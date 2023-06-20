@@ -3,7 +3,7 @@
 import * as React from 'react';
 import CommonProps from '../util';
 
-export interface VirtualListProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+export interface virtualListProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 渲染的子节点
      */
@@ -41,6 +41,6 @@ export interface VirtualListProps extends React.HTMLAttributes<HTMLElement>, Com
 }
 
 export default class VirtualList extends React.Component<
-    VirtualListProps,
+    virtualListProps,
     any
 > {}
