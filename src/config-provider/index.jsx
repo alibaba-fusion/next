@@ -28,7 +28,7 @@ const setMomentLocale = locale => {
         // ignore
     }
 
-    if (moment && locale) {
+    if (moment && moment.locale) {
         moment.locale(locale.momentLocale);
     }
 };
