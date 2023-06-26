@@ -197,6 +197,7 @@ class DragDemo extends React.Component {
         );
     }
 }
+
 class AsyncDemo extends Component {
     state = {
         data: [
@@ -1095,6 +1096,26 @@ describe('Tree', () => {
         );
         assert(document.querySelector('.next-tree').dir === 'rtl');
     });
+
+    it('should support virtualListProps', () => {
+        const height = 180;
+
+        ReactDOM.render(
+            <Tree
+                defaultExpandAll
+                useVirtual
+                style={{ height: `${height}px`, overflow: 'auto' }}
+                dataSource={createDataSource()}
+                virtualListProps={{jumpIndex:40, itemSizeGetter:() => 20}}
+            />,
+            mountNode
+        );
+        setTimeout(() => {
+            assert(Array.from(document.getElementsByTagName('li'))[0].innerText > 40);
+        }, 100);
+        
+    });
+
 });
 
 function createDataSource(level = 2, count = 3) {
