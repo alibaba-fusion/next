@@ -257,7 +257,7 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
     /**
      * VirtualList透传参数
      */
-    virtualListProps: VirtualListProps
+    virtualListProps?: VirtualListProps
 }
 
 export default class Tree extends React.Component<TreeProps, any> {
