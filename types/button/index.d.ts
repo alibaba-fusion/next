@@ -54,7 +54,7 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
      * 设置标签类型
      * TODO: 这里的 ReactNode 是错的，但是为了向前兼容而保留，下个大版本应该去掉
      */
-    component?: 'button' | 'a' | React.ReactNode | React.ComponentType;
+    component?: 'button' | 'a' | React.ReactNode | React.ComponentType<any>;
 
     /**
      * 设置按钮的载入状态
