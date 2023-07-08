@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
 import { obj } from '../util';

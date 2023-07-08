@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { findDOMNode } from 'react-dom';
+// import { findDOMNode } from 'react-dom';
 import { polyfill } from 'react-lifecycles-compat';
 import ResizeObserver from 'resize-observer-polyfill';
 
