@@ -162,6 +162,7 @@ export default class Button extends Component {
             if (child && ['function', 'object'].indexOf(typeof child.type) > -1 && child.type._typeMark === 'icon') {
                 const iconCls = classNames({
                     [`${prefix}btn-icon`]: !iconSize, // 如果用户没有传 iconSize，则使用该样式标记 icon 为 button 预设尺寸
+                    [`${prefix}btn-icon-size`]: iconSize,
                     [`${prefix}icon-first`]: count > 1 && index === 0,
                     [`${prefix}icon-last`]: count > 1 && index === count - 1,
                     [`${prefix}icon-alone`]: count === 1,
