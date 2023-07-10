@@ -11,7 +11,6 @@
     border-radius: $corner;
 
     @include button-size($padding, $height, $font-size, $border-width);
-
     & > #{$btn-prefix}-icon#{$btn-icon-prefix}-first {
         @if (get-compiling-value($icon-size) >= 12) {
             transform: scale(1);
@@ -31,6 +30,9 @@
         @include icon-size($icon-size);
     }
 
+    & > #{$btn-prefix}-icon-size {
+        margin-right: $icon-margin;
+    }
 
     &#{$btn-prefix}-loading {
         &:before {
