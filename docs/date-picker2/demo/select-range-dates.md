@@ -1,6 +1,6 @@
 # 选择不超过七天的范围
 
--   order: 10
+-   order: 4
 
 使用 onCalendarChange 和 disabledDate 来限制动态的日期区间选择。
 
@@ -8,7 +8,7 @@
 
 # Select range dates in 7 days
 
--   order: 10
+-   order: 4
 
 Using onCalendarChange and disabledDate to limit date selection.
 
