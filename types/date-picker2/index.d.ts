@@ -119,4 +119,5 @@ export interface RangePickerProps
     placeholder?: string | Array<string>;
     dateInputAriaLabel?: Array<string> | string;
     disabled?: boolean | boolean[];
+    onCalendarChange?: (values: [Dayjs, Dayjs], formatString: [string, string]) => void;
 }
