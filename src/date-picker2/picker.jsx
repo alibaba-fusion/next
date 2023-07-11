@@ -455,13 +455,16 @@ class Picker extends React.Component {
     };
 
     onCalendarChange = values => {
-        const { format } = this.props;
-        const startValue = values && values[0];
-        const endValue = values && values[1];
-        const startStr = startValue ? fmtValue(values[0], format) : '';
-        const endStr = endValue ? fmtValue(values[1], format) : '';
+        const { format, onCalendarChange } = this.props;
 
-        func.invoke(this.props, 'onCalendarChange', [values, [startStr, endStr]]);
+        if (onCalendarChange) {
+            const startValue = values && values[0];
+            const endValue = values && values[1];
+            const startStr = startValue ? fmtValue(values[0], format) : '';
+            const endStr = endValue ? fmtValue(values[1], format) : '';
+
+            onCalendarChange(values, [startStr, endStr]);
+        }
     };
 
     onOk = () => {
