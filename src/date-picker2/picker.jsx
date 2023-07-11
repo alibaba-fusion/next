@@ -42,6 +42,7 @@ class Picker extends React.Component {
         onChange: PT.func,
         onVisibleChange: PT.func,
         onPanelChange: PT.func,
+        onCalendarChange: PT.func,
 
         // time
         showTime: PT.bool,
@@ -325,6 +326,8 @@ class Picker extends React.Component {
             inputType: DATE_INPUT_TYPE.BEGIN,
             justBeginInput: this.isEnabled(),
         });
+
+        this.onCalendarChange(null);
     };
 
     shouldSwitchInput = value => {
@@ -451,6 +454,19 @@ class Picker extends React.Component {
         func.invoke(this.props, 'onChange', this.getOutputArgs(state.value));
     };
 
+    onCalendarChange = values => {
+        const { format, onCalendarChange } = this.props;
+
+        if (onCalendarChange) {
+            const startValue = values && values[0];
+            const endValue = values && values[1];
+            const startStr = startValue ? fmtValue(values[0], format) : '';
+            const endStr = endValue ? fmtValue(values[1], format) : '';
+
+            onCalendarChange(values, [startStr, endStr]);
+        }
+    };
+
     onOk = () => {
         const { inputValue } = this.state;
         const checkedValue = this.checkValue(inputValue);
@@ -547,6 +563,7 @@ class Picker extends React.Component {
             onInputTypeChange,
             onPanelChange,
             onKeyDown,
+            onCalendarChange,
         } = this;
 
         const {
@@ -642,7 +659,7 @@ class Picker extends React.Component {
         };
 
         const DateNode = isRange ? (
-            <RangePanel justBeginInput={justBeginInput} {...panelProps} />
+            <RangePanel justBeginInput={justBeginInput} onCalendarChange={onCalendarChange} {...panelProps} />
         ) : (
             <DatePanel {...panelProps} />
         );
