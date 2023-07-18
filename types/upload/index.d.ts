@@ -21,7 +21,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
      * 是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件
      */
     multiple?: boolean;
- 
+
     /**
      * 展示下载按钮
      */
@@ -55,7 +55,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 上传中
      */
-    onProgress?: () => void;
+    onProgress?: (e: {}, file?: {}) => void;
 
     /**
      * 可选参数，上传成功回调函数，参数为请求下响应信息以及文件
@@ -199,7 +199,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 调用系统设备媒体
      */
-     capture?: string;
+    capture?: string;
 
     /**
      * 自定义成功和失败的列表渲染方式
@@ -489,7 +489,7 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
      * 点击文件名时触发 onPreview
      * @version 1.24
      */
-    previewOnFileName?: boolean,
+    previewOnFileName?: boolean;
 
     /**
      * 自定义成功和失败的列表渲染方式
