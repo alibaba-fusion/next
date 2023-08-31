@@ -68,7 +68,6 @@ class Modal extends Component {
          */
         onClose: PropTypes.func,
         okProps: PropTypes.object,
-        cancelProps: PropTypes.object,
         locale: PropTypes.object,
         needWrapper: PropTypes.bool,
         className: PropTypes.string,
