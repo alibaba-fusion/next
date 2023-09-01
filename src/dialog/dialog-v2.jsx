@@ -134,11 +134,7 @@ const Dialog = props => {
 
     const handleClose = (targetType, e) => {
         setVisibleOverlayToParent(uuid, null);
-        if (typeof onClose === 'function') {
-            onClose(targetType, e);
-        } else if (typeof onCancel === 'function') {
-            onCancel(e);
-        }
+        typeof onClose === 'function' && onClose(targetType, e);
     };
 
     const keydownEvent = e => {
