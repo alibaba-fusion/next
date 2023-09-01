@@ -392,7 +392,9 @@ export default class Dialog extends Component {
             noPadding,
         } = this.props;
         const others = pickOthers(Object.keys(Dialog.propTypes), this.props);
-
+        const getCancelEvent = () => {
+            return onClose.toString() === noop.toString() ? onCancel : onClose.bind(this, 'closeClick');
+        };
         return (
             <Inner
                 prefix={prefix}
@@ -402,13 +404,13 @@ export default class Dialog extends Component {
                 footerAlign={footerAlign}
                 footerActions={footerActions}
                 onOk={visible ? onOk : noop}
-                onCancel={visible ? onCancel : noop}
+                onCancel={visible ? getCancelEvent() : noop}
                 okProps={okProps}
                 cancelProps={cancelProps}
                 locale={locale}
                 closeable={closeable}
                 rtl={rtl}
-                onClose={onClose.bind(this, 'closeClick')}
+                onClose={onClose.toString() === noop.toString() ? onCancel : onClose.bind(this, 'closeClick')}
                 height={height}
                 noPadding={noPadding}
                 {...others}

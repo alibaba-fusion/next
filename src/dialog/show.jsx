@@ -68,6 +68,7 @@ class Modal extends Component {
          */
         onClose: PropTypes.func,
         okProps: PropTypes.object,
+        cancelProps: PropTypes.object,
         locale: PropTypes.object,
         needWrapper: PropTypes.bool,
         className: PropTypes.string,
@@ -176,7 +177,7 @@ class Modal extends Component {
                 : undefined);
         const newOnOk = this.wrapper(onOk, this.close, this.okLoading);
         const newOnCancel = this.wrapper(onCancel, this.close, this.cancelLoading);
-        const newOnClose = this.wrapper(onClose, this.close, this.okLoading);
+        const newOnClose = this.wrapper(onClose, this.close, this.cancelLoading);
 
         const { visible, okLoading, cancelLoading } = this.state;
         // 不能直接改，这里修改相当于改了全局 okProps
