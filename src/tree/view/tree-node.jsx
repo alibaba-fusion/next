@@ -294,11 +294,16 @@ class TreeNode extends Component {
 
     addCallbacks(props) {
         const { disabled, root } = this.props;
+        const { treeSelect, checkable } = root.props;
         if (!disabled) {
             const selectable =
                 typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
             if (selectable) {
-                props.onClick = this.handleSelect;
+                if (treeSelect) {
+                    props.onClick = checkable ? this.handleCheck : this.handleSelect;
+                } else {
+                    props.onClick = this.handleSelect;
+                }
             }
             const editable = typeof this.props.editable !== 'undefined' ? this.props.editable : root.props.editable;
             if (editable) {
@@ -400,7 +405,13 @@ class TreeNode extends Component {
         const iconEl = typeof icon === 'string' ? <Icon type={icon} /> : icon;
 
         return (
-            <div className={`${prefix}tree-node-label-wrapper`} ref={this.saveLabelWrapperRef}>
+            <div
+                className={cx({
+                    [`${prefix}tree-node-label-wrapper`]: true,
+                    [`${prefix}tree-node-label-check-wrapper`]: root.props.treeSelect,
+                })}
+                ref={this.saveLabelWrapperRef}
+            >
                 <div {...labelProps}>
                     {iconEl}
                     {label}
@@ -504,7 +515,7 @@ class TreeNode extends Component {
 
         const innerClassName = cx({
             [`${prefix}tree-node-inner`]: true,
-            [`${prefix}selected`]: selected,
+            [`${prefix}selected`]: selected && !root.props.checkable,
             [`${prefix}disabled`]: disabled,
             [`${prefix}drag-over`]: dragOver,
             [`${prefix}drag-over-gap-top`]: dragOverGapTop,
