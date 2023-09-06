@@ -299,11 +299,8 @@ class TreeNode extends Component {
             const selectable =
                 typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
             if (selectable) {
-                if (treeSelect) {
+                    // props.onClick = this.handleSelect;
                     props.onClick = checkable ? this.handleCheck : this.handleSelect;
-                } else {
-                    props.onClick = this.handleSelect;
-                }
             }
             const editable = typeof this.props.editable !== 'undefined' ? this.props.editable : root.props.editable;
             if (editable) {
@@ -406,10 +403,7 @@ class TreeNode extends Component {
 
         return (
             <div
-                className={cx({
-                    [`${prefix}tree-node-label-wrapper`]: true,
-                    [`${prefix}tree-node-label-check-wrapper`]: root.props.treeSelect,
-                })}
+                className={`${prefix}tree-node-label-wrapper`}
                 ref={this.saveLabelWrapperRef}
             >
                 <div {...labelProps}>
@@ -515,7 +509,7 @@ class TreeNode extends Component {
 
         const innerClassName = cx({
             [`${prefix}tree-node-inner`]: true,
-            [`${prefix}selected`]: selected && !root.props.checkable,
+            [`${prefix}selected`]: selected ,
             [`${prefix}disabled`]: disabled,
             [`${prefix}drag-over`]: dragOver,
             [`${prefix}drag-over-gap-top`]: dragOverGapTop,
@@ -528,8 +522,8 @@ class TreeNode extends Component {
         const indent = typeof isNodeBlock === 'object' ? parseInt(isNodeBlock.indent || 24) : 24;
         const innerStyle = isNodeBlock
             ? {
-                  [paddingLeftProp]: `${(useVirtual ? 0 : indent * (level - 1)) + defaultPaddingLeft}px`,
-              }
+                [paddingLeftProp]: `${(useVirtual ? 0 : indent * (level - 1)) + defaultPaddingLeft}px`,
+            }
             : null;
 
         const innerProps = {

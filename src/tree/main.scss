@@ -232,11 +232,9 @@
         #{$tree-prefix}-node-inner {
             padding-top: calc(#{$tree-node-padding} / 2);
             padding-bottom: calc(#{$tree-node-padding} / 2);
-            display: flex;
-            align-items: center;
             &:focus {
                 #{$tree-prefix}-node-label {
-                    @include tree-node-state($tree-node-hover-color, transparent);
+                    @include tree-node-state($tree-node-hover-color,  $tree-node-hover-bg-color);
                 }
             }
         }
@@ -244,9 +242,6 @@
         #{$tree-prefix}-node-label-wrapper {
             border-top: $line-2 solid $color-transparent;
             border-bottom: $line-2 solid $color-transparent;
-        }
-        #{$tree-prefix}-node-label-check-wrapper {
-            flex-grow: 1;
         }
         #{$tree-prefix}-node-label {
             transition: color $motion-duration-immediately $motion-linear, background-color $motion-duration-immediately $motion-linear;

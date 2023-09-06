@@ -797,7 +797,7 @@ class TreeSelect extends Component {
             defaultExpandAll: treeDefaultExpandAll,
             defaultExpandedKeys: treeDefaultExpandedKeys,
             useVirtual,
-            treeSelect: true,
+            isNodeBlock: true,
         };
 
         // 使用虚拟滚动 设置默认高度
