@@ -36,8 +36,8 @@ The properties of config are as follows:
 | Property | Description | Type | Default | Version |
 | --- | --- | --- | --- | --- |
 | key | The unique identifier of the Notification | String | - |  |
-| title | The title of notification box (required)| String\|ReactNode | - |  |
-| content | The content of notification box (required) | String\|ReactNode | - |  |
+| title | The title of notification box | ReactNode | - |  |
+| content | The content of notification box  | ReactNode | - |  |
 | duration | Time in seconds before Notification is closed. When set to 0 or null, it will never be closed automatically | Number | 4.5 |  |
 | icon | Customized icon | ReactNode | - |  |
 | style | Customized inline style | [React.CSSProperties](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e434515761b36830c3e58a970abf5186f005adac/types/react/index.d.ts#L794) | - |  |
