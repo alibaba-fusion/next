@@ -393,19 +393,20 @@ class TreeNode extends Component {
                 [`${prefix}tree-node-label-selectable`]: selectable && !disabled,
                 [`${prefix}tree-node-label-checkable`]: !isClickStatusStyle && checkable && !disabled,
             }),
-             onKeyDown: this.handleKeyDown,
+            onKeyDown: this.handleKeyDown,
         };
 
-        if (isNodeBlock) {
-            this.addCallbacks(labelProps);
-        }
-
-
+        this.addCallbacks(labelProps);
+        
         const iconEl = typeof icon === 'string' ? <Icon type={icon} /> : icon;
 
         return (
             <div
-                className={`${prefix}tree-node-label-wrapper`}
+                className={cx({
+                    [`${prefix}tree-node-label-wrapper`]: true,
+                    [`${prefix}tree-node-label-wrapper-block`]: isNodeBlock
+                }
+                )}
                 ref={this.saveLabelWrapperRef}
             >
                 <div {...labelProps}>
@@ -479,7 +480,7 @@ class TreeNode extends Component {
             expanded,
             isLastChild,
         } = this.props;
-        const { isNodeBlock, showLine, draggable: rootDraggable, filterTreeNode, } = root.props;
+        const { isNodeBlock, showLine, draggable: rootDraggable, filterTreeNode } = root.props;
         const { label } = this.state;
 
         const ARIA_PREFIX = 'aria-';
@@ -535,10 +536,6 @@ class TreeNode extends Component {
             ...ariaProps,
         };
 
-        if (!isNodeBlock) {
-            this.addCallbacks(innerProps);
-        }
-
         const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
 
         const { editing } = this.state;
@@ -548,7 +545,7 @@ class TreeNode extends Component {
         if (rtl) {
             others.dir = 'rtl';
         }
-
+console.log(hasRenderChildNodes,'hasRenderChildNodes')
         return this.addAnimationIfNeeded(
             <li role="presentation" className={newClassName} {...others}>
                 <div
