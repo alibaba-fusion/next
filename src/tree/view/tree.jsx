@@ -493,6 +493,14 @@ class Tree extends Component {
          * VirtualList透传参数
          */
         virtualListProps: PropTypes.object,
+        /**
+         *点击文本是否需要背景样式
+         */
+        isClickStatusStyle: PropTypes.bool,
+        /**
+         * 点击文本是否可以勾选
+         */
+        isClickTextSelect: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -534,6 +542,8 @@ class Tree extends Component {
         useVirtual: false,
         immutable: false,
         virtualListProps: {},
+        isClickStatusStyle: true,
+        isClickTextSelect: false,
     };
 
     constructor(props) {
@@ -809,9 +819,9 @@ class Tree extends Component {
             this.processKey(checkedKeys, key, check);
             const newCheckedKeys = isPlainObject(this.props.checkedKeys)
                 ? {
-                      checked: checkedKeys,
-                      indeterminate: this.state.indeterminateKeys,
-                  }
+                    checked: checkedKeys,
+                    indeterminate: this.state.indeterminateKeys,
+                }
                 : checkedKeys;
 
             onCheck(newCheckedKeys, {
@@ -1291,10 +1301,10 @@ class Tree extends Component {
         return useVirtual
             ? virtualTreeRender(dataSource)
             : renderChildNodes
-            ? treeRender(this.renderWithCustomChildNodes(dataSource))
-            : !this.props.dataSource
-            ? treeRender(this.renderByChildren())
-            : treeRender(this.renderByDataSource(dataSource));
+                ? treeRender(this.renderWithCustomChildNodes(dataSource))
+                : !this.props.dataSource
+                    ? treeRender(this.renderByChildren())
+                    : treeRender(this.renderByDataSource(dataSource));
     }
 }
 

@@ -294,13 +294,12 @@ class TreeNode extends Component {
 
     addCallbacks(props) {
         const { disabled, root } = this.props;
-        const { treeSelect, checkable } = root.props;
+        const { isClickTextSelect, checkable } = root.props;
         if (!disabled) {
             const selectable =
                 typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
             if (selectable) {
-                    // props.onClick = this.handleSelect;
-                    props.onClick = checkable ? this.handleCheck : this.handleSelect;
+                props.onClick = isClickTextSelect && checkable ? this.handleCheck : this.handleSelect;
             }
             const editable = typeof this.props.editable !== 'undefined' ? this.props.editable : root.props.editable;
             if (editable) {
@@ -385,19 +384,22 @@ class TreeNode extends Component {
 
     renderLabel() {
         const { prefix, root, disabled, icon } = this.props;
-        const { isNodeBlock } = root.props;
+        const { isNodeBlock, isClickStatusStyle, checkable } = root.props;
         const { label } = this.state;
         const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
         const labelProps = {
             className: cx({
                 [`${prefix}tree-node-label`]: true,
                 [`${prefix}tree-node-label-selectable`]: selectable && !disabled,
+                [`${prefix}tree-node-label-checkable`]: !isClickStatusStyle && checkable && !disabled,
             }),
+             onKeyDown: this.handleKeyDown,
         };
 
-        if (!isNodeBlock) {
+        if (isNodeBlock) {
             this.addCallbacks(labelProps);
         }
+
 
         const iconEl = typeof icon === 'string' ? <Icon type={icon} /> : icon;
 
@@ -477,7 +479,7 @@ class TreeNode extends Component {
             expanded,
             isLastChild,
         } = this.props;
-        const { isNodeBlock, showLine, draggable: rootDraggable, filterTreeNode } = root.props;
+        const { isNodeBlock, showLine, draggable: rootDraggable, filterTreeNode, } = root.props;
         const { label } = this.state;
 
         const ARIA_PREFIX = 'aria-';
@@ -509,7 +511,7 @@ class TreeNode extends Component {
 
         const innerClassName = cx({
             [`${prefix}tree-node-inner`]: true,
-            [`${prefix}selected`]: selected ,
+            [`${prefix}selected`]: selected,
             [`${prefix}disabled`]: disabled,
             [`${prefix}drag-over`]: dragOver,
             [`${prefix}drag-over-gap-top`]: dragOverGapTop,
@@ -533,7 +535,7 @@ class TreeNode extends Component {
             ...ariaProps,
         };
 
-        if (isNodeBlock) {
+        if (!isNodeBlock) {
             this.addCallbacks(innerProps);
         }
 

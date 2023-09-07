@@ -15,7 +15,7 @@ import { func, obj, KEYCODE, str } from '../util';
 import zhCN from '../locale/zh-cn';
 import { getValueDataSource, valueToSelectKey } from '../select/util';
 
-const noop = () => {};
+const noop = () => { };
 const { Node: TreeNode } = Tree;
 const { bindCtx } = func;
 
@@ -307,6 +307,15 @@ class TreeSelect extends Component {
          * @version 1.23
          */
         immutable: PropTypes.bool,
+        /**
+         *点击文本是否需要背景样式
+         */
+        isClickStatusStyle: PropTypes.bool,
+        /**
+         * 点击文本是否可以勾选
+         */
+        isClickTextSelect: PropTypes.bool,
+
     };
 
     static defaultProps = {
@@ -343,6 +352,8 @@ class TreeSelect extends Component {
          * 目前 select/cascade select 是默认支持的，在 2.x 版本中 tree-select 也将默认支持
          */
         preserveNonExistentValue: false,
+        isClickStatusStyle: true,
+        isClickTextSelect: false,
     };
 
     constructor(props, context) {
@@ -786,6 +797,8 @@ class TreeSelect extends Component {
             readOnly,
             notFoundContent,
             useVirtual,
+            isClickStatusStyle,
+            isClickTextSelect,
         } = this.props;
 
         const { value, searchedValue, expandedKeys, autoExpandParent, searchedKeys } = this.state;
@@ -798,6 +811,8 @@ class TreeSelect extends Component {
             defaultExpandedKeys: treeDefaultExpandedKeys,
             useVirtual,
             isNodeBlock: true,
+            isClickStatusStyle,
+            isClickTextSelect,
         };
 
         // 使用虚拟滚动 设置默认高度
