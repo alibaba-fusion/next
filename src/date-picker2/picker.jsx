@@ -468,8 +468,8 @@ class Picker extends React.Component {
     };
 
     onOk = () => {
-        const { inputValue } = this.state;
-        const checkedValue = this.checkValue(inputValue);
+        const { curValue } = this.state;
+        const checkedValue = this.checkValue(curValue);
 
         func.invoke(this.props, 'onOk', this.getOutputArgs(checkedValue));
 
