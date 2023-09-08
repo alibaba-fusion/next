@@ -496,7 +496,7 @@ class Tree extends Component {
         /**
          *点击文本是否需要背景样式
          */
-        isClickStatusStyle: PropTypes.bool,
+         isClickTextStyle: PropTypes.bool,
         /**
          * 点击文本是否可以勾选
          */
@@ -542,7 +542,7 @@ class Tree extends Component {
         useVirtual: false,
         immutable: false,
         virtualListProps: {},
-        isClickStatusStyle: true,
+        isClickTextStyle: true,
         isClickTextSelect: false,
     };
 

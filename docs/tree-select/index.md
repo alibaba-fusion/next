@@ -61,7 +61,7 @@
 | renderPreview            | 预览态模式下渲染的内容<br/><br/>**签名**:<br/>Function(value: Array) => void<br/>**参数**:<br/>_value_: {Array} 选择值 { label: , value:}                                                                                                                                        | Function                    | -           |      |
 | useVirtual               | 是否开启虚拟滚动                                                                                                                                                                                                                                                       | Boolean                     | false       |      |
 | immutable                | 是否是不可变数据                                                                                                                                                                                                                                                       | Boolean                     | -           | 1.23 |
-| isClickStatusStyle           | 点击文本是否需要背景样式        | Boolean   | true |
+| isClickTextStyle           | 点击文本是否需要背景样式        | Boolean   | true |
 | isClickTextSelect          | 点击文本是否可以勾选         | Boolean   | false |
 <!-- api-extra-start -->
 

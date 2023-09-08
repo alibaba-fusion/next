@@ -60,7 +60,7 @@
 | useVirtual          | 是否开启虚拟滚动                                                                                                                                                                                                                                                                                                                                                                                                                    | Boolean                 | false      |      |
 | immutable           | 是否是不可变数据                                                                                                                                                                                                                                                                                                                                                                                                                    | Boolean                 | false      | 1.23 |
 | virtualListProps    | VirtualList透传参数                                                                                                                                                                                                                                                                                                                                                                                                             | Object                  | {}         |      |
-| isClickStatusStyle           | 点击文本是否需要背景样式        | Boolean   | true |
+| isClickTextStyle           | 点击文本是否需要背景样式        | Boolean   | true |
 | isClickTextSelect          | 点击文本是否可以勾选         | Boolean   | false |
 ### Tree.Node
 

@@ -310,7 +310,7 @@ class TreeSelect extends Component {
         /**
          *点击文本是否需要背景样式
          */
-        isClickStatusStyle: PropTypes.bool,
+        isClickTextStyle: PropTypes.bool,
         /**
          * 点击文本是否可以勾选
          */
@@ -352,7 +352,7 @@ class TreeSelect extends Component {
          * 目前 select/cascade select 是默认支持的，在 2.x 版本中 tree-select 也将默认支持
          */
         preserveNonExistentValue: false,
-        isClickStatusStyle: true,
+        isClickTextStyle: true,
         isClickTextSelect: false,
     };
 
@@ -797,7 +797,7 @@ class TreeSelect extends Component {
             readOnly,
             notFoundContent,
             useVirtual,
-            isClickStatusStyle,
+            isClickTextStyle,
             isClickTextSelect,
         } = this.props;
 
@@ -811,7 +811,7 @@ class TreeSelect extends Component {
             defaultExpandedKeys: treeDefaultExpandedKeys,
             useVirtual,
             isNodeBlock: true,
-            isClickStatusStyle,
+            isClickTextStyle,
             isClickTextSelect,
         };
 

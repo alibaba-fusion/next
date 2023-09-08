@@ -52,7 +52,7 @@ export interface NodeProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
      *点击文本是否需要背景样式
      */
-    isClickStatusStyle: boolean;
+    isClickTextStyle: boolean;
     /**
      * 点击文本是否可以勾选
      */
@@ -269,7 +269,7 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
     /**
      *点击文本是否需要背景样式
      */
-    isClickStatusStyle: boolean;
+    isClickTextStyle: boolean;
     /**
      * 点击文本是否可以勾选
      */

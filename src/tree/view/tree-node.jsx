@@ -384,14 +384,14 @@ class TreeNode extends Component {
 
     renderLabel() {
         const { prefix, root, disabled, icon } = this.props;
-        const { isNodeBlock, isClickStatusStyle, checkable } = root.props;
+        const { isNodeBlock, isClickTextStyle, checkable } = root.props;
         const { label } = this.state;
         const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
         const labelProps = {
             className: cx({
                 [`${prefix}tree-node-label`]: true,
                 [`${prefix}tree-node-label-selectable`]: selectable && !disabled,
-                [`${prefix}tree-node-label-checkable`]: !isClickStatusStyle && checkable && !disabled,
+                [`${prefix}tree-node-label-checkable`]: !isClickTextStyle && checkable && !disabled,
             }),
             onKeyDown: this.handleKeyDown,
         };
