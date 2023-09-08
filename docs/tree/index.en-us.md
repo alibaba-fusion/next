@@ -59,8 +59,7 @@ Folders, organizational structures, taxonomy, countries, regions, etc. Most of t
 | immutable           | whether to allow immutable dataSource                                                                                                                                                                                                                                                                                                                                                                                                         | Boolean                 | false          |
 | labelRender         | custom render function for tree node<br/><br/>**signature**:<br/>Function(node: Object) => ReactNode<br/>**params**:<br/>_node_: {Object} node<br/>**return**:<br/>{ReactNode} custom tree node content<br/>                                                                                                                                                                                                                                                                            | Function                | -          | 1.25 |
 | virtualListProps     | virtualList Transparent parameter                                                                                                                                                                                                                                                                                                                                                                                                                    | virtualList.props                  | {}         |      |
-| isClickTextStyle           | whether the click text needs a background style        | Boolean   | true |
-| isClickTextSelect           | is it possible to check by clicking on the text         | Boolean   | false |
+| clickToCheck           | is it possible to check by clicking on the text         | Boolean   | false |
 
 
 

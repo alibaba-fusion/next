@@ -198,6 +198,10 @@ class TreeNode extends Component {
 
         const { root, selected, eventKey } = this.props;
         root.handleSelect(!selected, eventKey, this, e);
+
+        const {clickToCheck,checkable}=root.props
+        clickToCheck && checkable &&this.handleCheck();
+
     }
 
     handleCheck() {
@@ -294,12 +298,11 @@ class TreeNode extends Component {
 
     addCallbacks(props) {
         const { disabled, root } = this.props;
-        const { isClickTextSelect, checkable } = root.props;
         if (!disabled) {
             const selectable =
                 typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
             if (selectable) {
-                props.onClick = isClickTextSelect && checkable ? this.handleCheck : this.handleSelect;
+                props.onClick =  this.handleSelect;
             }
             const editable = typeof this.props.editable !== 'undefined' ? this.props.editable : root.props.editable;
             if (editable) {
@@ -384,14 +387,14 @@ class TreeNode extends Component {
 
     renderLabel() {
         const { prefix, root, disabled, icon } = this.props;
-        const { isNodeBlock, isClickTextStyle, checkable } = root.props;
+        const { isNodeBlock, clickToCheck , checkable } = root.props;
         const { label } = this.state;
         const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
         const labelProps = {
             className: cx({
                 [`${prefix}tree-node-label`]: true,
                 [`${prefix}tree-node-label-selectable`]: selectable && !disabled,
-                [`${prefix}tree-node-label-checkable`]: !isClickTextStyle && checkable && !disabled,
+                [`${prefix}tree-node-label-checkable`]: clickToCheck  && checkable && !disabled,
             }),
             onKeyDown: this.handleKeyDown,
         };
@@ -545,7 +548,6 @@ class TreeNode extends Component {
         if (rtl) {
             others.dir = 'rtl';
         }
-console.log(hasRenderChildNodes,'hasRenderChildNodes')
         return this.addAnimationIfNeeded(
             <li role="presentation" className={newClassName} {...others}>
                 <div

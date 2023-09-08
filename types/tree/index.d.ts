@@ -49,14 +49,11 @@ export interface NodeProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 是否是叶子节点，设置loadData时生效
      */
     isLeaf?: boolean;
-    /**
-     *点击文本是否需要背景样式
-     */
-    isClickTextStyle: boolean;
+
     /**
      * 点击文本是否可以勾选
      */
-    isClickTextSelect: boolean;
+    clickToCheck : boolean;
 }
 
 export class Node extends React.Component<NodeProps, any> {}
@@ -267,13 +264,9 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
      */
     virtualListProps?: VirtualListProps;
     /**
-     *点击文本是否需要背景样式
-     */
-    isClickTextStyle: boolean;
-    /**
      * 点击文本是否可以勾选
      */
-    isClickTextSelect: boolean;
+    clickToCheck : boolean;
 }
 
 export default class Tree extends React.Component<TreeProps, any> {
