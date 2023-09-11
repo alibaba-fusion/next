@@ -311,10 +311,10 @@ class TreeSelect extends Component {
          * 点击文本是否可以勾选
          */
         clickToCheck: PropTypes.bool,
-        /**ß
-         * 是否需要选中背景色 在treeCheckable为true的时候生效
+        /**
+         * 是否支持选中节点
          */
-        hasSelectedBackgroundColor: PropTypes.bool,
+        selectable: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -352,7 +352,7 @@ class TreeSelect extends Component {
          */
         preserveNonExistentValue: false,
         clickToCheck: false,
-        hasSelectedBackgroundColor: true,
+        selectable: true,
     };
 
     constructor(props, context) {
@@ -797,7 +797,7 @@ class TreeSelect extends Component {
             notFoundContent,
             useVirtual,
             clickToCheck,
-            hasSelectedBackgroundColor,
+            selectable,
         } = this.props;
 
         const { value, searchedValue, expandedKeys, autoExpandParent, searchedKeys } = this.state;
@@ -811,7 +811,7 @@ class TreeSelect extends Component {
             useVirtual,
             isNodeBlock: true,
             clickToCheck,
-            hasSelectedBackgroundColor,
+            selectable,
         };
 
         // 使用虚拟滚动 设置默认高度

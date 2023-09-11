@@ -497,10 +497,6 @@ class Tree extends Component {
          * 点击文本是否可以勾选
          */
         clickToCheck: PropTypes.bool,
-        /**
-         * 是否需要选中背景色  在checkable为true的时候生效
-         */
-        hasSelectedBackgroundColor: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -543,7 +539,6 @@ class Tree extends Component {
         immutable: false,
         virtualListProps: {},
         clickToCheck: false,
-        hasSelectedBackgroundColor: true,
     };
 
     constructor(props) {

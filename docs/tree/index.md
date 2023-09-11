@@ -61,7 +61,6 @@
 | immutable           | 是否是不可变数据                                                                                                                                                                                                                                                                                                                                                                                                                    | Boolean                 | false      | 1.23 |
 | virtualListProps    | VirtualList透传参数                                                                                                                                                                                                                                                                                                                                                                                                             | Object                  | {}         |      |
 | clickToCheck          | 点击文本是否可以勾选         | Boolean   | false |
-| hasSelectedBackgroundColor          | 是否需要选中背景色  在checkable为true的时候生效      | Boolean   | true |
 
 ### Tree.Node
 

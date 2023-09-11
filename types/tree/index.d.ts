@@ -54,10 +54,6 @@ export interface NodeProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 点击文本是否可以勾选
      */
     clickToCheck?: boolean;
-    /**
-     * 是否需要背景色 在checkable为true的时候生效
-     */
-    hasSelectedBackgroundColor?: boolean;
 }
 
 export class Node extends React.Component<NodeProps, any> {}
@@ -271,10 +267,6 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
      * 点击文本是否可以勾选
      */
     clickToCheck?: boolean;
-    /**
-     * 是否需要背景色 在checkable为true的时候生效
-     */
-    hasSelectedBackgroundColor?: boolean;
 }
 
 export default class Tree extends React.Component<TreeProps, any> {

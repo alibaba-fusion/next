@@ -229,9 +229,9 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      */
     clickToCheck?: boolean;
     /**
-     * 是否需要背景色 在treeCheckable为true的时候生效
+     * 是否支持选中节点
      */
-    hasSelectedBackgroundColor?: boolean;
+    selectable?: boolean;
 }
 
 export default class TreeSelect extends React.Component<TreeSelectProps, any> {}

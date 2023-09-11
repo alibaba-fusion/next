@@ -97,14 +97,14 @@
         }
 
         &.#{$css-prefix}close #{$tree-prefix}-switcher-icon {
-            @if get-compiling-value($tree-unfold-icon-content) !=get-compiling-value($icon-reset) {
+            @if get-compiling-value($tree-unfold-icon-content) != get-compiling-value($icon-reset) {
                 &::before {
                     content: $tree-unfold-icon-content;
                 }
             }
 
             @else {
-                @include icon-size(
+                @include icon-size(  
                     $size: $tree-switch-arrow-size,
                     $transform: rotate(-90deg)
                 );

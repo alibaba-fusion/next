@@ -309,6 +309,7 @@ class TreeNode extends Component {
             } else if (clickToCheck && checkable) {
                 props.onClick = this.handleCheck;
             }
+
             const editable = typeof this.props.editable !== 'undefined' ? this.props.editable : root.props.editable;
             if (editable) {
                 props.onDoubleClick = this.handleEditStart;
@@ -509,13 +510,9 @@ class TreeNode extends Component {
             [className]: !!className,
         });
         const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
-        const hasSelectedBackgroundColor =
-            typeof this.props.hasSelectedBackgroundColor !== 'undefined'
-                ? this.props.hasSelectedBackgroundColor
-                : root.props.hasSelectedBackgroundColor;
         const innerClassName = cx({
             [`${prefix}tree-node-inner`]: true,
-            [`${prefix}selected`]: checkable ? hasSelectedBackgroundColor && selected : selected,
+            [`${prefix}selected`]: selected,
             [`${prefix}disabled`]: disabled,
             [`${prefix}drag-over`]: dragOver,
             [`${prefix}drag-over-gap-top`]: dragOverGapTop,

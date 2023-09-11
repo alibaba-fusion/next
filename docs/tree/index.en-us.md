@@ -61,7 +61,6 @@ Folders, organizational structures, taxonomy, countries, regions, etc. Most of t
 | virtualListProps     | virtualList Transparent parameter                                                                                                                                                                                                                                                                                                                                                                                                                    | virtualList.props                  | {}         |      |
 | clickToCheck           | is it possible to check by clicking on the text         | Boolean   | false |
 
-| hasSelectedBackgroundColor            | whether the background color needs to be selected will take effect when checkable is true        | Boolean   | true |
 
 ### Tree.Node
 
