@@ -496,7 +496,11 @@ class Tree extends Component {
         /**
          * 点击文本是否可以勾选
          */
-        clickToCheck : PropTypes.bool,
+        clickToCheck: PropTypes.bool,
+        /**
+         * 是否需要选中背景色  在checkable为true的时候生效
+         */
+        hasSelectedBackgroundColor: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -538,7 +542,8 @@ class Tree extends Component {
         useVirtual: false,
         immutable: false,
         virtualListProps: {},
-        clickToCheck : false,
+        clickToCheck: false,
+        hasSelectedBackgroundColor: true,
     };
 
     constructor(props) {
@@ -814,9 +819,9 @@ class Tree extends Component {
             this.processKey(checkedKeys, key, check);
             const newCheckedKeys = isPlainObject(this.props.checkedKeys)
                 ? {
-                    checked: checkedKeys,
-                    indeterminate: this.state.indeterminateKeys,
-                }
+                      checked: checkedKeys,
+                      indeterminate: this.state.indeterminateKeys,
+                  }
                 : checkedKeys;
 
             onCheck(newCheckedKeys, {
@@ -1296,10 +1301,10 @@ class Tree extends Component {
         return useVirtual
             ? virtualTreeRender(dataSource)
             : renderChildNodes
-                ? treeRender(this.renderWithCustomChildNodes(dataSource))
-                : !this.props.dataSource
-                    ? treeRender(this.renderByChildren())
-                    : treeRender(this.renderByDataSource(dataSource));
+            ? treeRender(this.renderWithCustomChildNodes(dataSource))
+            : !this.props.dataSource
+            ? treeRender(this.renderByChildren())
+            : treeRender(this.renderByDataSource(dataSource));
     }
 }
 

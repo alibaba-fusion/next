@@ -195,13 +195,13 @@ class TreeNode extends Component {
 
     handleSelect(e) {
         e.preventDefault();
-
         const { root, selected, eventKey } = this.props;
         root.handleSelect(!selected, eventKey, this, e);
 
-        const {clickToCheck,checkable}=root.props
-        clickToCheck && checkable &&this.handleCheck();
-
+        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
+        const clickToCheck =
+            typeof this.props.clickToCheck !== 'undefined' ? this.props.clickToCheck : root.props.clickToCheck;
+        clickToCheck && checkable && this.handleCheck();
     }
 
     handleCheck() {
@@ -298,11 +298,16 @@ class TreeNode extends Component {
 
     addCallbacks(props) {
         const { disabled, root } = this.props;
+        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
+        const clickToCheck =
+            typeof this.props.clickToCheck !== 'undefined' ? this.props.clickToCheck : root.props.clickToCheck;
         if (!disabled) {
             const selectable =
                 typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
             if (selectable) {
-                props.onClick =  this.handleSelect;
+                props.onClick = this.handleSelect;
+            } else if (clickToCheck && checkable) {
+                props.onClick = this.handleCheck;
             }
             const editable = typeof this.props.editable !== 'undefined' ? this.props.editable : root.props.editable;
             if (editable) {
@@ -387,31 +392,22 @@ class TreeNode extends Component {
 
     renderLabel() {
         const { prefix, root, disabled, icon } = this.props;
-        const { isNodeBlock, clickToCheck , checkable } = root.props;
         const { label } = this.state;
         const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
         const labelProps = {
             className: cx({
                 [`${prefix}tree-node-label`]: true,
                 [`${prefix}tree-node-label-selectable`]: selectable && !disabled,
-                [`${prefix}tree-node-label-checkable`]: clickToCheck  && checkable && !disabled,
             }),
             onKeyDown: this.handleKeyDown,
         };
 
         this.addCallbacks(labelProps);
-        
+
         const iconEl = typeof icon === 'string' ? <Icon type={icon} /> : icon;
 
         return (
-            <div
-                className={cx({
-                    [`${prefix}tree-node-label-wrapper`]: true,
-                    [`${prefix}tree-node-label-wrapper-block`]: isNodeBlock
-                }
-                )}
-                ref={this.saveLabelWrapperRef}
-            >
+            <div className={`${prefix}tree-node-label-wrapper`} ref={this.saveLabelWrapperRef}>
                 <div {...labelProps}>
                     {iconEl}
                     {label}
@@ -512,10 +508,14 @@ class TreeNode extends Component {
             [`${prefix}filtered`]: !!filterTreeNode && !!root.filterTreeNode(this),
             [className]: !!className,
         });
-
+        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
+        const hasSelectedBackgroundColor =
+            typeof this.props.hasSelectedBackgroundColor !== 'undefined'
+                ? this.props.hasSelectedBackgroundColor
+                : root.props.hasSelectedBackgroundColor;
         const innerClassName = cx({
             [`${prefix}tree-node-inner`]: true,
-            [`${prefix}selected`]: selected,
+            [`${prefix}selected`]: checkable ? hasSelectedBackgroundColor && selected : selected,
             [`${prefix}disabled`]: disabled,
             [`${prefix}drag-over`]: dragOver,
             [`${prefix}drag-over-gap-top`]: dragOverGapTop,
@@ -528,8 +528,8 @@ class TreeNode extends Component {
         const indent = typeof isNodeBlock === 'object' ? parseInt(isNodeBlock.indent || 24) : 24;
         const innerStyle = isNodeBlock
             ? {
-                [paddingLeftProp]: `${(useVirtual ? 0 : indent * (level - 1)) + defaultPaddingLeft}px`,
-            }
+                  [paddingLeftProp]: `${(useVirtual ? 0 : indent * (level - 1)) + defaultPaddingLeft}px`,
+              }
             : null;
 
         const innerProps = {
@@ -538,8 +538,6 @@ class TreeNode extends Component {
             onKeyDown: this.handleKeyDown,
             ...ariaProps,
         };
-
-        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
 
         const { editing } = this.state;
 

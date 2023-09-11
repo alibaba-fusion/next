@@ -15,7 +15,7 @@ import { func, obj, KEYCODE, str } from '../util';
 import zhCN from '../locale/zh-cn';
 import { getValueDataSource, valueToSelectKey } from '../select/util';
 
-const noop = () => { };
+const noop = () => {};
 const { Node: TreeNode } = Tree;
 const { bindCtx } = func;
 
@@ -311,7 +311,10 @@ class TreeSelect extends Component {
          * 点击文本是否可以勾选
          */
         clickToCheck: PropTypes.bool,
-
+        /**ß
+         * 是否需要选中背景色 在treeCheckable为true的时候生效
+         */
+        hasSelectedBackgroundColor: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -348,7 +351,8 @@ class TreeSelect extends Component {
          * 目前 select/cascade select 是默认支持的，在 2.x 版本中 tree-select 也将默认支持
          */
         preserveNonExistentValue: false,
-        clickToCheck: true,
+        clickToCheck: false,
+        hasSelectedBackgroundColor: true,
     };
 
     constructor(props, context) {
@@ -793,6 +797,7 @@ class TreeSelect extends Component {
             notFoundContent,
             useVirtual,
             clickToCheck,
+            hasSelectedBackgroundColor,
         } = this.props;
 
         const { value, searchedValue, expandedKeys, autoExpandParent, searchedKeys } = this.state;
@@ -806,6 +811,7 @@ class TreeSelect extends Component {
             useVirtual,
             isNodeBlock: true,
             clickToCheck,
+            hasSelectedBackgroundColor,
         };
 
         // 使用虚拟滚动 设置默认高度

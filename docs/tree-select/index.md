@@ -62,6 +62,8 @@
 | useVirtual               | 是否开启虚拟滚动                                                                                                                                                                                                                                                       | Boolean                     | false       |      |
 | immutable                | 是否是不可变数据                                                                                                                                                                                                                                                       | Boolean                     | -           | 1.23 |
 | clickToCheck           | 点击文本是否可以勾选         | Boolean   | false |
+| hasSelectedBackgroundColor           | 是否需要选中背景色，在treeCheckable为true的时候生效        | Boolean   | true |
+
 <!-- api-extra-start -->
 
 ### TreeSelect.Node
