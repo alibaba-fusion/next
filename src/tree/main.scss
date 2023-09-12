@@ -303,16 +303,16 @@
                     @include tree-node-state($tree-node-hover-color, $tree-node-hover-bg-color);
                 }
             }
+
+            &.#{$css-prefix}selected #{$tree-prefix}-node-label {
+                @include tree-node-state($tree-node-selected-color, $tree-node-selected-background);
+            }
         }
 
         #{$tree-prefix}-node-label-wrapper {
             cursor: pointer;
             flex-grow: 1;
             @include tree-node-state($tree-node-normal-color, $tree-node-normal-background);
-        }
-
-        #{$tree-prefix}-node-inner.#{$css-prefix}selected #{$tree-prefix}-node-label {
-            @include tree-node-state($tree-node-selected-color, $tree-node-selected-background);
         }
 
         &.#{$css-prefix}disabled,
