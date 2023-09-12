@@ -17,12 +17,9 @@
         white-space: nowrap;
     }
 
-    &-node-inner {
+    &-node-label-wrapper {
         font-size: 0;
         outline: none;
-    }
-
-    &-node-label-wrapper {
         display: inline-block;
         margin: 0 $tree-node-title-margin;
         vertical-align: middle;
@@ -104,7 +101,7 @@
             }
 
             @else {
-                @include icon-size(  
+                @include icon-size(
                     $size: $tree-switch-arrow-size,
                     $transform: rotate(-90deg)
                 );
@@ -221,11 +218,11 @@
         #{$tree-prefix}-node-inner {
             display: flex;
             align-items: center;
-            outline: none;
         }
 
         #{$tree-prefix}-node-label-wrapper {
             flex: 1 1 auto;
+            outline: none;
         }
     }
 
@@ -289,36 +286,34 @@
         }
     }
 
-    &.#{$css-prefix}node-block {
-        #{$tree-prefix}-node-inner {
-            padding-top: $tree-node-padding;
-            padding-bottom: $tree-node-padding;
-            transition: color $motion-duration-immediately $motion-linear, background-color $motion-duration-immediately $motion-linear;
-            display: flex;
-            align-items: center;
-
-            &:hover,
-            &:focus {
-                #{$tree-prefix}-node-label-wrapper {
-                    @include tree-node-state($tree-node-hover-color, $tree-node-hover-bg-color);
-                }
-            }
-
-            &.#{$css-prefix}selected #{$tree-prefix}-node-label {
-                @include tree-node-state($tree-node-selected-color, $tree-node-selected-background);
-            }
-        }
+    &.#{$css-prefix}node-block #{$tree-prefix}-node-inner {
+        padding-top: $tree-node-padding;
+        padding-bottom: $tree-node-padding;
+        transition: color $motion-duration-immediately $motion-linear, background-color $motion-duration-immediately $motion-linear;
+        display: flex;
+        align-items: center;
 
         #{$tree-prefix}-node-label-wrapper {
             cursor: pointer;
             flex-grow: 1;
             @include tree-node-state($tree-node-normal-color, $tree-node-normal-background);
+
+            &:hover,
+            &:focus {
+                @include tree-node-state($tree-node-hover-color, $tree-node-hover-bg-color);
+            }
+        }
+
+        &.#{$css-prefix}selected #{$tree-prefix}-node-label {
+            @include tree-node-state($tree-node-selected-color, $tree-node-selected-background);
         }
 
         &.#{$css-prefix}disabled,
         &.#{$css-prefix}disabled:hover {
-            @include tree-node-state($tree-node-disabled-color, $tree-node-disabled-background);
-            cursor: not-allowed;
+            #{$tree-prefix}-node-label {
+                @include tree-node-state($tree-node-disabled-color, $tree-node-disabled-background);
+                cursor: not-allowed;
+            }
         }
     }
 

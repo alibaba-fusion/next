@@ -132,7 +132,7 @@ class TreeNode extends Component {
     }
 
     componentDidMount() {
-        this.itemNode = findDOMNode(this.nodeEl);
+        this.itemNode = findDOMNode(this.labelWrapperEl);
         this.setFocus();
     }
 
@@ -392,7 +392,7 @@ class TreeNode extends Component {
     }
 
     renderLabel() {
-        const { prefix, root, disabled, icon } = this.props;
+        const { prefix, root, disabled, icon, _key } = this.props;
         const { label } = this.state;
         const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
         const labelProps = {
@@ -400,15 +400,17 @@ class TreeNode extends Component {
                 [`${prefix}tree-node-label`]: true,
                 [`${prefix}tree-node-label-selectable`]: selectable && !disabled,
             }),
-            onKeyDown: this.handleKeyDown,
         };
-
+        const labelWrapperProps = {
+            onKeyDown: this.handleKeyDown,
+            tabIndex: root.tabbableKey === _key ? '0' : '-1',
+        };
         this.addCallbacks(labelProps);
 
         const iconEl = typeof icon === 'string' ? <Icon type={icon} /> : icon;
 
         return (
-            <div className={`${prefix}tree-node-label-wrapper`} ref={this.saveLabelWrapperRef}>
+            <div className={`${prefix}tree-node-label-wrapper`} ref={this.saveLabelWrapperRef} {...labelWrapperProps}>
                 <div {...labelProps}>
                     {iconEl}
                     {label}
