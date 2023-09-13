@@ -228,10 +228,6 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      * 点击文本是否可以勾选
      */
     clickToCheck?: boolean;
-    /**
-     * 是否支持选中节点
-     */
-    selectable?: boolean;
 }
 
 export default class TreeSelect extends React.Component<TreeSelectProps, any> {}

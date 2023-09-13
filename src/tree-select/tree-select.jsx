@@ -311,10 +311,6 @@ class TreeSelect extends Component {
          * 点击文本是否可以勾选
          */
         clickToCheck: PropTypes.bool,
-        /**
-         * 是否支持选中节点
-         */
-        selectable: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -352,7 +348,6 @@ class TreeSelect extends Component {
          */
         preserveNonExistentValue: false,
         clickToCheck: false,
-        selectable: true,
     };
 
     constructor(props, context) {
@@ -797,7 +792,6 @@ class TreeSelect extends Component {
             notFoundContent,
             useVirtual,
             clickToCheck,
-            selectable,
         } = this.props;
 
         const { value, searchedValue, expandedKeys, autoExpandParent, searchedKeys } = this.state;
@@ -811,7 +805,6 @@ class TreeSelect extends Component {
             useVirtual,
             isNodeBlock: true,
             clickToCheck,
-            selectable,
         };
 
         // 使用虚拟滚动 设置默认高度
@@ -830,7 +823,7 @@ class TreeSelect extends Component {
             treeProps.checkStrictly = treeCheckStrictly;
             treeProps.checkedStrategy = treeCheckStrictly ? 'all' : treeCheckedStrategy;
             treeProps.checkedKeys = keys;
-            treeProps.selectable = clickToCheck ? false : selectable;
+            customTreeProps.selectable = clickToCheck && !customTreeProps.selectable ? false : customTreeProps.selectable;
             if (!readOnly) {
                 treeProps.onCheck = this.handleCheck;
             }
