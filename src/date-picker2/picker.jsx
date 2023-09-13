@@ -247,10 +247,10 @@ class Picker extends React.Component {
         }
     };
 
-    checkValue = (value, strictly) => {
+    checkValue = (value, strictly, format) => {
         return this.props.type === DATE_PICKER_TYPE.RANGE
-            ? checkRangeDate(value, this.state.inputType, this.props.disabled, strictly)
-            : checkDate(value);
+            ? checkRangeDate(value, this.state.inputType, this.props.disabled, strictly, format)
+            : checkDate(value, format);
     };
 
     handleInputFocus = inputType => {
@@ -299,10 +299,15 @@ class Picker extends React.Component {
                 this.handleClear();
             }
         } else {
-            this.setState({
+            const newState = {
                 inputValue: v,
                 visible: true,
-            });
+            };
+            const curValue = this.checkValue(v, true, this.props.format);
+            if (curValue !== null) {
+                newState.curValue = curValue;
+            }
+            this.setState(newState);
         }
     };
 
@@ -468,8 +473,8 @@ class Picker extends React.Component {
     };
 
     onOk = () => {
-        const { curValue } = this.state;
-        const checkedValue = this.checkValue(curValue);
+        const { inputValue } = this.state;
+        const checkedValue = this.checkValue(inputValue, true, this.props.format);
 
         func.invoke(this.props, 'onOk', this.getOutputArgs(checkedValue));
 
