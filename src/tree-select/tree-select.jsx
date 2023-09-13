@@ -307,6 +307,10 @@ class TreeSelect extends Component {
          * @version 1.23
          */
         immutable: PropTypes.bool,
+        /**
+         * 点击文本是否可以勾选
+         */
+        clickToCheck: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -343,6 +347,7 @@ class TreeSelect extends Component {
          * 目前 select/cascade select 是默认支持的，在 2.x 版本中 tree-select 也将默认支持
          */
         preserveNonExistentValue: false,
+        clickToCheck: false,
     };
 
     constructor(props, context) {
@@ -786,6 +791,7 @@ class TreeSelect extends Component {
             readOnly,
             notFoundContent,
             useVirtual,
+            clickToCheck,
         } = this.props;
 
         const { value, searchedValue, expandedKeys, autoExpandParent, searchedKeys } = this.state;
@@ -797,6 +803,8 @@ class TreeSelect extends Component {
             defaultExpandAll: treeDefaultExpandAll,
             defaultExpandedKeys: treeDefaultExpandedKeys,
             useVirtual,
+            isNodeBlock: true,
+            clickToCheck,
         };
 
         // 使用虚拟滚动 设置默认高度
@@ -815,6 +823,7 @@ class TreeSelect extends Component {
             treeProps.checkStrictly = treeCheckStrictly;
             treeProps.checkedStrategy = treeCheckStrictly ? 'all' : treeCheckedStrategy;
             treeProps.checkedKeys = keys;
+            treeProps.selectable = !clickToCheck;
             if (!readOnly) {
                 treeProps.onCheck = this.handleCheck;
             }

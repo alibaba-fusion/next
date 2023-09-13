@@ -6,7 +6,8 @@
 #{$tree-prefix} {
     @include box-sizing;
 
-    &, &-child-tree {
+    &,
+    &-child-tree {
         margin: 0;
         padding: 0;
         list-style: none;
@@ -16,12 +17,9 @@
         white-space: nowrap;
     }
 
-    &-node-inner {
+    &-node-label-wrapper {
         font-size: 0;
         outline: none;
-    }
-
-    &-node-label-wrapper {
         display: inline-block;
         margin: 0 $tree-node-title-margin;
         vertical-align: middle;
@@ -36,6 +34,7 @@
 
         .#{$css-prefix}icon {
             font-size: calc(#{$tree-node-title-font-size} + 2px);
+
             &::before {
                 font-size: $tree-node-title-font-size;
                 width: $tree-node-title-font-size;
@@ -75,6 +74,7 @@
     .#{$css-prefix}tree-unfold-icon::before {
         content: $tree-unfold-icon-content;
     }
+
     // --------- this is for config platform
 
     &-switcher.#{$css-prefix}noline {
@@ -98,7 +98,9 @@
                 &::before {
                     content: $tree-unfold-icon-content;
                 }
-            } @else {
+            }
+
+            @else {
                 @include icon-size(
                     $size: $tree-switch-arrow-size,
                     $transform: rotate(-90deg)
@@ -134,7 +136,7 @@
         cursor: pointer;
 
         #{$tree-prefix}-switcher-icon {
-            @include icon-size($tree-switch-icon-size, calc((#{$tree-switch-size} - #{$tree-switch-icon-size} - #{$tree-switch-border-width} * 2 ) / 2));
+            @include icon-size($tree-switch-icon-size, calc((#{$tree-switch-size} - #{$tree-switch-icon-size} - #{$tree-switch-border-width} * 2) / 2));
             color: $tree-switch-icon-color;
         }
 
@@ -216,11 +218,11 @@
         #{$tree-prefix}-node-inner {
             display: flex;
             align-items: center;
-            outline: none;
         }
 
         #{$tree-prefix}-node-label-wrapper {
             flex: 1 1 auto;
+            outline: none;
         }
     }
 
@@ -232,16 +234,17 @@
         #{$tree-prefix}-node-inner {
             padding-top: calc(#{$tree-node-padding} / 2);
             padding-bottom: calc(#{$tree-node-padding} / 2);
-            &:focus {
-                #{$tree-prefix}-node-label {
-                    @include tree-node-state($tree-node-hover-color, $tree-node-hover-bg-color);
-                }
-            }
         }
 
         #{$tree-prefix}-node-label-wrapper {
             border-top: $line-2 solid $color-transparent;
             border-bottom: $line-2 solid $color-transparent;
+
+            &:focus {
+                #{$tree-prefix}-node-label {
+                    @include tree-node-state($tree-node-hover-color, $tree-node-hover-bg-color);
+                }
+            }
         }
 
         #{$tree-prefix}-node-label {
@@ -287,24 +290,33 @@
         padding-top: $tree-node-padding;
         padding-bottom: $tree-node-padding;
         transition: color $motion-duration-immediately $motion-linear, background-color $motion-duration-immediately $motion-linear;
-        cursor: pointer;
-        @include tree-node-state($tree-node-normal-color, $tree-node-normal-background);
+        display: flex;
+        align-items: center;
 
-        &:hover,
-        &:focus {
-            @include tree-node-state($tree-node-hover-color, $tree-node-hover-bg-color);
+        #{$tree-prefix}-node-label-wrapper {
+            cursor: pointer;
+            flex-grow: 1;
+            @include tree-node-state($tree-node-normal-color, $tree-node-normal-background);
+
+            &:hover,
+            &:focus {
+                @include tree-node-state($tree-node-hover-color, $tree-node-hover-bg-color);
+            }
         }
 
-        &.#{$css-prefix}selected {
+        &.#{$css-prefix}selected #{$tree-prefix}-node-label {
             @include tree-node-state($tree-node-selected-color, $tree-node-selected-background);
         }
 
         &.#{$css-prefix}disabled,
         &.#{$css-prefix}disabled:hover {
-            @include tree-node-state($tree-node-disabled-color, $tree-node-disabled-background);
-            cursor: not-allowed;
+            #{$tree-prefix}-node-label {
+                @include tree-node-state($tree-node-disabled-color, $tree-node-disabled-background);
+                cursor: not-allowed;
+            }
         }
     }
+
 
     &.#{$css-prefix}show-line &-node &-node:not(:last-child) {
         margin-left: $tree-child-indent-left;
@@ -312,7 +324,7 @@
         padding-left: $tree-child-indent-right;
     }
 
-    &-node.#{$css-prefix}filtered > #{$tree-prefix}-node-inner #{$tree-prefix}-node-label {
+    &-node.#{$css-prefix}filtered>#{$tree-prefix}-node-inner #{$tree-prefix}-node-label {
         color: $color-brand1-6;
 
         &:hover {

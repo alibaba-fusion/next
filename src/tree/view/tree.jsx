@@ -493,6 +493,10 @@ class Tree extends Component {
          * VirtualList透传参数
          */
         virtualListProps: PropTypes.object,
+        /**
+         * 点击文本是否可以勾选
+         */
+        clickToCheck: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -534,6 +538,7 @@ class Tree extends Component {
         useVirtual: false,
         immutable: false,
         virtualListProps: {},
+        clickToCheck: false,
     };
 
     constructor(props) {
