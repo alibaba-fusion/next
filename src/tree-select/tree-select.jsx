@@ -823,7 +823,7 @@ class TreeSelect extends Component {
             treeProps.checkStrictly = treeCheckStrictly;
             treeProps.checkedStrategy = treeCheckStrictly ? 'all' : treeCheckedStrategy;
             treeProps.checkedKeys = keys;
-            customTreeProps.selectable = clickToCheck && !customTreeProps.selectable ? false : customTreeProps.selectable;
+            treeProps.selectable = !clickToCheck;
             if (!readOnly) {
                 treeProps.onCheck = this.handleCheck;
             }
