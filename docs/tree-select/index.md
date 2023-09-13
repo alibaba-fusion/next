@@ -62,7 +62,6 @@
 | useVirtual               | 是否开启虚拟滚动                                                                                                                                                                                                                                                       | Boolean                     | false       |      |
 | immutable                | 是否是不可变数据                                                                                                                                                                                                                                                       | Boolean                     | -           | 1.23 |
 | clickToCheck           | 点击文本是否可以勾选，为true时selectable默认为false       | Boolean   | false |
-| selectable          | 是否支持选中节点 
 
 <!-- api-extra-start -->
 

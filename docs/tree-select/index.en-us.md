@@ -57,7 +57,7 @@ Like Select, TreeSelect can be used when the selected data structure is a tree s
 | preserveNonExistentValue | if reserve value when value/defaultValue not exist in dataSource  | Boolean                     | false       | 1.25 |
 | autoClearSearch          | auto clear search value when choose item                                                                                                                                                                                                                                      | Boolean                     | true        | 1.26 |
 | clickToCheck            | whether clicking on the text can be checked. When it is true, selectable defaults to false.      | Boolean   | false |
-| selectable          | whether to support selecting node 
+
 <!-- api-extra-start -->
 
 ### TreeSelect.Node
