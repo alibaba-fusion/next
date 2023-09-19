@@ -67,6 +67,7 @@ class Demo extends React.Component {
             <TreeSelect
                 treeDefaultExpandAll
                 treeCheckable
+                clickToCheck
                 dataSource={treeData}
                 onChange={this.handleChange}
                 style={{ width: 200 }}
