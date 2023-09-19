@@ -21,7 +21,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
      * 是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件
      */
     multiple?: boolean;
- 
+
     /**
      * 展示下载按钮
      */
@@ -199,7 +199,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 调用系统设备媒体
      */
-     capture?: string;
+    capture?: string;
 
     /**
      * 自定义成功和失败的列表渲染方式
@@ -500,11 +500,39 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
      * 选择新文件上传并替换
      */
     reUpload?: boolean;
-}
 
+    /**
+     * 添加文件
+     * @param files
+     */
+    selectFiles?: (file: File) => any;
+    /**
+     * 控制文件上传
+     */
+    startUpload?: () => void;
+    /**
+     * 控制文件上传
+     * @param file 文件
+     */
+    uploadFiles?: (file: File) => any;
+    /**
+     * 替换文件
+     */
+    replaceFiles?: (old: object, current: object) => void;
+    /**
+     * 上传状态
+     */
+    isUploading?: () => void;
+    /**
+     * 中断某个文件上传
+     * @param file 文件
+     */
+    abort?: (file: File) => any;
+}
 export default class Upload extends React.Component<UploadProps, any> {
     static Card: typeof Card;
     static Dragger: typeof Dragger;
     static Selecter: typeof Selecter;
     static Uploader: typeof Uploader;
+    static ErrorCode: typeof Object;
 }
