@@ -500,7 +500,20 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
      * 选择新文件上传并替换
      */
     reUpload?: boolean;
+}
 
+export enum ErrorCode {
+    EXCEED_LIMIT = 'EXCEED_LIMIT',
+    BEFOREUPLOAD_REJECT = 'BEFOREUPLOAD_REJECT',
+    RESPONSE_FAIL = 'RESPONSE_FAIL',
+}
+
+export default class Upload extends React.Component<UploadProps, any> {
+    static Card: typeof Card;
+    static Dragger: typeof Dragger;
+    static Selecter: typeof Selecter;
+    static Uploader: typeof Uploader;
+    static ErrorCode: typeof ErrorCode;
     /**
      * 添加文件
      * @param files
@@ -509,7 +522,7 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 控制文件上传
      */
-    startUpload(files: Array<any>): void;
+    startUpload?: (file: File) => any;
     /**
      * 控制文件上传
      * @param file 文件
@@ -528,15 +541,4 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
      * @param file 文件
      */
     abort?: (file: File) => any;
-}
-export interface ErrorCodeProps extends HTMLAttributesWeak, CommonProps {
-    errorCode: object;
-}
-export class ErrorCode extends React.Component<ErrorCodeProps, any> {}
-export default class Upload extends React.Component<UploadProps, any> {
-    static Card: typeof Card;
-    static Dragger: typeof Dragger;
-    static Selecter: typeof Selecter;
-    static Uploader: typeof Uploader;
-    static ErrorCode: typeof ErrorCode;
 }
