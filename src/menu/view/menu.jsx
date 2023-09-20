@@ -322,6 +322,10 @@ class Menu extends Component {
          */
         footer: PropTypes.node,
         /**
+         * 自定义菜单尾部容器的 className
+         */
+        footerWrapperClassName: PropTypes.string,
+        /**
          * 是否自动获得焦点
          */
         autoFocus: PropTypes.bool,
@@ -883,6 +887,7 @@ class Menu extends Component {
             hozAlign,
             header,
             footer,
+            footerWrapperClassName,
             embeddable,
             selectMode,
             hozInLine,
@@ -923,7 +928,13 @@ class Menu extends Component {
                 newChildren
             );
         const footerElement = footer ? (
-            <li className={`${prefix}menu-footer`} ref={this.menuFooterRef}>
+            <li
+                className={cx({
+                    [`${prefix}menu-footer`]: true,
+                    [footerWrapperClassName]: !!footerWrapperClassName,
+                })}
+                ref={this.menuFooterRef}
+            >
                 {footer}
             </li>
         ) : null;
