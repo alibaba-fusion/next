@@ -518,27 +518,27 @@ export default class Upload extends React.Component<UploadProps, any> {
      * 添加文件
      * @param files
      */
-    selectFiles?: (file: File) => any;
+    selectFiles: (file: File) => void;
     /**
      * 控制文件上传
      */
-    startUpload?: (file: File) => any;
+    startUpload: () => void;
     /**
      * 控制文件上传
      * @param file 文件
      */
-    uploadFiles?: (file: File) => any;
+    uploadFiles: (file: File) => void;
     /**
      * 替换文件
      */
-    replaceFiles?: (old: object, current: object) => void;
+    replaceFiles: (old: object, current: object) => void;
     /**
      * 上传状态
      */
-    isUploading?: () => void;
+    isUploading: () => boolean;
     /**
      * 中断某个文件上传
      * @param file 文件
      */
-    abort?: (file: File) => any;
+    abort: (file: File) => void;
 }
