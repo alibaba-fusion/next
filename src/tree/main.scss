@@ -17,6 +17,11 @@
         white-space: nowrap;
     }
 
+    &-node-inner {
+        font-size: 0;
+        outline: none;
+    }
+
     &-node-label-wrapper {
         font-size: 0;
         outline: none;

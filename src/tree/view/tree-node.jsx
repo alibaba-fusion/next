@@ -132,7 +132,7 @@ class TreeNode extends Component {
     }
 
     componentDidMount() {
-        this.itemNode = findDOMNode(this.labelWrapperEl);
+        this.itemLabelWrapperNode = findDOMNode(this.labelWrapperEl);
         this.setFocus();
     }
 
@@ -159,7 +159,7 @@ class TreeNode extends Component {
     setFocus() {
         const focused = this.getFocused();
         if (focused && this.focusable()) {
-            this.itemNode.focus({ preventScroll: true });
+            this.itemLabelWrapperNode.focus({ preventScroll: true });
         }
     }
 
@@ -393,6 +393,7 @@ class TreeNode extends Component {
 
     renderLabel() {
         const { prefix, root, disabled, icon, _key } = this.props;
+        const { isNodeBlock } = root.props;
         const { label } = this.state;
         const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
         const labelProps = {
@@ -405,7 +406,9 @@ class TreeNode extends Component {
             onKeyDown: this.handleKeyDown,
             tabIndex: root.tabbableKey === _key ? '0' : '-1',
         };
-        this.addCallbacks(labelProps);
+        if (!isNodeBlock) {
+            this.addCallbacks(labelProps);
+        }
 
         const iconEl = typeof icon === 'string' ? <Icon type={icon} /> : icon;
 
@@ -537,6 +540,10 @@ class TreeNode extends Component {
             onKeyDown: this.handleKeyDown,
             ...ariaProps,
         };
+
+        if (isNodeBlock) {
+            this.addCallbacks(innerProps);
+        }
 
         const { editing } = this.state;
 
