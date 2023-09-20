@@ -512,7 +512,7 @@ class Cascader extends Component {
             const callback = () => {
                 this.setExpandValue(expandedValue);
 
-                if (focusedFirstChild || canExpand) {
+                if (focusedFirstChild) {
                     const endExpandedValue = expandedValue[expandedValue.length - 1];
                     this.setState({
                         focusedValue: this.state._v2n[endExpandedValue].children[0].value,
@@ -591,8 +591,9 @@ class Cascader extends Component {
     }
 
     handleFocus(focusedValue) {
+        const { expandTriggerType } = this.props;
         this.setState({
-            focusedValue,
+            focusedValue: expandTriggerType !== 'hover' ? focusedValue : undefined,
         });
     }
 
