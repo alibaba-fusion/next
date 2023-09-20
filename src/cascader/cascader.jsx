@@ -512,7 +512,7 @@ class Cascader extends Component {
             const callback = () => {
                 this.setExpandValue(expandedValue);
 
-                if (focusedFirstChild) {
+                if (focusedFirstChild || canExpand) {
                     const endExpandedValue = expandedValue[expandedValue.length - 1];
                     this.setState({
                         focusedValue: this.state._v2n[endExpandedValue].children[0].value,
