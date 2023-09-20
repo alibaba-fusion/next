@@ -39,7 +39,7 @@ class Input extends Base {
          */
         onPressEnter: PropTypes.func,
 
-        onClear: PropTypes.func,
+        // onClear: PropTypes.func,
         /**
          * 原生type
          */
