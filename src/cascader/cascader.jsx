@@ -591,9 +591,8 @@ class Cascader extends Component {
     }
 
     handleFocus(focusedValue) {
-        const { expandTriggerType } = this.props;
         this.setState({
-            focusedValue: expandTriggerType !== 'hover' ? focusedValue : undefined,
+            focusedValue,
         });
     }
 

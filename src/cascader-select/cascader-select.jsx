@@ -618,10 +618,10 @@ class CascaderSelect extends Component {
     }
 
     handleSelect(value, data) {
-        const { multiple, changeOnSelect } = this.props;
+        const { multiple, changeOnSelect, expandTriggerType } = this.props;
         const { visible, searchValue } = this.state;
 
-        if (!multiple && (!changeOnSelect || this.isLeaf(data) || !!searchValue)) {
+        if (!multiple && (!changeOnSelect || this.isLeaf(data) || expandTriggerType === 'hover' || !!searchValue)) {
             this.handleVisibleChange(!visible, 'fromCascader');
         }
     }
