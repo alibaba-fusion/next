@@ -13,10 +13,10 @@ $cascader-menu-border: $cascader-menu-border-width $line-solid $cascader-menu-bo
     border-radius: $cascader-menu-border-radius;
 
     &-inner {
+        display: flex;
         @include clearfix;
     }
     &-menu-wrapper {
-        float: left;
         overflow: auto;
         width: $cascader-menu-width;
         min-width: $cascader-menu-min-width;
