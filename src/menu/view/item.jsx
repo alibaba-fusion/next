@@ -59,7 +59,8 @@ export default class Item extends Component {
         this.setFocus();
     }
     componentDidUpdate() {
-        if (this.props.root.props.focusable) {
+        const { root } = this.props;
+        if (root.props.focusable && root.state.focusedKey !== this.lastFocusedKey) {
             this.setFocus();
         }
     }
@@ -77,6 +78,7 @@ export default class Item extends Component {
 
     setFocus() {
         const focused = this.getFocused();
+        this.lastFocusedKey = this.props.root.state.focusedKey;
         if (focused) {
             if (this.focusable()) {
                 this.itemNode.focus({ preventScroll: true });
