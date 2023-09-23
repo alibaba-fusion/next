@@ -97,7 +97,7 @@ describe('Menu', () => {
     it('Group/SubMenu should accepct string/number/node', () => {
         wrapper = mount(
             <Menu defaultOpenKeys={['sub-menu']}>
-                 <Group label="Group">
+                <Group label="Group">
                     test-group-string
                     <Item className="custom-className" key="group-1">
                         Group option 1
@@ -440,7 +440,7 @@ describe('Menu', () => {
         }
 
         wrapper = mount(
-            <Menu mode="popup" popupProps={{animation: false}} defaultOpenKeys={['sub-1']}>
+            <Menu mode="popup" popupProps={{ animation: false }} defaultOpenKeys={['sub-1']}>
                 <SubMenu key="sub-1" label="Popup menu 1">
                     <Item key="popup-1-2">Popup option 2</Item>
                 </SubMenu>
@@ -888,19 +888,26 @@ describe('Menu', () => {
         );
 
         const menu = document.querySelector('#menu-id');
-        assert(document.activeElement === menu.querySelector('.i1'));
-        const assertAE = assertActiveElement();
-        assertAE(KEYCODE.DOWN, menu.querySelector('.i2 .next-menu-item'));
-        assertAE(KEYCODE.ENTER, () => menu.querySelector('.i2-0'));
-        assertAE(KEYCODE.ESC, menu.querySelector('.i2 .next-menu-item'));
-        assertAE(KEYCODE.RIGHT, () => menu.querySelector('.i2-0'));
-        assertAE(KEYCODE.LEFT, menu.querySelector('.i2 .next-menu-item'));
-        assert(!menu.querySelector('.next-menu-sub-menu'));
-        assertAE(KEYCODE.UP, menu.querySelector('.i1'));
-        assertAE(KEYCODE.UP, menu.querySelector('.i3'));
+        try {
+            assert(document.activeElement === menu.querySelector('.i1'));
+            const assertAE = assertActiveElement();
+            assertAE(KEYCODE.DOWN, menu.querySelector('.i2 .next-menu-item'));
+            assertAE(KEYCODE.ENTER, () => menu.querySelector('.i2-0'));
+            assertAE(KEYCODE.ESC, menu.querySelector('.i2 .next-menu-item'));
+            assertAE(KEYCODE.RIGHT, () => menu.querySelector('.i2-0'));
+            assertAE(KEYCODE.LEFT, menu.querySelector('.i2 .next-menu-item'));
+            assert(!menu.querySelector('.next-menu-sub-menu'));
+            assertAE(KEYCODE.UP, menu.querySelector('.i1'));
+            assertAE(KEYCODE.UP, menu.querySelector('.i3'));
 
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+        } catch(err) {
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+            throw new Error(err);
+        }
+        
     });
 
     it('should support keyboard if direction is hoz', () => {
@@ -924,11 +931,18 @@ describe('Menu', () => {
 
         const menu = document.querySelector('.next-menu.next-hoz');
         const assertAE = assertActiveElement();
-        assertAE(KEYCODE.RIGHT, menu.querySelector('.i1'));
-        assertAE(KEYCODE.LEFT, menu.querySelector('.i0'));
+        try {
+            assertAE(KEYCODE.RIGHT, menu.querySelector('.i1'));
+            assertAE(KEYCODE.LEFT, menu.querySelector('.i0'));
 
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+        } catch(err) {
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+            throw new Error(err);
+        }
+        
     });
 
     it('should support hozInLine in hoz', () => {
@@ -939,17 +953,17 @@ describe('Menu', () => {
         ReactDOM.render(
             <Menu
                 direction="hoz"
-                style={{width: 300}}
+                style={{ width: 300 }}
                 mode="popup"
                 hozInLine
             >
-                <Item key="0" style={{width: 60}}>0</Item>
-                <Item key="1" style={{width: 60}}>1</Item>
-                <SubMenu key="sub-menu" label="Sub menu" style={{width: 50}}>
+                <Item key="0" style={{ width: 60 }}>0</Item>
+                <Item key="1" style={{ width: 60 }}>1</Item>
+                <SubMenu key="sub-menu" label="Sub menu" style={{ width: 50 }}>
                     <Item key="2">2</Item>
                     <Item key="3">3</Item>
                 </SubMenu>
-                <Item key="4" style={{width: 30}}>4</Item>
+                <Item key="4" style={{ width: 30 }}>4</Item>
                 <Item key="5">5</Item>
                 <Item key="6">6</Item>
             </Menu>,
@@ -957,17 +971,24 @@ describe('Menu', () => {
         );
 
         const menu = document.querySelector('.next-menu.next-hoz');
-        assert(menu.querySelectorAll('li.next-menu-more').length === 2);
+        try {
+            assert(menu.querySelectorAll('li.next-menu-more').length === 2);
 
-        const indicator = menu.querySelectorAll('li.next-menu-more')[0].querySelector('.next-menu-item-inner');
-        indicator.click();
-        const overlay = document.querySelector('.next-overlay-wrapper');
+            const indicator = menu.querySelectorAll('li.next-menu-more')[0].querySelector('.next-menu-item-inner');
+            indicator.click();
+            const overlay = document.querySelector('.next-overlay-wrapper');
 
-        assert(overlay);
-        assert(overlay.querySelectorAll('li').length === 2);
+            assert(overlay);
+            assert(overlay.querySelectorAll('li').length === 2);
 
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+        } catch(err) {
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+            throw new Error(err);
+        }
+        
 
     });
 
@@ -978,19 +999,19 @@ describe('Menu', () => {
         ReactDOM.render(
             <Menu
                 direction="hoz"
-                style={{width: 300}}
+                style={{ width: 300 }}
                 mode="popup"
                 hozInLine
                 renderMore={() => {
                     return (<div className="rendermore-class">test</div>);
-            }}>
-                <Item key="0" style={{width: 60}}>0</Item>
-                <Item key="1" style={{width: 60}}>1</Item>
-                <SubMenu key="sub-menu" label="Sub menu" style={{width: 50}}>
+                }}>
+                <Item key="0" style={{ width: 60 }}>0</Item>
+                <Item key="1" style={{ width: 60 }}>1</Item>
+                <SubMenu key="sub-menu" label="Sub menu" style={{ width: 50 }}>
                     <Item key="2">2</Item>
                     <Item key="3">3</Item>
                 </SubMenu>
-                <Item key="4" style={{width: 30}}>4</Item>
+                <Item key="4" style={{ width: 30 }}>4</Item>
                 <Item key="5">5</Item>
                 <Item key="6">6</Item>
             </Menu>,
@@ -1012,19 +1033,19 @@ describe('Menu', () => {
         ReactDOM.render(
             <Menu
                 direction="hoz"
-                style={{width: 300}}
+                style={{ width: 300 }}
                 mode="popup"
                 header="header"
                 footer="footer"
                 hozInLine
             >
-                <Item key="0" style={{width: 100}}>0</Item>
-                <Item key="1" style={{width: 60}}>1</Item>
-                <SubMenu key="sub-menu" label="Sub menu" style={{width: 50}}>
+                <Item key="0" style={{ width: 100 }}>0</Item>
+                <Item key="1" style={{ width: 60 }}>1</Item>
+                <SubMenu key="sub-menu" label="Sub menu" style={{ width: 50 }}>
                     <Item key="2">2</Item>
                     <Item key="3">3</Item>
                 </SubMenu>
-                <Item key="4" style={{width: 30}}>4</Item>
+                <Item key="4" style={{ width: 30 }}>4</Item>
                 <Item key="5">5</Item>
                 <Item key="6">6</Item>
             </Menu>,

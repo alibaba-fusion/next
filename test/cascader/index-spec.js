@@ -552,16 +552,23 @@ describe('Cascader', () => {
 
         const item00 = findRealItem(0, 0);
         item00.click();
-        assert(document.activeElement === item00);
-        const assertAE = assertActiveElement();
-        assertAE(KEYCODE.DOWN, findRealItem(0, 1));
-        assertAE(KEYCODE.UP, item00);
-        assertAE(KEYCODE.RIGHT, () => findRealItem(1, 0));
-        assertAE(KEYCODE.LEFT, item00);
-        assert(document.querySelectorAll('.next-cascader-menu').length === 1);
+        try {
+            assert(document.activeElement === item00);
+            const assertAE = assertActiveElement();
+            assertAE(KEYCODE.DOWN, findRealItem(0, 1));
+            assertAE(KEYCODE.UP, item00);
+            assertAE(KEYCODE.RIGHT, () => findRealItem(1, 0));
+            assertAE(KEYCODE.LEFT, item00);
+            assert(document.querySelectorAll('.next-cascader-menu').length === 1);
 
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+        } catch(err) {
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+            throw new Error(err);
+        }
+        
     });
 
     it('should set the style of the cascader inner node', () => {
