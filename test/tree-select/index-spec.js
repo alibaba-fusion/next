@@ -780,7 +780,7 @@ describe('TreeSelect', () => {
             wrapper.find('.next-select-trigger-search input').simulate('keydown', { keyCode: KEYCODE.DOWN });
             assert(
                 document.activeElement ===
-                    document.querySelectorAll('.next-tree  > .next-tree-node > .next-tree-node-inner')[0]
+                    document.querySelectorAll('.next-tree  > .next-tree-node > .next-tree-node-inner > .next-tree-node-label-wrapper')[0]
             );
             done();
         }, 2000);

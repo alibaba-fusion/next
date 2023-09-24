@@ -949,14 +949,14 @@ describe('Tree', () => {
             />,
             mountNode
         );
-        const item00 = findInnerNodeByKey('1');
+        const item00 = findInnerNodeLabelWrapperByKey('1');
         item00.focus();
         assert(document.activeElement === item00);
         const assertAE = assertActiveElement();
-        assertAE(KEYCODE.RIGHT, () => findInnerNodeByKey('2'));
-        assertAE(KEYCODE.DOWN, () => findInnerNodeByKey('3'));
-        assertAE(KEYCODE.DOWN, () => findInnerNodeByKey('2'));
-        assertAE(KEYCODE.LEFT, () => findInnerNodeByKey('1'));
+        assertAE(KEYCODE.RIGHT, () => findInnerNodeLabelWrapperByKey('2'));
+        assertAE(KEYCODE.DOWN, () => findInnerNodeLabelWrapperByKey('3'));
+        assertAE(KEYCODE.DOWN, () => findInnerNodeLabelWrapperByKey('2'));
+        assertAE(KEYCODE.LEFT, () => findInnerNodeLabelWrapperByKey('1'));
     });
 
     it('should support useVirtual', () => {
@@ -1321,6 +1321,10 @@ function assertActiveElement() {
 
 function findInnerNodeByKey(key) {
     return findTreeNodeByKey(key).querySelector('.next-tree-node-inner');
+}
+
+function findInnerNodeLabelWrapperByKey(key) {
+    return findInnerNodeByKey(key).querySelector('.next-tree-node-label-wrapper');
 }
 
 function walk(dataSource, enter, level = 1, parent) {

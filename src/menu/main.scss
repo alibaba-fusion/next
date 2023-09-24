@@ -117,7 +117,8 @@
                 $menu-color-selected,
                 $menu-background-selected,
                 $menu-arrow-color,
-                $menu-icon-selected-color
+                $menu-icon-selected-color,
+                $menu-item-border-radius
             );
         }
 
@@ -127,7 +128,8 @@
                 $menu-color-disabled,
                 $menu-background,
                 $menu-color-disabled,
-                $menu-color-disabled
+                $menu-color-disabled,
+                $menu-item-border-radius,
             );
             cursor: not-allowed;
         }
@@ -143,7 +145,8 @@
                 $menu-color-hover,
                 $menu-background-hover,
                 $menu-arrow-color-hover,
-                $menu-icon-selected-hover-color
+                $menu-icon-selected-hover-color,
+                $menu-item-border-radius,
             );
         }
     }

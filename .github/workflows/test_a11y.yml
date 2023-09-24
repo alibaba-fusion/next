@@ -18,7 +18,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: package-temp-dir
-          key: lock-${{ github.sha }}
+          key: lock-${{ github.sha }}-${{ github.run_id }}
 
       - name: create package-lock.json
         run: npm i --package-lock-only --legacy-peer-deps
@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: node_modules-${{ hashFiles('**/package-temp-dir/package-lock.json') }}
+          key: node_modules-${{ hashFiles('**/package-temp-dir/package-lock.json') }}-${{ github.run_id }}
 
       - name: install
         if: steps.node_modules_cache_id.outputs.cache-hit != 'true'
@@ -54,13 +54,13 @@ jobs:
         uses: actions/cache@v2
         with:
           path: package-temp-dir
-          key: lock-${{ github.sha }}
+          key: lock-${{ github.sha }}-${{ github.run_id }}
 
       - name: restore cache from node_modules
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: node_modules-${{ hashFiles('**/package-temp-dir/package-lock.json') }}
+          key: node_modules-${{ hashFiles('**/package-temp-dir/package-lock.json') }}-${{ github.run_id }}
 
       - name: test
         run: npm run test:a11y

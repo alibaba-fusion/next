@@ -132,7 +132,7 @@ class TreeNode extends Component {
     }
 
     componentDidMount() {
-        this.itemNode = findDOMNode(this.nodeEl);
+        this.itemLabelWrapperNode = findDOMNode(this.labelWrapperEl);
         this.setFocus();
     }
 
@@ -159,7 +159,7 @@ class TreeNode extends Component {
     setFocus() {
         const focused = this.getFocused();
         if (focused && this.focusable()) {
-            this.itemNode.focus({ preventScroll: true });
+            this.itemLabelWrapperNode.focus({ preventScroll: true });
         }
     }
 
@@ -195,9 +195,13 @@ class TreeNode extends Component {
 
     handleSelect(e) {
         e.preventDefault();
-
         const { root, selected, eventKey } = this.props;
         root.handleSelect(!selected, eventKey, this, e);
+
+        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
+        const clickToCheck =
+            typeof this.props.clickToCheck !== 'undefined' ? this.props.clickToCheck : root.props.clickToCheck;
+        clickToCheck && checkable && this.handleCheck();
     }
 
     handleCheck() {
@@ -294,12 +298,18 @@ class TreeNode extends Component {
 
     addCallbacks(props) {
         const { disabled, root } = this.props;
+        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
+        const clickToCheck =
+            typeof this.props.clickToCheck !== 'undefined' ? this.props.clickToCheck : root.props.clickToCheck;
         if (!disabled) {
             const selectable =
                 typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
             if (selectable) {
                 props.onClick = this.handleSelect;
+            } else if (clickToCheck && checkable) {
+                props.onClick = this.handleCheck;
             }
+
             const editable = typeof this.props.editable !== 'undefined' ? this.props.editable : root.props.editable;
             if (editable) {
                 props.onDoubleClick = this.handleEditStart;
@@ -382,7 +392,7 @@ class TreeNode extends Component {
     }
 
     renderLabel() {
-        const { prefix, root, disabled, icon } = this.props;
+        const { prefix, root, disabled, icon, _key } = this.props;
         const { isNodeBlock } = root.props;
         const { label } = this.state;
         const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
@@ -392,7 +402,10 @@ class TreeNode extends Component {
                 [`${prefix}tree-node-label-selectable`]: selectable && !disabled,
             }),
         };
-
+        const labelWrapperProps = {
+            onKeyDown: this.handleKeyDown,
+            tabIndex: root.tabbableKey === _key ? '0' : '-1',
+        };
         if (!isNodeBlock) {
             this.addCallbacks(labelProps);
         }
@@ -400,7 +413,7 @@ class TreeNode extends Component {
         const iconEl = typeof icon === 'string' ? <Icon type={icon} /> : icon;
 
         return (
-            <div className={`${prefix}tree-node-label-wrapper`} ref={this.saveLabelWrapperRef}>
+            <div className={`${prefix}tree-node-label-wrapper`} ref={this.saveLabelWrapperRef} {...labelWrapperProps}>
                 <div {...labelProps}>
                     {iconEl}
                     {label}
@@ -501,7 +514,7 @@ class TreeNode extends Component {
             [`${prefix}filtered`]: !!filterTreeNode && !!root.filterTreeNode(this),
             [className]: !!className,
         });
-
+        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
         const innerClassName = cx({
             [`${prefix}tree-node-inner`]: true,
             [`${prefix}selected`]: selected,
@@ -532,8 +545,6 @@ class TreeNode extends Component {
             this.addCallbacks(innerProps);
         }
 
-        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
-
         const { editing } = this.state;
 
         innerProps.tabIndex = root.tabbableKey === _key ? '0' : '-1';
@@ -541,7 +552,6 @@ class TreeNode extends Component {
         if (rtl) {
             others.dir = 'rtl';
         }
-
         return this.addAnimationIfNeeded(
             <li role="presentation" className={newClassName} {...others}>
                 <div

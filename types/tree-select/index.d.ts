@@ -76,7 +76,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      */
     defaultValue?: string | object | Array<any>;
 
-     /**
+    /**
      * value/defaultValue 在 dataSource 中不存在时，是否展示
      */
     preserveNonExistentValue?: boolean;
@@ -89,9 +89,9 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否一行显示，仅在 multiple 和 treeCheckable 为 true 时生效
      */
-     tagInline?: boolean;
+    tagInline?: boolean;
 
-     /**
+    /**
      * 隐藏多余 tag 时显示的内容，在 tagInline 生效时起作用
      * @param {Object[]} selectedValues 当前已选中的元素
      * @param {Object[]} [totalValues] 总待选元素，treeCheckedStrategy = 'parent' 时为 undefined
@@ -196,18 +196,18 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      * 是否跟随滚动
      */
     followTrigger?: boolean;
-    
+
     /**
      * 是否为预览态
      */
     isPreview?: boolean;
-    
+
     /**
      * 预览态模式下渲染的内容
      * @param {Array<data>} value 选择值 { label: , value:}
      */
     renderPreview?: (data: string | Array<any>, props: any | Array<any>) => React.ReactNode;
-  
+
     /**
      * 是否开启虚拟滚动
      */
@@ -217,13 +217,17 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      * 是否关闭本地搜索
      */
     filterLocal?: boolean;
-  
+
     immutable?: boolean;
 
     /**
      * 填充到选择框里的值的 key，默认是 value
      */
     fillProps?: string;
+    /**
+     * 点击文本是否可以勾选
+     */
+    clickToCheck?: boolean;
 }
 
 export default class TreeSelect extends React.Component<TreeSelectProps, any> {}

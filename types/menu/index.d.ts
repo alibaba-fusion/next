@@ -291,6 +291,11 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     footer?: React.ReactNode;
 
     /**
+     * 自定义菜单尾部容器的 className
+     */
+    footerWrapperClassName?: string;
+
+    /**
      * 是否自动获得焦点
      */
     autoFocus?: boolean;

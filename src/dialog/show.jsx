@@ -68,6 +68,7 @@ class Modal extends Component {
          */
         onClose: PropTypes.func,
         okProps: PropTypes.object,
+        cancelProps: PropTypes.object,
         locale: PropTypes.object,
         needWrapper: PropTypes.bool,
         className: PropTypes.string,
@@ -81,13 +82,15 @@ class Modal extends Component {
         onCancel: noop,
         onClose: noop,
         okProps: {},
+        cancelProps: {},
         locale: zhCN.Dialog,
         needWrapper: true,
     };
 
     state = {
         visible: true,
-        loading: false,
+        okLoading: false,
+        cancelLoading: false,
     };
 
     close = () => {
@@ -96,26 +99,31 @@ class Modal extends Component {
         });
     };
 
-    loading = loading => {
+    okLoading = loading => {
         this.setState({
-            loading,
+            okLoading: loading,
+        });
+    };
+    cancelLoading = loading => {
+        this.setState({
+            cancelLoading: loading,
         });
     };
 
-    wrapper(fn, callback) {
+    wrapper(fn, callback, changeLoading) {
         return (...args) => {
             const res = fn(...args);
             if (res && res.then) {
-                this.loading(true);
+                changeLoading(true);
 
                 res.then(result => {
-                    this.loading(false);
+                    changeLoading(false);
 
                     if (result !== false) {
                         return callback();
                     }
                 }).catch(e => {
-                    this.loading(false);
+                    changeLoading(false);
                     throw e;
                 });
             } else if (res !== false) {
@@ -136,6 +144,7 @@ class Modal extends Component {
             onCancel,
             onClose,
             okProps,
+            cancelProps,
             needWrapper,
             rtl,
             className,
@@ -166,17 +175,21 @@ class Modal extends Component {
                 : ['alert', 'success', 'error', 'notice', 'warning', 'help'].indexOf(type) > -1
                 ? ['ok']
                 : undefined);
-        const newOnOk = this.wrapper(onOk, this.close);
-        const newOnCancel = this.wrapper(onCancel, this.close);
-        const newOnClose = this.wrapper(onClose, this.close);
+        const newOnOk = this.wrapper(onOk, this.close, this.okLoading);
+        const newOnCancel = this.wrapper(onCancel, this.close, this.cancelLoading);
+        const newOnClose = this.wrapper(onClose, this.close, this.cancelLoading);
 
-        const { visible, loading } = this.state;
+        const { visible, okLoading, cancelLoading } = this.state;
         // 不能直接改，这里修改相当于改了全局 okProps
         // okProps.loading = loading;
 
         const newOkProps = { ...okProps };
         if (!('loading' in okProps)) {
-            newOkProps.loading = loading;
+            newOkProps.loading = okLoading;
+        }
+        const newCancelProps = { ...cancelProps };
+        if (!('loading' in cancelProps)) {
+            newCancelProps.loading = cancelLoading;
         }
 
         const classNames = cx(`${prefix}dialog-quick`, className);
@@ -196,6 +209,7 @@ class Modal extends Component {
                 onCancel={newOnCancel}
                 onClose={newOnClose}
                 okProps={newOkProps}
+                cancelProps={newCancelProps}
                 className={classNames}
                 width={v2 ? width : undefined}
             >
