@@ -100,6 +100,7 @@
     "@alifd/field": "~1.5.5",
     "@alifd/overlay": "^0.2.9",
     "@alifd/validate": "~1.2.0",
+    "@types/react-transition-group": "^4.4.6",
     "babel-runtime": "^6.26.0",
     "big.js": "^6.2.0",
     "classnames": "^2.2.3",
