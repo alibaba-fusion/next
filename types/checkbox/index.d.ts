@@ -8,7 +8,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-type data = {
+export type data = {
     value?: string | number;
     label?: React.ReactNode;
     disabled?: boolean;
