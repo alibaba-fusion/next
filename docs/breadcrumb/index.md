@@ -28,7 +28,7 @@
 | popupProps      | 添加到弹层上的属性（在showHiddenItems为true时才有意义）       | Object           | -     | 1.23 |
 | separator       | 分隔符，可以是文本或 Icon                             | ReactNode/String | -     |      |
 | component       | 设置标签类型                                      | String/Function  | 'nav' |      |
-
+| onClick         | 点击popup弹层内menu触发的回调<br/><br/>**签名**:<br/>Function() => void     
 ### Breadcrumb.Item
 
 | 参数   | 说明                                           | 类型     | 默认值 |

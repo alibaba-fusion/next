@@ -39,19 +39,20 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 当超过的项被隐藏时，是否可通过点击省略号展示菜单（包含被隐藏的项）
      */
-     showHiddenItems?: boolean;
-     /**
-      * 弹层挂载的容器节点（在showHiddenItems为true时才有意义）
-      */
-     popupContainer?: any;
-     /**
-      * 是否跟随trigger滚动（在showHiddenItems为true时才有意义）
-      */
-     followTrigger?: boolean;
-     /**
-      * 添加到弹层上的属性（在showHiddenItems为true时才有意义）
-      */
-     popupProps?: PopupProps;
+    showHiddenItems?: boolean;
+    /**
+     * 弹层挂载的容器节点（在showHiddenItems为true时才有意义）
+     */
+    popupContainer?: any;
+    /**
+     * 是否跟随trigger滚动（在showHiddenItems为true时才有意义）
+     */
+    followTrigger?: boolean;
+    /**
+     * 添加到弹层上的属性（在showHiddenItems为true时才有意义）
+     */
+    popupProps?: PopupProps;
+    onClick?: () => void;
 }
 
 export default class Breadcrumb extends React.Component<BreadcrumbProps, any> {
