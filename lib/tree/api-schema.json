@@ -1,0 +1,1098 @@
+{
+  "name": "Tree",
+  "props": {
+    "children": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "树节点",
+      "docblock": "树节点"
+    },
+    "dataSource": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "数据源，该属性优先级高于 children",
+      "docblock": "数据源，该属性优先级高于 children"
+    },
+    "showLine": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示树的线",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否显示树的线"
+    },
+    "selectable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否支持选中节点",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否支持选中节点"
+    },
+    "selectedKeys": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "string"
+        }
+      },
+      "required": false,
+      "description": "（用于受控）当前选中节点 key 的数组",
+      "docblock": "（用于受控）当前选中节点 key 的数组"
+    },
+    "defaultSelectedKeys": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "string"
+        }
+      },
+      "required": false,
+      "description": "（用于非受控）默认选中节点 key 的数组",
+      "defaultValue": {
+        "value": "[]",
+        "computed": false
+      },
+      "docblock": "（用于非受控）默认选中节点 key 的数组"
+    },
+    "onSelect": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选中或取消选中节点时触发的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "选中或取消选中节点时触发的回调函数\n@param {Array} selectedKeys 选中节点key的数组\n@param {Object} extra 额外参数\n@param {Array} extra.selectedNodes 选中节点的数组\n@param {Object} extra.node 当前操作的节点\n@param {Boolean} extra.selected 当前操作是否是选中",
+      "params": [
+        {
+          "name": "selectedKeys",
+          "description": "选中节点key的数组",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra",
+          "description": "额外参数",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.selectedNodes",
+          "description": "选中节点的数组",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra.node",
+          "description": "当前操作的节点",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.selected",
+          "description": "当前操作是否是选中",
+          "type": {
+            "name": "Boolean"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "multiple": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否支持多选",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否支持多选"
+    },
+    "checkable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否支持勾选节点的复选框",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否支持勾选节点的复选框"
+    },
+    "checkedKeys": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "string"
+            }
+          },
+          {
+            "name": "object"
+          }
+        ]
+      },
+      "required": false,
+      "description": "（用于受控）当前勾选复选框节点 key 的数组或 `{checked: Array, indeterminate: Array}` 的对象",
+      "docblock": "（用于受控）当前勾选复选框节点 key 的数组或 `{checked: Array, indeterminate: Array}` 的对象"
+    },
+    "defaultCheckedKeys": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "string"
+        }
+      },
+      "required": false,
+      "description": "（用于非受控）默认勾选复选框节点 key 的数组",
+      "defaultValue": {
+        "value": "[]",
+        "computed": false
+      },
+      "docblock": "（用于非受控）默认勾选复选框节点 key 的数组"
+    },
+    "checkStrictly": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "勾选节点复选框是否完全受控（父子节点选中状态不再关联）",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "勾选节点复选框是否完全受控（父子节点选中状态不再关联）"
+    },
+    "checkedStrategy": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'all'",
+            "computed": false,
+            "description": "返回所有选中的节点"
+          },
+          {
+            "value": "'parent'",
+            "computed": false,
+            "description": "父子节点都选中时只返回父节点"
+          },
+          {
+            "value": "'child'",
+            "computed": false,
+            "description": "父子节点都选中时只返回子节点"
+          }
+        ]
+      },
+      "required": false,
+      "description": "定义选中时回填的方式",
+      "defaultValue": {
+        "value": "'all'",
+        "computed": false
+      },
+      "docblock": "定义选中时回填的方式\n@enumdesc 返回所有选中的节点, 父子节点都选中时只返回父节点, 父子节点都选中时只返回子节点",
+      "value": [
+        {
+          "value": "'all'",
+          "computed": false,
+          "description": "返回所有选中的节点"
+        },
+        {
+          "value": "'parent'",
+          "computed": false,
+          "description": "父子节点都选中时只返回父节点"
+        },
+        {
+          "value": "'child'",
+          "computed": false,
+          "description": "父子节点都选中时只返回子节点"
+        }
+      ]
+    },
+    "onCheck": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "勾选或取消勾选复选框时触发的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "勾选或取消勾选复选框时触发的回调函数\n@param {Array} checkedKeys 勾选复选框节点key的数组\n@param {Object} extra 额外参数\n@param {Array} extra.checkedNodes 勾选复选框节点的数组\n@param {Array} extra.checkedNodesPositions 包含有勾选复选框节点和其位置的对象的数组\n@param {Array} extra.indeterminateKeys 半选复选框节点 key 的数组\n@param {Object} extra.node 当前操作的节点\n@param {Boolean} extra.checked 当前操作是否是勾选",
+      "params": [
+        {
+          "name": "checkedKeys",
+          "description": "勾选复选框节点key的数组",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra",
+          "description": "额外参数",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.checkedNodes",
+          "description": "勾选复选框节点的数组",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra.checkedNodesPositions",
+          "description": "包含有勾选复选框节点和其位置的对象的数组",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra.indeterminateKeys",
+          "description": "半选复选框节点 key 的数组",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra.node",
+          "description": "当前操作的节点",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.checked",
+          "description": "当前操作是否是勾选",
+          "type": {
+            "name": "Boolean"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "expandedKeys": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "string"
+        }
+      },
+      "required": false,
+      "description": "（用于受控）当前展开的节点 key 的数组",
+      "docblock": "（用于受控）当前展开的节点 key 的数组"
+    },
+    "defaultExpandedKeys": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "string"
+        }
+      },
+      "required": false,
+      "description": "（用于非受控）默认展开的节点 key 的数组",
+      "defaultValue": {
+        "value": "[]",
+        "computed": false
+      },
+      "docblock": "（用于非受控）默认展开的节点 key 的数组"
+    },
+    "defaultExpandAll": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否默认展开所有节点",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否默认展开所有节点"
+    },
+    "autoExpandParent": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否自动展开父节点，建议受控时设置为false",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否自动展开父节点，建议受控时设置为false"
+    },
+    "onExpand": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "展开或收起节点时触发的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "展开或收起节点时触发的回调函数\n@param {Array} expandedKeys 展开的节点key的数组\n@param {Object} extra 额外参数\n@param {Object} extra.node 当前操作的节点\n@param {Boolean} extra.expanded 当前操作是否是展开",
+      "params": [
+        {
+          "name": "expandedKeys",
+          "description": "展开的节点key的数组",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra",
+          "description": "额外参数",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.node",
+          "description": "当前操作的节点",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.expanded",
+          "description": "当前操作是否是展开",
+          "type": {
+            "name": "Boolean"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "editable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否支持编辑节点内容",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否支持编辑节点内容"
+    },
+    "onEditFinish": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "编辑节点内容完成时触发的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "编辑节点内容完成时触发的回调函数\n@param {String} key 编辑节点的 key\n@param {String} label 编辑节点完成时节点的文本\n@param {Object} node 当前编辑的节点",
+      "params": [
+        {
+          "name": "key",
+          "description": "编辑节点的 key",
+          "type": {
+            "name": "String"
+          }
+        },
+        {
+          "name": "label",
+          "description": "编辑节点完成时节点的文本",
+          "type": {
+            "name": "String"
+          }
+        },
+        {
+          "name": "node",
+          "description": "当前编辑的节点",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "draggable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否支持拖拽节点",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否支持拖拽节点"
+    },
+    "onDragStart": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "开始拖拽节点时触发的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "开始拖拽节点时触发的回调函数\n@param {Object} info 拖拽信息\n@param {Object} info.event 事件对象\n@param {Object} info.node 拖拽的节点",
+      "params": [
+        {
+          "name": "info",
+          "description": "拖拽信息",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.event",
+          "description": "事件对象",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.node",
+          "description": "拖拽的节点",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onDragEnter": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "拖拽节点进入目标节点时触发的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "拖拽节点进入目标节点时触发的回调函数\n@param {Object} info 拖拽信息\n@param {Object} info.event 事件对象\n@param {Object} info.node 目标节点\n@param {Array} info.expandedKeys 当前展开的节点key的数组",
+      "params": [
+        {
+          "name": "info",
+          "description": "拖拽信息",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.event",
+          "description": "事件对象",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.node",
+          "description": "目标节点",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.expandedKeys",
+          "description": "当前展开的节点key的数组",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onDragOver": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "拖拽节点在目标节点上移动的时候触发的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "拖拽节点在目标节点上移动的时候触发的回调函数\n@param {Object} info 拖拽信息\n@param {Object} info.event 事件对象\n@param {Object} info.node 目标节点",
+      "params": [
+        {
+          "name": "info",
+          "description": "拖拽信息",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.event",
+          "description": "事件对象",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.node",
+          "description": "目标节点",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onDragLeave": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "拖拽节点离开目标节点时触发的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "拖拽节点离开目标节点时触发的回调函数\n@param {Object} info 拖拽信息\n@param {Object} info.event 事件对象\n@param {Object} info.node 目标节点",
+      "params": [
+        {
+          "name": "info",
+          "description": "拖拽信息",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.event",
+          "description": "事件对象",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.node",
+          "description": "目标节点",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onDragEnd": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "拖拽节点拖拽结束时触发的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "拖拽节点拖拽结束时触发的回调函数\n@param {Object} info 拖拽信息\n@param {Object} info.event 事件对象\n@param {Object} info.node 目标节点",
+      "params": [
+        {
+          "name": "info",
+          "description": "拖拽信息",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.event",
+          "description": "事件对象",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.node",
+          "description": "目标节点",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onDrop": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "拖拽节点放入目标节点内或前后触发的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "拖拽节点放入目标节点内或前后触发的回调函数\n@param {Object} info 拖拽信息\n@param {Object} info.event 事件对象\n@param {Object} info.node 目标节点\n@param {Object} info.dragNode 拖拽的节点\n@param {Array} info.dragNodesKeys 拖拽的节点和其子节点 key 的数组\n@param {Number} info.dropPosition 放置位置，-1代表当前节点前，0代表当前节点里，1代表当前节点后",
+      "params": [
+        {
+          "name": "info",
+          "description": "拖拽信息",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.event",
+          "description": "事件对象",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.node",
+          "description": "目标节点",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.dragNode",
+          "description": "拖拽的节点",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.dragNodesKeys",
+          "description": "拖拽的节点和其子节点 key 的数组",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "info.dropPosition",
+          "description": "放置位置，-1代表当前节点前，0代表当前节点里，1代表当前节点后",
+          "type": {
+            "name": "Number"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "canDrop": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "节点是否可被作为拖拽的目标节点",
+      "defaultValue": {
+        "value": "() => true",
+        "computed": false
+      },
+      "docblock": "节点是否可被作为拖拽的目标节点\n@param {Object} info 拖拽信息\n@param {Object} info.node 目标节点\n@param {Object} info.dragNode 拖拽的节点\n@param {Array} info.dragNodesKeys 拖拽的节点和其子节点 key 的数组\n@param {Number} info.dropPosition 放置位置，-1代表当前节点前，0代表当前节点里，1代表当前节点后\n@return {Boolean} 是否可以被当作目标节点",
+      "params": [
+        {
+          "name": "info",
+          "description": "拖拽信息",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.node",
+          "description": "目标节点",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.dragNode",
+          "description": "拖拽的节点",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.dragNodesKeys",
+          "description": "拖拽的节点和其子节点 key 的数组",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "info.dropPosition",
+          "description": "放置位置，-1代表当前节点前，0代表当前节点里，1代表当前节点后",
+          "type": {
+            "name": "Number"
+          }
+        }
+      ],
+      "returns": {
+        "description": "是否可以被当作目标节点",
+        "type": {
+          "name": "Boolean"
+        }
+      }
+    },
+    "loadData": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "异步加载数据的函数",
+      "docblock": "异步加载数据的函数\n@param {Object} node 被点击展开的节点",
+      "params": [
+        {
+          "name": "node",
+          "description": "被点击展开的节点",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "filterTreeNode": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "按需筛选高亮节点",
+      "docblock": "按需筛选高亮节点\n@param {Object} node 待筛选的节点\n@return {Boolean} 是否被筛选中",
+      "params": [
+        {
+          "name": "node",
+          "description": "待筛选的节点",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "是否被筛选中",
+        "type": {
+          "name": "Boolean"
+        }
+      }
+    },
+    "onRightClick": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "右键点击节点时触发的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "右键点击节点时触发的回调函数\n@param {Object} info 信息对象\n@param {Object} info.event 事件对象\n@param {Object} info.node 点击的节点",
+      "params": [
+        {
+          "name": "info",
+          "description": "信息对象",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.event",
+          "description": "事件对象",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "info.node",
+          "description": "点击的节点",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "isLabelBlock": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "设置节点是否占满剩余空间，一般用于统一在各节点右侧添加元素(借助 flex 实现，暂时只支持 ie10+)",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "设置节点是否占满剩余空间，一般用于统一在各节点右侧添加元素(借助 flex 实现，暂时只支持 ie10+)"
+    },
+    "isNodeBlock": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "bool"
+          },
+          {
+            "name": "object"
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置节点是否占满一行",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "设置节点是否占满一行"
+    },
+    "animation": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启展开收起动画",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否开启展开收起动画"
+    },
+    "focusedKey": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "当前获得焦点的子菜单或菜单项 key 值",
+      "docblock": "当前获得焦点的子菜单或菜单项 key 值"
+    },
+    "renderChildNodes": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "渲染子节点",
+      "docblock": "渲染子节点\n@param {Array<ReactNode>} nodes 所有的子节点\n@return {ReactNode} 返回节点",
+      "params": [
+        {
+          "name": "nodes",
+          "description": "所有的子节点",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": {
+        "description": "返回节点",
+        "type": {
+          "name": "ReactNode"
+        }
+      }
+    },
+    "labelRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义渲染单个子节点",
+      "docblock": "自定义渲染单个子节点\n@param {Object} node 节点数据\n@return {ReactNode} 返回节点\n@version 1.25",
+      "params": [
+        {
+          "name": "node",
+          "description": "节点数据",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "返回节点",
+        "type": {
+          "name": "ReactNode"
+        }
+      },
+      "version": {
+        "value": "1.25",
+        "computed": false
+      }
+    },
+    "useVirtual": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启虚拟滚动",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否开启虚拟滚动"
+    },
+    "immutable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否是不可变数据",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否是不可变数据\n@version 1.23",
+      "version": {
+        "value": "1.23",
+        "computed": false
+      }
+    },
+    "virtualListProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "VirtualList透传参数",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "VirtualList透传参数",
+      "properties": []
+    },
+    "clickToCheck": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "点击文本是否可以勾选",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "点击文本是否可以勾选"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Node",
+      "props": {
+        "children": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "树节点",
+          "docblock": "树节点"
+        },
+        "label": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "节点文本内容",
+          "defaultValue": {
+            "value": "'---'",
+            "computed": false
+          },
+          "docblock": "节点文本内容"
+        },
+        "selectable": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "单独设置是否支持选中，覆盖 Tree 的 selectable",
+          "docblock": "单独设置是否支持选中，覆盖 Tree 的 selectable"
+        },
+        "checkable": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "单独设置是否出现复选框，覆盖 Tree 的 checkable",
+          "docblock": "单独设置是否出现复选框，覆盖 Tree 的 checkable"
+        },
+        "editable": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "单独设置是否支持编辑，覆盖 Tree 的 editable",
+          "docblock": "单独设置是否支持编辑，覆盖 Tree 的 editable"
+        },
+        "draggable": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "单独设置是否支持拖拽，覆盖 Tree 的 draggable",
+          "docblock": "单独设置是否支持拖拽，覆盖 Tree 的 draggable"
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否禁止节点响应",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否禁止节点响应"
+        },
+        "checkboxDisabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否禁止勾选节点复选框",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否禁止勾选节点复选框"
+        },
+        "isLeaf": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否是叶子节点，设置loadData时生效",
+          "docblock": "是否是叶子节点，设置loadData时生效"
+        },
+        "icon": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "node"
+              }
+            ]
+          },
+          "required": false,
+          "description": "自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type=\"icon type\" />`",
+          "docblock": "自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type=\"icon type\" />`\n@version 1.21",
+          "version": {
+            "value": "1.21",
+            "computed": false
+          }
+        }
+      },
+      "methods": []
+    }
+  ]
+}
