@@ -1,5 +1,10 @@
 # Change Log 
 
+## [1.26.26](https://github.com/alibaba-fusion/next/compare/1.26.25...1.26.26) (2023-10-11)
+
+
+
+
 ## [1.26.25](https://github.com/alibaba-fusion/next/compare/1.26.24...1.26.25) (2023-09-25)
 
 

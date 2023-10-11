@@ -154,16 +154,21 @@ class DatePicker extends Component {
         inputProps: PropTypes.object,
         /**
          * 自定义日期渲染函数
-         * @param {Object} value 日期值（moment对象）
+         * @param {Moment} calendarDate 日期值（moment对象）
          * @returns {ReactNode}
          */
         dateCellRender: PropTypes.func,
         /**
          * 自定义月份渲染函数
-         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @param {Moment} calendarDate 对应 Calendar 返回的自定义日期对象
          * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
+        /**
+         * 自定义年份渲染函数
+         * @param {Moment} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
         yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         /**
          * 日期输入框的 aria-label 属性
@@ -185,8 +190,17 @@ class DatePicker extends Component {
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        /**
+         * 自定义弹层组件
+         */
         popupComponent: PropTypes.elementType,
+        /**
+         * 自定义弹层内容
+         */
         popupContent: PropTypes.node,
+        /**
+         * 禁用日期选择器的日期模式切换
+         */
         disableChangeMode: PropTypes.bool,
         yearRange: PropTypes.arrayOf(PropTypes.number),
     };
