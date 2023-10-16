@@ -238,7 +238,7 @@ class Picker extends React.Component {
      * @param {string} type 事件类型
      */
     handleVisibleChange = (visible, targetType) => {
-        if (['docClick', 'fromTrigger'].indexOf(targetType) > -1) {
+        if (['docClick', 'fromTrigger', 'fromContent'].indexOf(targetType) > -1) {
             // 弹层收起 触发 Change 逻辑
             if (!visible) {
                 this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
