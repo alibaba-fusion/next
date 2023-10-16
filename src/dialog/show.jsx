@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, forwardRef, useImperativeHandle } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
@@ -6,10 +6,15 @@ import ConfigProvider from '../config-provider';
 import Message from '../message';
 import zhCN from '../locale/zh-cn';
 import dialog from './dialog';
-import dialog2 from './dialog-v2';
+import Dialog2Ins from './dialog-v2';
 
 const Dialog = ConfigProvider.config(dialog);
-const Dialog2 = ConfigProvider.config(dialog2);
+const Dialog2 = ConfigProvider.config(
+    forwardRef((props, ref) => {
+        useImperativeHandle(ref, () => undefined);
+        return <Dialog2Ins {...props} />;
+    })
+);
 
 const noop = () => {};
 const MESSAGE_TYPE = {
