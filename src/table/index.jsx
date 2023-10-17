@@ -60,7 +60,7 @@ export default ConfigProvider.config(Table, {
     componentName: 'Table',
     transform: /* istanbul ignore next */ (props, deprecated) => {
         // fix https://github.com/alibaba-fusion/next/issues/4062
-        if ('columns' in props) {
+        if ('columns' in props && typeof props.columns !== 'undefined') {
             const { columns, ...others } = props;
             const newColumns = [...columns];
 
