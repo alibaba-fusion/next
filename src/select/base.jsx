@@ -2,7 +2,7 @@ import React, { Children } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { func, dom, events } from '../util';
+import { func, dom, events, obj } from '../util';
 import Menu from '../menu';
 import Overlay from '../overlay';
 import Input from '../input';
@@ -503,7 +503,11 @@ export default class Base extends React.Component {
         const menuStyle = this.shouldAutoWidth() ? { width: '100%' } : { minWidth: this.width };
 
         return useVirtual && children.length > 10 ? (
-            <div className={`${prefix}select-menu-wrapper`} style={{ position: 'relative', ...menuStyle }}>
+            <div
+                className={`${prefix}select-menu-wrapper`}
+                style={{ position: 'relative', ...menuStyle }}
+                {...obj.pickProps(['onScroll'], customProps)}
+            >
                 <VirtualList
                     itemsRenderer={(items, ref) => {
                         return (
@@ -513,7 +517,7 @@ export default class Base extends React.Component {
                                     this.menuRef = c;
                                 }}
                                 flatenContent
-                                {...customProps}
+                                {...obj.pickOthers(['onScroll'], customProps)}
                             >
                                 {items}
                             </Menu>
