@@ -112,6 +112,8 @@ class Radio extends UIState {
 
         this.state = { checked };
 
+        this.radioRef = null;
+
         this.onChange = this.onChange.bind(this);
     }
 
@@ -173,6 +175,13 @@ class Radio extends UIState {
         }
     }
 
+    focus() {
+        if (this.radioRef) {
+            this.radioRef.focus();
+            this._onUIFocus();
+        }
+    }
+
     render() {
         /* eslint-disable no-unused-vars */
         const {
@@ -217,7 +226,6 @@ class Radio extends UIState {
                 </p>
             );
         }
-
         let input = (
             <input
                 {...obj.pickOthers(othersData, others)}
@@ -230,6 +238,9 @@ class Radio extends UIState {
                 onChange={this.onChange}
                 aria-checked={checked}
                 className={`${prefix}radio-input`}
+                ref={e => {
+                    this.radioRef = e;
+                }}
             />
         );
 
