@@ -265,9 +265,11 @@ export default class Dialog extends Component {
     }
 
     onKeyDown(e) {
-        const node = this.getInnerNode();
-        if (node) {
-            limitTabRange(node, e);
+        if (this.overlay) {
+            const node = this.getInnerNode();
+            if (node) {
+                limitTabRange(node, e);
+            }
         }
     }
 
