@@ -124,3 +124,12 @@ export function limitTabRange(node, e) {
         }
     }
 }
+
+/**
+ * 检查一个ref是否有focus方法，如果有方法，则调用focus函数
+ */
+export function focusRef(ref, ...args) {
+    if (ref && ref.focus && typeof ref.focus === 'function') {
+        ref.focus(...args);
+    }
+}
