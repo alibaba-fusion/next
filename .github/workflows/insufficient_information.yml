@@ -1,0 +1,19 @@
+name: Insufficient Info
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  reply-helper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: insufficient information
+        if: github.event.label.name == 'insufficient information'
+        uses: actions-cool/issues-helper@v2
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，由于缺乏必要的信息（如 bug 重现步骤、复现 demo 等），无法定位问题。请补充相应的信息以帮助我们更快地定位问题。复现 demo 可以是 [codesandbox](https://codesandbox.io/s/kmy7zjr7l3) 或 [codepen](https://codepen.io/pen?&editors=0010) 或是 GitHub 仓库的链接。在相关 label 移除之前，由于无法快速跟进我们将降低处理的优先级。
