@@ -220,7 +220,7 @@ class NumberPicker extends React.Component {
         // 如果是undefined或null，应该不限制最大最小值
         const { min, max } = nextProps;
         if ('min' in nextProps && min !== prevState.min) {
-            state.min = !isNil(min) ? min : stringMode ? Infinity : MIN_SAFE_INTEGER;
+            state.min = !isNil(min) ? min : stringMode ? -Infinity : MIN_SAFE_INTEGER;
         }
 
         if ('max' in nextProps && max !== prevState.max) {
