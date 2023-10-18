@@ -97,7 +97,7 @@
     ]
   },
   "dependencies": {
-    "@alifd/field": "~1.5.5",
+    "@alifd/field": "~1.6.3",
     "@alifd/overlay": "^0.2.9",
     "@alifd/validate": "~1.2.0",
     "@types/react-transition-group": "^4.4.6",
