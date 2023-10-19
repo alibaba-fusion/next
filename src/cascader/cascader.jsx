@@ -834,13 +834,13 @@ class Cascader extends Component {
 
         return (
             <div {...props} ref={this.getCascaderNode}>
-                {!searchValue ? (
-                    <div className={`${prefix}cascader-inner`}>
-                        {dataSource && dataSource.length ? this.renderMenus() : null}
-                    </div>
-                ) : (
-                    this.renderFilteredList()
-                )}
+                <div className={`${prefix}cascader-inner`}>
+                    {!searchValue
+                        ? dataSource && dataSource.length
+                            ? this.renderMenus()
+                            : null
+                        : this.renderFilteredList()}
+                </div>
             </div>
         );
     }
