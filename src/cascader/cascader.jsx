@@ -299,7 +299,7 @@ class Cascader extends Component {
     getCascaderNode(ref) {
         this.cascader = ref;
         if (this.cascader) {
-            this.cascaderInner = this.cascader.querySelector(`.${this.props.prefix}cascader-inner`);
+            this.cascaderInner = this.cascader.querySelector(`.${this.props.prefix}cascader-inner`) || this.cascader;
         }
     }
 
@@ -834,13 +834,13 @@ class Cascader extends Component {
 
         return (
             <div {...props} ref={this.getCascaderNode}>
-                <div className={`${prefix}cascader-inner`}>
-                    {!searchValue
-                        ? dataSource && dataSource.length
-                            ? this.renderMenus()
-                            : null
-                        : this.renderFilteredList()}
-                </div>
+                {!searchValue ? (
+                    <div className={`${prefix}cascader-inner`} ref={this.getCascaderNode}>
+                        {dataSource && dataSource.length ? this.renderMenus() : null}
+                    </div>
+                ) : (
+                    this.renderFilteredList()
+                )}
             </div>
         );
     }
