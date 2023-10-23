@@ -763,6 +763,26 @@ describe('Picker', () => {
             }, 200);
         });
 
+        it.only('should change input value when switch mode', () => {
+            const inputValue = {
+                'date': ['2023-10-16', '2023-10-22'],
+                'week': ['2023-42周', '2023-42周']
+            };
+
+            let mode = DATE;
+            let rangeValue = ['2023-10-16', '2023-10-22'];
+
+            wrapper = mount(<RangePicker value={rangeValue} mode={mode} />);
+            mode = WEEK;
+            rangeValue = ['2023-42周', '2023-42周'];
+
+            setTimeout(() => {
+                assert.deepEqual(getStrValue(wrapper), inputValue[mode]);
+                done();
+            }, 200);
+        });
+
+
         it('clear input', () => {
             wrapper = mount(<RangePicker visible defaultValue={defaultRangeVal} />);
             findInput(0).simulate('click');
