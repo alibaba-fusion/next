@@ -62,6 +62,7 @@
 | useVirtual               | 是否开启虚拟滚动                                                                                                                                                                                                                                                       | Boolean                     | false       |      |
 | immutable                | 是否是不可变数据                                                                                                                                                                                                                                                       | Boolean                     | -           | 1.23 |
 | clickToCheck             | 点击文本是否可以勾选                                                                                                                                                                                                                                                     | Boolean                     | false       |      |
+| valueRender            | 渲染 Select 展现内容的方法<br/><br/>**签名**:<br/>Function(item: Object, itemPaths: Object[]) => ReactNode<br/>**参数**:<br/>_item_: {Object} 渲染节点的item<br/>**参数**:<br/>_itemPaths_: {Object[]} item的全路径数组<br/>**返回值**:<br/>{ReactNode} 展现内容<br/>                                                                                                     | Function                               | item => `item.label || item.value` |      |
 
 <!-- api-extra-start -->
 

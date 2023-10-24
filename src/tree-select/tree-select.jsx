@@ -18,6 +18,7 @@ import { getValueDataSource, valueToSelectKey } from '../select/util';
 const noop = () => {};
 const { Node: TreeNode } = Tree;
 const { bindCtx } = func;
+const POS_REGEXP = /^\d+(-\d+){1,}$/;
 
 const flatDataSource = props => {
     const _k2n = {};
@@ -311,6 +312,14 @@ class TreeSelect extends Component {
          * 点击文本是否可以勾选
          */
         clickToCheck: PropTypes.bool,
+        /**
+         * 渲染 Select 展现内容的方法
+         * @param {Object} item 渲染节点的item
+         * @param {Object[]} itemPaths item的全路径数组
+         * @return {ReactNode} 展现内容
+         * @default item => `item.label || item.value`
+         */
+        valueRender: PropTypes.func,
     };
 
     static defaultProps = {
@@ -436,6 +445,21 @@ class TreeSelect extends Component {
 
     getValueByKeys(keys) {
         return keys.map(k => this.state._k2n[k].value);
+    }
+
+    getFullItemPath(item) {
+        if (!item) {
+            return [];
+        }
+        const pos = item.pos;
+        if (typeof pos === 'string' && POS_REGEXP.test(pos)) {
+            const { _p2n } = this.state;
+            const posArr = pos.split('-');
+            const fullPosArr = posArr.map((_, i) => posArr.slice(0, i + 1).join('-')).slice(1);
+            const itemArr = fullPosArr.map(pos => _p2n[pos]);
+            return itemArr;
+        }
+        return [item];
     }
 
     getValueForSelect(value) {
@@ -976,9 +1000,19 @@ class TreeSelect extends Component {
             isPreview,
             dataSource,
             tagInline,
+            valueRender,
         } = this.props;
         const others = obj.pickOthers(Object.keys(TreeSelect.propTypes), this.props);
         const { value, visible } = this.state;
+
+        const valueRenderProps =
+            typeof valueRender === 'function'
+                ? {
+                      valueRender: item => {
+                          return valueRender(item, this.getFullItemPath(item));
+                      },
+                  }
+                : undefined;
 
         // if (non-leaf 节点可选 & 父子节点选中状态需要联动)，需要额外计算父子节点间的联动关系
         const valueForSelect = treeCheckable && !treeCheckStrictly ? this.getValueForSelect(value) : value;
@@ -1021,6 +1055,7 @@ class TreeSelect extends Component {
                 followTrigger={followTrigger}
                 tagInline={tagInline}
                 maxTagPlaceholder={this.renderMaxTagPlaceholder}
+                {...valueRenderProps}
                 {...others}
                 onRemove={this.handleRemove}
                 onKeyDown={this.handleKeyDown}
