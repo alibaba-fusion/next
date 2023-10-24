@@ -255,7 +255,14 @@ class Cascader extends Component {
             _p2n: p2n,
         };
 
-        bindCtx(this, ['handleMouseLeave', 'handleFocus', 'handleFold', 'getCascaderNode', 'onBlur']);
+        bindCtx(this, [
+            'handleMouseLeave',
+            'handleFocus',
+            'handleFold',
+            'getCascaderNode',
+            'getCascaderInnerNode',
+            'onBlur',
+        ]);
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -298,9 +305,10 @@ class Cascader extends Component {
 
     getCascaderNode(ref) {
         this.cascader = ref;
-        if (this.cascader) {
-            this.cascaderInner = this.cascader.querySelector(`.${this.props.prefix}cascader-inner`);
-        }
+    }
+
+    getCascaderInnerNode(ref) {
+        this.cascaderInner = ref;
     }
 
     setCascaderInnerWidth() {
@@ -835,7 +843,7 @@ class Cascader extends Component {
         return (
             <div {...props} ref={this.getCascaderNode}>
                 {!searchValue ? (
-                    <div className={`${prefix}cascader-inner`}>
+                    <div className={`${prefix}cascader-inner`} ref={this.getCascaderInnerNode}>
                         {dataSource && dataSource.length ? this.renderMenus() : null}
                     </div>
                 ) : (
