@@ -1187,7 +1187,7 @@ describe('Issue', () => {
               dataIndex: 'itemName',
             },
         ];
-          
+
         function DemoTable() {
             const dataSource = [
                 {
@@ -1226,8 +1226,8 @@ describe('Issue', () => {
                 />
             );
         }
-          
-          
+
+
         function App() {
             return (
                 <div>
@@ -1255,7 +1255,7 @@ describe('Issue', () => {
             }
             return result;
         };
-        
+
         ReactDOM.render(
             <ConfigProvider prefix="my-">
                 <Table dataSource={dataSource()}>
@@ -1280,4 +1280,17 @@ describe('Issue', () => {
 
         assert(container.querySelector('.next-table-empty'))
     })
+
+    it('should not crash when columns is undefined, close #4070', (done) => {
+        wrapper.setProps({});
+        timeout(
+            {
+                columns: undefined,
+            },
+            () => {
+                assert(wrapper.find('.next-table-empty'));
+                done();
+            }
+        )
+    });
 });
