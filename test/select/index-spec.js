@@ -1305,7 +1305,7 @@ describe('AutoComplete', () => {
 describe('virtual list', function() {
     let wrapper = null;
 
-    this.afterEach(function() {
+    afterEach(function() {
         if(wrapper) {
             wrapper.unmount();
             wrapper = null;
