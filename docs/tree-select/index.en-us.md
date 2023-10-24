@@ -57,6 +57,7 @@ Like Select, TreeSelect can be used when the selected data structure is a tree s
 | preserveNonExistentValue | if reserve value when value/defaultValue not exist in dataSource  | Boolean                     | false       | 1.25 |
 | autoClearSearch          | auto clear search value when choose item                                                                                                                                                                                                                                      | Boolean                     | true        | 1.26 |
 | clickToCheck            | whether clicking on the text can be checked. When it is true, selectable defaults to false.      | Boolean   | false |
+| valueRender | Methods for rendering Select to display content <br>** Parameters**:<br>_item_: {Object} Render node's item<br>** Parameters**:<br>_itemPaths_: {Object[]} item full paths<br>**return value **:<br>{ReactNode} show content <br> | Function | item => item.label \|\| item.value |
 
 <!-- api-extra-start -->
 

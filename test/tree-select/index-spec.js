@@ -800,6 +800,20 @@ describe('TreeSelect', () => {
 
         assert(wrapper.find('.next-select-tag-compact').length > 0);
         assert(wrapper.find('.next-select-tag-compact').text().includes('3/6'));
+    });
+
+    it('should support valueRender', () => {
+        wrapper = mount(
+            <TreeSelect
+                dataSource={dataSource}
+                value={['2']}
+                valueRender={(item, paths) => {
+                    return paths.map(t => t.label).join('/');
+                }}
+            />
+        );
+        assert(wrapper.find('.next-select-values').length > 0);
+        assert(wrapper.find('.next-select-values').text().trim() === '服装/男装');
     })
 });
 
