@@ -143,7 +143,6 @@ export const getTrackLeft = function(spec) {
                 .slice(0, index)
                 .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
             targetLeft = newHeight * -1;
-            console.log(spec.slideHeightList, 'adaptiveHeight');
         }
     }
 
