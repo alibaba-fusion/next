@@ -146,7 +146,7 @@ class Picker extends React.Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { type, showTime, showOk, disabled, format } = props;
+        const { type, showTime, showOk, disabled, format, mode } = props;
         const isRange = type === DATE_PICKER_TYPE.RANGE;
 
         let newState = {
@@ -185,6 +185,16 @@ class Picker extends React.Component {
                     preValue: value,
                     inputValue: fmtValue(value, format),
                 };
+            }
+
+            if ('mode' in props) {
+                if (mode !== state.panelMode) {
+                    newState = {
+                        ...newState,
+                        panelMode: mode,
+                        inputValue: fmtValue(value, format),
+                    };
+                }
             }
 
             if ('showTime' in props) {
