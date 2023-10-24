@@ -311,9 +311,8 @@ class Cascader extends Component {
     }
 
     getCascaderInnerNode(ref) {
-        this.cascader = ref;
-        if (this.cascader) {
-            this.cascaderInner = this.cascade;
+        if (ref) {
+            this.cascaderInner = ref;
         }
     }
 
