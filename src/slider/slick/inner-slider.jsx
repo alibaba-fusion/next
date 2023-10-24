@@ -69,6 +69,7 @@ class InnerSlider extends React.Component {
             slideCount: null,
             slideWidth: null,
             slideHeight: null,
+            slideHeightList: [],
             swipeLeft: null,
             touchObject: {
                 startX: 0,
