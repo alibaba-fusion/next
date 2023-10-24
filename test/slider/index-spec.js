@@ -464,6 +464,29 @@ describe('slider', function () {
             wrapper = mount(<Slider {...settings}>{slides}</Slider>);
             wrapper.find('.next-slick-arrow.next-slick-next').simulate('click');
         });
+        it('should adaptiveHeight',()=>{
+            wrapper = mount(
+                <Slider 
+                adaptiveHeight
+                dotsDirection="ver"
+                slideDirection="ver"
+                activeIndex={0}
+              >
+                <div className="slider-item" key={1}>111111</div>
+                <div className="slider-item" key={2}>公告：22222222222222222222领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问。工从引然所国引极二间响他两周消广放济候办片提广起两有动书断化管千积争擦到了传达了查看；</div>
+                <div className="slider-item" key={3}>3333</div>
+                <div className="slider-item" key={4}>44444444444</div>
+              </Slider>
+            );
+            wrapper.setProps({ activeIndex: 2 });
+            wrapper.update();
+            const height1 = wrapper.find('.next-slick-slide').at(0).instance().style.height
+            const height2 = wrapper.find('.next-slick-slide').at(1).instance().style.height
+            const height3 = wrapper.find('.next-slick-slide').at(3).instance().style.height
+            const newHeight = height1 + height2 + height3
+           assert(wrapper.find('.next-slick-track').instance().style.transform === `translate3d(0px, ${-(newHeight)}px, 0px)`);
+        });
+
     });
 
     describe('action rtl', () => {

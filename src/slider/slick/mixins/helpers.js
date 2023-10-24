@@ -19,7 +19,12 @@ const helpers = {
 
         const slideHeight = this.getHeight(slickList.querySelector('[data-index="0"]')) || 0;
         const listHeight = slideHeight * props.slidesToShow;
-
+        let slideHeightList = [];
+        const newSlickList = Array.from(slickList.querySelectorAll(`.${props.prefix}slick-slide`) || []);
+        for (const item of newSlickList) {
+            const height = this.getHeight(item);
+            slideHeightList.push(height);
+        }
         const slidesToShow = props.slidesToShow || 1;
 
         const activeIndex = 'activeIndex' in props ? props.activeIndex : props.defaultActiveIndex;
@@ -34,6 +39,7 @@ const helpers = {
                 currentSlide,
                 slideHeight,
                 listHeight,
+                slideHeightList,
             },
             () => {
                 const targetLeft = getTrackLeft({
