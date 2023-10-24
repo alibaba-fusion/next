@@ -15,6 +15,7 @@ select with virtual list
 
 ````jsx
 import { Select } from '@alifd/next';
+import { useState, useRef } from 'react';
 
 const Option = Select.Option;
 
@@ -39,18 +40,56 @@ function generateData(len, isOption) {
 
     return data;
 }
+function generateAppendItems(start, end) {
+    const arr = [];
+    for(let i=start; i< end; i ++) {
+        arr.push(generateItem(i));
+    }
+    return arr;
+}
 
-ReactDOM.render(
-    <div>
-        <Select dataSource={generateData(100)} useVirtual onChange={onChange} defaultValue="option0" />
-        <br/>
-        <br/>
-        <Select useVirtual onChange={onChange} defaultValue="option50">
-            {generateData(100, true)}
-        </Select>
-        <br />
-        <br />
-        <Select style={{width: 300}} hasSelectAll tagInline mode="multiple" dataSource={generateData(100)} useVirtual onChange={onChange} defaultValue={["option0"]} />
-    </div>
-    , mountNode);
+function App() {
+    const [dataSource, setDataSource] = useState(generateData(30));
+    const dataSourceRef = useRef(dataSource);
+    dataSourceRef.current = dataSource;
+    const onScroll = e => {
+        const currentDataSource = dataSourceRef.current;
+        const length = currentDataSource.length;
+        const scrollHeight = e.target.scrollHeight; // 内容总高度
+        const clientHeight = e.target.clientHeight; // 窗口高度
+        const scrollTop = e.target.scrollTop;           //滚动高度
+        console.log(scrollTop,clientHeight, scrollHeight);
+
+        if ( scrollTop + clientHeight === scrollHeight) { // 到达底部
+            const otherData = generateAppendItems(length, length + 10);
+
+            setDataSource(currentDataSource.concat(otherData))
+        }
+    }
+  return (
+      <div>
+          <Select dataSource={generateData(100)} useVirtual onChange={onChange} defaultValue="option0" />
+          <br/>
+          <br/>
+          <Select useVirtual onChange={onChange} defaultValue="option50">
+              {generateData(100, true)}
+          </Select>
+          <br />
+          <br />
+          <div>Infinite scroll loading</div>
+          <Select
+              style={{width: 300}}
+              tagInline
+              mode="multiple"
+              dataSource={dataSource}
+              useVirtual
+              menuProps={{onScroll}}
+              onChange={onChange}
+              defaultValue={["option0"]}
+          />
+      </div>
+  )
+}
+
+ReactDOM.render(<App />, mountNode);
 ````

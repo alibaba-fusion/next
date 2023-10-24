@@ -10,6 +10,12 @@ import '../../src/select/style.js';
 
 /* eslint-disable react/no-multi-comp,no-undef */
 
+function delay(duration) {
+    return new Promise(resolve => {
+    	setTimeout(resolve, duration);
+    })
+}
+
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Select', () => {
@@ -1296,7 +1302,16 @@ describe('AutoComplete', () => {
     });
 });
 
-describe('virtual list', () => {
+describe('virtual list', function() {
+    let wrapper = null;
+
+    afterEach(function() {
+        if(wrapper) {
+            wrapper.unmount();
+            wrapper = null;
+        }
+    })
+
     it('should works with showSearch', done => {
         const dataSource = [
             { label: '海关总署', value: '0000' },
@@ -1311,7 +1326,7 @@ describe('virtual list', () => {
             { label: '京通关处', value: '0108' },
         ];
 
-        const wrapper = mount(
+        wrapper = mount(
             <Select
                 placeholder="选择尺寸"
                 useVirtual
@@ -1339,4 +1354,52 @@ describe('virtual list', () => {
             done();
         }, 200);
     });
+
+    it('should works with onScroll', async () => {
+        const generateItems = (start, end) => {
+            return new Array(end - start).fill(null).map((_, i) => ({
+                label: `option${start + i}`,
+                value: `option${start + i}`
+            }))
+        }
+        function Spec() {
+            const [ds, setDS] = React.useState(generateItems(0, 20));
+            const dsRef = React.useRef(ds);
+            dsRef.current = ds;
+            const onScroll = e => {
+                const currentDataSource = dsRef.current;
+                const length = currentDataSource.length;
+                const scrollHeight = e.target.scrollHeight; // 内容总高度
+                const clientHeight = e.target.clientHeight; // 窗口高度
+                const scrollTop = e.target.scrollTop;           //滚动高度
+                if ( scrollTop + clientHeight === scrollHeight) { // 到达底部
+                    const otherData = generateItems(length, length + 20);
+
+                    setDS(currentDataSource.concat(otherData))
+                }
+            }
+            return <Select useVirtual dataSource={ds} menuProps={{onScroll}} visible/>
+        }
+        wrapper = mount(<Spec/>);
+        const menuWrapper = wrapper.find('.next-select-menu-wrapper');
+        assert(menuWrapper);
+        const menuWrapperDom = menuWrapper.getDOMNode();
+        assert(menuWrapperDom.querySelector('.next-menu-item[title="option10"]'));
+
+        let page = 1;
+        const pageSize = 20;
+        const itemHeight = 32;
+        const wrapperHeight = menuWrapperDom.clientHeight;
+        const scrollToNextLimit = async () => {
+            menuWrapperDom.scrollTop = (page * pageSize) * itemHeight - wrapperHeight;
+            menuWrapper.simulate('scroll', {target: menuWrapperDom});
+            await delay(100);
+            assert(menuWrapperDom.querySelector(`.next-menu-item[title="option${page * pageSize + 2}"]`));
+            page++;
+        }
+
+        await scrollToNextLimit();
+        await scrollToNextLimit();
+        await scrollToNextLimit();
+    })
 });
