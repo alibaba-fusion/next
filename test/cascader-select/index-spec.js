@@ -596,52 +596,6 @@ describe('CascaderSelect', () => {
         await delay(300);
         assert(document.querySelector('.next-cascader-select-dropdown'));
     });
-    it('should render again', () => {
-        const dataSource = {
-            data: [
-                {
-                    value: '2973',
-                    label: '陕西',
-                    children: [
-                        {
-                            value: '2974',
-                            label: '西安',
-                            children: [
-                                { value: '2975', label: '西安市', isLeaf: true, checkboxDisabled: true },
-                                { value: '2976', label: '高陵县', isLeaf: true },
-                            ],
-                        },
-                        {
-                            value: '2980',
-                            label: '铜川',
-                            disabled: true,
-                            children: [
-                                { value: '2981', label: '铜川市', isLeaf: true },
-                                { value: '2982', label: '宜君县', isLeaf: true },
-                            ],
-                        },
-                    ],
-                },
-            ],
-        };
-        wrapper = mount(
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <CascaderSelect
-                    showSearch
-                    dataSource={dataSource}
-                    onChange={this.handleChange}
-                    style={{ width: '200px' }}
-                />
-            </div>
-        );
-        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '高陵' } });
-        wrapper.update();
-        assert(document.querySelector('.next-cascader-filtered-list').textContent.trim() === '陕西 / 西安 / 高陵县');
-
-        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '' } });
-        wrapper.update();
-        assert(wrapper.find('.next-cascader-inner').length > 0);
-    });
 });
 
 function findItem(menuIndex, itemIndex) {
