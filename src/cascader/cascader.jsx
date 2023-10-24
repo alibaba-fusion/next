@@ -305,15 +305,10 @@ class Cascader extends Component {
 
     getCascaderNode(ref) {
         this.cascader = ref;
-        if (this.cascader) {
-            this.cascaderInner = this.cascader.querySelector(`.${this.props.prefix}cascader-inner`);
-        }
     }
 
     getCascaderInnerNode(ref) {
-        if (ref) {
-            this.cascaderInner = ref;
-        }
+        this.cascaderInner = ref;
     }
 
     setCascaderInnerWidth() {
