@@ -10,7 +10,7 @@ const octokit = new Octokit({
 });
 
 const inquirer = require('inquirer');
-const { logger, runCmd } = require('../utils');
+const { logger, runCmd, runCmdSpawn } = require('../utils');
 const { execSync } = require('child_process');
 const publishToDocs = require('./publish');
 
@@ -21,7 +21,18 @@ const packageInfo = require(packagePath);
 const masterTag = packageInfo.version;
 const buildTag = `build/${packageInfo.version}`;
 
-const runCommond = function(cmd) {
+process.on('unhandledRejection', err => {
+    logger.error(err);
+    process.exit(1);
+});
+
+const runCommond = function(cmd, isSpawn = false) {
+    if (isSpawn) {
+        return runCmdSpawn(cmd).then(msg => {
+            logger.success(`[command] ${cmd}`, '\n');
+            logger.info(msg);
+        });
+    }
     return runCmd(cmd).then(msg => {
         logger.success(`[command] ${cmd}`, '\n');
         logger.info(msg);
@@ -208,7 +219,7 @@ function* publishToNpm() {
     ]);
     if (pubNpm.pub.toLowerCase() === 'yes') {
         logger.success('publishing ...');
-        yield runCommond(`npm publish --tag ${distTags.tag}`);
+        yield runCommond(`npm publish --tag ${distTags.tag}`, true);
         yield runCommond(`tnpm sync @alifd/next`);
         yield publishToNextDocs();
         triggerRelease();
@@ -269,12 +280,13 @@ function triggerRelease() {
                 prerelease: false,
             })
             .then(() => {
-                logger.success('Create release success');
+                logger.success('Create github release success');
                 resolve();
             })
             .catch(err => {
-                logger.error(`Failed to release: ${err}`);
-                reject();
+                logger.error(`Failed to create github release: ${err}`);
+                // github release失败不影响主流程
+                resolve();
             });
     });
 }
