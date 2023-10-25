@@ -1,4 +1,14 @@
-# Change Log 
+# Change Log
+
+## [1.26.28](https://github.com/alibaba-fusion/next/compare/1.26.27...1.26.28) (2023-10-25)
+
+
+### Bug Fixes
+
+* **TreeSelect:** valueRender prop type, close ([#4494](https://github.com/alibaba-fusion/next/issues/4494)) ([4ca767b](https://github.com/alibaba-fusion/next/commit/4ca767b))
+
+
+
 
 ## [1.26.27](https://github.com/alibaba-fusion/next/compare/1.26.26...1.26.27) (2023-10-25)
 
