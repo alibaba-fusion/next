@@ -1,11 +1,17 @@
 const path = require('path');
 const fs = require('fs-extra');
 
-const { logger, runCmd } = require('../utils');
+const { logger, runCmd, runCmdSpawn } = require('../utils');
 
 const cwd = process.cwd();
 
-const runCommond = function(cmd) {
+const runCommond = function(cmd, isSpawn = false, options) {
+    if (isSpawn) {
+        return runCmdSpawn(cmd, options).then(msg => {
+            logger.success(`[command] ${cmd}`, '\n');
+            logger.info(msg);
+        });
+    }
     return runCmd(cmd).then(msg => {
         logger.success(`[command] ${cmd}`, '\n');
         logger.info(msg);
@@ -32,21 +38,18 @@ module.exports = function*() {
     "originNpm": "@alifd/next",
     "repository": "https://github.com/alibaba-fusion/next.git",
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "registry": "https://registry.npmjs.org"
     }
 }`;
         currentDir.forEach(file => {
-            if (
-                ['compiled_docs', '.fusion', 'demos', 'dist', 'lib'].indexOf(
-                    file
-                ) > -1
-            ) {
+            if (['compiled_docs', '.fusion', 'demos', 'dist', 'lib'].indexOf(file) > -1) {
                 fs.copySync(path.join(cwd, file), path.join(docs, file));
             }
         });
         fs.writeFileSync(pkgPath, pkgContent);
         logger.success('Generate @alifd/next-docs successfully!');
-        yield runCommond(`cd ${docs}; npm publish`);
+        yield runCommond('npm publish', true, { cwd: docs });
         yield runCommond(`tnpm sync @alifd/next-docs`);
         logger.success('Publish @alifd/next-docs successfully!');
     } finally {
