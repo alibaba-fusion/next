@@ -41,7 +41,7 @@ exports.runCmd = function(command, options = { stdio: 'inherit' }) {
  * @param {object} options 参数，默认值 { stdio: 'inherit' }
  */
 exports.runCmdSpawn = function(command, options = { stdio: 'inherit' }) {
-    const { stdio, ...rest } = options;
+    const { stdio = 'inherit', ...rest } = options;
     return new Promise(function(resolve, reject) {
         const tokens = command.split(/\s+/);
         const cmd = tokens[0],
