@@ -63,9 +63,9 @@ function App() {
         if ( scrollTop + clientHeight === scrollHeight) { // 到达底部
             const otherData = generateAppendItems(length, length + 10);
 
-            setDataSource(currentDataSource.concat(otherData))
+            setDataSource(currentDataSource.concat(otherData));
         }
-    }
+    };
   return (
       <div>
           <Select dataSource={generateData(100)} useVirtual onChange={onChange} defaultValue="option0" />
@@ -88,7 +88,7 @@ function App() {
               defaultValue={["option0"]}
           />
       </div>
-  )
+  );
 }
 
 ReactDOM.render(<App />, mountNode);
