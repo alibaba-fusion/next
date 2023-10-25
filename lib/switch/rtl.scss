@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+.#{$css-prefix}switch {
+    &:after[dir="rtl"] {
+        content: " ";
+        transition: all $motion-duration-immediately $motion-linear;
+        transform-origin: right center;
+    }
+
+    &-medium[dir="rtl"] {
+        &:after {
+            right: 100%;
+            transform: translateX(100%);
+        }
+    }
+
+    &-small[dir="rtl"] {
+        &:after {
+            right: 100%;
+            transform: translateX(100%);
+        }
+    }
+
+    &-on[dir="rtl"] {
+        > .#{$css-prefix}switch-children {
+            color: $switch-normal-on-color-font;
+        }
+    }
+
+    &-on[disabled][dir="rtl"] {
+        &:after {
+            left: 0;
+            right: 100%;
+            box-shadow: $switch-on-shadow;
+        }
+    }
+
+    &-off[dir="rtl"] {
+        &:after {
+            right: 0;
+            transform: translateX(0);
+            box-shadow: $switch-rtl-on-shadow;
+        }
+        > .#{$css-prefix}switch-children {
+            right: auto;
+        }
+    }
+
+    &-off#{&}-small[dir="rtl"] {
+        > .#{$css-prefix}switch-children {
+            right: auto;
+        }
+    }
+}
