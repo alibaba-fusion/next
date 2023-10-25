@@ -82,7 +82,8 @@
   },
   "lint-staged": {
     "types/**/*.d.ts": [
-      "npm run tslint --"
+      "prettier --write",
+      "git add"
     ],
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx)": [
       "prettier --write"

@@ -4,6 +4,7 @@ import * as React from 'react';
 import CommonProps from '../util';
 import { PopupProps } from '../overlay';
 import { TreeProps } from '../tree';
+import { item } from '../select';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -224,10 +225,18 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      * 填充到选择框里的值的 key，默认是 value
      */
     fillProps?: string;
+
     /**
      * 点击文本是否可以勾选
      */
     clickToCheck?: boolean;
+
+    /**
+     * 渲染 Select 区域展现内容的方法
+     * @param {Object} item 渲染项
+     * @param {Object[]} itemPaths 渲染项在dataSource内的路径
+     */
+    valueRender?: (item: any, itemPaths: item[]) => React.ReactNode;
 }
 
 export default class TreeSelect extends React.Component<TreeSelectProps, any> {}
