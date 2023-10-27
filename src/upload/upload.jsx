@@ -49,6 +49,10 @@ class Upload extends Base {
         listType: PropTypes.oneOf(['text', 'image', 'card']),
         list: PropTypes.any,
         /**
+         * 是否展示上传文件的列表
+         */
+        showUploadList: PropTypes.bool,
+        /**
          * 文件名字段
          */
         name: PropTypes.string,
@@ -193,6 +197,7 @@ class Upload extends Base {
 
     static defaultProps = {
         ...html5Uploader.defaultProps,
+        showUploadList: true,
         prefix: 'next-',
         limit: Infinity,
         autoUpload: true,
@@ -528,6 +533,7 @@ class Upload extends Base {
             fileNameRender,
             actionRender,
             previewOnFileName,
+            showUploadList,
             ...others
         } = this.props;
 
@@ -611,24 +617,25 @@ class Upload extends Base {
                 >
                     {children}
                 </Uploader>
-                {listType || list ? (
-                    <List
-                        useDataURL={useDataURL}
-                        fileNameRender={fileNameRender}
-                        actionRender={actionRender}
-                        uploader={this}
-                        listType={listType}
-                        value={this.state.value}
-                        closable={closable}
-                        onRemove={onRemoveFunc}
-                        progressProps={progressProps}
-                        onCancel={onCancel}
-                        onPreview={onPreview}
-                        extraRender={extraRender}
-                        rtl={rtl}
-                        previewOnFileName={previewOnFileName}
-                    />
-                ) : null}
+                {showUploadList &&
+                    (listType || list ? (
+                        <List
+                            useDataURL={useDataURL}
+                            fileNameRender={fileNameRender}
+                            actionRender={actionRender}
+                            uploader={this}
+                            listType={listType}
+                            value={this.state.value}
+                            closable={closable}
+                            onRemove={onRemoveFunc}
+                            progressProps={progressProps}
+                            onCancel={onCancel}
+                            onPreview={onPreview}
+                            extraRender={extraRender}
+                            rtl={rtl}
+                            previewOnFileName={previewOnFileName}
+                        />
+                    ) : null)}
             </div>
         );
     }
