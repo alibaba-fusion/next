@@ -8,6 +8,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
      * 面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />`
      */
     link?: string;
+    onClick?: () => void;
 }
 
 export class Item extends React.Component<ItemProps, any> {}
@@ -52,7 +53,6 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
      * 添加到弹层上的属性（在showHiddenItems为true时才有意义）
      */
     popupProps?: PopupProps;
-    onClick?: () => void;
 }
 
 export default class Breadcrumb extends React.Component<BreadcrumbProps, any> {

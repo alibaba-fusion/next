@@ -71,7 +71,7 @@ class Breadcrumb extends Component {
          */
         component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         className: PropTypes.any,
-        onClick: PropTypes.object,
+        onClick: PropTypes.func,
     };
 
     static defaultProps = {
@@ -150,18 +150,11 @@ class Breadcrumb extends Component {
         // 拿到被隐藏的项
         const hiddenItems = [];
         Children.forEach(children, (item, i) => {
-            const { link, children: itemChildren } = item.props;
-            const { onClick } = this.props;
+            const { link, children: itemChildren, onClick, key } = item.props;
             if (i > 0 && i <= breakpointer) {
                 hiddenItems.push(
-                    <Menu.Item key={i}>
-                        {link ? (
-                            <a href={link} onClick={() => onClick && onClick(item.props, item.key)}>
-                                {itemChildren}
-                            </a>
-                        ) : (
-                            itemChildren
-                        )}
+                    <Menu.Item key={i} onClick={() => onClick && onClick({ children: itemChildren, link, key })}>
+                        {link ? <a href={link}>{itemChildren}</a> : itemChildren}
                     </Menu.Item>
                 );
             }

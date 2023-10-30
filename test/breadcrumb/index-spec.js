@@ -201,4 +201,42 @@ describe('Breadcrumb', () => {
         );
         wrapper.unmount();
     });
+    it('should support onClick', () => {
+        let isClicked = {};
+        const wrapper = mount(
+            <Breadcrumb maxNode={2} showHiddenItems popupProps={{ triggerType: 'click', visible: true }}>
+                <Breadcrumb.Item link="javascript:void(0);">Home 1</Breadcrumb.Item>
+                <Breadcrumb.Item
+                    link="javascript:void(0);"
+                    onClick={v => {
+                        isClicked = v;
+                    }}
+                >
+                    Whatever 2
+                </Breadcrumb.Item>
+                <Breadcrumb.Item link="javascript:void(0);">All Categories 3</Breadcrumb.Item>
+            </Breadcrumb>
+        );
+        const isObjectEqual = (obj1, obj2) => {
+            const obj1Keys = Object.keys(obj1);
+            const obj2Keys = Object.keys(obj2);
+
+            if (obj1Keys.length !== obj2Keys.length) {
+                return false;
+            }
+
+            for (let key of obj1Keys) {
+                if (obj1[key] !== obj2[key]) {
+                    return false;
+                }
+            }
+
+            return true;
+        };
+        wrapper
+            .find('.next-menu-item')
+            .at(0)
+            .simulate('click');
+        assert(isObjectEqual(isClicked, { children: 'Whatever 2', link: 'javascript:void(0);', key: undefined }));
+    });
 });
