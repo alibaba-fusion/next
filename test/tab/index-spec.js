@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
@@ -10,6 +11,7 @@ import TabNav from '../../src/tab/tabs/nav';
 import '../../src/tab/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
+const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 describe('Tab', () => {
     describe('simple', () => {
@@ -399,7 +401,7 @@ describe('Tab', () => {
     });
 
     describe('excess mode', () => {
-        let wrapper, target;
+        let target;
         const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
             <Tab.Item title={`tab item ${item}`} key={index} />
         ));
@@ -412,64 +414,62 @@ describe('Tab', () => {
 
         afterEach(() => {
             document.body.removeChild(target);
-            wrapper.unmount();
-            wrapper = null;
             target = null;
         });
 
-        it('should render excess tabs with slides', done => {
-            wrapper = mount(
+        it('should render excess tabs with slides', async () => {
+            const wrapper = mount(
                 <div style={boxStyle}>
                     <Tab animation={false}>{panes}</Tab>
                 </div>,
                 { attachTo: target }
             );
-            setTimeout(() => {
-                assert(
-                    dom.hasClass(
-                        wrapper.find('.next-tabs-btn-prev').getDOMNode(),
-                        'disabled'
-                    )
-                );
-                assert(wrapper.find('.next-tabs-btn-next').length === 1);
-                done();
-            }, 420);
+            await delay(600);
+            assert(
+                dom.hasClass(
+                    wrapper.getDOMNode().querySelector('.next-tabs-btn-prev'),
+                    'disabled'
+                )
+            );
+            assert(wrapper.getDOMNode().querySelector('.next-tabs-btn-next'));
         });
 
-        it('should click prev/next to slide', done => {
-            wrapper = mount(
+        it('should click prev/next to slide', async () => {
+            const wrapper = mount(
                 <div style={boxStyle}>
                     <Tab animation={false}>{panes}</Tab>
                 </div>,
                 { attachTo: target }
             );
-            setTimeout(() => {
-                assert(
-                    dom.hasClass(
-                        wrapper.find('.next-tabs-btn-prev').getDOMNode(),
-                        'disabled'
-                    )
-                );
-                wrapper.find('.next-tabs-btn-next').simulate('click');
-                assert(
-                    !dom.hasClass(
-                        wrapper.find('.next-tabs-btn-prev').getDOMNode(),
-                        'disabled'
-                    )
-                );
-                wrapper.find('.next-tabs-btn-prev').simulate('click');
-                assert(
-                    dom.hasClass(
-                        wrapper.find('.next-tabs-btn-prev').getDOMNode(),
-                        'disabled'
-                    )
-                );
-                done();
-            }, 420);
+            await delay(600);
+            const domNode = wrapper.getDOMNode();
+            assert(domNode);
+            assert(
+                dom.hasClass(
+                  domNode.querySelector('.next-tabs-btn-prev'),
+                    'disabled'
+                )
+            );
+            ReactTestUtils.Simulate.click(domNode.querySelector('.next-tabs-btn-next'));
+            await delay(800);
+            assert(
+                !dom.hasClass(
+                  domNode.querySelector('.next-tabs-btn-prev'),
+                    'disabled'
+                )
+            );
+            ReactTestUtils.Simulate.click(domNode.querySelector('.next-tabs-btn-prev'));
+            await delay(800);
+            assert(
+                dom.hasClass(
+                  domNode.querySelector('.next-tabs-btn-prev'),
+                    'disabled'
+                )
+            );
         });
 
         it('should not render dropdown if not excessed', () => {
-            wrapper = mount(
+            const wrapper = mount(
                 <div style={boxStyle}>
                     <Tab excessMode="dropdown" shape="wrapped">
                         <Tab.Item title="item" key={1} />
@@ -477,25 +477,22 @@ describe('Tab', () => {
                 </div>,
                 { attachTo: target }
             );
-            assert(wrapper.find('.next-tabs-btn-down').length === 0);
+            assert(!wrapper.getDOMNode().querySelector('.next-tabs-btn-down'));
         });
 
         it('should work fine without animation', () => {
-            wrapper = mount(<Tab animation={false}>{panes}</Tab>, { attachTo: target });
+            const wrapper = mount(<Tab animation={false}>{panes}</Tab>, { attachTo: target });
             assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(0)
-                    .hasClass('active')
+                wrapper.getDOMNode()
+                    .querySelectorAll('.next-tabs-tab').item(0).classList.contains('active')
             );
         });
 
         it('should scrollToActiveTab', () => {
-            wrapper = mount(
+            const wrapper = mount(
                 <div style={boxStyle}>
                     <Tab defaultActiveKey="9">{panes}</Tab>
-                </div>,
-                { attachTo: target }
+                </div>
             );
             wrapper
                 .find('.next-tabs-tab')
@@ -508,10 +505,27 @@ describe('Tab', () => {
                     .hasClass('active')
             );
         });
+
+        it('should scroll into the viewport while click the edge item', async () => {
+            const wrapper = mount(<Tab animation={false} style={{width: 380}}>{panes}</Tab>, {attachTo: target});
+            await delay(600);
+            const scroller = wrapper.getDOMNode().querySelector('.next-tabs-nav-scroll');
+            assert(scroller);
+            const rightEdgeItem = scroller.querySelectorAll('.next-tabs-tab').item(3);
+            assert(rightEdgeItem);
+            ReactTestUtils.Simulate.click(rightEdgeItem);
+            await delay(1000);
+            assert(isInScrollBoxViewport(scroller, rightEdgeItem));
+            scroller.scrollLeft = 2000;
+            const leftEdgeItem = scroller.querySelectorAll('.next-tabs-tab').item(6);
+            assert(leftEdgeItem);
+            ReactTestUtils.Simulate.click(leftEdgeItem);
+            await delay(1000);
+            assert(isInScrollBoxViewport(scroller, leftEdgeItem));
+        });
     });
     describe('animation sensitive tests', () => {
         let target;
-        const delay = time => new Promise(resolve => setTimeout(resolve, time));
         const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
             <Tab.Item title={`tab item ${item}`} key={index} />
         ));
@@ -549,7 +563,7 @@ describe('Tab', () => {
                         {panes}
                     </Tab>
                 </div>, target);
-            await delay(800);
+            await delay(1000);
             assert(target.querySelector('.next-tabs-btn-prev').classList.contains("disabled"));
         });
         it('should slide', async () => {
@@ -566,6 +580,7 @@ describe('Tab', () => {
             await delay(200);
             newpos = target.querySelector(".next-tabs-nav").getBoundingClientRect().left;
             assert(newpos > prev);
+            await delay(800);
         });
 
         it('should adjust scroll length so that tab not partially in view', async () => {
@@ -713,8 +728,14 @@ describe('Tab', () => {
                 </Tab>,
                 { attachTo: target }
             );
-            const el = wrapper.find('#test-extra').getDOMNode().parentElement;
+            const el = wrapper.getDOMNode().querySelector('#test-extra').parentElement;
             assert(el.style.getPropertyValue('float') === 'left');
         });
     });
 });
+
+function isInScrollBoxViewport(scroller, item) {
+    const scrollerRect = scroller.getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
+    return itemRect.left >= scrollerRect.left - 1 && itemRect.width + itemRect.left <= scrollerRect.width + scrollerRect.left + 1;
+}
