@@ -191,6 +191,7 @@ class Calendar extends Component {
         if (shape === 'panel') {
             this.changeMode(nextMode);
         }
+        this.setState({ value: date });
     };
 
     changeMode = nextMode => {
