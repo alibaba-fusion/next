@@ -320,8 +320,10 @@ class Base extends React.Component {
         return this.inputRef;
     }
 
-    focus(start, end) {
-        this.inputRef.focus();
+    focus(start, end, preventScroll) {
+        if (typeof preventScroll === 'boolean') {
+            this.inputRef.focus({ preventScroll });
+        }
         if (typeof start === 'number') {
             this.inputRef.selectionStart = start;
         }

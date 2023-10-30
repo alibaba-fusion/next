@@ -1289,6 +1289,23 @@ describe('AutoComplete', () => {
         }, 200);
     });
 
+    it('should prevent scroll when click wrapper', async () => {
+        wrapper = mount(
+            <div className="select-scroll-wrapper" style={{ width: 300, overflowX: 'scroll' }}>
+                <Select
+                    style={{ width: 540 }} 
+                    dataSource={[
+                        { label: 'xxx', value: 'yyy' },
+                        { label: 'empty', value: '' },
+                ]}/>
+            </div>
+        );
+        const selectWrapper = wrapper.find('.select-scroll-wrapper').getDOMNode();
+        const prevScrollLeft = selectWrapper.scrollLeft;
+        ReactTestUtils.Simulate.click(selectWrapper);
+        assert(wrapper.find('.select-scroll-wrapper').getDOMNode().scrollLeft === prevScrollLeft);
+    })
+
     describe('react api', () => {
         it('calls componentWillReceiveProps', done => {
             wrapper.setProps({ value: '30' });
