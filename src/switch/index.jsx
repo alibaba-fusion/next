@@ -188,6 +188,7 @@ class Switch extends React.Component {
         } else {
             attrs = {
                 disabled: true,
+                onClick: undefined,
             };
         }
 
