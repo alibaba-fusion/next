@@ -292,8 +292,9 @@ class Cascader extends Component {
                 states.value = getAllCheckedValues(states.value, v2n, p2n);
             }
 
-            // 仅仅在Props变化的情况下才处理expandedValue空值
             if (
+                // 仅在 set by value 的情况下才处理state.expandedValue为空的情况
+                // 此处代码仅在，未通过事件改变expandedValue，且传递了value，并发生 props or state变化时才执行
                 state.setExpandedBy === SET_EXPANDED_BY.VALUE &&
                 !state.expandedValue.length &&
                 !('expandedValue' in props)
