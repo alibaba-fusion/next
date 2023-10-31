@@ -590,7 +590,7 @@ export default class Base extends React.Component {
      * @override
      */
     focusInput() {
-        this.inputRef.focus();
+        this.inputRef.focus(undefined, undefined, true);
     }
 
     focus(...args) {
