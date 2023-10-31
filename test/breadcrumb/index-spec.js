@@ -201,4 +201,26 @@ describe('Breadcrumb', () => {
         );
         wrapper.unmount();
     });
+    it('should support onClick', () => {
+        let isClicked = {};
+        const wrapper = mount(
+            <Breadcrumb maxNode={2} showHiddenItems popupProps={{ triggerType: 'click', visible: true }}>
+                <Breadcrumb.Item link="javascript:void(0);">Home 1</Breadcrumb.Item>
+                <Breadcrumb.Item
+                    link="javascript:void(0);"
+                    onClick={v => {
+                        isClicked = true;
+                    }}
+                >
+                    Whatever 2
+                </Breadcrumb.Item>
+                <Breadcrumb.Item link="javascript:void(0);">All Categories 3</Breadcrumb.Item>
+            </Breadcrumb>
+        );
+        wrapper
+            .find('.next-menu-item')
+            .at(0)
+            .simulate('click');
+        assert(isClicked === true);
+    });
 });

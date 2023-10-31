@@ -28,13 +28,13 @@
 | popupProps      | 添加到弹层上的属性（在showHiddenItems为true时才有意义）       | Object           | -     | 1.23 |
 | separator       | 分隔符，可以是文本或 Icon                             | ReactNode/String | -     |      |
 | component       | 设置标签类型                                      | String/Function  | 'nav' |      |
-
+   
 ### Breadcrumb.Item
 
 | 参数   | 说明                                           | 类型     | 默认值 |
 | ---- | -------------------------------------------- | ------ | --- |
 | link | 面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />` | String | -   |
-
+| onClick | 单击事件 | Function (event: MouseEvent) => void
 ## 无障碍键盘操作指南
 
 | 按键  | 说明     |
