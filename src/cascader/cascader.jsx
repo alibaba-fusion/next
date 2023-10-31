@@ -92,17 +92,6 @@ const normalizeValue = value => {
 };
 
 /**
- * 设置 expandedValue 方式的枚举值
- * @type {{ACTION: string, VALUE: string}}
- */
-const SET_EXPANDED_BY = {
-    // 从 props.value 或 props.expandedValue中自动获取
-    VALUE: 'value',
-    // 通过用户事件的方式设置
-    ACTION: 'action',
-};
-
-/**
  * Cascader
  */
 class Cascader extends Component {
@@ -254,7 +243,7 @@ class Cascader extends Component {
         const st = {
             value: normalizedValue,
             expandedValue: realExpandedValue,
-            setExpandedBy: SET_EXPANDED_BY.VALUE,
+            isExpandedValueSetByAction: false,
         };
         if (multiple && !checkStrictly && !canOnlyCheckLeaf) {
             st.value = getAllCheckedValues(st.value, v2n, p2n);
@@ -293,9 +282,8 @@ class Cascader extends Component {
             }
 
             if (
-                // 仅在 set by value 的情况下才处理state.expandedValue为空的情况
-                // 此处代码仅在，未通过事件改变expandedValue，且传递了value，并发生 props or state变化时才执行
-                state.setExpandedBy === SET_EXPANDED_BY.VALUE &&
+                // 非受控模式下，若已经通过用户事件调整了expandedValue，则忽略下面的空值兜底处理
+                !state.isExpandedValueSetByAction &&
                 !state.expandedValue.length &&
                 !('expandedValue' in props)
             ) {
@@ -305,7 +293,8 @@ class Cascader extends Component {
 
         if ('expandedValue' in props) {
             states.expandedValue = normalizeValue(props.expandedValue);
-            states.setExpandedBy = SET_EXPANDED_BY.VALUE;
+            // 受控模式则重置isExpandedValueSetByAction
+            states.isExpandedValueSetByAction = false;
         }
 
         return {
@@ -537,7 +526,7 @@ class Cascader extends Component {
             }
 
             const callback = () => {
-                this.setExpandValue(expandedValue, SET_EXPANDED_BY.ACTION);
+                this.setExpandValue(expandedValue, true);
 
                 if (focusedFirstChild) {
                     const endExpandedValue = expandedValue[expandedValue.length - 1];
@@ -558,14 +547,14 @@ class Cascader extends Component {
     }
 
     handleMouseLeave() {
-        this.setExpandValue([...this.lastExpandedValue], SET_EXPANDED_BY.ACTION);
+        this.setExpandValue([...this.lastExpandedValue], true);
     }
 
-    setExpandValue(expandedValue, setExpandedBy = SET_EXPANDED_BY.VALUE) {
+    setExpandValue(expandedValue, isExpandedValueSetByAction = false) {
         if (!('expandedValue' in this.props)) {
             this.setState({
                 expandedValue,
-                setExpandedBy,
+                isExpandedValueSetByAction,
             });
         }
 
@@ -627,7 +616,7 @@ class Cascader extends Component {
     handleFold() {
         const { expandedValue } = this.state;
         if (expandedValue.length > 0) {
-            this.setExpandValue(expandedValue.slice(0, -1), SET_EXPANDED_BY.ACTION);
+            this.setExpandValue(expandedValue.slice(0, -1), true);
         }
 
         this.setState({
