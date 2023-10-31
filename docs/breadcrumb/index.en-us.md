@@ -29,7 +29,7 @@ It is used to inform the user of the current position and the position of the cu
 | Param           | Description                                                                                                                  | Type       | Default Value          |
 | ---- | -------------------------------------------- | ------ | --- |
 | link | The breadcrumb item link, if this property is set, the node is `<a />`, otherwise it is `<span />` | String | -   |
-| onClick   | Click event | Function() => void   
+| onClick   | Click event | Function (event: MouseEvent) => void 
 ## ARIA and KeyBoard
 
 | KeyBoard          | Descripiton                              |
