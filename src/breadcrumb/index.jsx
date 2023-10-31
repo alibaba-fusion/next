@@ -150,10 +150,10 @@ class Breadcrumb extends Component {
         // 拿到被隐藏的项
         const hiddenItems = [];
         Children.forEach(children, (item, i) => {
-            const { link, children: itemChildren, onClick, key } = item.props;
+            const { link, children: itemChildren, onClick } = item.props;
             if (i > 0 && i <= breakpointer) {
                 hiddenItems.push(
-                    <Menu.Item key={i} onClick={() => onClick && onClick({ children: itemChildren, link, key })}>
+                    <Menu.Item key={i} onClick={onClick}>
                         {link ? <a href={link}>{itemChildren}</a> : itemChildren}
                     </Menu.Item>
                 );

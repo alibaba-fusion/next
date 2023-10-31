@@ -33,17 +33,13 @@ class Item extends Component {
     }
 
     render() {
-        const { prefix, rtl, className, children, link, activated, separator, onClick, key, ...others } = this.props;
+        const { prefix, rtl, className, children, link, activated, separator, onClick, ...others } = this.props;
         const clazz = classNames(`${prefix}breadcrumb-text`, className, {
             activated,
         });
 
         return (
-            <li
-                dir={rtl ? 'rtl' : null}
-                className={`${prefix}breadcrumb-item`}
-                onClick={() => onClick && onClick({ children, link, key })}
-            >
+            <li dir={rtl ? 'rtl' : null} className={`${prefix}breadcrumb-item`} onClick={onClick}>
                 {link ? (
                     <a href={link} className={clazz} {...others}>
                         {children}

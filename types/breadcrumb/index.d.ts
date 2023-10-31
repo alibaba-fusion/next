@@ -8,7 +8,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
      * 面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />`
      */
     link?: string;
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler<HTMLLIElement>;
 }
 
 export class Item extends React.Component<ItemProps, any> {}
