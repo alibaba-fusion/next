@@ -64,6 +64,22 @@ describe('Calendar', () => {
             assert(wrapper.find('.next-calendar-card').length === 1);
         });
 
+        it('should render uncontrolled calendar', () => {
+            wrapper = mount(
+              <Calendar
+                  defaultValue={defaultVal}
+              />
+            );
+            assert(
+              wrapper.find('td[title="2017-10-01"]').hasClass('next-selected')
+            );
+            assert(wrapper.find('td[title="2017-10-02"]').length);
+            wrapper.find('td[title="2017-10-02"]').simulate('click');
+            assert(
+              wrapper.find('td[title="2017-10-02"]').hasClass('next-selected')
+            );
+        })
+
         it('should render controlled calendar', () => {
             wrapper = mount(
                 <Calendar
@@ -278,7 +294,7 @@ describe('Calendar', () => {
                 isClicked = true;
             };
             wrapper = mount(
-                <Calendar 
+                <Calendar
                     showOtherMonth={false}
                     defaultVisibleMonth={() => defaultVal}
                     onSelect={onSelect}
@@ -294,7 +310,7 @@ describe('Calendar', () => {
         it('should block click event from other month', () => {
             let isClicked = false;
             wrapper = mount(
-                <Calendar 
+                <Calendar
                     showOtherMonth={false}
                     defaultVisibleMonth={() => defaultVal}
                     onSelect={() => {
