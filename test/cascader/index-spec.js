@@ -568,7 +568,7 @@ describe('Cascader', () => {
             document.body.removeChild(div);
             throw new Error(err);
         }
-        
+
     });
 
     it('should set the style of the cascader inner node', () => {
@@ -618,6 +618,33 @@ describe('Cascader', () => {
         assert(document.getElementById('cascader-style').dir === 'rtl');
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
+    });
+
+    // Fix https://github.com/alibaba-fusion/next/issues/4472
+    it('Empty items at first level can collapse the next level panel while cross value', () => {
+        const dataSource = [
+            {
+                label: '1',
+                value: '1'
+            },
+            {
+                label: '2',
+                value: '2',
+                children: [
+                    {
+                        label: '2_1',
+                        value: '2_1'
+                    }
+                ]
+            }
+        ];
+        const wrapper = mount(<Cascader value={['2_1']} multiple dataSource={dataSource}/>);
+        assert(wrapper.find('.next-cascader-menu-wrapper').length === 2);
+        const el = wrapper.find('.next-menu-item[title="1"]').getDOMNode();
+        assert(el);
+        ReactTestUtils.Simulate.click(el);
+        wrapper.update();
+        assert(wrapper.find('.next-cascader-menu-wrapper').length === 1);
     });
 });
 

@@ -243,6 +243,7 @@ class Cascader extends Component {
         const st = {
             value: normalizedValue,
             expandedValue: realExpandedValue,
+            isExpandedValueSetByAction: false,
         };
         if (multiple && !checkStrictly && !canOnlyCheckLeaf) {
             st.value = getAllCheckedValues(st.value, v2n, p2n);
@@ -280,13 +281,20 @@ class Cascader extends Component {
                 states.value = getAllCheckedValues(states.value, v2n, p2n);
             }
 
-            if (!state.expandedValue.length && !('expandedValue' in props)) {
+            if (
+                // 非受控模式下，若已经通过用户事件调整了expandedValue，则忽略下面的空值兜底处理
+                !state.isExpandedValueSetByAction &&
+                !state.expandedValue.length &&
+                !('expandedValue' in props)
+            ) {
                 states.expandedValue = getExpandedValue(states.value[0], v2n, p2n);
             }
         }
 
         if ('expandedValue' in props) {
             states.expandedValue = normalizeValue(props.expandedValue);
+            // 受控模式则重置isExpandedValueSetByAction
+            states.isExpandedValueSetByAction = false;
         }
 
         return {
@@ -518,7 +526,7 @@ class Cascader extends Component {
             }
 
             const callback = () => {
-                this.setExpandValue(expandedValue);
+                this.setExpandValue(expandedValue, true);
 
                 if (focusedFirstChild) {
                     const endExpandedValue = expandedValue[expandedValue.length - 1];
@@ -539,13 +547,14 @@ class Cascader extends Component {
     }
 
     handleMouseLeave() {
-        this.setExpandValue([...this.lastExpandedValue]);
+        this.setExpandValue([...this.lastExpandedValue], true);
     }
 
-    setExpandValue(expandedValue) {
+    setExpandValue(expandedValue, isExpandedValueSetByAction = false) {
         if (!('expandedValue' in this.props)) {
             this.setState({
                 expandedValue,
+                isExpandedValueSetByAction,
             });
         }
 
@@ -607,7 +616,7 @@ class Cascader extends Component {
     handleFold() {
         const { expandedValue } = this.state;
         if (expandedValue.length > 0) {
-            this.setExpandValue(expandedValue.slice(0, -1));
+            this.setExpandValue(expandedValue.slice(0, -1), true);
         }
 
         this.setState({
