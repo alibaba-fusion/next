@@ -489,7 +489,7 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
      * 点击文件名时触发 onPreview
      * @version 1.24
      */
-    previewOnFileName?: boolean,
+    previewOnFileName?: boolean;
 
     /**
      * 自定义成功和失败的列表渲染方式

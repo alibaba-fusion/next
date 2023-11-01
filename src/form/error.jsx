@@ -42,15 +42,7 @@ class Error extends React.Component {
     };
 
     render() {
-        const {
-            children,
-            name,
-            prefix,
-            style,
-            className,
-            field: _field,
-            ...others
-        } = this.props;
+        const { children, name, prefix, style, className, field: _field, ...others } = this.props;
 
         if (children && typeof children !== 'function') {
             return <div className={`${prefix}form-item-help`}>{children}</div>;
@@ -78,10 +70,7 @@ class Error extends React.Component {
 
         let result = null;
         if (typeof children === 'function') {
-            result = children(
-                errorArr,
-                isSingle ? field.getState(name) : undefined
-            );
+            result = children(errorArr, isSingle ? field.getState(name) : undefined);
         } else {
             result = this.itemRender(errorArr);
         }

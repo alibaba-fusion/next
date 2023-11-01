@@ -27,22 +27,17 @@ describe('input', () => {
         });
 
         it('should isPreview', () => {
-            ReactDOM.render(<Input id="ispreview-input" isPreview defaultValue="abc"/>, parent);
-            assert(
-                document.querySelectorAll(
-                    '#ispreview-input'
-                )[0].innerText === 'abc'
-            );
+            ReactDOM.render(<Input id="ispreview-input" isPreview defaultValue="abc" />, parent);
+            assert(document.querySelectorAll('#ispreview-input')[0].innerText === 'abc');
         });
 
         it('should renderPreview', () => {
-            ReactDOM.render(<Input id="renderpreview-input" isPreview defaultValue="abc" renderPreview={() => 'ddd'}/>, parent);
-
-            assert(
-                document.querySelectorAll(
-                    '#renderpreview-input'
-                )[0].innerText === 'ddd'
+            ReactDOM.render(
+                <Input id="renderpreview-input" isPreview defaultValue="abc" renderPreview={() => 'ddd'} />,
+                parent
             );
+
+            assert(document.querySelectorAll('#renderpreview-input')[0].innerText === 'ddd');
         });
     });
 
@@ -54,9 +49,7 @@ describe('input', () => {
             assert(wrapper2.props().value === '123');
         });
         it('should accept addonBefore & addonAfter', () => {
-            const wrapper = mount(
-                <Input addonBefore="test" addonAfter="test2" />
-            );
+            const wrapper = mount(<Input addonBefore="test" addonAfter="test2" />);
             assert(wrapper.find('span.next-input-group-addon').length === 2);
             assert(wrapper.props().addonAfter === 'test2');
         });
@@ -70,16 +63,9 @@ describe('input', () => {
             const onBlur = sinon.spy();
             const onPressEnter = sinon.spy();
             const wrapper = mount(
-                <Input
-                    onChange={onChange}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    onPressEnter={onPressEnter}
-                />
+                <Input onChange={onChange} onFocus={onFocus} onBlur={onBlur} onPressEnter={onPressEnter} />
             );
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: '20' } });
+            wrapper.find('input').simulate('change', { target: { value: '20' } });
             assert(onChange.calledOnce);
             wrapper.find('input').simulate('focus');
             assert(onFocus.calledOnce);
@@ -135,13 +121,9 @@ describe('input', () => {
             let onChange = value => {
                     assert(value === '20');
                 },
-                wrapper = mount(
-                    <Input defaultValue={123} onChange={onChange} />
-                );
+                wrapper = mount(<Input defaultValue={123} onChange={onChange} />);
 
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: '20' } });
+            wrapper.find('input').simulate('change', { target: { value: '20' } });
             assert(wrapper.find('input').prop('value') === '20');
 
             done();
@@ -153,9 +135,7 @@ describe('input', () => {
                 },
                 wrapper = mount(<Input trim onChange={onChange} />);
 
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: ' 20 ' } });
+            wrapper.find('input').simulate('change', { target: { value: ' 20 ' } });
             assert(wrapper.find('input').prop('value') === '20');
 
             done();
@@ -190,22 +170,14 @@ describe('input', () => {
         });
 
         it('should support maxLength & hasLimitHint', done => {
-            const wrapper = mount(
-                <Input defaultValue={'abcd'} maxLength={10} hasLimitHint />
-            );
+            const wrapper = mount(<Input defaultValue={'abcd'} maxLength={10} hasLimitHint />);
             assert(!wrapper.find('.next-input-len').hasClass('next-error'));
 
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: '12345678901' } });
+            wrapper.find('input').simulate('change', { target: { value: '12345678901' } });
             assert(wrapper.find('.next-input-len').hasClass('next-error'));
 
-            const wrapper2 = mount(
-                <Input.TextArea maxLength={10} hasLimitHint />
-            );
-            wrapper2
-                .find('textarea')
-                .simulate('change', { target: { value: 'abc\nabc\n' } });
+            const wrapper2 = mount(<Input.TextArea maxLength={10} hasLimitHint />);
+            wrapper2.find('textarea').simulate('change', { target: { value: 'abc\nabc\n' } });
 
             //ie 浏览器下面认为\n是两个字符串所以展示各有不同，这里不做校验了
             // expect(wrapper2.find('.next-input-len').text()).to.be.equal('8/10');
@@ -230,9 +202,7 @@ describe('input', () => {
             let onPressEnter = e => {
                     assert(e.target.value === '123');
                 },
-                wrapper = mount(
-                    <Input defaultValue={'123'} onPressEnter={onPressEnter} />
-                );
+                wrapper = mount(<Input defaultValue={'123'} onPressEnter={onPressEnter} />);
             wrapper.find('input').simulate('keydown', { keyCode: 13 });
 
             const wrapper2 = mount(
@@ -262,13 +232,9 @@ describe('input', () => {
             let onChange = value => {
                     assert(value === '');
                 },
-                wrapper = mount(
-                    <Input defaultValue="abcdef" hasClear onChange={onChange} />
-                );
+                wrapper = mount(<Input defaultValue="abcdef" hasClear onChange={onChange} />);
 
-            assert(
-                wrapper.find('.next-icon').hasClass('next-input-clear-icon')
-            );
+            assert(wrapper.find('.next-icon').hasClass('next-input-clear-icon'));
             wrapper.find('.next-icon').simulate('click');
             assert(wrapper.find('input').prop('value') === '');
 
@@ -277,35 +243,19 @@ describe('input', () => {
 
         it('should support getValueLength', done => {
             const getValueLength = sinon.spy();
-            mount(
-                <Input
-                    defaultValue="abcdef"
-                    maxLength={10}
-                    getValueLength={getValueLength}
-                />
-            );
+            mount(<Input defaultValue="abcdef" maxLength={10} getValueLength={getValueLength} />);
             assert(getValueLength.calledOnce);
 
             let getValueLength2 = value => {
                     return 1;
                 },
                 wrapper = mount(
-                    <Input
-                        defaultValue="abcdef"
-                        maxLength={10}
-                        hasLimitHint
-                        getValueLength={getValueLength2}
-                    />
+                    <Input defaultValue="abcdef" maxLength={10} hasLimitHint getValueLength={getValueLength2} />
                 );
             assert(wrapper.find('.next-input-len').text() === '1/10');
 
             const wrapper2 = mount(
-                <Input.TextArea
-                    defaultValue="abcdef"
-                    maxLength={10}
-                    hasLimitHint
-                    getValueLength={getValueLength2}
-                />
+                <Input.TextArea defaultValue="abcdef" maxLength={10} hasLimitHint getValueLength={getValueLength2} />
             );
             assert(wrapper2.find('.next-input-len').text() === '1/10');
 
@@ -319,11 +269,7 @@ describe('input', () => {
                         <Input
                             ref="input"
                             onFocus={e => {
-                                assert(
-                                    this.refs.input
-                                        .getInstance()
-                                        .getInputNode() !== undefined
-                                );
+                                assert(this.refs.input.getInstance().getInputNode() !== undefined);
                                 done();
                             }}
                         />
@@ -340,17 +286,9 @@ describe('input', () => {
                     assert(value === 20);
                     done();
                 },
-                wrapper = mount(
-                    <Input
-                        defaultValue="abcdef"
-                        htmlType="number"
-                        onChange={onChange}
-                    />
-                );
+                wrapper = mount(<Input defaultValue="abcdef" htmlType="number" onChange={onChange} />);
 
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: '20' } });
+            wrapper.find('input').simulate('change', { target: { value: '20' } });
         });
 
         it('should support htmlType=number value="" ', done => {
@@ -358,13 +296,7 @@ describe('input', () => {
                     assert(value === '');
                     done();
                 },
-                wrapper = mount(
-                    <Input
-                        defaultValue="abcdef"
-                        htmlType="number"
-                        onChange={onChange}
-                    />
-                );
+                wrapper = mount(<Input defaultValue="abcdef" htmlType="number" onChange={onChange} />);
 
             wrapper.find('input').simulate('change', { target: { value: '' } });
         });
@@ -381,8 +313,8 @@ describe('input', () => {
                 </ConfigProvider>
             );
 
-            assert( wrapper.find('input').prop('disabled') === true);
-        })
+            assert(wrapper.find('input').prop('disabled') === true);
+        });
     });
     describe('react api', () => {
         it('calls componentWillReceiveProps', done => {

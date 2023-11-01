@@ -63,7 +63,11 @@ describe('Card', () => {
                 <Card
                     {...commonProps}
                     media={<img src="https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png" />}
-                    actions={<Button text type="primary">Button</Button>}
+                    actions={
+                        <Button text type="primary">
+                            Button
+                        </Button>
+                    }
                 >
                     Card Content
                 </Card>
@@ -76,13 +80,34 @@ describe('Card', () => {
         it('should render when contentHeight is auto', () => {
             wrapper = mount(
                 <Card {...commonProps} title="Card Title" contentHeight="300">
-                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
-                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
-                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
-                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
-                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
-                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
-                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
+                    Card Content <br />
                 </Card>
             );
 
@@ -94,21 +119,28 @@ describe('Card', () => {
 
         it('should render free', () => {
             wrapper = mount(
-                <Card
-                    style= {{ width: 300 }}
-                    free
-                >
+                <Card style={{ width: 300 }} free>
                     <Card.Media>
                         <img src="https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png" />
                     </Card.Media>
-                    <Card.Header title="Title" subTitle="Sub Title" extra={<Button type="primary" text>Link</Button>} />
+                    <Card.Header
+                        title="Title"
+                        subTitle="Sub Title"
+                        extra={
+                            <Button type="primary" text>
+                                Link
+                            </Button>
+                        }
+                    />
                     <Card.Divider />
-                    <Card.Content>
-                        Card Content
-                    </Card.Content>
+                    <Card.Content>Card Content</Card.Content>
                     <Card.Actions>
-                        <Button type="primary" key="action1" text>Action 1</Button>
-                        <Button type="primary" key="action2" text>Action 2</Button>
+                        <Button type="primary" key="action1" text>
+                            Action 1
+                        </Button>
+                        <Button type="primary" key="action2" text>
+                            Action 2
+                        </Button>
                     </Card.Actions>
                 </Card>
             );

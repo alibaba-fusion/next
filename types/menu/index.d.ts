@@ -21,7 +21,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     children?: React.ReactNode;
 }
 
-export class Item extends React.Component<ItemProps, any>  {}
+export class Item extends React.Component<ItemProps, any> {}
 
 export interface SubMenuProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -247,7 +247,11 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中或取消选中菜单项触发的回调函数
      */
-    onSelect?: (selectedKeys: Array<any>, item: any, extra: { select: boolean; lable: any; keyPath: any[]; key: string[] }) => void;
+    onSelect?: (
+        selectedKeys: Array<any>,
+        item: any,
+        extra: { select: boolean; lable: any; keyPath: any[]; key: string[] }
+    ) => void;
 
     /**
      * 选中模式，单选还是多选，默认无值，不可选

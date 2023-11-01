@@ -40,12 +40,7 @@ class ContextMenu extends Component {
             visible: true,
         };
 
-        bindCtx(this, [
-            'handleOverlayClose',
-            'handleOverlayOpen',
-            'handleItemClick',
-            'getOverlay',
-        ]);
+        bindCtx(this, ['handleOverlayClose', 'handleOverlayOpen', 'handleItemClick', 'getOverlay']);
     }
 
     getOverlay(ref) {
@@ -60,9 +55,7 @@ class ContextMenu extends Component {
     }
 
     handleOverlayClose(triggerType, e, ...others) {
-        const clickedPopupMenu =
-            triggerType === 'docClick' &&
-            this.popupNodes.some(node => node.contains(e.target));
+        const clickedPopupMenu = triggerType === 'docClick' && this.popupNodes.some(node => node.contains(e.target));
         if (!clickedPopupMenu) {
             this.close();
             const { overlayProps } = this.props;

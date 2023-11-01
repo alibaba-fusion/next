@@ -469,7 +469,7 @@ class NumberPicker extends React.Component {
         const { step, stringMode } = this.props;
         const precisionFactor = this.getPrecisionFactor();
         if (typeof val === 'number' && !stringMode) {
-            let result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
+            const result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
             return this.hackChrome(result);
         }
         return Big(val || '0')
@@ -481,7 +481,7 @@ class NumberPicker extends React.Component {
         const { step, stringMode } = this.props;
         const precisionFactor = this.getPrecisionFactor();
         if (typeof val === 'number' && !stringMode) {
-            let result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
+            const result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
             return this.hackChrome(result);
         }
         return Big(val || '0')

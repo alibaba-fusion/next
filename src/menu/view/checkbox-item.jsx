@@ -51,12 +51,7 @@ export default class CheckboxItem extends Component {
     render() {
         const { checkboxDisabled, ...others } = this.props;
         return (
-            <CheckableItem
-                role="menuitemcheckbox"
-                checkType="checkbox"
-                checkDisabled={checkboxDisabled}
-                {...others}
-            />
+            <CheckableItem role="menuitemcheckbox" checkType="checkbox" checkDisabled={checkboxDisabled} {...others} />
         );
     }
 }

@@ -3,12 +3,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Dropdown from '../../src/dropdown/index';
 import '../../src/dropdown/style';
-import {
-    unmount,
-    test,
-    createContainer,
-    testReact,
-} from '../util/a11y/validate';
+import { unmount, test, createContainer, testReact } from '../util/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -35,11 +30,7 @@ describe('Dropdown A11y', () => {
     it('should not have any violations', async () => {
         portalContainer = createContainer(portalContainerId);
         wrapper = await testReact(
-            <Dropdown
-                trigger={<a>Hello dropdown</a>}
-                visible
-                container={portalContainer}
-            >
+            <Dropdown trigger={<a>Hello dropdown</a>} visible container={portalContainer}>
                 <div>dropdown</div>
             </Dropdown>
         );

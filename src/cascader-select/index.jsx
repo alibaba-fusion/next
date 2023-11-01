@@ -22,18 +22,10 @@ export default ConfigProvider.config(CascaderSelect, {
         }
 
         if ('showItemCount' in props) {
-            deprecated(
-                'showItemCount',
-                'listStyle | listClassName',
-                'CascaderSelect'
-            );
+            deprecated('showItemCount', 'listStyle | listClassName', 'CascaderSelect');
         }
         if ('labelWidth' in props) {
-            deprecated(
-                'labelWidth',
-                'listStyle | listClassName',
-                'CascaderSelect'
-            );
+            deprecated('labelWidth', 'listStyle | listClassName', 'CascaderSelect');
         }
 
         return props;

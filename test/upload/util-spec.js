@@ -1,12 +1,5 @@
 import assert from 'power-assert';
-import {
-    uid,
-    fileToObject,
-    getFileItem,
-    removeFileItem,
-    previewFile,
-    errorCode,
-} from '../../src/upload/util';
+import { uid, fileToObject, getFileItem, removeFileItem, previewFile, errorCode } from '../../src/upload/util';
 
 describe('util function test', () => {
     it('uid generate', () => {
@@ -55,8 +48,7 @@ describe('util function test', () => {
         const json = JSON.stringify({ hello: 'world' }, null, 2);
         const blob = new Blob([json], { type: 'application/json' });
         previewFile(blob, dataurl => {
-            const data =
-                'data:application/json;base64,ewogICJoZWxsbyI6ICJ3b3JsZCIKfQ==';
+            const data = 'data:application/json;base64,ewogICJoZWxsbyI6ICJ3b3JsZCIKfQ==';
             assert(dataurl === data);
             done();
         });

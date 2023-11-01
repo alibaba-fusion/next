@@ -1,4 +1,4 @@
-import { ReactNode, MouseEventHandler, CSSProperties } from "react";
+import { ReactNode, MouseEventHandler, CSSProperties } from 'react';
 
 export interface NotificationConfig {
     offset?: [number, number];
@@ -6,7 +6,7 @@ export interface NotificationConfig {
     size?: 'large' | 'medium';
     duration?: number;
     getContainer?: () => HTMLElement;
-    placement?: 'topRight' | 'topLeft' | 'bottomLeft' | 'bottomRight',
+    placement?: 'topRight' | 'topLeft' | 'bottomLeft' | 'bottomRight';
 }
 
 export interface NotificationOptions {

@@ -31,9 +31,7 @@ module.exports = function(content, filePath, lang, dir) {
             const headerAST = remark.parse(headerContent);
             if (headerAST && headerAST.children) {
                 const header = headerAST.children;
-                const titleNode = header.find(
-                    child => child.type === 'heading' && child.depth === 1
-                );
+                const titleNode = header.find(child => child.type === 'heading' && child.depth === 1);
                 if (titleNode && titleNode.children && titleNode.children[0]) {
                     result.meta.title = titleNode.children[0].value;
                 }
@@ -55,17 +53,13 @@ module.exports = function(content, filePath, lang, dir) {
                     });
                 }
 
-                const paragraphNode = header.find(
-                    child => child.type === 'paragraph'
-                );
+                const paragraphNode = header.find(child => child.type === 'paragraph');
                 let desc = '';
                 if (paragraphNode && paragraphNode.children) {
                     desc = paragraphNode.children
                         .map(itemNode => {
                             if (itemNode.type === 'inlineCode') {
-                                return `<code>${html2Escape(
-                                    itemNode.value
-                                )}</code>`;
+                                return `<code>${html2Escape(itemNode.value)}</code>`;
                             }
                             return itemNode.value;
                         })
@@ -85,10 +79,7 @@ module.exports = function(content, filePath, lang, dir) {
                 components.push('ConfigProvider');
                 components = [...new Set(components)];
 
-                code = code.replace(
-                    IMPORT_REG,
-                    `import { ${components.join(', ')} } from '@alifd/next';`
-                );
+                code = code.replace(IMPORT_REG, `import { ${components.join(', ')} } from '@alifd/next';`);
 
                 const RENDER_REG = /(.*)ReactDOM\.render\(([\s\S]*),[ \n]*mountNode[ \n]*\);?(.*)/g;
                 code = code.replace(RENDER_REG, (all, s1, s2, s3) => {
@@ -105,24 +96,18 @@ module.exports = function(content, filePath, lang, dir) {
             if (bodyAST && bodyAST.children) {
                 const body = bodyAST.children;
                 const jsNode = body.find(
-                    child =>
-                        child.type === 'code' &&
-                        (child.lang === 'js' || child.lang === 'jsx')
+                    child => child.type === 'code' && (child.lang === 'js' || child.lang === 'jsx')
                 );
                 if (jsNode) {
                     result.js = jsNode.value;
                 }
 
-                const cssNode = body.find(
-                    child => child.type === 'code' && child.lang === 'css'
-                );
+                const cssNode = body.find(child => child.type === 'code' && child.lang === 'css');
                 if (cssNode) {
                     result.css = cssNode.value;
                 }
 
-                const htmlNode = body.find(
-                    child => child.type === 'code' && child.lang === 'html'
-                );
+                const htmlNode = body.find(child => child.type === 'code' && child.lang === 'html');
                 if (htmlNode) {
                     result.html = htmlNode.value;
                 }

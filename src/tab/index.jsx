@@ -23,19 +23,11 @@ export default ConfigProvider.config(Tab, {
 
             let excessMode;
             if (resDirection === 'horizontal') {
-                deprecated(
-                    'resDirection=horizontal',
-                    'excessMode=slide',
-                    'Tab'
-                );
+                deprecated('resDirection=horizontal', 'excessMode=slide', 'Tab');
 
                 excessMode = 'slide';
             } else if (resDirection === 'vertical') {
-                deprecated(
-                    'resDirection=vertical',
-                    'excessMode=dropdown',
-                    'Tab'
-                );
+                deprecated('resDirection=vertical', 'excessMode=dropdown', 'Tab');
 
                 excessMode = 'dropdown';
             }

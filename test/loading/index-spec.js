@@ -32,18 +32,12 @@ describe('Test', () => {
             assert(wrapper1.find('.next-loading-fusion-reactor').length === 1);
 
             wrapper2 = mount(<Loading size="medium" />);
-            assert(
-                wrapper2.find('.next-loading-medium-fusion-reactor').length ===
-                    1
-            );
+            assert(wrapper2.find('.next-loading-medium-fusion-reactor').length === 1);
         });
 
         it('should show fullscreen', () => {
             wrapper1 = mount(<Loading fullScreen />);
-            assert(
-                wrapper1.find(Overlay).length ===
-                    1
-            );
+            assert(wrapper1.find(Overlay).length === 1);
         });
     });
 
@@ -63,37 +57,24 @@ describe('Test', () => {
         });
         it('should support tip', () => {
             wrapper1 = mount(<Loading tip="hello world" />);
-            assert(
-                wrapper1.find('.next-loading-tip-content').text() ===
-                    'hello world'
-            );
+            assert(wrapper1.find('.next-loading-tip-content').text() === 'hello world');
         });
         it('should support indicator', () => {
             const indicator = <div className="custom-loading-dom" />;
-            wrapper1 = mount(
-                <Loading tip="hello world" indicator={indicator} />
-            );
+            wrapper1 = mount(<Loading tip="hello world" indicator={indicator} />);
             assert(wrapper1.find('.next-loading-indicator').contains(indicator));
         });
         it('should support visible', () => {
             wrapper1 = mount(<Loading tip="hello world" />);
             assert(wrapper1.find('.next-loading').hasClass('next-open'));
-            wrapper2 = mount(
-                <Loading tip="hello world" visible={false} />
-            );
+            wrapper2 = mount(<Loading tip="hello world" visible={false} />);
             assert(!wrapper2.find('.next-loading').hasClass('next-open'));
         });
         it('should support inline', () => {
             wrapper1 = mount(<Loading tip="hello world" />);
-            assert(
-                wrapper1.find('.next-loading').hasClass('next-loading-inline')
-            );
-            wrapper2 = mount(
-                <Loading tip="hello world" inline={false} />
-            );
-            assert(
-                !wrapper2.find('.next-loading').hasClass('next-loading-inline')
-            );
+            assert(wrapper1.find('.next-loading').hasClass('next-loading-inline'));
+            wrapper2 = mount(<Loading tip="hello world" inline={false} />);
+            assert(!wrapper2.find('.next-loading').hasClass('next-loading-inline'));
         });
     });
 });

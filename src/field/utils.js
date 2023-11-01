@@ -28,19 +28,9 @@ export function scrollToFirstError({ errorsGroup, options, instance }) {
         }
 
         if (firstNode) {
-            if (
-                typeof options.scrollToFirstError === 'number' &&
-                window &&
-                typeof window.scrollTo === 'function'
-            ) {
-                const offsetLeft =
-                    document && document.body && document.body.offsetLeft
-                        ? document.body.offsetLeft
-                        : 0;
-                window.scrollTo(
-                    offsetLeft,
-                    firstTop + options.scrollToFirstError
-                );
+            if (typeof options.scrollToFirstError === 'number' && window && typeof window.scrollTo === 'function') {
+                const offsetLeft = document && document.body && document.body.offsetLeft ? document.body.offsetLeft : 0;
+                window.scrollTo(offsetLeft, firstTop + options.scrollToFirstError);
             } else if (firstNode.scrollIntoViewIfNeeded) {
                 firstNode.scrollIntoViewIfNeeded(true);
             }

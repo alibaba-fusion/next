@@ -204,24 +204,14 @@ export default class Slider extends Component {
     };
 
     render() {
-        const {
-            prefix,
-            arrowPosition,
-            slideDirection,
-            style,
-            className,
-            children,
-        } = this.props;
+        const { prefix, arrowPosition, slideDirection, style, className, children } = this.props;
 
         const globalProps = {};
         Object.keys(ConfigProvider.propTypes).forEach(key => {
             globalProps[key] = this.props[key];
         });
 
-        const sliderProps = obj.pickOthers(
-            ['className', 'style', 'slideDirection'],
-            this.props
-        );
+        const sliderProps = obj.pickOthers(['className', 'style', 'slideDirection'], this.props);
         const slideCount = React.Children.count(children);
 
         if (slideCount === 0) {
@@ -235,11 +225,7 @@ export default class Slider extends Component {
         }
 
         const clazz = classNames(
-            [
-                `${prefix}slick`,
-                `${prefix}slick-${arrowPosition}`,
-                `${prefix}slick-${slideDirection}`,
-            ],
+            [`${prefix}slick`, `${prefix}slick-${arrowPosition}`, `${prefix}slick-${slideDirection}`],
             className
         );
 
@@ -255,15 +241,9 @@ export default class Slider extends Component {
                     dir="ltr"
                     className={clazz}
                     style={style}
-                    {...obj.pickOthers(
-                        { ...Slider.propTypes, ...InnerSlider.propTypes },
-                        sliderProps
-                    )}
+                    {...obj.pickOthers({ ...Slider.propTypes, ...InnerSlider.propTypes }, sliderProps)}
                 >
-                    <InnerSlider
-                        ref={InnerSlider => (this.innerSlider = InnerSlider)}
-                        {...sliderProps}
-                    />
+                    <InnerSlider ref={InnerSlider => (this.innerSlider = InnerSlider)} {...sliderProps} />
                 </div>
             </ConfigProvider>
         );

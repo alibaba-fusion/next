@@ -15,8 +15,7 @@ const defaultValue = [
         name: 'IMG.png',
         state: 'done',
         size: 1024,
-        url:
-            'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+        url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
     },
 ];
 
@@ -40,11 +39,7 @@ function buildFile(filename = 'test') {
 }
 
 function triggerUploadEvent(wrapper, done, callback) {
-    if (
-        typeof atob === 'function' &&
-        typeof Blob === 'function' &&
-        typeof File === 'function'
-    ) {
+    if (typeof atob === 'function' && typeof Blob === 'function' && typeof File === 'function') {
         // 模拟文件上传
         const file = buildFile();
         wrapper.find('input').simulate('change', { target: { files: [file] } });
@@ -70,9 +65,7 @@ describe('TextUpload', () => {
 
     describe('render', () => {
         it('should render a wrapper upload', () => {
-            const wrapper = mount(
-                <Upload listType="text" defaultValue={defaultValue} />
-            );
+            const wrapper = mount(<Upload listType="text" defaultValue={defaultValue} />);
             assert(wrapper.find('.next-upload').length === 1);
             assert(wrapper.find('.next-upload-list-item').length === 1);
         });
@@ -85,18 +78,14 @@ describe('TextUpload', () => {
                             name: 'IMG.png',
                             state: 'error',
                             size: 1024,
-                            url:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                         },
                     ]}
                 />
             );
             assert(wrapper.find('.next-upload').length === 1);
             assert(wrapper.find('.next-upload-list-item-error').length === 1);
-            assert(
-                wrapper.find('.next-upload-list-item-error-with-text')
-                    .length === 0
-            );
+            assert(wrapper.find('.next-upload-list-item-error-with-text').length === 0);
         });
         it('should render a upload item', () => {
             const wrapper = mount(
@@ -108,17 +97,14 @@ describe('TextUpload', () => {
                             state: 'uploading',
                             percent: 85,
                             size: 1024,
-                            url:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                             errorText: 'error text',
                         },
                     ]}
                 />
             );
             assert(wrapper.find('.next-upload').length === 1);
-            assert(
-                wrapper.find('.next-upload-list-item-uploading').length === 1
-            );
+            assert(wrapper.find('.next-upload-list-item-uploading').length === 1);
         });
         it('should render a error item with text', () => {
             const wrapper = mount(
@@ -129,8 +115,7 @@ describe('TextUpload', () => {
                             name: 'IMG.png',
                             state: 'error',
                             size: 1024,
-                            url:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                             errorMsg: 'error text',
                         },
                     ]}
@@ -138,13 +123,8 @@ describe('TextUpload', () => {
             );
             assert(wrapper.find('.next-upload').length === 1);
             assert(wrapper.find('.next-upload-list-item-error').length === 1);
-            assert(
-                wrapper.find('.next-upload-list-item-error-with-msg').length ===
-                    1
-            );
-            assert(
-                wrapper.find('.next-upload-list-item-error-msg').length === 1
-            );
+            assert(wrapper.find('.next-upload-list-item-error-with-msg').length === 1);
+            assert(wrapper.find('.next-upload-list-item-error-msg').length === 1);
             assert(
                 wrapper
                     .find('.next-upload-list-item-error-msg')

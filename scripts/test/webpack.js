@@ -15,10 +15,7 @@ module.exports = function(componentName, runAll) {
                     ? [
                           require.resolve('babel-plugin-istanbul'),
                           {
-                              exclude: [
-                                  `src/!(${componentName})/**/*.@(js|jsx)`,
-                                  'test/**',
-                              ],
+                              exclude: [`src/!(${componentName})/**/*.@(js|jsx)`, 'test/**'],
                           },
                       ]
                     : require.resolve('babel-plugin-istanbul'),

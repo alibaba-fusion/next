@@ -10,18 +10,9 @@ export default ConfigProvider.config(Step, {
             deprecated('type', 'shape', 'Step');
 
             let { type, direction, labelPlacement, ...others } = props;
-            direction =
-                direction === 'vertical'
-                    ? 'ver'
-                    : direction === 'horizontal'
-                    ? 'hoz'
-                    : direction;
+            direction = direction === 'vertical' ? 'ver' : direction === 'horizontal' ? 'hoz' : direction;
             labelPlacement =
-                labelPlacement === 'vertical'
-                    ? 'ver'
-                    : labelPlacement === 'horizontal'
-                    ? 'hoz'
-                    : labelPlacement;
+                labelPlacement === 'vertical' ? 'ver' : labelPlacement === 'horizontal' ? 'hoz' : labelPlacement;
             props = { shape: type, direction, labelPlacement, ...others };
         }
 

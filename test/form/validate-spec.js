@@ -29,9 +29,7 @@ describe('Submit', () => {
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: 'test' } });
+        wrapper.find('input#first').simulate('change', { target: { value: 'test' } });
         wrapper.find('button').simulate('click');
     });
     it('[name on FormItem] should support defaultValue & defaultChecked', done => {
@@ -41,19 +39,17 @@ describe('Submit', () => {
         };
         const wrapper = mount(
             <Form>
-                <FormItem name="first" >
+                <FormItem name="first">
                     <Input />
                 </FormItem>
-                <FormItem name="second" >
+                <FormItem name="second">
                     <Input />
                 </FormItem>
                 <Submit onClick={onClick}>click</Submit>
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: 'test' } });
+        wrapper.find('input#first').simulate('change', { target: { value: 'test' } });
         wrapper.find('button').simulate('click');
     });
     it('Submit', done => {
@@ -73,9 +69,7 @@ describe('Submit', () => {
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: 'test' } });
+        wrapper.find('input#first').simulate('change', { target: { value: 'test' } });
         wrapper.find('button').simulate('click');
     });
     it('[name on FormItem] Submit', done => {
@@ -85,19 +79,17 @@ describe('Submit', () => {
         };
         const wrapper = mount(
             <Form>
-                <FormItem name="first" >
+                <FormItem name="first">
                     <Input />
                 </FormItem>
-                <FormItem name="second" >
+                <FormItem name="second">
                     <Input />
                 </FormItem>
                 <Submit onClick={onClick}>click</Submit>
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: 'test' } });
+        wrapper.find('input#first').simulate('change', { target: { value: 'test' } });
         wrapper.find('button').simulate('click');
     });
     it('Submit && validate', done => {
@@ -110,18 +102,14 @@ describe('Submit', () => {
                 <FormItem required>
                     <Input name="first" />
                 </FormItem>
-                <FormItem required>
-                   {values => <Input name="second" /> }
-                </FormItem>
+                <FormItem required>{values => <Input name="second" />}</FormItem>
                 <Submit validate onClick={onClick}>
                     click
                 </Submit>
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: '' } });
+        wrapper.find('input#first').simulate('change', { target: { value: '' } });
         wrapper.update();
         assert(
             wrapper
@@ -130,9 +118,7 @@ describe('Submit', () => {
                 .text() === 'first 是必填字段'
         );
 
-        wrapper
-        .find('input#second')
-        .simulate('change', { target: { value: '' } });
+        wrapper.find('input#second').simulate('change', { target: { value: '' } });
         wrapper.update();
         assert(
             wrapper
@@ -160,9 +146,7 @@ describe('Submit', () => {
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: '1' } });
+        wrapper.find('input#first').simulate('change', { target: { value: '1' } });
         wrapper.update();
         assert(
             wrapper
@@ -180,10 +164,7 @@ describe('Submit', () => {
         };
         const wrapper = mount(
             <Form>
-                <FormItem
-                    minLength={10}
-                    minmaxLengthMessage={'min length is 10'}
-                >
+                <FormItem minLength={10} minmaxLengthMessage={'min length is 10'}>
                     <Input name="first" />
                 </FormItem>
                 <Submit validate onClick={onClick}>
@@ -192,9 +173,7 @@ describe('Submit', () => {
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: '1' } });
+        wrapper.find('input#first').simulate('change', { target: { value: '1' } });
         wrapper.update();
         assert(
             wrapper
@@ -215,12 +194,7 @@ describe('Submit', () => {
             render() {
                 return (
                     <Form field={this.field}>
-                        <FormItem
-                            label="test"
-                            type="email"
-                            format="email"
-                            hasFeedback
-                        >
+                        <FormItem label="test" type="email" format="email" hasFeedback>
                             <Input name="email" />
                         </FormItem>
                     </Form>
@@ -229,9 +203,7 @@ describe('Submit', () => {
         }
 
         const wrapper = mount(<Demo />);
-        wrapper
-            .find('input#email')
-            .simulate('change', { target: { value: '123' } });
+        wrapper.find('input#email').simulate('change', { target: { value: '123' } });
         assert(
             wrapper
                 .find('.next-form-item-help')
@@ -251,13 +223,7 @@ describe('Submit', () => {
             render() {
                 return (
                     <Form field={this.field}>
-                        <FormItem
-                            label="test"
-                            type="email"
-                            format="email"
-                            hasFeedback
-                            name="email" 
-                        >
+                        <FormItem label="test" type="email" format="email" hasFeedback name="email">
                             <Input />
                         </FormItem>
                     </Form>
@@ -266,9 +232,7 @@ describe('Submit', () => {
         }
 
         const wrapper = mount(<Demo />);
-        wrapper
-            .find('input#email')
-            .simulate('change', { target: { value: '123' } });
+        wrapper.find('input#email').simulate('change', { target: { value: '123' } });
         assert(
             wrapper
                 .find('.next-form-item-help')
@@ -294,9 +258,7 @@ describe('Submit', () => {
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: '' } });
+        wrapper.find('input#first').simulate('change', { target: { value: '' } });
         wrapper.update();
         assert(
             wrapper
@@ -323,9 +285,7 @@ describe('Submit', () => {
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: '' } });
+        wrapper.find('input#first').simulate('change', { target: { value: '' } });
         wrapper.update();
         assert(wrapper.find('.next-form-item-help').first().length === 0);
         wrapper.find('button').simulate('click');
@@ -339,15 +299,13 @@ describe('Submit', () => {
     it('validate useLabelForErrorMessage', () => {
         const wrapper = mount(
             <Form useLabelForErrorMessage>
-                <FormItem required label="姓名:" >
+                <FormItem required label="姓名:">
                     <Input name="first" />
                 </FormItem>
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: '' } });
+        wrapper.find('input#first').simulate('change', { target: { value: '' } });
         wrapper.update();
         assert(
             wrapper
@@ -359,15 +317,13 @@ describe('Submit', () => {
     it('the useLabelForErrorMessage of FormItem should have a higher priority', () => {
         const wrapper = mount(
             <Form useLabelForErrorMessage>
-                <FormItem useLabelForErrorMessage={false} required label="姓名" >
+                <FormItem useLabelForErrorMessage={false} required label="姓名">
                     <Input name="first" />
                 </FormItem>
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: '' } });
+        wrapper.find('input#first').simulate('change', { target: { value: '' } });
         wrapper.update();
         assert(
             wrapper
@@ -379,15 +335,13 @@ describe('Submit', () => {
     it('the useLabelForErrorMessage of FormItem should have a higher priority', () => {
         const wrapper = mount(
             <Form useLabelForErrorMessage={false}>
-                <FormItem useLabelForErrorMessage required label="姓名" >
+                <FormItem useLabelForErrorMessage required label="姓名">
                     <Input name="first" />
                 </FormItem>
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: '' } });
+        wrapper.find('input#first').simulate('change', { target: { value: '' } });
         wrapper.update();
         assert(
             wrapper
@@ -405,9 +359,7 @@ describe('Submit', () => {
             </Form>
         );
 
-        wrapper
-            .find('input#first')
-            .simulate('change', { target: { value: '' } });
+        wrapper.find('input#first').simulate('change', { target: { value: '' } });
         wrapper.update();
         assert(
             wrapper

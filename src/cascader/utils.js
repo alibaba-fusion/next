@@ -21,9 +21,7 @@ export function isNodeChecked(node, checkedValues) {
     /* istanbul ignore next */
     if (node.checkable === false) {
         return (
-            !node.children ||
-            node.children.length === 0 ||
-            node.children.every(c => isNodeChecked(c, checkedValues))
+            !node.children || node.children.length === 0 || node.children.every(c => isNodeChecked(c, checkedValues))
         );
     }
     return checkedValues.indexOf(node.value) > -1;
@@ -51,11 +49,7 @@ export function isNodeDisabledChecked(node) {
     if (node.disabled || node.checkboxDisabled) return true;
     /* istanbul ignore next */
     if (node.checkable === false) {
-        return (
-            !node.children ||
-            node.children.length === 0 ||
-            node.children.every(isNodeDisabledChecked)
-        );
+        return !node.children || node.children.length === 0 || node.children.every(isNodeDisabledChecked);
     }
 
     return false;
@@ -90,12 +84,7 @@ export function filterChildValue(values, _v2n, _p2n) {
     const newValues = [];
     values.forEach(value => {
         const node = getCheckableParentNode(_v2n[value], _p2n);
-        if (
-            !node ||
-            node.checkable === false ||
-            node === _v2n[value] ||
-            values.indexOf(node.value) === -1
-        ) {
+        if (!node || node.checkable === false || node === _v2n[value] || values.indexOf(node.value) === -1) {
             newValues.push(value);
         }
     });
@@ -107,11 +96,7 @@ export function filterParentValue(values, _v2n) {
 
     for (let i = 0; i < values.length; i++) {
         const node = _v2n[values[i]];
-        if (
-            !node.children ||
-            node.children.length === 0 ||
-            node.children.every(isNodeDisabledChecked)
-        ) {
+        if (!node.children || node.children.length === 0 || node.children.every(isNodeDisabledChecked)) {
             newValues.push(values[i]);
         }
     }
@@ -153,17 +138,11 @@ export function getAllCheckedValues(checkedValues, _v2n, _p2n) {
     const filteredValues = checkedValues.filter(value => !!_v2n[value]);
     const flatValues = [
         ...filterChildValue(filteredValues, _v2n, _p2n),
-        ...filteredValues.filter(
-            value => _v2n[value].disabled || _v2n[value].checkboxDisabled
-        ),
+        ...filteredValues.filter(value => _v2n[value].disabled || _v2n[value].checkboxDisabled),
     ];
     const removeValue = child => {
         if (child.disabled || child.checkboxDisabled) return;
-        if (
-            child.checkable === false &&
-            child.children &&
-            child.children.length > 0
-        ) {
+        if (child.checkable === false && child.children && child.children.length > 0) {
             return child.children.forEach(removeValue);
         }
         flatValues.splice(flatValues.indexOf(child.value), 1);
@@ -181,15 +160,8 @@ export function getAllCheckedValues(checkedValues, _v2n, _p2n) {
         for (let j = nums.length - 2; j > 0; j--) {
             const parentPos = nums.slice(0, j + 1).join('-');
             const parent = _p2n[parentPos];
-            if (
-                parent.checkable === false ||
-                parent.disabled ||
-                parent.checkboxDisabled
-            )
-                continue;
-            const parentChecked = parent.children.every(child =>
-                isNodeChecked(child, flatValues)
-            );
+            if (parent.checkable === false || parent.disabled || parent.checkboxDisabled) continue;
+            const parentChecked = parent.children.every(child => isNodeChecked(child, flatValues));
             if (parentChecked) {
                 parent.children.forEach(removeValue);
                 addParentValue(i, parent);

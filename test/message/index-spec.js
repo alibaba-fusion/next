@@ -57,19 +57,10 @@ describe('Message', () => {
     });
 
     it('should have type class', () => {
-        const types = [
-            'success',
-            'warning',
-            'error',
-            'notice',
-            'help',
-            'loading',
-        ];
+        const types = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
         types.forEach(type => {
             const wrapper = mount(<Message type={type} />);
-            assert(
-                wrapper.find(`.next-message.next-message-${type}`).length === 1
-            );
+            assert(wrapper.find(`.next-message.next-message-${type}`).length === 1);
             assert(wrapper.find(Icon).hasClass('next-message-symbol-icon'));
             wrapper.unmount();
         });
@@ -118,9 +109,7 @@ describe('Message', () => {
     });
 
     it('should show close link if set closeable to true', done => {
-        const wrapper = mount(
-            <Message animation={false} title="title" closeable />
-        );
+        const wrapper = mount(<Message animation={false} title="title" closeable />);
         const closeLink = wrapper.find('.next-message-close');
         assert(closeLink.length === 1);
         closeLink.simulate('click');
@@ -132,14 +121,7 @@ describe('Message', () => {
     });
 
     it('should show or hide under control', () => {
-        const wrapper = mount(
-            <Message
-                defaultVisible
-                visible={false}
-                animation={false}
-                title="title"
-            />
-        );
+        const wrapper = mount(<Message defaultVisible visible={false} animation={false} title="title" />);
         assert(wrapper.find('.next-message').length === 0);
         wrapper.setProps({
             visible: true,
@@ -150,8 +132,9 @@ describe('Message', () => {
 });
 
 describe('toast', done => {
-    it('should render nowrap message when content too long[Overlay case]', (done) => {
-        const content = 'content content content content content content content content content content content content content content content content content content content content';
+    it('should render nowrap message when content too long[Overlay case]', done => {
+        const content =
+            'content content content content content content content content content content content content content content content content content content content content';
         Message.show(content);
 
         const dom = document.querySelector('.next-overlay-wrapper .next-message');
@@ -164,42 +147,31 @@ describe('toast', done => {
         setTimeout(done, 500);
     });
 
-    it('should render message when only pass content string', (done) => {
+    it('should render message when only pass content string', done => {
         Message.show('content');
-        assert(
-            document
-                .querySelector('.next-overlay-wrapper .next-message')
-                .innerText.trim() === 'content'
-        );
+        assert(document.querySelector('.next-overlay-wrapper .next-message').innerText.trim() === 'content');
 
         Message.hide();
         setTimeout(done, 500);
     });
 
-    it('should render message when only pass content react element', (done) => {
+    it('should render message when only pass content react element', done => {
         Message.show(<i>content</i>);
-        assert(
-            document
-                .querySelector('.next-overlay-wrapper .next-message-title i')
-                .innerText.trim() === 'content'
-        );
+        assert(document.querySelector('.next-overlay-wrapper .next-message-title i').innerText.trim() === 'content');
 
         Message.hide();
 
         setTimeout(done, 500);
     });
 
-    it('should render message when pass config object', (done) => {
+    it('should render message when pass config object', done => {
         Message.show({
             type: 'warning',
             content: 'content',
         });
         assert(
-            document
-                .querySelector(
-                    '.next-overlay-wrapper .next-message.next-message-warning'
-                )
-                .innerText.trim() === 'content'
+            document.querySelector('.next-overlay-wrapper .next-message.next-message-warning').innerText.trim() ===
+                'content'
         );
 
         Message.hide();
@@ -217,11 +189,7 @@ describe('toast', done => {
             },
         });
         setTimeout(() => {
-            assert(
-                document.querySelector(
-                    '.next-overlay-wrapper .next-message'
-                ) === null
-            );
+            assert(document.querySelector('.next-overlay-wrapper .next-message') === null);
             assert(called);
             done();
         }, 1000);
@@ -234,11 +202,7 @@ describe('toast', done => {
         });
 
         setTimeout(() => {
-            assert(
-                document.querySelector(
-                    '.next-overlay-wrapper .next-message.next-message'
-                ) !== null
-            );
+            assert(document.querySelector('.next-overlay-wrapper .next-message.next-message') !== null);
             Message.hide();
         }, 500);
 
@@ -261,11 +225,7 @@ describe('toast', done => {
         }, 500);
 
         setTimeout(() => {
-            assert(
-                document.querySelector(
-                    '.next-overlay-wrapper .next-message'
-                ) === null
-            );
+            assert(document.querySelector('.next-overlay-wrapper .next-message') === null);
             assert(called);
             done();
         }, 1000);
@@ -290,11 +250,7 @@ describe('toast', done => {
         }, 500);
 
         setTimeout(() => {
-            assert(
-                document.querySelector(
-                    '.next-overlay-wrapper .next-message'
-                ) === null
-            );
+            assert(document.querySelector('.next-overlay-wrapper .next-message') === null);
             done();
         }, 1000);
     });
@@ -302,14 +258,7 @@ describe('toast', done => {
 
 describe('should support configProvider', () => {
     it('normal should obey: self.locale > nearest ConfigProvider.locale > further ConfigProvider.locale', () => {
-        const methods = [
-            'success',
-            'warning',
-            'error',
-            'notice',
-            'help',
-            'loading',
-        ];
+        const methods = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
         const wrapper = render(
             <ConfigProvider
                 prefix="far-"
@@ -333,12 +282,7 @@ describe('should support configProvider', () => {
                 >
                     <div>
                         {methods.map(method => (
-                            <Message
-                                key={method}
-                                title="title"
-                                type={method}
-                                shape="inline"
-                            >
+                            <Message key={method} title="title" type={method} shape="inline">
                                 <Button type="primary">button-{method}</Button>
                             </Message>
                         ))}
@@ -346,9 +290,7 @@ describe('should support configProvider', () => {
                 </ConfigProvider>
             </ConfigProvider>
         );
-        const innerBtn = document.querySelectorAll(
-            '.near-message .near-message-content .near-btn-primary'
-        );
+        const innerBtn = document.querySelectorAll('.near-message .near-message-content .near-btn-primary');
         assert(innerBtn.length === methods.length);
         wrapper.unmount();
     });
@@ -408,23 +350,12 @@ describe('should support configProvider', () => {
 });
 
 describe('toast quick-calling', () => {
-    const avaliableMethods = [
-        'success',
-        'warning',
-        'error',
-        'notice',
-        'help',
-        'loading',
-    ];
+    const avaliableMethods = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
 
     for (const method of avaliableMethods) {
         it(`render ${method}`, done => {
             Message.show('content');
-            assert(
-                document
-                    .querySelector('.next-overlay-wrapper .next-message')
-                    .innerText.trim() === 'content'
-            );
+            assert(document.querySelector('.next-overlay-wrapper .next-message').innerText.trim() === 'content');
             setTimeout(() => {
                 Message.hide();
                 done();
@@ -433,7 +364,7 @@ describe('toast quick-calling', () => {
     }
 });
 describe('Message v2', () => {
-    it('should support config to open multiple instance', (done) => {
+    it('should support config to open multiple instance', done => {
         Message.config({});
         const instance1 = Message.show('content');
         const instance2 = Message.success('content');

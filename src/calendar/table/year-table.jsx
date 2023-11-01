@@ -1,11 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import Icon from '../../icon';
-import {
-    isDisabledDate,
-    YEAR_TABLE_COL_COUNT,
-    YEAR_TABLE_ROW_COUNT,
-} from '../utils';
+import { isDisabledDate, YEAR_TABLE_COL_COUNT, YEAR_TABLE_ROW_COUNT } from '../utils';
 
 class YearTable extends React.PureComponent {
     onYearCellClick(date) {
@@ -58,8 +54,7 @@ class YearTable extends React.PureComponent {
                     const yearDate = visibleMonth.clone().year(year);
                     isDisabled = isDisabledDate(yearDate, disabledDate, 'year');
 
-                    !isDisabled &&
-                        (onClick = this.onYearCellClick.bind(this, yearDate));
+                    !isDisabled && (onClick = this.onYearCellClick.bind(this, yearDate));
 
                     content = yearCellRender ? yearCellRender(yearDate) : year;
                 }

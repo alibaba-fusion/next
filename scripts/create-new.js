@@ -24,14 +24,7 @@ co(function*() {
             name: 'family',
             type: 'list',
             message: "Input the component's chinese name (e.g. 日期选择): ",
-            choices: [
-                'data-entry',
-                'general',
-                'navigation',
-                'data-display',
-                'feedback',
-                'util',
-            ],
+            choices: ['data-entry', 'general', 'navigation', 'data-display', 'feedback', 'util'],
         },
     ]);
     const dashName = create.name;
@@ -106,7 +99,5 @@ co(function*() {
     );
     fs.writeFileSync(fusionJSPath, fusionJSContent);
 
-    logger.warn(
-        "Don't forget to write types/index.d.ts and English docs by hand!!"
-    );
+    logger.warn("Don't forget to write types/index.d.ts and English docs by hand!!");
 });

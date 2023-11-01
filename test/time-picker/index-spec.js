@@ -27,54 +27,32 @@ describe('TimePicker', () => {
 
         it('should render with defaultValue', () => {
             wrapper = mount(<TimePicker defaultValue={defaultValue} />);
-            assert(
-                wrapper.find('.next-time-picker-input input').instance()
-                    .value === '11:12:13'
-            );
+            assert(wrapper.find('.next-time-picker-input input').instance().value === '11:12:13');
         });
 
         it('should render with defaultValue as string', () => {
             wrapper = mount(<TimePicker defaultValue="11:11:11" />);
-            assert(
-                wrapper.find('.next-time-picker-input input').instance()
-                    .value === '11:11:11'
-            );
+            assert(wrapper.find('.next-time-picker-input input').instance().value === '11:11:11');
         });
 
         it('should render with format', () => {
-            wrapper = mount(
-                <TimePicker defaultValue="10:1:1" format="H:m:s" />
-            );
-            assert(
-                wrapper.find('.next-time-picker-input input').instance()
-                    .value === '10:1:1'
-            );
+            wrapper = mount(<TimePicker defaultValue="10:1:1" format="H:m:s" />);
+            assert(wrapper.find('.next-time-picker-input input').instance().value === '10:1:1');
         });
 
         it('should render with defaultVisible', () => {
-            wrapper = mount(
-                <TimePicker defaultValue={defaultValue} defaultVisible />
+            wrapper = mount(<TimePicker defaultValue={defaultValue} defaultVisible />);
+            assert(
+                wrapper.find('.next-time-picker-menu-hour .next-time-picker-menu-item.next-selected').instance()
+                    .title === '11'
             );
             assert(
-                wrapper
-                    .find(
-                        '.next-time-picker-menu-hour .next-time-picker-menu-item.next-selected'
-                    )
-                    .instance().title === '11'
+                wrapper.find('.next-time-picker-menu-minute .next-time-picker-menu-item.next-selected').instance()
+                    .title === '12'
             );
             assert(
-                wrapper
-                    .find(
-                        '.next-time-picker-menu-minute .next-time-picker-menu-item.next-selected'
-                    )
-                    .instance().title === '12'
-            );
-            assert(
-                wrapper
-                    .find(
-                        '.next-time-picker-menu-second .next-time-picker-menu-item.next-selected'
-                    )
-                    .instance().title === '13'
+                wrapper.find('.next-time-picker-menu-second .next-time-picker-menu-item.next-selected').instance()
+                    .title === '13'
             );
         });
 
@@ -82,10 +60,7 @@ describe('TimePicker', () => {
             wrapper = mount(<TimePicker value={defaultValue} />);
             const newValue = moment('12:22:22', 'HH:mm:ss', true);
             wrapper.setProps({ value: newValue });
-            assert(
-                wrapper.find('.next-time-picker-input input').instance()
-                    .value === '12:22:22'
-            );
+            assert(wrapper.find('.next-time-picker-input input').instance().value === '12:22:22');
         });
 
         it('should render with visisble controlled', () => {
@@ -97,40 +72,39 @@ describe('TimePicker', () => {
 
         it('should render with step', () => {
             wrapper = mount(<TimePicker defaultVisible secondStep={5} />);
-            assert(
-                wrapper.find(
-                    '.next-time-picker-menu-second .next-time-picker-menu-item'
-                ).length === 12
-            );
+            assert(wrapper.find('.next-time-picker-menu-second .next-time-picker-menu-item').length === 12);
         });
 
         it('should render menu items', () => {
-            const renderTimeMenuItems = (list) => {
+            const renderTimeMenuItems = list => {
                 return list.map(({ label, value }) => {
                     return {
                         value,
-                        label: value > 9 ? String(value) : `0${value}`
+                        label: value > 9 ? String(value) : `0${value}`,
                     };
                 });
             };
-            wrapper = mount(<TimePicker defaultVisible renderTimeMenuItems={renderTimeMenuItems}  />);
+            wrapper = mount(<TimePicker defaultVisible renderTimeMenuItems={renderTimeMenuItems} />);
 
             assert(
-                wrapper.find(
-                    '.next-time-picker-menu-second .next-time-picker-menu-item'
-                ).at(0).text() === '00'
+                wrapper
+                    .find('.next-time-picker-menu-second .next-time-picker-menu-item')
+                    .at(0)
+                    .text() === '00'
             );
 
             assert(
-                wrapper.find(
-                    '.next-time-picker-menu-second .next-time-picker-menu-item'
-                ).at(9).text() === '09'
+                wrapper
+                    .find('.next-time-picker-menu-second .next-time-picker-menu-item')
+                    .at(9)
+                    .text() === '09'
             );
 
             assert(
-                wrapper.find(
-                    '.next-time-picker-menu-second .next-time-picker-menu-item'
-                ).at(10).text() === '10'
+                wrapper
+                    .find('.next-time-picker-menu-second .next-time-picker-menu-item')
+                    .at(10)
+                    .text() === '10'
             );
         });
         it('should support preview mode render', () => {
@@ -138,10 +112,10 @@ describe('TimePicker', () => {
             assert(wrapper.find('.next-form-preview').length > 0);
             assert(wrapper.find('.next-form-preview').text() === '12:00:00');
             wrapper.setProps({
-                renderPreview: (value) => {
+                renderPreview: value => {
                     assert(value.format('HH:mm:ss') === '12:00:00');
                     return 'Hello World';
-                }
+                },
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
         });
@@ -191,14 +165,9 @@ describe('TimePicker', () => {
                     }}
                 />
             );
-            wrapper
-                .find('.next-time-picker-input input')
-                .simulate('change', { target: { value: '20:00:00' } });
+            wrapper.find('.next-time-picker-input input').simulate('change', { target: { value: '20:00:00' } });
             wrapper.find('.next-time-picker-input input').simulate('blur');
-            assert(
-                wrapper.find('.next-time-picker-input input').instance()
-                    .value === '20:00:00'
-            );
+            assert(wrapper.find('.next-time-picker-input input').instance().value === '20:00:00');
             assert(ret === '20:00:00');
         });
 
@@ -217,19 +186,20 @@ describe('TimePicker', () => {
             }
 
             wrapper = mount(
-                <TimePicker onChange={value => {
+                <TimePicker
+                    onChange={value => {
                         ret = value.format('HH:mm:ss');
                     }}
                 />
             );
             // 无效值输入
-            wrapperAsserts('Invalid value', null)
+            wrapperAsserts('Invalid value', null);
             // 空值状态下 有效值输入
-            wrapperAsserts('12:20:24', '12:20:24')
-            // 非空值状态下 有效值输入 
-            wrapperAsserts('12:20:40', '12:20:40')
+            wrapperAsserts('12:20:24', '12:20:24');
+            // 非空值状态下 有效值输入
+            wrapperAsserts('12:20:40', '12:20:40');
             // 非空值状态下 无效值输入
-            wrapperAsserts('Invalid value', '12:20:40')
+            wrapperAsserts('Invalid value', '12:20:40');
         });
 
         it('should select time-picker panel', () => {
@@ -247,47 +217,41 @@ describe('TimePicker', () => {
                 .simulate('click');
             assert(ret === '02:00:00');
             wrapper
-                .find(
-                    '.next-time-picker-menu-minute .next-time-picker-menu-item'
-                )
+                .find('.next-time-picker-menu-minute .next-time-picker-menu-item')
                 .at(2)
                 .simulate('click');
             assert(ret === '02:02:00');
             wrapper
-                .find(
-                    '.next-time-picker-menu-second .next-time-picker-menu-item'
-                )
+                .find('.next-time-picker-menu-second .next-time-picker-menu-item')
                 .at(2)
                 .simulate('click');
             assert(ret === '02:02:02');
         });
-        
+
         it('should keyboard date time input', () => {
-            wrapper = mount(
-                <TimePicker />
-            );
+            wrapper = mount(<TimePicker />);
 
             const timeInput = wrapper.find('.next-time-picker-input input');
             const instance = wrapper.instance().getInstance();
             timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.inputStr === ('00:00:00'));
+            assert(instance.state.inputStr === '00:00:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.LEFT });
             timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
             timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
             timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
-            assert(instance.state.inputStr === ('00:00:00'));
+            assert(instance.state.inputStr === '00:00:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.inputStr === ('00:00:01'));
+            assert(instance.state.inputStr === '00:00:01');
             timeInput.simulate('keydown', { keyCode: KEYCODE.UP });
-            assert(instance.state.inputStr === ('00:00:00'));
+            assert(instance.state.inputStr === '00:00:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
-            assert(instance.state.inputStr === ('00:01:00'));
+            assert(instance.state.inputStr === '00:01:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
-            assert(instance.state.inputStr === ('00:00:00'));
+            assert(instance.state.inputStr === '00:00:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
-            assert(instance.state.inputStr === ('01:00:00'));
+            assert(instance.state.inputStr === '01:00:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
-            assert(instance.state.inputStr === ('00:00:00'));
+            assert(instance.state.inputStr === '00:00:00');
         });
     });
 });

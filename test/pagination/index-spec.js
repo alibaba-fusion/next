@@ -41,95 +41,45 @@ describe('Pagination', () => {
         wrapper.setProps({ type: 'mini' });
         wrapper.update();
         assert(wrapper.find('.next-pagination').hasClass('next-mini'));
-        assert(
-            wrapper.find('.next-pagination-item.next-prev').hostNodes()
-                .length === 1
-        );
-        assert(
-            wrapper.find('.next-pagination-item.next-next').hostNodes()
-                .length === 1
-        );
+        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().length === 1);
+        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().length === 1);
         assert(wrapper.find('.next-pagination-list').hostNodes().length === 0);
-        assert(
-            wrapper.find('.next-pagination-display').hostNodes().length === 0
-        );
-        assert(
-            wrapper.find('.next-pagination-jump-input').hostNodes().length === 0
-        );
+        assert(wrapper.find('.next-pagination-display').hostNodes().length === 0);
+        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 0);
 
         wrapper.setProps({ type: 'simple' });
         wrapper.update();
         assert(wrapper.find('.next-pagination').hasClass('next-simple'));
-        assert(
-            wrapper.find('.next-pagination-item.next-prev').hostNodes()
-                .length === 1
-        );
-        assert(
-            wrapper.find('.next-pagination-item.next-next').hostNodes()
-                .length === 1
-        );
+        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().length === 1);
+        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().length === 1);
         assert(wrapper.find('.next-pagination-list').hostNodes().length === 0);
-        assert(
-            wrapper.find('.next-pagination-display').hostNodes().length === 1
-        );
-        assert(
-            wrapper.find('.next-pagination-jump-input').hostNodes().length === 0
-        );
+        assert(wrapper.find('.next-pagination-display').hostNodes().length === 1);
+        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 0);
 
         wrapper.setProps({ type: 'normal' });
         wrapper.update();
         assert(wrapper.find('.next-pagination').hasClass('next-normal'));
-        assert(
-            wrapper.find('.next-pagination-item.next-prev').hostNodes()
-                .length === 1
-        );
-        assert(
-            wrapper.find('.next-pagination-item.next-next').hostNodes()
-                .length === 1
-        );
+        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().length === 1);
+        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().length === 1);
         assert(wrapper.find('.next-pagination-list').hostNodes().length === 1);
-        assert(
-            wrapper.find('.next-pagination-display').hostNodes().length === 1
-        );
-        assert(
-            wrapper.find('.next-pagination-jump-input').hostNodes().length === 1
-        );
+        assert(wrapper.find('.next-pagination-display').hostNodes().length === 1);
+        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 1);
 
         wrapper.setProps({ type: 'normal', total: 40 });
         wrapper.update();
-        assert(
-            wrapper.find('.next-pagination-item.next-prev').hostNodes()
-                .length === 1
-        );
-        assert(
-            wrapper.find('.next-pagination-item.next-next').hostNodes()
-                .length === 1
-        );
+        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().length === 1);
+        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().length === 1);
         assert(wrapper.find('.next-pagination-list').hostNodes().length === 1);
-        assert(
-            wrapper.find('.next-pagination-display').hostNodes().length === 0
-        );
-        assert(
-            wrapper.find('.next-pagination-jump-input').hostNodes().length === 0
-        );
+        assert(wrapper.find('.next-pagination-display').hostNodes().length === 0);
+        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 0);
 
         wrapper.setProps({ type: 'others', total: 40 });
         wrapper.update();
-        assert(
-            wrapper.find('.next-pagination-item.next-prev').hostNodes()
-                .length === 0
-        );
-        assert(
-            wrapper.find('.next-pagination-item.next-next').hostNodes()
-                .length === 0
-        );
+        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().length === 0);
+        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().length === 0);
         assert(wrapper.find('.next-pagination-list').hostNodes().length === 0);
-        assert(
-            wrapper.find('.next-pagination-display').hostNodes().length === 0
-        );
-        assert(
-            wrapper.find('.next-pagination-jump-input').hostNodes().length === 0
-        );
+        assert(wrapper.find('.next-pagination-display').hostNodes().length === 0);
+        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 0);
     });
 
     it('should render by shape', () => {
@@ -184,18 +134,10 @@ describe('Pagination', () => {
 
         const currentTest = () => {
             wrapper.update();
+            assert(wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes().length === 1);
             assert(
                 wrapper
-                    .find(
-                        '.next-pagination-list .next-pagination-item.next-current'
-                    )
-                    .hostNodes().length === 1
-            );
-            assert(
-                wrapper
-                    .find(
-                        '.next-pagination-list .next-pagination-item.next-current'
-                    )
+                    .find('.next-pagination-list .next-pagination-item.next-current')
                     .hostNodes()
                     .text() === initCurrent.toString()
             );
@@ -258,25 +200,17 @@ describe('Pagination', () => {
             <Pagination
                 defaultCurrent={current}
                 onChange={index => {
-                    assert(index === current)
+                    assert(index === current);
                 }}
             />
         );
 
         const defaultCurrentTest = () => {
             wrapper.update();
+            assert(wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes().length === 1);
             assert(
                 wrapper
-                    .find(
-                        '.next-pagination-list .next-pagination-item.next-current'
-                    )
-                    .hostNodes().length === 1
-            );
-            assert(
-                wrapper
-                    .find(
-                        '.next-pagination-list .next-pagination-item.next-current'
-                    )
+                    .find('.next-pagination-list .next-pagination-item.next-current')
                     .hostNodes()
                     .text() === current.toString()
             );
@@ -355,7 +289,6 @@ describe('Pagination', () => {
         // wrapper.setProps({
         //     onChange: () => assert(false),
         // });
-
         // const testCase = value => {
         //     wrapper
         //         .find('.next-pagination-jump-input input')
@@ -370,7 +303,6 @@ describe('Pagination', () => {
         //             keyCode: 13,
         //         });
         // };
-
         // testCase('text');
         // testCase('0');
         // testCase('1');
@@ -428,9 +360,7 @@ describe('Pagination', () => {
                     keyCode: 13,
                 });
 
-            console.log(
-                wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes()
-            );
+            console.log(wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes());
         };
 
         // 实际上当输入不合法时，进入不了onChange逻辑
@@ -450,22 +380,14 @@ describe('Pagination', () => {
             total: 0,
         });
         assert(!wrapper.find('.next-pagination').hasClass('next-hide'));
-        assert(
-            wrapper
-                .find('.next-pagination-list .next-pagination-item')
-                .hostNodes().length === 1
-        );
+        assert(wrapper.find('.next-pagination-list .next-pagination-item').hostNodes().length === 1);
 
         wrapper.setProps({
             total: 0,
             hideOnlyOnePage: true,
         });
         assert(wrapper.find('.next-pagination').hasClass('next-hide'));
-        assert(
-            wrapper
-                .find('.next-pagination-list .next-pagination-item')
-                .hostNodes().length === 1
-        );
+        assert(wrapper.find('.next-pagination-list .next-pagination-item').hostNodes().length === 1);
 
         wrapper.setProps({
             total: 50,
@@ -475,20 +397,11 @@ describe('Pagination', () => {
             wrapper
                 .find('.next-pagination-list')
                 .children()
-                .everyWhere(
-                    (item, index) => item.text() === (index + 1).toString()
-                )
+                .everyWhere((item, index) => item.text() === (index + 1).toString())
         );
 
         wrapper.unmount();
-        wrapper = mount(
-            <Pagination
-                total={101}
-                pageSize={5}
-                pageShowCount={9}
-                current={11}
-            />
-        );
+        wrapper = mount(<Pagination total={101} pageSize={5} pageShowCount={9} current={11} />);
         assert(wrapper.find('.next-pagination-list').children().length === 11);
         wrapper
             .find('.next-pagination-list')
@@ -554,9 +467,7 @@ describe('Pagination', () => {
     });
 
     it('should next- jump and display parts if the type is normal when set showJump to false ', () => {
-        assert(
-            wrapper.find('.next-pagination-jump-input').hostNodes().length === 1
-        );
+        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 1);
         assert(wrapper.find('.next-pagination-display').length === 1);
         wrapper.setProps({ showJump: false });
         assert(wrapper.find('.next-pagination-jump-input').length === 0);
@@ -575,16 +486,11 @@ describe('Pagination', () => {
             onPageSizeChange: size => assert(size === currentPageSize),
         });
         assert(
-            wrapper
-                .find(
-                    '.next-pagination-size-selector .next-pagination-size-selector-filter'
-                )
-                .hostNodes().length === 1
+            wrapper.find('.next-pagination-size-selector .next-pagination-size-selector-filter').hostNodes().length ===
+                1
         );
 
-        const btnsWrapper = wrapper
-            .find('.next-pagination-size-selector-btn')
-            .hostNodes();
+        const btnsWrapper = wrapper.find('.next-pagination-size-selector-btn').hostNodes();
         pageSizeList.forEach((size, index) => {
             assert(btnsWrapper.at(index).text() === size.toString());
         });
@@ -610,16 +516,11 @@ describe('Pagination', () => {
             onPageSizeChange: size => assert(size === currentPageSize),
         });
         assert(
-            wrapper
-                .find(
-                    '.next-pagination-size-selector .next-pagination-size-selector-filter'
-                )
-                .hostNodes().length === 1
+            wrapper.find('.next-pagination-size-selector .next-pagination-size-selector-filter').hostNodes().length ===
+                1
         );
 
-        const btnsWrapper = wrapper
-            .find('.next-pagination-size-selector-btn')
-            .hostNodes();
+        const btnsWrapper = wrapper.find('.next-pagination-size-selector-btn').hostNodes();
         pageSizeList.forEach((size, index) => {
             assert(btnsWrapper.at(index).text() === size.label.toString());
         });
@@ -648,11 +549,8 @@ describe('Pagination', () => {
         });
         setTimeout(() => {
             assert(
-                wrapper
-                    .find(
-                        '.next-pagination-size-selector .next-pagination-size-selector-dropdown'
-                    )
-                    .hostNodes().length === 1
+                wrapper.find('.next-pagination-size-selector .next-pagination-size-selector-dropdown').hostNodes()
+                    .length === 1
             );
 
             wrapper
@@ -680,9 +578,7 @@ describe('Pagination', () => {
             newLis[2].click();
             assert(
                 wrapper
-                    .find(
-                        '.next-pagination-list .next-pagination-item.next-current'
-                    )
+                    .find('.next-pagination-list .next-pagination-item.next-current')
                     .hostNodes()
                     .text() === '10'
             );
@@ -718,19 +614,16 @@ describe('Pagination', () => {
             wrapper
                 .find('.next-pagination-list')
                 .children()
-                .everyWhere(
-                    (item, index) =>
-                        item.text() === (index + 1).toString() + 'test'
-                )
+                .everyWhere((item, index) => item.text() === (index + 1).toString() + 'test')
         );
     });
 
     it('should support device transfer type to simple', () => {
         wrapper.setProps({
             device: 'phone',
-            type: 'normal'
+            type: 'normal',
         });
 
         assert(wrapper.find('.next-simple').length > 0);
-    })
+    });
 });

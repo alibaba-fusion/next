@@ -55,16 +55,12 @@ describe('Slider A11y', () => {
     });
 
     it('should not have any violations in vertical mode', async () => {
-        wrapper = await testReact(
-            <Slider dotsDirection="ver">{slides}</Slider>
-        );
+        wrapper = await testReact(<Slider dotsDirection="ver">{slides}</Slider>);
         return wrapper;
     });
 
     it('should not have any violations when set slideDirection', async () => {
-        wrapper = await testReact(
-            <Slider slideDirection="ver">{slides}</Slider>
-        );
+        wrapper = await testReact(<Slider slideDirection="ver">{slides}</Slider>);
         return wrapper;
     });
 

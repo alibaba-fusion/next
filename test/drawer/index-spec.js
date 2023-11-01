@@ -104,34 +104,27 @@ describe('Drawer', () => {
         ReactTestUtils.Simulate.click(closeLink);
 
         assert(!document.querySelector('.next-drawer'));
-
     });
 
     it('should support placement', () => {
         ['top', 'left', 'bottom', 'right'].forEach(dir => {
             wrapper && wrapper.unmount();
 
-            wrapper = render(<Drawer visible placement={dir}/>);
-            assert(
-                hasClass(
-                    document.querySelector('.next-drawer'),
-                    `next-drawer-${dir}`
-                )
-            );
+            wrapper = render(<Drawer visible placement={dir} />);
+            assert(hasClass(document.querySelector('.next-drawer'), `next-drawer-${dir}`));
         });
     });
 
     it('should work when set <ConfigProvider popupContainer/> ', () => {
-
-        wrapper = render(<ConfigProvider popupContainer={"dialog-popupcontainer"}>
-        <div id="dialog-popupcontainer" style={{height: 300, overflow: 'auto'}}>
-            <Drawer
-                title="Welcome to Alibaba.com"
-                visible>
-                Start your business here by searching a popular product
-            </Drawer>
-        </div>
-        </ConfigProvider>);
+        wrapper = render(
+            <ConfigProvider popupContainer={'dialog-popupcontainer'}>
+                <div id="dialog-popupcontainer" style={{ height: 300, overflow: 'auto' }}>
+                    <Drawer title="Welcome to Alibaba.com" visible>
+                        Start your business here by searching a popular product
+                    </Drawer>
+                </div>
+            </ConfigProvider>
+        );
 
         const overlay = document.querySelector('#dialog-popupcontainer > .next-overlay-wrapper');
         assert(overlay);
@@ -143,11 +136,19 @@ describe('Drawer', () => {
     });
 
     it('should support headerStyle/bodyStyle', () => {
-        wrapper = render(<Drawer visible title="test" headerStyle={{background: 'blue'}} bodyStyle={{background: 'red'}} closeable={false}>body</Drawer>);
+        wrapper = render(
+            <Drawer
+                visible
+                title="test"
+                headerStyle={{ background: 'blue' }}
+                bodyStyle={{ background: 'red' }}
+                closeable={false}
+            >
+                body
+            </Drawer>
+        );
 
         assert(getStyle(document.querySelector('.next-drawer-header'), 'background'), 'blue');
         assert(getStyle(document.querySelector('.next-drawer-body'), 'background'), 'red');
     });
-
-})
-
+});

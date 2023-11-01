@@ -35,35 +35,14 @@ class CardHeader extends Component {
     };
 
     render() {
-        const {
-            prefix,
-            title,
-            subTitle,
-            extra,
-            className,
-            component: Component,
-            ...others
-        } = this.props;
+        const { prefix, title, subTitle, extra, className, component: Component, ...others } = this.props;
 
         return (
-            <Component
-                {...others}
-                className={classNames(`${prefix}card-header`, className)}
-            >
-                {extra && (
-                    <div className={`${prefix}card-header-extra`}>{extra}</div>
-                )}
+            <Component {...others} className={classNames(`${prefix}card-header`, className)}>
+                {extra && <div className={`${prefix}card-header-extra`}>{extra}</div>}
                 <div className={`${prefix}card-header-titles`}>
-                    {title && (
-                        <div className={`${prefix}card-header-title`}>
-                            {title}
-                        </div>
-                    )}
-                    {subTitle && (
-                        <div className={`${prefix}card-header-subtitle`}>
-                            {subTitle}
-                        </div>
-                    )}
+                    {title && <div className={`${prefix}card-header-title`}>{title}</div>}
+                    {subTitle && <div className={`${prefix}card-header-subtitle`}>{subTitle}</div>}
                 </div>
             </Component>
         );

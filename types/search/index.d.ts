@@ -14,7 +14,7 @@ type item = {
     value?: string | number;
     label?: React.ReactNode;
     [propName: string]: any;
-}
+};
 
 export interface SearchProps extends HTMLAttributesWeak, CommonProps {
     /**

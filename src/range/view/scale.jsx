@@ -7,10 +7,7 @@ export default class Scale extends React.Component {
     static propTypes = {
         min: PropTypes.number,
         max: PropTypes.number,
-        value: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number),
-        ]),
+        value: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
         prefix: PropTypes.string,
         scales: PropTypes.arrayOf(PropTypes.number),
         rtl: PropTypes.bool,

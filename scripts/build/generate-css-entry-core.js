@@ -11,16 +11,13 @@ module.exports = function() {
     corePaths.forEach(cPath => {
         const cContent = fs.readFileSync(cPath, 'utf8');
 
-        const newPath = cPath.replace('src', 'lib').replace('core-temp', 'core2').replace('-def-default.css', '.css');
+        const newPath = cPath
+            .replace('src', 'lib')
+            .replace('core-temp', 'core2')
+            .replace('-def-default.css', '.css');
 
-        fs.outputFileSync(
-            newPath,
-            cContent
-        );
-        fs.outputFileSync(
-            newPath.replace('lib', 'es'),
-            cContent
-        );
+        fs.outputFileSync(newPath, cContent);
+        fs.outputFileSync(newPath.replace('lib', 'es'), cContent);
     });
 
     const indexContent = `@import "./index-noreset.css";`;

@@ -39,10 +39,7 @@ DemoPlugin.prototype.apply = function(compiler) {
                 chunk: chunk,
             });
             const files = chunk.files;
-            const js = this._cut(
-                _.find(files, file => path.extname(file) === '.js'),
-                assets
-            );
+            const js = this._cut(_.find(files, file => path.extname(file) === '.js'), assets);
 
             assets[pathname] = {
                 source: () => {

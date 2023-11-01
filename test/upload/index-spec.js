@@ -42,11 +42,7 @@ function buildFile(filename = 'test') {
 }
 
 function triggerUploadEvent(wrapper, done, callback) {
-    if (
-        typeof atob === 'function' &&
-        typeof Blob === 'function' &&
-        typeof File === 'function'
-    ) {
+    if (typeof atob === 'function' && typeof Blob === 'function' && typeof File === 'function') {
         // 模拟文件上传
         const file = buildFile();
         wrapper.find('input').simulate('change', { target: { files: [file] } });
@@ -72,9 +68,7 @@ describe('Upload', () => {
 
     describe('render', () => {
         it('should render a wrapper upload', () => {
-            const wrapper = mount(
-                <Upload listType="text" defaultValue={defaultValue} />
-            );
+            const wrapper = mount(<Upload listType="text" defaultValue={defaultValue} />);
             assert(wrapper.find('.next-upload').length === 1);
             // remove item
             assert(wrapper.find('.next-upload-list-item').length === 1);
@@ -106,13 +100,7 @@ describe('Upload', () => {
         });
         it('should support limit', done => {
             // limit = 2 上传4个文件 结果应该是 2个成功 2个失败
-            if (
-                !(
-                    typeof atob === 'function' &&
-                    typeof Blob === 'function' &&
-                    typeof File === 'function'
-                )
-            ) {
+            if (!(typeof atob === 'function' && typeof Blob === 'function' && typeof File === 'function')) {
                 return done();
             }
 
@@ -135,17 +123,9 @@ describe('Upload', () => {
             const files = [1, 2, 3, 4].map(value => buildFile(value));
 
             const wrapper = mount(
-                <Upload
-                    autoUplod={false}
-                    limit={2}
-                    multiple
-                    onSuccess={onSuccess}
-                    onError={onError}
-                />
+                <Upload autoUplod={false} limit={2} multiple onSuccess={onSuccess} onError={onError} />
             );
-            wrapper
-                .find('input')
-                .simulate('change', { target: { files: files } });
+            wrapper.find('input').simulate('change', { target: { files: files } });
             requests.forEach(req =>
                 req.respond(
                     200,
@@ -158,14 +138,12 @@ describe('Upload', () => {
         it('should support onPreview events when listType is set to card and isPreview is set to true', done => {
             const onPreview = sinon.spy();
             const wrapper = mount(
-                <Upload
-                    listType="card"
-                    isPreview
-                    defaultValue={defaultValue}
-                    onPreview={onPreview}
-                />
+                <Upload listType="card" isPreview defaultValue={defaultValue} onPreview={onPreview} />
             );
-            wrapper.find('.next-upload-list-item-thumbnail > img').at(0).simulate('click');
+            wrapper
+                .find('.next-upload-list-item-thumbnail > img')
+                .at(0)
+                .simulate('click');
             assert(onPreview.calledOnce);
             done();
         });
@@ -174,12 +152,7 @@ describe('Upload', () => {
             const onChange = sinon.spy();
             const onRemove = sinon.spy();
             const wrapper = mount(
-                <Upload
-                    listType="text"
-                    defaultValue={defaultValue}
-                    onChange={onChange}
-                    onRemove={onRemove}
-                />
+                <Upload listType="text" defaultValue={defaultValue} onChange={onChange} onRemove={onRemove} />
             );
             wrapper
                 .find('i.next-icon-close')
@@ -251,13 +224,7 @@ describe('Upload', () => {
                 assert(pass.isPass);
                 done();
             };
-            const wrapper = mount(
-                <Upload
-                    autoUplod={false}
-                    request={customRequest}
-                    onSuccess={onSuccess}
-                />
-            );
+            const wrapper = mount(<Upload autoUplod={false} request={customRequest} onSuccess={onSuccess} />);
             triggerUploadEvent(wrapper, done, () => {
                 requests[0].respond(
                     200,
@@ -270,9 +237,7 @@ describe('Upload', () => {
             const onError = function onError() {
                 done();
             };
-            const wrapper = mount(
-                <Upload autoUplod={false} onError={onError} />
-            );
+            const wrapper = mount(<Upload autoUplod={false} onError={onError} />);
             triggerUploadEvent(wrapper, done, () => {
                 requests[0].respond(200, {}, '{"succe3}');
             });
@@ -281,9 +246,7 @@ describe('Upload', () => {
             const onError = function onError() {
                 done();
             };
-            const wrapper = mount(
-                <Upload autoUplod={false} onError={onError} />
-            );
+            const wrapper = mount(<Upload autoUplod={false} onError={onError} />);
             triggerUploadEvent(wrapper, done, () => {
                 requests[0].respond(200, {}, '{"success": false}');
             });
@@ -293,13 +256,7 @@ describe('Upload', () => {
             const onError = function onError() {
                 done();
             };
-            const wrapper = mount(
-                <Upload
-                    autoUplod={false}
-                    onError={onError}
-                    beforeUpload={beforeUpload}
-                />
-            );
+            const wrapper = mount(<Upload autoUplod={false} onError={onError} beforeUpload={beforeUpload} />);
             triggerUploadEvent(wrapper, done);
         });
         it('should throw error when return Promise.resolve(false) in BeforeUpload', done => {
@@ -307,13 +264,7 @@ describe('Upload', () => {
             const onError = function onError() {
                 done();
             };
-            const wrapper = mount(
-                <Upload
-                    autoUplod={false}
-                    onError={onError}
-                    beforeUpload={beforeUpload}
-                />
-            );
+            const wrapper = mount(<Upload autoUplod={false} onError={onError} beforeUpload={beforeUpload} />);
             triggerUploadEvent(wrapper, done);
         });
         it('should throw error when return Promise.reject() in BeforeUpload', done => {
@@ -321,13 +272,7 @@ describe('Upload', () => {
             const onError = function onError() {
                 done();
             };
-            const wrapper = mount(
-                <Upload
-                    autoUplod={false}
-                    onError={onError}
-                    beforeUpload={beforeUpload}
-                />
-            );
+            const wrapper = mount(<Upload autoUplod={false} onError={onError} beforeUpload={beforeUpload} />);
             triggerUploadEvent(wrapper, done);
         });
     });

@@ -33,17 +33,7 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
      */
-    iconSize?:
-        | number
-        | 'xxs'
-        | 'xs'
-        | 'small'
-        | 'medium'
-        | 'large'
-        | 'xl'
-        | 'xxl'
-        | 'xxxl'
-        | 'inherit';
+    iconSize?: number | 'xxs' | 'xs' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'xxxl' | 'inherit';
 
     /**
      * 当 component = 'button' 时，设置 button 标签的 type 值

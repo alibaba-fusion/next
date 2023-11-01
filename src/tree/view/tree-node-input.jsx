@@ -16,12 +16,6 @@ export default class TreeNodeInput extends Component {
     render() {
         const { prefix, ...others } = this.props;
 
-        return (
-            <Input
-                size="small"
-                className={`${prefix}tree-node-input`}
-                {...others}
-            />
-        );
+        return <Input size="small" className={`${prefix}tree-node-input`} {...others} />;
     }
 }

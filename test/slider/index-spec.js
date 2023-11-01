@@ -13,17 +13,13 @@ import ConfigProvider from '../../src/config-provider';
 Enzyme.configure({ adapter: new Adapter() });
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
-describe('slider', function () {
+describe('slider', function() {
     this.timeout(0);
 
     describe('render', () => {
         let wrapper;
         const slides = [1, 2, 3, 4].map((item, index) => (
-            <div
-                key={index}
-                className="custom-slick-item"
-                style={{ width: '500px' }}
-            >
+            <div key={index} className="custom-slick-item" style={{ width: '500px' }}>
                 <h3>{item}</h3>
             </div>
         ));
@@ -62,7 +58,7 @@ describe('slider', function () {
             const wrapper = mount(
                 <ConfigProvider prefix="ddd-">
                     <Slider>
-                        <Icon type="account"/>
+                        <Icon type="account" />
                     </Slider>
                 </ConfigProvider>
             );
@@ -132,7 +128,7 @@ describe('slider', function () {
         });
 
         it('should autoplay', () => {
-            return co(function* () {
+            return co(function*() {
                 wrapper = mount(
                     <Slider infinite={false} autoplay autoplaySpeed={200}>
                         {slides}
@@ -150,14 +146,9 @@ describe('slider', function () {
         });
 
         it('should fade', () => {
-            return co(function* () {
+            return co(function*() {
                 wrapper = mount(
-                    <Slider
-                        infinite={false}
-                        animation="fade"
-                        autoplay
-                        autoplaySpeed={200}
-                    >
+                    <Slider infinite={false} animation="fade" autoplay autoplaySpeed={200}>
                         {slides}
                     </Slider>
                 );
@@ -182,11 +173,7 @@ describe('slider', function () {
 
             const CustomNextArrow = props => {
                 return (
-                    <div
-                        {...props}
-                        style={arrowStyle}
-                        className="test-classname-right"
-                    >
+                    <div {...props} style={arrowStyle} className="test-classname-right">
                         <Icon type="arrow-double-right" />
                     </div>
                 );
@@ -194,21 +181,14 @@ describe('slider', function () {
 
             const CustomPrevArrow = props => {
                 return (
-                    <div
-                        {...props}
-                        style={arrowStyle}
-                        className="test-classname-left"
-                    >
+                    <div {...props} style={arrowStyle} className="test-classname-left">
                         <Icon type="arrow-double-left" />
                     </div>
                 );
             };
 
             wrapper = mount(
-                <Slider
-                    nextArrow={<CustomNextArrow />}
-                    prevArrow={<CustomPrevArrow />}
-                >
+                <Slider nextArrow={<CustomNextArrow />} prevArrow={<CustomPrevArrow />}>
                     {slides}
                 </Slider>
             );
@@ -239,7 +219,7 @@ describe('slider', function () {
             </div>
         ));
 
-        beforeEach(() => { });
+        beforeEach(() => {});
 
         afterEach(() => {
             if (wrapper) {
@@ -286,7 +266,7 @@ describe('slider', function () {
         });
 
         it('too more slidesToShow ', () => {
-            return co(function* () {
+            return co(function*() {
                 const settings = {
                     slidesToShow: 5,
                     slidesToScroll: 10,
@@ -351,7 +331,7 @@ describe('slider', function () {
         });
 
         it('should click next/prev arrow', () => {
-            return co(function* () {
+            return co(function*() {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
                 yield delay(100);
                 assert(
@@ -360,9 +340,7 @@ describe('slider', function () {
                         .at(0)
                         .hasClass('next-slick-active')
                 );
-                wrapper
-                    .find('.next-slick-arrow.next-slick-next')
-                    .simulate('click');
+                wrapper.find('.next-slick-arrow.next-slick-next').simulate('click');
                 yield delay(300);
                 assert(
                     wrapper
@@ -375,41 +353,39 @@ describe('slider', function () {
         });
 
         it('should have correct disabled class for next/prev arrow', () => {
-            return co(function* () {
-                wrapper = mount(<Slider
-                    infinite={false}
-                    defaultActiveIndex={2}
-                    slidesToShow={5}
-                    >{slides}</Slider>);
+            return co(function*() {
+                wrapper = mount(
+                    <Slider infinite={false} defaultActiveIndex={2} slidesToShow={5}>
+                        {slides}
+                    </Slider>
+                );
                 yield delay(100);
                 assert(
-                    wrapper.find('.next-slick-arrow.next-slick-next').at(0).hasClass('disabled')
+                    wrapper
+                        .find('.next-slick-arrow.next-slick-next')
+                        .at(0)
+                        .hasClass('disabled')
                 );
                 assert(
-                    !wrapper.find('.next-slick-arrow.next-slick-prev').at(0).hasClass('disabled')
+                    !wrapper
+                        .find('.next-slick-arrow.next-slick-prev')
+                        .at(0)
+                        .hasClass('disabled')
                 );
             });
         });
 
         it('should hover next/prev arrow', () => {
-            return co(function* () {
+            return co(function*() {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
 
-                wrapper
-                    .find('.next-slick-arrow.next-slick-next')
-                    .simulate('mouseEnter');
+                wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseEnter');
                 yield delay(300);
-                wrapper
-                    .find('.next-slick-arrow.next-slick-next')
-                    .simulate('mouseLeave');
+                wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseLeave');
 
-                wrapper
-                    .find('.next-slick-arrow.next-slick-prev')
-                    .simulate('mouseEnter');
+                wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseEnter');
                 yield delay(300);
-                wrapper
-                    .find('.next-slick-arrow.next-slick-prev')
-                    .simulate('mouseLeave');
+                wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseLeave');
 
                 assert(
                     wrapper
@@ -421,7 +397,7 @@ describe('slider', function () {
         });
 
         it('should click dots', () => {
-            return co(function* () {
+            return co(function*() {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
                 assert(
                     wrapper
@@ -458,45 +434,55 @@ describe('slider', function () {
                 onBeforeChange: (currentIndex, index) => {
                     assert(currentIndex === 0);
                     assert(index === 1);
-                }
+                },
             };
 
             wrapper = mount(<Slider {...settings}>{slides}</Slider>);
             wrapper.find('.next-slick-arrow.next-slick-next').simulate('click');
         });
-        it('should adaptiveHeight',()=>{
+        it('should adaptiveHeight', () => {
             wrapper = mount(
-                <Slider 
-                adaptiveHeight
-                dotsDirection="ver"
-                slideDirection="ver"
-                activeIndex={0}
-              >
-                <div className="slider-item" key={1}>111111</div>
-                <div className="slider-item" key={2}>公告：22222222222222222222领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问。工从引然所国引极二间响他两周消广放济候办片提广起两有动书断化管千积争擦到了传达了查看；</div>
-                <div className="slider-item" key={3}>3333</div>
-                <div className="slider-item" key={4}>44444444444</div>
-              </Slider>
+                <Slider adaptiveHeight dotsDirection="ver" slideDirection="ver" activeIndex={0}>
+                    <div className="slider-item" key={1}>
+                        111111
+                    </div>
+                    <div className="slider-item" key={2}>
+                        公告：22222222222222222222领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问。工从引然所国引极二间响他两周消广放济候办片提广起两有动书断化管千积争擦到了传达了查看；
+                    </div>
+                    <div className="slider-item" key={3}>
+                        3333
+                    </div>
+                    <div className="slider-item" key={4}>
+                        44444444444
+                    </div>
+                </Slider>
             );
             wrapper.setProps({ activeIndex: 2 });
             wrapper.update();
-            const height1 = wrapper.find('.next-slick-slide').at(0).instance().style.height
-            const height2 = wrapper.find('.next-slick-slide').at(1).instance().style.height
-            const height3 = wrapper.find('.next-slick-slide').at(3).instance().style.height
-            const newHeight = height1 + height2 + height3
-           assert(wrapper.find('.next-slick-track').instance().style.transform === `translate3d(0px, ${-(newHeight)}px, 0px)`);
+            const height1 = wrapper
+                .find('.next-slick-slide')
+                .at(0)
+                .instance().style.height;
+            const height2 = wrapper
+                .find('.next-slick-slide')
+                .at(1)
+                .instance().style.height;
+            const height3 = wrapper
+                .find('.next-slick-slide')
+                .at(3)
+                .instance().style.height;
+            const newHeight = height1 + height2 + height3;
+            assert(
+                wrapper.find('.next-slick-track').instance().style.transform ===
+                    `translate3d(0px, ${-newHeight}px, 0px)`
+            );
         });
-
     });
 
     describe('action rtl', () => {
         let wrapper;
         const slides = [1, 2, 3, 4].map((item, index) => (
-            <div
-                key={index}
-                className="custom-slick-item"
-                style={{ width: '500px' }}
-            >
+            <div key={index} className="custom-slick-item" style={{ width: '500px' }}>
                 <h3>{item}</h3>
             </div>
         ));
@@ -510,7 +496,7 @@ describe('slider', function () {
         });
 
         it('should click next/prev arrow', () => {
-            return co(function* () {
+            return co(function*() {
                 wrapper = mount(
                     <Slider rtl infinite={false}>
                         {slides}
@@ -525,9 +511,7 @@ describe('slider', function () {
                         .at(len - 1)
                         .hasClass('next-slick-active')
                 );
-                wrapper
-                    .find('.next-slick-arrow.next-slick-prev')
-                    .simulate('click');
+                wrapper.find('.next-slick-arrow.next-slick-prev').simulate('click');
                 yield delay(300);
                 assert(
                     wrapper
@@ -540,7 +524,7 @@ describe('slider', function () {
         });
 
         it('should hover next/prev arrow', () => {
-            return co(function* () {
+            return co(function*() {
                 wrapper = mount(
                     <Slider rtl infinite={false}>
                         {slides}
@@ -548,21 +532,13 @@ describe('slider', function () {
                 );
 
                 const len = wrapper.find('.next-slick-slide').length;
-                wrapper
-                    .find('.next-slick-arrow.next-slick-prev')
-                    .simulate('mouseEnter');
+                wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseEnter');
                 yield delay(300);
-                wrapper
-                    .find('.next-slick-arrow.next-slick-prev')
-                    .simulate('mouseLeave');
+                wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseLeave');
 
-                wrapper
-                    .find('.next-slick-arrow.next-slick-next')
-                    .simulate('mouseEnter');
+                wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseEnter');
                 yield delay(300);
-                wrapper
-                    .find('.next-slick-arrow.next-slick-next')
-                    .simulate('mouseLeave');
+                wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseLeave');
 
                 assert(
                     wrapper
@@ -574,7 +550,7 @@ describe('slider', function () {
         });
 
         it('should click dots', () => {
-            return co(function* () {
+            return co(function*() {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
                 assert(
                     wrapper
@@ -619,7 +595,7 @@ describe('slider', function () {
         });
 
         it('should autoplay', () => {
-            return co(function* () {
+            return co(function*() {
                 wrapper = mount(
                     <Slider rtl autoplay infinite={false} autoplaySpeed={200}>
                         {slides}
@@ -645,11 +621,11 @@ describe('slider', function () {
             );
 
             assert(wrapper.find('.custom-slick-item').length === 3);
-            wrapper.find('button.next-slick-next').simulate('click')
+            wrapper.find('button.next-slick-next').simulate('click');
         });
 
         it('too more slidesToShow ', () => {
-            return co(function* () {
+            return co(function*() {
                 const settings = {
                     rtl: true,
                     slidesToShow: 2,

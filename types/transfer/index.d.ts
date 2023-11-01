@@ -77,7 +77,7 @@ export interface TransferProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否开启虚拟滚动
      */
-    useVirtual?: boolean,
+    useVirtual?: boolean;
 
     /**
      * 搜索框占位符

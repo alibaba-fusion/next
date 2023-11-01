@@ -145,7 +145,7 @@ function* buildCompiledDocs(cwd) {
                 family: apiMdParsed.meta.family,
             });
 
-            let apiMdRenderedObj = JSON.parse(apiMdRendered);
+            const apiMdRenderedObj = JSON.parse(apiMdRendered);
             apiMdRenderedObj.renderHtml = transformHTML(globalControls);
             yield fs.writeFile(apiTo, `${JSON.stringify(apiMdRenderedObj)}`, 'utf8');
         } else {

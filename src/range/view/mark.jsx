@@ -7,10 +7,7 @@ export default class Mark extends React.Component {
     static propTypes = {
         min: PropTypes.number,
         max: PropTypes.number,
-        value: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number),
-        ]),
+        value: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
         prefix: PropTypes.string,
         marks: PropTypes.object,
         marksPosition: PropTypes.string,
@@ -61,10 +58,7 @@ export default class Mark extends React.Component {
 
     render() {
         const { prefix, marksPosition } = this.props;
-        const className =
-            marksPosition === 'above'
-                ? `${prefix}range-mark-above`
-                : `${prefix}range-mark-below`;
+        const className = marksPosition === 'above' ? `${prefix}range-mark-above` : `${prefix}range-mark-below`;
         const classes = classNames(className, {
             [`${prefix}range-mark`]: true,
         });

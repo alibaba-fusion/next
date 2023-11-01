@@ -53,12 +53,7 @@ describe('Form A11y', () => {
         wrapper = await testReact(
             <Form>
                 <FormItem>
-                    <Input
-                        id="form input"
-                        label="form input"
-                        placeholder="Input frank"
-                        name="username"
-                    />
+                    <Input id="form input" label="form input" placeholder="Input frank" name="username" />
                     <Form.Error name="username">Username Error</Form.Error>
                 </FormItem>
             </Form>

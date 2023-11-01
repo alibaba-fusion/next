@@ -23,25 +23,19 @@ describe('NumberPicker A11y', () => {
     //                       The most accessible solution is have the input type=number and then make the buttons aria-hidden.
     //                       Users will be able to use UP and DOWN arrows to modify values.
     it.skip('should not have any violations', async () => {
-        wrapper = await testReact(
-            <NumberPicker aria-label="a11y number picker" />
-        );
+        wrapper = await testReact(<NumberPicker aria-label="a11y number picker" />);
         return wrapper;
     });
 
     // TODO: fix above
     it.skip('should not have any violations when inline', async () => {
-        wrapper = await testReact(
-            <NumberPicker aria-label="a11y number picker" type="inline" />
-        );
+        wrapper = await testReact(<NumberPicker aria-label="a11y number picker" type="inline" />);
         return wrapper;
     });
 
     // TODO: fix above
     it.skip('should not have any violations when disabled', async () => {
-        wrapper = await testReact(
-            <NumberPicker aria-label="a11y number picker" disabled />
-        );
+        wrapper = await testReact(<NumberPicker aria-label="a11y number picker" disabled />);
         return wrapper;
     });
 
@@ -49,14 +43,8 @@ describe('NumberPicker A11y', () => {
     it.skip('should not have any violations when values set', async () => {
         wrapper = await testReact(
             <div>
-                <NumberPicker
-                    aria-label="a11y number picker defaultValue"
-                    defaultValue={123}
-                />
-                <NumberPicker
-                    aria-label="a11y number picker value"
-                    value={123}
-                />
+                <NumberPicker aria-label="a11y number picker defaultValue" defaultValue={123} />
+                <NumberPicker aria-label="a11y number picker value" value={123} />
             </div>
         );
         return wrapper;
@@ -64,9 +52,7 @@ describe('NumberPicker A11y', () => {
 
     // TODO: fix above
     it.skip('should not have any violations when autoFocused', async () => {
-        wrapper = await testReact(
-            <NumberPicker aria-label="a11y number picker" autoFocus />
-        );
+        wrapper = await testReact(<NumberPicker aria-label="a11y number picker" autoFocus />);
         return wrapper;
     });
 });

@@ -12,7 +12,7 @@ describe('notification', () => {
 
     afterEach(() => {
         Notification.destroy();
-    })
+    });
 
     it('should render timeout close notification', async () => {
         let called = false;
@@ -22,7 +22,7 @@ describe('notification', () => {
             duration: 100,
             onClose: () => {
                 called = true;
-            }
+            },
         });
         await delay(500);
         assert(called);
@@ -35,20 +35,20 @@ describe('notification', () => {
 
         key = Notification.open({
             title: '哈哈',
-            content: '嘿嘿'
+            content: '嘿嘿',
         });
 
         Notification.close(key);
 
         key = Notification.open({
             title: '哈哈',
-            content: '嘿嘿'
+            content: '嘿嘿',
         });
 
-        const dom  = document.querySelector('.next-message');
+        const dom = document.querySelector('.next-message');
 
         assert(!!dom);
 
         Notification.close(key);
     });
-})
+});

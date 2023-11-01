@@ -124,18 +124,13 @@ describe('Menu A11y', () => {
                 </SubMenu>
             </Menu>
         );
-        return test(".next-overlay-wrapper");
+        return test('.next-overlay-wrapper');
     });
 
     it('should not have any violations for Checkbox Item', async () => {
         wrapper = await testReact(
             <Menu className="my-menu">
-                <CheckboxItem
-                    checked
-                    className="custom"
-                    style={{ color: 'red' }}
-                    helper="helper"
-                >
+                <CheckboxItem checked className="custom" style={{ color: 'red' }} helper="helper">
                     checkbox
                 </CheckboxItem>
             </Menu>
@@ -146,17 +141,10 @@ describe('Menu A11y', () => {
     it('should not have any violations for Radio Item', async () => {
         wrapper = await testReact(
             <Menu className="my-menu">
-                <RadioItem
-                    key="1"
-                    checked
-                    className="custom"
-                    style={{ color: 'red' }}
-                >
+                <RadioItem key="1" checked className="custom" style={{ color: 'red' }}>
                     1
                 </RadioItem>
-                <RadioItem key="2">
-                    2
-                </RadioItem>
+                <RadioItem key="2">2</RadioItem>
             </Menu>
         );
         return wrapper;

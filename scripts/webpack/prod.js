@@ -69,9 +69,7 @@ Licensed under MIT (https://github.com/alibaba-fusion/next/blob/master/LICENSE)`
         );
     } else {
         config.output.filename = '[name].js';
-        config.plugins.push(
-            new ExtractTextPlugin(options.extractTextName || '[name].css')
-        );
+        config.plugins.push(new ExtractTextPlugin(options.extractTextName || '[name].css'));
     }
 
     return config;

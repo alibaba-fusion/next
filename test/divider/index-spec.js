@@ -8,7 +8,6 @@ import '../../src/divider/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-
 const render = element => {
     let inc;
     const container = document.createElement('div');
@@ -34,7 +33,6 @@ const render = element => {
     };
 };
 
-
 describe('Divider', () => {
     let wrapper;
 
@@ -52,17 +50,17 @@ describe('Divider', () => {
         }
     });
 
-    it("should render", () => {
+    it('should render', () => {
         wrapper = render(<Divider />);
         assert(document.querySelector('.next-divider'));
     });
 
-    it("should render dashed", () => {
-        wrapper = render(<Divider dashed/>);
+    it('should render dashed', () => {
+        wrapper = render(<Divider dashed />);
         assert(document.querySelector('.next-divider-dashed'));
     });
 
-    it("should render text right", () => {
+    it('should render text right', () => {
         wrapper = render(<Divider orientation="right">Right Text</Divider>);
 
         assert(document.querySelector('.next-divider-with-text-right'));

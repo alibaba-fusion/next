@@ -100,49 +100,52 @@ describe('Drawer v2', () => {
         wrapper = render(<DrawerDemo animation={false} />);
         const btn = document.getElementById('open-drawer');
         ReactTestUtils.Simulate.click(btn);
-        await delay(20)
+        await delay(20);
         assert(document.querySelector('.next-drawer'));
         const closeLink = document.querySelector('.next-drawer-close');
         ReactTestUtils.Simulate.click(closeLink);
-        await delay(20)
+        await delay(20);
 
         assert(!document.querySelector('.next-drawer'));
-
     });
 
     it('should support placement', () => {
         ['top', 'left', 'bottom', 'right'].forEach(dir => {
             wrapper && wrapper.unmount();
 
-            wrapper = render(<Drawer v2 visible placement={dir}/>);
-            assert(
-                hasClass(
-                    document.querySelector('.next-drawer-wrapper'),
-                    `next-drawer-${dir}`
-                )
-            );
+            wrapper = render(<Drawer v2 visible placement={dir} />);
+            assert(hasClass(document.querySelector('.next-drawer-wrapper'), `next-drawer-${dir}`));
         });
     });
 
     it('should work when set <ConfigProvider popupContainer/> ', async () => {
+        wrapper = render(
+            <ConfigProvider popupContainer={'dialog-popupcontainer'}>
+                <div id="dialog-popupcontainer" style={{ height: 300, overflow: 'auto' }}>
+                    <Drawer v2 title="Welcome to Alibaba.com" visible>
+                        Start your business here by searching a popular product
+                    </Drawer>
+                </div>
+            </ConfigProvider>
+        );
 
-        wrapper = render(<ConfigProvider popupContainer={"dialog-popupcontainer"}>
-        <div id="dialog-popupcontainer" style={{height: 300, overflow: 'auto'}}>
-            <Drawer
-                v2
-                title="Welcome to Alibaba.com"
-                visible>
-                Start your business here by searching a popular product
-            </Drawer>
-        </div>
-        </ConfigProvider>);
-
-        await delay(20)
+        await delay(20);
         assert(document.querySelector('#dialog-popupcontainer > .next-overlay-wrapper'));
     });
 
     it('should support headerStyle/bodyStyle', () => {
-        wrapper = render(<Drawer v2 visible title="test" headerStyle={{background: 'blue'}} bodyStyle={{background: 'red'}} closeable={false}>body</Drawer>);
+        wrapper = render(
+            <Drawer
+                v2
+                visible
+                title="test"
+                headerStyle={{ background: 'blue' }}
+                bodyStyle={{ background: 'red' }}
+                closeable={false}
+            >
+                body
+            </Drawer>
+        );
 
         assert(getStyle(document.querySelector('.next-drawer-header'), 'background'), 'blue');
         assert(getStyle(document.querySelector('.next-drawer-body'), 'background'), 'red');
@@ -153,7 +156,7 @@ describe('Drawer v2', () => {
             v2: true,
             prefix: 'test-',
             title: 'Title',
-            content: <span className='drawer-quick-content'></span>,
+            content: <span className="drawer-quick-content" />,
         });
 
         assert(hasClass(document.querySelector('.test-drawer'), 'test-closeable'));
@@ -161,5 +164,4 @@ describe('Drawer v2', () => {
 
         hide();
     });
-})
-
+});

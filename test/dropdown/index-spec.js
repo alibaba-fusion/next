@@ -22,8 +22,7 @@ const menu = (
 
 describe('Dropdown', () => {
     it('should render by defaultVisible', () => {
-        const initialLen = document.querySelectorAll('.next-overlay-wrapper')
-            .length;
+        const initialLen = document.querySelectorAll('.next-overlay-wrapper').length;
         let triggered = false;
         let show = false;
         const handleVisible = (visible, triggerType) => {
@@ -48,34 +47,24 @@ describe('Dropdown', () => {
             </Dropdown>
         );
 
-        assert(
-            document.querySelectorAll('.next-overlay-wrapper').length ===
-                initialLen
-        );
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
 
         wrapper.find('.trigger').simulate('click');
         assert(triggered);
-        assert(
-            document.querySelectorAll('.next-overlay-wrapper').length ===
-                initialLen + 1
-        );
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen + 1);
         triggered = false;
 
         const item = document.querySelector('.next-menu-item');
         ReactTestUtils.Simulate.click(item);
         assert(triggered);
-        assert(
-            document.querySelectorAll('.next-overlay-wrapper').length ===
-                initialLen
-        );
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
         triggered = false;
 
         wrapper.unmount();
     });
 
     it('should render by visible', () => {
-        const initialLen = document.querySelectorAll('.next-overlay-wrapper')
-            .length;
+        const initialLen = document.querySelectorAll('.next-overlay-wrapper').length;
         let triggered = false;
         let show = false;
         const handleVisible = (visible, triggerType) => {
@@ -102,26 +91,17 @@ describe('Dropdown', () => {
                 {menu}
             </Dropdown>
         );
-        assert(
-            document.querySelectorAll('.next-overlay-wrapper').length ===
-                initialLen
-        );
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
 
         wrapper.find('.trigger').simulate('click');
         assert(triggered);
-        assert(
-            document.querySelectorAll('.next-overlay-wrapper').length ===
-                initialLen + 1
-        );
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen + 1);
         triggered = false;
 
         const item = document.querySelector('.next-menu-item');
         ReactTestUtils.Simulate.click(item);
         assert(triggered);
-        assert(
-            document.querySelectorAll('.next-overlay-wrapper').length ===
-                initialLen
-        );
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
         triggered = false;
 
         wrapper.unmount();
@@ -134,11 +114,7 @@ describe('Dropdown', () => {
         };
 
         const wrapper = mount(
-            <Dropdown
-                defaultVisible
-                trigger={<a className="trigger">Hello dropdown</a>}
-                animation={false}
-            >
+            <Dropdown defaultVisible trigger={<a className="trigger">Hello dropdown</a>} animation={false}>
                 <Menu onItemClick={handleClick}>
                     <Menu.Item>Option 1</Menu.Item>
                     <Menu.Item>Option 2</Menu.Item>
@@ -153,65 +129,61 @@ describe('Dropdown', () => {
         assert(triggered);
     });
 
-//     it('should only focus when triggered by keyboard', done => {
-//         const mountNode = document.createElement('div');
-//         document.body.appendChild(mountNode);
+    //     it('should only focus when triggered by keyboard', done => {
+    //         const mountNode = document.createElement('div');
+    //         document.body.appendChild(mountNode);
 
-//         ReactDOM.render(
-//             <Dropdown
-//                 defaultVisible
-//                 trigger={<button className="trigger">Hello dropdown</button>}
-//                 animation={false}
-//             >
-//                 <Menu>
-//                     <Menu.Item>Option 1</Menu.Item>
-//                     <Menu.Item>Option 2</Menu.Item>
-//                     <Menu.Item>Option 3</Menu.Item>
-//                     <Menu.Item>Option 4</Menu.Item>
-//                 </Menu>
-//             </Dropdown>,
-//             mountNode
-//         );
+    //         ReactDOM.render(
+    //             <Dropdown
+    //                 defaultVisible
+    //                 trigger={<button className="trigger">Hello dropdown</button>}
+    //                 animation={false}
+    //             >
+    //                 <Menu>
+    //                     <Menu.Item>Option 1</Menu.Item>
+    //                     <Menu.Item>Option 2</Menu.Item>
+    //                     <Menu.Item>Option 3</Menu.Item>
+    //                     <Menu.Item>Option 4</Menu.Item>
+    //                 </Menu>
+    //             </Dropdown>,
+    //             mountNode
+    //         );
 
-//         const trigger = document.querySelector('.trigger');
+    //         const trigger = document.querySelector('.trigger');
 
-//         trigger.focus();
-//         trigger.click();
+    //         trigger.focus();
+    //         trigger.click();
 
-//         setTimeout(() => {
-//             assert(
-//                 document.activeElement !==
-//                     document.querySelectorAll('.next-menu-item')[0]
-//             );
+    //         setTimeout(() => {
+    //             assert(
+    //                 document.activeElement !==
+    //                     document.querySelectorAll('.next-menu-item')[0]
+    //             );
 
-//             ReactTestUtils.Simulate.keyDown(trigger, {
-//                 keyCode: KEYCODE.SPACE,
-//             });
+    //             ReactTestUtils.Simulate.keyDown(trigger, {
+    //                 keyCode: KEYCODE.SPACE,
+    //             });
 
-//             setTimeout(() => {
-//                 assert(
-//                     document.activeElement ===
-//                         document.querySelectorAll('.next-menu-item')[0]
-//                 );
+    //             setTimeout(() => {
+    //                 assert(
+    //                     document.activeElement ===
+    //                         document.querySelectorAll('.next-menu-item')[0]
+    //                 );
 
-//                 ReactDOM.unmountComponentAtNode(mountNode);
-//                 document.body.removeChild(mountNode);
+    //                 ReactDOM.unmountComponentAtNode(mountNode);
+    //                 document.body.removeChild(mountNode);
 
-//                 done();
-//             }, 200);
-//         }, 200);
-//     });
+    //                 done();
+    //             }, 200);
+    //         }, 200);
+    //     });
 
     it('autoFocus=false should not have any activeElement', done => {
         const mountNode = document.createElement('div');
         document.body.appendChild(mountNode);
 
         ReactDOM.render(
-            <Dropdown
-                autoFocus={false}
-                trigger={<button className="trigger">Hello dropdown</button>}
-                animation={false}
-            >
+            <Dropdown autoFocus={false} trigger={<button className="trigger">Hello dropdown</button>} animation={false}>
                 <Menu>
                     <Menu.Item>Option 1</Menu.Item>
                     <Menu.Item>Option 2</Menu.Item>
@@ -230,10 +202,7 @@ describe('Dropdown', () => {
         });
 
         setTimeout(() => {
-            assert(
-                document.activeElement !==
-                    document.querySelectorAll('.next-menu-item')[0]
-            );
+            assert(document.activeElement !== document.querySelectorAll('.next-menu-item')[0]);
 
             ReactDOM.unmountComponentAtNode(mountNode);
             document.body.removeChild(mountNode);

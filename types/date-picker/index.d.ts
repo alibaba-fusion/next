@@ -138,7 +138,6 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     dateInputAriaLabel?: string;
 }
 
-
 export class MonthPicker extends React.Component<MonthPickerProps, any> {}
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
@@ -149,7 +148,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 
 export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     name?: string;
-    type?: 'date' | 'month' | 'year',
+    type?: 'date' | 'month' | 'year';
 
     /**
      * 默认展示的起始月份

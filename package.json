@@ -81,6 +81,10 @@
     "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check && npm run docs && npm run clear-dist && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
   },
   "lint-staged": {
+    "test/**/*": [
+      "prettier --write",
+      "git add"
+    ],
     "types/**/*.d.ts": [
       "prettier --write",
       "git add"

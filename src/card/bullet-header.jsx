@@ -43,20 +43,14 @@ class CardBulletHeader extends Component {
             [`${prefix}card-head-show-bullet`]: showTitleBullet,
         });
 
-        const headExtra = extra ? (
-            <div className={`${prefix}card-extra`}>{extra}</div>
-        ) : null;
+        const headExtra = extra ? <div className={`${prefix}card-extra`}>{extra}</div> : null;
 
         return (
             <div className={headCls}>
                 <div className={`${prefix}card-head-main`}>
                     <div className={`${prefix}card-title`}>
                         {title}
-                        {subTitle ? (
-                            <span className={`${prefix}card-subtitle`}>
-                                {subTitle}
-                            </span>
-                        ) : null}
+                        {subTitle ? <span className={`${prefix}card-subtitle`}>{subTitle}</span> : null}
                     </div>
                     {headExtra}
                 </div>

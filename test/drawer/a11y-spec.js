@@ -25,9 +25,7 @@ describe('Drawer A11y', () => {
         });
 
         it('should not have any violations', async () => {
-            wrapper = await mount(
-                <Drawer visible />
-            );
+            wrapper = await mount(<Drawer visible />);
             return test('.next-overlay-wrapper');
         });
     });

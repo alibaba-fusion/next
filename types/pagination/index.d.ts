@@ -10,7 +10,6 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface PaginationProps extends HTMLAttributesWeak, CommonProps {
-
     /**
      * 分页组件类型
      */

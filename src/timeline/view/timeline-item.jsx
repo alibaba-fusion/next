@@ -124,20 +124,15 @@ class TimelineItem extends Component {
         });
 
         const renderTimeLineItemContent = isLeft => {
-            if (isLeft) return (<p className={`${prefix}timeline-item-body`}>
-                {timeLeft}
-            </p>)
-            return (<React.Fragment><div className={`${prefix}timeline-item-title`}>
-                {title}
-            </div>
-                <div className={`${prefix}timeline-item-body`}>
-                    {content}
-                </div>
-                <div className={`${prefix}timeline-item-time`}>
-                    {time}
-                </div>
-            </React.Fragment>)
-        }
+            if (isLeft) return <p className={`${prefix}timeline-item-body`}>{timeLeft}</p>;
+            return (
+                <React.Fragment>
+                    <div className={`${prefix}timeline-item-title`}>{title}</div>
+                    <div className={`${prefix}timeline-item-body`}>{content}</div>
+                    <div className={`${prefix}timeline-item-time`}>{time}</div>
+                </React.Fragment>
+            );
+        };
 
         const buttonProps = {
             text: true,
@@ -155,9 +150,7 @@ class TimelineItem extends Component {
                     }}
                 >
                     <div className={`${prefix}timeline-item-left-content`}>
-                        {
-                            renderTimeLineItemContent(className.includes(`${prefix}timeline-item-left`))
-                        }
+                        {renderTimeLineItemContent(className.includes(`${prefix}timeline-item-left`))}
                     </div>
                     <div className={`${prefix}timeline-item-timeline`}>
                         <div className={`${prefix}timeline-item-tail`}>
@@ -166,9 +159,7 @@ class TimelineItem extends Component {
                         <div className={itemNodeCls}>{finalItemNode}</div>
                     </div>
                     <div className={`${prefix}timeline-item-content`}>
-                        {
-                            renderTimeLineItemContent(!className.includes(`${prefix}timeline-item-left`))
-                        }
+                        {renderTimeLineItemContent(!className.includes(`${prefix}timeline-item-left`))}
                     </div>
                 </div>
             ) : null;

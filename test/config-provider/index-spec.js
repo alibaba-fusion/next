@@ -128,9 +128,7 @@ class Toast extends Component {
     render() {
         return (
             <div className="toast">
-                <button onClick={this.handleClose}>
-                    {this.props.locale.close}
-                </button>
+                <button onClick={this.handleClose}>{this.props.locale.close}</button>
             </div>
         );
     }
@@ -146,10 +144,7 @@ Toast.create = (props = {}) => {
 
     const newLocale = getContextProps(props, 'Toast').locale;
 
-    ReactDOM.render(
-        <Toast afterClose={closeChain} locale={newLocale} />,
-        mountNode
-    );
+    ReactDOM.render(<Toast afterClose={closeChain} locale={newLocale} />, mountNode);
 };
 const NewClickMe = config(ClickMe);
 const NewToast = config(Toast);
@@ -182,10 +177,7 @@ class Demo extends Component {
             <ConfigProvider locale={locales[language]}>
                 <div>
                     <div className="select-language">
-                        <select
-                            value={language}
-                            onChange={this.handleChangeLanguage}
-                        >
+                        <select value={language} onChange={this.handleChangeLanguage}>
                             <option value="zh-cn">zh-cn</option>
                             <option value="en-us">en-us</option>
                         </select>
@@ -225,21 +217,19 @@ class TestAlias extends Component {
 
 class TestDevice extends Component {
     render() {
-        return <span>{this.props.device}</span>
+        return <span>{this.props.device}</span>;
     }
 }
 
 const NTestDevice = config(TestDevice);
 
-function FunComponent (props) {
-    return <div {...props}/>
-};
+function FunComponent(props) {
+    return <div {...props} />;
+}
 const NewFunComponent = config(FunComponent);
 
-const ForwardRef = React.forwardRef((props,ref)=>{
-    return (
-        <div ref={ref} {...props}></div>
-    )
+const ForwardRef = React.forwardRef((props, ref) => {
+    return <div ref={ref} {...props} />;
 });
 const NewForwardRef = config(ForwardRef);
 describe('ConfigProvider', () => {
@@ -253,17 +243,21 @@ describe('ConfigProvider', () => {
     });
 
     it('should support function component', () => {
-        wrapper = mount(<ConfigProvider>
-            <NewFunComponent title="ssss" />
-        </ConfigProvider>);
+        wrapper = mount(
+            <ConfigProvider>
+                <NewFunComponent title="ssss" />
+            </ConfigProvider>
+        );
         const output = wrapper.find(FunComponent);
         assert(output);
     });
 
     it('should support forwardRef component', () => {
-        wrapper = mount(<ConfigProvider>
-            <NewForwardRef title="ssss" />
-        </ConfigProvider>);
+        wrapper = mount(
+            <ConfigProvider>
+                <NewForwardRef title="ssss" />
+            </ConfigProvider>
+        );
         const output = wrapper.find(FunComponent);
         assert(output);
     });
@@ -278,11 +272,7 @@ describe('ConfigProvider', () => {
 
     it('should use context prop if wrapped by ConfigProvider', () => {
         wrapper = mount(
-            <ConfigProvider
-                prefix="context-"
-                locale={{ Output: { hello: 'context' } }}
-                pure
-            >
+            <ConfigProvider prefix="context-" locale={{ Output: { hello: 'context' } }} pure>
                 <NewOutput />
             </ConfigProvider>
         );
@@ -294,11 +284,7 @@ describe('ConfigProvider', () => {
 
     it('should use passed prop if pass custom prop', () => {
         wrapper = mount(
-            <ConfigProvider
-                prefix="context-"
-                locale={{ Output: { hello: 'context' } }}
-                pure
-            >
+            <ConfigProvider prefix="context-" locale={{ Output: { hello: 'context' } }} pure>
                 <NewOutput prefix="my-" locale={{ hello: 'my' }} pure={false} />
             </ConfigProvider>
         );
@@ -310,10 +296,7 @@ describe('ConfigProvider', () => {
 
     it('should expose getInstance method', () => {
         wrapper = mount(<NewOutput />);
-        assert(
-            typeof wrapper.instance().getInstance().internalMethod ===
-                'function'
-        );
+        assert(typeof wrapper.instance().getInstance().internalMethod === 'function');
     });
 
     it('should not pure render by default', () => {
@@ -370,10 +353,7 @@ describe('ConfigProvider', () => {
         });
         ConfigProvider.setLanguage('en-us');
         wrapper = mount(<Select />);
-        assert(
-            wrapper.find('span.next-select input').props().placeholder ===
-                enUS.Select.selectPlaceholder
-        );
+        assert(wrapper.find('span.next-select input').props().placeholder === enUS.Select.selectPlaceholder);
     });
 
     it('should support setLocale', () => {
@@ -384,14 +364,11 @@ describe('ConfigProvider', () => {
         ConfigProvider.setLocale({
             Select: {
                 selectPlaceholder: '哈哈',
-                selectPlaceHolder: '哈哈'
+                selectPlaceHolder: '哈哈',
             },
         });
         wrapper = mount(<Select />);
-        assert(
-            wrapper.find('span.next-select input').props().placeholder ===
-                '哈哈'
-        );
+        assert(wrapper.find('span.next-select input').props().placeholder === '哈哈');
     });
 });
 
@@ -418,16 +395,12 @@ describe('ConfigProvider.Consumer', () => {
             warning: true,
         };
 
-        const App = ({ children }) => (
-            <ConfigProvider {...contextState}>{children}</ConfigProvider>
-        );
+        const App = ({ children }) => <ConfigProvider {...contextState}>{children}</ConfigProvider>;
 
         const ContextReader = props => <div>{props.nextPrefix}</div>;
 
         const Child = () => (
-            <ConfigProvider.Consumer>
-                {context => <ContextReader {...context} />}
-            </ConfigProvider.Consumer>
+            <ConfigProvider.Consumer>{context => <ContextReader {...context} />}</ConfigProvider.Consumer>
         );
 
         const TestConsumer = () => (
@@ -582,7 +555,7 @@ describe('ConfigProvider.ErrorBoundary', () => {
 
         assert(wrapper.text() === 'tablet');
         wrapper.setProps({
-            device: 'desktop'
+            device: 'desktop',
         });
 
         assert(wrapper.text() === 'desktop');

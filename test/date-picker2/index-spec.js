@@ -765,14 +765,14 @@ describe('Picker', () => {
 
         it('should change input value when switch mode', () => {
             const inputValue = {
-                'date': ['2023-10-16', '2023-10-22'],
-                'week': ['2023-42周', '2023-42周']
+                date: ['2023-10-16', '2023-10-22'],
+                week: ['2023-42周', '2023-42周'],
             };
 
             let mode = DATE;
             wrapper = mount(<RangePicker value={inputValue[DATE]} mode={mode} />);
             assert.deepEqual(getStrValue(wrapper), inputValue[mode]);
-            
+
             mode = WEEK;
             wrapper.setProps({ mode });
             assert.deepEqual(getStrValue(wrapper), inputValue[mode]);
@@ -986,9 +986,7 @@ describe('Picker', () => {
 
         it('should support triggerType', () => {
             return co(function*() {
-                wrapper = render(
-                    <DatePicker popupTriggerType={"hover"} />
-                );
+                wrapper = render(<DatePicker popupTriggerType={'hover'} />);
                 const btn = document.querySelector('.next-date-picker2 > div');
 
                 ReactTestUtils.Simulate.mouseEnter(btn);
@@ -1086,7 +1084,7 @@ describe('Picker', () => {
         it('should reset to previous value when input a disableValue', () => {
             const currentDate = dayjs(defaultVal);
             // Disable all dates before currentDate: 2020-12-12
-            const disabledDate = function (date, mode) {
+            const disabledDate = function(date, mode) {
                 switch (mode) {
                     case 'date':
                         return date.valueOf() <= currentDate.valueOf();
@@ -1094,18 +1092,17 @@ describe('Picker', () => {
                         return date.year() < currentDate.year();
                     case 'month':
                         return date.year() * 100 + date.month() < currentDate.year() * 100 + currentDate.month();
-                    default: return false;
+                    default:
+                        return false;
                 }
             };
 
-            wrapper = mount(
-                <DatePicker disabledDate={disabledDate} defaultValue="2020-12-25" />
-            );
+            wrapper = mount(<DatePicker disabledDate={disabledDate} defaultValue="2020-12-25" />);
 
             changeInput('2020-11-11');
             findInput().simulate('keydown', { keyCode: KEYCODE.ENTER });
-            assert(getStrValue(wrapper) === '2020-12-25')
-        })
+            assert(getStrValue(wrapper) === '2020-12-25');
+        });
 
         it('should support state', () => {
             wrapper = mount(<DatePicker state="loading" />);

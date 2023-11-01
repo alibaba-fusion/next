@@ -47,7 +47,7 @@ export interface DrawerProps extends Omit<HTMLAttributesWeak, 'content'>, Common
      * @property {String} in 进场动画
      * @property {String} out 出场动画
      */
-    animation?: { in: string; out: string; } | boolean;
+    animation?: { in: string; out: string } | boolean;
     visible?: boolean;
 
     /**
@@ -83,7 +83,6 @@ export interface DrawerProps extends Omit<HTMLAttributesWeak, 'content'>, Common
      */
     content?: React.ReactNode;
 }
-
 
 export interface QuickShowRet {
     hide: () => void;
