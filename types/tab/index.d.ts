@@ -148,11 +148,11 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 展示新增按钮
      */
-    showAdd?: boolean,
+    showAdd?: boolean;
     /**
      * 新增的事件回调
      */
-    onAdd?: () => void,
+    onAdd?: () => void;
 
     /**
      * 自定义添加按钮

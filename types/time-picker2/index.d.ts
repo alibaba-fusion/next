@@ -170,17 +170,10 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     onChange?: (date: Dayjs, dateString: string) => void;
 }
 
-
 export interface RangePickerProps
     extends Omit<
-    TimePickerProps,
-        | 'value'
-        | 'placeholder'
-        | 'defaultValue'
-        | 'onOk'
-        | 'disabled'
-        | 'onChange'
-        | 'preset'
+        TimePickerProps,
+        'value' | 'placeholder' | 'defaultValue' | 'onOk' | 'disabled' | 'onChange' | 'preset'
     > {
     value?: Array<ConfigType>;
     defaultValue?: Array<ConfigType>;

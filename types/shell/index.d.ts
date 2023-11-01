@@ -1,4 +1,4 @@
-import { HTMLAttributes, ElementType, Component, ComponentType } from "react";
+import { HTMLAttributes, ElementType, Component, ComponentType } from 'react';
 import CommonProps from '../util';
 
 export interface ShellProps extends HTMLAttributes<HTMLElement>, CommonProps {
@@ -10,9 +10,7 @@ export interface ShellProps extends HTMLAttributes<HTMLElement>, CommonProps {
     fixedHeader?: boolean;
 }
 
-export interface ShellCommonProps extends HTMLAttributes<HTMLElement>, CommonProps {
-
-}
+export interface ShellCommonProps extends HTMLAttributes<HTMLElement>, CommonProps {}
 
 export interface ShellNavigationProps extends ShellCommonProps {
     collapse?: boolean;

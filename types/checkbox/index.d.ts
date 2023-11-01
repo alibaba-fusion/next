@@ -13,7 +13,7 @@ type data = {
     label?: React.ReactNode;
     disabled?: boolean;
     [propName: string]: any;
-}
+};
 
 export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
@@ -143,7 +143,7 @@ export interface CheckboxProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否为预览态
      */
-     isPreview?: boolean;
+    isPreview?: boolean;
 
     /**
      * 状态变化时触发的事件

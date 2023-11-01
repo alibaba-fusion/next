@@ -40,7 +40,4 @@ export interface VirtualListProps extends React.HTMLAttributes<HTMLElement>, Com
     jumpIndex?: number;
 }
 
-export default class VirtualList extends React.Component<
-    VirtualListProps,
-    any
-> {}
+export default class VirtualList extends React.Component<VirtualListProps, any> {}

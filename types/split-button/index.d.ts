@@ -125,7 +125,6 @@ export interface SplitButtonProps extends HTMLAttributesWeak, CommonProps {
      * 是否跟随滚动
      */
     followTrigger?: boolean;
-
 }
 
 export default class SplitButton extends React.Component<SplitButtonProps, any> {

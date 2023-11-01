@@ -76,9 +76,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onClick?: any;
 }
 
-export interface TagGroupProps
-    extends React.HTMLAttributes<HTMLElement>,
-        CommonProps {}
+export interface TagGroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {}
 
 export class TagGroup extends React.Component<TagGroupProps, any> {}
 

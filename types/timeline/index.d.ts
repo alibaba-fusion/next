@@ -11,7 +11,7 @@ export interface ItemProps extends Omit<HTMLAttributesWeak, 'content'>, CommonPr
     /**
      * 节点状态
      */
-    state?: "done" | "process" | "error" | "success";
+    state?: 'done' | 'process' | 'error' | 'success';
 
     /**
      * 图标
@@ -58,7 +58,7 @@ type foldItem = {
      */
     foldArea?: Array<number>;
     foldShow?: boolean;
-}
+};
 
 export interface TimelineProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**

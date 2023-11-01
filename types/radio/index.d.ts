@@ -89,7 +89,10 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 预览态模式下渲染的内容
      */
-    renderPreview?: (previewed: { label: string | React.ReactNode; value: string | number | boolean }, props: any) => React.ReactNode;
+    renderPreview?: (
+        previewed: { label: string | React.ReactNode; value: string | number | boolean },
+        props: any
+    ) => React.ReactNode;
     itemDirection?: 'hoz' | 'ver';
 }
 

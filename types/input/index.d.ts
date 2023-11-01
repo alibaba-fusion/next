@@ -341,7 +341,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否为预览态
      */
-     isPreview?: boolean;
+    isPreview?: boolean;
 
     renderPreview?: (value: string | number) => React.ReactNode;
     /**
@@ -364,4 +364,3 @@ export default class Input extends React.Component<InputProps, any> {
     static Password: typeof Password;
     getInputNode: () => HTMLInputElement;
 }
-
