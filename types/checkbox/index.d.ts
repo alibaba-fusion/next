@@ -15,7 +15,7 @@ type data = {
     [propName: string]: any;
 }
 
-export type CheckboxOption = data;
+export type CheckboxData = data;
 
 export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
