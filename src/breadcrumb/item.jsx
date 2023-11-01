@@ -18,6 +18,10 @@ class Item extends Component {
         separator: PropTypes.node,
         className: PropTypes.any,
         children: PropTypes.node,
+        /**
+         * 元素点击事件
+         * @param {MouseEvent} e Click Mouse Event
+         */
         onClick: PropTypes.func,
     };
 

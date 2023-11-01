@@ -1,4 +1,9 @@
-# Change Log
+# Change Log 
+
+## [1.26.30](https://github.com/alibaba-fusion/next/compare/1.26.29...1.26.30) (2023-11-01)
+
+
+
 
 ## [1.26.29](https://github.com/alibaba-fusion/next/compare/1.26.28...1.26.29) (2023-11-01)
 
