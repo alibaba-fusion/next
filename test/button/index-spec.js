@@ -42,13 +42,21 @@ describe('Button', () => {
         });
 
         it('should render loading button', () => {
-            const wrapper = mount(<Button ghost loading>确定</Button>);
+            const wrapper = mount(
+                <Button ghost loading>
+                    确定
+                </Button>
+            );
 
             assert(wrapper.find('.next-btn-loading').length === 1);
         });
 
         it('should render custom loading button', () => {
-            const wrapper = mount(<Button ghost loading icons={{ loading: <Icon type="loading" /> }}>确定</Button>);
+            const wrapper = mount(
+                <Button ghost loading icons={{ loading: <Icon type="loading" /> }}>
+                    确定
+                </Button>
+            );
 
             assert(wrapper.find('Icon.next-btn-custom-loading-icon').length === 1);
             assert(wrapper.find('.next-btn-loading').length === 0);

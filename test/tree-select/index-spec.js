@@ -141,7 +141,6 @@ describe('TreeSelect', () => {
         assertDataAndNodes(newDataSource);
     });
 
-
     it('should render by defaultValue', () => {
         wrapper = mount(<TreeSelect defaultValue="4" defaultVisible treeDefaultExpandAll dataSource={dataSource} />);
         assertSelected('4', true);
@@ -346,12 +345,15 @@ describe('TreeSelect', () => {
     });
 
     it('should render tag when defaultValue [{ label, value}]', () => {
-        wrapper = mount(<TreeSelect
-            defaultValue={[{ label: 'test1', value: '123'}]}
-            treeDefaultExpandAll
-            treeCheckable
-            preserveNonExistentValue
-            dataSource={dataSource} />);
+        wrapper = mount(
+            <TreeSelect
+                defaultValue={[{ label: 'test1', value: '123' }]}
+                treeDefaultExpandAll
+                treeCheckable
+                preserveNonExistentValue
+                dataSource={dataSource}
+            />
+        );
 
         assert.deepEqual(getLabels(wrapper), ['test1']);
     });
@@ -367,10 +369,10 @@ describe('TreeSelect', () => {
                 treeCheckedStrategy="child"
                 value={['6']}
             />
-        )
+        );
 
         assertChecked('3', true);
-    })
+    });
 
     it('should render parent tag when set treeCheckedStrategy to all', () => {
         wrapper = mount(
@@ -714,7 +716,7 @@ describe('TreeSelect', () => {
     });
 
     it('should turn off local search when filterLocal is false', () => {
-        wrapper = mount( 
+        wrapper = mount(
             <TreeSelect
                 defaultVisible
                 filterLocal={false}
@@ -727,31 +729,25 @@ describe('TreeSelect', () => {
                     style: { maxHeight: '100px', overflow: 'auto' },
                 }}
             />
-        )
+        );
 
         wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
         wrapper.update();
 
         assertDataAndNodes(dataSource);
-    })
+    });
 
     it('should not clear search value when autoClearSearch is false', () => {
-        wrapper = mount( 
-            <TreeSelect
-                dataSource={dataSource}
-                showSearch
-                autoClearSearch={false}
-                style={{ width: 200 }}
-            />
-        )
+        wrapper = mount(
+            <TreeSelect dataSource={dataSource} showSearch autoClearSearch={false} style={{ width: 200 }} />
+        );
 
         wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
         wrapper.find('.next-tree-node[value="4"]').simulate('click');
         wrapper.update();
 
-        assert( wrapper.find('.next-select-trigger-search input').prop('value') === '外套');
-
-    })
+        assert(wrapper.find('.next-select-trigger-search input').prop('value') === '外套');
+    });
 
     it('fix issues use isPreview when value is empty', () => {
         wrapper = mount(<TreeSelect isPreview dataSource={dataSource} />);
@@ -780,7 +776,9 @@ describe('TreeSelect', () => {
             wrapper.find('.next-select-trigger-search input').simulate('keydown', { keyCode: KEYCODE.DOWN });
             assert(
                 document.activeElement ===
-                    document.querySelectorAll('.next-tree  > .next-tree-node > .next-tree-node-inner > .next-tree-node-label-wrapper')[0]
+                    document.querySelectorAll(
+                        '.next-tree  > .next-tree-node > .next-tree-node-inner > .next-tree-node-label-wrapper'
+                    )[0]
             );
             done();
         }, 2000);
@@ -796,10 +794,15 @@ describe('TreeSelect', () => {
                 tagInline
                 value={['1', '2', '3']}
             />
-        )
+        );
 
         assert(wrapper.find('.next-select-tag-compact').length > 0);
-        assert(wrapper.find('.next-select-tag-compact').text().includes('3/6'));
+        assert(
+            wrapper
+                .find('.next-select-tag-compact')
+                .text()
+                .includes('3/6')
+        );
     });
 
     it('should support valueRender', () => {
@@ -813,8 +816,13 @@ describe('TreeSelect', () => {
             />
         );
         assert(wrapper.find('.next-select-values').length > 0);
-        assert(wrapper.find('.next-select-values').text().trim() === '服装/男装');
-    })
+        assert(
+            wrapper
+                .find('.next-select-values')
+                .text()
+                .trim() === '服装/男装'
+        );
+    });
 });
 
 function cloneData(data, valueMap = {}) {

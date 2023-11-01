@@ -84,9 +84,7 @@ describe('form', () => {
             }
 
             const wrapper = mount(<Demo />);
-            wrapper
-                .find('input#input2')
-                .simulate('change', { target: { value: '' } });
+            wrapper.find('input#input2').simulate('change', { target: { value: '' } });
             assert(
                 wrapper
                     .find('.next-form-item-help')
@@ -119,9 +117,7 @@ describe('form', () => {
             }
 
             const wrapper = mount(<Demo />);
-            wrapper
-                .find('input#input2')
-                .simulate('change', { target: { value: '' } });
+            wrapper.find('input#input2').simulate('change', { target: { value: '' } });
             assert(
                 wrapper
                     .find('.next-form-item-help')
@@ -172,47 +168,52 @@ describe('form', () => {
                     </FormItem>
                 </Form>
             );
-            assert(
-                typeof wrapper.find('.next-form-item').props().onClick ===
-                    'function'
-            );
+            assert(typeof wrapper.find('.next-form-item').props().onClick === 'function');
         });
 
         it('should supoort component', () => {
-            let wrapper = mount(<Form component="div">
-                <FormItem required type="email" format="email" label="email:" help="help msg" >
-                    <Input name="email" />
-                </FormItem>
-            </Form>);
+            let wrapper = mount(
+                <Form component="div">
+                    <FormItem required type="email" format="email" label="email:" help="help msg">
+                        <Input name="email" />
+                    </FormItem>
+                </Form>
+            );
             assert(wrapper.find('div.next-form'));
 
-            const Tag = (props) => {
+            const Tag = props => {
                 return <div className="func-tag">{props.children}</div>;
             };
-            wrapper = mount(<Form component={Tag}>
-                <FormItem required type="email" format="email" label="email:" help="help msg" >
-                    <Input name="email" />
-                </FormItem>
-            </Form>);
+            wrapper = mount(
+                <Form component={Tag}>
+                    <FormItem required type="email" format="email" label="email:" help="help msg">
+                        <Input name="email" />
+                    </FormItem>
+                </Form>
+            );
             assert(wrapper.find('div.func-tag'));
         });
 
         it('should supoort component with name on FormItem', () => {
-            let wrapper = mount(<Form component="div">
-                <FormItem name="email" required type="email" format="email" label="email:" help="help msg" >
-                    <Input />
-                </FormItem>
-            </Form>);
+            let wrapper = mount(
+                <Form component="div">
+                    <FormItem name="email" required type="email" format="email" label="email:" help="help msg">
+                        <Input />
+                    </FormItem>
+                </Form>
+            );
             assert(wrapper.find('div.next-form'));
 
-            const Tag = (props) => {
+            const Tag = props => {
                 return <div className="func-tag">{props.children}</div>;
             };
-            wrapper = mount(<Form component={Tag}>
-                <FormItem name="email" required type="email" format="email" label="email:" help="help msg" >
-                    <Input />
-                </FormItem>
-            </Form>);
+            wrapper = mount(
+                <Form component={Tag}>
+                    <FormItem name="email" required type="email" format="email" label="email:" help="help msg">
+                        <Input />
+                    </FormItem>
+                </Form>
+            );
             assert(wrapper.find('div.func-tag'));
         });
 
@@ -225,21 +226,13 @@ describe('form', () => {
                 </Form>
             );
 
-            assert(
-                wrapper.find('div.next-form-item-label').hasClass('next-col-6')
-            );
+            assert(wrapper.find('div.next-form-item-label').hasClass('next-col-6'));
         });
 
         it('should supoort help', () => {
             const wrapper = mount(
                 <Form>
-                    <FormItem
-                        required
-                        type="email"
-                        format="email"
-                        label="email:"
-                        help="help msg"
-                    >
+                    <FormItem required type="email" format="email" label="email:" help="help msg">
                         <Input name="email" />
                     </FormItem>
                 </Form>
@@ -270,7 +263,7 @@ describe('form', () => {
 
         it('should supoort responsive', () => {
             const wrapper = mount(
-                <Form responsive >
+                <Form responsive>
                     <FormItem colSpan={6} labelWidth={80}>
                         <Input />
                     </FormItem>
@@ -286,7 +279,7 @@ describe('form', () => {
 
         it('should supoort responsive with react fragment', () => {
             const wrapper = mount(
-                <Form responsive >
+                <Form responsive>
                     <FormItem colSpan={4} labelWidth={80}>
                         <Input />
                     </FormItem>
@@ -317,16 +310,14 @@ describe('form', () => {
                 </Form>
             );
 
-            assert(
-                wrapper.find('.next-form-item-label label').prop('required')
-            );
+            assert(wrapper.find('.next-form-item-label label').prop('required'));
         });
         it('should supoort ref', () => {
             const saveRef = sinon.spy();
             const wrapper = mount(
                 <Form>
                     <FormItem required label="test">
-                        <Input name="testref" ref={saveRef}/>
+                        <Input name="testref" ref={saveRef} />
                     </FormItem>
                 </Form>
             );
@@ -335,7 +326,7 @@ describe('form', () => {
 
         it('should supoort defaultvalue', () => {
             const value = {
-                'checkbox-1':true,
+                'checkbox-1': true,
                 'radio-1': true,
             };
             const wrapper = mount(
@@ -371,17 +362,11 @@ describe('form', () => {
             );
 
             assert(wrapper.find('input[id="unknow"]').length === 0);
-            assert(
-                wrapper.find('input[id="frank"]').prop('value') === 'frankqian'
-            );
+            assert(wrapper.find('input[id="frank"]').prop('value') === 'frankqian');
 
-            wrapper
-                .find('input[id="name"]')
-                .simulate('change', { target: { value: '' } });
+            wrapper.find('input[id="name"]').simulate('change', { target: { value: '' } });
             assert(wrapper.find('input[id="frank"]').length === 0);
-            assert(
-                wrapper.find('input[id="unknow"]').prop('value') === 'unknow'
-            );
+            assert(wrapper.find('input[id="unknow"]').prop('value') === 'unknow');
         });
     });
 });

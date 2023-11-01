@@ -12,8 +12,8 @@ import '../../src/select/style.js';
 
 function delay(duration) {
     return new Promise(resolve => {
-    	setTimeout(resolve, duration);
-    })
+        setTimeout(resolve, duration);
+    });
 }
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -30,9 +30,7 @@ describe('Select', () => {
         wrapper.unmount();
         wrapper = null;
 
-        const nodeListArr = [].slice.call(
-            document.querySelectorAll('.next-overlay-wrapper')
-        );
+        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
 
         nodeListArr.forEach(node => {
             node.parentNode.removeChild(node);
@@ -55,37 +53,35 @@ describe('Select', () => {
     });
 
     it('should support showDataSourceChildren to ignore dataSource children', () => {
-        const dataSource = [{
-            label: 'xxx',
-            value: 'yyy',
-            children: [{ label: 'xxx1', value: 'yyy1' },{ label: 'xxx2', value: 'yyy2' }]
-        },{
-            label: 'label1',
-            value: 'label1',
-            children: []
-        }];
+        const dataSource = [
+            {
+                label: 'xxx',
+                value: 'yyy',
+                children: [{ label: 'xxx1', value: 'yyy1' }, { label: 'xxx2', value: 'yyy2' }],
+            },
+            {
+                label: 'label1',
+                value: 'label1',
+                children: [],
+            },
+        ];
 
         wrapper.setProps({
             dataSource,
             visible: true,
-            showDataSourceChildren: false
+            showDataSourceChildren: false,
         });
         assert(document.querySelectorAll('.next-menu-item').length === 2);
     });
 
     it('should support empty value from dataSource', () => {
-        const dataSource = [
-            { label: 'xxx', value: 'yyy' },
-            { label: 'empty', value: '' },
-        ];
+        const dataSource = [{ label: 'xxx', value: 'yyy' }, { label: 'empty', value: '' }];
         wrapper.setProps({
             dataSource,
             visible: true,
         });
         assert(document.querySelectorAll('.next-menu-item').length === 2);
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
         wrapper.update();
 
         assert(wrapper.find('span.next-select em').text() === 'xxx');
@@ -115,8 +111,8 @@ describe('Select', () => {
 
     it('should support custom title', () => {
         const dataSource = [
-            { label: 'xxx', value: 'yyy', title: "abc" },
-            { label: 'empty ', value: ' ', title: "" },
+            { label: 'xxx', value: 'yyy', title: 'abc' },
+            { label: 'empty ', value: ' ', title: '' },
             { label: 'empty undefined', value: 'undefined', title: undefined },
             { label: 'empty null', value: 'null', title: null },
             { label: 'bbbbb', value: 'bbbbb' },
@@ -128,26 +124,59 @@ describe('Select', () => {
             visible: true,
         });
         assert(document.querySelectorAll('.next-menu-item').length === 7);
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
         wrapper.update();
 
-        assert(wrapper.find('ul li').at(0).instance().title === 'abc');
-        assert(wrapper.find('ul li').at(1).instance().title === '');
-        assert(wrapper.find('ul li').at(2).instance().title === '');
-        assert(wrapper.find('ul li').at(3).instance().title === '');
-        assert(wrapper.find('ul li').at(4).instance().title === 'bbbbb');
-        assert(wrapper.find('ul li').at(5).instance().title === 'cccc');
-        assert(wrapper.find('ul li').at(6).instance().title === '');
+        assert(
+            wrapper
+                .find('ul li')
+                .at(0)
+                .instance().title === 'abc'
+        );
+        assert(
+            wrapper
+                .find('ul li')
+                .at(1)
+                .instance().title === ''
+        );
+        assert(
+            wrapper
+                .find('ul li')
+                .at(2)
+                .instance().title === ''
+        );
+        assert(
+            wrapper
+                .find('ul li')
+                .at(3)
+                .instance().title === ''
+        );
+        assert(
+            wrapper
+                .find('ul li')
+                .at(4)
+                .instance().title === 'bbbbb'
+        );
+        assert(
+            wrapper
+                .find('ul li')
+                .at(5)
+                .instance().title === 'cccc'
+        );
+        assert(
+            wrapper
+                .find('ul li')
+                .at(6)
+                .instance().title === ''
+        );
     });
 
     it('should support title in valueRender', () => {
         const arr = [];
         const strarr = [];
         const dataSource = [
-            { label: 'xxx', value: 'yyy', title: "abc" },
-            { label: 'empty ', value: ' ', title: "" },
+            { label: 'xxx', value: 'yyy', title: 'abc' },
+            { label: 'empty ', value: ' ', title: '' },
             { label: 'empty undefined', value: 'undefined', title: undefined },
             { label: 'empty null', value: 'null', title: null },
             { label: <span>dasbx</span>, value: 'ddddd' },
@@ -163,8 +192,8 @@ describe('Select', () => {
                         valueRender={item => {
                             arr.push(item.title);
                             strarr.push(`pre-${item.title}`);
-                            return item.label;}
-                        }
+                            return item.label;
+                        }}
                     />
                 );
             }
@@ -174,9 +203,15 @@ describe('Select', () => {
         document.body.appendChild(div);
         ReactDOM.render(<App />, div);
 
-        assert(arr[0] === 'abc' && arr[1] === '' && arr[2] === undefined && arr[3] === null && arr[ 4] === undefined);
+        assert(arr[0] === 'abc' && arr[1] === '' && arr[2] === undefined && arr[3] === null && arr[4] === undefined);
 
-        assert(strarr[0] === 'pre-abc' && strarr[1] === 'pre-' && strarr[2] === 'pre-undefined' && strarr[3] === 'pre-null' && strarr[4] === 'pre-undefined');
+        assert(
+            strarr[0] === 'pre-abc' &&
+                strarr[1] === 'pre-' &&
+                strarr[2] === 'pre-undefined' &&
+                strarr[3] === 'pre-null' &&
+                strarr[4] === 'pre-undefined'
+        );
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
@@ -203,33 +238,23 @@ describe('Select', () => {
             }
         }
         wrapper = mount(<App />);
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[1]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
         assert(wrapper.find('span.next-select em').text() === 'bbb');
     });
 
     it('should not change text while under controlled', () => {
-        const dataSource = [
-            { label: 'xxx', value: 123 },
-            { label: 'empty', value: 0 },
-        ];
+        const dataSource = [{ label: 'xxx', value: 123 }, { label: 'empty', value: 0 }];
         wrapper.setProps({
             dataSource,
             visible: true,
             value: 0,
         });
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
         assert(wrapper.find('span.next-select em').text() === 'empty');
     });
 
     it('should support not string value', done => {
-        const dataSource = [
-            { label: 'xxx', value: 123 },
-            { label: 'empty', value: false },
-        ];
+        const dataSource = [{ label: 'xxx', value: 123 }, { label: 'empty', value: false }];
         const onChange = value => {
             assert(value === 123);
             done();
@@ -239,16 +264,11 @@ describe('Select', () => {
             visible: true,
             onChange,
         });
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
     });
 
     it('should support special value', () => {
-        const dataSource = [
-            { label: 'xxx', value: 0 },
-            { label: 'empty', value: false },
-        ];
+        const dataSource = [{ label: 'xxx', value: 0 }, { label: 'empty', value: false }];
         wrapper.setProps({
             dataSource,
             value: 0,
@@ -258,10 +278,7 @@ describe('Select', () => {
     });
 
     it('should support useDetailValue with mode=single', () => {
-        const dataSource = [
-            { label: 'xxx', value: 0 },
-            { label: 'empty', value: false },
-        ];
+        const dataSource = [{ label: 'xxx', value: 0 }, { label: 'empty', value: false }];
         wrapper.setProps({
             dataSource,
             useDetailValue: true,
@@ -272,10 +289,7 @@ describe('Select', () => {
     });
 
     it('should support useDetailValue with mode=multiple', () => {
-        const dataSource = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: false },
-        ];
+        const dataSource = [{ label: 'xxx', value: '0' }, { label: 'empty', value: false }];
         wrapper.setProps({
             dataSource,
             useDetailValue: true,
@@ -287,10 +301,7 @@ describe('Select', () => {
     });
 
     it('should support useDetailValue with mode=multiple and showSearch', done => {
-        const dataSource = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: 1 },
-        ];
+        const dataSource = [{ label: 'xxx', value: '0' }, { label: 'empty', value: 1 }];
         wrapper.setProps({
             dataSource,
             useDetailValue: true,
@@ -322,9 +333,7 @@ describe('Select', () => {
             children: [<Select.Option value={123}>123label</Select.Option>],
             visible: true,
         });
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
         assert(React.Children.toArray(wrapper.props().children).length === 1);
         wrapper.update();
 
@@ -332,13 +341,7 @@ describe('Select', () => {
     });
 
     it('should renderPreview', () => {
-        const wrapper = mount(
-            <Select
-                isPreview
-                dataSource={[]}
-                value={null}
-            />
-        );
+        const wrapper = mount(<Select isPreview dataSource={[]} value={null} />);
 
         assert(wrapper.getDOMNode().innerText === '');
     });
@@ -346,102 +349,53 @@ describe('Select', () => {
     // <span style={{ display: 'inline-block', width: 1 }}>&nbsp;</span>
     // 非预览态会多一个空格
     it('preview and edit should keep same content', () => {
+        const wrapper1 = mount(<Select dataSource={[]} value={1} />);
+
+        const wrapper2 = mount(<Select isPreview dataSource={[]} value={1} />);
+        assert(wrapper1.getDOMNode().innerText.slice(0, -1) === wrapper2.getDOMNode().innerText);
+    });
+
+    // <span style={{ display: 'inline-block', width: 1 }}>&nbsp;</span>
+    // 非预览态会多一个空格
+    it('preview and edit should keep same content', () => {
         const wrapper1 = mount(
-            <Select
-                dataSource={[]}
-                value={1}
-            />
+            <Select dataSource={[{ label: 'test', value: '1' }]} valueRender={v => v.value} value={1} />
         );
 
         const wrapper2 = mount(
-            <Select
-                isPreview
-                dataSource={[]}
-                value={1}
-            />
+            <Select isPreview dataSource={[{ label: 'test', value: '1' }]} valueRender={v => v.value} value={1} />
         );
         assert(wrapper1.getDOMNode().innerText.slice(0, -1) === wrapper2.getDOMNode().innerText);
     });
 
-
     // <span style={{ display: 'inline-block', width: 1 }}>&nbsp;</span>
     // 非预览态会多一个空格
     it('preview and edit should keep same content', () => {
-        const wrapper1 = mount(
-            <Select
-                dataSource={[{label: "test", value: '1'}]}
-                valueRender={v => v.value}
-                value={1}
-            />
-        );
+        const wrapper1 = mount(<Select dataSource={[{ label: 'test', value: '1' }]} value={1} />);
 
-        const wrapper2 = mount(
-            <Select
-                isPreview
-                dataSource={[{label: "test", value: '1'}]}
-                valueRender={v => v.value}
-                value={1}
-            />
-        );
-        assert(wrapper1.getDOMNode().innerText.slice(0, -1)=== wrapper2.getDOMNode().innerText);
-    });
-
-    // <span style={{ display: 'inline-block', width: 1 }}>&nbsp;</span>
-    // 非预览态会多一个空格
-    it('preview and edit should keep same content', () => {
-        const wrapper1 = mount(
-            <Select
-                dataSource={[{label: "test", value: '1'}]}
-                value={1}
-            />
-        );
-
-        const wrapper2 = mount(
-            <Select
-                isPreview
-                dataSource={[{label: "test", value: '1'}]}
-                value={1}
-            />
-        );
+        const wrapper2 = mount(<Select isPreview dataSource={[{ label: 'test', value: '1' }]} value={1} />);
         assert(wrapper1.getDOMNode().innerText.slice(0, -1) === wrapper2.getDOMNode().innerText);
     });
 
     it('render preview content when use multiple select', () => {
         const wrapper = mount(
-            <Select
-                dataSource={[{label: '测试111', value: 1}]}
-                value={[1]}
-                mode='multiple'
-                isPreview
-            />
-        )
+            <Select dataSource={[{ label: '测试111', value: 1 }]} value={[1]} mode="multiple" isPreview />
+        );
 
         assert(wrapper.find('.next-form-preview').text() === '测试111');
-    })
+    });
 
     it('should renderPreview mode="tag"', () => {
-        const wrapper = mount(
-            <Select
-                isPreview
-                mode="tag"
-                dataSource={[]}
-                value={null}
-            />
-        );
+        const wrapper = mount(<Select isPreview mode="tag" dataSource={[]} value={null} />);
         assert(wrapper.getDOMNode().innerText === '');
     });
 
     it('should support children null', () => {
         wrapper.setProps({
-            children: [
-                <Select.Option value={123}>123label</Select.Option>,
-                null,
-            ],
+            children: [<Select.Option value={123}>123label</Select.Option>, null],
             visible: true,
         });
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
         assert(React.Children.toArray(wrapper.props().children).length === 1);
         wrapper.update();
 
@@ -453,9 +407,7 @@ describe('Select', () => {
             visible: true,
             fillProps: 'value',
         });
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
         wrapper.update();
 
         assert(wrapper.find('.next-select em').text() === 'yyy');
@@ -466,7 +418,7 @@ describe('Select', () => {
             value: 'jack',
             visible: true,
             fillProps: 'anything',
-            dataSource: []
+            dataSource: [],
         });
 
         assert(wrapper.find('.next-select em').text() === 'jack');
@@ -484,24 +436,17 @@ describe('Select', () => {
     });
 
     it('should support multiple', () => {
-        const dataSource = [
-            { label: 'xxx', value: 123 },
-            { label: 'empty', value: false },
-        ];
+        const dataSource = [{ label: 'xxx', value: 123 }, { label: 'empty', value: false }];
         wrapper.setProps({
             visible: true,
             dataSource,
             mode: 'multiple',
         });
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
         wrapper.update();
         const foo = wrapper.find('.next-tag-body');
         assert(wrapper.find('.next-tag-body').text() === 'xxx');
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[1]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
         wrapper.update();
         assert(
             wrapper
@@ -538,20 +483,14 @@ describe('Select', () => {
     });
 
     it('should support keyCode up & down', done => {
-        const dataSource = [
-            { label: 'xxx', value: 'a' },
-            { label: 'empty', value: 'b' },
-        ];
+        const dataSource = [{ label: 'xxx', value: 'a' }, { label: 'empty', value: 'b' }];
         wrapper.setProps({
             dataSource,
             visible: true,
         });
         wrapper.find('input').simulate('keydown', { keyCode: 40 });
         wrapper.update();
-        assert(
-            document.querySelectorAll('.next-menu-item.next-focused').length ===
-                1
-        );
+        assert(document.querySelectorAll('.next-menu-item.next-focused').length === 1);
         wrapper.find('input').simulate('keydown', { keyCode: 13 });
         wrapper.update();
         assert(wrapper.find('span.next-select em').text() === 'empty');
@@ -633,7 +572,7 @@ describe('Select', () => {
     it('should not delete disabled item with BACKSPACE', done => {
         wrapper.setProps({
             mode: 'tag',
-            dataSource:  [{value: '10001', label: 'Lucy King'}, {value: '10003', label: 'Tom Cat', disabled: true}],
+            dataSource: [{ value: '10001', label: 'Lucy King' }, { value: '10003', label: 'Tom Cat', disabled: true }],
             value: ['10001', '10003'],
             onChange: function(value) {
                 assert(value.length === 1);
@@ -646,7 +585,10 @@ describe('Select', () => {
             keyCode: 8,
         });
 
-        wrapper.find('div.next-tag .next-tag-close-btn').first().simulate('click');
+        wrapper
+            .find('div.next-tag .next-tag-close-btn')
+            .first()
+            .simulate('click');
     });
 
     it('should support mode=tag with visible=false', done => {
@@ -690,11 +632,11 @@ describe('Select', () => {
             visible: true,
             maxTagCount: 2,
             mode: 'tag',
-            value
+            value,
         });
         wrapper.update();
         assert(wrapper.find('span.next-select div.next-tag').length === 3);
-        done()
+        done();
     });
 
     it('should support tagInline', done => {
@@ -708,38 +650,35 @@ describe('Select', () => {
             visible: true,
             tagInline: true,
             mode: 'tag',
-            value
+            value,
         });
         wrapper.update();
 
         assert(wrapper.find('span.next-select .next-select-compact div.next-select-tag-compact').length === 1);
-        done()
+        done();
     });
 
     it('should support adjustTagSize', done => {
-      const value = [
-          { label: 'xxx', value: '0' },
-          { label: 'empty', value: 1 },
-          { label: 'zzz', value: 1 },
-          { label: 'yyy', value: 1 },
-      ];
-      wrapper.setProps({
-          visible: true,
-          adjustTagSize: true,
-          mode: 'tag',
-          value
-      });
-      wrapper.update();
-
-      assert(wrapper.find('span.next-select span.next-select-values div.next-tag-medium').length === 4);
-      done()
-  });
-
-    it('should support onChange with mode=single ', done => {
-        const dataSource = [
+        const value = [
             { label: 'xxx', value: '0' },
             { label: 'empty', value: 1 },
+            { label: 'zzz', value: 1 },
+            { label: 'yyy', value: 1 },
         ];
+        wrapper.setProps({
+            visible: true,
+            adjustTagSize: true,
+            mode: 'tag',
+            value,
+        });
+        wrapper.update();
+
+        assert(wrapper.find('span.next-select span.next-select-values div.next-tag-medium').length === 4);
+        done();
+    });
+
+    it('should support onChange with mode=single ', done => {
+        const dataSource = [{ label: 'xxx', value: '0' }, { label: 'empty', value: 1 }];
         wrapper.setProps({
             dataSource,
             visible: true,
@@ -750,16 +689,11 @@ describe('Select', () => {
             },
         });
 
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[1]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
     });
 
     it('should support onChange with mode=multiple ', done => {
-        const dataSource = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: 1 },
-        ];
+        const dataSource = [{ label: 'xxx', value: '0' }, { label: 'empty', value: 1 }];
         wrapper.setProps({
             dataSource,
             mode: 'multiple',
@@ -771,16 +705,11 @@ describe('Select', () => {
             },
         });
 
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[1]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
     });
 
     it('should support useDetailValue onChange with mode=single ', done => {
-        const dataSource = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: false },
-        ];
+        const dataSource = [{ label: 'xxx', value: '0' }, { label: 'empty', value: false }];
         wrapper.setProps({
             dataSource,
             useDetailValue: true,
@@ -791,16 +720,11 @@ describe('Select', () => {
             },
         });
 
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[1]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
     });
 
     it('should support useDetailValue onChange with mode=multiple ', done => {
-        const dataSource = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: false },
-        ];
+        const dataSource = [{ label: 'xxx', value: '0' }, { label: 'empty', value: false }];
         wrapper.setProps({
             dataSource,
             useDetailValue: true,
@@ -812,16 +736,11 @@ describe('Select', () => {
             },
         });
 
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[1]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
     });
 
     it('should support hiddenSelected', done => {
-        const dataSource = [
-            { label: 'xxx', value: 'a' },
-            { label: 'empty', value: 'b' },
-        ];
+        const dataSource = [{ label: 'xxx', value: 'a' }, { label: 'empty', value: 'b' }];
         wrapper.setProps({
             dataSource,
             mode: 'multiple',
@@ -841,10 +760,7 @@ describe('Select', () => {
 
     // 输入aaa 回车，不关闭弹层
     it('should not close popup while searching and searchValue not in dataSource', () => {
-        const dataSource = [
-            { label: 'xxx', value: 'a' },
-            { label: 'empty', value: 'b' },
-        ];
+        const dataSource = [{ label: 'xxx', value: 'a' }, { label: 'empty', value: 'b' }];
         wrapper.setProps({
             dataSource,
             mode: 'single',
@@ -862,11 +778,7 @@ describe('Select', () => {
         wrapper.find('input').simulate('change', { target: { value: 'aaa' } });
         wrapper.find('input').simulate('keydown', { keyCode: 13 });
         wrapper.update();
-        assert(
-            document.querySelectorAll(
-                '.next-select-menu .next-select-menu-empty-content'
-            ).length === 1
-        );
+        assert(document.querySelectorAll('.next-select-menu .next-select-menu-empty-content').length === 1);
         assert(wrapper.instance().getInstance().state.visible === true);
     });
 
@@ -929,10 +841,7 @@ describe('Select', () => {
     });
 
     it('should support select all and unselect all', () => {
-        const dataSource = [
-            { label: 'xxx', value: 123 },
-            { label: 'empty', value: false },
-        ];
+        const dataSource = [{ label: 'xxx', value: 123 }, { label: 'empty', value: false }];
         wrapper.setProps({
             dataSource,
             visible: true,
@@ -940,36 +849,20 @@ describe('Select', () => {
             hasSelectAll: true,
         });
 
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-select-all')[0]
-        );
-        assert(
-            document.querySelectorAll('.next-menu-icon-selected').length === 3
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-select-all')[0]);
+        assert(document.querySelectorAll('.next-menu-icon-selected').length === 3);
 
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-select-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-select-menu-item')[0]);
 
-        assert(
-            document.querySelectorAll('.next-menu-icon-selected').length === 1
-        );
+        assert(document.querySelectorAll('.next-menu-icon-selected').length === 1);
 
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-select-all')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-select-all')[0]);
 
-        assert(
-            document.querySelectorAll('.next-menu-icon-selected').length === 3
-        );
+        assert(document.querySelectorAll('.next-menu-icon-selected').length === 3);
 
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-select-all')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-select-all')[0]);
 
-        assert(
-            document.querySelectorAll('.next-menu-icon-selected').length === 0
-        );
+        assert(document.querySelectorAll('.next-menu-icon-selected').length === 0);
     });
 });
 
@@ -1034,7 +927,7 @@ describe('Select Controlled', () => {
         wrapper.update();
 
         assert(wrapper.find('.next-select input').prop('value') === 'xy');
-        assert(document.querySelectorAll('.next-select-menu .next-select-menu-empty-content' ).length === 1 );
+        assert(document.querySelectorAll('.next-select-menu .next-select-menu-empty-content').length === 1);
 
         wrapper.setState({
             searchValue: undefined,
@@ -1048,10 +941,7 @@ describe('AutoComplete', () => {
     let wrapper;
 
     beforeEach(() => {
-        const dataSource = [
-            { label: 'xxx', value: 'yyy' },
-            { label: '123', value: 444 },
-        ];
+        const dataSource = [{ label: 'xxx', value: 'yyy' }, { label: '123', value: 444 }];
         wrapper = mount(<Select.AutoComplete dataSource={dataSource} />);
     });
 
@@ -1073,18 +963,13 @@ describe('AutoComplete', () => {
     });
 
     it('should support empty value from dataSource', () => {
-        const dataSource = [
-            { label: 'xxx', value: 'yyy' },
-            { label: 'empty', value: '' },
-        ];
+        const dataSource = [{ label: 'xxx', value: 'yyy' }, { label: 'empty', value: '' }];
         wrapper.setProps({
             dataSource,
             visible: true,
         });
         assert(document.querySelectorAll('.next-menu-item').length === 2);
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
         wrapper.update();
 
         assert(wrapper.find('input').prop('value') === 'yyy');
@@ -1095,10 +980,7 @@ describe('AutoComplete', () => {
     });
 
     it('should support not string value', done => {
-        const dataSource = [
-            { label: 'xxx', value: 123 },
-            { label: 'empty', value: false },
-        ];
+        const dataSource = [{ label: 'xxx', value: 123 }, { label: 'empty', value: false }];
         const onChange = value => {
             assert(value === 123);
             done();
@@ -1108,9 +990,7 @@ describe('AutoComplete', () => {
             visible: true,
             onChange,
         });
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
     });
 
     it('should render from options', () => {
@@ -1129,9 +1009,7 @@ describe('AutoComplete', () => {
             visible: true,
             fillProps: 'label',
         });
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
         assert(wrapper.find('input').instance().value === 'xxx');
     });
 
@@ -1166,13 +1044,7 @@ describe('AutoComplete', () => {
                 value: '',
             };
             render() {
-                return (
-                    <Select.AutoComplete
-                        dataSource={[]}
-                        value={this.state.value}
-                        multiple
-                    />
-                );
+                return <Select.AutoComplete dataSource={[]} value={this.state.value} multiple />;
             }
             componentDidMount() {
                 this.setState({
@@ -1184,10 +1056,7 @@ describe('AutoComplete', () => {
     });
 
     it('should support keyCode up & down', () => {
-        const dataSource = [
-            { label: 'xxx', value: 'a' },
-            { label: 'empty', value: 'b' },
-        ];
+        const dataSource = [{ label: 'xxx', value: 'a' }, { label: 'empty', value: 'b' }];
         wrapper.setProps({
             dataSource,
             visible: true,
@@ -1195,10 +1064,7 @@ describe('AutoComplete', () => {
         wrapper.find('input').simulate('keydown', { keyCode: 40 });
         wrapper.find('input').simulate('keydown', { keyCode: 40 });
         wrapper.update();
-        assert(
-            document.querySelectorAll('.next-menu-item.next-focused').length ===
-                1
-        );
+        assert(document.querySelectorAll('.next-menu-item.next-focused').length === 1);
         wrapper.find('input').simulate('keydown', { keyCode: 13 });
         wrapper.update();
         assert(wrapper.find('input').prop('value') === 'b');
@@ -1215,23 +1081,20 @@ describe('AutoComplete', () => {
     });
 
     it('should remove highlightKey while value changed', () => {
-        const dataSource = [
-            { label: 'xxx', value: 'a' },
-            { label: 'empty', value: 'b' },
-        ];
+        const dataSource = [{ label: 'xxx', value: 'a' }, { label: 'empty', value: 'b' }];
         wrapper.setProps({
             dataSource,
             visible: true,
-            autoHighlightFirstItem: false
+            autoHighlightFirstItem: false,
         });
         wrapper.find('input').simulate('keydown', { keyCode: 40 });
         wrapper.find('input').simulate('keydown', { keyCode: 40 });
         wrapper.find('input').simulate('keydown', { keyCode: 13 });
         wrapper.update();
-        assert( document.querySelectorAll('.next-menu-item.next-focused').length === 1 );
+        assert(document.querySelectorAll('.next-menu-item.next-focused').length === 1);
         wrapper.find('input').simulate('change', { target: { value: '' } });
         wrapper.update();
-        assert( document.querySelectorAll('.next-menu-item.next-focused').length === 0 );
+        assert(document.querySelectorAll('.next-menu-item.next-focused').length === 0);
     });
 
     // simulate keydown not work in test event
@@ -1263,9 +1126,7 @@ describe('AutoComplete', () => {
                 return (
                     <Select placeholder="选择尺寸" style={{ float: 'right' }}>
                         <Option value="small">Small</Option>
-                        <Option value="medium">
-                            MediumMediumMediumMediumMedium
-                        </Option>
+                        <Option value="medium">MediumMediumMediumMediumMedium</Option>
                         <Option value="large">Large</Option>
                     </Select>
                 );
@@ -1278,10 +1139,7 @@ describe('AutoComplete', () => {
         ReactTestUtils.Simulate.click(select);
         setTimeout(() => {
             const rect = select.getBoundingClientRect();
-            const left = parseFloat(
-                document.querySelector('.next-select-single-menu').style.left,
-                10
-            );
+            const left = parseFloat(document.querySelector('.next-select-single-menu').style.left, 10);
             assert(rect.left === left);
             ReactDOM.unmountComponentAtNode(div);
             document.body.removeChild(div);
@@ -1293,18 +1151,16 @@ describe('AutoComplete', () => {
         wrapper = mount(
             <div className="select-scroll-wrapper" style={{ width: 300, overflowX: 'scroll' }}>
                 <Select
-                    style={{ width: 540 }} 
-                    dataSource={[
-                        { label: 'xxx', value: 'yyy' },
-                        { label: 'empty', value: '' },
-                ]}/>
+                    style={{ width: 540 }}
+                    dataSource={[{ label: 'xxx', value: 'yyy' }, { label: 'empty', value: '' }]}
+                />
             </div>
         );
         const selectWrapper = wrapper.find('.select-scroll-wrapper').getDOMNode();
         const prevScrollLeft = selectWrapper.scrollLeft;
         ReactTestUtils.Simulate.click(selectWrapper);
         assert(wrapper.find('.select-scroll-wrapper').getDOMNode().scrollLeft === prevScrollLeft);
-    })
+    });
 
     describe('react api', () => {
         it('calls componentWillReceiveProps', done => {
@@ -1323,11 +1179,11 @@ describe('virtual list', function() {
     let wrapper = null;
 
     afterEach(function() {
-        if(wrapper) {
+        if (wrapper) {
             wrapper.unmount();
             wrapper = null;
         }
-    })
+    });
 
     it('should works with showSearch', done => {
         const dataSource = [
@@ -1376,9 +1232,9 @@ describe('virtual list', function() {
         const generateItems = (start, end) => {
             return new Array(end - start).fill(null).map((_, i) => ({
                 label: `option${start + i}`,
-                value: `option${start + i}`
-            }))
-        }
+                value: `option${start + i}`,
+            }));
+        };
         function Spec() {
             const [ds, setDS] = React.useState(generateItems(0, 20));
             const dsRef = React.useRef(ds);
@@ -1388,16 +1244,17 @@ describe('virtual list', function() {
                 const length = currentDataSource.length;
                 const scrollHeight = e.target.scrollHeight; // 内容总高度
                 const clientHeight = e.target.clientHeight; // 窗口高度
-                const scrollTop = e.target.scrollTop;           //滚动高度
-                if ( scrollTop + clientHeight === scrollHeight) { // 到达底部
+                const scrollTop = e.target.scrollTop; //滚动高度
+                if (scrollTop + clientHeight === scrollHeight) {
+                    // 到达底部
                     const otherData = generateItems(length, length + 20);
 
-                    setDS(currentDataSource.concat(otherData))
+                    setDS(currentDataSource.concat(otherData));
                 }
-            }
-            return <Select useVirtual dataSource={ds} menuProps={{onScroll}} visible/>
+            };
+            return <Select useVirtual dataSource={ds} menuProps={{ onScroll }} visible />;
         }
-        wrapper = mount(<Spec/>);
+        wrapper = mount(<Spec />);
         const menuWrapper = wrapper.find('.next-select-menu-wrapper');
         assert(menuWrapper);
         const menuWrapperDom = menuWrapper.getDOMNode();
@@ -1408,15 +1265,15 @@ describe('virtual list', function() {
         const itemHeight = 32;
         const wrapperHeight = menuWrapperDom.clientHeight;
         const scrollToNextLimit = async () => {
-            menuWrapperDom.scrollTop = (page * pageSize) * itemHeight - wrapperHeight;
-            menuWrapper.simulate('scroll', {target: menuWrapperDom});
+            menuWrapperDom.scrollTop = page * pageSize * itemHeight - wrapperHeight;
+            menuWrapper.simulate('scroll', { target: menuWrapperDom });
             await delay(100);
             assert(menuWrapperDom.querySelector(`.next-menu-item[title="option${page * pageSize + 2}"]`));
             page++;
-        }
+        };
 
         await scrollToNextLimit();
         await scrollToNextLimit();
         await scrollToNextLimit();
-    })
+    });
 });

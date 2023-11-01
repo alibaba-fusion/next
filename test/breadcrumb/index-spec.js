@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import assert from 'power-assert';
-import Enzyme, { shallow, mount, } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Breadcrumb from '../../src/breadcrumb';
 import '../../src/breadcrumb/style';
@@ -18,9 +18,7 @@ describe('Item', () => {
     });
 
     it('should has an a tag if you pass the link property', () => {
-        const wrapper = mount(
-            <Item link="https://www.alibaba.com/">Item</Item>
-        );
+        const wrapper = mount(<Item link="https://www.alibaba.com/">Item</Item>);
         assert(wrapper.find('a').length === 1);
         assert(wrapper.find('a').props().href === 'https://www.alibaba.com/');
         wrapper.unmount();
@@ -64,9 +62,7 @@ describe('Breadcrumb', () => {
         try {
             shallow(<Breadcrumb>Breadcrumb</Breadcrumb>);
         } catch (e) {
-            assert(
-                e.message === "Breadcrumb's children must be Breadcrumb.Item!"
-            );
+            assert(e.message === "Breadcrumb's children must be Breadcrumb.Item!");
         }
     });
 
@@ -83,9 +79,7 @@ describe('Breadcrumb', () => {
         );
         const ellipsisItem = wrapper.find('.next-breadcrumb-text').at(1);
         assert(ellipsisItem.text() === '...');
-        assert(
-            ellipsisItem.find('span').hasClass('next-breadcrumb-text-ellipsis')
-        );
+        assert(ellipsisItem.find('span').hasClass('next-breadcrumb-text-ellipsis'));
         wrapper.unmount();
     });
 
@@ -98,23 +92,25 @@ describe('Breadcrumb', () => {
                 <Item>Women’s Clothing 4</Item>
                 <Item>Blouses & Shirts 5</Item>
                 <Item>T-shirts 6</Item>
-            </Breadcrumb>
-        , mountNode);
+            </Breadcrumb>,
+            mountNode
+        );
         const ellipsisItem = mountNode.querySelectorAll('.next-breadcrumb-text')[1];
         assert(ellipsisItem.textContent === '...');
     });
 
     it('should show hidden items menu when ellipsis clicked if showHiddenItems set true', () => {
         ReactDOM.render(
-            <Breadcrumb maxNode={5} showHiddenItems popupProps={{triggerType: 'click'}}>
+            <Breadcrumb maxNode={5} showHiddenItems popupProps={{ triggerType: 'click' }}>
                 <Item>Home 1</Item>
                 <Item>Whatever 2</Item>
                 <Item>All Categories 3</Item>
                 <Item>Women’s Clothing 4</Item>
                 <Item>Blouses & Shirts 5</Item>
                 <Item>T-shirts 6</Item>
-            </Breadcrumb>
-        , mountNode);
+            </Breadcrumb>,
+            mountNode
+        );
         const ellipsisItem = mountNode.querySelectorAll('.next-breadcrumb-text-ellipsis-clickable span')[0];
         assert.equal(ellipsisItem.textContent, '...');
 
@@ -150,7 +146,7 @@ describe('Breadcrumb', () => {
         let flag = false;
         const wrapper = mount(
             <Breadcrumb>
-                {flag && (<Item>Default Not Show</Item>)}
+                {flag && <Item>Default Not Show</Item>}
                 <Item>Whatever</Item>
                 <Item>All Categories</Item>
             </Breadcrumb>
@@ -176,10 +172,10 @@ describe('Breadcrumb', () => {
         assert(wrapper.getDOMNode().tagName.toUpperCase() === 'NAV'); // default nav
 
         wrapper.setProps({
-            component: 'div'
+            component: 'div',
         });
         assert(wrapper.getDOMNode().tagName.toUpperCase() === 'DIV');
-    })
+    });
 
     it('should support RTL', () => {
         const wrapper = mount(

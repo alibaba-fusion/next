@@ -25,11 +25,7 @@ describe('Range A11y', () => {
     it('should not have any violations for range without tips', async () => {
         wrapper = await testReact(
             <div>
-                <Range
-                    defaultValue={10}
-                    hasTip={false}
-                    tooltipVisible={false}
-                />
+                <Range defaultValue={10} hasTip={false} tooltipVisible={false} />
             </div>
         );
         return wrapper;

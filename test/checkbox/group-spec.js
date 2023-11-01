@@ -30,19 +30,13 @@ describe('Checkbox.Group', () => {
     });
     describe('[render] control', () => {
         it('should contain `pear`', () => {
-            const wrapper = shallow(
-                <CheckboxGroup value={['pear']} dataSource={list} />
-            ).dive();
+            const wrapper = shallow(<CheckboxGroup value={['pear']} dataSource={list} />).dive();
             assert(wrapper.state().value.indexOf('pear') !== -1);
         });
 
         it('should have three children with mock data', () => {
-            const wrapper = mount(
-                <CheckboxGroup value={['pear']} dataSource={list} />
-            );
-            assert(
-                wrapper.find('.next-checkbox-group').children().length === 3
-            );
+            const wrapper = mount(<CheckboxGroup value={['pear']} dataSource={list} />);
+            assert(wrapper.find('.next-checkbox-group').children().length === 3);
         });
 
         it('should support null child', () => {
@@ -53,20 +47,14 @@ describe('Checkbox.Group', () => {
                     {null}
                 </CheckboxGroup>
             );
-            assert(
-                wrapper.find('.next-checkbox-group').children().length === 2
-            );
+            assert(wrapper.find('.next-checkbox-group').children().length === 2);
         });
     });
 
     describe('[render] uncontrol', () => {
         it('should have three children with mock data', () => {
-            const wrapper = mount(
-                <CheckboxGroup defaultValue={['apple']} dataSource={list} />
-            );
-            assert(
-                wrapper.find('.next-checkbox-group').children().length === 3
-            );
+            const wrapper = mount(<CheckboxGroup defaultValue={['apple']} dataSource={list} />);
+            assert(wrapper.find('.next-checkbox-group').children().length === 3);
         });
     });
 
@@ -113,13 +101,7 @@ describe('Checkbox.Group', () => {
     describe('[events] simulate change', () => {
         it('should call `onChange`', () => {
             const onChange = sinon.spy();
-            const wrapper = mount(
-                <CheckboxGroup
-                    onChange={onChange}
-                    value={['pear']}
-                    dataSource={list}
-                />
-            );
+            const wrapper = mount(<CheckboxGroup onChange={onChange} value={['pear']} dataSource={list} />);
             wrapper
                 .find('input')
                 .first()
@@ -127,9 +109,7 @@ describe('Checkbox.Group', () => {
             assert(onChange.calledOnce);
 
             const onChange1 = sinon.spy();
-            const wrapper1 = mount(
-                <CheckboxGroup onChange={onChange1} dataSource={list} />
-            );
+            const wrapper1 = mount(<CheckboxGroup onChange={onChange1} dataSource={list} />);
             wrapper1
                 .find('input')
                 .first()
@@ -140,9 +120,7 @@ describe('Checkbox.Group', () => {
 
     describe('[behavior] controlled', () => {
         it('should support controlled `value`', () => {
-            const wrapper = shallow(
-                <CheckboxGroup value={['pear']} dataSource={list} />
-            ).dive();
+            const wrapper = shallow(<CheckboxGroup value={['pear']} dataSource={list} />).dive();
             assert(wrapper.state().value[0] === 'pear');
 
             wrapper.setProps({
@@ -161,13 +139,7 @@ describe('Checkbox.Group', () => {
         });
 
         it('should support controlled `disabled`', () => {
-            const wrapper = mount(
-                <CheckboxGroup
-                    disabled={false}
-                    value={['pear']}
-                    dataSource={list}
-                />
-            );
+            const wrapper = mount(<CheckboxGroup disabled={false} value={['pear']} dataSource={list} />);
             assert(!wrapper.props().disabled);
             assert(!wrapper.find('.next-checkbox-group').hasClass('disabled'));
 
@@ -179,12 +151,8 @@ describe('Checkbox.Group', () => {
     });
     describe('value === undefined', () => {
         it('should support value === undefined', () => {
-            const wrapper = shallow(
-                <CheckboxGroup value={['pear']} dataSource={list} />
-            );
-            const wrapper1 = shallow(
-                <CheckboxGroup value={undefined} dataSource={list} />
-            );
+            const wrapper = shallow(<CheckboxGroup value={['pear']} dataSource={list} />);
+            const wrapper1 = shallow(<CheckboxGroup value={undefined} dataSource={list} />);
             wrapper.setProps({
                 value: undefined,
             });
@@ -194,9 +162,7 @@ describe('Checkbox.Group', () => {
     });
     describe('value === 0', () => {
         it('should support value === 0', () => {
-            const wrapper = shallow(
-                <CheckboxGroup defaultValue={0} dataSource={list} />
-            );
+            const wrapper = shallow(<CheckboxGroup defaultValue={0} dataSource={list} />);
             assert.deepEqual(wrapper.dive().state().value, [0]);
             wrapper.setProps({
                 value: 1,
@@ -225,9 +191,7 @@ describe('Checkbox.Group', () => {
 
     describe('render in preview mode', () => {
         it('should isPreview', () => {
-            const wrapper = mount(
-                <CheckboxGroup isPreview defaultValue={['apple']} dataSource={list} />
-            );
+            const wrapper = mount(<CheckboxGroup isPreview defaultValue={['apple']} dataSource={list} />);
             assert(wrapper.getDOMNode().innerText === '苹果');
         });
 

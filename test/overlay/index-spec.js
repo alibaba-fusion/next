@@ -1074,9 +1074,9 @@ describe('Popup', () => {
                 <Popup trigger={<Button className="btn">Open</Button>} triggerType="click" />
                 <br />
             </div>
-        )
-        const buttonDom = wrapper.find(".btn");
+        );
+        const buttonDom = wrapper.find('.btn');
 
         assert(buttonDom);
-    })
+    });
 });

@@ -60,7 +60,7 @@ class Demo2 extends React.Component {
             visible: false,
         });
     };
-    
+
     render() {
         return (
             <div>
@@ -106,7 +106,7 @@ describe('v2', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        document.body.style='';
+        document.body.style = '';
     });
 
     it('should show and hide with no cache', async () => {
@@ -207,7 +207,8 @@ describe('v2', () => {
 
     it('should support custom footer button text', () => {
         wrapper = render(
-            <Dialog v2
+            <Dialog
+                v2
                 visible
                 okProps={{ className: 'custom-ok', children: 'my ok' }}
                 cancelProps={{
@@ -307,7 +308,7 @@ describe('v2', () => {
     });
 
     it('should support style.width compcat with v1', async () => {
-        wrapper = render(<Dialog v2 visible style={{width: 345}}/>);
+        wrapper = render(<Dialog v2 visible style={{ width: 345 }} />);
         await delay(20);
         assert(document.querySelector('.next-dialog').style.width === '345px');
     });
@@ -365,7 +366,7 @@ describe('v2', () => {
 
         assert(document.querySelector('.next-dialog'));
         assert(hasClass(document.querySelector('.next-btn-primary'), 'next-btn-loading'));
-        
+
         await delay(100);
         assert(!document.querySelector('.next-dialog'));
     });
@@ -585,8 +586,8 @@ describe('v2', () => {
             title: 'Title',
             content: 'Content',
             okProps: {
-                loading: true
-            }
+                loading: true,
+            },
         });
 
         assert(document.querySelector('.next-btn-loading'));
@@ -595,23 +596,23 @@ describe('v2', () => {
     it('should support hasMask={false}', async () => {
         const overlays = document.querySelectorAll('.next-overlay-wrapper');
         overlays.forEach(o => {
-           try {
-            o.parentElement.removeChild(o)
-           } catch(e) {}
+            try {
+                o.parentElement.removeChild(o);
+            } catch (e) {}
         });
-        
+
         const { hide } = Dialog.show({
             v2: true,
             hasMask: false,
             title: 'Title',
-            content: 'Content'
+            content: 'Content',
         });
 
         await delay(40);
         assert(!document.querySelector('.next-overlay-backdrop'));
         hide();
 
-        wrapper = render(<Demo2 animation={false} hasMask={false}/>);
+        wrapper = render(<Demo2 animation={false} hasMask={false} />);
         const btn = document.querySelector('button');
         ReactTestUtils.Simulate.click(btn);
         await delay(40);
@@ -632,14 +633,14 @@ describe('v2', () => {
     //                 title: 'Second',
     //                 content: 'content content content...'
     //             });
-    //         },    
+    //         },
     //     };
-        
+
     //     Dialog.success(config);
 
     //     await delay(40);
     //     assert(document.body.getAttribute('style').match('overflow: hidden'));
-        
+
     //     assert(document.querySelectorAll('.next-btn-primary').length == 1);
     //     ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
     //     await delay(40);
@@ -651,7 +652,6 @@ describe('v2', () => {
     //     assert(document.body.getAttribute('style') === '');
     // });
 });
-
 
 function assertOkBtn(btn) {
     assert(hasClass(btn, 'next-btn-primary'));

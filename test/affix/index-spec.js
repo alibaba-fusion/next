@@ -8,8 +8,6 @@ import Affix from '../../src/affix/index';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-
-
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp, react/prop-types, react/prefer-stateless-function */
 /* global describe, it, beforeEach, afterEach */
 
@@ -39,10 +37,7 @@ class AffixDemo extends React.Component {
                 }}
                 style={{ height: 100, overflowY: 'scroll' }}
             >
-                <div
-                    className="affix-wrapper"
-                    style={{ padding: 60, height: 300, background: '#eee' }}
-                >
+                <div className="affix-wrapper" style={{ padding: 60, height: 300, background: '#eee' }}>
                     <Affix
                         id="affix"
                         offsetTop={offsetTop}
@@ -51,9 +46,7 @@ class AffixDemo extends React.Component {
                             this.affix = ref;
                         }}
                     >
-                        <Button onClick={this.changeOffset.bind(this)}>
-                            hello world
-                        </Button>
+                        <Button onClick={this.changeOffset.bind(this)}>hello world</Button>
                     </Affix>
                 </div>
             </div>

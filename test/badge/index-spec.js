@@ -121,47 +121,15 @@ describe('Badge', () => {
             assert(document.querySelector('.next-badge sup') === null);
 
             enterNumber(1);
-            assert(
-                expectStyle(
-                    document.querySelector(
-                        '.next-badge .next-badge-scroll-number-only'
-                    ),
-                    true,
-                    11
-                )
-            );
+            assert(expectStyle(document.querySelector('.next-badge .next-badge-scroll-number-only'), true, 11));
 
             enterNumber(2);
-            assert(
-                expectStyle(
-                    document.querySelector(
-                        '.next-badge .next-badge-scroll-number-only'
-                    ),
-                    false,
-                    12
-                )
-            );
+            assert(expectStyle(document.querySelector('.next-badge .next-badge-scroll-number-only'), false, 12));
             yield delay(350);
-            assert(
-                expectStyle(
-                    document.querySelector(
-                        '.next-badge .next-badge-scroll-number-only'
-                    ),
-                    true,
-                    12
-                )
-            );
+            assert(expectStyle(document.querySelector('.next-badge .next-badge-scroll-number-only'), true, 12));
 
             enterNumber(1);
-            assert(
-                expectStyle(
-                    document.querySelector(
-                        '.next-badge .next-badge-scroll-number-only'
-                    ),
-                    true,
-                    11
-                )
-            );
+            assert(expectStyle(document.querySelector('.next-badge .next-badge-scroll-number-only'), true, 11));
             yield delay(350);
 
             enterNumber(0);
@@ -192,35 +160,11 @@ describe('Badge', () => {
             enterNumber(9);
             yield delay(350);
             enterNumber(10);
-            assert(
-                expectStyle(
-                    document.querySelectorAll(
-                        '.next-badge .next-badge-scroll-number-only'
-                    )[0],
-                    false,
-                    11
-                )
-            );
-            assert(
-                expectStyle(
-                    document.querySelectorAll(
-                        '.next-badge .next-badge-scroll-number-only'
-                    )[1],
-                    true,
-                    20
-                )
-            );
+            assert(expectStyle(document.querySelectorAll('.next-badge .next-badge-scroll-number-only')[0], false, 11));
+            assert(expectStyle(document.querySelectorAll('.next-badge .next-badge-scroll-number-only')[1], true, 20));
 
             enterNumber(9);
-            assert(
-                expectStyle(
-                    document.querySelectorAll(
-                        '.next-badge .next-badge-scroll-number-only'
-                    )[0],
-                    false,
-                    9
-                )
-            );
+            assert(expectStyle(document.querySelectorAll('.next-badge .next-badge-scroll-number-only')[0], false, 9));
             yield delay(350);
 
             ReactDOM.unmountComponentAtNode(div);
@@ -247,24 +191,8 @@ describe('Badge', () => {
         assert(document.querySelector('.next-badge sup').innerHTML === '99+');
 
         enterNumber(99);
-        assert(
-            expectStyle(
-                document.querySelectorAll(
-                    '.next-badge .next-badge-scroll-number-only'
-                )[0],
-                false,
-                9
-            )
-        );
-        assert(
-            expectStyle(
-                document.querySelectorAll(
-                    '.next-badge .next-badge-scroll-number-only'
-                )[1],
-                false,
-                9
-            )
-        );
+        assert(expectStyle(document.querySelectorAll('.next-badge .next-badge-scroll-number-only')[0], false, 9));
+        assert(expectStyle(document.querySelectorAll('.next-badge .next-badge-scroll-number-only')[1], false, 9));
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
@@ -274,5 +202,5 @@ describe('Badge', () => {
         const wrapper = render(<Badge count={0} showZero />);
         assert.notStrictEqual(wrapper.find('.next-badge-count'), null);
         assert(wrapper.find('.next-badge-count').hasClass('next-badge-scroll-number'));
-    })
+    });
 });

@@ -54,31 +54,19 @@ describe('Tree A11y', () => {
     });
 
     it('should not have any violations for default Tree', async () => {
-        wrapper = await testReact(
-            <Tree defaultExpandAll dataSource={dataSource} />,
-            { incomplete: true }
-        );
+        wrapper = await testReact(<Tree defaultExpandAll dataSource={dataSource} />, { incomplete: true });
         return wrapper;
     });
 
     it('should not have any violations for line Tree', async () => {
-        wrapper = await testReact(
-            <Tree defaultExpandAll showLine dataSource={dataSource} />,
-            { incomplete: true }
-        );
+        wrapper = await testReact(<Tree defaultExpandAll showLine dataSource={dataSource} />, { incomplete: true });
         return wrapper;
     });
 
     it('should not have any violations for checkable Tree', async () => {
-        wrapper = await testReact(
-            <Tree
-                defaultExpandAll
-                checkable
-                showLine
-                dataSource={dataSource}
-            />,
-            { incomplete: true }
-        );
+        wrapper = await testReact(<Tree defaultExpandAll checkable showLine dataSource={dataSource} />, {
+            incomplete: true,
+        });
         return wrapper;
     });
 });

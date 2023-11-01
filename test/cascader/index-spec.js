@@ -563,12 +563,11 @@ describe('Cascader', () => {
 
             ReactDOM.unmountComponentAtNode(div);
             document.body.removeChild(div);
-        } catch(err) {
+        } catch (err) {
             ReactDOM.unmountComponentAtNode(div);
             document.body.removeChild(div);
             throw new Error(err);
         }
-
     });
 
     it('should set the style of the cascader inner node', () => {
@@ -625,7 +624,7 @@ describe('Cascader', () => {
         const dataSource = [
             {
                 label: '1',
-                value: '1'
+                value: '1',
             },
             {
                 label: '2',
@@ -633,12 +632,12 @@ describe('Cascader', () => {
                 children: [
                     {
                         label: '2_1',
-                        value: '2_1'
-                    }
-                ]
-            }
+                        value: '2_1',
+                    },
+                ],
+            },
         ];
-        const wrapper = mount(<Cascader value={['2_1']} multiple dataSource={dataSource}/>);
+        const wrapper = mount(<Cascader value={['2_1']} multiple dataSource={dataSource} />);
         assert(wrapper.find('.next-cascader-menu-wrapper').length === 2);
         const el = wrapper.find('.next-menu-item[title="1"]').getDOMNode();
         assert(el);

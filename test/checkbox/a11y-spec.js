@@ -50,9 +50,7 @@ describe('Checkbox A11y', () => {
                 label: '橙子',
             },
         ];
-        wrapper = await testReact(
-            <Checkbox.Group value={['pear']} dataSource={list} />
-        );
+        wrapper = await testReact(<Checkbox.Group value={['pear']} dataSource={list} />);
         return wrapper;
     });
 });

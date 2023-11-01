@@ -76,11 +76,8 @@ const tagName = function(names, nodeOrSelector, rootNode) {
  */
 const isHeading = function(nodeOrSelector, rootNode) {
     return (
-        tagName(
-            ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-            nodeOrSelector,
-            rootNode
-        ) || roleType('heading', nodeOrSelector, rootNode)
+        tagName(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], nodeOrSelector, rootNode) ||
+        roleType('heading', nodeOrSelector, rootNode)
     );
 };
 
@@ -93,10 +90,7 @@ const isHeading = function(nodeOrSelector, rootNode) {
  * @returns { Boolean }
  */
 const isButton = function(nodeOrSelector, rootNode) {
-    return (
-        tagName('button', nodeOrSelector, rootNode) ||
-        roleType('button', nodeOrSelector, rootNode)
-    );
+    return tagName('button', nodeOrSelector, rootNode) || roleType('button', nodeOrSelector, rootNode);
 };
 
 export default {

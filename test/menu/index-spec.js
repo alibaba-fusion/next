@@ -48,11 +48,7 @@ describe('Menu', () => {
 
     it('should support isSelectIconRight', () => {
         wrapper = mount(
-            <Menu
-                isSelectIconRight
-                selectMode="multiple"
-                selectedKeys={['1', '2', '3']}
-            >
+            <Menu isSelectIconRight selectMode="multiple" selectedKeys={['1', '2', '3']}>
                 <Item key="1">item</Item>
                 <Item key="2">item</Item>
                 <Item key="3" isSelectIconRight={false}>
@@ -66,11 +62,7 @@ describe('Menu', () => {
     it('should render menu item', () => {
         wrapper = mount(
             <Menu>
-                <Item
-                    helper="helper"
-                    className="custom"
-                    style={{ color: 'red' }}
-                >
+                <Item helper="helper" className="custom" style={{ color: 'red' }}>
                     item
                 </Item>
             </Menu>
@@ -87,7 +79,9 @@ describe('Menu', () => {
     it('should render menu item with mode=popup && only 1 item', () => {
         wrapper = mount(
             <Menu hozInLine direction="hoz" mode="popup">
-                <Item key="1" className="popup-menu-item">First</Item>
+                <Item key="1" className="popup-menu-item">
+                    First
+                </Item>
             </Menu>
         );
         const item = wrapper.find('.next-menu-item');
@@ -111,7 +105,10 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
-        const innerHTML = wrapper.find('.next-menu').at(0).instance().innerHTML;
+        const innerHTML = wrapper
+            .find('.next-menu')
+            .at(0)
+            .instance().innerHTML;
         assert(innerHTML.match('test-group-string'));
         assert(innerHTML.match('test-submenu-string'));
     });
@@ -148,11 +145,7 @@ describe('Menu', () => {
 
     it('should pass className', () => {
         wrapper = mount(
-            <Menu
-                defaultOpenKeys="sub-menu"
-                className="custom"
-                style={{ color: 'red' }}
-            >
+            <Menu defaultOpenKeys="sub-menu" className="custom" style={{ color: 'red' }}>
                 <Item className="custom-className">item</Item>
                 <Group label="Group">
                     <Item className="custom-className" key="group-1">
@@ -231,8 +224,14 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
-        const item1Level = wrapper.find('#sub2-item').at(0).props().inlineLevel;
-        const item2Level = wrapper.find('#suba2-item').at(0).props().inlineLevel;
+        const item1Level = wrapper
+            .find('#sub2-item')
+            .at(0)
+            .props().inlineLevel;
+        const item2Level = wrapper
+            .find('#suba2-item')
+            .at(0)
+            .props().inlineLevel;
 
         assert(item1Level === 3);
         assert(item2Level === 2);
@@ -257,11 +256,7 @@ describe('Menu', () => {
     it('should render menu group', () => {
         wrapper = mount(
             <Menu>
-                <Group
-                    label="Group"
-                    className="custom"
-                    style={{ color: 'red' }}
-                >
+                <Group label="Group" className="custom" style={{ color: 'red' }}>
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </Group>
@@ -278,12 +273,7 @@ describe('Menu', () => {
     it('should render inline sub menu', () => {
         wrapper = mount(
             <Menu defaultOpenKeys={['sub']}>
-                <SubMenu
-                    key="sub"
-                    label="Sub Menu"
-                    className="custom"
-                    style={{ color: 'red' }}
-                >
+                <SubMenu key="sub" label="Sub Menu" className="custom" style={{ color: 'red' }}>
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </SubMenu>
@@ -314,14 +304,10 @@ describe('Menu', () => {
             div
         );
 
-        ReactTestUtils.Simulate.mouseEnter(
-            document.querySelector('.next-menu-sub-menu-wrapper')
-        );
+        ReactTestUtils.Simulate.mouseEnter(document.querySelector('.next-menu-sub-menu-wrapper'));
         assert(document.querySelector('.next-menu-sub-menu'));
 
-        ReactTestUtils.Simulate.mouseLeave(
-            document.querySelector('.next-menu-sub-menu-wrapper')
-        );
+        ReactTestUtils.Simulate.mouseLeave(document.querySelector('.next-menu-sub-menu-wrapper'));
         assert(!document.querySelector('.next-menu-sub-menu'));
 
         ReactDOM.unmountComponentAtNode(div);
@@ -357,9 +343,7 @@ describe('Menu', () => {
         assertInlineSubMenuOpen(firstWrapper);
         assertInlineSubMenuClose(secondWrapper);
 
-        const firstParentItem = firstWrapper.find(
-            '.next-menu-item.next-opened'
-        );
+        const firstParentItem = firstWrapper.find('.next-menu-item.next-opened');
         firstParentItem.simulate('click');
 
         assert(called);
@@ -380,11 +364,7 @@ describe('Menu', () => {
 
     it('should support setting openMode to single under inline mode', () => {
         wrapper = mount(
-            <Menu
-                openMode="single"
-                expandAnimation={false}
-                defaultOpenKeys={['0']}
-            >
+            <Menu openMode="single" expandAnimation={false} defaultOpenKeys={['0']}>
                 <SubMenu key="0" label="0">
                     <Item key="0-0">0-0</Item>
                     <Item key="0-1">0-1</Item>
@@ -412,12 +392,7 @@ describe('Menu', () => {
 
         wrapper = mount(
             <Menu mode="popup" defaultOpenKeys={['sub']}>
-                <SubMenu
-                    key="sub"
-                    label="Sub Menu"
-                    className="custom"
-                    style={{ color: 'red' }}
-                >
+                <SubMenu key="sub" label="Sub Menu" className="custom" style={{ color: 'red' }}>
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </SubMenu>
@@ -531,12 +506,7 @@ describe('Menu', () => {
         };
 
         wrapper = mount(
-            <Menu
-                selectMode="multiple"
-                selectedKeys={['0']}
-                defaultOpenKeys={['sub-menu']}
-                onSelect={handleSelect}
-            >
+            <Menu selectMode="multiple" selectedKeys={['0']} defaultOpenKeys={['sub-menu']} onSelect={handleSelect}>
                 <Item key="0">0</Item>
                 <Item key="1">1</Item>
                 <SubMenu key="sub-menu" label="Sub menu">
@@ -575,10 +545,7 @@ describe('Menu', () => {
 
     it('should select sub menu label if set selectable of SubMenu to true', () => {
         wrapper = mount(
-            <Menu
-                selectMode="multiple"
-                defaultSelectedKeys={['sub-1', 'sub-2']}
-            >
+            <Menu selectMode="multiple" defaultSelectedKeys={['sub-1', 'sub-2']}>
                 <SubMenu key="sub-1" selectable>
                     <Item key="0">0</Item>
                     <Item key="1">1</Item>
@@ -603,11 +570,7 @@ describe('Menu', () => {
 
     it('can not select sub menu item if set shallowSelect to true', () => {
         wrapper = mount(
-            <Menu
-                selectMode="multiple"
-                defaultOpenKeys={['sub-menu']}
-                shallowSelect
-            >
+            <Menu selectMode="multiple" defaultOpenKeys={['sub-menu']} shallowSelect>
                 <SubMenu key="sub-menu">
                     <Item key="2">2</Item>
                     <Item key="3">3</Item>
@@ -619,9 +582,7 @@ describe('Menu', () => {
             .find('.next-menu-sub-menu .next-menu-item')
             .at(0)
             .simulate('click');
-        assertUnselected(
-            wrapper.find('.next-menu-sub-menu .next-menu-item').at(0)
-        );
+        assertUnselected(wrapper.find('.next-menu-sub-menu .next-menu-item').at(0));
     });
 
     it('should support pressing space to select item', () => {
@@ -801,14 +762,10 @@ describe('Menu', () => {
             div
         );
 
-        ReactTestUtils.Simulate.mouseEnter(
-            document.querySelector('.next-menu-item')
-        );
+        ReactTestUtils.Simulate.mouseEnter(document.querySelector('.next-menu-item'));
 
         setTimeout(() => {
-            const subMenu = document.querySelector(
-                '.next-overlay-inner .next-menu'
-            );
+            const subMenu = document.querySelector('.next-overlay-inner .next-menu');
             assert(subMenu);
 
             ReactDOM.unmountComponentAtNode(div);
@@ -833,12 +790,7 @@ describe('Menu', () => {
                 defaultOpenKeys={['sub']}
                 style={{ width: '300px', height: '300px' }}
             >
-                <SubMenu
-                    key="sub"
-                    label="Sub Menu"
-                    className="custom"
-                    style={{ color: 'red' }}
-                >
+                <SubMenu key="sub" label="Sub Menu" className="custom" style={{ color: 'red' }}>
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </SubMenu>
@@ -847,9 +799,7 @@ describe('Menu', () => {
         );
 
         setTimeout(() => {
-            const subMenu = document.querySelector(
-                '.next-overlay-inner'
-            );
+            const subMenu = document.querySelector('.next-overlay-inner');
 
             assert(subMenu.style.width === '300px');
             assert(subMenu.style.height === '300px');
@@ -902,12 +852,11 @@ describe('Menu', () => {
 
             ReactDOM.unmountComponentAtNode(div);
             document.body.removeChild(div);
-        } catch(err) {
+        } catch (err) {
             ReactDOM.unmountComponentAtNode(div);
             document.body.removeChild(div);
             throw new Error(err);
         }
-        
     });
 
     it('should support keyboard if direction is hoz', () => {
@@ -937,33 +886,32 @@ describe('Menu', () => {
 
             ReactDOM.unmountComponentAtNode(div);
             document.body.removeChild(div);
-        } catch(err) {
+        } catch (err) {
             ReactDOM.unmountComponentAtNode(div);
             document.body.removeChild(div);
             throw new Error(err);
         }
-        
     });
 
     it('should support hozInLine in hoz', () => {
-
         const div = document.createElement('div');
         document.body.appendChild(div);
 
         ReactDOM.render(
-            <Menu
-                direction="hoz"
-                style={{ width: 300 }}
-                mode="popup"
-                hozInLine
-            >
-                <Item key="0" style={{ width: 60 }}>0</Item>
-                <Item key="1" style={{ width: 60 }}>1</Item>
+            <Menu direction="hoz" style={{ width: 300 }} mode="popup" hozInLine>
+                <Item key="0" style={{ width: 60 }}>
+                    0
+                </Item>
+                <Item key="1" style={{ width: 60 }}>
+                    1
+                </Item>
                 <SubMenu key="sub-menu" label="Sub menu" style={{ width: 50 }}>
                     <Item key="2">2</Item>
                     <Item key="3">3</Item>
                 </SubMenu>
-                <Item key="4" style={{ width: 30 }}>4</Item>
+                <Item key="4" style={{ width: 30 }}>
+                    4
+                </Item>
                 <Item key="5">5</Item>
                 <Item key="6">6</Item>
             </Menu>,
@@ -983,13 +931,11 @@ describe('Menu', () => {
 
             ReactDOM.unmountComponentAtNode(div);
             document.body.removeChild(div);
-        } catch(err) {
+        } catch (err) {
             ReactDOM.unmountComponentAtNode(div);
             document.body.removeChild(div);
             throw new Error(err);
         }
-        
-
     });
 
     it('should support hozInLine with renderMore', () => {
@@ -1003,15 +949,22 @@ describe('Menu', () => {
                 mode="popup"
                 hozInLine
                 renderMore={() => {
-                    return (<div className="rendermore-class">test</div>);
-                }}>
-                <Item key="0" style={{ width: 60 }}>0</Item>
-                <Item key="1" style={{ width: 60 }}>1</Item>
+                    return <div className="rendermore-class">test</div>;
+                }}
+            >
+                <Item key="0" style={{ width: 60 }}>
+                    0
+                </Item>
+                <Item key="1" style={{ width: 60 }}>
+                    1
+                </Item>
                 <SubMenu key="sub-menu" label="Sub menu" style={{ width: 50 }}>
                     <Item key="2">2</Item>
                     <Item key="3">3</Item>
                 </SubMenu>
-                <Item key="4" style={{ width: 30 }}>4</Item>
+                <Item key="4" style={{ width: 30 }}>
+                    4
+                </Item>
                 <Item key="5">5</Item>
                 <Item key="6">6</Item>
             </Menu>,
@@ -1026,26 +979,24 @@ describe('Menu', () => {
     });
 
     it('should support hozInLine with header&footer in hoz', () => {
-
         const div = document.createElement('div');
         document.body.appendChild(div);
 
         ReactDOM.render(
-            <Menu
-                direction="hoz"
-                style={{ width: 300 }}
-                mode="popup"
-                header="header"
-                footer="footer"
-                hozInLine
-            >
-                <Item key="0" style={{ width: 100 }}>0</Item>
-                <Item key="1" style={{ width: 60 }}>1</Item>
+            <Menu direction="hoz" style={{ width: 300 }} mode="popup" header="header" footer="footer" hozInLine>
+                <Item key="0" style={{ width: 100 }}>
+                    0
+                </Item>
+                <Item key="1" style={{ width: 60 }}>
+                    1
+                </Item>
                 <SubMenu key="sub-menu" label="Sub menu" style={{ width: 50 }}>
                     <Item key="2">2</Item>
                     <Item key="3">3</Item>
                 </SubMenu>
-                <Item key="4" style={{ width: 30 }}>4</Item>
+                <Item key="4" style={{ width: 30 }}>
+                    4
+                </Item>
                 <Item key="5">5</Item>
                 <Item key="6">6</Item>
             </Menu>,
@@ -1064,7 +1015,6 @@ describe('Menu', () => {
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
-
     });
 });
 

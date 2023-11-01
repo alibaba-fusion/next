@@ -23,7 +23,7 @@ describe('Issue', () => {
         class App extends React.Component {
             render() {
                 return (
-                    <div className="App2" style={{transform: 'scale(0.5)'}}>
+                    <div className="App2" style={{ transform: 'scale(0.5)' }}>
                         <Slider
                             autoplay={false}
                             slideDirection="ver"
@@ -36,16 +36,20 @@ describe('Issue', () => {
                         >
                             {[1, 2, 3, 4, 5].map((item, index) => (
                                 <div key={index} className="custom-slider">
-                                    <div style={{
-                                        background: '#4f74b3',
-                                        color: '#fff',
-                                        lineHeight: '100px',
-                                        textAlign: 'center',
-                                        fontSize: '36px',
-                                        boxSizing: 'border-box',
-                                        marginTop: '10px',
-                                        marginBottom: '10px',
-                                    }}>{item}</div>
+                                    <div
+                                        style={{
+                                            background: '#4f74b3',
+                                            color: '#fff',
+                                            lineHeight: '100px',
+                                            textAlign: 'center',
+                                            fontSize: '36px',
+                                            boxSizing: 'border-box',
+                                            marginTop: '10px',
+                                            marginBottom: '10px',
+                                        }}
+                                    >
+                                        {item}
+                                    </div>
                                 </div>
                             ))}
                         </Slider>

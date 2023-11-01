@@ -20,7 +20,7 @@ describe('List A11y', () => {
     });
 
     it('should render', async () => {
-        wrapper = await testReact(<List  />);
+        wrapper = await testReact(<List />);
         return wrapper;
     });
 });

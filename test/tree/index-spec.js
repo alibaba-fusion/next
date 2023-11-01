@@ -288,9 +288,14 @@ describe('Tree', () => {
     });
 
     it('should support render child node', () => {
-        ReactDOM.render(<Tree defaultExpandedKeys={['2']} dataSource={dataSource} labelRender={(nodeData) => {
-            return <div className='custom-child-title'>{nodeData.label}</div>
-        }} />,
+        ReactDOM.render(
+            <Tree
+                defaultExpandedKeys={['2']}
+                dataSource={dataSource}
+                labelRender={nodeData => {
+                    return <div className="custom-child-title">{nodeData.label}</div>;
+                }}
+            />,
             mountNode
         );
 
@@ -863,28 +868,26 @@ describe('Tree', () => {
         ReactDOM.render(
             <Tree
                 checkable
-                defaultCheckedKeys={[
-                    "2062867",
-                    "1068832",
-                ]}  
-                dataSource={
-                    [{
-                        "children": [
+                defaultCheckedKeys={['2062867', '1068832']}
+                dataSource={[
+                    {
+                        children: [
                             {
-                            "label": "来访目的",
-                            "key": "1068832"
-                            }
+                                label: '来访目的',
+                                key: '1068832',
+                            },
                         ],
-                        "label": "系统设置",
-                        "key": "106638",
-                        "className": 'k-106638'
-                    },{
-                        "label": "来访人员管理",
-                        "key": "2062867"
-                    }]
-                }
-                />,
-                mountNode
+                        label: '系统设置',
+                        key: '106638',
+                        className: 'k-106638',
+                    },
+                    {
+                        label: '来访人员管理',
+                        key: '2062867',
+                    },
+                ]}
+            />,
+            mountNode
         );
 
         assertChecked('106638', true);
@@ -1106,16 +1109,14 @@ describe('Tree', () => {
                 useVirtual
                 style={{ height: `${height}px`, overflow: 'auto' }}
                 dataSource={createDataSource()}
-                virtualListProps={{jumpIndex:40, itemSizeGetter:() => 20}}
+                virtualListProps={{ jumpIndex: 40, itemSizeGetter: () => 20 }}
             />,
             mountNode
         );
         setTimeout(() => {
             assert(Array.from(document.getElementsByTagName('li'))[0].innerText > 40);
         }, 100);
-        
     });
-
 });
 
 function createDataSource(level = 2, count = 3) {
@@ -1230,17 +1231,17 @@ function expandChildTree(key) {
 // 这里模拟下 React Event 触发
 // https://stackoverflow.com/questions/40091000/simulate-click-event-on-react-element
 const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
-function simulateMouseClick(element){
-  mouseClickEvents.forEach(mouseEventType =>
-    element.dispatchEvent(
-      new MouseEvent(mouseEventType, {
-          view: window,
-          bubbles: true,
-          cancelable: true,
-          buttons: 1
-      })
-    )
-  );
+function simulateMouseClick(element) {
+    mouseClickEvents.forEach(mouseEventType =>
+        element.dispatchEvent(
+            new MouseEvent(mouseEventType, {
+                view: window,
+                bubbles: true,
+                cancelable: true,
+                buttons: 1,
+            })
+        )
+    );
 }
 
 function selectTreeNode(key) {

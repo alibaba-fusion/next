@@ -28,9 +28,7 @@ describe('Tooltip', () => {
     });
     afterEach(function() {
         defaultWrapper.unmount();
-        const nodeListArr = [].slice.call(
-            document.querySelectorAll('.next-balloon-tooltip')
-        );
+        const nodeListArr = [].slice.call(document.querySelectorAll('.next-balloon-tooltip'));
         nodeListArr.forEach((node, index) => {
             node.parentNode.removeChild(node);
         });
@@ -66,26 +64,26 @@ describe('Tooltip', () => {
     it('trigger is disabled button, hover enter and leave, popup should resolve', done => {
         defaultWrapper.setProps({
             trigger: (
-                <Button
-                    disabled
-                    id="balloon-btn"
-                    style={{ color: 'red', display: 'inline' }}
-                >
+                <Button disabled id="balloon-btn" style={{ color: 'red', display: 'inline' }}>
                     button
                 </Button>
             ),
         });
         // hover on the <span> which is specially added for disabled pattern
-        defaultWrapper.find('span').at(0).simulate('mouseenter');
+        defaultWrapper
+            .find('span')
+            .at(0)
+            .simulate('mouseenter');
         setTimeout(function() {
             assert(document.querySelector('.next-balloon-tooltip') !== null);
 
-            defaultWrapper.find('span').at(0).simulate('mouseleave');
+            defaultWrapper
+                .find('span')
+                .at(0)
+                .simulate('mouseleave');
 
             setTimeout(function() {
-                assert(
-                    document.querySelector('.next-balloon-tooltip') === null
-                );
+                assert(document.querySelector('.next-balloon-tooltip') === null);
                 done();
             }, 600);
         }, 300);

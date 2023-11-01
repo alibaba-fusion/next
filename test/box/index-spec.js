@@ -50,15 +50,15 @@ describe('Box', () => {
         }
     });
 
-    it("should render", () => {
+    it('should render', () => {
         wrapper = render(
             <Box direction="row" wrap className="border-box" spacing={30}>
                 <Box className="border-box height-100 width-150" direction="row" wrap spacing={8} padding={10}>
-                    <Box className="border-box height-30 width-30 dashed"/>
+                    <Box className="border-box height-30 width-30 dashed" />
                     <Box className="border-box height-30 width-30" />
                     <Box className="border-box height-30 width-30" />
                     <Box className="border-box height-30 width-30" />
-                    <Box className="border-box height-30 width-30 dashed" margin={[3,6]} style={{marginRight: 10}}/>
+                    <Box className="border-box height-30 width-30 dashed" margin={[3, 6]} style={{ marginRight: 10 }} />
                     <Box className="border-box height-30 width-30" />
                 </Box>
 
@@ -75,7 +75,7 @@ describe('Box', () => {
         assert(wrapper.find('.next-box'));
     });
 
-    it("justify should work when wrap and spacing setted", () => {
+    it('justify should work when wrap and spacing setted', () => {
         wrapper = mount(
             <Box className="test" wrap spacing={20} direction="row" justify="center">
                 <Box className="box-180-50" />
@@ -85,8 +85,11 @@ describe('Box', () => {
             </Box>
         );
 
-        const style = wrapper.find('.test').at(2).prop('style');
-        const {justifyContent} = style;
-        assert(justifyContent === "center")
+        const style = wrapper
+            .find('.test')
+            .at(2)
+            .prop('style');
+        const { justifyContent } = style;
+        assert(justifyContent === 'center');
     });
 });

@@ -108,8 +108,8 @@ describe('Overlay v2', async () => {
 
     let onerror = window.onerror;
     before(() => {
-        // 捕获，否则进行不下去 ResizeObserver loop limit exceeded 
-        window.onerror  = null;  
+        // 捕获，否则进行不下去 ResizeObserver loop limit exceeded
+        window.onerror = null;
     });
     after(() => {
         window.onerror = onerror;
@@ -128,7 +128,7 @@ describe('Overlay v2', async () => {
             wrapper.unmount();
             wrapper = null;
         }
-        document.body.style='';
+        document.body.style = '';
     });
 
     it('should support rendering overlay', async () => {
@@ -183,7 +183,7 @@ describe('Overlay v2', async () => {
 
     it('should support canCloseByEsc', async () => {
         let called = false;
-        const handleClose = (e) => {
+        const handleClose = e => {
             called = true;
             assert('target' in e);
         };
@@ -209,7 +209,7 @@ describe('Overlay v2', async () => {
 
     it('should support canCloseByOutSideClick', async () => {
         let called = false;
-        const handleClose = (e) => {
+        const handleClose = e => {
             called = true;
             assert('target' in e);
         };
@@ -235,7 +235,7 @@ describe('Overlay v2', async () => {
 
     it('should support canCloseByMask', async () => {
         let called = false;
-        const handleClose = (e) => {
+        const handleClose = e => {
             called = true;
             assert('target' in e);
         };
@@ -262,7 +262,9 @@ describe('Overlay v2', async () => {
     it('should support safeNode', async () => {
         wrapper = render(
             <OverlayControlDemo>
-                <span id="inner" style={{width: 100,height: 100}}>123</span>
+                <span id="inner" style={{ width: 100, height: 100 }}>
+                    123
+                </span>
             </OverlayControlDemo>
         );
         let btn = document.querySelector('button');
@@ -281,7 +283,7 @@ describe('Overlay v2', async () => {
     });
 
     it('should support disableScroll', async () => {
-        wrapper = render(<OverlayControlDemo disableScroll hasMask/>);
+        wrapper = render(<OverlayControlDemo disableScroll hasMask />);
         const btn = document.querySelector('button');
 
         simulateEvent.simulate(btn, 'click');
@@ -348,7 +350,7 @@ describe('Overlay v2', async () => {
 
         await delay(20);
         simulateEvent.simulate(document.querySelector('.content'), 'click');
-        assert(clickHandler.calledOnce)
+        assert(clickHandler.calledOnce);
     });
 
     // // https://github.com/alibaba-fusion/next/issues/2033
@@ -425,7 +427,8 @@ describe('Overlay v2', async () => {
         // visible 直接为true，会自动delay 100ms渲染
         await delay(200);
         // 空间不够了弹窗顶开页面宽度
-        assert(document.querySelector('.next-overlay-inner').style.left ===
+        assert(
+            document.querySelector('.next-overlay-inner').style.left ===
                 `${parseFloat(window.getComputedStyle(document.body).width)}px`
         );
         container.remove();
@@ -436,7 +439,9 @@ describe('Overlay v2', async () => {
         wrapper = render(
             <div>
                 <Overlay v2 target="lzy" visible align="cc cc">
-                    <Button className="overlay-btn" style={{width: 50}}>cc cc</Button>
+                    <Button className="overlay-btn" style={{ width: 50 }}>
+                        cc cc
+                    </Button>
                 </Overlay>
                 <svg id="ppc" width={200} height={200}>
                     <rect id="lzy" width={200} height={200} fill="red" />
@@ -445,7 +450,7 @@ describe('Overlay v2', async () => {
         );
 
         await delay(200);
-        assert(document.querySelector('.overlay-btn').style.left ===  `${(200 - 50)/2}px`);
+        assert(document.querySelector('.overlay-btn').style.left === `${(200 - 50) / 2}px`);
     });
 });
 
@@ -453,8 +458,8 @@ describe('Popup v2', async () => {
     let wrapper;
     let onerror = window.onerror;
     before(() => {
-        // 捕获，否则进行不下去 ResizeObserver loop limit exceeded 
-        window.onerror  = null;  
+        // 捕获，否则进行不下去 ResizeObserver loop limit exceeded
+        window.onerror = null;
     });
     after(() => {
         window.onerror = onerror;
@@ -465,7 +470,6 @@ describe('Popup v2', async () => {
             wrapper = null;
         }
     });
-
 
     it('should support rendering trigger and overlay', async () => {
         return co(function*() {
@@ -549,7 +553,13 @@ describe('Popup v2', async () => {
 
     it('should support setting triggerType to click with custom triggerClickKeycode', async () => {
         wrapper = render(
-            <Popup v2 animation={false} trigger={<button>Open</button>} triggerType="click" triggerClickKeycode={KEYCODE.DOWN_ARROW}>
+            <Popup
+                v2
+                animation={false}
+                trigger={<button>Open</button>}
+                triggerType="click"
+                triggerClickKeycode={KEYCODE.DOWN_ARROW}
+            >
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
@@ -599,44 +609,69 @@ describe('Popup v2', async () => {
         class SafeNodeDemo extends React.Component {
             constructor(props) {
                 super(props);
-        
+
                 this.state = {
-                    visible: false
+                    visible: false,
                 };
             }
-        
+
             onGroupVisibleChange = groupVisible => {
                 this.setState({
-                    groupVisible
+                    groupVisible,
                 });
-            }
-        
+            };
+
             render() {
                 return (
                     <div>
-                        <Popup 
+                        <Popup
                             v2
-                            trigger={<Button id="btn1" ref={ref => {this.btn1 = ref;}}>Paired Popup 1</Button>}
+                            trigger={
+                                <Button
+                                    id="btn1"
+                                    ref={ref => {
+                                        this.btn1 = ref;
+                                    }}
+                                >
+                                    Paired Popup 1
+                                </Button>
+                            }
                             triggerType="click"
                             visible={this.state.groupVisible}
                             safeNode={[() => this.overlay2]}
-                            onVisibleChange={this.onGroupVisibleChange}>
-                            <span className="overlay-demo1" ref={ref => {
-                                this.overlay1 = ref;
-                            }}>
+                            onVisibleChange={this.onGroupVisibleChange}
+                        >
+                            <span
+                                className="overlay-demo1"
+                                ref={ref => {
+                                    this.overlay1 = ref;
+                                }}
+                            >
                                 Hello World From Popup!
                             </span>
                         </Popup>
-                        <Popup 
+                        <Popup
                             v2
-                            trigger={<Button ref={ref => {this.btn2 = ref;}}>Paired Popup 2</Button>}
+                            trigger={
+                                <Button
+                                    ref={ref => {
+                                        this.btn2 = ref;
+                                    }}
+                                >
+                                    Paired Popup 2
+                                </Button>
+                            }
                             triggerType="click"
                             visible={this.state.groupVisible}
                             safeNode={[() => this.overlay1]}
-                            onVisibleChange={this.onGroupVisibleChange}>
-                            <span className="overlay-demo2" ref={ref => {
-                                this.overlay2 = ref;
-                            }}>
+                            onVisibleChange={this.onGroupVisibleChange}
+                        >
+                            <span
+                                className="overlay-demo2"
+                                ref={ref => {
+                                    this.overlay2 = ref;
+                                }}
+                            >
                                 Hello World From Popup!
                             </span>
                         </Popup>
@@ -680,7 +715,9 @@ describe('Popup v2', async () => {
     it('should support setting custom container', async () => {
         wrapper = render(
             <div id="myContainer">
-                <Popup v2 animation={false}
+                <Popup
+                    v2
+                    animation={false}
                     trigger={<button>Open</button>}
                     triggerType="click"
                     container={'myContainer'}
@@ -705,21 +742,22 @@ describe('Popup v2', async () => {
         class PopupControlDemo extends React.Component {
             constructor(props) {
                 super(props);
-        
+
                 this.state = {
                     visible: false,
                 };
             }
-        
+
             onVisibleChange = visible => {
                 this.setState({
                     visible,
                 });
             };
-        
+
             render() {
                 return (
-                    <Popup animation={false}
+                    <Popup
+                        animation={false}
                         trigger={<button>Open</button>}
                         triggerType="click"
                         visible={this.state.visible}
@@ -774,12 +812,12 @@ describe('Popup v2', async () => {
     it('should not crash when Popup receives an empty node', async () => {
         wrapper = render(
             <div>
-                <Popup v2  trigger={<Button className="btn">Open</Button>} triggerType="click" />
+                <Popup v2 trigger={<Button className="btn">Open</Button>} triggerType="click" />
                 <br />
             </div>
-        )
-        const buttonDom = wrapper.find(".btn");
+        );
+        const buttonDom = wrapper.find('.btn');
 
         assert(buttonDom);
-    })
+    });
 });

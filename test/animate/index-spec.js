@@ -45,9 +45,7 @@ class Demo extends React.Component {
             <div>
                 <button onClick={this.handleToggle}>Toggle visible</button>
                 <A animation="my-zoom" {...others}>
-                    {this.state.visible ? (
-                        <div className="basic-demo">Next Animate</div>
-                    ) : null}
+                    {this.state.visible ? <div className="basic-demo">Next Animate</div> : null}
                 </A>
             </div>
         );
@@ -98,10 +96,7 @@ describe('Animate', () => {
 
     it('should not play appear animation if set animationAppear to false', () => {
         return co(function*() {
-            ReactDOM.render(
-                <Demo visible animationAppear={false} />,
-                mountNode
-            );
+            ReactDOM.render(<Demo visible animationAppear={false} />, mountNode);
             const demo = document.querySelector('.basic-demo');
             assert(!hasClass(demo, 'my-zoom-appear'));
             yield delay(15);
@@ -126,10 +121,7 @@ describe('Animate', () => {
 
     it('should play leave animation', () => {
         return co(function*() {
-            ReactDOM.render(
-                <Demo visible animationAppear={false} />,
-                mountNode
-            );
+            ReactDOM.render(<Demo visible animationAppear={false} />, mountNode);
             const btn = document.querySelector('button');
             btn.click();
             const demo = document.querySelector('.basic-demo');
@@ -173,10 +165,7 @@ describe('Animate', () => {
 
     it('should play expand animation', () => {
         return co(function*() {
-            ReactDOM.render(
-                <Demo visible={false} expand animation="expand" />,
-                mountNode
-            );
+            ReactDOM.render(<Demo visible={false} expand animation="expand" />, mountNode);
             const btn = document.querySelector('button');
             btn.click();
             const demo = document.querySelector('.basic-demo');
