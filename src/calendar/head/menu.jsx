@@ -21,9 +21,7 @@ export default class SelectMenu extends Component {
     scrollToSelectedItem() {
         const { prefix, dataSource, value } = this.props;
 
-        const selectedIndex = dataSource.findIndex(
-            item => item.value === value
-        );
+        const selectedIndex = dataSource.findIndex(item => item.value === value);
 
         if (selectedIndex === -1) {
             return;
@@ -35,10 +33,7 @@ export default class SelectMenu extends Component {
         if (targetItem) {
             menu.scrollTop =
                 targetItem.offsetTop -
-                Math.floor(
-                    (menu.clientHeight / targetItem.clientHeight - 1) / 2
-                ) *
-                    targetItem.clientHeight;
+                Math.floor((menu.clientHeight / targetItem.clientHeight - 1) / 2) * targetItem.clientHeight;
         }
     }
 
@@ -47,14 +42,7 @@ export default class SelectMenu extends Component {
     };
 
     render() {
-        const {
-            prefix,
-            dataSource,
-            onChange,
-            value,
-            className,
-            ...others
-        } = this.props;
+        const { prefix, dataSource, onChange, value, className, ...others } = this.props;
         return (
             <Menu
                 {...others}

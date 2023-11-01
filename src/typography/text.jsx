@@ -89,10 +89,7 @@ class Text extends Component {
         }
 
         return (
-            <Tag
-                {...others}
-                className={`${className || ''} ${prefix}typography`}
-            >
+            <Tag {...others} className={`${className || ''} ${prefix}typography`}>
                 {children}
             </Tag>
         );

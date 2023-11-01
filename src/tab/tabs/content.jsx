@@ -11,15 +11,7 @@ class TabContent extends PureComponent {
     };
 
     render() {
-        const {
-            prefix,
-            activeKey,
-            lazyLoad,
-            unmountInactiveTabs,
-            children,
-            className,
-            ...others
-        } = this.props;
+        const { prefix, activeKey, lazyLoad, unmountInactiveTabs, children, className, ...others } = this.props;
         const formatChildren = [];
         React.Children.forEach(children, child => {
             /* eslint-disable eqeqeq */

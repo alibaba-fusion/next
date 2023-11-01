@@ -21,20 +21,9 @@ function _getStyle(min, max, value, rtl) {
 }
 
 function sliderFrag(props) {
-    const {
-        prefix,
-        min,
-        max,
-        value,
-        disabled,
-        onMouseEnter,
-        onMouseLeave,
-        onMouseDown,
-        rtl,
-    } = props;
+    const { prefix, min, max, value, disabled, onMouseEnter, onMouseLeave, onMouseDown, rtl } = props;
 
-    const activeClass =
-        !disabled && props.hasMovingClass ? `${prefix}range-active` : '';
+    const activeClass = !disabled && props.hasMovingClass ? `${prefix}range-active` : '';
 
     return (
         <div
@@ -74,14 +63,8 @@ export default class FixedSlider extends React.Component {
         hasTip: PropTypes.bool,
         tooltipVisible: PropTypes.bool,
         onTooltipVisibleChange: PropTypes.func,
-        tooltipAnimation: PropTypes.oneOfType([
-            PropTypes.bool,
-            PropTypes.object,
-        ]),
-        value: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number),
-        ]),
+        tooltipAnimation: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+        value: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
         tipRender: PropTypes.func,
         disabled: PropTypes.bool,
         hasMovingClass: PropTypes.bool,
@@ -144,11 +127,7 @@ export default class FixedSlider extends React.Component {
     }
 
     _addDocumentEvents() {
-        this._onMouseUpListener = events.on(
-            document,
-            'mouseup',
-            this._onMouseUp.bind(this)
-        );
+        this._onMouseUpListener = events.on(document, 'mouseup', this._onMouseUp.bind(this));
     }
 
     _removeDocumentEvents() {
@@ -159,13 +138,7 @@ export default class FixedSlider extends React.Component {
     }
 
     render() {
-        const {
-            hasTip,
-            value,
-            tipRender,
-            tooltipVisible,
-            hasMovingClass,
-        } = this.props;
+        const { hasTip, value, tipRender, tooltipVisible, hasMovingClass } = this.props;
 
         const addedProps = {
             hasMovingClass: hasMovingClass || this.state.hasMovingClass,
@@ -179,9 +152,7 @@ export default class FixedSlider extends React.Component {
                 popupContainer={target => target.parentNode}
                 popupProps={{
                     visible: tooltipVisible || hasMovingClass,
-                    animation: this.state.tooltipAnimation
-                        ? { in: 'expandInUp', out: 'expandOutDown' }
-                        : false,
+                    animation: this.state.tooltipAnimation ? { in: 'expandInUp', out: 'expandOutDown' } : false,
                 }}
                 trigger={sliderFrag({ ...this.props, ...addedProps })}
                 align="t"

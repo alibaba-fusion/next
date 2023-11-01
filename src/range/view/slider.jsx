@@ -6,9 +6,7 @@ import { getPercent } from '../utils';
 function _getProps(min, max, value, rtl) {
     return {
         style: {
-            left: rtl
-                ? `${100 - getPercent(min, max, value)}%`
-                : `${getPercent(min, max, value)}%`,
+            left: rtl ? `${100 - getPercent(min, max, value)}%` : `${getPercent(min, max, value)}%`,
             zIndex: 100,
         },
         'aria-valuenow': value,
@@ -24,13 +22,7 @@ function Slider({ prefix, hasMovingClass, min, max, value, onKeyDown, rtl }) {
         [`${prefix}range-slider-moving`]: hasMovingClass,
     });
     return (
-        <div
-            className={classes}
-            onKeyDown={onKeyDown}
-            role="slider"
-            tabIndex={0}
-            {..._getProps(min, max, value, rtl)}
-        >
+        <div className={classes} onKeyDown={onKeyDown} role="slider" tabIndex={0} {..._getProps(min, max, value, rtl)}>
             <div className={`${prefix}range-slider-inner`} />
         </div>
     );

@@ -19,7 +19,7 @@ const helpers = {
 
         const slideHeight = this.getHeight(slickList.querySelector('[data-index="0"]')) || 0;
         const listHeight = slideHeight * props.slidesToShow;
-        let slideHeightList = [];
+        const slideHeightList = [];
         const newSlickList = Array.from(slickList.querySelectorAll(`.${props.prefix}slick-slide`) || []);
         for (const item of newSlickList) {
             const height = this.getHeight(item);

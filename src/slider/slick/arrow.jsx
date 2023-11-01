@@ -37,14 +37,7 @@ export default class Arrow extends Component {
     };
 
     static isDisabled(props) {
-        const {
-            infinite,
-            type,
-            centerMode,
-            currentSlide,
-            slideCount,
-            slidesToShow,
-        } = props;
+        const { infinite, type, centerMode, currentSlide, slideCount, slidesToShow } = props;
 
         if (infinite) {
             return false;
@@ -104,13 +97,7 @@ export default class Arrow extends Component {
         const disabled = Arrow.isDisabled(this.props);
 
         const arrowClazz = classNames(
-            [
-                `${prefix}slick-arrow`,
-                `${prefix}slick-${type}`,
-                arrowPosition,
-                arrowSize,
-                arrowDirection,
-            ],
+            [`${prefix}slick-arrow`, `${prefix}slick-${type}`, arrowPosition, arrowSize, arrowDirection],
             { disabled }
         );
 
@@ -120,18 +107,13 @@ export default class Arrow extends Component {
             'data-role': 'none',
             className: arrowClazz,
             style: { display: 'block' },
-            onClick: disabled
-                ? null
-                : this.handleClick.bind(this, { message: type }),
+            onClick: disabled ? null : this.handleClick.bind(this, { message: type }),
             onMouseEnter: disabled ? null : onMouseEnter,
             onMouseLeave: disabled ? null : onMouseLeave,
         };
 
         if (children) {
-            return React.cloneElement(
-                React.Children.only(children),
-                arrowProps
-            );
+            return React.cloneElement(React.Children.only(children), arrowProps);
         } else {
             return (
                 <button type="button" role="button" {...arrowProps}>

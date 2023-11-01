@@ -30,12 +30,7 @@ export default class StickHeader extends React.Component {
         });
 
         return (
-            <Affix
-                ref={this.getAffixRef}
-                {...others}
-                className={cls}
-                offsetTop={offsetTop}
-            >
+            <Affix ref={this.getAffixRef} {...others} className={cls} offsetTop={offsetTop}>
                 <Header {...this.props} />
             </Affix>
         );

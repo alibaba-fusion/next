@@ -46,11 +46,7 @@ export default class Dots extends React.Component {
             rtl,
         } = this.props;
 
-        const dotsClazz = classNames(
-            `${prefix}slick-dots`,
-            dotsDirection,
-            dotsClass
-        );
+        const dotsClazz = classNames(`${prefix}slick-dots`, dotsDirection, dotsClass);
         const dotCount = Math.ceil(slideCount / slidesToScroll);
         const children = [];
 
@@ -68,9 +64,10 @@ export default class Dots extends React.Component {
             };
             // 除非设置为hover，默认使用click触发
             const handleProp = {
-                [triggerType.toLowerCase() === 'hover'
-                    ? 'onMouseEnter'
-                    : 'onClick']: this.handleChangeSlide.bind(this, dotOptions),
+                [triggerType.toLowerCase() === 'hover' ? 'onMouseEnter' : 'onClick']: this.handleChangeSlide.bind(
+                    this,
+                    dotOptions
+                ),
             };
 
             let docIndex = i;

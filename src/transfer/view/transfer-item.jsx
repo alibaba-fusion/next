@@ -91,9 +91,7 @@ export default class TransferItem extends Component {
     getDragGap(e) {
         const referenceTop = getOffset(e.currentTarget).top;
         const referenceHeight = e.currentTarget.offsetHeight;
-        return e.pageY <= referenceTop + referenceHeight / 2
-            ? 'before'
-            : 'after';
+        return e.pageY <= referenceTop + referenceHeight / 2 ? 'before' : 'after';
     }
 
     handleDragOver(e) {
@@ -135,17 +133,13 @@ export default class TransferItem extends Component {
             panelPosition,
             dragPosition,
         } = this.props;
-        const others = pickOthers(
-            Object.keys(TransferItem.propTypes),
-            this.props
-        );
+        const others = pickOthers(Object.keys(TransferItem.propTypes), this.props);
         const { highlight } = this.state;
         const isSimple = mode === 'simple';
 
         const classNames = cx({
             [`${prefix}transfer-panel-item`]: true,
-            [`${prefix}insert-${this.dragGap}`]:
-                dragOverValue === item.value && panelPosition === dragPosition,
+            [`${prefix}insert-${this.dragGap}`]: dragOverValue === item.value && panelPosition === dragPosition,
             [`${prefix}focused`]: highlight,
             [`${prefix}simple`]: isSimple,
         });
@@ -176,12 +170,7 @@ export default class TransferItem extends Component {
         }
 
         return (
-            <CheckboxItem
-                checked={checked}
-                onChange={onCheck.bind(this, item.value)}
-                title={title}
-                {...itemProps}
-            />
+            <CheckboxItem checked={checked} onChange={onCheck.bind(this, item.value)} title={title} {...itemProps} />
         );
     }
 }

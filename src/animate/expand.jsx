@@ -28,14 +28,7 @@ export default class Expand extends Component {
 
     constructor(props) {
         super(props);
-        func.bindCtx(this, [
-            'beforeEnter',
-            'onEnter',
-            'afterEnter',
-            'beforeLeave',
-            'onLeave',
-            'afterLeave',
-        ]);
+        func.bindCtx(this, ['beforeEnter', 'onEnter', 'afterEnter', 'beforeLeave', 'onLeave', 'afterLeave']);
     }
 
     beforeEnter(node) {

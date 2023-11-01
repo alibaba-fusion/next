@@ -100,41 +100,22 @@ export default class AnimateChild extends Component {
 
             this.node = node;
             if (support.transition) {
-                const transitionEndListener = this.generateEndListener(
-                    node,
-                    done,
-                    'transitionend',
-                    id
-                );
+                const transitionEndListener = this.generateEndListener(node, done, 'transitionend', id);
                 on(node, 'transitionend', transitionEndListener);
                 this.endListeners.transitionend.push(transitionEndListener);
             }
             if (support.animation) {
-                const animationEndListener = this.generateEndListener(
-                    node,
-                    done,
-                    'animationend',
-                    id
-                );
+                const animationEndListener = this.generateEndListener(node, done, 'animationend', id);
                 on(node, 'animationend', animationEndListener);
                 this.endListeners.animationend.push(animationEndListener);
             }
 
             setTimeout(() => {
-                const transitionDelay =
-                    parseFloat(getStyleProperty(node, 'transition-delay')) || 0;
-                const transitionDuration =
-                    parseFloat(getStyleProperty(node, 'transition-duration')) ||
-                    0;
-                const animationDelay =
-                    parseFloat(getStyleProperty(node, 'animation-delay')) || 0;
-                const animationDuration =
-                    parseFloat(getStyleProperty(node, 'animation-duration')) ||
-                    0;
-                const time = Math.max(
-                    transitionDuration + transitionDelay,
-                    animationDuration + animationDelay
-                );
+                const transitionDelay = parseFloat(getStyleProperty(node, 'transition-delay')) || 0;
+                const transitionDuration = parseFloat(getStyleProperty(node, 'transition-duration')) || 0;
+                const animationDelay = parseFloat(getStyleProperty(node, 'animation-delay')) || 0;
+                const animationDuration = parseFloat(getStyleProperty(node, 'animation-duration')) || 0;
+                const time = Math.max(transitionDuration + transitionDelay, animationDuration + animationDelay);
                 if (time) {
                     this.timeoutMap[id] = setTimeout(() => {
                         done();
@@ -177,9 +158,7 @@ export default class AnimateChild extends Component {
                 addClass(node, names[className]);
             }
 
-            const hook = isAppearing
-                ? this.props.onAppearing
-                : this.props.onEntering;
+            const hook = isAppearing ? this.props.onAppearing : this.props.onEntering;
             hook(node);
         }, 10);
     }
@@ -187,9 +166,7 @@ export default class AnimateChild extends Component {
     handleEntered(node, isAppearing) {
         const { names } = this.props;
         if (names) {
-            const classNames = isAppearing
-                ? [names.appear, names.appearActive]
-                : [names.enter, names.enterActive];
+            const classNames = isAppearing ? [names.appear, names.appearActive] : [names.enter, names.enterActive];
             classNames.forEach(className => {
                 removeClass(node, className);
             });

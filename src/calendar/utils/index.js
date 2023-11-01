@@ -20,11 +20,7 @@ export const CALENDAR_MODE_MONTH = 'month';
 
 export const CALENDAR_MODE_DATE = 'date';
 
-export const CALENDAR_MODES = [
-    CALENDAR_MODE_DATE,
-    CALENDAR_MODE_MONTH,
-    CALENDAR_MODE_YEAR,
-];
+export const CALENDAR_MODES = [CALENDAR_MODE_DATE, CALENDAR_MODE_MONTH, CALENDAR_MODE_YEAR];
 
 export function isDisabledDate(date, fn, view) {
     if (typeof fn === 'function' && fn(date, view)) {
@@ -35,9 +31,7 @@ export function isDisabledDate(date, fn, view) {
 
 export function checkMomentObj(props, propName, componentName) {
     if (props[propName] && !moment.isMoment(props[propName])) {
-        return new Error(
-            `Invalid prop ${propName} supplied to ${componentName}. Required a moment object`
-        );
+        return new Error(`Invalid prop ${propName} supplied to ${componentName}. Required a moment object`);
     }
 }
 
@@ -66,8 +60,7 @@ export function isSameYearMonth(dateA, dateB) {
 }
 
 export function preFormatDateValue(value, format) {
-    const val =
-        typeof value === 'string' ? moment(value, format, false) : value;
+    const val = typeof value === 'string' ? moment(value, format, false) : value;
     if (val && moment.isMoment(val) && val.isValid()) {
         return val;
     }
@@ -76,14 +69,7 @@ export function preFormatDateValue(value, format) {
 }
 
 export function getLocaleData(
-    {
-        months,
-        shortMonths,
-        firstDayOfWeek,
-        weekdays,
-        shortWeekdays,
-        veryShortWeekdays,
-    },
+    { months, shortMonths, firstDayOfWeek, weekdays, shortWeekdays, veryShortWeekdays },
     localeData
 ) {
     return {

@@ -22,10 +22,7 @@ export default class CascaderMenu extends Component {
             return;
         }
         const selectedIndex = children.findIndex(
-            item =>
-                !!item.props.checked ||
-                !!item.props.selected ||
-                !!item.props.expanded
+            item => !!item.props.checked || !!item.props.selected || !!item.props.expanded
         );
 
         if (selectedIndex === -1) {
@@ -38,16 +35,11 @@ export default class CascaderMenu extends Component {
         } else {
             const itemSelector = `.${prefix}menu-item`;
             const menu = findDOMNode(this.menuEl);
-            const targetItem = menu.querySelectorAll(itemSelector)[
-                selectedIndex
-            ];
+            const targetItem = menu.querySelectorAll(itemSelector)[selectedIndex];
             if (targetItem) {
                 menu.scrollTop =
                     targetItem.offsetTop -
-                    Math.floor(
-                        (menu.clientHeight / targetItem.clientHeight - 1) / 2
-                    ) *
-                        targetItem.clientHeight;
+                    Math.floor((menu.clientHeight / targetItem.clientHeight - 1) / 2) * targetItem.clientHeight;
             }
         }
     }
@@ -56,10 +48,7 @@ export default class CascaderMenu extends Component {
         return (
             <Menu ref={ref} role="listbox" {...props}>
                 {items.map(node => {
-                    if (
-                        React.isValidElement(node) &&
-                        node.type.menuChildType === 'item'
-                    ) {
+                    if (React.isValidElement(node) && node.type.menuChildType === 'item') {
                         return React.cloneElement(node, {
                             menu: this,
                         });
@@ -80,14 +69,7 @@ export default class CascaderMenu extends Component {
     };
 
     render() {
-        const {
-            prefix,
-            useVirtual,
-            className,
-            style,
-            children,
-            ...others
-        } = this.props;
+        const { prefix, useVirtual, className, style, children, ...others } = this.props;
         const menuProps = {
             labelToggleChecked: false,
             className: `${prefix}cascader-menu`,
@@ -96,17 +78,13 @@ export default class CascaderMenu extends Component {
         return (
             <div
                 ref={this.saveMenuRef}
-                className={`${prefix}cascader-menu-wrapper ${
-                    className ? className : ''
-                }`}
+                className={`${prefix}cascader-menu-wrapper ${className ? className : ''}`}
                 style={style}
             >
                 {useVirtual ? (
                     <VirtualList
                         ref={this.saveVirtualRef}
-                        itemsRenderer={(items, ref) =>
-                            this.renderMenu(items, ref, menuProps)
-                        }
+                        itemsRenderer={(items, ref) => this.renderMenu(items, ref, menuProps)}
                     >
                         {children}
                     </VirtualList>

@@ -16,10 +16,7 @@ export default class FixedBody extends React.Component {
 
     static contextTypes = {
         fixedHeader: PropTypes.bool,
-        maxBodyHeight: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-        ]),
+        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         onFixedScrollSync: PropTypes.func,
         getNode: PropTypes.func,
     };
@@ -35,23 +32,14 @@ export default class FixedBody extends React.Component {
         onFixedScrollSync && onFixedScrollSync(event);
 
         // sync scroll top/left to lock columns
-        if (
-            'onLockScroll' in this.props &&
-            typeof this.props.onLockScroll === 'function'
-        ) {
+        if ('onLockScroll' in this.props && typeof this.props.onLockScroll === 'function') {
             this.props.onLockScroll(event);
         }
     };
 
     render() {
         /*eslint-disable no-unused-vars */
-        const {
-            className,
-            colGroup,
-            onLockScroll,
-            tableWidth,
-            ...others
-        } = this.props;
+        const { className, colGroup, onLockScroll, tableWidth, ...others } = this.props;
         const { maxBodyHeight, fixedHeader } = this.context;
         const style = {};
         if (fixedHeader) {
@@ -59,11 +47,7 @@ export default class FixedBody extends React.Component {
             style.position = 'relative';
         }
         return (
-            <div
-                style={style}
-                className={className}
-                onScroll={this.onBodyScroll}
-            >
+            <div style={style} className={className} onScroll={this.onBodyScroll}>
                 <table style={{ width: tableWidth }}>
                     {colGroup}
                     <BodyComponent {...others} colGroup={colGroup} />

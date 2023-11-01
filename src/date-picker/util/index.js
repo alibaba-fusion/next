@@ -29,8 +29,7 @@ export function resetValueTime(source, target) {
 }
 
 export function formatDateValue(value, format) {
-    const val =
-        typeof value === 'string' ? moment(value, format, false) : value;
+    const val = typeof value === 'string' ? moment(value, format, false) : value;
     if (val && moment.isMoment(val) && val.isValid()) {
         return val;
     }
@@ -40,11 +39,7 @@ export function formatDateValue(value, format) {
 
 export function checkDateValue(props, propName, componentName) {
     // 支持传入 moment 对象或字符串，字符串不检测是否为日期字符串
-    if (
-        props[propName] &&
-        !moment.isMoment(props[propName]) &&
-        typeof props[propName] !== 'string'
-    ) {
+    if (props[propName] && !moment.isMoment(props[propName]) && typeof props[propName] !== 'string') {
         return new Error(
             `Invalid prop ${propName} supplied to ${componentName}. Required a moment object or format date string!`
         );
@@ -85,20 +80,11 @@ export function extend(source, target) {
  * @param {String} type 类型 year month day
  */
 export function onDateKeydown(e, { format, dateInputStr, value }, type) {
-    if (
-        [KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(
-            e.keyCode
-        ) === -1
-    ) {
+    if ([KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) {
         return;
     }
 
-    if (
-        (e.altKey &&
-            [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
-        e.controlKey ||
-        e.shiftKey
-    ) {
+    if ((e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) || e.controlKey || e.shiftKey) {
         return;
     }
 
@@ -137,18 +123,8 @@ export function onDateKeydown(e, { format, dateInputStr, value }, type) {
  * @param {String} type second hour minute
  */
 export function onTimeKeydown(e, { format, timeInputStr, steps, value }, type) {
-    if (
-        [KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(
-            e.keyCode
-        ) === -1
-    )
-        return;
-    if (
-        (e.altKey &&
-            [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
-        e.controlKey ||
-        e.shiftKey
-    )
+    if ([KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) return;
+    if ((e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) || e.controlKey || e.shiftKey)
         return;
 
     let time = moment(timeInputStr, format, true);

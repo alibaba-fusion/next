@@ -62,10 +62,7 @@ class Submit extends React.Component {
         const { children } = this.props;
 
         return (
-            <Button
-                {...obj.pickOthers(Submit.propTypes, this.props)}
-                onClick={this.handleClick}
-            >
+            <Button {...obj.pickOthers(Submit.propTypes, this.props)} onClick={this.handleClick}>
                 {children}
             </Button>
         );
