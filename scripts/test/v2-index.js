@@ -9,5 +9,5 @@ const config = {
     a11y: false,
 };
 
-let server = new Server(config);
+const server = new Server(config);
 server.start();

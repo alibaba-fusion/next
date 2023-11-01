@@ -78,7 +78,7 @@ exports.runCmdSpawn = function(command, options = { stdio: 'inherit' }) {
  * 输入 datePicker2 输出 date-picker2
  */
 exports.getComPathName = function(component) {
-    let babName = _.kebabCase(component);
+    const babName = _.kebabCase(component);
     let componentName = babName;
     babName.replace(/(-*\d-*)/gi, s => {
         componentName = babName.replace(s, s.replace('-', ''));

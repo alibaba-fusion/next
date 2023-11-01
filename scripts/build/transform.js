@@ -20,10 +20,7 @@ module.exports = function transform() {
 
     const relativePaths = glob.sync('**/*.*', { cwd: srcPath });
     relativePaths.forEach(relaticePath => {
-        const content = fs.readFileSync(
-            path.join(srcPath, relaticePath),
-            'utf8'
-        );
+        const content = fs.readFileSync(path.join(srcPath, relaticePath), 'utf8');
         let libContent, esContent;
         libContent = esContent = content;
         if (PATTERN_ES6.test(relaticePath)) {

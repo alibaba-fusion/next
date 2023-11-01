@@ -5,7 +5,6 @@ const { checkComponentName } = require('../utils');
 
 const scriptPath = path.join(__dirname, 'server.js');
 
-
 const args = checkComponentName(false, true);
 
 // 获取输入的 mode，css / scss，默认scss

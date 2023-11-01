@@ -29,13 +29,7 @@ module.exports = function*(options) {
         const entryName = entries[i].name;
         for (let j = 0; j < possibleNames.length; j++) {
             const possibleName = possibleNames[j];
-            const possiblePath = path.join(
-                cwd,
-                'lib',
-                entryName,
-                'scss',
-                possibleName
-            );
+            const possiblePath = path.join(cwd, 'lib', entryName, 'scss', possibleName);
             if (yield fs.exists(possiblePath)) {
                 exportVars.push(path.relative(cwd, possiblePath));
                 break;
