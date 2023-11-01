@@ -8,12 +8,14 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export type data = {
+type data = {
     value?: string | number;
     label?: React.ReactNode;
     disabled?: boolean;
     [propName: string]: any;
 }
+
+export type CheckboxOption = data;
 
 export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
