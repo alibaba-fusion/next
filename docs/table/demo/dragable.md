@@ -17,7 +17,7 @@ Dragable table with sort. It requires react-dnd@7.x, react-dnd-html5-backend@7.x
 
 ```jsx
 import { Table } from '@alifd/next';
-import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
+import { DragDropContextProvider, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import classnames from 'classnames';
 
@@ -130,13 +130,6 @@ class InnerTable extends React.Component {
     }
 }
 
-class SortableTable extends React.Component {
-    render() {
-        const ComponentName = DragDropContext(HTML5Backend)(InnerTable);
-        return <ComponentName {...this.props} />;
-    }
-}
-
 const result = [
     {
         id: '001',
@@ -185,14 +178,14 @@ class Demo extends React.Component {
     };
     render() {
         return (
-            <div>
-                <SortableTable dataSource={this.state.dataSource} onSort={console.log}>
+            <DragDropContextProvider backend={HTML5Backend}>
+                <InnerTable dataSource={this.state.dataSource} onSort={console.log}>
                     <Table.Column title="Id" dataIndex="id" width={100} lock />
                     <Table.Column title="Title" dataIndex="title.name" width={400} />
                     <Table.Column title="Time" dataIndex="time" width={300} />
                     <Table.Column title="operate" cell={this.renderOper} width={300} lock="right" />
-                </SortableTable>
-            </div>
+                </InnerTable> 
+            </DragDropContextProvider>
         );
     }
 }
