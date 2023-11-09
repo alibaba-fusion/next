@@ -1081,7 +1081,6 @@ describe('Popup', () => {
     });
 
     it('fix support show-hide in nested scroll component', async function() {
-        this.timeout(30000);
         wrapper = render(
             <div
                 className="root-container"
