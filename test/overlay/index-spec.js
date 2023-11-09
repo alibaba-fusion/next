@@ -1079,4 +1079,53 @@ describe('Popup', () => {
 
         assert(buttonDom);
     });
+
+    it('fix support show-hide in nested scroll component', async function() {
+        wrapper = render(
+            <div
+                className="root-container"
+                style={{
+                    height: 150,
+                    padding: 50,
+                    border: '1px solid #eee',
+                    overflowY: 'scroll',
+                }}
+            >
+                <div style={{ height: 50, border: '1px solid #eee' }} />
+                <div
+                    className="parent-container"
+                    style={{ height: 100, overflowY: 'scroll', border: '1px solid #eee', background: 'gray' }}
+                >
+                    <div style={{ height: 30, border: '1px solid #eee' }} />
+                    <Popup v2 trigger={<button>Open</button>} triggerType="click">
+                        <div className="overlay-content" style={{ width: 400, height: 100 }}>
+                            Hello World From Popup!
+                        </div>
+                    </Popup>
+                    <div style={{ height: 200, border: '1px solid #eee' }} />
+                </div>
+                <div style={{ height: 200, border: '1px solid #eee' }} />
+            </div>
+        );
+        const popupButton = document.querySelector('button');
+        ReactTestUtils.Simulate.click(popupButton);
+        await delay(200);
+        const rootContainerNode = document.querySelector('.root-container');
+        assert(rootContainerNode);
+        rootContainerNode.scrollTop = 300;
+        await delay(200);
+        assert(document.querySelector('.next-overlay-inner').style.display === 'none');
+        rootContainerNode.scrollTop = 0;
+        await delay(200);
+        assert(document.querySelector('.next-overlay-inner').style.display !== 'none');
+
+        const parentContainerNode = document.querySelector('.parent-container');
+        assert(parentContainerNode);
+        parentContainerNode.scrollTop = 200;
+        await delay(200);
+        assert(document.querySelector('.next-overlay-inner').style.display === 'none');
+        parentContainerNode.scrollTop = 0;
+        await delay(200);
+        assert(document.querySelector('.next-overlay-inner').style.display !== 'none');
+    });
 });
