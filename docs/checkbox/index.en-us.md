@@ -29,6 +29,7 @@ Checkbox is used to verify which options you want selected from a group. If you 
 | onChange             | Callback function triggered when the state changes<br><br>**signatures**:<br>Function(checked: Boolean, e: Event) => void<br>**params**:<br>_checked_: {Boolean} The checked value of the underlying checkbox input <br>_e_: {Event} Dom event object | Function | func.noop |
 | onMouseEnter         | Callback function triggered when the mouse pointer enters the element.<br><br>**signatures**:<br>Function(e: Event) => void<br>**params**:<br>_e_: {Event} Dom event object                                               | Function | func.noop |
 | onMouseLeave         | Callback function triggered  when the mouse pointer leaves the element.<br><br>**signatures**:<br>Function(e: Event) => void<br>**params**:<br>_e_: {Event} Dom event object                                         | Function | func.noop |
+|value                 | The value of the Checkbox                       |  String/Number/Boolean    | -         |
 
 ### Checkbox.Group
 

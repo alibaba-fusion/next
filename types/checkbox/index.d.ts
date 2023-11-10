@@ -110,7 +110,7 @@ export interface CheckboxProps extends HTMLAttributesWeak, CommonProps {
     /**
      * checkbox 的value
      */
-    value?: string | number;
+    value?: string | number | boolean;
 
     /**
      * name
