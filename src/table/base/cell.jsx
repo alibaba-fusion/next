@@ -100,7 +100,11 @@ export default class Cell extends React.Component {
         if (React.isValidElement(content)) {
             content = React.cloneElement(content, cellProps);
         } else if (typeof content === 'function') {
-            content = content(value, rowIndex, record, context);
+            if (type === 'header') {
+                content = content();
+            } else {
+                content = content(value, rowIndex, record, context);
+            }
         }
         if (align) {
             tagStyle.textAlign = align;
