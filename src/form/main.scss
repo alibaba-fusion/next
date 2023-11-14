@@ -236,7 +236,7 @@
     }
 
     &-item-help {
-        margin-top: $form-help-margin-top;
+        position: absolute;
         font-size: $form-help-font-size;
         line-height: $font-lineheight-2;
         color: $form-help-color;
