@@ -213,7 +213,6 @@ class Search extends React.Component {
         this.props.onChange(value, type, ...argv);
         if (type === 'enter') {
             this.highlightKey = '';
-            this.props.onSearch(value, this.state.filterValue);
         }
     };
 

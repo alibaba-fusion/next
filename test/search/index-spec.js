@@ -77,6 +77,15 @@ describe('Search', () => {
                     .text() === 'sc'
             );
         });
+        it('onSearch run only once', () => {
+            let isFlag = false;
+            const onSearch = () => {
+                isFlag = !isFlag;
+                assert(isFlag === true);
+            };
+            const wrapper = mount(<Search dataSource={[{ label: 'a', value: 'a' }]} value={'a'} onSearch={onSearch} />);
+            wrapper.find('input').simulate('keydown', { keyCode: 13 });
+        });
     });
 
     describe('behavior', () => {
