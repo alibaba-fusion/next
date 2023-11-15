@@ -98,7 +98,8 @@ export default class Cell extends React.Component {
         const cellProps = { value, index: rowIndex, record, context };
         let content = cell;
         if (React.isValidElement(content)) {
-            content = React.cloneElement(content, cellProps);
+            // header情况下， props.cell为 column.title，不需要传递这些props
+            content = React.cloneElement(content, type === 'header' ? undefined : cellProps);
         } else if (typeof content === 'function') {
             content = content(value, rowIndex, record, context);
         }

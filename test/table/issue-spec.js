@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
 import Table from '../../src/table/index';
 import ConfigProvider from '../../src/config-provider';
+import Input from '../../src/input';
 import '../../src/table/style.js';
 
 /* eslint-disable */
@@ -1142,5 +1144,24 @@ describe('Issue', () => {
                 done();
             }
         );
+    });
+
+    it('should can use Input at column.title, close #4370', () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        ReactDOM.render(
+            <Table>
+                <Table.Column title={<Input />} lock htmlTitle="Unique Id" dataIndex="id" />
+                <Table.Column title="Title" dataIndex="title.name" />
+                <Table.Column title="Time" dataIndex="time" />
+            </Table>,
+            container
+        );
+        const input = container.querySelector('input');
+        assert(input);
+        console.log('[ input ]', input);
+        ReactTestUtils.Simulate.change(input, { target: { value: 'aa' } });
+        assert(input.value === 'aa');
     });
 });
