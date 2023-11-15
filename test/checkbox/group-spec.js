@@ -202,4 +202,35 @@ describe('Checkbox.Group', () => {
             assert(wrapper.getDOMNode().innerText === 'checkbox preview');
         });
     });
+    it.only('value support bool`', () => {
+        let value = null;
+        const wrapper = mount(
+            <CheckboxGroup
+                onChange={v => {
+                    value = v;
+                }}
+                dataSource={[
+                    {
+                        value: false,
+                        label: '苹果',
+                    },
+                    {
+                        value: true,
+                        label: '橙子',
+                    },
+                ]}
+            />
+        );
+
+        wrapper
+            .find('input')
+            .at(1)
+            .simulate('change');
+        assert.deepEqual(value, [true]);
+        wrapper
+            .find('input')
+            .at(0)
+            .simulate('change');
+        assert.deepEqual(value, [true, false]);
+    });
 });
