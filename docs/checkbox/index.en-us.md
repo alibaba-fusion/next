@@ -37,8 +37,8 @@ Checkbox is used to verify which options you want selected from a group. If you 
 | ---------------- | --------------------------------------------------- | -------- | ------------- |
 | disabled     | Set the status of all checkbox in group to be checked   | Boolean    | -         |
 | dataSource   | Optional list, data item can be String or Object, for example `['apple', 'pear', 'orange']` or `[{value: 'apple', label: 'Apple',}, {value: 'pear', label: 'Pear'}, {value: 'orange', label: 'Orange'}]` | Array&lt;any>          | \[]       |
-| value        | The values of selected optional list              | Array/String/Number    | -         |
-| defaultValue | The values of default selected optional list                                         | Array/String/Number    | -         |
+| value        | The values of selected optional list              | Array/String/Number/Boolean    | -         |
+| defaultValue | The values of default selected optional list                                         | Array/String/Number/Boolean    | -         |
 | children     | To set nested checkbox  by children components             | Array&lt;ReactElement> | -         |
 | onChange     | Callback function triggered when the selected value changes<br><br>**signatures**:<br>Function(value: Array, e: Event) => void<br>**params**:<br>_value_: {Array} values of selected optional list <br>_e_: {Event} Dom event object                                | Function               | () => { } |
 | direction    | The direction of item's aligning<br>- hoz: horizontal (default)<br>- ver: vertical<br><br>**Allowed values**:<br>'hoz', 'ver'                                                 | Enum                                | 'hoz' |

@@ -12,6 +12,7 @@ const CheckboxGroup = Checkbox.Group;
 
 describe('Checkbox.Group', () => {
     let list;
+    let newList;
     beforeEach('mock data', () => {
         list = [
             {
@@ -24,6 +25,21 @@ describe('Checkbox.Group', () => {
             },
             {
                 value: 'orange',
+                label: '橙子',
+            },
+        ];
+
+        newList = [
+            {
+                value: false,
+                label: '苹果',
+            },
+            {
+                value: false,
+                label: '梨',
+            },
+            {
+                value: true,
                 label: '橙子',
             },
         ];
@@ -200,6 +216,20 @@ describe('Checkbox.Group', () => {
                 <CheckboxGroup isPreview renderPreview={() => 'checkbox preview'} defaultValue={0} dataSource={list} />
             );
             assert(wrapper.getDOMNode().innerText === 'checkbox preview');
+        });
+    });
+    describe('simulate change', () => {
+        it('value support bool`', () => {
+            let value = false;
+            const onChange = v => {
+                value = v;
+            };
+            const wrapper = mount(<CheckboxGroup onChange={onChange} value={value} dataSource={newList} />);
+            wrapper
+                .find('input')
+                .at(2)
+                .simulate('change', { value: true });
+            assert(`${value}` === 'false,true');
         });
     });
 });
