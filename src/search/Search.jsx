@@ -213,6 +213,7 @@ class Search extends React.Component {
         this.props.onChange(value, type, ...argv);
         if (type === 'enter') {
             this.highlightKey = '';
+            this.props.onSearch(value, this.state.filterValue);
         }
     };
 
@@ -277,6 +278,9 @@ class Search extends React.Component {
         });
         this.props.onBlur && this.props.onBlur(...args);
     }
+    changeHighlightKey = value => {
+        this.highlightKey = value;
+    };
 
     render() {
         const {
@@ -415,6 +419,7 @@ class Search extends React.Component {
                     ref={this.saveInputRef}
                     onFocus={this.handleFocus}
                     onBlur={this.handleBlur}
+                    changeHighlightKey={this.changeHighlightKey}
                 />
             </Group>
         );

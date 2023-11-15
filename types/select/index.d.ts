@@ -171,6 +171,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
      *  默认高亮key
      */
     defaultHighlightKey?: string;
+    changeHighlightKey?: (value: string) => void;
 }
 
 export class AutoComplete extends React.Component<AutoCompleteProps, any> {}
