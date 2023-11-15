@@ -218,7 +218,9 @@ class Search extends React.Component {
     };
 
     onPressEnter = () => {
-        if (this.highlightKey) {
+        // when autoHighlightFirstItem = false, onToggleHighlightItem will not trigger, cause this.highlightKey is empty
+        // and trigger onSearch twice
+        if (this.highlightKey || !this.props.autoHighlightFirstItem) {
             return;
         }
         this.onSearch();
@@ -278,9 +280,6 @@ class Search extends React.Component {
         });
         this.props.onBlur && this.props.onBlur(...args);
     }
-    changeHighlightKey = value => {
-        this.highlightKey = value;
-    };
 
     render() {
         const {
@@ -419,7 +418,6 @@ class Search extends React.Component {
                     ref={this.saveInputRef}
                     onFocus={this.handleFocus}
                     onBlur={this.handleBlur}
-                    changeHighlightKey={this.changeHighlightKey}
                 />
             </Group>
         );

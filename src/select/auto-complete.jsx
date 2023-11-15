@@ -59,7 +59,6 @@ class AutoComplete extends Base {
         // 是否将当前高亮的选项作为 placeholder
         highlightHolder: PropTypes.bool,
         style: PropTypes.object,
-        changeHighlightKey: PropTypes.func,
     };
 
     static defaultProps = {
@@ -203,9 +202,6 @@ class AutoComplete extends Base {
 
         // 不自动高亮的情况下, highlightKey 根据value精确值走，也就是被选中元素自动高亮，这样也不会影响不在选项内的用户搜索操作
         if (!this.props.autoHighlightFirstItem) {
-            if (this.props.changeHighlightKey) {
-                this.props.changeHighlightKey(value);
-            }
             this.setState({
                 highlightKey: value,
             });
