@@ -9,6 +9,8 @@ import enUS from '../../src/locale/en-us';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+const sleep = duration => new Promise(resolve => setTimeout(resolve, duration));
+
 /* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Search', () => {
     describe('render', () => {
@@ -76,6 +78,14 @@ describe('Search', () => {
                     .at(0)
                     .text() === 'sc'
             );
+        });
+        it.only('onSearch run only once', async () => {
+            const onSearch = sinon.spy();
+            const wrapper = mount(<Search dataSource={['a']} onSearch={onSearch} autoHighlightFirstItem={false} />);
+            wrapper.find('input').simulate('change', { target: { value: 'a' } });
+            wrapper.find('input').simulate('keydown', { keyCode: 13 });
+            assert(onSearch.calledOnce);
+            wrapper.unmount();
         });
     });
 
