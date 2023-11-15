@@ -218,9 +218,7 @@ class Search extends React.Component {
     };
 
     onPressEnter = () => {
-        // when autoHighlightFirstItem = false, onToggleHighlightItem will not trigger, cause this.highlightKey is empty
-        // and trigger onSearch twice
-        if (this.highlightKey || !this.props.autoHighlightFirstItem) {
+        if (this.highlightKey) {
             return;
         }
         this.onSearch();
