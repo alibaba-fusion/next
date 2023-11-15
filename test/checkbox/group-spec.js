@@ -202,7 +202,7 @@ describe('Checkbox.Group', () => {
             assert(wrapper.getDOMNode().innerText === 'checkbox preview');
         });
     });
-    it.only('value support bool`', () => {
+    it('value support bool`', () => {
         let value = null;
         const wrapper = mount(
             <CheckboxGroup
