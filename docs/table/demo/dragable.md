@@ -25,6 +25,10 @@ const { SelectionRow } = Table;
 
 let dragingIndex = -1;
 
+const MyDndProvider = DragDropContext(HTML5Backend)(({children}) => {
+    return children;
+});
+
 function MyRow(props) {
     const { isDragging, isOver, connectDragSource, connectDropTarget, moveRow, className, ...others } = props;
 
@@ -178,14 +182,14 @@ class Demo extends React.Component {
     };
     render() {
         return (
-            <DragDropContext backend={HTML5Backend}>
+            <MyDndProvider>
                 <InnerTable dataSource={this.state.dataSource} onSort={console.log}>
                     <Table.Column title="Id" dataIndex="id" width={100} lock />
                     <Table.Column title="Title" dataIndex="title.name" width={400} />
                     <Table.Column title="Time" dataIndex="time" width={300} />
                     <Table.Column title="operate" cell={this.renderOper} width={300} lock="right" />
                 </InnerTable> 
-            </DragDropContext>
+            </MyDndProvider>
         );
     }
 }
