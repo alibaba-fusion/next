@@ -212,15 +212,20 @@ class Search extends React.Component {
 
         this.props.onChange(value, type, ...argv);
         if (type === 'enter') {
+            // 先记录，保留原先的执行顺序
+            const highlightKey = this.highlightKey;
+            // 重置
             this.highlightKey = '';
-            this.props.onSearch(value, this.state.filterValue);
+            // 若有匹配项，执行onSearch
+            if (highlightKey) {
+                this.props.onSearch(value, this.state.filterValue);
+            }
         }
     };
 
     onPressEnter = () => {
-        // when autoHighlightFirstItem = false, onToggleHighlightItem will not trigger, cause this.highlightKey is empty
-        // and trigger onSearch twice
-        if (this.highlightKey || !this.props.autoHighlightFirstItem) {
+        // 有匹配项情况，enter会触发 onChange，由那里执行onSearch
+        if (this.highlightKey) {
             return;
         }
         this.onSearch();
