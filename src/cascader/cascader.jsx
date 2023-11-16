@@ -289,6 +289,9 @@ class Cascader extends Component {
             ) {
                 states.expandedValue = getExpandedValue(states.value[0], v2n, p2n);
             }
+            if (!(state.value[0] === normalizeValue(props.value)[0])) {
+                states.expandedValue = getExpandedValue(normalizeValue(props.value)[0], v2n, p2n);
+            }
         }
 
         if ('expandedValue' in props) {
