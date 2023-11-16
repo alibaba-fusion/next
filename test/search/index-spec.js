@@ -79,14 +79,6 @@ describe('Search', () => {
                     .text() === 'sc'
             );
         });
-        it('onSearch run only once', async () => {
-            const onSearch = sinon.spy();
-            const wrapper = mount(<Search dataSource={['a']} onSearch={onSearch} autoHighlightFirstItem={false} />);
-            wrapper.find('input').simulate('change', { target: { value: 'a' } });
-            wrapper.find('input').simulate('keydown', { keyCode: 13 });
-            assert(onSearch.calledOnce);
-            wrapper.unmount();
-        });
     });
 
     describe('behavior', () => {
@@ -132,15 +124,12 @@ describe('Search', () => {
             done();
         });
 
-        it('should support onSearch ', done => {
-            const onSearch = value => {
-                assert(value === '123');
-            };
+        it('should support onSearch ', () => {
+            const onSearch = sinon.spy();
             wrapper = mount(<Search defaultValue={'123'} onSearch={onSearch} />);
 
             wrapper.find('input').simulate('keydown', { keyCode: 13 });
-
-            done();
+            assert(onSearch.calledOnceWith('123'));
         });
 
         it('should support onChange/onSearch ', done => {
@@ -384,6 +373,19 @@ describe('Search', () => {
             assert(wrapper.find('input').prop('value') === dataSource[0].value);
 
             done();
+        });
+        it('should support dataSource and onSearch', () => {
+            const onSearch = sinon.spy();
+            wrapper.setProps({ onSearch });
+            // has matched item
+            wrapper.find('input').simulate('change', { target: { value: 'y' } });
+            wrapper.find('input').simulate('keydown', { keyCode: 13 });
+            assert(onSearch.calledOnceWith('yyy'));
+            // does not has matched item
+            wrapper.find('input').simulate('change', { target: { value: 'abc' } });
+            wrapper.find('input').simulate('keydown', { keyCode: 13 });
+            assert(onSearch.calledTwice);
+            assert(onSearch.calledWith('abc'));
         });
     });
 });
