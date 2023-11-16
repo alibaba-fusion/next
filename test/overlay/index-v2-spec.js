@@ -696,7 +696,7 @@ describe('Popup v2', async () => {
         assert(document.querySelector('.overlay-demo1'));
     });
 
-    // it.only('should support setting canCloseByTrigger to false', async () => {
+    // it('should support setting canCloseByTrigger to false', async () => {
     //     wrapper = render(
     //         <Popup v2  animation={false}  trigger={<button>Open</button>} triggerType="click" canCloseByTrigger={false}>
     //             <span className="content">Hello World From Popup!</span>

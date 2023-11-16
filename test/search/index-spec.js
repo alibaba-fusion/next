@@ -79,7 +79,7 @@ describe('Search', () => {
                     .text() === 'sc'
             );
         });
-        it.only('onSearch run only once', async () => {
+        it('onSearch run only once', async () => {
             const onSearch = sinon.spy();
             const wrapper = mount(<Search dataSource={['a']} onSearch={onSearch} autoHighlightFirstItem={false} />);
             wrapper.find('input').simulate('change', { target: { value: 'a' } });
