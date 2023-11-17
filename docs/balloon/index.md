@@ -80,6 +80,7 @@
 | delay              | 如果需要让 Tooltip 内容可被点击，可以设置这个参数，例如 100                                                                                                                                        | Number       | 50          |
 | v2                 | 开启 v2 版本                                                                                                                                                                    | Boolean      | -           |
 | arrowPointToCenter | [v2] 箭头是否指向目标元素的中心                                                                                                                                                          | Boolean      | false       |
+| arrow | 是否展示tooltip中的箭头                                                                                                                                                          | Boolean      | true       |
 
 ## 无障碍键盘操作指南
 

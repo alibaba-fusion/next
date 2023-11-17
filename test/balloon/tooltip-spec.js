@@ -18,10 +18,22 @@ const trigger = (
 );
 describe('Tooltip', () => {
     let defaultWrapper = {};
+    let arrowFalseWrapper = {};
+    let arrowTrueWrapper = {};
 
     beforeEach(function() {
         defaultWrapper = mount(
             <Tooltip trigger={trigger} triggetType="hover">
+                i am tooltip content
+            </Tooltip>
+        );
+        arrowFalseWrapper = mount(
+            <Tooltip trigger={trigger} triggetType="hover" arrow={false}>
+                i am tooltip content
+            </Tooltip>
+        );
+        arrowTrueWrapper = mount(
+            <Tooltip trigger={trigger} triggetType="hover" arrow={true}>
                 i am tooltip content
             </Tooltip>
         );
@@ -96,6 +108,22 @@ describe('Tooltip', () => {
         defaultWrapper.find('span').simulate('mouseenter');
         setTimeout(function() {
             assert(document.querySelector('.next-balloon-tooltip') !== null);
+            done();
+        }, 300);
+    });
+
+    it('should not render arrow', done => {
+        arrowFalseWrapper.find('span').simulate('mouseenter');
+        setTimeout(function() {
+            assert(document.querySelector('.next-balloon-arrow') === null);
+            done();
+        }, 300);
+    });
+
+    it('should render arrow', done => {
+        arrowTrueWrapper.find('span').simulate('mouseenter');
+        setTimeout(function() {
+            assert(document.querySelector('.next-balloon-arrow') !== null);
             done();
         }, 300);
     });

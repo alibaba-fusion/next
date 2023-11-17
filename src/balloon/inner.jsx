@@ -21,6 +21,7 @@ class BalloonInner extends React.Component {
         rtl: PropTypes.bool,
         closable: PropTypes.bool,
         children: PropTypes.any,
+        arrow: PropTypes.bool,
         title: PropTypes.node,
         className: PropTypes.string,
         alignEdge: PropTypes.bool,
@@ -34,6 +35,7 @@ class BalloonInner extends React.Component {
         v2: PropTypes.bool,
     };
     static defaultProps = {
+        arrow: true,
         prefix: 'next-',
         closable: true,
         onClose: noop,
@@ -52,6 +54,7 @@ class BalloonInner extends React.Component {
             style,
             isTooltip,
             align,
+            arrow,
             title,
             type,
             onClose,
@@ -104,9 +107,11 @@ class BalloonInner extends React.Component {
                 style={style}
                 {...obj.pickOthers(Object.keys(BalloonInner.propTypes), others)}
             >
-                <div className={`${prefix}balloon-arrow`}>
-                    <div className={`${prefix}balloon-arrow-content`} />
-                </div>
+                {arrow && (
+                    <div className={`${prefix}balloon-arrow`}>
+                        <div className={`${prefix}balloon-arrow-content`} />
+                    </div>
+                )}
                 {title && (
                     <div className={titleCls}>
                         {title}
