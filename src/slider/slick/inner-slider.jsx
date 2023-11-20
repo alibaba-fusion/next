@@ -171,7 +171,7 @@ class InnerSlider extends React.Component {
                 }
             });
             // children 每次都会不同，所以不需要检测
-            if (diffKeys.length === 1 && diffKeys[0] === 'children') {
+            if (diffKeys.every(key => key === 'children' || typeof this.props[key] === 'function')) {
                 // do nothing;
             } else {
                 const update = !obj.shallowEqual(prevProps, this.props);

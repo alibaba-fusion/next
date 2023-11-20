@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
 import Slider from '../../src/slider/index';
+import ReactTestUtils from 'react-dom/test-utils';
 import '../../src/slider/style.js';
 
 /* eslint-disable */
 Enzyme.configure({ adapter: new Adapter() });
+const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 describe('Issue', () => {
     let dataSource = [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }],
@@ -68,5 +70,47 @@ describe('Issue', () => {
                 done();
             }, 100);
         });
+    });
+
+    // https://github.com/alibaba-fusion/next/issues/4533
+    it('should not affect index after calling onChange hook', async () => {
+        const slides = [1, 2, 3, 4].map((item, index) => (
+            <div key={index} className="custom-slick-item" style={{ width: '500px' }}>
+                <h3>{item}</h3>
+            </div>
+        ));
+        function DemoSlider() {
+            const [idx, setIdx] = useState(0);
+            const settings = {
+                infinite: false,
+                arrowPosition: 'outer',
+                dots: false,
+                infinite: false,
+                speed: 500,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                onChange: function(index) {
+                    setIdx(index);
+                },
+            };
+
+            return <Slider {...settings}>{slides}</Slider>;
+        }
+        const root = document.createElement('div');
+        document.body.appendChild(root);
+        const wrapper = mount(<DemoSlider />, { attachTo: root });
+
+        const isIndexActive = index => {
+            const el = root.querySelector(`.next-slick-slide[data-index="${index}"]`);
+            return el && el.classList.contains('next-slick-active');
+        };
+        assert(isIndexActive(0));
+        ReactTestUtils.Simulate.click(root.querySelector('.next-slick-next'));
+        await delay(800);
+        assert(isIndexActive(1));
+
+        ReactTestUtils.Simulate.click(root.querySelector('.next-slick-next'));
+        await delay(800);
+        assert(isIndexActive(2));
     });
 });
