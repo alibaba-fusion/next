@@ -258,7 +258,7 @@
     @include tooltip-arrow-rtl($balloon-size-arrow-size);
 
     // v1 模式下tooltip的rtl arrow位置与类名不匹配，v2需要补充一下
-    &.v2 {
+    &.#{$css-prefix}balloon-tooltip-v2 {
         @include tooltip-arrow-rtl-v2($balloon-size-arrow-size);
     }
 

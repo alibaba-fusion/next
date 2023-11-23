@@ -82,7 +82,7 @@ class BalloonInner extends React.Component {
             [`${_prefix}-${alignMap[align].arrow}`]: alignMap[align],
             [`${_prefix}-closable`]: closableInContent,
             [className]: className,
-            v2,
+            [`${_prefix}-v2`]: v2,
         });
 
         const titleCls = classNames({
