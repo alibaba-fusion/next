@@ -236,10 +236,13 @@
     }
 
     &-item-help {
-        margin-top: $form-help-margin-top;
         font-size: $form-help-font-size;
         line-height: $font-lineheight-2;
         color: $form-help-color;
+    }
+
+    &-item-help-margin-offset {
+        margin-top: - ($form-help-font-size*$font-lineheight-2);
     }
 
     &.#{$css-prefix}inline {

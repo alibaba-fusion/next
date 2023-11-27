@@ -439,4 +439,20 @@ describe('Reset', () => {
         wrapper.find('button').simulate('click');
         assert(warnFlag);
     });
+    it('the error does not affect the style', () => {
+        const wrapper = mount(
+            <Form>
+                <FormItem
+                    label="Input Error："
+                    validateState="error"
+                    help="Please enter a numeric and alphabetic string"
+                >
+                    <Input defaultValue="Invalid choice" />
+                </FormItem>
+            </Form>
+        );
+        let node1 = wrapper.find('.next-form-item-help').instance().style.height;
+        let node2 = wrapper.find('.next-form-item-help-margin-offset').instance().style.marginTop;
+        assert(node1 === node2);
+    });
 });
