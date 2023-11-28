@@ -263,6 +263,7 @@ class Cascader extends Component {
             'getCascaderNode',
             'getCascaderInnerNode',
             'onBlur',
+            'updateExpandedValue',
         ]);
     }
 
@@ -289,9 +290,6 @@ class Cascader extends Component {
             ) {
                 states.expandedValue = getExpandedValue(states.value[0], v2n, p2n);
             }
-            if (!(state.value[0] === normalizeValue(props.value)[0])) {
-                states.expandedValue = getExpandedValue(normalizeValue(props.value)[0], v2n, p2n);
-            }
         }
 
         if ('expandedValue' in props) {
@@ -312,6 +310,23 @@ class Cascader extends Component {
 
     componentDidUpdate() {
         this.setCascaderInnerWidth();
+    }
+
+    /**
+     * 根据value，更新expandedValue，若当前expandedValue与value中任意值都不匹配，则重置为第一个value对应的expandedValue
+     * 用于用户手动处理一些expandedValue与value值不匹配的情况
+     */
+    updateExpandedValue(value = this.state.value) {
+        const { expandedValue, _v2n, _p2n } = this.state;
+        const allowExpandedList = value.map(selected => {
+            return getExpandedValue(selected, _v2n, _p2n);
+        });
+        if (allowExpandedList.some(allowed => obj.shallowEqual(allowed, expandedValue))) {
+            return;
+        }
+        this.setState({
+            expandedValue: allowExpandedList[0] || [],
+        });
     }
 
     getCascaderNode(ref) {

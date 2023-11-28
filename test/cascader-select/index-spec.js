@@ -44,26 +44,6 @@ const ChinaArea = [
         value: '3078',
         label: '四川',
     },
-    {
-        children: [
-          {
-            value: '3372',
-            label: '乌鲁木齐',
-            children: [
-              {
-                value: '3373',
-                label: '乌鲁木齐市'
-              },
-              {
-                value: '3374',
-                label: '乌鲁木齐县'
-              },
-            ]
-          },
-        ],
-        value: '3371',
-        label: '新疆'
-      }
 ];
 
 describe('CascaderSelect', () => {
@@ -75,43 +55,7 @@ describe('CascaderSelect', () => {
             wrapper = null;
         }
     });
-    it('should show expander value same as value changed by props ', done => {
-        wrapper = mount(<CascaderSelect value='2975' dataSource={ChinaArea} popupProps={{ className: 'myCascaderSelect' }}/>);
-        wrapper.find('.next-select').simulate('click');
-        const item20 = findItem(2, 0);
-        ReactTestUtils.Simulate.click(item20);
-        wrapper.update();
-        assert(
-            wrapper
-                .find('span.next-select-inner em')
-                .text()
-                .trim() === '陕西 / 西安 / 西安市'
-        );
 
-        assert(document.querySelectorAll('.next-cascader-menu')[0].querySelector('.next-expanded').textContent.trim() === '陕西');
-        assert(document.querySelectorAll('.next-cascader-menu')[1].querySelector('.next-expanded').textContent.trim() === '西安');
-        assert(document.querySelectorAll('.next-cascader-menu')[2].querySelector('.next-selected').textContent.trim() === '西安市');
-
-        wrapper.setProps({ value: '3373' });
-        wrapper.update();
-        wrapper.find('.next-select').simulate('click');
-        setTimeout(() => {
-            wrapper.update();
-            assert(document.querySelector('.next-cascader-select-dropdown'));
-            assert(
-                wrapper
-                    .find('span.next-select-inner em')
-                    .text()
-                    .trim() === '新疆 / 乌鲁木齐 / 乌鲁木齐市'
-            );
-
-            assert(findRealItem(document.querySelector('.myCascaderSelect'), 2, 1));
-            assert(document.querySelectorAll('.next-cascader-menu')[0].querySelector('.next-expanded').textContent.trim() === '新疆');
-            assert(document.querySelectorAll('.next-cascader-menu')[1].querySelector('.next-expanded').textContent.trim() === '乌鲁木齐');
-            assert(document.querySelectorAll('.next-cascader-menu')[2].querySelector('.next-selected').textContent.trim() === '乌鲁木齐市');
-            done();
-        }, 500);
-    });
     it('should show dropdown when set defaultVisible to true', () => {
         wrapper = mount(<CascaderSelect dataSource={ChinaArea} defaultVisible />);
         assert(document.querySelector('.next-cascader-select-dropdown'));
