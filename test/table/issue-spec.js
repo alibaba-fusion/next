@@ -12,7 +12,7 @@ import '../../src/table/style.js';
 
 /* eslint-disable */
 Enzyme.configure({ adapter: new Adapter() });
-
+const delay = duration => new Promise(resolve => setTimeout(resolve, duration));
 const generateDataSource = j => {
     const result = [];
     for (let i = 0; i < j; i++) {
@@ -657,6 +657,79 @@ describe('Issue', () => {
         assert(document.querySelectorAll('.next-table-group-header + tr').length === 1);
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
+    });
+
+    // fix https://github.com/alibaba-fusion/next/issues/4396
+    it('should support Header and Body follow the TableGroupHeader when it locks the columns', async () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = () => {
+            const result = [];
+            for (let i = 0; i < 5; i++) {
+                result.push({
+                    title: { name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible` },
+                    id: 100306660940 + i,
+                    time: 2000 + i,
+                });
+            }
+            return result;
+        };
+        const columns = [
+            {
+                title: 'Group2-7',
+                children: [
+                    {
+                        title: 'Title2',
+                        dataIndex: 'id',
+                        lock: 'left',
+                        width: 140,
+                    },
+                    {
+                        title: 'Title3',
+                        lock: 'left',
+                        dataIndex: 'time',
+                        width: 200,
+                    },
+                ],
+            },
+            {
+                title: 'Title1',
+                dataIndex: 'id',
+                width: 1400,
+            },
+            {
+                title: 'Time',
+                dataIndex: 'time',
+                width: 500,
+            },
+        ];
+
+        ReactDOM.render(
+            <Table.StickyLock dataSource={dataSource()} columns={columns}>
+                <Table.GroupHeader
+                    useFirstLevelDataWhenNoChildren
+                    cell={() => {
+                        return <div>title</div>;
+                    }}
+                />
+            </Table.StickyLock>,
+            container
+        );
+        const tableHeader = document.querySelector('.next-table-header');
+        const tableBody = document.querySelector('.next-table-body');
+        assert(tableHeader);
+        assert(tableBody);
+
+        tableHeader.scrollTo({ left: 100, top: 0, behavior: 'smooth' });
+        await delay(500);
+        assert(tableHeader.scrollLeft === 100);
+        assert(tableBody.scrollLeft === 100);
+
+        tableBody.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+        await delay(500);
+        assert(tableHeader.scrollLeft === 0);
+        assert(tableBody.scrollLeft === 0);
     });
 
     it('should support multiple header lock', done => {
