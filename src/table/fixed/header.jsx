@@ -15,12 +15,15 @@ export default class FixedHeader extends React.Component {
 
     static contextTypes = {
         getNode: PropTypes.func,
+        getLockNode: PropTypes.func,
         onFixedScrollSync: PropTypes.func,
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
     componentDidMount() {
-        this.context.getNode('header', findDOMNode(this));
+        const { getNode, getLockNode, lockType } = this.context;
+        getNode && getNode('header', findDOMNode(this), lockType);
+        getLockNode && getLockNode('header', findDOMNode(this), lockType);
     }
 
     // 这里的 style={{overflow: 'unset'}} 可以删掉，只是为了解决用户js升级但是样式没升级的情况
