@@ -242,6 +242,9 @@
         color: $form-help-color;
     }
 
+    .#{$css-prefix}form-item-help-margin-offset {
+        margin-top: -$form-item-m-margin-b;
+    }
     &.#{$css-prefix}inline {
         #{$form-prefix}-item {
             display: inline-block;

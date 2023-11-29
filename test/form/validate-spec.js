@@ -1,14 +1,17 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Input from '../../src/input';
 import Form from '../../src/form/index';
 import Field from '../../src/field';
-
+import { dom } from '../../src/util';
 const FormItem = Form.Item;
 const Submit = Form.Submit;
 const Reset = Form.Reset;
+const { getStyle } = dom;
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Submit', () => {
@@ -438,5 +441,50 @@ describe('Reset', () => {
 
         wrapper.find('button').simulate('click');
         assert(warnFlag);
+    });
+});
+
+describe('Error', () => {
+    let mountNode;
+
+    const getVerDistance = (node1, node2) => {
+        const rect1 = node1.getBoundingClientRect();
+        const rect2 = node2.getBoundingClientRect();
+        return rect2.top - rect1.top - rect1.height;
+    };
+
+    beforeEach(() => {
+        mountNode = document.createElement('div');
+        document.body.appendChild(mountNode);
+    });
+
+    afterEach(() => {
+        ReactDOM.unmountComponentAtNode(mountNode);
+        document.body.removeChild(mountNode);
+    });
+
+    it('the error does not affect the style', () => {
+        ReactDOM.render(
+            <Form>
+                <FormItem label="item1" required>
+                    <Input />
+                </FormItem>
+                <FormItem label="item2">
+                    <Input />
+                </FormItem>
+                <FormItem>
+                    <Form.Submit>submit</Form.Submit>
+                </FormItem>
+            </Form>,
+            mountNode
+        );
+
+        const items = mountNode.querySelectorAll('.next-form-item');
+        assert(items.length === 3);
+
+        const oldDistance = getVerDistance(items[0], items[1]);
+        ReactTestUtils.Simulate.click(mountNode.querySelector('.next-btn'));
+        const newDistance = getVerDistance(items[0], items[1]);
+        assert(oldDistance === newDistance);
     });
 });

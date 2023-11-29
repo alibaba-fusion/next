@@ -45,7 +45,12 @@ class Error extends React.Component {
         const { children, name, prefix, style, className, field: _field, ...others } = this.props;
 
         if (children && typeof children !== 'function') {
-            return <div className={`${prefix}form-item-help`}>{children}</div>;
+            return (
+                <div className={`${prefix}form-item-help`}>
+                    {children}
+                    <div className={`${prefix}form-item-help-margin-offset`} />
+                </div>
+            );
         }
 
         const field = this.context._formField || _field;
@@ -87,6 +92,7 @@ class Error extends React.Component {
         return (
             <div {...others} className={cls} style={style}>
                 {result}
+                <div className={`${prefix}form-item-help-margin-offset`} />
             </div>
         );
     }
