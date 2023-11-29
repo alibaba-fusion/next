@@ -12,7 +12,7 @@ import '../../src/table/style.js';
 
 /* eslint-disable */
 Enzyme.configure({ adapter: new Adapter() });
-
+const delay = duration => new Promise(resolve => setTimeout(resolve, duration));
 const generateDataSource = j => {
     const result = [];
     for (let i = 0; i < j; i++) {
@@ -660,7 +660,7 @@ describe('Issue', () => {
     });
 
     // fix https://github.com/alibaba-fusion/next/issues/4396
-    it('should support Header and Body follow the TableGroupHeader when it locks the columns', done => {
+    it('should support Header and Body follow the TableGroupHeader when it locks the columns', async () => {
         const container = document.createElement('div');
         document.body.appendChild(container);
 
@@ -714,23 +714,22 @@ describe('Issue', () => {
                     }}
                 />
             </Table.StickyLock>,
-            container,
-            function() {
-                setTimeout(() => {
-                    const tableHeader = document.querySelector('.next-table-header');
-                    const tableBody = document.querySelector('.next-table-body');
-                    assert(tableHeader);
-                    assert(tableBody);
-                    const scrollLeft = tableHeader.scrollLeft + 100;
-                    tableHeader.scrollLeft = scrollLeft;
-                    ReactTestUtils.Simulate.scroll(tableHeader);
-                    setTimeout(() => {
-                        assert(tableBody.scrollLeft === '100px');
-                    }, 200);
-                    done();
-                }, 10);
-            }
+            container
         );
+        const tableHeader = document.querySelector('.next-table-header');
+        const tableBody = document.querySelector('.next-table-body');
+        assert(tableHeader);
+        assert(tableBody);
+
+        tableHeader.scrollTo({ left: 100, top: 0, behavior: 'smooth' });
+        await delay(500);
+        assert(tableHeader.scrollLeft === 100);
+        assert(tableBody.scrollLeft === 100);
+
+        tableBody.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+        await delay(500);
+        assert(tableHeader.scrollLeft === 0);
+        assert(tableBody.scrollLeft === 0);
     });
 
     it('should support multiple header lock', done => {
