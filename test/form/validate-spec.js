@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
@@ -446,6 +447,12 @@ describe('Reset', () => {
 describe('Error', () => {
     let mountNode;
 
+    const getVerDistance = (node1, node2) => {
+        const rect1 = node1.getBoundingClientRect();
+        const rect2 = node2.getBoundingClientRect();
+        return rect2.top - rect1.top - rect1.height;
+    };
+
     beforeEach(() => {
         mountNode = document.createElement('div');
         document.body.appendChild(mountNode);
@@ -459,28 +466,25 @@ describe('Error', () => {
     it('the error does not affect the style', () => {
         ReactDOM.render(
             <Form>
-                <FormItem
-                    label="Input Error："
-                    validateState="error"
-                    help="Please enter a numeric and alphabetic string"
-                >
-                    <Input defaultValue="Invalid choice" />
+                <FormItem label="item1" required>
+                    <Input />
                 </FormItem>
-                <FormItem
-                    label="Input Error："
-                    validateState="error"
-                    help="Please enter a numeric and alphabetic string"
-                >
-                    <Input defaultValue="Invalid choice" />
+                <FormItem label="item2">
+                    <Input />
+                </FormItem>
+                <FormItem>
+                    <Form.Submit>submit</Form.Submit>
                 </FormItem>
             </Form>,
             mountNode
         );
 
-        const node1 = mountNode.querySelectorAll('.next-form-item');
-        const node2 = mountNode.querySelector('.next-input');
-        const itemMargin = node1[1].offsetTop - node2.offsetTop - node2.clientHeight;
-        const helpHeight = mountNode.querySelector('.next-form-item-help');
-        assert(itemMargin >= -helpHeight.clientHeight);
+        const items = mountNode.querySelectorAll('.next-form-item');
+        assert(items.length === 3);
+
+        const oldDistance = getVerDistance(items[0], items[1]);
+        ReactTestUtils.Simulate.click(mountNode.querySelector('.next-btn'));
+        const newDistance = getVerDistance(items[0], items[1]);
+        assert(oldDistance === newDistance);
     });
 });
