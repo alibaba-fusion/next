@@ -1,14 +1,16 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Input from '../../src/input';
 import Form from '../../src/form/index';
 import Field from '../../src/field';
-
+import { dom } from '../../src/util';
 const FormItem = Form.Item;
 const Submit = Form.Submit;
 const Reset = Form.Reset;
+const { getStyle } = dom;
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Submit', () => {
@@ -439,8 +441,23 @@ describe('Reset', () => {
         wrapper.find('button').simulate('click');
         assert(warnFlag);
     });
+});
+
+describe('CascaderSelect', () => {
+    let mountNode;
+
+    beforeEach(() => {
+        mountNode = document.createElement('div');
+        document.body.appendChild(mountNode);
+    });
+
+    afterEach(() => {
+        ReactDOM.unmountComponentAtNode(mountNode);
+        document.body.removeChild(mountNode);
+    });
+
     it('the error does not affect the style', () => {
-        const wrapper = mount(
+        ReactDOM.render(
             <Form>
                 <FormItem
                     label="Input Error："
@@ -449,10 +466,14 @@ describe('Reset', () => {
                 >
                     <Input defaultValue="Invalid choice" />
                 </FormItem>
-            </Form>
+                <Submit validate={['first']}>click</Submit>
+            </Form>,
+            mountNode
         );
-        let node1 = wrapper.find('.next-form-item-help').instance().style.height;
-        let node2 = wrapper.find('.next-form-item-help-margin-offset').instance().style.marginTop;
-        assert(node1 === node2);
+        let node1 = mountNode.querySelector('.next-form-item');
+        const node2 = mountNode.querySelector('.next-form-item-help-margin-offset');
+        let marginBottom = getStyle(node1, 'marginBottom');
+        let marginTop = getStyle(node2, 'marginTop');
+        assert(marginBottom === -marginTop);
     });
 });
