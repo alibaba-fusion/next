@@ -443,7 +443,7 @@ describe('Reset', () => {
     });
 });
 
-describe('CascaderSelect', () => {
+describe('Error', () => {
     let mountNode;
 
     beforeEach(() => {
@@ -466,14 +466,21 @@ describe('CascaderSelect', () => {
                 >
                     <Input defaultValue="Invalid choice" />
                 </FormItem>
-                <Submit validate={['first']}>click</Submit>
+                <FormItem
+                    label="Input Error："
+                    validateState="error"
+                    help="Please enter a numeric and alphabetic string"
+                >
+                    <Input defaultValue="Invalid choice" />
+                </FormItem>
             </Form>,
             mountNode
         );
-        let node1 = mountNode.querySelector('.next-form-item');
-        const node2 = mountNode.querySelector('.next-form-item-help-margin-offset');
-        let marginBottom = getStyle(node1, 'marginBottom');
-        let marginTop = getStyle(node2, 'marginTop');
-        assert(marginBottom === -marginTop);
+
+        const node1 = mountNode.querySelectorAll('.next-form-item');
+        const node2 = mountNode.querySelector('.next-input');
+        const itemMargin = node1[1].offsetTop - node2.offsetTop - node2.clientHeight;
+        const helpHeight = mountNode.querySelector('.next-form-item-help');
+        assert(itemMargin >= -helpHeight.clientHeight);
     });
 });
