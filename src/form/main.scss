@@ -241,8 +241,18 @@
         color: $form-help-color;
     }
 
-    &-item-help-margin-offset {
-        margin-top: - ($form-help-font-size*$font-lineheight-2);
+    .has-error {
+        @if $form-help-font-size*$font-lineheight-2 <=$form-item-m-margin-b {
+            .#{$css-prefix}form-item-help-margin-offset {
+                margin-top: - ($form-help-font-size*$font-lineheight-2);
+            }
+        }
+
+        @else if $form-help-font-size*$font-lineheight-2>$form-item-m-margin-b {
+            .#{$css-prefix}form-item-help-margin-offset {
+                margin-top: -$form-item-m-margin-b;
+            }
+        }
     }
 
     &.#{$css-prefix}inline {
