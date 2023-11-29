@@ -1,8 +1,6 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 import classnames from 'classnames';
-import { dom } from '../util';
 import ListHeader from './list-header';
 import ListFooter from './list-footer';
 import RowComponent from './list/row';
@@ -28,8 +26,6 @@ export default function list(BaseComponent) {
             listHeader: PropTypes.any,
             listFooter: PropTypes.any,
             rowSelection: PropTypes.object,
-            getNode: PropTypes.func,
-            onFixedScrollSync: PropTypes.func,
         };
 
         state = {};
@@ -39,66 +35,8 @@ export default function list(BaseComponent) {
                 listHeader: this.listHeader,
                 listFooter: this.listFooter,
                 rowSelection: this.rowSelection,
-                onFixedScrollSync: this.onFixedScrollSync,
-                getNode: this.getNode,
             };
         }
-
-        getNode = (type, node, lockType) => {
-            lockType = lockType ? lockType.charAt(0).toUpperCase() + lockType.substr(1) : '';
-            this[`${type}${lockType}Node`] = node;
-        };
-
-        getTableNode() {
-            const table = this.tableInc;
-            try {
-                // in case of finding an unmounted component due to cached data
-                // need to clear refs of table when dataSource Changed
-                // use try catch for temporary
-                return findDOMNode(table.tableEl);
-            } catch (error) {
-                return null;
-            }
-        }
-
-        onFixedScrollSync = (current = { currentTarget: {} }) => {
-            const currentTarget = current.currentTarget || {},
-                headerNode = this.headerNode,
-                bodyNode = this.bodyNode;
-
-            const { scrollLeft, scrollWidth, clientWidth } = currentTarget;
-            const scrollToRightEnd = !(scrollLeft < scrollWidth - clientWidth);
-            const { prefix, loading } = this.props;
-
-            if (!loading && scrollToRightEnd !== this.scrollToRightEnd) {
-                this.scrollToRightEnd = scrollToRightEnd;
-                const table = this.getTableNode();
-
-                const leftFunc = scrollToRightEnd ? 'removeClass' : 'addClass';
-                dom[leftFunc](table, `${prefix}table-scrolling-to-right`);
-            }
-
-            // 通过定时器避免重复设置表格的左滚动距离
-            if (!this.scrollTarget || this.scrollTarget === currentTarget) {
-                this.scrollTarget = currentTarget;
-                window.clearTimeout(this.timeoutId);
-
-                this.timeoutId = window.setTimeout(() => {
-                    this.scrollTarget = null;
-                    this.timeoutId = undefined;
-                }, 100);
-
-                if (currentTarget === bodyNode) {
-                    if (headerNode && scrollLeft !== headerNode.scrollLeft) {
-                        headerNode.scrollLeft = scrollLeft;
-                    }
-                } else if (currentTarget === headerNode) {
-                    if (bodyNode && scrollLeft !== bodyNode.scrollLeft) {
-                        bodyNode.scrollLeft = scrollLeft;
-                    }
-                }
-            }
-        };
 
         normalizeDataSource(dataSource) {
             const ret = [];
@@ -119,7 +57,7 @@ export default function list(BaseComponent) {
 
         render() {
             /* eslint-disable prefer-const */
-            let { components, children, className, prefix, lockType, ...others } = this.props;
+            let { components, children, className, prefix, ...others } = this.props;
             let isList = false,
                 ret = [];
             Children.forEach(children, child => {
@@ -154,7 +92,6 @@ export default function list(BaseComponent) {
                 <BaseComponent
                     {...others}
                     components={components}
-                    lockType={lockType}
                     children={ret.length > 0 ? ret : undefined}
                     className={className}
                     prefix={prefix}

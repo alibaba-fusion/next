@@ -4,10 +4,6 @@ import PropTypes from 'prop-types';
 import BodyComponent from '../base/body';
 
 export default class ListBody extends React.Component {
-    static propTypes = {
-        className: PropTypes.string,
-    };
-
     static contextTypes = {
         getNode: PropTypes.func,
         onFixedScrollSync: PropTypes.func,
@@ -18,25 +14,12 @@ export default class ListBody extends React.Component {
         getNode && getNode('body', findDOMNode(this));
     }
 
-    onBodyScroll = event => {
+    onScroll = e => {
         const { onFixedScrollSync } = this.context;
-        // sync scroll left to header
-        onFixedScrollSync && onFixedScrollSync(event);
-
-        // sync scroll top/left to lock columns
-        if ('onLockScroll' in this.props && typeof this.props.onLockScroll === 'function') {
-            this.props.onLockScroll(event);
-        }
+        onFixedScrollSync && onFixedScrollSync(e);
     };
 
     render() {
-        const { className, ...others } = this.props;
-        const style = {};
-
-        return (
-            <div style={style} className={className} onScroll={this.onBodyScroll}>
-                <BodyComponent component="div" {...others} />
-            </div>
-        );
+        return <BodyComponent component="div" onScroll={this.onScroll} {...this.props} />;
     }
 }
