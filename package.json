@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.26.34",
+  "version": "1.26.35",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -103,7 +103,7 @@
   },
   "dependencies": {
     "@alifd/field": "~1.6.3",
-    "@alifd/overlay": "^0.3.0",
+    "@alifd/overlay": "^0.3.2",
     "@alifd/validate": "~1.2.0",
     "@types/react-transition-group": "^4.4.6",
     "babel-runtime": "^6.26.0",
