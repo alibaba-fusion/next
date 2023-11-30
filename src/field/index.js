@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Field from '@alifd/field';
 
 import { log } from '../util';
@@ -11,6 +11,14 @@ class NextField extends Field {
             return;
         }
         return this.getUseField({ useMemo, useState })(options);
+    }
+
+    static useWatch(field, name) {
+        if (!useState || !useEffect) {
+            log.warning('need react version > 16.8.0');
+            return;
+        }
+        return this.getUseWatch({ useEffect, useState })(field, name);
     }
 
     constructor(com, options = {}) {

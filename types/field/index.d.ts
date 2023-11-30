@@ -30,4 +30,10 @@ export default class Field extends innerField {
      * @param options
      */
     static useField(options?: FieldOption): Field;
+
+    /**
+     * 将 Field 的 Value 转换为 React 的 State
+     * @param options
+     */
+    static useField<T>(field: Field, name: string): T;
 }
