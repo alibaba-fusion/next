@@ -35,5 +35,5 @@ export default class Field extends innerField {
      * 将 Field 的 Value 转换为 React 的 State
      * @param options
      */
-    static useField<T>(field: Field, name: string): T;
+    static useWatch<T>(field: Field, name: string): T;
 }
