@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+// switch mixins
+// --------------------------------------------------
+@mixin bounding(
+    $width,
+    $trigger-size,
+    $border-width-container,
+    $border-width-trigger,
+    $container-radius,
+    $trigger-radius
+) {
+    position: relative;
+    display: inline-block;
+    border: $border-width-container solid transparent;
+    width: $width;
+    height: calc(#{$trigger-size} + #{$border-width-container} * 2);
+    border-radius: $container-radius;
+
+    &:not([disabled]):active .#{$css-prefix}switch-btn {
+        width: calc(#{$trigger-size} * 1.3);
+    }
+
+    &.#{$css-prefix}switch-on:not([disabled]):active .#{$css-prefix}switch-btn {
+        left: calc(100% - (#{$trigger-size} * 1.3));
+    }
+
+    &.#{$css-prefix}switch-auto-width {
+        min-width: $width;
+        width: auto;
+        overflow: initial;
+    }
+    &:after {
+        content: '';
+    }
+    > .#{$css-prefix}switch-btn {
+        border: $border-width-trigger solid transparent;
+        position: absolute;
+        left: calc(100% - #{$trigger-size});
+        width: $trigger-size;
+        height: $trigger-size;
+        border-radius: $trigger-radius;
+        box-sizing: border-box;
+    }
+    > .#{$css-prefix}switch-children {
+        height: $trigger-size;
+        line-height: $trigger-size;
+    }
+}
