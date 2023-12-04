@@ -99,7 +99,7 @@ describe('CascaderSelect issues', function() {
         assert(isExpanded('西安', 1, 0, root));
         assert(isSelected('西安市', 2, 0, root));
         ref.current.setVisible(false);
-        await delay(100);
+        await delay(500);
         ref.current.setValue('3373');
         assert(root.querySelector('span.next-select-inner em').textContent.trim() === '新疆 / 乌鲁木齐 / 乌鲁木齐市');
         ref.current.setVisible(true);

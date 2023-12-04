@@ -340,18 +340,6 @@ class CascaderSelect extends Component {
         return st;
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        // 受控模式
-        if ('value' in this.props) {
-            const { value } = this.state;
-            // 若 !visible 且 value发生了变化，需要更新cascader的expanded状态，避免选中与展开不一致情况
-            // 这里使用prevState.visible是为了确保value变更前为隐藏弹层状态（单选情况，选中同时会触发隐藏）
-            if (!prevState.visible && !obj.shallowEqual(prevState.value, value) && this.cascader) {
-                this.cascader.getInstance().updateExpandedValue(value);
-            }
-        }
-    }
-
     updateCache(dataSource) {
         this._v2n = {};
         this._p2n = {};
@@ -984,6 +972,17 @@ class CascaderSelect extends Component {
             popupProps,
             followTrigger,
         };
+
+        if (!multiple) {
+            // 单选模式 select 会强制cache=true，会导致菜单展开状态的初始化不执行
+            // 若用户没有手动设置cache true，这里重置为false
+            if (!popupProps || !popupProps.cache) {
+                props.popupProps = {
+                    ...popupProps,
+                    cache: false,
+                };
+            }
+        }
 
         if (showSearch) {
             props.popupProps = {
