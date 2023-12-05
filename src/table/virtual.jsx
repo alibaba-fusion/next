@@ -177,13 +177,15 @@ export default function virtual(BaseComponent) {
         }
 
         adjustScrollTop() {
-            // 根据点击时的scrollToRow和点击后的scrollToRow判断是否是 点击滚动到指定的row 并且不需要把上次滚动到最后一个row的距离添加上
             const oldScrollToRow = Math.floor(this.lastScrollTop / this.state.rowHeight);
-            if (this.state.hasVirtualData && this.bodyNode && oldScrollToRow !== this.state.scrollToRow) {
-                this.bodyNode.scrollTop = this.state.rowHeight * this.state.scrollToRow;
-            } else {
-                this.bodyNode.scrollTop =
-                    (this.lastScrollTop % this.state.rowHeight) + this.state.rowHeight * this.state.scrollToRow;
+            if (this.state.hasVirtualData && this.bodyNode) {
+                // scrollToRow的位置与当前的scrollToRow不匹配，则以scrollToRow为准重新校准位置（可能是由非用户滚动事件导致的props.scrollToRow发生了变化）
+                if (oldScrollToRow !== this.state.scrollToRow) {
+                    this.bodyNode.scrollTop = this.state.rowHeight * this.state.scrollToRow;
+                } else {
+                    this.bodyNode.scrollTop =
+                        (this.lastScrollTop % this.state.rowHeight) + this.state.rowHeight * this.state.scrollToRow;
+                }
             }
         }
 
