@@ -177,7 +177,8 @@ export default function virtual(BaseComponent) {
         }
 
         adjustScrollTop() {
-            const oldScrollToRow = parseInt(this.lastScrollTop / this.state.rowHeight);
+            // 根据点击时的scrollToRow和点击后的scrollToRow判断是否是 点击滚动到指定的row 并且不需要把上次滚动到最后一个row的距离添加上
+            const oldScrollToRow = Math.floor(this.lastScrollTop / this.state.rowHeight);
             if (this.state.hasVirtualData && this.bodyNode && oldScrollToRow !== this.state.scrollToRow) {
                 this.bodyNode.scrollTop = this.state.rowHeight * this.state.scrollToRow;
             } else {
