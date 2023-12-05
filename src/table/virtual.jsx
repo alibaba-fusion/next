@@ -177,7 +177,10 @@ export default function virtual(BaseComponent) {
         }
 
         adjustScrollTop() {
-            if (this.state.hasVirtualData && this.bodyNode) {
+            const oldScrollToRow = parseInt(this.lastScrollTop / this.state.rowHeight);
+            if (this.state.hasVirtualData && this.bodyNode && oldScrollToRow !== this.state.scrollToRow) {
+                this.bodyNode.scrollTop = this.state.rowHeight * this.state.scrollToRow;
+            } else {
                 this.bodyNode.scrollTop =
                     (this.lastScrollTop % this.state.rowHeight) + this.state.rowHeight * this.state.scrollToRow;
             }

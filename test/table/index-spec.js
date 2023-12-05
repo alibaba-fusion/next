@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
@@ -8,6 +10,7 @@ import Loading from '../../src/loading';
 import Icon from '../../src/icon';
 import Checkbox from '../../src/checkbox';
 import Table from '../../src/table/index';
+import Button from '../../src/button/index';
 
 /* eslint-disable */
 Enzyme.configure({ adapter: new Adapter() });
@@ -1279,5 +1282,79 @@ describe('Table', () => {
                 .at(2)
                 .props().style.textAlign === undefined
         );
+    });
+});
+
+const dataSource = j => {
+    const result = [];
+    for (let i = 0; i < j; i++) {
+        result.push({
+            title: { name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible` },
+            id: `100306660940${i}`,
+            time: 2000 + i,
+            index: i,
+        });
+    }
+    return result;
+};
+const relockColumn = (value, index, record) => {
+    return <a>Remove({record.id})</a>;
+};
+class Demo extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    state = {
+        scrollToRow: 20,
+    };
+    onBodyScroll = start => {
+        this.setState({
+            scrollToRow: start,
+        });
+    };
+    onClick100 = () => {
+        this.setState({ scrollToRow: 100 });
+    };
+    render() {
+        return (
+            <div style={{ width: '90%' }}>
+                <Table
+                    dataSource={dataSource(200)}
+                    maxBodyHeight={400}
+                    useVirtual
+                    scrollToRow={this.state.scrollToRow}
+                    onBodyScroll={this.onBodyScroll}
+                >
+                    <Table.Column title="Id1" dataIndex="id" width={100} />
+                    <Table.Column title="Index" dataIndex="index" width={200} />
+                    <Table.Column title="Time" dataIndex="time" width={200} />
+                    <Table.Column title="Time" dataIndex="time" width={200} />
+                    <Table.Column title="Time" dataIndex="time" width={200} lock="right" />
+                    <Table.Column cell={relockColumn} width={200} lock />
+                </Table>
+                <Button onClick={this.onClick100}> 跳转到100行</Button>
+            </div>
+        );
+    }
+}
+describe('TableScroll', () => {
+    let mountNode;
+
+    beforeEach(() => {
+        mountNode = document.createElement('div');
+        document.body.appendChild(mountNode);
+    });
+
+    afterEach(() => {
+        ReactDOM.unmountComponentAtNode(mountNode);
+        document.body.removeChild(mountNode);
+    });
+
+    it('scroll position error', () => {
+        ReactDOM.render(<Demo />, mountNode);
+        const rowHeight = mountNode.querySelector('.first');
+        ReactTestUtils.Simulate.click(mountNode.querySelector('.next-btn'));
+        const scrollTop = mountNode.querySelector('.next-table-body');
+        assert(rowHeight.clientHeight * 99 === scrollTop.scrollTop);
     });
 });
