@@ -101,7 +101,7 @@ describe('Tooltip', () => {
     });
 
     it('should not render arrow', done => {
-        let arrowFalseWrapper = mount(
+        const arrowFalseWrapper = mount(
             <Tooltip trigger={trigger} triggetType="hover" arrow={false}>
                 i am tooltip content
             </Tooltip>
@@ -109,8 +109,8 @@ describe('Tooltip', () => {
         arrowFalseWrapper.find('span').simulate('mouseenter');
         setTimeout(function() {
             assert(document.querySelector('.next-balloon-arrow') === null);
-            done();
             arrowFalseWrapper.unmount();
+            done();
         }, 300);
     });
 

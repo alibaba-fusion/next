@@ -93,6 +93,7 @@ export default class Tooltip extends React.Component {
         delay: 50,
         trigger: <span />,
         arrowPointToCenter: false,
+        arrow: true,
     };
 
     constructor(props) {
@@ -171,7 +172,6 @@ export default class Tooltip extends React.Component {
             delay,
             v2,
             arrowPointToCenter,
-            arrow,
             ...others
         } = this.props;
 
@@ -201,7 +201,6 @@ export default class Tooltip extends React.Component {
                 rtl={rtl}
                 alignEdge={alignEdge}
                 v2={v2}
-                arrow={arrow}
             >
                 {children}
             </BalloonInner>
