@@ -1252,7 +1252,7 @@ describe('TableScroll', () => {
         document.body.removeChild(mountNode);
     });
 
-    it('scroll position error', () => {
+    it('scroll position error, close #4484', () => {
         const dataSource = j => {
             const result = [];
             for (let i = 0; i < j; i++) {
