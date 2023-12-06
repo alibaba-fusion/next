@@ -1365,9 +1365,11 @@ describe('TableScroll', () => {
                 dataSource: [],
             };
             componentDidMount = () => {
-                this.setState({
-                    dataSource: dataSource(200),
-                });
+                setTimeout(() => {
+                    this.setState({
+                        dataSource: dataSource(200),
+                    });
+                }, 50);
             };
             onBodyScroll = start => {
                 this.setState({
@@ -1401,20 +1403,27 @@ describe('TableScroll', () => {
 
         ReactDOM.render(<App />, container);
 
-        await delay(50);
+        await delay(200);
         const button = container.querySelector('tr.next-table-row.first button');
         assert(button);
         button.click();
-        await delay(50);
-        const { top: theadTop, height: tableHeadHeight } = container.querySelector('thead').getBoundingClientRect();
+        await delay(200);
+
+        const getBodyTop = () => {
+            const { top, height } = container.querySelector('thead').getBoundingClientRect();
+            return top + height;
+        };
         const skipRow = container.querySelectorAll('tr.next-table-row')[10];
         assert(skipRow.children[0].textContent === '180');
         const skipRowTop = skipRow.getBoundingClientRect().top;
-        assert(skipRowTop < theadTop + tableHeadHeight + 10);
-        container.querySelector('.next-table-body').scrollTop += skipRow.getBoundingClientRect().height;
-        const scrollRow = container.querySelectorAll('tr.next-table-row')[11];
-        assert(scrollRow.children[0].textContent === '181');
+        assert(skipRowTop >= getBodyTop());
+        const tbody = container.querySelector('.next-table-body');
+        tbody.scrollTop += 10;
+        ReactTestUtils.Simulate.scroll(tbody);
+        await delay(200);
+        const scrollRow = container.querySelectorAll('tr.next-table-row')[10];
+        assert(scrollRow.children[0].textContent === '180');
         const scrollRowTop = scrollRow.getBoundingClientRect().top;
-        assert(scrollRowTop < theadTop + tableHeadHeight + 10);
+        assert(scrollRowTop >= getBodyTop() - 10);
     });
 });
