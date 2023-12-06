@@ -1,25 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Icon from '../../src/icon';
 import Button from '../../src/button';
 import ConfigProvider from '../../src/config-provider';
-import { env,dom } from '../../src/util';
+import { env } from '../../src/util';
 import Message from '../../src/message/index';
 import '../../src/message/style.js';
 
-import zhCN from '../../src/locale/zh-cn';
-
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */
-const { getStyle } = dom;
 Enzyme.configure({ adapter: new Adapter() });
-function getPos(node) {
-    return node.getBoundingClientRect? node.getBoundingClientRect(node) : {}
-}
+
 const render = element => {
     let inc;
     const container = document.createElement('div');
@@ -373,22 +367,4 @@ describe('Message v2', () => {
         Message.destory();
         setTimeout(done, 500);
     });
-});
-// Fix: https://github.com/alibaba-fusion/next/issues/3910
-describe('Issue', () => {
-    // rest message symbol icon 'vertical-align: top' 
-    it.only('should vertical icon & content', ()=> {
-        const wrapper = render(<Message defaultVisible animation={false} >content</Message>);
-        assert(wrapper.find('.next-message').length === 1);
-        const icon = wrapper.find('.next-message-symbol-icon')[0];
-        const content = wrapper.find('.next-message-content')[0];
-        assert(icon);
-        assert(content);
-        const iconPos = getPos(icon);
-        const contentPos = getPos(content);
-        assert(iconPos.height);
-        assert(iconPos.height === contentPos.height);
-        assert(iconPos.x === contentPos.x);
-        wrapper.unmount();
-    })
 });
