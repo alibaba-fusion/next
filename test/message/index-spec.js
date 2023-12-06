@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
@@ -11,11 +10,8 @@ import { env } from '../../src/util';
 import Message from '../../src/message/index';
 import '../../src/message/style.js';
 
-import zhCN from '../../src/locale/zh-cn';
-
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */
-
 Enzyme.configure({ adapter: new Adapter() });
 
 const render = element => {
@@ -130,7 +126,6 @@ describe('Message', () => {
         wrapper.unmount();
     });
 });
-
 describe('toast', done => {
     it('should render nowrap message when content too long[Overlay case]', done => {
         const content =

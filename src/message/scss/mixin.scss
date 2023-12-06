@@ -69,6 +69,7 @@
         color: $iconColor;
     }
     .#{$css-prefix}message-symbol-icon::before {
+        vertical-align: top;
         content: $icon;
         @if (get-compiling-value($icon) == get-compiling-value($message-loading-icon-content)) {
             animation: loadingCircle 1s infinite linear;
