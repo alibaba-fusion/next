@@ -9,7 +9,7 @@ import Table from '../../src/table/index';
 import ConfigProvider from '../../src/config-provider';
 import Input from '../../src/input';
 import '../../src/table/style.js';
-
+import Button from '../../src/button/index';
 /* eslint-disable */
 Enzyme.configure({ adapter: new Adapter() });
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration));
@@ -1236,5 +1236,80 @@ describe('Issue', () => {
         console.log('[ input ]', input);
         ReactTestUtils.Simulate.change(input, { target: { value: 'aa' } });
         assert(input.value === 'aa');
+    });
+});
+
+describe('TableScroll', () => {
+    let mountNode;
+
+    beforeEach(() => {
+        mountNode = document.createElement('div');
+        document.body.appendChild(mountNode);
+    });
+
+    afterEach(() => {
+        ReactDOM.unmountComponentAtNode(mountNode);
+        document.body.removeChild(mountNode);
+    });
+
+    it('scroll position error, close #4484', () => {
+        const dataSource = j => {
+            const result = [];
+            for (let i = 0; i < j; i++) {
+                result.push({
+                    title: { name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible` },
+                    id: `100306660940${i}`,
+                    time: 2000 + i,
+                    index: i,
+                });
+            }
+            return result;
+        };
+        const relockColumn = (value, index, record) => {
+            return <a>Remove({record.id})</a>;
+        };
+        class Demo extends React.Component {
+            constructor(props) {
+                super(props);
+            }
+            state = {
+                scrollToRow: 20,
+            };
+            onBodyScroll = start => {
+                this.setState({
+                    scrollToRow: start,
+                });
+            };
+            onClick100 = () => {
+                this.setState({ scrollToRow: 100 });
+            };
+            render() {
+                return (
+                    <div style={{ width: '90%' }}>
+                        <Table
+                            dataSource={dataSource(200)}
+                            maxBodyHeight={400}
+                            useVirtual
+                            scrollToRow={this.state.scrollToRow}
+                            onBodyScroll={this.onBodyScroll}
+                        >
+                            <Table.Column title="Id1" dataIndex="id" width={100} />
+                            <Table.Column title="Index" dataIndex="index" width={200} />
+                            <Table.Column title="Time" dataIndex="time" width={200} />
+                            <Table.Column title="Time" dataIndex="time" width={200} />
+                            <Table.Column title="Time" dataIndex="time" width={200} lock="right" />
+                            <Table.Column cell={relockColumn} width={200} lock />
+                        </Table>
+                        <Button onClick={this.onClick100}> 跳转到100行</Button>
+                    </div>
+                );
+            }
+        }
+        ReactDOM.render(<Demo />, mountNode);
+        const scrollNode = mountNode.querySelector('.next-table-body');
+        const rowHeight = scrollNode.querySelector('.next-table-cell').clientHeight;
+        scrollNode.scrollTop = 200;
+        ReactTestUtils.Simulate.click(mountNode.querySelector('.next-btn'));
+        assert(rowHeight * 100 === scrollNode.scrollTop);
     });
 });
