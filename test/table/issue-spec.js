@@ -1237,6 +1237,36 @@ describe('Issue', () => {
         ReactTestUtils.Simulate.change(input, { target: { value: 'aa' } });
         assert(input.value === 'aa');
     });
+
+    it('should support locking columns when the data source is empty and in the same grouping, close #4282', () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        ReactDOM.render(
+            <Table.StickyLock dataSource={[]} fixedHeader maxBodyHeight={400}>
+                <Table.ColumnGroup title="Group1-3">
+                    <Table.Column title="Title1" dataIndex="id" lock="left" width={140} />
+                    <Table.Column title="Title2" dataIndex="name" lock="left" width={140} />
+                </Table.ColumnGroup>
+                <Table.ColumnGroup title="Group4-5">
+                    <Table.Column title="Title4" dataIndex="title" width={400} />
+                    <Table.Column title="Title5" dataIndex="phone" width={200} />
+                </Table.ColumnGroup>
+                <Table.ColumnGroup>
+                    <Table.Column title="Time" dataIndex="time" width={500} />
+                </Table.ColumnGroup>
+            </Table.StickyLock>,
+            container
+        );
+
+        const title1Cell = container.querySelector('th.next-table-fix-left[rowspan="1"]');
+        const title1CellLeft = title1Cell.getBoundingClientRect().left;
+        const title1CellWidth = title1Cell.getBoundingClientRect().width;
+        const title2CellLeft = container
+            .querySelector('th.next-table-fix-left-last[rowspan="1"]')
+            .getBoundingClientRect().left;
+        assert(title1CellLeft + title1CellWidth === title2CellLeft);
+    });
 });
 
 describe('TableScroll', () => {

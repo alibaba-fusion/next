@@ -450,6 +450,8 @@ class Table extends React.Component {
             getChildren = (propsChildren = [], level) => {
                 groupChildren[level] = groupChildren[level] || [];
                 propsChildren.forEach(child => {
+                    child.headerCellRowIndex = level;
+                    child.headerCellColIndex = groupChildren[level].length;
                     if (child.children) {
                         hasGroupHeader = true;
                         getChildren(child.children, level + 1);

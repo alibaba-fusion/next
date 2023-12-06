@@ -299,11 +299,13 @@ export default function stickyLock(BaseComponent) {
                     return ret;
                 }
 
+                const { headerCellRowIndex, headerCellColIndex } = flatenChildren[tagNext];
+
                 // header with no dataSource
                 const isEmpty = !(dataSource && dataSource.length > 0);
                 // no header
                 const node = isEmpty
-                    ? this.getHeaderCellNode(0, nodeToGetWidth)
+                    ? this.getHeaderCellNode(headerCellRowIndex, headerCellColIndex)
                     : this.getCellNode(scrollToRow || (dataSource[0] && dataSource[0].__rowIndex) || 0, nodeToGetWidth);
                 const colWidth = (node && parseFloat(getComputedStyle(node).width)) || 0;
 
