@@ -8,6 +8,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
      * 面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />`
      */
     link?: string;
+    onClick?: React.MouseEventHandler<HTMLLIElement>;
 }
 
 export class Item extends React.Component<ItemProps, any> {}
@@ -39,19 +40,19 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 当超过的项被隐藏时，是否可通过点击省略号展示菜单（包含被隐藏的项）
      */
-     showHiddenItems?: boolean;
-     /**
-      * 弹层挂载的容器节点（在showHiddenItems为true时才有意义）
-      */
-     popupContainer?: any;
-     /**
-      * 是否跟随trigger滚动（在showHiddenItems为true时才有意义）
-      */
-     followTrigger?: boolean;
-     /**
-      * 添加到弹层上的属性（在showHiddenItems为true时才有意义）
-      */
-     popupProps?: PopupProps;
+    showHiddenItems?: boolean;
+    /**
+     * 弹层挂载的容器节点（在showHiddenItems为true时才有意义）
+     */
+    popupContainer?: any;
+    /**
+     * 是否跟随trigger滚动（在showHiddenItems为true时才有意义）
+     */
+    followTrigger?: boolean;
+    /**
+     * 添加到弹层上的属性（在showHiddenItems为true时才有意义）
+     */
+    popupProps?: PopupProps;
 }
 
 export default class Breadcrumb extends React.Component<BreadcrumbProps, any> {

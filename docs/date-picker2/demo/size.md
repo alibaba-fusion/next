@@ -1,13 +1,13 @@
 # 尺寸大小
 
-- order: 8
+- order: 10
 
 通过 `size` 属性设置输入框大小，默认`medium`。
 
 :::lang=en-us
 # Format
 
-- order: 8
+- order: 10
 
 Using attribute `size` to change the input size, `medium` as default.
 

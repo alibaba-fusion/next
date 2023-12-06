@@ -25,11 +25,7 @@ module.exports = function*() {
         });
     } catch (e) {
         logger.error(
-            chalk.red(
-                `Try to build entry scss failed: ${e.message} line: ${
-                    e.line
-                }, column: ${e.column} in ${e.file}`
-            )
+            chalk.red(`Try to build entry scss failed: ${e.message} line: ${e.line}, column: ${e.column} in ${e.file}`)
         );
         throw e;
     }

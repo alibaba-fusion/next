@@ -11,7 +11,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 卡片的上的图片 / 视频
      */
-    media?: React.ReactNode,
+    media?: React.ReactNode;
 
     /**
      * 卡片的标题
@@ -26,7 +26,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 卡片操作组，位置在卡片底部
      */
-    actions?: React.ReactNode,
+    actions?: React.ReactNode;
 
     /**
      * 是否显示标题的项目符号
@@ -126,8 +126,7 @@ export interface CardMediaProps extends HTMLAttributesWeak, CommonProps {
     src?: string;
 }
 
-export interface CardActionsProps extends HTMLAttributesWeak, CommonProps {
-}
+export interface CardActionsProps extends HTMLAttributesWeak, CommonProps {}
 
 export interface CardDividerProps extends HTMLAttributesWeak, CommonProps {
     /**

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import CommonProps from '../util';
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLElement>, 'content'>, CommonProps {
     /**
      * 徽章依托的内容
      */
@@ -28,6 +28,11 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 不展示数字，只展示一个小红点
      */
     dot?: boolean;
+
+    /**
+     * 当 count 为 0 时，默认不显示，但是可以使用 showZero 修改为显示
+     */
+    showZero?: boolean;
 }
 
 export default class Badge extends React.Component<BadgeProps, any> {}

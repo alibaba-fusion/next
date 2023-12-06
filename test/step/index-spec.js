@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React, { useState } from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
@@ -23,7 +23,13 @@ describe('Step', () => {
                 </Step>
             );
 
-            assert(wrapper.find('.next-step-circle').at(0).instance().getAttribute('dir') === 'rtl');
+            assert(
+                wrapper
+                    .find('.next-step-circle')
+                    .at(0)
+                    .instance()
+                    .getAttribute('dir') === 'rtl'
+            );
         });
         it('should render with default props', () => {
             const wrapper = mount(
@@ -52,8 +58,7 @@ describe('Step', () => {
                 wrapper
                     .find('.next-step-item-title')
                     .at(0)
-                    .html() ===
-                    '<div class="next-step-item-title"><span>测试</span></div>'
+                    .html() === '<div class="next-step-item-title"><span>测试</span></div>'
             );
         });
 
@@ -69,8 +74,7 @@ describe('Step', () => {
                 wrapper
                     .find('.next-step-item-content')
                     .at(0)
-                    .html() ===
-                    '<div class="next-step-item-content"><span>测试</span></div>'
+                    .html() === '<div class="next-step-item-content"><span>测试</span></div>'
             );
         });
 
@@ -141,13 +145,9 @@ describe('Step', () => {
         });
 
         it('should render when direction and labelPlacement are both hoz', () => {
-            const steps = [
-                "知道自己不懂",
-                "不知道自己懂",
-                "知道自己懂了"
-            ].map((item, index) => <Step.Item key={index} title={item} itemRender={() => (
-                <Icon type="smile" />
-            )} />);
+            const steps = ['知道自己不懂', '不知道自己懂', '知道自己懂了'].map((item, index) => (
+                <Step.Item key={index} title={item} itemRender={() => <Icon type="smile" />} />
+            ));
             const wrapper = mount(
                 <Step current={1} shape="circle" direction="hoz" labelPlacement="hoz">
                     {steps}
@@ -219,18 +219,9 @@ describe('Step', () => {
                     <StepItem title="步骤3" />
                 </Step>
             );
-            assert(
-                wrapper0.find('.next-progress-circle.next-step-item-progress')
-                    .length === 1
-            );
-            assert(
-                wrapper2.find('.next-progress-circle.next-step-item-progress')
-                    .length === 1
-            );
-            assert(
-                wrapper3.find('.next-progress-circle.next-step-item-progress')
-                    .length === 0
-            );
+            assert(wrapper0.find('.next-progress-circle.next-step-item-progress').length === 1);
+            assert(wrapper2.find('.next-progress-circle.next-step-item-progress').length === 1);
+            assert(wrapper3.find('.next-progress-circle.next-step-item-progress').length === 0);
         });
 
         it('should render step.item with itemRender', () => {
@@ -257,7 +248,12 @@ describe('Step', () => {
             );
 
             const item = wrapper.find('.next-step-item');
-            assert(item.at(0).instance().style.width.startsWith('calc((100%'));
+            assert(
+                item
+                    .at(0)
+                    .instance()
+                    .style.width.startsWith('calc((100%')
+            );
             assert(item.at(2).instance().style.width === 'auto');
         });
     });
@@ -327,11 +323,8 @@ describe('Step', () => {
                         $tail.at(2).instance().style.width === ''
                 );
                 // 重新设置为垂直居中 应该去掉 next-step-item-tail 的宽度值
-                wrapper.setProps({labelPlacement: 'ver'}, () => {
-                    assert(
-                        $tail.length === 3 &&
-                        $tail.at(0).instance().style.width === ""
-                    );
+                wrapper.setProps({ labelPlacement: 'ver' }, () => {
+                    assert($tail.length === 3 && $tail.at(0).instance().style.width === '');
                 });
             });
         });
@@ -340,10 +333,7 @@ describe('Step', () => {
             let ret_1 = -1;
             const wrapper = mount(
                 <Step current={1}>
-                    <StepItem
-                        title="步骤1"
-                        onClick={index => (ret_1 = index)}
-                    />
+                    <StepItem title="步骤1" onClick={index => (ret_1 = index)} />
                     <StepItem title="步骤2" />
                     <StepItem title="步骤3" />
                 </Step>
@@ -358,10 +348,7 @@ describe('Step', () => {
             let ret_2 = -1;
             const wrapper2 = mount(
                 <Step current={1} direction="ver">
-                    <StepItem
-                        title="步骤1"
-                        onClick={index => (ret_2 = index)}
-                    />
+                    <StepItem title="步骤1" onClick={index => (ret_2 = index)} />
                     <StepItem title="步骤2" />
                     <StepItem title="步骤3" />
                 </Step>
@@ -375,56 +362,71 @@ describe('Step', () => {
         });
 
         it('should resize when content changed', async () => {
-
-            const StepContent=()=>{
+            const StepContent = () => {
                 const [conditions, setconditions] = useState([]);
                 const createNewSelectItem = () => {
-                     const newType = {
-                         type: 'null',
-                         fieldName: 'null',
-                     };
-                     const newConditions = [...conditions,newType]
-                     setconditions(newConditions);
-                 }
-                return(
+                    const newType = {
+                        type: 'null',
+                        fieldName: 'null',
+                    };
+                    const newConditions = [...conditions, newType];
+                    setconditions(newConditions);
+                };
+                return (
                     <div>
-                        {conditions&&conditions.length>0&&
-                        conditions.map((item,index)=>
-                                    <div key={`step-content-${index}`} id={`step-content-${index}`} style={{width:'100%', maxWidth: 200, height:20, background:'#2196f3', margin:'10px 0'}}/>
-                                    )}
-                        <Button id="add-content-btn" onClick={createNewSelectItem}>add new div</Button>	
-                    </div>	
+                        {conditions &&
+                            conditions.length > 0 &&
+                            conditions.map((item, index) => (
+                                <div
+                                    key={`step-content-${index}`}
+                                    id={`step-content-${index}`}
+                                    style={{
+                                        width: '100%',
+                                        maxWidth: 200,
+                                        height: 20,
+                                        background: '#2196f3',
+                                        margin: '10px 0',
+                                    }}
+                                />
+                            ))}
+                        <Button id="add-content-btn" onClick={createNewSelectItem}>
+                            add new div
+                        </Button>
+                    </div>
                 );
             };
             const wrapper = await mountReact(
                 <Step current={1} shape="circle">
-                    <StepItem
-                        title="步骤1"
-                        content={<StepContent/>}
-                    />
+                    <StepItem title="步骤1" content={<StepContent />} />
                     <StepItem title="步骤2" icon="smile" content="this is a description" />
                     <StepItem title="步骤3" />
                 </Step>
             );
 
-            const originHeight = parseFloat(wrapper.find('.next-step').at(0).instance().style.height.slice(0, -2));
-            wrapper
-                .find('.next-btn')
-                .simulate('click');
+            const originHeight = parseFloat(
+                wrapper
+                    .find('.next-step')
+                    .at(0)
+                    .instance()
+                    .style.height.slice(0, -2)
+            );
+            wrapper.find('.next-btn').simulate('click');
             assert(document.querySelectorAll('[id^="step-content-"]').length === 1);
-            wrapper
-                .find('.next-btn')
-                .simulate('click');
-            
+            wrapper.find('.next-btn').simulate('click');
+
             assert(document.querySelectorAll('[id^="step-content-"]').length === 2);
             wrapper.setProps({ direction: 'ver' });
             wrapper.setProps({ direction: 'hoz' });
-            const changedHeight = parseFloat(wrapper.find('.next-step').at(0).instance().style.height.slice(0, -2));
+            const changedHeight = parseFloat(
+                wrapper
+                    .find('.next-step')
+                    .at(0)
+                    .instance()
+                    .style.height.slice(0, -2)
+            );
             assert(changedHeight > originHeight);
             wrapper.setProps({ direction: 'ver' });
-            wrapper
-                .find('.next-btn')
-                .simulate('click');
+            wrapper.find('.next-btn').simulate('click');
             wrapper.setProps({ direction: 'hoz' });
             wrapper.setProps({ direction: 'ver' });
         });

@@ -7,11 +7,7 @@ import Tag from '../../src/tag';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const {
-    Selectable: TagCheckable,
-    Group: TagGroup,
-    Closable: TagClosable,
-} = Tag;
+const { Selectable: TagCheckable, Group: TagGroup, Closable: TagClosable } = Tag;
 
 const PRESET_COLORS = {
     blue: '#4494F9',
@@ -81,18 +77,14 @@ describe('Tag', () => {
 
         it('should hidden tag if tag is closable and closeArea is `tag`', () => {
             const onCloseCb = sinon.spy();
-            const wrapper = mount(
-                <Tag onClose={onCloseCb} closable closeArea="tag" />
-            );
+            const wrapper = mount(<Tag onClose={onCloseCb} closable closeArea="tag" />);
             wrapper.find('.next-tag').simulate('click');
             assert(onCloseCb.calledOnce === true);
         });
 
         it('should emit `onClose` method if tail clicked', () => {
             const onCloseCb = sinon.spy();
-            const wrapper = mount(
-                <Tag closable type="primary" onClose={onCloseCb} />
-            );
+            const wrapper = mount(<Tag closable type="primary" onClose={onCloseCb} />);
             wrapper.find('.next-tag-close-btn').simulate('click');
             assert(onCloseCb.calledOnce === true);
         });
@@ -115,9 +107,7 @@ describe('Tag', () => {
         // 预设颜色值匹配
         Object.entries(PRESET_COLORS).forEach(([name]) => {
             it(`should render preset ${name} color when type is primay`, () => {
-                const wrapper = mount(
-                    <Tag closable type="primary" color={name} />
-                );
+                const wrapper = mount(<Tag closable type="primary" color={name} />);
 
                 // 背景一致，且颜色是白色
                 assert(wrapper.find('.next-tag').hasClass(`next-tag-${name}`));
@@ -129,11 +119,7 @@ describe('Tag', () => {
             it(`should render preset ${name} color when type is normal`, () => {
                 const wrapper = mount(<Tag color={name} />);
                 // 背景透明 25%， 字体颜色不变
-                assert(
-                    wrapper
-                        .find('.next-tag')
-                        .hasClass(`next-tag-${name}-inverse`)
-                );
+                assert(wrapper.find('.next-tag').hasClass(`next-tag-${name}-inverse`));
                 wrapper.unmount();
             });
         });
@@ -144,11 +130,7 @@ describe('Tag', () => {
             const style = wrapper.find('.next-tag').prop('style');
             const { backgroundColor, color, borderColor } = style;
 
-            assert(
-                backgroundColor === '#ff0' &&
-                    color === '#fff' &&
-                    borderColor === '#ff0'
-            );
+            assert(backgroundColor === '#ff0' && color === '#fff' && borderColor === '#ff0');
 
             wrapper.unmount();
         });
@@ -159,11 +141,7 @@ describe('Tag', () => {
             const style = wrapper.find('.next-tag').prop('style');
             const { backgroundColor, color, borderColor } = style;
 
-            assert(
-                backgroundColor === '#ff0' &&
-                    color === '#fff' &&
-                    borderColor === '#ff0'
-            );
+            assert(backgroundColor === '#ff0' && color === '#fff' && borderColor === '#ff0');
 
             wrapper.unmount();
         });
@@ -202,9 +180,7 @@ describe('TagCheckable', () => {
 
         it('`onChange` wont emit if click disabled tag', () => {
             const onChangeCb = sinon.spy();
-            const wrapper = mount(
-                <TagCheckable disabled onChange={onChangeCb} />
-            );
+            const wrapper = mount(<TagCheckable disabled onChange={onChangeCb} />);
             wrapper.find('.next-tag').simulate('click');
             assert(onChangeCb.calledOnce === false);
         });
@@ -231,9 +207,7 @@ describe('TagClosable', () => {
     describe('behavior', () => {
         it('emit `onChange` if click undisabled tag', () => {
             const onClose = sinon.spy();
-            const wrapper = mount(
-                <TagClosable closeArea="tag" onClose={onClose} />
-            );
+            const wrapper = mount(<TagClosable closeArea="tag" onClose={onClose} />);
             wrapper.find('.next-tag').simulate('click');
             assert(onClose.calledOnce === true);
         });

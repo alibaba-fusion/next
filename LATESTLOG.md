@@ -1,12 +1,15 @@
 # Latest Log 
 
-## [1.26.15](https://github.com/alibaba-fusion/next/compare/1.26.14...1.26.15) (2023-03-09)
+## [1.26.35](https://github.com/alibaba-fusion/next/compare/1.26.34...1.26.35) (2023-11-30)
 
 
 ### Bug Fixes
 
-* **Input:** fix input groups hover style,close [#3849](https://github.com/alibaba-fusion/next/issues/3849) ([#4274](https://github.com/alibaba-fusion/next/issues/4274)) ([bb37360](https://github.com/alibaba-fusion/next/commit/bb37360))
-* **Input:** update onChange function signature ([#4271](https://github.com/alibaba-fusion/next/issues/4271)) ([a73e73a](https://github.com/alibaba-fusion/next/commit/a73e73a))
-* **Overlay:** filter unused props 'shouldUpdatePosition', close [#3812](https://github.com/alibaba-fusion/next/issues/3812) ([#4277](https://github.com/alibaba-fusion/next/issues/4277)) ([8131740](https://github.com/alibaba-fusion/next/commit/8131740))
+* **Table:** header and body always scroll together while GroupHeader and StickyLock, close 4396 ([#4550](https://github.com/alibaba-fusion/next/issues/4550)) ([a11365a](https://github.com/alibaba-fusion/next/commit/a11365a)), closes [#4396](https://github.com/alibaba-fusion/next/issues/4396)
+
+
+### Features
+
+* **Form:** the error help does not affect the item margin, close [#3994](https://github.com/alibaba-fusion/next/issues/3994) ([#4546](https://github.com/alibaba-fusion/next/issues/4546)) ([99a08ba](https://github.com/alibaba-fusion/next/commit/99a08ba))
 
 

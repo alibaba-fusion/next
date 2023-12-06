@@ -59,9 +59,7 @@ describe('Nav A11y', () => {
 
     it('should not have any violations for inline subnav', async () => {
         wrapper = await testReact(
-            <Nav
-                defaultOpenKeys={['sub-nav-1']}
-            >
+            <Nav defaultOpenKeys={['sub-nav-1']}>
                 <Item key="1">First</Item>
                 <SubNav key="sub-nav-1" label="Sub Nav 1">
                     <Item key="1-1">Item 1</Item>
@@ -75,10 +73,7 @@ describe('Nav A11y', () => {
     // TODO: `aria-required-children` - sub-nav popup has role='menu', but the items are role="listitem". Should change "listitem" to "menuitem".
     it.skip('should not have any violations for popup subnav', async () => {
         wrapper = await testReact(
-            <Nav
-                mode="popup"
-                defaultOpenKeys={['sub-nav-1']}
-            >
+            <Nav mode="popup" defaultOpenKeys={['sub-nav-1']}>
                 <Item key="1">First</Item>
                 <SubNav key="sub-nav-1" label="Sub Nav 1">
                     <Item key="1-1">Item 1</Item>
@@ -88,6 +83,4 @@ describe('Nav A11y', () => {
         );
         return test('.next-overlay-wrapper');
     });
-
-
 });

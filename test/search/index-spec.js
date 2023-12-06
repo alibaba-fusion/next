@@ -9,6 +9,8 @@ import enUS from '../../src/locale/en-us';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+const sleep = duration => new Promise(resolve => setTimeout(resolve, duration));
+
 /* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Search', () => {
     describe('render', () => {
@@ -56,19 +58,26 @@ describe('Search', () => {
         });
 
         it('should set aria-label to locale.buttonText', () => {
-            const wrapper = shallow(<Search locale={enUS.Search}/>);
+            const wrapper = shallow(<Search locale={enUS.Search} />);
             assert(wrapper.dive().find(`[aria-label="${enUS.Search.buttonText}"]`).length === 1);
         });
 
         it('should override aria-label with prop', () => {
-            const wrapper = shallow(<Search locale={enUS.Search} aria-label="a11y search"/>);
+            const wrapper = shallow(<Search locale={enUS.Search} aria-label="a11y search" />);
             assert(wrapper.dive().find(`[aria-label="${enUS.Search.buttonText}"]`).length === 0);
             assert(wrapper.dive().find(`[aria-label="a11y search"]`).length === 1);
         });
 
         it('should support icons', () => {
-            const wrapper = mount(<Search icons={{search: <span id="icon-text">sc</span>}} aria-label="a11y search"/>);
-            assert(wrapper.find('.next-search-btn span').at(0).text() === 'sc');
+            const wrapper = mount(
+                <Search icons={{ search: <span id="icon-text">sc</span> }} aria-label="a11y search" />
+            );
+            assert(
+                wrapper
+                    .find('.next-search-btn span')
+                    .at(0)
+                    .text() === 'sc'
+            );
         });
     });
 
@@ -84,17 +93,9 @@ describe('Search', () => {
             const onSearch = sinon.spy();
             const onBlur = sinon.spy();
 
-            wrapper = mount(
-                <Search
-                    onChange={onChange}
-                    onSearch={onSearch}
-                    onBlur={onBlur}
-                />
-            );
+            wrapper = mount(<Search onChange={onChange} onSearch={onSearch} onBlur={onBlur} />);
 
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: '20' } });
+            wrapper.find('input').simulate('change', { target: { value: '20' } });
             assert(onChange.calledOnce);
             wrapper.find('button').simulate('click');
             assert(onSearch.calledOnce);
@@ -110,13 +111,9 @@ describe('Search', () => {
             const onChange = value => {
                 assert(value === '20');
             };
-            wrapper = mount(
-                <Search defaultValue={'123'} onChange={onChange} />
-            );
+            wrapper = mount(<Search defaultValue={'123'} onChange={onChange} />);
 
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: '20' } });
+            wrapper.find('input').simulate('change', { target: { value: '20' } });
             assert(wrapper.find('input').prop('value') === '20');
 
             //  这里可以修改下 defauValue 确认下第二次修改是没有影响的
@@ -127,17 +124,12 @@ describe('Search', () => {
             done();
         });
 
-        it('should support onSearch ', done => {
-            const onSearch = value => {
-                assert(value === '123');
-            };
-            wrapper = mount(
-                <Search defaultValue={'123'} onSearch={onSearch} />
-            );
+        it('should support onSearch ', () => {
+            const onSearch = sinon.spy();
+            wrapper = mount(<Search defaultValue={'123'} onSearch={onSearch} />);
 
             wrapper.find('input').simulate('keydown', { keyCode: 13 });
-
-            done();
+            assert(onSearch.calledOnceWith('123'));
         });
 
         it('should support onChange/onSearch ', done => {
@@ -162,17 +154,12 @@ describe('Search', () => {
                 done();
             };
 
-            wrapper = mount(
-                <Search
-                    dataSource={dataSource}
-                    onSearch={onSearch}
-                />
-            );
+            wrapper = mount(<Search dataSource={dataSource} onSearch={onSearch} />);
             // 点击
             wrapper.find('.next-search input').simulate('click');
             wrapper.find('.next-search input').simulate('change', { target: { value: 'A' } });
             wrapper.update();
-            
+
             wrapper.find('input').simulate('keydown', { keyCode: 13 });
         });
 
@@ -198,17 +185,9 @@ describe('Search', () => {
                 assert(value === filter[FILTER_INDEX].value);
             };
 
-            wrapper = mount(
-                <Search
-                    filter={filter}
-                    defaultValue={'123'}
-                    onFilterChange={onFilterChange}
-                />
-            );
+            wrapper = mount(<Search filter={filter} defaultValue={'123'} onFilterChange={onFilterChange} />);
             // 点击
-            wrapper
-                .find('.next-search-left-addon .next-select-single')
-                .simulate('click');
+            wrapper.find('.next-search-left-addon .next-select-single').simulate('click');
             wrapper
                 .find('.next-menu-item')
                 .at(FILTER_INDEX)
@@ -230,9 +209,7 @@ describe('Search', () => {
                 },
             ];
             wrapper.setProps({ filter });
-            wrapper
-                .find('.next-search-left-addon .next-select-single')
-                .simulate('click');
+            wrapper.find('.next-search-left-addon .next-select-single').simulate('click');
             wrapper
                 .find('.next-menu-item')
                 .at(FILTER_INDEX)
@@ -264,16 +241,9 @@ describe('Search', () => {
                 done();
             };
             wrapper = mount(
-                <Search
-                    defaultValue={'123'}
-                    filter={filter}
-                    filterValue={FILTER_VALUE}
-                    onSearch={onSearch}
-                />
+                <Search defaultValue={'123'} filter={filter} filterValue={FILTER_VALUE} onSearch={onSearch} />
             );
-            assert(
-                wrapper.find('.next-select-values em').text() === FILTER_VALUE
-            );
+            assert(wrapper.find('.next-select-values em').text() === FILTER_VALUE);
             wrapper.find('button').simulate('click');
         });
 
@@ -311,19 +281,10 @@ describe('Search', () => {
         it('should support disabled', () => {
             const onSearch = sinon.spy();
             const onChange = sinon.spy();
-            wrapper = mount(
-                <Search
-                    shape="simple"
-                    onSearch={onSearch}
-                    onChange={onChange}
-                    disabled
-                />
-            );
+            wrapper = mount(<Search shape="simple" onSearch={onSearch} onChange={onChange} disabled />);
             wrapper.find('.next-icon').simulate('click');
             assert(onSearch.notCalled);
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: '20' } });
+            wrapper.find('input').simulate('change', { target: { value: '20' } });
             assert(onChange.notCalled);
         });
         it('should support enter key', () => {
@@ -338,14 +299,7 @@ describe('Search', () => {
         });
         it('should support disable enter key', () => {
             const onSearch = sinon.spy();
-            wrapper = mount(
-                <Search
-                    disabled
-                    shape="simple"
-                    onSearch={onSearch}
-                    value="123"
-                />
-            );
+            wrapper = mount(<Search disabled shape="simple" onSearch={onSearch} value="123" />);
             // 支持enter
             wrapper.find('.next-icon').simulate('keyDown', { keyCode: 13 });
             assert(onSearch.notCalled);
@@ -376,12 +330,8 @@ describe('Search', () => {
 
         it('should support DataSource ', done => {
             wrapper.find('input').simulate('click');
-            assert(
-                wrapper.find('.next-menu-item').length === dataSource.length
-            );
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'y' } });
+            assert(wrapper.find('.next-menu-item').length === dataSource.length);
+            wrapper.find('input').simulate('change', { target: { value: 'y' } });
 
             const items = wrapper.find('.next-menu-item');
             assert(
@@ -399,9 +349,7 @@ describe('Search', () => {
         });
         it('should support dataSource filter ', done => {
             wrapper.find('input').simulate('click');
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'y' } });
+            wrapper.find('input').simulate('change', { target: { value: 'y' } });
 
             const items = wrapper.find('.next-menu-item');
             assert(
@@ -416,9 +364,7 @@ describe('Search', () => {
         });
         it('should support dataSource value click ', done => {
             wrapper.find('input').simulate('click');
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'y' } });
+            wrapper.find('input').simulate('change', { target: { value: 'y' } });
 
             wrapper
                 .find('.next-menu-item')
@@ -427,6 +373,19 @@ describe('Search', () => {
             assert(wrapper.find('input').prop('value') === dataSource[0].value);
 
             done();
+        });
+        it('should support dataSource and onSearch', () => {
+            const onSearch = sinon.spy();
+            wrapper.setProps({ onSearch });
+            // has matched item
+            wrapper.find('input').simulate('change', { target: { value: 'y' } });
+            wrapper.find('input').simulate('keydown', { keyCode: 13 });
+            assert(onSearch.calledOnceWith('yyy'));
+            // does not has matched item
+            wrapper.find('input').simulate('change', { target: { value: 'abc' } });
+            wrapper.find('input').simulate('keydown', { keyCode: 13 });
+            assert(onSearch.calledTwice);
+            assert(onSearch.calledWith('abc'));
         });
     });
 });

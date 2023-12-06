@@ -46,9 +46,7 @@ class Notification extends Component {
 
     close = key => {
         const { notifications } = this.state;
-        const index = notifications.findIndex(
-            notification => notification.key === key
-        );
+        const index = notifications.findIndex(notification => notification.key === key);
 
         if (index === -1) return;
         const { onClose, timer } = notifications[index];
@@ -80,9 +78,7 @@ class Notification extends Component {
             key = uuid('notification-');
         }
 
-        const index = notifications.findIndex(
-            notification => notification.key === key
-        );
+        const index = notifications.findIndex(notification => notification.key === key);
 
         if (index !== -1) {
             notifications[index] = {
@@ -128,12 +124,8 @@ class Notification extends Component {
             <div
                 className={`${prefix}notification`}
                 style={{
-                    [config.placement.indexOf('b') === 0
-                        ? 'bottom'
-                        : 'top']: config.offset[1],
-                    [config.placement.indexOf('l') !== -1
-                        ? 'left'
-                        : 'right']: config.offset[0],
+                    [config.placement.indexOf('b') === 0 ? 'bottom' : 'top']: config.offset[1],
+                    [config.placement.indexOf('l') !== -1 ? 'left' : 'right']: config.offset[0],
                 }}
             >
                 <Animate
@@ -144,36 +136,25 @@ class Notification extends Component {
                     }}
                     singleMode={false}
                 >
-                    {notifications.map(
-                        ({
-                            key,
-                            type,
-                            title,
-                            content,
-                            icon,
-                            onClick,
-                            style,
-                            className,
-                        }) => (
-                            <Message
-                                key={key}
-                                shape="toast"
-                                type={type}
-                                title={title}
-                                iconType={icon}
-                                closeable
-                                animation={false}
-                                size={config.size}
-                                visible
-                                style={style}
-                                className={className}
-                                onClick={onClick}
-                                onClose={() => close(key)}
-                            >
-                                {content}
-                            </Message>
-                        )
-                    )}
+                    {notifications.map(({ key, type, title, content, icon, onClick, style, className }) => (
+                        <Message
+                            key={key}
+                            shape="toast"
+                            type={type}
+                            title={title}
+                            iconType={icon}
+                            closeable
+                            animation={false}
+                            size={config.size}
+                            visible
+                            style={style}
+                            className={className}
+                            onClick={onClick}
+                            onClose={() => close(key)}
+                        >
+                            {content}
+                        </Message>
+                    ))}
                 </Animate>
             </div>
         );
@@ -190,10 +171,7 @@ let waitOpens = [];
 function open(options = {}) {
     if (!options.title && !options.content) return;
 
-    const duration =
-        !options.duration && options.duration !== 0
-            ? config.duration
-            : options.duration;
+    const duration = !options.duration && options.duration !== 0 ? config.duration : options.duration;
 
     if (!instance) {
         if (!options.key) {

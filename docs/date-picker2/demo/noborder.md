@@ -1,6 +1,6 @@
 # 无边框
 
--   order: 7
+-   order: 9
 
 无边框样式。
 
@@ -8,7 +8,7 @@
 
 # Borderless
 
--   order: 7
+-   order: 9
 
 borderless style.
 

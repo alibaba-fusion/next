@@ -16,8 +16,7 @@ export function deprecated(props, instead, component) {
     /* istanbul ignore else */
     if (!isProduction() && typeof console !== 'undefined' && console.error) {
         return console.error(
-            `Warning: [ ${props} ] is deprecated at [ ${component} ], ` +
-                `use [ ${instead} ] instead of it.`
+            `Warning: [ ${props} ] is deprecated at [ ${component} ], use [ ${instead} ] instead of it.`
         );
     }
 }

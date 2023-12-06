@@ -22,18 +22,12 @@ const getSlideClasses = specProps => {
     const slickCloned = index < 0 || index >= specProps.slideCount;
     if (specProps.centerMode) {
         centerOffset = Math.floor(specProps.slidesToShow / 2);
-        slickCenter =
-            (index - specProps.currentSlide) % specProps.slideCount === 0;
-        if (
-            index > specProps.currentSlide - centerOffset - 1 &&
-            index <= specProps.currentSlide + centerOffset
-        ) {
+        slickCenter = (index - specProps.currentSlide) % specProps.slideCount === 0;
+        if (index > specProps.currentSlide - centerOffset - 1 && index <= specProps.currentSlide + centerOffset) {
             slickActive = true;
         }
     } else {
-        slickActive =
-            specProps.currentSlide <= index &&
-            index < specProps.currentSlide + specProps.slidesToShow;
+        slickActive = specProps.currentSlide <= index && index < specProps.currentSlide + specProps.slidesToShow;
     }
 
     return classNames(`${prefix}slick-slide`, {
@@ -46,26 +40,17 @@ const getSlideClasses = specProps => {
 const getSlideStyle = function(specProps) {
     const style = {};
 
-    if (
-        specProps.variableWidth === undefined ||
-        specProps.variableWidth === false
-    ) {
+    if (specProps.variableWidth === undefined || specProps.variableWidth === false) {
         style.width = specProps.slideWidth;
     }
 
     if (specProps.animation === 'fade') {
         style.position = 'relative';
 
-        style.opacity =
-            specProps.currentSlide === specProps.activeIndex ? 1 : 0;
-        style.visibility =
-            specProps.currentSlide >= specProps.activeIndex
-                ? 'visible'
-                : 'hidden';
+        style.opacity = specProps.currentSlide === specProps.activeIndex ? 1 : 0;
+        style.visibility = 'visible';
         style.transition = `opacity ${specProps.speed}ms ${specProps.cssEase}`;
-        style.WebkitTransition = `opacity ${specProps.speed}ms ${
-            specProps.cssEase
-        }`;
+        style.WebkitTransition = `opacity ${specProps.speed}ms ${specProps.cssEase}`;
 
         if (specProps.vertical) {
             style.top = -specProps.activeIndex * specProps.slideHeight;
@@ -83,9 +68,7 @@ const getSlideStyle = function(specProps) {
 
 const getKey = (child, fallbackKey) => {
     // key could be a zero
-    return child.key === null || child.key === undefined
-        ? fallbackKey
-        : child.key;
+    return child.key === null || child.key === undefined ? fallbackKey : child.key;
 };
 
 const renderSlides = specProps => {
@@ -104,10 +87,7 @@ const renderSlides = specProps => {
             currentSlide: specProps.currentSlide,
         };
 
-        if (
-            !specProps.lazyLoad |
-            (specProps.lazyLoad && specProps.lazyLoadedList.indexOf(index) >= 0)
-        ) {
+        if (!specProps.lazyLoad | (specProps.lazyLoad && specProps.lazyLoadedList.indexOf(index) >= 0)) {
             child = elem;
         } else {
             child = elem.key ? <div key={elem.key} /> : <div />;
@@ -153,9 +133,7 @@ const renderSlides = specProps => {
 
         // variableWidth doesn't wrap properly.
         if (specProps.infinite && specProps.animation !== 'fade') {
-            const infiniteCount = specProps.variableWidth
-                ? specProps.slidesToShow + 1
-                : specProps.slidesToShow;
+            const infiniteCount = specProps.variableWidth ? specProps.slidesToShow + 1 : specProps.slidesToShow;
 
             if (index >= count - infiniteCount) {
                 key = -(count - index);
@@ -184,10 +162,7 @@ const renderSlides = specProps => {
     });
     // To support server-side rendering
     if (!dom.hasDOM) {
-        return slides.slice(
-            specProps.currentSlide,
-            specProps.currentSlide + specProps.slidesToShow
-        );
+        return slides.slice(specProps.currentSlide, specProps.currentSlide + specProps.slidesToShow);
     }
     if (specProps.rtl) {
         return preCloneSlides.concat(slides, postCloneSlides).reverse();
@@ -209,11 +184,7 @@ export default class Track extends Component {
     render() {
         const slides = renderSlides(this.props);
         return (
-            <div
-                role="list"
-                className={`${this.props.prefix}slick-track`}
-                style={this.props.trackStyle}
-            >
+            <div role="list" className={`${this.props.prefix}slick-track`} style={this.props.trackStyle}>
                 {slides}
             </div>
         );

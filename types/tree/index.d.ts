@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { VirtualListProps } from '../virtual-list';
 
 export interface NodeProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -48,6 +49,11 @@ export interface NodeProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 是否是叶子节点，设置loadData时生效
      */
     isLeaf?: boolean;
+
+    /**
+     * 点击文本是否可以勾选
+     */
+    clickToCheck?: boolean;
 }
 
 export class Node extends React.Component<NodeProps, any> {}
@@ -252,6 +258,15 @@ export interface TreeProps extends HTMLAttributesWeak, CommonProps {
      * 是否开启虚拟滚动
      */
     useVirtual?: boolean;
+
+    /**
+     * VirtualList透传参数
+     */
+    virtualListProps?: VirtualListProps;
+    /**
+     * 点击文本是否可以勾选
+     */
+    clickToCheck?: boolean;
 }
 
 export default class Tree extends React.Component<TreeProps, any> {

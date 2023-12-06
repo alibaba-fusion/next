@@ -133,7 +133,7 @@ export interface GroupFooterProps extends React.HTMLAttributes<HTMLElement>, Com
 export class GroupFooter extends React.Component<GroupFooterProps, any> {}
 
 export interface BaseTableProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
-/**
+    /**
      * 样式类名的品牌前缀
      */
     prefix?: string;
@@ -212,7 +212,6 @@ export interface BaseTableProps extends React.HTMLAttributes<HTMLElement>, Commo
     primaryKey?: string;
 }
 export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTableProps {
-
     /**
      * 点击表格每一行触发的事件
      */
@@ -252,18 +251,8 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTable
     /**
      * 设置单元格的属性，通过该属性可以进行合并单元格
      */
-    getCellProps?: (
-        rowIndex: number,
-        colIndex: number,
-        dataIndex: string,
-        record: any
-    ) => any;
-    cellProps?: (
-        rowIndex: number,
-        colIndex: number,
-        dataIndex: string,
-        record: any
-    ) => any;
+    getCellProps?: (rowIndex: number, colIndex: number, dataIndex: string, record: any) => any;
+    cellProps?: (rowIndex: number, colIndex: number, dataIndex: string, record: any) => any;
 
     /**
      * 自定义 Loading 组件
@@ -277,17 +266,17 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTable
      * 假设要控制dataIndex为id的列的过滤菜单中key为one的菜单项选中
      * `<Table filterParams={{id: {selectedKeys: ['one']}}}/>`
      */
-    filterParams?: {[propName: string]: any};
+    filterParams?: { [propName: string]: any };
 
     /**
      * 当前排序的字段,使用此属性可以控制表格的字段的排序,格式为{dataIndex: 'asc'}
      */
-    sort?: {[propName: string]: any};
+    sort?: { [propName: string]: any };
 
     /**
      * 自定义排序按钮，例如上下排布的: `{desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="small" />, asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="small" />}`
      */
-    sortIcons?: {desc?: React.ReactNode; asc?: React.ReactNode};
+    sortIcons?: { desc?: React.ReactNode; asc?: React.ReactNode };
 
     /**
      * 额外渲染行的渲染函数
@@ -313,17 +302,15 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTable
     /**
      * 设置额外渲染行的属性
      */
-    getExpandedColProps?: <IRecord extends any = any>(record: IRecord, index: number) => object | Record<string | number, any>;
+    getExpandedColProps?: <IRecord extends any = any>(
+        record: IRecord,
+        index: number
+    ) => object | Record<string | number, any>;
 
     /**
      * 在额外渲染行或者Tree展开或者收起的时候触发的事件
      */
-    onRowOpen?: (
-        openRowKeys: Array<any>,
-        currentRowKey: string,
-        expanded: boolean,
-        currentRecord:any
-    ) => void;
+    onRowOpen?: (openRowKeys: Array<any>, currentRowKey: string, expanded: boolean, currentRecord: any) => void;
 
     /**
      * 点击额外渲染行触发的事件
@@ -346,11 +333,7 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTable
     rowSelection?: {
         getProps?: (record: any, index: number) => void;
         onChange?: (selectedRowKeys: Array<any>, records: Array<any>) => void;
-        onSelect?: (
-            selected: boolean,
-            record: any,
-            records: Array<any>
-        ) => void;
+        onSelect?: (selected: boolean, record: any, records: Array<any>) => void;
         onSelectAll?: (selected: boolean, records: Array<any>) => void;
         selectedRowKeys?: Array<any>;
         mode?: 'single' | 'multiple';
@@ -408,7 +391,7 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTable
      * 开启时，getExpandedColProps() / getRowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
      */
     expandedIndexSimulate?: boolean;
-     /**
+    /**
      * 在 hover 时出现十字参考轴，适用于表头比较复杂，需要做表头分类的场景。
      */
     crossline?: boolean;

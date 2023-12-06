@@ -71,7 +71,7 @@ export default class Header extends React.Component {
             columnProps.ref(cell);
         }
     };
-    
+
     createCellDomRef = (i, j) => {
         const cellRefKey = this.getCellDomRefKey(i, j);
         if (!this[cellRefKey]) {

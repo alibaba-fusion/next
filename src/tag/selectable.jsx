@@ -43,10 +43,7 @@ class Selectable extends Component {
         super(props);
 
         this.state = {
-            checked:
-                'checked' in props
-                    ? props.checked
-                    : props.defaultChecked || false,
+            checked: 'checked' in props ? props.checked : props.defaultChecked || false,
         };
 
         bindCtx(this, ['handleClick']);
@@ -90,8 +87,7 @@ class Selectable extends Component {
         ];
 
         const others = obj.pickOthers(attrFilterTarget, this.props);
-        const isChecked =
-            'checked' in this.props ? this.props.checked : this.state.checked;
+        const isChecked = 'checked' in this.props ? this.props.checked : this.state.checked;
         const clazz = classNames(this.props.className, {
             checked: isChecked,
         });

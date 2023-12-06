@@ -48,7 +48,7 @@ describe('Icon', () => {
             scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
         });
 
-        let newWrapper = mount(<CustomIcon type="icon-pic"/>);
+        let newWrapper = mount(<CustomIcon type="icon-pic" />);
         assert(newWrapper.find('.next-icon svg'));
         newWrapper.setProps({ size: 'xl' });
         assert(newWrapper.find('.next-icon').hasClass('next-xl'));
@@ -62,9 +62,11 @@ describe('Icon', () => {
             scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
         });
 
-        let newWrapper = mount( <ConfigProvider prefix="abcd-">
-            <CustomIcon type="icon-pic" prefix="efg-"/>
-        </ConfigProvider>);
+        let newWrapper = mount(
+            <ConfigProvider prefix="abcd-">
+                <CustomIcon type="icon-pic" prefix="efg-" />
+            </ConfigProvider>
+        );
         assert(newWrapper.find('.abcd-icon > svg'));
         assert(newWrapper.find('.abcd-icon > efg-icon-remote'));
 
@@ -77,9 +79,11 @@ describe('Icon', () => {
             scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
         });
 
-        let newWrapper = mount( <ConfigProvider prefix="abcd-">
-            <CustomIcon type="icon-pic" prefix="efg-"/>
-        </ConfigProvider>);
+        let newWrapper = mount(
+            <ConfigProvider prefix="abcd-">
+                <CustomIcon type="icon-pic" prefix="efg-" />
+            </ConfigProvider>
+        );
         assert(newWrapper.find('.abcd-icon > svg'));
         assert(newWrapper.find('.abcd-icon > efg-icon-remote'));
 

@@ -51,18 +51,7 @@ class Panel extends React.Component {
         }
     };
     render() {
-        const {
-            title,
-            children,
-            className,
-            isExpanded,
-            disabled,
-            style,
-            prefix,
-            onClick,
-            id,
-            ...others
-        } = this.props;
+        const { title, children, className, isExpanded, disabled, style, prefix, onClick, id, ...others } = this.props;
 
         const cls = classNames({
             [`${prefix}collapse-panel`]: true,
@@ -93,18 +82,10 @@ class Panel extends React.Component {
                     aria-controls={regionId}
                     role="button"
                 >
-                    <Icon
-                        type="arrow-right"
-                        className={iconCls}
-                        aria-hidden="true"
-                    />
+                    <Icon type="arrow-right" className={iconCls} aria-hidden="true" />
                     {title}
                 </div>
-                <div
-                    className={`${prefix}collapse-panel-content`}
-                    role="region"
-                    id={regionId}
-                >
+                <div className={`${prefix}collapse-panel-content`} role="region" id={regionId}>
                     {children}
                 </div>
             </div>

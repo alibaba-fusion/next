@@ -4,7 +4,7 @@ import { FieldOption } from '@alifd/field';
 import innerField from '@alifd/field';
 
 export * from '@alifd/field';
-export default class Field extends innerField{
+export default class Field extends innerField {
     /**
      *
      * @param contextComp 传入调用class的this
@@ -23,10 +23,7 @@ export default class Field extends innerField{
      * @param names
      * @param callback
      */
-    validate(
-        names?: string[] | string,
-        callback?: (errors: object[], values: object) => void
-    ): void;
+    validate(names?: string[] | string, callback?: (errors: object[], values: object) => void): void;
 
     /**
      * react hooks 风格使用 Field

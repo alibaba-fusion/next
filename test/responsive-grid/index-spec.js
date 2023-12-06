@@ -34,21 +34,45 @@ const render = element => {
     };
 };
 
-const App = (props) => {
-    return (<ResponsiveGrid {...props}>
-        <Cell className="mygrid grid-12" colSpan={12} key="0">12</Cell>
-        <Cell className="mygrid grid-6" colSpan={6} key="1">6</Cell>
-        <Cell className="mygrid grid-6" colSpan={6} key="2">6</Cell>
-        <Cell className="mygrid grid-3" colSpan={3} key="3">3</Cell>
-        <Cell className="mygrid grid-3" colSpan={3} key="4">3</Cell>
-        <Cell className="mygrid grid-3" colSpan={3} key="5">3</Cell>
-        <Cell className="mygrid grid-3" colSpan={3} key="6">3</Cell>
-        <Cell className="mygrid grid-3" id="r-grid-tablet-8" colSpan={{desktop: 4, tablet: 8}} key="7">4 tablet: 8</Cell>
-        <Cell className="mygrid grid-3" colSpan={4} key="8">3</Cell>
-        <Cell className="mygrid grid-3" colSpan={4} key="9">3</Cell>
-        <Cell className="mygrid grid-3" id="r-grid-phone-2" colSpan={{desktop: 3, phone: 2}} key="10">3 phone: 2</Cell>
-    </ResponsiveGrid>)
-}
+const App = props => {
+    return (
+        <ResponsiveGrid {...props}>
+            <Cell className="mygrid grid-12" colSpan={12} key="0">
+                12
+            </Cell>
+            <Cell className="mygrid grid-6" colSpan={6} key="1">
+                6
+            </Cell>
+            <Cell className="mygrid grid-6" colSpan={6} key="2">
+                6
+            </Cell>
+            <Cell className="mygrid grid-3" colSpan={3} key="3">
+                3
+            </Cell>
+            <Cell className="mygrid grid-3" colSpan={3} key="4">
+                3
+            </Cell>
+            <Cell className="mygrid grid-3" colSpan={3} key="5">
+                3
+            </Cell>
+            <Cell className="mygrid grid-3" colSpan={3} key="6">
+                3
+            </Cell>
+            <Cell className="mygrid grid-3" id="r-grid-tablet-8" colSpan={{ desktop: 4, tablet: 8 }} key="7">
+                4 tablet: 8
+            </Cell>
+            <Cell className="mygrid grid-3" colSpan={4} key="8">
+                3
+            </Cell>
+            <Cell className="mygrid grid-3" colSpan={4} key="9">
+                3
+            </Cell>
+            <Cell className="mygrid grid-3" id="r-grid-phone-2" colSpan={{ desktop: 3, phone: 2 }} key="10">
+                3 phone: 2
+            </Cell>
+        </ResponsiveGrid>
+    );
+};
 
 describe('ResponsiveGrid', () => {
     let wrapper;
@@ -67,26 +91,26 @@ describe('ResponsiveGrid', () => {
         }
     });
 
-    it("should render", () => {
+    it('should render', () => {
         wrapper = render(<ResponsiveGrid />);
         assert(document.querySelector('.next-responsive-grid'));
     });
 
-    it("should render", () => {
+    it('should render', () => {
         wrapper = render(<App />);
         assert(document.querySelector('.next-responsive-grid'));
         assert(wrapper.find('#r-grid-tablet-8')[0].style.gridArea === 'span 1 / span 4');
         assert(wrapper.find('#r-grid-phone-2')[0].style.gridArea === 'span 1 / span 3');
     });
 
-    it("should render in tablet", () => {
-        wrapper = render(<App device="tablet"/>)
+    it('should render in tablet', () => {
+        wrapper = render(<App device="tablet" />);
         assert(wrapper.find('#r-grid-tablet-8')[0].style.gridArea === 'span 1 / span 8');
         assert(wrapper.find('#r-grid-phone-2')[0].style.gridArea === 'span 1 / span 2');
     });
 
-    it("should render in phone", () => {
-        wrapper = render(<App device="phone"/>)
+    it('should render in phone', () => {
+        wrapper = render(<App device="phone" />);
         assert(wrapper.find('#r-grid-tablet-8')[0].style.gridArea === 'span 1 / span 2');
         assert(wrapper.find('#r-grid-phone-2')[0].style.gridArea === 'span 1 / span 2');
     });

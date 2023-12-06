@@ -38,27 +38,14 @@ class CardMedia extends Component {
     };
 
     render() {
-        const {
-            prefix,
-            style,
-            className,
-            component: Component,
-            image,
-            src,
-            ...others
-        } = this.props;
+        const { prefix, style, className, component: Component, image, src, ...others } = this.props;
 
         if (!('children' in others || Boolean(image || src))) {
-            warning(
-                'either `children`, `image` or `src` prop must be specified.'
-            );
+            warning('either `children`, `image` or `src` prop must be specified.');
         }
 
         const isMediaComponent = MEDIA_COMPONENTS.indexOf(Component) !== -1;
-        const composedStyle =
-            !isMediaComponent && image
-                ? { backgroundImage: `url("${image}")`, ...style }
-                : style;
+        const composedStyle = !isMediaComponent && image ? { backgroundImage: `url("${image}")`, ...style } : style;
 
         return (
             <Component

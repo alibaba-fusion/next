@@ -7,6 +7,7 @@ import cx from 'classnames';
 import { func, dom, obj, KEYCODE } from '../../util';
 import TreeNode from './tree-node';
 import VirtualList from '../../virtual-list';
+
 import {
     normalizeToArray,
     isDescendantOrSelf,
@@ -488,6 +489,14 @@ class Tree extends Component {
          * @version 1.23
          */
         immutable: PropTypes.bool,
+        /**
+         * VirtualList透传参数
+         */
+        virtualListProps: PropTypes.object,
+        /**
+         * 点击文本是否可以勾选
+         */
+        clickToCheck: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -528,6 +537,8 @@ class Tree extends Component {
         onItemKeyDown: noop,
         useVirtual: false,
         immutable: false,
+        virtualListProps: {},
+        clickToCheck: false,
     };
 
     constructor(props) {
@@ -1238,6 +1249,7 @@ class Tree extends Component {
             multiple,
             useVirtual,
             renderChildNodes,
+            virtualListProps,
         } = this.props;
         const { dataSource } = this.state;
         const { style, ...others } = pickOthers(Object.keys(Tree.propTypes), this.props);
@@ -1274,7 +1286,7 @@ class Tree extends Component {
         const virtualTreeRender = dataSource => {
             return (
                 <div className={`${prefix}virtual-tree-container`} style={style}>
-                    <VirtualList itemsRenderer={(items, ref) => treeRender(items, ref)}>
+                    <VirtualList itemsRenderer={(items, ref) => treeRender(items, ref)} {...virtualListProps}>
                         {this.renderNodeList(dataSource)}
                     </VirtualList>
                 </div>

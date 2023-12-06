@@ -40,9 +40,7 @@ export default class CheckableItem extends Component {
         super(props);
 
         bindCtx(this, ['stopPropagation', 'handleKeyDown', 'handleClick']);
-        this.id = htmlId.escapeForId(
-            `checkable-item-${props.id || props._key}`
-        );
+        this.id = htmlId.escapeForId(`checkable-item-${props.id || props._key}`);
     }
 
     stopPropagation(e) {
@@ -71,15 +69,7 @@ export default class CheckableItem extends Component {
     }
 
     renderCheck() {
-        const {
-            root,
-            checked,
-            indeterminate,
-            disabled,
-            checkType,
-            checkDisabled,
-            onChange,
-        } = this.props;
+        const { root, checked, indeterminate, disabled, checkType, checkDisabled, onChange } = this.props;
         const { labelToggleChecked } = root.props;
         const Check = checkType === 'radio' ? Radio : Checkbox;
 
@@ -100,20 +90,9 @@ export default class CheckableItem extends Component {
     }
 
     render() {
-        const {
-            _key,
-            root,
-            checked,
-            disabled,
-            onClick,
-            helper,
-            children,
-        } = this.props;
+        const { _key, root, checked, disabled, onClick, helper, children } = this.props;
         const { prefix, labelToggleChecked } = root.props;
-        const others = pickOthers(
-            Object.keys(CheckableItem.propTypes),
-            this.props
-        );
+        const others = pickOthers(Object.keys(CheckableItem.propTypes), this.props);
 
         const newProps = {
             _key,
@@ -139,9 +118,7 @@ export default class CheckableItem extends Component {
                 <span className={`${prefix}menu-item-text`} id={this.id}>
                     {children}
                 </span>
-                {helper ? (
-                    <div className={`${prefix}menu-item-helper`}>{helper}</div>
-                ) : null}
+                {helper ? <div className={`${prefix}menu-item-helper`}>{helper}</div> : null}
             </Item>
         );
     }

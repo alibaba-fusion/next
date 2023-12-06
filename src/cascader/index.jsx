@@ -10,11 +10,7 @@ export default ConfigProvider.config(Cascader, {
         }
 
         if ('showItemCount' in props) {
-            deprecated(
-                'showItemCount',
-                'listStyle | listClassName',
-                'Cascader'
-            );
+            deprecated('showItemCount', 'listStyle | listClassName', 'Cascader');
         }
         if ('labelWidth' in props) {
             deprecated('labelWidth', 'listStyle | listClassName', 'Cascader');

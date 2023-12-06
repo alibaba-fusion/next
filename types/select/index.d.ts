@@ -10,16 +10,16 @@ import { data } from '../checkbox';
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement>, InputProps {
     defaultValue?: any;
     onChange?: any;
-    onBlur?: any,
-    onFocus?: any,
-    onKeyDown?: any,
+    onBlur?: any;
+    onFocus?: any;
+    onKeyDown?: any;
 }
 
-type item = {
+export type item = {
     value?: string | number;
     label?: React.ReactNode;
     [propName: string]: any;
-}
+};
 
 export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
@@ -114,7 +114,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
 
     /**
      * 是否跟随滚动
-    */
+     */
     followTrigger?: boolean;
 
     /**
@@ -125,7 +125,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 本地过滤方法，返回一个 Boolean 值确定是否保留
      */
-    filter?: (key:string, item: any) => boolean;
+    filter?: (key: string, item: any) => boolean;
 
     /**
      * 键盘上下键切换菜单高亮选项的回调
@@ -295,7 +295,7 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
 
     /**
      * 是否跟随滚动
-    */
+     */
     followTrigger?: boolean;
 
     /**
@@ -312,7 +312,7 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     /**
      * 本地过滤方法，返回一个 Boolean 值确定是否保留
      */
-    filter?: (key:string, item: any) => boolean;
+    filter?: (key: string, item: any) => boolean;
 
     /**
      * 键盘上下键切换菜单高亮选项的回调
@@ -462,7 +462,7 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     defaultHighlightKey?: string;
 
     /**
-     * 展开下拉菜单时是否自动焦点到弹层	
+     * 展开下拉菜单时是否自动焦点到弹层
      */
     popupAutoFocus?: boolean;
 }

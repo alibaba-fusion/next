@@ -38,8 +38,6 @@ class Input extends Base {
          * 按下回车的回调
          */
         onPressEnter: PropTypes.func,
-
-        onClear: PropTypes.func,
         /**
          * 原生type
          */

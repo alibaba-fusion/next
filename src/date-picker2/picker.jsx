@@ -42,6 +42,7 @@ class Picker extends React.Component {
         onChange: PT.func,
         onVisibleChange: PT.func,
         onPanelChange: PT.func,
+        onCalendarChange: PT.func,
 
         // time
         showTime: PT.bool,
@@ -145,7 +146,7 @@ class Picker extends React.Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { type, showTime, showOk, disabled, format } = props;
+        const { type, showTime, showOk, disabled, format, mode } = props;
         const isRange = type === DATE_PICKER_TYPE.RANGE;
 
         let newState = {
@@ -184,6 +185,16 @@ class Picker extends React.Component {
                     preValue: value,
                     inputValue: fmtValue(value, format),
                 };
+            }
+
+            if ('mode' in props) {
+                if (mode !== state.panelMode) {
+                    newState = {
+                        ...newState,
+                        panelMode: mode,
+                        inputValue: fmtValue(value, format),
+                    };
+                }
             }
 
             if ('showTime' in props) {
@@ -246,10 +257,10 @@ class Picker extends React.Component {
         }
     };
 
-    checkValue = (value, strictly) => {
+    checkValue = (value, strictly, format) => {
         return this.props.type === DATE_PICKER_TYPE.RANGE
-            ? checkRangeDate(value, this.state.inputType, this.props.disabled, strictly)
-            : checkDate(value);
+            ? checkRangeDate(value, this.state.inputType, this.props.disabled, strictly, format)
+            : checkDate(value, format);
     };
 
     handleInputFocus = inputType => {
@@ -298,10 +309,15 @@ class Picker extends React.Component {
                 this.handleClear();
             }
         } else {
-            this.setState({
+            const newState = {
                 inputValue: v,
                 visible: true,
-            });
+            };
+            const curValue = this.checkValue(v, true, this.props.format);
+            if (curValue !== null) {
+                newState.curValue = curValue;
+            }
+            this.setState(newState);
         }
     };
 
@@ -325,6 +341,8 @@ class Picker extends React.Component {
             inputType: DATE_INPUT_TYPE.BEGIN,
             justBeginInput: this.isEnabled(),
         });
+
+        this.onCalendarChange(null);
     };
 
     shouldSwitchInput = value => {
@@ -451,9 +469,22 @@ class Picker extends React.Component {
         func.invoke(this.props, 'onChange', this.getOutputArgs(state.value));
     };
 
+    onCalendarChange = values => {
+        const { format, onCalendarChange } = this.props;
+
+        if (onCalendarChange) {
+            const startValue = values && values[0];
+            const endValue = values && values[1];
+            const startStr = startValue ? fmtValue(values[0], format) : '';
+            const endStr = endValue ? fmtValue(values[1], format) : '';
+
+            onCalendarChange(values, [startStr, endStr]);
+        }
+    };
+
     onOk = () => {
         const { inputValue } = this.state;
-        const checkedValue = this.checkValue(inputValue);
+        const checkedValue = this.checkValue(inputValue, true, this.props.format);
 
         func.invoke(this.props, 'onOk', this.getOutputArgs(checkedValue));
 
@@ -547,6 +578,7 @@ class Picker extends React.Component {
             onInputTypeChange,
             onPanelChange,
             onKeyDown,
+            onCalendarChange,
         } = this;
 
         const {
@@ -642,7 +674,7 @@ class Picker extends React.Component {
         };
 
         const DateNode = isRange ? (
-            <RangePanel justBeginInput={justBeginInput} {...panelProps} />
+            <RangePanel justBeginInput={justBeginInput} onCalendarChange={onCalendarChange} {...panelProps} />
         ) : (
             <DatePanel {...panelProps} />
         );

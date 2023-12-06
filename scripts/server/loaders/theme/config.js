@@ -28,20 +28,14 @@ module.exports = function(context, componentName) {
         }
 
         const html = yield renderFile(cofigTplPath, locals);
-        context.emitFile(
-            path.join(componentName, 'theme', 'config.html'),
-            html
-        );
+        context.emitFile(path.join(componentName, 'theme', 'config.html'), html);
     }).catch(e => {
         logger.error(e.stack);
     });
 };
 
 function* getVariableEnums() {
-    const content = yield fs.readFile(
-        path.join(__dirname, 'var-enums.json'),
-        'utf8'
-    );
+    const content = yield fs.readFile(path.join(__dirname, 'var-enums.json'), 'utf8');
     return content.replace(/\n/g, '');
 }
 

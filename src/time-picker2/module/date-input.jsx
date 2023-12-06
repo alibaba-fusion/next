@@ -193,6 +193,7 @@ class DateInput extends React.Component {
                 [`${prefixCls}-focus`]: focus,
                 [`${prefixCls}-noborder`]: !hasBorder,
                 [`${prefixCls}-disabled`]: isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled,
+                [`${prefixCls}-error`]: state === 'error',
             }
         );
 

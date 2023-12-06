@@ -11,11 +11,7 @@ const generateData = len => {
     const dataSource = [];
 
     for (let i = 0; i < len; i++) {
-        dataSource.push(
-            <li key={`${i}-test`}>
-                {i}
-            </li>
-        );
+        dataSource.push(<li key={`${i}-test`}>{i}</li>);
     }
 
     return dataSource;
@@ -34,18 +30,12 @@ describe('VirtualList A11y', () => {
     });
 
     it('should not have any violations', async () => {
-        wrapper = await testReact(
-            <VirtualList>{generateData(10)}</VirtualList>
-        );
+        wrapper = await testReact(<VirtualList>{generateData(10)}</VirtualList>);
         return wrapper;
     });
 
     it('should not have any violations for jump index', async () => {
-        wrapper = await testReact(
-            <VirtualList jumpIndex={50}>{generateData(10)}</VirtualList>
-
-        );
+        wrapper = await testReact(<VirtualList jumpIndex={50}>{generateData(10)}</VirtualList>);
         return wrapper;
     });
-
 });

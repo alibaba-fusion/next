@@ -35,9 +35,7 @@ class Paragraph extends React.Component {
 
     constructor(props) {
         super(props);
-        log.warning(
-            '[Paragraph] is deprecated, please use Typography.Paragraph instead!'
-        );
+        log.warning('[Paragraph] is deprecated, please use Typography.Paragraph instead!');
     }
 
     render() {
@@ -45,12 +43,8 @@ class Paragraph extends React.Component {
 
         const cls = classNames(
             `${prefix}paragraph`,
-            type === 'short'
-                ? `${prefix}paragraph-short`
-                : `${prefix}paragraph-long`,
-            size === 'small'
-                ? `${prefix}paragraph-small`
-                : `${prefix}paragraph-medium`,
+            type === 'short' ? `${prefix}paragraph-short` : `${prefix}paragraph-long`,
+            size === 'small' ? `${prefix}paragraph-small` : `${prefix}paragraph-medium`,
             className
         );
         if (rtl) {

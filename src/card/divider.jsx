@@ -27,13 +27,7 @@ class CardDivider extends Component {
     };
 
     render() {
-        const {
-            prefix,
-            component: Component,
-            inset,
-            className,
-            ...others
-        } = this.props;
+        const { prefix, component: Component, inset, className, ...others } = this.props;
 
         const dividerClassName = classNames(
             `${prefix}card-divider`,

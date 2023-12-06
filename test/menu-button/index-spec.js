@@ -10,9 +10,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 /* eslint-disable no-undef,react/jsx-filename-extension */
 describe('MenuButton', () => {
-    const menu = ['a', 'b'].map(item => (
-        <MenuButton.Item key={item}>{item}</MenuButton.Item>
-    ));
+    const menu = ['a', 'b'].map(item => <MenuButton.Item key={item}>{item}</MenuButton.Item>);
 
     let wrapper;
 
@@ -25,35 +23,22 @@ describe('MenuButton', () => {
 
     describe('render', () => {
         it('should render', () => {
-            const wrapper = mount(
-                <MenuButton label="hello world">{menu}</MenuButton>
-            );
+            const wrapper = mount(<MenuButton label="hello world">{menu}</MenuButton>);
             assert(wrapper.find('button.next-menu-btn').length === 1);
         });
 
         it('should controlled selectedKeys', () => {
             const wrapper = mount(
-                <MenuButton
-                    label="hello world"
-                    visible
-                    selectedKeys={['a']}
-                    selectMode="single"
-                >
+                <MenuButton label="hello world" visible selectedKeys={['a']} selectMode="single">
                     {menu}
                 </MenuButton>
             );
             wrapper.setProps({ selectedKeys: ['b'] });
-            assert(
-                wrapper
-                    .find('li[title="b"][role="option"]')
-                    .hasClass('next-selected')
-            );
+            assert(wrapper.find('li[title="b"][role="option"]').hasClass('next-selected'));
         });
 
         it('should controlled popup visible', () => {
-            const wrapper = mount(
-                <MenuButton label="hello world">{menu}</MenuButton>
-            );
+            const wrapper = mount(<MenuButton label="hello world">{menu}</MenuButton>);
             assert(wrapper.find('.next-menu').length === 0);
             wrapper.setProps({ visible: true });
             assert(wrapper.find('.next-menu').length === 1);
@@ -64,10 +49,7 @@ describe('MenuButton', () => {
         it('should click trigger to open the popup', () => {
             let visible;
             const wrapper = mount(
-                <MenuButton
-                    label="hello world"
-                    onVisibleChange={vis => (visible = vis)}
-                >
+                <MenuButton label="hello world" onVisibleChange={vis => (visible = vis)}>
                     {menu}
                 </MenuButton>
             );
@@ -83,43 +65,36 @@ describe('MenuButton', () => {
                 </MenuButton>
             );
             wrapper.find('li[title="b"][role="option"]').simulate('click');
-            assert(
-                wrapper
-                    .find('li[title="b"][role="option"]')
-                    .hasClass('next-selected')
-            );
+            assert(wrapper.find('li[title="b"][role="option"]').hasClass('next-selected'));
         });
 
         it('should select in controlled mode', () => {
             const wrapper = mount(
-                <MenuButton
-                    label="hello world"
-                    visible
-                    selectedKeys={['a']}
-                    selectMode="single"
-                >
+                <MenuButton label="hello world" visible selectedKeys={['a']} selectMode="single">
                     {menu}
                 </MenuButton>
             );
             wrapper.find('li[title="b"][role="option"]').simulate('click');
-            assert(
-                wrapper
-                    .find('li[title="a"][role="option"]')
-                    .hasClass('next-selected')
-            );
+            assert(wrapper.find('li[title="a"][role="option"]').hasClass('next-selected'));
         });
 
         it('should mulitple select can`t close', () => {
             const onVisibleChange = sinon.spy();
             const onItemClick = sinon.spy();
             const wrapper = mount(
-                <MenuButton onVisibleChange={onVisibleChange} onItemClick={onItemClick} label="hello world" defaultVisible selectMode="multiple">
+                <MenuButton
+                    onVisibleChange={onVisibleChange}
+                    onItemClick={onItemClick}
+                    label="hello world"
+                    defaultVisible
+                    selectMode="multiple"
+                >
                     {menu}
                 </MenuButton>
             );
             wrapper.find('li[title="b"][role="option"]').simulate('click');
             assert(onItemClick.calledOnce);
             assert(onVisibleChange.notCalled);
-        })
+        });
     });
 });

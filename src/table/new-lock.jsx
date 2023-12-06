@@ -235,7 +235,7 @@ export default function stickyLock(BaseComponent) {
          */
         mergeFromSplitLockChildren(splitChildren, prefix) {
             const { lockLeftChildren, lockRightChildren } = splitChildren;
-            let { originChildren } = splitChildren;
+            const { originChildren } = splitChildren;
 
             const flatenLeftChildren = this.getFlatenChildren(lockLeftChildren);
             const flatenRightChildren = this.getFlatenChildren(lockRightChildren);

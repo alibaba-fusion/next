@@ -347,7 +347,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
      */
-    animation?: { in: string; out: string;} | boolean;
+    animation?: { in: string; out: string } | boolean;
     /**
      * 开启 v2 版本
      */

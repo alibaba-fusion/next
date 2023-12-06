@@ -21,43 +21,23 @@ describe('input-group', () => {
         it('should accept addonBefore', () => {
             let wrapper = mount(
                 <Input.Group addonBefore={select}>
-                    <Input
-                        hasClear
-                        defaultValue="abc"
-                        style={{ width: '100%' }}
-                    />
+                    <Input hasClear defaultValue="abc" style={{ width: '100%' }} />
                 </Input.Group>
             );
             assert(wrapper.find('span.next-input-group-addon').length === 1);
-            assert(
-                wrapper.find('span.next-input-group-addon.next-before')
-                    .length === 1
-            );
-            assert(
-                wrapper.find('span.next-input-group-addon.next-after')
-                    .length === 0
-            );
+            assert(wrapper.find('span.next-input-group-addon.next-before').length === 1);
+            assert(wrapper.find('span.next-input-group-addon.next-after').length === 0);
         });
 
         it('should accept addonAfter', () => {
             let wrapper = mount(
                 <Input.Group addonAfter={button}>
-                    <Input
-                        hasClear
-                        defaultValue="abc"
-                        style={{ width: '100%' }}
-                    />
+                    <Input hasClear defaultValue="abc" style={{ width: '100%' }} />
                 </Input.Group>
             );
             assert(wrapper.find('span.next-input-group-addon').length === 1);
-            assert(
-                wrapper.find('span.next-input-group-addon.next-before')
-                    .length === 0
-            );
-            assert(
-                wrapper.find('span.next-input-group-addon.next-after')
-                    .length === 1
-            );
+            assert(wrapper.find('span.next-input-group-addon.next-before').length === 0);
+            assert(wrapper.find('span.next-input-group-addon.next-after').length === 1);
         });
     });
 });

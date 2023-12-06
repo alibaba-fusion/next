@@ -26,10 +26,9 @@ function formatViolations(violations, verbose = false) {
     return JSON.stringify(violations, null, 2);
 }
 
-
 function delay(duration) {
-    return new Promise((res) => {
-        setTimeout(res, duration)
+    return new Promise(res => {
+        setTimeout(res, duration);
     });
 }
 

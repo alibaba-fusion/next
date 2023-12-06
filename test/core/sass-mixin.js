@@ -11,9 +11,7 @@ const Sassaby = require('sassaby-next');
 describe('../../src/core/util/_mixin.scss', function() {
     const file = path.join(__dirname, '../../src/core/util/_mixin.scss');
     const sassaby = new Sassaby(file, {
-        dependencies: [
-            path.join(__dirname, '../../src/core/util/_function.scss'),
-        ],
+        dependencies: [path.join(__dirname, '../../src/core/util/_function.scss')],
     });
 
     describe('#size (快捷设置元素 width, height 的混入)', function() {
@@ -72,13 +70,7 @@ describe('../../src/core/util/_mixin.scss', function() {
             sassaby
                 .includedMixin('position')
                 .calledWithArgs('absolute', '2em')
-                .equals(
-                    'position: absolute; ' +
-                        'top: 2em; ' +
-                        'right: 2em; ' +
-                        'bottom: 2em; ' +
-                        'left: 2em;'
-                );
+                .equals('position: absolute; ' + 'top: 2em; ' + 'right: 2em; ' + 'bottom: 2em; ' + 'left: 2em;');
         });
     });
 

@@ -85,20 +85,8 @@ export default class SelectableItem extends Component {
     }
 
     renderSelectedIcon(selected) {
-        const {
-            root,
-            inlineIndent,
-            needIndent,
-            hasSelectedIcon,
-            isSelectIconRight,
-            type,
-        } = this.props;
-        const {
-            prefix,
-            hasSelectedIcon: rootSelectedIcon,
-            isSelectIconRight: rootSelectIconRight,
-            icons,
-        } = root.props;
+        const { root, inlineIndent, needIndent, hasSelectedIcon, isSelectIconRight, type } = this.props;
+        const { prefix, hasSelectedIcon: rootSelectedIcon, isSelectIconRight: rootSelectIconRight, icons } = root.props;
 
         let iconsSelect = icons.select;
 
@@ -110,39 +98,21 @@ export default class SelectableItem extends Component {
             [`${prefix}menu-icon-selected`]: true,
             [`${prefix}menu-symbol-icon-selected`]: !iconsSelect,
             [`${prefix}menu-icon-right`]:
-                ('isSelectIconRight' in this.props
-                    ? isSelectIconRight
-                    : rootSelectIconRight) && type !== 'submenu',
+                ('isSelectIconRight' in this.props ? isSelectIconRight : rootSelectIconRight) && type !== 'submenu',
         });
 
-        return ('hasSelectedIcon' in this.props
-            ? hasSelectedIcon
-            : rootSelectedIcon) && selected
+        return ('hasSelectedIcon' in this.props ? hasSelectedIcon : rootSelectedIcon) && selected
             ? React.cloneElement(iconsSelect || <Icon type="select" />, {
-                  style:
-                      needIndent && inlineIndent > 0
-                          ? { left: `${inlineIndent}px` }
-                          : null,
+                  style: needIndent && inlineIndent > 0 ? { left: `${inlineIndent}px` } : null,
                   className: cls,
               })
             : null;
     }
 
     render() {
-        const {
-            _key,
-            root,
-            className,
-            disabled,
-            helper,
-            children,
-            needIndent,
-        } = this.props;
+        const { _key, root, className, disabled, helper, children, needIndent } = this.props;
         const { prefix } = root.props;
-        const others = pickOthers(
-            Object.keys(SelectableItem.propTypes),
-            this.props
-        );
+        const others = pickOthers(Object.keys(SelectableItem.propTypes), this.props);
         const selected = this.getSelected();
 
         const newProps = {
@@ -176,9 +146,7 @@ export default class SelectableItem extends Component {
                 <span className={`${prefix}menu-item-text`} {...textProps}>
                     {children}
                 </span>
-                {helper ? (
-                    <div className={`${prefix}menu-item-helper`}>{helper}</div>
-                ) : null}
+                {helper ? <div className={`${prefix}menu-item-helper`}>{helper}</div> : null}
             </Item>
         );
     }

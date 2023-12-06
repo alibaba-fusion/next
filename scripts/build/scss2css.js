@@ -18,21 +18,20 @@ const { logger } = require('../utils');
 const compileScss = function(all, s1, basePath, entry) {
     let cssval = '';
     try {
-
         const content = fs.readFileSync(path.join(basePath, entry), 'utf-8');
 
         const data = `${content}\n${all}.theScssCompileResultIwant{color:${s1};}`;
         const result = sass.renderSync({
             file: path.join(basePath, entry),
             includePaths: [path.join(basePath, entry)],
-            outputStyle: "compressed",
+            outputStyle: 'compressed',
             data,
         });
         const output = result.css.toString();
 
-        output.replace(/.*theScssCompileResultIwant{color:(.*)}/ig, (_, compileValue) => {
+        output.replace(/.*theScssCompileResultIwant{color:(.*)}/gi, (_, compileValue) => {
             cssval = compileValue;
-            const temp = `${s1.replace('$', '--')}: ${compileValue};\n`
+            const temp = `${s1.replace('$', '--')}: ${compileValue};\n`;
             logger.info(`${all}\n${temp}`);
         });
     } catch (error) {
@@ -44,35 +43,36 @@ const compileScss = function(all, s1, basePath, entry) {
 
 // basePath 例如 path.join(cwd, 'lib/core/')
 // entry 例如 index.scss
-const scss2css = function (all, s1, s2, basePath, entry) {
+const scss2css = function(all, s1, s2, basePath, entry) {
     s2 = s2.replace('!default', '').trim();
 
-    let cssvar = '', newcContent = '';
+    let cssvar = '',
+        newcContent = '';
     if (s2.match(/\$css-prefix/)) {
         // 保留原状
-    } else if (s2.match(/[/()+]/ig)) {
+    } else if (s2.match(/[/()+]/gi)) {
         const compileValue = compileScss(all, s1, basePath, entry);
         newcContent = `    ${s1.replace('$', '--')}: ${compileValue};\n`;
-    } else if (s2.match(/[ ]/ig)) {
+    } else if (s2.match(/[ ]/gi)) {
         const vs = s2.split(' ');
         const nvs = vs.map(v => {
-            return v.match(/[$]/ig) ? `var(${v.replace('$', '--')})` : v;
+            return v.match(/[$]/gi) ? `var(${v.replace('$', '--')})` : v;
         });
-        if (s2.match(/\*/ig)) {
+        if (s2.match(/\*/gi)) {
             newcContent = `    ${s1.replace('$', '--')}: calc(${nvs.join(' ')});\n`;
         } else {
             newcContent = `    ${s1.replace('$', '--')}: ${nvs.join(' ')};\n`;
         }
-    } else if (s2.match(/[$]/ig)) {
+    } else if (s2.match(/[$]/gi)) {
         cssvar = `var(${s2.replace('$', '--')})`;
         newcContent = `    ${s1.replace('$', '--')}: ${cssvar};\n`;
     } else {
         newcContent = `    ${s1.replace('$', '--')}: ${s2};\n`;
     }
     return newcContent;
-}
+};
 
 module.exports = {
     scss2css,
-    compileScss
-}
+    compileScss,
+};

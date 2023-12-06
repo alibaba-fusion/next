@@ -17,7 +17,7 @@ describe('options', () => {
             wrapper.unmount();
             wrapper = null;
         }
-    })
+    });
     it('should support autoUnmount', function(done) {
         class Demo extends React.Component {
             state = {
@@ -29,13 +29,10 @@ describe('options', () => {
                 const init = this.field.init;
                 return (
                     <div>
-                        <Input {...init('input')} />{' '}
-                        {this.state.show ? <Input {...init('input2')} /> : null}
+                        <Input {...init('input')} /> {this.state.show ? <Input {...init('input2')} /> : null}
                         <button
                             onClick={() => {
-                                assert(
-                                    'input2' in this.field.getValues() === false
-                                );
+                                assert('input2' in this.field.getValues() === false);
                                 done();
                             }}
                         >
@@ -62,16 +59,10 @@ describe('options', () => {
                 const init = this.field.init;
                 return (
                     <div>
-                        {this.state.show ? (
-                            <Input {...init('input')} key="1" />
-                        ) : (
-                            <Input {...init('input')} key="2" />
-                        )}
+                        {this.state.show ? <Input {...init('input')} key="1" /> : <Input {...init('input')} key="2" />}
                         <button
                             onClick={() => {
-                                assert(
-                                    'input' in this.field.getValues() === true
-                                );
+                                assert('input' in this.field.getValues() === true);
                             }}
                         >
                             click
@@ -99,16 +90,10 @@ describe('options', () => {
                 return (
                     <div>
                         <Input {...init('input')} />
-                        {this.state.show ? (
-                            <Input
-                                {...init('input2', { initValue: 'test2' })}
-                            />
-                        ) : null}
+                        {this.state.show ? <Input {...init('input2', { initValue: 'test2' })} /> : null}
                         <button
                             onClick={() => {
-                                assert(
-                                    this.field.getValue('input2') === 'test2'
-                                );
+                                assert(this.field.getValue('input2') === 'test2');
                             }}
                         >
                             click
@@ -137,17 +122,13 @@ describe('options', () => {
                     <div>
                         <Input
                             {...init('input', {
-                                rules: [
-                                    { required: true, message: 'cant be null' },
-                                ],
+                                rules: [{ required: true, message: 'cant be null' }],
                             })}
                         />
                         <button
                             onClick={() => {
                                 this.field.validate((error, value, cb) => {
-                                    assert(
-                                        error.input.errors[0] === 'cant be null'
-                                    );
+                                    assert(error.input.errors[0] === 'cant be null');
                                 });
                             }}
                         >
@@ -167,28 +148,28 @@ describe('options', () => {
         it('should support `defaultValue`', function() {
             const inputValue = 'my value';
             const field = new Field(this);
-            field.init('input', {props: {defaultValue: inputValue}});
+            field.init('input', { props: { defaultValue: inputValue } });
             assert.equal(field.getValue('input'), inputValue);
         });
 
         it('should support `defaultValue` with different value name and make camel case', function() {
             const inputValue = 'my value';
             const field = new Field(this);
-            field.init('input', { valueName: 'myValue', props: { defaultMyValue: inputValue} });
+            field.init('input', { valueName: 'myValue', props: { defaultMyValue: inputValue } });
             assert.equal(field.getValue('input'), inputValue);
         });
 
         it('should support `defaultValue` with falsy value', function() {
             const inputValue = 0;
             const field = new Field(this);
-            field.init('input', {props: {defaultValue: inputValue}});
+            field.init('input', { props: { defaultValue: inputValue } });
             assert.equal(field.getValue('input'), inputValue);
         });
-    })
+    });
 
     describe('values', () => {
         it('should shallow copy values with parseName=false', function() {
-            const inputValues = {a: 1, b: 2};
+            const inputValues = { a: 1, b: 2 };
             const field = new Field(this, {
                 values: inputValues,
             });
@@ -198,7 +179,7 @@ describe('options', () => {
             assert.equal(inputValues.b, 2);
         });
         it('should shallow copy values with parseName=true', function() {
-            const inputValues = { a: [1, 2, 3, 4], b: { c: 5}};
+            const inputValues = { a: [1, 2, 3, 4], b: { c: 5 } };
             const field = new Field(this, {
                 parseName: true,
                 values: inputValues,
@@ -215,7 +196,7 @@ describe('options', () => {
             const inputValue = 'my value';
             const field = new Field(this, {
                 values: {
-                    input: inputValue
+                    input: inputValue,
                 },
             });
             assert.equal(field.getValue('input'), inputValue);
@@ -225,7 +206,7 @@ describe('options', () => {
             const inputValue = 0;
             const field = new Field(this, {
                 values: {
-                    input: inputValue
+                    input: inputValue,
                 },
             });
             field.init('input');
@@ -267,13 +248,13 @@ describe('options', () => {
         });
 
         it('should use setValues instead of constructor values on field that has not been initialized', function() {
-            const inputValue = 'my value';            
+            const inputValue = 'my value';
             const field = new Field(this, {
                 values: {
                     input: inputValue,
                 },
             });
-            field.setValue('input', 1)
+            field.setValue('input', 1);
             assert.equal(field.getValue('input'), 1);
         });
 
@@ -305,7 +286,7 @@ describe('options', () => {
             const fieldDefault = 'field default value';
             const field = new Field(this, {
                 values: {
-                    input: fieldDefault
+                    input: fieldDefault,
                 },
             });
             field.init('input');
@@ -317,7 +298,7 @@ describe('options', () => {
             const fieldDefault = 'field default value';
             const field = new Field(this, {
                 values: {
-                    input: fieldDefault
+                    input: fieldDefault,
                 },
             });
             field.init('input');
@@ -326,7 +307,7 @@ describe('options', () => {
         });
 
         it('should return `undefined` after `remove` then re-`init`', function() {
-            const field = new Field(this, {values: {input: 4}});
+            const field = new Field(this, { values: { input: 4 } });
             field.init('input');
             field.remove('input');
             field.init('input');
@@ -338,10 +319,10 @@ describe('options', () => {
             const inputValue = 0;
             const field = new Field(this, {
                 values: {
-                    input: inputValue
+                    input: inputValue,
                 },
             });
-            field.init('input', {initValue: 1});
+            field.init('input', { initValue: 1 });
             assert.equal(field.getValue('input'), inputValue);
         });
     });
@@ -373,14 +354,14 @@ describe('options', () => {
         });
 
         it('should return constructor value for `names` if `getValues` called before init', function() {
-            const field = new Field(this, {parseName: true, values: {a: 1, b: 2, c: 3}});
-            const {a, b} = field.getValues(['a', 'b']);
+            const field = new Field(this, { parseName: true, values: { a: 1, b: 2, c: 3 } });
+            const { a, b } = field.getValues(['a', 'b']);
             assert(a === 1);
             assert(b === 2);
         });
         it('should return all of constructor value if `getValues` called with no names before init', function() {
-            const field = new Field(this, {parseName: true, values: {a: 1, b: 2, c: 3}});
-            const {a, b, c} = field.getValues();
+            const field = new Field(this, { parseName: true, values: { a: 1, b: 2, c: 3 } });
+            const { a, b, c } = field.getValues();
             assert(a === 1);
             assert(b === 2);
             assert(c === 3);
@@ -422,7 +403,7 @@ describe('options', () => {
                 parseName: true,
                 values: {
                     input: {
-                        myValue: fieldDefault
+                        myValue: fieldDefault,
                     },
                 },
             });
@@ -435,7 +416,7 @@ describe('options', () => {
                 parseName: true,
                 values: {
                     input: {
-                        myValue: fieldDefault
+                        myValue: fieldDefault,
                     },
                 },
             });
@@ -448,15 +429,13 @@ describe('options', () => {
                 parseName: true,
                 values: {
                     input: {
-                        myValue: fieldDefault
+                        myValue: fieldDefault,
                     },
                 },
             });
-            field.setValue('input.myValue', 1)
+            field.setValue('input.myValue', 1);
             assert.equal(field.getValue('input.myValue'), 1);
         });
-
-        
 
         it('should remove top level field after removed', function() {
             const fieldDefault = 'field default value';
@@ -464,8 +443,8 @@ describe('options', () => {
                 parseName: true,
                 values: {
                     input: {
-                        myValue: fieldDefault
-                    }
+                        myValue: fieldDefault,
+                    },
                 },
             });
             field.init('input.myValue');
@@ -479,8 +458,8 @@ describe('options', () => {
                 parseName: true,
                 values: {
                     input: {
-                        myValue: fieldDefault
-                    }
+                        myValue: fieldDefault,
+                    },
                 },
             });
             field.init('input.myValue');
@@ -495,8 +474,8 @@ describe('options', () => {
                 parseName: true,
                 values: {
                     input: {
-                        myValue: fieldDefault
-                    }
+                        myValue: fieldDefault,
+                    },
                 },
             });
             field.init('input.myValue');
@@ -563,7 +542,7 @@ describe('options', () => {
                     values: {
                         input: {
                             myValue: fieldDefault,
-                            otherValue: fieldDefault
+                            otherValue: fieldDefault,
                         },
                     },
                 });
@@ -581,7 +560,7 @@ describe('options', () => {
                     values: {
                         input: {
                             myValue: fieldDefault,
-                            otherValue: fieldDefault
+                            otherValue: fieldDefault,
                         },
                     },
                 });
@@ -602,7 +581,7 @@ describe('options', () => {
                 assert.equal(field.getValue('input.myValue'), undefined);
                 assert.equal(field.getValue('input.otherValue'), undefined);
             });
-    
+
             it('should reset all to undefined when given `values` in constructor and call `resetToDefault`', function() {
                 const fieldDefault = 'field default value';
                 const secondValue = 'second';
@@ -611,7 +590,7 @@ describe('options', () => {
                     values: {
                         input: {
                             myValue: fieldDefault,
-                            otherValue: fieldDefault
+                            otherValue: fieldDefault,
                         },
                     },
                 });
@@ -619,11 +598,11 @@ describe('options', () => {
                 field.init('input.otherValue');
                 field.setValue('input.myValue', secondValue);
                 field.setValue('input.otherValue', secondValue);
-                
+
                 // simulation rerender
                 field.init('input.myValue');
                 field.init('input.otherValue');
-                
+
                 field.resetToDefault();
                 assert.equal(field.getValue('input.myValue'), undefined);
                 assert.equal(field.getValue('input.otherValue'), undefined);
@@ -637,7 +616,7 @@ describe('options', () => {
                     values: {
                         input: {
                             myValue: fieldDefault,
-                            otherValue: fieldDefault
+                            otherValue: fieldDefault,
                         },
                     },
                 });
@@ -646,7 +625,7 @@ describe('options', () => {
                 field.setValue('input.otherValue', secondValue);
 
                 field.init('input.myValue');
-                
+
                 field.resetToDefault('input.myValue');
                 assert.equal(field.getValue('input.myValue'), undefined);
                 assert.equal(field.getValue('input.otherValue'), secondValue);
@@ -660,9 +639,9 @@ describe('options', () => {
                 parseName: true,
                 values: {
                     input: {
-                        myValue: fieldDefault
-                    }
-                }
+                        myValue: fieldDefault,
+                    },
+                },
             });
 
             field.init('input.myValue', { initValue });

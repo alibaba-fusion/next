@@ -46,7 +46,7 @@ class Upload extends Base {
          * 上传列表的样式
          * @enumdesc 文字, 图文, 卡片
          */
-        listType: PropTypes.oneOf(['text', 'image', 'card']),
+        listType: PropTypes.oneOf(['text', 'image', 'card', 'none']),
         list: PropTypes.any,
         /**
          * 文件名字段
@@ -611,7 +611,7 @@ class Upload extends Base {
                 >
                     {children}
                 </Uploader>
-                {listType || list ? (
+                {(listType && listType !== 'none') || list ? (
                     <List
                         useDataURL={useDataURL}
                         fileNameRender={fileNameRender}

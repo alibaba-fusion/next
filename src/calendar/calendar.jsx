@@ -183,6 +183,13 @@ class Calendar extends Component {
 
         this.changeVisibleMonth(date, 'cellClick');
 
+        if (!('value' in this.props)) {
+            // 非受控模式，直接修改当前state
+            this.setState({
+                value: date,
+            });
+        }
+
         // 当用户所在的面板为初始化面板时，则选择动作为触发 onSelect 回调
         if (this.state.mode === this.MODES[0]) {
             this.props.onSelect(date);

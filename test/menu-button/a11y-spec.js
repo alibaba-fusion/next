@@ -11,9 +11,7 @@ const wrapperClassName = 'js-a11y-test';
 const popupProps = { wrapperClassName };
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
-const menu = ['a', 'b'].map(item => (
-    <MenuButton.Item key={item}>{item}</MenuButton.Item>
-));
+const menu = ['a', 'b'].map(item => <MenuButton.Item key={item}>{item}</MenuButton.Item>);
 
 // TODO: fix `aria-allowed-attr` violation
 describe.skip('MenuButton A11y', () => {
@@ -39,12 +37,7 @@ describe.skip('MenuButton A11y', () => {
     it('should not have any violations when text button', async () => {
         wrapper = await mountReact(
             <div>
-                <MenuButton
-                    text
-                    label="Document Edit"
-                    visible
-                    popupProps={popupProps}
-                >
+                <MenuButton text label="Document Edit" visible popupProps={popupProps}>
                     {menu}
                 </MenuButton>
                 &nbsp;&nbsp;

@@ -84,6 +84,7 @@ class RangePanel extends React.Component {
         timePanelProps: PT.object,
         disabledTime: PT.object,
         dateCellRender: PT.func,
+        onCalendarChange: PT.func,
     };
 
     static defaultProps = {
@@ -173,7 +174,7 @@ class RangePanel extends React.Component {
     };
 
     handleSelect = (v, fromTimeChange) => {
-        const { value, inputType, resetTime } = this.props;
+        const { value, inputType, resetTime, onCalendarChange } = this.props;
         const otherType = switchInputType(inputType);
         const newValue = [...value];
 
@@ -191,6 +192,7 @@ class RangePanel extends React.Component {
         }
 
         newValue[inputType === BEGIN ? 0 : 1] = setTime(v, timeVal);
+        onCalendarChange(newValue);
 
         func.invoke(this.props, 'onSelect', [newValue]);
     };

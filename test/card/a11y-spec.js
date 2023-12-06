@@ -31,10 +31,7 @@ describe('Card A11y', () => {
     it('should not have any violations when displaying images', async () => {
         wrapper = await testReact(
             <Card className="image-card" contentHeight="auto">
-                <img
-                    src="https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png"
-                    alt="father day"
-                />
+                <img src="https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png" alt="father day" />
                 <div className="custom-card">
                     <h3>Father's Day</h3>
                     <p>Thank you, papa</p>

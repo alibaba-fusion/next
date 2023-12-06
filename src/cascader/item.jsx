@@ -38,13 +38,7 @@ export default class CascaderMenuItem extends Component {
             loading: false,
         };
 
-        bindCtx(this, [
-            'handleExpand',
-            'handleClick',
-            'handleMouseEnter',
-            'handleKeyDown',
-            'removeLoading',
-        ]);
+        bindCtx(this, ['handleExpand', 'handleClick', 'handleMouseEnter', 'handleKeyDown', 'removeLoading']);
     }
 
     addLoading() {
@@ -84,10 +78,7 @@ export default class CascaderMenuItem extends Component {
                 if (this.props.canExpand) {
                     this.handleExpand(true);
                 }
-            } else if (
-                e.keyCode === KEYCODE.LEFT ||
-                e.keyCode === KEYCODE.ESC
-            ) {
+            } else if (e.keyCode === KEYCODE.LEFT || e.keyCode === KEYCODE.ESC) {
                 this.props.onFold();
             } else if (e.keyCode === KEYCODE.SPACE) {
                 this.handleExpand(false);
@@ -113,10 +104,7 @@ export default class CascaderMenuItem extends Component {
             onCheck,
             children,
         } = this.props;
-        const others = pickOthers(
-            Object.keys(CascaderMenuItem.propTypes),
-            this.props
-        );
+        const others = pickOthers(Object.keys(CascaderMenuItem.propTypes), this.props);
         const { loading } = this.state;
 
         const itemProps = {

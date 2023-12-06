@@ -18,6 +18,11 @@ class Item extends Component {
         separator: PropTypes.node,
         className: PropTypes.any,
         children: PropTypes.node,
+        /**
+         * 元素点击事件
+         * @param {MouseEvent} e Click Mouse Event
+         */
+        onClick: PropTypes.func,
     };
 
     static defaultProps = {
@@ -28,28 +33,17 @@ class Item extends Component {
 
     // stateless separator component
     static Separator({ prefix, children }) {
-        return (
-            <span className={`${prefix}breadcrumb-separator`}>{children}</span>
-        );
+        return <span className={`${prefix}breadcrumb-separator`}>{children}</span>;
     }
 
     render() {
-        const {
-            prefix,
-            rtl,
-            className,
-            children,
-            link,
-            activated,
-            separator,
-            ...others
-        } = this.props;
+        const { prefix, rtl, className, children, link, activated, separator, onClick, ...others } = this.props;
         const clazz = classNames(`${prefix}breadcrumb-text`, className, {
             activated,
         });
 
         return (
-            <li dir={rtl ? 'rtl' : null} className={`${prefix}breadcrumb-item`}>
+            <li dir={rtl ? 'rtl' : null} className={`${prefix}breadcrumb-item`} onClick={onClick}>
                 {link ? (
                     <a href={link} className={clazz} {...others}>
                         {children}
@@ -59,9 +53,7 @@ class Item extends Component {
                         {children}
                     </span>
                 )}
-                {activated
-                    ? null
-                    : Item.Separator({ prefix, children: separator })}
+                {activated ? null : Item.Separator({ prefix, children: separator })}
             </li>
         );
     }

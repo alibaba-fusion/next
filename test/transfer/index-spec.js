@@ -37,9 +37,7 @@ describe('Transfer', () => {
     });
 
     it('should render by defaultValue', () => {
-        wrapper = mount(
-            <Transfer defaultValue={['1']} dataSource={dataSource} />
-        );
+        wrapper = mount(<Transfer defaultValue={['1']} dataSource={dataSource} />);
         compareDomAndDataSource(wrapper, 0, [
             { label: '0', value: '0' },
             { label: '2', value: '2' },
@@ -51,13 +49,7 @@ describe('Transfer', () => {
     });
 
     it('should render by value', () => {
-        wrapper = mount(
-            <Transfer
-                defaultValue={['1']}
-                value={['2']}
-                dataSource={dataSource}
-            />
-        );
+        wrapper = mount(<Transfer defaultValue={['1']} value={['2']} dataSource={dataSource} />);
         compareDomAndDataSource(wrapper, 0, [
             { label: '0', value: '0' },
             { label: '1', value: '1' },
@@ -88,9 +80,7 @@ describe('Transfer', () => {
     });
 
     it('should render by check checkbox of item and checkbox of footer', () => {
-        wrapper = mount(
-            <Transfer defaultValue={['1']} dataSource={dataSource} />
-        );
+        wrapper = mount(<Transfer defaultValue={['1']} dataSource={dataSource} />);
 
         checkSingle(findItem(wrapper, 0, 1));
         assert(findItemCheckbox(wrapper, 0, 1).hasClass('checked'));
@@ -121,20 +111,14 @@ describe('Transfer', () => {
     });
 
     it('should render search box when set showSearch', () => {
-        const dataSource = [
-            { label: 'a', value: '0' },
-            { label: 'b', value: '1' },
-            { label: <i>abc</i>, value: '2' },
-        ];
+        const dataSource = [{ label: 'a', value: '0' }, { label: 'b', value: '1' }, { label: <i>abc</i>, value: '2' }];
 
         wrapper = mount(
             <Transfer
                 showSearch
-                searchProps={
-                    {
-                        hasClear: true
-                    }
-                }
+                searchProps={{
+                    hasClear: true,
+                }}
                 searchPlaceholder="input something..."
                 dataSource={dataSource}
             />
@@ -154,22 +138,18 @@ describe('Transfer', () => {
     });
 
     it('should render search box when set showSearch（array）', () => {
-        const dataSource = [
-            { label: 'a', value: '0' },
-            { label: 'b', value: '1' },
-            { label: <i>abc</i>, value: '2' },
-        ];
+        const dataSource = [{ label: 'a', value: '0' }, { label: 'b', value: '1' }, { label: <i>abc</i>, value: '2' }];
 
         wrapper = mount(
             <Transfer
                 showSearch={[true, false]}
                 searchProps={[
                     {
-                        hasClear: true
+                        hasClear: true,
                     },
                     {
-                        size: 'large'
-                    }
+                        size: 'large',
+                    },
                 ]}
                 searchPlaceholder="input something..."
                 dataSource={dataSource}
@@ -232,11 +212,7 @@ describe('Transfer', () => {
     });
 
     it('should move items between the panels', () => {
-        const dataSource = [
-            { label: '0', value: '0' },
-            { label: '1', value: '1' },
-            { label: '2', value: '2' },
-        ];
+        const dataSource = [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }];
 
         let value, data, extra, changeCalled;
 
@@ -247,13 +223,9 @@ describe('Transfer', () => {
             changeCalled = true;
         };
 
-        wrapper = mount(
-            <Transfer dataSource={dataSource} onChange={handleChange} />
-        );
-        const l2r = () =>
-            wrapper.find('div.next-transfer-operations button').at(0);
-        const r2l = () =>
-            wrapper.find('div.next-transfer-operations button').at(1);
+        wrapper = mount(<Transfer dataSource={dataSource} onChange={handleChange} />);
+        const l2r = () => wrapper.find('div.next-transfer-operations button').at(0);
+        const r2l = () => wrapper.find('div.next-transfer-operations button').at(1);
 
         assert(l2r().prop('disabled'));
         assert(l2r().hasClass('next-btn-normal'));
@@ -305,11 +277,7 @@ describe('Transfer', () => {
     });
 
     it('should move items between the panels under control', () => {
-        const dataSource = [
-            { label: '0', value: '0' },
-            { label: '1', value: '1' },
-            { label: '2', value: '2' },
-        ];
+        const dataSource = [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }];
 
         let value, data, extra, changeCalled;
 
@@ -320,17 +288,9 @@ describe('Transfer', () => {
             changeCalled = true;
         };
 
-        wrapper = mount(
-            <Transfer
-                value={[]}
-                dataSource={dataSource}
-                onChange={handleChange}
-            />
-        );
-        const l2r = () =>
-            wrapper.find('div.next-transfer-operations button').at(0);
-        const r2l = () =>
-            wrapper.find('div.next-transfer-operations button').at(1);
+        wrapper = mount(<Transfer value={[]} dataSource={dataSource} onChange={handleChange} />);
+        const l2r = () => wrapper.find('div.next-transfer-operations button').at(0);
+        const r2l = () => wrapper.find('div.next-transfer-operations button').at(1);
 
         assert(l2r().prop('disabled'));
         assert(l2r().hasClass('next-btn-normal'));
@@ -390,11 +350,7 @@ describe('Transfer', () => {
     });
 
     it('should support simple mode', () => {
-        const dataSource = [
-            { label: '0', value: '0' },
-            { label: '1', value: '1' },
-            { label: '2', value: '2' },
-        ];
+        const dataSource = [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }];
 
         let value, data, extra, changeCalled;
 
@@ -405,17 +361,8 @@ describe('Transfer', () => {
             changeCalled = true;
         };
 
-        wrapper = mount(
-            <Transfer
-                mode="simple"
-                dataSource={dataSource}
-                onChange={handleChange}
-            />
-        );
-        assert(
-            wrapper.find('div.next-transfer-operations i.next-icon-switch')
-                .length
-        );
+        wrapper = mount(<Transfer mode="simple" dataSource={dataSource} onChange={handleChange} />);
+        assert(wrapper.find('div.next-transfer-operations i.next-icon-switch').length);
         assert(!findItem(wrapper, 0, 0).find('.next-checkbox-wrapper').length);
         assert(
             findFooter(wrapper, 0)
@@ -446,11 +393,7 @@ describe('Transfer', () => {
         data = [];
         extra = {
             leftValue: ['0', '1', '2'],
-            leftData: [
-                { label: '0', value: '0' },
-                { label: '1', value: '1' },
-                { label: '2', value: '2' },
-            ],
+            leftData: [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }],
             movedValue: ['0'],
             movedData: [{ label: '0', value: '0' }],
             direction: 'left',
@@ -465,20 +408,12 @@ describe('Transfer', () => {
 
         changeCalled = false;
         value = ['0', '1', '2'];
-        data = [
-            { label: '0', value: '0' },
-            { label: '1', value: '1' },
-            { label: '2', value: '2' },
-        ];
+        data = [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }];
         extra = {
             leftValue: [],
             leftData: [],
             movedValue: ['0', '1', '2'],
-            movedData: [
-                { label: '0', value: '0' },
-                { label: '1', value: '1' },
-                { label: '2', value: '2' },
-            ],
+            movedData: [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }],
             direction: 'right',
         };
         findFooter(wrapper, 0)
@@ -496,17 +431,9 @@ describe('Transfer', () => {
         data = [];
         extra = {
             leftValue: ['0', '1', '2'],
-            leftData: [
-                { label: '0', value: '0' },
-                { label: '1', value: '1' },
-                { label: '2', value: '2' },
-            ],
+            leftData: [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }],
             movedValue: ['0', '1', '2'],
-            movedData: [
-                { label: '0', value: '0' },
-                { label: '1', value: '1' },
-                { label: '2', value: '2' },
-            ],
+            movedData: [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }],
             direction: 'left',
         };
         findFooter(wrapper, 1)
@@ -521,12 +448,7 @@ describe('Transfer', () => {
     });
 
     it('should highlight moved item', done => {
-        wrapper = mount(
-            <Transfer
-                defaultLeftChecked={['0']}
-                dataSource={[{ label: '0', value: '0' }]}
-            />
-        );
+        wrapper = mount(<Transfer defaultLeftChecked={['0']} dataSource={[{ label: '0', value: '0' }]} />);
         wrapper
             .find('div.next-transfer-operations button')
             .at(0)
@@ -542,13 +464,7 @@ describe('Transfer', () => {
     });
 
     it('should support rtl prop', () => {
-        wrapper = mount(
-            <Transfer
-                rtl
-                defaultLeftChecked={['0']}
-                dataSource={[{ label: '0', value: '0' }]}
-            />
-        );
+        wrapper = mount(<Transfer rtl defaultLeftChecked={['0']} dataSource={[{ label: '0', value: '0' }]} />);
         assert(
             wrapper
                 .find('div')
@@ -565,9 +481,7 @@ describe('Transfer', () => {
             sortCalled = true;
         };
 
-        wrapper = mount(
-            <Transfer dataSource={dataSource} onSort={handleSort} />
-        );
+        wrapper = mount(<Transfer dataSource={dataSource} onSort={handleSort} />);
         let dragItem = findItem(wrapper, 0, 1);
         let dropItem = findItem(wrapper, 0, 3);
         let dropDom = dropItem.instance();
@@ -607,9 +521,7 @@ describe('Transfer', () => {
     });
 
     it('should support id on panel elements', () => {
-        wrapper = mount(
-            <Transfer dataSource={dataSource} id="transfer-test" titles={['left', 'right']}/>
-        );
+        wrapper = mount(<Transfer dataSource={dataSource} id="transfer-test" titles={['left', 'right']} />);
         assert(wrapper.find('#transfer-test-panel-footer-left').length === 1);
         assert(wrapper.find('#transfer-test-panel-footer-right').length === 1);
         assert(wrapper.find('#transfer-test-panel-header-left').length === 1);
@@ -617,7 +529,15 @@ describe('Transfer', () => {
     });
 
     it('should disabled item not move', () => {
-        wrapper = mount(<Transfer mode="simple" defaultLeftChecked={['0']} defaultValue={['0']} value={['1', '2', '3']} dataSource={dataSource} />);
+        wrapper = mount(
+            <Transfer
+                mode="simple"
+                defaultLeftChecked={['0']}
+                defaultValue={['0']}
+                value={['1', '2', '3']}
+                dataSource={dataSource}
+            />
+        );
         findFooter(wrapper, 0)
             .find('a.next-transfer-panel-move-all')
             .simulate('click');
@@ -625,26 +545,31 @@ describe('Transfer', () => {
         assert(findItems(wrapper, 1).length === 3);
     });
     it('should customer panel work well', () => {
-
-        const treeDataSource = [{
-            label: 'Form',
-            key: '2',
-            value: '2',
-            selectable: false,
-            children: [{
-                label: 'Input',
-                key: '4',
-                value: '4'
-            }, {
-                label: 'Field',
-                key: '7',
-                value: '7'
-            }, {
-                label: 'Select',
-                key: '5',
-                value: '5',
-            }]
-        }];
+        const treeDataSource = [
+            {
+                label: 'Form',
+                key: '2',
+                value: '2',
+                selectable: false,
+                children: [
+                    {
+                        label: 'Input',
+                        key: '4',
+                        value: '4',
+                    },
+                    {
+                        label: 'Field',
+                        key: '7',
+                        value: '7',
+                    },
+                    {
+                        label: 'Select',
+                        key: '5',
+                        value: '5',
+                    },
+                ],
+            },
+        ];
 
         function getTreeDataSource(dataSource = [], value) {
             return dataSource.map(({ children, ...props }) => (
@@ -662,39 +587,38 @@ describe('Transfer', () => {
         }
         flatten(treeDataSource);
         wrapper = mount(
-            <Transfer
-                dataSource={transferDataSource}>
-                { ({ position, onChange, value }) => {
+            <Transfer dataSource={transferDataSource}>
+                {({ position, onChange, value }) => {
                     if (position === 'left') {
                         return (
-                            <Tree checkable editable
-                                  style={{padding: '10px'}}
-                                  checkedKeys={value}
-                                  onCheck={(keys, extra) => {const newValues=extra.checkedNodes.map(item => item.props.value); onChange(position, newValues)}}
+                            <Tree
+                                checkable
+                                editable
+                                style={{ padding: '10px' }}
+                                checkedKeys={value}
+                                onCheck={(keys, extra) => {
+                                    const newValues = extra.checkedNodes.map(item => item.props.value);
+                                    onChange(position, newValues);
+                                }}
                             >
                                 {getTreeDataSource(treeDataSource, value)}
                             </Tree>
                         );
                     }
-                }
-                }
+                }}
             </Transfer>
         );
-        wrapper.find('.next-checkbox').at(0).simulate('click');
+        wrapper
+            .find('.next-checkbox')
+            .at(0)
+            .simulate('click');
     });
     it('should onSelect work well', () => {
         const onSelect = (sourceSelectedValue, targetSelectedValue, trigger) => {
             assert(trigger === 'source', 'position should be source');
-            assert(sourceSelectedValue && (sourceSelectedValue[0] === '1'), 'checked value should be 1');
+            assert(sourceSelectedValue && sourceSelectedValue[0] === '1', 'checked value should be 1');
         };
-        wrapper = mount(
-            <Transfer
-                defaultValue={['1']}
-                value={['2']}
-                dataSource={dataSource}
-                onSelect={onSelect}
-            />
-        );
+        wrapper = mount(<Transfer defaultValue={['1']} value={['2']} dataSource={dataSource} onSelect={onSelect} />);
         compareDomAndDataSource(wrapper, 0, [
             { label: '0', value: '0' },
             { label: '1', value: '1' },
@@ -703,8 +627,10 @@ describe('Transfer', () => {
         compareDomAndDataSource(wrapper, 1, [{ label: '2', value: '2' }]);
         assert(findFooterCount(wrapper, 0) === '3');
         assert(findFooterCount(wrapper, 1) === '1');
-        wrapper.find('.next-checkbox').at(1).simulate('click');
-
+        wrapper
+            .find('.next-checkbox')
+            .at(1)
+            .simulate('click');
     });
     it('should support virtual list', () => {
         const dataSource = (() => {
@@ -714,24 +640,15 @@ describe('Transfer', () => {
                 dataSource.push({
                     label: `content${i}`,
                     value: `${i}`,
-                    disabled: i % 4 === 0
+                    disabled: i % 4 === 0,
                 });
             }
 
             return dataSource;
         })();
 
-        wrapper = mount(
-            <Transfer
-                mode="simple"
-                useVirtual
-                dataSource={dataSource}
-            />
-        );
-        assert(
-            wrapper.find('div.next-transfer-operations i.next-icon-switch')
-                .length
-        );
+        wrapper = mount(<Transfer mode="simple" useVirtual dataSource={dataSource} />);
+        assert(wrapper.find('div.next-transfer-operations i.next-icon-switch').length);
         assert(findItems(wrapper, 0).length === 10);
     });
 });
@@ -741,9 +658,7 @@ function findPanel(wrapper, panelIndex) {
 }
 
 function findHeader(wrapper, panelIndex) {
-    return findPanel(wrapper, panelIndex).find(
-        'div.next-transfer-panel-header'
-    );
+    return findPanel(wrapper, panelIndex).find('div.next-transfer-panel-header');
 }
 
 function findHeaderTitle(wrapper, panelIndex) {
@@ -753,9 +668,7 @@ function findHeaderTitle(wrapper, panelIndex) {
 }
 
 function findFooter(wrapper, panelIndex) {
-    return findPanel(wrapper, panelIndex).find(
-        'div.next-transfer-panel-footer'
-    );
+    return findPanel(wrapper, panelIndex).find('div.next-transfer-panel-footer');
 }
 
 function findFooterCount(wrapper, panelIndex) {
@@ -786,9 +699,7 @@ function findItemText(wrapper, panelIndex, itemIndex) {
 }
 
 function findItemCheckbox(wrapper, panelIndex, itemIndex) {
-    return findItem(wrapper, panelIndex, itemIndex).find(
-        'label.next-checkbox-wrapper'
-    );
+    return findItem(wrapper, panelIndex, itemIndex).find('label.next-checkbox-wrapper');
 }
 
 function checkAll(checkbox, checked) {
@@ -809,9 +720,7 @@ function compareDomAndDataSource(wrapper, panelIndex, dataSource) {
         );
         if (dataSource[index].disabled) {
             assert(item.hasClass('next-disabled'));
-            assert(
-                item.find('label.next-checkbox-wrapper').hasClass('disabled')
-            );
+            assert(item.find('label.next-checkbox-wrapper').hasClass('disabled'));
         }
     });
 }

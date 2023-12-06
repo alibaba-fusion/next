@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.26.15",
+  "version": "1.26.35",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -81,8 +81,13 @@
     "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check && npm run docs && npm run clear-dist && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
   },
   "lint-staged": {
+    "test/**/*": [
+      "prettier --write",
+      "git add"
+    ],
     "types/**/*.d.ts": [
-      "npm run tslint --"
+      "prettier --write",
+      "git add"
     ],
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx)": [
       "prettier --write"
@@ -97,9 +102,10 @@
     ]
   },
   "dependencies": {
-    "@alifd/field": "~1.5.5",
-    "@alifd/overlay": "^0.2.9",
+    "@alifd/field": "~1.6.3",
+    "@alifd/overlay": "^0.3.2",
     "@alifd/validate": "~1.2.0",
+    "@types/react-transition-group": "^4.4.6",
     "babel-runtime": "^6.26.0",
     "big.js": "^6.2.0",
     "classnames": "^2.2.3",
@@ -129,7 +135,9 @@
     "@babel/plugin-syntax-jsx": "^7.12.1",
     "@commitlint/cli": "^7.0.0",
     "@octokit/rest": "^18.0.9",
-    "@types/react": "^16.8.13",
+    "@types/enzyme": "^3.10.14",
+    "@types/node": "^17.0.41",
+    "@types/react": "^16.14.37",
     "autoprefixer": "^7.1.4",
     "axe-core": "~3.2.0",
     "babel-core": "^6.26.0",
@@ -229,6 +237,7 @@
     "remark": "^9.0.0",
     "sass": "^1.35.2",
     "sassaby-next": "^3.0.0",
+    "semver": "^7.3.5",
     "simulate-event": "^1.4.0",
     "sinon": "^5.0.10",
     "solarlunar": "^2.0.7",
@@ -242,8 +251,7 @@
     "urllib": "^2.36.1",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.x",
-    "whatwg-fetch": "^2.0.3",
-    "semver": "^7.3.5"
+    "whatwg-fetch": "^2.0.3"
   },
   "peerDependencies": {
     "@alifd/meet-react": "^2.0.0",

@@ -52,7 +52,9 @@ async function run() {
     fs.removeSync(path.join(esPath, 'core-temp'));
     fs.removeSync(path.join(cwd, 'src/core-temp'));
 
-    const tempPaths = glob.sync(path.join(cwd, '@(lib|es)', '*', 'scss/@(scss-var-to-css-var|css-var-def-default).scss'));
+    const tempPaths = glob.sync(
+        path.join(cwd, '@(lib|es)', '*', 'scss/@(scss-var-to-css-var|css-var-def-default).scss')
+    );
     tempPaths.forEach(p => fs.removeSync(p));
 
     logger.success('Run build successfully!');

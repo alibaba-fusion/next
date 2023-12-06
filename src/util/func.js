@@ -105,7 +105,7 @@ export function renderNode(render, defaultRender, renderProps = []) {
  * @param {dayjs.ConfigType} value
  * @returns {Dayjs | null}
  */
-export function checkDate(value) {
+export function checkDate(value, format) {
     /**
      * 因为 datejs(undefined) 表示当前时间
      * 但是这里期望的是一个空值，即用户不输入值的时候显示为空
@@ -114,7 +114,7 @@ export function checkDate(value) {
         value = null;
     }
 
-    value = datejs(value);
+    value = format ? datejs(value, format) : datejs(value);
     return value.isValid() ? value : null;
 }
 
@@ -126,8 +126,8 @@ export function checkDate(value) {
  * @param {boolean} strictly 是否严格校验：严格模式下不允许开始时间大于结束时间，在显示确认按键的，用户输入过程可不严格校验
  * @returns {Dayjs[] | null[]}
  */
-export function checkRangeDate(value, inputType, disabled, strictly = true) {
-    const [begin, end] = Array.isArray(value) ? [0, 1].map(i => checkDate(value[i])) : [null, null];
+export function checkRangeDate(value, inputType, disabled, strictly = true, format) {
+    const [begin, end] = Array.isArray(value) ? [0, 1].map(i => checkDate(value[i], format)) : [null, null];
     const [disabledBegin, disabledEnd] = Array.isArray(disabled) ? disabled : [disabled, disabled];
 
     /**

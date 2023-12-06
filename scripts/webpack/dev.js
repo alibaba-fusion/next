@@ -33,18 +33,13 @@ module.exports = function(progress = true) {
         },
         plugins: [
             new CaseSensitivePathsPlugin(),
-            new WatchMissingNodeModulesPlugin(
-                path.resolve(process.cwd(), 'node_modules')
-            ),
+            new WatchMissingNodeModulesPlugin(path.resolve(process.cwd(), 'node_modules')),
             new webpack.optimize.ModuleConcatenationPlugin(),
         ],
     };
 
     if (progress) {
-        conf.plugins.concat([
-            new webpack.ProgressPlugin(),
-            new webpack.NamedModulesPlugin(),
-        ]);
+        conf.plugins.concat([new webpack.ProgressPlugin(), new webpack.NamedModulesPlugin()]);
     }
     return conf;
 };

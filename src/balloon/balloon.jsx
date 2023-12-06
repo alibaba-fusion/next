@@ -414,7 +414,6 @@ class Balloon extends React.Component {
             delete otherProps.align;
             delete otherProps.shouldUpdatePosition;
             delete otherProps.needAdjust;
-            delete otherProps.offset;
             delete otherProps.safeId;
             delete otherProps.onHover;
             delete otherProps.onPosition;

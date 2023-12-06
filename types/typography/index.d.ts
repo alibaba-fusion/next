@@ -1,4 +1,4 @@
-import { HTMLAttributes, ElementType, Component, ComponentType } from "react";
+import { HTMLAttributes, ElementType, Component, ComponentType } from 'react';
 import CommonProps from '../util';
 
 export interface TextProps extends HTMLAttributes<HTMLElement>, CommonProps {
@@ -10,12 +10,9 @@ export interface TextProps extends HTMLAttributes<HTMLElement>, CommonProps {
     component?: ElementType;
 }
 
-export interface TitleProps extends TextProps {
+export interface TitleProps extends TextProps {}
 
-}
-
-export interface ParagraphProps extends TextProps {
-}
+export interface ParagraphProps extends TextProps {}
 
 export interface TypographyProps extends TextProps {}
 

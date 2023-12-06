@@ -31,11 +31,11 @@ class CheckboxGroup extends Component {
         /**
          * 被选中的值列表
          */
-        value: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number]),
+        value: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number, PropTypes.bool]),
         /**
          * 默认被选中的值列表
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number]),
+        defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number, PropTypes.bool]),
         /**
          * 通过子元素方式设置内部 checkbox
          */

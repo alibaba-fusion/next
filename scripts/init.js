@@ -4,10 +4,7 @@ const { components } = require('./config');
 const { logger, getComponentName } = require('./utils');
 
 const cwd = process.cwd();
-const hasEntry = component =>
-    ['core', 'locale', 'mixin-ui-state', 'util', 'validate'].indexOf(
-        component
-    ) === -1;
+const hasEntry = component => ['core', 'locale', 'mixin-ui-state', 'util', 'validate'].indexOf(component) === -1;
 
 const indexJSPath = path.join(cwd, 'src', 'index.js');
 const indexJSContent = components

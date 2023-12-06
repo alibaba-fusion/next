@@ -20,12 +20,7 @@ describe('Balloon', () => {
 
     beforeEach(function() {
         defaultWrapper = mount(
-            <Balloon
-                closable={false}
-                type="normal"
-                trigger={defaultTrigger}
-                triggerType="click"
-            >
+            <Balloon closable={false} type="normal" trigger={defaultTrigger} triggerType="click">
                 i am balloon content
             </Balloon>
         );
@@ -149,9 +144,7 @@ describe('Balloon', () => {
 
         // trigger不传,默认用空的<span></span>填充
         it('trigger default is span', () => {
-            const wrapper = mount(
-                <Balloon triggerType="click">trigger</Balloon>
-            );
+            const wrapper = mount(<Balloon triggerType="click">trigger</Balloon>);
             assert(wrapper.find('span').length === 1);
         });
     });
@@ -160,11 +153,7 @@ describe('Balloon', () => {
         it('balloon align', () => {
             //top
             const wrapperT = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="t"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="t" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
@@ -172,40 +161,24 @@ describe('Balloon', () => {
             assert(document.querySelector('.next-balloon-bottom') !== null);
 
             const wrapperTL = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="tl"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="tl" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
             wrapperTL.find('span').simulate('click');
-            assert(
-                document.querySelector('.next-balloon-bottom-right') !== null
-            );
+            assert(document.querySelector('.next-balloon-bottom-right') !== null);
 
             const wrapperTR = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="tr"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="tr" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
             wrapperTR.find('span').simulate('click');
-            assert(
-                document.querySelector('.next-balloon-bottom-left') !== null
-            );
+            assert(document.querySelector('.next-balloon-bottom-left') !== null);
 
             //bottom
             const wrapperB = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="b"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="b" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
@@ -213,11 +186,7 @@ describe('Balloon', () => {
             assert(document.querySelector('.next-balloon-top') !== null);
 
             const wrapperBL = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="bl"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="bl" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
@@ -225,11 +194,7 @@ describe('Balloon', () => {
             assert(document.querySelector('.next-balloon-top-right') !== null);
 
             const wrapperBR = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="br"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="br" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
@@ -238,11 +203,7 @@ describe('Balloon', () => {
 
             //left
             const wrapperL = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="l"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="l" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
@@ -250,24 +211,14 @@ describe('Balloon', () => {
             assert(document.querySelector('.next-balloon-right') !== null);
 
             const wrapperLT = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="lt"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="lt" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
             wrapperLT.find('span').simulate('click');
-            assert(
-                document.querySelector('.next-balloon-right-bottom') !== null
-            );
+            assert(document.querySelector('.next-balloon-right-bottom') !== null);
             const wrapperLB = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="lb"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="lb" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
@@ -275,11 +226,7 @@ describe('Balloon', () => {
             assert(document.querySelector('.next-balloon-right-top') !== null);
             //right
             const wrapperR = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="r"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="r" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
@@ -287,24 +234,14 @@ describe('Balloon', () => {
             assert(document.querySelector('.next-balloon-left') !== null);
 
             const wrapperRT = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="rt"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="rt" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
             wrapperRT.find('span').simulate('click');
-            assert(
-                document.querySelector('.next-balloon-left-bottom') !== null
-            );
+            assert(document.querySelector('.next-balloon-left-bottom') !== null);
             const wrapperRB = mount(
-                <Balloon
-                    trigger={<span>trigger</span>}
-                    align="rb"
-                    triggerType="click"
-                >
+                <Balloon trigger={<span>trigger</span>} align="rb" triggerType="click">
                     i am balloon content
                 </Balloon>
             );
@@ -312,7 +249,6 @@ describe('Balloon', () => {
             assert(document.querySelector('.next-balloon-left-top') !== null);
         });
     });
-    
 });
 
 describe('Balloon onClose ComponentWillReceiveProps closeIcon', () => {
@@ -352,16 +288,10 @@ describe('Balloon onClose ComponentWillReceiveProps closeIcon', () => {
                     <div>
                         点击按钮操作
                         <br />
-                        <a
-                            style={{ right: 0 }}
-                            onClick={this.hide.bind(this)}
-                        >
+                        <a style={{ right: 0 }} onClick={this.hide.bind(this)}>
                             确认
                         </a>
-                        <a
-                            style={{ marginLeft: '4px' }}
-                            onClick={this.hide.bind(this)}
-                        >
+                        <a style={{ marginLeft: '4px' }} onClick={this.hide.bind(this)}>
                             关闭
                         </a>
                     </div>
@@ -372,9 +302,7 @@ describe('Balloon onClose ComponentWillReceiveProps closeIcon', () => {
                             trigger={visibleTrigger}
                             triggerType="click"
                             visible={this.state.visible}
-                            onVisibleChange={this.handleVisibleChange.bind(
-                                this
-                            )}
+                            onVisibleChange={this.handleVisibleChange.bind(this)}
                             afterClose={this.afterClose.bind(this)}
                             onClose={this.onClose.bind(this)}
                         >

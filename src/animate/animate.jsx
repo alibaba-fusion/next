@@ -33,10 +33,7 @@ class Animate extends Component {
         /**
          * 子元素
          */
-        children: PropTypes.oneOfType([
-            PropTypes.element,
-            PropTypes.arrayOf(PropTypes.element),
-        ]),
+        children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
         /**
          * 执行第一次挂载动画前触发的回调函数
          * @param {HTMLElement} node 执行动画的 dom 元素
@@ -164,11 +161,7 @@ class Animate extends Component {
         });
 
         return (
-            <TransitionGroup
-                appear={animationAppear}
-                component={singleMode ? FirstChild : component}
-                {...others}
-            >
+            <TransitionGroup appear={animationAppear} component={singleMode ? FirstChild : component} {...others}>
                 {animateChildren}
             </TransitionGroup>
         );
