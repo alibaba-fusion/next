@@ -177,14 +177,14 @@ export default function virtual(BaseComponent) {
         }
 
         adjustScrollTop() {
-            const oldScrollToRow = Math.floor(this.lastScrollTop / this.state.rowHeight);
-            if (this.state.hasVirtualData && this.bodyNode) {
-                // scrollToRow的位置与当前的scrollToRow不匹配，则以scrollToRow为准重新校准位置（可能是由非用户滚动事件导致的props.scrollToRow发生了变化）
-                if (oldScrollToRow !== this.state.scrollToRow) {
-                    this.bodyNode.scrollTop = this.state.rowHeight * this.state.scrollToRow;
+            const { rowHeight, hasVirtualData, scrollToRow } = this.state;
+            const oldScrollToRow = Math.floor(this.lastScrollTop / rowHeight);
+            if (hasVirtualData && this.bodyNode) {
+                //根据上次lastScrollTop记录的位置计算而来的scrollToRow位置不准 则以最新的scrollToRow为准重新校准位置（可能是由非用户滚动事件导致的props.scrollToRow发生了变化）
+                if (oldScrollToRow !== scrollToRow) {
+                    this.bodyNode.scrollTop = rowHeight * scrollToRow;
                 } else {
-                    this.bodyNode.scrollTop =
-                        (this.lastScrollTop % this.state.rowHeight) + this.state.rowHeight * this.state.scrollToRow;
+                    this.bodyNode.scrollTop = (this.lastScrollTop % rowHeight) + rowHeight * scrollToRow;
                 }
             }
         }
