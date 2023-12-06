@@ -973,6 +973,17 @@ class CascaderSelect extends Component {
             followTrigger,
         };
 
+        if (!multiple) {
+            // 单选模式 select 会强制cache=true，会导致菜单展开状态的初始化不执行
+            // 若用户没有手动设置cache true，这里重置为false
+            if (!popupProps || !popupProps.cache) {
+                props.popupProps = {
+                    ...popupProps,
+                    cache: false,
+                };
+            }
+        }
+
         if (showSearch) {
             props.popupProps = {
                 ...popupProps,
