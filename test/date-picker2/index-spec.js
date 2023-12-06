@@ -904,6 +904,31 @@ describe('Picker', () => {
             });
         });
     });
+    // fix: https://github.com/alibaba-fusion/next/issues/3877
+    describe('issues rangerPicker', () => {
+        it('should not select default endDate',()=>{
+            const currentDate = dayjs('2023-12-06');
+            const disabledDate = function (date, mode) {
+                console.log('aaa disabledDate',date, mode);
+                return currentDate.date() !== date.date();
+            };
+            const onRangeChange = () => {
+                visibleChanged = !visibleChanged;
+            };
+            wrapper = mount(<RangePicker visible showTime disabledDate={disabledDate} onChange={onRangeChange}  />);
+            clickDate('2023-12-06');
+            clickTime('12');
+            clickTime('12', 'minute');
+            clickTime('12', 'second');
+            assert.deepEqual(getStrValue(), ['2023-12-06 12:12:12', '']);
+            clickOk();
+            clickTime('16');
+            clickTime('16', 'minute');
+            clickTime('35', 'second');
+            clickOk();
+            assert.deepEqual(getStrValue(), ['2023-12-06 12:12:12', '2023-12-06 16:16:35']);
+        });
+    });
 
     describe('issues', () => {
         beforeEach(() => {

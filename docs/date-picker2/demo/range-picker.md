@@ -20,7 +20,7 @@ Choose a RangePicker.
 import { DatePicker2 } from '@alifd/next';
 
 const { RangePicker } = DatePicker2;
-
+const currentDate = dayjs();
 const onChange = (date, dateStr) => console.log(date, dateStr);
 
 const App = () => (
