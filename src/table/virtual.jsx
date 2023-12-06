@@ -97,6 +97,8 @@ export default function virtual(BaseComponent) {
         componentDidMount() {
             if (this.state.hasVirtualData && this.bodyNode) {
                 this.lastScrollTop = this.bodyNode.scrollTop;
+            } else {
+                this.lastScrollTop = 0;
             }
 
             this.adjustScrollTop();

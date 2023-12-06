@@ -88,7 +88,7 @@ describe('Issue', () => {
                 return (
                     <Table
                         dataSource={dataSource}
-                        rowSelection={{ onChange: console.log }}
+                        rowSelection={{ onChange: () => {} }}
                         expandedRowRender={record => record.title}
                     />
                 );
@@ -149,9 +149,9 @@ describe('Issue', () => {
 
         ReactDOM.render(<App />, container, function() {
             assert(
-                document.querySelectorAll('#normal-table .next-table-lock-left .next-table-body tbody tr').length === 2
+                container.querySelectorAll('#normal-table .next-table-lock-left .next-table-body tbody tr').length === 2
             );
-            assert(document.querySelectorAll('#sticky-table .next-table-fix-left')[0].style.position === 'sticky');
+            assert(container.querySelectorAll('#sticky-table .next-table-fix-left')[0].style.position === 'sticky');
             setTimeout(() => {
                 ReactDOM.unmountComponentAtNode(container);
                 document.body.removeChild(container);
@@ -186,7 +186,7 @@ describe('Issue', () => {
             const input = container.querySelector('.next-table-header .next-checkbox input');
             input.click();
             setTimeout(() => {
-                assert(document.querySelectorAll('.next-table-body .next-checkbox-wrapper.checked').length === 2);
+                assert(container.querySelectorAll('.next-table-body .next-checkbox-wrapper.checked').length === 2);
                 ReactDOM.unmountComponentAtNode(container);
                 document.body.removeChild(container);
                 done();
@@ -459,7 +459,7 @@ describe('Issue', () => {
         sortBtn[0].click();
         sortBtn[1].click();
 
-        assert(document.getElementsByClassName('current').length === 1);
+        assert(div.getElementsByClassName('current').length === 1);
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
@@ -487,7 +487,6 @@ describe('Issue', () => {
         ReactDOM.render(<App />, div);
 
         const sortBtn = div.querySelectorAll('.next-table-header .next-table-sort');
-        console.log(sortBtn);
         sortBtn[0].click();
         assert(div.querySelectorAll('a.current .next-icon-descending'));
         sortBtn[0].click();
@@ -516,7 +515,7 @@ describe('Issue', () => {
         document.body.appendChild(div);
         ReactDOM.render(<App />, div);
 
-        assert(document.querySelectorAll('div.next-table-empty').length === 1);
+        assert(div.querySelectorAll('div.next-table-empty').length === 1);
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
@@ -537,7 +536,7 @@ describe('Issue', () => {
         document.body.appendChild(div);
         ReactDOM.render(<App />, div);
 
-        assert(document.querySelectorAll('div.next-table-empty').length === 1);
+        assert(div.querySelectorAll('div.next-table-empty').length === 1);
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
@@ -576,9 +575,9 @@ describe('Issue', () => {
 
             cell.dispatchEvent(mouseover);
 
-            assert(document.querySelectorAll('td.next-table-cell.hovered').length === 2);
+            assert(container.querySelectorAll('td.next-table-cell.hovered').length === 2);
 
-            assert(document.querySelectorAll('tr.next-table-row.hovered').length === 1);
+            assert(container.querySelectorAll('tr.next-table-row.hovered').length === 1);
 
             const mouseout = new MouseEvent('mouseout', {
                 view: window,
@@ -588,19 +587,19 @@ describe('Issue', () => {
 
             cell.dispatchEvent(mouseout);
 
-            assert(document.querySelectorAll('td.next-table-cell.hovered').length === 0);
+            assert(container.querySelectorAll('td.next-table-cell.hovered').length === 0);
 
             // target is in inner
-            const renderA = document.getElementById('name-0');
+            const renderA = container.querySelector('#name-0');
             renderA.dispatchEvent(mouseover);
 
-            assert(document.querySelectorAll('td.next-table-cell.hovered').length === 2);
+            assert(container.querySelectorAll('td.next-table-cell.hovered').length === 2);
 
-            assert(document.querySelectorAll('tr.next-table-row.hovered').length === 1);
+            assert(container.querySelectorAll('tr.next-table-row.hovered').length === 1);
 
             renderA.dispatchEvent(mouseout);
 
-            assert(document.querySelectorAll('td.next-table-cell.hovered').length === 0);
+            assert(container.querySelectorAll('td.next-table-cell.hovered').length === 0);
 
             ReactDOM.unmountComponentAtNode(container);
             document.body.removeChild(container);
@@ -654,7 +653,7 @@ describe('Issue', () => {
         document.body.appendChild(div);
         ReactDOM.render(<App />, div);
 
-        assert(document.querySelectorAll('.next-table-group-header + tr').length === 1);
+        assert(div.querySelectorAll('.next-table-group-header + tr').length === 1);
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
@@ -708,7 +707,6 @@ describe('Issue', () => {
         ReactDOM.render(
             <Table.StickyLock dataSource={dataSource()} columns={columns}>
                 <Table.GroupHeader
-                    useFirstLevelDataWhenNoChildren
                     cell={() => {
                         return <div>title</div>;
                     }}
@@ -716,18 +714,21 @@ describe('Issue', () => {
             </Table.StickyLock>,
             container
         );
-        const tableHeader = document.querySelector('.next-table-header');
-        const tableBody = document.querySelector('.next-table-body');
+        const tableHeader = container.querySelector('.next-table-header');
+        const tableBody = container.querySelector('.next-table-body');
         assert(tableHeader);
         assert(tableBody);
-
-        tableHeader.scrollTo({ left: 100, top: 0, behavior: 'smooth' });
-        await delay(500);
+        // wait for initial scroll align
+        await delay(200);
+        tableHeader.scrollLeft = 100;
+        ReactTestUtils.Simulate.scroll(tableHeader);
+        await delay(200);
         assert(tableHeader.scrollLeft === 100);
         assert(tableBody.scrollLeft === 100);
 
-        tableBody.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
-        await delay(500);
+        tableBody.scrollLeft = 0;
+        ReactTestUtils.Simulate.scroll(tableBody);
+        await delay(200);
         assert(tableHeader.scrollLeft === 0);
         assert(tableBody.scrollLeft === 0);
     });
@@ -795,8 +796,7 @@ describe('Issue', () => {
 
         ReactDOM.render(<Table.StickyLock dataSource={dataSource()} columns={columns} />, container, function() {
             setTimeout(() => {
-                console.log(document.getElementById('target-line'));
-                assert(document.getElementById('target-line').style.left === '340px');
+                assert(container.querySelector('#target-line').style.left === '340px');
                 ReactDOM.unmountComponentAtNode(container);
                 document.body.removeChild(container);
                 done();
@@ -897,7 +897,7 @@ describe('Issue', () => {
         ReactDOM.render(<Table.StickyLock dataSource={dataSource()} columns={columns} />, container, function() {
             setTimeout(() => {
                 assert(
-                    document.querySelectorAll('.next-table-cell.next-table-fix-right.next-table-fix-right-first')[3]
+                    container.querySelectorAll('.next-table-cell.next-table-fix-right.next-table-fix-right-first')[3]
                         .style.right === '200px'
                 );
                 ReactDOM.unmountComponentAtNode(container);
@@ -1080,11 +1080,11 @@ describe('Issue', () => {
             const input = container.querySelector('.next-table-header .next-table-sort');
             input.click();
             setTimeout(() => {
-                assert(document.querySelectorAll(`.next-table-header-node.next-table-header-sort-desc`).length === 1);
+                assert(container.querySelectorAll(`.next-table-header-node.next-table-header-sort-desc`).length === 1);
                 input.click();
                 setTimeout(() => {
                     assert(
-                        document.querySelectorAll(`.next-table-header-node.next-table-header-sort-asc`).length === 1
+                        container.querySelectorAll(`.next-table-header-node.next-table-header-sort-asc`).length === 1
                     );
                     ReactDOM.unmountComponentAtNode(container);
                     document.body.removeChild(container);
@@ -1233,7 +1233,6 @@ describe('Issue', () => {
         );
         const input = container.querySelector('input');
         assert(input);
-        console.log('[ input ]', input);
         ReactTestUtils.Simulate.change(input, { target: { value: 'aa' } });
         assert(input.value === 'aa');
     });
@@ -1341,5 +1340,90 @@ describe('TableScroll', () => {
         scrollNode.scrollTop = 200;
         ReactTestUtils.Simulate.click(mountNode.querySelector('.next-btn'));
         assert(rowHeight * 100 === scrollNode.scrollTop);
+    });
+
+    // fix https://github.com/alibaba-fusion/next/issues/4394
+    it('should support onBodyScroll under the condition that useVirtual, dataSource is returned asynchronously, close #4394', async () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = j => {
+            const result = [];
+            for (let i = 0; i < j; i++) {
+                result.push({
+                    title: { name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible` },
+                    id: `100306660940${i}`,
+                    time: 2000 + i,
+                    index: i,
+                });
+            }
+            return result;
+        };
+        class App extends React.Component {
+            state = {
+                scrollToRow: 0,
+                dataSource: [],
+            };
+            componentDidMount = () => {
+                setTimeout(() => {
+                    this.setState({
+                        dataSource: dataSource(200),
+                    });
+                }, 50);
+            };
+            onBodyScroll = start => {
+                this.setState({
+                    scrollToRow: start,
+                });
+            };
+            handleAdd = () => {
+                this.setState({
+                    scrollToRow: 180,
+                });
+            };
+            renderCell = () => {
+                return <button onClick={this.handleAdd}>跳到底部</button>;
+            };
+
+            render() {
+                return (
+                    <Table
+                        dataSource={this.state.dataSource}
+                        maxBodyHeight={400}
+                        useVirtual
+                        scrollToRow={this.state.scrollToRow}
+                        onBodyScroll={this.onBodyScroll}
+                    >
+                        <Table.Column title="Index" dataIndex="index" width={200} />
+                        <Table.Column title="add" dataIndex="add" cell={this.renderCell} width={200} />
+                    </Table>
+                );
+            }
+        }
+
+        ReactDOM.render(<App />, container);
+
+        await delay(200);
+        const button = container.querySelector('tr.next-table-row.first button');
+        assert(button);
+        button.click();
+        await delay(200);
+
+        const getBodyTop = () => {
+            const { top, height } = container.querySelector('thead').getBoundingClientRect();
+            return top + height;
+        };
+        const skipRow = container.querySelectorAll('tr.next-table-row')[10];
+        assert(skipRow.children[0].textContent === '180');
+        const skipRowTop = skipRow.getBoundingClientRect().top;
+        assert(skipRowTop >= getBodyTop());
+        const tbody = container.querySelector('.next-table-body');
+        tbody.scrollTop += 10;
+        ReactTestUtils.Simulate.scroll(tbody);
+        await delay(200);
+        const scrollRow = container.querySelectorAll('tr.next-table-row')[10];
+        assert(scrollRow.children[0].textContent === '180');
+        const scrollRowTop = scrollRow.getBoundingClientRect().top;
+        assert(scrollRowTop >= getBodyTop() - 10);
     });
 });
