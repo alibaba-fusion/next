@@ -167,6 +167,10 @@ class Balloon extends React.Component {
          * 弹层id, 传入值才会支持无障碍
          */
         id: PropTypes.string,
+        /**
+         * 是否打开弹窗的箭头
+         */
+        arrow: PropTypes.bool,
     };
     static defaultProps = {
         prefix: 'next-',
@@ -196,6 +200,7 @@ class Balloon extends React.Component {
         popupStyle: {},
         popupClassName: '',
         popupProps: {},
+        arrow: true,
     };
 
     constructor(props, context) {
@@ -348,6 +353,7 @@ class Balloon extends React.Component {
             v2,
             arrowPointToCenter,
             placementOffset = 0,
+            arrow,
             ...others
         } = this.props;
 
@@ -384,6 +390,7 @@ class Balloon extends React.Component {
                 rtl={rtl}
                 alignEdge={alignEdge}
                 v2={v2}
+                arrow={arrow}
             >
                 {children}
             </BalloonInner>

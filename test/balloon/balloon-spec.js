@@ -30,6 +30,36 @@ describe('Balloon', () => {
         defaultWrapper.unmount();
     });
 
+    describe('arrow', () => {
+        it('should not render arrow', done => {
+            const arrowFalseWrapper = mount(
+                <Balloon trigger={defaultTrigger} triggetType="click" arrow={false}>
+                    i am balloon content
+                </Balloon>
+            );
+            arrowFalseWrapper.find('span').simulate('mouseenter');
+            setTimeout(function() {
+                assert(document.querySelector('.next-balloon-arrow') === null);
+                arrowFalseWrapper.unmount();
+                done();
+            }, 300);
+        });
+
+        it('should render arrow', done => {
+            const arrowTrueWrapper = mount(
+                <Balloon trigger={defaultTrigger} triggetType="click">
+                    i am balloon content
+                </Balloon>
+            );
+            arrowTrueWrapper.find('span').simulate('mouseenter');
+            setTimeout(function() {
+                assert(document.querySelector('.next-balloon-arrow') !== null);
+                arrowTrueWrapper.unmount();
+                done();
+            }, 300);
+        });
+    });
+
     describe('closable', () => {
         it('closable: true', () => {
             defaultWrapper.setProps({
