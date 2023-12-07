@@ -1,0 +1,19 @@
+:root {
+--typography-text-color: #333333;
+--typography-text-strong-font-weight: 600;
+--typography-text-code-corner: 3px;
+--typography-text-mark-color: #333333;
+--typography-text-mark-background: #FFE6BD;
+--typography-text-code-color: #333333;
+--typography-text-code-background: #F2F3F7;
+--typography-text-code-border-color: #E6E7EB;
+--typography-paragraph-font-size: 14px;
+--typography-paragraph-line-height: 1.5;
+--typography-title-h1-font-size: 24px;
+--typography-title-h2-font-size: 20px;
+--typography-title-h3-font-size: 16px;
+--typography-title-h4-font-size: 16px;
+--typography-title-h5-font-size: 14px;
+--typography-title-h6-font-size: 12px;
+--typography-title-font-weight: 600;
+}
