@@ -222,7 +222,7 @@ function* publishToNpm() {
         yield runCommond(`npm publish --tag ${distTags.tag}`, true);
         yield runCommond(`tnpm sync @alifd/next`);
         yield publishToNextDocs();
-        triggerRelease();
+        yield triggerRelease(distTags.tag !== 'latest');
     } else {
         logger.success('publish abort.');
     }
@@ -255,7 +255,7 @@ function* publishToNextDocs() {
     }
 }
 
-function triggerRelease() {
+function triggerRelease(isPrerelease = false) {
     logger.success(`正在准备发布Github release: ${buildTag}`);
 
     const latestLog = fs
@@ -277,7 +277,7 @@ function triggerRelease() {
                 name: buildTag,
                 body: latestLog,
                 draft: false,
-                prerelease: false,
+                prerelease: isPrerelease,
             })
             .then(() => {
                 logger.success('Create github release success');
