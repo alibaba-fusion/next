@@ -1,9 +1,19 @@
 {
     "compilerOptions": {
-      "experimentalDecorators": true,
-      "jsx": "preserve",
-      "removeComments": true,
-      "sourceMap": true
+        "target": "ES2018",
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "experimentalDecorators": true,
+        "jsx": "react",
+        "downlevelIteration": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "allowJs": false,
+        "skipLibCheck": true,
+        "esModuleInterop": false,
+        "allowSyntheticDefaultImports": false,
+        "isolatedModules": false
     },
-    "exclude": ["node_modules", "scripts"]
+    "include": ["global.d.ts", "cypress/**/*.ts", "./components/**/*.ts", "./components/**/*.tsx"]
 }

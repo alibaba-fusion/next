@@ -3,23 +3,85 @@
         "es6": true,
         "node": true
     },
-    "extends": ["@alifd/eslint-config-next", "./a11y.eslintrc", "prettier"],
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+        "@alifd/eslint-config-next",
+        "plugin:@typescript-eslint/recommended",
+        "prettier",
+        "./a11y.eslintrc"
+    ],
+    "plugins": ["@typescript-eslint"],
+    "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "18"
+        }
+    },
+    "overrides": [
+        {
+            "files": [
+                "./components/util/test.ts",
+                "./components/**/__tests__/**/*.ts",
+                "./components/**/__tests__/**/*.tsx"
+            ],
+            "extends": ["plugin:cypress/recommended"],
+            "plugins": ["cypress"]
+        }
+    ],
     "rules": {
         "valid-jsdoc": "off",
         "max-statements": "off",
         "max-len": "off",
-        "no-unused-vars": 1,
-        "import/prefer-default-export": 0
-    },
-    "overrides": [
-        {
-          "files": ["*.js", "*.jsx"],
-          "parser": "babel-eslint"
-        },
-        {
-          "files": ["*.ts", "*.tsx"],
-          "parser": "@typescript-eslint/parser",
-          "plugins": ["@typescript-eslint/eslint-plugin"]
-        }
-      ]
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "import/prefer-default-export": "off",
+        "@typescript-eslint/no-explicit-any": ["error", { "ignoreRestArgs": true }],
+        "@typescript-eslint/ban-ts-comment": "error",
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": "error",
+        "react/no-deprecated": "error",
+        "react/no-unsafe": "error",
+        "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
+        "react/sort-comp": [
+            "warn",
+            {
+                "order": [
+                    "static-variables",
+                    "static-methods",
+                    "lifecycle",
+                    "everything-else",
+                    "render"
+                ],
+                "groups": {
+                    "lifecycle": [
+                        "displayName",
+                        "propTypes",
+                        "defaultProps",
+                        "contextTypes",
+                        "childContextTypes",
+                        "mixins",
+                        "statics",
+                        "constructor",
+                        "getDefaultProps",
+                        "state",
+                        "getInitialState",
+                        "getChildContext",
+                        "getDerivedStateFromProps",
+                        "componentWillMount",
+                        "UNSAFE_componentWillMount",
+                        "componentDidMount",
+                        "componentWillReceiveProps",
+                        "UNSAFE_componentWillReceiveProps",
+                        "shouldComponentUpdate",
+                        "componentWillUpdate",
+                        "UNSAFE_componentWillUpdate",
+                        "getSnapshotBeforeUpdate",
+                        "componentDidUpdate",
+                        "componentDidCatch",
+                        "componentWillUnmount"
+                    ]
+                }
+            }
+        ]
+    }
 }
