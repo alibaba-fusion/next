@@ -1,0 +1,10 @@
+{
+    "extends": ["./tsconfig.json"],
+    "compilerOptions": {
+        "outDir": "types",
+        "declaration": true,
+        "emitDeclarationOnly": true
+    },
+    "include": ["./components/**/*.ts", "./components/**/*.tsx"],
+    "exclude": ["**/__docs__/**/*", "**/__tests__/**/*", "./components/**/style.ts"]
+}
