@@ -1,0 +1,12 @@
+.context-demo {
+    width: 500px;
+    height: 200px;
+    line-height: 200px;
+    text-align: center;
+    background: #ddd;
+    border: 1px solid black;
+}
+
+.context-menu {
+    width: 120px;
+}

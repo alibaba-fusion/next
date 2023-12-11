@@ -1,0 +1,9 @@
+.custom-tab-content {
+    min-height: 50px;
+}
+
+.next-tabs-content {
+    color: #333;
+    font-size: 12px;
+    padding: 12px;
+}

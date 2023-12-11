@@ -1,0 +1,16 @@
+.nest-demo .grid-fixed-demo-title {
+    margin-left: 20px;
+}
+
+.nest-demo .demo-row {
+    margin: 10px 0;
+}
+
+.nest-demo .demo-col-inset {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #ececec;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}

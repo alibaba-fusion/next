@@ -1,0 +1,18 @@
+.diy-menu {
+    /*width: 275px*/
+}
+
+.diy-menu .next-menu-item a {
+    display: none;
+    float: right;
+    cursor: pointer;
+}
+.diy-menu .next-menu-item:hover a {
+    display: inline-block;
+}
+.diy-menu .diy-menu-button {
+    float: right;
+}
+.diy-menu[dir='rtl'] .diy-menu-button {
+    float: left;
+}

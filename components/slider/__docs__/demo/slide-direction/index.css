@@ -1,0 +1,16 @@
+.ver-slick .h3 {
+    background: #4f74b3;
+    color: #fff;
+    line-height: 150px;
+    text-align: center;
+    font-size: 36px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.demo-item-title {
+    font-size: 16px;
+    color: #333;
+    padding: 8px;
+    margin: 20px 0 10px 0;
+}

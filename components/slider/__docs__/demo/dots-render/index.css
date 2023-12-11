@@ -1,0 +1,26 @@
+.next-slick .h3,
+.h4 {
+    background: #4f74b3;
+    color: #fff;
+    line-height: 150px;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.next-slick .h4 {
+    margin-right: 5px;
+    position: relative;
+}
+
+.dots-cust {
+    color: #fff;
+}
+.dots-cust a {
+    dispaly: block;
+    background: rgba(200, 200, 200, 0.4);
+    padding: 0 4px;
+}
+.dots-cust .active a {
+    color: rgb(70, 188, 2);
+}

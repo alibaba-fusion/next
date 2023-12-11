@@ -1,0 +1,8 @@
+.message-size-shape-demo .next-message {
+    display: inline-block;
+    margin: 10px;
+}
+
+.message-size-shape-demo .next-message-title {
+    text-transform: capitalize;
+}

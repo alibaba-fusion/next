@@ -1,0 +1,10 @@
+.custom-affix-container {
+    height: 150px;
+    overflow-y: scroll;
+    background: url(https://img.alicdn.com/tfs/TB1AbJXSpXXXXXJXpXXXXXXXXXX-32-32.jpg) repeat 50% 50%;
+}
+
+.custom-affix-container .affix-wrapper {
+    padding-top: 50px;
+    height: 500px;
+}

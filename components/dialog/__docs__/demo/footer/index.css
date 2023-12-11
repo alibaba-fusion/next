@@ -1,0 +1,13 @@
+.demo-content {
+    padding: 10px;
+    border: 2px dashed #ddd;
+    background: #f8f8f8;
+}
+
+.demo-radio-group {
+    display: block;
+}
+
+.demo-radio-group + .demo-radio-group {
+    margin-top: 10px;
+}

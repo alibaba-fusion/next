@@ -1,0 +1,8 @@
+.overlay-container {
+    position: relative;
+    height: 150px;
+    margin: 50px;
+    border: 1px solid #eee;
+    overflow: auto;
+    text-align: center;
+}

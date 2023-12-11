@@ -1,0 +1,16 @@
+.fusion-demo .demo-item-title {
+    font-size: 16px;
+    color: #333;
+    padding: 8px;
+    margin: 14px 0;
+}
+
+.custom-tab-content {
+    min-height: 150px;
+}
+
+.next-tabs-content {
+    color: #333;
+    font-size: 12px;
+    padding: 12px;
+}

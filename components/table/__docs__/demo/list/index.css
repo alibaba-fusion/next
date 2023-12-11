@@ -1,0 +1,13 @@
+.media-side {
+    width: 48px;
+    height: 48px;
+    float: left;
+    margin-right: 10px;
+}
+.media-content {
+    overflow: hidden;
+    vertical-align: top;
+}
+.media {
+    overflow: hidden;
+}

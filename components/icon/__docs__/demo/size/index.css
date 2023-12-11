@@ -1,0 +1,23 @@
+.icon-sizes {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.icon-sizes li {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+
+.icon-sizes i {
+    display: block;
+    margin: 12px auto 0 auto;
+    text-align: center;
+}
+
+.icon-sizes span {
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+}
