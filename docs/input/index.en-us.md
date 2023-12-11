@@ -73,7 +73,7 @@ Form Input, use it with Form components usually.
 | state           | state<br><br>option:<br>'error'<br>'loading'<br>'success'   | Enum          | -         |
 | autoHeight     | height auto fit, exapmle: true / {minRows: 2, maxRows: 4}                                                                                                  | Boolean/Object | false     |
 | rows           | multiline text height <br />(Never use `height` to controll textarea's height for compatibility with IE9/10)                                                                                  | Number         | 4         |
-
+| hasClear        | clear button displays or not                                                      | Boolean       | -         |
 ### Input.Group
 
 | Param | Descripiton  | Type  | Default Value |

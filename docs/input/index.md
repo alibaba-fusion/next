@@ -86,7 +86,7 @@
 | hasBorder      | 是否有边框                                                                                                                                                                                                                              | Boolean        | true      |      |
 | autoHeight     | 自动高度 true / {minRows: 2, maxRows: 4}                                                                                                                                                                                               | Boolean/Object | false     |      |
 | rows           | 多行文本框高度 <br />(不要直接用height设置多行文本框的高度, ie9 10会有兼容性问题)                                                                                                                                                                               | Number         | 4         |      |
-
+| hasClear        | 是否出现clear按钮                                                                                                                                                                                                                        | Boolean          | -         |      |
 ### Input.Group
 
 | 参数                   | 说明          | 类型        | 默认值 |
