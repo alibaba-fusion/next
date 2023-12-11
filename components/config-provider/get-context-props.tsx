@@ -1,12 +1,21 @@
-import zhCN from '../locale/zh-cn.js';
+import { ComponentLocaleObject } from '../locale/types';
+import zhCN from '../locale/zh-cn';
 import { obj } from '../util';
+import {
+    ContextState,
+    OverlayCommonProps,
+    ErrorBoundaryType,
+    ParsedContextConfig,
+    ParsedErrorBoundary,
+} from './types';
+
 /**
  *
  * @param {Object|Boolean} input
  * @returns {Object} typeof obj.open === 'boolean'
  */
-const parseBoundary = input => {
-    let obj;
+function parseBoundary(input?: ErrorBoundaryType): ParsedErrorBoundary {
+    let obj: ParsedErrorBoundary;
     if (input === undefined || input === null) {
         return {};
     } else if (typeof input === 'boolean') {
@@ -16,10 +25,14 @@ const parseBoundary = input => {
     }
 
     return obj;
-};
+}
 
-export default function getContextProps(props, context, displayName) {
-    const { prefix, locale, defaultPropsConfig, pure, rtl, device, popupContainer, errorBoundary } = props;
+export default function getContextProps<P extends Omit<OverlayCommonProps, 'defaultPropsConfig'>>(
+    props: P,
+    context: ContextState,
+    displayName: string
+): ParsedContextConfig {
+    const { prefix, locale, pure, rtl, device, popupContainer, errorBoundary } = props;
     const {
         nextPrefix,
         nextLocale,
@@ -34,7 +47,7 @@ export default function getContextProps(props, context, displayName) {
 
     const newPrefix = prefix || nextPrefix;
 
-    let localeFromContext;
+    let localeFromContext: ComponentLocaleObject | undefined;
     let newDisplayName = displayName;
 
     switch (displayName) {
@@ -52,13 +65,13 @@ export default function getContextProps(props, context, displayName) {
     }
 
     if (nextLocale) {
-        localeFromContext = nextLocale[newDisplayName];
+        localeFromContext = nextLocale[newDisplayName] as ComponentLocaleObject;
         if (localeFromContext) {
             localeFromContext.momentLocale = nextLocale.momentLocale;
         }
     }
 
-    let newLocale;
+    let newLocale: ComponentLocaleObject | undefined;
     if (locale) {
         newLocale = obj.deepMerge({}, zhCN[newDisplayName], localeFromContext, locale);
     } else if (localeFromContext) {
@@ -81,7 +94,7 @@ export default function getContextProps(props, context, displayName) {
     }
 
     return {
-        prefix: newPrefix,
+        prefix: newPrefix!,
         locale: newLocale,
         pure: newPure,
         rtl: newRtl,

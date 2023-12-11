@@ -1,16 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import { Component, ErrorInfo, ReactNode, ReactElement } from 'react';
+import * as PropTypes from 'prop-types';
+import { ErrorBoundaryConfig } from './types';
+
+function DefaultUI() {
+    // fixme: string is not a valid react component return type
+    return '' as unknown as ReactElement;
+}
 
 DefaultUI.propTypes = {
     error: PropTypes.object,
     errorInfo: PropTypes.object,
 };
 
-function DefaultUI() {
-    return '';
+export interface ErrorBoundaryProps extends ErrorBoundaryConfig {
+    children?: ReactNode;
 }
 
-export default class ErrorBoundary extends React.Component {
+interface ErrorBoundaryState {
+    error?: Error | null;
+    errorInfo?: ErrorInfo | null;
+}
+
+export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     static propTypes = {
         children: PropTypes.element,
         /**
@@ -28,12 +40,12 @@ export default class ErrorBoundary extends React.Component {
         fallbackUI: PropTypes.func,
     };
 
-    constructor(props) {
+    constructor(props: ErrorBoundaryProps) {
         super(props);
         this.state = { error: null, errorInfo: null };
     }
 
-    componentDidCatch(error, errorInfo) {
+    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         this.setState({
             error: error,
             errorInfo: errorInfo,
@@ -41,8 +53,8 @@ export default class ErrorBoundary extends React.Component {
 
         const { afterCatch } = this.props;
 
-        if ('afterCatch' in this.props && typeof afterCatch === 'function') {
-            this.props.afterCatch(error, errorInfo);
+        if (typeof afterCatch === 'function') {
+            afterCatch(error, errorInfo);
         }
     }
 
@@ -50,7 +62,7 @@ export default class ErrorBoundary extends React.Component {
         const { fallbackUI: FallbackUI = DefaultUI } = this.props;
 
         if (this.state.errorInfo) {
-            return <FallbackUI error={this.state.error} errorInfo={this.state.errorInfo} />;
+            return <FallbackUI error={this.state.error!} errorInfo={this.state.errorInfo} />;
         }
         // Normally, just render children
         return this.props.children;

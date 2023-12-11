@@ -1,22 +1,40 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import hoistNonReactStatic from 'hoist-non-react-statics';
+import * as React from 'react';
+import {
+    ComponentType,
+    ComponentClass,
+    FunctionComponent,
+    ForwardRefExoticComponent,
+    ComponentProps,
+    ComponentRef,
+} from 'react';
+import * as PropTypes from 'prop-types';
+import * as hoistNonReactStatic from 'hoist-non-react-statics';
 import { obj, log } from '../util';
 import getContextProps from './get-context-props';
 import ErrorBoundary from './error-boundary';
+import { Locale } from '../locale/types';
+import type {
+    ConfigOptions,
+    PropsDeprecatedPrinter,
+    ContextState,
+    ComponentCommonProps,
+    OverlayCommonProps,
+    ConfiguredComponent,
+    ConfigProviderProps,
+} from './types';
 
 const { shallowEqual } = obj;
 
-function getDisplayName(Component) {
+function getDisplayName(Component: ComponentType<unknown> | ForwardRefExoticComponent<unknown>) {
     return Component.displayName || Component.name || 'Component';
 }
 
-let globalLocales;
-let currentGlobalLanguage = 'zh-cn';
-let currentGlobalLocale = {};
-let currentGlobalRtl;
+let globalLocales: Record<string, Partial<Locale>> | undefined;
+let currentGlobalLanguage: string = 'zh-cn';
+let currentGlobalLocale: Partial<Locale> = {};
+let currentGlobalRtl: Locale['rtl'];
 
-export function initLocales(locales) {
+export function initLocales(locales?: Record<string, Locale>) {
     globalLocales = locales;
 
     if (locales) {
@@ -28,7 +46,7 @@ export function initLocales(locales) {
     }
 }
 
-export function setLanguage(language) {
+export function setLanguage(language: string) {
     if (globalLocales) {
         currentGlobalLanguage = language;
         currentGlobalLocale = globalLocales[language];
@@ -39,7 +57,7 @@ export function setLanguage(language) {
     }
 }
 
-export function setLocale(locale) {
+export function setLocale(locale: Partial<Locale>) {
     currentGlobalLocale = {
         ...(globalLocales ? globalLocales[currentGlobalLanguage] : {}),
         ...locale,
@@ -50,7 +68,7 @@ export function setLocale(locale) {
     }
 }
 
-export function setDirection(dir) {
+export function setDirection(dir: 'ltr' | 'rtl') {
     currentGlobalRtl = dir === 'rtl';
 }
 
@@ -66,11 +84,53 @@ export function getDirection() {
     return currentGlobalRtl;
 }
 
-export function config(Component, options = {}) {
+// type ComponentTypeWithState<P = {}, S = {}> = ComponentClass<P, S> | FunctionComponent<P>
+function config<C extends ComponentClass>(
+    Component: C,
+    options?: ConfigOptions<ComponentProps<C>, Extract<keyof InstanceType<C>, string>>
+): typeof ConfiguredComponent<
+    ComponentProps<C> & ComponentCommonProps,
+    Record<string, never>,
+    InstanceType<C>
+>;
+// fixme: forward ref type is not correctly
+function config<C extends ForwardRefExoticComponent<unknown>>(
+    Component: C,
+    options?: ConfigOptions<ComponentProps<C>>
+): typeof ConfiguredComponent<
+    ComponentProps<C> & ComponentCommonProps,
+    Record<string, never>,
+    ComponentRef<C>
+>;
+function config<C extends FunctionComponent>(
+    Component: C,
+    options?: ConfigOptions<ComponentProps<C>>
+): typeof ConfiguredComponent<
+    ComponentProps<C> & ComponentCommonProps,
+    Record<string, never>,
+    undefined
+>;
+function config<C extends ComponentClass | ForwardRefExoticComponent<unknown> | FunctionComponent>(
+    Component: C,
+    options: ConfigOptions<ComponentProps<C>> = {}
+): typeof ConfiguredComponent<
+    ComponentProps<C> & ComponentCommonProps,
+    Record<string, never>,
+    unknown
+> {
+    type P = ComponentProps<C> & ComponentCommonProps;
+    type S = Record<string, never>;
+    type R = unknown;
     // 非 forwardRef 创建的 class component
-    if (obj.isClassComponent(Component) && Component.prototype.shouldComponentUpdate === undefined) {
+    if (
+        obj.isClassComponent(Component) &&
+        Component.prototype.shouldComponentUpdate === undefined
+    ) {
         // class component: 通过定义 shouldComponentUpdate 改写成 pure component, 有refs
-        Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
+        Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(
+            nextProps: P,
+            nextState: S
+        ) {
             if (this.props.pure) {
                 return !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
             }
@@ -79,7 +139,8 @@ export function config(Component, options = {}) {
         };
     }
 
-    class ConfigedComponent extends React.Component {
+    class ConfigedComponent extends React.Component<P, S> {
+        static displayName = `Config(${getDisplayName(Component)})`;
         static propTypes = {
             ...(Component.propTypes || {}),
             prefix: PropTypes.string,
@@ -92,7 +153,7 @@ export function config(Component, options = {}) {
             errorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         };
         static contextTypes = {
-            ...(Component.contextTypes || {}),
+            ...((Component as ComponentClass).contextTypes || {}),
             nextPrefix: PropTypes.string,
             nextLocale: PropTypes.object,
             nextDefaultPropsConfig: PropTypes.object,
@@ -104,18 +165,24 @@ export function config(Component, options = {}) {
             nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         };
 
-        constructor(props, context) {
+        constructor(props: P, context: ContextState) {
             super(props, context);
 
             this._getInstance = this._getInstance.bind(this);
             this._deprecated = this._deprecated.bind(this);
         }
 
-        _getInstance(ref) {
+        // ref data
+        private _instance: R;
+        // proxied properties
+        [key: string]: unknown;
+
+        private _getInstance(ref: R) {
             this._instance = ref;
 
             if (this._instance && options.exportNames) {
                 options.exportNames.forEach(name => {
+                    // @ts-expect-error this._instance expect object
                     const field = this._instance[name];
                     if (typeof field === 'function') {
                         this[name] = field.bind(this._instance);
@@ -126,7 +193,7 @@ export function config(Component, options = {}) {
             }
         }
 
-        _deprecated(...args) {
+        private _deprecated(...args: Parameters<PropsDeprecatedPrinter>) {
             if (this.context.nextWarning !== false) {
                 log.deprecated(...args);
             }
@@ -140,6 +207,7 @@ export function config(Component, options = {}) {
             const {
                 prefix,
                 locale,
+                // fixme: defaultPropsConfig is useless
                 defaultPropsConfig,
                 pure,
                 rtl,
@@ -147,7 +215,7 @@ export function config(Component, options = {}) {
                 popupContainer,
                 errorBoundary,
                 ...others
-            } = this.props;
+            } = this.props as OverlayCommonProps & Pick<ConfigProviderProps, 'defaultPropsConfig'>;
             const {
                 nextPrefix,
                 nextLocale = {},
@@ -178,47 +246,58 @@ export function config(Component, options = {}) {
                     nextPure,
                     nextDevice,
                     nextPopupContainer,
-                    nextRtl: typeof nextRtl === 'boolean' ? nextRtl : currentGlobalRtl === true ? true : undefined,
+                    nextRtl:
+                        typeof nextRtl === 'boolean'
+                            ? nextRtl
+                            : currentGlobalRtl === true
+                              ? true
+                              : undefined,
                     nextErrorBoundary,
                 },
                 displayName
             );
 
             // errorBoundary is only for <ErrorBoundary>
-            const newContextProps = ['prefix', 'locale', 'pure', 'rtl', 'device', 'popupContainer'].reduce(
-                (ret, name) => {
-                    if (typeof contextProps[name] !== 'undefined') {
-                        ret[name] = contextProps[name];
-                    }
-                    return ret;
-                },
-                {}
-            );
+            const newContextProps = (
+                ['prefix', 'locale', 'pure', 'rtl', 'device', 'popupContainer'] as const
+            ).reduce((ret, name) => {
+                if (typeof contextProps[name] !== 'undefined') {
+                    // @ts-expect-error ignore assign type error
+                    ret[name] = contextProps[name];
+                }
+                return ret;
+            }, {} as OverlayCommonProps);
 
             if ('pure' in newContextProps && newContextProps.pure) {
-                log.warning('pure of ConfigProvider is deprecated, use Function Component or React.PureComponent');
+                log.warning(
+                    'pure of ConfigProvider is deprecated, use Function Component or React.PureComponent'
+                );
             }
 
             // 对于两个真正消费 popupContainer 的组件来说，正确的名字是 container,
             if (
                 'popupContainer' in newContextProps &&
-                this.props.container === undefined &&
+                (this.props as OverlayCommonProps).container === undefined &&
                 ['Overlay', 'Popup'].indexOf(displayName) > -1
             ) {
-                newContextProps.container = newContextProps.popupContainer;
+                (newContextProps as OverlayCommonProps).container = newContextProps.popupContainer;
                 delete newContextProps.popupContainer;
             }
 
-            const newOthers = options.transform ? options.transform(others, this._deprecated) : others;
+            const newOthers = options.transform
+                ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  options.transform(others as any, this._deprecated)
+                : others;
 
-            const content = (
-                <Component
-                    {...contextProps.defaultPropsConfig[displayName]}
-                    {...newOthers}
-                    {...newContextProps}
-                    ref={this._getInstance}
-                />
-            );
+            const newProps = {
+                ...contextProps.defaultPropsConfig[displayName],
+                ...newOthers,
+                ...newContextProps,
+                ref: this._getInstance,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } as any;
+
+            const content = <Component {...newProps} />;
 
             const { open, ...othersBoundary } = contextProps.errorBoundary;
 
@@ -230,5 +309,7 @@ export function config(Component, options = {}) {
 
     hoistNonReactStatic(ConfigedComponent, Component);
 
-    return ConfigedComponent;
+    return ConfigedComponent as unknown as typeof ConfiguredComponent<P, S, R>;
 }
+
+export { config };
