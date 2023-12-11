@@ -1,0 +1,33 @@
+{
+    "extends": ["../.eslintrc"],
+    "env": {
+        "node": false
+    },
+    "overrides": [
+        {
+            "files": ["**/__tests__/**/*.ts", "**/__tests__/**/*.tsx"],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "warn",
+                "no-console": "off",
+                "react/no-multi-comp": "off",
+                "no-unused-expressions": "off"
+            }
+        },
+        {
+            "files": ["./util/**/*"],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "warn"
+            }
+        },
+        {
+            "files": ["**/__docs__/**/*.ts", "**/__docs__/**/*.tsx"],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "off",
+                "no-console": "off",
+                "react/no-multi-comp": "off",
+                "react/no-deprecated": "off",
+                "no-unused-expressions": "off"
+            }
+        }
+    ]
+}

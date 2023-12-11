@@ -6,14 +6,21 @@
         "moduleResolution": "Node",
         "experimentalDecorators": true,
         "jsx": "react",
+        "noEmit": true,
         "downlevelIteration": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
-        "allowJs": false,
+        "allowJs": true, // 改造期间暂时允许导入js文件
         "skipLibCheck": true,
         "esModuleInterop": false,
         "allowSyntheticDefaultImports": false,
-        "isolatedModules": false
+        "isolatedModules": false,
+        "baseUrl": ".",
+        "paths": {
+            "@alifd/next": ["./components/index.ts"],
+            "@alifd/next/es/*": ["./components/*"],
+            "@alifd/next/lib/*": ["./components/*"]
+        }
     },
     "include": ["global.d.ts", "cypress/**/*.ts", "./components/**/*.ts", "./components/**/*.tsx"]
 }

@@ -2,6 +2,7 @@
     "extends": ["./tsconfig.json"],
     "compilerOptions": {
         "outDir": "types",
+        "noEmit": false,
         "declaration": true,
         "emitDeclarationOnly": true
     },
