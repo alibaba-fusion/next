@@ -19,11 +19,7 @@
     },
     "overrides": [
         {
-            "files": [
-                "./components/util/test.ts",
-                "./components/**/__tests__/**/*.ts",
-                "./components/**/__tests__/**/*.tsx"
-            ],
+            "files": ["./components/**/__tests__/**/*.ts", "./components/**/__tests__/**/*.tsx"],
             "extends": ["plugin:cypress/recommended"],
             "plugins": ["cypress"]
         }
@@ -41,7 +37,8 @@
         "@typescript-eslint/no-use-before-define": "error",
         "react/no-deprecated": "error",
         "react/no-unsafe": "error",
-        "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
+        "react/jsx-filename-extension": ["error", { "extensions": [".tsx", ".jsx"] }],
+        "react/prefer-stateless-function": "off",
         "react/sort-comp": [
             "warn",
             {

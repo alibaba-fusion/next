@@ -6,7 +6,7 @@ export default defineConfig({
             framework: 'react',
             bundler: 'vite',
         },
-        specPattern: ['**/__tests__/**/*.{ts,tsx}'],
+        specPattern: ['**/__tests__/**/*-{spec,test}.{ts,tsx}'],
         viewportWidth: 1000,
         viewportHeight: 600,
     },
