@@ -1,17 +1,32 @@
-/* eslint-disable */
-import assert from 'power-assert';
-import US from '../../src/locale/en-us';
-import JP from '../../src/locale/ja-jp';
-import CN from '../../src/locale/zh-cn';
-import HK from '../../src/locale/zh-hk';
-import TW from '../../src/locale/zh-tw';
-import VI from '../../src/locale/vi-vn';
-import IT from '../../src/locale/it-it';
-import PT from '../../src/locale/pt-pt';
-import KR from '../../src/locale/ko-kr';
-import MY from '../../src/locale/ms-my';
-import TH from '../../src/locale/th-th';
-import ID from '../../src/locale/id-id';
+import US from '../en-us';
+import JP from '../ja-jp';
+import CN from '../zh-cn';
+import HK from '../zh-hk';
+import TW from '../zh-tw';
+import VI from '../vi-vn';
+import IT from '../it-it';
+import PT from '../pt-pt';
+import KR from '../ko-kr';
+import MY from '../ms-my';
+import TH from '../th-th';
+import ID from '../id-id';
+import { ComponentLocaleObject, Locale } from '../types';
+
+function getKeys(object: Locale | ComponentLocaleObject, parent = '') {
+    const keys: string[] = [];
+    for (const key in object) {
+        if (!object.hasOwnProperty(key) || key === 'momentLocale') continue;
+        const value = object[key];
+        keys.push(parent ? `${parent}.${key}` : key);
+
+        if (Array.isArray(value)) {
+            keys.push(`${key}_length_${value.length}`);
+        } else if (typeof value === 'object') {
+            keys.push(getKeys(value as ComponentLocaleObject, key));
+        }
+    }
+    return keys.join(',');
+}
 
 describe('Locale', () => {
     it('should be the same keys', () => {
@@ -43,19 +58,3 @@ describe('Locale', () => {
         );
     });
 });
-
-function getKeys(object, parent = '') {
-    const keys = [];
-    for (const key in object) {
-        if (!object.hasOwnProperty(key) || key === 'momentLocale') continue;
-        const value = object[key];
-        keys.push(parent ? `${parent}.${key}` : key);
-
-        if (Array.isArray(value)) {
-            keys.push(`${key}_length_${value.length}`);
-        } else if (typeof value === 'object') {
-            keys.push(getKeys(value, key));
-        }
-    }
-    return keys.join(',');
-}
