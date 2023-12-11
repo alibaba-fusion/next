@@ -12,7 +12,7 @@ import { isProduction } from './env';
  * log.deprecated('onBeforeClose', 'beforeClose', 'Dialog');
  * // Warning: onBeforeClose is deprecated at [ Dialog ], use [ beforeClose ] instead of it.
  */
-export function deprecated(props, instead, component) {
+export function deprecated(props: string, instead: string, component: string) {
     /* istanbul ignore else */
     if (!isProduction() && typeof console !== 'undefined' && console.error) {
         return console.error(
@@ -26,7 +26,7 @@ export function deprecated(props, instead, component) {
  * @param {String} msg
  * @return {Console<Error> | void}
  */
-export function warning(msg) {
+export function warning(msg: string) {
     /* istanbul ignore else */
     if (!isProduction() && typeof console !== 'undefined' && console.error) {
         return console.error(`Warning: ${msg}`);

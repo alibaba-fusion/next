@@ -1,5 +1,6 @@
+// @ts-expect-error fixme: meet-react does not export Util but Utils
 import { Util as MeetUtil } from '@alifd/meet-react';
-import NextUtil from '../index';
+import * as NextUtil from '../index';
 
 const Util = MeetUtil ? MeetUtil : NextUtil;
 

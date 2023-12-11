@@ -3,9 +3,9 @@ import { each, isPlainObject } from './object';
 
 /**
  * 是否能使用 DOM 方法
- * @type {Boolean}
  */
-export const hasDOM = typeof window !== 'undefined' && !!window.document && !!document.createElement;
+export const hasDOM =
+    typeof window !== 'undefined' && !!window.document && !!document.createElement;
 
 /**
  * 节点是否包含指定 className
@@ -16,15 +16,17 @@ export const hasDOM = typeof window !== 'undefined' && !!window.document && !!do
  * @example
  * dom.hasClass(document.body, 'foo');
  */
-export function hasClass(node, className) {
+export function hasClass(node?: Element | null, className?: string): boolean {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return false;
     }
 
     if (node.classList) {
+        // @ts-expect-error fixme: className can be undefined, conflict with containes
         return node.classList.contains(className);
     } else {
+        // @ts-expect-error fixme: className can be undefined, conflict with containes
         return node.className.indexOf(className) > -1;
     }
 }
@@ -37,7 +39,7 @@ export function hasClass(node, className) {
  * @example
  * dom.addClass(document.body, 'foo');
  */
-export function addClass(node, className, _force) {
+export function addClass(node: Element | undefined | null, className: string, _force = false) {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return;
@@ -58,7 +60,7 @@ export function addClass(node, className, _force) {
  * @example
  * dom.removeClass(document.body, 'foo');
  */
-export function removeClass(node, className, _force) {
+export function removeClass(node: Element | undefined | null, className: string, _force = false) {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return;
@@ -67,10 +69,7 @@ export function removeClass(node, className, _force) {
     if (node.classList) {
         node.classList.remove(className);
     } else if (_force === true || hasClass(node, className)) {
-        node.className = node.className
-            .replace(className, '')
-            .replace(/\s+/g, ' ')
-            .trim();
+        node.className = node.className.replace(className, '').replace(/\s+/g, ' ').trim();
     }
 }
 
@@ -83,7 +82,7 @@ export function removeClass(node, className, _force) {
  * @example
  * dom.toggleClass(document.body, 'foo');
  */
-export function toggleClass(node, className) {
+export function toggleClass(node: Element | undefined | null, className: string): boolean {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return false;
@@ -108,28 +107,28 @@ export function toggleClass(node, className) {
  * @example
  * dom.matches(mountNode, '.container'); // boolean
  */
-export const matches = (function() {
-    let matchesFn = null;
+export const matches = (function () {
+    let matchesFn: string | null = null;
     /* istanbul ignore else */
     if (hasDOM) {
-        const _body = document.body || document.head;
+        const _body: any = document.body || document.head;
         matchesFn = _body.matches
             ? 'matches'
             : _body.webkitMatchesSelector
-            ? 'webkitMatchesSelector'
-            : _body.msMatchesSelector
-            ? 'msMatchesSelector'
-            : _body.mozMatchesSelector
-            ? 'mozMatchesSelector'
-            : null;
+              ? 'webkitMatchesSelector'
+              : _body.msMatchesSelector
+                ? 'msMatchesSelector'
+                : _body.mozMatchesSelector
+                  ? 'mozMatchesSelector'
+                  : null;
     }
 
-    return function(node, selector) {
+    return function (node?: Element | undefined | null, selector?: string) {
         if (!hasDOM || !node) {
             return false;
         }
-
-        return matchesFn ? node[matchesFn](selector) : false;
+        // @ts-expect-error fixme: selector can be undefined, conflict with matches
+        return matchesFn ? node[matchesFn as 'matches'](selector) : false;
     };
 })();
 
@@ -139,12 +138,14 @@ export const matches = (function() {
  * @param  {Element} node
  * @return {Object}
  */
-function _getComputedStyle(node) {
+function _getComputedStyle(
+    node: Element | undefined | null
+): CSSStyleDeclaration | undefined | null | { [key: string]: never } {
     return node && node.nodeType === 1 ? window.getComputedStyle(node, null) : {};
 }
 
 const PIXEL_PATTERN = /margin|padding|width|height|max|min|offset|size|top/i;
-const removePixel = { left: 1, top: 1, right: 1, bottom: 1 };
+const removePixel: Record<string, unknown> = { left: 1, top: 1, right: 1, bottom: 1 };
 
 /**
  * 校验并修正元素的样式属性值
@@ -153,7 +154,7 @@ const removePixel = { left: 1, top: 1, right: 1, bottom: 1 };
  * @param  {String} type
  * @param  {Number} value
  */
-function _getStyleValue(node, type, value) {
+function _getStyleValue(node: HTMLElement, type: string, value: number | string) {
     type = type.toLowerCase();
 
     if (value === 'auto') {
@@ -170,26 +171,27 @@ function _getStyleValue(node, type, value) {
         removePixel[type] = PIXEL_PATTERN.test(type);
     }
 
-    return removePixel[type] ? parseFloat(value) || 0 : value;
+    return removePixel[type] ? parseFloat(value as string) || 0 : value;
 }
 
-const floatMap = { cssFloat: 1, styleFloat: 1, float: 1 };
+const floatMap: Record<PropertyKey, unknown> = { cssFloat: 1, styleFloat: 1, float: 1 };
+type CustomCSSStyleKey = keyof CSSStyleDeclaration;
+type CustomCSSStyle = {
+    [key in CustomCSSStyleKey]: unknown;
+};
 
-export function getNodeHozWhitespace(node) {
-    const paddingLeft = getStyle(node, 'paddingLeft');
-    const paddingRight = getStyle(node, 'paddingRight');
-    const marginLeft = getStyle(node, 'marginLeft');
-    const marginRight = getStyle(node, 'marginRight');
-    return paddingLeft + paddingRight + marginLeft + marginRight;
-}
-
+export function getStyle<N extends undefined | null>(node: N, name?: unknown): N;
+export function getStyle(node: HTMLElement): CustomCSSStyle;
+export function getStyle<K extends CustomCSSStyleKey>(node: HTMLElement, name: K): string | number;
 /**
  * 获取元素计算后的样式
  * @param  {Element} node DOM 节点
- * @param  {String} name 属性名
- * @return {Number|Object}
+ * @param  {String | undefined} name 属性名
  */
-export function getStyle(node, name) {
+export function getStyle(
+    node: HTMLElement | undefined | null,
+    name?: any
+): CustomCSSStyle | string | number | { [key: string]: never } | undefined | null {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return null;
@@ -198,7 +200,7 @@ export function getStyle(node, name) {
     const style = _getComputedStyle(node);
 
     // 如果不指定属性名，则返回全部值
-    if (arguments.length === 1) {
+    if (!name) {
         return style;
     }
 
@@ -209,9 +211,17 @@ export function getStyle(node, name) {
 
     name = floatMap[name] ? ('cssFloat' in node.style ? 'cssFloat' : 'styleFloat') : name;
 
-    return _getStyleValue(node, name, style.getPropertyValue(hyphenate(name)) || node.style[camelcase(name)]);
+    return _getStyleValue(
+        node,
+        name,
+        (style as CSSStyleDeclaration).getPropertyValue(hyphenate(name)) ||
+            node.style[camelcase(name) as any]
+    );
 }
 
+export function setStyle(node: undefined | null, name: unknown): false;
+export function setStyle(node: HTMLElement, name: Partial<CustomCSSStyle>): void;
+export function setStyle(node: HTMLElement, name: CustomCSSStyleKey, value: unknown): void;
 /**
  * 设置元素的样式
  * @param {Element} node  DOM 节点
@@ -227,7 +237,11 @@ export function getStyle(node, name) {
  *     height: 200
  * });
  */
-export function setStyle(node, name, value) {
+export function setStyle(
+    node: HTMLElement | undefined | null,
+    name: any,
+    value?: any
+): false | void {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return false;
@@ -235,17 +249,25 @@ export function setStyle(node, name, value) {
 
     // 批量设置多个值
     if (typeof name === 'object' && arguments.length === 2) {
-        each(name, (val, key) => setStyle(node, key, val));
+        each(name, (val: any, key) => setStyle(node, key as any, val));
     } else {
         name = floatMap[name] ? ('cssFloat' in node.style ? 'cssFloat' : 'styleFloat') : name;
         if (typeof value === 'number' && PIXEL_PATTERN.test(name)) {
             value = `${value}px`;
         }
-        node.style[camelcase(name)] = value; // IE8 support
+        node.style[camelcase(name) as any] = value; // IE8 support
     }
 }
 
-const isScrollDisplay = function(element) {
+export function getNodeHozWhitespace(node: HTMLElement) {
+    const paddingLeft: number = getStyle(node, 'paddingLeft') as any;
+    const paddingRight: number = getStyle(node, 'paddingRight') as any;
+    const marginLeft: number = getStyle(node, 'marginLeft') as any;
+    const marginRight: number = getStyle(node, 'marginRight') as any;
+    return paddingLeft + paddingRight + marginLeft + marginRight;
+}
+
+const isScrollDisplay = function (element: Element) {
     try {
         const scrollbarStyle = window.getComputedStyle(element, '::-webkit-scrollbar');
         return !scrollbarStyle || scrollbarStyle.getPropertyValue('display') !== 'none';
@@ -258,9 +280,9 @@ const isScrollDisplay = function(element) {
 
 /**
  * 获取默认的滚动条大小（通过创造一个滚动元素，读取滚动元素的滚动条信息）
- * @return {Object} width, height
+ * @return {{width: number; height: number;}} width, height
  */
-export function scrollbar() {
+export function scrollbar(): { width: number; height: number } {
     const scrollDiv = document.createElement('div');
     scrollDiv.className += 'just-to-get-scrollbar-size';
 
@@ -282,14 +304,14 @@ export function scrollbar() {
     };
 }
 
-export function hasScroll(containerNode) {
+export function hasScroll(containerNode: HTMLElement) {
     // 当元素带有 overflow: hidden 一定没有滚动条
     const overflow = getStyle(containerNode, 'overflow');
     if (overflow === 'hidden') {
         return false;
     }
 
-    const parentNode = containerNode.parentNode;
+    const parentNode = containerNode.parentNode as HTMLElement | null;
 
     return (
         parentNode &&
@@ -304,9 +326,9 @@ export function hasScroll(containerNode) {
  * 获取元素距离视口顶部和左边的偏移距离
  * @return {Object} top, left
  */
-export function getOffset(node) {
+export function getOffset(node: Element) {
     const rect = node.getBoundingClientRect();
-    const win = node.ownerDocument.defaultView;
+    const win = node.ownerDocument.defaultView!;
     return {
         top: rect.top + win.pageYOffset,
         left: rect.left + win.pageXOffset,
@@ -318,8 +340,8 @@ export function getOffset(node) {
  * @param {string|number} len 传入的长度
  * @return {number} pixels
  */
-export function getPixels(len) {
-    const win = document.defaultView;
+export function getPixels(len: string | number): number {
+    const win = document.defaultView!;
     if (typeof +len === 'number' && !isNaN(+len)) {
         return +len;
     }
@@ -328,16 +350,40 @@ export function getPixels(len) {
         const PX_REG = /(\d+)px/;
         const VH_REG = /(\d+)vh/;
         if (Array.isArray(len.match(PX_REG))) {
-            return +len.match(PX_REG)[1] || 0;
+            return +len.match(PX_REG)![1] || 0;
         }
 
         if (Array.isArray(len.match(VH_REG))) {
             const _1vh = win.innerHeight / 100;
-            return +(len.match(VH_REG)[1] * _1vh) || 0;
+            return +((len.match(VH_REG)![1] as any) * _1vh) || 0;
         }
     }
 
     return 0;
+}
+
+/**
+ * 如果元素被指定的选择器字符串选择，getMatches()  方法返回true; 否则返回false
+ * @param {element} dom 待匹配的元素
+ * @param {string} selecotr 选择器
+ * @return {element} parent
+ */
+export function getMatches(dom: Element | undefined | null, selector: string): boolean | null {
+    /* istanbul ignore if */
+    if (!hasDOM || !dom) {
+        return null;
+    }
+
+    /* istanbul ignore if */
+    if (Element.prototype.matches as any) {
+        return dom.matches(selector);
+    } else if ((Element.prototype as any).msMatchesSelector) {
+        return (dom as any).msMatchesSelector(selector);
+    } else if ((Element.prototype as any).webkitMatchesSelector) {
+        return dom.webkitMatchesSelector(selector);
+    }
+
+    return null;
 }
 
 /**
@@ -346,7 +392,7 @@ export function getPixels(len) {
  * @param {string} selecotr 选择器
  * @return {element} parent
  */
-export function getClosest(dom, selector) {
+export function getClosest(dom: HTMLElement | undefined | null, selector: string): Element | null {
     /* istanbul ignore if */
     if (!hasDOM || !dom) {
         return null;
@@ -366,35 +412,11 @@ export function getClosest(dom, selector) {
     return null;
 }
 
-/**
- * 如果元素被指定的选择器字符串选择，getMatches()  方法返回true; 否则返回false
- * @param {element} dom 待匹配的元素
- * @param {string} selecotr 选择器
- * @return {element} parent
- */
-export function getMatches(dom, selector) {
-    /* istanbul ignore if */
-    if (!hasDOM || !dom) {
-        return null;
-    }
-
-    /* istanbul ignore if */
-    if (Element.prototype.matches) {
-        return dom.matches(selector);
-    } else if (Element.prototype.msMatchesSelector) {
-        return dom.msMatchesSelector(selector);
-    } else if (Element.prototype.webkitMatchesSelector) {
-        return dom.webkitMatchesSelector(selector);
-    }
-
-    return null;
-}
-
-export function saveRef(ref) {
+export function saveRef(ref: string | ((ins: any) => any) | { current?: any }) {
     if (!ref) {
         return null;
     }
-    return element => {
+    return (element: any) => {
         if (typeof ref === 'string') {
             throw new Error(`can not set ref string for ${ref}`);
         } else if (typeof ref === 'function') {

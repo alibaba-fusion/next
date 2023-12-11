@@ -6,7 +6,7 @@ import { typeOf } from './object';
  * @param  {String} str 例：-webkit-transition
  * @return {String}     例：WebkitTransition
  */
-export function camelcase(str) {
+export function camelcase(str: string): string {
     if (!/-/.test(str)) {
         return str || '';
     }
@@ -18,7 +18,7 @@ export function camelcase(str) {
  * @param  {String} str 例：WebkitTransition
  * @return {String}     例：-webkit-transition
  */
-export function hyphenate(str) {
+export function hyphenate(str?: unknown): string {
     const strType = typeOf(str);
     if (strType !== 'String') {
         warning(
@@ -28,7 +28,7 @@ export function hyphenate(str) {
         );
         return '';
     }
-    return str.replace(/([A-Z])/g, $0 => `-${$0.toLowerCase()}`);
+    return (str as string).replace(/([A-Z])/g, ($0: string) => `-${$0.toLowerCase()}`);
 }
 
 /**
@@ -37,7 +37,7 @@ export function hyphenate(str) {
  * @param {Object} object  例：{current: 1, total: 9}
  * @return {String}        例：
  */
-export function template(tpl, object = {}) {
+export function template(tpl?: unknown, object: Record<string, unknown> = {}): string {
     const tplType = typeOf(tpl);
     if (tplType !== 'String') {
         warning(
@@ -48,8 +48,8 @@ export function template(tpl, object = {}) {
         return '';
     }
 
-    return tpl.replace(/\{[a-z]*\}/g, str => {
+    return (tpl as string).replace(/\{[a-z]*\}/g, (str: string) => {
         const key = str.substring(1, str.length - 1);
-        return object[key] || '';
+        return (object[key] as string) || '';
     });
 }
