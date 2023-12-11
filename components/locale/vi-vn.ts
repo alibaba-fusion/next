@@ -1,5 +1,7 @@
+import { Locale } from './types';
+
 /* vietnamese */
-export default {
+const locale: Locale = {
     momentLocale: 'vi',
     Timeline: {
         expand: 'Mở rộng',
@@ -177,3 +179,5 @@ export default {
         },
     },
 };
+
+export default locale;

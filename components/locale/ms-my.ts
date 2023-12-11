@@ -1,4 +1,6 @@
-export default {
+import { Locale } from './types';
+
+const locale: Locale = {
     momentLocale: 'ms',
     Timeline: {
         expand: 'Berkembang',
@@ -176,3 +178,5 @@ export default {
         },
     },
 };
+
+export default locale;
