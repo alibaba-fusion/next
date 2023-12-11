@@ -36,7 +36,7 @@ class App extends React.Component {
         });
     };
 
-    onClose = reason => {
+    onClose = (reason: string) => {
         console.log(reason);
 
         this.setState({

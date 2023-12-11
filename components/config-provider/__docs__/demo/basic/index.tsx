@@ -1,16 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { ConfigProvider } from '@alifd/next';
-import PropTypes from 'prop-types';
+import { ConfigProvider, type CommonProps } from '@alifd/next';
 
 const { config } = ConfigProvider;
 
-class Output extends React.Component {
-    static propTypes = {
-        prefix: PropTypes.string,
-        locale: PropTypes.object,
-    };
-
+class Output extends React.Component<CommonProps> {
     static defaultProps = {
         prefix: 'next-',
         locale: {
@@ -30,24 +24,21 @@ class Output extends React.Component {
     }
 }
 
-const Func = props => {
+const Func = () => {
     return <div>This is a Function Component</div>;
 };
 
 const NewFunc = config(Func);
 const NewOutput = config(Output);
 
-class Demo extends React.Component {
-    render() {
-        return (
-            <ConfigProvider prefix="custom-" locale={{ Output: { hello: 'hello' } }}>
-                <div>
-                    <NewOutput />
-                    <NewFunc />
-                </div>
-            </ConfigProvider>
-        );
-    }
+function Demo() {
+    return (
+        <ConfigProvider prefix="custom-" locale={{ Output: { hello: 'hello' } }}>
+            <div>
+                <NewOutput />
+                <NewFunc />
+            </div>
+        </ConfigProvider>
+    );
 }
-
 ReactDOM.render(<Demo />, mountNode);

@@ -8,7 +8,6 @@ import {
     Calendar,
     DatePicker,
     Dialog,
-    TimePicker,
     Timeline,
     Select,
 } from '@alifd/next';
@@ -19,8 +18,12 @@ const RangePicker = DatePicker.RangePicker;
 // Set global direction to 'rtl'. This affects the whole page
 // ConfigProvider.setDirection('rtl');
 
-class Demo extends React.Component {
-    constructor(props) {
+interface DemoState {
+    dir: 'rtl' | 'ltr';
+}
+
+class Demo extends React.Component<unknown, DemoState> {
+    constructor(props: unknown) {
         super(props);
 
         this.state = {
@@ -31,7 +34,7 @@ class Demo extends React.Component {
         this.showDialog = this.showDialog.bind(this);
     }
 
-    changeDir(value) {
+    changeDir(value: DemoState['dir']) {
         this.setState({
             dir: value,
         });
