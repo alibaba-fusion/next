@@ -14,27 +14,32 @@ summary tabIndex target title type useMap value width wmode wrap`
     .replace(/\t|\n|\r/g, '')
     .split(' ');
 
-const eventsName = `onCopy onCut onPaste onCompositionEnd onCompositionStart onCompositionUpdate onKeyDown
+const eventsName =
+    `onCopy onCut onPaste onCompositionEnd onCompositionStart onCompositionUpdate onKeyDown
     onKeyPress onKeyUp onFocus onBlur onChange onInput onSubmit onClick onContextMenu onDoubleClick
     onDrag onDragEnd onDragEnter onDragExit onDragLeave onDragOver onDragStart onDrop onMouseDown
     onMouseEnter onMouseLeave onMouseMove onMouseOut onMouseOver onMouseUp onSelect onTouchCancel
     onTouchEnd onTouchMove onTouchStart onScroll onWheel onAbort onCanPlay onCanPlayThrough
     onDurationChange onEmptied onEncrypted onEnded onError onLoadedData onLoadedMetadata
     onLoadStart onPause onPlay onPlaying onProgress onRateChange onSeeked onSeeking onStalled onSuspend onTimeUpdate onVolumeChange onWaiting onLoad onError`
-    .replace(/\s+/g, ' ')
-    .replace(/\t|\n|\r/g, '')
-    .split(' ');
+        .replace(/\s+/g, ' ')
+        .replace(/\t|\n|\r/g, '')
+        .split(' ');
 
 const attrsPrefix = ['data-', 'aria-'];
 /**
  * 过滤掉无效的透传到 DOM 属性
  */
-export default props => {
-    const attrs = {};
+export default <V = unknown>(props: Record<string, V>) => {
+    const attrs: Record<string, V> = {};
     for (const key in props) {
         if (attributes.indexOf(key) > -1 || eventsName.indexOf(key) > -1) {
             attrs[key] = props[key];
-        } else if (attrsPrefix.map(prefix => new RegExp(`^${prefix}`)).some(reg => key.replace(reg, '') !== key)) {
+        } else if (
+            attrsPrefix
+                .map(prefix => new RegExp(`^${prefix}`))
+                .some(reg => key.replace(reg, '') !== key)
+        ) {
             attrs[key] = props[key];
         }
     }

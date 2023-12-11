@@ -1,4 +1,7 @@
-import React from 'react';
+import * as React from 'react';
+import { ReactElement, JSXElementConstructor, ComponentClass } from 'react';
+
+export type ObjectOrArray<T = unknown> = Record<PropertyKey, T> | ArrayLike<T>;
 
 /**
  * 获取对象的类型
@@ -10,7 +13,7 @@ import React from 'react';
  * typeOf() === 'Undefined'
  * typeOf(1) === 'Number'
  */
-export function typeOf(obj) {
+export function typeOf(obj?: unknown): string {
     return Object.prototype.toString.call(obj).replace(/\[object\s|]/g, '');
 }
 
@@ -24,11 +27,19 @@ export function typeOf(obj) {
  * isArrayLike(arguments) === true
  * isArrayLike(this.props.children) === true
  */
-export function isArrayLike(obj) {
+export function isArrayLike(obj: unknown): obj is ArrayLike<unknown> {
+    if (!obj || typeof obj !== 'object') {
+        return false;
+    }
+
     const length = !!obj && 'length' in obj && obj.length;
     const type = typeOf(obj);
 
-    return type === 'Array' || length === 0 || (typeof length === 'number' && length > 0 && length - 1 in obj);
+    return (
+        type === 'Array' ||
+        length === 0 ||
+        (typeof length === 'number' && length > 0 && length - 1 in obj)
+    );
 }
 
 /**
@@ -36,8 +47,12 @@ export function isArrayLike(obj) {
  * @param  {*}  obj
  * @return {Boolean}
  */
-export function isPromise(obj) {
-    return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+export function isPromise(obj: unknown): obj is Promise<unknown> {
+    return (
+        !!obj &&
+        (typeof obj === 'object' || typeof obj === 'function') &&
+        typeof (obj as Promise<unknown>).then === 'function'
+    );
 }
 
 /**
@@ -46,12 +61,12 @@ export function isPromise(obj) {
  * @return {Boolean}
  * @reference https://github.com/jonschlinkert/is-plain-object
  */
-export function isPlainObject(obj) {
+export function isPlainObject(obj?: unknown): obj is Record<string, unknown> {
     if (typeOf(obj) !== 'Object') {
         return false;
     }
 
-    const ctor = obj.constructor;
+    const ctor = (obj as Record<string, unknown>).constructor;
 
     if (typeof ctor !== 'function') {
         return false;
@@ -72,15 +87,14 @@ export function isPlainObject(obj) {
 
 /**
  * 对象浅比较
- * @param  {Object} objA
- * @param  {Object} objB
- * @param  {Function}  [compare] 手动调用方法比较
- * @return {Boolean}      对象浅比较是否相等
- *
  * @example
  * object.shallowEqual({a: 100}, {a: 100}); // true
  */
-export function shallowEqual(objA, objB, compare) {
+export function shallowEqual(
+    objA: unknown,
+    objB: unknown,
+    compare?: (val1: unknown, val2: unknown, key: string) => boolean | undefined
+): boolean {
     if (objA === objB) {
         return true;
     }
@@ -108,8 +122,8 @@ export function shallowEqual(objA, objB, compare) {
             return false;
         }
 
-        const valA = objA[key];
-        const valB = objB[key];
+        const valA = (objA as Record<string, unknown>)[key];
+        const valB = (objB as Record<string, unknown>)[key];
 
         const ret = hasCallback ? compare(valA, valB, key) : void 0;
 
@@ -121,6 +135,19 @@ export function shallowEqual(objA, objB, compare) {
     return true;
 }
 
+export function each<Obj extends Record<string, unknown>>(
+    obj: Obj,
+    callback: (
+        val: Obj extends Record<PropertyKey, infer V> ? V : unknown,
+        key: string
+    ) => void | boolean,
+    direction?: number
+): typeof obj;
+export function each<Arr extends ArrayLike<unknown>>(
+    obj: Arr,
+    callback: (val: Arr extends ArrayLike<infer T> ? T : unknown, key: number) => void | boolean,
+    direction?: number
+): typeof obj;
 /**
  * 遍历对象或数组，或者类数组，例如React中的children对象、arguments等
  * @param  {Object|Array}   obj
@@ -138,27 +165,29 @@ export function shallowEqual(objA, objB, compare) {
  * // 遍历arguments
  * object.each(arguments, (arg, i) => console.log(arg));
  */
-export function each(obj, callback, direction) {
+export function each(
+    obj: ObjectOrArray,
+    callback: (val: any, key: any) => void | boolean,
+    direction?: number
+): typeof obj {
     const reversed = direction === -1;
-    const length = obj.length;
-    let value,
-        i = reversed ? length - 1 : 0;
 
     if (isArrayLike(obj)) {
-        for (; i < length && i >= 0; reversed ? i-- : i++) {
-            value = callback.call(obj[i], obj[i], i);
+        const length = obj.length;
+        for (let i = reversed ? length - 1 : 0; i < length && i >= 0; reversed ? i-- : i++) {
+            const shouldContinue = callback.call(obj[i], obj[i], i);
 
-            if (value === false) {
+            if (shouldContinue === false) {
                 break;
             }
         }
     } else {
-        for (i in obj) {
+        for (const key in obj) {
             /* istanbul ignore else */
-            if (obj.hasOwnProperty(i)) {
-                value = callback.call(obj[i], obj[i], i);
+            if (obj.hasOwnProperty(key)) {
+                const shouldContinue = callback.call(obj[key], obj[key], key);
 
-                if (value === false) {
+                if (shouldContinue === false) {
                     break;
                 }
             }
@@ -169,20 +198,23 @@ export function each(obj, callback, direction) {
 }
 
 // @private 判断key是否在数组或对象中
-const _isInObj = (key, obj, isArray) => (isArray ? obj.indexOf(key) > -1 : key in obj);
+const _isInObj = <O extends ObjectOrArray>(key: PropertyKey, obj: O, isArray?: boolean): boolean =>
+    isArray ? (obj as Array<unknown>).indexOf(key) > -1 : key in obj;
 
 /**
  * 过滤出其它属性
- * @param  {Object|Array} holdProps 过滤的参照对象，最终的结果只保留不在参照对象中的key
- * @param  {Object} props     被过滤的对象
- * @return {Object}           others
+ * @param  {ObjectOrArray} holdProps 过滤的参照对象，最终的结果只保留不在参照对象中的key
+ * @param  {Record<string, any>} props     被过滤的对象
  *
  * @example
  * object.pickOthers(FooComponent.propTypes, this.props);
  * object.pickOthers(['className', 'onChange'], this.props);
  */
-export function pickOthers(holdProps, props) {
-    const others = {};
+export function pickOthers<P extends Record<string, unknown>>(
+    holdProps: ObjectOrArray,
+    props: P
+): Partial<P> {
+    const others: Partial<P> = {};
     const isArray = typeOf(holdProps) === 'Array';
 
     for (const key in props) {
@@ -204,8 +236,11 @@ export function pickOthers(holdProps, props) {
  * object.pickProps(FooComponent.propTypes, this.props);
  * object.pickProps(['className', 'onChange'], this.props);
  */
-export function pickProps(holdProps, props) {
-    const others = {};
+export function pickProps<P extends Record<string, unknown>>(
+    holdProps: ObjectOrArray,
+    props: P
+): Partial<P> {
+    const others: Partial<P> = {};
     const isArray = typeOf(holdProps) === 'Array';
 
     for (const key in props) {
@@ -226,8 +261,11 @@ export function pickProps(holdProps, props) {
  * @example
  * object.pickAttrsWith(FooComponent.propTypes, 'data-');
  */
-export function pickAttrsWith(holdProps, prefix) {
-    const others = {};
+export function pickAttrsWith<P extends Record<string, unknown>>(
+    holdProps: P,
+    prefix: string
+): Partial<P> {
+    const others: Partial<P> = {};
 
     for (const key in holdProps) {
         if (key.match(prefix)) {
@@ -243,19 +281,21 @@ export function pickAttrsWith(holdProps, prefix) {
  * @param {*} value
  * @return {Boolean}
  */
-export function isNil(value) {
+export function isNil(value: unknown): value is null | undefined {
     // It will returns `true` only if `null` or `undefined` compare with `null`
     // with loose equaliy
     return value == null; // eslint-disable-line eqeqeq
 }
-
+export function deepMerge(target: unknown): typeof target;
+export function deepMerge(target: unknown, ...sources: unknown[]): Record<string, unknown>;
 /**
  * Deep merge two objects.
- * @param target
- * @param ...sources
  * @reference https://stackoverflow.com/questions/27936772/how-to-deep-merge-instead-of-shallow-merge?page=1&tab=votes#tab-top
  */
-export function deepMerge(target, ...sources) {
+export function deepMerge(
+    target: unknown,
+    ...sources: unknown[]
+): typeof target | Record<string, unknown> {
     if (!sources.length) return target;
     const source = sources.shift();
 
@@ -283,13 +323,19 @@ export function deepMerge(target, ...sources) {
     return deepMerge(target, ...sources);
 }
 
+type AnyFunction = ((...args: unknown[]) => unknown) | (new (...args: unknown[]) => unknown);
+
 /**
  * 组件是否为 Fucntion Component
  * @param {*} component 传入的组件
  */
-export function isFunctionComponent(component) {
+export function isFunctionComponent(
+    component: AnyFunction
+): component is JSXElementConstructor<unknown> {
     return (
-        typeOf(component) === 'Function' && component.prototype && component.prototype.isReactComponent === undefined
+        typeOf(component) === 'Function' &&
+        component.prototype &&
+        component.prototype.isReactComponent === undefined
     );
 }
 
@@ -297,23 +343,29 @@ export function isFunctionComponent(component) {
  * 组件是否为 Class Component
  * @param {*} component  传入的组件
  */
-export function isClassComponent(component) {
+export function isClassComponent(component?: unknown): component is ComponentClass {
     return (
-        typeOf(component) === 'Function' && component.prototype && component.prototype.isReactComponent !== undefined
+        typeOf(component) === 'Function' &&
+        (component as AnyFunction).prototype &&
+        (component as AnyFunction).prototype.isReactComponent !== undefined
     );
 }
 
+export function isReactFragment(component?: null): false;
+export function isReactFragment(component: { type: typeof React.Fragment }): true;
+export function isReactFragment(component: typeof React.Fragment): true;
+export function isReactFragment(component: unknown): boolean;
 /**
  * 判断是否为 ReactFragment
  * @param {*} component  传入的组件
  */
-export function isReactFragment(component) {
+export function isReactFragment(component?: unknown): boolean {
     if (isNil(component)) {
         return false;
     }
 
-    if (component.type) {
-        return component.type === React.Fragment;
+    if ((component as ReactElement).type) {
+        return (component as ReactElement).type === React.Fragment;
     }
     return component === React.Fragment;
 }
@@ -328,16 +380,16 @@ export function isReactFragment(component) {
  * // returns [1, 2]
  * values({a: 1, b: 2})
  */
-export function values(obj) {
+export function values<T>(obj: ObjectOrArray<T>): T[] {
     if (Object.values) {
         return Object.values(obj);
     }
 
-    const vals = [];
+    const vals: T[] = [];
 
     for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
-            vals.push(obj[key]);
+            vals.push((obj as Record<string, T>)[key]);
         }
     }
 

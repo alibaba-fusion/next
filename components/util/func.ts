@@ -1,5 +1,10 @@
+import type { ConfigType, OptionType, Dayjs } from 'dayjs';
 import { isPromise } from './object';
 import datejs from './date';
+
+export interface AnyFunction<Result = unknown> {
+    (...args: unknown[]): Result;
+}
 
 /**
  * 一个空方法，返回入参本身或空对象
@@ -11,6 +16,12 @@ export const noop = () => {};
  */
 export const prevent = () => false;
 
+export function makeChain<F extends AnyFunction | { apply?: AnyFunction } | undefined | null>(
+    ...fns: [F]
+): F;
+export function makeChain(
+    ...fns: Array<AnyFunction | { apply?: AnyFunction } | undefined | null>
+): AnyFunction;
 /**
  * 将N个方法合并为一个链式调用的方法
  * @return {Function}     合并后的方法
@@ -19,15 +30,18 @@ export const prevent = () => false;
  * @example
  * func.makeChain(this.handleChange, this.props.onChange);
  */
-export function makeChain(...fns) {
+export function makeChain(
+    ...fns: ({ apply?: AnyFunction } | undefined | null)[]
+): AnyFunction | { apply?: AnyFunction } | undefined | null {
     if (fns.length === 1) {
         return fns[0];
     }
 
-    return function chainedFunction(...args) {
+    return function chainedFunction(...args: unknown[]) {
         for (let i = 0, j = fns.length; i < j; i++) {
-            if (fns[i] && fns[i].apply) {
-                fns[i].apply(this, args);
+            const fn = fns[i];
+            if (fn && fn.apply) {
+                fn.apply(this, args);
             }
         }
     };
@@ -43,7 +57,7 @@ export function makeChain(...fns) {
  * @example
  * func.bindCtx(this, ['handleClick', 'handleChange']);
  */
-export function bindCtx(ctx, fns, ns) {
+export function bindCtx(ctx: object, fns: string | string[], ns?: object) {
     if (typeof fns === 'string') {
         fns = [fns];
     }
@@ -52,18 +66,37 @@ export function bindCtx(ctx, fns, ns) {
     ns = ns || ctx;
 
     fns.forEach(fnName => {
-        // 这里不要添加空方法判断，由调用者保证正确性，否则出了问题无法排查
-        ns[fnName] = ns[fnName].bind(ctx);
+        // @ts-expect-error 这里不要添加空方法判断，由调用者保证正确性，否则出了问题无法排查
+        ns![fnName] = ns![fnName].bind(ctx);
     });
 }
 
+export function promiseCall<Value>(
+    ret: Promise<Value>,
+    success: (value: Value) => void,
+    failure?: (reason: unknown) => void
+): Promise<Value>;
+export function promiseCall<SuccessResult = unknown, FailureResult = unknown>(
+    ret: false,
+    success: (data: false) => SuccessResult,
+    failure?: (reason: false) => FailureResult
+): FailureResult;
+export function promiseCall<Value = unknown, SuccessResult = unknown, FailureResult = unknown>(
+    ret: Value,
+    success: (data: Value) => SuccessResult,
+    failure?: (reason: unknown) => FailureResult
+): SuccessResult;
 /**
  * 用于执行回调方法后的逻辑
  * @param  {*} ret            回调方法执行结果
  * @param  {Function} success 执行结果返回非false的回调
  * @param  {Function} [failure=noop] 执行结果返回false的回调
  */
-export function promiseCall(ret, success, failure = noop) {
+export function promiseCall(
+    ret: unknown,
+    success: (data: any) => unknown,
+    failure: (data: any) => unknown = noop
+) {
     if (isPromise(ret)) {
         return ret
             .then(result => {
@@ -86,12 +119,23 @@ export function promiseCall(ret, success, failure = noop) {
  * @param {Array} args 函数参数列表
  * @returns {*} 函数返回值 如果不存在返回undefined
  */
-export function invoke(target, method, args) {
-    const func = target && method in target ? target[method] : undefined;
-    return func && func(...args);
+export function invoke<Result = unknown>(
+    target: unknown,
+    method: string,
+    args?: unknown[]
+): Result | undefined {
+    const func =
+        target && method in (target as any)
+            ? (target as { [key: typeof method]: (...args: unknown[]) => Result })[method]
+            : undefined;
+    return func && func(...args || []);
 }
 
-export function renderNode(render, defaultRender, renderProps = []) {
+export function renderNode<Result = unknown>(
+    render: AnyFunction<Result> | undefined,
+    defaultRender: AnyFunction<Result> | undefined,
+    renderProps: unknown[] = []
+): Result | undefined {
     const r = render !== undefined ? render : defaultRender;
 
     if (renderProps && !Array.isArray(renderProps)) {
@@ -105,7 +149,7 @@ export function renderNode(render, defaultRender, renderProps = []) {
  * @param {dayjs.ConfigType} value
  * @returns {Dayjs | null}
  */
-export function checkDate(value, format) {
+export function checkDate(value: ConfigType, format?: OptionType): Dayjs | null {
     /**
      * 因为 datejs(undefined) 表示当前时间
      * 但是这里期望的是一个空值，即用户不输入值的时候显示为空
@@ -114,8 +158,8 @@ export function checkDate(value, format) {
         value = null;
     }
 
-    value = format ? datejs(value, format) : datejs(value);
-    return value.isValid() ? value : null;
+    const date = format ? datejs(value, format) : datejs(value);
+    return date.isValid() ? date : null;
 }
 
 /**
@@ -126,8 +170,16 @@ export function checkDate(value, format) {
  * @param {boolean} strictly 是否严格校验：严格模式下不允许开始时间大于结束时间，在显示确认按键的，用户输入过程可不严格校验
  * @returns {Dayjs[] | null[]}
  */
-export function checkRangeDate(value, inputType, disabled, strictly = true, format) {
-    const [begin, end] = Array.isArray(value) ? [0, 1].map(i => checkDate(value[i], format)) : [null, null];
+export function checkRangeDate(
+    value: ConfigType,
+    inputType: number,
+    disabled?: boolean,
+    strictly: boolean = true,
+    format?: OptionType
+): [Dayjs | null, Dayjs | null] {
+    const [begin, end] = Array.isArray(value)
+        ? [0, 1].map(i => checkDate(value[i], format))
+        : [null, null];
     const [disabledBegin, disabledEnd] = Array.isArray(disabled) ? disabled : [disabled, disabled];
 
     /**
