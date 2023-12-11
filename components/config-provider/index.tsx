@@ -1,6 +1,5 @@
 import { Component, Children } from 'react';
-import PropTypes from 'prop-types';
-import { polyfill } from 'react-lifecycles-compat';
+import * as PropTypes from 'prop-types';
 import getContextProps from './get-context-props';
 import {
     config,
@@ -16,13 +15,15 @@ import Consumer from './consumer';
 import ErrorBoundary from './error-boundary';
 import Cache from './cache';
 import datejs from '../util/date';
+import { ConfigProviderProps, ComponentCommonProps, ContextState } from './types';
 
 const childContextCache = new Cache();
 
-const setMomentLocale = locale => {
-    let moment;
+const setMomentLocale = async (locale?: { momentLocale?: string }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let moment: any;
     try {
-        moment = require('moment');
+        moment = await import('moment');
         if (moment && moment.default && moment.default.isMoment) moment = moment.default;
     } catch (e) {
         // ignore
@@ -33,7 +34,7 @@ const setMomentLocale = locale => {
     }
 };
 
-const setDateLocale = locale => {
+const setDateLocale = (locale?: { dateLocale?: string; momentLocale?: string }) => {
     if (locale) {
         datejs.locale(locale.dateLocale || locale.momentLocale);
     }
@@ -43,7 +44,7 @@ const setDateLocale = locale => {
  * ConfigProvider
  * @propsExtends false
  */
-class ConfigProvider extends Component {
+class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderProps, 'locale'>> {
     static propTypes = {
         /**
          * 样式类名的品牌前缀
@@ -126,23 +127,7 @@ class ConfigProvider extends Component {
      * @param {Object} options 可选项
      * @returns {Component} HOC
      */
-    static config = (Component, options) => {
-        return config(Component, options);
-    };
-
-    /**
-     * 传入组件的 props 和 displayName，得到和 childContext 计算过的包含有 preifx/locale/pure 的对象，一般用于通过静态方法生成脱离组件树的组件
-     * @param {Object} props 组件的 props
-     * @param {String} displayName 组件的 displayName
-     * @returns {Object} 新的 context props
-     */
-    static getContextProps = (props, displayName) => {
-        return getContextProps(props, childContextCache.root() || {}, displayName);
-    };
-
-    static clearCache = () => {
-        childContextCache.clear();
-    };
+    static config = config;
 
     static initLocales = initLocales;
     static setLanguage = setLanguage;
@@ -153,6 +138,20 @@ class ConfigProvider extends Component {
     static getDirection = getDirection;
     static Consumer = Consumer;
     static ErrorBoundary = ErrorBoundary;
+
+    /**
+     * 传入组件的 props 和 displayName，得到和 childContext 计算过的包含有 preifx/locale/pure 的对象，一般用于通过静态方法生成脱离组件树的组件
+     * @param {Object} props 组件的 props
+     * @param {String} displayName 组件的 displayName
+     * @returns 新的 context props
+     */
+    static getContextProps = <P extends ComponentCommonProps>(props: P, displayName: string) => {
+        return getContextProps(props, childContextCache.root() || {}, displayName);
+    };
+
+    static clearCache = () => {
+        childContextCache.clear();
+    };
 
     static getContext = () => {
         const {
@@ -165,7 +164,7 @@ class ConfigProvider extends Component {
             nextDevice,
             nextPopupContainer,
             nextErrorBoundary,
-        } = childContextCache.root() || {};
+        } = (childContextCache.root() as ContextState) || {};
 
         return {
             prefix: nextPrefix,
@@ -180,9 +179,12 @@ class ConfigProvider extends Component {
         };
     };
 
-    constructor(...args) {
-        super(...args);
-        childContextCache.add(this, Object.assign({}, childContextCache.get(this, {}), this.getChildContext()));
+    constructor(props: ConfigProviderProps, context: ContextState) {
+        super(props, context);
+        childContextCache.add(
+            this,
+            Object.assign({}, childContextCache.get(this, {}), this.getChildContext())
+        );
 
         setMomentLocale(this.props.locale);
         setDateLocale(this.props.locale);
@@ -230,7 +232,10 @@ class ConfigProvider extends Component {
         };
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(
+        nextProps: ConfigProviderProps,
+        prevState: Pick<ConfigProviderProps, 'locale'>
+    ) {
         if (nextProps.locale !== prevState.locale) {
             setMomentLocale(nextProps.locale);
             setDateLocale(nextProps.locale);
@@ -244,7 +249,10 @@ class ConfigProvider extends Component {
     }
 
     componentDidUpdate() {
-        childContextCache.add(this, Object.assign({}, childContextCache.get(this, {}), this.getChildContext()));
+        childContextCache.add(
+            this,
+            Object.assign({}, childContextCache.get(this, {}), this.getChildContext())
+        );
     }
 
     componentWillUnmount() {
@@ -256,4 +264,4 @@ class ConfigProvider extends Component {
     }
 }
 
-export default polyfill(ConfigProvider);
+export default ConfigProvider;
