@@ -1,4 +1,6 @@
-export default {
+import { Locale } from './types';
+
+const locale: Locale = {
     momentLocale: 'id',
     Timeline: {
         expand: 'Lebih Banyak',
@@ -177,3 +179,5 @@ export default {
         },
     },
 };
+
+export default locale;

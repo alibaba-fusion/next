@@ -1,5 +1,7 @@
 /* italian */
-export default {
+import { Locale } from './types';
+
+const locale: Locale = {
     momentLocale: 'it',
     Timeline: {
         expand: 'Espandi',
@@ -177,3 +179,5 @@ export default {
         },
     },
 };
+
+export default locale;

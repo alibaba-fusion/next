@@ -1,4 +1,6 @@
-export default {
+import { Locale } from './types';
+
+const locale: Locale = {
     momentLocale: 'zh-hk',
     Timeline: {
         expand: '展開',
@@ -176,3 +178,5 @@ export default {
         },
     },
 };
+
+export default locale;
