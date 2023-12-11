@@ -60,3 +60,8 @@ export { default as List } from './list';
 export { default as TimePicker2 } from './time-picker2';
 export { default as DatePicker2 } from './date-picker2';
 export { default as Calendar2 } from './calendar2';
+
+// types
+
+export type { CommonProps, IconsType } from './util/types';
+export type { Locale } from './locale/types';
