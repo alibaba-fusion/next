@@ -1,38 +1,37 @@
-import assert from 'power-assert';
-import * as dom from '../../src/util/dom';
+import * as dom from '../dom';
 
-describe('src/dom.js', function() {
-    describe('#dom.hasDOM', function() {
-        it('hasDOM should be a boolean', function() {
+describe('src/dom.js', function () {
+    describe('#dom.hasDOM', function () {
+        it('hasDOM should be a boolean', function () {
             assert(typeof dom.hasDOM === 'boolean');
         });
     });
 
-    describe('#addClass, #removeClass, #hasClass, #toggleClass, #matches', function() {
+    describe('#addClass, #removeClass, #hasClass, #toggleClass, #matches', function () {
         const tag = document.createElement('small');
         document.body.appendChild(tag);
 
-        it('hasClass should return a boolean', function() {
+        it('hasClass should return a boolean', function () {
             assert(!dom.hasClass());
             assert(!dom.hasClass(tag, 'foo'));
         });
 
-        it('addClass should works', function() {
+        it('addClass should works', function () {
             dom.addClass(tag, 'foo');
             assert(dom.hasClass(tag, 'foo'));
         });
 
-        it('removeClass should works', function() {
+        it('removeClass should works', function () {
             dom.removeClass(tag, 'foo');
             assert(!dom.hasClass(tag, 'foo'));
         });
 
-        it('toggleClass should works', function() {
+        it('toggleClass should works', function () {
             assert(dom.toggleClass(tag, 'foo'));
             assert(!dom.toggleClass(tag, 'foo'));
         });
 
-        it('matches should return a boolean', function() {
+        it('matches should return a boolean', function () {
             assert(!dom.matches());
             assert(!dom.matches(tag, '.foo'));
 
@@ -45,34 +44,34 @@ describe('src/dom.js', function() {
         document.body.removeChild(tag);
     });
 
-    describe('mock IE env', function() {
+    describe('mock IE env', function () {
         const tag = {
             className: '',
-        };
+        } as unknown as Element;
 
-        it('hasClass should return a boolean', function() {
+        it('hasClass should return a boolean', function () {
             assert(!dom.hasClass());
             assert(!dom.hasClass(tag, 'bar'));
         });
 
-        it('addClass should works', function() {
+        it('addClass should works', function () {
             dom.addClass(tag, 'bar');
             assert(dom.hasClass(tag, 'bar'));
         });
 
-        it('removeClass should works', function() {
+        it('removeClass should works', function () {
             dom.removeClass(tag, 'bar');
             assert(!dom.hasClass(tag, 'bar'));
         });
 
-        it('toggleClass should works', function() {
+        it('toggleClass should works', function () {
             assert(dom.toggleClass(tag, 'bar'));
             assert(!dom.toggleClass(tag, 'bar'));
         });
     });
 
-    describe('#setStyle, #getStyle', function() {
-        let tag;
+    describe('#setStyle, #getStyle', function () {
+        let tag: HTMLElement;
 
         beforeEach(() => {
             tag = document.createElement('small');
@@ -84,7 +83,7 @@ describe('src/dom.js', function() {
             document.body.removeChild(tag);
         });
 
-        it('setStyle should works', function() {
+        it('setStyle should works', function () {
             dom.setStyle(tag, 'width', 101);
             dom.setStyle(tag, {
                 height: 150,
@@ -99,25 +98,25 @@ describe('src/dom.js', function() {
             assert(dom.getStyle(tag, 'padding') === 0);
         });
 
-        it('height and width should return number', function() {
+        it('height and width should return number', function () {
             assert(typeof dom.getStyle(tag, 'width') === 'number');
             assert(typeof dom.getStyle(tag, 'height') === 'number');
         });
     });
 
-    describe('#scrollbar', function() {
-        it('scrollbar() should contain width and height', function() {
+    describe('#scrollbar', function () {
+        it('scrollbar() should contain width and height', function () {
             const scrollbar = dom.scrollbar();
             assert(typeof scrollbar.width === 'number');
             assert(typeof scrollbar.height === 'number');
         });
     });
 
-    describe('#getOffset', function() {
-        it('getOffset() should return top and left', function() {
+    describe('#getOffset', function () {
+        it('getOffset() should return top and left', function () {
             document.body.innerHTML = '';
-            document.body.style.margin = 0;
-            document.body.style.padding = 0;
+            document.body.style.margin = '0px';
+            document.body.style.padding = '0px';
             const div1 = document.createElement('div');
             div1.style.height = '100px';
             const div2 = document.createElement('div');
@@ -137,17 +136,17 @@ describe('src/dom.js', function() {
         });
     });
 
-    describe('#getPixels', function() {
-        it('getPixels() should return number', function() {
+    describe('#getPixels', function () {
+        it('getPixels() should return number', function () {
             assert(dom.getPixels('100') === 100);
             assert(dom.getPixels(100) === 100);
             assert(dom.getPixels('60px') === 60);
-            assert(parseInt(dom.getPixels('100vh')) === document.defaultView.innerHeight);
+            assert(Math.floor(dom.getPixels('100vh')) === document.defaultView!.innerHeight);
         });
     });
 
-    describe('#getClosest', function() {
-        it('getClosest() should return number', function() {
+    describe('#getClosest', function () {
+        it('getClosest() should return number', function () {
             const parent = document.createElement('div');
             const child = document.createElement('div');
             const grandChild = document.createElement('div');
@@ -167,8 +166,8 @@ describe('src/dom.js', function() {
             parent.appendChild(child);
             child.appendChild(grandChild);
 
-            assert(dom.getClosest(grandChild, 'div[data-level3]'), grandChild);
-            assert(dom.getClosest(grandChild, 'div[data-level2]'), child);
+            assert(dom.getClosest(grandChild, 'div[data-level3]') === grandChild);
+            assert(dom.getClosest(grandChild, 'div[data-level2]') === child);
         });
     });
 });

@@ -1,44 +1,48 @@
-import assert from 'power-assert';
-import ES6Promise from 'es6-promise-polyfill';
-import * as func from '../../src/util/func';
+import * as ES6Promise from 'es6-promise-polyfill';
+import * as func from '../func';
 
 window.Promise = window.Promise || ES6Promise.Promise;
 
 /* eslint-disable*/
 
-describe('src/func.js', function() {
-    describe('#func.noop', function() {
-        it('noop should be a function', function() {
+describe('src/func.js', function () {
+    describe('#func.noop', function () {
+        it('noop should be a function', function () {
             assert(typeof func.noop === 'function');
         });
 
-        it('noop() should return undefined', function() {
+        it('noop() should return undefined', function () {
             assert(func.noop() === undefined);
         });
     });
-    describe('#func.prevent', function() {
-        it('prevent should be a function', function() {
+    describe('#func.prevent', function () {
+        it('prevent should be a function', function () {
             assert(typeof func.noop === 'function');
         });
 
-        it('prevent() should return false', function() {
+        it('prevent() should return false', function () {
             assert(func.prevent() === false);
         });
     });
 
-    describe('#func.makeChain', function() {
-        it('makeChain should return a function', function() {
+    describe('#func.makeChain', function () {
+        it('makeChain should return a function', function () {
             assert(typeof func.makeChain() === 'function');
-            assert(typeof func.makeChain(x => x + 1, y => y * y) === 'function');
+            assert(
+                typeof func.makeChain(
+                    (x: number) => x + 1,
+                    (y: number) => y * y
+                ) === 'function'
+            );
         });
 
-        it('makeChain(fn) should return fn', function() {
+        it('makeChain(fn) should return fn', function () {
             const fn = () => undefined;
 
             assert(func.makeChain(fn) === fn);
         });
 
-        it('makeChain should return a chained function', function() {
+        it('makeChain should return a chained function', function () {
             let x = 0,
                 y = 0;
             const fn1 = () => {
@@ -67,20 +71,20 @@ describe('src/func.js', function() {
         });
     });
 
-    describe('#func.bindCtx', function() {
-        it('bindCtx should change function scope', function() {
+    describe('#func.bindCtx', function () {
+        it('bindCtx should change function scope', function () {
             const methods = {
                 key: 'METHODS-KEY',
 
-                fn1: function() {
+                fn1: function () {
                     return this.key;
                 },
 
-                fn2: function() {
+                fn2: function () {
                     return this.key;
                 },
 
-                fn3: function() {
+                fn3: function () {
                     return this.key;
                 },
             };
@@ -101,31 +105,47 @@ describe('src/func.js', function() {
         });
     });
 
-    describe('#func.promiseCall', function() {
-        it('promiseCall should trigger success callback with null value', function() {
+    describe('#func.promiseCall', function () {
+        it('promiseCall should trigger success callback with null value', function () {
             let succ = 0,
                 fail = 0;
-            func.promiseCall(null, () => succ++, () => fail++);
-            func.promiseCall(0, () => succ++, () => fail++);
+            func.promiseCall(
+                null,
+                () => succ++,
+                () => fail++
+            );
+            func.promiseCall(
+                0,
+                () => succ++,
+                () => fail++
+            );
             func.promiseCall(undefined, () => succ++);
-            func.promiseCall('', () => succ++, () => fail++);
+            func.promiseCall(
+                '',
+                () => succ++,
+                () => fail++
+            );
             assert(succ === 4);
             assert(fail === 0);
         });
 
-        it('promiseCall should trigger failure callback with false value', function() {
+        it('promiseCall should trigger failure callback with false value', function () {
             let succ = 0,
                 fail = 0;
-            func.promiseCall(false, () => succ++, () => fail++);
+            func.promiseCall(
+                false,
+                () => succ++,
+                () => fail++
+            );
             assert(succ === 0);
             assert(fail === 1);
         });
 
-        it('promiseCall should trigger success callback after resolve with promise', function(done) {
+        it('promiseCall should trigger success callback after resolve with promise', function (done) {
             let succ = 0,
                 fail = 0;
             func.promiseCall(
-                new Promise(resolve => {
+                new Promise<void>(resolve => {
                     setTimeout(() => resolve(), 16.66667);
                 }),
                 () => succ++,
@@ -154,7 +174,7 @@ describe('src/func.js', function() {
         //   }, 60);
         // });
 
-        it('promiseCall should trigger failure callback after reject with promise', function(done) {
+        it('promiseCall should trigger failure callback after reject with promise', function (done) {
             let succ = 0,
                 fail = 0;
             func.promiseCall(
@@ -176,9 +196,11 @@ describe('src/func.js', function() {
 
     describe('#func.invoke', () => {
         // undefined
-        [null, '', 0, undefined, {}, false].forEach(target => assert(func.invoke(target, 'method') === undefined));
+        [null, '', 0, undefined, {}, false].forEach(target =>
+            assert(func.invoke(target, 'method') === undefined)
+        );
 
         // 返回函数调用结果
-        assert(func.invoke({ foo: (...args) => args.length === 1 }, 'foo', ['']));
+        assert(func.invoke({ foo: (...args: unknown[]) => args.length === 1 }, 'foo', ['']));
     });
 });

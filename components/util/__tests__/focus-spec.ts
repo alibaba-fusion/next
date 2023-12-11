@@ -1,10 +1,9 @@
-import assert from 'power-assert';
-import * as focus from '../../src/util/focus';
+import * as focus from '../focus';
 
-describe('src/focus.js', function() {
-    let wrapper;
+describe('src/focus.js', function () {
+    let wrapper: HTMLElement;
 
-    beforeEach(function() {
+    beforeEach(function () {
         wrapper = document.createElement('div');
         wrapper.innerHTML = `
 <span class="form-title">Hello, World</span>
@@ -36,50 +35,50 @@ describe('src/focus.js', function() {
         document.body.appendChild(wrapper);
     });
 
-    afterEach(function() {
+    afterEach(function () {
         document.body.removeChild(wrapper);
     });
 
-    describe('#getFocusNodeList', function() {
-        const tabEvent = { keyCode: 9, preventDefault: () => undefined };
+    describe('#getFocusNodeList', function () {
+        const tabEvent = { keyCode: 9, preventDefault: () => undefined, shiftKey: false };
         const tabEventWithShift = {
             keyCode: 9,
             preventDefault: () => undefined,
             shiftKey: true,
         };
 
-        it('getFocusNodeList should return a list', function() {
+        it('getFocusNodeList should return a list', function () {
             const list = focus.getFocusNodeList(wrapper);
             assert(Array.isArray(list));
             assert(list.length === 6);
         });
 
-        it('data-auto-focus should works', function() {
+        it('data-auto-focus should works', function () {
             const list = focus.getFocusNodeList(wrapper);
             assert(!!list[0].getAttribute('data-auto-focus'));
         });
 
-        it('limitTabRange should works', function() {
-            wrapper.querySelector('.foo-password').focus();
+        it('limitTabRange should works', function () {
+            (wrapper.querySelector('.foo-password') as HTMLElement).focus();
             focus.limitTabRange(wrapper, tabEvent);
-            assert(document.activeElement.className === 'foo-select');
+            assert(document.activeElement!.className === 'foo-select');
 
             focus.limitTabRange(wrapper, tabEvent);
-            assert(document.activeElement.className === 'foo-btn');
+            assert(document.activeElement!.className === 'foo-btn');
 
             focus.limitTabRange(wrapper, tabEventWithShift);
-            assert(document.activeElement.className === 'foo-select');
+            assert(document.activeElement!.className === 'foo-select');
         });
 
-        it('backLastFocusNode should works', function() {
-            wrapper.querySelector('.foo-select').focus();
+        it('backLastFocusNode should works', function () {
+            (wrapper.querySelector('.foo-select') as HTMLElement).focus();
             focus.saveLastFocusNode();
             focus.limitTabRange(wrapper, tabEventWithShift);
             focus.limitTabRange(wrapper, tabEventWithShift);
             focus.limitTabRange(wrapper, tabEventWithShift);
 
             focus.backLastFocusNode();
-            assert(document.activeElement.className === 'foo-select');
+            assert(document.activeElement!.className === 'foo-select');
             focus.clearLastFocusNode();
         });
     });

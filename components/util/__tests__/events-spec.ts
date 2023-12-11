@@ -1,9 +1,8 @@
-import assert from 'power-assert';
-import simulateEvents from 'simulate-event';
-import * as events from '../../src/util/events';
+import * as simulateEvents from 'simulate-event';
+import * as events from '../events';
 
-describe('src/events.js', function() {
-    let element;
+describe('src/events.js', function () {
+    let element: HTMLElement;
 
     beforeEach(() => {
         element = document.createElement('div');
@@ -14,9 +13,9 @@ describe('src/events.js', function() {
         document.body.removeChild(element);
     });
 
-    it('should support on method', function() {
+    it('should support on method', function () {
         let flag = false;
-        let handler = events.on(element, 'click', function(e) {
+        const handler = events.on(element, 'click', function (e: MouseEvent) {
             flag = true;
             assert(e.target === element);
         });
@@ -29,9 +28,9 @@ describe('src/events.js', function() {
         assert(!flag);
     });
 
-    it('should support once method', function() {
+    it('should support once method', function () {
         let flag = false;
-        events.once(element, 'click', function(e) {
+        events.once(element, 'click', function (e: MouseEvent) {
             flag = true;
             assert(e.target === element);
         });

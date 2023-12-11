@@ -1,8 +1,7 @@
-import assert from 'power-assert';
-import { escapeForId, randomId } from '../../src/util/htmlId';
+import { escapeForId, randomId } from '../htmlId';
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
-describe('src/htmlId.js', function() {
+describe('src/htmlId.js', function () {
     describe('escapeForId', () => {
         it('should not change any text if no spaces or quotes', () => {
             const text = 'text-Not_anIssue123/';

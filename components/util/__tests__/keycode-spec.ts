@@ -1,8 +1,7 @@
-import assert from 'power-assert';
-import KEYCODE from '../../src/util/keycode';
+import KEYCODE from '../keycode';
 
-describe('src/keycode.js', function() {
-    it("KEYCODE's value should be correct", function() {
+describe('src/keycode.js', function () {
+    it("KEYCODE's value should be correct", function () {
         assert(KEYCODE.BACKSPACE === 8);
         assert(KEYCODE.TAB === 9);
         assert(KEYCODE.ENTER === 13);
