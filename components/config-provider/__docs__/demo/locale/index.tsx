@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { ConfigProvider, Button, Select } from '@alifd/next';
-import PropTypes from 'prop-types';
+import { ConfigProvider, Button, Select, CommonProps } from '@alifd/next';
 
 const { config, getContextProps } = ConfigProvider;
 const { Option } = Select;
@@ -25,12 +24,7 @@ const locales = {
     },
 };
 
-class ClickMe extends React.Component {
-    static propTypes = {
-        locale: PropTypes.object,
-        onClick: PropTypes.func,
-    };
-
+class ClickMe extends React.Component<{ locale?: { clickMe: string }; onClick: () => void }> {
     static defaultProps = {
         locale: locales['zh-cn'].ClickMe,
         onClick: () => {},
@@ -38,22 +32,34 @@ class ClickMe extends React.Component {
 
     render() {
         const { locale, onClick } = this.props;
-        return <Button onClick={onClick}>{locale.clickMe}</Button>;
+        return <Button onClick={onClick}>{locale!.clickMe}</Button>;
     }
 }
 
-class Toast extends React.Component {
-    static propTypes = {
-        locale: PropTypes.object,
-        afterClose: PropTypes.func,
-    };
+interface ToastProps extends CommonProps {
+    afterClose?: () => unknown;
+}
 
+class Toast extends React.Component<ToastProps> {
     static defaultProps = {
         locale: locales['zh-cn'].Toast,
         afterClose: () => {},
     };
+    static create = (props = {}) => {
+        const mountNode = document.createElement('div');
+        document.body.appendChild(mountNode);
 
-    constructor(props) {
+        const closeChain = () => {
+            ReactDOM.unmountComponentAtNode(mountNode);
+            document.body.removeChild(mountNode);
+        };
+
+        const newLocale = getContextProps(props, 'Toast').locale;
+
+        ReactDOM.render(<Toast afterClose={closeChain} locale={newLocale} />, mountNode);
+    };
+
+    constructor(props: ToastProps) {
         super(props);
 
         this.state = {
@@ -67,38 +73,29 @@ class Toast extends React.Component {
         this.setState({
             visible: false,
         });
-        this.props.afterClose();
+        this.props.afterClose!();
     }
 
     render() {
         return (
             <div className="toast">
                 <Button type="primary" onClick={this.handleClose}>
-                    {this.props.locale.close}
+                    {this.props.locale!.close}
                 </Button>
             </div>
         );
     }
 }
-Toast.create = (props = {}) => {
-    const mountNode = document.createElement('div');
-    document.body.appendChild(mountNode);
-
-    const closeChain = () => {
-        ReactDOM.unmountComponentAtNode(mountNode);
-        document.body.removeChild(mountNode);
-    };
-
-    const newLocale = getContextProps(props, 'Toast').locale;
-
-    ReactDOM.render(<Toast afterClose={closeChain} locale={newLocale} />, mountNode);
-};
 
 const NewClickMe = config(ClickMe);
 const NewToast = config(Toast);
 
-class Demo extends React.Component {
-    constructor(props) {
+interface DemoState {
+    language: 'zh-cn' | 'en-us';
+}
+
+class Demo extends React.Component<unknown, DemoState> {
+    constructor(props: unknown) {
         super(props);
 
         this.state = {
@@ -110,10 +107,10 @@ class Demo extends React.Component {
     }
 
     handleClick() {
-        NewToast.create();
+        (NewToast as unknown as typeof Toast).create();
     }
 
-    handleChangeLanguage(language) {
+    handleChangeLanguage(language: DemoState['language']) {
         this.setState({
             language,
         });

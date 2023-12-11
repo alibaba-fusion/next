@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { FC } from 'react';
 import { ConfigProvider } from '@alifd/next';
-import PropTypes from 'prop-types';
 
 const localeSettings = {
     momentLocale: 'fr-FR',
@@ -10,22 +10,18 @@ const localeSettings = {
     },
 };
 
-const App = ({ children }) => (
+const App: FC = ({ children }) => (
     <ConfigProvider prefix="customized-" locale={localeSettings} pure warning={false}>
         {children}
     </ConfigProvider>
 );
-
-App.propTypes = {
-    children: PropTypes.node,
-};
 
 const Child = () => (
     <ConfigProvider.Consumer>
         {context => (
             <div className="context-data">
                 <h3>Context's state</h3>
-                <pre>{JSON.stringify(context, false, 2)}</pre>
+                <pre>{JSON.stringify(context, null, 2)}</pre>
             </div>
         )}
     </ConfigProvider.Consumer>

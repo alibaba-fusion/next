@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ConfigProvider, Button } from '@alifd/next';
 
-const { ErrorBoundary, config } = ConfigProvider;
+const { config } = ConfigProvider;
 
-class Demo extends React.Component {
+class Demo extends React.Component<{ throwError?: boolean }> {
     render() {
         if (this.props.throwError) {
             throw Error('There is something going wrong!');
@@ -15,11 +15,6 @@ class Demo extends React.Component {
 }
 
 const NewDemo = config(Demo);
-
-const fallbackUI = props => {
-    const { error, errorInfo } = props;
-    return <span style={{ color: 'red' }}>{error.toString()}</span>;
-};
 
 class App extends React.Component {
     state = {
@@ -52,8 +47,7 @@ class App extends React.Component {
                 <hr />
                 <ConfigProvider
                     errorBoundary={{
-                        fallbackUI: props => {
-                            const { error, errorInfo } = props;
+                        fallbackUI: ({ error }) => {
                             return <span style={{ color: 'red' }}>Error: {error.toString()}</span>;
                         },
                         afterCatch: () => {

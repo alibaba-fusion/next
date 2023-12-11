@@ -17,6 +17,7 @@ import {
     Select,
     Upload,
     Table,
+    Locale,
 } from '@alifd/next';
 
 import enUS from '@alifd/next/lib/locale/en-us';
@@ -25,7 +26,7 @@ import jaJP from '@alifd/next/lib/locale/ja-jp';
 import viVN from '@alifd/next/lib/locale/vi-vn';
 import ptPT from '@alifd/next/lib/locale/pt-pt';
 
-const localeMap = {
+const localeMap: Record<string, Locale> = {
     'zh-cn': zhCN,
     'en-us': enUS,
     'ja-jp': jaJP,
@@ -55,8 +56,8 @@ const transferDataSource = (() => {
     return dataSource;
 })();
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<unknown, { lang: string }> {
+    constructor(props: unknown) {
         super(props);
 
         this.state = {
@@ -69,7 +70,7 @@ class Demo extends React.Component {
 
     componentDidMount() {}
 
-    changeLang(lang) {
+    changeLang(lang: string) {
         this.setState({
             lang,
         });
