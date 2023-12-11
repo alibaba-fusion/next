@@ -1,30 +1,19 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import Enzyme, { mount, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import moment from 'moment';
-import assert from 'power-assert';
-import Select from '../../src/select';
-import Button from '../../src/button';
-import enUS from '../../src/locale/en-us';
-import zhCN from '../../src/locale/zh-cn';
-import ConfigProvider from '../../src/config-provider';
-
-/* eslint-disable react/jsx-filename-extension, react/no-multi-comp, react/prop-types, react/prefer-stateless-function */
-/* global describe, it, afterEach */
-
-Enzyme.configure({ adapter: new Adapter() });
+import * as React from 'react';
+import { forwardRef, Component, FC, EventHandler, MouseEvent } from 'react';
+import * as moment from 'moment';
+import 'moment/locale/zh-cn';
+import Select from '../../select';
+import Button from '../../button';
+import enUS from '../../locale/en-us';
+import zhCN from '../../locale/zh-cn';
+import ConfigProvider from '../index';
+import { ComponentCommonProps } from '../types';
+import { render, shallow } from '../../util/__tests__';
+import { ConsumerState } from '../consumer';
 
 const { config, getContextProps, ErrorBoundary } = ConfigProvider;
 
-class Output extends Component {
-    static propTypes = {
-        prefix: PropTypes.string,
-        locale: PropTypes.object,
-        pure: PropTypes.bool,
-    };
-
+class Output extends Component<ComponentCommonProps> {
     static defaultProps = {
         prefix: 'next-',
         locale: {
@@ -36,28 +25,22 @@ class Output extends Component {
     internalMethod() {}
 
     render() {
-        const { prefix, locale } = this.props;
+        const { prefix, locale, pure } = this.props;
 
-        return <div className={`${prefix}output`}>{locale.hello}</div>;
+        return (
+            <div
+                className={`${prefix}output`}
+                data-cy="output"
+                data-cy-prefix={prefix}
+                data-cy-pure={String(pure)}
+                data-cy-locale={locale!.hello}
+            >
+                {locale!.hello}
+            </div>
+        );
     }
 }
 const NewOutput = config(Output);
-
-class TestPure extends Component {
-    static propTypes = {
-        obj: PropTypes.object,
-        pure: PropTypes.bool,
-    };
-
-    static defaultProps = {
-        pure: false,
-    };
-
-    render() {
-        return <div>{this.props.obj.text}</div>;
-    }
-}
-const NewTestPure = config(TestPure);
 
 const locales = {
     'zh-cn': {
@@ -77,12 +60,7 @@ const locales = {
         },
     },
 };
-class ClickMe extends Component {
-    static propTypes = {
-        locale: PropTypes.object,
-        onClick: PropTypes.func,
-    };
-
+class ClickMe extends Component<ComponentCommonProps & { onClick?: EventHandler<MouseEvent> }> {
     static defaultProps = {
         locale: locales['zh-cn'].ClickMe,
         onClick: () => {},
@@ -92,23 +70,23 @@ class ClickMe extends Component {
         const { locale, onClick } = this.props;
         return (
             <button className="click-me" onClick={onClick}>
-                {locale.clickMe}
+                {locale!.clickMe}
             </button>
         );
     }
 }
-class Toast extends Component {
-    static propTypes = {
-        locale: PropTypes.object,
-        afterClose: PropTypes.func,
-    };
-
+class Toast extends Component<ComponentCommonProps & { afterClose?: () => void }> {
     static defaultProps = {
         locale: locales['zh-cn'].Toast,
         afterClose: () => {},
     };
+    static create = (props = {}) => {
+        const newLocale = getContextProps(props, 'Toast').locale;
+        const wrapper = render(<Toast afterClose={() => wrapper.unmount()} locale={newLocale} />);
+        return wrapper;
+    };
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -122,34 +100,22 @@ class Toast extends Component {
         this.setState({
             visible: false,
         });
-        this.props.afterClose();
+        this.props.afterClose!();
     }
 
     render() {
         return (
             <div className="toast">
-                <button onClick={this.handleClose}>{this.props.locale.close}</button>
+                <button onClick={this.handleClose}>{this.props.locale!.close}</button>
             </div>
         );
     }
 }
-Toast.create = (props = {}) => {
-    const mountNode = document.createElement('div');
-    document.body.appendChild(mountNode);
 
-    const closeChain = () => {
-        ReactDOM.unmountComponentAtNode(mountNode);
-        document.body.removeChild(mountNode);
-    };
-
-    const newLocale = getContextProps(props, 'Toast').locale;
-
-    ReactDOM.render(<Toast afterClose={closeChain} locale={newLocale} />, mountNode);
-};
 const NewClickMe = config(ClickMe);
-const NewToast = config(Toast);
-class Demo extends Component {
-    constructor(props) {
+const NewToast = config(Toast) as unknown as typeof Toast;
+class Demo extends Component<unknown, { language: 'zh-cn' | 'en-us' }> {
+    constructor(props: unknown) {
         super(props);
 
         this.state = {
@@ -160,11 +126,21 @@ class Demo extends Component {
         this.handleChangeLanguage = this.handleChangeLanguage.bind(this);
     }
 
-    handleClick() {
-        NewToast.create();
+    componentWillUnmount() {
+        this.wrapper && this.wrapper.unmount();
     }
 
-    handleChangeLanguage(e) {
+    wrapper: ReturnType<typeof render> | null = null;
+
+    handleClick() {
+        if (this.wrapper) {
+            this.wrapper.unmount();
+            this.wrapper = null;
+        }
+        this.wrapper = NewToast.create();
+    }
+
+    handleChangeLanguage(e: any) {
         this.setState({
             language: e.target.value,
         });
@@ -189,161 +165,142 @@ class Demo extends Component {
     }
 }
 
-class TestMoment extends Component {
-    render() {
-        return (
-            <ConfigProvider locale={this.props.locale}>
-                <div />
-            </ConfigProvider>
-        );
-    }
-}
-
-class A extends Component {
-    render() {
-        return <div className="a">{this.props.locale.text}</div>;
-    }
-}
-const NewA = config(A, { componentName: 'B' });
-class TestAlias extends Component {
-    render() {
-        return (
-            <ConfigProvider locale={this.props.locale}>
-                <NewA />
-            </ConfigProvider>
-        );
-    }
-}
-
-class TestDevice extends Component {
-    render() {
-        return <span>{this.props.device}</span>;
-    }
-}
-
-const NTestDevice = config(TestDevice);
-
-function FunComponent(props) {
-    return <div {...props} />;
-}
-const NewFunComponent = config(FunComponent);
-
-const ForwardRef = React.forwardRef((props, ref) => {
-    return <div ref={ref} {...props} />;
-});
-const NewForwardRef = config(ForwardRef);
 describe('ConfigProvider', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('should support function component', () => {
-        wrapper = mount(
+        const FC: FC<{ title: string }> = ({ title }) => {
+            return <div data-cy="fc">{title}</div>;
+        };
+        const ConfigFC = config(FC);
+        cy.mount(
             <ConfigProvider>
-                <NewFunComponent title="ssss" />
+                <ConfigFC title="ssss" />
             </ConfigProvider>
         );
-        const output = wrapper.find(FunComponent);
-        assert(output);
+        cy.get('[data-cy="fc"]').should('have.text', 'ssss');
     });
 
     it('should support forwardRef component', () => {
-        wrapper = mount(
+        const ForwardFC = forwardRef<unknown, { title: string }>(({ title }, ref) => {
+            return <div data-cy="ffc">{title}</div>;
+        });
+        const ConfigForwardFC = config(ForwardFC);
+        cy.mount(
             <ConfigProvider>
-                <NewForwardRef title="ssss" />
+                <ConfigForwardFC title="ssss" />
             </ConfigProvider>
         );
-        const output = wrapper.find(FunComponent);
-        assert(output);
+        cy.get('[data-cy="ffc"]').should('have.text', 'ssss');
     });
 
     it('should use default prop by default', () => {
-        wrapper = mount(<NewOutput />);
-        const output = wrapper.find(Output);
-        assert(output.prop('prefix') === 'next-');
-        assert(output.prop('locale').hello === '你好');
-        assert(!output.prop('pure'));
+        cy.mount(<NewOutput />);
+        cy.get('[data-cy="output"]')
+            .should('have.attr', 'data-cy-prefix', 'next-')
+            .should('have.attr', 'data-cy-pure', 'false')
+            .should('have.attr', 'data-cy-locale', '你好');
     });
 
     it('should use context prop if wrapped by ConfigProvider', () => {
-        wrapper = mount(
+        cy.mount(
             <ConfigProvider prefix="context-" locale={{ Output: { hello: 'context' } }} pure>
                 <NewOutput />
             </ConfigProvider>
         );
-        const output = wrapper.find(Output);
-        assert(output.prop('prefix') === 'context-');
-        assert(output.prop('locale').hello === 'context');
-        assert(output.prop('pure'));
+        cy.get('[data-cy="output"]')
+            .should('have.attr', 'data-cy-prefix', 'context-')
+            .should('have.attr', 'data-cy-pure', 'true')
+            .should('have.attr', 'data-cy-locale', 'context');
     });
 
     it('should use passed prop if pass custom prop', () => {
-        wrapper = mount(
+        cy.mount(
             <ConfigProvider prefix="context-" locale={{ Output: { hello: 'context' } }} pure>
                 <NewOutput prefix="my-" locale={{ hello: 'my' }} pure={false} />
             </ConfigProvider>
         );
-        const output = wrapper.find(Output);
-        assert(output.prop('prefix') === 'my-');
-        assert(output.prop('locale').hello === 'my');
-        assert(!output.prop('pure'));
+        cy.get('[data-cy="output"]')
+            .should('have.attr', 'data-cy-prefix', 'my-')
+            .should('have.attr', 'data-cy-pure', 'false')
+            .should('have.attr', 'data-cy-locale', 'my');
     });
 
     it('should expose getInstance method', () => {
-        wrapper = mount(<NewOutput />);
-        assert(typeof wrapper.instance().getInstance().internalMethod === 'function');
+        const ref: { current: any } = { current: null };
+        cy.mount(<NewOutput ref={ref} />).then(() => {
+            expect(typeof ref.current?.getInstance?.().internalMethod).to.equal('function');
+        });
     });
 
     it('should not pure render by default', () => {
         const obj = { text: '0' };
-        wrapper = mount(<NewTestPure obj={obj} />);
-        obj.text = '1';
-        wrapper.setProps({
-            obj,
+        class Pure extends Component<{ obj: { text: string } }> {
+            render() {
+                return <div data-cy="pure">{this.props.obj.text}</div>;
+            }
+        }
+
+        const ConfigPure = config(Pure);
+        cy.mount(<ConfigPure obj={obj} />).then(xx => {
+            obj.text = '1';
+            xx.rerender(<ConfigPure obj={obj} />);
+            cy.get('[data-cy="pure"]').should('have.text', '1');
         });
-        assert(wrapper.find('div').text() === '1');
     });
 
     it('should pure render if set pure to true', () => {
         const obj = { text: '0' };
-        wrapper = mount(<NewTestPure obj={obj} pure />);
-        obj.text = '1';
-        wrapper.setProps({
-            obj,
+        class Pure extends Component<{ obj: { text: string } }> {
+            render() {
+                return <div data-cy="pure">{this.props.obj.text}</div>;
+            }
+        }
+
+        const ConfigPure = config(Pure);
+        cy.mount(<ConfigPure obj={obj} pure />).then(xx => {
+            obj.text = '1';
+            xx.rerender(<ConfigPure obj={obj} pure />);
+            cy.get('[data-cy="pure"]').should('have.text', '0');
         });
-        assert(wrapper.find('div').text() === '0');
     });
 
     it('should change context of component which is off the component tree', () => {
-        wrapper = mount(<Demo />);
-        const clickMe = wrapper.find('.click-me');
-        clickMe.simulate('click');
+        cy.mount(<Demo />);
+        cy.get('.click-me').click();
+        cy.then(() => {
+            let toast: HTMLButtonElement | null = document.querySelector('.toast button');
+            expect(toast?.innerHTML.trim()).to.equal('关闭');
+            toast!.click();
 
-        let toast = document.querySelector('.toast button');
-        assert(toast.innerHTML.trim() === '关闭');
-        toast.click();
+            cy.get('select').invoke('val', 'en-us').trigger('change');
 
-        const select = wrapper.find('select');
-        select.simulate('change', { target: { value: 'en-us' } });
-        clickMe.simulate('click');
-        toast = document.querySelector('.toast button');
-        assert(toast.innerHTML.trim() === 'close');
-        toast.click();
+            cy.get('.click-me').click();
+            cy.then(() => {
+                toast = document.querySelector('.toast button');
+                expect(toast?.innerHTML.trim()).to.equal('close');
+            });
+        });
     });
 
     it('should change moment locale', () => {
-        wrapper = mount(<TestMoment locale={{ momentLocale: 'zh-cn' }} />);
-        assert(moment.locale() === 'zh-cn');
+        cy.mount(
+            <ConfigProvider locale={{ momentLocale: 'zh-cn' }}>
+                <div />
+            </ConfigProvider>
+        );
+        expect(moment.locale()).to.equal('zh-cn');
     });
 
     it('should support alias displayName', () => {
-        wrapper = mount(<TestAlias locale={{ B: { text: '2' } }} />);
-        assert(wrapper.find('.a').text() === '2');
+        const FC: FC<{ locale?: { text?: string } }> = ({ locale }) => {
+            return <div data-cy="alias">{locale?.text}</div>;
+        };
+        const ConfigFC = config(FC, { componentName: 'B' });
+        cy.mount(
+            <ConfigProvider locale={{ B: { text: '2' } }}>
+                <ConfigFC />
+            </ConfigProvider>
+        );
+        cy.get('[data-cy="alias"]').should('have.text', '2');
     });
 
     it('should support setLanguage', () => {
@@ -352,8 +309,12 @@ describe('ConfigProvider', () => {
             'en-us': enUS,
         });
         ConfigProvider.setLanguage('en-us');
-        wrapper = mount(<Select />);
-        assert(wrapper.find('span.next-select input').props().placeholder === enUS.Select.selectPlaceholder);
+        cy.mount(<Select />);
+        cy.get('span.next-select input').should(
+            'have.attr',
+            'placeholder',
+            enUS.Select.selectPlaceholder
+        );
     });
 
     it('should support setLocale', () => {
@@ -364,24 +325,14 @@ describe('ConfigProvider', () => {
         ConfigProvider.setLocale({
             Select: {
                 selectPlaceholder: '哈哈',
-                selectPlaceHolder: '哈哈',
-            },
+            } as any,
         });
-        wrapper = mount(<Select />);
-        assert(wrapper.find('span.next-select input').props().placeholder === '哈哈');
+        cy.mount(<Select />);
+        cy.get('span.next-select input').should('have.attr', 'placeholder', '哈哈');
     });
 });
 
 describe('ConfigProvider.Consumer', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('can be to read the context state of provider', () => {
         const contextState = {
             prefix: 'context-prefix-',
@@ -395,169 +346,191 @@ describe('ConfigProvider.Consumer', () => {
             warning: true,
         };
 
-        const App = ({ children }) => <ConfigProvider {...contextState}>{children}</ConfigProvider>;
-
-        const ContextReader = props => <div>{props.nextPrefix}</div>;
+        const App: FC = ({ children }) => (
+            <ConfigProvider {...contextState}>{children}</ConfigProvider>
+        );
+        const ref: { current: ConsumerState | null } = { current: null };
+        const ContextReader: FC<ConsumerState> = props => {
+            ref.current = props;
+            return <div data-cy="reader">{props.prefix}</div>;
+        };
 
         const Child = () => (
-            <ConfigProvider.Consumer>{context => <ContextReader {...context} />}</ConfigProvider.Consumer>
+            <ConfigProvider.Consumer>
+                {context => <ContextReader {...context} />}
+            </ConfigProvider.Consumer>
         );
 
-        const TestConsumer = () => (
+        const TestConsumer: FC = () => (
             <App>
                 <Child />
             </App>
         );
 
-        wrapper = mount(<TestConsumer />);
-
-        const output = wrapper.find(ContextReader);
-        assert(output.prop('prefix') === contextState.prefix);
-        assert.equal(output.prop('locale'), contextState.locale);
-        assert(output.prop('pure') === contextState.pure);
-        assert(output.prop('warning') === contextState.warning);
+        cy.mount(<TestConsumer />);
+        cy.get('[data-cy="reader"]').should('not.be.empty');
+        cy.then(() => {
+            cy.wrap(ref.current).should('not.be.null');
+            cy.wrap(ref.current?.prefix).should('equal', contextState.prefix);
+            cy.wrap(ref.current?.locale).should('deep.equal', contextState.locale);
+            cy.wrap(ref.current?.pure).should('equal', contextState.pure);
+            cy.wrap(ref.current?.warning).should('equal', contextState.warning);
+        });
     });
 });
 
 describe('ConfigProvider.ErrorBoundary', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
+    const Something = () => {
+        React.useEffect(() => {
+            throw new Error('ErrorBoundary test');
+        });
+        return null;
+    };
+    cy.on('uncaught:exception', error => {
+        expect(error.message).to.include('ErrorBoundary test');
+        return false;
     });
-
     it('should catch errors with componentDidCatch', () => {
-        const Something = () => null;
-
-        wrapper = mount(
-            <ErrorBoundary>
+        const afterCatch = cy.spy().as('afterCatch');
+        cy.on('uncaught:exception', error => {
+            expect(error.message).to.include('ErrorBoundary test');
+            return false;
+        });
+        cy.mount(
+            <ErrorBoundary afterCatch={afterCatch}>
                 <Something />
             </ErrorBoundary>
         );
-        const error = new Error('test');
-
-        wrapper.find(Something).simulateError(error);
+        cy.get('@afterCatch').should('have.been.calledOnce');
     });
 
     it('should catch errors with componentDidCatch as to basic component', () => {
-        const Something = () => null;
-        wrapper = mount(
-            <ConfigProvider errorBoundary>
+        const afterCatch = cy.spy().as('afterCatch');
+        cy.on('uncaught:exception', error => {
+            expect(error.message).to.include('ErrorBoundary test');
+            return false;
+        });
+        cy.mount(
+            <ConfigProvider errorBoundary={{ afterCatch }}>
                 <Button>
                     <Something />
                 </Button>
             </ConfigProvider>
         );
-        const error = new Error('test');
-
-        wrapper.find(Something).simulateError(error);
+        cy.get('@afterCatch').should('have.been.calledOnce');
     });
 
     it('should on: errorBoundary should work', () => {
-        wrapper = shallow(
+        const wrapper = shallow(
             <ConfigProvider errorBoundary>
                 <Button />
             </ConfigProvider>
         );
-        assert(wrapper.dive().name() === 'ErrorBoundary');
+        expect(wrapper.findByType(ErrorBoundary)).to.not.be.null;
     });
 
     it('should on: errorBoundary={{}} should work', () => {
-        wrapper = shallow(
+        const wrapper = shallow(
             <ConfigProvider errorBoundary={{}}>
                 <Button />
             </ConfigProvider>
         );
-        assert(wrapper.dive().name() === 'ErrorBoundary');
+        expect(wrapper.findByType(ErrorBoundary)).to.not.be.null;
     });
 
     it('should off: errorBoundary={false} should work', () => {
-        wrapper = shallow(
+        const wrapper = shallow(
             <ConfigProvider errorBoundary={false}>
                 <Button />
             </ConfigProvider>
         );
-        assert(wrapper.dive().name() === 'Button');
+        expect(wrapper.findByType(ErrorBoundary)).to.be.null;
     });
 
     it('should on: errorBoundary={{open: true}} should work', () => {
-        wrapper = shallow(
+        const wrapper = shallow(
             <ConfigProvider errorBoundary={{ open: true }}>
                 <Button />
             </ConfigProvider>
         );
-        assert(wrapper.dive().name() === 'ErrorBoundary');
+        expect(wrapper.findByType(ErrorBoundary)).to.not.be.null;
     });
 
     it('should off: errorBoundary={{open: false}} should work', () => {
-        wrapper = shallow(
+        const wrapper = shallow(
             <ConfigProvider errorBoundary={{ open: false }}>
                 <Button />
             </ConfigProvider>
         );
-        assert(wrapper.dive().name() === 'Button');
+        expect(wrapper.findByType(ErrorBoundary)).to.be.null;
     });
 
     it('should off: config on component iteself >  on ConfigProvider 1', () => {
-        wrapper = shallow(
+        const wrapper = shallow(
             <ConfigProvider errorBoundary={{}}>
                 <Button errorBoundary={false} />
             </ConfigProvider>
         );
-        assert(wrapper.dive().name() === 'Button');
+        expect(wrapper.findByType(ErrorBoundary)).to.be.null;
     });
 
     it('should on: config on component iteself >  on ConfigProvider 2', () => {
-        wrapper = shallow(
+        const wrapper = shallow(
             <ConfigProvider errorBoundary={false}>
                 <Button errorBoundary={{}} />
             </ConfigProvider>
         );
-        assert(wrapper.dive().name() === 'ErrorBoundary');
+        expect(wrapper.findByType(ErrorBoundary)).to.not.be.null;
     });
 
     it('should on: config on component iteself >  on ConfigProvider 3', () => {
-        wrapper = shallow(
+        const wrapper = shallow(
             <ConfigProvider errorBoundary={{ open: false }}>
                 <Button errorBoundary />
             </ConfigProvider>
         );
-        assert(wrapper.dive().name() === 'ErrorBoundary');
+        expect(wrapper.findByType(ErrorBoundary)).to.not.be.null;
     });
 
     it('should off: config on component iteself >  on ConfigProvider 4', () => {
-        wrapper = shallow(
+        const wrapper = shallow(
             <ConfigProvider errorBoundary>
                 <Button errorBoundary={{ open: false }} />
             </ConfigProvider>
         );
-        assert(wrapper.dive().name() === 'Button');
+        expect(wrapper.findByType(ErrorBoundary)).to.be.null;
     });
 
     it('should on: config on component iteself >  on ConfigProvider 5', () => {
-        wrapper = shallow(
+        const wrapper = shallow(
             <ConfigProvider errorBoundary={{ open: false }}>
                 <Button errorBoundary={{ open: true }} />
             </ConfigProvider>
         );
-        assert(wrapper.dive().name() === 'ErrorBoundary');
+        expect(wrapper.findByType(ErrorBoundary)).to.not.be.null;
     });
 
     it('should support device', () => {
-        wrapper = mount(
+        class TestDevice extends Component<ComponentCommonProps> {
+            render() {
+                return <span data-cy="device">{this.props.device}</span>;
+            }
+        }
+
+        const NTestDevice = config(TestDevice);
+        cy.mount(
             <ConfigProvider device="tablet">
                 <NTestDevice />
             </ConfigProvider>
-        );
-
-        assert(wrapper.text() === 'tablet');
-        wrapper.setProps({
-            device: 'desktop',
+        ).then(({ rerender }) => {
+            cy.get('[data-cy="device"]').should('have.text', 'tablet');
+            rerender(
+                <ConfigProvider device="desktop">
+                    <NTestDevice />
+                </ConfigProvider>
+            ).then(() => {
+                cy.get('[data-cy="device"]').should('have.text', 'desktop');
+            });
         });
-
-        assert(wrapper.text() === 'desktop');
     });
 });
