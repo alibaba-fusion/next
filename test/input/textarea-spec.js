@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ReactTestUtils from 'react-dom/test-utils';
 import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -7,7 +8,9 @@ import assert from 'power-assert';
 import Input from '../../src/input/index';
 
 Enzyme.configure({ adapter: new Adapter() });
-
+function delay(duration) {
+    return new Promise(resolve => setTimeout(resolve, duration));
+}
 describe('TextArea', () => {
     describe('render', () => {
         let parent;
@@ -39,6 +42,27 @@ describe('TextArea', () => {
             );
 
             assert(document.querySelectorAll('#renderpreview-input')[0].innerText === 'ddd');
+        });
+        it('should support hasClear ,close #4334', async () => {
+            const ref = { current: null };
+            function Demo() {
+                const [value, setValue] = useState('aaa');
+                ref.current = { value };
+                return (
+                    <Input.TextArea
+                        value={value}
+                        placeholder="TextArea"
+                        aria-label="TextArea"
+                        hasClear
+                        onChange={v => setValue(v)}
+                    />
+                );
+            }
+            mount(<Demo />, { attachTo: parent });
+            await delay(100);
+            const btn = parent.querySelector('.next-input-clear');
+            ReactTestUtils.Simulate.click(btn);
+            assert(ref.current.value === '');
         });
     });
 
