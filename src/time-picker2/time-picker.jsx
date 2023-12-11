@@ -550,9 +550,13 @@ class TimePicker2 extends Component {
         const { prefix, format, className, renderPreview } = this.props;
         const { value } = this.state;
         const previewCls = classnames(className, `${prefix}form-preview`);
-
-        const label = value ? value.format(format) : '';
-
+        
+        let label = '';
+        // const label = 'a';
+        if (value && value.format) {
+            label = value.format(format);
+            // console.warn()
+        }
         if (typeof renderPreview === 'function') {
             return (
                 <div {...others} className={previewCls}>
