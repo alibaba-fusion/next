@@ -1,0 +1,33 @@
+.demo-container {
+    background-color: #f8f8f8;
+    padding: 16px;
+}
+
+.demo-container p {
+    margin-top: 0;
+}
+
+.overlay-content {
+    border: 1px solid #dddddd;
+    padding: 10px;
+    background: #ffffff;
+    margin: 0;
+    font-size: 12px;
+    font-family: Arial;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.15);
+}
+
+.overlay-content li {
+    list-style: none;
+    line-height: 30px;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+.overlay-content li:hover {
+    background: #f8f8f8;
+}
+
+.overlay-content li:last-child {
+    border-width: 0;
+}

@@ -1,0 +1,9 @@
+.rating-clear-wrapper {
+    display: flex;
+    align-items: center;
+}
+.rating-text {
+    display: inline-block;
+    margin: 0 8px;
+    font-size: 14px;
+}

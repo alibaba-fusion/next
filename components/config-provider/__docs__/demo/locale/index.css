@@ -1,0 +1,22 @@
+.toast {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 200px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    background: white;
+    box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.32);
+}
+
+.toast .next-btn {
+    margin: auto;
+}
+
+.select-language {
+    margin-bottom: 20px;
+}

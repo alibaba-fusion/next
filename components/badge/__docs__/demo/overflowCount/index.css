@@ -1,0 +1,10 @@
+.next-badge {
+    margin-right: 16px;
+}
+.head-example {
+    display: inline-block;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    background: #eee;
+}

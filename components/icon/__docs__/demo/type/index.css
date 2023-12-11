@@ -1,0 +1,46 @@
+.icon-list-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.icon-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.icon-list li {
+    display: inline-block;
+    width: 140px;
+    padding: 30px 0;
+    color: #666;
+    cursor: pointer;
+}
+
+.icon-list li:hover {
+    color: #333;
+    background-color: #f7f7f7;
+}
+
+.icon-list i {
+    display: block;
+    width: 32px;
+    margin: 0 auto;
+}
+
+.icon-list span {
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.icon-list-custom-title {
+    margin: 20px 0 20px 10px;
+    font-size: 20px;
+    color: #333;
+}

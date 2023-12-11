@@ -1,0 +1,14 @@
+.custom-row {
+    border: 1px solid #ccc;
+}
+
+.custom-col-sidebar {
+    border-right: 1px solid #ccc;
+    height: 130px;
+    line-height: 130px;
+    text-align: center;
+}
+
+.custom-col-content {
+    overflow: hidden;
+}

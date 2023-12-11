@@ -1,0 +1,22 @@
+.expand-enter {
+    overflow: hidden;
+}
+
+.expand-enter-active {
+    transition: height 0.3s ease-out;
+}
+
+.expand-leave {
+    overflow: hidden;
+}
+
+.expand-leave-active {
+    transition: height 0.3s ease-out;
+}
+
+.notice {
+    width: 200px;
+    height: 100px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+}

@@ -1,0 +1,12 @@
+.custom-slide h3,
+.custom-slide a {
+    display: block;
+    background: #4f74b3;
+    color: #fff;
+    font-size: 36px;
+    line-height: 100px;
+    margin: 10px;
+    padding: 2%;
+    position: relative;
+    text-align: center;
+}

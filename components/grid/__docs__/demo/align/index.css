@@ -1,0 +1,15 @@
+.align-demo .grid-fixed-demo-title {
+    margin-left: 20px;
+}
+
+.align-demo .next-row {
+    margin: 10px 0;
+}
+
+.align-demo .next-col {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #ececec;
+    line-height: 30px;
+    text-align: center;
+}

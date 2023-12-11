@@ -1,0 +1,16 @@
+.custom-leaf-tree {
+    padding-left: 20px;
+    display: block;
+    font-size: 0;
+    white-space: normal;
+}
+.custom-leaf-tree .next-tree-switcher {
+    display: none;
+}
+
+.custom-leaf-tree .next-tree-node {
+    margin-left: 0 !important;
+    margin-right: 8px;
+    width: 68px;
+    display: inline-block;
+}

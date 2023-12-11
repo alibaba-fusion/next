@@ -1,0 +1,8 @@
+.variable-width .next-slick-slide p {
+    background: #4f74b3;
+    height: 100px;
+    color: #fff;
+    margin: 5px;
+    line-height: 100px;
+    text-align: center;
+}

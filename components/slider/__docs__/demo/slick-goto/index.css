@@ -1,0 +1,10 @@
+.slider-img-wrapper img {
+    width: 100%;
+}
+
+.demo-item-title {
+    font-size: 16px;
+    color: #333;
+    padding: 8px;
+    margin: 20px 0 10px 0;
+}

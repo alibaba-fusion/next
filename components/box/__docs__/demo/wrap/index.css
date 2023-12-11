@@ -1,0 +1,15 @@
+.list {
+    position: relative;
+}
+.list-item {
+    position: relative;
+    background: #ddd;
+    border: 1px solid #eee;
+    margin-bottom: 20px;
+    min-height: 50px;
+}
+.box-180-50 {
+    background: #5584ff;
+    width: 180px;
+    height: 50px;
+}

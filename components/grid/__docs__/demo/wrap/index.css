@@ -1,0 +1,16 @@
+.wrap-demo .grid-fixed-demo-title {
+    margin-left: 20px;
+}
+
+.wrap-demo .next-row {
+    margin: 10px 0;
+}
+
+.wrap-demo .next-col {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #ececec;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}

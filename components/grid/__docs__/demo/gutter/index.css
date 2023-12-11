@@ -1,0 +1,16 @@
+.gutter-demo .grid-fixed-demo-title {
+    margin-left: 20px;
+}
+
+.gutter-demo .next-row {
+    margin: 10px 0;
+}
+
+.gutter-demo .demo-col-inset {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #ececec;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}

@@ -1,0 +1,25 @@
+.fusion-demo .demo-item-title {
+    font-size: 16px;
+    color: #333;
+    padding: 8px;
+    margin: 14px 0;
+}
+
+.custom-content {
+    padding: 15px;
+}
+
+.next-tabs-content {
+    color: #333;
+    font-size: 12px;
+    padding: 12px;
+}
+
+.custom-tab-item {
+    margin-right: -1px !important;
+}
+
+.justify-tabs-tab {
+    width: 140px;
+    text-align: center;
+}

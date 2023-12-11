@@ -1,0 +1,40 @@
+.fusion-demo-item {
+    margin: 15px 0;
+}
+.custom-node1 {
+    height: 100%;
+    width: 100%;
+    border-radius: 20%;
+    border: 1px dashed #3e71f1;
+    text-align: center;
+}
+.custom-node1 span {
+    font-size: 12px;
+
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    width: 100%;
+    left: 0;
+    transform: translateY(-50%);
+}
+.custom-node2 {
+    height: 100%;
+    width: 100%;
+    border-radius: 20%;
+    border: 1px dashed #3e71f1;
+    text-align: center;
+    background: #3e71f1;
+    color: #fff;
+    position: relative;
+}
+
+.custom-node2 span,
+.custom-node2 i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 100%;
+    text-align: center;
+}

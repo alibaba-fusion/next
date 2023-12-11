@@ -1,0 +1,16 @@
+.type-demo .grid-fixed-demo-title {
+    margin-left: 20px;
+}
+
+.type-demo .next-row {
+    margin: 10px 0;
+}
+
+.type-demo .next-col {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #ececec;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}

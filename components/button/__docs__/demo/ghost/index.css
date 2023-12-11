@@ -1,0 +1,20 @@
+.ghost-light-background {
+    display: inline-block;
+    height: 100px;
+    line-height: 100px;
+    width: 50%;
+    background: #ebecf0;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    box-sizing: border-box;
+}
+.ghost-dark-background {
+    display: inline-block;
+    height: 100px;
+    line-height: 100px;
+    width: 50%;
+    background: #333;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    box-sizing: border-box;
+}

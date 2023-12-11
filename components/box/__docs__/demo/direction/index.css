@@ -1,0 +1,21 @@
+.list {
+    position: relative;
+}
+.list-item {
+    position: relative;
+    background: #ddd;
+    border: 1px solid #eee;
+    margin-bottom: 20px;
+    min-height: 30px;
+}
+.box {
+    background: #5584ff;
+}
+
+.height-30 {
+    height: 30px;
+}
+
+.width-30 {
+    width: 30px;
+}

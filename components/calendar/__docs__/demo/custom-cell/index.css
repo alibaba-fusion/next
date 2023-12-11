@@ -1,0 +1,34 @@
+.custom-calendar-guide {
+    width: 270px;
+    border: 1px solid #c4c6cf;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.custom-calendar-cell-content {
+    height: 50px;
+    text-align: left;
+}
+
+.event-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.primary-event {
+    color: white;
+    background: red;
+    border-radius: 3px;
+    padding-left: 10px;
+    margin-bottom: 3px;
+}
+
+.normal-event {
+    color: white;
+    background: blue;
+    border-radius: 3px;
+    padding-left: 10px;
+    margin-bottom: 3px;
+}

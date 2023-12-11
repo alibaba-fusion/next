@@ -1,0 +1,12 @@
+.control-multiple-demo .strictly-check {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.control-multiple-demo .strictly-text {
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: middle;
+    color: #666;
+    font-size: 14px;
+}
