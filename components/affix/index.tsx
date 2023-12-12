@@ -194,7 +194,8 @@ class Affix extends React.Component {
             if (useAbsolute) {
                 affixStyle.position = 'absolute';
                 affixStyle.top =
-                    containerScrollTop - (affixOffset.top + affixHeight + affixMode.offset - containerHeight);
+                    containerScrollTop -
+                    (affixOffset.top + affixHeight + affixMode.offset - containerHeight);
                 positionStyle = 'relative';
             } else {
                 affixStyle.position = 'fixed';
@@ -274,7 +275,11 @@ class Affix extends React.Component {
         return (
             <div ref={this._affixNodeRefHandler} style={wrapperStyle}>
                 {state.style && <div style={state.containerStyle} aria-hidden="true" />}
-                <div ref={this._affixChildNodeRefHandler} className={classNames} style={state.style}>
+                <div
+                    ref={this._affixChildNodeRefHandler}
+                    className={classNames}
+                    style={state.style}
+                >
                     {children}
                 </div>
             </div>
