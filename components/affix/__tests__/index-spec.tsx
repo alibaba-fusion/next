@@ -37,7 +37,10 @@ class AffixDemo extends React.Component {
                 }}
                 style={{ height: 100, overflowY: 'scroll' }}
             >
-                <div className="affix-wrapper" style={{ padding: 60, height: 300, background: '#eee' }}>
+                <div
+                    className="affix-wrapper"
+                    style={{ padding: 60, height: 300, background: '#eee' }}
+                >
                     <Affix
                         id="affix"
                         offsetTop={offsetTop}
