@@ -214,6 +214,10 @@ export default class Item extends React.Component {
          */
         useLabelForErrorMessage: PropTypes.bool,
         /**
+         * 是否使用item的marginBottom空间来展示help
+         */
+        useMarginToDisplayHelp: PropTypes.bool,
+        /**
          * 表示是否显示 label 后面的冒号
          */
         colon: PropTypes.bool,
@@ -240,6 +244,7 @@ export default class Item extends React.Component {
         _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
         _formLabelForErrorMessage: PropTypes.bool,
+        _formMarginToDisplayHelp: PropTypes.bool,
     };
 
     static _typeMark = 'form_item';
@@ -268,11 +273,18 @@ export default class Item extends React.Component {
     }
 
     getHelper(children) {
-        const help = this.props.help;
-        const _formField = this.context._formField;
+        const { help, useMarginToDisplayHelp } = this.props;
+        const { _formField, _formMarginToDisplayHelp } = this.context;
+
+        const useMargin =
+            typeof useMarginToDisplayHelp !== 'undefined' ? useMarginToDisplayHelp : _formMarginToDisplayHelp;
 
         return (
-            <Error name={help === undefined ? this.getNames(children) : undefined} field={_formField}>
+            <Error
+                name={help === undefined ? this.getNames(children) : undefined}
+                field={_formField}
+                useMarginToDisplayHelp={useMargin}
+            >
                 {help}
             </Error>
         );

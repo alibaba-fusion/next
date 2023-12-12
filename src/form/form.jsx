@@ -143,6 +143,11 @@ export default class Form extends React.Component {
          */
         useLabelForErrorMessage: PropTypes.bool,
         /**
+         * 是否使用item的marginBottom空间来展示help
+         * @version 1.26.37
+         */
+        useMarginToDisplayHelp: PropTypes.bool,
+        /**
          * 表示是否显示 label 后面的冒号
          * @version 1.22
          */
@@ -166,6 +171,7 @@ export default class Form extends React.Component {
         device: 'desktop',
         colon: false,
         disabled: false,
+        useMarginToDisplayHelp: false,
     };
 
     static childContextTypes = {
@@ -175,6 +181,7 @@ export default class Form extends React.Component {
         _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
         _formLabelForErrorMessage: PropTypes.bool,
+        _formMarginToDisplayHelp: PropTypes.bool,
     };
 
     constructor(props) {
@@ -216,6 +223,7 @@ export default class Form extends React.Component {
             _formPreview: this.props.isPreview,
             _formFullWidth: this.props.fullWidth,
             _formLabelForErrorMessage: this.props.useLabelForErrorMessage,
+            _formMarginToDisplayHelp: this.props.useMarginToDisplayHelp,
         };
     }
 
