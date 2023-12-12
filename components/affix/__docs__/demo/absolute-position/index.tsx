@@ -3,7 +3,8 @@ import * as ReactDOM from 'react-dom';
 import { Affix, Button } from '@alifd/next';
 
 class Demo extends React.Component {
-    _containerRefHandler(ref) {
+    container: HTMLDivElement;
+    _containerRefHandler(ref: HTMLDivElement) {
         this.container = ref;
     }
 

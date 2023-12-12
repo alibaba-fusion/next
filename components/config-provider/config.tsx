@@ -84,7 +84,6 @@ export function getDirection() {
     return currentGlobalRtl;
 }
 
-// type ComponentTypeWithState<P = {}, S = {}> = ComponentClass<P, S> | FunctionComponent<P>
 function config<C extends ComponentClass>(
     Component: C,
     options?: ConfigOptions<ComponentProps<C>, Extract<keyof InstanceType<C>, string>>
@@ -93,7 +92,6 @@ function config<C extends ComponentClass>(
     Record<string, never>,
     InstanceType<C>
 >;
-// fixme: forward ref type is not correctly
 function config<C extends ForwardRefExoticComponent<unknown>>(
     Component: C,
     options?: ConfigOptions<ComponentProps<C>>

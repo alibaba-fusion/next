@@ -2,15 +2,15 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Affix, Button } from '@alifd/next';
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<unknown, { affixed: boolean }> {
+    constructor(props: unknown) {
         super(props);
         this.state = {
             affixed: false,
         };
     }
 
-    onAffix = affixed => {
+    onAffix = (affixed: boolean) => {
         this.setState({
             affixed,
         });
