@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { findDOMNode } from 'react-dom';
-import { polyfill } from 'react-lifecycles-compat';
+import * as React from 'react';
+import { Component } from 'react';
+import * as PropTypes from 'prop-types';
+import * as classnames from 'classnames';
 import ResizeObserver from 'resize-observer-polyfill';
 
+import type { AffixProps, AffixState, AffixMode, GetContainer } from './types';
 import { obj, events, func } from '../util';
 import ConfigProvider from '../config-provider';
 import { getScroll, getRect, getNodeHeight } from './util';
 
 /** Affix */
-class Affix extends React.Component {
+class Affix extends Component<AffixProps, AffixState> {
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -47,8 +47,8 @@ class Affix extends React.Component {
         onAffix: func.noop,
     };
 
-    static _getAffixMode(nextProps) {
-        const affixMode = {
+    static _getAffixMode(nextProps: AffixProps): AffixMode {
+        const affixMode: AffixMode = {
             top: false,
             bottom: false,
             offset: 0,
@@ -74,7 +74,7 @@ class Affix extends React.Component {
         return affixMode;
     }
 
-    constructor(props, context) {
+    constructor(props: AffixProps, context?: unknown) {
         super(props, context);
         this.state = {
             style: null,
@@ -85,7 +85,7 @@ class Affix extends React.Component {
         this.resizeObserver = new ResizeObserver(this._updateNodePosition);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: AffixProps) {
         if ('offsetTop' in nextProps || 'offsetBottom' in nextProps) {
             return {
                 affixMode: Affix._getAffixMode(nextProps),
@@ -99,16 +99,16 @@ class Affix extends React.Component {
         // wait for parent rendered
         this.timeout = setTimeout(() => {
             this._updateNodePosition();
-            this._setEventHandlerForContainer(container);
+            this._setEventHandlerForContainer(container!);
         });
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.container() !== this.props.container()) {
+    componentDidUpdate(prevProps: AffixProps) {
+        if (prevProps.container!() !== this.props.container!()) {
             this._clearContainerEvent();
 
             this.timeout = setTimeout(() => {
-                this._setEventHandlerForContainer(this.props.container);
+                this._setEventHandlerForContainer(this.props.container!);
             });
         }
 
@@ -119,16 +119,21 @@ class Affix extends React.Component {
         this._clearContainerEvent();
     }
 
+    resizeObserver: ResizeObserver;
+    timeout: ReturnType<typeof setTimeout> | null;
+    affixNode: HTMLDivElement;
+    affixChildNode: HTMLDivElement;
+
     _clearContainerEvent = () => {
         if (this.timeout) {
             clearTimeout(this.timeout);
             this.timeout = null;
         }
         const { container } = this.props;
-        this._removeEventHandlerForContainer(container);
+        this._removeEventHandlerForContainer(container!);
     };
 
-    _setEventHandlerForContainer(getContainer) {
+    _setEventHandlerForContainer(getContainer: GetContainer) {
         const container = getContainer();
         if (!container) {
             return;
@@ -137,7 +142,7 @@ class Affix extends React.Component {
         this.resizeObserver.observe(this.affixNode);
     }
 
-    _removeEventHandlerForContainer(getContainer) {
+    _removeEventHandlerForContainer(getContainer: GetContainer) {
         const container = getContainer();
         if (container) {
             events.off(container, 'scroll', this._updateNodePosition);
@@ -152,7 +157,7 @@ class Affix extends React.Component {
     _updateNodePosition = () => {
         const { affixMode } = this.state;
         const { container, useAbsolute } = this.props;
-        const affixContainer = container();
+        const affixContainer = container!();
 
         if (!affixContainer || !this.affixNode) {
             return false;
@@ -165,14 +170,14 @@ class Affix extends React.Component {
 
         const affixChildHeight = this.affixChildNode.offsetHeight;
 
-        const affixStyle = {
+        const affixStyle: AffixState['style'] = {
             width: affixOffset.width,
         };
-        const containerStyle = {
+        const containerStyle: AffixState['containerStyle'] = {
             width: affixOffset.width,
             height: affixChildHeight,
         };
-        let positionStyle = null;
+        let positionStyle: AffixState['positionStyle'] = null;
         if (affixMode.top && containerScrollTop > affixOffset.top - affixMode.offset) {
             // affix top
             if (useAbsolute) {
@@ -213,7 +218,7 @@ class Affix extends React.Component {
         }
     };
 
-    _setAffixStyle(affixStyle, affixed = false) {
+    _setAffixStyle(affixStyle: AffixState['style'], affixed = false) {
         if (obj.shallowEqual(affixStyle, this.state.style)) {
             return;
         }
@@ -225,20 +230,20 @@ class Affix extends React.Component {
         const { onAffix } = this.props;
 
         if (affixed) {
-            setTimeout(() => onAffix(true));
+            setTimeout(() => onAffix!(true));
         } else if (!affixStyle) {
-            setTimeout(() => onAffix(false));
+            setTimeout(() => onAffix!(false));
         }
     }
 
-    _setContainerStyle(containerStyle) {
+    _setContainerStyle(containerStyle: AffixState['containerStyle']) {
         if (obj.shallowEqual(containerStyle, this.state.containerStyle)) {
             return;
         }
         this.setState({ containerStyle });
     }
 
-    _getOffset(affixNode, affixContainer) {
+    _getOffset(affixNode: HTMLDivElement, affixContainer: Element) {
         const affixRect = affixNode.getBoundingClientRect(); // affix 元素 相对浏览器窗口的位置
         const containerRect = getRect(affixContainer); // affix 容器 相对浏览器窗口的位置
         const containerScrollTop = getScroll(affixContainer, true);
@@ -252,11 +257,11 @@ class Affix extends React.Component {
         };
     }
 
-    _affixNodeRefHandler = ref => {
+    _affixNodeRefHandler = (ref: HTMLDivElement) => {
         this.affixNode = ref;
     };
 
-    _affixChildNodeRefHandler = ref => {
+    _affixChildNodeRefHandler = (ref: HTMLDivElement) => {
         this.affixChildNode = ref;
     };
 
@@ -268,17 +273,17 @@ class Affix extends React.Component {
             [`${prefix}affix`]: state.style,
             [`${prefix}affix-top`]: !state.style && affixMode.top,
             [`${prefix}affix-bottom`]: !state.style && affixMode.bottom,
-            [className]: className,
+            [className!]: className,
         });
-        const wrapperStyle = { ...style, position: positionStyle };
+        const wrapperStyle = { ...style, position: positionStyle || undefined };
 
         return (
             <div ref={this._affixNodeRefHandler} style={wrapperStyle}>
-                {state.style && <div style={state.containerStyle} aria-hidden="true" />}
+                {state.style && <div style={state.containerStyle!} aria-hidden="true" />}
                 <div
                     ref={this._affixChildNodeRefHandler}
                     className={classNames}
-                    style={state.style}
+                    style={state.style!}
                 >
                     {children}
                 </div>
@@ -287,4 +292,6 @@ class Affix extends React.Component {
     }
 }
 
-export default ConfigProvider.config(polyfill(Affix));
+export { AffixProps };
+
+export default ConfigProvider.config(Affix);

@@ -1,13 +1,29 @@
-/// <reference types="react" />
-
 import * as React from 'react';
-import CommonProps from '../util';
+import { CSSProperties } from 'react';
+import { CommonProps } from '../util';
+
+export interface AffixMode {
+    top: boolean;
+    bottom: boolean;
+    offset: number;
+}
+
+export interface AffixState {
+    style: CSSProperties | null;
+    containerStyle: CSSProperties | null;
+    positionStyle: CSSProperties['position'] | null;
+    affixMode: AffixMode;
+}
+
+export interface GetContainer {
+    (): Element;
+}
 
 export interface AffixProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 设置 Affix 需要监听滚动事件的容器元素
      */
-    container?: () => React.ReactElement<any>;
+    container?: GetContainer;
 
     /**
      * 距离窗口顶部达到指定偏移量后触发
@@ -30,4 +46,4 @@ export interface AffixProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     useAbsolute?: boolean;
 }
 
-export default class Affix extends React.Component<AffixProps, any> {}
+export default class Affix extends React.Component<AffixProps, unknown> {}
