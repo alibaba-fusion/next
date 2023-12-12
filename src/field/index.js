@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import Field from '@alifd/field';
 
 import { log } from '../util';
@@ -11,6 +11,25 @@ class NextField extends Field {
             return;
         }
         return this.getUseField({ useMemo, useState })(options);
+    }
+
+    static useWatch(field, names, callback) {
+        const callbackRef = useRef(callback);
+        callbackRef.current = callback;
+
+        // watch at render stage, field or names change will cause rewatch
+        const unwatch = useMemo(() => {
+            return field.watch(names, (...args) => {
+                if (typeof callbackRef.current === 'function') {
+                    callbackRef.current(...args);
+                }
+            });
+        }, [field, names.join(',')]);
+
+        useEffect(() => {
+            // unwatch at uneffect stage
+            return unwatch;
+        }, [unwatch]);
     }
 
     constructor(com, options = {}) {

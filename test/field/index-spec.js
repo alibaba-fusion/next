@@ -1,9 +1,10 @@
 /* eslint-disable react/no-multi-comp */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
+import Switch from '../../src/switch';
 import Input from '../../src/input';
 import Form from '../../src/form';
 import Field from '../../src/field/index';
@@ -969,6 +970,103 @@ describe('field', () => {
                 assert(field.getValue('key2.1.id') === 1);
                 assert(field.getValue('key2.2.id') === 2);
             });
+        });
+    });
+
+    describe('watch', () => {
+        function Demo({ onWatchChange, options, onUnmount }) {
+            const [showInput, setShowInput] = useState(false);
+            const field = Field.useField(options);
+            Field.useWatch(field, ['switch', 'input'], (name, value, oldValue, triggerType) => {
+                onWatchChange && onWatchChange(name, value, oldValue, triggerType);
+                if (name === 'switch') {
+                    setShowInput(value);
+                }
+            });
+            useEffect(() => {
+                return () => {
+                    onUnmount && onUnmount(field);
+                };
+            }, []);
+            return (
+                <div>
+                    <Switch {...field.init('switch', { valueName: 'checked', initValue: false })} />
+                    {showInput && <Input {...field.init('input', { initValue: 'abc' })} />}
+
+                    <button data-reset onClick={() => field.reset()}>
+                        reset
+                    </button>
+                    <button data-setValue onClick={() => field.setValue('switch', true)}>
+                        setValue
+                    </button>
+                    <button data-setValues onClick={() => field.setValues({ switch: false, input: 'xyz' })}>
+                        setValues
+                    </button>
+                </div>
+            );
+        }
+        it('should trigger by init', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} />);
+            assert(callback.calledOnceWith('switch', false, undefined, 'init'));
+            wrapper.unmount();
+        });
+        it('should not trigger when has init value', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} options={{ values: { switch: true } }} />);
+            assert(callback.notCalled);
+            wrapper.unmount();
+        });
+        it('should trigger by change', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} />);
+            wrapper.find('.next-switch').simulate('click');
+            assert(callback.calledWith('switch', true, false, 'change'));
+            assert(callback.calledWith('input', 'abc', undefined, 'init'));
+            wrapper.find('.next-input input').simulate('change', { target: { value: 'xyz' } });
+            assert(callback.calledWith('input', 'xyz', 'abc', 'change'));
+            assert.equal(callback.callCount, 4);
+            wrapper.unmount();
+        });
+        it('should trigger by unmount', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} />);
+            wrapper.find('.next-switch').simulate('click');
+            assert(wrapper.find('.next-input').length);
+            wrapper.find('.next-switch').simulate('click');
+            assert(callback.lastCall.calledWith('input', undefined, 'abc', 'unmount'));
+            wrapper.unmount();
+        });
+        it('should trigger by reset', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} />);
+            wrapper.find('.next-switch').simulate('click');
+            assert.equal(callback.callCount, 3);
+            wrapper.find('button[data-reset]').simulate('click');
+            assert(callback.calledWith('switch', undefined, true, 'reset'));
+            assert(callback.calledWith('input', undefined, 'abc', 'reset'));
+            wrapper.unmount();
+        });
+        it('should trigger by setValue', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} />);
+            wrapper.find('button[data-setValue]').simulate('click');
+            assert(callback.calledWith('switch', true, false, 'setValue'));
+
+            wrapper.find('button[data-setValues]').simulate('click');
+            assert(callback.calledWith('switch', false, true, 'setValue'));
+            assert(callback.calledWith('input', 'xyz', 'abc', 'setValue'));
+            wrapper.unmount();
+        });
+        it('should unwatch work', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onUnmount={callback} />);
+            wrapper.unmount();
+            assert(callback.calledOnce);
+            const field = callback.getCall(0).args[0];
+            for (const set of Object.values(field.listeners)) {
+                assert(!set.size);
+            }
         });
     });
 });
