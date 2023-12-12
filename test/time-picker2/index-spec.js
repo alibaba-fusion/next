@@ -124,8 +124,11 @@ describe('TimePicker2', () => {
 
         it('should support string value', () => {
             wrapper = mount(<TimePicker2 defaultValue="12:00:00" isPreview />);
-
             assert(getStrValue(wrapper), '12:00:00');
+        });
+        it('should support preview mode render when no value set', () => {
+            wrapper = mount(<TimePicker2 isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
         });
     });
 
