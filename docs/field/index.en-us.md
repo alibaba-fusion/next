@@ -217,6 +217,7 @@ The api interface provided by the object after `new` (eg `myfield.getValues()`) 
 |remove | Delete the data of a certain control or a group of controls. After deletion, the validate/value associated with it will be cleared. | Function(name: String/String[])|
 | addArrayValue  | add data of name like name.{index} | Function(key: String, index: Number, value1, value2, ...)| | |
 | deleteArrayValue  | delete data of name like name.{index} | Function(key: String, index: Number, howmany)| | |
+| watch  | watch field value changes | Function(names: String[], callback: Function(name: String, value: any, oldValue: any, triggerType: 'init' \| 'change' \| 'setValue' \| 'unmount' \| 'reset'))|  |  |
 
 #### init
 ```
@@ -270,6 +271,20 @@ multiple rule
 | validator | Custom validation, (don't forget to execute `callback()` when validation is successful, otherwise validation will not return) | Function(rule,value,callback) |
 | trigger | Name of the event that triggered the check | String/Array | onChange/onBlur/... | onChange |
 | message | error message | String | | |
+
+#### Field.useWatch
+
+react hook for `field.watch`
+
+```typescript
+type WatchTriggerType = 'init' | 'change' | 'setValue' | 'unmount' | 'reset';
+interface WatchCallback {
+    (name: string, value: unknown, oldValue: unknown, triggerType: WatchTriggerType): void;
+}
+class Field {
+    static useWatch: (field: Field, names: string[], callback: WatchCallback) => void;
+}
+```
 
 ## Custom Component Access to Field Standards
 
