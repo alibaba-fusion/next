@@ -41,6 +41,10 @@
 
         #{$form-prefix}-item {
             margin-bottom: 0;
+
+            .#{$css-prefix}form-item-help-margin-offset {
+                margin-top: 0;
+            }
         }
 
         #{$form-prefix}-item.#{$css-prefix}left {
@@ -151,6 +155,10 @@
             #{$form-prefix}-item-label {
                 font-size: $form-element-large-font-size;
             }
+
+            .#{$css-prefix}form-item-help-margin-offset {
+                margin-top: -$form-item-l-margin-b;
+            }
         }
         &.#{$css-prefix}small {
             margin-bottom: $form-item-s-margin-b;
@@ -164,6 +172,10 @@
 
             #{$form-prefix}-item-label {
                 font-size: $form-element-small-font-size;
+            }
+
+            .#{$css-prefix}form-item-help-margin-offset {
+                margin-top: -$form-item-s-margin-b;
             }
         }
         &.#{$css-prefix}top > #{$form-prefix}-item-label {
