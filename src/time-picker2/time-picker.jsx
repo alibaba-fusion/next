@@ -550,10 +550,17 @@ class TimePicker2 extends Component {
         const { prefix, format, className, renderPreview } = this.props;
         const { value } = this.state;
         const previewCls = classnames(className, `${prefix}form-preview`);
-        
+
         let label = '';
-        if (value && typeof value.format === 'function' ) {
-            label = value.format(format);
+        if (value) {
+            if (Array.isArray(value)) {
+                const rangeDayjs = value.map(v => v && v.format(format));
+                if (rangeDayjs.some(v => v !== null)) {
+                    label = rangeDayjs.join('-');
+                }
+            } else {
+                label = value.format(format);
+            }
         }
         if (typeof renderPreview === 'function') {
             return (
