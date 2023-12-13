@@ -239,7 +239,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     useLabelForErrorMessage?: boolean;
 
     /**
-     * 是否使用item的marginBottom空间来展示help
+     * 倾向使用 item 的 margin 空间来展示 help
      * @default false
      * @version 1.26.37
      */
@@ -538,7 +538,7 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      */
     useLabelForErrorMessage?: boolean;
     /**
-     * 是否使用item的marginBottom空间来展示help
+     * 倾向使用 item 的 margin 空间来展示 help
      * @default false
      * @version 1.26.37
      */

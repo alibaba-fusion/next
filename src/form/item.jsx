@@ -214,7 +214,7 @@ export default class Item extends React.Component {
          */
         useLabelForErrorMessage: PropTypes.bool,
         /**
-         * 倾向使用item的margin空间来展示help
+         * 倾向使用 item 的 margin 空间来展示 help
          * @default false
          * @version 1.26.37
          */
