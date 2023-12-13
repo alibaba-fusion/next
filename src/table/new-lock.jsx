@@ -307,8 +307,25 @@ export default function stickyLock(BaseComponent) {
                 const node = isEmpty
                     ? this.getHeaderCellNode(headerCellRowIndex, headerCellColIndex)
                     : this.getCellNode(scrollToRow || (dataSource[0] && dataSource[0].__rowIndex) || 0, nodeToGetWidth);
-                const colWidth = (node && parseFloat(getComputedStyle(node).width)) || 0;
-
+                let colWidth = 0;
+                const checkMatchingMergeColSpan = nodeIndex => {
+                    for (let i = nodeIndex - 1; i >= 0; i--) {
+                        const tmpNode = this.getCellNode(
+                            scrollToRow || (dataSource[0] && dataSource[0].__rowIndex) || 0,
+                            i
+                        );
+                        if (tmpNode && tmpNode.colSpan === 1 + nodeIndex - i) {
+                            return parseFloat(getComputedStyle(tmpNode).width) / tmpNode.colSpan || 0;
+                        } else {
+                            return 0;
+                        }
+                    }
+                };
+                if (node) {
+                    colWidth = parseFloat(getComputedStyle(node).width) / node.colSpan || 0;
+                } else {
+                    colWidth = checkMatchingMergeColSpan(nodeToGetWidth);
+                }
                 ret[tag] = (ret[tagNext] || 0) + colWidth;
                 return ret;
             }, offsetArr);
