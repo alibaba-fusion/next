@@ -243,7 +243,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * @default false
      * @version 1.26.37
      */
-    useMarginToDisplayHelp?: boolean;
+    preferMarginToDisplayHelp?: boolean;
 
     /**
      * 表示是否显示 label 后面的冒号
@@ -542,7 +542,7 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      * @default false
      * @version 1.26.37
      */
-    useMarginToDisplayHelp?: boolean;
+    preferMarginToDisplayHelp?: boolean;
 }
 
 export default class Form extends React.Component<FormProps, any> {

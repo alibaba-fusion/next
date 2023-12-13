@@ -25,12 +25,12 @@ class Error extends React.Component {
          */
         children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
         prefix: PropTypes.string,
-        useMarginToDisplayHelp: PropTypes.bool,
+        preferMarginToDisplayHelp: PropTypes.bool,
     };
 
     static defaultProps = {
         prefix: 'next-',
-        useMarginToDisplayHelp: false,
+        preferMarginToDisplayHelp: false,
     };
 
     static contextTypes = {
@@ -51,7 +51,7 @@ class Error extends React.Component {
             style,
             className,
             field: _field,
-            useMarginToDisplayHelp,
+            preferMarginToDisplayHelp,
             ...others
         } = this.props;
 
@@ -59,7 +59,7 @@ class Error extends React.Component {
             return (
                 <div className={`${prefix}form-item-help`}>
                     {children}
-                    {!!useMarginToDisplayHelp && <div className={`${prefix}form-item-help-margin-offset`} />}
+                    {!!preferMarginToDisplayHelp && <div className={`${prefix}form-item-help-margin-offset`} />}
                 </div>
             );
         }
@@ -103,7 +103,7 @@ class Error extends React.Component {
         return (
             <div {...others} className={cls} style={style}>
                 {result}
-                {!!useMarginToDisplayHelp && <div className={`${prefix}form-item-help-margin-offset`} />}
+                {!!preferMarginToDisplayHelp && <div className={`${prefix}form-item-help-margin-offset`} />}
             </div>
         );
     }

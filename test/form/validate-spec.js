@@ -453,7 +453,7 @@ describe('Error', () => {
         return rect2.top - rect1.top - rect1.height;
     };
 
-    describe('useMarginToDisplayHelp', () => {
+    describe('preferMarginToDisplayHelp', () => {
         const getDistance = wrapper => {
             const items = wrapper.find('.next-form-item');
             assert(items.length === 3);
@@ -461,8 +461,8 @@ describe('Error', () => {
         };
         function Demo({ formUseMargin, itemUseMargin }) {
             return (
-                <Form useMarginToDisplayHelp={formUseMargin}>
-                    <FormItem label="item1" required useMarginToDisplayHelp={itemUseMargin}>
+                <Form preferMarginToDisplayHelp={formUseMargin}>
+                    <FormItem label="item1" required preferMarginToDisplayHelp={itemUseMargin}>
                         <Input name="name" />
                     </FormItem>
                     <FormItem label="item2">
@@ -474,7 +474,7 @@ describe('Error', () => {
                 </Form>
             );
         }
-        it('form should support useMarginToDisplayHelp', () => {
+        it('form should support preferMarginToDisplayHelp', () => {
             const wrapper = render(<Demo />);
 
             ReactTestUtils.Simulate.click(wrapper.find('.next-btn')[0]);
@@ -487,7 +487,7 @@ describe('Error', () => {
 
             wrapper.unmount();
         });
-        it('form item should support useMarginToDisplayHelp', () => {
+        it('form item should support preferMarginToDisplayHelp', () => {
             const wrapper = render(<Demo />);
             ReactTestUtils.Simulate.click(wrapper.find('.next-btn')[0]);
             const oldDistance = getDistance(wrapper);
@@ -499,7 +499,7 @@ describe('Error', () => {
 
             wrapper.unmount();
         });
-        it('form item > form when cross useMarginToDisplayHelp at same time', () => {
+        it('form item > form when cross preferMarginToDisplayHelp at same time', () => {
             const wrapper = render(<Demo />);
             ReactTestUtils.Simulate.click(wrapper.find('.next-btn')[0]);
             const oldDistance = getDistance(wrapper);
