@@ -1,3 +1,6 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 const render = element => {

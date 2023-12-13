@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -8,10 +7,13 @@ import Input from '../../src/input';
 import Form from '../../src/form/index';
 import Field from '../../src/field';
 import { dom } from '../../src/util';
+import testUtil from '../util/index';
+
 const FormItem = Form.Item;
 const Submit = Form.Submit;
 const Reset = Form.Reset;
 const { getStyle } = dom;
+const { render } = testUtil;
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Submit', () => {
@@ -445,46 +447,69 @@ describe('Reset', () => {
 });
 
 describe('Error', () => {
-    let mountNode;
-
     const getVerDistance = (node1, node2) => {
         const rect1 = node1.getBoundingClientRect();
         const rect2 = node2.getBoundingClientRect();
         return rect2.top - rect1.top - rect1.height;
     };
 
-    beforeEach(() => {
-        mountNode = document.createElement('div');
-        document.body.appendChild(mountNode);
-    });
+    describe('preferMarginToDisplayHelp', () => {
+        const getDistance = wrapper => {
+            const items = wrapper.find('.next-form-item');
+            assert(items.length === 3);
+            return getVerDistance(items[0].querySelector('.next-input'), items[1]);
+        };
+        function Demo({ formUseMargin, itemUseMargin }) {
+            return (
+                <Form preferMarginToDisplayHelp={formUseMargin}>
+                    <FormItem label="item1" required preferMarginToDisplayHelp={itemUseMargin}>
+                        <Input name="name" />
+                    </FormItem>
+                    <FormItem label="item2">
+                        <Input name="name2" />
+                    </FormItem>
+                    <FormItem>
+                        <Form.Submit validate>submit</Form.Submit>
+                    </FormItem>
+                </Form>
+            );
+        }
+        it('form should support preferMarginToDisplayHelp', () => {
+            const wrapper = render(<Demo />);
 
-    afterEach(() => {
-        ReactDOM.unmountComponentAtNode(mountNode);
-        document.body.removeChild(mountNode);
-    });
+            ReactTestUtils.Simulate.click(wrapper.find('.next-btn')[0]);
+            const oldDistance = getDistance(wrapper);
 
-    it('the error does not affect the style', () => {
-        ReactDOM.render(
-            <Form>
-                <FormItem label="item1" required>
-                    <Input />
-                </FormItem>
-                <FormItem label="item2">
-                    <Input />
-                </FormItem>
-                <FormItem>
-                    <Form.Submit>submit</Form.Submit>
-                </FormItem>
-            </Form>,
-            mountNode
-        );
+            wrapper.setProps({ formUseMargin: true });
+            const newDistance = getDistance(wrapper);
 
-        const items = mountNode.querySelectorAll('.next-form-item');
-        assert(items.length === 3);
+            assert(newDistance < oldDistance);
 
-        const oldDistance = getVerDistance(items[0], items[1]);
-        ReactTestUtils.Simulate.click(mountNode.querySelector('.next-btn'));
-        const newDistance = getVerDistance(items[0], items[1]);
-        assert(oldDistance === newDistance);
+            wrapper.unmount();
+        });
+        it('form item should support preferMarginToDisplayHelp', () => {
+            const wrapper = render(<Demo />);
+            ReactTestUtils.Simulate.click(wrapper.find('.next-btn')[0]);
+            const oldDistance = getDistance(wrapper);
+
+            wrapper.setProps({ itemUseMargin: true });
+            const newDistance = getDistance(wrapper);
+
+            assert(newDistance < oldDistance);
+
+            wrapper.unmount();
+        });
+        it('form item > form when cross preferMarginToDisplayHelp at same time', () => {
+            const wrapper = render(<Demo />);
+            ReactTestUtils.Simulate.click(wrapper.find('.next-btn')[0]);
+            const oldDistance = getDistance(wrapper);
+
+            wrapper.setProps({ formUseMargin: false, itemUseMargin: true });
+            const newDistance = getDistance(wrapper);
+
+            assert(newDistance < oldDistance);
+
+            wrapper.unmount();
+        });
     });
 });
