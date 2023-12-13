@@ -136,9 +136,13 @@ export default function expanded(BaseComponent, stickyLock) {
             const tableEl = this.getTableNode();
             const totalWidth = +(tableEl && tableEl.clientWidth) - 1 || '100%';
             const bodyNode = tableEl && tableEl.querySelector(`.${prefix}table-body`);
+            const prerowNode = tableEl && tableEl.querySelector(`.${prefix}table-expanded.${prefix}table-prerow`);
 
             Object.keys(this.expandedRowRefs || {}).forEach(key => {
-                dom.setStyle(this.expandedRowRefs[key], { width: (bodyNode && bodyNode.clientWidth) || totalWidth });
+                dom.setStyle(this.expandedRowRefs[key], {
+                    width: (bodyNode && bodyNode.clientWidth) || totalWidth,
+                    paddingLeft: (prerowNode && prerowNode.getBoundingClientRect().width) || 0,
+                });
             });
         };
 
