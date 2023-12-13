@@ -86,7 +86,6 @@
 
     &#{$input-prefix}-textarea {
         height: auto;
-        display: inline-table;
         textarea {
             color: $input-text-color;
             padding: $input-multiple-padding-tb $input-multiple-padding-lr;
@@ -102,12 +101,9 @@
         }
 
         #{$input-prefix}-control {
-            display: table-cell;
-            vertical-align: top;
+            display: block;
             width: auto;
             border-radius: $input-multiple-corner;
-            padding: $input-multiple-padding-tb $input-multiple-padding-lr;
-            padding-left: 0;
         }
 
         #{$input-prefix}-len {
@@ -115,6 +111,9 @@
             display: block;
             text-align: right;
             width: auto;
+        }
+        #{$input-prefix}-clear-line {
+            padding: 0 4px;
         }
 
         border-radius: $input-multiple-corner;

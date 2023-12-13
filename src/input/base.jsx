@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-
+import Icon from '../icon';
 import ConfigProvider from '../config-provider';
 import { func } from '../util';
 import zhCN from '../locale/zh-cn';
-
+// preventDefault here can stop onBlur to keep focus state
+function preventDefault(e) {
+    e.preventDefault();
+}
 class Base extends React.Component {
     static propTypes = {
         ...ConfigProvider.propTypes,
@@ -240,7 +243,28 @@ class Base extends React.Component {
         });
         this.props.onBlur(e);
     }
-
+    icon() {
+        const { hasClear, readOnly, state, prefix, locale, disabled } = this.props;
+        let clearWrap = null;
+        // showClear属性应该与disable属性为互斥状态
+        const showClear = hasClear && !readOnly && !!`${this.state.value}` && !disabled;
+        clearWrap = showClear ? (
+            <Icon
+                type="delete-filling"
+                role="button"
+                tabIndex="0"
+                className={`${prefix}input-clear ${prefix}input-clear-icon`}
+                aria-label={locale.clear}
+                onClick={this.onClear.bind(this)}
+                onMouseDown={preventDefault}
+                onKeyDown={this.handleKeyDownFromClear}
+            />
+        ) : null;
+        if (state === 'loading') {
+            clearWrap = null;
+        }
+        return clearWrap;
+    }
     renderLength() {
         const { maxLength, showLimitHint, prefix, rtl } = this.props;
         const len = maxLength > 0 && this.state.value ? this.getValueLength(this.state.value) : 0;
@@ -252,7 +276,17 @@ class Base extends React.Component {
 
         const content = rtl ? `${maxLength}/${len}` : `${len}/${maxLength}`;
 
-        return maxLength && showLimitHint ? <span className={classesLenWrap}>{content}</span> : null;
+        return (
+            <span className={classesLenWrap}>
+                {maxLength && showLimitHint ? (
+                    <span>
+                        {content}
+                        {this.icon() ? <span className={`${prefix}input-clear-line`}>|</span> : null}
+                    </span>
+                ) : null}
+                {this.icon()}
+            </span>
+        );
     }
 
     renderControl() {

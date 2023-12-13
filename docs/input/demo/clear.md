@@ -48,6 +48,7 @@ ReactDOM.render(
             aria-label="input with config of hasClear"
             hoverShowClear
             onChange={onChange} /><br/><br/>
+        <Input.TextArea placeholder="TextArea" aria-label="TextArea" defaultValue="clear by click" hasClear/>
     </div>
     , mountNode);
 ````

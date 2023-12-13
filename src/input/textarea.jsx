@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import Icon from '../icon';
 import { obj, env } from '../util';
 import Base from './base';
 
@@ -20,10 +19,7 @@ function clearNextFrameAction(nextFrameId) {
         window.clearTimeout(nextFrameId);
     }
 }
-// preventDefault here can stop onBlur to keep focus state
-function preventDefault(e) {
-    e.preventDefault();
-}
+
 // safari in mac
 const isMacSafari =
     typeof navigator !== 'undefined' && navigator && navigator.userAgent
@@ -241,31 +237,6 @@ export default class TextArea extends Base {
         this.focus();
     }
 
-    icon() {
-        const { hasClear, readOnly, state, prefix, locale, disabled } = this.props;
-        let clearWrap = null;
-        // showClear属性应该与disable属性为互斥状态
-        const showClear = hasClear && !readOnly && !!`${this.state.value}` && !disabled;
-        clearWrap = showClear ? (
-            <span onClick={() => this.focus()} className={`${prefix}input-control`}>
-                <Icon
-                    type="delete-filling"
-                    role="button"
-                    tabIndex="0"
-                    className={`${prefix}input-clear ${prefix}input-clear-icon`}
-                    aria-label={locale.clear}
-                    onClick={this.onClear.bind(this)}
-                    onMouseDown={preventDefault}
-                    onKeyDown={this.handleKeyDownFromClear}
-                />
-            </span>
-        ) : null;
-        if (state === 'loading') {
-            clearWrap = null;
-        }
-        return clearWrap;
-    }
-
     render() {
         const {
             rows,
@@ -357,7 +328,6 @@ export default class TextArea extends Base {
                     />
                 ) : null}
                 {this.renderControl()}
-                {this.icon()}
             </span>
         );
     }
