@@ -131,13 +131,15 @@ describe('TimePicker2', () => {
             assert(wrapper.find('.next-form-preview').length > 0);
         });
         it('should support preview mode  & setValue', () => {
-            wrapper = mount(<TimePicker2 isPreview />);
+            const container = document.createElement('div');
+            document.body.appendChild(container);
+            wrapper = mount(<TimePicker2 isPreview />, {attachTo: container});
             assert(wrapper.find('.next-form-preview').length > 0);
-            assert(getStrValue(wrapper), '');
+            assert.equal(wrapper.find('.next-form-preview').text(), '');
             const value = dayjs('12:22:22', 'HH:mm:ss', true);
             wrapper.setProps({ value: value });
             assert(wrapper.find('.next-form-preview').length > 0);
-            assert(getStrValue(wrapper), '12:22:22');
+            assert.equal(wrapper.find('.next-form-preview').text(), '12:22:22');
         });
         it('should support preview mode on type is range', () => {
             wrapper = mount(<TimePicker2.RangePicker isPreview />);
@@ -145,11 +147,11 @@ describe('TimePicker2', () => {
             const startValue = dayjs('12:22:22', 'HH:mm:ss', true);
             const endValue = dayjs('17:22:22', 'HH:mm:ss', true);
             wrapper.setProps({ value: [startValue,] });
-            assert(getStrValue(wrapper), '12:22:22-17:22:22');
+            assert(wrapper.find('.next-form-preview').text(), '12:22:22-17:22:22');
             wrapper.setProps({ value: [startValue,] });
-            assert(getStrValue(wrapper), '12:22:22-');
+            assert(wrapper.find('.next-form-preview').text(), '12:22:22-');
             wrapper.setProps({ value: [null,endValue] });
-            assert(getStrValue(wrapper), '-17:22:22');
+            assert(wrapper.find('.next-form-preview').text(), '-17:22:22');
         });
     });
 
