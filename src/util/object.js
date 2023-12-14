@@ -343,3 +343,15 @@ export function values(obj) {
 
     return vals;
 }
+
+// 应该向下级组件传递的通用属性列表
+const SHOULD_PASS_COMMON_KEYS = ['prefix', 'warning', 'rtl', 'device'];
+
+/**
+ * 获取需要向下传递的通用属性
+ * @param {Object} props 组件接收到的 props
+ * @returns {Object} props 内需要透传的通用属性对象
+ */
+export function pickCommonPropsToPass(props) {
+    return pickProps(SHOULD_PASS_COMMON_KEYS, props);
+}

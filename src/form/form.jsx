@@ -282,7 +282,13 @@ export default class Form extends React.Component {
                 dir={rtl ? 'rtl' : undefined}
                 onSubmit={onSubmit}
             >
-                {responsive ? <RGrid gap={gap}>{newChildren}</RGrid> : newChildren}
+                {responsive ? (
+                    <RGrid {...obj.pickCommonPropsToPass(this.props)} gap={gap}>
+                        {newChildren}
+                    </RGrid>
+                ) : (
+                    newChildren
+                )}
             </Tag>
         );
     }
