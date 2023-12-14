@@ -12,7 +12,11 @@ export default ConfigProvider.config(Button, {
             const { shape, type, ...others } = props;
 
             let newType = type;
-            if (type === 'light' || type === 'dark' || (type === 'secondary' && shape === 'warning')) {
+            if (
+                type === 'light' ||
+                type === 'dark' ||
+                (type === 'secondary' && shape === 'warning')
+            ) {
                 newType = 'normal';
             }
 

@@ -187,10 +187,7 @@ describe('ButtonGroup', () => {
                 </Button.Group>
             );
 
-            wrapper
-                .find('.next-btn')
-                .at(0)
-                .simulate('click');
+            wrapper.find('.next-btn').at(0).simulate('click');
             assert(clicked);
         });
     });

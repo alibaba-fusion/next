@@ -36,7 +36,17 @@ export default class Button extends Component {
          * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
          */
         iconSize: PropTypes.oneOfType([
-            PropTypes.oneOf(['xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl', 'inherit']),
+            PropTypes.oneOf([
+                'xxs',
+                'xs',
+                'small',
+                'medium',
+                'large',
+                'xl',
+                'xxl',
+                'xxxl',
+                'inherit',
+            ]),
             PropTypes.number,
         ]),
         /**
@@ -159,7 +169,11 @@ export default class Button extends Component {
 
         const count = Children.count(children);
         const clonedChildren = Children.map(children, (child, index) => {
-            if (child && ['function', 'object'].indexOf(typeof child.type) > -1 && child.type._typeMark === 'icon') {
+            if (
+                child &&
+                ['function', 'object'].indexOf(typeof child.type) > -1 &&
+                child.type._typeMark === 'icon'
+            ) {
                 const iconCls = classNames({
                     [`${prefix}btn-icon`]: !iconSize, // 如果用户没有传 iconSize，则使用该样式标记 icon 为 button 预设尺寸
                     [`${prefix}btn-icon-size`]: iconSize,
@@ -171,11 +185,7 @@ export default class Button extends Component {
 
                 if ('size' in child.props) {
                     log.warning(
-                        `The size of Icon will not take effect, when Icon is the [direct child element] of Button(<Button><Icon size="${
-                            child.props.size
-                        }" /></Button>), use <Button iconSize="${child.props.size}"> or <Button><div><Icon size="${
-                            child.props.size
-                        }" /></div></Button> instead of.`
+                        `The size of Icon will not take effect, when Icon is the [direct child element] of Button(<Button><Icon size="${child.props.size}" /></Button>), use <Button iconSize="${child.props.size}"> or <Button><div><Icon size="${child.props.size}" /></div></Button> instead of.`
                     );
                 }
                 return React.cloneElement(child, {
@@ -210,7 +220,12 @@ export default class Button extends Component {
         }
 
         return (
-            <TagName {...tagAttrs} dir={rtl ? 'rtl' : undefined} onMouseUp={this.onMouseUp} ref={this.buttonRefHandler}>
+            <TagName
+                {...tagAttrs}
+                dir={rtl ? 'rtl' : undefined}
+                onMouseUp={this.onMouseUp}
+                ref={this.buttonRefHandler}
+            >
                 {loadingIcon}
                 {clonedChildren}
             </TagName>
