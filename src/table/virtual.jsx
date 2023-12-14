@@ -7,7 +7,6 @@ import VirtualBody from './virtual/body';
 import { statics } from './util';
 
 const noop = () => {};
-const THRESHOLD = 10;
 export default function virtual(BaseComponent) {
     class VirtualTable extends React.Component {
         static VirtualBody = VirtualBody;
@@ -27,6 +26,7 @@ export default function virtual(BaseComponent) {
              * 在内容区域滚动的时候触发的函数
              */
             onBodyScroll: PropTypes.func,
+            keepForwardRenderRows: PropTypes.number,
             ...BaseComponent.propTypes,
         };
 
@@ -38,6 +38,7 @@ export default function virtual(BaseComponent) {
             components: {},
             prefix: 'next-',
             onBodyScroll: noop,
+            keepForwardRenderRows: 10,
         };
 
         static childContextTypes = {
@@ -141,12 +142,13 @@ export default function virtual(BaseComponent) {
         }
 
         computeInnerTop() {
+            const { keepForwardRenderRows } = this.props;
             const { rowHeight } = this.state;
             if (typeof rowHeight === 'function') {
                 return 0;
             }
 
-            const start = Math.max(this.start - THRESHOLD, 0);
+            const start = Math.max(this.start - keepForwardRenderRows, 0);
 
             return start * rowHeight;
         }
@@ -269,6 +271,7 @@ export default function virtual(BaseComponent) {
                 rowHeight,
                 scrollToRow,
                 onBodyScroll,
+                keepForwardRenderRows,
                 ...others
             } = this.props;
 
@@ -284,7 +287,7 @@ export default function virtual(BaseComponent) {
                 dataSource.forEach((current, index, record) => {
                     if (!current.__hidden) {
                         count += 1;
-                        if (count >= Math.max(start - THRESHOLD, 0) && count < end) {
+                        if (count >= Math.max(start - keepForwardRenderRows, 0) && count < end) {
                             newDataSource.push(current);
                         }
                     }
