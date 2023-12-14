@@ -26,6 +26,8 @@ export interface RangePreset {
     [propName: string]: (Dayjs)[];
 }
 
+export type StateValue = Dayjs | null;
+
 export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮的文案
@@ -158,6 +160,17 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
      * 透传给 Input 的属性
      */
     inputProps?: InputProps;
+
+    /**
+     * 是否为预览态
+     */
+    isPreview?: boolean;
+
+    /**
+     * 预览态模式下渲染的内容
+     * @param value 时间
+     */
+    renderPreview?: (value: StateValue | [StateValue, StateValue]) => React.ReactNode;
 
     /**
      * 预设值，会显示在时间面板下面

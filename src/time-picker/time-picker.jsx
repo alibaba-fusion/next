@@ -154,7 +154,7 @@ class TimePicker extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {MomentObject} value 时间
+         * @param {MomentObject|null} value 时间
          */
         renderPreview: PropTypes.func,
         /**
