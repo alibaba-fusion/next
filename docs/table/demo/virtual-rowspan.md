@@ -95,7 +95,7 @@ class App extends React.Component {
             if([0, 17, 34].includes(rowIndex) && colIndex === 0) {
               return {
                 rowSpan: 17,
-              }
+              };
             }
           }}
         >
@@ -119,7 +119,7 @@ class App extends React.Component {
             if([0, 17, 34].includes(rowIndex) && colIndex === 0) {
               return {
                 rowSpan: 17,
-              }
+              };
             }
           }}
         >
