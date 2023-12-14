@@ -1,0 +1,167 @@
+{
+  "name": "Progress",
+  "props": {
+    "shape": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'circle'",
+            "computed": false
+          },
+          {
+            "value": "'line'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "形态",
+      "defaultValue": {
+        "value": "'line'",
+        "computed": false
+      },
+      "docblock": "形态"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "尺寸",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "尺寸"
+    },
+    "percent": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "所占百分比",
+      "defaultValue": {
+        "value": "0",
+        "computed": false
+      },
+      "docblock": "所占百分比"
+    },
+    "state": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'normal'",
+            "computed": false
+          },
+          {
+            "value": "'success'",
+            "computed": false
+          },
+          {
+            "value": "'error'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "进度状态, 显示优先级: color > progressive > state",
+      "defaultValue": {
+        "value": "'normal'",
+        "computed": false
+      },
+      "docblock": "进度状态, 显示优先级: color > progressive > state"
+    },
+    "progressive": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为色彩阶段变化模式, 显示优先级: color > progressive > state",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为色彩阶段变化模式, 显示优先级: color > progressive > state"
+    },
+    "hasBorder": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否添加 Border（只适用于 Line Progress)",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否添加 Border（只适用于 Line Progress)"
+    },
+    "textRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "文本渲染函数",
+      "defaultValue": {
+        "value": "percent => `${Math.floor(percent)}%`",
+        "computed": false
+      },
+      "docblock": "文本渲染函数\n@param {Number} percent 当前的进度信息\n@param {Object} option 额外的参数\n@property {Boolean} option.rtl 是否在rtl 模式下渲染\n@return {ReactNode} 返回文本节点",
+      "params": [
+        {
+          "name": "percent",
+          "description": "当前的进度信息",
+          "type": {
+            "name": "Number"
+          }
+        },
+        {
+          "name": "option",
+          "description": "额外的参数",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "返回文本节点",
+        "type": {
+          "name": "ReactNode"
+        }
+      }
+    },
+    "color": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "进度条颜色, 显示优先级: color > progressive > state",
+      "docblock": "进度条颜色, 显示优先级: color > progressive > state"
+    },
+    "backgroundColor": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "背景色",
+      "docblock": "背景色"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
