@@ -1,7 +1,5 @@
-/// <reference types="react" />
-
 import * as React from 'react';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 
 export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -10,88 +8,124 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     size?: string;
 }
 
-export class Group extends React.Component<GroupProps, any> {}
-interface HTMLAttributesWeak extends React.ButtonHTMLAttributes<HTMLElement> {
-    type?: any;
-    onClick?: any;
-}
+type HTMLAttributesWeak = Omit<React.ButtonHTMLAttributes<HTMLElement>, 'type' | 'onClick'>;
 
 export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮的类型
+     * @en Typeo of button
+     * @defaultValue 'normal'
+     * @version 123
      */
     type?: 'primary' | 'secondary' | 'normal';
 
     /**
      * 按钮的尺寸
+     * @en Size of button
+     * @defaultValue 'medium'
      */
     size?: 'small' | 'medium' | 'large';
     /**
-     * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
+     * 按钮中可配置的 Icon
+     * @en Available icons in button
+     * @example
+     * \{ loading: <Icon type="loading"/> \}
      */
     icons?: { loading?: React.ReactNode };
     /**
-     * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
+     * 按钮中 Icon 的尺寸
+     * @en Size of icon in button
+     * @defaultValue 默认根据 size 自动映射，映射规则：
+     * size:large -\> `small`
+     * size:medium -\> `xs`
+     * size:small -\> `xs`
      */
-    iconSize?: number | 'xxs' | 'xs' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'xxxl' | 'inherit';
+    iconSize?:
+        | number
+        | 'xxs'
+        | 'xs'
+        | 'small'
+        | 'medium'
+        | 'large'
+        | 'xl'
+        | 'xxl'
+        | 'xxxl'
+        | 'inherit';
 
     /**
-     * 当 component = 'button' 时，设置 button 标签的 type 值
+     * button 标签的 type 值
+     * @en Original html type for button element
+     * @defaultValue 'button'
+     * @remarks 仅当 component = 'button' 时使用
      */
     htmlType?: 'submit' | 'reset' | 'button';
 
     /**
-     * 设置标签类型
-     * TODO: 这里的 ReactNode 是错的，但是为了向前兼容而保留，下个大版本应该去掉
+     * 最终渲染的 jsx 标签标签类型
+     * @en The jsx tag to be rendered
+     * @remarks 直接去掉原先的 ReactNode 类型，因为即使传递了非法类型运行时也会报错，不如在类型提示阶段就将错误抛出
      */
-    component?: 'button' | 'a' | React.ReactNode | React.ComponentType<any>;
+    component?: 'button' | 'a' | React.ComponentType<unknown>;
 
     /**
      * 设置按钮的载入状态
+     * @en Loading state of a button
+     * @defaultValue false
      */
     loading?: boolean;
 
     /**
      * 是否为幽灵按钮
+     * @en Setting ghost button
+     * @defaultValue false
      */
     ghost?: true | false | 'light' | 'dark';
 
     /**
      * 是否为文本按钮
+     * @en Is text button
+     * @defaultValue false
      */
     text?: boolean;
 
     /**
      * 是否为警告按钮
+     * @en Is warning button
+     * @defaultValue false
      */
     warning?: boolean;
 
     /**
      * 是否禁用
+     * @en Is disabled
+     * @defaultValue false
      */
     disabled?: boolean;
 
     /**
      * 点击按钮的回调
+     * @en Callback of click event
      */
     onClick?: React.MouseEventHandler;
 
     /**
-     * 在Button组件使用component属性值为a时有效，代表链接页面的URL
+     * 'a' 标签的 href 属性
+     * @remarks 仅在 component = 'a' 时使用
+     * @skip
      */
     href?: string;
 
     /**
-     * 在Button组件使用component属性值为a时有效，代表何处打开链接文档
+     * 'a' 标签的 target 属性
+     * @remarks 仅在 component = 'a' 时使用
+     * @skip
      */
     target?: string;
 
     /**
-     * 在Button组件使用component属性值为 React Router Link 时有效，代表链接页面的路径
+     * 'ReactRouterLink' 组件的 to 属性
+     * @remarks 仅在 component 支持 to 属性时使用
+     * @skip
      */
     to?: string;
-}
-
-export default class Button extends React.Component<ButtonProps, any> {
-    static Group: typeof Group;
 }
