@@ -129,6 +129,10 @@ class Table extends React.Component {
          */
         cellProps: PropTypes.func,
         /**
+         * 虚拟滚动时向前保留渲染的行数
+         */
+        keepForwardRenderRows: PropTypes.number,
+        /**
          * 表格是否具有边框
          */
         hasBorder: PropTypes.bool,
@@ -321,6 +325,7 @@ class Table extends React.Component {
         cellProps: noop,
         prefix: 'next-',
         hasBorder: true,
+        keepForwardRenderRows: 10,
         hasHeader: true,
         isZebra: false,
         loading: false,

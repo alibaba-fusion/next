@@ -395,6 +395,12 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTable
      * 在 hover 时出现十字参考轴，适用于表头比较复杂，需要做表头分类的场景。
      */
     crossline?: boolean;
+
+    /**
+     * 虚拟滚动时向前保留渲染的行数
+     * @defaultValue 10
+     */
+    keepForwardRenderRows?: number;
 }
 
 export default class Table extends React.Component<TableProps, any> {

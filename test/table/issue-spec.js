@@ -6,10 +6,10 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
 import Table from '../../src/table/index';
+import Button from '../../src/button/index';
 import ConfigProvider from '../../src/config-provider';
 import Input from '../../src/input';
 import '../../src/table/style.js';
-import Button from '../../src/button/index';
 /* eslint-disable */
 Enzyme.configure({ adapter: new Adapter() });
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration));
@@ -1425,5 +1425,77 @@ describe('TableScroll', () => {
         assert(scrollRow.children[0].textContent === '180');
         const scrollRowTop = scrollRow.getBoundingClientRect().top;
         assert(scrollRowTop >= getBodyTop() - 10);
+    });
+    it('set keepForwardRenderRows to support large rowSpan when useVirtual, close #4395', async () => {
+        const datas = j => {
+            const result = [];
+            for (let i = 0; i < j; i++) {
+                result.push({
+                    title: { name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible` },
+                    id: `100306660940${i}\nid\ntest`,
+                    time: 2000 + i,
+                    index: i,
+                });
+            }
+            return result;
+        };
+        class App extends React.Component {
+            state = {
+                scrollToRow: 0,
+                dataSource: datas(200),
+            };
+
+            componentDidUpdate(prevProps) {
+                if ('scrollToRow' in this.props && this.props.scrollToRow !== prevProps.scrollToRow) {
+                    this.setState({
+                        scrollToRow: this.props.scrollToRow,
+                    });
+                }
+            }
+
+            onBodyScroll = start => {
+                this.setState({
+                    scrollToRow: start,
+                });
+            };
+
+            render() {
+                return (
+                    <Table
+                        className="inventory-table"
+                        dataSource={this.state.dataSource}
+                        maxBodyHeight={314}
+                        useVirtual
+                        keepForwardRenderRows={this.props.keepForwardRenderRows}
+                        scrollToRow={this.state.scrollToRow}
+                        onBodyScroll={this.onBodyScroll}
+                        cellProps={(rowIndex, colIndex) => {
+                            if ([0, 17, 34].includes(rowIndex) && colIndex === 0) {
+                                return {
+                                    rowSpan: 17,
+                                };
+                            }
+                        }}
+                    >
+                        <Table.Column title="Id1" dataIndex="id" width={120} />
+                        <Table.Column title="Index" dataIndex="index" width={200} />
+                        <Table.Column title="Time" dataIndex="time" width={200} />
+                    </Table>
+                );
+            }
+        }
+
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        const wrapper = mount(<App keepForwardRenderRows={10} />, { attachTo: container });
+        await delay(100);
+
+        wrapper.setProps({ scrollToRow: 15 });
+        assert(!container.querySelector('[data-next-table-row="0"]'));
+
+        wrapper.setProps({ keepForwardRenderRows: 17 });
+        assert(container.querySelector('[data-next-table-row="0"]'));
+
+        wrapper.unmount();
     });
 });
