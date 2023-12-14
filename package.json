@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.26.36",
+  "version": "1.26.37",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -260,7 +260,8 @@
     "react-dom": ">=16.0.0"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "overrides": {
     "cheerio": "1.0.0-rc.3"

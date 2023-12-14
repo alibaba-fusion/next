@@ -17,8 +17,7 @@ Use `field.watch` or `Field.useWatch` to watch the value change event of field. 
 
 
 ````jsx
-import ReactDOM from 'react-dom';
-import React, { Component, useState, useEffect } from 'react';
+import { Component, useState, useEffect } from 'react';
 import { Switch, Input, Button, Field } from '@alifd/next';
 
 function DemoForm({ showInput, field }) {
