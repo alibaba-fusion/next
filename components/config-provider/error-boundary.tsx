@@ -25,18 +25,7 @@ interface ErrorBoundaryState {
 export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     static propTypes = {
         children: PropTypes.element,
-        /**
-         * 捕获错误后的自定义处理, 比如埋点上传
-         * @param {Object} error 错误
-         * @param {Object} errorInfo 错误详细信息
-         */
         afterCatch: PropTypes.func,
-        /**
-         * 捕获错误后的展现 自定义组件
-         * @param {Object} error 错误
-         * @param {Object} errorInfo 错误详细信息
-         * @returns {Element} 捕获错误后的处理
-         */
         fallbackUI: PropTypes.func,
     };
 

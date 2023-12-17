@@ -13,10 +13,10 @@ export interface CanListenNode {
 
 /**
  * 取消事件绑定
- * @param  {*}   node       DOM节点或任何可以绑定事件的对象
- * @param  {String}   eventName  事件名
- * @param  {Function} callback   回调方法
- * @param  {Boolean}   [useCapture=false] 是否开启事件捕获优先
+ * @param node - DOM 节点或任何可以绑定事件的对象
+ * @param eventName - 事件名
+ * @param callback - 回调方法
+ * @param useCapture - [useCapture=false] 是否开启事件捕获优先
  */
 export function off(
     node: CanListenNode,
@@ -32,16 +32,16 @@ export function off(
 
 /**
  * 绑定事件
- * @param  {*}   node       DOM节点或任何可以绑定事件的对象
- * @param  {String}   eventName  事件名
- * @param  {Function} callback   回调方法
- * @param  {Boolean}   useCapture 是否开启事件捕获优先
- * @return               返回的object中包含一个off方法，用于取消事件监听
+ * @param node - DOM 节点或任何可以绑定事件的对象
+ * @param eventName - 事件名
+ * @param callback - 回调方法
+ * @param useCapture - 是否开启事件捕获优先
+ * @returns 返回的 object 中包含一个 off 方法，用于取消事件监听
  *
  * @example
- * const handler = events.on(document.body, 'click', e => {
+ * const handler = events.on(document.body, 'click', e =\> \{
  *     // handle click ...
- * });
+ * \});
  * // 取消事件绑定
  * handler.off();
  */
@@ -63,11 +63,11 @@ export function on(
 
 /**
  * 绑定事件，只执行一次后销毁
- * @param  {*}   node       DOM节点或任何可以绑定事件的对象
- * @param  {String}   eventName  事件名
- * @param  {Function} callback   回调方法
- * @param  {Boolean}   useCapture 是否开启事件捕获优先
- * @return             返回的object中包含一个off方法，用于取消事件监听
+ * @param node - DOM 节点或任何可以绑定事件的对象
+ * @param eventName - 事件名
+ * @param callback - 回调方法
+ * @param useCapture - 是否开启事件捕获优先
+ * @returns 返回的 object 中包含一个 off 方法，用于取消事件监听
  */
 export function once(
     node: CanListenNode,
@@ -81,7 +81,7 @@ export function once(
         function __fn(this: unknown, ...args) {
             callback.apply(this, args);
 
-            // 由于addEventListener中的参数options只在Chrome 55、Firefox(Gecko)以上版本支持，故还是用传统的方法实现once
+            // 由于 addEventListener 中的参数 options 只在 Chrome 55、Firefox(Gecko) 以上版本支持，故还是用传统的方法实现 once
             off(node, eventName, __fn, useCapture);
         },
         useCapture

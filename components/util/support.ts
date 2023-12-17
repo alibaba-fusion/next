@@ -15,10 +15,7 @@ const transitionEventNames = {
 };
 
 /**
- * 是否支持某些动效事件，如果支持，返回相应的end事件名
- * @private
- * @param  {Record<string, string>} names
- * @return {{end: string}|false}
+ * 是否支持某些动效事件，如果支持，返回相应的 end 事件名
  */
 function _supportEnd(names: Record<string, string>): { end: string } | false {
     /* istanbul ignore if */
@@ -45,10 +42,7 @@ type CheckCssNameMap = {
 };
 
 /**
- * 是否支持某些CSS属性
- * @private
- * @param  {CheckCssNameMap} names
- * @return {Boolean}       is support
+ * 是否支持某些 CSS 属性
  */
 function _supportCSS(names: CheckCssNameMap): boolean {
     /* istanbul ignore if */
@@ -67,7 +61,7 @@ function _supportCSS(names: CheckCssNameMap): boolean {
             } catch (e) {
                 // It will be throw error when set unknown property under IE8
             }
-            return !ret; // 如果有一个支持就返回false，后面不需要再判断
+            return !ret; // 如果有一个支持就返回 false，后面不需要再判断
         });
 
         return !ret;
@@ -77,17 +71,17 @@ function _supportCSS(names: CheckCssNameMap): boolean {
 }
 
 /**
- * 是否支持animation以及动画结束事件名
+ * 是否支持 animation 以及动画结束事件名
  */
 export const animation = _supportEnd(animationEndEventNames);
 
 /**
- * 是否支持transition以及过滤效果结束事件名
+ * 是否支持 transition 以及过滤效果结束事件名
  */
 export const transition = _supportEnd(transitionEventNames);
 
 /**
- * 是否支持flex属性
+ * 是否支持 flex 属性
  */
 export const flex = _supportCSS({
     display: ['flex', '-webkit-flex', '-moz-flex', '-ms-flexbox'],

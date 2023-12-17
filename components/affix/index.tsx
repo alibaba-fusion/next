@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import * as classnames from 'classnames';
 import ResizeObserver from 'resize-observer-polyfill';
 
-import type { AffixProps, AffixState, AffixMode, GetContainer } from './types';
+import type { AffixProps, AffixState, AffixMode } from './types';
 import { obj, events, func } from '../util';
 import ConfigProvider from '../config-provider';
 import { getScroll, getRect, getNodeHeight } from './util';
@@ -13,28 +13,10 @@ import { getScroll, getRect, getNodeHeight } from './util';
 class Affix extends Component<AffixProps, AffixState> {
     static propTypes = {
         prefix: PropTypes.string,
-        /**
-         * 设置 Affix 需要监听滚动事件的容器元素
-         * @return {ReactElement} 目标容器元素的实例
-         */
         container: PropTypes.func,
-        /**
-         * 距离窗口顶部达到指定偏移量后触发
-         */
         offsetTop: PropTypes.number,
-        /**
-         * 距离窗口底部达到制定偏移量后触发
-         */
         offsetBottom: PropTypes.number,
-        /**
-         * 当元素的样式发生固钉样式变化时触发的回调函数
-         * @param {Boolean} affixed 元素是否被固钉
-         */
         onAffix: PropTypes.func,
-        /**
-         * 是否启用绝对布局实现 affix
-         * @param {Boolean} 是否启用绝对布局
-         */
         useAbsolute: PropTypes.bool,
         className: PropTypes.string,
         style: PropTypes.object,
@@ -133,7 +115,7 @@ class Affix extends Component<AffixProps, AffixState> {
         this._removeEventHandlerForContainer(container!);
     };
 
-    _setEventHandlerForContainer(getContainer: GetContainer) {
+    _setEventHandlerForContainer(getContainer: NonNullable<AffixProps['container']>) {
         const container = getContainer();
         if (!container) {
             return;
@@ -142,7 +124,7 @@ class Affix extends Component<AffixProps, AffixState> {
         this.resizeObserver.observe(this.affixNode);
     }
 
-    _removeEventHandlerForContainer(getContainer: GetContainer) {
+    _removeEventHandlerForContainer(getContainer: NonNullable<AffixProps['container']>) {
         const container = getContainer();
         if (container) {
             events.off(container, 'scroll', this._updateNodePosition);
@@ -243,7 +225,7 @@ class Affix extends Component<AffixProps, AffixState> {
         this.setState({ containerStyle });
     }
 
-    _getOffset(affixNode: HTMLDivElement, affixContainer: Element) {
+    _getOffset(affixNode: HTMLDivElement, affixContainer: Element | Window) {
         const affixRect = affixNode.getBoundingClientRect(); // affix 元素 相对浏览器窗口的位置
         const containerRect = getRect(affixContainer); // affix 容器 相对浏览器窗口的位置
         const containerScrollTop = getScroll(affixContainer, true);

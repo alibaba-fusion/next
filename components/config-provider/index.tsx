@@ -40,10 +40,6 @@ const setDateLocale = (locale?: { dateLocale?: string; momentLocale?: string }) 
     }
 };
 
-/**
- * ConfigProvider
- * @propsExtends false
- */
 class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderProps, 'locale'>> {
     static propTypes = {
         /**
@@ -63,7 +59,7 @@ class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderP
          * 如需自定义参数，请传入对象 对象接受参数列表如下：
          *
          * fallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示
-         * afterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为, 比如埋点上传
+         * afterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为，比如埋点上传
          */
         errorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         /**
@@ -87,7 +83,7 @@ class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderP
          */
         children: PropTypes.any,
         /**
-         * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数
+         * 指定浮层渲染的父节点，可以为节点 id 的字符串，也可以返回节点的函数
          */
         popupContainer: PropTypes.any,
     };
@@ -123,9 +119,9 @@ class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderP
 
     /**
      * 传入组件，生成受 ConfigProvider 控制的 HOC 组件
-     * @param {Component} Component 组件类
-     * @param {Object} options 可选项
-     * @returns {Component} HOC
+     * @param Component - 组件类
+     * @param options - 可选项
+     * @returns 被 HOC 后的组件
      */
     static config = config;
 
@@ -141,8 +137,8 @@ class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderP
 
     /**
      * 传入组件的 props 和 displayName，得到和 childContext 计算过的包含有 preifx/locale/pure 的对象，一般用于通过静态方法生成脱离组件树的组件
-     * @param {Object} props 组件的 props
-     * @param {String} displayName 组件的 displayName
+     * @param props - 组件的 props
+     * @param displayName - 组件的 displayName
      * @returns 新的 context props
      */
     static getContextProps = <P extends ComponentCommonProps>(props: P, displayName: string) => {

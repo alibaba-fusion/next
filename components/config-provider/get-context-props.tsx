@@ -11,8 +11,8 @@ import {
 
 /**
  *
- * @param {Object|Boolean} input
- * @returns {Object} typeof obj.open === 'boolean'
+ * @param input - ErrorBoundaryType
+ * @returns typeof obj.open === 'boolean'
  */
 function parseBoundary(input?: ErrorBoundaryType): ParsedErrorBoundary {
     let obj: ParsedErrorBoundary;
@@ -73,9 +73,18 @@ export default function getContextProps<P extends Omit<OverlayCommonProps, 'defa
 
     let newLocale: ComponentLocaleObject | undefined;
     if (locale) {
-        newLocale = obj.deepMerge({}, zhCN[newDisplayName], localeFromContext, locale);
+        newLocale = obj.deepMerge(
+            {},
+            zhCN[newDisplayName],
+            localeFromContext,
+            locale
+        ) as ComponentLocaleObject;
     } else if (localeFromContext) {
-        newLocale = obj.deepMerge({}, zhCN[newDisplayName], localeFromContext);
+        newLocale = obj.deepMerge(
+            {},
+            zhCN[newDisplayName],
+            localeFromContext
+        ) as ComponentLocaleObject;
     }
 
     const newPure = typeof pure === 'boolean' ? pure : nextPure;

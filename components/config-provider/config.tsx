@@ -87,35 +87,39 @@ export function getDirection() {
 function config<C extends ComponentClass>(
     Component: C,
     options?: ConfigOptions<ComponentProps<C>, Extract<keyof InstanceType<C>, string>>
-): typeof ConfiguredComponent<
-    ComponentProps<C> & ComponentCommonProps,
-    Record<string, never>,
-    InstanceType<C>
->;
+): C &
+    typeof ConfiguredComponent<
+        ComponentProps<C> & ComponentCommonProps,
+        Record<string, never>,
+        InstanceType<C>
+    >;
 function config<C extends ForwardRefExoticComponent<unknown>>(
     Component: C,
     options?: ConfigOptions<ComponentProps<C>>
-): typeof ConfiguredComponent<
-    ComponentProps<C> & ComponentCommonProps,
-    Record<string, never>,
-    ComponentRef<C>
->;
+): C &
+    typeof ConfiguredComponent<
+        ComponentProps<C> & ComponentCommonProps,
+        Record<string, never>,
+        ComponentRef<C>
+    >;
 function config<C extends FunctionComponent>(
     Component: C,
     options?: ConfigOptions<ComponentProps<C>>
-): typeof ConfiguredComponent<
-    ComponentProps<C> & ComponentCommonProps,
-    Record<string, never>,
-    undefined
->;
+): C &
+    typeof ConfiguredComponent<
+        ComponentProps<C> & ComponentCommonProps,
+        Record<string, never>,
+        undefined
+    >;
 function config<C extends ComponentClass | ForwardRefExoticComponent<unknown> | FunctionComponent>(
     Component: C,
     options: ConfigOptions<ComponentProps<C>> = {}
-): typeof ConfiguredComponent<
-    ComponentProps<C> & ComponentCommonProps,
-    Record<string, never>,
-    unknown
-> {
+): C &
+    typeof ConfiguredComponent<
+        ComponentProps<C> & ComponentCommonProps,
+        Record<string, never>,
+        unknown
+    > {
     type P = ComponentProps<C> & ComponentCommonProps;
     type S = Record<string, never>;
     type R = unknown;
@@ -124,7 +128,7 @@ function config<C extends ComponentClass | ForwardRefExoticComponent<unknown> | 
         obj.isClassComponent(Component) &&
         Component.prototype.shouldComponentUpdate === undefined
     ) {
-        // class component: 通过定义 shouldComponentUpdate 改写成 pure component, 有refs
+        // class component: 通过定义 shouldComponentUpdate 改写成 pure component, 有 refs
         Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(
             nextProps: P,
             nextState: S
@@ -307,7 +311,7 @@ function config<C extends ComponentClass | ForwardRefExoticComponent<unknown> | 
 
     hoistNonReactStatic(ConfigedComponent, Component);
 
-    return ConfigedComponent as unknown as typeof ConfiguredComponent<P, S, R>;
+    return ConfigedComponent as unknown as C & typeof ConfiguredComponent<P, S, R>;
 }
 
 export { config };

@@ -5,9 +5,6 @@ export type ObjectOrArray<T = unknown> = Record<PropertyKey, T> | ArrayLike<T>;
 
 /**
  * 获取对象的类型
- * @param  {*} obj
- * @return {String}
- *
  * @example
  * typeOf([]) === 'Array'
  * typeOf() === 'Undefined'
@@ -19,9 +16,6 @@ export function typeOf(obj?: unknown): string {
 
 /**
  * 判断是否是数组或类数组对象
- * @param  {*}  obj
- * @return {Boolean}
- *
  * @example
  * isArrayLike([]) === true
  * isArrayLike(arguments) === true
@@ -43,9 +37,7 @@ export function isArrayLike(obj: unknown): obj is ArrayLike<unknown> {
 }
 
 /**
- * 判断对象是否是一个promise，即是否可以用.then
- * @param  {*}  obj
- * @return {Boolean}
+ * 判断对象是否是一个 promise，即是否可以用.then
  */
 export function isPromise(obj: unknown): obj is Promise<unknown> {
     return (
@@ -57,9 +49,7 @@ export function isPromise(obj: unknown): obj is Promise<unknown> {
 
 /**
  * 是否是一个纯净的对象
- * @param  {*}  obj
- * @return {Boolean}
- * @reference https://github.com/jonschlinkert/is-plain-object
+ * @see https://github.com/jonschlinkert/is-plain-object
  */
 export function isPlainObject(obj?: unknown): obj is Record<string, unknown> {
     if (typeOf(obj) !== 'Object') {
@@ -88,7 +78,7 @@ export function isPlainObject(obj?: unknown): obj is Record<string, unknown> {
 /**
  * 对象浅比较
  * @example
- * object.shallowEqual({a: 100}, {a: 100}); // true
+ * object.shallowEqual(\{a: 100\}, \{a: 100\}); // true
  */
 export function shallowEqual(
     objA: unknown,
@@ -99,7 +89,7 @@ export function shallowEqual(
         return true;
     }
 
-    // 其中一个不是object，则不相等
+    // 其中一个不是 object，则不相等
     if (!objA || !objB || typeof objA + typeof objB !== 'objectobject') {
         return false;
     }
@@ -149,21 +139,20 @@ export function each<Arr extends ArrayLike<unknown>>(
     direction?: number
 ): typeof obj;
 /**
- * 遍历对象或数组，或者类数组，例如React中的children对象、arguments等
- * @param  {Object|Array}   obj
- * @param  {Function} callback fn(n, i) or fn(val, key)
- * @param  {Number}   [direction = 1] 是否倒序遍历，只对数组有效
- * @return {Object|Array}
+ * 遍历对象或数组，或者类数组，例如 React 中的 children 对象、arguments 等
+ * @param obj - 目标对象或类数组
+ * @param callback - fn(n, i) or fn(val, key)
+ * @param direction - 是否倒序遍历，只对数组有效，传入 -1 则是倒序
  *
  * @example
  * // 遍历数组
- * object.each([100, 200, 300], (n, i) => console.log(n, i));
+ * object.each([100, 200, 300], (n, i) =\> console.log(n, i));
  * // 遍历json对象
- * object.each({a: 100, b: 200}, (value, key) => console.log(key, value));
+ * object.each(\{a: 100, b: 200\}, (value, key) =\> console.log(key, value));
  * // 遍历React子节点
- * object.each(this.props.children, (child, index) => console.log(child));
+ * object.each(this.props.children, (child, index) =\> console.log(child));
  * // 遍历arguments
- * object.each(arguments, (arg, i) => console.log(arg));
+ * object.each(arguments, (arg, i) =\> console.log(arg));
  */
 export function each(
     obj: ObjectOrArray,
@@ -197,14 +186,14 @@ export function each(
     return obj;
 }
 
-// @private 判断key是否在数组或对象中
+// @private 判断 key 是否在数组或对象中
 const _isInObj = <O extends ObjectOrArray>(key: PropertyKey, obj: O, isArray?: boolean): boolean =>
     isArray ? (obj as Array<unknown>).indexOf(key) > -1 : key in obj;
 
 /**
  * 过滤出其它属性
- * @param  {ObjectOrArray} holdProps 过滤的参照对象，最终的结果只保留不在参照对象中的key
- * @param  {Record<string, any>} props     被过滤的对象
+ * @param holdProps - 过滤的参照对象，最终的结果只保留不在参照对象中的 key
+ * @param props - 被过滤的对象
  *
  * @example
  * object.pickOthers(FooComponent.propTypes, this.props);
@@ -228,9 +217,8 @@ export function pickOthers<P extends Record<string, unknown>>(
 
 /**
  * 过滤出需要的属性
- * @param  {Object|Array} holdProps 过滤的参照对象，最终的结果只保留在参照对象中的key
- * @param  {Object} props     被过滤的对象
- * @return {Object}           others
+ * @param holdProps - 过滤的参照对象，最终的结果只保留在参照对象中的 key
+ * @param props - 被过滤的对象
  *
  * @example
  * object.pickProps(FooComponent.propTypes, this.props);
@@ -253,10 +241,9 @@ export function pickProps<P extends Record<string, unknown>>(
 }
 
 /**
- * 过滤出带prefix的属性
- * @param  {Object} holdProps 过滤的参照对象，最终的结果只保留不在参照对象中的key
- * @param  {string} prefix    包含的字符串
- * @return {Object}           others
+ * 过滤出带 prefix 的属性
+ * @param holdProps - 过滤的参照对象，最终的结果只保留不在参照对象中的 key
+ * @param prefix - 包含的字符串
  *
  * @example
  * object.pickAttrsWith(FooComponent.propTypes, 'data-');
@@ -278,8 +265,6 @@ export function pickAttrsWith<P extends Record<string, unknown>>(
 
 /**
  * Checks if value is `null` or `undefined`.
- * @param {*} value
- * @return {Boolean}
  */
 export function isNil(value: unknown): value is null | undefined {
     // It will returns `true` only if `null` or `undefined` compare with `null`
@@ -290,7 +275,7 @@ export function deepMerge(target: unknown): typeof target;
 export function deepMerge(target: unknown, ...sources: unknown[]): Record<string, unknown>;
 /**
  * Deep merge two objects.
- * @reference https://stackoverflow.com/questions/27936772/how-to-deep-merge-instead-of-shallow-merge?page=1&tab=votes#tab-top
+ * @see https://stackoverflow.com/questions/27936772/how-to-deep-merge-instead-of-shallow-merge?page=1&tab=votes#tab-top
  */
 export function deepMerge(
     target: unknown,
@@ -305,7 +290,7 @@ export function deepMerge(
 
     if (isPlainObject(target) && isPlainObject(source)) {
         for (const key in source) {
-            // 如果是object 进行深拷贝
+            // 如果是 object 进行深拷贝
             if (isPlainObject(source[key]) && !React.isValidElement(source[key])) {
                 if (!target[key]) Object.assign(target, { [key]: {} });
                 // fix {a: 'te'}, {a:{b:3}}
@@ -327,7 +312,7 @@ type AnyFunction = ((...args: unknown[]) => unknown) | (new (...args: unknown[])
 
 /**
  * 组件是否为 Fucntion Component
- * @param {*} component 传入的组件
+ * @param component - 传入的组件
  */
 export function isFunctionComponent(
     component: AnyFunction
@@ -341,7 +326,7 @@ export function isFunctionComponent(
 
 /**
  * 组件是否为 Class Component
- * @param {*} component  传入的组件
+ * @param component - 传入的组件
  */
 export function isClassComponent(component?: unknown): component is ComponentClass {
     return (
@@ -357,7 +342,7 @@ export function isReactFragment(component: typeof React.Fragment): true;
 export function isReactFragment(component: unknown): boolean;
 /**
  * 判断是否为 ReactFragment
- * @param {*} component  传入的组件
+ * @param component - 传入的组件
  */
 export function isReactFragment(component?: unknown): boolean {
     if (isNil(component)) {
@@ -372,13 +357,9 @@ export function isReactFragment(component?: unknown): boolean {
 
 /**
  * Creates an array of the own enumerable string keyed property values of object.
- *
- * @param {Object} obj
- * @returns {Array}
- *
  * @example
  * // returns [1, 2]
- * values({a: 1, b: 2})
+ * values(\{a: 1, b: 2\})
  */
 export function values<T>(obj: ObjectOrArray<T>): T[] {
     if (Object.values) {

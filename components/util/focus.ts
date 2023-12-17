@@ -7,8 +7,6 @@ import { each } from './object';
 
 /**
  * 元素是否可见
- * @private
- * @param   {Element}  node
  */
 function _isVisible(node?: Element | null): boolean {
     while (node) {
@@ -27,9 +25,6 @@ function _isVisible(node?: Element | null): boolean {
 
 /**
  * 元素是否可以获取焦点
- * @private
- * @param   {Element}  node
- * @return  {Boolean}
  */
 function _isFocusable(node: Element): boolean {
     const nodeName = node.nodeName.toLowerCase();
@@ -54,8 +49,7 @@ function _isFocusable(node: Element): boolean {
 
 /**
  * 列出能获取焦点的子节点
- * @param  {Element} node 容器节点
- * @return {Array<Element>}
+ * @param node - 容器节点
  */
 export function getFocusNodeList(node: Element): Element[] {
     const res: Element[] = [];
@@ -108,8 +102,8 @@ export function backLastFocusNode() {
 
 /**
  * 在限制的范围内切换焦点
- * @param  {Element} node 容器节点
- * @param  {Event} e      键盘事件
+ * @param node - 容器节点
+ * @param e - 键盘事件
  */
 export function limitTabRange(
     node: HTMLElement,
@@ -131,7 +125,7 @@ export function limitTabRange(
 }
 
 /**
- * 检查一个ref是否有focus方法，如果有方法，则调用focus函数
+ * 检查一个 ref 是否有 focus 方法，如果有方法，则调用 focus 函数
  */
 export function focusRef(ref: { focus?: unknown } | undefined, ...args: unknown[]) {
     if (ref && ref.focus && typeof ref.focus === 'function') {
