@@ -10,7 +10,7 @@
         "downlevelIteration": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
-        "allowJs": true, // 改造期间暂时允许导入js文件
+        "allowJs": true, // 改造期间暂时允许导入 js 文件
         "skipLibCheck": true,
         "esModuleInterop": false,
         "allowSyntheticDefaultImports": false,

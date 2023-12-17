@@ -1,0 +1,21 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+    "tagDefinitions": [
+        {
+            "tagName": "@en",
+            "syntaxKind": "block"
+        },
+        {
+            "tagName": "@version",
+            "syntaxKind": "block"
+        },
+        {
+            "tagName": "@skip",
+            "syntaxKind": "modifier"
+        },
+        {
+            "tagName": "@api",
+            "syntaxKind": "block"
+        }
+    ]
+}
