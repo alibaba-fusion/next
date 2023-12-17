@@ -1,15 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Button, Icon, Box } from '@alifd/next';
+import { Button, Box } from '@alifd/next';
 
 class Demo extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-
-        this.state = {
-            loading: false,
-        };
-    }
+    state = {
+        loading: false,
+    };
 
     setLoading = () => {
         this.setState({ loading: true });
