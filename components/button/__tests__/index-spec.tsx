@@ -1,134 +1,105 @@
-import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import Icon from '../../src/icon';
-import Button from '../../src/button/index';
-
-Enzyme.configure({ adapter: new Adapter() });
+import * as React from 'react';
+import Icon from '../../icon';
+import Button from '../index';
 
 describe('Button', () => {
     describe('render', () => {
         it('should render button by type', () => {
-            const wrapper = mount(<Button type="primary">重要按钮</Button>);
-            assert(wrapper.find('.next-btn').hasClass('next-btn-primary'));
+            cy.mount(<Button type="primary">重要按钮</Button>);
+            cy.get('.next-btn.next-btn-primary');
         });
 
         it('should render button with deprecated shape', () => {
-            const wrapper = mount(<Button shape="text">button</Button>);
-            assert(wrapper.find('.next-btn').hasClass('next-btn-text'));
+            cy.mount(<Button shape="text">button</Button>);
+            cy.get('.next-btn.next-btn-text');
         });
 
         it('should render warning/text button', () => {
-            const wrapper2 = mount(<Button warning>确定</Button>);
-            const wrapper3 = mount(
+            cy.mount(<Button warning>确定</Button>);
+            cy.get('.next-btn.next-btn-warning');
+            cy.mount(
                 <Button text type="primary">
                     确定
                 </Button>
             );
-
-            assert(wrapper2.find('.next-btn').hasClass('next-btn-warning'));
-            assert(wrapper3.find('.next-btn').hasClass('next-btn-text'));
+            cy.get('.next-btn.next-btn-text');
         });
 
         it('should render ghost button', () => {
-            const wrapper = mount(<Button ghost>确定</Button>);
-            const wrapper2 = mount(<Button ghost="light">确定</Button>);
-            const wrapper3 = mount(<Button ghost="dark">确定</Button>);
-
-            assert(wrapper.find('.next-btn-ghost').length === 1);
-            assert(wrapper2.find('.next-btn-light').length === 1);
-            assert(wrapper3.find('.next-btn-dark').length === 1);
+            cy.mount(<Button ghost>确定</Button>);
+            cy.get('.next-btn-ghost');
+            cy.mount(<Button ghost="light">确定</Button>);
+            cy.get('.next-btn-light');
+            cy.mount(<Button ghost="dark">确定</Button>);
+            cy.get('.next-btn-dark');
         });
 
         it('should render loading button', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Button ghost loading>
                     确定
                 </Button>
             );
-
-            assert(wrapper.find('.next-btn-loading').length === 1);
+            cy.get('.next-btn-loading');
         });
 
         it('should render custom loading button', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Button ghost loading icons={{ loading: <Icon type="loading" /> }}>
                     确定
                 </Button>
             );
-
-            assert(wrapper.find('Icon.next-btn-custom-loading-icon').length === 1);
-            assert(wrapper.find('.next-btn-loading').length === 0);
+            cy.get('.next-btn-custom-loading-icon').should('not.have.class', '.next-btn-loading');
         });
 
         it('should render button with icon', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Button type="primary">
                     <Icon type="arrow-left" />
                     按钮
                 </Button>
             );
-            const wrapper2 = mount(
+            cy.get('.next-icon.next-icon-first');
+            cy.mount(
                 <Button type="primary">
                     按钮
                     <Icon type="arrow-right" />
                 </Button>
             );
-
-            assert(wrapper.find('.next-icon').hasClass('next-icon-first'));
-            assert(wrapper2.find('.next-icon').hasClass('next-icon-last'));
+            cy.get('.next-icon.next-icon-last');
         });
 
         it('should render button by different htmlType', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Button component="a" htmlType="submit">
                     按钮
                 </Button>
             );
-            assert(wrapper.find('a.next-btn').length === 1);
+            cy.get('a.next-btn');
         });
 
         it('should render disabled <a>', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Button component="a" href="https://www.taobao.com" disabled>
                     hello
                 </Button>
             );
-            const node = wrapper.find('a.next-btn').instance();
-            assert(node.hasAttribute('disabled'));
-            assert(!node.hasAttribute('href'));
+            cy.get('a.next-btn').should('have.attr', 'disabled');
+            cy.get('a.next-btn').should('not.have.attr', 'href');
         });
 
         it('should click single button', () => {
-            let isClicked = false;
-            const wrapper = mount(
-                <Button
-                    onClick={() => {
-                        isClicked = true;
-                    }}
-                >
-                    按钮
-                </Button>
-            );
-
-            wrapper.find('.next-btn').simulate('click');
-            assert(isClicked);
+            const onClick = cy.spy();
+            cy.mount(<Button onClick={onClick}>按钮</Button>);
+            cy.get('.next-btn').click();
+            cy.wrap(onClick).should('be.calledOnce');
         });
 
         it('should mouseUp with handler', () => {
-            let isUp = false;
-            const wrapper = mount(
-                <Button
-                    onMouseUp={() => {
-                        isUp = true;
-                    }}
-                >
-                    hello
-                </Button>
-            );
-            wrapper.find('.next-btn').simulate('mouseUp');
-            assert(isUp);
+            const onMouseUp = cy.spy();
+            cy.mount(<Button onMouseUp={onMouseUp}>hello</Button>);
+            cy.get('.next-btn').trigger('mouseup');
+            cy.wrap(onMouseUp).should('be.calledOnce');
         });
     });
 });
@@ -136,59 +107,53 @@ describe('Button', () => {
 describe('ButtonGroup', () => {
     describe('render', () => {
         it('should render button by type', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Button.Group>
                     <Button type="primary">确定</Button>
                     <Button type="secondary">取消</Button>
                 </Button.Group>
             );
-
-            assert(wrapper.find('.next-btn-group').length === 1);
-            assert(wrapper.find('.next-btn.next-btn-primary').length === 1);
-            assert(wrapper.find('.next-btn.next-btn-secondary').length === 1);
+            cy.get('.next-btn-group').should('have.length', 1);
+            cy.get('.next-btn.next-btn-primary').should('have.length', 1);
+            cy.get('.next-btn.next-btn-secondary').should('have.length', 1);
         });
 
         it('should render button by group size', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Button.Group size="small">
                     <Button size="large">确定</Button>
                     <Button>取消</Button>
                 </Button.Group>
             );
-
-            assert(wrapper.find('.next-large').length === 0);
-            assert(wrapper.find('.next-btn.next-small').length === 2);
+            cy.get('.next-btn').should('not.have.class', '.next-large');
+            cy.get('.next-btn.next-small').should('have.length', 2);
         });
 
         it('should render button group with invalid child', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Button.Group>
                     <Button>OK</Button>
                     {null}
                 </Button.Group>
             );
-            assert(wrapper.find('.next-btn-group').length === 1);
-            assert(wrapper.find('.next-btn').length === 1);
+            cy.get('.next-btn-group')
+                .should('have.length', 1)
+                .get('.next-btn')
+                .should('have.length', 1);
         });
 
         it('should click button in group', () => {
-            let clicked = false;
-            const wrapper = mount(
+            const onClick = cy.spy();
+            cy.mount(
                 <Button.Group>
-                    <Button
-                        type="primary"
-                        onClick={() => {
-                            clicked = true;
-                        }}
-                    >
+                    <Button type="primary" onClick={onClick}>
                         确定
                     </Button>
                     <Button type="primary">取消</Button>
                 </Button.Group>
             );
-
-            wrapper.find('.next-btn').at(0).simulate('click');
-            assert(clicked);
+            cy.get('.next-btn').first().click();
+            cy.wrap(onClick).should('be.calledOnce');
         });
     });
 });
