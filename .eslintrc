@@ -10,7 +10,7 @@
         "prettier",
         "./a11y.eslintrc"
     ],
-    "plugins": ["@typescript-eslint"],
+    "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc"],
     "settings": {
         "react": {
             "pragma": "React",
@@ -25,6 +25,7 @@
         }
     ],
     "rules": {
+        "tsdoc/syntax": "error",
         "valid-jsdoc": "off",
         "max-statements": "off",
         "max-len": "off",
