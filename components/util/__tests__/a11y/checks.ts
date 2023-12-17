@@ -3,12 +3,12 @@ import { ReactWrapper } from 'enzyme';
 /**
  * Test the `role` attribute of a node
  * @deprecated use cy instead enzyme
- * @param { string | string[] } roleTypes - ARIA Roles values that are to be checked against the desired nodes
- * @param { string | ReactWrapper } nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
+ * @param roleTypes - ARIA Roles values that are to be checked against the desired nodes
+ * @param nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
  *                  node using the `rootNode` param
- * @param { ReactWrapper } rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
+ * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
  *                  Required if `nodeOrSelector` is a string.
- * @returns { boolean } Is the node's role attribute one of the values passed in `roleTypes`?
+ * @returns Is the node's role attribute one of the values passed in `roleTypes`?
  */
 const roleType = function (
     roleTypes: string | string[],
@@ -53,12 +53,12 @@ const roleType = function (
 /**
  * Test the HTML tag of a node
  * @deprecated use cy instead enzyme
- * @param { string | string[] } names - HTML Tag element names that are to be checked against the desired nodes
- * @param { string | ReactWrapper } nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
+ * @param names - HTML Tag element names that are to be checked against the desired nodes
+ * @param nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
  *                  node using the `rootNode` param
- * @param { ReactWrapper } rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
+ * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
  *                  Required if `nodeOrSelector` is a string.
- * @returns { boolean } Is the node one of the tag types passed in `names`?
+ * @returns Is the node one of the tag types passed in `names`?
  */
 const tagName = function (
     names: string | string[],
@@ -87,11 +87,10 @@ const tagName = function (
 /**
  * Test if the node is an h* tag or has role=heading
  * @deprecated use cy instead enzyme
- * @param { string | ReactWrapper } nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
+ * @param nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
  *                  node using the `rootNode` param
- * @param { ReactWrapper } rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
+ * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
  *                  Required if `nodeOrSelector` is a string.
- * @returns { boolean }
  */
 const isHeading = function (
     nodeOrSelector: string | ReactWrapper,
@@ -106,11 +105,10 @@ const isHeading = function (
 /**
  * Test if the node is a button tag or has role=button
  * @deprecated use cy instead enzyme
- * @param { string | ReactWrapper } nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
+ * @param nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
  *                  node using the `rootNode` param
- * @param { ReactWrapper } rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
+ * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
  *                  Required if `nodeOrSelector` is a string.
- * @returns { boolean }
  */
 const isButton = function (nodeOrSelector: string | ReactWrapper, rootNode: ReactWrapper): boolean {
     return (

@@ -9,9 +9,6 @@ export const hasDOM =
 
 /**
  * 节点是否包含指定 className
- * @param  {Element}  node
- * @param  {String}  className
- * @return {Boolean}
  *
  * @example
  * dom.hasClass(document.body, 'foo');
@@ -33,8 +30,6 @@ export function hasClass(node?: Element | null, className?: string): boolean {
 
 /**
  * 添加 className
- * @param {Element} node
- * @param {String} className
  *
  * @example
  * dom.addClass(document.body, 'foo');
@@ -54,8 +49,6 @@ export function addClass(node: Element | undefined | null, className: string, _f
 
 /**
  * 移除 className
- * @param  {Element} node
- * @param  {String} className
  *
  * @example
  * dom.removeClass(document.body, 'foo');
@@ -75,9 +68,7 @@ export function removeClass(node: Element | undefined | null, className: string,
 
 /**
  * 切换 className
- * @param  {Element} node
- * @param  {String} className
- * @return {Boolean}           执行后节点上是否还有此 className
+ * @returns 执行后节点上是否还有此 className
  *
  * @example
  * dom.toggleClass(document.body, 'foo');
@@ -100,9 +91,8 @@ export function toggleClass(node: Element | undefined | null, className: string)
 
 /**
  * 元素是否匹配 CSS 选择器
- * @param  {Element} node       DOM 节点
- * @param  {String}  selector   CSS 选择器
- * @return {Boolean}
+ * @param node - DOM 节点
+ * @param selector - CSS 选择器
  *
  * @example
  * dom.matches(mountNode, '.container'); // boolean
@@ -134,9 +124,6 @@ export const matches = (function () {
 
 /**
  * 获取元素计算后的样式
- * @private
- * @param  {Element} node
- * @return {Object}
  */
 function _getComputedStyle(
     node: Element | undefined | null
@@ -149,10 +136,6 @@ const removePixel: Record<string, unknown> = { left: 1, top: 1, right: 1, bottom
 
 /**
  * 校验并修正元素的样式属性值
- * @private
- * @param  {Element} node
- * @param  {String} type
- * @param  {Number} value
  */
 function _getStyleValue(node: HTMLElement, type: string, value: number | string) {
     type = type.toLowerCase();
@@ -185,8 +168,8 @@ export function getStyle(node: HTMLElement): CustomCSSStyle;
 export function getStyle<K extends CustomCSSStyleKey>(node: HTMLElement, name: K): string | number;
 /**
  * 获取元素计算后的样式
- * @param  {Element} node DOM 节点
- * @param  {String | undefined} name 属性名
+ * @param node - DOM 节点
+ * @param name - 属性名
  */
 export function getStyle(
     node: HTMLElement | undefined | null,
@@ -224,18 +207,18 @@ export function setStyle(node: HTMLElement, name: Partial<CustomCSSStyle>): void
 export function setStyle(node: HTMLElement, name: CustomCSSStyleKey, value: unknown): void;
 /**
  * 设置元素的样式
- * @param {Element} node  DOM 节点
- * @param {Object|String} name  属性名，或者是一个对象，包含多个属性
- * @param {Number|String} value 属性值
+ * @param node - DOM 节点
+ * @param name - 属性名，或者是一个对象，包含多个属性
+ * @param value - 属性值
  *
  * @example
  * // 设置单个属性值
  * dom.setStyle(mountNode, 'width', 100);
  * // 设置多条属性值
- * dom.setStyle(mountNode, {
+ * dom.setStyle(mountNode, \{
  *     width: 100,
  *     height: 200
- * });
+ * \});
  */
 export function setStyle(
     node: HTMLElement | undefined | null,
@@ -280,7 +263,6 @@ const isScrollDisplay = function (element: Element) {
 
 /**
  * 获取默认的滚动条大小（通过创造一个滚动元素，读取滚动元素的滚动条信息）
- * @return {{width: number; height: number;}} width, height
  */
 export function scrollbar(): { width: number; height: number } {
     const scrollDiv = document.createElement('div');
@@ -324,7 +306,6 @@ export function hasScroll(containerNode: HTMLElement) {
 
 /**
  * 获取元素距离视口顶部和左边的偏移距离
- * @return {Object} top, left
  */
 export function getOffset(node: Element) {
     const rect = node.getBoundingClientRect();
@@ -337,8 +318,8 @@ export function getOffset(node: Element) {
 
 /**
  * 获取不同单位转为 number 的长度
- * @param {string|number} len 传入的长度
- * @return {number} pixels
+ * @param len - 传入的长度
+ * @returns pixels
  */
 export function getPixels(len: string | number): number {
     const win = document.defaultView!;
@@ -363,10 +344,10 @@ export function getPixels(len: string | number): number {
 }
 
 /**
- * 如果元素被指定的选择器字符串选择，getMatches()  方法返回true; 否则返回false
- * @param {element} dom 待匹配的元素
- * @param {string} selecotr 选择器
- * @return {element} parent
+ * 如果元素被指定的选择器字符串选择，getMatches()  方法返回 true; 否则返回 false
+ * @param dom - 待匹配的元素
+ * @param selecotr - 选择器
+ * @returns parent
  */
 export function getMatches(dom: Element | undefined | null, selector: string): boolean | null {
     /* istanbul ignore if */
@@ -388,9 +369,9 @@ export function getMatches(dom: Element | undefined | null, selector: string): b
 
 /**
  * 匹配特定选择器且离当前元素最近的祖先元素（也可以是当前元素本身），如果匹配不到，则返回 null
- * @param {element} dom 待匹配的元素
- * @param {string} selecotr 选择器
- * @return {element} parent
+ * @param dom - 待匹配的元素
+ * @param selecotr - 选择器
+ * @returns parent
  */
 export function getClosest(dom: HTMLElement | undefined | null, selector: string): Element | null {
     /* istanbul ignore if */

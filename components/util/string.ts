@@ -3,8 +3,8 @@ import { typeOf } from './object';
 
 /**
  * 将字符串转化为驼峰式写法
- * @param  {String} str 例：-webkit-transition
- * @return {String}     例：WebkitTransition
+ * @param str - 例：-webkit-transition
+ * @returns 例：WebkitTransition
  */
 export function camelcase(str: string): string {
     if (!/-/.test(str)) {
@@ -15,8 +15,8 @@ export function camelcase(str: string): string {
 
 /**
  * 将驼峰式字符串转化为连字符写法
- * @param  {String} str 例：WebkitTransition
- * @return {String}     例：-webkit-transition
+ * @param str - 例：WebkitTransition
+ * @returns 例：-webkit-transition
  */
 export function hyphenate(str?: unknown): string {
     const strType = typeOf(str);
@@ -33,9 +33,8 @@ export function hyphenate(str?: unknown): string {
 
 /**
  * 替换模板字符串
- * @param {String} tpl     例：当前{current}, 共{total}页
- * @param {Object} object  例：{current: 1, total: 9}
- * @return {String}        例：
+ * @param tpl - 例：当前\{current\}, 共\{total\}页
+ * @param object - 例：\{current: 1, total: 9\}
  */
 export function template(tpl?: unknown, object: Record<string, unknown> = {}): string {
     const tplType = typeOf(tpl);

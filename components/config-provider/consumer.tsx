@@ -26,14 +26,10 @@ const mapKeys = (
 /**
  * Replace specific key with prefix `next`
  * and lowercase first character of the result.
- * @param {String} key
  */
 const replaceKey = (key: string) =>
     key.replace(/^(next)([A-Z])/, (match, p1, p2) => p2.toLowerCase());
 
-/**
- * @param {Object} source
- */
 const transformContext = (source: Record<PropertyKey, string>) => mapKeys(source, replaceKey);
 
 export type ConsumerState = Pick<
@@ -47,16 +43,12 @@ export interface ConsumerProps {
 
 /**
  * Consumer
- * @param {Object} prop
- * @param {Object} context
  */
 const Consumer = ({ children }: ConsumerProps, context: Record<PropertyKey, string>) =>
     typeof children === 'function' ? children(transformContext(context)) : null;
 
 /**
  * PropTypes
- * @type {Object}
- * @static
  */
 Consumer.propTypes = {
     // Render context as function
@@ -66,8 +58,6 @@ Consumer.propTypes = {
 
 /**
  * ContextTypes (legacy context)
- * @type {Object}
- * @static
  */
 Consumer.contextTypes = {
     nextPrefix: PropTypes.string,

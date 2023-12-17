@@ -37,7 +37,7 @@ class Cache {
 
         if (key === this._root) {
             const maps = this._store.keys();
-            // 如果当前销毁的实例刚好是root，那么从map中取下一个加入的节点当作root
+            // 如果当前销毁的实例刚好是 root，那么从 map 中取下一个加入的节点当作 root
             const nextkey = maps.next().value;
             this._root = nextkey;
         }

@@ -4,9 +4,9 @@ import { isProduction } from './env';
 
 /**
  * 反对使用某一方法或属性的警告
- * @param  {String} props     过时的属性或方法名
- * @param  {String} instead   替代的属性或方法名
- * @param  {String} component 组件名
+ * @param props - 过时的属性或方法名
+ * @param instead - 替代的属性或方法名
+ * @param component - 组件名
  *
  * @example
  * log.deprecated('onBeforeClose', 'beforeClose', 'Dialog');
@@ -23,8 +23,6 @@ export function deprecated(props: string, instead: string, component: string) {
 
 /**
  * 控制台警告日志
- * @param {String} msg
- * @return {Console<Error> | void}
  */
 export function warning(msg: string) {
     /* istanbul ignore else */

@@ -12,7 +12,7 @@ export interface AnyFunction<Result = unknown> {
 export const noop = () => {};
 
 /**
- * 一个空方法，返回false
+ * 一个空方法，返回 false
  */
 export const prevent = () => false;
 
@@ -23,9 +23,9 @@ export function makeChain(
     ...fns: Array<AnyFunction | { apply?: AnyFunction } | undefined | null>
 ): AnyFunction;
 /**
- * 将N个方法合并为一个链式调用的方法
- * @return {Function}     合并后的方法
- * 参考 https://github.com/react-component/util/
+ * 将 N 个方法合并为一个链式调用的方法
+ * @returns 合并后的方法
+ * @see https://github.com/react-component/util/
  *
  * @example
  * func.makeChain(this.handleChange, this.props.onChange);
@@ -49,10 +49,10 @@ export function makeChain(
 
 /**
  * 批量改变方法的上下文
- * 此方法在react组件中很有用，在constructor中批量将组件上的方法执行上下文绑定到组件本身
- * 注意：用bind改变函数运行的上下文只会生效一次
- * @param  {Object} ctx 方法挂载的对象以及执行的上下文
- * @param  {Array<String>} fns 方法名列表
+ * 此方法在 react 组件中很有用，在 constructor 中批量将组件上的方法执行上下文绑定到组件本身
+ * 注意：用 bind 改变函数运行的上下文只会生效一次
+ * @param ctx - 方法挂载的对象以及执行的上下文
+ * @param fns - 方法名列表
  *
  * @example
  * func.bindCtx(this, ['handleClick', 'handleChange']);
@@ -88,9 +88,9 @@ export function promiseCall<Value = unknown, SuccessResult = unknown, FailureRes
 ): SuccessResult;
 /**
  * 用于执行回调方法后的逻辑
- * @param  {*} ret            回调方法执行结果
- * @param  {Function} success 执行结果返回非false的回调
- * @param  {Function} [failure=noop] 执行结果返回false的回调
+ * @param ret - 回调方法执行结果
+ * @param success - 执行结果返回非 false 的回调
+ * @param failure - [failure=noop] 执行结果返回 false 的回调
  */
 export function promiseCall(
     ret: unknown,
@@ -113,11 +113,11 @@ export function promiseCall(
 }
 
 /**
- * 方法调用，如果obj对象中存在名为method的方法则调用该方法
- * @param {Object} target 目标对象
- * @param {string} method 方法名
- * @param {Array} args 函数参数列表
- * @returns {*} 函数返回值 如果不存在返回undefined
+ * 方法调用，如果 obj 对象中存在名为 method 的方法则调用该方法
+ * @param target - 目标对象
+ * @param method - 方法名
+ * @param args - 函数参数列表
+ * @returns 函数返回值 如果不存在返回 undefined
  */
 export function invoke<Result = unknown>(
     target: unknown,
@@ -128,7 +128,7 @@ export function invoke<Result = unknown>(
         target && method in (target as any)
             ? (target as { [key: typeof method]: (...args: unknown[]) => Result })[method]
             : undefined;
-    return func && func(...args || []);
+    return func && func(...(args || []));
 }
 
 export function renderNode<Result = unknown>(
@@ -146,8 +146,6 @@ export function renderNode<Result = unknown>(
 
 /**
  * 日期检验：无效值返回 null
- * @param {dayjs.ConfigType} value
- * @returns {Dayjs | null}
  */
 export function checkDate(value: ConfigType, format?: OptionType): Dayjs | null {
     /**
@@ -164,11 +162,10 @@ export function checkDate(value: ConfigType, format?: OptionType): Dayjs | null 
 
 /**
  * Range 日期检验
- * @param {dayjs.ConfigType[]} value 日期值
- * @param {number} inputType 输入框类型：开始时间输入框/结束时间输入框
- * @param {boolean} disabled 是否禁用
- * @param {boolean} strictly 是否严格校验：严格模式下不允许开始时间大于结束时间，在显示确认按键的，用户输入过程可不严格校验
- * @returns {Dayjs[] | null[]}
+ * @param value - 日期值
+ * @param inputType - 输入框类型：开始时间输入框/结束时间输入框
+ * @param disabled - 是否禁用
+ * @param strictly - 是否严格校验：严格模式下不允许开始时间大于结束时间，在显示确认按键的，用户输入过程可不严格校验
  */
 export function checkRangeDate(
     value: ConfigType,
