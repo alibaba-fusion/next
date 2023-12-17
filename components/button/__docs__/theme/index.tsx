@@ -1,11 +1,22 @@
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import Button from '../../../src/button';
-import Icon from '../../../src/icon';
-import ConfigProvider from '../../../src/config-provider';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import '../../../src/demo-helper/style.js';
-import '../../../src/button/style.js';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import {
+    Demo,
+    DemoFunctionDefineForObject,
+    DemoGroup,
+    DemoHead,
+    initDemo,
+} from '../../../demo-helper';
+import Button from '../../../button';
+import Icon from '../../../icon';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import '../../../demo-helper/style';
+import '../../../button/style';
+import { ButtonProps } from '../../types';
+
+type ButtonType = NonNullable<ButtonProps['type']>;
 
 /* eslint-disable */
 const i18nMap = {
@@ -47,7 +58,7 @@ const i18nMap = {
 
 const ButtonGroup = Button.Group;
 
-function renderButton(type, i18n, children) {
+function renderButton(type: ButtonType, i18n: Record<string, string>, children: React.ReactNode) {
     return (
         <Demo title={i18n[type]} key={type}>
             <DemoHead cols={['L', 'M', 'S']} />
@@ -99,7 +110,11 @@ function renderButton(type, i18n, children) {
     );
 }
 
-function renderWarningButton(type, i18n, children) {
+function renderWarningButton(
+    type: ButtonType,
+    i18n: Record<string, string>,
+    children: React.ReactNode
+) {
     return (
         <Demo title={i18n[type]} key={type}>
             <DemoHead cols={['L', 'M', 'S']} />
@@ -151,7 +166,11 @@ function renderWarningButton(type, i18n, children) {
     );
 }
 
-function renderTextButton(type, i18n, children) {
+function renderTextButton(
+    type: ButtonType,
+    i18n: Record<string, string>,
+    children: React.ReactNode
+) {
     return (
         <Demo title={i18n[type]} key={type}>
             <DemoHead cols={['L', 'M', 'S']} />
@@ -192,7 +211,11 @@ function renderTextButton(type, i18n, children) {
     );
 }
 
-function renderGhostButton(type, i18n, children) {
+function renderGhostButton(
+    type: 'light' | 'dark',
+    i18n: Record<string, string>,
+    children: React.ReactNode
+) {
     let style = {};
 
     if (type === 'dark') {
@@ -242,8 +265,18 @@ function renderGhostButton(type, i18n, children) {
     );
 }
 
-class FunctionGroupButton extends React.Component {
-    constructor(props) {
+interface FunctionGroupButtonProps {
+    title: string;
+    locale: Record<string, string>;
+    types: ButtonType[];
+}
+class FunctionGroupButton extends React.Component<
+    FunctionGroupButtonProps,
+    {
+        demoFunction: Record<string, DemoFunctionDefineForObject>;
+    }
+> {
+    constructor(props: FunctionGroupButtonProps) {
         super(props);
 
         this.state = {
@@ -270,7 +303,7 @@ class FunctionGroupButton extends React.Component {
         };
     }
 
-    onFunctionChange = ret => {
+    onFunctionChange = (ret: Record<string, DemoFunctionDefineForObject>) => {
         this.setState({
             demoFunction: ret,
         });
@@ -282,7 +315,7 @@ class FunctionGroupButton extends React.Component {
         const children = locale.button;
         const iconType = demoFunction['arrow-type'].value;
 
-        let left, middle, right;
+        let left: React.ReactNode, middle: React.ReactNode, right: React.ReactNode;
 
         switch (iconType) {
             case 'none': {
@@ -339,8 +372,25 @@ class FunctionGroupButton extends React.Component {
     }
 }
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
+interface FunctionDemoProps {
+    noArrow?: boolean;
+    title: string;
+    locale: Record<string, string>;
+    types: ButtonType[];
+    buttonRender: (
+        type: ButtonType,
+        locale: Record<string, string>,
+        children: React.ReactNode
+    ) => React.ReactNode;
+}
+
+class FunctionDemo extends React.Component<
+    FunctionDemoProps,
+    {
+        demoFunction: Record<string, DemoFunctionDefineForObject>;
+    }
+> {
+    constructor(props: FunctionDemoProps) {
         super(props);
         let iconList;
         if (props.noArrow) {
@@ -398,7 +448,7 @@ class FunctionDemo extends React.Component {
         };
     }
 
-    onFunctionChange = ret => {
+    onFunctionChange = (ret: Record<string, DemoFunctionDefineForObject>) => {
         this.setState({
             demoFunction: ret,
         });
@@ -409,8 +459,10 @@ class FunctionDemo extends React.Component {
         const { demoFunction } = this.state;
         const iconType = demoFunction['arrow-type'].value;
         const iconPosition =
-            ['arrow-right', 'arrow-up', 'arrow-down'].indexOf(iconType) > -1 ? 'after' : 'before';
-        const children = [locale.button];
+            ['arrow-right', 'arrow-up', 'arrow-down'].indexOf(iconType as string) > -1
+                ? 'after'
+                : 'before';
+        const children: React.ReactNode[] = [locale.button];
 
         if (iconType !== 'none') {
             const icon = <Icon type={iconType} key="icon" />;
@@ -433,8 +485,9 @@ class FunctionDemo extends React.Component {
     }
 }
 
-function render(i18n, lang) {
+function render(i18n: Record<string, string>, lang: string) {
     return ReactDOM.render(
+        // @ts-expect-error ConfigProvider is not support lang
         <ConfigProvider lang={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">
                 <FunctionDemo
@@ -459,8 +512,8 @@ function render(i18n, lang) {
                 <FunctionDemo
                     title={i18n.ghostButton}
                     locale={i18n}
-                    buttonRender={renderGhostButton}
-                    types={['light', 'dark']}
+                    buttonRender={renderGhostButton as unknown as FunctionDemoProps['buttonRender']}
+                    types={['light', 'dark'] as unknown as ButtonType[]}
                 />
                 <FunctionGroupButton
                     title={i18n.groupButton}

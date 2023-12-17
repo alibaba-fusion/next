@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { Button, Box } from '@alifd/next';
 
 const props = {
-    component: 'a',
+    component: 'a' as const,
     href: 'http://www.alibaba.com',
     target: '_blank',
 };

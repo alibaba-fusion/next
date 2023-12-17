@@ -1,8 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import { Types, ContentType, parseData, STATE_MARK } from '@alifd/adaptor-helper';
 import { Button, Icon } from '@alifd/next';
 
-const createContent = (list = []) => {
+const createContent = (list: any = []) => {
     if (!Array.isArray(list)) return list;
     return list.map(({ type, value }, index) => {
         if (type === ContentType.icon) {
@@ -12,7 +12,7 @@ const createContent = (list = []) => {
     });
 };
 
-const _propsValue = ({ shape, level, size, data, ...others }) => {
+const _propsValue = ({ shape, level, size, data, ...others }: any) => {
     return {
         ...others,
         type: shape === 'ghost' ? 'normal' : level,
@@ -25,19 +25,21 @@ const _propsValue = ({ shape, level, size, data, ...others }) => {
 export default {
     name: 'Button',
     shape: ['normal', 'text', 'warning', 'ghost', 'group'],
-    editor: shape => {
+    editor: (shape: any) => {
         return {
             props: [
                 {
                     name: 'level',
                     type: Types.enum,
-                    options: {
-                        normal: ['normal', 'primary', 'secondary'],
-                        text: ['normal', 'primary', 'secondary'],
-                        warning: ['normal', 'primary'],
-                        ghost: ['light', 'dark'],
-                        group: ['normal', 'primary', 'secondary'],
-                    }[shape],
+                    options: (
+                        {
+                            normal: ['normal', 'primary', 'secondary'],
+                            text: ['normal', 'primary', 'secondary'],
+                            warning: ['normal', 'primary'],
+                            ghost: ['light', 'dark'],
+                            group: ['normal', 'primary', 'secondary'],
+                        } as any
+                    )[shape],
                 },
                 {
                     name: 'size',
@@ -59,7 +61,7 @@ export default {
         };
     },
     propsValue: _propsValue,
-    adaptor: ({ shape, level, size, data, ...others }) => {
+    adaptor: ({ shape, level, size, data, ...others }: any) => {
         const list = parseData(data, { parseContent: true });
 
         const buttonProps = _propsValue({ shape, level, size, data, ...others });
@@ -96,7 +98,7 @@ export default {
             </Button.Group>
         );
     },
-    content(shape) {
+    content(shape: string) {
         if (shape === 'group') {
             return {
                 options: [
@@ -106,7 +108,7 @@ export default {
                         default: 'none',
                     },
                 ],
-                transform: (props, { iconType }) => {
+                transform: (props: any, { iconType }: any) => {
                     if (iconType === 'arrow') {
                         return {
                             ...props,
@@ -136,7 +138,7 @@ export default {
                     default: 'none',
                 },
             ],
-            transform: (props, { iconType }) => {
+            transform: (props: any, { iconType }: any) => {
                 if (iconType === 'none') return props;
                 let { data } = props;
                 const icon = `[${iconType}]`;
@@ -159,7 +161,7 @@ export default {
             },
         };
     },
-    demoOptions(demo) {
+    demoOptions(demo: any) {
         const { node } = demo;
         const { level } = node.props;
         if (level === 'dark') {
