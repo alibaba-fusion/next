@@ -1,8 +1,6 @@
 import ConfigProvider from '../config-provider';
+import { ButtonProps } from './types';
 import Button from './view/button';
-import ButtonGroup from './view/group';
-
-Button.Group = ButtonGroup;
 
 export default ConfigProvider.config(Button, {
     transform: /* istanbul ignore next */ (props, deprecated) => {
@@ -13,28 +11,30 @@ export default ConfigProvider.config(Button, {
 
             let newType = type;
             if (
-                type === 'light' ||
-                type === 'dark' ||
+                (type as string) === 'light' ||
+                (type as string) === 'dark' ||
                 (type === 'secondary' && shape === 'warning')
             ) {
                 newType = 'normal';
             }
 
-            let ghost;
+            let ghost: ButtonProps['ghost'];
             if (shape === 'ghost') {
-                ghost = {
-                    primary: 'dark',
-                    secondary: 'dark',
-                    normal: 'light',
-                    dark: 'dark',
-                    light: 'light',
-                }[type || Button.defaultProps.type];
+                ghost = (
+                    {
+                        primary: 'dark',
+                        secondary: 'dark',
+                        normal: 'light',
+                        dark: 'dark',
+                        light: 'light',
+                    } as const
+                )[type || Button.defaultProps.type];
             }
 
             const text = shape === 'text';
             const warning = shape === 'warning';
 
-            props = { type: newType, ghost, text, warning, ...others };
+            return { type: newType, ghost, text, warning, ...others };
         }
 
         return props;

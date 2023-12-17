@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { CommonProps } from '../util';
 
+/**
+ * 按钮类型
+ */
+export type ButtonSize = 'small' | 'medium' | 'large';
+
 export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 统一设置 Button 组件的按钮大小
      */
-    size?: string;
+    size?: ButtonSize;
 }
 
 type HTMLAttributesWeak = Omit<React.ButtonHTMLAttributes<HTMLElement>, 'type' | 'onClick'>;
@@ -20,11 +25,16 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     type?: 'primary' | 'secondary' | 'normal';
 
     /**
+     * @deprecated use `warning` `text` `ghost` insteaded
+     */
+    shape?: 'warning' | 'text' | 'ghost';
+
+    /**
      * 按钮的尺寸
      * @en Size of button
      * @defaultValue 'medium'
      */
-    size?: 'small' | 'medium' | 'large';
+    size?: ButtonSize;
     /**
      * 按钮中可配置的 Icon
      * @en Available icons in button
@@ -111,21 +121,18 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 'a' 标签的 href 属性
      * @remarks 仅在 component = 'a' 时使用
-     * @skip
      */
     href?: string;
 
     /**
      * 'a' 标签的 target 属性
      * @remarks 仅在 component = 'a' 时使用
-     * @skip
      */
     target?: string;
 
     /**
      * 'ReactRouterLink' 组件的 to 属性
      * @remarks 仅在 component 支持 to 属性时使用
-     * @skip
      */
     to?: string;
 }
