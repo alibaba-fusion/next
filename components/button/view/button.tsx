@@ -1,40 +1,29 @@
-import React, { Component, Children, isValidElement } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import * as React from 'react';
+import { Component, Children, isValidElement } from 'react';
+import * as PropTypes from 'prop-types';
+import * as classNames from 'classnames';
+import { ButtonProps } from '../types';
 import ConfigProvider from '../../config-provider';
 import { obj, log } from '../../util';
+import Group from './group';
 
-function mapIconSize(size) {
+function mapIconSize(size: NonNullable<ButtonProps['size']>): ButtonProps['iconSize'] {
     return {
-        large: 'small',
-        medium: 'xs',
-        small: 'xs',
+        large: 'small' as const,
+        medium: 'xs' as const,
+        small: 'xs' as const,
     }[size];
 }
 
-/** Button */
-export default class Button extends Component {
+export default class Button extends Component<ButtonProps> {
+    static Group = Group;
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 按钮的类型
-         */
         type: PropTypes.oneOf(['primary', 'secondary', 'normal']),
-        /**
-         * 按钮的尺寸
-         */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
-        /**
-         * 按钮中可配置的 Icon，格式为 { loading: <Icon type="loading" /> }
-         */
-        icons: PropTypes.shape({
-            loading: PropTypes.node,
-        }),
-        /**
-         * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
-         */
+        icons: PropTypes.shape({ loading: PropTypes.node }),
         iconSize: PropTypes.oneOfType([
             PropTypes.oneOf([
                 'xxs',
@@ -49,38 +38,13 @@ export default class Button extends Component {
             ]),
             PropTypes.number,
         ]),
-        /**
-         * 当 component = 'button' 时，设置 button 标签的 type 值
-         */
         htmlType: PropTypes.oneOf(['submit', 'reset', 'button']),
-        /**
-         * 设置标签类型
-         */
         component: PropTypes.oneOf(['button', 'a', 'div', 'span']),
-        /**
-         * 设置按钮的载入状态
-         */
         loading: PropTypes.bool,
-        /**
-         * 是否为幽灵按钮
-         */
         ghost: PropTypes.oneOf([true, false, 'light', 'dark']),
-        /**
-         * 是否为文本按钮
-         */
         text: PropTypes.bool,
-        /**
-         * 是否为警告按钮
-         */
         warning: PropTypes.bool,
-        /**
-         * 是否禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * 点击按钮的回调
-         * @param {Object} e Event Object
-         */
         onClick: PropTypes.func,
         className: PropTypes.string,
         onMouseUp: PropTypes.func,
@@ -102,7 +66,10 @@ export default class Button extends Component {
         onClick: () => {},
     };
 
-    onMouseUp = e => {
+    button: HTMLButtonElement | HTMLAnchorElement | unknown;
+
+    onMouseUp = (e: React.MouseEvent<HTMLElement>) => {
+        // @ts-expect-error fixme: may have no blur
         this.button.blur();
 
         if (this.props.onMouseUp) {
@@ -110,7 +77,7 @@ export default class Button extends Component {
         }
     };
 
-    buttonRefHandler = button => {
+    buttonRefHandler = (button: unknown) => {
         this.button = button;
     };
 
@@ -134,7 +101,7 @@ export default class Button extends Component {
             rtl,
             ...others
         } = this.props;
-        const ghostType = ['light', 'dark'].indexOf(ghost) >= 0 ? ghost : 'dark';
+        const ghostType = ['light', 'dark'].indexOf(ghost as string) >= 0 ? ghost : 'dark';
 
         const btnClsObj = {
             [`${prefix}btn`]: true,
@@ -145,7 +112,7 @@ export default class Button extends Component {
             [`${prefix}btn-loading`]: loading,
             [`${prefix}btn-ghost`]: ghost,
             [`${prefix}btn-${ghostType}`]: ghost,
-            [className]: className,
+            [className!]: className,
         };
 
         let loadingIcon = null;
@@ -157,8 +124,8 @@ export default class Button extends Component {
                 btnClsObj[`${prefix}btn-custom-loading`] = true;
             }
 
-            const loadingSize = iconSize || mapIconSize(size);
-            loadingIcon = React.cloneElement(icons.loading, {
+            const loadingSize = iconSize || mapIconSize(size!);
+            loadingIcon = React.cloneElement(icons.loading as React.ReactElement, {
                 className: classNames({
                     [`${prefix}btn-custom-loading-icon`]: true,
                     show: loading,
@@ -168,7 +135,9 @@ export default class Button extends Component {
         }
 
         const count = Children.count(children);
-        const clonedChildren = Children.map(children, (child, index) => {
+        // fixme: react children is a complex types, map children to modify is unrecommended
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const clonedChildren = Children.map(children, (child: any, index) => {
             if (
                 child &&
                 ['function', 'object'].indexOf(typeof child.type) > -1 &&
@@ -190,7 +159,7 @@ export default class Button extends Component {
                 }
                 return React.cloneElement(child, {
                     className: iconCls,
-                    size: iconSize || mapIconSize(size),
+                    size: iconSize || mapIconSize(size!),
                 });
             }
 
@@ -201,7 +170,7 @@ export default class Button extends Component {
             return child;
         });
 
-        const TagName = component;
+        const TagName = component!;
         const tagAttrs = {
             ...obj.pickOthers(Object.keys(Button.propTypes), others),
             type: htmlType,

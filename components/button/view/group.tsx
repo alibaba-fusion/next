@@ -1,19 +1,18 @@
-import React, { Component, Children } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import * as React from 'react';
+import { Component, Children } from 'react';
+import * as PropTypes from 'prop-types';
+import * as classNames from 'classnames';
+import { GroupProps } from '../types';
 import ConfigProvider from '../../config-provider';
 
 /**
  * Button.Group
  */
-class ButtonGroup extends Component {
+class ButtonGroup extends Component<GroupProps> {
     static propTypes = {
         ...ConfigProvider.propTypes,
         rtl: PropTypes.bool,
         prefix: PropTypes.string,
-        /**
-         * 统一设置 Button 组件的按钮大小
-         */
         size: PropTypes.string,
         className: PropTypes.string,
         children: PropTypes.node,
@@ -29,12 +28,13 @@ class ButtonGroup extends Component {
 
         const groupCls = classNames({
             [`${prefix}btn-group`]: true,
-            [className]: className,
+            [className!]: className,
         });
 
         const cloneChildren = Children.map(children, child => {
             if (child) {
-                return React.cloneElement(child, {
+                // fixme: child may not be cloned
+                return React.cloneElement(child as React.ReactElement, {
                     size: size,
                 });
             }
