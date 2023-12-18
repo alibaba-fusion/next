@@ -49,7 +49,7 @@ describe('Button', () => {
                     确定
                 </Button>
             );
-            cy.get('.next-btn-custom-loading-icon').should('not.have.class', '.next-btn-loading');
+            cy.get('.next-btn-custom-loading-icon').should('not.have.class', 'next-btn-loading');
         });
 
         it('should render button with icon', () => {
@@ -125,7 +125,7 @@ describe('ButtonGroup', () => {
                     <Button>取消</Button>
                 </Button.Group>
             );
-            cy.get('.next-btn').should('not.have.class', '.next-large');
+            cy.get('.next-btn').should('not.have.class', 'next-large');
             cy.get('.next-btn.next-small').should('have.length', 2);
         });
 
