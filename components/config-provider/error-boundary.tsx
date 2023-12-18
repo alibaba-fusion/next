@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component, ErrorInfo, ReactNode, ReactElement } from 'react';
+import { Component, ErrorInfo, ReactElement } from 'react';
 import * as PropTypes from 'prop-types';
 import { ErrorBoundaryConfig } from './types';
 
@@ -13,9 +13,7 @@ DefaultUI.propTypes = {
     errorInfo: PropTypes.object,
 };
 
-export interface ErrorBoundaryProps extends ErrorBoundaryConfig {
-    children?: ReactNode;
-}
+export type ErrorBoundaryProps = ErrorBoundaryConfig;
 
 interface ErrorBoundaryState {
     error?: Error | null;
