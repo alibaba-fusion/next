@@ -80,6 +80,8 @@
     "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check && npm run docs && npm run clear-dist && npm run pack && npm run pack -- minimize && npm run pack-adaptor",
     "tool:rename2ts": "ts-node ./tools/rename2ts.ts",
     "check:types": "ts-node ./tools/checkers/types/index.ts",
+    "check:eslint": "ts-node ./tools/checkers/eslint.ts",
+    "check:all": "npm run check:types && npm run check:eslint",
     "test:head": "ts-node ./tools/test.ts --head",
     "test": "ts-node ./tools/test.ts"
   },
