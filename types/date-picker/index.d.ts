@@ -138,7 +138,6 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     dateInputAriaLabel?: string;
 }
 
-
 export class MonthPicker extends React.Component<MonthPickerProps, any> {}
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
@@ -149,7 +148,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 
 export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     name?: string;
-    type?: 'date' | 'month' | 'year',
+    type?: 'date' | 'month' | 'year';
 
     /**
      * 默认展示的起始月份
@@ -458,7 +457,12 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 默认展现的月
      */
-    defaultVisibleMonth?: () => void;
+    defaultVisibleMonth?: () => Moment;
+
+    /**
+     * 默认展现的年
+     */
+    defaultVisibleYear?: () => Moment;
 
     /**
      * 日期值（受控）moment 对象
@@ -536,6 +540,11 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     onVisibleChange?: (visible: boolean, reason: string) => void;
 
     /**
+     * 弹层展示月份变化时的回调
+     */
+    onVisibleMonthChange?: (value: Moment, reason: string) => void;
+
+    /**
      * 弹层触发方式
      */
     popupTriggerType?: 'click' | 'hover';
@@ -573,12 +582,17 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义日期渲染函数
      */
-    dateCellRender?: (value: {}) => React.ReactNode;
+    dateCellRender?: (calendarDate: Moment) => React.ReactNode;
 
     /**
      * 自定义月份渲染函数
      */
-    monthCellRender?: (calendarDate: {}) => React.ReactNode;
+    monthCellRender?: (calendarDate: Moment) => React.ReactNode;
+
+    /**
+     * 自定义年份渲染函数
+     */
+    yearCellRender?: (calendarDate: Moment) => React.ReactNode;
 
     /**
      * 日期输入框的 aria-label 属性
@@ -596,6 +610,26 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     isPreview?: boolean;
 
     renderPreview?: (value: any) => React.ReactNode;
+
+    /**
+     * 是否跟随滚动
+     */
+    followTrigger?: boolean;
+
+    /**
+     * 自定义弹层
+     */
+    popupComponent?: React.ComponentType<any>;
+
+    /**
+     * 自定义弹层内容
+     */
+    popupContent?: React.ReactNode;
+
+    /**
+     * 禁用日期选择器的日期模式切换
+     */
+    disableChangeMode?: boolean;
 }
 
 export default class DatePicker extends React.Component<DatePickerProps, any> {

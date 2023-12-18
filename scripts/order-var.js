@@ -6,13 +6,7 @@ const cwd = process.cwd();
 
 const componentName = checkComponentName();
 
-const varFilePath = path.join(
-    cwd,
-    'src',
-    componentName,
-    'scss',
-    'variable.scss'
-);
+const varFilePath = path.join(cwd, 'src', componentName, 'scss', 'variable.scss');
 if (!fs.existsSync(varFilePath)) {
     throw new Error(`Can not find the variable.scss: ${varFilePath}`);
 }

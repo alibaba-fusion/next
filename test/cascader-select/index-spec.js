@@ -308,7 +308,7 @@ describe('CascaderSelect', () => {
         wrapper = mount(<CascaderSelect showSearch defaultVisible defaultValue="2975" dataSource={ChinaArea} />);
         wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '哈哈' } });
         wrapper.update();
-        assert(document.querySelector('.next-cascader-select-not-found').textContent.trim() === 'Not Found');
+        assert(document.querySelector('.next-cascader-select-not-found').textContent.trim() === '无选项');
 
         wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '高陵' } });
         wrapper.update();
@@ -331,7 +331,7 @@ describe('CascaderSelect', () => {
         );
         wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '哈哈' } });
         wrapper.update();
-        assert(document.querySelector('.next-cascader-select-not-found').textContent.trim() === 'Not Found');
+        assert(document.querySelector('.next-cascader-select-not-found').textContent.trim() === '无选项');
 
         wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '高陵' } });
         wrapper.update();

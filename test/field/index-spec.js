@@ -1,9 +1,10 @@
 /* eslint-disable react/no-multi-comp */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
+import Switch from '../../src/switch';
 import Input from '../../src/input';
 import Form from '../../src/form';
 import Field from '../../src/field/index';
@@ -49,9 +50,7 @@ describe('field', () => {
                             </FormItem>
                             <button
                                 onClick={() => {
-                                    assert(
-                                        this.field.getValue('input') === '3'
-                                    );
+                                    assert(this.field.getValue('input') === '3');
                                     this.field.setValue('b', 2);
                                     this.field.reset();
                                 }}
@@ -130,16 +129,11 @@ describe('field', () => {
                                 />
                             </FormItem>
                             <FormItem>
-                                <input
-                                    type="radio"
-                                    {...init('radio', { valueName: 'checked' })}
-                                />
+                                <input type="radio" {...init('radio', { valueName: 'checked' })} />
                             </FormItem>
                             <button
                                 onClick={() => {
-                                    assert(
-                                        this.field.getValue('input') === '3'
-                                    );
+                                    assert(this.field.getValue('input') === '3');
                                     this.field.getValues();
                                 }}
                             >
@@ -157,9 +151,9 @@ describe('field', () => {
             done();
         });
         it('should support hooks', function(done) {
-            function Demo () {
+            function Demo() {
                 const field = Field.useField();
-                                
+
                 const init = field.init;
                 return (
                     <Form field={field}>
@@ -185,17 +179,16 @@ describe('field', () => {
                         </FormItem>
                         <button
                             onClick={() => {
-                                assert(
-                                    field.getValue('input') === '3'
-                                );
+                                assert(field.getValue('input') === '3');
                                 field.setValue('b', 2);
                                 field.reset();
                             }}
                         >
                             click
                         </button>
-                    </Form>)
-            };
+                    </Form>
+                );
+            }
             const wrapper = mount(<Demo />);
             wrapper.find('button').simulate('click');
 
@@ -325,7 +318,7 @@ describe('field', () => {
             const inited = field.init('input', {
                 getValueFromEvent: a => {
                     assert(a === 'test');
-                    return `${a  }!`;
+                    return `${a}!`;
                 },
             });
 
@@ -355,8 +348,8 @@ describe('field', () => {
                 },
                 setValueFormatter: a => {
                     assert(a === 'abcd');
-                    return `test!!`
-                }
+                    return `test!!`;
+                },
             });
 
             const wrapper = mount(<Input {...inited} />);
@@ -398,24 +391,22 @@ describe('field', () => {
             class Demo extends React.Component {
                 state = {
                     show: true,
-                    inputValue: 'start'
+                    inputValue: 'start',
                 };
                 field = new Field(this);
-    
+
                 render() {
-                    const init = this.field.init; 
+                    const init = this.field.init;
                     return (
                         <div>
-                            <Input {...init('input', {props: {value: this.state.inputValue}})} />{' '}
+                            <Input {...init('input', { props: { value: this.state.inputValue } })} />{' '}
                             <button
                                 id="set"
                                 onClick={() => {
-                                    assert(
-                                        this.field.getValue('input') === 'start'
-                                    );
+                                    assert(this.field.getValue('input') === 'start');
                                     this.setState({
                                         inputValue: 'end',
-                                    })
+                                    });
                                 }}
                             >
                                 click
@@ -423,9 +414,7 @@ describe('field', () => {
                             <button
                                 id="get"
                                 onClick={() => {
-                                    assert(
-                                        this.field.getValue('input') === 'end'
-                                    );
+                                    assert(this.field.getValue('input') === 'end');
                                     done();
                                 }}
                             >
@@ -445,24 +434,22 @@ describe('field', () => {
             class Demo extends React.Component {
                 state = {
                     show: true,
-                    inputValue: 'start'
+                    inputValue: 'start',
                 };
-                field = new Field(this, { parseName: true});
-    
+                field = new Field(this, { parseName: true });
+
                 render() {
-                    const init = this.field.init; 
+                    const init = this.field.init;
                     return (
                         <div>
-                            <Input {...init('input', {props: {value: this.state.inputValue}})} />{' '}
+                            <Input {...init('input', { props: { value: this.state.inputValue } })} />{' '}
                             <button
                                 id="set"
                                 onClick={() => {
-                                    assert(
-                                        this.field.getValue('input') === 'start'
-                                    );
+                                    assert(this.field.getValue('input') === 'start');
                                     this.setState({
                                         inputValue: 'end',
-                                    })
+                                    });
                                 }}
                             >
                                 click
@@ -470,9 +457,7 @@ describe('field', () => {
                             <button
                                 id="get"
                                 onClick={() => {
-                                    assert(
-                                        this.field.getValue('input') === 'end'
-                                    );
+                                    assert(this.field.getValue('input') === 'end');
                                     done();
                                 }}
                             >
@@ -486,7 +471,7 @@ describe('field', () => {
             wrapper = mount(<Demo />);
             wrapper.find('#set').simulate('click');
             wrapper.find('#get').simulate('click');
-        })
+        });
     });
 
     describe('behaviour', () => {
@@ -522,41 +507,41 @@ describe('field', () => {
 
         it('should set value with `setValue` on uninitialized field', function() {
             const field = new Field(this);
-            field.setValue('input', 1)
+            field.setValue('input', 1);
             field.init('input');
             assert.equal(field.getValue('input'), 1);
         });
 
         it('should set value with `setValues` on uninitialized field', function() {
             const field = new Field(this);
-            field.setValues({input: 1})
+            field.setValues({ input: 1 });
             field.init('input');
             assert.equal(field.getValue('input'), 1);
         });
 
         it('should return value from `setValue` when calling `getValue` on uninitialized field', function() {
             const field = new Field(this);
-            field.setValue('input', 1)
+            field.setValue('input', 1);
             assert.equal(field.getValue('input'), 1);
         });
 
         it('should return value from `setValue` when calling `getValues` on uninitialized field', function() {
             const field = new Field(this);
-            field.setValue('input', 1)
+            field.setValue('input', 1);
             assert.equal(field.getValues().input, 1);
         });
 
         it('should return values from `setValue` and init when calling `getValues`', function() {
             const field = new Field(this);
-            field.setValue('input', 1)
-            field.init('input2', {initValue: 2})
-            assert.deepEqual(field.getValues(), { input: 1, input2: 2});
+            field.setValue('input', 1);
+            field.init('input2', { initValue: 2 });
+            assert.deepEqual(field.getValues(), { input: 1, input2: 2 });
         });
 
         it('should return `setValue` value instead of initValue', function() {
             const field = new Field(this);
-            field.setValue('input', 1)
-            field.init('input', {initValue: 2})
+            field.setValue('input', 1);
+            field.init('input', { initValue: 2 });
             assert.deepEqual(field.getValues(), { input: 1 });
         });
 
@@ -611,13 +596,13 @@ describe('field', () => {
                 },
             });
 
-            field.validate((error) => {
+            field.validate(error => {
                 assert(error.input.errors[0] === 'cant be null');
             });
-            field.validate('input', (error) => {
+            field.validate('input', error => {
                 assert(error.input.errors[0] === 'cant be null');
             });
-            field.validate(['input'], (error) => {
+            field.validate(['input'], error => {
                 assert(error.input.errors[0] === 'cant be null');
             });
 
@@ -646,9 +631,9 @@ describe('field', () => {
             const field = new Field(this);
             const inited = field.init('input');
             const wrapper = mount(<Input {...inited} />);
-            
+
             field.setError('input', 'my error');
-            field.validate('input', (err) => {
+            field.validate('input', err => {
                 assert(err.input.errors[0] === 'my error');
                 wrapper.unmount();
                 done();
@@ -665,7 +650,7 @@ describe('field', () => {
             const wrapper2 = mount(<Input {...inited2} />);
 
             field.setError('input', 'my error');
-            field.validate((err) => {
+            field.validate(err => {
                 assert(err.input.errors[0] === 'my error');
                 assert(err.input2.errors[0] === 'cant be null');
 
@@ -684,7 +669,7 @@ describe('field', () => {
             const wrapper = mount(<Input {...inited} />);
 
             field.setError('input', 'my error');
-            field.validate((err) => {
+            field.validate(err => {
                 assert(err.input.errors.length === 1);
                 assert(err.input.errors[0] === 'cant be null');
 
@@ -692,12 +677,12 @@ describe('field', () => {
                 done();
             });
         });
-        
+
         describe('reset', function() {
             it('should set value to `undefined` on `reset()` if init with `initValue`', function() {
                 const field = new Field(this);
                 field.init('input', { initValue: '1' });
-    
+
                 field.reset();
                 assert(field.getValue('input') === undefined);
             });
@@ -706,16 +691,16 @@ describe('field', () => {
                 const field = new Field(this);
                 field.init('input', { initValue: '1' });
                 field.init('input2', { initValue: '2' });
-    
+
                 field.reset('input');
-                assert.deepEqual(field.getValues(), { input: undefined, input2: '2'});
+                assert.deepEqual(field.getValues(), { input: undefined, input2: '2' });
             });
-    
+
             it('should set value to `initValue` on `resetToDefaults()` if init with `initValue`', function() {
                 const field = new Field(this);
                 field.init('input', { initValue: '4' });
                 field.setValue('input', '33');
-    
+
                 field.resetToDefault();
                 assert(field.getValue('input') === '4');
             });
@@ -726,9 +711,9 @@ describe('field', () => {
                 field.setValue('input', '33');
                 field.init('input2', { initValue: '4' });
                 field.setValue('input2', '33');
-    
+
                 field.resetToDefault('input');
-                assert.deepEqual(field.getValues(), { input: '4', input2: '33'});
+                assert.deepEqual(field.getValues(), { input: '4', input2: '33' });
             });
 
             it('should set only named value to `undefined` on `resetToDefaults()` if init without `initValue`', function() {
@@ -738,7 +723,7 @@ describe('field', () => {
                 field.init('input'); // simulation a rerender
 
                 field.resetToDefault();
-                assert.deepEqual(field.getValues(), { input: undefined});
+                assert.deepEqual(field.getValues(), { input: undefined });
             });
         });
 
@@ -771,7 +756,6 @@ describe('field', () => {
                 assert(field.getValue('input.1') === 2);
                 assert(field.getValue('input.2') === undefined);
 
-
                 field.init('key.0.id', { initValue: 0 });
                 field.init('key.1.id', { initValue: 1 });
                 field.init('key.2.id', { initValue: 2 });
@@ -794,7 +778,6 @@ describe('field', () => {
                 assert(field.getValue('input.0') === 2);
                 assert(field.getValue('input.1') === undefined);
                 assert(field.getValue('input.2') === undefined);
-
 
                 field.init('key.0.id', { initValue: 0 });
                 field.init('key.1.id', { initValue: 1 });
@@ -888,7 +871,6 @@ describe('field', () => {
                 assert(field.getValue('key2.1.id') === undefined);
                 assert(field.getValue('key2.2.id') === undefined);
                 assert(field.getValue('key2.3.id') === undefined);
-
             });
             it('should remove 2 field item with deleteArrayValue(key,index,2)', () => {
                 const field = new Field(this, { parseName: true });
@@ -933,13 +915,12 @@ describe('field', () => {
                 field.init('key2.1.id', { initValue: 1 });
                 field.init('key2.2.id', { initValue: 2 });
 
-                field.addArrayValue('key2', 1, {id: 100});
+                field.addArrayValue('key2', 1, { id: 100 });
 
                 assert(field.getValue('key2.0.id') === 0);
                 assert(field.getValue('key2.1.id') === 100);
                 assert(field.getValue('key2.2.id') === 1);
                 assert(field.getValue('key2.3.id') === 2);
-
             });
             it('should add 2 item with spliceValue(key,index, 0, ...argv)', () => {
                 const field = new Field(this, { parseName: true });
@@ -959,16 +940,15 @@ describe('field', () => {
                 field.init('key2.1.id', { initValue: 1 });
                 field.init('key2.2.id', { initValue: 2 });
 
-                field.addArrayValue('key2', 1, {id: 100}, {id: 20});
+                field.addArrayValue('key2', 1, { id: 100 }, { id: 20 });
 
                 assert(field.getValue('key2.0.id') === 0);
                 assert(field.getValue('key2.1.id') === 100);
                 assert(field.getValue('key2.2.id') === 20);
                 assert(field.getValue('key2.3.id') === 1);
                 assert(field.getValue('key2.4.id') === 2);
-
             });
-            
+
             it('should make no change `key` does not exist', () => {
                 const field = new Field(this, { parseName: true });
                 field.init('key.0', { initValue: 0 });
@@ -990,6 +970,103 @@ describe('field', () => {
                 assert(field.getValue('key2.1.id') === 1);
                 assert(field.getValue('key2.2.id') === 2);
             });
+        });
+    });
+
+    describe('watch', () => {
+        function Demo({ onWatchChange, options, onUnmount }) {
+            const [showInput, setShowInput] = useState(false);
+            const field = Field.useField(options);
+            Field.useWatch(field, ['switch', 'input'], (name, value, oldValue, triggerType) => {
+                onWatchChange && onWatchChange(name, value, oldValue, triggerType);
+                if (name === 'switch') {
+                    setShowInput(value);
+                }
+            });
+            useEffect(() => {
+                return () => {
+                    onUnmount && onUnmount(field);
+                };
+            }, []);
+            return (
+                <div>
+                    <Switch {...field.init('switch', { valueName: 'checked', initValue: false })} />
+                    {showInput && <Input {...field.init('input', { initValue: 'abc' })} />}
+
+                    <button data-reset onClick={() => field.reset()}>
+                        reset
+                    </button>
+                    <button data-setValue onClick={() => field.setValue('switch', true)}>
+                        setValue
+                    </button>
+                    <button data-setValues onClick={() => field.setValues({ switch: false, input: 'xyz' })}>
+                        setValues
+                    </button>
+                </div>
+            );
+        }
+        it('should trigger by init', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} />);
+            assert(callback.calledOnceWith('switch', false, undefined, 'init'));
+            wrapper.unmount();
+        });
+        it('should not trigger when has init value', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} options={{ values: { switch: true } }} />);
+            assert(callback.notCalled);
+            wrapper.unmount();
+        });
+        it('should trigger by change', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} />);
+            wrapper.find('.next-switch').simulate('click');
+            assert(callback.calledWith('switch', true, false, 'change'));
+            assert(callback.calledWith('input', 'abc', undefined, 'init'));
+            wrapper.find('.next-input input').simulate('change', { target: { value: 'xyz' } });
+            assert(callback.calledWith('input', 'xyz', 'abc', 'change'));
+            assert.equal(callback.callCount, 4);
+            wrapper.unmount();
+        });
+        it('should trigger by unmount', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} />);
+            wrapper.find('.next-switch').simulate('click');
+            assert(wrapper.find('.next-input').length);
+            wrapper.find('.next-switch').simulate('click');
+            assert(callback.lastCall.calledWith('input', undefined, 'abc', 'unmount'));
+            wrapper.unmount();
+        });
+        it('should trigger by reset', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} />);
+            wrapper.find('.next-switch').simulate('click');
+            assert.equal(callback.callCount, 3);
+            wrapper.find('button[data-reset]').simulate('click');
+            assert(callback.calledWith('switch', undefined, true, 'reset'));
+            assert(callback.calledWith('input', undefined, 'abc', 'reset'));
+            wrapper.unmount();
+        });
+        it('should trigger by setValue', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onWatchChange={callback} />);
+            wrapper.find('button[data-setValue]').simulate('click');
+            assert(callback.calledWith('switch', true, false, 'setValue'));
+
+            wrapper.find('button[data-setValues]').simulate('click');
+            assert(callback.calledWith('switch', false, true, 'setValue'));
+            assert(callback.calledWith('input', 'xyz', 'abc', 'setValue'));
+            wrapper.unmount();
+        });
+        it('should unwatch work', () => {
+            const callback = sinon.spy();
+            const wrapper = mount(<Demo onUnmount={callback} />);
+            wrapper.unmount();
+            assert(callback.calledOnce);
+            const field = callback.getCall(0).args[0];
+            for (const set of Object.values(field.listeners)) {
+                assert(!set.size);
+            }
         });
     });
 });

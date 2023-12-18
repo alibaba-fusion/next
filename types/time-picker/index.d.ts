@@ -3,6 +3,7 @@
 import * as React from 'react';
 import CommonProps from '../util';
 import { PopupProps } from '../overlay';
+import { Moment } from 'moment';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -131,6 +132,17 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
      * 是否禁用
      */
     disabled?: boolean;
+
+    /**
+     * 是否为预览态
+     */
+    isPreview?: boolean;
+
+    /**
+     * 预览态模式下渲染的内容
+     * @param value 时间
+     */
+    renderPreview?: (value: Moment | null) => React.ReactNode;
 
     /**
      * 时间值改变时的回调

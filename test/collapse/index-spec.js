@@ -15,9 +15,7 @@ const Panel = Collapse.Panel;
 describe('Collapse', () => {
     describe('render', () => {
         it('[normal] Should render null', () => {
-            const wrapper = mount(
-                <Collapse></Collapse>
-            );
+            const wrapper = mount(<Collapse />);
             assert(wrapper.find(Collapse).length === 1);
         });
         it('[normal] Should render from children', () => {
@@ -77,7 +75,7 @@ describe('Collapse', () => {
         describe('default mode', () => {
             it('should expand panel with string key', () => {
                 const wrapper = mount(
-                    <Collapse defaultExpandedKeys={["2"]}>
+                    <Collapse defaultExpandedKeys={['2']}>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
@@ -86,9 +84,7 @@ describe('Collapse', () => {
                         <div>others</div>
                     </Collapse>
                 );
-                const el = wrapper
-                    .find('.next-collapse-panel')
-                    .at(2);
+                const el = wrapper.find('.next-collapse-panel').at(2);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
 
@@ -103,15 +99,13 @@ describe('Collapse', () => {
                         <div>others</div>
                     </Collapse>
                 );
-                const el = wrapper
-                    .find('.next-collapse-panel')
-                    .at(2);
+                const el = wrapper.find('.next-collapse-panel').at(2);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
 
             it('should close default expanded string keys', () => {
                 const wrapper = mount(
-                    <Collapse defaultExpandedKeys={["2"]}>
+                    <Collapse defaultExpandedKeys={['2']}>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
@@ -161,9 +155,7 @@ describe('Collapse', () => {
                     },
                 ];
                 const wrapper = mount(<Collapse dataSource={list} defaultExpandedKeys={[1]} />);
-                const el = wrapper
-                    .find('.next-collapse-panel')
-                    .at(1);
+                const el = wrapper.find('.next-collapse-panel').at(1);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
 
@@ -189,12 +181,12 @@ describe('Collapse', () => {
                     .simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
-        })
+        });
 
         describe('accordian mode', () => {
             it('should expand panel with string key', () => {
                 const wrapper = mount(
-                    <Collapse defaultExpandedKeys={["2"]} accordion>
+                    <Collapse defaultExpandedKeys={['2']} accordion>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
@@ -203,9 +195,7 @@ describe('Collapse', () => {
                         <div>others</div>
                     </Collapse>
                 );
-                const el = wrapper
-                    .find('.next-collapse-panel')
-                    .at(2);
+                const el = wrapper.find('.next-collapse-panel').at(2);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
 
@@ -220,15 +210,13 @@ describe('Collapse', () => {
                         <div>others</div>
                     </Collapse>
                 );
-                const el = wrapper
-                    .find('.next-collapse-panel')
-                    .at(2);
+                const el = wrapper.find('.next-collapse-panel').at(2);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
 
             it('should close default expanded string keys', () => {
                 const wrapper = mount(
-                    <Collapse defaultExpandedKeys={["2"]} accordion>
+                    <Collapse defaultExpandedKeys={['2']} accordion>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
@@ -277,10 +265,8 @@ describe('Collapse', () => {
                             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
                     },
                 ];
-                const wrapper = mount(<Collapse dataSource={list} defaultExpandedKeys={[1]}  accordion/>);
-                const el = wrapper
-                    .find('.next-collapse-panel')
-                    .at(1);
+                const wrapper = mount(<Collapse dataSource={list} defaultExpandedKeys={[1]} accordion />);
+                const el = wrapper.find('.next-collapse-panel').at(1);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
 
@@ -299,15 +285,15 @@ describe('Collapse', () => {
                             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
                     },
                 ];
-                const wrapper = mount(<Collapse dataSource={list} defaultExpandedKeys={[1]}  accordion/>);
+                const wrapper = mount(<Collapse dataSource={list} defaultExpandedKeys={[1]} accordion />);
                 wrapper
                     .find('.next-collapse-panel-title')
                     .at(1)
                     .simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
-        })
-    })
+        });
+    });
 
     describe('event', () => {
         it('Should expanded by click', () => {

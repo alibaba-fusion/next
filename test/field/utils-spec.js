@@ -1,11 +1,10 @@
 import React from 'react';
 import assert from 'power-assert';
-import {cloneAndAddKey, scrollToFirstError} from '../../src/field/utils';
+import { cloneAndAddKey, scrollToFirstError } from '../../src/field/utils';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it */
 describe('Field Utils', () => {
-    
     describe('cloneAndAddKey', () => {
         it('should return a cloned element with `error` key when no key set', () => {
             const el = <span>message 1</span>;
@@ -22,5 +21,5 @@ describe('Field Utils', () => {
             assert.equal(result.key, 'messageError');
             assert.equal(result.props.children, 'message 1');
         });
-    })
+    });
 });

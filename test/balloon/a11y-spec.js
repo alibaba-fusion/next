@@ -3,12 +3,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Balloon from '../../src/balloon/index';
 import '../../src/balloon/style';
-import {
-    unmount,
-    test,
-    testReact,
-    createContainer,
-} from '../util/a11y/validate';
+import { unmount, test, testReact, createContainer } from '../util/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -44,12 +39,7 @@ describe('Balloon A11y', () => {
     it('should not have any violations when not closable', async () => {
         portalContainer = createContainer(portalContainerId);
         wrapper = await testReact(
-            <Balloon
-                id="balloon-2"
-                visible
-                closable={false}
-                popupContainer={portalContainerId}
-            >
+            <Balloon id="balloon-2" visible closable={false} popupContainer={portalContainerId}>
                 I am balloon content
             </Balloon>
         );
@@ -61,11 +51,7 @@ describe('Balloon A11y', () => {
         portalContainer = createContainer(portalContainerId);
 
         wrapper = await testReact(
-            <Balloon.Tooltip
-                id="tooltip-1"
-                visible
-                popupContainer={portalContainerId}
-            >
+            <Balloon.Tooltip id="tooltip-1" visible popupContainer={portalContainerId}>
                 I am balloon content
             </Balloon.Tooltip>
         );

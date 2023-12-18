@@ -15,10 +15,7 @@ module.exports = function(content) {
 
     this.addDependency(themeTplPath);
 
-    const scripts = [
-        '/common.js',
-        `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`,
-    ];
+    const scripts = ['/common.js', `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`];
 
     ejs.renderFile(
         themeTplPath,
@@ -30,10 +27,7 @@ module.exports = function(content) {
             if (err) {
                 logger.error(`Render theme demo failed: ${err}`);
             } else {
-                const htmlPath = replaceExt(
-                    path.relative(path.join(cwd, 'docs'), this.resourcePath),
-                    '.html'
-                );
+                const htmlPath = replaceExt(path.relative(path.join(cwd, 'docs'), this.resourcePath), '.html');
                 this.emitFile(htmlPath, html);
             }
         }

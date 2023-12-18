@@ -15,9 +15,7 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('Range ', () => {
     afterEach(() => {
         //清楚所有浮层
-        const nodeListArr = [].slice.call(
-            document.querySelectorAll('.next-balloon-tooltip')
-        );
+        const nodeListArr = [].slice.call(document.querySelectorAll('.next-balloon-tooltip'));
         nodeListArr.forEach((node, index) => {
             node.parentNode.removeChild(node);
         });
@@ -25,59 +23,33 @@ describe('Range ', () => {
 
     it('defaultValue', () => {
         const wrapperSingle = mount(<Range defaultValue={10} />);
-        const wrapperDouble = mount(
-            <Range slider="double" defaultValue={[10, 30]} />
-        );
+        const wrapperDouble = mount(<Range slider="double" defaultValue={[10, 30]} />);
 
-        assert.deepEqual(
-            wrapperSingle.find('.next-range-selected').props().style,
-            { width: '10%', left: '0%' }
-        );
-        assert.deepEqual(
-            wrapperDouble.find('.next-range-selected').props().style,
-            { width: '20%', left: '10%' }
-        );
+        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, { width: '10%', left: '0%' });
+        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, { width: '20%', left: '10%' });
         wrapperSingle.setProps({
             defaultValue: 20,
         });
         wrapperDouble.setProps({
             defaultValue: [30, 40],
         });
-        assert.deepEqual(
-            wrapperSingle.find('.next-range-selected').props().style,
-            { width: '10%', left: '0%' }
-        );
-        assert.deepEqual(
-            wrapperDouble.find('.next-range-selected').props().style,
-            { width: '20%', left: '10%' }
-        );
+        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, { width: '10%', left: '0%' });
+        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, { width: '20%', left: '10%' });
     });
     it('value', () => {
         const wrapperSingle = mount(<Range value={10} />);
         const wrapperDouble = mount(<Range value={[10, 30]} />);
 
-        assert.deepEqual(
-            wrapperSingle.find('.next-range-selected').props().style,
-            { width: '10%', left: '0%' }
-        );
-        assert.deepEqual(
-            wrapperDouble.find('.next-range-selected').props().style,
-            { width: '20%', left: '10%' }
-        );
+        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, { width: '10%', left: '0%' });
+        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, { width: '20%', left: '10%' });
         wrapperSingle.setProps({
             value: 20,
         });
         wrapperDouble.setProps({
             value: [30, 40],
         });
-        assert.deepEqual(
-            wrapperSingle.find('.next-range-selected').props().style,
-            { width: '20%', left: '0%' }
-        );
-        assert.deepEqual(
-            wrapperDouble.find('.next-range-selected').props().style,
-            { width: '10%', left: '30%' }
-        );
+        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, { width: '20%', left: '0%' });
+        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, { width: '10%', left: '30%' });
     });
     it('min max', () => {
         const wrapper = mount(<Range min={10} value={20} max={30} />);
@@ -105,9 +77,7 @@ describe('Range ', () => {
 
     it('hasTip === true and tipRender', () => {
         const tipRender = sinon.spy();
-        const wrapper = mount(
-            <Range value={20} hasTip tipRender={tipRender} />
-        );
+        const wrapper = mount(<Range value={20} hasTip tipRender={tipRender} />);
 
         wrapper.find('.next-range-slider').simulate('mouseenter');
 
@@ -123,17 +93,10 @@ describe('Range ', () => {
         done();
     });
     it('marks', () => {
-        const wrapper = mount(
-            <Range defaultValue={30} marks={[3, 26, 37, 100]} />
-        );
+        const wrapper = mount(<Range defaultValue={30} marks={[3, 26, 37, 100]} />);
         const wrapper2 = mount(<Range defaultValue={30} marks={10} />);
 
-        const wrapper3 = mount(
-            <Range
-                defaultValue={26}
-                marks={{ 0: '0°C', 26: '26°C', 37: '37°C', 100: '100°C' }}
-            />
-        );
+        const wrapper3 = mount(<Range defaultValue={26} marks={{ 0: '0°C', 26: '26°C', 37: '37°C', 100: '100°C' }} />);
 
         assert(wrapper.find('.next-range-scale-item').length === 4);
         assert(wrapper.find('.next-range-scale-item.activated').length === 2);
@@ -322,14 +285,9 @@ describe('Range ', () => {
 
     it('value bigger max', () => {
         const wrapperSingle = mount(<Range value={100} max={10} min={1} />);
-        const wrapperDouble = mount(
-            <Range slider="double" value={[100, 200]} max={10} min={1} />
-        );
+        const wrapperDouble = mount(<Range slider="double" value={[100, 200]} max={10} min={1} />);
 
-        assert.deepEqual(
-            wrapperSingle.find('.next-range-slider').props().style,
-            { zIndex: 100, left: '100%' }
-        );
+        assert.deepEqual(wrapperSingle.find('.next-range-slider').props().style, { zIndex: 100, left: '100%' });
         assert.deepEqual(
             wrapperDouble
                 .find('.next-range-slider')
@@ -356,32 +314,19 @@ describe('Range ', () => {
         wrapperDouble.setProps({
             value: undefined,
         });
-        assert.deepEqual(
-            wrapperSingle.find('.next-range-selected').props().style,
-            { width: '0%', left: '0%' }
-        );
-        assert.deepEqual(
-            wrapperDouble.find('.next-range-selected').props().style,
-            { width: '0%', left: '0%' }
-        );
+        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, { width: '0%', left: '0%' });
+        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, { width: '0%', left: '0%' });
     });
     it('reverse  ', () => {
         const wrapperSingle = mount(<Range defaultValue={10} reverse />);
-        const wrapperDouble = mount(
-            <Range slider="double" defaultValue={[10, 30]} reverse />
-        );
+        const wrapperDouble = mount(<Range slider="double" defaultValue={[10, 30]} reverse />);
 
-        assert.deepEqual(
-            wrapperSingle.find('.next-range-selected').props().style,
-            { width: '90%', left: '10%' }
-        );
+        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, { width: '90%', left: '10%' });
         assert(wrapperDouble.find('.next-range-selected').length === 2);
     });
 
     it('fixedWidth ', () => {
-        const wrapperSingle = mount(
-            <Range fixedWidth defaultValue={[20, 40]} />
-        );
+        const wrapperSingle = mount(<Range fixedWidth defaultValue={[20, 40]} />);
 
         assert.deepEqual(wrapperSingle.find('.next-range-frag').props().style, {
             left: '20%',
@@ -390,29 +335,18 @@ describe('Range ', () => {
     });
 
     it('fixedWidth no tip', () => {
-        const wrapper = mount(
-            <Range fixedWidth hasTip={false} defaultValue={[20, 40]} />
-        );
+        const wrapper = mount(<Range fixedWidth hasTip={false} defaultValue={[20, 40]} />);
 
         const RangeInstance = wrapper
             .find('Range')
             .at(0)
             .instance();
 
-        assert(
-            RangeInstance.dom.querySelector('.next-balloon-tooltip') === null
-        );
+        assert(RangeInstance.dom.querySelector('.next-balloon-tooltip') === null);
     });
 
     it('fixedWidth dragging should have active class', () => {
-        const wrapper = mount(
-            <Range
-                marks={[0, 100]}
-                marksPosition="below"
-                fixedWidth
-                defaultValue={[20, 40]}
-            />
-        );
+        const wrapper = mount(<Range marks={[0, 100]} marksPosition="below" fixedWidth defaultValue={[20, 40]} />);
 
         const RangeInstance = wrapper
             .find('Range')
@@ -437,10 +371,7 @@ describe('Range ', () => {
 
         assert(document.querySelector('.next-balloon-tooltip') === null);
         // wrapper.find('.next-range-frag').simulate('mousedown');
-        ReactTestUtils.Simulate.mouseDown(
-            document.querySelectorAll('.next-range-frag')[0],
-            { button: 0 }
-        );
+        ReactTestUtils.Simulate.mouseDown(document.querySelectorAll('.next-range-frag')[0], { button: 0 });
         assert(document.querySelector('.next-balloon-tooltip') !== null);
         simulateEvent.simulate(document, 'mouseup');
 
@@ -455,17 +386,13 @@ describe('Range ', () => {
     });
 
     it(' fixedWidth tooltipVisible === true, always has tooltip', () => {
-        const wrapper = mount(
-            <Range tooltipVisible fixedWidth defaultValue={[20, 40]} />
-        );
+        const wrapper = mount(<Range tooltipVisible fixedWidth defaultValue={[20, 40]} />);
 
         const RangeInstance = wrapper
             .find('Range')
             .at(0)
             .instance();
-        assert(
-            RangeInstance.dom.querySelector('.next-balloon-tooltip') !== null
-        );
+        assert(RangeInstance.dom.querySelector('.next-balloon-tooltip') !== null);
 
         wrapper.find('.next-range-frag').simulate('mouseenter');
         wrapper.find('.next-range-frag').simulate('mouseleave');
@@ -474,16 +401,12 @@ describe('Range ', () => {
         wrapper.find('.next-range-frag').simulate('mouseleave');
         wrapper.find('.next-range-frag').simulate('mouseup');
 
-        assert(
-            RangeInstance.dom.querySelector('.next-balloon-tooltip') !== null
-        );
+        assert(RangeInstance.dom.querySelector('.next-balloon-tooltip') !== null);
     });
 
     it('keymove right', () => {
         const aSpy = sinon.spy();
-        const wrapper = mount(
-            <Range defaultValue={2} hasTip onChange={aSpy} />
-        );
+        const wrapper = mount(<Range defaultValue={2} hasTip onChange={aSpy} />);
 
         wrapper.find('.next-range-slider').simulate('keyDown', { keyCode: 39 });
         assert(aSpy.called);
@@ -491,9 +414,7 @@ describe('Range ', () => {
 
     it('keymove left', () => {
         const aSpy = sinon.spy();
-        const wrapper = mount(
-            <Range defaultValue={2} hasTip onChange={aSpy} />
-        );
+        const wrapper = mount(<Range defaultValue={2} hasTip onChange={aSpy} />);
 
         wrapper.find('.next-range-slider').simulate('keyDown', { keyCode: 37 });
         assert(aSpy.called);
@@ -501,15 +422,7 @@ describe('Range ', () => {
 
     it('keymove right at rightmost', () => {
         const aSpy = sinon.spy();
-        const wrapper = mount(
-            <Range
-                defaultValue={100}
-                min={1}
-                max={100}
-                hasTip
-                onChange={aSpy}
-            />
-        );
+        const wrapper = mount(<Range defaultValue={100} min={1} max={100} hasTip onChange={aSpy} />);
 
         wrapper.find('.next-range-slider').simulate('keyDown', { keyCode: 39 });
         assert(!aSpy.called);
@@ -518,25 +431,14 @@ describe('Range ', () => {
     it('rtl', () => {
         const wrapperSingle = mount(<Range rtl value={10} />);
         const wrapperDouble = mount(<Range rtl value={[10, 30]} />);
-        assert.deepEqual(
-            wrapperSingle.find('.next-range-selected').props().style,
-            { width: '10%', left: '90%' }
-        );
-        assert.deepEqual(
-            wrapperDouble.find('.next-range-selected').props().style,
-            { width: '20%', left: '70%' }
-        );
+        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, { width: '10%', left: '90%' });
+        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, { width: '20%', left: '70%' });
     });
 
     it('rtl & reverse', () => {
         const wrapperSingle = mount(<Range rtl reverse value={10} />);
-        const wrapperDouble = mount(
-            <Range rtl reverse slider="double" value={[10, 30]} />
-        );
-        assert.deepEqual(
-            wrapperSingle.find('.next-range-selected').props().style,
-            { width: '90%', left: '0%' }
-        );
+        const wrapperDouble = mount(<Range rtl reverse slider="double" value={[10, 30]} />);
+        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, { width: '90%', left: '0%' });
         assert.deepEqual(
             wrapperDouble
                 .find('.next-range-selected')
@@ -555,12 +457,8 @@ describe('Range ', () => {
     });
 
     it('should renderPreview', () => {
-        const wrapperSingle = mount(
-            <Range isPreview renderPreview={() => 'single'} value={30} />
-        );
-        const wrapperDouble = mount(
-            <Range isPreview renderPreview={() => 'double'} value={[10, 40]} />
-        );
+        const wrapperSingle = mount(<Range isPreview renderPreview={() => 'single'} value={30} />);
+        const wrapperDouble = mount(<Range isPreview renderPreview={() => 'double'} value={[10, 40]} />);
 
         assert(wrapperSingle.getDOMNode().innerText === 'single');
         assert(wrapperDouble.getDOMNode().innerText === 'double');

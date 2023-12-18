@@ -152,9 +152,9 @@ describe('src/dom.js', function() {
             const child = document.createElement('div');
             const grandChild = document.createElement('div');
 
-            parent.id = "dom-closest-parent";
-            child.id = "dom-closest-child";
-            grandChild.id = "dom-closest-grandChild";
+            parent.id = 'dom-closest-parent';
+            child.id = 'dom-closest-child';
+            grandChild.id = 'dom-closest-grandChild';
 
             parent.setAttribute('data-level3', 'abc');
             child.setAttribute('data-level3', 'abc');

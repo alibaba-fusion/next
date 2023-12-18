@@ -102,7 +102,7 @@ class Resize extends React.Component {
         if (this.props.hasLock) {
             if (!this.props.asyncResizable) {
                 // when hasn't lock attribute, cellLeft will change
-                this.cellLeft = this.props.cellDomRef.getBoundingClientRect().left - this.tLeft;
+                this.cellLeft = this.props.cellDomRef.current.getBoundingClientRect().left - this.tLeft;
             }
         }
         this.movingLimit();

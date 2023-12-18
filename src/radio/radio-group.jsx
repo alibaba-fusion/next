@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
-import { obj } from '../util';
+import { obj, func, focus } from '../util';
 import Radio from './radio';
 
+const { makeChain } = func;
+const { focusRef } = focus;
 const { pickOthers } = obj;
 
 /**
@@ -118,6 +120,10 @@ class RadioGroup extends Component {
             value = props.defaultValue;
         }
 
+        // The reference for the first Radio and for the selected Radio.
+        this.radioRefs = [];
+        this.hasFocus = false;
+
         this.state = { value };
         this.onChange = this.onChange.bind(this);
     }
@@ -153,6 +159,35 @@ class RadioGroup extends Component {
         }
     }
 
+    focus() {
+        if (!this.hasFocus) {
+            const availableRef = this.radioRefs.filter(ref => {
+                if (ref) {
+                    return !ref.props.disabled;
+                }
+                return false;
+            });
+            const radioRef = availableRef.find(ref => {
+                if (ref) {
+                    return ref.props.checked;
+                }
+                return false;
+            });
+            if (radioRef) {
+                focusRef(radioRef);
+            } else if (availableRef.length > 0) {
+                focusRef(availableRef[0]);
+            }
+        }
+    }
+
+    saveRadioRef = (el, index) => {
+        if (el && typeof el.getInstance === 'function') {
+            const radio = el.getInstance();
+            this.radioRefs[index] = radio;
+        }
+    };
+
     render() {
         const {
             rtl,
@@ -175,6 +210,7 @@ class RadioGroup extends Component {
 
         let children;
         const previewed = {};
+        this.radioRefs = [];
         if (this.props.children) {
             children = React.Children.map(this.props.children, (child, index) => {
                 if (!React.isValidElement(child)) {
@@ -192,11 +228,17 @@ class RadioGroup extends Component {
                         checked,
                         tabIndex,
                         rtl: childrtl,
+                        ref: e => {
+                            this.saveRadioRef(e, index);
+                        },
                     });
                 }
                 return React.cloneElement(child, {
                     checked,
                     rtl: childrtl,
+                    ref: e => {
+                        this.saveRadioRef(e, index);
+                    },
                 });
             });
         } else {
@@ -222,9 +264,19 @@ class RadioGroup extends Component {
                         checked={checked}
                         label={option.label}
                         disabled={disabled || option.disabled}
+                        ref={e => {
+                            this.saveRadioRef(e, index);
+                        }}
                     />
                 );
             });
+        }
+        // Reset the ref if children is unavailable.
+        if (children.length === 0) {
+            this.firstRef = null;
+        }
+        if (!previewed.value) {
+            this.selectedRef = null;
         }
         if (isPreview) {
             const previewCls = classnames(className, `${prefix}form-preview`);
@@ -257,7 +309,25 @@ class RadioGroup extends Component {
 
         const TagName = component;
         return (
-            <TagName {...others} aria-disabled={disabled} role="radiogroup" className={cls} style={style}>
+            <TagName
+                {...others}
+                aria-disabled={disabled}
+                role="radiogroup"
+                className={cls}
+                style={style}
+                onFocus={makeChain(
+                    function() {
+                        this.hasFocus = true;
+                    }.bind(this),
+                    this.props.onFocus
+                )}
+                onBlur={makeChain(
+                    function() {
+                        this.hasFocus = false;
+                    }.bind(this),
+                    this.props.onBlur
+                )}
+            >
                 {children}
             </TagName>
         );

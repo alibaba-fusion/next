@@ -77,7 +77,7 @@ class Checkbox extends UIState {
         /**
          * checkbox 的value
          */
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
         /**
          * name
          */

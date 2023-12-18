@@ -5,14 +5,7 @@ import RangeCalendar from './range-calendar';
 
 /* istanbul ignore next */
 const transform = (props, deprecated) => {
-    const {
-        type,
-        onChange,
-        base,
-        disabledMonth,
-        disabledYear,
-        ...others
-    } = props;
+    const { type, onChange, base, disabledMonth, disabledYear, ...others } = props;
     const newProps = others;
 
     if ('type' in props) {
@@ -62,11 +55,7 @@ const transform = (props, deprecated) => {
     }
 
     if ('yearCellRender' in props && typeof yearCellRender === 'function') {
-        deprecated(
-            'yearCellRender',
-            'monthCellRender/dateCellRender',
-            'Calendar'
-        );
+        deprecated('yearCellRender', 'monthCellRender/dateCellRender', 'Calendar');
     }
 
     if ('language' in props) {

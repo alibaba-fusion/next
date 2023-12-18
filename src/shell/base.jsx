@@ -73,20 +73,13 @@ export default function Base(props) {
                 [`${prefix}shell-${componentName.toLowerCase()}`]: true,
                 [`${prefix}shell-collapse`]: !!collapse,
                 [`${prefix}shell-mini`]: miniable,
-                [`${prefix}shell-nav-${align}`]:
-                    componentName === 'Navigation' &&
-                    direction === 'hoz' &&
-                    align,
+                [`${prefix}shell-nav-${align}`]: componentName === 'Navigation' && direction === 'hoz' && align,
                 [className]: !!className,
             });
 
             let newChildren = children;
             if (componentName === 'Content') {
-                newChildren = (
-                    <div className={`${prefix}shell-content-inner`}>
-                        {children}
-                    </div>
-                );
+                newChildren = <div className={`${prefix}shell-content-inner`}>{children}</div>;
             }
 
             if (componentName === 'Page') {

@@ -50,12 +50,7 @@ export default class ErrorBoundary extends React.Component {
         const { fallbackUI: FallbackUI = DefaultUI } = this.props;
 
         if (this.state.errorInfo) {
-            return (
-                <FallbackUI
-                    error={this.state.error}
-                    errorInfo={this.state.errorInfo}
-                />
-            );
+            return <FallbackUI error={this.state.error} errorInfo={this.state.errorInfo} />;
         }
         // Normally, just render children
         return this.props.children;

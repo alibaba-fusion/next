@@ -35,12 +35,8 @@ export default class Circle extends Component {
         if (this.underlay && this.overlay) {
             // eslint-disable-next-line
             this.setState({
-                underlayStrokeWidth:
-                    this._getCssValue(this.underlay, 'stroke-width') ||
-                    DEFAULT_STROKE_WIDTH,
-                overlayStrokeWidth:
-                    this._getCssValue(this.overlay, 'stroke-width') ||
-                    DEFAULT_STROKE_WIDTH,
+                underlayStrokeWidth: this._getCssValue(this.underlay, 'stroke-width') || DEFAULT_STROKE_WIDTH,
+                overlayStrokeWidth: this._getCssValue(this.overlay, 'stroke-width') || DEFAULT_STROKE_WIDTH,
             });
         }
     }
@@ -64,13 +60,9 @@ export default class Circle extends Component {
     _computeOverlayStrokeDashOffset() {
         const { underlayStrokeWidth, overlayStrokeWidth } = this.state;
         const overlayRadius =
-            HALF_VIEWBOX_WIDTH -
-            overlayStrokeWidth / 2 -
-            (underlayStrokeWidth - overlayStrokeWidth) / 2;
+            HALF_VIEWBOX_WIDTH - overlayStrokeWidth / 2 - (underlayStrokeWidth - overlayStrokeWidth) / 2;
         const overlayLen = Math.PI * 2 * overlayRadius;
-        return (
-            ((VIEWBOX_WIDTH - this.props.percent) / VIEWBOX_WIDTH) * overlayLen
-        );
+        return ((VIEWBOX_WIDTH - this.props.percent) / VIEWBOX_WIDTH) * overlayLen;
     }
 
     _getPath(radius) {
@@ -100,9 +92,7 @@ export default class Circle extends Component {
 
         // overlay path (为居中，减去相对于underlay的宽度)
         const overlayRadius =
-            HALF_VIEWBOX_WIDTH -
-            overlayStrokeWidth / 2 -
-            (underlayStrokeWidth - overlayStrokeWidth) / 2;
+            HALF_VIEWBOX_WIDTH - overlayStrokeWidth / 2 - (underlayStrokeWidth - overlayStrokeWidth) / 2;
         const overlayPath = this._getPath(overlayRadius);
         const overlayLen = Math.PI * 2 * overlayRadius;
         const overlayStrokeDasharray = `${overlayLen}px ${overlayLen}px`;
@@ -119,14 +109,10 @@ export default class Circle extends Component {
 
         const pathCls = classNames({
             [`${prefix}progress-circle-overlay`]: true,
-            [`${prefix}progress-circle-overlay-${state}`]:
-                !color && !progressive && state,
-            [`${prefix}progress-circle-overlay-started`]:
-                !color && progressive && percent <= 30,
-            [`${prefix}progress-circle-overlay-middle`]:
-                !color && progressive && percent > 30 && percent < 80,
-            [`${prefix}progress-circle-overlay-finishing`]:
-                !color && progressive && percent >= 80,
+            [`${prefix}progress-circle-overlay-${state}`]: !color && !progressive && state,
+            [`${prefix}progress-circle-overlay-started`]: !color && progressive && percent <= 30,
+            [`${prefix}progress-circle-overlay-middle`]: !color && progressive && percent > 30 && percent < 80,
+            [`${prefix}progress-circle-overlay-finishing`]: !color && progressive && percent >= 80,
         });
 
         const underlayStyle = { stroke: backgroundColor };
@@ -141,10 +127,7 @@ export default class Circle extends Component {
                 aria-valuemax="100"
                 {...others}
             >
-                <svg
-                    className={`${prefix}progress-circle-container`}
-                    viewBox={viewBox}
-                >
+                <svg className={`${prefix}progress-circle-container`} viewBox={viewBox}>
                     <path
                         className={`${prefix}progress-circle-underlay`}
                         d={underlayPath}
@@ -162,11 +145,7 @@ export default class Circle extends Component {
                         stroke={color}
                     />
                 </svg>
-                {suffixText ? (
-                    <div className={`${prefix}progress-circle-text`}>
-                        {suffixText}
-                    </div>
-                ) : null}
+                {suffixText ? <div className={`${prefix}progress-circle-text`}>{suffixText}</div> : null}
             </div>
         );
     }

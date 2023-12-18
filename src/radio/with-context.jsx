@@ -8,16 +8,31 @@ export default function withContext(Radio) {
             onChange: PropTypes.func,
             __group__: PropTypes.bool,
             isButton: PropTypes.bool,
-            selectedValue: PropTypes.oneOfType([
-                PropTypes.string,
-                PropTypes.number,
-                PropTypes.bool,
-            ]),
+            selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
             disabled: PropTypes.bool,
         };
 
+        constructor(props) {
+            super(props);
+            this.radioRef = null;
+        }
+
+        focus() {
+            if (this.radioRef) {
+                this.radioRef.focus();
+            }
+        }
+
         render() {
-            return <Radio {...this.props} context={this.context} />;
+            return (
+                <Radio
+                    ref={el => {
+                        this.radioRef = el;
+                    }}
+                    {...this.props}
+                    context={this.context}
+                />
+            );
         }
     };
 }

@@ -95,9 +95,7 @@ class TimePickerPanel extends Component {
 
     onSelectMenuItem = (index, type) => {
         const { value } = this.props;
-        const clonedValue = value
-            ? value.clone()
-            : moment('00:00:00', 'HH:mm:ss', true);
+        const clonedValue = value ? value.clone() : moment('00:00:00', 'HH:mm:ss', true);
         switch (type) {
             case 'hour':
                 clonedValue.hour(index);

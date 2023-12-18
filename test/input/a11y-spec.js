@@ -20,9 +20,7 @@ describe('Input A11y', () => {
     });
 
     it('should not have any violations', async () => {
-        wrapper = await testReact(
-            <Input aria-label="a11y input" defaultValue="123" />
-        );
+        wrapper = await testReact(<Input aria-label="a11y input" defaultValue="123" />);
         return wrapper;
     });
 
@@ -44,30 +42,16 @@ describe('Input A11y', () => {
     it('should not have any violations when any state is set', async () => {
         wrapper = await testReact(
             <div>
-                <Input
-                    aria-label="a11y input error"
-                    defaultValue="123"
-                    state="error"
-                />
-                <Input
-                    aria-label="a11y input loading"
-                    defaultValue="123"
-                    state="loading"
-                />
-                <Input
-                    aria-label="a11y input success"
-                    defaultValue="123"
-                    state="success"
-                />
+                <Input aria-label="a11y input error" defaultValue="123" state="error" />
+                <Input aria-label="a11y input loading" defaultValue="123" state="loading" />
+                <Input aria-label="a11y input success" defaultValue="123" state="success" />
             </div>
         );
         return wrapper;
     });
 
     it('should not have any violations when autoComplete', async () => {
-        wrapper = await testReact(
-            <Input aria-label="a11y input" autoComplete="on" />
-        );
+        wrapper = await testReact(<Input aria-label="a11y input" autoComplete="on" />);
         return wrapper;
     });
 
@@ -78,11 +62,7 @@ describe('Input A11y', () => {
 
     it('should not have any violations when using addons', async () => {
         wrapper = await testReact(
-            <Input
-                addonTextAfter=".com"
-                addonBefore={<span>before</span>}
-                aria-label="a11y input"
-            />
+            <Input addonTextAfter=".com" addonBefore={<span>before</span>} aria-label="a11y input" />
         );
         return wrapper;
     });

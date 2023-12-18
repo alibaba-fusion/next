@@ -24,50 +24,41 @@ describe('Typography', () => {
     describe('Paragraph', () => {
         it('default class check', () => {
             wrapper = mount(<Paragraph />);
-            assert(
-                wrapper
-                    .find('.next-typography-paragraph')
-                    .exists()
-            );
+            assert(wrapper.find('.next-typography-paragraph').exists());
         });
 
         it('props `rtl` should be ok', () => {
             wrapper = mount(<Paragraph rtl />);
-            assert(wrapper.find('.next-typography-paragraph').last().props().dir === 'rtl');
+            assert(
+                wrapper
+                    .find('.next-typography-paragraph')
+                    .last()
+                    .props().dir === 'rtl'
+            );
         });
     });
 
     describe('Typography', () => {
         it('default class check', () => {
             wrapper = mount(<Typography />);
-            assert(
-                wrapper
-                    .find('.next-typography')
-                    .exists()
-            );
-            assert(
-                wrapper
-                    .find('.next-typography').type() === 'article'
-            );
+            assert(wrapper.find('.next-typography').exists());
+            assert(wrapper.find('.next-typography').type() === 'article');
         });
     });
 
     describe('Title', () => {
         it('default class check', () => {
             wrapper = mount(<H1 />);
-            assert(
-                wrapper
-                    .find('.next-typography-title')
-                    .exists()
-            );
+            assert(wrapper.find('.next-typography-title').exists());
         });
 
         it('h1 tag check', () => {
             wrapper = mount(<H1 />);
             assert(
                 wrapper
-                    .find('.next-typography-title').last().type()
-                    === 'h1'
+                    .find('.next-typography-title')
+                    .last()
+                    .type() === 'h1'
             );
         });
 
@@ -75,8 +66,9 @@ describe('Typography', () => {
             wrapper = mount(<H2 />);
             assert(
                 wrapper
-                    .find('.next-typography-title').last().type()
-                    === 'h2'
+                    .find('.next-typography-title')
+                    .last()
+                    .type() === 'h2'
             );
         });
 
@@ -84,8 +76,9 @@ describe('Typography', () => {
             wrapper = mount(<H3 />);
             assert(
                 wrapper
-                    .find('.next-typography-title').last().type()
-                    === 'h3'
+                    .find('.next-typography-title')
+                    .last()
+                    .type() === 'h3'
             );
         });
 
@@ -93,8 +86,9 @@ describe('Typography', () => {
             wrapper = mount(<H4 />);
             assert(
                 wrapper
-                    .find('.next-typography-title').last().type()
-                    === 'h4'
+                    .find('.next-typography-title')
+                    .last()
+                    .type() === 'h4'
             );
         });
 
@@ -102,8 +96,9 @@ describe('Typography', () => {
             wrapper = mount(<H5 />);
             assert(
                 wrapper
-                    .find('.next-typography-title').last().type()
-                    === 'h5'
+                    .find('.next-typography-title')
+                    .last()
+                    .type() === 'h5'
             );
         });
 
@@ -111,8 +106,9 @@ describe('Typography', () => {
             wrapper = mount(<H6 />);
             assert(
                 wrapper
-                    .find('.next-typography-title').last().type()
-                    === 'h6'
+                    .find('.next-typography-title')
+                    .last()
+                    .type() === 'h6'
             );
         });
     });
@@ -120,55 +116,31 @@ describe('Typography', () => {
     describe('Text', () => {
         it('default class check', () => {
             wrapper = mount(<Text />);
-            assert(
-                wrapper
-                    .find('.next-typography')
-                    .exists()
-            );
+            assert(wrapper.find('.next-typography').exists());
         });
         it('default different style', () => {
             wrapper = mount(<Text strong />);
-            assert(
-                wrapper
-                    .find('strong')
-                    .exists()
-            );
+            assert(wrapper.find('strong').exists());
 
             wrapper.setProps({
                 underline: true,
             });
-            assert(
-                wrapper
-                    .find('u')
-                    .exists()
-            );
+            assert(wrapper.find('u').exists());
 
             wrapper.setProps({
                 delete: true,
             });
-            assert(
-                wrapper
-                    .find('del')
-                    .exists()
-            );
+            assert(wrapper.find('del').exists());
 
             wrapper.setProps({
                 code: true,
             });
-            assert(
-                wrapper
-                    .find('code')
-                    .exists()
-            );
+            assert(wrapper.find('code').exists());
 
             wrapper.setProps({
                 mark: true,
             });
-            assert(
-                wrapper
-                    .find('mark')
-                    .exists()
-            );
+            assert(wrapper.find('mark').exists());
         });
-    })
+    });
 });

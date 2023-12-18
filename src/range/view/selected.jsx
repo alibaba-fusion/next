@@ -8,10 +8,7 @@ export default class Selected extends React.Component {
         min: PropTypes.number,
         max: PropTypes.number,
         slider: PropTypes.string,
-        value: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number),
-        ]),
+        value: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
         prefix: PropTypes.string,
         reverse: PropTypes.bool,
         rtl: PropTypes.bool,

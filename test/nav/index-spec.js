@@ -94,9 +94,7 @@ describe('Nav', () => {
                 activeDirection,
             });
             assert(wrapper.find('ul.next-nav').hasClass('next-active'));
-            assert(
-                wrapper.find('ul.next-nav').hasClass(`next-${activeDirection}`)
-            );
+            assert(wrapper.find('ul.next-nav').hasClass(`next-${activeDirection}`));
         });
         ['top', 'bottom'].forEach(activeDirection => {
             wrapper.setProps({
@@ -112,9 +110,7 @@ describe('Nav', () => {
                 activeDirection,
             });
             assert(wrapper.find('ul.next-nav').hasClass('next-active'));
-            assert(
-                wrapper.find('ul.next-nav').hasClass(`next-${activeDirection}`)
-            );
+            assert(wrapper.find('ul.next-nav').hasClass(`next-${activeDirection}`));
         });
         ['left', 'right'].forEach(activeDirection => {
             wrapper.setProps({
@@ -164,10 +160,7 @@ describe('Nav', () => {
                     <Item key="2-1">First</Item>
                     <Item key="2-2">Second</Item>
                 </SubNav>
-                <SubNav
-                    key="3"
-                    icon={<Icon className="custom-icon" type="atm" />}
-                >
+                <SubNav key="3" icon={<Icon className="custom-icon" type="atm" />}>
                     <Item key="3-1">First</Item>
                     <Item key="3-2">Second</Item>
                 </SubNav>
@@ -199,10 +192,7 @@ describe('Nav', () => {
                 <PopupItem key="2" icon="account">
                     <div>Custom</div>
                 </PopupItem>
-                <PopupItem
-                    key="3"
-                    icon={<Icon className="custom-icon" type="atm" />}
-                >
+                <PopupItem key="3" icon={<Icon className="custom-icon" type="atm" />}>
                     <div>Custom</div>
                 </PopupItem>
             </Nav>
@@ -246,21 +236,20 @@ describe('Nav', () => {
                 </SubNav>
             </Nav>
         );
-
     });
 
     it('should support showChildSelected', () => {
-        wrapper = mount(
-            <Nav selectedKeys="1" />
-        );
+        wrapper = mount(<Nav selectedKeys="1" />);
 
         assert(wrapper);
 
         wrapper.setProps({
-            children: <SubNav label="Group label">
-            <Item key="1">First</Item>
-            <Item key="2">Second</Item>
-        </SubNav>
+            children: (
+                <SubNav label="Group label">
+                    <Item key="1">First</Item>
+                    <Item key="2">Second</Item>
+                </SubNav>
+            ),
         });
 
         const subNavItem = wrapper.find('li.next-nav-sub-nav-item').at(0);
@@ -268,13 +257,13 @@ describe('Nav', () => {
         assert(subNavItem.find('.next-nav-item').hasClass('next-child-selected'));
 
         wrapper.setProps({
-            mode: 'popup'
+            mode: 'popup',
         });
 
         assert(subNavItem.find('.next-nav-item').hasClass('next-child-selected'));
 
         wrapper.setProps({
-            selectedKeys: 'ddasdfa'
+            selectedKeys: 'ddasdfa',
         });
 
         assert(wrapper);
@@ -293,7 +282,7 @@ describe('Nav', () => {
         assert(wrapper.find('li.next-nav-sub-nav-item')[0].querySelector('.next-nav-item.next-opened'));
         wrapper.setProps({
             iconOnly: true,
-            mode: 'popup'
+            mode: 'popup',
         });
         assert(!wrapper.find('li.next-nav-sub-nav-item')[0].querySelector('.next-nav-item.next-opened'));
     });
@@ -357,32 +346,12 @@ describe('Nav', () => {
         assert(items.at(1).find('i.next-nav-icon').length === 0);
 
         let subNavItems = nav.find('li.next-nav-sub-nav-item');
-        assert(
-            subNavItems
-                .at(0)
-                .find('i.next-icon-arrow-down.next-nav-icon-only-arrow')
-                .length === 1
-        );
-        assert(
-            subNavItems
-                .at(1)
-                .find('i.next-icon-arrow-down.next-nav-icon-only-arrow')
-                .length === 1
-        );
+        assert(subNavItems.at(0).find('i.next-icon-arrow-down.next-nav-icon-only-arrow').length === 1);
+        assert(subNavItems.at(1).find('i.next-icon-arrow-down.next-nav-icon-only-arrow').length === 1);
 
         let popupItems = nav.find('li.next-nav-popup-item');
-        assert(
-            popupItems
-                .at(0)
-                .find('i.next-icon-arrow-right.next-nav-icon-only-arrow')
-                .length === 1
-        );
-        assert(
-            popupItems
-                .at(0)
-                .find('i.next-icon-arrow-right.next-nav-icon-only-arrow')
-                .length === 1
-        );
+        assert(popupItems.at(0).find('i.next-icon-arrow-right.next-nav-icon-only-arrow').length === 1);
+        assert(popupItems.at(0).find('i.next-icon-arrow-right.next-nav-icon-only-arrow').length === 1);
 
         const groupLabel = nav.find('li.next-nav-group-label');
         assert(groupLabel.find('.next-menu-item-inner > span').length === 1);
@@ -392,18 +361,8 @@ describe('Nav', () => {
         });
         nav = wrapper.find('ul.next-nav');
         subNavItems = nav.find('li.next-nav-sub-nav-item');
-        assert(
-            subNavItems
-                .at(0)
-                .find('i.next-icon-arrow-right.next-nav-icon-only-arrow')
-                .length === 1
-        );
-        assert(
-            subNavItems
-                .at(1)
-                .find('i.next-icon-arrow-right.next-nav-icon-only-arrow')
-                .length === 1
-        );
+        assert(subNavItems.at(0).find('i.next-icon-arrow-right.next-nav-icon-only-arrow').length === 1);
+        assert(subNavItems.at(1).find('i.next-icon-arrow-right.next-nav-icon-only-arrow').length === 1);
 
         wrapper.setProps({
             hasArrow: false,
@@ -412,15 +371,10 @@ describe('Nav', () => {
         nav = wrapper.find('ul.next-nav');
         subNavItems = nav.find('li.next-nav-sub-nav-item');
         assert(subNavItems.at(0).find('i.next-nav-icon').length === 1);
-        assert(
-            subNavItems.at(1).find('.next-menu-item-text > span').length ===
-                1
-        );
+        assert(subNavItems.at(1).find('.next-menu-item-text > span').length === 1);
         popupItems = nav.find('li.next-nav-popup-item');
         assert(popupItems.at(0).find('i.next-nav-icon').length === 1);
-        assert(
-            popupItems.at(1).find('.next-menu-item-text > span').length === 1
-        );
+        assert(popupItems.at(1).find('.next-menu-item-text > span').length === 1);
         items = nav.find('li.next-nav-item');
         items.at(0).simulate('mouseenter');
         setTimeout(() => {
@@ -429,9 +383,9 @@ describe('Nav', () => {
         }, 500);
     });
 
-    it('should support iconOnly switch state', (done) => {
+    it('should support iconOnly switch state', done => {
         wrapper = render(
-            <Nav iconOnly={false} mode={"inline"} style={{ width: '200px' }} openKeys="icononly-switch-subnav">
+            <Nav iconOnly={false} mode={'inline'} style={{ width: '200px' }} openKeys="icononly-switch-subnav">
                 <SubNav icon="account" label="SubNav label" key="icononly-switch-subnav">
                     <Item icon="account" key="1" id="icononly-switch-item-1">
                         First
@@ -443,33 +397,33 @@ describe('Nav', () => {
             </Nav>
         );
 
-        assert(document.getElementById("icononly-switch-item-1").style.paddingLeft === '40px');
-        assert(document.getElementById("icononly-switch-item-2").style.paddingLeft === '40px');
+        assert(document.getElementById('icononly-switch-item-1').style.paddingLeft === '40px');
+        assert(document.getElementById('icononly-switch-item-2').style.paddingLeft === '40px');
 
         wrapper.setProps({
             iconOnly: true,
-            mode: "popup"
+            mode: 'popup',
         });
 
-        assert(document.getElementById("icononly-switch-item-1").style.paddingLeft === '');
-        assert(document.getElementById("icononly-switch-item-2").style.paddingLeft === '');
+        assert(document.getElementById('icononly-switch-item-1').style.paddingLeft === '');
+        assert(document.getElementById('icononly-switch-item-2').style.paddingLeft === '');
 
         wrapper.setProps({
             iconOnly: false,
-            mode: "inline"
+            mode: 'inline',
         });
 
-        assert(document.getElementById("icononly-switch-item-1").style.paddingLeft === '40px');
-        assert(document.getElementById("icononly-switch-item-2").style.paddingLeft === '40px');
+        assert(document.getElementById('icononly-switch-item-1').style.paddingLeft === '40px');
+        assert(document.getElementById('icononly-switch-item-2').style.paddingLeft === '40px');
 
         done();
     });
 
-    it('should support fixed', (done) => {
+    it('should support fixed', done => {
         wrapper = render(
             <Nav
-                style={{ left: 0, top: 0, position: 'fixed', width: 70}}
-                popupStyle={{position: 'fixed'}}
+                style={{ left: 0, top: 0, position: 'fixed', width: 70 }}
+                popupStyle={{ position: 'fixed' }}
                 popupClassName="fixed-popup-sub3"
                 type="primary"
                 mode="popup"

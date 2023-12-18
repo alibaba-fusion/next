@@ -1,13 +1,13 @@
 # 自定义面板页脚
 
-- order: 9
+- order: 11
 
 可以通过 `extraFooterRender` 自定义对面板页脚的定制。
 
 :::lang=en-us
 # Footer
 
-- order: 9
+- order: 11
 
 Passing custom footer with `extraFooterRender`.
 

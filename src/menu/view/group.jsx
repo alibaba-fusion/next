@@ -25,14 +25,7 @@ export default class Group extends Component {
     };
 
     render() {
-        const {
-            root,
-            className,
-            label,
-            children,
-            parentMode,
-            ...others
-        } = this.props;
+        const { root, className, label, children, parentMode, ...others } = this.props;
         const { prefix } = root.props;
 
         const newClassName = cx({

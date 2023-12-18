@@ -8,12 +8,9 @@ import Upload from '../../src/upload/runtime/iframe-uploader';
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Iframe Upload', () => {
-  describe('should render without crash', () => {
-    const wrapper = mount(
-      <Upload />
-    );
+    describe('should render without crash', () => {
+        const wrapper = mount(<Upload />);
 
-    assert(wrapper.find('form').length);
-  })
-})
-
+        assert(wrapper.find('form').length);
+    });
+});

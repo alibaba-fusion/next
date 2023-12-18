@@ -25,14 +25,7 @@ class ButtonGroup extends Component {
     };
 
     render() {
-        const {
-            prefix,
-            className,
-            size,
-            children,
-            rtl,
-            ...others
-        } = this.props;
+        const { prefix, className, size, children, rtl, ...others } = this.props;
 
         const groupCls = classNames({
             [`${prefix}btn-group`]: true,

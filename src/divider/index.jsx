@@ -35,14 +35,7 @@ class Divider extends Component {
     };
 
     render() {
-        const {
-            prefix,
-            className,
-            dashed,
-            direction,
-            orientation,
-            children,
-        } = this.props;
+        const { prefix, className, dashed, direction, orientation, children } = this.props;
         const others = obj.pickOthers(Divider.propTypes, this.props);
 
         const cls = classNames(
@@ -50,19 +43,14 @@ class Divider extends Component {
                 [`${prefix}divider`]: true,
                 [`${prefix}divider-dashed`]: !!dashed,
                 [`${prefix}divider-${direction}`]: !!direction,
-                [`${prefix}divider-with-text-${orientation}`]:
-                    !!orientation && children,
+                [`${prefix}divider-with-text-${orientation}`]: !!orientation && children,
             },
             className
         );
 
         return (
             <div role="separator" className={cls} {...others}>
-                {children && (
-                    <span className={`${prefix}divider-inner-text`}>
-                        {children}
-                    </span>
-                )}
+                {children && <span className={`${prefix}divider-inner-text`}>{children}</span>}
             </div>
         );
     }

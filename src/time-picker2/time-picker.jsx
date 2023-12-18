@@ -164,7 +164,7 @@ class TimePicker2 extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {DayjsObject} value 时间
+         * @param {DayjsObject|DayjsObject[]} value 时间
          */
         renderPreview: PropTypes.func,
         /**
@@ -551,8 +551,11 @@ class TimePicker2 extends Component {
         const { value } = this.state;
         const previewCls = classnames(className, `${prefix}form-preview`);
 
-        const label = value ? value.format(format) : '';
-
+        let label = '';
+        if (value) {
+            const valueArr = Array.isArray(value) ? value : [value];
+            label = valueArr.map(v => (v ? v.format(format) : '')).join('-');
+        }
         if (typeof renderPreview === 'function') {
             return (
                 <div {...others} className={previewCls}>

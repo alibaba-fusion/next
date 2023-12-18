@@ -1,6 +1,6 @@
 const path = require('path');
 const _ = require('lodash');
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
 
 /**
  *
@@ -35,6 +35,42 @@ exports.runCmd = function(command, options = { stdio: 'inherit' }) {
 };
 
 /**
+ * 运行命令with spawn
+ *
+ * @param {string} command 命令
+ * @param {object} options 参数，默认值 { stdio: 'inherit' }
+ */
+exports.runCmdSpawn = function(command, options = { stdio: 'inherit' }) {
+    const { stdio = 'inherit', ...rest } = options;
+    return new Promise(function(resolve, reject) {
+        const tokens = command.split(/\s+/);
+        const cmd = tokens[0],
+            args = tokens.slice(1);
+        const child = spawn(cmd, args, {
+            stdio,
+            ...rest,
+        });
+        let errMsg = '';
+        let output = '';
+        child.on('exit', code => {
+            if (code !== null) {
+                if (code === 0) {
+                    resolve(output);
+                } else {
+                    reject(errMsg);
+                }
+            }
+        });
+        child.stdout?.on('data', data => {
+            output += String(data);
+        });
+        child.stderr?.on('data', data => {
+            errMsg += String(data);
+        });
+    });
+};
+
+/**
  *
  * @param {String} component date-picker2
  * @return {String} date-picker2
@@ -42,7 +78,7 @@ exports.runCmd = function(command, options = { stdio: 'inherit' }) {
  * 输入 datePicker2 输出 date-picker2
  */
 exports.getComPathName = function(component) {
-    let babName = _.kebabCase(component);
+    const babName = _.kebabCase(component);
     let componentName = babName;
     babName.replace(/(-*\d-*)/gi, s => {
         componentName = babName.replace(s, s.replace('-', ''));

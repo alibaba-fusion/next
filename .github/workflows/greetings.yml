@@ -1,0 +1,16 @@
+name: Greetings
+
+on: [pull_request_target, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: "这是您为 Fusion/Next 提的第一个 issue，感谢您对 Fusion 的信任和支持，我们会尽快进行处理。"
+        pr-message: "这是您为 Fusion/Next 提的第一个 pr，感谢您为 Fusion 做出的贡献，我们会尽快进行处理。"

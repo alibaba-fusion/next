@@ -24,11 +24,7 @@ export default ConfigProvider.config(Balloon, {
             props = { alignEdge: alignment === 'edge', ...others };
         }
         if (props.onCloseClick) {
-            deprecated(
-                'onCloseClick',
-                'onVisibleChange(visible, [type = "closeClick"])',
-                'Balloon'
-            );
+            deprecated('onCloseClick', 'onVisibleChange(visible, [type = "closeClick"])', 'Balloon');
             const { onCloseClick, onVisibleChange, ...others } = props;
             const newOnVisibleChange = (visible, type) => {
                 if (type === 'closeClick') {

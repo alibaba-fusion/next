@@ -47,7 +47,18 @@ class Nav extends React.Component {
             showBtn: false,
             dropdownTabs: [],
         };
-        this.offset = 0;
+    }
+
+    /**
+     * 实时获取滚动位置
+     */
+    get offset() {
+        const scroller = this.scroller;
+        if (!scroller) {
+            return 0;
+        }
+        const scrollLeft = scroller.scrollLeft;
+        return scrollLeft > 0 ? -scrollLeft : scrollLeft;
     }
 
     componentDidMount() {
@@ -63,12 +74,8 @@ class Nav extends React.Component {
         clearTimeout(this.scrollTimer);
         this.scrollTimer = setTimeout(() => {
             this.scrollToActiveTab();
-        }, 410); // transition-duration is set to be .4s, wait for the transition finishes before re-calc
-
-        clearTimeout(this.slideTimer);
-        this.slideTimer = setTimeout(() => {
             this.setSlideBtn();
-        }, 410);
+        }, 410); // transition-duration is set to be .4s, wait for the transition finishes before re-calc
 
         // 更改tabs后如果有dropdown属性，应该重新执行getDropdownItems函数更新dropdown数据
         if (this.props.excessMode === 'dropdown') {
@@ -128,8 +135,6 @@ class Nav extends React.Component {
         const offsetValue = isNaN(_ov) ? target : _ov;
 
         if (this.offset !== target && this.nav) {
-            // needs move
-            this.offset = target;
             const divScroll = this.nav.parentElement;
 
             if (tabPosition === 'left' || tabPosition === 'right') {
@@ -199,18 +204,19 @@ class Nav extends React.Component {
         // TEMP: 这里会受 Animate 影响，re-render 过程中 this.nav 实际上指向的是上次的 tabList 元素，建议暂时关闭 animation 解决
         const navWH = getOffsetWH(this.nav, tabPosition);
         const wrapperWH = getOffsetWH(this.wrapper, tabPosition);
-        const minOffset = wrapperWH - navWH;
-
+        // 这里统一向下取整再做比较，否则会因为小数点精度问题导致无法对齐
+        const minOffset = Math.floor(wrapperWH - navWH);
+        const offset = Math.floor(this.offset);
         let next;
         let prev;
         if (minOffset >= 0 || navWH <= wrapperWH) {
             next = false;
             prev = false;
             this.setOffset(0, false); // no need to check slide again since this call is invoked from inside setSlideBtn
-        } else if (this.offset < 0 && this.offset <= minOffset) {
+        } else if (offset < 0 && offset <= minOffset) {
             prev = true;
             next = false;
-        } else if (this.offset >= 0) {
+        } else if (offset >= 0) {
             prev = false;
             next = true;
         } else {
@@ -258,6 +264,18 @@ class Nav extends React.Component {
     removeTab = (key, e) => {
         e && e.stopPropagation(); // stop bubble, so that it won't trigger upstream listener
         this.props.onClose(key);
+    };
+
+    debounceSetSideBtn = () => {
+        clearTimeout(this.slideTimer);
+        this.slideTimer = setTimeout(() => {
+            this.setSlideBtn();
+        }, 100);
+    };
+
+    onScroll = () => {
+        // 每次滚动时更新btn状态
+        this.debounceSetSideBtn();
     };
 
     onCloseKeyDown = (key, e) => {
@@ -354,7 +372,7 @@ class Nav extends React.Component {
             const wrapperOffset = getOffsetLT(this.wrapper);
             const target = this.offset;
 
-            if (activeTabOffset + activeTabWH >= wrapperOffset + wrapperWH || activeTabOffset < wrapperOffset) {
+            if (activeTabOffset + activeTabWH > wrapperOffset + wrapperWH + 1 || activeTabOffset < wrapperOffset) {
                 this.setOffset(this.offset + wrapperOffset - activeTabOffset, true, true);
                 return;
             }
@@ -469,6 +487,10 @@ class Nav extends React.Component {
         this.wrapper = ref;
     };
 
+    scrollerRefHandler = ref => {
+        this.scroller = ref;
+    };
+
     navbarRefHandler = ref => {
         this.navbar = ref;
     };
@@ -562,7 +584,7 @@ class Nav extends React.Component {
         const container = (
             <div className={containerCls} onKeyDown={onKeyDown} key="nav-container">
                 <div className={`${prefix}tabs-nav-wrap`} ref={this.wrapperRefHandler}>
-                    <div className={`${prefix}tabs-nav-scroll`}>
+                    <div className={`${prefix}tabs-nav-scroll`} ref={this.scrollerRefHandler} onScroll={this.onScroll}>
                         {animation ? (
                             <Animate
                                 role="tablist"

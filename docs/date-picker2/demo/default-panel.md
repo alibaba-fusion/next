@@ -1,13 +1,13 @@
 # 面板的默认展现日期
 
-- order: 6
+- order: 8
 
 可以通过 `defaultPanelValue`属性可以修改面板的默认展现日期。
 
 :::lang=en-us
 # Default visible date
 
-- order: 6
+- order: 8
 
 Change default visible date by setting `defaultPanelValue`.
 

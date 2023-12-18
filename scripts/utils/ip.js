@@ -26,11 +26,6 @@ module.exports = function(remote) {
 };
 
 function getIP(list) {
-    const targetItem = list.find(
-        item =>
-            item.family === 'IPv4' &&
-            item.address !== '127.0.0.1' &&
-            !item.internal
-    );
+    const targetItem = list.find(item => item.family === 'IPv4' && item.address !== '127.0.0.1' && !item.internal);
     return targetItem ? targetItem.address : null;
 }

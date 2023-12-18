@@ -220,7 +220,7 @@ class NumberPicker extends React.Component {
         // 如果是undefined或null，应该不限制最大最小值
         const { min, max } = nextProps;
         if ('min' in nextProps && min !== prevState.min) {
-            state.min = !isNil(min) ? min : stringMode ? Infinity : MIN_SAFE_INTEGER;
+            state.min = !isNil(min) ? min : stringMode ? -Infinity : MIN_SAFE_INTEGER;
         }
 
         if ('max' in nextProps && max !== prevState.max) {
@@ -469,7 +469,7 @@ class NumberPicker extends React.Component {
         const { step, stringMode } = this.props;
         const precisionFactor = this.getPrecisionFactor();
         if (typeof val === 'number' && !stringMode) {
-            let result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
+            const result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
             return this.hackChrome(result);
         }
         return Big(val || '0')
@@ -481,7 +481,7 @@ class NumberPicker extends React.Component {
         const { step, stringMode } = this.props;
         const precisionFactor = this.getPrecisionFactor();
         if (typeof val === 'number' && !stringMode) {
-            let result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
+            const result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
             return this.hackChrome(result);
         }
         return Big(val || '0')

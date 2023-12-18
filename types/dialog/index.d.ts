@@ -11,7 +11,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface DialogProps extends HTMLAttributesWeak, CommonProps {
+export interface DialogProps extends Omit<HTMLAttributesWeak, 'content'>, CommonProps {
     /**
      * 是否显示
      */

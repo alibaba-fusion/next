@@ -42,7 +42,7 @@ type data = {
     disabled?: boolean;
     key?: string;
     [propName: string]: any;
-}
+};
 
 export interface CollapseProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**

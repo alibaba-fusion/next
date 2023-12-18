@@ -1,12 +1,7 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import {
-    test,
-    testReact,
-    unmount,
-    createContainer,
-} from '../util/a11y/validate';
+import { test, testReact, unmount, createContainer } from '../util/a11y/validate';
 import SplitButton from '../../src/split-button';
 import '../../src/split-button/style.js';
 
@@ -19,9 +14,7 @@ describe.skip('SplitButton A11y', () => {
     let wrapper;
     let portalContainer;
 
-    const menu = ['a', 'b'].map(item => (
-        <SplitButton.Item key={item}>{item}</SplitButton.Item>
-    ));
+    const menu = ['a', 'b'].map(item => <SplitButton.Item key={item}>{item}</SplitButton.Item>);
 
     afterEach(() => {
         if (wrapper) {

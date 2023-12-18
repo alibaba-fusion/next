@@ -9,11 +9,13 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 type data = {
-    value?: string | number;
+    value?: string | number | boolean;
     label?: React.ReactNode;
     disabled?: boolean;
     [propName: string]: any;
-}
+};
+
+export type CheckboxData = data;
 
 export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
@@ -46,12 +48,12 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 被选中的值列表
      */
-    value?: Array<string> | Array<number> | string | number;
+    value?: Array<string> | Array<number> | Array<boolean> | string | number | boolean;
 
     /**
      * 默认被选中的值列表
      */
-    defaultValue?: Array<string> | Array<number> | string | number;
+    defaultValue?: Array<string> | Array<number> | Array<boolean> | string | number | boolean;
 
     /**
      * name
@@ -66,7 +68,7 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中值改变时的事件
      */
-    onChange?: (value: Array<string>, e: any) => void;
+    onChange?: (value: Array<string> | Array<number> | Array<boolean>, e: any) => void;
 
     /**
      * 子项目的排列方式
@@ -108,7 +110,7 @@ export interface CheckboxProps extends HTMLAttributesWeak, CommonProps {
     /**
      * checkbox 的value
      */
-    value?: string | number;
+    value?: string | number | boolean;
 
     /**
      * name
@@ -143,7 +145,7 @@ export interface CheckboxProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否为预览态
      */
-     isPreview?: boolean;
+    isPreview?: boolean;
 
     /**
      * 状态变化时触发的事件

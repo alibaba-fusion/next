@@ -47,14 +47,10 @@ describe('Row', () => {
             children: [<Col key="1" span="12" />, <Col key="2" span="12" />],
         });
         const rowStyle = wrapper.find('.next-row').props().style;
-        assert(
-            rowStyle.marginLeft === '-8px' && rowStyle.marginRight === '-8px'
-        );
+        assert(rowStyle.marginLeft === '-8px' && rowStyle.marginRight === '-8px');
 
         const colStyle = wrapper.find('.next-col').getElements()[0].props.style;
-        assert(
-            colStyle.paddingLeft === '8px' && colStyle.paddingRight === '8px'
-        );
+        assert(colStyle.paddingLeft === '8px' && colStyle.paddingRight === '8px');
     });
 
     it('should receive className prop', () => {
@@ -75,9 +71,7 @@ describe('Row', () => {
         assert(wrapper.find('.next-row').hasClass('next-row-s-hidden'));
 
         wrapper.setProps({ hidden: ['s', 'm'] });
-        assert(
-            wrapper.find('.next-row-s-hidden').hasClass('next-row-m-hidden')
-        );
+        assert(wrapper.find('.next-row-s-hidden').hasClass('next-row-m-hidden'));
     });
 
     it('should rendered as custom element type', () => {
@@ -139,9 +133,7 @@ describe('Col', () => {
         assert(wrapper.find('.next-col').hasClass('next-col-s-hidden'));
 
         wrapper.setProps({ hidden: ['s', 'm'] });
-        assert(
-            wrapper.find('.next-col-s-hidden').hasClass('next-col-m-hidden')
-        );
+        assert(wrapper.find('.next-col-s-hidden').hasClass('next-col-m-hidden'));
     });
 
     it('should receive className prop', () => {

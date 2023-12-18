@@ -25,9 +25,7 @@ describe('Dialog A11y', () => {
         });
 
         it('should not have any violations', async () => {
-            wrapper = await mount(
-                <Dialog visible title="Accessible Header" />
-            );
+            wrapper = await mount(<Dialog visible title="Accessible Header" />);
             return test('.next-overlay-wrapper');
         });
 
@@ -68,9 +66,7 @@ describe('Dialog A11y', () => {
                 content: 'Content',
                 animation: false,
             }).hide;
-            assert(
-                roleType('alertdialog', document.querySelector('.next-dialog'))
-            );
+            assert(roleType('alertdialog', document.querySelector('.next-dialog')));
         });
 
         it('should have role `alertdialog` for show dialog', () => {
@@ -79,9 +75,7 @@ describe('Dialog A11y', () => {
                 content: 'Content',
                 animation: false,
             }).hide;
-            assert(
-                roleType('alertdialog', document.querySelector('.next-dialog'))
-            );
+            assert(roleType('alertdialog', document.querySelector('.next-dialog')));
         });
 
         it('should have role `alertdialog` for confirm dialog', () => {
@@ -90,9 +84,7 @@ describe('Dialog A11y', () => {
                 content: 'Content',
                 animation: false,
             }).hide;
-            assert(
-                roleType('alertdialog', document.querySelector('.next-dialog'))
-            );
+            assert(roleType('alertdialog', document.querySelector('.next-dialog')));
         });
     });
 });

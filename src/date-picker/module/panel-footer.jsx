@@ -32,13 +32,7 @@ class PanelFooter extends React.PureComponent {
                         onOk(momentValue);
                     };
                     return (
-                        <Button
-                            key={label}
-                            text
-                            size="small"
-                            type="primary"
-                            onClick={handleClick}
-                        >
+                        <Button key={label} text size="small" type="primary" onClick={handleClick}>
                             {label}
                         </Button>
                     );
@@ -78,11 +72,7 @@ class PanelFooter extends React.PureComponent {
                         {panelBtnLabel}
                     </Button>
                 ) : null}
-                <Button
-                    {...sharedBtnProps}
-                    disabled={disabledOk || !value}
-                    onClick={onClick}
-                >
+                <Button {...sharedBtnProps} disabled={disabledOk || !value} onClick={onClick}>
                     {locale.ok}
                 </Button>
             </div>

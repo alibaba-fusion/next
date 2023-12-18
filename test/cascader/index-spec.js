@@ -552,16 +552,22 @@ describe('Cascader', () => {
 
         const item00 = findRealItem(0, 0);
         item00.click();
-        assert(document.activeElement === item00);
-        const assertAE = assertActiveElement();
-        assertAE(KEYCODE.DOWN, findRealItem(0, 1));
-        assertAE(KEYCODE.UP, item00);
-        assertAE(KEYCODE.RIGHT, () => findRealItem(1, 0));
-        assertAE(KEYCODE.LEFT, item00);
-        assert(document.querySelectorAll('.next-cascader-menu').length === 1);
+        try {
+            assert(document.activeElement === item00);
+            const assertAE = assertActiveElement();
+            assertAE(KEYCODE.DOWN, findRealItem(0, 1));
+            assertAE(KEYCODE.UP, item00);
+            assertAE(KEYCODE.RIGHT, () => findRealItem(1, 0));
+            assertAE(KEYCODE.LEFT, item00);
+            assert(document.querySelectorAll('.next-cascader-menu').length === 1);
 
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+        } catch (err) {
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+            throw new Error(err);
+        }
     });
 
     it('should set the style of the cascader inner node', () => {
@@ -611,6 +617,33 @@ describe('Cascader', () => {
         assert(document.getElementById('cascader-style').dir === 'rtl');
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
+    });
+
+    // Fix https://github.com/alibaba-fusion/next/issues/4472
+    it('Empty items at first level can collapse the next level panel while cross value', () => {
+        const dataSource = [
+            {
+                label: '1',
+                value: '1',
+            },
+            {
+                label: '2',
+                value: '2',
+                children: [
+                    {
+                        label: '2_1',
+                        value: '2_1',
+                    },
+                ],
+            },
+        ];
+        const wrapper = mount(<Cascader value={['2_1']} multiple dataSource={dataSource} />);
+        assert(wrapper.find('.next-cascader-menu-wrapper').length === 2);
+        const el = wrapper.find('.next-menu-item[title="1"]').getDOMNode();
+        assert(el);
+        ReactTestUtils.Simulate.click(el);
+        wrapper.update();
+        assert(wrapper.find('.next-cascader-menu-wrapper').length === 1);
     });
 });
 

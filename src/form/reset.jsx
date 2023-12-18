@@ -59,10 +59,7 @@ class Reset extends React.Component {
         const { children } = this.props;
 
         return (
-            <Button
-                {...obj.pickOthers(Reset.propTypes, this.props)}
-                onClick={this.handleClick}
-            >
+            <Button {...obj.pickOthers(Reset.propTypes, this.props)} onClick={this.handleClick}>
                 {children}
             </Button>
         );

@@ -47,6 +47,40 @@ describe('Radio', () => {
         });
     });
 
+    describe('[focus] call focus()', () => {
+        let wrapper, target;
+
+        beforeEach(() => {
+            target = document.createElement('div');
+            document.body.appendChild(target);
+        });
+
+        afterEach(() => {
+            target = null;
+            if (wrapper) {
+                wrapper.unmount();
+            }
+        });
+        it('should focus', () => {
+            wrapper = mount(<Radio>1</Radio>, {
+                attachTo: target,
+            });
+            const group = wrapper.instance().getInstance();
+            group.focus();
+            const inputElement = wrapper.find('input').getDOMNode();
+            assert(document.activeElement === inputElement);
+        });
+        it('should not focus when disabled', () => {
+            wrapper = mount(<Radio disabled={true}>1</Radio>, {
+                attachTo: target,
+            });
+            const group = wrapper.instance().getInstance();
+            group.focus();
+            const inputElement = wrapper.find('input').getDOMNode();
+            assert(document.activeElement !== inputElement);
+        });
+    });
+
     describe('behavior', () => {
         it('simulate click', () => {
             let wrapper;

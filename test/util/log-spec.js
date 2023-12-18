@@ -21,14 +21,9 @@ describe('src/log.js', function() {
         });
 
         it('deprecated should splice 3 arguments str', function() {
-            const str = log.deprecated(
-                'onBeforeClose',
-                'beforeClose',
-                'Dialog'
-            );
+            const str = log.deprecated('onBeforeClose', 'beforeClose', 'Dialog');
             assert(
-                str ===
-                    'Warning: [ onBeforeClose ] is deprecated at [ Dialog ], use [ beforeClose ] instead of it.'
+                str === 'Warning: [ onBeforeClose ] is deprecated at [ Dialog ], use [ beforeClose ] instead of it.'
             );
         });
 

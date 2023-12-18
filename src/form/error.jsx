@@ -25,10 +25,12 @@ class Error extends React.Component {
          */
         children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
         prefix: PropTypes.string,
+        preferMarginToDisplayHelp: PropTypes.bool,
     };
 
     static defaultProps = {
         prefix: 'next-',
+        preferMarginToDisplayHelp: false,
     };
 
     static contextTypes = {
@@ -49,11 +51,17 @@ class Error extends React.Component {
             style,
             className,
             field: _field,
+            preferMarginToDisplayHelp,
             ...others
         } = this.props;
 
         if (children && typeof children !== 'function') {
-            return <div className={`${prefix}form-item-help`}>{children}</div>;
+            return (
+                <div className={`${prefix}form-item-help`}>
+                    {children}
+                    {!!preferMarginToDisplayHelp && <div className={`${prefix}form-item-help-margin-offset`} />}
+                </div>
+            );
         }
 
         const field = this.context._formField || _field;
@@ -78,10 +86,7 @@ class Error extends React.Component {
 
         let result = null;
         if (typeof children === 'function') {
-            result = children(
-                errorArr,
-                isSingle ? field.getState(name) : undefined
-            );
+            result = children(errorArr, isSingle ? field.getState(name) : undefined);
         } else {
             result = this.itemRender(errorArr);
         }
@@ -98,6 +103,7 @@ class Error extends React.Component {
         return (
             <div {...others} className={cls} style={style}>
                 {result}
+                {!!preferMarginToDisplayHelp && <div className={`${prefix}form-item-help-margin-offset`} />}
             </div>
         );
     }

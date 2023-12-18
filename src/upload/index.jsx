@@ -86,11 +86,7 @@ Upload.Core = class Core extends React.Component {
     };
 
     render() {
-        log.deprecated(
-            'Upload.Core',
-            'Upload.Selecter and Upload.Uploader',
-            'Upload'
-        );
+        log.deprecated('Upload.Core', 'Upload.Selecter and Upload.Uploader', 'Upload');
 
         // eslint-disable-next-line
         const {
@@ -109,12 +105,7 @@ Upload.Core = class Core extends React.Component {
 
         const props = others;
 
-        return (
-            <Selecter
-                {...transform(props, () => {})}
-                onSelect={this.handleSelect}
-            />
-        );
+        return <Selecter {...transform(props, () => {})} onSelect={this.handleSelect} />;
     }
 };
 

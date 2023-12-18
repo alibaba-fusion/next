@@ -10,11 +10,7 @@ export default class ListHeader extends React.Component {
         /**
          * 行渲染的逻辑
          */
-        cell: PropTypes.oneOfType([
-            PropTypes.element,
-            PropTypes.node,
-            PropTypes.func,
-        ]),
+        cell: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
         /**
          * 是否在Children上面渲染selection
          */

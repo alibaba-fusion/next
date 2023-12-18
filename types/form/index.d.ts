@@ -239,6 +239,13 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     useLabelForErrorMessage?: boolean;
 
     /**
+     * 倾向使用 item 的 margin 空间来展示 help
+     * @default false
+     * @version 1.26.37
+     */
+    preferMarginToDisplayHelp?: boolean;
+
+    /**
      * 表示是否显示 label 后面的冒号
      */
     colon?: boolean;
@@ -530,6 +537,12 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      * 是否使用 label 替换校验信息的 name 字段
      */
     useLabelForErrorMessage?: boolean;
+    /**
+     * 倾向使用 item 的 margin 空间来展示 help
+     * @default false
+     * @version 1.26.37
+     */
+    preferMarginToDisplayHelp?: boolean;
 }
 
 export default class Form extends React.Component<FormProps, any> {

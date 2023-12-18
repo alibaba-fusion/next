@@ -1,6 +1,6 @@
 # 预设时间快捷选择
 
--   order: 5
+-   order: 7
 
 通过`preset`预设时间快捷选择。
 
@@ -8,7 +8,7 @@
 
 # Basic
 
--   order: 5
+-   order: 7
 
 A preset usage case.
 

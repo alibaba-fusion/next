@@ -42,12 +42,6 @@ export default class RadioItem extends Component {
     };
 
     render() {
-        return (
-            <CheckableItem
-                role="menuitemradio"
-                checkType="radio"
-                {...this.props}
-            />
-        );
+        return <CheckableItem role="menuitemradio" checkType="radio" {...this.props} />;
     }
 }

@@ -81,9 +81,7 @@ describe('Table', () => {
             },
             () => {
                 assert(wrapper.find(Checkbox).length === 3);
-                assert(
-                    wrapper.find('.next-checkbox-wrapper.disabled').length === 1
-                );
+                assert(wrapper.find('.next-checkbox-wrapper.disabled').length === 1);
                 wrapper
                     .find('.next-checkbox')
                     .at(2)
@@ -107,9 +105,7 @@ describe('Table', () => {
                 },
             },
             () => {
-                assert(
-                    wrapper.find('.next-checkbox-wrapper.checked').length === 1
-                );
+                assert(wrapper.find('.next-checkbox-wrapper.checked').length === 1);
                 done();
             }
         );
@@ -132,9 +128,7 @@ describe('Table', () => {
         timeout(
             {
                 dataSource: ['string1', 'string2'],
-                children: [<Table.Column
-                    cell={(value, index, record) => record}
-                />],
+                children: [<Table.Column cell={(value, index, record) => record} />],
             },
             () => {
                 assert(wrapper);
@@ -220,9 +214,7 @@ describe('Table', () => {
                 onRowMouseLeave,
             },
             () => {
-                const row = wrapper
-                    .find('.next-table-body .next-table-row')
-                    .first();
+                const row = wrapper.find('.next-table-body .next-table-row').first();
                 row.simulate('click');
                 assert(onRowClick.called);
                 row.simulate('mouseenter');
@@ -242,16 +234,11 @@ describe('Table', () => {
 
         timeout(
             {
-                children: [
-                    <Table.Column dataIndex="id" sortable />,
-                    <Table.Column dataIndex="name" />,
-                ],
+                children: [<Table.Column dataIndex="id" sortable />, <Table.Column dataIndex="name" />],
                 onSort,
             },
             () => {
-                const sortNode = wrapper.find(
-                    '.next-table-header .next-table-sort'
-                );
+                const sortNode = wrapper.find('.next-table-header .next-table-sort');
                 sortNode.simulate('click');
                 done();
             }
@@ -261,19 +248,16 @@ describe('Table', () => {
     it('should support tableLayout&tableWidth', done => {
         timeout(
             {
-                children: [
-                    <Table.Column dataIndex="id" sortable />,
-                    <Table.Column dataIndex="name" />,
-                ],
+                children: [<Table.Column dataIndex="id" sortable />, <Table.Column dataIndex="name" />],
                 tableLayout: 'fixed',
-                tableWidth: 1200
+                tableWidth: 1200,
             },
             () => {
                 const tablewrapper = wrapper.find('.next-table');
                 const table = wrapper.find('.next-table table');
 
                 assert(tablewrapper.hasClass('next-table-layout-fixed'));
-                assert(table.at(0).props().style.width === 1200)
+                assert(table.at(0).props().style.width === 1200);
                 done();
             }
         );
@@ -286,20 +270,15 @@ describe('Table', () => {
 
         timeout(
             {
-                children: [
-                    <Table.Column dataIndex="id" sortable />,
-                    <Table.Column dataIndex="name" />,
-                ],
+                children: [<Table.Column dataIndex="id" sortable />, <Table.Column dataIndex="name" />],
                 onSort,
                 sortIcons: {
-                    desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="small" />,
-                    asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="small" />
-                }
+                    desc: <Icon style={{ top: '6px', left: '4px' }} type={'arrow-down'} size="small" />,
+                    asc: <Icon style={{ top: '-6px', left: '4px' }} type={'arrow-up'} size="small" />,
+                },
             },
             () => {
-                const sortNode = wrapper.find(
-                    '.next-table-header .next-table-sort'
-                );
+                const sortNode = wrapper.find('.next-table-header .next-table-sort');
                 assert(sortNode.find('.next-icon-arrow-down'));
                 assert(sortNode.find('.next-icon-arrow-up'));
                 sortNode.simulate('click');
@@ -319,9 +298,7 @@ describe('Table', () => {
                 getRowProps,
             },
             () => {
-                const row = wrapper
-                    .find('.next-table-body .next-table-row')
-                    .first();
+                const row = wrapper.find('.next-table-body .next-table-row').first();
                 assert(row.hasClass('rowClassName'));
                 done();
             }
@@ -339,9 +316,7 @@ describe('Table', () => {
                 rowProps,
             },
             () => {
-                const row = wrapper
-                    .find('.next-table-body .next-table-row')
-                    .first();
+                const row = wrapper.find('.next-table-body .next-table-row').first();
                 assert(row.hasClass('rowClassName'));
                 done();
             }
@@ -373,9 +348,7 @@ describe('Table', () => {
                         hasBorder: false,
                     },
                     () => {
-                        assert(
-                            wrapper.find('div.only-bottom-border').length === 1
-                        );
+                        assert(wrapper.find('div.only-bottom-border').length === 1);
                     }
                 );
             })
@@ -391,15 +364,8 @@ describe('Table', () => {
                 );
             })
             .then(() => {
-                const loadingIndicator = (
-                    <div className="test-custom-loading">Loading...</div>
-                );
-                const CustomLoading = ({ className }) => (
-                    <Loading
-                        className={className}
-                        indicator={loadingIndicator}
-                    />
-                );
+                const loadingIndicator = <div className="test-custom-loading">Loading...</div>;
+                const CustomLoading = ({ className }) => <Loading className={className} indicator={loadingIndicator} />;
 
                 return timeout(
                     {
@@ -409,9 +375,7 @@ describe('Table', () => {
                     () => {
                         wrapper.debug();
                         assert(wrapper.find(CustomLoading).length === 1);
-                        assert(
-                            wrapper.find('div.test-custom-loading').length === 1
-                        );
+                        assert(wrapper.find('div.test-custom-loading').length === 1);
                         done();
                     }
                 );
@@ -444,30 +408,17 @@ describe('Table', () => {
             () => {
                 assert(arr.toString() === '0,1');
 
-                let expandedCtrl0 = wrapper
-                    .find('.next-table-body .next-table-expanded-ctrl')
-                    .at(0);
+                let expandedCtrl0 = wrapper.find('.next-table-body .next-table-expanded-ctrl').at(0);
                 expandedCtrl0.simulate('click');
-                let expandedRow0 = wrapper
-                    .find('.next-table-body .next-table-expanded-row')
-                    .at(0);
+                let expandedRow0 = wrapper.find('.next-table-body .next-table-expanded-row').at(0);
 
-                assert(
-                    expandedRow0.text().replace(/\s$|^\s/g, '') === 'test' + '0'
-                );
+                assert(expandedRow0.text().replace(/\s$|^\s/g, '') === 'test' + '0');
 
-                let expandedCtrl1 = wrapper
-                    .find('.next-table-body .next-table-expanded-ctrl')
-                    .at(1);
+                let expandedCtrl1 = wrapper.find('.next-table-body .next-table-expanded-ctrl').at(1);
                 expandedCtrl1.simulate('click');
-                let expandedRow1 = wrapper
-                    .find('.next-table-body .next-table-expanded-row')
-                    .at(1);
+                let expandedRow1 = wrapper.find('.next-table-body .next-table-expanded-row').at(1);
 
-                assert(
-                    expandedRow1.text().replace(/\s$|^\s/g, '') ===
-                        'test2' + '1'
-                );
+                assert(expandedRow1.text().replace(/\s$|^\s/g, '') === 'test2' + '1');
             }
         ).then(() => {
             return timeout(
@@ -475,23 +426,10 @@ describe('Table', () => {
                     expandedRowIndent: [2, 1],
                 },
                 () => {
-                    let expandedRowTdFirst = wrapper
-                            .find(
-                                '.next-table-body .next-table-expanded-row td'
-                            )
-                            .first(),
-                        expandedRowTdSecond = wrapper
-                            .find(
-                                '.next-table-body .next-table-expanded-row td'
-                            )
-                            .at(1);
-                    assert(
-                        expandedRowTdFirst.text().replace(/\s$|^\s/g, '') === ''
-                    );
-                    assert(
-                        expandedRowTdSecond.text().replace(/\s$|^\s/g, '') ===
-                            ''
-                    );
+                    let expandedRowTdFirst = wrapper.find('.next-table-body .next-table-expanded-row td').first(),
+                        expandedRowTdSecond = wrapper.find('.next-table-body .next-table-expanded-row td').at(1);
+                    assert(expandedRowTdFirst.text().replace(/\s$|^\s/g, '') === '');
+                    assert(expandedRowTdSecond.text().replace(/\s$|^\s/g, '') === '');
                     done();
                 }
             );
@@ -508,13 +446,9 @@ describe('Table', () => {
                 },
             },
             () => {
-                let expandedRow = wrapper
-                    .find('.next-table-body .next-table-expanded-row')
-                    .first();
+                let expandedRow = wrapper.find('.next-table-body .next-table-expanded-row').first();
                 assert(expandedRow.length === 0);
-                let expandedCtrl = wrapper
-                    .find('.next-table-body .next-table-expanded-ctrl')
-                    .first();
+                let expandedCtrl = wrapper.find('.next-table-body .next-table-expanded-ctrl').first();
                 expandedCtrl.simulate('click');
             }
         );
@@ -525,17 +459,15 @@ describe('Table', () => {
             {
                 dataSource: [
                     { id: '1', name: 'test', expandable: false },
-                    { id: '2', name: 'test2', expandable: true, },
+                    { id: '2', name: 'test2', expandable: true },
                     { id: '3', name: 'test3', expandable: true },
                 ],
                 expandedRowRender: record => record.name,
-                rowExpandable: record => record.expandable
+                rowExpandable: record => record.expandable,
             },
             () => {
-                let expandedTotal = wrapper
-                    .find('.next-table-row');
-                let expandedIcon = wrapper
-                    .find('.next-table-prerow .next-table-cell-wrapper .next-icon');
+                let expandedTotal = wrapper.find('.next-table-row');
+                let expandedIcon = wrapper.find('.next-table-prerow .next-table-cell-wrapper .next-icon');
 
                 assert(expandedTotal.length - expandedIcon.length === 1);
                 done();
@@ -696,9 +628,9 @@ describe('Table', () => {
         const dataSource = new Array(40).fill(i => {
             return {
                 id: i + '',
-                name: `test${i}`
-            }
-        })
+                name: `test${i}`,
+            };
+        });
         wrapper.setProps({
             useVirtual: true,
             dataSource,
@@ -756,9 +688,7 @@ describe('Table', () => {
                 onRowMouseLeave,
             },
             () => {
-                const row = wrapper
-                    .find('.next-table-body .next-table-row')
-                    .first();
+                const row = wrapper.find('.next-table-body .next-table-row').first();
                 row.simulate('click');
                 assert(onRowClick.called);
                 row.simulate('mouseenter');
@@ -793,9 +723,7 @@ describe('Table', () => {
             },
             () => {
                 assert(wrapper.find('.next-table-row.hidden').length === 1);
-                let treeNode = wrapper.find(
-                    '.next-table-row .next-icon-arrow-right.next-table-tree-arrow'
-                );
+                let treeNode = wrapper.find('.next-table-row .next-icon-arrow-right.next-table-tree-arrow');
                 treeNode.simulate('click');
                 assert(wrapper.find('.next-table-row.hidden').length === 0);
                 assert(
@@ -816,10 +744,7 @@ describe('Table', () => {
 
         timeout(
             {
-                children: [
-                    <Table.Column dataIndex="id" />,
-                    <Table.Column dataIndex="name" />,
-                ]
+                children: [<Table.Column dataIndex="id" />, <Table.Column dataIndex="name" />],
             },
             () => {
                 assert(wrapper.find('.next-table-header th').length === 2);
@@ -830,13 +755,13 @@ describe('Table', () => {
                     children: [
                         <Table.Column dataIndex="id" colSpan="2" />,
                         <Table.Column dataIndex="name" colSpan="0" />,
-                    ]
+                    ],
                 },
                 () => {
                     assert(wrapper.find('.next-table-header th').length === 1);
                     done();
                 }
-            )
+            );
         });
     });
 
@@ -844,11 +769,7 @@ describe('Table', () => {
         wrapper.setProps({});
         timeout(
             {
-                dataSource: [
-                    { id: '1', name: 'test' },
-                    { id: '2', name: 'test2' },
-                    { id: '3', name: 'test3' },
-                ],
+                dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
                 cellProps: (rowIndex, colIndex) => {
                     if (rowIndex == 0 && colIndex == 1) {
                         return {
@@ -884,11 +805,7 @@ describe('Table', () => {
         ).then(() => {
             timeout(
                 {
-                    dataSource: [
-                        { id: '1', name: 'test' },
-                        { id: '2', name: 'test2' },
-                        { id: '3', name: 'test3' },
-                    ],
+                    dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
                     cellProps: (rowIndex, colIndex) => {
                         if (rowIndex == 0 && colIndex == 0) {
                             return {
@@ -918,11 +835,7 @@ describe('Table', () => {
         wrapper.setProps({});
         timeout(
             {
-                dataSource: [
-                    { id: '1', name: 'test' },
-                    { id: '2', name: 'test2' },
-                    { id: '3', name: 'test3' },
-                ],
+                dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
                 getCellProps: (rowIndex, colIndex) => {
                     if (rowIndex == 0 && colIndex == 1) {
                         return {
@@ -958,11 +871,7 @@ describe('Table', () => {
         ).then(() => {
             timeout(
                 {
-                    dataSource: [
-                        { id: '1', name: 'test' },
-                        { id: '2', name: 'test2' },
-                        { id: '3', name: 'test3' },
-                    ],
+                    dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
                     getCellProps: (rowIndex, colIndex) => {
                         if (rowIndex == 0 && colIndex == 0) {
                             return {
@@ -991,11 +900,7 @@ describe('Table', () => {
     it('should support getRowProps', done => {
         timeout(
             {
-                dataSource: [
-                    { id: '1', name: 'test' },
-                    { id: '2', name: 'test2' },
-                    { id: '3', name: 'test3' },
-                ],
+                dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
                 getRowProps: (record, index) => {
                     if (index == 0) {
                         return {
@@ -1019,11 +924,7 @@ describe('Table', () => {
     it('should support rowProps', done => {
         timeout(
             {
-                dataSource: [
-                    { id: '1', name: 'test' },
-                    { id: '2', name: 'test2' },
-                    { id: '3', name: 'test3' },
-                ],
+                dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
                 rowProps: (record, index) => {
                     if (index == 0) {
                         return {
@@ -1104,9 +1005,7 @@ describe('Table', () => {
                 },
             },
             () => {
-                wrapper
-                    .find('.next-table-resize-handler')
-                    .simulate('mousedown', { pageX: 0 });
+                wrapper.find('.next-table-resize-handler').simulate('mousedown', { pageX: 0 });
                 assert(document.body.style.cursor === 'ew-resize');
                 document.dispatchEvent(new Event('mousemove', { pageX: 0 }));
                 document.dispatchEvent(new Event('mouseup'));
@@ -1148,9 +1047,7 @@ describe('Table', () => {
                 },
             },
             () => {
-                wrapper
-                    .find('.next-table-resize-handler')
-                    .simulate('mousedown', { pageX: 0 });
+                wrapper.find('.next-table-resize-handler').simulate('mousedown', { pageX: 0 });
                 assert(document.body.style.cursor === 'ew-resize');
                 document.dispatchEvent(new Event('mousemove', { pageX: 0 }));
                 document.dispatchEvent(new Event('mouseup'));
@@ -1191,7 +1088,7 @@ describe('Table', () => {
 
     it('should support lock scroll x', () => {
         const ds = new Array(30).fill(1).map((val, i) => {
-           return { id: i, name: 'test' + i }
+            return { id: i, name: 'test' + i };
         });
         wrapper.setProps({
             children: [
@@ -1213,8 +1110,8 @@ describe('Table', () => {
             .onLockScroll({
                 target: {
                     scrollLeft: 30,
-                    scrollTop: 20
-                }
+                    scrollTop: 20,
+                },
             });
 
         wrapper
@@ -1224,14 +1121,14 @@ describe('Table', () => {
             .onLockScroll({
                 target: {
                     scrollLeft: 30,
-                    scrollTop: 20
-                }
+                    scrollTop: 20,
+                },
             });
     });
 
     it('should support StickyLock', done => {
         const ds = new Array(30).fill(1).map((val, i) => {
-           return { id: i, name: 'test' + i }
+            return { id: i, name: 'test' + i };
         });
         stickyLockWrapper.setProps({
             children: [
@@ -1255,14 +1152,22 @@ describe('Table', () => {
 
         assert(stickyLockWrapper.find('div.next-table-lock-left').length === 0);
         assert(stickyLockWrapper.find('div.next-table-lock-right').length === 0);
-        assert(stickyLockWrapper.find('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last').at(0).instance().style.position === 'sticky');
+        assert(
+            stickyLockWrapper
+                .find('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last')
+                .at(0)
+                .instance().style.position === 'sticky'
+        );
         wrapper.update();
         stickyLockWrapper.update();
 
         setTimeout(() => {
             // assert(wrapper.find('div.next-table-lock.next-table-scrolling-to-right').length === 1);
             // assert(stickyLockWrapper.find('div.next-table-lock.next-table-scrolling-to-right').length === 1);
-            assert(stickyLockWrapper.find('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last').length === ds.length);
+            assert(
+                stickyLockWrapper.find('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last')
+                    .length === ds.length
+            );
             done();
         }, 500);
     });
@@ -1270,25 +1175,9 @@ describe('Table', () => {
     it('should support align alignHeader', () => {
         wrapper.setProps({
             children: [
-                <Table.Column
-                    title="id"
-                    align="right"
-                    alignHeader="left"
-                    dataIndex="id"
-                    width={200}
-                />,
-                <Table.Column
-                    title="name"
-                    align="left"
-                    dataIndex="name"
-                    width={200}
-                />,
-                <Table.Column
-                    title="id"
-                    alignHeader="right"
-                    dataIndex="id"
-                    width={200}
-                />,
+                <Table.Column title="id" align="right" alignHeader="left" dataIndex="id" width={200} />,
+                <Table.Column title="name" align="left" dataIndex="name" width={200} />,
+                <Table.Column title="id" alignHeader="right" dataIndex="id" width={200} />,
             ],
         });
 
@@ -1340,25 +1229,9 @@ describe('Table', () => {
     it('should support align alignHeader rtl', () => {
         wrapper.setProps({
             children: [
-                <Table.Column
-                    title="id"
-                    align="right"
-                    alignHeader="left"
-                    dataIndex="id"
-                    width={200}
-                />,
-                <Table.Column
-                    title="name"
-                    align="left"
-                    dataIndex="name"
-                    width={200}
-                />,
-                <Table.Column
-                    title="id"
-                    alignHeader="right"
-                    dataIndex="id"
-                    width={200}
-                />,
+                <Table.Column title="id" align="right" alignHeader="left" dataIndex="id" width={200} />,
+                <Table.Column title="name" align="left" dataIndex="name" width={200} />,
+                <Table.Column title="id" alignHeader="right" dataIndex="id" width={200} />,
             ],
             rtl: true,
         });

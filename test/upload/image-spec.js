@@ -18,8 +18,7 @@ const defaultValue = [
         name: 'IMG.png',
         state: 'done',
         size: 1024,
-        url:
-            'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+        url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
     },
 ];
 
@@ -43,11 +42,7 @@ function buildFile(filename = 'test') {
 }
 
 function triggerUploadEvent(wrapper, done, callback) {
-    if (
-        typeof atob === 'function' &&
-        typeof Blob === 'function' &&
-        typeof File === 'function'
-    ) {
+    if (typeof atob === 'function' && typeof Blob === 'function' && typeof File === 'function') {
         // 模拟文件上传
         const file = buildFile();
         wrapper.find('input').simulate('change', { target: { files: [file] } });
@@ -81,51 +76,37 @@ describe('ImageUpload', () => {
                             uid: '0',
                             name: 'IMG.png',
                             state: 'done',
-                            url:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                            downloadURL:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                            imgURL:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                         },
                         {
                             uid: '1',
                             name: 'IMG.png',
                             percent: 50,
                             state: 'uploading',
-                            url:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                            downloadURL:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                            imgURL:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                         },
                         {
                             uid: '2',
                             name: 'IMG.png',
                             state: 'error',
-                            url:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                            downloadURL:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                            imgURL:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                         },
                     ]}
                 />
             );
-            assert(
-                wrapper.find('.next-upload-list.next-upload-list-image')
-                    .length === 1
-            );
+            assert(wrapper.find('.next-upload-list.next-upload-list-image').length === 1);
             assert(wrapper.find('.next-upload-list-item').length === 3);
-            [
-                'next-upload-list-item-done',
-                'next-upload-list-item-uploading',
-                'next-upload-list-item-error',
-            ].forEach(className => {
-                assert(wrapper.find(`.${className}`).length === 1);
-            });
+            ['next-upload-list-item-done', 'next-upload-list-item-uploading', 'next-upload-list-item-error'].forEach(
+                className => {
+                    assert(wrapper.find(`.${className}`).length === 1);
+                }
+            );
         });
         it('should render a imageList upload with error msg', () => {
             const wrapper = mount(
@@ -136,25 +117,17 @@ describe('ImageUpload', () => {
                             uid: '2',
                             name: 'IMG.png',
                             state: 'error',
-                            url:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                            downloadURL:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                            imgURL:
-                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                             errorMsg: 'ErrorText',
                         },
                     ]}
                 />
             );
-            assert(
-                wrapper.find('.next-upload-list-item-error-with-msg').length ===
-                    1
-            );
+            assert(wrapper.find('.next-upload-list-item-error-with-msg').length === 1);
             assert(wrapper.find('.next-upload-list-item-error').length === 1);
-            assert(
-                wrapper.find('.next-upload-list-item-error-msg').length === 1
-            );
+            assert(wrapper.find('.next-upload-list-item-error-msg').length === 1);
             assert(
                 wrapper
                     .find('.next-upload-list-item-error-msg')

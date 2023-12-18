@@ -5,26 +5,26 @@ import { LoadingProps } from '../loading';
 import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    title?: any
+    title?: any;
 }
 
 export interface ListProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 列表头部
      */
-    header?: ReactNode,
+    header?: ReactNode;
     /**
      * 列表尾部
      */
-    footer?: ReactNode,
+    footer?: ReactNode;
     /**
      * 列表尺寸
      */
-    size?: 'medium' | 'small',
+    size?: 'medium' | 'small';
     /**
      * 是否显示分割线
      */
-    divider?: boolean,
+    divider?: boolean;
     /**
      * children
      */
@@ -49,19 +49,19 @@ export interface ListItemProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 列表元素的标题
      */
-    title?: ReactNode,
+    title?: ReactNode;
     /**
      * 列表元素的描述内容
      */
-    description?: ReactNode,
+    description?: ReactNode;
     /**
      * 列表元素的头像 / 图标 / 图片内容
      */
-    media?: ReactNode,
+    media?: ReactNode;
     /**
      * 额外内容
      */
-    extra?: ReactNode,
+    extra?: ReactNode;
 }
 
 export default class List extends Component<ListProps, any> {

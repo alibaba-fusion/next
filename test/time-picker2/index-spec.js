@@ -124,9 +124,35 @@ describe('TimePicker2', () => {
 
         it('should support string value', () => {
             wrapper = mount(<TimePicker2 defaultValue="12:00:00" isPreview />);
-
-            assert(getStrValue(wrapper), '12:00:00')
-        })
+            assert.equal(wrapper.find('.next-form-preview').text(), '12:00:00');
+        });
+        it('should support preview mode render when no value set', () => {
+            wrapper = mount(<TimePicker2 isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+        });
+        it('should support preview mode & setValue', () => {
+            const container = document.createElement('div');
+            document.body.appendChild(container);
+            wrapper = mount(<TimePicker2 isPreview />, { attachTo: container });
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert.equal(wrapper.find('.next-form-preview').text(), '');
+            const value = dayjs('12:22:22', 'HH:mm:ss', true);
+            wrapper.setProps({ value: value });
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert.equal(wrapper.find('.next-form-preview').text(), '12:22:22');
+        });
+        it('should support preview mode on type is range', () => {
+            wrapper = mount(<TimePicker2.RangePicker isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            const startValue = dayjs('12:22:22', 'HH:mm:ss', true);
+            const endValue = dayjs('17:22:22', 'HH:mm:ss', true);
+            wrapper.setProps({ value: [startValue, endValue] });
+            assert.equal(wrapper.find('.next-form-preview').text(), '12:22:22-17:22:22');
+            wrapper.setProps({ value: [startValue] });
+            assert.equal(wrapper.find('.next-form-preview').text(), '12:22:22-');
+            wrapper.setProps({ value: [null, endValue] });
+            assert.equal(wrapper.find('.next-form-preview').text(), '-17:22:22');
+        });
     });
 
     describe('action', () => {
@@ -269,44 +295,44 @@ describe('TimePicker2', () => {
         });
 
         it('should support default value', () => {
-            wrapper = mount(
-                <TimeRangePicker defaultValue={[defaultValue, defaultValue.add(1, 'hours')]}></TimeRangePicker>
-            )
+            wrapper = mount(<TimeRangePicker defaultValue={[defaultValue, defaultValue.add(1, 'hours')]} />);
 
-            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13'])
-        })
+            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13']);
+        });
 
         it('should select value', async () => {
-            wrapper = mount(
-                <TimeRangePicker defaultValue={[defaultValue, ]}></TimeRangePicker>
-            )
+            wrapper = mount(<TimeRangePicker defaultValue={[defaultValue]} />);
 
             findInput(wrapper, 0).simulate('click');
             assert(findTime(wrapper, 12, 'hour').length === 2);
-            findTime(wrapper, 12, 'hour').at(1).simulate('click');
+            findTime(wrapper, 12, 'hour')
+                .at(1)
+                .simulate('click');
             clickOk(wrapper);
 
-            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:00:00'])
-        })
+            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:00:00']);
+        });
         it('should render with value controlled', () => {
             wrapper = mount(<TimeRangePicker value={[defaultValue, defaultValue.add(1, 'hours')]} />);
 
-            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13'])
+            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13']);
 
             findInput(wrapper, 0).simulate('click');
             assert(findTime(wrapper, 12, 'hour').length === 2);
-            findTime(wrapper, 13, 'hour').at(1).simulate('click');
+            findTime(wrapper, 13, 'hour')
+                .at(1)
+                .simulate('click');
             clickOk(wrapper);
 
-            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13'])
+            assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13']);
 
             const first = dayjs('11:13:00', 'HH:mm:ss', true);
             const second = dayjs('12:22:22', 'HH:mm:ss', true);
             wrapper.setProps({ value: [first, second] });
 
-            assert.deepEqual(getStrValue(wrapper), ['11:13:00', '12:22:22'])
+            assert.deepEqual(getStrValue(wrapper), ['11:13:00', '12:22:22']);
         });
-    })
+    });
 });
 
 function getStrValue(wrapper) {
@@ -319,11 +345,10 @@ function findInput(wrapper, idx) {
     return idx !== undefined ? input.at(idx) : input;
 }
 
-function findTime(wrapper, strVal, mode = 'hour'){
+function findTime(wrapper, strVal, mode = 'hour') {
     return wrapper.find(`.next-time-picker2-menu-${mode}>li[title=${strVal}]`);
 }
 
 function clickOk(wrapper) {
     wrapper.find('button.next-date-picker2-footer-ok').simulate('click');
 }
-

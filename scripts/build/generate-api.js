@@ -80,11 +80,7 @@ function generateAPIAST(apiInfos) {
 
     const apiAST = remark.parse(apiDocs);
     apiAST.children = apiAST.children.filter(child => {
-        return !(
-            child.children &&
-            child.children[0] &&
-            child.children[0].type === 'linkReference'
-        );
+        return !(child.children && child.children[0] && child.children[0].type === 'linkReference');
     });
 
     return apiAST;
@@ -107,9 +103,7 @@ function orderProps(props) {
             orderMap[name] = index * 10;
         }
     });
-    const orderedNames = names.sort(
-        (prev, next) => orderMap[prev] - orderMap[next]
-    );
+    const orderedNames = names.sort((prev, next) => orderMap[prev] - orderMap[next]);
 
     return orderedNames.reduce((ret, name) => {
         ret[name] = props[name];
@@ -118,16 +112,10 @@ function orderProps(props) {
 }
 
 function getAPIExtraAST(ast) {
-    const generateReg = key =>
-        new RegExp(`^<!--\\s*api-extra-${key}\\s*-->$`, 'i');
-    const startIndex = ast.children.findIndex(
-        child => child.type === 'html' && generateReg('start').test(child.value)
-    );
+    const generateReg = key => new RegExp(`^<!--\\s*api-extra-${key}\\s*-->$`, 'i');
+    const startIndex = ast.children.findIndex(child => child.type === 'html' && generateReg('start').test(child.value));
     if (startIndex > -1) {
-        const endIndex = ast.children.findIndex(
-            child =>
-                child.type === 'html' && generateReg('end').test(child.value)
-        );
+        const endIndex = ast.children.findIndex(child => child.type === 'html' && generateReg('end').test(child.value));
         if (endIndex > -1 && startIndex < endIndex) {
             return ast.children.slice(startIndex, endIndex + 1);
         }
@@ -147,23 +135,14 @@ function updateAST(ast, apiAST) {
     );
     if (apiIndex > -1) {
         const toNextHeading2 =
-            ast.children
-                .slice(apiIndex + 1)
-                .findIndex(
-                    child => child.type === 'heading' && child.depth === 2
-                ) + 1;
+            ast.children.slice(apiIndex + 1).findIndex(child => child.type === 'heading' && child.depth === 2) + 1;
 
         if (toNextHeading2 === 0) {
-            ast.children = ast.children
-                .slice(0, apiIndex)
-                .concat(apiAST.children);
+            ast.children = ast.children.slice(0, apiIndex).concat(apiAST.children);
         } else {
             ast.children = ast.children
                 .slice(0, apiIndex)
-                .concat(
-                    apiAST.children,
-                    ast.children.slice(apiIndex + toNextHeading2)
-                );
+                .concat(apiAST.children, ast.children.slice(apiIndex + toNextHeading2));
         }
     } else {
         ast.children = ast.children.concat(apiAST.children);

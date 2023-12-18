@@ -20,7 +20,7 @@ describe('Avatar A11y', () => {
     });
 
     it('should render', async () => {
-        wrapper = await testReact(<Avatar  />);
+        wrapper = await testReact(<Avatar />);
         return wrapper;
     });
 });

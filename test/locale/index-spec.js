@@ -28,7 +28,19 @@ describe('Locale', () => {
         const thKeys = getKeys(TH);
         const idKeys = getKeys(ID);
 
-        assert(usKeys === jpKeys && jpKeys === cnKeys && cnKeys === hkKeys && hkKeys === twKeys && twKeys === viKeys && viKeys === itKeys && itKeys === ptKeys && ptKeys === krKeys && krKeys === myKeys && myKeys === thKeys && thKeys === idKeys);
+        assert(
+            usKeys === jpKeys &&
+                jpKeys === cnKeys &&
+                cnKeys === hkKeys &&
+                hkKeys === twKeys &&
+                twKeys === viKeys &&
+                viKeys === itKeys &&
+                itKeys === ptKeys &&
+                ptKeys === krKeys &&
+                krKeys === myKeys &&
+                myKeys === thKeys &&
+                thKeys === idKeys
+        );
     });
 });
 
