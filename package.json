@@ -289,7 +289,10 @@
     "registry": "https://registry.npmjs.org"
   },
   "overrides": {
-    "cheerio": "1.0.0-rc.3"
+    "cheerio": "1.0.0-rc.3",
+    "sassaby-next": {
+      "node-sass": "^6"
+    }
   },
   "resolutions": {
     "cheerio": "1.0.0-rc.3"
