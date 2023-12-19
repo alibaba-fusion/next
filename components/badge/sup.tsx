@@ -147,7 +147,7 @@ class Sup extends Component<BadgeSubProps, BadgeSubState> {
                           };
 
                     Object.keys(scrollStyle).forEach((key: keyof typeof scrollStyle) => {
-                        scrollNums[i].style[key] = scrollStyle[key];
+                        scrollNums[i].style.setProperty(key, scrollStyle[key]!);
                     });
                 });
             }
