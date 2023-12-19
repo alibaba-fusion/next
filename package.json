@@ -136,9 +136,7 @@
     "@alifd/dts-generator": "^1.0.3",
     "@alifd/eslint-config-next": "^2.0.0",
     "@alifd/meet-react": "^2.9.8",
-    "@alifd/sass-mapper": "^2.0.2",
     "@alifd/sass-tracker": "^0.1.0",
-    "@alifd/sassdoc-parser": "^2.0.0",
     "@alifd/stylelint-config-next": "^1.0.0",
     "@babel/core": "^7.12.3",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
@@ -230,8 +228,6 @@
     "mocha": "^3.5.3",
     "mochawesome": "^7.1.3",
     "moment": "^2.20.1",
-    "node-sass": "^6.0.1",
-    "node-sass-package-importer": "^5.2.0",
     "nunjucks": "^3.2.0",
     "postcss": "^7.0.32",
     "postcss-calc": "^7.0.3",
@@ -258,7 +254,6 @@
     "redux": "^4.0.0",
     "remark": "^9.0.0",
     "sass": "^1.35.2",
-    "sassaby-next": "^3.0.0",
     "semver": "^7.3.5",
     "simulate-event": "^1.4.0",
     "sinon": "^5.0.10",
@@ -289,10 +284,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "overrides": {
-    "cheerio": "1.0.0-rc.3",
-    "sassaby-next": {
-      "node-sass": "^6"
-    }
+    "cheerio": "1.0.0-rc.3"
   },
   "resolutions": {
     "cheerio": "1.0.0-rc.3"
