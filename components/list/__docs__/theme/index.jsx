@@ -1,20 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import ConfigProvider from '../../../src/config-provider';
-import Box from '../../../src/box';
-import Button from '../../../src/button';
-import Avatar from '../../../src/avatar';
-import Divider from '../../../src/divider';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import '../../../src/list/style.js';
-import '../../../src/box/style.js';
-import '../../../src/button/style.js';
-import '../../../src/divider/style.js';
-import '../../../src/avatar/style.js';
-import List from '../../../src/list';
+import '../../../demo-helper/style';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import ConfigProvider from '../../../config-provider';
+import Box from '../../../box';
+import Button from '../../../button';
+import Avatar from '../../../avatar';
+import Divider from '../../../divider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import '../../style';
+import '../../../box/style';
+import '../../../button/style';
+import '../../../divider/style';
+import '../../../avatar/style';
+import List from '../../index';
 
 const i18nMap = {
     'zh-cn': {

@@ -1,9 +1,9 @@
 import React from 'react';
-import SplitButton from '../../../src/split-button';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import ConfigProvider from '../../../src/config-provider';
-import '../../../src/demo-helper/style.js';
-import '../../../src/split-button/style.js';
+import SplitButton from '../../index';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import ConfigProvider from '../../../config-provider';
+import '../../../demo-helper/style';
+import '../../style';
 
 /* eslint-disable */
 const i18nMap = {

@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import ConfigProvider from '../../../src/config-provider';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import '../../../src/demo-helper/style.js';
-import {Demo, DemoGroup, initDemo} from '../../../src/demo-helper';
-import '../../../src/checkbox/style.js';
-import Checkbox from '../../../src/checkbox';
-import Field from '../../../src/field';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import '../../../demo-helper/style';
+import {Demo, DemoGroup, initDemo} from '../../../demo-helper';
+import '../../style';
+import Checkbox from '../../index';
+import Field from '../../../field';
 
 // import demo helper
 

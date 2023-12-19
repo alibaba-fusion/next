@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Demo, DemoGroup, DemoHead, initDemo} from '../../../src/demo-helper';
-import ConfigProvider from '../../../src/config-provider';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import Input from '../../../src/input';
-import Field from '../../../src/field';
-import Form from '../../../src/form';
-import Select from '../../../src/select';
+import {Demo, DemoGroup, DemoHead, initDemo} from '../../../demo-helper';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import Input from '../../../input';
+import Field from '../../../field';
+import Form from '../../index';
+import Select from '../../../select';
 
-import Grid from '../../../src/grid';
-import '../../../src/demo-helper/style.js';
-import '../../../src/form/style.js';
-import '../../../src/input/style.js';
-import '../../../src/select/style.js';
+import Grid from '../../../grid';
+import '../../../demo-helper/style';
+import '../../style';
+import '../../../input/style';
+import '../../../select/style';
 
 // import form
 

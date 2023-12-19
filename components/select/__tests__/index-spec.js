@@ -4,9 +4,9 @@ import Adapter from 'enzyme-adapter-react-16';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import assert from 'power-assert';
-import Field from '../../src/field';
-import Select from '../../src/select/index';
-import '../../src/select/style.js';
+import Field from '../../field';
+import Select from '../index';
+import '../style';
 
 /* eslint-disable react/no-multi-comp,no-undef */
 

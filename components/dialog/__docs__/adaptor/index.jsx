@@ -1,7 +1,7 @@
 import React from 'react';
 import { Types } from '@alifd/adaptor-helper';
 import { Dialog, Message, Button } from '@alifd/next';
-import locale from '../../../src/locale/en-us';
+import locale from '../../../locale/en-us';
 
 
 export default {

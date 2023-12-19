@@ -3,8 +3,8 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
-import Switch from '../../src/switch/index';
-import { unmount, testReact } from '../util/a11y/validate';
+import Switch from '../index';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import assert from 'power-assert';
 import co from 'co';
-import { dom, env } from '../../src/util';
-import Animate from '../../src/animate';
+import { dom, env } from '../../util';
+import Animate from '../index';
 import './index-spec.scss';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp, react/prop-types, react/prefer-stateless-function */

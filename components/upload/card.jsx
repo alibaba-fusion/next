@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 
-import zhCN from '../locale/zh-cn.js';
+import zhCN from '../locale/zh-cn';
 import { func, obj } from '../util';
 import Base from './base';
 import List from './list';

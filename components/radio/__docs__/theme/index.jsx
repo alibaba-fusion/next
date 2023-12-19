@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import '../../../src/demo-helper/style.js';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import ConfigProvider from '../../../src/config-provider';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import '../../../src/radio/style.js';
-import Radio from '../../../src/radio';
-import Field from '../../../src/field';
+import '../../../demo-helper/style';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import '../../style';
+import Radio from '../../index';
+import Field from '../../../field';
 
 // import demo helper
 

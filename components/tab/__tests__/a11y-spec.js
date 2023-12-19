@@ -1,9 +1,9 @@
 import React from 'react';
 import Enzyme, { mount, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Tab from '../../src/tab/index';
-import '../../src/tab/style.js';
-import { unmount, testReact } from '../util/a11y/validate';
+import Tab from '../index';
+import '../style';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 

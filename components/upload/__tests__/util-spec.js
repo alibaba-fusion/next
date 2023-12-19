@@ -1,5 +1,5 @@
 import assert from 'power-assert';
-import { uid, fileToObject, getFileItem, removeFileItem, previewFile, errorCode } from '../../src/upload/util';
+import { uid, fileToObject, getFileItem, removeFileItem, previewFile, errorCode } from '../util';
 
 describe('util function test', () => {
     it('uid generate', () => {

@@ -2,10 +2,10 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import ConfigProvider from '../../src/config-provider';
-import Timeline from '../../src/timeline/index';
-import enUS from '../../src/locale/en-us';
-import '../../src/timeline/style.js';
+import ConfigProvider from '../../config-provider';
+import Timeline from '../index';
+import enUS from '../../locale/en-us';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

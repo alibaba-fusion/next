@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Message from '../../src/message/index';
-import '../../src/message/style.js';
+import Message from '../index';
+import '../style';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */

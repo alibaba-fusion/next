@@ -1,9 +1,9 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Divider from '../../src/divider/index';
-import '../../src/divider/style';
-import { unmount, testReact } from '../util/a11y/validate';
+import Divider from '../index';
+import '../style';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 

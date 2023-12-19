@@ -3,7 +3,7 @@ import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
-import Tag from '../../src/tag';
+import Tag from '../index';
 
 Enzyme.configure({ adapter: new Adapter() });
 

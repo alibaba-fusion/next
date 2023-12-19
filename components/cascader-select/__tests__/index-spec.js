@@ -4,9 +4,9 @@ import ReactTestUtils, { act } from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import { KEYCODE } from '../../src/util';
-import CascaderSelect from '../../src/cascader-select';
-import '../../src/cascader-select/style.js';
+import { KEYCODE } from '../../util';
+import CascaderSelect from '../index';
+import '../style';
 
 /* eslint-disable react/jsx-filename-extension  */
 /* global describe it afterEach */

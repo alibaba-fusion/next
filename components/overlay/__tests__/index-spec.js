@@ -4,15 +4,15 @@ import ReactTestUtils from 'react-dom/test-utils';
 import simulateEvent from 'simulate-event';
 import co from 'co';
 import assert from 'power-assert';
-import { dom, KEYCODE, env } from '../../src/util';
-import Overlay from '../../src/overlay/index';
-import Dialog from '../../src/dialog/index';
-import Balloon from '../../src/balloon/index';
-import Button from '../../src/button/index';
-import Drawer from '../../src/drawer/index';
-import ConfigProvider from '../../src/config-provider/index';
-import '../../src/button/style.js';
-import '../../src/overlay/style.js';
+import { dom, KEYCODE, env } from '../../util';
+import Overlay from '../index';
+import Dialog from '../../dialog/index';
+import Balloon from '../../balloon/index';
+import Button from '../../button/index';
+import Drawer from '../../drawer/index';
+import ConfigProvider from '../../config-provider/index';
+import '../../button/style';
+import '../style';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
 /* global describe it afterEach */

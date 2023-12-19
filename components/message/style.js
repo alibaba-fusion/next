@@ -1,4 +1,4 @@
-import '../icon/style.js';
-import '../animate/style.js';
-import '../overlay/style.js';
+import '../icon/style';
+import '../animate/style';
+import '../overlay/style';
 import './main.scss';

@@ -4,10 +4,10 @@ import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Dropdown from '../../src/dropdown';
-import Menu from '../../src/menu';
-import { KEYCODE } from '../../src/util';
-import '../../src/menu/style.js';
+import Dropdown from '../index';
+import Menu from '../../menu';
+import { KEYCODE } from '../../util';
+import '../../menu/style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

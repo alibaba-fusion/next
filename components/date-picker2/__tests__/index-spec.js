@@ -7,12 +7,12 @@ import assert from 'power-assert';
 import dayjs from 'dayjs';
 import co from 'co';
 import moment from 'moment';
-import DatePicker from '../../src/date-picker2/index';
-import Form from '../../src/form/index';
-import Field from '../../src/field/index';
-import { DATE_PICKER_MODE } from '../../src/date-picker2/constant';
-import { KEYCODE } from '../../src/util';
-import '../../src/date-picker2/style.js';
+import DatePicker from '../index';
+import Form from '../../form/index';
+import Field from '../../field/index';
+import { DATE_PICKER_MODE } from '../constant';
+import { KEYCODE } from '../../util';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

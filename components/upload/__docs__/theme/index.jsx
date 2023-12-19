@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import {Demo, DemoGroup, initDemo} from '../../../src/demo-helper';
-import '../../../src/upload/style.js';
-import Upload from '../../../src/upload';
-import Field from '../../../src/field';
-import '../../../src/dialog/style.js';
-import Dialog from '../../../src/dialog';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import ConfigProvider from '../../../src/config-provider';
+import '../../../demo-helper/style';
+import {Demo, DemoGroup, initDemo} from '../../../demo-helper';
+import '../../style';
+import Upload from '../../index';
+import Field from '../../../field';
+import '../../../dialog/style';
+import Dialog from '../../../dialog';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import ConfigProvider from '../../../config-provider';
 
 // import demo helper
 

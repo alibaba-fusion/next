@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import '../../../src/range/style.js';
-import Range from '../../../src/range';
+import '../../../demo-helper/style';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import '../../style';
+import Range from '../../index';
 
 const i18nMap = {
     'zh-cn': {

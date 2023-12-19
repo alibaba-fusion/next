@@ -2,10 +2,10 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Dialog from '../../src/dialog/index';
-import '../../src/dialog/style.js';
-import { test, unmount } from '../util/a11y/validate';
-import { roleType, isHeading, isButton } from '../util/a11y/checks';
+import Dialog from '../index';
+import '../style';
+import { test, unmount } from '../../util/__tests__/legacy/a11y/validate';
+import { roleType, isHeading, isButton } from '../../util/__tests__/legacy/a11y/checks';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */

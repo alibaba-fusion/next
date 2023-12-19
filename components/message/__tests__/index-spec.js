@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Icon from '../../src/icon';
-import Button from '../../src/button';
-import ConfigProvider from '../../src/config-provider';
-import { env } from '../../src/util';
-import Message from '../../src/message/index';
-import '../../src/message/style.js';
+import Icon from '../../icon';
+import Button from '../../button';
+import ConfigProvider from '../../config-provider';
+import { env } from '../../util';
+import Message from '../index';
+import '../style';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */

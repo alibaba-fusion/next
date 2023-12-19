@@ -1,2 +1,2 @@
-import '../balloon/style.js';
+import '../balloon/style';
 import './main.scss';

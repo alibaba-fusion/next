@@ -1,11 +1,11 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Icon from '../../src/icon';
-import Balloon from '../../src/balloon';
-import Nav from '../../src/nav/index';
-import '../../src/nav/style.js';
-import { unmount, test, testReact, mountReact } from '../util/a11y/validate';
+import Icon from '../../icon';
+import Balloon from '../../balloon';
+import Nav from '../index';
+import '../style';
+import { unmount, test, testReact, mountReact } from '../../util/__tests__/legacy/a11y/validate';
 
 const { Tooltip } = Balloon;
 const { Item, SubNav, PopupItem, Group } = Nav;

@@ -1,12 +1,12 @@
 import moment from 'moment';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Calendar from '../../../src/calendar';
-import RangeCalendar from '../../../src/calendar/range-calendar';
-import ConfigProvider from '../../../src/config-provider';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import '../../../src/demo-helper/style.js';
-import '../../../src/calendar/style.js';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Calendar from '../../index';
+import RangeCalendar from '../../range-calendar';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import '../../../demo-helper/style';
+import '../../style';
 
 const i18nMap = {
     'zh-cn': {

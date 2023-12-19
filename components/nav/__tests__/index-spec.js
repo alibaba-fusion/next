@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Icon from '../../src/icon';
-import Balloon from '../../src/balloon';
-import Nav from '../../src/nav/index';
-import '../../src/nav/style.js';
+import Icon from '../../icon';
+import Balloon from '../../balloon';
+import Nav from '../index';
+import '../style';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */

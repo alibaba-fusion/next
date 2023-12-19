@@ -4,12 +4,12 @@ import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { dom } from '../../src/util';
-import Button from '../../src/button';
-import ConfigProvider from '../../src/config-provider';
-import Dialog from '../../src/dialog/index';
-import '../../src/dialog/style.js';
-import zhCN from '../../src/locale/zh-cn';
+import { dom } from '../../util';
+import Button from '../../button';
+import ConfigProvider from '../../config-provider';
+import Dialog from '../index';
+import '../style';
+import zhCN from '../../locale/zh-cn';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import '../../../src/message/style.js';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import Message from '../../../src/message';
+import '../../../demo-helper/style';
+import '../../style';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import Message from '../../index';
 
 const i18nMap = {
     'en-us': {

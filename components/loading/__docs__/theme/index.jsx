@@ -1,7 +1,7 @@
-import '../../../src/demo-helper/style.js';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import '../../../src/loading/style.js';
-import Loading from '../../../src/loading';
+import '../../../demo-helper/style';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import '../../style';
+import Loading from '../../index';
 
 // import demo helper
 

@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Divider from '../../src/divider';
-import '../../src/divider/style.js';
+import Divider from '../index';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

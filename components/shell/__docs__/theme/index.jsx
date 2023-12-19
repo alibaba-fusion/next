@@ -1,15 +1,15 @@
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import Shell from '../../../src/shell';
-import Nav from '../../../src/nav';
-import Search from '../../../src/search';
-import Icon from '../../../src/icon';
-import ConfigProvider from '../../../src/config-provider';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import '../../../src/demo-helper/style.js';
-import '../../../src/shell/style.js';
-import '../../../src/search/style.js';
-import '../../../src/nav/style.js';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import Shell from '../../index';
+import Nav from '../../../nav';
+import Search from '../../../search';
+import Icon from '../../../icon';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import '../../../demo-helper/style';
+import '../../style';
+import '../../../search/style';
+import '../../../nav/style';
 
 /* eslint-disable */
 const i18nMap = {

@@ -1,6 +1,6 @@
 import assert from 'power-assert';
 import sinon from 'sinon';
-import request from '../../src/upload/runtime/request';
+import request from '../runtime/request';
 
 let xhr;
 let requests;

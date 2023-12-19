@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import '../../../src/collapse/style.js';
-import Collapse from '../../../src/collapse';
+import '../../../demo-helper/style';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import '../../style';
+import Collapse from '../../index';
 
 // import component
 

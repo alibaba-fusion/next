@@ -1,3 +1,3 @@
-import '../icon/style.js';
-import '../animate/style.js';
+import '../icon/style';
+import '../animate/style';
 import './main.scss';

@@ -4,7 +4,7 @@ import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
-import Upload from '../../src/upload/index';
+import Upload from '../index';
 
 Enzyme.configure({ adapter: new Adapter() });
 

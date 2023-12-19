@@ -1,11 +1,11 @@
 import React from 'react';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Timeline from '../../../src/timeline';
-import ConfigProvider from '../../../src/config-provider';
-import zhCN from '../../../src/locale/zh-cn.js';
-import enUS from '../../../src/locale/en-us.js';
-import '../../../src/demo-helper/style.js';
-import '../../../src/timeline/style.js';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Timeline from '../../index';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import '../../../demo-helper/style';
+import '../../style';
 
 const TimelineItem = Timeline.Item;
 const parseBool = str => {

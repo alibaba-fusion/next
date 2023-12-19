@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import ConfigProvider from '../../../src/config-provider';
-import Tab from '../../../src/tab';
-import Icon from '../../../src/icon';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import '../../../src/tab/style.js';
-import '../../../src/demo-helper/style.js';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import ConfigProvider from '../../../config-provider';
+import Tab from '../../index';
+import Icon from '../../../icon';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import '../../style';
+import '../../../demo-helper/style';
 
 const i18nMap = {
     'zh-cn': {

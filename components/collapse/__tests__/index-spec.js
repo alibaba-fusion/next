@@ -3,7 +3,7 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
-import Collapse from '../../src/collapse/index';
+import Collapse from '../index';
 
 Enzyme.configure({ adapter: new Adapter() });
 

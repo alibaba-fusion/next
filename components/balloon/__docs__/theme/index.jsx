@@ -1,8 +1,8 @@
-import '../../../src/demo-helper/style.js';
-import {Demo, DemoGroup, initDemo} from '../../../src/demo-helper';
-import Balloon from '../../../src/balloon';
-import '../../../src/balloon/style.js';
-import '../../../src/icon/style.js';
+import '../../../demo-helper/style';
+import {Demo, DemoGroup, initDemo} from '../../../demo-helper';
+import Balloon from '../../index';
+import '../../style';
+import '../../../icon/style';
 
 const i18nMap = {
     'zh-cn': {

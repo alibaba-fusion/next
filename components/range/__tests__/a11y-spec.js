@@ -6,8 +6,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import simulateEvent from 'simulate-event';
 import assert from 'power-assert';
 import sinon from 'sinon';
-import Range from '../../src/range/index';
-import { unmount, testReact } from '../util/a11y/validate';
+import Range from '../index';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
 
 /* eslint-disable react/no-multi-comp */
 Enzyme.configure({ adapter: new Adapter() });

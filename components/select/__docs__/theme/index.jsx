@@ -1,11 +1,11 @@
-import '../../../src/demo-helper/style.js';
-import {Demo, DemoGroup, DemoHead, initDemo} from '../../../src/demo-helper';
-import ConfigProvider from '../../../src/config-provider';
-import Select from '../../../src/select';
-import '../../../src/select/style.js';
-import Field from '../../../src/field';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
+import '../../../demo-helper/style';
+import {Demo, DemoGroup, DemoHead, initDemo} from '../../../demo-helper';
+import ConfigProvider from '../../../config-provider';
+import Select from '../../index';
+import '../../style';
+import Field from '../../../field';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
 
 // import demo helper
 

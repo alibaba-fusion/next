@@ -1,18 +1,18 @@
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Input from '../../../src/input';
-import Select from '../../../src/select';
-import TimePicker from '../../../src/time-picker';
-import Form from '../../../src/form';
-import Rating from '../../../src/rating';
-import Range from '../../../src/range';
-import '../../../src/demo-helper/style.js';
-import '../../../src/input/style.js';
-import '../../../src/time-picker/style.js';
-import '../../../src/select/style.js';
-import '../../../src/form/style.js';
-import '../../../src/rating/style.js';
-import '../../../src/range/style.js';
-import '../../../src/core/form-element.scss';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Input from '../../../input';
+import Select from '../../../select';
+import TimePicker from '../../../time-picker';
+import Form from '../../../form';
+import Rating from '../../../rating';
+import Range from '../../../range';
+import '../../../demo-helper/style';
+import '../../../input/style';
+import '../../../time-picker/style';
+import '../../../select/style';
+import '../../../form/style';
+import '../../../rating/style';
+import '../../../range/style';
+import '../../form-element.scss';
 
 const FormItem = Form.Item;
 

@@ -3,7 +3,7 @@ import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Balloon from '../../src/balloon';
+import Balloon from '../index';
 
 Enzyme.configure({ adapter: new Adapter() });
 

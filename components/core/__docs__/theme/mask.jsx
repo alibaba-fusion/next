@@ -1,8 +1,8 @@
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Dialog from '../../../src/dialog';
-import '../../../src/demo-helper/style.js';
-import '../../../src/dialog/style.js';
-import '../../../src/core/mask.scss';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Dialog from '../../../dialog';
+import '../../../demo-helper/style';
+import '../../../dialog/style';
+import '../../mask.scss';
 
 class MaskDemo extends React.Component {
     findContainer() {

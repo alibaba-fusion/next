@@ -1,5 +1,5 @@
-import '../input/style.js';
-import '../select/style.js';
-import '../button/style.js';
-import '../icon/style.js';
+import '../input/style';
+import '../select/style';
+import '../button/style';
+import '../icon/style';
 import './main.scss';

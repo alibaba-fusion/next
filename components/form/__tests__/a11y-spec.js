@@ -1,10 +1,10 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Form from '../../src/form/index';
-import Input from '../../src/input/index';
-import '../../src/form/style';
-import { unmount, testReact } from '../util/a11y/validate';
+import Form from '../index';
+import Input from '../../input/index';
+import '../style';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
 
 const FormItem = Form.Item;
 

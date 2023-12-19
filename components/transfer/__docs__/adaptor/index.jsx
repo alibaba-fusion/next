@@ -1,7 +1,7 @@
 import React from 'react';
 import { Types, parseData, NodeType } from '@alifd/adaptor-helper';
 import { Transfer } from '@alifd/next';
-import locale from '../../../src/locale/en-us';
+import locale from '../../../locale/en-us';
 
 export default {
     name: 'Transfer',

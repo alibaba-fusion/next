@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import Typography from '../../../src/typography';
-import '../../../src/typography/style.js';
+import '../../../demo-helper/style';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import Typography from '../../index';
+import '../../style';
 
 const { Text, Paragraph, H1, H2, H3, H4, H5, H6 } = Typography;
 

@@ -4,10 +4,10 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
-import Switch from '../../src/switch';
-import Input from '../../src/input';
-import Form from '../../src/form';
-import Field from '../../src/field/index';
+import Switch from '../../switch';
+import Input from '../../input';
+import Form from '../../form';
+import Field from '../index';
 
 Enzyme.configure({ adapter: new Adapter() });
 

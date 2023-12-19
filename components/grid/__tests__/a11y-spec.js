@@ -2,8 +2,8 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Grid from '../../src/grid';
-import { unmount, testReact } from '../util/a11y/validate';
+import Grid from '../index';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it beforeEach afterEach */

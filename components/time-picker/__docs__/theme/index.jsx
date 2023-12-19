@@ -1,13 +1,13 @@
 import React from 'react';
 import moment from 'moment';
-import { Demo, DemoHead, DemoGroup, initDemo } from '../../../src/demo-helper';
-import TimePicker from '../../../src/time-picker';
-import ConfigProvider from '../../../src/config-provider';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import '../../../src/time-picker/style.js';
-import '../../../src/demo-helper/style.js';
-import TimePanel from '../../../src/time-picker/panel';
+import { Demo, DemoHead, DemoGroup, initDemo } from '../../../demo-helper';
+import TimePicker from '../../index';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import '../../style';
+import '../../../demo-helper/style';
+import TimePanel from '../../panel';
 
 const timeValue = moment().hour(6).minute(6).second(6);
 

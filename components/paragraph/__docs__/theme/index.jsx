@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import Paragraph from '../../../src/paragraph';
-import '../../../src/paragraph/style.js';
+import '../../../demo-helper/style';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import Paragraph from '../../index';
+import '../../style';
 
 const i18nMap = {
     'zh-cn': {

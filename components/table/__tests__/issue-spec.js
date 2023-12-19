@@ -5,11 +5,11 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
-import Table from '../../src/table/index';
-import Button from '../../src/button/index';
-import ConfigProvider from '../../src/config-provider';
-import Input from '../../src/input';
-import '../../src/table/style.js';
+import Table from '../index';
+import Button from '../../button/index';
+import ConfigProvider from '../../config-provider';
+import Input from '../../input';
+import '../style';
 /* eslint-disable */
 Enzyme.configure({ adapter: new Adapter() });
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration));

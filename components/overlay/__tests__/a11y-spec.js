@@ -1,10 +1,10 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Overlay from '../../src/overlay/index';
+import Overlay from '../index';
 
-import { test, testReact, unmount, createContainer } from '../util/a11y/validate';
-import '../../src/progress/style.js';
+import { test, testReact, unmount, createContainer } from '../../util/__tests__/legacy/a11y/validate';
+import '../../progress/style';
 
 const { Popup } = Overlay;
 Enzyme.configure({ adapter: new Adapter() });

@@ -1,9 +1,9 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Calendar from '../../src/calendar/index';
-import '../../src/calendar/style';
-import { afterEach as a11yAfterEach, testReact } from '../util/a11y/validate';
+import Calendar from '../index';
+import '../style';
+import { afterEach as a11yAfterEach, testReact } from '../../util/__tests__/legacy/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 

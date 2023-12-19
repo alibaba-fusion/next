@@ -1,10 +1,10 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { unmount, testReact } from '../util/a11y/validate';
-import Icon from '../../src/icon';
-import Step from '../../src/step/index';
-import '../../src/step/style.js';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
+import Icon from '../../icon';
+import Step from '../index';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

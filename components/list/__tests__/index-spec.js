@@ -2,10 +2,10 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import List from '../../src/list';
-import Icon from '../../src/icon';
-import Loading from '../../src/loading';
-import '../../src/list/style.js';
+import List from '../index';
+import Icon from '../../icon';
+import Loading from '../../loading';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

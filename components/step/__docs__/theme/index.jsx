@@ -1,8 +1,8 @@
 import React from 'react';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Step from '../../../src/step';
-import '../../../src/step/style.js';
-import '../../../src/demo-helper/style.js';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Step from '../../index';
+import '../../style';
+import '../../../demo-helper/style';
 
 const StepItem = Step.Item;
 const parseBool = str => {

@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import '../../../src/transfer/style.js';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Transfer from '../../../src/transfer';
-import ConfigProvider from '../../../src/config-provider';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
+import '../../../demo-helper/style';
+import '../../style';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Transfer from '../../index';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
 
 /* eslint-disable react/react-in-jsx-scope */
 

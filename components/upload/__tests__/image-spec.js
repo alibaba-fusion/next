@@ -4,9 +4,9 @@ import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
-import Upload from '../../src/upload/index';
-import request from '../../src/upload/runtime/request';
-import { func } from '../../src/util';
+import Upload from '../index';
+import request from '../runtime/request';
+import { func } from '../../util';
 
 Enzyme.configure({ adapter: new Adapter() });
 

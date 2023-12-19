@@ -1,9 +1,9 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { unmount, testReact } from '../util/a11y/validate';
-import Search from '../../src/search/Search';
-import '../../src/search/style.js';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
+import Search from '../Search';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

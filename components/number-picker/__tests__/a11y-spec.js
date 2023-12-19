@@ -1,9 +1,9 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import NumberPicker from '../../src/number-picker/index';
-import '../../src/number-picker/style';
-import { unmount, testReact } from '../util/a11y/validate';
+import NumberPicker from '../index';
+import '../style';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 

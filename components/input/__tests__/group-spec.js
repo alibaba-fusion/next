@@ -3,9 +3,9 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
-import Select from '../../src/select';
-import Button from '../../src/button';
-import Input from '../../src/input/index';
+import Select from '../../select';
+import Button from '../../button';
+import Input from '../index';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -1,5 +1,5 @@
 import assert from 'power-assert';
-import { isSingle, isNull } from '../../src/select/util';
+import { isSingle, isNull } from '../util';
 
 /**
  * util spec test

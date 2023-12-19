@@ -1,11 +1,11 @@
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import ConfigProvider from '../../../src/config-provider';
-import Card from '../../../src/card';
-import Button from '../../../src/button';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import '../../../src/demo-helper/style.js';
-import '../../../src/card/style.js';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import ConfigProvider from '../../../config-provider';
+import Card from '../../index';
+import Button from '../../../button';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import '../../../demo-helper/style';
+import '../../style';
 
 /*eslint-disable*/
 const i18nMap = {

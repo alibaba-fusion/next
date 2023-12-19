@@ -2,8 +2,8 @@ import React, { createRef, useState } from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import CascaderSelect from '../../src/cascader-select';
-import '../../src/cascader-select/style.js';
+import CascaderSelect from '../index';
+import '../style';
 
 /* eslint-disable react/jsx-filename-extension  */
 /* global describe it beforeEach */

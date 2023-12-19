@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pagination } from '@alifd/next';
 import { Types } from '@alifd/adaptor-helper';
-import enUS from '../../../src/locale/en-us';
+import enUS from '../../../locale/en-us';
 
 export default {
     name: 'Pagination',

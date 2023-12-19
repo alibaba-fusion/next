@@ -4,10 +4,10 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
 import sinon from 'sinon';
-import Loading from '../../src/loading';
-import Icon from '../../src/icon';
-import Checkbox from '../../src/checkbox';
-import Table from '../../src/table/index';
+import Loading from '../../loading';
+import Icon from '../../icon';
+import Checkbox from '../../checkbox';
+import Table from '../index';
 
 /* eslint-disable */
 Enzyme.configure({ adapter: new Adapter() });

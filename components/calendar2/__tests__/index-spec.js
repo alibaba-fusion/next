@@ -3,7 +3,7 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import dayjs from 'dayjs';
-import Calendar2 from '../../src/calendar2/index';
+import Calendar2 from '../index';
 
 Enzyme.configure({
     adapter: new Adapter(),

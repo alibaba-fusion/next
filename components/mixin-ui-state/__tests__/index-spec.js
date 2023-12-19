@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import UIState from '../../src/mixin-ui-state/index';
+import UIState from '../index';
 
 /* eslint-disable */
 

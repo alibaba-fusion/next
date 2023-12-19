@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import '../../../src/menu/style.js';
-import '../../../src/icon/style.js';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Menu from '../../../src/menu';
-import Icon from '../../../src/icon';
+import '../../../demo-helper/style';
+import '../../style';
+import '../../../icon/style';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Menu from '../../index';
+import Icon from '../../../icon';
 
 const i18nMaps = {
     'en-us': {

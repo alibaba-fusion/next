@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Progress from '../../src/progress/index';
+import Progress from '../index';
 
 Enzyme.configure({ adapter: new Adapter() });
 

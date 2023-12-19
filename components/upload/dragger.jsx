@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
 import { func } from '../util';
-import zhCN from '../locale/zh-cn.js';
+import zhCN from '../locale/zh-cn';
 import Upload from './upload';
 
 /**

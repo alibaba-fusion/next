@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import ConfigProvider from '../../../src/config-provider';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
-import Field from '../../../src/field';
-import '../../../src/demo-helper/style.js';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Slider from '../../../src/slider';
-import '../../../src/slider/style.js';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
+import Field from '../../../field';
+import '../../../demo-helper/style';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Slider from '../../index';
+import '../../style';
 
 // import demo helper
 

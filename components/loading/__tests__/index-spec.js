@@ -2,8 +2,8 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Loading from '../../src/loading/index';
-import Overlay from '../../src/overlay';
+import Loading from '../index';
+import Overlay from '../../overlay';
 
 Enzyme.configure({ adapter: new Adapter() });
 

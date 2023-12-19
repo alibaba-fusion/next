@@ -3,9 +3,9 @@ import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
-import Search from '../../src/search/index';
-import zhCN from '../../src/locale/zh-cn';
-import enUS from '../../src/locale/en-us';
+import Search from '../index';
+import zhCN from '../../locale/zh-cn';
+import enUS from '../../locale/en-us';
 
 Enzyme.configure({ adapter: new Adapter() });
 

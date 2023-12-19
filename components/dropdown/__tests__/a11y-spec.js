@@ -1,9 +1,9 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Dropdown from '../../src/dropdown/index';
-import '../../src/dropdown/style';
-import { unmount, test, createContainer, testReact } from '../util/a11y/validate';
+import Dropdown from '../index';
+import '../style';
+import { unmount, test, createContainer, testReact } from '../../util/__tests__/legacy/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 

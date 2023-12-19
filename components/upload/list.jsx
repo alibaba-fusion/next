@@ -6,7 +6,7 @@ import Progress from '../progress';
 import Icon from '../icon';
 import Button from '../button';
 import { func, obj, KEYCODE, env } from '../util';
-import zhCN from '../locale/zh-cn.js';
+import zhCN from '../locale/zh-cn';
 import { previewFile } from './util';
 import transform from './transform';
 import Item from '../menu/view/item';

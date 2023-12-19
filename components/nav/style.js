@@ -1,4 +1,4 @@
-import '../animate/style.js';
-import '../menu/style.js';
-import '../balloon/style.js';
+import '../animate/style';
+import '../menu/style';
+import '../balloon/style';
 import './main.scss';

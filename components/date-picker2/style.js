@@ -1,7 +1,7 @@
-import '../input/style.js';
-import '../overlay/style.js';
-import '../calendar2/style.js';
-import '../time-picker2/style.js';
-import '../button/style.js';
-import '../icon/style.js';
+import '../input/style';
+import '../overlay/style';
+import '../calendar2/style';
+import '../time-picker2/style';
+import '../button/style';
+import '../icon/style';
 import './main.scss';

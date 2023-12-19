@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import assert from 'power-assert';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Breadcrumb from '../../src/breadcrumb';
-import '../../src/breadcrumb/style';
-import ConfigProvider from '../../src/config-provider';
+import Breadcrumb from '../index';
+import '../style';
+import ConfigProvider from '../../config-provider';
 
 Enzyme.configure({ adapter: new Adapter() });
 const { Item } = Breadcrumb;

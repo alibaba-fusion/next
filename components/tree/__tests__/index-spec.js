@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import propTypes from 'prop-types';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
-import { dom, KEYCODE } from '../../src/util';
-import Tree from '../../src/tree/index';
-import Button from '../../src/button/index';
-import Icon from '../../src/icon/index';
-import '../../src/tree/style.js';
+import { dom, KEYCODE } from '../../util';
+import Tree from '../index';
+import Button from '../../button/index';
+import Icon from '../../icon/index';
+import '../style';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
 /* global describe it beforeEach afterEach */

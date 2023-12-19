@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import '../../../src/tree/style.js';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Tree from '../../../src/tree';
+import '../../../demo-helper/style';
+import '../../style';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Tree from '../../index';
 
 const TreeNode = Tree.Node;
 

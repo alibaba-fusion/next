@@ -1,10 +1,10 @@
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Menu from '../../../src/menu';
-import TreeSelect from '../../../src/tree-select';
-import '../../../src/demo-helper/style.js';
-import '../../../src/menu/style.js';
-import '../../../src/tree-select/style.js';
-import '../../../src/core/popup.scss';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Menu from '../../../menu';
+import TreeSelect from '../../../tree-select';
+import '../../../demo-helper/style';
+import '../../../menu/style';
+import '../../../tree-select/style';
+import '../../popup.scss';
 
 const { SubMenu, Item, Divider } = Menu;
 

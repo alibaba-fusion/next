@@ -1,2 +1,2 @@
-import '../icon/style.js';
+import '../icon/style';
 import './main.scss';
