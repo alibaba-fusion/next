@@ -1,14 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import { Component } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import * as classNames from 'classnames';
 import ConfigProvider from '../config-provider';
 import { obj } from '../util';
 import Sup from './sup';
+import type { BadgeProps } from './types';
+
+export type { BadgeProps };
 
 /**
  * Badge
  */
-class Badge extends Component {
+class Badge extends Component<BadgeProps> {
     static propTypes = {
         // 样式类名的品牌前缀
         prefix: PropTypes.string,
@@ -26,7 +30,7 @@ class Badge extends Component {
          */
         count: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
-         * 当`count`为`0`时，是否显示count
+         * 当`count`为`0`时，是否显示 count
          * @version 1.16
          */
         showZero: PropTypes.bool,
@@ -65,9 +69,9 @@ class Badge extends Component {
             showZero,
             overflowCount: originOverflowCount,
         } = this.props;
-        const count = parseInt(originCount, 10);
-        const overflowCount = parseInt(originOverflowCount, 10);
-        const others = obj.pickOthers(Badge.propTypes, this.props);
+        const count = parseInt((originCount || 0).toString(), 10);
+        const overflowCount = parseInt((originOverflowCount || 99).toString(), 10);
+        const others = obj.pickOthers(Badge.propTypes, { ...this.props });
 
         // 如果是数字，则添加默认的 title
         if (count || (count === 0 && showZero)) {

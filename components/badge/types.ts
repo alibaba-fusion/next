@@ -1,16 +1,16 @@
-/// <reference types="react" />
-
 import * as React from 'react';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 
-export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLElement>, 'content'>, CommonProps {
+export interface BadgeProps
+    extends Omit<React.HTMLAttributes<HTMLElement>, 'content'>,
+        CommonProps {
     /**
      * 徽章依托的内容
      */
     children?: React.ReactNode;
 
     /**
-     * 展示的数字，大于 overflowCount 时显示为 ${overflowCount}+，为 0 时隐藏
+     * 展示的数字，大于 overflowCount 时显示为 overflowCount+，为 0 时隐藏
      */
     count?: number | string;
 
@@ -35,4 +35,12 @@ export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLElement>, 'con
     showZero?: boolean;
 }
 
-export default class Badge extends React.Component<BadgeProps, any> {}
+export interface BadgeSubProps
+    extends Pick<
+        BadgeProps,
+        'prefix' | 'count' | 'showZero' | 'overflowCount' | 'content' | 'dot' | 'style'
+    > {}
+export interface BadgeSubState {
+    lastCount: BadgeSubProps['count'];
+    currentCount: BadgeSubProps['count'];
+}
