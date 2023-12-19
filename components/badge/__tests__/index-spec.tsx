@@ -1,19 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { mount, render } from 'enzyme';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as ReactTestUtils from 'react-dom/test-utils';
+import { mount, render } from 'enzyme';
+import * as Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
+import * as assert from 'power-assert';
 import co from 'co';
 import { support } from '../../util';
 import Badge from '../index';
 import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
-// import util from '../../src/util';
 
 describe('Badge', () => {
-    let wrapper;
+    let wrapper: Enzyme.ReactWrapper;
 
     beforeEach(() => {
         wrapper = mount(<Badge />);
@@ -21,7 +21,7 @@ describe('Badge', () => {
 
     afterEach(() => {
         wrapper.unmount();
-        wrapper = null;
+        wrapper = null as any;
     });
 
     it("should have next-badge-not-a-wrapper class if don't pass children", () => {
@@ -39,7 +39,7 @@ describe('Badge', () => {
 
     it('should receive style prop', () => {
         wrapper.setProps({ dot: true, style: { color: 'red' } });
-        assert(wrapper.find('sup').prop('style').color === 'red');
+        assert(wrapper.find('sup').prop('style')!.color === 'red');
     });
 
     it('should render by dot and align', () => {
@@ -61,26 +61,33 @@ describe('Badge', () => {
             count: 0,
         };
 
-        handleKeyDown(e) {
+        handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = e => {
             this.setState({
-                count: parseInt(e.target.value, 10),
+                count: parseInt((e.target as HTMLInputElement).value, 10),
             });
-        }
+        };
 
         render() {
             return (
                 <div>
-                    <input id="input" onKeyDown={::this.handleKeyDown} />
+                    <input id="input" onKeyDown={this.handleKeyDown} />
                     <Badge count={this.state.count} />
                 </div>
             );
         }
     }
-    const expectStyle = (number, removeTransition, position) => {
+    const expectStyle = (
+        number: HTMLElement | null,
+        removeTransition: boolean,
+        position: number
+    ) => {
+        if (number === null) {
+            return '';
+        }
         const style = number.style;
         const transformTo = position * 16;
         if (support.animation) {
-            const expectTransition = transition => {
+            const expectTransition = (transition: string) => {
                 // compatible firefox
                 if (removeTransition) {
                     return transition === 'none' || 'none 0s ease 0s';
@@ -94,24 +101,24 @@ describe('Badge', () => {
             return (
                 expectTransition(style.transition) &&
                 style.transform === `translateY(-${transformTo}px)` &&
-                style.WebkitTransform === `translateY(-${transformTo}px)`
+                style.webkitTransform === `translateY(-${transformTo}px)`
             );
         }
 
         return parseInt(style.top, 10) === -transformTo;
     };
-    const delay = time => new Promise(resolve => setTimeout(resolve, time));
+    const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time));
 
     it('should render by count part one', () => {
-        return co(function*() {
+        return co(function* () {
             const div = document.createElement('div');
             document.body.appendChild(div);
 
             ReactDOM.render(<Test />, div);
-            const enterNumber = num => {
-                const input = document.querySelector('#input');
-                input.value = num.toString();
-                ReactTestUtils.Simulate.keyDown(input, {
+            const enterNumber = (num: number) => {
+                const input = document.querySelector<HTMLInputElement>('#input');
+                input!.value = num.toString();
+                ReactTestUtils.Simulate.keyDown(input!, {
                     key: 'Enter',
                     keyCode: 13,
                     which: 13,
@@ -121,15 +128,39 @@ describe('Badge', () => {
             assert(document.querySelector('.next-badge sup') === null);
 
             enterNumber(1);
-            assert(expectStyle(document.querySelector('.next-badge .next-badge-scroll-number-only'), true, 11));
+            assert(
+                expectStyle(
+                    document.querySelector('.next-badge .next-badge-scroll-number-only'),
+                    true,
+                    11
+                )
+            );
 
             enterNumber(2);
-            assert(expectStyle(document.querySelector('.next-badge .next-badge-scroll-number-only'), false, 12));
+            assert(
+                expectStyle(
+                    document.querySelector('.next-badge .next-badge-scroll-number-only'),
+                    false,
+                    12
+                )
+            );
             yield delay(350);
-            assert(expectStyle(document.querySelector('.next-badge .next-badge-scroll-number-only'), true, 12));
+            assert(
+                expectStyle(
+                    document.querySelector('.next-badge .next-badge-scroll-number-only'),
+                    true,
+                    12
+                )
+            );
 
             enterNumber(1);
-            assert(expectStyle(document.querySelector('.next-badge .next-badge-scroll-number-only'), true, 11));
+            assert(
+                expectStyle(
+                    document.querySelector('.next-badge .next-badge-scroll-number-only'),
+                    true,
+                    11
+                )
+            );
             yield delay(350);
 
             enterNumber(0);
@@ -142,15 +173,15 @@ describe('Badge', () => {
     });
 
     it('should render by count part two', () => {
-        return co(function*() {
+        return co(function* () {
             const div = document.createElement('div');
             document.body.appendChild(div);
 
             ReactDOM.render(<Test />, div);
-            const enterNumber = num => {
-                const input = document.querySelector('#input');
-                input.value = num.toString();
-                ReactTestUtils.Simulate.keyDown(input, {
+            const enterNumber = (num: number) => {
+                const input = document.querySelector<HTMLInputElement>('#input');
+                input!.value = num.toString();
+                ReactTestUtils.Simulate.keyDown(input!, {
                     key: 'Enter',
                     keyCode: 13,
                     which: 13,
@@ -160,11 +191,35 @@ describe('Badge', () => {
             enterNumber(9);
             yield delay(350);
             enterNumber(10);
-            assert(expectStyle(document.querySelectorAll('.next-badge .next-badge-scroll-number-only')[0], false, 11));
-            assert(expectStyle(document.querySelectorAll('.next-badge .next-badge-scroll-number-only')[1], true, 20));
+            assert(
+                expectStyle(
+                    document.querySelectorAll<HTMLElement>(
+                        '.next-badge .next-badge-scroll-number-only'
+                    )[0],
+                    false,
+                    11
+                )
+            );
+            assert(
+                expectStyle(
+                    document.querySelectorAll<HTMLElement>(
+                        '.next-badge .next-badge-scroll-number-only'
+                    )[1],
+                    true,
+                    20
+                )
+            );
 
             enterNumber(9);
-            assert(expectStyle(document.querySelectorAll('.next-badge .next-badge-scroll-number-only')[0], false, 9));
+            assert(
+                expectStyle(
+                    document.querySelectorAll<HTMLElement>(
+                        '.next-badge .next-badge-scroll-number-only'
+                    )[0],
+                    false,
+                    9
+                )
+            );
             yield delay(350);
 
             ReactDOM.unmountComponentAtNode(div);
@@ -177,10 +232,10 @@ describe('Badge', () => {
         document.body.appendChild(div);
 
         ReactDOM.render(<Test />, div);
-        const enterNumber = num => {
-            const input = document.querySelector('#input');
-            input.value = num.toString();
-            ReactTestUtils.Simulate.keyDown(input, {
+        const enterNumber = (num: number) => {
+            const input = document.querySelector<HTMLInputElement>('#input');
+            input!.value = num.toString();
+            ReactTestUtils.Simulate.keyDown(input!, {
                 key: 'Enter',
                 keyCode: 13,
                 which: 13,
@@ -188,11 +243,27 @@ describe('Badge', () => {
         };
 
         enterNumber(100);
-        assert(document.querySelector('.next-badge sup').innerHTML === '99+');
+        assert(document.querySelector('.next-badge sup')!.innerHTML === '99+');
 
         enterNumber(99);
-        assert(expectStyle(document.querySelectorAll('.next-badge .next-badge-scroll-number-only')[0], false, 9));
-        assert(expectStyle(document.querySelectorAll('.next-badge .next-badge-scroll-number-only')[1], false, 9));
+        assert(
+            expectStyle(
+                document.querySelectorAll<HTMLElement>(
+                    '.next-badge .next-badge-scroll-number-only'
+                )[0],
+                false,
+                9
+            )
+        );
+        assert(
+            expectStyle(
+                document.querySelectorAll<HTMLElement>(
+                    '.next-badge .next-badge-scroll-number-only'
+                )[1],
+                false,
+                9
+            )
+        );
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
