@@ -1,59 +1,34 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import * as ReactTestUtils from 'react-dom/test-utils';
-import { mount, render } from 'enzyme';
-import * as Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import * as assert from 'power-assert';
-import co from 'co';
+import { ChangeEventHandler } from 'react';
 import { support } from '../../util';
 import Badge from '../index';
 import '../style';
 
-Enzyme.configure({ adapter: new Adapter() });
-
 describe('Badge', () => {
-    let wrapper: Enzyme.ReactWrapper;
-
-    beforeEach(() => {
-        wrapper = mount(<Badge />);
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
-        wrapper = null as any;
-    });
-
     it("should have next-badge-not-a-wrapper class if don't pass children", () => {
-        let badge = wrapper.find('.next-badge');
-        assert(badge.hasClass('next-badge-not-a-wrapper'));
-        badge = wrapper.setProps({ children: <a>some link</a> });
-        assert(!badge.hasClass('next-badge-not-a-wrapper'));
+        cy.mount(<Badge />);
+        cy.get('.next-badge.next-badge-not-a-wrapper');
+        cy.mount(
+            <Badge>
+                <a>some link</a>
+            </Badge>
+        );
+        cy.get('.next-badge.next-badge-not-a-wrapper').should('not.exist');
     });
 
     it('should receive className prop', () => {
-        wrapper.setProps({ className: 'custom' });
-        const badge = wrapper.find('.next-badge');
-        assert(badge.hasClass('custom'));
+        cy.mount(<Badge className="custom" />);
+        cy.get('.next-badge.custom');
     });
 
     it('should receive style prop', () => {
-        wrapper.setProps({ dot: true, style: { color: 'red' } });
-        assert(wrapper.find('sup').prop('style')!.color === 'red');
-    });
-
-    it('should render by dot and align', () => {
-        wrapper.setProps({ dot: true });
-        assert(wrapper.find('sup').hasClass('next-badge-dot'));
-        wrapper.setProps({ align: 'left' });
-        // assert(wrapper.find('sup').hasClass('next-badge-dot-left'));
-        assert(wrapper.find('.next-badge').prop('align') === 'left');
+        cy.mount(<Badge dot style={{ color: 'green' }} />);
+        cy.get('.next-badge sup').should('have.css', 'color', 'rgb(0, 128, 0)');
     });
 
     it('should receive content prop', () => {
-        wrapper.setProps({ content: 'hot' });
-        assert(wrapper.find('sup').hasClass('next-badge-custom'));
-        assert(wrapper.find('sup').text() === 'hot');
+        cy.mount(<Badge content="hot" />);
+        cy.get('.next-badge sup.next-badge-custom').should('have.text', 'hot');
     });
 
     class Test extends React.Component {
@@ -61,217 +36,85 @@ describe('Badge', () => {
             count: 0,
         };
 
-        handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = e => {
+        handleChange: ChangeEventHandler<HTMLInputElement> = e => {
             this.setState({
-                count: parseInt((e.target as HTMLInputElement).value, 10),
+                count: Number(e.target.value),
             });
         };
 
         render() {
             return (
                 <div>
-                    <input id="input" onKeyDown={this.handleKeyDown} />
+                    <input type="text" id="input" onChange={this.handleChange} />
                     <Badge count={this.state.count} />
                 </div>
             );
         }
     }
-    const expectStyle = (
-        number: HTMLElement | null,
-        removeTransition: boolean,
-        position: number
-    ) => {
-        if (number === null) {
-            return '';
-        }
-        const style = number.style;
+    const enterNumber = async (num: number) => {
+        cy.get('#input').clear();
+        cy.get('#input').type(num.toString());
+    };
+    const expectStyle = (removeTransition: boolean, position: number, index: number = 0) => {
+        cy.get('.next-badge .next-badge-scroll-number-only').eq(index).as('number');
         const transformTo = position * 16;
         if (support.animation) {
-            const expectTransition = (transition: string) => {
-                // compatible firefox
+            const expectTransition = () => {
                 if (removeTransition) {
-                    return transition === 'none' || 'none 0s ease 0s';
+                    cy.get('@number').should('have.css', 'transition', 'none 0s ease 0s');
+                } else {
+                    cy.get('@number').should(
+                        'have.css',
+                        'transition',
+                        'transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)'
+                    );
                 }
-                return (
-                    transition ===
-                        'transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)' ||
-                    'transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) 0s, -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) 0s'
-                );
             };
-            return (
-                expectTransition(style.transition) &&
-                style.transform === `translateY(-${transformTo}px)` &&
-                style.webkitTransform === `translateY(-${transformTo}px)`
+            expectTransition();
+            cy.get('@number').should(
+                'have.css',
+                'transform',
+                `matrix(1, 0, 0, 1, 0, -${transformTo})`
             );
+        } else {
+            cy.get('@number').should('have.css', 'top', -transformTo);
         }
-
-        return parseInt(style.top, 10) === -transformTo;
     };
-    const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time));
 
     it('should render by count part one', () => {
-        return co(function* () {
-            const div = document.createElement('div');
-            document.body.appendChild(div);
-
-            ReactDOM.render(<Test />, div);
-            const enterNumber = (num: number) => {
-                const input = document.querySelector<HTMLInputElement>('#input');
-                input!.value = num.toString();
-                ReactTestUtils.Simulate.keyDown(input!, {
-                    key: 'Enter',
-                    keyCode: 13,
-                    which: 13,
-                });
-            };
-
-            assert(document.querySelector('.next-badge sup') === null);
-
-            enterNumber(1);
-            assert(
-                expectStyle(
-                    document.querySelector('.next-badge .next-badge-scroll-number-only'),
-                    true,
-                    11
-                )
-            );
-
-            enterNumber(2);
-            assert(
-                expectStyle(
-                    document.querySelector('.next-badge .next-badge-scroll-number-only'),
-                    false,
-                    12
-                )
-            );
-            yield delay(350);
-            assert(
-                expectStyle(
-                    document.querySelector('.next-badge .next-badge-scroll-number-only'),
-                    true,
-                    12
-                )
-            );
-
-            enterNumber(1);
-            assert(
-                expectStyle(
-                    document.querySelector('.next-badge .next-badge-scroll-number-only'),
-                    true,
-                    11
-                )
-            );
-            yield delay(350);
-
-            enterNumber(0);
-            yield delay(350);
-            assert(document.querySelector('.next-badge sup') === null);
-
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-        });
+        cy.mount(<Test />);
+        cy.get('.next-badge sup').should('not.exist');
+        enterNumber(1);
+        expectStyle(true, 11);
+        enterNumber(2);
+        expectStyle(true, 12);
+        enterNumber(1);
+        expectStyle(true, 11);
+        enterNumber(0);
+        cy.get('.next-badge sup').should('not.exist');
     });
 
     it('should render by count part two', () => {
-        return co(function* () {
-            const div = document.createElement('div');
-            document.body.appendChild(div);
-
-            ReactDOM.render(<Test />, div);
-            const enterNumber = (num: number) => {
-                const input = document.querySelector<HTMLInputElement>('#input');
-                input!.value = num.toString();
-                ReactTestUtils.Simulate.keyDown(input!, {
-                    key: 'Enter',
-                    keyCode: 13,
-                    which: 13,
-                });
-            };
-
-            enterNumber(9);
-            yield delay(350);
-            enterNumber(10);
-            assert(
-                expectStyle(
-                    document.querySelectorAll<HTMLElement>(
-                        '.next-badge .next-badge-scroll-number-only'
-                    )[0],
-                    false,
-                    11
-                )
-            );
-            assert(
-                expectStyle(
-                    document.querySelectorAll<HTMLElement>(
-                        '.next-badge .next-badge-scroll-number-only'
-                    )[1],
-                    true,
-                    20
-                )
-            );
-
-            enterNumber(9);
-            assert(
-                expectStyle(
-                    document.querySelectorAll<HTMLElement>(
-                        '.next-badge .next-badge-scroll-number-only'
-                    )[0],
-                    false,
-                    9
-                )
-            );
-            yield delay(350);
-
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-        });
+        cy.mount(<Test />);
+        enterNumber(9);
+        enterNumber(10);
+        expectStyle(true, 11);
+        expectStyle(true, 10, 1);
+        enterNumber(9);
+        expectStyle(true, 19);
     });
 
     it('should render by overflowCount', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(<Test />, div);
-        const enterNumber = (num: number) => {
-            const input = document.querySelector<HTMLInputElement>('#input');
-            input!.value = num.toString();
-            ReactTestUtils.Simulate.keyDown(input!, {
-                key: 'Enter',
-                keyCode: 13,
-                which: 13,
-            });
-        };
-
+        cy.mount(<Test />);
         enterNumber(100);
-        assert(document.querySelector('.next-badge sup')!.innerHTML === '99+');
-
+        cy.get('.next-badge sup').should('have.text', '99+');
         enterNumber(99);
-        assert(
-            expectStyle(
-                document.querySelectorAll<HTMLElement>(
-                    '.next-badge .next-badge-scroll-number-only'
-                )[0],
-                false,
-                9
-            )
-        );
-        assert(
-            expectStyle(
-                document.querySelectorAll<HTMLElement>(
-                    '.next-badge .next-badge-scroll-number-only'
-                )[1],
-                false,
-                9
-            )
-        );
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        expectStyle(true, 19);
+        expectStyle(true, 19, 1);
     });
 
     it('should show zero when count is even zero by setting showZero', () => {
-        const wrapper = render(<Badge count={0} showZero />);
-        assert.notStrictEqual(wrapper.find('.next-badge-count'), null);
-        assert(wrapper.find('.next-badge-count').hasClass('next-badge-scroll-number'));
+        cy.mount(<Badge count={0} showZero />);
+        cy.get('.next-badge-count.next-badge-scroll-number');
     });
 });

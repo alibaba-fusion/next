@@ -69,9 +69,9 @@ class Badge extends Component<BadgeProps> {
             showZero,
             overflowCount: originOverflowCount,
         } = this.props;
-        const count = parseInt((originCount || 0).toString(), 10);
-        const overflowCount = parseInt((originOverflowCount || 99).toString(), 10);
-        const others = obj.pickOthers(Badge.propTypes, { ...this.props });
+        const count = parseInt(originCount as string, 10);
+        const overflowCount = parseInt(originOverflowCount as string, 10);
+        const others = obj.pickOthers(Badge.propTypes, this.props);
 
         // 如果是数字，则添加默认的 title
         if (count || (count === 0 && showZero)) {
