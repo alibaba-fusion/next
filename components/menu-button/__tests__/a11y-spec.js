@@ -1,9 +1,9 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import MenuButton from '../../src/menu-button/index';
-import '../../src/menu-button/style';
-import { unmount, test, mountReact } from '../util/a11y/validate';
+import MenuButton from '../index';
+import '../style';
+import { unmount, test, mountReact } from '../../util/__tests__/legacy/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -1,7 +1,7 @@
-import '../../../src/demo-helper/style.js';
-import {Demo, DemoGroup, DemoHead, initDemo} from '../../../src/demo-helper';
-import NumberPicker from '../../../src/number-picker';
-import '../../../src/number-picker/style.js';
+import '../../../demo-helper/style';
+import {Demo, DemoGroup, DemoHead, initDemo} from '../../../demo-helper';
+import NumberPicker from '../../index';
+import '../../style';
 
 // import demo helper
 

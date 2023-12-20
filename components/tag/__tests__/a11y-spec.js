@@ -1,9 +1,9 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Tag from '../../src/tag';
-import '../../src/tag/style.js';
-import { testReact, unmount } from '../util/a11y/validate';
+import Tag from '../index';
+import '../style';
+import { testReact, unmount } from '../../util/__tests__/legacy/a11y/validate';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach*/

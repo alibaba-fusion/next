@@ -2,9 +2,9 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Radio from '../../src/radio/index';
-import '../../src/radio/style';
-import { unmount, testReact } from '../util/a11y/validate';
+import Radio from '../index';
+import '../style';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -3,9 +3,9 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import moment from 'moment';
-import TimePicker from '../../src/time-picker/index';
-import '../../src/time-picker/style.js';
-import { KEYCODE } from '../../src/util';
+import TimePicker from '../index';
+import '../style';
+import { KEYCODE } from '../../util';
 
 Enzyme.configure({ adapter: new Adapter() });
 const defaultValue = moment('11:12:13', 'HH:mm:ss', true);

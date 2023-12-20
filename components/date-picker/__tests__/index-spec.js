@@ -3,8 +3,8 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import moment from 'moment';
-import DatePicker from '../../src/date-picker/index';
-import { KEYCODE } from '../../src/util';
+import DatePicker from '../index';
+import { KEYCODE } from '../../util';
 
 Enzyme.configure({ adapter: new Adapter() });
 const { RangePicker, MonthPicker, YearPicker, WeekPicker } = DatePicker;

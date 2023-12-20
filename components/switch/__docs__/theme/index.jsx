@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import '../../../src/demo-helper/style.js';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import '../../../src/switch/style.js';
-import Switch from '../../../src/switch';
+import '../../../demo-helper/style';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import '../../style';
+import Switch from '../../index';
 
 const i18nMap = {
     'zh-cn': {

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import '../../../src/dialog/style.js';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Dialog from '../../../src/dialog';
-import { ModalInner } from '../../../src/dialog/show';
+import '../../../demo-helper/style';
+import '../../style';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Dialog from '../../index';
+import { ModalInner } from '../../show';
 
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
 
 const i18nMaps = {
     'en-us': {

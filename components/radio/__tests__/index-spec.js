@@ -4,7 +4,7 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
-import Radio from '../../src/radio/index';
+import Radio from '../index';
 
 /* eslint-disable */
 Enzyme.configure({ adapter: new Adapter() });

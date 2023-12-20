@@ -1,2 +1,2 @@
-import '../animate/style.js';
+import '../animate/style';
 import './main.scss';

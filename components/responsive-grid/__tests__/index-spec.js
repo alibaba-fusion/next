@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import ResponsiveGrid from '../../src/responsive-grid';
-import '../../src/responsive-grid/style.js';
+import ResponsiveGrid from '../index';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 const { Cell } = ResponsiveGrid;

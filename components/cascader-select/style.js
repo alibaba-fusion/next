@@ -1,3 +1,3 @@
-import '../select/style.js';
-import '../cascader/style.js';
+import '../select/style';
+import '../cascader/style';
 import './main.scss';

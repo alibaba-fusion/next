@@ -5,11 +5,11 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
 import { setTimeout } from 'timers';
-import Checkbox from '../../src/checkbox';
-import Radio from '../../src/radio';
-import { KEYCODE, env } from '../../src/util';
-import Menu from '../../src/menu/index';
-import '../../src/menu/style.js';
+import Checkbox from '../../checkbox';
+import Radio from '../../radio';
+import { KEYCODE, env } from '../../util';
+import Menu from '../index';
+import '../style';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */

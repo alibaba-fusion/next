@@ -1,8 +1,8 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Checkbox from '../../src/checkbox/index';
-import { unmount, testReact } from '../util/a11y/validate';
+import Checkbox from '../index';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 

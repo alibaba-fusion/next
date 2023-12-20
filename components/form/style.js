@@ -1,4 +1,4 @@
-import '../grid/style.js';
-import '../responsive-grid/style.js';
-import '../button/style.js';
+import '../grid/style';
+import '../responsive-grid/style';
+import '../button/style';
 import './main.scss';

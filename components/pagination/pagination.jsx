@@ -8,7 +8,7 @@ import Button from '../button';
 import Input from '../input';
 import Select from '../select';
 import { KEYCODE, str, obj } from '../util';
-import zhCN from '../locale/zh-cn.js';
+import zhCN from '../locale/zh-cn';
 
 const { Option } = Select;
 const noop = () => {};

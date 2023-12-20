@@ -4,9 +4,9 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
-import Slider from '../../src/slider/index';
+import Slider from '../index';
 import ReactTestUtils from 'react-dom/test-utils';
-import '../../src/slider/style.js';
+import '../style';
 
 /* eslint-disable */
 Enzyme.configure({ adapter: new Adapter() });

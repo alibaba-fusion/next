@@ -2,8 +2,8 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Icon from '../../src/icon';
-import ConfigProvider from '../../src/config-provider';
+import Icon from '../index';
+import ConfigProvider from '../../config-provider';
 
 Enzyme.configure({ adapter: new Adapter() });
 

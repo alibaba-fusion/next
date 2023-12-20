@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Upload from '../../src/upload/runtime/iframe-uploader';
+import Upload from '../runtime/iframe-uploader';
 
 Enzyme.configure({ adapter: new Adapter() });
 

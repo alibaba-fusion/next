@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import '../../../src/cascader/style.js';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Cascader from '../../../src/cascader';
+import '../../../demo-helper/style';
+import '../../style';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Cascader from '../../index';
 
 const i18nMap = {
     'en-us': {

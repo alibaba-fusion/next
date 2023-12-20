@@ -1,7 +1,7 @@
 import React from 'react';
 import { Types, parseData, NodeType } from '@alifd/adaptor-helper';
 import { Upload } from '@alifd/next';
-import locale from '../../../src/locale/en-us';
+import locale from '../../../locale/en-us';
 
 const getSize = (size) => {
     if (!size) return 0;

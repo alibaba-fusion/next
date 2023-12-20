@@ -5,9 +5,9 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import { setTimeout } from 'timers';
-import Rating from '../../src/rating/index';
-import '../../src/rating/style.js';
-import { KEYCODE } from '../../src/util';
+import Rating from '../index';
+import '../style';
+import { KEYCODE } from '../../util';
 
 Enzyme.configure({ adapter: new Adapter() });
 

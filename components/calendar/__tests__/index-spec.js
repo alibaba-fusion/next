@@ -4,10 +4,10 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import moment from 'moment';
-import Calendar from '../../src/calendar/index';
-import RangeCalendar from '../../src/calendar/range-calendar';
-import '../../src/calendar/style.js';
-import { getLocaleData } from '../../src/calendar/utils/index';
+import Calendar from '../index';
+import RangeCalendar from '../range-calendar';
+import '../style';
+import { getLocaleData } from '../utils/index';
 
 Enzyme.configure({
     adapter: new Adapter(),

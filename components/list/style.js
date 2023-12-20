@@ -1,3 +1,3 @@
-import '../avatar/style.js';
-import '../loading/style.js';
+import '../avatar/style';
+import '../loading/style';
 import './main.scss';

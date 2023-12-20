@@ -1,5 +1,5 @@
 import assert from 'power-assert';
-import Schema from '../../src/validate/';
+import Schema from '../index';
 
 describe('abort', () => {
     it('works with abort', done => {

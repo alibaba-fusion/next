@@ -66,6 +66,7 @@
     "pack": "node ./scripts/pack.js",
     "pack-adaptor": "node ./scripts/adaptor/build.js",
     "release": "node ./scripts/release/index.js",
+    "test:js": "node --max_old_space_size=8192 ./scripts/test/index.js",
     "test:v2": "node --max_old_space_size=8192 ./scripts/test/v2-index.js",
     "test:a11y": "node --max_old_space_size=8192 ./scripts/test/a11y-index.js",
     "order-var": "node ./scripts/order-var.js",
@@ -99,15 +100,14 @@
       "git add"
     ],
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx)": [
-      "prettier --write"
+      "prettier --write",
+      "git add"
     ],
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx|md)": [
-      "eslint",
-      "git add"
+      "eslint"
     ],
     "src/**/*.@(css|scss)": [
-      "stylelint",
-      "git add"
+      "stylelint"
     ]
   },
   "dependencies": {
@@ -210,7 +210,6 @@
     "jsonp": "^0.2.1",
     "karma": "^3.0.0",
     "karma-chrome-launcher": "^2.2.0",
-    "karma-coverage": "^1.1.1",
     "karma-mocha": "^1.3.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "^0.0.26",
@@ -237,6 +236,7 @@
     "power-assert": "^1.5.0",
     "prettier": "^3.1.0",
     "promise-polyfill": "^8.1.0",
+    "puppeteer": "^10.4.0",
     "react": "^16.0.0",
     "react-axe": "^3.0.2",
     "react-copy-to-clipboard": "^5.0.1",
@@ -263,6 +263,7 @@
     "stylelint-config-recommended": "^3.0.0",
     "stylelint-csstree-validator": "^1.8.0",
     "stylelint-scss": "^3.1.1",
+    "ts-loader": "^6.2.2",
     "ts-node": "^10.9.2",
     "tslint": "^5.18.0",
     "typescript": "^5.3.2",

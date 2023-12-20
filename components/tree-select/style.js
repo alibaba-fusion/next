@@ -1,4 +1,4 @@
-import '../icon/style.js';
-import '../tree/style.js';
-import '../select/style.js';
+import '../icon/style';
+import '../tree/style';
+import '../select/style';
 import './main.scss';

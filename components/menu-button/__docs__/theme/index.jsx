@@ -1,9 +1,9 @@
 import React from 'react';
-import MenuButton from '../../../src/menu-button';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import ConfigProvider from '../../../src/config-provider';
-import '../../../src/demo-helper/style.js';
-import '../../../src/menu-button/style.js';
+import MenuButton from '../../index';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import ConfigProvider from '../../../config-provider';
+import '../../../demo-helper/style';
+import '../../style';
 
 /* eslint-disable */
 const i18nMap = {

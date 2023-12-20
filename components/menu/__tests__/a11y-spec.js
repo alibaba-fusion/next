@@ -1,9 +1,9 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Menu from '../../src/menu/index';
-import '../../src/menu/style';
-import { unmount, test, testReact, mountReact } from '../util/a11y/validate';
+import Menu from '../index';
+import '../style';
+import { unmount, test, testReact, mountReact } from '../../util/__tests__/legacy/a11y/validate';
 
 const { SubMenu, Item, Group, Divider, CheckboxItem, RadioItem } = Menu;
 Enzyme.configure({ adapter: new Adapter() });

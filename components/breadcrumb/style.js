@@ -1,4 +1,4 @@
-import '../icon/style.js';
-import '../menu/style.js';
-import '../dropdown/style.js';
+import '../icon/style';
+import '../menu/style';
+import '../dropdown/style';
 import './main.scss';

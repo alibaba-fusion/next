@@ -1,11 +1,11 @@
-import '../../../src/demo-helper/style.js';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import '../../../src/breadcrumb/style.js';
-import Breadcrumb from '../../../src/breadcrumb';
-import Field from '../../../src/field';
-import ConfigProvider from '../../../src/config-provider';
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
+import '../../../demo-helper/style';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import '../../style';
+import Breadcrumb from '../../index';
+import Field from '../../../field';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
 
 // import demo helper
 

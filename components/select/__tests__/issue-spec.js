@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
-import Field from '../../src/field';
-import Select from '../../src/select/index';
-import '../../src/select/style.js';
+import Field from '../../field';
+import Select from '../index';
+import '../style';
 
 /* eslint-disable react/no-multi-comp,no-undef */
 

@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import VirtualList from '../../src/virtual-list/index';
-import '../../src/virtual-list/style.js';
+import VirtualList from '../index';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

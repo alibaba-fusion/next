@@ -4,9 +4,9 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
-import Input from '../../src/input/index';
-import Icon from '../../src/icon/index';
-import ConfigProvider from '../../src/config-provider';
+import Input from '../index';
+import Icon from '../../icon/index';
+import ConfigProvider from '../../config-provider';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import Tag from '../../../src/tag';
-import '../../../src/tag/style.js';
-import '../../../src/icon/style.js';
+import '../../../demo-helper/style';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import Tag from '../../index';
+import '../../style';
+import '../../../icon/style';
 
 /* eslint-disable */
 

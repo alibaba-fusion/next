@@ -5,11 +5,10 @@ const { getComPathName } = require('../utils');
 
 process.env.CHROME_BIN = require('puppeteer').executablePath();
 
-module.exports = function(config) {
+module.exports = function (config) {
     const { runAll, a11y, v2 } = config;
     const componentName = config.component ? getComPathName(config.component) : config.component;
     const singleRun = runAll;
-    const coveragePath = resolveCwd('coverage');
     // const componentArray = config.componentArray;
     // 'table' or 'table|tree|tree-select'
     // const componentList = componentArray ? componentArray.join('|') : componentName;
@@ -23,7 +22,7 @@ module.exports = function(config) {
     } else if (runAll) {
         specPath = resolveCwd('scripts/test/allinone.js');
     } else {
-        specPath = resolveCwd('test', `@(${componentName})/*-spec.js`);
+        specPath = resolveCwd('components', `@(${componentName})/**/*-spec.js`);
     }
 
     const options = {
@@ -35,7 +34,7 @@ module.exports = function(config) {
                 flags: ['--no-sandbox'],
             },
         },
-        reporters: ['spec', 'coverage'],
+        reporters: ['spec'],
         preprocessors: {
             [specPath]: ['webpack', 'sourcemap'],
         },
@@ -48,14 +47,6 @@ module.exports = function(config) {
             require.resolve('html5shiv/dist/html5shiv.js'),
             specPath,
         ],
-        coverageReporter: {
-            dir: coveragePath,
-            reporters: [
-                { type: 'lcov', subdir: '.' },
-                { type: 'json', subdir: '.' },
-                { type: 'text-summary', subdir: '.', file: 'coverage.txt' },
-            ],
-        },
         client: {
             mocha: {
                 timeout: 10000,
@@ -80,7 +71,6 @@ module.exports = function(config) {
             'karma-webpack',
             'karma-spec-reporter',
             'karma-sourcemap-loader',
-            'karma-coverage',
         ],
     };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Balloon from '../../src/balloon/index';
+import Balloon from '../index';
 
 /* eslint-disable react/no-multi-comp */
 

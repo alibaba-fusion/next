@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Grid from '../../src/grid';
+import Grid from '../index';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it beforeEach afterEach */

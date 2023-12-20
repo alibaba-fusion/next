@@ -6,7 +6,7 @@ const { logger, getComPathName } = require('./index');
 
 const cwd = process.cwd();
 
-module.exports = function(runtest = false, withOtherArgs = false) {
+module.exports = function (runtest = false, withOtherArgs = false) {
     const argv = minimist(process.argv.slice(2));
     const arr = argv._;
     const comIndex = arr.findIndex(a => a.indexOf('=') === -1);
@@ -16,7 +16,7 @@ module.exports = function(runtest = false, withOtherArgs = false) {
     if (componentName) {
         // compatible with npm run dev -- Menu
         componentName = getComPathName(componentName);
-        const file = runtest ? 'test' : 'docs';
+        const file = runtest ? 'components' : 'docs';
         const components = fs.readdirSync(path.join(cwd, file));
         let name = componentName;
         const valid = components.some(com => {

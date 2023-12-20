@@ -3,12 +3,12 @@ import Enzyme, { mount } from 'enzyme';
 import sinon from 'sinon';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Input from '../../src/input';
-import Field from '../../src/field';
-import Select from '../../src/select';
-import Radio from '../../src/radio';
-import Checkbox from '../../src/checkbox';
-import Form from '../../src/form/index';
+import Input from '../../input';
+import Field from '../../field';
+import Select from '../../select';
+import Radio from '../../radio';
+import Checkbox from '../../checkbox';
+import Form from '../index';
 
 const FormItem = Form.Item;
 Enzyme.configure({ adapter: new Adapter() });

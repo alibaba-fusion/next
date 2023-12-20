@@ -1,6 +1,6 @@
-import '../icon/style.js';
-import '../tag/style.js';
-import '../overlay/style.js';
-import '../menu/style.js';
-import '../input/style.js';
+import '../icon/style';
+import '../tag/style';
+import '../overlay/style';
+import '../menu/style';
+import '../input/style';
 import './main.scss';

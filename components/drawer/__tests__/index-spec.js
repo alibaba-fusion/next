@@ -4,10 +4,10 @@ import assert from 'power-assert';
 import Enzyme, { shallow } from 'enzyme';
 import ReactTestUtils from 'react-dom/test-utils';
 import Adapter from 'enzyme-adapter-react-16';
-import { dom } from '../../src/util';
-import Drawer from '../../src/drawer/index';
-import ConfigProvider from '../../src/config-provider';
-import '../../src/drawer/style.js';
+import { dom } from '../../util';
+import Drawer from '../index';
+import ConfigProvider from '../../config-provider';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

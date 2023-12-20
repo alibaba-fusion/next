@@ -1,9 +1,9 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { unmount, testReact } from '../util/a11y/validate';
-import Rating from '../../src/rating';
-import '../../src/rating/style.js';
+import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
+import Rating from '../index';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

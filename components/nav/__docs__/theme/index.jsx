@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import '../../../src/nav/style.js';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import Nav from '../../../src/nav';
+import '../../../demo-helper/style';
+import '../../style';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import Nav from '../../index';
 
 const { Item, Group, SubNav } = Nav;
 

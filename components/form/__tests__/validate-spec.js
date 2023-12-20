@@ -3,11 +3,11 @@ import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Input from '../../src/input';
-import Form from '../../src/form/index';
-import Field from '../../src/field';
-import { dom } from '../../src/util';
-import testUtil from '../util/index';
+import Input from '../../input';
+import Form from '../index';
+import Field from '../../field';
+import { dom } from '../../util';
+import testUtil from '../../util/__tests__/legacy/index';
 
 const FormItem = Form.Item;
 const Submit = Form.Submit;

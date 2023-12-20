@@ -1,3 +1,3 @@
-import '../animate/style.js';
-import '../message/style.js';
+import '../animate/style';
+import '../message/style';
 import './main.scss';

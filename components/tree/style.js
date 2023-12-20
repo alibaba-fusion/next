@@ -1,4 +1,4 @@
-import '../icon/style.js';
-import '../checkbox/style.js';
-import '../input/style.js';
+import '../icon/style';
+import '../checkbox/style';
+import '../input/style';
 import './main.scss';

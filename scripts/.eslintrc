@@ -1,0 +1,10 @@
+{
+    "root": true,
+    "extends": ["@alifd/eslint-config-next", "prettier"],
+    "rules": {
+        "no-undef": "warn",
+        "no-unused-vars": "warn",
+        "max-statements": "off",
+        "max-len": "off"
+    }
+}

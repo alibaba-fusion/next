@@ -1,4 +1,4 @@
-import '../input/style.js';
-import '../icon/style.js';
-import '../button/style.js';
+import '../input/style';
+import '../icon/style';
+import '../button/style';
 import './main.scss';

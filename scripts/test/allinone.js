@@ -1,2 +1,2 @@
-const testsContext = require.context('../../test/', true, /^.*(?<!a11y|v2)-spec.js$/);
+const testsContext = require.context('../../components/', true, /^.*-spec.js$/);
 testsContext.keys().forEach(testsContext);

@@ -8,12 +8,12 @@ import sinon from 'sinon';
 
 import co from 'co';
 import assert from 'power-assert';
-import { dom, KEYCODE, env } from '../../src/util';
-import Overlay from '../../src/overlay/index';
-import Button from '../../src/button/index';
-import '../../src/button/style.js';
-import '../../src/animate/style.js';
-import '../../src/overlay/style.js';
+import { dom, KEYCODE, env } from '../../util';
+import Overlay from '../index';
+import Button from '../../button/index';
+import '../../button/style';
+import '../../animate/style';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

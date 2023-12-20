@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
-import '../../../src/drawer/style.js';
-import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
-import Drawer from '../../../src/drawer';
+import '../../../demo-helper/style';
+import '../../style';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import Drawer from '../../index';
 
-import zhCN from '../../../src/locale/zh-cn';
-import enUS from '../../../src/locale/en-us';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
 
 const i18nMaps = {
     'en-us': {

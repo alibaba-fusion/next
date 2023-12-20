@@ -2,9 +2,9 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Button from '../../src/button';
-import Card from '../../src/card/index';
-import '../../src/card/style.js';
+import Button from '../../button';
+import Card from '../index';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

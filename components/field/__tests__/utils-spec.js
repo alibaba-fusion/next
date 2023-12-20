@@ -1,6 +1,6 @@
 import React from 'react';
 import assert from 'power-assert';
-import { cloneAndAddKey, scrollToFirstError } from '../../src/field/utils';
+import { cloneAndAddKey, scrollToFirstError } from '../utils';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it */

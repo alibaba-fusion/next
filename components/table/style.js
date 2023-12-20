@@ -1,8 +1,8 @@
-import '../icon/style.js';
-import '../checkbox/style.js';
-import '../radio/style.js';
-import '../menu/style.js';
-import '../button/style.js';
-import '../dropdown/style.js';
-import '../loading/style.js';
+import '../icon/style';
+import '../checkbox/style';
+import '../radio/style';
+import '../menu/style';
+import '../button/style';
+import '../dropdown/style';
+import '../loading/style';
 import './main.scss';

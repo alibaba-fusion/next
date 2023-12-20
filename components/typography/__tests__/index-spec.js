@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Typography from '../../src/typography/index';
+import Typography from '../index';
 
 // import ReactDOM from 'react-dom';
 

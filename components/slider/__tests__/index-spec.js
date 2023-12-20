@@ -4,10 +4,10 @@ import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import co from 'co';
-import Icon from '../../src/icon';
-import Slider from '../../src/slider/index';
+import Icon from '../../icon';
+import Slider from '../index';
 import './index.scss';
-import ConfigProvider from '../../src/config-provider';
+import ConfigProvider from '../../config-provider';
 
 /* eslint-disable */
 

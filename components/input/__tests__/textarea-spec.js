@@ -4,7 +4,7 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
-import Input from '../../src/input/index';
+import Input from '../index';
 
 Enzyme.configure({ adapter: new Adapter() });
 

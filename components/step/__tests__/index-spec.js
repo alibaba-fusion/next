@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import Icon from '../../src/icon';
-import Button from '../../src/button/index';
-import Step from '../../src/step/index';
-import { mountReact } from '../util/a11y/validate';
-import '../../src/step/style.js';
+import Icon from '../../icon';
+import Button from '../../button/index';
+import Step from '../index';
+import { mountReact } from '../../util/__tests__/legacy/a11y/validate';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

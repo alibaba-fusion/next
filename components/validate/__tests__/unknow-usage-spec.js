@@ -1,5 +1,5 @@
 import assert from 'power-assert';
-import Schema from '../../src/validate/';
+import Schema from '../index';
 
 describe('unknow usage', () => {
     it('works with unknow rule', done => {

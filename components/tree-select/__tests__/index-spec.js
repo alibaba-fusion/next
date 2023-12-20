@@ -3,9 +3,9 @@ import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import { dom, KEYCODE } from '../../src/util';
-import TreeSelect from '../../src/tree-select/index';
-import '../../src/tree-select/style.js';
+import { dom, KEYCODE } from '../../util';
+import TreeSelect from '../index';
+import '../style';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */

@@ -5,10 +5,10 @@ import Enzyme, { mount, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
-import { KEYCODE, dom } from '../../src/util';
-import Tab from '../../src/tab/index';
-import TabNav from '../../src/tab/tabs/nav';
-import '../../src/tab/style.js';
+import { KEYCODE, dom } from '../../util';
+import Tab from '../index';
+import TabNav from '../tabs/nav';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 const delay = time => new Promise(resolve => setTimeout(resolve, time));

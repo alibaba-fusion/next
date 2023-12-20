@@ -5,9 +5,9 @@ import Enzyme, { mount, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import co from 'co';
-import { support } from '../../src/util';
-import Badge from '../../src/badge';
-import '../../src/badge/style.js';
+import { support } from '../../util';
+import Badge from '../index';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 // import util from '../../src/util';

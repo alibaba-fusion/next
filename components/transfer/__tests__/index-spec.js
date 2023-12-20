@@ -2,10 +2,10 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import { dom } from '../../src/util';
-import Transfer from '../../src/transfer/index';
-import Tree from '../../src/tree/index';
-import '../../src/transfer/style.js';
+import { dom } from '../../util';
+import Transfer from '../index';
+import Tree from '../../tree/index';
+import '../style';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
 /* global describe it afterEach */

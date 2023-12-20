@@ -20,7 +20,7 @@
             }
         },
         {
-            "files": ["**/__docs__/**/*.ts", "**/__docs__/**/*.tsx"],
+            "files": ["**/*.js", "**/*.jsx", "**/__docs__/**/*.ts", "**/__docs__/**/*.tsx"],
             "rules": {
                 "@typescript-eslint/no-explicit-any": "off",
                 "no-console": "off",

@@ -1,5 +1,5 @@
-import '../icon/style.js';
-import '../button/style.js';
-import '../menu/style.js';
-import '../overlay/style.js';
+import '../icon/style';
+import '../button/style';
+import '../menu/style';
+import '../overlay/style';
 import './main.scss';

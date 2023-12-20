@@ -3,8 +3,8 @@ import Enzyme, { mount } from 'enzyme';
 import sinon from 'sinon';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import MenuButton from '../../src/menu-button/index';
-import '../../src/menu-button/style.js';
+import MenuButton from '../index';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 

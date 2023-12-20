@@ -5,9 +5,9 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import cloneDeep from 'lodash.clonedeep';
-import { KEYCODE } from '../../src/util';
-import Cascader from '../../src/cascader';
-import '../../src/cascader/style.js';
+import { KEYCODE } from '../../util';
+import Cascader from '../index';
+import '../style';
 
 /* eslint-disable react/jsx-filename-extension, no-unused-expressions  */
 /* global describe it afterEach */

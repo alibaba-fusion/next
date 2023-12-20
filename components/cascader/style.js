@@ -1,3 +1,3 @@
-import '../menu/style.js';
-import '../icon/style.js';
+import '../menu/style';
+import '../icon/style';
 import './main.scss';

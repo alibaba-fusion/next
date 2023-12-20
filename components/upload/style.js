@@ -1,4 +1,4 @@
-import '../icon/style.js';
-import '../button/style.js';
-import '../progress/style.js';
+import '../icon/style';
+import '../button/style';
+import '../progress/style';
 import './main.scss';

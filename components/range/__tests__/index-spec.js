@@ -6,7 +6,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import simulateEvent from 'simulate-event';
 import assert from 'power-assert';
 import sinon from 'sinon';
-import Range from '../../src/range/index';
+import Range from '../index';
 
 /* eslint-disable react/no-multi-comp */
 
