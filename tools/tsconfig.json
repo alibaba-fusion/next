@@ -6,5 +6,5 @@
         "types": ["node"],
         "target": "ESNext"
     },
-    "include": ["./**/*.ts"]
+    "include": ["./**/*.ts", "../global.d.ts"]
 }

@@ -1,21 +1,6 @@
-import { resolve } from 'path';
+import { join, resolve } from 'path';
 import { existsSync } from 'fs-extra';
-// @ts-expect-error ignore
-import * as yargs from 'yargs/yargs';
-import { hideBin } from 'yargs/helpers';
-
-export const argv = yargs(hideBin(process.argv)).argv as {
-    _: string[];
-    [key: string]: unknown;
-};
-
-export const cwd = process.cwd();
-export const targets = (() => {
-    const dirs = argv._.map(dir => [resolve(cwd, dir), resolve(cwd, 'components', dir)])
-        .flat()
-        .filter(dir => existsSync(dir));
-    return Array.from(new Set(dirs));
-})();
+import { CWD } from './consts';
 
 export function beforeExit(task: () => unknown) {
     const exitSignals = [
@@ -58,4 +43,12 @@ export function beforeExit(task: () => unknown) {
             });
         }
     });
+}
+
+export function getBin(name: string) {
+    const binPath = resolve(CWD, join('node_modules/.bin/', name));
+    if (existsSync(binPath)) {
+        return binPath;
+    }
+    return null;
 }

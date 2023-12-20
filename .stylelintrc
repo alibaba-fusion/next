@@ -1,6 +1,6 @@
 {
     "extends": ["@alifd/stylelint-config-next"],
-    "ignoreFiles": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+    "ignoreFiles": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/__docs__/**"],
     "rules": {
         "max-nesting-depth": 4,
         "max-empty-lines": 3,

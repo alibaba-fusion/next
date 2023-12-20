@@ -4,32 +4,28 @@
   create: 2023-12-17 18:05:55
   description: 执行测试
   example:
-    test in head: ts-node ./tools/test.ts button --head
-    test in headless: ts-node ./tools/test.ts button ./components/affix
-    test all in headless: ts-node ./tools/test.ts
+    test in head: npm run test:head button
+    test in headless: npm run test button
+    test all in headless: npm run test
 ------------------------------------------------------------
 */
 
 import { join, relative, resolve } from 'path';
-import { spawnSync } from 'child_process';
 import { existsSync } from 'fs-extra';
-import { cwd, targets, argv } from './utils';
+import { CWD, TARGETS, ARGV, execSync } from './utils';
 
-const cypressBin = resolve(cwd, 'node_modules/.bin/cypress');
+const cypressBin = resolve(CWD, 'node_modules/.bin/cypress');
 
 if (!existsSync(cypressBin)) {
     throw new Error('Not found cypress');
 }
 
-if (argv.head) {
-    spawnSync(cypressBin, ['open', '--component', '-b', 'chrome'], { cwd, stdio: 'inherit' });
+if (ARGV.head) {
+    execSync(cypressBin, ['open', '--component', '-b', 'chrome']);
 } else {
-    const specArgs = targets.map(dir => [relative(cwd, join(dir, '__tests__/**/*'))]).flat();
+    const specArgs = TARGETS.map(dir => [relative(CWD, join(dir, '__tests__/**/*'))]).flat();
     if (specArgs.length) {
         specArgs.unshift('-s');
     }
-    spawnSync(cypressBin, ['run', '--component', '-b', 'chrome'].concat(specArgs), {
-        cwd,
-        stdio: 'inherit',
-    });
+    execSync(cypressBin, ['run', '--component', '-b', 'chrome'].concat(specArgs));
 }

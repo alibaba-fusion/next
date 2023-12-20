@@ -3,36 +3,41 @@
   author: 珵之
   create: 2023-12-18 14:19:12
   description: 执行 eslint 检查
+  example:
+    npm run check:eslint button
+    npm run check:eslint ./components/button
+    npm run check:eslint button --fix
 ------------------------------------------------------------
 */
-import { resolve, join } from 'path';
-import { existsSync } from 'fs-extra';
+import { join } from 'path';
 import chalk from 'chalk';
-import { spawnSync } from 'child_process';
-import { cwd, targets } from '../utils';
+import { TARGETS, ARGV, execSync, getBin, log, error } from '../utils';
 
-const binPath = resolve(cwd, 'node_modules/.bin/eslint');
-if (!existsSync(binPath)) {
+const binPath = getBin('eslint');
+if (!binPath) {
     throw new Error('Not found eslint');
 }
 
-if (!targets.length) {
-  console.log(chalk.yellow('[Example]:'));
-  console.log(chalk.green('npm run check:eslint button table'));
-  console.log(chalk.green(`npm run check:eslint ./components/button ./components/table`));
-  console.log();
-  throw new Error('请指定一个合法目录');
+if (!TARGETS.length) {
+    log(chalk.yellow('[Example]:'));
+    log(chalk.green('npm run check:eslint button table'));
+    log(chalk.green(`npm run check:eslint ./components/button ./components/table`));
+    log();
+    throw new Error('请指定一个合法目录');
 }
 
+const args: string[] = ['--no-error-on-unmatched-pattern'];
+const fix = ARGV.fix;
+if (fix) {
+    args.push('--fix');
+}
+const includes = TARGETS.map(dir => [join(dir, '**/*.ts'), join(dir, '**/*.tsx')]).flat();
+args.push(...includes);
 
-const includes = targets.map(dir => [join(dir, '**/*.ts'), join(dir, '**/*.tsx')]).flat();
+const result = execSync(binPath, args);
 
-const child = spawnSync(binPath, includes, { cwd, stdio: 'inherit' });
-
-if (!child.status) {
-    if (child.status === 0) {
-        console.log(chalk.green('校验通过'));
-    }
-} else {
-    console.log(chalk.red('校验失败'));
+if (result === true) {
+    log('eslint 校验通过');
+} else if (result === false) {
+    error('eslint 校验失败');
 }
