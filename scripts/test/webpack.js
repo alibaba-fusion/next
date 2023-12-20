@@ -1,6 +1,6 @@
 const getWebpackConfig = require('../webpack/dev');
 
-module.exports = function(componentName, runAll) {
+module.exports = function (componentName, runAll) {
     const config = getWebpackConfig(false);
 
     if (runAll || componentName === 'core') {
@@ -8,8 +8,10 @@ module.exports = function(componentName, runAll) {
     }
 
     config.module.exprContextCritical = false;
+    let babelUse;
     config.module.rules = config.module.rules.map(rule => {
         if (rule.use.loader === 'babel-loader') {
+            babelUse = rule.use;
             rule.use.options.plugins.push(
                 componentName && !runAll
                     ? [
@@ -24,6 +26,22 @@ module.exports = function(componentName, runAll) {
         }
         return rule;
     });
+    config.module.rules.push({
+        test: /\.tsx?$/,
+        use: [
+            babelUse,
+            {
+                loader: 'ts-loader',
+                options: {
+                    transpileOnly: true,
+                    configFile: require.resolve('./ts.json'),
+                },
+            },
+        ],
+        exclude: /node_modules/,
+    });
+    config.devtool = 'cheap-module-eval-source-map';
+    config.resolve.extensions.push('.ts', '.tsx');
 
     return config;
 };
