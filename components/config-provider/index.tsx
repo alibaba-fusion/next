@@ -1,5 +1,6 @@
 import { Component, Children } from 'react';
 import * as PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import getContextProps from './get-context-props';
 import {
     config,
@@ -260,4 +261,4 @@ class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderP
     }
 }
 
-export default ConfigProvider;
+export default polyfill(ConfigProvider);

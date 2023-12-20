@@ -3,6 +3,7 @@ import { Component } from 'react';
 import * as PropTypes from 'prop-types';
 import * as classnames from 'classnames';
 import ResizeObserver from 'resize-observer-polyfill';
+import { polyfill } from 'react-lifecycles-compat';
 
 import type { AffixProps, AffixState, AffixMode } from './types';
 import { obj, events, func } from '../util';
@@ -276,4 +277,4 @@ class Affix extends Component<AffixProps, AffixState> {
 
 export { AffixProps };
 
-export default ConfigProvider.config(Affix);
+export default ConfigProvider.config(polyfill(Affix));

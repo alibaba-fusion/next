@@ -87,41 +87,28 @@ export function getDirection() {
 function config<C extends ComponentClass>(
     Component: C,
     options?: ConfigOptions<ComponentProps<C>, Extract<keyof InstanceType<C>, string>>
-): C &
-    typeof ConfiguredComponent<
-        ComponentProps<C> & ComponentCommonProps,
-        Record<string, never>,
-        InstanceType<C>
-    >;
+): typeof ConfiguredComponent<ComponentProps<C> & ComponentCommonProps, InstanceType<C>> & {
+    [K in keyof C]: C[K];
+};
 function config<C extends ForwardRefExoticComponent<unknown>>(
     Component: C,
     options?: ConfigOptions<ComponentProps<C>>
-): C &
-    typeof ConfiguredComponent<
-        ComponentProps<C> & ComponentCommonProps,
-        Record<string, never>,
-        ComponentRef<C>
-    >;
+): typeof ConfiguredComponent<ComponentProps<C> & ComponentCommonProps, ComponentRef<C>> & {
+    [K in keyof C]: C[K];
+};
 function config<C extends FunctionComponent>(
     Component: C,
     options?: ConfigOptions<ComponentProps<C>>
-): C &
-    typeof ConfiguredComponent<
-        ComponentProps<C> & ComponentCommonProps,
-        Record<string, never>,
-        undefined
-    >;
+): typeof ConfiguredComponent<ComponentProps<C> & ComponentCommonProps, undefined> & {
+    [K in keyof C]: C[K];
+};
 function config<C extends ComponentClass | ForwardRefExoticComponent<unknown> | FunctionComponent>(
     Component: C,
     options: ConfigOptions<ComponentProps<C>> = {}
-): C &
-    typeof ConfiguredComponent<
-        ComponentProps<C> & ComponentCommonProps,
-        Record<string, never>,
-        unknown
-    > {
+): typeof ConfiguredComponent<ComponentProps<C> & ComponentCommonProps, unknown> & {
+    [K in keyof C]: C[K];
+} {
     type P = ComponentProps<C> & ComponentCommonProps;
-    type S = Record<string, never>;
     type R = unknown;
     // 非 forwardRef 创建的 class component
     if (
@@ -131,7 +118,7 @@ function config<C extends ComponentClass | ForwardRefExoticComponent<unknown> | 
         // class component: 通过定义 shouldComponentUpdate 改写成 pure component, 有 refs
         Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(
             nextProps: P,
-            nextState: S
+            nextState: unknown
         ) {
             if (this.props.pure) {
                 return !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
@@ -141,7 +128,7 @@ function config<C extends ComponentClass | ForwardRefExoticComponent<unknown> | 
         };
     }
 
-    class ConfigedComponent extends React.Component<P, S> {
+    class ConfigedComponent extends React.Component<P> {
         static displayName = `Config(${getDisplayName(Component)})`;
         static propTypes = {
             ...(Component.propTypes || {}),
@@ -209,7 +196,7 @@ function config<C extends ComponentClass | ForwardRefExoticComponent<unknown> | 
             const {
                 prefix,
                 locale,
-                // fixme: defaultPropsConfig is useless
+                // fixme: defaultPropsConfig is unused
                 defaultPropsConfig,
                 pure,
                 rtl,
@@ -311,7 +298,9 @@ function config<C extends ComponentClass | ForwardRefExoticComponent<unknown> | 
 
     hoistNonReactStatic(ConfigedComponent, Component);
 
-    return ConfigedComponent as unknown as C & typeof ConfiguredComponent<P, S, R>;
+    return ConfigedComponent as unknown as typeof ConfiguredComponent<P, R> & {
+        [K in keyof C]: C[K];
+    };
 }
 
 export { config };
