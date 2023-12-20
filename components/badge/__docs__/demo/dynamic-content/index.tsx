@@ -4,8 +4,8 @@ import { Badge, Button, Icon } from '@alifd/next';
 
 const ButtonGroup = Button.Group;
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<any, any> {
+    constructor(props: any) {
         super(props);
 
         this.state = {

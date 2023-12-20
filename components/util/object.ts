@@ -2,6 +2,9 @@ import * as React from 'react';
 import { ReactElement, JSXElementConstructor, ComponentClass } from 'react';
 
 export type ObjectOrArray<T = unknown> = Record<PropertyKey, T> | ArrayLike<T>;
+type Writable<T> = {
+    -readonly [P in keyof T]: T[P];
+};
 
 /**
  * 获取对象的类型
@@ -199,11 +202,11 @@ const _isInObj = <O extends ObjectOrArray>(key: PropertyKey, obj: O, isArray?: b
  * object.pickOthers(FooComponent.propTypes, this.props);
  * object.pickOthers(['className', 'onChange'], this.props);
  */
-export function pickOthers<P extends Record<string, unknown>>(
-    holdProps: ObjectOrArray,
+export function pickOthers<T extends string, P extends Record<string, unknown>>(
+    holdProps: T[] | Record<T, any>,
     props: P
-): Partial<P> {
-    const others: Partial<P> = {};
+): Writable<Omit<P, T>> {
+    const others: any = {};
     const isArray = typeOf(holdProps) === 'Array';
 
     for (const key in props) {
