@@ -51,7 +51,10 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     onOk?: (value: Dayjs, strVal: string) => void;
     onChange?: (value: Dayjs, strVal: string) => void;
     onVisibleChange?: (visible: boolean) => void;
-    onPanelChange?: (panelValue: Dayjs, mode: 'date' | 'month' | 'week' | 'quarter' | 'year') => void;
+    onPanelChange?: (
+        panelValue: Dayjs,
+        mode: 'date' | 'month' | 'week' | 'quarter' | 'year'
+    ) => void;
 
     format?: string | ((value: Dayjs) => string);
     /**
@@ -115,7 +118,11 @@ export interface RangePickerProps
      *
      * @version 1.23
      */
-    outputFormat?: string | ((value: Dayjs) => string) | Array<string> | Array<(value: Dayjs) => string>;
+    outputFormat?:
+        | string
+        | ((value: Dayjs) => string)
+        | Array<string>
+        | Array<(value: Dayjs) => string>;
     placeholder?: string | Array<string>;
     dateInputAriaLabel?: Array<string> | string;
     disabled?: boolean | boolean[];

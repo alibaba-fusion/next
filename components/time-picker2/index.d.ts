@@ -23,7 +23,7 @@ export interface DatePreset extends ButtonProps {
 }
 
 export interface RangePreset {
-    [propName: string]: (Dayjs)[];
+    [propName: string]: Dayjs[];
 }
 
 export type StateValue = Dayjs | null;

@@ -97,7 +97,10 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      * @param {Object[]} selectedValues 当前已选中的元素
      * @param {Object[]} [totalValues] 总待选元素，treeCheckedStrategy = 'parent' 时为 undefined
      */
-    maxTagPlaceholder?: (selectedValues: any[], totalValues?: any[]) => React.ReactNode | HTMLElement;
+    maxTagPlaceholder?: (
+        selectedValues: any[],
+        totalValues?: any[]
+    ) => React.ReactNode | HTMLElement;
 
     /**
      * 是否自动清除 searchValue

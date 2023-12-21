@@ -420,7 +420,10 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
      * @param {object} selectedValues 当前已选中的元素
      * @param {object} totalValues 总待选元素
      */
-    maxTagPlaceholder?: (selectedValues?: any[], totalValues?: any[]) => React.ReactNode | HTMLElement;
+    maxTagPlaceholder?: (
+        selectedValues?: any[],
+        totalValues?: any[]
+    ) => React.ReactNode | HTMLElement;
 
     /**
      * 选择后是否立即隐藏菜单 (mode=multiple/tag 模式生效)
@@ -445,7 +448,10 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
      */
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
     isPreview?: boolean;
-    renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => any;
+    renderPreview?: (
+        values: number | string | data | Array<number | string | data>,
+        props: any
+    ) => any;
     /**
      * 自动高亮第一个选项
      */

@@ -23,7 +23,10 @@ export default class Field extends innerField {
      * @param names
      * @param callback
      */
-    validate(names?: string[] | string, callback?: (errors: object[], values: object) => void): void;
+    validate(
+        names?: string[] | string,
+        callback?: (errors: object[], values: object) => void
+    ): void;
 
     /**
      * react hooks 风格使用 Field
