@@ -1,5 +1,5 @@
 import ConfigProvider from '../config-provider';
-import { ButtonProps } from './types';
+import { ButtonProps, GroupProps } from './types';
 import Button from './view/button';
 import Group from './view/group';
 
@@ -7,6 +7,8 @@ const WithSubButton = Button as typeof Button & {
     Group: typeof Group;
 };
 WithSubButton.Group = Group;
+
+export { ButtonProps, GroupProps };
 
 export default ConfigProvider.config(WithSubButton, {
     transform: /* istanbul ignore next */ (props, deprecated) => {

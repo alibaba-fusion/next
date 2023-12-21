@@ -261,4 +261,6 @@ class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderP
     }
 }
 
+export { ConfigProviderProps };
+
 export default polyfill(ConfigProvider);
