@@ -1,4 +1,4 @@
-import { spawnSync, execSync as nodeExecSync } from 'child_process';
+import { spawnSync, execSync as nodeExecSync, SpawnSyncOptions } from 'child_process';
 import { CWD } from './consts';
 
 /**
@@ -8,8 +8,8 @@ import { CWD } from './consts';
  * @param cwd - 自定义执行路径
  * @returns false: 失败; true: 成功; null: 中断；
  */
-export function execSync(bin: string, args: string[], cwd?: string) {
-    const child = spawnSync(bin, args, { stdio: 'inherit', cwd: cwd || CWD });
+export function execSync(bin: string, args: string[], options?: SpawnSyncOptions) {
+    const child = spawnSync(bin, args, { stdio: 'inherit', cwd: CWD, ...options });
     if (!child.status) {
         return child.status === 0 ? true : null;
     } else {

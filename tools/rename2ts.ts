@@ -10,9 +10,9 @@
 */
 
 import { resolve, relative, extname } from 'path';
-import { readdirSync, statSync, readFileSync, renameSync } from 'fs';
+import { readdirSync, statSync, readFileSync } from 'fs';
 import chalk from 'chalk';
-import { CWD, TARGETS, execSync, getBin, log, warn } from './utils';
+import { CWD, TARGETS, execSync, log, warn } from './utils';
 
 if (!TARGETS.length) {
     throw new Error('请指定一个合法目录');

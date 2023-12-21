@@ -1,11 +1,26 @@
 {
-    "extends": ["./tsconfig.json"],
+    "extends": [
+        "./tsconfig.json"
+    ],
     "compilerOptions": {
-        "outDir": "types",
+        "module": "esnext",
         "noEmit": false,
+        "emitDeclarationOnly": true,
         "declaration": true,
-        "emitDeclarationOnly": true
+        "checkJs": false,
+        "noResolve": true,
+        "outDir": "ttyeps"
     },
-    "include": ["./components/**/*.ts", "./components/**/*.tsx"],
-    "exclude": ["**/__docs__/**/*", "**/__tests__/**/*", "./components/**/style.ts"]
+    "include": [
+        "global.d.ts",
+        "./components/affix/**/*.ts",
+        "./components/affix/**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules/",
+        "**/__tests__/**/*",
+        "**/__docs__/**/*",
+        "**/style.ts",
+        "**/style.js"
+    ]
 }

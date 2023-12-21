@@ -1,0 +1,12 @@
+{
+    "extends": ["../../../tsconfig.json"],
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "ESNext",
+        "allowJs": true,
+        "noEmit": false,
+        "declaration": false,
+        "checkJs": false,
+        "importHelpers": true
+    }
+}

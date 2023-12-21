@@ -1,0 +1,12 @@
+{
+    "extends": ["../../../tsconfig.json"],
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "CommonJS",
+        "allowJs": true,
+        "noEmit": false,
+        "declaration": false,
+        "checkJs": false,
+        "importHelpers": true
+    }
+}

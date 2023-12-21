@@ -1,0 +1,11 @@
+{
+    "extends": ["../../../tsconfig.json"],
+    "compilerOptions": {
+        "module": "esnext",
+        "noEmit": false,
+        "emitDeclarationOnly": true,
+        "declaration": true,
+        "checkJs": false
+    },
+    "exclude": ["../../../components/*/style.ts"]
+}
