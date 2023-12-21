@@ -6,6 +6,7 @@ import {
     ForwardRefExoticComponent,
     ComponentProps,
     ComponentRef,
+    StaticLifecycle,
 } from 'react';
 import * as PropTypes from 'prop-types';
 import * as hoistNonReactStatic from 'hoist-non-react-statics';
@@ -84,32 +85,25 @@ export function getDirection() {
     return currentGlobalRtl;
 }
 
-function config<C extends ComponentClass>(
-    Component: C,
-    options?: ConfigOptions<ComponentProps<C>, Extract<keyof InstanceType<C>, string>>
-): typeof ConfiguredComponent<ComponentProps<C> & ComponentCommonProps, InstanceType<C>> & {
-    [K in keyof C]: C[K];
-};
-function config<C extends ForwardRefExoticComponent<unknown>>(
-    Component: C,
-    options?: ConfigOptions<ComponentProps<C>>
-): typeof ConfiguredComponent<ComponentProps<C> & ComponentCommonProps, ComponentRef<C>> & {
-    [K in keyof C]: C[K];
-};
-function config<C extends FunctionComponent>(
-    Component: C,
-    options?: ConfigOptions<ComponentProps<C>>
-): typeof ConfiguredComponent<ComponentProps<C> & ComponentCommonProps, undefined> & {
-    [K in keyof C]: C[K];
-};
-function config<C extends ComponentClass | ForwardRefExoticComponent<unknown> | FunctionComponent>(
+export type ExcludeComponentStatics =
+    | 'prototype'
+    | 'contextType'
+    | keyof StaticLifecycle<unknown, unknown>;
+
+function config<
+    C extends ComponentClass | ForwardRefExoticComponent<unknown> | FunctionComponent,
+    R = C extends ComponentClass
+        ? InstanceType<C>
+        : C extends ForwardRefExoticComponent<unknown>
+          ? ComponentRef<C>
+          : unknown,
+>(
     Component: C,
     options: ConfigOptions<ComponentProps<C>> = {}
-): typeof ConfiguredComponent<ComponentProps<C> & ComponentCommonProps, unknown> & {
-    [K in keyof C]: C[K];
+): typeof ConfiguredComponent<ComponentProps<C> & ComponentCommonProps, R> & {
+    [K in Exclude<keyof C, ExcludeComponentStatics>]: C[K];
 } {
     type P = ComponentProps<C> & ComponentCommonProps;
-    type R = unknown;
     // 非 forwardRef 创建的 class component
     if (
         obj.isClassComponent(Component) &&
@@ -299,7 +293,7 @@ function config<C extends ComponentClass | ForwardRefExoticComponent<unknown> | 
     hoistNonReactStatic(ConfigedComponent, Component);
 
     return ConfigedComponent as unknown as typeof ConfiguredComponent<P, R> & {
-        [K in keyof C]: C[K];
+        [K in Exclude<keyof C, ExcludeComponentStatics>]: C[K];
     };
 }
 
