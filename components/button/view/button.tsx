@@ -5,7 +5,6 @@ import * as classNames from 'classnames';
 import { ButtonProps } from '../types';
 import ConfigProvider from '../../config-provider';
 import { obj, log } from '../../util';
-import Group from './group';
 
 function mapIconSize(size: NonNullable<ButtonProps['size']>): ButtonProps['iconSize'] {
     return {
@@ -16,7 +15,6 @@ function mapIconSize(size: NonNullable<ButtonProps['size']>): ButtonProps['iconS
 }
 
 export default class Button extends Component<ButtonProps> {
-    static Group = Group;
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -184,7 +182,9 @@ export default class Button extends Component<ButtonProps> {
 
             if (tagAttrs.disabled) {
                 delete tagAttrs.onClick; // a 标签的 onClick 浏览器默认不会禁用
-                tagAttrs.href && delete tagAttrs.href; // a 标签在禁用状态下无跳转
+                if ('href' in tagAttrs && tagAttrs.href) {
+                    delete tagAttrs.href; // a 标签在禁用状态下无跳转
+                }
             }
         }
 
