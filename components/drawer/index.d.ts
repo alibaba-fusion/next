@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { PopupProps } from '../overlay';
 import { CloseMode } from '../dialog';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 
 interface HTMLAttributesWeak extends PopupProps {
     title?: any;

@@ -2,7 +2,7 @@
 
 import { ReactNode, Component, ComponentType } from 'react';
 import { LoadingProps } from '../loading';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;

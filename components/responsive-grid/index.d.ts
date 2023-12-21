@@ -1,7 +1,7 @@
 /// <reference types="react" />
 
 import { HTMLAttributes, ElementType, Component } from 'react';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 
 export interface ResponsiveGridProps extends HTMLAttributes<HTMLElement>, CommonProps {
     rows?: number | string;

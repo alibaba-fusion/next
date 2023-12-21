@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import * as React from 'react';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 import { Dayjs, ConfigType } from 'dayjs';
 import { PopupProps } from '../overlay';
 import { InputProps } from '../input';

@@ -1,5 +1,5 @@
 import { HTMLAttributes, ElementType, Component, ComponentType } from 'react';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 
 export interface TextProps extends HTMLAttributes<HTMLElement>, CommonProps {
     delete?: boolean;
