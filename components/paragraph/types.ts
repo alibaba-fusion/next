@@ -14,6 +14,7 @@ export interface ParagraphProps extends React.HTMLAttributes<HTMLElement>, Commo
     /**
      * 什么方式展示段落
      * @en How to display the paragraph
+     * @remarks
      * - 'long' :  展示所有文本
      * - 'short' : 展示三行以内（非强制）
      * @defaultValue 'long'
@@ -23,6 +24,7 @@ export interface ParagraphProps extends React.HTMLAttributes<HTMLElement>, Commo
     /**
      * 组件大小。
      * @en The size of the component.
+     * @remarks
      * - 'medium' : 中号
      * - 'short' : 小号
      * @defaultValue 'medium'

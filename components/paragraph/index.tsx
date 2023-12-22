@@ -39,8 +39,6 @@ class Paragraph extends React.Component<ParagraphProps> {
         log.warning('[Paragraph] is deprecated, please use Typography.Paragraph instead!');
     }
 
-    props: ParagraphProps;
-
     render() {
         const { prefix, className, type, size, rtl, ...others } = this.props;
 
