@@ -1,5 +1,5 @@
 /* eslint-disable */
-const babelConfig = require('@alifd/babel-preset-next')({}, { runtime: true });
+const babelConfig = require('./babelConfig')({}, { runtime: true });
 
 const js = (options = {}) => ({
     loader: 'babel-loader',

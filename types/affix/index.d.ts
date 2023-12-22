@@ -1,33 +1,85 @@
-/// <reference types="react" />
-
 import * as React from 'react';
-import CommonProps from '../util';
-
-export interface AffixProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
-    /**
-     * 设置 Affix 需要监听滚动事件的容器元素
-     */
-    container?: () => React.ReactElement<any>;
-
-    /**
-     * 距离窗口顶部达到指定偏移量后触发
-     */
-    offsetTop?: number;
-
-    /**
-     * 距离窗口底部达到制定偏移量后触发
-     */
-    offsetBottom?: number;
-
-    /**
-     * 当元素的样式发生固钉样式变化时触发的回调函数
-     */
-    onAffix?: (affixed: boolean) => void;
-
-    /**
-     * 是否启用绝对布局实现 affix
-     */
-    useAbsolute?: boolean;
+import { Component } from 'react';
+import * as PropTypes from 'prop-types';
+import ResizeObserver from 'resize-observer-polyfill';
+import type { AffixProps, AffixState, AffixMode } from './types';
+/** Affix */
+declare class Affix extends Component<AffixProps, AffixState> {
+    static propTypes: {
+        prefix: PropTypes.Requireable<string>;
+        container: PropTypes.Requireable<(...args: any[]) => any>;
+        offsetTop: PropTypes.Requireable<number>;
+        offsetBottom: PropTypes.Requireable<number>;
+        onAffix: PropTypes.Requireable<(...args: any[]) => any>;
+        useAbsolute: PropTypes.Requireable<boolean>;
+        className: PropTypes.Requireable<string>;
+        style: PropTypes.Requireable<object>;
+        children: PropTypes.Requireable<any>;
+    };
+    static defaultProps: {
+        prefix: string;
+        container: () => Window & typeof globalThis;
+        onAffix: () => void;
+    };
+    static _getAffixMode(nextProps: AffixProps): AffixMode;
+    constructor(props: AffixProps, context?: unknown);
+    static getDerivedStateFromProps(nextProps: AffixProps): {
+        affixMode: AffixMode;
+    } | null;
+    componentDidMount(): void;
+    componentDidUpdate(prevProps: AffixProps): void;
+    componentWillUnmount(): void;
+    resizeObserver: ResizeObserver;
+    timeout: ReturnType<typeof setTimeout> | null;
+    affixNode: HTMLDivElement;
+    affixChildNode: HTMLDivElement;
+    _clearContainerEvent: () => void;
+    _setEventHandlerForContainer(getContainer: NonNullable<AffixProps['container']>): void;
+    _removeEventHandlerForContainer(getContainer: NonNullable<AffixProps['container']>): void;
+    updatePosition: () => void;
+    _updateNodePosition: () => false | undefined;
+    _setAffixStyle(affixStyle: AffixState['style'], affixed?: boolean): void;
+    _setContainerStyle(containerStyle: AffixState['containerStyle']): void;
+    _getOffset(
+        affixNode: HTMLDivElement,
+        affixContainer: Element | Window
+    ): {
+        top: number;
+        left: number;
+        width: number;
+        height: number;
+    };
+    _affixNodeRefHandler: (ref: HTMLDivElement) => void;
+    _affixChildNodeRefHandler: (ref: HTMLDivElement) => void;
+    render(): React.JSX.Element;
 }
-
-export default class Affix extends React.Component<AffixProps, any> {}
+export { AffixProps };
+declare const _default: {
+    new (
+        props: AffixProps & import('../config-provider/types').ComponentCommonProps,
+        context?: unknown
+    ): import('../config-provider/types').ConfiguredComponent<
+        AffixProps & import('../config-provider/types').ComponentCommonProps,
+        Affix
+    >;
+    contextType?: React.Context<any> | undefined;
+} & {
+    propTypes: {
+        prefix: PropTypes.Requireable<string>;
+        container: PropTypes.Requireable<(...args: any[]) => any>;
+        offsetTop: PropTypes.Requireable<number>;
+        offsetBottom: PropTypes.Requireable<number>;
+        onAffix: PropTypes.Requireable<(...args: any[]) => any>;
+        useAbsolute: PropTypes.Requireable<boolean>;
+        className: PropTypes.Requireable<string>;
+        style: PropTypes.Requireable<object>;
+        children: PropTypes.Requireable<any>;
+    };
+    defaultProps: {
+        prefix: string;
+        container: () => Window & typeof globalThis;
+        onAffix: () => void;
+    };
+    _getAffixMode: typeof Affix._getAffixMode;
+};
+export default _default;

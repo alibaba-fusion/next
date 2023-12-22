@@ -1,42 +1,14 @@
-/* eslint-disable  */
-// @ts-nocheck
-import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import * as React from 'react';
 import Dropdown from '../index';
 import '../style';
-import {
-    unmount,
-    test,
-    createContainer,
-    testReact,
-} from '../../util/__tests__/legacy/a11y/validate';
-
-Enzyme.configure({ adapter: new Adapter() });
+import { test, createContainer, testReact } from '../../util/__tests__/a11y/validate';
 
 const portalContainerId = 'a11y-portal-id';
-let portalContainer;
-
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Dropdown A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-
-        if (portalContainer) {
-            portalContainer.remove();
-        }
-
-        unmount();
-    });
-
     it('should not have any violations', async () => {
-        portalContainer = createContainer(portalContainerId);
-        wrapper = await testReact(
+      const portalContainer: HTMLElement = createContainer(portalContainerId);
+        await testReact(
+            // eslint-disable-next-line jsx-a11y/anchor-is-valid
             <Dropdown trigger={<a>Hello dropdown</a>} visible container={portalContainer}>
                 <div>dropdown</div>
             </Dropdown>

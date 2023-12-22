@@ -1,71 +1,90 @@
-/// <reference types="react" />
-
 import * as React from 'react';
-import CommonProps from '../util';
-
-export interface LoadingProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
-    /**
-     * 样式前缀
-     */
-    prefix?: string;
-
-    /**
-     * 自定义内容
-     */
-    tip?: React.ReactNode;
-
-    /**
-     * 自定义内容位置
-     */
-    tipAlign?: 'right' | 'bottom';
-
-    /**
-     * loading 状态, 默认 true
-     */
-    visible?: boolean;
-
-    /**
-     * 自定义class
-     */
-    className?: string;
-
-    /**
-     * 自定义内联样式
-     */
-    style?: React.CSSProperties;
-
-    /**
-     * 设置动画尺寸
-     */
-    size?: 'large' | 'medium';
-
-    /**
-     * 自定义动画内容
-     */
-    indicator?: React.ReactNode;
-
-    /**
-     * 动画颜色
-     */
-    color?: string;
-
-    /**
-     * 全屏展示
-     */
-    fullScreen?: boolean;
-    /**
-     * 是否禁用滚动，仅在 fullScreen 模式下生效
-     */
-    disableScroll?: boolean;
-    /**
-     * 子元素
-     */
-    children?: React.ReactNode;
-
-    /**
-     * should loader be displayed inline
-     */
-    inline?: boolean;
+import * as PropTypes from 'prop-types';
+import type { LoadingProps } from './types';
+/** Loading */
+declare class Loading extends React.Component<LoadingProps> {
+    static propTypes: {
+        prefix: PropTypes.Requireable<string>;
+        tip: PropTypes.Requireable<any>;
+        tipAlign: PropTypes.Requireable<string>;
+        visible: PropTypes.Requireable<boolean>;
+        onVisibleChange: PropTypes.Requireable<(...args: any[]) => any>;
+        className: PropTypes.Requireable<string>;
+        style: PropTypes.Requireable<object>;
+        size: PropTypes.Requireable<string>;
+        indicator: PropTypes.Requireable<any>;
+        color: PropTypes.Requireable<string>;
+        fullScreen: PropTypes.Requireable<boolean>;
+        disableScroll: PropTypes.Requireable<boolean>;
+        safeNode: PropTypes.Requireable<any>;
+        children: PropTypes.Requireable<any>;
+        inline: PropTypes.Requireable<boolean>;
+        rtl: PropTypes.Requireable<boolean>;
+        locale: PropTypes.Requireable<object>;
+        defaultPropsConfig: PropTypes.Requireable<object>;
+        errorBoundary: PropTypes.Requireable<NonNullable<boolean | object | null | undefined>>;
+        pure: PropTypes.Requireable<boolean>;
+        warning: PropTypes.Requireable<boolean>;
+        device: PropTypes.Requireable<string>;
+        popupContainer: PropTypes.Requireable<any>;
+    };
+    static defaultProps: {
+        prefix: string;
+        visible: boolean;
+        onVisibleChange: () => void;
+        animate: null;
+        tipAlign: string;
+        size: string;
+        inline: boolean;
+        disableScroll: boolean;
+    };
+    render(): React.JSX.Element | React.ReactNode[];
 }
-
-export default class Loading extends React.Component<LoadingProps, any> {}
+export type { LoadingProps };
+declare const _default: {
+    new (
+        props: LoadingProps & import('../config-provider/types').ComponentCommonProps,
+        context?: unknown
+    ): import('../config-provider/types').ConfiguredComponent<
+        LoadingProps & import('../config-provider/types').ComponentCommonProps,
+        Loading
+    >;
+    contextType?: React.Context<any> | undefined;
+} & {
+    propTypes: {
+        prefix: PropTypes.Requireable<string>;
+        tip: PropTypes.Requireable<any>;
+        tipAlign: PropTypes.Requireable<string>;
+        visible: PropTypes.Requireable<boolean>;
+        onVisibleChange: PropTypes.Requireable<(...args: any[]) => any>;
+        className: PropTypes.Requireable<string>;
+        style: PropTypes.Requireable<object>;
+        size: PropTypes.Requireable<string>;
+        indicator: PropTypes.Requireable<any>;
+        color: PropTypes.Requireable<string>;
+        fullScreen: PropTypes.Requireable<boolean>;
+        disableScroll: PropTypes.Requireable<boolean>;
+        safeNode: PropTypes.Requireable<any>;
+        children: PropTypes.Requireable<any>;
+        inline: PropTypes.Requireable<boolean>;
+        rtl: PropTypes.Requireable<boolean>;
+        locale: PropTypes.Requireable<object>;
+        defaultPropsConfig: PropTypes.Requireable<object>;
+        errorBoundary: PropTypes.Requireable<NonNullable<boolean | object | null | undefined>>;
+        pure: PropTypes.Requireable<boolean>;
+        warning: PropTypes.Requireable<boolean>;
+        device: PropTypes.Requireable<string>;
+        popupContainer: PropTypes.Requireable<any>;
+    };
+    defaultProps: {
+        prefix: string;
+        visible: boolean;
+        onVisibleChange: () => void;
+        animate: null;
+        tipAlign: string;
+        size: string;
+        inline: boolean;
+        disableScroll: boolean;
+    };
+};
+export default _default;

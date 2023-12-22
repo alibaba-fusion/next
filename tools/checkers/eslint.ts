@@ -26,11 +26,7 @@ function checkEslint() {
     const includes = TARGETS.map(dir => [join(dir, '**/*.ts'), join(dir, '**/*.tsx')]).flat();
     args.push(...includes);
 
-    const result = execSync(binPath, args);
-
-    if (result === false) {
-        throw new Error('eslint 校验失败');
-    }
+    execSync(binPath, args);
 }
 
 export function registryCheckEslint(file = __filename) {

@@ -3,12 +3,11 @@ import * as ReactDOM from 'react-dom';
 import { Loading, Button } from '@alifd/next';
 
 class App extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            visible: false,
-        };
-    }
+    state = {
+        visible: false,
+    };
+
+    btn: any;
 
     onClick() {
         this.setState({ visible: !this.state.visible });

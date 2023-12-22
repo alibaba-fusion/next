@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { CascaderProps, data, extra } from '../cascader';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 import { PopupProps } from '../overlay';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {

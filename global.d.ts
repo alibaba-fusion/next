@@ -9,7 +9,7 @@ declare module 'conventional-changelog' {
     function conventionalChangelog(...args: any[]): Readable;
     export = conventionalChangelog;
 }
-declare module 'conventional-changelog-alifd';
+declare module 'conventional-changelog-conventionalcommits';
 declare module 'postcss-discard-comments';
 declare module '@alifd/doc-parser';
 declare module '@alifd/api-extractor';

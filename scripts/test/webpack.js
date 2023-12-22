@@ -8,10 +8,8 @@ module.exports = function (componentName, runAll) {
     }
 
     config.module.exprContextCritical = false;
-    let babelUse;
     config.module.rules = config.module.rules.map(rule => {
         if (rule.use.loader === 'babel-loader') {
-            babelUse = rule.use;
             rule.use.options.plugins.push(
                 componentName && !runAll
                     ? [
@@ -29,7 +27,6 @@ module.exports = function (componentName, runAll) {
     config.module.rules.push({
         test: /\.tsx?$/,
         use: [
-            babelUse,
             {
                 loader: 'ts-loader',
                 options: {

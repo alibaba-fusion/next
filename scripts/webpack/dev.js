@@ -2,10 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-const babelConfig = require('@alifd/babel-preset-next')({ modules: false });
+const babelConfig = require('./babelConfig')({ modules: false });
 const loaders = require('./loaders');
 
-module.exports = function(progress = true) {
+module.exports = function (progress = true) {
     const conf = {
         output: {
             filename: '[name].js',

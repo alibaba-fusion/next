@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { data } from '../checkbox';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;

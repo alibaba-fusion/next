@@ -1,7 +1,7 @@
 /// <reference types="react" />
 
 import * as React from 'react';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 import { PopupProps } from '../overlay';
 import { TreeProps } from '../tree';
 import { item } from '../select';

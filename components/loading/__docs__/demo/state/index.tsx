@@ -14,14 +14,11 @@ const layout = {
 };
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            visible: false,
-        };
-    }
+    state = {
+        visible: false,
+    };
 
-    setVisible(visible) {
+    setVisible(visible: boolean) {
         this.setState({
             visible,
         });
@@ -54,7 +51,7 @@ class App extends React.Component {
 
         return (
             <div>
-                <Loading visible={this.state.visible} shape="fusion-reactor">
+                <Loading visible={this.state.visible}>
                     <CustomForm />
                 </Loading>
                 <ControlButton />

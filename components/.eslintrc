@@ -10,7 +10,8 @@
                 "@typescript-eslint/no-explicit-any": "warn",
                 "no-console": "off",
                 "react/no-multi-comp": "off",
-                "no-unused-expressions": "off"
+                "no-unused-expressions": "off",
+                "jsx-a11y/anchor-is-valid": "off"
             }
         },
         {

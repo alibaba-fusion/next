@@ -7,7 +7,7 @@
 */
 
 import { dirname, relative, resolve, join } from 'path';
-import { writeFileSync, readFileSync, removeSync } from 'fs-extra';
+import { writeFileSync, readFileSync, removeSync, outputFileSync } from 'fs-extra';
 import * as glob from 'glob';
 import { ARGV, CWD, SRC_DIR, SRC_DIR_PATH, TARGETS, visitCode, warn, registryTask } from '../utils';
 import cssVarTempFileCore from './tools/css-var-temp-file-core';
@@ -55,7 +55,6 @@ function generateSassIndex(targets: string[]) {
 }
 
 function sassIndex() {
-
     const sassIndexMap = generateSassIndex(TARGETS);
 
     const outDirs = (ARGV.out as string[]) || ['es', 'lib'];
@@ -67,6 +66,15 @@ function sassIndex() {
             writeFileSync(destPath, text, 'utf-8');
         });
     });
+
+    // 旧包中 lib/_components/@alife/next-core/lib 下的 index.scss 和 index-noreset.scss 很可能被用户使用，故保留该文件夹结构
+    // fixme: 2.x 移除
+    const _corePath = resolve(CWD, 'lib/_components/@alife/next-core/lib');
+    outputFileSync(resolve(_corePath, 'index.scss'), '@import "../../../../core/reset.scss";\n');
+    outputFileSync(
+        resolve(_corePath, 'index-noreset.scss'),
+        '@import "../../../../core/index-noreset.scss";\n'
+    );
 }
 
 export function registryBuildSass(file = __filename) {

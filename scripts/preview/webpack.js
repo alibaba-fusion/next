@@ -69,7 +69,9 @@ module.exports = function getWebpackConfig(options) {
     config.plugins.push(
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
-            chunks: Object.keys(entry).filter(entryPath => !/docs\/[^/]+\/index\.((en-us)\.)?$/.test(entryPath)),
+            chunks: Object.keys(entry).filter(
+                entryPath => !/docs\/[^/]+\/index\.((en-us)\.)?$/.test(entryPath)
+            ),
         })
     );
 
@@ -168,7 +170,10 @@ function getWebpackPreset(context, options) {
         ]);
     }
     if (typeof options.modules === 'undefined' || options.modules) {
-        preset.plugins.push(require('babel-plugin-add-module-exports'));
+        preset.plugins.push([
+            require('babel-plugin-add-module-exports'),
+            { addDefaultProperty: true },
+        ]);
     }
 
     return preset;

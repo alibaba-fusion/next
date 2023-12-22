@@ -19,16 +19,13 @@ function checkStylelint() {
         throw new Error('Not found stylelint');
     }
 
-    const args: string[] = [];
+    const args: string[] = ['--ip="__tests__/"', '--ip="__docs__/"'];
 
     if (ARGV.fix) {
         args.push('--fix');
     }
     args.push(...TARGETS);
-    const result = execSync(binPath, args);
-    if (result === false) {
-        throw new Error('stylelint 校验失败');
-    }
+    execSync(binPath, args);
 }
 
 export function registryCheckStylelint(file = __filename) {

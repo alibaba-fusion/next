@@ -1,5 +1,3 @@
-/* eslint-disable  */
-// @ts-nocheck
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Dropdown, Menu, Button } from '@alifd/next';
@@ -24,7 +22,7 @@ class App extends React.Component {
         });
     };
 
-    onVisibleChange = visible => {
+    onVisibleChange = (visible: boolean) => {
         this.setState({
             visible,
         });

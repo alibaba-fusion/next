@@ -9,9 +9,13 @@ import { DropdownProps } from './types';
 const { noop, makeChain, bindCtx } = func;
 const Popup = Overlay.Popup;
 
+interface ReactElementNextMenuType {
+    isNextMenu: boolean;
+}
+
 /**
  * Dropdown
- * @description 继承 Popup 的 API，除非特别说明
+ * @remarks 继承 Popup 的 API，除非特别说明
  */
 export default class Dropdown extends Component<
     DropdownProps,
@@ -164,9 +168,10 @@ export default class Dropdown extends Component<
 
         const child = Children.only(this.props.children) as React.ReactPortal;
         let content = child as React.ReactChild;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        if (typeof child.type === 'function' && child.type.isNextMenu) {
+        if (
+            typeof child.type === 'function' &&
+            (child.type as unknown as ReactElementNextMenuType).isNextMenu
+        ) {
             content = React.cloneElement(child, {
                 onItemClick: makeChain(this.onMenuClick, child.props.onItemClick),
             });

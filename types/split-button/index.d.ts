@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Item, Group, Divider, MenuProps } from '../menu';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 import { ButtonProps } from '../button';
 import { PopupProps } from '../overlay';
 
