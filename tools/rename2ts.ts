@@ -12,11 +12,7 @@
 import { resolve, relative, extname } from 'path';
 import { readdirSync, statSync, readFileSync } from 'fs';
 import chalk from 'chalk';
-import { CWD, TARGETS, execSync, log, warn } from './utils';
-
-if (!TARGETS.length) {
-    throw new Error('请指定一个合法目录');
-}
+import { CWD, TARGETS, execSync, log, warn, registryTask } from './utils';
 
 function renameJs2Ts(js: string) {
     const text = readFileSync(js, 'utf-8');
@@ -34,7 +30,7 @@ function gitRename(from: string, to: string) {
     execSync('git', ['mv', from, to]);
 }
 
-async function renameDirs(files: string[]) {
+export async function renameDirs(files: string[]) {
     for (const file of files) {
         const stat = statSync(file);
         if (stat.isDirectory()) {
@@ -53,8 +49,10 @@ async function renameDirs(files: string[]) {
     }
 }
 
-renameDirs(TARGETS).then(() => {
-    log();
+registryTask(__filename, 'rename2ts', async () => {
+    if (!TARGETS.length) {
+        throw new Error('请指定一个合法目录');
+    }
+    await renameDirs(TARGETS);
     warn('为保证重命名能够被 git 追踪，请执行一次 commit');
-    log();
 });

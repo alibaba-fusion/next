@@ -18,29 +18,22 @@ import {
     existsSync,
 } from 'fs-extra';
 import * as glob from 'glob';
-import { CWD, TARGETS, beforeExit, execSync, getBin, log } from '../../utils';
+import { CWD, SRC_DIR_PATH, TARGETS, execSync, getBin, log, registryTask } from '../../utils';
 
 const tscBin = getBin('tsc');
-
-if (!tscBin) {
-    throw new Error('Not found tsc');
-}
-
-const SRC_DIR = 'components';
-const SRC_PATH = resolve(CWD, SRC_DIR);
+const SRC_PATH = SRC_DIR_PATH;
 const DEST_TYPES = resolve(CWD, 'types');
 const DEST_ES = resolve(CWD, 'es');
 const DEST_LIB = resolve(CWD, 'lib');
 const CONFIG_ES_PATH = resolve(__dirname, 'es.json');
 const CONFIG_LIB_PATH = resolve(__dirname, 'lib.json');
 const CONFIG_TYPES_PATH = resolve(__dirname, 'types.json');
-const targets = TARGETS.length ? TARGETS : [SRC_PATH];
+const targets = TARGETS;
 const COMMON_INCLUDE = [relative(__dirname, resolve(CWD, 'global.d.ts'))];
 const rollbacks: Array<() => unknown> = [];
-
-beforeExit(() => {
+const rollback = () => {
     rollbacks.forEach(f => f());
-});
+};
 
 function copyDTS(to: string) {
     if (!existsSync(DEST_TYPES) || !readdirSync(DEST_TYPES).length) {
@@ -106,8 +99,6 @@ function compileTypes() {
     if (filterTargets.length) {
         compile(filterTargets, DEST_TYPES, CONFIG_TYPES_PATH);
     }
-
-    log('Compile to types done.');
 }
 
 function compileEs() {
@@ -128,8 +119,6 @@ function compileEs() {
 
     // compile .tsx? and .jsx?
     compile(targets, DEST_ES, CONFIG_ES_PATH, true);
-
-    log('Compile to es done');
 }
 
 function compileLib() {
@@ -153,10 +142,20 @@ function compileLib() {
 
     // copy .d.ts
     copyDTS(DEST_LIB);
-
-    log('Compile to lib done');
 }
 
-compileTypes();
-compileEs();
-compileLib();
+export function registryTransform(file = __filename) {
+    return registryTask(
+        file,
+        'transform to es|lib|types',
+        async () => {
+            await registryTask(file, 'transform to types', compileTypes);
+            await registryTask(file, 'transform to es', compileEs);
+            await registryTask(file, 'transform to lib', compileLib);
+            rollback();
+        },
+        rollback
+    );
+}
+
+registryTransform();

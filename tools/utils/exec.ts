@@ -1,5 +1,7 @@
+import * as path from 'path';
 import { spawnSync, execSync as nodeExecSync, SpawnSyncOptions } from 'child_process';
 import { CWD } from './consts';
+import { log } from './log';
 
 /**
  * 执行 command line 命令
@@ -9,12 +11,12 @@ import { CWD } from './consts';
  * @returns false: 失败; true: 成功; null: 中断；
  */
 export function execSync(bin: string, args: string[], options?: SpawnSyncOptions) {
+    log('SHELL:', `${path.basename(bin)} ${args.join(' ')}`);
     const child = spawnSync(bin, args, { stdio: 'inherit', cwd: CWD, ...options });
-    if (!child.status) {
-        return child.status === 0 ? true : null;
-    } else {
-        return false;
+    if (!child.status && child.status !== 0) {
+        throw new Error('命令终止');
     }
+    return child.status === 0;
 }
 
 /**
@@ -24,5 +26,8 @@ export function execSync(bin: string, args: string[], options?: SpawnSyncOptions
  * @param cwd - 自定义执行路径
  */
 export function querySync(bin: string, args: string[], cwd?: string) {
-    return nodeExecSync([bin].concat(args).join(' '), { cwd, encoding: 'utf-8' });
+    return nodeExecSync([bin].concat(args).join(' '), { cwd, encoding: 'utf-8' }).replace(
+        /^[\s\n]+|[\s\n]+$/g,
+        ''
+    );
 }

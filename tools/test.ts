@@ -12,7 +12,7 @@
 
 import { join, relative, resolve } from 'path';
 import { existsSync } from 'fs-extra';
-import { CWD, TARGETS, ARGV, execSync } from './utils';
+import { CWD, TARGETS, ARGV, execSync, registryTask } from './utils';
 
 const cypressBin = resolve(CWD, 'node_modules/.bin/cypress');
 
@@ -20,12 +20,14 @@ if (!existsSync(cypressBin)) {
     throw new Error('Not found cypress');
 }
 
-if (ARGV.head) {
-    execSync(cypressBin, ['open', '--component', '-b', 'chrome']);
-} else {
-    const specArgs = TARGETS.map(dir => [relative(CWD, join(dir, '__tests__/**/*'))]).flat();
-    if (specArgs.length) {
-        specArgs.unshift('-s');
+registryTask(__filename, 'test', () => {
+    if (ARGV.head) {
+        execSync(cypressBin, ['open', '--component', '-b', 'chrome']);
+    } else {
+        const specArgs = TARGETS.map(dir => [relative(CWD, join(dir, '__tests__/**/*'))]).flat();
+        if (specArgs.length) {
+            specArgs.unshift('-s');
+        }
+        execSync(cypressBin, ['run', '--component', '-b', 'chrome'].concat(specArgs));
     }
-    execSync(cypressBin, ['run', '--component', '-b', 'chrome'].concat(specArgs));
-}
+});

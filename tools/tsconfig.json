@@ -3,8 +3,12 @@
     "compilerOptions": {
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
-        "types": ["node"],
-        "target": "ESNext"
+        "types": ["node", "../global.d.ts"],
+        "target": "ESNext",
+        "paths": {},
+        "baseUrl": "/",
+        "checkJs": false,
+        "resolveJsonModule": true
     },
-    "include": ["./**/*.ts", "../global.d.ts"]
+    "include": ["./**/*.ts"]
 }

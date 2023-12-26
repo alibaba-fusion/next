@@ -10,34 +10,31 @@
 ------------------------------------------------------------
 */
 import { join } from 'path';
-import chalk from 'chalk';
-import { TARGETS, ARGV, execSync, getBin, log, error } from '../utils';
+import { TARGETS, ARGV, execSync, getBin, registryTask } from '../utils';
 
-const binPath = getBin('eslint');
-if (!binPath) {
-    throw new Error('Not found eslint');
+function checkEslint() {
+    const binPath = getBin('eslint');
+    if (!binPath) {
+        throw new Error('Not found eslint');
+    }
+
+    const args: string[] = ['--no-error-on-unmatched-pattern'];
+    const fix = ARGV.fix;
+    if (fix) {
+        args.push('--fix');
+    }
+    const includes = TARGETS.map(dir => [join(dir, '**/*.ts'), join(dir, '**/*.tsx')]).flat();
+    args.push(...includes);
+
+    const result = execSync(binPath, args);
+
+    if (result === false) {
+        throw new Error('eslint 校验失败');
+    }
 }
 
-if (!TARGETS.length) {
-    log(chalk.yellow('[Example]:'));
-    log(chalk.green('npm run check:eslint button table'));
-    log(chalk.green(`npm run check:eslint ./components/button ./components/table`));
-    log();
-    throw new Error('请指定一个合法目录');
+export function registryCheckEslint(file = __filename) {
+    return registryTask(file, 'eslint', checkEslint);
 }
 
-const args: string[] = ['--no-error-on-unmatched-pattern'];
-const fix = ARGV.fix;
-if (fix) {
-    args.push('--fix');
-}
-const includes = TARGETS.map(dir => [join(dir, '**/*.ts'), join(dir, '**/*.tsx')]).flat();
-args.push(...includes);
-
-const result = execSync(binPath, args);
-
-if (result === true) {
-    log('eslint 校验通过');
-} else if (result === false) {
-    error('eslint 校验失败');
-}
+registryCheckEslint();
