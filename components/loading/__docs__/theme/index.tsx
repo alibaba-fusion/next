@@ -10,15 +10,15 @@ import Loading from '../../index';
 const lightDemo = {
     textAlign: 'center',
     padding: '60px',
-    display: 'block'
+    display: 'block',
 };
 
-ReactDOM.render((
+ReactDOM.render(
     <div className="demo-container">
         <h2>加载 Loading</h2>
 
         <Demo title="Loading">
-            <DemoHead cols={['L', 'M']}/>
+            <DemoHead cols={['L', 'M']} />
             <DemoGroup label="Normal">
                 <Loading>
                     <div style={lightDemo}></div>
@@ -28,7 +28,8 @@ ReactDOM.render((
                 </Loading>
             </DemoGroup>
         </Demo>
-    </div>
-), document.getElementById('container'));
+    </div>,
+    document.getElementById('container')
+);
 
 initDemo('loading');
