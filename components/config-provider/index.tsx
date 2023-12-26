@@ -16,7 +16,7 @@ import Consumer from './consumer';
 import ErrorBoundary from './error-boundary';
 import Cache from './cache';
 import datejs from '../util/date';
-import { ConfigProviderProps, ComponentCommonProps, ContextState } from './types';
+import type { ConfigProviderProps, ComponentCommonProps, ContextState } from './types';
 
 const childContextCache = new Cache();
 
@@ -261,6 +261,6 @@ class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderP
     }
 }
 
-export { ConfigProviderProps };
+export type { ConfigProviderProps };
 
 export default polyfill(ConfigProvider);
