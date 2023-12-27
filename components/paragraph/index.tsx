@@ -1,13 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import * as classNames from 'classnames';
 import ConfigProvider from '../config-provider';
 import { log } from '../util';
-
-/* eslint-disable */
+import { ParagraphProps } from './types';
 
 /** Paragraph */
-class Paragraph extends React.Component {
+class Paragraph extends React.Component<ParagraphProps> {
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -16,12 +15,14 @@ class Paragraph extends React.Component {
         className: PropTypes.string,
         /**
          * 什么方式展示段落
-         * @enumdesc 展示所有文本, 展示三行以内（非强制）
+         * - 'long' :  展示所有文本
+         * - 'short' : 展示三行以内（非强制）
          */
         type: PropTypes.oneOf(['long', 'short']),
         /**
          * 组件大小。
-         * @enumdesc 中号, 小号
+         * - 'medium' : 中号
+         * - 'short' : 小号
          */
         size: PropTypes.oneOf(['medium', 'small']),
         rtl: PropTypes.bool,
@@ -33,7 +34,7 @@ class Paragraph extends React.Component {
         size: 'medium',
     };
 
-    constructor(props) {
+    constructor(props: ParagraphProps) {
         super(props);
         log.warning('[Paragraph] is deprecated, please use Typography.Paragraph instead!');
     }
@@ -58,5 +59,7 @@ class Paragraph extends React.Component {
         );
     }
 }
+
+export type { ParagraphProps };
 
 export default ConfigProvider.config(Paragraph);

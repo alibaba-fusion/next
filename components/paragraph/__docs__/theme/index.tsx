@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import Paragraph from '../../index';
@@ -16,24 +16,33 @@ const i18nMap = {
     },
 };
 
-function render(i18n) {
-    return ReactDOM.render((
+function render(i18n: any) {
+    ReactDOM.render(
         <div className="demo-container">
             <Demo title="Default">
                 <Demo title="Normal">
                     <DemoHead cols={['M', 'S']} />
                     <DemoGroup label="Short">
-                        <Paragraph type="short" size="medium">{i18n.short}</Paragraph>
-                        <Paragraph type="short" size="small">{i18n.short}</Paragraph>
+                        <Paragraph type="short" size="medium">
+                            {i18n.short}
+                        </Paragraph>
+                        <Paragraph type="short" size="small">
+                            {i18n.short}
+                        </Paragraph>
                     </DemoGroup>
                     <DemoGroup label="Long">
-                        <Paragraph type="long" size="medium">{i18n.long}</Paragraph>
-                        <Paragraph type="long" size="small">{i18n.long}</Paragraph>
+                        <Paragraph type="long" size="medium">
+                            {i18n.long}
+                        </Paragraph>
+                        <Paragraph type="long" size="small">
+                            {i18n.long}
+                        </Paragraph>
                     </DemoGroup>
                 </Demo>
             </Demo>
-        </div>
-    ), document.getElementById('container'));
+        </div>,
+        document.getElementById('container')
+    );
 }
 
 window.renderDemo = function (lang) {
