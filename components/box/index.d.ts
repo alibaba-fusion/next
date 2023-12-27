@@ -1,6 +1,6 @@
 /// <reference types="react" />
 
-import { HTMLAttributes, ElementType, Component } from 'react';
+import React, { HTMLAttributes, ElementType, Component } from 'react';
 import { CommonProps } from '../util';
 
 export interface BoxProps extends HTMLAttributes<HTMLElement>, CommonProps {
