@@ -5,7 +5,7 @@ import * as classNames from 'classnames';
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
 import { obj } from '../util';
-import { AvatarProps } from './types';
+import type { AvatarProps } from './types';
 
 /**
  * Avatar
@@ -52,7 +52,7 @@ class Avatar extends Component<AvatarProps> {
         }
     };
 
-    getIconSize = (avatarSize: number | 'small' | 'medium' | 'large' | undefined) => {
+    getIconSize = (avatarSize: AvatarProps['size']) => {
         return typeof avatarSize === 'number' ? avatarSize / 2 : avatarSize;
     };
 
@@ -106,5 +106,7 @@ class Avatar extends Component<AvatarProps> {
         );
     }
 }
+
+export { AvatarProps };
 
 export default ConfigProvider.config(Avatar);
