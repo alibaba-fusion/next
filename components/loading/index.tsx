@@ -1,78 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import * as classNames from 'classnames';
 import Overlay from '../overlay';
 import ConfigProvider from '../config-provider';
 import { obj, func } from '../util';
-
-/* eslint-disable react/prefer-stateless-function */
+import type { LoadingProps } from './types';
 
 /** Loading */
-class Loading extends React.Component {
+class Loading extends React.Component<LoadingProps> {
     static propTypes = {
         ...ConfigProvider.propTypes,
-        /**
-         * 样式前缀
-         */
         prefix: PropTypes.string,
-        /**
-         * 自定义内容，可以传入string或reactElement
-         */
         tip: PropTypes.any,
-        /**
-         * 自定义内容位置
-         * @enumdesc 出现在动画右边, 出现在动画下面
-         */
         tipAlign: PropTypes.oneOf(['right', 'bottom']),
-        /**
-         * loading 状态, 默认 true
-         */
         visible: PropTypes.bool,
-        /**
-         * 全屏模式下，loading弹层请求关闭时触发的回调函数
-         * @param {String} type 弹层关闭的来源
-         * @param {Object} e DOM 事件
-         */
         onVisibleChange: PropTypes.func,
-        /**
-         * 自定义class
-         */
         className: PropTypes.string,
-        /**
-         * 自定义内联样式
-         */
         style: PropTypes.object,
-        /**
-         * 设置动画尺寸
-         * @description 仅仅对默认动画效果起作用
-         * @enumdesc 大号, 中号
-         */
         size: PropTypes.oneOf(['large', 'medium']),
-        /**
-         * 自定义动画
-         */
         indicator: PropTypes.any,
-        /**
-         * 动画颜色
-         */
         color: PropTypes.string,
-        /**
-         * 全屏展示
-         */
         fullScreen: PropTypes.bool,
-        /**
-         * 当点击 document 的时候，如果包含该节点则不会关闭弹层，
-         * 如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组
-         * 是否禁用滚动，仅在 fullScreen 模式下生效
-         */
         disableScroll: PropTypes.bool,
-        /**
-         * 安全节点，fullScreen时有效，
-         */
         safeNode: PropTypes.any,
-        /**
-         * 子元素
-         */
         children: PropTypes.any,
         inline: PropTypes.bool,
         rtl: PropTypes.bool,
@@ -134,7 +84,7 @@ class Loading extends React.Component {
             [`${prefix}loading`]: true,
             [`${prefix}open`]: visible,
             [`${prefix}loading-inline`]: inline,
-            [className]: className,
+            [className!]: className,
         });
 
         const tipCls = classNames({
@@ -192,4 +142,5 @@ class Loading extends React.Component {
     }
 }
 
+export type { LoadingProps };
 export default ConfigProvider.config(Loading);

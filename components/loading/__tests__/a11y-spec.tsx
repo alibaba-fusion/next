@@ -1,63 +1,42 @@
-import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import * as React from 'react';
 import Loading from '../index';
 import '../style';
-import { testReact, unmount } from '../../util/__tests__/legacy/a11y/validate';
-
-/* eslint-disable react/jsx-filename-extension */
-/* global describe it afterEach*/
-
-Enzyme.configure({ adapter: new Adapter() });
+import { testReact } from '../../util/__tests__/a11y/validate';
 
 describe('Loading', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
     it('should not have any violations', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Loading visible tip="loading...">
                 <div className="demo">test</div>
             </Loading>,
             { incomplete: true }
         );
-        return wrapper;
     });
 
     it('should not have any violations when hidden', async () => {
-        wrapper = await testReact(
-            <Loading tip="loading...">
+        await testReact(
+            <Loading tip="loading..." visible={false}>
                 <div className="demo">test</div>
             </Loading>,
             { incomplete: true }
         );
-        return wrapper;
     });
 
     it('should not have any violations when fullscreen', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Loading visible tip="loading..." fullScreen>
                 <div className="demo">test</div>
             </Loading>,
             { incomplete: true }
         );
-        return wrapper;
     });
 
     it('should not have any violations when inline', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Loading visible tip="loading..." inline={false}>
                 <div className="demo">test</div>
             </Loading>,
             { incomplete: true }
         );
-        return wrapper;
     });
 });

@@ -1,3 +1,5 @@
+import * as ReactDOM from 'react-dom';
+import * as React from 'react';
 import '../../../demo-helper/style';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import '../../style';
@@ -8,7 +10,7 @@ import Loading from '../../index';
 // import component
 
 const lightDemo = {
-    textAlign: 'center',
+    textAlign: 'center' as const,
     padding: '60px',
     display: 'block',
 };

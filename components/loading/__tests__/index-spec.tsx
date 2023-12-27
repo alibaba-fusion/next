@@ -1,80 +1,47 @@
-import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
+import * as React from 'react';
 import Loading from '../index';
-import Overlay from '../../overlay';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Test', () => {
     describe('render', () => {
-        let wrapper1;
-        let wrapper2;
-
-        afterEach(() => {
-            if (wrapper1) {
-                wrapper1.unmount();
-                wrapper1 = null;
-            }
-            if (wrapper2) {
-                wrapper2.unmount();
-                wrapper2 = null;
-            }
-        });
         it('should render default', () => {
-            wrapper1 = mount(<Loading />);
-            assert(wrapper1.find('.next-loading').length === 1);
+            cy.mount(<Loading />);
+            cy.get('.next-loading');
         });
         it('should render medium size', () => {
-            wrapper1 = mount(<Loading />);
-            assert(wrapper1.find('.next-loading-fusion-reactor').length === 1);
+            cy.mount(<Loading />);
+            cy.get('.next-loading-fusion-reactor');
 
-            wrapper2 = mount(<Loading size="medium" />);
-            assert(wrapper2.find('.next-loading-medium-fusion-reactor').length === 1);
+            cy.mount(<Loading size="medium" />);
+            cy.get('.next-loading-medium-fusion-reactor');
         });
 
         it('should show fullscreen', () => {
-            wrapper1 = mount(<Loading fullScreen />);
-            assert(wrapper1.find(Overlay).length === 1);
+            cy.mount(<Loading fullScreen />);
+            cy.get('.next-overlay-wrapper');
         });
     });
 
     describe('behavior', () => {
-        let wrapper1;
-        let wrapper2;
-
-        afterEach(() => {
-            if (wrapper1) {
-                wrapper1.unmount();
-                wrapper1 = null;
-            }
-            if (wrapper2) {
-                wrapper2.unmount();
-                wrapper2 = null;
-            }
-        });
         it('should support tip', () => {
-            wrapper1 = mount(<Loading tip="hello world" />);
-            assert(wrapper1.find('.next-loading-tip-content').text() === 'hello world');
+            cy.mount(<Loading tip="hello world" />);
+            cy.get('.next-loading-tip-content');
         });
         it('should support indicator', () => {
             const indicator = <div className="custom-loading-dom" />;
-            wrapper1 = mount(<Loading tip="hello world" indicator={indicator} />);
-            assert(wrapper1.find('.next-loading-indicator').contains(indicator));
+            cy.mount(<Loading tip="hello world" indicator={indicator} />);
+            cy.get('.next-loading-indicator > .custom-loading-dom');
         });
         it('should support visible', () => {
-            wrapper1 = mount(<Loading tip="hello world" />);
-            assert(wrapper1.find('.next-loading').hasClass('next-open'));
-            wrapper2 = mount(<Loading tip="hello world" visible={false} />);
-            assert(!wrapper2.find('.next-loading').hasClass('next-open'));
+            cy.mount(<Loading tip="hello world" />);
+            cy.get('.next-loading').should('have.class', 'next-open');
+            cy.mount(<Loading tip="hello world" visible={false} />);
+            cy.get('.next-loading').not('.next-open');
         });
         it('should support inline', () => {
-            wrapper1 = mount(<Loading tip="hello world" />);
-            assert(wrapper1.find('.next-loading').hasClass('next-loading-inline'));
-            wrapper2 = mount(<Loading tip="hello world" inline={false} />);
-            assert(!wrapper2.find('.next-loading').hasClass('next-loading-inline'));
+            cy.mount(<Loading tip="hello world" />);
+            cy.get('.next-loading').should('have.class', 'next-loading-inline');
+            cy.mount(<Loading tip="hello world" inline={false} />);
+            cy.get('.next-loading').not('.next-loading-inline');
         });
     });
 });
