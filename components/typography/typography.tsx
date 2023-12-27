@@ -1,20 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import Text from './text';
+import { TypographyProps } from './types';
 
 /**
  * Typography
- * @description 继承 Typography.Text API
- * @order 0
  */
-class Typography extends Component {
+class Typography extends React.Component<TypographyProps> {
     static propTypes = {
-        /**
-         * 设置标签类型
-         */
         component: PropTypes.elementType,
     };
-
     static defaultProps = {
         component: 'article',
     };

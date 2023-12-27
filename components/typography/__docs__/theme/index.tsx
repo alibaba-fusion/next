@@ -1,7 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import ConfigProvider from '../../../config-provider';
+import zhCN from '../../../locale/zh-cn';
+import enUS from '../../../locale/en-us';
 import Typography from '../../index';
 import '../../style';
 
@@ -18,64 +21,65 @@ const i18nMap = {
     },
 };
 
-function render(i18n) {
-    return ReactDOM.render(
-        <div className="demo-container">
-            <Demo title="Typography">
-                <Demo title="Text">
-                    <DemoGroup label="Normal">
-                        <Text>Fusion Design</Text>
-                    </DemoGroup>
-                    <DemoGroup label="Mark">
-                        <Text mark>Fusion Design</Text>
-                    </DemoGroup>
-                    <DemoGroup label="Code">
-                        <Text code>Fusion Design</Text>
-                    </DemoGroup>
-                    <DemoGroup label="Underline">
-                        <Text underline>Fusion Design</Text>
-                    </DemoGroup>
-                    <DemoGroup label="Delete">
-                        <Text delete>Fusion Design</Text>
-                    </DemoGroup>
-                    <DemoGroup label="Strong">
-                        <Text strong>Fusion Design</Text>
-                    </DemoGroup>
+function render(i18n: Record<string, string>, lang: string) {
+    ReactDOM.render(
+        <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
+            <div className="demo-container">
+                <Demo title="Typography">
+                    <Demo title="Text">
+                        <DemoGroup label="Normal">
+                            <Text>Fusion Design</Text>
+                        </DemoGroup>
+                        <DemoGroup label="Mark">
+                            <Text mark>Fusion Design</Text>
+                        </DemoGroup>
+                        <DemoGroup label="Code">
+                            <Text code>Fusion Design</Text>
+                        </DemoGroup>
+                        <DemoGroup label="Underline">
+                            <Text underline>Fusion Design</Text>
+                        </DemoGroup>
+                        <DemoGroup label="Delete">
+                            <Text delete>Fusion Design</Text>
+                        </DemoGroup>
+                        <DemoGroup label="Strong">
+                            <Text strong>Fusion Design</Text>
+                        </DemoGroup>
+                    </Demo>
+                    <Demo title="Title">
+                        <DemoGroup label="H1">
+                            <H1>h1. Fusion Design</H1>
+                        </DemoGroup>
+                        <DemoGroup label="H2">
+                            <H2>h2. Fusion Design</H2>
+                        </DemoGroup>
+                        <DemoGroup label="H3">
+                            <H3>h3. Fusion Design</H3>
+                        </DemoGroup>
+                        <DemoGroup label="H4">
+                            <H4>h4. Fusion Design</H4>
+                        </DemoGroup>
+                        <DemoGroup label="H5">
+                            <H5>h5. Fusion Design</H5>
+                        </DemoGroup>
+                        <DemoGroup label="H6">
+                            <H6>h6. Fusion Design</H6>
+                        </DemoGroup>
+                    </Demo>
+                    <Demo title="Paragraph">
+                        <DemoGroup label="Normal">
+                            <Paragraph>{i18n.paragraph}</Paragraph>
+                        </DemoGroup>
+                    </Demo>
                 </Demo>
-                <Demo title="Title">
-                    <DemoGroup label="H1">
-                        <H1>h1. Fusion Design</H1>
-                    </DemoGroup>
-                    <DemoGroup label="H2">
-                        <H2>h2. Fusion Design</H2>
-                    </DemoGroup>
-                    <DemoGroup label="H3">
-                        <H3>h3. Fusion Design</H3>
-                    </DemoGroup>
-                    <DemoGroup label="H4">
-                        <H4>h4. Fusion Design</H4>
-                    </DemoGroup>
-                    <DemoGroup label="H5">
-                        <H5>h5. Fusion Design</H5>
-                    </DemoGroup>
-                    <DemoGroup label="H6">
-                        <H6>h6. Fusion Design</H6>
-                    </DemoGroup>
-                </Demo>
-                <Demo title="Paragraph">
-                    <DemoGroup label="Normal">
-                        <Paragraph>{i18n.paragraph}</Paragraph>
-                    </DemoGroup>
-                </Demo>
-            </Demo>
-        </div>,
+            </div>
+        </ConfigProvider>,
         document.getElementById('container')
     );
 }
 
-window.renderDemo = function (lang) {
-    lang = lang || 'en-us';
-    render(i18nMap[lang]);
+window.renderDemo = function (lang = 'en-us') {
+    render(i18nMap[lang], lang);
 };
 
 window.renderDemo('en-us');

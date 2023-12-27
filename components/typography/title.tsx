@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import Text from './text';
 import ConfigProvider from '../config-provider';
+import { TitleProps } from './types';
 
-export default Tag => {
+export default (Tag: string) => {
     /**
      * Typography.Title
-     * @description 分为 H1, H2, H3, H4, H5, H6 不同的组件，表示不同层级，继承 Typography.Text API
-     * @order 1
      */
-    class Title extends Component {
+    class Title extends React.Component<TitleProps> {
         static propTypes = {
             prefix: PropTypes.string,
         };
-
         static defaultProps = {
             prefix: 'next-',
         };
+
+        static displayName = Tag.toUpperCase();
 
         render() {
             const { prefix, className, ...others } = this.props;
@@ -30,6 +30,5 @@ export default Tag => {
         }
     }
 
-    Title.displayName = Tag.toUpperCase();
     return ConfigProvider.config(Title);
 };
