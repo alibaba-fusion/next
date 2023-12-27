@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import '../../../src/demo-helper/style.js';
+import '../../../demo-helper/style';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import Paragraph from '../../index';
 import '../../style';
