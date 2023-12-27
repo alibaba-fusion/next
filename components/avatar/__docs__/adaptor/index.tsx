@@ -1,8 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import { Avatar } from '@alifd/next';
 import { Types } from '@alifd/adaptor-helper';
 
-const _propsValue = ({ size, shape, src, ...others }) => {
+const _propsValue = ({ size, shape, src, ...others }: any) => {
     return {
         size,
         shape,
@@ -34,7 +34,7 @@ export default {
         ],
     }),
     propsValue: _propsValue,
-    adaptor: args => {
+    adaptor: (args: any) => {
         const props = _propsValue(args);
         return <Avatar {...props} />;
     },
