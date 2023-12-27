@@ -24,11 +24,7 @@ describe('Step', () => {
             );
 
             assert(
-                wrapper
-                    .find('.next-step-circle')
-                    .at(0)
-                    .instance()
-                    .getAttribute('dir') === 'rtl'
+                wrapper.find('.next-step-circle').at(0).instance().getAttribute('dir') === 'rtl'
             );
         });
         it('should render with default props', () => {
@@ -55,10 +51,8 @@ describe('Step', () => {
             );
 
             assert(
-                wrapper
-                    .find('.next-step-item-title')
-                    .at(0)
-                    .html() === '<div class="next-step-item-title"><span>测试</span></div>'
+                wrapper.find('.next-step-item-title').at(0).html() ===
+                    '<div class="next-step-item-title"><span>测试</span></div>'
             );
         });
 
@@ -71,10 +65,8 @@ describe('Step', () => {
             );
 
             assert(
-                wrapper
-                    .find('.next-step-item-content')
-                    .at(0)
-                    .html() === '<div class="next-step-item-content"><span>测试</span></div>'
+                wrapper.find('.next-step-item-content').at(0).html() ===
+                    '<div class="next-step-item-content"><span>测试</span></div>'
             );
         });
 
@@ -248,12 +240,7 @@ describe('Step', () => {
             );
 
             const item = wrapper.find('.next-step-item');
-            assert(
-                item
-                    .at(0)
-                    .instance()
-                    .style.width.startsWith('calc((100%')
-            );
+            assert(item.at(0).instance().style.width.startsWith('calc((100%'));
             assert(item.at(2).instance().style.width === 'auto');
         });
     });
@@ -267,26 +254,16 @@ describe('Step', () => {
                     <StepItem title="步骤3" />
                 </Step>
             );
-            wrapper
-                .find('.next-step-item-node')
-                .at(2)
-                .simulate('click');
+            wrapper.find('.next-step-item-node').at(2).simulate('click');
             assert(
-                wrapper
-                    .find('.next-step-item-node')
-                    .at(2)
-                    .instance().className === 'next-step-item-node clicked'
+                wrapper.find('.next-step-item-node').at(2).instance().className ===
+                    'next-step-item-node clicked'
             );
 
-            wrapper
-                .find('.next-step-item-node')
-                .at(2)
-                .simulate('transitionEnd');
+            wrapper.find('.next-step-item-node').at(2).simulate('transitionEnd');
             assert(
-                wrapper
-                    .find('.next-step-item-node')
-                    .at(2)
-                    .instance().className === 'next-step-item-node'
+                wrapper.find('.next-step-item-node').at(2).instance().className ===
+                    'next-step-item-node'
             );
         });
 
@@ -339,10 +316,7 @@ describe('Step', () => {
                 </Step>
             );
 
-            wrapper
-                .find('.next-step-item-first')
-                .find('.next-step-item-node')
-                .simulate('click');
+            wrapper.find('.next-step-item-first').find('.next-step-item-node').simulate('click');
             assert(ret_1 === 0);
 
             let ret_2 = -1;
@@ -404,11 +378,7 @@ describe('Step', () => {
             );
 
             const originHeight = parseFloat(
-                wrapper
-                    .find('.next-step')
-                    .at(0)
-                    .instance()
-                    .style.height.slice(0, -2)
+                wrapper.find('.next-step').at(0).instance().style.height.slice(0, -2)
             );
             wrapper.find('.next-btn').simulate('click');
             assert(document.querySelectorAll('[id^="step-content-"]').length === 1);
@@ -418,11 +388,7 @@ describe('Step', () => {
             wrapper.setProps({ direction: 'ver' });
             wrapper.setProps({ direction: 'hoz' });
             const changedHeight = parseFloat(
-                wrapper
-                    .find('.next-step')
-                    .at(0)
-                    .instance()
-                    .style.height.slice(0, -2)
+                wrapper.find('.next-step').at(0).instance().style.height.slice(0, -2)
             );
             assert(changedHeight > originHeight);
             wrapper.setProps({ direction: 'ver' });
