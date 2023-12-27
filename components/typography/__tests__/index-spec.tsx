@@ -29,12 +29,7 @@ describe('Typography', () => {
 
         it('props `rtl` should be ok', () => {
             wrapper = mount(<Paragraph rtl />);
-            assert(
-                wrapper
-                    .find('.next-typography-paragraph')
-                    .last()
-                    .props().dir === 'rtl'
-            );
+            assert(wrapper.find('.next-typography-paragraph').last().props().dir === 'rtl');
         });
     });
 
@@ -54,62 +49,32 @@ describe('Typography', () => {
 
         it('h1 tag check', () => {
             wrapper = mount(<H1 />);
-            assert(
-                wrapper
-                    .find('.next-typography-title')
-                    .last()
-                    .type() === 'h1'
-            );
+            assert(wrapper.find('.next-typography-title').last().type() === 'h1');
         });
 
         it('h2 tag check', () => {
             wrapper = mount(<H2 />);
-            assert(
-                wrapper
-                    .find('.next-typography-title')
-                    .last()
-                    .type() === 'h2'
-            );
+            assert(wrapper.find('.next-typography-title').last().type() === 'h2');
         });
 
         it('h3 tag check', () => {
             wrapper = mount(<H3 />);
-            assert(
-                wrapper
-                    .find('.next-typography-title')
-                    .last()
-                    .type() === 'h3'
-            );
+            assert(wrapper.find('.next-typography-title').last().type() === 'h3');
         });
 
         it('h4 tag check', () => {
             wrapper = mount(<H4 />);
-            assert(
-                wrapper
-                    .find('.next-typography-title')
-                    .last()
-                    .type() === 'h4'
-            );
+            assert(wrapper.find('.next-typography-title').last().type() === 'h4');
         });
 
         it('h5 tag check', () => {
             wrapper = mount(<H5 />);
-            assert(
-                wrapper
-                    .find('.next-typography-title')
-                    .last()
-                    .type() === 'h5'
-            );
+            assert(wrapper.find('.next-typography-title').last().type() === 'h5');
         });
 
         it('h6 tag check', () => {
             wrapper = mount(<H6 />);
-            assert(
-                wrapper
-                    .find('.next-typography-title')
-                    .last()
-                    .type() === 'h6'
-            );
+            assert(wrapper.find('.next-typography-title').last().type() === 'h6');
         });
     });
 

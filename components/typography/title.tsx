@@ -20,7 +20,13 @@ export default Tag => {
 
         render() {
             const { prefix, className, ...others } = this.props;
-            return <Text {...others} component={Tag} className={`${className || ''} ${prefix}typography-title`} />;
+            return (
+                <Text
+                    {...others}
+                    component={Tag}
+                    className={`${className || ''} ${prefix}typography-title`}
+                />
+            );
         }
     }
 
