@@ -9,7 +9,7 @@
 ------------------------------------------------------------
 */
 
-import { resolve, relative, extname } from 'path';
+import { resolve, relative, extname, dirname } from 'path';
 import { readdirSync, statSync, readFileSync } from 'fs';
 import chalk from 'chalk';
 import { CWD, TARGETS, execSync, log, warn, registryTask } from './utils';
@@ -40,6 +40,10 @@ export async function renameDirs(files: string[]) {
             const ext = extname(file);
             if (['.js', '.jsx'].includes(ext)) {
                 const tsFile = renameJs2Ts(file);
+                gitRename(file, tsFile);
+                log(chalk.green('[rename2ts]'), relative(CWD, file), ' -> ', relative(CWD, tsFile));
+            } else if (file.endsWith('index.d.ts')) {
+                const tsFile = resolve(dirname(file), 'types.ts');
                 gitRename(file, tsFile);
                 log(chalk.green('[rename2ts]'), relative(CWD, file), ' -> ', relative(CWD, tsFile));
             }
