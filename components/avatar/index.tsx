@@ -17,7 +17,10 @@ class Avatar extends Component {
          * 头像的大小
          * @enumdesc 小,中,大
          */
-        size: PropTypes.oneOfType([PropTypes.oneOf(['small', 'medium', 'large']), PropTypes.number]),
+        size: PropTypes.oneOfType([
+            PropTypes.oneOf(['small', 'medium', 'large']),
+            PropTypes.number,
+        ]),
         /**
          * 头像的形状
          * @enumdesc 圆形,方形
@@ -104,7 +107,9 @@ class Avatar extends Component {
         const iconSize = this.getIconSize(size);
         if (src) {
             if (isImgExist) {
-                children = <img src={src} srcSet={srcSet} onError={this.handleImgLoadError} alt={alt} />;
+                children = (
+                    <img src={src} srcSet={srcSet} onError={this.handleImgLoadError} alt={alt} />
+                );
             } else {
                 children = <Icon type={'picture'} size={iconSize} />;
             }
