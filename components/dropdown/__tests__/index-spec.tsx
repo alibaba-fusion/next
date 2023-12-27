@@ -114,7 +114,11 @@ describe('Dropdown', () => {
         };
 
         const wrapper = mount(
-            <Dropdown defaultVisible trigger={<a className="trigger">Hello dropdown</a>} animation={false}>
+            <Dropdown
+                defaultVisible
+                trigger={<a className="trigger">Hello dropdown</a>}
+                animation={false}
+            >
                 <Menu onItemClick={handleClick}>
                     <Menu.Item>Option 1</Menu.Item>
                     <Menu.Item>Option 2</Menu.Item>
@@ -183,7 +187,11 @@ describe('Dropdown', () => {
         document.body.appendChild(mountNode);
 
         ReactDOM.render(
-            <Dropdown autoFocus={false} trigger={<button className="trigger">Hello dropdown</button>} animation={false}>
+            <Dropdown
+                autoFocus={false}
+                trigger={<button className="trigger">Hello dropdown</button>}
+                animation={false}
+            >
                 <Menu>
                     <Menu.Item>Option 1</Menu.Item>
                     <Menu.Item>Option 2</Menu.Item>
