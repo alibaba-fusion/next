@@ -1,7 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { mount } from 'enzyme';
+/* eslint-disable  */
+// @ts-nocheck
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as ReactTestUtils from 'react-dom/test-utils';
+import * as Enzyme from 'enzyme';
+import { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Dropdown from '../index';

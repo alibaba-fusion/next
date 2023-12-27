@@ -1,5 +1,4 @@
-/// <reference types="react" />
-
+/* eslint-disable tsdoc/syntax */
 import * as React from 'react';
 import { CommonProps } from '../util';
 
@@ -17,12 +16,12 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
     /**
      * 弹层请求关闭时触发事件的回调函数
      */
-    onRequestClose?: (type: string, e: {}) => void;
+    onRequestClose?: (type: string, e: object) => void;
 
     /**
      * 弹层定位的参照元素
      */
-    target?: any;
+    target?: unknown;
 
     /**
      * 弹层相对于触发元素的定位, 详见 Overlay 的定位部分
@@ -32,12 +31,12 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
     /**
      * 弹层相对于触发元素定位的微调
      */
-    offset?: Array<any>;
+    offset?: Array<unknown>;
 
     /**
      * 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点
      */
-    container?: any;
+    container?: unknown;
 
     /**
      * 是否显示遮罩
@@ -97,7 +96,7 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
     /**
      * 弹层定位完成时触发的事件
      */
-    onPosition?: (config: {}, node: {}) => void;
+    onPosition?: (config: object, node: object) => void;
 
     /**
      * 是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式
@@ -127,7 +126,7 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
     /**
      * 安全节点，当点击 document 的时候，如果包含该节点则不会关闭弹层，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组
      */
-    safeNode?: any;
+    safeNode?: unknown;
 
     /**
      * 弹层的根节点的样式类
@@ -140,9 +139,9 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
     wrapperStyle?: React.CSSProperties;
 
     /**
-     * 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画
+     * 配置动画的播放方式，支持 {in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画
      */
-    animation?: any | boolean;
+    animation?: unknown | boolean;
 
     /**
      * 触发弹层显示或者隐藏的元素
@@ -152,12 +151,12 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
     /**
      * 触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，或者它们组成的数组，如 ['hover', 'click']
      */
-    triggerType?: string | Array<any>;
+    triggerType?: string | Array<unknown>;
 
     /**
      * 当 triggerType 为 click 时才生效，可自定义触发弹层显示的键盘码
      */
-    triggerClickKeycode?: number | Array<any>;
+    triggerClickKeycode?: number | Array<unknown>;
 
     /**
      * 弹层默认是否显示
@@ -172,7 +171,7 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
     /**
      * 弹层显示或隐藏时触发的回调函数
      */
-    onVisibleChange?: (visible: boolean, type: string, e: {}) => void;
+    onVisibleChange?: (visible: boolean, type: string, e?: object) => void;
 
     /**
      * 设置此属性，弹层无法显示或隐藏
@@ -195,4 +194,4 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
     followTrigger?: boolean;
 }
 
-export default class Dropdown extends React.Component<DropdownProps, any> {}
+export default class Dropdown extends React.Component<DropdownProps, unknown> {}

@@ -1,6 +1,8 @@
 import ConfigProvider from '../config-provider';
 import Dropdown from './dropdown';
+import type { DropdownProps } from './types';
 
+export type { DropdownProps };
 export default ConfigProvider.config(Dropdown, {
     transform: /* istanbul ignore next */ (props, deprecated) => {
         if ('triggerType' in props) {
