@@ -1,6 +1,3 @@
-import { Typography as MeetTypography } from '@alifd/meet-react';
-import NextTypography from '../index';
-
-const Typography = MeetTypography ? MeetTypography : NextTypography;
+import { Typography } from '@alifd/meet-react';
 
 export default Typography;

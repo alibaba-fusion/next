@@ -1,111 +1,86 @@
-import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
+import * as React from 'react';
 import Typography from '../index';
-
-// import ReactDOM from 'react-dom';
 
 const { Paragraph, Text, H1, H2, H3, H4, H5, H6 } = Typography;
 
-Enzyme.configure({ adapter: new Adapter() });
-
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Typography', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     describe('Paragraph', () => {
         it('default class check', () => {
-            wrapper = mount(<Paragraph />);
-            assert(wrapper.find('.next-typography-paragraph').exists());
+            cy.mount(<Paragraph />);
+            cy.get('.next-typography-paragraph');
         });
 
         it('props `rtl` should be ok', () => {
-            wrapper = mount(<Paragraph rtl />);
-            assert(wrapper.find('.next-typography-paragraph').last().props().dir === 'rtl');
+            cy.mount(<Paragraph rtl />);
+            cy.get('.next-typography-paragraph').last().should('have.attr', 'dir', 'rtl');
         });
     });
 
     describe('Typography', () => {
         it('default class check', () => {
-            wrapper = mount(<Typography />);
-            assert(wrapper.find('.next-typography').exists());
-            assert(wrapper.find('.next-typography').type() === 'article');
+            cy.mount(<Typography />);
+            cy.get('.next-typography');
+            cy.get('.next-typography').should('have.prop', 'tagName', 'ARTICLE');
         });
     });
 
     describe('Title', () => {
         it('default class check', () => {
-            wrapper = mount(<H1 />);
-            assert(wrapper.find('.next-typography-title').exists());
+            cy.mount(<H1 />);
+            cy.get('.next-typography-title');
         });
 
         it('h1 tag check', () => {
-            wrapper = mount(<H1 />);
-            assert(wrapper.find('.next-typography-title').last().type() === 'h1');
+            cy.mount(<H1 />);
+            cy.get('.next-typography-title').last().should('have.prop', 'tagName', 'H1');
         });
 
         it('h2 tag check', () => {
-            wrapper = mount(<H2 />);
-            assert(wrapper.find('.next-typography-title').last().type() === 'h2');
+            cy.mount(<H2 />);
+            cy.get('.next-typography-title').last().should('have.prop', 'tagName', 'H2');
         });
 
         it('h3 tag check', () => {
-            wrapper = mount(<H3 />);
-            assert(wrapper.find('.next-typography-title').last().type() === 'h3');
+            cy.mount(<H3 />);
+            cy.get('.next-typography-title').last().should('have.prop', 'tagName', 'H3');
         });
 
         it('h4 tag check', () => {
-            wrapper = mount(<H4 />);
-            assert(wrapper.find('.next-typography-title').last().type() === 'h4');
+            cy.mount(<H4 />);
+            cy.get('.next-typography-title').last().should('have.prop', 'tagName', 'H4');
         });
 
         it('h5 tag check', () => {
-            wrapper = mount(<H5 />);
-            assert(wrapper.find('.next-typography-title').last().type() === 'h5');
+            cy.mount(<H5 />);
+            cy.get('.next-typography-title').last().should('have.prop', 'tagName', 'H5');
         });
 
         it('h6 tag check', () => {
-            wrapper = mount(<H6 />);
-            assert(wrapper.find('.next-typography-title').last().type() === 'h6');
+            cy.mount(<H6 />);
+            cy.get('.next-typography-title').last().should('have.prop', 'tagName', 'H6');
         });
     });
 
     describe('Text', () => {
         it('default class check', () => {
-            wrapper = mount(<Text />);
-            assert(wrapper.find('.next-typography').exists());
+            cy.mount(<Text />);
+            cy.get('.next-typography');
         });
         it('default different style', () => {
-            wrapper = mount(<Text strong />);
-            assert(wrapper.find('strong').exists());
+            cy.mount(<Text strong />);
+            cy.get('strong');
 
-            wrapper.setProps({
-                underline: true,
-            });
-            assert(wrapper.find('u').exists());
+            cy.mount(<Text underline />);
+            cy.get('u');
 
-            wrapper.setProps({
-                delete: true,
-            });
-            assert(wrapper.find('del').exists());
+            cy.mount(<Text delete />);
+            cy.get('del');
 
-            wrapper.setProps({
-                code: true,
-            });
-            assert(wrapper.find('code').exists());
+            cy.mount(<Text code />);
+            cy.get('code');
 
-            wrapper.setProps({
-                mark: true,
-            });
-            assert(wrapper.find('mark').exists());
+            cy.mount(<Text mark />);
+            cy.get('mark');
         });
     });
 });

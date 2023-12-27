@@ -1,41 +1,23 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import * as classNames from 'classnames';
 import ConfigProvider from '../config-provider';
+import { TextProps } from './types';
 /**
  * Typography.Text
- * @order 3
  */
-class Text extends Component {
+class Text extends React.Component<TextProps> {
     static propTypes = {
         prefix: PropTypes.string,
-        /**
-         * 添加删除线样式
-         */
         delete: PropTypes.bool,
-        /**
-         * 添加标记样式
-         */
         mark: PropTypes.bool,
-        /**
-         * 添加下划线样式
-         */
         underline: PropTypes.bool,
-        /**
-         * 是否加粗
-         */
         strong: PropTypes.bool,
-        /**
-         * 添加代码样式
-         */
         code: PropTypes.bool,
-        /**
-         * 设置标签类型
-         */
         component: PropTypes.elementType,
         children: PropTypes.node,
         rtl: PropTypes.bool,
     };
-
     static defaultProps = {
         prefix: 'next-',
         delete: false,
@@ -46,6 +28,10 @@ class Text extends Component {
         component: 'span',
         rtl: false,
     };
+
+    wrapChildren(children: React.ReactNode, wrapper: keyof JSX.IntrinsicElements): React.ReactNode {
+        return React.createElement(wrapper, {}, children);
+    }
 
     render() {
         const {
@@ -58,40 +44,37 @@ class Text extends Component {
             code,
             mark,
             rtl,
+            children,
             ...others
         } = this.props;
 
-        const Tag = component;
-        let children = this.props.children;
-
+        const Component = component as React.ElementType;
+        let formattedChildren = children;
         if (strong) {
-            children = <strong>{children}</strong>;
+            formattedChildren = this.wrapChildren(formattedChildren, 'strong');
         }
-
         if (underline) {
-            children = <u>{children}</u>;
+            formattedChildren = this.wrapChildren(formattedChildren, 'u');
         }
-
         if (deleteProp) {
-            children = <del>{children}</del>;
+            formattedChildren = this.wrapChildren(formattedChildren, 'del');
         }
-
         if (code) {
-            children = <code>{children}</code>;
+            formattedChildren = this.wrapChildren(formattedChildren, 'code');
         }
-
         if (mark) {
-            children = <mark>{children}</mark>;
+            formattedChildren = this.wrapChildren(formattedChildren, 'mark');
         }
-
         if (rtl) {
             others.dir = 'rtl';
         }
 
+        const cls = classNames(`${prefix}typography`, className);
+
         return (
-            <Tag {...others} className={`${className || ''} ${prefix}typography`}>
-                {children}
-            </Tag>
+            <Component {...others} className={cls}>
+                {formattedChildren}
+            </Component>
         );
     }
 }

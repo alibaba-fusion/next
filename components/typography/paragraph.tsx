@@ -1,23 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import * as classNames from 'classnames';
 import ConfigProvider from '../config-provider';
 import Text from './text';
+import { ParagraphProps } from './types';
 
 /**
  * Typography.Paragraph
- * @description 继承 Typography.Text 的 API
- * @order 2
  */
-class Paragraph extends React.Component {
+class Paragraph extends React.Component<ParagraphProps> {
     static propTypes = {
         prefix: PropTypes.string,
-        /**
-         * 设置标签类型
-         */
         component: PropTypes.elementType,
     };
-
     static defaultProps = {
         prefix: 'next-',
         type: 'long',
