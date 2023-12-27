@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Paragraph from '../index';
 
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Paragraph', () => {
     describe('render', () => {
         it('default class check', () => {
