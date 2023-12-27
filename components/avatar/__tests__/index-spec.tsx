@@ -1,65 +1,44 @@
-import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
+import * as React from 'react';
 import Avatar from '../index';
 import Icon from '../../icon';
 import '../style';
 import '../../icon/style';
 
-Enzyme.configure({ adapter: new Adapter() });
-
 describe('Avatar', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        wrapper = mount(<Avatar />);
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
-        wrapper = null;
-    });
-
     it('should render', () => {
-        const avatar = wrapper.find('.next-avatar');
-        assert(avatar.hasClass('next-avatar'));
+        cy.mount(<Avatar />);
+        cy.get('.next-avatar');
     });
 
-    it('should render src', done => {
+    it('should render src', () => {
         const link = 'https://img.alicdn.com/tfs/TB1EHhicAH0gK0jSZPiXXavapXa-904-826.png';
-        let avatar = wrapper.find('.next-avatar');
-        assert(avatar.hasClass('next-avatar'));
+        cy.mount(<Avatar />);
+        cy.get('.next-avatar');
 
-        avatar = wrapper.setProps({ src: link });
-        assert(avatar.find('img').props().src === link);
+        cy.mount(<Avatar src={link} />);
+        cy.get('img').should('have.attr', 'src', link);
 
-        let error = 0;
-        avatar = wrapper.setProps({
-            src: 'unexist',
-            onError: () => {
-                error += 1;
-            },
-        });
-        setTimeout(() => {
-            assert(error === 1);
-            done();
-        }, 200);
+        const onError = cy.spy();
+        cy.mount(<Avatar src="unexist" onError={onError} />);
+        cy.wrap(onError).should('have.been.called');
     });
 
     it('should render icon', () => {
-        let avatar = wrapper.find('.next-avatar');
-        avatar = wrapper.setProps({ icon: 'account' });
-        assert(avatar.find('.next-icon-account'));
+        cy.mount(<Avatar />);
+        cy.get('.next-avatar');
 
-        avatar = wrapper.setProps({ icon: <Icon type="atm" /> });
-        assert(avatar.find('.next-icon-atm'));
+        cy.mount(<Avatar icon="account" />);
+        cy.get('.next-icon-account');
+
+        cy.mount(<Avatar icon={<Icon type="atm" />} />);
+        cy.get('.next-icon-atm');
     });
 
     it('should render letters', () => {
-        let avatar = wrapper.find('.next-avatar');
-        avatar = wrapper.setProps({ children: 'U' });
+        cy.mount(<Avatar />);
+        cy.get('.next-avatar');
 
-        assert(avatar.find('.next-avatar').instance().innerHTML === 'U');
+        cy.mount(<Avatar children="U" />);
+        cy.get('.next-avatar').should('have.html', 'U');
     });
 });
