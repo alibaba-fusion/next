@@ -207,7 +207,11 @@ class MenuButton extends React.Component {
         );
 
         const trigger = (
-            <Button style={style} className={classNames} {...obj.pickOthers(MenuButton.propTypes, others)}>
+            <Button
+                style={style}
+                className={classNames}
+                {...obj.pickOthers(MenuButton.propTypes, others)}
+            >
                 {label} <Icon type="arrow-down" className={`${prefix}menu-btn-arrow`} />
             </Button>
         );
