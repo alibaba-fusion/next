@@ -1,4 +1,5 @@
 {
+  "parserPreset": "conventional-changelog-conventionalcommits",
   "rules": {
     "header-max-length": [2, "always", 120],
     "scope-empty": [2, "never"],

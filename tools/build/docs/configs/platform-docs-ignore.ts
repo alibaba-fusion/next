@@ -1,4 +1,4 @@
-# Logs
+export const PLATFORM_DOCS_IGNORE = `# Logs
 logs
 *.log
 npm-debug.log*
@@ -75,3 +75,4 @@ gemini-report/
 *.log
 .DS_Store
 
+`;

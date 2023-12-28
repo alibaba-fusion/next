@@ -1,7 +1,7 @@
 /// <reference types="react" />
 
 import React, { HTMLAttributes, ElementType, Component } from 'react';
-import CommonProps from '../util';
+import { CommonProps } from '../util';
 
 export interface BoxProps extends HTMLAttributes<HTMLElement>, CommonProps {
     device?: 'phone' | 'tablet' | 'desktop';

@@ -6,7 +6,7 @@
 ------------------------------------------------------------
 */
 import co from 'co';
-import { log, error, setLevel, getLevel } from './log';
+import { log, error, setLevel, getLevel, setSlient } from './log';
 import { beforeExit } from './common';
 
 process.on('unhandledRejection', e => {
@@ -32,7 +32,10 @@ export async function run() {
         }
         if (rollbackSet.has(rollback)) {
             rollbackSet.delete(rollback);
-            return rollback();
+            setSlient();
+            const result = await rollback();
+            setSlient(false);
+            return result;
         }
         return Promise.resolve();
     };

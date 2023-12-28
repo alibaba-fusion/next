@@ -36,12 +36,9 @@ function checkTypes() {
         writeFileSync(checkTsConfigPath, checkTsConfigText, 'utf-8');
     };
 
-    const result = execSync(tscPath, ['-p', checkTsConfigPath]);
+    execSync(tscPath, ['-p', checkTsConfigPath]);
 
     rollback();
-    if (result === false) {
-        throw new Error('类型校验失败');
-    }
 }
 
 export function registryCheckTypes(file = __filename) {
