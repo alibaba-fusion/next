@@ -7,6 +7,6 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "esModuleInterop": false,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": false
     }
 }

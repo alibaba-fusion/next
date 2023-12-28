@@ -94,7 +94,7 @@ const isButton = function(nodeOrSelector, rootNode) {
     return tagName('button', nodeOrSelector, rootNode) || roleType('button', nodeOrSelector, rootNode);
 };
 
-export default {
+export {
     roleType,
     tagName,
     isButton,
