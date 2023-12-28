@@ -24,7 +24,7 @@ registryTask(__filename, 'test', () => {
     if (ARGV.head) {
         execSync(cypressBin, ['open', '--component', '-b', 'chrome']);
     } else {
-        const specArgs = TARGETS.map(dir => [relative(CWD, join(dir, '__tests__/**/*'))]).flat();
+        const specArgs = TARGETS.map(dir => [relative(CWD, join(dir, '**/__tests__/**/*'))]).flat();
         if (specArgs.length) {
             specArgs.unshift('-s');
         }

@@ -325,23 +325,23 @@ ${latestLog}
 registryTask(__filename, 'release', async () => {
     // 暂时手动生成 changelog
     // await registryChangelog(__filename);
-
-    // await registryBuild(__filename);
-
-    // await registryCheck(__filename);
-
     const { masterTag } = getVersion();
 
-    // await registryTask(__filename, 'release check', async () => {
-    //     await registryCheckSass(__filename);
-    //     await registryTask(__filename, 'check git tag', checkTags);
-    //     await registryTask(__filename, 'check build outputs', checkFiles);
-    // });
+    await registryBuild(__filename);
 
-    // await registryTask(__filename, 'publish next to npm', publishNpm);
-    // await registryTask(__filename, 'publish next-docs to npm', publishNpmForDocs, () => {
-    //     fs.removeSync(NEXT_DOCS_PATH);
-    // });
+    await registryCheck(__filename);
+
+
+    await registryTask(__filename, 'release check', async () => {
+        await registryCheckSass(__filename);
+        await registryTask(__filename, 'check git tag', checkTags);
+        await registryTask(__filename, 'check build outputs', checkFiles);
+    });
+
+    await registryTask(__filename, 'publish next to npm', publishNpm);
+    await registryTask(__filename, 'publish next-docs to npm', publishNpmForDocs, () => {
+        fs.removeSync(NEXT_DOCS_PATH);
+    });
 
     const commitRollbackFns = new Set<() => unknown>();
     await registryTask(
