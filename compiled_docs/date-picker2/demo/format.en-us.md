@@ -1,0 +1,1 @@
+{"title":"Basic","meta":{"title":"Basic","description":"\n<h1 id=\"basic\">Basic</h1>\n<p>Using attribute <code>format</code> to change the displayed dates, it will be also used to check user inputs.</p>\n","order":"5"},"codes":{},"body":"\n\n","name":"formatEnUs","html":"","renderScript":"<script>(function(){})()</script>"}

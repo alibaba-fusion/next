@@ -1,0 +1,1 @@
+{"title":"Colorful Tag","meta":{"title":"Colorful Tag","description":"\n<h1 id=\"colorful-tag\">Colorful Tag</h1>\n<p>colorful tag &amp; tag with custom color</p>\n","order":"3"},"codes":{},"body":"\n\n","name":"colorfulTagEnUs","html":"","renderScript":"<script>(function(){})()</script>"}

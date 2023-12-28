@@ -1,0 +1,1 @@
+{"title":"Default visible date","meta":{"title":"Default visible date","description":"\n<h1 id=\"default-visible-date\">Default visible date</h1>\n<p>Change default visible date by setting <code>defaultPanelValue</code>.</p>\n","order":"8"},"codes":{},"body":"\n\n","name":"defaultPanelEnUs","html":"","renderScript":"<script>(function(){})()</script>"}
