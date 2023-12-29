@@ -23,7 +23,6 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
      * 按钮的类型
      * @en Typeo of button
      * @defaultValue 'normal'
-     * @version 123
      */
     type?: 'primary' | 'secondary' | 'normal';
     /**

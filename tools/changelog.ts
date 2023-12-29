@@ -65,7 +65,7 @@ const rollback = () => {
 function updateVersionInCode(version: string) {
     const entryPath = path.join(CWD, 'index.js');
     const text = fs.readFileSync(entryPath, 'utf8');
-    const newText = text.replace(/(next\.version = ')[\d.\w]+(';)/, (all, s1, s2) => {
+    const newText = text.replace(/(next\.version = ')[^']+(';)/, (all, s1, s2) => {
         return `${s1}${version}${s2}`;
     });
     fs.writeFileSync(entryPath, newText);
