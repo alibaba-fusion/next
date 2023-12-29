@@ -163,4 +163,5 @@ export declare class ConfiguredComponent<P, R> extends Component<P> {
     constructor(props: P, context?: unknown);
     getInstance(): R;
     [key: string]: unknown;
+    render(): React.JSX.Element;
 }
