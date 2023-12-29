@@ -161,7 +161,7 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.6",
     "babel-loader": "^7.0.0",
-    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-espower": "^2.3.2",
     "babel-plugin-generator-prettier": "^1.2.0",
     "babel-plugin-istanbul": "^4.1.5",
