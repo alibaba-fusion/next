@@ -18,7 +18,8 @@ import {
     existsSync,
 } from 'fs-extra';
 import * as glob from 'glob';
-import { CWD, SRC_DIR_PATH, TARGETS, execSync, getBin, log, registryTask } from '../../utils';
+import { CWD, SRC_DIR_PATH, TARGETS, execSync, getBin, registryTask } from '../../utils';
+import transformJs = require('./transformJs');
 
 const tscBin = getBin('tsc');
 const SRC_PATH = SRC_DIR_PATH;
@@ -77,8 +78,6 @@ function compile(dirs: string[], out: string, configPath: string, includeJs?: bo
 }
 
 function compileTypes() {
-    // delete types
-    removeSync(DEST_TYPES);
     targets.forEach(dir => {
         // copy legacy index.d.ts
         const dtsList = glob.sync('**/index.d.ts', { cwd: dir, absolute: true });
@@ -95,52 +94,22 @@ function compileTypes() {
         });
     }
 
-    // compile .tsx?
+    // compile /.tsx?$/
     if (filterTargets.length) {
         compile(filterTargets, DEST_TYPES, CONFIG_TYPES_PATH);
     }
 }
 
 function compileEs() {
-    // delete es
-    removeSync(DEST_ES);
-
-    // copy !.js .jsx .ts .tsx
-    targets.forEach(dir => {
-        const otherFiles = glob.sync('**/*.!(js|jsx|ts|tsx|d.ts)', {
-            cwd: dir,
-            absolute: true,
-            ignore: '**/@(__tests__|__docs__)/**/*',
-        });
-        for (const file of otherFiles) {
-            copySync(file, file.replace(SRC_PATH, DEST_ES));
-        }
-    });
-
-    // compile .tsx? and .jsx?
-    compile(targets, DEST_ES, CONFIG_ES_PATH, true);
+    // compile /.tsx?$/
+    compile(targets, DEST_ES, CONFIG_ES_PATH);
 }
 
 function compileLib() {
-    // delete es
-    removeSync(DEST_LIB);
+    // compile /.tsx?$/
+    compile(targets, DEST_LIB, CONFIG_LIB_PATH);
 
-    // copy !.js .jsx .ts .tsx
-    targets.forEach(dir => {
-        const otherFiles = glob.sync('**/*.!(js|jsx|ts|tsx|d.ts)', {
-            cwd: dir,
-            absolute: true,
-            ignore: '**/@(__tests__|__docs__)/**/*',
-        });
-        for (const file of otherFiles) {
-            copySync(file, file.replace(SRC_PATH, DEST_LIB));
-        }
-    });
-
-    // compile .tsx? and .jsx?
-    compile(targets, DEST_LIB, CONFIG_LIB_PATH, true);
-
-    // copy .d.ts
+    // copy /.d.ts$/
     copyDTS(DEST_LIB);
 }
 
@@ -149,10 +118,37 @@ export function registryTransform(file = __filename) {
         file,
         'transform to es|lib|types',
         async () => {
-            await registryTask(file, 'transform to types', compileTypes);
-            await registryTask(file, 'transform to es', compileEs);
-            await registryTask(file, 'transform to lib', compileLib);
-            rollback();
+            await registryTask(file, 'clean', async () => {
+                removeSync(DEST_LIB);
+                removeSync(DEST_ES);
+                removeSync(DEST_TYPES);
+            });
+            await registryTask(file, 'copy non .[jt]sx? files', async () => {
+                targets.forEach(dir => {
+                    const otherFiles = glob.sync('**/*.!(js|jsx|ts|tsx|d.ts)', {
+                        cwd: dir,
+                        absolute: true,
+                        ignore: '**/@(__tests__|__docs__)/**/*',
+                    });
+                    for (const file of otherFiles) {
+                        copySync(file, file.replace(SRC_PATH, DEST_LIB));
+                        copySync(file, file.replace(SRC_PATH, DEST_ES));
+                    }
+                });
+            });
+            await registryTask(
+                file,
+                'compile ts',
+                async () => {
+                    await registryTask(file, 'transform to types', compileTypes);
+                    await registryTask(file, 'transform to es', compileEs);
+                    await registryTask(file, 'transform to lib', compileLib);
+                    rollback();
+                },
+                rollback
+            );
+
+            await registryTask(file, 'compile js', transformJs);
         },
         rollback
     );
