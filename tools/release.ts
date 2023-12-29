@@ -198,21 +198,7 @@ const pushPlatformDocs = {
     },
 };
 
-async function publishNpm() {
-    const { version } = getVersion();
-    const versionTag = version.match(/[a-z]+/)?.[0];
-    const distTag: string =
-        ARGV.tag ||
-        versionTag ||
-        (
-            await inquirer.prompt({
-                name: 'tag',
-                type: 'list',
-                choices: ['latest', 'next', 'beta'],
-                default: 0,
-                message: 'publish dist-tags:',
-            })
-        ).tag;
+async function publishNpm(distTag = 'latest') {
     execSync('npm', ['publish', '--tag', distTag]);
     execSync('tnpm', ['sync', '@alifd/next']);
 }
@@ -243,7 +229,7 @@ async function githubRelease() {
         .then(() => {});
 }
 
-async function publishNpmForDocs() {
+async function publishNpmForDocs(distTag = 'latest') {
     const { version } = getVersion();
     const docs = NEXT_DOCS_PATH;
 
@@ -268,7 +254,7 @@ async function publishNpmForDocs() {
     });
     fs.writeFileSync(pkgPath, pkgContent);
     logger.log('Generate @alifd/next-docs successfully!');
-    execSync('npm', ['publish'], { cwd: docs });
+    execSync('npm', ['publish', '--tag', distTag], { cwd: docs });
     execSync('tnpm', ['sync', NEXT_DOCS_NAME], { cwd: docs });
     fs.removeSync(docs);
 }
@@ -331,16 +317,35 @@ registryTask(__filename, 'release', async () => {
 
     await registryCheck(__filename);
 
-
     await registryTask(__filename, 'release check', async () => {
         await registryCheckSass(__filename);
         await registryTask(__filename, 'check git tag', checkTags);
         await registryTask(__filename, 'check build outputs', checkFiles);
     });
-
-    await registryTask(__filename, 'publish next to npm', publishNpm);
-    await registryTask(__filename, 'publish next-docs to npm', publishNpmForDocs, () => {
-        fs.removeSync(NEXT_DOCS_PATH);
+    await registryTask(__filename, 'publish to npm', async () => {
+        const { version } = getVersion();
+        const versionTag = version.match(/[a-z]+/)?.[0];
+        const distTag: string =
+            ARGV.tag ||
+            versionTag ||
+            (
+                await inquirer.prompt({
+                    name: 'tag',
+                    type: 'list',
+                    choices: ['latest', 'next', 'beta'],
+                    default: 0,
+                    message: 'publish dist-tags:',
+                })
+            ).tag;
+        await registryTask(__filename, 'publish next to npm', publishNpm.bind(undefined, distTag));
+        await registryTask(
+            __filename,
+            'publish next-docs to npm',
+            publishNpmForDocs.bind(undefined, distTag),
+            () => {
+                fs.removeSync(NEXT_DOCS_PATH);
+            }
+        );
     });
 
     const commitRollbackFns = new Set<() => unknown>();
