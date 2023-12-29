@@ -1,5 +1,3 @@
-import { TSCONFIG_PATH } from '../../utils';
-
 /* eslint-disable */
 const webpack = require('webpack');
 const path = require('path');
@@ -9,10 +7,11 @@ const CssSplitWebpackPlugin = require('css-split-webpack-plugin').default;
 
 const loaders = require('./loaders');
 
-module.exports = function(options = {}) {
+module.exports = function (options = {}) {
     const minimize = options.minimize;
     const packagePath = path.resolve('package.json');
     const version = require(packagePath).version;
+    const tsConfigPath = path.resolve(__dirname, './ts.json');
 
     const config = {
         output: {},
@@ -23,20 +22,19 @@ module.exports = function(options = {}) {
             rules: [
                 {
                     test: /\.jsx?$/,
-                    use: loaders.js(),
+                    use: loaders.js({}),
                     exclude: /node_modules/,
                 },
                 {
                     test: /\.tsx?$/,
                     use: [
-                        loaders.js(),
                         {
                             loader: 'ts-loader',
                             options: {
                                 transpileOnly: true,
-                                configFile: TSCONFIG_PATH,
+                                configFile: tsConfigPath,
                             },
-                        }
+                        },
                     ],
                     exclude: /node_modules/,
                 },
