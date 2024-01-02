@@ -1,25 +1,32 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import cx from 'classnames';
-import ConfigProvider from '../config-provider';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import * as cx from 'classnames';
+import { Component } from 'react';
 import { obj } from '../util';
+import type { IconProps } from './types';
+import ConfigProvider from '../config-provider';
+import createFromIconfontCN from './icon-font';
+
 /**
  * Icon
  */
-class Icon extends Component {
+class Icon extends Component<IconProps> {
     static propTypes = {
         ...ConfigProvider.propTypes,
-        /**
-         * 指定显示哪种图标
-         */
         type: PropTypes.string,
         children: PropTypes.node,
-        /**
-         * 指定图标大小
-         * <br/>**可选值**<br/> xxs, xs, small, medium, large, xl, xxl, xxxl, inherit
-         */
         size: PropTypes.oneOfType([
-            PropTypes.oneOf(['xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl', 'inherit']),
+            PropTypes.oneOf([
+                'xxs',
+                'xs',
+                'small',
+                'medium',
+                'large',
+                'xl',
+                'xxl',
+                'xxxl',
+                'inherit',
+            ]),
             PropTypes.number,
         ]),
         className: PropTypes.string,
@@ -32,9 +39,9 @@ class Icon extends Component {
     };
 
     static _typeMark = 'icon';
+    static createFromIconfontCN: typeof createFromIconfontCN;
 
     render() {
-        /* eslint-disable no-unused-vars*/
         const { prefix, type, size, className, rtl, style, children } = this.props;
         const others = obj.pickOthers(Object.assign({}, Icon.propTypes), this.props);
 
@@ -42,11 +49,12 @@ class Icon extends Component {
             [`${prefix}icon`]: true,
             [`${prefix}icon-${type}`]: !!type,
             [`${prefix}${size}`]: !!size && typeof size === 'string',
-            [className]: !!className,
+            [className!]: !!className,
         });
 
         if (
             rtl &&
+            type &&
             [
                 'arrow-left',
                 'arrow-right',
