@@ -1,0 +1,11 @@
+:root {
+--avatar-size-large: 52px;
+--avatar-size-medium: 40px;
+--avatar-size-small: 28px;
+--avatar-size-border-width: 0px;
+--avatar-border-radius: 3px;
+--avatar-border-color: #FFFFFF;
+--avatar-shadow: none;
+--avatar-color: #FFFFFF;
+--avatar-default-bg: #E2E4E8;
+}

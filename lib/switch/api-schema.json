@@ -1,0 +1,244 @@
+{
+  "name": "Switch",
+  "props": {
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义类名",
+      "docblock": "自定义类名"
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义内敛样式",
+      "docblock": "自定义内敛样式",
+      "properties": []
+    },
+    "checkedChildren": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "打开时的内容",
+      "docblock": "打开时的内容"
+    },
+    "unCheckedChildren": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "关闭时的内容",
+      "docblock": "关闭时的内容"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "开关状态改变是触发此事件",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "开关状态改变是触发此事件\n@param {Boolean} checked 是否为打开状态\n@param {Event} e DOM事件对象",
+      "params": [
+        {
+          "name": "checked",
+          "description": "是否为打开状态",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "e",
+          "description": "DOM事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "checked": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "开关当前的值(针对受控组件)",
+      "docblock": "开关当前的值(针对受控组件)"
+    },
+    "defaultChecked": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "开关默认值 (针对非受控组件)",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "开关默认值 (针对非受控组件)"
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "表示开关被禁用",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "表示开关被禁用"
+    },
+    "loading": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "loading",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "loading"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'medium'",
+            "computed": false,
+            "description": "正常大小"
+          },
+          {
+            "value": "'small'",
+            "computed": false,
+            "description": "缩小版大小"
+          }
+        ]
+      },
+      "required": false,
+      "description": "switch的尺寸",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "switch的尺寸\n@enumdesc 正常大小, 缩小版大小",
+      "value": [
+        {
+          "value": "'medium'",
+          "computed": false,
+          "description": "正常大小"
+        },
+        {
+          "value": "'small'",
+          "computed": false,
+          "description": "缩小版大小"
+        }
+      ]
+    },
+    "onClick": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "鼠标点击事件",
+      "docblock": "鼠标点击事件\n@param {Event} e DOM事件对象",
+      "params": [
+        {
+          "name": "e",
+          "description": "DOM事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onKeyDown": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "键盘按键事件",
+      "docblock": "键盘按键事件\n@param {Event} e DOM事件对象",
+      "params": [
+        {
+          "name": "e",
+          "description": "DOM事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "isPreview": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为预览态",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为预览态"
+    },
+    "renderPreview": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "预览态模式下渲染的内容",
+      "docblock": "预览态模式下渲染的内容\n@param {number} value 评分值",
+      "params": [
+        {
+          "name": "value",
+          "description": "评分值",
+          "type": {
+            "name": "number"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "autoWidth": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "开启后宽度根据内容自适应",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "开启后宽度根据内容自适应\n@version 1.23",
+      "version": {
+        "value": "1.23",
+        "computed": false
+      }
+    },
+    "locale": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "国际化配置",
+      "defaultValue": {
+        "value": "zhCN.Switch",
+        "computed": true
+      },
+      "docblock": "国际化配置",
+      "properties": []
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
