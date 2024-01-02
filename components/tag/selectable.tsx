@@ -1,66 +1,45 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import * as React from 'react';
+import * as cn from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import { obj, func } from '../util';
 import Tag from './tag';
+import { SelectableProps, SelectableState } from './types';
 
 const { noop, bindCtx } = func;
 
 /**
  * Tag.Selectable
  */
-class Selectable extends Component {
-    static propTypes = {
-        /**
-         * 标签是否被选中，受控用法
-         * tag checked or not, a controlled way
-         */
-        checked: PropTypes.bool,
-        /**
-         * 标签是否默认被选中，非受控用法
-         * tag checked or not by default, a uncontrolled way
-         */
-        defaultChecked: PropTypes.bool,
-        /**
-         * 选中状态变化时触发的事件
-         * @param {Boolean} checked 是否选中
-         * @param {Event} e Dom 事件对象
-         */
-        onChange: PropTypes.func,
-        /**
-         * 标签是否被禁用
-         */
-        disabled: PropTypes.bool,
-        className: PropTypes.any,
-    };
-
-    static defaultProps = {
+class Selectable extends React.Component<SelectableProps, SelectableState> {
+    static defaultProps: Partial<SelectableProps> = {
         onChange: noop,
     };
 
-    constructor(props) {
+    constructor(props: SelectableProps) {
         super(props);
-
+        const { checked, defaultChecked } = props;
+        // 如果checked属性传递了，就使用checked的值，否则使用defaultChecked的值，如果defaultChecked也没提供，那么默认为false。
+        const isChecked = checked ?? defaultChecked ?? false;
         this.state = {
-            checked: 'checked' in props ? props.checked : props.defaultChecked || false,
+            checked: isChecked,
         };
-
         bindCtx(this, ['handleClick']);
     }
 
-    static getDerivedStateFromProps(props, state) {
-        if (props.checked !== undefined && props.checked !== state.checked) {
+    static getDerivedStateFromProps(
+        nextProps: SelectableProps,
+        prevState: SelectableState
+    ): SelectableState | null {
+        if (nextProps.checked !== undefined && nextProps.checked !== prevState.checked) {
             return {
-                checked: props.checked,
+                checked: nextProps.checked,
             };
         }
-
         return null;
     }
 
-    handleClick(e) {
-        e && e.preventDefault();
+    handleClick(e: React.MouseEvent<HTMLDivElement>) {
+        e?.preventDefault();
         // IE9 不支持 pointer-events，还是可能会触发 click 事件
         if (this.props.disabled) {
             return false;
@@ -72,7 +51,7 @@ class Selectable extends Component {
             checked: !checked,
         });
 
-        this.props.onChange(!checked, e);
+        this.props.onChange?.(!checked, e);
     }
 
     render() {
@@ -88,7 +67,7 @@ class Selectable extends Component {
 
         const others = obj.pickOthers(attrFilterTarget, this.props);
         const isChecked = 'checked' in this.props ? this.props.checked : this.state.checked;
-        const clazz = classNames(this.props.className, {
+        const clazz = cn(this.props.className, {
             checked: isChecked,
         });
         return (
@@ -104,4 +83,5 @@ class Selectable extends Component {
     }
 }
 
-export default polyfill(Selectable);
+const polyfilledSelectable = polyfill(Selectable);
+export { polyfilledSelectable as Selectable };

@@ -1,28 +1,29 @@
 import ConfigProvider from '../config-provider';
+// import { ConfigOptions } from '../config-provider/types';
 import { log } from '../util';
+import { Closeable } from './closeable';
+import { Selectable } from './selectable';
 import Tag from './tag';
-import Group from './tag-group';
-import Selectable from './selectable';
-import Closable from './closeable';
+import { Group } from './tag-group';
 
 const ConfigTag = ConfigProvider.config(Tag, {
-    transfrom: /* istanbul ignore next */ (props, deprecated) => {
-        const { shape, type } = props;
-        if (shape === 'selectable') {
-            deprecated('shape=selectable', 'Tag.Selectable', 'Tag');
-        }
+    transform: (props, deprecated) => {
+        const { type } = props;
+        // if (shape === 'selectable') {
+        //     deprecated('shape=selectable', 'Tag.Selectable', 'Tag');
+        // }
 
-        if (shape === 'deletable') {
-            deprecated('shape=deletable', 'Tag.Closeable', 'Tag');
-        }
+        // if (shape === 'deletable') {
+        //     deprecated('shape=deletable', 'Tag.Closeable', 'Tag');
+        // }
 
-        if (shape === 'link') {
-            deprecated('shape=link', '<Tag><a href="x">x</a></Tag>', 'Tag');
-        }
+        // if (shape === 'link') {
+        //     deprecated('shape=link', '<Tag><a href="x">x</a></Tag>', 'Tag');
+        // }
 
-        if (shape === 'readonly' || shape === 'interactive') {
-            log.warning(`Warning: [ shape=${shape} ] is deprecated at [ Tag ]`);
-        }
+        // if (shape === 'readonly' || shape === 'interactive') {
+        //     log.warning(`Warning: [ shape=${shape} ] is deprecated at [ Tag ]`);
+        // }
 
         if (type === 'secondary') {
             log.warning('Warning: [ type=secondary ] is deprecated at [ Tag ]');
@@ -61,11 +62,10 @@ const ConfigTag = ConfigProvider.config(Tag, {
 });
 
 ConfigTag.Group = ConfigProvider.config(Group);
-
 ConfigTag.Selectable = ConfigProvider.config(Selectable);
 
 // 有的地方叫做 Closeable 有的地方用Closeable, 为了保持兼容 文档类出现 Closeable, Closeable可以继续用
-ConfigTag.Closable = ConfigProvider.config(Closable);
+ConfigTag.Closable = ConfigProvider.config(Closeable);
 ConfigTag.Closeable = ConfigTag.Closable;
 
 export default ConfigTag;

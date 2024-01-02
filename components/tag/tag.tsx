@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import * as React from 'react';
+import * as cn from 'classnames';
 import Animate from '../animate';
 import Icon from '../icon';
 import { func, KEYCODE, obj, support } from '../util';
 import zhCN from '../locale/zh-cn';
 import ConfigProvider from '../config-provider';
+import { CloseArea, TagProps, TagState } from './types';
+import { Closeable } from './closeable';
+import { Selectable } from './selectable';
+import { Group } from './tag-group';
 
 const { noop, bindCtx } = func;
 
@@ -14,51 +17,12 @@ const PRESET_COLOR_REG = /blue|green|orange|red|turquoise|yellow/;
 /**
  * Tag
  */
-class Tag extends Component {
-    static propTypes = {
-        /**
-         * 标签类名前缀,提供给二次开发者用
-         * @default next-
-         */
-        prefix: PropTypes.string,
-        /**
-         * 标签的类型
-         * @enumdesc 普通, 主要
-         */
-        type: PropTypes.oneOf(['normal', 'primary']),
-        /**
-         * 标签的尺寸（large 尺寸为兼容表单场景 large = medium）
-         * @enumdesc 小, 中, 大
-         */
-        size: PropTypes.oneOf(['small', 'medium', 'large']),
-
-        /**
-         * 标签颜色, 目前支持：blue、 green、 orange、red、 turquoise、 yellow 和 hex 颜色值 （`color keywords`作为 Tag 组件的保留字，请勿直接使用 ）, `1.19.0` 以上版本生效
-         */
-        color: PropTypes.string,
-        /**
-         * 是否开启动效
-         */
-        animation: PropTypes.bool,
-        closeArea: PropTypes.oneOf(['tag', 'tail']),
-        closable: PropTypes.bool,
-        onClose: PropTypes.func,
-        afterClose: PropTypes.func,
-        /**
-         * 标签出现动画结束后执行的回调
-         */
-        afterAppear: PropTypes.func,
-        className: PropTypes.any,
-        children: PropTypes.node,
-        /**
-         * 点击回调
-         */
-        onClick: PropTypes.func,
-        _shape: PropTypes.oneOf(['default', 'closable', 'checkable']),
-        disabled: PropTypes.bool,
-        rtl: PropTypes.bool,
-        locale: PropTypes.object,
-    };
+class Tag extends React.Component<TagProps, TagState> {
+    // 静态属性用于导出相关子组件
+    static Closable: typeof Closeable;
+    static Closeable: typeof Closeable;
+    static Selectable: typeof Selectable;
+    static Group: typeof Group;
 
     static defaultProps = {
         prefix: 'next-',
@@ -76,7 +40,7 @@ class Tag extends Component {
         locale: zhCN.Tag,
     };
 
-    constructor(props) {
+    constructor(props: TagProps | Readonly<TagProps>) {
         super(props);
 
         this.state = {
@@ -95,13 +59,15 @@ class Tag extends Component {
     componentWillUnmount() {
         this.__destroyed = true;
     }
+    __destroyed: boolean;
+    private tagNode: HTMLElement | null = null;
 
-    handleClose(from) {
-        const { animation, onClose } = this.props;
+    handleClose(from: CloseArea) {
+        const { animation, onClose, afterClose } = this.props;
         const hasAnimation = support.animation && animation;
 
         // 先执行回调
-        const result = onClose(from, this.tagNode);
+        const result = onClose?.(from, this.tagNode);
 
         // 如果回调函数返回 false，则阻止关闭行为
         if (result !== false && !this.__destroyed) {
@@ -109,20 +75,19 @@ class Tag extends Component {
                 {
                     visible: false,
                 },
-                () => {
+                () =>
                     // 如果没有动画，则直接执行 afterClose
-                    !hasAnimation && this.props.afterClose(this.tagNode);
-                }
+                    !hasAnimation && afterClose && afterClose(this.tagNode)
             );
         }
     }
 
     // 标签体点击
-    handleBodyClick(e) {
+    handleBodyClick(e: React.MouseEvent<HTMLDivElement>) {
         const { closable, closeArea, onClick } = this.props;
         const node = e.currentTarget;
 
-        if (node && (node === e.target || node.contains(e.target))) {
+        if (node && (node === e.target || (node as Node).contains(e.target as Node))) {
             if (closable && closeArea === 'tag') {
                 this.handleClose('tag');
             }
@@ -133,7 +98,7 @@ class Tag extends Component {
         }
     }
 
-    onKeyDown = e => {
+    onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         // 针对无障碍化要求 添加键盘SPACE事件
         const { closable, closeArea, onClick, disabled } = this.props;
         if (e.keyCode !== KEYCODE.SPACE || disabled) {
@@ -143,29 +108,31 @@ class Tag extends Component {
         e.preventDefault();
         e.stopPropagation();
 
-        if (closable) {
+        if (closable && closeArea) {
             this.handleClose(closeArea);
-        } else {
-            typeof onClick === 'function' && onClick(e);
+        } else if (typeof onClick === 'function') {
+            return onClick(e);
         }
     };
 
-    handleTailClick(e) {
-        e && e.preventDefault();
-        e && e.stopPropagation();
+    handleTailClick(e: React.MouseEvent<HTMLSpanElement>) {
+        e?.preventDefault();
+        e?.stopPropagation();
 
         this.handleClose('tail');
     }
 
-    handleAnimationInit(node) {
-        this.props.afterAppear(node);
+    handleAnimationInit(node: HTMLElement) {
+        const { afterAppear } = this.props;
+        afterAppear?.(node);
     }
 
-    handleAnimationEnd(node) {
-        this.props.afterClose(node);
+    handleAnimationEnd(node: HTMLElement) {
+        const { afterClose } = this.props;
+        afterClose?.(node);
     }
 
-    renderAnimatedTag(children, animationName) {
+    renderAnimatedTag(children: React.ReactNode, animationName: string) {
         return (
             <Animate
                 animation={animationName}
@@ -183,13 +150,12 @@ class Tag extends Component {
         if (!closable) {
             return null;
         }
-
         return (
             <span
                 className={`${prefix}tag-close-btn`}
                 onClick={this.handleTailClick}
                 role="button"
-                aria-label={locale.delete}
+                aria-label={locale?.delete as string}
             >
                 <Icon type="close" />
             </span>
@@ -238,11 +204,11 @@ class Tag extends Component {
         } = this.props;
         const { visible } = this.state;
         const isPresetColor = this.isPresetColor();
-        const others = obj.pickOthers(Tag.propTypes, this.props);
+        const others = obj.pickOthers(Tag.defaultProps, this.props);
         // eslint-disable-next-line no-unused-vars
         const { style, ...otherTagProps } = others;
         const shape = closable ? 'closable' : _shape;
-        const bodyClazz = classNames(
+        const bodyClazz = cn(
             [`${prefix}tag`, `${prefix}tag-${shape}`, `${prefix}tag-${size}`],
             {
                 [`${prefix}tag-level-${type}`]: !color,
@@ -262,7 +228,7 @@ class Tag extends Component {
                 className={bodyClazz}
                 onClick={this.handleBodyClick}
                 onKeyDown={this.onKeyDown}
-                tabIndex={disabled ? '' : '0'}
+                tabIndex={disabled ? -1 : 0}
                 role="button"
                 aria-disabled={disabled}
                 disabled={disabled}
@@ -284,5 +250,4 @@ class Tag extends Component {
         return tagNode;
     }
 }
-
 export default ConfigProvider.config(Tag);
