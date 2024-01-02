@@ -19,7 +19,17 @@ class Icon extends Component {
          * <br/>**可选值**<br/> xxs, xs, small, medium, large, xl, xxl, xxxl, inherit
          */
         size: PropTypes.oneOfType([
-            PropTypes.oneOf(['xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl', 'inherit']),
+            PropTypes.oneOf([
+                'xxs',
+                'xs',
+                'small',
+                'medium',
+                'large',
+                'xl',
+                'xxl',
+                'xxxl',
+                'inherit',
+            ]),
             PropTypes.number,
         ]),
         className: PropTypes.string,
