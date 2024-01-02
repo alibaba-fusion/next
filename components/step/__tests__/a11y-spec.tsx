@@ -1,19 +1,18 @@
-import React from 'react';
-import Enzyme from 'enzyme';
+import * as React from 'react';
+import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
 import Icon from '../../icon';
 import Step from '../index';
 import '../style';
 
-Enzyme.configure({ adapter: new Adapter() });
+configure({ adapter: new Adapter() });
 
 const StepItem = Step.Item;
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Step A11y', () => {
-    let wrapper;
-
+    let wrapper: any;
     afterEach(() => {
         if (wrapper) {
             wrapper.unmount();
@@ -133,7 +132,7 @@ describe('Step A11y', () => {
     });
 
     it('should not have any violations for custom node', async () => {
-        function itemRender(index) {
+        function itemRender(index: number) {
             return (
                 <div className="custom-node">
                     <span>{index + 1}</span>
@@ -175,7 +174,7 @@ describe('Step A11y', () => {
 
     it('should not have any violations for step.item with itemRender', async () => {
         const steps = ['one', 'two', 'three', 'four'];
-        const itemRender = (index, status) => {
+        const itemRender = (index: number, status: string) => {
             return status === 'finish' ? <Icon type="good" /> : index + 1;
         };
         wrapper = await testReact(

@@ -8,7 +8,7 @@ const steps = [
     ['Step 3', 'Close the refrigerator door'],
 ].map((item, index) => (
     <Step.Item
-        aria-current={index === 1 ? 'step' : null}
+        aria-current={index === 1 ? 'step' : undefined}
         key={index}
         title={item[0]}
         content={item[1]}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Step, Box, Icon } from '@alifd/next';
+import { Step, Icon } from '@alifd/next';
 
 ReactDOM.render(
     <div>
@@ -9,7 +9,7 @@ ReactDOM.render(
             <Step.Item
                 title={<span style={{ color: 'red' }}>In Progress</span>}
                 content={<span style={{ color: 'red' }}>download image failed</span>}
-                itemRender={(index, status) => {
+                itemRender={(_index, _status) => {
                     return (
                         <div
                             className="next-step-item-node-circle"

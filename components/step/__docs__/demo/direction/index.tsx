@@ -1,9 +1,19 @@
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { Button, Step, Radio } from '@alifd/next';
+import { OneOfRule } from 'webpack';
 
+interface Condition {
+    type: string;
+    fieldName: string;
+}
+
+// interface State {
+//     newConditions: Condition[];
+// }
 const Step1Content = () => {
-    const [conditions, setconditions] = useState([]);
+    const [conditions, setconditions] = useState<Condition[]>([]);
     const createNewSelectItem = () => {
         const newType = {
             type: 'null',
@@ -33,8 +43,8 @@ const Step1Content = () => {
     );
 };
 const CreateDemo = () => {
-    const [conditions, setconditions] = useState([]);
-    const [direction, setDirection] = useState('ver');
+    const [conditions, setconditions] = useState<Condition[]>([]);
+    const [direction, setDirection] = useState<string | 'hoz' | 'ver'>('ver');
     const createNewSelectItem = () => {
         const newType = {
             type: 'null',
@@ -50,16 +60,18 @@ const CreateDemo = () => {
                 style={{ padding: 30 }}
                 shape="button"
                 value={direction}
-                onChange={setDirection}
+                onChange={(value: string) => setDirection(value)}
             >
                 <Radio value={'hoz'}>hoz</Radio>
                 <Radio value={'ver'}>ver</Radio>
             </Radio.Group>
-            <Step current={1} direction={direction} stretch animation style={{ marginTop: 30 }}>
-                <Step.Item title={'What would youlike to test?'} content={'test'} />
-                <Step.Item title={'What would youlike to test?'} content={<Step1Content />} />
-                <Step.Item title={'A bit more on the background'} content={'test'} />
-            </Step>
+            <div style={{ marginTop: 30 }}>
+                <Step current={1} direction={direction} stretch animation>
+                    <Step.Item title={'What would youlike to test?'} content={'test'} />
+                    <Step.Item title={'What would youlike to test?'} content={<Step1Content />} />
+                    <Step.Item title={'A bit more on the background'} content={'test'} />
+                </Step>
+            </div>
         </div>
     );
 };

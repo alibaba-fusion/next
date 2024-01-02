@@ -1,16 +1,26 @@
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import React, { Component, Children } from 'react';
+/* eslint-disable tsdoc/syntax */
+import * as ReactDOM from 'react-dom';
+import * as PropTypes from 'prop-types';
+import * as classNames from 'classnames';
+import * as React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
+import { Component, Children } from 'react';
 import ConfigProvider from '../../config-provider';
 import { support, events, dom, obj } from '../../util';
+import type { StepProps } from '../types';
+import StepItem from './step-item';
 
-const getHeight = el => dom.getStyle(el, 'height');
-const setHeight = (el, height) => dom.setStyle(el, 'height', height);
+const getHeight = (el: HTMLElement) => dom.getStyle(el, 'height');
+const setHeight = (el: HTMLElement, height: number) => dom.setStyle(el, 'height', height);
+type StepState = {
+    parentWidth: string;
+    parentHeight: string;
+    currentfocus: number;
+};
 
 /** Step */
-class Step extends Component {
+class Step extends Component<StepProps, StepState> {
+    static Item = StepItem;
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -70,16 +80,22 @@ class Step extends Component {
     static contextTypes = {
         prefix: PropTypes.string,
     };
+    static getDerivedStateFromProps(
+        nextProps: { current: unknown },
+        prevState: { current: unknown }
+    ) {
+        // 计算新的状态...
+        const newState = { current: nextProps.current };
 
-    static getDerivedStateFromProps(newProps) {
-        if ('current' in newProps) {
-            return {
-                current: newProps.current,
-            };
+        // 如果没有需要更新的状态，返回 null
+        if (newState.current === prevState.current) {
+            return null;
         }
-    }
 
-    constructor(props, context) {
+        // 否则，返回新的状态
+        return newState;
+    }
+    constructor(props: StepProps, context: unknown) {
         super(props, context);
         this.state = {
             parentWidth: 'auto',
@@ -109,33 +125,58 @@ class Step extends Component {
         }
     }
 
+    step: unknown;
+
     adjustHeight() {
         const { shape, direction, prefix, labelPlacement } = this.props;
-        const step = ReactDOM.findDOMNode(this.step);
+        const step = ReactDOM.findDOMNode(this.step as React.ReactInstance);
         if (
             shape !== 'arrow' &&
             (direction === 'horizontal' || direction === 'hoz') &&
             (labelPlacement === 'vertical' || labelPlacement === 'ver')
         ) {
             const height = Array.prototype.slice
-                .call(step.getElementsByClassName(`${prefix}step-item`))
-                .reduce((ret, re) => {
-                    const itemHeight =
-                        getHeight(re.getElementsByClassName(`${prefix}step-item-container`)[0]) +
-                        getHeight(re.getElementsByClassName(`${prefix}step-item-body`)[0]);
-                    return Math.max(itemHeight, ret);
-                }, 0);
-            setHeight(step, height);
+                .call((step as HTMLElement)?.getElementsByClassName(`${prefix}step-item`))
+                .reduce(
+                    (
+                        ret: number,
+                        re: {
+                            getElementsByClassName: (
+                                arg0: string
+                            ) => (
+                                | boolean
+                                | React.ReactChild
+                                | React.ReactFragment
+                                | React.ReactPortal
+                                | null
+                                | undefined
+                            )[];
+                        }
+                    ) => {
+                        const containerElements = re.getElementsByClassName(
+                            `${prefix}step-item-container`
+                        );
+                        const bodyElements = re.getElementsByClassName(`${prefix}step-item-body`);
+                        const itemHeight =
+                            Number(getHeight(containerElements[0] as HTMLElement)) +
+                            Number(getHeight(bodyElements[0] as HTMLElement));
+                        return Math.max(itemHeight, ret);
+                    },
+                    0
+                );
+            if (step instanceof HTMLElement) {
+                setHeight(step, height);
+            }
         } else {
-            setHeight(step, '');
+            setHeight(step as HTMLElement, 'auto' as unknown as number);
         }
     }
 
     resize() {
         if (this.step) {
             this.setState({
-                parentWidth: this.step.offsetWidth || 0,
-                parentHeight: this.step.offsetHeight || 0,
+                parentWidth: (this.step as HTMLElement).offsetWidth.toString() || '0',
+                parentHeight: (this.step as HTMLElement).offsetHeight.toString() || '0',
             });
         }
     }
@@ -174,8 +215,17 @@ class Step extends Component {
     //     }
     // };
 
-    _getValidChildren(children) {
-        const result = [];
+    _getValidChildren(
+        children:
+            | boolean
+            | React.ReactChild
+            | React.ReactFragment
+            | React.ReactPortal
+            | null
+            | undefined
+    ) {
+        const result: React.ReactElement<unknown, string | React.JSXElementConstructor<unknown>>[] =
+            [];
         React.Children.forEach(children, child => {
             if (React.isValidElement(child)) {
                 result.push(child);
@@ -184,7 +234,7 @@ class Step extends Component {
         return result;
     }
 
-    _stepRefHandler = ref => {
+    _stepRefHandler = (ref: unknown) => {
         this.step = ref;
     };
 
@@ -211,16 +261,22 @@ class Step extends Component {
 
         // children去除null
         children = this._getValidChildren(children);
-
         // 修改子节点属性
-        const cloneChildren = Children.map(children, (child, index) => {
-            const status = index < current ? 'finish' : index === current ? 'process' : 'wait';
+        const cloneChildren = Children.map(children, (child: React.ReactElement, index) => {
+            const status =
+                typeof current !== 'undefined'
+                    ? index < current
+                        ? 'finish'
+                        : index === current
+                          ? 'process'
+                          : 'wait'
+                    : 'wait';
 
             return React.cloneElement(child, {
                 prefix,
                 key: index,
                 index,
-                total: children.length,
+                total: Array.isArray(children) ? children.length : 0,
                 status: child.props.status || status,
                 shape,
                 direction,
@@ -249,7 +305,7 @@ class Step extends Component {
             [`${prefix}step-${shape}`]: shape,
             [`${prefix}step-${_direction}`]: _direction,
             [`${prefix}step-label-${_labelPlacement}`]: _labelPlacement,
-            [className]: className,
+            [`${className}`]: className,
         });
 
         if (rtl) {
@@ -264,5 +320,4 @@ class Step extends Component {
         );
     }
 }
-
 export default polyfill(Step);

@@ -1,11 +1,13 @@
-import React from 'react';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import Step from '../../index';
 import '../../style';
 import '../../../demo-helper/style';
+import type { StepProps } from '../../types';
 
 const StepItem = Step.Item;
-const parseBool = str => {
+const parseBool = (str: string) => {
     switch (str) {
         case 'true':
             return true;
@@ -56,8 +58,8 @@ const i18nMap = {
     },
 };
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
+class FunctionDemo extends React.Component<StepProps, object> {
+    constructor(props: StepProps) {
         super(props);
         this.state = {
             circleDdemoFunction: {
@@ -107,13 +109,13 @@ class FunctionDemo extends React.Component {
         };
     }
 
-    onFunctionChange = ret => {
+    onFunctionChange = (ret: any) => {
         this.setState({
             demoFunction: ret,
         });
     };
 
-    itemRender = ({ flag, index, ...props }) => {
+    itemRender = ({ flag, index, ...props }: { flag: any; index: number; [key: string]: any }) => {
         !flag.withIcon && delete props.icon;
         !flag.withContent && delete props.content;
         // !flag.withProgress && delete props.percent;

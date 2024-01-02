@@ -1,14 +1,18 @@
 import ConfigProvider from '../config-provider';
 import Step from './view/step';
-import StepItem from './view/step-item';
+import type { StepProps } from './types';
 
-Step.Item = StepItem;
+export type { StepProps };
 
 export default ConfigProvider.config(Step, {
-    transform: /* istanbul ignore next */ (props, deprecated) => {
+    transform: /* istanbul ignore next */ (
+        props: StepProps,
+        deprecated: (arg: string, arg2: string, arg3: string) => void
+    ) => {
         if ('type' in props) {
             deprecated('type', 'shape', 'Step');
 
+            // eslint-disable-next-line prefer-const
             let { type, direction, labelPlacement, ...others } = props;
             direction =
                 direction === 'vertical' ? 'ver' : direction === 'horizontal' ? 'hoz' : direction;
@@ -18,7 +22,12 @@ export default ConfigProvider.config(Step, {
                     : labelPlacement === 'horizontal'
                       ? 'hoz'
                       : labelPlacement;
-            props = { shape: type, direction, labelPlacement, ...others };
+            props = {
+                shape: type as 'circle' | 'arrow' | 'dot' | undefined,
+                direction,
+                labelPlacement,
+                ...others,
+            };
         }
 
         return props;

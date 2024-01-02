@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import Enzyme, { mount } from 'enzyme';
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { useState } from 'react';
+import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Icon from '../../icon';
@@ -8,7 +10,7 @@ import Step from '../index';
 import { mountReact } from '../../util/__tests__/legacy/a11y/validate';
 import '../style';
 
-Enzyme.configure({ adapter: new Adapter() });
+configure({ adapter: new Adapter() });
 
 const StepItem = Step.Item;
 /* eslint-disable */
@@ -22,10 +24,10 @@ describe('Step', () => {
                     <StepItem title="步骤3" />
                 </Step>
             );
-
-            assert(
-                wrapper.find('.next-step-circle').at(0).instance().getAttribute('dir') === 'rtl'
-            );
+            const componentInstance = wrapper.find('.next-step-circle').at(0).instance();
+            const domNode = ReactDOM.findDOMNode(componentInstance);
+            const dir = domNode.getAttribute('dir');
+            assert(dir === 'rtl');
         });
         it('should render with default props', () => {
             const wrapper = mount(
@@ -170,7 +172,7 @@ describe('Step', () => {
         });
 
         it('should render with custom node ', () => {
-            function itemRender(index, status) {
+            function itemRender(index: number, status: any) {
                 return (
                     <div className="custom-node">
                         <span>{index + 1}</span>
@@ -218,7 +220,7 @@ describe('Step', () => {
 
         it('should render step.item with itemRender', () => {
             const steps = ['one', 'two', 'three', 'four'];
-            const itemRender = (index, status) => {
+            const itemRender = (index: number, status: string) => {
                 return status === 'finish' ? <Icon type="good" /> : index + 1;
             };
             const wrapper = mount(
@@ -240,8 +242,10 @@ describe('Step', () => {
             );
 
             const item = wrapper.find('.next-step-item');
-            assert(item.at(0).instance().style.width.startsWith('calc((100%'));
-            assert(item.at(2).instance().style.width === 'auto');
+            const componentInstance = item.at(0).instance();
+            const domNode = ReactDOM.findDOMNode(componentInstance) as HTMLElement;
+            assert(domNode.style.width.startsWith('calc((100%'));
+            assert(domNode.style.width === 'auto');
         });
     });
 
@@ -255,16 +259,12 @@ describe('Step', () => {
                 </Step>
             );
             wrapper.find('.next-step-item-node').at(2).simulate('click');
-            assert(
-                wrapper.find('.next-step-item-node').at(2).instance().className ===
-                    'next-step-item-node clicked'
-            );
+            const componentInstance = wrapper.find('.next-step-item-node').at(2).instance();
+            const domNode = ReactDOM.findDOMNode(componentInstance) as HTMLElement;
+            assert(domNode.className === 'next-step-item-node clicked');
 
             wrapper.find('.next-step-item-node').at(2).simulate('transitionEnd');
-            assert(
-                wrapper.find('.next-step-item-node').at(2).instance().className ===
-                    'next-step-item-node'
-            );
+            assert(domNode.className === 'next-step-item-node');
         });
 
         it('should change current step', () => {

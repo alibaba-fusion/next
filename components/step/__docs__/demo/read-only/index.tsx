@@ -4,8 +4,19 @@ import { Step, Button } from '@alifd/next';
 
 const StepItem = Step.Item,
     ButtonGroup = Button.Group;
-class Component extends React.Component {
-    constructor(props) {
+
+interface IProps {
+    current?: number;
+    shape?: string;
+    animation?: boolean;
+    labelPlacement?: string;
+}
+interface State {
+    currentStep: number;
+}
+
+class Component extends React.Component<IProps, State> {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -26,7 +37,7 @@ class Component extends React.Component {
             currentStep: s < 0 ? 0 : s,
         });
     }
-    onClick(currentStep) {
+    onClick(currentStep: any) {
         console.log(currentStep);
 
         this.setState({
