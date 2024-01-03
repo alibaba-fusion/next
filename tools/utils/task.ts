@@ -6,13 +6,55 @@
 ------------------------------------------------------------
 */
 import co from 'co';
+import { resolve } from 'path';
+import { existsSync, outputFileSync, readFileSync } from 'fs-extra';
 import { log, error, setLevel, getLevel, setSlient } from './log';
 import { beforeExit } from './common';
+import { ARGV, CWD } from './consts';
 
 process.on('unhandledRejection', e => {
     // eslint-disable-next-line no-console
     console.error(e);
     process.exit(1);
+});
+
+const isContinue = Boolean(ARGV.continue);
+
+class Cache {
+    static CACHE_PATH = resolve(CWD, 'node_modules/.cache/.next_task');
+    constructor() {
+        this.read();
+    }
+    private _cache: { completes: Array<string> } = { completes: [] };
+    private read() {
+        if (!existsSync(Cache.CACHE_PATH)) {
+            return;
+        }
+        const cacheText = readFileSync(Cache.CACHE_PATH, 'utf-8');
+        this._cache = JSON.parse(cacheText);
+    }
+    private write() {
+        outputFileSync(Cache.CACHE_PATH, JSON.stringify(this._cache));
+    }
+    clear() {
+        this._cache = { completes: [] };
+        this.write();
+    }
+    addComplete(name: string) {
+        this._cache.completes.push(name);
+        this.write();
+    }
+    isComplete(name: string) {
+        return this._cache.completes.includes(name);
+    }
+}
+
+const cache = new Cache();
+process.on('exit', code => {
+    if (code === 0) {
+        // 正常退出，清空缓存
+        cache.clear();
+    }
 });
 
 export interface Task {
@@ -58,7 +100,7 @@ export async function run() {
                 yield exec() ?? Promise.resolve();
                 taskYieldMap.get(key)?.();
                 setLevel(logLevel - 1);
-
+                cache.addComplete(key);
                 log(`> run "${name}" done.`);
             } catch (e) {
                 pass = false;
@@ -93,6 +135,9 @@ export async function registryTask(
     }
     const fn = function* () {
         const key = `${file}:${name}`;
+        if (isContinue && cache.isComplete(key)) {
+            return;
+        }
         if (tasks.has(key)) {
             throw new Error(`Task exists: ${key}`);
         }
