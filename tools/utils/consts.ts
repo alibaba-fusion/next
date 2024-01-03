@@ -14,6 +14,7 @@ export const SRC_DIR = 'components';
 export const SRC_DIR_PATH = resolve(CWD, SRC_DIR);
 export const DIST_PATH = resolve(CWD, 'dist');
 export const TSCONFIG_PATH = resolve(CWD, 'tsconfig.json');
+export const PKG_PATH = resolve(CWD, 'package.json');
 export const TARGETS = (() => {
     const dirs = ARGV._.map(dir => [resolve(CWD, dir), resolve(SRC_DIR_PATH, dir)])
         .flat()

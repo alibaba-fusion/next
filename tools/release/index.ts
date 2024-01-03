@@ -8,37 +8,20 @@
 import path = require('path');
 import fs = require('fs-extra');
 import * as inquirer from 'inquirer';
-import { Octokit } from '@octokit/rest';
-import urllib = require('urllib');
-import { CWD, querySync, registryTask, logger, ARGV, execSync, SRC_DIR_PATH } from './utils';
-import { PLATFORM_DOCS_IGNORE } from './build/docs/configs/platform-docs-ignore';
-import { registryCheck } from './checkers';
-import { registryChangelog } from './changelog';
-import { registryBuild } from './build';
-import { registryCheckSass } from './checkers/sass';
+import { CWD, querySync, registryTask, logger, ARGV, execSync, SRC_DIR_PATH } from '../utils';
+import { PLATFORM_DOCS_IGNORE } from '../build/docs/configs/platform-docs-ignore';
+import { registryCheck } from '../checkers';
+import { registryChangelog } from '../changelog';
+import { registryBuild } from '../build';
+import { registryCheckSass } from '../checkers/sass';
+import { getVersion } from './utils';
 
 const cwd = CWD;
-const PKG_PATH = path.resolve(cwd, 'package.json');
 const NEXT_DOCS_PATH = path.resolve(cwd, 'next-docs');
 const NEXT_DOCS_NAME = '@alifd/next-docs';
 const REMOTE_NAME = (ARGV.remote as string) || 'origin';
 const PLATFORM_DOCS_BRANCH = 'platform-docs';
 const PLATFORM_DOCS_PATH = path.join(cwd, 'platform-docs');
-if (!process.env.GITHUB_RELEASE_TOKEN) {
-    throw new Error(`Not found GITHUB_RELEASE_TOKEN, check "echo $GITHUB_RELEASE_TOKEN"`);
-}
-const octokit = new Octokit({
-    auth: process.env.GITHUB_RELEASE_TOKEN,
-});
-
-function getVersion() {
-    const version = fs.readJSONSync(PKG_PATH).version as string;
-    return {
-        version,
-        masterTag: version,
-        buildTag: `build/${version}`,
-    };
-}
 
 function checkTags() {
     let repeatTag = '';
@@ -203,32 +186,6 @@ async function publishNpm(distTag = 'latest') {
     execSync('tnpm', ['sync', '@alifd/next']);
 }
 
-async function githubRelease() {
-    const { buildTag, version } = getVersion();
-    const isPrerelease = !/\d+\.\d+\.\d+/.test(version);
-    const latestLog = fs
-        .readFileSync(path.join(cwd, 'LATESTLOG.md'), 'utf8')
-        .replace(/\n+/g, '\n')
-        .split('\n')
-        .slice(1)
-        .join('\n');
-
-    return octokit.repos
-        .createRelease({
-            owner: 'alibaba-fusion',
-            repo: 'next',
-            /* eslint-disable */
-            tag_name: buildTag,
-            target_commitish: 'platform-docs',
-            /* eslint-enable */
-            name: buildTag,
-            body: latestLog,
-            draft: false,
-            prerelease: isPrerelease,
-        })
-        .then(() => {});
-}
-
 async function publishNpmForDocs(distTag = 'latest') {
     const { version } = getVersion();
     const docs = NEXT_DOCS_PATH;
@@ -257,55 +214,6 @@ async function publishNpmForDocs(distTag = 'latest') {
     execSync('npm', ['publish', '--tag', distTag], { cwd: docs });
     execSync('tnpm', ['sync', NEXT_DOCS_NAME], { cwd: docs });
     fs.removeSync(docs);
-}
-
-function* sendDingMessage() {
-    const group = process.env.FUSION_SERVICE_DINGTALK_GROUPS;
-    const { masterTag } = getVersion();
-    const dingtalks = (group && group.split(', ')) || [];
-    if (!dingtalks.length) {
-        return;
-    }
-    const shouldDing =
-        ARGV.ding ||
-        (
-            (yield inquirer.prompt({
-                name: 'sync',
-                type: 'confirm',
-                default: true,
-                message: '是否同步发布信息到钉钉群',
-            })) as { sync: boolean }
-        ).sync;
-    if (!shouldDing) {
-        return;
-    }
-
-    const username = querySync('git', ['config', '--get', 'user.name']);
-    const latestLog = fs
-        .readFileSync(path.join(cwd, 'LATESTLOG.md'), 'utf8')
-        .replace(/# Latest Log/g, '')
-        .replace(/\n+/g, '\n')
-        .replace(/\(\[[\d\w]+\]\(https:\/\/[^)]+\)\)/g, '');
-    const dingContent = `> [公告] @alifd/next@${masterTag} 版本发布！by: ${username}
-${latestLog}
-> 历史发布记录请查看 [CHANGELOG](https://github.com/alibaba-fusion/next/blob/master/CHANGELOG.md);`;
-
-    for (let i = 0; i < dingtalks.length; i++) {
-        const url = dingtalks[i];
-        yield urllib.request(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            content: JSON.stringify({
-                msgtype: 'markdown',
-                markdown: {
-                    title: 'Fusion Next 组件发布',
-                    text: dingContent,
-                },
-            }),
-        });
-    }
 }
 
 registryTask(__filename, 'release', async () => {
@@ -387,7 +295,4 @@ registryTask(__filename, 'release', async () => {
             pushPlatformDocs.rollback
         );
     });
-
-    // await registryTask(__filename, 'Github release', githubRelease);
-    // await registryTask(__filename, 'Ding message', sendDingMessage);
 });
