@@ -6,10 +6,10 @@
 ------------------------------------------------------------
 */
 
-import path = require('path');
-import fs = require('fs-extra');
-import inquirer = require('inquirer');
-import urllib = require('urllib');
+import path from 'path';
+import fs from 'fs-extra';
+import inquirer from 'inquirer';
+import urllib from 'urllib';
 import { registryTask, ARGV, querySync, CWD } from '../utils';
 import { getVersion } from './utils';
 

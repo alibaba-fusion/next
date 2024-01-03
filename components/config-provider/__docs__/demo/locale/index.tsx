@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { ConfigProvider, Button, Select, CommonProps } from '@alifd/next';
 
 const { config, getContextProps } = ConfigProvider;

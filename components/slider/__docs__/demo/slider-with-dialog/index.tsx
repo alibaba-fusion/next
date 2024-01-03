@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Slider, Dialog, Button } from '@alifd/next';
 import PropTypes from 'prop-types';
 

@@ -1,7 +1,6 @@
-import * as React from 'react';
-import { Component, Children } from 'react';
-import * as PropTypes from 'prop-types';
-import * as classNames from 'classnames';
+import React, { Component, Children } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { GroupProps } from '../types';
 import ConfigProvider from '../../config-provider';
 

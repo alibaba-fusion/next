@@ -12,8 +12,8 @@
         "strictNullChecks": true,
         "allowJs": true, // 改造期间暂时允许导入 js 文件
         "skipLibCheck": true,
-        "esModuleInterop": false,
-        "allowSyntheticDefaultImports": false,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
         "isolatedModules": false,
         "baseUrl": ".",
         "paths": {

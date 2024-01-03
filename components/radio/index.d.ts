@@ -1,6 +1,6 @@
 /// <reference types="react" />
 
-import * as React from 'react';
+import React from 'react';
 import { data } from '../checkbox';
 import { CommonProps } from '../util';
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {

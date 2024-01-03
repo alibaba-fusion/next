@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import {
     Demo,
     DemoFunctionDefineForObject,
@@ -457,11 +457,9 @@ class FunctionDemo extends React.Component<
     render() {
         const { title, locale, types, buttonRender } = this.props;
         const { demoFunction } = this.state;
-        const iconType = demoFunction['arrow-type'].value;
+        const iconType = demoFunction['arrow-type'].value as string;
         const iconPosition =
-            ['arrow-right', 'arrow-up', 'arrow-down'].indexOf(iconType as string) > -1
-                ? 'after'
-                : 'before';
+            ['arrow-right', 'arrow-up', 'arrow-down'].indexOf(iconType) > -1 ? 'after' : 'before';
         const children: React.ReactNode[] = [locale.button];
 
         if (iconType !== 'none') {

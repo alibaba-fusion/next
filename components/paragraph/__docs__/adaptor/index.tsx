@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Paragraph } from '@alifd/next';
 import { Types } from '@alifd/adaptor-helper';
 

@@ -1,6 +1,6 @@
 import { isAbsolute, join, resolve } from 'path';
 import { existsSync } from 'fs-extra';
-import _ = require('lodash');
+import _ from 'lodash';
 import { CWD } from './consts';
 
 export function beforeExit(task: () => unknown) {

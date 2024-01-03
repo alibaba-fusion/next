@@ -1,7 +1,6 @@
 import { resolve } from 'path';
 import { existsSync } from 'fs-extra';
-// @ts-expect-error ignore
-import * as yargs from 'yargs/yargs';
+import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
 
 export const ARGV = yargs(hideBin(process.argv)).argv as {

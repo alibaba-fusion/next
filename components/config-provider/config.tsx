@@ -1,5 +1,4 @@
-import * as React from 'react';
-import {
+import React, {
     ComponentType,
     ComponentClass,
     FunctionComponent,
@@ -8,8 +7,8 @@ import {
     ComponentRef,
     StaticLifecycle,
 } from 'react';
-import * as PropTypes from 'prop-types';
-import * as hoistNonReactStatic from 'hoist-non-react-statics';
+import PropTypes from 'prop-types';
+import hoistNonReactStatic from 'hoist-non-react-statics';
 import { obj, log } from '../util';
 import getContextProps from './get-context-props';
 import ErrorBoundary from './error-boundary';
@@ -165,8 +164,7 @@ function config<
 
             if (this._instance && options.exportNames) {
                 options.exportNames.forEach(name => {
-                    // @ts-expect-error this._instance expect object
-                    const field = this._instance[name];
+                    const field = (this._instance as Record<string, unknown>)[name];
                     if (typeof field === 'function') {
                         this[name] = field.bind(this._instance);
                     } else {

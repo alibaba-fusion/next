@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Component, useState } from 'react';
+import React, { Component, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { Switch, Input, Button, Field } from '@alifd/next';
 
 function DemoForm({ showInput, field }: { showInput?: boolean; field: Field }) {

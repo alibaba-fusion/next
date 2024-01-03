@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Badge from '../../badge/index';
 import '../../badge/style';
 import { testReact } from '../../util/__tests__/a11y/validate';

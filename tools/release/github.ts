@@ -5,8 +5,8 @@
   description: 触发 github release
 ------------------------------------------------------------
 */
-import fs = require('fs-extra');
-import path = require('path');
+import fs from 'fs-extra';
+import path from 'path';
 import { Octokit } from '@octokit/rest';
 import { registryTask, CWD } from '../utils';
 import { getVersion } from './utils';
