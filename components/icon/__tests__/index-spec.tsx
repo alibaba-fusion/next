@@ -1,60 +1,39 @@
-import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
+import * as React from 'react';
 import Icon from '../index';
+import '../style';
 import ConfigProvider from '../../config-provider';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-/* eslint-disable react/jsx-filename-extension */
-/* global describe it afterEach */
-/* global describe it beforeEach */
-
 describe('Icon', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        wrapper = mount(<Icon />);
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
-        wrapper = null;
-    });
-
     it('should have type class', () => {
-        wrapper.setProps({ type: 'comments' });
-        assert(wrapper.find('.next-icon').hasClass('next-icon-comments'));
+        cy.mount(<Icon type="smile" />);
+        cy.get('.next-icon').should('have.class', 'next-icon-smile');
     });
 
     it('should have size class', () => {
-        wrapper.setProps({ size: 'large' });
-        assert(wrapper.find('.next-icon').hasClass('next-large'));
+        cy.mount(<Icon type="smile" size="large" />);
+        cy.get('.next-icon').should('have.class', 'next-large');
     });
 
     it('should receive className prop', () => {
-        wrapper.setProps({ className: 'custom' });
-        assert(wrapper.find('.next-icon').hasClass('custom'));
+        cy.mount(<Icon type="smile" className="custom" />);
+        cy.get('.next-icon').should('have.class', 'custom');
     });
 
     it('should receive style prop', () => {
-        wrapper.setProps({ style: { color: 'red' } });
-        assert(wrapper.find('.next-icon').prop('style').color === 'red');
+        cy.mount(<Icon type="smile" style={{ color: 'red' }} />);
+        cy.get('.next-icon').should('have.css', 'color').and('eq', 'rgb(255, 0, 0)');
     });
 
-    it('should receive style prop', () => {
+    it('should support createFromIconfontCN', () => {
         const CustomIcon = Icon.createFromIconfontCN({
             scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
         });
 
-        let newWrapper = mount(<CustomIcon type="icon-pic" />);
-        assert(newWrapper.find('.next-icon svg'));
-        newWrapper.setProps({ size: 'xl' });
-        assert(newWrapper.find('.next-icon').hasClass('next-xl'));
+        cy.mount(<CustomIcon type="icon-pic" />);
+        cy.get('.next-icon svg');
 
-        newWrapper.unmount();
-        newWrapper = null;
+        cy.mount(<CustomIcon type="icon-pic" size="xl" />);
+        cy.get('.next-icon').should('have.class', 'next-xl');
     });
 
     it('createFromIconfontCN should support prefix', () => {
@@ -62,32 +41,12 @@ describe('Icon', () => {
             scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
         });
 
-        let newWrapper = mount(
+        cy.mount(
             <ConfigProvider prefix="abcd-">
                 <CustomIcon type="icon-pic" prefix="efg-" />
             </ConfigProvider>
         );
-        assert(newWrapper.find('.abcd-icon > svg'));
-        assert(newWrapper.find('.abcd-icon > efg-icon-remote'));
-
-        newWrapper.unmount();
-        newWrapper = null;
-    });
-
-    it('createFromIconfontCN should support prefix', () => {
-        const CustomIcon = Icon.createFromIconfontCN({
-            scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
-        });
-
-        let newWrapper = mount(
-            <ConfigProvider prefix="abcd-">
-                <CustomIcon type="icon-pic" prefix="efg-" />
-            </ConfigProvider>
-        );
-        assert(newWrapper.find('.abcd-icon > svg'));
-        assert(newWrapper.find('.abcd-icon > efg-icon-remote'));
-
-        newWrapper.unmount();
-        newWrapper = null;
+        cy.get('.abcd-icon > svg');
+        cy.get('.abcd-icon > .efg-icon-remote');
     });
 });

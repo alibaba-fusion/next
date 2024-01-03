@@ -1,17 +1,17 @@
-import React from 'react';
-import cx from 'classnames';
+import * as React from 'react';
+import * as cx from 'classnames';
 import ConfigProvider from '../config-provider';
 import Icon from './icon';
+import { IconOptions, IconSvgProps } from './types';
 
 const customCache = new Set();
 
 const ConfigIcon = ConfigProvider.config(Icon);
 
 /** Icon.createFromIconfontCN
- *  @description 通过自定义 iconfont源来使用使用svg格式的图片
- *  @order 1
+ *  通过自定义 iconfont源来使用使用svg格式的图片
  */
-export default function createFromIconfontCN(options = {}) {
+export default function createFromIconfontCN(options = {} as IconOptions) {
     const { scriptUrl, extraCommonProps = {} } = options;
     let hasExist = customCache.has(scriptUrl);
 
@@ -40,7 +40,7 @@ export default function createFromIconfontCN(options = {}) {
         document.body.appendChild(script);
     }
 
-    const Iconfont = props => {
+    const Iconfont = (props: IconSvgProps) => {
         const { type, size, children, className, prefix = 'next-', ...others } = props;
 
         // component > children > type

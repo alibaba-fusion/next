@@ -1,26 +1,10 @@
-import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import * as React from 'react';
 import Icon from '../index';
 import '../style';
-import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
+import { testReact } from '../../util/__tests__/a11y/validate';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-/* eslint-disable no-undef, react/jsx-filename-extension */
-describe('Icon A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
+describe('Icon', () => {
     it('should not have any violations', async () => {
-        wrapper = await testReact(<Icon />);
-        return wrapper;
+        await testReact(<Icon type="smile" />);
     });
 });
