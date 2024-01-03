@@ -1,4 +1,4 @@
-import { Component, Children } from 'react';
+import { Component, Children, ReactNode } from 'react';
 import * as PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import getContextProps from './get-context-props';
@@ -256,7 +256,7 @@ class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderP
         childContextCache.remove(this);
     }
 
-    render() {
+    render(): ReactNode {
         return Children.only(this.props.children);
     }
 }

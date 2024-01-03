@@ -1,8 +1,7 @@
-import { basename, extname, isAbsolute, join, resolve } from 'path';
+import { isAbsolute, join, resolve } from 'path';
 import { existsSync } from 'fs-extra';
 import _ = require('lodash');
 import { CWD } from './consts';
-import { error } from './log';
 
 export function beforeExit(task: () => unknown) {
     const exitSignals = [

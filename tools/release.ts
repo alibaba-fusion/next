@@ -259,7 +259,7 @@ async function publishNpmForDocs(distTag = 'latest') {
     fs.removeSync(docs);
 }
 
-async function* sendDingMessage() {
+function* sendDingMessage() {
     const group = process.env.FUSION_SERVICE_DINGTALK_GROUPS;
     const { masterTag } = getVersion();
     const dingtalks = (group && group.split(', ')) || [];
@@ -269,12 +269,12 @@ async function* sendDingMessage() {
     const shouldDing =
         ARGV.ding ||
         (
-            await inquirer.prompt({
+            (yield inquirer.prompt({
                 name: 'sync',
                 type: 'confirm',
                 default: true,
                 message: '是否同步发布信息到钉钉群',
-            })
+            })) as { sync: boolean }
         ).sync;
     if (!shouldDing) {
         return;
@@ -313,40 +313,40 @@ registryTask(__filename, 'release', async () => {
     // await registryChangelog(__filename);
     const { masterTag } = getVersion();
 
-    // await registryBuild(__filename);
+    await registryBuild(__filename);
 
-    // await registryCheck(__filename);
+    await registryCheck(__filename);
 
-    // await registryTask(__filename, 'release check', async () => {
-    //     await registryCheckSass(__filename);
-    //     await registryTask(__filename, 'check git tag', checkTags);
-    //     await registryTask(__filename, 'check build outputs', checkFiles);
-    // });
-    // await registryTask(__filename, 'publish to npm', async () => {
-    //     const { version } = getVersion();
-    //     const versionTag = version.match(/[a-z]+/)?.[0];
-    //     const distTag: string =
-    //         ARGV.tag ||
-    //         versionTag ||
-    //         (
-    //             await inquirer.prompt({
-    //                 name: 'tag',
-    //                 type: 'list',
-    //                 choices: ['latest', 'next', 'beta'],
-    //                 default: 0,
-    //                 message: 'publish dist-tags:',
-    //             })
-    //         ).tag;
-    //     await registryTask(__filename, 'publish next to npm', publishNpm.bind(undefined, distTag));
-    //     await registryTask(
-    //         __filename,
-    //         'publish next-docs to npm',
-    //         publishNpmForDocs.bind(undefined, distTag),
-    //         () => {
-    //             fs.removeSync(NEXT_DOCS_PATH);
-    //         }
-    //     );
-    // });
+    await registryTask(__filename, 'release check', async () => {
+        await registryCheckSass(__filename);
+        await registryTask(__filename, 'check git tag', checkTags);
+        await registryTask(__filename, 'check build outputs', checkFiles);
+    });
+    await registryTask(__filename, 'publish to npm', async () => {
+        const { version } = getVersion();
+        const versionTag = version.match(/[a-z]+/)?.[0];
+        const distTag: string =
+            ARGV.tag ||
+            versionTag ||
+            (
+                await inquirer.prompt({
+                    name: 'tag',
+                    type: 'list',
+                    choices: ['latest', 'next', 'beta'],
+                    default: 0,
+                    message: 'publish dist-tags:',
+                })
+            ).tag;
+        await registryTask(__filename, 'publish next to npm', publishNpm.bind(undefined, distTag));
+        await registryTask(
+            __filename,
+            'publish next-docs to npm',
+            publishNpmForDocs.bind(undefined, distTag),
+            () => {
+                fs.removeSync(NEXT_DOCS_PATH);
+            }
+        );
+    });
 
     const commitRollbackFns = new Set<() => unknown>();
     await registryTask(
