@@ -1,7 +1,7 @@
 @import "../core/index-noreset.scss";
 @import "../button/scss/variable.scss";
-@import "scss/mixin";
-@import "scss/variable";
+@import "./scss/mixin";
+@import "./scss/variable";
 
 #{$menu-btn-prefix} {
     display: inline-block;

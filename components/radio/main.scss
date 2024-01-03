@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 @import '../core/index-noreset';
-@import "scss/variable";
+@import "./scss/variable";
 @import './rtl.scss';
 
 #{$radio-prefix}-wrapper {
