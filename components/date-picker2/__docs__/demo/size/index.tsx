@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { DatePicker2, Radio } from '@alifd/next';
 
 const { useState } = React;

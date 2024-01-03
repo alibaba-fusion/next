@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Nav, Switch, Radio } from '@alifd/next';
 
 const { Item, SubNav } = Nav;

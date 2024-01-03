@@ -1,6 +1,6 @@
 /// <reference types="react" />
 
-import * as React from 'react';
+import React from 'react';
 import { Item, Group, Divider, MenuProps } from '../menu';
 import { CommonProps } from '../util';
 import { ButtonProps } from '../button';

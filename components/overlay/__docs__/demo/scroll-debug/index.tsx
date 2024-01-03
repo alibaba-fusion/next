@@ -1,5 +1,5 @@
-import * as ReactDOM from 'react-dom';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { Overlay, Button, Table, Select } from '@alifd/next';
 
 const { Popup } = Overlay;

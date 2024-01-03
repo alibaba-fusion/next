@@ -1,6 +1,6 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
-import * as PT from 'prop-types';
+import PT from 'prop-types';
 import { func, datejs } from '../../util';
 
 import { CALENDAR_MODE, DATE_PANEL_MODE, CALENDAR_SHAPE } from '../constant';

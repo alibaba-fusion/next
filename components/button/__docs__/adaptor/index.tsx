@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Types, ContentType, parseData, STATE_MARK } from '@alifd/adaptor-helper';
 import { Button, Icon } from '@alifd/next';
 

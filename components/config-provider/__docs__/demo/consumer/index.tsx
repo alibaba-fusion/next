@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { FC } from 'react';
+import React, { FC } from 'react';
+import ReactDOM from 'react-dom';
 import { ConfigProvider } from '@alifd/next';
 
 const localeSettings = {

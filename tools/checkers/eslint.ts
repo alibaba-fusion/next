@@ -19,9 +19,12 @@ function checkEslint() {
     }
 
     const args: string[] = ['--no-error-on-unmatched-pattern'];
-    const fix = ARGV.fix;
+    const { fix, quiet } = ARGV;
     if (fix) {
         args.push('--fix');
+    }
+    if (quiet) {
+        args.push('--quiet');
     }
     const includes = TARGETS.map(dir => [join(dir, '**/*.ts'), join(dir, '**/*.tsx')]).flat();
     args.push(...includes);

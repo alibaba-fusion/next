@@ -1,5 +1,5 @@
 import { Component, Children, ReactNode } from 'react';
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import getContextProps from './get-context-props';
 import {

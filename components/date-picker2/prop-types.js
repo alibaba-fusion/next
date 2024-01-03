@@ -1,4 +1,4 @@
-import * as PT from 'prop-types';
+import PT from 'prop-types';
 import { DATE_PICKER_TYPE, DATE_INPUT_TYPE, DATE_PICKER_MODE } from './constant';
 import { datejs } from '../util';
 

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Typography } from '@alifd/next';
 
 const { H1, H2, H3, H4, H5, H6 } = Typography;

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Upload, Button, Dialog } from '@alifd/next';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';

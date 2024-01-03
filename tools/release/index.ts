@@ -5,9 +5,9 @@
   description: 发布组件库
 ------------------------------------------------------------
 */
-import path = require('path');
-import fs = require('fs-extra');
-import * as inquirer from 'inquirer';
+import path from 'path';
+import fs from 'fs-extra';
+import inquirer from 'inquirer';
 import { CWD, querySync, registryTask, logger, ARGV, execSync, SRC_DIR_PATH } from '../utils';
 import { PLATFORM_DOCS_IGNORE } from '../build/docs/configs/platform-docs-ignore';
 import { registryCheck } from '../checkers';

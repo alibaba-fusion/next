@@ -1,8 +1,7 @@
-import { Component } from 'react';
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
-import * as classNames from 'classnames';
+import classNames from 'classnames';
 import Animate from '../animate';
 import { support, dom } from '../util';
 import type { BadgeSubProps, BadgeSubState } from './types';
@@ -41,7 +40,7 @@ class Sup extends Component<BadgeSubProps, BadgeSubState> {
 
     // 单排可滚动的数字列表
     static renderDigit(prefix: string, digit: number, key: string | number) {
-        const children = [];
+        const children: Array<React.ReactElement> = [];
         for (let i = 0; i < 30; i++) {
             children.push(<span key={i}>{i % 10}</span>);
         }
@@ -185,7 +184,7 @@ class Sup extends Component<BadgeSubProps, BadgeSubState> {
             [`${prefix}badge-custom`]: !!content,
         });
 
-        let children = null;
+        let children: React.ReactNode = null;
         const show = dot || (count as number) > 0 || (count === 0 && showZero) || content;
 
         if ((count as number) > 0 || (count === 0 && showZero)) {

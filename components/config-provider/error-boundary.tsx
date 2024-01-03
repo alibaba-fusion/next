@@ -1,6 +1,5 @@
-import * as React from 'react';
-import { Component, ErrorInfo, ReactElement } from 'react';
-import * as PropTypes from 'prop-types';
+import React, { Component, ErrorInfo, ReactElement } from 'react';
+import PropTypes from 'prop-types';
 import { ErrorBoundaryConfig } from './types';
 
 function DefaultUI() {

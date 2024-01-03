@@ -67,7 +67,7 @@ export function bindCtx(ctx: object, fns: string | string[], ns?: object) {
 
     fns.forEach(fnName => {
         // @ts-expect-error 这里不要添加空方法判断，由调用者保证正确性，否则出了问题无法排查
-        ns![fnName] = ns![fnName].bind(ctx);
+        ns[fnName] = ns[fnName].bind(ctx);
     });
 }
 
