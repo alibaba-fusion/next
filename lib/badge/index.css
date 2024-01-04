@@ -1,0 +1,163 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-badge {
+  box-sizing: border-box;
+  /* @include global-font; */
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+.next-badge *,
+.next-badge *:before,
+.next-badge *:after {
+  box-sizing: border-box;
+}
+.next-badge .next-badge-count {
+  color: #FFFFFF;
+  color: var(--badge-color, #FFFFFF);
+  background: #FF3000;
+  background: var(--badge-color-bg, #FF3000);
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 8px;
+  border-radius: var(--badge-size-count-border-radius, 8px);
+  position: absolute;
+  width: auto;
+  width: var(--badge-size-count-width, auto);
+  height: 16px;
+  height: var(--badge-size-count-height, 16px);
+  min-width: 16px;
+  min-width: var(--badge-size-count-min-width, 16px);
+  padding: 0 4px 0 4px;
+  padding: var(--badge-size-count-padding, 0 4px 0 4px);
+  font-size: 12px;
+  font-size: var(--badge-size-count-font, 12px);
+  line-height: 16px;
+  line-height: var(--badge-size-count-lineheight, 16px);
+  transform: translateX(-50%);
+  top: -0.5em;
+  border: 0px solid #FFFFFF;
+  border: var(--badge-size-count-border-width, 0px) solid var(--badge-normal-count-border-color, #FFFFFF);
+}
+.next-badge .next-badge-count a,
+.next-badge .next-badge-count a:hover {
+  color: #FFFFFF;
+  color: var(--badge-color, #FFFFFF);
+}
+.next-badge .next-badge-dot {
+  color: #FFFFFF;
+  color: var(--badge-dot-color, #FFFFFF);
+  background: #FF3000;
+  background: var(--badge-dot-color-bg, #FF3000);
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 8px;
+  border-radius: var(--badge-size-dot-border-radius, 8px);
+  position: absolute;
+  width: 8px;
+  width: var(--badge-size-dot-width, 8px);
+  height: 8px;
+  height: var(--badge-size-dot-height, 8px);
+  min-width: 8px;
+  min-width: var(--badge-size-dot-min-width, 8px);
+  padding: 0px;
+  padding: var(--badge-size-dot-padding, 0px);
+  font-size: 1px;
+  line-height: 1;
+  transform: translateX(-50%);
+  top: -0.5em;
+}
+.next-badge .next-badge-dot a,
+.next-badge .next-badge-dot a:hover {
+  color: #FFFFFF;
+  color: var(--badge-dot-color, #FFFFFF);
+}
+.next-badge .next-badge-custom {
+  line-height: 1.166667;
+  white-space: nowrap;
+  font-size: 12px;
+  font-size: var(--font-size-caption, 12px);
+  padding-left: 4px;
+  padding-left: var(--badge-size-custom-padding-lr, 4px);
+  padding-right: 4px;
+  padding-right: var(--badge-size-custom-padding-lr, 4px);
+  border-radius: 3px;
+  border-radius: var(--badge-size-custom-border-radius, 3px);
+  transform: translateX(-50%);
+}
+.next-badge .next-badge-custom > * {
+  line-height: 1;
+}
+.next-badge .next-badge-custom > i:before,
+.next-badge .next-badge-custom > .next-icon:before {
+  font-size: inherit;
+  width: auto;
+  vertical-align: top;
+}
+.next-badge .next-badge-scroll-number {
+  position: absolute;
+  top: -4px;
+  z-index: 10;
+  overflow: hidden;
+  transform-origin: left center;
+}
+.next-badge-scroll-number-only {
+  position: relative;
+  display: inline-block;
+  transition: transform 100ms linear, -webkit-transform 100ms linear;
+  transition: transform var(--motion-duration-immediately, 100ms) var(--motion-linear, linear), -webkit-transform var(--motion-duration-immediately, 100ms) var(--motion-linear, linear);
+  min-width: 8px;
+  min-width: var(--badge-size-dot-min-width, 8px);
+}
+.next-badge-scroll-number-only span {
+  display: block;
+  height: 16px;
+  height: var(--badge-size-count-height, 16px);
+  line-height: 16px;
+  line-height: var(--badge-size-count-height, 16px);
+  font-size: 12px;
+  font-size: var(--badge-size-count-font, 12px);
+}
+.next-badge-not-a-wrapper .next-badge-count, .next-badge-not-a-wrapper .next-badge-custom {
+  position: relative;
+  display: block;
+  top: auto;
+  transform: translateX(0);
+}
+.next-badge-not-a-wrapper .next-badge-dot {
+  position: relative;
+  display: block;
+  top: auto;
+  transform: translateX(0);
+}
+.next-badge-list-wrapper {
+  margin-left: 0;
+}
+.next-badge-list-wrapper li {
+  margin-bottom: 0px;
+  margin-bottom: var(--badge-size-list-margin, 0px);
+  list-style: none;
+}
+
+.next-badge[dir=rtl] .next-badge-custom {
+  padding-right: 4px;
+  padding-right: var(--badge-size-custom-padding-lr, 4px);
+  padding-left: 4px;
+  padding-left: var(--badge-size-custom-padding-lr, 4px);
+}
+.next-badge[dir=rtl] .next-badge-scroll-number {
+  left: 0;
+  transform-origin: right center;
+}
