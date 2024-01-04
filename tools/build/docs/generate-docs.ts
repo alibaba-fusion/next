@@ -322,17 +322,27 @@ function generateDocsLangFolder() {
             const mdTextLines = mdText.split('\n');
             const langMetaMap = new Map<
                 string,
-                { lang: string; params: Record<string, string>; body: string }
+                { lang: string; params: Record<string, string>; title: string; body: string }
             >();
             langTitleNodes.forEach((node, i) => {
                 const line = node.position.start.line;
                 const { lang, params } = parseLangTitle(node.children[0].value)!;
                 const nextLine =
                     langTitleNodes[i + 1]?.position.start.line || mdTextLines.length + 1;
+                const selfLines = mdTextLines.slice(line, nextLine - 1);
+                const selfParsed = parse(selfLines.join('\n'));
+                const titleNodes = selfParsed.children.filter((child: any) => {
+                    return child.type === 'heading' && child.depth === 1;
+                });
+                if (titleNodes.length !== 1) {
+                    throw new Error(`Demo 没有标题：${demoPath}`);
+                }
+                const titleLineIndex = titleNodes[0].position.start.line - 1;
                 langMetaMap.set(lang, {
                     lang,
                     params,
-                    body: mdTextLines.slice(line, nextLine - 1).join('\n'),
+                    title: selfLines.slice(titleLineIndex, titleLineIndex + 1).join(''),
+                    body: selfLines.slice(titleLineIndex + 1).join('\n'),
                 });
             });
             const jsCode = fs.existsSync(jsPath) ? fs.readFileSync(jsPath, 'utf-8') : '';
@@ -342,7 +352,7 @@ function generateDocsLangFolder() {
                 if (!meta) {
                     continue;
                 }
-                const mergedMdText = `${Object.keys(meta.params)
+                const mergedMdText = `${meta.title}\n\n${Object.keys(meta.params)
                     .map(key => {
                         return `- ${key}: ${meta.params[key]}`;
                     })
