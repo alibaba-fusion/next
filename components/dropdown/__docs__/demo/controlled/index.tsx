@@ -22,7 +22,7 @@ class App extends React.Component {
         });
     };
 
-    onVisibleChange = visible => {
+    onVisibleChange = (visible: boolean) => {
         this.setState({
             visible,
         });
