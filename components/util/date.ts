@@ -1,10 +1,10 @@
-import * as dayjs from 'dayjs';
-import * as customParseFormat from 'dayjs/plugin/customParseFormat';
-import * as updateLocale from 'dayjs/plugin/updateLocale';
-import * as localeData from 'dayjs/plugin/localeData';
-import * as quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import * as advancedFormat from 'dayjs/plugin/advancedFormat';
-import * as weekOfYear from 'dayjs/plugin/weekOfYear';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import updateLocale from 'dayjs/plugin/updateLocale';
+import localeData from 'dayjs/plugin/localeData';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
 import 'dayjs/locale/zh-cn';
 
 type _dayjs = typeof dayjs;

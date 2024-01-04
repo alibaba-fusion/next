@@ -1,6 +1,6 @@
-import * as ReactDOM from 'react-dom';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { List, Avatar, Button, Loading, Icon, Switch } from '@alifd/next';
-import { useState } from 'react';
 
 const data = [
     {

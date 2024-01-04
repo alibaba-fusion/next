@@ -1,6 +1,6 @@
 /// <reference types="react" />
 
-import * as React from 'react';
+import React from 'react';
 import { CascaderProps, data, extra } from '../cascader';
 import { CommonProps } from '../util';
 import { PopupProps } from '../overlay';

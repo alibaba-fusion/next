@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Avatar from '../index';
 import Icon from '../../icon';
 import '../style';

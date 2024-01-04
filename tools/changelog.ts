@@ -5,12 +5,12 @@
   description: 生成 changelog 信息
 ------------------------------------------------------------
 */
-import * as path from 'path';
-import * as fs from 'fs-extra';
-import * as semver from 'semver';
-import * as inquirer from 'inquirer';
-import conventionalChangelog = require('conventional-changelog');
-import createPreset = require('conventional-changelog-conventionalcommits');
+import path from 'path';
+import fs from 'fs-extra';
+import semver from 'semver';
+import inquirer from 'inquirer';
+import conventionalChangelog from 'conventional-changelog';
+import createPreset from 'conventional-changelog-conventionalcommits';
 import { CWD, log, querySync, warn, registryTask } from './utils';
 
 const CHANGELOG_NAME = 'CHANGELOG.md';

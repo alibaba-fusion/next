@@ -1,5 +1,5 @@
-import * as ReactDOM from 'react-dom';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { Slider, Select, Switch } from '@alifd/next';
 
 const { Option } = Select;

@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler } from 'react';
 import { support } from '../../util';
 import Badge from '../index';
 import '../style';

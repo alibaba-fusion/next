@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { NumberPicker } from '@alifd/next';
 
 const intlize = val => Intl.NumberFormat('en-US').format(val);

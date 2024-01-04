@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { ReactElement, JSXElementConstructor, ComponentClass } from 'react';
+import React, { ReactElement, JSXElementConstructor, ComponentClass } from 'react';
 
 export type ObjectOrArray<T = unknown> = Record<PropertyKey, T> | ArrayLike<T>;
 type Writable<T> = {

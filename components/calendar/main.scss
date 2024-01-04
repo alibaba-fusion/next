@@ -1,12 +1,12 @@
 @import '../core/index-noreset';
 
-@import "scss/variable";
-@import "scss/normalize";
-@import "scss/mixin";
-@import "scss/animation";
+@import "./scss/variable";
+@import "./scss/normalize";
+@import "./scss/mixin";
+@import "./scss/animation";
 
-@import "scss/header";
-@import "scss/table";
+@import "./scss/header";
+@import "./scss/table";
 @import "./rtl.scss";
 
 #{$calendar-prefix} {

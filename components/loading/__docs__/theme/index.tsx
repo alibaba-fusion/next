@@ -1,5 +1,5 @@
-import * as ReactDOM from 'react-dom';
-import * as React from 'react';
+import ReactDOM from 'react-dom';
+import React from 'react';
 import '../../../demo-helper/style';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import '../../style';

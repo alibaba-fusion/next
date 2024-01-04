@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { TimePicker } from '@alifd/next';
 
 const disabledHours = [1, 2, 3, 4, 5];

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Slider } from '@alifd/next';
 
 const slides = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => (
