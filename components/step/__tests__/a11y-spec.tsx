@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
+import { testReact } from '../../util/__tests__/a11y/validate';
 import Icon from '../../icon';
 import Step from '../index';
 import '../style';
@@ -12,50 +12,38 @@ const StepItem = Step.Item;
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Step A11y', () => {
-    let wrapper: any;
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
     it('should not have any violations', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Step current={1}>
                 <StepItem title="步骤1" />
                 <StepItem title="步骤2" />
                 <StepItem title="步骤3" />
             </Step>
         );
-        return wrapper;
     });
 
     it('should not have any violations for element title', async () => {
         const title = <span>测试</span>;
-        wrapper = await testReact(
+        await testReact(
             <Step current={1}>
                 <StepItem title={title} />
                 <StepItem title="步骤2" />
                 <StepItem title="步骤3" />
             </Step>
         );
-        return wrapper;
     });
 
     it('should not have any violations for element content', async () => {
         const content = <span>测试</span>;
-        wrapper = await testReact(
+        await testReact(
             <Step current={1}>
                 <StepItem title="标题1" content={content} />
             </Step>
         );
-        return wrapper;
     });
 
     it('should not have any violations for different shapes', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Step current={1} shape="arrow">
                     <StepItem title="步骤1" />
@@ -69,11 +57,10 @@ describe('Step A11y', () => {
                 </Step>
             </div>
         );
-        return wrapper;
     });
 
     it('should not have any violations for vertical direction', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Step current={1} direction="ver">
                     <StepItem title="步骤1" />
@@ -92,11 +79,10 @@ describe('Step A11y', () => {
                 </Step>
             </div>
         );
-        return wrapper;
     });
 
     it('should not have any violations for labelPlacement', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Step current={1} labelPlacement="hoz">
                     <StepItem title="步骤1" />
@@ -110,11 +96,10 @@ describe('Step A11y', () => {
                 </Step>
             </div>
         );
-        return wrapper;
     });
 
     it('should not have any violations for icon', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Step current={1}>
                     <StepItem title="步骤1" icon="atm" />
@@ -128,7 +113,6 @@ describe('Step A11y', () => {
                 </Step>
             </div>
         );
-        return wrapper;
     });
 
     it('should not have any violations for custom node', async () => {
@@ -139,18 +123,17 @@ describe('Step A11y', () => {
                 </div>
             );
         }
-        wrapper = await testReact(
+        await testReact(
             <Step current={1} itemRender={itemRender}>
                 <StepItem title="步骤1" icon="atm" />
                 <StepItem title="步骤2" />
                 <StepItem title="步骤3" />
             </Step>
         );
-        return wrapper;
     });
 
     it('should not have any violations for progress', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Step current={1}>
                     <StepItem title="步骤1" percent={40} />
@@ -169,7 +152,6 @@ describe('Step A11y', () => {
                 </Step>
             </div>
         );
-        return wrapper;
     });
 
     it('should not have any violations for step.item with itemRender', async () => {
@@ -177,13 +159,12 @@ describe('Step A11y', () => {
         const itemRender = (index: number, status: string) => {
             return status === 'finish' ? <Icon type="good" /> : index + 1;
         };
-        wrapper = await testReact(
+        await testReact(
             <Step current={2} animation={false} itemRender={itemRender}>
                 {steps.map(item => (
                     <Step.Item key={item} title={item} />
                 ))}
             </Step>
         );
-        return wrapper;
     });
 });

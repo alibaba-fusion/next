@@ -69,7 +69,7 @@ export interface ItemProps
     /**
      * 点击步骤时的回调
      */
-    onClick?: (index: number) => void | undefined;
+    onClick?: (index: number) => number | void | undefined;
 
     /**
      * 自定义样式
