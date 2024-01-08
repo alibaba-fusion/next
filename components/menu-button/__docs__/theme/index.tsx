@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import MenuButton from '../../index';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
@@ -43,7 +44,7 @@ const i18nMap = {
     },
 };
 
-function renderButton(type, locale, props) {
+function renderButton(type: string, locale: any, props: any = {}) {
     const menu = ['undo', 'redo', 'cut', 'copy', 'paste'].map(item => (
         <MenuButton.Item key={item}>{locale[item]}</MenuButton.Item>
     ));
@@ -139,7 +140,7 @@ function renderButton(type, locale, props) {
     );
 }
 
-function render(locale, lang) {
+function render(locale: any, lang: string) {
     return ReactDOM.render(
         <ConfigProvider>
             <div className="demo-container">
