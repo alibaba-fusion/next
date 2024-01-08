@@ -1,90 +1,40 @@
-import React from 'react';
+import * as React from 'react';
 import { findDOMNode } from 'react-dom';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
-import classnames from 'classnames';
+import * as classnames from 'classnames';
 import Button from '../button';
 import Icon from '../icon';
 import Menu from '../menu';
 import Overlay from '../overlay';
 import ConfigProvider from '../config-provider';
 import { obj, func } from '../util';
+import type { MenuButtonProps, MenuButtonState } from './types';
 
 const { Popup } = Overlay;
 
 /**
  * MenuButton
  */
-class MenuButton extends React.Component {
+class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
     static propTypes = {
         prefix: PropTypes.string,
-        /**
-         * 按钮上的文本内容
-         */
         label: PropTypes.node,
-        /**
-         * 弹层是否与按钮宽度相同
-         */
         autoWidth: PropTypes.bool,
-        /**
-         * 弹层触发方式
-         */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
-        /**
-         * 弹层容器
-         */
         popupContainer: PropTypes.any,
-        /**
-         * 弹层展开状态
-         */
         visible: PropTypes.bool,
-        /**
-         * 弹层默认是否展开
-         */
         defaultVisible: PropTypes.bool,
-        /**
-         * 弹层在显示和隐藏触发的事件
-         */
         onVisibleChange: PropTypes.func,
-        /**
-         * 弹层自定义样式
-         */
         popupStyle: PropTypes.object,
-        /**
-         * 弹层自定义样式类
-         */
         popupClassName: PropTypes.string,
-        /**
-         * 弹层属性透传
-         */
         popupProps: PropTypes.object,
-        /**
-         * 是否跟随滚动
-         */
         followTrigger: PropTypes.bool,
-        /**
-         * 默认激活的菜单项（用法同 Menu 非受控）
-         */
         defaultSelectedKeys: PropTypes.array,
-        /**
-         * 激活的菜单项（用法同 Menu 受控）
-         */
         selectedKeys: PropTypes.array,
-        /**
-         * 菜单的选择模式，同 Menu
-         */
         selectMode: PropTypes.oneOf(['single', 'multiple']),
-        /**
-         * 点击菜单项后的回调，同 Menu
-         */
         onItemClick: PropTypes.func,
-        /**
-         * 选择菜单后的回调，同 Menu
-         */
         onSelect: PropTypes.func,
-        /**
-         * 菜单属性透传
-         */
         menuProps: PropTypes.object,
         style: PropTypes.object,
         className: PropTypes.string,
@@ -102,7 +52,7 @@ class MenuButton extends React.Component {
         menuProps: {},
     };
 
-    constructor(props, context) {
+    constructor(props: MenuButtonProps, context?: unknown) {
         super(props, context);
         this.state = {
             selectedKeys: props.defaultSelectedKeys,
@@ -110,8 +60,8 @@ class MenuButton extends React.Component {
         };
     }
 
-    static getDerivedStateFromProps(props) {
-        const st = {};
+    static getDerivedStateFromProps(props: MenuButtonProps) {
+        const st: MenuButtonProps = {};
 
         if ('visible' in props) {
             st.visible = props.visible;
@@ -123,11 +73,20 @@ class MenuButton extends React.Component {
 
         return st;
     }
+    menu: HTMLElement | null;
 
-    clickMenuItem = (key, ...others) => {
+    clickMenuItem = (
+        key: string,
+        ...others: [object, React.MouseEvent<HTMLElement, MouseEvent>]
+    ) => {
         const { selectMode } = this.props;
 
-        this.props.onItemClick(key, ...others);
+        if (typeof this.props.onItemClick === 'function') {
+            this.props.onItemClick(key, ...others);
+        }
+        if (selectMode === 'single') {
+            this.onPopupVisibleChange(false, 'menuSelect');
+        }
 
         if (selectMode === 'multiple') {
             return;
@@ -136,35 +95,43 @@ class MenuButton extends React.Component {
         this.onPopupVisibleChange(false, 'menuSelect');
     };
 
-    selectMenu = (keys, ...others) => {
+    selectMenu = (
+        keys: string[],
+        ...others: [object, React.MouseEvent<HTMLElement, MouseEvent>]
+    ) => {
         if (!('selectedKeys' in this.props)) {
             this.setState({
                 selectedKeys: keys,
             });
         }
-        this.props.onSelect(keys, ...others);
-    };
-
-    onPopupOpen = () => {
-        const button = findDOMNode(this);
-        if (this.props.autoWidth && button && this.menu) {
-            this.menu.style.width = `${button.offsetWidth}px`;
+        if (typeof this.props.onSelect === 'function') {
+            this.props.onSelect(keys, ...others);
         }
     };
 
-    onPopupVisibleChange = (visible, type) => {
+    onPopupOpen = () => {
+        const button = findDOMNode(this) as HTMLElement;
+        if (this.props.autoWidth && button && this?.menu) {
+            this.menu.style.width = `${button?.offsetWidth}px`;
+        }
+    };
+
+    onPopupVisibleChange = (visible: boolean, type: string) => {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
             });
         }
-        this.props.onVisibleChange(visible, type);
+        if (typeof this.props.onVisibleChange === 'function') {
+            this.props.onVisibleChange(visible, type);
+        }
     };
 
-    _menuRefHandler = ref => {
-        this.menu = findDOMNode(ref);
+    _menuRefHandler = (ref: React.ReactInstance | null | undefined) => {
+        this.menu = findDOMNode(ref) as HTMLElement;
 
-        const refFn = this.props.menuProps.ref;
+        //@ts-expect-error  menuProps 缺少 ref 类型
+        const refFn = this.props?.menuProps?.ref;
         if (typeof refFn === 'function') {
             refFn(ref);
         }
@@ -235,6 +202,7 @@ class MenuButton extends React.Component {
                         ref={this._menuRefHandler}
                         selectedKeys={state.selectedKeys}
                         selectMode={selectMode}
+                        // @ts-expect-error 类型为定义
                         onSelect={this.selectMenu}
                         onItemClick={this.clickMenuItem}
                     >
@@ -246,10 +214,18 @@ class MenuButton extends React.Component {
     }
 }
 
-MenuButton.Item = Menu.Item;
-MenuButton.Group = Menu.Group;
-MenuButton.Divider = Menu.Divider;
+const WithSubMenuButton = MenuButton as typeof MenuButton & {
+    Item: typeof Menu.Item;
+    Group: typeof Menu.Group;
+    Divider: typeof Menu.Divider;
+};
 
-export default ConfigProvider.config(polyfill(MenuButton), {
+WithSubMenuButton.Item = Menu.Item;
+WithSubMenuButton.Group = Menu.Group;
+WithSubMenuButton.Divider = Menu.Divider;
+
+export type { MenuButtonProps };
+
+export default ConfigProvider.config(polyfill(WithSubMenuButton), {
     componentName: 'MenuButton',
 });

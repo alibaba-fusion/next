@@ -1,87 +1,79 @@
-import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import sinon from 'sinon';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import MenuButton from '../index';
+import * as React from 'react';
+import { MountReturn } from 'cypress/react';
 import '../style';
+import MenuButton from '../index';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-/* eslint-disable no-undef,react/jsx-filename-extension */
 describe('MenuButton', () => {
     const menu = ['a', 'b'].map(item => <MenuButton.Item key={item}>{item}</MenuButton.Item>);
 
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     describe('render', () => {
         it('should render', () => {
-            const wrapper = mount(<MenuButton label="hello world">{menu}</MenuButton>);
-            assert(wrapper.find('button.next-menu-btn').length === 1);
+            cy.mount(<MenuButton label="hello world">{menu}</MenuButton>);
+            cy.get('button.next-menu-btn').should('have.length', 1);
         });
 
         it('should controlled selectedKeys', () => {
-            const wrapper = mount(
+            cy.mount(
                 <MenuButton label="hello world" visible selectedKeys={['a']} selectMode="single">
                     {menu}
                 </MenuButton>
-            );
-            wrapper.setProps({ selectedKeys: ['b'] });
-            assert(wrapper.find('li[title="b"][role="option"]').hasClass('next-selected'));
+            ).as('menu-btn');
+            cy.get<MountReturn>('@menu-btn').then(({ component, rerender }) => {
+                return rerender(React.cloneElement(component, { selectedKeys: ['b'] }));
+            });
+            cy.get('li[title="b"][role="option"]').should('have.class', 'next-selected');
         });
 
         it('should controlled popup visible', () => {
-            const wrapper = mount(<MenuButton label="hello world">{menu}</MenuButton>);
-            assert(wrapper.find('.next-menu').length === 0);
-            wrapper.setProps({ visible: true });
-            assert(wrapper.find('.next-menu').length === 1);
+            cy.mount(<MenuButton label="hello world">{menu}</MenuButton>).as('menu-btn');
+            cy.get('.next-menu').should('have.length', 0);
+            cy.get<MountReturn>('@menu-btn').then(({ component, rerender }) => {
+                return rerender(React.cloneElement(component, { visible: true }));
+            });
+            cy.get('.next-menu').should('have.length', 1);
         });
     });
 
     describe('action', () => {
         it('should click trigger to open the popup', () => {
-            let visible;
-            const wrapper = mount(
+            let visible: boolean;
+            cy.mount(
                 <MenuButton label="hello world" onVisibleChange={vis => (visible = vis)}>
                     {menu}
                 </MenuButton>
             );
-            wrapper.find('button.next-menu-btn').simulate('click');
-            assert(wrapper.find('.next-menu').length === 1);
-            assert(visible);
+            cy.get('button.next-menu-btn')
+                .click()
+                .then(() => {
+                    cy.get('.next-menu').should('have.length', 1);
+                    cy.wrap(visible).should('be.true');
+                });
         });
 
         it('should select in uncontrolled mode', () => {
-            const wrapper = mount(
+            cy.mount(
                 <MenuButton label="hello world" visible selectMode="single">
                     {menu}
                 </MenuButton>
             );
-            wrapper.find('li[title="b"][role="option"]').simulate('click');
-            assert(wrapper.find('li[title="b"][role="option"]').hasClass('next-selected'));
+            cy.get('li[title="b"][role="option"]').click();
+            cy.get('li[title="b"][role="option"]').should('have.class', 'next-selected');
         });
 
         it('should select in controlled mode', () => {
-            const wrapper = mount(
+            cy.mount(
                 <MenuButton label="hello world" visible selectedKeys={['a']} selectMode="single">
                     {menu}
                 </MenuButton>
             );
-            wrapper.find('li[title="b"][role="option"]').simulate('click');
-            assert(wrapper.find('li[title="a"][role="option"]').hasClass('next-selected'));
+            cy.get('li[title="b"][role="option"]').click();
+            cy.get('li[title="a"][role="option"]').should('have.class', 'next-selected');
         });
 
         it('should mulitple select can`t close', () => {
-            const onVisibleChange = sinon.spy();
-            const onItemClick = sinon.spy();
-            const wrapper = mount(
+            const onVisibleChange = cy.spy();
+            const onItemClick = cy.spy();
+            cy.mount(
                 <MenuButton
                     onVisibleChange={onVisibleChange}
                     onItemClick={onItemClick}
@@ -92,9 +84,9 @@ describe('MenuButton', () => {
                     {menu}
                 </MenuButton>
             );
-            wrapper.find('li[title="b"][role="option"]').simulate('click');
-            assert(onItemClick.calledOnce);
-            assert(onVisibleChange.notCalled);
+            cy.get('li[title="b"][role="option"]').click();
+            cy.wrap(onItemClick).should('be.calledOnce');
+            cy.wrap(onVisibleChange).should('not.have.been.called');
         });
     });
 });
