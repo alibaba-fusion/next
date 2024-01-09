@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import { Demo, DemoFunctionDefineForObject, DemoGroup, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import Box from '../../../box';
 import Button from '../../../button';
@@ -29,15 +29,30 @@ const i18nMap = {
     },
 };
 
-class RenderList extends React.Component {
-    constructor(props) {
+interface DemoFunction {
+    [index: string]: DemoFunctionDefineForObject;
+}
+
+type I18nMap = Record<string, string>;
+
+interface RenderProps {
+    i18nMap: I18nMap;
+}
+
+class RenderList extends React.Component<
+    RenderProps,
+    {
+        demoFunction: DemoFunction;
+    }
+> {
+    constructor(props: any) {
         super(props);
         this.state = {
             demoFunction: {},
         };
     }
 
-    onFunctionChange = demoFunction => {
+    onFunctionChange = (demoFunction: DemoFunction) => {
         this.setState({ demoFunction });
     };
 
@@ -255,7 +270,7 @@ class RenderList extends React.Component {
     }
 }
 
-function render(i18nMap, lang) {
+function render(i18nMap: I18nMap, lang: string) {
     ReactDOM.render(
         <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">

@@ -1,15 +1,15 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
 import List from '../index';
 import Icon from '../../icon';
 import Loading from '../../loading';
 import '../style';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-const data = [
+interface DataItem {
+    title: string;
+    img: string;
+    money: string;
+}
+const data: DataItem[] = [
     {
         title: 'A Title',
         img: 'https://img.alicdn.com/tfs/TB1QS.4l4z1gK0jSZSgXXavwpXa-1024-1024.png',
@@ -33,15 +33,8 @@ const data = [
 ];
 /*eslint-disable*/
 describe('List', () => {
-    let wrapper;
-
-    afterEach(() => {
-        wrapper.unmount();
-        wrapper = null;
-    });
-
     it('should render', () => {
-        wrapper = mount(
+        cy.mount(
             <List size="small" header={<div>Notifications</div>}>
                 <List.Item extra={'$20'} title="Title">
                     List Item 1
@@ -61,13 +54,13 @@ describe('List', () => {
             </List>
         );
 
-        assert(wrapper.find('.next-list-item').length === 5);
-        assert(wrapper.find('.next-list-header').length > 0);
-        assert(wrapper.find('.next-list-small').length > 0);
+        cy.get('.next-list-item').should('have.length', 5);
+        cy.get('.next-list-header');
+        cy.get('.next-list-small');
     });
 
     it('should RTL render', () => {
-        wrapper = mount(
+        cy.mount(
             <List rtl footer={<div>footer</div>}>
                 <List.Item media={'$20'} description="List Item 1" />
                 <List.Item media={'$20'} description="List Item 2" />
@@ -76,41 +69,38 @@ describe('List', () => {
                 <List.Item media={'$20'} description="List Item 5" />
             </List>
         );
-
-        assert(wrapper.find('[dir]').length === 1);
+        cy.get('[dir]').should('have.length', 1);
     });
 
     it('should support datasource & renderItem', () => {
-        wrapper = mount(
+        cy.mount(
             <List
                 size="small"
                 dataSource={data}
-                renderItem={item => (
+                renderItem={(item: DataItem) => (
                     <List.Item extra={item.money} title={item.title}>
                         List Item 1
                     </List.Item>
                 )}
             />
         );
-
-        assert(wrapper.find('.next-list-item').length === 4);
+        cy.get('.next-list-item').should('have.length', 4);
     });
 
     it('should support loading', () => {
-        wrapper = mount(
+        cy.mount(
             <List
                 size="small"
                 loading
                 dataSource={data}
-                renderItem={item => (
+                renderItem={(item: DataItem) => (
                     <List.Item extra={item.money} title={item.title}>
                         List Item 1
                     </List.Item>
                 )}
             />
         );
-
-        assert(wrapper.find('.next-list-loading'));
+        cy.get('.next-list-loading');
     });
 
     it('should support loadingComponent', () => {
@@ -120,38 +110,32 @@ describe('List', () => {
             </div>
         );
 
-        const CustomLoading = props => <Loading indicator={indicator} {...props} />;
+        const CustomLoading = (props: any) => <Loading indicator={indicator} {...props} />;
 
-        wrapper = mount(
+        cy.mount(
             <List
                 size="small"
                 loading
                 dataSource={data}
                 loadingComponent={CustomLoading}
-                renderItem={item => (
+                renderItem={(item: DataItem) => (
                     <List.Item extra={item.money} title={item.title}>
                         List Item 1
                     </List.Item>
                 )}
             />
         );
-
-        assert(wrapper.find('.next-icon-loading'));
+        cy.get('.next-list-loading');
     });
 
     it('should support emptyContent', () => {
-        wrapper = mount(<List size="small" header={<div>Notifications</div>} />);
+        cy.mount(<List size="small" header={<div>Notifications</div>} />);
+        cy.get('.next-list-empty');
 
-        assert(wrapper.find('.next-list-empty').length);
+        cy.mount(<List dataSource={[]} />);
+        cy.get('.next-list-empty');
 
-        wrapper.setProps({
-            dataSource: [],
-        });
-        assert(wrapper.find('.next-list-empty').length);
-
-        wrapper.setProps({
-            dataSource: null,
-        });
-        assert(wrapper.find('.next-list-empty').length);
+        cy.mount(<List dataSource={undefined} />);
+        cy.get('.next-list-empty');
     });
 });

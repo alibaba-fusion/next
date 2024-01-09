@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import Loading from '../loading';
 import zhCN from '../locale/zh-cn';
 import ConfigProvider from '../config-provider';
+import { ListProps, ListItemProps } from './types';
 
 /**
  * List
  */
-class List extends Component {
+class List<DataItem = unknown> extends Component<ListProps<DataItem>> {
+    static Item: ComponentType<ListItemProps>;
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -35,8 +37,6 @@ class List extends Component {
         dataSource: PropTypes.array,
         /**
          * 当使用 dataSource 时，可以用 renderItem 自定义渲染列表项
-         * @param {Any} current 当前遍历的项
-         * @param {Number} index 当前遍历的项的索引
          */
         renderItem: PropTypes.func,
         /**
@@ -44,10 +44,7 @@ class List extends Component {
          */
         loading: PropTypes.bool,
         /**
-         * 自定义 Loading 组件
-         * 请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
-         * @param {LoadingProps} props 需要透传给组件的参数
-         * @return {React.ReactNode} 展示的组件
+         * 自定义加载内容
          */
         loadingComponent: PropTypes.func,
         /**
@@ -65,7 +62,7 @@ class List extends Component {
         divider: true,
         prefix: 'next-',
         locale: zhCN.List,
-        renderItem: item => item,
+        renderItem: (item: object) => item,
         loading: false,
     };
 
@@ -105,6 +102,7 @@ class List extends Component {
 
         const customContent =
             dSValid &&
+            renderItem &&
             dataSource.map((one, index) => {
                 return renderItem(one, index);
             });
@@ -114,7 +112,7 @@ class List extends Component {
                 {header ? <div className={`${prefix}list-header`}>{header}</div> : null}
 
                 {!(dSValid && dataSource.length > 0) && !children ? (
-                    <div className={`${prefix}list-empty`}>{emptyContent || locale.empty}</div>
+                    <div className={`${prefix}list-empty`}>{emptyContent || locale?.empty}</div>
                 ) : (
                     <ul key="list-body" className={`${prefix}list-items`}>
                         {customContent}

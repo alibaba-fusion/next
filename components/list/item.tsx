@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
+import { ListItemProps } from './types';
 
 /**
  * List.Item
  */
-class ListItem extends Component {
+class ListItem extends Component<ListItemProps> {
     static propTypes = {
         prefix: PropTypes.string,
         /**
