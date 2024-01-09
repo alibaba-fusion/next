@@ -11,7 +11,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 /* global describe it */
 describe('rules', () => {
-    it('required', function(done) {
+    it('required', function (done) {
         const field = new Field(this);
         const inited = field.init('input', {
             rules: [
@@ -41,7 +41,7 @@ describe('rules', () => {
 
         done();
     });
-    it('triger', function(done) {
+    it('triger', function (done) {
         const field = new Field(this);
         const inited = field.init('input', {
             rules: [
@@ -75,7 +75,7 @@ describe('rules', () => {
 
         done();
     });
-    it('validator', function(done) {
+    it('validator', function (done) {
         const field = new Field(this);
         const inited = field.init('input', {
             rules: [

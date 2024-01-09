@@ -17,7 +17,7 @@ const FormItem = Form.Item;
 /*global describe it afterEach */
 describe('field', () => {
     describe('render', () => {
-        it('should support Form', function(done) {
+        it('should support Form', function (done) {
             class Demo extends React.Component {
                 constructor(props) {
                     super(props);
@@ -66,7 +66,7 @@ describe('field', () => {
 
             done();
         });
-        it('should support PureComponent', function(done) {
+        it('should support PureComponent', function (done) {
             class Demo extends React.PureComponent {
                 constructor(props) {
                     super(props);
@@ -97,7 +97,7 @@ describe('field', () => {
             done();
         });
 
-        it('should support origin input/checkbox/radio', function(done) {
+        it('should support origin input/checkbox/radio', function (done) {
             class Demo extends React.Component {
                 constructor(props) {
                     super(props);
@@ -150,7 +150,7 @@ describe('field', () => {
 
             done();
         });
-        it('should support hooks', function(done) {
+        it('should support hooks', function (done) {
             function Demo() {
                 const field = Field.useField();
 
@@ -204,7 +204,7 @@ describe('field', () => {
             }
         });
 
-        it('init(input)', function(done) {
+        it('init(input)', function (done) {
             const field = new Field(this);
             const inited = field.init('input');
 
@@ -226,7 +226,7 @@ describe('field', () => {
 
             done();
         });
-        it('initValue', function(done) {
+        it('initValue', function (done) {
             const field = new Field(this);
             const inited = field.init('input', { initValue: 2 });
 
@@ -238,7 +238,7 @@ describe('field', () => {
 
             done();
         });
-        it('valueName', function(done) {
+        it('valueName', function (done) {
             const field = new Field(this);
             const inited = field.init('input', {
                 initValue: true,
@@ -249,7 +249,7 @@ describe('field', () => {
             done();
         });
 
-        it('props', function(done) {
+        it('props', function (done) {
             const field = new Field(this);
             const inited = field.init('input', {
                 initValue: true,
@@ -265,7 +265,7 @@ describe('field', () => {
             done();
         });
 
-        it('custom Event: onChange', function(done) {
+        it('custom Event: onChange', function (done) {
             const onChange = sinon.spy();
             const field = new Field(this, { onChange });
             const inited = field.init('input', {
@@ -308,7 +308,7 @@ describe('field', () => {
 
             done();
         });
-        it('getValueFromEvent', function(done) {
+        it('getValueFromEvent', function (done) {
             const field = new Field(this, {
                 onChange: (name, value) => {
                     assert(value === 'test!');
@@ -333,7 +333,7 @@ describe('field', () => {
 
             done();
         });
-        it('getValueFormatter & setValueFormatter', function(done) {
+        it('getValueFormatter & setValueFormatter', function (done) {
             const field = new Field(this, {
                 onChange: (name, value) => {
                     assert(value === 'test!');
@@ -364,7 +364,7 @@ describe('field', () => {
             done();
         });
 
-        it('rules', function(done) {
+        it('rules', function (done) {
             const field = new Field(this);
             field.init('input', {
                 rules: [
@@ -387,7 +387,7 @@ describe('field', () => {
             done();
         });
 
-        it('should support control through `setState`', function(done) {
+        it('should support control through `setState`', function (done) {
             class Demo extends React.Component {
                 state = {
                     show: true,
@@ -399,7 +399,9 @@ describe('field', () => {
                     const init = this.field.init;
                     return (
                         <div>
-                            <Input {...init('input', { props: { value: this.state.inputValue } })} />{' '}
+                            <Input
+                                {...init('input', { props: { value: this.state.inputValue } })}
+                            />{' '}
                             <button
                                 id="set"
                                 onClick={() => {
@@ -430,7 +432,7 @@ describe('field', () => {
             wrapper.find('#get').simulate('click');
         });
 
-        it('should support control through `setState` when `parseName` is true', function(done) {
+        it('should support control through `setState` when `parseName` is true', function (done) {
             class Demo extends React.Component {
                 state = {
                     show: true,
@@ -442,7 +444,9 @@ describe('field', () => {
                     const init = this.field.init;
                     return (
                         <div>
-                            <Input {...init('input', { props: { value: this.state.inputValue } })} />{' '}
+                            <Input
+                                {...init('input', { props: { value: this.state.inputValue } })}
+                            />{' '}
                             <button
                                 id="set"
                                 onClick={() => {
@@ -475,7 +479,7 @@ describe('field', () => {
     });
 
     describe('behaviour', () => {
-        it('getValue & getValues & setValue & setValues', function(done) {
+        it('getValue & getValues & setValue & setValues', function (done) {
             const field = new Field(this);
             field.init('input', { initValue: 1 });
             field.init('input2', { initValue: 2 });
@@ -495,57 +499,57 @@ describe('field', () => {
             done();
         });
 
-        it('should return `undefined` for `getValue` on uninitialized field', function() {
+        it('should return `undefined` for `getValue` on uninitialized field', function () {
             const field = new Field(this);
             assert.equal(field.getValue('input'), undefined);
         });
 
-        it('should return empty object for `getValues` on uninitialized field', function() {
+        it('should return empty object for `getValues` on uninitialized field', function () {
             const field = new Field(this);
             assert.equal(Object.keys(field.getValues()).length, 0);
         });
 
-        it('should set value with `setValue` on uninitialized field', function() {
+        it('should set value with `setValue` on uninitialized field', function () {
             const field = new Field(this);
             field.setValue('input', 1);
             field.init('input');
             assert.equal(field.getValue('input'), 1);
         });
 
-        it('should set value with `setValues` on uninitialized field', function() {
+        it('should set value with `setValues` on uninitialized field', function () {
             const field = new Field(this);
             field.setValues({ input: 1 });
             field.init('input');
             assert.equal(field.getValue('input'), 1);
         });
 
-        it('should return value from `setValue` when calling `getValue` on uninitialized field', function() {
+        it('should return value from `setValue` when calling `getValue` on uninitialized field', function () {
             const field = new Field(this);
             field.setValue('input', 1);
             assert.equal(field.getValue('input'), 1);
         });
 
-        it('should return value from `setValue` when calling `getValues` on uninitialized field', function() {
+        it('should return value from `setValue` when calling `getValues` on uninitialized field', function () {
             const field = new Field(this);
             field.setValue('input', 1);
             assert.equal(field.getValues().input, 1);
         });
 
-        it('should return values from `setValue` and init when calling `getValues`', function() {
+        it('should return values from `setValue` and init when calling `getValues`', function () {
             const field = new Field(this);
             field.setValue('input', 1);
             field.init('input2', { initValue: 2 });
             assert.deepEqual(field.getValues(), { input: 1, input2: 2 });
         });
 
-        it('should return `setValue` value instead of initValue', function() {
+        it('should return `setValue` value instead of initValue', function () {
             const field = new Field(this);
             field.setValue('input', 1);
             field.init('input', { initValue: 2 });
             assert.deepEqual(field.getValues(), { input: 1 });
         });
 
-        it('setError & setErrors & getError & getErrors', function(done) {
+        it('setError & setErrors & getError & getErrors', function (done) {
             const field = new Field(this);
             field.setError('input', 'error1');
 
@@ -570,7 +574,7 @@ describe('field', () => {
 
             done();
         });
-        it('getState', function(done) {
+        it('getState', function (done) {
             const field = new Field(this);
 
             field.init('input');
@@ -583,7 +587,7 @@ describe('field', () => {
             done();
         });
 
-        it('validate', function(done) {
+        it('validate', function (done) {
             const field = new Field(this);
             const inited = field.init('input', {
                 rules: [{ required: true, message: 'cant be null' }],
@@ -627,7 +631,7 @@ describe('field', () => {
             done();
         });
 
-        it('should show setError on validate', function(done) {
+        it('should show setError on validate', function (done) {
             const field = new Field(this);
             const inited = field.init('input');
             const wrapper = mount(<Input {...inited} />);
@@ -640,7 +644,7 @@ describe('field', () => {
             });
         });
 
-        it('should merge setError and rules on validate', function(done) {
+        it('should merge setError and rules on validate', function (done) {
             const field = new Field(this);
             const inited = field.init('input');
             const inited2 = field.init('input2', {
@@ -660,7 +664,7 @@ describe('field', () => {
             });
         });
 
-        it('should overwrite setError errors when using rules', function(done) {
+        it('should overwrite setError errors when using rules', function (done) {
             const field = new Field(this);
 
             const inited = field.init('input', {
@@ -678,8 +682,8 @@ describe('field', () => {
             });
         });
 
-        describe('reset', function() {
-            it('should set value to `undefined` on `reset()` if init with `initValue`', function() {
+        describe('reset', function () {
+            it('should set value to `undefined` on `reset()` if init with `initValue`', function () {
                 const field = new Field(this);
                 field.init('input', { initValue: '1' });
 
@@ -687,7 +691,7 @@ describe('field', () => {
                 assert(field.getValue('input') === undefined);
             });
 
-            it('should set only named value to `undefined` on `reset()` if init with `initValue`', function() {
+            it('should set only named value to `undefined` on `reset()` if init with `initValue`', function () {
                 const field = new Field(this);
                 field.init('input', { initValue: '1' });
                 field.init('input2', { initValue: '2' });
@@ -696,7 +700,7 @@ describe('field', () => {
                 assert.deepEqual(field.getValues(), { input: undefined, input2: '2' });
             });
 
-            it('should set value to `initValue` on `resetToDefaults()` if init with `initValue`', function() {
+            it('should set value to `initValue` on `resetToDefaults()` if init with `initValue`', function () {
                 const field = new Field(this);
                 field.init('input', { initValue: '4' });
                 field.setValue('input', '33');
@@ -705,7 +709,7 @@ describe('field', () => {
                 assert(field.getValue('input') === '4');
             });
 
-            it('should set only named value to `initValue` on `resetToDefaults()` if init with `initValue`', function() {
+            it('should set only named value to `initValue` on `resetToDefaults()` if init with `initValue`', function () {
                 const field = new Field(this);
                 field.init('input', { initValue: '4' });
                 field.setValue('input', '33');
@@ -716,7 +720,7 @@ describe('field', () => {
                 assert.deepEqual(field.getValues(), { input: '4', input2: '33' });
             });
 
-            it('should set only named value to `undefined` on `resetToDefaults()` if init without `initValue`', function() {
+            it('should set only named value to `undefined` on `resetToDefaults()` if init without `initValue`', function () {
                 const field = new Field(this);
                 field.init('input');
                 field.setValue('input', 'a value');
@@ -727,7 +731,7 @@ describe('field', () => {
             });
         });
 
-        it('remove', function(done) {
+        it('remove', function (done) {
             const field = new Field(this);
             field.init('input', { initValue: 1 });
             field.init('input2', { initValue: 1 });
@@ -743,7 +747,7 @@ describe('field', () => {
 
             done();
         });
-        describe('spliceArray', function() {
+        describe('spliceArray', function () {
             it('should remove the middle field item', () => {
                 const field = new Field(this);
                 field.init('input.0', { initValue: 0 });
@@ -818,7 +822,7 @@ describe('field', () => {
             });
         });
 
-        describe('addArrayValue && deleteArrayValue', function() {
+        describe('addArrayValue && deleteArrayValue', function () {
             it('should remove field item with value like [1,2]', () => {
                 const field = new Field(this, { parseName: true });
                 field.init('key.0', { initValue: 0 });
@@ -999,7 +1003,10 @@ describe('field', () => {
                     <button data-setValue onClick={() => field.setValue('switch', true)}>
                         setValue
                     </button>
-                    <button data-setValues onClick={() => field.setValues({ switch: false, input: 'xyz' })}>
+                    <button
+                        data-setValues
+                        onClick={() => field.setValues({ switch: false, input: 'xyz' })}
+                    >
                         setValues
                     </button>
                 </div>
@@ -1013,7 +1020,9 @@ describe('field', () => {
         });
         it('should not trigger when has init value', () => {
             const callback = sinon.spy();
-            const wrapper = mount(<Demo onWatchChange={callback} options={{ values: { switch: true } }} />);
+            const wrapper = mount(
+                <Demo onWatchChange={callback} options={{ values: { switch: true } }} />
+            );
             assert(callback.notCalled);
             wrapper.unmount();
         });
