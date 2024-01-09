@@ -1,4 +1,5 @@
 import ConfigProvider from '../config-provider';
+import type { RowProps, ColProps } from './types';
 import Row from './row';
 import Col from './col';
 
@@ -26,5 +27,7 @@ const Grid = {
     }),
     Col: ConfigProvider.config(Col),
 };
+
+export { RowProps, ColProps };
 
 export default Grid;
