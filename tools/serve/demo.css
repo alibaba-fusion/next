@@ -1,0 +1,31 @@
+#root {
+    width: 80%;
+    margin: 5vh auto;
+}
+.demo-doc {
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    th,
+    td {
+        padding: 0.5rem 1rem;
+        line-height: 1.25;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+}
+.demo-lang {
+    position: absolute;
+    top: 20px;
+    right: 10%;
+}
+.demo-list-item {
+    margin-bottom: 1.5rem;
+
+    .demo-list-item-demo {
+        border-radius: 5px;
+        border: 1px solid rgb(217, 232, 242);
+        padding: 16px;
+    }
+}
