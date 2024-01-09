@@ -1,7 +1,4 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
 import Grid from '../index';
 
 /* eslint-disable react/jsx-filename-extension */
@@ -9,151 +6,132 @@ import Grid from '../index';
 
 const { Row, Col } = Grid;
 
-Enzyme.configure({ adapter: new Adapter() });
-
 describe('Row', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        wrapper = mount(<Row />);
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
-        wrapper = null;
-    });
-
     it('should have class', () => {
-        wrapper.setProps({
-            wrap: true,
-            fixed: true,
-            fixedWidth: 'xxs',
-            justify: 'end',
-            align: 'center',
-        });
-        const row = wrapper.find('.next-row');
-        assert(
-            row.hasClass('next-row-wrap') &&
-                row.hasClass('next-row-fixed') &&
-                row.hasClass('next-row-fixed-xxs') &&
-                row.hasClass('next-row-justify-end') &&
-                row.hasClass('next-row-align-center')
+        cy.mount(
+            <Row
+                {...{
+                    wrap: true,
+                    fixed: true,
+                    fixedWidth: 'xxs',
+                    justify: 'end',
+                    align: 'center',
+                }}
+            />
         );
+        cy.get('.next-row').should('have.class', 'next-row-wrap');
+        cy.get('.next-row').should('have.class', 'next-row-fixed');
+        cy.get('.next-row').should('have.class', 'next-row-fixed-xxs');
+        cy.get('.next-row').should('have.class', 'next-row-justify-end');
+        cy.get('.next-row').should('have.class', 'next-row-align-center');
     });
 
     it('should apply gutter', () => {
-        wrapper.setProps({
-            gutter: 16,
-            children: [<Col key="1" span="12" />, <Col key="2" span="12" />],
-        });
-        const rowStyle = wrapper.find('.next-row').props().style;
-        assert(rowStyle.marginLeft === '-8px' && rowStyle.marginRight === '-8px');
-
-        const colStyle = wrapper.find('.next-col').getElements()[0].props.style;
-        assert(colStyle.paddingLeft === '8px' && colStyle.paddingRight === '8px');
+        cy.mount(
+            <Row gutter={16}>
+                <Col key="1" span="12" />
+                <Col key="2" span="12" />
+            </Row>
+        );
+        cy.get('.next-row')
+            .should('have.css', 'margin-left', '-8px')
+            .and('have.css', 'margin-right', '-8px');
+        cy.get('.next-col')
+            .should('have.css', 'padding-left', '8px')
+            .and('have.css', 'padding-right', '8px');
     });
 
     it('should receive className prop', () => {
-        wrapper.setProps({ className: 'custom' });
-        assert(wrapper.find('.next-row').hasClass('custom'));
+        cy.mount(<Row className="custom" />);
+        cy.get('.next-row').should('have.class', 'custom');
     });
 
     it('should receive style prop', () => {
-        wrapper.setProps({ style: { color: 'red' } });
-        assert(wrapper.find('.next-row').prop('style').color === 'red');
+        cy.mount(<Row style={{ color: 'red' }} />);
+        cy.get('.next-row').should('have.css', 'color', 'rgb(255, 0, 0)');
     });
 
     it('should have hidden class', () => {
-        wrapper.setProps({ hidden: true });
-        assert(wrapper.find('.next-row').hasClass('next-row-hidden'));
+        cy.mount(<Row hidden />);
+        cy.get('.next-row').should('have.class', 'next-row-hidden');
 
-        wrapper.setProps({ hidden: 's' });
-        assert(wrapper.find('.next-row').hasClass('next-row-s-hidden'));
+        cy.mount(<Row hidden="s" />);
+        cy.get('.next-row').should('have.class', 'next-row-s-hidden');
 
-        wrapper.setProps({ hidden: ['s', 'm'] });
-        assert(wrapper.find('.next-row-s-hidden').hasClass('next-row-m-hidden'));
+        cy.mount(<Row hidden={['s', 'm']} />);
+        cy.get('.next-row-s-hidden').should('have.class', 'next-row-m-hidden');
     });
 
     it('should rendered as custom element type', () => {
-        wrapper.setProps({ component: 'ul' });
-        assert(wrapper.find('.next-row').type() === 'ul');
+        cy.mount(<Row component="ul" />);
+        cy.get('.next-row').should('have.prop', 'tagName', 'UL');
     });
 
     it('should rendered as custom element type(function)', () => {
-        const func = props => <div className="cus-component">{props.children}</div>; // eslint-disable-line
-        wrapper.setProps({ component: func });
-        assert(wrapper.find('.cus-component'));
+        const func = (props: any) => <div className="cus-component">{props.children}</div>; // eslint-disable-line
+        cy.mount(<Row component={func} />);
+        cy.get('.cus-component');
     });
 });
 
 describe('Col', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        wrapper = mount(<Col />);
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
-        wrapper = null;
-    });
-
     it('should have class', () => {
-        wrapper.setProps({
-            span: 1,
-            fixedSpan: 2,
-            offset: 3,
-            fixedOffset: 4,
-            align: 'center',
-        });
-
-        const col = wrapper.find('.next-col');
-        assert(
-            col.hasClass('next-col-1') &&
-                col.hasClass('next-col-fixed-2') &&
-                col.hasClass('next-col-offset-3') &&
-                col.hasClass('next-col-offset-fixed-4') &&
-                col.hasClass('next-col-center')
+        cy.mount(
+            <Col
+                {...{
+                    span: 1,
+                    fixedSpan: 2,
+                    offset: 3,
+                    fixedOffset: 4,
+                    align: 'center',
+                }}
+            />
         );
+
+        cy.get('.next-col')
+            .should('have.class', 'next-col-1')
+            .and('have.class', 'next-col-fixed-2')
+            .and('have.class', 'next-col-offset-3')
+            .and('have.class', 'next-col-offset-fixed-4')
+            .and('have.class', 'next-col-center');
     });
 
     it('should have break point class', () => {
-        wrapper.setProps({ s: 2 });
-        assert(wrapper.find('.next-col').hasClass('next-col-s-2'));
-
-        wrapper.setProps({ s: { span: 2, offset: 2 } });
-        assert(wrapper.find('.next-col-s-2').hasClass('next-col-s-offset-2'));
+        cy.mount(<Col {...{ s: 2 }} />);
+        cy.get('.next-col').should('have.class', 'next-col-s-2');
+        cy.mount(<Col {...{ s: { span: 2, offset: 2 } }} />);
+        cy.get('.next-col-s-2').should('have.class', 'next-col-s-offset-2');
     });
 
     it('should have hidden class', () => {
-        wrapper.setProps({ hidden: true });
-        assert(wrapper.find('.next-col').hasClass('next-col-hidden'));
+        cy.mount(<Col hidden />);
+        cy.get('.next-col').should('have.class', 'next-col-hidden');
 
-        wrapper.setProps({ hidden: 's' });
-        assert(wrapper.find('.next-col').hasClass('next-col-s-hidden'));
+        cy.mount(<Col hidden="s" />);
+        cy.get('.next-col').should('have.class', 'next-col-s-hidden');
 
-        wrapper.setProps({ hidden: ['s', 'm'] });
-        assert(wrapper.find('.next-col-s-hidden').hasClass('next-col-m-hidden'));
+        cy.mount(<Col hidden={['s', 'm']} />);
+        cy.get('.next-col-s-hidden').should('have.class', 'next-col-m-hidden');
     });
 
     it('should receive className prop', () => {
-        wrapper.setProps({ className: 'custom' });
-        assert(wrapper.find('.next-col').hasClass('custom'));
+        cy.mount(<Col className="custom" />);
+        cy.get('.next-col').should('have.class', 'custom');
     });
 
     it('should receive style prop', () => {
-        wrapper.setProps({ style: { color: 'red' } });
-        assert(wrapper.find('.next-col').prop('style').color === 'red');
+        cy.mount(<Col style={{ color: 'red' }} />);
+        cy.get('.next-col').should('have.css', 'color', 'rgb(255, 0, 0)');
     });
 
     it('should rendered as custom element type', () => {
-        wrapper.setProps({ component: 'li' });
-        assert(wrapper.find('.next-col').type() === 'li');
+        cy.mount(<Col component="li" />);
+        cy.get('.next-col').should('have.prop', 'tagName', 'LI');
     });
 
     it('should rendered as custom element type(function)', () => {
-        const func = props => <div className="cus-component">{props.children}</div>; // eslint-disable-line
-        wrapper.setProps({ component: func });
-        assert(wrapper.find('.cus-component'));
+        const func = (props: any) => <div className="cus-component">{props.children}</div>; // eslint-disable-line
+        cy.mount(<Col component={func} />);
+        cy.get('.cus-component');
     });
 });

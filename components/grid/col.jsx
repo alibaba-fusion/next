@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import { ColProps, BreakPoints, PointProps, TypeRecord } from './types';
 
-const breakPoints = ['xxs', 'xs', 's', 'm', 'l', 'xl'];
+const breakPoints: BreakPoints[] = ['xxs', 'xs', 's', 'm', 'l', 'xl'];
 
+type BooleanRecord = TypeRecord<boolean>;
 /**
  * Grid.Col
  * @order 2
  */
-export default class Col extends Component {
+export default class Col extends Component<ColProps> {
     static isNextCol = true;
 
     static propTypes = {
@@ -44,33 +46,19 @@ export default class Col extends Component {
          * 列在不同断点下的显示与隐藏<br><br>**可选值**:<br>true(在所有断点下隐藏)<br>false(在所有断点下显示)<br>'xs'(在 xs 断点下隐藏）<br>['xxs', 'xs', 's', 'm', 'l', 'xl'](在 xxs, xs, s, m, l, xl 断点下隐藏）
          */
         hidden: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.array]),
-        /**
-         * >=320px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-         */
+
         xxs: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
-        /**
-         * >=480px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-         */
+
         xs: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
-        /**
-         * >=720px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-         */
+
         s: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
-        /**
-         * >=990px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-         */
+
         m: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
-        /**
-         * >=1200px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-         */
+
         l: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
-        /**
-         * >=1500px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-         */
+
         xl: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
-        /**
-         * 指定以何种元素渲染该节点，默认为 'div'
-         */
+
         component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     };
 
@@ -97,41 +85,41 @@ export default class Col extends Component {
             m,
             l,
             xl,
-            component: Tag,
+            component,
             className,
             children,
             rtl,
             ...others
         } = this.props;
         /* eslint-enable no-unused-vars */
-
+        const Tag = component as 'div';
         const pointClassObj = breakPoints.reduce((ret, point) => {
-            let pointProps = {};
-            if (typeof this.props[point] === 'object') {
-                pointProps = this.props[point];
+            let pointProps = {} as PointProps;
+            if (typeof this.props[point] === 'object' && this.props[point]) {
+                pointProps = this.props[point] as PointProps;
             } else {
-                pointProps.span = this.props[point];
+                pointProps.span = this.props[point] as string | number;
             }
 
             ret[`${prefix}col-${point}-${pointProps.span}`] = !!pointProps.span;
             ret[`${prefix}col-${point}-offset-${pointProps.offset}`] = !!pointProps.offset;
 
             return ret;
-        }, {});
+        }, {} as BooleanRecord);
 
-        let hiddenClassObj;
+        let hiddenClassObj = {} as BooleanRecord;
         if (hidden === true) {
             hiddenClassObj = { [`${prefix}col-hidden`]: true };
         } else if (typeof hidden === 'string') {
             hiddenClassObj = { [`${prefix}col-${hidden}-hidden`]: !!hidden };
         } else if (Array.isArray(hidden)) {
-            hiddenClassObj = hidden.reduce((ret, point) => {
+            hiddenClassObj = hidden.reduce((ret: BooleanRecord, point) => {
                 ret[`${prefix}col-${point}-hidden`] = !!point;
                 return ret;
-            }, {});
+            }, {} as BooleanRecord) as BooleanRecord;
         }
 
-        const classes = cx({
+        const config = {
             [`${prefix}col`]: true,
             [`${prefix}col-${span}`]: !!span,
             [`${prefix}col-fixed-${fixedSpan}`]: !!fixedSpan,
@@ -140,8 +128,11 @@ export default class Col extends Component {
             [`${prefix}col-${align}`]: !!align,
             ...pointClassObj,
             ...hiddenClassObj,
-            [className]: className,
-        });
+        };
+        if (className) {
+            config[className] = !!className;
+        }
+        const classes = cx(config);
 
         return (
             <Tag dir={rtl ? 'rtl' : 'ltr'} role="gridcell" className={classes} {...others}>
