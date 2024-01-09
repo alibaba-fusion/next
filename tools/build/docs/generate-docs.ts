@@ -28,7 +28,7 @@ function* compileApiFrom(apiFrom: string, docParser: any) {
     const apiMdFile: string = yield fs.readFile(apiFrom, 'utf8');
     const apiMdParsed = docParser.parse(apiMdFile);
     // const apiMdRendered = docParser.simpleRender(apiMdParsed.body);
-    // TODO 统一所有的mdRender
+    // TODO 统一所有的 mdRender
     const apiMdRendered = marked(apiMdParsed.body);
     const $ = cheerio.load(`<div id="cheerio-load">${apiMdRendered}</div>`);
     $('#API').before('<split></split>');
@@ -38,6 +38,57 @@ function* compileApiFrom(apiFrom: string, docParser: any) {
         apiMdParsed,
         apiMdRendered: JSON.stringify({ meta, api }),
     };
+}
+
+function parseLangTitle(text: string) {
+    const [_, lang, query] = text.match(/^\s*(zh-CN|en-US)\s*(.*)/) || [];
+    if (!_) {
+        return null;
+    }
+
+    return {
+        lang,
+        params: Object.fromEntries(new URLSearchParams(query).entries()),
+    };
+}
+
+export function parseDemoMd(mdPath: string) {
+    const mdText = fs.readFileSync(mdPath, 'utf-8');
+    const mdParsed: any = parse(mdText);
+    const langTitleNodes: any[] = mdParsed.children.filter(
+        (child: any) =>
+            child.type === 'heading' &&
+            child.depth === 1 &&
+            child.children?.[0]?.type === 'text' &&
+            child.children?.[0]?.value &&
+            /^\s*(zh-CN|en-US)/.test(child.children?.[0]?.value)
+    );
+    const mdTextLines = mdText.split('\n');
+    const langMetaMap = new Map<
+        string,
+        { lang: string; params: Record<string, string>; title: string; body: string }
+    >();
+    langTitleNodes.forEach((node, i) => {
+        const line = node.position.start.line;
+        const { lang, params } = parseLangTitle(node.children[0].value)!;
+        const nextLine = langTitleNodes[i + 1]?.position.start.line || mdTextLines.length + 1;
+        const selfLines = mdTextLines.slice(line, nextLine - 1);
+        const selfParsed = parse(selfLines.join('\n'));
+        const titleNodes = selfParsed.children.filter((child: any) => {
+            return child.type === 'heading' && child.depth === 1;
+        });
+        if (titleNodes.length !== 1) {
+            throw new Error(`Demo 没有标题：${mdPath}`);
+        }
+        const titleLineIndex = titleNodes[0].position.start.line - 1;
+        langMetaMap.set(lang, {
+            lang,
+            params,
+            title: selfLines.slice(titleLineIndex, titleLineIndex + 1).join(''),
+            body: selfLines.slice(titleLineIndex + 1).join('\n'),
+        });
+    });
+    return langMetaMap;
 }
 
 async function transformHTML(code: string, separate = true) {
@@ -54,7 +105,7 @@ function mutliLangHandler(orginData = '') {
     const enDocsMatch = orginData.match(enDocReg);
     let enDocs = enDocsMatch ? enDocsMatch[0] : '';
 
-    // 把 :::lang=xxx去掉
+    // 把 :::lang=xxx 去掉
     enDocs = enDocs.replace(/:{3}(lang[=\w-]*)?/g, '');
 
     const jsxCodeMatch = orginData.match(jsxReg);
@@ -113,18 +164,6 @@ function* buildDemoMappingList(srcFolder: string, toFile: string) {
     }
     content += '\n};\n';
     yield fs.writeFile(toFile, content);
-}
-
-function parseLangTitle(text: string) {
-    const [_, lang, query] = text.match(/^\s*(zh-CN|en-US)\s*(.*)/) || [];
-    if (!_) {
-        return null;
-    }
-
-    return {
-        lang,
-        params: Object.fromEntries(new URLSearchParams(query).entries()),
-    };
 }
 
 function* buildCompiledDocs(cwd: string) {
@@ -309,42 +348,7 @@ function generateDocsLangFolder() {
                 warn('Detect demo index.md failed', mdPath);
                 continue;
             }
-            const mdText = fs.readFileSync(mdPath, 'utf-8');
-            const mdParsed: any = parse(mdText);
-            const langTitleNodes: any[] = mdParsed.children.filter(
-                (child: any) =>
-                    child.type === 'heading' &&
-                    child.depth === 1 &&
-                    child.children?.[0]?.type === 'text' &&
-                    child.children?.[0]?.value &&
-                    /^\s*(zh-CN|en-US)/.test(child.children?.[0]?.value)
-            );
-            const mdTextLines = mdText.split('\n');
-            const langMetaMap = new Map<
-                string,
-                { lang: string; params: Record<string, string>; title: string; body: string }
-            >();
-            langTitleNodes.forEach((node, i) => {
-                const line = node.position.start.line;
-                const { lang, params } = parseLangTitle(node.children[0].value)!;
-                const nextLine =
-                    langTitleNodes[i + 1]?.position.start.line || mdTextLines.length + 1;
-                const selfLines = mdTextLines.slice(line, nextLine - 1);
-                const selfParsed = parse(selfLines.join('\n'));
-                const titleNodes = selfParsed.children.filter((child: any) => {
-                    return child.type === 'heading' && child.depth === 1;
-                });
-                if (titleNodes.length !== 1) {
-                    throw new Error(`Demo 没有标题：${demoPath}`);
-                }
-                const titleLineIndex = titleNodes[0].position.start.line - 1;
-                langMetaMap.set(lang, {
-                    lang,
-                    params,
-                    title: selfLines.slice(titleLineIndex, titleLineIndex + 1).join(''),
-                    body: selfLines.slice(titleLineIndex + 1).join('\n'),
-                });
-            });
+            const langMetaMap = parseDemoMd(mdPath);
             const jsCode = fs.existsSync(jsPath) ? fs.readFileSync(jsPath, 'utf-8') : '';
             const cssCode = fs.existsSync(cssPath) ? fs.readFileSync(cssPath, 'utf-8') : '';
             for (const lang of SUPPORT_LANGS) {

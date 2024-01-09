@@ -52,6 +52,7 @@
     "*.css"
   ],
   "scripts": {
+    "start": "ts-node ./tools/serve/index.ts",
     "build": "ts-node ./tools/build/index.ts",
     "build:transform": "ts-node ./tools/build/transform/index.ts",
     "build:sass": "ts-node ./tools/build/sass.ts",
