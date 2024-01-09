@@ -1,30 +1,12 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
 import Grid from '../index';
-import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
-
-/* eslint-disable react/jsx-filename-extension */
-/* global describe it beforeEach afterEach */
+import { testReact } from '../../util/__tests__/a11y/validate';
 
 const { Row, Col } = Grid;
 
-Enzyme.configure({ adapter: new Adapter() });
-
 describe('Row a11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
     it('should not have any violations', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div role="grid">
                 <Row>
                     <Col span={6}>1</Col>
@@ -42,6 +24,5 @@ describe('Row a11y', () => {
                 </Row>
             </div>
         );
-        return wrapper;
     });
 });
