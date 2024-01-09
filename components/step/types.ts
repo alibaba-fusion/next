@@ -1,14 +1,26 @@
-/// <reference types="react" />
-
-import React from 'react';
+import * as React from 'react';
 import { CommonProps } from '../util';
 
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    title?: any;
-    onClick?: any;
-}
+export interface ItemProps<T = HTMLElement> extends React.HTMLAttributes<T>, CommonProps {
+    index?: number;
+    shape?: 'circle' | 'arrow' | 'dot';
+    total: number;
+    direction?: 'hoz' | 'ver' | 'vertical' | 'horizontal';
+    onResize?: () => void;
+    stretch?: unknown;
+    labelPlacement?: unknown;
+    readOnly?: boolean;
+    parentWidth?: number;
+    parentHeight?: number;
+    parentLeft?: number;
+    parentTop?: number;
+    parentRight?: number;
+    parentBottom?: number;
 
-export interface ItemProps extends Omit<HTMLAttributesWeak, 'content'>, CommonProps {
+    /**
+     * 是否开启动效
+     */
+    animation?: boolean;
     /**
      * 步骤的状态，如不传，会根据外层的 Step 的 current 属性生成，可选值为 `wait`, `process`, `finish`
      */
@@ -32,7 +44,12 @@ export interface ItemProps extends Omit<HTMLAttributesWeak, 'content'>, CommonPr
     /**
      * StepItem 的自定义渲染, 会覆盖父节点设置的itemRender
      */
-    itemRender?: (index: number, status: string) => React.ReactNode;
+    itemRender?: (
+        index: number | undefined,
+        status: string | undefined,
+        title?: string,
+        content?: React.ReactNode
+    ) => React.ReactNode;
 
     /**
      * 百分比
@@ -47,7 +64,7 @@ export interface ItemProps extends Omit<HTMLAttributesWeak, 'content'>, CommonPr
     /**
      * 点击步骤时的回调
      */
-    onClick?: (index: number) => void;
+    onClick?: (index: number) => number | void | undefined;
 
     /**
      * 自定义样式
@@ -55,7 +72,7 @@ export interface ItemProps extends Omit<HTMLAttributesWeak, 'content'>, CommonPr
     className?: string;
 }
 
-export class Item extends React.Component<ItemProps, any> {}
+export class Item extends React.Component<ItemProps, unknown> {}
 export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 当前步骤
@@ -65,7 +82,7 @@ export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
      * 展示方向
      */
-    direction?: 'hoz' | 'ver';
+    direction?: 'hoz' | 'ver' | 'vertical' | 'horizontal';
     /**
      * 宽度是否横向拉伸
      */
@@ -73,7 +90,7 @@ export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
      * 横向布局时的内容排列
      */
-    labelPlacement?: 'hoz' | 'ver';
+    labelPlacement?: 'hoz' | 'ver' | 'vertical' | 'horizontal';
 
     /**
      * 类型
@@ -101,6 +118,7 @@ export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     itemRender?: (index: number, status: string) => React.ReactNode;
 }
 
-export default class Step extends React.Component<StepProps, any> {
+// eslint-disable-next-line react/no-multi-comp
+export default class Step extends React.Component<StepProps, unknown> {
     static Item: typeof Item;
 }

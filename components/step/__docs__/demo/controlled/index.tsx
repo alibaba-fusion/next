@@ -5,15 +5,15 @@ import { Step, Button, Select, Icon } from '@alifd/next';
 const StepItem = Step.Item,
     ButtonGroup = Button.Group;
 
-const renders = {
-    1: function itemRender1(index) {
+const renders: { [key: number]: (index: number, status: string) => JSX.Element } = {
+    1: function itemRender1(index: number) {
         return (
             <div className="custom-node1">
                 <span>{index + 1}</span>
             </div>
         );
     },
-    2: function itemRender2(index, status) {
+    2: function itemRender2(index: number, status: string) {
         return (
             <div className="custom-node2">
                 {status === 'finish' ? <Icon type="success" /> : <span>{index + 1}</span>}{' '}
@@ -21,14 +21,30 @@ const renders = {
         );
     },
 };
+
 const contents = [
     'Description1',
     'Description2 --- Very Looooooooooooooooooooooog content',
     'Description3',
 ];
+interface IProps {
+    itemRender?: any;
+    current?: number;
+    shape?: string;
+    animation?: boolean;
+    labelPlacement?: string;
+}
+interface State {
+    currentStep: number;
+    stepType: string;
+    stepAnimation: boolean;
+    labelPlacement: string;
+    itemRender?: any;
+    content?: string;
+}
 
-class Component extends React.Component {
-    constructor(props) {
+class Component extends React.Component<IProps, State> {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -54,23 +70,23 @@ class Component extends React.Component {
             currentStep: s < 0 ? 0 : s,
         });
     }
-    onClick(currentStep) {
+    onClick(currentStep: any) {
         console.log(currentStep);
 
         this.setState({
             currentStep: currentStep,
         });
     }
-    onStepTypeChange(value) {
+    onStepTypeChange(value: any) {
         this.setState({ stepType: value });
     }
-    onStepAnimation(value) {
+    onStepAnimation(value: any) {
         this.setState({ stepAnimation: value });
     }
-    onLabelPlacementChange(value) {
+    onLabelPlacementChange(value: any) {
         this.setState({ labelPlacement: value });
     }
-    onItemRenderChange(value) {
+    onItemRenderChange(value: number) {
         this.setState({ itemRender: renders[value], content: contents[value] });
     }
     render() {

@@ -1,0 +1,4 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "github.copilot.chat.localeOverride": "zh-CN"
+}

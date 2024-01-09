@@ -87,3 +87,5 @@ gemini-report/
 *.log
 .DS_Store
 src/core-temp
+./vscode/settings.json
+
