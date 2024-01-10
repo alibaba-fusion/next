@@ -78,7 +78,10 @@ class Timeline extends Component {
             for (let i = 0; i < fold.length; i++) {
                 const { foldArea, foldShow } = fold[i];
 
-                if ((foldArea[1] && folderIndex === foldArea[1]) || (!foldArea[1] && folderIndex === total - 1)) {
+                if (
+                    (foldArea[1] && folderIndex === foldArea[1]) ||
+                    (!foldArea[1] && folderIndex === total - 1)
+                ) {
                     fold[i].foldShow = !foldShow;
                 }
             }
@@ -96,7 +99,9 @@ class Timeline extends Component {
         const isAlternateMode = mode === 'alternate';
         const getPositionCls = idx => {
             if (isAlternateMode) {
-                return idx % 2 === 0 ? `${prefix}timeline-item-left` : `${prefix}timeline-item-right`;
+                return idx % 2 === 0
+                    ? `${prefix}timeline-item-left`
+                    : `${prefix}timeline-item-right`;
             }
             return `${prefix}timeline-item-left`;
         };
@@ -122,7 +127,10 @@ class Timeline extends Component {
                 index: i,
                 folderIndex: folderIndex,
                 foldShow: foldNodeShow,
-                toggleFold: folderIndex === i ? this.toggleFold.bind(this, folderIndex, childrenCount) : () => {},
+                toggleFold:
+                    folderIndex === i
+                        ? this.toggleFold.bind(this, folderIndex, childrenCount)
+                        : () => {},
                 animation: animation,
             });
         });

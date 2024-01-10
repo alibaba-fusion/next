@@ -150,7 +150,9 @@ class TimelineItem extends Component {
                     }}
                 >
                     <div className={`${prefix}timeline-item-left-content`}>
-                        {renderTimeLineItemContent(className.includes(`${prefix}timeline-item-left`))}
+                        {renderTimeLineItemContent(
+                            className.includes(`${prefix}timeline-item-left`)
+                        )}
                     </div>
                     <div className={`${prefix}timeline-item-timeline`}>
                         <div className={`${prefix}timeline-item-tail`}>
@@ -159,7 +161,9 @@ class TimelineItem extends Component {
                         <div className={itemNodeCls}>{finalItemNode}</div>
                     </div>
                     <div className={`${prefix}timeline-item-content`}>
-                        {renderTimeLineItemContent(!className.includes(`${prefix}timeline-item-left`))}
+                        {renderTimeLineItemContent(
+                            !className.includes(`${prefix}timeline-item-left`)
+                        )}
                     </div>
                 </div>
             ) : null;
