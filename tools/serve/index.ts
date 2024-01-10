@@ -13,6 +13,7 @@ import { existsSync, readFileSync, readdirSync } from 'fs-extra';
 import createDocParser from '@alifd/doc-parser';
 import MagicString from 'magic-string';
 import { kebabCase } from 'lodash';
+import { glob } from 'glob';
 import { ARGV, SRC_DIR_PATH, TARGETS, findFile, logger, parseImportDeclarations } from '../utils';
 import { marked } from '../build/docs/utils';
 import { parseDemoMd } from '../build/docs/generate-docs';
@@ -82,6 +83,8 @@ const demoPlugin = (dirName: string): VitePlugin => {
             };
         });
     }
+    const SCSS_REG = /^__scss/;
+    const SCSS_VIRTUAL_REG = /^\0__scss\.scss/;
     const DOC_REG = /^__doc/;
     const DEMOS_REG = /^__demos/;
     const DOC_VIRTUAL_REG = /^\0__doc/;
@@ -112,11 +115,22 @@ const demoPlugin = (dirName: string): VitePlugin => {
             return html.replace(/\$name/g, dirName);
         },
         resolveId(source) {
+            if (SCSS_REG.test(source)) {
+                return `\0${source}.scss`;
+            }
             if (DOC_REG.test(source) || DEMOS_REG.test(source)) {
                 return `\0${source}`;
             }
         },
         load(id) {
+            if (SCSS_VIRTUAL_REG.test(id)) {
+                const fixedFiles: string[] = [resolve(SRC_DIR_PATH, 'core/reset.scss')];
+                const mainFiles = glob.sync('*/main.scss', { cwd: SRC_DIR_PATH, absolute: true });
+                return fixedFiles
+                    .concat(mainFiles)
+                    .map(f => `@import "${f}";`)
+                    .join('\n');
+            }
             if (DOC_VIRTUAL_REG.test(id)) {
                 const { doc, files } = loadComponentDoc(dirName);
                 files.forEach(f => this.addWatchFile(f));
