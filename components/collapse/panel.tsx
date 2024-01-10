@@ -51,7 +51,18 @@ class Panel extends React.Component {
         }
     };
     render() {
-        const { title, children, className, isExpanded, disabled, style, prefix, onClick, id, ...others } = this.props;
+        const {
+            title,
+            children,
+            className,
+            isExpanded,
+            disabled,
+            style,
+            prefix,
+            onClick,
+            id,
+            ...others
+        } = this.props;
 
         const cls = classNames({
             [`${prefix}collapse-panel`]: true,
