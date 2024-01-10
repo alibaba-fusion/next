@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Timeline, Icon, Select } from '@alifd/next';
+import { Timeline, Select } from '@alifd/next';
 
 const TimelineItem = Timeline.Item;
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<any, any> {
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -13,7 +13,7 @@ class Demo extends React.Component {
         };
     }
 
-    onTimelineMode = value => {
+    onTimelineMode = (value: string) => {
         this.setState({ mode: value });
     };
 

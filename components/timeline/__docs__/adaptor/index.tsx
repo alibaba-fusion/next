@@ -42,15 +42,20 @@ export default {
             ].join('\n'),
         },
     }),
-    adaptor: ({ state, timeLeft, content, height, style, data, ...others }) => {
-        const list = parseData(data, { parseContent: true }).filter(
+    adaptor: ({ state, timeLeft, content, height, style, data, ...others }: any) => {
+        interface IListItem {
+            value: any[];
+            type: any;
+            children: { value: any[] }[];
+        }
+        const list = (parseData(data, { parseContent: true }) as IListItem[]).filter(
             ({ type }) => type === NodeType.node
         );
-        const array = [];
+        const array: any[] = [];
 
         list.forEach((item, index) => {
             const { value = '' } = item.value.find(({ type }) => type === ContentType.icon) || {};
-            const obj = {
+            const obj: any = {
                 title: item.value
                     .filter(({ type }) => type === ContentType.text)
                     .map(({ value }) => value)

@@ -1,4 +1,4 @@
-import React, { Component, Children } from 'react';
+import React, { Component, Children, type ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
@@ -6,9 +6,12 @@ import { polyfill } from 'react-lifecycles-compat';
 import { obj } from '../../util';
 import ConfigProvider from '../../config-provider';
 import nextLocale from '../../locale/zh-cn';
+import Item from './timeline-item';
+import { TimelineProps, TimelineState } from '../types';
 
 /** Timeline */
-class Timeline extends Component {
+class Timeline extends Component<TimelineProps, TimelineState> {
+    static Item = Item;
     static propTypes = {
         ...ConfigProvider.propTypes,
         /**
@@ -29,7 +32,6 @@ class Timeline extends Component {
         animation: PropTypes.bool,
         /**
          * 展示的模式
-         * @enumdesc 左, 交错显示
          * @version 1.23.18
          */
         mode: PropTypes.oneOf(['left', 'alternate']),
@@ -44,15 +46,15 @@ class Timeline extends Component {
         mode: 'left',
     };
 
-    constructor(props, context) {
-        super(props, context);
+    constructor(props: TimelineProps) {
+        super(props);
 
         this.state = {
-            fold: props.fold,
+            fold: props.fold!,
         };
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: TimelineProps, prevState: TimelineState) {
         const { innerUpdate, fold } = prevState;
 
         if (innerUpdate) {
@@ -71,7 +73,7 @@ class Timeline extends Component {
         return null;
     }
 
-    toggleFold(folderIndex, total) {
+    toggleFold(folderIndex: number, total: number) {
         const fold = this.state.fold.map(item => ({ ...item }));
 
         if (folderIndex) {
@@ -79,8 +81,8 @@ class Timeline extends Component {
                 const { foldArea, foldShow } = fold[i];
 
                 if (
-                    (foldArea[1] && folderIndex === foldArea[1]) ||
-                    (!foldArea[1] && folderIndex === total - 1)
+                    (foldArea![1] && folderIndex === foldArea![1]) ||
+                    (!foldArea![1] && folderIndex === total - 1)
                 ) {
                     fold[i].foldShow = !foldShow;
                 }
@@ -97,7 +99,7 @@ class Timeline extends Component {
         // 修改子节点属性
         const childrenCount = React.Children.count(children);
         const isAlternateMode = mode === 'alternate';
-        const getPositionCls = idx => {
+        const getPositionCls = (idx: number) => {
             if (isAlternateMode) {
                 return idx % 2 === 0
                     ? `${prefix}timeline-item-left`
@@ -113,13 +115,13 @@ class Timeline extends Component {
             fold.forEach(item => {
                 const { foldArea, foldShow } = item;
 
-                if (foldArea[0] && i >= foldArea[0] && (i <= foldArea[1] || !foldArea[1])) {
-                    folderIndex = foldArea[1] || childrenCount - 1;
-                    foldNodeShow = foldShow;
+                if (foldArea![0] && i >= foldArea![0] && (i <= foldArea![1] || !foldArea![1])) {
+                    folderIndex = foldArea![1] || childrenCount - 1;
+                    foldNodeShow = foldShow!;
                 }
             });
 
-            return React.cloneElement(child, {
+            return React.cloneElement(child as ReactElement, {
                 prefix: prefix,
                 locale: locale,
                 total: childrenCount,

@@ -1,7 +1,6 @@
-import ConfigProvider from '../config-provider';
 import Timeline from './view/timeline';
-import TimelineItem from './view/timeline-item';
+import type { TimelineProps, ItemProps } from './types';
 
-Timeline.Item = ConfigProvider.config(TimelineItem, {});
+export type { TimelineProps, ItemProps };
 
-export default ConfigProvider.config(Timeline, {});
+export default Timeline;
