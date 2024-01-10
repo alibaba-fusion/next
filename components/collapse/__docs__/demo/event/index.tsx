@@ -4,21 +4,26 @@ import { Collapse } from '@alifd/next';
 
 const Panel = Collapse.Panel;
 
-class Demo extends React.Component {
-    constructor(props, context) {
+class Demo extends React.Component<
+    unknown,
+    {
+        expandedKeys: string[];
+    }
+> {
+    constructor(props: unknown, context: any) {
         super(props, context);
         this.state = {
             expandedKeys: [],
         };
     }
 
-    onExpand(expandedKeys) {
+    onExpand(expandedKeys: string[]) {
         this.setState({
             expandedKeys,
         });
     }
 
-    onClick(key) {
+    onClick(key: any) {
         console.log('clicked', key);
     }
     render() {
