@@ -15,17 +15,21 @@
         border: 1px solid rgba(0, 0, 0, 0.05);
     }
 }
-.demo-lang {
+.demo-actions {
     position: absolute;
     top: 20px;
     right: 10%;
+}
+.demo-actions > * {
+    margin-left: 10px;
 }
 .demo-list-item {
     margin-bottom: 1.5rem;
 
     .demo-list-item-demo {
         border-radius: 5px;
-        border: 1px solid rgb(217, 232, 242);
+        border: 1px solid #ebebeb;
+        box-shadow: 2px 6px 12px 0 rgba(0, 0, 0, 0.08);
         padding: 16px;
     }
 }
