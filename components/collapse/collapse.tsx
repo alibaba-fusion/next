@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { MouseEventHandler, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
 import { func, obj } from '../util';
 import Panel from './panel';
+import { CollapseProps, DataItem } from './types';
 
 /** Collapse */
-class Collapse extends React.Component {
+class Collapse extends React.Component<
+    CollapseProps,
+    {
+        expandedKeys: (string | number)[];
+    }
+> {
+    static Panel: typeof Panel;
     static propTypes = {
         /**
          * 样式前缀
@@ -60,7 +67,7 @@ class Collapse extends React.Component {
         prefix: PropTypes.string,
     };
 
-    constructor(props) {
+    constructor(props: CollapseProps) {
         super(props);
 
         let expandedKeys;
@@ -71,11 +78,11 @@ class Collapse extends React.Component {
         }
 
         this.state = {
-            expandedKeys: typeof expandedKeys === 'undefined' ? [] : expandedKeys,
+            expandedKeys: typeof expandedKeys === 'undefined' ? [] : (expandedKeys as string[]),
         };
     }
 
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(props: CollapseProps) {
         if ('expandedKeys' in props) {
             return {
                 expandedKeys: typeof props.expandedKeys === 'undefined' ? [] : props.expandedKeys,
@@ -84,7 +91,7 @@ class Collapse extends React.Component {
         return null;
     }
 
-    onItemClick(key) {
+    onItemClick(key: string) {
         let expandedKeys = this.state.expandedKeys;
         if (this.props.accordion) {
             expandedKeys = String(expandedKeys[0]) === String(key) ? [] : [key];
@@ -102,7 +109,7 @@ class Collapse extends React.Component {
         this.setExpandedKey(expandedKeys);
     }
 
-    genratePanelId(itemId, index) {
+    genratePanelId(itemId: string | number, index: number) {
         const { id: collapseId } = this.props;
         let id;
         if (itemId) {
@@ -114,7 +121,7 @@ class Collapse extends React.Component {
         }
         return id;
     }
-    getProps(item, index, key) {
+    getProps(item: DataItem, index: number, key: string) {
         const expandedKeys = this.state.expandedKeys;
         const { title } = item;
         let disabled = this.props.disabled;
@@ -145,7 +152,7 @@ class Collapse extends React.Component {
             });
         }
 
-        const id = this.genratePanelId(item.id, index);
+        const id = this.genratePanelId(item.id as number, index) as string;
         return {
             key,
             title,
@@ -153,13 +160,13 @@ class Collapse extends React.Component {
             disabled,
             id,
             onClick: disabled
-                ? null
-                : () => {
+                ? undefined
+                : ((() => {
                       this.onItemClick(key);
                       if ('onClick' in item) {
-                          item.onClick(key);
+                          item.onClick?.(key);
                       }
-                  },
+                  }) as MouseEventHandler<HTMLDivElement>),
         };
     }
 
@@ -167,11 +174,11 @@ class Collapse extends React.Component {
         const { props } = this;
         const { dataSource } = props;
         // 是否有dataSource.item传入过key
-        const hasKeys = dataSource.some(item => 'key' in item);
+        const hasKeys = dataSource!.some(item => 'key' in item);
 
-        return dataSource.map((item, index) => {
+        return dataSource!.map((item, index) => {
             // 传入过key就用item.key 没传入则统一使用index为key
-            const key = hasKeys ? item.key : `${index}`;
+            const key = (hasKeys ? item.key : `${index}`) as string;
             return (
                 <Panel {...this.getProps(item, index, key)} key={key}>
                     {item.content}
@@ -182,29 +189,37 @@ class Collapse extends React.Component {
 
     getItemsByChildren() {
         // 是否有child传入过key
-        const allKeys = React.Children.map(this.props.children, child => child && child.key);
+        const allKeys = React.Children.map(
+            this.props.children,
+            (child: ReactElement) => child && child.key
+        );
         const hasKeys = Boolean(allKeys && allKeys.length);
 
-        return React.Children.map(this.props.children, (child, index) => {
-            if (child && typeof child.type === 'function' && child.type.isNextPanel) {
+        return React.Children.map(this.props.children, (child: ReactElement, index) => {
+            if (
+                child &&
+                typeof child.type === 'function' &&
+                (child.type as unknown as { isNextPanel: boolean }).isNextPanel
+            ) {
                 // 传入过key就用child.key 没传入则统一使用index为key
                 const key = hasKeys ? child.key : `${index}`;
-                return React.cloneElement(child, this.getProps(child.props, index, key));
+                return React.cloneElement(child, this.getProps(child.props, index, key as string));
             } else {
                 return child;
             }
         });
     }
 
-    setExpandedKey(expandedKeys) {
+    setExpandedKey(expandedKeys: (string | number)[]) {
         if (!('expandedKeys' in this.props)) {
             this.setState({ expandedKeys });
         }
-        this.props.onExpand(this.props.accordion ? expandedKeys[0] : expandedKeys);
+        this.props.onExpand?.(this.props.accordion ? expandedKeys[0] : expandedKeys);
     }
 
     render() {
-        const { prefix, className, style, disabled, dataSource, id, rtl } = this.props;
+        const { prefix, style, disabled, dataSource, id, rtl } = this.props;
+        const className = this.props!.className as string;
         const collapseClassName = classNames({
             [`${prefix}collapse`]: true,
             [`${prefix}collapse-disabled`]: disabled,

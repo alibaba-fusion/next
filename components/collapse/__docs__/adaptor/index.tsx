@@ -2,6 +2,13 @@ import React from 'react';
 import { Collapse } from '@alifd/next';
 import { Types, parseData, NodeType } from '@alifd/adaptor-helper';
 
+interface AdaptorProps {
+    state: string;
+    width: number;
+    data: string;
+    style: React.CSSProperties;
+}
+
 export default {
     name: 'Collapse',
     editor: () => ({
@@ -26,9 +33,9 @@ export default {
                 '*Panel Header 1\n\tPeople always make mistakes, frustrated, nerve-racking, but cannot remain stagnant.\nPanel Header 2\n\tPeople always make mistakes, frustrated, nerve-racking, but cannot remain stagnant.\nPanel Header 3\n\tPeople always make mistakes, frustrated, nerve-racking, but cannot remain stagnant.\n',
         },
     }),
-    adaptor: ({ state, width, data, style = {}, ...others }) => {
+    adaptor: ({ state, width, data, style = {}, ...others }: AdaptorProps) => {
         const list = parseData(data).filter(node => NodeType.node === node.type);
-        let expandedKeys = [];
+        const expandedKeys = [] as string[];
         const children = list.map(({ state, value, children }, index) => {
             if (state === 'active') {
                 expandedKeys.push(`panel_${index}`);
@@ -38,7 +45,7 @@ export default {
                 <Collapse.Panel
                     disabled={state === 'disabled'}
                     key={`panel_${index}`}
-                    title={value}
+                    title={value as string}
                 >
                     {children && children.length > 0 ? children[0].value : ''}
                 </Collapse.Panel>
