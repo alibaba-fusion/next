@@ -1,24 +1,12 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/no-multi-comp */
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
 import Input from '../../input';
 import Field from '../index';
 
-Enzyme.configure({ adapter: new Adapter() });
-
 /*global describe it afterEach */
 describe('options', () => {
-    let wrapper;
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-    it('should support autoUnmount', function (done) {
+    it('should support autoUnmount', function () {
         class Demo extends React.Component {
             state = {
                 show: true,
@@ -31,22 +19,19 @@ describe('options', () => {
                     <div>
                         <Input {...init('input')} />{' '}
                         {this.state.show ? <Input {...init('input2')} /> : null}
-                        <button
-                            onClick={() => {
-                                assert('input2' in this.field.getValues() === false);
-                                done();
-                            }}
-                        >
-                            click
-                        </button>
                     </div>
                 );
             }
         }
-        wrapper = mount(<Demo />);
-        wrapper.setState({ show: false });
-        wrapper.update();
-        wrapper.find('button').simulate('click');
+        const ref = React.createRef<Demo>();
+        cy.mount(<Demo ref={ref} />);
+        cy.then(() => {
+            ref.current!.setState({ show: false });
+        }).then(() => {
+            expect('input2' in ref.current!.field.getValues<Record<string, unknown>>()).to.equal(
+                false
+            );
+        });
     });
 
     it('should support autoUnmount with same name', function (done) {
@@ -65,22 +50,21 @@ describe('options', () => {
                         ) : (
                             <Input {...init('input')} key="2" />
                         )}
-                        <button
-                            onClick={() => {
-                                assert('input' in this.field.getValues() === true);
-                            }}
-                        >
-                            click
-                        </button>
+                        <button>click</button>
                     </div>
                 );
             }
         }
-        wrapper = mount(<Demo />);
-        wrapper.setState({ show: false });
-        wrapper.find('button').simulate('click');
-
-        done();
+        const ref = React.createRef<Demo>();
+        cy.mount(<Demo ref={ref} />);
+        cy.then(() => {
+            ref.current!.setState({ show: false });
+        }).then(() => {
+            expect('input' in ref.current!.field.getValues<Record<string, unknown>>()).to.equal(
+                true
+            );
+            done();
+        });
     });
 
     it('should support autoUnmount=false', function (done) {
@@ -98,30 +82,29 @@ describe('options', () => {
                         {this.state.show ? (
                             <Input {...init('input2', { initValue: 'test2' })} />
                         ) : null}
-                        <button
-                            onClick={() => {
-                                assert(this.field.getValue('input2') === 'test2');
-                            }}
-                        >
-                            click
-                        </button>
+                        <button>click</button>
                     </div>
                 );
             }
         }
-        wrapper = mount(<Demo />);
-        wrapper.setState({ show: false });
-        wrapper.find('button').simulate('click');
 
-        done();
+        const ref = React.createRef<Demo>();
+        cy.mount(<Demo ref={ref} />);
+        cy.then(() => {
+            ref.current!.setState({ show: false });
+        }).then(() => {
+            expect(ref.current!.field.getValues<any>().input2).to.equal('test2');
+            done();
+        });
     });
 
     it('scrollToFirstError', function (done) {
         class Demo extends React.Component {
-            constructor(props) {
+            constructor(props: any) {
                 super(props);
                 this.field = new Field(this, { scrollToFirstError: true });
             }
+            field: Field;
 
             render() {
                 const init = this.field.init;
@@ -134,7 +117,7 @@ describe('options', () => {
                         />
                         <button
                             onClick={() => {
-                                this.field.validate((error, value, cb) => {
+                                this.field.validate((error: any) => {
                                     assert(error.input.errors[0] === 'cant be null');
                                 });
                             }}
@@ -145,10 +128,16 @@ describe('options', () => {
                 );
             }
         }
-        wrapper = mount(<Demo />);
-        wrapper.find('button').simulate('click');
-
-        done();
+        const ref = React.createRef<Demo>();
+        cy.mount(<Demo ref={ref} />);
+        cy.then(() => {
+            ref.current!.setState({ show: false });
+        }).then(() => {
+            ref.current!.field.validate((error: any) => {
+                expect(error.input.errors[0]).to.equal('cant be null');
+                done();
+            });
+        });
     });
 
     describe('defaultValue', () => {
@@ -251,7 +240,7 @@ describe('options', () => {
                     input: inputValue,
                 },
             });
-            assert.equal(field.getValues().input, inputValue);
+            assert.equal(field.getValues<{ input: string }>().input, inputValue);
         });
 
         it('should use setValues instead of constructor values on field that has not been initialized', function () {
@@ -341,7 +330,7 @@ describe('options', () => {
             field.init('user.pwd', { initValue: 12345 });
             field.init('option[0]', { initValue: 'option1' });
             field.init('option[1]', { initValue: 'option2' });
-            const values = field.getValues();
+            const values = field.getValues<any>();
 
             assert(Object.keys(values).length === 2);
             assert(values.user.name === 'frankqian');
@@ -362,13 +351,13 @@ describe('options', () => {
 
         it('should return constructor value for `names` if `getValues` called before init', function () {
             const field = new Field(this, { parseName: true, values: { a: 1, b: 2, c: 3 } });
-            const { a, b } = field.getValues(['a', 'b']);
+            const { a, b } = field.getValues<any>(['a', 'b']);
             assert(a === 1);
             assert(b === 2);
         });
         it('should return all of constructor value if `getValues` called with no names before init', function () {
             const field = new Field(this, { parseName: true, values: { a: 1, b: 2, c: 3 } });
-            const { a, b, c } = field.getValues();
+            const { a, b, c } = field.getValues<any>();
             assert(a === 1);
             assert(b === 2);
             assert(c === 3);
@@ -380,7 +369,7 @@ describe('options', () => {
             field.init('option[0]', { initValue: 'option1' });
             field.init('option[1]', { initValue: 'option2' });
 
-            let values = field.getValues();
+            let values = field.getValues<any>();
             assert(values.user.name === 'frankqian');
             assert(values.user.pwd === 12345);
             assert(values.option[0] === 'option1');
@@ -427,7 +416,7 @@ describe('options', () => {
                     },
                 },
             });
-            assert.equal(field.getValues().input.myValue, fieldDefault);
+            assert.equal(field.getValues<any>().input.myValue, fieldDefault);
         });
 
         it('should use setValue instead of constructor values on field that has not been initialized', function () {
@@ -456,7 +445,7 @@ describe('options', () => {
             });
             field.init('input.myValue');
             field.remove('input.myValue');
-            assert.equal(Object.keys(field.getValues()).input, undefined);
+            assert.equal(field.getValues<any>().input.myValue, undefined);
         });
 
         it('should return `{}` for `getValues after `remove()`', function () {
@@ -471,6 +460,7 @@ describe('options', () => {
             });
             field.init('input.myValue');
             field.setValue('input.value2', fieldDefault);
+            /* @ts-expect-error field type error */
             field.remove();
             assert.equal(Object.keys(field.getValues()).length, 0);
         });
@@ -662,59 +652,42 @@ describe('options', () => {
     });
 
     describe('should support autoValidate=false', () => {
-        it('options.autoValidate=true', function (done) {
+        it('options.autoValidate=true', function () {
             const field = new Field(this, { autoValidate: true });
-            const inited = field.init('input', { rules: [{ minLength: 10 }] });
+            const inited = field.init('input', { rules: [{ minLength: 10 }] }) as any;
 
-            wrapper = mount(<Input {...inited} />);
-            wrapper.find('input').simulate('change', {
-                target: {
-                    value: 'test',
-                },
+            cy.mount(<Input {...inited} />);
+            cy.get('input').type('test');
+            cy.then(() => {
+                assert(field.getError('input') !== null);
             });
-
-            assert(field.getError('input') !== null);
-
-            done();
         });
-        it('options.autoValidate=false', function (done) {
+        it('options.autoValidate=false', function () {
             const field = new Field(this, { autoValidate: false });
-            const inited = field.init('input', { rules: [{ minLength: 10 }] });
+            const inited = field.init('input', { rules: [{ minLength: 10 }] }) as any;
 
-            wrapper = mount(<Input {...inited} />);
-            wrapper.find('input').simulate('change', {
-                target: {
-                    value: 'test',
-                },
+            cy.mount(<Input {...inited} />);
+            cy.get('input').type('test');
+            cy.then(() => {
+                assert(field.getError('input') === null);
+                field.validate('input');
+                assert(field.getError('input') !== null);
             });
-
-            assert(field.getError('input') === null);
-
-            field.validate('input');
-            assert(field.getError('input') !== null);
-
-            done();
         });
-        it('props.autoValidate=false', function (done) {
+        it('props.autoValidate=false', function () {
             const field = new Field(this);
             const inited = field.init('input', {
                 autoValidate: false,
                 rules: [{ minLength: 10 }],
+            } as any) as any;
+
+            cy.mount(<Input {...inited} />);
+            cy.get('input').type('test');
+            cy.then(() => {
+                assert(field.getError('input') === null);
+                field.validate('input');
+                assert(field.getError('input') !== null);
             });
-
-            wrapper = mount(<Input {...inited} />);
-            wrapper.find('input').simulate('change', {
-                target: {
-                    value: 'test',
-                },
-            });
-
-            assert(field.getError('input') === null);
-
-            field.validate('input');
-            assert(field.getError('input') !== null);
-
-            done();
         });
     });
 });

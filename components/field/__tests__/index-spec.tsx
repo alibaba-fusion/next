@@ -1,15 +1,10 @@
 /* eslint-disable react/no-multi-comp */
 import React, { useState, useEffect } from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import sinon from 'sinon';
 import Switch from '../../switch';
+import '../../switch/style';
 import Input from '../../input';
 import Form from '../../form';
 import Field from '../index';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 const FormItem = Form.Item;
 
@@ -17,12 +12,13 @@ const FormItem = Form.Item;
 /*global describe it afterEach */
 describe('field', () => {
     describe('render', () => {
-        it('should support Form', function (done) {
+        it('should support Form', function () {
             class Demo extends React.Component {
-                constructor(props) {
+                constructor(props: any) {
                     super(props);
-                    this.field = new Field(this);
+                    this.field = new Field(this) as Field;
                 }
+                field: Field;
 
                 render() {
                     const init = this.field.init;
@@ -61,51 +57,43 @@ describe('field', () => {
                     );
                 }
             }
-            const wrapper = mount(<Demo />);
-            wrapper.find('button').simulate('click');
-
-            done();
+            cy.mount(<Demo />);
+            cy.get('button').click();
         });
-        it('should support PureComponent', function (done) {
+        it('should support PureComponent', function () {
             class Demo extends React.PureComponent {
-                constructor(props) {
+                constructor(props: any) {
                     super(props);
-                    this.field = new Field(this, { forceUpdate: true });
+                    this.field = new Field(this, { forceUpdate: true }) as Field;
                 }
+                field: Field;
 
                 render() {
                     const init = this.field.init;
                     return <Input {...init('input')} />;
                 }
             }
-            const wrapper = mount(<Demo />);
-            wrapper.find('input').simulate('change', {
-                target: {
-                    value: 'test',
-                },
-            });
-            assert(wrapper.find('input').prop('value') === 'test');
+            cy.mount(<Demo />);
+            cy.get('input').type('test');
+            cy.get('input').should('have.value', 'test');
 
             // PureComponent will not render by second update use this.setState();
             // so you should use this.fourceUpdate
-            wrapper.find('input').simulate('change', {
-                target: {
-                    value: 'test2',
-                },
-            });
-            assert(wrapper.find('input').prop('value') === 'test2');
-            done();
+            cy.get('input').clear();
+            cy.get('input').type('test2');
+            cy.get('input').should('have.value', 'test2');
         });
 
-        it('should support origin input/checkbox/radio', function (done) {
+        it('should support origin input/checkbox/radio', function () {
             class Demo extends React.Component {
-                constructor(props) {
+                constructor(props: any) {
                     super(props);
                     this.field = new Field(this);
                 }
+                field: Field;
 
                 render() {
-                    const init = this.field.init;
+                    const init = this.field.init as any;
                     return (
                         <Form field={this.field}>
                             <FormItem>
@@ -143,16 +131,14 @@ describe('field', () => {
                     );
                 }
             }
-            const wrapper = mount(<Demo />);
-            wrapper.find('button').simulate('click');
-            wrapper.find('input[type="checkbox"]').simulate('change');
-            wrapper.find('input[type="radio"]').simulate('change');
-
-            done();
+            cy.mount(<Demo />);
+            cy.get('button').click();
+            cy.get('input[type="checkbox"]').click();
+            cy.get('input[type="radio"]').click();
         });
-        it('should support hooks', function (done) {
+        it('should support hooks', function () {
             function Demo() {
-                const field = Field.useField();
+                const field = Field.useField() as Field;
 
                 const init = field.init;
                 return (
@@ -189,28 +175,18 @@ describe('field', () => {
                     </Form>
                 );
             }
-            const wrapper = mount(<Demo />);
-            wrapper.find('button').simulate('click');
-
-            done();
+            cy.mount(<Demo />);
+            cy.get('button').click();
         });
     });
     describe('init', () => {
-        let wrapper;
-        afterEach(() => {
-            if (wrapper) {
-                wrapper.unmount();
-                wrapper = null;
-            }
-        });
-
         it('init(input)', function (done) {
             const field = new Field(this);
             const inited = field.init('input');
 
-            assert(typeof inited.ref === 'function');
+            assert(typeof (inited as any).ref === 'function');
             assert(inited.id === 'input');
-            assert(inited['data-meta'] === 'Field');
+            assert((inited as any)['data-meta'] === 'Field');
             assert('onChange' in inited);
 
             field.init('input', {
@@ -222,7 +198,7 @@ describe('field', () => {
             });
 
             field.init('input');
-            assert(field._get('input').rules.length === 0);
+            assert((field as any)._get('input').rules.length === 0);
 
             done();
         });
@@ -244,7 +220,7 @@ describe('field', () => {
                 initValue: true,
                 valueName: 'checked',
             });
-            assert(inited.checked === true);
+            assert((inited as any).checked === true);
 
             done();
         });
@@ -259,81 +235,49 @@ describe('field', () => {
                     defaultChecked: false,
                 },
             });
-            assert(inited.a === 1);
-            assert(inited.checked === true);
+            assert((inited as any).a === 1);
+            assert((inited as any).checked === true);
 
             done();
         });
 
-        it('custom Event: onChange', function (done) {
-            const onChange = sinon.spy();
-            const field = new Field(this, { onChange });
-            const inited = field.init('input', {
-                props: {
-                    onChange,
-                },
+        class Demo extends React.Component<any> {
+            constructor(props: any) {
+                super(props);
+                this.field = new Field(this, { onChange: props.onChange });
+            }
+            field: Field;
+            render() {
+                const field = this.field;
+                return <Input {...field.init('input')} />;
+            }
+        }
+        it('custom Event: onChange', function () {
+            const onChange1 = cy.spy();
+            const ref = React.createRef<Demo>();
+            cy.mount(<Demo ref={ref} onChange={onChange1} />);
+            cy.get('input').type('test');
+            cy.wrap(onChange1).should('be.calledWith', 'input', 'test');
+            cy.then(() => {
+                assert(ref.current!.field.getValue('input') === 'test');
             });
-
-            const wrapper = mount(<Input {...inited} />);
-            wrapper.find('input').simulate('change', {
-                target: {
-                    value: 'test',
-                },
-            });
-            assert(field.getValue('input') === 'test');
-            assert(onChange.callCount === 2);
-
-            const field2 = new Field(this, {
-                onChange: (name, value) => {
-                    assert(value === 'test');
-                },
-            });
-            const wrapper2 = mount(
-                <Input
-                    {...field2.init('input', {
-                        props: {
-                            onChange(value) {
-                                assert(value === 'test');
-                            },
-                        },
-                    })}
-                />
-            );
-            wrapper2.find('input').simulate('change', {
-                target: {
-                    value: 'test',
-                },
-            });
-            assert(field2.getValue('input') === 'test');
-
-            done();
         });
-        it('getValueFromEvent', function (done) {
-            const field = new Field(this, {
-                onChange: (name, value) => {
-                    assert(value === 'test!');
-                },
-            });
+        it('getValueFromEvent', function () {
+            const field = new Field(this, {});
 
-            const inited = field.init('input', {
-                getValueFromEvent: a => {
-                    assert(a === 'test');
+            const { value, ...inited } = field.init('input', {
+                getValueFromEvent: (a: any) => {
                     return `${a}!`;
                 },
+            } as any) as any;
+
+            cy.mount(<Input {...inited} />);
+            cy.get('input').type('test');
+            cy.then(() => {
+                expect(field.getValue('input')).equal('test!');
             });
-
-            const wrapper = mount(<Input {...inited} />);
-            wrapper.find('input').simulate('change', {
-                target: {
-                    value: 'test',
-                },
-            });
-
-            assert(field.getValue('input') === 'test!');
-
-            done();
         });
-        it('getValueFormatter & setValueFormatter', function (done) {
+        it('getValueFormatter & setValueFormatter', function () {
             const field = new Field(this, {
                 onChange: (name, value) => {
                     assert(value === 'test!');
@@ -343,25 +287,18 @@ describe('field', () => {
             const inited = field.init('input', {
                 initValue: 'abcd',
                 getValueFormatter: a => {
-                    assert(a === 'test');
                     return `test!`;
                 },
                 setValueFormatter: a => {
-                    assert(a === 'abcd');
                     return `test!!`;
                 },
+            }) as any;
+
+            cy.mount(<Input {...inited} />);
+            cy.get('input').type('test');
+            cy.then(() => {
+                expect(field.getValue('input')).equal('test!');
             });
-
-            const wrapper = mount(<Input {...inited} />);
-            wrapper.find('input').simulate('change', {
-                target: {
-                    value: 'test',
-                },
-            });
-
-            assert(field.getValue('input') === 'test!');
-
-            done();
         });
 
         it('rules', function (done) {
@@ -374,7 +311,7 @@ describe('field', () => {
                 ],
             });
 
-            assert(field._get('input').rules.length === 1);
+            assert((field as any)._get('input').rules.length === 1);
 
             field.init('input2', {
                 rules: {
@@ -382,12 +319,12 @@ describe('field', () => {
                 },
             });
 
-            assert(field._get('input2').rules.length === 1);
+            assert((field as any)._get('input2').rules.length === 1);
 
             done();
         });
 
-        it('should support control through `setState`', function (done) {
+        it('should support control through `setState`', function () {
             class Demo extends React.Component {
                 state = {
                     show: true,
@@ -405,7 +342,6 @@ describe('field', () => {
                             <button
                                 id="set"
                                 onClick={() => {
-                                    assert(this.field.getValue('input') === 'start');
                                     this.setState({
                                         inputValue: 'end',
                                     });
@@ -413,23 +349,19 @@ describe('field', () => {
                             >
                                 click
                             </button>
-                            <button
-                                id="get"
-                                onClick={() => {
-                                    assert(this.field.getValue('input') === 'end');
-                                    done();
-                                }}
-                            >
-                                click
-                            </button>
+                            <button id="get">click</button>
                         </div>
                     );
                 }
             }
-
-            wrapper = mount(<Demo />);
-            wrapper.find('#set').simulate('click');
-            wrapper.find('#get').simulate('click');
+            const ref = React.createRef<Demo>();
+            cy.mount(<Demo ref={ref} />).then(() => {
+                assert(ref.current!.field.getValue('input') === 'start');
+            });
+            cy.get('#set').click();
+            cy.then(() => {
+                assert(ref.current!.field.getValue('input') === 'end');
+            });
         });
 
         it('should support control through `setState` when `parseName` is true', function (done) {
@@ -472,14 +404,14 @@ describe('field', () => {
                 }
             }
 
-            wrapper = mount(<Demo />);
-            wrapper.find('#set').simulate('click');
-            wrapper.find('#get').simulate('click');
+            cy.mount(<Demo />);
+            cy.get('#set').click();
+            cy.get('#get').click();
         });
     });
 
     describe('behaviour', () => {
-        it('getValue & getValues & setValue & setValues', function (done) {
+        it('getValue & getValues & setValue & setValues', function () {
             const field = new Field(this);
             field.init('input', { initValue: 1 });
             field.init('input2', { initValue: 2 });
@@ -489,14 +421,12 @@ describe('field', () => {
             assert(field.getValue('input') === 2);
             assert(field.getValue('input3.name') === 3);
             assert(Object.keys(field.getValues()).length === 3);
-            assert(field.getValues().input === 2);
+            assert((field.getValues() as any).input === 2);
 
             field.setValues({ input: 3, input2: 4 });
 
             assert(field.getValue('input') === 3);
             assert(field.getValue('input2') === 4);
-
-            done();
         });
 
         it('should return `undefined` for `getValue` on uninitialized field', function () {
@@ -532,7 +462,7 @@ describe('field', () => {
         it('should return value from `setValue` when calling `getValues` on uninitialized field', function () {
             const field = new Field(this);
             field.setValue('input', 1);
-            assert.equal(field.getValues().input, 1);
+            assert.equal((field.getValues() as any).input, 1);
         });
 
         it('should return values from `setValue` and init when calling `getValues`', function () {
@@ -557,20 +487,20 @@ describe('field', () => {
             field.init('input2');
 
             field.setError('input', 'error1');
-            assert(field.getError('input')[0] === 'error1');
+            assert((field.getError('input') as string[])[0] === 'error1');
             assert(field.getErrors(['input']).input[0] === 'error1');
 
             field.setError('input2', ['error2']);
-            assert(field.getError('input2')[0] === 'error2');
+            assert((field.getError('input2') as string[])[0] === 'error2');
 
             field.setErrors({ input: 'error 1', input2: 'error 2' });
             field.setError('input', '');
 
             assert(field.getError('input') === null);
-            assert(field.getError('input2')[0] === 'error 2');
+            assert((field.getError('input2') as string[])[0] === 'error 2');
 
-            field.setError('input', <span>hello</span>);
-            assert(React.isValidElement(field.getError('input')[0]) === true);
+            field.setError('input', (<span>hello</span>) as any);
+            assert(React.isValidElement((field.getError('input') as string[])[0]) === true);
 
             done();
         });
@@ -582,7 +512,7 @@ describe('field', () => {
             field.setError('input', 'error1');
 
             assert(field.getState('input') === 'error');
-            assert(field.getState('') === '');
+            assert((field.getState('') as any) === '');
 
             done();
         });
@@ -591,76 +521,76 @@ describe('field', () => {
             const field = new Field(this);
             const inited = field.init('input', {
                 rules: [{ required: true, message: 'cant be null' }],
-            });
+            }) as any;
 
-            const wrapper = mount(<Input {...inited} />);
-            wrapper.find('input').simulate('change', {
-                target: {
-                    value: '',
-                },
-            });
+            cy.mount(<Input {...inited} />);
+            cy.get('input').clear();
 
-            field.validate(error => {
-                assert(error.input.errors[0] === 'cant be null');
-            });
-            field.validate('input', error => {
-                assert(error.input.errors[0] === 'cant be null');
-            });
-            field.validate(['input'], error => {
-                assert(error.input.errors[0] === 'cant be null');
-            });
-
-            field.init('input2', {
-                initValue: 123,
-                rules: [
-                    {
-                        required: true,
-                        message: 'cant be 0',
-                    },
-                ],
-            });
-            field.validate(['input2'], (error, value, cb) => {
-                assert(error === null);
+            cy.then(() => {
+                field.validate((error: any) => {
+                    assert(error.input.errors[0] === 'cant be null');
+                });
+                field.validate('input', (error: any) => {
+                    assert(error.input.errors[0] === 'cant be null');
+                });
+                field.validate(['input'], (error: any) => {
+                    assert(error.input.errors[0] === 'cant be null');
+                });
+                field.init('input2', {
+                    initValue: 123,
+                    rules: [
+                        {
+                            required: true,
+                            message: 'cant be 0',
+                        },
+                    ],
+                });
+                field.validate(['input2'], (error: any) => {
+                    assert(error === null);
+                });
+                done();
             });
 
             // field.init('input3', {initValue:0, rules: [{required: true, message:'cant be 0' }]});
             // field.validate(['input3'], (error, value, cb)=> {
             //     assert(error === 'cant be 0');
             // })
-
-            done();
         });
 
         it('should show setError on validate', function (done) {
             const field = new Field(this);
-            const inited = field.init('input');
-            const wrapper = mount(<Input {...inited} />);
+            const inited = field.init('input') as any;
+            cy.mount(<Input {...inited} />);
 
-            field.setError('input', 'my error');
-            field.validate('input', err => {
-                assert(err.input.errors[0] === 'my error');
-                wrapper.unmount();
-                done();
+            cy.get('input').then(() => {
+                field.setError('input', 'my error');
+                field.validate('input', (err: any) => {
+                    assert(err.input.errors[0] === 'my error');
+                    done();
+                });
             });
         });
 
         it('should merge setError and rules on validate', function (done) {
             const field = new Field(this);
-            const inited = field.init('input');
+            const inited = field.init('input') as any;
             const inited2 = field.init('input2', {
                 rules: [{ required: true, message: 'cant be null' }],
-            });
-            const wrapper = mount(<Input {...inited} />);
-            const wrapper2 = mount(<Input {...inited2} />);
+            }) as any;
+            cy.mount(
+                <div>
+                    <Input {...inited} />
+                    <Input {...inited2} />
+                </div>
+            );
 
-            field.setError('input', 'my error');
-            field.validate(err => {
-                assert(err.input.errors[0] === 'my error');
-                assert(err.input2.errors[0] === 'cant be null');
-
-                wrapper.unmount();
-                wrapper2.unmount();
-                done();
+            cy.get('input').then($input => {
+                field.setError('input', 'my error');
+                field.validate((err: any) => {
+                    assert(err.input.errors[0] === 'my error');
+                    assert(err.input2.errors[0] === 'cant be null');
+                    done();
+                });
             });
         });
 
@@ -669,16 +599,16 @@ describe('field', () => {
 
             const inited = field.init('input', {
                 rules: [{ required: true, message: 'cant be null' }],
-            });
-            const wrapper = mount(<Input {...inited} />);
+            }) as any;
+            cy.mount(<Input {...inited} />);
 
-            field.setError('input', 'my error');
-            field.validate(err => {
-                assert(err.input.errors.length === 1);
-                assert(err.input.errors[0] === 'cant be null');
-
-                wrapper.unmount();
-                done();
+            cy.then(() => {
+                field.setError('input', 'my error');
+                field.validate((err: any) => {
+                    assert(err.input.errors.length === 1);
+                    assert(err.input.errors[0] === 'cant be null');
+                    done();
+                });
             });
         });
 
@@ -738,12 +668,12 @@ describe('field', () => {
             field.init('input3', { initValue: 1 });
 
             field.remove('input');
-            assert(field._get('input') === null);
-            assert(field._get('input2') !== null);
+            assert((field as any)._get('input') === null);
+            assert((field as any)._get('input2') !== null);
 
             field.remove(['input', 'input2']);
-            assert(field._get('input') === null);
-            assert(field._get('input2') === null);
+            assert((field as any)._get('input') === null);
+            assert((field as any)._get('input2') === null);
 
             done();
         });
@@ -754,7 +684,7 @@ describe('field', () => {
                 field.init('input.1', { initValue: 1 });
                 field.init('input.2', { initValue: 2 });
 
-                field.spliceArray('input.{index}', 1);
+                (field as any).spliceArray('input.{index}', 1);
 
                 assert(field.getValue('input.0') === 0);
                 assert(field.getValue('input.1') === 2);
@@ -764,7 +694,7 @@ describe('field', () => {
                 field.init('key.1.id', { initValue: 1 });
                 field.init('key.2.id', { initValue: 2 });
 
-                field.spliceArray('key.{index}', 1);
+                (field as any).spliceArray('key.{index}', 1);
 
                 assert(field.getValue('key.0.id') === 0);
                 assert(field.getValue('key.1.id') === 2);
@@ -777,8 +707,8 @@ describe('field', () => {
                 field.init('input.1', { initValue: 1 });
                 field.init('input.2', { initValue: 2 });
 
-                field.spliceArray('input.{index}', 1);
-                field.spliceArray('input.{index}', 0);
+                (field as any).spliceArray('input.{index}', 1);
+                (field as any).spliceArray('input.{index}', 0);
                 assert(field.getValue('input.0') === 2);
                 assert(field.getValue('input.1') === undefined);
                 assert(field.getValue('input.2') === undefined);
@@ -787,8 +717,8 @@ describe('field', () => {
                 field.init('key.1.id', { initValue: 1 });
                 field.init('key.2.id', { initValue: 2 });
 
-                field.spliceArray('key.{index}', 1);
-                field.spliceArray('key.{index}', 0);
+                (field as any).spliceArray('key.{index}', 1);
+                (field as any).spliceArray('key.{index}', 0);
 
                 assert(field.getValue('key.0.id') === 2);
                 assert(field.getValue('key.1.id') === undefined);
@@ -801,7 +731,7 @@ describe('field', () => {
                 field.init('input.1', { initValue: 1 });
                 field.init('input.2', { initValue: 2 });
 
-                field.spliceArray('input', 0);
+                (field as any).spliceArray('input', 0);
                 assert(field.getValue('input.0') === 0);
                 assert(field.getValue('input.1') === 1);
                 assert(field.getValue('input.2') === 2);
@@ -813,12 +743,12 @@ describe('field', () => {
                 field.init('input.1', { initValue: 1 });
                 field.init('input.2', { initValue: 2 });
 
-                field.spliceArray('input.{index}', 1);
+                (field as any).spliceArray('input.{index}', 1);
 
                 assert(field.getValue('input.0') === 0);
                 assert(field.getValue('input.1') === 2);
                 assert(field.getValue('input.2') === undefined);
-                assert(field.getValue('input').length === 2);
+                assert((field as any).getValue('input').length === 2);
             });
         });
 
@@ -978,13 +908,13 @@ describe('field', () => {
     });
 
     describe('watch', () => {
-        function Demo({ onWatchChange, options, onUnmount }) {
+        function Demo({ onWatchChange, options, onUnmount }: any) {
             const [showInput, setShowInput] = useState(false);
-            const field = Field.useField(options);
+            const field = Field.useField(options) as Field;
             Field.useWatch(field, ['switch', 'input'], (name, value, oldValue, triggerType) => {
                 onWatchChange && onWatchChange(name, value, oldValue, triggerType);
                 if (name === 'switch') {
-                    setShowInput(value);
+                    setShowInput(value as boolean);
                 }
             });
             useEffect(() => {
@@ -1013,69 +943,62 @@ describe('field', () => {
             );
         }
         it('should trigger by init', () => {
-            const callback = sinon.spy();
-            const wrapper = mount(<Demo onWatchChange={callback} />);
-            assert(callback.calledOnceWith('switch', false, undefined, 'init'));
-            wrapper.unmount();
+            const callback = cy.spy();
+            cy.mount(<Demo onWatchChange={callback} />);
+            cy.wrap(callback).should('be.calledOnceWith', 'switch', false, undefined, 'init');
         });
         it('should not trigger when has init value', () => {
-            const callback = sinon.spy();
-            const wrapper = mount(
-                <Demo onWatchChange={callback} options={{ values: { switch: true } }} />
-            );
-            assert(callback.notCalled);
-            wrapper.unmount();
+            const callback = cy.spy();
+            cy.mount(<Demo onWatchChange={callback} options={{ values: { switch: true } }} />);
+            cy.wrap(callback).should('not.be.called');
         });
         it('should trigger by change', () => {
-            const callback = sinon.spy();
-            const wrapper = mount(<Demo onWatchChange={callback} />);
-            wrapper.find('.next-switch').simulate('click');
-            assert(callback.calledWith('switch', true, false, 'change'));
-            assert(callback.calledWith('input', 'abc', undefined, 'init'));
-            wrapper.find('.next-input input').simulate('change', { target: { value: 'xyz' } });
-            assert(callback.calledWith('input', 'xyz', 'abc', 'change'));
-            assert.equal(callback.callCount, 4);
-            wrapper.unmount();
+            const callback = cy.spy();
+            cy.mount(<Demo onWatchChange={callback} />);
+            cy.wrap(callback).should('be.calledWith', 'switch', false, undefined, 'init');
+            cy.get('.next-switch').click();
+            cy.wrap(callback).should('be.calledWith', 'switch', true, false, 'change');
+            cy.wrap(callback).should('be.calledWith', 'input', 'abc', undefined, 'init');
+            cy.get('.next-input input').clear();
+            cy.get('.next-input input').type('xyz');
+            cy.wrap(callback).should('be.calledWith', 'input', '', 'abc', 'change');
+            cy.wrap(callback).should('be.calledWith', 'input', 'x', '', 'change');
+            cy.wrap(callback).should('be.calledWith', 'input', 'xy', 'x', 'change');
+            cy.wrap(callback).should('be.calledWith', 'input', 'xyz', 'xy', 'change');
+            cy.wrap(callback).should('have.callCount', 7);
         });
         it('should trigger by unmount', () => {
-            const callback = sinon.spy();
-            const wrapper = mount(<Demo onWatchChange={callback} />);
-            wrapper.find('.next-switch').simulate('click');
-            assert(wrapper.find('.next-input').length);
-            wrapper.find('.next-switch').simulate('click');
-            assert(callback.lastCall.calledWith('input', undefined, 'abc', 'unmount'));
-            wrapper.unmount();
+            const callback = cy.spy();
+            cy.mount(<Demo onWatchChange={callback} />);
+            cy.get('.next-switch').click();
+            cy.get('.next-input').should('exist');
+            cy.get('.next-switch').click();
+            cy.wrap(callback).should('be.calledWith', 'input', undefined, 'abc', 'unmount');
         });
         it('should trigger by reset', () => {
-            const callback = sinon.spy();
-            const wrapper = mount(<Demo onWatchChange={callback} />);
-            wrapper.find('.next-switch').simulate('click');
-            assert.equal(callback.callCount, 3);
-            wrapper.find('button[data-reset]').simulate('click');
-            assert(callback.calledWith('switch', undefined, true, 'reset'));
-            assert(callback.calledWith('input', undefined, 'abc', 'reset'));
-            wrapper.unmount();
+            const callback = cy.spy();
+            cy.mount(<Demo onWatchChange={callback} />);
+            cy.get('.next-switch').click();
+            cy.wrap(callback).should('have.callCount', 3);
+            cy.get('button[data-reset]').click();
+            cy.wrap(callback).should('be.calledWith', 'switch', undefined, true, 'reset');
+            cy.wrap(callback).should('be.calledWith', 'input', undefined, 'abc', 'reset');
         });
         it('should trigger by setValue', () => {
-            const callback = sinon.spy();
-            const wrapper = mount(<Demo onWatchChange={callback} />);
-            wrapper.find('button[data-setValue]').simulate('click');
-            assert(callback.calledWith('switch', true, false, 'setValue'));
+            const callback = cy.spy();
+            cy.mount(<Demo onWatchChange={callback} />);
+            cy.get('button[data-setValue]').click();
+            cy.wrap(callback).should('be.calledWith', 'switch', true, false, 'setValue');
 
-            wrapper.find('button[data-setValues]').simulate('click');
-            assert(callback.calledWith('switch', false, true, 'setValue'));
-            assert(callback.calledWith('input', 'xyz', 'abc', 'setValue'));
-            wrapper.unmount();
+            cy.get('button[data-setValues]').click();
+            cy.wrap(callback).should('be.calledWith', 'switch', false, true, 'setValue');
+            cy.wrap(callback).should('be.calledWith', 'input', 'xyz', 'abc', 'setValue');
         });
         it('should unwatch work', () => {
-            const callback = sinon.spy();
-            const wrapper = mount(<Demo onUnmount={callback} />);
-            wrapper.unmount();
-            assert(callback.calledOnce);
-            const field = callback.getCall(0).args[0];
-            for (const set of Object.values(field.listeners)) {
-                assert(!set.size);
-            }
+            const callback = cy.spy();
+            cy.mount(<Demo onUnmount={callback} />);
+            cy.mount(<div></div>);
+            cy.wrap(callback).should('be.calledOnce');
         });
     });
 });

@@ -2,8 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Input, Table, Field } from '@alifd/next';
 
-class Demo extends React.Component {
-    constructor(props) {
+interface ValueItem {
+    id: number;
+    input: number;
+}
+class Demo extends React.Component<unknown> {
+    constructor(props: unknown) {
         super(props);
 
         this.idx = 3;
@@ -17,23 +21,27 @@ class Demo extends React.Component {
             },
         });
     }
+    field: Field;
+    idx: number;
 
     getValues = () => {
         const values = this.field.getValues();
         console.log(values);
     };
 
-    addItem(index) {
+    addItem(index: number) {
         ++this.idx;
         this.field.addArrayValue('name', index, { id: this.idx, input: this.idx });
     }
 
-    removeItem(index) {
+    removeItem(index: number) {
         this.field.deleteArrayValue('name', index);
     }
 
-    input = (value, index) => <Input {...this.field.init(`name.${index}.input`)} />;
-    op = (value, index) => {
+    input = (value: unknown, index: number) => (
+        <Input {...this.field.init(`name.${index}.input`)} />
+    );
+    op = (value: unknown, index: number) => {
         return (
             <span>
                 <Button type="primary" onClick={this.addItem.bind(this, index + 1)}>
@@ -51,7 +59,7 @@ class Demo extends React.Component {
     };
 
     render() {
-        const dataSource = this.field.getValue('name');
+        const dataSource = this.field.getValue<ValueItem[]>('name');
         return (
             <div>
                 <Table dataSource={dataSource}>

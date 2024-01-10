@@ -69,7 +69,7 @@ class ClassApp extends Component<unknown, { showInput: boolean }> {
 
 function FunctionApp() {
     const [showInput, setShowInput] = useState(false);
-    const field = Field.useField();
+    const field = Field.useField() as Field;
     Field.useWatch(field, ['switch', 'input'], (name, value, oldValue, triggerType) => {
         console.group('[detect change]');
         console.log('name: ', name);
@@ -79,7 +79,7 @@ function FunctionApp() {
 
         if (name === 'switch') {
             // use switch value to control showInput
-            setShowInput(value);
+            setShowInput(value as boolean);
         }
     });
 

@@ -1,19 +1,21 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
-import Field from '@alifd/field';
+import Field, { FieldOption, WatchCallback } from '@alifd/field';
 
 import { log } from '../util';
 import { scrollToFirstError, cloneAndAddKey } from './utils';
+import { FieldExtend, ValidateCallback } from './types';
 
-class NextField extends Field {
-    static useField(options = {}) {
+class NextField extends Field implements FieldExtend {
+    static useField(options: FieldOption = {}): NextField {
         if (!useState || !useMemo) {
             log.warning('need react version > 16.8.0');
+            // @ts-expect-error ...
             return;
         }
-        return this.getUseField({ useMemo, useState })(options);
+        return this.getUseField({ useMemo, useState })(options) as NextField;
     }
 
-    static useWatch(field, names, callback) {
+    static useWatch(field: Field, names: string[], callback: WatchCallback) {
         const callbackRef = useRef(callback);
         callbackRef.current = callback;
 
@@ -32,7 +34,7 @@ class NextField extends Field {
         }, [unwatch]);
     }
 
-    constructor(com, options = {}) {
+    constructor(com: unknown, options: FieldOption = {}) {
         const newOptions = Object.assign({}, options, {
             afterValidateRerender: scrollToFirstError,
             processErrorMessage: cloneAndAddKey,
@@ -42,18 +44,19 @@ class NextField extends Field {
         this.validate = this.validate.bind(this);
     }
 
-    validate(ns, cb) {
-        this.validateCallback(ns, cb);
+    validate(a?: ValidateCallback | string[] | string, b?: object | ValidateCallback) {
+        this.validateCallback(a as string, b as ValidateCallback);
     }
 
-    reset(ns, backToDefault = false) {
+    reset(ns?: string[] | string | undefined | boolean, backToDefault = false) {
         if (ns === true) {
             log.deprecated('reset(true)', 'resetToDefault()', 'Field');
             this.resetToDefault();
         } else if (backToDefault === true) {
             log.deprecated('reset(ns,true)', 'resetToDefault(ns)', 'Field');
-            this.resetToDefault(ns);
+            this.resetToDefault(ns as string[]);
         } else {
+            // @ts-expect-error _reset method is not exposed
             this._reset(ns, false);
         }
     }

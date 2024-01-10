@@ -5,7 +5,10 @@ import { Input, Button, Field } from '@alifd/next';
 import { combineReducers, createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 
-function formReducer(state = { email: 'frankqian@qq.com' }, action) {
+function formReducer(
+    state = { email: 'frankqian@qq.com' },
+    action: { type: string; payload: { [key: string]: string } }
+) {
     switch (action.type) {
         case 'save_fields':
             return {
@@ -17,8 +20,13 @@ function formReducer(state = { email: 'frankqian@qq.com' }, action) {
     }
 }
 
-class Demo extends React.Component {
-    componentWillReceiveProps(nextProps) {
+interface DemoProps {
+    email: string;
+    dispatch: (action: { type: string; payload: { [key: string]: string } }) => void;
+}
+
+class Demo extends React.Component<DemoProps> {
+    componentWillReceiveProps(nextProps: DemoProps) {
         this.field.setValues({
             email: nextProps.email,
             newlen: nextProps.email.length,
@@ -71,7 +79,7 @@ class Demo extends React.Component {
     }
 }
 
-const ReduxDemo = connect(state => {
+const ReduxDemo = connect((state: { formReducer: { email: string } }) => {
     return {
         email: state.formReducer.email,
     };
