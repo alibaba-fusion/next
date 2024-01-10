@@ -33,6 +33,8 @@ export function scrollToFirstError({ errorsGroup, options, instance }) {
                 window.scrollTo(offsetLeft, firstTop + options.scrollToFirstError);
             } else if (firstNode.scrollIntoViewIfNeeded) {
                 firstNode.scrollIntoViewIfNeeded(true);
+            } else {
+                firstNode.scrollIntoView({ block: 'center' });
             }
         }
     }
