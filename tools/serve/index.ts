@@ -13,7 +13,7 @@ import { existsSync, readFileSync, readdirSync } from 'fs-extra';
 import createDocParser from '@alifd/doc-parser';
 import MagicString from 'magic-string';
 import { kebabCase } from 'lodash';
-import { ARGV, SRC_DIR_PATH, TARGETS, logger, parseImportDeclarations } from '../utils';
+import { ARGV, SRC_DIR_PATH, TARGETS, findFile, logger, parseImportDeclarations } from '../utils';
 import { marked } from '../build/docs/utils';
 import { parseDemoMd } from '../build/docs/generate-docs';
 
@@ -31,7 +31,7 @@ let lang: Lang = ARGV.en ? 'en' : 'zh';
 // @ts-expect-error esm import vite
 type VitePlugin = import('vite').Plugin;
 
-const servePlugin = (dirName: string): VitePlugin => {
+const demoPlugin = (dirName: string): VitePlugin => {
     const docParser = createDocParser({});
 
     function loadComponentDoc(name: string): { doc: string; files: string[] } {
@@ -89,14 +89,14 @@ const servePlugin = (dirName: string): VitePlugin => {
     const DEMO_MD_REG = /__docs__\/demo\/[^/]+\/index\.md$/;
     const DEMO_TS_REG = /([^/]+)\/__docs__\/demo\/([^/]+)\/index\.tsx$/;
     return {
-        name: 'next-serve',
+        name: 'next-demo',
         config() {
             return {
                 optimizeDeps: {
                     entries: ['util/index.ts', 'config-provider/config.tsx'].map(n =>
                         resolve(SRC_DIR_PATH, n)
                     ),
-                    include: ['moment/moment.js', 'classnames', 'react-lifecycles-compat'],
+                    include: ['moment/moment.js', 'classnames', 'react-lifecycles-compat', 'md5'],
                 },
                 resolve: {
                     alias: [
@@ -157,6 +157,28 @@ const servePlugin = (dirName: string): VitePlugin => {
             }
             if (id.includes('tools/serve/demo.tsx')) {
                 return code.replace(/['"](__doc|__demos)['"]/g, `'$1_${new Date().getTime()}'`);
+            }
+        },
+    };
+};
+
+const themePlugin = (dirName: string): VitePlugin => {
+    const THEME_REG = /^__theme/;
+    const THEME_VIRTUAL_REG = /^\0__theme/;
+    return {
+        name: 'next-theme',
+        resolveId(source) {
+            if (THEME_REG.test(source)) {
+                return `\0${source}`;
+            }
+        },
+        load(id) {
+            if (THEME_VIRTUAL_REG.test(id)) {
+                const themePath = findFile(resolve(SRC_DIR_PATH, dirName, '__docs__/theme/index'));
+                if (!themePath) {
+                    return `export default () => {}`;
+                }
+                return `export default () => import(${JSON.stringify(themePath)})`;
             }
         },
     };
@@ -224,7 +246,8 @@ const importNextPlugin = (): VitePlugin => {
         },
         plugins: [
             react({ exclude: /tools/ }),
-            servePlugin(DIR_NAME),
+            demoPlugin(DIR_NAME),
+            themePlugin(DIR_NAME),
             importNextPlugin(),
             {
                 name: 'next-apis',
@@ -232,8 +255,7 @@ const importNextPlugin = (): VitePlugin => {
                     return html.replace(/\$lang/g, JSON.stringify(lang));
                 },
                 configureServer(server) {
-                    server.middlewares.use('/changelang', (req, res, next) => {
-                        next();
+                    server.middlewares.use('/changelang.json', (req, res) => {
                         const url = new URL(req.url!, `http://${req.headers.host}`);
                         lang = url.searchParams.get('lang') as Lang;
                         res.setHeader('Content-Type', 'application/json');

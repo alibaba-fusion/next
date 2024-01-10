@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 // @ts-expect-error __doc
 import doc from '__doc';
 // @ts-expect-error __demos
@@ -27,19 +26,29 @@ declare global {
     }
 }
 
-function App() {
+export default function Demo() {
     const nextLang = window.lang === 'zh' ? 'en' : 'zh';
     return (
         <div className="demo">
-            <button
-                className="demo-lang"
-                onClick={() => {
-                    fetch(`/changelang?lang=${nextLang}`);
-                }}
-            >
-                {nextLang}
-            </button>
-            <div className="demo-doc" dangerouslySetInnerHTML={{ __html: doc }}></div>
+            <div className="demo-actions">
+                <button
+                    className="demo-actions-item"
+                    onClick={() => {
+                        fetch(`/changelang.json?lang=${nextLang}`);
+                    }}
+                >
+                    {nextLang}
+                </button>
+                <button
+                    className="demo-actions-item"
+                    onClick={() => {
+                        location.href = '/theme';
+                    }}
+                >
+                    theme
+                </button>
+            </div>
+            <section className="demo-doc" dangerouslySetInnerHTML={{ __html: doc }}></section>
             <br />
             <br />
             <h1>Demos</h1>
@@ -51,6 +60,3 @@ function App() {
         </div>
     );
 }
-
-// eslint-disable-next-line react/no-deprecated
-ReactDOM.render(<App />, document.getElementById('root'));
