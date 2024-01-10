@@ -68,6 +68,7 @@ class App extends React.Component {
                 <Range
                     style={{ ...layout, marginTop: 30 }}
                     slider={'double'}
+                    /* @ts-expect-error Range is not been refractor */
                     scales={10}
                     marks={10}
                     {...init('range', { initValue: [20, 40] })}

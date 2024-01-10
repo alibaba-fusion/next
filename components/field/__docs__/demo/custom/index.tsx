@@ -2,8 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Field } from '@alifd/next';
 
-class Custom extends React.Component {
-    constructor(props) {
+interface CustomProps {
+    value?: any[];
+    onChange?: (value: any[]) => void;
+}
+
+interface CustomState {
+    value: any[];
+}
+class Custom extends React.Component<CustomProps, CustomState> {
+    constructor(props: CustomProps) {
         super(props);
 
         this.state = {
@@ -12,7 +20,7 @@ class Custom extends React.Component {
     }
 
     // update value
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: CustomProps) {
         if ('value' in nextProps) {
             this.setState({
                 value: typeof nextProps.value === 'undefined' ? [] : nextProps.value,
@@ -27,7 +35,7 @@ class Custom extends React.Component {
         this.setState({
             value,
         });
-        this.props.onChange(value);
+        this.props?.onChange?.(value);
     };
 
     render() {
@@ -47,6 +55,7 @@ class Custom extends React.Component {
 /* eslint-disable react/no-multi-comp */
 class App extends React.Component {
     field = new Field(this, {
+        // @ts-expect-error FieldOption has no property 'deepReset'
         deepReset: true,
     });
 

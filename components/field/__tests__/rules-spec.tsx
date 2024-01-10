@@ -1,19 +1,14 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import sinon from 'sinon';
 import Input from '../../input';
 import Field from '../index';
 
-Enzyme.configure({ adapter: new Adapter() });
-
 /* global describe it */
 describe('rules', () => {
-    it('required', function (done) {
+    it('required', function () {
         const field = new Field(this);
-        const inited = field.init('input', {
+        const inited = field.init<string>('input', {
+            initValue: '123',
             rules: [
                 {
                     required: true,
@@ -22,28 +17,23 @@ describe('rules', () => {
             ],
         });
 
-        const wrapper = mount(<Input {...inited} />);
-        wrapper.find('input').simulate('change', {
-            target: {
-                value: '',
-            },
+        cy.mount(<Input {...inited} />);
+        cy.get('input').clear();
+        cy.then(() => {
+            assert((field.getError('input') as string[])[0] === 'cant be null');
         });
 
-        assert(field.getError('input')[0] === 'cant be null');
-
         // validator can't callback when option.rules is an empty Array
-        mount(<Input {...field.init('input', { rules: [] })} />);
-
-        const callback = sinon.spy();
-        field.validate(callback);
-
-        assert(callback.calledOnce === true);
-
-        done();
+        cy.mount(<Input {...field.init('input', { rules: [] })} />);
+        cy.then(() => {
+            const callback = cy.spy();
+            field.validate(callback);
+            expect(callback.calledOnce).equal(true);
+        });
     });
-    it('triger', function (done) {
+    it('triger', function () {
         const field = new Field(this);
-        const inited = field.init('input', {
+        const inited = field.init<string>('input', {
             rules: [
                 {
                     required: true,
@@ -53,12 +43,13 @@ describe('rules', () => {
             ],
         });
 
-        const wrapper = mount(<Input {...inited} />);
-        wrapper.find('input').simulate('blur');
-
-        assert(field.getError('input')[0] === 'cant be null');
-
-        const inited2 = field.init('input2', {
+        cy.mount(<Input {...inited} />);
+        cy.get('input').focus();
+        cy.get('input').blur();
+        cy.then(() => {
+            assert((field.getError('input') as string[])[0] === 'cant be null');
+        });
+        const inited2 = field.init<string>('input2', {
             rules: [
                 {
                     required: true,
@@ -68,16 +59,17 @@ describe('rules', () => {
             ],
         });
 
-        const wrapper2 = mount(<Input {...inited2} />);
-        wrapper2.find('input').simulate('blur');
-
-        assert(field.getError('input2')[0] === 'cannot be null');
-
-        done();
+        cy.mount(<Input {...inited2} />);
+        cy.get('input').focus();
+        cy.get('input').blur();
+        cy.then(() => {
+            assert((field.getError('input2') as string[])[0] === 'cannot be null');
+        });
     });
-    it('validator', function (done) {
+    it('validator', function () {
         const field = new Field(this);
-        const inited = field.init('input', {
+        const inited = field.init<string>('input', {
+            initValue: '123',
             rules: [
                 {
                     validator: (rule, value, callback) => {
@@ -91,14 +83,10 @@ describe('rules', () => {
             ],
         });
 
-        const wrapper = mount(<Input {...inited} />);
-        wrapper.find('input').simulate('change', {
-            target: {
-                value: '',
-            },
+        cy.mount(<Input {...inited} />);
+        cy.get('input').clear();
+        cy.then(() => {
+            assert((field.getError('input') as string[])[0] === '不能为空！');
         });
-
-        assert(field.getError('input')[0] === '不能为空！');
-        done();
     });
 });
