@@ -114,10 +114,7 @@ describe('Collapse', () => {
                         <div>others</div>
                     </Collapse>
                 );
-                wrapper
-                    .find('.next-collapse-panel-title')
-                    .at(2)
-                    .simulate('click');
+                wrapper.find('.next-collapse-panel-title').at(2).simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
 
@@ -132,10 +129,7 @@ describe('Collapse', () => {
                         <div>others</div>
                     </Collapse>
                 );
-                wrapper
-                    .find('.next-collapse-panel-title')
-                    .at(2)
-                    .simulate('click');
+                wrapper.find('.next-collapse-panel-title').at(2).simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
 
@@ -175,10 +169,7 @@ describe('Collapse', () => {
                     },
                 ];
                 const wrapper = mount(<Collapse dataSource={list} defaultExpandedKeys={[1]} />);
-                wrapper
-                    .find('.next-collapse-panel-title')
-                    .at(1)
-                    .simulate('click');
+                wrapper.find('.next-collapse-panel-title').at(1).simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
         });
@@ -225,10 +216,7 @@ describe('Collapse', () => {
                         <div>others</div>
                     </Collapse>
                 );
-                wrapper
-                    .find('.next-collapse-panel-title')
-                    .at(2)
-                    .simulate('click');
+                wrapper.find('.next-collapse-panel-title').at(2).simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
 
@@ -243,10 +231,7 @@ describe('Collapse', () => {
                         <div>others</div>
                     </Collapse>
                 );
-                wrapper
-                    .find('.next-collapse-panel-title')
-                    .at(2)
-                    .simulate('click');
+                wrapper.find('.next-collapse-panel-title').at(2).simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
 
@@ -265,7 +250,9 @@ describe('Collapse', () => {
                             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
                     },
                 ];
-                const wrapper = mount(<Collapse dataSource={list} defaultExpandedKeys={[1]} accordion />);
+                const wrapper = mount(
+                    <Collapse dataSource={list} defaultExpandedKeys={[1]} accordion />
+                );
                 const el = wrapper.find('.next-collapse-panel').at(1);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
@@ -285,11 +272,10 @@ describe('Collapse', () => {
                             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
                     },
                 ];
-                const wrapper = mount(<Collapse dataSource={list} defaultExpandedKeys={[1]} accordion />);
-                wrapper
-                    .find('.next-collapse-panel-title')
-                    .at(1)
-                    .simulate('click');
+                const wrapper = mount(
+                    <Collapse dataSource={list} defaultExpandedKeys={[1]} accordion />
+                );
+                wrapper.find('.next-collapse-panel-title').at(1).simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
         });
@@ -306,20 +292,11 @@ describe('Collapse', () => {
             );
             const wrapper = mount(collapse);
 
-            wrapper
-                .find('.next-collapse-panel-title')
-                .first()
-                .simulate('click');
+            wrapper.find('.next-collapse-panel-title').first().simulate('click');
             assert(wrapper.find('.next-collapse-panel-expanded').length === 1);
-            wrapper
-                .find('.next-collapse-panel-title')
-                .at(1)
-                .simulate('click');
+            wrapper.find('.next-collapse-panel-title').at(1).simulate('click');
             assert(wrapper.find('.next-collapse-panel-expanded').length === 2);
-            wrapper
-                .find('.next-collapse-panel-title')
-                .at(1)
-                .simulate('click');
+            wrapper.find('.next-collapse-panel-title').at(1).simulate('click');
             assert(wrapper.find('.next-collapse-panel-expanded').length === 1);
         });
 
@@ -333,20 +310,11 @@ describe('Collapse', () => {
             );
             const wrapper = mount(collapse);
 
-            wrapper
-                .find('.next-collapse-panel-title')
-                .first()
-                .simulate('keyDown', { keyCode: 32 });
+            wrapper.find('.next-collapse-panel-title').first().simulate('keyDown', { keyCode: 32 });
             assert(wrapper.find('.next-collapse-panel-expanded').length === 1);
-            wrapper
-                .find('.next-collapse-panel-title')
-                .at(1)
-                .simulate('keyDown', { keyCode: 32 });
+            wrapper.find('.next-collapse-panel-title').at(1).simulate('keyDown', { keyCode: 32 });
             assert(wrapper.find('.next-collapse-panel-expanded').length === 2);
-            wrapper
-                .find('.next-collapse-panel-title')
-                .at(1)
-                .simulate('keyDown', { keyCode: 32 });
+            wrapper.find('.next-collapse-panel-title').at(1).simulate('keyDown', { keyCode: 32 });
             assert(wrapper.find('.next-collapse-panel-expanded').length === 1);
         });
         it('should support accordion', () => {
@@ -358,20 +326,11 @@ describe('Collapse', () => {
                 </Collapse>
             );
             const wrapper = mount(collapse);
-            wrapper
-                .find('.next-collapse-panel-title')
-                .first()
-                .simulate('click');
+            wrapper.find('.next-collapse-panel-title').first().simulate('click');
             assert(wrapper.find('.next-collapse-panel-expanded').length === 1);
-            wrapper
-                .find('.next-collapse-panel-title')
-                .at(1)
-                .simulate('click');
+            wrapper.find('.next-collapse-panel-title').at(1).simulate('click');
             assert(wrapper.find('.next-collapse-panel-expanded').length === 1);
-            wrapper
-                .find('.next-collapse-panel-title')
-                .at(2)
-                .simulate('click');
+            wrapper.find('.next-collapse-panel-title').at(2).simulate('click');
             assert(wrapper.find('.next-collapse-panel-expanded').length === 1);
         });
 
@@ -382,10 +341,7 @@ describe('Collapse', () => {
                 </Collapse>
             );
             const wrapper = mount(collapse);
-            wrapper
-                .find('.next-collapse-panel-title')
-                .first()
-                .simulate('click'); //模拟点击
+            wrapper.find('.next-collapse-panel-title').first().simulate('click'); //模拟点击
             assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
         });
 
@@ -399,10 +355,7 @@ describe('Collapse', () => {
                 </Collapse>
             );
             const wrapper = mount(collapse);
-            wrapper
-                .find('.next-collapse-panel-title')
-                .first()
-                .simulate('click'); //模拟点击
+            wrapper.find('.next-collapse-panel-title').first().simulate('click'); //模拟点击
 
             assert(onExpand.calledOnce);
         });
@@ -415,10 +368,7 @@ describe('Collapse', () => {
                 </Collapse>
             );
             const wrapper = mount(collapse);
-            wrapper
-                .find('.next-collapse-panel-title')
-                .first()
-                .simulate('click'); //模拟点击
+            wrapper.find('.next-collapse-panel-title').first().simulate('click'); //模拟点击
 
             assert(wrapper.find('.next-collapse-panel-expanded').length === 1);
         });
