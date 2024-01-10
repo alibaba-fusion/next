@@ -129,7 +129,12 @@ class Collapse extends React.Component {
             isExpanded = String(expandedKeys[0]) === String(key);
         } else {
             isExpanded = expandedKeys.some(expandedKey => {
-                if (expandedKey === null || expandedKey === undefined || key === null || key === undefined) {
+                if (
+                    expandedKey === null ||
+                    expandedKey === undefined ||
+                    key === null ||
+                    key === undefined
+                ) {
                     return false;
                 }
 
