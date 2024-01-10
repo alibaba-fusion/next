@@ -179,7 +179,9 @@
             word-break: break-word;
         }
     }
-
+    #{$table-prefix}-expanded-area {
+        background: $table-th-bg;
+    }
     #{$table-prefix}-expanded,
     #{$table-prefix}-selection {
         #{$table-prefix}-cell-wrapper {

@@ -1426,6 +1426,63 @@ describe('TableScroll', () => {
         const scrollRowTop = scrollRow.getBoundingClientRect().top;
         assert(scrollRowTop >= getBodyTop() - 10);
     });
+
+    // fix https://github.com/alibaba-fusion/next/issues/4304
+    it('should support for aligning table headers when the table is nested, close #4304', async () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = () => {
+            const result = [];
+            for (let i = 0; i < 5; i++) {
+                result.push({
+                    title: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`,
+                    id: 100306660940 + i,
+                    time: 2000 + i,
+                });
+            }
+            return result;
+        };
+        class App extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    dataSource: dataSource(),
+                };
+            }
+            render() {
+                return (
+                    <Table.StickyLock
+                        dataSource={this.state.dataSource}
+                        expandedRowRender={record => {
+                            return (
+                                <Table dataSource={dataSource(5)}>
+                                    <Table.Column title="Id" dataIndex="id" />
+                                    <Table.Column title="Title" dataIndex="title" />
+                                </Table>
+                            );
+                        }}
+                    >
+                        <Table.Column width={200} title="Id" dataIndex="id" />
+                        <Table.Column width={200} title="Title" dataIndex="title" />
+                    </Table.StickyLock>
+                );
+            }
+        }
+
+        ReactDOM.render(<App />, container);
+
+        await delay(200);
+        const prerowNode = container.querySelector('.next-table-expanded.next-table-prerow');
+        assert(prerowNode);
+        const buttonNode = container.querySelector('.first.next-table-expanded.next-table-prerow span');
+        assert(buttonNode);
+        buttonNode.click();
+        await delay(200);
+        const expandedArea = container.querySelector('.next-table-expanded-area');
+        assert(expandedArea);
+        assert(prerowNode.getBoundingClientRect().width - parseFloat(expandedArea.style.paddingLeft) < 1);
+    });
     it('set keepForwardRenderRows to support large rowSpan when useVirtual, close #4395', async () => {
         const datas = j => {
             const result = [];
