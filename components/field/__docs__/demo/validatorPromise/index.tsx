@@ -25,7 +25,7 @@ class App extends React.Component {
     };
     field = new Field(this, { scrollToFirstError: -10 });
 
-    isChecked(rule, value) {
+    isChecked(rule: unknown, value: string) {
         if (!value) {
             return Promise.reject('consent agreement not checked ');
         } else {
@@ -33,7 +33,7 @@ class App extends React.Component {
         }
     }
 
-    userName(rule, value) {
+    userName(rule: unknown, value: string) {
         if (value === 'frank') {
             return new Promise((resolve, reject) => {
                 setTimeout(() => reject('name existed'), 200);
@@ -62,10 +62,11 @@ class App extends React.Component {
                         ],
                     })}
                 />
+                {/* @ts-expect-error @alifd/next state is error */}
                 {this.field.getState('username') === 'loading' ? 'validating...' : ''}
                 {this.field.getError('username') ? (
                     <span style={{ color: 'red' }}>
-                        {this.field.getError('username').join(',')}
+                        {(this.field.getError('username') as string[]).join(',')}
                     </span>
                 ) : (
                     ''
@@ -81,7 +82,7 @@ class App extends React.Component {
                 />
                 {this.field.getError('checkbox') ? (
                     <span style={{ color: 'red' }}>
-                        {this.field.getError('checkbox').join(',')}
+                        {(this.field.getError('checkbox') as string[]).join(',')}
                     </span>
                 ) : (
                     ''
