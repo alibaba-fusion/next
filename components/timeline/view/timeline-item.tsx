@@ -12,6 +12,7 @@ import type { ItemProps } from '../types';
 const { Expand } = Animate;
 /** Timeline.Item */
 class TimelineItem extends Component<ItemProps> {
+    static displayName = 'TimelineItem';
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
