@@ -163,9 +163,9 @@ class RangePanel extends React.Component {
         if (!curDateVal) {
             curDateVal =
                 inputType === BEGIN && end
-                    ? end.subtract(1, 'day')
+                    ? end
                     : inputType === END && begin
-                    ? begin.add(1, 'day')
+                    ? begin
                     : datejs();
         }
         curDateVal = setTime(curDateVal, v);
