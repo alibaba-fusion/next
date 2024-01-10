@@ -4,12 +4,14 @@ import classNames from 'classnames';
 import ConfigProvider from '../../config-provider';
 import Animate from '../../animate';
 import Icon from '../../icon';
-import Button from '../../button';
+import Button, { type ButtonProps } from '../../button';
 import { obj } from '../../util';
+import type { ItemProps } from '../types';
 
+//@ts-expect-error Animate 尚未完成 ts 改造
 const { Expand } = Animate;
 /** Timeline.Item */
-class TimelineItem extends Component {
+class TimelineItem extends Component<ItemProps> {
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -61,15 +63,17 @@ class TimelineItem extends Component {
         animation: true,
     };
 
-    toggleFold(folderIndex) {
-        this.props.toggleFold(folderIndex);
+    'timeline-item'?: HTMLDivElement | null;
+
+    toggleFold(folderIndex: number) {
+        this.props.toggleFold!(folderIndex);
     }
 
     beforeEnter = () => {
-        this['timeline-item'].style['min-height'] = 'auto';
+        this['timeline-item']!.style.setProperty('min-height', 'auto');
     };
     beforeLeave = () => {
-        this['timeline-item'].style['min-height'] = '48px'; // timeleft 节点最小高度
+        this['timeline-item']!.style.setProperty('min-height', '48px'); // timeleft 节点最小高度
     };
     render() {
         const {
@@ -102,12 +106,12 @@ class TimelineItem extends Component {
         const itemCls = classNames({
             [`${prefix}timeline-item`]: true,
             [`${prefix}timeline-item-first`]: index === 0,
-            [`${prefix}timeline-item-last`]: index === total - 1,
+            [`${prefix}timeline-item-last`]: index === total! - 1,
             [`${prefix}timeline-item-${state}`]: state,
             [`${prefix}timeline-item-folded`]: folderIndex,
             [`${prefix}timeline-item-unfolded`]: foldShow,
             [`${prefix}timeline-item-has-left-content`]: timeLeft,
-            [className]: className,
+            [className!]: className,
         });
         const folderCls = classNames({
             [`${prefix}timeline-item-folder`]: true,
@@ -120,10 +124,10 @@ class TimelineItem extends Component {
         const dotTailCls = classNames({
             [`${prefix}timeline-item-dot-tail`]: true,
             [`${prefix}timeline-item-dot-tail-solid`]: foldShow,
-            [`${prefix}timeline-hide`]: index === total - 1 && foldShow,
+            [`${prefix}timeline-hide`]: index === total! - 1 && foldShow,
         });
 
-        const renderTimeLineItemContent = isLeft => {
+        const renderTimeLineItemContent = (isLeft: boolean) => {
             if (isLeft) return <p className={`${prefix}timeline-item-body`}>{timeLeft}</p>;
             return (
                 <React.Fragment>
@@ -134,7 +138,7 @@ class TimelineItem extends Component {
             );
         };
 
-        const buttonProps = {
+        const buttonProps: ButtonProps = {
             text: true,
             size: 'small',
             type: 'primary',
@@ -151,7 +155,7 @@ class TimelineItem extends Component {
                 >
                     <div className={`${prefix}timeline-item-left-content`}>
                         {renderTimeLineItemContent(
-                            className.includes(`${prefix}timeline-item-left`)
+                            className!.includes(`${prefix}timeline-item-left`)
                         )}
                     </div>
                     <div className={`${prefix}timeline-item-timeline`}>
@@ -162,13 +166,13 @@ class TimelineItem extends Component {
                     </div>
                     <div className={`${prefix}timeline-item-content`}>
                         {renderTimeLineItemContent(
-                            !className.includes(`${prefix}timeline-item-left`)
+                            !className!.includes(`${prefix}timeline-item-left`)
                         )}
                     </div>
                 </div>
             ) : null;
         return (
-            <li tabIndex="0">
+            <li tabIndex={0}>
                 {animation && folderIndex ? (
                     <Expand
                         animationAppear={false}
@@ -186,12 +190,12 @@ class TimelineItem extends Component {
                         <div className={dotTailCls} />
                         {foldShow ? (
                             <Button {...buttonProps}>
-                                {locale.fold}
+                                {locale!.fold}
                                 <Icon type="arrow-up" />
                             </Button>
                         ) : (
                             <Button {...buttonProps}>
-                                {locale.expand}
+                                {locale!.expand}
                                 <Icon type="arrow-down" />
                             </Button>
                         )}
@@ -201,4 +205,4 @@ class TimelineItem extends Component {
         );
     }
 }
-export default TimelineItem;
+export default ConfigProvider.config(TimelineItem, {});
