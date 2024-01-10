@@ -11,6 +11,7 @@ import { TimelineProps, TimelineState } from '../types';
 
 /** Timeline */
 class Timeline extends Component<TimelineProps, TimelineState> {
+    static displayName = 'Timeline';
     static Item = Item;
     static propTypes = {
         ...ConfigProvider.propTypes,
@@ -146,7 +147,7 @@ class Timeline extends Component<TimelineProps, TimelineState> {
         );
 
         if (rtl) {
-            others.dir = 'rtl';
+            (others as TimelineProps & { dir: string }).dir = 'rtl';
         }
 
         return (
