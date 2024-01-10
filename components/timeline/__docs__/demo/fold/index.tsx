@@ -4,8 +4,8 @@ import { Timeline, Select } from '@alifd/next';
 
 const TimelineItem = Timeline.Item;
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<any, { timelineAnimation: boolean }> {
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -13,7 +13,7 @@ class Demo extends React.Component {
         };
     }
 
-    onTimelineAnimation = value => {
+    onTimelineAnimation = (value: boolean) => {
         this.setState({ timelineAnimation: value });
     };
 

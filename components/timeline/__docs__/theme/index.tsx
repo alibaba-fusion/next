@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import Timeline from '../../index';
 import ConfigProvider from '../../../config-provider';
@@ -8,7 +9,7 @@ import '../../../demo-helper/style';
 import '../../style';
 
 const TimelineItem = Timeline.Item;
-const parseBool = str => {
+const parseBool = (str: string) => {
     switch (str) {
         case 'true':
             return true;
@@ -18,7 +19,7 @@ const parseBool = str => {
             return true;
     }
 };
-const i18nMap = {
+const i18nMap: Record<string, Record<string, string>> = {
     'zh-cn': {
         basic: '基本',
         normal: '普通',
@@ -65,15 +66,37 @@ const i18nMap = {
         orderContNine: 'Your order is processed',
     },
 };
-const CONTENT_TYPE = {
+const CONTENT_TYPE: Record<string, number> = {
     title: 0,
     'title & content': 1,
     'title & content & time': 2,
     'title & time': 3,
 };
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
+class FunctionDemo extends React.Component<
+    any,
+    {
+        demoFunction: {
+            content: {
+                label: string;
+                value: string;
+                enum: Array<{
+                    value: string;
+                    label: string;
+                }>;
+            };
+            icon: {
+                label: string;
+                value: string;
+                enum: Array<{
+                    value: string;
+                    label: string;
+                }>;
+            };
+        };
+    }
+> {
+    constructor(props: any) {
         super(props);
         this.state = {
             demoFunction: {
@@ -99,12 +122,19 @@ class FunctionDemo extends React.Component {
         };
     }
 
-    onFunctionChange = ret => {
+    onFunctionChange = (ret: any) => {
         this.setState({
             demoFunction: ret,
         });
     };
-    itemRender = ({ flag, index, ...props }) => {
+    itemRender = ({
+        flag,
+        index,
+        ...props
+    }: {
+        flag: { contentType: number; withIcon: boolean };
+        [prop: string]: any;
+    }) => {
         switch (flag.contentType) {
             case 0:
                 delete props.content;
@@ -145,21 +175,21 @@ class FunctionDemo extends React.Component {
                 >
                     <DemoGroup label={i18n.normal}>
                         <Timeline>
-                            {itemData.normalItems.map((v, index) =>
+                            {(itemData.normalItems as any[]).map((v, index) =>
                                 this.itemRender({ ...v, flag, index })
                             )}
                         </Timeline>
                     </DemoGroup>
                     <DemoGroup label={i18n.success}>
                         <Timeline>
-                            {itemData.successItems.map((v, index) =>
+                            {(itemData.successItems as any[]).map((v, index) =>
                                 this.itemRender({ ...v, flag, index })
                             )}
                         </Timeline>
                     </DemoGroup>
                     <DemoGroup label={i18n.error}>
                         <Timeline>
-                            {itemData.errorItems.map((v, index) =>
+                            {(itemData.errorItems as any[]).map((v, index) =>
                                 this.itemRender({ ...v, flag, index })
                             )}
                         </Timeline>
@@ -171,7 +201,7 @@ class FunctionDemo extends React.Component {
                                 { foldArea: [4], foldShow: true },
                             ]}
                         >
-                            {itemData.expandItems.map((v, index) =>
+                            {(itemData.expandItems as any[]).map((v, index) =>
                                 this.itemRender({ ...v, flag, index })
                             )}
                         </Timeline>
@@ -183,7 +213,7 @@ class FunctionDemo extends React.Component {
 }
 
 /* eslint-disable */
-function render(lang) {
+function render(lang: string) {
     const i18n = i18nMap[lang];
     const timeRight = {
             normalItems: [
