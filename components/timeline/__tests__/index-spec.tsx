@@ -41,7 +41,12 @@ describe('Timeline', () => {
 
         it('should render a fold timeline', () => {
             const wrapper = mount(
-                <Timeline fold={[{ foldArea: [1, 2], foldShow: false }, { foldArea: [4], foldShow: false }]}>
+                <Timeline
+                    fold={[
+                        { foldArea: [1, 2], foldShow: false },
+                        { foldArea: [4], foldShow: false },
+                    ]}
+                >
                     <Item content="2016-10-06" state="process" />
                     <Item content="2016-10-05" />
                     <Item content="2016-10-04" />
@@ -65,7 +70,8 @@ describe('Timeline', () => {
                 </Timeline>
             );
             assert(
-                wrapper.find('.next-timeline-item-left').length === wrapper.find('.next-timeline-item-right').length
+                wrapper.find('.next-timeline-item-left').length ===
+                    wrapper.find('.next-timeline-item-right').length
             );
         });
     });
@@ -88,7 +94,12 @@ describe('Timeline', () => {
         it('should support i18n using ConfigProvider', () => {
             wrapper = mount(
                 <ConfigProvider locale={enUS}>
-                    <Timeline fold={[{ foldArea: [1, 2], foldShow: false }, { foldArea: [5], foldShow: false }]}>
+                    <Timeline
+                        fold={[
+                            { foldArea: [1, 2], foldShow: false },
+                            { foldArea: [5], foldShow: false },
+                        ]}
+                    >
                         <TimelineItem
                             title="Sign"
                             content="[Hangzhou] has received the sign, the signer is Alibaba Post Office, thank you for using STO, looking forward to serving you again"
@@ -139,12 +150,7 @@ describe('Timeline', () => {
                 </ConfigProvider>,
                 { attachTo: parent }
             );
-            assert(
-                wrapper
-                    .find('.next-btn-helper')
-                    .at(0)
-                    .text() === 'Expand'
-            );
+            assert(wrapper.find('.next-btn-helper').at(0).text() === 'Expand');
         });
     });
 

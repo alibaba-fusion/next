@@ -36,7 +36,12 @@ describe('Timeline A11y', () => {
 
     it('should not have any violations when using fold', async () => {
         wrapper = await testReact(
-            <Timeline fold={[{ foldArea: [1, 2], foldShow: false }, { foldArea: [4], foldShow: false }]}>
+            <Timeline
+                fold={[
+                    { foldArea: [1, 2], foldShow: false },
+                    { foldArea: [4], foldShow: false },
+                ]}
+            >
                 <Item content="2016-10-06" state="process" />
                 <Item content="2016-10-05" />
                 <Item content="2016-10-04" />
