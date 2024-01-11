@@ -5,7 +5,7 @@ import { polyfill } from 'react-lifecycles-compat';
 import * as classnames from 'classnames';
 import Button from '../button';
 import Icon from '../icon';
-import Menu from '../menu';
+import Menu, { MenuProps } from '../menu';
 import Overlay from '../overlay';
 import ConfigProvider from '../config-provider';
 import { obj, func } from '../util';
@@ -17,6 +17,10 @@ const { Popup } = Overlay;
  * MenuButton
  */
 class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
+    static Item = Menu.Item;
+    static Group = Menu.Group;
+    static Divider = Menu.Divider;
+
     static propTypes = {
         prefix: PropTypes.string,
         label: PropTypes.node,
@@ -73,16 +77,13 @@ class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
 
         return st;
     }
-    menu: HTMLElement | null;
+    menu: HTMLElement | undefined;
 
-    clickMenuItem = (
-        key: string,
-        ...others: [object, React.MouseEvent<HTMLElement, MouseEvent>]
-    ) => {
+    clickMenuItem: MenuProps['onItemClick'] = (key, item, event) => {
         const { selectMode } = this.props;
 
         if (typeof this.props.onItemClick === 'function') {
-            this.props.onItemClick(key, ...others);
+            this.props.onItemClick(key, item, event);
         }
         if (selectMode === 'single') {
             this.onPopupVisibleChange(false, 'menuSelect');
@@ -95,10 +96,7 @@ class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
         this.onPopupVisibleChange(false, 'menuSelect');
     };
 
-    selectMenu = (
-        keys: string[],
-        ...others: [object, React.MouseEvent<HTMLElement, MouseEvent>]
-    ) => {
+    selectMenu: MenuProps['onSelect'] = (keys, ...others) => {
         if (!('selectedKeys' in this.props)) {
             this.setState({
                 selectedKeys: keys,
@@ -127,10 +125,10 @@ class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
         }
     };
 
-    _menuRefHandler = (ref: React.ReactInstance | null | undefined) => {
+    _menuRefHandler = (ref: React.ComponentRef<typeof Menu> | null) => {
         this.menu = findDOMNode(ref) as HTMLElement;
 
-        //@ts-expect-error  menuProps 缺少 ref 类型
+        //@ts-expect-error  menuProps 缺少 ref 类型 React.ComponentRef<typeof Menu> | null
         const refFn = this.props?.menuProps?.ref;
         if (typeof refFn === 'function') {
             refFn(ref);
@@ -202,7 +200,6 @@ class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
                         ref={this._menuRefHandler}
                         selectedKeys={state.selectedKeys}
                         selectMode={selectMode}
-                        // @ts-expect-error 类型为定义
                         onSelect={this.selectMenu}
                         onItemClick={this.clickMenuItem}
                     >
@@ -214,18 +211,8 @@ class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
     }
 }
 
-const WithSubMenuButton = MenuButton as typeof MenuButton & {
-    Item: typeof Menu.Item;
-    Group: typeof Menu.Group;
-    Divider: typeof Menu.Divider;
-};
-
-WithSubMenuButton.Item = Menu.Item;
-WithSubMenuButton.Group = Menu.Group;
-WithSubMenuButton.Divider = Menu.Divider;
-
 export type { MenuButtonProps };
 
-export default ConfigProvider.config(polyfill(WithSubMenuButton), {
+export default ConfigProvider.config(polyfill(MenuButton), {
     componentName: 'MenuButton',
 });
