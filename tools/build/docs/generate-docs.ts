@@ -4,6 +4,7 @@ import fs = require('fs-extra');
 import cheerio = require('cheerio');
 import _ = require('lodash');
 import glob = require('glob');
+import prettier from 'prettier';
 import createDocParser = require('@alifd/doc-parser');
 import { getComponentName, marked, parse, transform } from './utils';
 import { getOnlineDemos } from './gen-demo-insert-scripts';
@@ -301,7 +302,7 @@ function* buildCompiledDocs(cwd: string) {
     yield buildDemoMappingList(to, demoMappingFilePath);
 }
 
-function generateDocsLangFolder() {
+async function generateDocsLangFolder() {
     const components = fs.readdirSync(SRC_DIR_PATH);
     const outputMap = new Map<string, string>();
     fs.removeSync(path.resolve(CWD, LANGDOC_FOLDER));
@@ -349,7 +350,18 @@ function generateDocsLangFolder() {
                 continue;
             }
             const langMetaMap = parseDemoMd(mdPath);
-            const jsCode = fs.existsSync(jsPath) ? fs.readFileSync(jsPath, 'utf-8') : '';
+            let jsCode = fs.existsSync(jsPath) ? fs.readFileSync(jsPath, 'utf-8') : '';
+            if (jsCode) {
+                // 将 ts 代码转换为 js 代码输出到文档
+                const options = await prettier.resolveConfig(
+                    path.resolve(SRC_DIR_PATH, 'index.ts')
+                );
+                jsCode = await prettier.format(await transform(jsCode, 'preserve', 'esm'), {
+                    ...options,
+                    parser: 'typescript',
+                    tabWidth: 2,
+                });
+            }
             const cssCode = fs.existsSync(cssPath) ? fs.readFileSync(cssPath, 'utf-8') : '';
             for (const lang of SUPPORT_LANGS) {
                 const meta = langMetaMap.get(lang);
@@ -380,7 +392,7 @@ function generateDocsLangFolder() {
 }
 
 export default function* () {
-    const targetDir = generateDocsLangFolder();
+    const targetDir = (yield generateDocsLangFolder()) as string;
     try {
         // 编译文档
         yield buildCompiledDocs(cwd);
