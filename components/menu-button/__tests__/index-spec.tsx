@@ -42,12 +42,11 @@ describe('MenuButton', () => {
                     {menu}
                 </MenuButton>
             );
-            cy.get('button.next-menu-btn')
-                .click()
-                .then(() => {
-                    cy.get('.next-menu').should('have.length', 1);
-                    cy.wrap(visible).should('be.true');
-                });
+            cy.get('button.next-menu-btn').click();
+            cy.then(() => {
+                cy.get('.next-menu').should('have.length', 1);
+                cy.wrap(visible).should('be.true');
+            });
         });
 
         it('should select in uncontrolled mode', () => {
