@@ -235,7 +235,7 @@ const importNextPlugin = (): VitePlugin => {
                             newImports.push(
                                 `import ${alias || name} from '${resolve(
                                     SRC_DIR_PATH,
-                                    kebabCase(name)
+                                    kebabCase(name).replace(/-(\d)/g, '$1')
                                 )}'`
                             );
                         });
