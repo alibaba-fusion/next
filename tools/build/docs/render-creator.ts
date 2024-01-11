@@ -1,5 +1,7 @@
 import MagicString from 'magic-string';
-import { parseImportDeclarations, visitCode, warn } from '../../utils';
+import { resolve } from 'path';
+import prettier from 'prettier';
+import { CWD, SRC_DIR_PATH, parseImportDeclarations, visitCode, warn } from '../../utils';
 import { marked, transform } from './utils';
 
 export function getGlobalControl() {
@@ -332,10 +334,7 @@ export async function getDemoRenderScript(
 ) {
     const liveArr = getLiveScript(js);
     const liveVars = liveArr[1];
-    const liveScript = (await transform(liveArr[0], 'preserve'))
-        .replace(/`/g, '\\`')
-        .replace(/\$/g, '\\$')
-        .replace(/\n$/, '');
+    const liveScript = liveArr[0].replace(/`/g, '\\`').replace(/\$/g, '\\$').replace(/\n$/, '');
     return `
 window.${name}RenderScript = function ${name}RenderScript(liveDemo){
     var mountNode = document.getElementById('${name}-mount');

@@ -40,12 +40,12 @@ export function parse(md: string) {
 
 const TSCONFIG_PATH = path.resolve(CWD, 'tsconfig.json');
 
-export async function transform(code: string, jsx?: 'transform' | 'preserve') {
+export async function transform(code: string, jsx: 'transform' | 'preserve' = 'transform', format: 'cjs' | 'esm' = 'cjs') {
     const tsconfig = await getRegularTsconfigJson(fs.readFileSync(TSCONFIG_PATH, 'utf-8'));
     try {
         
         const result = await esbuildTransform(code, {
-            format: 'cjs',
+            format,
             loader: 'tsx',
             jsx,
             tsconfigRaw: JSON.stringify({ compilerOptions: tsconfig.compilerOptions }),
