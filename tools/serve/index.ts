@@ -14,7 +14,7 @@ import createDocParser from '@alifd/doc-parser';
 import MagicString from 'magic-string';
 import { kebabCase } from 'lodash';
 import { glob } from 'glob';
-import { ARGV, SRC_DIR_PATH, TARGETS, findFile, logger, parseImportDeclarations } from '../utils';
+import { ARGV, SRC_DIR_PATH, TARGETS, findFile, logger, parseImportDeclarations, warn } from '../utils';
 import { marked } from '../build/docs/utils';
 import { parseDemoMd } from '../build/docs/generate-docs';
 
@@ -81,6 +81,11 @@ const demoPlugin = (dirName: string): VitePlugin => {
                 cssEntry: existsSync(cssEntryPath) ? cssEntryPath : undefined,
                 jsEntry: existsSync(demoEntryPath) ? demoEntryPath : undefined,
             };
+        }).filter(t => {
+            if (!t.jsEntry) {
+                warn(`Not found demo index.tsx: ${t.id}`)
+            }
+            return !!t.jsEntry
         });
     }
     const SCSS_REG = /^__scss/;
