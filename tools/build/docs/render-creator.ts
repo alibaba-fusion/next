@@ -332,7 +332,7 @@ export async function getDemoRenderScript(
 ) {
     const liveArr = getLiveScript(js);
     const liveVars = liveArr[1];
-    const liveScript = (await transform(liveArr[0]))
+    const liveScript = (await transform(liveArr[0], 'preserve'))
         .replace(/`/g, '\\`')
         .replace(/\$/g, '\\$')
         .replace(/\n$/, '');
