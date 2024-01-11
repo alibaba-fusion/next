@@ -3,8 +3,8 @@ import React from 'react';
 import doc from '__doc';
 // @ts-expect-error __demos
 import demos from '__demos';
+import '__scss';
 import './demo.css';
-import '../../index.scss';
 
 function DemoItem({ id, doc, render }: { id: string; doc: string; render(): void }) {
     React.useEffect(() => {
@@ -38,14 +38,6 @@ export default function Demo() {
                     }}
                 >
                     {nextLang}
-                </button>
-                <button
-                    className="demo-actions-item"
-                    onClick={() => {
-                        location.href = '/theme';
-                    }}
-                >
-                    theme
                 </button>
             </div>
             <section className="demo-doc" dangerouslySetInnerHTML={{ __html: doc }}></section>
