@@ -1,11 +1,11 @@
 import ConfigProvider from '../config-provider';
 import Step from './view/step';
-import type { StepProps } from './types';
+import type { StepProps, ItemProps } from './types';
 
-export type { StepProps };
+export type { StepProps, ItemProps };
 
 export default ConfigProvider.config(Step, {
-    transform: /* istanbul ignore next */ (
+    transform: (
         props: StepProps,
         deprecated: (arg: string, arg2: string, arg3: string) => void
     ) => {

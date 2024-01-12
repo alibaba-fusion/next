@@ -11,7 +11,7 @@ import type { StepProps } from '../types';
 import StepItem from './step-item';
 
 const getHeight = (el: HTMLElement) => dom.getStyle(el, 'height');
-const setHeight = (el: HTMLElement, height: number) => dom.setStyle(el, 'height', height);
+const setHeight = (el: HTMLElement, height: number | string) => dom.setStyle(el, 'height', height);
 type StepState = {
     parentWidth: string;
     parentHeight: string;
@@ -80,20 +80,14 @@ class Step extends Component<StepProps, StepState> {
     static contextTypes = {
         prefix: PropTypes.string,
     };
-    static getDerivedStateFromProps(
-        nextProps: { current: unknown },
-        prevState: { current: unknown }
-    ) {
-        // 计算新的状态...
-        const newState = { current: nextProps.current };
-
-        // 如果没有需要更新的状态，返回 null
-        if (newState.current === prevState.current) {
+    static getDerivedStateFromProps(newProps: StepProps) {
+        if ('current' in newProps) {
+            return {
+                current: newProps.current,
+            };
+        } else {
             return null;
         }
-
-        // 否则，返回新的状态
-        return newState;
     }
     constructor(props: StepProps, context: unknown) {
         super(props, context);
@@ -125,50 +119,34 @@ class Step extends Component<StepProps, StepState> {
         }
     }
 
-    step: unknown;
+    step: React.ReactNode;
 
     adjustHeight() {
         const { shape, direction, prefix, labelPlacement } = this.props;
-        const step = ReactDOM.findDOMNode(this.step as React.ReactInstance);
+        const step = ReactDOM.findDOMNode(this.step as React.ReactInstance) as HTMLElement;
         if (
             shape !== 'arrow' &&
             (direction === 'horizontal' || direction === 'hoz') &&
             (labelPlacement === 'vertical' || labelPlacement === 'ver')
         ) {
-            const height = Array.prototype.slice
-                .call((step as HTMLElement)?.getElementsByClassName(`${prefix}step-item`))
-                .reduce(
-                    (
-                        ret: number,
-                        re: {
-                            getElementsByClassName: (
-                                arg0: string
-                            ) => (
-                                | boolean
-                                | React.ReactChild
-                                | React.ReactFragment
-                                | React.ReactPortal
-                                | null
-                                | undefined
-                            )[];
-                        }
-                    ) => {
-                        const containerElements = re.getElementsByClassName(
-                            `${prefix}step-item-container`
-                        );
-                        const bodyElements = re.getElementsByClassName(`${prefix}step-item-body`);
-                        const itemHeight =
-                            Number(getHeight(containerElements[0] as HTMLElement)) +
-                            Number(getHeight(bodyElements[0] as HTMLElement));
-                        return Math.max(itemHeight, ret);
-                    },
-                    0
-                );
+            // const height = (Array.prototype.slice.call(step) as Element[]).getElementsByClassName(`${prefix}step-item`)
+            const height = (
+                Array.prototype.slice.call(
+                    step.getElementsByClassName(`${prefix}step-item`)
+                ) as Element[]
+            ).reduce((ret, re) => {
+                const containerElements = re.getElementsByClassName(`${prefix}step-item-container`);
+                const bodyElements = re.getElementsByClassName(`${prefix}step-item-body`);
+                const itemHeight =
+                    Number(getHeight(containerElements[0] as HTMLElement)) +
+                    Number(getHeight(bodyElements[0] as HTMLElement));
+                return Math.max(itemHeight, ret);
+            }, 0);
             if (step instanceof HTMLElement) {
                 setHeight(step, height);
             }
         } else {
-            setHeight(step as HTMLElement, 'auto' as unknown as number);
+            setHeight(step, 'auto');
         }
     }
 
@@ -234,7 +212,7 @@ class Step extends Component<StepProps, StepState> {
         return result;
     }
 
-    _stepRefHandler = (ref: unknown) => {
+    _stepRefHandler = (ref: HTMLOListElement | null) => {
         this.step = ref;
     };
 
