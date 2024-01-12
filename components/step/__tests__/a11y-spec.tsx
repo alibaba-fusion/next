@@ -1,12 +1,8 @@
 import * as React from 'react';
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import { testReact } from '../../util/__tests__/a11y/validate';
 import Icon from '../../icon';
 import Step from '../index';
 import '../style';
-
-configure({ adapter: new Adapter() });
 
 const StepItem = Step.Item;
 

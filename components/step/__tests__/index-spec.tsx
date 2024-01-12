@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import { MountReturn } from 'cypress/react';
 import { useState } from 'react';
 import Icon from '../../icon';
 import Button from '../../button/index';
