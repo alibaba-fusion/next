@@ -1,8 +1,7 @@
-/* eslint-disable tsdoc/syntax */
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import * as classNames from 'classnames';
+import classNames from 'classnames';
 import ResizeObserver from 'resize-observer-polyfill';
 import Icon from '../../icon';
 import Progress from '../../progress';
@@ -40,9 +39,9 @@ class StepItem extends React.Component<ItemProps, object> {
         content: PropTypes.node,
         /**
          * StepItem 的自定义渲染, 会覆盖父节点设置的itemRender
-         * @param {Number} index   节点索引
-         * @param {String} status  节点状态
-         * @returns {Node} 节点的渲染结果
+         * @param index - 节点索引
+         * @param status - 节点状态s
+         * @returns  React.ReactNode  -节点的渲染结果
          */
         itemRender: PropTypes.func,
         /**
@@ -60,7 +59,7 @@ class StepItem extends React.Component<ItemProps, object> {
         parentHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         /**
          * 点击步骤时的回调
-         * @param {Number} index 节点索引
+         * @param index -节点索引
          */
         onClick: PropTypes.func,
         /**

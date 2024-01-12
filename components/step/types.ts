@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { CommonProps } from '../util';
 
-export interface ItemProps<T = HTMLElement> extends React.HTMLAttributes<T>, CommonProps {
+type HTMLAttributesWeak<T> = Omit<React.HTMLAttributes<T>, 'content' | 'onClick' | 'title'>;
+
+export interface ItemProps<T = HTMLElement> extends HTMLAttributesWeak<T>, CommonProps {
     index?: number;
     shape?: 'circle' | 'arrow' | 'dot';
     total: number;
-    direction?: 'hoz' | 'ver' | 'vertical' | 'horizontal';
+    direction?: 'hoz' | 'ver' | string;
     onResize?: () => void;
     stretch?: unknown;
     labelPlacement?: unknown;
@@ -47,7 +49,7 @@ export interface ItemProps<T = HTMLElement> extends React.HTMLAttributes<T>, Com
     itemRender?: (
         index: number | undefined,
         status: string | undefined,
-        title?: string,
+        title?: React.ReactNode,
         content?: React.ReactNode
     ) => React.ReactNode;
 
@@ -72,7 +74,7 @@ export interface ItemProps<T = HTMLElement> extends React.HTMLAttributes<T>, Com
     className?: string;
 }
 
-export class Item extends React.Component<ItemProps, unknown> {}
+// export class Item extends React.Component<ItemProps, unknown> {}
 export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 当前步骤
@@ -82,7 +84,7 @@ export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
      * 展示方向
      */
-    direction?: 'hoz' | 'ver' | 'vertical' | 'horizontal';
+    direction?: 'hoz' | 'ver' | string;
     /**
      * 宽度是否横向拉伸
      */
@@ -90,7 +92,7 @@ export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
      * 横向布局时的内容排列
      */
-    labelPlacement?: 'hoz' | 'ver' | 'vertical' | 'horizontal';
+    labelPlacement?: 'hoz' | 'ver' | string;
 
     /**
      * 类型
@@ -116,9 +118,4 @@ export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * StepItem 的自定义渲染
      */
     itemRender?: (index: number, status: string) => React.ReactNode;
-}
-
-// eslint-disable-next-line react/no-multi-comp
-export default class Step extends React.Component<StepProps, unknown> {
-    static Item: typeof Item;
 }

@@ -1,7 +1,7 @@
 /* eslint-disable tsdoc/syntax */
 import * as ReactDOM from 'react-dom';
 import * as PropTypes from 'prop-types';
-import * as classNames from 'classnames';
+import classNames from 'classnames';
 import * as React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import { Component, Children } from 'react';

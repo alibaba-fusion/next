@@ -1,8 +1,28 @@
 import React from 'react';
 import { Types, parseData, NodeType, ContentType } from '@alifd/adaptor-helper';
+import { IContent } from '@alifd/adaptor-helper/types/parse-data';
 import { Step } from '@alifd/next';
 
-const _propsValue = ({ shape, level, location }) => {
+interface adaptorProps {
+    shape: string;
+    level: string;
+    state: 'percent' | 'disabled' | string;
+    location: 'right' | string;
+    width: number | string;
+    height: number | string;
+    style?: React.CSSProperties;
+    others: any;
+    data: any;
+}
+const _propsValue = ({
+    shape,
+    level,
+    location,
+}: {
+    shape: string;
+    level: string;
+    location: string;
+}) => {
     return {
         shape: shape,
         direction: level,
@@ -13,7 +33,7 @@ const _propsValue = ({ shape, level, location }) => {
 export default {
     name: 'Step',
     shape: ['circle', 'arrow', 'dot'],
-    editor: shape => {
+    editor: (shape: string) => {
         if (shape === 'arrow') {
             return {
                 props: [
@@ -92,31 +112,49 @@ export default {
         };
     },
     propsValue: _propsValue,
-    adaptor: ({ shape, level, state, location, width, height, data, style, ...others }) => {
+    adaptor: ({
+        shape,
+        level,
+        state,
+        location,
+        width,
+        height,
+        data,
+        style,
+        ...others
+    }: adaptorProps) => {
         const list = parseData(data, { parseContent: true }).filter(
             ({ type }) => type === NodeType.node
         );
-        const dataSouce = [];
+        const dataSouce: {
+            key: number;
+            icon?: string;
+            title: string;
+            content?: string;
+            disabled: boolean;
+            percent?: number;
+        }[] = [];
+
         let current = 0;
         list.forEach((item, index) => {
-            const { value = '' } = item.value.find(({ type }) => type === ContentType.icon) || {};
+            const { value = '' } =
+                (item.value as IContent[]).find(({ type }) => type === ContentType.icon) || {};
             dataSouce.push({
                 key: index,
                 icon: value,
-                title: item.value
+                title: (item.value as IContent[])
                     .filter(({ type }) => type === ContentType.text)
                     .map(({ value }) => value)
                     .join(''),
                 content:
                     item.children && item.children.length > 0
-                        ? item.children[0].value
+                        ? (item.children[0].value as IContent[])
                               .filter(({ type }) => type === ContentType.text)
                               .map(({ value }) => value)
                               .join('')
                         : '',
                 disabled: state === 'disabled' || item.state === 'disabled',
             });
-
             if (item.state === 'active') {
                 current = index;
             }
@@ -155,7 +193,7 @@ export default {
             </div>
         );
     },
-    demoOptions: demo => {
+    demoOptions: (demo: { node: { props: { level: string; width: number; height: number } } }) => {
         if (demo.node.props.level === 'hoz') {
             demo.node.props = {
                 ...demo.node.props,
