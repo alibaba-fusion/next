@@ -36,7 +36,7 @@ interface IProps {
 }
 interface State {
     currentStep: number;
-    stepType: string;
+    stepType?: 'circle' | 'arrow' | 'dot';
     stepAnimation: boolean;
     labelPlacement: string;
     itemRender?: any;

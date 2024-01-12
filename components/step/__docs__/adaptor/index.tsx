@@ -4,7 +4,7 @@ import { IContent } from '@alifd/adaptor-helper/types/parse-data';
 import { Step } from '@alifd/next';
 
 interface adaptorProps {
-    shape: string;
+    shape?: 'circle' | 'arrow' | 'dot';
     level: string;
     state: 'percent' | 'disabled' | string;
     location: 'right' | string;

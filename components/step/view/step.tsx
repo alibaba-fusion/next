@@ -85,11 +85,10 @@ class Step extends Component<StepProps, StepState> {
             return {
                 current: newProps.current,
             };
-        } else {
-            return null;
         }
+        return null;
     }
-    constructor(props: StepProps, context: unknown) {
+    constructor(props: StepProps) {
         super(props, context);
         this.state = {
             parentWidth: 'auto',
@@ -100,7 +99,6 @@ class Step extends Component<StepProps, StepState> {
     }
 
     componentDidMount() {
-        /* istanbul ignore if */
         if (!support.flex) {
             this.resize();
             events.on(window, 'resize', this.resize);
@@ -113,7 +111,6 @@ class Step extends Component<StepProps, StepState> {
     }
 
     componentWillUnmount() {
-        /* istanbul ignore if */
         if (!support.flex) {
             events.off(window, 'resize', this.resize);
         }
@@ -129,7 +126,6 @@ class Step extends Component<StepProps, StepState> {
             (direction === 'horizontal' || direction === 'hoz') &&
             (labelPlacement === 'vertical' || labelPlacement === 'ver')
         ) {
-            // const height = (Array.prototype.slice.call(step) as Element[]).getElementsByClassName(`${prefix}step-item`)
             const height = (
                 Array.prototype.slice.call(
                     step.getElementsByClassName(`${prefix}step-item`)
