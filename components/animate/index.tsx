@@ -1,8 +1,5 @@
 import Animate from './animate';
-import Expand from './expand';
-import OverlayAnimate from './overlay-animate';
 
-Animate.Expand = Expand;
-Animate.OverlayAnimate = OverlayAnimate;
+export type { AnimateProps, ExpandProps, OverlayAnimateProps } from './types';
 
 export default Animate;

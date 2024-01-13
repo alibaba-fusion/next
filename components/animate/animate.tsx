@@ -1,10 +1,13 @@
-import React, { Component, Children } from 'react';
+import React, { Component, Children, type ReactNode, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { TransitionGroup } from 'react-transition-group';
 import AnimateChild from './child';
+import type { AnimateProps } from './types';
+import Expand from './expand';
+import OverlayAnimate from './overlay-animate';
 
 const noop = () => {};
-const FirstChild = props => {
+const FirstChild = (props: { children: ReactNode }) => {
     const childrenArray = React.Children.toArray(props.children);
     return childrenArray[0] || null;
 };
@@ -12,7 +15,10 @@ const FirstChild = props => {
 /**
  * Animate
  */
-class Animate extends Component {
+class Animate extends Component<AnimateProps> {
+    static Expand = Expand;
+    static OverlayAnimate = OverlayAnimate;
+    static displayName = 'Animate';
     static propTypes = {
         /**
          * 动画 className
@@ -36,47 +42,38 @@ class Animate extends Component {
         children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
         /**
          * 执行第一次挂载动画前触发的回调函数
-         * @param {HTMLElement} node 执行动画的 dom 元素
          */
         beforeAppear: PropTypes.func,
         /**
          * 执行第一次挂载动画，添加 xxx-appear-active 类名后触发的回调函数
-         *  @param {HTMLElement} node 执行动画的 dom 元素
          */
         onAppear: PropTypes.func,
         /**
          * 执行完第一次挂载动画后触发的函数
-         * @param {HTMLElement} node 执行动画的 dom 元素
          */
         afterAppear: PropTypes.func,
         /**
          * 执行进场动画前触发的回调函数
-         * @param {HTMLElement} node 执行动画的 dom 元素
          */
         beforeEnter: PropTypes.func,
         /**
          * 执行进场动画，添加 xxx-enter-active 类名后触发的回调函数
-         * @param {HTMLElement} node 执行动画的 dom 元素
          */
         onEnter: PropTypes.func,
         /**
          * 执行完进场动画后触发的回调函数
-         * @param {HTMLElement} node 执行动画的 dom 元素
          */
         afterEnter: PropTypes.func,
         /**
          * 执行离场动画前触发的回调函数
-         * @param {HTMLElement} node 执行动画的 dom 元素
          */
         beforeLeave: PropTypes.func,
         /**
          * 执行离场动画，添加 xxx-leave-active 类名后触发的回调函数
-         * @param {HTMLElement} node 执行动画的 dom 元素
          */
         onLeave: PropTypes.func,
         /**
          * 执行完离场动画后触发的回调函数
-         * @param {HTMLElement} node 执行动画的 dom 元素
          */
         afterLeave: PropTypes.func,
     };
@@ -96,7 +93,7 @@ class Animate extends Component {
         afterLeave: noop,
     };
 
-    normalizeNames(names) {
+    normalizeNames(names: AnimateProps['animation']) {
         if (typeof names === 'string') {
             return {
                 appear: `${names}-appear`,
@@ -120,7 +117,6 @@ class Animate extends Component {
     }
 
     render() {
-        /* eslint-disable no-unused-vars */
         const {
             animation,
             children,
@@ -138,13 +134,12 @@ class Animate extends Component {
             afterLeave,
             ...others
         } = this.props;
-        /* eslint-enable no-unused-vars */
 
         const animateChildren = Children.map(children, child => {
             return (
                 <AnimateChild
-                    key={child.key}
-                    names={this.normalizeNames(animation)}
+                    key={(child as ReactElement)?.key}
+                    names={this.normalizeNames(animation)!}
                     onAppear={beforeAppear}
                     onAppearing={onAppear}
                     onAppeared={afterAppear}

@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Animate } from '@alifd/next';
 
-class TodoList extends React.Component {
-    constructor(props) {
+class TodoList extends React.Component<any, any> {
+    constructor(props: any) {
         super(props);
         this.state = { items: ['hello', 'world', 'click', 'me'] };
     }
@@ -18,7 +18,7 @@ class TodoList extends React.Component {
         });
     }
 
-    handleRemove(i) {
+    handleRemove(i: number) {
         const newItems = this.state.items.slice();
         newItems.splice(i, 1);
         this.setState({ items: newItems });
@@ -42,7 +42,7 @@ class TodoList extends React.Component {
                     onLeave={() => console.log('leave')}
                     afterLeave={() => console.log('after leave')}
                 >
-                    {this.state.items.map((item, i) => (
+                    {this.state.items.map((item: string, i: number) => (
                         <div key={item}>
                             {item}
                             <button onClick={() => this.handleRemove(i)}>&times;</button>
