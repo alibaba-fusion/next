@@ -1,19 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import assert from 'power-assert';
-import co from 'co';
-import { dom, env } from '../../util';
 import Animate from '../index';
 import './index-spec.scss';
 
-/* eslint-disable react/jsx-filename-extension, react/no-multi-comp, react/prop-types, react/prefer-stateless-function */
-/* global describe, it, beforeEach, afterEach */
-
-const { hasClass, getStyle } = dom;
-const { ieVersion } = env;
-
-class Demo extends React.Component {
+class Demo extends React.Component<any, any> {
     static propTypes = {
         visible: PropTypes.bool,
         expand: PropTypes.bool,
@@ -24,7 +14,7 @@ class Demo extends React.Component {
         expand: false,
     };
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = { visible: props.visible };
         this.handleToggle = this.handleToggle.bind(this);
@@ -37,12 +27,11 @@ class Demo extends React.Component {
     }
 
     render() {
-        // eslint-disable-next-line
         const { visible, expand, ...others } = this.props;
         const A = expand ? Animate.Expand : Animate;
 
         return (
-            <div>
+            <div className="demo-wrapper">
                 <button onClick={this.handleToggle}>Toggle visible</button>
                 <A animation="my-zoom" {...others}>
                     {this.state.visible ? <div className="basic-demo">Next Animate</div> : null}
@@ -52,130 +41,65 @@ class Demo extends React.Component {
     }
 }
 
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
-
 describe('Animate', () => {
-    let mountNode;
-
-    beforeEach(() => {
-        mountNode = document.createElement('div');
-        document.body.appendChild(mountNode);
-    });
-
-    afterEach(() => {
-        ReactDOM.unmountComponentAtNode(mountNode);
-        document.body.removeChild(mountNode);
-    });
-
-    if (ieVersion === 9) {
-        it('should visible and hide immediately', () => {
-            ReactDOM.render(<Demo visible />, mountNode);
-            assert(document.querySelector('.basic-demo'));
-            const btn = document.querySelector('button');
-            btn.click();
-            assert(!document.querySelector('.basic-demo'));
-            btn.click();
-            assert(document.querySelector('.basic-demo'));
-        });
-
-        return;
-    }
-
     it('should play appear animation', () => {
-        return co(function* () {
-            ReactDOM.render(<Demo visible />, mountNode);
-            const demo = document.querySelector('.basic-demo');
-            assert(hasClass(demo, 'my-zoom-appear'));
-            yield delay(15);
-            assert(hasClass(demo, 'my-zoom-appear-active'));
-            yield delay(600);
-            assert(!hasClass(demo, 'my-zoom-appear'));
-            assert(!hasClass(demo, 'my-zoom-appear-active'));
-        });
+        cy.mount(<Demo visible />);
+        cy.get('.basic-demo').should('have.class', 'my-zoom-appear');
+        cy.get('.basic-demo').should('have.class', 'my-zoom-appear-active');
+        cy.get('.basic-demo').should('not.have.class', 'my-zoom-appear');
+        cy.get('.basic-demo').should('not.have.class', 'my-zoom-appear-active');
     });
 
     it('should not play appear animation if set animationAppear to false', () => {
-        return co(function* () {
-            ReactDOM.render(<Demo visible animationAppear={false} />, mountNode);
-            const demo = document.querySelector('.basic-demo');
-            assert(!hasClass(demo, 'my-zoom-appear'));
-            yield delay(15);
-            assert(!hasClass(demo, 'my-zoom-appear-active'));
-        });
+        cy.mount(<Demo visible animationAppear={false} />);
+        cy.get('.basic-demo').should('not.have.class', 'my-zoom-appear');
+        cy.get('.basic-demo').should('not.have.class', 'my-zoom-appear-active');
     });
 
     it('should play enter animation', () => {
-        return co(function* () {
-            ReactDOM.render(<Demo />, mountNode);
-            const btn = document.querySelector('button');
-            btn.click();
-            const demo = document.querySelector('.basic-demo');
-            assert(hasClass(demo, 'my-zoom-enter'));
-            yield delay(15);
-            assert(hasClass(demo, 'my-zoom-enter-active'));
-            yield delay(600);
-            assert(!hasClass(demo, 'my-zoom-enter'));
-            assert(!hasClass(demo, 'my-zoom-enter-active'));
-        });
+        cy.mount(<Demo />);
+        cy.get('button').click();
+        cy.get('.basic-demo').should('have.class', 'my-zoom-enter');
+        cy.get('.basic-demo').should('have.class', 'my-zoom-enter-active');
+        cy.get('.basic-demo').should('not.have.class', 'my-zoom-enter');
+        cy.get('.basic-demo').should('not.have.class', 'my-zoom-enter-active');
     });
 
     it('should play leave animation', () => {
-        return co(function* () {
-            ReactDOM.render(<Demo visible animationAppear={false} />, mountNode);
-            const btn = document.querySelector('button');
-            btn.click();
-            const demo = document.querySelector('.basic-demo');
-            assert(hasClass(demo, 'my-zoom-leave'));
-            yield delay(15);
-            assert(hasClass(demo, 'my-zoom-leave-active'));
-            yield delay(600);
-            assert(!document.querySelector('.basic-demo'));
-        });
+        cy.mount(<Demo visible animationAppear={false} />);
+        cy.get('button').click();
+        cy.get('.basic-demo').should('have.class', 'my-zoom-leave');
+        cy.get('.basic-demo').should('have.class', 'my-zoom-leave-active');
+        cy.get('.basic-demo').should('not.exist');
     });
 
     it('should support passing object to animation property', () => {
-        return co(function* () {
-            ReactDOM.render(
-                <Demo
-                    animation={{
-                        enter: 'my-zoom-in',
-                        leave: 'my-zoom-out',
-                    }}
-                />,
-                mountNode
-            );
-            const btn = document.querySelector('button');
-            btn.click();
-            const demo = document.querySelector('.basic-demo');
-            assert(hasClass(demo, 'my-zoom-in'));
-            yield delay(15);
-            assert(hasClass(demo, 'my-zoom-in-active'));
-            yield delay(600);
-            assert(!hasClass(demo, 'my-zoom-in'));
-            assert(!hasClass(demo, 'my-zoom-in-active'));
-
-            btn.click();
-            assert(hasClass(demo, 'my-zoom-out'));
-            yield delay(15);
-            assert(hasClass(demo, 'my-zoom-out-active'));
-            yield delay(600);
-            assert(!document.querySelector('.basic-demo'));
-        });
+        cy.mount(
+            <Demo
+                animation={{
+                    enter: 'my-zoom-in',
+                    leave: 'my-zoom-out',
+                }}
+            />
+        );
+        cy.get('button').click();
+        cy.get('.basic-demo').should('have.class', 'my-zoom-in');
+        cy.get('.basic-demo').should('have.class', 'my-zoom-in-active');
+        cy.get('.basic-demo').should('not.have.class', 'my-zoom-in');
+        cy.get('.basic-demo').should('not.have.class', 'my-zoom-in-active');
+        cy.get('button').click();
+        cy.get('.basic-demo').should('have.class', 'my-zoom-out');
+        cy.get('.basic-demo').should('have.class', 'my-zoom-out-active');
+        cy.get('.basic-demo').should('not.exist');
     });
 
     it('should play expand animation', () => {
-        return co(function* () {
-            ReactDOM.render(<Demo visible={false} expand animation="expand" />, mountNode);
-            const btn = document.querySelector('button');
-            btn.click();
-            const demo = document.querySelector('.basic-demo');
-            assert(getStyle(demo, 'height') === 0);
-            yield delay(500);
-            assert(getStyle(demo, 'height') === 200);
-
-            btn.click();
-            yield delay(500);
-            assert(!document.querySelector('.basic-demo'));
-        });
+        cy.mount(<Demo visible={false} expand animation="expand" />);
+        cy.get('button').click();
+        cy.get('.demo-wrapper').should('have.css', 'height', '23.5px');
+        cy.get('.demo-wrapper').should('have.css', 'height', '223.5px');
+        cy.get('button').click();
+        cy.get('.basic-demo').should('not.exist');
+        cy.get('button').click();
     });
 });
