@@ -1,9 +1,9 @@
-/* istanbul ignore file */
-import React, { useCallback, useEffect, useState } from 'react';
-import { Transition } from 'react-transition-group';
+import React from 'react';
+import { Transition, type TransitionStatus } from 'react-transition-group';
 import classNames from 'classnames';
+import type { OverlayAnimateProps } from './types';
 
-const OverlayAnimate = props => {
+const OverlayAnimate = (props: OverlayAnimateProps) => {
     const {
         animation,
         visible,
@@ -40,7 +40,7 @@ const OverlayAnimate = props => {
         onExited,
     };
 
-    Object.keys(animateProps).forEach(k => {
+    Object.keys(animateProps).forEach((k: keyof typeof animateProps) => {
         if (!(k in props) || typeof props[k] === 'undefined') {
             delete animateProps[k];
         }
@@ -49,10 +49,10 @@ const OverlayAnimate = props => {
     const animationMap =
         typeof animation === 'string' ? { in: animation, out: animation } : animation;
 
-    const animateClsMap = animation
+    const animateClsMap: Partial<Record<TransitionStatus, string | undefined>> = animation
         ? {
-              entering: animationMap.in,
-              exiting: animationMap.out,
+              entering: (animationMap as Record<'in' | 'out', string>).in,
+              exiting: (animationMap as Record<'in' | 'out', string>).out,
           }
         : {};
 
@@ -65,20 +65,20 @@ const OverlayAnimate = props => {
         <Transition {...animateProps} in={visible} timeout={animation ? timeout : 0} appear>
             {state => {
                 const cls = classNames({
-                    [children.props.className]: !!children.props.className,
-                    [animateClsMap[state]]: state in animateClsMap && animateClsMap[state],
+                    [children!.props.className]: !!children!.props.className,
+                    [animateClsMap[state]!]: state in animateClsMap && animateClsMap[state],
                 });
 
-                const childProps = {
+                const childProps: Record<string, unknown> = {
                     ...others,
                     className: cls,
                 };
 
-                if (style && children.props && children.props.style) {
-                    childProps.style = Object.assign({}, children.props.style, style);
+                if (style && children!.props && children!.props.style) {
+                    childProps.style = Object.assign({}, children!.props.style, style);
                 }
 
-                return React.cloneElement(children, childProps);
+                return React.cloneElement(children!, childProps);
             }}
         </Transition>
     );
