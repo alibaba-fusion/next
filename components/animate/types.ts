@@ -1,15 +1,36 @@
-/// <reference types="react" />
+import React, { type ReactElement, type CSSProperties } from 'react';
+import type { TransitionProps } from 'react-transition-group/Transition';
+import type { TransitionGroupProps } from 'react-transition-group/TransitionGroup';
+import type { CommonProps } from '../util';
 
-import React from 'react';
-import { CommonProps } from '../util';
-import { TransitionProps } from 'react-transition-group/Transition';
-import { TransitionGroupProps } from 'react-transition-group/TransitionGroup';
+export interface AnimateChildProps {
+    names?: Partial<{
+        appear: string;
+        appearActive: string;
+        enter: string;
+        enterActive: string;
+        leave: string;
+        leaveActive: string;
+    }>;
+    onAppear?: (node: HTMLElement) => void;
+    onAppeared?: (node: HTMLElement) => void;
+    onAppearing?: (node: HTMLElement) => void;
+    onEnter?: (node: HTMLElement) => void;
+    onEntering?: (node: HTMLElement) => void;
+    onEntered?: (node: HTMLElement) => void;
+    onExit?: (node: HTMLElement) => void;
+    onExiting?: (node: HTMLElement) => void;
+    onExited?: (node: HTMLElement) => void;
+}
 
+/**
+ * @api Animate
+ */
 export interface AnimateProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 动画 className
      */
-    animation?: string | any;
+    animation?: string | Partial<Record<'appear' | 'enter' | 'leave', string>>;
 
     /**
      * 子元素第一次挂载时是否执行动画
@@ -25,11 +46,6 @@ export interface AnimateProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 是否只有单个子元素，如果有多个子元素，请设置为 false
      */
     singleMode?: boolean;
-
-    /**
-     * 子元素
-     */
-    children?: React.ReactElement<any> | Array<any>;
 
     /**
      * 执行第一次挂载动画前触发的回调函数
@@ -77,4 +93,61 @@ export interface AnimateProps extends React.HTMLAttributes<HTMLElement>, CommonP
     afterLeave?: TransitionProps['onExited'];
 }
 
-export default class Animate extends React.Component<AnimateProps, any> {}
+/**
+ * @api Animate.Expand
+ */
+export interface ExpandProps {
+    /**
+     * 动画 className
+     */
+    animation?: string | Partial<Record<'appear' | 'enter' | 'leave', string>>;
+    /**
+     * 执行进场动画前触发的回调函数
+     */
+    beforeEnter?: (node: HTMLElement) => void;
+    /**
+     * 执行进场动画，添加 xxx-enter-active 类名后触发的回调函数
+     */
+    onEnter?: (node: HTMLElement) => void;
+    /**
+     * 执行完进场动画后触发的回调函数
+     */
+    afterEnter?: (node: HTMLElement) => void;
+
+    /**
+     * 执行离场动画前触发的回调函数
+     */
+    beforeLeave?: TransitionProps['onExit'];
+
+    /**
+     * 执行离场动画，添加 xxx-leave-active 类名后触发的回调函数
+     */
+    onLeave?: TransitionProps['onExiting'];
+
+    /**
+     * 执行完离场动画后触发的回调函数
+     */
+    afterLeave?: TransitionProps['onExited'];
+}
+
+/**
+ * @api Animate.OverlayAnimate
+ */
+export interface OverlayAnimateProps {
+    animation?: string | false | Record<'in' | 'out', string>;
+    visible?: boolean;
+    children?: ReactElement;
+    timeout?: number;
+    style?: CSSProperties;
+    mountOnEnter?: boolean;
+    unmountOnExit?: boolean;
+    onEnter?: (node: HTMLElement, isAppearing: boolean) => void;
+    onEntering?: (node: HTMLElement, isAppearing: boolean) => void;
+    onEntered?: (node: HTMLElement, isAppearing: boolean) => void;
+    onExit?: (node: HTMLElement) => void;
+    onExiting?: (node: HTMLElement) => void;
+    onExited?: (node: HTMLElement) => void;
+    appear?: boolean;
+    enter?: boolean;
+    exit?: boolean;
+}

@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { func, dom } from '../util';
 import Animate from './animate';
+import type { ExpandProps } from './types';
 
 const noop = () => {};
 const { getStyle } = dom;
 
-export default class Expand extends Component {
+export default class Expand extends Component<ExpandProps> {
+    static displayName = 'Expand';
     static propTypes = {
         animation: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
         beforeEnter: PropTypes.func,
@@ -25,8 +27,19 @@ export default class Expand extends Component {
         onLeave: noop,
         afterLeave: noop,
     };
+    leaving: boolean;
+    styleBorderTopWidth: string;
+    stylePaddingTop: string;
+    styleHeight: string;
+    stylePaddingBottom: string;
+    styleBorderBottomWidth: string;
+    borderTopWidth: string | number;
+    paddingTop: string | number;
+    height: number;
+    paddingBottom: string | number;
+    borderBottomWidth: string | number;
 
-    constructor(props) {
+    constructor(props: ExpandProps) {
         super(props);
         func.bindCtx(this, [
             'beforeEnter',
@@ -38,7 +51,7 @@ export default class Expand extends Component {
         ]);
     }
 
-    beforeEnter(node) {
+    beforeEnter(node: HTMLElement) {
         if (this.leaving) {
             this.afterLeave(node);
         }
@@ -47,46 +60,46 @@ export default class Expand extends Component {
         this.cacheComputedStyle(node);
         this.setCurrentStyleToZero(node);
 
-        this.props.beforeEnter(node);
+        this.props.beforeEnter!(node);
     }
 
-    onEnter(node) {
+    onEnter(node: HTMLElement) {
         this.setCurrentStyleToComputedStyle(node);
 
-        this.props.onEnter(node);
+        this.props.onEnter!(node);
     }
 
-    afterEnter(node) {
+    afterEnter(node: HTMLElement) {
         this.restoreCurrentStyle(node);
 
-        this.props.afterEnter(node);
+        this.props.afterEnter!(node);
     }
 
-    beforeLeave(node) {
+    beforeLeave(node: HTMLElement) {
         this.leaving = true;
 
         this.cacheCurrentStyle(node);
         this.cacheComputedStyle(node);
         this.setCurrentStyleToComputedStyle(node);
 
-        this.props.beforeLeave(node);
+        this.props.beforeLeave!(node);
     }
 
-    onLeave(node) {
+    onLeave(node: HTMLElement) {
         this.setCurrentStyleToZero(node);
 
-        this.props.onLeave(node);
+        this.props.onLeave!(node);
     }
 
-    afterLeave(node) {
+    afterLeave(node: HTMLElement) {
         this.leaving = false;
 
         this.restoreCurrentStyle(node);
 
-        this.props.afterLeave(node);
+        this.props.afterLeave!(node);
     }
 
-    cacheCurrentStyle(node) {
+    cacheCurrentStyle(node: HTMLElement) {
         this.styleBorderTopWidth = node.style.borderTopWidth;
         this.stylePaddingTop = node.style.paddingTop;
         this.styleHeight = node.style.height;
@@ -94,7 +107,7 @@ export default class Expand extends Component {
         this.styleBorderBottomWidth = node.style.borderBottomWidth;
     }
 
-    cacheComputedStyle(node) {
+    cacheComputedStyle(node: HTMLElement) {
         this.borderTopWidth = getStyle(node, 'borderTopWidth');
         this.paddingTop = getStyle(node, 'paddingTop');
         this.height = node.offsetHeight;
@@ -102,7 +115,7 @@ export default class Expand extends Component {
         this.borderBottomWidth = getStyle(node, 'borderBottomWidth');
     }
 
-    setCurrentStyleToZero(node) {
+    setCurrentStyleToZero(node: HTMLElement) {
         node.style.borderTopWidth = '0px';
         node.style.paddingTop = '0px';
         node.style.height = '0px';
@@ -110,7 +123,7 @@ export default class Expand extends Component {
         node.style.borderBottomWidth = '0px';
     }
 
-    setCurrentStyleToComputedStyle(node) {
+    setCurrentStyleToComputedStyle(node: HTMLElement) {
         node.style.borderTopWidth = `${this.borderTopWidth}px`;
         node.style.paddingTop = `${this.paddingTop}px`;
         node.style.height = `${this.height}px`;
@@ -118,7 +131,7 @@ export default class Expand extends Component {
         node.style.borderBottomWidth = `${this.borderBottomWidth}px`;
     }
 
-    restoreCurrentStyle(node) {
+    restoreCurrentStyle(node: HTMLElement) {
         node.style.borderTopWidth = this.styleBorderTopWidth;
         node.style.paddingTop = this.stylePaddingTop;
         node.style.height = this.styleHeight;
