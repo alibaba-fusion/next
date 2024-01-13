@@ -46,7 +46,8 @@ const OverlayAnimate = props => {
         }
     });
 
-    const animationMap = typeof animation === 'string' ? { in: animation, out: animation } : animation;
+    const animationMap =
+        typeof animation === 'string' ? { in: animation, out: animation } : animation;
 
     const animateClsMap = animation
         ? {
