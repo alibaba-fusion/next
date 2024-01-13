@@ -161,7 +161,11 @@ class Animate extends Component {
         });
 
         return (
-            <TransitionGroup appear={animationAppear} component={singleMode ? FirstChild : component} {...others}>
+            <TransitionGroup
+                appear={animationAppear}
+                component={singleMode ? FirstChild : component}
+                {...others}
+            >
                 {animateChildren}
             </TransitionGroup>
         );
