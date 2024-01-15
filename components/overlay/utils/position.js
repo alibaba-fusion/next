@@ -201,9 +201,14 @@ export default class Position {
                 pinElementPoints.x +
                 pinElementParentScrollOffset.left;
 
-            this._setPinElementPostion(pinElement, { left, top }, this.offset);
-
-            if (this._isInViewport(pinElement, align)) {
+            // 此处若真实改变元素位置可能为导致布局发生变化，从而导致 container 发生 resize，进而重复触发 postion 和 componentUpdate，导致崩溃
+            // 需要根据新的 left、top 进行模拟计算 isInViewport
+            const xOffset = left + this.offset[0] - dom.getStyle(pinElement, 'left');
+            const yOffset = top + this.offset[1] - dom.getStyle(pinElement, 'top');
+            
+            if (this._isInViewport(pinElement, align, [xOffset, yOffset])) {
+                // 如果在视区内，则设置 pin 位置，并中断 postion 返回设置的位置
+                this._setPinElementPostion(pinElement, { left, top }, this.offset);
                 return align;
             } else if (!firstPositionResult) {
                 if (this.needAdjust && !this.autoFit) {
@@ -443,9 +448,12 @@ export default class Position {
     }
 
     // Detecting element is in the window， we want to adjust position later.
-    _isInViewport(element, align) {
+    _isInViewport(element, align, adjustOffset = []) {
         const viewportSize = _getViewportSize(this.container);
         const elementRect = _getElementRect(element, this.container);
+        const [xOffset = 0, yOffset = 0] = adjustOffset;
+        const left = elementRect.left + xOffset;
+        const top = elementRect.top + yOffset;
         const elementSize = _getSize(element);
 
         // https://github.com/alibaba-fusion/next/issues/853
@@ -457,15 +465,15 @@ export default class Position {
         // 临时方案，在 select + table 的场景下，不需要关注横向上是否在可视区域内
         // 在 balloon 场景下需要关注
         if (this.autoFit) {
-            return elementRect.top >= 0 && elementRect.top + element.offsetHeight <= viewportHeight;
+            return top >= 0 && top + element.offsetHeight <= viewportHeight;
         }
 
         // Avoid animate problem that use offsetWidth instead of getBoundingClientRect.
         return (
-            elementRect.left >= 0 &&
-            elementRect.left + elementSize.width <= viewportWidth &&
-            elementRect.top >= 0 &&
-            elementRect.top + elementSize.height <= viewportHeight
+            left >= 0 &&
+            left + elementSize.width <= viewportWidth &&
+            top >= 0 &&
+            top + elementSize.height <= viewportHeight
         );
     }
 
