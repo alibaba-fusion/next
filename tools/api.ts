@@ -62,8 +62,17 @@ tsdocConfigFile.configureParser(tsdocConfiguration);
 const tsdocParser = new TSDocParser(tsdocConfiguration);
 
 function cleanText(text: string): string;
+function cleanText(text?: null): undefined;
 function cleanText(text?: string | null) {
     return text?.replace(/^[\n\s]+|[\n\s]+$/g, '');
+}
+function upperCaseFirst(text: string): string;
+function upperCaseFirst(text?: null): undefined;
+function upperCaseFirst(text?: string | null) {
+    if (!text) {
+        return undefined;
+    }
+    return text.slice(0, 1).toUpperCase() + text.slice(1);
 }
 
 /**
@@ -143,9 +152,11 @@ function parseTsDoc(text?: string | null) {
     }
     if (customBlocks) {
         customBlocks.forEach(block => {
+            const tag = block.blockTag.tagName;
+            const content = Formatter.renderDocNode(block);
             tags.push({
-                tag: block.blockTag.tagName,
-                content: Formatter.renderDocNode(block),
+                tag,
+                content: tag === '@en' ? upperCaseFirst(content) : content,
             });
         });
     }
@@ -160,7 +171,7 @@ function parseTsDoc(text?: string | null) {
                 tag: '@param',
                 paramName: param.parameterName,
                 content: zh,
-                enContent: en,
+                enContent: upperCaseFirst(en),
             });
         }
     }
@@ -170,7 +181,7 @@ function parseTsDoc(text?: string | null) {
         tags.push({
             tag: returnsBlock.blockTag.tagName,
             content: zh,
-            enContent: en,
+            enContent: upperCaseFirst(en),
         });
     }
     return {
@@ -199,8 +210,8 @@ function createAPI(properties: TSDocMeta['properties'], isEn = false) {
         {
             title: isEn ? 'Description' : '说明',
             render(property) {
-                const { title, enTitle, params, results } = property;
-                const lines = [isEn ? enTitle || title : title].filter(Boolean);
+                const { name, title, enTitle, params, results } = property;
+                const lines = [isEn ? enTitle : title].filter(Boolean);
                 if (params?.length || results) {
                     const signatureLines = [`**${isEn ? 'signature' : '签名'}**:`];
 
@@ -210,15 +221,15 @@ function createAPI(properties: TSDocMeta['properties'], isEn = false) {
                         signatureLines.push(
                             ...params.map(
                                 ({ name, title, enTitle }) =>
-                                    `_${name}_: ${isEn ? enTitle || title : title}`
+                                    `_${name}_: ${isEn ? enTitle || name : title}`
                             )
                         );
                     }
                     if (results) {
-                        signatureLines.push(
-                            `**${isEn ? 'return' : '返回值'}**:`,
-                            isEn ? results.enTitle || results.title : results.title
-                        );
+                        const returnDesc = isEn ? results.enTitle : results.title;
+                        if (returnDesc) {
+                            signatureLines.push(`**${isEn ? 'return' : '返回值'}**:`, returnDesc);
+                        }
                     }
                     lines.push(signatureLines.join('\n'));
                 }
