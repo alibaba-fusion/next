@@ -1,22 +1,37 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-import UIState from '../mixin-ui-state';
+import UIState, { UIStateState } from '../mixin-ui-state';
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
-import withContext from './with-context';
+import withCheckboxContext, { CheckboxContext } from './with-context';
 import { obj, func } from '../util';
+import type { CheckboxProps } from './types';
 
 const noop = func.noop;
-function isChecked(selectedValue, value) {
+function isChecked(
+    selectedValue: CheckboxContext['selectedValue'],
+    value: CheckboxProps['value']
+): boolean {
     return selectedValue.indexOf(value) > -1;
 }
+
+interface CheckboxState extends UIStateState {
+    value?: CheckboxProps['value'];
+    checked?: boolean;
+    indeterminate?: boolean;
+}
+
+export interface PrivateCheckboxProps extends CheckboxProps {
+    context: CheckboxContext;
+}
+
 /**
  * Checkbox
  * @order 1
  */
-class Checkbox extends UIState {
+class Checkbox extends UIState<PrivateCheckboxProps, CheckboxState> {
     static displayName = 'Checkbox';
     static propTypes = {
         ...ConfigProvider.propTypes,
@@ -107,7 +122,7 @@ class Checkbox extends UIState {
         isPreview: false,
     };
 
-    constructor(props) {
+    constructor(props: PrivateCheckboxProps) {
         super(props);
         const { context } = props;
         let checked, indeterminate;
@@ -134,9 +149,9 @@ class Checkbox extends UIState {
         this.onChange = this.onChange.bind(this);
     }
 
-    static getDerivedStateFromProps(nextProps) {
+    static getDerivedStateFromProps(nextProps: PrivateCheckboxProps) {
         const { context: nextContext } = nextProps;
-        const state = {};
+        const state: CheckboxState = {};
         if (nextContext.__group__) {
             if ('selectedValue' in nextContext) {
                 state.checked = isChecked(nextContext.selectedValue, nextProps.value);
@@ -159,7 +174,11 @@ class Checkbox extends UIState {
         return props.disabled || ('disabled' in context && context.disabled);
     }
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
+    shouldComponentUpdate(
+        nextProps: PrivateCheckboxProps,
+        nextState: CheckboxState,
+        nextContext: CheckboxContext
+    ) {
         const { shallowEqual } = obj;
         return (
             !shallowEqual(this.props, nextProps) ||
@@ -168,15 +187,15 @@ class Checkbox extends UIState {
         );
     }
 
-    onChange(e) {
+    onChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { context, value } = this.props;
-        const checked = e.target.checked;
+        const checked = event.target.checked;
 
         if (this.disabled) {
             return;
         }
         if (context.__group__) {
-            context.onChange(value, e);
+            context.onChange(value, event);
         } else {
             if (!('checked' in this.props)) {
                 this.setState({
@@ -189,7 +208,7 @@ class Checkbox extends UIState {
                     indeterminate: false,
                 });
             }
-            this.props.onChange(checked, e);
+            this.props.onChange?.(checked, event);
         }
     }
 
@@ -226,7 +245,7 @@ class Checkbox extends UIState {
             <input
                 {...obj.pickOthers(Checkbox.propTypes, otherProps)}
                 id={id}
-                value={value}
+                value={typeof value === 'boolean' ? String(value) : value}
                 name={name}
                 disabled={disabled}
                 checked={checked}
@@ -241,9 +260,8 @@ class Checkbox extends UIState {
         if (!disabled) {
             childInput = this.getStateElement(childInput);
         }
-        const cls = classnames({
+        const cls = classnames(className, {
             [`${prefix}checkbox-wrapper`]: true,
-            [className]: !!className,
             checked,
             disabled,
             indeterminate,
@@ -256,8 +274,13 @@ class Checkbox extends UIState {
             const previewCls = classnames(className, `${prefix}form-preview`);
             if ('renderPreview' in this.props) {
                 return (
-                    <div id={id} dir={rtl ? 'rtl' : undefined} {...othersData} className={previewCls}>
-                        {renderPreview(checked, this.props)}
+                    <div
+                        id={id}
+                        dir={rtl ? 'rtl' : undefined}
+                        {...othersData}
+                        className={previewCls}
+                    >
+                        {renderPreview?.(checked, this.props)}
                     </div>
                 );
             }
@@ -290,8 +313,8 @@ class Checkbox extends UIState {
                     </span>
                     {childInput}
                 </span>
-                {[label, children].map((item, i) =>
-                    [undefined, null].indexOf(item) === -1 ? (
+                {[label, children].map((item: React.ReactNode | undefined | null, i) =>
+                    item !== undefined && item !== null ? (
                         <span key={i} className={labelCls}>
                             {item}
                         </span>
@@ -302,4 +325,13 @@ class Checkbox extends UIState {
     }
 }
 
-export default ConfigProvider.config(withContext(polyfill(Checkbox)));
+// 这里的 Checkbox as React.ComponentType<PrivateCheckboxProps>)) 是由于 ConfigProvider.propTypes 和 ComponentCommonProps 有冲突导致的
+export default ConfigProvider.config<
+    React.ComponentType<CheckboxProps> & { Group?: React.ComponentType }
+>(
+    withCheckboxContext(
+        polyfill<React.ComponentType<PrivateCheckboxProps>>(
+            Checkbox as React.ComponentType<PrivateCheckboxProps>
+        )
+    )
+);

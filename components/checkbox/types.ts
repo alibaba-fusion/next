@@ -1,23 +1,19 @@
-/// <reference types="react" />
-
-import React from 'react';
+import * as React from 'react';
 import { CommonProps } from '../util';
 
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    defaultValue?: any;
-    onChange?: any;
-}
+interface HTMLAttributesWeak
+    extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange' | 'defaultValue'> {}
 
-type data = {
-    value?: string | number | boolean;
+export type CheckboxData<T extends string | number | boolean = string> = {
+    value: T;
     label?: React.ReactNode;
     disabled?: boolean;
     [propName: string]: any;
 };
 
-export type CheckboxData = data;
-
-export interface GroupProps extends HTMLAttributesWeak, CommonProps {
+export interface GroupProps<T extends string | number | boolean = string>
+    extends HTMLAttributesWeak,
+        CommonProps {
     /**
      * 自定义类名
      */
@@ -38,22 +34,28 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
      */
     isPreview?: boolean;
 
-    renderPreview?: (checked: boolean, props: object) => React.ReactNode;
+    renderPreview?: (
+        checked: {
+            label: string | React.ReactNode;
+            value: string | React.ReactNode;
+        }[],
+        props: object
+    ) => React.ReactNode;
 
     /**
      * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`
      */
-    dataSource?: Array<string> | Array<data> | Array<number>;
+    dataSource?: Array<T> | Array<CheckboxData<T>>;
 
     /**
      * 被选中的值列表
      */
-    value?: Array<string> | Array<number> | Array<boolean> | string | number | boolean;
+    value?: T[] | T;
 
     /**
      * 默认被选中的值列表
      */
-    defaultValue?: Array<string> | Array<number> | Array<boolean> | string | number | boolean;
+    defaultValue?: T[] | T;
 
     /**
      * name
@@ -63,12 +65,12 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 通过子元素方式设置内部 checkbox
      */
-    children?: Array<any>;
+    children?: Array<React.ReactChild>;
 
     /**
      * 选中值改变时的事件
      */
-    onChange?: (value: Array<string> | Array<number> | Array<boolean>, e: any) => void;
+    onChange?: (value: T[], e: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * 子项目的排列方式
@@ -79,18 +81,15 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     itemDirection?: 'hoz' | 'ver';
 }
 
-export class Group extends React.Component<GroupProps, any> {}
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    onChange?: any;
-    onMouseEnter?: any;
-    onMouseLeave?: any;
-}
+export class Group extends React.Component<GroupProps, {}> {}
 
 export interface CheckboxProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义类名
      */
     className?: string;
+
+    renderPreview?: (checked: boolean, props: object) => React.ReactNode;
 
     /**
      * checkbox id, 挂载在input上
@@ -150,19 +149,22 @@ export interface CheckboxProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 状态变化时触发的事件
      */
-    onChange?: (checked: boolean, e: any) => void;
+    onChange?: (
+        checked: boolean,
+        e: React.ChangeEvent<HTMLInputElement | HTMLLabelElement>
+    ) => void;
 
     /**
      * 鼠标进入enter事件
      */
-    onMouseEnter?: (e: React.MouseEvent<HTMLInputElement>) => void;
+    onMouseEnter?: (e: React.MouseEvent<HTMLInputElement | HTMLLabelElement>) => void;
 
     /**
      * 鼠标离开Leave事件
      */
-    onMouseLeave?: (e: React.MouseEvent<HTMLInputElement>) => void;
+    onMouseLeave?: (e: React.MouseEvent<HTMLInputElement | HTMLLabelElement>) => void;
 }
 
-export default class Checkbox extends React.Component<CheckboxProps, any> {
+export default class Checkbox extends React.Component<CheckboxProps, {}> {
     static Group: typeof Group;
 }
