@@ -1,14 +1,23 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import { obj } from '../util';
 import Checkbox from './checkbox';
+import type { CheckboxData, GroupProps } from './types';
+import { clone } from 'lodash';
 
 const { pickOthers } = obj;
 
+interface GroupState<T extends string | number | boolean> {
+    value: T[];
+}
+
 /** Checkbox.Group */
-class CheckboxGroup extends Component {
+class CheckboxGroup<T extends string | number | boolean> extends React.Component<
+    GroupProps<T>,
+    GroupState<T>
+> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -27,15 +36,28 @@ class CheckboxGroup extends Component {
         /**
          * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`
          */
-        dataSource: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.arrayOf(PropTypes.object)]),
+        dataSource: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.arrayOf(PropTypes.object),
+        ]),
         /**
          * 被选中的值列表
          */
-        value: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number, PropTypes.bool]),
+        value: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
         /**
          * 默认被选中的值列表
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number, PropTypes.bool]),
+        defaultValue: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
         /**
          * 通过子元素方式设置内部 checkbox
          */
@@ -83,10 +105,11 @@ class CheckboxGroup extends Component {
         disabled: PropTypes.bool,
     };
 
-    constructor(props) {
+    constructor(props: GroupProps<T>) {
         super(props);
 
-        let value = [];
+        let value: GroupProps<T>['value'] = [];
+        let formatValue: GroupState<T>['value'] = [];
         if ('value' in props) {
             value = props.value;
         } else if ('defaultValue' in props) {
@@ -94,13 +117,19 @@ class CheckboxGroup extends Component {
         }
         if (!Array.isArray(value)) {
             if (value === null || value === undefined) {
-                value = [];
-            } else {
-                value = [value];
+                formatValue = [];
+            } else if (typeof value === 'string') {
+                formatValue = [value];
+            } else if (typeof value === 'number') {
+                formatValue = [value];
+            } else if (typeof value === 'boolean') {
+                formatValue = [value];
             }
+        } else {
+            formatValue = value;
         }
         this.state = {
-            value: [...value],
+            value: formatValue,
         };
 
         this.onChange = this.onChange.bind(this);
@@ -115,27 +144,34 @@ class CheckboxGroup extends Component {
         };
     }
 
-    static getDerivedStateFromProps(nextProps) {
+    static getDerivedStateFromProps<T extends string | number | boolean>(nextProps: GroupProps<T>) {
         if ('value' in nextProps) {
             let { value } = nextProps;
+            let formatValue: GroupState<T>['value'] = [];
             if (!Array.isArray(value)) {
                 if (value === null || value === undefined) {
-                    value = [];
-                } else {
-                    value = [value];
+                    formatValue = [];
+                } else if (typeof value === 'string') {
+                    formatValue = [value];
+                } else if (typeof value === 'number') {
+                    formatValue = [value];
+                } else if (typeof value === 'boolean') {
+                    formatValue = [value];
                 }
+            } else {
+                formatValue = value;
             }
 
-            return { value };
+            return { value: formatValue };
         }
 
         return null;
     }
 
-    onChange(currentValue, e) {
+    onChange(currentValue: T, event: React.ChangeEvent<HTMLInputElement>) {
         const { value } = this.state;
         const index = value.indexOf(currentValue);
-        const valTemp = [...value];
+        const valTemp = clone(value);
 
         if (index === -1) {
             valTemp.push(currentValue);
@@ -146,41 +182,57 @@ class CheckboxGroup extends Component {
         if (!('value' in this.props)) {
             this.setState({ value: valTemp });
         }
-        this.props.onChange(valTemp, e);
+        this.props.onChange?.(valTemp, event);
     }
 
     render() {
-        const { className, style, prefix, disabled, direction, rtl, isPreview, renderPreview } = this.props;
+        const { className, style, prefix, disabled, direction, rtl, isPreview, renderPreview } =
+            this.props;
         const others = pickOthers(CheckboxGroup.propTypes, this.props);
 
         // 如果内嵌标签跟dataSource同时存在，以内嵌标签为主
         let children;
-        const previewed = [];
+        const previewed: {
+            label: string | React.ReactNode;
+            value: string | React.ReactNode;
+        }[] = [];
         if (this.props.children) {
-            children = React.Children.map(this.props.children, child => {
-                if (!React.isValidElement(child)) {
-                    return child;
-                }
-                const checked = this.state.value && this.state.value.indexOf(child.props.value) > -1;
+            children = React.Children.map(
+                this.props.children,
+                (
+                    child: React.ReactElement<{
+                        value: T;
+                        children?: string;
+                        rtl?: boolean;
+                    }>
+                ) => {
+                    if (!React.isValidElement(child)) {
+                        return child;
+                    }
+                    const checked =
+                        this.state.value && this.state.value.indexOf(child.props?.value) > -1;
 
-                if (checked) {
-                    previewed.push({
-                        label: child.props.children,
-                        value: child.props.value,
-                    });
-                }
+                    if (checked) {
+                        previewed.push({
+                            label: child.props?.children,
+                            value: child.props?.value,
+                        });
+                    }
 
-                return React.cloneElement(child, child.props.rtl === undefined ? { rtl } : null);
-            });
+                    return React.cloneElement(child, child.props?.rtl === undefined ? { rtl } : {});
+                }
+            );
         } else {
-            children = this.props.dataSource.map((item, index) => {
-                let option = item;
+            children = this.props.dataSource?.map((item, index) => {
+                let option: CheckboxData<T>;
                 if (typeof item !== 'object') {
                     option = {
                         label: item,
                         value: item,
                         disabled,
                     };
+                } else {
+                    option = item;
                 }
                 const checked = this.state.value && this.state.value.indexOf(option.value) > -1;
 
@@ -210,7 +262,7 @@ class CheckboxGroup extends Component {
             if ('renderPreview' in this.props) {
                 return (
                     <div {...others} dir={rtl ? 'rtl' : undefined} className={previewCls}>
-                        {renderPreview(previewed, this.props)}
+                        {renderPreview?.(previewed, this.props)}
                     </div>
                 );
             }
@@ -222,10 +274,9 @@ class CheckboxGroup extends Component {
             );
         }
 
-        const cls = classnames({
+        const cls = classnames(className, {
             [`${prefix}checkbox-group`]: true,
             [`${prefix}checkbox-group-${direction}`]: true,
-            [className]: !!className,
             disabled,
         });
 
@@ -237,4 +288,6 @@ class CheckboxGroup extends Component {
     }
 }
 
-export default polyfill(CheckboxGroup);
+export default polyfill<React.ComponentType<GroupProps>>(
+    CheckboxGroup as React.ComponentType<GroupProps>
+);
