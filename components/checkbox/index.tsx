@@ -15,4 +15,6 @@ Checkbox.Group = ConfigProvider.config(Group, {
     },
 });
 
+export type { CheckboxProps, GroupProps } from './types';
+
 export default Checkbox;
