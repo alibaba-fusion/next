@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import SubMenu from './sub-menu';
+import isEqual from 'lodash.isequal';
 import ConfigProvider from '../../config-provider';
 import { func, obj, dom, events, KEYCODE } from '../../util';
 import { getWidth, normalizeToArray, isSibling, isAncestor, isAvailablePos, getFirstAvaliablelChildKey } from './util';
@@ -57,7 +58,7 @@ const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
         }
         let overflowedItems = [];
 
-        if (index > lastVisibleIndex) {
+        if (index >= lastVisibleIndex) {
             child = React.cloneElement(child, {
                 // 别折叠不显示的 item，不占用真实的用户传入的 key
                 key: `more-${index}`,
@@ -479,7 +480,6 @@ class Menu extends Component {
 
     componentDidMount() {
         this.menuNode = findDOMNode(this);
-
         this.adjustChildrenWidth();
 
         if (this.props.hozInLine) {
@@ -491,6 +491,9 @@ class Menu extends Component {
         if (prevState.lastVisibleIndex !== this.state.lastVisibleIndex) {
             this.adjustChildrenWidth();
         }
+        if (!isEqual(this.props.children, prevProps.children)) {
+            this.adjustChildrenWidth();
+        }
     }
 
     componentWillUnmount() {
@@ -498,12 +501,15 @@ class Menu extends Component {
     }
 
     adjustChildrenWidth() {
+        
         const { direction, prefix, header, footer, hozInLine } = this.props;
         if (direction !== 'hoz' || !hozInLine) {
+            
             return;
         }
 
         if (!this.menuNode && !this.menuContent) {
+            
             return;
         }
 
@@ -511,11 +517,13 @@ class Menu extends Component {
             spaceWidth;
 
         if (header || footer) {
+            
             children = this.menuContent.children;
             spaceWidth = getWidth(this.menuNode) - getWidth(this.menuHeader) - getWidth(this.menuFooter);
         } else {
             children = this.menuNode.children;
             spaceWidth = getWidth(this.menuNode);
+            console.log(children)
         }
 
         if (children.length < 2) {

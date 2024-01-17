@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -977,6 +977,52 @@ describe('Menu', () => {
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
+
+    it('should show renderMore when hozInLine & async load more items ', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        const items = [];
+        for (let i = 0; i < 50; i++) {
+          items.push(i);
+        }
+        function App() {
+          const [categoryList, setCategoryList] = useState(items);
+          useEffect(() => {
+            setCategoryList(items);
+          }, []);
+        
+          return (
+            <Menu
+              hozInLine
+              direction="hoz"
+              triggerType="hover"
+              mode="popup"
+              popupAutoWidth
+            >
+              {categoryList.map((index, v) => (
+                <SubMenu label="Sub Nav" key={index}>
+                  <Item key="sub-12">Sub option 1</Item>
+                  <Item key="sub-22">Sub option 2</Item>
+                </SubMenu>
+              ))}
+            </Menu>
+          );
+        }
+
+        ReactDOM.render(
+            <App/>,
+            div
+        );
+
+        const menu = document.querySelector('.next-menu.next-hoz');
+        assert(menu.querySelectorAll('li.next-menu-more.rendermore-class'));
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
+
+
 
     it('should support hozInLine with header&footer in hoz', () => {
         const div = document.createElement('div');
