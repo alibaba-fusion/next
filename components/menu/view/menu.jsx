@@ -504,12 +504,10 @@ class Menu extends Component {
         
         const { direction, prefix, header, footer, hozInLine } = this.props;
         if (direction !== 'hoz' || !hozInLine) {
-            
             return;
         }
 
         if (!this.menuNode && !this.menuContent) {
-            
             return;
         }
 
@@ -523,7 +521,6 @@ class Menu extends Component {
         } else {
             children = this.menuNode.children;
             spaceWidth = getWidth(this.menuNode);
-            console.log(children)
         }
 
         if (children.length < 2) {

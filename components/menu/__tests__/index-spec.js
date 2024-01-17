@@ -1015,8 +1015,10 @@ describe('Menu', () => {
             div
         );
 
-        const menu = document.querySelector('.next-menu.next-hoz');
-        assert(menu.querySelectorAll('li.next-menu-more.rendermore-class'));
+        const menu = document.querySelector('.next-menu');
+        assert(menu.querySelectorAll('li.next-menu-item').length === 52);
+        assert(menu.querySelectorAll('li.next-menu-item.next-menu-more').length === 2);
+        assert(menu.querySelectorAll('li.menuitem-overflowed').length > 1);
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
