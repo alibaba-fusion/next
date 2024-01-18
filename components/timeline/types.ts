@@ -11,7 +11,7 @@ export interface ItemProps extends Omit<HTMLAttributesWeak, 'content' | 'title'>
     /**
      * 节点状态
      * @en node state
-     * @defaultValue done
+     * @defaultValue 'done'
      */
     state?: 'done' | 'process' | 'error' | 'success';
 
@@ -60,7 +60,7 @@ export interface ItemProps extends Omit<HTMLAttributesWeak, 'content' | 'title'>
     /**
      * 展示的模式，left 为左，alternate 为交替显示
      * @en show mode
-     * @defaultValue left
+     * @defaultValue 'left'
      * @version 1.23.18
      */
     mode?: 'left' | 'alternate';
@@ -88,7 +88,7 @@ export interface ItemProps extends Omit<HTMLAttributesWeak, 'content' | 'title'>
     foldShow?: boolean;
 }
 
-type foldItem = {
+export type FoldItem = {
     /**
      * [startIndex, endIndex] or [startIndex] 到最后一个节点
      */
@@ -106,7 +106,7 @@ export interface TimelineProps extends React.HTMLAttributes<HTMLElement>, Common
      * @en custom folding options
      * @example `[{foldArea: [startIndex, endIndex], foldShow: boolean}]`
      */
-    fold?: Array<foldItem>;
+    fold?: Array<FoldItem>;
     /**
      * 自定义类名
      * @en custom className
@@ -121,7 +121,7 @@ export interface TimelineProps extends React.HTMLAttributes<HTMLElement>, Common
     /**
      * 展示的模式，left 为左，alternate 为交替显示
      * @en show mode
-     * @defaultValue left
+     * @defaultValue 'left'
      * @version 1.23.18
      */
     mode?: 'left' | 'alternate';

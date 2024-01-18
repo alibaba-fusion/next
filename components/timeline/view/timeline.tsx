@@ -6,35 +6,20 @@ import { polyfill } from 'react-lifecycles-compat';
 import { obj } from '../../util';
 import ConfigProvider from '../../config-provider';
 import nextLocale from '../../locale/zh-cn';
-import Item from './timeline-item';
-import { TimelineProps, TimelineState } from '../types';
+import type { TimelineProps, TimelineState } from '../types';
 
 /** Timeline */
 class Timeline extends Component<TimelineProps, TimelineState> {
     static displayName = 'Timeline';
-    static Item = Item;
     static propTypes = {
         ...ConfigProvider.propTypes,
-        /**
-         * 样式的品牌前缀
-         */
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 自定义折叠选项 示例`[{foldArea: [startIndex, endIndex], foldShow: boolean}]`
-         */
         fold: PropTypes.array,
-        /**
-         * 自定义类名
-         */
         className: PropTypes.string,
         children: PropTypes.any,
         locale: PropTypes.object,
         animation: PropTypes.bool,
-        /**
-         * 展示的模式
-         * @version 1.23.18
-         */
         mode: PropTypes.oneOf(['left', 'alternate']),
     };
 

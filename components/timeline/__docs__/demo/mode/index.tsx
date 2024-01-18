@@ -4,14 +4,12 @@ import { Timeline, Select } from '@alifd/next';
 
 const TimelineItem = Timeline.Item;
 
-class Demo extends React.Component<any, any> {
-    constructor(props: any) {
-        super(props);
-
-        this.state = {
-            mode: 'alternate',
-        };
-    }
+class Demo extends React.Component {
+    state: {
+        mode: 'alternate' | 'left';
+    } = {
+        mode: 'alternate',
+    };
 
     onTimelineMode = (value: string) => {
         this.setState({ mode: value });

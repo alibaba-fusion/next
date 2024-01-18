@@ -4,14 +4,10 @@ import { Timeline, Select } from '@alifd/next';
 
 const TimelineItem = Timeline.Item;
 
-class Demo extends React.Component<any, { timelineAnimation: boolean }> {
-    constructor(props: any) {
-        super(props);
-
-        this.state = {
-            timelineAnimation: true,
-        };
-    }
+class Demo extends React.Component {
+    state = {
+        timelineAnimation: true,
+    };
 
     onTimelineAnimation = (value: boolean) => {
         this.setState({ timelineAnimation: value });

@@ -22,7 +22,6 @@ describe('Timeline', () => {
         });
 
         it('should render a timeline with timeLeft', () => {
-            // 涉及到子组件的渲染，不能用 shallow，改用 mount
             cy.mount(
                 <Timeline>
                     <Item timeLeft="2017-10-23" content="2016-10-03" state="process" title="签收" />
