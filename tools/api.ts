@@ -50,7 +50,11 @@ interface TSDocMeta {
     order?: string | number;
     apiMode?: boolean;
     summary?: string;
+    summaryEn?: string;
     remarks?: string;
+    remarksEn?: string;
+    example?: string;
+    exampleEn?: string;
     type?: string;
     properties?: Array<TSDocPropertyMeta>;
 }
@@ -62,12 +66,14 @@ tsdocConfigFile.configureParser(tsdocConfiguration);
 const tsdocParser = new TSDocParser(tsdocConfiguration);
 
 function cleanText(text: string): string;
-function cleanText(text?: null): undefined;
+function cleanText(text?: null | undefined): undefined;
+function cleanText(text?: string | null | undefined): string | undefined;
 function cleanText(text?: string | null) {
     return text?.replace(/^[\n\s]+|[\n\s]+$/g, '');
 }
 function upperCaseFirst(text: string): string;
-function upperCaseFirst(text?: null): undefined;
+function upperCaseFirst(text?: null | undefined): undefined;
+function upperCaseFirst(text?: string | null | undefined): string | undefined;
 function upperCaseFirst(text?: string | null) {
     if (!text) {
         return undefined;
@@ -117,8 +123,9 @@ function getMultiLineCommentText(code: string, start: number) {
     return code.slice(multiLineComment.pos, multiLineComment.end);
 }
 
-function parseCombineLang(text: string) {
-    const [, zh, en] = text.match(/(.+)\s*(?<!\\)-\s*(.+)/) || [text, text];
+function parseCombineLang(text: string): { zh: string; en?: string } {
+    const REG = /\n/.test(text) ? /([\s\S]+)\n\s*-\s*\n([\s\S]+)/m : /(.+)\s*(?<!\\)-\s*(.+)/;
+    const [, zh, en] = text.match(REG) || [text, text];
     return {
         zh: cleanText(zh),
         en: cleanText(en),
@@ -145,18 +152,23 @@ function parseTsDoc(text?: string | null) {
         });
     }
     if (remarksBlock) {
+        const remarks = Formatter.renderDocNode(remarksBlock);
+        const { zh, en } = parseCombineLang(remarks);
         tags.push({
             tag: remarksBlock.blockTag.tagName,
-            content: Formatter.renderDocNode(remarksBlock),
+            content: zh,
+            enContent: upperCaseFirst(en),
         });
     }
     if (customBlocks) {
         customBlocks.forEach(block => {
             const tag = block.blockTag.tagName;
             const content = Formatter.renderDocNode(block);
+            const { zh, en } = parseCombineLang(content);
             tags.push({
                 tag,
-                content: tag === '@en' ? upperCaseFirst(content) : content,
+                content: tag === '@en' ? upperCaseFirst(zh) : zh,
+                enContent: upperCaseFirst(en),
             });
         });
     }
@@ -213,7 +225,7 @@ function createAPI(properties: TSDocMeta['properties'], isEn = false) {
                 const { name, title, enTitle, params, results } = property;
                 const lines = [isEn ? enTitle : title].filter(Boolean);
                 if (params?.length || results) {
-                    const signatureLines = [`**${isEn ? 'signature' : '签名'}**:`];
+                    const signatureLines = [];
 
                     if (params?.length) {
                         signatureLines.push(`**${isEn ? 'params' : '参数'}**:`);
@@ -231,7 +243,10 @@ function createAPI(properties: TSDocMeta['properties'], isEn = false) {
                             signatureLines.push(`**${isEn ? 'return' : '返回值'}**:`, returnDesc);
                         }
                     }
-                    lines.push(signatureLines.join('\n'));
+                    if (signatureLines.length) {
+                        signatureLines.unshift(`**${isEn ? 'signature' : '签名'}**:`);
+                        lines.push(signatureLines.join('\n'));
+                    }
                 }
                 if (!lines.length) {
                     return undefined;
@@ -330,7 +345,11 @@ export function registryApiGenerator(file = __filename) {
                         title: apiTag.content || typeName.replace(/Props$/, ''),
                         order: apiDoc.getTag('@order')?.content,
                         remarks: apiDoc.getTag('@remarks')?.content,
+                        remarksEn: apiDoc.getTag('@remarks')?.enContent,
                         summary: apiDoc.summary,
+                        summaryEn: apiDoc.getTag('@en')?.content,
+                        example: apiDoc.getTag('@example')?.content,
+                        exampleEn: apiDoc.getTag('@example')?.enContent,
                         type: typedNode.getText(),
                     };
                     tsDocMetas.push(meta);
@@ -342,6 +361,7 @@ export function registryApiGenerator(file = __filename) {
                         order: indexApi ? -Infinity : apiDoc.getTag('@order')?.content,
                         remarks: apiDoc.getTag('@remarks')?.content,
                         summary: apiDoc.summary,
+                        summaryEn: apiDoc.getTag('@en')?.content,
                         apiMode: true,
                         properties: typedNode.members
                             .map<TSDocPropertyMeta | null>(member => {
@@ -449,13 +469,42 @@ export function registryApiGenerator(file = __filename) {
                     apiNode.position.end.line + 1,
                     nextNode ? nextNode.position.start.line - 1 : lines.length,
                     tsDocMetas
-                        .map(({ title, type, properties, apiMode }) => {
-                            const head = `${new Array(apiLevel + 1).fill('#').join('')} ${title}`;
-                            const apiInfo = apiMode
-                                ? createAPI(properties, isEn)
-                                : `\`\`\`typescript\n${type}\n\`\`\``;
-                            return [head, apiInfo].filter(Boolean).join('\n\n');
-                        })
+                        .map(
+                            ({
+                                title,
+                                type,
+                                properties,
+                                apiMode,
+                                summary,
+                                summaryEn,
+                                example,
+                                exampleEn,
+                                remarks,
+                                remarksEn,
+                            }) => {
+                                const head = `${new Array(apiLevel + 1)
+                                    .fill('#')
+                                    .join('')} ${title}`;
+                                const summaryText = isEn ? summaryEn : summary;
+                                const exampleText = isEn ? exampleEn : example;
+                                const remarksText = isEn ? remarksEn : remarks;
+                                const descriptions = apiMode
+                                    ? [summaryText]
+                                    : [
+                                          summaryText,
+                                          remarksText &&
+                                              `${isEn ? 'Remarks:' : '备注：'}\n\n${remarksText}`,
+                                          exampleText &&
+                                              `${isEn ? 'Example:' : '示例：'}\n\n${exampleText}`,
+                                      ];
+                                const apiInfo = apiMode
+                                    ? createAPI(properties, isEn)
+                                    : `\`\`\`typescript\n${type}\n\`\`\``;
+                                return [head, ...descriptions, apiInfo]
+                                    .filter(Boolean)
+                                    .join('\n\n');
+                            }
+                        )
                         .join('\n\n')
                 );
                 writeFileSync(
