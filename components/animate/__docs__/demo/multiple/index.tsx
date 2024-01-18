@@ -2,18 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Animate } from '@alifd/next';
 
-class TodoList extends React.Component<any, any> {
-    constructor(props: any) {
-        super(props);
-        this.state = { items: ['hello', 'world', 'click', 'me'] };
-    }
+class TodoList extends React.Component {
+    state = { items: ['hello', 'world', 'click', 'me'] };
 
     handleAdd() {
         this.setState({
             items: [
                 ...this.state.items,
-                // eslint-disable-next-line
-                prompt('Enter some text'),
+                // eslint-disable-next-line no-alert
+                window.prompt('Enter some text'),
             ],
         });
     }

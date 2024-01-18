@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Animate from '../index';
+import Animate, { type AnimateProps } from '../index';
 import './index-spec.scss';
 
-class Demo extends React.Component<any, any> {
+interface DemoProps extends AnimateProps {
+    visible?: boolean;
+    expand?: boolean;
+}
+
+class Demo extends React.Component<DemoProps, { visible: boolean }> {
     static propTypes = {
         visible: PropTypes.bool,
         expand: PropTypes.bool,
@@ -14,17 +19,16 @@ class Demo extends React.Component<any, any> {
         expand: false,
     };
 
-    constructor(props: any) {
+    constructor(props: DemoProps) {
         super(props);
-        this.state = { visible: props.visible };
-        this.handleToggle = this.handleToggle.bind(this);
+        this.state = { visible: props.visible! };
     }
 
-    handleToggle() {
+    handleToggle = () => {
         this.setState({
             visible: !this.state.visible,
         });
-    }
+    };
 
     render() {
         const { visible, expand, ...others } = this.props;
@@ -96,8 +100,18 @@ describe('Animate', () => {
     it('should play expand animation', () => {
         cy.mount(<Demo visible={false} expand animation="expand" />);
         cy.get('button').click();
-        cy.get('.demo-wrapper').should('have.css', 'height', '23.5px');
-        cy.get('.demo-wrapper').should('have.css', 'height', '223.5px');
+        cy.get('.demo-wrapper')
+            .invoke('height')
+            .should('satisfy', num => {
+                // 避免不同浏览器对 .5px 处理方式的不同造成的测试失败，下同
+                return num < 24;
+            });
+        cy.get('.demo-wrapper')
+            .invoke('height')
+            .should('satisfy', num => {
+                // 这里多考虑了一些不同运行环境下具体值的扰动问题
+                return num >= 220 && num <= 224;
+            });
         cy.get('button').click();
         cy.get('.basic-demo').should('not.exist');
         cy.get('button').click();

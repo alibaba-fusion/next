@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { TransitionGroup } from 'react-transition-group';
 import AnimateChild from './child';
 import type { AnimateProps } from './types';
-import Expand from './expand';
-import OverlayAnimate from './overlay-animate';
 
 const noop = () => {};
 const FirstChild = (props: { children: ReactNode }) => {
@@ -16,65 +14,21 @@ const FirstChild = (props: { children: ReactNode }) => {
  * Animate
  */
 class Animate extends Component<AnimateProps> {
-    static Expand = Expand;
-    static OverlayAnimate = OverlayAnimate;
     static displayName = 'Animate';
     static propTypes = {
-        /**
-         * 动画 className
-         */
         animation: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-        /**
-         * 子元素第一次挂载时是否执行动画
-         */
         animationAppear: PropTypes.bool,
-        /**
-         * 包裹子元素的标签
-         */
         component: PropTypes.any,
-        /**
-         * 是否只有单个子元素，如果有多个子元素，请设置为 false
-         */
         singleMode: PropTypes.bool,
-        /**
-         * 子元素
-         */
         children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
-        /**
-         * 执行第一次挂载动画前触发的回调函数
-         */
         beforeAppear: PropTypes.func,
-        /**
-         * 执行第一次挂载动画，添加 xxx-appear-active 类名后触发的回调函数
-         */
         onAppear: PropTypes.func,
-        /**
-         * 执行完第一次挂载动画后触发的函数
-         */
         afterAppear: PropTypes.func,
-        /**
-         * 执行进场动画前触发的回调函数
-         */
         beforeEnter: PropTypes.func,
-        /**
-         * 执行进场动画，添加 xxx-enter-active 类名后触发的回调函数
-         */
         onEnter: PropTypes.func,
-        /**
-         * 执行完进场动画后触发的回调函数
-         */
         afterEnter: PropTypes.func,
-        /**
-         * 执行离场动画前触发的回调函数
-         */
         beforeLeave: PropTypes.func,
-        /**
-         * 执行离场动画，添加 xxx-leave-active 类名后触发的回调函数
-         */
         onLeave: PropTypes.func,
-        /**
-         * 执行完离场动画后触发的回调函数
-         */
         afterLeave: PropTypes.func,
     };
 
@@ -161,7 +115,7 @@ class Animate extends Component<AnimateProps> {
                 component={singleMode ? FirstChild : component}
                 {...others}
             >
-                {animateChildren}
+                {animateChildren!}
             </TransitionGroup>
         );
     }
