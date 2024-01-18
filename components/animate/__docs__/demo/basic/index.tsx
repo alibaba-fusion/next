@@ -2,18 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Animate } from '@alifd/next';
 
-class Demo extends React.Component<any, any> {
-    constructor(props: any) {
-        super(props);
-        this.state = { visible: true };
-        this.handleToggle = this.handleToggle.bind(this);
-    }
+class Demo extends React.Component {
+    state = { visible: true };
 
-    handleToggle() {
+    handleToggle = () => {
         this.setState({
             visible: !this.state.visible,
         });
-    }
+    };
 
     render() {
         return (
