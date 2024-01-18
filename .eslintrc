@@ -4,12 +4,7 @@
         "node": true
     },
     "parser": "@typescript-eslint/parser",
-    "extends": [
-        "@alifd/eslint-config-next",
-        "plugin:@typescript-eslint/recommended",
-        "prettier",
-        "./a11y.eslintrc"
-    ],
+    "extends": ["@alifd/eslint-config-next", "plugin:@typescript-eslint/recommended", "prettier"],
     "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc"],
     "settings": {
         "react": {
@@ -22,6 +17,11 @@
             "files": ["./components/**/__tests__/**/*.ts", "./components/**/__tests__/**/*.tsx"],
             "extends": ["plugin:cypress/recommended"],
             "plugins": ["cypress"]
+        },
+        {
+            "files": ["./components/**"],
+            "extends": ["./a11y.eslintrc"],
+            "excludedFiles": ["**/__tests__/**", "**/__docs__/**"]
         }
     ],
     "rules": {
