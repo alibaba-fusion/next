@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import { Demo, type DemoFunctionDefineForObject, DemoGroup, initDemo } from '../../../demo-helper';
 import Timeline from '../../index';
 import ConfigProvider from '../../../config-provider';
 import zhCN from '../../../locale/zh-cn';
@@ -76,24 +76,7 @@ const CONTENT_TYPE: Record<string, number> = {
 class FunctionDemo extends React.Component<
     any,
     {
-        demoFunction: {
-            content: {
-                label: string;
-                value: string;
-                enum: Array<{
-                    value: string;
-                    label: string;
-                }>;
-            };
-            icon: {
-                label: string;
-                value: string;
-                enum: Array<{
-                    value: string;
-                    label: string;
-                }>;
-            };
-        };
+        demoFunction: Record<string, DemoFunctionDefineForObject>;
     }
 > {
     constructor(props: any) {
@@ -160,11 +143,11 @@ class FunctionDemo extends React.Component<
         const { title, i18n, itemData, lang } = this.props;
         const { demoFunction } = this.state;
         const flag = {
-            contentType: CONTENT_TYPE[demoFunction.content.value],
+            contentType: CONTENT_TYPE[demoFunction.content.value as string],
             withIcon:
                 typeof demoFunction.icon.value === 'boolean'
                     ? demoFunction.icon.value
-                    : parseBool(demoFunction.icon.value),
+                    : parseBool(demoFunction.icon.value as string),
         };
         return (
             <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>

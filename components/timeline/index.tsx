@@ -1,6 +1,11 @@
+import { assignSubComponent } from '../util/component';
 import Timeline from './view/timeline';
-import type { TimelineProps, ItemProps } from './types';
+import TimelineItem from './view/timeline-item';
 
-export type { TimelineProps, ItemProps };
+const TimelineWithItem = assignSubComponent(Timeline, {
+    Item: TimelineItem,
+});
 
-export default Timeline;
+export type { TimelineProps, ItemProps } from './types';
+
+export default TimelineWithItem;

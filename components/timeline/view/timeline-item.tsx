@@ -8,7 +8,6 @@ import Button, { type ButtonProps } from '../../button';
 import { obj } from '../../util';
 import type { ItemProps } from '../types';
 
-//@ts-expect-error Animate 尚未完成 ts 改造
 const { Expand } = Animate;
 /** Timeline.Item */
 class TimelineItem extends Component<ItemProps> {
@@ -20,40 +19,16 @@ class TimelineItem extends Component<ItemProps> {
         total: PropTypes.number,
         folderIndex: PropTypes.number,
         foldShow: PropTypes.bool,
-        /**
-         * 节点状态
-         */
         state: PropTypes.oneOf(['done', 'process', 'error', 'success']),
-        /**
-         * 图标
-         */
         icon: PropTypes.string,
-        /**
-         * 自定义时间轴节点
-         */
         dot: PropTypes.node,
-        /**
-         * 格式化后的时间
-         */
         time: PropTypes.node,
-        /**
-         * 标题
-         */
         title: PropTypes.node,
-        /**
-         * 左侧时间
-         */
         timeLeft: PropTypes.node,
-        /**
-         * 右侧内容
-         */
         content: PropTypes.node,
         toggleFold: PropTypes.func,
         className: PropTypes.string,
         locale: PropTypes.object,
-        /**
-         * 动画
-         */
         animation: PropTypes.bool,
     };
 

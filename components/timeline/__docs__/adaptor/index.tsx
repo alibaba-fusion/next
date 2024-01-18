@@ -42,7 +42,7 @@ export default {
             ].join('\n'),
         },
     }),
-    adaptor: ({ state, timeLeft, content, height, style, data, ...others }: any) => {
+    adaptor: ({ state, timeLeft, height, style, data, ...others }: any) => {
         interface IListItem {
             value: any[];
             type: any;
