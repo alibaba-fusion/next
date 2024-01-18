@@ -49,10 +49,10 @@ const OverlayAnimate = (props: OverlayAnimateProps) => {
     const animationMap =
         typeof animation === 'string' ? { in: animation, out: animation } : animation;
 
-    const animateClsMap: Partial<Record<TransitionStatus, string | undefined>> = animation
+    const animateClsMap: Partial<Record<TransitionStatus, string | undefined>> = animationMap
         ? {
-              entering: (animationMap as Record<'in' | 'out', string>).in,
-              exiting: (animationMap as Record<'in' | 'out', string>).out,
+              entering: animationMap.in,
+              exiting: animationMap.out,
           }
         : {};
 
@@ -65,7 +65,7 @@ const OverlayAnimate = (props: OverlayAnimateProps) => {
         <Transition {...animateProps} in={visible} timeout={animation ? timeout : 0} appear>
             {state => {
                 const cls = classNames({
-                    [children!.props.className]: !!children!.props.className,
+                    [children.props.className]: !!children.props.className,
                     [animateClsMap[state]!]: state in animateClsMap && animateClsMap[state],
                 });
 
@@ -74,11 +74,11 @@ const OverlayAnimate = (props: OverlayAnimateProps) => {
                     className: cls,
                 };
 
-                if (style && children!.props && children!.props.style) {
-                    childProps.style = Object.assign({}, children!.props.style, style);
+                if (style && children.props && children.props.style) {
+                    childProps.style = Object.assign({}, children.props.style, style);
                 }
 
-                return React.cloneElement(children!, childProps);
+                return React.cloneElement(children, childProps);
             }}
         </Transition>
     );
