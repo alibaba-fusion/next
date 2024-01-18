@@ -187,7 +187,8 @@ export interface OverlayAnimateProps {
      */
     children?: ReactElement;
     /**
-     * @en The duration of the transition, in milliseconds. Required unless addEndListener is provided.
+     * 过渡的超时时间。
+     * @en The duration of the transition.
      * @example
      * 你可以为所有的过渡指定一个超时时间：
      * ```js
