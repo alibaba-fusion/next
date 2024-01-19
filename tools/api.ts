@@ -465,9 +465,13 @@ export function registryApiGenerator(file = __filename) {
                     );
                 });
                 const apiLevel = apiNode.depth as number;
+                const spliceStart = apiNode.position.end.line + 1;
+                const deleteCount = nextNode
+                    ? nextNode.position.start.line - 1 - spliceStart
+                    : lines.length - spliceStart;
                 lines.splice(
-                    apiNode.position.end.line + 1,
-                    nextNode ? nextNode.position.start.line - 1 : lines.length,
+                    spliceStart,
+                    deleteCount,
                     tsDocMetas
                         .map(
                             ({
