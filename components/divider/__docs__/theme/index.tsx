@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import { Demo, DemoFunctionDefineForObject, DemoGroup, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
@@ -29,15 +29,21 @@ const i18nMap = {
     },
 };
 
-class RenderDivider extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            demoFunction: {},
-        };
-    }
-
-    onFunctionChange = demoFunction => {
+type I18nMap = Record<string, string>;
+interface RenderDividerProps {
+    i18nMap: I18nMap;
+}
+interface DemoFunction {
+    [index: string]: DemoFunctionDefineForObject;
+}
+interface RenderDividerState {
+    demoFunction: DemoFunction;
+}
+class RenderDivider extends React.Component<RenderDividerProps, RenderDividerState> {
+    state = {
+        demoFunction: {},
+    };
+    onFunctionChange = (demoFunction: DemoFunction) => {
         this.setState({ demoFunction });
     };
 
@@ -152,7 +158,7 @@ class RenderDivider extends React.Component {
     }
 }
 
-function render(i18nMap, lang) {
+function render(i18nMap: I18nMap, lang: string) {
     ReactDOM.render(
         <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">
