@@ -30,7 +30,7 @@ export default {
             },
         ],
     }),
-    adaptor: ({ orientation, direction, dashed, text, ...others }) => {
+    adaptor: ({ orientation, direction, dashed, text, ...others }: any) => {
         return (
             <Divider
                 dashed={dashed}
