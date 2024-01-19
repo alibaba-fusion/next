@@ -2,28 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-import ConfigProvider from '../config-provider';
 import { obj } from '../util';
+import type { DividerProps } from './types';
+import ConfigProvider from '../config-provider';
 
 /**
  * Divider
  */
-class Divider extends Component {
+class Divider extends Component<DividerProps> {
     static propTypes = {
         prefix: PropTypes.string,
         children: PropTypes.any,
         className: PropTypes.string,
-        /**
-         * 是否为虚线
-         */
         dashed: PropTypes.bool,
-        /**
-         * 线是水平还是垂直类型
-         */
         direction: PropTypes.oneOf(['hoz', 'ver']),
-        /**
-         * 分割线标题的位置
-         */
         orientation: PropTypes.oneOf(['left', 'right', 'center']),
     };
 
@@ -56,4 +48,5 @@ class Divider extends Component {
     }
 }
 
+export type { DividerProps };
 export default ConfigProvider.config(polyfill(Divider));
