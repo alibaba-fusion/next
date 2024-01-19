@@ -62,7 +62,7 @@ const types = [
     'dashboard',
 ];
 
-let customTypes = [];
+let customTypes: string[] = [];
 
 // The code here is for fusion dev display custom Icon components only
 if ((window as any).customIcons) {
@@ -88,7 +88,7 @@ ReactDOM.render(
             <div>
                 <div className="icon-list-custom-title">Custom Icon</div>
                 <ul className="icon-list">
-                    {customTypes.map((type: any, index: number) => (
+                    {customTypes.map((type: string, index: number) => (
                         <CopyToClipboard
                             key={index}
                             text={`<Icon type="${type}" />`}

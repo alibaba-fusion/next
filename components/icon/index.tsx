@@ -3,7 +3,10 @@ import createFromIconfontCN from './icon-font';
 import Icon from './icon';
 import { IconProps, IconOptions } from './types';
 
-Icon.createFromIconfontCN = createFromIconfontCN;
+const WithFontIcon = Icon as typeof Icon & {
+    createFromIconfontCN: typeof createFromIconfontCN;
+};
+WithFontIcon.createFromIconfontCN = createFromIconfontCN;
 
-export type { IconProps, IconOptions as iconOptions };
-export default ConfigProvider.config(Icon);
+export type { IconProps, IconOptions };
+export default ConfigProvider.config(WithFontIcon);

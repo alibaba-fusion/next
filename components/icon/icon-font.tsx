@@ -11,7 +11,7 @@ const ConfigIcon = ConfigProvider.config(Icon);
 /** Icon.createFromIconfontCN
  *  通过自定义 iconfont源来使用使用svg格式的图片
  */
-export default function createFromIconfontCN(options = {} as IconOptions) {
+export default function createFromIconfontCN(options: IconOptions) {
     const { scriptUrl, extraCommonProps = {} } = options;
     let hasExist = customCache.has(scriptUrl);
 
@@ -44,7 +44,7 @@ export default function createFromIconfontCN(options = {} as IconOptions) {
         const { type, size, children, className, prefix = 'next-', ...others } = props;
 
         // component > children > type
-        let content = null;
+        let content: React.ReactNode = null;
         if (props.type) {
             content = <use xlinkHref={`#${type}`} />;
         }
