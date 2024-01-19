@@ -1,10 +1,10 @@
 @charset "UTF-8";
 
 @import "../core/index-noreset.scss";
-@import "scss/function";
-@import "scss/mixin";
-@import "scss/placeholder";
-@import "scss/variable";
+@import "./scss/function";
+@import "./scss/mixin";
+@import "./scss/placeholder";
+@import "./scss/variable";
 
 .#{$css-prefix} {
     &badge {

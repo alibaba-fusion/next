@@ -3,11 +3,11 @@
 @import "../input/scss/mixin.scss";
 @import "../time-picker/scss/variable.scss";
 
-@import "scss/variable";
-@import "scss/mixin";
+@import "./scss/variable";
+@import "./scss/mixin";
 
-@import "scss/date-picker.scss";
-@import "scss/range-picker.scss";
+@import "./scss/date-picker.scss";
+@import "./scss/range-picker.scss";
 @import "./rtl.scss";
 
 #{$date-picker-prefix},

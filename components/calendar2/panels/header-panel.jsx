@@ -55,7 +55,9 @@ class HeaderPanel extends React.PureComponent {
     createPanelBtns = ({ unit, num = 1, isSuper = true }) => {
         const value = this.props.panelValue.clone();
         const { prefixCls } = this;
-        const iconTypes = isSuper ? ['arrow-double-left', 'arrow-double-right'] : ['arrow-left', 'arrow-right'];
+        const iconTypes = isSuper
+            ? ['arrow-double-left', 'arrow-double-right']
+            : ['arrow-left', 'arrow-right'];
 
         return [
             <Button
@@ -323,7 +325,8 @@ class HeaderPanel extends React.PureComponent {
                     {this.renderYearSelect()}
                     {mode !== CALENDAR_MODE.YEAR ? this.renderMonthSelect() : null}
                     {showModeSwitch ? this.renderModeSwitch() : null}
-                    {this.props.renderHeaderExtra && this.props.renderHeaderExtra({ ...this.props })}
+                    {this.props.renderHeaderExtra &&
+                        this.props.renderHeaderExtra({ ...this.props })}
                 </div>
             );
         }
@@ -334,7 +337,7 @@ class HeaderPanel extends React.PureComponent {
     render() {
         return (
             <div className={`${this.prefixCls}`}>
-                {renderNode(this.props.headerRender, this.renderInner(), [...this.props])}
+                {renderNode(this.props.headerRender, this.renderInner(), { ...this.props })}
             </div>
         );
     }
