@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Form, Input, Select, Radio, NumberPicker, DatePicker, Switch, Button } from '@alifd/next';
 
 const FormItem = Form.Item;

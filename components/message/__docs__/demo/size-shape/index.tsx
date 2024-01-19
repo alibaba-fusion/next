@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Message, Radio } from '@alifd/next';
 
 const types = ['success', 'warning', 'error', 'notice', 'help', 'loading'];

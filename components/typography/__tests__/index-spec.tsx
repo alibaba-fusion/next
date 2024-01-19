@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Typography from '../index';
 
 const { Paragraph, Text, H1, H2, H3, H4, H5, H6 } = Typography;

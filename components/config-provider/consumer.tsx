@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode } from 'react';
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { ConfigProviderProps } from './types';
 
 /**

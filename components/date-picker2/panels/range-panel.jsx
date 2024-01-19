@@ -1,7 +1,7 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
-import * as PT from 'prop-types';
+import PT from 'prop-types';
 
 import SharedPT from '../prop-types';
 import { func, datejs, obj } from '../../util';
@@ -163,9 +163,9 @@ class RangePanel extends React.Component {
         if (!curDateVal) {
             curDateVal =
                 inputType === BEGIN && end
-                    ? end.subtract(1, 'day')
+                    ? end
                     : inputType === END && begin
-                    ? begin.add(1, 'day')
+                    ? begin
                     : datejs();
         }
         curDateVal = setTime(curDateVal, v);

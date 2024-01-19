@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';

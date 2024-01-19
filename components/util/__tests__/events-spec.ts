@@ -1,4 +1,4 @@
-import * as simulateEvents from 'simulate-event';
+import simulateEvents from 'simulate-event';
 import * as events from '../events';
 
 describe('src/events.js', function () {

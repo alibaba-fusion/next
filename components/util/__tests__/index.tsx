@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { ReactElement, ElementType } from 'react';
+import React, { ReactElement, ElementType } from 'react';
+import ReactDOM from 'react-dom';
 import { create, ReactTestRendererTree } from 'react-test-renderer';
 
 export const delay = (time: number) => new Promise<void>(resolve => setTimeout(resolve, time));

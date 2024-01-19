@@ -1,5 +1,10 @@
-import * as React from 'react';
-import { ReactNode, ErrorInfo, JSXElementConstructor, Component, PropsWithChildren } from 'react';
+import React, {
+    ReactNode,
+    ErrorInfo,
+    JSXElementConstructor,
+    Component,
+    PropsWithChildren,
+} from 'react';
 import { ComponentLocaleObject, Locale } from '../locale/types';
 
 export interface PropsDeprecatedPrinter {

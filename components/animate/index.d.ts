@@ -1,6 +1,6 @@
 /// <reference types="react" />
 
-import * as React from 'react';
+import React from 'react';
 import { CommonProps } from '../util';
 import { TransitionProps } from 'react-transition-group/Transition';
 import { TransitionGroupProps } from 'react-transition-group/TransitionGroup';

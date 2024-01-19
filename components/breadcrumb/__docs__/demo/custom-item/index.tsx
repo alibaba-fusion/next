@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Breadcrumb } from '@alifd/next';
 import { HashRouter, Route, Switch, Link, withRouter } from 'react-router-dom';
 

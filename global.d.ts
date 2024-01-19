@@ -2,10 +2,11 @@
 
 declare module 'enzyme-adapter-react-16';
 declare module 'es6-promise-polyfill' {
-    export { Promise };
+    export = { Promise };
 }
 declare module 'conventional-changelog' {
     import { Readable } from 'stream';
+
     function conventionalChangelog(...args: any[]): Readable;
     export = conventionalChangelog;
 }
@@ -21,5 +22,6 @@ declare const mountNode: HTMLDivElement;
 
 declare module 'react-lifecycles-compat' {
     import { ComponentType } from 'react';
+
     export function polyfill<C extends ComponentType>(Component: C): C;
 }

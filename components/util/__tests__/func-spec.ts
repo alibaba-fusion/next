@@ -1,4 +1,4 @@
-import * as ES6Promise from 'es6-promise-polyfill';
+import ES6Promise from 'es6-promise-polyfill';
 import * as func from '../func';
 
 window.Promise = window.Promise || ES6Promise.Promise;

@@ -1,9 +1,9 @@
 @import "../core/index-noreset.scss";
 
-@import "scss/variable";
-@import "scss/normalize";
-@import "scss/mixin";
-@import "scss/util";
+@import "./scss/variable";
+@import "./scss/normalize";
+@import "./scss/mixin";
+@import "./scss/util";
 @import "./rtl.scss";
 
 #{$timeline-prefix} {

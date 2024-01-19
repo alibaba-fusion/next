@@ -1,7 +1,7 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
-import * as PT from 'prop-types';
+import PT from 'prop-types';
 import SharedPT from '../prop-types';
 import { DATE_PANEL_MODE } from '../constant';
 import { func, datejs, KEYCODE } from '../../util';

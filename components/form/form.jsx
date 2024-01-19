@@ -291,7 +291,7 @@ export default class Form extends React.Component {
                 dir={rtl ? 'rtl' : undefined}
                 onSubmit={onSubmit}
             >
-                {responsive ? <RGrid gap={gap}>{newChildren}</RGrid> : newChildren}
+                {responsive ? <RGrid gap={gap} device={device}>{newChildren}</RGrid> : newChildren}
             </Tag>
         );
     }

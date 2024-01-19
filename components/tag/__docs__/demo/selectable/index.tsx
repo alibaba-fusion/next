@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Tag } from '@alifd/next';
 
 const { Group: TagGroup, Selectable: SelectableTag } = Tag;

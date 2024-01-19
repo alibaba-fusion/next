@@ -1,4 +1,4 @@
-import * as PT from 'prop-types';
+import PT from 'prop-types';
 import { CALENDAR_SHAPE, CALENDAR_MODE, DATE_PANEL_MODE } from './constant';
 import { datejs } from '../util';
 

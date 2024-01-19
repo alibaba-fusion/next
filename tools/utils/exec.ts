@@ -1,4 +1,4 @@
-import * as path from 'path';
+import path from 'path';
 import { spawnSync, execSync as nodeExecSync, SpawnSyncOptions } from 'child_process';
 import { CWD } from './consts';
 import { error, log } from './log';

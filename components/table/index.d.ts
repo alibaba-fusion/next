@@ -1,6 +1,6 @@
 /// <reference types="react" />
 
-import * as React from 'react';
+import React from 'react';
 import { CommonProps } from '../util';
 import { LoadingProps } from '../loading';
 import { AffixProps } from '../affix';

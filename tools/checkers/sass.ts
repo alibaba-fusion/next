@@ -5,10 +5,10 @@
   description: 检查项目所有 scss 是否编译通过 & 检查 variables.scss 内是否是纯变量文件
 ------------------------------------------------------------
 */
-import path = require('path');
-import sass = require('sass');
-import postcss = require('postcss');
-import discardComments = require('postcss-discard-comments');
+import path from 'path';
+import sass from 'sass';
+import postcss from 'postcss';
+import discardComments from 'postcss-discard-comments';
 import { CWD, error, registryTask } from '../utils';
 
 function hasCssCode(code: string) {

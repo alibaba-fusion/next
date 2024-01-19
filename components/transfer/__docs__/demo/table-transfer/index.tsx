@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Transfer, Table } from '@alifd/next';
 
 // 生成 transfer 数据源

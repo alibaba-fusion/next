@@ -1,6 +1,6 @@
-import * as ReactDOM from 'react-dom';
+import React, { useState, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
-import { useState, useRef } from 'react';
 
 const Option = Select.Option;
 

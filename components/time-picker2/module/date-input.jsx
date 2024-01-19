@@ -1,6 +1,6 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
-import * as PT from 'prop-types';
+import PT from 'prop-types';
 import classnames from 'classnames';
 import SharedPT from '../prop-types';
 import { TIME_INPUT_TYPE } from '../constant';

@@ -1,6 +1,6 @@
 @import "../core/index-noreset.scss";
-@import "scss/variable";
-@import "scss/mixin";
+@import "./scss/variable";
+@import "./scss/mixin";
 @import "./rtl.scss";
 
 #{$menu-prefix} {

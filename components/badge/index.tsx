@@ -1,7 +1,6 @@
-import { Component } from 'react';
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import * as classNames from 'classnames';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
 import { obj } from '../util';
 import Sup from './sup';

@@ -6,7 +6,7 @@
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "module": "commonjs",
         "moduleResolution": "node",
-        "esModuleInterop": false,
-        "allowSyntheticDefaultImports": false
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true
     }
 }

@@ -4,12 +4,6 @@
 
 当聚焦在组件上时，通过`aria-labelledby`对组件进行描述。关于键盘操作请参考[#无障碍键盘操作指南](#无障碍键盘操作指南)。
 
-```css
-.next-menu-item:focus {
-    background-color: #f2f3f7;
-}
-```
-
 # en-US order=11
 
 # Accessibility

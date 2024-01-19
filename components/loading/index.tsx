@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import * as classNames from 'classnames';
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import Overlay from '../overlay';
 import ConfigProvider from '../config-provider';
 import { obj, func } from '../util';
@@ -59,7 +59,7 @@ class Loading extends React.Component<LoadingProps> {
             safeNode,
         } = this.props;
 
-        let indicatorDom = null;
+        let indicatorDom: React.ReactNode = null;
         const dotCls = `${prefix}loading-dot`;
 
         if (indicator) {

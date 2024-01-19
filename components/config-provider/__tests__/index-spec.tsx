@@ -1,6 +1,5 @@
-import * as React from 'react';
-import { forwardRef, Component, FC, EventHandler, MouseEvent } from 'react';
-import * as moment from 'moment';
+import React, { forwardRef, Component, FC, EventHandler, MouseEvent } from 'react';
+import moment from 'moment';
 import 'moment/locale/zh-cn';
 import Select from '../../select';
 import Button from '../../button';

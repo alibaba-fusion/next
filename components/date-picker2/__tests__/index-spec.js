@@ -920,6 +920,26 @@ describe('Picker', () => {
                 wrapper = null;
             }
         });
+         // fix: https://github.com/alibaba-fusion/next/issues/3877
+        it('should not select default endDate',()=>{
+                const currentDate = dayjs();
+                const currentDateStr = currentDate.format('YYYY-MM-DD');
+                const disabledDate = function (date, mode) {
+                    return currentDate.date() !== date.date();
+                };
+                wrapper = mount(<RangePicker visible showTime disabledDate={disabledDate}  />);
+                clickDate(currentDateStr);
+                clickTime('12');
+                clickTime('12', 'minute');
+                clickTime('12', 'second');
+                assert.deepEqual(getStrValue(), [`${currentDateStr} 12:12:12`, '']);
+                clickOk();
+                clickTime('16');
+                clickTime('16', 'minute');
+                clickTime('35', 'second');
+                clickOk();
+                assert.deepEqual(getStrValue(), [`${currentDateStr} 12:12:12`, `${currentDateStr} 16:16:35`]);
+        });
         // https://github.com/alibaba-fusion/next/issues/2641
         it('value controlled issue', () => {
             function App() {

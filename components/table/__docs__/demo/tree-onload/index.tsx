@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Table } from '@alifd/next';
 
 const generateRandomKey = () => Math.ceil(Math.random() * 10000);

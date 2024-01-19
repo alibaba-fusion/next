@@ -1,7 +1,7 @@
 @charset "UTF-8";
 @import "../core/index-noreset.scss";
-@import "scss/variable";
-@import "scss/mixin";
+@import "./scss/variable";
+@import "./scss/mixin";
 /* put your code here */
 #{$table-prefix} {
     @include box-sizing;

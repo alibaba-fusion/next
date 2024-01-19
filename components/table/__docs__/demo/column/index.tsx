@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Table, Button, Dialog, Checkbox } from '@alifd/next';
 
 const { Group } = Checkbox;

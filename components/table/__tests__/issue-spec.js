@@ -1426,6 +1426,58 @@ describe('TableScroll', () => {
         const scrollRowTop = scrollRow.getBoundingClientRect().top;
         assert(scrollRowTop >= getBodyTop() - 10);
     });
+
+    // fix https://github.com/alibaba-fusion/next/issues/4264
+    it('should support for merging cells in locked columns, close #4264', async () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const dataSource = j => {
+            const result = [];
+            for (let i = 0; i < j; i++) {
+                result.push({
+                    title: { name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible` },
+                    id: `100306660940${i}`,
+                    time: 2000 + i,
+                    index: i,
+                });
+            }
+            return result;
+        };
+
+        const mergeCell = (rowIndex, colIndex) => {
+            if (colIndex === 0 && rowIndex === 0) {
+                return {
+                    rowSpan: 2,
+                    colSpan: 2,
+                };
+            }
+        };
+        class App extends React.Component {
+            render() {
+                return (
+                    <Table.StickyLock dataSource={dataSource(3)} cellProps={mergeCell}>
+                        <Table.Column title="Id" dataIndex="id" width={200} lock />
+                        <Table.Column title="Title" dataIndex="title.name" lock width={200} />
+                        <Table.Column title="Time" dataIndex="time" width={200} lock />
+                        <Table.Column title="test" width={200} />
+                        <Table.Column title="test2" width={200} />
+                    </Table.StickyLock>
+                );
+            }
+        }
+        ReactDOM.render(<App />, container);
+
+        await delay(200);
+        const titleHeaderNode = container.querySelectorAll('thead .next-table-header-node')[1];
+        assert(titleHeaderNode);
+        assert(titleHeaderNode.colSpan === 1);
+        const idHeaderNode = container.querySelectorAll('thead .next-table-header-node')[0];
+        assert(idHeaderNode);
+        assert(titleHeaderNode.getBoundingClientRect().left === idHeaderNode.getBoundingClientRect().right);
+        const testNode = container.querySelector('tbody [data-next-table-col="1"][data-next-table-row="2"]');
+        assert(testNode);
+    });
     it('set keepForwardRenderRows to support large rowSpan when useVirtual, close #4395', async () => {
         const datas = j => {
             const result = [];

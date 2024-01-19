@@ -3,9 +3,9 @@
 @import "../calendar2/scss/mixin.scss";
 @import "../input/scss/variable.scss";
 @import "../input/scss/mixin.scss";
-@import "scss/variable";
+@import "./scss/variable";
 
-@import "scss/footer.scss";
+@import "./scss/footer.scss";
 @import "./rtl.scss";
 
 #{$date-picker2-prefix} {

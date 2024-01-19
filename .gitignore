@@ -73,6 +73,7 @@ __html/
 dist/
 es/
 lib/
+types/
 test/coverage/
 test/**/coverage/
 compiled_docs/

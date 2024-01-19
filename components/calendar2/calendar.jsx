@@ -1,6 +1,6 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
-import * as PT from 'prop-types';
+import PT from 'prop-types';
 import classnames from 'classnames';
 import defaultLocale from '../locale/zh-cn';
 import { func, datejs, obj } from '../util';

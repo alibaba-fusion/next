@@ -1,5 +1,5 @@
-import * as ReactDOM from 'react-dom';
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import ReactDOM from 'react-dom';
 import { Button, Step, Radio } from '@alifd/next';
 
 const Step1Content = () => {

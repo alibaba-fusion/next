@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Menu, Search, Nav, Shell, Radio } from '@alifd/next';
 
 const { SubNav, Item, Group, Divider } = Nav;

@@ -1,7 +1,5 @@
-import * as React from 'react';
-import * as Axe from 'axe-core';
-import { Result, ElementContext, AxeResults } from 'axe-core';
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
+import Axe, { Result, ElementContext, AxeResults } from 'axe-core';
 
 export const A11Y_ROOT_ID = 'A11Y-ROOT-ID';
 

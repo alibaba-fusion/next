@@ -1,8 +1,8 @@
 @import "../core/index-noreset.scss";
-@import "scss/variable";
-@import "scss/normalize";
-@import "scss/mixin";
-@import "rtl.scss";
+@import "./scss/variable";
+@import "./scss/normalize";
+@import "./scss/mixin";
+@import "./rtl.scss";
 
 #{$card-prefix} {
     @include box-sizing;

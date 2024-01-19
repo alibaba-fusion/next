@@ -1,7 +1,6 @@
-import * as React from 'react';
-import { Component, Children, isValidElement } from 'react';
-import * as PropTypes from 'prop-types';
-import * as classNames from 'classnames';
+import React, { Component, Children, isValidElement } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { ButtonProps } from '../types';
 import ConfigProvider from '../../config-provider';
 import { obj, log } from '../../util';
@@ -113,7 +112,7 @@ export default class Button extends Component<ButtonProps> {
             [className!]: className,
         };
 
-        let loadingIcon = null;
+        let loadingIcon: React.ReactNode = null;
 
         // 如果传入了 loading 的 icons，使用该节点来渲染
         if (icons && icons.loading && isValidElement(icons.loading)) {

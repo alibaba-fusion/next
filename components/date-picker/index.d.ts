@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { Moment } from 'moment';
-import * as React from 'react';
+import React from 'react';
 import { CommonProps } from '../util';
 import { PopupProps } from '../overlay';
 import { InputProps } from '../input';

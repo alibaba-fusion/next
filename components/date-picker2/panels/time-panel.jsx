@@ -1,6 +1,6 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
-import * as PT from 'prop-types';
+import PT from 'prop-types';
 import TimePickerPanel from '../../time-picker2/panel';
 import SharedPT from '../prop-types';
 import { func } from '../../util';

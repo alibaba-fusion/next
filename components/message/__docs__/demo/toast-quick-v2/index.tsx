@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Message, Button } from '@alifd/next';
 
 // 只要使用了 config 就是 v2 版本
