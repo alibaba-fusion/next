@@ -1,9 +1,9 @@
 import { Icon as MeetIcon } from '@alifd/meet-react';
 import NextIcon from '../index';
+import { assignSubComponent } from '../../util/component';
 
-const Icon = MeetIcon as typeof MeetIcon & {
-    createFromIconfontCN: typeof NextIcon.createFromIconfontCN;
-};
+const MeetIconWithSub = assignSubComponent(MeetIcon, {
+    createFromIconfontCN: NextIcon.createFromIconfontCN,
+});
 
-Icon.createFromIconfontCN = NextIcon.createFromIconfontCN;
-export default Icon;
+export default MeetIconWithSub;

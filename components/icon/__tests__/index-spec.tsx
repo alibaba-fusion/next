@@ -30,7 +30,7 @@ describe('Icon', () => {
         });
 
         cy.mount(<CustomIcon type="icon-pic" />);
-        cy.get('.next-icon svg');
+        cy.get('.next-icon svg').should('exist');
 
         cy.mount(<CustomIcon type="icon-pic" size="xl" />);
         cy.get('.next-icon').should('have.class', 'next-xl');
@@ -46,7 +46,7 @@ describe('Icon', () => {
                 <CustomIcon type="icon-pic" prefix="efg-" />
             </ConfigProvider>
         );
-        cy.get('.abcd-icon > svg');
-        cy.get('.abcd-icon > .efg-icon-remote');
+        cy.get('.abcd-icon > svg').should('exist');
+        cy.get('.abcd-icon > .efg-icon-remote').should('exist');
     });
 });

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import * as cx from 'classnames';
+import cx from 'classnames';
 import { Component } from 'react';
 import { obj } from '../util';
 import type { IconProps } from './types';
 import ConfigProvider from '../config-provider';
-import createFromIconfontCN from './icon-font';
 
 /**
  * Icon
@@ -39,7 +38,6 @@ class Icon extends Component<IconProps> {
     };
 
     static _typeMark = 'icon';
-    static createFromIconfontCN: typeof createFromIconfontCN;
 
     render() {
         const { prefix, type, size, className, rtl, style, children } = this.props;
