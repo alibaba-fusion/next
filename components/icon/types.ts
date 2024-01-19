@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { CommonProps } from '../util';
+import type * as React from 'react';
+import type { CommonProps } from '../util';
 
 export interface IconSvgProps extends React.SVGAttributes<SVGSVGElement>, CommonProps {
     /**
