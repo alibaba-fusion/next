@@ -38,7 +38,13 @@ export default class CascaderMenuItem extends Component {
             loading: false,
         };
 
-        bindCtx(this, ['handleExpand', 'handleClick', 'handleMouseEnter', 'handleKeyDown', 'removeLoading']);
+        bindCtx(this, [
+            'handleExpand',
+            'handleClick',
+            'handleMouseEnter',
+            'handleKeyDown',
+            'removeLoading',
+        ]);
     }
 
     addLoading() {
