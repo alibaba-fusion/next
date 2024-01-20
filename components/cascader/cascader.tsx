@@ -51,7 +51,10 @@ function preHandleData(data, immutable) {
     } catch (err) {
         if ((err.message || '').match('Cannot assign to read only property')) {
             // eslint-disable-next-line no-console
-            console.error(err.message, 'try to set immutable to true to allow immutable dataSource');
+            console.error(
+                err.message,
+                'try to set immutable to true to allow immutable dataSource'
+            );
         }
         throw err;
     }
@@ -323,7 +326,9 @@ class Cascader extends Component {
         if (!this.cascaderInner) {
             return;
         }
-        const menus = [].slice.call(this.cascaderInner.querySelectorAll(`.${this.props.prefix}cascader-menu-wrapper`));
+        const menus = [].slice.call(
+            this.cascaderInner.querySelectorAll(`.${this.props.prefix}cascader-menu-wrapper`)
+        );
         if (menus.length === 0) {
             return;
         }
@@ -453,7 +458,11 @@ class Cascader extends Component {
                 for (let j = 0; j < ps.length; j++) {
                     const p = ps[j];
                     const pnode = this.state._p2n[p];
-                    if (isSiblingOrSelf(currentPos, p) && !pnode.disabled && !pnode.checkboxDisabled) {
+                    if (
+                        isSiblingOrSelf(currentPos, p) &&
+                        !pnode.disabled &&
+                        !pnode.checkboxDisabled
+                    ) {
                         const k = pnode.value;
                         // eslint-disable-next-line max-depth
                         if (pnode.checkable === false) {
@@ -693,7 +702,9 @@ class Cascader extends Component {
                 {data
                     .map(item => {
                         const disabled = !!item.disabled;
-                        const canExpand = (!!item.children && !!item.children.length) || (!!loadData && !item.isLeaf);
+                        const canExpand =
+                            (!!item.children && !!item.children.length) ||
+                            (!!loadData && !item.isLeaf);
                         const expanded = expandedValue[level] === item.value;
                         const props = {
                             prefix,
@@ -715,7 +726,8 @@ class Cascader extends Component {
                             props.indeterminate =
                                 (checkStrictly || canOnlyCheckLeaf
                                     ? false
-                                    : this.indeterminate.indexOf(item.value) > -1) || !!item.indeterminate;
+                                    : this.indeterminate.indexOf(item.value) > -1) ||
+                                !!item.indeterminate;
                             props.checkboxDisabled = !!item.checkboxDisabled;
                             props.onCheck = this.handleCheck.bind(this, item.value);
                         } else {
@@ -783,7 +795,9 @@ class Cascader extends Component {
             const { checkStrictly, canOnlyCheckLeaf } = this.props;
             props.checked = value.indexOf(lastItem.value) > -1;
             props.indeterminate =
-                !checkStrictly && !canOnlyCheckLeaf && this.indeterminate.indexOf(lastItem.value) > -1;
+                !checkStrictly &&
+                !canOnlyCheckLeaf &&
+                this.indeterminate.indexOf(lastItem.value) > -1;
             props.checkboxDisabled = lastItem.checkboxDisabled;
             props.onChange = this.handleCheck.bind(this, lastItem.value);
         } else {
