@@ -30,12 +30,18 @@ const ChinaArea = [
             {
                 value: '2974',
                 label: '西安',
-                children: [{ value: '2975', label: '西安市' }, { value: '2976', label: '高陵县' }],
+                children: [
+                    { value: '2975', label: '西安市' },
+                    { value: '2976', label: '高陵县' },
+                ],
             },
             {
                 value: '2980',
                 label: '铜川',
-                children: [{ value: '2981', label: '铜川市' }, { value: '2982', label: '宜君县' }],
+                children: [
+                    { value: '2981', label: '铜川市' },
+                    { value: '2982', label: '宜君县' },
+                ],
             },
         ],
     },
@@ -204,20 +210,8 @@ describe('Cascader', () => {
         data[0].title = '';
 
         wrapper = mount(<Cascader dataSource={data} />);
-        assert(
-            wrapper
-                .find('.next-menu-item')
-                .at(0)
-                .getDOMNode()
-                .getAttribute('title') === ''
-        );
-        assert(
-            wrapper
-                .find('.next-menu-item')
-                .at(1)
-                .getDOMNode()
-                .getAttribute('title') === '四川'
-        );
+        assert(wrapper.find('.next-menu-item').at(0).getDOMNode().getAttribute('title') === '');
+        assert(wrapper.find('.next-menu-item').at(1).getDOMNode().getAttribute('title') === '四川');
         delete data[0].title;
     });
 
@@ -238,7 +232,12 @@ describe('Cascader', () => {
 
     it('could only check checkbox of leaf item when set canOnlyCheckLeaf to true', () => {
         wrapper = mount(
-            <Cascader multiple defaultExpandedValue={['2973', '2974']} canOnlyCheckLeaf dataSource={ChinaArea} />
+            <Cascader
+                multiple
+                defaultExpandedValue={['2973', '2974']}
+                canOnlyCheckLeaf
+                dataSource={ChinaArea}
+            />
         );
         assert(findItem(wrapper, 0, 0).find('label.next-checkbox').length === 0);
     });
@@ -406,7 +405,10 @@ describe('Cascader', () => {
         compareChecked(item20);
 
         (value = ['2973', '2975']),
-            (data = [{ value: '2973', label: '陕西', pos: '0-0' }, { value: '2975', label: '西安市', pos: '0-0-0-0' }]);
+            (data = [
+                { value: '2973', label: '陕西', pos: '0-0' },
+                { value: '2975', label: '西安市', pos: '0-0-0-0' },
+            ]);
         extra = {
             checked: true,
             currentData: { value: '2973', label: '陕西', pos: '0-0' },
@@ -510,16 +512,8 @@ describe('Cascader', () => {
         assert(findItem(newWrapper, 0, 0).find('.next-cascader-menu-icon-loading').length > 0);
 
         setTimeout(() => {
-            assert(
-                findItem(newWrapper, 1, 0)
-                    .text()
-                    .trim() === '西安'
-            );
-            assert(
-                findItem(newWrapper, 1, 1)
-                    .text()
-                    .trim() === '铜川'
-            );
+            assert(findItem(newWrapper, 1, 0).text().trim() === '西安');
+            assert(findItem(newWrapper, 1, 1).text().trim() === '铜川');
             done();
         }, 1000);
     });
@@ -529,15 +523,23 @@ describe('Cascader', () => {
         document.body.appendChild(div);
 
         ReactDOM.render(
-            <Cascader dataSource={ChinaArea} listStyle={{ width: '400px', height: '400px' }} listClassName="custom" />,
+            <Cascader
+                dataSource={ChinaArea}
+                listStyle={{ width: '400px', height: '400px' }}
+                listClassName="custom"
+            />,
             div
         );
 
         const list = div.querySelector('.next-cascader-menu-wrapper');
         assert(list.style.width === '400px');
         assert(list.style.height === '400px');
-        assert(window.getComputedStyle(list.querySelector('.next-cascader-menu')).width === '400px');
-        assert(window.getComputedStyle(list.querySelector('.next-cascader-menu')).height === '400px');
+        assert(
+            window.getComputedStyle(list.querySelector('.next-cascader-menu')).width === '400px'
+        );
+        assert(
+            window.getComputedStyle(list.querySelector('.next-cascader-menu')).height === '400px'
+        );
         assert(list.className.indexOf('custom') !== -1);
 
         ReactDOM.unmountComponentAtNode(div);
@@ -726,9 +728,9 @@ function assertActiveElement() {
 }
 
 function findRealItem(listIndex, itemIndex) {
-    return document.querySelectorAll('.next-cascader-menu')[listIndex].querySelectorAll('.next-cascader-menu-item')[
-        itemIndex
-    ];
+    return document
+        .querySelectorAll('.next-cascader-menu')
+        [listIndex].querySelectorAll('.next-cascader-menu-item')[itemIndex];
 }
 
 function filter$Source(data) {

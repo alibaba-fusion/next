@@ -21,7 +21,9 @@ export function isNodeChecked(node, checkedValues) {
     /* istanbul ignore next */
     if (node.checkable === false) {
         return (
-            !node.children || node.children.length === 0 || node.children.every(c => isNodeChecked(c, checkedValues))
+            !node.children ||
+            node.children.length === 0 ||
+            node.children.every(c => isNodeChecked(c, checkedValues))
         );
     }
     return checkedValues.indexOf(node.value) > -1;
@@ -49,7 +51,11 @@ export function isNodeDisabledChecked(node) {
     if (node.disabled || node.checkboxDisabled) return true;
     /* istanbul ignore next */
     if (node.checkable === false) {
-        return !node.children || node.children.length === 0 || node.children.every(isNodeDisabledChecked);
+        return (
+            !node.children ||
+            node.children.length === 0 ||
+            node.children.every(isNodeDisabledChecked)
+        );
     }
 
     return false;
@@ -84,7 +90,12 @@ export function filterChildValue(values, _v2n, _p2n) {
     const newValues = [];
     values.forEach(value => {
         const node = getCheckableParentNode(_v2n[value], _p2n);
-        if (!node || node.checkable === false || node === _v2n[value] || values.indexOf(node.value) === -1) {
+        if (
+            !node ||
+            node.checkable === false ||
+            node === _v2n[value] ||
+            values.indexOf(node.value) === -1
+        ) {
             newValues.push(value);
         }
     });
@@ -96,7 +107,11 @@ export function filterParentValue(values, _v2n) {
 
     for (let i = 0; i < values.length; i++) {
         const node = _v2n[values[i]];
-        if (!node.children || node.children.length === 0 || node.children.every(isNodeDisabledChecked)) {
+        if (
+            !node.children ||
+            node.children.length === 0 ||
+            node.children.every(isNodeDisabledChecked)
+        ) {
             newValues.push(values[i]);
         }
     }
