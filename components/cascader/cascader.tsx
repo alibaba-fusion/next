@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, type ComponentType, type FocusEvent } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import cloneDeep from 'lodash.clonedeep';
 import cx from 'classnames';
-import Menu from '../menu';
+import Menu, { type ItemProps, type CheckboxItemProps } from '../menu';
 import { func, obj, dom } from '../util';
 import CascaderMenu from './menu';
 import CascaderMenuItem from './item';
@@ -15,13 +15,28 @@ import {
     isDescendantOrSelf,
     isNodeChecked,
 } from './utils';
+import type {
+    CascaderDataItem,
+    CascaderDataItemWithPosInfo,
+    ItemProps as CascaderItemProps,
+    CascaderProps,
+    CascaderState,
+    NormalizeValueReturns,
+    P2n,
+    V2n,
+} from './types';
 
 const { bindCtx } = func;
 const { pickOthers } = obj;
 const { addClass, removeClass, setStyle, getStyle } = dom;
 
 // 数据打平
-const flatDataSource = (data, prefix = '0', v2n = {}, p2n = {}) => {
+const flatDataSource = (
+    data: Array<CascaderDataItem>,
+    prefix = '0',
+    v2n: V2n = {},
+    p2n: P2n = {}
+) => {
     data.forEach((item, index) => {
         const { value, children } = item;
         const pos = `${prefix}-${index}`;
@@ -43,7 +58,7 @@ const flatDataSource = (data, prefix = '0', v2n = {}, p2n = {}) => {
     return { v2n, p2n };
 };
 
-function preHandleData(data, immutable) {
+function preHandleData(data: Array<CascaderDataItem>, immutable?: boolean) {
     const _data = immutable ? cloneDeep(data) : data;
 
     try {
@@ -60,7 +75,7 @@ function preHandleData(data, immutable) {
     }
 }
 
-const getExpandedValue = (v, _v2n, _p2n) => {
+const getExpandedValue = (v: string | undefined, _v2n: V2n, _p2n: V2n) => {
     if (!v || !_v2n[v]) {
         return [];
     }
@@ -70,7 +85,7 @@ const getExpandedValue = (v, _v2n, _p2n) => {
         return [];
     }
 
-    const expandedMap = {};
+    const expandedMap: Record<string, string> = {};
     Object.keys(_p2n).forEach(p => {
         if (isDescendantOrSelf(p, pos) && p !== pos) {
             expandedMap[_p2n[p].value] = p;
@@ -82,22 +97,22 @@ const getExpandedValue = (v, _v2n, _p2n) => {
     });
 };
 
-const normalizeValue = value => {
+const normalizeValue = <T,>(value: T): NormalizeValueReturns<T> => {
     if (value) {
         if (Array.isArray(value)) {
-            return value;
+            return value as NormalizeValueReturns<T>;
         }
 
-        return [value];
+        return [value] as NormalizeValueReturns<T>;
     }
 
-    return [];
+    return [] as NormalizeValueReturns<T>;
 };
 
 /**
  * Cascader
  */
-class Cascader extends Component {
+class Cascader extends Component<CascaderProps, CascaderState> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -117,14 +132,6 @@ class Cascader extends Component {
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
         /**
          * 选中值改变时触发的回调函数
-         * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
-         * @param {Object|Array} data 选中的数据，包括 value 和 label，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点
-         * @param {Object} extra 额外参数
-         * @param {Array} extra.selectedPath 单选时选中的数据的路径
-         * @param {Boolean} extra.checked 多选时当前的操作是选中还是取消选中
-         * @param {Object} extra.currentData 多选时当前操作的数据
-         * @param {Array} extra.checkedData 多选时所有被选中的数据
-         * @param {Array} extra.indeterminateData 多选时半选的数据
          */
         onChange: PropTypes.func,
         onSelect: PropTypes.func,
@@ -142,7 +149,6 @@ class Cascader extends Component {
         expandTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
          * 展开时触发的回调函数
-         * @param {Array} expandedValue 各列展开值的数组
          */
         onExpand: PropTypes.func,
         /**
@@ -175,14 +181,10 @@ class Cascader extends Component {
         listClassName: PropTypes.string,
         /**
          * 每列列表项渲染函数
-         * @param {Object} data 数据
-         * @return {ReactNode} 列表项内容
          */
         itemRender: PropTypes.func,
         /**
          * 异步加载数据函数
-         * @param {Object} data 当前点击异步加载的数据
-         * @param {Object} source 当前点击数据，source是原始对象
          */
         loadData: PropTypes.func,
         searchValue: PropTypes.string,
@@ -209,12 +211,17 @@ class Cascader extends Component {
         multiple: false,
         useVirtual: false,
         checkStrictly: false,
-        itemRender: item => item.label,
+        itemRender: (item: CascaderDataItem) => item.label,
         immutable: false,
     };
 
-    constructor(props, context) {
-        super(props, context);
+    lastExpandedValue: string[];
+    cascader: HTMLDivElement;
+    cascaderInner: HTMLDivElement;
+    indeterminate: string[];
+
+    constructor(props: CascaderProps) {
+        super(props);
 
         const {
             defaultValue,
@@ -269,9 +276,9 @@ class Cascader extends Component {
         ]);
     }
 
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props: CascaderProps, state: CascaderState) {
         const { v2n, p2n } = preHandleData(props.dataSource, props.immutable);
-        const states = {};
+        const states = {} as CascaderState;
 
         if ('value' in props) {
             states.value = normalizeValue(props.value);
@@ -285,7 +292,7 @@ class Cascader extends Component {
             }
 
             if (
-                // 非受控模式下，若已经通过用户事件调整了expandedValue，则忽略下面的空值兜底处理
+                // 非受控模式下，若已经通过用户事件调整了 expandedValue，则忽略下面的空值兜底处理
                 !state.isExpandedValueSetByAction &&
                 !state.expandedValue.length &&
                 !('expandedValue' in props)
@@ -296,7 +303,7 @@ class Cascader extends Component {
 
         if ('expandedValue' in props) {
             states.expandedValue = normalizeValue(props.expandedValue);
-            // 受控模式则重置isExpandedValueSetByAction
+            // 受控模式则重置 isExpandedValueSetByAction
             states.isExpandedValueSetByAction = false;
         }
 
@@ -314,11 +321,11 @@ class Cascader extends Component {
         this.setCascaderInnerWidth();
     }
 
-    getCascaderNode(ref) {
+    getCascaderNode(ref: HTMLDivElement) {
         this.cascader = ref;
     }
 
-    getCascaderInnerNode(ref) {
+    getCascaderInnerNode(ref: HTMLDivElement) {
         this.cascaderInner = ref;
     }
 
@@ -326,7 +333,7 @@ class Cascader extends Component {
         if (!this.cascaderInner) {
             return;
         }
-        const menus = [].slice.call(
+        const menus: HTMLElement[] = [].slice.call(
             this.cascaderInner.querySelectorAll(`.${this.props.prefix}cascader-menu-wrapper`)
         );
         if (menus.length === 0) {
@@ -352,24 +359,23 @@ class Cascader extends Component {
         }
     }
 
-    /*eslint-enable*/
-    flatValue(value) {
+    flatValue(value: string[]) {
         return filterChildValue(value, this.state._v2n, this.state._p2n);
     }
 
-    getValue(pos) {
+    getValue(pos: string) {
         return this.state._p2n[pos] ? this.state._p2n[pos].value : null;
     }
 
-    getPos(value) {
+    getPos(value: string) {
         return this.state._v2n[value] ? this.state._v2n[value].pos : null;
     }
 
-    getData(value) {
+    getData(value: string[]) {
         return value.map(v => this.state._v2n[v]);
     }
 
-    processValue(value, v, checked) {
+    processValue(value: string[], v: string, checked: boolean) {
         const index = value.indexOf(v);
         if (checked && index === -1) {
             value.push(v);
@@ -378,7 +384,7 @@ class Cascader extends Component {
         }
     }
 
-    handleSelect(v, canExpand) {
+    handleSelect(v: string, canExpand: boolean) {
         if (!(this.props.canOnlySelectLeaf && canExpand)) {
             const data = this.state._v2n[v];
             const nums = data.pos.split('-');
@@ -386,7 +392,7 @@ class Cascader extends Component {
                 const p = nums.slice(0, index + 2).join('-');
                 ret.push(this.state._p2n[p]);
                 return ret;
-            }, []);
+            }, [] as CascaderDataItemWithPosInfo[]);
 
             if (this.state.value[0] !== v) {
                 if (!('value' in this.props)) {
@@ -396,14 +402,14 @@ class Cascader extends Component {
                 }
 
                 if ('onChange' in this.props) {
-                    this.props.onChange(v, data, {
+                    this.props.onChange!(v, data, {
                         selectedPath,
                     });
                 }
             }
 
             if ('onSelect' in this.props) {
-                this.props.onSelect(v, data, {
+                this.props.onSelect!(v, data, {
                     selectedPath,
                 });
             }
@@ -417,8 +423,7 @@ class Cascader extends Component {
             this.lastExpandedValue = [...this.state.expandedValue];
         }
     }
-    /*eslint-disable max-statements*/
-    handleCheck(v, checked) {
+    handleCheck(v: string, checked: boolean) {
         const { checkStrictly, canOnlyCheckLeaf } = this.props;
         const value = [...this.state.value];
 
@@ -435,7 +440,7 @@ class Cascader extends Component {
             });
 
             let currentPos = pos;
-            const nums = pos.split('-');
+            const nums = pos!.split('-');
             for (let i = nums.length; i > 2; i--) {
                 let parentCheck = true;
 
@@ -459,20 +464,16 @@ class Cascader extends Component {
                     const p = ps[j];
                     const pnode = this.state._p2n[p];
                     if (
-                        isSiblingOrSelf(currentPos, p) &&
+                        isSiblingOrSelf(currentPos!, p) &&
                         !pnode.disabled &&
                         !pnode.checkboxDisabled
                     ) {
                         const k = pnode.value;
-                        // eslint-disable-next-line max-depth
                         if (pnode.checkable === false) {
-                            // eslint-disable-next-line max-depth
                             if (!pnode.children || pnode.children.length === 0) {
                                 continue;
                             }
-                            // eslint-disable-next-line max-depth
                             for (let m = 0; m < pnode.children.length; m++) {
-                                // eslint-disable-next-line max-depth
                                 if (!pnode.children.every(child => isNodeChecked(child, value))) {
                                     parentCheck = false;
                                     break;
@@ -501,7 +502,7 @@ class Cascader extends Component {
         if ('onChange' in this.props) {
             if (checkStrictly || canOnlyCheckLeaf) {
                 const data = this.getData(value);
-                this.props.onChange(value, data, {
+                this.props.onChange!(value, data, {
                     checked,
                     currentData: this.state._v2n[v],
                     checkedData: data,
@@ -512,7 +513,7 @@ class Cascader extends Component {
                 const checkedData = this.getData(value);
                 const indeterminateValue = this.getIndeterminate(value);
                 const indeterminateData = this.getData(indeterminateValue);
-                this.props.onChange(flatValue, flatData, {
+                this.props.onChange!(flatValue, flatData, {
                     checked,
                     currentData: this.state._v2n[v],
                     checkedData,
@@ -524,7 +525,7 @@ class Cascader extends Component {
         this.lastExpandedValue = [...this.state.expandedValue];
     }
 
-    handleExpand(value, level, canExpand, focusedFirstChild) {
+    handleExpand(value: string, level: number, canExpand: boolean, focusedFirstChild: boolean) {
         const { expandedValue } = this.state;
 
         if (canExpand || expandedValue.length > level) {
@@ -540,7 +541,7 @@ class Cascader extends Component {
                 if (focusedFirstChild) {
                     const endExpandedValue = expandedValue[expandedValue.length - 1];
                     this.setState({
-                        focusedValue: this.state._v2n[endExpandedValue].children[0].value,
+                        focusedValue: this.state._v2n[endExpandedValue].children![0].value,
                     });
                 }
             };
@@ -559,7 +560,7 @@ class Cascader extends Component {
         this.setExpandValue([...this.lastExpandedValue], true);
     }
 
-    setExpandValue(expandedValue, isExpandedValueSetByAction = false) {
+    setExpandValue(expandedValue: string[], isExpandedValueSetByAction = false) {
         if (!('expandedValue' in this.props)) {
             this.setState({
                 expandedValue,
@@ -568,11 +569,11 @@ class Cascader extends Component {
         }
 
         if ('onExpand' in this.props) {
-            this.props.onExpand(expandedValue);
+            this.props.onExpand!(expandedValue);
         }
     }
 
-    getFirstFocusKeyByDataSource(dataSource) {
+    getFirstFocusKeyByDataSource(dataSource: Array<CascaderDataItem>) {
         if (!dataSource || dataSource.length === 0) {
             return '';
         }
@@ -586,7 +587,7 @@ class Cascader extends Component {
         return '';
     }
 
-    getFirstFocusKeyByFilteredPaths(filteredPaths) {
+    getFirstFocusKeyByFilteredPaths(filteredPaths: CascaderProps['filteredPaths']) {
         if (!filteredPaths || filteredPaths.length === 0) {
             return '';
         }
@@ -616,7 +617,7 @@ class Cascader extends Component {
         });
     }
 
-    handleFocus(focusedValue) {
+    handleFocus(focusedValue: string) {
         this.setState({
             focusedValue,
         });
@@ -633,8 +634,8 @@ class Cascader extends Component {
         });
     }
 
-    getIndeterminate(value) {
-        const indeterminateValues = [];
+    getIndeterminate(value: string[]) {
+        const indeterminateValues: string[] = [];
 
         const poss = filterChildValue(
             value
@@ -664,7 +665,7 @@ class Cascader extends Component {
         return indeterminateValues;
     }
 
-    onBlur(e) {
+    onBlur(e: FocusEvent<HTMLElement>) {
         this.setState({
             focusedValue: undefined,
         });
@@ -672,7 +673,7 @@ class Cascader extends Component {
         this.props.onBlur && this.props.onBlur(e);
     }
 
-    renderMenu(data, level) {
+    renderMenu(data: CascaderProps['dataSource'], level: number) {
         const {
             prefix,
             multiple,
@@ -694,7 +695,6 @@ class Cascader extends Component {
                 useVirtual={useVirtual}
                 className={listClassName}
                 style={listStyle}
-                ref={this.saveMenuRef}
                 focusedKey={focusedValue}
                 onItemFocus={this.handleFocus}
                 onBlur={this.onBlur}
@@ -706,7 +706,7 @@ class Cascader extends Component {
                             (!!item.children && !!item.children.length) ||
                             (!!loadData && !item.isLeaf);
                         const expanded = expandedValue[level] === item.value;
-                        const props = {
+                        const props: CascaderItemProps = {
                             prefix,
                             disabled,
                             canExpand,
@@ -735,7 +735,7 @@ class Cascader extends Component {
                             props.onSelect = this.handleSelect.bind(this, item.value, canExpand);
                         }
 
-                        const itemContent = itemRender(item, props);
+                        const itemContent = itemRender!(item, props);
                         if (itemContent === null) {
                             return null;
                         }
@@ -755,7 +755,7 @@ class Cascader extends Component {
         const { expandedValue } = this.state;
 
         const menus = [];
-        let data = dataSource;
+        let data: CascaderProps['dataSource'] | null | undefined = dataSource;
 
         for (let i = 0; i <= expandedValue.length; i++) {
             if (!data) {
@@ -777,36 +777,36 @@ class Cascader extends Component {
         return menus;
     }
 
-    renderFilteredItem(path) {
+    renderFilteredItem(path: CascaderDataItemWithPosInfo[]) {
         const { prefix, resultRender, searchValue, multiple } = this.props;
         const { value } = this.state;
         const lastItem = path[path.length - 1];
 
-        let Item;
-        const props = {
-            key: lastItem.value,
+        let Item: ComponentType;
+        const props: CheckboxItemProps | ItemProps = {
             className: `${prefix}cascader-filtered-item`,
             disabled: path.some(item => item.disabled),
-            children: resultRender(searchValue, path),
+            children: resultRender!(searchValue!, path),
         };
 
         if (multiple) {
             Item = Menu.CheckboxItem;
             const { checkStrictly, canOnlyCheckLeaf } = this.props;
-            props.checked = value.indexOf(lastItem.value) > -1;
-            props.indeterminate =
+            (props as CheckboxItemProps).checked = value.indexOf(lastItem.value) > -1;
+            (props as CheckboxItemProps).indeterminate =
                 !checkStrictly &&
                 !canOnlyCheckLeaf &&
                 this.indeterminate.indexOf(lastItem.value) > -1;
-            props.checkboxDisabled = lastItem.checkboxDisabled;
+            (props as CheckboxItemProps).checkboxDisabled = lastItem.checkboxDisabled;
             props.onChange = this.handleCheck.bind(this, lastItem.value);
         } else {
             Item = Menu.Item;
-            props.selected = value[0] === lastItem.value;
+            // @ts-expect-error 这里的实现应该是有问题，只有 SelectableItem 才有 selected
+            (props as ItemProps).selected = value[0] === lastItem.value;
             props.onSelect = this.handleSelect.bind(this, lastItem.value, false);
         }
 
-        return <Item {...props} />;
+        return <Item key={lastItem.value} {...props} />;
     }
 
     renderFilteredList() {
@@ -822,7 +822,7 @@ class Cascader extends Component {
                 className={`${prefix}cascader-filtered-list`}
                 style={filteredListStyle}
             >
-                {filteredPaths.map(path => this.renderFilteredItem(path))}
+                {filteredPaths!.map(path => this.renderFilteredItem(path))}
             </Menu>
         );
     }
@@ -839,7 +839,8 @@ class Cascader extends Component {
             canOnlyCheckLeaf,
             searchValue,
         } = this.props;
-        const others = pickOthers(Object.keys(Cascader.propTypes), this.props);
+        // FIXME 这样做风险比较大，propTypes 如果不全，就会出现一些 div 接收不了的参数传导到 div
+        const others = pickOthers(Cascader.propTypes, this.props);
         const { value } = this.state;
 
         if (rtl) {
@@ -850,7 +851,7 @@ class Cascader extends Component {
             className: cx({
                 [`${prefix}cascader`]: true,
                 multiple,
-                [className]: !!className,
+                [className!]: !!className,
             }),
             ref: 'cascader',
             ...others,

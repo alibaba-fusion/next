@@ -19,6 +19,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 菜单项标签内容
      */
     children?: React.ReactNode;
+    menu?: any;
 }
 
 export class Item extends React.Component<ItemProps, any> {}
@@ -100,6 +101,7 @@ export interface CheckboxItemProps extends HTMLAttributesWeak, CommonProps {
      * 标签内容
      */
     children?: React.ReactNode;
+    checkboxDisabled?: boolean;
 }
 
 export class CheckboxItem extends React.Component<CheckboxItemProps, any> {}
@@ -308,6 +310,8 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
      * 当前获得焦点的子菜单或菜单项 key 值
      */
     focusedKey?: string;
+    focusable?: boolean;
+    onItemFocus?: (key: string, ...rest: any[]) => void;
     renderMore?: (items?: Array<any>) => React.ReactElement;
 
     /**
