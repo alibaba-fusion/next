@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, type ComponentType, type KeyboardEvent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import Menu from '../menu';
+import Menu, { type CheckboxItemProps, type ItemProps as MenuItemProps } from '../menu';
 import Icon from '../icon';
 import { func, obj, KEYCODE } from '../util';
+import type { ItemProps, ItemState } from './types';
 
 const { bindCtx } = func;
 const { pickOthers } = obj;
 
-export default class CascaderMenuItem extends Component {
+export default class CascaderMenuItem extends Component<ItemProps, ItemState> {
     static menuChildType = 'item';
 
     static propTypes = {
@@ -31,7 +32,7 @@ export default class CascaderMenuItem extends Component {
         children: PropTypes.node,
     };
 
-    constructor(props) {
+    constructor(props: ItemProps) {
         super(props);
 
         this.state = {
@@ -59,15 +60,15 @@ export default class CascaderMenuItem extends Component {
         });
     }
 
-    setLoadingIfNeed(p) {
+    setLoadingIfNeed(p?: Promise<unknown> | void) {
         if (p && typeof p.then === 'function') {
             this.addLoading();
             p.then(this.removeLoading).catch(this.removeLoading);
         }
     }
 
-    handleExpand(focusedFirstChild) {
-        this.setLoadingIfNeed(this.props.onExpand(focusedFirstChild));
+    handleExpand(focusedFirstChild: boolean) {
+        this.setLoadingIfNeed(this.props.onExpand!(focusedFirstChild));
     }
 
     handleClick() {
@@ -78,14 +79,14 @@ export default class CascaderMenuItem extends Component {
         this.handleExpand(false);
     }
 
-    handleKeyDown(e) {
+    handleKeyDown(e: KeyboardEvent) {
         if (!this.props.disabled) {
             if (e.keyCode === KEYCODE.RIGHT || e.keyCode === KEYCODE.ENTER) {
                 if (this.props.canExpand) {
                     this.handleExpand(true);
                 }
             } else if (e.keyCode === KEYCODE.LEFT || e.keyCode === KEYCODE.ESC) {
-                this.props.onFold();
+                this.props.onFold!();
             } else if (e.keyCode === KEYCODE.SPACE) {
                 this.handleExpand(false);
             }
@@ -110,14 +111,14 @@ export default class CascaderMenuItem extends Component {
             onCheck,
             children,
         } = this.props;
-        const others = pickOthers(Object.keys(CascaderMenuItem.propTypes), this.props);
+        const others = pickOthers(CascaderMenuItem.propTypes, this.props);
         const { loading } = this.state;
 
-        const itemProps = {
+        const itemProps: CheckboxItemProps | MenuItemProps = {
             className: cx({
                 [`${prefix}cascader-menu-item`]: true,
                 [`${prefix}expanded`]: expanded,
-                [className]: !!className,
+                [className!]: !!className,
             }),
             disabled,
             menu,
@@ -133,15 +134,16 @@ export default class CascaderMenuItem extends Component {
             }
         }
 
-        let Item, title;
+        let Item: ComponentType, title;
         if (checkable) {
             Item = Menu.CheckboxItem;
-            itemProps.checked = checked;
-            itemProps.indeterminate = indeterminate;
-            itemProps.checkboxDisabled = checkboxDisabled;
-            itemProps.onChange = onCheck;
+            (itemProps as CheckboxItemProps).checked = checked;
+            (itemProps as CheckboxItemProps).indeterminate = indeterminate;
+            (itemProps as CheckboxItemProps).checkboxDisabled = checkboxDisabled;
+            (itemProps as CheckboxItemProps).onChange = onCheck;
         } else {
             Item = Menu.Item;
+            // @ts-expect-error 这里的实现应该是有问题，只有 SelectableItem 才有 selected
             itemProps.selected = selected;
             itemProps.onSelect = onSelect;
         }

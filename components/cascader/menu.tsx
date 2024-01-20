@@ -1,16 +1,28 @@
-import React, { Component } from 'react';
+import React, {
+    Component,
+    type ReactNode,
+    type LegacyRef,
+    type ReactElement,
+    type ReactNodeArray,
+    type ComponentElement,
+    JSXElementConstructor,
+} from 'react';
 import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
-import Menu from '../menu';
+import Menu, { type MenuProps } from '../menu';
 import VirtualList from '../virtual-list';
+import type { CascaderMenuProps, ItemProps } from './types';
+import CascaderMenuItem from './item';
 
-export default class CascaderMenu extends Component {
+export default class CascaderMenu extends Component<CascaderMenuProps> {
     static propTypes = {
         prefix: PropTypes.string,
         className: PropTypes.string,
         useVirtual: PropTypes.bool,
         children: PropTypes.node,
     };
+    virtualEl: VirtualList | null;
+    menuEl: HTMLDivElement;
 
     componentDidMount() {
         this.scrollToSelectedItem();
@@ -18,10 +30,11 @@ export default class CascaderMenu extends Component {
 
     scrollToSelectedItem() {
         const { prefix, useVirtual, children } = this.props;
-        if (!children || children.length === 0) {
+        // FIXME 这里的判断很容易报错
+        if (!children || (children as ReactNodeArray).length === 0) {
             return;
         }
-        const selectedIndex = children.findIndex(
+        const selectedIndex = (children as Array<ReactElement>).findIndex(
             item => !!item.props.checked || !!item.props.selected || !!item.props.expanded
         );
 
@@ -30,12 +43,13 @@ export default class CascaderMenu extends Component {
         }
 
         if (useVirtual) {
-            const instance = this.virtualEl.getInstance();
+            // @ts-expect-error VirtualList 尚未做优化，因此无法取得 getInstance
+            const instance = this.virtualEl!.getInstance();
             setTimeout(() => instance.scrollTo(selectedIndex), 0);
         } else {
             const itemSelector = `.${prefix}menu-item`;
-            const menu = findDOMNode(this.menuEl);
-            const targetItem = menu.querySelectorAll(itemSelector)[selectedIndex];
+            const menu = findDOMNode(this.menuEl) as HTMLElement;
+            const targetItem = menu.querySelectorAll(itemSelector)[selectedIndex] as HTMLElement;
             if (targetItem) {
                 menu.scrollTop =
                     targetItem.offsetTop -
@@ -45,11 +59,18 @@ export default class CascaderMenu extends Component {
         }
     }
 
-    renderMenu(items, ref, props) {
+    renderMenu(items: ReactNodeArray, ref: LegacyRef<Menu> | undefined, props: MenuProps) {
+        function isItem(node: ReactNode): node is ComponentElement<ItemProps, CascaderMenuItem> {
+            // FIXME 这里的判断很容易报错，node.type 可以是 string 或者函数组件
+            return (
+                React.isValidElement(node) &&
+                (node.type as typeof CascaderMenuItem).menuChildType === 'item'
+            );
+        }
         return (
             <Menu ref={ref} role="listbox" {...props}>
                 {items.map(node => {
-                    if (React.isValidElement(node) && node.type.menuChildType === 'item') {
+                    if (isItem(node)) {
                         return React.cloneElement(node, {
                             menu: this,
                         });
@@ -61,11 +82,11 @@ export default class CascaderMenu extends Component {
         );
     }
 
-    saveMenuRef = ref => {
+    saveMenuRef = (ref: HTMLDivElement) => {
         this.menuEl = ref;
     };
 
-    saveVirtualRef = ref => {
+    saveVirtualRef = (ref: VirtualList) => {
         this.virtualEl = ref;
     };
 
@@ -90,7 +111,7 @@ export default class CascaderMenu extends Component {
                         {children}
                     </VirtualList>
                 ) : (
-                    this.renderMenu(children, undefined, menuProps)
+                    this.renderMenu(children as ReactNodeArray, undefined, menuProps)
                 )}
             </div>
         );
