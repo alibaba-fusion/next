@@ -118,84 +118,29 @@ class Cascader extends Component<CascaderProps, CascaderState> {
         rtl: PropTypes.bool,
         pure: PropTypes.bool,
         className: PropTypes.string,
-        /**
-         * 数据源，结构可参考下方说明
-         */
         dataSource: PropTypes.arrayOf(PropTypes.object),
-        /**
-         * （非受控）默认值
-         */
         defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-        /**
-         * （受控）当前值
-         */
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-        /**
-         * 选中值改变时触发的回调函数
-         */
         onChange: PropTypes.func,
         onSelect: PropTypes.func,
-        /**
-         * （非受控）默认展开值，如果不设置，组件内部会根据 defaultValue/value 进行自动设置
-         */
         defaultExpandedValue: PropTypes.arrayOf(PropTypes.string),
-        /**
-         * （受控）当前展开值
-         */
         expandedValue: PropTypes.arrayOf(PropTypes.string),
-        /**
-         * 展开触发的方式
-         */
         expandTriggerType: PropTypes.oneOf(['click', 'hover']),
-        /**
-         * 展开时触发的回调函数
-         */
         onExpand: PropTypes.func,
-        /**
-         * 是否开启虚拟滚动
-         */
         useVirtual: PropTypes.bool,
-        /**
-         * 是否多选
-         */
         multiple: PropTypes.bool,
-        /**
-         * 单选时是否只能选中叶子节点
-         */
         canOnlySelectLeaf: PropTypes.bool,
-        /**
-         * 多选时是否只能选中叶子节点
-         */
         canOnlyCheckLeaf: PropTypes.bool,
-        /**
-         * 父子节点是否选中不关联
-         */
         checkStrictly: PropTypes.bool,
-        /**
-         * 每列列表样式对象
-         */
         listStyle: PropTypes.object,
-        /**
-         * 每列列表类名
-         */
         listClassName: PropTypes.string,
-        /**
-         * 每列列表项渲染函数
-         */
         itemRender: PropTypes.func,
-        /**
-         * 异步加载数据函数
-         */
         loadData: PropTypes.func,
         searchValue: PropTypes.string,
         onBlur: PropTypes.func,
         filteredPaths: PropTypes.array,
         filteredListStyle: PropTypes.object,
         resultRender: PropTypes.func,
-        /**
-         * 是否是不可变数据
-         * @version 1.23
-         */
         immutable: PropTypes.bool,
     };
 
