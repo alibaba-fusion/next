@@ -1,20 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
+import React, {
+    useState,
+    forwardRef,
+    useImperativeHandle,
+    type Dispatch,
+    type SetStateAction,
+} from 'react';
 import cloneDeep from 'lodash.clonedeep';
-import { KEYCODE } from '../../util';
-import Cascader from '../index';
+import type { SinonSpy } from 'cypress/types/sinon';
+import Cascader, { type CascaderDataItem, type CascaderProps } from '../index';
 import '../style';
 
-/* eslint-disable react/jsx-filename-extension, no-unused-expressions  */
-/* global describe it afterEach */
-
-Enzyme.configure({ adapter: new Adapter() });
-
-function freeze(dataSource) {
+function freeze(dataSource: NonNullable<CascaderProps['dataSource']>) {
     return dataSource.map(item => {
         const { children } = item;
         children && freeze(children);
@@ -22,7 +18,7 @@ function freeze(dataSource) {
     });
 }
 
-const ChinaArea = [
+const ChinaArea: NonNullable<CascaderProps['dataSource']> = [
     {
         value: '2973',
         label: '陕西',
@@ -51,59 +47,126 @@ const ChinaArea = [
     },
 ];
 
-describe('Cascader', () => {
-    let wrapper;
-
-    afterEach(() => {
-        const overlay = document.querySelectorAll('.next-overlay-wrapper');
-        overlay.forEach(dom => {
-            document.body.removeChild(dom);
-        });
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
+function compareDOMAndData(value: string, expandedValue: string[]) {
+    const getTarget = (col: number, row: number, data = ChinaArea) => {
+        const expanded = [...expandedValue];
+        while (col !== 0) {
+            const index = expanded.shift();
+            const newData = data.find(item => item.value === index);
+            data = newData?.children as CascaderDataItem[];
+            col--;
         }
+        return data[row];
+    };
+    cy.get('ul.next-cascader-menu').each(($menu, i) => {
+        cy.wrap($menu)
+            .find('li.next-cascader-menu-item')
+            .each(($item, j) => {
+                const target = getTarget(i, j);
+                const targetLabel = target.label;
+                cy.wrap($item).should('have.text', targetLabel);
+                const curValue = target.value;
+                if (curValue === value) {
+                    cy.wrap($item).should('have.class', 'next-selected');
+                }
+                if (curValue === expandedValue[i]) {
+                    cy.wrap($item).should('have.class', 'next-expanded');
+                }
+            });
     });
+}
 
+function compareIndeterminate(item: ReturnType<typeof cy.get>) {
+    item.find('.next-checkbox-wrapper')
+        .should('have.class', 'indeterminate')
+        .should('not.have.class', 'checked');
+}
+
+function compareChecked(item: ReturnType<typeof cy.get>) {
+    item.find('.next-checkbox-wrapper')
+        .should('have.class', 'checked')
+        .should('not.have.class', 'indeterminate');
+}
+
+function compareNotChecked(item: ReturnType<typeof cy.get>) {
+    item.find('.next-checkbox-wrapper')
+        .should('not.have.class', 'checked')
+        .should('not.have.class', 'indeterminate');
+}
+
+function findItem(menuIndex: number, itemIndex?: number) {
+    if (itemIndex !== undefined) {
+        return cy
+            .get('ul.next-cascader-menu')
+            .eq(menuIndex)
+            .find('li.next-cascader-menu-item')
+            .eq(itemIndex);
+    }
+    return cy.get('ul.next-cascader-menu').eq(menuIndex).find('li.next-cascader-menu-item');
+}
+
+function checkItem(item: ReturnType<typeof cy.get>) {
+    return item.find('input').click({ force: true });
+}
+
+function filter$Source(data: Record<string, any>[]) {
+    if (!data) return;
+
+    return [...data].map(it => {
+        const item = {
+            ...it,
+        };
+        delete item._source;
+        return item;
+    });
+}
+function sortByValue<T extends string[] | (Record<string, unknown> & { value?: string })[]>(
+    data: T,
+    isValue = false
+): T {
+    if (!isValue) {
+        data.forEach(d => {
+            if (typeof d === 'object') {
+                delete d.children;
+            }
+        });
+    }
+
+    return data.sort((prev, next) => {
+        if (isValue) {
+            return Number(prev) - Number(next);
+        }
+        if (typeof prev === 'object' && typeof next === 'object') {
+            return Number(prev.value) - Number(next.value);
+        }
+        return -1;
+    }) as T;
+}
+
+function assertActiveElement() {
+    let activeElement = document.activeElement;
+
+    return (
+        events: string,
+        next: ReturnType<typeof cy.get> | (() => ReturnType<typeof cy.get>)
+    ) => {
+        cy.wrap(activeElement).type(events);
+        next = typeof next === 'function' ? next() : next;
+        next.then(($el: JQuery<HTMLElement>) => {
+            const element = $el.get(0);
+            cy.wrap(element).should('equal', document.activeElement);
+            activeElement = element;
+        });
+    };
+}
+
+describe('Cascader', () => {
     it('should render single cascader', () => {
         const defaultValue = '2975';
         const defaultExpandedValue = ['2973', '2974'];
-        let changeCalled = false;
-        let expandCalled = false;
-        const handleChange = (v, d, e) => {
-            changeCalled = true;
-            assert(v === '2980');
-            delete d.children;
-            delete d._source;
-            assert.deepEqual(d, {
-                value: '2980',
-                label: '铜川',
-                pos: '0-0-1',
-            });
-            e.selectedPath.forEach(d => {
-                delete d.children;
-                delete d._source;
-            });
-            assert.deepEqual(e, {
-                selectedPath: [
-                    {
-                        value: '2973',
-                        label: '陕西',
-                        pos: '0-0',
-                    },
-                    {
-                        value: '2980',
-                        label: '铜川',
-                        pos: '0-0-1',
-                    },
-                ],
-            });
-        };
-        const handleExpand = ev => {
-            expandCalled = true;
-            assert.deepEqual(ev, ['2973', '2980']);
-        };
-        wrapper = mount(
+        const handleChange = cy.spy().as('handleChange');
+        const handleExpand = cy.spy().as('handleExpand');
+        cy.mount(
             <Cascader
                 defaultValue={defaultValue}
                 defaultExpandedValue={defaultExpandedValue}
@@ -112,88 +175,119 @@ describe('Cascader', () => {
                 onExpand={handleExpand}
             />
         );
-        compareDOMAndData(wrapper, defaultValue, defaultExpandedValue);
+        compareDOMAndData(defaultValue, defaultExpandedValue);
 
-        findItem(wrapper, 1, 1).simulate('click');
-        compareDOMAndData(wrapper, '2980', ['2973', '2980']);
-        assert(changeCalled);
-        assert(expandCalled);
-    });
-
-    it('should render single cascader under control', () => {
-        let value = '2975';
-        let expandedValue = ['2973', '2974'];
-        let changeCalled = false;
-        let expandCalled = false;
-        const handleChange = (v, d, e) => {
-            changeCalled = true;
-            assert(v === '2980');
-            delete d.children;
-            delete d._source;
-            assert.deepEqual(d, {
-                value: '2980',
-                label: '铜川',
-                pos: '0-0-1',
-            });
-            e.selectedPath.forEach(d => {
-                delete d.children;
-                delete d._source;
-            });
-            assert.deepEqual(e, {
-                selectedPath: [
-                    {
-                        value: '2973',
-                        label: '陕西',
-                        pos: '0-0',
-                    },
-                    {
+        findItem(1, 1)
+            .click({ force: true })
+            .then(() => {
+                compareDOMAndData('2980', ['2973', '2980']);
+                cy.get('@handleChange').should('have.been.calledOnce');
+                cy.get<SinonSpy>('@handleChange').then($hc => {
+                    const [v, d, e] = $hc.args[0] as Parameters<
+                        NonNullable<CascaderProps['onChange']>
+                    >;
+                    cy.wrap(v).should('equal', '2980');
+                    delete (d as CascaderDataItem).children;
+                    delete (d as CascaderDataItem)._source;
+                    cy.wrap(d).should('deep.equal', {
                         value: '2980',
                         label: '铜川',
                         pos: '0-0-1',
-                    },
-                ],
+                    });
+                    e.selectedPath!.forEach(d => {
+                        delete d.children;
+                        delete d._source;
+                    });
+                    cy.wrap(e).should('deep.equal', {
+                        selectedPath: [
+                            {
+                                value: '2973',
+                                label: '陕西',
+                                pos: '0-0',
+                            },
+                            {
+                                value: '2980',
+                                label: '铜川',
+                                pos: '0-0-1',
+                            },
+                        ],
+                    });
+                });
+                cy.get('@handleExpand').should('have.been.calledOnce');
+                cy.get('@handleExpand').should('have.been.calledWith', ['2973', '2980']);
             });
-            value = v;
-            wrapper.setProps({ value });
-        };
-        const handleExpand = ev => {
-            expandCalled = true;
-            assert.deepEqual(ev, ['2973', '2980']);
+    });
 
-            expandedValue = ev;
-            wrapper.setProps({ value, expandedValue });
-        };
-        wrapper = mount(
-            <Cascader
-                defaultValue="2973"
-                defaultExpandedValue={['2973']}
-                value={value}
-                expandedValue={expandedValue}
-                onChange={handleChange}
-                onExpand={handleExpand}
+    it('should render single cascader under control', () => {
+        let VALUE = '2975';
+        let EXPANDED = ['2973', '2974'];
+        const handleChange = cy.spy().as('handleChange');
+        const handleExpand = cy.spy().as('handleExpand');
+        interface DemoRef {
+            setDefaultValue: Dispatch<SetStateAction<string>>;
+            setDefaultExpandedValue: Dispatch<SetStateAction<string[]>>;
+        }
+        const Demo = forwardRef<DemoRef>((props, ref) => {
+            const [value, setValue] = useState(VALUE);
+            const [expandedValue, setExpandedValue] = useState([...EXPANDED]);
+            const [defaultValue, setDefaultValue] = useState('2973');
+            const [defaultExpandedValue, setDefaultExpandedValue] = useState(['2973']);
+            useImperativeHandle(ref, () => {
+                return {
+                    setValue,
+                    setExpandedValue,
+                    setDefaultValue,
+                    setDefaultExpandedValue,
+                };
+            });
+
+            return (
+                <Cascader
+                    defaultValue={defaultValue}
+                    defaultExpandedValue={defaultExpandedValue}
+                    value={value}
+                    dataSource={ChinaArea}
+                    expandedValue={expandedValue}
+                    onChange={(...rest) => {
+                        setValue(rest[0] as string);
+                        VALUE = rest[0] as string;
+                        handleChange(...rest);
+                    }}
+                    onExpand={ex => {
+                        setExpandedValue(ex);
+                        EXPANDED = ex;
+                        handleExpand(ex);
+                    }}
+                />
+            );
+        });
+
+        let demoRef: DemoRef | null;
+
+        cy.mount(
+            <Demo
+                ref={c => {
+                    demoRef = c;
+                }}
             />
         );
-        compareDOMAndData(wrapper, value, expandedValue);
+        compareDOMAndData(VALUE, EXPANDED);
 
-        wrapper.setProps({ dataSource: ChinaArea });
-
-        findItem(wrapper, 1, 1).simulate('click');
-        compareDOMAndData(wrapper, value, expandedValue);
-        assert(changeCalled);
-        assert(expandCalled);
-
-        wrapper.setProps({
-            defaultValue: '2974',
-            defaultExpandedValue: ['2973', '2974'],
-        });
-        compareDOMAndData(wrapper, value, expandedValue);
+        findItem(1, 1)
+            .click()
+            .then(() => {
+                compareDOMAndData(VALUE, EXPANDED);
+                cy.get('@handleChange').should('be.calledOnce');
+                cy.get('@handleExpand').should('be.calledOnce');
+                demoRef!.setDefaultValue('2974');
+                demoRef!.setDefaultExpandedValue(['2973', '2974']);
+                compareDOMAndData(VALUE, EXPANDED);
+            });
     });
 
     it('should not trigger onChange when click the selected item', () => {
-        const handleChange = () => {
-            assert(false);
-        };
-        wrapper = mount(
+        const handleChange = cy.spy().as('handleChange');
+        cy.mount(
             <Cascader
                 defaultValue="2980"
                 defaultExpandedValue={['2973', '2980']}
@@ -201,7 +295,8 @@ describe('Cascader', () => {
                 onChange={handleChange}
             />
         );
-        findItem(wrapper, 1, 1).simulate('click');
+        findItem(1, 1).click();
+        cy.get('@handleChange').should('not.be.called');
     });
 
     it('should support remove title', () => {
@@ -209,17 +304,14 @@ describe('Cascader', () => {
 
         data[0].title = '';
 
-        wrapper = mount(<Cascader dataSource={data} />);
-        assert(wrapper.find('.next-menu-item').at(0).getDOMNode().getAttribute('title') === '');
-        assert(wrapper.find('.next-menu-item').at(1).getDOMNode().getAttribute('title') === '四川');
-        delete data[0].title;
+        cy.mount(<Cascader dataSource={data} />);
+        cy.get('.next-menu-item').eq(0).should('have.prop', 'title', '');
+        cy.get('.next-menu-item').eq(1).should('have.prop', 'title', '四川');
     });
 
     it('could only select leaf item when set canOnlySelectLeaf to true', () => {
-        const handleChange = () => {
-            assert(false);
-        };
-        wrapper = mount(
+        const handleChange = cy.spy().as('handleChange');
+        cy.mount(
             <Cascader
                 defaultExpandedValue={['2973', '2974']}
                 canOnlySelectLeaf
@@ -227,11 +319,12 @@ describe('Cascader', () => {
                 onChange={handleChange}
             />
         );
-        findItem(wrapper, 1, 1).simulate('click');
+        findItem(1, 1).click();
+        cy.get('@handleChange').should('not.be.called');
     });
 
     it('could only check checkbox of leaf item when set canOnlyCheckLeaf to true', () => {
-        wrapper = mount(
+        cy.mount(
             <Cascader
                 multiple
                 defaultExpandedValue={['2973', '2974']}
@@ -239,17 +332,14 @@ describe('Cascader', () => {
                 dataSource={ChinaArea}
             />
         );
-        assert(findItem(wrapper, 0, 0).find('label.next-checkbox').length === 0);
+        findItem(0, 0).find('.next-checkbox').should('not.exist');
+        findItem(0, 1).find('.next-checkbox').should('exist');
     });
 
     it('should expand menu by hover when set expandTriggerType to hover', () => {
         let expandedValue;
-        let expandCalled = false;
-        const handleExpand = value => {
-            expandCalled = true;
-            assert.deepEqual(expandedValue, value);
-        };
-        wrapper = mount(
+        const handleExpand = cy.spy().as('handleExpand');
+        cy.mount(
             <Cascader
                 defaultValue="2975"
                 defaultExpandedValue={['2973', '2974']}
@@ -259,17 +349,15 @@ describe('Cascader', () => {
             />
         );
         expandedValue = ['2973', '2980'];
-        findItem(wrapper, 1, 1).simulate('mouseenter');
-        assert(expandCalled);
-        expandCalled = false;
+        findItem(1, 1).trigger('mouseover', { force: true });
+        cy.get('@handleExpand').should('be.calledWith', expandedValue);
 
         expandedValue = ['2973', '2974'];
-        wrapper.simulate('mouseleave');
-        assert(expandCalled);
-        expandCalled = false;
+        findItem(1, 1).trigger('mouseout', { force: true });
+        cy.get('@handleExpand').should('be.calledWith', expandedValue);
     });
 
-    it('should render multiple cascader', done => {
+    it('should render multiple cascader', () => {
         const dataSource = [
             {
                 value: '2973',
@@ -296,31 +384,8 @@ describe('Cascader', () => {
                 ],
             },
         ];
-        let changeCalled = false;
-        let value;
-        let data;
-        let extra;
-        const handleChange = (v, d, e) => {
-            d = filter$Source(d);
-            const item = {
-                ...e.currentData,
-            };
-            delete item._source;
-            delete item.children;
-            e = {
-                ...e,
-                currentData: item,
-                checkedData: filter$Source(e.checkedData),
-                indeterminateData: filter$Source(e.indeterminateData),
-            };
-            assert.deepEqual(value, sortByValue(v, true));
-            assert.deepEqual(data, sortByValue(d));
-            e.checkedData = sortByValue(e.checkedData);
-            e.indeterminateData = sortByValue(e.indeterminateData);
-            assert.deepEqual(extra, e);
-            changeCalled = true;
-        };
-        wrapper = mount(
+        const handleChange = cy.spy().as('handleChange');
+        cy.mount(
             <Cascader
                 multiple
                 defaultValue={['2975']}
@@ -330,66 +395,70 @@ describe('Cascader', () => {
             />
         );
 
-        const item00 = findItem(wrapper, 0, 0);
-        const item10 = findItem(wrapper, 1, 0);
-        const item20 = findItem(wrapper, 2, 0);
+        const item00 = findItem(0, 0);
+        const item10 = findItem(1, 0);
+        const item20 = findItem(2, 0);
         compareIndeterminate(item00);
         compareIndeterminate(item10);
         compareChecked(item20);
 
-        (value = ['2973']), (data = [{ value: '2973', label: '陕西', pos: '0-0' }]);
-        extra = {
-            checked: true,
-            currentData: { value: '2973', label: '陕西', pos: '0-0' },
-            checkedData: [
-                { value: '2973', label: '陕西', pos: '0-0' },
-                { value: '2974', label: '西安', pos: '0-0-0' },
-                { value: '2975', label: '西安市', pos: '0-0-0-0' },
-                { value: '2976', label: '高陵县', pos: '0-0-0-1' },
-                { value: '2980', label: '铜川', pos: '0-0-1' },
-            ],
-            indeterminateData: [],
-        };
-        checkItem(item00, true);
-        compareChecked(findItem(wrapper, 0, 0));
-        findItem(wrapper, 1).forEach(compareChecked);
-        findItem(wrapper, 2).forEach(compareChecked);
-        assert(changeCalled);
-        changeCalled = false;
-
-        setTimeout(() => {
-            (value = ['2980']), (data = [{ value: '2980', label: '铜川', pos: '0-0-1' }]);
-            extra = {
-                checked: false,
-                currentData: { value: '2974', label: '西安', pos: '0-0-0' },
-                checkedData: [{ value: '2980', label: '铜川', pos: '0-0-1' }],
-                indeterminateData: [{ value: '2973', label: '陕西', pos: '0-0' }],
-            };
-            checkItem(findItem(wrapper, 1, 0), false);
-            compareIndeterminate(findItem(wrapper, 0, 0));
-            compareNotChecked(findItem(wrapper, 1, 0));
-            findItem(wrapper, 2).forEach(compareNotChecked);
-            assert(changeCalled);
-            done();
-        }, 20);
+        checkItem(item00).then(() => {
+            cy.get('@handleChange').should('be.called');
+            cy.get<SinonSpy>('@handleChange').then($hc => {
+                const [v, d, e] = $hc.args[0] as Parameters<NonNullable<CascaderProps['onChange']>>;
+                const newD = filter$Source(d as CascaderDataItem[]);
+                const item = {
+                    ...e.currentData,
+                };
+                delete item._source;
+                delete item.children;
+                const newE = {
+                    ...e,
+                    currentData: item,
+                    checkedData: filter$Source(e.checkedData!),
+                    indeterminateData: filter$Source(e.indeterminateData!),
+                };
+                cy.wrap(sortByValue(v as string[], true)).should('deep.equal', ['2973']);
+                cy.wrap(sortByValue(newD!)).should('deep.equal', [
+                    { value: '2973', label: '陕西', pos: '0-0' },
+                ]);
+                newE.checkedData = sortByValue(newE.checkedData!);
+                newE.indeterminateData = sortByValue(newE.indeterminateData!);
+                cy.wrap(newE).should('deep.equal', {
+                    checked: true,
+                    currentData: { value: '2973', label: '陕西', pos: '0-0' },
+                    checkedData: [
+                        { value: '2973', label: '陕西', pos: '0-0' },
+                        { value: '2974', label: '西安', pos: '0-0-0' },
+                        { value: '2975', label: '西安市', pos: '0-0-0-0' },
+                        { value: '2976', label: '高陵县', pos: '0-0-0-1' },
+                        { value: '2980', label: '铜川', pos: '0-0-1' },
+                    ],
+                    indeterminateData: [],
+                });
+            });
+            compareChecked(findItem(0, 0));
+            [1, 2].forEach(index => {
+                findItem(index).each(item => {
+                    compareChecked(cy.wrap(item));
+                });
+            });
+            checkItem(findItem(1, 0));
+            cy.get('@handleChange').should('be.called');
+            compareIndeterminate(findItem(0, 0));
+            compareNotChecked(findItem(1, 0));
+            findItem(2).each(item => {
+                compareNotChecked(cy.wrap(item));
+            });
+        });
     });
 
     it('should render multiple cascader when set checkStrictly to true', () => {
-        let changeCalled = false;
-        let value;
-        let data;
-        let extra;
-        const handleChange = (v, d, e) => {
-            d.forEach(d => delete d._source);
-            e.checkedData.forEach(d => delete d._source);
-            delete e.currentData._source;
-            assert.deepEqual(value, sortByValue(v, true));
-            assert.deepEqual(data, sortByValue(d));
-            e.checkedData = sortByValue(e.checkedData);
-            assert.deepEqual(extra, e);
-            changeCalled = true;
-        };
-        wrapper = mount(
+        let curValue: any;
+        let curData: any;
+        let curExtra: any;
+        const handleChange = cy.spy().as('handleChange');
+        cy.mount(
             <Cascader
                 checkStrictly
                 multiple
@@ -400,211 +469,184 @@ describe('Cascader', () => {
             />
         );
 
-        const item00 = findItem(wrapper, 0, 0);
-        const item20 = findItem(wrapper, 2, 0);
+        const item00 = findItem(0, 0);
+        const item20 = findItem(2, 0);
         compareChecked(item20);
-
-        (value = ['2973', '2975']),
-            (data = [
+        const checkChange = ($hc: SinonSpy, value: any, data: any, extra: any, argsIndex = 0) => {
+            const [v, d, e] = $hc.args[argsIndex] as Parameters<
+                NonNullable<CascaderProps['onChange']>
+            >;
+            (d as CascaderDataItem[]).forEach(item => delete item._source);
+            e.checkedData!.forEach(item => delete item._source);
+            delete e.currentData!._source;
+            cy.wrap(sortByValue(v as string[], true)).should('deep.equal', value);
+            cy.wrap(sortByValue(d as CascaderDataItem[])).should('deep.equal', data);
+            e.checkedData = sortByValue(e.checkedData!);
+            cy.wrap(e).should('deep.equal', extra);
+        };
+        checkItem(item00).then(() => {
+            curValue = ['2973', '2975'];
+            curData = [
                 { value: '2973', label: '陕西', pos: '0-0' },
                 { value: '2975', label: '西安市', pos: '0-0-0-0' },
-            ]);
-        extra = {
-            checked: true,
-            currentData: { value: '2973', label: '陕西', pos: '0-0' },
-            checkedData: [
-                { value: '2973', label: '陕西', pos: '0-0' },
-                { value: '2975', label: '西安市', pos: '0-0-0-0' },
-            ],
-        };
-        checkItem(item00, true);
-        compareChecked(findItem(wrapper, 0, 0));
-        assert(changeCalled);
-        changeCalled = false;
-
-        (value = ['2973']), (data = [{ value: '2973', label: '陕西', pos: '0-0' }]);
-        extra = {
-            checked: false,
-            currentData: { value: '2975', label: '西安市', pos: '0-0-0-0' },
-            checkedData: [{ value: '2973', label: '陕西', pos: '0-0' }],
-        };
-        checkItem(findItem(wrapper, 2, 0), false);
-        compareNotChecked(findItem(wrapper, 2, 0));
-        assert(changeCalled);
+            ];
+            curExtra = {
+                checked: true,
+                currentData: { value: '2973', label: '陕西', pos: '0-0' },
+                checkedData: curData,
+            };
+            cy.get('@handleChange').should('be.called');
+            cy.get<SinonSpy>('@handleChange').then($hc => {
+                checkChange($hc, curValue, curData, curExtra);
+            });
+            compareChecked(findItem(0, 0));
+            checkItem(findItem(2, 0)).then(() => {
+                cy.get('@handleChange').should('be.called');
+                curData = [{ value: '2973', label: '陕西', pos: '0-0' }];
+                curExtra = {
+                    checked: false,
+                    currentData: { value: '2975', label: '西安市', pos: '0-0-0-0' },
+                    checkedData: [{ value: '2973', label: '陕西', pos: '0-0' }],
+                };
+                curValue = ['2973'];
+                cy.get<SinonSpy>('@handleChange').then($hc => {
+                    checkChange($hc, curValue, curData, curExtra, 1);
+                });
+                compareNotChecked(findItem(2, 0));
+            });
+        });
     });
 
     it('should compute expanded value auto if set value but not set expanded value', () => {
-        wrapper = mount(<Cascader defaultValue={['2975']} dataSource={ChinaArea} />);
-        const item00 = findItem(wrapper, 0, 0);
-        assert(item00.hasClass('next-cascader-menu-item'));
-        const item10 = findItem(wrapper, 1, 0);
-        assert(item10.hasClass('next-cascader-menu-item'));
+        cy.mount(<Cascader defaultValue={['2975']} dataSource={ChinaArea} />);
+        findItem(0, 0).should('exist');
+        findItem(1, 0).should('exist');
     });
 
-    it('should load data asynchronously when set loadData', done => {
-        const newWrapper = mount(
-            <Cascader
-                dataSource={[
-                    {
-                        value: '2973',
-                        label: '陕西',
-                        isLeaf: false,
-                    },
-                ]}
-                loadData={onLoadData}
-            />
-        );
+    it('should load data asynchronously when set loadData', () => {
+        const Demo = () => {
+            const [dataSource, setDs] = useState<CascaderProps['dataSource']>([
+                {
+                    value: '2973',
+                    label: '陕西',
+                    isLeaf: false,
+                },
+            ]);
+            function onLoadData() {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        setDs([
+                            {
+                                value: '2973',
+                                label: '陕西',
+                                children: [
+                                    {
+                                        value: '2974',
+                                        label: '西安',
+                                        children: [
+                                            {
+                                                value: '2975',
+                                                label: '西安市',
+                                                isLeaf: true,
+                                            },
+                                            {
+                                                value: '2976',
+                                                label: '高陵县',
+                                                isLeaf: true,
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        value: '2980',
+                                        label: '铜川',
+                                        children: [
+                                            {
+                                                value: '2981',
+                                                label: '铜川市',
+                                                isLeaf: true,
+                                            },
+                                            {
+                                                value: '2982',
+                                                label: '宜君县',
+                                                isLeaf: true,
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ]);
+                        resolve('');
+                    }, 500);
+                });
+            }
+            return <Cascader dataSource={dataSource} loadData={onLoadData} />;
+        };
 
-        function onLoadData() {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    newWrapper.setProps(
-                        {
-                            dataSource: [
-                                {
-                                    value: '2973',
-                                    label: '陕西',
-                                    children: [
-                                        {
-                                            value: '2974',
-                                            label: '西安',
-                                            children: [
-                                                {
-                                                    value: '2975',
-                                                    label: '西安市',
-                                                    isLeaf: true,
-                                                },
-                                                {
-                                                    value: '2976',
-                                                    label: '高陵县',
-                                                    isLeaf: true,
-                                                },
-                                            ],
-                                        },
-                                        {
-                                            value: '2980',
-                                            label: '铜川',
-                                            children: [
-                                                {
-                                                    value: '2981',
-                                                    label: '铜川市',
-                                                    isLeaf: true,
-                                                },
-                                                {
-                                                    value: '2982',
-                                                    label: '宜君县',
-                                                    isLeaf: true,
-                                                },
-                                            ],
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                        resolve
-                    );
-                }, 500);
+        cy.mount(<Demo />);
+        findItem(0, 0)
+            .click()
+            .then(() => {
+                findItem(0, 0).find('.next-cascader-menu-icon-loading').should('exist');
+                findItem(1, 0).should('have.text', '西安');
+                findItem(1, 1).should('have.text', '铜川');
             });
-        }
-
-        const item00 = findItem(newWrapper, 0, 0);
-        item00.simulate('click');
-        assert(findItem(newWrapper, 0, 0).find('.next-cascader-menu-icon-loading').length > 0);
-
-        setTimeout(() => {
-            assert(findItem(newWrapper, 1, 0).text().trim() === '西安');
-            assert(findItem(newWrapper, 1, 1).text().trim() === '铜川');
-            done();
-        }, 1000);
     });
 
     it('should support listClassName and listStyle', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
+        cy.mount(
             <Cascader
                 dataSource={ChinaArea}
                 listStyle={{ width: '400px', height: '400px' }}
                 listClassName="custom"
-            />,
-            div
+            />
         );
 
-        const list = div.querySelector('.next-cascader-menu-wrapper');
-        assert(list.style.width === '400px');
-        assert(list.style.height === '400px');
-        assert(
-            window.getComputedStyle(list.querySelector('.next-cascader-menu')).width === '400px'
-        );
-        assert(
-            window.getComputedStyle(list.querySelector('.next-cascader-menu')).height === '400px'
-        );
-        assert(list.className.indexOf('custom') !== -1);
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.get('.next-cascader-menu-wrapper').should('have.css', 'width', '400px');
+        cy.get('.next-cascader-menu-wrapper').should('have.css', 'height', '400px');
+        cy.get('.next-cascader-menu').should('have.css', 'width', '400px');
+        cy.get('.next-cascader-menu').should('have.css', 'height', '400px');
+        cy.get('.next-cascader-menu-wrapper').should('have.class', 'custom');
     });
 
     it('should support keyboard', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
+        cy.mount(<Cascader dataSource={ChinaArea} />);
 
-        ReactDOM.render(<Cascader dataSource={ChinaArea} />, div);
-
-        const item00 = findRealItem(0, 0);
-        item00.click();
-        try {
-            assert(document.activeElement === item00);
-            const assertAE = assertActiveElement();
-            assertAE(KEYCODE.DOWN, findRealItem(0, 1));
-            assertAE(KEYCODE.UP, item00);
-            assertAE(KEYCODE.RIGHT, () => findRealItem(1, 0));
-            assertAE(KEYCODE.LEFT, item00);
-            assert(document.querySelectorAll('.next-cascader-menu').length === 1);
-
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-        } catch (err) {
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-            throw new Error(err);
-        }
+        findItem(0, 0)
+            .click()
+            .then(() => {
+                findItem(0, 0).then($el => {
+                    cy.wrap($el.get(0)).should('equal', document.activeElement);
+                });
+                const assertAE = assertActiveElement();
+                assertAE('{rightArrow}', () => findItem(1, 0));
+                assertAE('{leftArrow}', findItem(0, 0));
+                assertAE('{enter}', () => findItem(1, 0));
+                assertAE('{esc}', findItem(0, 0));
+                cy.get('.next-cascader-menu').should('have.length', 1);
+            });
     });
 
     it('should set the style of the cascader inner node', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
+        cy.mount(
             <Cascader
                 id="cascader-style"
                 defaultValue={['2975']}
                 dataSource={ChinaArea}
                 style={{ width: '700px' }}
                 listStyle={{ width: '200px' }}
-            />,
-            div
+            />
         );
 
-        const inner = document.querySelector('#cascader-style .next-cascader-inner');
-        assert(inner.style.width === '600px');
-        const lists = document.querySelectorAll('.next-cascader-menu-wrapper');
-        assert(lists[lists.length - 1].className.indexOf('next-has-right-border') > -1);
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.get('#cascader-style .next-cascader-inner').should('have.css', 'width', '600px');
+        cy.get('.next-cascader-menu-wrapper').last().should('have.class', 'next-has-right-border');
     });
 
     it('support immutable data source', () => {
-        wrapper = mount(<Cascader id="cascader-style" dataSource={freeze(ChinaArea)} immutable />);
+        cy.mount(<Cascader id="cascader-style" dataSource={freeze(ChinaArea)} immutable />);
     });
 
     it('should support rtl', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
+        cy.mount(
             <Cascader
                 id="cascader-style"
                 rtl
@@ -612,13 +654,9 @@ describe('Cascader', () => {
                 dataSource={ChinaArea}
                 style={{ width: '700px' }}
                 listStyle={{ width: '200px' }}
-            />,
-            div
+            />
         );
-
-        assert(document.getElementById('cascader-style').dir === 'rtl');
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.get('#cascader-style').should('have.prop', 'dir', 'rtl');
     });
 
     // Fix https://github.com/alibaba-fusion/next/issues/4472
@@ -639,108 +677,9 @@ describe('Cascader', () => {
                 ],
             },
         ];
-        const wrapper = mount(<Cascader value={['2_1']} multiple dataSource={dataSource} />);
-        assert(wrapper.find('.next-cascader-menu-wrapper').length === 2);
-        const el = wrapper.find('.next-menu-item[title="1"]').getDOMNode();
-        assert(el);
-        ReactTestUtils.Simulate.click(el);
-        wrapper.update();
-        assert(wrapper.find('.next-cascader-menu-wrapper').length === 1);
+        cy.mount(<Cascader value={['2_1']} multiple dataSource={dataSource} />);
+        cy.get('.next-cascader-menu-wrapper').should('have.length', 2);
+        cy.get('.next-menu-item[title="1"]').click();
+        cy.get('.next-cascader-menu-wrapper').should('have.length', 1);
     });
 });
-
-function compareDOMAndData(wrapper, value, expandedValue) {
-    let itemsData = ChinaArea;
-    const menus = wrapper.find('ul.next-cascader-menu');
-    menus.forEach((menu, i) => {
-        let expandedIndex;
-        menu.find('li.next-cascader-menu-item').forEach((item, j) => {
-            assert(item.text().trim() === itemsData[j].label);
-            if (itemsData[j].value === value) {
-                assert(item.find('li.next-selected').length === 1);
-            }
-            if (itemsData[j].value === expandedValue[i]) {
-                assert(item.hasClass('next-expanded'));
-                expandedIndex = j;
-            }
-        });
-
-        if (i < menus.length - 1) {
-            itemsData = itemsData[expandedIndex].children;
-        }
-    });
-}
-
-function findItem(wrapper, menuIndex, itemIndex) {
-    return wrapper
-        .find('ul.next-cascader-menu')
-        .at(menuIndex)
-        .find('li.next-cascader-menu-item')
-        .at(itemIndex);
-}
-
-function checkItem(item, check) {
-    const checkbox = item.find('.next-checkbox-wrapper input');
-    checkbox.simulate('change', { target: { checked: check } });
-}
-
-function compareChecked(item) {
-    const checkbox = item.find('.next-checkbox-wrapper');
-    assert(checkbox.hasClass('checked'));
-    assert(!checkbox.hasClass('indeterminate'));
-}
-
-function compareIndeterminate(item) {
-    const checkbox = item.find('.next-checkbox-wrapper');
-    assert(checkbox.hasClass('indeterminate'));
-    assert(!checkbox.hasClass('checked'));
-}
-
-function compareNotChecked(item) {
-    const checkbox = item.find('.next-checkbox-wrapper');
-    assert(!checkbox.hasClass('indeterminate'));
-    assert(!checkbox.hasClass('checked'));
-}
-
-function sortByValue(data, isValue = false) {
-    if (!isValue) {
-        data.forEach(d => delete d.children);
-    }
-
-    return data.sort((prev, next) => {
-        if (isValue) {
-            return prev - next;
-        }
-
-        return prev.value - next.value;
-    });
-}
-
-function assertActiveElement() {
-    let activeElement = document.activeElement;
-
-    return (keyCode, next) => {
-        ReactTestUtils.Simulate.keyDown(activeElement, { keyCode });
-        next = typeof next === 'function' ? next() : next;
-        assert(document.activeElement === next);
-        activeElement = next;
-    };
-}
-
-function findRealItem(listIndex, itemIndex) {
-    return document
-        .querySelectorAll('.next-cascader-menu')
-        [listIndex].querySelectorAll('.next-cascader-menu-item')[itemIndex];
-}
-
-function filter$Source(data) {
-    if (!data) return;
-
-    return [...data].map(it => {
-        const item = {
-            ...it,
-        };
-        delete item._source;
-        return item;
-    });
-}
