@@ -1,15 +1,13 @@
-import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import UIState from '../index';
+import React, { ReactElement, cloneElement } from 'react';
+import { MountReturn } from 'cypress/react';
+import UIState, { UIStateProps } from '../index';
 
-/* eslint-disable */
+interface TestProps extends UIStateProps {
+    reset?: boolean;
+}
 
-Enzyme.configure({ adapter: new Adapter() });
-
-class Test extends UIState {
-    componentWillReceiveProps(nextProps) {
+class Test extends UIState<TestProps> {
+    componentWillReceiveProps(nextProps: TestProps) {
         if (nextProps.reset) {
             this.resetUIState();
         }
@@ -21,21 +19,27 @@ class Test extends UIState {
 }
 
 describe('mixin-ui-state', () => {
-    const wrapper = mount(<Test id="abc" onMouseEnter={() => {}} />);
-
     it('Focus element should has focused class', () => {
-        wrapper.find('input').simulate('focus');
-        assert(wrapper.find('.focused').length === 1);
+        cy.mount(<Test />);
+        cy.get('input').focus();
+        cy.get('.focused').should('exist');
     });
 
     it('Blur element should not has focused class', () => {
-        wrapper.find('input').simulate('blur');
-        assert(wrapper.find('.focused').length === 0);
+        cy.mount(<Test />);
+        cy.get('input').focus();
+        cy.get('.focused').should('exist');
+        cy.get('input').blur();
+        cy.get('.focused').should('not.exist');
     });
 
     it('resetUIState should not has focused class', () => {
-        wrapper.find('input').simulate('focus');
-        wrapper.setProps({ reset: true });
-        assert(wrapper.find('.focused').length === 0);
+        cy.mount(<Test />).as('el');
+        cy.get('input').focus();
+        cy.get('.focused').should('exist');
+        cy.get<MountReturn>('@el').then(({ component, rerender }) => {
+            return rerender(cloneElement(component as ReactElement, { reset: true }));
+        });
+        cy.get('.focused').should('not.exist');
     });
 });
