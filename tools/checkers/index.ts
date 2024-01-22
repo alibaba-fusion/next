@@ -18,5 +18,12 @@ export function registryCheck(file = __filename) {
         await registryCheckStylelint(file);
     });
 }
+export function registryAllCheck(file = __filename) {
+    return registryTask(file, 'code check', async () => {
+        await registryCheckTypes(file);
+        await registryCheckEslint(file);
+        await registryCheckStylelint(file);
+    });
+}
 
-registryCheck();
+registryAllCheck();
