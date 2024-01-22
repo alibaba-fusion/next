@@ -1,11 +1,7 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import Cascader from '../index';
 import '../style';
-import { unmount, testReact, mountReact } from '../../util/__tests__/legacy/a11y/validate';
-
-Enzyme.configure({ adapter: new Adapter() });
+import { testReact } from '../../util/__tests__/a11y/validate';
 
 const ChinaArea = [
     {
@@ -36,22 +32,10 @@ const ChinaArea = [
     },
 ];
 
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Cascader A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
     it('should not have any violations when expanded', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Cascader dataSource={ChinaArea} defaultExpandedValue={['2973', '2974', '2975']} />
         );
-        return wrapper;
     });
 });

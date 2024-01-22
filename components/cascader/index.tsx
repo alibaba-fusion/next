@@ -1,7 +1,7 @@
 import ConfigProvider from '../config-provider';
 import Cascader from './cascader';
 
-export { CascaderProps, CascaderDataItem, CascaderDataItemWithPosInfo } from './types';
+export type { CascaderProps, CascaderDataItem, CascaderDataItemWithPosInfo } from './types';
 
 export default ConfigProvider.config(Cascader, {
     transform: (props, deprecated) => {
