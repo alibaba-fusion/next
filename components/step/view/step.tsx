@@ -1,10 +1,8 @@
-/* eslint-disable tsdoc/syntax */
-import * as ReactDOM from 'react-dom';
-import * as PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import * as React from 'react';
+import React, { Component, Children } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
-import { Component, Children } from 'react';
 import ConfigProvider from '../../config-provider';
 import { support, events, dom, obj } from '../../util';
 import type { StepProps } from '../types';
@@ -55,9 +53,9 @@ class Step extends Component<StepProps, StepState> {
         className: PropTypes.string,
         /**
          * StepItem 的自定义渲染
-         * @param {Number} index   节点索引
-         * @param {String} status  节点状态
-         * @returns {Node} 节点的渲染结果
+         * @param index - 节点索引
+         * @param status - 节点状态
+         * @returns \{Node\} 节点的渲染结果
          */
         itemRender: PropTypes.func,
         /**

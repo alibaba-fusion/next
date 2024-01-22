@@ -1,6 +1,6 @@
-import * as ReactDOM from 'react-dom';
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ResizeObserver from 'resize-observer-polyfill';
 import Icon from '../../icon';
