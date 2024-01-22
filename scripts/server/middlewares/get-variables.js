@@ -5,13 +5,19 @@ const parse = require('@alifd/sassdoc-parser');
 const generate = require('@alifd/sass-mapper');
 const { logger } = require('../../utils');
 
-module.exports = function(options) {
-    return function(req, res, next) {
-        return co(function*() {
+module.exports = function (options) {
+    return function (req, res, next) {
+        return co(function* () {
             if (req.method === 'GET' && /\/getVariables.json/.test(req.url)) {
                 const { cwd } = options;
                 const { componentName } = req.query;
-                const varPath = path.join(cwd, 'src', componentName, 'scss', 'variable.scss');
+                const varPath = path.join(
+                    cwd,
+                    'components',
+                    componentName,
+                    'scss',
+                    'variable.scss'
+                );
                 if (!(yield fs.exists(varPath))) {
                     throw new Error(`Can not find the scss variable file: ${varPath}`);
                 }
@@ -48,7 +54,10 @@ function* getCssScssMap(varPath, cwd, componentName) {
         }
     });
 
-    const cssSccMap = yield generate(path.join(cwd, 'src', componentName, 'main.scss'), varPrefix);
+    const cssSccMap = yield generate(
+        path.join(cwd, 'components', componentName, 'main.scss'),
+        varPrefix
+    );
     cssSccMap.selectors = cssSccMap.selectors.map(selector => {
         return {
             selector: selector.selector.replace(/"/g, ''),

@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const co = require('co');
 const postcss = require('postcss');
 const syntax = require('postcss-scss');
-const sass = require('node-sass');
+const sass = require('sass');
 const packageImporter = require('node-sass-package-importer');
 const { logger } = require('../../utils');
 
@@ -17,9 +17,9 @@ const sassRender = options => {
 const scss2AST = scss => postcss().process(scss, { syntax: syntax }).result.root;
 
 const PATTEN = /^import\s+['"](.+)style\.js['"];?/gm;
-module.exports = function(options) {
-    return function(req, res, next) {
-        co(function*() {
+module.exports = function (options) {
+    return function (req, res, next) {
+        co(function* () {
             if (req.method === 'GET' && /\/rebuildScss.json/.test(req.url)) {
                 const { cwd } = options;
                 const { componentName } = req.query;

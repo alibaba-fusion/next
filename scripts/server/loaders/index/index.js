@@ -7,11 +7,12 @@ const tplsPath = path.resolve(__dirname, '../../tpls');
 const headerTplPath = path.resolve(tplsPath, 'partials/header.ejs');
 const indexTplPath = path.resolve(tplsPath, 'index.ejs');
 
-module.exports = function(content) {
+module.exports = function (content) {
     const options = loaderUtils.getOptions(this);
     const links = options.links;
     const lang = options.lang;
     const dir = options.dir;
+    const componentName = options.componentName;
     const resourcePath = this.resourcePath;
 
     this.addDependency(headerTplPath);
@@ -36,10 +37,7 @@ module.exports = function(content) {
             if (err) {
                 logger.error(`Render index.html failed: ${err}`);
             } else {
-                const htmlPath = path.relative(
-                    path.join(process.cwd(), 'docs'),
-                    this.resourcePath.replace(/\.(en-us\.)?md$/, '.html')
-                );
+                const htmlPath = path.join(componentName, 'index.html');
                 this.emitFile(htmlPath, html);
             }
         }

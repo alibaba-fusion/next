@@ -16,7 +16,7 @@ module.exports = function (runtest = false, withOtherArgs = false) {
     if (componentName) {
         // compatible with npm run dev -- Menu
         componentName = getComPathName(componentName);
-        const file = runtest ? 'components' : 'docs';
+        const file = 'components';
         const components = fs.readdirSync(path.join(cwd, file));
         let name = componentName;
         const valid = components.some(com => {
