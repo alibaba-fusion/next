@@ -474,6 +474,7 @@ class Cascader extends Component<CascaderProps, CascaderState> {
         const { expandedValue } = this.state;
 
         if (canExpand || expandedValue.length > level) {
+            // FIXME 此处实现有 bug，state.expandedValue 被直接修改，并没有考虑受控非受控的情况
             if (canExpand) {
                 expandedValue.splice(level, expandedValue.length - level, value);
             } else {
