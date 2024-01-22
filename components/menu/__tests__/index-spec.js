@@ -978,7 +978,7 @@ describe('Menu', () => {
         document.body.removeChild(div);
     });
 
-    it('should show renderMore when hozInLine & async load more items ', () => {
+    it('should show renderMore when hozInLine & async load more items ', done => {
         const div = document.createElement('div');
         document.body.appendChild(div);
 
@@ -987,7 +987,7 @@ describe('Menu', () => {
           items.push(i);
         }
         function App() {
-          const [categoryList, setCategoryList] = useState(items);
+          const [categoryList, setCategoryList] = useState([]);
           useEffect(() => {
             setCategoryList(items);
           }, []);
@@ -1014,17 +1014,17 @@ describe('Menu', () => {
             <App/>,
             div
         );
-
-        const menu = document.querySelector('.next-menu');
-        assert(menu.querySelectorAll('li.next-menu-item').length === 52);
-        assert(menu.querySelectorAll('li.next-menu-item.next-menu-more').length === 2);
-        assert(menu.querySelectorAll('li.menuitem-overflowed').length > 1);
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        setTimeout(() => {
+            const menu = document.querySelector('.next-menu');
+            assert(menu.querySelectorAll('li.next-menu-item').length === 52);
+            assert(menu.querySelectorAll('li.next-menu-item.next-menu-more').length === 2);
+            assert(menu.querySelectorAll('li.menuitem-overflowed').length > 1);
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+            done();
+        }, 9000);
     });
-
-
+        
 
     it('should support hozInLine with header&footer in hoz', () => {
         const div = document.createElement('div');

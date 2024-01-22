@@ -488,10 +488,9 @@ class Menu extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.lastVisibleIndex !== this.state.lastVisibleIndex) {
-            this.adjustChildrenWidth();
-        }
-        if (!isEqual(this.props.children, prevProps.children)) {
+        if ( prevState.lastVisibleIndex !== this.state.lastVisibleIndex 
+             || ( React.Children.toArray(this.props.children).length !==  React.Children.toArray(prevProps.children).length) 
+        ) {
             this.adjustChildrenWidth();
         }
     }
