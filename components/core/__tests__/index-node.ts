@@ -1,5 +1,5 @@
 import path from 'path';
-import * as sassTrue from 'sass-true';
+import { runSassSpec } from '../../util/__tests__/sass-true';
 
-sassTrue.runSass({ describe, it }, path.resolve(__dirname, './function-spec.scss'));
-sassTrue.runSass({ describe, it }, path.resolve(__dirname, './mixin-spec.scss'));
+runSassSpec(path.resolve(__dirname, './function-spec.scss'));
+runSassSpec(path.resolve(__dirname, './mixin-spec.scss'));
