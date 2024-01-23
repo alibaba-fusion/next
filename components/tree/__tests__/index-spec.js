@@ -265,62 +265,18 @@ describe('Tree', () => {
     });
 
     it('should switcher ignore flex when node is long text', () => {
-        const x = 3;
-        const y = 2;
-        const z = 1;
-        const gData = [];
-
-        const generateData = (_level, _preKey, _tns) => {
-            const preKey = _preKey || '0';
-            const tns = _tns || gData;
-
-            const children = [];
-            for (let i = 0; i < x; i++) {
-                let key = `${preKey}-${i}`;
-                key = key === '0-0-0-1' ? '我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的我内容超长的': key;
-        
-                tns.push({ label: key, key });
-                
-                if (i < y) {
-                    children.push(key);
-                }
-            }
-
-            if (_level < 0) {
-                return tns;
-            }
-
-            const level = _level - 1;
-            children.forEach((key, index) => {
-                tns[index].children = [];
-                return generateData(level, key, tns[index].children);
-            });
-        };
-
-        generateData(z);
-        const loop = data =>
-            data.map(item => {
-                if (item.children) {
-                    return (
-                        <TreeNode key={item.key} label={item.key}>
-                            {loop(item.children)}
-                        </TreeNode>
-                    );
-                }
-                return <TreeNode key={item.key} label={item.key} />;
-            });
         ReactDOM.render(
             <Tree
                 selectable={false}
                 isLabelBlock
                 defaultExpandedKeys={['0-0', '0-0-0', '0-0-0-0']}
             >
-                {loop(gData)}
+                 <TreeNode key="2" className="long-text-node" label={<div style={{width: '200vw'}}>long text</div>} />
             </Tree>,
             mountNode
         );
-        const switcherList = document.querySelectorAll('.next-tree-switcher');
-        assert(Array.from(switcherList).every((v)=>v.clientWidth !== 0));
+        const switcher = document.querySelector('.long-text-node .next-tree-switcher');
+        assert(switcher && switcher.clientWidth);
     });
 
     it('should ignore children contain null or string', () => {
