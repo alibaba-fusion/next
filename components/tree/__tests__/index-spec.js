@@ -264,7 +264,7 @@ describe('Tree', () => {
         assertTree({ children: loop(dataSource), dataSource }, mountNode);
     });
 
-    it.only('should switcher ignore flex when node is long text', () => {
+    it('should switcher ignore flex when node is long text', () => {
         const x = 3;
         const y = 2;
         const z = 1;
