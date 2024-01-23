@@ -3,22 +3,19 @@ import ReactDOM from 'react-dom';
 import { Animate } from '@alifd/next';
 
 class TodoList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { items: ['hello', 'world', 'click', 'me'] };
-    }
+    state = { items: ['hello', 'world', 'click', 'me'] };
 
     handleAdd() {
         this.setState({
             items: [
                 ...this.state.items,
-                // eslint-disable-next-line
-                prompt('Enter some text'),
+                // eslint-disable-next-line no-alert
+                window.prompt('Enter some text'),
             ],
         });
     }
 
-    handleRemove(i) {
+    handleRemove(i: number) {
         const newItems = this.state.items.slice();
         newItems.splice(i, 1);
         this.setState({ items: newItems });
@@ -42,7 +39,7 @@ class TodoList extends React.Component {
                     onLeave={() => console.log('leave')}
                     afterLeave={() => console.log('after leave')}
                 >
-                    {this.state.items.map((item, i) => (
+                    {this.state.items.map((item: string, i: number) => (
                         <div key={item}>
                             {item}
                             <button onClick={() => this.handleRemove(i)}>&times;</button>
