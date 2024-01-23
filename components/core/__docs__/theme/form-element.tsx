@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import Input from '../../../input';
 import Select from '../../../select';
@@ -14,6 +16,10 @@ import '../../../rating/style';
 import '../../../range/style';
 import '../../form-element.scss';
 
+interface Props {
+    size?: 'small' | 'medium' | 'large';
+}
+
 const FormItem = Form.Item;
 
 const dataSource = [
@@ -23,35 +29,7 @@ const dataSource = [
     { label: 'DDDD', value: 'd' },
 ];
 
-const fileList = [
-    {
-        uid: '0',
-        name: 'IMG.png',
-        state: 'done',
-        url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-        downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-        imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-    },
-    {
-        uid: '1',
-        name: 'IMG.png',
-        percent: 50,
-        state: 'uploading',
-        url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-        downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-        imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-    },
-    {
-        uid: '2',
-        name: 'IMG.png',
-        state: 'error',
-        url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-        downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-        imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-    },
-];
-
-class FormElementDemo extends React.Component {
+class FormElementDemo extends React.Component<Props> {
     render() {
         const { size } = this.props;
         const elementProps = {
@@ -90,7 +68,7 @@ const formItemLayout = {
         span: 16,
     },
 };
-class FormElementPreviewDemo extends React.Component {
+class FormElementPreviewDemo extends React.Component<Props> {
     render() {
         const { size } = this.props;
         const itemProps = {
@@ -170,11 +148,7 @@ class FormElementPreviewDemo extends React.Component {
                                 </FormItem>
 
                                 <FormItem {...itemProps} wrapperCol={{ offset: 7 }}>
-                                    <Form.Submit
-                                        validate
-                                        type="primary"
-                                        onClick={this.submitHandler}
-                                    >
+                                    <Form.Submit validate type="primary">
                                         Submit
                                     </Form.Submit>
                                     <Form.Reset style={{ marginLeft: 10 }}>Reset</Form.Reset>
@@ -195,7 +169,8 @@ window.renderDemo = function () {
                 <tr className="demo-group">
                     <td className="label"></td>
                     <td style={{ fontSize: '14px', height: '40px', lineHeight: '40px' }}>
-                        配置该类容器的Size、Font、Icon(size)、Corner会涉及到联动的组件一起改变的有：Input、Select、TreeSelect、CascaderSelect、Timepicker、DatePicker、NumberPicker
+                        配置该类容器的 Size、Font、Icon(size)、Corner
+                        会涉及到联动的组件一起改变的有：Input、Select、TreeSelect、CascaderSelect、Timepicker、DatePicker、NumberPicker
                     </td>
                 </tr>
                 <DemoGroup label="Large">

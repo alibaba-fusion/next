@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import Dialog from '../../../dialog';
 import '../../../demo-helper/style';
@@ -11,7 +13,7 @@ class MaskDemo extends React.Component {
 
     afterOpen() {
         document
-            .querySelector('#mask-demo-container .next-overlay-backdrop')
+            .querySelector('#mask-demo-container .next-overlay-backdrop')!
             .classList.add('next-mask');
     }
 
