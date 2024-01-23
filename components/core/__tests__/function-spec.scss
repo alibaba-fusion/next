@@ -1,4 +1,4 @@
-@use '../../../node_modules/sass-true' as *;
+@use '~sass-true/_index.scss' as *;
 @import "../util/_function.scss";
 
 @include describe('core/util/_function.scss') {
