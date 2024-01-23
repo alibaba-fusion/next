@@ -16,8 +16,6 @@
           height: 2em;
         }
       }
-
-      ;
     }
 
     @include it('应该在传参"2em 1em"调用时宽为"2em",高为"1em"') {
@@ -31,8 +29,6 @@
           height: 1em;
         }
       }
-
-      ;
     }
   }
 
@@ -47,8 +43,6 @@
           position: relative;
         }
       }
-
-      ;
     }
 
     @include it('应该在传参`absolute, 2em`调用时返回绝对定位且四个方向的距离值都是2em') {
