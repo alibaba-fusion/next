@@ -3,7 +3,7 @@
 import React from 'react';
 import { CommonProps } from '../util';
 import { PopupProps } from '../overlay';
-import { TreeProps } from '../tree';
+import { TreeProps, Node } from '../tree';
 import { item } from '../select';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
@@ -242,4 +242,6 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     valueRender?: (item: any, itemPaths: item[]) => React.ReactNode;
 }
 
-export default class TreeSelect extends React.Component<TreeSelectProps, any> {}
+export default class TreeSelect extends React.Component<TreeSelectProps, any> {
+    static Node: typeof Node;
+}
