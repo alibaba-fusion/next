@@ -46,6 +46,7 @@
                 "order": [
                     "static-variables",
                     "static-methods",
+                    "instance-variables",
                     "lifecycle",
                     "everything-else",
                     "render"

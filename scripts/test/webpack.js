@@ -24,19 +24,7 @@ module.exports = function (componentName, runAll) {
         }
         return rule;
     });
-    config.module.rules.push({
-        test: /\.tsx?$/,
-        use: [
-            {
-                loader: 'ts-loader',
-                options: {
-                    transpileOnly: true,
-                    configFile: require.resolve('./ts.json'),
-                },
-            },
-        ],
-        exclude: /node_modules/,
-    });
+
     config.devtool = 'cheap-module-eval-source-map';
     config.resolve.extensions.push('.ts', '.tsx');
 
