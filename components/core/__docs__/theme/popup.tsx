@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import Menu from '../../../menu';
 import TreeSelect from '../../../tree-select';
@@ -17,7 +19,7 @@ class PopupDemo extends React.Component {
         const style = {
             width: '200px',
         };
-        const popupContainer = trigger => trigger.parentNode;
+        const popupContainer = (trigger: HTMLElement) => trigger.parentNode as HTMLElement;
 
         return (
             <table style={{ height: '300px' }}>

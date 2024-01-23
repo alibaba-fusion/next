@@ -1,0 +1,55 @@
+@use '../../../node_modules/sass-true' as *;
+@import "../util/_function.scss";
+
+@include describe('core/util/_function.scss') {
+  @include describe('#strip-units') {
+
+    @include it('应该去除所有数值的单位') {
+      @include assert-equal(strip-units(1px), 1);
+      @include assert-equal(strip-units(20em), 20);
+      @include assert-equal(strip-units(100%), 100);
+    }
+  }
+
+  @include describe('#is-length') {
+
+    @include it('应该检查一个值是否为合法的CSS长度') {
+      @include assert-equal(is-length(1px), true);
+      @include assert-equal(is-length(0), true);
+      @include assert-equal(is-length(1), false);
+    }
+
+    @include it('应该检查`0或auto或initial或inherit`为合法的CSS长度') {
+      @include assert-equal(is-length(0), true);
+      @include assert-equal(is-length(auto), true);
+      @include assert-equal(is-length(inherit), true);
+      @include assert-equal(is-length(initial), true);
+    }
+
+    @include it('应该识别`calc()`方法调用为CSS长度') {
+      @include assert-equal(is-length(calc(100% - 20em)), true);
+    }
+  }
+
+  @include describe('#em') {
+    @include it('应该将长度的pixel单位转换为em单位') {
+      @include assert-equal(em(24px, 12px), 2em);
+      @include assert-equal(em(36, 12px), 3em);
+      @include assert-equal(em(12, 12), 1em);
+    }
+  }
+
+  @include describe('#unpack') {
+    @include it('应该在输入1个长度值时返回相同的四个方位值') {
+      @include assert-equal(unpack(1em), 1em 1em 1em 1em);
+    }
+
+    @include it('应该在输入2个长度值时返回两两相同的四个方位值') {
+      @include assert-equal(unpack(1em 2em), 1em 2em 1em 2em);
+    }
+
+    @include it('应该在输入3个长度值时返回左右相同上下不同的四个方位值') {
+      @include assert-equal(unpack(1em 3em 2em), 1em 3em 2em 3em);
+    }
+  }
+}

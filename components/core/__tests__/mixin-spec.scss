@@ -1,0 +1,256 @@
+@use '../../../node_modules/sass-true' as *;
+@import "../util/function.scss";
+@import "../util/mixin.scss";
+
+@include describe('core/util/_mixin.scss') {
+  @include describe('#size (快捷设置元素 width, height 的混入)') {
+
+    @include it('应该在传参"2em"调用时宽高均为"2em"') {
+      @include assert {
+        @include output {
+          @include size(2em);
+        }
+
+        @include expect {
+          width: 2em;
+          height: 2em;
+        }
+      }
+
+      ;
+    }
+
+    @include it('应该在传参"2em 1em"调用时宽为"2em",高为"1em"') {
+      @include assert {
+        @include output {
+          @include size(2em 1em);
+        }
+
+        @include expect {
+          width: 2em;
+          height: 1em;
+        }
+      }
+
+      ;
+    }
+  }
+
+  @include describe('#position (快捷设置元素postion的混入)') {
+    @include it('应该在不传参调用时返回默认定位 `position: relative;`') {
+      @include assert {
+        @include output {
+          @include position();
+        }
+
+        @include expect {
+          position: relative;
+        }
+      }
+
+      ;
+    }
+
+    @include it('应该在传参`absolute, 2em`调用时返回绝对定位且四个方向的距离值都是2em') {
+      @include assert {
+        @include output {
+          @include position(absolute);
+        }
+
+        @include expect {
+          position: absolute;
+        }
+      }
+
+      @include assert {
+        @include output {
+          @include position(absolute, 2em);
+        }
+
+        @include expect {
+          position: absolute;
+          top: 2em;
+          right: 2em;
+          bottom: 2em;
+          left: 2em;
+        }
+      }
+    }
+  }
+
+  @include describe('#triangle (三角型生成器)') {
+    @include it('应该在生成"向下"三角形时不含有下边框的规则声明, 且上边框颜色不透明') {
+      @include assert {
+        @include output {
+          @include triangle(10px, #333, down);
+        }
+
+        @include expect {
+          height: 0;
+          width: 0;
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          border-top: 5px solid #333;
+        }
+      }
+    }
+
+    @include it('应该在生成"向上"三角形时不含有上边框的规则声明, 且下边框颜色不透明') {
+      @include assert {
+        @include output {
+          @include triangle(10px, #333, up);
+        }
+
+        @include expect {
+          height: 0;
+          width: 0;
+          border-bottom: 5px solid #333;
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+        }
+      }
+    }
+  }
+
+  @include describe('#clearfix (清除浮动)') {
+    @include it('应该含有"clear:both"') {
+      @include assert {
+        @include output {
+          @include clearfix;
+        }
+
+        @include contains {
+          &:after {
+            clear: both;
+          }
+        }
+      }
+    }
+  }
+
+  @include describe('#hide-text (隐藏文字)') {
+    @include it('#hide-text') {
+      @include assert {
+        @include output {
+          @include hide-text;
+        }
+
+        @include expect {
+          font: 0/0 a;
+          text-shadow: none;
+          color: transparent;
+        }
+      }
+    }
+  }
+
+  @include describe('#ellipsis (单行截取溢出字符)') {
+    @include it('应该在传入指定400px宽度时最大宽度 "400px"') {
+      @include assert {
+        @include output {
+          @include ellipsis(400px);
+        }
+
+        @include contains {
+          max-width: 400px;
+        }
+      }
+    }
+
+    @include it('应该在不传入宽度时默认最大宽度 "100%"') {
+      @include assert {
+        @include output {
+          @include ellipsis();
+        }
+
+        @include contains {
+          max-width: 100%;
+        }
+      }
+    }
+  }
+
+  @include describe('#multi-line-ellipsis (多行截取溢出字符)') {
+    @include it('直接调用时默认值应该生效') {
+      @include assert {
+        @include output {
+          @include multi-line-ellipsis();
+        }
+
+        @include contains {
+          line-height: 1.2em;
+          max-height: 2.4em;
+
+          &:before {
+            background: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  @include describe('#center-tl (居中元素, transform版本)') {
+    @include it('直接调用时应该水平垂直居中') {
+      @include assert {
+        @include output {
+          @include center-tl();
+        }
+
+        @include contains {
+          >.inner {
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+          }
+        }
+      }
+    }
+
+    @include it('$horizontal: false; 调用时应该垂直居中') {
+      @include assert {
+        @include output {
+          @include center-tl(".inner", false);
+        }
+
+        @include contains {
+          >.inner {
+            transform: translateY(-50%);
+            top: 50%;
+          }
+        }
+      }
+    }
+  }
+
+  @include describe('#center-td (居中元素, table版本)') {
+    @include it('直接调用时应该水平垂直居中') {
+      @include assert {
+        @include output {
+          @include center-td();
+        }
+
+        @include contains {
+          display: table;
+          text-align: center;
+        }
+      }
+    }
+
+    @include it('$horizontal: false; 调用时应该垂直居中') {
+      @include assert {
+        @include output {
+          @include center-td(".inner", false);
+        }
+
+        @include expect {
+          display: table;
+
+          &>.inner {
+            display: table-cell;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+  }
+}
