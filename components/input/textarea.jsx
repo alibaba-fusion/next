@@ -37,9 +37,6 @@ const hiddenStyle = {
     right: 0,
 };
 
-function preventDefault(e) {
-    e.preventDefault();
-}
 
 /**
  * Input.TextArea
@@ -227,35 +224,14 @@ export default class TextArea extends Base {
     saveHelpRef(ref) {
         this.helpRef = ref;
     }
-    handleKeyDownFromClear = e => {
-        if (e.keyCode === 13) {
-            this.onClear(e);
-        }
-    };
 
-    onClear(e) {
-        if (this.props.disabled) {
-            return;
-        }
-        // 非受控模式清空内部数据
-        if (!('value' in this.props)) {
-            this.setState({
-                value: '',
-            });
-        }
-        this.props.onChange('', e, 'clear');
-        this.focus();
-    }
     renderClear() {
-        const { hasClear, readOnly, state, prefix, disabled, showLimitHint, maxLength,locale } = this.props;
-        const len = maxLength > 0 && this.state.value ? this.getValueLength(this.state.value) : 0;
+        const { hasClear, readOnly, state, prefix, disabled, locale } = this.props;
         let clearWrap = null;
         // showClear属性应该与disable属性为互斥状态
-        const showClear = hasClear && !readOnly && !!`${this.state.value}` && !disabled;
+        const showClear = hasClear && !readOnly && !!`${this.state.value}` && !disabled;     
         const cls = classNames({
-            [`${prefix}input-clear-before`]: !!showLimitHint,
-            [`${prefix}input-len`]: true,
-            [`${prefix}error`]: len > maxLength,
+            [`${prefix}input-textarea-clear`]: true,
         })
         clearWrap = showClear ?
             <span
@@ -271,17 +247,23 @@ export default class TextArea extends Base {
     }
 
     renderControl() {
+        const { prefix, showLimitHint } = this.props
         const lenWrap = this.renderLength();
-        const { prefix } = this.props
+        const clearText = this.renderClear()
+        
         const cls = classNames({
             [`${prefix}input-control`]: true,
-            [`${prefix}input-control-textarea`]: true,
+            [`${prefix}input-clear-wrap`]: true,
         })
-        return (
+        const lineCls = classNames({
+            [`${prefix}input-clear-before`]: !!showLimitHint,
+        })
+     
+        return lenWrap || clearText ? (
             <span onClick={() => this.focus()} className={cls}>
-                {lenWrap && lenWrap}  {this.renderClear()}
+                {lenWrap} <span className={lineCls}></span>{clearText}
             </span>
-        );
+        ) : null
     }
     render() {
         const {

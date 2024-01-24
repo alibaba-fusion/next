@@ -109,23 +109,31 @@
             border-radius: $input-multiple-corner;
         }
 
-        #{$input-prefix}-control-textarea {
+        #{$input-prefix}-clear-wrap {
             display: flex;
             justify-content: end;
-            padding: 0 $input-l-icon-padding-right 4px ;
+            padding: 0 $input-l-icon-padding-right 4px;
         }
-        #{$input-prefix}-len {
+
+        #{$input-prefix}-len,
+        #{$input-prefix}-textarea-clear {
             display: block;
             text-align: right;
             width: auto;
         }
 
+        #{$input-prefix}-textarea-clear {
+            cursor: pointer;
+            padding-left: 4px;
+        }
+
         #{$input-prefix}-clear-before {
-            &::before {
+            &::after {
                 content: "|";
-                color:$input-disabled-border-color;
+                color: $input-disabled-border-color;
                 display: inline-block;
-                padding: 0 4px 0 2px;
+                font-size: $input-multiple-font-size;
+                
             }
         }
 
@@ -236,7 +244,9 @@
     }
 
     &-control {
-        #{$input-prefix}-len {
+
+        #{$input-prefix}-len,
+        #{$input-prefix}-textarea-clear {
             font-size: $input-maxlen-font-size;
             line-height: $input-maxlen-font-size;
             color: $input-maxlen-color;
