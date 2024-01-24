@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-
 import ConfigProvider from '../config-provider';
 import { func } from '../util';
 import zhCN from '../locale/zh-cn';
+
 
 class Base extends React.Component {
     static propTypes = {
@@ -252,18 +252,10 @@ class Base extends React.Component {
 
         const content = rtl ? `${maxLength}/${len}` : `${len}/${maxLength}`;
 
-        return maxLength && showLimitHint ? <span className={classesLenWrap}>{content}</span> : null;
+        return maxLength && showLimitHint ? <span className={classesLenWrap}>{content}</span> : null
     }
 
-    renderControl() {
-        const lenWrap = this.renderLength();
 
-        return lenWrap ? (
-            <span onClick={() => this.focus()} className={`${this.props.prefix}input-control`}>
-                {lenWrap}
-            </span>
-        ) : null;
-    }
 
     getClass() {
         const { disabled, state, prefix } = this.props;

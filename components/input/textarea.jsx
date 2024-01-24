@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Input from '../locale/zh-cn';
 import { obj, env } from '../util';
 import Base from './base';
 
@@ -35,6 +36,10 @@ const hiddenStyle = {
     left: 0,
     right: 0,
 };
+
+function preventDefault(e) {
+    e.preventDefault();
+}
 
 /**
  * Input.TextArea
@@ -71,6 +76,10 @@ export default class TextArea extends Base {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
+        /**
+         * 国际化配置
+         */
+        locale: PropTypes.object,
     };
 
     static defaultProps = {
@@ -79,6 +88,7 @@ export default class TextArea extends Base {
         isPreview: false,
         rows: 4,
         autoHeight: false,
+        locale: Input.Input,
     };
 
     constructor(props) {
@@ -217,7 +227,62 @@ export default class TextArea extends Base {
     saveHelpRef(ref) {
         this.helpRef = ref;
     }
+    handleKeyDownFromClear = e => {
+        if (e.keyCode === 13) {
+            this.onClear(e);
+        }
+    };
 
+    onClear(e) {
+        if (this.props.disabled) {
+            return;
+        }
+        // 非受控模式清空内部数据
+        if (!('value' in this.props)) {
+            this.setState({
+                value: '',
+            });
+        }
+        this.props.onChange('', e, 'clear');
+        this.focus();
+    }
+    renderClear() {
+        const { hasClear, readOnly, state, prefix, disabled, showLimitHint, maxLength,locale } = this.props;
+        const len = maxLength > 0 && this.state.value ? this.getValueLength(this.state.value) : 0;
+        let clearWrap = null;
+        // showClear属性应该与disable属性为互斥状态
+        const showClear = hasClear && !readOnly && !!`${this.state.value}` && !disabled;
+        const cls = classNames({
+            [`${prefix}input-clear-before`]: !!showLimitHint,
+            [`${prefix}input-len`]: true,
+            [`${prefix}error`]: len > maxLength,
+        })
+        clearWrap = showClear ?
+            <span
+                className={cls}
+                onClick={this.onClear.bind(this)}
+                onKeyDown={this.handleKeyDownFromClear}
+            > {locale.clear}</span>
+            : null;
+        if (state === 'loading') {
+            clearWrap = null;
+        }
+        return clearWrap;
+    }
+
+    renderControl() {
+        const lenWrap = this.renderLength();
+        const { prefix } = this.props
+        const cls = classNames({
+            [`${prefix}input-control`]: true,
+            [`${prefix}input-control-textarea`]: true,
+        })
+        return (
+            <span onClick={() => this.focus()} className={cls}>
+                {lenWrap && lenWrap}  {this.renderClear()}
+            </span>
+        );
+    }
     render() {
         const {
             rows,
