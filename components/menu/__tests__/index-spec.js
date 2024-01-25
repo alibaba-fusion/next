@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -105,10 +105,7 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
-        const innerHTML = wrapper
-            .find('.next-menu')
-            .at(0)
-            .instance().innerHTML;
+        const innerHTML = wrapper.find('.next-menu').at(0).instance().innerHTML;
         assert(innerHTML.match('test-group-string'));
         assert(innerHTML.match('test-submenu-string'));
     });
@@ -203,7 +200,11 @@ describe('Menu', () => {
 
     it('paddingleft should only be related to inline mode', () => {
         wrapper = mount(
-            <Menu direction="hoz" mode="popup" defaultOpenKeys={['sub', 'sub1', 'sub2', 'suba', 'suba1', 'suba2']}>
+            <Menu
+                direction="hoz"
+                mode="popup"
+                defaultOpenKeys={['sub', 'sub1', 'sub2', 'suba', 'suba1', 'suba2']}
+            >
                 <SubMenu label="submenu1" key="sub">
                     <Item>1</Item>
                     <SubMenu label="submenu2" mode="inline" key="sub1">
@@ -224,14 +225,8 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
-        const item1Level = wrapper
-            .find('#sub2-item')
-            .at(0)
-            .props().inlineLevel;
-        const item2Level = wrapper
-            .find('#suba2-item')
-            .at(0)
-            .props().inlineLevel;
+        const item1Level = wrapper.find('#sub2-item').at(0).props().inlineLevel;
+        const item2Level = wrapper.find('#suba2-item').at(0).props().inlineLevel;
 
         assert(item1Level === 3);
         assert(item2Level === 2);
@@ -506,7 +501,12 @@ describe('Menu', () => {
         };
 
         wrapper = mount(
-            <Menu selectMode="multiple" selectedKeys={['0']} defaultOpenKeys={['sub-menu']} onSelect={handleSelect}>
+            <Menu
+                selectMode="multiple"
+                selectedKeys={['0']}
+                defaultOpenKeys={['sub-menu']}
+                onSelect={handleSelect}
+            >
                 <Item key="0">0</Item>
                 <Item key="1">1</Item>
                 <SubMenu key="sub-menu" label="Sub menu">
@@ -516,10 +516,7 @@ describe('Menu', () => {
             </Menu>
         );
 
-        wrapper
-            .find('.next-menu-sub-menu .next-menu-item')
-            .at(0)
-            .simulate('click');
+        wrapper.find('.next-menu-sub-menu .next-menu-item').at(0).simulate('click');
         assert(called);
         assert.deepEqual(selectedKeys, ['0', '2']);
         assert(item.props._key === '2');
@@ -578,10 +575,7 @@ describe('Menu', () => {
             </Menu>
         );
 
-        wrapper
-            .find('.next-menu-sub-menu .next-menu-item')
-            .at(0)
-            .simulate('click');
+        wrapper.find('.next-menu-sub-menu .next-menu-item').at(0).simulate('click');
         assertUnselected(wrapper.find('.next-menu-sub-menu .next-menu-item').at(0));
     });
 
@@ -922,7 +916,9 @@ describe('Menu', () => {
         try {
             assert(menu.querySelectorAll('li.next-menu-more').length === 2);
 
-            const indicator = menu.querySelectorAll('li.next-menu-more')[0].querySelector('.next-menu-item-inner');
+            const indicator = menu
+                .querySelectorAll('li.next-menu-more')[0]
+                .querySelector('.next-menu-item-inner');
             indicator.click();
             const overlay = document.querySelector('.next-overlay-wrapper');
 
@@ -978,12 +974,54 @@ describe('Menu', () => {
         document.body.removeChild(div);
     });
 
+    it('should show renderMore when hozInLine & async load more items ', done => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        const items = [];
+        for (let i = 0; i < 50; i++) {
+            items.push(i);
+        }
+        function App() {
+            const [categoryList, setCategoryList] = useState([]);
+            useEffect(() => {
+                setCategoryList(items);
+            }, []);
+
+            return (
+                <Menu hozInLine direction="hoz" triggerType="hover" mode="popup" popupAutoWidth>
+                    {categoryList.map((index, v) => (
+                        <SubMenu label="Sub Nav" key={index}>
+                            <Item key="sub-12">Sub option 1</Item>
+                            <Item key="sub-22">Sub option 2</Item>
+                        </SubMenu>
+                    ))}
+                </Menu>
+            );
+        }
+        ReactDOM.render(<App />, div);
+        const menu = document.querySelector('.next-menu');
+        assert(menu.querySelectorAll('li.next-menu-item').length === 52);
+        assert(menu.querySelectorAll('li.next-menu-item.next-menu-more').length === 2);
+        assert(menu.querySelectorAll('li.menuitem-overflowed').length > 1);
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+        done();
+    });
+
     it('should support hozInLine with header&footer in hoz', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
 
         ReactDOM.render(
-            <Menu direction="hoz" style={{ width: 300 }} mode="popup" header="header" footer="footer" hozInLine>
+            <Menu
+                direction="hoz"
+                style={{ width: 300 }}
+                mode="popup"
+                header="header"
+                footer="footer"
+                hozInLine
+            >
                 <Item key="0" style={{ width: 100 }}>
                     0
                 </Item>
@@ -1006,7 +1044,9 @@ describe('Menu', () => {
         const menu = document.querySelector('.next-menu.next-hoz');
         assert(menu.querySelectorAll('li.next-menu-more').length === 2);
 
-        const indicator = menu.querySelectorAll('li.next-menu-more')[0].querySelector('.next-menu-item-inner');
+        const indicator = menu
+            .querySelectorAll('li.next-menu-more')[0]
+            .querySelector('.next-menu-item-inner');
         indicator.click();
         const overlay = document.querySelector('.next-overlay-wrapper');
 
