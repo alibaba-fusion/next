@@ -9,7 +9,7 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
      * 弹层内容
      * @en Content in overlay
      */
-    children?: React.ReactNode;
+    children?: React.ReactElement;
 
     /**
      * 弹层当前是否显示
@@ -43,20 +43,20 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement>, Common
      * @en Animation play mode, support object value: \{ in: 'enter-class', out: 'leave-class' \}, there is no animation if set false
      * @defaultValue \{ in: 'expandInDown', out: 'expandOutUp' \}
      */
-    animation?: object | boolean;
+    animation?: any | boolean;
 
     /**
      * 触发弹层显示或者隐藏的元素
      * @en Trigger element
      */
-    trigger?: React.ReactElement<any, string | React.JSXElementConstructor<any>> | undefined;
+    trigger: React.ReactElement;
 
     /**
      * 触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，或者它们组成的数组，如 ['hover', 'click']
      * @en Operation type of trigger overlay toggle visible, eg 'hover', 'click'
      * @defaultValue 'hover'
      */
-    triggerType?: string | Array<string>;
+    triggerType?: PopupProps['triggerType'];
 
     /**
      * 当 triggerType 为 click 时才生效，可自定义触发弹层显示的键盘码

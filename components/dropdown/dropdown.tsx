@@ -1,4 +1,3 @@
-/* eslint-disable tsdoc/syntax */
 import * as React from 'react';
 import { Component, Children } from 'react';
 import * as PropTypes from 'prop-types';
@@ -13,13 +12,18 @@ interface ReactElementNextMenuType {
     isNextMenu: boolean;
 }
 
+interface DropdownState {
+    visible?: unknown;
+    autoFocus?: boolean | undefined
+}
+
 /**
  * Dropdown
  * @remarks 继承 Popup 的 API，除非特别说明
  */
 export default class Dropdown extends Component<
     DropdownProps,
-    { visible: unknown; autoFocus: boolean | undefined }
+    DropdownState
 > {
     static propTypes = {
         prefix: PropTypes.string,
@@ -108,7 +112,7 @@ export default class Dropdown extends Component<
         onPosition: noop,
     };
 
-    constructor(props: DropdownProps | Readonly<DropdownProps>) {
+    constructor(props: DropdownProps) {
         super(props);
 
         this.state = {
@@ -119,8 +123,8 @@ export default class Dropdown extends Component<
         bindCtx(this, ['onTriggerKeyDown', 'onMenuClick', 'onVisibleChange']);
     }
 
-    static getDerivedStateFromProps(nextProps: { visible: unknown }) {
-        const state: { visible?: unknown } = {};
+    static getDerivedStateFromProps(nextProps: DropdownProps) {
+        const state: DropdownState = {};
 
         if ('visible' in nextProps) {
             state.visible = nextProps.visible;
@@ -164,12 +168,12 @@ export default class Dropdown extends Component<
 
     render() {
         const { rtl, autoClose } = this.props;
-        const trigger = this.props.trigger as React.ReactPortal;
+        const trigger = this.props.trigger;
 
-        const child = Children.only(this.props.children) as React.ReactPortal;
+        const child = Children.only(this.props.children);
         let content = child as React.ReactChild;
         if (
-            typeof child.type === 'function' &&
+            typeof child?.type === 'function' &&
             (child.type as unknown as ReactElementNextMenuType).isNextMenu
         ) {
             content = React.cloneElement(child, {
@@ -177,7 +181,7 @@ export default class Dropdown extends Component<
             });
         } else if (autoClose) {
             content = React.cloneElement(child as React.ReactElement, {
-                onClick: makeChain(this.onMenuClick, child.props.onClick),
+                onClick: makeChain(this.onMenuClick, child?.props.onClick),
             });
         }
 
