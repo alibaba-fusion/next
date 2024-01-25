@@ -12,7 +12,7 @@ const render = element => {
     let inc;
     const container = document.createElement('div');
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function() {
+    ReactDOM.render(element, container, function () {
         inc = this;
     });
     return {
@@ -53,12 +53,22 @@ describe('Box', () => {
     it('should render', () => {
         wrapper = render(
             <Box direction="row" wrap className="border-box" spacing={30}>
-                <Box className="border-box height-100 width-150" direction="row" wrap spacing={8} padding={10}>
+                <Box
+                    className="border-box height-100 width-150"
+                    direction="row"
+                    wrap
+                    spacing={8}
+                    padding={10}
+                >
                     <Box className="border-box height-30 width-30 dashed" />
                     <Box className="border-box height-30 width-30" />
                     <Box className="border-box height-30 width-30" />
                     <Box className="border-box height-30 width-30" />
-                    <Box className="border-box height-30 width-30 dashed" margin={[3, 6]} style={{ marginRight: 10 }} />
+                    <Box
+                        className="border-box height-30 width-30 dashed"
+                        margin={[3, 6]}
+                        style={{ marginRight: 10 }}
+                    />
                     <Box className="border-box height-30 width-30" />
                 </Box>
 
@@ -85,10 +95,7 @@ describe('Box', () => {
             </Box>
         );
 
-        const style = wrapper
-            .find('.test')
-            .at(2)
-            .prop('style');
+        const style = wrapper.find('.test').at(2).prop('style');
         const { justifyContent } = style;
         assert(justifyContent === 'center');
     });
