@@ -2,9 +2,9 @@ import React, { isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-
-import Input from '../input';
-import Select from '../select';
+import { SearchProps } from './types';
+import Input, { InputProps } from '../input';
+import Select, { AutoCompleteProps, AutoComplete as AutoCompleteType } from '../select';
 import Button from '../button';
 import Icon from '../icon';
 import { obj, func, KEYCODE } from '../util';
@@ -14,134 +14,76 @@ const Group = Input.Group;
 const AutoComplete = Select.AutoComplete;
 const { noop } = func;
 
+interface SearchState {
+    value: string | number;
+    filterValue: string | undefined;
+    ifFocus: boolean;
+}
+
 /**
  * Search
- * @description 输入框部分继承 Select.AutoComplete 的能力，可以直接用AutoComplete 的 api
+ *  输入框部分继承 Select.AutoComplete 的能力，可以直接用AutoComplete 的 api
  */
-class Search extends React.Component {
+class Search extends React.Component<SearchProps, SearchState> {
     static propTypes = {
-        /**
-         * 样式前缀
-         */
         prefix: PropTypes.string,
-        /**
-         * 形状
-         */
+
         shape: PropTypes.oneOf(['normal', 'simple']),
-        /**
-         * 类型 shape=normal: primary/secondary; shape=simple: normal/dark;
-         */
+
         type: PropTypes.oneOf(['primary', 'secondary', 'normal', 'dark']),
-        /**
-         * 大小
-         * @enumdesc '大', '小'
-         */
+
         size: PropTypes.oneOf(['large', 'medium']),
-        /**
-         * 搜索框默认值
-         */
+
         defaultValue: PropTypes.string,
-        /**
-         * 搜索框数值
-         */
+
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        /**
-         * 输入关键字时的回掉
-         * @param {Object} value 输入值
-         */
+
         onChange: PropTypes.func,
-        /**
-         * 点击搜索按钮触发的回调
-         * @param {String} value 输入值
-         * @param {String} filterValue 选项值
-         */
+
         onSearch: PropTypes.func,
-        /**
-         * 选择器默认值
-         */
+
         defaultFilterValue: PropTypes.string,
-        /**
-         * 填充到输入框里的值的 key ，默认是value
-         */
+
         fillProps: PropTypes.string,
-        /**
-         * 选择器
-         */
+
         filter: PropTypes.array,
-        /**
-         * 选择器值
-         */
+
         filterValue: PropTypes.string,
-        /**
-         * 选择器发生变化时回调
-         * @param {Object} filter value
-         */
+
         onFilterChange: PropTypes.func,
-        /**
-         * 搜索框下拉联想列表
-         */
+
         dataSource: PropTypes.array,
-        /**
-         * 默认提示
-         */
+
         placeholder: PropTypes.string,
-        /**
-         * button 的内容
-         */
+
         searchText: PropTypes.node,
-        /**
-         * 自定义样式
-         */
+
         style: PropTypes.object,
-        /**
-         * 样式名称
-         */
+
         className: PropTypes.string,
-        /**
-         * 选择器的props
-         */
+
         filterProps: PropTypes.object,
-        /**
-         * 按钮的额外属性
-         */
+
         buttonProps: PropTypes.object,
-        /**
-         * 自定义渲染的的下拉框
-         */
+
         popupContent: PropTypes.node,
-        /**
-         * 是否跟随滚动
-         */
+
         followTrigger: PropTypes.bool,
-        /**
-         * 自定义渲染的的下拉框
-         */
+
         visible: PropTypes.bool,
-        /**
-         * 是否显示清除按钮
-         */
+
         hasClear: PropTypes.bool,
-        /**
-         * 是否显示搜索按钮
-         */
+
         hasIcon: PropTypes.bool,
-        /**
-         * 是否禁用
-         */
+
         disabled: PropTypes.bool,
         locale: PropTypes.object,
         rtl: PropTypes.bool,
-        /**
-         * 可配置的icons，包括 search 等
-         */
+
         icons: PropTypes.object,
-        /**
-         * 是否自动高亮第一个元素
-         */
+
         autoHighlightFirstItem: PropTypes.bool,
-        /**
-         * 上下箭头切换选项的回调
-         */
+
         onToggleHighlightItem: PropTypes.func,
     };
 
@@ -164,26 +106,8 @@ class Search extends React.Component {
         autoHighlightFirstItem: true,
     };
 
-    constructor(props) {
-        super(props);
-
-        const value = 'value' in props ? props.value : props.defaultValue;
-        const filterValue = 'filterValue' in props ? props.filterValue : props.defaultFilterValue;
-
-        this.state = {
-            value: typeof value === 'undefined' ? '' : value,
-            filterValue,
-            ifFocus: false,
-        };
-
-        this.highlightKey = null;
-
-        this.handleBlur = this.handleBlur.bind(this);
-        this.handleFocus = this.handleFocus.bind(this);
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const nextState = {};
+    static getDerivedStateFromProps(nextProps: SearchProps, prevState: SearchState) {
+        const nextState: Partial<SearchState> = {};
         if ('value' in nextProps && nextProps.value !== prevState.value) {
             const value = nextProps.value;
             nextState.value = value === undefined || value === null ? '' : nextProps.value;
@@ -201,7 +125,27 @@ class Search extends React.Component {
         return null;
     }
 
-    onChange = (value, type, ...argv) => {
+    highlightKey: unknown;
+    inputRef: AutoCompleteType | null = null;
+
+    constructor(props: SearchProps) {
+        super(props);
+        const value = 'value' in props ? props.value : props.defaultValue;
+        const filterValue = 'filterValue' in props ? props.filterValue : props.defaultFilterValue;
+
+        this.state = {
+            value: typeof value === 'undefined' ? '' : value,
+            filterValue,
+            ifFocus: false,
+        };
+
+        this.highlightKey = null;
+
+        this.handleBlur = this.handleBlur.bind(this);
+        this.handleFocus = this.handleFocus.bind(this);
+    }
+
+    onChange: NonNullable<AutoCompleteProps['onChange']> = (value, type, ...args) => {
         if (this.props.disabled) {
             return;
         }
@@ -209,8 +153,7 @@ class Search extends React.Component {
         if (!('value' in this.props)) {
             this.setState({ value });
         }
-
-        this.props.onChange(value, type, ...argv);
+        this.props.onChange!(value, type, ...args);
         if (type === 'enter') {
             // 先记录，保留原先的执行顺序
             const highlightKey = this.highlightKey;
@@ -218,7 +161,7 @@ class Search extends React.Component {
             this.highlightKey = '';
             // 若有匹配项，执行onSearch
             if (highlightKey) {
-                this.props.onSearch(value, this.state.filterValue);
+                this.props.onSearch!(value, this.state.filterValue);
             }
         }
     };
@@ -235,24 +178,27 @@ class Search extends React.Component {
         if (this.props.disabled) {
             return;
         }
-        this.props.onSearch(this.state.value, this.state.filterValue);
+        this.props.onSearch!(this.state.value as string, this.state.filterValue);
     };
 
-    onFilterChange = filterValue => {
+    onFilterChange = (filterValue: string) => {
         if (!('filterValue' in this.props)) {
             this.setState({ filterValue });
         }
 
-        this.props.onFilterChange(filterValue);
+        this.props.onFilterChange!(filterValue);
     };
 
-    onToggleHighlightItem = (highlightKey, ...args) => {
+    onToggleHighlightItem: NonNullable<AutoCompleteProps['onToggleHighlightItem']> = (
+        highlightKey,
+        ...args
+    ) => {
         this.highlightKey = highlightKey;
 
-        this.props.onToggleHighlightItem(highlightKey, ...args);
+        this.props.onToggleHighlightItem!(highlightKey, ...args);
     };
 
-    onKeyDown = e => {
+    onKeyDown = (e: React.KeyboardEvent) => {
         if (this.props.disabled) {
             return;
         }
@@ -262,28 +208,30 @@ class Search extends React.Component {
         this.onSearch();
     };
 
-    saveInputRef = ref => {
+    saveInputRef = (ref: React.ComponentRef<typeof AutoComplete>) => {
+        // @ts-expect-error wait for AutoComplete types complete
         if (ref && ref.getInstance()) {
+            // @ts-expect-error wait for AutoComplete types complete
             this.inputRef = ref.getInstance();
         }
     };
 
-    focus(...args) {
-        this.inputRef.focus(...args);
-    }
+    focus: NonNullable<InputProps['onFocus']> = (...args) => {
+        this.inputRef!.focus(...args);
+    };
 
-    handleFocus(...args) {
+    handleFocus(...args: [React.FocusEvent<HTMLInputElement>]) {
         this.setState({
             ifFocus: true,
         });
-        this.props.onFocus && this.props.onFocus(...args);
+        this.props.onFocus!(...args);
     }
 
-    handleBlur(...args) {
+    handleBlur(...args: [React.FocusEvent<HTMLInputElement>]) {
         this.setState({
             ifFocus: false,
         });
-        this.props.onBlur && this.props.onBlur(...args);
+        this.props.onBlur(...args);
     }
 
     render() {
@@ -323,44 +271,48 @@ class Search extends React.Component {
             [`${prefix}${size}`]: size,
             [`${prefix}disabled`]: !!disabled,
             [`${prefix}search-focus`]: ifFocus,
-            [className]: !!className,
+            [className!]: !!className,
         });
 
         let searchIcon = null,
             filterSelect = null,
             searchBtn = null,
-            iconsSearch = icons.search;
+            iconsSearch = icons!.search;
 
-        if (!isValidElement(icons.search) && icons.search) {
-            iconsSearch = <span>{icons.search}</span>;
+        if (!isValidElement(iconsSearch)) {
+            iconsSearch = <span>{iconsSearch}</span>;
         }
 
         if (shape === 'simple') {
             const cls = classNames({
                 [`${prefix}search-icon`]: true,
-                [buttonProps.className]: !!buttonProps.className,
+                [buttonProps!.className!]: !!buttonProps!.className,
                 [`${prefix}search-symbol-icon`]: !iconsSearch,
             });
+
             hasIcon &&
-                (searchIcon = React.cloneElement(iconsSearch || <Icon type="search" />, {
-                    role: 'button',
-                    'aria-disabled': disabled,
-                    'aria-label': locale.buttonText,
-                    ...buttonProps,
-                    className: cls,
-                    onClick: this.onSearch,
-                    onKeyDown: this.onKeyDown,
-                }));
+                (searchIcon = React.cloneElement(
+                    (iconsSearch as React.ReactElement) || <Icon type="search" />,
+                    {
+                        role: 'button',
+                        'aria-disabled': disabled,
+                        'aria-label': locale!.buttonText,
+                        ...buttonProps,
+                        className: cls,
+                        onClick: this.onSearch,
+                        onKeyDown: this.onKeyDown,
+                    }
+                ));
         } else {
             const cls = classNames({
                 [`${prefix}search-btn`]: true,
-                [buttonProps.className]: !!buttonProps.className,
+                [buttonProps!.className!]: !!buttonProps!.className,
             });
             searchBtn = (
                 <Button
-                    tabIndex="0"
+                    tabIndex={0}
                     aria-disabled={disabled}
-                    aria-label={locale.buttonText}
+                    aria-label={locale!.buttonText as string}
                     className={cls}
                     disabled={disabled}
                     {...buttonProps}
@@ -379,7 +331,7 @@ class Search extends React.Component {
             );
         }
 
-        if (filter.length > 0) {
+        if (filter!.length > 0) {
             filterSelect = (
                 <Select
                     {...filterProps}
@@ -394,12 +346,14 @@ class Search extends React.Component {
             );
         }
 
-        const othersAttributes = obj.pickOthers(Search.propTypes, others);
+        const _othersAttributes = obj.pickOthers(Search.propTypes, others);
+        const othersAttributes: typeof _othersAttributes & { visible?: boolean } =
+            _othersAttributes;
         if (visible !== undefined) {
             // 受控属性 visible 不能直接写在组件上
             othersAttributes.visible = Boolean(visible);
         }
-        const dataAttr = obj.pickAttrsWith(others, 'data-');
+        const dataAttr = obj.pickAttrsWith<Record<string, unknown>>(others, 'data-');
 
         const left = (
             <Group
@@ -408,7 +362,7 @@ class Search extends React.Component {
                 addonBeforeClassName={`${prefix}search-left-addon`}
             >
                 <AutoComplete
-                    aria-label={locale.buttonText}
+                    aria-label={locale!.buttonText as string}
                     {...othersAttributes}
                     followTrigger={followTrigger}
                     role="searchbox"

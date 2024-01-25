@@ -2,8 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Search } from '@alifd/next';
 
-class App extends React.Component {
-    constructor(props) {
+interface AppState {
+    filter: Array<{ label: string; value: string }>;
+    value: string;
+}
+
+class App extends React.Component<unknown, AppState> {
+    constructor(props: unknown) {
         super(props);
         this.state = {
             filter: [
@@ -60,18 +65,18 @@ class App extends React.Component {
         };
     }
 
-    onSearch(value, filterValue) {
+    onSearch(value: string, filterValue: string) {
         console.log(value, filterValue);
     }
 
-    onChange(value) {
+    onChange(value: string) {
         this.setState({
             value: value,
         });
     }
 
     // value is filter value，obj is the search value
-    onFilterChange(value) {
+    onFilterChange(value: unknown) {
         console.log(value);
     }
 

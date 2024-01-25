@@ -1,137 +1,113 @@
-import React from 'react';
-import Enzyme, { mount, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import sinon from 'sinon';
+import React, { ReactElement } from 'react';
+import { MountReturn } from 'cypress/react';
 import Search from '../index';
-import zhCN from '../../locale/zh-cn';
 import enUS from '../../locale/en-us';
+import '../style';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-const sleep = duration => new Promise(resolve => setTimeout(resolve, duration));
-
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Search', () => {
     describe('render', () => {
         it('should accept type ', () => {
-            const wrapper = mount(<Search type="secondary" />);
-
-            assert(wrapper.props().type === 'secondary');
+            cy.mount(<Search type="secondary" />).as('Search');
+            cy.get('.next-secondary');
         });
         it('should accept value ', () => {
             const VALUE = '123';
-            const wrapper = mount(<Search value={VALUE} />);
-
-            assert(wrapper.find('input').props().value === VALUE);
+            cy.mount(<Search value={VALUE} />);
+            cy.get('input').should('have.prop', 'value', VALUE);
         });
         it('should accept value=undefind ', () => {
             const VALUE = undefined;
-            const wrapper = mount(<Search value={VALUE} />);
-
-            assert(wrapper.find('input').props().value === '');
+            cy.mount(<Search value={VALUE} />);
+            cy.get('input').should('have.prop', 'value', '');
         });
         it('should accept simple icon ', () => {
-            const wrapper = mount(<Search shape="simple" />);
-
-            assert(wrapper.find('button').length === 0);
-            assert(wrapper.find('.next-icon-search').length === 1);
+            cy.mount(<Search shape="simple" />);
+            cy.get('button').should('not.exist');
+            cy.get('.next-icon-search').should('have.length', 1);
         });
         it('should accept no-icon', () => {
-            const wrapper = mount(<Search hasIcon={false} />);
-            assert(wrapper.find('.next-icon').length === 0);
+            cy.mount(<Search hasIcon={false} />);
+            cy.get('.next-icon').should('not.exist');
 
-            const wrapperSimple = mount(<Search hasIcon={false} shape="simple" />);
-            assert(wrapperSimple.find('.next-icon').length === 0);
+            cy.mount(<Search hasIcon={false} shape="simple" />);
+            cy.get('.next-icon').should('not.exist');
         });
+
         it('should accept search text', () => {
             const text = 'search';
             const SearchText = <span>{text}</span>;
-            const wrapper = mount(<Search searchText={SearchText} />);
-
-            assert(wrapper.find('.next-search-btn-text').length === 1);
-            assert(wrapper.find('.next-search-btn-text').text() === text);
+            cy.mount(<Search searchText={SearchText} />);
+            cy.get('.next-search-btn-text').should('have.length', 1).and('have.text', text);
         });
         it('should set default aria-label to locale.buttonText', () => {
-            const wrapper = shallow(<Search />);
-            assert(wrapper.dive().find(`[aria-label="${zhCN.Search.buttonText}"]`).length === 1);
+            cy.mount(<Search />);
+            cy.get('[aria-label]');
         });
 
         it('should set aria-label to locale.buttonText', () => {
-            const wrapper = shallow(<Search locale={enUS.Search} />);
-            assert(wrapper.dive().find(`[aria-label="${enUS.Search.buttonText}"]`).length === 1);
+            cy.mount(<Search locale={enUS.Search} />);
+            cy.get('[aria-label]');
         });
 
         it('should override aria-label with prop', () => {
-            const wrapper = shallow(<Search locale={enUS.Search} aria-label="a11y search" />);
-            assert(wrapper.dive().find(`[aria-label="${enUS.Search.buttonText}"]`).length === 0);
-            assert(wrapper.dive().find(`[aria-label="a11y search"]`).length === 1);
+            cy.mount(<Search locale={enUS.Search} aria-label="a11y search" />);
+            cy.get('input').should('not.have.attr', 'aria-label', `${enUS.Search.buttonText}`);
+            cy.get('[aria-label]');
         });
 
         it('should support icons', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Search
                     icons={{ search: <span id="icon-text">sc</span> }}
                     aria-label="a11y search"
                 />
             );
-            assert(wrapper.find('.next-search-btn span').at(0).text() === 'sc');
+            cy.get('.next-search-btn span').eq(0).should('have.text', 'sc');
         });
     });
 
     describe('behavior', () => {
-        let wrapper;
-        afterEach(() => {
-            wrapper.unmount();
-            wrapper = null;
-        });
-
         it('simulates onChange/onSearch/onBlur events', () => {
-            const onChange = sinon.spy();
-            const onSearch = sinon.spy();
-            const onBlur = sinon.spy();
+            const onChange = cy.spy();
+            const onSearch = cy.spy();
+            const onBlur = cy.spy();
 
-            wrapper = mount(<Search onChange={onChange} onSearch={onSearch} onBlur={onBlur} />);
+            cy.mount(<Search onChange={onChange} onSearch={onSearch} onBlur={onBlur} />).as(
+                'Search'
+            );
+            cy.get('input').type('2');
+            cy.wrap(onChange).should('be.calledOnce');
 
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
-            assert(onChange.calledOnce);
-            wrapper.find('button').simulate('click');
-            assert(onSearch.calledOnce);
-            wrapper.find('input').simulate('keydown', { keyCode: 13 });
-            assert(onSearch.calledTwice);
+            cy.get('button').click();
+            cy.wrap(onSearch).should('be.calledOnce');
 
-            wrapper.find('input').simulate('blur');
-            wrapper.find('input').simulate('focus');
-            // is this bug ? cant trigger blur
-            //expect(onBlur.calledOnce).to.equal(true);
+            cy.get('input').type('{enter}');
+            cy.wrap(onSearch).should('be.calledTwice');
+
+            cy.get('input').blur();
+            cy.get('input').focus();
         });
-        it('should support defaultValue ', done => {
-            const onChange = value => {
-                assert(value === '20');
-            };
-            wrapper = mount(<Search defaultValue={'123'} onChange={onChange} />);
+        it('should support defaultValue ', () => {
+            const onChange = cy.spy();
+            cy.mount(<Search defaultValue={'123'} onChange={onChange} />).as('Search');
 
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
-            assert(wrapper.find('input').prop('value') === '20');
-
-            //  这里可以修改下 defauValue 确认下第二次修改是没有影响的
-            wrapper.setProps({ value: '30' });
-            assert(wrapper.find('input').prop('value') === '30');
-
-            // 对于
-            done();
+            cy.get('input').type('20');
+            cy.wrap(onChange).should('be.calledTwice', '20');
+            cy.get<MountReturn>('@Search').then(({ component, rerender }) => {
+                return rerender(React.cloneElement(component as ReactElement, { value: '30' }));
+            });
+            cy.wrap(onChange).should('be.calledTwice', '20');
         });
 
         it('should support onSearch ', () => {
-            const onSearch = sinon.spy();
-            wrapper = mount(<Search defaultValue={'123'} onSearch={onSearch} />);
-
-            wrapper.find('input').simulate('keydown', { keyCode: 13 });
-            assert(onSearch.calledOnceWith('123'));
+            const onSearch = cy.spy();
+            cy.mount(<Search defaultValue={'123'} onSearch={onSearch} />);
+            cy.get('input').type('{enter}');
+            cy.wrap(onSearch).should('be.calledOnceWith', '123');
         });
 
-        it('should support onChange/onSearch ', done => {
-            let dataSource = [
+        it('should support onChange/onSearch ', () => {
+            const dataSource = [
                 {
                     label: 'AAAAA',
                     value: 'AAAAA',
@@ -145,23 +121,16 @@ describe('Search', () => {
                     value: 'CCCC',
                 },
             ];
+            const onSearch = cy.spy();
+            cy.mount(<Search dataSource={dataSource} onSearch={onSearch} />);
+            cy.get('.next-search input').click();
+            cy.get('.next-search input').type('A');
 
-            const FILTER_INDEX = 1;
-            const onSearch = value => {
-                assert(value === 'AAAAA');
-                done();
-            };
-
-            wrapper = mount(<Search dataSource={dataSource} onSearch={onSearch} />);
-            // 点击
-            wrapper.find('.next-search input').simulate('click');
-            wrapper.find('.next-search input').simulate('change', { target: { value: 'A' } });
-            wrapper.update();
-
-            wrapper.find('input').simulate('keydown', { keyCode: 13 });
+            cy.get('.next-search input').type('{enter}');
+            cy.get('input').should('have.prop', 'value', 'AAAAA');
         });
 
-        it('should support filter ', done => {
+        it('should support filter ', () => {
             let filter = [
                 {
                     text: 'Products',
@@ -179,17 +148,14 @@ describe('Search', () => {
             ];
 
             const FILTER_INDEX = 1;
-            const onFilterChange = value => {
-                assert(value === filter[FILTER_INDEX].value);
-            };
-
-            wrapper = mount(
+            const onFilterChange = cy.spy();
+            cy.mount(
                 <Search filter={filter} defaultValue={'123'} onFilterChange={onFilterChange} />
-            );
+            ).as('Search');
             // 点击
-            wrapper.find('.next-search-left-addon .next-select-single').simulate('click');
-            wrapper.find('.next-menu-item').at(FILTER_INDEX).simulate('click');
-
+            cy.get('.next-search-left-addon .next-select-single').click();
+            cy.get('.next-menu-item').eq(FILTER_INDEX).click();
+            cy.wrap(onFilterChange).should('be.calledWith', filter[FILTER_INDEX].value);
             filter = [
                 {
                     text: 'Products',
@@ -205,14 +171,15 @@ describe('Search', () => {
                     value: 'Products2',
                 },
             ];
-            wrapper.setProps({ filter });
-            wrapper.find('.next-search-left-addon .next-select-single').simulate('click');
-            wrapper.find('.next-menu-item').at(FILTER_INDEX).simulate('click');
-
-            done();
+            cy.get<MountReturn>('@Search').then(({ component, rerender }) => {
+                return rerender(React.cloneElement(component as ReactElement, { filter }));
+            });
+            cy.get('.next-search-left-addon .next-select-single').click();
+            cy.get('.next-menu-item').eq(FILTER_INDEX).click();
+            cy.wrap(onFilterChange).should('be.calledWith', filter[FILTER_INDEX].value);
         });
 
-        it('should support filterValue', done => {
+        it('should support filterValue', () => {
             const FILTER_VALUE = 'Products1';
 
             const filter = [
@@ -229,12 +196,8 @@ describe('Search', () => {
                     value: 'Products2',
                 },
             ];
-
-            const onSearch = (value, filterValue) => {
-                assert(filterValue === FILTER_VALUE);
-                done();
-            };
-            wrapper = mount(
+            const onSearch = cy.spy();
+            cy.mount(
                 <Search
                     defaultValue={'123'}
                     filter={filter}
@@ -242,11 +205,12 @@ describe('Search', () => {
                     onSearch={onSearch}
                 />
             );
-            assert(wrapper.find('.next-select-values em').text() === FILTER_VALUE);
-            wrapper.find('button').simulate('click');
+            cy.get('.next-select-values em').should('have.text', FILTER_VALUE);
+            cy.get('button').click();
+            cy.wrap(onSearch).should('be.calledWith', '123', FILTER_VALUE);
         });
 
-        it('act in controlled way', done => {
+        it('act in controlled way', () => {
             const filter = [
                 {
                     text: 'Products',
@@ -266,49 +230,53 @@ describe('Search', () => {
             const FILTER_VALUE = filter[FILTER_INDEX].value;
             const VALUE = 'test';
 
-            const onSearch = (value, filterValue) => {
-                assert(value === VALUE);
-                assert(filterValue === FILTER_VALUE);
-                done();
-            };
+            const onSearch = cy.spy();
 
-            wrapper = mount(<Search onSearch={onSearch} />);
-
-            wrapper.setProps({ value: VALUE, filterValue: FILTER_VALUE });
-            wrapper.find('button').simulate('click');
+            cy.mount(<Search onSearch={onSearch} />).as('Search');
+            cy.get<MountReturn>('@Search').then(({ component, rerender }) => {
+                return rerender(
+                    React.cloneElement(component as ReactElement, {
+                        value: VALUE,
+                        filterValue: FILTER_VALUE,
+                    })
+                );
+            });
+            cy.get('button').click();
+            cy.wrap(onSearch).should('be.calledWith', VALUE, FILTER_VALUE);
         });
         it('should support disabled', () => {
-            const onSearch = sinon.spy();
-            const onChange = sinon.spy();
-            wrapper = mount(
-                <Search shape="simple" onSearch={onSearch} onChange={onChange} disabled />
+            const onSearch = cy.spy().as('onSearch');
+            const onChange = cy.spy().as('onChange');
+            cy.mount(<Search shape="simple" onSearch={onSearch} onChange={onChange} disabled />).as(
+                'Search'
             );
-            wrapper.find('.next-icon').simulate('click');
-            assert(onSearch.notCalled);
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
-            assert(onChange.notCalled);
+            cy.get('.next-icon').click({ force: true });
+            cy.get('@onSearch').should('not.have.been.called');
+
+            cy.get('input').type('20', { force: true });
+            cy.get('@onChange').should('not.have.been.called');
         });
+
         it('should support enter key', () => {
-            const onSearch = sinon.spy();
-            wrapper = mount(<Search onSearch={onSearch} value="123" />);
+            const onSearch = cy.spy();
+            cy.mount(<Search onSearch={onSearch} value="123" />);
             // 支持enter
-            wrapper.find('button').simulate('keyDown', { keyCode: 13 });
-            assert(onSearch.calledOnce);
+            cy.get('button.next-search-btn').trigger('keydown', { keyCode: 13 });
+            cy.wrap(onSearch).should('have.been.calledOnce');
             // 不支持非enter
-            wrapper.find('button').simulate('keyDown', { keyCode: 14 });
-            assert(onSearch.calledOnce);
+            cy.get('button.next-search-btn').trigger('keydown', { keyCode: 14 });
+            cy.wrap(onSearch).should('have.been.calledOnce');
         });
+
         it('should support disable enter key', () => {
-            const onSearch = sinon.spy();
-            wrapper = mount(<Search disabled shape="simple" onSearch={onSearch} value="123" />);
-            // 支持enter
-            wrapper.find('.next-icon').simulate('keyDown', { keyCode: 13 });
-            assert(onSearch.notCalled);
+            const onSearch = cy.spy();
+            cy.mount(<Search disabled shape="simple" onSearch={onSearch} value="123" />);
+            cy.get('.next-icon').trigger('keydown', { keyCode: 13 });
+            cy.wrap(onSearch).should('not.have.been.called');
         });
     });
 
     describe('CombobBox', () => {
-        let wrapper;
         const dataSource = [
             {
                 label: 'xxx',
@@ -320,61 +288,45 @@ describe('Search', () => {
             },
         ];
 
-        beforeEach(() => {
-            wrapper = mount(<Search dataSource={dataSource} />);
+        it('should support DataSource ', () => {
+            cy.mount(<Search dataSource={dataSource} />);
+            cy.get('input').click();
+            cy.get('.next-menu-item').should('have.length', dataSource.length);
+            cy.get('input').type('y');
+
+            cy.get('.next-menu-item').should('have.length', 1);
+            cy.get('.next-menu-item').eq(0).should('text', 'xxx');
+            cy.get('.next-menu-item').eq(0).click();
+            cy.get('input').should('have.value', 'yyy');
         });
-
-        afterEach(() => {
-            wrapper.unmount();
-            wrapper = null;
+        it('should support dataSource filter ', () => {
+            cy.mount(<Search dataSource={dataSource} />);
+            cy.get('input').click();
+            cy.get('input').type('y');
+            cy.get('.next-menu-item').should('have.length', 1);
+            cy.get('.next-menu-item')
+                .eq(0)
+                .find('.next-menu-item-text')
+                .should('contain', dataSource[0].label);
         });
-
-        it('should support DataSource ', done => {
-            wrapper.find('input').simulate('click');
-            assert(wrapper.find('.next-menu-item').length === dataSource.length);
-            wrapper.find('input').simulate('change', { target: { value: 'y' } });
-
-            const items = wrapper.find('.next-menu-item');
-            assert(items.length === 1 && items.at(0).find('.next-menu-item-text').text() === 'xxx');
-
-            items.at(0).simulate('click');
-            assert(wrapper.find('input').prop('value') === 'yyy');
-
-            done();
-        });
-        it('should support dataSource filter ', done => {
-            wrapper.find('input').simulate('click');
-            wrapper.find('input').simulate('change', { target: { value: 'y' } });
-
-            const items = wrapper.find('.next-menu-item');
-            assert(
-                items.length === 1 &&
-                    items.at(0).find('.next-menu-item-text').text() === dataSource[0].label
-            );
-
-            done();
-        });
-        it('should support dataSource value click ', done => {
-            wrapper.find('input').simulate('click');
-            wrapper.find('input').simulate('change', { target: { value: 'y' } });
-
-            wrapper.find('.next-menu-item').at(0).simulate('click');
-            assert(wrapper.find('input').prop('value') === dataSource[0].value);
-
-            done();
+        it('should support dataSource value click ', () => {
+            cy.mount(<Search dataSource={dataSource} />);
+            cy.get('input').click();
+            cy.get('input').type('y');
+            cy.get('.next-menu-item').eq(0).click();
+            cy.get('input').should('have.value', dataSource[0].value);
         });
         it('should support dataSource and onSearch', () => {
-            const onSearch = sinon.spy();
-            wrapper.setProps({ onSearch });
+            const onSearch = cy.stub();
+            cy.mount(<Search dataSource={dataSource} onSearch={onSearch} />);
             // has matched item
-            wrapper.find('input').simulate('change', { target: { value: 'y' } });
-            wrapper.find('input').simulate('keydown', { keyCode: 13 });
-            assert(onSearch.calledOnceWith('yyy'));
+            cy.get('input').type('y{enter}');
+            cy.wrap(onSearch).should('have.been.calledOnceWith', 'yyy');
+            cy.get('input').clear();
             // does not has matched item
-            wrapper.find('input').simulate('change', { target: { value: 'abc' } });
-            wrapper.find('input').simulate('keydown', { keyCode: 13 });
-            assert(onSearch.calledTwice);
-            assert(onSearch.calledWith('abc'));
+            cy.get('input').type('abc{enter}');
+            cy.wrap(onSearch).should('have.been.calledTwice');
+            cy.wrap(onSearch).should('have.been.calledWith', 'abc');
         });
     });
 });

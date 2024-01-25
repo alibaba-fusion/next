@@ -57,7 +57,7 @@ export default {
             },
         ],
     }),
-    adaptor: ({ shape, level, size, menu, label, width, style, ...others }) => {
+    adaptor: ({ shape, level, size, menu, label, width, style, ...others }: any) => {
         return (
             <Search
                 {...others}
@@ -71,7 +71,7 @@ export default {
             />
         );
     },
-    content: shape => ({
+    content: (shape: string) => ({
         options: [
             {
                 name: 'menu',
@@ -84,7 +84,7 @@ export default {
                 default: 'show',
             },
         ].filter(({ name }) => name !== 'buttonLabel' || shape === 'normal'),
-        transform: (props, { menu, buttonLabel }) => {
+        transform: (props: any, { menu, buttonLabel }: any) => {
             return {
                 ...props,
                 menu: menu === 'show',
@@ -92,7 +92,7 @@ export default {
             };
         },
     }),
-    demoOptions: demo => {
+    demoOptions: (demo: { node: { props: { level: string } } }) => {
         if (demo.node.props.level === 'dark') {
             return {
                 ...demo,

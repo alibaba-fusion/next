@@ -22,11 +22,11 @@ const dataSource = [
 ];
 
 class App extends React.Component {
-    onSearch(value, filterValue) {
+    onSearch(value: string, filterValue: string) {
         console.log('onSearch', value, filterValue);
     }
 
-    onChange(value, type, e) {
+    onChange(value: number | string, type: string, e: unknown) {
         console.log('onChange', value, type, e);
         this.setState({
             value: value,

@@ -9,10 +9,6 @@ import enUS from '../../../locale/en-us';
 import '../../style';
 import Search from '../../index';
 
-// import demo helper
-
-// import component
-
 const i18nMaps = {
     'en-us': {
         title: 'Search',
@@ -50,8 +46,14 @@ const demo = {
 const style = {
     width: 380,
 };
-
-class FunctionDemo extends React.Component {
+interface DemoProps {
+    i18n: { title: string; products: string; suppliers: string };
+}
+interface FieldValue {
+    hasMenu: { value: string };
+    buttonText: { value: string };
+}
+class FunctionDemo extends React.Component<DemoProps> {
     field = new Field(this, {
         values: {
             demo: demo,
@@ -61,7 +63,8 @@ class FunctionDemo extends React.Component {
     render() {
         const { i18n } = this.props;
         const { init, getValue } = this.field;
-        const hasMenu = getValue('demo').hasMenu.value === 'true';
+        const newValue: FieldValue = getValue('demo');
+        const hasMenu = newValue.hasMenu.value === 'true';
         const filter = hasMenu
             ? [
                   {
@@ -75,7 +78,7 @@ class FunctionDemo extends React.Component {
               ]
             : [];
 
-        const buttonText = getValue('demo').buttonText.value === 'true';
+        const buttonText = newValue.buttonText.value === 'true';
 
         const title = buttonText ? i18n.title : '';
 
