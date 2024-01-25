@@ -8,11 +8,13 @@ import Search from '../index';
 Enzyme.configure({ adapter: new Adapter() });
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
-describe('Search issues', function() {
+describe('Search issues', function () {
     // Fix https://github.com/alibaba-fusion/next/issues/4049
-    it('Enter search should be called once when autoHighlightFirstItem=false', function() {
+    it('Enter search should be called once when autoHighlightFirstItem=false', function () {
         const onSearch = sinon.spy();
-        const wrapper = mount(<Search dataSource={['a']} onSearch={onSearch} autoHighlightFirstItem={false} />);
+        const wrapper = mount(
+            <Search dataSource={['a']} onSearch={onSearch} autoHighlightFirstItem={false} />
+        );
         // has matched item
         wrapper.find('input').simulate('change', { target: { value: 'a' } });
         wrapper.find('input').simulate('keydown', { keyCode: 13 });
