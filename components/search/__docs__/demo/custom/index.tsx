@@ -24,9 +24,13 @@ const menuData = [
         index: '4',
     },
 ];
-
-class App extends React.Component {
-    constructor(props) {
+interface AppState {
+    menuData: Array<{ label: string; value: string; index?: string }>;
+    value: string;
+    visible: boolean;
+}
+class App extends React.Component<unknown, AppState> {
+    constructor(props: unknown) {
         super(props);
         this.state = {
             visible: false,
@@ -65,30 +69,30 @@ class App extends React.Component {
         );
     }
 
-    onSearch(value) {
+    onSearch(value: string) {
         console.log(value);
     }
 
-    onChange(value) {
+    onChange(value: string) {
         this.setState({
             visible: value.length > 0,
             value: value,
         });
     }
 
-    onSelect(selectedKeys) {
+    onSelect(selectedKeys: Array<string>) {
         this.setState({
             visible: false,
             value: selectedKeys[0],
         });
     }
 
-    onDelete(index, e) {
+    onDelete(index: string | undefined, e: React.MouseEvent) {
         e.stopPropagation();
 
         const menuData = this.state.menuData;
 
-        const menuDataNew = [];
+        const menuDataNew: AppState['menuData'] = [];
 
         menuData.forEach(function (item) {
             if (item.index !== index) {

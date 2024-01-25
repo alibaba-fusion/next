@@ -130,7 +130,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 键盘上下键切换菜单高亮选项的回调
      */
-    onToggleHighlightItem?: () => void;
+    onToggleHighlightItem?: (highlightKey: unknown, ...args: unknown[]) => void;
 
     /**
      * 是否开启虚拟滚动模式
@@ -171,9 +171,12 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
      *  默认高亮key
      */
     defaultHighlightKey?: string;
+    onFocus?: InputProps['onFocus'];
 }
 
-export class AutoComplete extends React.Component<AutoCompleteProps, any> {}
+export class AutoComplete extends React.Component<AutoCompleteProps, any> {
+    focus(...args: unknown[]): unknown;
+}
 
 export interface OptionGroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**

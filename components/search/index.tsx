@@ -1,8 +1,10 @@
 import ConfigProvider from '../config-provider';
 import Search from './Search';
 
+export type { SearchProps } from './types';
+
 export default ConfigProvider.config(Search, {
-    transfrom: /* istanbul ignore next */ (props, deprecated) => {
+    transform: (props, deprecated) => {
         const { onInputFocus, overlayVisible, combox, ...others } = props;
 
         const newprops = others;
