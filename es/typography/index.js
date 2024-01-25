@@ -1,0 +1,14 @@
+import Text from './text';
+import Paragraph from './paragraph';
+import Typography from './typography';
+import createTitle from './title';
+var WithSubTypography = Typography;
+WithSubTypography.Text = Text;
+WithSubTypography.Paragraph = Paragraph;
+WithSubTypography.H1 = createTitle('h1');
+WithSubTypography.H2 = createTitle('h2');
+WithSubTypography.H3 = createTitle('h3');
+WithSubTypography.H4 = createTitle('h4');
+WithSubTypography.H5 = createTitle('h5');
+WithSubTypography.H6 = createTitle('h6');
+export default WithSubTypography;

@@ -1,0 +1,176 @@
+{
+  "name": "Breadcrumb",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式类名的品牌前缀",
+      "defaultValue": {
+        "value": "'next-'",
+        "computed": false
+      },
+      "docblock": "样式类名的品牌前缀"
+    },
+    "children": {
+      "type": {
+        "name": "custom",
+        "raw": "(props, propName) => {\n    Children.forEach(props[propName], child => {\n        if (\n            !(\n                child &&\n                ['function', 'object'].indexOf(typeof child.type) > -1 &&\n                child.type._typeMark === 'breadcrumb_item'\n            )\n        ) {\n            throw new Error(\"Breadcrumb's children must be Breadcrumb.Item!\");\n        }\n    });\n}"
+      },
+      "required": false,
+      "description": "面包屑子节点，需传入 Breadcrumb.Item",
+      "docblock": "面包屑子节点，需传入 Breadcrumb.Item"
+    },
+    "maxNode": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "number"
+          },
+          {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'auto'",
+                "computed": false
+              }
+            ]
+          }
+        ]
+      },
+      "required": false,
+      "description": "面包屑最多显示个数，超出部分会被隐藏, 设置为 auto 会自动根据父元素的宽度适配。",
+      "defaultValue": {
+        "value": "100",
+        "computed": false
+      },
+      "docblock": "面包屑最多显示个数，超出部分会被隐藏, 设置为 auto 会自动根据父元素的宽度适配。"
+    },
+    "showHiddenItems": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "当超过的项被隐藏时，是否可通过点击省略号展示菜单（包含被隐藏的项）",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "当超过的项被隐藏时，是否可通过点击省略号展示菜单（包含被隐藏的项）\n@version 1.23",
+      "version": {
+        "value": "1.23",
+        "computed": false
+      }
+    },
+    "popupContainer": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "弹层挂载的容器节点（在showHiddenItems为true时才有意义）",
+      "docblock": "弹层挂载的容器节点（在showHiddenItems为true时才有意义）\n@version 1.23",
+      "version": {
+        "value": "1.23",
+        "computed": false
+      }
+    },
+    "followTrigger": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否跟随trigger滚动（在showHiddenItems为true时才有意义）",
+      "docblock": "是否跟随trigger滚动（在showHiddenItems为true时才有意义）\n@version 1.23",
+      "version": {
+        "value": "1.23",
+        "computed": false
+      }
+    },
+    "popupProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "添加到弹层上的属性（在showHiddenItems为true时才有意义）",
+      "docblock": "添加到弹层上的属性（在showHiddenItems为true时才有意义）\n@version 1.23",
+      "properties": [],
+      "version": {
+        "value": "1.23",
+        "computed": false
+      }
+    },
+    "separator": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "node"
+          },
+          {
+            "name": "string"
+          }
+        ]
+      },
+      "required": false,
+      "description": "分隔符，可以是文本或 Icon",
+      "docblock": "分隔符，可以是文本或 Icon"
+    },
+    "component": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "func"
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置标签类型",
+      "defaultValue": {
+        "value": "'nav'",
+        "computed": false
+      },
+      "docblock": "设置标签类型"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Item",
+      "props": {
+        "link": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />`",
+          "docblock": "面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />`"
+        },
+        "onClick": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "元素点击事件",
+          "docblock": "元素点击事件\n@param {MouseEvent} e Click Mouse Event",
+          "params": [
+            {
+              "name": "e",
+              "description": "Click Mouse Event",
+              "type": {
+                "name": "MouseEvent"
+              }
+            }
+          ],
+          "returns": null
+        }
+      },
+      "methods": []
+    }
+  ]
+}
