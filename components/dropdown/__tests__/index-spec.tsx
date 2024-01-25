@@ -151,44 +151,27 @@ describe('Dropdown', () => {
     //     });
 
     it('autoFocus=false should not have any activeElement', done => {
-        cy.document().then(document => {
-            // 创建新的 div 元素
-            const mountNode = document.createElement('div');
-            // 添加该 div 到 body 中
-            document.body.appendChild(mountNode);
-
-            // eslint-disable-next-line react/no-deprecated
-            ReactDOM.render(
-                <Dropdown
-                    // eslint-disable-next-line jsx-a11y/no-autofocus
-                    autoFocus={false}
-                    trigger={<button className="trigger">Hello dropdown</button>}
-                    animation={false}
-                >
-                    <Menu>
-                        <Menu.Item>Option 1</Menu.Item>
-                        <Menu.Item>Option 2</Menu.Item>
-                        <Menu.Item>Option 3</Menu.Item>
-                        <Menu.Item>Option 4</Menu.Item>
-                    </Menu>
-                </Dropdown>,
-                mountNode
-            );
-
-            cy.get('.trigger').focus();
-            ReactTestUtils.Simulate.keyDown(document.activeElement as Element, {
-                keyCode: KEYCODE.DOWN,
-            });
-
-            setTimeout(() => {
-                assert(document.activeElement !== document.querySelectorAll('.next-menu-item')[0]);
-
-                // eslint-disable-next-line react/no-deprecated
-                ReactDOM.unmountComponentAtNode(mountNode);
-                document.body.removeChild(mountNode);
-
-                done();
-            }, 200);
+        cy.mount(
+            <Dropdown
+                autoFocus
+                trigger={<button className="trigger">Hello dropdown</button>}
+                animation={false}
+            >
+                <Menu>
+                    <Menu.Item>Option 1</Menu.Item>
+                    <Menu.Item>Option 2</Menu.Item>
+                    <Menu.Item>Option 3</Menu.Item>
+                    <Menu.Item>Option 4</Menu.Item>
+                </Menu>
+            </Dropdown>
+        );
+        cy.clock();
+        cy.get('.trigger').focus();
+        ReactTestUtils.Simulate.keyDown(document.activeElement as Element, {
+            keyCode: KEYCODE.DOWN,
+        });
+        cy.tick(500).then(() => {
+            cy.wrap(document.activeElement).should('not.have.class', 'next-menu-item');
         });
     });
 
