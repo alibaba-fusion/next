@@ -30,7 +30,8 @@ const createChildren = (children, { spacing, direction, wrap, device }) => {
         if (!wrap) {
             // 不折行
             const isNone = [index === 0, index === array.length - 1];
-            const props = direction === 'row' ? ['marginLeft', 'marginRight'] : ['marginTop', 'marginBottom'];
+            const props =
+                direction === 'row' ? ['marginLeft', 'marginRight'] : ['marginTop', 'marginBottom'];
 
             ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'].forEach(prop => {
                 if (prop in spacingMargin && props.indexOf(prop) === -1) {
@@ -50,7 +51,10 @@ const createChildren = (children, { spacing, direction, wrap, device }) => {
             const childPropsMargin = getMargin(propsMargin);
             let gridProps = {};
 
-            if (['function', 'object'].indexOf(typeof child.type) > -1 && child.type._typeMark === 'responsive_grid') {
+            if (
+                ['function', 'object'].indexOf(typeof child.type) > -1 &&
+                child.type._typeMark === 'responsive_grid'
+            ) {
                 gridProps = createStyle({ display: 'grid', ...child.props });
             }
 
@@ -136,7 +140,13 @@ class Box extends Component {
         /**
          * 沿着主轴方向，子元素们的排布关系 （兼容性同 justify-content ）
          */
-        justify: PropTypes.oneOf(['flex-start', 'center', 'flex-end', 'space-between', 'space-around']),
+        justify: PropTypes.oneOf([
+            'flex-start',
+            'center',
+            'flex-end',
+            'space-between',
+            'space-around',
+        ]),
         /**
          * 垂直主轴方向，子元素们的排布关系 （兼容性同 align-items ）
          */
