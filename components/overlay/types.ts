@@ -80,7 +80,7 @@ export interface PopupV1Props extends React.HTMLAttributes<HTMLElement>, CommonP
     target?: Target;
 
     /**
-     * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
+     * 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)
      * @en Alignment of the overlay relative to the reference element, see [Alignment](#Alignment)
      * @defaultValue 'tl bl'
      * @skip
@@ -148,7 +148,7 @@ export interface PopupV1Props extends React.HTMLAttributes<HTMLElement>, CommonP
     onOpen?: (target?: React.ReactNode) => void;
 
     /**
-     * 弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发
+     * 弹层打开后触发事件的回调函数，如果有动画，则在动画结束后触发
      * @en Callback function that triggers the event after the overlay opens, if enable animations, trigger after the animation ends
      * @skip
      */
@@ -169,7 +169,7 @@ export interface PopupV1Props extends React.HTMLAttributes<HTMLElement>, CommonP
     onClose?: (target?: React.ReactNode) => void;
 
     /**
-     * 弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发
+     * 弹层关闭后触发事件的回调函数，如果有动画，则在动画结束后触发
      * @en Callback function that triggers the event after the overlay closes, if enable animations, trigger after the animation ends
      * @skip
      */
@@ -254,7 +254,7 @@ export interface PopupV1Props extends React.HTMLAttributes<HTMLElement>, CommonP
     wrapperStyle?: React.CSSProperties;
 
     /**
-     * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
+     * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。请参考 Animate 组件的文档获取可用的动画名
      * @en configure animation, support the \{in: 'enter-class', out: 'leave-class' \} object parameters, if set to false, do not play the animation. Refer to Animate component documentation for available animations.
      * @defaultValue \{ in: 'expandInDown', out: 'expandOutUp' \}
      * @skip
@@ -272,7 +272,7 @@ export interface PopupV1Props extends React.HTMLAttributes<HTMLElement>, CommonP
      * @en trigger the overlay to show or hide operations, either 'click', 'hover', 'focus', or an array of them, such as ['hover', 'focus']
      * @defaultValue 'hover'
      */
-    triggerType?: string | Array<string>;
+    triggerType?: 'click' | 'hover' | 'focus' | Array<'click' | 'hover' | 'focus'>;
 
     /**
      * 当 triggerType 为 click 时才生效，可自定义触发弹层显示的键盘码
@@ -283,58 +283,52 @@ export interface PopupV1Props extends React.HTMLAttributes<HTMLElement>, CommonP
 
     /**
      * 弹层默认是否显示
-     * @en whether the overlay is visible default
+     * @en Whether to show the overlay by default
      * @defaultValue false
      */
     defaultVisible?: boolean;
 
     /**
-     * 弹层显示或隐藏时触发的回调函数, v2 版本第二个参数是 event
-     * @en callback function triggered when the ovlery is visible or hidden
-        signatures:
-        Function(visible: Boolean, type: String, e: Object) =\> void
-        params:
-        visible: \{Boolean\} whether the overlay is visible
-        type: \{String\} the reason that triggers the overlay to show or hide
-        e: \{Object\} DOM event
+     * 弹层显示或隐藏时触发的回调函数，v2 版本第二个参数是 event
+     * @en callback function that triggers when the overlay shows or hides
      */
     onVisibleChange?: (visible: boolean, type: string | object, e?: object) => void;
 
     /**
      * 设置此属性，弹层无法显示或隐藏
-     * @en if set this property, the overlay cannot be shown or hidden
+     * @en Set this property, the overlay cannot be displayed or hidden
      * @defaultValue false
      */
     disabled?: boolean;
 
     /**
      * 弹层显示或隐藏的延时时间（以毫秒为单位），在 triggerType 被设置为 hover 时生效
-     * @en The delay time, in milliseconds, that the overlay shows or hides and only works when triggerType is set to hover
+     * @en Delay time (in milliseconds) when the overlay is displayed or hidden, effective when triggerType is set to hover
      * @defaultValue 200
      */
     delay?: number;
 
     /**
-     * 鼠标放置后的延时显示, 单位毫秒 ms, 优先级高于delay
-     * @en Delay display after mouse, Higher priority than delay
+     * 鼠标放置后的延时显示，单位毫秒 ms, 优先级高于 delay
+     * @en Delay display after mouse enter, Higher priority than delay
      */
     mouseEnterDelay?: number;
 
     /**
-     * 鼠标离开后的延时显示, 单位毫秒 ms, 优先级高于delay
-     * @en Delay display after mouse, Higher priority than delay
+     * 鼠标离开后的延时显示，单位毫秒 ms, 优先级高于 delay
+     * @en Delay display after mouse leave, Higher priority than delay
      */
     mouseLeaveDelay?: number;
 
     /**
      * trigger 是否可以关闭弹层
-     * @en whether the trigger element can close the overlay
+     * @en whether overlay can be closed by trigger
      * @defaultValue true
      */
     canCloseByTrigger?: boolean;
 
     /**
-     * 是否跟随trigger滚动
+     * 是否跟随 trigger 滚动
      * @en follow trigger to scroll or not
      * @defaultValue false
      */
@@ -421,7 +415,7 @@ export interface PopupV2Props extends React.HTMLAttributes<HTMLElement>, CommonP
     target?: Target;
 
     /**
-     * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
+     * 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)
      * @en Alignment of the overlay relative to the reference element, see [Alignment](#Alignment)
      * @defaultValue 'tl bl'
      * @skip
@@ -489,7 +483,7 @@ export interface PopupV2Props extends React.HTMLAttributes<HTMLElement>, CommonP
     onOpen?: (target?: React.ReactNode) => void;
 
     /**
-     * 弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发
+     * 弹层打开后触发事件的回调函数，如果有动画，则在动画结束后触发
      * @en Callback function that triggers the event after the overlay opens, if enable animations, trigger after the animation ends
      * @skip
      */
@@ -510,7 +504,7 @@ export interface PopupV2Props extends React.HTMLAttributes<HTMLElement>, CommonP
     onClose?: (target?: React.ReactNode) => void;
 
     /**
-     * 弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发
+     * 弹层关闭后触发事件的回调函数，如果有动画，则在动画结束后触发
      * @en Callback function that triggers the event after the overlay closes, if enable animations, trigger after the animation ends
      * @skip
      */
@@ -595,7 +589,7 @@ export interface PopupV2Props extends React.HTMLAttributes<HTMLElement>, CommonP
     wrapperStyle?: React.CSSProperties;
 
     /**
-     * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
+     * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。请参考 Animate 组件的文档获取可用的动画名
      * @en configure animation, support the \{in: 'enter-class', out: 'leave-class' \} object parameters, if set to false, do not play the animation. Refer to Animate component documentation for available animations.
      * @defaultValue \{ in: 'expandInDown', out: 'expandOutUp' \}
      * @skip
@@ -613,7 +607,7 @@ export interface PopupV2Props extends React.HTMLAttributes<HTMLElement>, CommonP
      * @en trigger the overlay to show or hide operations, either 'click', 'hover', 'focus', or an array of them, such as ['hover', 'focus']
      * @defaultValue 'hover'
      */
-    triggerType?: string | Array<string>;
+    triggerType?: 'click' | 'hover' | 'focus' | Array<'click' | 'hover' | 'focus'>;
 
     /**
      * 当 triggerType 为 click 时才生效，可自定义触发弹层显示的键盘码
@@ -630,14 +624,8 @@ export interface PopupV2Props extends React.HTMLAttributes<HTMLElement>, CommonP
     defaultVisible?: boolean;
 
     /**
-     * 弹层显示或隐藏时触发的回调函数, v2 版本第二个参数是 event
-     * @en callback function triggered when the ovlery is visible or hidden
-        signatures:
-        Function(visible: Boolean, type: String, e: Object) =\> void
-        params:
-        visible: \{Boolean\} whether the overlay is visible
-        type: \{String\} the reason that triggers the overlay to show or hide
-        e: \{Object\} DOM event
+     * 弹层显示或隐藏时触发的回调函数，v2 版本第二个参数是 event
+     * @en Callback function that triggers the event when the overlay shows or hides
      */
     onVisibleChange?: (visible: boolean, type: string | object, e?: object) => void;
 
@@ -650,20 +638,20 @@ export interface PopupV2Props extends React.HTMLAttributes<HTMLElement>, CommonP
 
     /**
      * 弹层显示或隐藏的延时时间（以毫秒为单位），在 triggerType 被设置为 hover 时生效
-     * @en The delay time, in milliseconds, that the overlay shows or hides and only works when triggerType is set to hover
+     * @en Delay time (in milliseconds) when the overlay is displayed or hidden, effective when triggerType is set to hover
      * @defaultValue 200
      */
     delay?: number;
 
     /**
-     * 鼠标放置后的延时显示, 单位毫秒 ms, 优先级高于delay
-     * @en Delay display after mouse, Higher priority than delay
+     * 鼠标放置后的延时显示，单位毫秒 ms, 优先级高于 delay
+     * @en Delay display after mouse enter, Higher priority than delay
      */
     mouseEnterDelay?: number;
 
     /**
-     * 鼠标离开后的延时显示, 单位毫秒 ms, 优先级高于delay
-     * @en Delay display after mouse, Higher priority than delay
+     * 鼠标离开后的延时显示，单位毫秒 ms, 优先级高于 delay
+     * @en Delay display after mouse leave, Higher priority than delay
      */
     mouseLeaveDelay?: number;
 
@@ -675,7 +663,7 @@ export interface PopupV2Props extends React.HTMLAttributes<HTMLElement>, CommonP
     canCloseByTrigger?: boolean;
 
     /**
-     * 是否跟随trigger滚动
+     * 是否跟随 trigger 滚动
      * @en follow trigger to scroll or not
      * @defaultValue false
      */
@@ -713,7 +701,7 @@ export interface OverlayV1Props extends React.HTMLAttributes<HTMLElement>, Commo
      * @defaultValue 'hover'
      * @skip
      */
-    triggerType?: string | Array<string>;
+    triggerType?: 'click' | 'hover' | 'focus' | Array<'click' | 'hover' | 'focus'>;
     /**
      * 固定时是否销毁跟随底座元件
      * @en Whether to destroy the follow-the-base element when fixed
@@ -765,7 +753,7 @@ export interface OverlayV1Props extends React.HTMLAttributes<HTMLElement>, Commo
     visible?: boolean;
 
     /**
-     * 弹层请求关闭时触发事件的回调函数, v2 版本第一个参数是 event
+     * 弹层请求关闭时触发事件的回调函数，v2 版本第一个参数是 event
      * @en callback function that triggers an event when the overlay request closed
      */
     onRequestClose?: (type: string, e: Event | React.MouseEvent<Element>) => void;
@@ -777,14 +765,14 @@ export interface OverlayV1Props extends React.HTMLAttributes<HTMLElement>, Commo
      */
     target?: Target;
     /**
-     * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
+     * 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)
      * @en alignment of the overlay relative to the reference element, see [Alignment](#Alignment)
      * @defaultValue 'tl bl'
      */
     align?: string | boolean;
 
     /**
-     * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量 e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
+     * 弹层相对于 trigger 的定位的微调，接收数组 [hoz, ver], 表示弹层在 left / top 上的增量 e.g. [100, 100] 表示往右 (RTL 模式下是往左) 、下分布偏移 100px
      * @en Fine-tuning the positioning of the elastic layer relative to the trigger, receiving array [hoz, ver], indicating the increment of the elastic layer on the left / top e.g. [100, 100] means moving to the right (to the left in RTL mode) and downward distribution Move 100px
      * @defaultValue [0, 0]
      */
@@ -837,7 +825,7 @@ export interface OverlayV1Props extends React.HTMLAttributes<HTMLElement>, Commo
     onOpen?: (target?: React.ReactNode) => void;
 
     /**
-     * 弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发
+     * 弹层打开后触发事件的回调函数，如果有动画，则在动画结束后触发
      * @en callback function that triggers the event after the overlay opens, if enable animations, trigger after the animation ends
      */
     afterOpen?: (target?: React.ReactNode) => void;
@@ -855,7 +843,7 @@ export interface OverlayV1Props extends React.HTMLAttributes<HTMLElement>, Commo
     onClose?: (target?: React.ReactNode) => void;
 
     /**
-     * 弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发
+     * 弹层关闭后触发事件的回调函数，如果有动画，则在动画结束后触发
      * @en callback function that triggers the event after the overlay closes, if enable animations, trigger after the animation ends
      */
     afterClose?: (target?: React.ReactNode) => void;
@@ -933,7 +921,7 @@ export interface OverlayV1Props extends React.HTMLAttributes<HTMLElement>, Commo
      */
     wrapperStyle?: React.CSSProperties;
     /**
-     * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
+     * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。请参考 Animate 组件的文档获取可用的动画名
      * @en configure animation, support the \{in: 'enter-class', out: 'leave-class' \} object parameters, if set to false, do not play the animation. Refer to Animate component documentation for available animations.
      * @defaultValue \{ in: 'expandInDown', out: 'expandOutUp' \}
      */
@@ -970,7 +958,7 @@ export interface OverlayV2Props extends React.HTMLAttributes<HTMLElement>, Commo
      * @defaultValue 'hover'
      * @skip
      */
-    triggerType?: string | Array<string>;
+    triggerType?: 'click' | 'hover' | 'focus' | Array<'click' | 'hover' | 'focus'>;
     /**
      * 固定时是否销毁跟随底座元件
      * @en Whether to destroy the follow-the-base element when fixed
@@ -1022,7 +1010,7 @@ export interface OverlayV2Props extends React.HTMLAttributes<HTMLElement>, Commo
     visible?: boolean;
 
     /**
-     * 弹层请求关闭时触发事件的回调函数, v2 版本第一个参数是 event
+     * 弹层请求关闭时触发事件的回调函数，v2 版本第一个参数是 event
      * @en callback function that triggers an event when the overlay request closed
      */
     onRequestClose?: (type: string, e: Event | React.MouseEvent<Element>) => void;
@@ -1034,14 +1022,14 @@ export interface OverlayV2Props extends React.HTMLAttributes<HTMLElement>, Commo
      */
     target?: Target;
     /**
-     * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
+     * 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)
      * @en alignment of the overlay relative to the reference element, see [Alignment](#Alignment)
      * @defaultValue 'tl bl'
      */
     align?: string;
 
     /**
-     * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量 e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
+     * 弹层相对于 trigger 的定位的微调，接收数组 [hoz, ver], 表示弹层在 left / top 上的增量 e.g. [100, 100] 表示往右 (RTL 模式下是往左) 、下分布偏移 100px
      * @en Fine-tuning the positioning of the elastic layer relative to the trigger, receiving array [hoz, ver], indicating the increment of the elastic layer on the left / top e.g. [100, 100] means moving to the right (to the left in RTL mode) and downward distribution Move 100px
      * @defaultValue [0, 0]
      */
@@ -1094,7 +1082,7 @@ export interface OverlayV2Props extends React.HTMLAttributes<HTMLElement>, Commo
     onOpen?: (target?: React.ReactNode) => void;
 
     /**
-     * 弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发
+     * 弹层打开后触发事件的回调函数，如果有动画，则在动画结束后触发
      * @en callback function that triggers the event after the overlay opens, if enable animations, trigger after the animation ends
      */
     afterOpen?: (target?: React.ReactNode) => void;
@@ -1112,7 +1100,7 @@ export interface OverlayV2Props extends React.HTMLAttributes<HTMLElement>, Commo
     onClose?: (target?: React.ReactNode) => void;
 
     /**
-     * 弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发
+     * 弹层关闭后触发事件的回调函数，如果有动画，则在动画结束后触发
      * @en callback function that triggers the event after the overlay closes, if enable animations, trigger after the animation ends
      */
     afterClose?: (target?: React.ReactNode) => void;
@@ -1192,7 +1180,7 @@ export interface OverlayV2Props extends React.HTMLAttributes<HTMLElement>, Commo
      */
     wrapperStyle?: React.CSSProperties;
     /**
-     * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
+     * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。请参考 Animate 组件的文档获取可用的动画名
      * @en configure animation, support the \{in: 'enter-class', out: 'leave-class' \} object parameters, if set to false, do not play the animation. Refer to Animate component documentation for available animations.
      * @defaultValue \{ in: 'expandInDown', out: 'expandOutUp' \}
      */
@@ -1256,7 +1244,7 @@ export interface PositionProps {
      */
     container?: Target;
     /**
-     * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
+     * 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)
      * @en Alignment of the overlay relative to the reference element, see [Alignment](#Alignment)
      * @defaultValue 'tl bl'
      * @skip

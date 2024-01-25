@@ -8,4 +8,4 @@
 
 # Close the Overlay from Outside
 
-You can set `visible` attribute to controll overlay display or hidden, and you should tell dropdown component what it controls by `safeNode` attibute.
+You can set `visible` attribute to control overlay display or hidden, and you should tell dropdown component what it controls by `safeNode` attribute.

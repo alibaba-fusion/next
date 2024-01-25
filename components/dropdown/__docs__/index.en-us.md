@@ -20,32 +20,34 @@ You can storage operation command with dropdown component when there are too muc
 ## API
 
 ### Dropdown
-> Dropdown component extends API of Popup component,  unless special note.
 
-| Param | Descripiton  | Type  | Default Value |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------ |
-| children        | content in overlay                                                                                                                                                                                            | ReactNode      | -                                          |
-| visible         | overlay display or not now                                                                                                                                                                                        | Boolean        | -                                          |
-| defaultVisible  | overlay display or not in default situation                                                                                                                                                                                        | Boolean        | false                                      |
-| onVisibleChange | callback function when toggle visible of overlay<br><br>**signatures**:<br>Function(visible: Boolean, type: String, e: Object) => void<br>**params**:<br>_visible_: {Boolean} overlay display or not<br>_type_: {String} orign of trigger overlay toggle visible<br>_e_: {Object} DOM Event| Function       | func.noop                                  |
-| trigger         | trigger element                                                                                                                                                                                   | ReactNode      | -                                          |
-| triggerType     | operation type of trigger overlay toggle visible<br><br>**options**:<br>'hover', 'click'                                                                                                                                     | Enum           | 'hover'                                    |
-| disabled        | overlay can not toggle visible if you set disabled attribute                                                                                                                                                                                 | Boolean        | false                                      |
-| align           | overlay position relative to trigger element, see details Overlay align                                                                  | String         | 'tl bl'                                    |
-| offset          | extra adjustment for trigger element. e.g. [hoz, ver] means move to right ${hoz}px (to left in RTL mode), to bottom ${ver}px                                                                                                                                                                                  | Array          | [0, 0]                                     |
-| delay           | delay time of toggle overlay visible(unit: ms)，if triggerType value is 'hover', delay time will work                                                                                                        | Number         | 200                                        |
-| autoFocus       | let element in overlay get focus or not after overlay was opened                                                                                                                                                                              | Boolean        | true                                       |
-| hasMask         | display mask or not                                                                                                                                                                                          | Boolean        | false                                      |
-| cache           | reserve child element or not after hidden overlay                                                                                                                                                                                      | Boolean        | false                                      |
-| animation       | animation play mode, support object value: { in: 'enter-class', out: 'leave-class' }, there is no animation if set `false`                                                                                                                 | Object/Boolean | { in: 'expandInDown', out: 'expandOutUp' } |
+继承 Popup 绝大多数属性，除了 canCloseByOutSideClick, autoFocus，以下列举为常用属性，其他可参考 Overlay 文档
+
+Inherit most properties from Popup, except canCloseByOutSideClick, autoFocus, the following are common properties, other properties can refer to Overlay documentation
+
+| Param           | Description                                                                                                          | Type                                              | Default Value                                | Required |
+| --------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | -------------------------------------------- | -------- |
+| autoClose       | If set true, the popup will be closed when the child is clicked no matter whether it is a Menu (2.x default is true) | boolean                                           | false                                        |          |
+| children        | Content in Dropdown                                                                                                  | React.ReactElement                                | -                                            | yes      |
+| visible         | Overlay display or not now                                                                                           | boolean                                           | -                                            |          |
+| align           | Overlay position relative to trigger element, see details Overlay align                                              | string                                            | 'tl bl'                                      |          |
+| offset          | Extra adjustment for trigger element.                                                                                | Array\<number>                                    | [0, 0]                                       |          |
+| hasMask         | Display mask or not                                                                                                  | boolean                                           | false                                        |          |
+| animation       | Animation play mode, support object value: \{ in: 'enter-class', out: 'leave                                         | string \| false \| Record\<'in' \| 'out', string> | \{ in: 'expandInDown', out: 'expandOutUp' \} |          |
+| trigger         | Trigger element                                                                                                      | React.ReactElement                                | -                                            | yes      |
+| triggerType     | Operation type of trigger overlay toggle visible, eg 'hover', 'click'                                                | PopupProps['triggerType']                         | 'hover'                                      |          |
+| defaultVisible  | Overlay display or not in default situation                                                                          | boolean                                           | false                                        |          |
+| onVisibleChange | Callback function when toggle visible of overlay                                                                     | PopupProps['onVisibleChange']                     | -                                            |          |
+| disabled        | Overlay can not toggle visible if you set disabled attribute                                                         | PopupProps['disabled']                            | false                                        |          |
+| delay           | Delay time of toggle overlay visible(unit: ms)，if triggerType value is 'hover', delay time will work                | PopupProps['delay']                               | 200                                          |          |
 
 ## ARIA and KeyBoard
 
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-| Up Arrow    | in vertical mode, at the same level navigation, navigate to previous item   |
-| Down Arrow  | in vertical mode, at the same level navigation, navigate to next item       |
+| KeyBoard    | Description                                                                                                                                             |
+| :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Up Arrow    | in vertical mode, at the same level navigation, navigate to previous item                                                                               |
+| Down Arrow  | in vertical mode, at the same level navigation, navigate to next item                                                                                   |
 | Right Arrow | in vertical mode, open the submenu, navigate to the first item of the submenu; in horizontal mode, navigate at the same level, navigate to the next one |
-| Left Arrow  | in vertical mode, close the submenu, navigate to the parent menu; in horizontal mode, navigate at the same level, navigate to the previous one   |
-| Enter       | open submenu and navigate to the first item of the submenu                |
-| Esc         | close submenu and navigate to the parent menu item                  |
+| Left Arrow  | in vertical mode, close the submenu, navigate to the parent menu; in horizontal mode, navigate at the same level, navigate to the previous one          |
+| Enter       | open submenu and navigate to the first item of the submenu                                                                                              |
+| Esc         | close submenu and navigate to the parent menu item                                                                                                      |

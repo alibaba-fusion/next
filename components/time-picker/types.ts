@@ -212,7 +212,7 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
      * 弹层内容
      * @en popup content
      */
-    popupContent?: React.ReactNode;
+    popupContent?: React.ReactElement;
     /**
      * 跟随触发元素
      * @en follow trigger element
