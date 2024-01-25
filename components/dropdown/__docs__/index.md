@@ -17,33 +17,31 @@
 
 ### Dropdown
 
-> 继承 Popup 的 API，除非特别说明
+继承 Popup 绝大多数属性，除了 canCloseByOutSideClick, autoFocus，以下列举为常用属性，其他可参考 Overlay 文档
 
-| 参数              | 说明                                                                                                                                                                                                                                                      | 类型             | 默认值                                        | 版本支持 |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------ | ---- |
-| children        | 弹层内容                                                                                                                                                                                                                                                    | ReactNode      | -                                          |      |
-| visible         | 弹层当前是否显示                                                                                                                                                                                                                                                | Boolean        | -                                          |      |
-| defaultVisible  | 弹层默认是否显示                                                                                                                                                                                                                                                | Boolean        | false                                      |      |
-| onVisibleChange | 弹层显示或隐藏时触发的回调函数<br/><br/>**签名**:<br/>Function(visible: Boolean, type: String) => void<br/>**参数**:<br/>_visible_: {Boolean} 弹层是否显示<br/>_type_: {String} 触发弹层显示或隐藏的来源 fromContent 表示由Dropdown内容触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发 | Function       | func.noop                                  |      |
-| trigger         | 触发弹层显示或者隐藏的元素                                                                                                                                                                                                                                           | ReactNode      | -                                          |      |
-| triggerType     | 触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，或者它们组成的数组，如 ['hover', 'click']                                                                                                                                                                                       | String/Array   | 'hover'                                    |      |
-| disabled        | 设置此属性，弹层无法显示或隐藏                                                                                                                                                                                                                                         | Boolean        | false                                      |      |
-| align           | 弹层相对于触发元素的定位, 详见 Overlay 的定位部分                                                                                                                                                                                                                          | String         | 'tl bl'                                    |      |
-| offset          | 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量<br/>e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px                                                                                                                                              | Array          | [0, 0]                                     |      |
-| delay           | 弹层显示或隐藏的延时时间（以毫秒为单位），在 triggerType 被设置为 hover 时生效                                                                                                                                                                                                       | Number         | 200                                        |      |
-| autoFocus       | 弹层打开时是否让其中的元素自动获取焦点                                                                                                                                                                                                                                     | Boolean        | -                                          |      |
-| hasMask         | 是否显示遮罩                                                                                                                                                                                                                                                  | Boolean        | false                                      |      |
-| autoClose       | 开启后，children 不管是不是Menu，点击后都默认关掉弹层（2.x默认设置为true）                                                                                                                                                                                                         | Boolean        | false                                      | 1.23 |
-| cache           | 隐藏时是否保留子节点                                                                                                                                                                                                                                              | Boolean        | false                                      |      |
-| animation       | 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画                                                                                                                                                                         | Object/Boolean | { in: 'expandInDown', out: 'expandOutUp' } |      |
+| 参数            | 说明                                                                                                           | 类型                                              | 默认值                                       | 是否必填 |
+| --------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | -------------------------------------------- | -------- |
+| autoClose       | 开启后，children 不管是不是 Menu，点击后都默认关掉弹层（2.x 默认设置为 true）                                  | boolean                                           | false                                        |          |
+| children        | 弹层内容                                                                                                       | React.ReactElement                                | -                                            | 是       |
+| visible         | 弹层当前是否显示                                                                                               | boolean                                           | -                                            |          |
+| align           | 弹层相对于触发元素的定位，详见 Overlay 的定位部分                                                              | string                                            | 'tl bl'                                      |          |
+| offset          | 弹层相对于触发元素定位的微调                                                                                   | Array\<number>                                    | [0, 0]                                       |          |
+| hasMask         | 是否显示遮罩                                                                                                   | boolean                                           | false                                        |          |
+| animation       | 配置动画的播放方式，支持 \{in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画 | string \| false \| Record\<'in' \| 'out', string> | \{ in: 'expandInDown', out: 'expandOutUp' \} |          |
+| trigger         | 触发弹层显示或者隐藏的元素                                                                                     | React.ReactElement                                | -                                            | 是       |
+| triggerType     | 触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，或者它们组成的数组，如 ['hover', 'click']               | PopupProps['triggerType']                         | 'hover'                                      |          |
+| defaultVisible  | 弹层默认是否显示                                                                                               | boolean                                           | false                                        |          |
+| onVisibleChange | 弹层显示或隐藏时触发的回调函数                                                                                 | PopupProps['onVisibleChange']                     | -                                            |          |
+| disabled        | 设置此属性，弹层无法显示或隐藏                                                                                 | PopupProps['disabled']                            | false                                        |          |
+| delay           | 弹层显示或隐藏的延时时间（以毫秒为单位），在 triggerType 被设置为 hover 时生效                                 | PopupProps['delay']                               | 200                                          |          |
 
 ## 无障碍键盘操作指南
 
-| 按键          | 说明                                      |
-| :---------- | :-------------------------------------- |
-| Up Arrow    | 垂直模式下，同级导航，导航到前一项                       |
-| Down Arrow  | 垂直模式下，同级导航，导航到后一项                       |
+| 按键        | 说明                                                                           |
+| :---------- | :----------------------------------------------------------------------------- |
+| Up Arrow    | 垂直模式下，同级导航，导航到前一项                                             |
+| Down Arrow  | 垂直模式下，同级导航，导航到后一项                                             |
 | Right Arrow | 垂直模式下，打开子菜单，导航到子菜单第一项；水平模式下，同级导航，导航到后一项 |
-| Left Arrow  | 垂直模式下，关闭子菜单，导航到父级菜单；水平模式下，同级导航，导航到前一项   |
-| Enter       | 打开子菜单，导航到子菜单第一项                         |
-| Esc         | 关闭子菜单，导航到父级菜单                           |
+| Left Arrow  | 垂直模式下，关闭子菜单，导航到父级菜单；水平模式下，同级导航，导航到前一项     |
+| Enter       | 打开子菜单，导航到子菜单第一项                                                 |
+| Esc         | 关闭子菜单，导航到父级菜单                                                     |
