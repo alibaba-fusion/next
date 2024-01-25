@@ -224,14 +224,14 @@ class Search extends React.Component<SearchProps, SearchState> {
         this.setState({
             ifFocus: true,
         });
-        this.props.onFocus!(...args);
+        this.props.onFocus && this.props.onFocus(...args);
     }
 
     handleBlur(...args: [React.FocusEvent<HTMLInputElement>]) {
         this.setState({
             ifFocus: false,
         });
-        this.props.onBlur(...args);
+        this.props.onBlur && this.props.onBlur(...args);
     }
 
     render() {
@@ -279,7 +279,7 @@ class Search extends React.Component<SearchProps, SearchState> {
             searchBtn = null,
             iconsSearch = icons!.search;
 
-        if (!isValidElement(iconsSearch)) {
+        if (!isValidElement(iconsSearch) && iconsSearch) {
             iconsSearch = <span>{iconsSearch}</span>;
         }
 
