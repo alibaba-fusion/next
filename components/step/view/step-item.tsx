@@ -227,7 +227,7 @@ class StepItem extends React.Component<ItemProps, object> {
 
     _getNode() {
         const { prefix, index, status, icon, shape, percent, itemRender } = this.props;
-        let nodeElement: unknown | null | undefined | string;
+        let nodeElement: React.ReactNode;
         nodeElement = icon;
         if (shape === 'dot') {
             nodeElement = icon ? (
@@ -385,15 +385,12 @@ class StepItem extends React.Component<ItemProps, object> {
     }
 
     _refHandlerCreator(refName: string) {
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const self = this;
-        return function (ref: unknown) {
-            self[refName] = ref;
+        return (ref: unknown) => {
+            this[refName] = ref;
         };
     }
 
     render() {
-        // eslint-disable-next-line
         const {
             prefix,
             locale,

@@ -4,19 +4,75 @@ import { CommonProps } from '../util';
 type HTMLAttributesWeak<T> = Omit<React.HTMLAttributes<T>, 'content' | 'onClick' | 'title'>;
 
 export interface ItemProps<T = HTMLElement> extends HTMLAttributesWeak<T>, CommonProps {
+    /**
+     * @deprecated index
+     * @skip
+     */
     index: number;
+    /**
+     * @deprecated shape
+     * @skip
+     */
     shape: 'circle' | 'arrow' | 'dot';
+    /**
+     * @deprecated total
+     * @skip
+     */
     total: number;
+    /**
+     * @deprecated direction
+     * @skip
+     */
     direction?: string;
+    /**
+     * @deprecated onResize
+     * @skip
+     */
     onResize?: () => void;
+    /**
+     * @deprecated stretch
+     * @skip
+     */
     stretch?: boolean;
+    /**
+     * @deprecated labelPlacement
+     * @skip
+     */
     labelPlacement?: string;
+    /**
+     * @deprecated readOnly
+     * @skip
+     */
     readOnly?: boolean;
+    /**
+     * @deprecated parentWidth
+     * @skip
+     */
     parentWidth?: number;
+    /**
+     * @deprecated parentHeight
+     * @skip
+     */
     parentHeight?: number;
+    /**
+     * @deprecated parentLeft
+     * @skip
+     */
     parentLeft?: number;
+    /**
+     * @deprecated parentTop
+     * @skip
+     */
     parentTop?: number;
+    /**
+     * @deprecated parentRight
+     * @skip
+     */
     parentRight?: number;
+    /**
+     * @deprecated parentBottom
+     * @skip
+     */
     parentBottom?: number;
 
     /**
