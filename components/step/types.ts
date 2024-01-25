@@ -4,13 +4,13 @@ import { CommonProps } from '../util';
 type HTMLAttributesWeak<T> = Omit<React.HTMLAttributes<T>, 'content' | 'onClick' | 'title'>;
 
 export interface ItemProps<T = HTMLElement> extends HTMLAttributesWeak<T>, CommonProps {
-    index?: number;
-    shape?: 'circle' | 'arrow' | 'dot';
+    index: number;
+    shape: 'circle' | 'arrow' | 'dot';
     total: number;
-    direction?: 'hoz' | 'ver' | string;
+    direction?: string;
     onResize?: () => void;
-    stretch?: unknown;
-    labelPlacement?: unknown;
+    stretch?: boolean;
+    labelPlacement?: string;
     readOnly?: boolean;
     parentWidth?: number;
     parentHeight?: number;
@@ -47,8 +47,8 @@ export interface ItemProps<T = HTMLElement> extends HTMLAttributesWeak<T>, Commo
      * StepItem 的自定义渲染, 会覆盖父节点设置的itemRender
      */
     itemRender?: (
-        index: number | undefined,
-        status: string | undefined,
+        index: number,
+        status: string,
         title?: React.ReactNode,
         content?: React.ReactNode
     ) => React.ReactNode;
@@ -66,7 +66,7 @@ export interface ItemProps<T = HTMLElement> extends HTMLAttributesWeak<T>, Commo
     /**
      * 点击步骤时的回调
      */
-    onClick?: (index: number) => number | void | undefined;
+    onClick?: (index: number) => unknown;
 
     /**
      * 自定义样式
@@ -75,7 +75,7 @@ export interface ItemProps<T = HTMLElement> extends HTMLAttributesWeak<T>, Commo
 }
 
 // export class Item extends React.Component<ItemProps, unknown> {}
-export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+export interface StepProps extends Omit<React.HTMLAttributes<HTMLElement>, 'type'>, CommonProps {
     /**
      * 当前步骤
      */
@@ -118,4 +118,10 @@ export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * StepItem 的自定义渲染
      */
     itemRender?: (index: number, status: string) => React.ReactNode;
+
+    /**
+     * @deprecated Use shape instead
+     * @skip
+     */
+    type?: 'circle' | 'arrow' | 'dot';
 }

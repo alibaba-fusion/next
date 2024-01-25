@@ -5,27 +5,23 @@ import type { StepProps, ItemProps } from './types';
 export type { StepProps, ItemProps };
 
 export default ConfigProvider.config(Step, {
-    transform: (
-        props: StepProps,
-        deprecated: (arg: string, arg2: string, arg3: string) => void
-    ) => {
+    transform: (props, deprecated) => {
         if ('type' in props) {
             deprecated('type', 'shape', 'Step');
 
-            // eslint-disable-next-line prefer-const
-            let { type, direction, labelPlacement, ...others } = props;
-            direction =
+            const { type, direction, labelPlacement, ...others } = props;
+            const resolvedDirection =
                 direction === 'vertical' ? 'ver' : direction === 'horizontal' ? 'hoz' : direction;
-            labelPlacement =
+            const resolvedLabelPlacement =
                 labelPlacement === 'vertical'
                     ? 'ver'
                     : labelPlacement === 'horizontal'
                       ? 'hoz'
                       : labelPlacement;
             props = {
-                shape: type as 'circle' | 'arrow' | 'dot' | undefined,
-                direction,
-                labelPlacement,
+                shape: type,
+                direction: resolvedDirection,
+                labelPlacement: resolvedLabelPlacement,
                 ...others,
             };
         }

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { testReact } from '../../util/__tests__/a11y/validate';
 import Icon from '../../icon';
 import Step from '../index';
@@ -6,7 +6,6 @@ import '../style';
 
 const StepItem = Step.Item;
 
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Step A11y', () => {
     it('should not have any violations', async () => {
         await testReact(

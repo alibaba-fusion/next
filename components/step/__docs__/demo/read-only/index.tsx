@@ -37,7 +37,7 @@ class Component extends React.Component<IProps, State> {
             currentStep: s < 0 ? 0 : s,
         });
     }
-    onClick(currentStep: any) {
+    onClick(currentStep: number) {
         console.log(currentStep);
 
         this.setState({

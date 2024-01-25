@@ -4,8 +4,8 @@ import { Step, Button, Select, Icon } from '@alifd/next';
 
 const StepItem = Step.Item,
     ButtonGroup = Button.Group;
-
-const renders: { [key: number]: (index: number, status: string) => JSX.Element } = {
+type ItemRender = (index: number, status: string) => JSX.Element;
+const renders: Record<string, ItemRender> = {
     1: function itemRender1(index: number) {
         return (
             <div className="custom-node1">
@@ -28,7 +28,7 @@ const contents = [
     'Description3',
 ];
 interface IProps {
-    itemRender?: any;
+    itemRender?: ItemRender;
     current?: number;
     shape?: string;
     animation?: boolean;
@@ -39,7 +39,7 @@ interface State {
     stepType?: 'circle' | 'arrow' | 'dot';
     stepAnimation: boolean;
     labelPlacement: string;
-    itemRender?: any;
+    itemRender?: ItemRender;
     content?: string;
 }
 
@@ -70,20 +70,20 @@ class Component extends React.Component<IProps, State> {
             currentStep: s < 0 ? 0 : s,
         });
     }
-    onClick(currentStep: any) {
+    onClick(currentStep: number) {
         console.log(currentStep);
 
         this.setState({
             currentStep: currentStep,
         });
     }
-    onStepTypeChange(value: any) {
+    onStepTypeChange(value: State['stepType']) {
         this.setState({ stepType: value });
     }
-    onStepAnimation(value: any) {
+    onStepAnimation(value: State['stepAnimation']) {
         this.setState({ stepAnimation: value });
     }
-    onLabelPlacementChange(value: any) {
+    onLabelPlacementChange(value: State['labelPlacement']) {
         this.setState({ labelPlacement: value });
     }
     onItemRenderChange(value: number) {

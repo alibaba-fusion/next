@@ -7,9 +7,6 @@ interface Condition {
     fieldName: string;
 }
 
-// interface State {
-//     newConditions: Condition[];
-// }
 const Step1Content = () => {
     const [conditions, setconditions] = useState<Condition[]>([]);
     const createNewSelectItem = () => {
@@ -41,17 +38,8 @@ const Step1Content = () => {
     );
 };
 const CreateDemo = () => {
-    const [conditions, setconditions] = useState<Condition[]>([]);
-    const [direction, setDirection] = useState<string | 'hoz' | 'ver'>('ver');
-    const createNewSelectItem = () => {
-        const newType = {
-            type: 'null',
-            fieldName: 'null',
-        };
-        const newConditions = [...conditions, newType];
-        setconditions(newConditions);
-    };
-    console.log('direction: ', direction);
+    const [direction, setDirection] = useState<string>('ver');
+
     return (
         <div>
             <Radio.Group
@@ -63,13 +51,11 @@ const CreateDemo = () => {
                 <Radio value={'hoz'}>hoz</Radio>
                 <Radio value={'ver'}>ver</Radio>
             </Radio.Group>
-            <div style={{ marginTop: 30 }}>
-                <Step current={1} direction={direction} stretch animation>
-                    <Step.Item title={'What would youlike to test?'} content={'test'} />
-                    <Step.Item title={'What would youlike to test?'} content={<Step1Content />} />
-                    <Step.Item title={'A bit more on the background'} content={'test'} />
-                </Step>
-            </div>
+            <Step current={1} direction={direction} stretch animation style={{ marginTop: 30 }}>
+                <Step.Item title={'What would youlike to test?'} content={'test'} />
+                <Step.Item title={'What would youlike to test?'} content={<Step1Content />} />
+                <Step.Item title={'A bit more on the background'} content={'test'} />
+            </Step>
         </div>
     );
 };

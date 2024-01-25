@@ -62,6 +62,7 @@ class Step extends Component<StepProps, StepState> {
          * 宽度横向拉伸
          */
         stretch: PropTypes.bool,
+        type: PropTypes.string,
     };
 
     static defaultProps = {
@@ -114,11 +115,11 @@ class Step extends Component<StepProps, StepState> {
         }
     }
 
-    step: React.ReactNode;
+    step: HTMLOListElement | null;
 
     adjustHeight() {
         const { shape, direction, prefix, labelPlacement } = this.props;
-        const step = ReactDOM.findDOMNode(this.step as React.ReactInstance) as HTMLElement;
+        const step = ReactDOM.findDOMNode(this.step) as HTMLOListElement;
         if (
             shape !== 'arrow' &&
             (direction === 'horizontal' || direction === 'hoz') &&
@@ -127,13 +128,21 @@ class Step extends Component<StepProps, StepState> {
             const height = (
                 Array.prototype.slice.call(
                     step.getElementsByClassName(`${prefix}step-item`)
-                ) as Element[]
+                ) as HTMLElement[]
             ).reduce((ret, re) => {
-                const containerElements = re.getElementsByClassName(`${prefix}step-item-container`);
-                const bodyElements = re.getElementsByClassName(`${prefix}step-item-body`);
                 const itemHeight =
-                    Number(getHeight(containerElements[0] as HTMLElement)) +
-                    Number(getHeight(bodyElements[0] as HTMLElement));
+                    Number(
+                        getHeight(
+                            re.getElementsByClassName(
+                                `${prefix}step-item-container`
+                            )[0] as HTMLElement
+                        )
+                    ) +
+                    Number(
+                        getHeight(
+                            re.getElementsByClassName(`${prefix}step-item-body`)[0] as HTMLElement
+                        )
+                    );
                 return Math.max(itemHeight, ret);
             }, 0);
             if (step instanceof HTMLElement) {
@@ -147,8 +156,8 @@ class Step extends Component<StepProps, StepState> {
     resize() {
         if (this.step) {
             this.setState({
-                parentWidth: (this.step as HTMLElement).offsetWidth.toString() || '0',
-                parentHeight: (this.step as HTMLElement).offsetHeight.toString() || '0',
+                parentWidth: this.step.offsetWidth.toString() || '0',
+                parentHeight: this.step.offsetHeight.toString() || '0',
             });
         }
     }
@@ -211,7 +220,6 @@ class Step extends Component<StepProps, StepState> {
     };
 
     render() {
-        // eslint-disable-next-line
         const {
             className,
             current,

@@ -1,12 +1,10 @@
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Icon from '../../icon';
 import Button from '../../button/index';
 import Step from '../index';
 import '../style';
 
 const StepItem = Step.Item;
-/* eslint-disable */
 describe('Step', () => {
     describe('render', () => {
         it('should support rtl', () => {
@@ -306,13 +304,13 @@ describe('Step', () => {
         });
 
         it('should trigger click event', () => {
-            let ret_1 = -1;
+            let ret1 = -1;
             cy.mount(
                 <Step current={1}>
                     <StepItem
                         title="步骤1"
                         onClick={index => {
-                            ret_1 = index;
+                            ret1 = index;
                         }}
                     />
                     <StepItem title="步骤2" />
@@ -321,17 +319,17 @@ describe('Step', () => {
             ).then(() => {
                 cy.get('.next-step-item-first .next-step-item-node').trigger('click');
                 setTimeout(() => {
-                    expect(ret_1).to.equal(0);
+                    expect(ret1).to.equal(0);
                 }, 1000);
             });
 
-            let ret_2 = -1;
+            let ret2 = -1;
             cy.mount(
                 <Step current={1} direction="ver">
                     <StepItem
                         title="步骤1"
                         onClick={index => {
-                            ret_2 = index;
+                            ret2 = index;
                         }}
                     />
                     <StepItem title="步骤2" />
@@ -340,7 +338,7 @@ describe('Step', () => {
             ).then(() => {
                 cy.get('.next-step-item-first .next-step-item-node-placeholder').trigger('click');
                 setTimeout(() => {
-                    expect(ret_2).to.equal(0);
+                    expect(ret2).to.equal(0);
                 }, 1000);
             });
         });
@@ -406,37 +404,5 @@ describe('Step', () => {
                 });
             });
         });
-
-        // it('should trigger keyboard event', () => {
-        //     cy.mount(
-        //         <Step current={0}>
-        //             <StepItem title="步骤1"/>
-        //             <StepItem title="步骤2" />
-        //             <StepItem title="步骤3" />
-        //         </Step>
-        //     );
-
-        //     wrapper
-        //         .find('.next-step-item-first')
-        //         .simulate('keydown', {keyCode: 40});
-
-        //     assert(cy.get('.next-step-item-body').at(1).instance().getAttribute('tabindex')==='0');
-
-        //     wrapper
-        //         .find('.next-step-item-first')
-        //         .simulate('keydown', {keyCode: 38});
-        //     assert(cy.get('.next-step-item-body').at(0).instance().getAttribute('tabindex')==='0');
-
-        //     wrapper
-        //         .find('.next-step-item-first')
-        //         .simulate('keydown', {keyCode: 39});
-        //     assert(cy.get('.next-step-item-body').at(1).instance().getAttribute('tabindex')==='0');
-
-        //     wrapper
-        //         .find('.next-step-item-first')
-        //         .simulate('keydown', {keyCode: 37});
-        //     assert(cy.get('.next-step-item-body').at(0).instance().getAttribute('tabindex')==='0');
-
-        // });
     });
 });
