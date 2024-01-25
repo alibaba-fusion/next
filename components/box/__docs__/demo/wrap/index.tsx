@@ -6,7 +6,7 @@ class BoxDemo extends React.Component {
     state = {
         wrap: true,
     };
-    onSwitchChange = checked => {
+    onSwitchChange = (checked: boolean) => {
         this.setState({
             wrap: checked,
         });
