@@ -80,6 +80,9 @@ export interface Locale extends LocaleConfig {
     Input: {
         clear: string;
     };
+    TextArea: {
+        clear: string;
+    };
     List: {
         empty: string;
     };

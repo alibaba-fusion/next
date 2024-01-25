@@ -42,6 +42,10 @@ export function log(...args: unknown[]) {
     print(chalk.bgGreen('  LOG  '), prefix(), ...args);
 }
 
+export function success(...args: unknown[]) {
+    print(chalk.bgGreen('  LOG  '), prefix(), ...args);
+}
+
 export function warn(...args: unknown[]) {
     print(chalk.bgYellow('  WARN '), prefix(), ...args);
 }

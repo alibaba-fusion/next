@@ -6,7 +6,14 @@ import { polyfill } from 'react-lifecycles-compat';
 import SubMenu from './sub-menu';
 import ConfigProvider from '../../config-provider';
 import { func, obj, dom, events, KEYCODE } from '../../util';
-import { getWidth, normalizeToArray, isSibling, isAncestor, isAvailablePos, getFirstAvaliablelChildKey } from './util';
+import {
+    getWidth,
+    normalizeToArray,
+    isSibling,
+    isAncestor,
+    isAvailablePos,
+    getFirstAvaliablelChildKey,
+} from './util';
 
 const { bindCtx } = func;
 const { pickOthers, isNil } = obj;
@@ -83,7 +90,15 @@ const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
     return arr;
 };
 
-const getNewChildren = ({ children, root, mode, lastVisibleIndex, hozInLine, prefix, renderMore }) => {
+const getNewChildren = ({
+    children,
+    root,
+    mode,
+    lastVisibleIndex,
+    hozInLine,
+    prefix,
+    renderMore,
+}) => {
     const k2n = {};
     const p2n = {};
 
@@ -149,7 +164,11 @@ const getNewChildren = ({ children, root, mode, lastVisibleIndex, hozInLine, pre
 
                 switch (child.type.menuChildType) {
                     case 'submenu':
-                        newChild = cloneElement(child, props, loop(child.props.children, pos, undefined, childLevel));
+                        newChild = cloneElement(
+                            child,
+                            props,
+                            loop(child.props.children, pos, undefined, childLevel)
+                        );
                         break;
                     case 'group':
                         newChild = cloneElement(
@@ -420,7 +439,11 @@ class Menu extends Component {
             tabbableKey,
             openKeys: this.getInitOpenKeys(props, _k2n, _p2n),
             selectedKeys: normalizeToArray(selectedKeys || defaultSelectedKeys),
-            focusedKey: !isNil(this.props.focusedKey) ? focusedKey : focusable && autoFocus ? tabbableKey : null,
+            focusedKey: !isNil(this.props.focusedKey)
+                ? focusedKey
+                : focusable && autoFocus
+                  ? tabbableKey
+                  : null,
         };
 
         bindCtx(this, [
@@ -441,7 +464,11 @@ class Menu extends Component {
         if ('openKeys' in nextProps) {
             state.openKeys = normalizeToArray(nextProps.openKeys);
             // 从展开状态变为收起状态，才需要清空openKeys
-        } else if ('mode' in nextProps && nextProps.mode === 'popup' && prevState.lastMode === 'inline') {
+        } else if (
+            'mode' in nextProps &&
+            nextProps.mode === 'popup' &&
+            prevState.lastMode === 'inline'
+        ) {
             state.openKeys = [];
         }
 
@@ -479,7 +506,6 @@ class Menu extends Component {
 
     componentDidMount() {
         this.menuNode = findDOMNode(this);
-
         this.adjustChildrenWidth();
 
         if (this.props.hozInLine) {
@@ -488,7 +514,11 @@ class Menu extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.lastVisibleIndex !== this.state.lastVisibleIndex) {
+        if (
+            prevState.lastVisibleIndex !== this.state.lastVisibleIndex ||
+            React.Children.toArray(this.props.children).length !==
+                React.Children.toArray(prevProps.children).length
+        ) {
             this.adjustChildrenWidth();
         }
     }
@@ -512,7 +542,8 @@ class Menu extends Component {
 
         if (header || footer) {
             children = this.menuContent.children;
-            spaceWidth = getWidth(this.menuNode) - getWidth(this.menuHeader) - getWidth(this.menuFooter);
+            spaceWidth =
+                getWidth(this.menuNode) - getWidth(this.menuHeader) - getWidth(this.menuFooter);
         } else {
             children = this.menuNode.children;
             spaceWidth = getWidth(this.menuNode);
@@ -556,7 +587,10 @@ class Menu extends Component {
 
         this.menuItemSizes.forEach((liWidth, i) => {
             currentSumWidth += liWidth;
-            if ((i >= totalLen - 1 && currentSumWidth <= spaceWidth) || currentSumWidth + moreWidth <= spaceWidth) {
+            if (
+                (i >= totalLen - 1 && currentSumWidth <= spaceWidth) ||
+                currentSumWidth + moreWidth <= spaceWidth
+            ) {
                 lastVisibleIndex++;
             }
         });
@@ -614,7 +648,9 @@ class Menu extends Component {
         if (open && index === -1) {
             if (mode === 'inline') {
                 if (openMode === 'single') {
-                    newOpenKeys = openKeys.filter(k => _k2n[k] && !isSibling(_k2n[key].pos, _k2n[k].pos));
+                    newOpenKeys = openKeys.filter(
+                        k => _k2n[k] && !isSibling(_k2n[key].pos, _k2n[k].pos)
+                    );
                     newOpenKeys.push(key);
                 } else {
                     newOpenKeys = openKeys.concat(key);
@@ -735,7 +771,9 @@ class Menu extends Component {
 
                 this.props.onOpen([], {
                     key: this.state.openKeys.sort(
-                        (prevKey, nextKey) => _k2n[nextKey].pos.split('-').length - _k2n[prevKey].pos.split('-').length
+                        (prevKey, nextKey) =>
+                            _k2n[nextKey].pos.split('-').length -
+                            _k2n[prevKey].pos.split('-').length
                     )[0],
                     open: false,
                 });
@@ -769,9 +807,15 @@ class Menu extends Component {
 
     handleItemKeyDown(key, type, item, e) {
         if (
-            [KEYCODE.UP, KEYCODE.DOWN, KEYCODE.RIGHT, KEYCODE.LEFT, KEYCODE.ENTER, KEYCODE.ESC, KEYCODE.SPACE].indexOf(
-                e.keyCode
-            ) > -1
+            [
+                KEYCODE.UP,
+                KEYCODE.DOWN,
+                KEYCODE.RIGHT,
+                KEYCODE.LEFT,
+                KEYCODE.ENTER,
+                KEYCODE.ESC,
+                KEYCODE.SPACE,
+            ].indexOf(e.keyCode) > -1
         ) {
             e.preventDefault();
             e.stopPropagation();

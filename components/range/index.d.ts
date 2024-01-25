@@ -6,6 +6,10 @@ import { CommonProps } from '../util';
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
+    /**
+     * for form item
+     */
+    name?: string;
 }
 
 export interface RangeProps extends HTMLAttributesWeak, CommonProps {

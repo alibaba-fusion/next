@@ -11,7 +11,12 @@ module.exports = function (progress = true) {
             filename: '[name].js',
         },
         resolve: {
-            extensions: ['.js', '.jsx'],
+            alias: {
+                '@alifd/next$': require.resolve('../../components/index.ts'),
+                '@alifd/next/es': path.resolve(process.cwd(), 'components'),
+                '@alifd/next/lib': path.resolve(process.cwd(), 'components'),
+            },
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         devtool: 'inline-source-map',
         module: {
@@ -19,6 +24,19 @@ module.exports = function (progress = true) {
                 {
                     test: /\.jsx?$/,
                     use: loaders.js(babelConfig),
+                    exclude: /node_modules/,
+                },
+                {
+                    test: /\.tsx?$/,
+                    use: [
+                        {
+                            loader: 'ts-loader',
+                            options: {
+                                transpileOnly: true,
+                                configFile: require.resolve('./ts.json'),
+                            },
+                        },
+                    ],
                     exclude: /node_modules/,
                 },
                 {

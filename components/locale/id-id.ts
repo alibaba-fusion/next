@@ -74,6 +74,9 @@ const locale: Locale = {
     Input: {
         clear: 'Reset',
     },
+    TextArea: {
+        clear: 'Reset',
+    },
     List: {
         empty: 'Tidak Ada Data',
     },

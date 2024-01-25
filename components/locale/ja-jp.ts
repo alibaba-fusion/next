@@ -73,6 +73,9 @@ const locale: Locale = {
     Input: {
         clear: 'クリア',
     },
+    TextArea: {
+        clear: 'クリア',
+    },
     List: {
         empty: 'データなし',
     },

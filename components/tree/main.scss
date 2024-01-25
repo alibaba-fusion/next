@@ -127,6 +127,7 @@
     }
 
     &-switcher.#{$css-prefix}noop-noline {
+        flex: none;
         width: $tree-switch-arrow-size;
         height: $tree-switch-arrow-size;
     }

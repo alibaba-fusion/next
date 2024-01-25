@@ -36,7 +36,7 @@ export interface DemoFunctionDefineForObject {
     name?: string;
     label: string;
     value: unknown;
-    enum: Array<{ label: string; value: string }>;
+    enum: Array<{ label: string; value: string | boolean }>;
 }
 
 const COL = '{Col}';
@@ -127,7 +127,7 @@ function convertObjectToArray(demoFunction: Record<string, DemoFunctionDefineFor
             label: demo.label,
             value: demo.value,
             enum: demo.enum.map(e => {
-                return e.value;
+                return String(e.value);
             }),
         });
     });

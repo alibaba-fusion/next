@@ -73,6 +73,9 @@ const locale = {
     Input: {
         clear: 'Limpar',
     },
+    TextArea: {
+        clear: 'Limpar',
+    },
     List: {
         empty: 'Vazio',
     },

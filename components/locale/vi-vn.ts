@@ -74,6 +74,9 @@ const locale: Locale = {
     Input: {
         clear: 'Xóa',
     },
+    TextArea: {
+        clear: 'Xóa',
+    },
     List: {
         empty: 'Không có dữ liệu',
     },
