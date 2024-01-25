@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import { Demo, DemoGroup, initDemo, DemoFunctionDefineForObject } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
@@ -18,9 +18,15 @@ const i18nMap = {
         normal: 'Normal',
     },
 };
+interface RenderBoxState {
+    demoFunction: Record<string, DemoFunctionDefineForObject>;
+}
 
-class RenderBox extends React.Component {
-    constructor(props) {
+interface RenderBoxProps {
+    i18nMap: { [index: string]: string };
+}
+class RenderBox extends React.Component<RenderBoxProps, RenderBoxState> {
+    constructor(props: RenderBoxProps) {
         super(props);
         this.state = {
             demoFunction: {
@@ -42,24 +48,24 @@ class RenderBox extends React.Component {
         };
     }
 
-    onFunctionChange = demoFunction => {
+    onFunctionChange = (demoFunction: RenderBoxState['demoFunction']) => {
         this.setState({ demoFunction });
     };
 
     render() {
         const { i18nMap } = this.props;
         const { demoFunction } = this.state;
-        const hasChildren = demoFunction.hasChildren.value === 'true';
+        const hasChildren = demoFunction ? demoFunction.hasChildren.value === 'true' : null;
 
         return (
             <Demo
-                title={i18nMap['box']}
+                title={i18nMap.box}
                 demoFunction={demoFunction}
                 onFunctionChange={this.onFunctionChange}
             >
-                <Demo title={i18nMap['box']}>
+                <Demo title={i18nMap.box}>
                     <DemoGroup label={i18nMap.normal}>
-                        <Box hasChildren={hasChildren} />
+                        <Box children={hasChildren} />
                     </DemoGroup>
                 </Demo>
             </Demo>
@@ -67,7 +73,7 @@ class RenderBox extends React.Component {
     }
 }
 
-function render(i18nMap, lang) {
+function render(i18nMap: { [index: string]: string }, lang: string) {
     ReactDOM.render(
         <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">
