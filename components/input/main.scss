@@ -109,7 +109,7 @@
             border-radius: $input-multiple-corner;
         }
 
-        #{$input-prefix}-clear-wrap {
+        #{$input-prefix}-textarea-control {
             display: flex;
             justify-content: end;
             padding: 0 $input-l-icon-padding-right 4px;
@@ -127,7 +127,7 @@
             padding-left: 4px;
         }
 
-        #{$input-prefix}-clear-before {
+        #{$input-prefix}-textarea-control-line {
             &::after {
                 content: "|";
                 color: $input-disabled-border-color;

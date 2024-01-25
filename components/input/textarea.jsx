@@ -37,7 +37,6 @@ const hiddenStyle = {
     right: 0,
 };
 
-
 /**
  * Input.TextArea
  * @order 2
@@ -229,17 +228,20 @@ export default class TextArea extends Base {
         const { hasClear, readOnly, state, prefix, disabled, locale } = this.props;
         let clearWrap = null;
         // showClear属性应该与disable属性为互斥状态
-        const showClear = hasClear && !readOnly && !!`${this.state.value}` && !disabled;     
+        const showClear = hasClear && !readOnly && !!`${this.state.value}` && !disabled;
         const cls = classNames({
             [`${prefix}input-textarea-clear`]: true,
-        })
-        clearWrap = showClear ?
+        });
+        clearWrap = showClear ? (
             <span
                 className={cls}
                 onClick={this.onClear.bind(this)}
                 onKeyDown={this.handleKeyDownFromClear}
-            > {locale.clear}</span>
-            : null;
+            >
+                {' '}
+                {locale.clear}
+            </span>
+        ) : null;
         if (state === 'loading') {
             clearWrap = null;
         }
@@ -247,23 +249,20 @@ export default class TextArea extends Base {
     }
 
     renderControl() {
-        const { prefix, showLimitHint } = this.props
+        const { prefix } = this.props;
         const lenWrap = this.renderLength();
-        const clearText = this.renderClear()
-        
-        const cls = classNames({
-            [`${prefix}input-control`]: true,
-            [`${prefix}input-clear-wrap`]: true,
-        })
-        const lineCls = classNames({
-            [`${prefix}input-clear-before`]: !!showLimitHint,
-        })
-     
+        const clearText = this.renderClear();
+        const isShowLine = Boolean(lenWrap && clearText);
+
+        const cls = classNames(`${prefix}input-control`, `${prefix}input-textarea-control`);
+
         return lenWrap || clearText ? (
             <span onClick={() => this.focus()} className={cls}>
-                {lenWrap} <span className={lineCls}></span>{clearText}
+                {lenWrap}
+                {isShowLine && <span className={`${prefix}input-textarea-control-line`}></span>}
+                {clearText}
             </span>
-        ) : null
+        ) : null;
     }
     render() {
         const {
