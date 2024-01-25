@@ -209,10 +209,14 @@ class NumberPicker extends React.Component {
         const { value, stringMode } = nextProps;
         // 一般受控render逻辑
         if ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) {
-            const newValue = value === undefined || value === null ? '' : stringMode ? `${value}` : value;
+            const newValue =
+                value === undefined || value === null ? '' : stringMode ? `${value}` : value;
             state.value = newValue;
             // 因为 Number('') === 0，所以会导致value=0赋值不生效
-            if (prevState.displayValue === '' || Number(prevState.displayValue) !== nextProps.value) {
+            if (
+                prevState.displayValue === '' ||
+                Number(prevState.displayValue) !== nextProps.value
+            ) {
                 state.displayValue = newValue;
             }
         }
@@ -275,7 +279,9 @@ class NumberPicker extends React.Component {
         // 展示值非法时，回退前一个有效值
         if (editable === true && !isNaN(displayValue) && !this.withinMinMax(displayValue)) {
             let valueCorrected = this.correctValue(displayValue);
-            valueCorrected = stringMode ? Big(valueCorrected).toFixed(this.getPrecision()) : valueCorrected;
+            valueCorrected = stringMode
+                ? Big(valueCorrected).toFixed(this.getPrecision())
+                : valueCorrected;
             if (this.state.value !== valueCorrected) {
                 this.setValue({ value: valueCorrected, e });
             }
@@ -291,7 +297,8 @@ class NumberPicker extends React.Component {
 
     withinMinMax(value) {
         const { max, min } = this.state;
-        if (isNaN(value) || this.isGreaterThan(value, max) || this.isGreaterThan(min, value)) return false;
+        if (isNaN(value) || this.isGreaterThan(value, max) || this.isGreaterThan(min, value))
+            return false;
         return true;
     }
 
@@ -312,9 +319,9 @@ class NumberPicker extends React.Component {
         return typeof format === 'function' && !hasFocused
             ? format(displayValue)
             : // 避免原生input将number类型的-0，渲染为0
-            typeof displayValue === 'number' && 1 / displayValue === -Infinity
-            ? '-0'
-            : displayValue;
+              typeof displayValue === 'number' && 1 / displayValue === -Infinity
+              ? '-0'
+              : displayValue;
     }
 
     /**
@@ -341,7 +348,10 @@ class NumberPicker extends React.Component {
             if (this.state.value !== valueCorrected) {
                 this.setValue({ value: valueCorrected, e });
             }
-            if (typeof this.props.max !== 'undefined' && this.isGreaterThan(value, this.state.max)) {
+            if (
+                typeof this.props.max !== 'undefined' &&
+                this.isGreaterThan(value, this.state.max)
+            ) {
                 value = String(valueCorrected);
             }
         } else {
@@ -364,7 +374,8 @@ class NumberPicker extends React.Component {
             const precisionCurrent = value.length - value.indexOf('.') - 1;
             const dotIndex = value.indexOf('.');
             // precision === 0 should cut '.' for stringMode
-            const cutPosition = precisionSet !== 0 ? dotIndex + 1 + precisionSet : dotIndex + precisionSet;
+            const cutPosition =
+                precisionSet !== 0 ? dotIndex + 1 + precisionSet : dotIndex + precisionSet;
             if (dotIndex > -1 && precisionCurrent > precisionSet) val = val.substr(0, cutPosition);
 
             // 边界订正：
