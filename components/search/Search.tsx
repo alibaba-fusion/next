@@ -367,8 +367,14 @@ class Search extends React.Component {
                     onClick={this.onSearch}
                     onKeyDown={this.onKeyDown}
                 >
-                    {hasIcon ? iconsSearch || <Icon type="search" className={`${prefix}search-symbol-icon`} /> : null}
-                    {searchText ? <span className={`${prefix}search-btn-text`}>{searchText}</span> : null}
+                    {hasIcon
+                        ? iconsSearch || (
+                              <Icon type="search" className={`${prefix}search-symbol-icon`} />
+                          )
+                        : null}
+                    {searchText ? (
+                        <span className={`${prefix}search-btn-text`}>{searchText}</span>
+                    ) : null}
                 </Button>
             );
         }
