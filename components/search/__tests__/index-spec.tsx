@@ -70,14 +70,12 @@ describe('Search', () => {
 
         it('should support icons', () => {
             const wrapper = mount(
-                <Search icons={{ search: <span id="icon-text">sc</span> }} aria-label="a11y search" />
+                <Search
+                    icons={{ search: <span id="icon-text">sc</span> }}
+                    aria-label="a11y search"
+                />
             );
-            assert(
-                wrapper
-                    .find('.next-search-btn span')
-                    .at(0)
-                    .text() === 'sc'
-            );
+            assert(wrapper.find('.next-search-btn span').at(0).text() === 'sc');
         });
     });
 
@@ -185,13 +183,12 @@ describe('Search', () => {
                 assert(value === filter[FILTER_INDEX].value);
             };
 
-            wrapper = mount(<Search filter={filter} defaultValue={'123'} onFilterChange={onFilterChange} />);
+            wrapper = mount(
+                <Search filter={filter} defaultValue={'123'} onFilterChange={onFilterChange} />
+            );
             // 点击
             wrapper.find('.next-search-left-addon .next-select-single').simulate('click');
-            wrapper
-                .find('.next-menu-item')
-                .at(FILTER_INDEX)
-                .simulate('click');
+            wrapper.find('.next-menu-item').at(FILTER_INDEX).simulate('click');
 
             filter = [
                 {
@@ -210,10 +207,7 @@ describe('Search', () => {
             ];
             wrapper.setProps({ filter });
             wrapper.find('.next-search-left-addon .next-select-single').simulate('click');
-            wrapper
-                .find('.next-menu-item')
-                .at(FILTER_INDEX)
-                .simulate('click');
+            wrapper.find('.next-menu-item').at(FILTER_INDEX).simulate('click');
 
             done();
         });
@@ -241,7 +235,12 @@ describe('Search', () => {
                 done();
             };
             wrapper = mount(
-                <Search defaultValue={'123'} filter={filter} filterValue={FILTER_VALUE} onSearch={onSearch} />
+                <Search
+                    defaultValue={'123'}
+                    filter={filter}
+                    filterValue={FILTER_VALUE}
+                    onSearch={onSearch}
+                />
             );
             assert(wrapper.find('.next-select-values em').text() === FILTER_VALUE);
             wrapper.find('button').simulate('click');
@@ -281,7 +280,9 @@ describe('Search', () => {
         it('should support disabled', () => {
             const onSearch = sinon.spy();
             const onChange = sinon.spy();
-            wrapper = mount(<Search shape="simple" onSearch={onSearch} onChange={onChange} disabled />);
+            wrapper = mount(
+                <Search shape="simple" onSearch={onSearch} onChange={onChange} disabled />
+            );
             wrapper.find('.next-icon').simulate('click');
             assert(onSearch.notCalled);
             wrapper.find('input').simulate('change', { target: { value: '20' } });
@@ -334,13 +335,7 @@ describe('Search', () => {
             wrapper.find('input').simulate('change', { target: { value: 'y' } });
 
             const items = wrapper.find('.next-menu-item');
-            assert(
-                items.length === 1 &&
-                    items
-                        .at(0)
-                        .find('.next-menu-item-text')
-                        .text() === 'xxx'
-            );
+            assert(items.length === 1 && items.at(0).find('.next-menu-item-text').text() === 'xxx');
 
             items.at(0).simulate('click');
             assert(wrapper.find('input').prop('value') === 'yyy');
@@ -354,10 +349,7 @@ describe('Search', () => {
             const items = wrapper.find('.next-menu-item');
             assert(
                 items.length === 1 &&
-                    items
-                        .at(0)
-                        .find('.next-menu-item-text')
-                        .text() === dataSource[0].label
+                    items.at(0).find('.next-menu-item-text').text() === dataSource[0].label
             );
 
             done();
@@ -366,10 +358,7 @@ describe('Search', () => {
             wrapper.find('input').simulate('click');
             wrapper.find('input').simulate('change', { target: { value: 'y' } });
 
-            wrapper
-                .find('.next-menu-item')
-                .at(0)
-                .simulate('click');
+            wrapper.find('.next-menu-item').at(0).simulate('click');
             assert(wrapper.find('input').prop('value') === dataSource[0].value);
 
             done();
