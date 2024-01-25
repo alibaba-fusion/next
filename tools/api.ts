@@ -360,6 +360,7 @@ export function registryApiGenerator(file = __filename) {
                         title: apiTitle,
                         order: indexApi ? -Infinity : apiDoc.getTag('@order')?.content,
                         remarks: apiDoc.getTag('@remarks')?.content,
+                        remarksEn: apiDoc.getTag('@remarks')?.enContent,
                         summary: apiDoc.summary,
                         summaryEn: apiDoc.getTag('@en')?.content,
                         apiMode: true,
@@ -458,11 +459,20 @@ export function registryApiGenerator(file = __filename) {
                     continue;
                 }
                 const nextNode = children.find(child => {
-                    return (
-                        child.type === 'heading' &&
-                        child.depth === apiNode.depth &&
-                        child.position.start.line > apiNode.position.start.line
-                    );
+                    if (child.position.start.line <= apiNode.position.start.line) {
+                        return false;
+                    }
+                    if (child.type === 'heading' && child.depth === apiNode.depth) {
+                        return true;
+                    }
+                    if (
+                        child.type === 'html' &&
+                        child.value &&
+                        child.value.includes('api-extra-start')
+                    ) {
+                        return true;
+                    }
+                    return false;
                 });
                 const apiLevel = apiNode.depth as number;
                 const spliceStart = apiNode.position.end.line + 1;
@@ -493,7 +503,7 @@ export function registryApiGenerator(file = __filename) {
                                 const exampleText = isEn ? exampleEn : example;
                                 const remarksText = isEn ? remarksEn : remarks;
                                 const descriptions = apiMode
-                                    ? [summaryText]
+                                    ? [summaryText || remarksText]
                                     : [
                                           summaryText,
                                           remarksText &&

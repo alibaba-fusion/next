@@ -23,11 +23,11 @@
 
 ### Badge
 
-| 参数          | 说明                                                                             | 类型          | 默认值 | 版本支持 |
-| ------------- | -------------------------------------------------------------------------------- | ------------- | ------ | -------- |
-| children      | 徽标依托的内容，一般显示在其右上方                                               | ReactNode     | -      |          |
-| count         | 展示的数字，大于 `overflowCount` 时显示为 `${overflowCount}+`，为 `0` 时默认隐藏 | Number/String | 0      |          |
-| showZero      | 当`count`为`0`时，是否显示 count                                                 | Boolean       | false  | 1.16     |
-| content       | 自定义徽标中的内容                                                               | ReactNode     | -      |          |
-| overflowCount | 展示的封顶的数字                                                                 | Number/String | 99     |          |
-| dot           | 不展示数字，只展示一个小红点                                                     | Boolean       | false  |          |
+| 参数          | 说明                                                                | 类型             | 默认值 | 是否必填 |
+| ------------- | ------------------------------------------------------------------- | ---------------- | ------ | -------- |
+| children      | 徽章依托的内容                                                      | React.ReactNode  | -      |          |
+| count         | 展示的数字，大于 overflowCount 时显示为 overflowCount+，为 0 时隐藏 | number \| string | 0      |          |
+| content       | 自定义节点内容                                                      | React.ReactNode  | -      |          |
+| overflowCount | 展示的封顶的数字                                                    | number \| string | 99     |          |
+| dot           | 不展示数字，只展示一个小红点                                        | boolean          | false  |          |
+| showZero      | 当 count 为 0 时，默认不显示，但是可以使用 showZero 修改为显示      | boolean          | false  |          |

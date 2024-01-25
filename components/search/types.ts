@@ -124,12 +124,6 @@ export interface SearchProps extends HTMLAttributesWeak, CommonProps {
     filter?: SelectProps['dataSource'];
 
     /**
-     * 键盘上下键切换菜单高亮选项的回调
-     * @en callback for keyboard up and down keys to switch menu highlighted options
-     */
-    onToggleHighlightItem?: AutoCompleteProps['onToggleHighlightItem'];
-
-    /**
      * 是否开启虚拟滚动模式
      */
     useVirtual?: boolean;
@@ -254,6 +248,12 @@ export interface SearchProps extends HTMLAttributesWeak, CommonProps {
      * @en whether to automatically highlight the first element
      */
     autoHighlightFirstItem?: boolean;
+
+    /**
+     * 键盘上下键切换菜单高亮选项的回调
+     * @en callback for keyboard up and down keys to switch menu highlighted options
+     */
+    onToggleHighlightItem?: AutoCompleteProps['onToggleHighlightItem'];
 
     /**
      * @skip

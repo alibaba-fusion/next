@@ -17,30 +17,38 @@
 
 ### Button
 
-| 参数        | 说明                                                                                                  | 类型          | 默认值      |
-| --------- | --------------------------------------------------------------------------------------------------- | ----------- | -------- |
-| size      | 按钮的尺寸<br/><br/>**可选值**:<br/>'small', 'medium', 'large'                                              | Enum        | 'medium' |
-| type      | 按钮的类型<br/><br/>**可选值**:<br/>'primary', 'secondary', 'normal'                                        | Enum        | 'normal' |
-| icons     | 按钮中可配置的 Icon，格式为 { loading: <Icon type="loading" /> }                                               | Object      | {}       |
-| iconSize  | 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小                                                                        | Enum/Number | -        |
-| htmlType  | 当 component = 'button' 时，设置 button 标签的 type 值<br/><br/>**可选值**:<br/>'submit', 'reset', 'button'     | Enum        | 'button' |
-| component | 设置标签类型<br/><br/>**可选值**:<br/>'button', 'a', 'div', 'span'                                           | Enum        | 'button' |
-| loading   | 设置按钮的载入状态                                                                                           | Boolean     | false    |
-| ghost     | 是否为幽灵按钮<br/><br/>**可选值**:<br/>true, false, 'light', 'dark'                                          | Enum        | false    |
-| text      | 是否为文本按钮                                                                                             | Boolean     | false    |
-| warning   | 是否为警告按钮                                                                                             | Boolean     | false    |
-| disabled  | 是否禁用                                                                                                | Boolean     | false    |
-| onClick   | 点击按钮的回调<br/><br/>**签名**:<br/>Function(e: Object) => void<br/>**参数**:<br/>_e_: {Object} Event Object | Function    | () => {} |
+| 参数      | 说明                        | 类型                                                                                                                                              | 默认值                                                                                                         | 是否必填 |
+| --------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------- |
+| type      | 按钮的类型                  | 'primary' \| 'secondary' \| 'normal'                                                                                                              | 'normal'                                                                                                       |          |
+| size      | 按钮的尺寸                  | ButtonSize                                                                                                                                        | 'medium'                                                                                                       |          |
+| icons     | 按钮中可配置的 Icon         | { loading?: React.ReactNode }                                                                                                                     | -                                                                                                              |          |
+| iconSize  | 按钮中 Icon 的尺寸          | \| number<br/> \| 'xxs'<br/> \| 'xs'<br/> \| 'small'<br/> \| 'medium'<br/> \| 'large'<br/> \| 'xl'<br/> \| 'xxl'<br/> \| 'xxxl'<br/> \| 'inherit' | 默认根据 size 自动映射，映射规则：<br/>size:large -\> `small`<br/>size:medium -\> `xs`<br/>size:small -\> `xs` |          |
+| htmlType  | button 标签的 type 值       | 'submit' \| 'reset' \| 'button'                                                                                                                   | 'button'                                                                                                       |          |
+| component | 最终渲染的 jsx 标签标签类型 | 'button' \| 'a' \| React.ComponentType<unknown>                                                                                                   | -                                                                                                              |          |
+| loading   | 设置按钮的载入状态          | boolean                                                                                                                                           | false                                                                                                          |          |
+| ghost     | 是否为幽灵按钮              | true \| false \| 'light' \| 'dark'                                                                                                                | false                                                                                                          |          |
+| text      | 是否为文本按钮              | boolean                                                                                                                                           | false                                                                                                          |          |
+| warning   | 是否为警告按钮              | boolean                                                                                                                                           | false                                                                                                          |          |
+| disabled  | 是否禁用                    | boolean                                                                                                                                           | false                                                                                                          |          |
+| onClick   | 点击按钮的回调              | React.MouseEventHandler                                                                                                                           | -                                                                                                              |          |
 
 ### Button.Group
 
-| 参数   | 说明                  | 类型     | 默认值      |
-| ---- | ------------------- | ------ | -------- |
-| size | 统一设置 Button 组件的按钮大小 | String | 'medium' |
+| 参数 | 说明                           | 类型       | 默认值 | 是否必填 |
+| ---- | ------------------------------ | ---------- | ------ | -------- |
+| size | 统一设置 Button 组件的按钮大小 | ButtonSize | -      |          |
+
+### ButtonSize
+
+按钮类型
+
+```typescript
+export type ButtonSize = 'small' | 'medium' | 'large';
+```
 
 ## 无障碍键盘操作指南
 
-| 按键    | 说明          |
-| :---- | :---------- |
+| 按键  | 说明            |
+| :---- | :-------------- |
 | Enter | 触发onClick事件 |
 | SPACE | 触发onClick事件 |
