@@ -53,14 +53,19 @@ export interface TextProps extends React.HTMLAttributes<HTMLElement>, CommonProp
 /**
  * @api Typography.Title
  * @order 1
- * @remarks 分为 H1, H2, H3, H4, H5, H6 不同的组件，表示不同层级，继承 Typography.Text API
+ * @remarks
+ * 分为 H1, H2, H3, H4, H5, H6 不同的组件，表示不同层级，继承 Typography.Text API
+ * -
+ * t is divided into H1, H2, H3, H4, H5, H6 components, representing different levels of headings
+ *
+ * Inherit the Typography.Text API
  */
 export interface TitleProps extends TextProps {}
 
 /**
  * @api Typography.Paragraph
  * @order 2
- * @remarks 继承 Typography.Text 的 API
+ * @remarks 继承 Typography.Text 的 API - Inherit the Typography.Text API
  */
 export interface ParagraphProps extends TextProps {
     /**
@@ -83,9 +88,9 @@ export interface ParagraphProps extends TextProps {
     component?: string | React.JSX.IntrinsicElements;
 }
 /**
- * @api Typography.Text
+ * @api Typography
  * @order 0
- * @remarks 继承 Typography.Text API
+ * @remarks 继承 Typography.Text API - Inherit the Typography.Text API
  */
 export interface TypographyProps extends TextProps {
     /**
