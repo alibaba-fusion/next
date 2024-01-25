@@ -73,6 +73,9 @@ const locale: Locale = {
     Input: {
         clear: 'Jelas',
     },
+    TextArea: {
+        clear: 'Jelas',
+    },
     List: {
         empty: 'tiada data',
     },

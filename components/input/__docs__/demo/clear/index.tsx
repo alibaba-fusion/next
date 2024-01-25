@@ -42,6 +42,24 @@ ReactDOM.render(
         />
         <br />
         <br />
+        <Input.TextArea
+            hasClear
+            defaultValue="clear by click"
+            aria-label="input with config of hasClear"
+            onChange={onChange}
+        />
+        <br />
+        <br />
+        <Input.TextArea
+            hasClear
+            defaultValue="clear by click"
+            aria-label="input with config of hasClear"
+            onChange={onChange}
+            maxLength={100}
+            showLimitHint
+        />
+        <br />
+        <br />
     </div>,
     mountNode
 );

@@ -73,6 +73,9 @@ const locale: Locale = {
     Input: {
         clear: '清除',
     },
+    TextArea: {
+        clear: '清除',
+    },
     List: {
         empty: '没有数据',
     },

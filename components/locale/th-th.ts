@@ -73,6 +73,9 @@ const locale: Locale = {
     Input: {
         clear: 'ชัดเจน',
     },
+    TextArea: {
+        clear: 'ชัดเจน',
+    },
     List: {
         empty: 'ไม่มีข้อมูล',
     },
