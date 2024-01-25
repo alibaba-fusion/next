@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import Input from '../locale/zh-cn';
+import zhCN from '../locale/zh-cn';
 import { obj, env } from '../util';
 import Base from './base';
 
@@ -84,7 +84,7 @@ export default class TextArea extends Base {
         isPreview: false,
         rows: 4,
         autoHeight: false,
-        locale: Input.Input,
+        locale: zhCN.TextArea,
     };
 
     constructor(props) {
