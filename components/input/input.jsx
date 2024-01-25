@@ -240,27 +240,6 @@ class Input extends Base {
         this.onKeyDown(e);
     };
 
-    handleKeyDownFromClear = e => {
-        if (e.keyCode === 13) {
-            this.onClear(e);
-        }
-    };
-
-    onClear(e) {
-        if (this.props.disabled) {
-            return;
-        }
-
-        // 非受控模式清空内部数据
-        if (!('value' in this.props)) {
-            this.setState({
-                value: '',
-            });
-        }
-        this.props.onChange('', e, 'clear');
-        this.focus();
-    }
-
     render() {
         const {
             size,

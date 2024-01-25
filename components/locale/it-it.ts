@@ -74,6 +74,9 @@ const locale: Locale = {
     Input: {
         clear: 'Cancella',
     },
+    TextArea: {
+        clear: 'Cancella',
+    },
     List: {
         empty: 'Nessun dato',
     },

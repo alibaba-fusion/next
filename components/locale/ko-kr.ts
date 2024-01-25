@@ -73,6 +73,9 @@ const locale: Locale = {
     Input: {
         clear: '삭제',
     },
+    TextArea: {
+        clear: '삭제',
+    },
     List: {
         empty: '노데이터',
     },

@@ -55,6 +55,7 @@
         }
     }
 
+
     display: inline-table;
     border-collapse: separate;
     font-size: 0;
@@ -97,6 +98,7 @@
         &.#{$css-prefix}small textarea {
             font-size: $form-element-medium-font-size;
         }
+
         &.#{$css-prefix}large textarea {
             font-size: $form-element-large-font-size;
         }
@@ -107,12 +109,34 @@
             border-radius: $input-multiple-corner;
         }
 
-        #{$input-prefix}-len {
+        #{$input-prefix}-textarea-control {
+            display: flex;
+            justify-content: end;
             padding: 0 $input-l-icon-padding-right 4px;
+        }
+
+        #{$input-prefix}-len,
+        #{$input-prefix}-textarea-clear {
             display: block;
             text-align: right;
             width: auto;
         }
+
+        #{$input-prefix}-textarea-clear {
+            cursor: pointer;
+            padding-left: 4px;
+        }
+
+        #{$input-prefix}-textarea-control-line {
+            &::after {
+                content: "|";
+                color: $input-disabled-border-color;
+                display: inline-block;
+                font-size: $input-multiple-font-size;
+                
+            }
+        }
+
         border-radius: $input-multiple-corner;
         font-size: 0;
     }
@@ -126,12 +150,15 @@
             z-index: 1;
             position: absolute;
         }
+
         #{$input-prefix}-hint {
             opacity: 1;
         }
     }
 
-    #{$input-prefix}-clear-icon, .#{$css-prefix}icon-eye, .#{$css-prefix}icon-eye-close {
+    #{$input-prefix}-clear-icon,
+    .#{$css-prefix}icon-eye,
+    .#{$css-prefix}icon-eye-close {
         &:hover {
             cursor: pointer;
             color: $input-hint-hover-color;
@@ -141,7 +168,7 @@
     @mixin clear-icon-visible {
         opacity: 1;
 
-        + #{$input-prefix}-hint {
+        +#{$input-prefix}-hint {
             opacity: 0;
         }
     }
@@ -150,7 +177,8 @@
         opacity: 0;
     }
 
-    &:hover, &.#{$css-prefix}focus {
+    &:hover,
+    &.#{$css-prefix}focus {
         border-color: $input-hover-border-color;
         background-color: $input-hover-bg-color;
 
@@ -191,7 +219,8 @@
         border-color: $input-feedback-error-border-color;
         background-color: $input-feedback-error-bg-color;
 
-        input, textarea {
+        input,
+        textarea {
             color: $input-feedback-error-color;
         }
 
@@ -215,7 +244,9 @@
     }
 
     &-control {
-        #{$input-prefix}-len {
+
+        #{$input-prefix}-len,
+        #{$input-prefix}-textarea-clear {
             font-size: $input-maxlen-font-size;
             line-height: $input-maxlen-font-size;
             color: $input-maxlen-color;
@@ -232,13 +263,13 @@
             }
         }
 
-        > * {
+        >* {
             display: table-cell;
             width: 1%;
             top: 0;
         }
 
-        > *:not(:last-child) {
+        >*:not(:last-child) {
             padding-right: $s-1;
         }
 
@@ -249,23 +280,29 @@
 
         #{$input-prefix}-warning-icon {
             color: $input-feedback-warning-color;
+
             &::before {
                 content: $input-feedback-warning-icon;
             }
         }
+
         #{$input-prefix}-success-icon {
             color: $input-feedback-success-color;
+
             &::before {
                 content: $input-feedback-success-icon;
             }
         }
+
         #{$input-prefix}-loading-icon {
             color: $input-feedback-loading-color;
+
             &::before {
                 content: $input-feedback-loading-icon;
                 animation: loadingCircle 1s infinite linear;
             }
         }
+
         #{$input-prefix}-clear-icon {
             &::before {
                 content: $input-feedback-clear-icon;
@@ -273,7 +310,8 @@
         }
     }
 
-    &-label, &-inner-text {
+    &-label,
+    &-inner-text {
         color: $input-label-color;
     }
 
@@ -285,15 +323,18 @@
     &.#{$css-prefix}disabled {
         @include input-disabled();
 
-        input, textarea {
+        input,
+        textarea {
             -webkit-text-fill-color: $input-disabled-color;
             color: $input-disabled-color;
             @include input-placeholder($input-disabled-color);
         }
 
-        #{$input-prefix}-label, #{$input-prefix}-inner-text {
+        #{$input-prefix}-label,
+        #{$input-prefix}-inner-text {
             color: $input-disabled-color;
         }
+
         #{$input-prefix}-len {
             color: $input-disabled-color;
         }
@@ -302,6 +343,7 @@
             #{$input-prefix}-clear {
                 opacity: 0;
             }
+
             #{$input-prefix}-hint {
                 opacity: 1;
             }
@@ -319,7 +361,9 @@
         }
     }
 
-    &-inner, &-control, &-label {
+    &-inner,
+    &-control,
+    &-label {
         display: table-cell;
         width: 1px;
         vertical-align: middle;
@@ -343,15 +387,17 @@
             border-radius: 0 !important;
         }
 
-        > #{$input-prefix} {
+        >#{$input-prefix} {
             border-radius: 0;
-            &.#{$css-prefix}focus,&:hover {
+
+            &.#{$css-prefix}focus,
+            &:hover {
                 position: relative;
                 z-index: 1;
             }
         }
 
-        > #{$input-prefix}:first-child {
+        >#{$input-prefix}:first-child {
             &.#{$css-prefix}small {
                 border-top-left-radius: $form-element-small-corner !important;
                 border-bottom-left-radius: $form-element-small-corner !important;
@@ -367,7 +413,8 @@
                 border-bottom-left-radius: $form-element-large-corner !important;
             }
         }
-        > #{$input-prefix}:last-child {
+
+        >#{$input-prefix}:last-child {
             &.#{$css-prefix}small {
                 border-top-right-radius: $form-element-small-corner !important;
                 border-bottom-right-radius: $form-element-small-corner !important;
@@ -384,6 +431,7 @@
             }
         }
     }
+
     &-group-addon {
         width: 1px;
         display: table-cell;
@@ -394,40 +442,48 @@
         &:first-child {
             border-bottom-right-radius: 0 !important;
             border-top-right-radius: 0 !important;
+
             //TODO: removed in 2.x
-            > * {
+            >* {
                 margin-right: calc(0px - #{$input-border-width});
                 border-bottom-right-radius: 0 !important;
                 border-top-right-radius: 0 !important;
+
                 &.#{$css-prefix}focus {
                     position: relative;
                     z-index: 1;
                 }
-                > #{$input-prefix} {
+
+                >#{$input-prefix} {
                     border-bottom-right-radius: 0 !important;
                     border-top-right-radius: 0 !important;
                 }
-                > #{$input-prefix}.#{$css-prefix}focus {
+
+                >#{$input-prefix}.#{$css-prefix}focus {
                     position: relative;
                     z-index: 1;
                 }
             }
         }
+
         &:last-child {
             border-bottom-left-radius: 0 !important;
             border-top-left-radius: 0 !important;
+
             //TODO: removed in 2.x
-            > * {
+            >* {
                 margin-left: calc(0px - #{$input-border-width});
                 border-bottom-left-radius: 0 !important;
                 border-top-left-radius: 0 !important;
-                > #{$input-prefix} {
+
+                >#{$input-prefix} {
                     border-bottom-left-radius: 0 !important;
                     border-top-left-radius: 0 !important;
                 }
             }
         }
     }
+
     &-group-text {
         color: $input-addon-text-color;
         background-color: $input-addon-bg-color;
@@ -438,6 +494,7 @@
         &:first-child {
             border-right-width: 0;
         }
+
         &:last-child {
             border-left-width: 0;
         }
