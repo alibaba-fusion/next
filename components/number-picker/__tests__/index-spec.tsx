@@ -25,30 +25,10 @@ describe('number-picker', () => {
         it('should not tab trigger ', () => {
             const wrapper = mount(<NumberPicker />);
             const wrapper1 = mount(<NumberPicker type="inline" />);
-            assert(
-                wrapper
-                    .find('button')
-                    .at(0)
-                    .prop('tabIndex') === -1
-            );
-            assert(
-                wrapper
-                    .find('button')
-                    .at(1)
-                    .prop('tabIndex') === -1
-            );
-            assert(
-                wrapper1
-                    .find('button')
-                    .at(0)
-                    .prop('tabIndex') === -1
-            );
-            assert(
-                wrapper1
-                    .find('button')
-                    .at(1)
-                    .prop('tabIndex') === -1
-            );
+            assert(wrapper.find('button').at(0).prop('tabIndex') === -1);
+            assert(wrapper.find('button').at(1).prop('tabIndex') === -1);
+            assert(wrapper1.find('button').at(0).prop('tabIndex') === -1);
+            assert(wrapper1.find('button').at(1).prop('tabIndex') === -1);
         });
         it('should compare max or min the changes', () => {
             class App extends React.Component {
@@ -73,7 +53,11 @@ describe('number-picker', () => {
                     return (
                         <div>
                             <button onClick={this.setMax}>setMax to 15</button>
-                            <NumberPicker value={this.state.value} onChange={this.onChange} max={this.state.max} />
+                            <NumberPicker
+                                value={this.state.value}
+                                onChange={this.onChange}
+                                max={this.state.max}
+                            />
                         </div>
                     );
                 }
@@ -84,40 +68,22 @@ describe('number-picker', () => {
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === 8);
 
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('button').at(0).simulate('click');
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === 5);
         });
         it('if max or min were undefined or null should infinity', () => {
             const wrapper = mount(<NumberPicker max={10} defaultValue={10} min={10} />);
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('button').at(0).simulate('click');
             assert(wrapper.find('input').props('value').value === 10);
             wrapper.setProps({ max: undefined });
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('button').at(0).simulate('click');
             assert(wrapper.find('input').props('value').value === 11);
-            wrapper
-                .find('button')
-                .at(1)
-                .simulate('click');
-            wrapper
-                .find('button')
-                .at(1)
-                .simulate('click');
+            wrapper.find('button').at(1).simulate('click');
+            wrapper.find('button').at(1).simulate('click');
             assert(wrapper.find('input').props('value').value === 10);
             wrapper.setProps({ min: undefined });
-            wrapper
-                .find('button')
-                .at(1)
-                .simulate('click');
+            wrapper.find('button').at(1).simulate('click');
             assert(wrapper.find('input').props('value').value === 9);
         });
     });
@@ -136,7 +102,14 @@ describe('number-picker', () => {
                 };
 
                 render() {
-                    return <NumberPicker value={this.state.value} onChange={this.onChange} step={step} stringMode />;
+                    return (
+                        <NumberPicker
+                            value={this.state.value}
+                            onChange={this.onChange}
+                            step={step}
+                            stringMode
+                        />
+                    );
                 }
             }
             let wrapper = mount(<NumberPicker defaultValue={Number.MAX_SAFE_INTEGER} stringMode />),
@@ -144,29 +117,41 @@ describe('number-picker', () => {
             assert(wrapper.props().defaultValue === Number.MAX_SAFE_INTEGER);
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}`);
 
-            wrapper.find('input').simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}2333` } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}2333` } });
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper.find('input').simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}a2333` } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}a2333` } });
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper.find('input').simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}2333.1` } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}2333.1` } });
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333.1`);
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
 
             assert(wrapper2.find('input').prop('value') === `${Number.MIN_SAFE_INTEGER}`);
-            wrapper2.find('input').simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}2333` } });
+            wrapper2
+                .find('input')
+                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}2333` } });
             assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
             wrapper2.find('input').simulate('blur');
             assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper2.find('input').simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}a2333` } });
+            wrapper2
+                .find('input')
+                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}a2333` } });
             assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
             wrapper2.find('input').simulate('blur');
             assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper2.find('input').simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}.2333` } });
+            wrapper2
+                .find('input')
+                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}.2333` } });
             assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}.2333`);
             wrapper2.find('input').simulate('blur');
             assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}.2333`);
@@ -186,7 +171,14 @@ describe('number-picker', () => {
                 };
 
                 render() {
-                    return <NumberPicker value={this.state.value} onChange={this.onChange} step={step} stringMode />;
+                    return (
+                        <NumberPicker
+                            value={this.state.value}
+                            onChange={this.onChange}
+                            step={step}
+                            stringMode
+                        />
+                    );
                 }
             }
             let wrapper = mount(<NumberPicker defaultValue={Number.MAX_SAFE_INTEGER} stringMode />),
@@ -195,56 +187,33 @@ describe('number-picker', () => {
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}`);
             assert(wrapper2.find('input').prop('value') === `${Number.MIN_SAFE_INTEGER}`);
 
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('button').at(0).simulate('click');
             assert(
                 wrapper.find('input').prop('value') ===
-                    Big(Number.MAX_SAFE_INTEGER)
-                        .plus(1)
-                        .toFixed(0)
+                    Big(Number.MAX_SAFE_INTEGER).plus(1).toFixed(0)
             );
-            wrapper
-                .find('button')
-                .at(1)
-                .simulate('click');
+            wrapper.find('button').at(1).simulate('click');
             assert(wrapper.find('input').prop('value') === Big(Number.MAX_SAFE_INTEGER).toFixed(0));
-            wrapper
-                .find('button')
-                .at(1)
-                .simulate('click');
+            wrapper.find('button').at(1).simulate('click');
             assert(
                 wrapper.find('input').prop('value') ===
-                    Big(Number.MAX_SAFE_INTEGER)
-                        .minus(1)
-                        .toFixed(0)
+                    Big(Number.MAX_SAFE_INTEGER).minus(1).toFixed(0)
             );
 
-            wrapper2
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper2.find('button').at(0).simulate('click');
             assert(
                 wrapper2.find('input').prop('value') ===
-                    Big(Number.MIN_SAFE_INTEGER)
-                        .plus(step)
-                        .toFixed(precision)
+                    Big(Number.MIN_SAFE_INTEGER).plus(step).toFixed(precision)
             );
-            wrapper2
-                .find('button')
-                .at(1)
-                .simulate('click');
-            assert(wrapper2.find('input').prop('value') === Big(Number.MIN_SAFE_INTEGER).toFixed(precision));
-            wrapper2
-                .find('button')
-                .at(1)
-                .simulate('click');
+            wrapper2.find('button').at(1).simulate('click');
             assert(
                 wrapper2.find('input').prop('value') ===
-                    Big(Number.MIN_SAFE_INTEGER)
-                        .minus(step)
-                        .toFixed(precision)
+                    Big(Number.MIN_SAFE_INTEGER).toFixed(precision)
+            );
+            wrapper2.find('button').at(1).simulate('click');
+            assert(
+                wrapper2.find('input').prop('value') ===
+                    Big(Number.MIN_SAFE_INTEGER).minus(step).toFixed(precision)
             );
         });
 
@@ -281,19 +250,27 @@ describe('number-picker', () => {
             }
             let wrapper = mount(<App />);
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}`);
-            wrapper.find('input').simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}123456789` } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}123456789` } });
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}123456789`);
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}123456789`);
-            wrapper.find('input').simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}000` } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}000` } });
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}000`);
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === Big(20).toFixed(precision));
         });
 
         it('should delete 0 at beginning when blur', () => {
-            const wrapper = mount(<NumberPicker defaultValue={Number.MAX_SAFE_INTEGER} stringMode />);
-            wrapper.find('input').simulate('change', { target: { value: `0${Number.MAX_SAFE_INTEGER}123` } });
+            const wrapper = mount(
+                <NumberPicker defaultValue={Number.MAX_SAFE_INTEGER} stringMode />
+            );
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: `0${Number.MAX_SAFE_INTEGER}123` } });
             assert(wrapper.find('input').prop('value') === `0${Number.MAX_SAFE_INTEGER}123`);
             wrapper.find('input').simulate('blur');
             assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}123`);
@@ -307,10 +284,7 @@ describe('number-picker', () => {
 
             const wrapper = mount(<NumberPicker onChange={onChange} onFocus={onFocus} />);
 
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('button').at(0).simulate('click');
             assert(onChange.calledOnce);
 
             wrapper.find('input').simulate('change', { target: { value: '5' } });
@@ -495,7 +469,9 @@ describe('number-picker', () => {
                 };
 
                 render() {
-                    return <NumberPicker min={6} value={this.state.value} onChange={this.onChange} />;
+                    return (
+                        <NumberPicker min={6} value={this.state.value} onChange={this.onChange} />
+                    );
                 }
             }
 
@@ -514,7 +490,9 @@ describe('number-picker', () => {
             let onChange = value => {
                 assert(value === -0.2);
             };
-            let wrapper = mount(<NumberPicker defaultValue={-0.3} onChange={onChange} precision={1} />);
+            let wrapper = mount(
+                <NumberPicker defaultValue={-0.3} onChange={onChange} precision={1} />
+            );
 
             wrapper.find('input').simulate('change', { target: { value: '-.2' } });
             assert(wrapper.find('input').prop('value') == '-.2');
@@ -578,7 +556,9 @@ describe('number-picker', () => {
             let onChange = value => {
                 assert(value === -0);
             };
-            let wrapper = mount(<NumberPicker defaultValue={-0.3} onChange={onChange} precision={1} />);
+            let wrapper = mount(
+                <NumberPicker defaultValue={-0.3} onChange={onChange} precision={1} />
+            );
 
             wrapper.find('input').simulate('change', { target: { value: '-0' } });
             wrapper.find('input').simulate('blur');
@@ -610,7 +590,9 @@ describe('number-picker', () => {
         // 特殊输入检测
         it('should support input with -/-0/-0./0./0.0 ', () => {
             const onChange = sinon.spy();
-            const wrapper = mount(<NumberPicker defaultValue={0} onChange={onChange} precision={1} />);
+            const wrapper = mount(
+                <NumberPicker defaultValue={0} onChange={onChange} precision={1} />
+            );
 
             wrapper.find('input').simulate('change', { target: { value: ' ' } });
             // ''会触发onChange
@@ -642,10 +624,7 @@ describe('number-picker', () => {
         it('should accept disabled ', () => {
             const wrapper = mount(<NumberPicker defaultValue={0} disabled />);
 
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('button').at(0).simulate('click');
             assert(wrapper.find('input').prop('value') === 0);
         });
 
@@ -655,24 +634,15 @@ describe('number-picker', () => {
                 },
                 wrapper = mount(<NumberPicker defaultValue={3} onChange={onChange} />);
 
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
-            wrapper
-                .find('button')
-                .at(1)
-                .simulate('mousedown');
+            wrapper.find('button').at(0).simulate('click');
+            wrapper.find('button').at(1).simulate('mousedown');
 
             let onChange2 = value => {
                     assert(value === 2);
                 },
                 wrapper2 = mount(<NumberPicker defaultValue={3} onChange={onChange2} />);
 
-            wrapper2
-                .find('button')
-                .at(1)
-                .simulate('click');
+            wrapper2.find('button').at(1).simulate('click');
 
             done();
         });
@@ -688,12 +658,11 @@ describe('number-picker', () => {
             let onChange2 = value => {
                     assert(value === 124);
                 },
-                wrapper2 = mount(<NumberPicker defaultValue={123} editable={false} onChange={onChange2} />);
+                wrapper2 = mount(
+                    <NumberPicker defaultValue={123} editable={false} onChange={onChange2} />
+                );
 
-            wrapper2
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper2.find('button').at(0).simulate('click');
 
             done();
         });
@@ -704,17 +673,17 @@ describe('number-picker', () => {
                 },
                 onDisabled = sinon.spy(),
                 wrapper = mount(
-                    <NumberPicker defaultValue={19} max={20} step={3} onDisabled={onDisabled} onChange={onChange} />
+                    <NumberPicker
+                        defaultValue={19}
+                        max={20}
+                        step={3}
+                        onDisabled={onDisabled}
+                        onChange={onChange}
+                    />
                 );
 
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('button').at(0).simulate('click');
+            wrapper.find('button').at(0).simulate('click');
 
             assert(onDisabled.calledOnce);
 
@@ -732,18 +701,20 @@ describe('number-picker', () => {
                     />
                 );
 
-            wrapper2
-                .find('button')
-                .at(1)
-                .simulate('click');
-            wrapper2
-                .find('button')
-                .at(1)
-                .simulate('click');
+            wrapper2.find('button').at(1).simulate('click');
+            wrapper2.find('button').at(1).simulate('click');
 
             assert(onDisabled.calledTwice);
-            assert(mount(<NumberPicker defaultValue={22} max={20} onChange={onChange} />).prop('max') === 20);
-            assert(mount(<NumberPicker defaultValue={17} min={18} onChange={onChange} />).prop('min') === 18);
+            assert(
+                mount(<NumberPicker defaultValue={22} max={20} onChange={onChange} />).prop(
+                    'max'
+                ) === 20
+            );
+            assert(
+                mount(<NumberPicker defaultValue={17} min={18} onChange={onChange} />).prop(
+                    'min'
+                ) === 18
+            );
 
             let onChange3 = (value, e) => {
                     assert(value === 20);
@@ -776,12 +747,11 @@ describe('number-picker', () => {
                     assert(value === 30);
                     done();
                 },
-                wrapper = mount(<NumberPicker defaultValue={5} min={30} step={3} onChange={onChange} />);
+                wrapper = mount(
+                    <NumberPicker defaultValue={5} min={30} step={3} onChange={onChange} />
+                );
 
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('button').at(0).simulate('click');
         });
 
         it('should be equal max while next value > max by click -', done => {
@@ -789,12 +759,11 @@ describe('number-picker', () => {
                     assert(value === 30);
                     done();
                 },
-                wrapper = mount(<NumberPicker defaultValue={205} max={30} step={3} onChange={onChange} />);
+                wrapper = mount(
+                    <NumberPicker defaultValue={205} max={30} step={3} onChange={onChange} />
+                );
 
-            wrapper
-                .find('button')
-                .at(1)
-                .simulate('click');
+            wrapper.find('button').at(1).simulate('click');
         });
 
         it('should not input number large then max', () => {
@@ -808,14 +777,8 @@ describe('number-picker', () => {
         it('should support precision', done => {
             const wrapper = mount(<NumberPicker defaultValue={0.121} step={0.01} precision={3} />);
 
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('button').at(0).simulate('click');
+            wrapper.find('button').at(0).simulate('click');
 
             assert(wrapper.find('input').prop('value') === 0.141);
 
@@ -828,7 +791,9 @@ describe('number-picker', () => {
                 done();
             };
 
-            const wrapper = mount(<NumberPicker defaultValue={1.2} step={0.01} precision={3} onChange={onChange} />);
+            const wrapper = mount(
+                <NumberPicker defaultValue={1.2} step={0.01} precision={3} onChange={onChange} />
+            );
 
             wrapper.find('input').simulate('change', { target: { value: '3。9' } });
             assert(wrapper.find('input').prop('value') === '3.9');
@@ -836,7 +801,9 @@ describe('number-picker', () => {
 
         it('should support onCorrect', done => {
             const onCorrect = sinon.spy();
-            const wrapper = mount(<NumberPicker defaultValue={1} min={1} max={3} onCorrect={onCorrect} />);
+            const wrapper = mount(
+                <NumberPicker defaultValue={1} min={1} max={3} onCorrect={onCorrect} />
+            );
             wrapper.find('input').simulate('change', { target: { value: '21' } });
             wrapper.find('input').simulate('blur');
             assert(onCorrect.calledOnce);
@@ -845,7 +812,9 @@ describe('number-picker', () => {
                     assert(obj.currentValue === 20);
                     assert(obj.oldValue === '21');
                 },
-                wrapper2 = mount(<NumberPicker defaultValue={19} max={20} step={3} onCorrect={onCorrect2} />);
+                wrapper2 = mount(
+                    <NumberPicker defaultValue={19} max={20} step={3} onCorrect={onCorrect2} />
+                );
             wrapper2.find('input').simulate('change', { target: { value: '21' } });
 
             done();
@@ -893,13 +862,17 @@ describe('number-picker', () => {
             let onChange2 = value => {
                     assert(value === 3.3);
                 },
-                wrapper2 = mount(<NumberPicker defaultValue={19} onChange={onChange2} step={0.2} />);
+                wrapper2 = mount(
+                    <NumberPicker defaultValue={19} onChange={onChange2} step={0.2} />
+                );
             wrapper2.find('input').simulate('change', { target: { value: '3.3' } });
 
             let onChange3 = value => {
                     assert(value === 3);
                 },
-                wrapper3 = mount(<NumberPicker defaultValue={19} onChange={onChange3} step={0.2} />);
+                wrapper3 = mount(
+                    <NumberPicker defaultValue={19} onChange={onChange3} step={0.2} />
+                );
             wrapper3.find('input').simulate('change', { target: { value: '3.' } });
 
             done();
@@ -922,14 +895,8 @@ describe('number-picker', () => {
 
             const wrapper1 = mount(<NumberPicker onChange={onChange1} />);
             const wrapper2 = mount(<NumberPicker onChange={onChange2} />);
-            wrapper1
-                .find('button')
-                .at(0)
-                .simulate('click');
-            wrapper2
-                .find('button')
-                .at(1)
-                .simulate('click');
+            wrapper1.find('button').at(0).simulate('click');
+            wrapper2.find('button').at(1).simulate('click');
         });
 
         it('will render value in custom if `format` is settled', () => {
@@ -966,24 +933,32 @@ describe('number-picker', () => {
                     assert(value === 0.29);
                     done();
                 },
-                wrapper = mount(<NumberPicker defaultValue={0.28} onChange={onChange} step={0.01} precision={2} />);
+                wrapper = mount(
+                    <NumberPicker
+                        defaultValue={0.28}
+                        onChange={onChange}
+                        step={0.01}
+                        precision={2}
+                    />
+                );
 
-            wrapper
-                .find('button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('button').at(0).simulate('click');
         });
         it('0.29 - 0.01 should be 0.28 not 0.27999999999999997', done => {
             let onChange = value => {
                     assert(value === 0.28);
                     done();
                 },
-                wrapper = mount(<NumberPicker defaultValue={0.29} onChange={onChange} step={0.01} precision={2} />);
+                wrapper = mount(
+                    <NumberPicker
+                        defaultValue={0.29}
+                        onChange={onChange}
+                        step={0.01}
+                        precision={2}
+                    />
+                );
 
-            wrapper
-                .find('button')
-                .at(1)
-                .simulate('click');
+            wrapper.find('button').at(1).simulate('click');
         });
     });
 });
