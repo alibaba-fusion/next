@@ -1,12 +1,10 @@
 import ConfigProvider from '../config-provider';
+import { assignSubComponent } from '../util/component';
 import type { ButtonProps, GroupProps } from './types';
 import Button from './view/button';
 import Group from './view/group';
 
-const WithSubButton = Button as typeof Button & {
-    Group: typeof Group;
-};
-WithSubButton.Group = Group;
+const WithSubButton = assignSubComponent(Button, { Group });
 
 export type { ButtonProps, GroupProps };
 
