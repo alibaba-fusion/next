@@ -183,7 +183,6 @@ const pushPlatformDocs = {
 
 async function publishNpm(distTag = 'latest') {
     execSync('npm', ['publish', '--tag', distTag]);
-    execSync('tnpm', ['sync', '@alifd/next']);
 }
 
 async function publishNpmForDocs(distTag = 'latest') {
@@ -212,7 +211,6 @@ async function publishNpmForDocs(distTag = 'latest') {
     fs.writeFileSync(pkgPath, pkgContent);
     logger.log('Generate @alifd/next-docs successfully!');
     execSync('npm', ['publish', '--tag', distTag], { cwd: docs });
-    execSync('tnpm', ['sync', NEXT_DOCS_NAME], { cwd: docs });
     fs.removeSync(docs);
 }
 
@@ -254,6 +252,9 @@ registryTask(__filename, 'release', async () => {
                 fs.removeSync(NEXT_DOCS_PATH);
             }
         );
+        await registryTask(__filename, 'tnpm sync', () => {
+            execSync('tnpm', ['sync', '@alifd/next', NEXT_DOCS_NAME]);
+        });
     });
 
     const commitRollbackFns = new Set<() => unknown>();
