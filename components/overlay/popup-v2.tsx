@@ -121,12 +121,20 @@ const Popup = props => {
 
         const placement = result.config.placement;
         if (placement && typeof placement === 'string') {
-            if (animation.in === 'expandInDown' && animation.out === 'expandOutUp' && placement.match(/t/)) {
+            if (
+                animation.in === 'expandInDown' &&
+                animation.out === 'expandOutUp' &&
+                placement.match(/t/)
+            ) {
                 setAnimation({
                     in: 'expandInUp',
                     out: 'expandOutDown',
                 });
-            } else if (animation.in === 'expandInUp' && animation.out === 'expandOutDown' && placement.match(/b/)) {
+            } else if (
+                animation.in === 'expandInUp' &&
+                animation.out === 'expandOutDown' &&
+                placement.match(/b/)
+            ) {
                 setAnimation({
                     in: 'expandInDown',
                     out: 'expandOutUp',

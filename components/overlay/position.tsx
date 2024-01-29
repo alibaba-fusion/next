@@ -120,7 +120,9 @@ export default class Position extends Component {
             this.updateCount = 0;
         });
         if (this.updateCount > MAX_UPDATE_COUNT - 10) {
-            warning('Over maximum times to adjust position at one task, it is recommended to use v2.');
+            warning(
+                'Over maximum times to adjust position at one task, it is recommended to use v2.'
+            );
             return true;
         }
         return false;

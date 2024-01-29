@@ -30,7 +30,7 @@ const render = element => {
     const container = document.createElement('div');
     container.className = 'container';
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function() {
+    ReactDOM.render(element, container, function () {
         inc = this;
     });
     return {
@@ -132,7 +132,7 @@ describe('Overlay v2', async () => {
     });
 
     it('should support rendering overlay', async () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(
                 <Overlay v2 visible>
                     <div className="content" />
@@ -241,7 +241,14 @@ describe('Overlay v2', async () => {
         };
 
         wrapper = render(
-            <Overlay v2 visible animation={false} hasMask canCloseByMask={false} onRequestClose={handleClose}>
+            <Overlay
+                v2
+                visible
+                animation={false}
+                hasMask
+                canCloseByMask={false}
+                onRequestClose={handleClose}
+            >
                 <div className="content" />
             </Overlay>
         );
@@ -334,7 +341,10 @@ describe('Overlay v2', async () => {
         simulateEvent.simulate(btn, 'click');
         await delay(200);
 
-        assert(document.querySelector('.overlay-cache-test.next-overlay-wrapper').style.display === 'none');
+        assert(
+            document.querySelector('.overlay-cache-test.next-overlay-wrapper').style.display ===
+                'none'
+        );
     });
 
     it('should propagate click event to parent DOM', async () => {
@@ -472,9 +482,15 @@ describe('Popup v2', async () => {
     });
 
     it('should support rendering trigger and overlay', async () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(
-                <Popup v2 animation={false} defaultVisible trigger={<button>Open</button>} triggerType="click">
+                <Popup
+                    v2
+                    animation={false}
+                    defaultVisible
+                    trigger={<button>Open</button>}
+                    triggerType="click"
+                >
                     <span>Hello World From Popup!</span>
                 </Popup>
             );
@@ -587,7 +603,12 @@ describe('Popup v2', async () => {
         const onClick = sinon.spy();
 
         wrapper = render(
-            <Popup v2 animation={false} trigger={<button onClick={onClick}>Open</button>} triggerType="click">
+            <Popup
+                v2
+                animation={false}
+                trigger={<button onClick={onClick}>Open</button>}
+                triggerType="click"
+            >
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );

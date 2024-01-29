@@ -163,7 +163,9 @@ class Popup extends Component {
 
     handleTriggerKeyDown(e) {
         const { triggerClickKeycode } = this.props;
-        const keycodes = Array.isArray(triggerClickKeycode) ? triggerClickKeycode : [triggerClickKeycode];
+        const keycodes = Array.isArray(triggerClickKeycode)
+            ? triggerClickKeycode
+            : [triggerClickKeycode];
         if (keycodes.includes(e.keyCode)) {
             e.preventDefault();
             this.handleTriggerClick(e);
@@ -306,7 +308,8 @@ class Popup extends Component {
     }
 
     renderPortal() {
-        const { target, safeNode, followTrigger, triggerType, hasMask, wrapperStyle, ...others } = this.props;
+        const { target, safeNode, followTrigger, triggerType, hasMask, wrapperStyle, ...others } =
+            this.props;
         let { container } = this.props;
         const findTriggerNode = () => findDOMNode(this);
         const safeNodes = Array.isArray(safeNode) ? [...safeNode] : [safeNode];
