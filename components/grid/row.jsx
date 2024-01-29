@@ -1,4 +1,11 @@
-import React, { Component, Children, cloneElement, ReactElement } from 'react';
+import React, {
+    Component,
+    Children,
+    cloneElement,
+    ReactElement,
+    type FunctionComponent,
+    type ComponentClass,
+} from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { RowProps, TypeRecord } from './types';
@@ -72,18 +79,21 @@ export default class Row extends Component<RowProps> {
             rtl,
             ...others
         } = this.props;
-        /* eslint-enable no-unused-vars */
-        const Tag = component as 'div';
+        const Tag = component as
+            | string
+            | FunctionComponent<Record<string, unknown> & { className: string }>
+            | ComponentClass<Record<string, unknown> & { className: string }>;
+
         let hiddenClassObj = {} as BooleanRecord;
         if (hidden === true) {
             hiddenClassObj = { [`${prefix}row-hidden`]: true };
         } else if (typeof hidden === 'string') {
             hiddenClassObj = { [`${prefix}row-${hidden}-hidden`]: !!hidden };
         } else if (Array.isArray(hidden)) {
-            hiddenClassObj = hidden.reduce((ret: BooleanRecord, point) => {
+            hiddenClassObj = hidden.reduce((ret, point) => {
                 ret[`${prefix}row-${point}-hidden`] = !!point;
                 return ret;
-            }, {} as BooleanRecord) as BooleanRecord;
+            }, {} as BooleanRecord);
         }
 
         const config = {
@@ -101,7 +111,7 @@ export default class Row extends Component<RowProps> {
         const newClassName = cx(config);
 
         let newChildren = children;
-        const gutterNumber = parseInt((gutter || '0').toString(), 10);
+        const gutterNumber = parseInt((gutter as string).toString(), 10);
         if (gutterNumber !== 0) {
             const halfGutterString = `${gutterNumber / 2}px`;
             others.style = {
@@ -120,7 +130,7 @@ export default class Row extends Component<RowProps> {
                         style: {
                             paddingLeft: halfGutterString,
                             paddingRight: halfGutterString,
-                            // @ts-expect-error 这边是一个需要修复的错误
+                            // @ts-expect-error 只有 dom 才有 style 属性
                             ...(child.style || {}),
                         },
                     });
