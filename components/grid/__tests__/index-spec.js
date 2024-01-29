@@ -1,9 +1,6 @@
 import React from 'react';
 import Grid from '../index';
 
-/* eslint-disable react/jsx-filename-extension */
-/* global describe it beforeEach afterEach */
-
 const { Row, Col } = Grid;
 
 describe('Row', () => {

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { type FunctionComponent, type ComponentClass } from 'react';
 import { CommonProps } from '../util';
 
 type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'hidden'>;
@@ -25,18 +25,21 @@ export interface RowProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 列间隔
      * @en Column spacing
+     * @defaultValue 0
      */
     gutter?: string | number;
 
     /**
      * 列在行中宽度溢出后是否换行
      * @en Whether to wrap when the column width overflows in the row
+     * @defaultValue false
      */
     wrap?: boolean;
 
     /**
      * 行在某一断点下宽度是否保持不变（默认行宽度随视口变化而变化）
      * @en Whether the row width remains unchanged at a breakpoint (the default row width changes with the viewport)
+     * @defaultValue false
      */
     fixed?: boolean;
 
@@ -61,16 +64,16 @@ export interface RowProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 行在不同断点下的显示与隐藏
      * @en Display and hide the row at different breakpoints
-     * @remarks \<br\>\<br\>**可选值**:\<br\>true(在所有断点下隐藏)\<br\>false(在所有断点下显示)\<br\>'xs'(在 xs 断点下隐藏）\<br\>['xxs', 'xs', 's', 'm', 'l', 'xl'](在 xxs, xs, s, m, l, xl 断点下隐藏）
+     * @remarks \<br\>\<br\>**可选值**:\<br\>true(在所有断点下隐藏)\<br\>false(在所有断点下显示)\<br\>'xs'(在 xs 断点下隐藏）\<br\>['xxs', 'xs', 's', 'm', 'l', 'xl'](在 xxs, xs, s, m, l, xl 断点下隐藏）- \<br\>\<br\>**Optional values**:<br>true (hidden at all breakpoints)\<br\>false (displayed at all breakpoints)\<br\>'xs' (hidden at xs breakpoint)\<br\>['xxs', 'xs', 's', 'm', 'l', 'xl'] (hidden at xxs, xs, s, m, l, xl breakpoints)
      */
-    hidden?: boolean | string | Array<unknown>;
+    hidden?: boolean | string | Array<BreakPoints>;
 
     /**
      * 指定以何种元素渲染该节点
      * @en Specifies the element with which to render the node
      * @defaultValue 'div'
      */
-    component?: Ele | (() => Ele) | string;
+    component?: string | FunctionComponent<unknown> | ComponentClass<unknown>;
 }
 
 /**
@@ -84,20 +87,23 @@ export interface ColProps extends HTMLAttributesWeak, CommonProps {
     children?: React.ReactNode;
 
     /**
-     * 列宽度\<br\>\<br\>**可选值**:<br>1, 2, 3, ..., 22, 23, 24
-     * @en Column width\<br\>\<br\>**Optional values**:<br>1, 2, 3, ..., 22, 23, 24
+     * 列宽度
+     * @en Column width
+     * @remarks \<br\>\<br\>**可选值**:<br>1, 2, 3, ..., 22, 23, 24 - \<br\>\<br\>**Optional values**:<br>1, 2, 3, ..., 22, 23, 24
      */
     span?: string | number;
 
     /**
-     * 固定列宽度，宽度值为20 * 栅格数\<br\>\<br\>**可选值**:\<br\>1, 2, 3, ..., 28, 29, 30
-     * @en Fixed column width, width value is 20 * grid number\<br\>\<br\>**Optional values**:<br>1, 2, 3, ..., 28, 29, 30
+     * 固定列宽度
+     * @en Fixed column width
+     * @remarks 宽度值为20 * 栅格数\<br\>\<br\>**可选值**:\<br\>1, 2, 3, ..., 28, 29, 30 - width value is 20 * grid number\<br\>\<br\>**Optional values**:<br>1, 2, 3, ..., 28, 29, 30
      */
     fixedSpan?: string | number;
 
     /**
-     * （不支持IE9浏览器）列偏移\<br\>\<br\>**可选值**:\<br\>1, 2, 3, ..., 22, 23, 24
-     * @en (IE9 browser is not supported) Column offset\<br\>\<br\>**Optional values**:<br>1, 2, 3, ..., 22, 23, 24
+     * （不支持IE9浏览器）列偏移
+     * @en (IE9 browser is not supported) Column offset
+     * @remarks \<br\>\<br\>**可选值**:\<br\>1, 2, 3, ..., 22, 23, 24 - \<br\>\<br\>**Optional values**:<br>1, 2, 3, ..., 22, 23, 24
      */
     offset?: string | number;
 
@@ -114,50 +120,58 @@ export interface ColProps extends HTMLAttributesWeak, CommonProps {
     align?: 'top' | 'center' | 'bottom' | 'baseline' | 'stretch';
 
     /**
-     * 列在不同断点下的显示与隐藏\<br\>\<br\>**可选值**:\<br\>true(在所有断点下隐藏)\<br\>false(在所有断点下显示)\<br\>'xs'(在 xs 断点下隐藏）\<br\>['xxs', 'xs', 's', 'm', 'l', 'xl'](在 xxs, xs, s, m, l, xl 断点下隐藏）
-     * @en Display and hide the column at different breakpoints\<br\>\<br\>**Optional values**:\<br\>true (hidden at all breakpoints)\<br\>false (displayed at all breakpoints)\<br\>'xs' (hidden at xs breakpoint)\<br\>['xxs', 'xs', 's', 'm', 'l', 'xl'] (hidden at xxs, xs, s, m, l, xl breakpoints)
+     * 列在不同断点下的显示与隐藏
+     * @en Display and hide the column at different breakpoints
+     * @remarks \<br\>\<br\>**可选值**:\<br\>true(在所有断点下隐藏)\<br\>false(在所有断点下显示)\<br\>'xs'(在 xs 断点下隐藏）\<br\>['xxs', 'xs', 's', 'm', 'l', 'xl'](在 xxs, xs, s, m, l, xl 断点下隐藏）- \<br\>\<br\>**Optional values**:\<br\>true (hidden at all breakpoints)\<br\>false (displayed at all breakpoints)\<br\>'xs' (hidden at xs breakpoint)\<br\>['xxs', 'xs', 's', 'm', 'l', 'xl'] (hidden at xxs, xs, s, m, l, xl breakpoints)
      */
-    hidden?: boolean | string | Array<unknown>;
+    hidden?: boolean | string | Array<BreakPoints>;
 
     /**
-     * \>=320px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-     * @en \>=320px, responsive grid, can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
+     * \>=320px，响应式栅格
+     * @en \>=320px, responsive grid
+     * @remarks 可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象 - can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
      */
     xxs?: string | number | PointProps;
 
     /**
-     * \>=480px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-     * @en \>=480px, responsive grid, can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
+     * \>=480px，响应式栅格
+     * @en \>=480px, responsive grid
+     * @remarks 可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象 - can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
      */
     xs?: string | number | PointProps;
 
     /**
-     * \>=720px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-     * @en \>=720px, responsive grid, can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
+     * \>=720px，响应式栅格
+     * @en \>=720px, responsive grid
+     * @remarks 可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象 - can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
      */
     s?: string | number | PointProps;
 
     /**
-     * \>=990px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-     * @en \>=990px, responsive grid, can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
+     * \>=990px，响应式栅格
+     * @en \>=990px, responsive grid
+     * @remarks 可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象 - can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
      */
     m?: string | number | PointProps;
 
     /**
-     * \>=1200px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-     * @en \>=1200px, responsive grid, can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
+     * \>=1200px，响应式栅格
+     * @en \>=1200px, responsive grid
+     * @remarks 可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象 - can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
      */
     l?: string | number | PointProps;
 
     /**
-     * \>=1500px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
-     * @en \>=1500px, responsive grid, can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
+     * \>=1500px，响应式栅格
+     * @en \>=1500px, responsive grid
+     * @remarks 可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象 - can be grid number (span) or an object containing grid number (span) and offset grid number (offset)
      */
     xl?: string | number | PointProps;
 
     /**
      * 指定以何种元素渲染该节点，默认为 'div'
      * @en Specifies the element with which to render the node, default is 'div'
+     * @defaultValue 'div'
      */
     component?: Ele | (() => Ele) | string;
 }
