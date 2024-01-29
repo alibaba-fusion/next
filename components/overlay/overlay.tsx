@@ -400,15 +400,23 @@ class Overlay extends Component {
             if (node) {
                 const id = guid();
 
-                this._animation = events.on(node, support.animation.end, this.handleAnimateEnd.bind(this, id));
+                this._animation = events.on(
+                    node,
+                    support.animation.end,
+                    this.handleAnimateEnd.bind(this, id)
+                );
 
                 const animationDelay = parseFloat(getStyleProperty(node, 'animation-delay')) || 0;
-                const animationDuration = parseFloat(getStyleProperty(node, 'animation-duration')) || 0;
+                const animationDuration =
+                    parseFloat(getStyleProperty(node, 'animation-duration')) || 0;
                 const time = animationDelay + animationDuration;
                 if (time) {
-                    this.timeoutMap[id] = setTimeout(() => {
-                        this.handleAnimateEnd(id);
-                    }, time * 1000 + 200);
+                    this.timeoutMap[id] = setTimeout(
+                        () => {
+                            this.handleAnimateEnd(id);
+                        },
+                        time * 1000 + 200
+                    );
                 }
             }
         });
@@ -544,7 +552,11 @@ class Overlay extends Component {
 
                 // 最后一个 overlay 的时候再将样式重置回去
                 // 此时 overflow 应该值在 beforeOpen 中设置的 hidden
-                if (cnInfo.count === 1 && this._containerNode && this._containerNode.style.overflow === 'hidden') {
+                if (
+                    cnInfo.count === 1 &&
+                    this._containerNode &&
+                    this._containerNode.style.overflow === 'hidden'
+                ) {
                     const style = {
                         overflow,
                     };
@@ -615,12 +627,22 @@ class Overlay extends Component {
         // use capture phase listener to be compatible with react17
         // https://reactjs.org/blog/2020/08/10/react-v17-rc.html#fixing-potential-issues
         if (this.props.canCloseByEsc) {
-            this._keydownEvents = events.on(document, 'keydown', this.handleDocumentKeyDown, useCapture);
+            this._keydownEvents = events.on(
+                document,
+                'keydown',
+                this.handleDocumentKeyDown,
+                useCapture
+            );
         }
 
         if (this.props.canCloseByOutSideClick) {
             this._clickEvents = events.on(document, 'click', this.handleDocumentClick, useCapture);
-            this._touchEvents = events.on(document, 'touchend', this.handleDocumentClick, useCapture);
+            this._touchEvents = events.on(
+                document,
+                'touchend',
+                this.handleDocumentClick,
+                useCapture
+            );
         }
     }
 
@@ -634,7 +656,11 @@ class Overlay extends Component {
     }
 
     handleDocumentKeyDown(e) {
-        if (this.state.visible && e.keyCode === KEYCODE.ESC && overlayManager.isCurrentOverlay(this)) {
+        if (
+            this.state.visible &&
+            e.keyCode === KEYCODE.ESC &&
+            overlayManager.isCurrentOverlay(this)
+        ) {
             this.props.onRequestClose('keyboard', e);
         }
     }
@@ -645,7 +671,11 @@ class Overlay extends Component {
 
     getEventPath(event) {
         // 参考 https://github.com/spring-media/react-shadow-dom-retarget-events/blob/master/index.js#L29
-        return event.path || (event.composedPath && event.composedPath()) || this.composedPath(event.target);
+        return (
+            event.path ||
+            (event.composedPath && event.composedPath()) ||
+            this.composedPath(event.target)
+        );
     }
 
     composedPath(el) {

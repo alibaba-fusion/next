@@ -68,7 +68,9 @@ function _getElementRect(elem, container) {
 
     return {
         top:
-            offsetTop - scrollTop - (treatAsWindow ? document.documentElement.scrollTop || document.body.scrollTop : 0),
+            offsetTop -
+            scrollTop -
+            (treatAsWindow ? document.documentElement.scrollTop || document.body.scrollTop : 0),
         left:
             offsetLeft -
             scrollLeft -
@@ -172,7 +174,11 @@ export default class Position {
         // 根据期望的定位
         for (let i = 0; i < expectedAlign.length; i++) {
             const align = expectedAlign[i];
-            const pinElementPoints = this._normalizePosition(pinElement, align.split(' ')[0], isPinFixed);
+            const pinElementPoints = this._normalizePosition(
+                pinElement,
+                align.split(' ')[0],
+                isPinFixed
+            );
             const baseElementPoints = this._normalizePosition(
                 baseElement,
                 align.split(' ')[1],
@@ -224,8 +230,18 @@ export default class Position {
         }
 
         // This will only execute if `pinElement` could not be placed entirely in the Viewport
-        const inViewportLeft = this._makeElementInViewport(pinElement, firstPositionResult.left, 'Left', isPinFixed);
-        const inViewportTop = this._makeElementInViewport(pinElement, firstPositionResult.top, 'Top', isPinFixed);
+        const inViewportLeft = this._makeElementInViewport(
+            pinElement,
+            firstPositionResult.left,
+            'Left',
+            isPinFixed
+        );
+        const inViewportTop = this._makeElementInViewport(
+            pinElement,
+            firstPositionResult.top,
+            'Top',
+            isPinFixed
+        );
 
         this._setPinElementPostion(
             pinElement,
@@ -247,7 +263,10 @@ export default class Position {
             const x = pinAlign.charAt(1);
             const y = pinAlign.charAt(0);
 
-            if (pinElementRect.top < 0 || pinElementRect.top + pinElementRect.height > viewportSize.height) {
+            if (
+                pinElementRect.top < 0 ||
+                pinElementRect.top + pinElementRect.height > viewportSize.height
+            ) {
                 offset[1] = -baseElementRect.top - (y === 't' ? baseElementRect.height : 0);
             }
         }
@@ -272,7 +291,7 @@ export default class Position {
         return offset;
     }
 
-    _getParentScrollOffset = function(elem) {
+    _getParentScrollOffset = function (elem) {
         let top = 0;
         let left = 0;
 
@@ -301,7 +320,10 @@ export default class Position {
         if (result < 0) {
             if (isPinFixed) {
                 result = 0;
-            } else if (offsetParent === document.body && dom.getStyle(offsetParent, 'position') === 'static') {
+            } else if (
+                offsetParent === document.body &&
+                dom.getStyle(offsetParent, 'position') === 'static'
+            ) {
                 // Only when div's offsetParent is document.body, we set new position result.
                 result = Math.max(docElement[`scroll${type}`], document.body[`scroll${type}`]);
             }
@@ -332,7 +354,7 @@ export default class Position {
             .replace(/t|l/gi, '0%')
             .replace(/c/gi, '50%')
             .replace(/b|r/gi, '100%')
-            .replace(/(\d+)%/gi, function(m, d) {
+            .replace(/(\d+)%/gi, function (m, d) {
                 return points.size()[type] * (d / 100);
             });
 
@@ -403,7 +425,9 @@ export default class Position {
 
     // According to the location of the overflow to calculate the desired positioning
     _getExpectedAlign() {
-        const align = this.isRtl ? this._replaceAlignDir(this.align, /l|r/g, { l: 'r', r: 'l' }) : this.align;
+        const align = this.isRtl
+            ? this._replaceAlignDir(this.align, /l|r/g, { l: 'r', r: 'l' })
+            : this.align;
         const expectedAlign = [align];
         if (this.needAdjust) {
             if (/t|b/g.test(align)) {
@@ -459,8 +483,12 @@ export default class Position {
         // https://github.com/alibaba-fusion/next/issues/853
         // Equality causes issues in Chrome when pin element is off screen to right or bottom.
         // If it is not supposed to align with the bottom or right, then subtract 1 to use strict less than.
-        const viewportWidth = this._isRightAligned(align) ? viewportSize.width : viewportSize.width - 1;
-        const viewportHeight = this._isBottomAligned(align) ? viewportSize.height : viewportSize.height - 1;
+        const viewportWidth = this._isRightAligned(align)
+            ? viewportSize.width
+            : viewportSize.width - 1;
+        const viewportHeight = this._isBottomAligned(align)
+            ? viewportSize.height
+            : viewportSize.height - 1;
 
         // 临时方案，在 select + table 的场景下，不需要关注横向上是否在可视区域内
         // 在 balloon 场景下需要关注
@@ -482,8 +510,12 @@ export default class Position {
         const elementRect = _getElementRect(element, this.container);
         const elementSize = _getSize(element);
 
-        const viewportWidth = this._isRightAligned(align) ? viewportSize.width : viewportSize.width - 1;
-        const viewportHeight = this._isBottomAligned(align) ? viewportSize.height : viewportSize.height - 1;
+        const viewportWidth = this._isRightAligned(align)
+            ? viewportSize.width
+            : viewportSize.width - 1;
+        const viewportHeight = this._isBottomAligned(align)
+            ? viewportSize.height
+            : viewportSize.height - 1;
 
         return {
             top: elementRect.top,
