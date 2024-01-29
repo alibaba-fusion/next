@@ -15,41 +15,14 @@ class List<DataItem = unknown> extends Component<ListProps<DataItem>> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 列表头部
-         */
         header: PropTypes.node,
-        /**
-         * 列表尾部
-         */
         footer: PropTypes.node,
-        /**
-         * 列表尺寸
-         */
         size: PropTypes.oneOf(['medium', 'small']),
-        /**
-         * 是否显示分割线
-         */
         divider: PropTypes.bool,
-        /**
-         * 列表数据源
-         */
         dataSource: PropTypes.array,
-        /**
-         * 当使用 dataSource 时，可以用 renderItem 自定义渲染列表项
-         */
         renderItem: PropTypes.func,
-        /**
-         * 是否在加载中
-         */
         loading: PropTypes.bool,
-        /**
-         * 自定义加载内容
-         */
         loadingComponent: PropTypes.func,
-        /**
-         * 设置数据为空的时候的表格内容展现
-         */
         emptyContent: PropTypes.node,
         className: PropTypes.string,
         children: PropTypes.any,
