@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Grid } from '@alifd/next';
-import { BreakPoints } from '../../../types';
+
+type BreakPoints = 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
 
 const { Row, Col } = Grid;
 

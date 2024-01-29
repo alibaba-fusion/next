@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ComponentClass, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { ColProps, BreakPoints, PointProps, TypeRecord } from './types';
@@ -69,7 +69,6 @@ export default class Col extends Component<ColProps> {
     };
 
     render() {
-        /* eslint-disable no-unused-vars */
         const {
             prefix,
             pure,
@@ -91,14 +90,17 @@ export default class Col extends Component<ColProps> {
             rtl,
             ...others
         } = this.props;
-        /* eslint-enable no-unused-vars */
-        const Tag = component as 'div';
+        const Tag = component as
+            | string
+            | FunctionComponent<Record<string, unknown> & { className: string }>
+            | ComponentClass<Record<string, unknown> & { className: string }>;
         const pointClassObj = breakPoints.reduce((ret, point) => {
             let pointProps = {} as PointProps;
-            if (typeof this.props[point] === 'object' && this.props[point]) {
-                pointProps = this.props[point] as PointProps;
+            const pointValue = this.props[point];
+            if (typeof pointValue === 'object' && pointValue !== null) {
+                pointProps = pointValue;
             } else {
-                pointProps.span = this.props[point] as string | number;
+                pointProps.span = pointValue;
             }
 
             ret[`${prefix}col-${point}-${pointProps.span}`] = !!pointProps.span;
@@ -113,10 +115,10 @@ export default class Col extends Component<ColProps> {
         } else if (typeof hidden === 'string') {
             hiddenClassObj = { [`${prefix}col-${hidden}-hidden`]: !!hidden };
         } else if (Array.isArray(hidden)) {
-            hiddenClassObj = hidden.reduce((ret: BooleanRecord, point) => {
+            hiddenClassObj = hidden.reduce((ret, point) => {
                 ret[`${prefix}col-${point}-hidden`] = !!point;
                 return ret;
-            }, {} as BooleanRecord) as BooleanRecord;
+            }, {} as BooleanRecord);
         }
 
         const config = {
@@ -126,12 +128,10 @@ export default class Col extends Component<ColProps> {
             [`${prefix}col-offset-${offset}`]: !!offset,
             [`${prefix}col-offset-fixed-${fixedOffset}`]: !!fixedOffset,
             [`${prefix}col-${align}`]: !!align,
+            [`${className}`]: className,
             ...pointClassObj,
             ...hiddenClassObj,
         };
-        if (className) {
-            config[className] = !!className;
-        }
         const classes = cx(config);
 
         return (
