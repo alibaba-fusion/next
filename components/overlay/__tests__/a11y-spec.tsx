@@ -3,7 +3,12 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Overlay from '../index';
 
-import { test, testReact, unmount, createContainer } from '../../util/__tests__/legacy/a11y/validate';
+import {
+    test,
+    testReact,
+    unmount,
+    createContainer,
+} from '../../util/__tests__/legacy/a11y/validate';
 import '../../progress/style';
 
 const { Popup } = Overlay;
@@ -28,7 +33,7 @@ describe('Overlay A11y', () => {
         unmount();
     });
 
-    it('should not have any violations', async function() {
+    it('should not have any violations', async function () {
         portalContainer = createContainer(portalContainerId);
         wrapper = await testReact(
             <Overlay visible container={portalContainer}>
@@ -38,7 +43,7 @@ describe('Overlay A11y', () => {
         return test(portalContainer);
     });
 
-    it('should not have any violations for Popup', async function() {
+    it('should not have any violations for Popup', async function () {
         portalContainer = createContainer(portalContainerId);
         wrapper = await testReact(
             <Popup

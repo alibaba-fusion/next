@@ -27,7 +27,7 @@ const render = element => {
     const container = document.createElement('div');
     container.className = 'container';
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function() {
+    ReactDOM.render(element, container, function () {
         inc = this;
     });
     return {
@@ -171,7 +171,7 @@ describe('Overlay', () => {
     });
 
     it('should support rendering overlay', () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(
                 <Overlay visible>
                     <div className="content" />
@@ -197,7 +197,7 @@ describe('Overlay', () => {
     });
 
     it('should support rendering overlay and mask', () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(
                 <Overlay>
                     <div className="content" />
@@ -306,7 +306,13 @@ describe('Overlay', () => {
         };
 
         wrapper = render(
-            <Overlay visible animation={false} hasMask canCloseByMask={false} onRequestClose={handleClose}>
+            <Overlay
+                visible
+                animation={false}
+                hasMask
+                canCloseByMask={false}
+                onRequestClose={handleClose}
+            >
                 <div className="content" />
             </Overlay>
         );
@@ -323,7 +329,7 @@ describe('Overlay', () => {
     });
 
     it('should support safeNode', () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(
                 <OverlayControlDemo>
                     <span id="inner">123</span>
@@ -356,7 +362,7 @@ describe('Overlay', () => {
     });
 
     it('should support disableScroll', () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(<OverlayControlDemo disableScroll />);
             const btn = document.querySelector('button');
 
@@ -373,7 +379,7 @@ describe('Overlay', () => {
     });
 
     it('should support autoFocus', () => {
-        return co(function*() {
+        return co(function* () {
             const outerInput = document.createElement('input');
             outerInput.id = 'outer';
             document.body.appendChild(outerInput);
@@ -401,7 +407,7 @@ describe('Overlay', () => {
     });
 
     it('should not destory overlay node if set cache to true', () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(<OverlayControlDemo cache wrapperClassName="overlay-cache-test" />);
             const btn = document.querySelector('button');
 
@@ -411,7 +417,10 @@ describe('Overlay', () => {
             simulateEvent.simulate(btn, 'click');
             yield delay(500);
 
-            assert(document.querySelector('.overlay-cache-test.next-overlay-wrapper').style.display === 'none');
+            assert(
+                document.querySelector('.overlay-cache-test.next-overlay-wrapper').style.display ===
+                    'none'
+            );
         });
     });
 
@@ -746,7 +755,7 @@ describe('Popup', () => {
     });
 
     it('should support rendering trigger and overlay', () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(
                 <Popup defaultVisible trigger={<button>Open</button>} triggerType="click">
                     <span>Hello World From Popup!</span>
@@ -810,7 +819,7 @@ describe('Popup', () => {
     });
 
     it('should support setting triggerType to focus', () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(
                 <Popup trigger={<button>Open</button>} triggerType="focus">
                     <span className="content">Hello World From Popup!</span>
@@ -834,7 +843,7 @@ describe('Popup', () => {
     });
 
     it('should support setting triggerType to click with custom triggerClickKeycode', () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(
                 <Popup trigger={<button>Open</button>} triggerType="click" triggerClickKeycode={40}>
                     <span className="content">Hello World From Popup!</span>
@@ -873,9 +882,13 @@ describe('Popup', () => {
     });
 
     it('should support setting canCloseByTrigger to false', () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(
-                <Popup trigger={<button>Open</button>} triggerType="click" canCloseByTrigger={false}>
+                <Popup
+                    trigger={<button>Open</button>}
+                    triggerType="click"
+                    canCloseByTrigger={false}
+                >
                     <span className="content">Hello World From Popup!</span>
                 </Popup>
             );
@@ -892,7 +905,7 @@ describe('Popup', () => {
     });
 
     it('should support setting custom container', () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(
                 <div id="myContainer">
                     <Popup
@@ -911,7 +924,9 @@ describe('Popup', () => {
             ReactTestUtils.Simulate.click(btn);
             yield delay(300);
 
-            assert(document.querySelector('.next-overlay-wrapper').parentElement.id === 'myContainer');
+            assert(
+                document.querySelector('.next-overlay-wrapper').parentElement.id === 'myContainer'
+            );
 
             ReactTestUtils.Simulate.click(btn);
             yield delay(300);
@@ -920,7 +935,7 @@ describe('Popup', () => {
     });
 
     it('should support controling', () => {
-        return co(function*() {
+        return co(function* () {
             wrapper = render(<PopupControlDemo />);
             const btn = document.querySelector('button');
 
@@ -935,7 +950,7 @@ describe('Popup', () => {
     });
 
     it('should support render in shadow dom', () => {
-        return co(function*() {
+        return co(function* () {
             const host = document.createElement('div');
             const shadowRoot = host.attachShadow({ mode: 'open' });
             document.body.appendChild(host);
@@ -1080,7 +1095,7 @@ describe('Popup', () => {
         assert(buttonDom);
     });
 
-    it('fix support show-hide in nested scroll component', async function() {
+    it('fix support show-hide in nested scroll component', async function () {
         wrapper = render(
             <div
                 className="root-container"
@@ -1094,7 +1109,12 @@ describe('Popup', () => {
                 <div style={{ height: 50, border: '1px solid #eee' }} />
                 <div
                     className="parent-container"
-                    style={{ height: 100, overflowY: 'scroll', border: '1px solid #eee', background: 'gray' }}
+                    style={{
+                        height: 100,
+                        overflowY: 'scroll',
+                        border: '1px solid #eee',
+                        background: 'gray',
+                    }}
                 >
                     <div style={{ height: 30, border: '1px solid #eee' }} />
                     <Popup v2 trigger={<button>Open</button>} triggerType="click">
