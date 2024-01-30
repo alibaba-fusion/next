@@ -1,51 +1,23 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import Overlay from '../index';
-
-import {
-    test,
-    testReact,
-    unmount,
-    createContainer,
-} from '../../util/__tests__/legacy/a11y/validate';
-import '../../progress/style';
+import '../style';
+import { testReact } from '../../util/__tests__/a11y/validate';
 
 const { Popup } = Overlay;
-Enzyme.configure({ adapter: new Adapter() });
 
-const portalContainerId = 'a11y-portal-id';
-let portalContainer;
+let portalContainer: HTMLElement;
 
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Overlay A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        if (portalContainer) {
-            portalContainer.remove();
-        }
-
-        unmount();
-    });
-
     it('should not have any violations', async function () {
-        portalContainer = createContainer(portalContainerId);
-        wrapper = await testReact(
+        await testReact(
             <Overlay visible container={portalContainer}>
                 <div>Hello World</div>
             </Overlay>
         );
-        return test(portalContainer);
     });
 
     it('should not have any violations for Popup', async function () {
-        portalContainer = createContainer(portalContainerId);
-        wrapper = await testReact(
+        await testReact(
             <Popup
                 visible={false}
                 container={portalContainer}
@@ -56,6 +28,5 @@ describe('Overlay A11y', () => {
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
-        return test(portalContainer);
     });
 });

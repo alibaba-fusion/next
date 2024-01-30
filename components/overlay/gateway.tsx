@@ -1,18 +1,19 @@
-import React, { Component, Children } from 'react';
+import { Component, Children, cloneElement } from 'react';
 import { findDOMNode, createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import { func } from '../util';
 import findNode from './utils/find-node';
+import type { GatewayProps, GatewayState } from './types';
 
 const { makeChain } = func;
 
-const getContainerNode = props => {
+const getContainerNode = (props: GatewayProps) => {
     const targetNode = findNode(props.target);
     return findNode(props.container, targetNode);
 };
 
-class Gateway extends Component {
+class Gateway extends Component<GatewayProps, GatewayState> {
     static propTypes = {
         children: PropTypes.node,
         container: PropTypes.any,
@@ -23,7 +24,9 @@ class Gateway extends Component {
         container: () => document.body,
     };
 
-    constructor(props) {
+    child: Element | null | undefined;
+
+    constructor(props: GatewayProps) {
         super(props);
 
         this.state = {
@@ -58,7 +61,7 @@ class Gateway extends Component {
         }
     }
 
-    saveChildRef = ref => {
+    saveChildRef = (ref: HTMLDivElement) => {
         this.child = ref;
     };
 
@@ -78,11 +81,11 @@ class Gateway extends Component {
         if (typeof child.ref === 'string') {
             throw new Error('Can not set ref by string in Gateway, use function instead.');
         }
-        child = React.cloneElement(child, {
+        child = cloneElement(child, {
             ref: makeChain(this.saveChildRef, child.ref),
         });
 
-        return createPortal(child, containerNode);
+        return createPortal(child, containerNode as HTMLElement);
     }
 }
 

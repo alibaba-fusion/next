@@ -112,7 +112,7 @@ class ContextMenu extends Component<CreateMenuProps, { visible: boolean }> {
             ...contextProps,
             ...overlayProps,
             target,
-            align,
+            align: align as string,
             offset,
             afterClose,
             visible,

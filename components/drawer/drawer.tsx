@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component, type ComponentType } from 'react';
+import React, { Component, type ComponentRef, type ComponentType } from 'react';
 import Overlay from '../overlay';
 import Inner from './inner';
 import zhCN from '../locale/zh-cn';
@@ -65,7 +65,7 @@ export default class Drawer extends Component<DrawerProps> {
         locale: zhCN.Drawer,
     };
 
-    private overlay: Overlay | null = null;
+    private overlay: ComponentRef<typeof Popup> | null = null;
 
     getAlign = (placement: string | undefined) => {
         let align;
@@ -125,7 +125,7 @@ export default class Drawer extends Component<DrawerProps> {
         return animation;
     };
 
-    getOverlayRef = (ref: Overlay | null) => {
+    getOverlayRef = (ref: ComponentRef<typeof Popup> | null) => {
         this.overlay = ref;
     };
 

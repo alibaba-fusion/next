@@ -1,25 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Overlay, Button } from '@alifd/next';
 
 const { Popup } = Overlay;
 
-class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+class Demo extends Component {
+    state = {
+        visible: false,
+        groupVisible: false,
+    };
 
-        this.state = {
-            visible: false,
-        };
-    }
+    btn1: InstanceType<typeof Button> | null;
+    btn2: InstanceType<typeof Button> | null;
+    overlay1: HTMLElement | null;
+    overlay2: HTMLElement | null;
 
-    onVisibleChange = visible => {
+    onVisibleChange = (visible: boolean) => {
         this.setState({
             visible,
         });
     };
 
-    onGroupVisibleChange = groupVisible => {
+    onGroupVisibleChange = (groupVisible: boolean) => {
         this.setState({
             groupVisible,
         });

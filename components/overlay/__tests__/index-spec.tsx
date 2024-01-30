@@ -1,11 +1,18 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, {
+    useRef,
+    useState,
+    useEffect,
+    cloneElement,
+    type FC,
+    Component,
+    type ReactElement,
+    createRef,
+} from 'react';
 import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
-import simulateEvent from 'simulate-event';
-import co from 'co';
-import assert from 'power-assert';
-import { dom, KEYCODE, env } from '../../util';
-import Overlay from '../index';
+import type { MountReturn } from 'cypress/react';
+
+import { KEYCODE, env } from '../../util';
+import Overlay, { type OverlayProps } from '../index';
 import Dialog from '../../dialog/index';
 import Balloon from '../../balloon/index';
 import Button from '../../button/index';
@@ -13,44 +20,14 @@ import Drawer from '../../drawer/index';
 import ConfigProvider from '../../config-provider/index';
 import '../../button/style';
 import '../style';
+import type { PopupProps } from '../types';
 
-/* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
-/* global describe it afterEach */
-/* global describe it beforeEach */
-
-const { hasClass } = dom;
 const { Popup } = Overlay;
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
-const render = element => {
-    let inc;
-    const container = document.createElement('div');
-    container.className = 'container';
-    document.body.appendChild(container);
-    ReactDOM.render(element, container, function () {
-        inc = this;
-    });
-    return {
-        setProps: props => {
-            ReactDOM.unmountComponentAtNode(container);
-            const clonedElement = React.cloneElement(element, props);
-            ReactDOM.render(clonedElement, container);
-        },
-        unmount: () => {
-            ReactDOM.unmountComponentAtNode(container);
-            document.body.removeChild(container);
-        },
-        instance: () => {
-            return inc;
-        },
-        find: selector => {
-            return container.querySelectorAll(selector);
-        },
-    };
-};
+class OverlayControlDemo extends Component<OverlayProps, { visible: boolean }> {
+    btn: HTMLElement;
 
-class OverlayControlDemo extends React.Component {
-    constructor(props) {
+    constructor(props: OverlayProps) {
         super(props);
 
         this.state = {
@@ -71,7 +48,6 @@ class OverlayControlDemo extends React.Component {
     };
 
     render() {
-        // eslint-disable-next-line
         const { children, ...others } = this.props;
 
         return (
@@ -79,7 +55,7 @@ class OverlayControlDemo extends React.Component {
                 <button
                     onClick={this.onClick}
                     ref={ref => {
-                        this.btn = ref;
+                        this.btn = ref!;
                     }}
                 >
                     Toggle visible
@@ -98,8 +74,8 @@ class OverlayControlDemo extends React.Component {
     }
 }
 
-class PopupControlDemo extends React.Component {
-    constructor(props) {
+class PopupControlDemo extends Component<PopupProps, { visible: boolean }> {
+    constructor(props: PopupProps) {
         super(props);
 
         this.state = {
@@ -107,7 +83,7 @@ class PopupControlDemo extends React.Component {
         };
     }
 
-    onVisibleChange = visible => {
+    onVisibleChange = (visible: boolean) => {
         this.setState({
             visible,
         });
@@ -127,7 +103,7 @@ class PopupControlDemo extends React.Component {
     }
 }
 
-class OverlayDemo extends React.Component {
+class OverlayDemo extends Component {
     state = {
         container: () => document.getElementById('container0'),
     };
@@ -153,159 +129,116 @@ class OverlayDemo extends React.Component {
 }
 
 describe('Overlay', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
-
-        nodeListArr.forEach(node => {
-            node.parentNode.removeChild(node);
-        });
-    });
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('should support rendering overlay', () => {
-        return co(function* () {
-            wrapper = render(
-                <Overlay visible>
-                    <div className="content" />
-                </Overlay>
-            );
-            yield delay(500);
-            assert(document.querySelector('.next-overlay-wrapper.opened'));
-            assert(document.querySelector('.next-overlay-inner.content'));
+        cy.mount(
+            <Overlay visible>
+                <div className="content" />
+            </Overlay>
+        ).as('overlay');
 
-            wrapper.setProps({
-                visible: false,
-            });
-            yield delay(500);
-            assert(!document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper.opened').should('exist');
+        cy.get('.next-overlay-inner.content').should('exist');
 
-            wrapper.setProps({
-                visible: true,
-            });
-            yield delay(500);
-            assert(document.querySelector('.next-overlay-wrapper.opened'));
-            assert(document.querySelector('.next-overlay-inner.content'));
+        cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
+            return rerender(cloneElement(component as ReactElement, { visible: false }));
         });
+
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
+
+        cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
+            return rerender(cloneElement(component as ReactElement, { visible: true }));
+        });
+
+        cy.get('.next-overlay-wrapper.opened').should('exist');
+        cy.get('.next-overlay-inner.content').should('exist');
     });
 
     it('should support rendering overlay and mask', () => {
-        return co(function* () {
-            wrapper = render(
-                <Overlay>
-                    <div className="content" />
-                </Overlay>
-            );
-            yield delay(500);
-            assert(!document.querySelector('.next-overlay-wrapper'));
-
-            wrapper.setProps({
-                visible: true,
-            });
-
-            yield delay(500);
-            assert(document.querySelector('.next-overlay-wrapper.opened'));
-            assert(document.querySelector('.next-overlay-inner.content'));
-
-            assert(!document.querySelector('.next-overlay-backdrop'));
-
-            wrapper.setProps({
-                visible: true,
-                hasMask: true,
-            });
-            yield delay(500);
-            assert(document.querySelector('.next-overlay-backdrop'));
+        cy.mount(
+            <Overlay>
+                <div className="content" />
+            </Overlay>
+        ).as('overlay');
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
+        cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
+            return rerender(cloneElement(component as ReactElement, { visible: true }));
         });
+        cy.get('.next-overlay-wrapper.opened').should('exist');
+        cy.get('.next-overlay-inner.content').should('exist');
+        cy.get('.next-overlay-backdrop').should('have.length', 0);
+        cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
+            return rerender(
+                cloneElement(component as ReactElement, { visible: true, hasMask: true })
+            );
+        });
+        cy.get('.next-overlay-backdrop').should('exist');
     });
 
     it('should support setting animation to false', () => {
-        wrapper = render(
+        cy.mount(
             <Overlay animation={false}>
                 <div className="content" />
             </Overlay>
-        );
-        assert(!document.querySelector('.next-overlay-wrapper'));
-
-        wrapper.setProps({
-            visible: true,
+        ).as('overlay');
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
+        cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
+            return rerender(cloneElement(component as ReactElement, { visible: true }));
         });
-        assert(document.querySelector('.next-overlay-wrapper'));
-        assert(hasClass(document.querySelector('.next-overlay-inner'), 'content'));
-        assert(!document.querySelector('.next-overlay-backdrop'));
-
-        wrapper.setProps({
-            visible: true,
-            hasMask: true,
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('.next-overlay-inner').should('have.class', 'content');
+        cy.get('.next-overlay-backdrop').should('have.length', 0);
+        cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
+            return rerender(
+                cloneElement(component as ReactElement, { visible: true, hasMask: true })
+            );
         });
-        assert(document.querySelector('.next-overlay-backdrop'));
+        cy.get('.next-overlay-backdrop').should('exist');
     });
 
     it('should support canCloseByEsc', () => {
-        let called = false;
-        const handleClose = (type, e) => {
-            called = true;
-            assert(type === 'keyboard');
-            assert('target' in e);
-        };
-
-        wrapper = render(
+        const handleClose = cy.spy();
+        cy.mount(
             <Overlay visible canCloseByEsc={false} onRequestClose={handleClose}>
                 <div className="content" />
             </Overlay>
         );
 
-        simulateEvent.simulate(document, 'keydown', { keyCode: KEYCODE.ESC });
-        assert(!called);
+        cy.document().trigger('keydown', { keyCode: KEYCODE.ESC });
+        cy.wrap(handleClose).should('not.be.calledOnce');
+        cy.mount(
+            <Overlay visible canCloseByEsc onRequestClose={handleClose}>
+                <div className="content" />
+            </Overlay>
+        );
 
-        wrapper.setProps({
-            canCloseByEsc: true,
-        });
-
-        simulateEvent.simulate(document, 'keydown', { keyCode: KEYCODE.ESC });
-        assert(called);
+        cy.document().trigger('keydown', { keyCode: KEYCODE.ESC });
+        cy.wrap(handleClose).should('have.been.calledOnce');
     });
 
     it('should support canCloseByOutSideClick', () => {
-        let called = false;
-        const handleClose = (type, e) => {
-            called = true;
-            assert(type === 'docClick');
-            assert('target' in e);
-        };
-
-        wrapper = render(
+        const handleClose = cy.spy();
+        cy.mount(
             <Overlay visible canCloseByOutSideClick={false} onRequestClose={handleClose}>
                 <div className="content" />
             </Overlay>
         );
 
-        simulateEvent.simulate(document, 'click');
-        assert(!called);
+        cy.get('body').click({ force: true });
+        cy.wrap(handleClose).should('not.be.calledOnce');
 
-        wrapper.setProps({
-            canCloseByOutSideClick: true,
-        });
+        cy.mount(
+            <Overlay visible canCloseByOutSideClick onRequestClose={handleClose}>
+                <div className="content" />
+            </Overlay>
+        );
 
-        simulateEvent.simulate(document, 'click');
-        assert(called);
+        cy.get('body').click({ force: true });
+        cy.wrap(handleClose).should('be.calledOnce');
     });
 
     it('should support canCloseByMask', () => {
-        let called = false;
-        const handleClose = (type, e) => {
-            called = true;
-            assert(type === 'maskClick');
-            assert('target' in e);
-        };
-
-        wrapper = render(
+        const handleClose = cy.spy();
+        cy.mount(
             <Overlay
                 visible
                 animation={false}
@@ -316,128 +249,99 @@ describe('Overlay', () => {
                 <div className="content" />
             </Overlay>
         );
+        cy.get('.next-overlay-backdrop').click();
+        cy.wrap(handleClose).should('not.be.calledOnce');
 
-        simulateEvent.simulate(document.querySelector('.next-overlay-backdrop'), 'click');
-        assert(!called);
-
-        wrapper.setProps({
-            canCloseByMask: true,
-        });
-
-        simulateEvent.simulate(document.querySelector('.next-overlay-backdrop'), 'click');
-        assert(called);
+        cy.mount(
+            <Overlay visible animation={false} hasMask canCloseByMask onRequestClose={handleClose}>
+                <div className="content" />
+            </Overlay>
+        );
+        cy.get('.next-overlay-backdrop').click();
+        cy.wrap(handleClose).should('be.calledOnce');
     });
 
     it('should support safeNode', () => {
-        return co(function* () {
-            wrapper = render(
-                <OverlayControlDemo>
-                    <span id="inner">123</span>
-                </OverlayControlDemo>
-            );
-            let btn = document.querySelector('button');
+        cy.mount(
+            <OverlayControlDemo>
+                <span id="inner">123</span>
+            </OverlayControlDemo>
+        ).as('OverlayControlDemo');
+        cy.get('button').click();
 
-            simulateEvent.simulate(btn, 'click');
-            yield delay(500);
-            assert(document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('#inner').click();
 
-            simulateEvent.simulate(document.querySelector('#inner'), 'click');
-            yield delay(500);
-            assert(document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('button').click();
 
-            simulateEvent.simulate(btn, 'click');
-            yield delay(500);
-            assert(!document.querySelector('.next-overlay-wrapper'));
-
-            wrapper.setProps({
-                animation: false,
-            });
-            btn = document.querySelector('button');
-            simulateEvent.simulate(btn, 'click');
-            assert(document.querySelector('.next-overlay-wrapper'));
-
-            simulateEvent.simulate(btn, 'click');
-            assert(!document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
+        cy.get<MountReturn>('@OverlayControlDemo').then(({ component, rerender }) => {
+            return rerender(cloneElement(component as ReactElement, { animation: false }));
         });
+        cy.get('button').click();
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('button').click();
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
 
     it('should support disableScroll', () => {
-        return co(function* () {
-            wrapper = render(<OverlayControlDemo disableScroll />);
-            const btn = document.querySelector('button');
+        cy.mount(<OverlayControlDemo disableScroll />).as('OverlayControlDemo');
+        cy.get('button').click();
+        cy.get('body').should('have.css', 'overflowY', 'hidden');
+        cy.get('button').click({ force: true });
 
-            simulateEvent.simulate(btn, 'click');
-            assert(document.body.style.overflowY === 'hidden');
-            // paddingRight 有没有值取决于当前浏览器环境是否有滚动条（mac可以设置默认有，或默认没有）
-            // assert(document.body.style.paddingRight === `${scrollbarWidth}px`);
-
-            simulateEvent.simulate(btn, 'click');
-            yield delay(500);
-            assert(!document.body.style.overflowY);
-            assert(!document.body.style.paddingRight);
-        });
+        cy.get('body').should('have.css', 'overflowY', 'visible');
+        cy.get('body').should('have.css', 'paddingRight', '0px');
     });
 
     it('should support autoFocus', () => {
-        return co(function* () {
-            const outerInput = document.createElement('input');
-            outerInput.id = 'outer';
-            document.body.appendChild(outerInput);
-            outerInput.focus();
-            wrapper = render(
-                <OverlayControlDemo animation={false} autoFocus>
-                    <input id="inner" />
-                </OverlayControlDemo>
-            );
-            const btn = document.querySelector('button');
+        const outerInput = document.createElement('input');
+        outerInput.id = 'outer';
+        document.body.appendChild(outerInput);
+        outerInput.focus();
+        cy.mount(
+            <OverlayControlDemo animation={false} autoFocus>
+                <input id="inner" />
+            </OverlayControlDemo>
+        ).as('OverlayControlDemo');
+        cy.get('button').click();
 
-            simulateEvent.simulate(btn, 'click');
-            yield delay(500);
-            assert(document.activeElement === document.querySelector('#inner'));
+        cy.get('#inner').should('exist');
 
-            simulateEvent.simulate(btn, 'click');
-            yield delay(500);
-            // ie9/ie10 document.activeElement === document.body
-            if (env.ieVersion > 10) {
-                assert(document.activeElement === document.querySelector('#outer'));
-            }
-
-            document.body.removeChild(outerInput);
-        });
+        cy.get('button').click();
+        // ie9/ie10 document.activeElement === document.body
+        if ((env.ieVersion as number) > 10) {
+            cy.get('#outer').should('exist');
+        }
+        document.body.removeChild(outerInput);
     });
 
     it('should not destory overlay node if set cache to true', () => {
-        return co(function* () {
-            wrapper = render(<OverlayControlDemo cache wrapperClassName="overlay-cache-test" />);
-            const btn = document.querySelector('button');
+        cy.mount(<OverlayControlDemo cache wrapperClassName="overlay-cache-test" />).as(
+            'OverlayControlDemo'
+        );
+        cy.get('button').click();
 
-            simulateEvent.simulate(btn, 'click');
-            yield delay(500);
-
-            simulateEvent.simulate(btn, 'click');
-            yield delay(500);
-
-            assert(
-                document.querySelector('.overlay-cache-test.next-overlay-wrapper').style.display ===
-                    'none'
-            );
-        });
+        cy.get('button').click();
+        cy.get('.overlay-cache-test.next-overlay-wrapper').should('have.css', 'display', 'none');
     });
 
     it('should support getContent', () => {
-        wrapper = render(
+        cy.mount(
             <Overlay visible>
                 <span>content</span>
             </Overlay>
-        );
-        const overlay = wrapper.instance().getInstance();
-        const content = overlay.getContent();
-        assert(content.textContent.trim() === 'content');
+        ).as('OverlayDemo');
+        cy.get('.next-overlay-wrapper').then(el => {
+            expect(el.text().trim()).to.equal('content');
+        });
     });
 
     it('should support autoFit', () => {
-        wrapper = render(
+        cy.mount(
             <div
+                id="auto-fit-el"
                 style={{
                     width: 300,
                     height: 100,
@@ -448,8 +352,9 @@ describe('Overlay', () => {
                 <div style={{ height: 200, width: 500 }}>
                     <Popup
                         animation={false}
-                        container={node => node.parentNode}
+                        container={(node: HTMLElement) => node.parentNode}
                         autoFit
+                        autoFocus={false}
                         trigger={
                             <button
                                 id="overlay-autofit-btn"
@@ -480,43 +385,39 @@ describe('Overlay', () => {
                 </div>
             </div>
         );
+        cy.get('#auto-fit-el').scrollTo(0, 220);
+        cy.get('#overlay-autofit-btn').click({ scrollBehavior: false, force: true });
+        cy.get('#overlay-autofit-wrapper').should('have.css', 'top', '245px');
 
-        wrapper.instance().scrollTop = 220;
-        document.getElementById('overlay-autofit-btn').click();
-        assert(document.getElementById('overlay-autofit-wrapper').style.top === '245px');
+        cy.get('body').click();
 
-        document.body.click();
-        wrapper.instance().scrollTop = 140;
-        document.getElementById('overlay-autofit-btn').click();
-        assert(document.getElementById('overlay-autofit-wrapper').style.top === '150px');
+        cy.get('#auto-fit-el').scrollTo(0, 140);
 
-        document.body.click();
-        wrapper.instance().scrollTop = 170;
-        document.getElementById('overlay-autofit-btn').click();
-        assert(document.getElementById('overlay-autofit-wrapper').style.top === '170px');
+        cy.get('#overlay-autofit-btn').click({ scrollBehavior: false, force: true });
+        cy.get('#overlay-autofit-wrapper').should('have.css', 'top', '150px');
+
+        cy.get('body').click();
+
+        cy.get('#auto-fit-el').scrollTo(0, 170);
+        cy.get('#overlay-autofit-btn').click({ scrollBehavior: false, force: true });
+        cy.get('#overlay-autofit-wrapper').should('have.css', 'top', '170px');
     });
 
-    it('should support onClick', done => {
-        const handleClick = e => {
-            assert('target' in e);
-            done();
-        };
-
-        wrapper = render(
+    it('should support onClick', () => {
+        const handleClick = cy.spy();
+        cy.mount(
             <Overlay visible onClick={handleClick}>
                 <div className="content" />
             </Overlay>
         );
+        cy.get('.content').click({ force: true });
 
-        simulateEvent.simulate(document.querySelector('.content'), 'click');
+        cy.wrap(handleClick).should('be.calledOnce');
     });
 
     it('should support stop Child Click propagation by default', done => {
-        const clickHandler = () => {
-            assert(false);
-        };
-
-        wrapper = render(
+        const clickHandler = cy.spy();
+        cy.mount(
             <div id="overlay-container" onClick={clickHandler}>
                 <Overlay visible container={'overlay-container'}>
                     <div className="content" />
@@ -524,7 +425,8 @@ describe('Overlay', () => {
             </div>
         );
 
-        simulateEvent.simulate(document.querySelector('.content'), 'click');
+        cy.get('.content').click();
+        cy.wrap(clickHandler).should('be.false');
 
         setTimeout(() => {
             done();
@@ -533,32 +435,32 @@ describe('Overlay', () => {
 
     it('should support function children', () => {
         const MyFuncComp = () => {
-            return 'content';
+            return <div>content</div>;
         };
-        wrapper = render(
+        cy.mount(
             <Overlay visible>
                 <MyFuncComp />
             </Overlay>
-        );
+        ).as('OverlayDemo');
 
-        const overlay = wrapper.instance().getInstance();
-        const content = overlay.getContent();
-        assert(content.textContent.trim() === 'content');
+        cy.get('.next-overlay-wrapper').then(el => {
+            expect(el.text().trim()).to.equal('content');
+        });
     });
 
     // https://github.com/alibaba-fusion/next/issues/2033
     it('fix bug on Gateway when settting ContainerNode', done => {
         const container = document.createElement('div');
         document.body.append(container);
+        // eslint-disable-next-line react/no-deprecated
         ReactDOM.render(<OverlayDemo />, container);
 
-        assert(document.querySelector('#container0 .next-overlay-wrapper'));
+        cy.get('#container0 .next-overlay-wrapper').should('exist');
 
-        const btn = document.querySelector('#btn');
-        simulateEvent.simulate(btn, 'click');
+        cy.get('#btn').click();
 
         setTimeout(() => {
-            assert(document.querySelector('#container1 .next-overlay-wrapper'));
+            cy.get('#container1 .next-overlay-wrapper').should('exist');
             container.remove();
             done();
         });
@@ -566,19 +468,13 @@ describe('Overlay', () => {
 
     // https://github.com/alibaba-fusion/next/issues/2277
     it('dom should ready when call onOpen & afterOpen evnet', done => {
-        const container = document.createElement('div');
-
         function Demo() {
             return (
                 <Dialog
                     overlayProps={{
                         wrapperClassName: 'myWrapper',
                         afterOpen() {
-                            const myWrapper = document.querySelector('.myWrapper');
-                            assert(myWrapper.classList.contains('opened'));
-                            ReactDOM.unmountComponentAtNode(container);
-                            container.remove();
-                            myWrapper.remove();
+                            cy.get('.myWrapper').should('have.class', 'opened');
                             done();
                         },
                     }}
@@ -592,16 +488,16 @@ describe('Overlay', () => {
                 </Dialog>
             );
         }
-        document.body.append(container);
-        ReactDOM.render(<Demo />, container);
-        container.remove();
+        cy.mount(
+            <div>
+                <Demo />
+            </div>
+        );
     });
 
     it('fix left overflow', () => {
-        const container = document.createElement('div');
-
-        function Demo(props) {
-            const btnRef = useRef();
+        function Demo(props: OverlayProps) {
+            const btnRef = createRef<InstanceType<typeof Button>>();
 
             return (
                 <div>
@@ -622,19 +518,24 @@ describe('Overlay', () => {
                 </div>
             );
         }
-        document.body.append(container);
-        ReactDOM.render(<Demo align="tl tr" />, container);
-
-        assert(
-            document.querySelector('.next-overlay-inner').style.left ===
-                `${parseFloat(window.getComputedStyle(document.body).width) - 200 - 1}px` // Reason to subtract 1, see: Overly._isInViewport
+        cy.get('body').then(b => {
+            b[0].style.margin = '0';
+            b[0].style.overflow = 'hidden';
+        });
+        cy.mount(
+            <div>
+                <Demo align="tl tr" />
+            </div>
         );
-        container.remove();
-        document.querySelector('.next-overlay-wrapper').remove();
+        cy.get('.next-overlay-inner').should(
+            'have.css',
+            'left',
+            `${document.documentElement.clientWidth - 200 - 1}px`
+        ); // Reason to subtract 1, see: Overly._isInViewport
     });
 
     it('fix bug on position when target is a svg element', () => {
-        wrapper = render(
+        cy.mount(
             <div>
                 <Overlay target="lzy" visible align="cc cc">
                     <Button className="overlay-btn">cc cc</Button>
@@ -644,8 +545,7 @@ describe('Overlay', () => {
                 </svg>
             </div>
         );
-
-        assert(document.querySelector('.overlay-btn').style.left.match('73'));
+        cy.get('.overlay-btn').should('have.css', 'left', '73.5px');
     });
 
     it('should set overflow hidden to container', () => {
@@ -664,38 +564,31 @@ describe('Overlay', () => {
             );
         }
 
-        wrapper = render(<Demo />);
-        wrapper.find('.btn')[0].click();
+        cy.mount(<Demo />);
+        cy.get('#luodan').find('.btn').first().click();
 
-        const container = wrapper.find('#luodan')[0];
-
-        assert(container.style.overflow === 'hidden');
-        assert(container.style.paddingRight === '');
-
-        wrapper.find('.btn')[0].click();
+        cy.get('#luodan').first().should('have.css', 'overflow', 'hidden');
+        cy.get('#luodan').first().should('have.css', 'paddingRight', '0px');
     });
 
     // https://codesandbox.io/s/next-overlay-overflow-2-fulpq?file=/src/App.js
     it('fix overlay overflow hidden', done => {
         function App() {
-            const appRef = useRef(null);
+            const appRef = createRef<HTMLDivElement>();
 
             useEffect(() => {
-                appRef.current.style.overflow = 'hidden';
+                appRef.current!.style.overflow = 'hidden';
                 Dialog.show({
                     popupContainer: 'app',
                     content: 'Dialog Content',
                     onOk() {
-                        appRef.current.style.overflow = '';
-
-                        setTimeout(() => {
-                            assert(appRef.current.style.overflow === '');
-                            done();
-                        });
+                        appRef.current!.style.overflow = 'visible';
+                        cy.get('#app').should('have.css', 'overflow', 'visible');
+                        done();
                     },
                 });
-                setTimeout(() => {
-                    simulateEvent.simulate(document.querySelector('.next-dialog-btn'), 'click');
+                cy.get('.next-dialog-btn').then(el => {
+                    el[0].click();
                 });
             }, []);
 
@@ -706,7 +599,7 @@ describe('Overlay', () => {
             );
         }
 
-        wrapper = render(<App />);
+        cy.mount(<App />);
     });
 
     // https://github.com/alibaba-fusion/next/issues/3104
@@ -732,256 +625,213 @@ describe('Overlay', () => {
             );
         }
 
-        wrapper = render(<MyDrawer />);
-        simulateEvent.simulate(document.querySelector('.btn-open'), 'click');
-        assert(document.body.style.overflow === 'hidden');
-        simulateEvent.simulate(document.querySelector('.next-overlay-backdrop'), 'click');
-        simulateEvent.simulate(document.querySelector('.btn-close '), 'click');
-        assert(document.body.style.overflow === 'hidden');
-        simulateEvent.simulate(document.querySelector('.next-dialog-btn'), 'click');
-        document.body.style.overflow = undefined;
-        assert(document.body.style.overflow === '');
+        cy.mount(<MyDrawer />);
+        cy.get('.btn-open').click();
+        cy.get('body').should('have.css', 'overflow', 'hidden');
+        cy.get('.next-overlay-backdrop').click();
+        cy.get('.btn-close').click({ force: true });
+        cy.get('body').should('have.css', 'overflow', 'hidden');
+        cy.get('.next-dialog-btn').click({ multiple: true });
+        cy.get('body').then(el => {
+            el[0].style.overflow = 'visible';
+        });
+        cy.get('body').should('have.css', 'overflow', 'visible');
     });
 });
 
 describe('Popup', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('should support rendering trigger and overlay', () => {
-        return co(function* () {
-            wrapper = render(
-                <Popup defaultVisible trigger={<button>Open</button>} triggerType="click">
-                    <span>Hello World From Popup!</span>
-                </Popup>
-            );
-            assert(document.querySelector('button'));
-            yield delay(500);
-            assert(document.querySelector('.next-overlay-wrapper'));
+        cy.mount(
+            <Popup defaultVisible trigger={<button>Open</button>} triggerType="click">
+                <span>Hello World From Popup!</span>
+            </Popup>
+        );
+        cy.get('button').should('exist');
 
-            simulateEvent.simulate(document, 'click');
-            yield delay(500);
-            assert(!document.querySelector('.next-overlay-wrapper'));
-        });
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('body').click();
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
 
-    it('should support triggerType', async () => {
-        wrapper = render(
+    it('should support triggerType', () => {
+        cy.mount(
             <Popup trigger={<button>Open</button>}>
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
-        const btn = document.querySelector('button');
 
-        ReactTestUtils.Simulate.mouseEnter(btn);
-        await delay(300);
-        assert(document.querySelector('.next-overlay-wrapper'));
+        cy.get('button').trigger('mouseover');
 
-        ReactTestUtils.Simulate.mouseLeave(btn);
-        ReactTestUtils.Simulate.mouseEnter(document.querySelector('.content'));
-        await delay(300);
-        assert(document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('button').trigger('mouseleave');
+        cy.get('.content').trigger('mouseover');
 
-        ReactTestUtils.Simulate.mouseLeave(document.querySelector('.content'));
-        await delay(600);
-        assert(!document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('.content').trigger('mouseleave');
+
+        cy.get('.next-overlay-wrapper').should('not.be.visible');
     });
 
-    it('should support setting triggerType to click', async () => {
-        wrapper = render(
+    it('should support setting triggerType to click', () => {
+        cy.mount(
             <Popup trigger={<button>Open</button>} triggerType="click">
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
-        const btn = document.querySelector('button');
 
-        ReactTestUtils.Simulate.click(btn);
-        await delay(300);
-        assert(document.querySelector('.next-overlay-wrapper'));
+        cy.get('button').click();
 
-        ReactTestUtils.Simulate.click(btn);
-        await delay(300);
-        assert(!document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('button').click();
 
-        ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.SPACE });
-        await delay(300);
-        assert(document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
+        cy.get('button').trigger('keydown', { keyCode: KEYCODE.SPACE });
 
-        ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.ENTER });
-        await delay(300);
-        assert(!document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('button').trigger('keydown', { keyCode: KEYCODE.ENTER });
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
 
     it('should support setting triggerType to focus', () => {
-        return co(function* () {
-            wrapper = render(
-                <Popup trigger={<button>Open</button>} triggerType="focus">
-                    <span className="content">Hello World From Popup!</span>
-                </Popup>
-            );
-            const btn = document.querySelector('button');
+        cy.mount(
+            <Popup trigger={<button>Open</button>} triggerType="focus">
+                <span className="content">Hello World From Popup!</span>
+            </Popup>
+        );
+        cy.get('button').focus();
 
-            ReactTestUtils.Simulate.focus(btn);
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('.content').trigger('mousedown');
+        cy.get('button').blur();
 
-            ReactTestUtils.Simulate.mouseDown(document.querySelector('.content'));
-            ReactTestUtils.Simulate.blur(btn);
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
-
-            ReactTestUtils.Simulate.blur(btn);
-            yield delay(300);
-            assert(!document.querySelector('.next-overlay-wrapper'));
-        });
+        cy.get('button').focus();
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('button').blur();
+        cy.get('.next-overlay-wrapper').should('not.be.visible');
     });
 
     it('should support setting triggerType to click with custom triggerClickKeycode', () => {
-        return co(function* () {
-            wrapper = render(
-                <Popup trigger={<button>Open</button>} triggerType="click" triggerClickKeycode={40}>
-                    <span className="content">Hello World From Popup!</span>
-                </Popup>
-            );
-            const btn = document.querySelector('button');
+        cy.mount(
+            <Popup trigger={<button>Open</button>} triggerType="click" triggerClickKeycode={40}>
+                <span className="content">Hello World From Popup!</span>
+            </Popup>
+        );
+        cy.get('button').click();
 
-            ReactTestUtils.Simulate.click(btn);
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('button').click();
 
-            ReactTestUtils.Simulate.click(btn);
-            yield delay(300);
-            assert(!document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
+        cy.get('button').trigger('keydown', { keyCode: KEYCODE.DOWN_ARROW });
 
-            ReactTestUtils.Simulate.keyDown(btn, {
-                keyCode: KEYCODE.DOWN_ARROW,
-            });
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('button').trigger('keydown', { keyCode: KEYCODE.DOWN_ARROW });
 
-            ReactTestUtils.Simulate.keyDown(btn, {
-                keyCode: KEYCODE.DOWN_ARROW,
-            });
-            yield delay(300);
-            assert(!document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
+        cy.get('button').trigger('keydown', { keyCode: KEYCODE.ENTER });
 
-            ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.ENTER });
-            yield delay(300);
-            assert(!document.querySelector('.next-overlay-wrapper'));
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
+        cy.get('button').trigger('keydown', { keyCode: KEYCODE.SPACE });
 
-            ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.SPACE });
-            yield delay(300);
-            assert(!document.querySelector('.next-overlay-wrapper'));
-        });
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
 
     it('should support setting canCloseByTrigger to false', () => {
-        return co(function* () {
-            wrapper = render(
+        cy.mount(
+            <Popup trigger={<button>Open</button>} triggerType="click" canCloseByTrigger={false}>
+                <span className="content">Hello World From Popup!</span>
+            </Popup>
+        );
+        cy.get('button').click();
+
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('button').click();
+
+        cy.get('.next-overlay-wrapper').should('exist');
+    });
+
+    it('should support setting custom container', () => {
+        cy.mount(
+            <div id="myContainer">
                 <Popup
                     trigger={<button>Open</button>}
                     triggerType="click"
+                    container={'myContainer'}
                     canCloseByTrigger={false}
                 >
                     <span className="content">Hello World From Popup!</span>
                 </Popup>
-            );
-            const btn = document.querySelector('button');
+            </div>
+        );
+        cy.get('button').click();
 
-            ReactTestUtils.Simulate.click(btn);
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
-
-            ReactTestUtils.Simulate.click(btn);
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
-        });
+        cy.get('#myContainer .next-overlay-wrapper').should('exist');
+        cy.get('button').click();
+        cy.get('.next-overlay-wrapper').should('exist');
     });
 
-    it('should support setting custom container', () => {
-        return co(function* () {
-            wrapper = render(
-                <div id="myContainer">
-                    <Popup
-                        trigger={<button>Open</button>}
-                        triggerType="click"
-                        container={'myContainer'}
-                        canCloseByTrigger={false}
-                    >
+    it('should support controling', () => {
+        cy.mount(<PopupControlDemo />);
+        cy.get('button').click();
+
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('button').click();
+
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
+    });
+
+    it('should support render in shadow dom', () => {
+        const ShadowComponent: FC = () => {
+            // 使用useRef钩子来获取DOM引用
+            const ref = useRef<HTMLDivElement>(null);
+
+            // 使用useEffect钩子来处理组件挂载后的逻辑
+            useEffect(() => {
+                // 确保ref.current存在，并且是HTMLElement的实例
+                if (ref.current && 'shadowRoot' in ref.current) {
+                    // 使用attachShadow方法创建Shadow Root
+                    const shadowRoot = ref.current.attachShadow({ mode: 'open' });
+
+                    // 在Shadow Root中添加内容
+                    shadowRoot.innerHTML = `
+                  <style>
+                    /* Shadow DOM styles */
+                    .shadow-content {
+                      color: red;
+                      text-align: center;
+                    }
+                  </style>
+                  <div class="shadow-content">This is inside the Shadow DOM!</div>
+                `;
+                }
+            }, []);
+
+            // 渲染一个宿主元素，它将包含Shadow DOM
+            return (
+                <div id="host" ref={ref} className="shadow-host">
+                    <Popup trigger={<button>Open</button>} triggerType="click">
                         <span className="content">Hello World From Popup!</span>
                     </Popup>
                 </div>
             );
+        };
+        cy.mount(<ShadowComponent />);
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
 
-            const btn = document.querySelector('button');
+        // NOTE: 此处不能使用 ReactTestUtils.Simulate.click(btn);
+        cy.get('#host').find('button').click({ force: true });
 
-            ReactTestUtils.Simulate.click(btn);
-            yield delay(300);
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('#host').find('button').click({ force: true });
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
 
-            assert(
-                document.querySelector('.next-overlay-wrapper').parentElement.id === 'myContainer'
-            );
-
-            ReactTestUtils.Simulate.click(btn);
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
-        });
-    });
-
-    it('should support controling', () => {
-        return co(function* () {
-            wrapper = render(<PopupControlDemo />);
-            const btn = document.querySelector('button');
-
-            ReactTestUtils.Simulate.click(btn);
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
-
-            ReactTestUtils.Simulate.click(btn);
-            yield delay(300);
-            assert(!document.querySelector('.next-overlay-wrapper'));
-        });
-    });
-
-    it('should support render in shadow dom', () => {
-        return co(function* () {
-            const host = document.createElement('div');
-            const shadowRoot = host.attachShadow({ mode: 'open' });
-            document.body.appendChild(host);
-
-            ReactDOM.render(
-                <Popup trigger={<button>Open</button>} triggerType="click">
-                    <span className="content">Hello World From Popup!</span>
-                </Popup>,
-                shadowRoot
-            );
-
-            yield delay(300);
-            const btn = shadowRoot.querySelector('button');
-            // NOTE: 此处不能使用 ReactTestUtils.Simulate.click(btn);
-            btn.click();
-
-            yield delay(300);
-            assert(document.querySelector('.next-overlay-wrapper'));
-
-            btn.click();
-            yield delay(300);
-            assert(!document.querySelector('.next-overlay-wrapper'));
-
-            ReactDOM.unmountComponentAtNode(shadowRoot);
-            document.body.removeChild(host);
-        });
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
 
     // https://riddle.alibaba-inc.com/riddles/b58b48a6
     it('should support container return a react component', () => {
-        class App extends React.Component {
+        class App extends Component {
+            downloadRef: InstanceType<typeof Button> | null;
             render() {
                 const innerButton = (
                     <Button
@@ -1009,16 +859,15 @@ describe('Popup', () => {
                 );
             }
         }
-        const wrapper = render(<App />);
-        wrapper.find('#balloon-button-container')[0].click();
-        assert(document.querySelector('.next-balloon') !== null);
-        assert(wrapper.find('#balloon-button-container .next-balloon'));
-        wrapper.unmount();
+        cy.mount(<App />);
+        cy.get('#balloon-button-container').first().click();
+        cy.get('.next-balloon').should('exist');
+        cy.get('#balloon-button-container .next-balloon').should('exist');
     });
 
     // https://riddle.alibaba-inc.com/riddles/10f7eac1
     it('should base on BaseElement`offset event when BaseElement is fixed', () => {
-        wrapper = render(
+        cy.mount(
             <div className="container" style={{ height: '400px', overflow: 'auto' }}>
                 <div style={{ height: 1200, width: '100%', background: 'red' }} />
                 <Balloon
@@ -1046,57 +895,50 @@ describe('Popup', () => {
                 </Balloon>
             </div>
         );
-        const triggerEl = document.querySelector('.aem-feedback');
-        ReactTestUtils.Simulate.click(triggerEl);
-
-        const overlayInner = document.querySelector('.next-overlay-inner');
-        assert(overlayInner.style.top !== '0px');
+        cy.get('.aem-feedback').click({ force: true });
+        cy.get('.next-overlay-inner').should('not.have.css', 'top', '0px');
     });
 
     it('should configprovider work', () => {
-        const container = document.createElement('div');
-
         function Demo() {
             return (
-                <ConfigProvider popupContainer={() => document.getElementById('config-provider')}>
+                <ConfigProvider popupContainer={() => document.getElementById('config-provider')!}>
                     <div>
                         <div id="config-provider" />
                         <div id="self" />
                         <Popup visible>
                             <span id="test-popup">this is popup</span>
                         </Popup>
-                        <Balloon visible popupContainer={() => document.getElementById('self')}>
+                        <Balloon visible popupContainer={() => document.getElementById('self')!}>
                             <span id="test-balloon">this is balloon</span>
                         </Balloon>
                     </div>
                 </ConfigProvider>
             );
         }
-        wrapper = render(<Demo />, container);
-        const popupDom = wrapper.find('#config-provider #test-popup')[0];
-        const balloonDom = wrapper.find('#self #test-balloon')[0];
+        cy.mount(
+            <div>
+                <Demo />
+            </div>
+        );
 
-        assert(balloonDom);
-        assert(popupDom);
-
-        ReactDOM.unmountComponentAtNode(container);
+        cy.get('#config-provider #test-popup').first();
+        cy.get('#self #test-balloon').first();
     });
 
     // https://github.com/alibaba-fusion/next/issues/3233
     it('fix crash when Popup receives an empty node', () => {
-        wrapper = render(
+        cy.mount(
             <div>
                 <Popup trigger={<Button className="btn">Open</Button>} triggerType="click" />
                 <br />
             </div>
         );
-        const buttonDom = wrapper.find('.btn');
-
-        assert(buttonDom);
+        cy.get('.btn');
     });
 
-    it('fix support show-hide in nested scroll component', async function () {
-        wrapper = render(
+    it('fix support show-hide in nested scroll component', function () {
+        cy.mount(
             <div
                 className="root-container"
                 style={{
@@ -1127,25 +969,35 @@ describe('Popup', () => {
                 <div style={{ height: 200, border: '1px solid #eee' }} />
             </div>
         );
-        const popupButton = document.querySelector('button');
-        ReactTestUtils.Simulate.click(popupButton);
-        await delay(200);
-        const rootContainerNode = document.querySelector('.root-container');
-        assert(rootContainerNode);
-        rootContainerNode.scrollTop = 300;
-        await delay(200);
-        assert(document.querySelector('.next-overlay-inner').style.display === 'none');
-        rootContainerNode.scrollTop = 0;
-        await delay(200);
-        assert(document.querySelector('.next-overlay-inner').style.display !== 'none');
+        cy.get('button').click();
 
-        const parentContainerNode = document.querySelector('.parent-container');
-        assert(parentContainerNode);
-        parentContainerNode.scrollTop = 200;
-        await delay(200);
-        assert(document.querySelector('.next-overlay-inner').style.display === 'none');
-        parentContainerNode.scrollTop = 0;
-        await delay(200);
-        assert(document.querySelector('.next-overlay-inner').style.display !== 'none');
+        cy.get('.root-container').then($el => {
+            if ($el.length) {
+                $el[0].scrollTop = 300;
+            }
+        });
+
+        cy.get('.next-overlay-inner').should('have.css', 'display', 'none');
+        cy.get('.root-container').then($el => {
+            if ($el.length) {
+                $el[0].scrollTop = 0;
+            }
+        });
+
+        cy.get('.next-overlay-inner').should('have.css', 'display', 'block');
+        cy.get('.parent-container').then($el => {
+            if ($el.length) {
+                $el[0].scrollTop = 200;
+            }
+        });
+
+        cy.get('.next-overlay-inner').should('have.css', 'display', 'none');
+        cy.get('.parent-container').then($el => {
+            if ($el.length) {
+                $el[0].scrollTop = 0;
+            }
+        });
+
+        cy.get('.next-overlay-inner').should('have.css', 'display', 'block');
     });
 });

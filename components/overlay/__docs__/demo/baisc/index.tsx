@@ -1,15 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Overlay, Button } from '@alifd/next';
 
-class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+class Demo extends Component {
+    state = {
+        visible: false,
+    };
 
-        this.state = {
-            visible: false,
-        };
-    }
+    btn: InstanceType<typeof Button> | null;
 
     onClick = () => {
         this.setState({

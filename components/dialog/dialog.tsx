@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, type ComponentPropsWithRef } from 'react';
 import PropTypes from 'prop-types';
 import Overlay from '../overlay';
 import zhCN from '../locale/zh-cn';
@@ -111,7 +111,7 @@ export default class Dialog extends Component<DialogV1Props> {
         locale: zhCN.Dialog,
         noPadding: false,
     };
-    overlay: Overlay | null;
+    overlay: InstanceType<typeof Overlay> | null;
     private _lastDialogHeight: string | number;
     dialogBodyStyleMaxHeight: string;
     dialogBodyStyleOverflowY: string;
@@ -151,7 +151,7 @@ export default class Dialog extends Component<DialogV1Props> {
             const inner = this.getInner();
             if (inner) {
                 const node = this.getInnerNode();
-                if (this._lastDialogHeight !== _getSize(node, 'height')) {
+                if (this._lastDialogHeight !== _getSize(node!, 'height')) {
                     this.revertSize(inner.bodyNode);
                 }
             }
@@ -164,21 +164,21 @@ export default class Dialog extends Component<DialogV1Props> {
             if (inner) {
                 const node = this.getInnerNode();
 
-                let top = getStyle(node, 'top');
+                let top = getStyle(node!, 'top') as number;
                 const minMargin = this.props.minMargin;
                 if (top < minMargin!) {
-                    top = minMargin;
+                    top = minMargin!;
                     setStyle(node, 'top', `${minMargin}px`);
                 }
 
-                const height = _getSize(node, 'height') as number;
+                const height = _getSize(node!, 'height') as number;
                 const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
                 if (
                     viewportHeight < height + top * 2 - 1 || // 分辨率和精确度的原因 高度计算的时候 可能会有1px内的偏差
                     this.props.height
                 ) {
-                    this.adjustSize(inner, node, Math.min(height, viewportHeight - top * 2));
+                    this.adjustSize(inner, node!, Math.min(height, viewportHeight - top * 2));
                 } else {
                     this.revertSize(inner.bodyNode);
                 }
@@ -247,17 +247,15 @@ export default class Dialog extends Component<DialogV1Props> {
         );
     }
 
-    getOverlayRef(ref: Overlay | null) {
+    getOverlayRef(ref: InstanceType<typeof Overlay> | null) {
         this.overlay = ref;
     }
 
     getInner() {
-        // @ts-expect-error Overlay 尚未 ts 化
         return this.overlay!.getInstance().getContent();
     }
 
     getInnerNode() {
-        // @ts-expect-error Overlay 尚未 ts 化
         return this.overlay!.getInstance().getContentNode();
     }
 
@@ -335,7 +333,7 @@ export default class Dialog extends Component<DialogV1Props> {
                     : closeMode
                 : closeable;
         const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(newCloseable!);
-        const newOverlayProps = {
+        const newOverlayProps: ComponentPropsWithRef<typeof Overlay> = {
             disableScroll: true,
             container: popupContainer,
             cache,
@@ -348,7 +346,7 @@ export default class Dialog extends Component<DialogV1Props> {
             afterClose,
             ...closeConfig,
             canCloseByOutSideClick: false,
-            align: useCSS ? false : align,
+            align: (useCSS ? false : align) as string,
             onRequestClose: onClose,
             needAdjust: false,
             ref: this.getOverlayRef,
