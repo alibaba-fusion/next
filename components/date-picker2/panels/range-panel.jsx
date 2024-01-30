@@ -145,7 +145,7 @@ class RangePanel extends React.Component {
             disabledDate,
             value: [begin, end],
         } = this.props;
-
+        
         const unit = mode2unit(mode);
 
         return (
@@ -328,8 +328,17 @@ class RangePanel extends React.Component {
         });
     };
 
+    checkValueDisabled = (v, mode) => {
+        const disabledDate = this.props.justBeginInput ? this.props.disabledDate : this.disabledDate;
+        return (
+            disabledDate(v.hour(0).minute(0).second(0), mode) &&
+            disabledDate(v.hour(23).minute(59).second(59), mode)
+        );
+    };
+
+
     renderRangeTime = sharedProps => {
-        const { value, prefix, showTime, inputType, timePanelProps = {}, disabledTime } = this.props;
+        const { value, prefix, showTime, inputType, timePanelProps = {}, disabledTime, mode } = this.props;
 
         const className = classnames(`${prefix}range-picker2-panel`, {
             [`${prefix}range-picker2-panel-single`]: this.hasModeChanged,
@@ -346,6 +355,7 @@ class RangePanel extends React.Component {
                 <Calendar
                     panelValue={this.state.panelValue}
                     {...sharedProps}
+                    disabledDate={this.checkValueDisabled}
                     value={value[inputType]}
                     onPanelChange={this.handlePanelChange}
                 />
@@ -356,6 +366,8 @@ class RangePanel extends React.Component {
                         value={value[inputType] || this.state.defaultTime[inputType]}
                         onSelect={this.onTimeSelect}
                         disabledTime={disabledTime}
+                        disabledDate={sharedProps.disabledDate}
+                        panelMode={mode}
                         timePanelProps={{ ..._disabledTime, ...timePanelProps }}
                     />
                 ) : null}

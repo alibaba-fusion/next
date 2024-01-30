@@ -72,6 +72,19 @@ class DatePanel extends React.Component {
         func.invoke(this.props, 'onPanelChange', [v, mode]);
     };
 
+    checkValueDisabled = (v, mode) => {
+        const { showTime, disabledDate, panelMode } = this.props;
+
+        if (showTime && mode === panelMode) {
+            return (
+                disabledDate(v.hour(0).minute(0).second(0), mode) &&
+                disabledDate(v.hour(23).minute(59).second(59), mode)
+            );
+        }
+
+        return disabledDate && disabledDate(v, mode);
+    };
+
     render() {
         const {
             mode,
@@ -109,7 +122,7 @@ class DatePanel extends React.Component {
                     colNum={showTime ? 6 : undefined}
                     onSelect={this.handleSelect}
                     onPanelChange={this.handlePanelChange}
-                    disabledDate={disabledDate}
+                    disabledDate={this.checkValueDisabled}
                     dateCellRender={dateCellRender}
                 />
                 {showTime && mode === panelMode ? (
@@ -119,6 +132,8 @@ class DatePanel extends React.Component {
                         value={value || this.state.defaultTime}
                         onSelect={this.onTimeSelect}
                         disabledTime={disabledTime}
+                        disabledDate={disabledDate}
+                        panelMode={mode}
                         timePanelProps={{ ..._disabledTime, ...timePanelProps }}
                     />
                 ) : null}

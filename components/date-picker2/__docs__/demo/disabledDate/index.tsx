@@ -22,6 +22,13 @@ const disabledDate = function (date, mode) {
     }
 };
 
+const disabledCurrentTime = function (date) {
+    return (
+        date.valueOf() < Number(dayjs('2024-01-22 13:30:10').valueOf()) ||
+        date.valueOf() > Number(dayjs('2024-01-28 18:30:10').valueOf())
+    );
+};
+
 ReactDOM.render(
     <div>
         <DatePicker2 disabledDate={disabledDate} onChange={val => console.log(val)} />
@@ -34,6 +41,13 @@ ReactDOM.render(
         <br />
         <br />
         <RangePicker disabledDate={disabledDate} onChange={val => console.log(val)} />
+        <br />
+        <br />
+        <RangePicker
+            showTime
+            disabledDate={disabledCurrentTime}
+            onChange={val => console.log(val)}
+        />
         <br />
         <br />
     </div>,

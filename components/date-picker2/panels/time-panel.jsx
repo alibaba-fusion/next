@@ -7,6 +7,155 @@ import { func } from '../../util';
 
 const DECADE_TIME_FORMAT = 'HH:mm:ss';
 
+const WithTimePanel = function (WrappedComponent) {
+    return class extends React.Component {
+        static propTypes = {
+            ...WrappedComponent.propTypes,
+            disabledDate: PT.func,
+            panelMode: PT.string,
+        };
+
+        constructor(props) {
+            super(props);
+
+            let _disabledTime = false;
+            if (typeof props.disabledDate === 'function' && !props.value) {
+                _disabledTime = true;
+            }
+
+            this.state = {
+                disabledTime: _disabledTime,
+            };
+        }
+
+        getDisabledStatus = () => {
+            const { value, timePanelProps } = this.props;
+            let disabled = this.state.disabledTime;
+            if (value) {
+                disabled = timePanelProps.disabled ?? false;
+            }
+
+            return disabled;
+        };
+
+        disabledItems = list => index => {
+            return list.indexOf(index) >= 0;
+        };
+
+        getDisabledTime = () => {
+            const { timePanelProps, value, disabledDate, panelMode } = this.props;
+            const { disabledHours, disabledMinutes, disabledSeconds } = timePanelProps;
+
+            if (disabledHours || disabledMinutes || disabledSeconds) {
+                return {
+                    disabledHours,
+                    disabledMinutes,
+                    disabledSeconds,
+                };
+            }
+
+            if (value && typeof disabledDate === 'function') {
+                let newDate = value.clone();
+                const hours = 24;
+                const minutesAndSeconds = 60;
+                const _disabledHours = [];
+                const _disabledMinutes = [];
+                const _disabledSeconds = [];
+                let currentHour = value.get('hour');
+                let currentMinute = value.get('minute');
+
+                for (let i = 0; i < hours; i++) {
+                    // console
+                    //     .log(
+                    //         '=====> ',
+                    //         disabledDate(newDate.hour(i).minute(0).second(0), panelMode),
+                    //         disabledDate(newDate.hour(i).minute(59).second(59), panelMode),
+                    //         newDate.format('YYYY-MM-DD HH:mm:ss'),
+                    //         newDate.hour(i).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'),
+                    //         newDate.hour(i).minute(59).second(59).format('YYYY-MM-DD HH:mm:ss')
+                    //     );
+                        
+                    // 禁用小时
+                    if (
+                        disabledDate(newDate.hour(i).minute(0).second(0), panelMode) &&
+                        disabledDate(newDate.hour(i).minute(59).second(59), panelMode)
+                    ) {
+                        _disabledHours.push(i);
+                    }
+                }
+                // console.log('=====> _disabledHours', _disabledHours);
+                if (_disabledHours.length && _disabledHours.length < hours) {
+                    // 边界处理
+                    while (_disabledHours.indexOf(currentHour) > -1) {
+                        currentHour = (currentHour + 1) % hours;
+                    }
+                    for (let i = 0; i < minutesAndSeconds; i++) {
+                        // 从当前小时开始遍历
+                        if (
+                            disabledDate(
+                                newDate.hour(currentHour).minute(i).second(0),
+                                panelMode
+                            ) &&
+                            disabledDate(newDate.hour(currentHour).minute(i).second(59), panelMode)
+                        ) {
+                            _disabledMinutes.push(i);
+                        }
+                    }
+                }
+                // console.log('=====> _disabledMinutes', _disabledMinutes);
+                if (_disabledMinutes.length && _disabledMinutes.length < minutesAndSeconds) {
+                    // 边界处理
+                    while (_disabledMinutes.indexOf(currentMinute) > -1) {
+                        currentMinute = (currentMinute + 1) % minutesAndSeconds;
+                    }
+                    for (let i = 0; i < minutesAndSeconds; i++) {
+                        // 从当前时分开始遍历
+                        newDate = newDate.hour(currentHour).minute(currentMinute).second(i);
+                        if (disabledDate(newDate, panelMode)) {
+                            _disabledSeconds.push(i);
+                        }
+                    }
+                }
+
+                // 当前选中时间落在禁用区
+                if (disabledDate(value, panelMode)) {
+                    // 边界处理
+                    let currentSecond = value.get('second');
+                    while (_disabledSeconds.indexOf(currentSecond) > -1) {
+                        currentSecond = (currentSecond + 1) % minutesAndSeconds;
+                    }
+                    newDate = newDate.hour(currentHour).minute(currentMinute).second(currentSecond);
+                    func.invoke(this.props, 'onSelect', [newDate]);
+                }
+
+                return {
+                    disabledHours: this.disabledItems(_disabledHours),
+                    disabledMinutes: this.disabledItems(_disabledMinutes),
+                    disabledSeconds: this.disabledItems(_disabledSeconds),
+                };
+            }
+
+            return null;
+        };
+
+        render() {
+            const { timePanelProps, ...rest } = this.props;
+
+            // 开启 disabledDate 属性时，需要提前禁用时分秒
+            // 如果“今天”是属于禁用时间的话，先选时分秒可能导致回填数据与预期不符合
+            const disabled = this.getDisabledStatus();
+            const disabledTime = this.getDisabledTime();
+
+            return (
+                <WrappedComponent
+                    {...rest}
+                    timePanelProps={{ ...timePanelProps, disabled, ...disabledTime }}
+                />
+            );
+        }
+    };
+};
+
 class TimePanel extends React.PureComponent {
     static propTypes = {
         rtl: PT.bool,
@@ -68,9 +217,14 @@ class TimePanel extends React.PureComponent {
         const { showHour, showMinute, showSecond } = this.getShow();
 
         return (
-            <div dir={rtl ? 'rtl' : undefined} className={`${prefix}date-time-picker-wrapper ${prefix}calendar2-panel`}>
+            <div
+                dir={rtl ? 'rtl' : undefined}
+                className={`${prefix}date-time-picker-wrapper ${prefix}calendar2-panel`}
+            >
                 <div className={`${prefix}calendar2-header`}>
-                    <div className={`${prefix}calendar2-header-text-field`}>{value ? this.formater(value) : null}</div>
+                    <div className={`${prefix}calendar2-header-text-field`}>
+                        {value ? this.formater(value) : null}
+                    </div>
                 </div>
                 <TimePickerPanel
                     prefix={prefix}
@@ -87,4 +241,4 @@ class TimePanel extends React.PureComponent {
     }
 }
 
-export default polyfill(TimePanel);
+export default polyfill(WithTimePanel(TimePanel));

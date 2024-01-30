@@ -1128,6 +1128,18 @@ describe('Picker', () => {
             wrapper = mount(<DatePicker state="loading" />);
             assert(wrapper.find('.next-icon-loading').length === 1);
         });
+
+        it('should support prohibit minutes and seconds', () => {
+            const disabledDate = function (date) {
+                return date.valueOf() < Number(moment('2024-01-22 13:30:10').valueOf()) || date.valueOf() > Number(moment('2024-01-28 18:30:10').valueOf())
+            };
+            wrapper = mount( <RangePicker showTime disabledDate={disabledDate} onChange={val => console.log(val)} />);
+            clickDate('2024-01-22 13:30:09');
+            clickOk();
+            clickDate('2024-01-28 18:30:11');
+            clickOk();
+            assert.deepEqual(getStrValue(), [``, ``]);
+        });
     });
 });
 
