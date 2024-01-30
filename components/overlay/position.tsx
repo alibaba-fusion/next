@@ -6,6 +6,7 @@ import { func, dom, events } from '../util';
 import position from './utils/position';
 import findNode from './utils/find-node';
 import { warning } from '../util/log';
+import type { PositionProps } from './types';
 
 const { noop, bindCtx } = func;
 const { getStyle } = dom;
@@ -13,7 +14,7 @@ const place = position.place;
 // Follow react NESTED_UPDATE_LIMIT = 50
 const MAX_UPDATE_COUNT = 50;
 
-export default class Position extends Component {
+export default class Position extends Component<PositionProps> {
     static VIEWPORT = position.VIEWPORT;
 
     static propTypes = {
@@ -43,10 +44,13 @@ export default class Position extends Component {
         shouldUpdatePosition: false,
         rtl: false,
     };
+    resizeObserver: ResizeObserver;
+    shouldUpdatePosition: boolean;
 
     updateCount = 0;
+    resizeTimeout: number;
 
-    constructor(props) {
+    constructor(props: PositionProps) {
         super(props);
 
         bindCtx(this, ['handleResize']);
@@ -63,7 +67,7 @@ export default class Position extends Component {
         }
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: PositionProps) {
         const { props } = this;
 
         if (('align' in props && props.align !== prevProps.align) || props.shouldUpdatePosition) {
@@ -161,13 +165,13 @@ export default class Position extends Component {
                 container,
                 needAdjust,
                 isRtl: rtl,
-            });
+            } as PositionProps);
             const top = getStyle(contentNode, 'top');
             const left = getStyle(contentNode, 'left');
 
             onPosition(
                 {
-                    align: resultAlign.split(' '),
+                    align: resultAlign!.split(' '),
                     top,
                     left,
                 },
@@ -176,9 +180,9 @@ export default class Position extends Component {
         }
     }
 
-    getContentNode() {
+    getContentNode(): null | HTMLElement {
         try {
-            return findDOMNode(this);
+            return findDOMNode(this) as HTMLElement;
         } catch (err) {
             return null;
         }
@@ -193,7 +197,7 @@ export default class Position extends Component {
     handleResize() {
         clearTimeout(this.resizeTimeout);
 
-        this.resizeTimeout = setTimeout(() => {
+        this.resizeTimeout = window.setTimeout(() => {
             this.setPosition();
         }, 200);
     }

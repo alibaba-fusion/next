@@ -20,8 +20,9 @@ import type {
     CascaderSelectState,
     CascaderSelectVisibleChangeType,
 } from './types';
-import type { Popup } from '../overlay';
+import Overlay from '../overlay';
 
+const { Popup } = Overlay;
 const { bindCtx } = func;
 const { pickOthers } = obj;
 const { getStyle } = dom;
@@ -506,9 +507,8 @@ class CascaderSelect extends Component<CascaderSelectProps, CascaderSelectState>
         const { prefix, popupProps } = this.props;
         const { v2 = false } = popupProps;
         if (!v2) {
-            // @ts-expect-error 待 overlay 技术升级完成
-            const dropDownNode = this.popup.getInstance().overlay.getInstance().getContentNode();
-            const cascaderNode = dropDownNode.querySelector(`.${prefix}cascader`) as HTMLElement;
+            const dropDownNode = this.popup.getInstance().overlay!.getInstance().getContentNode();
+            const cascaderNode = dropDownNode!.querySelector(`.${prefix}cascader`) as HTMLElement;
             if (cascaderNode) {
                 this.cascaderHeight = getStyle(cascaderNode, 'height');
             }

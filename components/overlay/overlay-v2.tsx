@@ -1,5 +1,4 @@
-/* istanbul ignore file */
-import React, { useState, useRef, useEffect, cloneElement } from 'react';
+import React, { useState, useRef, useEffect, cloneElement, type ReactElement } from 'react';
 import classNames from 'classnames';
 import Overlay from '@alifd/overlay';
 
@@ -7,7 +6,9 @@ import Animate from '../animate';
 
 import { log } from '../util';
 
-const Overlay2 = props => {
+import type { OverlayV2Props } from './types';
+
+const Overlay2 = (props: OverlayV2Props) => {
     if (!useState || !useRef || !useEffect) {
         log.warning('need react version > 16.8.0');
         return null;
@@ -89,18 +90,18 @@ const Overlay2 = props => {
 
     const wraperCls = classNames({
         [`${prefix}overlay-wrapper v2`]: true,
-        [wrapperClassName]: wrapperClassName,
+        [wrapperClassName!]: wrapperClassName,
         opened: visible,
     });
 
-    const handlePosition = result => {
+    const handlePosition = (result: { config: { points: string[] } }) => {
         // 兼容 1.x, 2.x 可去除这段逻辑
         Object.assign(result, { align: result.config.points });
 
         typeof onPosition === 'function' && onPosition(result);
     };
 
-    const maskRender = node => (
+    const maskRender = (node: ReactElement) => (
         <Animate.OverlayAnimate
             visible={visible}
             animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}
@@ -112,6 +113,7 @@ const Overlay2 = props => {
     );
 
     return (
+        // @ts-expect-error overlay类型导出不是overlay实例， 导致 JSX 元素类型“Overlay”不具有任何构造签名或调用签名。
         <Overlay
             {...others}
             visible={visible}

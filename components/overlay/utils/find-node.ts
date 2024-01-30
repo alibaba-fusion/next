@@ -1,29 +1,33 @@
 import { findDOMNode } from 'react-dom';
+import type { Target } from '../types';
 
-export default function findNode(target, param) {
-    if (!target) {
+export default function findNode<T>(target?: Target<T>, param?: T): Element | Text | null {
+    let realTarget: typeof target | void = target;
+    if (!realTarget) {
         return null;
     }
 
-    if (typeof target === 'string') {
-        return document.getElementById(target);
+    if (typeof realTarget === 'string') {
+        return document.getElementById(realTarget);
     }
 
-    if (typeof target === 'function') {
+    if (typeof realTarget === 'function') {
         try {
-            target = target(param);
+            realTarget = realTarget(param);
         } catch (err) {
-            target = null;
+            realTarget = null;
         }
     }
 
-    if (!target) {
+    if (!realTarget) {
         return null;
     }
 
     try {
-        return findDOMNode(target);
+        // @ts-expect-error realTarget需要判断是否是ReactInstance，还会存在Element Node Text的情况
+        return findDOMNode(realTarget);
     } catch (err) {
-        return target;
+        // @ts-expect-error 这个兜底逻辑十分破坏类型完备
+        return realTarget;
     }
 }

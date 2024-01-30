@@ -1,15 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-    Overlay,
-    Button,
-    Select,
-    Switch,
-    Balloon,
-    DatePicker,
-    DatePicker2,
-    TimePicker2,
-} from '@alifd/next';
+import { Overlay, Select, Balloon, DatePicker2 } from '@alifd/next';
 
 const { Popup } = Overlay;
 const { Tooltip } = Balloon;

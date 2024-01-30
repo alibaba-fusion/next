@@ -99,7 +99,7 @@ class Mask extends React.Component<MessageQuickProps> {
                 prefix={prefix}
                 animation={animation}
                 visible={visible}
-                align={align}
+                align={align as string}
                 offset={offset}
                 hasMask={hasMask}
                 afterClose={afterClose}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Overlay, Button } from '@alifd/next';
+import { Overlay } from '@alifd/next';
 
 const { Popup } = Overlay;
 
@@ -37,7 +37,7 @@ const App = () => {
                 onPosition={result => {
                     const { style } = result;
                     console.log(result);
-                    setPosition(style);
+                    setPosition(style!);
                 }}
             >
                 <button style={{ marginTop: 10 }}>Open1</button>
@@ -47,11 +47,11 @@ const App = () => {
                 cache
                 triggerType="click"
                 overlay={<div style={style}>position: {JSON.stringify(position12)}</div>}
-                container={trigger => trigger.parentNode}
+                container={(trigger: HTMLElement) => trigger.parentNode}
                 onPosition={result => {
                     const { style } = result;
                     console.log(result);
-                    setPosition12(style);
+                    setPosition12(style!);
                 }}
             >
                 <button style={{ marginTop: 10, marginLeft: 20 }}>mount parent node</button>
@@ -65,7 +65,7 @@ const App = () => {
                 onPosition={result => {
                     const { style } = result;
                     console.log(result);
-                    setPosition13(style);
+                    setPosition13(style!);
                 }}
             >
                 <button style={{ marginTop: 10, marginLeft: 20 }}>followTrigger</button>
@@ -76,7 +76,7 @@ const App = () => {
                 triggerType="click"
                 overlay={<div style={style}>position: {JSON.stringify(position2)}</div>}
                 onPosition={({ style }) => {
-                    setPosition2(style);
+                    setPosition2(style!);
                 }}
             >
                 <button style={{ marginTop: 200 }}>Open2</button>

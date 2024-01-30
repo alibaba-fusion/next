@@ -1,13 +1,13 @@
-/* istanbul ignore file */
-import React, { useState, useRef, useEffect, cloneElement } from 'react';
+import React, { useState, useRef, useEffect, cloneElement, type ReactElement } from 'react';
 import classNames from 'classnames';
 import Overlay from '@alifd/overlay';
 
 import Animate from '../animate';
 
 import { log } from '../util';
+import type { AnimationObjectType, PopupProps } from './types';
 
-const Popup = props => {
+const Popup = (props: PopupProps) => {
     if (!useState || !useRef || !useEffect) {
         log.warning('need react version > 16.8.0');
         return null;
@@ -28,14 +28,12 @@ const Popup = props => {
         wrapperClassName,
         triggerClickKeycode,
         align,
-
         beforeOpen,
         onOpen,
         afterOpen,
         beforeClose,
         onClose,
         afterClose,
-
         ...others
     } = props;
 
@@ -55,8 +53,7 @@ const Popup = props => {
             setAnimation(panimation);
         }
     }, [panimation]);
-
-    const handleVisibleChange = (visible, ...args) => {
+    const handleVisibleChange = (visible: boolean, ...args: [string, object]) => {
         if (!('visible' in props)) {
             setVisible(visible);
         }
@@ -115,15 +112,15 @@ const Popup = props => {
         </Animate.OverlayAnimate>
     );
 
-    const handlePosition = result => {
+    const handlePosition = (result: { config: { placement: string; points: string } }) => {
         // 兼容 1.x, 2.x 可去除这段逻辑
         Object.assign(result, { align: result.config.points });
 
         const placement = result.config.placement;
         if (placement && typeof placement === 'string') {
             if (
-                animation.in === 'expandInDown' &&
-                animation.out === 'expandOutUp' &&
+                (animation as AnimationObjectType).in === 'expandInDown' &&
+                (animation as AnimationObjectType).out === 'expandOutUp' &&
                 placement.match(/t/)
             ) {
                 setAnimation({
@@ -131,8 +128,8 @@ const Popup = props => {
                     out: 'expandOutDown',
                 });
             } else if (
-                animation.in === 'expandInUp' &&
-                animation.out === 'expandOutDown' &&
+                (animation as AnimationObjectType).in === 'expandInUp' &&
+                (animation as AnimationObjectType).out === 'expandOutDown' &&
                 placement.match(/b/)
             ) {
                 setAnimation({
@@ -147,17 +144,17 @@ const Popup = props => {
 
     const wraperCls = classNames({
         [`${prefix}overlay-wrapper v2`]: true,
-        [wrapperClassName]: wrapperClassName,
+        [wrapperClassName!]: wrapperClassName,
         opened: visible,
     });
 
     // 兼容
-    const v1Props = {};
+    const v1Props = { points: ['tr', 'tl'] };
     if (align) {
         v1Props.points = align.split(' ');
     }
 
-    const maskRender = node => (
+    const maskRender = (node: ReactElement) => (
         <Animate.OverlayAnimate
             visible={visible}
             animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}

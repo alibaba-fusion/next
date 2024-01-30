@@ -1,8 +1,10 @@
 import type React from 'react';
 import type { CascaderProps, CascaderDataItem, Extra } from '../cascader';
 import type { CommonProps } from '../util';
-import type { Popup } from '../overlay';
+import Overlay from '../overlay';
 import type { SelectProps, VisibleChangeType } from '../select';
+
+const { Popup } = Overlay;
 
 interface HTMLAttributesWeak
     extends Omit<

@@ -1,10 +1,12 @@
 import type React from 'react';
 import type { CommonProps } from '../util';
-import type { Popup } from '../overlay';
+import Overlay from '../overlay';
 import type { MenuProps } from '../menu';
 import type { InputProps } from '../input';
 import type { TagProps } from '../tag';
 import type { Locale } from '../locale/types';
+
+const { Popup } = Overlay;
 
 export type ReactElementWithTypeMark<P = unknown> = React.ReactElement<
     P,

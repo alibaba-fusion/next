@@ -3,8 +3,6 @@ import type { PopupProps } from '../overlay';
 import type { CommonProps } from '../util';
 import type { ComponentLocaleObject } from '../locale/types';
 
-interface HTMLAttributesWeak extends PopupProps {}
-
 /**
  * @api
  */
@@ -14,7 +12,7 @@ export type CloseMode = 'close' | 'mask' | 'esc';
  * @api Drawer
  */
 export interface DrawerV1Props
-    extends Omit<HTMLAttributesWeak, 'content' | 'onClose' | 'title'>,
+    extends Omit<PopupProps, 'content' | 'onClose' | 'title' | 'children'>,
         CommonProps {
     /**
      * [废弃] 同 closeMode, 控制对话框关闭的方式，
@@ -127,6 +125,12 @@ export interface DrawerV1Props
      */
     content?: React.ReactNode;
     /**
+     * 子元素
+     * @skip
+     * @en Child elements
+     */
+    children?: React.ReactNode;
+    /**
      * 渲染组件的容器
      * @en Render component container
      * @remarks
@@ -167,7 +171,7 @@ export interface DrawerV1Props
  * @api Drawer V2
  */
 export interface DrawerV2Props
-    extends Omit<HTMLAttributesWeak, 'content' | 'onClose' | 'title'>,
+    extends Omit<PopupProps, 'content' | 'onClose' | 'title' | 'children'>,
         CommonProps {
     /**
      * [废弃] 同 closeMode, 控制对话框关闭的方式，
@@ -284,6 +288,12 @@ export interface DrawerV2Props
      * @en Content
      */
     content?: React.ReactNode;
+    /**
+     * 子元素
+     * @skip
+     * @en Child elements
+     */
+    children?: React.ReactNode;
     /**
      * 渲染组件的容器
      * @en Render component container
