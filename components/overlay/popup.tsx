@@ -4,14 +4,15 @@ import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
 import { func, KEYCODE } from '../util';
 import Overlay from './overlay';
-
+import { OverlayProps, PopupProps, PopupState } from './types';
+import { AnyFunction } from '../util/func';
 const { noop, makeChain, bindCtx } = func;
 
 /**
  * Overlay.Popup
  * @description 继承 Overlay 的 API，除非特别说明
  * */
-class Popup extends Component {
+class Popup extends Component<PopupProps, PopupState> {
     static propTypes = {
         /**
          * 弹层内容
@@ -61,13 +62,13 @@ class Popup extends Component {
          * 弹层定位的参照元素
          * @default target 属性，即触发元素
          */
-        target: PropTypes.any,
-        safeNode: PropTypes.any,
+        target: PropTypes.element,
+        safeNode: PropTypes.element,
         /**
          * 是否跟随trigger滚动
          */
         followTrigger: PropTypes.bool,
-        container: PropTypes.any,
+        container: PropTypes.element,
         hasMask: PropTypes.bool,
         wrapperStyle: PropTypes.object,
         rtl: PropTypes.bool,
@@ -102,8 +103,14 @@ class Popup extends Component {
         container: () => document.body,
         rtl: false,
     };
+    _mouseNotFirstOnMask: boolean;
+    _isForwardContent: any;
+    overlay: OverlayProps | null;
+    _timer: NodeJS.Timeout | null;
+    _hideTimer: NodeJS.Timeout | null;
+    _showTimer: NodeJS.Timeout | null;
 
-    constructor(props) {
+    constructor(props: PopupProps) {
         super(props);
 
         this.state = {
@@ -126,7 +133,7 @@ class Popup extends Component {
         ]);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: PopupProps, prevState: PopupState) {
         if ('visible' in nextProps) {
             return {
                 ...prevState,
@@ -138,22 +145,24 @@ class Popup extends Component {
     }
 
     componentWillUnmount() {
-        ['_timer', '_hideTimer', '_showTimer'].forEach(time => {
-            this[time] && clearTimeout(this[time]);
-        });
+        ['_timer', '_hideTimer', '_showTimer'].forEach(
+            (time: '_timer' | '_hideTimer' | '_showTimer') => {
+                this[time] && clearTimeout(this[time] as NodeJS.Timeout);
+            }
+        );
     }
 
-    handleVisibleChange(visible, type, e) {
+    handleVisibleChange(visible: boolean, type: string | object, e?: {}) {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
             });
         }
 
-        this.props.onVisibleChange(visible, type, e);
+        this.props.onVisibleChange!(visible, type, e);
     }
 
-    handleTriggerClick(e) {
+    handleTriggerClick(e: {}) {
         if (this.state.visible && !this.props.canCloseByTrigger) {
             return;
         }
@@ -161,7 +170,7 @@ class Popup extends Component {
         this.handleVisibleChange(!this.state.visible, 'fromTrigger', e);
     }
 
-    handleTriggerKeyDown(e) {
+    handleTriggerKeyDown(e: KeyboardEvent) {
         const { triggerClickKeycode } = this.props;
         const keycodes = Array.isArray(triggerClickKeycode)
             ? triggerClickKeycode
@@ -172,7 +181,7 @@ class Popup extends Component {
         }
     }
 
-    handleTriggerMouseEnter(e) {
+    handleTriggerMouseEnter(e: {}) {
         this._mouseNotFirstOnMask = false;
 
         if (this._hideTimer) {
@@ -190,7 +199,7 @@ class Popup extends Component {
         }
     }
 
-    handleTriggerMouseLeave(e, type) {
+    handleTriggerMouseLeave(e: {}, type: string | object) {
         if (this._showTimer) {
             clearTimeout(this._showTimer);
             this._showTimer = null;
@@ -202,11 +211,11 @@ class Popup extends Component {
         }
     }
 
-    handleTriggerFocus(e) {
+    handleTriggerFocus(e: {}) {
         this.handleVisibleChange(true, 'fromTrigger', e);
     }
 
-    handleTriggerBlur(e) {
+    handleTriggerBlur(e: {}) {
         if (!this._isForwardContent) {
             this.handleVisibleChange(false, 'fromTrigger', e);
         }
@@ -218,16 +227,16 @@ class Popup extends Component {
     }
 
     handleContentMouseEnter() {
-        clearTimeout(this._hideTimer);
+        clearTimeout(this._hideTimer as NodeJS.Timeout);
     }
 
-    handleContentMouseLeave(e) {
+    handleContentMouseLeave(e: {}) {
         this.handleTriggerMouseLeave(e, 'fromContent');
     }
 
     handleMaskMouseEnter() {
         if (!this._mouseNotFirstOnMask) {
-            clearTimeout(this._hideTimer);
+            clearTimeout(this._hideTimer as NodeJS.Timeout);
             this._hideTimer = null;
             this._mouseNotFirstOnMask = false;
         }
@@ -237,7 +246,7 @@ class Popup extends Component {
         this._mouseNotFirstOnMask = true;
     }
 
-    handleRequestClose(type, e) {
+    handleRequestClose(type: string | object, e: {}) {
         this.handleVisibleChange(false, type, e);
     }
 
@@ -247,6 +256,8 @@ class Popup extends Component {
             key: 'trigger',
             'aria-haspopup': true,
             'aria-expanded': this.state.visible,
+        } as {
+            [key: string]: string | boolean | AnyFunction<unknown> | undefined;
         };
 
         if (!this.state.visible) {
@@ -284,10 +295,12 @@ class Popup extends Component {
     renderContent() {
         const { children, triggerType } = this.props;
         const triggerTypes = Array.isArray(triggerType) ? triggerType : [triggerType];
-        const content = Children.only(children);
+        const content = Children.only(children) as React.ReactElement;
         const { onMouseDown, onMouseEnter, onMouseLeave } = content.props;
         const props = {
             key: 'portal',
+        } as {
+            [key: string]: string | AnyFunction<unknown>;
         };
 
         triggerTypes.forEach(triggerType => {
@@ -318,7 +331,7 @@ class Popup extends Component {
         const newWrapperStyle = wrapperStyle || {};
 
         if (followTrigger) {
-            container = trigger => (trigger && trigger.parentNode) || trigger;
+            container = (trigger: HTMLElement) => (trigger && trigger.parentNode) || trigger;
             newWrapperStyle.position = 'relative';
         }
 
@@ -337,11 +350,11 @@ class Popup extends Component {
                 container={container}
                 safeNode={safeNodes}
                 wrapperStyle={newWrapperStyle}
-                triggerType={triggerType}
+                triggerType={triggerType as string}
                 hasMask={hasMask}
                 onRequestClose={this.handleRequestClose}
             >
-                {this.props.children && this.renderContent()}
+                {(this.props.children as HTMLElement) && this.renderContent()}
             </Overlay>
         );
     }

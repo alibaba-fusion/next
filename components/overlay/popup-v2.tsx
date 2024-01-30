@@ -6,8 +6,10 @@ import Overlay from '@alifd/overlay';
 import Animate from '../animate';
 
 import { log } from '../util';
+import { PopupProps } from './types';
+import { string } from 'yargs';
 
-const Popup = props => {
+const Popup = (props: PopupProps) => {
     if (!useState || !useRef || !useEffect) {
         log.warning('need react version > 16.8.0');
         return null;
@@ -55,8 +57,7 @@ const Popup = props => {
             setAnimation(panimation);
         }
     }, [panimation]);
-
-    const handleVisibleChange = (visible, ...args) => {
+    const handleVisibleChange = (visible: boolean, ...args: [string, object]) => {
         if (!('visible' in props)) {
             setVisible(visible);
         }
@@ -65,7 +66,7 @@ const Popup = props => {
     };
 
     const triggerNode = overlay ? children : trigger;
-    let overlayNode = overlay ? overlay : children;
+    let overlayNode = overlay ? overlay : (children as React.ReactElement);
 
     const handleEnter = () => {
         markAnimationEnd(false);
@@ -102,11 +103,13 @@ const Popup = props => {
             style={style}
         >
             {overlayNode ? (
-                cloneElement(overlayNode, {
+                cloneElement(overlayNode as React.ReactElement, {
                     className: classNames([
                         `${prefix}overlay-inner`,
                         className,
-                        overlayNode && overlayNode.props && overlayNode.props.className,
+                        overlayNode &&
+                            (overlayNode as React.ReactElement).props &&
+                            (overlayNode as React.ReactElement).props.className,
                     ]),
                 })
             ) : (
@@ -115,7 +118,7 @@ const Popup = props => {
         </Animate.OverlayAnimate>
     );
 
-    const handlePosition = result => {
+    const handlePosition = (result: { config: { placement: string; points: string } }) => {
         // 兼容 1.x, 2.x 可去除这段逻辑
         Object.assign(result, { align: result.config.points });
 
@@ -147,17 +150,19 @@ const Popup = props => {
 
     const wraperCls = classNames({
         [`${prefix}overlay-wrapper v2`]: true,
-        [wrapperClassName]: wrapperClassName,
+        [wrapperClassName as string]: wrapperClassName,
         opened: visible,
     });
 
     // 兼容
-    const v1Props = {};
+    const v1Props = { points: ['tr', 'tl'] };
     if (align) {
-        v1Props.points = align.split(' ');
+        v1Props.points = (align as string).split(' ');
     }
 
-    const maskRender = node => (
+    const maskRender = (
+        node: React.ReactElement<any, string | React.JSXElementConstructor<any>>
+    ) => (
         <Animate.OverlayAnimate
             visible={visible}
             animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}

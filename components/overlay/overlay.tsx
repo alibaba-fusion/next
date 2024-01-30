@@ -1,4 +1,4 @@
-import React, { Children, Component } from 'react';
+import React, { Children, Component, ReactNode } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -8,17 +8,18 @@ import overlayManager from './manager';
 import Gateway from './gateway';
 import Position from './position';
 import findNode from './utils/find-node';
+import { OverlayProps, OverlayState } from './types';
 
 const { saveLastFocusNode, getFocusNodeList, backLastFocusNode } = focus;
 const { makeChain, noop, bindCtx } = func;
 
-const getContainerNode = props => {
+const getContainerNode = (props: OverlayProps) => {
     const targetNode = findNode(props.target);
-    return findNode(props.container, targetNode);
+    return findNode(props.container, targetNode as HTMLElement);
 };
 
 const prefixes = ['-webkit-', '-moz-', '-o-', 'ms-', ''];
-const getStyleProperty = (node, name) => {
+const getStyleProperty = (node: HTMLElement, name: string) => {
     const style = window.getComputedStyle(node);
     let ret = '';
     for (let i = 0; i < prefixes.length; i++) {
@@ -31,12 +32,14 @@ const getStyleProperty = (node, name) => {
 };
 
 // 存 containerNode 信息
-const containerNodeList = [];
+const containerNodeList = [] as Array<
+    HTMLElement | { [key: string]: string } | { containerNode: HTMLElement } | CSSPropertyRule
+>;
 
 /**
  * Overlay
  */
-class Overlay extends Component {
+class Overlay extends Component<OverlayProps, OverlayState> {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -46,7 +49,7 @@ class Overlay extends Component {
         /**
          * 弹层内容
          */
-        children: PropTypes.any,
+        children: PropTypes.element,
         /**
          * 是否显示弹层
          */
@@ -60,7 +63,7 @@ class Overlay extends Component {
         /**
          * 弹层定位的参照元素
          */
-        target: PropTypes.any,
+        target: PropTypes.element,
         /**
          * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
          */
@@ -73,7 +76,7 @@ class Overlay extends Component {
         /**
          * 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点
          */
-        container: PropTypes.any,
+        container: PropTypes.element,
         /**
          * 是否显示遮罩
          */
@@ -149,7 +152,7 @@ class Overlay extends Component {
         /**
          * 安全节点，当点击 document 的时候，如果包含该节点则不会关闭弹层，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组
          */
-        safeNode: PropTypes.any,
+        safeNode: PropTypes.array,
         /**
          * 弹层的根节点的样式类
          */
@@ -210,17 +213,44 @@ class Overlay extends Component {
         disableScroll: false,
         cache: false,
         isChildrenInMask: false,
-        onTouchEnd: event => {
+        onTouchEnd: (event: Event) => {
             event.stopPropagation();
         },
-        onClick: event => event.stopPropagation(),
+        onClick: (event: Event) => event.stopPropagation(),
         maskClass: '',
         useCapture: true,
     };
+    lastAlign: string | boolean | undefined;
+    timeoutMap: { [key: string]: NodeJS.Timeout };
+    _isMounted: boolean;
+    _isDestroyed: boolean;
+    focusTimeout: NodeJS.Timeout;
+    _animation: { off: () => void } | null;
+    _containerNode: HTMLElement | undefined;
+    _hasFocused: boolean;
+    contentRef: HTMLElement;
+    gatewayRef: HTMLElement | HTMLDivElement | React.ReactNode | null;
+    _keydownEvents: {
+        /**
+         * 弹层内容
+         */
+        off: () => void;
+    } | null;
+    _clickEvents: {
+        /**
+         * 弹层内容
+         */
+        off: () => void;
+    } | null;
+    _touchEvents: {
+        /**
+         * 弹层内容
+         */
+        off: () => void;
+    } | null;
 
-    constructor(props) {
+    constructor(props: OverlayProps) {
         super(props);
-
         this.lastAlign = props.align;
 
         bindCtx(this, [
@@ -244,14 +274,14 @@ class Overlay extends Component {
         this.timeoutMap = {};
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: OverlayProps, prevState: OverlayState) {
         const willOpen = !prevState.visible && nextProps.visible;
         const willClose = prevState.visible && !nextProps.visible;
 
         const nextState = {
             willOpen,
             willClose,
-        };
+        } as OverlayState;
 
         if (willOpen) {
             nextProps.beforeOpen && nextProps.beforeOpen();
@@ -273,7 +303,7 @@ class Overlay extends Component {
                 nextState.status = 'leaving';
             }
         } else if ('visible' in nextProps && nextProps.visible !== prevState.visible) {
-            nextState.visible = nextProps.visible;
+            nextState.visible = nextProps.visible as boolean;
         }
 
         return nextState;
@@ -296,7 +326,7 @@ class Overlay extends Component {
         overlayManager.addOverlay(this);
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: OverlayProps) {
         if (this.state.willOpen) {
             this.beforeOpen();
         } else if (this.state.willClose) {
@@ -314,7 +344,7 @@ class Overlay extends Component {
         const willOpen = !prevProps.visible && this.props.visible;
         const willClose = prevProps.visible && !this.props.visible;
 
-        (willOpen || willClose) && this.doAnimation(willOpen, willClose);
+        (willOpen || willClose) && this.doAnimation(willOpen as boolean, willClose as boolean);
     }
 
     componentWillUnmount() {
@@ -332,7 +362,7 @@ class Overlay extends Component {
         this.beforeClose();
     }
 
-    doAnimation(open, close) {
+    doAnimation(open: boolean, close: boolean) {
         if (this.state.animation && support.animation) {
             if (open) {
                 this.onEntering();
@@ -344,22 +374,22 @@ class Overlay extends Component {
             if (open) {
                 // fix https://github.com/alibaba-fusion/next/issues/1901
                 setTimeout(() => {
-                    this.props.onOpen();
+                    this.props.onOpen!();
                     dom.addClass(this.getWrapperNode(), 'opened');
                     overlayManager.addOverlay(this);
-                    this.props.afterOpen();
+                    this.props.afterOpen!();
                 });
             } else if (close) {
-                this.props.onClose();
+                this.props.onClose!();
                 dom.removeClass(this.getWrapperNode(), 'opened');
                 overlayManager.removeOverlay(this);
-                this.props.afterClose();
+                this.props.afterClose!();
             }
             this.setFocusNode();
         }
     }
 
-    getAnimation(props) {
+    getAnimation(props: OverlayProps) {
         if (props.animation === false) {
             return false;
         }
@@ -371,8 +401,8 @@ class Overlay extends Component {
         return this.getAnimationByAlign(props.align);
     }
 
-    getAnimationByAlign(align) {
-        switch (align[0]) {
+    getAnimationByAlign(align: Array<string> | string | boolean | undefined) {
+        switch ((align as Array<string>)[0]) {
             case 't':
                 return {
                     // 为了防止有的用户 js升级了而css没升级，所以把两个动画都保留了。
@@ -396,13 +426,13 @@ class Overlay extends Component {
 
     addAnimationEvents() {
         setTimeout(() => {
-            const node = this.getContentNode();
+            const node = this.getContentNode() as HTMLElement;
             if (node) {
                 const id = guid();
 
                 this._animation = events.on(
                     node,
-                    support.animation.end,
+                    (support.animation as { end: string }).end,
                     this.handleAnimateEnd.bind(this, id)
                 );
 
@@ -422,7 +452,7 @@ class Overlay extends Component {
         });
     }
 
-    handlePosition(config) {
+    handlePosition(config: { align: Array<string> }) {
         const align = config.align.join(' ');
 
         if (!('animation' in this.props) && this.props.needAdjust && this.lastAlign !== align) {
@@ -441,7 +471,7 @@ class Overlay extends Component {
         this.lastAlign = align;
     }
 
-    handleAnimateEnd(id) {
+    handleAnimateEnd(id: string) {
         if (this.timeoutMap[id]) {
             clearTimeout(this.timeoutMap[id]);
         }
@@ -483,34 +513,36 @@ class Overlay extends Component {
         setTimeout(() => {
             const wrapperNode = this.getWrapperNode();
             dom.addClass(wrapperNode, 'opened');
-            this.props.onOpen();
+            this.props.onOpen!();
         });
     }
 
     onLeaving() {
         const wrapperNode = this.getWrapperNode();
         dom.removeClass(wrapperNode, 'opened');
-        this.props.onClose();
+        this.props.onClose!();
     }
 
     onEntered() {
         overlayManager.addOverlay(this);
         this.setFocusNode();
-        this.props.afterOpen();
+        this.props.afterOpen!();
     }
 
     onLeaved() {
         overlayManager.removeOverlay(this);
         this.setFocusNode();
-        this.props.afterClose();
+        this.props.afterClose!();
     }
 
     beforeOpen() {
         if (this.props.disableScroll) {
             const containerNode = getContainerNode(this.props) || document.body;
-            const { overflow, paddingRight } = containerNode.style;
+            const { overflow, paddingRight } = (containerNode as HTMLDivElement).style;
 
-            const cnInfo = containerNodeList.find(m => m.containerNode === containerNode) || {
+            const cnInfo = containerNodeList.find(
+                m => (m as { containerNode: HTMLElement }).containerNode === containerNode
+            ) || {
                 containerNode,
                 count: 0,
             };
@@ -519,35 +551,42 @@ class Overlay extends Component {
              * container 节点初始状态已经是 overflow=hidden 则忽略
              * See {@link https://codesandbox.io/s/next-overlay-overflow-2-fulpq?file=/src/App.js}
              */
-            if (cnInfo.count === 0 && overflow !== 'hidden') {
+            if ((cnInfo as { count: number }).count === 0 && overflow !== 'hidden') {
                 const style = {
                     overflow: 'hidden',
-                };
+                } as CSSStyleDeclaration;
 
-                cnInfo.overflow = overflow;
+                (cnInfo as { overflow: string }).overflow = overflow;
 
-                if (dom.hasScroll(containerNode)) {
-                    cnInfo.paddingRight = paddingRight;
-                    style.paddingRight = `${dom.getStyle(containerNode, 'paddingRight') + dom.scrollbar().width}px`;
+                if (dom.hasScroll(containerNode as HTMLElement)) {
+                    (cnInfo as { paddingRight: string }).paddingRight = paddingRight;
+                    style.paddingRight = `${((dom.getStyle(containerNode as HTMLElement, 'paddingRight') as string) + dom.scrollbar().width) as string}px`;
                 }
 
-                dom.setStyle(containerNode, style);
-                containerNodeList.push(cnInfo);
-                cnInfo.count++;
-            } else if (cnInfo.count) {
-                cnInfo.count++;
+                dom.setStyle(containerNode as HTMLElement, style);
+                containerNodeList.push(cnInfo as HTMLElement);
+                (cnInfo as { containerNode: Element | Text; count: number }).count++;
+            } else if ((cnInfo as { containerNode: Element | Text; count: number }).count) {
+                (cnInfo as { containerNode: Element | Text; count: number }).count++;
             }
 
-            this._containerNode = containerNode;
+            this._containerNode = containerNode as HTMLElement;
         }
     }
 
     beforeClose() {
         if (this.props.disableScroll) {
-            const idx = containerNodeList.findIndex(cn => cn.containerNode === this._containerNode);
+            const idx = containerNodeList.findIndex(
+                (cn: { containerNode: HTMLElement }) => cn.containerNode === this._containerNode
+            );
 
             if (idx !== -1) {
-                const cnInfo = containerNodeList[idx];
+                const cnInfo = containerNodeList[idx] as {
+                    containerNode: HTMLElement;
+                    count: number;
+                    overflow: string;
+                    paddingRight: string;
+                };
                 const { overflow, paddingRight } = cnInfo;
 
                 // 最后一个 overlay 的时候再将样式重置回去
@@ -559,7 +598,7 @@ class Overlay extends Component {
                 ) {
                     const style = {
                         overflow,
-                    };
+                    } as CSSStyleDeclaration;
 
                     if (paddingRight !== undefined) {
                         style.paddingRight = paddingRight;
@@ -588,9 +627,9 @@ class Overlay extends Component {
             // 这个时候很可能上一个弹层的关闭事件还未触发，导致焦点已经回到触发的元素
             // 这里延时处理一下，延时的时间为 document.click 捕获触发的延时时间
             this.focusTimeout = setTimeout(() => {
-                const node = this.getContentNode();
+                const node = this.getContentNode() as HTMLElement;
                 if (node) {
-                    const focusNodeList = getFocusNodeList(node);
+                    const focusNodeList = getFocusNodeList(node) as HTMLElement[];
                     if (focusNodeList.length) {
                         focusNodeList[0].focus();
                     }
@@ -616,13 +655,20 @@ class Overlay extends Component {
     }
 
     getWrapperNode() {
-        return this.gatewayRef ? this.gatewayRef.getChildNode() : null;
+        return this.gatewayRef
+            ? (
+                  this.gatewayRef as {
+                      getChildNode: () => HTMLElement;
+                  }
+              ).getChildNode()
+            : null;
     }
 
     /**
      * document global event
      */
     addDocumentEvents() {
+        // FIXME: canCloseByEsc、canCloseByOutSideClick、canCloseByMask仅在didMount时生效，update时不生效
         const { useCapture } = this.props;
         // use capture phase listener to be compatible with react17
         // https://reactjs.org/blog/2020/08/10/react-v17-rc.html#fixing-potential-issues
@@ -647,38 +693,44 @@ class Overlay extends Component {
     }
 
     removeDocumentEvents() {
-        ['_keydownEvents', '_clickEvents', '_touchEvents'].forEach(event => {
-            if (this[event]) {
-                this[event].off();
-                this[event] = null;
+        ['_keydownEvents', '_clickEvents', '_touchEvents'].forEach(
+            (event: '_keydownEvents' | '_clickEvents' | '_touchEvents') => {
+                if (this[event]) {
+                    (
+                        this[event] as {
+                            off: () => void;
+                        }
+                    ).off();
+                    this[event] = null;
+                }
             }
-        });
+        );
     }
 
-    handleDocumentKeyDown(e) {
+    handleDocumentKeyDown(e: KeyboardEvent) {
         if (
             this.state.visible &&
             e.keyCode === KEYCODE.ESC &&
             overlayManager.isCurrentOverlay(this)
         ) {
-            this.props.onRequestClose('keyboard', e);
+            this.props.onRequestClose!('keyboard', e);
         }
     }
 
-    isInShadowDOM(node) {
+    isInShadowDOM(node: HTMLElement) {
         return node.getRootNode ? node.getRootNode().nodeType === 11 : false;
     }
 
-    getEventPath(event) {
+    getEventPath(event: Event | { path: string }) {
         // 参考 https://github.com/spring-media/react-shadow-dom-retarget-events/blob/master/index.js#L29
         return (
-            event.path ||
-            (event.composedPath && event.composedPath()) ||
-            this.composedPath(event.target)
+            (event as { path: string }).path ||
+            ((event as Event).composedPath && (event as Event).composedPath()) ||
+            this.composedPath((event as Event).target as HTMLElement)
         );
     }
 
-    composedPath(el) {
+    composedPath(el: HTMLElement | null) {
         const path = [];
         while (el) {
             path.push(el);
@@ -691,55 +743,56 @@ class Overlay extends Component {
         }
     }
 
-    matchInShadowDOM(node, e) {
+    matchInShadowDOM(node: HTMLElement, e: Event) {
         if (this.isInShadowDOM(node)) {
             // Shadow DOM 环境中，触发点击事件，监听 document click 事件获得的事件源
             // 并非实际触发的 dom 节点，而是 Shadow DOM 的 host 节点
             // 进而会导致如 Select 组件的下拉弹层打开后立即关闭等问题
             // 因此额外增加 node 和 eventPath 的判断
-            const eventPath = this.getEventPath(e);
-            return node === eventPath[0] || node.contains(eventPath[0]);
+            const eventPath = this.getEventPath(e) as EventTarget[];
+            return node === eventPath[0] || node.contains(eventPath[0] as HTMLElement);
         }
 
         return false;
     }
 
-    handleDocumentClick(e) {
+    handleDocumentClick(e: Event) {
         if (this.state.visible) {
             const { safeNode } = this.props;
             const safeNodes = Array.isArray(safeNode) ? [...safeNode] : [safeNode];
             safeNodes.unshift(() => this.getWrapperNode());
 
             for (let i = 0; i < safeNodes.length; i++) {
-                const node = findNode(safeNodes[i], this.props);
+                const node = findNode(safeNodes[i], this.props as Element);
                 // HACK: 如果触发点击的节点是弹层内部的节点，并且在被点击后立即销毁，那么此时无法使用 node.contains(e.target)
                 // 来判断此时点击的节点是否是弹层内部的节点，额外判断
                 if (
                     node &&
                     (node === e.target ||
-                        node.contains(e.target) ||
-                        this.matchInShadowDOM(node, e) ||
-                        (e.target !== document && !document.documentElement.contains(e.target)))
+                        node.contains(e.target as HTMLElement) ||
+                        this.matchInShadowDOM(node as HTMLElement, e) ||
+                        (e.target !== document &&
+                            !document.documentElement.contains(e.target as HTMLElement)))
                 ) {
                     return;
                 }
             }
 
-            this.props.onRequestClose('docClick', e);
+            this.props.onRequestClose!('docClick', e);
         }
     }
 
-    handleMaskClick(e) {
+    handleMaskClick(e: React.MouseEvent<Element>) {
         if (e.currentTarget === e.target && this.props.canCloseByMask) {
-            this.props.onRequestClose('maskClick', e);
+            this.props.onRequestClose!('maskClick', e);
         }
     }
 
-    saveContentRef = ref => {
+    saveContentRef = (ref: HTMLDivElement) => {
         this.contentRef = ref;
     };
 
-    saveGatewayRef = ref => {
+    saveGatewayRef: React.LegacyRef<any> | undefined = ref => {
         this.gatewayRef = ref;
     };
 
@@ -788,7 +841,7 @@ class Overlay extends Component {
                 [animation.in]: status === 'entering' || status === 'mounting',
                 [animation.out]: status === 'leaving',
                 [child.props.className]: !!child.props.className,
-                [className]: !!className,
+                [className as string]: !!className,
             });
             if (typeof child.ref === 'string') {
                 throw new Error('Can not set ref by string in Overlay, use function instead.');
@@ -836,7 +889,7 @@ class Overlay extends Component {
 
             const maskClazz = classnames({
                 [`${prefix}overlay-backdrop`]: true,
-                [maskClass]: !!maskClass,
+                [maskClass as string]: !!maskClass,
             });
 
             children = (
@@ -857,7 +910,12 @@ class Overlay extends Component {
             );
         }
 
-        return <Gateway {...{ container, target, children }} ref={this.saveGatewayRef} />;
+        return (
+            <Gateway
+                {...{ container, target, children }}
+                ref={this.saveGatewayRef as React.LegacyRef<any>}
+            />
+        );
     }
 }
 

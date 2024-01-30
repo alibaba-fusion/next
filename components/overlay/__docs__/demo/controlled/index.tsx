@@ -1,11 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Overlay, Button } from '@alifd/next';
+import { PopupProps, PopupState } from '../../../types';
+import { ButtonProps } from '@alifd/meet-react/lib/button';
 
 const { Popup } = Overlay;
 
-class Demo extends React.Component {
-    constructor(props) {
+interface DemoState {
+    visible?: boolean;
+    groupVisible?: boolean;
+}
+
+class Demo extends React.Component<PopupProps, DemoState> {
+    btn1: ButtonProps;
+    btn2: ButtonProps;
+    overlay1: HTMLSpanElement;
+    overlay2: HTMLSpanElement;
+
+    constructor(props: PopupProps) {
         super(props);
 
         this.state = {
@@ -13,13 +25,13 @@ class Demo extends React.Component {
         };
     }
 
-    onVisibleChange = visible => {
+    onVisibleChange = (visible: boolean) => {
         this.setState({
             visible,
         });
     };
 
-    onGroupVisibleChange = groupVisible => {
+    onGroupVisibleChange = (groupVisible: boolean) => {
         this.setState({
             groupVisible,
         });
@@ -47,7 +59,7 @@ class Demo extends React.Component {
                             <Button
                                 style={{ marginRight: '50px' }}
                                 ref={ref => {
-                                    this.btn1 = ref;
+                                    this.btn1 = ref as ButtonProps;
                                 }}
                             >
                                 Paired Popup 1
@@ -61,7 +73,7 @@ class Demo extends React.Component {
                         <span
                             className="overlay-demo"
                             ref={ref => {
-                                this.overlay1 = ref;
+                                this.overlay1 = ref as HTMLSpanElement;
                             }}
                         >
                             Hello World From Popup!
@@ -72,7 +84,7 @@ class Demo extends React.Component {
                         trigger={
                             <Button
                                 ref={ref => {
-                                    this.btn2 = ref;
+                                    this.btn2 = ref as ButtonProps;
                                 }}
                             >
                                 Paired Popup 2
@@ -86,7 +98,7 @@ class Demo extends React.Component {
                         <span
                             className="overlay-demo"
                             ref={ref => {
-                                this.overlay2 = ref;
+                                this.overlay2 = ref as HTMLSpanElement;
                             }}
                         >
                             Hello World From Popup!

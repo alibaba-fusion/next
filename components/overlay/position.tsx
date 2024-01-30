@@ -7,19 +7,20 @@ import position from './utils/position';
 import findNode from './utils/find-node';
 import { warning } from '../util/log';
 
+import { PositionProps } from './types';
 const { noop, bindCtx } = func;
 const { getStyle } = dom;
 const place = position.place;
 // Follow react NESTED_UPDATE_LIMIT = 50
 const MAX_UPDATE_COUNT = 50;
 
-export default class Position extends Component {
+export default class Position extends Component<PositionProps> {
     static VIEWPORT = position.VIEWPORT;
 
     static propTypes = {
         children: PropTypes.node,
-        target: PropTypes.any,
-        container: PropTypes.any,
+        target: PropTypes.element,
+        container: PropTypes.element,
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         offset: PropTypes.array,
         beforePosition: PropTypes.func,
@@ -43,10 +44,12 @@ export default class Position extends Component {
         shouldUpdatePosition: false,
         rtl: false,
     };
+    resizeObserver: ResizeObserver;
+    shouldUpdatePosition: boolean;
 
     updateCount = 0;
 
-    constructor(props) {
+    constructor(props: PositionProps) {
         super(props);
 
         bindCtx(this, ['handleResize']);
@@ -63,7 +66,7 @@ export default class Position extends Component {
         }
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: PositionProps) {
         const { props } = this;
 
         if (('align' in props && props.align !== prevProps.align) || props.shouldUpdatePosition) {
@@ -71,11 +74,14 @@ export default class Position extends Component {
         }
 
         if (this.shouldUpdatePosition) {
-            clearTimeout(this.resizeTimeout);
+            clearTimeout(this.resizeTimeout as unknown as number);
 
             this.setPosition();
             this.shouldUpdatePosition = false;
         }
+    }
+    resizeTimeout(resizeTimeout: number): void {
+        throw new Error('Method not implemented.');
     }
 
     componentWillUnmount() {
@@ -84,11 +90,11 @@ export default class Position extends Component {
             this.unobserve();
         }
 
-        clearTimeout(this.resizeTimeout);
+        clearTimeout(this.resizeTimeout as unknown as number);
     }
 
     observe = () => {
-        const contentNode = this.getContentNode();
+        const contentNode = this.getContentNode() as HTMLElement;
         contentNode && this.resizeObserver.observe(contentNode);
     };
 
@@ -147,8 +153,8 @@ export default class Position extends Component {
 
         beforePosition();
 
-        const contentNode = this.getContentNode();
-        const targetNode = this.getTargetNode();
+        const contentNode = this.getContentNode() as HTMLElement;
+        const targetNode = this.getTargetNode() as HTMLElement;
 
         if (contentNode && targetNode) {
             const resultAlign = place({
@@ -161,13 +167,13 @@ export default class Position extends Component {
                 container,
                 needAdjust,
                 isRtl: rtl,
-            });
+            } as PositionProps);
             const top = getStyle(contentNode, 'top');
             const left = getStyle(contentNode, 'left');
 
             onPosition(
                 {
-                    align: resultAlign.split(' '),
+                    align: (resultAlign as string).split(' '),
                     top,
                     left,
                 },
@@ -187,15 +193,17 @@ export default class Position extends Component {
     getTargetNode() {
         const { target } = this.props;
 
-        return target === position.VIEWPORT ? position.VIEWPORT : findNode(target, this.props);
+        return target === position.VIEWPORT
+            ? position.VIEWPORT
+            : findNode(target, this.props as unknown as Element);
     }
 
     handleResize() {
-        clearTimeout(this.resizeTimeout);
+        clearTimeout(this.resizeTimeout as unknown as number);
 
         this.resizeTimeout = setTimeout(() => {
             this.setPosition();
-        }, 200);
+        }, 200) as unknown as (resizeTimeout: number) => void;
     }
 
     render() {

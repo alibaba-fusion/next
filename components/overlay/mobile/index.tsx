@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Overlay as MeetOverlay } from '@alifd/meet-react';
 import NextOverlay from '../index';
 
