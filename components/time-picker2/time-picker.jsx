@@ -633,6 +633,7 @@ class TimePicker2 extends Component {
             hasClear: value && hasClear,
             inputType,
             isRange,
+            focus: visible,
             onInputTypeChange: this.onInputTypeChange,
             onInput: this.handleInput,
             onKeyDown: this.onKeyDown,
