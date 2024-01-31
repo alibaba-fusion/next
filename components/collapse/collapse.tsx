@@ -1,11 +1,11 @@
-import React, { MouseEventHandler, ReactElement } from 'react';
+import React, { type MouseEventHandler, type ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
 import { func, obj } from '../util';
 import Panel from './panel';
-import { CollapseProps, DataItem } from './types';
+import { PanelProps, type CollapseProps, type DataItem } from './types';
 
 /** Collapse */
 class Collapse extends React.Component<
@@ -78,7 +78,7 @@ class Collapse extends React.Component<
         }
 
         this.state = {
-            expandedKeys: typeof expandedKeys === 'undefined' ? [] : (expandedKeys as string[]),
+            expandedKeys: typeof expandedKeys === 'undefined' ? [] : expandedKeys,
         };
     }
 
@@ -109,7 +109,7 @@ class Collapse extends React.Component<
         this.setExpandedKey(expandedKeys);
     }
 
-    genratePanelId(itemId: string | number, index: number) {
+    genratePanelId(itemId: string | number | undefined, index: number) {
         const { id: collapseId } = this.props;
         let id;
         if (itemId) {
@@ -152,7 +152,7 @@ class Collapse extends React.Component<
             });
         }
 
-        const id = this.genratePanelId(item.id as number, index) as string;
+        const id = this.genratePanelId(item.id, index);
         return {
             key,
             title,
@@ -160,13 +160,13 @@ class Collapse extends React.Component<
             disabled,
             id,
             onClick: disabled
-                ? undefined
+                ? null
                 : ((() => {
                       this.onItemClick(key);
                       if ('onClick' in item) {
                           item.onClick?.(key);
                       }
-                  }) as MouseEventHandler<HTMLDivElement>),
+                  }) as PanelProps['onClick']),
         };
     }
 
@@ -219,11 +219,11 @@ class Collapse extends React.Component<
 
     render() {
         const { prefix, style, disabled, dataSource, id, rtl } = this.props;
-        const className = this.props!.className as string;
+        const className = this.props.className;
         const collapseClassName = classNames({
             [`${prefix}collapse`]: true,
             [`${prefix}collapse-disabled`]: disabled,
-            [className]: Boolean(className),
+            [className!]: Boolean(className),
         });
 
         const others = obj.pickOthers(Collapse.propTypes, this.props);

@@ -1,8 +1,11 @@
 import React from 'react';
 import { CommonProps } from '../util';
 
-type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'title'>;
+type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'title' | 'id' | 'onClick'>;
 
+/**
+ * @api Panel
+ */
 export interface PanelProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 样式类名的品牌前缀
@@ -40,9 +43,24 @@ export interface PanelProps extends HTMLAttributesWeak, CommonProps {
      */
     className?: string;
 
-    // onClick?: (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => void
+    /**
+     * 唯一标识
+     * @en Unique identifier
+     */
+    id?: string | number;
+
+    /**
+     * 点击回调函数
+     * @en Click callback function
+     */
+    onClick?:
+        | ((e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void)
+        | null;
 }
 
+/**
+ * @api Collapse
+ */
 export type DataItem = {
     id?: string | number;
     title?: React.ReactNode;
@@ -53,6 +71,9 @@ export type DataItem = {
     [propName: string]: unknown;
 };
 
+/**
+ * @api Collapse
+ */
 export interface CollapseProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 样式前缀
