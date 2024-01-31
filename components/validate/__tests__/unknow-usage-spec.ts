@@ -1,4 +1,3 @@
-import assert from 'power-assert';
 import Schema from '../index';
 
 describe('unknow usage', () => {
@@ -46,6 +45,7 @@ describe('unknow usage', () => {
                 v: '',
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 1);
                 assert(errors[0].message === 'v 是必填字段');
                 done();
@@ -82,6 +82,7 @@ describe('unknow usage', () => {
                 v: 'abcd',
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 1);
                 assert(errors[0].message === 'haha');
                 done();

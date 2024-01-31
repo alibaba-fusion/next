@@ -1,4 +1,3 @@
-import assert from 'power-assert';
 import Schema from '../index';
 
 describe('format', () => {
@@ -109,6 +108,7 @@ describe('format', () => {
                     v: 'http://www.taobao.com/abc?abc=%23&b=  a~c#abc    ',
                 },
                 errors => {
+                    assert(errors);
                     assert(errors.length === 1);
                     assert(errors[0].message === 'v 不是合法的 URL 地址');
                     done();
@@ -176,6 +176,7 @@ describe('format', () => {
                     v: 'bindoon@sina .com',
                 },
                 errors => {
+                    assert(errors);
                     assert(errors.length === 1);
                     assert(errors[0].message === 'v 不是合法的 email 地址');
                     done();
@@ -243,6 +244,7 @@ describe('format', () => {
                     v: '1zbcd',
                 },
                 errors => {
+                    assert(errors);
                     assert(errors.length === 1);
                     assert(errors[0].message === 'v 不是合法的数字');
                     done();
@@ -306,6 +308,7 @@ describe('format', () => {
                     v2: '15688888888abcd',
                 },
                 errors => {
+                    assert(errors);
                     assert(errors.length === 2);
                     assert(errors[0].message === 'v 不是合法的电话号码');
                     done();

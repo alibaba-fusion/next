@@ -105,7 +105,7 @@
   "dependencies": {
     "@alifd/field": "~1.7.0",
     "@alifd/overlay": "^0.3.3",
-    "@alifd/validate": "~1.2.0",
+    "@alifd/validate": "^2.0.0",
     "@types/react-transition-group": "^4.4.6",
     "babel-runtime": "^6.26.0",
     "big.js": "^6.2.0",
@@ -140,6 +140,7 @@
     "@microsoft/tsdoc": "^0.14.2",
     "@octokit/rest": "^18.0.9",
     "@types/babel-core": "^6.25.10",
+    "@types/chai": "^4.3.11",
     "@types/classnames": "^2.3.1",
     "@types/co": "^4.6.6",
     "@types/enzyme": "^3.10.14",
