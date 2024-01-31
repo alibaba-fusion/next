@@ -1,7 +1,7 @@
 import React, { Component, ComponentClass, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { ColProps, BreakPoints, PointProps, TypeRecord } from './types';
+import { type ColProps, type BreakPoints, type PointProps, type TypeRecord } from './types';
 
 const breakPoints: BreakPoints[] = ['xxs', 'xs', 's', 'm', 'l', 'xl'];
 
@@ -128,7 +128,7 @@ export default class Col extends Component<ColProps> {
             [`${prefix}col-offset-${offset}`]: !!offset,
             [`${prefix}col-offset-fixed-${fixedOffset}`]: !!fixedOffset,
             [`${prefix}col-${align}`]: !!align,
-            [`${className}`]: className,
+            [className!]: !!className,
             ...pointClassObj,
             ...hiddenClassObj,
         };
