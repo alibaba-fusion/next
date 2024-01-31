@@ -44,7 +44,7 @@ export interface ListProps<DataItem = unknown>
      * 当使用 dataSource 时，可以用 renderItem 自定义渲染列表项
      * @param current - 当前遍历的项 - The current item
      * @param index - 当前遍历的项的索引 - The index of the current item
-     * @returns ReactElement - 自定义渲染的 ReactElement - The ReactElement be customized
+     * @returns - 自定义渲染的 ReactElement - The ReactElement be customized
      */
     renderItem?: (current: DataItem, index: number) => ReactElement;
     /**
@@ -57,7 +57,7 @@ export interface ListProps<DataItem = unknown>
      * 自定义 Loading 组件
      * @en Custom Loading component
      * @param props - 透传 props - Pass through props
-     * @returns ReactElement - 自定义的 Loading 组件 - Custom Loading component
+     * @returns - 自定义的 Loading 组件 - Custom Loading component
      * @remarks 请务必透传 props, 使用方式： loadingComponent=\{props =\> \<Loading \{...props\}/\>\}
      */
     loadingComponent?: (props: LoadingProps) => ReactElement;
