@@ -1,10 +1,10 @@
-import React, { KeyboardEvent } from 'react';
+import React, { type KeyboardEvent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
 import { func, KEYCODE } from '../util';
-import { PanelProps } from './types';
+import { type PanelProps } from './types';
 
 /** Collapse.Panel */
 class Panel extends React.Component<PanelProps> {
@@ -43,12 +43,12 @@ class Panel extends React.Component<PanelProps> {
 
     static isNextPanel = true; //
 
-    onKeyDown = (e: KeyboardEvent) => {
+    onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
         const { keyCode } = e;
         if (keyCode === KEYCODE.SPACE) {
             const { onClick } = this.props;
             e.preventDefault();
-            onClick && onClick(e as unknown as React.MouseEvent<HTMLDivElement>);
+            onClick && onClick(e);
         }
     };
     render() {
@@ -74,11 +74,11 @@ class Panel extends React.Component<PanelProps> {
         const headingId = id ? `${id}-heading` : undefined;
         const regionId = id ? `${id}-region` : undefined;
         return (
-            <div className={cls} style={style} id={id} {...others}>
+            <div className={cls} style={style} id={id as string} {...others}>
                 <div
                     id={headingId}
                     className={`${prefix}collapse-panel-title`}
-                    onClick={onClick}
+                    onClick={onClick!}
                     onKeyDown={this.onKeyDown}
                     tabIndex={0}
                     aria-disabled={disabled}
