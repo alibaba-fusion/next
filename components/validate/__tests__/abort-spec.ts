@@ -31,7 +31,7 @@ describe('abort', () => {
                 v: 3,
             },
             errors => {
-                expect(callback.called).be.false;
+                assert(!callback.called);
                 assert(errors);
                 assert(errors.length === 1);
                 done();
