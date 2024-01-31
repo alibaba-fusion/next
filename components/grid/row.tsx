@@ -96,17 +96,16 @@ export default class Row extends Component<RowProps> {
             }, {} as BooleanRecord);
         }
 
-        const config = {
+        const newClassName = cx({
             [`${prefix}row`]: true,
             [`${prefix}row-wrap`]: wrap,
             [`${prefix}row-fixed`]: fixed,
             [`${prefix}row-fixed-${fixedWidth}`]: !!fixedWidth,
             [`${prefix}row-justify-${justify}`]: !!justify,
             [`${prefix}row-align-${align}`]: !!align,
-            [className!]: !!className,
             ...hiddenClassObj,
-        };
-        const newClassName = cx(config);
+            [className!]: !!className,
+        });
 
         let newChildren = children;
         const gutterNumber = parseInt((gutter as string).toString(), 10);
