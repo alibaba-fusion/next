@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { RowProps, TypeRecord } from './types';
+import { type RowProps, type TypeRecord } from './types';
 import Col from './col';
 
 type BooleanRecord = TypeRecord<boolean>;
@@ -103,11 +103,9 @@ export default class Row extends Component<RowProps> {
             [`${prefix}row-fixed-${fixedWidth}`]: !!fixedWidth,
             [`${prefix}row-justify-${justify}`]: !!justify,
             [`${prefix}row-align-${align}`]: !!align,
+            [className!]: !!className,
             ...hiddenClassObj,
         };
-        if (className) {
-            config[className] = true;
-        }
         const newClassName = cx(config);
 
         let newChildren = children;
