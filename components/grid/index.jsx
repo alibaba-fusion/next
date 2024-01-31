@@ -28,6 +28,6 @@ const Grid = {
     Col: ConfigProvider.config(Col),
 };
 
-export { RowProps, ColProps };
+export type { RowProps, ColProps };
 
 export default Grid;
