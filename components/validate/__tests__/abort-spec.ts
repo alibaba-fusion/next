@@ -1,9 +1,9 @@
-import assert from 'power-assert';
 import Schema from '../index';
 
 describe('abort', () => {
     it('works with abort', done => {
-        let schema = new Schema({
+        const callback = cy.spy();
+        const schema = new Schema({
             v: [
                 {
                     validator(rule, value, callback) {
@@ -19,9 +19,8 @@ describe('abort', () => {
             {
                 v: 2,
             },
-            errors => {
-                assert('should not be here' === '');
-                done();
+            () => {
+                callback();
             }
         );
 
@@ -32,6 +31,8 @@ describe('abort', () => {
                 v: 3,
             },
             errors => {
+                expect(callback.called).be.false;
+                assert(errors);
                 assert(errors.length === 1);
                 done();
             }

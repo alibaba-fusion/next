@@ -1,4 +1,3 @@
-import assert from 'power-assert';
 import Schema from '../index';
 
 describe('size', () => {
@@ -16,6 +15,7 @@ describe('size', () => {
                 v1: 1,
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 2);
                 assert(errors[0].message === 'v 字段数值不得小于 3');
                 done();
@@ -61,6 +61,7 @@ describe('size', () => {
                 v1: 5,
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 2);
                 assert(errors[0].message === 'v 字段数值不得大于 3');
                 done();
@@ -105,6 +106,7 @@ describe('size', () => {
                 v1: 31,
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 2);
                 assert(errors[0].message === 'must between 3 and 30');
                 done();

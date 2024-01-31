@@ -1,4 +1,3 @@
-import assert from 'power-assert';
 import Schema from '../index';
 
 const required = true;
@@ -14,6 +13,7 @@ describe('required', () => {
                 v2: undefined,
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 2);
                 assert(errors[0].message === 'v1 是必填字段');
                 assert(errors[1].message === 'v2 是必填字段');
@@ -30,6 +30,7 @@ describe('required', () => {
                 v: [],
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 1);
                 assert(errors[0].message === 'no');
                 done();
@@ -45,6 +46,7 @@ describe('required', () => {
                 v: '',
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 1);
                 assert(errors[0].message === 'no');
                 done();

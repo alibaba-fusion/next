@@ -1,4 +1,3 @@
-import assert from 'power-assert';
 import Schema from '../index';
 
 describe('pattern', () => {
@@ -32,6 +31,7 @@ describe('pattern', () => {
                 v: 's',
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 1);
                 assert(errors[0].message === 'haha');
                 done();
@@ -52,6 +52,7 @@ describe('pattern', () => {
                 v: '',
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 1);
                 assert(errors[0].message === 'haha');
                 done();
@@ -104,6 +105,7 @@ describe('pattern', () => {
                 v: ' ',
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 1);
                 assert(errors[0].message === 'haha');
                 done();

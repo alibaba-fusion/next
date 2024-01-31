@@ -1,4 +1,3 @@
-import assert from 'power-assert';
 import Schema from '../index';
 
 describe('validator', () => {
@@ -6,19 +5,19 @@ describe('validator', () => {
         new Schema({
             v: [
                 {
-                    validator(rule, value, callback) {
+                    validator(_rule, _value, callback) {
                         callback(new Error('e1'));
                     },
                 },
                 {
-                    validator(rule, value, callback) {
+                    validator(_rule, _value, callback) {
                         callback(new Error('e2'));
                     },
                 },
             ],
             v2: [
                 {
-                    validator(rule, value, callback) {
+                    validator(_rule, _value, callback) {
                         callback(new Error('e3'));
                     },
                 },
@@ -28,6 +27,7 @@ describe('validator', () => {
                 v: 2,
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 2);
                 assert(errors[0].message === 'e1');
                 assert(errors[1].message === 'e3');
@@ -41,19 +41,19 @@ describe('validator', () => {
             {
                 v: [
                     {
-                        validator(rule, value, callback) {
+                        validator(_rule, _value, callback) {
                             callback(new Error('e1'));
                         },
                     },
                     {
-                        validator(rule, value, callback) {
+                        validator(_rule, _value, callback) {
                             callback(new Error('e2'));
                         },
                     },
                 ],
                 v2: [
                     {
-                        validator(rule, value, callback) {
+                        validator(_rule, _value, callback) {
                             callback(new Error('e3'));
                         },
                     },
@@ -66,6 +66,7 @@ describe('validator', () => {
                 v2: 1,
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 1);
                 assert(errors[0].message === 'e1');
                 done();
@@ -79,19 +80,19 @@ describe('promise validator', () => {
         new Schema({
             v: [
                 {
-                    validator(rule, value) {
+                    validator() {
                         return Promise.reject(new Error('e1'));
                     },
                 },
                 {
-                    validator(rule, value) {
+                    validator() {
                         return Promise.reject(new Error('e2'));
                     },
                 },
             ],
             v2: [
                 {
-                    validator(rule, value) {
+                    validator() {
                         return Promise.reject(new Error('e3'));
                     },
                 },
@@ -101,6 +102,7 @@ describe('promise validator', () => {
                 v: 2,
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 2);
                 assert(errors[0].message === 'e1');
                 assert(errors[1].message === 'e3');
@@ -114,19 +116,19 @@ describe('promise validator', () => {
             {
                 v: [
                     {
-                        validator(rule, value) {
+                        validator() {
                             return Promise.reject(new Error('e1'));
                         },
                     },
                     {
-                        validator(rule, value) {
+                        validator() {
                             return Promise.reject(new Error('e2'));
                         },
                     },
                 ],
                 v2: [
                     {
-                        validator(rule, value) {
+                        validator() {
                             return Promise.reject(new Error('e3'));
                         },
                     },
@@ -139,6 +141,7 @@ describe('promise validator', () => {
                 v2: 1,
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 1);
                 assert(errors[0].message === 'e1');
                 done();

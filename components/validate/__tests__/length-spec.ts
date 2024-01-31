@@ -1,4 +1,3 @@
-import assert from 'power-assert';
 import Schema from '../index';
 
 describe('length', () => {
@@ -20,6 +19,7 @@ describe('length', () => {
                 v2: ['1'],
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 3);
                 assert(errors[0].message === 'v 字段字符长度不得少于 3');
                 assert(errors[1].message === 'v1 字段字符长度不得少于 3');
@@ -67,6 +67,7 @@ describe('length', () => {
                 v1: 5000,
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 2);
                 assert(errors[0].message === 'v 字段字符长度不得超过 3');
                 done();
@@ -111,6 +112,7 @@ describe('length', () => {
                 v1: 31,
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 2);
                 assert(errors[0].message === 'must between 3 and 30');
                 done();
@@ -156,6 +158,7 @@ describe('length', () => {
                 v1: 3100000,
             },
             errors => {
+                assert(errors);
                 assert(errors.length === 2);
                 assert(errors[0].message === '长度必须是10');
                 done();
