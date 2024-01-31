@@ -121,18 +121,17 @@ export default class Col extends Component<ColProps> {
             }, {} as BooleanRecord);
         }
 
-        const config = {
+        const classes = cx({
             [`${prefix}col`]: true,
             [`${prefix}col-${span}`]: !!span,
             [`${prefix}col-fixed-${fixedSpan}`]: !!fixedSpan,
             [`${prefix}col-offset-${offset}`]: !!offset,
             [`${prefix}col-offset-fixed-${fixedOffset}`]: !!fixedOffset,
             [`${prefix}col-${align}`]: !!align,
-            [className!]: !!className,
             ...pointClassObj,
             ...hiddenClassObj,
-        };
-        const classes = cx(config);
+            [className!]: !!className,
+        });
 
         return (
             <Tag dir={rtl ? 'rtl' : 'ltr'} role="gridcell" className={classes} {...others}>
