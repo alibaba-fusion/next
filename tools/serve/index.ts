@@ -263,6 +263,7 @@ const importNextPlugin = (): VitePlugin => {
         optimizeDeps: {
             force: isForce,
         },
+        root: __dirname,
         plugins: [
             react({ exclude: /tools/ }),
             demoPlugin(DIR_NAME),
