@@ -357,9 +357,9 @@ describe('TimePicker2', () => {
             document.body.appendChild(container);
             ReactDOM.render(<TimePicker2 />, container);
             const inputNode = document.querySelector('.next-time-picker2-input');
-            simulateMouseClick(inputNode.querySelector('input'));
+            inputNode.querySelector('input').click();
             assert(hasClass(inputNode, 'next-time-picker2-input-focus'));
-            simulateMouseClick(document);
+            document.body.click();
             setTimeout(() => {
                 assert(!hasClass(inputNode, 'next-time-picker2-input-focus'));
                 ReactDOM.unmountComponentAtNode(container);
@@ -373,14 +373,12 @@ describe('TimePicker2', () => {
             document.body.appendChild(container);
             ReactDOM.render(<TimePicker2.RangePicker />, container);
             const inputNode = document.querySelector('.next-time-picker2-input');
-            simulateMouseClick(inputNode.querySelectorAll('input')[0]);
+            inputNode.querySelectorAll('input')[0].click();
             assert(hasClass(inputNode, 'next-time-picker2-input-focus'));
-
-            // simulateMouseClick(inputNode.querySelectorAll('input')[1]);
-            // assert(hasClass(inputNode, 'next-time-picker2-input-focus'));
-            simulateMouseClick(document);
+            inputNode.querySelectorAll('input')[1].click();
+            assert(hasClass(inputNode, 'next-time-picker2-input-focus'));
+            document.body.click();
             setTimeout(() => {
-                simulateMouseClick(document);
                 assert(!hasClass(inputNode, 'next-time-picker2-input-focus'));
                 ReactDOM.unmountComponentAtNode(container);
                 document.body.removeChild(container);
@@ -389,20 +387,6 @@ describe('TimePicker2', () => {
         });
     });
 });
-
-const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
-function simulateMouseClick(element) {
-    mouseClickEvents.forEach(mouseEventType =>
-        element.dispatchEvent(
-            new MouseEvent(mouseEventType, {
-                view: window,
-                bubbles: true,
-                cancelable: true,
-                buttons: 1,
-            })
-        )
-    );
-}
 
 function getStrValue(wrapper) {
     const inputEl = wrapper.find('.next-time-picker2-input input');
