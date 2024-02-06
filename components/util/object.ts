@@ -193,14 +193,9 @@ export function each(
     return obj;
 }
 
-type KeyOf<T> = T extends Array<infer U> ? U : keyof T;
-
 // @private 判断 key 是否在数组或对象中
-const _isInObj = <O extends ObjectOrArray>(
-    key: PropertyKey,
-    obj: O,
-    isArray?: boolean
-): key is KeyOf<O> => (isArray ? (obj as Array<unknown>).indexOf(key) > -1 : key in obj);
+const _isInObj = <O extends ObjectOrArray>(key: PropertyKey, obj: O, isArray?: boolean): boolean =>
+    isArray ? (obj as Array<unknown>).indexOf(key) > -1 : key in obj;
 
 /**
  * 过滤出其它属性
@@ -212,10 +207,10 @@ const _isInObj = <O extends ObjectOrArray>(
  * object.pickOthers(['className', 'onChange'], this.props);
  */
 export function pickOthers<T extends string, P extends Record<string, unknown>>(
-    holdProps: T[] | Partial<Record<T, any>>,
+    holdProps: T[] | Record<T, any>,
     props: P
 ): Writable<Omit<P, T>> {
-    const others: Partial<P> = {};
+    const others: any = {};
     const isArray = typeOf(holdProps) === 'Array';
 
     for (const key in props) {
@@ -224,7 +219,7 @@ export function pickOthers<T extends string, P extends Record<string, unknown>>(
         }
     }
 
-    return others as Writable<Omit<P, T>>;
+    return others;
 }
 
 /**
@@ -236,10 +231,10 @@ export function pickOthers<T extends string, P extends Record<string, unknown>>(
  * object.pickProps(FooComponent.propTypes, this.props);
  * object.pickProps(['className', 'onChange'], this.props);
  */
-export function pickProps<T extends string, P extends Record<string, unknown>>(
-    holdProps: T[] | Record<T, unknown>,
+export function pickProps<P extends Record<string, unknown>>(
+    holdProps: ObjectOrArray,
     props: P
-): Writable<Pick<P, T>> {
+): Partial<P> {
     const others: Partial<P> = {};
     const isArray = typeOf(holdProps) === 'Array';
 
@@ -249,7 +244,7 @@ export function pickProps<T extends string, P extends Record<string, unknown>>(
         }
     }
 
-    return others as Writable<Pick<P, T>>;
+    return others;
 }
 
 /**
@@ -360,23 +355,15 @@ export function isForwardRefComponent(
     return (!!$$typeof && $$typeof.toString().includes('react.forward_ref')) || $$typeof === 0xead0;
 }
 
-export function isReactFragment(component?: null): false;
-export function isReactFragment(component: { type: typeof React.Fragment }): true;
-export function isReactFragment(component: typeof React.Fragment): true;
-export function isReactFragment(component: unknown): boolean;
 /**
- * 判断是否为 ReactFragment
+ * 判断是否为 ReactFragmentElement
  * @param component - 传入的组件
  */
-export function isReactFragment(component?: unknown): boolean {
-    if (isNil(component)) {
-        return false;
-    }
-
+export function isReactFragmentElement(component?: unknown) {
     if ((component as ReactElement).type) {
-        return (component as ReactElement).type === React.Fragment;
+        return true;
     }
-    return component === React.Fragment;
+    return false;
 }
 
 /**

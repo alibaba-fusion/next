@@ -3,7 +3,7 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import ConfigProvider from '../config-provider';
 import { obj } from '../util';
-import { BoxProps } from './types';
+import type { BoxProps } from './types';
 import createStyle, {
     getMargin,
     getChildMargin,
