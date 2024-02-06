@@ -358,12 +358,16 @@ export function isForwardRefComponent(
 export function isReactFragment(component?: null): false;
 export function isReactFragment(component: { type: typeof React.Fragment }): true;
 export function isReactFragment(component: typeof React.Fragment): true;
-export function isReactFragment(component: unknown): boolean;
+export function isReactFragment(
+    component?: unknown
+): component is ReactElement<Record<string, unknown>, typeof React.Fragment>;
 /**
  * 判断是否为 ReactFragment
  * @param component - 传入的组件
  */
-export function isReactFragment(component?: unknown): boolean {
+export function isReactFragment(
+    component?: unknown
+): component is typeof React.Fragment | React.ReactElement<unknown, typeof React.Fragment> {
     if (isNil(component)) {
         return false;
     }
