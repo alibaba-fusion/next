@@ -36,7 +36,7 @@ export interface DemoFunctionDefineForObject {
     name?: string;
     label: string;
     value: unknown;
-    enum: Array<{ label: string; value: string }>;
+    enum: Array<{ label: string; value: string | boolean }>;
 }
 
 const COL = '{Col}';

@@ -6,11 +6,12 @@ const { Cell } = ResponsiveGrid;
 
 const ds = ['desktop', 'tablet', 'phone'];
 
+type DemoState = { device: 'phone' | 'tablet' | 'desktop' };
 class Demo extends React.Component {
     state = {
         device: 'desktop',
     };
-    onChange = device => {
+    onChange = (device: DemoState['device']) => {
         this.setState({
             device,
         });
@@ -28,7 +29,7 @@ class Demo extends React.Component {
                 <br />
                 <br />
                 <div className={`list-item ${device}`}>
-                    <ResponsiveGrid gap={10} device={device}>
+                    <ResponsiveGrid gap={10} device={device as DemoState['device']}>
                         <Cell className="mygrid grid-12" colSpan={12}>
                             12
                         </Cell>
