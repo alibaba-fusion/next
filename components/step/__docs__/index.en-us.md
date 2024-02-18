@@ -11,27 +11,28 @@
 
 ### Step
 
-| Param | Descripiton  | Type  | Default Value |
-| -------------- | ------------------------------------------------------ | -------- | ------------ |
-| current        | current step                                           | Number   | 0            |
-| shape          | shape<br><br>**optional**:<br>'circle', 'arrow', 'dot'         | Enum     | 'circle'     |
-| direction      | dispaly direction<br><br>**optional**:<br>'horizontal', 'vertical'       | Enum     | 'horizontal' |
-| labelPlacement | Content arrangement in horizontal layout<br><br>**optional**:<br>'horizontal', 'vertical' | Enum     | 'vertical'   |
-| readOnly       | enable read-only mode                                                 | Boolean  | -            |
-| animation      | enable animation                              | Boolean  | true         |
-| itemRender     | custom node render function <br><br>**Function signature**:<br>Function(index: Number, status: String) => Node        | Function | -        |
-| stretch        | stretch width of step item | Boolean  | false |
+| Param          | Description                                                                                           | Type                                                                        | Default Value | Required |
+| -------------- | ----------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------- | -------- |
+| current        | Current step                                                                                          | number                                                                      | 0             |          |
+| direction      | Direction                                                                                             | 'hoz' \| 'ver' \| string                                                    | 'ver'         |          |
+| stretch        | Stretch the width                                                                                     | boolean                                                                     | -             |          |
+| labelPlacement | Label placement                                                                                       | 'hoz' \| 'ver' \| string                                                    | 'ver'         |          |
+| shape          | Type                                                                                                  | 'circle' \| 'arrow' \| 'dot'                                                | 'circle'      |          |
+| readOnly       | Read only mode                                                                                        | boolean                                                                     | -             |          |
+| animation      | Enable animation                                                                                      | boolean                                                                     | -             |          |
+| className      | Custom class name                                                                                     | string                                                                      | -             |          |
+| itemRender     | Custom node render function<br/><br/>**signature**:<br/>**params**:<br/>_arg1_: arg1<br/>_arg1_: arg1 | (index: number, status: 'wait' \| 'process' \| 'finish') => React.ReactNode | -             |          |
 
-### Step.Item
+### Item
 
-
-| Param | Descripiton  | Type  | Default Value |
-| -------------- | ------------------------------------------------------ | -------- | ------------ |
-| status         |The status of a step, if not passed, is generated based on the current attribute of the outer Step, with optional values `wait`, `process`, `finish`<br><br>**optional**:<br>'wait', 'process', 'finish'  | Enum      | -         |
-| title          | title                                         | ReactNode | -         |
-| percent        | percent                                         | Number | -         |
-| icon           | icon         | String    | -         |
-| content        | Content for vertical content filling | ReactNode | -         |
-| disabled       | disable step node  | Boolean   | -         |
-| itemRender     | custom node render function (it will overwirde Step's itemRender)<br>**Function signature**:<br>Function(index: Number, status: String) => Node        | Function | -         |
-| onClick        | the callback when click to step node <br><br>**Function signature**:<br>Function(index: Number) => void<br>**Parameters**:<br>_index_: {Number} node index | Function  | () => { } |
+| Param      | Description                                                                                                                                                   | Type                                                                                                                                                                  | Default Value | Required |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
+| status     | Status of the step, if not passed, it will be generated according to the current attribute of the outer Step, optional values are `wait`, `process`, `finish` | 'wait' \| 'process' \| 'finish'                                                                                                                                       | -             |          |
+| title      | Title                                                                                                                                                         | React.ReactNode                                                                                                                                                       | -             |          |
+| icon       | Icon                                                                                                                                                          | string                                                                                                                                                                | -             |          |
+| content    | Content, invalid when shape is arrow                                                                                                                          | React.ReactNode                                                                                                                                                       | -             |          |
+| itemRender | Custom node render function<br/><br/>**signature**:<br/>**params**:<br/>_index_: index<br/>_status_: status<br/>**return**:<br/>\{Node\} 节点的渲染结果       | (<br/> index: number,<br/> status?: 'wait' \| 'process' \| 'finish' \| string,<br/> title?: React.ReactNode,<br/> content?: React.ReactNode<br/> ) => React.ReactNode | -             |          |
+| percent    | -                                                                                                                                                             | number                                                                                                                                                                | -             |          |
+| disabled   | -                                                                                                                                                             | boolean                                                                                                                                                               | -             |          |
+| onClick    | Callback when clicking on the step<br/><br/>**signature**:<br/>**params**:<br/>_index_: index                                                                 | (index: number) => unknown                                                                                                                                            | () =\> \{\}   |          |
+| className  | -                                                                                                                                                             | string                                                                                                                                                                | -             |          |

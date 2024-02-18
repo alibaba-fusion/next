@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ResizeObserver from 'resize-observer-polyfill';
@@ -7,9 +7,13 @@ import Icon from '../../icon';
 import Progress from '../../progress';
 import ConfigProvider from '../../config-provider';
 import { support, events, dom, obj } from '../../util';
+import type { ItemProps } from '../types';
 
+interface EventHandler {
+    off: () => void;
+}
 /** Step.Item */
-class StepItem extends Component {
+class StepItem extends React.Component<ItemProps, object> {
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -35,9 +39,9 @@ class StepItem extends Component {
         content: PropTypes.node,
         /**
          * StepItem 的自定义渲染, 会覆盖父节点设置的itemRender
-         * @param {Number} index   节点索引
-         * @param {String} status  节点状态
-         * @returns {Node} 节点的渲染结果
+         * param \{Number\} index   节点索引
+         * param \{String\} status  节点状态
+         * @returns \{Node\} 节点的渲染结果
          */
         itemRender: PropTypes.func,
         /**
@@ -55,7 +59,7 @@ class StepItem extends Component {
         parentHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         /**
          * 点击步骤时的回调
-         * @param {Number} index 节点索引
+         * param \{Number\} index 节点索引
          */
         onClick: PropTypes.func,
         /**
@@ -75,7 +79,7 @@ class StepItem extends Component {
         stretch: false,
     };
 
-    constructor(props) {
+    constructor(props: ItemProps | Readonly<ItemProps>) {
         super(props);
         this.removeClickedCls = this.removeClickedCls.bind(this);
         this._refHandlerCreator = this._refHandlerCreator.bind(this);
@@ -95,7 +99,7 @@ class StepItem extends Component {
 
     componentDidMount() {
         const { shape, direction, labelPlacement, index, total, stretch } = this.props;
-        this.body && this.ro.observe(ReactDOM.findDOMNode(this.body));
+        this.body && this.ro.observe(ReactDOM.findDOMNode(this.body) as HTMLElement);
         if (shape === 'arrow') {
             return;
         }
@@ -158,14 +162,24 @@ class StepItem extends Component {
     componentWillUnmount() {
         this.eventHandler && this.eventHandler.off();
     }
-
+    ro: ResizeObserver;
+    body: HTMLElement;
+    tail: HTMLElement;
+    container: HTMLElement;
+    title: HTMLElement;
+    step: HTMLElement;
+    stepNode: HTMLElement;
+    eventHandler: EventHandler | null = null;
+    ariaCurrent: string | null;
+    [key: string]: unknown;
     adjustItemWidth() {
         const { index, total, labelPlacement } = this.props;
         const lastNodeWidth =
             labelPlacement === 'horizontal' || labelPlacement === 'hoz'
                 ? this.container.offsetWidth + this.body.offsetWidth
                 : this.title.offsetWidth;
-        const width = total - 1 !== index ? `calc((100% - ${lastNodeWidth}px)/${total - 1})` : 'auto';
+        const width =
+            total - 1 !== index ? `calc((100% - ${lastNodeWidth}px)/${total - 1})` : 'auto';
         dom.setStyle(this.step, {
             width,
         });
@@ -175,7 +189,7 @@ class StepItem extends Component {
         const width = this.container.offsetWidth + this.title.offsetWidth;
         dom.setStyle(this.tail, {
             width: `calc(100% - ${width}px)`,
-            top: `${dom.getStyle(this.container, 'height') / 2}px`,
+            top: `${Number(dom.getStyle(this.container, 'height')) / 2}px`,
         });
     }
 
@@ -183,32 +197,48 @@ class StepItem extends Component {
         const { direction } = this.props;
         if (direction === 'vertical' || direction === 'ver') {
             const stepWidth = dom.getStyle(this.step, 'width');
-            const stepHozWhitespace = dom.getNodeHozWhitespace(this.step.parentNode);
+            const stepHozWhitespace =
+                this.step.parentNode &&
+                dom.getNodeHozWhitespace(this.step.parentNode as HTMLElement);
             const stepBodyHozWhitespace = dom.getNodeHozWhitespace(this.body);
             const { rtl } = this.props;
-            rtl ? (this.body.style.right = `${stepWidth}px`) : (this.body.style.left = `${stepWidth}px`);
+            rtl
+                ? (this.body.style.right = `${stepWidth}px`)
+                : (this.body.style.left = `${stepWidth}px`);
             dom.setStyle(this.body, {
                 width:
-                    dom.getStyle(this.step.parentNode.parentNode, 'width') -
-                    stepWidth -
-                    stepHozWhitespace -
+                    Number(dom.getStyle(this.step.parentNode?.parentNode as HTMLElement, 'width')) -
+                    Number(stepWidth) -
+                    Number(stepHozWhitespace) -
                     stepBodyHozWhitespace,
             });
             dom.setStyle(
                 this.tail,
                 'height',
-                dom.getStyle(this.body, 'height') - dom.getStyle(this.container, 'height')
+                Number(dom.getStyle(this.body, 'height')) -
+                    Number(dom.getStyle(this.container, 'height'))
             );
         }
     }
 
     _getNode() {
         const { prefix, index, status, icon, shape, percent, itemRender } = this.props;
-        let nodeElement = icon;
+        let nodeElement: React.ReactNode;
+        nodeElement = icon;
         if (shape === 'dot') {
-            nodeElement = icon ? <Icon type={icon} /> : <div className={`${prefix}step-item-node-dot`}> </div>;
+            nodeElement = icon ? (
+                <Icon type={icon} />
+            ) : (
+                <div className={`${prefix}step-item-node-dot`}> </div>
+            );
         } else if (shape === 'circle' && percent) {
-            nodeElement = <Progress shape="circle" percent={percent} className={`${prefix}step-item-progress`} />;
+            nodeElement = (
+                <Progress
+                    shape="circle"
+                    percent={percent}
+                    className={`${prefix}step-item-progress`}
+                />
+            );
         } else if (shape === 'circle' && !!itemRender && typeof itemRender === 'function') {
             nodeElement = null; // 如果是需要自定义节点，则不处理，返回空
         } else {
@@ -221,7 +251,11 @@ class StepItem extends Component {
 
         return nodeElement;
     }
-    getNode(args) {
+    getNode(args: {
+        others: { [key: string]: unknown };
+        stepCls: string | undefined;
+        overlayCls: { width: string } | null;
+    }) {
         const { prefix, itemRender, index, status, title, content, shape } = this.props;
         const { others, stepCls, overlayCls } = args;
         const nodeElement = this._getNode();
@@ -253,7 +287,7 @@ class StepItem extends Component {
                     ref={this._refHandlerCreator('container')}
                 >
                     <div className={`${prefix}step-item-node-placeholder`} onClick={this.onClick}>
-                        {itemRender(index, status, title, content)}
+                        {itemRender && itemRender(index, status, title, content)}
                     </div>
                 </div>
             );
@@ -264,7 +298,12 @@ class StepItem extends Component {
         }
 
         return (
-            <li {...others} style={this.getStyle()} className={stepCls} ref={this._refHandlerCreator('step')}>
+            <li
+                {...others}
+                style={this.getStyle()}
+                className={stepCls}
+                ref={this._refHandlerCreator('step')}
+            >
                 {finalNodeElement}
                 <div
                     className={`${prefix}step-item-body`}
@@ -272,14 +311,20 @@ class StepItem extends Component {
                     tabIndex={this.props.tabIndex}
                     aria-current={this.props['aria-current']}
                 >
-                    <div className={`${prefix}step-item-title`} ref={this._refHandlerCreator('title')}>
+                    <div
+                        className={`${prefix}step-item-title`}
+                        ref={this._refHandlerCreator('title')}
+                    >
                         {title}
                     </div>
                     <div className={`${prefix}step-item-content`}>{content}</div>
                 </div>
                 <div className={`${prefix}step-item-tail`} ref={this._refHandlerCreator('tail')}>
                     <div className={`${prefix}step-item-tail-underlay`}>
-                        <div className={`${prefix}step-item-tail-overlay`} style={overlayCls} />
+                        <div
+                            className={`${prefix}step-item-tail-overlay`}
+                            style={overlayCls as React.CSSProperties}
+                        />
                     </div>
                 </div>
             </li>
@@ -290,9 +335,11 @@ class StepItem extends Component {
         const { parentWidth, parentHeight, direction, total, index, shape } = this.props;
         let width = 'auto';
 
-        if (Number(parentWidth) && Number(parentHeight)) {
+        if (parentWidth && parentHeight) {
             if (!support.flex && shape === 'arrow') {
-                width = Math.floor(parentWidth / total - parentHeight / 2 - parentHeight / 8);
+                width = Math.floor(
+                    parentWidth / total - parentHeight / 2 - parentHeight / 8
+                ).toString();
             }
         }
         if (shape !== 'arrow' && (direction === 'horizontal' || direction === 'hoz')) {
@@ -314,7 +361,7 @@ class StepItem extends Component {
                 ? dom.removeClass(this.stepNode, 'clicked')
                 : dom.addClass(this.stepNode, 'clicked');
         }
-        this.props.onClick(index);
+        this.props.onClick && this.props.onClick(index);
     };
 
     removeClickedCls() {
@@ -325,7 +372,7 @@ class StepItem extends Component {
     }
 
     // 节点的渲染方法
-    _itemRender(index, status) {
+    _itemRender(index: number, status: string | undefined) {
         const { itemRender } = this.props;
         if (itemRender) {
             return itemRender(index, status);
@@ -333,10 +380,9 @@ class StepItem extends Component {
         return status === 'finish' ? <Icon type="select" /> : index + 1;
     }
 
-    _refHandlerCreator(refName) {
-        const self = this;
-        return function(ref) {
-            self[refName] = ref;
+    _refHandlerCreator(refName: string) {
+        return (ref: unknown) => {
+            this[refName] = ref;
         };
     }
 
@@ -375,7 +421,7 @@ class StepItem extends Component {
             [`${prefix}step-item-last`]: index === total - 1,
             [`${prefix}step-item-disabled`]: disabled,
             [`${prefix}step-item-read-only`]: readOnly,
-            [className]: className,
+            [className!]: className,
         });
 
         const overlayCls = status === 'finish' ? { width: '100%' } : null;

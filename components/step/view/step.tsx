@@ -1,59 +1,37 @@
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import React, { Component, Children } from 'react';
+import React, { Children } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../../config-provider';
 import { support, events, dom, obj } from '../../util';
+import type { StepProps } from '../types';
+import StepItem from './step-item';
 
-const getHeight = el => dom.getStyle(el, 'height');
-const setHeight = (el, height) => dom.setStyle(el, 'height', height);
-
+const getHeight = (el: HTMLElement) => dom.getStyle(el, 'height');
+const setHeight = (el: HTMLElement, height: number | string) => dom.setStyle(el, 'height', height);
+type StepState = {
+    parentWidth: string;
+    parentHeight: string;
+    currentfocus: number;
+};
 /** Step */
-class Step extends Component {
+class Step extends React.Component<StepProps, StepState> {
+    static Item = StepItem;
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 当前步骤
-         */
         current: PropTypes.number,
-        /**
-         * 展示方向
-         */
         direction: PropTypes.oneOf(['hoz', 'ver']),
-        /**
-         * 横向布局时( direction 为 hoz )的内容排列
-         */
         labelPlacement: PropTypes.oneOf(['hoz', 'ver']),
-        /**
-         * 类型
-         */
         shape: PropTypes.oneOf(['circle', 'arrow', 'dot']),
-        /**
-         * 是否只读模式
-         */
         readOnly: PropTypes.bool,
-        /**
-         * 是否开启动效
-         */
         animation: PropTypes.bool,
-        /**
-         * 自定义样式名
-         */
         className: PropTypes.string,
-        /**
-         * StepItem 的自定义渲染
-         * @param {Number} index   节点索引
-         * @param {String} status  节点状态
-         * @returns {Node} 节点的渲染结果
-         */
         itemRender: PropTypes.func,
-        /**
-         * 宽度横向拉伸
-         */
         stretch: PropTypes.bool,
+        type: PropTypes.string,
     };
 
     static defaultProps = {
@@ -71,15 +49,15 @@ class Step extends Component {
         prefix: PropTypes.string,
     };
 
-    static getDerivedStateFromProps(newProps) {
+    static getDerivedStateFromProps(newProps: StepProps) {
         if ('current' in newProps) {
             return {
                 current: newProps.current,
             };
         }
+        return null;
     }
-
-    constructor(props, context) {
+    constructor(props: StepProps, context?: unknown) {
         super(props, context);
         this.state = {
             parentWidth: 'auto',
@@ -108,23 +86,36 @@ class Step extends Component {
             events.off(window, 'resize', this.resize);
         }
     }
+    step: HTMLOListElement | null;
 
     adjustHeight() {
         const { shape, direction, prefix, labelPlacement } = this.props;
-        const step = ReactDOM.findDOMNode(this.step);
+        const step = ReactDOM.findDOMNode(this.step) as HTMLOListElement;
         if (
             shape !== 'arrow' &&
             (direction === 'horizontal' || direction === 'hoz') &&
             (labelPlacement === 'vertical' || labelPlacement === 'ver')
         ) {
-            const height = Array.prototype.slice
-                .call(step.getElementsByClassName(`${prefix}step-item`))
-                .reduce((ret, re) => {
-                    const itemHeight =
-                        getHeight(re.getElementsByClassName(`${prefix}step-item-container`)[0]) +
-                        getHeight(re.getElementsByClassName(`${prefix}step-item-body`)[0]);
-                    return Math.max(itemHeight, ret);
-                }, 0);
+            const height = (
+                Array.prototype.slice.call(
+                    step.getElementsByClassName(`${prefix}step-item`)
+                ) as HTMLElement[]
+            ).reduce((ret, re) => {
+                const itemHeight =
+                    Number(
+                        getHeight(
+                            re.getElementsByClassName(
+                                `${prefix}step-item-container`
+                            )[0] as HTMLElement
+                        )
+                    ) +
+                    Number(
+                        getHeight(
+                            re.getElementsByClassName(`${prefix}step-item-body`)[0] as HTMLElement
+                        )
+                    );
+                return Math.max(itemHeight, ret);
+            }, 0);
             setHeight(step, height);
         } else {
             setHeight(step, '');
@@ -134,8 +125,8 @@ class Step extends Component {
     resize() {
         if (this.step) {
             this.setState({
-                parentWidth: this.step.offsetWidth || 0,
-                parentHeight: this.step.offsetHeight || 0,
+                parentWidth: this.step.offsetWidth.toString() || '0',
+                parentHeight: this.step.offsetHeight.toString() || '0',
             });
         }
     }
@@ -174,8 +165,8 @@ class Step extends Component {
     //     }
     // };
 
-    _getValidChildren(children) {
-        const result = [];
+    _getValidChildren(children: React.ReactNode) {
+        const result: React.ReactNode[] = [];
         React.Children.forEach(children, child => {
             if (React.isValidElement(child)) {
                 result.push(child);
@@ -184,13 +175,22 @@ class Step extends Component {
         return result;
     }
 
-    _stepRefHandler = ref => {
+    _stepRefHandler = (ref: HTMLOListElement | null) => {
         this.step = ref;
     };
 
     render() {
-        // eslint-disable-next-line
-        const { className, current, labelPlacement, shape, readOnly, animation, itemRender, rtl, stretch } = this.props;
+        const {
+            className,
+            current,
+            labelPlacement,
+            shape,
+            readOnly,
+            animation,
+            itemRender,
+            rtl,
+            stretch,
+        } = this.props;
         const others = obj.pickOthers(Step.propTypes, this.props);
         let { prefix, direction, children } = this.props;
         prefix = this.context.prefix || prefix;
@@ -203,14 +203,21 @@ class Step extends Component {
         children = this._getValidChildren(children);
 
         // 修改子节点属性
-        const cloneChildren = Children.map(children, (child, index) => {
-            const status = index < current ? 'finish' : index === current ? 'process' : 'wait';
+        const cloneChildren = Children.map(children, (child: React.ReactElement, index: number) => {
+            const status =
+                typeof current !== 'undefined'
+                    ? index < current
+                        ? 'finish'
+                        : index === current
+                          ? 'process'
+                          : 'wait'
+                    : 'wait';
 
             return React.cloneElement(child, {
                 prefix,
                 key: index,
                 index,
-                total: children.length,
+                total: React.Children.count(children),
                 status: child.props.status || status,
                 shape,
                 direction,
@@ -230,14 +237,16 @@ class Step extends Component {
             });
         });
 
-        const _direction = direction === 'ver' || direction === 'vertical' ? 'vertical' : 'horizontal';
-        const _labelPlacement = labelPlacement === 'ver' || labelPlacement === 'vertical' ? 'vertical' : 'horizontal';
+        const _direction =
+            direction === 'ver' || direction === 'vertical' ? 'vertical' : 'horizontal';
+        const _labelPlacement =
+            labelPlacement === 'ver' || labelPlacement === 'vertical' ? 'vertical' : 'horizontal';
         const stepCls = classNames({
             [`${prefix}step`]: true,
             [`${prefix}step-${shape}`]: shape,
             [`${prefix}step-${_direction}`]: _direction,
             [`${prefix}step-label-${_labelPlacement}`]: _labelPlacement,
-            [className]: className,
+            [className!]: className,
         });
 
         if (rtl) {

@@ -5,8 +5,9 @@ import { Step, Button, Select, Icon } from '@alifd/next';
 const StepItem = Step.Item,
     ButtonGroup = Button.Group;
 
-const renders = {
-    1: function itemRender1(index) {
+type ItemRender = (index: number, status: string) => JSX.Element;
+const renders: Record<string, ItemRender> = {
+    1: function itemRender1(index: number) {
         return (
             <div className="custom-node1">
                 <span>{index + 1}</span>
