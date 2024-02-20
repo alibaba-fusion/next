@@ -360,6 +360,11 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
      * @version 1.24
      */
     hoverShowClear?: boolean;
+
+    /**
+     * NumberPicker组件展示调节增减按钮(配合 hasTrigger=true 使用)
+     */
+    extra?: React.ReactNode | null;
 }
 export interface PasswordProps extends InputProps {
     /**

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { NumberPicker } from '@alifd/next';
 
-function onChange(value, e) {
+function onChange(value: number, e: any) {
     console.log(value, e.type, e.triggerType);
 }
 

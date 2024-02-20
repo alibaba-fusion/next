@@ -3,8 +3,13 @@ import ReactDOM from 'react-dom';
 
 import { NumberPicker } from '@alifd/next';
 
-class App extends React.Component {
-    constructor(props) {
+interface AppState {
+    value: number;
+    tip: string;
+}
+
+class App extends React.Component<any, AppState> {
+    constructor(props: any) {
         super(props);
         this.state = {
             value: 0,
@@ -12,10 +17,10 @@ class App extends React.Component {
         };
         this.onChange = this.onChange.bind(this);
     }
-    onChange(value, e) {
+    onChange(value: number, e: Event) {
         let num = '';
         if (value >= 0) {
-            num = value;
+            num = value.toString();
         } else {
             num = `negative ${value * -1}`;
         }

@@ -2,8 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { NumberPicker, Button } from '@alifd/next';
 
-class App extends React.Component {
-    constructor(props) {
+interface DemoState {
+    editable: boolean;
+    value: number;
+}
+
+class App extends React.Component<any, DemoState> {
+    constructor(props: any) {
         super(props);
         this.state = {
             editable: false,
@@ -17,7 +22,7 @@ class App extends React.Component {
         });
     }
 
-    onChange(value) {
+    onChange(value: number) {
         console.log('changed', value);
         this.setState({
             value: value,

@@ -3,13 +3,12 @@ import ReactDOM from 'react-dom';
 import { NumberPicker } from '@alifd/next';
 
 const step = '0.000000000000000000000001';
-const precision = step.length - step.indexOf('.') - 1;
 
-function onChange(value) {
+function onChange(value: number) {
     console.log('changed', value);
 }
 
-function onCorrect(value) {
+function onCorrect(value: object) {
     console.log('corrected', value);
 }
 
@@ -17,7 +16,7 @@ class App extends React.Component {
     state = {
         value: `${Number.MIN_SAFE_INTEGER}`,
     };
-    onChange = value => {
+    onChange = (value: number) => {
         console.log(value);
         this.setState({
             value,
