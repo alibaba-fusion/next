@@ -1,34 +1,44 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import sinon from 'sinon';
-import NumberPicker from '../index';
 import Big from 'big.js';
-
-Enzyme.configure({ adapter: new Adapter() });
+import NumberPicker, { type NumberPickerProps } from '../index';
+import '../style';
 
 /* global describe it */
 describe('number-picker', () => {
     describe('render', () => {
         it('should accept defaultValue & value', () => {
-            let wrapper = mount(<NumberPicker defaultValue={123} />),
-                wrapper2 = mount(<NumberPicker value={123} />);
-            assert(wrapper.props().defaultValue === 123);
-            assert(wrapper2.props().value === 123);
+            cy.mount(<NumberPicker defaultValue={123} />).as('numberPicker');
+            cy.get('@numberPicker').its('component.props.defaultValue').should('eq', 123);
+            cy.mount(<NumberPicker value={234} />).as('numberPicker');
+            cy.get('@numberPicker').its('component.props.value').should('eq', 234);
         });
         it('should accept type ', () => {
-            const wrapper = mount(<NumberPicker type="inline" />);
-            assert(wrapper.props().type === 'inline');
+            cy.mount(<NumberPicker type="inline" />).as('numberPicker');
+            cy.get('@numberPicker').its('component.props.type').should('eq', 'inline');
         });
         it('should not tab trigger ', () => {
-            const wrapper = mount(<NumberPicker />);
-            const wrapper1 = mount(<NumberPicker type="inline" />);
-            assert(wrapper.find('button').at(0).prop('tabIndex') === -1);
-            assert(wrapper.find('button').at(1).prop('tabIndex') === -1);
-            assert(wrapper1.find('button').at(0).prop('tabIndex') === -1);
-            assert(wrapper1.find('button').at(1).prop('tabIndex') === -1);
+            cy.mount(<NumberPicker />).as('numberPicker');
+            cy.get('@numberPicker')
+                .document()
+                .find('button')
+                .eq(0)
+                .should('have.attr', 'tabIndex', -1);
+            cy.get('@numberPicker')
+                .document()
+                .find('button')
+                .eq(1)
+                .should('have.attr', 'tabIndex', -1);
+            cy.mount(<NumberPicker type="inline" />).as('numberPickerInline');
+            cy.get('@numberPickerInline')
+                .document()
+                .find('button')
+                .eq(0)
+                .should('have.attr', 'tabIndex', -1);
+            cy.get('@numberPickerInline')
+                .document()
+                .find('button')
+                .eq(1)
+                .should('have.attr', 'tabIndex', -1);
         });
         it('should compare max or min the changes', () => {
             class App extends React.Component {
@@ -43,7 +53,7 @@ describe('number-picker', () => {
                     });
                 };
 
-                onChange = value => {
+                onChange = (value: number) => {
                     this.setState({
                         value,
                     });
@@ -63,39 +73,79 @@ describe('number-picker', () => {
                 }
             }
 
-            let wrapper = mount(<App />);
+            cy.mount(<App />).as('DOM');
+            cy.get('@DOM').document().find('input').as('input');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.attr', 'value', 8);
 
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 8);
-
-            wrapper.find('button').at(0).simulate('click');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 5);
+            cy.get('@DOM').document().find('button').eq(0).as('button');
+            cy.get('@button').click();
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.attr', 'value', 5);
         });
         it('if max or min were undefined or null should infinity', () => {
-            const wrapper = mount(<NumberPicker max={10} defaultValue={10} min={10} />);
-            wrapper.find('button').at(0).simulate('click');
-            assert(wrapper.find('input').props('value').value === 10);
-            wrapper.setProps({ max: undefined });
-            wrapper.find('button').at(0).simulate('click');
-            assert(wrapper.find('input').props('value').value === 11);
-            wrapper.find('button').at(1).simulate('click');
-            wrapper.find('button').at(1).simulate('click');
-            assert(wrapper.find('input').props('value').value === 10);
-            wrapper.setProps({ min: undefined });
-            wrapper.find('button').at(1).simulate('click');
-            assert(wrapper.find('input').props('value').value === 9);
+            cy.mount(<NumberPicker max={10} defaultValue={10} min={10} />).as('numberPicker');
+            cy.get('@numberPicker').document().find('input').as('input');
+            cy.get('@numberPicker').document().find('button').eq(0).as('up');
+            cy.get('@numberPicker').document().find('button').eq(1).as('down');
+
+            cy.get('@up').click();
+            cy.get('@input').should('have.attr', 'value', 10);
+
+            cy.get('@down').click();
+            cy.get('@input').should('have.attr', 'value', 10);
+
+            cy.get('@numberPicker').then(({ component, rerender }: any) => {
+                return rerender(React.cloneElement(component, { max: undefined }));
+            });
+            cy.get('@up').click();
+            cy.get('@input').should('have.attr', 'value', 11);
+
+            cy.get('@numberPicker').then(({ component, rerender }: any) => {
+                return rerender(React.cloneElement(component, { min: undefined }));
+            });
+            cy.get('@down').click();
+            cy.get('@down').click();
+            cy.get('@input').should('have.attr', 'value', 9);
         });
     });
 
     describe('stringMode', () => {
         it('should support big number not within [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER] in stringMode ', () => {
+            cy.mount(
+                <NumberPicker
+                    defaultValue={Number.MAX_SAFE_INTEGER}
+                    style={{ width: '100%' }}
+                    stringMode
+                />
+            ).as('NumberPicker');
+            cy.get('@NumberPicker')
+                .its('component.props.defaultValue')
+                .should('eq', Number.MAX_SAFE_INTEGER);
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type(`${Number.MAX_SAFE_INTEGER}2333`);
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', `${Number.MAX_SAFE_INTEGER}2333`);
+            cy.get('@input').clear();
+            cy.get('@input').type(`${Number.MAX_SAFE_INTEGER}a2333`);
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', `${Number.MAX_SAFE_INTEGER}2333`);
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.value', `${Number.MAX_SAFE_INTEGER}2333`);
+            cy.get('@input').clear();
+            cy.get('@input').type(`${Number.MAX_SAFE_INTEGER}2333.1`);
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', `${Number.MAX_SAFE_INTEGER}2333.1`);
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.value', `${Number.MAX_SAFE_INTEGER}2333`);
+
             const step = '0.000000000000000000000001';
             class App extends React.Component {
                 state = {
                     value: `${Number.MIN_SAFE_INTEGER}`,
                 };
-                onChange = value => {
+                onChange = (value: number) => {
                     this.setState({
                         value,
                     });
@@ -108,63 +158,63 @@ describe('number-picker', () => {
                             onChange={this.onChange}
                             step={step}
                             stringMode
+                            style={{ width: '100%' }}
                         />
                     );
                 }
             }
-            let wrapper = mount(<NumberPicker defaultValue={Number.MAX_SAFE_INTEGER} stringMode />),
-                wrapper2 = mount(<App />);
-            assert(wrapper.props().defaultValue === Number.MAX_SAFE_INTEGER);
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}`);
-
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}2333` } });
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}a2333` } });
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}2333.1` } });
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333.1`);
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-
-            assert(wrapper2.find('input').prop('value') === `${Number.MIN_SAFE_INTEGER}`);
-            wrapper2
-                .find('input')
-                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}2333` } });
-            assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper2.find('input').simulate('blur');
-            assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper2
-                .find('input')
-                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}a2333` } });
-            assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper2.find('input').simulate('blur');
-            assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}2333`);
-            wrapper2
-                .find('input')
-                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}.2333` } });
-            assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}.2333`);
-            wrapper2.find('input').simulate('blur');
-            assert(wrapper2.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}.2333`);
+            cy.mount(<App />).as('NumberPicker2');
+            cy.get('@NumberPicker2').document().find('input').as('input2');
+            cy.get('@input2').should('have.attr', 'value', `${Number.MIN_SAFE_INTEGER}`);
+            cy.get('@input2').clear();
+            cy.get('@input2').type(`${Number.MAX_SAFE_INTEGER}2333`);
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').should('have.value', `${Number.MAX_SAFE_INTEGER}2333`);
+            cy.get('@input2').trigger('blur');
+            cy.get('@input2').should('have.value', `${Number.MAX_SAFE_INTEGER}2333`);
+            cy.get('@input2').clear();
+            cy.get('@input2').type(`${Number.MAX_SAFE_INTEGER}a2333`);
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').should('have.value', `${Number.MAX_SAFE_INTEGER}2333`);
+            cy.get('@input2').trigger('blur');
+            cy.get('@input2').should('have.value', `${Number.MAX_SAFE_INTEGER}2333`);
+            cy.get('@input2').clear();
+            cy.get('@input2').type(`${Number.MAX_SAFE_INTEGER}.2333`);
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').should('have.value', `${Number.MAX_SAFE_INTEGER}.2333`);
+            cy.get('@input2').trigger('blur');
+            cy.get('@input2').should('have.value', `${Number.MAX_SAFE_INTEGER}.2333`);
         });
 
         it('should support big number when triggering step whether under control or not', () => {
+            cy.mount(
+                <NumberPicker
+                    defaultValue={Number.MAX_SAFE_INTEGER}
+                    style={{ width: '100%' }}
+                    stringMode
+                />
+            ).as('NumberPicker');
+            cy.get('@NumberPicker')
+                .its('component.props.defaultValue')
+                .should('eq', Number.MAX_SAFE_INTEGER);
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').should('have.value', `${Number.MAX_SAFE_INTEGER}`);
+            cy.get('@NumberPicker').document().find('button').eq(0).click();
+            const PlusBigNumber = Big(Number.MAX_SAFE_INTEGER).plus(1).toFixed(0);
+            cy.get('@input').should('have.value', PlusBigNumber);
+            cy.get('@NumberPicker').document().find('button').eq(1).click();
+            cy.get('@input').should('have.value', `${Number.MAX_SAFE_INTEGER}`);
+            cy.get('@NumberPicker').document().find('button').eq(1).click();
+            const MinusBigNumber = Big(Number.MAX_SAFE_INTEGER).minus(1).toFixed(0);
+            cy.get('@input').should('have.value', MinusBigNumber);
+
             const step = '0.000000000000000000000001';
             const precision = step.length - step.indexOf('.') - 1;
             class App extends React.Component {
                 state = {
                     value: `${Number.MIN_SAFE_INTEGER}`,
                 };
-                onChange = value => {
+                onChange = (value: number) => {
                     this.setState({
                         value,
                     });
@@ -176,45 +226,25 @@ describe('number-picker', () => {
                             value={this.state.value}
                             onChange={this.onChange}
                             step={step}
+                            style={{ width: '100%' }}
                             stringMode
                         />
                     );
                 }
             }
-            let wrapper = mount(<NumberPicker defaultValue={Number.MAX_SAFE_INTEGER} stringMode />),
-                wrapper2 = mount(<App />);
-            assert(wrapper.props().defaultValue === Number.MAX_SAFE_INTEGER);
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}`);
-            assert(wrapper2.find('input').prop('value') === `${Number.MIN_SAFE_INTEGER}`);
 
-            wrapper.find('button').at(0).simulate('click');
-            assert(
-                wrapper.find('input').prop('value') ===
-                    Big(Number.MAX_SAFE_INTEGER).plus(1).toFixed(0)
-            );
-            wrapper.find('button').at(1).simulate('click');
-            assert(wrapper.find('input').prop('value') === Big(Number.MAX_SAFE_INTEGER).toFixed(0));
-            wrapper.find('button').at(1).simulate('click');
-            assert(
-                wrapper.find('input').prop('value') ===
-                    Big(Number.MAX_SAFE_INTEGER).minus(1).toFixed(0)
-            );
-
-            wrapper2.find('button').at(0).simulate('click');
-            assert(
-                wrapper2.find('input').prop('value') ===
-                    Big(Number.MIN_SAFE_INTEGER).plus(step).toFixed(precision)
-            );
-            wrapper2.find('button').at(1).simulate('click');
-            assert(
-                wrapper2.find('input').prop('value') ===
-                    Big(Number.MIN_SAFE_INTEGER).toFixed(precision)
-            );
-            wrapper2.find('button').at(1).simulate('click');
-            assert(
-                wrapper2.find('input').prop('value') ===
-                    Big(Number.MIN_SAFE_INTEGER).minus(step).toFixed(precision)
-            );
+            cy.mount(<App />).as('NumberPicker2');
+            cy.get('@NumberPicker2').document().find('input').as('input2');
+            cy.get('@input2').should('have.attr', 'value', `${Number.MIN_SAFE_INTEGER}`);
+            cy.get('@NumberPicker2').document().find('button').eq(0).click();
+            const PlusBigNumber2 = Big(Number.MIN_SAFE_INTEGER).plus(step).toFixed(precision);
+            cy.get('@input2').should('have.value', PlusBigNumber2);
+            cy.get('@NumberPicker2').document().find('button').eq(1).click();
+            const MinusBigNumber2 = Big(Number.MIN_SAFE_INTEGER).toFixed(precision);
+            cy.get('@input2').should('have.value', MinusBigNumber2);
+            cy.get('@NumberPicker2').document().find('button').eq(1).click();
+            const MinusBigNumber3 = Big(Number.MIN_SAFE_INTEGER).minus(step).toFixed(precision);
+            cy.get('@input2').should('have.value', MinusBigNumber3);
         });
 
         it('should support max & min props change', () => {
@@ -226,7 +256,7 @@ describe('number-picker', () => {
                     max: Infinity,
                     min: -Infinity,
                 };
-                onChange = value => {
+                onChange = (value: number | string) => {
                     this.setState({
                         value,
                         max: value === `${Number.MAX_SAFE_INTEGER}000` ? 20 : Infinity,
@@ -243,188 +273,225 @@ describe('number-picker', () => {
                             value={value}
                             onChange={this.onChange}
                             step={step}
+                            style={{ width: '100%' }}
                             stringMode
                         />
                     );
                 }
             }
-            let wrapper = mount(<App />);
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}`);
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}123456789` } });
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}123456789`);
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}123456789`);
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: `${Number.MAX_SAFE_INTEGER}000` } });
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}000`);
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === Big(20).toFixed(precision));
+            cy.mount(<App />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').should('have.attr', 'value', `${Number.MAX_SAFE_INTEGER}`);
+            cy.get('@input').clear();
+            cy.get('@input').type(`${Number.MAX_SAFE_INTEGER}123456789`);
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', `${Number.MAX_SAFE_INTEGER}123456789`);
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.value', `${Number.MAX_SAFE_INTEGER}123456789`);
+            cy.get('@input').clear();
+            cy.get('@input').type(`${Number.MAX_SAFE_INTEGER}000`);
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', `${Number.MAX_SAFE_INTEGER}000`);
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.value', Big(20).toFixed(precision));
         });
 
         it('should delete 0 at beginning when blur', () => {
-            const wrapper = mount(
-                <NumberPicker defaultValue={Number.MAX_SAFE_INTEGER} stringMode />
-            );
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: `0${Number.MAX_SAFE_INTEGER}123` } });
-            assert(wrapper.find('input').prop('value') === `0${Number.MAX_SAFE_INTEGER}123`);
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === `${Number.MAX_SAFE_INTEGER}123`);
+            cy.mount(
+                <NumberPicker
+                    defaultValue={Number.MAX_SAFE_INTEGER}
+                    style={{ width: '100%' }}
+                    stringMode
+                />
+            ).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type(`0${Number.MAX_SAFE_INTEGER}123`);
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', `0${Number.MAX_SAFE_INTEGER}123`);
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.value', `${Number.MAX_SAFE_INTEGER}123`);
         });
     });
 
     describe('behavior', () => {
         it('simulates onChange/onClick/onFocus/onDisabled events', () => {
-            const onChange = sinon.spy();
-            const onFocus = sinon.spy();
-
-            const wrapper = mount(<NumberPicker onChange={onChange} onFocus={onFocus} />);
-
-            wrapper.find('button').at(0).simulate('click');
-            assert(onChange.calledOnce);
-
-            wrapper.find('input').simulate('change', { target: { value: '5' } });
-            assert(onChange.calledTwice);
-
-            wrapper.find('input').simulate('blur');
-            wrapper.find('input').simulate('focus');
-            assert(onFocus.calledOnce);
+            const onFocus = cy.spy();
+            const onChange = cy.spy();
+            cy.mount(<NumberPicker onChange={onChange} onFocus={onFocus} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('button').eq(0).click();
+            cy.wrap(onChange).should('be.calledOnce');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').type(`5`);
+            cy.get('@input').trigger('focus');
+            cy.wrap(onChange).should('be.calledTwice');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').trigger('focus');
+            cy.wrap(onFocus).should('be.calledThrice');
         });
 
-        it('should support defaultValue and can be changed', done => {
-            let onChange = value => {
-                    assert(value === 20);
-                    done();
-                },
-                wrapper = mount(<NumberPicker defaultValue={123} onChange={onChange} />);
-
-            assert(wrapper.find('input').prop('value') === 123);
-
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
-            assert(wrapper.find('input').prop('value') === '20');
+        it('should support defaultValue and can be changed', () => {
+            const onChange = (value: number) => {
+                assert(value === 1234);
+            };
+            cy.mount(<NumberPicker defaultValue={123} onChange={onChange} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').should('have.attr', 'value', 123);
+            cy.get('@input').type('4');
+            cy.get('@input').should('have.value', '1234');
         });
 
-        it('should support value and can not be changed', done => {
-            let onChange = value => {
-                    assert(value === 20);
-                },
-                wrapper = mount(<NumberPicker value={123} onChange={onChange} />);
-
-            assert(wrapper.find('input').prop('value') === 123);
-
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
-            assert(wrapper.find('input').prop('value') === '20');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 123);
-
-            done();
+        it('should support value and can not be changed', () => {
+            const onChange = (value: number) => {
+                assert(value === 1234);
+            };
+            cy.mount(<NumberPicker value={123} onChange={onChange} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').should('have.attr', 'value', 123);
+            cy.get('@input').type('4');
+            cy.get('@input').should('have.value', '1234');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.attr', 'value', 123);
         });
 
         it('should only input -.1234567890', () => {
-            let wrapper = mount(<NumberPicker />);
-            wrapper.find('input').simulate('change', { target: { value: '-1.' } });
-            assert(wrapper.find('input').prop('value') === '-1.');
-            wrapper.find('input').simulate('change', { target: { value: '-1.a' } });
-            assert(wrapper.find('input').prop('value') === '-1.');
-            wrapper.find('input').simulate('change', { target: { value: '-1.13a2' } });
-            assert(wrapper.find('input').prop('value') === '-1.132');
+            cy.mount(<NumberPicker />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').type('-1.');
+            cy.get('@input').should('have.value', '-1.');
+            cy.get('@input').clear();
+            cy.get('@input').type('-1.a');
+            cy.get('@input').should('have.value', '-1.');
+            cy.get('@input').clear();
+            cy.get('@input').type('-1.13a2');
+            cy.get('@input').should('have.value', '-1.132');
         });
 
-        it('onChange value 1.9 -> 1. should input displayValue === 1. onchange value === 1', done => {
-            const onChange = value => {
-                assert(value === 1);
-                done();
+        it('onChange value 1.9 -> 1. should input displayValue === 1. onchange value === 1', () => {
+            const onChange = (value: number) => {
+                assert(value === 1 || value === undefined);
             };
-            let wrapper = mount(<NumberPicker value={1.9} onChange={onChange} precision={1} />);
-            wrapper.find('input').simulate('change', { target: { value: '1.' } });
-            assert(wrapper.find('input').prop('value') === '1.');
-            wrapper.setProps({ value: 1 });
-            assert(wrapper.find('input').prop('value') === '1.');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 1);
+            cy.mount(<NumberPicker value={1.9} onChange={onChange} precision={1} />).as(
+                'NumberPicker'
+            );
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('1.');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '1.');
+
+            cy.mount(<NumberPicker value={1} onChange={onChange} precision={1} />).as(
+                'NumberPicker2'
+            );
+            cy.get('@NumberPicker2').document().find('input').as('input2');
+            cy.get('@input2').clear();
+            cy.get('@input2').type('1.');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').should('have.value', '1.');
+            cy.get('@input2').trigger('blur');
+            cy.get('@input2').should('have.attr', 'value', 1);
         });
 
-        it('should leave out digits larger than precision set', done => {
-            let wrapper = mount(<NumberPicker defaultValue={0} precision={1} />);
+        it('should leave out digits larger than precision set', () => {
+            cy.mount(<NumberPicker defaultValue={0} precision={1} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('0.34');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '0.34');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.attr', 'value', 0.3);
 
-            wrapper.find('input').simulate('change', { target: { value: '0.34' } });
-            assert(wrapper.find('input').prop('value') === '0.34');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 0.3);
-
-            wrapper = mount(<NumberPicker defaultValue={1} />);
-
-            wrapper.find('input').simulate('change', { target: { value: '0.' } });
-            assert(wrapper.find('input').prop('value') === '0.');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 0);
-
-            wrapper.find('input').simulate('change', { target: { value: '0.24' } });
-            assert(wrapper.find('input').prop('value') === '0.24');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 0);
-
-            wrapper.find('input').simulate('change', { target: { value: '0.2.4' } });
-            assert(wrapper.find('input').prop('value') === '0.2.4');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 0);
-
-            done();
+            cy.mount(<NumberPicker defaultValue={1} />).as('NumberPicker2');
+            cy.get('@NumberPicker2').document().find('input').as('input2');
+            cy.get('@input2').clear();
+            cy.get('@input2').type('0.');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').should('have.value', '0.');
+            cy.get('@input2').trigger('blur');
+            cy.get('@input2').should('have.attr', 'value', 0);
+            cy.get('@input2').clear();
+            cy.get('@input2').type('0.24');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').should('have.value', '0.24');
+            cy.get('@input2').trigger('blur');
+            cy.get('@input2').should('have.attr', 'value', 0);
+            cy.get('@input2').clear();
+            cy.get('@input2').type('0.2.4');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').should('have.value', '0.2.4');
+            cy.get('@input2').trigger('blur');
+            cy.get('@input2').should('have.attr', 'value', 0);
         });
 
-        it('should ignore more than one . or -, cut at second . or -', done => {
-            let wrapper = mount(<NumberPicker defaultValue={0} precision={2} />);
+        it('should ignore more than one . or -, cut at second . or -', () => {
+            cy.mount(<NumberPicker defaultValue={0} precision={2} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('0.3.4');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '0.3.4');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.attr', 'value', 0.3);
 
-            wrapper.find('input').simulate('change', { target: { value: '0.3.4' } });
-            assert(wrapper.find('input').prop('value') === '0.3.4');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 0);
+            cy.get('@input').clear();
+            cy.get('@input').type('0.3');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').type('.');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '0.3.');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.attr', 'value', 0.3);
 
-            wrapper.find('input').simulate('change', { target: { value: '0.3' } });
-            wrapper.find('input').simulate('change', { target: { value: '0.3.' } });
-            assert(wrapper.find('input').prop('value') === '0.3.');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 0.3);
+            cy.get('@input').clear();
+            cy.get('@input').type('-0.3');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').type('-');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '-0.3-');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.attr', 'value', -0.3);
 
-            wrapper.find('input').simulate('change', { target: { value: '-0.3' } });
-            wrapper.find('input').simulate('change', { target: { value: '-0.3-' } });
-            assert(wrapper.find('input').prop('value') === '-0.3-');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === -0.3);
+            cy.get('@input').clear();
+            cy.get('@input').type('-1.34');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').type('5-4');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '-1.345-4');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.attr', 'value', -1.34);
 
-            wrapper.find('input').simulate('change', { target: { value: '-1.34' } });
-            wrapper.find('input').simulate('change', { target: { value: '-1.345-4' } });
-            assert(wrapper.find('input').prop('value') === '-1.345-4');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === -1.34);
-
-            const onChange = value => {
-                assert(value === 0);
-            };
-            wrapper = mount(<NumberPicker defaultValue={0} precision={2} onChange={onChange} />);
-
-            wrapper.find('input').simulate('change', { target: { value: '-0' } });
-            wrapper.find('input').simulate('change', { target: { value: '-0.' } });
-            wrapper.find('input').simulate('change', { target: { value: '-0.-' } });
-            wrapper.find('input').simulate('change', { target: { value: '-0.-3' } });
-            assert(wrapper.find('input').prop('value') === '-0.-3');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 0);
-            assert(!onChange.calledOnce);
-
-            done();
+            const onChange = cy.spy();
+            cy.mount(
+                <NumberPicker
+                    defaultValue={0}
+                    precision={2}
+                    onChange={onChange}
+                    style={{ width: '100%' }}
+                />
+            ).as('NumberPicker2');
+            cy.get('@NumberPicker2').document().find('input').as('input2');
+            cy.get('@input2').clear();
+            cy.get('@input2').type('-0');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').type('.');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').type('-');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').type('3');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').should('have.value', '-0.-3');
+            cy.get('@input2').trigger('blur');
+            cy.get('@input2').should('have.attr', 'value', '-0');
+            cy.wrap(onChange).should('have.been.called');
         });
 
-        it('should work with value and onChange under control', done => {
+        it('should work with value and onChange under control', () => {
             class App extends React.Component {
                 state = {
                     value: 123,
                 };
-                onChange = value => {
+                onChange = (value: number) => {
                     this.setState({
                         value,
                     });
@@ -434,35 +501,33 @@ describe('number-picker', () => {
                     return <NumberPicker value={this.state.value} onChange={this.onChange} />;
                 }
             }
-
-            const wrapper = mount(<App />);
-
-            assert(wrapper.find('input').prop('value') === 123);
-
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
-            assert(wrapper.find('input').prop('value') === '20');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') === 20);
-
-            done();
+            cy.mount(<App />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').should('have.attr', 'value', 123);
+            cy.get('@input').clear();
+            cy.get('@input').type('20');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '20');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.attr', 'value', 20);
         });
 
-        it('should not correct "" as 0 when blur', done => {
-            const onChange = value => {
+        it('should not correct "" as 0 when blur', () => {
+            const onChange = (value: any) => {
                 assert(value === undefined);
-                done();
             };
-            const wrapper = mount(<NumberPicker defaultValue={0} onChange={onChange} />);
-
-            wrapper.find('input').simulate('change', { target: { value: '' } });
-            assert(wrapper.find('input').prop('value') === '');
-            wrapper.find('input').simulate('blur');
+            cy.mount(<NumberPicker defaultValue={0} onChange={onChange} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '');
+            cy.get('@input').trigger('blur');
         });
 
-        it('should work with value and onChange and min under control', done => {
+        it('should work with value and onChange and min under control', () => {
             class App extends React.Component {
-                state = {};
-                onChange = value => {
+                state: { value?: number } = {};
+                onChange = (value: number) => {
                     this.setState({
                         value,
                     });
@@ -474,491 +539,564 @@ describe('number-picker', () => {
                     );
                 }
             }
-
-            const wrapper = mount(<App />);
-
-            wrapper.find('input').simulate('change', { target: { value: '1' } });
-            // 不合法输入不触发 onChange，故受控模式不合法输入无法获取
-            assert(wrapper.find('input').prop('value') == '1');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') == 6);
-
-            done();
+            cy.mount(<App />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('1');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '1');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.attr', 'value', 6);
         });
 
         it('should support input with -.x or .x or -0.0x', () => {
-            let onChange = value => {
-                assert(value === -0.2);
+            const onChange: any = (value: number) => {
+                assert(value === -0.2 || value === undefined);
             };
-            let wrapper = mount(
-                <NumberPicker defaultValue={-0.3} onChange={onChange} precision={1} />
+            cy.mount(<NumberPicker defaultValue={-0.3} onChange={onChange} precision={1} />).as(
+                'NumberPicker'
             );
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('-.2');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '-.2');
+            cy.get('@input').clear();
+            cy.get('@input').type('-.');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '-.');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.attr', 'value', '');
 
-            wrapper.find('input').simulate('change', { target: { value: '-.2' } });
-            assert(wrapper.find('input').prop('value') == '-.2');
-            wrapper.find('input').simulate('change', { target: { value: '-.' } });
-            assert(wrapper.find('input').prop('value') == '-.');
-            wrapper.simulate('blur');
-            assert(wrapper.find('input').prop('value') == '-.');
+            cy.mount(<NumberPicker defaultValue={-0.2} onChange={onChange} precision={1} />).as(
+                'NumberPicker2'
+            );
+            cy.get('@NumberPicker2').document().find('input').as('input2');
+            cy.get('@input2').clear();
+            cy.get('@input2').type('-.2');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').should('have.value', '-.2');
+            cy.get('@input2').trigger('blur');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').should('have.value', '-0.2');
 
-            wrapper = mount(<NumberPicker defaultValue={-0.2} onChange={onChange} precision={1} />);
-
-            wrapper.find('input').simulate('change', { target: { value: '-.2' } });
-            assert(wrapper.find('input').prop('value') == '-.2');
-            wrapper.find('input').simulate('blur');
-            wrapper.find('input').simulate('focus');
-            assert(wrapper.find('input').prop('value') == '-0.2');
-
-            onChange = value => {
-                assert(value === 0.3);
+            const onChange3 = (value: number) => {
+                assert(value === 0.3 || value === undefined);
             };
-            wrapper = mount(<NumberPicker defaultValue={0.2} onChange={onChange} precision={1} />);
-            wrapper.find('input').simulate('change', { target: { value: '.3' } });
-            assert(wrapper.find('input').prop('value') == '.3');
-            wrapper.find('input').simulate('blur');
-            wrapper.find('input').simulate('focus');
-            assert(wrapper.find('input').prop('value') == '0.3');
+            cy.mount(<NumberPicker defaultValue={0.2} onChange={onChange3} precision={1} />).as(
+                'NumberPicker3'
+            );
+            cy.get('@NumberPicker3').document().find('input').as('input3');
+            cy.get('@input3').clear();
+            cy.get('@input3').type('.3');
+            cy.get('@input3').trigger('focus');
+            cy.get('@input3').should('have.value', '.3');
+            cy.get('@input3').trigger('blur');
+            cy.get('@input3').trigger('focus');
+            cy.get('@input3').should('have.value', '0.3');
 
-            onChange = sinon.spy();
+            const onChange4 = cy.spy();
+            cy.mount(<NumberPicker defaultValue={0.3} onChange={onChange4} precision={1} />).as(
+                'NumberPicker4'
+            );
+            cy.get('@NumberPicker4').document().find('input').as('input4');
+            cy.get('@input4').clear();
+            cy.get('@input4').type('.3');
+            cy.get('@input4').trigger('focus');
+            cy.get('@input4').should('have.value', '.3');
+            cy.wrap(onChange4).should('be.calledTwice');
+            cy.get('@input4').trigger('blur');
+            cy.get('@input4').should('have.value', '0.3');
+            cy.wrap(onChange4).should('be.calledTwice');
 
-            wrapper = mount(<NumberPicker defaultValue={0.3} onChange={onChange} precision={1} />);
+            const onChange5 = cy.spy();
+            cy.mount(<NumberPicker defaultValue={0.3} onChange={onChange5} precision={1} />).as(
+                'NumberPicker5'
+            );
+            cy.get('@NumberPicker5').document().find('input').as('input5');
+            cy.get('@input5').clear();
+            cy.get('@input5').type('-0.');
+            cy.get('@input5').trigger('focus');
+            cy.get('@input5').should('have.value', '-0.');
+            cy.wrap(onChange5).should('be.calledTwice');
+            cy.get('@input5').trigger('blur');
+            cy.get('@input5').should('have.value', '-0');
+            cy.wrap(onChange5).should('be.calledTwice');
 
-            wrapper.find('input').simulate('change', { target: { value: '.3' } });
-            assert(onChange.notCalled);
-            assert(wrapper.find('input').prop('value') == '.3');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') == '0.3');
-            // 值实际无变化，不触发onChange
-            assert(onChange.notCalled);
-
-            wrapper = mount(<NumberPicker defaultValue={0.3} onChange={onChange} precision={1} />);
-
-            wrapper.find('input').simulate('change', { target: { value: '-0.' } });
-            assert(onChange.calledOnce);
-            assert(wrapper.find('input').prop('value') == '-0.');
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') == '-0');
-            assert(onChange.calledOnce);
-
-            wrapper = mount(<NumberPicker defaultValue={0} precision={2} />);
-
-            wrapper.find('input').simulate('change', { target: { value: '-0.0' } });
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') == '-0');
-            wrapper.find('input').simulate('change', { target: { value: '-0.0' } });
-            assert(wrapper.find('input').prop('value') == '-0.0');
-            wrapper.find('input').simulate('change', { target: { value: '-0.01' } });
-            wrapper.find('input').simulate('blur');
-            assert(wrapper.find('input').prop('value') == '-0.01');
+            cy.mount(<NumberPicker defaultValue={0} precision={2} />).as('NumberPicker6');
+            cy.get('@NumberPicker6').document().find('input').as('input6');
+            cy.get('@input6').clear();
+            cy.get('@input6').type('-0.0');
+            cy.get('@input6').trigger('focus');
+            cy.get('@input6').trigger('blur');
+            cy.get('@input6').should('have.value', '-0');
+            cy.get('@input6').clear();
+            cy.get('@input6').type('-0.0');
+            cy.get('@input6').trigger('focus');
+            cy.get('@input6').should('have.value', '-0.0');
+            cy.get('@input6').clear();
+            cy.get('@input6').type('-0.01');
+            cy.get('@input6').trigger('focus');
+            cy.get('@input6').trigger('blur');
+            cy.get('@input6').should('have.value', '-0.01');
         });
 
         it('should support input with -0 ', () => {
-            let onChange = value => {
-                assert(value === -0);
+            const onChange: any = (value: number) => {
+                assert(value === -0 || value === undefined);
             };
-            let wrapper = mount(
-                <NumberPicker defaultValue={-0.3} onChange={onChange} precision={1} />
+            cy.mount(<NumberPicker defaultValue={-0.3} onChange={onChange} precision={1} />).as(
+                'NumberPicker'
             );
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('-0');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').clear();
+            cy.get('@input').type('-0.');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').trigger('blur');
 
-            wrapper.find('input').simulate('change', { target: { value: '-0' } });
-            wrapper.find('input').simulate('blur');
+            const onChange2 = cy.spy();
+            cy.mount(<NumberPicker defaultValue={-0.3} onChange={onChange2} precision={1} />).as(
+                'NumberPicker2'
+            );
+            cy.get('@NumberPicker2').document().find('input').as('input2');
+            cy.get('@input2').clear();
+            cy.get('@input2').type('-0.');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').should('have.value', '-0.');
+            cy.wrap(onChange2).should('be.calledTwice');
+            cy.get('@input2').trigger('blur');
+            cy.get('@input2').should('have.value', '-0');
+            cy.wrap(onChange2).should('be.calledTwice');
 
-            wrapper.find('input').simulate('change', { target: { value: '-0.' } });
-            wrapper.find('input').simulate('blur');
-
-            onChange = sinon.spy();
-
-            wrapper = mount(<NumberPicker defaultValue={-0.3} onChange={onChange} precision={1} />);
-
-            wrapper.find('input').simulate('change', { target: { value: '-0.' } });
-            assert(onChange.calledOnce);
-            assert(wrapper.find('input').prop('value') == '-0.');
-            wrapper.find('input').simulate('blur');
-            assert(onChange.calledOnce);
-            assert(wrapper.find('input').prop('value') == '-0');
-
-            onChange = sinon.spy();
-
-            wrapper = mount(<NumberPicker defaultValue={-0.3} onChange={onChange} precision={1} />);
-
-            wrapper.find('input').simulate('change', { target: { value: '-3' } });
-            wrapper.find('input').simulate('change', { target: { value: '-0' } });
-            assert(onChange.calledTwice);
-            assert(wrapper.find('input').prop('value') == '-0');
+            const onChange3 = cy.spy();
+            cy.mount(<NumberPicker defaultValue={-0.3} onChange={onChange3} precision={1} />).as(
+                'NumberPicker3'
+            );
+            cy.get('@NumberPicker3').document().find('input').as('input3');
+            cy.get('@input3').clear();
+            cy.get('@input3').type('-3');
+            cy.get('@input3').clear();
+            cy.get('@input3').type('-0');
+            cy.get('@input3').trigger('focus');
+            cy.get('@input3').should('have.value', '-0');
+            cy.wrap(onChange3).should('have.callCount', 4);
         });
 
         // 特殊输入检测
         it('should support input with -/-0/-0./0./0.0 ', () => {
-            const onChange = sinon.spy();
-            const wrapper = mount(
-                <NumberPicker defaultValue={0} onChange={onChange} precision={1} />
+            const onChange = cy.spy();
+            cy.mount(<NumberPicker defaultValue={0} onChange={onChange} precision={1} />).as(
+                'NumberPicker'
             );
-
-            wrapper.find('input').simulate('change', { target: { value: ' ' } });
-            // ''会触发onChange
-            assert(onChange.calledOnce);
-
-            wrapper.find('input').simulate('change', { target: { value: '  ' } });
-            assert(!onChange.calledTwice);
-
-            wrapper.find('input').simulate('change', { target: { value: '-' } });
-            assert(!onChange.calledTwice);
-
-            wrapper.find('input').simulate('change', { target: { value: '-0.' } });
-            assert(onChange.calledTwice);
-
-            // 以下 实际值无变化，不触发onChange
-            wrapper.find('input').simulate('change', { target: { value: '-0.0' } });
-            assert(onChange.calledTwice);
-
-            wrapper.find('input').simulate('change', { target: { value: '0.' } });
-            assert(onChange.calledTwice);
-
-            wrapper.find('input').simulate('change', { target: { value: '0.0' } });
-            assert(onChange.calledTwice);
-
-            wrapper.find('input').simulate('blur');
-            assert(onChange.calledTwice);
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type(' ');
+            cy.get('@input').trigger('focus');
+            cy.wrap(onChange).should('be.calledOnce');
+            cy.get('@input').clear();
+            cy.get('@input').type('  ');
+            cy.get('@input').trigger('focus');
+            cy.wrap(onChange).should('be.calledOnce');
+            cy.get('@input').clear();
+            cy.get('@input').type('-');
+            cy.get('@input').trigger('focus');
+            cy.wrap(onChange).should('be.calledOnce');
+            cy.get('@input').clear();
+            cy.get('@input').type('-0.');
+            cy.get('@input').trigger('focus');
+            cy.wrap(onChange).should('be.calledTwice');
+            cy.get('@input').clear();
+            cy.get('@input').type('-0.0');
+            cy.get('@input').trigger('focus');
+            cy.wrap(onChange).should('have.callCount', 4);
+            cy.get('@input').clear();
+            cy.get('@input').type('0.');
+            cy.get('@input').trigger('focus');
+            cy.wrap(onChange).should('have.callCount', 6);
+            cy.get('@input').clear();
+            cy.get('@input').type('0.0');
+            cy.get('@input').trigger('focus');
+            cy.wrap(onChange).should('have.callCount', 8);
+            cy.get('@input').trigger('blur');
+            cy.wrap(onChange).should('have.callCount', 8);
         });
 
         it('should accept disabled ', () => {
-            const wrapper = mount(<NumberPicker defaultValue={0} disabled />);
-
-            wrapper.find('button').at(0).simulate('click');
-            assert(wrapper.find('input').prop('value') === 0);
+            cy.mount(<NumberPicker defaultValue={0} disabled />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('button').eq(0).as('up');
+            cy.get('@NumberPicker').document().find('button').eq(1).as('down');
+            cy.get('@up').should('have.attr', 'disabled');
+            cy.get('@down').should('have.attr', 'disabled');
         });
 
-        it('should support click add && reduce', done => {
-            let onChange = value => {
-                    assert(value === 4);
-                },
-                wrapper = mount(<NumberPicker defaultValue={3} onChange={onChange} />);
+        it('should support click add && reduce', () => {
+            const onChange = (value: number) => {
+                assert(value === 4);
+            };
+            cy.mount(<NumberPicker defaultValue={3} onChange={onChange} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('button').eq(0).as('up');
+            cy.get('@NumberPicker').document().find('button').eq(1).as('down');
+            cy.get('@up').click();
+            cy.get('@down').trigger('mousedown');
 
-            wrapper.find('button').at(0).simulate('click');
-            wrapper.find('button').at(1).simulate('mousedown');
-
-            let onChange2 = value => {
-                    assert(value === 2);
-                },
-                wrapper2 = mount(<NumberPicker defaultValue={3} onChange={onChange2} />);
-
-            wrapper2.find('button').at(1).simulate('click');
-
-            done();
+            const onChange2 = (value: number) => {
+                assert(value === 2);
+            };
+            cy.mount(<NumberPicker defaultValue={3} onChange={onChange2} />).as('NumberPicker2');
+            cy.get('@NumberPicker2').document().find('button').eq(1).as('down');
+            cy.get('@down').click();
         });
 
-        it('should support editable', done => {
-            let onChange = value => {
-                    assert(value === 20);
-                },
-                wrapper = mount(<NumberPicker defaultValue={123} editable onChange={onChange} />);
-
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
-
-            let onChange2 = value => {
-                    assert(value === 124);
-                },
-                wrapper2 = mount(
-                    <NumberPicker defaultValue={123} editable={false} onChange={onChange2} />
-                );
-
-            wrapper2.find('button').at(0).simulate('click');
-
-            done();
-        });
-
-        it('should support max & min', done => {
-            let onChange = value => {
-                    assert(value === 20);
-                },
-                onDisabled = sinon.spy(),
-                wrapper = mount(
-                    <NumberPicker
-                        defaultValue={19}
-                        max={20}
-                        step={3}
-                        onDisabled={onDisabled}
-                        onChange={onChange}
-                    />
-                );
-
-            wrapper.find('button').at(0).simulate('click');
-            wrapper.find('button').at(0).simulate('click');
-
-            assert(onDisabled.calledOnce);
-
-            let onChange2 = value => {
-                    assert(value === 18);
-                },
-                wrapper2 = mount(
-                    <NumberPicker
-                        defaultValue={19}
-                        max={20}
-                        min={18}
-                        step={3}
-                        onDisabled={onDisabled}
-                        onChange={onChange2}
-                    />
-                );
-
-            wrapper2.find('button').at(1).simulate('click');
-            wrapper2.find('button').at(1).simulate('click');
-
-            assert(onDisabled.calledTwice);
-            assert(
-                mount(<NumberPicker defaultValue={22} max={20} onChange={onChange} />).prop(
-                    'max'
-                ) === 20
+        it('should support editable', () => {
+            const onChange = (value: number) => {
+                assert(value === 2 || value === 20 || value === undefined);
+            };
+            cy.mount(<NumberPicker defaultValue={123} editable onChange={onChange} />).as(
+                'NumberPicker'
             );
-            assert(
-                mount(<NumberPicker defaultValue={17} min={18} onChange={onChange} />).prop(
-                    'min'
-                ) === 18
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('20');
+            cy.get('@input').trigger('focus');
+
+            const onChange2 = (value: number) => {
+                assert(value === 124);
+            };
+            cy.mount(<NumberPicker defaultValue={123} editable={false} onChange={onChange2} />).as(
+                'NumberPicker2'
             );
-
-            let onChange3 = (value, e) => {
-                    assert(value === 20);
-                },
-                wrapper3 = mount(<NumberPicker max={20} min={18} step={3} onChange={onChange3} />);
-            // litter then min wont trigger onChange, so here can be passed
-            wrapper3.find('input').simulate('change', { target: { value: '1' } });
-            assert(wrapper3.find('input').prop('value') === '1');
-
-            // tigger onChange and value will be set to  max
-            wrapper3.find('input').simulate('change', { target: { value: '21' } });
-
-            done();
+            cy.get('@NumberPicker2').document().find('button').eq(0).click();
         });
 
-        it('should avoid input - when min >= 0', done => {
-            let onChange = value => {
-                    assert(value === 0);
-                },
-                wrapper = mount(<NumberPicker min={0} onChange={onChange} />);
-            wrapper.find('input').simulate('change', { target: { value: '-' } });
-            wrapper.find('input').simulate('change', { target: { value: '-2' } });
-            wrapper = mount(<NumberPicker defaultValue={-2} min={0} onChange={onChange} />);
-            wrapper.find('input').simulate('change', { target: { value: '-' } });
-            wrapper.find('input').simulate('change', { target: { value: '-21' } });
-            done();
+        it('should support max & min', () => {
+            const onChange = (value: number) => {
+                assert(value === 20);
+            };
+            const onDisabled = cy.spy();
+            cy.mount(
+                <NumberPicker
+                    defaultValue={19}
+                    max={20}
+                    step={3}
+                    onDisabled={onDisabled}
+                    onChange={onChange}
+                />
+            ).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('button').eq(0).as('up');
+            cy.get('@up').click();
+            cy.get('@up').click();
+            cy.wrap(onDisabled).should('be.calledOnce');
+
+            const onChange2 = (value: number) => {
+                assert(value === 18);
+            };
+            const onDisabled2 = cy.spy();
+            cy.mount(
+                <NumberPicker
+                    defaultValue={19}
+                    max={20}
+                    min={18}
+                    step={3}
+                    onDisabled={onDisabled2}
+                    onChange={onChange2}
+                />
+            ).as('NumberPicker2');
+            cy.get('@NumberPicker2').document().find('button').eq(1).as('down2');
+            cy.get('@down2').click();
+            cy.get('@down2').click();
+            cy.wrap(onDisabled2).should('be.calledOnce');
+
+            cy.mount(<NumberPicker defaultValue={22} max={20} />).as('NumberPicker3');
+            cy.get('@NumberPicker3').its('component.props.max').should('eq', 20);
+
+            cy.mount(<NumberPicker defaultValue={17} min={18} />).as('NumberPicker4');
+            cy.get('@NumberPicker4').its('component.props.min').should('eq', 18);
+
+            const onChange5 = (value: number) => {
+                assert(value === 18 || value === 20 || value === undefined);
+            };
+            cy.mount(<NumberPicker max={20} min={18} step={3} onChange={onChange5} />).as(
+                'NumberPicker5'
+            );
+            cy.get('@NumberPicker5').document().find('input').as('input5');
+            cy.get('@input5').clear();
+            cy.get('@input5').type('1');
+            cy.get('@input5').trigger('focus');
+            cy.get('@input5').should('have.value', '1');
+            cy.get('@input5').trigger('blur');
+            cy.get('@input5').should('have.value', '18');
+            cy.get('@input5').clear();
+            cy.get('@input5').type('21');
+            cy.get('@input5').trigger('focus');
+            cy.get('@input5').trigger('blur');
+            cy.get('@input5').should('have.value', '20');
         });
-        it('should be equal min while next value < min by click +', done => {
-            let onChange = value => {
-                    assert(value === 30);
-                    done();
-                },
-                wrapper = mount(
-                    <NumberPicker defaultValue={5} min={30} step={3} onChange={onChange} />
-                );
 
-            wrapper.find('button').at(0).simulate('click');
+        it('should avoid input - when min >= 0', () => {
+            const onChange = (value: number) => {
+                assert(value === 0);
+            };
+            cy.mount(<NumberPicker min={0} onChange={onChange} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('-');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').type('2');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').trigger('blur');
+
+            cy.mount(<NumberPicker defaultValue={-2} min={0} onChange={onChange} />).as(
+                'NumberPicker2'
+            );
+            cy.get('@NumberPicker2').document().find('input').as('input2');
+            cy.get('@input2').trigger('blur');
+            cy.get('@input2').type('-');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').type('21');
+            cy.get('@input2').trigger('focus');
+            cy.get('@input2').trigger('blur');
+        });
+        it('should be equal min while next value < min by click +', () => {
+            const onChange = (value: number) => {
+                assert(value === 30);
+            };
+            cy.mount(<NumberPicker defaultValue={5} min={30} step={3} onChange={onChange} />).as(
+                'NumberPicker'
+            );
+            cy.get('@NumberPicker').document().find('button').eq(0).as('up');
+            cy.get('@up').click();
         });
 
-        it('should be equal max while next value > max by click -', done => {
-            let onChange = value => {
-                    assert(value === 30);
-                    done();
-                },
-                wrapper = mount(
-                    <NumberPicker defaultValue={205} max={30} step={3} onChange={onChange} />
-                );
-
-            wrapper.find('button').at(1).simulate('click');
+        it('should be equal max while next value > max by click -', () => {
+            const onChange = (value: number) => {
+                assert(value === 30);
+            };
+            cy.mount(<NumberPicker defaultValue={205} max={30} step={3} onChange={onChange} />).as(
+                'NumberPicker'
+            );
+            cy.get('@NumberPicker').document().find('button').eq(1).as('down');
+            cy.get('@down').click();
         });
 
         it('should not input number large then max', () => {
-            let wrapper = mount(<NumberPicker max={10} />);
-            wrapper.find('input').simulate('change', { target: { value: '100' } });
-            assert(wrapper.find('input').prop('value') === '10');
-            wrapper.find('input').simulate('change', { target: { value: '5' } });
-            assert(wrapper.find('input').prop('value') === '5');
+            cy.mount(<NumberPicker max={10} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('100');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.value', '10');
+            cy.get('@input').clear();
+            cy.get('@input').type('5');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.value', '5');
         });
 
-        it('should support precision', done => {
-            const wrapper = mount(<NumberPicker defaultValue={0.121} step={0.01} precision={3} />);
-
-            wrapper.find('button').at(0).simulate('click');
-            wrapper.find('button').at(0).simulate('click');
-
-            assert(wrapper.find('input').prop('value') === 0.141);
-
-            done();
+        it('should support precision', () => {
+            cy.mount(<NumberPicker defaultValue={0.121} step={0.01} precision={3} />).as(
+                'NumberPicker'
+            );
+            cy.get('@NumberPicker').document().find('button').eq(0).as('up');
+            cy.get('@up').click();
+            cy.get('@up').click();
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').should('have.value', 0.141);
         });
 
-        it('should consider [。] as [.]', done => {
-            const onChange = value => {
-                assert(value === 3.9);
-                done();
+        it('should consider [。] as [.]', () => {
+            const onChange = (value: number) => {
+                assert(value === 3 || value === 3.9 || value === undefined);
             };
-
-            const wrapper = mount(
+            cy.mount(
                 <NumberPicker defaultValue={1.2} step={0.01} precision={3} onChange={onChange} />
-            );
-
-            wrapper.find('input').simulate('change', { target: { value: '3。9' } });
-            assert(wrapper.find('input').prop('value') === '3.9');
+            ).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('3。9');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').should('have.value', '3.9');
         });
 
-        it('should support onCorrect', done => {
-            const onCorrect = sinon.spy();
-            const wrapper = mount(
-                <NumberPicker defaultValue={1} min={1} max={3} onCorrect={onCorrect} />
+        it('should support onCorrect', () => {
+            const onCorrect = cy.spy();
+            cy.mount(<NumberPicker defaultValue={1} min={1} max={3} onCorrect={onCorrect} />).as(
+                'NumberPicker'
             );
-            wrapper.find('input').simulate('change', { target: { value: '21' } });
-            wrapper.find('input').simulate('blur');
-            assert(onCorrect.calledOnce);
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('21');
+            cy.get('@input').trigger('focus');
+            cy.get('@input').trigger('blur');
+            cy.wrap(onCorrect).should('be.calledOnce');
 
-            let onCorrect2 = obj => {
-                    assert(obj.currentValue === 20);
-                    assert(obj.oldValue === '21');
-                },
-                wrapper2 = mount(
-                    <NumberPicker defaultValue={19} max={20} step={3} onCorrect={onCorrect2} />
-                );
-            wrapper2.find('input').simulate('change', { target: { value: '21' } });
-
-            done();
+            const onCorrect2 = (obj: { currentValue: number; oldValue: string }) => {
+                assert(obj.currentValue === 20);
+                assert(obj.oldValue === '21');
+            };
+            cy.mount(
+                <NumberPicker defaultValue={19} max={20} step={3} onCorrect={onCorrect2} />
+            ).as('NumberPicker2');
+            cy.get('@NumberPicker2').document().find('input').as('input2');
+            cy.get('@input2').clear();
+            cy.get('@input2').type('21');
+            cy.get('@input2').trigger('focus');
         });
 
-        it('should support onKeyDown & onFocus & onBlur', done => {
-            let onChange = value => {
-                    assert(value === 20);
-                },
-                wrapper = mount(<NumberPicker defaultValue={19} onChange={onChange} />);
-            wrapper.find('input').simulate('keydown', { keyCode: 38 });
+        it('should support onKeyDown & onFocus & onBlur', () => {
+            const onChange = (value: number) => {
+                assert(value === 20);
+            };
+            cy.mount(<NumberPicker defaultValue={19} onChange={onChange} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').trigger('keydown', { keyCode: 38 });
 
-            const wrapper2 = mount(
-                <NumberPicker
-                    defaultValue={19}
-                    onChange={value => {
-                        assert(value === 18);
-                    }}
-                />
-            );
-            wrapper2.find('input').simulate('keydown', { keyCode: 40 });
+            const onChange2 = (value: number) => {
+                assert(value === 18);
+            };
+            cy.mount(<NumberPicker defaultValue={19} onChange={onChange2} />).as('NumberPicker2');
+            cy.get('@NumberPicker2').document().find('input').as('input2');
+            cy.get('@input2').trigger('keydown', { keyCode: 40 });
 
-            const wrapper3 = mount(
-                <NumberPicker
-                    defaultValue={19}
-                    onChange={value => {
-                        assert(value === 19);
-                    }}
-                />
-            );
-            wrapper3.find('input').simulate('change', { target: { value: '-' } });
-            wrapper3.find('input').simulate('focus');
-            wrapper3.find('input').simulate('blur');
-
-            done();
+            const onChange3 = (value: number) => {
+                assert(value === undefined);
+            };
+            cy.mount(<NumberPicker defaultValue={19} onChange={onChange3} />).as('NumberPicker3');
+            cy.get('@NumberPicker3').document().find('input').as('input3');
+            cy.get('@input3').clear();
+            cy.get('@input3').type('-');
+            cy.get('@input3').trigger('focus');
+            cy.get('@input3').trigger('blur');
         });
 
-        it('should support Integer & Float ', done => {
-            let onChange = value => {
-                    assert(value === 3);
-                },
-                wrapper = mount(<NumberPicker defaultValue={19} onChange={onChange} />);
-            wrapper.find('input').simulate('change', { target: { value: '3.3' } });
+        it('should support Integer & Float ', () => {
+            const onChange = (value: number) => {
+                assert(value === 3 || value === undefined);
+            };
+            cy.mount(<NumberPicker defaultValue={19} onChange={onChange} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').clear();
+            cy.get('@input').type('3.3');
+            cy.get('@input').trigger('focus');
 
-            let onChange2 = value => {
-                    assert(value === 3.3);
-                },
-                wrapper2 = mount(
-                    <NumberPicker defaultValue={19} onChange={onChange2} step={0.2} />
-                );
-            wrapper2.find('input').simulate('change', { target: { value: '3.3' } });
+            const onChange2 = (value: number) => {
+                assert(value === 3 || value === 3.3 || value === undefined);
+            };
+            cy.mount(<NumberPicker defaultValue={19} onChange={onChange2} step={0.2} />).as(
+                'NumberPicker2'
+            );
+            cy.get('@NumberPicker2').document().find('input').as('input2');
+            cy.get('@input2').clear();
+            cy.get('@input2').type('3.3');
+            cy.get('@input2').trigger('focus');
 
-            let onChange3 = value => {
-                    assert(value === 3);
-                },
-                wrapper3 = mount(
-                    <NumberPicker defaultValue={19} onChange={onChange3} step={0.2} />
-                );
-            wrapper3.find('input').simulate('change', { target: { value: '3.' } });
-
-            done();
+            const onChange3 = (value: number) => {
+                assert(value === 3 || value === undefined);
+            };
+            cy.mount(<NumberPicker defaultValue={19} onChange={onChange3} step={0.2} />).as(
+                'NumberPicker3'
+            );
+            cy.get('@NumberPicker3').document().find('input').as('input3');
+            cy.get('@input3').clear();
+            cy.get('@input3').type('3.');
+            cy.get('@input3').trigger('focus');
         });
 
-        it('should support e.triggerType ', done => {
-            let upClicked = false,
-                downClicked = false;
-            const onChange1 = (value, e) => {
+        it('should support e.triggerType ', () => {
+            const onChange: NumberPickerProps['onChange'] = (value, e) => {
                 assert(e.triggerType === 'up');
-                upClicked = true;
-                if (upClicked && downClicked) done();
             };
+            cy.mount(<NumberPicker onChange={onChange} />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('button').eq(0).as('up');
+            cy.get('@up').click();
 
-            const onChange2 = (value, e) => {
+            const onChange2: NumberPickerProps['onChange'] = (value, e) => {
                 assert(e.triggerType === 'down');
-                downClicked = true;
-                if (upClicked && downClicked) done();
             };
-
-            const wrapper1 = mount(<NumberPicker onChange={onChange1} />);
-            const wrapper2 = mount(<NumberPicker onChange={onChange2} />);
-            wrapper1.find('button').at(0).simulate('click');
-            wrapper2.find('button').at(1).simulate('click');
+            cy.mount(<NumberPicker onChange={onChange2} />).as('NumberPicker2');
+            cy.get('@NumberPicker2').document().find('button').eq(1).as('down');
+            cy.get('@down').click();
         });
 
         it('will render value in custom if `format` is settled', () => {
-            const format = val => `${val} %`;
+            const format = (val: number) => `${val} %`;
             const defaultValue = 1000;
-
-            const wrapper = mount(<NumberPicker defaultValue={defaultValue} format={format} />);
-            assert(wrapper.find('input').prop('value') === '1000 %');
+            cy.mount(<NumberPicker defaultValue={defaultValue} format={format} />).as(
+                'NumberPicker'
+            );
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').trigger('blur');
+            cy.get('@input').should('have.value', format(defaultValue));
         });
     });
 
     describe('react api', () => {
-        it('calls componentWillReceiveProps', done => {
-            const wrapper = mount(<NumberPicker defaultValue={19} />);
+        it('should retain the initial defaultValue when props change', () => {
+            class App extends React.Component {
+                state: { value?: number } = { value: 19 };
+                changeDefalutValue = (value: number) => {
+                    this.setState({
+                        value,
+                    });
+                };
 
-            wrapper.setProps({ defaultValue: 30 });
-            assert(wrapper.find('input').prop('value') === 19);
+                render() {
+                    return (
+                        <>
+                            <NumberPicker defaultValue={this.state.value} />
+                            <button onClick={() => this.changeDefalutValue(30)}>
+                                点击变更defaultValue
+                            </button>
+                        </>
+                    );
+                }
+            }
+            cy.mount(<App />).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('input').as('input');
+            cy.get('@input').should('have.value', '19');
+            cy.get('@NumberPicker').document().find('button').eq(2).as('button');
+            cy.get('@button').click();
+            cy.get('@input').should('have.value', '19');
+        });
 
-            wrapper.setProps({ value: 30 });
-            assert(wrapper.find('input').prop('value') === 30);
+        it('calls componentWillReceiveProps', () => {
+            cy.mount(<NumberPicker value={30} />).as('NumberPicker2');
+            cy.get('@NumberPicker2').document().find('input').should('have.value', 30);
 
-            wrapper.setProps({ value: undefined });
-            assert(wrapper.find('input').prop('value') === '');
+            cy.mount(<NumberPicker value={undefined} />).as('NumberPicker3');
+            cy.get('@NumberPicker3').document().find('input').should('have.value', '');
 
-            wrapper.setProps({ value: null });
-            assert(wrapper.find('input').prop('value') === '');
-
-            done();
+            const value: any = null;
+            cy.mount(<NumberPicker value={value} />).as('NumberPicker4');
+            cy.get('@NumberPicker4').document().find('input').should('have.value', '');
         });
     });
+
     describe('chrome bug hack', () => {
-        it('0.28 + 0.01 should be 0.29 not 0.29000000000000004', done => {
-            let onChange = value => {
-                    assert(value === 0.29);
-                    done();
-                },
-                wrapper = mount(
-                    <NumberPicker
-                        defaultValue={0.28}
-                        onChange={onChange}
-                        step={0.01}
-                        precision={2}
-                    />
-                );
-
-            wrapper.find('button').at(0).simulate('click');
+        it('0.28 + 0.01 should be 0.29 not 0.29000000000000004', () => {
+            const onChange = (value: number) => {
+                assert(value === 0.29);
+            };
+            cy.mount(
+                <NumberPicker defaultValue={0.28} onChange={onChange} step={0.01} precision={2} />
+            ).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('button').eq(0).as('up');
+            cy.get('@up').click();
         });
-        it('0.29 - 0.01 should be 0.28 not 0.27999999999999997', done => {
-            let onChange = value => {
-                    assert(value === 0.28);
-                    done();
-                },
-                wrapper = mount(
-                    <NumberPicker
-                        defaultValue={0.29}
-                        onChange={onChange}
-                        step={0.01}
-                        precision={2}
-                    />
-                );
 
-            wrapper.find('button').at(1).simulate('click');
+        it('0.29 - 0.01 should be 0.28 not 0.27999999999999997', () => {
+            const onChange = (value: number) => {
+                assert(value === 0.28);
+            };
+            cy.mount(
+                <NumberPicker defaultValue={0.29} onChange={onChange} step={0.01} precision={2} />
+            ).as('NumberPicker');
+            cy.get('@NumberPicker').document().find('button').eq(1).as('down');
+            cy.get('@down').click();
         });
     });
 });

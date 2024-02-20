@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import { NumberPicker, Radio } from '@alifd/next';
 
 class Demo extends React.Component {
-    state = {
+    state: { device: 'phone' | 'tablet' | 'desktop' } = {
         device: 'desktop',
     };
 
-    handleDeviceChange = device => {
+    handleDeviceChange = (device: 'phone' | 'tablet' | 'desktop') => {
         this.setState({
             device,
         });
