@@ -1428,7 +1428,8 @@ describe('TableScroll', () => {
     });
 
     // fix https://github.com/alibaba-fusion/next/issues/4264
-    it.only('should support for merging cells in locked columns, close #4264', async () => {
+    // fix https://github.com/alibaba-fusion/next/issues/4716
+    it('should support for merging cells in locked columns, close #4264, #4716', async () => {
         const container = document.createElement('div');
         document.body.appendChild(container);
 
