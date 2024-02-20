@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { NumberPicker } from '@alifd/next';
 
-const intlize = val => Intl.NumberFormat('en-US').format(val);
+const intlize = (val: number) => Intl.NumberFormat('en-US').format(val);
 
 ReactDOM.render(
     <div>

@@ -8,149 +8,47 @@ import Icon from '../icon';
 import Button from '../button';
 import Input from '../input';
 import { func, obj } from '../util';
+import { NumberPickerProps, NumberPickerState } from './types';
 
 const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
 const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER || -Math.pow(2, 53) + 1;
 
 const { isNil } = obj;
 /** NumberPicker */
-class NumberPicker extends React.Component {
+class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState> {
     static propTypes = {
-        /**
-         * 样式前缀
-         */
         prefix: PropTypes.string,
-        /**
-         * 设置类型(当 device 为 phone 时，NumberPicker 的类型强制为 normal，不可通过 type 修改)
-         * @enumdesc 普通, 内联
-         */
         type: PropTypes.oneOf(['normal', 'inline']),
-        /**
-         * 大小
-         */
         size: PropTypes.oneOf(['large', 'medium', 'small']),
-        /**
-         * 当前值
-         */
         value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        /**
-         * 默认值
-         */
         defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        /**
-         * 是否禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * 步长
-         */
         step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        /**
-         * 保留小数点后位数
-         */
         precision: PropTypes.number,
-        /**
-         * 用户是否可以输入
-         */
         editable: PropTypes.bool,
-        /**
-         * 自动焦点
-         */
         autoFocus: PropTypes.bool,
-        /**
-         * 数值被改变的事件
-         * @param {Number|String} value 数据
-         * @param {Event} e DOM事件对象
-         */
         onChange: PropTypes.func,
-        /**
-         * 键盘按下
-         * @param {Event} e DOM事件对象
-         */
         onKeyDown: PropTypes.func,
-        /**
-         * 焦点获得
-         * @param {Event} e DOM事件对象
-         */
         onFocus: PropTypes.func,
-        /**
-         * 焦点失去
-         * @param {Event} e DOM事件对象
-         */
         onBlur: PropTypes.func,
-        /**
-         * 数值订正后的回调
-         * @param {Object} obj {currentValue,oldValue:String}
-         */
         onCorrect: PropTypes.func,
-        onDisabled: PropTypes.func, // 兼容0.x onDisabled
-        /**
-         * 最大值
-         */
+        onDisabled: PropTypes.func,
         max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        /**
-         * 最小值
-         */
         min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        /**
-         * 自定义class
-         */
         className: PropTypes.string,
-        /**
-         * 自定义内联样式
-         */
         style: PropTypes.object,
         state: PropTypes.oneOf(['error']),
-        /**
-         * 格式化当前值
-         * @param {Number} value
-         * @return {String|Number}
-         */
         format: PropTypes.func,
-        /**
-         * 增加按钮的props
-         */
         upBtnProps: PropTypes.object,
-        /**
-         * 减少按钮的props
-         */
         downBtnProps: PropTypes.object,
-        /**
-         * 内联 左侧label
-         */
         label: PropTypes.node,
-        /**
-         * 内联 右侧附加内容
-         */
         innerAfter: PropTypes.node,
         rtl: PropTypes.bool,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param {Number|String} value 当前值
-         * @param {Object} props 传入的组件参数
-         * @returns {reactNode} Element 渲染内容
-         */
         renderPreview: PropTypes.func,
-        /**
-         * 预设屏幕宽度
-         */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
-        /**
-         * 是否展示点击按钮
-         */
         hasTrigger: PropTypes.bool,
-        /**
-         * 是否一直显示点击按钮(无须hover)
-         */
         alwaysShowTrigger: PropTypes.bool,
-        /**
-         * 开启大数支持，输入输出均为string类型
-         * @version 1.24
-         */
         stringMode: PropTypes.bool,
     };
 
@@ -173,8 +71,9 @@ class NumberPicker extends React.Component {
         alwaysShowTrigger: false,
         stringMode: false,
     };
+    inputRef: HTMLInputElement | null;
 
-    constructor(props) {
+    constructor(props: NumberPickerProps) {
         super(props);
         const { defaultValue, stringMode } = props;
 
@@ -195,7 +94,7 @@ class NumberPicker extends React.Component {
         };
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: NumberPickerProps, prevState: NumberPickerState) {
         // 用户键入非法值后render逻辑，未触发onChange，业务组件无感知，不强制受控value
         if (prevState.onlyDisplay) {
             return {
@@ -205,7 +104,7 @@ class NumberPicker extends React.Component {
             };
         }
 
-        const state = {};
+        const state: Partial<NumberPickerState> = {};
         const { value, stringMode } = nextProps;
         // 一般受控render逻辑
         if ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) {
@@ -238,7 +137,7 @@ class NumberPicker extends React.Component {
         return null;
     }
 
-    isGreaterThan(v1, v2) {
+    isGreaterThan(v1: string | number, v2: string | number) {
         const { stringMode } = this.props;
         if (stringMode) {
             try {
@@ -251,12 +150,12 @@ class NumberPicker extends React.Component {
         return Number(v1) > Number(v2);
     }
 
-    correctBoundary(value) {
+    correctBoundary(value: string | number) {
         const { max, min } = this.state;
         return this.isGreaterThan(min, value) ? min : this.isGreaterThan(value, max) ? max : value;
     }
 
-    setFocus(status) {
+    setFocus(status: boolean) {
         const { format } = this.props;
         // Only trigger `setState` if `format` is settled to avoid unnecessary rendering
         if (typeof format === 'function') {
@@ -266,18 +165,22 @@ class NumberPicker extends React.Component {
         }
     }
 
-    onFocus(e, ...args) {
+    onFocus: NumberPickerProps['onFocus'] = (e, ...args) => {
         const { onFocus } = this.props;
         this.setFocus(true);
         onFocus && onFocus(e, ...args);
-    }
+    };
 
-    onBlur(e, ...args) {
-        const { editable, stringMode } = this.props;
+    onBlur: NumberPickerProps['onBlur'] = (e, ...args) => {
+        const { editable, stringMode, onBlur } = this.props;
         const displayValue = `${this.state.displayValue}`;
         // 展示值合法但超出边界时，额外在Blur时触发onChange
         // 展示值非法时，回退前一个有效值
-        if (editable === true && !isNaN(displayValue) && !this.withinMinMax(displayValue)) {
+        if (
+            editable === true &&
+            !isNaN(displayValue as unknown as number) &&
+            !this.withinMinMax(displayValue)
+        ) {
             let valueCorrected = this.correctValue(displayValue);
             valueCorrected = stringMode
                 ? Big(valueCorrected).toFixed(this.getPrecision())
@@ -291,24 +194,33 @@ class NumberPicker extends React.Component {
         }
 
         this.setFocus(false);
-        const { onBlur } = this.props;
         onBlur && onBlur(e, ...args);
-    }
+    };
 
-    withinMinMax(value) {
+    withinMinMax(value: number | string) {
         const { max, min } = this.state;
-        if (isNaN(value) || this.isGreaterThan(value, max) || this.isGreaterThan(min, value))
+        if (
+            isNaN(value as unknown as number) ||
+            this.isGreaterThan(value, max) ||
+            this.isGreaterThan(min, value)
+        )
             return false;
         return true;
     }
 
-    withinMin(value) {
+    withinMin(value: number | string) {
         const { min } = this.state;
-        if (isNaN(value) || this.isGreaterThan(min, value)) return false;
+        if (isNaN(value as unknown as number) || this.isGreaterThan(min, value)) return false;
         return true;
     }
 
-    setDisplayValue({ displayValue, onlyDisplay = false }) {
+    setDisplayValue({
+        displayValue,
+        onlyDisplay = false,
+    }: {
+        displayValue: string | number;
+        onlyDisplay?: boolean;
+    }) {
         this.setState({ displayValue, onlyDisplay });
     }
 
@@ -329,14 +241,14 @@ class NumberPicker extends React.Component {
      * 正常触发: 合法数字 (eg: -0 -0. 0.1)；超出最大值
      * 不触发: 1. 非数字（eg: - ）, 2. 小于最小值(输入需要过程由小变大)
      */
-    shouldFireOnChange(value) {
-        if (isNaN(value) || !this.withinMin(value)) {
+    shouldFireOnChange(value: string) {
+        if (isNaN(value as unknown as number) || !this.withinMin(value)) {
             return false;
         }
         return true;
     }
 
-    onChange(value, e) {
+    onChange(value: string, e: React.FocusEvent<HTMLInputElement>) {
         // ignore space & Compatible Chinese Input Method
         value = value.replace('。', '.').trim();
         // 过滤非数字
@@ -364,8 +276,8 @@ class NumberPicker extends React.Component {
         this.setDisplayValue({ displayValue: value, onlyDisplay });
     }
 
-    correctValue(value) {
-        let val = value;
+    correctValue(value: string) {
+        let val: string | number = value;
 
         // take care of isNaN('')=false
         if (val !== '') {
@@ -383,36 +295,48 @@ class NumberPicker extends React.Component {
             val = this.props.stringMode ? Big(val).toFixed() : Number(val);
         }
 
-        if (isNaN(val)) val = this.state.value;
+        if (isNaN(val as unknown as number)) val = this.state.value;
 
         if (`${val}` !== `${value}`) {
             // .0* 到 .x0* 不该触发onCorrect
             if (!/\.[0-9]*0+$/g.test(value)) {
-                this.props.onCorrect({
-                    currentValue: val,
-                    oldValue: value,
-                });
+                const { onCorrect } = this.props;
+                onCorrect &&
+                    onCorrect({
+                        currentValue: val,
+                        oldValue: value,
+                    });
             }
         }
 
         return val;
     }
 
-    setValue({ value, e, triggerType }) {
+    setValue({
+        value,
+        e,
+        triggerType,
+    }: {
+        value: string | number;
+        e: React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>;
+        triggerType?: 'up' | 'down';
+    }) {
         if (!('value' in this.props) || value === this.props.value) {
             this.setState({
                 value,
             });
         }
-
-        this.props.onChange(isNaN(value) || value === '' ? undefined : value, {
-            ...e,
-            triggerType,
-        });
+        const { onChange } = this.props;
+        onChange &&
+            onChange(isNaN(value as unknown as number) || value === '' ? undefined : value, {
+                ...e,
+                triggerType,
+            });
     }
 
     getPrecision() {
-        const stepString = this.props.step.toString();
+        const { step } = this.props;
+        const stepString = step ? step.toString() : '';
         if (stepString.indexOf('e-') >= 0) {
             return parseInt(stepString.slice(stepString.indexOf('e-')), 10);
         }
@@ -421,7 +345,7 @@ class NumberPicker extends React.Component {
             precision = stepString.length - stepString.indexOf('.') - 1;
         }
 
-        return Math.max(precision, this.props.precision);
+        return Math.max(precision, this.props.precision ?? 0);
     }
 
     getPrecisionFactor() {
@@ -429,36 +353,37 @@ class NumberPicker extends React.Component {
         return Math.pow(10, precision);
     }
 
-    onKeyDown(e, ...args) {
+    onKeyDown: NumberPickerProps['onKeyDown'] = (e, ...args) => {
         if (e.keyCode === 38) {
             this.up(false, e);
         } else if (e.keyCode === 40) {
             this.down(false, e);
         }
-        this.props.onKeyDown(e, ...args);
-    }
+        const { onKeyDown } = this.props;
+        onKeyDown && onKeyDown(e, ...args);
+    };
 
-    up(disabled, e) {
+    up(disabled: boolean, e: React.KeyboardEvent<HTMLInputElement>) {
         this.step('up', disabled, e);
     }
 
-    down(disabled, e) {
+    down(disabled: boolean, e: React.KeyboardEvent<HTMLInputElement>) {
         this.step('down', disabled, e);
     }
 
-    step(type, disabled, e) {
+    step(type: 'up' | 'down', disabled: boolean, e: React.KeyboardEvent<HTMLInputElement>) {
         if (e) {
             e.preventDefault();
         }
 
         const { onDisabled } = this.props;
         if (disabled) {
-            return onDisabled(e);
+            return onDisabled && onDisabled(e);
         }
 
         let value = this.state.value;
         // 受控下，可能强制回填非法值
-        if (isNaN(value)) {
+        if (isNaN(value as unknown as number)) {
             return;
         }
 
@@ -476,27 +401,29 @@ class NumberPicker extends React.Component {
         this.setValue({ value: val, e, triggerType: type });
     }
 
-    upStep(val) {
+    upStep(val: number | string) {
         const { step, stringMode } = this.props;
         const precisionFactor = this.getPrecisionFactor();
         if (typeof val === 'number' && !stringMode) {
-            const result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
+            const result =
+                (precisionFactor * val + precisionFactor * (step as number)) / precisionFactor;
             return this.hackChrome(result);
         }
         return Big(val || '0')
-            .plus(step)
+            .plus(step as string | number)
             .toFixed(this.getPrecision());
     }
 
-    downStep(val) {
+    downStep(val: number | string) {
         const { step, stringMode } = this.props;
         const precisionFactor = this.getPrecisionFactor();
         if (typeof val === 'number' && !stringMode) {
-            const result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
+            const result =
+                (precisionFactor * val - precisionFactor * (step as number)) / precisionFactor;
             return this.hackChrome(result);
         }
         return Big(val || '0')
-            .minus(step)
+            .minus(step as string | number)
             .toFixed(this.getPrecision());
     }
 
@@ -504,9 +431,9 @@ class NumberPicker extends React.Component {
      * fix bug in chrome browser
      * 0.28 + 0.01 = 0.29000000000000004
      * 0.29 - 0.01 = 0.27999999999999997
-     * @param {Number} value value
+     * @param value - The numeric value to be corrected
      */
-    hackChrome(value) {
+    hackChrome(value: number) {
         const precision = this.getPrecision();
         if (precision > 0) {
             return Number(Number(value).toFixed(precision));
@@ -514,11 +441,12 @@ class NumberPicker extends React.Component {
         return value;
     }
 
-    focus() {
-        this.inputRef.getInstance().focus();
-    }
+    // 未被使用 ？？
+    // focus() {
+    //     this.inputRef && this.inputRef.getInstance().focus();
+    // }
 
-    saveInputRef(ref) {
+    saveInputRef(ref: HTMLInputElement) {
         this.inputRef = ref;
     }
 
@@ -526,7 +454,7 @@ class NumberPicker extends React.Component {
         return this.inputRef;
     }
 
-    handleMouseDown(e) {
+    handleMouseDown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
     }
 
@@ -563,13 +491,13 @@ class NumberPicker extends React.Component {
             [`${prefixCls}-show-trigger`]: alwaysShowTrigger,
             [`${prefixCls}-no-trigger`]: !hasTrigger,
             [`${prefix}disabled`]: disabled,
-            [className]: className,
+            [className ?? '']: className,
         });
 
         let upDisabled = false;
         let downDisabled = false;
         const value = this.state.value;
-        if (!isNaN(value)) {
+        if (!isNaN(value as number)) {
             if (!this.isGreaterThan(max, value)) {
                 upDisabled = true;
             }
@@ -579,7 +507,7 @@ class NumberPicker extends React.Component {
         }
 
         let extra = null,
-            innerAfterClassName = null,
+            // innerAfterClassName = null,
             addonBefore = null,
             addonAfter = null;
         if (type === 'normal') {
@@ -592,18 +520,30 @@ class NumberPicker extends React.Component {
                         className={`${upBtnProps.className || ''} ${upDisabled ? 'disabled' : ''}`}
                         onClick={this.up.bind(this, upDisabled)}
                         tabIndex={-1}
+                        aria-label="icon-up"
                     >
-                        <Icon type="arrow-up" className={`${prefixCls}-up-icon`} />
+                        <Icon
+                            type="arrow-up"
+                            aria-hidden="true"
+                            className={`${prefixCls}-up-icon`}
+                        />
                     </Button>
                     <Button
                         {...downBtnProps}
                         onMouseDown={this.handleMouseDown}
                         disabled={disabled}
-                        className={`${downBtnProps.className || ''} ${downDisabled ? 'disabled' : ''}`}
+                        className={`${downBtnProps.className || ''} ${
+                            downDisabled ? 'disabled' : ''
+                        }`}
                         onClick={this.down.bind(this, downDisabled)}
                         tabIndex={-1}
+                        aria-label="icon-down"
                     >
-                        <Icon type="arrow-down" className={`${prefixCls}-down-icon`} />
+                        <Icon
+                            type="arrow-down"
+                            aria-hidden="true"
+                            className={`${prefixCls}-down-icon`}
+                        />
                     </Button>
                 </span>
             );
@@ -616,8 +556,9 @@ class NumberPicker extends React.Component {
                     className={`${downBtnProps.className || ''} ${downDisabled ? 'disabled' : ''}`}
                     onClick={this.down.bind(this, downDisabled)}
                     tabIndex={-1}
+                    aria-label="icon-minus"
                 >
-                    <Icon type="minus" className={`${prefixCls}-minus-icon`} />
+                    <Icon type="minus" aria-hidden="true" className={`${prefixCls}-minus-icon`} />
                 </Button>
             );
             addonAfter = (
@@ -628,18 +569,19 @@ class NumberPicker extends React.Component {
                     className={`${upBtnProps.className || ''} ${upDisabled ? 'disabled' : ''}`}
                     onClick={this.up.bind(this, upDisabled)}
                     tabIndex={-1}
+                    aria-label="icon-add"
                 >
-                    <Icon type="add" className={`${prefixCls}-add-icon`} />
+                    <Icon type="add" aria-hidden="true" className={`${prefixCls}-add-icon`} />
                 </Button>
             );
         }
 
         const others = obj.pickOthers(NumberPicker.propTypes, this.props);
-        const dataAttrs = obj.pickAttrsWith(this.props, 'data-');
+        const dataAttrs: object = obj.pickAttrsWith(this.props, 'data-');
 
         const previewCls = classNames({
             [`${prefix}form-preview`]: true,
-            [className]: !!className,
+            [className ?? '']: !!className,
         });
 
         if (isPreview) {
@@ -651,7 +593,7 @@ class NumberPicker extends React.Component {
                 );
             }
             return (
-                <p {...others} style={{ style }} className={previewCls}>
+                <p {...others} style={style} className={previewCls}>
                     {this.getDisplayValue()}
                     &nbsp;{innerAfter}
                 </p>
@@ -663,12 +605,13 @@ class NumberPicker extends React.Component {
                 <Input
                     {...others}
                     hasClear={false}
-                    aria-valuemax={max}
-                    aria-valuemin={min}
-                    state={state === 'error' ? 'error' : null}
-                    onBlur={this.onBlur.bind(this)}
-                    onFocus={this.onFocus.bind(this)}
-                    onKeyDown={this.onKeyDown.bind(this)}
+                    max={max as number | undefined}
+                    min={min as number | undefined}
+                    aria-label={'number picker'}
+                    state={state === 'error' ? 'error' : undefined}
+                    onBlur={this.onBlur}
+                    onFocus={this.onFocus}
+                    onKeyDown={this.onKeyDown}
                     autoFocus={autoFocus}
                     readOnly={!editable}
                     value={this.getDisplayValue()}
