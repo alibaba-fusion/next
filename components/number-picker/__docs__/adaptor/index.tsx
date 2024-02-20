@@ -2,6 +2,16 @@ import React from 'react';
 import { NumberPicker } from '@alifd/next';
 import { Types } from '@alifd/adaptor-helper';
 
+export interface AdaptorProps {
+    level?: 'normal' | 'inline';
+    width?: React.CSSProperties['minWidth'];
+    size?: 'large' | 'medium' | 'small';
+    state?: 'normal' | 'hover' | 'disabled';
+    value?: number | string;
+    style?: React.CSSProperties;
+    className?: string;
+}
+
 export default {
     name: 'NumberPicker',
     editor: () => ({
@@ -37,7 +47,7 @@ export default {
             },
         ],
     }),
-    adaptor: ({ level, size, state, width, value, style, className, ...others }) => {
+    adaptor: ({ level, size, state, width, value, style, className, ...others }: AdaptorProps) => {
         return (
             <NumberPicker
                 className={`${className} ${state === 'hover' ? 'hover' : ''}`}
