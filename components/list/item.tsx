@@ -56,4 +56,6 @@ class ListItem extends Component<ListItemProps> {
     }
 }
 
+export type { ListItem };
+
 export default ConfigProvider.config(polyfill(ListItem));

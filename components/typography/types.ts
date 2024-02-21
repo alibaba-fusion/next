@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, ReactElement } from 'react';
 import { CommonProps } from '../util';
 
 /**
@@ -61,6 +61,11 @@ export interface TextProps extends React.HTMLAttributes<HTMLElement>, CommonProp
  * Inherit the Typography.Text API
  */
 export interface TitleProps extends TextProps {}
+
+export declare class TitleClass extends Component<TitleProps> {
+    static displayName: string;
+    render(): ReactElement<TextProps>;
+}
 
 /**
  * @api Typography.Paragraph

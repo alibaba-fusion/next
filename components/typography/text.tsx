@@ -79,4 +79,6 @@ class Text extends React.Component<TextProps> {
     }
 }
 
+export type { Text };
+
 export default ConfigProvider.config(Text);

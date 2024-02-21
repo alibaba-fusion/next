@@ -1,6 +1,7 @@
 import List from './list';
 import Item from './item';
+import { assignSubComponent } from '../util/component';
 
-List.Item = Item;
+const ListWithItem = assignSubComponent(List, { Item });
 
-export default List;
+export default ListWithItem;
