@@ -1,4 +1,10 @@
+import { type FieldOption as OriginalFieldOption } from '@alifd/field';
+
 export * from '@alifd/field';
+
+export interface FieldOption extends OriginalFieldOption {
+    scrollToFirstError?: boolean | number;
+}
 
 export type ValidateCallback = (errors: object[], values: object) => void;
 
@@ -11,11 +17,15 @@ export interface ValidateResults {
     values: object;
 }
 
-export interface FieldExtend {
-    validate(callback?: (errors: object[], values?: object) => void): void;
+export type FirstParamType<Fn extends (...rest: unknown[]) => unknown> = Fn extends (
+    firstArg: infer FirstArg,
+    ...rest: unknown[]
+) => unknown
+    ? FirstArg
+    : never;
 
-    validate(
-        names?: string[] | string,
-        callback?: (errors: object[], values: object) => void
-    ): void;
-}
+export type ScrollToFirstErrorOption = FirstParamType<
+    NonNullable<FieldOption['afterValidateRerender']>
+> & {
+    options: FieldOption;
+};

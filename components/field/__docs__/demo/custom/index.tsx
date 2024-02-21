@@ -3,45 +3,22 @@ import ReactDOM from 'react-dom';
 import { Button, Field } from '@alifd/next';
 
 interface CustomProps {
-    value?: any[];
-    onChange?: (value: any[]) => void;
+    value?: string[];
+    onChange: (value: string[]) => void;
 }
 
-interface CustomState {
-    value: any[];
-}
-class Custom extends React.Component<CustomProps, CustomState> {
-    constructor(props: CustomProps) {
-        super(props);
-
-        this.state = {
-            value: typeof props.value === 'undefined' ? [] : props.value,
-        };
-    }
-
-    // update value
-    componentWillReceiveProps(nextProps: CustomProps) {
-        if ('value' in nextProps) {
-            this.setState({
-                value: typeof nextProps.value === 'undefined' ? [] : nextProps.value,
-            });
-        }
-    }
-
+class Custom extends React.Component<CustomProps> {
     onAdd = () => {
-        const value = this.state.value.concat([]);
-        value.push('new');
-
-        this.setState({
-            value,
-        });
-        this.props?.onChange?.(value);
+        const { value = [] } = this.props;
+        const newValue = value.concat('new');
+        this.props.onChange(newValue);
     };
 
     render() {
+        const { value = [] } = this.props;
         return (
             <div className="custom">
-                {this.state.value.map((v, i) => {
+                {value.map((v, i) => {
                     return <Button key={i}>{v}</Button>;
                 })}
                 <Button type="primary" onClick={this.onAdd.bind(this)}>
@@ -52,12 +29,8 @@ class Custom extends React.Component<CustomProps, CustomState> {
     }
 }
 
-/* eslint-disable react/no-multi-comp */
 class App extends React.Component {
-    field = new Field(this, {
-        // @ts-expect-error FieldOption has no property 'deepReset'
-        deepReset: true,
-    });
+    field = new Field(this);
 
     onGetValue() {
         console.log(this.field.getValue('custom'));

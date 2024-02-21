@@ -1,12 +1,6 @@
-import { FieldOption } from '@alifd/field';
-import { isValidElement, cloneElement, ReactElement, ReactInstance } from 'react';
+import { isValidElement, cloneElement, type ReactElement, type ReactInstance } from 'react';
 import ReactDOM from 'react-dom';
-
-type scrollToFirstErrorOption = {
-    errorsGroup: { [index: string]: object };
-    options: FieldOption;
-    instance: { [index: string]: ReactInstance | null | undefined };
-};
+import { type ScrollToFirstErrorOption } from './types';
 
 export function cloneAndAddKey(element: ReactElement) {
     if (element && isValidElement(element)) {
@@ -16,18 +10,18 @@ export function cloneAndAddKey(element: ReactElement) {
     return element;
 }
 
-export function scrollToFirstError({ errorsGroup, options, instance }: scrollToFirstErrorOption) {
+export function scrollToFirstError({ errorsGroup, options, instance }: ScrollToFirstErrorOption) {
     if (errorsGroup && options.scrollToFirstError) {
-        let firstNode;
-        let firstTop: number = -Infinity;
+        let firstNode: HTMLElement | undefined;
+        let firstTop: number | undefined;
         for (const i in errorsGroup) {
             if (errorsGroup.hasOwnProperty(i)) {
-                const node = ReactDOM.findDOMNode(instance[i]) as HTMLElement;
+                const node = ReactDOM.findDOMNode(instance[i] as ReactInstance) as HTMLElement;
                 if (!node) {
                     return;
                 }
                 const top = node.offsetTop;
-                if (firstTop > top) {
+                if (firstTop === undefined || firstTop > top) {
                     firstTop = top;
                     firstNode = node;
                 }
@@ -44,14 +38,14 @@ export function scrollToFirstError({ errorsGroup, options, instance }: scrollToF
                     document && document.body && document.body.offsetLeft
                         ? document.body.offsetLeft
                         : 0;
-                window.scrollTo(offsetLeft, firstTop + options.scrollToFirstError);
+                window.scrollTo(offsetLeft, firstTop! + options.scrollToFirstError);
             } else if (
-                (firstNode as unknown as { scrollIntoViewIfNeeded: (flag: boolean) => void })
-                    .scrollIntoViewIfNeeded
+                'scrollIntoViewIfNeeded' in firstNode &&
+                typeof firstNode.scrollIntoViewIfNeeded === 'function'
             ) {
-                (
-                    firstNode as unknown as { scrollIntoViewIfNeeded: (flag: boolean) => void }
-                ).scrollIntoViewIfNeeded(true);
+                firstNode.scrollIntoViewIfNeeded(true);
+            } else {
+                firstNode.scrollIntoView({ block: 'center' });
             }
         }
     }

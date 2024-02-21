@@ -1,11 +1,10 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
-import Field, { FieldOption, WatchCallback } from '@alifd/field';
-
+import Field, { type WatchCallback } from '@alifd/field';
 import { log } from '../util';
 import { scrollToFirstError, cloneAndAddKey } from './utils';
-import { FieldExtend, ValidateCallback } from './types';
+import type { FieldOption } from './types';
 
-class NextField extends Field implements FieldExtend {
+class NextField extends Field {
     static useField(options: FieldOption = {}): NextField {
         if (!useState || !useMemo) {
             log.warning('need react version > 16.8.0');
@@ -35,20 +34,36 @@ class NextField extends Field implements FieldExtend {
     }
 
     constructor(com: unknown, options: FieldOption = {}) {
+        // scrollToFirstError 选项的默认值设置放在 next field 里处理
+        const { scrollToFirstError: scrollToFirstErrorOption = true } = options;
         const newOptions = Object.assign({}, options, {
+            scrollToFirstError: scrollToFirstErrorOption,
             afterValidateRerender: scrollToFirstError,
             processErrorMessage: cloneAndAddKey,
         });
         super(com, newOptions);
 
         this.validate = this.validate.bind(this);
+        this.reset = this.reset.bind(this);
     }
 
-    validate(a?: ValidateCallback | string[] | string, b?: object | ValidateCallback) {
-        this.validateCallback(a as string, b as ValidateCallback);
-    }
+    /**
+     * 校验 - callback version
+     */
+    validate = this.validateCallback;
 
-    reset(ns?: string[] | string | undefined | boolean, backToDefault = false) {
+    /**
+     * 重置全部字段
+     * @param backToDefault - 是否重置为默认值，默认 false
+     */
+    reset(backToDefault?: boolean): void;
+    /**
+     * 重置指定字段
+     * @param names - 字段名
+     * @param backToDefault - 是否重置为默认值，默认为 false
+     */
+    reset(names: string | string[], backToDefault?: boolean): void;
+    reset(ns?: string[] | string | boolean, backToDefault = false) {
         if (ns === true) {
             log.deprecated('reset(true)', 'resetToDefault()', 'Field');
             this.resetToDefault();
@@ -56,10 +71,10 @@ class NextField extends Field implements FieldExtend {
             log.deprecated('reset(ns,true)', 'resetToDefault(ns)', 'Field');
             this.resetToDefault(ns as string[]);
         } else {
-            // @ts-expect-error _reset method is not exposed
-            this._reset(ns, false);
+            super.reset(ns as string | string[]);
         }
     }
 }
 
+export * from './types';
 export default NextField;
