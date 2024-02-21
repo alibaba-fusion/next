@@ -1,9 +1,10 @@
 import React, {
-    ReactNode,
     ErrorInfo,
     JSXElementConstructor,
     Component,
     PropsWithChildren,
+    WeakValidationMap,
+    ValidationMap,
 } from 'react';
 import { ComponentLocaleObject, Locale } from '../locale/types';
 
@@ -103,7 +104,7 @@ export interface OverlayCommonProps extends ComponentCommonProps {
     container?: PopupContainerType;
 }
 
-export interface ConfigOptions<Props = Record<string, never>, Names extends string = string> {
+export interface ConfigOptions<Props = Record<string, never>, Names extends PropertyKey = string> {
     exportNames?: Names[];
     componentName?: string;
     transform?: (
@@ -181,9 +182,67 @@ export interface ParsedContextConfig extends Omit<ConfigProviderProps, 'locale'>
     defaultPropsConfig: DefaultPropsConfig;
 }
 
-export declare class ConfiguredComponent<P, R> extends Component<P> {
-    constructor(props: P, context?: unknown);
+/**
+ * 被 config() 包裹后的组件实例对象
+ */
+export interface ConfiguredComponent<P, R> extends Component<P> {
+    /**
+     * 获取到真实的组件 ref 对象的函数
+     */
     getInstance(): R;
+    /**
+     * 其他通过 exportNames 提升上来的属性
+     */
     [key: string]: unknown;
-    render(): React.JSX.Element;
 }
+
+/**
+ * 被 config() 包裹后的组件的 class 类型
+ */
+export interface ConfiguredComponentClass<P, R> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    new (props: P, context?: any): ConfiguredComponent<P, R>;
+    propTypes: WeakValidationMap<P> | undefined;
+    displayName: string;
+    contextTypes: ValidationMap<ContextState> | undefined;
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type NonBlank<O> = keyof O extends never ? {} : O;
+
+export interface REACT_STATICS {
+    childContextTypes: true;
+    contextType: true;
+    contextTypes: true;
+    defaultProps: true;
+    displayName: true;
+    getDefaultProps: true;
+    getDerivedStateFromError: true;
+    getDerivedStateFromProps: true;
+    mixins: true;
+    propTypes: true;
+    type: true;
+    compare: true;
+    render: true;
+    $$typeof: true;
+}
+
+export interface KNOWN_FUNCTION_STATICS {
+    name: true;
+    length: true;
+    prototype: true;
+    caller: true;
+    callee: true;
+    arguments: true;
+    arity: true;
+}
+
+export type ReactStaticsKeys = keyof REACT_STATICS | keyof KNOWN_FUNCTION_STATICS;
+
+export type NonReactStatics<C> = NonBlank<{
+    [k in Exclude<keyof C, ReactStaticsKeys>]: C[k];
+}>;
+
+export type PartialLocale = {
+    [P in keyof Locale]?: Partial<Locale[P]>;
+};
