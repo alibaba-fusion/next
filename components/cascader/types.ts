@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactElement } from 'react';
 import { CommonProps } from '../util';
 import type { CheckboxItemProps, MenuProps, ItemProps as MenuItemProps } from '../menu';
 
@@ -38,9 +38,9 @@ export type NormalizeValueReturns<T> = T extends undefined | null
       : [T];
 
 /**
- * @api extra
+ * @api Extra
  */
-type extra = {
+export type Extra = {
     /**
      * 单选时选中的数据的路径
      */
@@ -95,6 +95,7 @@ export interface ItemState {
 
 export interface CascaderMenuProps extends CommonProps, MenuProps {
     useVirtual?: boolean;
+    children: Array<ReactElement>;
 }
 
 /**
@@ -108,7 +109,7 @@ export interface CascaderProps
      * @en data source
      * @defaultValue []
      */
-    dataSource: Array<CascaderDataItem>;
+    dataSource?: Array<CascaderDataItem>;
 
     /**
      * （非受控）默认值
@@ -132,7 +133,7 @@ export interface CascaderProps
     onChange?: (
         value: string | Array<string>,
         data: CascaderDataItem | Array<CascaderDataItem>,
-        extra: extra
+        extra: Extra
     ) => void;
 
     /**
@@ -143,7 +144,7 @@ export interface CascaderProps
      * @param data - 选中的数据，包括 value 和 label - selected data, including value and label
      * @param extra - 额外参数 - extra parameters
      */
-    onSelect?: (v: string, data: CascaderDataItemWithPosInfo, extra: extra) => void;
+    onSelect?: (v: string, data: CascaderDataItemWithPosInfo, extra: Extra) => void;
 
     /**
      * （非受控）默认展开值

@@ -134,7 +134,7 @@ export default class CascaderMenuItem extends Component<ItemProps, ItemState> {
             }
         }
 
-        let Item: ComponentType, title;
+        let Item: ComponentType<CheckboxItemProps | MenuItemProps>, title;
         if (checkable) {
             Item = Menu.CheckboxItem;
             (itemProps as CheckboxItemProps).checked = checked;
@@ -143,7 +143,6 @@ export default class CascaderMenuItem extends Component<ItemProps, ItemState> {
             (itemProps as CheckboxItemProps).onChange = onCheck;
         } else {
             Item = Menu.Item;
-            // @ts-expect-error 这里的实现应该是有问题，只有 SelectableItem 才有 selected
             itemProps.selected = selected;
             itemProps.onSelect = onSelect;
         }
