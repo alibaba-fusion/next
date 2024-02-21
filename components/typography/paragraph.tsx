@@ -29,4 +29,6 @@ class Paragraph extends React.Component<ParagraphProps> {
     }
 }
 
+export type { Paragraph };
+
 export default ConfigProvider.config(Paragraph);
