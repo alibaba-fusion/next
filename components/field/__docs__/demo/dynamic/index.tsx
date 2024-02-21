@@ -6,23 +6,16 @@ interface ValueItem {
     id: number;
     input: number;
 }
-class Demo extends React.Component<unknown> {
-    constructor(props: unknown) {
-        super(props);
-
-        this.idx = 3;
-
-        this.field = new Field(this, {
-            parseName: true,
-            values: {
-                name: [0, 1, 2, 3].map(i => {
-                    return { id: i, input: i };
-                }),
-            },
-        });
-    }
-    field: Field;
-    idx: number;
+class Demo extends React.Component {
+    idx = 3;
+    field = new Field(this, {
+        parseName: true,
+        values: {
+            name: [0, 1, 2, 3].map(i => {
+                return { id: i, input: i };
+            }),
+        },
+    });
 
     getValues = () => {
         const values = this.field.getValues();
@@ -38,9 +31,7 @@ class Demo extends React.Component<unknown> {
         this.field.deleteArrayValue('name', index);
     }
 
-    input = (value: unknown, index: number) => (
-        <Input {...this.field.init(`name.${index}.input`)} />
-    );
+    input = (value: number, index: number) => <Input {...this.field.init(`name.${index}.input`)} />;
     op = (value: unknown, index: number) => {
         return (
             <span>

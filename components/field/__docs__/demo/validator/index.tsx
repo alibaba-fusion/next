@@ -49,9 +49,7 @@ class App extends React.Component {
             <div className="demo">
                 <Input {...init('input', { initValue: 'delete all', rules: { required: true } })} />
                 {this.field.getError('input') ? (
-                    <span style={{ color: 'red' }}>
-                        {(this.field.getError('input') as string[]).join(',')}
-                    </span>
+                    <span style={{ color: 'red' }}>{this.field.getError('input')!.join(',')}</span>
                 ) : (
                     ''
                 )}
@@ -70,9 +68,7 @@ class App extends React.Component {
                     })}
                 />
                 {this.field.getError('input1') ? (
-                    <span style={{ color: 'red' }}>
-                        {(this.field.getError('input1') as string[]).join(',')}
-                    </span>
+                    <span style={{ color: 'red' }}>{this.field.getError('input1')!.join(',')}</span>
                 ) : (
                     ''
                 )}
@@ -90,11 +86,10 @@ class App extends React.Component {
                         ],
                     })}
                 />
-                {/* @ts-expect-error @alifd/next error */}
                 {this.field.getState('username') === 'loading' ? 'validating...' : ''}
                 {this.field.getError('username') ? (
                     <span style={{ color: 'red' }}>
-                        {(this.field.getError('username') as string[]).join(',')}
+                        {this.field.getError('username')!.join(',')}
                     </span>
                 ) : (
                     ''
@@ -110,7 +105,7 @@ class App extends React.Component {
                 />
                 {this.field.getError('checkbox') ? (
                     <span style={{ color: 'red' }}>
-                        {(this.field.getError('checkbox') as string[]).join(',')}
+                        {this.field.getError('checkbox')!.join(',')}
                     </span>
                 ) : (
                     ''
@@ -131,7 +126,7 @@ class App extends React.Component {
                 />
                 {this.field.getError('textarea') ? (
                     <span style={{ color: 'red' }}>
-                        {(this.field.getError('textarea') as string[]).join(',')}
+                        {this.field.getError('textarea')!.join(',')}
                     </span>
                 ) : (
                     ''
@@ -156,7 +151,7 @@ class App extends React.Component {
                         />
                         {this.field.getError('checkboxgroup') ? (
                             <span style={{ color: 'red' }}>
-                                {(this.field.getError('checkboxgroup') as string[]).join(',')}
+                                {this.field.getError('checkboxgroup')!.join(',')}
                             </span>
                         ) : (
                             ''

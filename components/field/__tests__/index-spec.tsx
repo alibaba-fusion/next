@@ -1,27 +1,21 @@
-/* eslint-disable react/no-multi-comp */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import Switch from '../../switch';
-import '../../switch/style';
 import Input from '../../input';
 import Form from '../../form';
 import Field from '../index';
+import type { FieldOption, ValidateErrorGroup, WatchCallback } from '../types';
+import '../../switch/style';
 
 const FormItem = Form.Item;
 
-/* eslint-disable react/jsx-filename-extension */
-/*global describe it afterEach */
 describe('field', () => {
     describe('render', () => {
-        it('should support Form', function () {
+        it('should support Form', () => {
             class Demo extends React.Component {
-                constructor(props: any) {
-                    super(props);
-                    this.field = new Field(this) as Field;
-                }
-                field: Field;
+                field = new Field(this);
 
                 render() {
-                    const init = this.field.init;
+                    const { init } = this.field;
                     return (
                         <Form field={this.field}>
                             <FormItem>
@@ -44,29 +38,53 @@ describe('field', () => {
                                     )}
                                 />
                             </FormItem>
-                            <button
-                                onClick={() => {
-                                    assert(this.field.getValue('input') === '3');
-                                    this.field.setValue('b', 2);
-                                    this.field.reset();
-                                }}
-                            >
-                                click
-                            </button>
                         </Form>
                     );
                 }
             }
-            cy.mount(<Demo />);
-            cy.get('button').click();
+            const ref = createRef<Demo>();
+            cy.mount(<Demo ref={ref} />).then(() => {
+                cy.wrap(ref.current).should('be.ok');
+                const ins = ref.current!;
+                cy.wrap(ins.field.getValue('input')).should('eq', '3');
+                ins.field.setValue('b', 2);
+                cy.wrap(ins.field.getValues()).should('deep.equal', {
+                    input: '3',
+                    b: 2,
+                });
+                ins.field.reset();
+                cy.wrap(ins.field.getValues()).should('deep.equal', {
+                    input: undefined,
+                });
+            });
         });
-        it('should support PureComponent', function () {
-            class Demo extends React.PureComponent {
-                constructor(props: any) {
-                    super(props);
-                    this.field = new Field(this, { forceUpdate: true }) as Field;
+
+        it('should support React.createRef in Form', () => {
+            class Demo extends React.Component {
+                field = new Field(this);
+                ref = createRef<Input>();
+                render() {
+                    return (
+                        <Form field={this.field}>
+                            <FormItem>
+                                <Input name="username" ref={this.ref} />
+                            </FormItem>
+                        </Form>
+                    );
                 }
-                field: Field;
+            }
+            const ref = createRef<Demo>();
+            cy.mount(<Demo ref={ref} />);
+            cy.then(() => {
+                const ins = ref.current!;
+                cy.wrap(ins).should('be.ok');
+                cy.wrap(ins.ref.current).should('be.ok');
+            });
+        });
+
+        it('should support PureComponent', () => {
+            class Demo extends React.PureComponent {
+                field = new Field(this, { forceUpdate: true });
 
                 render() {
                     const init = this.field.init;
@@ -75,29 +93,23 @@ describe('field', () => {
             }
             cy.mount(<Demo />);
             cy.get('input').type('test');
-            cy.get('input').should('have.value', 'test');
+            cy.get('input').should('have.attr', 'value', 'test');
 
-            // PureComponent will not render by second update use this.setState();
-            // so you should use this.fourceUpdate
             cy.get('input').clear();
             cy.get('input').type('test2');
-            cy.get('input').should('have.value', 'test2');
+            cy.get('input').should('have.attr', 'value', 'test2');
         });
 
-        it('should support origin input/checkbox/radio', function () {
+        it('should support origin input/checkbox/radio', () => {
             class Demo extends React.Component {
-                constructor(props: any) {
-                    super(props);
-                    this.field = new Field(this);
-                }
-                field: Field;
+                field = new Field(this);
 
                 render() {
-                    const init = this.field.init as any;
+                    const init = this.field.init;
                     return (
                         <Form field={this.field}>
                             <FormItem>
-                                <input {...init('input', { initValue: '3' })} />
+                                <input type="text" {...init('input', { initValue: '3' })} />
                             </FormItem>
                             <FormItem>
                                 <input
@@ -117,7 +129,11 @@ describe('field', () => {
                                 />
                             </FormItem>
                             <FormItem>
-                                <input type="radio" {...init('radio', { valueName: 'checked' })} />
+                                <input
+                                    value="rad"
+                                    type="radio"
+                                    {...init('radio', { valueName: 'checked' })}
+                                />
                             </FormItem>
                             <button
                                 onClick={() => {
@@ -131,14 +147,33 @@ describe('field', () => {
                     );
                 }
             }
-            cy.mount(<Demo />);
-            cy.get('button').click();
-            cy.get('input[type="checkbox"]').click();
-            cy.get('input[type="radio"]').click();
+            const ref = createRef<Demo>();
+            cy.mount(<Demo ref={ref} />).then(() => {
+                cy.wrap(ref.current).should('be.ok');
+                const { field } = ref.current!;
+                cy.get('input[type="text"]').should('have.attr', 'value', '3');
+                cy.wrap(field.getValue('input')).should('eq', '3');
+
+                cy.get('input[type="checkbox"]').should('have.attr', 'value');
+                cy.wrap(field.getValue('checkbox')).should('eq', undefined);
+
+                cy.get('input[type="radio"]')
+                    .should('not.be.checked')
+                    .then(() => {
+                        cy.wrap(field.getValue('radio')).should('be.undefined');
+                    });
+                cy.get('input[type="radio"]').click();
+                cy.get('input[type="radio"]')
+                    .should('be.checked')
+                    .then(() => {
+                        cy.wrap(field.getValue('radio')).should('eq', 'rad');
+                    });
+            });
         });
-        it('should support hooks', function () {
+        it('should support hooks', () => {
+            const callback = cy.spy();
             function Demo() {
-                const field = Field.useField() as Field;
+                const field = Field.useField();
 
                 const init = field.init;
                 return (
@@ -165,9 +200,11 @@ describe('field', () => {
                         </FormItem>
                         <button
                             onClick={() => {
-                                assert(field.getValue('input') === '3');
+                                callback(field.getValue('input'));
                                 field.setValue('b', 2);
+                                callback(field.getValues());
                                 field.reset();
+                                callback(field.getValues());
                             }}
                         >
                             click
@@ -177,16 +214,22 @@ describe('field', () => {
             }
             cy.mount(<Demo />);
             cy.get('button').click();
+            cy.then(() => {
+                cy.wrap(callback).should('be.calledThrice');
+                cy.wrap(callback.firstCall).should('be.calledWith', '3');
+                cy.wrap(callback.secondCall).should('be.calledWith', { input: '3', b: 2 });
+                cy.wrap(callback.thirdCall).should('be.calledWith', { input: undefined });
+            });
         });
     });
     describe('init', () => {
-        it('init(input)', function (done) {
-            const field = new Field(this);
+        it('init(input)', () => {
+            const field = new Field({});
             const inited = field.init('input');
 
-            assert(typeof (inited as any).ref === 'function');
+            assert(typeof inited.ref === 'function');
             assert(inited.id === 'input');
-            assert((inited as any)['data-meta'] === 'Field');
+            assert(inited['data-meta'] === 'Field');
             assert('onChange' in inited);
 
             field.init('input', {
@@ -198,12 +241,10 @@ describe('field', () => {
             });
 
             field.init('input');
-            assert((field as any)._get('input').rules.length === 0);
-
-            done();
+            assert(field.get('input')?.rules.length === 0);
         });
-        it('initValue', function (done) {
-            const field = new Field(this);
+        it('initValue', () => {
+            const field = new Field({});
             const inited = field.init('input', { initValue: 2 });
 
             assert(inited.value === 2);
@@ -211,22 +252,18 @@ describe('field', () => {
             assert(inited.value === 2);
 
             assert(field.init('input2', { initValue: '' }).value === '');
-
-            done();
         });
-        it('valueName', function (done) {
-            const field = new Field(this);
+        it('valueName', () => {
+            const field = new Field({});
             const inited = field.init('input', {
                 initValue: true,
                 valueName: 'checked',
             });
-            assert((inited as any).checked === true);
-
-            done();
+            assert(inited.checked === true);
         });
 
-        it('props', function (done) {
-            const field = new Field(this);
+        it('props', () => {
+            const field = new Field({});
             const inited = field.init('input', {
                 initValue: true,
                 valueName: 'checked',
@@ -235,74 +272,84 @@ describe('field', () => {
                     defaultChecked: false,
                 },
             });
-            assert((inited as any).a === 1);
-            assert((inited as any).checked === true);
-
-            done();
+            assert(inited.a === 1);
+            assert(inited.checked === true);
         });
 
-        class Demo extends React.Component<any> {
-            constructor(props: any) {
-                super(props);
-                this.field = new Field(this, { onChange: props.onChange });
-            }
-            field: Field;
-            render() {
-                const field = this.field;
-                return <Input {...field.init('input')} />;
-            }
-        }
-        it('custom Event: onChange', function () {
-            const onChange1 = cy.spy();
-            const ref = React.createRef<Demo>();
-            cy.mount(<Demo ref={ref} onChange={onChange1} />);
+        it('custom Event: onChange', () => {
+            const onChange = cy.spy();
+            const onFieldChange = cy.spy();
+            const field = new Field({}, { onChange });
+            const { value, ...inited } = field.init('input', {
+                props: {
+                    onChange: onFieldChange,
+                },
+            });
+
+            cy.mount(<Input {...inited} />);
             cy.get('input').type('test');
-            cy.wrap(onChange1).should('be.calledWith', 'input', 'test');
+            cy.wrap(onChange).should('be.calledWith', 'input', 'test');
+            cy.wrap(onFieldChange).should('be.calledWithMatch', 'test');
             cy.then(() => {
-                assert(ref.current!.field.getValue('input') === 'test');
+                assert(field.getValue('input') === 'test');
             });
         });
-        it('getValueFromEvent', function () {
-            const field = new Field(this, {});
+        it('getValueFromEvent', () => {
+            const onChange = cy.spy();
+            const field = new Field(
+                {},
+                {
+                    onChange,
+                }
+            );
+
+            const getValueFromEvent = cy.spy();
 
             const { value, ...inited } = field.init('input', {
-                getValueFromEvent: (a: any) => {
+                getValueFromEvent: a => {
+                    getValueFromEvent(a);
                     return `${a}!`;
                 },
-            } as any) as any;
+            });
 
             cy.mount(<Input {...inited} />);
             cy.get('input').type('test');
+
+            cy.wrap(onChange).should('be.calledWith', 'input', 'test!');
+            cy.wrap(getValueFromEvent).should('be.calledWith', 'test');
             cy.then(() => {
-                expect(field.getValue('input')).equal('test!');
+                cy.wrap(field.getValue('input')).should('eq', 'test!');
             });
         });
-        it('getValueFormatter & setValueFormatter', function () {
-            const field = new Field(this, {
-                onChange: (name, value) => {
-                    assert(value === 'test!');
-                },
-            });
+        it('getValueFormatter & setValueFormatter', () => {
+            const field = new Field(
+                {},
+                {
+                    onChange: (_name, value) => {
+                        assert(value === 'test!');
+                    },
+                }
+            );
 
-            const inited = field.init('input', {
+            const { value, ...inited } = field.init('input', {
                 initValue: 'abcd',
-                getValueFormatter: a => {
+                getValueFormatter: () => {
                     return `test!`;
                 },
-                setValueFormatter: a => {
+                setValueFormatter: () => {
                     return `test!!`;
                 },
-            }) as any;
+            });
 
             cy.mount(<Input {...inited} />);
             cy.get('input').type('test');
             cy.then(() => {
-                expect(field.getValue('input')).equal('test!');
+                cy.wrap(field.getValue('input')).should('eq', 'test!');
             });
         });
 
-        it('rules', function (done) {
-            const field = new Field(this);
+        it('rules', () => {
+            const field = new Field({});
             field.init('input', {
                 rules: [
                     {
@@ -311,7 +358,7 @@ describe('field', () => {
                 ],
             });
 
-            assert((field as any)._get('input').rules.length === 1);
+            assert(field.get('input')?.rules.length === 1);
 
             field.init('input2', {
                 rules: {
@@ -319,12 +366,10 @@ describe('field', () => {
                 },
             });
 
-            assert((field as any)._get('input2').rules.length === 1);
-
-            done();
+            assert(field.get('input2')?.rules.length === 1);
         });
 
-        it('should support control through `setState`', function () {
+        it('should support control through `setState`', () => {
             class Demo extends React.Component {
                 state = {
                     show: true,
@@ -335,36 +380,25 @@ describe('field', () => {
                 render() {
                     const init = this.field.init;
                     return (
-                        <div>
-                            <Input
-                                {...init('input', { props: { value: this.state.inputValue } })}
-                            />{' '}
-                            <button
-                                id="set"
-                                onClick={() => {
-                                    this.setState({
-                                        inputValue: 'end',
-                                    });
-                                }}
-                            >
-                                click
-                            </button>
-                            <button id="get">click</button>
-                        </div>
+                        <Input
+                            {...init('input', {
+                                props: { value: this.state.inputValue },
+                            })}
+                        />
                     );
                 }
             }
-            const ref = React.createRef<Demo>();
+            const ref = createRef<Demo>();
             cy.mount(<Demo ref={ref} />).then(() => {
-                assert(ref.current!.field.getValue('input') === 'start');
-            });
-            cy.get('#set').click();
-            cy.then(() => {
-                assert(ref.current!.field.getValue('input') === 'end');
+                cy.wrap(ref.current).should('be.ok');
+                const comp = ref.current!;
+                cy.wrap(comp.field.getValue('input')).should('eq', 'start');
+                comp.setState({ inputValue: 'end' });
+                cy.wrap(comp.field.getValue('input')).should('eq', 'end');
             });
         });
 
-        it('should support control through `setState` when `parseName` is true', function (done) {
+        it('should support control through `setState` when `parseName` is true', () => {
             class Demo extends React.Component {
                 state = {
                     show: true,
@@ -375,44 +409,63 @@ describe('field', () => {
                 render() {
                     const init = this.field.init;
                     return (
-                        <div>
-                            <Input
-                                {...init('input', { props: { value: this.state.inputValue } })}
-                            />{' '}
-                            <button
-                                id="set"
-                                onClick={() => {
-                                    assert(this.field.getValue('input') === 'start');
-                                    this.setState({
-                                        inputValue: 'end',
-                                    });
-                                }}
-                            >
-                                click
-                            </button>
-                            <button
-                                id="get"
-                                onClick={() => {
-                                    assert(this.field.getValue('input') === 'end');
-                                    done();
-                                }}
-                            >
-                                click
-                            </button>
-                        </div>
+                        <Input
+                            {...init('input.a', {
+                                props: { value: this.state.inputValue },
+                            })}
+                        />
                     );
                 }
             }
+            const ref = createRef<Demo>();
+            cy.mount(<Demo ref={ref} />).then(() => {
+                cy.wrap(ref.current).should('be.ok');
+                const comp = ref.current!;
+                cy.wrap(comp.field.getValue('input')).should('deep.equal', {
+                    a: 'start',
+                });
+                comp.setState({ inputValue: 'end' });
+                cy.wrap(comp.field.getValue('input')).should('deep.equal', {
+                    a: 'end',
+                });
+            });
+        });
 
-            cy.mount(<Demo />);
-            cy.get('#set').click();
-            cy.get('#get').click();
+        it('should has key by getValues when parseName=true', () => {
+            const field = new Field({}, { parseName: true });
+            field.init('obj.arrd[0]', { initValue: undefined });
+            field.init('obj.arrd[1]', { initValue: undefined });
+
+            const value = field.getValues<{ obj: { arrd: unknown[] } }>();
+
+            assert(Object.keys(value).length === 1);
+            assert(Array.isArray(value.obj.arrd));
+        });
+
+        // Fix https://github.com/alibaba-fusion/next/issues/4159
+        it('should return truly value when parseName=true', () => {
+            const field = new Field(
+                {},
+                {
+                    parseName: true,
+                    values: { list: [{ text: '1' }] },
+                }
+            );
+            const input1 = field.init('list');
+            const input2 = field.init('list[0].text');
+            assert.deepEqual(input1.value, [{ text: '1' }]);
+            assert.equal(input2.value, '1');
+            input2.onChange('2');
+            const values = field.getValue('list');
+            assert.deepEqual(values, [{ text: '2' }]);
+            assert.deepEqual(field.init('list').value, [{ text: '2' }]);
+            assert.equal(field.init('list[0].text').value, '2');
         });
     });
 
     describe('behaviour', () => {
-        it('getValue & getValues & setValue & setValues', function () {
-            const field = new Field(this);
+        it('getValue & getValues & setValue & setValues', () => {
+            const field = new Field({});
             field.init('input', { initValue: 1 });
             field.init('input2', { initValue: 2 });
             field.init('input3.name', { initValue: 3 });
@@ -421,7 +474,7 @@ describe('field', () => {
             assert(field.getValue('input') === 2);
             assert(field.getValue('input3.name') === 3);
             assert(Object.keys(field.getValues()).length === 3);
-            assert((field.getValues() as any).input === 2);
+            assert(field.getValues().input === 2);
 
             field.setValues({ input: 3, input2: 4 });
 
@@ -429,113 +482,119 @@ describe('field', () => {
             assert(field.getValue('input2') === 4);
         });
 
-        it('should return `undefined` for `getValue` on uninitialized field', function () {
-            const field = new Field(this);
+        it('should return `undefined` for `getValue` on uninitialized field', () => {
+            const field = new Field({});
             assert.equal(field.getValue('input'), undefined);
         });
 
-        it('should return empty object for `getValues` on uninitialized field', function () {
-            const field = new Field(this);
+        it('should return empty object for `getValues` on uninitialized field', () => {
+            const field = new Field({});
             assert.equal(Object.keys(field.getValues()).length, 0);
         });
 
-        it('should set value with `setValue` on uninitialized field', function () {
-            const field = new Field(this);
+        it('should set value with `setValue` on uninitialized field', () => {
+            const field = new Field({});
             field.setValue('input', 1);
             field.init('input');
             assert.equal(field.getValue('input'), 1);
         });
 
-        it('should set value with `setValues` on uninitialized field', function () {
-            const field = new Field(this);
+        it('should set value with `setValues` on uninitialized field', () => {
+            const field = new Field({});
             field.setValues({ input: 1 });
             field.init('input');
             assert.equal(field.getValue('input'), 1);
         });
 
-        it('should return value from `setValue` when calling `getValue` on uninitialized field', function () {
-            const field = new Field(this);
+        it('should return value from `setValue` when calling `getValue` on uninitialized field', () => {
+            const field = new Field({});
             field.setValue('input', 1);
             assert.equal(field.getValue('input'), 1);
         });
 
-        it('should return value from `setValue` when calling `getValues` on uninitialized field', function () {
-            const field = new Field(this);
+        it('should return value from `setValue` when calling `getValues` on uninitialized field', () => {
+            const field = new Field({});
             field.setValue('input', 1);
-            assert.equal((field.getValues() as any).input, 1);
+            assert.equal(field.getValues().input, 1);
         });
 
-        it('should return values from `setValue` and init when calling `getValues`', function () {
-            const field = new Field(this);
+        it('should return values from `setValue` and init when calling `getValues`', () => {
+            const field = new Field({});
             field.setValue('input', 1);
             field.init('input2', { initValue: 2 });
             assert.deepEqual(field.getValues(), { input: 1, input2: 2 });
         });
 
-        it('should return `setValue` value instead of initValue', function () {
-            const field = new Field(this);
+        it('should return `setValue` value instead of initValue', () => {
+            const field = new Field({});
             field.setValue('input', 1);
             field.init('input', { initValue: 2 });
             assert.deepEqual(field.getValues(), { input: 1 });
         });
 
-        it('setError & setErrors & getError & getErrors', function (done) {
-            const field = new Field(this);
+        it('setError & setErrors & getError & getErrors', () => {
+            const field = new Field({});
             field.setError('input', 'error1');
 
             field.init('input');
             field.init('input2');
 
             field.setError('input', 'error1');
-            assert((field.getError('input') as string[])[0] === 'error1');
-            assert(field.getErrors(['input']).input[0] === 'error1');
+            assert(field.getError('input')?.[0] === 'error1');
+            assert(field.getErrors(['input']).input?.[0] === 'error1');
 
             field.setError('input2', ['error2']);
-            assert((field.getError('input2') as string[])[0] === 'error2');
+            assert(field.getError('input2')?.[0] === 'error2');
 
             field.setErrors({ input: 'error 1', input2: 'error 2' });
             field.setError('input', '');
 
             assert(field.getError('input') === null);
-            assert((field.getError('input2') as string[])[0] === 'error 2');
+            assert(field.getError('input2')?.[0] === 'error 2');
 
-            field.setError('input', (<span>hello</span>) as any);
-            assert(React.isValidElement((field.getError('input') as string[])[0]) === true);
-
-            done();
+            field.setError('input', <span>hello</span>);
+            assert(React.isValidElement(field.getError('input')?.[0]) === true);
         });
-        it('getState', function (done) {
-            const field = new Field(this);
+        it('getState', () => {
+            const field = new Field({});
 
             field.init('input');
 
             field.setError('input', 'error1');
 
             assert(field.getState('input') === 'error');
-            assert((field.getState('') as any) === '');
-
-            done();
+            assert(field.getState('') === '');
         });
 
-        it('validate', function (done) {
-            const field = new Field(this);
-            const inited = field.init('input', {
+        it('validate', () => {
+            const field = new Field({});
+            const { value, ...inited } = field.init('input', {
                 rules: [{ required: true, message: 'cant be null' }],
-            }) as any;
+            });
 
             cy.mount(<Input {...inited} />);
+            cy.get('input').type('a');
             cy.get('input').clear();
+            cy.then(async () => {
+                const errors1 = await new Promise<ValidateErrorGroup | null>(resolve => {
+                    field.validate(error1 => {
+                        resolve(error1);
+                    });
+                });
+                cy.wrap(errors1).should('deep.equal', { input: { errors: ['cant be null'] } });
 
-            cy.then(() => {
-                field.validate((error: any) => {
-                    assert(error.input.errors[0] === 'cant be null');
+                const errors2 = await new Promise<ValidateErrorGroup | null>(resolve => {
+                    field.validate('input', error => {
+                        resolve(error);
+                    });
                 });
-                field.validate('input', (error: any) => {
-                    assert(error.input.errors[0] === 'cant be null');
+                cy.wrap(errors2).should('deep.equal', { input: { errors: ['cant be null'] } });
+                const errors3 = await new Promise<ValidateErrorGroup | null>(resolve => {
+                    field.validate(['input'], error => {
+                        resolve(error);
+                    });
                 });
-                field.validate(['input'], (error: any) => {
-                    assert(error.input.errors[0] === 'cant be null');
-                });
+                cy.wrap(errors3).should('deep.equal', { input: { errors: ['cant be null'] } });
                 field.init('input2', {
                     initValue: 123,
                     rules: [
@@ -545,38 +604,37 @@ describe('field', () => {
                         },
                     ],
                 });
-                field.validate(['input2'], (error: any) => {
-                    assert(error === null);
+                const errors4 = await new Promise<ValidateErrorGroup | null>(resolve => {
+                    field.validate(['input2'], error => {
+                        resolve(error);
+                    });
                 });
-                done();
+                cy.wrap(errors4).should('be.null');
             });
-
-            // field.init('input3', {initValue:0, rules: [{required: true, message:'cant be 0' }]});
-            // field.validate(['input3'], (error, value, cb)=> {
-            //     assert(error === 'cant be 0');
-            // })
         });
 
-        it('should show setError on validate', function (done) {
-            const field = new Field(this);
-            const inited = field.init('input') as any;
+        it('should show setError on validate', () => {
+            const field = new Field({});
+            const inited = field.init('input');
             cy.mount(<Input {...inited} />);
 
-            cy.get('input').then(() => {
+            cy.get('input').then(async () => {
                 field.setError('input', 'my error');
-                field.validate('input', (err: any) => {
-                    assert(err.input.errors[0] === 'my error');
-                    done();
+                const errors = await new Promise(resolve => {
+                    field.validate('input', err => {
+                        resolve(err);
+                    });
                 });
+                cy.wrap(errors).should('deep.equal', { input: { errors: ['my error'] } });
             });
         });
 
-        it('should merge setError and rules on validate', function (done) {
-            const field = new Field(this);
-            const inited = field.init('input') as any;
+        it('should merge setError and rules on validate', () => {
+            const field = new Field({});
+            const inited = field.init('input');
             const inited2 = field.init('input2', {
                 rules: [{ required: true, message: 'cant be null' }],
-            }) as any;
+            });
             cy.mount(
                 <div>
                     <Input {...inited} />
@@ -584,54 +642,58 @@ describe('field', () => {
                 </div>
             );
 
-            cy.get('input').then($input => {
+            cy.then(async () => {
                 field.setError('input', 'my error');
-                field.validate((err: any) => {
-                    assert(err.input.errors[0] === 'my error');
-                    assert(err.input2.errors[0] === 'cant be null');
-                    done();
+                const errors = await new Promise(resolve => {
+                    field.validate(err => {
+                        resolve(err);
+                    });
+                });
+                cy.wrap(errors).should('deep.equal', {
+                    input: { errors: ['my error'] },
+                    input2: { errors: ['cant be null'] },
                 });
             });
         });
 
-        it('should overwrite setError errors when using rules', function (done) {
-            const field = new Field(this);
+        it('should overwrite setError errors when using rules', () => {
+            const field = new Field({});
 
             const inited = field.init('input', {
                 rules: [{ required: true, message: 'cant be null' }],
-            }) as any;
-            cy.mount(<Input {...inited} />);
-
-            cy.then(() => {
+            });
+            cy.mount(<Input {...inited} />).then(async () => {
                 field.setError('input', 'my error');
-                field.validate((err: any) => {
-                    assert(err.input.errors.length === 1);
-                    assert(err.input.errors[0] === 'cant be null');
-                    done();
-                });
+                cy.wrap(field.validatePromise())
+                    .should('have.property', 'errors')
+                    .and('not.be.null')
+                    .and('deep.equal', { input: { errors: ['cant be null'] } });
             });
         });
 
-        describe('reset', function () {
-            it('should set value to `undefined` on `reset()` if init with `initValue`', function () {
-                const field = new Field(this);
+        describe('reset', () => {
+            it('should set value to `undefined` on `reset()` if init with `initValue`', () => {
+                const field = new Field({});
                 field.init('input', { initValue: '1' });
 
                 field.reset();
                 assert(field.getValue('input') === undefined);
             });
 
-            it('should set only named value to `undefined` on `reset()` if init with `initValue`', function () {
-                const field = new Field(this);
+            it('should set only named value to `undefined` on `reset()` if init with `initValue`', () => {
+                const field = new Field({});
                 field.init('input', { initValue: '1' });
                 field.init('input2', { initValue: '2' });
 
                 field.reset('input');
-                assert.deepEqual(field.getValues(), { input: undefined, input2: '2' });
+                assert.deepEqual(field.getValues(), {
+                    input: undefined,
+                    input2: '2',
+                });
             });
 
-            it('should set value to `initValue` on `resetToDefaults()` if init with `initValue`', function () {
-                const field = new Field(this);
+            it('should set value to `initValue` on `resetToDefaults()` if init with `initValue`', () => {
+                const field = new Field({});
                 field.init('input', { initValue: '4' });
                 field.setValue('input', '33');
 
@@ -639,19 +701,22 @@ describe('field', () => {
                 assert(field.getValue('input') === '4');
             });
 
-            it('should set only named value to `initValue` on `resetToDefaults()` if init with `initValue`', function () {
-                const field = new Field(this);
+            it('should set only named value to `initValue` on `resetToDefaults()` if init with `initValue`', () => {
+                const field = new Field({});
                 field.init('input', { initValue: '4' });
                 field.setValue('input', '33');
                 field.init('input2', { initValue: '4' });
                 field.setValue('input2', '33');
 
                 field.resetToDefault('input');
-                assert.deepEqual(field.getValues(), { input: '4', input2: '33' });
+                assert.deepEqual(field.getValues(), {
+                    input: '4',
+                    input2: '33',
+                });
             });
 
-            it('should set only named value to `undefined` on `resetToDefaults()` if init without `initValue`', function () {
-                const field = new Field(this);
+            it('should set only named value to `undefined` on `resetToDefaults()` if init without `initValue`', () => {
+                const field = new Field({});
                 field.init('input');
                 field.setValue('input', 'a value');
                 field.init('input'); // simulation a rerender
@@ -661,30 +726,28 @@ describe('field', () => {
             });
         });
 
-        it('remove', function (done) {
-            const field = new Field(this);
+        it('remove', () => {
+            const field = new Field({});
             field.init('input', { initValue: 1 });
             field.init('input2', { initValue: 1 });
             field.init('input3', { initValue: 1 });
 
             field.remove('input');
-            assert((field as any)._get('input') === null);
-            assert((field as any)._get('input2') !== null);
+            assert(field.get('input') === null);
+            assert(field.get('input2') !== null);
 
             field.remove(['input', 'input2']);
-            assert((field as any)._get('input') === null);
-            assert((field as any)._get('input2') === null);
-
-            done();
+            assert(field.get('input') === null);
+            assert(field.get('input2') === null);
         });
-        describe('spliceArray', function () {
+        describe('spliceArray', () => {
             it('should remove the middle field item', () => {
-                const field = new Field(this);
+                const field = new Field({});
                 field.init('input.0', { initValue: 0 });
                 field.init('input.1', { initValue: 1 });
                 field.init('input.2', { initValue: 2 });
 
-                (field as any).spliceArray('input.{index}', 1);
+                field.spliceArray('input.{index}', 1);
 
                 assert(field.getValue('input.0') === 0);
                 assert(field.getValue('input.1') === 2);
@@ -694,7 +757,7 @@ describe('field', () => {
                 field.init('key.1.id', { initValue: 1 });
                 field.init('key.2.id', { initValue: 2 });
 
-                (field as any).spliceArray('key.{index}', 1);
+                field.spliceArray('key.{index}', 1);
 
                 assert(field.getValue('key.0.id') === 0);
                 assert(field.getValue('key.1.id') === 2);
@@ -702,13 +765,13 @@ describe('field', () => {
             });
 
             it('should remove the first 2 field items', () => {
-                const field = new Field(this);
+                const field = new Field({});
                 field.init('input.0', { initValue: 0 });
                 field.init('input.1', { initValue: 1 });
                 field.init('input.2', { initValue: 2 });
 
-                (field as any).spliceArray('input.{index}', 1);
-                (field as any).spliceArray('input.{index}', 0);
+                field.spliceArray('input.{index}', 1);
+                field.spliceArray('input.{index}', 0);
                 assert(field.getValue('input.0') === 2);
                 assert(field.getValue('input.1') === undefined);
                 assert(field.getValue('input.2') === undefined);
@@ -717,8 +780,8 @@ describe('field', () => {
                 field.init('key.1.id', { initValue: 1 });
                 field.init('key.2.id', { initValue: 2 });
 
-                (field as any).spliceArray('key.{index}', 1);
-                (field as any).spliceArray('key.{index}', 0);
+                field.spliceArray('key.{index}', 1);
+                field.spliceArray('key.{index}', 0);
 
                 assert(field.getValue('key.0.id') === 2);
                 assert(field.getValue('key.1.id') === undefined);
@@ -726,35 +789,44 @@ describe('field', () => {
             });
 
             it('should make no change `keymatch` does not contain `{index}', () => {
-                const field = new Field(this);
+                const field = new Field({});
                 field.init('input.0', { initValue: 0 });
                 field.init('input.1', { initValue: 1 });
                 field.init('input.2', { initValue: 2 });
 
-                (field as any).spliceArray('input', 0);
+                field.spliceArray('input', 0);
                 assert(field.getValue('input.0') === 0);
                 assert(field.getValue('input.1') === 1);
                 assert(field.getValue('input.2') === 2);
             });
 
             it('should remove the middle field item when parseName=true', () => {
-                const field = new Field(this, { parseName: true });
+                const field = new Field({}, { parseName: true });
                 field.init('input.0', { initValue: 0 });
                 field.init('input.1', { initValue: 1 });
                 field.init('input.2', { initValue: 2 });
 
-                (field as any).spliceArray('input.{index}', 1);
+                field.spliceArray('input.{index}', 1);
 
                 assert(field.getValue('input.0') === 0);
                 assert(field.getValue('input.1') === 2);
                 assert(field.getValue('input.2') === undefined);
-                assert((field as any).getValue('input').length === 2);
+                assert(field.getValue<number[]>('input')!.length === 2);
             });
         });
 
-        describe('addArrayValue && deleteArrayValue', function () {
+        describe('addArrayValue && deleteArrayValue', () => {
+            function getFieldValue(field: Field, name: string) {
+                const value = field.getValue(name);
+                const nameField = field.get(name);
+                if (nameField) {
+                    assert.equal(nameField.value, value);
+                }
+                return value;
+            }
+
             it('should remove field item with value like [1,2]', () => {
-                const field = new Field(this, { parseName: true });
+                const field = new Field({}, { parseName: true });
                 field.init('key.0', { initValue: 0 });
                 field.init('key.1', { initValue: 1 });
                 field.init('key.2', { initValue: 2 });
@@ -762,27 +834,44 @@ describe('field', () => {
 
                 field.deleteArrayValue('key', 1);
 
-                assert(field.getValue('key.0') === 0);
-                assert(field.getValue('key.1') === 2);
-                assert(field.getValue('key.2') === 3);
-                assert(field.getValue('key.3') === undefined);
+                assert(getFieldValue(field, 'key.0') === 0);
+                assert(getFieldValue(field, 'key.1') === 2);
+                assert(getFieldValue(field, 'key.2') === 3);
+                assert(getFieldValue(field, 'key.3') === undefined);
 
                 field.deleteArrayValue('key', 1);
 
-                assert(field.getValue('key.0') === 0);
-                assert(field.getValue('key.1') === 3);
-                assert(field.getValue('key.2') === undefined);
+                assert(getFieldValue(field, 'key.0') === 0);
+                assert(getFieldValue(field, 'key.1') === 3);
+                assert(getFieldValue(field, 'key.2') === undefined);
 
                 field.deleteArrayValue('key', 0);
 
-                assert(field.getValue('key.0') === 3);
-                assert(field.getValue('key.1') === undefined);
-                assert(field.getValue('key.2') === undefined);
-                assert(field.getValue('key.3') === undefined);
+                assert(getFieldValue(field, 'key.0') === 3);
+                assert(getFieldValue(field, 'key.1') === undefined);
+                assert(getFieldValue(field, 'key.2') === undefined);
+                assert(getFieldValue(field, 'key.3') === undefined);
+
+                /// 删除最后一个元素
+                const field2 = new Field({}, { parseName: true });
+
+                field2.init('key.0', { initValue: 0 });
+                field2.init('key.1', { initValue: 1 });
+                field2.init('key.2', { initValue: 2 });
+                field2.init('key.3', { initValue: 3 });
+
+                field2.deleteArrayValue('key', 3);
+
+                assert(field2.getValue('key.0') === 0);
+                assert(field2.getValue('key.1') === 1);
+                assert(field2.getValue('key.2') === 2);
+                assert(field2.getValue('key.3') === undefined);
+
+                assert(field2.getNames().length === 3);
             });
 
             it('should remove field item with value like [{id:1},{id:2}]', () => {
-                const field = new Field(this, { parseName: true });
+                const field = new Field({}, { parseName: true });
                 field.init('key2.0.id', { initValue: 0 });
                 field.init('key2.1.id', { initValue: 1 });
                 field.init('key2.2.id', { initValue: 2 });
@@ -790,24 +879,24 @@ describe('field', () => {
 
                 field.deleteArrayValue('key2', 1);
 
-                assert(field.getValue('key2.0.id') === 0);
-                assert(field.getValue('key2.1.id') === 2);
-                assert(field.getValue('key2.2.id') === 3);
-                assert(field.getValue('key2.3.id') === undefined);
+                assert(getFieldValue(field, 'key2.0.id') === 0);
+                assert(getFieldValue(field, 'key2.1.id') === 2);
+                assert(getFieldValue(field, 'key2.2.id') === 3);
+                assert(getFieldValue(field, 'key2.3.id') === undefined);
 
                 field.deleteArrayValue('key2', 1);
-                assert(field.getValue('key2.0.id') === 0);
-                assert(field.getValue('key2.1.id') === 3);
-                assert(field.getValue('key2.2.id') === undefined);
+                assert(getFieldValue(field, 'key2.0.id') === 0);
+                assert(getFieldValue(field, 'key2.1.id') === 3);
+                assert(getFieldValue(field, 'key2.2.id') === undefined);
 
                 field.deleteArrayValue('key2', 0);
-                assert(field.getValue('key2.0.id') === 3);
-                assert(field.getValue('key2.1.id') === undefined);
-                assert(field.getValue('key2.2.id') === undefined);
-                assert(field.getValue('key2.3.id') === undefined);
+                assert(getFieldValue(field, 'key2.0.id') === 3);
+                assert(getFieldValue(field, 'key2.1.id') === undefined);
+                assert(getFieldValue(field, 'key2.2.id') === undefined);
+                assert(getFieldValue(field, 'key2.3.id') === undefined);
             });
             it('should remove 2 field item with deleteArrayValue(key,index,2)', () => {
-                const field = new Field(this, { parseName: true });
+                const field = new Field({}, { parseName: true });
                 field.init('key.0', { initValue: 0 });
                 field.init('key.1', { initValue: 1 });
                 field.init('key.2', { initValue: 2 });
@@ -815,10 +904,10 @@ describe('field', () => {
 
                 field.deleteArrayValue('key', 1, 2);
 
-                assert(field.getValue('key.0') === 0);
-                assert(field.getValue('key.1') === 3);
-                assert(field.getValue('key.2') === undefined);
-                assert(field.getValue('key.3') === undefined);
+                assert(getFieldValue(field, 'key.0') === 0);
+                assert(getFieldValue(field, 'key.1') === 3);
+                assert(getFieldValue(field, 'key.2') === undefined);
+                assert(getFieldValue(field, 'key.3') === undefined);
 
                 field.init('key2.0.id', { initValue: 0 });
                 field.init('key2.1.id', { initValue: 1 });
@@ -827,23 +916,23 @@ describe('field', () => {
 
                 field.deleteArrayValue('key2', 1, 2);
 
-                assert(field.getValue('key2.0.id') === 0);
-                assert(field.getValue('key2.1.id') === 3);
-                assert(field.getValue('key2.2.id') === undefined);
-                assert(field.getValue('key2.3.id') === undefined);
+                assert(getFieldValue(field, 'key2.0.id') === 0);
+                assert(getFieldValue(field, 'key2.1.id') === 3);
+                assert(getFieldValue(field, 'key2.2.id') === undefined);
+                assert(getFieldValue(field, 'key2.3.id') === undefined);
             });
             it('should add item with addArrayValue(key,index,value)', () => {
-                const field = new Field(this, { parseName: true });
+                const field = new Field({}, { parseName: true });
                 field.init('key.0', { initValue: 0 });
                 field.init('key.1', { initValue: 1 });
                 field.init('key.2', { initValue: 2 });
 
                 field.addArrayValue('key', 1, 100);
 
-                assert(field.getValue('key.0') === 0);
-                assert(field.getValue('key.1') === 100);
-                assert(field.getValue('key.2') === 1);
-                assert(field.getValue('key.3') === 2);
+                assert(getFieldValue(field, 'key.0') === 0);
+                assert(getFieldValue(field, 'key.1') === 100);
+                assert(getFieldValue(field, 'key.2') === 1);
+                assert(getFieldValue(field, 'key.3') === 2);
 
                 field.init('key2.0.id', { initValue: 0 });
                 field.init('key2.1.id', { initValue: 1 });
@@ -851,24 +940,24 @@ describe('field', () => {
 
                 field.addArrayValue('key2', 1, { id: 100 });
 
-                assert(field.getValue('key2.0.id') === 0);
-                assert(field.getValue('key2.1.id') === 100);
-                assert(field.getValue('key2.2.id') === 1);
-                assert(field.getValue('key2.3.id') === 2);
+                assert(getFieldValue(field, 'key2.0.id') === 0);
+                assert(getFieldValue(field, 'key2.1.id') === 100);
+                assert(getFieldValue(field, 'key2.2.id') === 1);
+                assert(getFieldValue(field, 'key2.3.id') === 2);
             });
             it('should add 2 item with spliceValue(key,index, 0, ...argv)', () => {
-                const field = new Field(this, { parseName: true });
+                const field = new Field({}, { parseName: true });
                 field.init('key.0', { initValue: 0 });
                 field.init('key.1', { initValue: 1 });
                 field.init('key.2', { initValue: 2 });
 
                 field.addArrayValue('key', 1, 100, 20);
 
-                assert(field.getValue('key.0') === 0);
-                assert(field.getValue('key.1') === 100);
-                assert(field.getValue('key.2') === 20);
-                assert(field.getValue('key.3') === 1);
-                assert(field.getValue('key.4') === 2);
+                assert(getFieldValue(field, 'key.0') === 0);
+                assert(getFieldValue(field, 'key.1') === 100);
+                assert(getFieldValue(field, 'key.2') === 20);
+                assert(getFieldValue(field, 'key.3') === 1);
+                assert(getFieldValue(field, 'key.4') === 2);
 
                 field.init('key2.0.id', { initValue: 0 });
                 field.init('key2.1.id', { initValue: 1 });
@@ -876,23 +965,23 @@ describe('field', () => {
 
                 field.addArrayValue('key2', 1, { id: 100 }, { id: 20 });
 
-                assert(field.getValue('key2.0.id') === 0);
-                assert(field.getValue('key2.1.id') === 100);
-                assert(field.getValue('key2.2.id') === 20);
-                assert(field.getValue('key2.3.id') === 1);
-                assert(field.getValue('key2.4.id') === 2);
+                assert(getFieldValue(field, 'key2.0.id') === 0);
+                assert(getFieldValue(field, 'key2.1.id') === 100);
+                assert(getFieldValue(field, 'key2.2.id') === 20);
+                assert(getFieldValue(field, 'key2.3.id') === 1);
+                assert(getFieldValue(field, 'key2.4.id') === 2);
             });
 
             it('should make no change `key` does not exist', () => {
-                const field = new Field(this, { parseName: true });
+                const field = new Field({}, { parseName: true });
                 field.init('key.0', { initValue: 0 });
                 field.init('key.1', { initValue: 1 });
                 field.init('key.2', { initValue: 2 });
 
-                field.deleteArrayValue('notexist', 0);
-                assert(field.getValue('key.0') === 0);
-                assert(field.getValue('key.1') === 1);
-                assert(field.getValue('key.2') === 2);
+                field.addArrayValue('notexist', 0);
+                assert(getFieldValue(field, 'key.0') === 0);
+                assert(getFieldValue(field, 'key.1') === 1);
+                assert(getFieldValue(field, 'key.2') === 2);
 
                 field.init('key2.0.id', { initValue: 0 });
                 field.init('key2.1.id', { initValue: 1 });
@@ -900,17 +989,25 @@ describe('field', () => {
 
                 field.deleteArrayValue('notexist', 1);
 
-                assert(field.getValue('key2.0.id') === 0);
-                assert(field.getValue('key2.1.id') === 1);
-                assert(field.getValue('key2.2.id') === 2);
+                assert(getFieldValue(field, 'key2.0.id') === 0);
+                assert(getFieldValue(field, 'key2.1.id') === 1);
+                assert(getFieldValue(field, 'key2.2.id') === 2);
             });
         });
     });
 
     describe('watch', () => {
-        function Demo({ onWatchChange, options, onUnmount }: any) {
+        function Demo({
+            onWatchChange,
+            options,
+            onUnmount,
+        }: {
+            onWatchChange?: WatchCallback;
+            options?: FieldOption;
+            onUnmount?: (field: Field) => void;
+        }) {
             const [showInput, setShowInput] = useState(false);
-            const field = Field.useField(options) as Field;
+            const field = Field.useField(options);
             Field.useWatch(field, ['switch', 'input'], (name, value, oldValue, triggerType) => {
                 onWatchChange && onWatchChange(name, value, oldValue, triggerType);
                 if (name === 'switch') {
@@ -974,6 +1071,7 @@ describe('field', () => {
             cy.get('.next-input').should('exist');
             cy.get('.next-switch').click();
             cy.wrap(callback).should('be.calledWith', 'input', undefined, 'abc', 'unmount');
+            cy.get('.next-input').should('not.exist');
         });
         it('should trigger by reset', () => {
             const callback = cy.spy();

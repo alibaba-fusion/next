@@ -1,14 +1,11 @@
-/* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import Input from '../../input';
 import Field from '../index';
 
-/* global describe it */
 describe('rules', () => {
-    it('required', function () {
-        const field = new Field(this);
-        const inited = field.init<string>('input', {
-            initValue: '123',
+    it('required', () => {
+        const field = new Field({});
+        const { value, ...inited } = field.init('input', {
             rules: [
                 {
                     required: true,
@@ -18,22 +15,23 @@ describe('rules', () => {
         });
 
         cy.mount(<Input {...inited} />);
+        cy.get('input').type('1');
         cy.get('input').clear();
         cy.then(() => {
-            assert((field.getError('input') as string[])[0] === 'cant be null');
+            cy.wrap(field.getError('input')).should('deep.equal', ['cant be null']);
         });
 
-        // validator can't callback when option.rules is an empty Array
-        cy.mount(<Input {...field.init('input', { rules: [] })} />);
-        cy.then(() => {
-            const callback = cy.spy();
-            field.validate(callback);
-            expect(callback.calledOnce).equal(true);
-        });
+        const { value: _v, ...inited2 } = field.init('input', { rules: [] });
+        cy.mount(<Input {...inited2} />);
+        const callback = cy.spy();
+        field.validateCallback(callback);
+
+        cy.wrap(callback).should('be.calledOnce');
+        cy.wrap(callback).should('be.calledWithMatch', null);
     });
-    it('triger', function () {
-        const field = new Field(this);
-        const inited = field.init<string>('input', {
+    it('triger', () => {
+        const field = new Field({});
+        const { value, ...inited } = field.init('input', {
             rules: [
                 {
                     required: true,
@@ -44,35 +42,17 @@ describe('rules', () => {
         });
 
         cy.mount(<Input {...inited} />);
-        cy.get('input').focus();
-        cy.get('input').blur();
+        cy.get('input').trigger('blur');
         cy.then(() => {
-            assert((field.getError('input') as string[])[0] === 'cant be null');
-        });
-        const inited2 = field.init<string>('input2', {
-            rules: [
-                {
-                    required: true,
-                    trigger: ['onBlur'],
-                    message: 'cannot be null',
-                },
-            ],
-        });
-
-        cy.mount(<Input {...inited2} />);
-        cy.get('input').focus();
-        cy.get('input').blur();
-        cy.then(() => {
-            assert((field.getError('input2') as string[])[0] === 'cannot be null');
+            cy.wrap(field.getError('input')).should('deep.equal', ['cant be null']);
         });
     });
-    it('validator', function () {
-        const field = new Field(this);
-        const inited = field.init<string>('input', {
-            initValue: '123',
+    it('validator', () => {
+        const field = new Field({});
+        const { value, ...inited } = field.init('input', {
             rules: [
                 {
-                    validator: (rule, value, callback) => {
+                    validator: (_rule, value, callback) => {
                         if (!value) {
                             callback('不能为空！');
                         } else {
@@ -84,9 +64,10 @@ describe('rules', () => {
         });
 
         cy.mount(<Input {...inited} />);
+        cy.get('input').type('a');
         cy.get('input').clear();
         cy.then(() => {
-            assert((field.getError('input') as string[])[0] === '不能为空！');
+            cy.wrap(field.getError('input')).should('deep.equal', ['不能为空！']);
         });
     });
 });

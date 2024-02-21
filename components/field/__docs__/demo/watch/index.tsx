@@ -34,7 +34,7 @@ function DemoForm({ showInput, field }: { showInput?: boolean; field: Field }) {
     );
 }
 
-class ClassApp extends Component<unknown, { showInput: boolean }> {
+class ClassComponent extends Component<unknown, { showInput: boolean }> {
     field: Field;
     unwatch: () => unknown;
     constructor(props: unknown) {
@@ -67,9 +67,9 @@ class ClassApp extends Component<unknown, { showInput: boolean }> {
     }
 }
 
-function FunctionApp() {
+function FunctionComponent() {
     const [showInput, setShowInput] = useState(false);
-    const field = Field.useField() as Field;
+    const field = Field.useField();
     Field.useWatch(field, ['switch', 'input'], (name, value, oldValue, triggerType) => {
         console.group('[detect change]');
         console.log('name: ', name);
@@ -90,9 +90,9 @@ function App() {
     return (
         <div>
             <h3>Class component</h3>
-            <ClassApp />
+            <ClassComponent />
             <h3>Function component</h3>
-            <FunctionApp />
+            <FunctionComponent />
         </div>
     );
 }
