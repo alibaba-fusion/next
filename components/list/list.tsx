@@ -1,17 +1,16 @@
-import React, { Component, ComponentType } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import Loading from '../loading';
 import zhCN from '../locale/zh-cn';
 import ConfigProvider from '../config-provider';
-import { ListProps, ListItemProps } from './types';
+import { ListProps } from './types';
 
 /**
  * List
  */
 class List<DataItem = unknown> extends Component<ListProps<DataItem>> {
-    static Item: ComponentType<ListItemProps>;
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -105,5 +104,7 @@ class List<DataItem = unknown> extends Component<ListProps<DataItem>> {
         return content;
     }
 }
+
+export type { List };
 
 export default ConfigProvider.config(polyfill(List));
