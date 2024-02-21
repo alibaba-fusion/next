@@ -2,10 +2,8 @@ import React, {
     Component,
     type ReactNode,
     type LegacyRef,
-    type ReactElement,
     type ReactNodeArray,
     type ComponentElement,
-    JSXElementConstructor,
 } from 'react';
 import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
@@ -34,7 +32,7 @@ export default class CascaderMenu extends Component<CascaderMenuProps> {
         if (!children || (children as ReactNodeArray).length === 0) {
             return;
         }
-        const selectedIndex = (children as Array<ReactElement>).findIndex(
+        const selectedIndex = children.findIndex(
             item => !!item.props.checked || !!item.props.selected || !!item.props.expanded
         );
 

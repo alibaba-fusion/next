@@ -4,6 +4,7 @@ import '../../../demo-helper/style';
 import '../../style';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import Cascader from '../../index';
+import { CascaderDataItem } from '../../types';
 
 const i18nMap = {
     'en-us': {
@@ -14,8 +15,8 @@ const i18nMap = {
     },
 };
 
-const createDataSource = (label, hasDisabled) => {
-    const dataSource = [
+const createDataSource = (label: unknown, hasDisabled?: boolean) => {
+    const dataSource: CascaderDataItem[] = [
         {
             children: [
                 {
@@ -6080,7 +6081,7 @@ const createDataSource = (label, hasDisabled) => {
     return dataSource;
 };
 
-function render(lang = 'en-us') {
+function render(lang: keyof typeof i18nMap = 'en-us') {
     const i18n = i18nMap[lang];
     const dataSource = createDataSource(i18n.option);
     const disabledDataSource = createDataSource(i18n.option, true);

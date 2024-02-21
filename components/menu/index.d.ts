@@ -19,6 +19,10 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 菜单项标签内容
      */
     children?: React.ReactNode;
+    /**
+     * 是否选中
+     */
+    selected?: boolean;
     menu?: any;
 }
 

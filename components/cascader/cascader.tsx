@@ -1,4 +1,4 @@
-import React, { Component, type ComponentType, type FocusEvent } from 'react';
+import React, { Component, type ReactElement, type FocusEvent, type ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import cloneDeep from 'lodash.clonedeep';
@@ -181,7 +181,7 @@ class Cascader extends Component<CascaderProps, CascaderState> {
             immutable,
         } = props;
 
-        const { v2n, p2n } = preHandleData(dataSource, immutable);
+        const { v2n, p2n } = preHandleData(dataSource!, immutable);
 
         let normalizedValue = normalizeValue(typeof value === 'undefined' ? defaultValue : value);
 
@@ -222,8 +222,8 @@ class Cascader extends Component<CascaderProps, CascaderState> {
     }
 
     static getDerivedStateFromProps(props: CascaderProps, state: CascaderState) {
-        const { v2n, p2n } = preHandleData(props.dataSource, props.immutable);
-        const states = {} as CascaderState;
+        const { v2n, p2n } = preHandleData(props.dataSource!, props.immutable);
+        const states: Partial<CascaderState> = {};
 
         if ('value' in props) {
             states.value = normalizeValue(props.value);
@@ -553,7 +553,7 @@ class Cascader extends Component<CascaderProps, CascaderState> {
         const { dataSource, searchValue, filteredPaths } = this.props;
 
         return !searchValue
-            ? this.getFirstFocusKeyByDataSource(dataSource)
+            ? this.getFirstFocusKeyByDataSource(dataSource!)
             : this.getFirstFocusKeyByFilteredPaths(filteredPaths);
     }
 
@@ -645,53 +645,64 @@ class Cascader extends Component<CascaderProps, CascaderState> {
                 onItemFocus={this.handleFocus}
                 onBlur={this.onBlur}
             >
-                {data
-                    .map(item => {
-                        const disabled = !!item.disabled;
-                        const canExpand =
-                            (!!item.children && !!item.children.length) ||
-                            (!!loadData && !item.isLeaf);
-                        const expanded = expandedValue[level] === item.value;
-                        const props: CascaderItemProps = {
-                            prefix,
-                            disabled,
-                            canExpand,
-                            expanded,
-                            expandTriggerType,
-                            onExpand: this.handleExpand.bind(this, item.value, level, canExpand),
-                            onFold: this.handleFold,
-                        };
+                {
+                    data!
+                        .map(item => {
+                            const disabled = !!item.disabled;
+                            const canExpand =
+                                (!!item.children && !!item.children.length) ||
+                                (!!loadData && !item.isLeaf);
+                            const expanded = expandedValue[level] === item.value;
+                            const props: CascaderItemProps = {
+                                prefix,
+                                disabled,
+                                canExpand,
+                                expanded,
+                                expandTriggerType,
+                                onExpand: this.handleExpand.bind(
+                                    this,
+                                    item.value,
+                                    level,
+                                    canExpand
+                                ),
+                                onFold: this.handleFold,
+                            };
 
-                        if ('title' in item) {
-                            props.title = item.title;
-                        }
+                            if ('title' in item) {
+                                props.title = item.title;
+                            }
 
-                        if (multiple) {
-                            props.checkable = !(canOnlyCheckLeaf && canExpand);
-                            props.checked = value.indexOf(item.value) > -1 || !!item.checked;
-                            props.indeterminate =
-                                (checkStrictly || canOnlyCheckLeaf
-                                    ? false
-                                    : this.indeterminate.indexOf(item.value) > -1) ||
-                                !!item.indeterminate;
-                            props.checkboxDisabled = !!item.checkboxDisabled;
-                            props.onCheck = this.handleCheck.bind(this, item.value);
-                        } else {
-                            props.selected = value[0] === item.value;
-                            props.onSelect = this.handleSelect.bind(this, item.value, canExpand);
-                        }
+                            if (multiple) {
+                                props.checkable = !(canOnlyCheckLeaf && canExpand);
+                                props.checked = value.indexOf(item.value) > -1 || !!item.checked;
+                                props.indeterminate =
+                                    (checkStrictly || canOnlyCheckLeaf
+                                        ? false
+                                        : this.indeterminate.indexOf(item.value) > -1) ||
+                                    !!item.indeterminate;
+                                props.checkboxDisabled = !!item.checkboxDisabled;
+                                props.onCheck = this.handleCheck.bind(this, item.value);
+                            } else {
+                                props.selected = value[0] === item.value;
+                                props.onSelect = this.handleSelect.bind(
+                                    this,
+                                    item.value,
+                                    canExpand
+                                );
+                            }
 
-                        const itemContent = itemRender!(item, props);
-                        if (itemContent === null) {
-                            return null;
-                        }
-                        return (
-                            <CascaderMenuItem key={item.value} {...props}>
-                                {itemContent}
-                            </CascaderMenuItem>
-                        );
-                    })
-                    .filter(v => v)}
+                            const itemContent = itemRender!(item, props);
+                            if (itemContent === null) {
+                                return null;
+                            }
+                            return (
+                                <CascaderMenuItem key={item.value} {...props}>
+                                    {itemContent}
+                                </CascaderMenuItem>
+                            );
+                        })
+                        .filter(v => v) as ReactElement[]
+                }
             </CascaderMenu>
         );
     }
@@ -728,8 +739,8 @@ class Cascader extends Component<CascaderProps, CascaderState> {
         const { value } = this.state;
         const lastItem = path[path.length - 1];
 
-        let Item: ComponentType;
-        const props: CheckboxItemProps | ItemProps = {
+        let Item: ComponentType<CheckboxItemProps | ItemProps>;
+        let props: CheckboxItemProps | ItemProps = {
             className: `${prefix}cascader-filtered-item`,
             disabled: path.some(item => item.disabled),
             children: resultRender!(searchValue!, path),
@@ -738,20 +749,24 @@ class Cascader extends Component<CascaderProps, CascaderState> {
         if (multiple) {
             Item = Menu.CheckboxItem;
             const { checkStrictly, canOnlyCheckLeaf } = this.props;
-            (props as CheckboxItemProps).checked = value.indexOf(lastItem.value) > -1;
-            (props as CheckboxItemProps).indeterminate =
-                !checkStrictly &&
-                !canOnlyCheckLeaf &&
-                this.indeterminate.indexOf(lastItem.value) > -1;
-            (props as CheckboxItemProps).checkboxDisabled = lastItem.checkboxDisabled;
-            props.onChange = this.handleCheck.bind(this, lastItem.value);
+            props = {
+                ...props,
+                checked: value.indexOf(lastItem.value) > -1,
+                indeterminate:
+                    !checkStrictly &&
+                    !canOnlyCheckLeaf &&
+                    this.indeterminate.indexOf(lastItem.value) > -1,
+                checkboxDisabled: lastItem.checkboxDisabled,
+                onChange: this.handleCheck.bind(this, lastItem.value),
+            };
         } else {
             Item = Menu.Item;
-            // @ts-expect-error 这里的实现应该是有问题，只有 SelectableItem 才有 selected
-            (props as ItemProps).selected = value[0] === lastItem.value;
-            props.onSelect = this.handleSelect.bind(this, lastItem.value, false);
+            props = {
+                ...props,
+                selected: value[0] === lastItem.value,
+                onSelect: this.handleSelect.bind(this, lastItem.value, false),
+            };
         }
-
         return <Item key={lastItem.value} {...props} />;
     }
 
