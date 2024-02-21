@@ -3,7 +3,7 @@ import React from 'react';
 import { Input, Button, Field } from '@alifd/next';
 
 function App() {
-    const field = Field.useField() as Field;
+    const field = Field.useField();
 
     const { init, getError } = field;
 

@@ -2,30 +2,13 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { Input, Button, Checkbox, Field } from '@alifd/next';
 
-const CheckboxGroup = Checkbox.Group;
-
-const list = [
-    {
-        value: 'apple',
-        label: 'apple',
-    },
-    {
-        value: 'pear',
-        label: 'pear',
-    },
-    {
-        value: 'orange',
-        label: 'orange',
-    },
-];
-
 class App extends React.Component {
     state = {
         checkboxStatus: true,
     };
     field = new Field(this, { scrollToFirstError: -10 });
 
-    isChecked(rule: unknown, value: string) {
+    isChecked(_rule: unknown, value: string) {
         if (!value) {
             return Promise.reject('consent agreement not checked ');
         } else {
@@ -33,9 +16,9 @@ class App extends React.Component {
         }
     }
 
-    userName(rule: unknown, value: string) {
+    userName(_rule: unknown, value: string) {
         if (value === 'frank') {
-            return new Promise((resolve, reject) => {
+            return new Promise((_resolve, reject) => {
                 setTimeout(() => reject('name existed'), 200);
             });
         } else {
@@ -62,11 +45,10 @@ class App extends React.Component {
                         ],
                     })}
                 />
-                {/* @ts-expect-error @alifd/next state is error */}
                 {this.field.getState('username') === 'loading' ? 'validating...' : ''}
                 {this.field.getError('username') ? (
                     <span style={{ color: 'red' }}>
-                        {(this.field.getError('username') as string[]).join(',')}
+                        {this.field.getError('username')!.join(',')}
                     </span>
                 ) : (
                     ''
@@ -82,7 +64,7 @@ class App extends React.Component {
                 />
                 {this.field.getError('checkbox') ? (
                     <span style={{ color: 'red' }}>
-                        {(this.field.getError('checkbox') as string[]).join(',')}
+                        {this.field.getError('checkbox')!.join(',')}
                     </span>
                 ) : (
                     ''
