@@ -84,7 +84,7 @@ function checkFiles() {
     const esLen = getChildDirLength(esPath);
     const typesLen = getChildDirLength(typesPath);
 
-    if (srcLen !== esLen || libLen !== srcLen + 1 || typesLen !== srcLen - 3) {
+    if (srcLen !== esLen || libLen !== srcLen + 1 || typesLen !== srcLen - 2) {
         // src : demo-helper / core / mixin-ui-state / validate
         // lib : core / core2/  mixin-ui-state / validate / _components
         // es : core / core2/ mixin-ui-state / validate

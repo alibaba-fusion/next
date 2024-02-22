@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.27.4",
+  "version": "1.27.5-beta.0",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -302,9 +302,11 @@
     "registry": "https://registry.npmjs.org"
   },
   "overrides": {
+    "@alifd/validate": "^2.0.0",
     "cheerio": "1.0.0-rc.3"
   },
   "resolutions": {
+    "@alifd/validate": "^2.0.0",
     "cheerio": "1.0.0-rc.3"
   }
 }
