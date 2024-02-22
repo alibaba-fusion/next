@@ -188,7 +188,10 @@ export default class Drawer extends Component {
     mapcloseableToConfig = closeable => {
         return ['esc', 'close', 'mask'].reduce((ret, option) => {
             const key = option.charAt(0).toUpperCase() + option.substr(1);
-            const value = typeof closeable === 'boolean' ? closeable : closeable.split(',').indexOf(option) > -1;
+            const value =
+                typeof closeable === 'boolean'
+                    ? closeable
+                    : closeable.split(',').indexOf(option) > -1;
 
             if (option === 'esc' || option === 'mask') {
                 ret[`canCloseBy${key}`] = value;
@@ -272,7 +275,11 @@ export default class Drawer extends Component {
         };
 
         const newCloseable =
-            'closeMode' in this.props ? (Array.isArray(closeMode) ? closeMode.join(',') : closeMode) : closeable;
+            'closeMode' in this.props
+                ? Array.isArray(closeMode)
+                    ? closeMode.join(',')
+                    : closeMode
+                : closeable;
 
         const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(newCloseable);
 

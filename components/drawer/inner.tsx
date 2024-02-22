@@ -70,7 +70,12 @@ export default class Inner extends Component {
 
         if (closeable) {
             return (
-                <a role="button" aria-label={locale.close} className={`${prefix}drawer-close`} onClick={onClose}>
+                <a
+                    role="button"
+                    aria-label={locale.close}
+                    className={`${prefix}drawer-close`}
+                    onClick={onClose}
+                >
                     <Icon className={`${prefix}drawer-close-icon`} type="close" />
                 </a>
             );
