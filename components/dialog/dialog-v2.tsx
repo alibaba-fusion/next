@@ -71,8 +71,8 @@ const Dialog = props => {
         typeof popupContainer === 'string'
             ? () => document.getElementById(popupContainer)
             : typeof popupContainer !== 'function'
-            ? () => popupContainer
-            : popupContainer;
+              ? () => popupContainer
+              : popupContainer;
     const [container, setContainer] = useState(getContainer());
     const dialogRef = useRef(null);
     const wrapperRef = useRef(null);

@@ -320,7 +320,10 @@ export default class Dialog extends Component {
         const [headerHeight, footerHeight] = [headerNode, footerNode].map(node =>
             node ? _getSize(node, 'height') : 0
         );
-        const padding = ['padding-top', 'padding-bottom'].reduce((sum, attr) => sum + getStyle(node, attr), 0);
+        const padding = ['padding-top', 'padding-bottom'].reduce(
+            (sum, attr) => sum + getStyle(node, attr),
+            0
+        );
 
         let maxBodyHeight = expectHeight - headerHeight - footerHeight - padding;
 
@@ -349,7 +352,10 @@ export default class Dialog extends Component {
     mapcloseableToConfig(closeable) {
         return ['esc', 'close', 'mask'].reduce((ret, option) => {
             const key = option.charAt(0).toUpperCase() + option.substr(1);
-            const value = typeof closeable === 'boolean' ? closeable : closeable.split(',').indexOf(option) > -1;
+            const value =
+                typeof closeable === 'boolean'
+                    ? closeable
+                    : closeable.split(',').indexOf(option) > -1;
 
             if (option === 'esc' || option === 'mask') {
                 ret[`canCloseBy${key}`] = value;
@@ -441,7 +447,11 @@ export default class Dialog extends Component {
 
         const useCSS = this.useCSSToPosition();
         const newCloseable =
-            'closeMode' in this.props ? (Array.isArray(closeMode) ? closeMode.join(',') : closeMode) : closeable;
+            'closeMode' in this.props
+                ? Array.isArray(closeMode)
+                    ? closeMode.join(',')
+                    : closeMode
+                : closeable;
         const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(newCloseable);
         const newOverlayProps = {
             disableScroll: true,
