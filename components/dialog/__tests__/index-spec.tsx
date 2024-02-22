@@ -24,7 +24,7 @@ const render = element => {
     let inc;
     const container = document.createElement('div');
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function() {
+    ReactDOM.render(element, container, function () {
         inc = this;
     });
     return {
@@ -67,7 +67,9 @@ class Demo extends React.Component {
         this.setState({
             content: new Array(40)
                 .fill('')
-                .map((__, index) => <p key={index}>Start your business here by searching a popular product</p>),
+                .map((__, index) => (
+                    <p key={index}>Start your business here by searching a popular product</p>
+                )),
         });
     };
 
@@ -92,7 +94,11 @@ class Demo extends React.Component {
                     onClose={this.onClose}
                     {...this.props}
                 >
-                    <Button className="contentChangeBt" onClick={this.onChangeContent} type="primary">
+                    <Button
+                        className="contentChangeBt"
+                        onClick={this.onChangeContent}
+                        type="primary"
+                    >
                         修改内容
                     </Button>
                     {this.state.content}
@@ -197,7 +203,9 @@ describe('inner', () => {
                 </a>
             ),
         });
-        assert(document.querySelector('.next-dialog-footer a.custom').textContent.trim() === 'Link');
+        assert(
+            document.querySelector('.next-dialog-footer a.custom').textContent.trim() === 'Link'
+        );
     });
 
     it('should support custom footer button text', () => {
@@ -337,13 +345,23 @@ describe('inner', () => {
         wrapper = render(<Dialog visible />);
         assert(!document.querySelector('.next-dialog').style.height);
 
-        assert(!hasClass(document.querySelector('.next-dialog-footer'), 'next-dialog-footer-fixed-height'));
+        assert(
+            !hasClass(
+                document.querySelector('.next-dialog-footer'),
+                'next-dialog-footer-fixed-height'
+            )
+        );
 
         wrapper.setProps({
             height: '500px',
         });
         assert(document.querySelector('.next-dialog').style.height === '500px');
-        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-dialog-footer-fixed-height'));
+        assert(
+            hasClass(
+                document.querySelector('.next-dialog-footer'),
+                'next-dialog-footer-fixed-height'
+            )
+        );
     });
 
     it('should close dialog if click the ok button', () => {

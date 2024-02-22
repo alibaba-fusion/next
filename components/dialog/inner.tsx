@@ -177,8 +177,17 @@ export default class Inner extends Component {
 
         if (closeable) {
             return (
-                <a role="button" aria-label={locale.close} className={`${prefix}dialog-close`} onClick={onClose}>
-                    {closeIcon ? closeIcon : <Icon className={`${prefix}dialog-close-icon`} type="close" />}
+                <a
+                    role="button"
+                    aria-label={locale.close}
+                    className={`${prefix}dialog-close`}
+                    onClick={onClose}
+                >
+                    {closeIcon ? (
+                        closeIcon
+                    ) : (
+                        <Icon className={`${prefix}dialog-close-icon`} type="close" />
+                    )}
                 </a>
             );
         }
@@ -208,7 +217,11 @@ export default class Inner extends Component {
             ariaProps['aria-labelledby'] = this.titleId;
         }
 
-        others.style = Object.assign({}, obj.pickProps(['height', 'maxHeight', 'width'], this.props), others.style);
+        others.style = Object.assign(
+            {},
+            obj.pickProps(['height', 'maxHeight', 'width'], this.props),
+            others.style
+        );
 
         return (
             <div {...ariaProps} className={newClassName} {...others} dir={rtl ? 'rtl' : undefined}>

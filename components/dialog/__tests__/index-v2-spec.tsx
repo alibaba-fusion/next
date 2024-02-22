@@ -22,7 +22,7 @@ const render = element => {
     let inc;
     const container = document.createElement('div');
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function() {
+    ReactDOM.render(element, container, function () {
         inc = this;
     });
     return {
@@ -192,7 +192,9 @@ describe('v2', () => {
                 </a>
             ),
         });
-        assert(document.querySelector('.next-dialog-footer a.custom').textContent.trim() === 'Link');
+        assert(
+            document.querySelector('.next-dialog-footer a.custom').textContent.trim() === 'Link'
+        );
     });
 
     it('should support typeof closeMode === string', () => {
@@ -298,13 +300,23 @@ describe('v2', () => {
         await delay(20);
         assert(!document.querySelector('.next-dialog').style.height);
 
-        assert(!hasClass(document.querySelector('.next-dialog-footer'), 'next-dialog-footer-fixed-height'));
+        assert(
+            !hasClass(
+                document.querySelector('.next-dialog-footer'),
+                'next-dialog-footer-fixed-height'
+            )
+        );
 
         wrapper.setProps({
             height: '500px',
         });
         assert(document.querySelector('.next-dialog').style.height === '500px');
-        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-dialog-footer-fixed-height'));
+        assert(
+            hasClass(
+                document.querySelector('.next-dialog-footer'),
+                'next-dialog-footer-fixed-height'
+            )
+        );
     });
 
     it('should support style.width compcat with v1', async () => {
