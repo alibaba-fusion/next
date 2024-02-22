@@ -16,7 +16,7 @@ const i18nMaps = {
         alert: 'Alert',
         confirm: 'Confirm',
         alertContent: 'Alert content...',
-        confirmContent: 'Are you sure delete this ?'
+        confirmContent: 'Are you sure delete this ?',
     },
 
     'zh-cn': {
@@ -25,8 +25,8 @@ const i18nMaps = {
         alert: '警告',
         confirm: '确认',
         alertContent: '警告内容...',
-        confirmContent: '你确认删除这些内容吗？'
-    }
+        confirmContent: '你确认删除这些内容吗？',
+    },
 };
 
 class FunctionDemo extends Component {
@@ -35,76 +35,97 @@ class FunctionDemo extends Component {
             hasTitle: {
                 label: '标题',
                 value: 'true',
-                enum: [{
-                    label: '显示',
-                    value: 'true'
-                }, {
-                    label: '隐藏',
-                    value: 'false'
-                }]
+                enum: [
+                    {
+                        label: '显示',
+                        value: 'true',
+                    },
+                    {
+                        label: '隐藏',
+                        value: 'false',
+                    },
+                ],
             },
             hasMask: {
                 label: '遮罩',
                 value: 'false',
-                enum: [{
-                    label: '显示',
-                    value: 'true'
-                }, {
-                    label: '隐藏',
-                    value: 'false'
-                }]
+                enum: [
+                    {
+                        label: '显示',
+                        value: 'true',
+                    },
+                    {
+                        label: '隐藏',
+                        value: 'false',
+                    },
+                ],
             },
             footer: {
                 label: '按钮',
                 value: 'true',
-                enum: [{
-                    label: '显示',
-                    value: 'true'
-                }, {
-                    label: '隐藏',
-                    value: 'false'
-                }]
+                enum: [
+                    {
+                        label: '显示',
+                        value: 'true',
+                    },
+                    {
+                        label: '隐藏',
+                        value: 'false',
+                    },
+                ],
             },
             footerAlign: {
                 label: '按钮对齐方式',
                 value: 'right',
-                enum: [{
-                    label: '左侧',
-                    value: 'left'
-                }, {
-                    label: '中间',
-                    value: 'center'
-                }, {
-                    label: '右侧',
-                    value: 'right'
-                }]
+                enum: [
+                    {
+                        label: '左侧',
+                        value: 'left',
+                    },
+                    {
+                        label: '中间',
+                        value: 'center',
+                    },
+                    {
+                        label: '右侧',
+                        value: 'right',
+                    },
+                ],
             },
             okPosition: {
                 label: '确定按钮位置',
                 value: 'left',
-                enum: [{
-                    label: '在左',
-                    value: 'left'
-                }, {
-                    label: '在右',
-                    value: 'right'
-                }]
-            }
-        }
-    }
+                enum: [
+                    {
+                        label: '在左',
+                        value: 'left',
+                    },
+                    {
+                        label: '在右',
+                        value: 'right',
+                    },
+                ],
+            },
+        },
+    };
     onFunctionChange = demoFunction => {
         this.setState({
-            demoFunction
+            demoFunction,
         });
-    }
+    };
 
     renderMask(hasMask, content) {
         return hasMask ? (
-            <div className="next-overlay-wrapper opened" style={{ position: 'relative', width: 440, height: 195 }}>
+            <div
+                className="next-overlay-wrapper opened"
+                style={{ position: 'relative', width: 440, height: 195 }}
+            >
                 <div className="next-overlay-backdrop" style={{ position: 'relative' }} />
                 {content}
             </div>
-        ) : content;
+        ) : (
+            content
+        );
     }
 
     render() {
@@ -116,9 +137,9 @@ class FunctionDemo extends Component {
         const footer = this.state.demoFunction.footer.value === 'true';
         const footerAlign = this.state.demoFunction.footerAlign.value;
         const okIsLeft = this.state.demoFunction.okPosition.value === 'left';
-        const style = hasMask ?
-            { position: 'absolute', top: 20, left: 20, width: 400 } :
-            { position: 'relative', top: 20, left: 20, width: 400 };
+        const style = hasMask
+            ? { position: 'absolute', top: 20, left: 20, width: 400 }
+            : { position: 'relative', top: 20, left: 20, width: 400 };
         const normalContent = (
             <Dialog.Inner
                 style={style}
@@ -126,7 +147,8 @@ class FunctionDemo extends Component {
                 footer={footer}
                 footerAlign={footerAlign}
                 footerActions={okIsLeft ? ['ok', 'cancel'] : ['cancel', 'ok']}
-                locale={locale}>
+                locale={locale}
+            >
                 {i18n.content}
             </Dialog.Inner>
         );
@@ -138,12 +160,14 @@ class FunctionDemo extends Component {
                 footer={footer}
                 footerAlign={footerAlign}
                 footerActions={okIsLeft ? ['ok', 'cancel'] : ['cancel', 'ok']}
-                locale={locale}>
+                locale={locale}
+            >
                 <ModalInner
                     type="alert"
                     title={hasTitle ? i18n.title : null}
                     locale={locale}
-                    content={i18n.content} />
+                    content={i18n.content}
+                />
             </Dialog.Inner>
         );
 
@@ -154,18 +178,24 @@ class FunctionDemo extends Component {
                 footer={footer}
                 footerAlign={footerAlign}
                 footerActions={okIsLeft ? ['ok', 'cancel'] : ['cancel', 'ok']}
-                locale={locale}>
+                locale={locale}
+            >
                 <ModalInner
                     type="confirm"
                     title={hasTitle ? i18n.title : null}
                     locale={locale}
-                    content={i18n.content} />
+                    content={i18n.content}
+                />
             </Dialog.Inner>
         );
 
         return (
             <div className="demo-container">
-                <Demo title="Dialog" demoFunction={this.state.demoFunction} onFunctionChange={this.onFunctionChange}>
+                <Demo
+                    title="Dialog"
+                    demoFunction={this.state.demoFunction}
+                    onFunctionChange={this.onFunctionChange}
+                >
                     <Demo title="Normal">
                         <DemoGroup label="Align">
                             {this.renderMask(hasMask, normalContent)}
@@ -184,7 +214,6 @@ class FunctionDemo extends Component {
         );
     }
 }
-
 
 const render = (lang = 'en-us') => {
     const i18n = i18nMaps[lang];

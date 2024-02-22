@@ -28,7 +28,14 @@ const MESSAGE_TYPE = {
     help: 'help',
 };
 
-export const ModalInner = function({ type, messageProps = {}, title, rtl, prefix = 'next-', content }) {
+export const ModalInner = function ({
+    type,
+    messageProps = {},
+    title,
+    rtl,
+    prefix = 'next-',
+    content,
+}) {
     return (
         <Message
             size="large"
@@ -49,7 +56,15 @@ class Modal extends Component {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
-        type: PropTypes.oneOf(['alert', 'confirm', 'success', 'error', 'notice', 'warning', 'help']),
+        type: PropTypes.oneOf([
+            'alert',
+            'confirm',
+            'success',
+            'error',
+            'notice',
+            'warning',
+            'help',
+        ]),
         title: PropTypes.node,
         content: PropTypes.node,
         messageProps: PropTypes.object,
@@ -178,8 +193,8 @@ class Modal extends Component {
             (type === 'confirm'
                 ? ['ok', 'cancel']
                 : ['alert', 'success', 'error', 'notice', 'warning', 'help'].indexOf(type) > -1
-                ? ['ok']
-                : undefined);
+                  ? ['ok']
+                  : undefined);
         const newOnOk = this.wrapper(onOk, this.close, this.okLoading);
         const newOnCancel = this.wrapper(onCancel, this.close, this.cancelLoading);
         const newOnClose = this.wrapper(onClose, this.close, this.cancelLoading);
@@ -259,7 +274,7 @@ export const show = (config = {}) => {
             />
         </ConfigProvider>,
         container,
-        function() {
+        function () {
             instance = myRef;
         }
     );
@@ -271,10 +286,12 @@ export const show = (config = {}) => {
     };
 };
 
-const methodFactory = type => (config = {}) => {
-    config.type = type;
-    return show(config);
-};
+const methodFactory =
+    type =>
+    (config = {}) => {
+        config.type = type;
+        return show(config);
+    };
 
 /**
  * 创建警示对话框
