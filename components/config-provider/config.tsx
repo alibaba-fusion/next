@@ -22,6 +22,7 @@ import type {
     ConfiguredComponentClass,
     PartialLocale,
     NonReactStatics,
+    NonBlank,
 } from './types';
 
 const { shallowEqual } = obj;
@@ -102,10 +103,13 @@ function config<
         | ComponentType<AnyProps>
         | ForwardRefExoticComponent<AnyProps>
         | JSXElementConstructor<AnyProps>,
->(Component: C, options: ConfigOptions<ComponentPropsWithoutRef<C>, keyof ComponentRef<C>> = {}) {
+    K extends Exclude<keyof ComponentRef<C>, symbol> = never,
+>(Component: C, options: ConfigOptions<ComponentPropsWithoutRef<C>, K> = {}) {
     type P = ComponentPropsWithoutRef<C> & ComponentCommonProps;
     type R = ComponentRef<C>;
     type RefType = R extends never ? undefined : R;
+    type HoistsProperties = NonBlank<Pick<R, K>>;
+
     // 非 forwardRef 创建的 class component
     if (
         obj.isClassComponent(Component) &&
@@ -160,9 +164,6 @@ function config<
             this._deprecated = this._deprecated.bind(this);
         }
 
-        // proxied properties
-        [key: string]: unknown;
-
         private _getInstance(ref: R) {
             this._instance = ref;
 
@@ -170,9 +171,9 @@ function config<
                 options.exportNames.forEach(name => {
                     const field = this._instance[name];
                     if (typeof field === 'function') {
-                        this[name as string] = field.bind(this._instance);
+                        (this as R)[name] = field.bind(this._instance);
                     } else {
-                        this[name as string] = field;
+                        (this as R)[name] = field;
                     }
                 });
             }
@@ -295,7 +296,7 @@ function config<
     hoistNonReactStatic(ConfigedComponent, Component);
 
     // 这里将 ConfigedComponent 推断一个限定的类型，以简化生成的类型代码
-    return ConfigedComponent as unknown as ConfiguredComponentClass<P, RefType> &
+    return ConfigedComponent as unknown as ConfiguredComponentClass<P, RefType, HoistsProperties> &
         NonReactStatics<C>;
 }
 
