@@ -332,19 +332,12 @@ describe('ConfigProvider.config', () => {
         it('should change context of component which is off the component tree', () => {
             cy.mount(<Demo />);
             cy.get('.click-me').click();
-            cy.then(() => {
-                let toast = document.querySelector<HTMLButtonElement>('.toast button')!;
-                expect(toast.innerHTML.trim()).to.equal('关闭');
-                toast.click();
+            cy.get('.toast button').should('have.text', '关闭');
+            cy.get('.toast button').click();
+            cy.get('select').select('en-us');
 
-                cy.get('select').invoke('val', 'en-us').trigger('change');
-
-                cy.get('.click-me').click();
-                cy.then(() => {
-                    toast = document.querySelector<HTMLButtonElement>('.toast button')!;
-                    expect(toast.innerHTML.trim()).to.equal('close');
-                });
-            });
+            cy.get('.click-me').click();
+            cy.get('.toast button').should('have.text', 'close');
         });
     });
 
@@ -499,9 +492,9 @@ describe('ConfigProvider.config', () => {
                 cy.wrap(ins).should('be.ok');
                 cy.wrap(ins.type).should('eq', 'demo');
                 cy.wrap(ins.sayHello).should('be.a', 'function');
-                cy.wrap((ins.sayHello as () => string)()).should('eq', 'demo-hello');
+                cy.wrap(ins.sayHello()).should('eq', 'demo-hello');
                 ins.type = 'xx';
-                cy.wrap((ins.sayHello as () => string)()).should('eq', 'demo-hello');
+                cy.wrap(ins.sayHello()).should('eq', 'demo-hello');
                 const comp = ins.getInstance();
                 cy.wrap(comp).should('be.ok');
                 cy.wrap(comp.setState).should('be.a', 'function');
@@ -534,9 +527,9 @@ describe('ConfigProvider.config', () => {
                 cy.wrap(ins).should('be.ok');
                 cy.wrap(ins.type).should('eq', 'demo');
                 cy.wrap(ins.sayHello).should('be.a', 'function');
-                cy.wrap((ins.sayHello as () => string)()).should('eq', 'demo-hello');
+                cy.wrap(ins.sayHello()).should('eq', 'demo-hello');
                 ins.type = 'xx';
-                cy.wrap((ins.sayHello as () => string)()).should('eq', 'demo-hello');
+                cy.wrap(ins.sayHello()).should('eq', 'demo-hello');
                 const comp = ins.getInstance();
                 cy.wrap(comp).should('be.ok');
                 cy.wrap(comp.type).should('eq', 'demo');
@@ -574,7 +567,8 @@ describe('ConfigProvider.config', () => {
                 }
             }
             const ConfiguredDemo = ConfigProvider.config(Demo, {
-                exportNames: ['type', 'aa'] as any,
+                // @ts-expect-error aa is not in Demo
+                exportNames: ['type', 'aa'],
             });
             const ref = createRef<InstanceType<typeof ConfiguredDemo>>();
             cy.mount(<ConfiguredDemo name="1" ref={ref} />);
