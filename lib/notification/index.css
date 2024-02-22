@@ -1,0 +1,51 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-notification {
+  width: 384px;
+  position: fixed;
+  z-index: 1010;
+  padding: 0;
+  margin: 0;
+}
+.next-notification .next-message {
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.next-notification-fade-leave {
+  animation-duration: 300ms;
+  animation-play-state: paused;
+  animation-fill-mode: both;
+  animation-timing-function: ease;
+}
+
+.next-notification-fade-leave.next-notification-fade-leave-active {
+  animation-name: NotificationFadeOut;
+  animation-play-state: running;
+}
+
+@keyframes NotificationFadeOut {
+  0% {
+    max-height: 150px;
+    margin-bottom: 16px;
+    opacity: 1;
+  }
+  100% {
+    max-height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+  }
+}
