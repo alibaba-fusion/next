@@ -84,8 +84,8 @@ const Drawer = props => {
         typeof popupContainer === 'string'
             ? () => document.getElementById(popupContainer)
             : typeof popupContainer !== 'function'
-            ? () => popupContainer
-            : popupContainer;
+              ? () => popupContainer
+              : popupContainer;
     const [container, setContainer] = useState(getContainer());
     const drawerRef = useRef(null);
     const wrapperRef = useRef(null);
@@ -139,7 +139,9 @@ const Drawer = props => {
             if (dom.hasScroll(document.body)) {
                 const scrollWidth = dom.scrollbar().width;
                 if (scrollWidth) {
-                    style.paddingRight = `${dom.getStyle(document.body, 'paddingRight') + dom.scrollbar().width}px`;
+                    style.paddingRight = `${
+                        dom.getStyle(document.body, 'paddingRight') + dom.scrollbar().width
+                    }px`;
                 }
             }
             locker.current = scrollLocker.lock(document.body, style);
@@ -254,7 +256,11 @@ const Drawer = props => {
     });
 
     const newAnimation =
-        animation === null || animation === false ? null : animation ? animation : getAnimation(placement);
+        animation === null || animation === false
+            ? null
+            : animation
+              ? animation
+              : getAnimation(placement);
 
     const timeout = {
         appear: 300,
@@ -294,7 +300,10 @@ const Drawer = props => {
                             timeout={timeout}
                             unmountOnExit
                         >
-                            <div className={`${prefix}overlay-backdrop`} onClick={handleMaskClick} />
+                            <div
+                                className={`${prefix}overlay-backdrop`}
+                                onClick={handleMaskClick}
+                            />
                         </Animate.OverlayAnimate>
                     ) : null}
 

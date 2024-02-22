@@ -17,7 +17,7 @@ const i18nMaps = {
     'zh-cn': {
         title: '这里是标题',
         content: '开启您的贸易生活从 Alibaba.com 开始',
-    }
+    },
 };
 
 class FunctionDemo extends Component {
@@ -26,57 +26,73 @@ class FunctionDemo extends Component {
             hasTitle: {
                 label: '标题',
                 value: 'true',
-                enum: [{
-                    label: '显示',
-                    value: 'true'
-                }, {
-                    label: '隐藏',
-                    value: 'false'
-                }]
+                enum: [
+                    {
+                        label: '显示',
+                        value: 'true',
+                    },
+                    {
+                        label: '隐藏',
+                        value: 'false',
+                    },
+                ],
             },
             hasCloseIcon: {
                 label: '有无关闭按钮',
                 value: 'true',
-                enum: [{
-                    label: '有',
-                    value: 'true'
-                }, {
-                    label: '无',
-                    value: 'false'
-                }]
+                enum: [
+                    {
+                        label: '有',
+                        value: 'true',
+                    },
+                    {
+                        label: '无',
+                        value: 'false',
+                    },
+                ],
             },
             placement: {
                 label: '方向',
                 value: 'right',
-                enum: [{
-                    label: '上',
-                    value: 'top'
-                }, {
-                    label: '下',
-                    value: 'bottom'
-                }, {
-                    label: '左',
-                    value: 'left'
-                }, {
-                    label: '右',
-                    value: 'right'
-                }]
+                enum: [
+                    {
+                        label: '上',
+                        value: 'top',
+                    },
+                    {
+                        label: '下',
+                        value: 'bottom',
+                    },
+                    {
+                        label: '左',
+                        value: 'left',
+                    },
+                    {
+                        label: '右',
+                        value: 'right',
+                    },
+                ],
             },
-        }
-    }
+        },
+    };
     onFunctionChange = demoFunction => {
         this.setState({
-            demoFunction
+            demoFunction,
         });
-    }
+    };
 
     renderMask(hasMask, content) {
         return hasMask ? (
-            <div className="next-overlay-wrapper opened" style={{ position: 'relative', width: 440, height: 300 }}>
+            <div
+                className="next-overlay-wrapper opened"
+                style={{ position: 'relative', width: 440, height: 300 }}
+            >
                 <div className="next-overlay-backdrop" style={{ position: 'relative' }} />
                 {content}
             </div>
-        ) : content;
+        ) : (
+            content
+        );
     }
 
     render() {
@@ -99,25 +115,27 @@ class FunctionDemo extends Component {
                 placement={placement}
                 closeable={hasCloseIcon}
                 title={hasTitle ? i18n.title : null}
-                locale={locale}>
+                locale={locale}
+            >
                 {i18n.content}
             </Drawer.Inner>
         );
 
         return (
             <div className="demo-container">
-                <Demo title="Drawer" demoFunction={this.state.demoFunction} onFunctionChange={this.onFunctionChange}>
+                <Demo
+                    title="Drawer"
+                    demoFunction={this.state.demoFunction}
+                    onFunctionChange={this.onFunctionChange}
+                >
                     <Demo title="Normal">
-                        <DemoGroup label="Align">
-                            {this.renderMask(true, normalContent)}
-                        </DemoGroup>
+                        <DemoGroup label="Align">{this.renderMask(true, normalContent)}</DemoGroup>
                     </Demo>
                 </Demo>
             </div>
         );
     }
 }
-
 
 const render = (lang = 'en-us') => {
     const i18n = i18nMaps[lang];

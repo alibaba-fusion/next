@@ -20,7 +20,7 @@ const render = element => {
     let inc;
     const container = document.createElement('div');
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function() {
+    ReactDOM.render(element, container, function () {
         inc = this;
     });
     return {
