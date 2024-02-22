@@ -190,18 +190,14 @@ export interface ConfiguredComponent<P, R> extends Component<P> {
      * 获取到真实的组件 ref 对象的函数
      */
     getInstance(): R;
-    /**
-     * 其他通过 exportNames 提升上来的属性
-     */
-    [key: string]: unknown;
 }
 
 /**
  * 被 config() 包裹后的组件的 class 类型
  */
-export interface ConfiguredComponentClass<P, R> {
+export interface ConfiguredComponentClass<P, R, OP> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    new (props: P, context?: any): ConfiguredComponent<P, R>;
+    new (props: P, context?: any): ConfiguredComponent<P, R> & OP;
     propTypes: WeakValidationMap<P> | undefined;
     displayName: string;
     contextTypes: ValidationMap<ContextState> | undefined;
