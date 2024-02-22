@@ -71,7 +71,7 @@ export const show = (config = {}) => {
             />
         </ConfigProvider>,
         container,
-        function() {
+        function () {
             instance = myRef;
         }
     );
