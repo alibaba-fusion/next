@@ -774,7 +774,7 @@ class Overlay extends Component {
             });
 
             if (align) {
-                const shouldUpdatePosition = (status === 'mounting' || status === 'none') && propShouldUpdatePosition;
+                const shouldUpdatePosition = status !== 'leaving' && propShouldUpdatePosition;
                 children = (
                     <Position
                         {...{
