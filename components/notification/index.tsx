@@ -7,7 +7,9 @@ import Message from '../message';
 import uuid from '../util/guid';
 import config from './config';
 
-const getAnimation = placement => {
+import type { NotificationConfig, NotificationOptions } from './types';
+
+const getAnimation = (placement: string) => {
     switch (placement) {
         case 'tl':
         case 'bl':
@@ -16,11 +18,32 @@ const getAnimation = placement => {
         case 'br':
             return 'slideInRight';
         default:
-            return null;
+            return undefined;
     }
 };
 
-class Notification extends Component {
+interface NotificationProps {
+    prefix?: string;
+}
+
+interface NotificationState {
+    notifications: NotificationOptions[];
+}
+
+let instance: Notification;
+let mounting = false;
+let waitOpens: NotificationOptions[] = [];
+function close(key: string) {
+    if (!instance) {
+        const index = waitOpens.findIndex(item => item.key === key);
+        waitOpens.splice(index, 1);
+        return;
+    }
+
+    instance.close(key);
+}
+
+class Notification extends Component<NotificationProps, NotificationState> {
     static propTypes = {
         prefix: PropTypes.string,
     };
@@ -28,8 +51,9 @@ class Notification extends Component {
     static defaultProps = {
         prefix: 'next-',
     };
+    timers: number[];
 
-    constructor(props) {
+    constructor(props: NotificationProps) {
         super(props);
         this.state = {
             notifications: [],
@@ -44,7 +68,7 @@ class Notification extends Component {
         });
     }
 
-    close = key => {
+    close = (key: string) => {
         const { notifications } = this.state;
         const index = notifications.findIndex(notification => notification.key === key);
 
@@ -72,7 +96,7 @@ class Notification extends Component {
         }
     };
 
-    open = ({ key, duration, ...others }) => {
+    open = ({ key, duration, ...others }: NotificationOptions) => {
         const notifications = [...this.state.notifications];
         if (!key) {
             key = uuid('notification-');
@@ -88,10 +112,10 @@ class Notification extends Component {
         } else {
             let timer;
 
-            if (duration > 0) {
+            if (duration && duration > 0) {
                 timer = setTimeout(() => {
-                    this.close(key);
-                }, duration);
+                    this.close(key as string);
+                }, duration) as unknown as number;
                 this.timers.push(timer);
             }
             notifications.push({
@@ -104,7 +128,7 @@ class Notification extends Component {
         if (config.maxCount > 0 && config.maxCount < notifications.length) {
             while (notifications.length > config.maxCount) {
                 const { key } = notifications[0];
-                this.close(key);
+                this.close(key as string);
                 notifications.splice(0, 1);
             }
         }
@@ -146,12 +170,12 @@ class Notification extends Component {
                                 iconType={icon}
                                 closeable
                                 animation={false}
-                                size={config.size}
+                                size={(config as NotificationConfig).size}
                                 visible
                                 style={style}
                                 className={className}
                                 onClick={onClick}
-                                onClose={() => close(key)}
+                                onClose={() => close(key as string)}
                             >
                                 {content}
                             </Message>
@@ -166,11 +190,8 @@ class Notification extends Component {
 const ConfigedNotification = ConfigProvider.config(Notification, {
     exportNames: ['open', 'close'],
 });
-let instance;
-let mounting = false;
-let waitOpens = [];
 
-function open(options = {}) {
+function open(options: NotificationOptions = {}) {
     if (!options.title && !options.content) return;
 
     const duration =
@@ -196,11 +217,13 @@ function open(options = {}) {
                 document.body.appendChild(div);
             }
 
+            // 类型提示使用 createRoot，考虑到兼容性，暂时不处理
+            // eslint-disable-next-line react/no-deprecated
             ReactDOM.render(
                 <ConfigProvider {...ConfigProvider.getContext()}>
                     <ConfigedNotification
                         ref={ref => {
-                            instance = ref;
+                            instance = ref as unknown as Notification;
                         }}
                     />
                 </ConfigProvider>,
@@ -224,37 +247,32 @@ function open(options = {}) {
     return key;
 }
 
-function close(key) {
-    if (!instance) {
-        const index = waitOpens.findIndex(item => item.key === key);
-        waitOpens.splice(index, 1);
-        return;
-    }
-
-    instance.close(key);
-}
-
 function destroy() {
     if (!instance) return;
-    const mountNode = ReactDOM.findDOMNode(instance).parentNode;
+    const mountNode = ReactDOM.findDOMNode(instance)?.parentNode;
     if (mountNode) {
-        ReactDOM.unmountComponentAtNode(mountNode);
-        mountNode.parentNode.removeChild(mountNode);
+        // eslint-disable-next-line react/no-deprecated
+        ReactDOM.unmountComponentAtNode(mountNode as Element);
+        mountNode.parentNode?.removeChild(mountNode);
     }
 }
 
-const levels = {};
+interface objectAny {
+    [key: string]: () => string | undefined;
+}
+const levels: objectAny = {};
 
 ['success', 'error', 'warning', 'notice', 'help'].forEach(type => {
     levels[type] = (options = {}) => {
         return open({
             ...options,
-            type,
+            type: type as NotificationOptions['type'],
         });
     };
 });
+
 export default {
-    config(...args) {
+    config(...args: { placement: unknown }[]) {
         return Object.assign(config, ...args);
     },
     open,
@@ -262,3 +280,5 @@ export default {
     destroy,
     ...levels,
 };
+
+export type { NotificationConfig, NotificationOptions };

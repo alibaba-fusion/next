@@ -1,14 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
+import * as React from 'react';
 import Notification from '../index';
 
-Enzyme.configure({ adapter: new Adapter() });
-
 describe('notification', () => {
-    const delay = time => new Promise(resolve => setTimeout(resolve, time));
+    const delay = (time: number | undefined) => new Promise(resolve => setTimeout(resolve, time));
 
     afterEach(() => {
         Notification.destroy();
@@ -38,17 +32,14 @@ describe('notification', () => {
             content: '嘿嘿',
         });
 
-        Notification.close(key);
+        Notification.close(key as string);
 
         key = Notification.open({
             title: '哈哈',
             content: '嘿嘿',
         });
 
-        const dom = document.querySelector('.next-message');
-
-        assert(!!dom);
-
-        Notification.close(key);
+        cy.get('.next-message').should('exist');
+        Notification.close(key as string);
     });
 });
