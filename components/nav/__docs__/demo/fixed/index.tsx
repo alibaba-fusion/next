@@ -1,8 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Nav } from '@alifd/next';
-
-const { Item, SubNav } = Nav;
 
 const header = <span className="fusion">FUSION</span>;
 const footer = (
