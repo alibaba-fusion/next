@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Menu from '../menu';
+import { GroupProps } from './types';
 
 /**
  * Nav.Group
- * @description 继承自 `Menu.Group` 的能力请查看 `Menu.Group` 文档
+ * @remarks 继承自 `Menu.Group` 的能力请查看 `Menu.Group` 文档
  */
-class Group extends Component {
+class Group extends Component<GroupProps> {
     static menuChildType = 'group';
 
     static propTypes = {
@@ -42,7 +43,7 @@ class Group extends Component {
 
         const cls = classNames({
             [`${prefix}nav-group-label`]: true,
-            [className]: !!className,
+            [className as string]: !!className,
         });
 
         return (

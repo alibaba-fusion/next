@@ -4,14 +4,15 @@ import classNames from 'classnames';
 import Menu from '../menu';
 import Icon from '../icon';
 import Balloon from '../balloon';
+import { ItemProps } from './types';
 
 const { Tooltip } = Balloon;
 
 /**
  * Nav.Item
- * @description 继承自 `Menu.Item` 的能力请查看 `Menu.Item` 文档
+ * @remarks 继承自 `Menu.Item` 的能力请查看 `Menu.Item` 文档
  */
-class Item extends Component {
+class Item extends Component<ItemProps> {
     static menuChildType = 'item';
 
     static propTypes = {
@@ -37,7 +38,8 @@ class Item extends Component {
     render() {
         const { prefix, iconOnly, iconOnlyWidth, hasTooltip, iconTextOnly } = this.context;
         const { icon, children, className, ...others } = this.props;
-        const iconEl = typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;
+        const iconEl =
+            typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;
 
         let title;
 
@@ -48,7 +50,7 @@ class Item extends Component {
         const showChildren = !iconOnly || (iconOnly && !iconOnlyWidth) || iconTextOnly;
         const cls = classNames({
             [`${prefix}nav-with-title`]: iconOnly && iconTextOnly,
-            [className]: !!className,
+            [className as string]: !!className,
         });
 
         const newChildren = showChildren ? (

@@ -1,19 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Radio } from '@alifd/next';
+import { NavProps } from '@alifd/next/es/nav';
 
+type AppState = Pick<NavProps, 'type'>;
 const { Item, SubNav } = Nav;
 
 class App extends React.Component {
-    state = {
+    state: AppState = {
         type: 'normal',
     };
 
-    changeType = type => {
+    changeType(type: AppState['type']) {
         this.setState({
             type,
         });
-    };
+    }
 
     render() {
         const { type } = this.state;
@@ -25,7 +27,7 @@ class App extends React.Component {
                         shape="button"
                         size="medium"
                         value={type}
-                        onChange={this.changeType}
+                        onChange={this.changeType.bind(this)}
                     >
                         <Radio value="normal">type="normal"</Radio>
                         <Radio value="primary">type="primary"</Radio>
@@ -41,7 +43,7 @@ class App extends React.Component {
                     </Item>
                     <Item icon="account">Navigation Four</Item>
                     <Item icon="account">Navigation Five</Item>
-                    <SubNav disabled icon="account" label="Sub Nav">
+                    <SubNav icon="account" label="Sub Nav">
                         <Item icon="account">Item 1</Item>
                         <Item icon="account">Item 2</Item>
                         <Item icon="account">Item 3</Item>

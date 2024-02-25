@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Switch, Radio } from '@alifd/next';
+import { NavProps } from '@alifd/next/es/nav';
 
 const { Item, SubNav } = Nav;
 
@@ -10,13 +11,13 @@ class App extends React.Component {
         embeddable: false,
     };
 
-    onChange = val => {
+    onChange = (val: boolean) => {
         this.setState({
             collapse: val,
         });
     };
 
-    changeEmbeddable = embeddable => {
+    changeEmbeddable = (embeddable: boolean) => {
         this.setState({
             embeddable,
         });
@@ -56,7 +57,7 @@ class App extends React.Component {
                     iconOnly={iconOnly}
                     hasArrow={false}
                     hasTooltip
-                    mode={mode}
+                    mode={mode as NavProps['mode']}
                 >
                     <Item icon="calendar"> Schedule </Item>
                     <Item icon="email"> Email </Item>
