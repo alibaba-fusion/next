@@ -1,25 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Nav, Radio, Icon, Input } from '@alifd/next';
+import { Nav, Radio } from '@alifd/next';
+import { NavProps } from '@alifd/next/es/nav';
+
+type AppState = Pick<
+    NavProps,
+    'iconOnly' | 'hasTooltip' | 'hasArrow' | 'iconOnlyWidth' | 'iconTextOnly'
+>;
 
 const { Item, SubNav } = Nav;
 
 class App extends React.Component {
-    state = {
+    state: AppState = {
         iconOnly: false,
         hasTooltip: true,
         hasArrow: true,
         iconOnlyWidth: 58,
+        iconTextOnly: false,
     };
 
-    setValue(name, value) {
+    setValue(name: keyof AppState, value: string) {
         this.setState({
             [name]: value === 'true',
         });
     }
 
-    iconfontChange(value) {
-        const props = {};
+    iconfontChange(value: string) {
+        const props: AppState = {};
         if (value === 'trueText') {
             props.iconTextOnly = true;
             props.iconOnly = true;
@@ -30,7 +37,7 @@ class App extends React.Component {
         this.setState(props);
     }
 
-    setWidth(value) {
+    setWidth(value: number) {
         this.setState({
             iconOnlyWidth: value,
         });

@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Radio } from '@alifd/next';
+import { NavProps } from '@alifd/next/es/nav';
+
+type AppState = Pick<NavProps, 'type' | 'mode' | 'direction' | 'activeDirection' | 'triggerType'>;
 
 const { Item, SubNav } = Nav;
-
 class App extends React.Component {
-    state = {
+    state: AppState = {
         type: 'normal',
         direction: 'hoz',
         activeDirection: null,
@@ -13,19 +15,19 @@ class App extends React.Component {
         mode: 'inline',
     };
 
-    setValue(name, value) {
+    setValue(name: keyof AppState, value: string) {
         this.setState({
             [name]: value === '' ? null : value,
         });
     }
 
-    setTriggerType(triggerType) {
+    setTriggerType(triggerType: AppState['triggerType']) {
         this.setState({
             triggerType,
         });
     }
 
-    setModeType(mode) {
+    setModeType(mode: AppState['mode']) {
         this.setState({
             mode,
         });

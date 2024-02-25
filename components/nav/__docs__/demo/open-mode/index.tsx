@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Radio } from '@alifd/next';
+import { NavProps } from '@alifd/next/es/nav';
+
+type AppState = Pick<NavProps, 'openMode'>;
 
 const { Item, SubNav } = Nav;
 
 class App extends React.Component {
-    state = {
+    state: AppState = {
         openMode: 'single',
     };
 
-    setValue(openMode) {
+    setValue(openMode: AppState['openMode']) {
         this.setState({
             openMode,
         });
