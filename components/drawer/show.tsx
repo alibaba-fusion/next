@@ -1,11 +1,17 @@
-import React, { Component } from 'react';
+import React, { type JSXElementConstructor } from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import cx from 'classnames';
 import ConfigProvider from '../config-provider';
 import Drawer from './drawer-v2';
+import type { DrawerProps } from './types';
+import type { AnyProps } from '../config-provider/config';
+import type { ConsumerState } from '../config-provider/consumer';
 
-class Modal extends React.Component {
+interface ModalState {
+    visible?: boolean;
+    loading?: boolean;
+}
+
+class Modal extends React.Component<DrawerProps, ModalState> {
     state = {
         visible: true,
         loading: false,
@@ -29,27 +35,39 @@ class Modal extends React.Component {
 
 const ConfigModal = ConfigProvider.config(Modal, { componentName: 'Drawer' });
 
+export type Config = DrawerProps & {
+    afterClose?: () => void;
+    onClose?: () => void;
+    contextConfig?: ConsumerState;
+};
+
 /**
- * 创建对话框
- * @exportName show
- * @param {Object} config 配置项
- * @returns {Object} 包含有 hide 方法，可用来关闭对话框
+ * 创建对话框。
+ *
+ * @remarks
+ * 该函数导出的名字是 `show`。
+ *
+ * @param config - 配置项。
+ * @returns 返回一个对象，该对象包含有 `hide` 方法，可用来关闭对话框。
  */
-export const show = (config = {}) => {
-    const container = document.createElement('div');
+export const show = (config: Config = {}) => {
+    const container: HTMLDivElement = document.createElement('div');
+
     const unmount = () => {
         if (config.afterClose) {
             config.afterClose();
         }
+        // eslint-disable-next-line react/no-deprecated
         ReactDOM.unmountComponentAtNode(container);
-        container.parentNode.removeChild(container);
+        container.parentNode?.removeChild(container);
     };
 
     document.body.appendChild(container);
     let newContext = config.contextConfig;
     if (!newContext) newContext = ConfigProvider.getContext();
 
-    let instance, myRef;
+    let instance: InstanceType<typeof ConfigModal> | null,
+        myRef: InstanceType<typeof ConfigModal> | null;
 
     const handleClose = () => {
         const inc = instance && instance.getInstance();
@@ -59,6 +77,7 @@ export const show = (config = {}) => {
         }
     };
 
+    // eslint-disable-next-line react/no-deprecated
     ReactDOM.render(
         <ConfigProvider {...newContext}>
             <ConfigModal
@@ -80,13 +99,25 @@ export const show = (config = {}) => {
     };
 };
 
-export const withContext = WrappedComponent => {
-    const HOC = props => {
+export interface ContextDialog {
+    show: (config?: Config) => { hide: () => void };
+}
+
+export interface WithContextDrawerProps {
+    contextDialog: ContextDialog;
+}
+
+export const withContext = <P extends WithContextDrawerProps, C>(
+    WrappedComponent: JSXElementConstructor<P> & C
+) => {
+    type Props = React.JSX.LibraryManagedAttributes<C, Omit<P, 'contextDialog'>>;
+    const HOC = (props: Props) => {
         return (
             <ConfigProvider.Consumer>
                 {contextConfig => (
                     <WrappedComponent
-                        {...props}
+                        // why AnyProps? see: https://react-typescript-cheatsheet.netlify.app/docs/hoc/react_hoc_docs
+                        {...(props as AnyProps)}
                         contextDialog={{
                             show: (config = {}) => show({ ...config, contextConfig }),
                         }}

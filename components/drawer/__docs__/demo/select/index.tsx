@@ -1,17 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Radio, Drawer, Select } from '@alifd/next';
+import type { SelectProps } from '@alifd/next/lib/select';
+import type { RadioProps } from '@alifd/next/lib/radio';
+
+interface onToggleHighlightItemProps {
+    deep: number;
+    value: string;
+    label: string;
+}
 
 const Option = Select.Option;
 
-const onChange = function (value) {
+const onChange: SelectProps['onChange'] = value => {
     console.log(value);
 };
-const onBlur = function (e) {
+
+const onBlur: SelectProps['onBlur'] = e => {
     console.log(/onblur/, e);
 };
 
-const onToggleHighlightItem = function (item, type) {
+const onToggleHighlightItem = (item: onToggleHighlightItemProps, type: 'up' | 'down') => {
     console.log(item, type);
 };
 
@@ -20,7 +29,7 @@ class Demo extends React.Component {
         placement: 'right',
     };
 
-    onPlacementChange = dir => {
+    onPlacementChange: RadioProps['onChange'] = dir => {
         this.setState({
             placement: dir,
         });

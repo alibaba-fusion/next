@@ -1,125 +1,64 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import assert from 'power-assert';
-import Enzyme, { shallow } from 'enzyme';
-import ReactTestUtils from 'react-dom/test-utils';
-import Adapter from 'enzyme-adapter-react-16';
-import { dom } from '../../util';
 import Drawer from '../index';
 import ConfigProvider from '../../config-provider';
 import '../style';
-
-Enzyme.configure({ adapter: new Adapter() });
-
-/* eslint-disable react/jsx-filename-extension */
-/* global describe it afterEach */
-/* global describe it beforeEach */
-const { hasClass, getStyle } = dom;
-
-const render = element => {
-    let inc;
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    ReactDOM.render(element, container, function () {
-        inc = this;
-    });
-    return {
-        setProps: props => {
-            const clonedElement = React.cloneElement(element, props);
-            ReactDOM.render(clonedElement, container);
-        },
-        unmount: () => {
-            ReactDOM.unmountComponentAtNode(container);
-            document.body.removeChild(container);
-        },
-        instance: () => {
-            return inc;
-        },
-        find: selector => {
-            return container.querySelectorAll(selector);
-        },
-    };
-};
-
-class DrawerDemo extends React.Component {
-    state = {
-        visible: false,
-    };
-
-    onOpen = () => {
-        this.setState({
-            visible: true,
-        });
-    };
-
-    onClose = () => {
-        this.setState({
-            visible: false,
-        });
-    };
-
-    render() {
-        return (
-            <div>
-                <button id="open-drawer" onClick={this.onOpen} type="primary">
-                    打开抽屉
-                </button>
-                <Drawer
-                    v2
-                    title="欢迎来到 Alibaba.com"
-                    visible={this.state.visible}
-                    onClose={this.onClose}
-                    {...this.props}
-                >
-                    开启您的贸易生活从 Alibaba.com 开始
-                </Drawer>
-            </div>
-        );
-    }
-}
+import type { DrawerProps } from '../types';
 
 describe('Drawer v2', () => {
-    let wrapper;
-    const delay = time => new Promise(resolve => setTimeout(resolve, time));
+    it('should show and hide', () => {
+        class DrawerDemo extends React.Component<{ animation: DrawerProps['animation'] }> {
+            state = {
+                visible: false,
+            };
 
-    beforeEach(() => {
-        const overlay = document.querySelectorAll('.next-overlay-wrapper');
-        overlay.forEach(dom => {
-            document.body.removeChild(dom);
-        });
-    });
+            onOpen = () => {
+                this.setState({
+                    visible: true,
+                });
+            };
 
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
+            onClose = () => {
+                this.setState({
+                    visible: false,
+                });
+            };
+
+            render() {
+                return (
+                    <div>
+                        <button id="open-drawer" onClick={this.onOpen}>
+                            打开抽屉
+                        </button>
+                        <Drawer
+                            v2
+                            title="欢迎来到 Alibaba.com"
+                            visible={this.state.visible}
+                            onClose={this.onClose}
+                            {...this.props}
+                        >
+                            开启您的贸易生活从 Alibaba.com 开始
+                        </Drawer>
+                    </div>
+                );
+            }
         }
-    });
-
-    it('should show and hide', async () => {
-        wrapper = render(<DrawerDemo animation={false} />);
-        const btn = document.getElementById('open-drawer');
-        ReactTestUtils.Simulate.click(btn);
-        await delay(20);
-        assert(document.querySelector('.next-drawer'));
-        const closeLink = document.querySelector('.next-drawer-close');
-        ReactTestUtils.Simulate.click(closeLink);
-        await delay(20);
-
-        assert(!document.querySelector('.next-drawer'));
+        cy.mount(<DrawerDemo animation={false} />);
+        cy.get('button#open-drawer').click();
+        cy.get('.next-drawer').should('be.visible');
+        cy.get('.next-drawer-close').click();
+        cy.get('.next-drawer').should('not.exist');
     });
 
     it('should support placement', () => {
-        ['top', 'left', 'bottom', 'right'].forEach(dir => {
-            wrapper && wrapper.unmount();
-
-            wrapper = render(<Drawer v2 visible placement={dir} />);
-            assert(hasClass(document.querySelector('.next-drawer-wrapper'), `next-drawer-${dir}`));
+        ['top', 'left', 'bottom', 'right'].forEach((dir: 'top' | 'left' | 'bottom' | 'right') => {
+            cy.mount(<Drawer v2 visible placement={dir} />);
+            cy.get('.next-drawer').should('exist');
+            cy.get(`.next-drawer-${dir}`).should('exist');
         });
     });
 
-    it('should work when set <ConfigProvider popupContainer/> ', async () => {
-        wrapper = render(
+    it('should work when set <ConfigProvider popupContainer/> ', () => {
+        cy.mount(
             <ConfigProvider popupContainer={'dialog-popupcontainer'}>
                 <div id="dialog-popupcontainer" style={{ height: 300, overflow: 'auto' }}>
                     <Drawer v2 title="Welcome to Alibaba.com" visible>
@@ -128,27 +67,26 @@ describe('Drawer v2', () => {
                 </div>
             </ConfigProvider>
         );
-
-        await delay(20);
-        assert(document.querySelector('#dialog-popupcontainer > .next-overlay-wrapper'));
+        cy.get('#dialog-popupcontainer').within(() => {
+            cy.get('.next-overlay-wrapper').should('exist');
+        });
     });
 
     it('should support headerStyle/bodyStyle', () => {
-        wrapper = render(
+        cy.mount(
             <Drawer
                 v2
                 visible
                 title="test"
                 headerStyle={{ background: 'blue' }}
                 bodyStyle={{ background: 'red' }}
-                closeable={false}
+                closeMode={[]}
             >
                 body
             </Drawer>
         );
-
-        assert(getStyle(document.querySelector('.next-drawer-header'), 'background'), 'blue');
-        assert(getStyle(document.querySelector('.next-drawer-body'), 'background'), 'red');
+        cy.get('.next-drawer-header').should('have.css', 'background-color', 'rgb(0, 0, 255)');
+        cy.get('.next-drawer-body').should('have.css', 'background-color', 'rgb(255, 0, 0)');
     });
 
     it('quick-calling should should support set prefix for dialog', () => {
@@ -159,9 +97,12 @@ describe('Drawer v2', () => {
             content: <span className="drawer-quick-content" />,
         });
 
-        assert(hasClass(document.querySelector('.test-drawer'), 'test-closeable'));
-        assert(document.querySelector('.drawer-quick-content'));
+        cy.get('.test-drawer').should('exist');
+        cy.get('.test-closeable').should('exist');
+        cy.get('.drawer-quick-content').should('exist');
 
-        hide();
+        cy.then(() => {
+            hide();
+        });
     });
 });
