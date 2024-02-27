@@ -4,11 +4,19 @@ import cx from 'classnames';
 import Icon from '../icon';
 import zhCN from '../locale/zh-cn';
 import { obj } from '../util';
+import type { InnerProps } from './types';
 
 const noop = () => {};
 const { pickOthers } = obj;
 
-export default class Inner extends Component {
+interface ariaRoleProps {
+    role?: string;
+    'aria-modal'?: boolean | 'true' | 'false';
+    'aria-level'?: number;
+    'aria-label'?: string;
+}
+
+export default class Inner extends Component<InnerProps> {
     static propTypes = {
         prefix: PropTypes.string,
         className: PropTypes.string,
@@ -44,9 +52,13 @@ export default class Inner extends Component {
             [`${prefix}drawer-header`]: true,
             [`${prefix}drawer-no-title`]: !title,
         });
+        const ariaProps: ariaRoleProps = {
+            role: 'heading',
+            'aria-level': 1,
+        };
 
         return (
-            <div className={headerCls} style={headerStyle} role="heading" aria-level="1">
+            <div {...ariaProps} className={headerCls} style={headerStyle}>
                 {title}
                 {closeLink}
             </div>
@@ -67,15 +79,14 @@ export default class Inner extends Component {
 
     renderCloseLink() {
         const { prefix, closeable, onClose, locale } = this.props;
+        const ariaProps: ariaRoleProps = {
+            role: 'button',
+            'aria-label': locale?.close as string,
+        };
 
         if (closeable) {
             return (
-                <a
-                    role="button"
-                    aria-label={locale.close}
-                    className={`${prefix}drawer-close`}
-                    onClick={onClose}
-                >
+                <a {...ariaProps} className={`${prefix}drawer-close`} onClick={onClose}>
                     <Icon className={`${prefix}drawer-close-icon`} type="close" />
                 </a>
             );
@@ -92,10 +103,10 @@ export default class Inner extends Component {
             [`${prefix}drawer`]: true,
             [`${prefix}drawer-${placement}`]: !v2,
             [`${prefix}closeable`]: closeable,
-            [className]: !!className,
+            [className!]: !!className,
         });
 
-        const ariaProps = {
+        const ariaProps: ariaRoleProps = {
             role,
             'aria-modal': 'true',
         };

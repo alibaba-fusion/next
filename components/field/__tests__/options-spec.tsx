@@ -825,6 +825,14 @@ describe('options', () => {
                 field.validateCallback('input');
                 cy.wrap(field.getError('input')).should('not.be.null');
             });
+
+            cy.mount(<Input {...inited} />);
+            cy.get('input').type('test');
+            cy.then(() => {
+                cy.wrap(field.getError('input')).should('be.null');
+                field.validateCallback('input');
+                cy.wrap(field.getError('input')).should('not.be.null');
+            });
         });
     });
 });
