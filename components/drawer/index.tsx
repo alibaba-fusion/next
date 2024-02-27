@@ -7,8 +7,21 @@ import Drawer2 from './drawer-v2';
 import Inner from './inner';
 
 import { show, withContext } from './show';
+import type { DrawerV2Props, DrawerV1Props } from './types';
 
-class Drawer extends React.Component {
+export interface QuickShowRet {
+    hide: () => void;
+}
+
+export type DrawerProps = DrawerV2Props | DrawerV1Props;
+
+class Drawer extends React.Component<DrawerProps> {
+    static Inner: typeof Inner;
+    static show: (config?: DrawerProps) => QuickShowRet;
+    static withContext: <P extends object>(
+        WrappedComponent: React.ComponentType<P>
+    ) => React.ComponentType<P>;
+
     render() {
         const { v2, ...others } = this.props;
         if (v2) {

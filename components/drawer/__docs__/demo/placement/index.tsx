@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Radio, Button, Drawer } from '@alifd/next';
+import type { RadioProps } from '@alifd/next/lib/radio';
 
 class Demo extends React.Component {
     state = {
@@ -14,13 +15,13 @@ class Demo extends React.Component {
         });
     };
 
-    onClose = reason => {
+    onClose = () => {
         this.setState({
             visible: false,
         });
     };
 
-    onPlacementChange = dir => {
+    onPlacementChange: RadioProps['onChange'] = dir => {
         this.setState({
             placement: dir,
         });
@@ -44,7 +45,7 @@ class Demo extends React.Component {
                     v2
                     title="标题"
                     visible={this.state.visible}
-                    placement={this.state.placement}
+                    placement={this.state.placement as 'right' | 'bottom' | 'left' | 'top'}
                     onClose={this.onClose}
                 >
                     Start your business here by searching a popular product

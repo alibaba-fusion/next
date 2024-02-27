@@ -9,11 +9,16 @@ import Animate from '../animate';
 import zhCN from '../locale/zh-cn';
 import { log, func, dom, focus, guid } from '../util';
 import scrollLocker from '../dialog/scroll-locker';
+import type { DrawerV2Props } from './types';
 
 const { OverlayContext } = Overlay;
 const noop = func.noop;
 
-const getAnimation = placement => {
+interface CustomDrawerElement extends HTMLDivElement {
+    bodyNode?: HTMLElement;
+}
+
+const getAnimation = (placement: string) => {
     let animation;
     switch (placement) {
         case 'top':
@@ -46,7 +51,7 @@ const getAnimation = placement => {
     return animation;
 };
 
-const Drawer = props => {
+const Drawer = (props: DrawerV2Props) => {
     if (!useState || !useRef || !useEffect) {
         log.warning('need react version > 16.8.0');
         return null;
@@ -87,18 +92,18 @@ const Drawer = props => {
               ? () => popupContainer
               : popupContainer;
     const [container, setContainer] = useState(getContainer());
-    const drawerRef = useRef(null);
-    const wrapperRef = useRef(null);
-    const lastFocus = useRef(null);
-    const locker = useRef(null);
+    const drawerRef = useRef<CustomDrawerElement | null>(null);
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const lastFocus = useRef<HTMLElement | null>(null);
+    const locker = useRef<ReturnType<typeof scrollLocker.lock> | null>(null);
     const [uuid] = useState(guid());
     const { setVisibleOverlayToParent, ...otherContext } = useContext(OverlayContext);
     const childIDMap = useRef(new Map());
     const isAnimationEnd = useRef(false); // 动效是否结束, 因为时机非常快用 state 太慢
-    const [, forceUpdate] = useState();
+    const [, forceUpdate] = useState<object | undefined>();
 
     // 动效结束，强制重新渲染
-    const markAnimationEnd = state => {
+    const markAnimationEnd = (state: boolean) => {
         isAnimationEnd.current = state;
         forceUpdate({});
     };
@@ -132,7 +137,7 @@ const Drawer = props => {
     // 打开遮罩后 document.body 滚动处理
     useEffect(() => {
         if (visible && hasMask) {
-            const style = {
+            const style: { paddingRight?: string; overflow: string } = {
                 overflow: 'hidden',
             };
 
@@ -140,7 +145,8 @@ const Drawer = props => {
                 const scrollWidth = dom.scrollbar().width;
                 if (scrollWidth) {
                     style.paddingRight = `${
-                        dom.getStyle(document.body, 'paddingRight') + dom.scrollbar().width
+                        dom.getStyle(document.body, 'paddingRight').toString() +
+                        dom.scrollbar().width
                     }px`;
                 }
             }
@@ -148,12 +154,15 @@ const Drawer = props => {
         }
     }, [visible && hasMask]);
 
-    const handleClose = (targetType, e) => {
+    const handleClose = (
+        targetType: string,
+        e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent
+    ) => {
         setVisibleOverlayToParent(uuid, null);
         typeof onClose === 'function' && onClose(targetType, e);
     };
 
-    const keydownEvent = e => {
+    const keydownEvent = (e: KeyboardEvent) => {
         if (e.keyCode === 27 && canCloseByEsc && !childIDMap.current.size) {
             handleClose('esc', e);
         }
@@ -187,7 +196,7 @@ const Drawer = props => {
     const handleExited = () => {
         if (!isAnimationEnd.current) {
             markAnimationEnd(true);
-            dom.setStyle(wrapperRef.current, 'display', 'none');
+            dom.setStyle(wrapperRef.current!, 'display', 'none');
             scrollLocker.unlock(document.body, locker.current);
 
             if (autoFocus && lastFocus.current) {
@@ -217,7 +226,7 @@ const Drawer = props => {
         return null;
     }
 
-    const handleMaskClick = e => {
+    const handleMaskClick = (e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent) => {
         if (!canCloseByMask) {
             return;
         }
@@ -227,14 +236,15 @@ const Drawer = props => {
 
     const handleEnter = () => {
         markAnimationEnd(false);
-        dom.setStyle(wrapperRef.current, 'display', '');
+        dom.setStyle(wrapperRef.current!, 'display', '');
     };
     const handleEntered = () => {
         if (autoFocus && drawerRef.current && drawerRef.current.bodyNode) {
             const focusableNodes = focus.getFocusNodeList(drawerRef.current.bodyNode);
             if (focusableNodes.length > 0 && focusableNodes[0]) {
-                lastFocus.current = document.activeElement;
-                focusableNodes[0].focus();
+                lastFocus.current = document.activeElement as HTMLElement;
+                const firstFocusableNode = focusableNodes[0] as HTMLElement;
+                firstFocusableNode.focus();
             }
         }
         setVisibleOverlayToParent(uuid, drawerRef.current);
@@ -248,16 +258,16 @@ const Drawer = props => {
         [`${prefix}overlay-inner`]: true,
         [`${prefix}drawer-wrapper`]: true,
         [`${prefix}drawer-${placement}`]: true,
-        [className]: !!className,
+        [className!]: !!className,
     });
     const drawerCls = classNames({
         [`${prefix}drawer-v2`]: true,
-        [className]: !!className,
+        [className!]: !!className,
     });
 
-    const newAnimation =
+    const newAnimation: DrawerV2Props['animation'] =
         animation === null || animation === false
-            ? null
+            ? undefined
             : animation
               ? animation
               : getAnimation(placement);
@@ -268,7 +278,7 @@ const Drawer = props => {
         exit: 250,
     };
 
-    const getVisibleOverlayFromChild = (id, node) => {
+    const getVisibleOverlayFromChild = (id: string, node: HTMLElement) => {
         if (node) {
             childIDMap.current.set(id, node);
         } else {

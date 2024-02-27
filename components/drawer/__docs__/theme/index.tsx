@@ -2,11 +2,25 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
 import '../../style';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import {
+    Demo,
+    DemoGroup,
+    initDemo,
+    type DemoFunctionDefineForArray,
+    type DemoFunctionDefineForObject,
+} from '../../../demo-helper';
 import Drawer from '../../index';
 
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
+
+interface FunctionProps {
+    lang: string;
+    i18n: {
+        title: string;
+        content: string;
+    };
+}
 
 const i18nMaps = {
     'en-us': {
@@ -20,7 +34,7 @@ const i18nMaps = {
     },
 };
 
-class FunctionDemo extends Component {
+class FunctionDemo extends Component<FunctionProps> {
     state = {
         demoFunction: {
             hasTitle: {
@@ -75,13 +89,15 @@ class FunctionDemo extends Component {
             },
         },
     };
-    onFunctionChange = demoFunction => {
+    onFunctionChange = (
+        demoFunction: Record<string, DemoFunctionDefineForObject> | DemoFunctionDefineForArray[]
+    ) => {
         this.setState({
             demoFunction,
         });
     };
 
-    renderMask(hasMask, content) {
+    renderMask(hasMask: boolean, content: object | null | undefined) {
         return hasMask ? (
             <div
                 className="next-overlay-wrapper opened"
@@ -96,14 +112,17 @@ class FunctionDemo extends Component {
     }
 
     render() {
-        // eslint-disable-next-line
         const { lang, i18n } = this.props;
         const locale = (lang === 'en-us' ? enUS : zhCN).Drawer;
         const hasTitle = this.state.demoFunction.hasTitle.value === 'true';
         const hasCloseIcon = this.state.demoFunction.hasCloseIcon.value === 'true';
 
-        const placement = this.state.demoFunction.placement.value;
-        const style = {
+        const placement = this.state.demoFunction.placement.value as
+            | 'top'
+            | 'bottom'
+            | 'left'
+            | 'right';
+        const style: React.CSSProperties = {
             position: 'absolute',
             top: placement === 'bottom' ? 'auto' : 0,
             [placement]: 0,
@@ -138,7 +157,7 @@ class FunctionDemo extends Component {
 }
 
 const render = (lang = 'en-us') => {
-    const i18n = i18nMaps[lang];
+    const i18n = i18nMaps[lang as keyof typeof i18nMaps];
     ReactDOM.render(<FunctionDemo lang={lang} i18n={i18n} />, document.getElementById('container'));
 };
 

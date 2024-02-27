@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Drawer } from '@alifd/next';
+import type { QuickShowRet } from '@alifd/next/lib/drawer';
 
-let instance = null;
+let instance: QuickShowRet | null = null;
 const show = () => {
+    instance && instance.hide();
     instance = Drawer.show({
         title: 'quick',
         hasMask: false,

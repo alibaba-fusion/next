@@ -320,6 +320,15 @@ describe('field', () => {
             cy.then(() => {
                 cy.wrap(field.getValue('input')).should('eq', 'test!');
             });
+
+            cy.mount(<Input {...inited} />);
+            cy.get('input').type('test');
+
+            cy.wrap(onChange).should('be.calledWith', 'input', 'test!');
+            cy.wrap(getValueFromEvent).should('be.calledWith', 'test');
+            cy.then(() => {
+                cy.wrap(field.getValue('input')).should('eq', 'test!');
+            });
         });
         it('getValueFormatter & setValueFormatter', () => {
             const field = new Field(
@@ -339,6 +348,12 @@ describe('field', () => {
                 setValueFormatter: () => {
                     return `test!!`;
                 },
+            });
+
+            cy.mount(<Input {...inited} />);
+            cy.get('input').type('test');
+            cy.then(() => {
+                cy.wrap(field.getValue('input')).should('eq', 'test!');
             });
 
             cy.mount(<Input {...inited} />);
