@@ -23,5 +23,7 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         days-before-stale: 30
         start-date: '2023-10-12'
+        exempt-pr-labels: Technical Upgrade
+        exempt-issue-labels: Technical Upgrade,PR welcome,Easy to solve
         stale-issue-message: '你好，该 issue 已 30 天没有活动，因此被标记为 stale，如果之后的 7 天仍然没有活动，该 issue 将被自动关闭'
         stale-pr-message: '你好，该 pr 已 30 天没有活动，因此被标记为 stale，如果之后的 7 天仍然没有活动，该 pr 将被自动关闭'
