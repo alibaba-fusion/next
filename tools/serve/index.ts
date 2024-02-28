@@ -14,7 +14,15 @@ import createDocParser from '@alifd/doc-parser';
 import MagicString from 'magic-string';
 import { kebabCase } from 'lodash';
 import { glob } from 'glob';
-import { ARGV, SRC_DIR_PATH, TARGETS, findFile, logger, parseImportDeclarations, warn } from '../utils';
+import {
+    ARGV,
+    SRC_DIR_PATH,
+    TARGETS,
+    findFile,
+    logger,
+    parseImportDeclarations,
+    warn,
+} from '../utils';
 import { marked } from '../build/docs/utils';
 import { parseDemoMd } from '../build/docs/generate-docs';
 
@@ -26,6 +34,7 @@ if (!DIR_NAME) {
     process.exit(1);
 }
 const isForce = Boolean(ARGV.force);
+const themePkg = ARGV.theme as string;
 
 let lang: Lang = ARGV.en ? 'en' : 'zh';
 
@@ -70,23 +79,25 @@ const demoPlugin = (dirName: string): VitePlugin => {
         if (!existsSync(demoDir)) {
             return [];
         }
-        return readdirSync(demoDir).map(demoName => {
-            const id = getDemoId(name, demoName);
-            const mdEntryPath = resolve(demoDir, demoName, 'index.md');
-            const demoEntryPath = resolve(demoDir, demoName, 'index.tsx');
-            const cssEntryPath = resolve(demoDir, demoName, 'index.css');
-            return {
-                id,
-                docEntry: existsSync(mdEntryPath) ? mdEntryPath : undefined,
-                cssEntry: existsSync(cssEntryPath) ? cssEntryPath : undefined,
-                jsEntry: existsSync(demoEntryPath) ? demoEntryPath : undefined,
-            };
-        }).filter(t => {
-            if (!t.jsEntry) {
-                warn(`Not found demo index.tsx: ${t.id}`)
-            }
-            return !!t.jsEntry
-        });
+        return readdirSync(demoDir)
+            .map(demoName => {
+                const id = getDemoId(name, demoName);
+                const mdEntryPath = resolve(demoDir, demoName, 'index.md');
+                const demoEntryPath = resolve(demoDir, demoName, 'index.tsx');
+                const cssEntryPath = resolve(demoDir, demoName, 'index.css');
+                return {
+                    id,
+                    docEntry: existsSync(mdEntryPath) ? mdEntryPath : undefined,
+                    cssEntry: existsSync(cssEntryPath) ? cssEntryPath : undefined,
+                    jsEntry: existsSync(demoEntryPath) ? demoEntryPath : undefined,
+                };
+            })
+            .filter(t => {
+                if (!t.jsEntry) {
+                    warn(`Not found demo index.tsx: ${t.id}`);
+                }
+                return !!t.jsEntry;
+            });
     }
     const SCSS_REG = /^__scss/;
     const SCSS_VIRTUAL_REG = /^\0__scss\.scss/;
@@ -283,6 +294,23 @@ const importNextPlugin = (): VitePlugin => {
                         res.end();
                         server.restart();
                     });
+                },
+            },
+            {
+                name: 'next-theme',
+                config() {
+                    if (!themePkg) {
+                        return;
+                    }
+                    return {
+                        css: {
+                            preprocessorOptions: {
+                                scss: {
+                                    additionalData: `@import "${themePkg}/variables.scss";\n`,
+                                },
+                            },
+                        },
+                    };
                 },
             },
         ],
