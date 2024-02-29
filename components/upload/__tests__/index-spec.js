@@ -187,6 +187,32 @@ describe('Upload', () => {
 
             done();
         });
+        // issue: 
+        it('should hidden upload Dragger when file length === limit',  done => {
+            const drag = mount(
+                 <Upload.Dragger
+                     listType="image"
+                     limit={1}
+                     defaultValue={[
+                         {
+                             uid: '0',
+                             name: 'IMG.png',
+                             state: 'done',
+                             url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                             downloadURL:
+                                 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                             imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                         },
+                     ]}
+                 />
+             );
+             assert(drag.find('.next-upload-drag').length === 1);
+             // assert(wrapper.exists('.next-upload-list') === true);
+             // assert(wrapper.find('.next-upload-list-item').length === 1);
+             // assert(wrapper.find('.next-upload-dragable').length === 1);
+             assert(drag.find('.next-upload-inner.next-hidden'));
+             done
+         });
     });
 
     describe('[behavior] Upload Request', () => {

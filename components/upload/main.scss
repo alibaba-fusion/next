@@ -10,7 +10,7 @@
 
     &-inner {
         &.#{$css-prefix}hidden {
-            display: none;
+            display: none !important;
         }
         outline: 0;
         display: inline-block;
