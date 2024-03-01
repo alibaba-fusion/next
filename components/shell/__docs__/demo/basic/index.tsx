@@ -18,7 +18,7 @@ class App extends React.Component {
                             key="2"
                             shape="simple"
                             type="dark"
-                            palceholder="Search"
+                            placeholder="Search"
                             style={{ width: '200px' }}
                         />
                     </Shell.Navigation>
