@@ -2,11 +2,10 @@ import { type FieldOption as OriginalFieldOption } from '@alifd/field';
 
 export * from '@alifd/field';
 
-export interface FieldOption extends OriginalFieldOption {
+export interface FieldOption
+    extends Omit<OriginalFieldOption, 'afterValidateRerender' | 'processErrorMessage'> {
     scrollToFirstError?: boolean | number;
 }
-
-export type ValidateCallback = (errors: object[], values: object) => void;
 
 export interface errorsGroup {
     [key: string]: object;
@@ -25,7 +24,7 @@ export type FirstParamType<Fn extends (...rest: unknown[]) => unknown> = Fn exte
     : never;
 
 export type ScrollToFirstErrorOption = FirstParamType<
-    NonNullable<FieldOption['afterValidateRerender']>
+    NonNullable<OriginalFieldOption['afterValidateRerender']>
 > & {
     options: FieldOption;
 };
