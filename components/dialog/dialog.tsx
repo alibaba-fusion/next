@@ -38,182 +38,45 @@ export default class Dialog extends Component<DialogProps> {
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
         className: PropTypes.string,
-        /**
-         * 是否显示
-         */
         visible: PropTypes.bool,
-        /**
-         * 标题
-         */
         title: PropTypes.node,
-        /**
-         * 内容
-         */
         children: PropTypes.node,
-        /**
-         * 底部内容，设置为 false，则不进行显示
-         * @defaultValue [<Button type="primary">确定</Button>, <Button>取消</Button>]
-         */
         footer: PropTypes.oneOfType([PropTypes.bool, PropTypes.node]),
-        /**
-         * 底部按钮的对齐方式
-         */
         footerAlign: PropTypes.oneOf(['left', 'center', 'right']),
-        /**
-         * 指定确定按钮和取消按钮是否存在以及如何排列，<br><br>**可选值**：
-         * ['ok', 'cancel']（确认取消按钮同时存在，确认按钮在左）
-         * ['cancel', 'ok']（确认取消按钮同时存在，确认按钮在右）
-         * ['ok']（只存在确认按钮）
-         * ['cancel']（只存在取消按钮）
-         */
         footerActions: PropTypes.array,
-        /**
-         * 在点击确定按钮时触发的回调函数
-         * @param event - 点击事件对象
-         */
         onOk: PropTypes.func,
-        /**
-         * 在点击取消/关闭按钮时触发的回调函数
-         * @param event - 点击事件对象，event.triggerType=esc|closeIcon 可区分点击来源
-         */
         onCancel: PropTypes.func,
-        /**
-         * 应用于确定按钮的属性对象
-         */
         okProps: PropTypes.object,
-        /**
-         * 应用于取消按钮的属性对象
-         */
         cancelProps: PropTypes.object,
-        /**
-         * [推荐]1.21.x 支持控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：
-         * **close** 表示点击关闭按钮可以关闭对话框
-         * **mask** 表示点击遮罩区域可以关闭对话框
-         * **esc** 表示按下 esc 键可以关闭对话框
-         * 如 'close' 或 ['close','esc','mask'], []
-         * @version 1.21
-         */
         closeMode: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.oneOf(['close', 'mask', 'esc'])),
             PropTypes.oneOf(['close', 'mask', 'esc']),
         ]),
-        /**
-         * 隐藏时是否保留子节点，不销毁（低版本通过 overlayProps 实现）
-         * @version 1.23
-         */
         cache: PropTypes.bool,
-        /**
-         * 对话框关闭后触发的回调函数，如果有动画，则在动画结束后触发
-         */
         afterClose: PropTypes.func,
-        /**
-         * 是否显示遮罩
-         */
         hasMask: PropTypes.bool,
-        /**
-         * 显示隐藏时动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。请参考 Animate 组件的文档获取可用的动画名
-         * @defaultValue \{ in: 'expandInDown', out: 'expandOutUp' \}
-         */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-        /**
-         * 对话框弹出时是否自动获得焦点
-         */
         autoFocus: PropTypes.bool,
-        /**
-         * [v2 废弃] 透传到弹层组件的属性对象
-         */
         overlayProps: PropTypes.object,
-        /**
-         * 自定义国际化文案对象
-         * ok 确认按钮文案
-         * cancel 取消按钮文案
-         */
         locale: PropTypes.object,
         // Do not remove this, it's for <ConfigProvider popupContainer={} />
         // see https://github.com/alibaba-fusion/next/issues/1508
-        /**
-         * 自定义弹窗挂载位置
-         */
         popupContainer: PropTypes.any,
-        /**
-         * 对话框的高度样式属性
-         */
         height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        /**
-         * 开启 v2 版本弹窗
-         */
         v2: PropTypes.bool,
-        /**
-         * [v2] 弹窗宽度
-         * @version 1.25
-         */
         width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        /**
-         * [v2] 弹窗上边距。默认 100，设置 centered=true 后默认 40
-         * @version 1.25
-         */
         top: PropTypes.number,
-        /**
-         * [v2] 弹窗下边距
-         * @version 1.25
-         */
         bottom: PropTypes.number,
-        /**
-         * [v2] 定制关闭按钮 icon
-         * @version 1.25
-         */
         closeIcon: PropTypes.node,
-        /**
-         * [v2] 弹窗居中对齐
-         * @version 1.25
-         */
         centered: PropTypes.bool,
-        /**
-         * [v2] 对话框高度超过浏览器视口高度时，对话框是否展示滚动条。关闭此功后对话框会随高度撑开页面。
-         * @version 1.25
-         */
         overflowScroll: PropTypes.bool,
-        /**
-         * [v2] 最外包裹层 className
-         * @version 1.26
-         */
         wrapperClassName: PropTypes.string,
-        /**
-         * [废弃] 同 closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
-         * **close** 表示点击关闭按钮可以关闭对话框
-         * **mask** 表示点击遮罩区域可以关闭对话框
-         * **esc** 表示按下 esc 键可以关闭对话框
-         * 如 'close' 或 'close,esc,mask'
-         * 如果设置为 true，则以上关闭方式全部生效
-         * 如果设置为 false，则以上关闭方式全部失效
-         */
         closeable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-        /**
-         * 点击对话框关闭按钮时触发的回调函数
-         * @param trigger - 关闭触发行为的描述字符串
-         * @param event - 关闭时事件对象
-         */
         onClose: PropTypes.func,
-        /**
-         * [v2 废弃] 对话框对齐方式，具体见 Overlay 文档
-         */
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-        /**
-         * [v2 废弃] 是否撑开页面。v2 改用 overflowScroll
-         */
         isFullScreen: PropTypes.bool,
-        /**
-         * [v2 废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
-         */
         shouldUpdatePosition: PropTypes.bool,
-        /**
-         * [v2 废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
-         */
         minMargin: PropTypes.number,
-        /**
-         * 去除 body 内间距
-         * @version 1.26
-         */
         noPadding: PropTypes.bool,
     };
 
