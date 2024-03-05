@@ -264,6 +264,21 @@ describe('Tree', () => {
         assertTree({ children: loop(dataSource), dataSource }, mountNode);
     });
 
+    it('should switcher ignore flex when node is long text', () => {
+        ReactDOM.render(
+            <Tree
+                selectable={false}
+                isLabelBlock
+                defaultExpandedKeys={['0-0', '0-0-0', '0-0-0-0']}
+            >
+                 <TreeNode key="2" className="long-text-node" label={<div style={{width: '200vw'}}>long text</div>} />
+            </Tree>,
+            mountNode
+        );
+        const switcher = document.querySelector('.long-text-node .next-tree-switcher');
+        assert(switcher && switcher.clientWidth);
+    });
+
     it('should ignore children contain null or string', () => {
         ReactDOM.render(
             <Tree checkable editable defaultExpandAll defaultSelectedKeys={['1']} defaultCheckedKeys={['3']}>

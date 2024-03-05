@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-
 import ConfigProvider from '../config-provider';
 import { func } from '../util';
 import zhCN from '../locale/zh-cn';
+
 
 class Base extends React.Component {
     static propTypes = {
@@ -240,7 +240,26 @@ class Base extends React.Component {
         });
         this.props.onBlur(e);
     }
+    
+    handleKeyDownFromClear = e => {
+        if (e.keyCode === 13) {
+            this.onClear(e);
+        }
+    };
 
+    onClear(e) {
+        if (this.props.disabled) {
+            return;
+        }
+        // 非受控模式清空内部数据
+        if (!('value' in this.props)) {
+            this.setState({
+                value: '',
+            });
+        }
+        this.props.onChange('', e, 'clear');
+        this.focus();
+    }
     renderLength() {
         const { maxLength, showLimitHint, prefix, rtl } = this.props;
         const len = maxLength > 0 && this.state.value ? this.getValueLength(this.state.value) : 0;
@@ -252,18 +271,10 @@ class Base extends React.Component {
 
         const content = rtl ? `${maxLength}/${len}` : `${len}/${maxLength}`;
 
-        return maxLength && showLimitHint ? <span className={classesLenWrap}>{content}</span> : null;
+        return maxLength && showLimitHint ? <span className={classesLenWrap}>{content}</span> : null
     }
 
-    renderControl() {
-        const lenWrap = this.renderLength();
 
-        return lenWrap ? (
-            <span onClick={() => this.focus()} className={`${this.props.prefix}input-control`}>
-                {lenWrap}
-            </span>
-        ) : null;
-    }
 
     getClass() {
         const { disabled, state, prefix } = this.props;

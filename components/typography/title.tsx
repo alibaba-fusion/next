@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Text from './text';
 import ConfigProvider from '../config-provider';
-import { TitleProps } from './types';
+import { TitleClass, TitleProps } from './types';
 
 export default (Tag: string) => {
     /**
@@ -30,5 +30,5 @@ export default (Tag: string) => {
         }
     }
 
-    return ConfigProvider.config(Title);
+    return ConfigProvider.config(Title as typeof TitleClass);
 };

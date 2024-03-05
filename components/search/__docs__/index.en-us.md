@@ -17,41 +17,57 @@ search data in forms or pages.
 
 ### Search
 
-> Inhert from  Select.AutoComplete, you can use AutoComplete api directly
-
-| Param | Descripiton  | Type  | Default Value |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------- | --------- |
-| size               | size<br><br>**option**:<br>'large'<br>'medium'                                                                       | Enum          | 'medium'  |
-| type               | type. when shape=normal, type options: primary/secondary; when shape=simple, type options: normal/dark;<br><br>**option**:<br>'primary', 'secondary', 'normal', 'dark' | Enum          | 'normal'  |
-| shape              | shape<br><br>**option**:<br>'normal', 'simple'                                                                                   | Enum          | 'normal'  |
-| defaultValue       | default value                                                                                                                    | String        | -         |
-| value              | current value                                                                                                                      | String/Number | -         |
-| onChange           | callback when value changes<br><br>**signature**:<br>Function() => void                                             | Function      | func.noop |
-| onSearch           | callback when search button clicked<br><br>**signature**:<br>Function() => void                                     | Function      | func.noop |
-| defaultFilterValue | default filter                                                                                                      | String        | -         |
-| filter             | filter                                                                                                               | Array         | \[]       |
-| filterValue        | filter value                                                                                                         | String        | -         |
-| onFilterChange     | callback when filter changes<br><br>**signature**:<br>Function() => void                                             | Function      | func.noop |
-| dataSource         | dropdown menu data source                                                                                            | Array         | -         |
-| placeholder        | default hint                                                                                                                       | String        | -         |
-| searchText         | button  text                                                                                                               | ReactNode     | -         |
-| filterProps        | filter props                                                                                                                  | Object        | -         |
-| buttonProps        | props for Button                                                                                                                    | Object        | {}        |
-| popupContent       | custom popup menu                                                                                                                 | ReactNode     | -         |
-| followTrigger      | follow Trigger or not                | Boolean         | -                                         |
-| visible            | popupContent is displayed                                                                                                                 | Boolean       | -         |
-| hasClear           | show clear text button                                                                                                                   | Boolean       | false     |
-| hasIcon           | show find button                                                                                                                   | Boolean       | true     |
-| disabled           | disabled or not                                                                                                                   | Boolean       | false     |
+| Param                  | Description                                                               | Type                                                            | Default Value | Required |
+| ---------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------- | -------- |
+| size                   | -                                                                         | 'large' \| 'medium'                                             | 'medium'      |          |
+| value                  | -                                                                         | string \| number                                                | -             |          |
+| defaultValue           | -                                                                         | string                                                          | -             |          |
+| placeholder            | Default hint                                                              | string                                                          | -             |          |
+| autoWidth              | -                                                                         | boolean                                                         | -             |          |
+| label                  | -                                                                         | React.ReactNode                                                 | -             |          |
+| hasClear               | Show clear button                                                         | boolean                                                         | -             |          |
+| state                  | -                                                                         | 'error' \| 'loading'                                            | -             |          |
+| readOnly               | -                                                                         | boolean                                                         | -             |          |
+| disabled               | Disabled or not                                                           | boolean                                                         | -             |          |
+| visible                | Is popupContent displayed                                                 | boolean                                                         | -             |          |
+| defaultVisible         | -                                                                         | boolean                                                         | -             |          |
+| onVisibleChange        | -                                                                         | (visible: boolean) => void                                      | -             |          |
+| popupContainer         | -                                                                         | string \| HTMLElement \| ((target: HTMLElement) => HTMLElement) | -             |          |
+| popupClassName         | -                                                                         | string                                                          | -             |          |
+| popupStyle             | -                                                                         | React.CSSProperties                                             | -             |          |
+| popupProps             | -                                                                         | PopupProps                                                      | -             |          |
+| popupContent           | Custom popup content                                                      | React.ReactNode                                                 | -             |          |
+| filterLocal            | -                                                                         | boolean                                                         | -             |          |
+| filter                 | Filter                                                                    | SelectProps['dataSource']                                       | -             |          |
+| useVirtual             | -                                                                         | boolean                                                         | -             |          |
+| dataSource             | Dropdown menu dataSource                                                  | AutoCompleteProps['dataSource']                                 | -             |          |
+| itemRender             | -                                                                         | (item: Item) => React.ReactNode                                 | -             |          |
+| onChange               | Callback when value changes                                               | AutoCompleteProps['onChange']                                   | -             |          |
+| fillProps              | The key of the value filled in the selection box, the default is value    | string                                                          | -             |          |
+| prefix                 | -                                                                         | string                                                          | -             |          |
+| shape                  | Shape                                                                     | 'normal' \| 'simple'                                            | 'normal'      |          |
+| type                   | -                                                                         | 'primary' \| 'secondary' \| 'normal' \| 'dark'                  | 'normal'      |          |
+| onSearch               | Callback when search button clicked                                       | (value: string, filterValue?: string) => void                   | -             |          |
+| defaultFilterValue     | DefaultFilterValue                                                        | string                                                          | -             |          |
+| filterValue            | FilterValue                                                               | string                                                          | -             |          |
+| onFilterChange         | Callback when filter changes                                              | (filter: string) => void                                        | -             |          |
+| searchText             | SearchText                                                                | React.ReactNode                                                 | -             |          |
+| filterProps            | FilterProps                                                               | SelectProps                                                     | -             |          |
+| buttonProps            | Props for Button                                                          | ButtonProps                                                     | -             |          |
+| hasIcon                | Show find button                                                          | boolean                                                         | -             |          |
+| icons                  | Configurable icons, including search, etc                                 | {<br/> search?: React.ReactNode;<br/> }                         | -             |          |
+| followTrigger          | Follow Trigger or not                                                     | boolean                                                         | -             |          |
+| autoHighlightFirstItem | Whether to automatically highlight the first element                      | boolean                                                         | -             |          |
+| onToggleHighlightItem  | Callback for keyboard up and down keys to switch menu highlighted options | AutoCompleteProps['onToggleHighlightItem']                      | -             |          |
 
 ## Search Inner Methods(Got by refs)
 
-| Param | Descripiton  | Type  | Default Value |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------ | -------- | --- |
-| focus        | get foucs<br><br>**signature**:<br> Function(start:Number, end: Number)<br>**params**:<br>_start_: {Number} cursor postion<br>_end_: {Number} select end postion | Function |     |
+| Param | Descripiton                                                                                                                                                      | Type     | Default Value |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------- |
+| focus | get foucs<br><br>**signature**:<br> Function(start:Number, end: Number)<br>**params**:<br>_start_: {Number} cursor postion<br>_end_: {Number} select end postion | Function |               |
 
 ## ARIA and KeyBoard
 
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-| Tab       | Trigger the onSearch event    |
+| KeyBoard | Descripiton                |
+| :------- | :------------------------- |
+| Tab      | Trigger the onSearch event |

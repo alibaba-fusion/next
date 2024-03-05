@@ -1,12 +1,14 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import dayjs from 'dayjs';
 import TimePicker2 from '../index';
 import '../../time-picker/style';
-import { KEYCODE } from '../../util';
+import { KEYCODE, dom } from '../../util';
 
+const { hasClass } = dom;
 Enzyme.configure({ adapter: new Adapter() });
 const defaultValue = dayjs('11:12:13', 'HH:mm:ss', true);
 
@@ -45,16 +47,23 @@ describe('TimePicker2', () => {
         it('should render with defaultVisible', () => {
             wrapper = mount(<TimePicker2 defaultValue={defaultValue} defaultVisible />);
             assert(
-                wrapper.find('.next-time-picker2-menu-hour .next-time-picker2-menu-item.next-selected').instance()
-                    .title === '11'
+                wrapper
+                    .find('.next-time-picker2-menu-hour .next-time-picker2-menu-item.next-selected')
+                    .instance().title === '11'
             );
             assert(
-                wrapper.find('.next-time-picker2-menu-minute .next-time-picker2-menu-item.next-selected').instance()
-                    .title === '12'
+                wrapper
+                    .find(
+                        '.next-time-picker2-menu-minute .next-time-picker2-menu-item.next-selected'
+                    )
+                    .instance().title === '12'
             );
             assert(
-                wrapper.find('.next-time-picker2-menu-second .next-time-picker2-menu-item.next-selected').instance()
-                    .title === '13'
+                wrapper
+                    .find(
+                        '.next-time-picker2-menu-second .next-time-picker2-menu-item.next-selected'
+                    )
+                    .instance().title === '13'
             );
         });
 
@@ -74,7 +83,10 @@ describe('TimePicker2', () => {
 
         it('should render with step', () => {
             wrapper = mount(<TimePicker2 defaultVisible secondStep={5} />);
-            assert(wrapper.find('.next-time-picker2-menu-second .next-time-picker2-menu-item').length === 12);
+            assert(
+                wrapper.find('.next-time-picker2-menu-second .next-time-picker2-menu-item')
+                    .length === 12
+            );
         });
 
         it('should render menu items', () => {
@@ -86,7 +98,9 @@ describe('TimePicker2', () => {
                     };
                 });
             };
-            wrapper = mount(<TimePicker2 defaultVisible renderTimeMenuItems={renderTimeMenuItems} />);
+            wrapper = mount(
+                <TimePicker2 defaultVisible renderTimeMenuItems={renderTimeMenuItems} />
+            );
 
             assert(
                 wrapper
@@ -199,8 +213,12 @@ describe('TimePicker2', () => {
                     }}
                 />
             );
-            wrapper.find('.next-time-picker2-input input').simulate('change', { target: { value: '20:00:00' } });
-            wrapper.find('.next-time-picker2-input input').simulate('keydown', { keyCode: KEYCODE.ENTER });
+            wrapper
+                .find('.next-time-picker2-input input')
+                .simulate('change', { target: { value: '20:00:00' } });
+            wrapper
+                .find('.next-time-picker2-input input')
+                .simulate('keydown', { keyCode: KEYCODE.ENTER });
             assert(wrapper.find('.next-time-picker2-input input').instance().value === '20:00:00');
             assert(ret === '20:00:00');
         });
@@ -295,7 +313,9 @@ describe('TimePicker2', () => {
         });
 
         it('should support default value', () => {
-            wrapper = mount(<TimeRangePicker defaultValue={[defaultValue, defaultValue.add(1, 'hours')]} />);
+            wrapper = mount(
+                <TimeRangePicker defaultValue={[defaultValue, defaultValue.add(1, 'hours')]} />
+            );
 
             assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13']);
         });
@@ -305,23 +325,21 @@ describe('TimePicker2', () => {
 
             findInput(wrapper, 0).simulate('click');
             assert(findTime(wrapper, 12, 'hour').length === 2);
-            findTime(wrapper, 12, 'hour')
-                .at(1)
-                .simulate('click');
+            findTime(wrapper, 12, 'hour').at(1).simulate('click');
             clickOk(wrapper);
 
             assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:00:00']);
         });
         it('should render with value controlled', () => {
-            wrapper = mount(<TimeRangePicker value={[defaultValue, defaultValue.add(1, 'hours')]} />);
+            wrapper = mount(
+                <TimeRangePicker value={[defaultValue, defaultValue.add(1, 'hours')]} />
+            );
 
             assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13']);
 
             findInput(wrapper, 0).simulate('click');
             assert(findTime(wrapper, 12, 'hour').length === 2);
-            findTime(wrapper, 13, 'hour')
-                .at(1)
-                .simulate('click');
+            findTime(wrapper, 13, 'hour').at(1).simulate('click');
             clickOk(wrapper);
 
             assert.deepEqual(getStrValue(wrapper), ['11:12:13', '12:12:13']);
@@ -331,6 +349,41 @@ describe('TimePicker2', () => {
             wrapper.setProps({ value: [first, second] });
 
             assert.deepEqual(getStrValue(wrapper), ['11:13:00', '12:22:22']);
+        });
+    });
+    describe('issues', () => {
+        it('should has border when single time input is focusing', done => {
+            const container = document.createElement('div');
+            document.body.appendChild(container);
+            ReactDOM.render(<TimePicker2 />, container);
+            const inputNode = document.querySelector('.next-time-picker2-input');
+            inputNode.querySelector('input').click();
+            assert(hasClass(inputNode, 'next-time-picker2-input-focus'));
+            document.body.click();
+            setTimeout(() => {
+                assert(!hasClass(inputNode, 'next-time-picker2-input-focus'));
+                ReactDOM.unmountComponentAtNode(container);
+                document.body.removeChild(container);
+                done();
+            }, 1000);
+        });
+
+        it('should has border when time-range input is focusing', done => {
+            const container = document.createElement('div');
+            document.body.appendChild(container);
+            ReactDOM.render(<TimePicker2.RangePicker />, container);
+            const inputNode = document.querySelector('.next-time-picker2-input');
+            inputNode.querySelectorAll('input')[0].click();
+            assert(hasClass(inputNode, 'next-time-picker2-input-focus'));
+            inputNode.querySelectorAll('input')[1].click();
+            assert(hasClass(inputNode, 'next-time-picker2-input-focus'));
+            document.body.click();
+            setTimeout(() => {
+                assert(!hasClass(inputNode, 'next-time-picker2-input-focus'));
+                ReactDOM.unmountComponentAtNode(container);
+                document.body.removeChild(container);
+                done();
+            }, 1000);
         });
     });
 });

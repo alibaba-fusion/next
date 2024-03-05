@@ -4,22 +4,16 @@ import { Range, Grid } from '@alifd/next';
 
 const { Row, Col } = Grid;
 
-class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+class Demo extends React.Component<any, { gutter: number }> {
+    state = {
+        gutter: 0,
+    };
 
-        this.state = {
-            gutter: 0,
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(gutter) {
+    handleChange = (gutter: number) => {
         this.setState({
             gutter,
         });
-    }
+    };
 
     render() {
         const { gutter } = this.state;

@@ -1,5 +1,67 @@
 # Change Log 
 
+## [1.27.5](https://github.com/alibaba-fusion/next/compare/1.27.4...1.27.5) (2024-02-22)
+
+### Bug Fixes
+
+* **ConfigProvider:** improve config types, close [#4751](https://github.com/alibaba-fusion/next/issues/4751) ([b442d93](https://github.com/alibaba-fusion/next/commit/b442d9310bf503203ba4cc36ac6fb5766f030289))
+* **TimePicker2:** should has focus style when visible, close [#4657](https://github.com/alibaba-fusion/next/issues/4657) ([#4738](https://github.com/alibaba-fusion/next/issues/4738)) ([228b621](https://github.com/alibaba-fusion/next/commit/228b621023fb8e63d79b5783393954b8a6e12db5))
+* **Overlay:** solve problems caused by numerical floating, close [#4740](https://github.com/alibaba-fusion/next/issues/4740) ([8f29094](https://github.com/alibaba-fusion/next/commit/8f290948b08d6fda23121f6c75178b738b2b84c2))
+* rollback [#4746](https://github.com/alibaba-fusion/next/issues/4746) and fix textarea clear spec ([e486542](https://github.com/alibaba-fusion/next/commit/e486542d786f63ce189adc8c1908f782a2082a03))
+
+
+### Code Refactoring
+
+* **Cascader:** convert to TypeScript, impove docs and tests ([#4730](https://github.com/alibaba-fusion/next/pull/4730))
+* **Grid:** convert to TypeScript, impove docs and tests ([#4703](https://github.com/alibaba-fusion/next/pull/4703))
+* **List:** convert to TypeScript, impove docs and tests ([#4702](https://github.com/alibaba-fusion/next/pull/4702))
+* **Validate:** convert to TypeScript, improve tests ([910c957](https://github.com/alibaba-fusion/next/commit/910c957fc9623f642c5400f680af497bc1e5c4c6))
+
+
+## [1.27.5-beta.1](https://github.com/alibaba-fusion/next/compare/1.27.5-beta.0...1.27.5-beta.1) (2024-02-22)
+
+
+## [1.27.5-beta.0](https://github.com/alibaba-fusion/next/compare/1.27.4...1.27.5-beta.0) (2024-02-22)
+
+
+## [1.27.4](https://github.com/alibaba-fusion/next/compare/1.27.3...1.27.4) (2024-01-26)
+
+
+### Bug Fixes
+
+* **Util:** compatibility breaking introduced by Object.hasOwn ([6caea8e](https://github.com/alibaba-fusion/next/commit/6caea8e7a4c2ea5f4bd0ed3cd124b1cb074e12e4))
+
+
+## [1.27.3](https://github.com/alibaba-fusion/next/compare/1.27.2...1.27.3) (2024-01-25)
+
+
+### Features
+
+* **Input:** TextArea support hasClear, close [#4334](https://github.com/alibaba-fusion/next/issues/4334) ([#4714](https://github.com/alibaba-fusion/next/issues/4714)) ([12333ed](https://github.com/alibaba-fusion/next/commit/12333ed583b641a2e390cf5640b2506b731c816f))
+
+
+### Bug Fixes
+
+* **Menu:** should update layout when children size changed, close [#4640](https://github.com/alibaba-fusion/next/issues/4640) ([#4722](https://github.com/alibaba-fusion/next/issues/4722)) ([f4ceaf7](https://github.com/alibaba-fusion/next/commit/f4ceaf77c6ae171cb1e59fb29d223eafefffc82a))
+* **Overlay:** fix the crash issue when resize is caused by adjustment, close [#4692](https://github.com/alibaba-fusion/next/issues/4692) ([7315f9e](https://github.com/alibaba-fusion/next/commit/7315f9ed9343f6b9b9157c915c36a372b2219012))
+* **Rating:** fix grade background, close [#4734](https://github.com/alibaba-fusion/next/issues/4734) ([#4735](https://github.com/alibaba-fusion/next/issues/4735)) ([54d7f57](https://github.com/alibaba-fusion/next/commit/54d7f573509f7f3fbcc5344bc2cf833d9dcad709))
+* **Tree:** expand action area should not shrink when the content is oversize, close [#4689](https://github.com/alibaba-fusion/next/issues/4689) ([#4723](https://github.com/alibaba-fusion/next/issues/4723)) ([157835f](https://github.com/alibaba-fusion/next/commit/157835f992e370648287123ecdc1d492e6b07fe9))
+
+
+### Documentation
+
+* Generate docs from tsdoc ([f89d6b2](https://github.com/alibaba-fusion/next/commit/f89d6b29b483547c9c68f21d5cf4aa2819fc92f3))
+
+
+### Code Refactoring
+
+* **Animate:** convert to TypeScript, impove docs and tests ([#4719](https://github.com/alibaba-fusion/next/pull/4719))
+* **Box:** convert to TypeScript, impove docs and tests ([e1805e2](https://github.com/alibaba-fusion/next/commit/e1805e251309a7f63214ef62670b663a1a55a189))
+* **Core:** support node&sass tests, complete types, improve tests and docs ([9b1b054](https://github.com/alibaba-fusion/next/commit/9b1b054f3e61de6a073f5be198aca47e4078adc9))
+* **MixinUiState:** convert to TypeScript, improve tests ([86e5414](https://github.com/alibaba-fusion/next/commit/86e5414e6652959e9ad3efa1e92631675edeeb91))
+* **Search:** convert to TypeScript, impove docs and tests ([5997230](https://github.com/alibaba-fusion/next/commit/5997230f8a06f91341ade3e10049b6b44a915502))
+
+
 ## [1.27.2](https://github.com/alibaba-fusion/next/compare/1.27.1...1.27.2) (2024-01-11)
 
 

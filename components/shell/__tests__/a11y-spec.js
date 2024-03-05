@@ -30,7 +30,7 @@ describe('Shell A11y', () => {
                     <span style={{ marginLeft: 10 }}>App Name</span>
                 </Shell.Branding>
                 <Shell.Navigation direction="hoz">
-                    <Search key="2" shape="simple" type="dark" palceholder="Search" style={{ width: '200px' }} />
+                    <Search key="2" shape="simple" type="dark" placeholder="Search" style={{ width: '200px' }} />
                 </Shell.Navigation>
                 <Shell.Action>
                     <img

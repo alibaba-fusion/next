@@ -13,7 +13,7 @@
 ## 何时使用
 
 -   用于弹性布局, 通过`display: flex`实现。
--   受浏览器限制，本功能支持到IE10+，IE下[#参考文档](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/dev-guides/hh673531(v=vs.85>))。
+-   受浏览器限制，本功能支持到IE10+，IE下[#参考文档](<https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/dev-guides/hh673531(v=vs.85%3E)>)。
 
 ## FAQ
 
@@ -23,13 +23,13 @@
 
 ```jsx
 // wrong
-function Foo () {
-  return <div />;
+function Foo() {
+    return <div />;
 }
 
 // correct
-function Foo ({style}) {
-  return <div style={style} />;
+function Foo({ style }) {
+    return <div style={style} />;
 }
 ```
 
@@ -37,14 +37,24 @@ function Foo ({style}) {
 
 ### Box
 
-| 参数        | 说明                                                                                                                                 | 类型                             | 默认值    |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ | ------ |
-| flex      | 布局属性                                                                                                                               | Array&lt;Number/String>/Number | -      |
-| direction | 布局方向，默认为 column ，一个元素占据一整行<br/><br/>**可选值**:<br/>'row', 'column', 'row-reverse'                                                    | Enum                           | column |
-| wrap      | 是否折行 支持IE11+                                                                                                                       | Boolean                        | false  |
-| spacing   | 元素之间的间距 [bottom&top, right&left]                                                                                                   | Array&lt;Number>/Number        | -      |
-| margin    | 设置 margin [bottom&top, right&left]                                                                                                 | Array&lt;Number>/Number        | -      |
-| padding   | 设置 padding [bottom&top, right&left]                                                                                                | Array&lt;Number>/Number        | -      |
-| justify   | 沿着主轴方向，子元素们的排布关系 （兼容性同 justify-content ）<br/><br/>**可选值**:<br/>'flex-start', 'center', 'flex-end', 'space-between', 'space-around' | Enum                           | -      |
-| align     | 垂直主轴方向，子元素们的排布关系 （兼容性同 align-items ）<br/><br/>**可选值**:<br/>'flex-start', 'center', 'flex-end', 'baseline', 'stretch'               | Enum                           | -      |
-| component | 定制标签名， 例如section等                                                                                                                  | String                         | 'div'  |
+| 参数      | 说明                                                            | 类型                                                                                                  | 默认值   | 是否必填 |
+| --------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------- | -------- |
+| flex      | 同 CSS 属性 `flex`，支持数组方式设置                            | \| CSS.Property.Flex<br/> \| [CSS.Property.FlexGrow, CSS.Property.FlexShrink, CSS.Property.FlexBasis] | -        |          |
+| direction | 布局方向，同 CSS 属性 `flex-direction`                          | CSS.Property.FlexDirection                                                                            | 'column' |          |
+| wrap      | 是否折行                                                        | boolean                                                                                               | false    |          |
+| spacing   | 元素之间的间距                                                  | Spacing                                                                                               | -        |          |
+| margin    | 容器外间距                                                      | Spacing                                                                                               | -        |          |
+| padding   | 容器内间距                                                      | Spacing                                                                                               | -        |          |
+| justify   | 沿着主轴方向，子元素们的排布关系，同 CSS 属性 `justify-content` | CSS.Property.JustifyContent                                                                           | -        |          |
+| align     | 沿交叉轴方向，子元素们的排布关系，同 CSS 属性 `align-items`     | CSS.Property.AlignItems                                                                               | -        |          |
+| component | 定制 JSX 标签名                                                 | keyof React.JSX.IntrinsicElements                                                                     | 'div'    |          |
+
+### Spacing
+
+```typescript
+export type Spacing =
+    | number
+    | [topAndBottom: number, rightAndLeft: number]
+    | [top: number, rightAndLeft: number, bottom: number]
+    | [top: number, right: number, bottom: number, left: number];
+```

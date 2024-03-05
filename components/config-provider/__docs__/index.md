@@ -60,7 +60,7 @@ props 方式的 locale > 最近 ConfigProvider 的 locale > 更远父级 ConfigP
 ```jsx
 <ConfigProvider locale={ALocale}>
     <ConfigProvider locale={BLocale}>
-        <Button locale={CLocale}/>
+        <Button locale={CLocale} />
     </ConfigProvider>
 </ConfigProvider>
 ```
@@ -71,13 +71,13 @@ props 方式的 locale > 最近 ConfigProvider 的 locale > 更远父级 ConfigP
 import { ConfigProvider, DatePicker } from '@alifd/next';
 
 const localeDatePicker = {
-  placeholder: 'localeDatePicker placeholder'
+    placeholder: 'localeDatePicker placeholder',
 };
 
 const localeGlobal = {
-  DatePicker: {
-    placeholder: 'localeGlobal placeholder'
-  }
+    DatePicker: {
+        placeholder: 'localeGlobal placeholder',
+    },
 };
 
 class App extends React.Component {
@@ -90,7 +90,8 @@ class App extends React.Component {
                 <br />
                 <br />
                 <ConfigProvider locale={localeGlobal}>
-                    <DatePicker locale={localeDatePicker} /> should be 'localeDatePicker placeholder'
+                    <DatePicker locale={localeDatePicker} /> should be 'localeDatePicker
+                    placeholder'
                 </ConfigProvider>
             </div>
         );
@@ -112,7 +113,6 @@ import enUS from '@alifd/next/lib/locale/en-us';
 // 需要按照下面的方式引入国际化文案文件
 // const { ConfigProvider, DatePicker, locales } = window.Next;
 // const enUS = locales['en-us'];
-
 
 class App extends React.Component {
     render() {
@@ -171,8 +171,8 @@ class App extends React.Component {
     entry.scss
 
     ```scss
-    $css-prefix: "my-";
-    @import "~@alifd/theme-xxx/index.scss";
+    $css-prefix: 'my-';
+    @import '~@alifd/theme-xxx/index.scss';
     ```
 
 ### 开启 Pure Render
@@ -203,13 +203,13 @@ class Component extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
         locale: PropTypes.object,
-        pure: PropTypes.bool
+        pure: PropTypes.bool,
     };
 
     static defaultProps = {
         prefix: 'next-',
         locale: locale,
-        pure: false
+        pure: false,
     };
 
     render() {
@@ -225,16 +225,30 @@ export default config(Component);
 
 ### ConfigProvider
 
-| 参数                 | 说明                                                                                                                                                                                                         | 类型             | 默认值   |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ----- |
-| defaultPropsConfig | 组件 API 的默认配置                                                                                                                                                                                               | Object         | -     |
-| errorBoundary      | 是否开启错误捕捉 errorBoundary<br/>如需自定义参数，请传入对象 对象接受参数列表如下：<br/><br/>fallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示<br/>afterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为, 比如埋点上传 | Boolean/Object | false |
-| pure               | 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用                                                                                                                                                                        | Boolean        | -     |
-| warning            | 是否在开发模式下显示组件属性被废弃的 warning 提示                                                                                                                                                                              | Boolean        | true  |
-| rtl                | 是否开启 rtl 模式                                                                                                                                                                                                | Boolean        | -     |
-| device             | 设备类型，针对不同的设备类型组件做出对应的响应式变化<br/><br/>**可选值**:<br/>'tablet', 'desktop', 'phone'                                                                                                                              | Enum           | -     |
-| children           | 组件树                                                                                                                                                                                                        | any            | -     |
-| popupContainer     | 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数                                                                                                                                                                         | any            | -     |
+| 参数               | 说明                                                               | 类型                   | 默认值 | 是否必填 |
+| ------------------ | ------------------------------------------------------------------ | ---------------------- | ------ | -------- |
+| prefix             | 样式类名的品牌前缀                                                 | string                 | -      |          |
+| pure               | 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用          | boolean                | -      |          |
+| device             | 设备类型，针对不同的设备类型组件做出对应的响应式变化               | DeviceType             | -      |          |
+| rtl                | 是否开启 rtl 模式                                                  | boolean                | -      |          |
+| errorBoundary      | 是否开启错误捕捉                                                   | ErrorBoundaryType      | false  |          |
+| warning            | 是否在开发模式下显示组件属性被废弃的 warning 提示                  | boolean                | true   |          |
+| locale             | 各组件的国际化文案对象，属性为组件的 displayName                   | Partial<Locale>        | -      |          |
+| popupContainer     | 指定浮层渲染的父节点，可以为节点 id 的字符串，也可以返回节点的函数 | PopupContainerType     | -      |          |
+| children           | 组件树                                                             | React.ReactNode        | -      |          |
+| defaultPropsConfig | 各组件 API 的默认配置                                              | Record<string, object> | -      |          |
+
+### DeviceType
+
+```typescript
+export type DeviceType = 'tablet' | 'desktop' | 'phone';
+```
+
+### PopupContainerType
+
+```typescript
+export type PopupContainerType = string | HTMLElement | ((target: HTMLElement) => HTMLElement);
+```
 
 <!-- api-extra-start -->
 
@@ -276,7 +290,7 @@ Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextP
 ```jsx
 ConfigProvider.initLocales({
     'zh-cn': {},
-    'en-us': {}
+    'en-us': {},
 });
 ```
 
@@ -296,7 +310,7 @@ ConfigProvider.setLanguage('zh-cn');
 // 相当于 同时用ConfigProvider.initLocales 和 ConfigProvider.setLanguage
 ConfigProvider.setLocale({
     DatePicker: {},
-    Dialog: {}
+    Dialog: {},
 });
 ```
 
@@ -334,11 +348,11 @@ const webpack = require('webpack');
 module.exports = {
     // ...
     plugins: [
-    // 打包指定需要的语言文件
-        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn|ja/)
-    // 只打包有过引用的语言文件，应用中需要添加如：`import 'moment/locale/zh-cn';`
-    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
-    ]
+        // 打包指定需要的语言文件
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn|ja/),
+        // 只打包有过引用的语言文件，应用中需要添加如：`import 'moment/locale/zh-cn';`
+        // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    ],
 };
 ```
 
@@ -348,8 +362,8 @@ ConfigProvider 获取组件对应的多语言文案，是通过组件的 display
 
 ```jsx
 class CustomComponent extends React.Component {
-	static displayName = 'CustomComponent';
-	// ...
+    static displayName = 'CustomComponent';
+    // ...
 }
 ```
 
