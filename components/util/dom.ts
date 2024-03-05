@@ -1,3 +1,4 @@
+import type { CamelCase } from 'yargs';
 import { camelcase, hyphenate } from './string';
 import { each, isPlainObject } from './object';
 
@@ -158,14 +159,25 @@ function _getStyleValue(node: HTMLElement, type: string, value: number | string)
 }
 
 const floatMap: Record<PropertyKey, unknown> = { cssFloat: 1, styleFloat: 1, float: 1 };
-type CustomCSSStyleKey = keyof CSSStyleDeclaration;
-type CustomCSSStyle = {
+export type CustomCSSStyleKey = Exclude<
+    keyof ReturnType<typeof window.getComputedStyle>,
+    number | typeof Symbol.iterator
+>;
+type LikeCustomCSSStyleKey<T extends string> = CamelCase<T> extends CustomCSSStyleKey ? T : never;
+
+export type CustomCSSStyle = {
     [key in CustomCSSStyleKey]: unknown;
 };
 
+type LikeCustomCSSStyle<T extends Record<string, unknown>> =
+    LikeCustomCSSStyleKey<Exclude<keyof T, number | symbol>> extends never ? never : T;
+
 export function getStyle<N extends undefined | null>(node: N, name?: unknown): N;
 export function getStyle(node: HTMLElement): CustomCSSStyle;
-export function getStyle<K extends CustomCSSStyleKey>(node: HTMLElement, name: K): string | number;
+export function getStyle<K extends string>(
+    node: HTMLElement,
+    name: LikeCustomCSSStyleKey<K>
+): string | number;
 /**
  * 获取元素计算后的样式
  * @param node - DOM 节点
@@ -203,8 +215,15 @@ export function getStyle(
 }
 
 export function setStyle(node: undefined | null, name: unknown): false;
-export function setStyle(node: HTMLElement, name: Partial<CustomCSSStyle>): void;
-export function setStyle(node: HTMLElement, name: CustomCSSStyleKey, value: unknown): void;
+export function setStyle<K extends Record<string, unknown>>(
+    node: HTMLElement,
+    name: K & LikeCustomCSSStyle<K>
+): void;
+export function setStyle<K extends string>(
+    node: HTMLElement,
+    name: LikeCustomCSSStyleKey<K>,
+    value: unknown
+): void;
 /**
  * 设置元素的样式
  * @param node - DOM 节点
@@ -232,7 +251,7 @@ export function setStyle(
 
     // 批量设置多个值
     if (typeof name === 'object' && arguments.length === 2) {
-        each(name, (val: any, key) => setStyle(node, key as any, val));
+        each(name, (val: any, key: LikeCustomCSSStyleKey<string>) => setStyle(node, key, val));
     } else {
         name = floatMap[name] ? ('cssFloat' in node.style ? 'cssFloat' : 'styleFloat') : name;
         if (typeof value === 'number' && PIXEL_PATTERN.test(name)) {

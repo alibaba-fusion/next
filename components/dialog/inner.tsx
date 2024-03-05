@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
+import React, { type CSSProperties, Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Button from '../button';
 import Icon from '../icon';
 import zhCN from '../locale/zh-cn';
 import { func, obj, guid, dom } from '../util';
+import type { InnerProps } from './types';
+import type { CustomCSSStyle } from '../util/dom';
 
 const { makeChain } = func;
 const { pickOthers } = obj;
 const noop = () => {};
 
-export default class Inner extends Component {
+export default class Inner extends Component<InnerProps> {
     static propTypes = {
         prefix: PropTypes.string,
         className: PropTypes.string,
@@ -52,15 +54,17 @@ export default class Inner extends Component {
         role: 'dialog',
     };
 
+    bodyNode: HTMLElement;
+    headerNode: HTMLElement;
+    footerNode: HTMLElement;
+    titleId: string;
+
     componentDidUpdate() {
         // style 作为第一优先级
-        const {
-            height: pheight,
-            style: { maxHeight, height: sheight = maxHeight || pheight },
-            v2,
-        } = this.props;
+        const { height: pheight, style, v2 } = this.props;
+        const { maxHeight, height: sheight = maxHeight || pheight } = style!;
         if (this.bodyNode && v2 && sheight && sheight !== 'auto') {
-            const style = {};
+            const style: Partial<CustomCSSStyle> = {};
             let headerHeight = 0,
                 footerHeight = 0;
             if (this.headerNode) {
@@ -73,7 +77,7 @@ export default class Inner extends Component {
 
             let height = sheight;
             if (sheight && typeof sheight === 'string') {
-                if (height.match(/calc|vh/)) {
+                if ((height as string).match(/calc|vh/)) {
                     style.maxHeight = `calc(${sheight} - ${minHeight}px)`;
                     style.overflowY = 'auto';
                 } else {
@@ -90,7 +94,7 @@ export default class Inner extends Component {
         }
     }
 
-    getNode(name, ref) {
+    getNode(name: 'headerNode' | 'bodyNode' | 'footerNode', ref: HTMLDivElement) {
         this[name] = ref;
     }
 
@@ -104,7 +108,7 @@ export default class Inner extends Component {
                     id={this.titleId}
                     ref={this.getNode.bind(this, 'headerNode')}
                     role="heading"
-                    aria-level="1"
+                    aria-level={1}
                 >
                     {title}
                 </div>
@@ -145,17 +149,21 @@ export default class Inner extends Component {
         });
         const footerContent =
             footer === true || !footer
-                ? footerActions.map(action => {
+                ? footerActions!.map(action => {
                       const btnProps = this.props[`${action}Props`];
                       const newBtnProps = {
                           ...btnProps,
                           prefix,
-                          className: cx(`${prefix}dialog-btn`, btnProps.className),
+                          className: cx(`${prefix}dialog-btn`, btnProps!.className),
                           onClick: makeChain(
-                              this.props[`on${action[0].toUpperCase() + action.slice(1)}`],
-                              btnProps.onClick
+                              this.props[
+                                  `on${action[0].toUpperCase() + action.slice(1)}` as
+                                      | 'onOk'
+                                      | 'onCancel'
+                              ],
+                              btnProps!.onClick
                           ),
-                          children: btnProps.children || locale[action],
+                          children: btnProps!.children || locale![action],
                       };
                       if (action === 'ok') {
                           newBtnProps.type = 'primary';
@@ -179,7 +187,7 @@ export default class Inner extends Component {
             return (
                 <a
                     role="button"
-                    aria-label={locale.close}
+                    aria-label={locale!.close as string}
                     className={`${prefix}dialog-close`}
                     onClick={onClose}
                 >
@@ -197,11 +205,11 @@ export default class Inner extends Component {
 
     render() {
         const { prefix, className, closeable, title, role, rtl } = this.props;
-        const others = pickOthers(Object.keys(Inner.propTypes), this.props);
+        const others = pickOthers(Inner.propTypes, this.props);
         const newClassName = cx({
             [`${prefix}dialog`]: true,
             [`${prefix}closeable`]: closeable,
-            [className]: !!className,
+            [className!]: !!className,
         });
 
         const header = this.renderHeader();
@@ -209,7 +217,10 @@ export default class Inner extends Component {
         const footer = this.renderFooter();
         const closeLink = this.renderCloseLink();
 
-        const ariaProps = {
+        const ariaProps: Pick<
+            React.HTMLAttributes<HTMLDivElement>,
+            'role' | 'aria-modal' | 'aria-labelledby'
+        > = {
             role,
             'aria-modal': 'true',
         };

@@ -1,9 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Radio, Dialog } from '@alifd/next';
+import type { DialogProps } from '../../../types';
+
+interface DemoState {
+    visible?: boolean;
+    footerActions: NonNullable<DialogProps['footerActions']>;
+    footerAlign?: DialogProps['footerAlign'];
+    loading?: boolean;
+}
 
 class Demo extends React.Component {
-    state = {
+    state: DemoState = {
         visible: false,
         footerActions: ['ok', 'cancel'],
         footerAlign: 'right',
@@ -22,19 +30,19 @@ class Demo extends React.Component {
         });
     };
 
-    toggleFooterActions = footerActionsStr => {
+    toggleFooterActions = (footerActionsStr: string) => {
         this.setState({
             footerActions: footerActionsStr.split(','),
         });
     };
 
-    toggleFooterAlign = footerAlign => {
+    toggleFooterAlign = (footerAlign: string) => {
         this.setState({
             footerAlign,
         });
     };
 
-    toggleOkLoader = loading => {
+    toggleOkLoader = (loading: boolean) => {
         this.setState({
             loading,
         });

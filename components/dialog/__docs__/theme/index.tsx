@@ -1,13 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, type ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
 import '../../style';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import {
+    Demo,
+    DemoGroup,
+    type DemoProps,
+    initDemo,
+    type DemoFunctionDefineForObject,
+} from '../../../demo-helper';
 import Dialog from '../../index';
 import { ModalInner } from '../../show';
 
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
+import type { InnerProps } from '../../types';
 
 const i18nMaps = {
     'en-us': {
@@ -29,8 +36,10 @@ const i18nMaps = {
     },
 };
 
-class FunctionDemo extends Component {
-    state = {
+class FunctionDemo extends Component<{ lang: 'en-us' | 'zh-cn'; i18n: Record<string, string> }> {
+    state: {
+        demoFunction: Record<string, DemoFunctionDefineForObject>;
+    } = {
         demoFunction: {
             hasTitle: {
                 label: '标题',
@@ -108,13 +117,13 @@ class FunctionDemo extends Component {
             },
         },
     };
-    onFunctionChange = demoFunction => {
+    onFunctionChange: DemoProps['onFunctionChange'] = demoFunction => {
         this.setState({
             demoFunction,
         });
     };
 
-    renderMask(hasMask, content) {
+    renderMask(hasMask: boolean, content: ReactNode) {
         return hasMask ? (
             <div
                 className="next-overlay-wrapper opened"
@@ -129,15 +138,14 @@ class FunctionDemo extends Component {
     }
 
     render() {
-        // eslint-disable-next-line
         const { lang, i18n } = this.props;
         const locale = (lang === 'en-us' ? enUS : zhCN).Dialog;
         const hasTitle = this.state.demoFunction.hasTitle.value === 'true';
         const hasMask = this.state.demoFunction.hasMask.value === 'true';
         const footer = this.state.demoFunction.footer.value === 'true';
-        const footerAlign = this.state.demoFunction.footerAlign.value;
+        const footerAlign = this.state.demoFunction.footerAlign.value as InnerProps['footerAlign'];
         const okIsLeft = this.state.demoFunction.okPosition.value === 'left';
-        const style = hasMask
+        const style: InnerProps['style'] = hasMask
             ? { position: 'absolute', top: 20, left: 20, width: 400 }
             : { position: 'relative', top: 20, left: 20, width: 400 };
         const normalContent = (
@@ -215,7 +223,7 @@ class FunctionDemo extends Component {
     }
 }
 
-const render = (lang = 'en-us') => {
+const render = (lang: 'en-us' | 'zh-cn' = 'en-us') => {
     const i18n = i18nMaps[lang];
     ReactDOM.render(<FunctionDemo lang={lang} i18n={i18n} />, document.getElementById('container'));
 };

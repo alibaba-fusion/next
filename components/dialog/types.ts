@@ -1,16 +1,16 @@
-/// <reference types="react" />
-
 import React from 'react';
-import { CommonProps } from '../util';
-import { ButtonProps } from '../button';
-import { OverlayProps } from '../overlay';
+import { type CommonProps } from '../util';
+import { type ButtonProps } from '../button';
+import { type OverlayProps } from '../overlay';
+import { type MessageProps } from '../message';
 
 export type CloseMode = 'close' | 'mask' | 'esc';
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    title?: any;
-}
+interface HTMLAttributes extends React.HTMLAttributes<HTMLElement> {}
 
-export interface DialogProps extends Omit<HTMLAttributesWeak, 'content'>, CommonProps {
+/**
+ * @api Dialog
+ */
+export interface DialogProps extends Omit<HTMLAttributes, 'content' | 'title'>, CommonProps {
     /**
      * 是否显示
      */
@@ -37,13 +37,13 @@ export interface DialogProps extends Omit<HTMLAttributesWeak, 'content'>, Common
     footerAlign?: 'left' | 'center' | 'right';
 
     /**
-     * 指定确定按钮和取消按钮是否存在以及如何排列,<br><br>**可选值**：
+     * 指定确定按钮和取消按钮是否存在以及如何排列，<br><br>**可选值**：
      * ['ok', 'cancel']（确认取消按钮同时存在，确认按钮在左）
      * ['cancel', 'ok']（确认取消按钮同时存在，确认按钮在右）
      * ['ok']（只存在确认按钮）
      * ['cancel']（只存在取消按钮）
      */
-    footerActions?: Array<string>;
+    footerActions?: Array<'ok' | 'cancel'>;
 
     /**
      * 隐藏时是否保留子节点，不销毁
@@ -71,7 +71,7 @@ export interface DialogProps extends Omit<HTMLAttributesWeak, 'content'>, Common
     cancelProps?: ButtonProps;
 
     /**
-     * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
+     * [废弃] 同 closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
      * **close** 表示点击关闭按钮可以关闭对话框
      * **mask** 表示点击遮罩区域可以关闭对话框
      * **esc** 表示按下 esc 键可以关闭对话框
@@ -81,21 +81,21 @@ export interface DialogProps extends Omit<HTMLAttributesWeak, 'content'>, Common
      */
     closeable?: 'close' | 'mask' | 'esc' | boolean | 'close,mask' | 'close,esc' | 'mask,esc';
     /**
-     * [推荐]控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：
+     * [推荐] 控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：
      * **close** 表示点击关闭按钮可以关闭对话框
      * **mask** 表示点击遮罩区域可以关闭对话框
      * **esc** 表示按下 esc 键可以关闭对话框
      * 如 'close' 或 ['close','esc','mask'], []
      */
-    closeMode?: CloseMode[] | 'close' | 'mask' | 'esc';
+    closeMode?: CloseMode[] | CloseMode;
 
     /**
      * 对话框关闭时触发的回调函数
      */
-    onClose?: (trigger: string, event: React.MouseEvent) => void;
+    onClose?: (trigger: string, event: React.MouseEvent | KeyboardEvent) => void;
 
     /**
-     * 对话框关闭后触发的回调函数, 如果有动画，则在动画结束后触发
+     * 对话框关闭后触发的回调函数，如果有动画，则在动画结束后触发
      */
     afterClose?: () => void;
 
@@ -107,7 +107,7 @@ export interface DialogProps extends Omit<HTMLAttributesWeak, 'content'>, Common
     /**
      * 显示隐藏时动画的播放方式
      */
-    animation?: any | boolean;
+    animation?: Record<'in' | 'out', string> | false;
 
     /**
      * 对话框弹出时是否自动获得焦点
@@ -115,25 +115,25 @@ export interface DialogProps extends Omit<HTMLAttributesWeak, 'content'>, Common
     autoFocus?: boolean;
 
     /**
-     * [v2废弃] 对话框对齐方式, 具体见Overlay文档
-     * @deprecated
+     * [v2 废弃] 对话框对齐方式，具体见 Overlay 文档
+     * @deprecated v2 废弃
      */
     align?: string | boolean;
     /**
-     * [v2废弃] 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
-     * @deprecated
+     * [v2 废弃] 当对话框高度超过浏览器视口高度时，是否显示所有内容而不是出现滚动条以保证对话框完整显示在浏览器视口内，该属性仅在对话框垂直水平居中时生效，即 align 被设置为 'cc cc' 时
+     * @deprecated v2 废弃
      */
     isFullScreen?: boolean;
 
     /**
-     * [v2废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
-     * @deprecated
+     * [v2 废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
+     * @deprecated v2 废弃
      */
     shouldUpdatePosition?: boolean;
 
     /**
-     * [v2废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
-     * @deprecated
+     * [v2 废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
+     * @deprecated v2 废弃
      */
     minMargin?: number;
     /**
@@ -153,7 +153,7 @@ export interface DialogProps extends Omit<HTMLAttributesWeak, 'content'>, Common
      * 对话框的高度样式属性
      */
     height?: string | number;
-    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
+    popupContainer?: string | HTMLElement | ((target?: HTMLElement) => HTMLElement);
     /**
      * 开启 v2 版本弹窗
      */
@@ -171,7 +171,7 @@ export interface DialogProps extends Omit<HTMLAttributesWeak, 'content'>, Common
      */
     top?: number;
     /**
-     * [v2] 弹窗下边距, 默认 40
+     * [v2] 弹窗下边距，默认 40
      */
     bottom?: number;
     /**
@@ -190,6 +190,8 @@ export interface DialogProps extends Omit<HTMLAttributesWeak, 'content'>, Common
      * [v2] 最外包裹层 className
      */
     wrapperClassName?: string;
+    noPadding?: boolean;
+    wrapperStyle?: React.CSSProperties;
 }
 
 export interface QuickShowConfig extends DialogProps {
@@ -207,13 +209,29 @@ export interface QuickShowRet {
     hide: () => void;
 }
 
-export default class Dialog extends React.Component<DialogProps, any> {
-    static show(config: QuickShowConfig): QuickShowRet;
-    static alert(config: QuickShowConfig): QuickShowRet;
-    static confirm(config: QuickShowConfig): QuickShowRet;
-    static success(config: QuickShowConfig): QuickShowRet;
-    static error(config: QuickShowConfig): QuickShowRet;
-    static warning(config: QuickShowConfig): QuickShowRet;
-    static notice(config: QuickShowConfig): QuickShowRet;
-    static help(config: QuickShowConfig): QuickShowRet;
+export interface InnerProps
+    extends Omit<HTMLAttributes, 'title'>,
+        CommonProps,
+        Pick<
+            DialogProps,
+            | 'footer'
+            | 'footerAlign'
+            | 'footerActions'
+            | 'onOk'
+            | 'onCancel'
+            | 'closeable'
+            | 'v2'
+            | 'okProps'
+            | 'cancelProps'
+            | 'closeIcon'
+            | 'title'
+        > {
+    height?: string | number;
+    noPadding?: boolean;
+    onClose?: (event: React.MouseEvent) => void;
+}
+
+export interface ShowModalInnerProps extends CommonProps, Pick<MessageProps, 'title'> {
+    messageProps?: MessageProps;
+    content?: MessageProps['children'];
 }

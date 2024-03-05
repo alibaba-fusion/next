@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Dialog, Box } from '@alifd/next';
-import Draggable from 'react-draggable';
+import { Button, Dialog } from '@alifd/next';
+import Draggable, { DraggableCoreProps } from 'react-draggable';
+import type { DialogProps } from '../../../types';
 
 class App extends React.Component {
     state = {
@@ -10,7 +11,7 @@ class App extends React.Component {
         bounds: { left: 0, top: 100, bottom: 0, right: 0 },
     };
 
-    draggleRef = React.createRef();
+    draggleRef = React.createRef<HTMLDivElement>();
 
     showModal = () => {
         this.setState({
@@ -18,14 +19,21 @@ class App extends React.Component {
         });
     };
 
-    handleCancel = e => {
+    handleCancel: DialogProps['onOk'] = () => {
         this.setState({
             visible: false,
         });
     };
 
-    onStart = (event, uiData) => {
+    handleClose: DialogProps['onClose'] = () => {
+        this.setState({
+            visible: false,
+        });
+    };
+
+    onStart: DraggableCoreProps['onStart'] = (event, uiData) => {
         const { clientWidth, clientHeight } = window.document.documentElement;
+        if (!this.draggleRef.current) return;
         const targetRect = this.draggleRef.current.getBoundingClientRect();
         this.setState({
             bounds: {
@@ -37,7 +45,7 @@ class App extends React.Component {
         });
     };
 
-    toogleDisabled(disabled) {
+    toogleDisabled(disabled: boolean) {
         if (disabled === this.state.disabled) {
             return;
         }
@@ -61,7 +69,7 @@ class App extends React.Component {
                     }
                     visible={visible}
                     onOk={this.handleCancel}
-                    onClose={this.handleCancel}
+                    onClose={this.handleClose}
                     v2
                     cache
                     dialogRender={modal => (
