@@ -1,4 +1,5 @@
 import { dom, guid } from '../util';
+import { type CustomCSSStyle } from '../util/dom';
 
 /**
  * https://github.com/alibaba-fusion/next/issues/3638
@@ -13,9 +14,9 @@ import { dom, guid } from '../util';
  *   2. 如果dialog1 先退出，发现 dialog2 存在则不做任何操作，把自己的恢复值给到 dialog2
  */
 
-const lockcache = [];
+const lockcache: Array<{ uuid: string; container: HTMLElement; originStyle: string | null }> = [];
 
-function lock(container, style) {
+function lock(container: HTMLElement, style: Partial<CustomCSSStyle>): string {
     const originStyle = container.getAttribute('style');
     const uuid = guid();
     lockcache.push({
@@ -27,7 +28,7 @@ function lock(container, style) {
     return uuid;
 }
 
-function unlock(container, uuid) {
+function unlock(container: HTMLElement, uuid: string) {
     const list = lockcache.filter(i => i.container === container);
     const item = list.find(i => i.uuid === uuid);
     if (item) {

@@ -118,6 +118,7 @@
     "react-transition-group": "^2.2.1",
     "resize-observer-polyfill": "^1.5.1",
     "shallow-element-equals": "^1.0.1",
+    "ts-essentials": "^9.4.1",
     "tslib": "^2.6.2"
   },
   "devDependencies": {

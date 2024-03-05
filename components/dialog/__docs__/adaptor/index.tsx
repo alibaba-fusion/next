@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import { Types } from '@alifd/adaptor-helper';
 import { Dialog, Message, Button } from '@alifd/next';
 import locale from '../../../locale/en-us';
+import type { InnerProps } from '../../types';
+
+type AdaptorProps = InnerProps & {
+    confirmButtonText?: ReactNode;
+    cancelButtonText?: ReactNode;
+    data?: ReactNode;
+    mask?: boolean;
+    okButtonPosition?: 'left' | 'right';
+    level?: 'normal' | 'alert' | 'confirm';
+    width?: number;
+};
 
 export default {
     name: 'Dialog',
@@ -78,8 +89,8 @@ export default {
         cancelButtonText,
         data,
         ...others
-    }) => {
-        const dialogStyle = {
+    }: AdaptorProps) => {
+        const dialogStyle: InnerProps['style'] = {
             position: mask ? 'absolute' : 'relative',
             width: width,
             zIndex: 1,
@@ -92,7 +103,7 @@ export default {
                 : style),
         };
 
-        const props = {
+        const props: InnerProps = {
             ...(mask ? {} : { ...others }),
             className: level === 'normal' ? className : `${className || ''} next-dialog-quick`,
             style: dialogStyle,
@@ -103,14 +114,18 @@ export default {
             footer:
                 okButtonPosition === 'left'
                     ? [
-                          <Button className="next-dialog-btn" type="primary">
+                          <Button key="1" className="next-dialog-btn" type="primary">
                               {confirmButtonText}
                           </Button>,
-                          <Button className="next-dialog-btn">{cancelButtonText}</Button>,
+                          <Button key="2" className="next-dialog-btn">
+                              {cancelButtonText}
+                          </Button>,
                       ]
                     : [
-                          <Button className="next-dialog-btn">{cancelButtonText}</Button>,
-                          <Button className="next-dialog-btn" type="primary">
+                          <Button key="1" className="next-dialog-btn">
+                              {cancelButtonText}
+                          </Button>,
+                          <Button key="2" className="next-dialog-btn" type="primary">
                               {confirmButtonText}
                           </Button>,
                       ],
@@ -161,7 +176,12 @@ export default {
             <div
                 className={`next-overlay-wrapper opened ${className}`}
                 {...others}
-                style={{ position: 'relative', width: width + 40, height: height + 40, ...style }}
+                style={{
+                    position: 'relative',
+                    width: width! + 40,
+                    height: (height as number) + 40,
+                    ...style,
+                }}
             >
                 <div className="next-overlay-backdrop" style={{ position: 'relative' }} />
                 {dialog}
@@ -193,7 +213,10 @@ export default {
                 default: 'right',
             },
         ],
-        transform: (props, { title, overlay, footerAlign, okButtonPosition }) => {
+        transform: (
+            props: AdaptorProps,
+            { title, overlay, footerAlign, okButtonPosition }: AdaptorProps & { overlay?: string }
+        ) => {
             return {
                 ...props,
                 title: title === 'hide' ? '' : title,

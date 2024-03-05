@@ -4,6 +4,8 @@ import Overlay from '../overlay';
 import zhCN from '../locale/zh-cn';
 import { focus, obj, func, events, dom, env } from '../util';
 import Inner from './inner';
+import { type CustomCSSStyleKey } from '../util/dom';
+import { DialogProps } from './types';
 
 const noop = () => {};
 const { limitTabRange } = focus;
@@ -11,12 +13,16 @@ const { bindCtx } = func;
 const { pickOthers } = obj;
 const { getStyle, setStyle } = dom;
 
+function isWidthOrHeight(name: string): name is 'width' | 'height' {
+    return ['width', 'height'].indexOf(name) !== -1;
+}
+
 // [fix issue #1609](https://github.com/alibaba-fusion/next/issues/1609)
 // https://stackoverflow.com/questions/19717907/getcomputedstyle-reporting-different-heights-between-chrome-safari-firefox-and-i
-function _getSize(dom, name) {
+function _getSize(dom: HTMLElement, name: CustomCSSStyleKey) {
     const boxSizing = getStyle(dom, 'boxSizing');
 
-    if (env.ieVersion && ['width', 'height'].indexOf(name) !== -1 && boxSizing === 'border-box') {
+    if (env.ieVersion && isWidthOrHeight(name) && boxSizing === 'border-box') {
         return parseFloat(dom.getBoundingClientRect()[name].toFixed(1));
     } else {
         return getStyle(dom, name);
@@ -26,7 +32,7 @@ function _getSize(dom, name) {
 /**
  * Dialog
  */
-export default class Dialog extends Component {
+export default class Dialog extends Component<DialogProps> {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -46,7 +52,7 @@ export default class Dialog extends Component {
         children: PropTypes.node,
         /**
          * 底部内容，设置为 false，则不进行显示
-         * @default [<Button type="primary">确定</Button>, <Button>取消</Button>]
+         * @defaultValue [<Button type="primary">确定</Button>, <Button>取消</Button>]
          */
         footer: PropTypes.oneOfType([PropTypes.bool, PropTypes.node]),
         /**
@@ -54,7 +60,7 @@ export default class Dialog extends Component {
          */
         footerAlign: PropTypes.oneOf(['left', 'center', 'right']),
         /**
-         * 指定确定按钮和取消按钮是否存在以及如何排列,<br><br>**可选值**：
+         * 指定确定按钮和取消按钮是否存在以及如何排列，<br><br>**可选值**：
          * ['ok', 'cancel']（确认取消按钮同时存在，确认按钮在左）
          * ['cancel', 'ok']（确认取消按钮同时存在，确认按钮在右）
          * ['ok']（只存在确认按钮）
@@ -63,12 +69,12 @@ export default class Dialog extends Component {
         footerActions: PropTypes.array,
         /**
          * 在点击确定按钮时触发的回调函数
-         * @param {Object} event 点击事件对象
+         * @param event - 点击事件对象
          */
         onOk: PropTypes.func,
         /**
          * 在点击取消/关闭按钮时触发的回调函数
-         * @param {Object} event 点击事件对象, event.triggerType=esc|closeIcon 可区分点击来源
+         * @param event - 点击事件对象，event.triggerType=esc|closeIcon 可区分点击来源
          */
         onCancel: PropTypes.func,
         /**
@@ -92,12 +98,12 @@ export default class Dialog extends Component {
             PropTypes.oneOf(['close', 'mask', 'esc']),
         ]),
         /**
-         * 隐藏时是否保留子节点，不销毁 （低版本通过 overlayProps 实现）
+         * 隐藏时是否保留子节点，不销毁（低版本通过 overlayProps 实现）
          * @version 1.23
          */
         cache: PropTypes.bool,
         /**
-         * 对话框关闭后触发的回调函数, 如果有动画，则在动画结束后触发
+         * 对话框关闭后触发的回调函数，如果有动画，则在动画结束后触发
          */
         afterClose: PropTypes.func,
         /**
@@ -105,8 +111,8 @@ export default class Dialog extends Component {
          */
         hasMask: PropTypes.bool,
         /**
-         * 显示隐藏时动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
-         * @default { in: 'expandInDown', out: 'expandOutUp' }
+         * 显示隐藏时动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。请参考 Animate 组件的文档获取可用的动画名
+         * @defaultValue \{ in: 'expandInDown', out: 'expandOutUp' \}
          */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         /**
@@ -114,13 +120,13 @@ export default class Dialog extends Component {
          */
         autoFocus: PropTypes.bool,
         /**
-         * [v2废弃] 透传到弹层组件的属性对象
+         * [v2 废弃] 透传到弹层组件的属性对象
          */
         overlayProps: PropTypes.object,
         /**
          * 自定义国际化文案对象
-         * @property {String} ok 确认按钮文案
-         * @property {String} cancel 取消按钮文案
+         * ok 确认按钮文案
+         * cancel 取消按钮文案
          */
         locale: PropTypes.object,
         // Do not remove this, it's for <ConfigProvider popupContainer={} />
@@ -173,7 +179,7 @@ export default class Dialog extends Component {
          */
         wrapperClassName: PropTypes.string,
         /**
-         * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
+         * [废弃] 同 closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
          * **close** 表示点击关闭按钮可以关闭对话框
          * **mask** 表示点击遮罩区域可以关闭对话框
          * **esc** 表示按下 esc 键可以关闭对话框
@@ -184,28 +190,28 @@ export default class Dialog extends Component {
         closeable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         /**
          * 点击对话框关闭按钮时触发的回调函数
-         * @param {String} trigger 关闭触发行为的描述字符串
-         * @param {Object} event 关闭时事件对象
+         * @param trigger - 关闭触发行为的描述字符串
+         * @param event - 关闭时事件对象
          */
         onClose: PropTypes.func,
         /**
-         * [v2废弃] 对话框对齐方式, 具体见Overlay文档
+         * [v2 废弃] 对话框对齐方式，具体见 Overlay 文档
          */
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         /**
-         * [v2废弃] 是否撑开页面。 v2 改用 overflowScroll
+         * [v2 废弃] 是否撑开页面。v2 改用 overflowScroll
          */
         isFullScreen: PropTypes.bool,
         /**
-         * [v2废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
+         * [v2 废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式
          */
         shouldUpdatePosition: PropTypes.bool,
         /**
-         * [v2废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
+         * [v2 废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效
          */
         minMargin: PropTypes.number,
         /**
-         * 去除body内间距
+         * 去除 body 内间距
          * @version 1.26
          */
         noPadding: PropTypes.bool,
@@ -242,9 +248,13 @@ export default class Dialog extends Component {
         locale: zhCN.Dialog,
         noPadding: false,
     };
+    overlay: Overlay | null;
+    private _lastDialogHeight: string | number;
+    dialogBodyStyleMaxHeight: string;
+    dialogBodyStyleOverflowY: string;
 
-    constructor(props, context) {
-        super(props, context);
+    constructor(props: DialogProps) {
+        super(props);
         bindCtx(this, ['onKeyDown', 'beforePosition', 'adjustPosition', 'getOverlayRef']);
     }
 
@@ -264,7 +274,7 @@ export default class Dialog extends Component {
         return align === 'cc cc' && isFullScreen;
     }
 
-    onKeyDown(e) {
+    onKeyDown(e: KeyboardEvent) {
         if (this.overlay) {
             const node = this.getInnerNode();
             if (node) {
@@ -293,12 +303,12 @@ export default class Dialog extends Component {
 
                 let top = getStyle(node, 'top');
                 const minMargin = this.props.minMargin;
-                if (top < minMargin) {
+                if (top < minMargin!) {
                     top = minMargin;
                     setStyle(node, 'top', `${minMargin}px`);
                 }
 
-                const height = _getSize(node, 'height');
+                const height = _getSize(node, 'height') as number;
                 const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
                 if (
@@ -315,13 +325,17 @@ export default class Dialog extends Component {
         }
     }
 
-    adjustSize(inner, node, expectHeight) {
+    adjustSize(
+        inner: { headerNode: HTMLElement; bodyNode: HTMLElement; footerNode: HTMLDivElement },
+        node: HTMLElement,
+        expectHeight: number
+    ) {
         const { headerNode, bodyNode, footerNode } = inner;
         const [headerHeight, footerHeight] = [headerNode, footerNode].map(node =>
-            node ? _getSize(node, 'height') : 0
+            node ? (_getSize(node, 'height') as number) : 0
         );
         const padding = ['padding-top', 'padding-bottom'].reduce(
-            (sum, attr) => sum + getStyle(node, attr),
+            (sum, attr: CustomCSSStyleKey) => sum + (getStyle(node, attr) as number),
             0
         );
 
@@ -342,44 +356,49 @@ export default class Dialog extends Component {
         }
     }
 
-    revertSize(bodyNode) {
+    revertSize(bodyNode: HTMLElement) {
         setStyle(bodyNode, {
             'max-height': this.dialogBodyStyleMaxHeight,
             'overflow-y': this.dialogBodyStyleOverflowY,
         });
     }
 
-    mapcloseableToConfig(closeable) {
-        return ['esc', 'close', 'mask'].reduce((ret, option) => {
-            const key = option.charAt(0).toUpperCase() + option.substr(1);
-            const value =
-                typeof closeable === 'boolean'
-                    ? closeable
-                    : closeable.split(',').indexOf(option) > -1;
+    mapcloseableToConfig(closeable: NonNullable<DialogProps['closeable']>) {
+        return ['esc', 'close', 'mask'].reduce(
+            (ret, option) => {
+                const key = option.charAt(0).toUpperCase() + option.substr(1);
+                const value =
+                    typeof closeable === 'boolean'
+                        ? closeable
+                        : closeable.split(',').indexOf(option) > -1;
 
-            if (option === 'esc' || option === 'mask') {
-                ret[`canCloseBy${key}`] = value;
-            } else {
-                ret[`canCloseBy${key}Click`] = value;
-            }
+                if (option === 'esc' || option === 'mask') {
+                    ret[`canCloseBy${key}`] = value;
+                } else {
+                    ret[`canCloseBy${key}Click`] = value;
+                }
 
-            return ret;
-        }, {});
+                return ret;
+            },
+            {} as Record<string, NonNullable<DialogProps['closeable']>>
+        );
     }
 
-    getOverlayRef(ref) {
+    getOverlayRef(ref: Overlay | null) {
         this.overlay = ref;
     }
 
     getInner() {
-        return this.overlay.getInstance().getContent();
+        // @ts-expect-error Overlay 尚未 ts 化
+        return this.overlay!.getInstance().getContent();
     }
 
     getInnerNode() {
-        return this.overlay.getInstance().getContentNode();
+        // @ts-expect-error Overlay 尚未 ts 化
+        return this.overlay!.getInstance().getContentNode();
     }
 
-    renderInner(closeable) {
+    renderInner(closeable: DialogProps['closeable']) {
         const {
             prefix,
             className,
@@ -416,7 +435,7 @@ export default class Dialog extends Component {
                 locale={locale}
                 closeable={closeable}
                 rtl={rtl}
-                onClose={onClose.bind(this, 'closeClick')}
+                onClose={onClose!.bind(this, 'closeClick')}
                 height={height}
                 noPadding={noPadding}
                 {...others}
@@ -446,13 +465,13 @@ export default class Dialog extends Component {
         } = this.props;
 
         const useCSS = this.useCSSToPosition();
-        const newCloseable =
+        const newCloseable: DialogProps['closeable'] =
             'closeMode' in this.props
                 ? Array.isArray(closeMode)
-                    ? closeMode.join(',')
+                    ? (closeMode.join(',') as DialogProps['closeable'])
                     : closeMode
                 : closeable;
-        const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(newCloseable);
+        const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(newCloseable!);
         const newOverlayProps = {
             disableScroll: true,
             container: popupContainer,
@@ -482,8 +501,8 @@ export default class Dialog extends Component {
 
         const inner = this.renderInner(canCloseByCloseClick);
 
-        // useCSS && hasMask : isFullScreen 并且 有mask的模式下，为了解决 next-overlay-backdrop 覆盖mask，使得点击mask关闭页面的功能不生效的问题，需要开启 Overlay 的 isChildrenInMask 功能，并且把 next-dialog-container 放到 next-overlay-backdrop上
-        // useCSS && !hasMask : isFullScreen 并且 没有mask的情况下，需要关闭 isChildrenInMask 功能，以防止children不渲染
+        // useCSS && hasMask : isFullScreen 并且 有 mask 的模式下，为了解决 next-overlay-backdrop 覆盖 mask，使得点击 mask 关闭页面的功能不生效的问题，需要开启 Overlay 的 isChildrenInMask 功能，并且把 next-dialog-container 放到 next-overlay-backdrop 上
+        // useCSS && !hasMask : isFullScreen 并且 没有 mask 的情况下，需要关闭 isChildrenInMask 功能，以防止 children 不渲染
         // 其他模式下维持 mask 与 children 同级的关系
         return (
             <Overlay {...newOverlayProps}>

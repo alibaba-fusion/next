@@ -5,51 +5,24 @@ import Dialog1 from './dialog';
 import Dialog2 from './dialog-v2';
 
 import Inner from './inner';
-import { show, alert, confirm, withContext, success, error, notice, warning, help } from './show';
+import {
+    show,
+    alert,
+    confirm,
+    withContext,
+    success,
+    error,
+    notice,
+    warning,
+    help,
+    type Config,
+} from './show';
+import type { DialogProps, InnerProps } from './types';
 
-class Dialog extends React.Component {
-    render() {
-        const { v2, ...others } = this.props;
-        if (v2) {
-            return <Dialog2 {...others} />;
-        } else {
-            return <Dialog1 {...others} />;
-        }
-    }
-}
-
-Dialog.Inner = Inner;
-Dialog.show = config => {
-    const { warning } = ConfigProvider.getContextProps(config, 'Dialog');
-    if (warning !== false) {
-        config = processProps(config, log.deprecated);
-    }
-    return show(config);
-};
-Dialog.alert = config => {
-    const { warning } = ConfigProvider.getContextProps(config, 'Dialog');
-    if (warning !== false) {
-        config = processProps(config, log.deprecated);
-    }
-    return alert(config);
-};
-Dialog.confirm = config => {
-    const { warning } = ConfigProvider.getContextProps(config, 'Dialog');
-    if (warning !== false) {
-        config = processProps(config, log.deprecated);
-    }
-    return confirm(config);
-};
-Dialog.success = config => success(config);
-Dialog.error = config => error(config);
-Dialog.notice = config => notice(config);
-Dialog.warning = config => warning(config);
-Dialog.help = config => help(config);
-
-Dialog.withContext = withContext;
+export type { DialogProps, Config, InnerProps };
 
 /* istanbul ignore next */
-function processProps(props, deprecated) {
+function processProps(props: Record<string, unknown>, deprecated: typeof log.deprecated) {
     if ('closable' in props) {
         deprecated('closable', 'closeable', 'Dialog');
         const { closable, ...others } = props;
@@ -106,6 +79,46 @@ function processProps(props, deprecated) {
     });
 
     return props;
+}
+
+class Dialog extends React.Component<DialogProps> {
+    static Inner = Inner;
+    static withContext = withContext;
+    static show = (config: Config) => {
+        const { warning } = ConfigProvider.getContextProps(config, 'Dialog');
+        if (warning !== false) {
+            config = processProps(config as Record<string, unknown>, log.deprecated);
+        }
+        return show(config);
+    };
+    static alert = (config: Config) => {
+        const { warning } = ConfigProvider.getContextProps(config, 'Dialog');
+        if (warning !== false) {
+            config = processProps(config as Record<string, unknown>, log.deprecated);
+        }
+        return alert(config);
+    };
+    static confirm = (config: Config) => {
+        const { warning } = ConfigProvider.getContextProps(config, 'Dialog');
+        if (warning !== false) {
+            config = processProps(config as Record<string, unknown>, log.deprecated);
+        }
+        return confirm(config);
+    };
+    static success = (config: Config) => success(config);
+    static error = (config: Config) => error(config);
+    static notice = (config: Config) => notice(config);
+    static warning = (config: Config) => warning(config);
+    static help = (config: Config) => help(config);
+
+    render() {
+        const { v2, ...others } = this.props;
+        if (v2) {
+            return <Dialog2 {...others} />;
+        } else {
+            return <Dialog1 {...others} />;
+        }
+    }
 }
 
 export default ConfigProvider.config(Dialog, {

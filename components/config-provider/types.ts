@@ -51,7 +51,7 @@ export type DefaultPropsConfig = Record<string, object>;
  */
 export interface ContextState {
     nextPrefix?: string;
-    nextLocale?: Locale;
+    nextLocale?: Partial<Locale>;
     nextDefaultPropsConfig?: DefaultPropsConfig;
     nextPure?: boolean;
     nextDevice?: DeviceType;
