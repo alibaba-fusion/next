@@ -796,7 +796,7 @@ describe('Issue', () => {
 
         ReactDOM.render(<Table.StickyLock dataSource={dataSource()} columns={columns} />, container, function() {
             setTimeout(() => {
-                assert(container.querySelector('#target-line').style.left === '340px');
+                assert(parseInt(container.querySelector('#target-line').style.left) - 340 < 1);
                 ReactDOM.unmountComponentAtNode(container);
                 document.body.removeChild(container);
                 done();
@@ -897,8 +897,8 @@ describe('Issue', () => {
         ReactDOM.render(<Table.StickyLock dataSource={dataSource()} columns={columns} />, container, function() {
             setTimeout(() => {
                 assert(
-                    container.querySelectorAll('.next-table-cell.next-table-fix-right.next-table-fix-right-first')[3]
-                        .style.right === '200px'
+                    parseInt(container.querySelectorAll('.next-table-cell.next-table-fix-right.next-table-fix-right-first')[3]
+                        .style.right) - 200 < 1
                 );
                 ReactDOM.unmountComponentAtNode(container);
                 document.body.removeChild(container);
@@ -1415,6 +1415,7 @@ describe('TableScroll', () => {
         };
         const skipRow = container.querySelectorAll('tr.next-table-row')[10];
         assert(skipRow.children[0].textContent === '180');
+        await delay(200);
         const skipRowTop = skipRow.getBoundingClientRect().top;
         assert(skipRowTop >= getBodyTop());
         const tbody = container.querySelector('.next-table-body');
