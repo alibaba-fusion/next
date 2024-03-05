@@ -1,5 +1,13 @@
 /* istanbul ignore file */
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, {
+    useState,
+    useRef,
+    useEffect,
+    useContext,
+    type MouseEvent,
+    type CSSProperties,
+    type ReactNode,
+} from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import Overlay from '@alifd/overlay';
@@ -9,11 +17,13 @@ import Animate from '../animate';
 import zhCN from '../locale/zh-cn';
 import { log, func, dom, focus, guid } from '../util';
 import scrollLocker from './scroll-locker';
+import type { DialogProps } from './types';
+import type { CustomCSSStyle } from '../util/dom';
 
 const { OverlayContext } = Overlay;
 const noop = func.noop;
 
-const Dialog = props => {
+const Dialog = (props: DialogProps) => {
     if (!useState || !useRef || !useEffect) {
         log.warning('need react version > 16.8.0');
         return null;
@@ -74,19 +84,19 @@ const Dialog = props => {
               ? () => popupContainer
               : popupContainer;
     const [container, setContainer] = useState(getContainer());
-    const dialogRef = useRef(null);
-    const wrapperRef = useRef(null);
-    const lastFocus = useRef(null);
-    const locker = useRef(null);
+    const dialogRef = useRef<Inner>(null);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const lastFocus = useRef<HTMLElement>();
+    const locker = useRef<string | null>(null);
     const [uuid] = useState(guid());
     const { setVisibleOverlayToParent, ...otherContext } = useContext(OverlayContext);
     const childIDMap = useRef(new Map());
     const isAnimationEnd = useRef(false);
     const [, forceUpdate] = useState();
 
-    const markAnimationEnd = state => {
+    const markAnimationEnd = (state: boolean) => {
         isAnimationEnd.current = state;
-        forceUpdate({});
+        forceUpdate(undefined);
     };
 
     let canCloseByEsc = false;
@@ -118,26 +128,26 @@ const Dialog = props => {
     // 打开遮罩后 document.body 滚动处理
     useEffect(() => {
         if (visible && hasMask) {
-            const style = {
+            const style: Partial<CustomCSSStyle> = {
                 overflow: 'hidden',
             };
 
             if (dom.hasScroll(document.body)) {
                 const scrollWidth = dom.scrollbar().width;
                 if (scrollWidth) {
-                    style.paddingRight = `${dom.getStyle(document.body, 'paddingRight') + dom.scrollbar().width}px`;
+                    style.paddingRight = `${(dom.getStyle(document.body, 'paddingRight') as number) + dom.scrollbar().width}px`;
                 }
             }
             locker.current = scrollLocker.lock(document.body, style);
         }
     }, [visible && hasMask]);
 
-    const handleClose = (targetType, e) => {
+    const handleClose = (targetType: string, e: MouseEvent | KeyboardEvent) => {
         setVisibleOverlayToParent(uuid, null);
         typeof onClose === 'function' && onClose(targetType, e);
     };
 
-    const keydownEvent = e => {
+    const keydownEvent = (e: KeyboardEvent) => {
         if (e.keyCode === 27 && canCloseByEsc && !childIDMap.current.size) {
             handleClose('esc', e);
         }
@@ -170,8 +180,8 @@ const Dialog = props => {
     const handleExited = () => {
         if (!isAnimationEnd.current) {
             markAnimationEnd(true);
-            dom.setStyle(wrapperRef.current, 'display', 'none');
-            scrollLocker.unlock(document.body, locker.current);
+            dom.setStyle(wrapperRef.current!, 'display', 'none');
+            scrollLocker.unlock(document.body, locker.current!);
 
             if (autoFocus && lastFocus.current) {
                 try {
@@ -179,7 +189,7 @@ const Dialog = props => {
                 } finally {
                     // ignore ...
                 }
-                lastFocus.current = null;
+                lastFocus.current = undefined;
             }
             afterClose();
         }
@@ -199,7 +209,7 @@ const Dialog = props => {
         return null;
     }
 
-    const handleCancel = e => {
+    const handleCancel = (e: MouseEvent) => {
         if (typeof onCancel === 'function') {
             onCancel(e);
         } else {
@@ -207,14 +217,14 @@ const Dialog = props => {
         }
     };
 
-    const handleMaskClick = e => {
+    const handleMaskClick = (e: MouseEvent<Element>) => {
         if (!canCloseByMask) {
             return;
         }
 
         if (e.type === 'click' && dialogRef.current) {
             const dialogNode = ReactDOM.findDOMNode(dialogRef.current);
-            if (dialogNode && dialogNode.contains(e.target)) {
+            if (dialogNode && dialogNode.contains(e.target as Element)) {
                 return;
             }
         }
@@ -224,13 +234,13 @@ const Dialog = props => {
 
     const handleEnter = () => {
         markAnimationEnd(false);
-        dom.setStyle(wrapperRef.current, 'display', '');
+        dom.setStyle(wrapperRef.current!, 'display', '');
     };
     const handleEntered = () => {
         if (autoFocus && dialogRef.current && dialogRef.current.bodyNode) {
             const focusableNodes = focus.getFocusNodeList(dialogRef.current.bodyNode);
             if (focusableNodes.length > 0 && focusableNodes[0]) {
-                lastFocus.current = document.activeElement;
+                lastFocus.current = document.activeElement as HTMLElement;
                 focusableNodes[0].focus();
             }
         }
@@ -239,15 +249,15 @@ const Dialog = props => {
 
     const wrapperCls = classNames({
         [`${prefix}overlay-wrapper`]: true,
-        [wrapperClassName]: !!wrapperClassName,
+        [wrapperClassName!]: !!wrapperClassName,
         opened: visible,
     });
     const dialogCls = classNames({
         [`${prefix}dialog-v2`]: true,
-        [className]: !!className,
+        [className!]: !!className,
     });
 
-    const topStyle = {};
+    const topStyle: CSSProperties = {};
     if (centered) {
         // 兼容 minMargin
         if (!top && !bottom && minMargin) {
@@ -273,7 +283,7 @@ const Dialog = props => {
         exit: 250,
     };
 
-    let inner = (
+    let inner: ReactNode = (
         <Animate.OverlayAnimate
             visible={visible}
             animation={animation}
@@ -320,7 +330,7 @@ const Dialog = props => {
         [`${prefix}dialog-centered`]: centered,
     });
 
-    const getVisibleOverlayFromChild = (id, node) => {
+    const getVisibleOverlayFromChild = (id: string, node: Element) => {
         if (node) {
             childIDMap.current.set(id, node);
         } else {

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Dialog } from '@alifd/next';
+import type { DialogProps } from '../../../types';
 
 class Demo extends React.Component {
     state = {
@@ -13,8 +14,15 @@ class Demo extends React.Component {
         });
     };
 
-    onClose = e => {
-        console.log(e.triggerType);
+    onOk: DialogProps['onOk'] = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+
+    onClose: DialogProps['onClose'] = (triggerType, e) => {
+        console.log(triggerType, e);
         this.setState({
             visible: false,
         });
@@ -30,7 +38,7 @@ class Demo extends React.Component {
                     v2
                     title="Welcome to Alibaba.com"
                     visible={this.state.visible}
-                    onOk={this.onClose}
+                    onOk={this.onOk}
                     onClose={this.onClose}
                 >
                     <p>Start your business here by searching a popular product</p>

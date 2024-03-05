@@ -51,11 +51,11 @@ function _isFocusable(node: Element): boolean {
  * 列出能获取焦点的子节点
  * @param node - 容器节点
  */
-export function getFocusNodeList(node: Element): Element[] {
-    const res: Element[] = [];
+export function getFocusNodeList(node: HTMLElement): HTMLElement[] {
+    const res: HTMLElement[] = [];
     const nodeList = node.querySelectorAll('*');
 
-    each(nodeList, item => {
+    each(nodeList, (item: HTMLElement) => {
         if (_isFocusable(item)) {
             const method = item.getAttribute('data-auto-focus') ? 'unshift' : 'push';
             res[method](item);
@@ -112,7 +112,7 @@ export function limitTabRange(
     if (e.keyCode === KEYCODE.TAB) {
         const tabNodeList = getFocusNodeList(node);
         const maxIndex = tabNodeList.length - 1;
-        const index = tabNodeList.indexOf(document.activeElement!);
+        const index = tabNodeList.indexOf(document.activeElement! as HTMLElement);
 
         if (index > -1) {
             let targetIndex = index + (e.shiftKey ? -1 : 1);

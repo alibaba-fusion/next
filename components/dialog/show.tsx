@@ -1,12 +1,21 @@
-import React, { Component, forwardRef, useImperativeHandle } from 'react';
+import React, {
+    Component,
+    type JSXElementConstructor,
+    forwardRef,
+    useImperativeHandle,
+    type ComponentPropsWithoutRef,
+    ComponentType,
+    ReactComponentElement,
+} from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import ConfigProvider from '../config-provider';
-import Message from '../message';
+import Message, { type MessageProps } from '../message';
 import zhCN from '../locale/zh-cn';
 import dialog from './dialog';
 import Dialog2Ins from './dialog-v2';
+import type { ShowModalInnerProps, DialogProps } from './types';
 
 const Dialog = ConfigProvider.config(dialog);
 const Dialog2 = ConfigProvider.config(
@@ -17,16 +26,17 @@ const Dialog2 = ConfigProvider.config(
 );
 
 const noop = () => {};
-const MESSAGE_TYPE = {
+const MESSAGE_TYPE: Record<string, MessageProps['type']> = {
     alert: 'warning', // deprecated in 2.x
     confirm: 'help',
-
     success: 'success',
     error: 'error',
     warning: 'warning',
     notice: 'notice',
     help: 'help',
 };
+
+type ModalInnerProps = ShowModalInnerProps & { type?: keyof typeof MESSAGE_TYPE };
 
 export const ModalInner = function ({
     type,
@@ -35,12 +45,12 @@ export const ModalInner = function ({
     rtl,
     prefix = 'next-',
     content,
-}) {
+}: ModalInnerProps) {
     return (
         <Message
             size="large"
             shape="addon"
-            type={MESSAGE_TYPE[type]}
+            type={MESSAGE_TYPE[type!]}
             {...messageProps}
             title={title}
             rtl={rtl}
@@ -51,7 +61,19 @@ export const ModalInner = function ({
     );
 };
 
-class Modal extends Component {
+interface ModalState {
+    visible?: boolean;
+    loading?: boolean;
+    okLoading?: boolean;
+    cancelLoading?: boolean;
+}
+
+interface ModelProps extends DialogProps, Omit<ShowModalInnerProps, 'locale'> {
+    type?: keyof typeof MESSAGE_TYPE;
+    needWrapper?: boolean;
+}
+
+class Modal extends Component<ModelProps, ModalState> {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -71,20 +93,20 @@ class Modal extends Component {
         footerActions: PropTypes.array,
         /**
          * Callback function triggered when Ok button is clicked
-         * @param {Object} event click event object
-         * @returns {Promise} Optionally handles a Promise return object
+         * @param event - click event object
+         * @returns Optionally handles a Promise return object
          */
         onOk: PropTypes.func,
         /**
          * Callback function triggered when Cancel button is clicked
-         * @param {Object} event click event object
-         * @returns {Promise} Optionally handles a Promise return object
+         * @param event - click event object
+         * @returns Optionally handles a Promise return object
          */
         onCancel: PropTypes.func,
         /**
          * Callback function triggered when Close button is clicked
-         * @param {Object} event click event object
-         * @returns {Promise} Optionally handles a Promise return object
+         * @param event - click event object
+         * @returns Optionally handles a Promise return object
          */
         onClose: PropTypes.func,
         okProps: PropTypes.object,
@@ -107,7 +129,7 @@ class Modal extends Component {
         needWrapper: true,
     };
 
-    state = {
+    state: ModalState = {
         visible: true,
         okLoading: false,
         cancelLoading: false,
@@ -119,33 +141,39 @@ class Modal extends Component {
         });
     };
 
-    okLoading = loading => {
+    okLoading = (loading: boolean) => {
         this.setState({
             okLoading: loading,
         });
     };
-    cancelLoading = loading => {
+    cancelLoading = (loading: boolean) => {
         this.setState({
             cancelLoading: loading,
         });
     };
 
-    wrapper(fn, callback, changeLoading) {
-        return (...args) => {
+    wrapper(
+        fn: (...args: unknown[]) => unknown,
+        callback: () => void,
+        changeLoading: (n: boolean) => void
+    ) {
+        return (...args: unknown[]) => {
             const res = fn(...args);
-            if (res && res.then) {
+            if (res && (res as Promise<unknown>).then) {
                 changeLoading(true);
 
-                res.then(result => {
-                    changeLoading(false);
+                (res as Promise<unknown>)
+                    .then(result => {
+                        changeLoading(false);
 
-                    if (result !== false) {
-                        return callback();
-                    }
-                }).catch(e => {
-                    changeLoading(false);
-                    throw e;
-                });
+                        if (result !== false) {
+                            return callback();
+                        }
+                    })
+                    .catch(e => {
+                        changeLoading(false);
+                        throw e;
+                    });
             } else if (res !== false) {
                 return callback();
             }
@@ -192,23 +220,23 @@ class Modal extends Component {
             footerActions ||
             (type === 'confirm'
                 ? ['ok', 'cancel']
-                : ['alert', 'success', 'error', 'notice', 'warning', 'help'].indexOf(type) > -1
+                : ['alert', 'success', 'error', 'notice', 'warning', 'help'].indexOf(type!) > -1
                   ? ['ok']
                   : undefined);
-        const newOnOk = this.wrapper(onOk, this.close, this.okLoading);
-        const newOnCancel = this.wrapper(onCancel, this.close, this.cancelLoading);
-        const newOnClose = this.wrapper(onClose, this.close, this.cancelLoading);
+        const newOnOk = this.wrapper(onOk!, this.close, this.okLoading);
+        const newOnCancel = this.wrapper(onCancel!, this.close, this.cancelLoading);
+        const newOnClose = this.wrapper(onClose!, this.close, this.cancelLoading);
 
         const { visible, okLoading, cancelLoading } = this.state;
         // 不能直接改，这里修改相当于改了全局 okProps
         // okProps.loading = loading;
 
         const newOkProps = { ...okProps };
-        if (!('loading' in okProps)) {
+        if (!('loading' in okProps!)) {
             newOkProps.loading = okLoading;
         }
         const newCancelProps = { ...cancelProps };
-        if (!('loading' in cancelProps)) {
+        if (!('loading' in cancelProps!)) {
             newCancelProps.loading = cancelLoading;
         }
 
@@ -241,28 +269,35 @@ class Modal extends Component {
 
 const ConfigModal = ConfigProvider.config(Modal, { componentName: 'Dialog' });
 
+export interface Config extends ModelProps {
+    afterClose?: () => void;
+    contextConfig?: Partial<ReturnType<typeof ConfigProvider.getContext>>;
+}
+
 /**
  * 创建对话框
- * @exportName show
- * @param {Object} config 配置项
- * @returns {Object} 包含有 hide 方法，可用来关闭对话框
+ * @param config - 配置项
+ * @returns 包含有 hide 方法，可用来关闭对话框
  */
-export const show = (config = {}) => {
+export const show = (config: Config = {}) => {
     const container = document.createElement('div');
     const unmount = () => {
         if (config.afterClose) {
             config.afterClose();
         }
+        // eslint-disable-next-line react/no-deprecated
         ReactDOM.unmountComponentAtNode(container);
-        container.parentNode.removeChild(container);
+        container.parentNode?.removeChild(container);
     };
 
     document.body.appendChild(container);
     let newContext = config.contextConfig;
     if (!newContext) newContext = ConfigProvider.getContext();
 
-    let instance, myRef;
+    let instance: InstanceType<typeof ConfigModal> | null,
+        myRef: InstanceType<typeof ConfigModal> | null;
 
+    // eslint-disable-next-line react/no-deprecated
     ReactDOM.render(
         <ConfigProvider {...newContext}>
             <ConfigModal
@@ -287,17 +322,16 @@ export const show = (config = {}) => {
 };
 
 const methodFactory =
-    type =>
-    (config = {}) => {
+    (type: Config['type']) =>
+    (config: Config = {}) => {
         config.type = type;
         return show(config);
     };
 
 /**
  * 创建警示对话框
- * @exportName alert
- * @param {Object} config 配置项
- * @returns {Object} 包含有 hide 方法，可用来关闭对话框
+ * @param config - 配置项
+ * @returns 包含有 hide 方法，可用来关闭对话框
  */
 export const alert = methodFactory('alert');
 
@@ -309,29 +343,52 @@ export const help = methodFactory('help');
 
 /**
  * 创建确认对话框
- * @exportName confirm
- * @param {Object} config 配置项
- * @returns {Object} 包含有 hide 方法，可用来关闭对话框
+ * @param config - 配置项
+ * @returns 包含有 hide 方法，可用来关闭对话框
  */
 export const confirm = methodFactory('confirm');
 
-export const withContext = WrappedComponent => {
-    const HOC = props => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyProps = any;
+
+export interface ContextDialog {
+    show: (config?: Config) => { hide: () => void };
+    alert: (config?: Config) => { hide: () => void };
+    confirm: (config?: Config) => { hide: () => void };
+    success: (config?: Config) => { hide: () => void };
+    error: (config?: Config) => { hide: () => void };
+    warning: (config?: Config) => { hide: () => void };
+    notice: (config?: Config) => { hide: () => void };
+    help: (config?: Config) => { hide: () => void };
+}
+
+export interface WithContextDialogProps {
+    contextDialog: ContextDialog;
+}
+
+export const withContext = <P extends WithContextDialogProps, C>(
+    WrappedComponent: JSXElementConstructor<P> & C
+) => {
+    type Props = React.JSX.LibraryManagedAttributes<C, Omit<P, 'contextDialog'>>;
+    const HOC = (props: Props) => {
         return (
             <ConfigProvider.Consumer>
                 {contextConfig => (
                     <WrappedComponent
-                        {...props}
-                        contextDialog={{
-                            show: (config = {}) => show({ ...config, contextConfig }),
-                            alert: (config = {}) => alert({ ...config, contextConfig }),
-                            confirm: (config = {}) => confirm({ ...config, contextConfig }),
-                            success: (config = {}) => success({ ...config, contextConfig }),
-                            error: (config = {}) => error({ ...config, contextConfig }),
-                            warning: (config = {}) => warning({ ...config, contextConfig }),
-                            notice: (config = {}) => notice({ ...config, contextConfig }),
-                            help: (config = {}) => help({ ...config, contextConfig }),
-                        }}
+                        // why AnyProps? see: https://react-typescript-cheatsheet.netlify.app/docs/hoc/react_hoc_docs
+                        {...(props as AnyProps)}
+                        contextDialog={
+                            {
+                                show: (config = {}) => show({ ...config, contextConfig }),
+                                alert: (config = {}) => alert({ ...config, contextConfig }),
+                                confirm: (config = {}) => confirm({ ...config, contextConfig }),
+                                success: (config = {}) => success({ ...config, contextConfig }),
+                                error: (config = {}) => error({ ...config, contextConfig }),
+                                warning: (config = {}) => warning({ ...config, contextConfig }),
+                                notice: (config = {}) => notice({ ...config, contextConfig }),
+                                help: (config = {}) => help({ ...config, contextConfig }),
+                            } as ContextDialog
+                        }
                     />
                 )}
             </ConfigProvider.Consumer>
