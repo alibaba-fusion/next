@@ -289,15 +289,26 @@ class RangePicker extends Component {
         };
     }
 
+    getFormValue = (value) => {
+        return value ? value.format(this.state.dateTimeFormat) : null;
+    }
+
     onValueChange = (values, handler = 'onChange') => {
+        const { startValue, endValue, activeDateInput } = this.state
         let ret;
         if (!values.length || !this.state.inputAsString) {
             ret = values;
         } else {
             ret = [
-                values[0] ? values[0].format(this.state.dateTimeFormat) : null,
-                values[1] ? values[1].format(this.state.dateTimeFormat) : null,
+                values[0] ? this.getFormValue(values[0]) : null,
+                values[1] ? this.getFormValue(values[1]) : null,
             ];
+        }
+        if (this.getFormValue(values[1]) === this.getFormValue(endValue) && activeDateInput === 'endValue') {
+            this.onFocusDateInput('startValue')
+        }
+        if (this.getFormValue(values[0]) === this.getFormValue(startValue) && activeDateInput === 'startValue') {
+            this.onFocusDateInput('endValue')
         }
         this.props[handler](ret);
     };

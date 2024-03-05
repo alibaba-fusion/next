@@ -1652,4 +1652,16 @@ describe('RangePicker', () => {
             );
         });
     });
+    
+    describe('issues', () => {
+        it('should render replacing the Focus frame close #3998', () => {
+            wrapper = mount(<RangePicker visible={true}/>);
+            wrapper.find('td[title="2024-03-01"] .next-calendar-date').simulate('click');
+            wrapper.find('span.next-range-picker-panel-input-start-date').hasClass('next-focus');
+            wrapper.find('td[title="2024-03-08"] .next-calendar-date').simulate('click');
+            wrapper.find('span.next-range-picker-panel-input-end-date').hasClass('next-focus');
+            wrapper.find('td[title="2024-03-08"] .next-calendar-date').simulate('click');
+            wrapper.find('span.next-range-picker-panel-input-start-date').hasClass('next-focus');
+        });
+    });
 });
