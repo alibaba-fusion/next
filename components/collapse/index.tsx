@@ -1,8 +1,9 @@
+import { assignSubComponent } from '../util/component';
 import Collapse from './collapse';
 import Panel from './panel';
 import type { CollapseProps, PanelProps } from './types';
 
-Collapse.Panel = Panel;
+const CollapseWithPanel = assignSubComponent(Collapse, { Panel });
 
-export default Collapse;
+export default CollapseWithPanel;
 export type { CollapseProps, PanelProps };

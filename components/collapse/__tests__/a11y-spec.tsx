@@ -5,7 +5,6 @@ import { testReact } from '../../util/__tests__/a11y/validate';
 
 const Panel = Collapse.Panel;
 
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Collapse A11y', () => {
     it('should not have any violations for children rendered component', async () => {
         await testReact(

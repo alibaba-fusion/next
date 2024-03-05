@@ -1,24 +1,12 @@
 import React from 'react';
 import { CommonProps } from '../util';
 
-type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'title' | 'id' | 'onClick'>;
+type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'title' | 'onClick'>;
 
 /**
- * @api Panel
+ * @api Collapse.Panel
  */
 export interface PanelProps extends HTMLAttributesWeak, CommonProps {
-    /**
-     * 样式类名的品牌前缀
-     * @en The prefix of the component's className
-     */
-    prefix?: string;
-
-    /**
-     * 子组件接受行内样式
-     * @en The style of the component
-     */
-    style?: React.CSSProperties;
-
     /**
      * 是否禁止用户操作
      * @en Whether to disable user actions
@@ -33,21 +21,10 @@ export interface PanelProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否展开
      * @en Whether to expand
+     * @defaultValue false
      */
 
     isExpanded?: boolean;
-
-    /**
-     * 扩展 className
-     * @en Extra className
-     */
-    className?: string;
-
-    /**
-     * 唯一标识
-     * @en Unique identifier
-     */
-    id?: string | number;
 
     /**
      * 点击回调函数
@@ -59,15 +36,20 @@ export interface PanelProps extends HTMLAttributesWeak, CommonProps {
 }
 
 /**
- * @api Collapse
+ * @api
+ */
+export type KeyType = string | number;
+
+/**
+ * @api
  */
 export type DataItem = {
-    id?: string | number;
+    id?: string;
     title?: React.ReactNode;
     content?: React.ReactNode;
     disabled?: boolean;
-    key?: string | number;
-    onClick?: (key: string) => void;
+    key?: KeyType;
+    onClick?: (key: KeyType) => void;
     [propName: string]: unknown;
 };
 
@@ -76,40 +58,28 @@ export type DataItem = {
  */
 export interface CollapseProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
-     * 样式前缀
-     * @en The prefix of the component's className
-     */
-    prefix?: string;
-
-    /**
-     * 组件接受行内样式
-     * @en The style of the component
-     */
-    style?: React.CSSProperties;
-
-    /**
      * 使用数据模型构建
      * @en Use data model to build
      */
     dataSource?: Array<DataItem>;
 
     /**
-     * 默认展开keys
+     * 默认展开 keys
      * @en Default expanded keys
      */
-    defaultExpandedKeys?: Array<string | number>;
+    defaultExpandedKeys?: KeyType[];
 
     /**
-     * 受控展开keys
+     * 受控展开 keys
      * @en Controlled expanded keys
      */
-    expandedKeys?: Array<string>;
+    expandedKeys?: KeyType[];
 
     /**
      * 展开状态发升变化时候的回调
      * @en Callback when the expanded state changes
      */
-    onExpand?: (expandedKeys: Array<string | number> | string | number) => void;
+    onExpand?: (expandedKeys: KeyType | KeyType[]) => void;
 
     /**
      * 所有禁用
@@ -118,14 +88,9 @@ export interface CollapseProps extends React.HTMLAttributes<HTMLElement>, Common
     disabled?: boolean;
 
     /**
-     * 扩展class
-     * @en Extra className
-     */
-    className?: string;
-
-    /**
      * 手风琴模式，一次只能打开一个
      * @en Accordion mode, only one can be opened at a time
+     * @defaultValue false
      */
     accordion?: boolean;
 }
