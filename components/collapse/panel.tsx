@@ -28,7 +28,7 @@ class Panel extends React.Component<PanelProps> {
          */
         title: PropTypes.node,
         /**
-         * 扩展class
+         * 扩展 class
          */
         className: PropTypes.string,
         onClick: PropTypes.func,
@@ -41,7 +41,7 @@ class Panel extends React.Component<PanelProps> {
         onClick: func.noop,
     };
 
-    static isNextPanel = true; //
+    static isNextPanel = true;
 
     onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
         const { keyCode } = e;
@@ -70,11 +70,11 @@ class Panel extends React.Component<PanelProps> {
             [`${prefix}collapse-panel-icon-expanded`]: isExpanded,
         });
 
-        // 为了无障碍 需要添加两个id
+        // 为了无障碍 需要添加两个 id
         const headingId = id ? `${id}-heading` : undefined;
         const regionId = id ? `${id}-region` : undefined;
         return (
-            <div className={cls} style={style} id={id as string} {...others}>
+            <div className={cls} style={style} id={id} {...others}>
                 <div
                     id={headingId}
                     className={`${prefix}collapse-panel-title`}

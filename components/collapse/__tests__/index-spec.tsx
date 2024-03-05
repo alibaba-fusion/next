@@ -1,11 +1,8 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import Collapse from '../index';
 import '../style';
 
 const Panel = Collapse.Panel;
-
-/* global describe, it */
-/* eslint-disable react/jsx-filename-extension */
 
 describe('Collapse', () => {
     describe('render', () => {
@@ -78,7 +75,9 @@ describe('Collapse', () => {
                         <div>others</div>
                     </Collapse>
                 );
-                cy.get('.next-collapse-panel-expanded').should('have.length', 1);
+                cy.get('.next-collapse-panel')
+                    .eq(2)
+                    .should('have.class', 'next-collapse-panel-expanded');
             });
 
             it('should expand panel with number key', () => {
@@ -92,7 +91,9 @@ describe('Collapse', () => {
                         <div>others</div>
                     </Collapse>
                 );
-                cy.get('.next-collapse-panel-expanded').should('have.length', 1);
+                cy.get('.next-collapse-panel')
+                    .eq(2)
+                    .should('have.class', 'next-collapse-panel-expanded');
             });
 
             it('should close default expanded string keys', () => {
