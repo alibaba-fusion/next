@@ -165,7 +165,8 @@ class StepItem extends Component {
             labelPlacement === 'horizontal' || labelPlacement === 'hoz'
                 ? this.container.offsetWidth + this.body.offsetWidth
                 : this.title.offsetWidth;
-        const width = total - 1 !== index ? `calc((100% - ${lastNodeWidth}px)/${total - 1})` : 'auto';
+        const width =
+            total - 1 !== index ? `calc((100% - ${lastNodeWidth}px)/${total - 1})` : 'auto';
         dom.setStyle(this.step, {
             width,
         });
@@ -186,7 +187,9 @@ class StepItem extends Component {
             const stepHozWhitespace = dom.getNodeHozWhitespace(this.step.parentNode);
             const stepBodyHozWhitespace = dom.getNodeHozWhitespace(this.body);
             const { rtl } = this.props;
-            rtl ? (this.body.style.right = `${stepWidth}px`) : (this.body.style.left = `${stepWidth}px`);
+            rtl
+                ? (this.body.style.right = `${stepWidth}px`)
+                : (this.body.style.left = `${stepWidth}px`);
             dom.setStyle(this.body, {
                 width:
                     dom.getStyle(this.step.parentNode.parentNode, 'width') -
@@ -206,9 +209,19 @@ class StepItem extends Component {
         const { prefix, index, status, icon, shape, percent, itemRender } = this.props;
         let nodeElement = icon;
         if (shape === 'dot') {
-            nodeElement = icon ? <Icon type={icon} /> : <div className={`${prefix}step-item-node-dot`}> </div>;
+            nodeElement = icon ? (
+                <Icon type={icon} />
+            ) : (
+                <div className={`${prefix}step-item-node-dot`}> </div>
+            );
         } else if (shape === 'circle' && percent) {
-            nodeElement = <Progress shape="circle" percent={percent} className={`${prefix}step-item-progress`} />;
+            nodeElement = (
+                <Progress
+                    shape="circle"
+                    percent={percent}
+                    className={`${prefix}step-item-progress`}
+                />
+            );
         } else if (shape === 'circle' && !!itemRender && typeof itemRender === 'function') {
             nodeElement = null; // 如果是需要自定义节点，则不处理，返回空
         } else {
@@ -264,7 +277,12 @@ class StepItem extends Component {
         }
 
         return (
-            <li {...others} style={this.getStyle()} className={stepCls} ref={this._refHandlerCreator('step')}>
+            <li
+                {...others}
+                style={this.getStyle()}
+                className={stepCls}
+                ref={this._refHandlerCreator('step')}
+            >
                 {finalNodeElement}
                 <div
                     className={`${prefix}step-item-body`}
@@ -272,7 +290,10 @@ class StepItem extends Component {
                     tabIndex={this.props.tabIndex}
                     aria-current={this.props['aria-current']}
                 >
-                    <div className={`${prefix}step-item-title`} ref={this._refHandlerCreator('title')}>
+                    <div
+                        className={`${prefix}step-item-title`}
+                        ref={this._refHandlerCreator('title')}
+                    >
                         {title}
                     </div>
                     <div className={`${prefix}step-item-content`}>{content}</div>
@@ -335,7 +356,7 @@ class StepItem extends Component {
 
     _refHandlerCreator(refName) {
         const self = this;
-        return function(ref) {
+        return function (ref) {
             self[refName] = ref;
         };
     }
