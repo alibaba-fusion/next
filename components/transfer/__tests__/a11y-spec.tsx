@@ -34,12 +34,16 @@ describe('Transfer A11y', () => {
     });
 
     it('should not have any violations when simple mode', async () => {
-        wrapper = await testReact(<Transfer id="a11y-transfer" mode="simple" dataSource={dataSource} />);
+        wrapper = await testReact(
+            <Transfer id="a11y-transfer" mode="simple" dataSource={dataSource} />
+        );
         return wrapper;
     });
 
     it('should not have any violations when defaultValue set', async () => {
-        wrapper = await testReact(<Transfer id="a11y-transfer" defaultValue={['1']} dataSource={dataSource} />);
+        wrapper = await testReact(
+            <Transfer id="a11y-transfer" defaultValue={['1']} dataSource={dataSource} />
+        );
         return wrapper;
     });
 
