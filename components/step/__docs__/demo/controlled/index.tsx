@@ -1,11 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Step, Button, Select, Icon } from '@alifd/next';
+import type { StepDirection, StepProps, StepShape } from '../../../types';
+
+type ItemRender = NonNullable<StepProps['itemRender']>;
+interface IState {
+    currentStep: number;
+    stepType: StepShape;
+    stepAnimation: boolean;
+    labelPlacement: StepDirection;
+    itemRender?: StepProps['itemRender'];
+    content?: string;
+}
 
 const StepItem = Step.Item,
     ButtonGroup = Button.Group;
 
-const renders = {
+const renders: Record<string, ItemRender> = {
     1: function itemRender1(index) {
         return (
             <div className="custom-node1">
@@ -27,8 +38,8 @@ const contents = [
     'Description3',
 ];
 
-class Component extends React.Component {
-    constructor(props) {
+class Component extends React.Component<unknown, IState> {
+    constructor(props: unknown) {
         super(props);
 
         this.state = {
@@ -54,23 +65,23 @@ class Component extends React.Component {
             currentStep: s < 0 ? 0 : s,
         });
     }
-    onClick(currentStep) {
+    onClick(currentStep: number) {
         console.log(currentStep);
 
         this.setState({
             currentStep: currentStep,
         });
     }
-    onStepTypeChange(value) {
+    onStepTypeChange(value: StepShape) {
         this.setState({ stepType: value });
     }
-    onStepAnimation(value) {
+    onStepAnimation(value: boolean) {
         this.setState({ stepAnimation: value });
     }
-    onLabelPlacementChange(value) {
+    onLabelPlacementChange(value: StepDirection) {
         this.setState({ labelPlacement: value });
     }
-    onItemRenderChange(value) {
+    onItemRenderChange(value: number) {
         this.setState({ itemRender: renders[value], content: contents[value] });
     }
     render() {

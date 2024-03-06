@@ -1,11 +1,13 @@
-import React from 'react';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import React, { type ReactNode } from 'react';
+import ReactDOM from 'react-dom';
+import { Demo, DemoGroup, initDemo, DemoFunctionDefineForObject } from '../../../demo-helper';
 import Step from '../../index';
+import type { StepDirection, ItemProps, StepShape } from '../../types';
 import '../../style';
 import '../../../demo-helper/style';
 
 const StepItem = Step.Item;
-const parseBool = str => {
+const parseBool = (str: unknown) => {
     switch (str) {
         case 'true':
             return true;
@@ -56,8 +58,29 @@ const i18nMap = {
     },
 };
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
+interface FunctionDemoProps {
+    title: string;
+    i18n: Record<string, string>;
+    itemData: Record<string, ItemProps[]>;
+    shape: StepShape;
+}
+
+type DemoFunctionMap = Record<string, DemoFunctionDefineForObject>;
+
+interface FunctionDemoState {
+    circleDdemoFunction: DemoFunctionMap;
+    dotDemoFunction: DemoFunctionMap;
+    demoFunction?: DemoFunctionMap;
+}
+
+interface Flag {
+    withIcon: boolean;
+    withContent: boolean;
+    labelPlacement?: StepDirection;
+}
+
+class FunctionDemo extends React.Component<FunctionDemoProps, FunctionDemoState> {
+    constructor(props: FunctionDemoProps) {
         super(props);
         this.state = {
             circleDdemoFunction: {
@@ -107,13 +130,20 @@ class FunctionDemo extends React.Component {
         };
     }
 
-    onFunctionChange = ret => {
+    onFunctionChange = (ret: DemoFunctionMap) => {
         this.setState({
             demoFunction: ret,
         });
     };
 
-    itemRender = ({ flag, index, ...props }) => {
+    itemRender = ({
+        flag,
+        index,
+        ...props
+    }: ItemProps & {
+        flag: Flag;
+        index: number;
+    }) => {
         !flag.withIcon && delete props.icon;
         !flag.withContent && delete props.content;
         // !flag.withProgress && delete props.percent;
@@ -121,12 +151,12 @@ class FunctionDemo extends React.Component {
     };
     render() {
         const { title, i18n, itemData, shape } = this.props;
-        let demoFunction, flag, result;
+        let demoFunction: DemoFunctionMap, flag: Flag, result: ReactNode;
         if (shape === 'circle') {
             demoFunction = this.state.circleDdemoFunction;
             flag = {
                 withIcon: parseBool(demoFunction.icon.value),
-                labelPlacement: demoFunction.contentPos.value,
+                labelPlacement: demoFunction.contentPos.value as StepDirection,
                 withContent: parseBool(demoFunction.content.value),
             };
         } else {
@@ -144,14 +174,14 @@ class FunctionDemo extends React.Component {
                         <DemoGroup label={i18n.horizontal}>
                             <Step current={2} shape={shape}>
                                 {itemData.horizontal.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
                         <DemoGroup label={i18n.disabled}>
                             <Step current={2} shape={shape}>
                                 {itemData.disabled.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
@@ -169,14 +199,14 @@ class FunctionDemo extends React.Component {
                         <DemoGroup label={i18n.horizontal}>
                             <Step current={1} shape={shape} labelPlacement={flag.labelPlacement}>
                                 {itemData.horizontal.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
                         <DemoGroup label={i18n.disabled}>
                             <Step current={2} shape={shape} labelPlacement={flag.labelPlacement}>
                                 {itemData.disabled.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
@@ -185,14 +215,14 @@ class FunctionDemo extends React.Component {
                         <DemoGroup label={i18n.horizontal}>
                             <Step current={1} shape={shape} direction="ver">
                                 {itemData.horizontal.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
                         <DemoGroup label={i18n.disabled}>
                             <Step current={2} shape={shape} direction="ver">
                                 {itemData.disabled.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
@@ -210,21 +240,21 @@ class FunctionDemo extends React.Component {
                         <DemoGroup label={i18n.horizontal}>
                             <Step current={1} shape={shape} labelPlacement={flag.labelPlacement}>
                                 {itemData.horizontal.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
                         <DemoGroup label={i18n.percent}>
                             <Step current={2} shape={shape} labelPlacement={flag.labelPlacement}>
                                 {itemData.percent.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
                         <DemoGroup label={i18n.disabled}>
                             <Step current={2} shape={shape} labelPlacement={flag.labelPlacement}>
                                 {itemData.disabled.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
@@ -233,21 +263,21 @@ class FunctionDemo extends React.Component {
                         <DemoGroup label={i18n.horizontal}>
                             <Step current={1} shape={shape} direction="ver">
                                 {itemData.horizontal.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
                         <DemoGroup label={i18n.percent}>
                             <Step current={2} shape={shape} direction="ver">
                                 {itemData.percent.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
                         <DemoGroup label={i18n.disabled}>
                             <Step current={2} shape={shape} direction="ver">
                                 {itemData.disabled.map((v, index) =>
-                                    this.itemRender({ flag, index, ...v })
+                                    this.itemRender({ ...v, flag, index })
                                 )}
                             </Step>
                         </DemoGroup>
@@ -259,8 +289,7 @@ class FunctionDemo extends React.Component {
     }
 }
 
-/* eslint-disable */
-function render(lang) {
+function render(lang: 'zh-cn' | 'en-us') {
     const i18n = i18nMap[lang];
     const horizontal = [
             {
@@ -358,6 +387,7 @@ function render(lang) {
                 },
             ],
         };
+    // eslint-disable-next-line react/no-render-return-value
     return ReactDOM.render(
         <div className="demo-container">
             <FunctionDemo
@@ -378,7 +408,7 @@ function render(lang) {
     );
 }
 
-window.renderDemo = function (lang) {
+window.renderDemo = function (lang?: 'en-us' | 'zh-cn') {
     lang = lang || 'en-us';
     render(lang);
 };
