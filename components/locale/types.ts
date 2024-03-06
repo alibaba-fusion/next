@@ -1,5 +1,5 @@
 export interface ComponentLocaleObject {
-    [key: string]: string | ComponentLocaleObject | undefined;
+    [key: string]: string | ComponentLocaleObject | undefined | boolean;
 }
 
 export interface LocaleConfig {
@@ -53,11 +53,11 @@ export interface Locale extends LocaleConfig {
         minute: string;
         second: string;
     };
-    Dialog: {
+    Dialog: Partial<{
         close: string;
         ok: string;
         cancel: string;
-    };
+    }>;
     Drawer: {
         close: string;
     };

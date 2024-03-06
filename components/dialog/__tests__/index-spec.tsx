@@ -1,51 +1,28 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import assert from 'power-assert';
-import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import React, { type ReactElement, cloneElement, useState } from 'react';
+import { type MountReturn } from 'cypress/react';
 import { dom } from '../../util';
 import Button from '../../button';
 import ConfigProvider from '../../config-provider';
-import Dialog from '../index';
-import Message from '../../message';
+import Dialog, { type DialogProps } from '../index';
 import '../style';
 import zhCN from '../../locale/zh-cn';
 import { ModalInner as QuickInner } from '../show';
 
-Enzyme.configure({ adapter: new Adapter() });
+const { getStyle } = dom;
 
-/* eslint-disable react/jsx-filename-extension */
-/* global describe it afterEach */
-/* global describe it beforeEach */
+function shouldOkBtn(btn: Cypress.Chainable<JQuery<HTMLElement>>) {
+    btn.should('have.class', 'next-btn-primary');
+    btn.should('have.text', '确定');
+}
 
-const { hasClass, getStyle } = dom;
-const render = element => {
-    let inc;
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    ReactDOM.render(element, container, function () {
-        inc = this;
-    });
-    return {
-        setProps: props => {
-            const clonedElement = React.cloneElement(element, props);
-            ReactDOM.render(clonedElement, container);
-        },
-        unmount: () => {
-            ReactDOM.unmountComponentAtNode(container);
-            document.body.removeChild(container);
-        },
-        instance: () => {
-            return inc;
-        },
-        find: selector => {
-            return container.querySelectorAll(selector);
-        },
-    };
-};
+function shouldCancelBtn(btn: Cypress.Chainable<JQuery<HTMLElement>>) {
+    btn.should('have.class', 'next-btn-normal');
+    btn.should('have.text', '取消');
+}
 
-class Demo extends React.Component {
+const COUNT = 5;
+
+class Demo extends React.Component<DialogProps> {
     state = {
         visible: false,
         content: '开启您的贸易生活从 Alibaba.com 开始',
@@ -65,7 +42,7 @@ class Demo extends React.Component {
 
     onChangeContent = () => {
         this.setState({
-            content: new Array(40)
+            content: new Array(COUNT)
                 .fill('')
                 .map((__, index) => (
                     <p key={index}>Start your business here by searching a popular product</p>
@@ -109,9 +86,6 @@ class Demo extends React.Component {
 }
 
 describe('inner', () => {
-    let wrapper;
-    const delay = time => new Promise(resolve => setTimeout(resolve, time));
-
     beforeEach(() => {
         ConfigProvider.initLocales({
             'zh-cn': zhCN,
@@ -119,97 +93,77 @@ describe('inner', () => {
         ConfigProvider.setLanguage('zh-cn');
     });
 
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('should show and hide', () => {
-        wrapper = render(<Demo animation={false} />);
-        const btn = document.querySelector('button');
-        ReactTestUtils.Simulate.click(btn);
-        assert(document.querySelector('.next-dialog'));
+        cy.mount(<Demo animation={false} />);
+        cy.get('button').click();
+        cy.get('.next-dialog').should('exist');
 
-        ReactTestUtils.Simulate.click(btn);
-        const okBtn = document.querySelector('.next-btn-primary.next-dialog-btn');
-        ReactTestUtils.Simulate.click(okBtn);
-        assert(!document.querySelector('.next-dialog'));
+        cy.get('.next-btn-primary.next-dialog-btn').click();
+        cy.get('.next-dialog').should('not.exist');
 
-        ReactTestUtils.Simulate.click(btn);
-        const cancelBtn = document.querySelector('.next-btn-normal.next-dialog-btn');
-        ReactTestUtils.Simulate.click(cancelBtn);
-        assert(!document.querySelector('.next-dialog'));
+        cy.get('button').click();
+        cy.get('.next-btn-normal.next-dialog-btn').click();
+        cy.get('.next-dialog').should('not.exist');
 
-        ReactTestUtils.Simulate.click(btn);
-        const closeLink = document.querySelector('.next-dialog-close');
-        ReactTestUtils.Simulate.click(closeLink);
-        assert(!document.querySelector('.next-dialog'));
+        cy.get('button').click();
+        cy.get('.next-dialog-close').click();
+        cy.get('.next-dialog').should('not.exist');
     });
 
     it('should support footerAlign', () => {
-        wrapper = render(<Dialog visible />);
-        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-align-right'));
-
-        wrapper.setProps({
-            footerAlign: 'center',
+        cy.mount(<Dialog visible />).as('Demo');
+        cy.get('.next-dialog-footer').should('have.class', 'next-align-right');
+        cy.get<MountReturn>('@Demo').then(({ component, rerender }) => {
+            rerender(cloneElement(component as ReactElement, { footerAlign: 'center' }));
         });
-        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-align-center'));
-        wrapper.setProps({
-            footerAlign: 'left',
+        cy.get('.next-dialog-footer').should('have.class', 'next-align-center');
+        cy.get<MountReturn>('@Demo').then(({ component, rerender }) => {
+            rerender(cloneElement(component as ReactElement, { footerAlign: 'left' }));
         });
-        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-align-left'));
+        cy.get('.next-dialog-footer').should('have.class', 'next-align-left');
     });
 
     it('should support footerActions', () => {
-        wrapper = render(<Dialog visible />);
-        let btns = document.querySelectorAll('.next-dialog-btn');
-        assert(btns.length === 2);
-        assertOkBtn(btns[0]);
-        assertCancelBtn(btns[1]);
+        cy.mount(<Dialog visible />).as('Demo');
+        cy.get('.next-dialog-btn').should('have.length', 2);
+        shouldOkBtn(cy.get('.next-dialog-btn').eq(0));
+        shouldCancelBtn(cy.get('.next-dialog-btn').eq(1));
 
-        wrapper.setProps({
-            footerActions: ['cancel', 'ok'],
+        cy.get<MountReturn>('@Demo').then(({ component, rerender }) => {
+            rerender(cloneElement(component as ReactElement, { footerActions: ['cancel', 'ok'] }));
         });
-        btns = document.querySelectorAll('.next-dialog-btn');
-        assert(btns.length === 2);
-        assertCancelBtn(btns[0]);
-        assertOkBtn(btns[1]);
+        cy.get('.next-dialog-btn').should('have.length', 2);
+        shouldCancelBtn(cy.get('.next-dialog-btn').eq(0));
+        shouldOkBtn(cy.get('.next-dialog-btn').eq(1));
 
-        wrapper.setProps({
-            footerActions: ['ok'],
+        cy.get<MountReturn>('@Demo').then(({ component, rerender }) => {
+            rerender(cloneElement(component as ReactElement, { footerActions: ['ok'] }));
         });
-        btns = document.querySelectorAll('.next-dialog-btn');
-        assert(btns.length === 1);
-        assertOkBtn(btns[0]);
+        cy.get('.next-dialog-btn').should('have.length', 1);
+        shouldOkBtn(cy.get('.next-dialog-btn').eq(0));
 
-        wrapper.setProps({
-            footerActions: ['cancel'],
+        cy.get<MountReturn>('@Demo').then(({ component, rerender }) => {
+            rerender(cloneElement(component as ReactElement, { footerActions: ['cancel'] }));
         });
-        btns = document.querySelectorAll('.next-dialog-btn');
-        assert(btns.length === 1);
-        assertCancelBtn(btns[0]);
+        cy.get('.next-dialog-btn').should('have.length', 1);
+        shouldCancelBtn(cy.get('.next-dialog-btn').eq(0));
     });
 
     it('should support custom footer', () => {
-        wrapper = render(<Dialog visible footer={false} />);
-        assert(!document.querySelector('.next-dialog-footer'));
-
-        wrapper.setProps({
-            footer: (
-                <a className="custom" href>
-                    Link
-                </a>
-            ),
+        cy.mount(<Dialog visible footer={false} />).as('Demo');
+        cy.get('.next-dialog-footer').should('not.exist');
+        cy.get<MountReturn>('@Demo').then(({ component, rerender }) => {
+            rerender(
+                cloneElement(component as ReactElement, {
+                    footer: <a className="custom">Link</a>,
+                })
+            );
         });
-        assert(
-            document.querySelector('.next-dialog-footer a.custom').textContent.trim() === 'Link'
-        );
+        cy.get('.next-dialog-footer a.custom').should('have.text', 'Link');
     });
 
     it('should support custom footer button text', () => {
-        wrapper = render(
+        cy.mount(
             <Dialog
                 visible
                 okProps={{ className: 'custom-ok', children: 'my ok' }}
@@ -219,81 +173,86 @@ describe('inner', () => {
                 }}
             />
         );
-        assert(document.querySelector('.custom-ok').textContent.trim() === 'my ok');
-
-        assert(document.querySelector('.custom-cancel').textContent.trim() === 'my cancel');
+        cy.get('.custom-ok').should('have.text', 'my ok');
+        cy.get('.custom-cancel').should('have.text', 'my cancel');
     });
 
     it("should use css to position dialog if set isFullScreen to true and align to 'cc cc'", () => {
-        wrapper = render(<Dialog visible isFullScreen />);
-        assert(document.querySelector('.next-dialog-container'));
+        cy.mount(<Dialog visible isFullScreen />);
+        cy.get('.next-dialog-container').should('exist');
     });
 
     it('should adjust position and size if not use css to position', () => {
         const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
         const dialogHeight = viewportHeight - 80 + 20;
 
-        wrapper = render(<Demo height={`${dialogHeight}px`} />);
-
-        const btn = document.querySelector('button');
-        ReactTestUtils.Simulate.click(btn);
-        assert(getStyle(document.querySelector('.next-dialog'), 'top') === 40);
+        cy.mount(<Demo height={`${dialogHeight}px`} />);
+        cy.get('button').click();
+        cy.get('.next-dialog').should('have.css', 'top', '40px');
     });
 
     it('should update position and size when dailog content has been changed', () => {
+        cy.mount(<Demo visible shouldUpdatePosition />);
         const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-
-        wrapper = render(<Demo visible />);
-        wrapper.setProps({
-            shouldUpdatePosition: true,
+        let contentHeight = 28;
+        // 42 为 body padding + dialog border
+        const extraHeight = 40 + 2;
+        const heightAndTopShouldBeOk = ($dialog: JQuery<HTMLElement>) => {
+            const headerHeight = getStyle(
+                document.querySelector<HTMLElement>('.next-dialog-header')!,
+                'height'
+            ) as number;
+            const footerHeight = getStyle(
+                document.querySelector<HTMLElement>('.next-dialog-footer')!,
+                'height'
+            ) as number;
+            const expectDialogHeight = headerHeight + footerHeight + contentHeight + extraHeight;
+            cy.wrap($dialog).should('have.css', 'height', `${expectDialogHeight}px`);
+            cy.wrap($dialog).should(
+                'have.css',
+                'top',
+                `${(viewportHeight - expectDialogHeight) / 2}px`
+            );
+        };
+        cy.get('.next-dialog').then($dialog => {
+            heightAndTopShouldBeOk($dialog);
         });
-
-        const contentChangeBt = document.querySelector('.contentChangeBt');
-        ReactTestUtils.Simulate.click(contentChangeBt);
-
-        const top = getStyle(document.querySelector('.next-dialog'), 'top');
-        const dailogHeight = ['.next-dialog-body', '.next-dialog-footer', '.next-dialog-header']
-            .map(sltor => getStyle(document.querySelector(sltor), 'height'))
-            .reduce((sum, height) => sum + height, 0);
-
-        assert(dailogHeight === viewportHeight - top * 2);
+        cy.get('.contentChangeBt').click();
+        cy.get('.next-dialog').then($dialog => {
+            contentHeight = 28 + COUNT * (18 + 12) + 12;
+            heightAndTopShouldBeOk($dialog);
+        });
     });
 
-    it('dialog body should has max-heigth when setting smaller value of heigth', () => {
-        wrapper = render(<Demo visible />);
-        wrapper.setProps({
-            height: '200px',
-            shouldUpdatePosition: true,
-        });
+    it('dialog body should has max-height when setting smaller value of height', () => {
+        cy.mount(<Demo visible height="200px" shouldUpdatePosition />);
 
-        const bodyEl = document.querySelector('.next-dialog-body');
-
-        assert(bodyEl.style.maxHeight === '100px');
+        cy.get('.next-dialog-body').should('have.css', 'max-height', '100px');
     });
 
     it('should hide close link if set closeable to false', () => {
-        wrapper = render(<Dialog visible closeable={false} />);
-        assert(!document.querySelector('.next-dialog-close'));
+        cy.mount(<Dialog visible closeable={false} />);
+        cy.get('.next-dialog-close').should('not.exist');
     });
 
     it('should support show', () => {
-        let called = false;
+        const handleClose = cy.spy().as('handleClose');
         const { hide } = Dialog.show({
             title: 'Title',
             content: 'Content',
             animation: false,
-            afterClose: () => {
-                called = true;
-            },
+            afterClose: handleClose,
         });
 
-        assert(document.querySelector('.next-dialog'));
-        assert(document.querySelector('.next-dialog-header').textContent.trim() === 'Title');
-        assert(document.querySelector('.next-dialog-body').textContent.trim() === 'Content');
+        cy.get('.next-dialog').should('exist');
+        cy.get('.next-dialog-header').should('have.text', 'Title');
+        cy.get('.next-dialog-body').should('have.text', 'Content');
+        cy.then(() => {
+            hide();
+        });
 
-        hide();
-        assert(!document.querySelector('.next-dialog'));
-        assert(called);
+        cy.get('.next-dialog').should('not.exist');
+        cy.get('@handleClose').should('be.called');
     });
 
     it('should support alert', () => {
@@ -302,20 +261,18 @@ describe('inner', () => {
             content: 'Content',
             animation: false,
         });
-        assert(
-            hasClass(
-                document.querySelector('.next-dialog-message.next-message.next-addon.next-large'),
-                'next-message-warning'
-            )
+        cy.get('.next-dialog-message.next-message.next-addon.next-large').should(
+            'have.class',
+            'next-message-warning'
         );
-        assert(!document.querySelector('.next-dialog-header'));
-        assert(document.querySelector('.next-message-title').textContent.trim() === 'Title');
-        assert(document.querySelector('.next-message-content').textContent.trim() === 'Content');
-        const btns = document.querySelectorAll('.next-dialog-btn');
-        assert(btns.length === 1);
-        assertOkBtn(btns[0]);
-
-        hide();
+        cy.get('.next-dialog-header').should('not.exist');
+        cy.get('.next-message-title').should('have.text', 'Title');
+        cy.get('.next-message-content').should('have.text', 'Content');
+        cy.get('.next-dialog-btn').should('have.length', 1);
+        shouldOkBtn(cy.get('.next-dialog-btn').eq(0));
+        cy.then(() => {
+            hide();
+        });
     });
 
     it('should support confirm', () => {
@@ -324,44 +281,39 @@ describe('inner', () => {
             content: 'Content',
             animation: false,
         });
-        assert(
-            hasClass(
-                document.querySelector('.next-dialog-message.next-message.next-addon.next-large'),
-                'next-message-help'
-            )
+        cy.get('.next-dialog-message.next-message.next-addon.next-large').should(
+            'have.class',
+            'next-message-help'
         );
-        assert(!document.querySelector('.next-dialog-header'));
-        assert(document.querySelector('.next-message-title').textContent.trim() === 'Title');
-        assert(document.querySelector('.next-message-content').textContent.trim() === 'Content');
-        const btns = document.querySelectorAll('.next-dialog-btn');
-        assert(btns.length === 2);
-        assertOkBtn(btns[0]);
-        assertCancelBtn(btns[1]);
-
-        hide();
+        cy.get('.next-dialog-header').should('not.exist');
+        cy.get('.next-message-title').should('have.text', 'Title');
+        cy.get('.next-message-content').should('have.text', 'Content');
+        cy.get('.next-dialog-btn').should('have.length', 2);
+        shouldOkBtn(cy.get('.next-dialog-btn').eq(0));
+        shouldCancelBtn(cy.get('.next-dialog-btn').eq(1));
+        cy.then(() => {
+            hide();
+        });
     });
 
     it('should support height', () => {
-        wrapper = render(<Dialog visible />);
-        assert(!document.querySelector('.next-dialog').style.height);
-
-        assert(
-            !hasClass(
-                document.querySelector('.next-dialog-footer'),
-                'next-dialog-footer-fixed-height'
-            )
-        );
-
-        wrapper.setProps({
-            height: '500px',
+        cy.mount(<Dialog visible />).as('Demo');
+        cy.get('.next-dialog').then($el => {
+            cy.wrap($el.prop('style').height).should('be.empty');
         });
-        assert(document.querySelector('.next-dialog').style.height === '500px');
-        assert(
-            hasClass(
-                document.querySelector('.next-dialog-footer'),
-                'next-dialog-footer-fixed-height'
-            )
-        );
+        cy.get('.next-dialog-footer').should('not.have.class', 'next-dialog-footer-fixed-height');
+
+        cy.get<MountReturn>('@Demo').then(({ component, rerender }) => {
+            rerender(
+                cloneElement(component as ReactElement, {
+                    height: '500px',
+                })
+            );
+        });
+        cy.get('.next-dialog').then($el => {
+            cy.wrap($el.prop('style').height).should('be.equal', '500px');
+        });
+        cy.get('.next-dialog-footer').should('have.class', 'next-dialog-footer-fixed-height');
     });
 
     it('should close dialog if click the ok button', () => {
@@ -371,8 +323,8 @@ describe('inner', () => {
             animation: false,
         });
 
-        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
-        assert(!document.querySelector('.next-dialog'));
+        cy.get('.next-btn-primary').click();
+        cy.get('.next-dialog').should('not.exist');
     });
 
     it('should not close dialog if onOk return false', () => {
@@ -383,13 +335,14 @@ describe('inner', () => {
             onOk: () => false,
         });
 
-        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
-        assert(document.querySelector('.next-dialog'));
-
-        hide();
+        cy.get('.next-btn-primary').click();
+        cy.get('.next-dialog').should('exist');
+        cy.then(() => {
+            hide();
+        });
     });
 
-    it('should not close dialog immediately if onOk return promise and resolve true', done => {
+    it('should not close dialog immediately if onOk return promise and resolve true', () => {
         Dialog.show({
             title: 'Title',
             content: 'Content',
@@ -401,17 +354,13 @@ describe('inner', () => {
             },
         });
 
-        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
-        assert(document.querySelector('.next-dialog'));
-        assert(hasClass(document.querySelector('.next-btn-primary'), 'next-btn-loading'));
-
-        setTimeout(() => {
-            assert(!document.querySelector('.next-dialog'));
-            done();
-        }, 1000);
+        cy.get('.next-btn-primary').click();
+        cy.get('.next-dialog').should('exist');
+        cy.get('.next-btn-primary').should('have.class', 'next-btn-loading');
+        cy.get('.next-dialog').should('not.exist');
     });
 
-    it('should not close dialog if onOk return promise and resolve false', done => {
+    it('should not close dialog if onOk return promise and resolve false', () => {
         const { hide } = Dialog.show({
             title: 'Title',
             content: 'Content',
@@ -422,17 +371,18 @@ describe('inner', () => {
                 });
             },
         });
-        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
-
-        setTimeout(() => {
-            assert(document.querySelector('.next-dialog'));
+        cy.get('.next-btn-primary').click();
+        // 这里的 wait 是有必要的
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(1000);
+        cy.get('.next-dialog').should('exist');
+        cy.then(() => {
             hide();
-            done();
-        }, 1000);
+        });
     });
 
     it('should work when set <ConfigProvider popupContainer/> ', () => {
-        wrapper = render(
+        cy.mount(
             <ConfigProvider popupContainer={'dialog-popupcontainer'}>
                 <div id="dialog-popupcontainer" style={{ height: 300, overflow: 'auto' }}>
                     <Dialog title="Welcome to Alibaba.com" visible>
@@ -441,35 +391,40 @@ describe('inner', () => {
                 </div>
             </ConfigProvider>
         );
-
-        const overlay = document.querySelector('#dialog-popupcontainer > .next-overlay-wrapper');
-        assert(overlay);
+        cy.get('#dialog-popupcontainer > .next-overlay-wrapper').should('exist');
     });
 
-    it('should not close dialog if onOk return promise and reject', done => {
+    it('should not close dialog if onOk return promise and reject', () => {
         const { hide } = Dialog.show({
             title: 'Title',
             content: 'Content',
             animation: false,
             onOk: () => {
                 return new Promise((resolve, reject) => {
-                    setTimeout(reject, 500);
+                    setTimeout(() => {
+                        reject('test');
+                    }, 500);
                 });
             },
         });
 
-        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+        cy.on('uncaught:exception', () => {
+            return false;
+        });
 
-        setTimeout(() => {
-            assert(!hasClass(document.querySelector('.next-btn-primary'), 'next-btn-loading'));
-            assert(document.querySelector('.next-dialog'));
+        cy.get('.next-btn-primary').click();
+        // 这里的 wait 是有必要的
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(1000);
+        cy.get('.next-btn-primary').should('not.have.class', 'next-btn-loading');
+        cy.get('.next-dialog').should('exist');
+        cy.then(() => {
             hide();
-            done();
-        }, 1000);
+        });
     });
 
     it('should obey: self.locale > nearest ConfigProvider.locale > further ConfigProvider.locale', () => {
-        wrapper = render(
+        cy.mount(
             <ConfigProvider
                 prefix="far-"
                 locale={{
@@ -495,20 +450,15 @@ describe('inner', () => {
             </ConfigProvider>
         );
 
-        const btn = document.querySelector('button');
-        ReactTestUtils.Simulate.click(btn);
+        cy.get('button').click();
 
-        const footer = document.querySelector('.near-dialog-footer');
-        const ok = footer.querySelectorAll('button')[0];
-        const cancel = footer.querySelectorAll('button')[1];
-
-        assert(footer);
-        assert(ok.textContent === 'my ok');
-        assert(cancel.textContent === 'near cancel');
+        cy.get('.near-dialog-footer').as('footer').should('exist');
+        cy.get('@footer').find('button').eq(0).should('have.text', 'my ok');
+        cy.get('@footer').find('button').eq(1).should('have.text', 'near cancel');
     });
 
-    it("quick-calling should use root context's state if its exists", async () => {
-        wrapper = render(
+    it("quick-calling should use root context's state if its exists", () => {
+        cy.mount(
             <ConfigProvider
                 prefix="far-"
                 locale={{
@@ -546,23 +496,13 @@ describe('inner', () => {
             </ConfigProvider>
         );
 
-        const btn = document.querySelector('button');
-        ReactTestUtils.Simulate.click(btn);
+        cy.get('button').click();
+        cy.get('.far-dialog-footer').as('footer').should('exist');
+        cy.get('@footer').find('button').eq(0).should('have.text', 'far ok');
+        cy.get('@footer').find('button').eq(1).as('cancel').should('have.text', 'my cancel');
 
-        const footer = document.querySelector('.far-dialog-footer');
-        const overlayWrapper = document.querySelector('.far-overlay-wrapper');
-        const ok = footer.querySelectorAll('button')[0];
-        const cancel = footer.querySelectorAll('button')[1];
-
-        assert(footer);
-        assert(overlayWrapper);
-        assert(ok.textContent === 'far ok');
-        assert(cancel.textContent === 'my cancel');
-
-        cancel.click();
-        await delay(800);
-
-        assert(!document.querySelector('.far-overlay-wrapper'));
+        cy.get('@cancel').click();
+        cy.get('.far-overlay-wrapper').should('not.exist');
     });
 
     it('quick-calling should should support set prefix for dialog', () => {
@@ -572,47 +512,52 @@ describe('inner', () => {
             content: 'Content',
         });
 
-        assert(hasClass(document.querySelector('.test-dialog'), 'test-closeable'));
-
-        hide();
+        cy.get('.test-dialog').should('have.class', 'test-closeable');
+        cy.wrap(() => {
+            hide();
+        });
     });
 
     it('should throw error (async)', () => {
+        const handleError = cy.spy().as('handleError');
         const { hide } = Dialog.show({
             title: 'Title',
             content: 'Content',
             onOk: async () => {
-                throw Error();
+                throw Error('for test');
             },
         });
-        try {
-            ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
-            assert(false);
-        } catch (e) {
-            assert(true);
-        }
-        hide();
+        cy.on('uncaught:exception', err => {
+            expect(err.message).to.contain('for test');
+            handleError();
+            hide();
+            return false;
+        });
+        cy.get('.next-btn-primary').eq(0).click();
+        cy.get('@handleError').should('be.called');
     });
 
     it('should throw error', () => {
+        const handleError = cy.spy().as('handleError');
         const { hide } = Dialog.show({
             title: 'Title',
             content: 'Content',
             onOk: () => {
-                throw Error();
+                throw Error('for test');
             },
         });
-        try {
-            ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
-            assert(false);
-        } catch (e) {
-            assert(true);
-        }
-        hide();
+        cy.on('uncaught:exception', err => {
+            expect(err.message).to.contain('for test');
+            handleError();
+            hide();
+            return false;
+        });
+        cy.get('.next-btn-primary').eq(0).click();
+        cy.get('@handleError').should('be.called');
     });
 
     // https://github.com/alibaba-fusion/next/issues/2868
-    it('should resize after children size changed', done => {
+    it('should resize after children size changed', () => {
         function MyContent() {
             const [height, setHeight] = useState(100);
 
@@ -623,35 +568,31 @@ describe('inner', () => {
                 </div>
             );
         }
-
-        wrapper = render(
-            <Dialog shouldUpdatePosition visible>
+        let left: string, top: string;
+        cy.mount(
+            <Dialog shouldUpdatePosition visible centered>
                 <MyContent />
             </Dialog>
         );
-        const { left, top } = document.querySelector('.next-dialog').style;
+        // 等待 dialog 调整完成
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(1000);
+        cy.get('.next-dialog').then($el => {
+            left = $el.css('left');
+            top = $el.css('top');
+        });
 
-        document.querySelector('.content button').click();
-
-        setTimeout(() => {
-            const { left: newLeft, top: newTop } = document.querySelector('.next-dialog').style;
-            assert.notDeepEqual([left, top], [newLeft, newTop]);
-            done();
-        }, 300);
+        cy.get('.content button').click();
+        cy.then(() => {
+            cy.get('.next-dialog').should('not.have.css', 'top', top);
+            cy.get('.next-dialog').should('have.css', 'left', left);
+        });
     });
 });
 
 describe('Quick', () => {
-    let wrapper;
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('should support alert message', () => {
-        wrapper = shallow(
+        cy.mount(
             <QuickInner
                 type="alert"
                 title="quick confirm modal inner"
@@ -660,12 +601,11 @@ describe('Quick', () => {
             />
         );
 
-        const message = wrapper.find(Message);
-        assert(message.prop('type') === 'warning');
+        cy.get('.next-message-warning').should('exist');
     });
 
     it('should support confirm message', () => {
-        wrapper = shallow(
+        cy.mount(
             <QuickInner
                 type="confirm"
                 title="quick confirm modal inner"
@@ -674,12 +614,11 @@ describe('Quick', () => {
             />
         );
 
-        const message = wrapper.find(Message);
-        assert(message.prop('type') === 'help');
+        cy.get('.next-message-help').should('exist');
     });
 
     it('should support message title', () => {
-        wrapper = shallow(
+        cy.mount(
             <QuickInner
                 type="confirm"
                 title="quick confirm modal inner"
@@ -688,12 +627,11 @@ describe('Quick', () => {
             />
         );
 
-        const message = wrapper.find(Message);
-        assert(message.prop('title') === 'quick confirm modal inner');
+        cy.get('.next-message-title').should('have.text', 'quick confirm modal inner');
     });
 
     it('should support default prefix', () => {
-        wrapper = shallow(
+        cy.mount(
             <QuickInner
                 type="confirm"
                 title="quick confirm modal inner"
@@ -702,27 +640,25 @@ describe('Quick', () => {
             />
         );
 
-        const message = wrapper.find(Message);
-        assert(message.prop('className') === 'next-dialog-message');
+        cy.get('.next-dialog-message').should('exist');
     });
 
     it('should support messageProps', () => {
-        wrapper = shallow(
+        cy.mount(
             <QuickInner
                 type="confirm"
                 title="quick confirm modal inner"
                 locale={zhCN}
-                messageProps={{ testProp: 'test' }}
+                messageProps={{ iconType: 'close' }}
                 content={<span>Modal Content</span>}
             />
         );
 
-        const message = wrapper.find(Message);
-        assert(message.prop('testProp') === 'test');
+        cy.get('.next-icon-close').should('exist');
     });
 
     it('should support custom prefix', () => {
-        wrapper = shallow(
+        cy.mount(
             <QuickInner
                 type="confirm"
                 title="quick confirm modal inner"
@@ -732,12 +668,11 @@ describe('Quick', () => {
             />
         );
 
-        const message = wrapper.find(Message);
-        assert(message.prop('className') === 'test-dialog-message');
+        cy.get('.test-dialog-message').should('exist');
     });
 
     it('should pass content as child', () => {
-        wrapper = shallow(
+        cy.mount(
             <QuickInner
                 type="confirm"
                 title="quick confirm modal inner"
@@ -747,17 +682,6 @@ describe('Quick', () => {
             />
         );
 
-        const message = wrapper.find(Message);
-        assert(message.children().type() === 'span');
+        cy.get('.next-message-content').should('have.text', 'Modal Content');
     });
 });
-
-function assertOkBtn(btn) {
-    assert(hasClass(btn, 'next-btn-primary'));
-    assert(btn.textContent.trim() === '确定');
-}
-
-function assertCancelBtn(btn) {
-    assert(hasClass(btn, 'next-btn-normal'));
-    assert(btn.textContent.trim() === '取消');
-}
