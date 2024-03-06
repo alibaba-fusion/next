@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Step, Button } from '@alifd/next';
+import { StepProps } from '@alifd/meet-react/lib/step';
 
 const StepItem = Step.Item,
     ButtonGroup = Button.Group;
-class Component extends React.Component {
-    constructor(props) {
+
+type stateType = {
+    currentStep: number;
+};
+class Component extends React.Component<StepProps, stateType> {
+    constructor(props: StepProps) {
         super(props);
 
         this.state = {
@@ -26,7 +31,7 @@ class Component extends React.Component {
             currentStep: s < 0 ? 0 : s,
         });
     }
-    onClick(currentStep) {
+    onClick(currentStep: number) {
         console.log(currentStep);
 
         this.setState({

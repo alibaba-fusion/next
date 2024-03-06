@@ -17,35 +17,53 @@
 
 ### Step
 
-| 参数             | 说明                                                                                                                                                                                           | 类型       | 默认值      |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- |
-| current        | 当前步骤                                                                                                                                                                                         | Number   | 0        |
-| shape          | 类型<br/><br/>**可选值**:<br/>'circle', 'arrow', 'dot'                                                                                                                                            | Enum     | 'circle' |
-| direction      | 展示方向<br/><br/>**可选值**:<br/>'hoz', 'ver'                                                                                                                                                      | Enum     | 'hoz'    |
-| labelPlacement | 横向布局时( direction 为 hoz )的内容排列<br/><br/>**可选值**:<br/>'hoz', 'ver'                                                                                                                             | Enum     | 'ver'    |
-| readOnly       | 是否只读模式                                                                                                                                                                                       | Boolean  | -        |
-| animation      | 是否开启动效                                                                                                                                                                                       | Boolean  | true     |
-| itemRender     | StepItem 的自定义渲染<br/><br/>**签名**:<br/>Function(index: Number, status: String) => Node<br/>**参数**:<br/>_index_: {Number} 节点索引<br/>_status_: {String} 节点状态<br/>**返回值**:<br/>{Node} 节点的渲染结果<br/> | Function | null     |
-| stretch        | 宽度横向拉伸                                                                                                                                                                                       | Boolean  | false    |
+| 参数           | 说明                                                                                                                            | 类型                                                   | 默认值   | 是否必填 |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | -------- |
+| current        | 当前步骤                                                                                                                        | number                                                 | 0        |          |
+| shape          | 形状                                                                                                                            | StepShape                                              | 'circle' |          |
+| direction      | 展示方向                                                                                                                        | StepDirection                                          | 'hoz'    |          |
+| labelPlacement | 横向布局时的内容排列方式                                                                                                        | StepDirection                                          | 'ver'    |          |
+| readOnly       | 是否只读模式                                                                                                                    | boolean                                                | -        |          |
+| animation      | 是否开启动效                                                                                                                    | boolean                                                | true     |          |
+| itemRender     | 自定义渲染节点<br/><br/>**签名**:<br/>**参数**:<br/>_index_: 节点索引<br/>_status_: 节点状态<br/>**返回值**:<br/>节点的渲染结果 | (index: number, status: StepStatus) => React.ReactNode | -        |          |
+| stretch        | 宽度是否横向拉伸                                                                                                                | boolean                                                | false    |          |
 
 ### Step.Item
 
-| 参数         | 说明                                                                                                                                                                                                                | 类型        | 默认值      |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- |
-| status     | 步骤的状态，如不传，会根据外层的 Step 的 current 属性生成，可选值为 `wait`, `process`, `finish`<br/><br/>**可选值**:<br/>'wait', 'process', 'finish'                                                                                           | Enum      | -        |
-| title      | 标题                                                                                                                                                                                                                | ReactNode | -        |
-| icon       | 图标                                                                                                                                                                                                                | String    | -        |
-| content    | 内容填充, shape为 arrow 时无效                                                                                                                                                                                            | ReactNode | -        |
-| itemRender | StepItem 的自定义渲染, 会覆盖父节点设置的itemRender<br/><br/>**签名**:<br/>Function(index: Number, status: String) => Node<br/>**参数**:<br/>_index_: {Number} 节点索引<br/>_status_: {String} 节点状态<br/>**返回值**:<br/>{Node} 节点的渲染结果<br/> | Function  | -        |
-| percent    | 百分比                                                                                                                                                                                                               | Number    | -        |
-| disabled   | 是否禁用                                                                                                                                                                                                              | Boolean   | -        |
-| onClick    | 点击步骤时的回调<br/><br/>**签名**:<br/>Function(index: Number) => void<br/>**参数**:<br/>_index_: {Number} 节点索引                                                                                                              | Function  | () => {} |
+| 参数       | 说明                                                                                                                                                                  | 类型                                                                                                                                   | 默认值 | 是否必填 |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------- |
+| status     | 步骤的状态，如不传，会根据外层的 Step 的 current 属性生成                                                                                                             | StepStatus                                                                                                                             | -      |          |
+| title      | 标题                                                                                                                                                                  | React.ReactNode                                                                                                                        | -      |          |
+| icon       | 图标                                                                                                                                                                  | string                                                                                                                                 | -      |          |
+| content    | 内容填充，shape 为 arrow 时无效                                                                                                                                       | React.ReactNode                                                                                                                        | -      |          |
+| itemRender | StepItem 的自定义渲染，会覆盖父节点设置的 itemRender<br/><br/>**签名**:<br/>**参数**:<br/>_index_: 节点索引<br/>_status_: 节点状态<br/>**返回值**:<br/>节点的渲染结果 | (<br/> index: number,<br/> status?: StepStatus,<br/> title?: React.ReactNode,<br/> content?: React.ReactNode<br/> ) => React.ReactNode | -      |          |
+| percent    | 百分比                                                                                                                                                                | number                                                                                                                                 | -      |          |
+| disabled   | 是否禁用                                                                                                                                                              | boolean                                                                                                                                | -      |          |
+| onClick    | 点击步骤时的回调<br/><br/>**签名**:<br/>**参数**:<br/>_index_: 节点索引                                                                                               | (index: number) => unknown                                                                                                             | -      |          |
+
+### StepDirection
+
+```typescript
+export type StepDirection = 'hoz' | 'ver';
+```
+
+### StepStatus
+
+```typescript
+export type StepStatus = 'wait' | 'process' | 'finish';
+```
+
+### StepShape
+
+```typescript
+export type StepShape = 'circle' | 'arrow' | 'dot';
+```
 
 ## FAQ
 
 ### 为什么设置 Step 的展示方向不生效？
 
-`Step`组件有三种类型（shape） `shape?: 'arrow' | 'circle' | 'dot';`, 其中:
+`Step`组件有三种类型（shape） `shape?: 'arrow' | 'circle' | 'dot';`, 其中：
 
 -   `shape='arrow'` 只有一种模式；
 -   `shape='circle'` 有两种方向；

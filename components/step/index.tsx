@@ -1,24 +1,32 @@
 import ConfigProvider from '../config-provider';
 import Step from './view/step';
-import StepItem from './view/step-item';
+import Item from './view/step-item';
+import type { StepProps, ItemProps, DeprecatedStepProps } from './types';
+import { assignSubComponent } from '../util/component';
 
-Step.Item = StepItem;
+export type { StepProps, ItemProps };
 
-export default ConfigProvider.config(Step, {
-    transform: /* istanbul ignore next */ (props, deprecated) => {
+const WithStepItem = assignSubComponent(Step, { Item });
+
+export default ConfigProvider.config(WithStepItem, {
+    transform: (props, deprecated) => {
         if ('type' in props) {
             deprecated('type', 'shape', 'Step');
-
-            let { type, direction, labelPlacement, ...others } = props;
-            direction =
+            const { type, direction, labelPlacement, ...others } = props as DeprecatedStepProps;
+            const resolvedDirection =
                 direction === 'vertical' ? 'ver' : direction === 'horizontal' ? 'hoz' : direction;
-            labelPlacement =
+            const resolvedLabelPlacement =
                 labelPlacement === 'vertical'
                     ? 'ver'
                     : labelPlacement === 'horizontal'
                       ? 'hoz'
                       : labelPlacement;
-            props = { shape: type, direction, labelPlacement, ...others };
+            props = {
+                shape: type,
+                direction: resolvedDirection,
+                labelPlacement: resolvedLabelPlacement,
+                ...others,
+            };
         }
 
         return props;

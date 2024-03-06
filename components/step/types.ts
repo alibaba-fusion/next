@@ -1,106 +1,193 @@
-/// <reference types="react" />
-
 import React from 'react';
 import { CommonProps } from '../util';
 
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    title?: any;
-    onClick?: any;
+type HTMLAttributesWeak<T> = Omit<
+    React.HTMLAttributes<T>,
+    'content' | 'onClick' | 'title' | 'direction'
+>;
+
+/**
+ * @api
+ */
+export type StepDirection = 'hoz' | 'ver';
+/**
+ * @api
+ */
+export type StepStatus = 'wait' | 'process' | 'finish';
+/**
+ * @api
+ */
+export type StepShape = 'circle' | 'arrow' | 'dot';
+
+/**
+ * Step.Item 继承自 Step 的私有的属性
+ * @en Step.Item private props inherit from Step
+ */
+export interface ItemPrivateProps {
+    index?: number;
+    shape?: StepShape;
+    direction?: StepDirection;
+    onResize?: () => void;
+    stretch?: boolean;
+    labelPlacement?: StepDirection;
+    readOnly?: boolean;
+    parentWidth?: number;
+    parentHeight?: number;
+    parentLeft?: number;
+    parentTop?: number;
+    parentRight?: number;
+    parentBottom?: number;
+    animation?: boolean;
+    current?: number;
+    total?: number;
 }
 
-export interface ItemProps extends Omit<HTMLAttributesWeak, 'content'>, CommonProps {
+/**
+ * @api Step.Item
+ */
+export interface ItemProps<T = HTMLElement>
+    extends HTMLAttributesWeak<T>,
+        CommonProps,
+        ItemPrivateProps {
     /**
-     * 步骤的状态，如不传，会根据外层的 Step 的 current 属性生成，可选值为 `wait`, `process`, `finish`
+     * 步骤的状态，如不传，会根据外层的 Step 的 current 属性生成
+     * @en The status of a step, if not passed, is generated based on the current attribute of the outer Step
      */
-    status?: 'wait' | 'process' | 'finish';
+    status?: StepStatus;
 
     /**
      * 标题
+     * @en Title
      */
     title?: React.ReactNode;
 
     /**
      * 图标
+     * @en Icon
      */
     icon?: string;
 
     /**
-     * 内容，用于垂直状态下的内容填充
+     * 内容填充，shape 为 arrow 时无效
+     * @en Content for vertical content filling, invalid when shape is arrow
      */
     content?: React.ReactNode;
 
     /**
-     * StepItem 的自定义渲染, 会覆盖父节点设置的itemRender
+     * StepItem 的自定义渲染，会覆盖父节点设置的 itemRender
+     * @en Custom node render function (it will overwirde Step's itemRender)
+     * @param index - 节点索引
+     * @param status - 节点状态
+     * @returns 节点的渲染结果
      */
-    itemRender?: (index: number, status: string) => React.ReactNode;
+    itemRender?: (
+        index: number,
+        status?: StepStatus,
+        title?: React.ReactNode,
+        content?: React.ReactNode
+    ) => React.ReactNode;
 
     /**
      * 百分比
+     * @en Percent
      */
     percent?: number;
 
     /**
      * 是否禁用
+     * @en disabled
      */
     disabled?: boolean;
 
     /**
      * 点击步骤时的回调
+     * @en Callback when clicking on the step
+     * @param index - 节点索引 - node index
      */
-    onClick?: (index: number) => void;
-
-    /**
-     * 自定义样式
-     */
-    className?: string;
+    onClick?: (index: number) => unknown;
 }
 
-export class Item extends React.Component<ItemProps, any> {}
-export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+/**
+ * @api Step
+ */
+export interface StepProps
+    extends Omit<React.HTMLAttributes<HTMLElement>, 'type' | 'direction'>,
+        CommonProps {
     /**
      * 当前步骤
+     * @en Current step
+     * @defaultValue 0
      */
     current?: number;
 
     /**
-     * 展示方向
+     * 形状
+     * @en Shape
+     * @defaultValue 'circle'
      */
-    direction?: 'hoz' | 'ver';
-    /**
-     * 宽度是否横向拉伸
-     */
-    stretch?: boolean;
-    /**
-     * 横向布局时的内容排列
-     */
-    labelPlacement?: 'hoz' | 'ver';
+    shape?: StepShape;
 
     /**
-     * 类型
+     * 展示方向
+     * @en Direction
+     * @defaultValue 'hoz'
      */
-    shape?: 'circle' | 'arrow' | 'dot';
+    direction?: StepDirection;
+
+    /**
+     * 横向布局时的内容排列方式
+     * @en Content arrangement in horizontal layout
+     * @defaultValue 'ver'
+     */
+    labelPlacement?: StepDirection;
 
     /**
      * 是否只读模式
+     * @en Read only mode
      */
     readOnly?: boolean;
 
     /**
      * 是否开启动效
+     * @en Enable animation
+     * @defaultValue true
      */
     animation?: boolean;
 
     /**
-     * 自定义样式名
+     * 自定义渲染节点
+     * @en Custom node render function
+     * @param index - 节点索引
+     * @param status - 节点状态
+     * @returns 节点的渲染结果
      */
-    className?: string;
+    itemRender?: (index: number, status: StepStatus) => React.ReactNode;
 
     /**
-     * StepItem 的自定义渲染
+     * 宽度是否横向拉伸
+     * @en Stretch the width
+     * @defaultValue false
      */
-    itemRender?: (index: number, status: string) => React.ReactNode;
+    stretch?: boolean;
 }
 
-export default class Step extends React.Component<StepProps, any> {
-    static Item: typeof Item;
+export interface StepState {
+    parentWidth: string | number;
+    parentHeight: string | number;
+    currentfocus: number;
+}
+
+export interface DeprecatedStepProps extends Omit<StepProps, 'direction' | 'labelPlacement'> {
+    /**
+     * @deprecated Use shape instead
+     */
+    type?: 'circle' | 'arrow' | 'dot';
+    /**
+     * @deprecated Available enums: 'hoz' | 'ver'
+     */
+    direction?: 'hoz' | 'ver' | 'horizontal' | 'vertical';
+    /**
+     * @deprecated Available enums: 'hoz' | 'ver'
+     */
+    labelPlacement?: 'hoz' | 'ver' | 'horizontal' | 'vertical';
 }
