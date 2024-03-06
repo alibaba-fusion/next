@@ -3,9 +3,6 @@ import React, {
     type JSXElementConstructor,
     forwardRef,
     useImperativeHandle,
-    type ComponentPropsWithoutRef,
-    ComponentType,
-    ReactComponentElement,
 } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';

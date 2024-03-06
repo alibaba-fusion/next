@@ -204,10 +204,10 @@ export interface DialogProps extends Omit<HTMLAttributes, 'content' | 'title'>, 
      * 自定义国际化文案对象
      * @en Customized internationalized text
      */
-    locale?: {
+    locale?: Partial<{
         ok: string;
         cancel: string;
-    };
+    }>;
 
     /**
      * 对话框的高度样式属性
