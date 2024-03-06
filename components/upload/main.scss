@@ -10,7 +10,7 @@
 
     &-inner {
         &.#{$css-prefix}hidden {
-            display: none !important;
+            display: none;
         }
         outline: 0;
         display: inline-block;
@@ -488,6 +488,9 @@
 #{$upload-prefix}-dragable {
     #{$upload-prefix}-inner {
         display: block;
+        &.#{$css-prefix}hidden {
+            display: none;
+        }
     }
 
     #{$upload-prefix}-drag {
