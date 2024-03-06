@@ -1130,15 +1130,49 @@ describe('Picker', () => {
         });
 
         it('should support prohibit minutes and seconds', () => {
-            const disabledDate = function (date) {
-                return date.valueOf() < Number(moment('2024-01-22 13:30:10').valueOf()) || date.valueOf() > Number(moment('2024-01-28 18:30:10').valueOf())
+            const div = document.createElement('div');
+            document.body.appendChild(div);
+            const disabledDate = date => {
+                return (
+                    date.valueOf() < Number(moment('2024-01-22 13:30:12').valueOf()) ||
+                    date.valueOf() > Number(moment('2024-01-28 18:30:12').valueOf())
+                );
             };
-            wrapper = mount( <RangePicker showTime disabledDate={disabledDate} onChange={val => console.log(val)} />);
-            clickDate('2024-01-22 13:30:09');
-            clickOk();
-            clickDate('2024-01-28 18:30:11');
-            clickOk();
-            assert.deepEqual(getStrValue(), [``, ``]);
+            wrapper = mount(
+                <RangePicker
+                    showTime
+                    disabledDate={disabledDate}
+                    visible={true}
+                    followTrigger
+                    onChange={val => console.log(val)}
+                    defaultPanelValue={dayjs('2024-01-22 14:30:10')}
+                />,
+                { attachTo: div }
+            );
+            const isDisabledNode = name => {
+                return div.querySelector(name).classList.contains('next-disabled');
+            };
+
+            let startHour = isDisabledNode('.next-time-picker2-menu-hour > li[title="12"]');
+            let startMinute = isDisabledNode('.next-time-picker2-menu-minute > li[title="29"]');
+            let startSecond = isDisabledNode('.next-time-picker2-menu-second > li[title="11"]');
+            assert(startHour && startMinute && startSecond);
+
+            ReactTestUtils.Simulate.click(div.querySelector('td[title="2024-01-28"]'));
+
+            let endHour = isDisabledNode('.next-time-picker2-menu-hour > li[title="19"]');
+            ReactTestUtils.Simulate.click(
+                div.querySelector('.next-time-picker2-menu-hour > li[title="18"]')
+            );
+
+            let endMinute = isDisabledNode('.next-time-picker2-menu-minute > li[title="31"]');
+            ReactTestUtils.Simulate.click(
+                div.querySelector('.next-time-picker2-menu-minute > li[title="30"]')
+            );
+
+            let endSecond = isDisabledNode('.next-time-picker2-menu-second > li[title="13"]');
+
+            assert(endHour && endMinute && endSecond);
         });
     });
 });

@@ -24,8 +24,8 @@ const disabledDate = function (date, mode) {
 
 const disabledCurrentTime = function (date) {
     return (
-        date.valueOf() < Number(dayjs('2024-01-22 13:30:10').valueOf()) ||
-        date.valueOf() > Number(dayjs('2024-01-28 18:30:10').valueOf())
+        date.valueOf() < Number(dayjs().valueOf()) ||
+        date.valueOf() > Number(dayjs().add(6, 'day').valueOf())
     );
 };
 
