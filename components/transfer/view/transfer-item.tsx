@@ -139,7 +139,8 @@ export default class TransferItem extends Component {
 
         const classNames = cx({
             [`${prefix}transfer-panel-item`]: true,
-            [`${prefix}insert-${this.dragGap}`]: dragOverValue === item.value && panelPosition === dragPosition,
+            [`${prefix}insert-${this.dragGap}`]:
+                dragOverValue === item.value && panelPosition === dragPosition,
             [`${prefix}focused`]: highlight,
             [`${prefix}simple`]: isSimple,
         });
@@ -170,7 +171,12 @@ export default class TransferItem extends Component {
         }
 
         return (
-            <CheckboxItem checked={checked} onChange={onCheck.bind(this, item.value)} title={title} {...itemProps} />
+            <CheckboxItem
+                checked={checked}
+                onChange={onCheck.bind(this, item.value)}
+                title={title}
+                {...itemProps}
+            />
         );
     }
 }

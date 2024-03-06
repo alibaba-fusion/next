@@ -10,7 +10,6 @@ import enUS from '../../../locale/en-us';
 
 /* eslint-disable react/react-in-jsx-scope */
 
-
 const createDatasource = lang => {
     const dataSource = [];
 
@@ -28,7 +27,7 @@ const createDatasource = lang => {
         dataSource.push({
             label: `${labelPrefix}${i}`,
             value: `${i}`,
-            disabled: i % 4 === 0
+            disabled: i % 4 === 0,
         });
     }
 
@@ -42,8 +41,8 @@ const i18nMap = {
     },
     'zh-cn': {
         title: '标题',
-        dataSource: createDatasource('zh-cn')
-    }
+        dataSource: createDatasource('zh-cn'),
+    },
 };
 
 class FunctionDemo extends React.Component {
@@ -54,15 +53,18 @@ class FunctionDemo extends React.Component {
                 showSearch: {
                     label: '有无搜索',
                     value: 'false',
-                    enum: [{
-                        label: '有',
-                        value: 'true'
-                    }, {
-                        label: '无',
-                        value: 'false'
-                    }]
-                }
-            }
+                    enum: [
+                        {
+                            label: '有',
+                            value: 'true',
+                        },
+                        {
+                            label: '无',
+                            value: 'false',
+                        },
+                    ],
+                },
+            },
         };
 
         this.onFunctionChange = this.onFunctionChange.bind(this);
@@ -70,7 +72,7 @@ class FunctionDemo extends React.Component {
 
     onFunctionChange(demoFunction) {
         this.setState({
-            demoFunction
+            demoFunction,
         });
     }
 }
@@ -83,9 +85,19 @@ class NormalDemo extends FunctionDemo {
         const showSearch = demoFunction.showSearch.value === 'true';
 
         return (
-            <Demo title="Normal" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
+            <Demo
+                title="Normal"
+                demoFunction={demoFunction}
+                onFunctionChange={this.onFunctionChange}
+            >
                 <DemoGroup label="Normal">
-                    <Transfer showSearch={showSearch} titles={[title, title]} dataSource={dataSource} defaultValue={['3']} defaultLeftChecked={['1']} />
+                    <Transfer
+                        showSearch={showSearch}
+                        titles={[title, title]}
+                        dataSource={dataSource}
+                        defaultValue={['3']}
+                        defaultLeftChecked={['1']}
+                    />
                 </DemoGroup>
             </Demo>
         );
@@ -100,26 +112,38 @@ class SimpleDemo extends FunctionDemo {
         const showSearch = demoFunction.showSearch.value === 'true';
 
         return (
-            <Demo title="Simple" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
+            <Demo
+                title="Simple"
+                demoFunction={demoFunction}
+                onFunctionChange={this.onFunctionChange}
+            >
                 <DemoGroup label="Normal">
-                    <Transfer showSearch={showSearch} mode="simple" titles={[title, title]} dataSource={dataSource} defaultValue={['3']} defaultLeftChecked={['1']} />
+                    <Transfer
+                        showSearch={showSearch}
+                        mode="simple"
+                        titles={[title, title]}
+                        dataSource={dataSource}
+                        defaultValue={['3']}
+                        defaultLeftChecked={['1']}
+                    />
                 </DemoGroup>
             </Demo>
         );
     }
 }
 
-window.renderDemo = function(lang = 'en-us') {
+window.renderDemo = function (lang = 'en-us') {
     const i18n = i18nMap[lang];
 
-    ReactDOM.render((
+    ReactDOM.render(
         <ConfigProvider locale={lang === 'zh-cn' ? zhCN : enUS}>
             <div className="demo-container">
                 <NormalDemo i18n={i18n} />
                 <SimpleDemo i18n={i18n} />
             </div>
-        </ConfigProvider>
-    ), document.getElementById('container'));
+        </ConfigProvider>,
+        document.getElementById('container')
+    );
 };
 
 window.renderDemo();

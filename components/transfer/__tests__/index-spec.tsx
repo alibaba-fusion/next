@@ -111,7 +111,11 @@ describe('Transfer', () => {
     });
 
     it('should render search box when set showSearch', () => {
-        const dataSource = [{ label: 'a', value: '0' }, { label: 'b', value: '1' }, { label: <i>abc</i>, value: '2' }];
+        const dataSource = [
+            { label: 'a', value: '0' },
+            { label: 'b', value: '1' },
+            { label: <i>abc</i>, value: '2' },
+        ];
 
         wrapper = mount(
             <Transfer
@@ -138,7 +142,11 @@ describe('Transfer', () => {
     });
 
     it('should render search box when set showSearch（array）', () => {
-        const dataSource = [{ label: 'a', value: '0' }, { label: 'b', value: '1' }, { label: <i>abc</i>, value: '2' }];
+        const dataSource = [
+            { label: 'a', value: '0' },
+            { label: 'b', value: '1' },
+            { label: <i>abc</i>, value: '2' },
+        ];
 
         wrapper = mount(
             <Transfer
@@ -189,30 +197,21 @@ describe('Transfer', () => {
 
         assert(wrapper.find('div.next-transfer.custom').length === 1);
         assert(
-            findPanel(wrapper, 0)
-                .find('ul.next-transfer-panel-list')
-                .props().style.width === '200px'
+            findPanel(wrapper, 0).find('ul.next-transfer-panel-list').props().style.width ===
+                '200px'
         );
         assert(findHeaderTitle(wrapper, 0) === 'Source');
         assert(findHeaderTitle(wrapper, 1) === 'Target');
-        assert(
-            wrapper
-                .find('div.next-transfer-operations button')
-                .at(0)
-                .text()
-                .trim() === '>>'
-        );
-        assert(
-            wrapper
-                .find('div.next-transfer-operations button')
-                .at(1)
-                .text()
-                .trim() === '<<'
-        );
+        assert(wrapper.find('div.next-transfer-operations button').at(0).text().trim() === '>>');
+        assert(wrapper.find('div.next-transfer-operations button').at(1).text().trim() === '<<');
     });
 
     it('should move items between the panels', () => {
-        const dataSource = [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }];
+        const dataSource = [
+            { label: '0', value: '0' },
+            { label: '1', value: '1' },
+            { label: '2', value: '2' },
+        ];
 
         let value, data, extra, changeCalled;
 
@@ -238,12 +237,18 @@ describe('Transfer', () => {
         assert(l2r().hasClass('next-btn-primary'));
 
         value = ['0', '1'];
-        data = [{ label: '0', value: '0' }, { label: '1', value: '1' }];
+        data = [
+            { label: '0', value: '0' },
+            { label: '1', value: '1' },
+        ];
         extra = {
             leftValue: ['2'],
             leftData: [{ label: '2', value: '2' }],
             movedValue: ['0', '1'],
-            movedData: [{ label: '0', value: '0' }, { label: '1', value: '1' }],
+            movedData: [
+                { label: '0', value: '0' },
+                { label: '1', value: '1' },
+            ],
             direction: 'right',
         };
         l2r().simulate('click');
@@ -262,7 +267,10 @@ describe('Transfer', () => {
         data = [{ label: '1', value: '1' }];
         extra = {
             leftValue: ['0', '2'],
-            leftData: [{ label: '0', value: '0' }, { label: '2', value: '2' }],
+            leftData: [
+                { label: '0', value: '0' },
+                { label: '2', value: '2' },
+            ],
             movedValue: ['0'],
             movedData: [{ label: '0', value: '0' }],
             direction: 'left',
@@ -277,7 +285,11 @@ describe('Transfer', () => {
     });
 
     it('should move items between the panels under control', () => {
-        const dataSource = [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }];
+        const dataSource = [
+            { label: '0', value: '0' },
+            { label: '1', value: '1' },
+            { label: '2', value: '2' },
+        ];
 
         let value, data, extra, changeCalled;
 
@@ -303,12 +315,18 @@ describe('Transfer', () => {
         assert(l2r().hasClass('next-btn-primary'));
 
         value = ['0', '1'];
-        data = [{ label: '0', value: '0' }, { label: '1', value: '1' }];
+        data = [
+            { label: '0', value: '0' },
+            { label: '1', value: '1' },
+        ];
         extra = {
             leftValue: ['2'],
             leftData: [{ label: '2', value: '2' }],
             movedValue: ['0', '1'],
-            movedData: [{ label: '0', value: '0' }, { label: '1', value: '1' }],
+            movedData: [
+                { label: '0', value: '0' },
+                { label: '1', value: '1' },
+            ],
             direction: 'right',
         };
         l2r().simulate('click');
@@ -331,7 +349,10 @@ describe('Transfer', () => {
         data = [{ label: '1', value: '1' }];
         extra = {
             leftValue: ['0', '2'],
-            leftData: [{ label: '0', value: '0' }, { label: '2', value: '2' }],
+            leftData: [
+                { label: '0', value: '0' },
+                { label: '2', value: '2' },
+            ],
             movedValue: ['0'],
             movedData: [{ label: '0', value: '0' }],
             direction: 'left',
@@ -350,7 +371,11 @@ describe('Transfer', () => {
     });
 
     it('should support simple mode', () => {
-        const dataSource = [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }];
+        const dataSource = [
+            { label: '0', value: '0' },
+            { label: '1', value: '1' },
+            { label: '2', value: '2' },
+        ];
 
         let value, data, extra, changeCalled;
 
@@ -365,17 +390,18 @@ describe('Transfer', () => {
         assert(wrapper.find('div.next-transfer-operations i.next-icon-switch').length);
         assert(!findItem(wrapper, 0, 0).find('.next-checkbox-wrapper').length);
         assert(
-            findFooter(wrapper, 0)
-                .find('a.next-transfer-panel-move-all')
-                .text()
-                .trim() === '移动全部'
+            findFooter(wrapper, 0).find('a.next-transfer-panel-move-all').text().trim() ===
+                '移动全部'
         );
 
         value = ['0'];
         data = [{ label: '0', value: '0' }];
         extra = {
             leftValue: ['1', '2'],
-            leftData: [{ label: '1', value: '1' }, { label: '2', value: '2' }],
+            leftData: [
+                { label: '1', value: '1' },
+                { label: '2', value: '2' },
+            ],
             movedValue: ['0'],
             movedData: [{ label: '0', value: '0' }],
             direction: 'right',
@@ -393,7 +419,11 @@ describe('Transfer', () => {
         data = [];
         extra = {
             leftValue: ['0', '1', '2'],
-            leftData: [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }],
+            leftData: [
+                { label: '0', value: '0' },
+                { label: '1', value: '1' },
+                { label: '2', value: '2' },
+            ],
             movedValue: ['0'],
             movedData: [{ label: '0', value: '0' }],
             direction: 'left',
@@ -408,17 +438,23 @@ describe('Transfer', () => {
 
         changeCalled = false;
         value = ['0', '1', '2'];
-        data = [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }];
+        data = [
+            { label: '0', value: '0' },
+            { label: '1', value: '1' },
+            { label: '2', value: '2' },
+        ];
         extra = {
             leftValue: [],
             leftData: [],
             movedValue: ['0', '1', '2'],
-            movedData: [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }],
+            movedData: [
+                { label: '0', value: '0' },
+                { label: '1', value: '1' },
+                { label: '2', value: '2' },
+            ],
             direction: 'right',
         };
-        findFooter(wrapper, 0)
-            .find('a.next-transfer-panel-move-all')
-            .simulate('click');
+        findFooter(wrapper, 0).find('a.next-transfer-panel-move-all').simulate('click');
         assert(changeCalled);
         assert(findItems(wrapper, 0).length === 0);
         assert(findItems(wrapper, 1).length === 3);
@@ -431,14 +467,20 @@ describe('Transfer', () => {
         data = [];
         extra = {
             leftValue: ['0', '1', '2'],
-            leftData: [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }],
+            leftData: [
+                { label: '0', value: '0' },
+                { label: '1', value: '1' },
+                { label: '2', value: '2' },
+            ],
             movedValue: ['0', '1', '2'],
-            movedData: [{ label: '0', value: '0' }, { label: '1', value: '1' }, { label: '2', value: '2' }],
+            movedData: [
+                { label: '0', value: '0' },
+                { label: '1', value: '1' },
+                { label: '2', value: '2' },
+            ],
             direction: 'left',
         };
-        findFooter(wrapper, 1)
-            .find('a.next-transfer-panel-move-all')
-            .simulate('click');
+        findFooter(wrapper, 1).find('a.next-transfer-panel-move-all').simulate('click');
         assert(changeCalled);
         assert(findItems(wrapper, 0).length === 3);
         assert(findItemText(wrapper, 0, 0) === '0');
@@ -448,11 +490,10 @@ describe('Transfer', () => {
     });
 
     it('should highlight moved item', done => {
-        wrapper = mount(<Transfer defaultLeftChecked={['0']} dataSource={[{ label: '0', value: '0' }]} />);
-        wrapper
-            .find('div.next-transfer-operations button')
-            .at(0)
-            .simulate('click');
+        wrapper = mount(
+            <Transfer defaultLeftChecked={['0']} dataSource={[{ label: '0', value: '0' }]} />
+        );
+        wrapper.find('div.next-transfer-operations button').at(0).simulate('click');
         const item = findItem(wrapper, 1, 0);
         setTimeout(() => {
             assert(hasClass(item.instance(), 'next-focused'));
@@ -464,13 +505,10 @@ describe('Transfer', () => {
     });
 
     it('should support rtl prop', () => {
-        wrapper = mount(<Transfer rtl defaultLeftChecked={['0']} dataSource={[{ label: '0', value: '0' }]} />);
-        assert(
-            wrapper
-                .find('div')
-                .at(0)
-                .props().dir === 'rtl'
+        wrapper = mount(
+            <Transfer rtl defaultLeftChecked={['0']} dataSource={[{ label: '0', value: '0' }]} />
         );
+        assert(wrapper.find('div').at(0).props().dir === 'rtl');
     });
 
     it('should support sorting items', () => {
@@ -521,7 +559,9 @@ describe('Transfer', () => {
     });
 
     it('should support id on panel elements', () => {
-        wrapper = mount(<Transfer dataSource={dataSource} id="transfer-test" titles={['left', 'right']} />);
+        wrapper = mount(
+            <Transfer dataSource={dataSource} id="transfer-test" titles={['left', 'right']} />
+        );
         assert(wrapper.find('#transfer-test-panel-footer-left').length === 1);
         assert(wrapper.find('#transfer-test-panel-footer-right').length === 1);
         assert(wrapper.find('#transfer-test-panel-header-left').length === 1);
@@ -538,9 +578,7 @@ describe('Transfer', () => {
                 dataSource={dataSource}
             />
         );
-        findFooter(wrapper, 0)
-            .find('a.next-transfer-panel-move-all')
-            .simulate('click');
+        findFooter(wrapper, 0).find('a.next-transfer-panel-move-all').simulate('click');
         assert(findItems(wrapper, 0).length === 1);
         assert(findItems(wrapper, 1).length === 3);
     });
@@ -573,7 +611,11 @@ describe('Transfer', () => {
 
         function getTreeDataSource(dataSource = [], value) {
             return dataSource.map(({ children, ...props }) => (
-                <TreeNode {...props} disabled={props.disabled || value.includes(props.value)} key={props.value}>
+                <TreeNode
+                    {...props}
+                    disabled={props.disabled || value.includes(props.value)}
+                    key={props.value}
+                >
                     {getTreeDataSource(children, value)}
                 </TreeNode>
             ));
@@ -597,7 +639,9 @@ describe('Transfer', () => {
                                 style={{ padding: '10px' }}
                                 checkedKeys={value}
                                 onCheck={(keys, extra) => {
-                                    const newValues = extra.checkedNodes.map(item => item.props.value);
+                                    const newValues = extra.checkedNodes.map(
+                                        item => item.props.value
+                                    );
                                     onChange(position, newValues);
                                 }}
                             >
@@ -608,17 +652,24 @@ describe('Transfer', () => {
                 }}
             </Transfer>
         );
-        wrapper
-            .find('.next-checkbox')
-            .at(0)
-            .simulate('click');
+        wrapper.find('.next-checkbox').at(0).simulate('click');
     });
     it('should onSelect work well', () => {
         const onSelect = (sourceSelectedValue, targetSelectedValue, trigger) => {
             assert(trigger === 'source', 'position should be source');
-            assert(sourceSelectedValue && sourceSelectedValue[0] === '1', 'checked value should be 1');
+            assert(
+                sourceSelectedValue && sourceSelectedValue[0] === '1',
+                'checked value should be 1'
+            );
         };
-        wrapper = mount(<Transfer defaultValue={['1']} value={['2']} dataSource={dataSource} onSelect={onSelect} />);
+        wrapper = mount(
+            <Transfer
+                defaultValue={['1']}
+                value={['2']}
+                dataSource={dataSource}
+                onSelect={onSelect}
+            />
+        );
         compareDomAndDataSource(wrapper, 0, [
             { label: '0', value: '0' },
             { label: '1', value: '1' },
@@ -627,10 +678,7 @@ describe('Transfer', () => {
         compareDomAndDataSource(wrapper, 1, [{ label: '2', value: '2' }]);
         assert(findFooterCount(wrapper, 0) === '3');
         assert(findFooterCount(wrapper, 1) === '1');
-        wrapper
-            .find('.next-checkbox')
-            .at(1)
-            .simulate('click');
+        wrapper.find('.next-checkbox').at(1).simulate('click');
     });
     it('should support virtual list', () => {
         const dataSource = (() => {
@@ -662,9 +710,7 @@ function findHeader(wrapper, panelIndex) {
 }
 
 function findHeaderTitle(wrapper, panelIndex) {
-    return findHeader(wrapper, panelIndex)
-        .text()
-        .trim();
+    return findHeader(wrapper, panelIndex).text().trim();
 }
 
 function findFooter(wrapper, panelIndex) {
@@ -692,10 +738,7 @@ function findItem(wrapper, panelIndex, itemIndex) {
 }
 
 function findItemText(wrapper, panelIndex, itemIndex) {
-    return findItem(wrapper, panelIndex, itemIndex)
-        .find('span.next-menu-item-text')
-        .text()
-        .trim();
+    return findItem(wrapper, panelIndex, itemIndex).find('span.next-menu-item-text').text().trim();
 }
 
 function findItemCheckbox(wrapper, panelIndex, itemIndex) {
@@ -712,12 +755,7 @@ function checkSingle(item) {
 
 function compareDomAndDataSource(wrapper, panelIndex, dataSource) {
     findItems(wrapper, panelIndex).forEach((item, index) => {
-        assert(
-            item
-                .find('span.next-menu-item-text')
-                .text()
-                .trim() === dataSource[index].label
-        );
+        assert(item.find('span.next-menu-item-text').text().trim() === dataSource[index].label);
         if (dataSource[index].disabled) {
             assert(item.hasClass('next-disabled'));
             assert(item.find('label.next-checkbox-wrapper').hasClass('disabled'));

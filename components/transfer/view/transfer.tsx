@@ -219,7 +219,10 @@ class Transfer extends Component {
             };
             loop(data.label);
 
-            return labelString.length >= searchedValue.length && labelString.indexOf(searchedValue) > -1;
+            return (
+                labelString.length >= searchedValue.length &&
+                labelString.indexOf(searchedValue) > -1
+            );
         },
         onSearch: () => {},
         notFoundContent: 'Not Found',
@@ -279,7 +282,15 @@ class Transfer extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const { value, defaultValue, defaultLeftChecked, defaultRightChecked, dataSource, rtl, operations } = props;
+        const {
+            value,
+            defaultValue,
+            defaultLeftChecked,
+            defaultRightChecked,
+            dataSource,
+            rtl,
+            operations,
+        } = props;
         if (operations.length === 0) {
             operations.push(<Icon rtl={rtl} type="arrow-right" />);
             operations.push(<Icon rtl={rtl} type="arrow-left" />);
@@ -370,7 +381,9 @@ class Transfer extends Component {
 
         if (direction === 'right') {
             rightValue = leftCheckedValue.concat(value);
-            newLeftValue = leftValue.filter(itemValue => leftCheckedValue.indexOf(itemValue) === -1);
+            newLeftValue = leftValue.filter(
+                itemValue => leftCheckedValue.indexOf(itemValue) === -1
+            );
             movedValue = leftCheckedValue;
             valuePropName = 'leftCheckedValue';
         } else {
@@ -464,7 +477,8 @@ class Transfer extends Component {
     }
 
     renderCenter() {
-        const { prefix, mode, operations, disabled, leftDisabled, rightDisabled, locale } = this.props;
+        const { prefix, mode, operations, disabled, leftDisabled, rightDisabled, locale } =
+            this.props;
         const { leftCheckedValue, rightCheckedValue } = this.state;
         return (
             <div className={`${prefix}transfer-operations`}>
@@ -556,7 +570,9 @@ class Transfer extends Component {
         }
         const _showSearch = Array.isArray(showSearch) ? showSearch : [showSearch, showSearch];
         const _searchProps = Array.isArray(searchProps) ? searchProps : [searchProps, searchProps];
-        const _notFoundContent = Array.isArray(notFoundContent) ? notFoundContent : [notFoundContent, notFoundContent];
+        const _notFoundContent = Array.isArray(notFoundContent)
+            ? notFoundContent
+            : [notFoundContent, notFoundContent];
         return (
             <div className={cx(`${prefix}transfer`, className)} id={id} {...others}>
                 <TransferPanel
