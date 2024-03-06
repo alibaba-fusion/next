@@ -21,7 +21,7 @@ const popupError = () => {
 };
 
 const popupShow = () => {
-    const dialog = Dialog.show({
+    Dialog.show({
         v2: true,
         title: 'Custom',
         content: 'custom content custom content...',

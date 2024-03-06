@@ -1,119 +1,74 @@
-import { ReactWrapper } from 'enzyme';
-
 /**
  * Test the `role` attribute of a node
- * @deprecated use cy instead enzyme
  * @param roleTypes - ARIA Roles values that are to be checked against the desired nodes
- * @param nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
- *                  node using the `rootNode` param
- * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
- *                  Required if `nodeOrSelector` is a string.
+ * @param selector - a CSS selector to find the node using the `rootNode` param
+ * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `selector`.
  * @returns Is the node's role attribute one of the values passed in `roleTypes`?
  */
-const roleType = function (
+export const roleType = function (
     roleTypes: string | string[],
-    nodeOrSelector: string | ReactWrapper | Element,
-    rootNode: ReactWrapper
-) {
-    if (!nodeOrSelector || !roleTypes) {
+    selector: string,
+    rootNode: string = 'body'
+): boolean {
+    if (!selector || !roleTypes) {
         return false;
     }
 
-    let node = nodeOrSelector;
-
-    if (typeof node === 'string') {
-        node = rootNode.find(node);
-    }
-
-    let role: string | null = null;
-
-    // @ts-expect-error use property to judge type
-    if (node.getDOMNode) {
-        // @ts-expect-error use property to judge type
-        role = node.getDOMNode().getAttribute('role');
-        // @ts-expect-error use property to judge type
-    } else if (node.getAttribute) {
-        // @ts-expect-error use property to judge type
-        role = node.getAttribute('role');
-        // @ts-expect-error use property to judge type
-    } else if (node.attr) {
-        // @ts-expect-error use property to judge type
-        role = node.attr('role');
-    }
+    let role: string | null | undefined = null;
 
     roleTypes = Array.isArray(roleTypes) ? roleTypes : [roleTypes];
-    return Boolean(
-        role &&
-            roleTypes.some(r => {
-                return role!.toLocaleLowerCase() === r.toLocaleLowerCase();
-            })
-    );
+    roleTypes = roleTypes.map(r => r.toLocaleLowerCase());
+
+    const node = document.querySelector(rootNode)?.querySelector(selector);
+    if (!node) {
+        return false;
+    }
+    role = node.getAttribute('role');
+    return roleTypes.includes(role!.toLocaleLowerCase());
 };
 
 /**
  * Test the HTML tag of a node
- * @deprecated use cy instead enzyme
  * @param names - HTML Tag element names that are to be checked against the desired nodes
- * @param nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
- *                  node using the `rootNode` param
- * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
- *                  Required if `nodeOrSelector` is a string.
+ * @param selector - a CSS selector to find the node using the `rootNode` param
+ * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `selector`.
  * @returns Is the node one of the tag types passed in `names`?
  */
-const tagName = function (
+export const tagName = function (
     names: string | string[],
-    nodeOrSelector: string | ReactWrapper,
-    rootNode: ReactWrapper
-) {
-    if (!nodeOrSelector || !names) {
+    selector: string,
+    rootNode: string = 'body'
+): boolean {
+    if (!selector || !names) {
         return false;
     }
-
-    let node: typeof nodeOrSelector | Element = nodeOrSelector;
-
-    if (typeof node === 'string') {
-        node = rootNode.find(node);
-    }
-    if (node.getDOMNode) {
-        node = node.getDOMNode();
-    }
-
     names = Array.isArray(names) ? names : [names];
-    return names.some(n => {
-        return (node as Element).tagName.toLocaleLowerCase() === n.toLocaleLowerCase();
-    });
+    names = names.map(n => n.toLocaleLowerCase());
+    const node = document.querySelector(rootNode)?.querySelector(selector);
+    if (!node) {
+        return false;
+    }
+    return names.includes(node.tagName!.toLocaleLowerCase());
 };
-
 /**
  * Test if the node is an h* tag or has role=heading
- * @deprecated use cy instead enzyme
- * @param nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
- *                  node using the `rootNode` param
- * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
- *                  Required if `nodeOrSelector` is a string.
+ * @param selector - a CSS selector to find the node using the `rootNode` param
+ * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `selector`.
  */
-const isHeading = function (
-    nodeOrSelector: string | ReactWrapper,
-    rootNode: ReactWrapper
-): boolean {
+export const isHeading = function (selector: string, rootNode: string): boolean {
     return (
-        tagName(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], nodeOrSelector, rootNode) ||
-        roleType('heading', nodeOrSelector, rootNode)
+        tagName(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], selector, rootNode) ||
+        roleType('heading', selector, rootNode)
     );
 };
 
 /**
  * Test if the node is a button tag or has role=button
- * @deprecated use cy instead enzyme
- * @param nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
- *                  node using the `rootNode` param
- * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `nodeOrSelector`.
- *                  Required if `nodeOrSelector` is a string.
+ * @param selector - a CSS selector to find the node using the `rootNode` param
+ * @param rootNode - (Optional) root node used to search for the desired node using the CSS selector from `selector`.
  */
-const isButton = function (nodeOrSelector: string | ReactWrapper, rootNode: ReactWrapper): boolean {
-    return (
-        tagName('button', nodeOrSelector, rootNode) || roleType('button', nodeOrSelector, rootNode)
-    );
+export const isButton = function (selector: string, rootNode: string): boolean {
+    return tagName('button', selector, rootNode) || roleType('button', selector, rootNode);
 };
 
 export default {
