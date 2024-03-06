@@ -190,7 +190,17 @@ class Step extends Component {
 
     render() {
         // eslint-disable-next-line
-        const { className, current, labelPlacement, shape, readOnly, animation, itemRender, rtl, stretch } = this.props;
+        const {
+            className,
+            current,
+            labelPlacement,
+            shape,
+            readOnly,
+            animation,
+            itemRender,
+            rtl,
+            stretch,
+        } = this.props;
         const others = obj.pickOthers(Step.propTypes, this.props);
         let { prefix, direction, children } = this.props;
         prefix = this.context.prefix || prefix;
@@ -230,8 +240,10 @@ class Step extends Component {
             });
         });
 
-        const _direction = direction === 'ver' || direction === 'vertical' ? 'vertical' : 'horizontal';
-        const _labelPlacement = labelPlacement === 'ver' || labelPlacement === 'vertical' ? 'vertical' : 'horizontal';
+        const _direction =
+            direction === 'ver' || direction === 'vertical' ? 'vertical' : 'horizontal';
+        const _labelPlacement =
+            labelPlacement === 'ver' || labelPlacement === 'vertical' ? 'vertical' : 'horizontal';
         const stepCls = classNames({
             [`${prefix}step`]: true,
             [`${prefix}step-${shape}`]: shape,
