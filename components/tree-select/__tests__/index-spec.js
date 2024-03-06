@@ -66,6 +66,94 @@ function freeze(dataSource) {
     ]);
 }
 
+function cloneData(data, valueMap = {}) {
+    const loop = data =>
+        data.map(item => {
+            let newItem;
+
+            if (item.value in valueMap) {
+                newItem = { ...item, ...valueMap[item.value] };
+            } else {
+                newItem = { ...item };
+            }
+            if (newItem.children) {
+                newItem.children = loop(newItem.children);
+            }
+
+            return newItem;
+        });
+
+    return loop(data);
+}
+
+function flattenData(dataSource) {
+    const flattenList = [];
+    const drill = data => {
+        data.forEach(item => {
+            const { children, ...newItem } = item;
+            flattenList.push(newItem);
+            children && children.length && drill(children);
+        });
+    };
+
+    drill(dataSource);
+
+    return flattenList;
+}
+
+function assertDataAndNodes(dataSource) {
+    const labels = Array.prototype.map.call(
+        document.querySelectorAll('li.next-tree-node .next-tree-node-label'),
+        item => item.textContent
+    );
+
+    assert(flattenData(dataSource).every((item, index) => item.label === labels[index]));
+}
+
+function findTreeNodeByValue(value, container = document) {
+    return container.querySelector(`.k-${value}`);
+}
+
+function createMap(data) {
+    const map = {};
+
+    const loop = (data, prefix = '0') => {
+        data.forEach((item, index) => {
+            const { value, label, children, ...rests } = item;
+            const pos = `${prefix}-${index}`;
+            map[value] = { ...rests, value, label, pos, key: pos };
+            if (children && children.length) {
+                loop(children, pos);
+            }
+        })
+    }
+    loop(data);
+
+    return map;
+}
+
+function selectTreeNode(value, container) {
+    ReactTestUtils.Simulate.click(findTreeNodeByValue(value, container).querySelector('.next-tree-node-label'));
+}
+
+function checkTreeNode(value) {
+    const input = findTreeNodeByValue(value).querySelector('.next-checkbox input');
+    ReactTestUtils.Simulate.click(input);
+}
+
+function assertSelected(value, selected) {
+    assert(hasClass(findTreeNodeByValue(value).querySelector('.next-tree-node-inner'), 'next-selected') === selected);
+}
+
+function assertChecked(value, checked) {
+    assert(hasClass(findTreeNodeByValue(value).querySelector('.next-checkbox-wrapper'), 'checked') === checked);
+}
+
+function getLabels(wrapper) {
+    return wrapper.find('span.next-tag-body').map(node => node.text().trim());
+}
+
+
 const _v2n = createMap(dataSource);
 
 describe('TreeSelect', () => {
@@ -82,6 +170,7 @@ describe('TreeSelect', () => {
     afterEach(() => {
         if (wrapper) {
             wrapper.unmount();
+            wrapper = null;
         }
     });
 
@@ -823,90 +912,59 @@ describe('TreeSelect', () => {
                 .trim() === '服装/男装'
         );
     });
+
+    describe('should support useDetailValue', () => {
+        it('Support dataSource mode', () => {
+            const div = document.createElement('div');
+            document.body.appendChild(div);
+            const handleChange = value => {
+                assert(typeof value === 'object');
+                assert(value.value === '1');
+            };
+            const wrapper = mount(
+                <TreeSelect
+                    followTrigger
+                    useDetailValue
+                    defaultVisible
+                    treeDefaultExpandAll
+                    dataSource={dataSource}
+                    onChange={handleChange}
+                />,
+                { attachTo: div }
+            );
+            selectTreeNode('1', div);
+            wrapper.unmount();
+        });
+        it('Support children mode', () => {
+            const div = document.createElement('div');
+            document.body.appendChild(div);
+            const handleChange = value => {
+                assert(typeof value === 'object');
+                assert(value.value === '1');
+            };
+            const wrapper = mount(
+                <TreeSelect
+                    followTrigger
+                    useDetailValue
+                    defaultVisible
+                    treeDefaultExpandAll
+                    onChange={handleChange}
+                >
+                    <TreeNode key="1" className="k-1" value="1" label="Component">
+                        <TreeNode key="2" value="2" label="Form">
+                            <TreeNode key="4" value="4" label="Input" />
+                            <TreeNode key="5" value="5" label="Select" disabled />
+                        </TreeNode>
+                        <TreeNode key="3" value="3" label="Display">
+                            <TreeNode key="6" value="6" label="Table" />
+                        </TreeNode>
+                    </TreeNode>
+                </TreeSelect>,
+                { attachTo: div }
+            );
+            selectTreeNode('1', div);
+            wrapper.unmount();
+        });
+    });
+
 });
-
-function cloneData(data, valueMap = {}) {
-    const loop = data =>
-        data.map(item => {
-            let newItem;
-
-            if (item.value in valueMap) {
-                newItem = { ...item, ...valueMap[item.value] };
-            } else {
-                newItem = { ...item };
-            }
-            if (newItem.children) {
-                newItem.children = loop(newItem.children);
-            }
-
-            return newItem;
-        });
-
-    return loop(data);
-}
-
-function flattenData(dataSource) {
-    const flattenList = [];
-    const drill = data => {
-        data.forEach(item => {
-            const { children, ...newItem } = item;
-            flattenList.push(newItem);
-            children && children.length && drill(children);
-        });
-    };
-
-    drill(dataSource);
-
-    return flattenList;
-}
-
-function assertDataAndNodes(dataSource) {
-    const labels = Array.prototype.map.call(
-        document.querySelectorAll('li.next-tree-node .next-tree-node-label'),
-        item => item.textContent
-    );
-
-    assert(flattenData(dataSource).every((item, index) => item.label === labels[index]));
-}
-
-function findTreeNodeByValue(value) {
-    return document.querySelector(`.k-${value}`);
-}
-
-function createMap(data) {
-    const map = {};
-
-    const loop = (data, prefix = '0') =>
-        data.forEach((item, index) => {
-            const { value, label, children } = item;
-            const pos = `${prefix}-${index}`;
-            map[value] = { value, label, pos, key: pos };
-            if (children && children.length) {
-                loop(children, pos);
-            }
-        });
-    loop(data);
-
-    return map;
-}
-
-function selectTreeNode(value) {
-    ReactTestUtils.Simulate.click(findTreeNodeByValue(value).querySelector('.next-tree-node-label'));
-}
-
-function checkTreeNode(value) {
-    const input = findTreeNodeByValue(value).querySelector('.next-checkbox input');
-    ReactTestUtils.Simulate.click(input);
-}
-
-function assertSelected(value, selected) {
-    assert(hasClass(findTreeNodeByValue(value).querySelector('.next-tree-node-inner'), 'next-selected') === selected);
-}
-
-function assertChecked(value, checked) {
-    assert(hasClass(findTreeNodeByValue(value).querySelector('.next-checkbox-wrapper'), 'checked') === checked);
-}
-
-function getLabels(wrapper) {
-    return wrapper.find('span.next-tag-body').map(node => node.text().trim());
-}

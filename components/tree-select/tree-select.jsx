@@ -320,6 +320,7 @@ class TreeSelect extends Component {
          * @default item => `item.label || item.value`
          */
         valueRender: PropTypes.func,
+        useDetailValue: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -493,8 +494,9 @@ class TreeSelect extends Component {
         const ret = value.reduce((ret, v) => {
             const k = this.state._v2n[v] && this.state._v2n[v].key;
             if (k) {
-                const { label, pos, disabled, checkboxDisabled } = this.state._k2n[k];
+                const { label, pos, disabled, checkboxDisabled, children, ...rests } = this.state._k2n[k];
                 const d = {
+                    ...rests,
                     value: v,
                     label,
                     pos,
@@ -561,8 +563,13 @@ class TreeSelect extends Component {
         this.props.onVisibleChange(visible, type);
     }
 
+    triggerOnChange(value, data) {
+        const { useDetailValue, onChange } = this.props;
+        onChange(useDetailValue ? data : value, data);
+    }
+
     handleSelect(selectedKeys, extra) {
-        const { multiple, onChange, autoClearSearch } = this.props;
+        const { multiple, autoClearSearch } = this.props;
         const { selected } = extra;
 
         if (multiple || selected) {
@@ -582,7 +589,7 @@ class TreeSelect extends Component {
             const data = this.getData(value);
             const selectedData = this.getData(selectedValue);
             // 单选情况下，不返回 nonExistentValue，直接返回当前选择值，避免无法改选的问题
-            multiple ? onChange(value, data) : onChange(selectedValue[0], selectedData[0]);
+            multiple ? this.triggerOnChange(value, data) : this.triggerOnChange(selectedValue[0], selectedData[0]);
 
             // clear search value manually
             if (autoClearSearch) {
@@ -594,7 +601,7 @@ class TreeSelect extends Component {
     }
 
     handleCheck(checkedKeys) {
-        const { onChange, autoClearSearch } = this.props;
+        const { autoClearSearch } = this.props;
 
         let value = this.getValueByKeys(checkedKeys);
         const nonExistentValues = this.getNonExistentValues();
@@ -606,7 +613,7 @@ class TreeSelect extends Component {
             });
         }
 
-        onChange(value, this.getData(value));
+        this.triggerOnChange(value, this.getData(value));
 
         // clear search value manually
         if (autoClearSearch) {
@@ -616,7 +623,7 @@ class TreeSelect extends Component {
 
     handleRemove(removedItem) {
         const { value: removedValue } = removedItem;
-        const { treeCheckable, treeCheckStrictly, treeCheckedStrategy, onChange } = this.props;
+        const { treeCheckable, treeCheckStrictly, treeCheckedStrategy } = this.props;
 
         let value;
         if (
@@ -655,7 +662,7 @@ class TreeSelect extends Component {
         }
 
         const data = this.getData(value);
-        onChange(value, data);
+        this.triggerOnChange(value, data);
     }
 
     handleSearch(searchedValue) {
@@ -719,7 +726,7 @@ class TreeSelect extends Component {
                 });
             }
 
-            this.props.onChange(null, null);
+            this.triggerOnChange(null, null);
         }
     }
 
