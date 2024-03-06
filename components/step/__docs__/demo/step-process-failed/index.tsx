@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Step, Box, Icon } from '@alifd/next';
+import { Step, Icon } from '@alifd/next';
 
 ReactDOM.render(
     <div>
