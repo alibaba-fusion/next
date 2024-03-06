@@ -46,7 +46,7 @@ function App() {
             <div>DataSource mode</div>
             <TreeSelect
                 useDetailValue
-                defaultValue="2"
+                defaultValue={{ label: 'Form', value: '2' }}
                 onChange={handleChange.bind(undefined, 'from dataSource mode')}
                 dataSource={dataSource}
                 style={{ width: 150 }}
@@ -57,7 +57,7 @@ function App() {
             <div>Children mode</div>
             <TreeSelect
                 useDetailValue
-                defaultValue="2"
+                defaultValue={{ label: 'Form', value: '2' }}
                 onChange={handleChange.bind(undefined, 'from children mode')}
                 style={{ width: 150 }}
                 treeDefaultExpandAll

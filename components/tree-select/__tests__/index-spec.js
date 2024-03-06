@@ -239,6 +239,22 @@ describe('TreeSelect', () => {
         assertSelected('6', false);
     });
 
+    it('should render by detail defaultValue', () => {
+        wrapper = mount(
+            <TreeSelect
+                defaultValue={{ label: '外套', value: '4' }}
+                defaultVisible
+                treeDefaultExpandAll
+                dataSource={dataSource}
+            />
+        );
+        assertSelected('4', true);
+
+        wrapper.setProps({ defaultValue: { label: '裙子', value: '6' } });
+        wrapper.update();
+        assertSelected('6', false);
+    });
+
     it('should render by value', () => {
         wrapper = mount(
             <TreeSelect
@@ -254,6 +270,30 @@ describe('TreeSelect', () => {
         assertSelected('6', true);
 
         const newValue = ['4', '6'];
+        wrapper.setProps({ value: newValue });
+        wrapper.update();
+        assertSelected('4', true);
+        assertSelected('6', true);
+    });
+
+    it('should render by detail value', () => {
+        wrapper = mount(
+            <TreeSelect
+                defaultValue={{ label: '外套', value: '4' }}
+                value={{ label: '裙子', value: '6' }}
+                multiple
+                defaultVisible
+                treeDefaultExpandAll
+                dataSource={dataSource}
+            />
+        );
+        assertSelected('4', false);
+        assertSelected('6', true);
+
+        const newValue = [
+            { label: '外套', value: '4' },
+            { label: '裙子', value: '6' },
+        ];
         wrapper.setProps({ value: newValue });
         wrapper.update();
         assertSelected('4', true);
