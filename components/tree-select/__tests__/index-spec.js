@@ -141,8 +141,8 @@ function checkTreeNode(value) {
     ReactTestUtils.Simulate.click(input);
 }
 
-function assertSelected(value, selected) {
-    assert(hasClass(findTreeNodeByValue(value).querySelector('.next-tree-node-inner'), 'next-selected') === selected);
+function assertSelected(value, selected, container) {
+    assert(hasClass(findTreeNodeByValue(value, container).querySelector('.next-tree-node-inner'), 'next-selected') === selected);
 }
 
 function assertChecked(value, checked) {
@@ -1003,6 +1003,45 @@ describe('TreeSelect', () => {
                 { attachTo: div }
             );
             selectTreeNode('1', div);
+            wrapper.unmount();
+        });
+        it('Control mode available', () => {
+            const div = document.createElement('div');
+            document.body.appendChild(div);
+
+            function App() {
+                const [value, setValue] = useState({ label: 'Component', value: '1' });
+
+                return (
+                    <TreeSelect
+                        followTrigger
+                        useDetailValue
+                        visible
+                        treeDefaultExpandAll
+                        value={value}
+                        onChange={v => {
+                            assert(v && typeof v === 'object' && v.value);
+                            setValue(v);
+                        }}
+                    >
+                        <TreeNode key="1" value="1" label="Component">
+                            <TreeNode key="2" className="k-2" value="2" label="Form">
+                                <TreeNode key="4" value="4" label="Input" />
+                                <TreeNode key="5" value="5" label="Select" disabled />
+                            </TreeNode>
+                            <TreeNode key="3" value="3" label="Display">
+                                <TreeNode key="6" value="6" label="Table" />
+                            </TreeNode>
+                        </TreeNode>
+                    </TreeSelect>
+                );
+            }
+
+            const wrapper = mount(<App />, { attachTo: div });
+            assert(wrapper.find('.next-select-values').text().trim() === 'Component');
+            selectTreeNode('2', div);
+            assert(wrapper.find('.next-select-values').text().trim() === 'Form');
+            assertSelected('2', true, div);
             wrapper.unmount();
         });
     });
