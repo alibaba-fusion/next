@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import moment from 'moment';
 import DatePicker from '../index';
 import { KEYCODE } from '../../util';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 const { RangePicker, MonthPicker, YearPicker, WeekPicker } = DatePicker;
 
+const delay = duration => new Promise(r => setTimeout(r, duration));
 const startValue = moment('2017-11-20', 'YYYY-MM-DD', true);
 const endValue = moment('2017-12-15', 'YYYY-MM-DD', true);
 const defaultTimeValue = moment('09:00:00', 'HH:mm:ss', true);
@@ -1650,6 +1653,93 @@ describe('RangePicker', () => {
                     .first()
                     .text() === 'April'
             );
+        });
+    });
+    
+    describe('issues', () => {
+        it('should render replacing the Focus frame close #3998', async function() {
+            this.timeout(99999999);
+            const div = document.createElement('div');
+            document.body.appendChild(div);
+            const wrapper = mount(<RangePicker followTrigger defaultValue={['2024-03-02', '2024-03-03']}/>, {attachTo: div});
+
+            const clickPanelInput = async (index) => {
+                const paneInputs = div.querySelectorAll('.next-range-picker-panel-header input');
+                assert(paneInputs.length === 2);
+                paneInputs[index].click();
+                await delay(200);
+            }
+            const assertPanelInputValue = (index, value) => {
+                const paneInputs = div.querySelectorAll('.next-range-picker-panel-header input');
+                assert(paneInputs.length === 2);
+                assert(paneInputs[index].value === value);
+            }
+            const assertPanelInputFocus = (index) => {
+                // FIXME 框架限制，focus 状态无法改变，技术升级后再实现
+                // const paneInputs = div.querySelectorAll('.next-range-picker-panel-header input');
+                // assert(paneInputs.length === 2);
+                // assert(document.activeElement && document.activeElement === paneInputs[index]);
+            }
+            const assertPanelInputHasFocusClass = (index) => {
+                // FIXME 框架限制，focus 状态无法改变，技术升级后再实现
+                // const paneInputs = div.querySelectorAll('.next-range-picker-panel-header .next-input');
+                // assert(paneInputs.length === 2);
+                // assert(paneInputs[index].classList.contains('next-focus'));
+            }
+            const clickDate = async (value) => {
+                // ReactTestUtils.Simulate.click(div.querySelector(`td[title="${value}"] .next-calendar-date`));
+                div.querySelector(`td[title="${value}"] .next-calendar-date`).click();
+                await delay(100);
+            }
+
+            const triggerInputs = div.querySelectorAll('.next-range-picker-trigger .next-input');
+            assert(triggerInputs.length === 2);
+            triggerInputs[0].click();
+            
+            await delay(500);
+            assertPanelInputFocus(0);
+            assertPanelInputHasFocusClass(0);
+            await clickDate('2024-03-01');
+            assertPanelInputValue(0, '2024-03-01');
+            assertPanelInputHasFocusClass(1);
+            await clickDate('2024-03-08');
+            assertPanelInputValue(1, '2024-03-08');
+            assertPanelInputHasFocusClass(1);
+
+            await clickPanelInput(0);
+            assertPanelInputFocus(0);
+            assertPanelInputHasFocusClass(0);
+            await clickDate('2024-03-01');
+            assertPanelInputValue(0, '2024-03-01');
+            assertPanelInputHasFocusClass(1);
+            clickDate('2024-03-01');
+            assertPanelInputHasFocusClass(1);
+            assertPanelInputValue(1, '2024-03-01');
+
+            clickPanelInput(1);
+            assertPanelInputFocus(1);
+            assertPanelInputHasFocusClass(1);
+            clickDate('2024-03-05');
+            assertPanelInputValue(1, '2024-03-05');
+            assertPanelInputHasFocusClass(0);
+            clickDate('2024-03-05');
+            assertPanelInputHasFocusClass(0);
+            assertPanelInputValue(0, '2024-03-05');
+
+            document.body.click();
+            await delay(300);
+            triggerInputs[1].click();
+            await delay(500);
+            assertPanelInputFocus(1);
+            assertPanelInputHasFocusClass(1);
+            await clickDate('2024-03-08');
+            assertPanelInputValue(1, '2024-03-08');
+            assertPanelInputHasFocusClass(0);
+            await clickDate('2024-03-08');
+            assertPanelInputValue(0, '2024-03-08');
+            assertPanelInputHasFocusClass(0);
+
+            wrapper.unmount();
         });
     });
 });

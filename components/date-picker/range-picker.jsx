@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
@@ -243,6 +243,10 @@ class RangePicker extends Component {
         onVisibleChange: func.noop,
     };
 
+    startDateInputRef = createRef();
+    endDateInputRef = createRef();
+    autoSwitchDateInput = false;
+
     constructor(props, context) {
         super(props, context);
         const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(props.format, props.showTime, props.type);
@@ -320,7 +324,7 @@ class RangePicker extends Component {
 
         switch (active || prevActiveDateInput) {
             case 'startValue': {
-                if (!prevEndValue || value.valueOf() <= prevEndValue.valueOf()) {
+                if (!prevEndValue || this.autoSwitchDateInput) {
                     newState.activeDateInput = 'endValue';
                 }
 
@@ -357,7 +361,7 @@ class RangePicker extends Component {
             }
 
             case 'endValue':
-                if (!prevStartValue) {
+                if (!prevStartValue || this.autoSwitchDateInput) {
                     newState.activeDateInput = 'startValue';
                 }
 
@@ -396,6 +400,11 @@ class RangePicker extends Component {
 
         const newStartValue = 'startValue' in newState ? newState.startValue : prevStartValue;
         const newEndValue = 'endValue' in newState ? newState.endValue : prevEndValue;
+
+        // 每当 input 发生了自动切换，则关闭自动切换
+        if (newState.activeDateInput !== prevActiveDateInput) {
+            this.autoSwitchDateInput = false;
+        }
 
         // 受控状态选择不更新值
         if ('value' in this.props) {
@@ -689,6 +698,28 @@ class RangePicker extends Component {
         return disabledTime;
     };
 
+    enableAutoSwitchDateInput = () => {
+        this.autoSwitchDateInput = true;
+    }
+
+    afterOpen = () => {
+        // autoFocus 逻辑手动处理
+        switch(this.state.activeDateInput) {
+            case 'startValue': {
+                if (this.startDateInputRef.current) {
+                    this.startDateInputRef.current.getInstance().focus();
+                }
+                break;
+            }
+            case 'endValue': {
+                if (this.endDateInputRef.current) {
+                    this.endDateInputRef.current.getInstance().focus();
+                }
+                break;
+            }
+        }
+    }
+
     renderPreview([startValue, endValue], others) {
         const { prefix, className, renderPreview } = this.props;
         const { dateTimeFormat } = this.state;
@@ -826,6 +857,8 @@ class RangePicker extends Component {
                 value={startDateInputValue}
                 onFocus={() => this.onFocusDateInput('startValue')}
                 className={startDateInputCls}
+                ref={this.startDateInputRef}
+                onClick={func.makeChain(this.enableAutoSwitchDateInput, sharedInputProps.onClick)}
             />
         );
 
@@ -837,6 +870,8 @@ class RangePicker extends Component {
                 value={endDateInputValue}
                 onFocus={() => this.onFocusDateInput('endValue')}
                 className={endDateInputCls}
+                ref={this.endDateInputRef}
+                onClick={func.makeChain(this.enableAutoSwitchDateInput, sharedInputProps.onClick)}
             />
         );
 
@@ -1084,13 +1119,14 @@ class RangePicker extends Component {
         return (
             <div {...obj.pickOthers(RangePicker.propTypes, others)} className={classNames}>
                 <PopupComponent
-                    autoFocus
                     align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     disabled={disabled}
                     visible={state.visible}
                     onVisibleChange={this.onVisibleChange}
+                    beforeOpen={func.makeChain(this.enableAutoSwitchDateInput, popupProps && popupProps.beforeOpen)}
+                    afterOpen={func.makeChain(this.afterOpen, popupProps && popupProps.afterOpen)}
                     triggerType={popupTriggerType}
                     container={popupContainer}
                     style={popupStyle}
