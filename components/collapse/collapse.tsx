@@ -15,41 +15,14 @@ class Collapse extends React.Component<
     }
 > {
     static propTypes = {
-        /**
-         * 样式前缀
-         */
         prefix: PropTypes.string,
-        /**
-         * 组件接受行内样式
-         */
         style: PropTypes.object,
-        /**
-         * 使用数据模型构建
-         */
         dataSource: PropTypes.array,
-        /**
-         * 默认展开 keys
-         */
         defaultExpandedKeys: PropTypes.array,
-        /**
-         * 受控展开 keys
-         */
         expandedKeys: PropTypes.array,
-        /**
-         * 展开状态发升变化时候的回调
-         */
         onExpand: PropTypes.func,
-        /**
-         * 所有禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * 扩展 class
-         */
         className: PropTypes.string,
-        /**
-         * 手风琴模式，一次只能打开一个
-         */
         accordion: PropTypes.bool,
         children: PropTypes.node,
         id: PropTypes.string,
