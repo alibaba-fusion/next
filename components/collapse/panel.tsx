@@ -52,17 +52,25 @@ class Panel extends React.Component<PanelProps> {
         }
     };
     render() {
-        const { title, children, isExpanded, disabled, style, prefix, onClick, id, ...others } =
-            this.props;
-
-        const className = this.props!.className as string;
+        const {
+            title,
+            children,
+            className,
+            isExpanded,
+            disabled,
+            style,
+            prefix,
+            onClick,
+            id,
+            ...others
+        } = this.props;
 
         const cls = classNames({
             [`${prefix}collapse-panel`]: true,
             [`${prefix}collapse-panel-hidden`]: !isExpanded,
             [`${prefix}collapse-panel-expanded`]: isExpanded,
             [`${prefix}collapse-panel-disabled`]: disabled,
-            [className]: className,
+            [className!]: className,
         });
 
         const iconCls = classNames({
