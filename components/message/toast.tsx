@@ -128,7 +128,7 @@ const create = props => {
 
     const div = document.createElement('div');
     document.body.appendChild(div);
-    const closeChain = function() {
+    const closeChain = function () {
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
         afterClose && afterClose();
@@ -157,7 +157,7 @@ const create = props => {
             />
         </ConfigProvider>,
         div,
-        function() {
+        function () {
             mask = myRef;
             if (mask && destroyed) {
                 destroy();
