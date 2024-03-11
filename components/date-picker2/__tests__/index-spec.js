@@ -1128,6 +1128,14 @@ describe('Picker', () => {
             wrapper = mount(<DatePicker state="loading" />);
             assert(wrapper.find('.next-icon-loading').length === 1);
         });
+
+        // fix https://github.com/alibaba-fusion/next/issues/4767
+        it('should pass inputProps to trigger', () => {
+            mount(<DatePicker trigger={(inputProps) => {
+                assert(typeof inputProps.onInputTypeChange === 'function');
+                return <div>test</div>
+            }} />);
+        })
     });
 });
 
