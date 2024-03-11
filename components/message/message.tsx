@@ -86,7 +86,10 @@ class Message extends Component {
     };
 
     state = {
-        visible: typeof this.props.visible === 'undefined' ? this.props.defaultVisible : this.props.visible,
+        visible:
+            typeof this.props.visible === 'undefined'
+                ? this.props.defaultVisible
+                : this.props.visible,
     };
 
     static getDerivedStateFromProps(props) {
@@ -148,7 +151,13 @@ class Message extends Component {
         });
 
         const newChildren = visible ? (
-            <div role="alert" style={style} {...others} className={classes} dir={rtl ? 'rtl' : undefined}>
+            <div
+                role="alert"
+                style={style}
+                {...others}
+                className={classes}
+                dir={rtl ? 'rtl' : undefined}
+            >
                 {closeable ? (
                     <a
                         role="button"
