@@ -32,7 +32,7 @@ describe('notification', () => {
             content: '嘿嘿',
         });
 
-        Notification.close(key as string);
+        Notification.close(key);
 
         key = Notification.open({
             title: '哈哈',
@@ -40,6 +40,6 @@ describe('notification', () => {
         });
 
         cy.get('.next-message').should('exist');
-        Notification.close(key as string);
+        Notification.close(key);
     });
 });
