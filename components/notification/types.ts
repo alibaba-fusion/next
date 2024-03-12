@@ -1,7 +1,7 @@
-import { ReactNode, MouseEventHandler, CSSProperties } from 'react';
+import type { ReactNode, MouseEventHandler, CSSProperties } from 'react';
 
 /**
- * @api Notification
+ * @api Notification.Config
  * @order 1
  */
 export interface NotificationConfig {
@@ -44,7 +44,7 @@ export interface NotificationConfig {
 }
 
 /**
- * @api Notification
+ * @api NotificationOptions
  * @order 2
  */
 export interface NotificationOptions {
@@ -111,14 +111,16 @@ export interface NotificationOptions {
  * @api Notification
  * @order 0
  */
-export default class Notification {
-    static config: (config: NotificationConfig) => NotificationConfig;
-    static open: (options: NotificationOptions) => string;
-    static close: (key: string) => void;
-    static destroy: () => void;
-    static success: (options: NotificationOptions) => string;
-    static error: (options: NotificationOptions) => string;
-    static warning: (options: NotificationOptions) => string;
-    static notice: (options: NotificationOptions) => string;
-    static help: (options: NotificationOptions) => string;
+export default interface Notification {
+    config: (config: NotificationConfig) => NotificationConfig;
+    open: (options: NotificationOptions) => string;
+    close: (key: string) => void;
+    destroy: () => void;
+    success: (options: NotificationOptions) => string;
+    error: (options: NotificationOptions) => string;
+    warning: (options: NotificationOptions) => string;
+    notice: (options: NotificationOptions) => string;
+    help: (options: NotificationOptions) => string;
 }
+
+export interface INotification extends Notification {}

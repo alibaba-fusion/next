@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import ConfigProvider from '../config-provider';
@@ -7,7 +7,7 @@ import Message from '../message';
 import uuid from '../util/guid';
 import config from './config';
 
-import type { NotificationConfig, NotificationOptions } from './types';
+import type { NotificationConfig, NotificationOptions, INotification } from './types';
 
 const getAnimation = (placement: string) => {
     switch (placement) {
@@ -30,7 +30,8 @@ interface NotificationState {
     notifications: NotificationOptions[];
 }
 
-let instance: Notification;
+// let instance: Notification;
+let instance: InstanceType<typeof ConfigedNotification> | null;
 let mounting = false;
 let waitOpens: NotificationOptions[] = [];
 function close(key: string) {
@@ -113,9 +114,9 @@ class Notification extends Component<NotificationProps, NotificationState> {
             let timer;
 
             if (duration && duration > 0) {
-                timer = setTimeout(() => {
-                    this.close(key as string);
-                }, duration) as unknown as number;
+                timer = window.setTimeout(() => {
+                    this.close(key!);
+                }, duration);
                 this.timers.push(timer);
             }
             notifications.push({
@@ -128,7 +129,7 @@ class Notification extends Component<NotificationProps, NotificationState> {
         if (config.maxCount > 0 && config.maxCount < notifications.length) {
             while (notifications.length > config.maxCount) {
                 const { key } = notifications[0];
-                this.close(key as string);
+                this.close(key!);
                 notifications.splice(0, 1);
             }
         }
@@ -175,7 +176,7 @@ class Notification extends Component<NotificationProps, NotificationState> {
                                 style={style}
                                 className={className}
                                 onClick={onClick}
-                                onClose={() => close(key as string)}
+                                onClose={() => close(key!)}
                             >
                                 {content}
                             </Message>
@@ -223,13 +224,13 @@ function open(options: NotificationOptions = {}) {
                 <ConfigProvider {...ConfigProvider.getContext()}>
                     <ConfigedNotification
                         ref={ref => {
-                            instance = ref as unknown as Notification;
+                            instance = ref;
                         }}
                     />
                 </ConfigProvider>,
                 div,
                 () => {
-                    waitOpens.forEach(item => instance.open(item));
+                    waitOpens.forEach(item => instance!.open(item));
                     waitOpens = [];
                     mounting = false;
                 }
@@ -272,13 +273,13 @@ const levels: objectAny = {};
 });
 
 export default {
-    config(...args: { placement: unknown }[]) {
+    config(...args) {
         return Object.assign(config, ...args);
     },
     open,
     close,
     destroy,
     ...levels,
-};
+} as INotification;
 
 export type { NotificationConfig, NotificationOptions };
