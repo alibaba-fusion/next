@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Menu from '../../menu';
 import { func, obj, dom } from '../../util';
+import { DragGapType, TransferItemProps, TransferItemState } from '../types';
 
 const { Item, CheckboxItem } = Menu;
 const { bindCtx } = func;
 const { pickOthers } = obj;
 const { getOffset } = dom;
 
-export default class TransferItem extends Component {
+export default class TransferItem extends Component<TransferItemProps, TransferItemState> {
     static menuChildType = CheckboxItem.menuChildType;
 
     static propTypes = {
@@ -33,7 +34,12 @@ export default class TransferItem extends Component {
         panelPosition: PropTypes.oneOf(['left', 'right']),
     };
 
-    constructor(props) {
+    addHighlightTimer: NodeJS.Timer;
+    removeHighlightTimer: NodeJS.Timer;
+    item: typeof CheckboxItem;
+    dragGap: DragGapType;
+
+    constructor(props: TransferItemProps) {
         super(props);
 
         this.state = {
@@ -70,8 +76,8 @@ export default class TransferItem extends Component {
         clearTimeout(this.removeHighlightTimer);
     }
 
-    getItemDOM(ref) {
-        this.item = ref;
+    getItemDOM(ref: unknown) {
+        this.item = ref as typeof CheckboxItem;
     }
 
     handleClick() {
@@ -79,22 +85,22 @@ export default class TransferItem extends Component {
         onClick(panelPosition === 'left' ? 'right' : 'left', item.value);
     }
 
-    handleDragStart(ev) {
+    handleDragStart(ev: React.DragEvent) {
         ev &&
             ev.dataTransfer &&
             typeof ev.dataTransfer.setData === 'function' &&
-            ev.dataTransfer.setData('text/plain', ev.target.id);
+            ev.dataTransfer.setData('text/plain', (ev.target as HTMLElement).id);
         const { onDragStart, panelPosition, item } = this.props;
         onDragStart(panelPosition, item.value);
     }
 
-    getDragGap(e) {
+    getDragGap(e: React.DragEvent<HTMLElement>) {
         const referenceTop = getOffset(e.currentTarget).top;
         const referenceHeight = e.currentTarget.offsetHeight;
         return e.pageY <= referenceTop + referenceHeight / 2 ? 'before' : 'after';
     }
 
-    handleDragOver(e) {
+    handleDragOver(e: React.DragEvent<HTMLElement>) {
         const { panelPosition, dragPosition, onDragOver, item } = this.props;
         if (panelPosition === dragPosition) {
             e.preventDefault();
@@ -112,7 +118,7 @@ export default class TransferItem extends Component {
         onDragEnd();
     }
 
-    handleDrop(e) {
+    handleDrop(e: React.DragEvent) {
         e.preventDefault();
 
         const { onDrop, item, panelPosition, dragValue } = this.props;
@@ -145,8 +151,8 @@ export default class TransferItem extends Component {
             [`${prefix}simple`]: isSimple,
         });
 
-        const children = itemRender(item);
-        const itemProps = {
+        const children = itemRender!(item);
+        const itemProps: Record<string, unknown> = {
             ref: this.getItemDOM,
             className: classNames,
             children,

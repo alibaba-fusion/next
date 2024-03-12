@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Transfer } from '@alifd/next';
+import BaseDemo from '../BaseDemo';
+import { TransferProps } from '../../../types';
 
 const dataSource = (() => {
     const dataSource = [];
@@ -16,15 +18,11 @@ const dataSource = (() => {
     return dataSource;
 })();
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends BaseDemo {
+    constructor(props: TransferProps) {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(value, data, extra) {
-        console.log(value, data, extra);
     }
 
     render() {

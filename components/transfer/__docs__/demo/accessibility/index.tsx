@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Transfer } from '@alifd/next';
+import { TransferProps } from '../../../types';
+import BaseDemo from '../BaseDemo';
 
 const dataSource = (() => {
     const dataSource = [];
@@ -24,15 +26,11 @@ const obj = {
     moveToRight: '提交选中元素',
 };
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends BaseDemo {
+    constructor(props: TransferProps) {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(value, data, extra) {
-        console.log(value, data, extra);
     }
 
     render() {

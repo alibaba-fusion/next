@@ -108,7 +108,9 @@ export interface CheckboxItemProps extends HTMLAttributesWeak, CommonProps {
     checkboxDisabled?: boolean;
 }
 
-export class CheckboxItem extends React.Component<CheckboxItemProps, any> {}
+export class CheckboxItem extends React.Component<CheckboxItemProps, any> {
+    static menuChildType: any;
+}
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
