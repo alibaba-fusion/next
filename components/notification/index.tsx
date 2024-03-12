@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import ConfigProvider from '../config-provider';
@@ -7,7 +7,11 @@ import Message from '../message';
 import uuid from '../util/guid';
 import config from './config';
 
-import type { NotificationConfig, NotificationOptions, INotification } from './types';
+import type {
+    NotificationConfig,
+    NotificationOptions,
+    Notification as INotification,
+} from './types';
 
 const getAnimation = (placement: string) => {
     switch (placement) {
