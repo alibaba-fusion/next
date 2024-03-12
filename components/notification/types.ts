@@ -111,7 +111,7 @@ export interface NotificationOptions {
  * @api Notification
  * @order 0
  */
-export default interface Notification {
+export interface Notification {
     config: (config: NotificationConfig) => NotificationConfig;
     open: (options: NotificationOptions) => string;
     close: (key: string) => void;
@@ -122,5 +122,3 @@ export default interface Notification {
     notice: (options: NotificationOptions) => string;
     help: (options: NotificationOptions) => string;
 }
-
-export interface INotification extends Notification {}
