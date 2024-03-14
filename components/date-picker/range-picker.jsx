@@ -1075,7 +1075,7 @@ class RangePicker extends Component {
             [PANEL.TIME]: timePanel,
         }[state.panel];
 
-        const allowClear = state.startValue && state.endValue && hasClear;
+        const allowClear = (state.startValue || state.endValue) && hasClear;
         let [startPlaceholder, endPlaceholder] = placeholder || [];
 
         if (typeof placeholder === 'string') {
