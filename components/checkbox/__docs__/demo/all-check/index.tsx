@@ -13,7 +13,7 @@ const App = () => {
     const [indeterminate, setIndeterminate] = React.useState(true);
     const [checkAll, setCheckAll] = React.useState(false);
 
-    const onChange: GroupProps['onChange'] = list => {
+    const onChange: GroupProps['onChange'] = (list: string[]) => {
         setCheckedList(list);
         setIndeterminate(!!list.length && list.length < plainOptions.length);
         setCheckAll(list.length === plainOptions.length);

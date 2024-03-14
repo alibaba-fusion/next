@@ -2,10 +2,9 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-import { clone } from 'lodash';
 import { obj } from '../util';
 import Checkbox from './checkbox';
-import type { CheckboxData, GroupProps, GroupState, IValue } from './types';
+import type { CheckboxData, GroupProps, GroupState, ValueItem } from './types';
 
 const { pickOthers } = obj;
 
@@ -14,72 +13,29 @@ class CheckboxGroup extends React.Component<GroupProps, GroupState> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 自定义类名
-         */
         className: PropTypes.string,
-        /**
-         * 自定义内敛样式
-         */
         style: PropTypes.object,
-        /**
-         * 整体禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * 可选项列表，数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`
-         */
         dataSource: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.string),
             PropTypes.arrayOf(PropTypes.object),
         ]),
-        /**
-         * 被选中的值列表
-         */
         value: PropTypes.oneOfType([
             PropTypes.array,
             PropTypes.string,
             PropTypes.number,
             PropTypes.bool,
         ]),
-        /**
-         * 默认被选中的值列表
-         */
         defaultValue: PropTypes.oneOfType([
             PropTypes.array,
             PropTypes.string,
             PropTypes.number,
             PropTypes.bool,
         ]),
-        /**
-         * 通过子元素方式设置内部 checkbox
-         */
         children: PropTypes.arrayOf(PropTypes.element),
-        /**
-         * 选中值改变时的事件
-         * @param value - 选中项列表
-         * @param e - Dom 事件对象
-         */
         onChange: PropTypes.func,
-
-        /**
-         * 子项目的排列方式
-         * - hoz: 水平排列 (default)
-         * - ver: 垂直排列
-         */
         direction: PropTypes.oneOf(['hoz', 'ver']),
-        /**
-         * 是否为预览态
-         * @version 1.19
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param previewed - 预览值 [\{label: '', value:''\},...]
-         * @param props - 所有传入的参数
-         * @returns Element 渲染内容
-         * @version 1.19
-         */
         renderPreview: PropTypes.func,
     };
 
@@ -102,7 +58,6 @@ class CheckboxGroup extends React.Component<GroupProps, GroupState> {
         super(props);
 
         let value: GroupProps['value'] = [];
-        let formatValue: GroupState['value'] = [];
         if ('value' in props) {
             value = props.value;
         } else if ('defaultValue' in props) {
@@ -110,19 +65,13 @@ class CheckboxGroup extends React.Component<GroupProps, GroupState> {
         }
         if (!Array.isArray(value)) {
             if (value === null || value === undefined) {
-                formatValue = [];
-            } else if (typeof value === 'string') {
-                formatValue = [value];
-            } else if (typeof value === 'number') {
-                formatValue = [value];
-            } else if (typeof value === 'boolean') {
-                formatValue = [value];
+                value = [];
+            } else {
+                value = [value];
             }
-        } else {
-            formatValue = value;
         }
         this.state = {
-            value: formatValue,
+            value: [...value],
         };
 
         this.onChange = this.onChange.bind(this);
@@ -139,32 +88,24 @@ class CheckboxGroup extends React.Component<GroupProps, GroupState> {
 
     static getDerivedStateFromProps(nextProps: GroupProps) {
         if ('value' in nextProps) {
-            const { value } = nextProps;
-            let formatValue: GroupState['value'] = [];
+            let { value } = nextProps;
             if (!Array.isArray(value)) {
                 if (value === null || value === undefined) {
-                    formatValue = [];
-                } else if (typeof value === 'string') {
-                    formatValue = [value];
-                } else if (typeof value === 'number') {
-                    formatValue = [value];
-                } else if (typeof value === 'boolean') {
-                    formatValue = [value];
+                    value = [];
+                } else {
+                    value = [value];
                 }
-            } else {
-                formatValue = value;
             }
-
-            return { value: formatValue };
+            return { value };
         }
 
         return null;
     }
 
-    onChange(currentValue: IValue, event: React.ChangeEvent<HTMLInputElement>) {
+    onChange(currentValue: ValueItem, event: React.ChangeEvent<HTMLInputElement>) {
         const { value } = this.state;
         const index = value.indexOf(currentValue);
-        const valTemp = clone(value);
+        const valTemp = [...value];
 
         if (index === -1) {
             valTemp.push(currentValue);
@@ -194,7 +135,7 @@ class CheckboxGroup extends React.Component<GroupProps, GroupState> {
                 this.props.children,
                 (
                     child: React.ReactElement<{
-                        value: IValue;
+                        value: ValueItem;
                         children?: string;
                         rtl?: boolean;
                     }>
@@ -281,6 +222,4 @@ class CheckboxGroup extends React.Component<GroupProps, GroupState> {
     }
 }
 
-export default polyfill<React.ComponentType<GroupProps>>(
-    CheckboxGroup as React.ComponentType<GroupProps>
-);
+export default polyfill(CheckboxGroup);
