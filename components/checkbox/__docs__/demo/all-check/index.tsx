@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Checkbox, Divider } from '@alifd/next';
+import type { CheckboxProps, GroupProps } from '@alifd/next/lib/checkbox';
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -12,13 +13,13 @@ const App = () => {
     const [indeterminate, setIndeterminate] = React.useState(true);
     const [checkAll, setCheckAll] = React.useState(false);
 
-    const onChange = list => {
+    const onChange: GroupProps['onChange'] = list => {
         setCheckedList(list);
         setIndeterminate(!!list.length && list.length < plainOptions.length);
         setCheckAll(list.length === plainOptions.length);
     };
 
-    const onCheckAllChange = (checked, e) => {
+    const onCheckAllChange: CheckboxProps['onChange'] = (checked, e) => {
         setCheckedList(e.target.checked ? plainOptions : []);
         setIndeterminate(false);
         setCheckAll(e.target.checked);

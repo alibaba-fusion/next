@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { PrivateCheckboxProps } from './checkbox';
-import { CheckboxProps } from './types';
+import { type PrivateCheckboxProps } from './checkbox';
+import { type CheckboxProps } from './types';
 
 export interface CheckboxContext {
     onChange: (
@@ -9,7 +9,7 @@ export interface CheckboxContext {
         event: React.ChangeEvent<HTMLInputElement>
     ) => void;
     __group__: boolean;
-    selectedValue: PrivateCheckboxProps['value'][];
+    selectedValue: CheckboxProps['value'][];
     disabled: boolean;
     prefix: string;
 }

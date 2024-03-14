@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Checkbox } from '@alifd/next';
+import { type GroupProps } from '@alifd/next/lib/checkbox';
 
 const list = [
     {
@@ -18,26 +19,16 @@ const list = [
 ];
 
 class ControlApp extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        value: 'orange',
+    };
 
-        this.state = {
-            value: 'orange',
-        };
-
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange(value) {
+    onChange: GroupProps['onChange'] = value => {
         this.setState({
             value: value,
         });
         console.log('onChange', value);
-    }
-
-    onClick(e) {
-        console.log('onClick', e);
-    }
+    };
 
     render() {
         return (

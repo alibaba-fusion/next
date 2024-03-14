@@ -1,25 +1,10 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import Checkbox from '../index';
-import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
+import { testReact } from '../../util/__tests__/a11y/validate';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Checkbox A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
     it('should not have any violations for grouped checkbox with children', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Checkbox.Group value={['pear', 'watermelon']}>
                 <Checkbox id="apple" value="apple" className="apple">
                     苹果
@@ -32,7 +17,6 @@ describe('Checkbox A11y', () => {
                 </Checkbox>
             </Checkbox.Group>
         );
-        return wrapper;
     });
 
     it('should not have any violations for grouped checkbox with datasource', async () => {
@@ -50,7 +34,6 @@ describe('Checkbox A11y', () => {
                 label: '橙子',
             },
         ];
-        wrapper = await testReact(<Checkbox.Group value={['pear']} dataSource={list} />);
-        return wrapper;
+        await testReact(<Checkbox.Group value={['pear']} dataSource={list} />);
     });
 });
