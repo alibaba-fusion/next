@@ -2,22 +2,15 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
+import { clone } from 'lodash';
 import { obj } from '../util';
 import Checkbox from './checkbox';
-import type { CheckboxData, GroupProps } from './types';
-import { clone } from 'lodash';
+import type { CheckboxData, GroupProps, GroupState, IValue } from './types';
 
 const { pickOthers } = obj;
 
-interface GroupState<T extends string | number | boolean> {
-    value: T[];
-}
-
 /** Checkbox.Group */
-class CheckboxGroup<T extends string | number | boolean> extends React.Component<
-    GroupProps<T>,
-    GroupState<T>
-> {
+class CheckboxGroup extends React.Component<GroupProps, GroupState> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -34,7 +27,7 @@ class CheckboxGroup<T extends string | number | boolean> extends React.Component
          */
         disabled: PropTypes.bool,
         /**
-         * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`
+         * 可选项列表，数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`
          */
         dataSource: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.string),
@@ -64,8 +57,8 @@ class CheckboxGroup<T extends string | number | boolean> extends React.Component
         children: PropTypes.arrayOf(PropTypes.element),
         /**
          * 选中值改变时的事件
-         * @param {Array} value 选中项列表
-         * @param {Event} e Dom 事件对象
+         * @param value - 选中项列表
+         * @param e - Dom 事件对象
          */
         onChange: PropTypes.func,
 
@@ -82,9 +75,9 @@ class CheckboxGroup<T extends string | number | boolean> extends React.Component
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {Array} previewed 预览值 [{label: '', value:''},...]
-         * @param {Object} props 所有传入的参数
-         * @returns {reactNode} Element 渲染内容
+         * @param previewed - 预览值 [\{label: '', value:''\},...]
+         * @param props - 所有传入的参数
+         * @returns Element 渲染内容
          * @version 1.19
          */
         renderPreview: PropTypes.func,
@@ -105,11 +98,11 @@ class CheckboxGroup<T extends string | number | boolean> extends React.Component
         disabled: PropTypes.bool,
     };
 
-    constructor(props: GroupProps<T>) {
+    constructor(props: GroupProps) {
         super(props);
 
-        let value: GroupProps<T>['value'] = [];
-        let formatValue: GroupState<T>['value'] = [];
+        let value: GroupProps['value'] = [];
+        let formatValue: GroupState['value'] = [];
         if ('value' in props) {
             value = props.value;
         } else if ('defaultValue' in props) {
@@ -144,10 +137,10 @@ class CheckboxGroup<T extends string | number | boolean> extends React.Component
         };
     }
 
-    static getDerivedStateFromProps<T extends string | number | boolean>(nextProps: GroupProps<T>) {
+    static getDerivedStateFromProps(nextProps: GroupProps) {
         if ('value' in nextProps) {
-            let { value } = nextProps;
-            let formatValue: GroupState<T>['value'] = [];
+            const { value } = nextProps;
+            let formatValue: GroupState['value'] = [];
             if (!Array.isArray(value)) {
                 if (value === null || value === undefined) {
                     formatValue = [];
@@ -168,7 +161,7 @@ class CheckboxGroup<T extends string | number | boolean> extends React.Component
         return null;
     }
 
-    onChange(currentValue: T, event: React.ChangeEvent<HTMLInputElement>) {
+    onChange(currentValue: IValue, event: React.ChangeEvent<HTMLInputElement>) {
         const { value } = this.state;
         const index = value.indexOf(currentValue);
         const valTemp = clone(value);
@@ -190,7 +183,7 @@ class CheckboxGroup<T extends string | number | boolean> extends React.Component
             this.props;
         const others = pickOthers(CheckboxGroup.propTypes, this.props);
 
-        // 如果内嵌标签跟dataSource同时存在，以内嵌标签为主
+        // 如果内嵌标签跟 dataSource 同时存在，以内嵌标签为主
         let children;
         const previewed: {
             label: string | React.ReactNode;
@@ -201,7 +194,7 @@ class CheckboxGroup<T extends string | number | boolean> extends React.Component
                 this.props.children,
                 (
                     child: React.ReactElement<{
-                        value: T;
+                        value: IValue;
                         children?: string;
                         rtl?: boolean;
                     }>
@@ -224,7 +217,7 @@ class CheckboxGroup<T extends string | number | boolean> extends React.Component
             );
         } else {
             children = this.props.dataSource?.map((item, index) => {
-                let option: CheckboxData<T>;
+                let option: CheckboxData;
                 if (typeof item !== 'object') {
                     option = {
                         label: item,

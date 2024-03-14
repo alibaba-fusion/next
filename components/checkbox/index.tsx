@@ -1,20 +1,23 @@
 import Checkbox from './checkbox';
 import Group from './checkbox-group';
 import ConfigProvider from '../config-provider';
+import { assignSubComponent } from '../util/component';
 
-Checkbox.Group = ConfigProvider.config(Group, {
-    transform: /* istanbul ignore next */ (props, deprecated) => {
-        if ('itemDirection' in props) {
-            deprecated('itemDirection', 'direction', 'Checkbox');
-            const { itemDirection, ...others } = props;
+const CheckboxWithGroup = assignSubComponent(Checkbox, {
+    Group: ConfigProvider.config(Group, {
+        transform: /* istanbul ignore next */ (props, deprecated) => {
+            if ('itemDirection' in props) {
+                deprecated('itemDirection', 'direction', 'Checkbox');
+                const { itemDirection, ...others } = props;
 
-            props = { direction: itemDirection, ...others };
-        }
+                props = { direction: itemDirection, ...others };
+            }
 
-        return props;
-    },
+            return props;
+        },
+    }),
 });
 
 export type { CheckboxProps, GroupProps } from './types';
 
-export default Checkbox;
+export default CheckboxWithGroup;

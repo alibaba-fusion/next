@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-import UIState, { UIStateState } from '../mixin-ui-state';
+import UIState, { type UIStateState } from '../mixin-ui-state';
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
-import withCheckboxContext, { CheckboxContext } from './with-context';
+import withCheckboxContext, { type CheckboxContext } from './with-context';
 import { obj, func } from '../util';
 import type { CheckboxProps } from './types';
 
@@ -42,7 +42,7 @@ class Checkbox extends UIState<PrivateCheckboxProps, CheckboxState> {
          */
         className: PropTypes.string,
         /**
-         * checkbox id, 挂载在input上
+         * checkbox id, 挂载在 input 上
          */
         id: PropTypes.string,
         /**
@@ -62,7 +62,7 @@ class Checkbox extends UIState<PrivateCheckboxProps, CheckboxState> {
          */
         disabled: PropTypes.bool,
         /**
-         * 通过属性配置label，
+         * 通过属性配置 label，
          */
         label: PropTypes.node,
         /**
@@ -75,22 +75,22 @@ class Checkbox extends UIState<PrivateCheckboxProps, CheckboxState> {
         defaultIndeterminate: PropTypes.bool,
         /**
          * 状态变化时触发的事件
-         * @param {Boolean} checked 是否选中
-         * @param {Event} e Dom 事件对象
+         * @param checked - 是否选中
+         * @param e - Dom 事件对象
          */
         onChange: PropTypes.func,
         /**
-         * 鼠标进入enter事件
-         * @param {Event} e Dom 事件对象
+         * 鼠标进入 enter 事件
+         * @param e - Dom 事件对象
          */
         onMouseEnter: PropTypes.func,
         /**
-         * 鼠标离开Leave事件
-         * @param {Event} e Dom 事件对象
+         * 鼠标离开 Leave 事件
+         * @param e -  Dom 事件对象
          */
         onMouseLeave: PropTypes.func,
         /**
-         * checkbox 的value
+         * checkbox 的 value
          */
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
         /**
@@ -104,9 +104,9 @@ class Checkbox extends UIState<PrivateCheckboxProps, CheckboxState> {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {Boolean} checked 是否选中
-         * @param {Object} props 所有传入的参数
-         * @returns {reactNode} Element 渲染内容
+         * @param checked - 是否选中
+         * @param props - 所有传入的参数
+         * @returns Element 渲染内容
          * @version 1.19
          */
         renderPreview: PropTypes.func,
@@ -325,10 +325,7 @@ class Checkbox extends UIState<PrivateCheckboxProps, CheckboxState> {
     }
 }
 
-// 这里的 Checkbox as React.ComponentType<PrivateCheckboxProps>)) 是由于 ConfigProvider.propTypes 和 ComponentCommonProps 有冲突导致的
-export default ConfigProvider.config<
-    React.ComponentType<CheckboxProps> & { Group?: React.ComponentType }
->(
+export default ConfigProvider.config(
     withCheckboxContext(
         polyfill<React.ComponentType<PrivateCheckboxProps>>(
             Checkbox as React.ComponentType<PrivateCheckboxProps>
