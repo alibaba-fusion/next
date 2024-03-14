@@ -18,6 +18,6 @@ const CheckboxWithGroup = assignSubComponent(Checkbox, {
     }),
 });
 
-export type { CheckboxProps, GroupProps } from './types';
+export type { CheckboxProps, GroupProps, CheckboxData, ValueItem } from './types';
 
 export default CheckboxWithGroup;

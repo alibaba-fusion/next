@@ -13,41 +13,67 @@ Checkbox
 ### When to Use
 
 Checkbox is used to verify which options you want selected from a group. If you have only a single option, do not use the checkbox, use the on/off switch.
+
 ## API
 
 ### Checkbox
 
-| Param           | Description                                                                                                                  | Type       | Default Value          |
-| ------------------------ |---------------------------- | ------------ | ------------- |
-| id                   | checkbox id, mounted on input                  | String   | -         |
-| checked              | Set the status to be checked                      | Boolean  | -         |
-| defaultChecked       | Set the default status to be checked              | Boolean  | false     |
-| disabled             | Set the status to be disabled                     | Boolean  | -         |
-| label                | Set the label by property                      | String   | -         |
-| indeterminate        | The intermediate state of the Checkbox will only affect the style of the Checkbox and does not affect its checked property.                               | Boolean  | -         |
-| defaultIndeterminate | Set the default status to intermediate, it will only affect the style of the Checkbox and does not affect its checked property.                      | Boolean  | false     |
-| onChange             | Callback function triggered when the state changes<br><br>**signatures**:<br>Function(checked: Boolean, e: Event) => void<br>**params**:<br>_checked_: {Boolean} The checked value of the underlying checkbox input <br>_e_: {Event} Dom event object | Function | func.noop |
-| onMouseEnter         | Callback function triggered when the mouse pointer enters the element.<br><br>**signatures**:<br>Function(e: Event) => void<br>**params**:<br>_e_: {Event} Dom event object                                               | Function | func.noop |
-| onMouseLeave         | Callback function triggered  when the mouse pointer leaves the element.<br><br>**signatures**:<br>Function(e: Event) => void<br>**params**:<br>_e_: {Event} Dom event object                                         | Function | func.noop |
-|value                 | The value of the Checkbox                       |  String/Number/Boolean    | -         |
+| Param                | Description                                                                                                                                                    | Type                                                                | Default Value | Required | Supported Version |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------- | -------- | ----------------- |
+| className            | ClassName                                                                                                                                                      | string                                                              | -             |          | -                 |
+| id                   | Checkbox id, mounted on the input                                                                                                                              | string                                                              | -             |          | -                 |
+| style                | Custom inline style                                                                                                                                            | React.CSSProperties                                                 | -             |          | -                 |
+| checked              | Checked status                                                                                                                                                 | boolean                                                             | -             |          | -                 |
+| value                | Checkbox value                                                                                                                                                 | IValue                                                              | -             |          | -                 |
+| name                 | Name                                                                                                                                                           | string                                                              | -             |          | -                 |
+| defaultChecked       | Default checked status                                                                                                                                         | boolean                                                             | false         |          | -                 |
+| disabled             | Disabled                                                                                                                                                       | boolean                                                             | -             |          | -                 |
+| label                | Label                                                                                                                                                          | React.ReactNode                                                     | -             |          | -                 |
+| indeterminate        | Checkbox middle status, only affects the style of Checkbox, and does not affect its checked property                                                           | boolean                                                             | -             |          | -                 |
+| defaultIndeterminate | Checkbox default middle status, only affects the style of Checkbox, and does not affect its checked property                                                   | boolean                                                             | false         |          | -                 |
+| onChange             | Status change event                                                                                                                                            | (checked: boolean, e: React.ChangeEvent<HTMLInputElement>) => void  | -             |          | -                 |
+| onMouseEnter         | Mouse enter event                                                                                                                                              | (e: React.MouseEvent<HTMLInputElement \| HTMLLabelElement>) => void | -             |          | -                 |
+| onMouseLeave         | Mouse leave event                                                                                                                                              | (e: React.MouseEvent<HTMLInputElement \| HTMLLabelElement>) => void | -             |          | -                 |
+| isPreview            | Is preview                                                                                                                                                     | boolean                                                             | false         |          | 1.19              |
+| renderPreview        | Custom rendering content<br/><br/>**signature**:<br/>**params**:<br/>_checked_: Is checked<br/>_props_: All props<br/>**return**:<br/>Custom rendering content | (checked: boolean, props: CheckboxProps) => React.ReactNode         | -             |          | 1.19              |
 
 ### Checkbox.Group
 
-| params           | desc                                                | type     | default       |
-| ---------------- | --------------------------------------------------- | -------- | ------------- |
-| disabled     | Set the status of all checkbox in group to be checked   | Boolean    | -         |
-| dataSource   | Optional list, data item can be String or Object, for example `['apple', 'pear', 'orange']` or `[{value: 'apple', label: 'Apple',}, {value: 'pear', label: 'Pear'}, {value: 'orange', label: 'Orange'}]` | Array&lt;any>          | \[]       |
-| value        | The values of selected optional list              | Array/String/Number/Boolean    | -         |
-| defaultValue | The values of default selected optional list                                         | Array/String/Number/Boolean    | -         |
-| children     | To set nested checkbox  by children components             | Array&lt;ReactElement> | -         |
-| onChange     | Callback function triggered when the selected value changes<br><br>**signatures**:<br>Function(value: Array, e: Event) => void<br>**params**:<br>_value_: {Array} values of selected optional list <br>_e_: {Event} Dom event object                                | Function               | () => { } |
-| direction    | The direction of item's aligning<br>- hoz: horizontal (default)<br>- ver: vertical<br><br>**Allowed values**:<br>'hoz', 'ver'                                                 | Enum                                | 'hoz' |
+| Param         | Description                                                                                                                                                                                         | Type                                                                                                                                                     | Default Value | Required | Supported Version |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | -------- | ----------------- |
+| className     | Custom className                                                                                                                                                                                    | string                                                                                                                                                   | -             |          | -                 |
+| style         | Custom inline style                                                                                                                                                                                 | React.CSSProperties                                                                                                                                      | -             |          | -                 |
+| disabled      | Entirely disabled                                                                                                                                                                                   | boolean                                                                                                                                                  | -             |          | -                 |
+| dataSource    | Option list                                                                                                                                                                                         | Array<IValue> \| Array<CheckboxData>                                                                                                                     | -             |          | -                 |
+| value         | Selected value list                                                                                                                                                                                 | IValue[] \| IValue                                                                                                                                       | -             |          | -                 |
+| defaultValue  | Default selected value list                                                                                                                                                                         | IValue[] \| IValue                                                                                                                                       | -             |          | -                 |
+| name          | Name                                                                                                                                                                                                | string                                                                                                                                                   | -             |          | -                 |
+| children      | Set internal checkbox through child elements                                                                                                                                                        | React.ReactNode                                                                                                                                          | -             |          | -                 |
+| onChange      | Selected value change event                                                                                                                                                                         | (value: IValue[], e: React.ChangeEvent<HTMLInputElement>) => void                                                                                        | -             |          | -                 |
+| direction     | Arrangement of subitems                                                                                                                                                                             | 'hoz' \| 'ver'                                                                                                                                           | -             |          | -                 |
+| itemDirection | [Deprecated] Arrangement of subitems                                                                                                                                                                | 'hoz' \| 'ver'                                                                                                                                           | -             |          | -                 |
+| isPreview     | Is preview                                                                                                                                                                                          | boolean                                                                                                                                                  | -             |          | 1.19              |
+| renderPreview | Custom rendering content<br/><br/>**signature**:<br/>**params**:<br/>_previewed_: Previewed value [\{label: '', value:''\},...]<br/>_props_: All props<br/>**return**:<br/>Custom rendering content | (<br/> previewed: {<br/> label: string \| React.ReactNode;<br/> value: string \| React.ReactNode;<br/> }[],<br/> props: object<br/> ) => React.ReactNode | -             |          | 1.19              |
 
+### IValue
 
+```typescript
+export type IValue = string | number | boolean;
+```
 
+### CheckboxData
+
+```typescript
+export type CheckboxData = {
+    value: IValue;
+    label?: React.ReactNode;
+    disabled?: boolean;
+    [propName: string]: unknown;
+};
+```
 
 ## ARIA and KeyBoard
 
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-| SPACE       | Select or cancel the current item  |
+| KeyBoard | Descripiton                       |
+| :------- | :-------------------------------- |
+| SPACE    | Select or cancel the current item |

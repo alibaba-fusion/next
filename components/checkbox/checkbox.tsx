@@ -37,78 +37,21 @@ class Checkbox extends UIState<PrivateCheckboxProps, CheckboxState> {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 自定义类名
-         */
         className: PropTypes.string,
-        /**
-         * checkbox id, 挂载在 input 上
-         */
         id: PropTypes.string,
-        /**
-         * 自定义内敛样式
-         */
         style: PropTypes.object,
-        /**
-         * 选中状态
-         */
         checked: PropTypes.bool,
-        /**
-         * 默认选中状态
-         */
         defaultChecked: PropTypes.bool,
-        /**
-         * 禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * 通过属性配置 label，
-         */
         label: PropTypes.node,
-        /**
-         * Checkbox 的中间状态，只会影响到 Checkbox 的样式，并不影响其 checked 属性
-         */
         indeterminate: PropTypes.bool,
-        /**
-         *  Checkbox 的默认中间态，只会影响到 Checkbox 的样式，并不影响其 checked 属性
-         */
         defaultIndeterminate: PropTypes.bool,
-        /**
-         * 状态变化时触发的事件
-         * @param checked - 是否选中
-         * @param e - Dom 事件对象
-         */
         onChange: PropTypes.func,
-        /**
-         * 鼠标进入 enter 事件
-         * @param e - Dom 事件对象
-         */
         onMouseEnter: PropTypes.func,
-        /**
-         * 鼠标离开 Leave 事件
-         * @param e -  Dom 事件对象
-         */
         onMouseLeave: PropTypes.func,
-        /**
-         * checkbox 的 value
-         */
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-        /**
-         * name
-         */
         name: PropTypes.string,
-        /**
-         * 是否为预览态
-         * @version 1.19
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param checked - 是否选中
-         * @param props - 所有传入的参数
-         * @returns Element 渲染内容
-         * @version 1.19
-         */
         renderPreview: PropTypes.func,
     };
 
@@ -245,7 +188,7 @@ class Checkbox extends UIState<PrivateCheckboxProps, CheckboxState> {
             <input
                 {...obj.pickOthers(Checkbox.propTypes, otherProps)}
                 id={id}
-                value={typeof value === 'boolean' ? String(value) : value}
+                value={value as string}
                 name={name}
                 disabled={disabled}
                 checked={checked}
@@ -326,9 +269,5 @@ class Checkbox extends UIState<PrivateCheckboxProps, CheckboxState> {
 }
 
 export default ConfigProvider.config(
-    withCheckboxContext(
-        polyfill<React.ComponentType<PrivateCheckboxProps>>(
-            Checkbox as React.ComponentType<PrivateCheckboxProps>
-        )
-    )
+    withCheckboxContext(polyfill(Checkbox) as React.ComponentType<PrivateCheckboxProps>)
 );
