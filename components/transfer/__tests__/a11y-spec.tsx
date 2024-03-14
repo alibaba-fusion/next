@@ -1,14 +1,7 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import Transfer from '../index';
 import '../style';
-import { testReact, unmount } from '../../util/__tests__/legacy/a11y/validate';
-
-/* eslint-disable react/jsx-filename-extension */
-/* global describe it afterEach*/
-
-Enzyme.configure({ adapter: new Adapter() });
+import { testReact } from '../../util/__tests__/a11y/validate';
 
 const dataSource = [
     { label: '0', value: '0', disabled: true },
@@ -18,37 +11,24 @@ const dataSource = [
 ];
 
 describe('Transfer A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
     it('should not have any violations', async () => {
-        wrapper = await testReact(<Transfer id="a11y-transfer" dataSource={dataSource} />);
-        return wrapper;
+        return await testReact(<Transfer id="a11y-transfer" dataSource={dataSource} />);
     });
 
     it('should not have any violations when simple mode', async () => {
-        wrapper = await testReact(
+        return await testReact(
             <Transfer id="a11y-transfer" mode="simple" dataSource={dataSource} />
         );
-        return wrapper;
     });
 
     it('should not have any violations when defaultValue set', async () => {
-        wrapper = await testReact(
+        return await testReact(
             <Transfer id="a11y-transfer" defaultValue={['1']} dataSource={dataSource} />
         );
-        return wrapper;
     });
 
     it('should not have any violations when default checked items', async () => {
-        wrapper = await testReact(
+        return await testReact(
             <Transfer
                 id="a11y-transfer"
                 defaultValue={['1']}
@@ -57,11 +37,10 @@ describe('Transfer A11y', () => {
                 dataSource={dataSource}
             />
         );
-        return wrapper;
     });
 
     it('should not have any violations when showing search', async () => {
-        wrapper = await testReact(
+        return await testReact(
             <Transfer
                 id="a11y-transfer"
                 showSearch
@@ -70,6 +49,5 @@ describe('Transfer A11y', () => {
                 titles={['Searchable 1', 'Searchable 2']}
             />
         );
-        return wrapper;
     });
 });
