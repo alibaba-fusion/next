@@ -1138,6 +1138,14 @@ describe('RangePicker', () => {
             assert(!ret[0]);
             assert(!ret[1]);
         });
+        // issue: https://github.com/alibaba-fusion/next/issues/3448
+        it('should clear range when only half value', () => {
+            let ret;
+            wrapper = mount(<RangePicker defaultValue={[, endValue]} onChange={val => (ret = val)} />);
+            wrapper.find('i.next-input-clear-icon').simulate('click');
+            assert(!ret[0]);
+            assert(!ret[1]);
+        });
 
         it('should input range value', function() {
             this.timeout(3000);
