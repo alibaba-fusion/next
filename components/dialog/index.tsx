@@ -5,23 +5,11 @@ import Dialog1 from './dialog';
 import Dialog2 from './dialog-v2';
 
 import Inner from './inner';
-import {
-    show,
-    alert,
-    confirm,
-    withContext,
-    success,
-    error,
-    notice,
-    warning,
-    help,
-    type Config,
-} from './show';
-import type { DialogProps, InnerProps } from './types';
+import { show, alert, confirm, withContext, success, error, notice, warning, help } from './show';
+import type { DialogProps, InnerProps, ShowConfig, ShowConfigV1, ShowConfigV2 } from './types';
 
-export type { DialogProps, Config, InnerProps };
+export type { DialogProps, ShowConfig, InnerProps, ShowConfigV1, ShowConfigV2 };
 
-/* istanbul ignore next */
 function processProps(props: Record<string, unknown>, deprecated: typeof log.deprecated) {
     if ('closable' in props) {
         deprecated('closable', 'closeable', 'Dialog');
@@ -84,32 +72,32 @@ function processProps(props: Record<string, unknown>, deprecated: typeof log.dep
 class Dialog extends React.Component<DialogProps> {
     static Inner = Inner;
     static withContext = withContext;
-    static show = (config: Config) => {
+    static show = (config: ShowConfig) => {
         const { warning } = ConfigProvider.getContextProps(config, 'Dialog');
         if (warning !== false) {
             config = processProps(config as Record<string, unknown>, log.deprecated);
         }
         return show(config);
     };
-    static alert = (config: Config) => {
+    static alert = (config: ShowConfig) => {
         const { warning } = ConfigProvider.getContextProps(config, 'Dialog');
         if (warning !== false) {
             config = processProps(config as Record<string, unknown>, log.deprecated);
         }
         return alert(config);
     };
-    static confirm = (config: Config) => {
+    static confirm = (config: ShowConfig) => {
         const { warning } = ConfigProvider.getContextProps(config, 'Dialog');
         if (warning !== false) {
             config = processProps(config as Record<string, unknown>, log.deprecated);
         }
         return confirm(config);
     };
-    static success = (config: Config) => success(config);
-    static error = (config: Config) => error(config);
-    static notice = (config: Config) => notice(config);
-    static warning = (config: Config) => warning(config);
-    static help = (config: Config) => help(config);
+    static success = (config: ShowConfig) => success(config);
+    static error = (config: ShowConfig) => error(config);
+    static notice = (config: ShowConfig) => notice(config);
+    static warning = (config: ShowConfig) => warning(config);
+    static help = (config: ShowConfig) => help(config);
 
     render() {
         const { v2, ...others } = this.props;

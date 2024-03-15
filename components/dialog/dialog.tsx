@@ -5,7 +5,7 @@ import zhCN from '../locale/zh-cn';
 import { focus, obj, func, events, dom, env } from '../util';
 import Inner from './inner';
 import { type CustomCSSStyleKey } from '../util/dom';
-import { DialogProps } from './types';
+import { DialogV1Props } from './types';
 
 const noop = () => {};
 const { limitTabRange } = focus;
@@ -32,7 +32,7 @@ function _getSize(dom: HTMLElement, name: CustomCSSStyleKey) {
 /**
  * Dialog
  */
-export default class Dialog extends Component<DialogProps> {
+export default class Dialog extends Component<DialogV1Props> {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -116,7 +116,7 @@ export default class Dialog extends Component<DialogProps> {
     dialogBodyStyleMaxHeight: string;
     dialogBodyStyleOverflowY: string;
 
-    constructor(props: DialogProps) {
+    constructor(props: DialogV1Props) {
         super(props);
         bindCtx(this, ['onKeyDown', 'beforePosition', 'adjustPosition', 'getOverlayRef']);
     }
@@ -226,7 +226,7 @@ export default class Dialog extends Component<DialogProps> {
         });
     }
 
-    mapcloseableToConfig(closeable: NonNullable<DialogProps['closeable']>) {
+    mapcloseableToConfig(closeable: NonNullable<DialogV1Props['closeable']>) {
         return ['esc', 'close', 'mask'].reduce(
             (ret, option) => {
                 const key = option.charAt(0).toUpperCase() + option.substr(1);
@@ -243,7 +243,7 @@ export default class Dialog extends Component<DialogProps> {
 
                 return ret;
             },
-            {} as Record<string, NonNullable<DialogProps['closeable']>>
+            {} as Record<string, boolean>
         );
     }
 
@@ -261,7 +261,7 @@ export default class Dialog extends Component<DialogProps> {
         return this.overlay!.getInstance().getContentNode();
     }
 
-    renderInner(closeable: DialogProps['closeable']) {
+    renderInner(closeable: boolean) {
         const {
             prefix,
             className,
@@ -328,10 +328,10 @@ export default class Dialog extends Component<DialogProps> {
         } = this.props;
 
         const useCSS = this.useCSSToPosition();
-        const newCloseable: DialogProps['closeable'] =
+        const newCloseable: DialogV1Props['closeable'] =
             'closeMode' in this.props
                 ? Array.isArray(closeMode)
-                    ? (closeMode.join(',') as DialogProps['closeable'])
+                    ? (closeMode.join(',') as DialogV1Props['closeable'])
                     : closeMode
                 : closeable;
         const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(newCloseable!);
