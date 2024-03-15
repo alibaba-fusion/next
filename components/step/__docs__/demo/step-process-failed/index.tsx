@@ -9,7 +9,7 @@ ReactDOM.render(
             <Step.Item
                 title={<span style={{ color: 'red' }}>In Progress</span>}
                 content={<span style={{ color: 'red' }}>download image failed</span>}
-                itemRender={(index, status) => {
+                itemRender={() => {
                     return (
                         <div
                             className="next-step-item-node-circle"
