@@ -120,7 +120,12 @@ describe('Radio.Group', () => {
             document.body.appendChild(container);
             before(done => {
                 ReactDOM.render(
-                    <RadioGroup shape="button" size="small" defaultValue={'apple'} dataSource={list} />,
+                    <RadioGroup
+                        shape="button"
+                        size="small"
+                        defaultValue={'apple'}
+                        dataSource={list}
+                    />,
                     container,
                     function init() {
                         done();
@@ -128,7 +133,10 @@ describe('Radio.Group', () => {
                 );
             });
             it('should be 20px height', () => {
-                assert(container.querySelector('.next-radio-wrapper').getBoundingClientRect().height === 20);
+                assert(
+                    container.querySelector('.next-radio-wrapper').getBoundingClientRect()
+                        .height === 20
+                );
             });
         });
 
@@ -138,7 +146,12 @@ describe('Radio.Group', () => {
             document.body.appendChild(container);
             before(done => {
                 ReactDOM.render(
-                    <RadioGroup shape="button" size="medium" defaultValue={'apple'} dataSource={list} />,
+                    <RadioGroup
+                        shape="button"
+                        size="medium"
+                        defaultValue={'apple'}
+                        dataSource={list}
+                    />,
                     container,
                     function init() {
                         done();
@@ -156,7 +169,12 @@ describe('Radio.Group', () => {
             document.body.appendChild(container);
             before(done => {
                 ReactDOM.render(
-                    <RadioGroup shape="button" size="large" defaultValue={'apple'} dataSource={list} />,
+                    <RadioGroup
+                        shape="button"
+                        size="large"
+                        defaultValue={'apple'}
+                        dataSource={list}
+                    />,
                     container,
                     function init() {
                         done();
@@ -165,8 +183,10 @@ describe('Radio.Group', () => {
             });
             it('should be 40px height', () => {
                 assert(
-                    Math.abs(container.querySelector('.next-radio-wrapper').getBoundingClientRect().height - 40) <
-                        0.0001
+                    Math.abs(
+                        container.querySelector('.next-radio-wrapper').getBoundingClientRect()
+                            .height - 40
+                    ) < 0.0001
                 );
             });
         });
@@ -177,7 +197,12 @@ describe('Radio.Group', () => {
             document.body.appendChild(container);
             before(done => {
                 ReactDOM.render(
-                    <RadioGroup shape="button" size="large" defaultValue={'apple'} dataSource={list} />,
+                    <RadioGroup
+                        shape="button"
+                        size="large"
+                        defaultValue={'apple'}
+                        dataSource={list}
+                    />,
                     container,
                     function init() {
                         done();
@@ -242,11 +267,10 @@ describe('Radio.Group', () => {
     describe('[events] simulate change', () => {
         it('should call `onChange`', () => {
             const onChange = sinon.spy();
-            const wrapper1 = mount(<RadioGroup onChange={onChange} value={'pear'} dataSource={list} />);
-            wrapper1
-                .find('input')
-                .first()
-                .simulate('change');
+            const wrapper1 = mount(
+                <RadioGroup onChange={onChange} value={'pear'} dataSource={list} />
+            );
+            wrapper1.find('input').first().simulate('change');
             assert(onChange.calledOnce);
         });
     });
@@ -354,14 +378,18 @@ describe('Radio.Group', () => {
     });
     describe('string array ', () => {
         it('should support string array', () => {
-            const wrapper = mount(<RadioGroup defaultValue={0} dataSource={['apple', 'orange', 'pear']} />);
+            const wrapper = mount(
+                <RadioGroup defaultValue={0} dataSource={['apple', 'orange', 'pear']} />
+            );
             assert(wrapper.find('.next-radio-group').children().length === 3);
         });
     });
 
     describe('Radio shape', () => {
         it('shape = button', () => {
-            const wrapper = mount(<RadioGroup shape="button" dataSource={['apple', 'orange', 'pear']} />);
+            const wrapper = mount(
+                <RadioGroup shape="button" dataSource={['apple', 'orange', 'pear']} />
+            );
             assert(wrapper.find('.next-radio-button').children().length === 3);
         });
     });
@@ -420,10 +448,7 @@ describe('Radio.Group', () => {
             );
             const group = wrapper.instance().getInstance();
             group.focus();
-            const inputElement = wrapper
-                .find('input')
-                .at(0)
-                .getDOMNode();
+            const inputElement = wrapper.find('input').at(0).getDOMNode();
             assert(document.activeElement === inputElement);
         });
         it('should focus the checked radio', () => {
@@ -438,10 +463,7 @@ describe('Radio.Group', () => {
             );
             const group = wrapper.instance().getInstance();
             group.focus();
-            const inputElement = wrapper
-                .find('input')
-                .at(1)
-                .getDOMNode();
+            const inputElement = wrapper.find('input').at(1).getDOMNode();
             assert(document.activeElement === inputElement);
         });
         it('should focus in datasource mode', () => {
@@ -450,10 +472,7 @@ describe('Radio.Group', () => {
             });
             const group = wrapper.instance().getInstance();
             group.focus();
-            const inputElement = wrapper
-                .find('input')
-                .at(1)
-                .getDOMNode();
+            const inputElement = wrapper.find('input').at(1).getDOMNode();
             assert(document.activeElement === inputElement);
         });
     });
@@ -466,7 +485,11 @@ describe('Radio.Group', () => {
 
         it('should renderPreview', () => {
             const wrapper = mount(
-                <RadioGroup isPreview renderPreview={() => 'render preivew'} dataSource={numberList} />
+                <RadioGroup
+                    isPreview
+                    renderPreview={() => 'render preivew'}
+                    dataSource={numberList}
+                />
             );
             assert(wrapper.getDOMNode().innerText === 'render preivew');
         });
