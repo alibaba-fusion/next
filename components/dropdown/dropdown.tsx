@@ -3,7 +3,7 @@ import { Component, Children } from 'react';
 import * as PropTypes from 'prop-types';
 import Overlay from '../overlay';
 import { func } from '../util';
-import { DropdownProps } from './types';
+import type { DropdownProps } from './types';
 
 const { noop, makeChain, bindCtx } = func;
 const Popup = Overlay.Popup;
@@ -14,17 +14,14 @@ interface ReactElementNextMenuType {
 
 interface DropdownState {
     visible?: unknown;
-    autoFocus?: boolean | undefined
+    autoFocus?: boolean | undefined;
 }
 
 /**
  * Dropdown
  * @remarks 继承 Popup 的 API，除非特别说明
  */
-export default class Dropdown extends Component<
-    DropdownProps,
-    DropdownState
-> {
+export default class Dropdown extends Component<DropdownProps, DropdownState> {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -44,8 +41,8 @@ export default class Dropdown extends Component<
         defaultVisible: PropTypes.bool,
         /**
          * 弹层显示或隐藏时触发的回调函数
-         * @param {Boolean} visible 弹层是否显示
-         * @param {String} type 触发弹层显示或隐藏的来源 fromContent 表示由Dropdown内容触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
+         * \@param \{Boolean\} visible 弹层是否显示
+         * \@param \{String\} type 触发弹层显示或隐藏的来源 fromContent 表示由Dropdown内容触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -91,8 +88,8 @@ export default class Dropdown extends Component<
          */
         cache: PropTypes.bool,
         /**
-         * 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画
-         * @default { in: 'expandInDown', out: 'expandOutUp' }
+         * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画
+         * \@default \{ in: 'expandInDown', out: 'expandOutUp' \}
          */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     };
@@ -171,17 +168,17 @@ export default class Dropdown extends Component<
         const trigger = this.props.trigger;
 
         const child = Children.only(this.props.children);
-        let content = child as React.ReactChild;
+        let content = child;
         if (
-            typeof child?.type === 'function' &&
+            typeof child.type === 'function' &&
             (child.type as unknown as ReactElementNextMenuType).isNextMenu
         ) {
             content = React.cloneElement(child, {
                 onItemClick: makeChain(this.onMenuClick, child.props.onItemClick),
             });
         } else if (autoClose) {
-            content = React.cloneElement(child as React.ReactElement, {
-                onClick: makeChain(this.onMenuClick, child?.props.onClick),
+            content = React.cloneElement(child, {
+                onClick: makeChain(this.onMenuClick, child.props.onClick),
             });
         }
 

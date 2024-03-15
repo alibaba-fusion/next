@@ -1,10 +1,9 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import * as ReactTestUtils from 'react-dom/test-utils';
-import { MountReturn } from 'cypress/react';
+// import * as ReactTestUtils from 'react-dom/test-utils';
+import type { MountReturn } from 'cypress/react';
 import Dropdown from '../index';
 import Menu from '../../menu';
-import { KEYCODE } from '../../util';
+// import { KEYCODE } from '../../util';
 import '../../menu/style';
 
 const menu = (
@@ -23,7 +22,6 @@ describe('Dropdown', () => {
 
         cy.mount(
             <Dropdown
-                // eslint-disable-next-line jsx-a11y/anchor-is-valid
                 trigger={<a className="trigger">Hello dropdown</a>}
                 onVisibleChange={onHandleVisible}
                 animation={false}
@@ -48,7 +46,6 @@ describe('Dropdown', () => {
 
         cy.mount(
             <Dropdown
-                // eslint-disable-next-line jsx-a11y/anchor-is-valid
                 trigger={<a className="trigger">Hello dropdown</a>}
                 onVisibleChange={onHandleVisible}
                 animation={false}
@@ -65,12 +62,14 @@ describe('Dropdown', () => {
         // triggered = false;
 
         cy.get<MountReturn>('@dropdown').then(({ component, rerender }) => {
-            return rerender(React.cloneElement(component, { visible: false }));
+            return rerender(
+                React.cloneElement(component as React.ReactElement, { visible: false })
+            );
         });
         cy.get('.next-overlay-wrapper').should('not.exist');
 
         cy.get<MountReturn>('@dropdown').then(({ component, rerender }) => {
-            return rerender(React.cloneElement(component, { visible: true }));
+            return rerender(React.cloneElement(component as React.ReactElement, { visible: true }));
         });
         cy.get('.next-overlay-wrapper').should('exist');
         cy.get('.next-menu-item').first().click();
@@ -84,7 +83,6 @@ describe('Dropdown', () => {
         cy.mount(
             <Dropdown
                 defaultVisible
-                // eslint-disable-next-line jsx-a11y/anchor-is-valid
                 trigger={<a className="trigger">Hello dropdown</a>}
                 animation={false}
             >
@@ -150,10 +148,10 @@ describe('Dropdown', () => {
     //         }, 200);
     //     });
 
-    it('autoFocus=false should not have any activeElement', done => {
+    it('autoFocus=false should not have any activeElement', () => {
         cy.mount(
             <Dropdown
-                autoFocus
+                autoFocus={false}
                 trigger={<button className="trigger">Hello dropdown</button>}
                 animation={false}
             >
@@ -167,10 +165,12 @@ describe('Dropdown', () => {
         );
         cy.clock();
         cy.get('.trigger').focus();
-        ReactTestUtils.Simulate.keyDown(document.activeElement as Element, {
-            keyCode: KEYCODE.DOWN,
-        });
+        // ReactTestUtils.Simulate.keyDown(document.activeElement as Element, {
+        //     keyCode: KEYCODE.DOWN,
+        // });
+        cy.get('.trigger').click();
         cy.tick(500).then(() => {
+            cy.wrap(document.activeElement).get('.next-menu').should('exist');
             cy.wrap(document.activeElement).should('not.have.class', 'next-menu-item');
         });
     });
