@@ -17,13 +17,13 @@ import Animate from '../animate';
 import zhCN from '../locale/zh-cn';
 import { log, func, dom, focus, guid } from '../util';
 import scrollLocker from './scroll-locker';
-import type { DialogProps } from './types';
+import type { DialogV2Props } from './types';
 import type { CustomCSSStyle } from '../util/dom';
 
 const { OverlayContext } = Overlay;
 const noop = func.noop;
 
-const Dialog = (props: DialogProps) => {
+const Dialog = (props: DialogV2Props) => {
     if (!useState || !useRef || !useEffect) {
         log.warning('need react version > 16.8.0');
         return null;
@@ -92,11 +92,11 @@ const Dialog = (props: DialogProps) => {
     const { setVisibleOverlayToParent, ...otherContext } = useContext(OverlayContext);
     const childIDMap = useRef(new Map());
     const isAnimationEnd = useRef(false);
-    const [, forceUpdate] = useState();
+    const [, forceUpdate] = useState<Record<string, unknown>>();
 
     const markAnimationEnd = (state: boolean) => {
         isAnimationEnd.current = state;
-        forceUpdate(undefined);
+        forceUpdate({});
     };
 
     let canCloseByEsc = false;

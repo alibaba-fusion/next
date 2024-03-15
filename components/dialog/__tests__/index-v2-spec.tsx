@@ -2,7 +2,7 @@ import React, { type ReactElement, cloneElement } from 'react';
 import { type MountReturn } from 'cypress/react';
 import Button from '../../button';
 import ConfigProvider from '../../config-provider';
-import Dialog, { type Config, type DialogProps } from '../index';
+import Dialog, { type ShowConfig, type DialogProps } from '../index';
 import '../style';
 import zhCN from '../../locale/zh-cn';
 
@@ -77,15 +77,15 @@ describe('v2', () => {
         cy.get('.next-dialog').should('exist');
 
         cy.get('.next-btn-primary.next-dialog-btn').click();
-        cy.get('.next-dialog').should('not.be.visible');
+        cy.get('.next-dialog').should('not.exist');
 
         cy.get('@triggerButton').click();
         cy.get('.next-btn-normal.next-dialog-btn').click();
-        cy.get('.next-dialog').should('not.be.visible');
+        cy.get('.next-dialog').should('not.exist');
 
         cy.get('@triggerButton').click();
         cy.get('.next-dialog-close').click();
-        cy.get('.next-dialog').should('not.be.visible');
+        cy.get('.next-dialog').should('not.exist');
     });
 
     it('should support footerAlign', () => {
@@ -261,7 +261,7 @@ describe('v2', () => {
     });
 
     it('should close dialog if click the ok button', () => {
-        Dialog.show({
+        const { hide } = Dialog.show({
             v2: true,
             animation: false,
             title: 'Title',
@@ -271,6 +271,9 @@ describe('v2', () => {
         cy.get('.next-btn-primary').click();
 
         cy.get('.next-dialog').should('not.exist');
+        cy.then(() => {
+            hide();
+        });
     });
 
     it('should not close dialog if onOk return false', () => {
@@ -467,7 +470,7 @@ describe('v2', () => {
         });
 
         cy.get('.test-dialog').should('have.class', 'test-closeable');
-        cy.wrap(() => {
+        cy.then(() => {
             hide();
         });
     });
@@ -547,7 +550,7 @@ describe('v2', () => {
 
     it('should rollback document.body.style in order', () => {
         document.body.setAttribute('style', '');
-        const config: Config = {
+        const config: ShowConfig = {
             v2: true,
             animation: false,
             title: 'First',

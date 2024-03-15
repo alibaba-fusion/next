@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Dialog } from '@alifd/next';
 import Draggable, { DraggableCoreProps } from 'react-draggable';
-import type { DialogProps } from '../../../types';
+import type { DialogProps } from '@alifd/next/lib/dialog';
 
 class App extends React.Component {
     state = {
