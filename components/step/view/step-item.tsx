@@ -240,7 +240,7 @@ class StepItem extends Component<ItemProps> {
                     ref={this._refHandlerCreator('container')}
                 >
                     <div className={`${prefix}step-item-node-placeholder`} onClick={this.onClick}>
-                        {itemRender!(index!, status, title, content)}
+                        {itemRender!(index!, status!, title, content)}
                     </div>
                 </div>
             );

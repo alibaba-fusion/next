@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import { CommonProps } from '../util';
 
 type HTMLAttributesWeak<T> = Omit<
@@ -21,7 +21,6 @@ export type StepShape = 'circle' | 'arrow' | 'dot';
 
 /**
  * Step.Item 继承自 Step 的私有的属性
- * @en Step.Item private props inherit from Step
  */
 export interface ItemPrivateProps {
     index?: number;
@@ -76,13 +75,15 @@ export interface ItemProps<T = HTMLElement>
     /**
      * StepItem 的自定义渲染，会覆盖父节点设置的 itemRender
      * @en Custom node render function (it will overwirde Step's itemRender)
-     * @param index - 节点索引
-     * @param status - 节点状态
-     * @returns 节点的渲染结果
+     * @param index - 节点索引 - node index
+     * @param status - 节点状态 - node status
+     * @param title - 节点标题，仅在 `shape='circle'` 时会传递 - node title（only for `shape='circle'`）
+     * @param content - 节点内容，仅在 `shape='circle'` 时会传递 - node content（only for `shape='circle'`）
+     * @returns 节点的渲染结果 - render content of the node
      */
     itemRender?: (
         index: number,
-        status?: StepStatus,
+        status: StepStatus,
         title?: React.ReactNode,
         content?: React.ReactNode
     ) => React.ReactNode;
@@ -121,7 +122,7 @@ export interface StepProps
     current?: number;
 
     /**
-     * 形状
+     * 类型
      * @en Shape
      * @defaultValue 'circle'
      */
@@ -157,11 +158,18 @@ export interface StepProps
     /**
      * 自定义渲染节点
      * @en Custom node render function
-     * @param index - 节点索引
-     * @param status - 节点状态
-     * @returns 节点的渲染结果
+     * @param index - 节点索引 - node index
+     * @param status - 节点状态 - node status
+     * @param title - 节点标题，仅在 `shape='circle'` 时会传递 - node title（only for `shape='circle'`）
+     * @param content - 节点内容，仅在 `shape='circle'` 时会传递 - node content（only for `shape='circle'`）
+     * @returns 节点的渲染结果 - render content of the node
      */
-    itemRender?: (index: number, status: StepStatus) => React.ReactNode;
+    itemRender?: (
+        index: number,
+        status: StepStatus,
+        title?: ReactNode,
+        content?: ReactNode
+    ) => React.ReactNode;
 
     /**
      * 宽度是否横向拉伸
