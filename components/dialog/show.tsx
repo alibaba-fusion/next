@@ -12,7 +12,7 @@ import Message, { type MessageProps } from '../message';
 import zhCN from '../locale/zh-cn';
 import dialog from './dialog';
 import Dialog2Ins from './dialog-v2';
-import type { ShowModalInnerProps, DialogProps } from './types';
+import type { ShowModalInnerProps, ModelProps, ModalState, ShowConfig } from './types';
 
 const Dialog = ConfigProvider.config(dialog);
 const Dialog2 = ConfigProvider.config(
@@ -33,7 +33,7 @@ const MESSAGE_TYPE: Record<string, MessageProps['type']> = {
     help: 'help',
 };
 
-type ModalInnerProps = ShowModalInnerProps & { type?: keyof typeof MESSAGE_TYPE };
+type ModalInnerProps = ShowModalInnerProps & { type?: string };
 
 export const ModalInner = function ({
     type,
@@ -58,18 +58,6 @@ export const ModalInner = function ({
     );
 };
 
-interface ModalState {
-    visible?: boolean;
-    loading?: boolean;
-    okLoading?: boolean;
-    cancelLoading?: boolean;
-}
-
-interface ModelProps extends DialogProps, Omit<ShowModalInnerProps, 'locale'> {
-    type?: keyof typeof MESSAGE_TYPE;
-    needWrapper?: boolean;
-}
-
 class Modal extends Component<ModelProps, ModalState> {
     static propTypes = {
         prefix: PropTypes.string,
@@ -88,23 +76,8 @@ class Modal extends Component<ModelProps, ModalState> {
         content: PropTypes.node,
         messageProps: PropTypes.object,
         footerActions: PropTypes.array,
-        /**
-         * Callback function triggered when Ok button is clicked
-         * @param event - click event object
-         * @returns Optionally handles a Promise return object
-         */
         onOk: PropTypes.func,
-        /**
-         * Callback function triggered when Cancel button is clicked
-         * @param event - click event object
-         * @returns Optionally handles a Promise return object
-         */
         onCancel: PropTypes.func,
-        /**
-         * Callback function triggered when Close button is clicked
-         * @param event - click event object
-         * @returns Optionally handles a Promise return object
-         */
         onClose: PropTypes.func,
         okProps: PropTypes.object,
         cancelProps: PropTypes.object,
@@ -266,17 +239,12 @@ class Modal extends Component<ModelProps, ModalState> {
 
 const ConfigModal = ConfigProvider.config(Modal, { componentName: 'Dialog' });
 
-export interface Config extends ModelProps {
-    afterClose?: () => void;
-    contextConfig?: Partial<ReturnType<typeof ConfigProvider.getContext>>;
-}
-
 /**
  * 创建对话框
  * @param config - 配置项
  * @returns 包含有 hide 方法，可用来关闭对话框
  */
-export const show = (config: Config = {}) => {
+export const show = (config: ShowConfig = {}) => {
     const container = document.createElement('div');
     const unmount = () => {
         if (config.afterClose) {
@@ -319,8 +287,8 @@ export const show = (config: Config = {}) => {
 };
 
 const methodFactory =
-    (type: Config['type']) =>
-    (config: Config = {}) => {
+    (type: ShowConfig['type']) =>
+    (config: ShowConfig = {}) => {
         config.type = type;
         return show(config);
     };
@@ -349,14 +317,14 @@ export const confirm = methodFactory('confirm');
 type AnyProps = any;
 
 export interface ContextDialog {
-    show: (config?: Config) => { hide: () => void };
-    alert: (config?: Config) => { hide: () => void };
-    confirm: (config?: Config) => { hide: () => void };
-    success: (config?: Config) => { hide: () => void };
-    error: (config?: Config) => { hide: () => void };
-    warning: (config?: Config) => { hide: () => void };
-    notice: (config?: Config) => { hide: () => void };
-    help: (config?: Config) => { hide: () => void };
+    show: (config?: ShowConfig) => { hide: () => void };
+    alert: (config?: ShowConfig) => { hide: () => void };
+    confirm: (config?: ShowConfig) => { hide: () => void };
+    success: (config?: ShowConfig) => { hide: () => void };
+    error: (config?: ShowConfig) => { hide: () => void };
+    warning: (config?: ShowConfig) => { hide: () => void };
+    notice: (config?: ShowConfig) => { hide: () => void };
+    help: (config?: ShowConfig) => { hide: () => void };
 }
 
 export interface WithContextDialogProps {
