@@ -286,7 +286,7 @@ describe('CascaderSelect', () => {
             });
             changeCalled = true;
         };
-        const wrapper = mount(
+        wrapper = mount(
             <CascaderSelect
                 multiple
                 defaultVisible
@@ -404,6 +404,7 @@ describe('CascaderSelect', () => {
         wrapper = mount(
             <CascaderSelect
                 multiple
+                defaultVisible
                 displayRender={(displayPath, item) => item.label || ''}
                 dataSource={ChinaArea}
                 valueRender={valueRender}

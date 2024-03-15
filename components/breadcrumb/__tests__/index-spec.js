@@ -218,5 +218,6 @@ describe('Breadcrumb', () => {
             .at(0)
             .simulate('click');
         assert(isClicked === true);
+        wrapper.unmount();
     });
 });
