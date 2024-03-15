@@ -68,7 +68,10 @@ class RadioGroup extends Component {
         /**
          * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` `[{label: 'apply', value: 'apple'}]`
          */
-        dataSource: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.arrayOf(PropTypes.object)]),
+        dataSource: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.arrayOf(PropTypes.object),
+        ]),
         /**
          * 通过子元素方式设置内部radio
          */
@@ -316,13 +319,13 @@ class RadioGroup extends Component {
                 className={cls}
                 style={style}
                 onFocus={makeChain(
-                    function() {
+                    function () {
                         this.hasFocus = true;
                     }.bind(this),
                     this.props.onFocus
                 )}
                 onBlur={makeChain(
-                    function() {
+                    function () {
                         this.hasFocus = false;
                     }.bind(this),
                     this.props.onBlur

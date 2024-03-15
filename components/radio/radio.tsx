@@ -137,7 +137,8 @@ class Radio extends UIState {
         const { props } = this;
         const { context } = props;
 
-        const disabled = props.disabled || (context.__group__ && 'disabled' in context && context.disabled);
+        const disabled =
+            props.disabled || (context.__group__ && 'disabled' in context && context.disabled);
 
         return disabled;
     }
@@ -286,8 +287,12 @@ class Radio extends UIState {
                 aria-checked={checked}
                 aria-disabled={disabled}
                 className={clsWrapper}
-                onMouseEnter={disabled ? onMouseEnter : makeChain(this._onUIMouseEnter, onMouseEnter)}
-                onMouseLeave={disabled ? onMouseLeave : makeChain(this._onUIMouseLeave, onMouseLeave)}
+                onMouseEnter={
+                    disabled ? onMouseEnter : makeChain(this._onUIMouseEnter, onMouseEnter)
+                }
+                onMouseLeave={
+                    disabled ? onMouseLeave : makeChain(this._onUIMouseLeave, onMouseLeave)
+                }
             >
                 {radioComp}
                 {[children, label].map((d, i) =>
