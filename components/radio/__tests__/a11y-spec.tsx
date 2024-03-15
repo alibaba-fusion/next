@@ -111,12 +111,7 @@ describe('Radio A11y', () => {
             </Radio.Group>
         );
         wrapper.update();
-        assert(
-            wrapper
-                .find('input#pear')
-                .at(0)
-                .getDOMNode().tabIndex === 0
-        );
+        assert(wrapper.find('input#pear').at(0).getDOMNode().tabIndex === 0);
     });
 
     it('should not add tabIndex for non Radio Item', async () => {
@@ -134,11 +129,6 @@ describe('Radio A11y', () => {
                 </div>
             </Radio.Group>
         );
-        assert(
-            wrapper
-                .find('div#mywrapper')
-                .at(0)
-                .getDOMNode().tabIndex === -1
-        );
+        assert(wrapper.find('div#mywrapper').at(0).getDOMNode().tabIndex === -1);
     });
 });

@@ -8,7 +8,11 @@ export default function withContext(Radio) {
             onChange: PropTypes.func,
             __group__: PropTypes.bool,
             isButton: PropTypes.bool,
-            selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+            selectedValue: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+                PropTypes.bool,
+            ]),
             disabled: PropTypes.bool,
         };
 
