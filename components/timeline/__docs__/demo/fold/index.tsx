@@ -5,15 +5,11 @@ import { Timeline, Select } from '@alifd/next';
 const TimelineItem = Timeline.Item;
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        timelineAnimation: true,
+    };
 
-        this.state = {
-            timelineAnimation: true,
-        };
-    }
-
-    onTimelineAnimation = value => {
+    onTimelineAnimation = (value: boolean) => {
         this.setState({ timelineAnimation: value });
     };
 

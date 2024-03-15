@@ -68,9 +68,8 @@ class App extends React.Component {
                 <Range
                     style={{ ...layout, marginTop: 30 }}
                     slider={'double'}
-                    scales={10}
                     marks={10}
-                    {...init('range', { initValue: [20, 40] })}
+                    {...init<[number, number]>('range', { initValue: [20, 40] })}
                 />
 
                 <div style={{ marginBottom: 10 }}>

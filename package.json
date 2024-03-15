@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.27.3",
+  "version": "1.27.7",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -103,9 +103,9 @@
     ]
   },
   "dependencies": {
-    "@alifd/field": "~1.7.0",
+    "@alifd/field": "~2.0.0",
     "@alifd/overlay": "^0.3.3",
-    "@alifd/validate": "~1.2.0",
+    "@alifd/validate": "~2.0.3",
     "@types/react-transition-group": "^4.4.6",
     "babel-runtime": "^6.26.0",
     "big.js": "^6.2.0",
@@ -140,6 +140,7 @@
     "@microsoft/tsdoc": "^0.14.2",
     "@octokit/rest": "^18.0.9",
     "@types/babel-core": "^6.25.10",
+    "@types/chai": "^4.3.11",
     "@types/classnames": "^2.3.1",
     "@types/co": "^4.6.6",
     "@types/enzyme": "^3.10.14",
@@ -147,12 +148,14 @@
     "@types/glob": "^7.2.0",
     "@types/inquirer": "^6.5.0",
     "@types/lodash": "^4.14.202",
+    "@types/lodash.clonedeep": "^4.5.9",
     "@types/md5": "^2.3.5",
     "@types/node": "^17.0.41",
     "@types/postcss-calc": "^7.0.2",
     "@types/postcss-custom-properties": "^9.1.1",
     "@types/react": "^16.14.37",
     "@types/react-dom": "^16.9.24",
+    "@types/react-redux": "^5.0.28",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-test-renderer": "^16.9.12",
     "@types/stylelint": "^13.13.3",
@@ -300,9 +303,11 @@
     "registry": "https://registry.npmjs.org"
   },
   "overrides": {
+    "@alifd/field": "~2.0.0",
     "cheerio": "1.0.0-rc.3"
   },
   "resolutions": {
+    "@alifd/field": "~2.0.0",
     "cheerio": "1.0.0-rc.3"
   }
 }

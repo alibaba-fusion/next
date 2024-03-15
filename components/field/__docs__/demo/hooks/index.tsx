@@ -5,7 +5,7 @@ import { Input, Button, Field } from '@alifd/next';
 function App() {
     const field = Field.useField();
 
-    const { init, setValue, reset, getError } = field;
+    const { init, getError } = field;
 
     function onGetValue() {
         console.log(field.getValue('input'));

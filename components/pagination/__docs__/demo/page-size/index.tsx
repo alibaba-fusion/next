@@ -18,8 +18,13 @@ class Demo extends React.Component {
                 <Pagination pageSize={20} />
                 <h3>Hide page size selector</h3>
                 <Pagination pageSizeSelector={false} />
-                <h3>Set page size selector to 'dropdown'，and show it in the end</h3>
-                <Pagination pageSizeSelector="dropdown" pageSizePosition="end" />
+                <h3>Set page size selector to 'dropdown', and show it in the end</h3>
+                <Pagination
+                    pageSize={this.state.pageSize}
+                    onPageSizeChange={this.handleChange}
+                    pageSizeSelector="dropdown"
+                    pageSizePosition="end"
+                />
                 <h3>Use pageSizeList to specify the number of records per page.</h3>
                 <Pagination
                     pageSize={this.state.pageSize}

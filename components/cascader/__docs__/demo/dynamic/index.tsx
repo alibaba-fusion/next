@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Cascader } from '@alifd/next';
+import type { CascaderProps } from '@alifd/next/lib/cascader';
 import 'whatwg-fetch';
 
 const dataSource = [
@@ -11,17 +12,11 @@ const dataSource = [
 ];
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        dataSource,
+    };
 
-        this.state = {
-            dataSource,
-        };
-
-        this.onLoadData = this.onLoadData.bind(this);
-    }
-
-    onLoadData(data) {
+    onLoadData: CascaderProps['loadData'] = data => {
         console.log(data);
 
         return new Promise(resolve => {
@@ -53,11 +48,13 @@ class Demo extends React.Component {
                             },
                         ],
                     },
-                    resolve
+                    () => {
+                        resolve('');
+                    }
                 );
             }, 500);
         });
-    }
+    };
 
     render() {
         return (

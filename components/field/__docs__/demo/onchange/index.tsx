@@ -49,9 +49,11 @@ class App extends React.Component {
                     <Range
                         style={{ ...layout, marginTop: 30 }}
                         slider={'double'}
-                        scales={10}
                         marks={10}
-                        {...init('range', { initValue: [20, 40], trigger: 'onProcess' })}
+                        {...init('range', {
+                            initValue: [20, 40] as [number, number],
+                            trigger: 'onProcess',
+                        })}
                     />
                 ) : null}
                 <br />

@@ -203,9 +203,9 @@ export default class Position {
 
             // 此处若真实改变元素位置可能为导致布局发生变化，从而导致 container 发生 resize，进而重复触发 postion 和 componentUpdate，导致崩溃
             // 需要根据新的 left、top 进行模拟计算 isInViewport
-            const xOffset = left + this.offset[0] - dom.getStyle(pinElement, 'left');
-            const yOffset = top + this.offset[1] - dom.getStyle(pinElement, 'top');
-            
+            const xOffset = Math.round(left + this.offset[0] - dom.getStyle(pinElement, 'left'));
+            const yOffset = Math.round(top + this.offset[1] - dom.getStyle(pinElement, 'top'));
+
             if (this._isInViewport(pinElement, align, [xOffset, yOffset])) {
                 // 如果在视区内，则设置 pin 位置，并中断 postion 返回设置的位置
                 this._setPinElementPostion(pinElement, { left, top }, this.offset);

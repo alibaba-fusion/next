@@ -1,17 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Checkbox, Cascader } from '@alifd/next';
+import type { CascaderProps } from '@alifd/next/lib/cascader';
 import 'whatwg-fetch';
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: [],
-            checkStrictly: false,
-        };
-    }
+    state = {
+        data: [],
+        checkStrictly: false,
+    };
 
     componentDidMount() {
         fetch('https://os.alipayobjects.com/rmsportal/ODDwqcDFTLAguOvWEolX.json')
@@ -26,7 +23,7 @@ class Demo extends React.Component {
         });
     };
 
-    handleChange = (value, data, extra) => {
+    handleChange: CascaderProps['onChange'] = (value, data, extra) => {
         console.log(value, data, extra);
     };
 
