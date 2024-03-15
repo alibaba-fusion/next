@@ -2,8 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Tree } from '@alifd/next';
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<
+    any,
+    {
+        data: any[];
+    }
+> {
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -17,8 +22,8 @@ class Demo extends React.Component {
         this.onLoadData = this.onLoadData.bind(this);
     }
 
-    onLoadData(node) {
-        return new Promise(resolve => {
+    onLoadData(node: any) {
+        return new Promise<void>(resolve => {
             if (node.props.children) {
                 return resolve();
             }
@@ -38,11 +43,11 @@ class Demo extends React.Component {
         });
     }
 
-    getItemByPos(pos) {
+    getItemByPos(pos: string) {
         return pos
             .split('-')
             .slice(1)
-            .reduce((ret, num) => ret.children[num], { children: this.state.data });
+            .reduce((ret, num) => ret.children[Number(num)], { children: this.state.data });
     }
 
     render() {

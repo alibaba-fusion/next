@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Tree } from '@alifd/next';
+import type { DataNode } from '../../../types';
 
 function createDataSource(level = 3, count = 5) {
     const dataSource = [];
     let num = 0;
 
-    const drill = (children, _level, _count) => {
-        children.forEach((child, i) => {
+    const drill = (children: DataNode[], _level: number, _count: number) => {
+        children.forEach(child => {
             child.children = new Array(_count).fill(null).map((item, k) => {
                 const key = `${child.key}-${k}`;
                 num++;
@@ -31,9 +32,9 @@ function createDataSource(level = 3, count = 5) {
     return dataSource;
 }
 
-class Demo extends React.Component {
-    constructor() {
-        super();
+class Demo extends React.Component<any, any> {
+    constructor(props: any) {
+        super(props);
 
         this.state = {
             dataSource: [],
@@ -45,11 +46,11 @@ class Demo extends React.Component {
         });
     }
 
-    onSelect(keys, info) {
+    onSelect(keys: string[], info: any) {
         console.log('onSelect', keys, info);
     }
 
-    onCheck(keys, info) {
+    onCheck(keys: string[], info: any) {
         console.log('onCheck', keys, info);
     }
 

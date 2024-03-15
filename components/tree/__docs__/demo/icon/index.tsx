@@ -1,6 +1,6 @@
+import { Icon, Tree } from '@alifd/next';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Tree, Checkbox, Icon } from '@alifd/next';
 
 const data = [
     {
