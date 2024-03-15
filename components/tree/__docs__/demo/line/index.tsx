@@ -1,6 +1,6 @@
+import { Tree } from '@alifd/next';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Tree, Checkbox } from '@alifd/next';
 
 const data = [
     {

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Checkbox, Tree } from '@alifd/next';
+import type { TreeProps } from '@alifd/next/lib/tree';
 
 const data = [
     {
@@ -37,31 +38,25 @@ const data = [
     },
 ];
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        checkedKeys: [],
+        checkStrictly: false,
+    };
 
-        this.state = {
-            checkedKeys: [],
-            checkStrictly: false,
-        };
-        this.handleCheck = this.handleCheck.bind(this);
-        this.handleCheckStrictly = this.handleCheckStrictly.bind(this);
-    }
-
-    handleCheck(keys, info) {
-        console.log(keys, info);
+    handleCheck: TreeProps['onCheck'] = (keys, extra) => {
+        console.log(keys, extra);
 
         this.setState({
             checkedKeys: keys,
         });
-    }
+    };
 
-    handleCheckStrictly() {
+    handleCheckStrictly = () => {
         this.setState({
             checkStrictly: !this.state.checkStrictly,
             checkedKeys: [],
         });
-    }
+    };
 
     render() {
         const { checkedKeys, checkStrictly } = this.state;

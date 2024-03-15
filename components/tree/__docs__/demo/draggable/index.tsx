@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Tree } from '@alifd/next';
+import type { DataNode } from '@alifd/next/lib/tree';
 
 const TreeNode = Tree.Node;
 
 const x = 3;
 const y = 2;
 const z = 1;
-const gData = [];
+const gData: DataNode[] = [];
 
-const generateData = (_level, _preKey, _tns) => {
+const generateData = (_level: number, _preKey?: string, _tns?: DataNode[]) => {
     const preKey = _preKey || '0';
     const tns = _tns || gData;
 
@@ -35,8 +36,13 @@ const generateData = (_level, _preKey, _tns) => {
 
 generateData(z);
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<
+    any,
+    {
+        gData: DataNode[];
+    }
+> {
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -44,7 +50,7 @@ class Demo extends React.Component {
         };
     }
 
-    onDrop(info) {
+    onDrop(info: any) {
         if (!info.dragNode) {
             return;
         }
@@ -52,7 +58,11 @@ class Demo extends React.Component {
         const dropKey = info.node.props.eventKey;
         const dropPosition = info.dropPosition;
 
-        const loop = (data, key, callback) => {
+        const loop = (
+            data: DataNode[],
+            key: string,
+            callback: (item: DataNode, index: number, arr: DataNode[]) => void
+        ) => {
             data.forEach((item, index, arr) => {
                 if (item.key === key) {
                     return callback(item, index, arr);
@@ -64,7 +74,7 @@ class Demo extends React.Component {
         };
 
         const data = [...this.state.gData];
-        let dragObj;
+        let dragObj: DataNode = { key: dragKey };
 
         loop(data, dragKey, (item, index, arr) => {
             arr.splice(index, 1);
@@ -77,8 +87,8 @@ class Demo extends React.Component {
                 item.children.push(dragObj);
             });
         } else {
-            let ar;
-            let i;
+            let ar: DataNode[] = [];
+            let i: number = 0;
             loop(data, dropKey, (item, index, arr) => {
                 ar = arr;
                 i = index;
@@ -95,7 +105,7 @@ class Demo extends React.Component {
         });
     }
     render() {
-        const loop = data =>
+        const loop = (data: DataNode[]) =>
             data.map(item => {
                 if (item.children) {
                     return (
