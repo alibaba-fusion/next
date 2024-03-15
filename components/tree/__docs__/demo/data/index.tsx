@@ -38,19 +38,19 @@ const data = [
 ];
 
 class Demo extends React.Component {
-    onSelect(keys, info) {
+    onSelect(keys: string[], info: any) {
         console.log('onSelect', keys, info);
     }
 
-    onCheck(keys, info) {
+    onCheck(keys: string[], info: any) {
         console.log('onCheck', keys, info);
     }
 
-    onEditFinish(key, label, node) {
+    onEditFinish(key: string, label: string, node: any) {
         console.log('onEditFinish', key, label, node);
     }
 
-    onRightClick(info) {
+    onRightClick(info: any) {
         console.log('onRightClick', info);
     }
 

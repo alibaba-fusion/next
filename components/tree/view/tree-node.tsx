@@ -9,28 +9,23 @@ import Animate from '../../animate';
 import { func, obj, KEYCODE } from '../../util';
 import TreeNodeInput from './tree-node-input';
 import TreeNodeIndent from './tree-node-indent';
+import type { NodeProps, NodeState } from '../types';
 
 const { Expand } = Animate;
 const { bindCtx } = func;
 const { isPromise, pickOthers, pickAttrsWith } = obj;
-const isRoot = pos => /^0-(\d)+$/.test(pos);
+const isRoot = (pos: string) => /^0-(\d)+$/.test(pos);
 
 /**
  * Tree.Node
  */
-class TreeNode extends Component {
+export class TreeNode extends Component<NodeProps, NodeState> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         _key: PropTypes.string,
         className: PropTypes.string,
-        /**
-         * 树节点
-         */
         children: PropTypes.node,
-        /**
-         * 节点文本内容
-         */
         label: PropTypes.node,
         /**
          * 单独设置是否支持选中，覆盖 Tree 的 selectable
@@ -72,9 +67,7 @@ class TreeNode extends Component {
         dragOverGapBottom: PropTypes.bool,
         parentNode: PropTypes.object,
         onKeyDown: PropTypes.func,
-        // 无障碍化属性：aria-setsize
         size: PropTypes.number,
-        // 无障碍化属性：aria-posinset
         posinset: PropTypes.number,
         // 是否是最后一个子节点，数组类型，包含对祖先节点的判断
         isLastChild: PropTypes.arrayOf(PropTypes.bool),
@@ -86,6 +79,7 @@ class TreeNode extends Component {
     };
 
     static defaultProps = {
+        prefix: 'next-',
         label: '---',
         rtl: false,
         disabled: false,
@@ -94,7 +88,11 @@ class TreeNode extends Component {
         posinset: 1,
     };
 
-    constructor(props) {
+    itemLabelWrapperNode: HTMLDivElement;
+    labelWrapperEl: HTMLDivElement;
+    nodeEl: HTMLDivElement;
+
+    constructor(props: NodeProps) {
         super(props);
 
         this.state = {
@@ -121,7 +119,7 @@ class TreeNode extends Component {
         ]);
     }
 
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(props: NodeProps) {
         if ('label' in props) {
             return {
                 label: props.label,
@@ -132,7 +130,7 @@ class TreeNode extends Component {
     }
 
     componentDidMount() {
-        this.itemLabelWrapperNode = findDOMNode(this.labelWrapperEl);
+        this.itemLabelWrapperNode = findDOMNode(this.labelWrapperEl) as HTMLDivElement;
         this.setFocus();
     }
 
@@ -140,19 +138,15 @@ class TreeNode extends Component {
         this.setFocus();
     }
 
-    getParentNode() {
-        return this.props.root.getParentNode(this.props.pos);
-    }
-
     focusable() {
         const { root, disabled } = this.props;
-        const { focusable } = root.props;
+        const { focusable } = root!.props;
         return focusable && !disabled;
     }
 
     getFocused() {
         const { _key, root } = this.props;
-        const { focusedKey } = root.state;
+        const { focusedKey } = root!.state;
         return focusedKey === _key;
     }
 
@@ -163,10 +157,10 @@ class TreeNode extends Component {
         }
     }
 
-    handleExpand(e) {
+    handleExpand(e: React.MouseEvent<HTMLSpanElement>) {
         const { root, expanded, eventKey } = this.props;
 
-        if (root.props.isNodeBlock) {
+        if (root!.props.isNodeBlock) {
             e.stopPropagation();
         }
 
@@ -175,7 +169,7 @@ class TreeNode extends Component {
             return;
         }
 
-        const returnValue = root.handleExpand(!expanded, eventKey, this);
+        const returnValue = root!.handleExpand(!expanded, eventKey!, this);
         if (isPromise(returnValue)) {
             this.setLoading(true);
             return returnValue.then(
@@ -189,27 +183,32 @@ class TreeNode extends Component {
         }
     }
 
-    setLoading(loading) {
+    setLoading(loading: boolean) {
         this.setState({ loading });
     }
 
-    handleSelect(e) {
+    handleSelect(e: React.MouseEvent) {
         e.preventDefault();
         const { root, selected, eventKey } = this.props;
-        root.handleSelect(!selected, eventKey, this, e);
+        root!.handleSelect(!selected, eventKey!, this, e);
 
-        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
+        const checkable =
+            typeof this.props.checkable !== 'undefined'
+                ? this.props.checkable
+                : root!.props.checkable;
         const clickToCheck =
-            typeof this.props.clickToCheck !== 'undefined' ? this.props.clickToCheck : root.props.clickToCheck;
+            typeof this.props.clickToCheck !== 'undefined'
+                ? this.props.clickToCheck
+                : root!.props.clickToCheck;
         clickToCheck && checkable && this.handleCheck();
     }
 
     handleCheck() {
         const { root, checked, eventKey } = this.props;
-        root.handleCheck(!checked, eventKey, this);
+        root!.handleCheck(!checked, eventKey!, this);
     }
 
-    handleEditStart(e) {
+    handleEditStart(e: React.MouseEvent) {
         e.preventDefault();
 
         this.setState({
@@ -217,104 +216,133 @@ class TreeNode extends Component {
         });
     }
 
-    handleEditFinish(e) {
-        const label = e.target.value;
+    handleEditFinish(
+        e: React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>
+    ) {
+        const target = e.target as HTMLInputElement;
+        const label = target.value;
 
         this.setState({
             editing: false,
         });
 
         const { root, eventKey } = this.props;
-        root.props.onEditFinish(eventKey, label, this);
+        root!.props.onEditFinish!(eventKey!, label, this);
     }
 
-    handleRightClick(e) {
-        this.props.root.props.onRightClick({
+    handleRightClick(e: React.MouseEvent) {
+        this.props.root!.props.onRightClick!({
             event: e,
             node: this,
         });
     }
 
-    handleDragStart(e) {
+    handleDragStart(e: React.MouseEvent) {
         e.stopPropagation();
 
-        this.props.root.handleDragStart(e, this);
+        this.props.root!.handleDragStart(e, this);
     }
 
-    handleDragEnter(e) {
+    handleDragEnter(e: React.MouseEvent) {
         e.preventDefault();
         e.stopPropagation();
 
-        this.props.root.handleDragEnter(e, this);
+        this.props.root!.handleDragEnter(e, this);
     }
 
-    handleDragOver(e) {
-        if (this.props.root.canDrop(this)) {
+    handleDragOver(e: React.MouseEvent) {
+        if (this.props.root!.canDrop(this)) {
             e.preventDefault();
 
-            this.props.root.handleDragOver(e, this);
+            this.props.root!.handleDragOver(e, this);
         }
         e.stopPropagation();
     }
 
-    handleDragLeave(e) {
+    handleDragLeave(e: React.MouseEvent) {
         e.stopPropagation();
 
-        this.props.root.handleDragLeave(e, this);
+        this.props.root!.handleDragLeave(e, this);
     }
 
-    handleDragEnd(e) {
+    handleDragEnd(e: React.MouseEvent) {
         e.stopPropagation();
 
-        this.props.root.handleDragEnd(e, this);
+        this.props.root!.handleDragEnd(e, this);
     }
 
-    handleDrop(e) {
+    handleDrop(e: React.MouseEvent) {
         e.preventDefault();
         e.stopPropagation();
 
-        this.props.root.handleDrop(e, this);
+        this.props.root!.handleDrop(e, this);
     }
 
-    handleInputKeyDown(e) {
+    handleInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.keyCode === KEYCODE.ENTER) {
             this.handleEditFinish(e);
         }
         e.stopPropagation();
     }
 
-    handleKeyDown(e) {
+    handleKeyDown(e: React.KeyboardEvent) {
         const { _key, root, disabled } = this.props;
         if (disabled) {
             return;
         }
 
         if (this.focusable()) {
-            root.handleItemKeyDown(_key, this, e);
+            root!.handleItemKeyDown(_key!, this, e);
         }
 
         this.props.onKeyDown && this.props.onKeyDown(e);
     }
 
-    addCallbacks(props) {
+    addCallbacks(
+        props: {
+            onClick?: (e: React.MouseEvent) => void;
+            onDoubleClick?: (e: React.MouseEvent) => void;
+            onContextMenu?: (e: React.MouseEvent) => void;
+            onDragStart?: (e: React.DragEvent) => void;
+            onDragEnd?: (e: React.DragEvent) => void;
+            onKeyDown?: (e: React.KeyboardEvent) => void;
+            draggable?: boolean;
+            className?: string;
+            style?: React.CSSProperties | undefined;
+            tabIndex?: number;
+        } & ReturnType<typeof pickAttrsWith<typeof this.props>>
+    ) {
         const { disabled, root } = this.props;
-        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
+        const checkable =
+            typeof this.props.checkable !== 'undefined'
+                ? this.props.checkable
+                : root!.props.checkable;
         const clickToCheck =
-            typeof this.props.clickToCheck !== 'undefined' ? this.props.clickToCheck : root.props.clickToCheck;
+            typeof this.props.clickToCheck !== 'undefined'
+                ? this.props.clickToCheck
+                : root!.props.clickToCheck;
         if (!disabled) {
             const selectable =
-                typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
+                typeof this.props.selectable !== 'undefined'
+                    ? this.props.selectable
+                    : root!.props.selectable;
             if (selectable) {
                 props.onClick = this.handleSelect;
             } else if (clickToCheck && checkable) {
                 props.onClick = this.handleCheck;
             }
 
-            const editable = typeof this.props.editable !== 'undefined' ? this.props.editable : root.props.editable;
+            const editable =
+                typeof this.props.editable !== 'undefined'
+                    ? this.props.editable
+                    : root!.props.editable;
             if (editable) {
                 props.onDoubleClick = this.handleEditStart;
             }
-            const draggable = typeof this.props.draggable !== 'undefined' ? this.props.draggable : root.props.draggable;
+            const draggable =
+                typeof this.props.draggable !== 'undefined'
+                    ? this.props.draggable
+                    : root!.props.draggable;
             if (draggable) {
                 props.draggable = true;
                 props.onDragStart = this.handleDragStart;
@@ -324,9 +352,9 @@ class TreeNode extends Component {
         }
     }
 
-    renderSwitcher(showLine) {
+    renderSwitcher(showLine: boolean) {
         const { prefix, disabled, expanded, root } = this.props;
-        const { loadData } = root.props;
+        const { loadData } = root!.props;
         const { loading } = this.state;
 
         const lineState = showLine ? 'line' : 'noline';
@@ -338,7 +366,14 @@ class TreeNode extends Component {
             [`${prefix}loading`]: loading,
             [`${prefix}loading-${lineState}`]: loading,
         });
-        const iconType = loadData && loading ? 'loading' : showLine ? (expanded ? 'minus' : 'add') : 'arrow-down';
+        const iconType =
+            loadData && loading
+                ? 'loading'
+                : showLine
+                  ? expanded
+                      ? 'minus'
+                      : 'add'
+                  : 'arrow-down';
         const iconCls = cx({
             [`${prefix}tree-switcher-icon`]: true,
             [`${prefix}tree-fold-icon`]: iconType === 'arrow-down',
@@ -348,30 +383,30 @@ class TreeNode extends Component {
 
         return (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-            <span className={className} onClick={disabled ? null : this.handleExpand}>
+            <span className={className} onClick={disabled ? undefined : this.handleExpand}>
                 {this.renderRightAngle(showLine)}
                 <Icon className={iconCls} type={iconType} />
             </span>
         );
     }
 
-    renderNoopSwitcher(showLine) {
+    renderNoopSwitcher(showLine: boolean) {
         const { prefix, pos } = this.props;
 
         const lineState = showLine ? 'line' : 'noline';
         const className = cx({
             [`${prefix}tree-switcher`]: true,
             [`${prefix}noop-${lineState}`]: true,
-            [`${prefix}noop-line-noroot`]: showLine && !isRoot(pos),
+            [`${prefix}noop-line-noroot`]: showLine && !isRoot(pos!),
         });
 
         return <span className={className}>{this.renderRightAngle(showLine)}</span>;
     }
 
-    renderRightAngle(showLine) {
+    renderRightAngle(showLine: boolean) {
         const { prefix, pos } = this.props;
 
-        return showLine && !isRoot(pos) ? <span className={`${prefix}tree-right-angle`} /> : null;
+        return showLine && !isRoot(pos!) ? <span className={`${prefix}tree-right-angle`} /> : null;
     }
 
     renderCheckbox() {
@@ -379,6 +414,7 @@ class TreeNode extends Component {
         const { label } = this.state;
 
         return (
+            // @ts-expect-error aria-label should be undefined instead of null
             <Checkbox
                 aria-label={typeof label === 'string' ? label : null}
                 checked={checked}
@@ -393,9 +429,12 @@ class TreeNode extends Component {
 
     renderLabel() {
         const { prefix, root, disabled, icon, _key } = this.props;
-        const { isNodeBlock } = root.props;
+        const { isNodeBlock } = root!.props;
         const { label } = this.state;
-        const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
+        const selectable =
+            typeof this.props.selectable !== 'undefined'
+                ? this.props.selectable
+                : root!.props.selectable;
         const labelProps = {
             className: cx({
                 [`${prefix}tree-node-label`]: true,
@@ -404,7 +443,8 @@ class TreeNode extends Component {
         };
         const labelWrapperProps = {
             onKeyDown: this.handleKeyDown,
-            tabIndex: root.tabbableKey === _key ? '0' : '-1',
+            // @ts-expect-error should covert to number
+            tabIndex: (root!.tabbableKey === _key ? '0' : '-1') as number,
         };
         if (!isNodeBlock) {
             this.addCallbacks(labelProps);
@@ -413,7 +453,11 @@ class TreeNode extends Component {
         const iconEl = typeof icon === 'string' ? <Icon type={icon} /> : icon;
 
         return (
-            <div className={`${prefix}tree-node-label-wrapper`} ref={this.saveLabelWrapperRef} {...labelWrapperProps}>
+            <div
+                className={`${prefix}tree-node-label-wrapper`}
+                ref={this.saveLabelWrapperRef}
+                {...labelWrapperProps}
+            >
                 <div {...labelProps}>
                     {iconEl}
                     {label}
@@ -450,17 +494,21 @@ class TreeNode extends Component {
         );
     }
 
-    addAnimationIfNeeded(node) {
+    addAnimationIfNeeded(node: React.JSX.Element) {
         const { root } = this.props;
 
-        return root && root.props.animation ? <Expand animationAppear={false}>{node}</Expand> : node;
+        return root && root.props.animation ? (
+            <Expand animationAppear={false}>{node}</Expand>
+        ) : (
+            node
+        );
     }
 
-    saveRef = ref => {
+    saveRef = (ref: HTMLDivElement) => {
         this.nodeEl = ref;
     };
 
-    saveLabelWrapperRef = ref => {
+    saveLabelWrapperRef = (ref: HTMLDivElement) => {
         this.labelWrapperEl = ref;
     };
 
@@ -485,12 +533,15 @@ class TreeNode extends Component {
             expanded,
             isLastChild,
         } = this.props;
-        const { isNodeBlock, showLine, draggable: rootDraggable, filterTreeNode } = root.props;
+        const { isNodeBlock, showLine, draggable: rootDraggable, filterTreeNode } = root!.props;
         const { label } = this.state;
 
         const ARIA_PREFIX = 'aria-';
         const ariaProps = pickAttrsWith(this.props, ARIA_PREFIX);
-        const others = pickOthers(Object.keys(TreeNode.propTypes), this.props);
+        const others: Record<string, unknown> = pickOthers(
+            Object.keys(TreeNode.propTypes),
+            this.props
+        );
 
         const hasRenderChildNodes = root && root.props.renderChildNodes;
         const shouldShouldLine = !isNodeBlock && showLine && !hasRenderChildNodes;
@@ -511,10 +562,13 @@ class TreeNode extends Component {
         }
         const newClassName = cx({
             [`${prefix}tree-node`]: true,
-            [`${prefix}filtered`]: !!filterTreeNode && !!root.filterTreeNode(this),
-            [className]: !!className,
+            [`${prefix}filtered`]: !!filterTreeNode && !!root!.filterTreeNode(this),
+            [className!]: !!className,
         });
-        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
+        const checkable =
+            typeof this.props.checkable !== 'undefined'
+                ? this.props.checkable
+                : root!.props.checkable;
         const innerClassName = cx({
             [`${prefix}tree-node-inner`]: true,
             [`${prefix}selected`]: selected,
@@ -524,15 +578,21 @@ class TreeNode extends Component {
             [`${prefix}drag-over-gap-bottom`]: dragOverGapBottom,
         });
 
-        const defaultPaddingLeft = typeof isNodeBlock === 'object' ? parseInt(isNodeBlock.defaultPaddingLeft || 0) : 0;
+        const defaultPaddingLeft =
+            typeof isNodeBlock === 'object'
+                ? // @ts-expect-error should convert 0 to '0'
+                  parseInt((isNodeBlock.defaultPaddingLeft as string) || 0)
+                : 0;
         const paddingLeftProp = rtl ? 'paddingRight' : 'paddingLeft';
 
-        const indent = typeof isNodeBlock === 'object' ? parseInt(isNodeBlock.indent || 24) : 24;
+        const indent =
+            // @ts-expect-error should convert 24 to '24'
+            typeof isNodeBlock === 'object' ? parseInt((isNodeBlock.indent as string) || 24) : 24;
         const innerStyle = isNodeBlock
             ? {
-                  [paddingLeftProp]: `${(useVirtual ? 0 : indent * (level - 1)) + defaultPaddingLeft}px`,
+                  [paddingLeftProp]: `${(useVirtual ? 0 : indent * (level! - 1)) + defaultPaddingLeft}px`,
               }
-            : null;
+            : (null as unknown as undefined);
 
         const innerProps = {
             className: innerClassName,
@@ -547,11 +607,13 @@ class TreeNode extends Component {
 
         const { editing } = this.state;
 
+        // @ts-expect-error should convert to number type
         innerProps.tabIndex = root.tabbableKey === _key ? '0' : '-1';
 
         if (rtl) {
             others.dir = 'rtl';
         }
+
         return this.addAnimationIfNeeded(
             <li role="presentation" className={newClassName} {...others}>
                 <div
@@ -561,7 +623,7 @@ class TreeNode extends Component {
                     aria-disabled={disabled}
                     aria-checked={checked}
                     aria-expanded={!isLeaf}
-                    aria-label={typeof label === 'string' ? label : null}
+                    aria-label={typeof label === 'string' ? label : (null as unknown as undefined)}
                     aria-level={level}
                     aria-posinset={posinset}
                     aria-setsize={size}
@@ -570,16 +632,18 @@ class TreeNode extends Component {
                     {useVirtual && !hasRenderChildNodes && (
                         <TreeNodeIndent
                             prefix={prefix}
-                            level={level}
+                            level={level!}
                             isLastChild={isLastChild}
                             showLine={shouldShouldLine}
                         />
                     )}
-                    {isLeaf ? this.renderNoopSwitcher(shouldShouldLine) : this.renderSwitcher(shouldShouldLine)}
+                    {isLeaf
+                        ? this.renderNoopSwitcher(shouldShouldLine!)
+                        : this.renderSwitcher(shouldShouldLine!)}
                     {checkable ? this.renderCheckbox() : null}
                     {editing ? this.renderInput() : this.renderLabel()}
                 </div>
-                {expanded && (hasRenderChildNodes ? children : this.renderChildTree(children))}
+                {expanded && (hasRenderChildNodes ? children : this.renderChildTree())}
             </li>
         );
     }

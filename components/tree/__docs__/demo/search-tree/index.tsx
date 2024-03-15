@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Search, Tree } from '@alifd/next';
+import type { DataNode, NodeInstance } from '@alifd/next/lib/tree';
 
-const data = [
+const data: DataNode[] = [
     {
         label: 'Component',
         key: '1',
@@ -35,8 +36,15 @@ const data = [
     },
 ];
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<
+    any,
+    {
+        expandedKeys: string[];
+        autoExpandParent: boolean;
+    }
+> {
+    matchedKeys: string[] | null;
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -50,17 +58,17 @@ class Demo extends React.Component {
         this.handleExpand = this.handleExpand.bind(this);
     }
 
-    handleSearch(value) {
+    handleSearch(value: string) {
         value = value.trim();
         if (!value) {
             this.matchedKeys = null;
             return;
         }
 
-        const matchedKeys = [];
-        const loop = data =>
+        const matchedKeys: string[] = [];
+        const loop = (data: DataNode[]) =>
             data.forEach(item => {
-                if (item.label.indexOf(value) > -1) {
+                if ((item.label! as string).indexOf(value) > -1) {
                     matchedKeys.push(item.key);
                 }
                 if (item.children && item.children.length) {
@@ -76,7 +84,7 @@ class Demo extends React.Component {
         this.matchedKeys = matchedKeys;
     }
 
-    handleExpand(keys) {
+    handleExpand(keys: string[]) {
         this.setState({
             expandedKeys: keys,
             autoExpandParent: false,
@@ -85,8 +93,8 @@ class Demo extends React.Component {
 
     render() {
         const { expandedKeys, autoExpandParent } = this.state;
-        const filterTreeNode = node => {
-            return this.matchedKeys && this.matchedKeys.indexOf(node.props.eventKey) > -1;
+        const filterTreeNode = (node: NodeInstance) => {
+            return !!this.matchedKeys && this.matchedKeys.indexOf(node.props.eventKey!) > -1;
         };
 
         return (

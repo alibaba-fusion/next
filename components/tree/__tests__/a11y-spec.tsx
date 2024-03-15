@@ -1,11 +1,7 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import Tree from '../index';
 import '../style';
-import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
-
-Enzyme.configure({ adapter: new Adapter() });
+import { testReact } from '../../util/__tests__/a11y/validate';
 
 const dataSource = [
     {
@@ -41,32 +37,16 @@ const dataSource = [
     },
 ];
 
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Tree A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
     it('should not have any violations for default Tree', async () => {
-        wrapper = await testReact(<Tree defaultExpandAll dataSource={dataSource} />, { incomplete: true });
-        return wrapper;
+        await testReact(<Tree defaultExpandAll dataSource={dataSource} />);
     });
 
     it('should not have any violations for line Tree', async () => {
-        wrapper = await testReact(<Tree defaultExpandAll showLine dataSource={dataSource} />, { incomplete: true });
-        return wrapper;
+        await testReact(<Tree defaultExpandAll showLine dataSource={dataSource} />);
     });
 
     it('should not have any violations for checkable Tree', async () => {
-        wrapper = await testReact(<Tree defaultExpandAll checkable showLine dataSource={dataSource} />, {
-            incomplete: true,
-        });
-        return wrapper;
+        await testReact(<Tree defaultExpandAll checkable showLine dataSource={dataSource} />);
     });
 });
