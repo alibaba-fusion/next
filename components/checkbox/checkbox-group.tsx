@@ -131,31 +131,28 @@ class CheckboxGroup extends React.Component<GroupProps, GroupState> {
             value: string | React.ReactNode;
         }[] = [];
         if (this.props.children) {
-            children = React.Children.map(
-                this.props.children,
-                (
-                    child: React.ReactElement<{
+            children = React.Children.map(this.props.children, child => {
+                if (
+                    !React.isValidElement<{
                         value: ValueItem;
                         children?: string;
                         rtl?: boolean;
-                    }>
-                ) => {
-                    if (!React.isValidElement(child)) {
-                        return child;
-                    }
-                    const checked =
-                        this.state.value && this.state.value.indexOf(child.props?.value) > -1;
-
-                    if (checked) {
-                        previewed.push({
-                            label: child.props?.children,
-                            value: child.props?.value,
-                        });
-                    }
-
-                    return React.cloneElement(child, child.props?.rtl === undefined ? { rtl } : {});
+                    }>(child)
+                ) {
+                    return child;
                 }
-            );
+                const checked =
+                    this.state.value && this.state.value.indexOf(child.props?.value) > -1;
+
+                if (checked) {
+                    previewed.push({
+                        label: child.props?.children,
+                        value: child.props?.value,
+                    });
+                }
+
+                return React.cloneElement(child, child.props?.rtl === undefined ? { rtl } : {});
+            });
         } else {
             children = this.props.dataSource?.map((item, index) => {
                 let option: CheckboxData;
