@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TreeSelect } from '@alifd/next';
+import type { TreeSelectProps } from '@alifd/next/lib/tree-select';
 
 const defaultTreeData = [
     {
@@ -16,18 +17,13 @@ const defaultTreeData = [
 ];
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    timeId: number;
+    state = {
+        value: ['浙江'],
+        treeData: defaultTreeData,
+    };
 
-        this.state = {
-            value: ['浙江'],
-            treeData: defaultTreeData,
-        };
-
-        this.handleSearch = this.handleSearch.bind(this);
-    }
-
-    handleSearch(searchVal, data) {
+    handleSearch: TreeSelectProps['onSearch'] = searchVal => {
         clearTimeout(this.timeId);
 
         if (searchVal) {
@@ -40,13 +36,13 @@ class Demo extends React.Component {
                         },
                     ],
                 });
-            }, 500);
+            }, 500) as unknown as number;
         } else {
             this.setState({
                 treeData: defaultTreeData,
             });
         }
-    }
+    };
 
     render() {
         return (

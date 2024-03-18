@@ -36,22 +36,11 @@ const dataSource = [
     },
 ];
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        multiple: false,
+    };
 
-        this.state = {
-            multiple: false,
-        };
-
-        this.handleCheck = this.handleCheck.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(value, data) {
-        console.log(value, data);
-    }
-
-    handleCheck(v) {
+    handleCheck(v: boolean) {
         this.setState({
             multiple: v,
         });
@@ -70,7 +59,6 @@ class Demo extends React.Component {
                     treeDefaultExpandAll
                     hasClear
                     multiple={multiple}
-                    onSelect={this.handleSelect}
                     dataSource={dataSource}
                     style={{ width: 200 }}
                 />
