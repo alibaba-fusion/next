@@ -54,13 +54,8 @@ class Demo extends React.Component {
     };
 
     render() {
-        const {
-            selectedValue,
-            leftTableDataSource,
-            rightTableDataSource,
-            rselectedRowKeys,
-            lselectedRowKeys,
-        } = this.state;
+        const { leftTableDataSource, rightTableDataSource, rselectedRowKeys, lselectedRowKeys } =
+            this.state;
         return (
             <Transfer
                 dataSource={TransferDataSource}
@@ -69,7 +64,7 @@ class Demo extends React.Component {
                 showCheckAll={false}
                 className="table-transfer-demo"
             >
-                {({ position, onChange, value, dataSource }) => {
+                {({ position, onChange }) => {
                     // console.log(position, onChange, value, dataSource);
                     if (position === 'left') {
                         return (

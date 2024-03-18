@@ -67,7 +67,7 @@ class Demo extends BaseDemo {
         };
     }
 
-    handleChange(...[value, data, extra]: ExtractCallbackParameters<'onChange'>) {
+    handleChange(...[value]: ExtractCallbackParameters<'onChange'>) {
         this.setState({ selected: value });
     }
 

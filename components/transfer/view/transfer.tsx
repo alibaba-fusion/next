@@ -88,21 +88,10 @@ class Transfer extends Component<TransferProps, TransferState> {
         defaultValue: PropTypes.arrayOf(PropTypes.string),
         /**
          * 值发生改变的时候触发的回调函数
-         * @param {Array} value 右面板值
-         * @param {Array} data 右面板数据
-         * @param {Object} extra 额外参数
-         * @param {Array} extra.leftValue 左面板值
-         * @param {Array} extra.leftData 左面板数据
-         * @param {Array} extra.movedValue 发生移动的值
-         * @param {Object} extra.movedData 发生移动的数据
-         * @param {String} extra.direction 移动的方向，值为'left'或'right'
          */
         onChange: PropTypes.func,
         /**
          * Item 被选中的时候触发的回调函数
-         * @param {Array} sourceSelectedValue 源面板选中的 Item 列表
-         * @param {Array} targetSelectedValue 目标面板选中的 Item 列表
-         * @param {String} trigger 触发面板，值为'source'或'target'
          */
         onSelect: PropTypes.func,
         /**
@@ -119,22 +108,14 @@ class Transfer extends Component<TransferProps, TransferState> {
         rightDisabled: PropTypes.bool,
         /**
          * 列表项渲染函数
-         * @param {Object} data 数据
-         * @return {ReactNode} 列表项内容
          */
         itemRender: PropTypes.func,
         /**
          * 自定义搜索函数
-         * @param {String} searchedValue 搜索的内容
-         * @param {Object} data 数据
-         * @return {Boolean} 是否匹配到
-         * @default 根据 label 属性匹配
          */
         filter: PropTypes.func,
         /**
          * 搜索框输入时触发的回调函数
-         * @param {String} searchedValue 搜索的内容
-         * @param {String} position 搜索面板的位置
          */
         onSearch: PropTypes.func,
         /**
@@ -159,7 +140,6 @@ class Transfer extends Component<TransferProps, TransferState> {
         titles: PropTypes.arrayOf(PropTypes.node),
         /**
          * 向右向左移动按钮显示内容
-         * @default [<Icon type="arrow-right" />, <Icon type="arrow-left" />]
          */
         operations: PropTypes.arrayOf(PropTypes.node),
         /**
@@ -184,8 +164,6 @@ class Transfer extends Component<TransferProps, TransferState> {
         sortable: PropTypes.bool,
         /**
          * 拖拽排序时触发的回调函数
-         * @param {Array} value 排序后的值
-         * @param {String} position 拖拽的面板位置，值为：left 或 right
          */
         onSort: PropTypes.func,
         /**

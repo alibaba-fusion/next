@@ -1,8 +1,8 @@
 import React from 'react';
+import { MountReturn } from 'cypress/react';
 import Transfer, { TransferDataItem, TransferProps } from '../index';
 import Tree from '../../tree/index';
 import '../style';
-import { MountReturn } from 'cypress/react';
 
 type ChangeEventHandler = Required<TransferProps>['onChange'];
 type SortEventHandler = Required<TransferProps>['onSort'];
@@ -15,6 +15,72 @@ const dataSource: TransferDataItem[] = [
     { label: '2', value: '2' },
     { label: '3', value: '3' },
 ];
+
+function findPanel(panelIndex: number) {
+    return cy.get('div.next-transfer-panel').eq(panelIndex);
+}
+
+function findFooter(panelIndex: number) {
+    return findPanel(panelIndex).find('div.next-transfer-panel-footer');
+}
+
+function expectFooterCount(panelIndex: number, count: string) {
+    return findFooter(panelIndex)
+        .find('span.next-transfer-panel-count')
+        .invoke('text')
+        .then(text => {
+            const num = text.split(/\s/)[0];
+            expect(num).to.eq(count);
+        });
+}
+
+function findFooterCheckbox(panelIndex: number) {
+    return findFooter(panelIndex).find('label.next-checkbox-wrapper');
+}
+
+function findItems(panelIndex: number) {
+    return findPanel(panelIndex).find('li.next-transfer-panel-item');
+}
+
+function findItem(panelIndex: number, itemIndex: number) {
+    return findItems(panelIndex).eq(itemIndex);
+}
+
+function findItemCheckbox(panelIndex: number, itemIndex: number) {
+    return findItem(panelIndex, itemIndex).find('label.next-checkbox-wrapper');
+}
+
+function checkAll(checkbox: Cypress.Chainable<JQuery<HTMLElement>>, checked: boolean) {
+    checked ? checkbox.find('input').check() : checkbox.find('input').uncheck();
+}
+
+function checkSingle(item: Cypress.Chainable<JQuery<HTMLElement>>) {
+    return item.should('be.visible').click();
+}
+
+function shouldHasClass(item: Cypress.Chainable<JQuery<HTMLElement>>, className: string) {
+    item.should('have.class', className);
+}
+
+function shouldHasItem(panelIndex: number, itemIndex: number, itemText: string) {
+    findItem(panelIndex, itemIndex).should('have.text', itemText);
+}
+
+function shouldHasTitle(panelIndex: number, titleText: string) {
+    findPanel(panelIndex).find('div.next-transfer-panel-header').should('have.text', titleText);
+}
+
+function compareDomAndDataSource(panelIndex: number, dataSource: TransferDataItem[]) {
+    findItems(panelIndex).each(($el, index) => {
+        // 在这里，$el 是当前遍历到的元素（jQuery 对象）
+        // index 是元素在列表中的索引
+        cy.wrap($el).find('span.next-menu-item-text').should('have.text', dataSource[index].label);
+        if (dataSource[index].disabled) {
+            cy.wrap($el).should('have.class', 'next-disabled');
+            cy.wrap($el).find('label.next-checkbox-wrapper').should('have.class', 'disabled');
+        }
+    });
+}
 
 describe('Transfer', () => {
     it('should render by dataSource', () => {
@@ -119,9 +185,19 @@ describe('Transfer', () => {
         findPanel(0).find('span.next-search').find('input').as('searchInput');
 
         cy.get('@searchInput')
-            .should('be.visible')
-            .should('have.attr', 'placeholder', 'input something...');
-        cy.get('@searchInput').type('a').should('have.value', 'a');
+            .then(el => {
+                cy.wrap(el).should('be.visible');
+            })
+            .then(el => {
+                cy.wrap(el).should('have.attr', 'placeholder', 'input something...');
+            })
+            .then(el => {
+                cy.wrap(el).type('a');
+            })
+            .then(el => {
+                cy.wrap(el).should('have.value', 'a');
+            });
+
         findItems(0).should('have.length', 2);
         shouldHasItem(0, 0, 'a');
         shouldHasItem(0, 1, 'abc');
@@ -154,9 +230,18 @@ describe('Transfer', () => {
         findPanel(0).find('span.next-search').find('input').as('searchInput');
 
         cy.get('@searchInput')
-            .should('be.visible')
-            .should('have.attr', 'placeholder', 'input something...');
-        cy.get('@searchInput').type('a').should('have.value', 'a');
+            .then(el => {
+                cy.wrap(el).should('be.visible');
+            })
+            .then(el => {
+                cy.wrap(el).should('have.attr', 'placeholder', 'input something...');
+            })
+            .then(el => {
+                cy.wrap(el).type('a');
+            })
+            .then(el => {
+                cy.wrap(el).should('have.value', 'a');
+            });
         findItems(0).should('have.length', 2);
         shouldHasItem(0, 0, 'a');
         shouldHasItem(0, 1, 'abc');
@@ -754,70 +839,3 @@ describe('Transfer', () => {
         findItems(0).should('have.length', 9);
     });
 });
-
-function findPanel(panelIndex: number) {
-    return cy.get('div.next-transfer-panel').eq(panelIndex);
-}
-
-function findFooter(panelIndex: number) {
-    return findPanel(panelIndex).find('div.next-transfer-panel-footer');
-}
-
-function expectFooterCount(panelIndex: number, count: string) {
-    return findFooter(panelIndex)
-        .find('span.next-transfer-panel-count')
-        .invoke('text')
-        .then(text => {
-            const num = text.split(/\s/)[0];
-            expect(num).to.eq(count);
-        });
-}
-
-function findFooterCheckbox(panelIndex: number) {
-    return findFooter(panelIndex).find('label.next-checkbox-wrapper');
-}
-
-function findItems(panelIndex: number) {
-    return findPanel(panelIndex).find('li.next-transfer-panel-item');
-}
-
-function findItem(panelIndex: number, itemIndex: number) {
-    return findItems(panelIndex).eq(itemIndex);
-}
-
-function findItemCheckbox(panelIndex: number, itemIndex: number) {
-    return findItem(panelIndex, itemIndex).find('label.next-checkbox-wrapper');
-}
-
-function checkAll(checkbox: Cypress.Chainable<JQuery<HTMLElement>>, checked: boolean) {
-    checked ? checkbox.find('input').check() : checkbox.find('input').uncheck();
-}
-
-function checkSingle(item: Cypress.Chainable<JQuery<HTMLElement>>) {
-    return item.should('be.visible').click();
-}
-
-function shouldHasClass(item: Cypress.Chainable<JQuery<HTMLElement>>, className: string) {
-    item.should('have.class', className);
-}
-
-function shouldHasItem(panelIndex: number, itemIndex: number, itemText: string) {
-    findItem(panelIndex, itemIndex).should('have.text', itemText);
-}
-
-function shouldHasTitle(panelIndex: number, titleText: string) {
-    findPanel(panelIndex).find('div.next-transfer-panel-header').should('have.text', titleText);
-}
-
-function compareDomAndDataSource(panelIndex: number, dataSource: TransferDataItem[]) {
-    findItems(panelIndex).each(($el, index, $list) => {
-        // 在这里，$el 是当前遍历到的元素（jQuery 对象）
-        // index 是元素在列表中的索引
-        // $list 是完整的元素列表
-        cy.wrap($el).find('span.next-menu-item-text').should('have.text', dataSource[index].label);
-        if (dataSource[index].disabled) {
-            cy.wrap($el).should('have.class', 'next-disabled');
-            cy.wrap($el).find('label.next-checkbox-wrapper').should('have.class', 'disabled');
-        }
-    });
-}
