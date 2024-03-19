@@ -55,9 +55,12 @@ module.exports = function (options = {}) {
             ],
         },
         plugins: [
-            new webpack.BannerPlugin(`@alifd/next@${version} (https://fusion.design)
+            new webpack.BannerPlugin({
+                banner: `@alifd/next@${version} (https://fusion.design)
 Copyright 2018-present Alibaba Group,
-Licensed under MIT (https://github.com/alibaba-fusion/next/blob/master/LICENSE)`),
+Licensed under MIT (https://github.com/alibaba-fusion/next/blob/master/LICENSE)`,
+                exclude: /\.css$/,
+            }),
             new CaseSensitivePathsPlugin(),
             new webpack.optimize.ModuleConcatenationPlugin(),
             // support ie 9
