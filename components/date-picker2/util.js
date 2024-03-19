@@ -1,4 +1,4 @@
-import { datejs, func } from '../util';
+import { datejs } from '../util';
 import { DATE_INPUT_TYPE } from './constant';
 
 export function setTime(targetVal, sourceVal) {
@@ -50,24 +50,51 @@ export function fmtValue(value, fmt) {
 export function isValueChanged(newValue, oldValue) {
     return Array.isArray(newValue)
         ? isValueChanged(newValue[0], oldValue && oldValue[0]) ||
-              isValueChanged(newValue[1], oldValue && oldValue[1])
+                isValueChanged(newValue[1], oldValue && oldValue[1])
         : newValue !== oldValue && !datejs(newValue).isSame(oldValue);
 }
 
+/**
+ * 判读时间是否被禁用
+ * @param {dayjs.ConfigType} value 
+ * @param {object} param
+ * @returns {boolean}
+ */
+export function disableDateTime(value, {
+    mode,
+    inputType,
+    disabledDate,
+    disabledHours,
+    disabledMinutes,
+    disabledSeconds,
+    disabledTime = {}
+}) {
+    value = datejs.isDayjs(value) ? value : datejs(value);
+
+    const _disabledTime = typeof disabledTime === 'function' ? disabledTime(value, inputType) : disabledTime;
+
+    return (
+        (typeof disabledDate === 'function' && disabledDate(value, mode)) ||
+        (typeof disabledHours === 'function' && disabledHours(value.get('hour'))) ||
+        (typeof disabledMinutes === 'function' && disabledMinutes(value.get('minute'))) ||
+        (typeof disabledSeconds === 'function' && disabledSeconds(value.get('second'))) ||
+        (typeof _disabledTime.disabledHours === 'function' && _disabledTime.disabledHours(value.get('hour'))) ||
+        (typeof _disabledTime.disabledMinutes === 'function' && _disabledTime.disabledMinutes(value.get('minute'))) ||
+        (typeof _disabledTime.disabledSeconds === 'function' && _disabledTime.disabledSeconds(value.get('second')))
+    );
+}
+
 export function getDisabledTime(props) {
-    const { timePanelProps, value, disabledDate, panelMode } = props;
-    const { disabledHours, disabledMinutes, disabledSeconds } = timePanelProps;
+    const { timePanelProps, value, disabledDate, panelMode, disabledTime = {}, inputType } = props;
+    const { disabledHours, disabledMinutes, disabledSeconds } = timePanelProps || {};
 
-    const disabledItems = list => index => {
-        return list.indexOf(index) >= 0;
-    };
-
-    if (disabledHours || disabledMinutes || disabledSeconds) {
-        return {
-            disabledHours,
-            disabledMinutes,
-            disabledSeconds,
-        };
+    const _disabledTime = typeof disabledTime === 'function' ? disabledTime(value, inputType) : disabledTime;
+    
+    const disabledItems = (list) => index => list.indexOf(index) >= 0;
+    const executedFunc = (...args) => {
+        return (index) => {
+            return args.some(func => typeof func === 'function' ? func(index) : false)
+        }
     }
 
     if (value && typeof disabledDate === 'function') {
@@ -77,8 +104,8 @@ export function getDisabledTime(props) {
         const _disabledHours = [];
         const _disabledMinutes = [];
         const _disabledSeconds = [];
-        let currentHour = value.get('hour');
-        let currentMinute = value.get('minute');
+        const currentHour = value.get('hour');
+        const currentMinute = value.get('minute');
 
         for (let i = 0; i < hours; i++) {
             // 禁用小时
@@ -91,10 +118,6 @@ export function getDisabledTime(props) {
         }
 
         if (_disabledHours.length && _disabledHours.length < hours) {
-            // 边界处理
-            while (_disabledHours.indexOf(currentHour) > -1) {
-                currentHour = (currentHour + 1) % hours;
-            }
             for (let i = 0; i < minutesAndSeconds; i++) {
                 // 从当前小时开始遍历
                 if (
@@ -107,10 +130,6 @@ export function getDisabledTime(props) {
         }
 
         if (_disabledMinutes.length && _disabledMinutes.length < minutesAndSeconds) {
-            // 边界处理
-            while (_disabledMinutes.indexOf(currentMinute) > -1) {
-                currentMinute = (currentMinute + 1) % minutesAndSeconds;
-            }
             for (let i = 0; i < minutesAndSeconds; i++) {
                 // 从当前时分开始遍历
                 newDate = newDate.hour(currentHour).minute(currentMinute).second(i);
@@ -119,24 +138,17 @@ export function getDisabledTime(props) {
                 }
             }
         }
-
-        // 当前选中时间落在禁用区
-        if (disabledDate(value, panelMode)) {
-            // 边界处理
-            let currentSecond = value.get('second');
-            while (_disabledSeconds.indexOf(currentSecond) > -1) {
-                currentSecond = (currentSecond + 1) % minutesAndSeconds;
-            }
-            newDate = newDate.hour(currentHour).minute(currentMinute).second(currentSecond);
-            func.invoke(props, 'onSelect', [newDate]);
-        }
-
         return {
-            disabledHours: disabledItems(_disabledHours),
-            disabledMinutes: disabledItems(_disabledMinutes),
-            disabledSeconds: disabledItems(_disabledSeconds),
+            disabledHours: executedFunc(disabledItems(_disabledHours), disabledHours, _disabledTime.disabledHours),
+            disabledMinutes: executedFunc(disabledItems(_disabledMinutes), disabledMinutes, _disabledTime.disabledMinutes),
+            disabledSeconds: executedFunc(disabledItems(_disabledSeconds), disabledSeconds, _disabledTime.disabledSeconds),
         };
     }
 
-    return null;
+    return {
+        ..._disabledTime,
+        disabledHours,
+        disabledMinutes,
+        disabledSeconds,
+    };
 }

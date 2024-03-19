@@ -1128,51 +1128,127 @@ describe('Picker', () => {
             wrapper = mount(<DatePicker state="loading" />);
             assert(wrapper.find('.next-icon-loading').length === 1);
         });
-
+        
         it('should support prohibit minutes and seconds', () => {
-            const div = document.createElement('div');
-            document.body.appendChild(div);
+            let value;
             const disabledDate = date => {
                 return (
                     date.valueOf() < Number(moment('2024-01-22 13:30:12').valueOf()) ||
                     date.valueOf() > Number(moment('2024-01-28 18:30:12').valueOf())
                 );
             };
+            const handleChange = date => {
+                if (Array.isArray(date)) {
+                    assert(date[0].valueOf() === Number(moment(value[0]).valueOf()), 'The start time should be the same')
+                    assert(date[1].valueOf() === Number(moment(value[1]).valueOf()), 'The end time should be the same')
+                } else {
+                    assert(date.valueOf() === Number(moment(value).valueOf()))
+                }
+            };
+
+            const clickDateTime = (date) => {
+                const m = moment(date);
+                clickDate(m.format('YYYY-MM-DD'));
+                clickTime(m.hour(), 'hour');
+                clickTime(m.minute(), 'minute');
+                clickTime(m.second(), 'second');
+            }
+
+            const isDisabledNode = name => {
+                return hasClassNames(wrapper.find(name), 'next-disabled');
+            };
+
+            wrapper = mount(
+                <DatePicker
+                    showTime
+                    disabledDate={disabledDate}
+                    onChange={handleChange}
+                    defaultPanelValue={dayjs('2024-01-22 14:30:10')}
+                />,
+            );
+            findInput(0).simulate('click');
+            assert(wrapper.find('.next-date-picker2-wrapper').exists());
+            [22, 23, 24, 25, 26, 27, 28].forEach(item => {
+                assert(!hasClassNames(findDate(`2024-01-${item}`), 'next-calendar2-cell-disabled'));
+            })
+            assert(hasClassNames(findDate('2024-01-21'), 'next-calendar2-cell-disabled'));
+            assert(hasClassNames(findDate('2024-01-29'), 'next-calendar2-cell-disabled'));
+
+            wrapper.setProps({ value: '2024-01-22 13:30:10' });
+            assert(wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'), 'Select date to 2024-01-22 13:30:10, confirm button should be disabled');
+            wrapper.setProps({ value: '2024-01-28 18:30:13' });
+            assert(wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'), 'Select date to 2024-01-28 18:30:13, confirm button should be disabled');
+            value = '2024-01-22 14:30:10';
+            clickDateTime(value);
+            assert(!wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'), 'Select date to 2024-01-22 14:30:10, confirm button should not be disabled');
+            clickOk();
+
+            wrapper.setProps({
+                disabledTime: {
+                    disabledHours: i => i < 5, 
+                    disabledMinutes: i => i < 10, 
+                    disabledSeconds: i => i < 10 
+                },
+                timePanelProps: {
+                    disabledHours: i => i > 14, 
+                    disabledMinutes: i => i > 30, 
+                    disabledSeconds: i => i > 30
+                }
+            });
+
+            clickDate('2024-01-23');
+            wrapper.find('ul.next-time-picker2-menu-hour li.next-time-picker2-menu-item').forEach((item) => {
+                if (item.prop('title') > 14 || item.prop('title') < 5) {
+                    assert(hasClassNames(item, 'next-disabled'));
+                } else {
+                    assert(!hasClassNames(item, 'next-disabled'));
+                }
+            });
+            wrapper.find('ul.next-time-picker2-menu-minute li.next-time-picker2-menu-item').forEach((item) => {
+                if (item.prop('title') > 30 || item.prop('title') < 10) {
+                    assert(hasClassNames(item, 'next-disabled'));
+                } else {
+                    assert(!hasClassNames(item, 'next-disabled'));
+                }
+            });
+            wrapper.find('ul.next-time-picker2-menu-second li.next-time-picker2-menu-item').forEach((item) => {
+                if (item.prop('title') > 30 || item.prop('title') < 10) {
+                    assert(hasClassNames(item, 'next-disabled'));
+                } else {
+                    assert(!hasClassNames(item, 'next-disabled'));
+                }
+            });
+
+            clickDate('2024-01-22');
+            [12, 15].forEach(i => {
+                assert(hasClassNames(wrapper.find(`ul.next-time-picker2-menu-hour [title=${i}]`), 'next-disabled'))
+            })
+            assert(!hasClassNames(wrapper.find('ul.next-time-picker2-menu-hour [title=14]'), 'next-disabled'));
+
             wrapper = mount(
                 <RangePicker
                     showTime
                     disabledDate={disabledDate}
-                    visible={true}
-                    followTrigger
                     onChange={val => console.log(val)}
                     defaultPanelValue={dayjs('2024-01-22 14:30:10')}
                 />,
-                { attachTo: div }
             );
-            const isDisabledNode = name => {
-                return div.querySelector(name).classList.contains('next-disabled');
-            };
-
-            let startHour = isDisabledNode('.next-time-picker2-menu-hour > li[title="12"]');
-            let startMinute = isDisabledNode('.next-time-picker2-menu-minute > li[title="29"]');
-            let startSecond = isDisabledNode('.next-time-picker2-menu-second > li[title="11"]');
+            findInput(0).simulate('click');
+            assert(wrapper.find('.next-date-picker2-wrapper').exists());
+            value = ['2024-01-22 13:30:12', '2024-01-28 18:30:12']
+            clickDateTime(value[0])
+            const startHour = isDisabledNode('.next-time-picker2-menu-hour > li[title=12]');
+            const startMinute = isDisabledNode('.next-time-picker2-menu-minute > li[title=29]');
+            const startSecond = isDisabledNode('.next-time-picker2-menu-second > li[title=11]');
             assert(startHour && startMinute && startSecond);
-
-            ReactTestUtils.Simulate.click(div.querySelector('td[title="2024-01-28"]'));
-
-            let endHour = isDisabledNode('.next-time-picker2-menu-hour > li[title="19"]');
-            ReactTestUtils.Simulate.click(
-                div.querySelector('.next-time-picker2-menu-hour > li[title="18"]')
-            );
-
-            let endMinute = isDisabledNode('.next-time-picker2-menu-minute > li[title="31"]');
-            ReactTestUtils.Simulate.click(
-                div.querySelector('.next-time-picker2-menu-minute > li[title="30"]')
-            );
-
-            let endSecond = isDisabledNode('.next-time-picker2-menu-second > li[title="13"]');
-
+            clickOk();
+            
+            clickDateTime(value[1])
+            const endHour = isDisabledNode('.next-time-picker2-menu-hour > li[title=19]');
+            const endMinute = isDisabledNode('.next-time-picker2-menu-minute > li[title=31]');
+            const endSecond = isDisabledNode('.next-time-picker2-menu-second > li[title=14]');
             assert(endHour && endMinute && endSecond);
+            clickOk();
         });
     });
 });

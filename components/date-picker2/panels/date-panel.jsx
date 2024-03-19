@@ -75,7 +75,7 @@ class DatePanel extends React.Component {
     checkValueDisabled = (v, mode) => {
         const { showTime, disabledDate, panelMode } = this.props;
 
-        if (showTime && mode === panelMode) {
+        if (showTime && disabledDate && mode === panelMode) {
             return (
                 disabledDate(v.hour(0).minute(0).second(0), mode) &&
                 disabledDate(v.hour(23).minute(59).second(59), mode)

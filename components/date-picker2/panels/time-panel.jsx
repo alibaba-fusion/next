@@ -4,7 +4,7 @@ import PT from 'prop-types';
 import TimePickerPanel from '../../time-picker2/panel';
 import SharedPT from '../prop-types';
 import { func } from '../../util';
-import { getDisabledTime } from '../util'
+import { getDisabledTime, isValueChanged } from '../util'
 
 const DECADE_TIME_FORMAT = 'HH:mm:ss';
 
@@ -16,35 +16,31 @@ const WithTimePanel = function (WrappedComponent) {
             panelMode: PT.string,
         };
 
-        getDisabledStatus = () => {
-            const { value, timePanelProps, disabledDate } = this.props;
-
-            // 直接禁用时间选择，权重最高
-            if (timePanelProps.disabled) {
-                return true;
+        constructor(props) {
+            super(props);
+            const disabledTime = getDisabledTime(this.props);
+            this.state = {
+                ...disabledTime
             }
+        }
 
-            // 开启自定义禁用日期
-            if (typeof disabledDate === 'function') {
-                // 如果“今天”是属于禁用时间的话，先选时分秒可能导致回填数据与预期不符合，所以未选择值时，提前警用时间选择
-                return !value;
+        componentDidUpdate(prevProps) {
+            if (isValueChanged(this.props.value, prevProps.value)) {
+                const disabledTime = getDisabledTime(this.props);
+                this.setState({
+                    ...disabledTime
+                });
             }
-
-            return false;
         }
 
         render() {
             const { timePanelProps, ...rest } = this.props;
-
-            // 开启 disabledDate 属性时，需要提前禁用时分秒
-            // 如果“今天”是属于禁用时间的话，先选时分秒可能导致回填数据与预期不符合
-            const disabled = this.getDisabledStatus();
-            const disabledTime = getDisabledTime(this.props);
+            const { disabledHours, disabledMinutes, disabledSeconds } = this.state;
 
             return (
                 <WrappedComponent
                     {...rest}
-                    timePanelProps={{ ...timePanelProps, disabled, ...disabledTime }}
+                    timePanelProps={{ ...timePanelProps, disabledHours, disabledMinutes, disabledSeconds }}
                 />
             );
         }
@@ -110,7 +106,7 @@ class TimePanel extends React.PureComponent {
     render() {
         const { prefix, rtl, locale, timePanelProps = {}, value } = this.props;
         const { showHour, showMinute, showSecond } = this.getShow();
-
+               
         return (
             <div
                 dir={rtl ? 'rtl' : undefined}
