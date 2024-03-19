@@ -6,7 +6,7 @@ import PT from 'prop-types';
 import SharedPT from './prop-types';
 import defaultLocale from '../locale/zh-cn';
 import { func, KEYCODE, obj } from '../util';
-import { switchInputType, fmtValue, isValueChanged } from './util';
+import { switchInputType, fmtValue, isValueChanged ,disableDateTime} from './util';
 import { DATE_PICKER_TYPE, DATE_INPUT_TYPE, DATE_PICKER_MODE } from './constant';
 
 import Overlay from '../overlay';
@@ -679,8 +679,16 @@ class Picker extends React.Component {
             <DatePanel {...panelProps} />
         );
 
+        const options = {
+            mode,
+            disabledDate,
+            disabledHours: timePanelProps && timePanelProps.disabledHours,
+            disabledMinutes: timePanelProps && timePanelProps.disabledMinutes,
+            disabledSeconds: timePanelProps && timePanelProps.disabledSeconds
+        }
+
         // 底部节点
-        const oKable = !!(isRange ? inputValue && inputValue[inputType] : inputValue);
+        const oKable = !disableDateTime(isRange ? inputValue && inputValue[inputType] : inputValue, options);
         const shouldShowFooter = showOk || preset || extraFooterRender;
 
         const footerNode = shouldShowFooter ? (

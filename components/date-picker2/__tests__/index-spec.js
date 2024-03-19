@@ -1128,6 +1128,29 @@ describe('Picker', () => {
             wrapper = mount(<DatePicker state="loading" />);
             assert(wrapper.find('.next-icon-loading').length === 1);
         });
+        it('should support state', () => {
+            wrapper = mount(<DatePicker state="loading" />);
+            assert(wrapper.find('.next-icon-loading').length === 1);
+        });
+        it('should support prohibited time is not selectable', () => {
+            const disabledDate = date => {
+                return date.valueOf() <= currentDate.valueOf();
+            };
+            wrapper = mount(
+                <DatePicker
+                    showTime
+                    disabledDate={disabledDate}
+                    onChange={handleChange}
+                />,
+            );
+            findInput(0).simulate('click');
+            assert(wrapper.find('.next-date-picker2-wrapper').exists());
+            wrapper.setProps({ value: dayjs().format('YYYY-MM-DD') });
+            assert(!wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'), 'confirm button should be click');
+            wrapper.setProps({ value: dayjs().subtract(1,'day').format('YYYY-MM-DD') });
+            assert(wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'), 'confirm button should be disabled');
+
+        });
     });
 });
 

@@ -52,3 +52,27 @@ export function isValueChanged(newValue, oldValue) {
         ? isValueChanged(newValue[0], oldValue && oldValue[0]) || isValueChanged(newValue[1], oldValue && oldValue[1])
         : newValue !== oldValue && !datejs(newValue).isSame(oldValue);
 }
+
+export function disableDateTime(value, {
+    mode,
+    inputType,
+    disabledDate,
+    disabledHours,
+    disabledMinutes,
+    disabledSeconds,
+    disabledTime = {}
+}) {
+    value = datejs.isDayjs(value) ? value : datejs(value);
+
+    const _disabledTime = typeof disabledTime === 'function' ? disabledTime(value, inputType) : disabledTime;
+
+    return (
+        (typeof disabledDate === 'function' && disabledDate(value, mode)) ||
+        (typeof disabledHours === 'function' && disabledHours(value.get('hour'))) ||
+        (typeof disabledMinutes === 'function' && disabledMinutes(value.get('minute'))) ||
+        (typeof disabledSeconds === 'function' && disabledSeconds(value.get('second'))) ||
+        (typeof _disabledTime.disabledHours === 'function' && _disabledTime.disabledHours(value.get('hour'))) ||
+        (typeof _disabledTime.disabledMinutes === 'function' && _disabledTime.disabledMinutes(value.get('minute'))) ||
+        (typeof _disabledTime.disabledSeconds === 'function' && _disabledTime.disabledSeconds(value.get('second')))
+    );
+}
