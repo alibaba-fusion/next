@@ -187,7 +187,7 @@
     "chalk": "^2.3.2",
     "cheerio": "1.0.0-rc.3",
     "chokidar": "^2.0.4",
-    "chrome-launcher": "^0.10.2",
+    "chrome-launcher": "^0.13.2",
     "co": "^4.6.0",
     "console-polyfill": "^0.3.0",
     "conventional-changelog": "^5.1.0",
