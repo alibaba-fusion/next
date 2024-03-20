@@ -1134,6 +1134,13 @@ describe('Picker', () => {
             assert(getStrValue() === '2021-52周');
             wrapper = mount(<WeekPicker defaultValue="2022-01-01" format="YYYY-wo" />)
             assert(getStrValue() === '2021-52周');
+
+        // fix https://github.com/alibaba-fusion/next/issues/4767
+        it('should pass inputProps to trigger', () => {
+            mount(<DatePicker trigger={(inputProps) => {
+                assert(typeof inputProps.onInputTypeChange === 'function');
+                return <div>test</div>
+            }} />);
         })
     });
 });
