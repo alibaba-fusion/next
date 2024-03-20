@@ -1149,7 +1149,7 @@ describe('Picker', () => {
             wrapper.setProps({ value: dayjs().add(1, 'day').format('YYYY-MM-DD') });
             assert(
                 !wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'),
-                'confirm button should be click'
+                'confirm button should be clickable'
             );
         });
     });
