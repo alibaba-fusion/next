@@ -31,7 +31,7 @@ const render = element => {
     const container = document.createElement('div');
     container.className = 'container';
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function() {
+    ReactDOM.render(element, container, function () {
         inc = this;
     });
     return {
@@ -400,9 +400,9 @@ describe('Picker', () => {
                         .at(0)
                         .getDOMNode()
                         .getAttribute('title') ===
-                        dayjs()
-                            .startOf('month')
-                            .format('YYYY-MM-DD')
+                    dayjs()
+                        .startOf('month')
+                        .format('YYYY-MM-DD')
                 );
                 wrapper.unmount();
             });
@@ -920,25 +920,25 @@ describe('Picker', () => {
                 wrapper = null;
             }
         });
-         // fix: https://github.com/alibaba-fusion/next/issues/3877
-        it('should not select default endDate',()=>{
-                const currentDate = dayjs();
-                const currentDateStr = currentDate.format('YYYY-MM-DD');
-                const disabledDate = function (date, mode) {
-                    return currentDate.date() !== date.date();
-                };
-                wrapper = mount(<RangePicker visible showTime disabledDate={disabledDate}  />);
-                clickDate(currentDateStr);
-                clickTime('12');
-                clickTime('12', 'minute');
-                clickTime('12', 'second');
-                assert.deepEqual(getStrValue(), [`${currentDateStr} 12:12:12`, '']);
-                clickOk();
-                clickTime('16');
-                clickTime('16', 'minute');
-                clickTime('35', 'second');
-                clickOk();
-                assert.deepEqual(getStrValue(), [`${currentDateStr} 12:12:12`, `${currentDateStr} 16:16:35`]);
+        // fix: https://github.com/alibaba-fusion/next/issues/3877
+        it('should not select default endDate', () => {
+            const currentDate = dayjs();
+            const currentDateStr = currentDate.format('YYYY-MM-DD');
+            const disabledDate = function (date, mode) {
+                return currentDate.date() !== date.date();
+            };
+            wrapper = mount(<RangePicker visible showTime disabledDate={disabledDate} />);
+            clickDate(currentDateStr);
+            clickTime('12');
+            clickTime('12', 'minute');
+            clickTime('12', 'second');
+            assert.deepEqual(getStrValue(), [`${currentDateStr} 12:12:12`, '']);
+            clickOk();
+            clickTime('16');
+            clickTime('16', 'minute');
+            clickTime('35', 'second');
+            clickOk();
+            assert.deepEqual(getStrValue(), [`${currentDateStr} 12:12:12`, `${currentDateStr} 16:16:35`]);
         });
         // https://github.com/alibaba-fusion/next/issues/2641
         it('value controlled issue', () => {
@@ -1005,7 +1005,7 @@ describe('Picker', () => {
         });
 
         it('should support triggerType', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = render(<DatePicker popupTriggerType={'hover'} />);
                 const btn = document.querySelector('.next-date-picker2 > div');
 
@@ -1015,11 +1015,11 @@ describe('Picker', () => {
 
                 ReactTestUtils.Simulate.mouseLeave(btn);
                 ReactTestUtils.Simulate.mouseEnter(document.querySelector('.next-calendar2-body'));
-                yield delay(300);
+                yield delay(200);
                 assert(document.querySelector('.next-overlay-wrapper'));
 
                 ReactTestUtils.Simulate.mouseLeave(document.querySelector('.next-calendar2-body'));
-                yield delay(500);
+                yield delay(1000);
                 assert(!document.querySelector('.next-overlay-wrapper'));
             });
         });
@@ -1104,7 +1104,7 @@ describe('Picker', () => {
         it('should reset to previous value when input a disableValue', () => {
             const currentDate = dayjs(defaultVal);
             // Disable all dates before currentDate: 2020-12-12
-            const disabledDate = function(date, mode) {
+            const disabledDate = function (date, mode) {
                 switch (mode) {
                     case 'date':
                         return date.valueOf() <= currentDate.valueOf();
@@ -1128,6 +1128,12 @@ describe('Picker', () => {
             wrapper = mount(<DatePicker state="loading" />);
             assert(wrapper.find('.next-icon-loading').length === 1);
         });
+
+        it('WeekPicker should format value correctly when date is 01-01', () => {
+            wrapper = mount(<WeekPicker defaultValue="2022-01-01" />)
+            assert(getStrValue() === '2021-52周');
+            wrapper = mount(<WeekPicker defaultValue="2022-01-01" format="YYYY-wo" />)
+            assert(getStrValue() === '2021-52周');
 
         // fix https://github.com/alibaba-fusion/next/issues/4767
         it('should pass inputProps to trigger', () => {
