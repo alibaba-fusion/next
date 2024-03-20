@@ -877,6 +877,7 @@ class Select extends Base {
                         animation={false}
                         onClose={this.handleTagClose.bind(this, v)}
                         closable={tagClosable}
+                        color={v.color}
                     >
                         {labelNode}
                     </Tag>

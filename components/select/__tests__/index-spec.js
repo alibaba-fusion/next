@@ -471,6 +471,43 @@ describe('Select', () => {
         );
     });
 
+    it('should show colorful Tag when dataSource item`s has color', () => {
+        const dataSource = [
+            { value: '10001', label: 'Lucy King', color: 'orange' },
+            { value: 10002, label: 'Lily King', color: 'green' },
+            { value: 10003, label: 'Tom Cat', disabled: true, color: 'blue'},
+            {
+                label: 'Special Group',
+                children: [
+                    { value: -1, label: 'FALSE', color: 'purple' },
+                    { value: 0, label: 'ZERO', color: 'pink'},
+                ],
+            },
+        ];
+        class App extends React.Component {
+            render() {
+                return (
+                    <Select value={[10001, 10002, 10003]} mode='multiple' dataSource={dataSource} useVirtual />
+                );
+            }
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        ReactDOM.render(<App />, div);
+        assert(document.querySelectorAll('.next-tag').length === 3);
+        assert(document.querySelectorAll('.next-input').length === 1);
+        const tags = document.querySelectorAll('.next-tag');
+        assert(tags.length === 3);
+        const firstTagStyle = window.getComputedStyle(tags[0]);
+        const secondTagStyle = window.getComputedStyle(tags[1]);
+        assert(firstTagStyle.backgroundColor === 'rgb(255, 147, 0)');
+        assert(secondTagStyle.backgroundColor === 'rgb(70, 188, 21)');
+        
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
+
     it('should support showSearch', () => {
         wrapper.setProps({
             showSearch: true,
@@ -606,7 +643,7 @@ describe('Select', () => {
         wrapper.find('input').simulate('change', { target: { value: 'bbb' } });
         wrapper.find('input').simulate('keydown', { keyCode: 13 });
     });
-
+    
     it('should support mode=tag with hasClear', done => {
         wrapper.setProps({
             mode: 'tag',
