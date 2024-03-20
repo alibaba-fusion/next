@@ -1128,28 +1128,29 @@ describe('Picker', () => {
             wrapper = mount(<DatePicker state="loading" />);
             assert(wrapper.find('.next-icon-loading').length === 1);
         });
-        it('should support state', () => {
-            wrapper = mount(<DatePicker state="loading" />);
-            assert(wrapper.find('.next-icon-loading').length === 1);
-        });
-        it('should support prohibited time is not selectable', () => {
+        it('should support prohibited time is not selectable, close #3801', () => {
+            const currentDate = dayjs();
             const disabledDate = date => {
-                return date.valueOf() <= currentDate.valueOf();
+                if(date){
+                    return date.valueOf() <= currentDate.valueOf();
+                }
             };
-            wrapper = mount(
-                <DatePicker
-                    showTime
-                    disabledDate={disabledDate}
-                    onChange={handleChange}
-                />,
-            );
-            findInput(0).simulate('click');
-            assert(wrapper.find('.next-date-picker2-wrapper').exists());
-            wrapper.setProps({ value: dayjs().format('YYYY-MM-DD') });
-            assert(!wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'), 'confirm button should be click');
-            wrapper.setProps({ value: dayjs().subtract(1,'day').format('YYYY-MM-DD') });
-            assert(wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'), 'confirm button should be disabled');
+            wrapper = mount(<DatePicker showOk disabledDate={disabledDate} />);
 
+            findInput().simulate('keydown', { keyCode: KEYCODE.ENTER });
+            assert(wrapper.find('.next-date-picker2-wrapper').exists());
+
+            wrapper.setProps({ value: dayjs().format('YYYY-MM-DD') });
+            assert(
+                wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'),
+                'confirm button should be disabled'
+            );
+
+            wrapper.setProps({ value: dayjs().add(1, 'day').format('YYYY-MM-DD') });
+            assert(
+                !wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'),
+                'confirm button should be click'
+            );
         });
     });
 });
