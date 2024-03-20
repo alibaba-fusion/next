@@ -1266,6 +1266,43 @@ describe('Issue', () => {
             .getBoundingClientRect().left;
         assert(title1CellLeft + title1CellWidth === title2CellLeft);
     });
+
+    it('should support when dataSource item id 0, close #3740', () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        function CheckTable() {
+            const dataSource = [{ id: 0, name: 'test' }, { id: 1, name: 'test1' },{ id: 2, name: 'test2' }];
+            return (
+                <Table 
+                    rowSelection={{
+                        mode: 'multiple',
+                        selectedRowKeys: [0]
+                    }} 
+                    dataSource={dataSource} 
+                >
+                    <Table.Column title="Id" dataIndex="id" />
+                    <Table.Column title="Name" dataIndex="name" />
+                </Table>
+            )
+        };
+        ReactDOM.render(
+            <CheckTable />,
+            container
+        );
+        const getRowCell = function(row, index = 1) {
+            return row.querySelectorAll('.next-table-cell')[index];
+        }
+        const rows = container.querySelectorAll('tr.next-table-row');
+        assert(container.querySelectorAll('.next-checkbox-wrapper.checked').length === 1);
+        assert(container.querySelectorAll('.next-table-body .next-table-row').length === 3);
+        assert(getRowCell(rows[0]).textContent === '0' && getRowCell(rows[0], 2).textContent === 'test');
+        assert(getRowCell(rows[1]).textContent === '1' && getRowCell(rows[1], 2).textContent === 'test1');
+        assert(getRowCell(rows[2]).textContent === '2' && getRowCell(rows[2], 2).textContent === 'test2');
+        ReactDOM.unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
+
 });
 
 describe('TableScroll', () => {
