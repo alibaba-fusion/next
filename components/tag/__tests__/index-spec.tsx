@@ -161,12 +161,7 @@ describe('TagCheckable', () => {
             wrapper.setProps({
                 checked: false,
             });
-            assert(
-                wrapper
-                    .children()
-                    .first()
-                    .state('checked') === false
-            );
+            assert(wrapper.children().first().state('checked') === false);
         });
     });
 
