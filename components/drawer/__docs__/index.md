@@ -30,7 +30,7 @@
 | 参数            | 说明                                                                                                  | 类型                                                                               | 默认值                                       | 是否必填 | 支持版本 |
 | --------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------- | -------- | -------- |
 | closeable       | [废弃] 同 closeMode, 控制对话框关闭的方式，                                                           | 'close' \| 'mask' \| 'esc' \| boolean \| 'close,mask' \| 'close,esc' \| 'mask,esc' | true                                         |          | -        |
-| closeMode       | [推荐] 控制对话框关闭的方式                                                                           | CloseMode[] \| 'close' \| 'mask' \| 'esc'                                          | -                                            |          | 1.21     |
+| closeMode       | [推荐] 控制对话框关闭的方式                                                                           | CloseMode \| CloseMode[]                                                           | -                                            |          | 1.21     |
 | cache           | 隐藏时是否保留子节点，不销毁                                                                          | boolean                                                                            | -                                            |          | -        |
 | title           | 标题                                                                                                  | React.ReactNode                                                                    | -                                            |          | -        |
 | bodyStyle       | body 上的样式                                                                                         | React.CSSProperties                                                                | -                                            |          | -        |
@@ -53,7 +53,7 @@
 | 参数           | 说明                                                                                                  | 类型                                                                               | 默认值                                       | 是否必填 | 支持版本 |
 | -------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------- | -------- | -------- |
 | closeable      | [废弃] 同 closeMode, 控制对话框关闭的方式，                                                           | 'close' \| 'mask' \| 'esc' \| boolean \| 'close,mask' \| 'close,esc' \| 'mask,esc' | true                                         |          | -        |
-| closeMode      | [推荐] 控制对话框关闭的方式                                                                           | CloseMode[] \| 'close' \| 'mask' \| 'esc'                                          | -                                            |          | 1.21     |
+| closeMode      | [推荐] 控制对话框关闭的方式                                                                           | CloseMode \| CloseMode[]                                                           | -                                            |          | 1.21     |
 | cache          | 隐藏时是否保留子节点，不销毁                                                                          | boolean                                                                            | -                                            |          | -        |
 | title          | 标题                                                                                                  | React.ReactNode                                                                    | -                                            |          | -        |
 | bodyStyle      | body 上的样式                                                                                         | React.CSSProperties                                                                | -                                            |          | -        |
@@ -69,6 +69,12 @@
 | content        | 内容                                                                                                  | React.ReactNode                                                                    | -                                            |          | -        |
 | popupContainer | 渲染组件的容器                                                                                        | string \| HTMLElement \| null                                                      | -                                            |          | -        |
 | hasMask        | 是否显示遮罩                                                                                          | boolean                                                                            | true                                         |          | -        |
+
+### CloseMode
+
+```typescript
+export type CloseMode = 'close' | 'mask' | 'esc';
+```
 
 <!-- api-extra-start -->
 

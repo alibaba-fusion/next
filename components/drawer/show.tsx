@@ -2,7 +2,7 @@ import React, { type JSXElementConstructor } from 'react';
 import ReactDOM from 'react-dom';
 import ConfigProvider from '../config-provider';
 import Drawer from './drawer-v2';
-import type { DrawerProps } from './types';
+import type { DrawerV2Props } from './types';
 import type { AnyProps } from '../config-provider/config';
 import type { ConsumerState } from '../config-provider/consumer';
 
@@ -11,7 +11,7 @@ interface ModalState {
     loading?: boolean;
 }
 
-class Modal extends React.Component<DrawerProps, ModalState> {
+class Modal extends React.Component<DrawerV2Props, ModalState> {
     state = {
         visible: true,
         loading: false,
@@ -35,7 +35,7 @@ class Modal extends React.Component<DrawerProps, ModalState> {
 
 const ConfigModal = ConfigProvider.config(Modal, { componentName: 'Drawer' });
 
-export type Config = DrawerProps & {
+export type Config = DrawerV2Props & {
     afterClose?: () => void;
     onClose?: () => void;
     contextConfig?: ConsumerState;
