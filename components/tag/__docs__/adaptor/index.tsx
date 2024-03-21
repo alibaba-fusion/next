@@ -18,7 +18,7 @@ export default {
             value: 'deletable',
         },
     ],
-    editor: shape => ({
+    editor: (shape: string) => ({
         props: [
             {
                 name: 'level',
@@ -50,7 +50,7 @@ export default {
             default: 'Tag Hello',
         },
     }),
-    adaptor: ({ shape, level, size, state = '', data, className = '', ...others }) => {
+    adaptor: ({ shape, level, size, state = '', data, className = '', ...others }: any) => {
         const TagComponent =
             shape === 'selectable' ? Tag.Selectable : shape === 'deletable' ? Tag.Closable : Tag;
         return (

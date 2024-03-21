@@ -1,55 +1,22 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, type KeyboardEvent, type MouseEvent } from 'react';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import { obj, func } from '../util';
 import Tag from './tag';
+import type { SelectableProps } from './types';
 
 const { noop, bindCtx } = func;
 
-/**
- * Tag.Selectable
- */
-class Selectable extends Component {
-    static propTypes = {
-        /**
-         * 标签是否被选中，受控用法
-         * tag checked or not, a controlled way
-         */
-        checked: PropTypes.bool,
-        /**
-         * 标签是否默认被选中，非受控用法
-         * tag checked or not by default, a uncontrolled way
-         */
-        defaultChecked: PropTypes.bool,
-        /**
-         * 选中状态变化时触发的事件
-         * @param {Boolean} checked 是否选中
-         * @param {Event} e Dom 事件对象
-         */
-        onChange: PropTypes.func,
-        /**
-         * 标签是否被禁用
-         */
-        disabled: PropTypes.bool,
-        className: PropTypes.any,
-    };
+interface SelectableState {
+    checked: boolean | undefined;
+}
 
-    static defaultProps = {
+class Selectable extends Component<SelectableProps, SelectableState> {
+    static defaultProps: Partial<SelectableProps> = {
         onChange: noop,
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            checked: 'checked' in props ? props.checked : props.defaultChecked || false,
-        };
-
-        bindCtx(this, ['handleClick']);
-    }
-
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props: SelectableProps, state: SelectableState) {
         if (props.checked !== undefined && props.checked !== state.checked) {
             return {
                 checked: props.checked,
@@ -59,7 +26,17 @@ class Selectable extends Component {
         return null;
     }
 
-    handleClick(e) {
+    constructor(props: SelectableProps) {
+        super(props);
+
+        this.state = {
+            checked: 'checked' in props ? props.checked : props.defaultChecked || false,
+        };
+
+        bindCtx(this, ['handleClick']);
+    }
+
+    handleClick(e: MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>) {
         e && e.preventDefault();
         // IE9 不支持 pointer-events，还是可能会触发 click 事件
         if (this.props.disabled) {
@@ -72,7 +49,7 @@ class Selectable extends Component {
             checked: !checked,
         });
 
-        this.props.onChange(!checked, e);
+        this.props.onChange!(!checked, e);
     }
 
     render() {

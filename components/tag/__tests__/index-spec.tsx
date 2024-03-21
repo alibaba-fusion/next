@@ -1,11 +1,7 @@
-import React from 'react';
-import Enzyme, { mount, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import sinon from 'sinon';
+import React, { createRef } from 'react';
+import type { MountReturn } from 'cypress/react';
 import Tag from '../index';
-
-Enzyme.configure({ adapter: new Adapter() });
+import '../style';
 
 const { Selectable: TagCheckable, Group: TagGroup, Closable: TagClosable } = Tag;
 
@@ -18,88 +14,85 @@ const PRESET_COLORS = {
     yellow: '#FCCC12',
 };
 
-/* eslint-disable react/jsx-filename-extension */
-/* global describe it */
-
 describe('Tag', () => {
     describe('render', () => {
         it('should render nothing if tag is unvisible', () => {
-            const wrapper = shallow(<Tag animation={false} />)
-                .dive()
-                .dive();
-            // note: react setState is asynchronous
-            // so must force update or setTimeout in test suit to check render results.
-            wrapper
-                .setState({
-                    visible: false,
-                })
-                .update();
-
-            assert(wrapper.isEmptyRender() === true);
+            const ref = createRef<InstanceType<typeof Tag>>();
+            cy.mount(<Tag animation={false} ref={ref} />);
+            cy.then(() => {
+                const ins = ref.current?.getInstance()?.getInstance();
+                cy.wrap(ins).should('be.ok');
+                ins?.setState({ visible: false });
+            });
+            cy.get('.next-tag').should('not.exist');
         });
 
         it('should render tag body if tag is visible', () => {
-            const wrapper = mount(<Tag />);
-            assert(wrapper.find('.next-tag-body').length === 1);
+            cy.mount(<Tag />);
+            cy.get('.next-tag-body').should('exist').and('have.length', 1);
         });
 
         it('should contain tail if tag is closable and type is not normal', () => {
-            const wrapper = mount(<Tag closable type="primary" />);
-            assert(wrapper.find('.next-tag-close-btn').length === 1);
+            cy.mount(<Tag closable type="primary" />);
+            cy.get('.next-tag-close-btn').should('exist').and('have.length', 1);
         });
 
         it('`afterAppear` should be called when tag appeared', () => {
-            const afterAppearCb = sinon.spy();
-            const wrapper = shallow(<Tag afterAppear={afterAppearCb} />)
-                .dive()
-                .dive();
-            wrapper.instance().handleAnimationInit();
-            assert(afterAppearCb.calledOnce === true);
+            const afterAppearCb = cy.spy();
+            cy.mount(<Tag afterAppear={afterAppearCb} animation />);
+            cy.then(() => {
+                cy.wrap(afterAppearCb).should('be.calledOnce');
+            });
         });
 
         it('`afterLeave` should be called when tag leaved', () => {
-            const afterLeaveCb = sinon.spy();
-            const wrapper = shallow(<Tag afterClose={afterLeaveCb} />)
-                .dive()
-                .dive();
-            wrapper.instance().handleAnimationEnd();
-            assert(afterLeaveCb.calledOnce === true);
+            const afterLeaveCb = cy.spy();
+            cy.mount(<Tag afterClose={afterLeaveCb} closable />);
+            cy.get('.next-tag-close-btn').click();
+            cy.then(() => {
+                cy.wrap(afterLeaveCb).should('be.calledOnce');
+            });
+            cy.mount(<Tag afterClose={afterLeaveCb} closable animation />);
+            cy.get('.next-tag-close-btn').click();
+            cy.then(() => {
+                cy.wrap(afterLeaveCb).should('be.calledTwice');
+            });
         });
     });
 
     describe('behavior', () => {
         it('should emit `onClick` method if tag body clicked', () => {
-            const onClickCb = sinon.spy();
-            const wrapper = mount(<Tag onClick={onClickCb} />);
-            wrapper.find('.next-tag').simulate('click');
-            assert(onClickCb.calledOnce === true);
+            const onClickCb = cy.spy();
+            cy.mount(<Tag onClick={onClickCb} />);
+            cy.get('.next-tag').click();
+            cy.then(() => {
+                cy.wrap(onClickCb).should('be.calledOnce');
+            });
         });
 
         it('should hidden tag if tag is closable and closeArea is `tag`', () => {
-            const onCloseCb = sinon.spy();
-            const wrapper = mount(<Tag onClose={onCloseCb} closable closeArea="tag" />);
-            wrapper.find('.next-tag').simulate('click');
-            assert(onCloseCb.calledOnce === true);
+            const onCloseCb = cy.spy();
+            cy.mount(<Tag onClose={onCloseCb} closable closeArea="tag" />);
+            cy.get('.next-tag').click();
+            cy.then(() => {
+                cy.wrap(onCloseCb).should('be.calledOnce');
+            });
         });
 
         it('should emit `onClose` method if tail clicked', () => {
-            const onCloseCb = sinon.spy();
-            const wrapper = mount(<Tag closable type="primary" onClose={onCloseCb} />);
-            wrapper.find('.next-tag-close-btn').simulate('click');
-            assert(onCloseCb.calledOnce === true);
+            const onCloseCb = cy.spy();
+            cy.mount(<Tag closable type="primary" onClose={onCloseCb} />);
+            cy.get('.next-tag-close-btn').click();
+            cy.then(() => {
+                cy.wrap(onCloseCb).should('be.calledOnce');
+            });
         });
 
-        it('tag should be destroyed after unmoun', () => {
-            const wrapper = shallow(<Tag />)
-                .dive()
-                .dive();
-            const willUnmount = sinon.spy();
-            const instance = wrapper.instance();
-            // for coverage
-            instance.componentWillUnmount();
-            instance.componentWillUnmount = willUnmount;
-            wrapper.unmount();
-            assert(willUnmount.callCount === 1);
+        it('tag should be destroyed after unmount', () => {
+            cy.mount(<Tag />);
+            cy.get('.next-tag').should('exist');
+            cy.mount(<div></div>);
+            cy.get('.next-tag').should('not.exist');
         });
     });
 
@@ -107,43 +100,34 @@ describe('Tag', () => {
         // 预设颜色值匹配
         Object.entries(PRESET_COLORS).forEach(([name]) => {
             it(`should render preset ${name} color when type is primay`, () => {
-                const wrapper = mount(<Tag closable type="primary" color={name} />);
+                cy.mount(<Tag closable type="primary" color={name} />);
 
                 // 背景一致，且颜色是白色
-                assert(wrapper.find('.next-tag').hasClass(`next-tag-${name}`));
-                wrapper.unmount();
+                cy.get('.next-tag').should('have.class', `next-tag-${name}`);
             });
         });
 
-        Object.entries(PRESET_COLORS).forEach(([name, color]) => {
+        Object.entries(PRESET_COLORS).forEach(([name]) => {
             it(`should render preset ${name} color when type is normal`, () => {
-                const wrapper = mount(<Tag color={name} />);
-                // 背景透明 25%， 字体颜色不变
-                assert(wrapper.find('.next-tag').hasClass(`next-tag-${name}-inverse`));
-                wrapper.unmount();
+                cy.mount(<Tag color={name} />);
+                // 背景透明 25%，字体颜色不变
+                cy.get('.next-tag').should('have.class', `next-tag-${name}-inverse`);
             });
         });
 
         it('should render custom color ', () => {
-            const wrapper = mount(<Tag color={'#ff0'} />);
-
-            const style = wrapper.find('.next-tag').prop('style');
-            const { backgroundColor, color, borderColor } = style;
-
-            assert(backgroundColor === '#ff0' && color === '#fff' && borderColor === '#ff0');
-
-            wrapper.unmount();
+            cy.mount(<Tag color={'#ff0'} />);
+            cy.get('.next-tag').should('have.css', 'color', 'rgb(255, 255, 255)');
+            cy.get('.next-tag').should('have.css', 'background-color', 'rgb(255, 255, 0)');
+            cy.get('.next-tag').should('have.css', 'border-color', 'rgb(255, 255, 0)');
         });
 
         it('should render as primary type when type is normal but custom color is set', () => {
-            const wrapper = mount(<Tag color={'#ff0'} type="normal" />);
+            cy.mount(<Tag color={'#ff0'} type="normal" />);
 
-            const style = wrapper.find('.next-tag').prop('style');
-            const { backgroundColor, color, borderColor } = style;
-
-            assert(backgroundColor === '#ff0' && color === '#fff' && borderColor === '#ff0');
-
-            wrapper.unmount();
+            cy.get('.next-tag').should('have.css', 'color', 'rgb(255, 255, 255)');
+            cy.get('.next-tag').should('have.css', 'background-color', 'rgb(255, 255, 0)');
+            cy.get('.next-tag').should('have.css', 'border-color', 'rgb(255, 255, 0)');
         });
     });
 });
@@ -151,60 +135,86 @@ describe('Tag', () => {
 describe('TagCheckable', () => {
     describe('render', () => {
         it('should contain `checked` class if tag is check state', () => {
-            const wrapper = mount(<TagCheckable checked />);
-            assert(wrapper.find('.next-tag').hasClass('checked'));
+            cy.mount(<TagCheckable checked />);
+            cy.get('.next-tag').should('have.class', 'checked');
         });
 
         it('should update `checked` state when new props', () => {
-            const wrapper = mount(<TagCheckable checked />);
-
-            wrapper.setProps({
-                checked: false,
+            cy.mount(<TagCheckable checked />).as('tag');
+            cy.get<MountReturn>('@tag').then(({ rerender }) => {
+                return rerender(<TagCheckable checked={false} />);
             });
-            assert(wrapper.children().first().state('checked') === false);
+            cy.get('.next-tag').should('not.have.class', 'checked');
         });
     });
 
     describe('behavior', () => {
         it('emit `onChange` if click undisabled tag', () => {
-            const onChangeCb = sinon.spy();
-            const wrapper = mount(<TagCheckable onChange={onChangeCb} />);
-            wrapper.find('.next-tag').simulate('click');
-            assert(onChangeCb.calledOnce === true);
+            const onChangeCb = cy.spy();
+            cy.mount(<TagCheckable onChange={onChangeCb} />);
+            cy.get('.next-tag').click();
+            cy.then(() => {
+                cy.wrap(onChangeCb).should('be.calledOnce');
+                cy.wrap(onChangeCb.firstCall.args[0]).should('be.true');
+            });
         });
 
         it('`onChange` wont emit if click disabled tag', () => {
-            const onChangeCb = sinon.spy();
-            const wrapper = mount(<TagCheckable disabled onChange={onChangeCb} />);
-            wrapper.find('.next-tag').simulate('click');
-            assert(onChangeCb.calledOnce === false);
+            const onChangeCb = cy.spy();
+            cy.mount(<TagCheckable disabled onChange={onChangeCb} />);
+            cy.get('.next-tag').click({ force: true });
+            cy.then(() => {
+                cy.wrap(onChangeCb).should('not.be.called');
+            });
         });
 
         it('`onChange` passes checked state value', () => {
-            const onChangeCb = sinon.spy();
-            const wrapper = mount(<TagCheckable onChange={onChangeCb} />);
-            wrapper.find('.next-tag').simulate('click');
-            assert(onChangeCb.getCall(0).args[0] === true);
-            wrapper.find('.next-tag').simulate('click');
-            assert(onChangeCb.getCall(1).args[0] === false);
+            const onChangeCb = cy.spy();
+            cy.mount(<TagCheckable onChange={onChangeCb} />);
+            cy.get('.next-tag').click();
+            cy.then(() => {
+                cy.wrap(onChangeCb.firstCall.args[0]).should('be.true');
+            });
+            cy.get('.next-tag').click();
+            cy.then(() => {
+                cy.wrap(onChangeCb.secondCall.args[0]).should('be.false');
+            });
         });
     });
 });
 
 describe('TagClosable', () => {
     describe('render', () => {
-        it('should contain `checked` class if tag is check state', () => {
-            const wrapper = mount(<TagClosable checked />);
-            assert(wrapper.find('.next-tag .next-tag-close-btn').length === 1);
+        it('should contain `close` btn', () => {
+            cy.mount(<TagClosable />);
+            cy.get('.next-tag .next-tag-close-btn').should('exist');
         });
     });
 
     describe('behavior', () => {
-        it('emit `onChange` if click undisabled tag', () => {
-            const onClose = sinon.spy();
-            const wrapper = mount(<TagClosable closeArea="tag" onClose={onClose} />);
-            wrapper.find('.next-tag').simulate('click');
-            assert(onClose.calledOnce === true);
+        it('should emit `onClose` if click tail when closeArea is "tail"', () => {
+            const onClose = cy.spy();
+            cy.mount(<TagClosable closeArea="tail" onClose={onClose} />);
+            cy.get('.next-tag-close-btn').click();
+            cy.then(() => {
+                cy.wrap(onClose).should('be.calledOnce');
+            });
+        });
+        it('should not emit `onClose` if click tag when closeArea is "tail"', () => {
+            const onClose = cy.spy();
+            cy.mount(<TagClosable closeArea="tail" onClose={onClose} />);
+            cy.get('.next-tag').click();
+            cy.then(() => {
+                cy.wrap(onClose).should('not.be.called');
+            });
+        });
+        it('should emit `onClose` if click tag when closeArea is "tag"', () => {
+            const onClose = cy.spy();
+            cy.mount(<TagClosable closeArea="tag" onClose={onClose} />);
+            cy.get('.next-tag').click();
+            cy.then(() => {
+                cy.wrap(onClose).should('be.calledOnce');
+            });
         });
     });
 });
@@ -212,14 +222,17 @@ describe('TagClosable', () => {
 describe('TagGroup', () => {
     describe('render', () => {
         it('should contain child node that pass in', () => {
-            const node = <div>Hello World</div>;
-            const wrapper = mount(<TagGroup>{node}</TagGroup>);
-            assert(wrapper.contains(node) === true);
+            cy.mount(
+                <TagGroup>
+                    <div className="hello">Hello World</div>
+                </TagGroup>
+            );
+            cy.get('.next-tag-group .hello').should('exist');
         });
 
         it('default prefix props is `next-`', () => {
-            const wrapper = shallow(<TagGroup />);
-            assert(wrapper.props().prefix === 'next-');
+            cy.mount(<TagGroup />);
+            cy.get('.next-tag-group').should('exist');
         });
     });
 });

@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import type { TagGroupProps } from './types';
 
-class Group extends Component {
-    static propTypes = {
-        prefix: PropTypes.string,
-        className: PropTypes.any,
-        children: PropTypes.node,
-        rtl: PropTypes.bool,
-    };
-
+class Group extends Component<TagGroupProps> {
     static defaultProps = {
         prefix: 'next-',
         rtl: false,
