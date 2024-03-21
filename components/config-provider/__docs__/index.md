@@ -225,18 +225,18 @@ export default config(Component);
 
 ### ConfigProvider
 
-| 参数               | 说明                                                               | 类型                   | 默认值 | 是否必填 |
-| ------------------ | ------------------------------------------------------------------ | ---------------------- | ------ | -------- |
-| prefix             | 样式类名的品牌前缀                                                 | string                 | -      |          |
-| pure               | 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用          | boolean                | -      |          |
-| device             | 设备类型，针对不同的设备类型组件做出对应的响应式变化               | DeviceType             | -      |          |
-| rtl                | 是否开启 rtl 模式                                                  | boolean                | -      |          |
-| errorBoundary      | 是否开启错误捕捉                                                   | ErrorBoundaryType      | false  |          |
-| warning            | 是否在开发模式下显示组件属性被废弃的 warning 提示                  | boolean                | true   |          |
-| locale             | 各组件的国际化文案对象，属性为组件的 displayName                   | Partial<Locale>        | -      |          |
-| popupContainer     | 指定浮层渲染的父节点，可以为节点 id 的字符串，也可以返回节点的函数 | PopupContainerType     | -      |          |
-| children           | 组件树                                                             | React.ReactNode        | -      |          |
-| defaultPropsConfig | 各组件 API 的默认配置                                              | Record<string, object> | -      |          |
+| 参数               | 说明                                                               | 类型                    | 默认值 | 是否必填 |
+| ------------------ | ------------------------------------------------------------------ | ----------------------- | ------ | -------- |
+| prefix             | 样式类名的品牌前缀                                                 | string                  | -      |          |
+| pure               | 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用          | boolean                 | -      |          |
+| device             | 设备类型，针对不同的设备类型组件做出对应的响应式变化               | DeviceType              | -      |          |
+| rtl                | 是否开启 rtl 模式                                                  | boolean                 | -      |          |
+| errorBoundary      | 是否开启错误捕捉                                                   | ErrorBoundaryType       | false  |          |
+| warning            | 是否在开发模式下显示组件属性被废弃的 warning 提示                  | boolean                 | true   |          |
+| locale             | 各组件的国际化文案对象，属性为组件的 displayName                   | Partial\<Locale>        | -      |          |
+| popupContainer     | 指定浮层渲染的父节点，可以为节点 id 的字符串，也可以返回节点的函数 | PopupContainerType      | -      |          |
+| children           | 组件树                                                             | React.ReactNode         | -      |          |
+| defaultPropsConfig | 各组件 API 的默认配置                                              | Record\<string, object> | -      |          |
 
 ### DeviceType
 

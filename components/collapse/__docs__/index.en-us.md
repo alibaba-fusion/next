@@ -19,7 +19,7 @@ When some earas may toggle between collapse state and expand state.
 
 | Param               | Description                                      | Type                                         | Default Value | Required |
 | ------------------- | ------------------------------------------------ | -------------------------------------------- | ------------- | -------- |
-| dataSource          | Use data model to build                          | Array<DataItem>                              | -             |          |
+| dataSource          | Use data model to build                          | Array\<DataItem>                             | -             |          |
 | defaultExpandedKeys | Default expanded keys                            | KeyType[]                                    | -             |          |
 | expandedKeys        | Controlled expanded keys                         | KeyType[]                                    | -             |          |
 | onExpand            | Callback when the expanded state changes         | (expandedKeys: KeyType \| KeyType[]) => void | -             |          |
@@ -28,12 +28,12 @@ When some earas may toggle between collapse state and expand state.
 
 ### Collapse.Panel
 
-| Param      | Description                     | Type                                                                                             | Default Value | Required |
-| ---------- | ------------------------------- | ------------------------------------------------------------------------------------------------ | ------------- | -------- |
-| disabled   | Whether to disable user actions | boolean                                                                                          | -             |          |
-| title      | Title                           | React.ReactNode                                                                                  | -             |          |
-| isExpanded | Whether to expand               | boolean                                                                                          | false         |          |
-| onClick    | Click callback function         | \| ((e: React.MouseEvent<HTMLElement> \| React.KeyboardEvent<HTMLElement>) => void)<br/> \| null | -             |          |
+| Param      | Description                     | Type                                                                                               | Default Value | Required |
+| ---------- | ------------------------------- | -------------------------------------------------------------------------------------------------- | ------------- | -------- |
+| disabled   | Whether to disable user actions | boolean                                                                                            | -             |          |
+| title      | Title                           | React.ReactNode                                                                                    | -             |          |
+| isExpanded | Whether to expand               | boolean                                                                                            | false         |          |
+| onClick    | Click callback function         | \| ((e: React.MouseEvent\<HTMLElement> \| React.KeyboardEvent\<HTMLElement>) => void)<br/> \| null | -             |          |
 
 ### KeyType
 
