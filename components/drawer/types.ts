@@ -13,7 +13,7 @@ export interface DrawerV1Props
     extends Omit<HTMLAttributesWeak, 'content' | 'onClose' | 'title'>,
         CommonProps {
     /**
-     * [废弃]同closeMode, 控制对话框关闭的方式，
+     * [废弃] 同 closeMode, 控制对话框关闭的方式，
      * @en [Deprecated] Control the way the drawer is closed
      * @deprecated 由于设计变更，该属性已被弃用。请使用 `closeMode` 属性来控制对话框关闭的方式。
      * @defaultValue true
@@ -36,7 +36,7 @@ export interface DrawerV1Props
      */
     closeable?: 'close' | 'mask' | 'esc' | boolean | 'close,mask' | 'close,esc' | 'mask,esc';
     /**
-     * [推荐]控制对话框关闭的方式
+     * [推荐] 控制对话框关闭的方式
      * @en Control the way the dialog is closed
      * @version 1.21
      * @remarks
@@ -64,12 +64,12 @@ export interface DrawerV1Props
      */
     title?: React.ReactNode;
     /**
-     * body上的样式
+     * body 上的样式
      * @en Style on body
      */
     bodyStyle?: React.CSSProperties;
     /**
-     * header上的样式
+     * header 上的样式
      * @en Style on header
      */
     headerStyle?: React.CSSProperties;
@@ -78,7 +78,7 @@ export interface DrawerV1Props
      * @en Animation playback method when showing and hiding
      * @defaultValue \{ in: 'expandInDown', out: 'expandOutUp' \}
      * @remarks
-     * `animation` 对象包含两个属性: `in` 和 `out`。
+     * `animation` 对象包含两个属性：`in` 和 `out`。
      * - `in`: 进场动画
      * - `out`: 出场动画
      * @param animation - 指定进场和出场动画的对象。
@@ -90,27 +90,15 @@ export interface DrawerV1Props
      */
     visible?: boolean;
     /**
-     * 宽度，仅在 placement是 left right 的时候生效
+     * 宽度，仅在 placement 是 left right 的时候生效
      * @en Width, only effective when placement is left right
      */
     width?: number | string;
     /**
-     * 高度，仅在 placement是 top bottom 的时候生效
+     * 高度，仅在 placement 是 top bottom 的时候生效
      * @en Height, only effective when placement is the top bottom
      */
     height?: number | string;
-    /**
-     * [v2 废弃] 受控模式下(没有 trigger 的时候)，只会在关闭时触发，相当于onClose
-     * @en [v2 Deprecated] Controlled mode (without trigger), only triggered when closed, equivalent to onClose
-     * @remarks
-     * 该属性在v2版本已被废弃，不再推荐使用。
-     * 请改用 `onClose` 事件处理器来处理关闭事件。
-     * -
-     * This attribute has been deprecated in version v2 and is no longer recommended for use.
-     * Please use the 'onClose' event handler to handle the shutdown event instead.
-     * @deprecated v2 废弃 - v2 deprecated
-     */
-    onVisibleChange?: (visible: boolean, reason: string, e?: React.MouseEvent) => void;
     /**
      * 对话框关闭时触发的回调函数
      * @en Callback when the dialog is closed
@@ -124,7 +112,7 @@ export interface DrawerV1Props
      */
     placement?: 'top' | 'right' | 'bottom' | 'left';
     /**
-     * 开启v2
+     * 开启 v2
      * @en Enable v2 version
      * @defaultValue false
      */
@@ -154,11 +142,21 @@ export interface DrawerV1Props
      */
     hasMask?: boolean;
     /**
-     * [v2 废弃]对话框打开后的回调函数
+     * [v2 废弃] 对话框打开后的回调函数
      * @en Callback after the dialog is opened
-     * @deprecated v2 废弃 - v2 deprecated
      */
     afterOpen?: () => void;
+    /**
+     * [v2 废弃] 受控模式下 (没有 trigger 的时候)，只会在关闭时触发，相当于 onClose
+     * @en [v2 Deprecated] Controlled mode (without trigger), only triggered when closed, equivalent to onClose
+     * @remarks
+     * 该属性在 v2 版本已被废弃，不再推荐使用。
+     * 请改用 `onClose` 事件处理器来处理关闭事件。
+     * -
+     * This attribute has been deprecated in version v2 and is no longer recommended for use.
+     * Please use the 'onClose' event handler to handle the shutdown event instead.
+     */
+    onVisibleChange?: (visible: boolean, reason: string, e?: React.MouseEvent) => void;
 }
 
 /**
@@ -168,7 +166,7 @@ export interface DrawerV2Props
     extends Omit<HTMLAttributesWeak, 'content' | 'onClose' | 'title'>,
         CommonProps {
     /**
-     * [废弃]同closeMode, 控制对话框关闭的方式，
+     * [废弃] 同 closeMode, 控制对话框关闭的方式，
      * @en [Deprecated] Control the way the drawer is closed
      * @deprecated 由于设计变更，该属性已被弃用。请使用 `closeMode` 属性来控制对话框关闭的方式。
      * @defaultValue true
@@ -191,7 +189,7 @@ export interface DrawerV2Props
      */
     closeable?: 'close' | 'mask' | 'esc' | boolean | 'close,mask' | 'close,esc' | 'mask,esc';
     /**
-     * [推荐]控制对话框关闭的方式
+     * [推荐] 控制对话框关闭的方式
      * @en Control the way the dialog is closed
      * @version 1.21
      * @remarks
@@ -219,12 +217,12 @@ export interface DrawerV2Props
      */
     title?: React.ReactNode;
     /**
-     * body上的样式
+     * body 上的样式
      * @en Style on body
      */
     bodyStyle?: React.CSSProperties;
     /**
-     * header上的样式
+     * header 上的样式
      * @en Style on header
      */
     headerStyle?: React.CSSProperties;
@@ -233,7 +231,7 @@ export interface DrawerV2Props
      * @en Animation playback method when showing and hiding
      * @defaultValue \{ in: 'expandInDown', out: 'expandOutUp' \}
      * @remarks
-     * `animation` 对象包含两个属性: `in` 和 `out`。
+     * `animation` 对象包含两个属性：`in` 和 `out`。
      * - `in`: 进场动画
      * - `out`: 出场动画
      * @param animation - 指定进场和出场动画的对象。
@@ -245,12 +243,12 @@ export interface DrawerV2Props
      */
     visible?: boolean;
     /**
-     * 宽度，仅在 placement是 left right 的时候生效
+     * 宽度，仅在 placement 是 left right 的时候生效
      * @en Width, only effective when placement is left right
      */
     width?: number | string;
     /**
-     * 高度，仅在 placement是 top bottom 的时候生效
+     * 高度，仅在 placement 是 top bottom 的时候生效
      * @en Height, only effective when placement is the top bottom
      */
     height?: number | string;
@@ -272,11 +270,11 @@ export interface DrawerV2Props
      */
     placement?: 'top' | 'right' | 'bottom' | 'left';
     /**
-     * 开启v2
+     * 开启 v2
      * @en Enable v2 version
      * @defaultValue false
      */
-    v2?: boolean;
+    v2?: true;
     /**
      * 内容
      * @en Content
