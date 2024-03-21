@@ -147,18 +147,18 @@ export default config(Component);
 
 ### ConfigProvider
 
-| Param              | Description                                                                                         | Type                   | Default Value | Required |
-| ------------------ | --------------------------------------------------------------------------------------------------- | ---------------------- | ------------- | -------- |
-| prefix             | Prefix of component className                                                                       | string                 | -             |          |
-| pure               | Enable the Pure Render mode, it will improve performance, but it will also have side effects        | boolean                | -             |          |
-| device             | Responsive of device                                                                                | DeviceType             | -             |          |
-| rtl                | Enable right to left mode                                                                           | boolean                | -             |          |
-| errorBoundary      | Turn errorBoundary on or not                                                                        | ErrorBoundaryType      | false         |          |
-| warning            | Whether to display the warning prompt for component properties being deprecated in development mode | boolean                | true          |          |
-| locale             | Locale object for components                                                                        | Partial<Locale>        | -             |          |
-| popupContainer     | Shell container node                                                                                | PopupContainerType     | -             |          |
-| children           | Children nodes                                                                                      | React.ReactNode        | -             |          |
-| defaultPropsConfig | Set default props of components in batches                                                          | Record<string, object> | -             |          |
+| Param              | Description                                                                                         | Type                    | Default Value | Required |
+| ------------------ | --------------------------------------------------------------------------------------------------- | ----------------------- | ------------- | -------- |
+| prefix             | Prefix of component className                                                                       | string                  | -             |          |
+| pure               | Enable the Pure Render mode, it will improve performance, but it will also have side effects        | boolean                 | -             |          |
+| device             | Responsive of device                                                                                | DeviceType              | -             |          |
+| rtl                | Enable right to left mode                                                                           | boolean                 | -             |          |
+| errorBoundary      | Turn errorBoundary on or not                                                                        | ErrorBoundaryType       | false         |          |
+| warning            | Whether to display the warning prompt for component properties being deprecated in development mode | boolean                 | true          |          |
+| locale             | Locale object for components                                                                        | Partial\<Locale>        | -             |          |
+| popupContainer     | Shell container node                                                                                | PopupContainerType      | -             |          |
+| children           | Children nodes                                                                                      | React.ReactNode         | -             |          |
+| defaultPropsConfig | Set default props of components in batches                                                          | Record\<string, object> | -             |          |
 
 ### DeviceType
 

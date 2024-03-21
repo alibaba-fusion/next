@@ -13,27 +13,30 @@ Vertical display of time flow information.
 
 ### When to use
 
-- When there is a series of information that needs to be ordered from top to bottom.
-- There is a need to carry out a series of visual timeline time.
+-   When there is a series of information that needs to be ordered from top to bottom.
+-   There is a need to carry out a series of visual timeline time.
 
 ## API
 
 ### Timeline
 
-| Param | Descripiton  | Type  | Default Value |
-| ---- | ------------------------------------------------------------------- | ----- | --- |
-| fold | custom folding options, eg: `[{foldArea: [startIndex, endIndex], foldShow: boolean}]` | Array | \[] |
-| mode | mode show, eg: `left`.optional `left`, `alternate`                                    | String | 'left'   |
+| Param     | Description            | Type                  | Default Value | Required | Supported Version |
+| --------- | ---------------------- | --------------------- | ------------- | -------- | ----------------- |
+| fold      | Custom folding options | Array\<FoldItem>      | -             |          | -                 |
+| className | Custom className       | string                | -             |          | -                 |
+| animation | Show animation         | boolean               | true          |          | -                 |
+| mode      | Show mode              | 'left' \| 'alternate' | 'left'        |          | 1.23.18           |
 
 ### Timeline.Item
 
-| Param | Descripiton  | Type  | Default Value |
-| --------- | ------------------------------------------------------------- | --------- | ------ |
-| state     | node state <br><br>**optional**:<br>'done', 'process', 'error', 'success' | Enum      | 'done' |
-| icon      | icon                                                            | String    | -      |
-| dot       | custom timeline node                                                      | ReactNode | -      |
-| time      | formatted time                                                       | ReactNode | -      |
-| title     | title                                                            | ReactNode | -      |
-| timeLeft  |the time of timeline left                                                          | ReactNode | -      |
-| content   | the content of timeline right                                                          | ReactNode | -      |
-| animation | animation                                                            | Boolean   | true   |
+| Param     | Description    | Type                                        | Default Value | Required | Supported Version |
+| --------- | -------------- | ------------------------------------------- | ------------- | -------- | ----------------- |
+| state     | Node state     | 'done' \| 'process' \| 'error' \| 'success' | 'done'        |          | -                 |
+| icon      | Icon           | string                                      | -             |          | -                 |
+| dot       | Custom dot     | React.ReactNode                             | -             |          | -                 |
+| time      | Formatted time | React.ReactNode                             | -             |          | -                 |
+| title     | Title          | React.ReactNode                             | -             |          | -                 |
+| timeLeft  | Left time      | React.ReactNode                             | -             |          | -                 |
+| content   | Right content  | React.ReactNode                             | -             |          | -                 |
+| animation | Show animation | boolean                                     | true          |          | -                 |
+| mode      | Show mode      | 'left' \| 'alternate'                       | 'left'        |          | 1.23.18           |

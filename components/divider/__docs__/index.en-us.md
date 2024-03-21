@@ -8,9 +8,11 @@
 ---
 
 ## Develop Guide
+
 Partition line of partition content, supported in 1.19+
 
 ### When to Use
+
 It can divide text paragraphs of different chapters.
 
 Splits text / links within a row, such as the action column of a table.
@@ -19,8 +21,8 @@ Splits text / links within a row, such as the action column of a table.
 
 ### Divider
 
-| Param | Descripiton  | Type  | Default Value |
-| ----------- | ----------------------------------------------------- | ------- | -------- |
-| dashed      | is dash or not                                                 | Boolean | false    |
-| direction   | is horizonal or vertical<br><br>**options**:<br>'hoz', 'ver'            | Enum    | 'hoz'    |
-| orientation | position of title<br><br>**options**:<br>'left', 'right', 'center' | Enum    | 'center' |
+| Param       | Description                                | Type                          | Default Value | Required |
+| ----------- | ------------------------------------------ | ----------------------------- | ------------- | -------- |
+| dashed      | Is it a dashed line                        | boolean                       | false         |          |
+| direction   | Is the line of horizontal or vertical type | 'hoz' \| 'ver'                | 'hoz'         |          |
+| orientation | The position of the divider title          | 'left' \| 'right' \| 'center' | 'center'      |          |

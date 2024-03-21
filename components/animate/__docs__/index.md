@@ -16,39 +16,39 @@
 
 ### Animate
 
-| 参数            | 说明                                                            | 类型                                                              | 默认值 | 是否必填 |
-| --------------- | --------------------------------------------------------------- | ----------------------------------------------------------------- | ------ | -------- |
-| animation       | 动画 className                                                  | string \| Partial<Record<'appear' \| 'enter' \| 'leave', string>> | -      |          |
-| animationAppear | 子元素第一次挂载时是否执行动画                                  | boolean                                                           | true   |          |
-| component       | 包裹子元素的标签                                                | React.ElementType                                                 | 'div'  |          |
-| singleMode      | 是否只有单个子元素，如果有多个子元素，请设置为 false            | boolean                                                           | true   |          |
-| beforeAppear    | 执行第一次挂载动画前触发的回调函数                              | (node: HTMLElement) => void                                       | -      |          |
-| onAppear        | 执行第一次挂载动画，添加 xxx-appear-active 类名后触发的回调函数 | (node: HTMLElement) => void                                       | -      |          |
-| afterAppear     | 执行完第一次挂载动画后触发的函数                                | (node: HTMLElement) => void                                       | -      |          |
-| beforeEnter     | 执行进场动画前触发的回调函数                                    | (node: HTMLElement) => void                                       | -      |          |
-| onEnter         | 执行进场动画，添加 xxx-enter-active 类名后触发的回调函数        | (node: HTMLElement) => void                                       | -      |          |
-| afterEnter      | 执行完进场动画后触发的回调函数                                  | (node: HTMLElement) => void                                       | -      |          |
-| beforeLeave     | 执行离场动画前触发的回调函数                                    | (node: HTMLElement) => void                                       | -      |          |
-| onLeave         | 执行离场动画，添加 xxx-leave-active 类名后触发的回调函数        | (node: HTMLElement) => void                                       | -      |          |
-| afterLeave      | 执行完离场动画后触发的回调函数                                  | (node: HTMLElement) => void                                       | -      |          |
+| 参数            | 说明                                                            | 类型                                                                | 默认值 | 是否必填 |
+| --------------- | --------------------------------------------------------------- | ------------------------------------------------------------------- | ------ | -------- |
+| animation       | 动画 className                                                  | string \| Partial\<Record\<'appear' \| 'enter' \| 'leave', string>> | -      |          |
+| animationAppear | 子元素第一次挂载时是否执行动画                                  | boolean                                                             | true   |          |
+| component       | 包裹子元素的标签                                                | React.ElementType                                                   | 'div'  |          |
+| singleMode      | 是否只有单个子元素，如果有多个子元素，请设置为 false            | boolean                                                             | true   |          |
+| beforeAppear    | 执行第一次挂载动画前触发的回调函数                              | (node: HTMLElement) => void                                         | -      |          |
+| onAppear        | 执行第一次挂载动画，添加 xxx-appear-active 类名后触发的回调函数 | (node: HTMLElement) => void                                         | -      |          |
+| afterAppear     | 执行完第一次挂载动画后触发的函数                                | (node: HTMLElement) => void                                         | -      |          |
+| beforeEnter     | 执行进场动画前触发的回调函数                                    | (node: HTMLElement) => void                                         | -      |          |
+| onEnter         | 执行进场动画，添加 xxx-enter-active 类名后触发的回调函数        | (node: HTMLElement) => void                                         | -      |          |
+| afterEnter      | 执行完进场动画后触发的回调函数                                  | (node: HTMLElement) => void                                         | -      |          |
+| beforeLeave     | 执行离场动画前触发的回调函数                                    | (node: HTMLElement) => void                                         | -      |          |
+| onLeave         | 执行离场动画，添加 xxx-leave-active 类名后触发的回调函数        | (node: HTMLElement) => void                                         | -      |          |
+| afterLeave      | 执行完离场动画后触发的回调函数                                  | (node: HTMLElement) => void                                         | -      |          |
 
 ### Animate.Expand
 
-| 参数        | 说明                                                     | 类型                                                              | 默认值 | 是否必填 |
-| ----------- | -------------------------------------------------------- | ----------------------------------------------------------------- | ------ | -------- |
-| animation   | 动画 className                                           | string \| Partial<Record<'appear' \| 'enter' \| 'leave', string>> | -      |          |
-| beforeEnter | 执行进场动画前触发的回调函数                             | (node: HTMLElement) => void                                       | -      |          |
-| onEnter     | 执行进场动画，添加 xxx-enter-active 类名后触发的回调函数 | (node: HTMLElement) => void                                       | -      |          |
-| afterEnter  | 执行完进场动画后触发的回调函数                           | (node: HTMLElement) => void                                       | -      |          |
-| beforeLeave | 执行离场动画前触发的回调函数                             | (node: HTMLElement) => void                                       | -      |          |
-| onLeave     | 执行离场动画，添加 xxx-leave-active 类名后触发的回调函数 | (node: HTMLElement) => void                                       | -      |          |
-| afterLeave  | 执行完离场动画后触发的回调函数                           | (node: HTMLElement) => void                                       | -      |          |
+| 参数        | 说明                                                     | 类型                                                                | 默认值 | 是否必填 |
+| ----------- | -------------------------------------------------------- | ------------------------------------------------------------------- | ------ | -------- |
+| animation   | 动画 className                                           | string \| Partial\<Record\<'appear' \| 'enter' \| 'leave', string>> | -      |          |
+| beforeEnter | 执行进场动画前触发的回调函数                             | (node: HTMLElement) => void                                         | -      |          |
+| onEnter     | 执行进场动画，添加 xxx-enter-active 类名后触发的回调函数 | (node: HTMLElement) => void                                         | -      |          |
+| afterEnter  | 执行完进场动画后触发的回调函数                           | (node: HTMLElement) => void                                         | -      |          |
+| beforeLeave | 执行离场动画前触发的回调函数                             | (node: HTMLElement) => void                                         | -      |          |
+| onLeave     | 执行离场动画，添加 xxx-leave-active 类名后触发的回调函数 | (node: HTMLElement) => void                                         | -      |          |
+| afterLeave  | 执行完离场动画后触发的回调函数                           | (node: HTMLElement) => void                                         | -      |          |
 
 ### Animate.OverlayAnimate
 
 | 参数          | 说明                                                                                                  | 类型                                                                                                        | 默认值 | 是否必填 |
 | ------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------ | -------- |
-| animation     | 动画 className                                                                                        | string \| false \| Record<'in' \| 'out', string>                                                            | -      |          |
+| animation     | 动画 className                                                                                        | string \| false \| Record\<'in' \| 'out', string>                                                           | -      |          |
 | visible       | 是否显示                                                                                              | boolean                                                                                                     | -      |          |
 | children      | 子元素                                                                                                | ReactElement                                                                                                | -      | 是       |
 | timeout       | 过渡的超时时间。                                                                                      | \| number<br/> \| { appear?: number \| undefined; enter?: number \| undefined; exit?: number \| undefined } | -      |          |

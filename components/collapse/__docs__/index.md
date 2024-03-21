@@ -21,7 +21,7 @@
 
 | 参数                | 说明                         | 类型                                         | 默认值 | 是否必填 |
 | ------------------- | ---------------------------- | -------------------------------------------- | ------ | -------- |
-| dataSource          | 使用数据模型构建             | Array<DataItem>                              | -      |          |
+| dataSource          | 使用数据模型构建             | Array\<DataItem>                             | -      |          |
 | defaultExpandedKeys | 默认展开 keys                | KeyType[]                                    | -      |          |
 | expandedKeys        | 受控展开 keys                | KeyType[]                                    | -      |          |
 | onExpand            | 展开状态发升变化时候的回调   | (expandedKeys: KeyType \| KeyType[]) => void | -      |          |
@@ -30,12 +30,12 @@
 
 ### Collapse.Panel
 
-| 参数       | 说明             | 类型                                                                                             | 默认值 | 是否必填 |
-| ---------- | ---------------- | ------------------------------------------------------------------------------------------------ | ------ | -------- |
-| disabled   | 是否禁止用户操作 | boolean                                                                                          | -      |          |
-| title      | 标题             | React.ReactNode                                                                                  | -      |          |
-| isExpanded | 是否展开         | boolean                                                                                          | false  |          |
-| onClick    | 点击回调函数     | \| ((e: React.MouseEvent<HTMLElement> \| React.KeyboardEvent<HTMLElement>) => void)<br/> \| null | -      |          |
+| 参数       | 说明             | 类型                                                                                               | 默认值 | 是否必填 |
+| ---------- | ---------------- | -------------------------------------------------------------------------------------------------- | ------ | -------- |
+| disabled   | 是否禁止用户操作 | boolean                                                                                            | -      |          |
+| title      | 标题             | React.ReactNode                                                                                    | -      |          |
+| isExpanded | 是否展开         | boolean                                                                                            | false  |          |
+| onClick    | 点击回调函数     | \| ((e: React.MouseEvent\<HTMLElement> \| React.KeyboardEvent\<HTMLElement>) => void)<br/> \| null | -      |          |
 
 ### KeyType
 
