@@ -114,7 +114,7 @@ class StepItem extends Component<ItemProps> {
             dom.setStyle(this.body, {
                 width: '',
                 [pos]: '',
-            });
+            } as { width: string; left?: string; right?: string });
             if (shape === 'circle' && labelPlacement === 'hoz' && index !== total! - 1) {
                 // 调整横向 Content
                 this.adjustTail();

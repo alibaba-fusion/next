@@ -197,7 +197,7 @@ const Drawer = (props: DrawerV2Props) => {
         if (!isAnimationEnd.current) {
             markAnimationEnd(true);
             dom.setStyle(wrapperRef.current!, 'display', 'none');
-            scrollLocker.unlock(document.body, locker.current);
+            scrollLocker.unlock(document.body, locker.current!);
 
             if (autoFocus && lastFocus.current) {
                 try {

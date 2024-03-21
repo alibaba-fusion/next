@@ -1,10 +1,14 @@
 import type React from 'react';
 import type { PopupProps } from '../overlay';
-import type { CloseMode } from '../dialog';
 import type { CommonProps } from '../util';
 import type { ComponentLocaleObject } from '../locale/types';
 
 interface HTMLAttributesWeak extends PopupProps {}
+
+/**
+ * @api
+ */
+export type CloseMode = 'close' | 'mask' | 'esc';
 
 /**
  * @api Drawer
@@ -52,7 +56,7 @@ export interface DrawerV1Props
      * **esc** (Press the esc key to close the dialog),
      * For example: 'close' or ['close','esc','mask'], [].
      */
-    closeMode?: CloseMode[] | 'close' | 'mask' | 'esc';
+    closeMode?: CloseMode | CloseMode[];
     /**
      * 隐藏时是否保留子节点，不销毁
      * @en Whether to retain the child node when hiding
@@ -205,7 +209,7 @@ export interface DrawerV2Props
      * **esc** (Press the esc key to close the dialog),
      * For example: 'close' or ['close','esc','mask'], [].
      */
-    closeMode?: CloseMode[] | 'close' | 'mask' | 'esc';
+    closeMode?: CloseMode | CloseMode[];
     /**
      * 隐藏时是否保留子节点，不销毁
      * @en Whether to retain the child node when hiding

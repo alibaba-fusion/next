@@ -29,7 +29,7 @@ feature：
 | Param           | Description                                                                                                          | Type                                                                               | Default Value                                | Required | Supported Version |
 | --------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------- | -------- | ----------------- |
 | closeable       | [Deprecated] Control the way the drawer is closed                                                                    | 'close' \| 'mask' \| 'esc' \| boolean \| 'close,mask' \| 'close,esc' \| 'mask,esc' | true                                         |          | -                 |
-| closeMode       | Control the way the dialog is closed                                                                                 | CloseMode[] \| 'close' \| 'mask' \| 'esc'                                          | -                                            |          | 1.21              |
+| closeMode       | Control the way the dialog is closed                                                                                 | CloseMode \| CloseMode[]                                                           | -                                            |          | 1.21              |
 | cache           | Whether to retain the child node when hiding                                                                         | boolean                                                                            | -                                            |          | -                 |
 | title           | Title                                                                                                                | React.ReactNode                                                                    | -                                            |          | -                 |
 | bodyStyle       | Style on body                                                                                                        | React.CSSProperties                                                                | -                                            |          | -                 |
@@ -52,7 +52,7 @@ feature：
 | Param          | Description                                                                                                          | Type                                                                               | Default Value                                | Required | Supported Version |
 | -------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------- | -------- | ----------------- |
 | closeable      | [Deprecated] Control the way the drawer is closed                                                                    | 'close' \| 'mask' \| 'esc' \| boolean \| 'close,mask' \| 'close,esc' \| 'mask,esc' | true                                         |          | -                 |
-| closeMode      | Control the way the dialog is closed                                                                                 | CloseMode[] \| 'close' \| 'mask' \| 'esc'                                          | -                                            |          | 1.21              |
+| closeMode      | Control the way the dialog is closed                                                                                 | CloseMode \| CloseMode[]                                                           | -                                            |          | 1.21              |
 | cache          | Whether to retain the child node when hiding                                                                         | boolean                                                                            | -                                            |          | -                 |
 | title          | Title                                                                                                                | React.ReactNode                                                                    | -                                            |          | -                 |
 | bodyStyle      | Style on body                                                                                                        | React.CSSProperties                                                                | -                                            |          | -                 |
@@ -68,6 +68,12 @@ feature：
 | content        | Content                                                                                                              | React.ReactNode                                                                    | -                                            |          | -                 |
 | popupContainer | Render component container                                                                                           | string \| HTMLElement \| null                                                      | -                                            |          | -                 |
 | hasMask        | Whether there is a mask                                                                                              | boolean                                                                            | true                                         |          | -                 |
+
+### CloseMode
+
+```typescript
+export type CloseMode = 'close' | 'mask' | 'esc';
+```
 
 <!-- api-extra-start -->
 
