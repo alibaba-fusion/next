@@ -257,7 +257,7 @@ function createAPI(properties: TSDocMeta['properties'], isEn = false) {
         {
             title: isEn ? 'Type' : '类型',
             render(property) {
-                return property.type;
+                return property.type?.replace(/</g, '\\<');
             },
         },
         {
