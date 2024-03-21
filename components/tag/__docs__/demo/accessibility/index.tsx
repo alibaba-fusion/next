@@ -1,22 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Tag, Icon } from '@alifd/next';
+import { Tag } from '@alifd/next';
 
 const { Group: TagGroup } = Tag;
-
 const dataType = ['全部', '衣服', '手机', '化妆品'];
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: '',
-        };
-        this.onclick = this.onclick.bind(this);
-    }
-    onclick(v) {
-        this.setState({ name: v.item });
-    }
+    state = {
+        name: '',
+    };
+    onClick = (name: string) => {
+        this.setState({ name });
+    };
     render() {
         return (
             <div>
@@ -26,7 +21,7 @@ class Demo extends React.Component {
                             type="normal"
                             key={item}
                             size="medium"
-                            onClick={() => this.onclick({ item })}
+                            onClick={() => this.onClick(item)}
                         >
                             {item}
                         </Tag>
@@ -37,4 +32,5 @@ class Demo extends React.Component {
         );
     }
 }
+
 ReactDOM.render(<Demo />, mountNode);

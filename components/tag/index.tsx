@@ -4,10 +4,12 @@ import Tag from './tag';
 import Group from './tag-group';
 import Selectable from './selectable';
 import Closable from './closeable';
+import { assignSubComponent } from '../util/component';
+import type { TagLegacyProps, TagProps } from './types';
 
 const ConfigTag = ConfigProvider.config(Tag, {
-    transfrom: /* istanbul ignore next */ (props, deprecated) => {
-        const { shape, type } = props;
+    transform: (props, deprecated) => {
+        const { shape, type } = props as TagLegacyProps;
         if (shape === 'selectable') {
             deprecated('shape=selectable', 'Tag.Selectable', 'Tag');
         }
@@ -56,16 +58,29 @@ const ConfigTag = ConfigProvider.config(Tag, {
             );
         }
 
-        return props;
+        return props as TagProps;
     },
 });
 
-ConfigTag.Group = ConfigProvider.config(Group);
+const ConfigClosable = ConfigProvider.config(Closable);
 
-ConfigTag.Selectable = ConfigProvider.config(Selectable);
+const TagWithSub = assignSubComponent(ConfigTag, {
+    Group: ConfigProvider.config(Group),
+    Selectable: ConfigProvider.config(Selectable),
+    // 有的地方叫做 Closeable 有的地方用 Closeable, 为了保持兼容 文档类出现 Closeable, Closeable 可以继续用
+    Closable: ConfigClosable,
+    Closeable: ConfigClosable,
+});
 
-// 有的地方叫做 Closeable 有的地方用Closeable, 为了保持兼容 文档类出现 Closeable, Closeable可以继续用
-ConfigTag.Closable = ConfigProvider.config(Closable);
-ConfigTag.Closeable = ConfigTag.Closable;
+export type {
+    TagProps,
+    CloseableProps,
+    SelectableProps,
+    TagGroupProps,
+    CloseArea,
+    TagCurrentProps,
+    TagLegacyProps,
+    TagLocale,
+} from './types';
 
-export default ConfigTag;
+export default TagWithSub;
