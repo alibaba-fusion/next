@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Animate from '../animate';
@@ -6,53 +6,26 @@ import Icon from '../icon';
 import { func, KEYCODE, obj, support } from '../util';
 import zhCN from '../locale/zh-cn';
 import ConfigProvider from '../config-provider';
+import type { CloseArea, TagRealProps, TagProps } from './types';
 
 const { noop, bindCtx } = func;
 
 const PRESET_COLOR_REG = /blue|green|orange|red|turquoise|yellow/;
 
-/**
- * Tag
- */
-class Tag extends Component {
+class Tag extends Component<TagProps, { visible: boolean }> {
     static propTypes = {
-        /**
-         * 标签类名前缀,提供给二次开发者用
-         * @default next-
-         */
-        prefix: PropTypes.string,
-        /**
-         * 标签的类型
-         * @enumdesc 普通, 主要
-         */
+        ...ConfigProvider.propTypes,
         type: PropTypes.oneOf(['normal', 'primary']),
-        /**
-         * 标签的尺寸（large 尺寸为兼容表单场景 large = medium）
-         * @enumdesc 小, 中, 大
-         */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
-
-        /**
-         * 标签颜色, 目前支持：blue、 green、 orange、red、 turquoise、 yellow 和 hex 颜色值 （`color keywords`作为 Tag 组件的保留字，请勿直接使用 ）, `1.19.0` 以上版本生效
-         */
         color: PropTypes.string,
-        /**
-         * 是否开启动效
-         */
         animation: PropTypes.bool,
         closeArea: PropTypes.oneOf(['tag', 'tail']),
         closable: PropTypes.bool,
         onClose: PropTypes.func,
         afterClose: PropTypes.func,
-        /**
-         * 标签出现动画结束后执行的回调
-         */
         afterAppear: PropTypes.func,
         className: PropTypes.any,
         children: PropTypes.node,
-        /**
-         * 点击回调
-         */
         onClick: PropTypes.func,
         _shape: PropTypes.oneOf(['default', 'closable', 'checkable']),
         disabled: PropTypes.bool,
@@ -76,7 +49,10 @@ class Tag extends Component {
         locale: zhCN.Tag,
     };
 
-    constructor(props) {
+    private __destroyed: boolean;
+    private tagNode: HTMLDivElement | null = null;
+
+    constructor(props: TagProps) {
         super(props);
 
         this.state = {
@@ -96,12 +72,16 @@ class Tag extends Component {
         this.__destroyed = true;
     }
 
-    handleClose(from) {
-        const { animation, onClose } = this.props;
+    get realProps() {
+        return this.props as TagRealProps;
+    }
+
+    handleClose(from: CloseArea) {
+        const { animation, onClose } = this.realProps;
         const hasAnimation = support.animation && animation;
 
         // 先执行回调
-        const result = onClose(from, this.tagNode);
+        const result = onClose!(from, this.tagNode!);
 
         // 如果回调函数返回 false，则阻止关闭行为
         if (result !== false && !this.__destroyed) {
@@ -111,18 +91,18 @@ class Tag extends Component {
                 },
                 () => {
                     // 如果没有动画，则直接执行 afterClose
-                    !hasAnimation && this.props.afterClose(this.tagNode);
+                    !hasAnimation && this.realProps.afterClose!(this.tagNode);
                 }
             );
         }
     }
 
     // 标签体点击
-    handleBodyClick(e) {
-        const { closable, closeArea, onClick } = this.props;
+    handleBodyClick(e: MouseEvent<HTMLDivElement>) {
+        const { closable, closeArea, onClick } = this.realProps;
         const node = e.currentTarget;
 
-        if (node && (node === e.target || node.contains(e.target))) {
+        if (node && (node === e.target || node.contains(e.target as HTMLElement))) {
             if (closable && closeArea === 'tag') {
                 this.handleClose('tag');
             }
@@ -133,9 +113,9 @@ class Tag extends Component {
         }
     }
 
-    onKeyDown = e => {
-        // 针对无障碍化要求 添加键盘SPACE事件
-        const { closable, closeArea, onClick, disabled } = this.props;
+    onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+        // 针对无障碍化要求 添加键盘 SPACE 事件
+        const { closable, closeArea, onClick, disabled } = this.realProps;
         if (e.keyCode !== KEYCODE.SPACE || disabled) {
             return;
         }
@@ -144,28 +124,28 @@ class Tag extends Component {
         e.stopPropagation();
 
         if (closable) {
-            this.handleClose(closeArea);
+            this.handleClose(closeArea!);
         } else {
-            typeof onClick === 'function' && onClick(e);
+            return onClick!(e);
         }
     };
 
-    handleTailClick(e) {
+    handleTailClick(e: MouseEvent<HTMLSpanElement>) {
         e && e.preventDefault();
         e && e.stopPropagation();
 
         this.handleClose('tail');
     }
 
-    handleAnimationInit(node) {
-        this.props.afterAppear(node);
+    handleAnimationInit(node: HTMLElement) {
+        this.realProps.afterAppear!(node);
     }
 
-    handleAnimationEnd(node) {
-        this.props.afterClose(node);
+    handleAnimationEnd(node: HTMLElement) {
+        this.realProps.afterClose!(node);
     }
 
-    renderAnimatedTag(children, animationName) {
+    renderAnimatedTag(children: ReactNode, animationName: string) {
         return (
             <Animate
                 animation={animationName}
@@ -189,7 +169,7 @@ class Tag extends Component {
                 className={`${prefix}tag-close-btn`}
                 onClick={this.handleTailClick}
                 role="button"
-                aria-label={locale.delete}
+                aria-label={locale!.delete}
             >
                 <Icon type="close" />
             </span>
@@ -235,11 +215,10 @@ class Tag extends Component {
             animation,
             disabled,
             rtl,
-        } = this.props;
+        } = this.realProps;
         const { visible } = this.state;
         const isPresetColor = this.isPresetColor();
         const others = obj.pickOthers(Tag.propTypes, this.props);
-        // eslint-disable-next-line no-unused-vars
         const { style, ...otherTagProps } = others;
         const shape = closable ? 'closable' : _shape;
         const bodyClazz = classNames(
@@ -262,6 +241,7 @@ class Tag extends Component {
                 className={bodyClazz}
                 onClick={this.handleBodyClick}
                 onKeyDown={this.onKeyDown}
+                // @ts-expect-error tagIndex required number
                 tabIndex={disabled ? '' : '0'}
                 role="button"
                 aria-disabled={disabled}

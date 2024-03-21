@@ -6,12 +6,6 @@ import Tag from '../../index';
 import '../../style';
 import '../../../icon/style';
 
-/* eslint-disable */
-
-// import demo helper
-
-// import tag
-
 const i18nMap = {
     'zh-cn': {
         large: '大号标签',
@@ -25,7 +19,8 @@ const i18nMap = {
     },
 };
 
-function render(i18n) {
+function render(i18n: Record<string, string>) {
+    // eslint-disable-next-line react/no-render-return-value
     return ReactDOM.render(
         <div className="demo-container">
             <Demo title="Default">
@@ -331,7 +326,7 @@ function render(i18n) {
     );
 }
 
-window.renderDemo = function (lang) {
+window.renderDemo = function (lang?: 'zh-cn' | 'en-us') {
     lang = lang || 'en-us';
     render(i18nMap[lang]);
 };

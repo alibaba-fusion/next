@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Tag, Icon } from '@alifd/next';
+import { Tag } from '@alifd/next';
 
 const { Group: TagGroup } = Tag;
 
