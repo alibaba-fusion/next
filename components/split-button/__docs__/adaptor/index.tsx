@@ -1,20 +1,36 @@
-/* eslint-disable no-use-before-define */
 import React from 'react';
 import { SplitButton, Menu, Icon } from '@alifd/next';
 import { Types, parseData, ContentType } from '@alifd/adaptor-helper';
 
-const createDataSouce = (list, keys = { selected: [], expanded: {} }, level = 0, prefix = '') => {
-    const array = [];
-    let group = [];
-    let grouping = false;
+type MenuItem = {
+    key?: string;
+    type?: string;
+    state?: string;
+    value?: any;
+    children?: MenuItem[];
+};
+
+type Keys = {
+    selected: string[];
+    expanded: string[];
+};
+
+const createDataSouce = (
+    list: MenuItem[],
+    keys: Keys = { selected: [], expanded: [] },
+    level = 0,
+    prefix = ''
+) => {
+    const array: MenuItem[] = [];
+    let group: MenuItem[] = [];
+    let grouping: boolean | undefined = false;
     let index = 0;
+    let key: string = '';
 
     list.forEach(item => {
         switch (item.type) {
-            // eslint-disable-next-line no-case-declarations
             case 'node':
-                const key = `${prefix || level}-${index++}`;
-
+                key = `${prefix || level}-${index++}`;
                 if (item.children && item.children.length > 0) {
                     item.children = createDataSouce(item.children, keys, level + 1, key);
                 }
@@ -86,17 +102,21 @@ const createDataSouce = (list, keys = { selected: [], expanded: {} }, level = 0,
     return array;
 };
 
-const createMenuItem = item => {
-    if (item.children.length > 0) {
+// createMenuItem need use this function, which is now defined here
+let createContents: (array: MenuItem[]) => React.ReactNode = () => null;
+
+const createMenuItem = (item: MenuItem) => {
+    if (item.children && item.children.length > 0) {
         return (
             <Menu.SubMenu
                 key={item.key}
+                // @ts-expect-error disabled is not defined on Menu.SubMenu
                 disabled={item.state === 'disabled'}
                 label={
                     item.value
                         ? item.value
-                              .filter(({ type }) => type === ContentType.text)
-                              .map(({ value }) => value)
+                              .filter(({ type }: { type: string }) => type === ContentType.text)
+                              .map(({ value }: any) => value)
                               .join('')
                         : ''
                 }
@@ -109,9 +129,10 @@ const createMenuItem = item => {
     return (
         <Menu.Item
             key={item.key}
+            // @ts-expect-error checked is not defined on Menu.Item
             checked={item.state === 'active'}
             disabled={item.state === 'disabled'}
-            children={item.value.map(({ type, value }, index) =>
+            children={item.value.map(({ type, value }: any, index: number) =>
                 type === 'icon' ? (
                     <Icon
                         key={`icon_${index}`}
@@ -127,9 +148,9 @@ const createMenuItem = item => {
     );
 };
 
-const createContents = (array = []) => {
+createContents = (array = []) => {
     return array.map(item => {
-        if (item.type === 'group' && item.children.length > 0) {
+        if (item.type === 'group' && item.children && item.children.length > 0) {
             return (
                 <Menu.Group key={item.key} label={item.value}>
                     {item.children.map(it => createMenuItem(it))}
@@ -145,15 +166,18 @@ const createContents = (array = []) => {
     });
 };
 
-const _propsValue = ({ shape, level, size, data, ...others }) => {
+const _propsValue = ({ shape, level, size, data, ...others }: any) => {
     const list = parseData(data, { parseContent: true });
-    const buttonItem = list[0] ? list[0] : { value: [] };
+    const buttonItem = list[0] ? list[0] : { value: [], type: undefined };
     const keys = { selected: [], expanded: [] };
     if (buttonItem.type !== 'node') return null;
-    const label = buttonItem.value.map(({ type, value }) => {
-        if (type === 'icon') return <Icon type={value} />;
-        return value;
-    });
+
+    const label =
+        Array.isArray(buttonItem.value) &&
+        buttonItem.value.map(({ type, value }) => {
+            if (type === 'icon') return <Icon type={value} />;
+            return value;
+        });
 
     return {
         ...others,
@@ -161,7 +185,7 @@ const _propsValue = ({ shape, level, size, data, ...others }) => {
         disabled: buttonItem.state === 'disabled',
         visible: buttonItem.state === 'active',
         type: shape === 'ghost' ? 'normal' : level,
-        popupProps: { needAdjust: false, container: node => node },
+        popupProps: { needAdjust: false, container: (node: any) => node },
         ghost: shape === 'ghost' ? level : false,
         selectMode: 'multiple',
         menuProps: { openKeys: keys.expanded, style: { textAlign: 'left' } },
@@ -169,6 +193,7 @@ const _propsValue = ({ shape, level, size, data, ...others }) => {
         label: label,
     };
 };
+
 export default {
     name: 'SplitButton',
     shape: ['normal', 'ghost'],
@@ -195,14 +220,14 @@ export default {
         },
     }),
     propsValue: _propsValue,
-    adaptor: args => {
+    adaptor: (args: any) => {
         const list = parseData(args.data, { parseContent: true });
         const keys = { selected: [], expanded: [] };
-        const dataSouce = createDataSouce(list[0] ? list[0].children : [], keys);
+        const dataSouce = createDataSouce((list[0] ? list[0].children : []) as MenuItem[], keys);
         const props = _propsValue(args);
         return <SplitButton {...props}>{createContents(dataSouce)}</SplitButton>;
     },
-    demoOptions: demo => {
+    demoOptions: (demo: any) => {
         const { node = { props: {} } } = demo;
         const { level, data } = node.props;
         if (data.indexOf('*') === 0) {
