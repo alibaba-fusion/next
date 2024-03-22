@@ -270,7 +270,11 @@ class Select extends Base {
             Object.assign(state, {
                 highlightKey: nextProps.highlightKey,
             });
-        } else if ('value' in nextProps && nextProps.value !== prevState.value && nextProps.mode === 'single') {
+        } else if (
+            'value' in nextProps &&
+            nextProps.value !== prevState.value &&
+            nextProps.mode === 'single'
+        ) {
             Object.assign(state, {
                 highlightKey: nextProps.value,
             });
@@ -473,7 +477,11 @@ class Select extends Base {
      * 多选模式 multiple/tag
      */
     handleMultipleSelect(keys, triggerType, key, keepSearchValue) {
-        const itemObj = getValueDataSource(keys, this.valueDataSource.mapValueDS, this.dataStore.getMapDS());
+        const itemObj = getValueDataSource(
+            keys,
+            this.valueDataSource.mapValueDS,
+            this.dataStore.getMapDS()
+        );
 
         const { cacheValue, mode, hiddenSelected } = this.props;
 
@@ -821,7 +829,11 @@ class Select extends Base {
             if (value === this.valueDataSource.value) {
                 value = this.valueDataSource.valueDS;
             } else {
-                value = getValueDataSource(value, this.valueDataSource.mapValueDS, this.dataStore.getMapDS()).valueDS;
+                value = getValueDataSource(
+                    value,
+                    this.valueDataSource.mapValueDS,
+                    this.dataStore.getMapDS()
+                ).valueDS;
             }
         }
 
@@ -831,14 +843,17 @@ class Select extends Base {
             }
 
             const retvalue =
-                fillProps && typeof value === 'object' && fillProps in value ? value[fillProps] : valueRender(value);
+                fillProps && typeof value === 'object' && fillProps in value
+                    ? value[fillProps]
+                    : valueRender(value);
             // 0 => '0'
             return typeof retvalue === 'number' ? retvalue.toString() : retvalue;
         } else if (value) {
             let limitedCountValue = value;
             let maxTagPlaceholderEl;
             const totalValue = this.dataStore.getFlattenDS();
-            const holder = 'maxTagPlaceholder' in this.props ? maxTagPlaceholder : this.maxTagPlaceholder;
+            const holder =
+                'maxTagPlaceholder' in this.props ? maxTagPlaceholder : this.maxTagPlaceholder;
 
             if (maxTagCount !== undefined && value.length > maxTagCount && !tagInline) {
                 limitedCountValue = limitedCountValue.slice(0, maxTagCount);
@@ -951,7 +966,12 @@ class Select extends Base {
 
         if (hasArrow) {
             ret.push(
-                <span key="arrow" aria-hidden onClick={this.handleArrowClick} className={`${prefix}select-arrow`}>
+                <span
+                    key="arrow"
+                    aria-hidden
+                    onClick={this.handleArrowClick}
+                    className={`${prefix}select-arrow`}
+                >
                     <Icon type="arrow-down" className={`${prefix}select-symbol-fold`} />
                 </span>
             );
@@ -960,7 +980,12 @@ class Select extends Base {
         // do not use this.hasClear() here, to make sure clear btn always exists, can not influenced by apis like `disabled` `readOnly`
         if (hasClear) {
             ret.push(
-                <span key="clear" aria-hidden onClick={this.handleClear} className={`${prefix}select-clear`}>
+                <span
+                    key="clear"
+                    aria-hidden
+                    onClick={this.handleClear}
+                    className={`${prefix}select-clear`}
+                >
                     <Icon type="delete-filling" />
                 </span>
             );
@@ -1022,7 +1047,13 @@ class Select extends Base {
         const extra = this.renderExtraNode();
 
         const triggerClazz = classNames(
-            [`${prefix}select`, `${prefix}select-trigger`, `${prefix}select-${mode}`, `${prefix}${size}`, className],
+            [
+                `${prefix}select`,
+                `${prefix}select-trigger`,
+                `${prefix}select-${mode}`,
+                `${prefix}${size}`,
+                className,
+            ],
             {
                 [`${prefix}active`]: visible, // 用于设置 searchInput 样式
                 [`${prefix}inactive`]: !visible, // 用于设置 searchInput 样式
@@ -1157,9 +1188,18 @@ class Select extends Base {
         // remove style={{'lineHeight': 'unset'}} in next Y
         // remove style={{'display': 'none'}} in next Y
         return (
-            <div key="all" onClick={this.handleSelectAll} className={cls} style={{ lineHeight: 'unset' }}>
+            <div
+                key="all"
+                onClick={this.handleSelectAll}
+                className={cls}
+                style={{ lineHeight: 'unset' }}
+            >
                 {selectAllYet ? (
-                    <Icon className={`${prefix}menu-icon-selected`} style={{ display: 'none' }} type="select" />
+                    <Icon
+                        className={`${prefix}menu-icon-selected`}
+                        style={{ display: 'none' }}
+                        type="select"
+                    />
                 ) : null}
                 <span className={clsInner}>{text}</span>
             </div>
