@@ -1,11 +1,11 @@
-import React from 'react';
-import SplitButton from '../../index';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import SplitButton, { SplitButtonProps } from '../../index';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import '../../../demo-helper/style';
 import '../../style';
 
-/* eslint-disable */
 const i18nMap = {
     'zh-cn': {
         splitButton: '分隔下拉按钮',
@@ -41,7 +41,7 @@ const i18nMap = {
     },
 };
 
-function renderButton(type, locale, props) {
+function renderButton(type: string, locale: Record<string, string>, props?: SplitButtonProps) {
     const menu = ['undo', 'redo', 'cut', 'copy', 'paste'].map(item => (
         <SplitButton.Item key={item}>{locale[item]}</SplitButton.Item>
     ));
@@ -59,7 +59,7 @@ function renderButton(type, locale, props) {
 
     const commonProps = {
         ...props,
-        type: type.toLowerCase(),
+        type: type.toLowerCase() as 'normal' | 'primary' | 'secondary',
         label: newLabel,
     };
 
@@ -137,7 +137,7 @@ function renderButton(type, locale, props) {
     );
 }
 
-function render(locale, lang) {
+function render(locale: Record<string, string>, lang: 'zh-cn' | 'en-us') {
     return ReactDOM.render(
         <ConfigProvider>
             <div className="demo-container">

@@ -11,14 +11,14 @@ class CompositeSplitButton extends React.Component {
         label: 'Choose Action',
     };
 
-    onSelect = val => {
+    onSelect = (val: string) => {
         this.setState({
             visible: false,
             label: val,
         });
     };
 
-    changeVisible = visible => {
+    changeVisible = (visible: boolean) => {
         this.setState({
             visible,
         });
