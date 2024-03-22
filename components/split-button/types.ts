@@ -1,5 +1,5 @@
-import React from 'react';
-import { CommonProps } from '../util';
+import type React from 'react';
+import type { CommonProps } from '../util';
 import Menu, { type MenuProps } from '../menu';
 import type { ButtonProps } from '../button';
 import type { PopupProps } from '../overlay';

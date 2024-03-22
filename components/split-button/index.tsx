@@ -9,7 +9,7 @@ import Overlay from '../overlay';
 import ConfigProvider from '../config-provider';
 import { dom, obj, func } from '../util';
 import type { SplitButtonProps } from './types';
-import Menu, { type Item as MenuItem, type MenuProps } from '../menu';
+import Menu, { type MenuProps } from '../menu';
 
 const { Popup } = Overlay;
 
@@ -85,15 +85,15 @@ class SplitButton extends React.Component<SplitButtonProps> {
         visible: this.props.defaultVisible,
     };
 
+    private wrapper: HTMLDivElement | null = null;
+    private menu: HTMLUListElement | null = null;
+
     componentDidMount() {
         // 由于定位目标是 wrapper，如果弹层默认展开，wrapper 还未渲染，didMount 后强制再渲染一次，弹层重新定位
         if (this.state.visible) {
             this.forceUpdate();
         }
     }
-
-    private wrapper: HTMLDivElement | null = null;
-    private menu: HTMLUListElement | null = null;
 
     selectMenuItem: MenuProps['onSelect'] = (keys, ...others) => {
         if (!('selectedKeys' in this.props)) {

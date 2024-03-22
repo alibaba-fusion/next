@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import SplitButton, { SplitButtonProps } from '../../index';
+import SplitButton, { type SplitButtonProps } from '../../index';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import '../../../demo-helper/style';
@@ -137,8 +137,8 @@ function renderButton(type: string, locale: Record<string, string>, props?: Spli
     );
 }
 
-function render(locale: Record<string, string>, lang: 'zh-cn' | 'en-us') {
-    return ReactDOM.render(
+function render(locale: Record<string, string>) {
+    ReactDOM.render(
         <ConfigProvider>
             <div className="demo-container">
                 <Demo title={locale.splitButton}>
@@ -157,7 +157,7 @@ function render(locale: Record<string, string>, lang: 'zh-cn' | 'en-us') {
 }
 
 window.renderDemo = function (lang = 'en-us') {
-    render(i18nMap[lang], lang);
+    render(i18nMap[lang]);
 };
 
 renderDemo();
