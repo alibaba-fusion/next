@@ -2,17 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import '../../../demo-helper/style';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import {
+    Demo,
+    DemoGroup,
+    DemoHead,
+    initDemo,
+    type DemoFunctionDefineForObject,
+} from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
 import '../../style';
 import Radio from '../../index';
 import Field from '../../../field';
-
-// import demo helper
-
-// import component
 
 const i18nMap = {
     'zh-cn': {
@@ -66,12 +68,17 @@ const i18nMap = {
 };
 const RadioGroup = Radio.Group;
 
+interface DemoProps {
+    i18n: (typeof i18nMap)[keyof typeof i18nMap];
+}
+
 // default radio
-class RadioDefaultDemo extends React.Component {
+class RadioDefaultDemo extends React.Component<DemoProps> {
     static propTypes = {
         i18n: PropTypes.object,
     };
-    constructor(props) {
+    field: Field;
+    constructor(props: DemoProps) {
         super(props);
         this.field = new Field(this, {
             values: {
@@ -92,7 +99,11 @@ class RadioDefaultDemo extends React.Component {
     render() {
         const { init, getValue } = this.field;
         const { i18n } = this.props;
-        const label = getValue('demo').radiolabel.value === 'true' ? i18n.label : null;
+        const label =
+            getValue<{ radiolabel: DemoFunctionDefineForObject }>('demo')!.radiolabel.value ===
+            'true'
+                ? i18n.label
+                : null;
         return (
             <Demo
                 title="Radio Default"
@@ -145,8 +156,7 @@ class RadioDefaultDemo extends React.Component {
 }
 
 // button radio
-/* eslint-disable */
-class RadioButtonDemo extends React.Component {
+class RadioButtonDemo extends React.Component<DemoProps> {
     static propTypes = {
         i18n: PropTypes.object,
     };

@@ -1,18 +1,23 @@
 import Radio from './radio';
 import RadioGroup from './radio-group';
 import ConfigProvider from '../config-provider';
+import { assignSubComponent } from '../util/component';
 
-Radio.Group = ConfigProvider.config(RadioGroup, {
-    transform: /* istanbul ignore next */ (props, deprecated) => {
-        if ('itemDirection' in props) {
-            deprecated('itemDirection', 'direction', 'Radio');
-            const { itemDirection, ...others } = props;
+const RadioWithSub = assignSubComponent(Radio, {
+    Group: ConfigProvider.config(RadioGroup, {
+        transform: (props, deprecated) => {
+            if ('itemDirection' in props) {
+                deprecated('itemDirection', 'direction', 'Radio');
+                const { itemDirection, ...others } = props;
 
-            props = { direction: itemDirection, ...others };
-        }
+                props = { direction: itemDirection, ...others };
+            }
 
-        return props;
-    },
+            return props;
+        },
+    }),
 });
 
-export default Radio;
+export type { RadioProps, GroupProps, RadioValue, RadioValueItem } from './types';
+
+export default RadioWithSub;

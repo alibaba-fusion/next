@@ -1,81 +1,115 @@
-/// <reference types="react" />
+import React, { type RefAttributes } from 'react';
+import type { CommonProps } from '../util';
+import type { Radio } from './radio';
 
-import React from 'react';
-import { data } from '../checkbox';
-import { CommonProps } from '../util';
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    defaultValue?: any;
-    onChange?: any;
+export type HTMLAttributesWeak = Omit<
+    React.HTMLAttributes<HTMLElement>,
+    'defaultValue' | 'onChange' | 'onMouseEnter' | 'onMouseLeave'
+>;
+
+/**
+ * @api
+ */
+export type RadioValue = string | number | boolean;
+
+/**
+ * @api
+ */
+export interface RadioValueItem {
+    label?: React.ReactNode;
+    value: RadioValue;
+    disabled?: boolean;
 }
 
+export interface GroupChildProps extends RefAttributes<unknown> {
+    checked: boolean;
+    rtl?: boolean;
+    tabIndex?: number;
+    children?: React.ReactNode;
+    value?: RadioValue;
+}
+
+export type RadioContext = {
+    __group__: boolean;
+    isButton: boolean;
+    onChange: (value: RadioValue, event: React.ChangeEvent<HTMLInputElement>) => void;
+    selectedValue?: RadioValue;
+    disabled?: boolean;
+};
+
+/**
+ * @api Radio.Group
+ * @order 2
+ */
 export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
-     * 样式类名的品牌前缀
-     */
-    prefix?: string;
-
-    /**
-     * 自定义类名
-     */
-    className?: string;
-
-    /**
-     * 自定义内敛样式
-     */
-    style?: React.CSSProperties;
-
-    /**
-     * name
+     * 表单 name
+     * @en form name
      */
     name?: string;
 
     /**
-     * radio group的选中项的值
+     * radio group 的选中项的值（受控）
+     * @en The value of the Item witch is selected in radio group (controlled)
      */
-    value?: string | number | boolean;
+    value?: RadioValue;
 
     /**
-     * radio group的默认值
+     * radio group 的默认值（非受控）
+     * @en The value of the Item witch is default selected in radio group (uncontrolled)
      */
-    defaultValue?: string | number | boolean;
+    defaultValue?: RadioValue;
 
     /**
      * 设置标签类型
+     * @en Specify jsx tag name
+     * @defaultValue 'div'
      */
-    component?: React.ReactHTML | (() => void);
+    component?: React.ElementType;
 
     /**
      * 选中值改变时的事件
+     * @en Callback on value change
+     * @param value - 选中的值 - The selected value
+     * @param event - Dom 事件对象 - Dom Event
      */
-    onChange?: (value: string | number | boolean, e: any) => void;
+    onChange?: (value: RadioValue, event: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
-     * 表示radio被禁用
+     * 表示 radio 被禁用
+     * @en All the radios in group are disable to be used
      */
     disabled?: boolean;
 
     /**
-     * 可以设置成 button 展示形状
+     * 展示类型
+     * @en Shape type
      */
-    shape?: 'button';
+    shape?: 'normal' | 'button';
 
     /**
-     * 与 `shape` 属性配套使用，shape设为button时有效
+     * 与 `shape` 属性配套使用，shape 设为 button 时有效
+     * @en Used with `shape` prop, valid when shape is set to button
+     * @defaultValue 'medium'
      */
     size?: 'large' | 'medium' | 'small';
 
     /**
-     * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']`
+     * 可选项列表
+     * @en List of options
      */
-    dataSource?: Array<string> | Array<data> | Array<number>;
+    dataSource?: Array<RadioValue> | Array<RadioValueItem>;
 
     /**
-     * 通过子元素方式设置内部radio
+     * 通过子元素方式设置内部 radio
+     * @en To set radio button by setting children components
      */
-    children?: Array<any> | React.ReactElement<any>;
+    children?: React.ReactNode;
 
     /**
      * 子项目的排列方式
+     * @en How items are arranged
+     * @example
      * - hoz: 水平排列 (default)
      * - ver: 垂直排列
      */
@@ -87,94 +121,120 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     isPreview?: boolean;
 
     /**
-     * 预览态模式下渲染的内容
+     * 自定义预览态模式下渲染的内容
+     * @en Customized rendering content function in preview mode
+     * @param previewed - 预览的数据项 - Previewed item data，
+     * @param props - 预览项的参数 - The props of the previewed item
+     * @returns 渲染内容 - The content of item
+     * @remarks previewed 为空对象时代表没有选中的项 - When `previewed` is an empty object, it means there is no selected item.
      */
     renderPreview?: (
-        previewed: { label: string | React.ReactNode; value: string | number | boolean },
-        props: any
+        previewed: RadioValueItem | Partial<RadioValueItem>,
+        props: GroupProps
     ) => React.ReactNode;
+
+    /**
+     * @deprecated Use direction instead
+     * @skip
+     */
     itemDirection?: 'hoz' | 'ver';
 }
 
-export class Group extends React.Component<GroupProps, any> {}
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    onChange?: any;
-    onMouseEnter?: any;
-    onMouseLeave?: any;
-}
-
+/**
+ * @api
+ * @order 1
+ */
 export interface RadioProps extends HTMLAttributesWeak, CommonProps {
     /**
-     * 自定义类名
-     */
-    className?: string;
-
-    /**
-     * 组件input的id
+     * 组件 input 的 id
+     * @en Id of the input
      */
     id?: string;
 
     /**
-     * 自定义内敛样式
-     */
-    style?: React.CSSProperties;
-
-    /**
-     * 设置radio是否选中
+     * 设置 radio 是否选中
+     * @en To set radio button is checked
      */
     checked?: boolean;
 
     /**
-     * 设置radio是否默认选中
+     * 设置 radio 是否默认选中
+     * @en To set radio button default to be checked
      */
     defaultChecked?: boolean;
 
     /**
-     * 通过属性配置label
+     * 通过属性配置 label
+     * @en To set the radio label
      */
     label?: React.ReactNode;
 
     /**
-     * 状态变化时触发的事件
+     * 选中状态变化时触发的事件
+     * @en Callback on check state change
+     * @param checked - 是否选中 - Is checked
+     * @param event - DOM 事件 - DOM event
      */
-    onChange?: (checked: boolean, e: any) => void;
+    onChange?: (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
-     * 鼠标进入enter事件
+     * 鼠标进入 enter 事件
+     * @en Callback on mouse enter
      */
     onMouseEnter?: (e: React.MouseEvent<HTMLInputElement>) => void;
 
     /**
      * 鼠标离开事件
+     * @en Callback on mouse leave
      */
     onMouseLeave?: (e: React.MouseEvent<HTMLInputElement>) => void;
 
     /**
-     * radio是否被禁用
+     * radio 是否被禁用
+     * @en Set radio button disable to be used
      */
     disabled?: boolean;
 
     /**
-     * radio 的value
+     * radio 的 value
+     * @en Value of radio
      */
-    value?: string | number | boolean;
+    value?: RadioValue;
 
     /**
-     * name
+     * 表单项 name
+     * @en Form item name
      */
     name?: string;
 
     /**
      * 是否开启预览态
+     * @en Set radio to preview state
      */
     isPreview?: boolean;
 
     /**
-     * 预览态模式下渲染的内容
+     * 自定义预览态模式下渲染的内容
+     * @en Customized rendering content function in preview mode
+     * @param checked - 是否选中 - Is checked
+     * @param props - 所有传入的参数 - The props of the radio
+     * @returns 渲染内容 - The content of item
      */
-    renderPreview?: (values: string | number | boolean, props: any) => React.ReactNode;
+    renderPreview?: (checked: boolean, props: RadioProps) => React.ReactNode;
+
+    /**
+     * Radio.Group 传递给 Radio 的私有属性
+     * @skip
+     */
+    context?: RadioContext;
 }
 
-export default class Radio extends React.Component<RadioProps, any> {
-    static Group: typeof Group;
+export interface RadioWithContextProps extends RadioProps {
+    context: RadioContext;
+}
+
+export declare class WrappedRadio extends React.Component<RadioProps> {
+    static displayName: 'Radio';
+    radioRef: Radio | null;
+    focus(): void;
 }
