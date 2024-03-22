@@ -1,5 +1,5 @@
 import React from 'react';
-import { MountReturn } from 'cypress/react';
+import type { MountReturn } from 'cypress/react';
 import SplitButton from '../index';
 import '../style';
 
