@@ -216,7 +216,12 @@ class AutoComplete extends Base {
     };
 
     handleVisibleChange(visible, type) {
-        if (!('visible' in this.props) && visible && !this.props.popupContent && !this.dataStore.getMenuDS().length) {
+        if (
+            !('visible' in this.props) &&
+            visible &&
+            !this.props.popupContent &&
+            !this.dataStore.getMenuDS().length
+        ) {
             return;
         }
 
@@ -324,7 +329,12 @@ class AutoComplete extends Base {
 
         // trigger className
         const triggerClazz = classNames(
-            [`${prefix}select`, `${prefix}select-auto-complete`, `${prefix}size-${size}`, className],
+            [
+                `${prefix}select`,
+                `${prefix}select-auto-complete`,
+                `${prefix}size-${size}`,
+                className,
+            ],
             {
                 [`${prefix}active`]: visible,
                 [`${prefix}disabled`]: disabled,
@@ -333,7 +343,8 @@ class AutoComplete extends Base {
 
         // highlightKey into placeholder
         // compatible with selectPlaceHolder. TODO: removed in 2.0 version
-        let _placeholder = placeholder || locale.autoCompletePlaceholder || locale.autoCompletePlaceHolder;
+        let _placeholder =
+            placeholder || locale.autoCompletePlaceholder || locale.autoCompletePlaceHolder;
         if (highlightHolder && visible) {
             _placeholder = this.state.highlightKey || _placeholder;
         }

@@ -14,7 +14,8 @@ Select.OptionGroup = OptionGroup;
 // compatible with 0.x version
 /* istanbul ignore next */
 function transform(props, deprecated) {
-    const { shape, container, multiple, filterBy, overlay, safeNode, noFoundContent, ...others } = props;
+    const { shape, container, multiple, filterBy, overlay, safeNode, noFoundContent, ...others } =
+        props;
 
     const newprops = others;
     if (shape === 'arrow-only') {

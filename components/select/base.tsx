@@ -203,8 +203,8 @@ export default class Base extends React.Component {
                 'highlightKey' in props
                     ? props.highlightKey
                     : props.mode === 'single'
-                    ? props.value || props.defaultHighlightKey || props.defaultValue
-                    : props.defaultHighlightKey,
+                      ? props.value || props.defaultHighlightKey || props.defaultValue
+                      : props.defaultHighlightKey,
             srReader: '',
         };
 
@@ -243,7 +243,10 @@ export default class Base extends React.Component {
      */
     syncWidth() {
         const { popupStyle, popupProps } = this.props;
-        if ((popupStyle && 'width' in popupStyle) || (popupProps && popupProps.style && 'width' in popupProps.style)) {
+        if (
+            (popupStyle && 'width' in popupStyle) ||
+            (popupProps && popupProps.style && 'width' in popupProps.style)
+        ) {
             return;
         }
 
@@ -417,7 +420,9 @@ export default class Base extends React.Component {
         this.highlightTimer = setTimeout(() => {
             try {
                 const menuNode = findDOMNode(this.menuRef);
-                const itemNode = menuNode.querySelector(`.${prefix}select-menu-item.${prefix}focused`);
+                const itemNode = menuNode.querySelector(
+                    `.${prefix}select-menu-item.${prefix}focused`
+                );
                 itemNode && itemNode.scrollIntoViewIfNeeded && itemNode.scrollIntoViewIfNeeded();
             } catch (ex) {
                 // I don't care...
@@ -667,8 +672,11 @@ export default class Base extends React.Component {
                     if (value === this.valueDataSource.value) {
                         valueDS = this.valueDataSource.valueDS;
                     } else {
-                        valueDS = getValueDataSource(value, this.valueDataSource.mapValueDS, this.dataStore.getMapDS())
-                            .valueDS;
+                        valueDS = getValueDataSource(
+                            value,
+                            this.valueDataSource.mapValueDS,
+                            this.dataStore.getMapDS()
+                        ).valueDS;
                     }
                 }
 
@@ -709,7 +717,9 @@ export default class Base extends React.Component {
                                 style={style}
                                 className={className}
                                 isPreview={isPreview}
-                                value={(Array.isArray(valueDS) ? valueDS : []).map(i => i.label).join(', ')}
+                                value={(Array.isArray(valueDS) ? valueDS : [])
+                                    .map(i => i.label)
+                                    .join(', ')}
                             />
                         );
                     }
