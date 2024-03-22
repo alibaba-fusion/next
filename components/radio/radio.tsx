@@ -1,83 +1,36 @@
-import React from 'react';
+import React, { type ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-import UIState from '../mixin-ui-state';
+import UIState, { type UIStateState } from '../mixin-ui-state';
 import ConfigProvider from '../config-provider';
 import withContext from './with-context';
 import { obj, func } from '../util';
+import type { RadioContext, RadioWithContextProps } from './types';
 
 const { makeChain, noop } = func;
-/**
- * Radio
- * @order 1
- */
-class Radio extends UIState {
+
+interface RadioState extends UIStateState {
+    checked?: boolean;
+}
+
+class Radio extends UIState<RadioWithContextProps, RadioState> {
     static displayName = 'Radio';
     static propTypes = {
         ...ConfigProvider.propTypes,
-        /**
-         * 自定义类名
-         */
         className: PropTypes.string,
-        /**
-         * 组件input的id
-         */
         id: PropTypes.string,
-        /**
-         * 自定义内敛样式
-         */
         style: PropTypes.object,
-        /**
-         * 设置radio是否选中
-         */
         checked: PropTypes.bool,
-        /**
-         * 设置radio是否默认选中
-         */
         defaultChecked: PropTypes.bool,
-        /**
-         * 通过属性配置label
-         */
         label: PropTypes.node,
-        /**
-         * 状态变化时触发的事件
-         * @param {Boolean} checked 是否选中
-         * @param {Event} e Dom 事件对象
-         */
         onChange: PropTypes.func,
-        /**
-         * 鼠标进入enter事件
-         * @param {Event} e Dom 事件对象
-         */
         onMouseEnter: PropTypes.func,
-        /**
-         * 鼠标离开事件
-         * @param {Event} e Dom 事件对象
-         */
         onMouseLeave: PropTypes.func,
-        /**
-         * radio是否被禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * radio 的value
-         */
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-        /**
-         * name
-         */
         name: PropTypes.string,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param {Boolean} checked 是否选中
-         * @param {Object} props 所有传入的参数
-         * @returns {reactNode} Element 渲染内容
-         */
         renderPreview: PropTypes.func,
     };
 
@@ -98,7 +51,25 @@ class Radio extends UIState {
         disabled: PropTypes.bool,
     };
 
-    constructor(props) {
+    static getDerivedStateFromProps(nextProps: RadioWithContextProps) {
+        const { context: nextContext } = nextProps;
+
+        if (nextContext.__group__ && 'selectedValue' in nextContext) {
+            return {
+                checked: nextContext.selectedValue === nextProps.value,
+            };
+        } else if ('checked' in nextProps) {
+            return {
+                checked: nextProps.checked,
+            };
+        }
+
+        return null;
+    }
+
+    radioRef: HTMLInputElement | null;
+
+    constructor(props: RadioWithContextProps) {
         super(props);
         const { context } = props;
         let checked;
@@ -117,22 +88,6 @@ class Radio extends UIState {
         this.onChange = this.onChange.bind(this);
     }
 
-    static getDerivedStateFromProps(nextProps) {
-        const { context: nextContext } = nextProps;
-
-        if (nextContext.__group__ && 'selectedValue' in nextContext) {
-            return {
-                checked: nextContext.selectedValue === nextProps.value,
-            };
-        } else if ('checked' in nextProps) {
-            return {
-                checked: nextProps.checked,
-            };
-        }
-
-        return null;
-    }
-
     get disabled() {
         const { props } = this;
         const { context } = props;
@@ -143,7 +98,11 @@ class Radio extends UIState {
         return disabled;
     }
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
+    shouldComponentUpdate(
+        nextProps: RadioWithContextProps,
+        nextState: RadioState,
+        nextContext: RadioContext
+    ) {
         const { shallowEqual } = obj;
         return (
             !shallowEqual(this.props, nextProps) ||
@@ -160,19 +119,19 @@ class Radio extends UIState {
         }
     }
 
-    onChange(e) {
+    onChange(e: ChangeEvent<HTMLInputElement>) {
         const checked = e.target.checked;
         const { context, value } = this.props;
 
         if (context.__group__) {
-            context.onChange(value, e);
+            context.onChange(value!, e);
         } else if (this.state.checked !== checked) {
             if (!('checked' in this.props)) {
                 this.setState({
                     checked: checked,
                 });
             }
-            this.props.onChange(checked, e);
+            this.props.onChange!(checked, e);
         }
     }
 
@@ -184,7 +143,6 @@ class Radio extends UIState {
     }
 
     render() {
-        /* eslint-disable no-unused-vars */
         const {
             id,
             className,
@@ -205,10 +163,10 @@ class Radio extends UIState {
         const checked = !!this.state.checked;
         const disabled = this.disabled;
         const isButton = context.isButton;
-        const prefix = context.prefix || this.props.prefix;
+        const prefix = this.props.prefix;
 
         const others = obj.pickOthers(Radio.propTypes, otherProps);
-        const othersData = obj.pickAttrsWith(others, 'data-');
+        const othersData = obj.pickAttrsWith(others, 'data-') as Record<`data-${string}`, unknown>;
 
         if (isPreview) {
             const previewCls = classnames(className, `${prefix}form-preview`);
@@ -216,7 +174,7 @@ class Radio extends UIState {
             if ('renderPreview' in this.props) {
                 return (
                     <div id={id} dir={rtl ? 'rtl' : 'ltr'} {...others} className={previewCls}>
-                        {renderPreview(checked, this.props)}
+                        {renderPreview!(checked, this.props)}
                     </div>
                 );
             }
@@ -261,9 +219,8 @@ class Radio extends UIState {
             press: checked,
             unpress: !checked,
         });
-        const clsWrapper = classnames({
+        const clsWrapper = classnames(className, {
             [`${prefix}radio-wrapper`]: true,
-            [className]: !!className,
             checked,
             disabled,
             [this.getStateClassName()]: true,
@@ -288,9 +245,11 @@ class Radio extends UIState {
                 aria-disabled={disabled}
                 className={clsWrapper}
                 onMouseEnter={
+                    // @ts-expect-error _onUIMouseEnter is not defined
                     disabled ? onMouseEnter : makeChain(this._onUIMouseEnter, onMouseEnter)
                 }
                 onMouseLeave={
+                    // @ts-expect-error _onUIMouseLeave is not defined
                     disabled ? onMouseLeave : makeChain(this._onUIMouseLeave, onMouseLeave)
                 }
             >
@@ -306,5 +265,7 @@ class Radio extends UIState {
         );
     }
 }
+
+export type { Radio };
 
 export default ConfigProvider.config(withContext(polyfill(Radio)));

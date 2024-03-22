@@ -2,6 +2,14 @@ import React from 'react';
 import { Types, parseData, NodeType } from '@alifd/adaptor-helper';
 import { Radio } from '@alifd/next';
 
+interface Data {
+    size: string;
+    state: string;
+    label: string;
+    type: string;
+    value: string;
+}
+
 export default {
     name: 'Radio',
     shape: ['normal', { value: 'button', label: 'Radio Button' }],
@@ -55,7 +63,7 @@ export default {
             ],
         };
     },
-    adaptor: ({ shape, size, state = '', label, data, ...others }) => {
+    adaptor: ({ shape, size, state = '', label, data, ...others }: any) => {
         if (shape === 'normal') {
             return (
                 <Radio
@@ -70,7 +78,7 @@ export default {
             );
         }
 
-        const list = parseData(data).filter(({ type }) => type === NodeType.node);
+        const list = (parseData(data) as Data[]).filter(({ type }) => type === NodeType.node);
 
         return (
             <Radio.Group

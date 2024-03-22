@@ -1,125 +1,104 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import ReactTestUtils from 'react-dom/test-utils';
+import React, { cloneElement, createRef, type ReactElement } from 'react';
+import type { MountReturn } from 'cypress/react';
 import Radio from '../index';
-
-/* eslint-disable */
-Enzyme.configure({ adapter: new Adapter() });
+import '../style';
 
 describe('Radio', () => {
     describe('[render] normal', () => {
         it('should get a normal radio', () => {
-            const wrapper1 = mount(<Radio />);
-            const wrapper2 = mount(<Radio id="banana">香蕉</Radio>);
-            assert(wrapper1.find('.next-radio').length === 1);
-            assert(wrapper2.find('.next-radio').length === 1);
+            cy.mount(<Radio />);
+            cy.get('.next-radio').should('have.length', 1);
+            cy.mount(<Radio id="banana">香蕉</Radio>);
+            cy.get('.next-radio').should('have.length', 1);
+            cy.get('#banana').should('have.length', 1).and('have.prop', 'tagName', 'INPUT');
         });
         it('with checked && defaultChecked', () => {
-            const wrapper1 = mount(<Radio defaultChecked={false} />);
-            const wrapper2 = mount(<Radio checked={false} />);
-            assert(wrapper1.find('.next-radio.checked').length === 0);
-            assert(wrapper2.find('.next-radio.checked').length === 0);
+            cy.mount(<Radio defaultChecked={false} />);
+            cy.get('.next-radio.checked').should('not.exist');
+            cy.mount(<Radio checked={false} />);
+            cy.get('.next-radio.checked').should('not.exist');
         });
         it('disabled', () => {
-            const wrapper = mount(<Radio disabled />);
-            assert(wrapper.find('.next-radio.disabled').length === 1);
+            cy.mount(<Radio disabled />);
+            cy.get('.next-radio.disabled').should('have.length', 1);
         });
         it('should support className', () => {
-            const wrapper = mount(<Radio className="custom-name" />);
-            assert(wrapper.find('.next-radio-wrapper.custom-name').length === 1);
+            cy.mount(<Radio className="custom-name" />);
+            cy.get('.next-radio-wrapper.custom-name').should('have.length', 1);
         });
         it('should support name', () => {
-            const wrapper = mount(<Radio name="customer" />);
-            assert(wrapper.find('input[name="customer"]').length === 1);
+            cy.mount(<Radio name="customer" />);
+            cy.get('input[name="customer"]').should('have.length', 1);
         });
 
         it('should isPreview', () => {
-            const wrapper = mount(<Radio isPreview defaultChecked label="apple" />);
-            assert(wrapper.getDOMNode().innerText === 'apple');
+            cy.mount(<Radio isPreview defaultChecked label="apple" />);
+            cy.get('.next-form-preview').should('have.text', 'apple');
         });
 
         it('should renderPreview', () => {
-            const wrapper = mount(<Radio isPreview renderPreview={() => 'render preivew'} />);
-            assert(wrapper.getDOMNode().innerText === 'render preivew');
+            cy.mount(<Radio isPreview renderPreview={() => 'render preivew'} />);
+            cy.get('.next-form-preview').should('have.text', 'render preivew');
         });
     });
 
     describe('[focus] call focus()', () => {
-        let wrapper, target;
-
-        beforeEach(() => {
-            target = document.createElement('div');
-            document.body.appendChild(target);
-        });
-
-        afterEach(() => {
-            target = null;
-            if (wrapper) {
-                wrapper.unmount();
-            }
-        });
         it('should focus', () => {
-            wrapper = mount(<Radio>1</Radio>, {
-                attachTo: target,
+            const ref = createRef<InstanceType<typeof Radio>>();
+            cy.mount(<Radio ref={ref}>1</Radio>);
+            cy.get('input').should('not.be.focused');
+            cy.then(() => {
+                ref.current?.getInstance().focus();
             });
-            const group = wrapper.instance().getInstance();
-            group.focus();
-            const inputElement = wrapper.find('input').getDOMNode();
-            assert(document.activeElement === inputElement);
+            cy.get('input').should('be.focused');
         });
         it('should not focus when disabled', () => {
-            wrapper = mount(<Radio disabled={true}>1</Radio>, {
-                attachTo: target,
+            const ref = createRef<InstanceType<typeof Radio>>();
+            cy.mount(
+                <Radio disabled ref={ref}>
+                    1
+                </Radio>
+            );
+            cy.get('input').should('not.be.focused');
+            cy.then(() => {
+                ref.current?.getInstance().focus();
             });
-            const group = wrapper.instance().getInstance();
-            group.focus();
-            const inputElement = wrapper.find('input').getDOMNode();
-            assert(document.activeElement !== inputElement);
+            cy.get('input').should('not.be.focused');
         });
     });
 
     describe('behavior', () => {
         it('simulate click', () => {
-            let wrapper;
-            const container = document.createElement('div');
-            container.style.display = 'none';
-            document.body.appendChild(container);
-
-            before(done => {
-                ReactDOM.render(<Radio />, container, function init() {
-                    wrapper = this;
-                    done();
-                });
-            });
             it('should checked after click', () => {
-                assert(!wrapper.state.checked);
-                ReactTestUtils.scryRenderedDOMComponentsWithTag(wrapper, 'input')[0].click();
-                assert(!!wrapper.state.checked);
+                cy.mount(<Radio />);
+                cy.get('.next-radio.checked').should('not.exist');
+                cy.get('input').check();
+                cy.get('.next-radio.checked').should('exist');
             });
             it('should call `onChange`', () => {
-                const onChange = sinon.spy();
-                const wrapper1 = mount(<Radio onChange={onChange} />);
-
-                assert(!wrapper.find('input').prop('checked'));
-                wrapper1.find('input').simulate('change', { target: { checked: true } });
-
-                assert(onChange.calledOnce);
-                assert(wrapper.find('input').prop('checked'));
+                const onChange = cy.spy();
+                cy.mount(<Radio onChange={onChange} />);
+                cy.get('input').should('have.prop', 'checked', false);
+                cy.get('input').check();
+                cy.then(() => {
+                    cy.wrap(onChange).should('be.calledOnce');
+                });
+                cy.get('input').should('have.prop', 'checked', true);
             });
         });
         it('should support controlled `checked`', () => {
-            const wrapper = mount(<Radio checked={true} />);
-            assert(wrapper.find('input').props().checked);
-            assert(wrapper.find('.checked').length !== 0);
-
-            wrapper.setProps({
-                checked: false,
+            cy.mount(<Radio checked />).as('radio');
+            cy.get('input').should('have.prop', 'checked', true);
+            cy.get('.checked').should('exist');
+            cy.get<MountReturn>('@radio').then(({ component, rerender }) => {
+                return rerender(
+                    cloneElement(component as ReactElement, {
+                        checked: false,
+                    })
+                );
             });
-            assert(!wrapper.find('input').props().checked);
-            assert(wrapper.find('.checked').length === 0);
+            cy.get('input').should('have.prop', 'checked', false);
+            cy.get('.checked').should('not.exist');
         });
     });
 });

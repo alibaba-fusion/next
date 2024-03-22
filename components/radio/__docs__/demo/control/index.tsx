@@ -20,26 +20,16 @@ const list = [
 ];
 
 class ControlApp extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        value: 'orange',
+    };
 
-        this.state = {
-            value: 'orange',
-        };
-
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange(value) {
+    onChange = (value: string) => {
         this.setState({
             value: value,
         });
         console.log('onChange', value);
-    }
-
-    onClick(e) {
-        console.log('onClick', e);
-    }
+    };
 
     render() {
         return (
