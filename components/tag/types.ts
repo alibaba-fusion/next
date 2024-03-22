@@ -208,5 +208,3 @@ export interface SelectableProps extends TagCurrentProps {
         e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
     ) => void;
 }
-
-export type TagRealProps = CloseableProps & { disabled?: boolean };

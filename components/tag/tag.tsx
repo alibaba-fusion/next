@@ -6,7 +6,7 @@ import Icon from '../icon';
 import { func, KEYCODE, obj, support } from '../util';
 import zhCN from '../locale/zh-cn';
 import ConfigProvider from '../config-provider';
-import type { CloseArea, TagRealProps, TagProps } from './types';
+import type { CloseArea, TagProps } from './types';
 
 const { noop, bindCtx } = func;
 
@@ -72,12 +72,8 @@ class Tag extends Component<TagProps, { visible: boolean }> {
         this.__destroyed = true;
     }
 
-    get realProps() {
-        return this.props as TagRealProps;
-    }
-
     handleClose(from: CloseArea) {
-        const { animation, onClose } = this.realProps;
+        const { animation, onClose } = this.props;
         const hasAnimation = support.animation && animation;
 
         // 先执行回调
@@ -91,7 +87,7 @@ class Tag extends Component<TagProps, { visible: boolean }> {
                 },
                 () => {
                     // 如果没有动画，则直接执行 afterClose
-                    !hasAnimation && this.realProps.afterClose!(this.tagNode);
+                    !hasAnimation && this.props.afterClose!(this.tagNode);
                 }
             );
         }
@@ -99,7 +95,7 @@ class Tag extends Component<TagProps, { visible: boolean }> {
 
     // 标签体点击
     handleBodyClick(e: MouseEvent<HTMLDivElement>) {
-        const { closable, closeArea, onClick } = this.realProps;
+        const { closable, closeArea, onClick } = this.props;
         const node = e.currentTarget;
 
         if (node && (node === e.target || node.contains(e.target as HTMLElement))) {
@@ -115,7 +111,7 @@ class Tag extends Component<TagProps, { visible: boolean }> {
 
     onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         // 针对无障碍化要求 添加键盘 SPACE 事件
-        const { closable, closeArea, onClick, disabled } = this.realProps;
+        const { closable, closeArea, onClick, disabled } = this.props;
         if (e.keyCode !== KEYCODE.SPACE || disabled) {
             return;
         }
@@ -138,11 +134,11 @@ class Tag extends Component<TagProps, { visible: boolean }> {
     }
 
     handleAnimationInit(node: HTMLElement) {
-        this.realProps.afterAppear!(node);
+        this.props.afterAppear!(node);
     }
 
     handleAnimationEnd(node: HTMLElement) {
-        this.realProps.afterClose!(node);
+        this.props.afterClose!(node);
     }
 
     renderAnimatedTag(children: ReactNode, animationName: string) {
@@ -215,7 +211,7 @@ class Tag extends Component<TagProps, { visible: boolean }> {
             animation,
             disabled,
             rtl,
-        } = this.realProps;
+        } = this.props;
         const { visible } = this.state;
         const isPresetColor = this.isPresetColor();
         const others = obj.pickOthers(Tag.propTypes, this.props);
