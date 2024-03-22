@@ -435,9 +435,20 @@ export function registryApiGenerator(file = __filename) {
                 continue;
             }
             tsDocMetas.sort((a, b) => {
-                // 未设置 order 时，apiMode 内容优先展示
-                const aOrder = a.order ? Number(a.order) : a.apiMode ? 0 : Infinity;
-                const bOrder = b.order ? Number(b.order) : b.apiMode ? 0 : Infinity;
+                // 都有 order 的情况，值越小越靠前
+                if (a.order && b.order) {
+                    if (a.order === b.order) {
+                        return 0;
+                    }
+                    return Number(a.order) > Number(b.order) ? 1 : -1;
+                }
+                // 有 order 的比无 order 的靠前
+                if (a.order || b.order) {
+                    return b.order ? 1 : -1;
+                }
+                // 未设置 order 情况，apiMode 类型的靠前展示
+                const aOrder = a.apiMode ? 0 : Infinity;
+                const bOrder = b.apiMode ? 0 : Infinity;
                 if (aOrder === bOrder) {
                     return 0;
                 }
