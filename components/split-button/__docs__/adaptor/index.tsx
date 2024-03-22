@@ -174,7 +174,7 @@ const _propsValue = ({ shape, level, size, data, ...others }: any) => {
 
     const label =
         Array.isArray(buttonItem.value) &&
-        buttonItem.value.map(({ type, value }) => {
+        buttonItem.value.map(({ type, value }: { type: string; value: string }) => {
             if (type === 'icon') return <Icon type={value} />;
             return value;
         });
