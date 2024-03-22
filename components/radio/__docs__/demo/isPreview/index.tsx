@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Radio, Switch } from '@alifd/next';
+import type { RadioProps, GroupProps } from '@alifd/next/lib/radio';
 
 class App extends React.Component {
     state = {
@@ -20,10 +21,10 @@ class App extends React.Component {
         });
     };
 
-    renderChecked = (checked, props) =>
+    renderChecked: RadioProps['renderPreview'] = (checked, props) =>
         checked ? <span>{props.children}</span> : <span>null</span>;
 
-    renderPreview = (previewed, props) => <span>{previewed.label}</span>;
+    renderPreview: GroupProps['renderPreview'] = previewed => <span>{previewed.label}</span>;
 
     render() {
         return (

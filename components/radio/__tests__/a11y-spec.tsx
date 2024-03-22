@@ -1,44 +1,11 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
 import Radio from '../index';
 import '../style';
-import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
+import { testReact } from '../../util/__tests__/a11y/validate';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-const list = [
-    {
-        value: 'apple',
-        label: 'Apple',
-        disabled: false,
-    },
-    {
-        value: 'pear',
-        label: 'Pear',
-    },
-    {
-        value: 'orange',
-        label: 'Orange',
-        disabled: true,
-    },
-];
-
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Radio A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
     it('should not have any violations for different states', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Radio defaultChecked label="test1">
                     test 1
@@ -58,11 +25,10 @@ describe('Radio A11y', () => {
                 &nbsp;
             </div>
         );
-        return wrapper;
     });
 
     it('should not have any violations for Radio Group with children', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Radio.Group value="watermelon">
                 <Radio id="apple" value="apple" disabled>
                     苹果
@@ -75,7 +41,6 @@ describe('Radio A11y', () => {
                 </Radio>
             </Radio.Group>
         );
-        return wrapper;
     });
 
     it('should not have any violations for Radio Group with datasource', async () => {
@@ -94,12 +59,11 @@ describe('Radio A11y', () => {
                 label: '橙子',
             },
         ];
-        wrapper = await testReact(<Radio.Group value={'apple'} dataSource={list} />);
-        return wrapper;
+        await testReact(<Radio.Group value={'apple'} dataSource={list} />);
     });
 
-    it('should add tabIndex for first Radio Item', async () => {
-        const wrapper = mount(
+    it('should add tabIndex for first Radio Item', () => {
+        cy.mount(
             <Radio.Group>
                 <Radio id="pear" value="pear" checked>
                     ={true}
@@ -110,25 +74,24 @@ describe('Radio A11y', () => {
                 </Radio>
             </Radio.Group>
         );
-        wrapper.update();
-        assert(wrapper.find('input#pear').at(0).getDOMNode().tabIndex === 0);
+        cy.get('input#pear').should('have.prop', 'tabIndex', 0);
     });
 
-    it('should not add tabIndex for non Radio Item', async () => {
-        const wrapper = mount(
+    it('should not add tabIndex for non Radio Item', () => {
+        cy.mount(
             <Radio.Group defaultValue={'pear'}>
                 <div id="mywrapper">
                     <Radio id="pear" value="pear">
                         梨子
                     </Radio>
                 </div>
-                <div id="another" tabIndex="-100">
+                <div id="another" tabIndex={-100}>
                     <Radio id="apple" value="apple" className="apple">
                         苹果
                     </Radio>
                 </div>
             </Radio.Group>
         );
-        assert(wrapper.find('div#mywrapper').at(0).getDOMNode().tabIndex === -1);
+        cy.get('div#mywrapper').should('have.prop', 'tabIndex', -1);
     });
 });
