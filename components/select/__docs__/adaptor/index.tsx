@@ -5,47 +5,66 @@ import { Select } from '@alifd/next';
 export default {
     name: 'Select',
     editor: () => ({
-        props: [{
-            name: 'level',
-            label: 'Type',
-            type: Types.enum,
-            options: ['single', 'multiple'],
-            default: 'single'
-        }, {
-            name: 'size',
-            type: Types.enum,
-            options: ['large', 'medium', 'small'],
-            default: 'medium'
-        }, {
-            name: 'state',
-            label: 'Status',
-            type: Types.enum,
-            options: ['normal', 'expanded', 'disabled'],
-            default: 'normal'
-        }, {
-            name: 'border',
-            type: Types.bool,
-            default: true
-        }, {
-            name: 'width',
-            type: Types.number,
-            default: 200
-        }, {
-            name: 'label',
-            type: Types.string,
-            default: ''
-        }, {
-            name: 'placeholder',
-            type: Types.string,
-            default: 'Please Select'
-        }],
+        props: [
+            {
+                name: 'level',
+                label: 'Type',
+                type: Types.enum,
+                options: ['single', 'multiple'],
+                default: 'single',
+            },
+            {
+                name: 'size',
+                type: Types.enum,
+                options: ['large', 'medium', 'small'],
+                default: 'medium',
+            },
+            {
+                name: 'state',
+                label: 'Status',
+                type: Types.enum,
+                options: ['normal', 'expanded', 'disabled'],
+                default: 'normal',
+            },
+            {
+                name: 'border',
+                type: Types.bool,
+                default: true,
+            },
+            {
+                name: 'width',
+                type: Types.number,
+                default: 200,
+            },
+            {
+                name: 'label',
+                type: Types.string,
+                default: '',
+            },
+            {
+                name: 'placeholder',
+                type: Types.string,
+                default: 'Please Select',
+            },
+        ],
         data: {
             disable: true,
             active: true,
-            default: 'Option 1\n*Option 2\nOption 3\nOption 4\nOption 5'
-        }
+            default: 'Option 1\n*Option 2\nOption 3\nOption 4\nOption 5',
+        },
     }),
-    adaptor: ({ level, size, state, border, width, label, placeholder, data, style, ...others }) => {
+    adaptor: ({
+        level,
+        size,
+        state,
+        border,
+        width,
+        label,
+        placeholder,
+        data,
+        style,
+        ...others
+    }) => {
         const list = parseData(data).filter(({ type }) => NodeType.node === type);
         const dataSource = [];
         const value = [];
@@ -54,7 +73,7 @@ export default {
             dataSource.push({
                 label: item.value,
                 value: index,
-                disabled: item.state === 'disabled'
+                disabled: item.state === 'disabled',
             });
             if (item.state === 'active') {
                 value.push(index);
@@ -82,11 +101,11 @@ export default {
             />
         );
     },
-    demoOptions: (demo) => {
+    demoOptions: demo => {
         if (demo.node.props.state === 'expanded') {
             return {
                 ...demo,
-                height: 300
+                height: 300,
             };
         }
 
@@ -95,5 +114,5 @@ export default {
         }
 
         return demo;
-    }
+    },
 };

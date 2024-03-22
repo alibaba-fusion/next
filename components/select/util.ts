@@ -91,10 +91,16 @@ export function parseDataSourceFromChildren(children, deep = 0) {
         let isOption = false;
         let isOptionGroup = false;
 
-        if ((typeof type === 'function' && type._typeMark === 'next_select_option') || type === 'option') {
+        if (
+            (typeof type === 'function' && type._typeMark === 'next_select_option') ||
+            type === 'option'
+        ) {
             isOption = true;
         }
-        if ((typeof type === 'function' && type._typeMark === 'next_select_option_group') || type === 'optgroup') {
+        if (
+            (typeof type === 'function' && type._typeMark === 'next_select_option_group') ||
+            type === 'optgroup'
+        ) {
             isOptionGroup = true;
         }
 
@@ -111,10 +117,10 @@ export function parseDataSourceFromChildren(children, deep = 0) {
                 'value' in childProps
                     ? childProps.value
                     : 'key' in childProps
-                    ? childProps.key
-                    : isStrChild
-                    ? childProps.children
-                    : `${index}`;
+                      ? childProps.key
+                      : isStrChild
+                        ? childProps.children
+                        : `${index}`;
 
             item2.label = childProps.label || childProps.children || `${item2.value}`;
             if ('title' in childProps) {

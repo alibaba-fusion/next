@@ -36,7 +36,9 @@ describe('Slider A11y', () => {
     // TODO: `aria-required-attr`
     it.skip('should not have any violations for dataSource', async () => {
         const dataSource = [{ label: 'xxx', value: 'yyy' }];
-        wrapper = await testReact(<Select id="a11yTest" dataSource={dataSource} label="a11y test" />);
+        wrapper = await testReact(
+            <Select id="a11yTest" dataSource={dataSource} label="a11y test" />
+        );
         return wrapper;
     });
 
@@ -56,21 +58,27 @@ describe('Slider A11y', () => {
     // TODO: `aria-required-attr`
     it.skip('should not have any violations when using `useVirtual`', async () => {
         const dataSource = [{ label: 'xxx', value: 'yyy' }];
-        wrapper = await testReact(<Select aria-label="a11y select" dataSource={dataSource} useVirtual />);
+        wrapper = await testReact(
+            <Select aria-label="a11y select" dataSource={dataSource} useVirtual />
+        );
         return wrapper;
     });
 
     // TODO: `aria-required-attr`
     it.skip('should not have any violations when using `Autocomplete`', async () => {
         const dataSource = [{ label: 'xxx', value: 'yyy' }];
-        wrapper = await testReact(<Select.AutoComplete aria-label="a11y select" dataSource={dataSource} />);
+        wrapper = await testReact(
+            <Select.AutoComplete aria-label="a11y select" dataSource={dataSource} />
+        );
         return wrapper;
     });
 
     // TODO: `aria-required-attr`
     it.skip('should not have any violations when disabled', async () => {
         const dataSource = [{ label: 'xxx', value: 'yyy' }];
-        wrapper = await testReact(<Select aria-label="a11y select" dataSource={dataSource} disabled />);
+        wrapper = await testReact(
+            <Select aria-label="a11y select" dataSource={dataSource} disabled />
+        );
         return wrapper;
     });
 });

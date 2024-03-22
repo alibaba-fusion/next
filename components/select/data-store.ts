@@ -1,4 +1,10 @@
-import { filter, parseDataSourceFromChildren, normalizeDataSource, flattingDataSource, filterDataSource } from './util';
+import {
+    filter,
+    parseDataSourceFromChildren,
+    normalizeDataSource,
+    flattingDataSource,
+    filterDataSource,
+} from './util';
 
 /**
  * manage dataSource for menu list
@@ -67,9 +73,16 @@ class DataStore {
 
     updateAll() {
         const { key, filter, filterLocal, showDataSourceChildren } = this.options;
-        this.menuDataSource = filterDataSource(this.dataSource, filterLocal ? key : '', filter, this.options.addonKey);
+        this.menuDataSource = filterDataSource(
+            this.dataSource,
+            filterLocal ? key : '',
+            filter,
+            this.options.addonKey
+        );
 
-        this.flattenDataSource = showDataSourceChildren ? flattingDataSource(this.menuDataSource) : this.menuDataSource;
+        this.flattenDataSource = showDataSourceChildren
+            ? flattingDataSource(this.menuDataSource)
+            : this.menuDataSource;
 
         this.mapDataSource = {};
         this.flattenDataSource.forEach(item => {

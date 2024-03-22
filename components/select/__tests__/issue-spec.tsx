@@ -90,7 +90,12 @@ describe('issue in AutoComplete', () => {
                         <button id="btn_93" onClick={this.setValue}>
                             set value
                         </button>
-                        <Select value={this.state.value} dataSource={dataSource} visible onChange={onChange} />
+                        <Select
+                            value={this.state.value}
+                            dataSource={dataSource}
+                            visible
+                            onChange={onChange}
+                        />
                     </div>
                 );
             }
@@ -141,8 +146,14 @@ describe('issue in AutoComplete', () => {
     // });
 
     it('should escape special char when filter local', () => {
-        const dataSource = [{ label: '[测试]文案11', value: '1' }, { label: '[tag]文案22', value: '2' }];
-        ReactDOM.render(<Select dataSource={dataSource} showSearch visible style={{ width: '300px' }} />, div);
+        const dataSource = [
+            { label: '[测试]文案11', value: '1' },
+            { label: '[tag]文案22', value: '2' },
+        ];
+        ReactDOM.render(
+            <Select dataSource={dataSource} showSearch visible style={{ width: '300px' }} />,
+            div
+        );
         const input = document.body.querySelector('.next-select input');
         input.value = 't';
         ReactTestUtils.Simulate.change(input);
