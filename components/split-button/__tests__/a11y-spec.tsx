@@ -1,7 +1,12 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { test, testReact, unmount, createContainer } from '../../util/__tests__/legacy/a11y/validate';
+import {
+    test,
+    testReact,
+    unmount,
+    createContainer,
+} from '../../util/__tests__/legacy/a11y/validate';
 import SplitButton from '../index';
 import '../style';
 
