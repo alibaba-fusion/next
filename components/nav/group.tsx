@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Menu from '../menu';
-import { GroupProps } from './types';
+import type { GroupProps } from './types';
 
 /**
  * Nav.Group
@@ -43,7 +43,7 @@ class Group extends Component<GroupProps> {
 
         const cls = classNames({
             [`${prefix}nav-group-label`]: true,
-            [className as string]: !!className,
+            [className!]: !!className,
         });
 
         return (

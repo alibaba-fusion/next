@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Menu from '../menu';
 import Icon from '../icon';
-import { PopupItemProps } from './types';
+import type { PopupItemProps } from './types';
 
 /**
  * Nav.PopupItem

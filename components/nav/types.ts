@@ -1,7 +1,5 @@
-/** disable-eslint react/no-multi-comp */
-import React from 'react';
-import { CommonProps } from '../util';
-import { PopupProps } from '../overlay';
+import type { CommonProps } from '../util';
+import type { PopupProps } from '../overlay';
 
 /**
  * @api SelectEventExtraOptions
@@ -31,6 +29,8 @@ type SelectEventExtraOptions = {
     label: string;
 };
 /**
+ * @api OpenEventExtraOptions
+ *
  * @en Options for {@link NavProps.onOpen}
  */
 type OpenEventExtraOptions = {
@@ -49,7 +49,6 @@ type OpenEventExtraOptions = {
 /**
  * @api Nav.Group
  * @order 2
- * @reference 继承自 `Menu.Group` 的能力请查看 `Menu.Group` 文档 - The API inherits from `Menu.Group`, please look at the `Menu.Group` document
  */
 export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -68,7 +67,6 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
 /**
  * @api Nav.Item
  * @order 3
- * @reference 继承自 `Menu.Item` 的能力请查看 `Menu.Item` 文档 - The API inherits from `Menu.Item`, please look at the `Menu.Item` document
  */
 export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -109,7 +107,6 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
 /**
  * @api Nav.PopupItem
  * @order 4
- * @reference 继承自 `Menu.PopupItem` 的能力请查看 `Menu.PopupItem` 文档 - The API inherits from `Menu.PopupItem`, please look at the `Menu.PopupItem` document
  */
 export interface PopupItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -135,7 +132,6 @@ export interface PopupItemProps extends React.HTMLAttributes<HTMLElement>, Commo
 /**
  * @api Nav.SubNav
  * @order 5
- * @reference 继承自 `Menu.SubMenu` 的能力请查看 `Menu.SubMenu` 文档 - The API inherits from `Menu.SubMenu`, please look at the `Menu.SubMenu` document
  */
 export interface SubNavProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -184,7 +180,6 @@ export interface NavRef extends React.RefObject<NavProps> {}
 /**
  * @api Nav
  * @order 1
- * @reference 继承自 `Menu` 的能力请查看 `Menu` 文档 - The API inherits from `Menu`, please look at the `Menu` document
  */
 export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
@@ -311,7 +306,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * @en Keys of selected nav item in default
      * @defaultValue []
      */
-    defaultSelectedKeys?: string | Array<string>;
+    defaultSelectedKeys?: string | Array<string> | null;
 
     /**
      * 选中或取消选中导航项触发的回调函数
@@ -319,7 +314,6 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * @param selectedKeys - 选中的导航项的 key 值 - Keys of selected nav item
      * @param item - 选中的导航项 - Current operation nav item
      * @param extra - 扩展参数 - Extra parameters
-
      */
     onSelect?: (
         selectedKeys: Array<string>,

@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
-import Menu, { MenuProps } from '../menu';
-import { NavProps } from './types';
+import Menu from '../menu';
+import type { NavProps } from './types';
+
+type MenuProps = React.ComponentProps<typeof Menu>;
 
 /**
  * Nav
@@ -75,13 +77,7 @@ class Nav extends Component<NavProps> {
         isCollapse: PropTypes.bool,
     };
 
-    menu? = React.createRef<MenuProps>();
-
-    constructor(props: NavProps) {
-        super(props);
-
-        this.getMenuRef = this.getMenuRef.bind(this);
-    }
+    menu: Menu | null;
 
     getChildContext() {
         const {
@@ -108,12 +104,11 @@ class Nav extends Component<NavProps> {
         };
     }
 
-    getMenuRef(ref?: React.RefObject<MenuProps>) {
+    getMenuRef: React.LegacyRef<Menu> = ref => {
         this.menu = ref;
-    }
+    };
 
     render() {
-        // eslint-disable-next-line
         const {
             prefix,
             className,
@@ -201,13 +196,7 @@ class Nav extends Component<NavProps> {
         };
 
         return (
-            <Menu
-                className={cls}
-                style={newStyle}
-                {...props}
-                {...others}
-                ref={this.getMenuRef as unknown as React.LegacyRef<Menu> | undefined}
-            >
+            <Menu className={cls} style={newStyle} {...props} {...others} ref={this.getMenuRef}>
                 {children}
             </Menu>
         );

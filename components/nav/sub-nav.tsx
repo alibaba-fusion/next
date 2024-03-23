@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Menu from '../menu';
 import Icon from '../icon';
-import { SubNavProps } from './types';
+import type { SubNavProps } from './types';
 
 /**
  * Nav.SubNav

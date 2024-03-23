@@ -258,7 +258,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 初始选中菜单项的 key 值
      */
-    defaultSelectedKeys?: string | Array<any>;
+    defaultSelectedKeys?: string | Array<any> | null;
 
     /**
      * 选中或取消选中菜单项触发的回调函数

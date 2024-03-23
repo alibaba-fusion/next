@@ -1,9 +1,8 @@
-/* eslint-disable import/imports-first */
 import React from 'react';
+import type { MountReturn } from 'cypress/react';
 import Icon from '../../icon';
 import Nav from '../index';
 import '../style';
-import { MountReturn } from 'cypress/react';
 
 const { Item, SubNav, PopupItem, Group } = Nav;
 
@@ -191,7 +190,7 @@ describe('Nav', () => {
 
         it('should support defaultSelectedKeys undefined/null', () => {
             cy.mount(
-                <Nav defaultSelectedKeys={null as any}>
+                <Nav defaultSelectedKeys={null}>
                     <SubNav label="Group label">
                         <Item key="1">First</Item>
                         <Item key="2">Second</Item>
@@ -202,7 +201,7 @@ describe('Nav', () => {
 
         it('should support showChildSelected', () => {
             cy.mount(<Nav selectedKeys="1" />).as('el');
-            cy.get('ul.next-nav');
+            cy.get('ul.next-nav').should('exist');
 
             cy.get<MountReturn>('@el')
                 .then(({ component, rerender }) => {
@@ -218,7 +217,7 @@ describe('Nav', () => {
                     );
                 })
                 .as('el1');
-            cy.get('li.next-nav-sub-nav-item').eq(0);
+            cy.get('li.next-nav-sub-nav-item').eq(0).should('exist');
             cy.get('.next-nav-item').should('have.class', 'next-child-selected');
 
             cy.get<MountReturn>('@el1')
@@ -241,7 +240,7 @@ describe('Nav', () => {
                     );
                 })
                 .as('el2');
-            cy.get('ul.next-nav');
+            cy.get('ul.next-nav').should('exist');
         });
 
         it('should support iconOnly and mode="popup" switched and openKeys reset', () => {
@@ -253,7 +252,7 @@ describe('Nav', () => {
                     </SubNav>
                 </Nav>
             ).as('el');
-            cy.get('ul.next-nav');
+            cy.get('ul.next-nav').should('exist');
             cy.get('li.next-nav-sub-nav-item').first().get('.next-nav-item.next-opened');
             cy.get<MountReturn>('@el').then(({ component, rerender }) => {
                 return rerender(
