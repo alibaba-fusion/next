@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
+          fetch-depth: ${{ github.event.pull_request.commits }}
       - name: Get Head Commit Message
         id: get_head_commit_message
         run: echo '${{ github.event.pull_request.base.sha }}' > /tmp/pr_base
