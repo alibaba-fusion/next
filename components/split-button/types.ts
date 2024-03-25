@@ -1,6 +1,6 @@
 import type React from 'react';
 import type { CommonProps } from '../util';
-import Menu, { type MenuProps } from '../menu';
+import type { default as Menu, MenuProps } from '../menu';
 import type { ButtonProps } from '../button';
 import type { PopupProps } from '../overlay';
 
@@ -105,7 +105,7 @@ export interface SplitButtonProps extends Omit<ButtonProps, 'onSelect'>, CommonP
      * 弹层显示状态变化时的回调函数
      * @en Callback when visible state change
      * @param visible - 弹层显示状态
-     * @param type - 触发弹层显示或隐藏的来源 menuSelect 表示由menu触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
+     * @param type - 触发弹层显示或隐藏的来源 menuSelect 表示由 menu 触发；fromTrigger 表示由 trigger 的点击触发；docClick 表示由 document 的点击触发
      */
     onVisibleChange?: (visible: boolean, type: 'menuSelect' | 'fromTrigger' | 'docClick') => void;
 
@@ -117,7 +117,7 @@ export interface SplitButtonProps extends Omit<ButtonProps, 'onSelect'>, CommonP
     popupTriggerType?: 'click' | 'hover';
 
     /**
-     * 弹层对齐方式, 详情见 Overlay align
+     * 弹层对齐方式，详情见 Overlay align
      * @en Align of popup, @see Overlay doc for detail
      */
     popupAlign?: string;
