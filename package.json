@@ -64,7 +64,7 @@
     "release:ding": "ts-node ./tools/release/ding.ts",
     "release:github": "ts-node ./tools/release/github.ts",
     "check": "ts-node ./tools/checkers/index.ts",
-    "check:changed": "ts-node ./tools/checkers/current.ts",
+    "check:changed": "ts-node ./tools/checkers/changed.ts",
     "check:types": "ts-node ./tools/checkers/types/index.ts",
     "check:eslint": "ts-node ./tools/checkers/eslint.ts",
     "check:stylelint": "ts-node ./tools/checkers/stylelint.ts",
