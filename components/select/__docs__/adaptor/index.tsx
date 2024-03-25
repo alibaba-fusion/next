@@ -1,6 +1,7 @@
 import React from 'react';
 import { Types, parseData, NodeType } from '@alifd/adaptor-helper';
 import { Select } from '@alifd/next';
+import { type SelectProps } from '@alifd/next/lib/select';
 
 export default {
     name: 'Select',
@@ -64,10 +65,12 @@ export default {
         data,
         style,
         ...others
-    }) => {
-        const list = parseData(data).filter(({ type }) => NodeType.node === type);
-        const dataSource = [];
-        const value = [];
+    }: any) => {
+        const list = (parseData(data) as { type: string; value?: string; state?: string }[]).filter(
+            ({ type }) => NodeType.node === type
+        );
+        const dataSource: SelectProps['dataSource'] = [];
+        const value: number[] = [];
 
         list.forEach((item, index) => {
             dataSource.push({
@@ -101,7 +104,7 @@ export default {
             />
         );
     },
-    demoOptions: demo => {
+    demoOptions: (demo: any) => {
         if (demo.node.props.state === 'expanded') {
             return {
                 ...demo,

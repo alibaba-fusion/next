@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
+import { type AutoCompleteProps } from '@alifd/next/lib/select';
 
 const { AutoComplete } = Select;
 const dataSource = [
@@ -34,34 +35,30 @@ const ctrlDataSources = {
 };
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        value: null,
+        size: undefined,
+        disabled: undefined,
+        hasClear: undefined,
+    };
 
-        this.state = {
-            value: null,
-            size: undefined,
-            disabled: undefined,
-            hasClear: undefined,
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleCtrlChange = this.handleCtrlChange.bind(this);
-    }
-
-    handleCtrlChange(key, value) {
+    handleCtrlChange = (
+        key: string,
+        value: Parameters<NonNullable<AutoCompleteProps['onChange']>>[1]
+    ) => {
         this.setState({ [key]: value });
 
         if (key === 'mode') {
             this.setState({ value: null });
         }
-    }
+    };
 
-    handleChange(value) {
+    handleChange: AutoCompleteProps['onChange'] = value => {
         console.log('handleChange: value: ', value);
         this.setState({ value });
-    }
+    };
 
-    renderCtrlNodes(state) {
+    renderCtrlNodes(state: typeof this.state) {
         const ctrlNodes = [];
         let k;
         for (k in ctrlDataSources) {
@@ -71,8 +68,8 @@ class Demo extends React.Component {
                         key={k}
                         style={{ marginRight: 8 }}
                         label={`${k}: `}
-                        value={state[k]}
-                        dataSource={ctrlDataSources[k]}
+                        value={state[k as keyof typeof this.state]}
+                        dataSource={ctrlDataSources[k as keyof typeof ctrlDataSources]}
                         onChange={this.handleCtrlChange.bind(this, k)}
                     />
                 );

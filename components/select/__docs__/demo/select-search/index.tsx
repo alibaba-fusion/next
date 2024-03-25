@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
 import jsonp from 'jsonp';
+import { type SelectProps } from '@alifd/next/lib/select';
 
 let timestamp = Date.now();
 
@@ -10,15 +11,16 @@ class Demo extends React.Component {
         dataSource: [],
     };
 
-    handleSearch = value => {
+    searchTimeout: number;
+
+    handleSearch: SelectProps['onSearch'] = value => {
         if (this.searchTimeout) {
             clearTimeout(this.searchTimeout);
         }
-        this.searchTimeout = setTimeout(() => {
-            // eslint-disable-next-line handle-callback-err
+        this.searchTimeout = window.setTimeout(() => {
             value
                 ? jsonp(`https://suggest.taobao.com/sug?code=utf-8&q=${value}`, (err, data) => {
-                      const dataSource = data.result.map(item => ({
+                      const dataSource = data.result.map((item: unknown[]) => ({
                           label: item[0],
                           value: (timestamp++).toString(36),
                       }));

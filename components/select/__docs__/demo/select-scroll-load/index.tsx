@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
+import { type SelectProps } from '@alifd/next/lib/select';
 
 const Option = Select.Option;
 
-function generateItem(start, end) {
+function generateItem(start: number, end: number) {
     const arr = [];
     for (let i = start; i < end; i++) {
         arr.push({ label: `option${i}`, value: `option${i}` });
@@ -17,10 +18,11 @@ class App extends React.Component {
         dataSource: generateItem(0, 10),
     };
 
-    onScroll = e => {
-        const scrollHeight = e.target.scrollHeight; // 内容总高度
-        const clientHeight = e.target.clientHeight; // 窗口高度
-        const scrollTop = e.target.scrollTop; //滚动高度
+    onScroll: SelectProps['onScroll'] = e => {
+        const target = e.target as HTMLElement;
+        const scrollHeight = target.scrollHeight; // 内容总高度
+        const clientHeight = target.clientHeight; // 窗口高度
+        const scrollTop = target.scrollTop; //滚动高度
         console.log(scrollTop, clientHeight, scrollHeight);
 
         if (scrollTop + clientHeight === scrollHeight) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
+import { type SelectProps } from '@alifd/next/lib/select';
 
 const dataSource = [
     { value: '10001', label: 'Lucy King' },
@@ -28,9 +29,9 @@ const dataSourceColorful = [
     },
 ];
 
-function handleChange(value) {
+const handleChange: SelectProps['onChange'] = value => {
     console.log(value);
-}
+};
 
 ReactDOM.render(
     <div style={{ display: 'flex', alignItems: 'flex-start' }}>

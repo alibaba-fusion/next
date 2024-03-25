@@ -1,27 +1,69 @@
-/// <reference types="react" />
+import type React from 'react';
+import type { CommonProps } from '../util';
+import type { PopupProps } from '../overlay';
+import type { MenuProps } from '../menu';
+import type { InputProps } from '../input';
 
-import React from 'react';
-import { CommonProps } from '../util';
-import { PopupProps } from '../overlay';
-import { MenuProps } from '../menu';
-import { InputProps } from '../input';
-import { data } from '../checkbox';
-
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement>, InputProps {
-    defaultValue?: any;
-    onChange?: any;
-    onBlur?: any;
-    onFocus?: any;
-    onKeyDown?: any;
+export interface ReactElementWithTypeMark extends React.ReactElement {
+    type: React.ReactElement['type'] & { _typeMark?: string };
 }
 
-export type item = {
-    value?: string | number;
-    label?: React.ReactNode;
-    [propName: string]: any;
-};
+interface HTMLAttributesWeak
+    extends Omit<
+        React.HTMLAttributes<HTMLElement>,
+        'defaultValue' | 'onChange' | 'onBlur' | 'onFocus' | 'onKeyDown'
+    > {}
 
-export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
+/**
+ * @api
+ */
+export interface ObjectItem {
+    value?: string | number | boolean | null | undefined;
+    label?: string | number | boolean;
+    color?: string;
+    disabled?: boolean;
+    children?: DataSourceItem[];
+    title?: string;
+    __isAddon?: boolean;
+    [propName: string]: unknown;
+}
+
+export interface NormalizedObjectItem extends ObjectItem {
+    children?: NormalizedObjectItem[];
+}
+
+/**
+ * @deprecated use ObjectItem instead
+ */
+export type item = ObjectItem;
+
+/**
+ * @api
+ */
+export type DataSourceItem = ObjectItem | string | boolean | number | null | undefined;
+
+/**
+ * @api
+ */
+export type VisibleChangeType =
+    | 'itemClick'
+    | 'enter'
+    | 'esc'
+    | 'keyDown'
+    | 'selectAll'
+    | 'update'
+    | 'change'
+    | 'tag';
+
+/**
+ * @api
+ */
+export type HighlightChangeType = 'up' | 'down' | 'autoFirstItem' | 'highlightKeyToNull';
+
+export interface AutoCompleteProps
+    extends HTMLAttributesWeak,
+        Omit<InputProps, 'onChange' | 'value'>,
+        CommonProps {
     /**
      * 选择器尺寸
      */
@@ -30,7 +72,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 当前值，用于受控模式
      */
-    value?: string | number;
+    value?: string | number | null;
 
     /**
      * 初始化的默认值
@@ -85,7 +127,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层显示或隐藏时触发的回调
      */
-    onVisibleChange?: (visible: boolean, type: string) => void;
+    onVisibleChange?: (visible: boolean, type?: VisibleChangeType) => void;
 
     /**
      * 弹层挂载的容器节点
@@ -125,7 +167,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 本地过滤方法，返回一个 Boolean 值确定是否保留
      */
-    filter?: (key: string, item: any) => boolean;
+    filter?: (key: string | number, item: ObjectItem) => boolean;
 
     /**
      * 键盘上下键切换菜单高亮选项的回调
@@ -140,7 +182,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 传入的数据源，可以动态渲染子项
      */
-    dataSource?: Array<any>;
+    dataSource?: Array<DataSourceItem>;
 
     /**
      * 渲染 MenuItem 内容的方法
@@ -148,12 +190,14 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     itemRender?: (item: item) => React.ReactNode;
 
     /**
-     * Select发生改变时触发的回调
+     * Select 发生改变时触发的回调
      */
-    onChange?: (value: any, actionType: string, item: any) => void;
+    onChange?: (value: string, actionType: string, item?: ObjectItem) => void;
+
+    onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => void;
 
     /**
-     * 填充到选择框里的值的 key，默认是 value
+     * 填充到选择框里的值的 key，默认是 value
      */
     fillProps?: string;
 
@@ -163,19 +207,17 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     autoHighlightFirstItem?: boolean;
 
     /**
-     * 高亮key
+     * 高亮 key
      */
     highlightKey?: string;
 
     /**
-     *  默认高亮key
+     *  默认高亮 key
      */
     defaultHighlightKey?: string;
     onFocus?: InputProps['onFocus'];
-}
-
-export class AutoComplete extends React.Component<AutoCompleteProps, any> {
-    focus(...args: unknown[]): unknown;
+    children?: ReactElementWithTypeMark | ReactElementWithTypeMark[];
+    highlightHolder?: boolean;
 }
 
 export interface OptionGroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
@@ -185,13 +227,11 @@ export interface OptionGroupProps extends React.HTMLAttributes<HTMLElement>, Com
     label?: React.ReactNode;
 }
 
-export class OptionGroup extends React.Component<OptionGroupProps, any> {}
-
 export interface OptionProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 选项值
      */
-    value: any;
+    value: string | number | boolean | null | undefined;
 
     /**
      * 是否禁用
@@ -199,17 +239,16 @@ export interface OptionProps extends React.HTMLAttributes<HTMLElement>, CommonPr
     disabled?: boolean;
 }
 
-export class Option extends React.Component<OptionProps, any> {}
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    defaultValue?: any;
-    onChange?: any;
-}
-
-export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, CommonProps {
+export interface SelectProps
+    extends HTMLAttributesWeak,
+        Omit<InputProps, 'value' | 'defaultValue' | 'renderPreview' | 'onChange'>,
+        CommonProps {
     /**
      * 选择器尺寸
      */
     size?: 'small' | 'medium' | 'large';
+
+    children?: ReactElementWithTypeMark | ReactElementWithTypeMark[];
 
     /**
      * name
@@ -219,12 +258,12 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     /**
      * 当前值，用于受控模式
      */
-    value?: any;
+    value?: DataSourceItem | DataSourceItem[];
 
     /**
      * 初始的默认值
      */
-    defaultValue?: any;
+    defaultValue?: DataSourceItem | DataSourceItem[];
 
     /**
      * 没有值的时候的占位符
@@ -274,7 +313,7 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     /**
      * 弹层显示或隐藏时触发的回调
      */
-    onVisibleChange?: (visible: boolean) => void;
+    onVisibleChange?: (visible: boolean, type?: VisibleChangeType) => void;
 
     /**
      * 弹层挂载的容器节点
@@ -315,12 +354,12 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     /**
      * 本地过滤方法，返回一个 Boolean 值确定是否保留
      */
-    filter?: (key: string, item: any) => boolean;
+    filter?: (key: string | number, item: ObjectItem) => boolean;
 
     /**
      * 键盘上下键切换菜单高亮选项的回调
      */
-    onToggleHighlightItem?: (highlightKey?: unknown, type?: unknown) => void;
+    onToggleHighlightItem?: (highlightKey?: unknown, type?: HighlightChangeType) => void;
 
     /**
      * 是否开启虚拟滚动模式
@@ -328,14 +367,14 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     useVirtual?: boolean;
 
     /**
-     * 传入的数据源，可以动态渲染子项，详见 [dataSource的使用](#dataSource的使用)
+     * 传入的数据源，可以动态渲染子项，详见 [dataSource 的使用](#dataSource 的使用)
      */
-    dataSource?: Array<any>;
+    dataSource?: Array<DataSourceItem>;
 
     /**
      * 渲染 MenuItem 内容的方法
      */
-    itemRender?: (item: item, searchValue: string) => React.ReactNode;
+    itemRender?: (item: item, searchValue: string | undefined) => React.ReactNode;
 
     /**
      * 选择器模式
@@ -348,9 +387,13 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     notFoundContent?: React.ReactNode;
 
     /**
-     * Select发生改变时触发的回调
+     * Select 发生改变时触发的回调
      */
-    onChange?: (value: any, actionType: string, item: any) => void;
+    onChange?: (
+        value: DataSourceItem | DataSourceItem[],
+        actionType: string,
+        item?: ObjectItem | ObjectItem[]
+    ) => void;
 
     /**
      * 是否有边框
@@ -363,19 +406,19 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     hasArrow?: boolean;
 
     /**
-     * 展开后是否能搜索（tag 模式下固定为true）
+     * 展开后是否能搜索（tag 模式下固定为 true）
      */
     showSearch?: boolean;
 
     /**
      * 当搜索框值变化时回调
      */
-    onSearch?: (value: string) => void;
+    onSearch?: (value: string, e: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * 当搜索框值被清空时候的回调
      */
-    onSearchClear?: (actionType: string) => void;
+    onSearchClear?: (actionType?: string) => void;
 
     /**
      * 多选模式下是否有全选功能
@@ -383,7 +426,7 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     hasSelectAll?: boolean | string;
 
     /**
-     * 填充到选择框里的值的 key
+     * 填充到选择框里的值的 key
      */
     fillProps?: string;
 
@@ -400,7 +443,7 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     /**
      * 渲染 Select 展现内容的方法
      */
-    valueRender?: (item: any) => React.ReactNode;
+    valueRender?: (item: ObjectItem, props?: SelectProps) => React.ReactNode;
 
     /**
      * 受控搜索值，一般不需要设置
@@ -420,12 +463,12 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     adjustTagSize?: boolean;
     /**
      * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
-     * @param {object} selectedValues 当前已选中的元素
-     * @param {object} totalValues 总待选元素
+     * @param selectedValues - 当前已选中的元素
+     * @param totalValues - 总待选元素
      */
     maxTagPlaceholder?: (
-        selectedValues?: any[],
-        totalValues?: any[]
+        selectedValues: ObjectItem[],
+        totalValues: ObjectItem[]
     ) => React.ReactNode | HTMLElement;
 
     /**
@@ -439,7 +482,7 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     /**
      * tag 删除回调
      */
-    onRemove?: (item: {}) => void;
+    onRemove?: (item: ObjectItem) => void;
 
     /**
      * 焦点事件
@@ -450,25 +493,26 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
      * 失去焦点事件
      */
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => void;
     isPreview?: boolean;
     renderPreview?: (
-        values: number | string | data | Array<number | string | data>,
-        props: any
-    ) => any;
+        values: DataSourceItem | DataSourceItem[],
+        props?: SelectProps
+    ) => React.ReactNode;
     /**
      * 自动高亮第一个选项
      */
     autoHighlightFirstItem?: boolean;
 
     /**
-     * 高亮key
+     * 高亮 key
      */
     highlightKey?: string;
 
     /**
-     *  默认高亮key
+     *  默认高亮 key
      */
-    defaultHighlightKey?: string;
+    defaultHighlightKey?: string | null;
 
     /**
      * 展开下拉菜单时是否自动焦点到弹层
@@ -478,11 +522,70 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     /**
      * drawer 组件使用此属性 将 Select 的弹出模式换成 Drawer
      */
-    popupComponent?: React.ReactNode;
+    popupComponent?: React.FunctionComponent | React.ComponentClass | string;
+    tagClosable?: boolean;
+    /**
+     * @deprecated use onSearch & showSearch instead
+     */
+    onInputUpdate?: SelectProps['onSearch'];
 }
 
-export default class Select extends React.Component<SelectProps, any> {
-    static AutoComplete: typeof AutoComplete;
-    static OptionGroup: typeof OptionGroup;
-    static Option: typeof Option;
+export interface BaseProps
+    extends CommonProps,
+        Pick<
+            SelectProps,
+            | 'size'
+            | 'autoWidth'
+            | 'onChange'
+            | 'onVisibleChange'
+            | 'onToggleHighlightItem'
+            | 'popupProps'
+            | 'filterLocal'
+            | 'filter'
+            | 'itemRender'
+            | 'autoHighlightFirstItem'
+            | 'showDataSourceChildren'
+            | 'defaultHighlightKey'
+            | 'highlightKey'
+            | 'mode'
+            | 'defaultValue'
+            | 'defaultVisible'
+            | 'value'
+            | 'visible'
+            | 'dataSource'
+            | 'children'
+            | 'label'
+            | 'popupStyle'
+            | 'disabled'
+            | 'popupAutoFocus'
+            | 'popupContent'
+            | 'menuProps'
+            | 'notFoundContent'
+            | 'useVirtual'
+            | 'popupComponent'
+            | 'popupContainer'
+            | 'popupClassName'
+            | 'followTrigger'
+            | 'isPreview'
+            | 'style'
+            | 'className'
+            | 'valueRender'
+            | 'fillProps'
+        > {
+    canCloseByTrigger?: boolean;
+    cache?: boolean;
+    onChange?: (...rest: any[]) => void;
+    renderPreview?: (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        values: any,
+        props?: SelectProps
+    ) => React.ReactNode;
+}
+
+export interface DataStoreOptions {
+    filter?: BaseProps['filter'];
+    filterLocal?: BaseProps['filterLocal'];
+    showDataSourceChildren?: BaseProps['showDataSourceChildren'];
+    addonKey?: boolean;
+    key?: string | number | null;
 }
