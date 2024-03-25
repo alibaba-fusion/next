@@ -81,7 +81,7 @@ class SplitButton extends React.Component<SplitButtonProps> {
     }
 
     state = {
-        selectedKeys: this.props.defaultSelectedKeys,
+        selectedKeys: this.props.defaultSelectedKeys!,
         visible: this.props.defaultVisible,
     };
 
@@ -101,11 +101,11 @@ class SplitButton extends React.Component<SplitButtonProps> {
                 selectedKeys: keys,
             });
         }
-        this.props.onSelect && this.props.onSelect(keys, ...others);
+        this.props.onSelect!(keys, ...others);
     };
 
     clickMenuItem: MenuProps['onItemClick'] = (key, ...others) => {
-        this.props.onItemClick && this.props.onItemClick(key, ...others);
+        this.props.onItemClick!(key, ...others);
         this.onVisibleChange(false, 'menuSelect');
     };
 
@@ -123,13 +123,13 @@ class SplitButton extends React.Component<SplitButtonProps> {
                 visible,
             });
         }
-        this.props.onVisibleChange && this.props.onVisibleChange(visible, reason);
+        this.props.onVisibleChange!(visible, reason);
     };
 
     _menuRefHandler = (ref: React.ComponentRef<typeof Menu>) => {
         this.menu = findDOMNode(ref) as HTMLUListElement;
 
-        const refFn = this.props.menuProps?.ref;
+        const refFn = this.props.menuProps!.ref;
         if (typeof refFn === 'function') {
             refFn(ref);
         }
