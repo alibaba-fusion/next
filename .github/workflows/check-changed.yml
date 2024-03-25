@@ -1,0 +1,22 @@
+name: check-current
+
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Get Head Commit Message
+        id: get_head_commit_message
+        run: echo '${{ github.event.pull_request.base.sha }}' > /tmp/pr_base
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run check:changed
