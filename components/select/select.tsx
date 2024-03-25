@@ -1,5 +1,11 @@
-/* eslint-disable valid-jsdoc */
-import React from 'react';
+import React, {
+    type ChangeEvent,
+    type ReactElement,
+    type KeyboardEvent,
+    type UIEvent,
+    type MouseEvent,
+    type ReactNode,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
@@ -9,26 +15,37 @@ import Tag from '../tag';
 import Input from '../input';
 import Icon from '../icon';
 import zhCN from '../locale/zh-cn';
-import Base from './base';
+import Base, { type BaseState } from './base';
 import { isNull, getValueDataSource, valueToSelectKey } from './util';
+import type {
+    BaseProps,
+    DataSourceItem,
+    ObjectItem,
+    SelectProps,
+    VisibleChangeType,
+} from './types';
 
 const { bindCtx, noop } = func;
 const isIE9 = env.ieVersion === 9;
 
 /**
- * 无障碍化注意事项:
- * 1. Select 无搜索情况下，不应该让 Input 可focus，此时外层wrap必须可focus，并且需要相应focus事件让外边框发生变化
+ * 无障碍化注意事项：
+ * 1. Select 无搜索情况下，不应该让 Input 可 focus，此时外层 wrap 必须可 focus，并且需要相应 focus 事件让外边框发生变化
  *
  * TODO: hightLight 后续改造注意点
- * 1. hightLight 跟随点击变化(fixed) 2. 弹窗打开时根据 是否高亮第一个选项的 api开关设置是否hightLight 第一项
+ * 1. hightLight 跟随点击变化 (fixed) 2. 弹窗打开时根据 是否高亮第一个选项的 api 开关设置是否 hightLight 第一项
  */
 
-// 自定义弹层：1. 不需要关心Menu的点击事件 2. 不需要关心dataSource变化
+// 自定义弹层：1. 不需要关心 Menu 的点击事件 2. 不需要关心 dataSource 变化
+
+interface SelectState extends BaseState {
+    fixWidth?: boolean;
+}
 
 /**
  * Select
  */
-class Select extends Base {
+class Select extends Base<SelectProps, SelectState> {
     static propTypes = {
         ...Base.propTypes,
         /**
@@ -44,14 +61,14 @@ class Select extends Base {
          */
         defaultValue: PropTypes.any,
         /**
-         * Select发生改变时触发的回调
-         * @param {*} value 选中的值
-         * @param {String} actionType 触发的方式, 'itemClick', 'enter', 'tag'
-         * @param {*} item 选中的值的对象数据 (useDetailValue=false有效)
+         * Select 发生改变时触发的回调
+         * @param value - 选中的值
+         * @param actionType - 触发的方式，'itemClick', 'enter', 'tag'
+         * @param item - 选中的值的对象数据 (useDetailValue=false 有效)
          */
         onChange: PropTypes.func,
         /**
-         * 传入的数据源，可以动态渲染子项，详见 [dataSource的使用](#dataSource的使用)
+         * 传入的数据源，可以动态渲染子项，详见 [dataSource 的使用](#dataSource 的使用)
          */
         dataSource: PropTypes.arrayOf(
             PropTypes.oneOfType([
@@ -75,17 +92,17 @@ class Select extends Base {
          */
         hasArrow: PropTypes.bool,
         /**
-         * 展开后是否能搜索（tag 模式下固定为true）
+         * 展开后是否能搜索（tag 模式下固定为 true）
          */
         showSearch: PropTypes.bool,
         /**
          * 当搜索框值变化时回调
-         * @param {String} value 数据
+         * @param value - 数据
          */
         onSearch: PropTypes.func,
         /**
-         * 当搜索框值被(选择、弹窗关闭)导致清空时候的回调
-         * @param {String} actionType 触发的方式, 'select'(选择清空), 'popupClose'(弹窗关闭清空)
+         * 当搜索框值被 (选择、弹窗关闭) 导致清空时候的回调
+         * @param actionType - 触发的方式，'select'(选择清空), 'popupClose'(弹窗关闭清空)
          */
         onSearchClear: PropTypes.func,
         /**
@@ -93,7 +110,7 @@ class Select extends Base {
          */
         hasSelectAll: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
         /**
-         * 填充到选择框里的值的 key
+         * 填充到选择框里的值的 key
          */
         fillProps: PropTypes.string,
         /**
@@ -106,16 +123,16 @@ class Select extends Base {
         cacheValue: PropTypes.bool,
         /**
          * 渲染 Select 展现内容的方法
-         * @param {Object} item 渲染节点的item
-         * @return {ReactNode} 展现内容
-         * @default item => `item.label || item.value`
+         * @param item - 渲染节点的 item
+         * @returns 展现内容
+         * @defaultValue item =\> `item.label || item.value`
          */
         valueRender: PropTypes.func,
         /**
          * 渲染 MenuItem 内容的方法
-         * @param {Object} item 渲染节点的item
-         * @param {String} searchValue 搜索关键字（如果开启搜索）
-         * @return {ReactNode} item node
+         * @param item - 渲染节点的 item
+         * @param searchValue - 搜索关键字（如果开启搜索）
+         * @returns item node
          */
         itemRender: PropTypes.func,
         /**
@@ -125,7 +142,6 @@ class Select extends Base {
         style: PropTypes.object,
         /**
          * 受控搜索值，一般不需要设置
-         * @type {[type]}
          */
         searchValue: PropTypes.string,
         /**
@@ -139,7 +155,7 @@ class Select extends Base {
          */
         tagClosable: PropTypes.bool,
         /**
-         * tag 尺寸是否和 select 保持一致(mode=multiple/tag 模式生效），默认false
+         * tag 尺寸是否和 select 保持一致 (mode=multiple/tag 模式生效），默认 false
          * @version 1.24
          */
         adjustTagSize: PropTypes.bool,
@@ -150,8 +166,8 @@ class Select extends Base {
         maxTagCount: PropTypes.number,
         /**
          * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
-         * @param {object} selectedValues 当前已选中的元素
-         * @param {object} totalValues 总待选元素
+         * @param selectedValues - 当前已选中的元素
+         * @param totalValues - 总待选元素
          * @version 1.15
          */
         maxTagPlaceholder: PropTypes.func,
@@ -161,7 +177,7 @@ class Select extends Base {
         hiddenSelected: PropTypes.bool,
         /**
          * tag 删除回调
-         * @param {object} item 渲染节点的item
+         * @param item - 渲染节点的 item
          */
         onRemove: PropTypes.func,
         /**
@@ -190,7 +206,7 @@ class Select extends Base {
         showDataSourceChildren: PropTypes.bool,
     };
 
-    static defaultProps = {
+    static defaultProps: SelectProps = {
         ...Base.defaultProps,
         locale: zhCN.Select,
         mode: 'single',
@@ -216,8 +232,9 @@ class Select extends Base {
     };
 
     static displayName = 'Select';
+    selectAllYet: boolean;
 
-    constructor(props) {
+    constructor(props: SelectProps) {
         super(props);
 
         // because dataSource maybe updated while select a item, so we should cache choosen value's item
@@ -238,11 +255,11 @@ class Select extends Base {
             dataSource: this.setDataSource(props),
         });
 
-        // 根据value和计算后的dataSource，更新value对应的详细数据valueDataSource
+        // 根据 value 和计算后的 dataSource，更新 value 对应的详细数据 valueDataSource
         if (typeof this.state.value !== 'undefined') {
             this.valueDataSource = getValueDataSource(
                 this.state.value,
-                this.valueDataSource.mapValueDS,
+                this.valueDataSource.mapValueDS!,
                 this.dataStore.getMapDS()
             );
         }
@@ -257,7 +274,7 @@ class Select extends Base {
         ]);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: SelectProps, prevState: BaseState) {
         const state = {};
 
         if ('value' in nextProps && nextProps.value !== prevState.value) {
@@ -300,7 +317,7 @@ class Select extends Base {
         return null;
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps: SelectProps, prevState: BaseState) {
         const props = this.props;
         if ('searchValue' in props && this.state.searchValue !== prevState.searchValue) {
             this.dataStore.setOptions({ key: this.state.searchValue });
@@ -341,7 +358,7 @@ class Select extends Base {
         if ('value' in props) {
             this.valueDataSource = getValueDataSource(
                 props.value,
-                this.valueDataSource.mapValueDS,
+                this.valueDataSource.mapValueDS!,
                 this.dataStore.getMapDS()
             );
             this.updateSelectAllYet(this.valueDataSource.value);
@@ -354,7 +371,7 @@ class Select extends Base {
             // fix: set defaultValue first, then update dataSource.
             this.valueDataSource = getValueDataSource(
                 props.defaultValue,
-                this.valueDataSource.mapValueDS,
+                this.valueDataSource.mapValueDS!,
                 this.dataStore.getMapDS()
             );
         }
@@ -378,7 +395,8 @@ class Select extends Base {
     // ie9 下 table-cell 布局不支持宽度超出隐藏
     ie9Hack() {
         try {
-            const width = this.selectDOM.currentStyle.width;
+            const width = (this.selectDOM as HTMLElement & { currentStyle: HTMLElement['style'] })
+                .currentStyle.width;
             this.setState({
                 fixWidth: width !== 'auto',
             });
@@ -389,7 +407,7 @@ class Select extends Base {
 
     useDetailValue() {
         const { popupContent, useDetailValue, dataSource } = this.props;
-        return useDetailValue || (popupContent && !dataSource);
+        return useDetailValue || (!!popupContent && !dataSource);
     }
 
     hasSearch() {
@@ -407,11 +425,8 @@ class Select extends Base {
 
     /**
      * Menu.Item onSelect
-     * @private
-     * @param  {Array<string>} keys
-     * @
      */
-    handleMenuSelect(keys, item) {
+    handleMenuSelect(keys: string[], item: { props: { _key: string } }) {
         const { mode, readOnly, disabled } = this.props;
 
         if (readOnly || disabled) {
@@ -429,7 +444,7 @@ class Select extends Base {
         }
     }
 
-    handleItemClick(key) {
+    handleItemClick(key: string) {
         if (!this.props.popupAutoFocus) {
             this.focusInput();
         }
@@ -443,20 +458,20 @@ class Select extends Base {
     /**
      * 单选模式
      */
-    handleSingleSelect(key, triggerType) {
+    handleSingleSelect(key: string, triggerType: VisibleChangeType) {
         // TODO: 这里 cacheValue=false 有问题，dataSource 更新的时候就应该处理
         const { cacheValue } = this.props;
         // get data only from dataStore while cacheValue=false
         const itemObj = getValueDataSource(
             key,
-            cacheValue ? this.valueDataSource.mapValueDS : {},
+            cacheValue ? this.valueDataSource.mapValueDS! : {},
             this.dataStore.getMapDS()
         );
         this.valueDataSource = itemObj;
 
         this.setVisible(false, triggerType);
 
-        // 应在return之前传出highlightKey
+        // 应在 return 之前传出 highlightKey
         this.setState({
             highlightKey: key,
         });
@@ -464,7 +479,7 @@ class Select extends Base {
         if (this.useDetailValue()) {
             return this.handleChange(itemObj.valueDS, triggerType);
         } else {
-            this.handleChange(itemObj.value, triggerType, itemObj.valueDS);
+            this.handleChange(itemObj.value!, triggerType, itemObj.valueDS);
         }
 
         // 清空搜索
@@ -476,10 +491,15 @@ class Select extends Base {
     /**
      * 多选模式 multiple/tag
      */
-    handleMultipleSelect(keys, triggerType, key, keepSearchValue) {
+    handleMultipleSelect(
+        keys: DataSourceItem[] | undefined,
+        triggerType: VisibleChangeType,
+        key?: string | null,
+        keepSearchValue?: boolean
+    ) {
         const itemObj = getValueDataSource(
             keys,
-            this.valueDataSource.mapValueDS,
+            this.valueDataSource.mapValueDS!,
             this.dataStore.getMapDS()
         );
 
@@ -494,7 +514,7 @@ class Select extends Base {
             this.setVisible(false, triggerType);
         }
 
-        // 因为搜索后会设置 hightLight 为第一个item，menu渲染会自动滚动到 hightLight 的元素上面。
+        // 因为搜索后会设置 hightLight 为第一个 item，menu 渲染会自动滚动到 hightLight 的元素上面。
         // 所以设置 hightLight 为当前选中项避免滚动
         key &&
             this.state.visible &&
@@ -519,7 +539,7 @@ class Select extends Base {
         }
     }
 
-    updateSelectAllYet(value) {
+    updateSelectAllYet(value?: unknown) {
         // multiple mode
         // is current state select all or not
         this.selectAllYet = false;
@@ -539,7 +559,7 @@ class Select extends Base {
         }
     }
 
-    handleSearchValue(value) {
+    handleSearchValue(value: string) {
         if (this.state.searchValue === value) {
             return;
         }
@@ -563,10 +583,8 @@ class Select extends Base {
 
     /**
      * Handle search input change event
-     * @param {String} value search text
-     * @param {Event} e change Event
      */
-    handleSearch(value, e) {
+    handleSearch(value: string, e: ChangeEvent<HTMLInputElement>) {
         this.handleSearchValue(value);
 
         // inputing should trigger popup open
@@ -574,16 +592,16 @@ class Select extends Base {
             this.setVisible(true);
         }
 
-        this.props.onSearch(value, e);
+        this.props.onSearch!(value, e);
     }
 
-    handleSearchClear(triggerType) {
+    handleSearchClear(triggerType: string) {
         this.handleSearchValue('');
-        this.props.onSearchClear(triggerType);
+        this.props.onSearchClear!(triggerType);
     }
 
     // 搜索框 keyDown 事件
-    handleSearchKeyDown(e) {
+    handleSearchKeyDown(e: KeyboardEvent<HTMLElement>) {
         const {
             popupContent,
             onKeyDown,
@@ -602,7 +620,7 @@ class Select extends Base {
             if (hasSearch && e.keyCode === KEYCODE.SPACE) {
                 e.stopPropagation();
             }
-            return onKeyDown(e);
+            return onKeyDown!(e);
         }
 
         const proxy = 'search';
@@ -610,11 +628,11 @@ class Select extends Base {
         switch (e.keyCode) {
             case KEYCODE.UP:
                 e.preventDefault();
-                onToggleHighlightItem(this.toggleHighlightItem(-1, e), 'up');
+                onToggleHighlightItem!(this.toggleHighlightItem(-1), 'up');
                 break;
             case KEYCODE.DOWN:
                 e.preventDefault();
-                onToggleHighlightItem(this.toggleHighlightItem(1, e), 'down');
+                onToggleHighlightItem!(this.toggleHighlightItem(1), 'down');
                 break;
             case KEYCODE.ENTER:
                 e.preventDefault();
@@ -638,7 +656,11 @@ class Select extends Base {
                 if ((mode === 'multiple' && showSearch) || mode === 'tag') {
                     // 在多选并且有搜索的情况下，删除最后一个 tag
                     const valueDS = this.valueDataSource.valueDS;
-                    if (valueDS && valueDS.length && !valueDS[valueDS.length - 1].disabled) {
+                    if (
+                        valueDS &&
+                        valueDS.length &&
+                        !(valueDS as ObjectItem[])[(valueDS as ObjectItem[]).length - 1].disabled
+                    ) {
                         this.handleDeleteTag(e);
                     }
                 } else if (mode === 'single' && hasClear && !this.state.visible) {
@@ -650,11 +672,11 @@ class Select extends Base {
                 break;
         }
 
-        onKeyDown(e);
+        onKeyDown!(e);
     }
 
-    chooseMultipleItem(key) {
-        const value = this.state.value || [];
+    chooseMultipleItem(key: string) {
+        const value = (this.state.value as DataSourceItem[]) || [];
         const keys = value.map(v => {
             return valueToSelectKey(v);
         });
@@ -676,7 +698,7 @@ class Select extends Base {
     }
 
     // 回车 选择高亮的 item
-    chooseHighlightItem(proxy, e) {
+    chooseHighlightItem(proxy: unknown, e: UIEvent<HTMLElement>) {
         const { mode } = this.props;
 
         if (!this.state.visible) {
@@ -695,54 +717,53 @@ class Select extends Base {
         }
 
         if (mode === 'single') {
-            this.handleSingleSelect(highlightKey, 'enter');
+            this.handleSingleSelect(highlightKey!, 'enter');
         } else {
-            this.chooseMultipleItem(highlightKey);
-            // 阻止事件冒泡到最外层，让Popup 监听到触发弹层关闭
+            this.chooseMultipleItem(highlightKey!);
+            // 阻止事件冒泡到最外层，让 Popup 监听到触发弹层关闭
             e && e.stopPropagation();
         }
     }
 
     /**
      * Handle Tag close event
-     * @param  {Object} item
-     * @return {Boolean} false  return false to prevent auto close
+     * @returns false  return false to prevent auto close
      * ----
      * It MUST be multiple mode, needn't additional judgement
      */
-    handleTagClose(item) {
+    handleTagClose(item: ObjectItem) {
         const { readOnly } = this.props;
         if (readOnly) return false;
+        const stateValue = this.state.value;
         if (this.useDetailValue()) {
-            const value = this.state.value.filter(v => {
+            const value = (stateValue as ObjectItem[]).filter(v => {
                 return item.value !== v.value;
             });
 
             this.handleChange(value, 'tag');
         } else {
             // filter out current item, and then call handleMenuSelect
-            const value = this.state.value.filter(v => {
+            const value = (stateValue as Exclude<DataSourceItem, ObjectItem>[]).filter(v => {
                 return item.value !== v;
             });
 
             this.handleMultipleSelect(value, 'tag');
         }
 
-        this.props.onRemove(item);
+        this.props.onRemove!(item);
 
         // prevent tag close
         return false;
     }
 
-    // eslint-disable-next-line valid-jsdoc
     /**
      * Handle BACKSPACE key event
-     * @param {Event} e keyDown event
+     * @param e - keyDown event
      * ---
      * It MUST be multiple mode
      */
-    handleDeleteTag(e) {
-        const value = this.state.value;
+    handleDeleteTag(e: UIEvent<HTMLElement>) {
+        const value = this.state.value as ObjectItem[];
         const searchValue = this.state.searchValue;
 
         if (searchValue || !value || !value.length) {
@@ -763,11 +784,11 @@ class Select extends Base {
 
     /**
      * Handle SelectAll span click event
-     * @param {Event} e click event
+     * @param e - click event
      */
-    handleSelectAll(e) {
+    handleSelectAll(e: UIEvent<HTMLElement>) {
         e && e.preventDefault();
-        let nextValues;
+        let nextValues: ObjectItem['value'][];
 
         if (this.selectAllYet) {
             nextValues = [];
@@ -779,7 +800,7 @@ class Select extends Base {
         this.handleMultipleSelect(nextValues, 'selectAll');
     }
 
-    handleVisibleChange(visible, type) {
+    handleVisibleChange(visible: boolean, type: VisibleChangeType) {
         this.setVisible(visible, type);
     }
 
@@ -790,10 +811,10 @@ class Select extends Base {
         }
     }
 
-    maxTagPlaceholder(selectedValues, totalValues) {
+    maxTagPlaceholder(selectedValues: ObjectItem[], totalValues: ObjectItem[]) {
         const { locale } = this.props;
 
-        return `${str.template(locale.maxTagPlaceholder, {
+        return `${str.template(locale!.maxTagPlaceholder, {
             selected: selectedValues.length,
             total: totalValues.length,
         })}`;
@@ -801,11 +822,10 @@ class Select extends Base {
 
     /**
      * 如果用户是自定义的弹层，则直接以 value 为准，不再校验 dataSource
-     * TODO: 2.0 中 value 接受 string/object{value,label} 两种类型的数据，自动做识别，可以避免用户去转换，也和 date-picker 对齐
-     * 此外 onChange 第一个参数根据 api 来控制类型是 [string] 还是 [object{value,label}]
-     * @param {object} props
+     * TODO: 2.0 中 value 接受 string/object\{value,label\} 两种类型的数据，自动做识别，可以避免用户去转换，也和 date-picker 对齐
+     * 此外 onChange 第一个参数根据 api 来控制类型是 [string] 还是 [object\{value,label\}]
      */
-    renderValues() {
+    renderValues(): ReactNode {
         const {
             prefix,
             mode,
@@ -831,7 +851,7 @@ class Select extends Base {
             } else {
                 value = getValueDataSource(
                     value,
-                    this.valueDataSource.mapValueDS,
+                    this.valueDataSource.mapValueDS!,
                     this.dataStore.getMapDS()
                 ).valueDS;
             }
@@ -844,48 +864,49 @@ class Select extends Base {
 
             const retvalue =
                 fillProps && typeof value === 'object' && fillProps in value
-                    ? value[fillProps]
-                    : valueRender(value);
+                    ? (value as ObjectItem)[fillProps]
+                    : valueRender!(value as ObjectItem);
             // 0 => '0'
             return typeof retvalue === 'number' ? retvalue.toString() : retvalue;
         } else if (value) {
-            let limitedCountValue = value;
+            let detailedValueArr = value as ObjectItem[];
+            let limitedCountValue = detailedValueArr;
             let maxTagPlaceholderEl;
             const totalValue = this.dataStore.getFlattenDS();
             const holder =
                 'maxTagPlaceholder' in this.props ? maxTagPlaceholder : this.maxTagPlaceholder;
 
-            if (maxTagCount !== undefined && value.length > maxTagCount && !tagInline) {
+            if (maxTagCount !== undefined && detailedValueArr.length > maxTagCount && !tagInline) {
                 limitedCountValue = limitedCountValue.slice(0, maxTagCount);
                 maxTagPlaceholderEl = (
                     <Tag key="_count" type="primary" size={tagSize} animation={false}>
-                        {holder(value, totalValue)}
+                        {holder!(detailedValueArr, totalValue)}
                     </Tag>
                 );
             }
 
-            if (value.length > 0 && tagInline) {
+            if (detailedValueArr.length > 0 && tagInline) {
                 maxTagPlaceholderEl = (
                     <div className={`${prefix}select-tag-compact`} key="_count">
-                        {holder(value, totalValue)}
+                        {holder!(detailedValueArr, totalValue)}
                     </div>
                 );
             }
 
-            value = limitedCountValue;
-            if (!Array.isArray(value)) {
-                value = [value];
+            detailedValueArr = limitedCountValue;
+            if (!Array.isArray(detailedValueArr)) {
+                value = [detailedValueArr];
             }
 
-            const selectedValueNodes = value.map(v => {
+            const selectedValueNodes = detailedValueArr.map(v => {
                 if (!v) {
                     return null;
                 }
-                const labelNode = fillProps ? v[fillProps] : valueRender(v);
+                const labelNode = fillProps ? v[fillProps] : valueRender!(v);
 
                 return (
                     <Tag
-                        key={v.value}
+                        key={v.value as string}
                         disabled={disabled || v.disabled}
                         type="primary"
                         size={tagSize}
@@ -916,15 +937,15 @@ class Select extends Base {
      * 2. fix onBlur while has clear
      * @returns
      */
-    handleWrapClick = e => {
+    handleWrapClick = (e: MouseEvent<HTMLElement>) => {
         // ignore click on input to choose text
-        if (e.target.nodeName !== 'INPUT') {
+        if ((e.target as HTMLElement).nodeName !== 'INPUT') {
             e.preventDefault();
         }
         this.focusInput();
     };
 
-    handleArrowClick = e => {
+    handleArrowClick = (e: UIEvent<HTMLElement>) => {
         e.preventDefault();
         this.focusInput();
 
@@ -933,7 +954,7 @@ class Select extends Base {
         this.state.visible && this.hasSearch() && this.setVisible(false);
     };
 
-    handleClear = e => {
+    handleClear = (e: UIEvent<HTMLElement>) => {
         e.stopPropagation();
         this.selectAllYet = false;
         this.handleChange(undefined, 'clear');
@@ -956,13 +977,11 @@ class Select extends Base {
 
     /**
      * render arrow
-     * @param {object} props
-     * @param {function} [clickHandler]
      */
     renderExtraNode() {
         const { hasArrow, hasClear, prefix } = this.props;
 
-        const ret = [];
+        const ret: ReactElement[] = [];
 
         if (hasArrow) {
             ret.push(
@@ -997,7 +1016,7 @@ class Select extends Base {
     /**
      * 选择器
      * @override
-     * @param {object} props
+     * @param props -
      */
     renderSelect() {
         const {
@@ -1021,7 +1040,7 @@ class Select extends Base {
             rtl,
         } = this.props;
         const others = obj.pickOthers(Select.propTypes, this.props);
-        // select不是输入框，应过滤掉addonTextAfter
+        // select 不是输入框，应过滤掉 addonTextAfter
         if ('addonTextAfter' in others) {
             delete others.addonTextAfter;
         }
@@ -1033,9 +1052,12 @@ class Select extends Base {
         const valueNodes = this.renderValues();
 
         // compatible with selectPlaceHolder. TODO: removed in 2.0 version
-        let _placeholder = placeholder || locale.selectPlaceholder || locale.selectPlaceHolder;
-        if (valueNodes && valueNodes.length) {
-            _placeholder = null;
+        let _placeholder: string | undefined =
+            placeholder ||
+            (locale!.selectPlaceholder as string) ||
+            (locale!.selectPlaceHolder as string);
+        if (valueNodes && (valueNodes as ReactElement[]).length) {
+            _placeholder = undefined;
         }
 
         // 弹窗展开时将当前的值作为 placeholder，这个功能的前提是 valueNode 必须是一个字符串
@@ -1065,7 +1087,9 @@ class Select extends Base {
             }
         );
 
-        const valuetext = this.valueDataSource.valueDS ? this.valueDataSource.valueDS.label : '';
+        const valuetext = this.valueDataSource.valueDS
+            ? ((this.valueDataSource.valueDS as ObjectItem).label as string)
+            : '';
         return (
             <span
                 {...othersData}
@@ -1113,7 +1137,11 @@ class Select extends Base {
         );
     }
 
-    renderSearchInput(valueNodes, placeholder, inputEl) {
+    renderSearchInput(
+        valueNodes: ReactNode,
+        placeholder: string | undefined,
+        inputEl: ReactElement
+    ) {
         const { prefix, mode, tagInline } = this.props;
         const isSingle = mode === 'single';
 
@@ -1157,7 +1185,7 @@ class Select extends Base {
     /**
      * 渲染弹层的 header 内容
      * @override
-     * @param {object} props
+     * @param props -
      */
     renderMenuHeader() {
         const { prefix, hasSelectAll, mode, locale, menuProps } = this.props;
@@ -1172,7 +1200,7 @@ class Select extends Base {
             return null;
         }
 
-        const text = typeof hasSelectAll === 'boolean' ? locale.selectAll : hasSelectAll;
+        const text = typeof hasSelectAll === 'boolean' ? locale!.selectAll : hasSelectAll;
 
         const selectAllYet = this.selectAllYet;
 
@@ -1208,7 +1236,7 @@ class Select extends Base {
 
     render() {
         const { mode } = this.props;
-        const props = { ...this.props };
+        const props: BaseProps = { ...this.props };
 
         // forbid to close Popup by click Input while hasSearch
         if (this.hasSearch()) {

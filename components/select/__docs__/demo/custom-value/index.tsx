@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select, Radio } from '@alifd/next';
+import { type GroupProps } from '@alifd/next/lib/radio';
+import { type SelectProps } from '@alifd/next/lib/select';
 
 class DemoWithFillProps extends React.Component {
     state = {
@@ -8,7 +10,7 @@ class DemoWithFillProps extends React.Component {
         fillProps: 'value',
         placeholder: 'Fill with value',
     };
-    handleCtrlChange = fillProps => {
+    handleCtrlChange: GroupProps['onChange'] = fillProps => {
         this.setState({
             fillProps,
             value: '',
@@ -16,7 +18,7 @@ class DemoWithFillProps extends React.Component {
         });
     };
 
-    handleChange = value => {
+    handleChange: SelectProps['onChange'] = value => {
         this.setState({ value });
     };
 
@@ -62,7 +64,7 @@ const DemoWithValueRender = () => {
         { value: 'Monkey King', age: 999, gender: 'M' },
     ];
 
-    const valueRender = v => {
+    const valueRender: SelectProps['valueRender'] = v => {
         return `${v.value} / ${v.gender} / ${v.age}`;
     };
 

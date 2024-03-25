@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
+import { type SelectProps } from '@alifd/next/lib/select';
 
-const dataSource = [
+const dataSource: SelectProps['dataSource'] = [
     'Lucy King',
     'Lily King',
     'Jim Green',
@@ -26,7 +27,7 @@ const dataSource = [
     },
 ];
 
-const onChange = v => {
+const onChange: SelectProps['onChange'] = v => {
     console.log(v);
 };
 

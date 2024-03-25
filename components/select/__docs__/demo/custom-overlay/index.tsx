@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { type UIEvent, type MouseEvent, HTMLAttributes } from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
 import classNames from 'classnames';
-/* eslint-disable react/prop-types, react/no-multi-comp */
+import { SelectProps } from '@alifd/meet-react/lib/select';
 
-// prevent onBlur
-function preventDefault(e) {
+function preventDefault(e: UIEvent<HTMLElement>) {
     e.preventDefault();
 }
 
-class CustomMenu extends React.Component {
+interface CustomMenuProps extends HTMLAttributes<HTMLElement> {
+    onChange: (item: any) => void;
+    className?: string;
+}
+
+class CustomMenu extends React.Component<CustomMenuProps> {
     data = [
         {
             label: 'value1',
@@ -21,7 +25,7 @@ class CustomMenu extends React.Component {
         },
     ];
 
-    onClick(item) {
+    onClick(item: MouseEvent<HTMLElement>) {
         this.props.onChange(item);
     }
 
@@ -46,22 +50,19 @@ class CustomMenu extends React.Component {
 }
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        value: null,
+        visible: undefined,
+    };
 
-        this.state = {
-            value: null,
-        };
-    }
-
-    handleSelect = value => {
+    handleSelect: CustomMenuProps['onChange'] = value => {
         this.setState({
             value,
             visible: false,
         });
     };
 
-    onVisibleChange = visible => {
+    onVisibleChange: SelectProps['onVisibleChange'] = visible => {
         this.setState({
             visible,
         });

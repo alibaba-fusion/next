@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-/* istanbul ignore file */
+import type { OptionGroupProps } from './types';
 
 /**
  * Select.OptionGroup
  */
-export default class OptionGroup extends React.Component {
+export default class OptionGroup extends React.Component<OptionGroupProps> {
     static propTypes = {
         /**
          * 设置分组的文案

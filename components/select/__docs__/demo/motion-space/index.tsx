@@ -17,6 +17,11 @@ import {
     CascaderSelect,
 } from '@alifd/next';
 import 'whatwg-fetch';
+import { type GroupProps } from '@alifd/next/lib/radio';
+import { type SelectProps } from '@alifd/next/lib/select';
+import { type DrawerProps } from '@alifd/next/lib/drawer';
+import { type CascaderSelectProps } from '@alifd/next/lib/cascader-select';
+import { type TreeSelectProps } from '@alifd/next/lib/tree-select';
 
 const Tooltip = Balloon.Tooltip;
 const menubuttonMenu = ['Undo', 'Redo', 'Cut', 'Copy', 'Paste'].map(item => (
@@ -251,11 +256,11 @@ const TreeNode = TreeSelect.Node;
 
 const Option = Select.Option;
 
-const onChange = function (value) {
+const onChange: GroupProps['onChange'] = function (value) {
     console.log(value);
 };
 
-const onToggleHighlightItem = function (item, type) {
+const onToggleHighlightItem: SelectProps['onToggleHighlightItem'] = function (item, type) {
     console.log(item, type);
 };
 
@@ -270,7 +275,7 @@ const onBlur = () => {
 class Demo extends React.Component {
     state = {
         visible: false,
-        placement: 'right',
+        placement: 'right' as DrawerProps['placement'],
     };
 
     onOpen = () => {
@@ -279,13 +284,13 @@ class Demo extends React.Component {
         });
     };
 
-    onClose = reason => {
+    onClose: DrawerProps['onClose'] = reason => {
         this.setState({
             visible: false,
         });
     };
 
-    onPlacementChange = dir => {
+    onPlacementChange: GroupProps['onChange'] = dir => {
         this.setState({
             placement: dir,
         });
@@ -322,7 +327,7 @@ const popupCustomIcon = () => {
     Dialog.confirm({
         title: 'Confirm',
         content: 'set icon as "warning" ',
-        closeMode: ['mask', 'icon', 'esc'],
+        closeMode: ['mask', 'close', 'esc'],
         messageProps: {
             type: 'warning',
         },
@@ -336,13 +341,9 @@ const notice = () => {
 };
 
 class Demo3 extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: [],
-        };
-    }
+    state = {
+        data: [],
+    };
 
     componentDidMount() {
         fetch('https://os.alipayobjects.com/rmsportal/ODDwqcDFTLAguOvWEolX.json')
@@ -353,7 +354,7 @@ class Demo3 extends React.Component {
             .catch(e => console.log(e));
     }
 
-    handleChange = (value, data, extra) => {
+    handleChange: CascaderSelectProps['onChange'] = (value, data, extra) => {
         console.log(value, data, extra);
     };
 
@@ -363,15 +364,9 @@ class Demo3 extends React.Component {
 }
 
 class Demo4 extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(value, data) {
+    handleChange: TreeSelectProps['onChange'] = (value, data) => {
         console.log(value, data);
-    }
+    };
 
     render() {
         return (
