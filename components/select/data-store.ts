@@ -1,3 +1,10 @@
+import type {
+    DataSourceItem,
+    DataStoreOptions,
+    NormalizedObjectItem,
+    ObjectItem,
+    ReactElementWithTypeMark,
+} from './types';
 import {
     filter,
     parseDataSourceFromChildren,
@@ -10,7 +17,13 @@ import {
  * manage dataSource for menu list
  */
 class DataStore {
-    constructor(options) {
+    options: DataStoreOptions;
+    dataSource: NormalizedObjectItem[];
+    menuDataSource: NormalizedObjectItem[];
+    flattenDataSource: NormalizedObjectItem[];
+    mapDataSource: Record<string, ObjectItem>;
+    enabledDataSource: NormalizedObjectItem[];
+    constructor(options: DataStoreOptions) {
         this.options = {
             filter,
             key: undefined,
@@ -31,18 +44,27 @@ class DataStore {
         this.flattenDataSource = [];
     }
 
-    setOptions(options) {
+    setOptions(options: DataStoreOptions) {
         Object.assign(this.options, options);
     }
 
-    updateByDS(dataSource, isChildren = false) {
+    updateByDS(
+        dataSource: ReactElementWithTypeMark | ReactElementWithTypeMark[] | DataSourceItem[],
+        isChildren = false
+    ) {
         this.dataSource = isChildren
-            ? parseDataSourceFromChildren(dataSource)
-            : normalizeDataSource(dataSource, 0, this.options.showDataSourceChildren);
+            ? parseDataSourceFromChildren(
+                  dataSource as ReactElementWithTypeMark | ReactElementWithTypeMark[]
+              )
+            : normalizeDataSource(
+                  dataSource as DataSourceItem[],
+                  0,
+                  this.options.showDataSourceChildren
+              );
         return this.updateAll();
     }
 
-    updateByKey(key) {
+    updateByKey(key: string) {
         if (key === this.options.key) {
             return this.getMenuDS();
         }
@@ -76,7 +98,7 @@ class DataStore {
         this.menuDataSource = filterDataSource(
             this.dataSource,
             filterLocal ? key : '',
-            filter,
+            filter!,
             this.options.addonKey
         );
 

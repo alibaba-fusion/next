@@ -1,17 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
+import { type SelectProps } from '@alifd/next/lib/select';
 
 const Option = Select.Option;
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.onChange = this.onChange.bind(this);
-    }
-    onChange(value) {
+    onChange: SelectProps['onChange'] = value => {
         console.log(value);
-    }
+    };
 
     render() {
         return (

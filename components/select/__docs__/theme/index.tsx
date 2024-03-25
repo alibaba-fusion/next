@@ -1,7 +1,9 @@
 import '../../../demo-helper/style';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Demo, DemoGroup, DemoHead, initDemo, type DemoProps } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
-import Select from '../../index';
+import Select, { type SelectProps } from '../../index';
 import '../../style';
 import Field from '../../../field';
 import zhCN from '../../../locale/zh-cn';
@@ -31,8 +33,8 @@ const demo = {
     },
 };
 
-const itemRender = (item, searchKey) => {
-    let label = item.label;
+const itemRender: SelectProps['itemRender'] = (item, searchKey) => {
+    let label = item.label as string;
     if (searchKey && searchKey.length) {
         const key = searchKey.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
         const reg = new RegExp(`(${key})`, 'i');
@@ -42,7 +44,7 @@ const itemRender = (item, searchKey) => {
     return <span dangerouslySetInnerHTML={{ __html: label }} />;
 };
 
-class FunctionDemo extends React.Component {
+class FunctionDemo extends React.Component<{ lang: keyof typeof i18nMaps }> {
     field = new Field(this, {
         values: {
             demo: demo,
@@ -101,7 +103,7 @@ class FunctionDemo extends React.Component {
         const selectProps = {
             dataSource,
             popupProps: { needAdjust: false },
-            label: getValue('demo').label.value === 'true' ? 'Label' : undefined,
+            label: getValue<typeof demo>('demo')!.label.value === 'true' ? 'Label' : undefined,
         };
 
         const comboboxProps = {
@@ -109,7 +111,7 @@ class FunctionDemo extends React.Component {
             itemRender,
             popupProps: { needAdjust: false, style: { maxHeight: 160 } },
             hasArrow: true,
-            label: getValue('demo').label.value === 'true' ? 'Label' : undefined,
+            label: getValue<typeof demo>('demo')!.label.value === 'true' ? 'Label' : undefined,
         };
 
         return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select, Icon } from '@alifd/next';
+import { type SelectProps } from '@alifd/next/lib/select';
 
 const dataSource = [
     { value: '#FF0000', label: 'red', title: 'red' },
@@ -10,7 +11,7 @@ const dataSource = [
     { value: '#66CCFF', label: 'blue', title: 'blue' },
 ];
 
-const itemRender = item => {
+const itemRender: SelectProps['itemRender'] = (item: { value: string }) => {
     return (
         <span>
             <Icon type="account" size="xs" style={{ color: item.value }} />
@@ -22,7 +23,7 @@ const itemRender = item => {
     );
 };
 
-const valueRender = item => {
+const valueRender: SelectProps['valueRender'] = (item: { value: string; label: string }) => {
     return (
         <span>
             <Icon type="account" size="xs" style={{ color: item.value }} /> {item.label}
@@ -49,8 +50,8 @@ const dataSource2 = [
 ];
 
 // highlight keywords
-const itemRender2 = (item, searchKey) => {
-    let label = item.label;
+const itemRender2: SelectProps['itemRender'] = (item, searchKey) => {
+    let label = item.label as string;
     if (searchKey && searchKey.length) {
         const key = searchKey.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
         const reg = new RegExp(`(${key})`, 'ig');

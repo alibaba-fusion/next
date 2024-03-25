@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select, Balloon } from '@alifd/next';
+import { type SelectProps } from '@alifd/next/lib/select';
 
 const { Tooltip } = Balloon;
 
@@ -17,11 +18,11 @@ const dataSource = [
     },
 ];
 
-function handleChange(value) {
+const handleChange: SelectProps['onChange'] = value => {
     console.log(value);
-}
+};
 
-const maxTagPlaceholder = (selectedValues, totalValues) => {
+const maxTagPlaceholder: SelectProps['maxTagPlaceholder'] = (selectedValues, totalValues) => {
     const trigger = <span>{`${selectedValues.length}/${totalValues.length}`}</span>;
     const labels = selectedValues.map(obj => obj.label);
 

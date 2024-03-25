@@ -1,4 +1,10 @@
 import { Children } from 'react';
+import type {
+    DataSourceItem,
+    NormalizedObjectItem,
+    ObjectItem,
+    ReactElementWithTypeMark,
+} from './types';
 
 /**
  * util module
@@ -6,38 +12,38 @@ import { Children } from 'react';
 
 /**
  * 是否是单选模式
- * @param {string} mode
- * @return {boolean} is single mode
+ * @param mode - 模式
+ * @returns is single mode
  */
-export function isSingle(mode) {
+export function isSingle(mode?: string | null) {
     return !mode || mode === 'single';
 }
 
 /**
  * 在 Select 中，认为 null 和 undefined 都是空值
- * @param {*} n any object
- * @return {boolean}
+ * @param n - any object
+ * @returns n is null or undefined
  */
-export function isNull(n) {
+export function isNull(n: unknown): n is null | undefined {
     return n === null || n === undefined;
 }
 
 /**
  * 将字符串中的正则表达式关键字符添加转义
- * @param {string} str
- * @return {string}
+ * @param str - 字符串
+ * @returns
  */
-export function escapeForReg(str) {
+export function escapeForReg(str: string) {
     return str.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
 /**
  * filter by key
- * @param {string} key filter key
- * @param {object} item item object
- * @return {boolean} it's filtered
+ * @param key - filter key
+ * @param item - item object
+ * @returns it's filtered
  */
-export function filter(key, item) {
+export function filter(key: string | number, item: ObjectItem) {
     const _key = escapeForReg(`${key}`);
     const regExp = new RegExp(`(${_key})`, 'ig');
 
@@ -46,15 +52,14 @@ export function filter(key, item) {
 
 /**
  * loop map
- * @param {Array} dataSource
- * @param {function} callback
- * @return {Array}
- * ----
- * @callback ~loopCallback
- * @param {object} option
+ * @param dataSource - 数据源
+ * @param callback - 回调
  */
-export function loopMap(dataSource, callback) {
-    const result = [];
+export function loopMap(
+    dataSource: NormalizedObjectItem[],
+    callback: (option: NormalizedObjectItem) => NormalizedObjectItem | undefined | null | false
+) {
+    const result: NormalizedObjectItem[] = [];
     dataSource.forEach(option => {
         if (option.children) {
             const children = loopMap(option.children, callback);
@@ -63,30 +68,30 @@ export function loopMap(dataSource, callback) {
                 children,
             });
         } else {
-            // eslint-disable-next-line callback-return
             const tmp = callback(option);
             tmp && result.push(tmp);
         }
     });
-
     return result;
 }
 
 /**
  * Parse dataSource from MenuItem
- * @static
- * @param {Array<Element>} children
- * @param {number} [deep=0] recursion deep level
+ * @param children - children
+ * @param deep - recursion deep level
  */
-export function parseDataSourceFromChildren(children, deep = 0) {
-    const source = [];
+export function parseDataSourceFromChildren(
+    children: ReactElementWithTypeMark | ReactElementWithTypeMark[],
+    deep = 0
+): NormalizedObjectItem[] {
+    const source: NormalizedObjectItem[] = [];
 
     Children.forEach(children, (child, index) => {
         if (!child) {
             return;
         }
         const { type, props: childProps } = child;
-        const item2 = { deep };
+        const item2: NormalizedObjectItem & { deep: number } = { deep };
 
         let isOption = false;
         let isOptionGroup = false;
@@ -142,22 +147,29 @@ export function parseDataSourceFromChildren(children, deep = 0) {
     return source;
 }
 
+export function isObjectDataSourceItem(item: DataSourceItem): item is ObjectItem {
+    return !(/string|boolean|number/.test(typeof item) || item === null || item === undefined);
+}
+
 /**
  * Normalize dataSource
- * @static
- * @param {Array} dataSource
- * @param {number} [deep=0] recursion deep level
+ * @param dataSource - dataSource
+ * @param deep -  recursion deep level
  * ----
- * value priority: value > 'index'
- * label priority: label > 'value' > 'index'
+ * value priority: value \> 'index'
+ * label priority: label \> 'value' \> 'index'
  * disabled: disabled === true
  */
-export function normalizeDataSource(dataSource, deep = 0, showDataSourceChildren = true) {
-    const source = [];
+export function normalizeDataSource(
+    dataSource: DataSourceItem[],
+    deep = 0,
+    showDataSourceChildren = true
+) {
+    const source: NormalizedObjectItem[] = [];
 
     dataSource.forEach((item, index) => {
         // enable array of basic type
-        if (/string|boolean|number/.test(typeof item) || item === null || item === undefined) {
+        if (!isObjectDataSourceItem(item)) {
             item = { label: `${item}`, value: item };
         }
 
@@ -166,7 +178,7 @@ export function normalizeDataSource(dataSource, deep = 0, showDataSourceChildren
             return;
         }
 
-        const item2 = { deep };
+        const item2: NormalizedObjectItem & { deep: number } = { deep };
         // deep < 1: only 2 level allowed
         if (Array.isArray(item.children) && deep < 1 && showDataSourceChildren) {
             // handle group
@@ -194,12 +206,10 @@ export function normalizeDataSource(dataSource, deep = 0, showDataSourceChildren
 
 /**
  * Get flatten dataSource
- * @static
- * @param  {Array} dataSource structured dataSource
- * @return {Array}
+ * @param dataSource - structured dataSource
  */
-export function flattingDataSource(dataSource) {
-    const source = [];
+export function flattingDataSource(dataSource: NormalizedObjectItem[]) {
+    const source: NormalizedObjectItem[] = [];
 
     dataSource.forEach(item => {
         if (Array.isArray(item.children)) {
@@ -212,12 +222,17 @@ export function flattingDataSource(dataSource) {
     return source;
 }
 
-export function filterDataSource(dataSource, key, filter, addonKey) {
+export function filterDataSource(
+    dataSource: NormalizedObjectItem[] | undefined,
+    key: string | number | undefined | null,
+    filter: (key: string | number, item: NormalizedObjectItem) => boolean,
+    addonKey?: boolean
+) {
     if (!Array.isArray(dataSource)) {
         return [];
     }
     if (typeof key === 'undefined' || key === null) {
-        return [].concat(dataSource);
+        return ([] as NormalizedObjectItem[]).concat(dataSource);
     }
 
     let addKey = true;
@@ -240,11 +255,11 @@ export function filterDataSource(dataSource, key, filter, addonKey) {
     return menuDataSource;
 }
 
-function getKeyItemByValue(value, valueMap) {
+function getKeyItemByValue(value: DataSourceItem, valueMap: Record<string, ObjectItem>) {
     let item;
 
     if (typeof value === 'object') {
-        if (value.hasOwnProperty('value')) {
+        if (value!.hasOwnProperty('value')) {
             item = value;
         } else {
             item = {
@@ -259,24 +274,32 @@ function getKeyItemByValue(value, valueMap) {
         };
     }
 
-    return item;
+    return item as ObjectItem;
 }
 
 /**
  * compute valueDataSource by new value
- * @param {Array/String} value 数据
- * @param {Object} mapValueDS   上个value的缓存数据 value => {value,label} 的映射关系表
- * @param {*} mapMenuDS  通过 dataSource 建立 value => {value,label} 的映射关系表
- * @returns {Object} value: [value]; valueDS: [{value,label}]; mapValueDS: {value: {value,label}}
+ * @param value - 数据
+ * @param mapValueDS - 上个 value 的缓存数据 value =\> \{value,label\} 的映射关系表
+ * @param mapMenuDS - 通过 dataSource 建立 value =\> \{value,label\} 的映射关系表
+ * @returns value: [value]; valueDS: [\{value,label\}]; mapValueDS: \{value: \{value,label\}\}
  */
-export function getValueDataSource(value, mapValueDS, mapMenuDS) {
+export function getValueDataSource(
+    value: DataSourceItem | DataSourceItem[],
+    mapValueDS: Record<string, ObjectItem>,
+    mapMenuDS: Record<string, ObjectItem>
+): {
+    value?: ObjectItem['value'][] | ObjectItem['value'];
+    valueDS?: ObjectItem | ObjectItem[];
+    mapValueDS?: Record<string, ObjectItem>;
+} {
     if (isNull(value)) {
         return {};
     }
 
-    const newValue = [];
-    const newValueDS = [];
-    const newMapValueDS = {};
+    const newValue: ObjectItem['value'][] = [];
+    const newValueDS: ObjectItem[] = [];
+    const newMapValueDS: Record<string, ObjectItem> = {};
     const _newMapDS = Object.assign({}, mapValueDS, mapMenuDS);
 
     if (Array.isArray(value)) {
@@ -307,61 +330,16 @@ export function getValueDataSource(value, mapValueDS, mapMenuDS) {
 }
 
 /**
- * Get flatten dataSource
- * @static
- * @param  {any} value structured dataSource
- * @return {String}
+ * Get Selected key from value
+ * @param value - structured dataSource
+ * @returns
  */
-export function valueToSelectKey(value) {
+export function valueToSelectKey(value: DataSourceItem): ObjectItem['value'] {
     let val;
-    if (typeof value === 'object' && value.hasOwnProperty('value')) {
-        val = value.value;
+    if (typeof value === 'object' && value!.hasOwnProperty('value')) {
+        val = value!.value;
     } else {
         val = value;
     }
     return `${val}`;
 }
-
-/**
- * UP Down 改进双向链表方法
- */
-// function DoubleLinkList(element){
-//     this.prev = null;
-//     this.next = null;
-//     this.element = element;
-// }
-//
-// export function mapDoubleLinkList(dataSource){
-//
-//     const mapDS = {};
-//     let doubleLink = null;
-//
-//     let head = null;
-//     let tail = null;
-//
-//     function  append(element) {
-//         if (!doubleLink) {
-//             doubleLink = new DoubleLinkList(element);
-//             head = doubleLink;
-//             tail = doubleLink;
-//             return doubleLink;
-//         }
-//
-//         const node = new DoubleLinkList(element);
-//         tail.next = node;
-//         node.prev = tail;
-//         tail = node;
-//
-//         return tail;
-//     }
-//
-//     dataSource.forEach((item => {
-//         if (item.disabled) {
-//             return;
-//         }
-//         mapDS[`${item.value}`] = append(item);
-//     }));
-//
-//     return mapDS;
-// }
-//

@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
+import { type SelectProps } from '@alifd/next/lib/select';
 
 const Option = Select.Option;
 
-const onChange = function (value) {
+const onChange: SelectProps['onChange'] = function (value) {
     console.log(value);
 };
 
-const onToggleHighlightItem = function (item, type) {
+const onToggleHighlightItem: SelectProps['onToggleHighlightItem'] = function (item, type) {
     console.log(item, type);
 };
 

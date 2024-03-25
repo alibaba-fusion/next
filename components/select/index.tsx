@@ -1,19 +1,21 @@
-import ConfigProvider from '../config-provider';
+import ConfigProvider, { type PropsDeprecatedPrinter } from '../config-provider';
 import Select from './select';
 import AutoComplete from './auto-complete';
 import Option from './option';
 import OptionGroup from './option-group';
+import { assignSubComponent } from '../util/component';
 
-Select.AutoComplete = ConfigProvider.config(AutoComplete, {
-    componentName: 'Select',
-});
-
-Select.Option = Option;
-Select.OptionGroup = OptionGroup;
+export type {
+    SelectProps,
+    OptionProps,
+    OptionGroupProps,
+    AutoCompleteProps,
+    DataSourceItem,
+    ObjectItem,
+} from './types';
 
 // compatible with 0.x version
-/* istanbul ignore next */
-function transform(props, deprecated) {
+function transform(props: Record<string, unknown>, deprecated: PropsDeprecatedPrinter) {
     const { shape, container, multiple, filterBy, overlay, safeNode, noFoundContent, ...others } =
         props;
 
@@ -55,21 +57,28 @@ function transform(props, deprecated) {
     return newprops;
 }
 
-// compatible with 0.x version: Select.Combobox
-Select.Combobox = ConfigProvider.config(Select, {
-    transform: /* istanbul ignore next */ (props, deprecated) => {
-        deprecated('Select.Combobox', '<Select showSearch={true}/>', 'Select');
+const SelectWithSub = assignSubComponent(Select, {
+    AutoComplete: ConfigProvider.config(AutoComplete, {
+        componentName: 'Select',
+    }),
+    Option: Option,
+    OptionGroup: OptionGroup,
+    // compatible with 0.x version: Select.Combobox
+    Combobox: ConfigProvider.config(Select, {
+        transform: /* istanbul ignore next */ (props, deprecated) => {
+            deprecated('Select.Combobox', '<Select showSearch={true}/>', 'Select');
 
-        const newprops = transform(props, deprecated);
-        if (props.onInputUpdate) {
-            newprops.onSearch = props.onInputUpdate;
-            newprops.showSearch = true;
-        }
-        return newprops;
-    },
+            const newprops = transform(props, deprecated);
+            if (props.onInputUpdate) {
+                newprops.onSearch = props.onInputUpdate;
+                newprops.showSearch = true;
+            }
+            return newprops;
+        },
+    }),
 });
 
-export default ConfigProvider.config(Select, {
+export default ConfigProvider.config(SelectWithSub, {
     transform,
     exportNames: ['focusInput', 'handleSearchClear'],
 });

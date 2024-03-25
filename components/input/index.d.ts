@@ -189,7 +189,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 发生改变的时候触发的回调
      */
-    onChange?: (value: string, e: React.ChangeEvent<HTMLInputElement>, type?: string) => void;
+    onChange?: (value: string, e: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * 键盘按下的时候触发的回调
@@ -360,6 +360,9 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
      * @version 1.24
      */
     hoverShowClear?: boolean;
+    extra?: unknown;
+    htmlSize?: string;
+    inputRender?: (input: React.ReactElement) => React.ReactNode;
 }
 export interface PasswordProps extends InputProps {
     /**

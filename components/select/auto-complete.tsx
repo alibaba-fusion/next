@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { type ChangeEvent, type KeyboardEvent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 
 import { func, obj, KEYCODE } from '../util';
 import Input from '../input';
-import Base from './base';
+import Base, { type BaseState } from './base';
+import type { AutoCompleteProps, ObjectItem, VisibleChangeType } from './types';
 
 const { bindCtx, noop } = func;
+
+interface AutoCompleteState extends BaseState {
+    value: string;
+    highlightKey: string;
+}
 
 /**
  * Select.AutoComplete
  */
-class AutoComplete extends Base {
+class AutoComplete extends Base<AutoCompleteProps, AutoCompleteState> {
     static propTypes = {
         ...Base.propTypes,
         /**
@@ -24,10 +30,10 @@ class AutoComplete extends Base {
          */
         defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         /**
-         * Select发生改变时触发的回调
-         * @param {*} value 选中的值
-         * @param {String} actionType 触发的方式, 'itemClick', 'enter', 'change'
-         * @param {*} item 选中的值的对象数据
+         * Select 发生改变时触发的回调
+         * @param value - 选中的值
+         * @param actionType - 触发的方式，'itemClick', 'enter', 'change'
+         * @param item - 选中的值的对象数据
          */
         onChange: PropTypes.func,
         /**
@@ -50,8 +56,8 @@ class AutoComplete extends Base {
         fillProps: PropTypes.string,
         /**
          * 渲染 MenuItem 内容的方法
-         * @param {Object} item 渲染节点的 item
-         * @return {ReactNode} item node
+         * @param item - 渲染节点的 item
+         * @returns item node
          */
         itemRender: PropTypes.func,
         // input keydown
@@ -66,8 +72,9 @@ class AutoComplete extends Base {
         onKeyDown: noop,
         fillProps: 'value',
     };
+    isInputing: boolean;
 
-    constructor(props) {
+    constructor(props: AutoCompleteProps) {
         super(props);
 
         this.isAutoComplete = true;
@@ -81,7 +88,7 @@ class AutoComplete extends Base {
         bindCtx(this, ['handleTriggerKeyDown', 'handleMenuSelect', 'handleItemClick']);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: AutoCompleteProps, prevState: AutoCompleteState) {
         const state = {};
 
         if ('value' in nextProps && nextProps.value !== prevState.value) {
@@ -103,7 +110,7 @@ class AutoComplete extends Base {
         return null;
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps: AutoCompleteProps) {
         const props = this.props;
 
         if ('value' in props) {
@@ -122,13 +129,12 @@ class AutoComplete extends Base {
         }
 
         if (prevProps.children !== props.children || prevProps.dataSource !== props.dataSource) {
-            /* eslint-disable react/no-did-update-set-state */
             this.setState({
                 dataSource: this.setDataSource(props),
             });
 
             // remote dataSource and focused
-            // 因为autoComplete没有下拉数据不展示，搜索并且有数据了需要自动展示下拉
+            // 因为 autoComplete 没有下拉数据不展示，搜索并且有数据了需要自动展示下拉
             if (!props.filterLocal && this.isInputing) {
                 this.shouldControlPopup(props, 'update');
             }
@@ -138,7 +144,7 @@ class AutoComplete extends Base {
         }
     }
 
-    shouldControlPopup(props = this.props, type) {
+    shouldControlPopup(props = this.props, type: VisibleChangeType) {
         const hasPopup = props.popupContent || this.dataStore.getMenuDS().length;
         if (hasPopup) {
             this.setVisible(true, type);
@@ -147,7 +153,7 @@ class AutoComplete extends Base {
         }
     }
 
-    handleMenuSelect(keys) {
+    handleMenuSelect(keys: string[]) {
         const key = keys[0];
 
         const mapDS = this.dataStore.getMapDS();
@@ -162,8 +168,8 @@ class AutoComplete extends Base {
         this.setVisible(false, 'itemClick');
     }
 
-    handleSelectEvent(key, item, triggerType) {
-        const value = (item && item[this.props.fillProps]) || key;
+    handleSelectEvent(key: string, item: ObjectItem, triggerType: VisibleChangeType) {
+        const value = ((item && item[this.props.fillProps!]) as string) || key;
 
         if (triggerType === 'itemClick' || triggerType === 'enter') {
             // 点击 item 的时候不会触发关闭，需要手动关闭，其它类型比如 keyDown 等都会有其它事件句柄处理
@@ -173,7 +179,11 @@ class AutoComplete extends Base {
         this.handleChange(value, triggerType, item);
     }
 
-    handleChange = (value, proxy, item) => {
+    handleChange = (
+        value: string,
+        proxy: ChangeEvent<HTMLElement> | VisibleChangeType,
+        item?: ObjectItem
+    ) => {
         const { disabled, readOnly, filterLocal } = this.props;
 
         if (disabled || readOnly) {
@@ -200,14 +210,14 @@ class AutoComplete extends Base {
             });
         }
 
-        // 不自动高亮的情况下, highlightKey 根据value精确值走，也就是被选中元素自动高亮，这样也不会影响不在选项内的用户搜索操作
+        // 不自动高亮的情况下，highlightKey 根据 value 精确值走，也就是被选中元素自动高亮，这样也不会影响不在选项内的用户搜索操作
         if (!this.props.autoHighlightFirstItem) {
             this.setState({
                 highlightKey: value,
             });
         }
 
-        this.props.onChange(value, actionType, item);
+        this.props.onChange!(value, actionType, item);
 
         if (actionType === 'itemClick' || actionType === 'enter') {
             // 点击 item 的时候不会触发关闭，需要手动关闭，其它类型比如 keyDown 等都会有其它事件句柄处理
@@ -215,7 +225,7 @@ class AutoComplete extends Base {
         }
     };
 
-    handleVisibleChange(visible, type) {
+    handleVisibleChange(visible: boolean, type: VisibleChangeType) {
         if (
             !('visible' in this.props) &&
             visible &&
@@ -234,27 +244,26 @@ class AutoComplete extends Base {
 
     /**
      * Handle trigger keydown event
-     * @param {Event} e
      */
-    handleTriggerKeyDown(e) {
+    handleTriggerKeyDown(e: KeyboardEvent<HTMLElement>) {
         const { popupContent, onToggleHighlightItem, onKeyDown } = this.props;
         if (popupContent) {
-            e.stopPropagation(); //stopPropagation can make use onChange triggerd while typing space('') in Input
-            return onKeyDown(e);
+            e.stopPropagation(); // stopPropagation can make use onChange trigger while typing space('') in Input
+            return onKeyDown!(e);
         }
 
         switch (e.keyCode) {
             case KEYCODE.UP:
                 e.preventDefault();
-                onToggleHighlightItem(this.toggleHighlightItem(-1, e), 'up');
+                onToggleHighlightItem!(this.toggleHighlightItem(-1), 'up');
                 break;
             case KEYCODE.DOWN:
                 e.preventDefault();
-                onToggleHighlightItem(this.toggleHighlightItem(1, e), 'down');
+                onToggleHighlightItem!(this.toggleHighlightItem(1), 'down');
                 break;
             case KEYCODE.ENTER:
                 e.preventDefault();
-                this.chooseHighlightItem(e);
+                this.chooseHighlightItem();
                 break;
             case KEYCODE.SPACE:
                 // stopPropagation can make use onChange triggerd while typing space('') in Input
@@ -268,7 +277,7 @@ class AutoComplete extends Base {
                 break;
         }
 
-        onKeyDown(e);
+        onKeyDown!(e);
     }
 
     // 回车 选择高亮的 item
@@ -283,7 +292,7 @@ class AutoComplete extends Base {
         });
 
         if (highlightItem) {
-            this.handleSelectEvent(highlightKey, highlightItem, 'enter');
+            this.handleSelectEvent(highlightKey!, highlightItem, 'enter');
         }
     }
 
@@ -297,7 +306,7 @@ class AutoComplete extends Base {
     /**
      * 选择器
      * @override
-     * @param {object} props
+     * @param props -
      */
     renderSelect(props = this.props) {
         const {
@@ -344,7 +353,9 @@ class AutoComplete extends Base {
         // highlightKey into placeholder
         // compatible with selectPlaceHolder. TODO: removed in 2.0 version
         let _placeholder =
-            placeholder || locale.autoCompletePlaceholder || locale.autoCompletePlaceHolder;
+            placeholder ||
+            (locale!.autoCompletePlaceholder as string) ||
+            (locale!.autoCompletePlaceHolder as string);
         if (highlightHolder && visible) {
             _placeholder = this.state.highlightKey || _placeholder;
         }
@@ -392,10 +403,11 @@ class AutoComplete extends Base {
     render() {
         if (this.hasClear()) {
             // clear 按钮点击后，会在 dom 结构中被删除掉，需要将其额外设置为安全节点，防止触发弹层的显示或隐藏
-            const safeNode = this.props.popupProps.safeNode || [];
+            const safeNode = this.props.popupProps!.safeNode || [];
             const safeNodes = Array.isArray(safeNode) ? safeNode : [safeNode];
+            //@ts-expect-error 确实没有 clearNode，后续应该做删除处理
             safeNodes.push(() => this.clearNode);
-            this.props.popupProps.safeNode = safeNodes;
+            this.props.popupProps!.safeNode = safeNodes;
         }
 
         return super.render(Object.assign({}, this.props, { canCloseByTrigger: false }));
