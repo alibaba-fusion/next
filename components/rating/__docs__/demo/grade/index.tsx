@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Rating } from '@alifd/next';
 
-const starMap = {
+const starMap: Record<string, string> = {
     1: 'Bad',
     2: 'OK',
     3: 'Good',
