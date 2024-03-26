@@ -1,4 +1,4 @@
-name: check-current
+name: check-changed
 
 on: [pull_request]
 

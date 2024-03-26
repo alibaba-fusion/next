@@ -27,13 +27,13 @@ registryTask(__filename, 'check:changed', () => {
             .flat()
     );
     const reg = new RegExp(
-        `${children
+        `\\((${children
             .map(name => {
                 return [name, camelCase(name), getComponentName(name), kebabCase(name)]
                     .map(t => escapeRegExp(t))
                     .join('|');
             })
-            .join('|')}`,
+            .join('|')})\\)`,
         'g'
     );
     const matched = commits.match(reg);
@@ -42,7 +42,7 @@ registryTask(__filename, 'check:changed', () => {
         return;
     }
     const names = Array.from(new Set(matched))
-        .map(name => namesMap.get(name))
+        .map(name => namesMap.get(name.replace(/^\(|\)$/g, '')))
         .filter(Boolean) as string[];
     log('发生变更的组件', names);
     execSync('npm', ['run', 'check', ...names]);
