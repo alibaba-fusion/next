@@ -149,7 +149,9 @@ class Rating extends Component {
             'renderPreview' in nextProps
         ) {
             state.disabled =
-                nextProps.disabled || nextProps.readOnly || (nextProps.isPreview && !('renderPreview' in nextProps));
+                nextProps.disabled ||
+                nextProps.readOnly ||
+                (nextProps.isPreview && !('renderPreview' in nextProps));
         }
 
         return state;
@@ -178,7 +180,8 @@ class Rating extends Component {
 
         if (icon && this.underlayNode) {
             const newIconSize = icon.offsetWidth;
-            const newIconSpace = (this.underlayNode.offsetWidth - count * newIconSize) / (count + 1);
+            const newIconSpace =
+                (this.underlayNode.offsetWidth - count * newIconSize) / (count + 1);
 
             if (newIconSize !== iconSize || newIconSpace !== iconSpace) {
                 this.setState({
@@ -437,7 +440,9 @@ class Rating extends Component {
                     className={`${prefix}rating-icon`}
                 >
                     {iconNode}
-                    {enableA11y ? <span className={`${prefix}sr-only`}>{readAs(i + 1)}</span> : null}
+                    {enableA11y ? (
+                        <span className={`${prefix}sr-only`}>{readAs(i + 1)}</span>
+                    ) : null}
                 </label>
             );
         }
@@ -502,10 +507,18 @@ class Rating extends Component {
                 aria-label={locale.description}
             >
                 <div className={baseCls} {...finalProps}>
-                    <div className={`${prefix}rating-underlay`} ref={n => (this.underlayNode = n)} aria-hidden>
+                    <div
+                        className={`${prefix}rating-underlay`}
+                        ref={n => (this.underlayNode = n)}
+                        aria-hidden
+                    >
                         {underlay}
                     </div>
-                    <div className={`${prefix}rating-overlay`} style={overlayStyle} onClick={e => e.preventDefault()}>
+                    <div
+                        className={`${prefix}rating-overlay`}
+                        style={overlayStyle}
+                        onClick={e => e.preventDefault()}
+                    >
                         {overlay}
                     </div>
                 </div>
