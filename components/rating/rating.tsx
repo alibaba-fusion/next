@@ -1,96 +1,47 @@
-import React, { Component } from 'react';
+import React, { Component, type KeyboardEvent, type MouseEvent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-
 import Icon from '../icon';
-import { func, KEYCODE, obj } from '../util';
+import ConfigProvider from '../config-provider';
+import { func, KEYCODE, obj, type ClassPropsWithDefault } from '../util';
 import zhCN from '../locale/zh-cn';
+import type { RatingProps, RatingState } from './types';
 
 const { noop, bindCtx } = func;
 const { ENTER, LEFT, UP, RIGHT, DOWN } = KEYCODE;
 const supportKeys = [ENTER, LEFT, UP, RIGHT, DOWN];
 
-// 评分组件的大小与icon的大小映射关系
+// 评分组件的大小与 icon 的大小映射关系
 const ICON_SIZE_MAP = {
     small: 'xs',
     medium: 'small',
     large: 'medium',
-};
+} as const;
 
-/** Rating */
-class Rating extends Component {
+class Rating extends Component<RatingProps, RatingState> {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
-        /**
-         * 默认值
-         */
         defaultValue: PropTypes.number,
-        /**
-         * 值
-         */
         value: PropTypes.number,
-        /**
-         * 评分的总数
-         */
         count: PropTypes.number,
-        /**
-         * 是否显示 grade
-         */
         showGrade: PropTypes.bool,
-        /**
-         * 尺寸
-         */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
-        /**
-         * 是否允许半星评分
-         */
         allowHalf: PropTypes.bool,
-        /**
-         * 是否允许再次点击后清除
-         */
         allowClear: PropTypes.bool,
-        /**
-         * 用户点击评分时触发的回调
-         * @param {Number} value 评分值
-         */
         onChange: PropTypes.func,
-        /**
-         * 用户hover评分时触发的回调
-         * @param {Number} value 评分值
-         */
         onHoverChange: PropTypes.func,
-        /**
-         * 是否禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * 评分文案生成方法，传入id支持无障碍时，读屏软件可读
-         */
         readAs: PropTypes.func,
-        // 实验属性: 自定义评分icon
         iconType: PropTypes.string,
-        // 实验属性: 开启 `-webkit-text-stroke` 显示边框颜色，在IE中无效
         strokeMode: PropTypes.bool,
         className: PropTypes.string,
         id: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 自定义国际化文案对象
-         */
         locale: PropTypes.object,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param {number} value 评分值
-         */
         renderPreview: PropTypes.func,
-        /**
-         * 是否为只读态，效果上同 disabeld
-         */
         readOnly: PropTypes.bool,
     };
 
@@ -103,7 +54,7 @@ class Rating extends Component {
         count: 5,
         showGrade: false,
         defaultValue: 0,
-        readAs: val => val,
+        readAs: (val: number) => val,
         allowHalf: false,
         allowClear: false,
         onChange: noop,
@@ -111,7 +62,7 @@ class Rating extends Component {
         locale: zhCN.Rating,
     };
 
-    static currentValue(min, max, hoverValue, stateValue) {
+    static currentValue(min: number, max: number, hoverValue: number, stateValue: number) {
         let value = hoverValue ? hoverValue : stateValue;
 
         value = value >= max ? max : value;
@@ -120,24 +71,8 @@ class Rating extends Component {
         return value || 0;
     }
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            value: 'value' in props ? props.value : props.defaultValue,
-            hoverValue: 0,
-            cleanedValue: null,
-            iconSpace: 0,
-            iconSize: 0,
-            clicked: false, // 标记组件是否被点击过
-        };
-        this.timer = null;
-
-        bindCtx(this, ['handleClick', 'handleHover', 'handleLeave', 'onKeyDown']);
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const state = {};
+    static getDerivedStateFromProps(nextProps: RatingProps) {
+        const state: Partial<RatingState> = {};
         if ('value' in nextProps) {
             state.value = nextProps.value || 0;
         }
@@ -157,6 +92,26 @@ class Rating extends Component {
         return state;
     }
 
+    timer: ReturnType<typeof setTimeout> | null;
+    underlayNode: HTMLDivElement | null = null;
+    readonly props: ClassPropsWithDefault<RatingProps, keyof typeof Rating.defaultProps>;
+
+    constructor(props: RatingProps) {
+        super(props);
+
+        this.state = {
+            // @ts-expect-error FIXME 这里没有像 getDerivedStateFromProps 内那样处理 props.value 为 undefined 时的情况，先标记
+            value: 'value' in props ? props.value : props.defaultValue,
+            hoverValue: 0,
+            cleanedValue: null,
+            iconSpace: 0,
+            iconSize: 0,
+            clicked: false, // 标记组件是否被点击过
+        };
+        this.timer = null;
+        bindCtx(this, ['handleClick', 'handleHover', 'handleLeave', 'onKeyDown']);
+    }
+
     componentDidMount() {
         this.getRenderResult();
     }
@@ -164,6 +119,8 @@ class Rating extends Component {
     componentWillUnmount() {
         this.clearTimer();
     }
+
+    [key: `refs-rating-icon-${number}`]: HTMLSpanElement | null;
 
     // 清除延时
     clearTimer() {
@@ -192,14 +149,14 @@ class Rating extends Component {
         }
     }
 
-    getValue(e) {
+    getValue(e: MouseEvent) {
         // 如定位不准，优先纠正定位
         this.getRenderResult();
 
         const { allowHalf, count, rtl } = this.props;
         const { iconSpace, iconSize } = this.state;
 
-        const pos = e.pageX - this.underlayNode.getBoundingClientRect().left;
+        const pos = e.pageX - this.underlayNode!.getBoundingClientRect().left;
         const fullNum = Math.floor(pos / (iconSpace + iconSize));
         const surplusNum = (pos - fullNum * (iconSpace + iconSize) - iconSpace) / iconSize;
         let value = Number(fullNum) + Number(surplusNum.toFixed(1));
@@ -219,7 +176,7 @@ class Rating extends Component {
         return rtl ? count - value + 1 : value;
     }
 
-    handleHover(e) {
+    handleHover(e: MouseEvent<HTMLDivElement>) {
         if (this.state.disabled) {
             return;
         }
@@ -253,7 +210,7 @@ class Rating extends Component {
         onHoverChange(undefined);
     }
 
-    onKeyDown(e) {
+    onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
         if (this.state.disabled) {
             return;
         }
@@ -300,7 +257,7 @@ class Rating extends Component {
         return !onKeyDown || onKeyDown(e);
     }
 
-    handleChecked(index) {
+    handleChecked(index: number) {
         if (this.state.disabled) {
             return;
         }
@@ -308,7 +265,7 @@ class Rating extends Component {
         this.setState({ hoverValue: index });
     }
 
-    handleClick(e) {
+    handleClick(e: MouseEvent<HTMLDivElement>) {
         if (this.state.disabled) {
             return;
         }
@@ -361,7 +318,7 @@ class Rating extends Component {
         return iconSize * (ceilValue - 1) + ceilValue * iconSpace;
     }
 
-    saveRef = (ref, i) => {
+    saveRef = (ref: HTMLSpanElement | null, i: number) => {
         this[`refs-rating-icon-${i}`] = ref;
     };
 
@@ -390,10 +347,10 @@ class Rating extends Component {
 
         const enableA11y = !!id;
 
-        // 获得Value
+        // 获得 Value
         const value = Rating.currentValue(0, count, hoverValue, this.state.value);
 
-        // icon的sizeMap
+        // icon 的 sizeMap
         const sizeMap = ICON_SIZE_MAP[size];
 
         for (let i = 0; i < count; i++) {
@@ -409,7 +366,7 @@ class Rating extends Component {
                 <Icon type="favorites-filling" size={sizeMap} className={iconCls} />
             );
 
-            const saveRefs = ref => {
+            const saveRefs = (ref: HTMLSpanElement | null) => {
                 this.saveRef(ref, i);
             };
 
@@ -424,7 +381,9 @@ class Rating extends Component {
                         id={`${id}-${prefix}star${i + 1}`}
                         key={`input-${i}`}
                         className={`${prefix}sr-only`}
+                        // @ts-expect-error FIXME parseInt require number arg
                         aria-checked={i + 1 === parseInt(hoverValue)}
+                        // @ts-expect-error FIXME parseInt require number arg
                         checked={i + 1 === parseInt(hoverValue)}
                         onChange={this.handleChecked.bind(this, i + 1)}
                         type="radio"
@@ -436,7 +395,7 @@ class Rating extends Component {
             overlay.push(
                 <label
                     key={`overlay-${i}`}
-                    htmlFor={enableA11y ? `${id}-${prefix}star${i + 1}` : null}
+                    htmlFor={enableA11y ? `${id}-${prefix}star${i + 1}` : undefined}
                     className={`${prefix}rating-icon`}
                 >
                     {iconNode}
@@ -462,10 +421,12 @@ class Rating extends Component {
             [`${prefix}rating-base-disabled`]: disabled,
         });
 
-        const previewCls = classNames({
-            [`${prefix}form-preview`]: true,
-            [className]: !!className,
-        });
+        const previewCls = classNames(
+            {
+                [`${prefix}form-preview`]: true,
+            },
+            className
+        );
 
         const overlayStyle = {
             width: this.getOverlayWidth(),
@@ -488,7 +449,7 @@ class Rating extends Component {
             others.dir = 'rtl';
         }
 
-        if (isPreview && 'renderPreview' in this.props) {
+        if (isPreview && typeof renderPreview === 'function') {
             return (
                 <div id={id} {...others} className={previewCls}>
                     {renderPreview(value, this.props)}
@@ -502,7 +463,7 @@ class Rating extends Component {
                 {...others}
                 className={ratingCls}
                 onKeyDown={this.onKeyDown}
-                tabIndex="0"
+                tabIndex={0}
                 role="group"
                 aria-label={locale.description}
             >
