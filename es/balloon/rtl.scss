@@ -1,0 +1,269 @@
+@mixin tooltip-arrow-rtl($width) {
+
+    &.#{$css-prefix}balloon-tooltip-right .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
+        right: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-left .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
+        left: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-left-top .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
+        left: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-left-bottom .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
+        left: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-right-top .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
+        right: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-right-bottom .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
+        right: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-top-left .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - 2px);
+        left: auto;
+    }
+
+    &.#{$css-prefix}balloon-tooltip-top-right .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - 2px);
+        right: auto;
+    }
+
+    &.#{$css-prefix}balloon-tooltip-bottom-left .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - 2px);
+        left: auto;
+    }
+
+    &.#{$css-prefix}balloon-tooltip-bottom-right .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - 2px);
+        right: auto;
+    }
+}
+
+// tooltip rtl模式在 v1 下的类名与位置实现不匹配，v2需要调整一下
+@mixin tooltip-arrow-rtl-v2($width) {
+
+    &.#{$css-prefix}balloon-tooltip-right .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
+        left: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-left .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
+        right: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-left-top .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
+        right: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-left-bottom .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
+        right: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-right-top .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
+        left: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-right-bottom .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
+        left: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-tooltip-top-left .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - 2px);
+        right: auto;
+    }
+
+    &.#{$css-prefix}balloon-tooltip-top-right .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - 2px);
+        left: auto;
+    }
+
+    &.#{$css-prefix}balloon-tooltip-bottom-left .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - 2px);
+        right: auto;
+    }
+
+    &.#{$css-prefix}balloon-tooltip-bottom-right .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - 2px);
+        left: auto;
+    }
+}
+
+@mixin balloon-close-rtl($left) {
+    .#{$css-prefix}balloon-close {
+        left: $left;
+        right: auto;
+    }
+}
+
+@mixin balloon-arrow-rtl($width) {
+    &.#{$css-prefix}balloon-right .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
+        right: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-left .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
+        left: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-left-top .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
+        left: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-left-bottom .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
+        left: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-right-top .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
+        right: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-right-bottom .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
+        right: auto;
+
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-top-left .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - 2px);
+        left: auto;
+    }
+
+    &.#{$css-prefix}balloon-top-right .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - 2px);
+        right: auto;
+    }
+
+    &.#{$css-prefix}balloon-bottom-left .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - 2px);
+        left: auto;
+    }
+
+    &.#{$css-prefix}balloon-bottom-right .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - 2px);
+        right: auto;
+    }
+}
+
+.#{$css-prefix}balloon[dir="rtl"] {
+    &.#{$css-prefix}balloon-primary {
+        @include balloon-close-rtl($balloon-size-close-margin-right );
+        @include balloon-arrow-rtl($balloon-size-arrow-size );
+    }
+
+    &.#{$css-prefix}balloon-normal {
+        @include balloon-close-rtl($balloon-size-close-margin-right );
+        @include balloon-arrow-rtl($balloon-size-arrow-size );
+    }
+
+    /* 带关闭按钮的右侧padding变大 */
+    &.#{$css-prefix}balloon-closable {
+        @include balloon-size($balloon-size-padding-top, $balloon-size-padding-right, $balloon-size-padding-top, $balloon-size-padding-closable-right);
+    }
+}
+
+.#{$css-prefix}balloon-tooltip[dir="rtl"] {
+
+    @include tooltip-arrow-rtl($balloon-size-arrow-size);
+
+    // v1 模式下tooltip的rtl arrow位置与类名不匹配，v2需要补充一下
+    &.#{$css-prefix}balloon-tooltip-v2 {
+        @include tooltip-arrow-rtl-v2($balloon-size-arrow-size);
+    }
+
+    /* size */
+    &.#{$css-prefix}balloon-tooltip-medium {
+        @include balloon-size($balloon-tooltip-size-padding-top, $balloon-tooltip-size-padding-left, $balloon-tooltip-size-padding-bottom, $balloon-tooltip-size-padding-right);
+    }
+}
