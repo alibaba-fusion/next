@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
@@ -33,16 +35,17 @@ const i18nMap = {
     },
 };
 
-function render(i18n, lang) {
+function render(i18n: (typeof i18nMap)[keyof typeof i18nMap], lang: 'zh-cn' | 'en-us') {
+    // eslint-disable-next-line react/no-render-return-value
     return ReactDOM.render(
         <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">
                 <Demo title={i18n.readonly}>
                     <DemoHead cols={['L', 'M', 'S']} />
                     <DemoGroup label={i18n.normal}>
-                        <Rating value={3.5} showInfo disabled size="large" />
-                        <Rating value={3.5} showInfo disabled />
-                        <Rating value={3.5} showInfo disabled size="small" />
+                        <Rating value={3.5} disabled size="large" />
+                        <Rating value={3.5} disabled />
+                        <Rating value={3.5} disabled size="small" />
                     </DemoGroup>
                 </Demo>
                 <Demo title={i18n.normal}>

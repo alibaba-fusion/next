@@ -25,7 +25,7 @@ export default {
             },
         ],
     }),
-    adaptor: ({ type, size, value, ...others }) => {
+    adaptor: ({ type, size, value, ...others }: any) => {
         return <Rating {...others} showGrade={type === 'level'} value={value} size={size} />;
     },
 };

@@ -3,10 +3,7 @@ import ReactDOM from 'react-dom';
 import { Rating, Button } from '@alifd/next';
 
 class Preview extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { isPreview: false };
-    }
+    state = { isPreview: false };
 
     render() {
         return (
