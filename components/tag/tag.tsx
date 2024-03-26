@@ -49,8 +49,8 @@ class Tag extends Component<TagProps, { visible: boolean }> {
         locale: zhCN.Tag,
     };
 
-    private __destroyed: boolean;
-    private tagNode: HTMLDivElement | null = null;
+    __destroyed: boolean;
+    tagNode: HTMLDivElement | null = null;
 
     constructor(props: TagProps) {
         super(props);

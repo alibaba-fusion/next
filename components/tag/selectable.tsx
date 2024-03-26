@@ -7,7 +7,7 @@ import type { SelectableProps } from './types';
 
 const { noop, bindCtx } = func;
 
-interface SelectableState {
+export interface SelectableState {
     checked: boolean | undefined;
 }
 
