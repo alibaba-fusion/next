@@ -72,7 +72,9 @@ describe('Switch', () => {
         assert(wrapper.find('.next-switch-children').text() === '开');
         //非受控的onChange
         const onChange = sinon.spy();
-        const wrapper1 = mount(<Switch checkedChildren="开" unCheckedChildren="关" onChange={onChange} />);
+        const wrapper1 = mount(
+            <Switch checkedChildren="开" unCheckedChildren="关" onChange={onChange} />
+        );
         assert(wrapper1.find('.next-switch-children').text() === '关');
         wrapper1.find('.next-switch').simulate('click');
         assert(wrapper1.find('.next-switch-children').text() === '开');
@@ -132,7 +134,9 @@ describe('Switch', () => {
         assert(wrapper.find('.next-switch-off').length === 1);
     });
     it('should renderPreview', () => {
-        const wrapper = mount(<Switch id="render-preview" isPreview renderPreview={() => 'preview switch'} />);
+        const wrapper = mount(
+            <Switch id="render-preview" isPreview renderPreview={() => 'preview switch'} />
+        );
 
         assert(wrapper.getDOMNode().innerText === 'preview switch');
     });
