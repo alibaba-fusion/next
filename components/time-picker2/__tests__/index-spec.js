@@ -385,6 +385,15 @@ describe('TimePicker2', () => {
                 done();
             }, 1000);
         });
+
+        it('should support custom formatting , close #3651', () => {
+            const div = document.createElement('div');
+            document.body.appendChild(div);
+            mount(<TimePicker2 format="HH" visible={true}  value={'12'} />, { attachTo: div });
+            assert(
+                document.querySelector('li[title="12"][role="option"]').classList.contains('next-selected')
+            );
+        });
     });
 });
 
