@@ -1,19 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import { NumberPicker } from '@alifd/next';
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: 0,
-            tip: '',
-        };
-        this.onChange = this.onChange.bind(this);
-    }
-    onChange(value, e) {
-        let num = '';
+    state = {
+        value: 0,
+        tip: '',
+    };
+
+    onChange(value: number) {
+        let num: string | number = '';
         if (value >= 0) {
             num = value;
         } else {
@@ -32,7 +28,7 @@ class App extends React.Component {
                 <NumberPicker
                     type="inline"
                     value={value}
-                    onChange={this.onChange}
+                    onChange={this.onChange.bind(this)}
                     upBtnProps={{ 'aria-label': 'increasing button' }}
                     downBtnProps={{ 'aria-label': 'decreasing button' }}
                     aria-labelledby="a11y-number-picker"

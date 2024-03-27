@@ -1,23 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { NumberPicker } from '@alifd/next';
+import type { NumberPickerProps } from '@alifd/next/lib/number-picker';
 
 const step = '0.000000000000000000000001';
-const precision = step.length - step.indexOf('.') - 1;
 
-function onChange(value) {
+const onChange: NumberPickerProps['onChange'] = value => {
     console.log('changed', value);
-}
+};
 
-function onCorrect(value) {
+const onCorrect: NumberPickerProps['onCorrect'] = value => {
     console.log('corrected', value);
-}
+};
 
 class App extends React.Component {
     state = {
         value: `${Number.MIN_SAFE_INTEGER}`,
     };
-    onChange = value => {
+    onChange = (value: number) => {
         console.log(value);
         this.setState({
             value,

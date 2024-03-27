@@ -141,6 +141,7 @@
     "@microsoft/tsdoc": "^0.14.2",
     "@octokit/rest": "^18.0.9",
     "@types/babel-core": "^6.25.10",
+    "@types/big.js": "^6.2.2",
     "@types/chai": "^4.3.11",
     "@types/classnames": "^2.3.1",
     "@types/co": "^4.6.6",

@@ -3,13 +3,10 @@ import ReactDOM from 'react-dom';
 import { NumberPicker, Button } from '@alifd/next';
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            editable: false,
-            value: 0,
-        };
-    }
+    state = {
+        editable: false,
+        value: 0,
+    };
 
     toogle() {
         this.setState({
@@ -17,7 +14,7 @@ class App extends React.Component {
         });
     }
 
-    onChange(value) {
+    onChange(value: number) {
         console.log('changed', value);
         this.setState({
             value: value,
@@ -35,7 +32,7 @@ class App extends React.Component {
                 <br />
                 <br />
                 <Button onClick={this.toogle.bind(this)}>
-                    Toggle to {!this.state.editable ? 'editable' : 'uneditable'}
+                    {!this.state.editable ? 'Toggle to editable' : 'Toggle to uneditable'}
                 </Button>
             </div>
         );

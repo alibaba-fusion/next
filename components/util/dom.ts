@@ -169,8 +169,11 @@ export type CustomCSSStyle = {
     [key in CustomCSSStyleKey]: unknown;
 };
 
-type LikeCustomCSSStyle<T extends Record<string, unknown>> =
-    LikeCustomCSSStyleKey<Exclude<keyof T, number | symbol>> extends never ? never : T;
+type LikeCustomCSSStyle<T extends Record<string, unknown>> = LikeCustomCSSStyleKey<
+    Exclude<keyof T, number | symbol>
+> extends never
+    ? never
+    : T;
 
 export function getStyle<N extends undefined | null>(node: N, name?: unknown): N;
 export function getStyle(node: HTMLElement): CustomCSSStyle;
