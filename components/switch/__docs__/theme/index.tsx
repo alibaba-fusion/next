@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import '../../../demo-helper/style';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import '../../style';
@@ -11,12 +11,17 @@ const i18nMap = {
         showText: {
             label: '是否显示文字',
             value: 'false',
-            enum: [{
-                label: '是', value: 'true'
-            }, {
-                label: '否', value: 'false'
-            }]
-        }
+            enum: [
+                {
+                    label: '是',
+                    value: 'true',
+                },
+                {
+                    label: '否',
+                    value: 'false',
+                },
+            ],
+        },
     },
     'en-us': {
         checkedChildren: 'on',
@@ -24,13 +29,18 @@ const i18nMap = {
         showText: {
             label: 'show text',
             value: 'false',
-            enum: [{
-                label: 'yes', value: 'true'
-            }, {
-                label: 'no', value: 'false'
-            }]
-        }
-    }
+            enum: [
+                {
+                    label: 'yes',
+                    value: 'true',
+                },
+                {
+                    label: 'no',
+                    value: 'false',
+                },
+            ],
+        },
+    },
 };
 
 class ThemeDemo extends Component {
@@ -41,22 +51,32 @@ class ThemeDemo extends Component {
                 showText: {
                     label: '是否显示文字',
                     value: 'false',
-                    enum: [{
-                        label: '是', value: 'true'
-                    }, {
-                        label: '否', value: 'false'
-                    }]
+                    enum: [
+                        {
+                            label: '是',
+                            value: 'true',
+                        },
+                        {
+                            label: '否',
+                            value: 'false',
+                        },
+                    ],
                 },
                 autoWidth: {
                     label: '宽度根据内容自适应',
                     value: 'false',
-                    enum: [{
-                        label: '是', value: 'true'
-                    }, {
-                        label: '否', value: 'false'
-                    }]
-                }
-            }
+                    enum: [
+                        {
+                            label: '是',
+                            value: 'true',
+                        },
+                        {
+                            label: '否',
+                            value: 'false',
+                        },
+                    ],
+                },
+            },
         };
 
         this.onFunctionChange = this.onFunctionChange.bind(this);
@@ -64,27 +84,31 @@ class ThemeDemo extends Component {
 
     onFunctionChange(demoFunction) {
         this.setState({
-            demoFunction
+            demoFunction,
         });
     }
 
     render() {
         const { demoFunction } = this.state;
-        const {i18n} = this.props;
+        const { i18n } = this.props;
         const showText = demoFunction.showText.value;
         const autoWidth = demoFunction.autoWidth.value;
         let props = {};
         if (showText === 'true') {
             props = {
                 checkedChildren: i18n.checkedChildren,
-                unCheckedChildren: i18n.unCheckedChildren
+                unCheckedChildren: i18n.unCheckedChildren,
             };
         }
 
         props.autoWidth = autoWidth === 'true';
 
         return (
-            <Demo title="Normal" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
+            <Demo
+                title="Normal"
+                demoFunction={demoFunction}
+                onFunctionChange={this.onFunctionChange}
+            >
                 <Demo title="Normal">
                     <DemoHead cols={['M', 'S']} />
                     <DemoGroup label="Off">
@@ -127,13 +151,14 @@ class ThemeDemo extends Component {
     }
 }
 
-function render (i18n) {
-    return ReactDOM.render((
+function render(i18n) {
+    return ReactDOM.render(
         <div className="demo-container">
             <h2>Switch</h2>
             <ThemeDemo i18n={i18n} />
-        </div>
-    ), document.getElementById('container'));
+        </div>,
+        document.getElementById('container')
+    );
 }
 
 window.renderDemo = function (lang = 'en-us') {
@@ -141,6 +166,5 @@ window.renderDemo = function (lang = 'en-us') {
 };
 
 window.renderDemo('en-us');
-
 
 initDemo('switch');
