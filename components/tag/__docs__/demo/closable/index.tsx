@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import { Tag } from '@alifd/next';
 
@@ -6,7 +6,7 @@ const { Group: TagGroup, Closeable: CloseableTag } = Tag;
 
 class Demo extends React.Component {
     renderCloseAreaTags() {
-        return ['tag', 'tail'].reduce(
+        return (['tag', 'tail'] as const).reduce(
             (prev, curr) =>
                 prev.concat([
                     <h4 key={`tag-title-${curr}`}>点击{curr} 关闭</h4>,
@@ -17,7 +17,7 @@ class Demo extends React.Component {
                         closeArea: {curr}
                     </CloseableTag>,
                 ]),
-            []
+            [] as ReactNode[]
         );
     }
     render() {
@@ -34,13 +34,12 @@ class Demo extends React.Component {
                         close
                     </CloseableTag>
                     <CloseableTag
-                        onClose={from => {
+                        onClose={() => {
                             console.log('禁用关闭');
                             return false;
                         }}
                     >
-                        {' '}
-                        prevent close{' '}
+                        prevent close
                     </CloseableTag>
                     <CloseableTag afterClose={() => console.log('关闭后回调')}>
                         after Close

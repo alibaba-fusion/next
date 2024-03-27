@@ -488,6 +488,9 @@
 #{$upload-prefix}-dragable {
     #{$upload-prefix}-inner {
         display: block;
+        &.#{$css-prefix}hidden {
+            display: none;
+        }
     }
 
     #{$upload-prefix}-drag {

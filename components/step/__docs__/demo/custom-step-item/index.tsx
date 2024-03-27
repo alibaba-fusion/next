@@ -4,7 +4,7 @@ import { Step, Icon } from '@alifd/next';
 
 const steps = ['one', 'two', 'three', 'four'];
 
-function itemRender(index) {
+function itemRender(index: number) {
     return (
         <div className="custom-node1">
             <span>{index + 1}</span>
@@ -12,7 +12,7 @@ function itemRender(index) {
     );
 }
 
-function itemRender2(index, status) {
+function itemRender2(index: number, status: string) {
     return (
         <div className="custom-node2">
             {status === 'finish' ? <Icon type="success" /> : <span>{index + 1}</span>}{' '}

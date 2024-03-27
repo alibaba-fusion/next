@@ -5,7 +5,7 @@ export function assignSubComponent<
     P extends Record<string, unknown>,
 >(Component: T, SubComponents: P): T & P {
     for (const key in SubComponents) {
-        if (Object.hasOwn(SubComponents, key)) {
+        if (Object.prototype.hasOwnProperty.call(SubComponents, key)) {
             ((Component as T & P)[key] as unknown) = SubComponents[key];
         }
     }

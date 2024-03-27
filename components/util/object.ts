@@ -1,4 +1,9 @@
-import React, { ReactElement, JSXElementConstructor, ComponentClass } from 'react';
+import React, {
+    ReactElement,
+    JSXElementConstructor,
+    ComponentClass,
+    ForwardRefExoticComponent,
+} from 'react';
 
 export type ObjectOrArray<T = unknown> = Record<PropertyKey, T> | ArrayLike<T>;
 type Writable<T> = {
@@ -336,6 +341,18 @@ export function isClassComponent(component?: unknown): component is ComponentCla
         (component as AnyFunction).prototype &&
         (component as AnyFunction).prototype.isReactComponent !== undefined
     );
+}
+
+export function isForwardRefComponent(
+    component?: unknown
+): component is ForwardRefExoticComponent<any> {
+    if (!component || typeof component !== 'object') {
+        return false;
+    }
+    const $$typeof = (component as { $$typeof: number | symbol }).$$typeof;
+
+    // FIXME 依据 react 内部实现代码来判断，有可能因 react 版本变更错误判断，先用测试用例来保证运行正常，关注测试用例异常适时调整此处代码
+    return (!!$$typeof && $$typeof.toString().includes('react.forward_ref')) || $$typeof === 0xead0;
 }
 
 export function isReactFragment(component?: null): false;

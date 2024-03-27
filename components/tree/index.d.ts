@@ -15,6 +15,8 @@ export interface NodeProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      */
     label?: React.ReactNode;
 
+    value?: any;
+
     /**
      * 单独设置是否支持选中，覆盖 Tree 的 selectable
      */

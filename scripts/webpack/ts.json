@@ -2,7 +2,7 @@
     "compilerOptions": {
         "jsx": "react",
         "allowJs": true,
-        "target": "es6",
+        "target": "es5",
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "module": "commonjs",
         "moduleResolution": "node",

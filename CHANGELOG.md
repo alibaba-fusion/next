@@ -1,5 +1,149 @@
 # Change Log 
 
+## [1.27.9](https://github.com/alibaba-fusion/next/compare/1.27.8...1.27.9) (2024-03-26)
+
+
+### Bug Fixes
+
+* **Overlay:** fix maximum loop update error ([f6a71fd](https://github.com/alibaba-fusion/next/commit/f6a71fd01e5635888140e5a87042ca9ad88a5afd))
+
+
+### Code Refactoring
+
+* **SplitButton:** convert to TypeScript, impove docs and tests, close [#4609](https://github.com/alibaba-fusion/next/issues/4609) ([cc68da8](https://github.com/alibaba-fusion/next/commit/cc68da8b3233b4e29e47275ba92f5e57f0e3f106))
+* **Tag:** convert to TypeScript, impove docs and tests, close [#4614](https://github.com/alibaba-fusion/next/issues/4614) ([df9fd5e](https://github.com/alibaba-fusion/next/commit/df9fd5e4b342ecdb7ed82adec7e79f0b0f020f2f))
+
+
+## [1.27.8](https://github.com/alibaba-fusion/next/compare/1.27.7...1.27.8) (2024-03-21)
+
+
+### Features
+
+* **Select:** suport colorful tag [#3778](https://github.com/alibaba-fusion/next/issues/3778) ([6f73852](https://github.com/alibaba-fusion/next/commit/6f73852e47f593f1b4e722aeb0c5b8a0c67ad280))
+
+
+### Bug Fixes
+
+* **Avatar:** size should work in box , close [#3511](https://github.com/alibaba-fusion/next/issues/3511) ([881cad8](https://github.com/alibaba-fusion/next/commit/881cad8d2f13c015e329e935c852e434bdcdec2d))
+* **DatePicker2:** should pass inputProps to trigger function to support custom range picker trigger ([2bdb937](https://github.com/alibaba-fusion/next/commit/2bdb937c73b3de4caccbec2fefcb6373322909e7))
+* **DatePicker2:** WeekPicker should format value correctly when date is 01-01 ([#4786](https://github.com/alibaba-fusion/next/issues/4786)) ([103aafe](https://github.com/alibaba-fusion/next/commit/103aafeafc4a0491496670dd5869e3717ef707ce))
+* **DatePicker:** should show clear icon when it only has start/end value, close [#3448](https://github.com/alibaba-fusion/next/issues/3448) ([67cf979](https://github.com/alibaba-fusion/next/commit/67cf97945a2369b3277f83c2a8eb32cc7d80ffe2))
+* **Table:** should not log warn when primaryKey is 0, close [#3740](https://github.com/alibaba-fusion/next/issues/3740) ([f7b8c8c](https://github.com/alibaba-fusion/next/commit/f7b8c8c17318cfb3a7ec718d047fefddd52f0986))
+* remove banner msg from dist/*.css to make [@charset](https://github.com/charset) useful ([77b0c2e](https://github.com/alibaba-fusion/next/commit/77b0c2e35af4e5d77e78f89a18eb533af2f645be))
+
+
+### Documentation
+
+* **Search:** remove unnecessary symbol "," ([4c15a1b](https://github.com/alibaba-fusion/next/commit/4c15a1bd97bf46ffa902908b1b5ad394788812ad))
+
+
+### Code Refactoring
+
+* **Checkbox:** convert to TypeScript, impove docs and tests ([#4688](https://github.com/alibaba-fusion/next/pull/4688))
+* **Dialog:** convert to TypeScript, impove docs and tests ([#4772](https://github.com/alibaba-fusion/next/pull/4772))
+* **Drawer:** convert to TypeScript, impove docs and tests ([#4760](https://github.com/alibaba-fusion/next/pull/4760))
+* **Step:** convert to TypeScript, impove docs and tests ([#4770](https://github.com/alibaba-fusion/next/pull/4770))
+
+
+## [1.27.7](https://github.com/alibaba-fusion/next/compare/1.27.6...1.27.7) (2024-03-08)
+
+
+### Bug Fixes
+
+* **Collapse:** hotfix panel className missing ([8430d71](https://github.com/alibaba-fusion/next/commit/8430d71ab58a13024b17a20298d2e7cef50ce9ad))
+
+
+## [1.27.6](https://github.com/alibaba-fusion/next/compare/1.27.5...1.27.6) (2024-03-07)
+
+
+### Features
+
+* **DatePicker:** improve focus logic, close [#3998](https://github.com/alibaba-fusion/next/issues/3998) ([#4769](https://github.com/alibaba-fusion/next/issues/4769)) ([1cdd236](https://github.com/alibaba-fusion/next/commit/1cdd236486305ff8940498d24f7f396d46a40746))
+* **TreeSelect:** support useDetailValue, close [#3531](https://github.com/alibaba-fusion/next/issues/3531) ([#4771](https://github.com/alibaba-fusion/next/issues/4771)) ([d19ebdd](https://github.com/alibaba-fusion/next/commit/d19ebdd78c699f8e525a8694a6599f18ff0beec2))
+
+
+### Bug Fixes
+
+* **Shell:** phone shell should hidden when collapsed, close [#3886](https://github.com/alibaba-fusion/next/issues/3886) ([#4766](https://github.com/alibaba-fusion/next/issues/4766)) ([94d3030](https://github.com/alibaba-fusion/next/commit/94d3030682a64de37f5a62b6766ac46b3b209695))
+* **Table:** fix merging cell width in locked columns, close [#4716](https://github.com/alibaba-fusion/next/issues/4716) ([#4752](https://github.com/alibaba-fusion/next/issues/4752)) ([9bda719](https://github.com/alibaba-fusion/next/commit/9bda719c7dae5e47d7f3ade3ef05cd00ca5a11b1))
+* **Upload:** should hide trigger when limit is reached for Upload.Dragger, close [#3951](https://github.com/alibaba-fusion/next/issues/3951) ([#4761](https://github.com/alibaba-fusion/next/issues/4761)) ([f2d5303](https://github.com/alibaba-fusion/next/commit/f2d5303214984891cd8b638c43f1005d21364f7d))
+
+
+### Documentation
+
+* **Calendar2:** remove legacy api, close [#3100](https://github.com/alibaba-fusion/next/issues/3100) ([8a6536f](https://github.com/alibaba-fusion/next/commit/8a6536fdb4b0fe83756ed2b1e1e8f40953401da4))
+* **Field:** improve document description of parseName, close [#3453](https://github.com/alibaba-fusion/next/issues/3453) ([004fa0e](https://github.com/alibaba-fusion/next/commit/004fa0e9e3ad085209859e5eb78b76caaf48ad3e))
+
+
+### Code Refactoring
+
+* **Collapse:** convert to TypeScript, impove docs and tests ([#4713](https://github.com/alibaba-fusion/next/pull/4713))
+* **Field:** convert to TypeScript, impove docs and tests ([#4710](https://github.com/alibaba-fusion/next/pull/4710))
+* **Timeline:** convert to TypeScript, impove docs and tests ([#4715](https://github.com/alibaba-fusion/next/pull/4715))
+
+
+## [1.27.5](https://github.com/alibaba-fusion/next/compare/1.27.4...1.27.5) (2024-02-22)
+
+### Bug Fixes
+
+* **ConfigProvider:** improve config types, close [#4751](https://github.com/alibaba-fusion/next/issues/4751) ([b442d93](https://github.com/alibaba-fusion/next/commit/b442d9310bf503203ba4cc36ac6fb5766f030289))
+* **TimePicker2:** should has focus style when visible, close [#4657](https://github.com/alibaba-fusion/next/issues/4657) ([#4738](https://github.com/alibaba-fusion/next/issues/4738)) ([228b621](https://github.com/alibaba-fusion/next/commit/228b621023fb8e63d79b5783393954b8a6e12db5))
+* **Overlay:** solve problems caused by numerical floating, close [#4740](https://github.com/alibaba-fusion/next/issues/4740) ([8f29094](https://github.com/alibaba-fusion/next/commit/8f290948b08d6fda23121f6c75178b738b2b84c2))
+* rollback [#4746](https://github.com/alibaba-fusion/next/issues/4746) and fix textarea clear spec ([e486542](https://github.com/alibaba-fusion/next/commit/e486542d786f63ce189adc8c1908f782a2082a03))
+
+
+### Code Refactoring
+
+* **Cascader:** convert to TypeScript, impove docs and tests ([#4730](https://github.com/alibaba-fusion/next/pull/4730))
+* **Grid:** convert to TypeScript, impove docs and tests ([#4703](https://github.com/alibaba-fusion/next/pull/4703))
+* **List:** convert to TypeScript, impove docs and tests ([#4702](https://github.com/alibaba-fusion/next/pull/4702))
+* **Validate:** convert to TypeScript, improve tests ([910c957](https://github.com/alibaba-fusion/next/commit/910c957fc9623f642c5400f680af497bc1e5c4c6))
+
+
+## [1.27.5-beta.1](https://github.com/alibaba-fusion/next/compare/1.27.5-beta.0...1.27.5-beta.1) (2024-02-22)
+
+
+## [1.27.5-beta.0](https://github.com/alibaba-fusion/next/compare/1.27.4...1.27.5-beta.0) (2024-02-22)
+
+
+## [1.27.4](https://github.com/alibaba-fusion/next/compare/1.27.3...1.27.4) (2024-01-26)
+
+
+### Bug Fixes
+
+* **Util:** compatibility breaking introduced by Object.hasOwn ([6caea8e](https://github.com/alibaba-fusion/next/commit/6caea8e7a4c2ea5f4bd0ed3cd124b1cb074e12e4))
+
+
+## [1.27.3](https://github.com/alibaba-fusion/next/compare/1.27.2...1.27.3) (2024-01-25)
+
+
+### Features
+
+* **Input:** TextArea support hasClear, close [#4334](https://github.com/alibaba-fusion/next/issues/4334) ([#4714](https://github.com/alibaba-fusion/next/issues/4714)) ([12333ed](https://github.com/alibaba-fusion/next/commit/12333ed583b641a2e390cf5640b2506b731c816f))
+
+
+### Bug Fixes
+
+* **Menu:** should update layout when children size changed, close [#4640](https://github.com/alibaba-fusion/next/issues/4640) ([#4722](https://github.com/alibaba-fusion/next/issues/4722)) ([f4ceaf7](https://github.com/alibaba-fusion/next/commit/f4ceaf77c6ae171cb1e59fb29d223eafefffc82a))
+* **Overlay:** fix the crash issue when resize is caused by adjustment, close [#4692](https://github.com/alibaba-fusion/next/issues/4692) ([7315f9e](https://github.com/alibaba-fusion/next/commit/7315f9ed9343f6b9b9157c915c36a372b2219012))
+* **Rating:** fix grade background, close [#4734](https://github.com/alibaba-fusion/next/issues/4734) ([#4735](https://github.com/alibaba-fusion/next/issues/4735)) ([54d7f57](https://github.com/alibaba-fusion/next/commit/54d7f573509f7f3fbcc5344bc2cf833d9dcad709))
+* **Tree:** expand action area should not shrink when the content is oversize, close [#4689](https://github.com/alibaba-fusion/next/issues/4689) ([#4723](https://github.com/alibaba-fusion/next/issues/4723)) ([157835f](https://github.com/alibaba-fusion/next/commit/157835f992e370648287123ecdc1d492e6b07fe9))
+
+
+### Documentation
+
+* Generate docs from tsdoc ([f89d6b2](https://github.com/alibaba-fusion/next/commit/f89d6b29b483547c9c68f21d5cf4aa2819fc92f3))
+
+
+### Code Refactoring
+
+* **Animate:** convert to TypeScript, impove docs and tests ([#4719](https://github.com/alibaba-fusion/next/pull/4719))
+* **Box:** convert to TypeScript, impove docs and tests ([e1805e2](https://github.com/alibaba-fusion/next/commit/e1805e251309a7f63214ef62670b663a1a55a189))
+* **Core:** support node&sass tests, complete types, improve tests and docs ([9b1b054](https://github.com/alibaba-fusion/next/commit/9b1b054f3e61de6a073f5be198aca47e4078adc9))
+* **MixinUiState:** convert to TypeScript, improve tests ([86e5414](https://github.com/alibaba-fusion/next/commit/86e5414e6652959e9ad3efa1e92631675edeeb91))
+* **Search:** convert to TypeScript, impove docs and tests ([5997230](https://github.com/alibaba-fusion/next/commit/5997230f8a06f91341ade3e10049b6b44a915502))
+
+
 ## [1.27.2](https://github.com/alibaba-fusion/next/compare/1.27.1...1.27.2) (2024-01-11)
 
 

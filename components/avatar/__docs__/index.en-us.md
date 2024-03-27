@@ -8,21 +8,24 @@
 ---
 
 ## Develop Guide
+
 1.19.0+ supported
 
 ### When to Use
+
 Avatars can be used to represent people or objects. It supports images, Icons, or letters.
 
 ## API
 
 ### Avatar
 
-| Param                   | Description                  | Type              | Default Value                                      |
-| ------- | ---------------------------------------------------------------------------- | ---------------- | -------- |
-| size    | size of avatar                                                                      | Enum/Number      | 'medium' |
-| shape   | shape of avatar <br><br>**option**:<br>'circle', 'square'                                  | Enum             | 'circle' |
-| icon    | the `Icon` type for an icon avatar, it can be any type of `Icon` Component or `ReactNode`                                | ReactNode/String | -        |
-| src     | the address of the image for an image avatars                         | String           | -        |
-| onError | error handler of image, return false to prevent default fallback behavior<br><br>**signatures**:<br>Function() => void | Function         | -        |
-| alt     | This attribute defines the alternative text describing the image         | String           | -        |
-| srcSet  | a list of sources to use for different screen resolutions                             | String           | -        |
+| Param    | Description                                                                                                  | Type                                     | Default Value | Required |
+| -------- | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------- | ------------- | -------- |
+| children | Children node list                                                                                           | React.ReactNode                          | -             |          |
+| size     | The size of the avatar                                                                                       | 'small' \| 'medium' \| 'large' \| number | 'medium'      |          |
+| shape    | The shape of the avatar                                                                                      | 'circle' \| 'square'                     | 'circle'      |          |
+| icon     | The icon type of the icon avatar, can be set to the `type` or `ReactElement` of Icon                         | React.ReactElement \| string             | -             |          |
+| src      | The resource address of the image avatar                                                                     | string                                   | -             |          |
+| onError  | The event of the image loading failure, returning false will close the component's default fallback behavior | () => boolean                            | -             |          |
+| alt      | The alt replacement text when the image cannot be displayed                                                  | string                                   | -             |          |
+| srcSet   | The responsive resource address of the image avatar                                                          | string                                   | -             |          |

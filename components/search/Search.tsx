@@ -14,7 +14,7 @@ const Group = Input.Group;
 const AutoComplete = Select.AutoComplete;
 const { noop } = func;
 
-interface SearchState {
+export interface SearchState {
     value: string | number;
     filterValue: string | undefined;
     ifFocus: boolean;

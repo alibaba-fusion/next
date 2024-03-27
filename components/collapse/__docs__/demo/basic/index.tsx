@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Collapse, Radio } from '@alifd/next';
+import { Collapse } from '@alifd/next';
 
 const Panel = Collapse.Panel;
-const RadioGroup = Radio.Group;
 
 ReactDOM.render(
     <Collapse>

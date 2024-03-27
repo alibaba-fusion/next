@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import moment from 'moment';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import DatePicker from '../../index';
@@ -80,11 +81,11 @@ function renderDatePicker(locale, demoFunction, onFunctionChange, otherProps) {
             <DatePicker visible={false} {...otherProps} />
         </DemoGroup>
 
-        <DemoGroup label={locale.expandNormal} height="300px">
+        <DemoGroup label={locale.expandNormal} height="340px">
             <DatePicker value={startValue} visible popupProps={{ needAdjust: false }} {...otherProps} />
         </DemoGroup>
 
-        <DemoGroup label={locale.expandTime} height="330px">
+        <DemoGroup label={locale.expandTime} height="370px">
             <DatePicker value={startValue} visible showTime popupProps={{ needAdjust: false }} {...otherProps} />
         </DemoGroup>
 
@@ -104,11 +105,11 @@ function renderRangePicker(locale, demoFunction, onFunctionChange, otherProps) {
             <RangePicker {...otherProps} />
         </DemoGroup>
 
-        <DemoGroup label={locale.expandNormal} height="330px">
+        <DemoGroup label={locale.expandNormal} height="370px">
             <RangePicker visible value={[startValue, endValue]} popupProps={{ needAdjust: false }} {...otherProps} />
         </DemoGroup>
 
-        <DemoGroup label={locale.expandTime} height="330px">
+        <DemoGroup label={locale.expandTime} height="370px">
             <RangePicker visible showTime value={[startValue, endValue]} popupProps={{ needAdjust: false }} {...otherProps} />
         </DemoGroup>
 

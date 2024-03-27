@@ -1,15 +1,15 @@
 import React, {
     Component,
-    HTMLAttributes,
-    DetailedReactHTMLElement,
-    ReactHTMLElement,
-    ReactSVGElement,
-    DOMElement,
-    DOMAttributes,
-    FunctionComponentElement,
-    CElement,
-    ComponentState,
-    ReactElement,
+    type HTMLAttributes,
+    type DetailedReactHTMLElement,
+    type ReactHTMLElement,
+    type ReactSVGElement,
+    type DOMElement,
+    type DOMAttributes,
+    type FunctionComponentElement,
+    type CElement,
+    type ComponentState,
+    type ReactElement,
 } from 'react';
 import classnames from 'classnames';
 import { func } from '../util';
@@ -26,8 +26,8 @@ type ClonableElement<P = unknown> =
     | ReactElement<P>;
 
 export interface UIStateProps {
-    onFocus?: () => unknown;
-    onBlur?: () => unknown;
+    onFocus?: (...rest: unknown[]) => unknown;
+    onBlur?: (...rest: unknown[]) => unknown;
 }
 
 export interface UIStateState {

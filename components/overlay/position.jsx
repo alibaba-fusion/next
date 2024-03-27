@@ -5,10 +5,13 @@ import ResizeObserver from 'resize-observer-polyfill';
 import { func, dom, events } from '../util';
 import position from './utils/position';
 import findNode from './utils/find-node';
+import { warning } from '../util/log';
 
 const { noop, bindCtx } = func;
 const { getStyle } = dom;
 const place = position.place;
+// Follow react NESTED_UPDATE_LIMIT = 50
+const MAX_UPDATE_COUNT = 50;
 
 export default class Position extends Component {
     static VIEWPORT = position.VIEWPORT;
@@ -40,6 +43,8 @@ export default class Position extends Component {
         shouldUpdatePosition: false,
         rtl: false,
     };
+
+    updateCount = 0;
 
     constructor(props) {
         super(props);
@@ -91,6 +96,36 @@ export default class Position extends Component {
         this.resizeObserver.disconnect();
     };
 
+    shouldIgnorePosition = () => {
+        const node = this.getContentNode();
+        if (!node) {
+            return true;
+        }
+        // 从文档中移除
+        if (!node.parentNode) {
+            return true;
+        }
+        // 元素隐藏
+        const { position, display, visibility } = getComputedStyle(node);
+        if (!node.offsetParent && position !== 'fixed') {
+            return true;
+        }
+        // Firefox offsetParent 会返回 body，这里兼容处理
+        if (display === 'none' || visibility === 'hidden') {
+            return true;
+        }
+        // 兜底处理，同步进程里连续更新多次，强制中断
+        this.updateCount++;
+        Promise.resolve().then(() => {
+            this.updateCount = 0;
+        });
+        if (this.updateCount > MAX_UPDATE_COUNT - 10) {
+            warning('Over maximum times to adjust position at one task, it is recommended to use v2.');
+            return true;
+        }
+        return false;
+    };
+
     setPosition() {
         const {
             align,
@@ -103,6 +138,10 @@ export default class Position extends Component {
             pinFollowBaseElementWhenFixed,
             autoFit,
         } = this.props;
+
+        if (this.shouldIgnorePosition()) {
+            return;
+        }
 
         beforePosition();
 

@@ -61,7 +61,6 @@ class Avatar extends Component<AvatarProps> {
         let { children } = this.props;
 
         const others = obj.pickOthers(Avatar.propTypes, this.props);
-
         const cls = classNames(
             {
                 [`${prefix}avatar`]: true,
@@ -99,7 +98,7 @@ class Avatar extends Component<AvatarProps> {
         }
 
         return (
-            <span className={cls} style={{ ...sizeStyle, ...style }} {...others}>
+            <span {...others} className={cls} style={{ ...sizeStyle, ...style }}>
                 {children}
             </span>
         );

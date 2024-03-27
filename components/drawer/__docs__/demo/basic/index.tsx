@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Drawer } from '@alifd/next';
+import type { DrawerProps } from '@alifd/next/lib/drawer';
 
 class Demo extends React.Component {
     state = {
@@ -13,7 +14,7 @@ class Demo extends React.Component {
         });
     };
 
-    onClose = (reason, e) => {
+    onClose: DrawerProps['onClose'] = (reason, e) => {
         console.log('onClose: ', reason, e);
         this.setState({
             visible: false,

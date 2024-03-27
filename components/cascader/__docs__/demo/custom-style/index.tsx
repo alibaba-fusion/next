@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Cascader } from '@alifd/next';
+import type { CascaderDataItem } from '@alifd/next/lib/cascader';
 
 const dataSource = [
     {
@@ -41,7 +42,7 @@ const dataSource = [
     },
 ];
 
-function itemRender(itemData) {
+function itemRender(itemData: CascaderDataItem) {
     return `${itemData.label}(${itemData.value})`;
 }
 

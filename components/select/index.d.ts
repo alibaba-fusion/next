@@ -320,7 +320,7 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
     /**
      * 键盘上下键切换菜单高亮选项的回调
      */
-    onToggleHighlightItem?: () => void;
+    onToggleHighlightItem?: (highlightKey?: unknown, type?: unknown) => void;
 
     /**
      * 是否开启虚拟滚动模式
@@ -474,6 +474,11 @@ export interface SelectProps extends Omit<HTMLAttributesWeak, 'renderPreview'>, 
      * 展开下拉菜单时是否自动焦点到弹层
      */
     popupAutoFocus?: boolean;
+
+    /**
+     * drawer 组件使用此属性 将 Select 的弹出模式换成 Drawer
+     */
+    popupComponent?: React.ReactNode;
 }
 
 export default class Select extends React.Component<SelectProps, any> {

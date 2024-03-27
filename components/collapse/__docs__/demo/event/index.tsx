@@ -5,25 +5,22 @@ import { Collapse } from '@alifd/next';
 const Panel = Collapse.Panel;
 
 class Demo extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            expandedKeys: [],
-        };
-    }
+    state = {
+        expandedKeys: [],
+    };
 
-    onExpand(expandedKeys) {
+    onExpand = (expandedKeys: string[]) => {
         this.setState({
             expandedKeys,
         });
-    }
+    };
 
-    onClick(key) {
+    onClick = (key: any) => {
         console.log('clicked', key);
-    }
+    };
     render() {
         return (
-            <Collapse onExpand={this.onExpand.bind(this)} expandedKeys={this.state.expandedKeys}>
+            <Collapse onExpand={this.onExpand} expandedKeys={this.state.expandedKeys}>
                 <Panel title="simple tile" onClick={this.onClick}>
                     Promotions are marketing campaigns ran by Marketplace. Participate to sale your
                     products during that promotion and make a profit

@@ -72,7 +72,7 @@ describe('TextArea', () => {
             }
             mount(<Demo />, { attachTo: parent });
             await delay(100);
-            const btn = parent.querySelector('.next-input-clear');
+            const btn = parent.querySelector('.next-input-textarea-clear');
             ReactTestUtils.Simulate.click(btn);
             assert(ref.current.value === '');
         });

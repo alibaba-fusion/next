@@ -23,14 +23,16 @@ if you want `wrap all the element`, please use `<Loading style={{display: 'block
 
 ### Loading
 
-| Param | Descripiton  | Type  | Default Value |
-| ---------- | -------------------------------------------------------------------------- | ------- | -------- |
-| tip        | custom text in loading                                                                      | any     | -        |
-| size       | the animation size<br><br>option:<br>'large'<br>'medium'             | Enum    | 'large'  |
-| tipAlign   | tip location <br><br>option:<br>'right'(right side of animation)<br>'bottom'(bottom of animation) | Enum    | 'bottom' |
-| visible    | loading state, default true                                                        | Boolean | true     |
-| indicator  | custom  animation                                                                      | any     | -        |
-| color      | animation color                                                                     | String  | -        |
-| fullScreen | fullscreen display                                                                       | Boolean | -        |
-| disableScroll | whether to disable page scrolling, only works when fullScreen is true                 | Boolean | false    |
-| children   | children elements                                                                        | any     | -        |
+| Param           | Description                                                                                                                                                                                          | Type                                        | Default Value | Required |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | ------------- | -------- |
+| tip             | Tip content                                                                                                                                                                                          | React.ReactNode \| string                   | -             |          |
+| tipAlign        | Align of tip                                                                                                                                                                                         | 'right' \| 'bottom'                         | 'bottom'      |          |
+| visible         | Loading status, default to true                                                                                                                                                                      | boolean                                     | true          |          |
+| size            | Size of animation indicator                                                                                                                                                                          | 'large' \| 'medium'                         | 'large'       |          |
+| indicator       | Custom animation indicator                                                                                                                                                                           | React.ReactNode                             | -             |          |
+| color           | Color of animation indicator                                                                                                                                                                         | string                                      | -             |          |
+| fullScreen      | Full screen display                                                                                                                                                                                  | boolean                                     | -             |          |
+| disableScroll   | Is scrolling disabled, only effective in fullScreen mode                                                                                                                                             | boolean                                     | false         |          |
+| children        | Child elements                                                                                                                                                                                       | React.ReactNode                             | -             |          |
+| onVisibleChange | The callback function triggered when the loading layer request is closed in full screen mode<br/><br/>**signature**:<br/>**params**:<br/>_type_: The source of fan layer closure<br/>_e_: DOM events | (type: string, e: React.MouseEvent) => void | -             |          |
+| safeNode        | Security node, only valid at fullScreen                                                                                                                                                              | PopupProps['safeNode']                      | -             |          |

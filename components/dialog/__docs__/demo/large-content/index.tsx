@@ -2,10 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Switch, Button, Dialog, Icon } from '@alifd/next';
 
-const largeContent = new Array(60)
-    .fill()
-    .map((_, index) => <p key={index}>Start your business here by searching a popular product</p>);
-
 class Demo extends React.Component {
     state = {
         visible: false,
@@ -33,7 +29,7 @@ class Demo extends React.Component {
     };
 
     render() {
-        const { visible, overflowScroll, closeOnMaskClick, count } = this.state;
+        const { visible, overflowScroll, count } = this.state;
 
         return (
             <div>
@@ -60,7 +56,7 @@ class Demo extends React.Component {
                     onClose={this.onClose}
                 >
                     {Array(count)
-                        .fill()
+                        .fill(0)
                         .map((_, index) => (
                             <p key={index}>
                                 a long long content here

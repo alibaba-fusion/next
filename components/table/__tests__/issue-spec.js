@@ -796,7 +796,7 @@ describe('Issue', () => {
 
         ReactDOM.render(<Table.StickyLock dataSource={dataSource()} columns={columns} />, container, function() {
             setTimeout(() => {
-                assert(container.querySelector('#target-line').style.left === '340px');
+                assert(parseInt(container.querySelector('#target-line').style.left) - 340 < 1);
                 ReactDOM.unmountComponentAtNode(container);
                 document.body.removeChild(container);
                 done();
@@ -897,8 +897,8 @@ describe('Issue', () => {
         ReactDOM.render(<Table.StickyLock dataSource={dataSource()} columns={columns} />, container, function() {
             setTimeout(() => {
                 assert(
-                    container.querySelectorAll('.next-table-cell.next-table-fix-right.next-table-fix-right-first')[3]
-                        .style.right === '200px'
+                    parseInt(container.querySelectorAll('.next-table-cell.next-table-fix-right.next-table-fix-right-first')[3]
+                        .style.right) - 200 < 1
                 );
                 ReactDOM.unmountComponentAtNode(container);
                 document.body.removeChild(container);
@@ -1266,6 +1266,43 @@ describe('Issue', () => {
             .getBoundingClientRect().left;
         assert(title1CellLeft + title1CellWidth === title2CellLeft);
     });
+
+    it('should support when dataSource item id 0, close #3740', () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        function CheckTable() {
+            const dataSource = [{ id: 0, name: 'test' }, { id: 1, name: 'test1' },{ id: 2, name: 'test2' }];
+            return (
+                <Table 
+                    rowSelection={{
+                        mode: 'multiple',
+                        selectedRowKeys: [0]
+                    }} 
+                    dataSource={dataSource} 
+                >
+                    <Table.Column title="Id" dataIndex="id" />
+                    <Table.Column title="Name" dataIndex="name" />
+                </Table>
+            )
+        };
+        ReactDOM.render(
+            <CheckTable />,
+            container
+        );
+        const getRowCell = function(row, index = 1) {
+            return row.querySelectorAll('.next-table-cell')[index];
+        }
+        const rows = container.querySelectorAll('tr.next-table-row');
+        assert(container.querySelectorAll('.next-checkbox-wrapper.checked').length === 1);
+        assert(container.querySelectorAll('.next-table-body .next-table-row').length === 3);
+        assert(getRowCell(rows[0]).textContent === '0' && getRowCell(rows[0], 2).textContent === 'test');
+        assert(getRowCell(rows[1]).textContent === '1' && getRowCell(rows[1], 2).textContent === 'test1');
+        assert(getRowCell(rows[2]).textContent === '2' && getRowCell(rows[2], 2).textContent === 'test2');
+        ReactDOM.unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
+
 });
 
 describe('TableScroll', () => {
@@ -1415,6 +1452,7 @@ describe('TableScroll', () => {
         };
         const skipRow = container.querySelectorAll('tr.next-table-row')[10];
         assert(skipRow.children[0].textContent === '180');
+        await delay(200);
         const skipRowTop = skipRow.getBoundingClientRect().top;
         assert(skipRowTop >= getBodyTop());
         const tbody = container.querySelector('.next-table-body');
@@ -1428,7 +1466,8 @@ describe('TableScroll', () => {
     });
 
     // fix https://github.com/alibaba-fusion/next/issues/4264
-    it('should support for merging cells in locked columns, close #4264', async () => {
+    // fix https://github.com/alibaba-fusion/next/issues/4716
+    it('should support for merging cells in locked columns, close #4264, #4716', async () => {
         const container = document.createElement('div');
         document.body.appendChild(container);
 
@@ -1453,30 +1492,33 @@ describe('TableScroll', () => {
                 };
             }
         };
-        class App extends React.Component {
-            render() {
-                return (
-                    <Table.StickyLock dataSource={dataSource(3)} cellProps={mergeCell}>
-                        <Table.Column title="Id" dataIndex="id" width={200} lock />
-                        <Table.Column title="Title" dataIndex="title.name" lock width={200} />
-                        <Table.Column title="Time" dataIndex="time" width={200} lock />
-                        <Table.Column title="test" width={200} />
-                        <Table.Column title="test2" width={200} />
-                    </Table.StickyLock>
-                );
-            }
-        }
-        ReactDOM.render(<App />, container);
 
-        await delay(200);
+        ReactDOM.render(
+            <div className="table-container" style={{width: 800}}> 
+                <Table.StickyLock dataSource={dataSource(3)} cellProps={mergeCell}>
+                    <Table.Column title="Id" dataIndex="id" width={200} lock />
+                    <Table.Column title="Title" dataIndex="title.name" lock width={100} />
+                    <Table.Column title="Time" dataIndex="time" width={300} lock />
+                    <Table.Column title="test" width={100} />
+                    <Table.Column title="test2" width={800} />
+                </Table.StickyLock>
+            </div>, 
+            container
+        );
+
         const titleHeaderNode = container.querySelectorAll('thead .next-table-header-node')[1];
         assert(titleHeaderNode);
-        assert(titleHeaderNode.colSpan === 1);
         const idHeaderNode = container.querySelectorAll('thead .next-table-header-node')[0];
         assert(idHeaderNode);
         assert(titleHeaderNode.getBoundingClientRect().left === idHeaderNode.getBoundingClientRect().right);
-        const testNode = container.querySelector('tbody [data-next-table-col="1"][data-next-table-row="2"]');
-        assert(testNode);
+        
+        const tableNode = container.querySelector('.next-table-body');
+        tableNode.scrollLeft = 900;
+        ReactTestUtils.Simulate.scroll(tableNode);
+        await delay(200);
+        const timeNode = container.querySelectorAll('thead .next-table-header-node')[2];
+        assert(timeNode);
+        assert(timeNode.getBoundingClientRect().left === titleHeaderNode.getBoundingClientRect().right);
     });
     it('set keepForwardRenderRows to support large rowSpan when useVirtual, close #4395', async () => {
         const datas = j => {

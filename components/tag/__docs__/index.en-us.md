@@ -19,39 +19,45 @@ Tags are used to mark something for its atrribute, or to classify things
 
 1. the attribute `size` can be set to `large`, but for compatible with form situation, `size` = `large` is actually equal to `size` = `medium`,
 2. it is not recommanded to use large text inside Tag;
+
 ## API
 
 ### Tag
 
-| Param       | Descripiton                                                                                                           | Type     | Default Value |
-| ----------- | --------------------------------------------------------------------------------------------------------------------- | -------- | ------------- |
-| size        | size of tag（large = medium for compatible with form situation ）<br><br>**optional**:<br>'small', 'medium', 'large'  | Enum     | 'medium'      |
-| type        | type of tag <br><br>**optional**:<br>'normal', 'primary'                                                              | Enum     | 'normal'      |
-| animation   | enable animation or not                                                                                               | Boolean  | false         |
-| color       | color of tag <br><br>**signatures**: <br>'orange', 'green','blue', 'red', 'turquoise', 'yellow' <br>or<br>  `hex` color value | String   |               |
-| afterAppear | callback when animation ends<br><br>**signatures**:<br>Function() => void                                             | Function | func.noop     |
-| onClick     | callback when it is clicked<br><br>**signatures**:<br>Function() => void                                              | Function | func.noop     |
+| Param       | Description                                                                                      | Type                                                                                                   | Default Value | Required | Supported Version |
+| ----------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------- | -------- | ----------------- |
+| type        | Type of tag                                                                                      | 'normal' \| 'primary'                                                                                  | 'normal'      |          | -                 |
+| size        | The size of the tag                                                                              | 'small' \| 'medium' \| 'large'                                                                         | -             |          | -                 |
+| color       | Tag color, currently supports: blue, green, orange, red, turquoise, yellow, and hex color values | string                                                                                                 | -             |          | 1.19.0            |
+| animation   | Enable animation or not                                                                          | boolean                                                                                                | false         |          | -                 |
+| afterAppear | Callback after the animation of the tag appears                                                  | (node: HTMLElement) => void                                                                            | -             |          | -                 |
+| onClick     | Callback when it is clicked                                                                      | (<br/> event: React.MouseEvent\<HTMLDivElement> \| React.KeyboardEvent\<HTMLDivElement><br/> ) => void | -             |          | -                 |
 
 ### Tag.Closeable
 
-| Param      | Descripiton                                                                                                                                                                                                                                                                 | Type     | Default Value |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------- |
-| closeArea  | area for responsing close action, tag: entire tag, tail(default): only the button at the end <br><br>**optional**:<br>'tag', 'tail'                                                                                                                                         | Enum     | -             |
-| size       | size of tag（large = medium for compatible with form situation ）<br><br>**optional**:<br>'small', 'medium', 'large'                                                                                                                                                        | Enum     | -             |
-| onClose    | callback when closeArea is clicked<br><br>**signatures**:<br>Function(from: String) => Boolean<br>**params**:<br>_from_: {String} clicked place, tag: entire, tail: button at the end<br>**returns**:<br>{Boolean} true to close tag, false to prevent the close action<br> | Function | -             |
-| afterClose | callback when tag has been closed <br><br>**signatures**:<br>Function() => void                                                                                                                                                                                             | Function | -             |
-| onClick    | callback when tag is clicked<br><br>**signatures**:<br>Function() => void                                                                                                                                                                                                   | Function | -             |
+Extends all props of `Tag`
+
+| Param      | Description                                                                                                                                                                   | Type                                                     | Default Value | Required |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------- | -------- |
+| closeArea  | The area which triggers onClose event for closeable tag                                                                                                                       | CloseArea                                                | 'tail'        |          |
+| onClose    | Callback when closeArea is clicked<br/><br/>**signature**:<br/>**params**:<br/>_from_: Clicked place<br/>**return**:<br/>True to close tag, false to prevent the close action | (from: CloseArea, node?: HTMLElement \| null) => boolean | -             |          |
+| afterClose | Callback when tag has been closed                                                                                                                                             | (node: HTMLElement \| null) => void                      | -             |          |
 
 ### Tag.Selectable
 
-| Param          | Descripiton                                                                                                                                                                                                      | Type     | Default Value |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------- |
-| checked        | check the tag, under controlled way                                                                                                                                                                              | Boolean  | -             |
-| defaultChecked | tag is checked by default, under uncontrolled way                                                                                                                                                                | Boolean  | -             |
-| onChange       | callback when check state changes <br><br>**signatures**:<br>Function(checked: Boolean, e: Event) => void<br>**params**:<br>_checked_: {Boolean} whether tag is checked or not <br>_e_: {Event} Dom Event Object | Function | func.noop     |
-| disabled       | disable tag                                                                                                                                                                                                      | Boolean  | -             |
+Extends all props of `Tag`
 
+| Param          | Description                                               | Type                                                                                                                      | Default Value | Required |
+| -------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
+| checked        | Whether the tag is checked, controlled usage              | boolean                                                                                                                   | -             |          |
+| defaultChecked | Whether the tag is checked by default, uncontrolled usage | boolean                                                                                                                   | -             |          |
+| onChange       | Callback when the checked state changes                   | (<br/> checked: boolean,<br/> e: React.MouseEvent\<HTMLDivElement> \| React.KeyboardEvent\<HTMLDivElement><br/> ) => void | -             |          |
 
+### CloseArea
+
+```typescript
+export type CloseArea = 'tag' | 'tail';
+```
 
 ## ARIA and KeyBoard
 

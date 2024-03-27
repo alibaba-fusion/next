@@ -1,22 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Radio, Cascader } from '@alifd/next';
+import type { CascaderProps } from '@alifd/next/lib/cascader';
+import type { GroupProps } from '@alifd/next/lib/radio';
 import 'whatwg-fetch';
 
 const RadioGroup = Radio.Group;
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            triggerType: 'click',
-            data: [],
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleTriggerTypeChange = this.handleTriggerTypeChange.bind(this);
-    }
+    state = {
+        triggerType: 'click',
+        data: [],
+    };
 
     componentDidMount() {
         fetch('https://os.alipayobjects.com/rmsportal/ODDwqcDFTLAguOvWEolX.json')
@@ -25,15 +20,15 @@ class Demo extends React.Component {
             .catch(e => console.log(e));
     }
 
-    handleChange(value, data, extra) {
+    handleChange: CascaderProps['onChange'] = (value, data, extra) => {
         console.log(value, data, extra);
-    }
+    };
 
-    handleTriggerTypeChange(triggerType) {
+    handleTriggerTypeChange: GroupProps['onChange'] = triggerType => {
         this.setState({
             triggerType,
         });
-    }
+    };
 
     render() {
         return (
@@ -47,7 +42,7 @@ class Demo extends React.Component {
                     />
                 </div>
                 <Cascader
-                    expandTriggerType={this.state.triggerType}
+                    expandTriggerType={this.state.triggerType as CascaderProps['expandTriggerType']}
                     dataSource={this.state.data}
                     onChange={this.handleChange}
                 />

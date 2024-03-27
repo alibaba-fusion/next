@@ -5,6 +5,7 @@ import localeData from 'dayjs/plugin/localeData';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
+import weekYear from 'dayjs/plugin/weekYear';
 import 'dayjs/locale/zh-cn';
 
 type _dayjs = typeof dayjs;
@@ -19,6 +20,7 @@ dayjs.extend(customParseFormat);
 dayjs.extend(updateLocale);
 dayjs.extend(localeData);
 dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
 dayjs.locale('zh-cn');
 
 const datejs = dayjs as dayjsWithIsSelf;

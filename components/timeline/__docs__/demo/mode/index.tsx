@@ -1,19 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Timeline, Icon, Select } from '@alifd/next';
+import { Timeline, Select } from '@alifd/next';
 
 const TimelineItem = Timeline.Item;
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state: {
+        mode: 'alternate' | 'left';
+    } = {
+        mode: 'alternate',
+    };
 
-        this.state = {
-            mode: 'alternate',
-        };
-    }
-
-    onTimelineMode = value => {
+    onTimelineMode = (value: string) => {
         this.setState({ mode: value });
     };
 

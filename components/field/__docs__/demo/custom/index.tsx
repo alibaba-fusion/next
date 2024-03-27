@@ -2,38 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Field } from '@alifd/next';
 
-class Custom extends React.Component {
-    constructor(props) {
-        super(props);
+interface CustomProps {
+    value?: string[];
+    onChange: (value: string[]) => void;
+}
 
-        this.state = {
-            value: typeof props.value === 'undefined' ? [] : props.value,
-        };
-    }
-
-    // update value
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            this.setState({
-                value: typeof nextProps.value === 'undefined' ? [] : nextProps.value,
-            });
-        }
-    }
-
+class Custom extends React.Component<CustomProps> {
     onAdd = () => {
-        const value = this.state.value.concat([]);
-        value.push('new');
-
-        this.setState({
-            value,
-        });
-        this.props.onChange(value);
+        const { value = [] } = this.props;
+        const newValue = value.concat('new');
+        this.props.onChange(newValue);
     };
 
     render() {
+        const { value = [] } = this.props;
         return (
             <div className="custom">
-                {this.state.value.map((v, i) => {
+                {value.map((v, i) => {
                     return <Button key={i}>{v}</Button>;
                 })}
                 <Button type="primary" onClick={this.onAdd.bind(this)}>
@@ -44,11 +29,8 @@ class Custom extends React.Component {
     }
 }
 
-/* eslint-disable react/no-multi-comp */
 class App extends React.Component {
-    field = new Field(this, {
-        deepReset: true,
-    });
+    field = new Field(this);
 
     onGetValue() {
         console.log(this.field.getValue('custom'));

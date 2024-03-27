@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { List, Avatar, Button } from '@alifd/next';
+import { List, Avatar } from '@alifd/next';
+
+interface DataItem {
+    title: string;
+    img: string;
+    money: string;
+}
 
 ReactDOM.render(
     <div style={{ width: 288 }}>
@@ -18,7 +24,7 @@ ReactDOM.render(
             }
             header={<div>Notifications</div>}
             dataSource={[]}
-            renderItem={(item, i) => (
+            renderItem={(item: DataItem, i) => (
                 <List.Item
                     key={i}
                     extra={item.money}

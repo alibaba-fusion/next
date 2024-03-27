@@ -22,5 +22,5 @@
             "@alifd/next/lib/*": ["./components/*"]
         }
     },
-    "include": ["global.d.ts", "cypress/**/*.ts", "./components/**/*.ts", "./components/**/*.tsx"]
+    "include": ["global.d.ts", "cypress/**/*.ts", "./components/**/*.ts", "./components/**/*.tsx", "tools"]
 }

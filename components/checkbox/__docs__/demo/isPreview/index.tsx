@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Checkbox, Switch } from '@alifd/next';
+import { type CheckboxProps, type GroupProps } from '@alifd/next/lib/checkbox';
 
 class App extends React.Component {
     state = {
@@ -20,10 +21,10 @@ class App extends React.Component {
         });
     };
 
-    renderChecked = (checked, props) =>
+    renderChecked: CheckboxProps['renderPreview'] = (checked, props) =>
         checked ? <span>{props.children}</span> : <span>null</span>;
 
-    renderPreview = (previewed, props) =>
+    renderPreview: GroupProps['renderPreview'] = previewed =>
         previewed.length
             ? previewed.map((Item, index) => (
                   <span key={`${index}-checkbox`} style={{ marginRight: 10 }}>

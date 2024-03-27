@@ -19,13 +19,14 @@ const list = [
     },
 ];
 
+type callbackInterface = (message?: string) => void;
 class App extends React.Component {
     state = {
         checkboxStatus: true,
     };
     field = new Field(this, { scrollToFirstError: -10 });
 
-    isChecked(rule, value, callback) {
+    isChecked(rule: unknown, value: unknown, callback: callbackInterface) {
         if (!value) {
             return callback('consent agreement not checked ');
         } else {
@@ -33,7 +34,7 @@ class App extends React.Component {
         }
     }
 
-    userName(rule, value, callback) {
+    userName(rule: unknown, value: string, callback: callbackInterface) {
         if (value === 'frank') {
             setTimeout(() => callback('name existed'), 200);
         } else {
@@ -48,7 +49,7 @@ class App extends React.Component {
             <div className="demo">
                 <Input {...init('input', { initValue: 'delete all', rules: { required: true } })} />
                 {this.field.getError('input') ? (
-                    <span style={{ color: 'red' }}>{this.field.getError('input').join(',')}</span>
+                    <span style={{ color: 'red' }}>{this.field.getError('input')!.join(',')}</span>
                 ) : (
                     ''
                 )}
@@ -67,7 +68,7 @@ class App extends React.Component {
                     })}
                 />
                 {this.field.getError('input1') ? (
-                    <span style={{ color: 'red' }}>{this.field.getError('input1').join(',')}</span>
+                    <span style={{ color: 'red' }}>{this.field.getError('input1')!.join(',')}</span>
                 ) : (
                     ''
                 )}
@@ -88,7 +89,7 @@ class App extends React.Component {
                 {this.field.getState('username') === 'loading' ? 'validating...' : ''}
                 {this.field.getError('username') ? (
                     <span style={{ color: 'red' }}>
-                        {this.field.getError('username').join(',')}
+                        {this.field.getError('username')!.join(',')}
                     </span>
                 ) : (
                     ''
@@ -104,7 +105,7 @@ class App extends React.Component {
                 />
                 {this.field.getError('checkbox') ? (
                     <span style={{ color: 'red' }}>
-                        {this.field.getError('checkbox').join(',')}
+                        {this.field.getError('checkbox')!.join(',')}
                     </span>
                 ) : (
                     ''
@@ -125,7 +126,7 @@ class App extends React.Component {
                 />
                 {this.field.getError('textarea') ? (
                     <span style={{ color: 'red' }}>
-                        {this.field.getError('textarea').join(',')}
+                        {this.field.getError('textarea')!.join(',')}
                     </span>
                 ) : (
                     ''
@@ -150,7 +151,7 @@ class App extends React.Component {
                         />
                         {this.field.getError('checkboxgroup') ? (
                             <span style={{ color: 'red' }}>
-                                {this.field.getError('checkboxgroup').join(',')}
+                                {this.field.getError('checkboxgroup')!.join(',')}
                             </span>
                         ) : (
                             ''

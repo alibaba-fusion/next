@@ -169,7 +169,7 @@ interface BaseProps {
     switchVisible?: (demoIndex: string) => unknown;
 }
 
-interface DemoProps extends Omit<BaseProps, 'demoTitle'> {
+export interface DemoProps extends Omit<BaseProps, 'demoTitle'> {
     parentDisplayName?: string;
     defaultBackground?: 'dark' | 'light';
     title: string;

@@ -1,9 +1,13 @@
 name: test
 
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
-  test:
+  ts:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,3 +23,16 @@ jobs:
 
       - name: coverage
         run: bash <(curl -s https://codecov.io/bash)
+  js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm run test:js

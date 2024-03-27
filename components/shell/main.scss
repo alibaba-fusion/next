@@ -576,6 +576,7 @@
 
             &#{$shell-prefix}-collapse {
                 width: 0;
+                overflow: hidden;
             }
         }
         #{$shell-prefix}-header #{$shell-prefix}-navigation {

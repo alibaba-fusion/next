@@ -97,13 +97,14 @@ describe('Animate', () => {
         cy.get('.basic-demo').should('not.exist');
     });
 
-    it('should play expand animation', () => {
+    it('should play expand animation(height from 0 to auto)', () => {
         cy.mount(<Demo visible={false} expand animation="expand" />);
         cy.get('button').click();
         cy.get('.demo-wrapper')
             .invoke('height')
             .should('satisfy', num => {
                 // 避免不同浏览器对 .5px 处理方式的不同造成的测试失败，下同
+                cy.task('log', num);
                 return num < 24;
             });
         cy.get('.demo-wrapper')

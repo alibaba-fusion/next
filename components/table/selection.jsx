@@ -253,7 +253,7 @@ export default function selection(BaseComponent) {
             const { primaryKey, rowSelection, dataSource, entireDataSource } = this.props,
                 mode = rowSelection.mode ? rowSelection.mode : 'multiple',
                 id = record[primaryKey];
-            if (!id) {
+            if (id === null || id === undefined) {
                 log.warning(`Can't get value from record using given ${primaryKey} as primaryKey.`);
             }
             if (mode === 'multiple') {

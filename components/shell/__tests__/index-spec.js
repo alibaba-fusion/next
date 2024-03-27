@@ -90,7 +90,7 @@ class App extends React.Component {
                         <span style={{ marginLeft: 10 }}>App Name</span>
                     </Shell.Branding>
                     <Shell.Navigation direction="hoz">
-                        <Search key="2" shape="simple" type="dark" palceholder="Search" style={{ width: '200px' }} />
+                        <Search key="2" shape="simple" type="dark" placeholder="Search" style={{ width: '200px' }} />
                     </Shell.Navigation>
                     <Shell.Action>
                         <img
@@ -192,7 +192,7 @@ describe('Shell', () => {
                         <span style={{ marginLeft: 10 }}>App Name</span>
                     </Shell.Branding>
                     <Shell.Navigation direction="hoz">
-                        <Search key="2" shape="simple" type="dark" palceholder="Search" style={{ width: '200px' }} />
+                        <Search key="2" shape="simple" type="dark" placeholder="Search" style={{ width: '200px' }} />
                     </Shell.Navigation>
                     <Shell.Action>
                         <img
@@ -388,6 +388,49 @@ describe('Shell', () => {
                 device: 'phone',
             });
             assert(wrapper.find('.next-shell-header').length === 1);
+        });
+
+        // issue:
+        it('should hidden menu & menu-items-icon in phone', () => {
+            const div = document.createElement('div');
+            document.body.appendChild(div);
+            wrapper = mount(
+                <Shell
+                    device={'phone'}
+                    className={'iframe-hack'}
+                    style={{ border: '1px solid #eee' }}
+                >
+                    <Shell.Navigation>
+                        <Nav embeddable aria-label="global navigation">
+                            <Nav.Item icon="account">Nav Item 1</Nav.Item>
+                            <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
+                            <Nav.Item icon="atm">Nav Item 3</Nav.Item>
+                            <Nav.Item icon="account">Nav Item 4</Nav.Item>
+                            <Nav.Item icon="account">Nav Item 5</Nav.Item>
+                            <Nav.Item icon="account">Nav Item 6</Nav.Item>
+                            <Nav.Item icon="account">Nav Item 7</Nav.Item>
+                        </Nav>
+                    </Shell.Navigation>
+                    <Shell.Content>
+                        <div style={{ minHeight: 1200, background: '#fff' }} />
+                    </Shell.Content>
+                    <Shell.ToolDock>
+                        <Shell.ToolDockItem>
+                            <Icon type="calendar" />
+                        </Shell.ToolDockItem>
+                        <Shell.ToolDockItem>
+                            <Icon type="atm" />
+                        </Shell.ToolDockItem>
+                        <Shell.ToolDockItem>
+                            <Icon type="account" />
+                        </Shell.ToolDockItem>
+                    </Shell.ToolDock>
+                </Shell>,
+                {attachTo: div}
+            );
+            const element = wrapper.find('.next-aside-navigation').at(0).instance();
+            assert(element.offsetWidth === 0);
+            assert(window.getComputedStyle(element).overflow === 'hidden');
         });
     });
 });

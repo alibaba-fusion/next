@@ -21,7 +21,7 @@ const popupError = () => {
 };
 
 const popupShow = () => {
-    const dialog = Dialog.show({
+    Dialog.show({
         v2: true,
         title: 'Custom',
         content: 'custom content custom content...',
@@ -29,7 +29,7 @@ const popupShow = () => {
 };
 
 ReactDOM.render(
-    <ConfigProvider locale={{ Dialog: { ok: 'OK', cancel: 'Cancel' } }}>
+    <ConfigProvider>
         <Box direction="row" spacing={8}>
             <Button onClick={() => Dialog.success(config)}>Success</Button>
             <Button onClick={popupError}>Error</Button>

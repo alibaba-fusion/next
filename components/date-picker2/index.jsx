@@ -6,7 +6,7 @@ import { DATE_PICKER_MODE } from './constant';
 const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PICKER_MODE;
 const MODE2FORMAT = {
     [DATE]: 'YYYY-MM-DD',
-    [WEEK]: 'YYYY-wo',
+    [WEEK]: 'gggg-wo',
     [MONTH]: 'YYYY-MM',
     [QUARTER]: 'YYYY-[Q]Q',
     [YEAR]: 'YYYY',
@@ -47,7 +47,10 @@ const transform = (props, deprecated) => {
 
     if (!newProps.format) {
         newProps.format = MODE2FORMAT[mode] + (newProps.showTime ? ' HH:mm:ss' : '');
-    }
+    } else if (mode === WEEK && typeof newProps.format === 'string' && newProps.format.includes('YYYY')) {
+        // see https://github.com/alibaba-fusion/next/issues/3727
+        newProps.format = newProps.format.replace('YYYY', 'gggg');
+    } 
 
     return newProps;
 };

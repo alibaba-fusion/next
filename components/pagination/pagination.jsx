@@ -599,7 +599,7 @@ class Pagination extends Component {
                         ? this.renderPageDisplay(currentPage, totalPage)
                         : null;
                 const pageJump =
-                    showJump && total > pageSize * pageShowCount ? this.renderPageJump(currentPage, totalPage) : null;
+                    showJump && total > pageSize * pageShowCount ? this.renderPageJump(currentPage, totalPage) : [];
                 return buildComponent(pageFirst, pageList, pageLast, pageDisplay, ...pageJump);
             }
             default:

@@ -4,6 +4,9 @@
         "node": true
     },
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "./tsconfig.json"
+    },
     "extends": ["@alifd/eslint-config-next", "plugin:@typescript-eslint/recommended", "prettier"],
     "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc"],
     "settings": {
@@ -30,10 +33,13 @@
         "max-statements": "off",
         "max-len": "off",
         "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-unused-vars": ["warn", {"ignoreRestSiblings": true}],
         "import/prefer-default-export": "off",
         "@typescript-eslint/no-explicit-any": ["error", { "ignoreRestArgs": true }],
         "@typescript-eslint/ban-ts-comment": "error",
+        "import/export": "off",
+        "@typescript-eslint/consistent-type-exports": "warn",
+        "@typescript-eslint/consistent-type-imports": "warn",
         "no-use-before-define": "off",
         "@typescript-eslint/no-use-before-define": "error",
         "react/no-deprecated": "error",

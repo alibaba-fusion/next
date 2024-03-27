@@ -23,36 +23,48 @@
 
 ### Tag
 
-| 参数          | 说明                                                                                                                       | 类型       | 默认值       |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------- | --------- |
-| size        | 标签的尺寸（large 尺寸为兼容表单场景 large = medium）<br/><br/>**可选值**:<br/>'small'(小)<br/>'medium'(中)<br/>'large'(大)                    | Enum     | 'medium'  |
-| type        | 标签的类型<br/><br/>**可选值**:<br/>'normal'(普通)<br/>'primary'(主要)                                                               | Enum     | 'normal'  |
-| color       | 标签颜色, 目前支持：blue、 green、 orange、red、 turquoise、 yellow 和 hex 颜色值 （`color keywords`作为 Tag 组件的保留字，请勿直接使用 ）, `1.19.0` 以上版本生效 | String   | -         |
-| animation   | 是否开启动效                                                                                                                   | Boolean  | false     |
-| afterAppear | 标签出现动画结束后执行的回调<br/><br/>**签名**:<br/>Function() => void                                                                   | Function | func.noop |
-| onClick     | 点击回调<br/><br/>**签名**:<br/>Function() => void                                                                             | Function | func.noop |
+| 参数        | 说明                                                                          | 类型                                                                                                   | 默认值   | 是否必填 | 支持版本 |
+| ----------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------- | -------- | -------- |
+| type        | 标签的类型                                                                    | 'normal' \| 'primary'                                                                                  | 'normal' |          | -        |
+| size        | 标签的尺寸                                                                    | 'small' \| 'medium' \| 'large'                                                                         | -        |          | -        |
+| color       | 标签颜色，目前支持：blue、green、orange、red、turquoise、yellow 和 hex 颜色值 | string                                                                                                 | -        |          | 1.19.0   |
+| animation   | 是否开启动效                                                                  | boolean                                                                                                | false    |          | -        |
+| afterAppear | 标签出现动画结束后执行的回调                                                  | (node: HTMLElement) => void                                                                            | -        |          | -        |
+| onClick     | 点击回调                                                                      | (<br/> event: React.MouseEvent\<HTMLDivElement> \| React.KeyboardEvent\<HTMLDivElement><br/> ) => void | -        |          | -        |
 
 ### Tag.Closeable
 
-| 参数         | 说明                                                                                                                                                                                   | 类型       | 默认值 |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | --- |
-| closeArea  | closeable 标签的 onClose 响应区域, tag: 标签体, tail(默认): 关闭按钮<br/><br/>**可选值**:<br/>'tag'(标签)<br/>'tail'(尾部icon)                                                                              | Enum     | -   |
-| size       | 标签的尺寸（large 尺寸为兼容表单场景 large = medium）<br/><br/>**可选值**:<br/>'small', 'medium', 'large'                                                                                               | Enum     | -   |
-| onClose    | 点击关闭按钮时的回调<br/><br/>**签名**:<br/>Function(from: String) => Boolean<br/>**参数**:<br/>_from_: {String} 事件来源, tag: 标签体点击, tail: 关闭按钮点击<br/>**返回值**:<br/>{Boolean} true则关闭, false阻止关闭<br/> | Function | -   |
-| afterClose | 标签关闭后执行的回调<br/><br/>**签名**:<br/>Function() => void                                                                                                                                   | Function | -   |
-| onClick    | 点击回调<br/><br/>**签名**:<br/>Function() => void                                                                                                                                         | Function | -   |
+继承 Tag 的所有属性
+
+| 参数       | 说明                                                                                                                       | 类型                                                     | 默认值 | 是否必填 |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------ | -------- |
+| closeArea  | closeable 标签的 onClose 响应区域                                                                                          | CloseArea                                                | 'tail' |          |
+| onClose    | 点击关闭按钮时的回调<br/><br/>**签名**:<br/>**参数**:<br/>_from_: 事件来源<br/>**返回值**:<br/>true 则关闭，false 阻止关闭 | (from: CloseArea, node?: HTMLElement \| null) => boolean | -      |          |
+| afterClose | 标签关闭后执行的回调                                                                                                       | (node: HTMLElement \| null) => void                      | -      |          |
 
 ### Tag.Selectable
 
-| 参数             | 说明                                                                                                                                                 | 类型       | 默认值       |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------- |
-| checked        | 标签是否被选中，受控用法<br/>tag checked or not, a controlled way                                                                                              | Boolean  | -         |
-| defaultChecked | 标签是否默认被选中，非受控用法<br/>tag checked or not by default, a uncontrolled way                                                                              | Boolean  | -         |
-| onChange       | 选中状态变化时触发的事件<br/><br/>**签名**:<br/>Function(checked: Boolean, e: Event) => void<br/>**参数**:<br/>_checked_: {Boolean} 是否选中<br/>_e_: {Event} Dom 事件对象 | Function | func.noop |
-| disabled       | 标签是否被禁用                                                                                                                                            | Boolean  | -         |
+继承 Tag 的所有属性
+
+| 参数           | 说明                             | 类型                                                                                                                      | 默认值 | 是否必填 |
+| -------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------ | -------- |
+| checked        | 标签是否被选中，受控用法         | boolean                                                                                                                   | -      |          |
+| defaultChecked | 标签是否默认被选中，非受控用法。 | boolean                                                                                                                   | -      |          |
+| onChange       | 选中状态变化时触发的事件         | (<br/> checked: boolean,<br/> e: React.MouseEvent\<HTMLDivElement> \| React.KeyboardEvent\<HTMLDivElement><br/> ) => void | -      |          |
+
+### CloseArea
+
+示例：
+
+-   tag: 标签体
+-   tail: 关闭按钮
+
+```typescript
+export type CloseArea = 'tag' | 'tail';
+```
 
 ## 无障碍键盘操作指南
 
-| 按键    | 说明           |
-| :---- | :----------- |
-| SPACE | 选择,取消或删除当前标签 |
+| 按键  | 说明                     |
+| :---- | :----------------------- |
+| SPACE | 选择，取消或删除当前标签 |

@@ -18,43 +18,46 @@ This grid system provides response rules for almost all mainstream resolution sc
 
 Though we have build-in support of a11y by adding `<Row>` and `<Col>` with `role="row"` and `role="gridcell"` respectively, in order to achieve more a11y compliance, developers are also expected to add `role="grid"` in the outer wrapper element, as this:
 
-````
+```
 <div role="grid">
     <Row><Col span={6}>1</Col><Col span={6}>2</Col><Col span={6}>3</Col><Col span={6}>4</Col></Row>
     <Row><Col span={6} offset={6}>1</Col><Col span={6} offset={6}>2</Col></Row>
 </div>
-````
+```
 
 ## API
 
-### Grid.Row
+### Grid
 
-| Param | Descripiton  | Type  | Default Value |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | --------- |
-| children   | content of the row                                                                                                                                                                         | ReactNode     | -         |
-| gutter     | spacing of the columns                                                                                                                                                                       | String/Number | 0         |
-| wrap       | whether the row is wrap while width overflow                                                                                                                                                             | Boolean       | false     |
-| fixed      | whether the width of the row stays the same under a certain breakpoint (the default row width varies depending on the viewport)                                                                                                                                              | Boolean       | false     |
-| fixedWidth | the width of the fixed row is the width of a certain breakpoint and it is not affected by the viewport.<br><br>**option**:<br>'xxs'(320px)<br>'xs'(480px)<br>'s'(720px)<br>'m'(990px)<br>'l'(1200px)<br>'xl'(1500px)                                          | Enum          | -         |
-| align      | (IE9 is not supported) vertical alignment of columns<br><br>**option**:<br>'top'<br>'center'<br>'bottom'<br>'baseline'<br>'stretch'                | Enum          | 'stretch' |
-| justify    | (IE9 is not supported) horizontal alignment of columns<br><br>**option**:<br>'start'<br>'center'<br>'end'<br>'space-between'<br>'space-around' | Enum          | 'start'   |
-| hidden      | whether display or hide the row under different breakpoints.<br><br>**option**:<br>true(always hide)<br>false(always display)<br>'xs'(hide under xs breakpoint）<br>['xxs', 'xs', 's', 'm', 'l', 'xl']\(hide under xxs, xs, s, m, l, xl breakpoint） | Boolean/String/Array | -   |
+### Row
 
-### Grid.Col
+| Param      | Description                                                                                               | Type                                                              | Default Value | Required |
+| ---------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------- | -------- |
+| children   | Row content                                                                                               | React.ReactNode                                                   | -             |          |
+| gutter     | Column spacing                                                                                            | string \| number                                                  | 0             |          |
+| wrap       | Whether to wrap when the column width overflows in the row                                                | boolean                                                           | false         |          |
+| fixed      | Whether the row width remains unchanged at a breakpoint (the default row width changes with the viewport) | boolean                                                           | false         |          |
+| fixedWidth | The width of the fixed row is the width of a breakpoint, which is not affected by the viewport            | BreakPoints                                                       | -             |          |
+| align      | (IE9 browser is not supported) Multi                                                                      | 'top' \| 'center' \| 'bottom' \| 'baseline' \| 'stretch'          | -             |          |
+| justify    | (IE9 browser is not supported) Layout method when there is extra space in the row                         | 'start' \| 'center' \| 'end' \| 'space-between' \| 'space-around' | -             |          |
+| hidden     | Display and hide the row at different breakpoints                                                         | boolean \| string \| Array\<BreakPoints>                          | -             |          |
+| component  | Specifies the element with which to render the node                                                       | string \| FunctionComponent\<unknown> \| ComponentClass\<unknown> | 'div'         |          |
 
-| Param | Descripiton  | Type  | Default Value |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | --- |
-| children    | content of the column                                                                                                                                                         | ReactNode            | -   |
-| span        | width of the column<br><br>**option**:<br>1, 2, 3, ..., 22, 23, 24                                                                                                             | String/Number        | -   |
-| fixedSpan   | width of the fixed column, the unit width is 20px<br><br>**option**:<br>1, 2, 3, ..., 28, 29, 30                                                                                             | String/Number        | -   |
-| offset      | (IE9 is not supported) the offset of the column<br><br>**option**:<br>1, 2, 3, ..., 22, 23, 24                                                                                               | String/Number        | -   |
-| fixedOffset | (IE9 is not supported) the fixed offset of the column, the unit width is 20px<br><br>**option**:<br>1, 2, 3, ..., 28, 29, 30                                                                               | String/Number        | -   |
-| align       | (IE9 is not supported) vertical alignment of columns, it can override the Row's align property<br><br>**option**:<br>'top', 'center', 'bottom', 'baseline', 'stretch'                                                 | Enum                 | -   |
-| hidden      | whether display or hide the column under different breakpoints.<br><br>**option**:<br>true(always hide)<br>false(always display)<br>'xs'(hide under xs breakpoint）<br>['xxs', 'xs', 's', 'm', 'l', 'xl']\(hide under xxs, xs, s, m, l, xl breakpoint） | Boolean/String/Array | -   |
-| xxs         | >=320px, responsive grid, it can be a span string or an object with span and offset property                                                                                                  | String/Number/Object | -   |
-| xs          | >=480px, responsive grid, it can be a span string or an object with span and offset property                                                                                                     | String/Number/Object | -   |
-| s           | >=720px, responsive grid, it can be a span string or an object with span and offset property                                                                                                     | String/Number/Object | -   |
-| m           | >=990px, responsive grid, it can be a span string or an object with span and offset property                                                                                                     | String/Number/Object | -   |
-| l           | >=1200px, responsive grid, it can be a span string or an object with span and offset property                                                                                                    | String/Number/Object | -   |
-| xl          | >=1500px, responsive grid, it can be a span string or an object with span and offset property                                                                                                    | String/Number/Object | -   |
-| component   | render node 'div' | String | 'div' |
+### Row.Col
+
+| Param       | Description                                                                                                                                      | Type                                                     | Default Value | Required |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- | ------------- | -------- |
+| children    | Column content                                                                                                                                   | React.ReactNode                                          | -             |          |
+| span        | Column width                                                                                                                                     | string \| number                                         | -             |          |
+| fixedSpan   | Fixed column width                                                                                                                               | string \| number                                         | -             |          |
+| offset      | (IE9 browser is not supported) Column offset                                                                                                     | string \| number                                         | -             |          |
+| fixedOffset | (IE9 browser is not supported) Fixed column offset, width value is 20 \* grid number\<br\>\<br\>**Optional values**:<br>1, 2, 3, ..., 28, 29, 30 | string \| number                                         | -             |          |
+| align       | (IE9 browser is not supported) Multi                                                                                                             | 'top' \| 'center' \| 'bottom' \| 'baseline' \| 'stretch' | -             |          |
+| hidden      | Display and hide the column at different breakpoints                                                                                             | boolean \| string \| Array\<BreakPoints>                 | -             |          |
+| xxs         | \>=320px, responsive grid                                                                                                                        | string \| number \| PointProps                           | -             |          |
+| xs          | \>=480px, responsive grid                                                                                                                        | string \| number \| PointProps                           | -             |          |
+| s           | \>=720px, responsive grid                                                                                                                        | string \| number \| PointProps                           | -             |          |
+| m           | \>=990px, responsive grid                                                                                                                        | string \| number \| PointProps                           | -             |          |
+| l           | \>=1200px, responsive grid                                                                                                                       | string \| number \| PointProps                           | -             |          |
+| xl          | \>=1500px, responsive grid                                                                                                                       | string \| number \| PointProps                           | -             |          |
+| component   | Specifies the element with which to render the node, default is 'div'                                                                            | Ele \| (() => Ele) \| string                             | 'div'         |          |

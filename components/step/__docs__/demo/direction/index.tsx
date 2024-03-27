@@ -1,22 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Step, Radio } from '@alifd/next';
+import type { StepDirection } from '../../../types';
 
 const Step1Content = () => {
-    const [conditions, setconditions] = useState([]);
+    const [conditions, setconditions] = useState<number[]>([]);
     const createNewSelectItem = () => {
-        const newType = {
-            type: 'null',
-            fieldName: 'null',
-        };
-        const newConditions = [...conditions, newType];
-        setconditions(newConditions);
+        setconditions(pre => pre.concat(1));
     };
     return (
         <div>
             {conditions &&
                 conditions.length > 0 &&
-                conditions.map((item, index) => (
+                conditions.map((_item, index) => (
                     <div
                         key={`step-content-${index}`}
                         style={{
@@ -32,28 +28,19 @@ const Step1Content = () => {
         </div>
     );
 };
-const CreateDemo = () => {
-    const [conditions, setconditions] = useState([]);
-    const [direction, setDirection] = useState('ver');
-    const createNewSelectItem = () => {
-        const newType = {
-            type: 'null',
-            fieldName: 'null',
-        };
-        const newConditions = [...conditions, newType];
-        setconditions(newConditions);
-    };
-    console.log('direction: ', direction);
+
+const App = () => {
+    const [direction, setDirection] = useState<StepDirection>('ver');
     return (
         <div>
             <Radio.Group
                 style={{ padding: 30 }}
                 shape="button"
                 value={direction}
-                onChange={setDirection}
+                onChange={(value: StepDirection) => setDirection(value)}
             >
-                <Radio value={'hoz'}>hoz</Radio>
-                <Radio value={'ver'}>ver</Radio>
+                <Radio value="hoz">hoz</Radio>
+                <Radio value="ver">ver</Radio>
             </Radio.Group>
             <Step current={1} direction={direction} stretch animation style={{ marginTop: 30 }}>
                 <Step.Item title={'What would youlike to test?'} content={'test'} />
@@ -63,4 +50,5 @@ const CreateDemo = () => {
         </div>
     );
 };
-ReactDOM.render(<CreateDemo />, mountNode);
+
+ReactDOM.render(<App />, mountNode);

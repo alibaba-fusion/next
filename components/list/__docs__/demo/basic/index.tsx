@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { List, Avatar } from '@alifd/next';
+import { Avatar, List } from '@alifd/next';
 
-const data = [
+interface DataItem {
+    title: string;
+    img: string;
+    money: string;
+}
+
+const data: DataItem[] = [
     {
         title: 'A Title',
         img: 'https://img.alicdn.com/tfs/TB1QS.4l4z1gK0jSZSgXXavwpXa-1024-1024.png',
@@ -31,7 +37,7 @@ ReactDOM.render(
             size="small"
             header={<div>Notifications</div>}
             dataSource={data}
-            renderItem={(item, i) => (
+            renderItem={(item: DataItem, i) => (
                 <List.Item
                     key={i}
                     extra={item.money}

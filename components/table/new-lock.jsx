@@ -301,15 +301,11 @@ export default function stickyLock(BaseComponent) {
 
                 const { headerCellRowIndex, headerCellColIndex } = flatenChildren[tagNext];
 
-                // header with no dataSource
-                const isEmpty = !(dataSource && dataSource.length > 0);
-                // no header
-                const node = isEmpty
-                    ? this.getHeaderCellNode(headerCellRowIndex, headerCellColIndex)
-                    : this.getCellNode(scrollToRow || (dataSource[0] && dataSource[0].__rowIndex) || 0, nodeToGetWidth);
+                // 根据tableHeader计算，避免单元格合并出现问题
+                const node = this.getHeaderCellNode(headerCellRowIndex, headerCellColIndex);
                 let colWidth = 0;
                 if (node) {
-                    colWidth = parseFloat(getComputedStyle(node).width) / node.colSpan || 0;
+                    colWidth = parseFloat(getComputedStyle(node).width) || 0;
                 }
 
                 ret[tag] = (ret[tagNext] || 0) + colWidth;

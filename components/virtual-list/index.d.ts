@@ -22,7 +22,7 @@ export interface VirtualListProps extends React.HTMLAttributes<HTMLElement>, Com
     /**
      * 父渲染函数，默认为 (items, ref) => <ul ref={ref}>{items}</ul>
      */
-    itemsRenderer?: () => void;
+    itemsRenderer?: (items: any, ref: any) => React.ReactNode;
 
     /**
      * 缓冲区高度

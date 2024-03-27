@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Tag } from '@alifd/next';
+import type { SelectableProps } from '@alifd/next/lib/tag';
 
 const { Group: TagGroup, Selectable: SelectableTag } = Tag;
 const dataSource = ['tag 1', 'tag 2', 'tag 3', 'disabled', 'disabled & checked'];
@@ -11,21 +12,20 @@ class Demo extends React.Component {
         singleValue: 'tag 2',
     };
 
-    handleChange(name, checked) {
+    handleChange(name: string, checked: boolean) {
         const { value } = this.state;
         const next = checked ? [...value, name] : value.filter(n => n !== name);
 
         this.setState({ value: next });
     }
 
-    handleChangeSingle(name, checked) {
-        const { singleValue } = this.state;
+    handleChangeSingle(name: string, checked: boolean) {
         const next = checked ? name : '';
 
         this.setState({ singleValue: next });
     }
 
-    renderTagList(props) {
+    renderTagList(props: SelectableProps) {
         const { value } = this.state;
 
         return dataSource.map((name, i) => (
@@ -41,7 +41,7 @@ class Demo extends React.Component {
         ));
     }
 
-    renderTagListSingle(props) {
+    renderTagListSingle() {
         const { singleValue } = this.state;
 
         return dataSource.map((name, i) => (

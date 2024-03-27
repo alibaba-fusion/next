@@ -9,7 +9,7 @@ const Demo = () => {
 
     return (
         <div>
-            <Button type="primary" onClick={setVisible}>
+            <Button type="primary" onClick={() => setVisible(true)}>
                 {' '}
                 fixed 700{' '}
             </Button>
@@ -23,7 +23,7 @@ const Demo = () => {
             >
                 Start your business here by searching a popular product
             </Drawer>
-            <Button type="primary" onClick={setVisible2} style={{ marginLeft: 8 }}>
+            <Button type="primary" onClick={() => setVisible2(true)} style={{ marginLeft: 8 }}>
                 {' '}
                 auto width
             </Button>

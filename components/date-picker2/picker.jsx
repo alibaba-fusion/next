@@ -656,7 +656,7 @@ class Picker extends React.Component {
             inputProps.hasClear = false;
         }
 
-        const triggerNode = renderNode(trigger, <DateInput {...inputProps} />);
+        const triggerNode = renderNode(trigger, <DateInput {...inputProps} />, inputProps);
 
         // 日期
         const panelProps = {

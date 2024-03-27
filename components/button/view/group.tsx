@@ -51,4 +51,6 @@ class ButtonGroup extends Component<GroupProps> {
     }
 }
 
+export type { ButtonGroup };
+
 export default ConfigProvider.config(ButtonGroup);

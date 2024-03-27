@@ -17,10 +17,12 @@ The Affix component allows an element to become affixed (locked) to an area on t
 
 ### Affix
 
-| Param           | Description                                                                                                                  | Type       | Default Value          |
-| ------------- | ------------------------------------------------------------------------------------------------------------------- | -------- | ------------ |
-| container     | The container for listening scroll events<br><br>**signature**:<br>Function() => ReactElement<br>**return**:<br>{ReactElement} the instance of container<br>     | Function | () => window |
-| offsetTop     | Offset from top when event triggers  | Number   | -       |
-| offsetBottom  | Offset from bottom when event triggers | Number   | -     |
-| onAffix       | Callback when affix event triggers <br><br>**signature**:<br>Function(isAffixed: Boolean) => void<br>**parameters**:<br>_if element is affixed_: {Boolean} null | Function | func.noop    |
-| useAbsolute | Enable absolute position                                                                                                    | Boolean  | -            |
+| Param        | Description                                                                                                     | Type                       | Default Value | Required |
+| ------------ | --------------------------------------------------------------------------------------------------------------- | -------------------------- | ------------- | -------- |
+| container    | The container for listening scroll events                                                                       | () => Element \| Window    | () =\> window |          |
+| offsetTop    | Offset from top when event triggers                                                                             | number                     | -             |          |
+| offsetBottom | Offset from bottom when event triggers                                                                          | number                     | -             |          |
+| onAffix      | Callback when affix event triggers<br/><br/>**signature**:<br/>**params**:<br/>_affixed_: If element is affixed | (affixed: boolean) => void | -             |          |
+| useAbsolute  | Enable absolute position                                                                                        | boolean                    | -             |          |
+| className    | -                                                                                                               | string                     | -             |          |
+| style        | -                                                                                                               | React.CSSProperties        | -             |          |

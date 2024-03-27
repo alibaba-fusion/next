@@ -1,3 +1,9 @@
+html, body {
+    /* 亮色主题背景色 */
+    background-color: #F2F3F7 !important;
+    /* 暗色主题背景色 */
+    /* background-color: #000 !important; */
+}
 #root {
     width: 80%;
     margin: 5vh auto;

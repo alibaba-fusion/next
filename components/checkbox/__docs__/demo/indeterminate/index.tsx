@@ -3,15 +3,11 @@ import ReactDOM from 'react-dom';
 import { Checkbox, Button } from '@alifd/next';
 
 class IndeterminateApp extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            checked: false,
-            indeterminate: true,
-            disabled: false,
-        };
-    }
+    state = {
+        checked: false,
+        indeterminate: true,
+        disabled: false,
+    };
 
     toggle = () => {
         if (this.state.indeterminate) {

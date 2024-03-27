@@ -98,7 +98,7 @@ class RenderShell extends React.Component {
                     {
                         demoFunction.actions.value === 'true'
                             ? <Shell.Action>
-                                <Search key="2" shape='simple' palceholder="Search" style={{width: '160px', marginRight: 20}}/>
+                                <Search key="2" shape='simple' placeholder="Search" style={{width: '160px', marginRight: 20}}/>
                                 <Icon type="ic_tongzhi" />
                                 <img src="https://img.alicdn.com/tfs/TB1.ZBecq67gK0jSZFHXXa9jVXa-904-826.png" style={{width: 24, height: 24, borderRadius: '50%', verticalAlign: 'middle'}} alt="用户头像" />
                                 <span style={{marginLeft: 10}}>Name</span>

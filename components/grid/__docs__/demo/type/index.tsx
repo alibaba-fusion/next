@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Grid } from '@alifd/next';
 
+type BreakPoints = 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
+
 const { Row, Col } = Grid;
 
 const breakpoints = {
@@ -11,19 +13,21 @@ const breakpoints = {
     m: 990,
     l: 1200,
     xl: 1500,
-};
+} as Record<BreakPoints, number>;
 
 class Demo extends React.Component {
+    handleResize: () => void;
+
     componentDidMount() {
         const row = ReactDOM.findDOMNode(this.refs.fixCol);
 
         this.handleResize = () => {
-            let point = '';
+            let point = '' as BreakPoints;
             const innerWidth =
                 window.innerWidth ||
                 document.documentElement.clientWidth ||
                 document.body.clientWidth;
-            const keys = Object.keys(breakpoints);
+            const keys = Object.keys(breakpoints) as BreakPoints[];
             for (let i = 0; i < keys.length; i++) {
                 const width = breakpoints[keys[i]];
                 const nextWidth = breakpoints[keys[i + 1]];
@@ -34,7 +38,7 @@ class Demo extends React.Component {
             }
 
             if (point) {
-                row.innerHTML = `${breakpoints[point]}px`;
+                (row as Element).innerHTML = `${breakpoints[point]}px`;
             }
         };
         window.addEventListener('resize', this.handleResize);
@@ -43,7 +47,7 @@ class Demo extends React.Component {
     }
 
     componentWillUnmount() {
-        window.removeListener('resize', this.handleResize);
+        window.removeEventListener('resize', this.handleResize);
     }
 
     render() {

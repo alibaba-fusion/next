@@ -2,8 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Dialog } from '@alifd/next';
 
+interface DemoState {
+    visible?: boolean;
+    fullyCustomizedVisible?: boolean;
+    textCustomizedVisible?: boolean;
+}
+
 class Demo extends React.Component {
-    state = {
+    state: DemoState = {
         visible: false,
     };
 

@@ -12,11 +12,24 @@
 import { resolve, relative, extname, dirname } from 'path';
 import { readdirSync, statSync, readFileSync } from 'fs';
 import chalk from 'chalk';
-import { CWD, TARGETS, execSync, log, warn, registryTask } from './utils';
+import ts from 'typescript';
+import { CWD, TARGETS, execSync, log, warn, registryTask, visitCode } from './utils';
+
+function hasJsx(code: string) {
+    let has = false;
+    visitCode(code, node => {
+        if (ts.isJsxElement(node) || ts.isJsxFragment(node) || ts.isJsxSelfClosingElement(node)) {
+            has = true;
+        }
+
+        return node;
+    });
+    return has;
+}
 
 function renameJs2Ts(js: string) {
     const text = readFileSync(js, 'utf-8');
-    if (/<[a-zA-Z][\s\S]*(>|\/>)/m.test(text)) {
+    if (hasJsx(text)) {
         // 文件内有 jsx 语法，转为 tsx
         return js.replace(/\.(js|jsx|ts)$/, '.tsx');
     } else {

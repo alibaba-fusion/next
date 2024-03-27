@@ -1,12 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Enzyme, { shallow, mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
 import Upload from '../index';
 import request from '../runtime/request';
-import { func } from '../../util';
+import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -187,6 +186,34 @@ describe('Upload', () => {
 
             done();
         });
+        // issue: Shell phone model menu icon should hidde, close #3886
+        it('should hidden upload Dragger when file length === limit',  done => {
+            const drag = document.createElement('div');
+            document.body.appendChild(drag);
+            mount(
+                 <Upload.Dragger
+                     listType="image"
+                     limit={1}
+                     defaultValue={[
+                         {
+                             uid: '0',
+                             name: 'IMG.png',
+                             state: 'done',
+                             url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                             downloadURL:
+                                 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                             imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                         },
+                     ]}
+                 />,
+                 {attachTo: drag}
+             );
+             assert(document.querySelectorAll('.next-upload-drag').length === 1);
+             const uploadInner = document.querySelectorAll('.next-upload-inner');
+             assert(uploadInner.length === 1 )
+             assert(uploadInner[0].offsetHeight === 0);
+             done();
+         });
     });
 
     describe('[behavior] Upload Request', () => {

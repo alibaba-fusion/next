@@ -18,36 +18,32 @@
 
 ### Typography
 
-> 继承 Typography.Text API
+继承 Typography.Text API
 
-| 参数        | 说明     | 类型     | 默认值       |
-| --------- | ------ | ------ | --------- |
-| component | 设置标签类型 | custom | 'article' |
-
-### Typography.Paragraph
-
-> 继承 Typography.Text 的 API
-
-| 参数        | 说明     | 类型     | 默认值 |
-| --------- | ------ | ------ | --- |
-| component | 设置标签类型 | custom | 'p' |
-
-### Typography.Text
-
-| 参数        | 说明      | 类型      | 默认值    |
-| --------- | ------- | ------- | ------ |
-| delete    | 添加删除线样式 | Boolean | false  |
-| mark      | 添加标记样式  | Boolean | false  |
-| underline | 添加下划线样式 | Boolean | false  |
-| strong    | 是否加粗    | Boolean | false  |
-| code      | 添加代码样式  | Boolean | false  |
-| component | 设置标签类型  | custom  | 'span' |
-
-<!-- api-extra-start -->
+| 参数      | 说明         | 类型                                  | 默认值  | 是否必填 |
+| --------- | ------------ | ------------------------------------- | ------- | -------- |
+| component | 设置标签类型 | string \| React.JSX.IntrinsicElements | article |          |
 
 ### Typography.Title
 
-> 分为 H1, H2, H3, H4, H5, H6 组件，代表不同层级的标题
-> 继承 Typography.Text 的 API
+分为 H1, H2, H3, H4, H5, H6 不同的组件，表示不同层级，继承 Typography.Text API
 
-<!-- api-extra-end -->
+### Typography.Paragraph
+
+继承 Typography.Text 的 API
+
+| 参数      | 说明         | 类型                                  | 默认值 | 是否必填 |
+| --------- | ------------ | ------------------------------------- | ------ | -------- |
+| component | 设置标签类型 | string \| React.JSX.IntrinsicElements | p      |          |
+
+### Typography.Text
+
+| 参数      | 说明                | 类型                                  | 默认值 | 是否必填 |
+| --------- | ------------------- | ------------------------------------- | ------ | -------- |
+| delete    | 添加删除线样式      | boolean                               | false  |          |
+| mark      | 添加标记样式        | boolean                               | false  |          |
+| underline | 添加下划线样式      | boolean                               | false  |          |
+| strong    | 是否加粗            | boolean                               | false  |          |
+| code      | 添加代码样式        | boolean                               | false  |          |
+| component | 设置标签类型        | string \| React.JSX.IntrinsicElements | span   |          |
+| rtl       | 是否以 rtl 模式展示 | boolean                               | false  |          |

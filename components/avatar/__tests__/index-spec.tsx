@@ -3,6 +3,7 @@ import Avatar from '../index';
 import Icon from '../../icon';
 import '../style';
 import '../../icon/style';
+import Box from '../../box';
 
 describe('Avatar', () => {
     it('should render', () => {
@@ -40,5 +41,14 @@ describe('Avatar', () => {
 
         cy.mount(<Avatar children="U" />);
         cy.get('.next-avatar').should('have.html', 'U');
+    });
+    it('should render current size when avatar in box', () => {
+        cy.mount(
+            <Box>
+                <Avatar size={24} icon="account" />
+            </Box>
+        );
+        cy.get('.next-avatar').should('have.css', 'width', '24px');
+        cy.get('.next-avatar').should('have.css', 'height', '24px');
     });
 });

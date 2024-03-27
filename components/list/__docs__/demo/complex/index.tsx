@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { List, Avatar, Box, Button, Divider } from '@alifd/next';
+import { List, Box, Button, Divider } from '@alifd/next';
 
-const data = [
+interface DataItem {
+    title: string;
+    img: string;
+    description: string;
+    author: string;
+}
+const data: DataItem[] = [
     {
         title: '构建一套产品化设计系统',
         description:
@@ -55,7 +61,7 @@ const actions = (
 ReactDOM.render(
     <List
         dataSource={data}
-        renderItem={(item, i) => (
+        renderItem={(item: DataItem, i) => (
             <List.Item
                 key={i}
                 extra={actions}

@@ -110,7 +110,17 @@ export interface AnimateProps extends React.HTMLAttributes<HTMLElement>, CommonP
 /**
  * @api Animate.Expand
  */
-export interface ExpandProps {
+export interface ExpandProps
+    extends Omit<
+        AnimateProps,
+        | 'animation'
+        | 'beforeEnter'
+        | 'onEnter'
+        | 'afterEnter'
+        | 'beforeLeave'
+        | 'onLeave'
+        | 'afterLeave'
+    > {
     /**
      * 动画 className
      * @en The animation className

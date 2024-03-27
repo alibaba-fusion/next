@@ -1,19 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Cascader } from '@alifd/next';
+import type { CascaderDataItem, CascaderProps } from '@alifd/next/lib/cascader';
 import 'whatwg-fetch';
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            label: '',
-            data: [],
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-    }
+    state = {
+        label: '',
+        data: [],
+    };
 
     componentDidMount() {
         fetch('https://os.alipayobjects.com/rmsportal/ODDwqcDFTLAguOvWEolX.json')
@@ -24,13 +19,13 @@ class Demo extends React.Component {
             .catch(e => console.log(e));
     }
 
-    handleChange(value, data, extra) {
+    handleChange: CascaderProps['onChange'] = (value, data, extra) => {
         console.log(value, data, extra);
 
         this.setState({
-            label: data.map(d => d.label).join(', '),
+            label: (data as CascaderDataItem[]).map(d => d.label).join(', '),
         });
-    }
+    };
 
     render() {
         return (

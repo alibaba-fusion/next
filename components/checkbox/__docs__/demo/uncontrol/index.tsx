@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Checkbox } from '@alifd/next';
+import { type GroupProps } from '@alifd/next/lib/checkbox';
 
 const { Group: CheckboxGroup } = Checkbox;
 const list = [
@@ -21,15 +22,9 @@ const list = [
 ];
 
 class UnControlApp extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange(selectedItems) {
+    onChange: GroupProps['onChange'] = selectedItems => {
         console.log('onChange callback', selectedItems);
-    }
+    };
 
     render() {
         return (

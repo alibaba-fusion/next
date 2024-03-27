@@ -1,11 +1,11 @@
 import React, {
     ComponentType,
-    ComponentClass,
-    FunctionComponent,
     ForwardRefExoticComponent,
     ComponentProps,
     ComponentRef,
     StaticLifecycle,
+    JSXElementConstructor,
+    ComponentPropsWithoutRef,
 } from 'react';
 import PropTypes from 'prop-types';
 import hoistNonReactStatic from 'hoist-non-react-statics';
@@ -16,11 +16,13 @@ import { Locale } from '../locale/types';
 import type {
     ConfigOptions,
     PropsDeprecatedPrinter,
-    ContextState,
     ComponentCommonProps,
     OverlayCommonProps,
-    ConfiguredComponent,
     ConfigProviderProps,
+    ConfiguredComponentClass,
+    PartialLocale,
+    NonReactStatics,
+    NonBlank,
 } from './types';
 
 const { shallowEqual } = obj;
@@ -31,7 +33,7 @@ function getDisplayName(Component: ComponentType<unknown> | ForwardRefExoticComp
 
 let globalLocales: Record<string, Partial<Locale>> | undefined;
 let currentGlobalLanguage: string = 'zh-cn';
-let currentGlobalLocale: Partial<Locale> = {};
+let currentGlobalLocale: PartialLocale = {};
 let currentGlobalRtl: Locale['rtl'];
 
 export function initLocales(locales?: Record<string, Locale>) {
@@ -57,7 +59,7 @@ export function setLanguage(language: string) {
     }
 }
 
-export function setLocale(locale: Partial<Locale>) {
+export function setLocale(locale: PartialLocale) {
     currentGlobalLocale = {
         ...(globalLocales ? globalLocales[currentGlobalLanguage] : {}),
         ...locale,
@@ -89,20 +91,25 @@ export type ExcludeComponentStatics =
     | 'contextType'
     | keyof StaticLifecycle<unknown, unknown>;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyProps = any;
+
+function isCanPassRefComponent(component: JSXElementConstructor<AnyProps>) {
+    return obj.isClassComponent(component) || obj.isForwardRefComponent(component);
+}
+
 function config<
-    C extends ComponentClass | ForwardRefExoticComponent<unknown> | FunctionComponent,
-    R = C extends ComponentClass
-        ? InstanceType<C>
-        : C extends ForwardRefExoticComponent<unknown>
-          ? ComponentRef<C>
-          : unknown,
->(
-    Component: C,
-    options: ConfigOptions<ComponentProps<C>> = {}
-): typeof ConfiguredComponent<ComponentProps<C> & ComponentCommonProps, R> & {
-    [K in Exclude<keyof C, ExcludeComponentStatics>]: C[K];
-} {
-    type P = ComponentProps<C> & ComponentCommonProps;
+    C extends
+        | ComponentType<AnyProps>
+        | ForwardRefExoticComponent<AnyProps>
+        | JSXElementConstructor<AnyProps>,
+    K extends Exclude<keyof ComponentRef<C>, symbol> = never,
+>(Component: C, options: ConfigOptions<ComponentPropsWithoutRef<C>, K> = {}) {
+    type P = ComponentPropsWithoutRef<C> & ComponentCommonProps;
+    type R = ComponentRef<C>;
+    type RefType = R extends never ? undefined : R;
+    type HoistsProperties = NonBlank<Pick<R, K>>;
+
     // 非 forwardRef 创建的 class component
     if (
         obj.isClassComponent(Component) &&
@@ -124,7 +131,7 @@ function config<
     class ConfigedComponent extends React.Component<P> {
         static displayName = `Config(${getDisplayName(Component)})`;
         static propTypes = {
-            ...(Component.propTypes || {}),
+            ...((Component as ComponentType).propTypes || {}),
             prefix: PropTypes.string,
             locale: PropTypes.object,
             defaultPropsConfig: PropTypes.object,
@@ -135,7 +142,7 @@ function config<
             errorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         };
         static contextTypes = {
-            ...((Component as ComponentClass).contextTypes || {}),
+            ...((Component as ComponentType).contextTypes || {}),
             nextPrefix: PropTypes.string,
             nextLocale: PropTypes.object,
             nextDefaultPropsConfig: PropTypes.object,
@@ -147,28 +154,26 @@ function config<
             nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         };
 
-        constructor(props: P, context: ContextState) {
+        // ref data
+        private _instance: R;
+
+        constructor(props: P, context?: unknown) {
             super(props, context);
 
             this._getInstance = this._getInstance.bind(this);
             this._deprecated = this._deprecated.bind(this);
         }
 
-        // ref data
-        private _instance: R;
-        // proxied properties
-        [key: string]: unknown;
-
         private _getInstance(ref: R) {
             this._instance = ref;
 
             if (this._instance && options.exportNames) {
                 options.exportNames.forEach(name => {
-                    const field = (this._instance as Record<string, unknown>)[name];
+                    const field = this._instance[name];
                     if (typeof field === 'function') {
-                        this[name] = field.bind(this._instance);
+                        (this as R)[name] = field.bind(this._instance);
                     } else {
-                        this[name] = field;
+                        (this as R)[name] = field;
                     }
                 });
             }
@@ -266,17 +271,19 @@ function config<
             }
 
             const newOthers = options.transform
-                ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  options.transform(others as any, this._deprecated)
+                ? options.transform(others as P, this._deprecated)
                 : others;
 
             const newProps = {
                 ...contextProps.defaultPropsConfig[displayName],
                 ...newOthers,
                 ...newContextProps,
-                ref: this._getInstance,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } as any;
+            } as ComponentProps<C>;
+
+            // 仅向 class or forwardRef component 传递 ref，否则 react 会报一个 warning
+            if (isCanPassRefComponent(Component)) {
+                newProps.ref = this._getInstance;
+            }
 
             const content = <Component {...newProps} />;
 
@@ -286,13 +293,11 @@ function config<
         }
     }
 
-    ConfigedComponent.displayName = `Config(${getDisplayName(Component)})`;
-
     hoistNonReactStatic(ConfigedComponent, Component);
 
-    return ConfigedComponent as unknown as typeof ConfiguredComponent<P, R> & {
-        [K in Exclude<keyof C, ExcludeComponentStatics>]: C[K];
-    };
+    // 这里将 ConfigedComponent 推断一个限定的类型，以简化生成的类型代码
+    return ConfigedComponent as unknown as ConfiguredComponentClass<P, RefType, HoistsProperties> &
+        NonReactStatics<C>;
 }
 
 export { config };

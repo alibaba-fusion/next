@@ -85,7 +85,12 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中值改变时触发的回调函数
      */
-    onChange?: (value: string | Array<any>, data: any | Array<any>) => void;
+    onChange?: (value: any | Array<any>, data: any | Array<any>) => void;
+
+    /**
+     * onChange 返回的 value 使用 dataSource 的对象
+     */
+    useDetailValue?: boolean;
 
     /**
      * 是否一行显示，仅在 multiple 和 treeCheckable 为 true 时生效
