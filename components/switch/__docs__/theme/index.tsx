@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import {
+    Demo,
+    DemoGroup,
+    DemoHead,
+    initDemo,
+    type DemoFunctionDefineForObject,
+} from '../../../demo-helper';
 import '../../style';
-import Switch from '../../index';
+import Switch, { type SwitchProps } from '../../index';
 
 const i18nMap = {
     'zh-cn': {
@@ -43,8 +50,16 @@ const i18nMap = {
     },
 };
 
-class ThemeDemo extends Component {
-    constructor(props) {
+type I18n = (typeof i18nMap)[keyof typeof i18nMap];
+interface ThemeDemoProps {
+    i18n: I18n;
+}
+interface ThemeDemoState {
+    demoFunction: Record<string, DemoFunctionDefineForObject>;
+}
+
+class ThemeDemo extends Component<ThemeDemoProps, ThemeDemoState> {
+    constructor(props: ThemeDemoProps) {
         super(props);
         this.state = {
             demoFunction: {
@@ -82,7 +97,7 @@ class ThemeDemo extends Component {
         this.onFunctionChange = this.onFunctionChange.bind(this);
     }
 
-    onFunctionChange(demoFunction) {
+    onFunctionChange(demoFunction: ThemeDemoState['demoFunction']) {
         this.setState({
             demoFunction,
         });
@@ -93,7 +108,7 @@ class ThemeDemo extends Component {
         const { i18n } = this.props;
         const showText = demoFunction.showText.value;
         const autoWidth = demoFunction.autoWidth.value;
-        let props = {};
+        let props: SwitchProps = {};
         if (showText === 'true') {
             props = {
                 checkedChildren: i18n.checkedChildren,
@@ -151,7 +166,8 @@ class ThemeDemo extends Component {
     }
 }
 
-function render(i18n) {
+function render(i18n: I18n) {
+    // eslint-disable-next-line react/no-render-return-value
     return ReactDOM.render(
         <div className="demo-container">
             <h2>Switch</h2>
