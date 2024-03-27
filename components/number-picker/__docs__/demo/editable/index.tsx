@@ -2,19 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { NumberPicker, Button } from '@alifd/next';
 
-interface DemoState {
-    editable: boolean;
-    value: number;
-}
-
-class App extends React.Component<any, DemoState> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            editable: false,
-            value: 0,
-        };
-    }
+class App extends React.Component {
+    state = {
+        editable: false,
+        value: 0,
+    };
 
     toogle() {
         this.setState({
@@ -40,7 +32,7 @@ class App extends React.Component<any, DemoState> {
                 <br />
                 <br />
                 <Button onClick={this.toogle.bind(this)}>
-                    Toggle to {!this.state.editable ? 'editable' : 'uneditable'}
+                    {!this.state.editable ? 'Toggle to editable' : 'Toggle to uneditable'}
                 </Button>
             </div>
         );

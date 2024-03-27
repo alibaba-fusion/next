@@ -1,6 +1,6 @@
 import React from 'react';
 import Big from 'big.js';
-import NumberPicker from '../index';
+import NumberPicker, { type NumberPickerProps } from '../index';
 import '../style';
 
 /* global describe it */
@@ -1007,14 +1007,14 @@ describe('number-picker', () => {
         });
 
         it('should support e.triggerType ', () => {
-            const onChange = (value: number, e: { triggerType: string }) => {
+            const onChange: NumberPickerProps['onChange'] = (value, e) => {
                 assert(e.triggerType === 'up');
             };
             cy.mount(<NumberPicker onChange={onChange} />).as('NumberPicker');
             cy.get('@NumberPicker').document().find('button').eq(0).as('up');
             cy.get('@up').click();
 
-            const onChange2 = (value: number, e: { triggerType: string }) => {
+            const onChange2: NumberPickerProps['onChange'] = (value, e) => {
                 assert(e.triggerType === 'down');
             };
             cy.mount(<NumberPicker onChange={onChange2} />).as('NumberPicker2');

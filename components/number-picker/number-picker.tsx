@@ -8,7 +8,7 @@ import Icon from '../icon';
 import Button from '../button';
 import Input from '../input';
 import { func, obj } from '../util';
-import { DerivedStateFromProps, NumberPickerProps, NumberPickerState } from './types';
+import { NumberPickerProps, NumberPickerState } from './types';
 
 const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
 const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER || -Math.pow(2, 53) + 1;
@@ -104,7 +104,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
             };
         }
 
-        const state: DerivedStateFromProps = {};
+        const state: Partial<NumberPickerState> = {};
         const { value, stringMode } = nextProps;
         // 一般受控render逻辑
         if ('value' in nextProps && `${nextProps.value}` !== `${prevState.value}`) {
@@ -165,14 +165,14 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
         }
     }
 
-    onFocus(e: React.FocusEvent<HTMLInputElement>, ...args: any[]) {
+    onFocus: NumberPickerProps['onFocus'] = (e, ...args) => {
         const { onFocus } = this.props;
         this.setFocus(true);
         onFocus && onFocus(e, ...args);
-    }
+    };
 
-    onBlur(e: React.FocusEvent<HTMLInputElement>, ...args: any[]) {
-        const { editable, stringMode } = this.props;
+    onBlur: NumberPickerProps['onBlur'] = (e, ...args) => {
+        const { editable, stringMode, onBlur } = this.props;
         const displayValue = `${this.state.displayValue}`;
         // 展示值合法但超出边界时，额外在Blur时触发onChange
         // 展示值非法时，回退前一个有效值
@@ -194,9 +194,8 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
         }
 
         this.setFocus(false);
-        const { onBlur } = this.props;
         onBlur && onBlur(e, ...args);
-    }
+    };
 
     withinMinMax(value: number | string) {
         const { max, min } = this.state;
@@ -320,7 +319,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
     }: {
         value: string | number;
         e: React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>;
-        triggerType?: string;
+        triggerType?: 'up' | 'down';
     }) {
         if (!('value' in this.props) || value === this.props.value) {
             this.setState({
@@ -354,7 +353,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
         return Math.pow(10, precision);
     }
 
-    onKeyDown(e: React.KeyboardEvent<HTMLInputElement>, ...args: any[]) {
+    onKeyDown: NumberPickerProps['onKeyDown'] = (e, ...args) => {
         if (e.keyCode === 38) {
             this.up(false, e);
         } else if (e.keyCode === 40) {
@@ -362,7 +361,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
         }
         const { onKeyDown } = this.props;
         onKeyDown && onKeyDown(e, ...args);
-    }
+    };
 
     up(disabled: boolean, e: React.KeyboardEvent<HTMLInputElement>) {
         this.step('up', disabled, e);
@@ -610,9 +609,9 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
                     min={min as number | undefined}
                     aria-label={'number picker'}
                     state={state === 'error' ? 'error' : undefined}
-                    onBlur={this.onBlur.bind(this)}
-                    onFocus={this.onFocus.bind(this)}
-                    onKeyDown={this.onKeyDown.bind(this)}
+                    onBlur={this.onBlur}
+                    onFocus={this.onFocus}
+                    onKeyDown={this.onKeyDown}
                     autoFocus={autoFocus}
                     readOnly={!editable}
                     value={this.getDisplayValue()}

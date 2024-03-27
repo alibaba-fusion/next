@@ -1,16 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { NumberPicker } from '@alifd/next';
+import type { NumberPickerProps } from '@alifd/next/lib/number-picker';
 
 const step = '0.000000000000000000000001';
 
-function onChange(value: number) {
+const onChange: NumberPickerProps['onChange'] = value => {
     console.log('changed', value);
-}
+};
 
-function onCorrect(value: object) {
+const onCorrect: NumberPickerProps['onCorrect'] = value => {
     console.log('corrected', value);
-}
+};
 
 class App extends React.Component {
     state = {
