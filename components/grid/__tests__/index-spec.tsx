@@ -1,4 +1,5 @@
 import React from 'react';
+import ConfigProvider from '../../config-provider';
 import Grid from '../index';
 
 const { Row, Col } = Grid;
@@ -130,5 +131,36 @@ describe('Col', () => {
         const func = (props: any) => <div className="cus-component">{props.children}</div>; // eslint-disable-line
         cy.mount(<Col component={func} />);
         cy.get('.cus-component');
+    });
+});
+
+describe('Issues', () => {
+    // https://github.com/alibaba-fusion/next/issues/2867
+    it('should not pass common props to dom', () => {
+        cy.mount(
+            <ConfigProvider
+                prefix="next-"
+                device="desktop"
+                popupContainer={document.body}
+                pure
+                rtl
+                warning
+                locale={{}}
+                errorBoundary
+                defaultPropsConfig={{}}
+            >
+                <div>
+                    <Row>
+                        <Col span={4}>11</Col>
+                    </Row>
+                </div>
+            </ConfigProvider>
+        );
+        ['prefix', 'device', 'popupContainer', 'pure', 'rtl', 'warning', 'locale'].forEach(key => {
+            cy.get('.next-row').should('not.have.attr', key);
+            cy.get('.next-row').should('not.have.attr', key.toLowerCase());
+            cy.get('.next-col').should('not.have.attr', key);
+            cy.get('.next-col').should('not.have.attr', key.toLowerCase());
+        });
     });
 });
