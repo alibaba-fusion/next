@@ -2,7 +2,12 @@ import type React from 'react';
 import type { CommonProps } from '../util';
 import type { Locale } from '../locale/types';
 
-type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'onChange'>;
+export interface HTMLAttributesWeak extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
+    /**
+     * for form item
+     */
+    name?: string;
+}
 
 export type RatingLocale = Locale['Rating'];
 
