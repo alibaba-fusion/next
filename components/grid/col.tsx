@@ -1,7 +1,9 @@
 import React, { Component, ComponentClass, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import ConfigProvider from '../config-provider';
 import { type ColProps, type BreakPoints, type PointProps, type TypeRecord } from './types';
+import { obj } from '../util';
 
 const breakPoints: BreakPoints[] = ['xxs', 'xs', 's', 'm', 'l', 'xl'];
 
@@ -14,6 +16,7 @@ export default class Col extends Component<ColProps> {
     static isNextCol = true;
 
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
@@ -90,6 +93,7 @@ export default class Col extends Component<ColProps> {
             rtl,
             ...others
         } = this.props;
+        const domOtherProps = obj.pickOthers(Col.propTypes, others);
         const Tag = component as
             | string
             | FunctionComponent<Record<string, unknown> & { className: string }>
@@ -134,7 +138,7 @@ export default class Col extends Component<ColProps> {
         });
 
         return (
-            <Tag dir={rtl ? 'rtl' : 'ltr'} role="gridcell" className={classes} {...others}>
+            <Tag dir={rtl ? 'rtl' : 'ltr'} role="gridcell" className={classes} {...domOtherProps}>
                 {children}
             </Tag>
         );
