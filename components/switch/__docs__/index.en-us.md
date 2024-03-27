@@ -16,24 +16,27 @@ The Switch Component toggles the state. The options in the switch, as well as it
 
 ### Note
 
--   We should take into account the font size when using custom checkChildren and unCheckedChildren，cuz the width is limited and defaults to be 2 characters.
+-   We should take into account the font size when using custom checkChildren and unCheckedChildren, cuz the width is limited and defaults to be 2 characters.
 
 ## API
 
 ### Switch
 
-| Param | Descripiton  | Type  | Default Value |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------- |
-
-| size              | size of switch<br><br>**option**:<br>'medium'<br>'small'                                                                              | Enum     | 'medium'  |
-| checkedChildren   | content of 'on' state                                                                                                                                         | any      | -         |
-| unCheckedChildren | content of 'off' state                                                                                                                                         | any      | -         |
-| onChange          | callback triggered when state is toggled<br><br>**signature**:<br>Function(checked: Boolean, e: Event) => void<br>**parameter**:<br>_checked_: {Boolean} whether on<br>_e_: {Event} DOM Event | Function | () => { } |
-| checked           | current value (for controlled one)                                                                                                                                 | Boolean  | -         |
-| defaultChecked    | default value (for uncontrolled one)                                                                                                                                | Boolean  | -         |
-| disabled          | disabled                                                                                                                                        | Boolean  | false     |
-| onClick           | callback triggered when clicked<br><br>**signature**:<br>Function(e: Event) => void<br>**parameter**:<br>_e_: {Event} DOM Event                                                         | Function | -         |
-| onKeyDown         | callback triggered when key is pressed<br><br>**signature**:<br>Function(e: Event) => void<br>**parameter**:<br>_e_: {Event} DOM Event                                                         | Function | -         |
+| Param             | Description                                                                                                                                                                                  | Type                                                                                                                      | Default Value | Required |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
+| defaultChecked    | Is default on（uncontrolled）                                                                                                                                                                | boolean                                                                                                                   | false         |          |
+| checked           | Is on（controlled）                                                                                                                                                                          | boolean                                                                                                                   | -             |          |
+| onChange          | Callback when state is changed<br/><br/>**signature**:<br/>**params**:<br/>_checked_: Is on                                                                                                  | (<br/> checked: boolean,<br/> e: React.MouseEvent\<HTMLDivElement> \| React.KeyboardEvent\<HTMLDivElement><br/> ) => void | -             |          |
+| size              | Size of switch                                                                                                                                                                               | 'medium' \| 'small'                                                                                                       | 'medium'      |          |
+| loading           | Is loading                                                                                                                                                                                   | boolean                                                                                                                   | false         |          |
+| disabled          | Is disabled                                                                                                                                                                                  | boolean                                                                                                                   | false         |          |
+| autoWidth         | Width adapts to content                                                                                                                                                                      | boolean                                                                                                                   | false         |          |
+| isPreview         | Is preview mode                                                                                                                                                                              | boolean                                                                                                                   | false         |          |
+| renderPreview     | Custom render method when is preview mode.<br/><br/>**signature**:<br/>**params**:<br/>_checked_: Is on<br/>_props_: The props of switch<br/>**return**:<br/>The render content when preview | (checked: boolean, props: SwitchProps) => React.ReactNode                                                                 | -             |          |
+| checkedChildren   | Content of 'on' state                                                                                                                                                                        | React.ReactNode                                                                                                           | -             |          |
+| unCheckedChildren | Content of 'off' state                                                                                                                                                                       | React.ReactNode                                                                                                           | -             |          |
+| onClick           | -                                                                                                                                                                                            | (e: React.MouseEvent\<HTMLDivElement> \| React.KeyboardEvent\<HTMLDivElement>) => void                                    | -             |          |
+| onKeyDown         | -                                                                                                                                                                                            | (e: React.KeyboardEvent\<HTMLDivElement>) => void                                                                         | -             |          |
 
 ## Keyboard Support
 
@@ -41,7 +44,7 @@ The Switch Component toggles the state. The options in the switch, as well as it
 
 ## ARIA and KeyBoard
 
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-| Enter       | toggle checked                |
-| Space       | toggle checked                |
+| KeyBoard | Descripiton    |
+| :------- | :------------- |
+| Enter    | toggle checked |
+| Space    | toggle checked |

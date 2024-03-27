@@ -27,7 +27,7 @@ export default {
             },
         ],
     }),
-    adaptor: ({ state, size, showLabel, ...others }) => {
+    adaptor: ({ state, size, showLabel, ...others }: any) => {
         return (
             <Switch
                 {...others}
