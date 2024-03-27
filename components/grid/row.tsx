@@ -8,8 +8,10 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import ConfigProvider from '../config-provider';
 import { type RowProps, type TypeRecord } from './types';
 import Col from './col';
+import { obj } from '../util';
 
 type BooleanRecord = TypeRecord<boolean>;
 
@@ -19,6 +21,7 @@ type BooleanRecord = TypeRecord<boolean>;
  */
 export default class Row extends Component<RowProps> {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
@@ -74,11 +77,13 @@ export default class Row extends Component<RowProps> {
             justify,
             hidden,
             className,
+            style,
             component,
             children,
             rtl,
             ...others
         } = this.props;
+        const domOtherProps = obj.pickOthers(Row.propTypes, others);
         const Tag = component as
             | string
             | FunctionComponent<Record<string, unknown> & { className: string }>
@@ -108,13 +113,14 @@ export default class Row extends Component<RowProps> {
         });
 
         let newChildren = children;
+        let newStyle = style;
         const gutterNumber = parseInt((gutter as string).toString(), 10);
         if (gutterNumber !== 0) {
             const halfGutterString = `${gutterNumber / 2}px`;
-            others.style = {
+            newStyle = {
                 marginLeft: `-${halfGutterString}`,
                 marginRight: `-${halfGutterString}`,
-                ...(others.style || {}),
+                ...newStyle,
             };
             newChildren = Children.map(children, (child: ReactElement) => {
                 if (
@@ -139,7 +145,13 @@ export default class Row extends Component<RowProps> {
         }
 
         return (
-            <Tag dir={rtl ? 'rtl' : 'ltr'} role="row" className={newClassName} {...others}>
+            <Tag
+                dir={rtl ? 'rtl' : 'ltr'}
+                role="row"
+                className={newClassName}
+                style={newStyle}
+                {...domOtherProps}
+            >
                 {newChildren}
             </Tag>
         );
