@@ -596,6 +596,33 @@ describe('CascaderSelect', () => {
         await delay(300);
         assert(document.querySelector('.next-cascader-select-dropdown'));
     });
+
+    it('should support focus api', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        const wrapper = mount(<CascaderSelect id="cascader-focus" dataSource={ChinaArea} />, {
+            attachTo: div,
+        });
+        const ins = wrapper.instance();
+        assert(typeof ins.focus === 'function');
+        ins.focus();
+        assert(document.activeElement.id === 'cascader-focus');
+        wrapper.unmount();
+    });
+
+    it('should support visible by keyboard', async () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        const wrapper = mount(<CascaderSelect followTrigger dataSource={ChinaArea} />, {
+            attachTo: div,
+        });
+        ReactTestUtils.Simulate.keyDown(wrapper.find('input').getDOMNode(), {
+            keyCode: KEYCODE.UP,
+        });
+        await delay(300);
+        assert(div.querySelector('.next-cascader-select-dropdown'));
+        wrapper.unmount();
+    });
 });
 
 function findItem(menuIndex, itemIndex) {
