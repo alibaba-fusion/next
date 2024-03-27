@@ -5,21 +5,15 @@ import { Radio } from '@alifd/next';
 const RadioGroup = Radio.Group;
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        value: 'orange',
+    };
 
-        this.state = {
-            value: 'orange',
-        };
-
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange(value) {
+    onChange = (value: string) => {
         this.setState({
             value: value,
         });
-    }
+    };
 
     render() {
         return (

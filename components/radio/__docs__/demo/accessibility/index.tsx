@@ -5,7 +5,7 @@ import { Radio } from '@alifd/next';
 const RadioGroup = Radio.Group;
 ReactDOM.render(
     <div>
-        <span id="radio-a11y">Programming language ：</span>
+        <span id="radio-a11y">Programming language :</span>
         <RadioGroup aria-labelledby="radio-a11y">
             <Radio id="python" value="python">
                 python

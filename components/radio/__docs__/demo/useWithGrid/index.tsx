@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type MouseEvent } from 'react';
 import ReactDOM from 'react-dom';
 import { Radio, Grid } from '@alifd/next';
 
@@ -6,25 +6,19 @@ const { Row, Col } = Grid;
 const RadioGroup = Radio.Group;
 
 class ControlApp extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        value: 'orange',
+        other: 0,
+    };
 
-        this.state = {
-            value: 'orange',
-            other: 0,
-        };
-
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange(value) {
+    onChange = (value: string) => {
         this.setState({
             value: value,
         });
         console.log('onChange', value);
-    }
+    };
 
-    onClick(e) {
+    onClick(e: MouseEvent) {
         console.log('onClick', e);
     }
 

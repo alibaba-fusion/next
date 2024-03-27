@@ -22,22 +22,18 @@ const list = [
 ];
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        value: 'apple',
+        buttonValue: 'pear',
+    };
 
-        this.state = {
-            value: 'apple',
-            buttonValue: 'pear',
-        };
-    }
-
-    onChange = value => {
+    onChange = (value: string) => {
         this.setState({
             value: value,
         });
     };
 
-    onButtonChange = value => {
+    onButtonChange = (value: string) => {
         this.setState({
             buttonValue: value,
         });

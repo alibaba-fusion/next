@@ -22,37 +22,29 @@ const list = [
 ];
 
 class ControlApp extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        value1: 'apple',
+        value2: 'apple',
+        value3: '',
+    };
 
-        this.state = {
-            value1: 'apple',
-            value2: 'apple',
-            value3: '',
-        };
-
-        this.onNestChange = this.onNestChange.bind(this);
-        this.onSmallChange = this.onSmallChange.bind(this);
-        this.onMediumChange = this.onMediumChange.bind(this);
-    }
-
-    onSmallChange(value) {
+    onSmallChange = (value: string) => {
         this.setState({
             value1: value,
         });
-    }
+    };
 
-    onMediumChange(value) {
+    onMediumChange = (value: string) => {
         this.setState({
             value2: value,
         });
-    }
+    };
 
-    onNestChange(value) {
+    onNestChange = (value: string) => {
         this.setState({
             value3: value,
         });
-    }
+    };
 
     render() {
         return (

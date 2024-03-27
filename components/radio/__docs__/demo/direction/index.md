@@ -2,7 +2,7 @@
 
 # 垂直展示
 
-垂直展示`<Radio.Group>`，配合更多输入框。仅适用于非Button样式的`<Radio.Group>`。
+垂直展示`<Radio.Group>`，配合更多输入框。仅适用于非 Button 样式的`<Radio.Group>`。
 
 # en-US order=5
 

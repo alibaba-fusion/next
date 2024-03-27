@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ChangeEvent } from 'react';
 import ReactDOM from 'react-dom';
 import { Radio, Input, Switch } from '@alifd/next';
 
@@ -8,7 +8,7 @@ class App extends React.Component {
         dir: true,
     };
 
-    onChange = (value, e) => {
+    onChange = (value: number, e: ChangeEvent<HTMLInputElement>) => {
         console.log('radio checked', value, e);
         this.setState({
             value,
