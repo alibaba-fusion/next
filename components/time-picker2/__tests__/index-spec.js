@@ -385,6 +385,21 @@ describe('TimePicker2', () => {
                 done();
             }, 1000);
         });
+
+        it('should support custom formatting , close #3651', () => {
+            const div = document.createElement('div');
+            document.body.appendChild(div);
+            const wrapper = mount(<TimePicker2 format="HH" />, { attachTo: div });
+            wrapper
+                .find('.next-time-picker2-input input')
+                .simulate('change', { target: { value: '12' } });
+            wrapper.update();
+            assert(
+                document
+                    .querySelector('li[title="12"][role="option"]')
+                    .classList.contains('next-selected')
+            );
+        });
     });
 });
 
