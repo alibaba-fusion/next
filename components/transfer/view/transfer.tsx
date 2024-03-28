@@ -9,12 +9,19 @@ import zhCN from '../../locale/zh-cn';
 import { func, obj } from '../../util';
 import ConfigProvider from '../../config-provider';
 import TransferPanel from '../view/transfer-panel';
+import {
+    DragGapType,
+    PositionType,
+    TransferDataItem,
+    TransferProps,
+    TransferState,
+} from '../types';
 
 const { config } = ConfigProvider;
 const { bindCtx } = func;
 const { pickOthers } = obj;
 
-const getLeftValue = (dataSource, rightValue) => {
+const getLeftValue = (dataSource: Array<TransferDataItem>, rightValue: Array<string>) => {
     return dataSource
         .map(item => item.value)
         .filter(itemValue => {
@@ -22,8 +29,15 @@ const getLeftValue = (dataSource, rightValue) => {
         });
 };
 
-const filterCheckedValue = (left, right, dataSource) => {
-    const result = {
+const filterCheckedValue = (
+    left: Array<string>,
+    right: Array<string>,
+    dataSource: Array<TransferDataItem>
+) => {
+    const result: {
+        left: Array<string>;
+        right: Array<string>;
+    } = {
         left: [],
         right: [],
     };
@@ -45,7 +59,7 @@ const filterCheckedValue = (left, right, dataSource) => {
 /**
  * Transfer
  */
-class Transfer extends Component {
+class Transfer extends Component<TransferProps, TransferState> {
     static contextTypes = {
         prefix: PropTypes.string,
     };
@@ -74,21 +88,10 @@ class Transfer extends Component {
         defaultValue: PropTypes.arrayOf(PropTypes.string),
         /**
          * 值发生改变的时候触发的回调函数
-         * @param {Array} value 右面板值
-         * @param {Array} data 右面板数据
-         * @param {Object} extra 额外参数
-         * @param {Array} extra.leftValue 左面板值
-         * @param {Array} extra.leftData 左面板数据
-         * @param {Array} extra.movedValue 发生移动的值
-         * @param {Object} extra.movedData 发生移动的数据
-         * @param {String} extra.direction 移动的方向，值为'left'或'right'
          */
         onChange: PropTypes.func,
         /**
          * Item 被选中的时候触发的回调函数
-         * @param {Array} sourceSelectedValue 源面板选中的 Item 列表
-         * @param {Array} targetSelectedValue 目标面板选中的 Item 列表
-         * @param {String} trigger 触发面板，值为'source'或'target'
          */
         onSelect: PropTypes.func,
         /**
@@ -105,22 +108,14 @@ class Transfer extends Component {
         rightDisabled: PropTypes.bool,
         /**
          * 列表项渲染函数
-         * @param {Object} data 数据
-         * @return {ReactNode} 列表项内容
          */
         itemRender: PropTypes.func,
         /**
          * 自定义搜索函数
-         * @param {String} searchedValue 搜索的内容
-         * @param {Object} data 数据
-         * @return {Boolean} 是否匹配到
-         * @default 根据 label 属性匹配
          */
         filter: PropTypes.func,
         /**
          * 搜索框输入时触发的回调函数
-         * @param {String} searchedValue 搜索的内容
-         * @param {String} position 搜索面板的位置
          */
         onSearch: PropTypes.func,
         /**
@@ -145,7 +140,6 @@ class Transfer extends Component {
         titles: PropTypes.arrayOf(PropTypes.node),
         /**
          * 向右向左移动按钮显示内容
-         * @default [<Icon type="arrow-right" />, <Icon type="arrow-left" />]
          */
         operations: PropTypes.arrayOf(PropTypes.node),
         /**
@@ -170,8 +164,6 @@ class Transfer extends Component {
         sortable: PropTypes.bool,
         /**
          * 拖拽排序时触发的回调函数
-         * @param {Array} value 排序后的值
-         * @param {String} position 拖拽的面板位置，值为：left 或 right
          */
         onSort: PropTypes.func,
         /**
@@ -206,20 +198,23 @@ class Transfer extends Component {
         leftDisabled: false,
         rightDisabled: false,
         showCheckAll: true,
-        itemRender: data => data.label,
+        itemRender: (data: TransferDataItem) => data.label,
         showSearch: false,
-        filter: (searchedValue, data) => {
+        filter: (searchedValue: string, data: TransferDataItem) => {
             let labelString = '';
-            const loop = arg => {
-                if (React.isValidElement(arg) && arg.props.children) {
-                    React.Children.forEach(arg.props.children, loop);
+            const loop = (arg: TransferDataItem['label']) => {
+                if (React.isValidElement(arg) && (arg as React.ReactElement).props.children) {
+                    React.Children.forEach((arg as React.ReactElement).props.children, loop);
                 } else if (typeof arg === 'string') {
                     labelString += arg;
                 }
             };
             loop(data.label);
 
-            return labelString.length >= searchedValue.length && labelString.indexOf(searchedValue) > -1;
+            return (
+                labelString.length >= searchedValue.length &&
+                labelString.indexOf(searchedValue) > -1
+            );
         },
         onSearch: () => {},
         notFoundContent: 'Not Found',
@@ -232,7 +227,7 @@ class Transfer extends Component {
         locale: zhCN.Transfer,
     };
 
-    static normalizeValue(value) {
+    static normalizeValue(value?: string | Array<string>) {
         if (value) {
             if (Array.isArray(value)) {
                 return value;
@@ -244,7 +239,7 @@ class Transfer extends Component {
         return [];
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: TransferProps, prevState: TransferState) {
         const { innerUpdate, value, leftValue } = prevState;
         if (innerUpdate) {
             return {
@@ -253,7 +248,7 @@ class Transfer extends Component {
                 leftValue,
             };
         }
-        const st = {};
+        const st: Partial<TransferState> = {};
 
         let newValue;
         if ('value' in nextProps) {
@@ -264,11 +259,11 @@ class Transfer extends Component {
             /* istanbul ignore next */
             newValue = prevState.value;
         }
-        st.leftValue = getLeftValue(nextProps.dataSource, newValue);
+        st.leftValue = getLeftValue(nextProps.dataSource!, newValue!);
         const { left, right } = filterCheckedValue(
-            prevState.leftCheckedValue,
-            prevState.rightCheckedValue,
-            nextProps.dataSource
+            prevState.leftCheckedValue!,
+            prevState.rightCheckedValue!,
+            nextProps.dataSource!
         );
         st.leftCheckedValue = left;
         st.rightCheckedValue = right;
@@ -276,25 +271,33 @@ class Transfer extends Component {
         return st;
     }
 
-    constructor(props, context) {
+    constructor(props: TransferProps, context: unknown) {
         super(props, context);
 
-        const { value, defaultValue, defaultLeftChecked, defaultRightChecked, dataSource, rtl, operations } = props;
-        if (operations.length === 0) {
-            operations.push(<Icon rtl={rtl} type="arrow-right" />);
-            operations.push(<Icon rtl={rtl} type="arrow-left" />);
+        const {
+            value,
+            defaultValue,
+            defaultLeftChecked,
+            defaultRightChecked,
+            dataSource,
+            rtl,
+            operations,
+        } = props;
+        if (operations!.length === 0) {
+            operations!.push(<Icon rtl={rtl} type="arrow-right" />);
+            operations!.push(<Icon rtl={rtl} type="arrow-left" />);
         }
         const { left, right } = filterCheckedValue(
             Transfer.normalizeValue(defaultLeftChecked),
             Transfer.normalizeValue(defaultRightChecked),
-            dataSource
+            dataSource!
         );
         const stValue = Transfer.normalizeValue('value' in props ? value : defaultValue);
         this.state = {
             value: stValue,
             leftCheckedValue: left,
             rightCheckedValue: right,
-            leftValue: getLeftValue(dataSource, stValue),
+            leftValue: getLeftValue(dataSource!, stValue),
         };
 
         bindCtx(this, [
@@ -306,17 +309,21 @@ class Transfer extends Component {
         ]);
     }
 
-    groupDatasource(value, itemValues, dataSource) {
+    groupDatasource(
+        value: Array<string>,
+        itemValues: Array<string>,
+        dataSource: Array<TransferDataItem>
+    ) {
         return value.reduce((ret, itemValue) => {
             const index = itemValues.indexOf(itemValue);
             if (index > -1) {
                 ret.push(dataSource[index]);
             }
             return ret;
-        }, []);
+        }, [] as Array<TransferDataItem>);
     }
 
-    handlePanelChange(position, value) {
+    handlePanelChange(position: PositionType, value: string[]) {
         const { leftCheckedValue, rightCheckedValue } = this.state;
         const { onSelect } = this.props;
         const valuePropName = position === 'left' ? 'leftCheckedValue' : 'rightCheckedValue';
@@ -324,16 +331,21 @@ class Transfer extends Component {
         this.setState({
             innerUpdate: true,
             [valuePropName]: value,
-        });
+        } as Pick<TransferState, 'innerUpdate' | 'leftCheckedValue' | 'rightCheckedValue'>);
         onSelect &&
             onSelect(
-                position === 'left' ? value : leftCheckedValue,
-                position === 'left' ? rightCheckedValue : value,
+                position === 'left' ? value : leftCheckedValue!,
+                position === 'left' ? rightCheckedValue! : value,
                 position === 'left' ? 'source' : 'target'
             );
     }
 
-    handlePanelSort(position, dragValue, referenceValue, dragGap) {
+    handlePanelSort(
+        position: PositionType,
+        dragValue: string,
+        referenceValue: string,
+        dragGap: DragGapType
+    ) {
         const { value, leftValue } = this.state;
         const newValue = position === 'right' ? value : leftValue;
         const currentIndex = newValue.indexOf(dragValue);
@@ -355,12 +367,14 @@ class Transfer extends Component {
                 leftValue,
             },
             () => {
-                this.props.onSort(newValue, position);
+                if (typeof this.props.onSort === 'function') {
+                    this.props.onSort(newValue, position);
+                }
             }
         );
     }
 
-    handleMoveItem(direction) {
+    handleMoveItem(direction: PositionType) {
         let rightValue;
         let newLeftValue;
         let movedValue;
@@ -370,7 +384,9 @@ class Transfer extends Component {
 
         if (direction === 'right') {
             rightValue = leftCheckedValue.concat(value);
-            newLeftValue = leftValue.filter(itemValue => leftCheckedValue.indexOf(itemValue) === -1);
+            newLeftValue = leftValue.filter(
+                itemValue => leftCheckedValue.indexOf(itemValue) === -1
+            );
             movedValue = leftCheckedValue;
             valuePropName = 'leftCheckedValue';
         } else {
@@ -385,7 +401,7 @@ class Transfer extends Component {
         this.setValueState(st, rightValue, newLeftValue, movedValue, direction);
     }
 
-    handleSimpleMove(direction, v) {
+    handleSimpleMove(direction: PositionType, v: string) {
         let rightValue;
         let newLeftValue;
 
@@ -402,20 +418,20 @@ class Transfer extends Component {
         this.setValueState({}, rightValue, newLeftValue, [v], direction);
     }
 
-    handleSimpleMoveAll(direction) {
+    handleSimpleMoveAll(direction: PositionType) {
         let rightValue;
         let newLeftValue;
         let movedValue;
 
         const { dataSource } = this.props;
         const { value, leftValue } = this.state;
-        const disabledValue = dataSource.reduce((ret, item) => {
+        const disabledValue = dataSource!.reduce((ret, item) => {
             if (item.disabled) {
                 ret.push(item.value);
             }
 
             return ret;
-        }, []);
+        }, [] as string[]);
 
         if (direction === 'right') {
             movedValue = leftValue.filter(itemValue => disabledValue.indexOf(itemValue) === -1);
@@ -431,16 +447,22 @@ class Transfer extends Component {
     }
 
     // eslint-disable-next-line max-params
-    setValueState(st, rightValue, leftValue, movedValue, direction) {
+    setValueState(
+        st: Partial<TransferState>,
+        rightValue: string[],
+        leftValue: string[],
+        movedValue: string[],
+        direction: PositionType
+    ) {
         const { dataSource } = this.props;
         const callback = () => {
             if ('onChange' in this.props) {
-                const itemValues = dataSource.map(item => item.value);
-                const rightData = this.groupDatasource(rightValue, itemValues, dataSource);
-                const leftData = this.groupDatasource(leftValue, itemValues, dataSource);
-                const movedData = this.groupDatasource(movedValue, itemValues, dataSource);
+                const itemValues = dataSource!.map(item => item.value);
+                const rightData = this.groupDatasource(rightValue, itemValues, dataSource!);
+                const leftData = this.groupDatasource(leftValue, itemValues, dataSource!);
+                const movedData = this.groupDatasource(movedValue, itemValues, dataSource!);
 
-                this.props.onChange(rightValue, rightData, {
+                this.props.onChange!(rightValue, rightData, {
                     leftValue,
                     leftData,
                     movedValue,
@@ -456,7 +478,7 @@ class Transfer extends Component {
         }
 
         if (Object.keys(st).length) {
-            this.setState(st, callback);
+            this.setState(st as TransferState, callback);
         } else {
             // eslint-disable-next-line callback-return
             callback();
@@ -464,7 +486,8 @@ class Transfer extends Component {
     }
 
     renderCenter() {
-        const { prefix, mode, operations, disabled, leftDisabled, rightDisabled, locale } = this.props;
+        const { prefix, mode, operations, disabled, leftDisabled, rightDisabled, locale } =
+            this.props;
         const { leftCheckedValue, rightCheckedValue } = this.state;
         return (
             <div className={`${prefix}transfer-operations`}>
@@ -473,24 +496,24 @@ class Transfer extends Component {
                 ) : (
                     [
                         <Button
-                            aria-label={locale.moveToRight}
+                            aria-label={locale!.moveToRight as string}
                             key="l2r"
                             className={`${prefix}transfer-operation`}
                             type={leftCheckedValue.length ? 'primary' : 'normal'}
                             disabled={leftDisabled || disabled || !leftCheckedValue.length}
                             onClick={this.handleMoveItem.bind(this, 'right')}
                         >
-                            {operations[0]}
+                            {operations![0]}
                         </Button>,
                         <Button
-                            aria-label={locale.moveToLeft}
+                            aria-label={locale!.moveToLeft as string}
                             key="r2l"
                             className={`${prefix}transfer-operation`}
                             type={rightCheckedValue.length ? 'primary' : 'normal'}
                             disabled={rightDisabled || disabled || !rightCheckedValue.length}
                             onClick={this.handleMoveItem.bind(this, 'left')}
                         >
-                            {operations[1]}
+                            {operations![1]}
                         </Button>,
                     ]
                 )}
@@ -504,7 +527,7 @@ class Transfer extends Component {
             mode,
             disabled,
             className,
-            dataSource,
+            dataSource = [],
             locale,
             showSearch = false,
             searchProps = {},
@@ -514,7 +537,7 @@ class Transfer extends Component {
             rightDisabled,
             searchPlaceholder,
             notFoundContent,
-            titles,
+            titles = [],
             listClassName,
             listStyle,
             itemRender,
@@ -549,14 +572,19 @@ class Transfer extends Component {
             customerList: children,
             showCheckAll,
         };
-        const others = pickOthers(Object.keys(Transfer.propTypes), this.props);
+        const others = pickOthers(
+            Object.keys(Transfer.propTypes) as unknown as typeof Transfer.propTypes,
+            this.props
+        );
 
         if (rtl) {
             others.dir = 'rtl';
         }
         const _showSearch = Array.isArray(showSearch) ? showSearch : [showSearch, showSearch];
         const _searchProps = Array.isArray(searchProps) ? searchProps : [searchProps, searchProps];
-        const _notFoundContent = Array.isArray(notFoundContent) ? notFoundContent : [notFoundContent, notFoundContent];
+        const _notFoundContent = Array.isArray(notFoundContent)
+            ? notFoundContent
+            : [notFoundContent, notFoundContent];
         return (
             <div className={cx(`${prefix}transfer`, className)} id={id} {...others}>
                 <TransferPanel
@@ -587,4 +615,4 @@ class Transfer extends Component {
     }
 }
 
-export default config(polyfill(Transfer));
+export default config(polyfill(Transfer)) as unknown as typeof Transfer;
