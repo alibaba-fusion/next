@@ -2,7 +2,7 @@
 
 # 加载中
 
-带加载中状态的switch
+带加载中状态的 switch
 
 # en-US order=0
 

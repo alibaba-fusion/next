@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Switch } from '@alifd/next';
 
-function onChange(checked) {
+function onChange(checked: boolean) {
     console.log(`switch to ${checked}`);
 }
 

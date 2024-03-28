@@ -1,91 +1,35 @@
+import React, { type HTMLAttributes, type KeyboardEvent, type MouseEvent } from 'react';
 import classNames from 'classnames';
-import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
-import { KEYCODE } from '../util';
+import { KEYCODE, obj } from '../util';
 import Icon from '../icon';
 import ConfigProvider from '../config-provider';
 import zhCN from '../locale/zh-cn';
+import type { SwitchProps, SwitchState } from './types';
 
-/** Switch*/
-class Switch extends React.Component {
-    static contextTypes = {
-        prefix: PropTypes.string,
-    };
+class Switch extends React.Component<SwitchProps, SwitchState> {
     static propTypes = {
+        ...ConfigProvider.propTypes,
+        name: PropTypes.string,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         pure: PropTypes.bool,
-        /**
-         * 自定义类名
-         */
         className: PropTypes.string,
-        /**
-         * 自定义内敛样式
-         */
         style: PropTypes.object,
-        /**
-         * 打开时的内容
-         */
         checkedChildren: PropTypes.any,
-        /**
-         * 关闭时的内容
-         */
         unCheckedChildren: PropTypes.any,
-        /**
-         * 开关状态改变是触发此事件
-         * @param {Boolean} checked 是否为打开状态
-         * @param {Event} e DOM事件对象
-         */
         onChange: PropTypes.func,
-        /**
-         * 开关当前的值(针对受控组件)
-         */
         checked: PropTypes.bool,
-        /**
-         * 开关默认值 (针对非受控组件)
-         */
         defaultChecked: PropTypes.bool,
-        /**
-         * 表示开关被禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * loading
-         */
         loading: PropTypes.bool,
-        /**
-         * switch的尺寸
-         * @enumdesc 正常大小, 缩小版大小
-         */
         size: PropTypes.oneOf(['medium', 'small']),
-        /**
-         * 鼠标点击事件
-         * @param {Event} e DOM事件对象
-         */
         onClick: PropTypes.func,
-        /**
-         * 键盘按键事件
-         * @param {Event} e DOM事件对象
-         */
         onKeyDown: PropTypes.func,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param {number} value 评分值
-         */
         renderPreview: PropTypes.func,
-        /**
-         * 开启后宽度根据内容自适应
-         * @version 1.23
-         */
         autoWidth: PropTypes.bool,
-        /**
-         * 国际化配置
-         */
         locale: PropTypes.object,
     };
     static defaultProps = {
@@ -101,18 +45,7 @@ class Switch extends React.Component {
         locale: zhCN.Switch,
     };
 
-    constructor(props, context) {
-        super(props, context);
-
-        const checked = props.checked || props.defaultChecked;
-        this.onChange = this.onChange.bind(this);
-        this.onKeyDown = this.onKeyDown.bind(this);
-        this.state = {
-            checked,
-        };
-    }
-
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props: SwitchProps, state: SwitchState) {
         if ('checked' in props && props.checked !== state.checked) {
             return {
                 checked: !!props.checked,
@@ -122,7 +55,20 @@ class Switch extends React.Component {
         return null;
     }
 
-    onChange(ev) {
+    readonly props: SwitchProps & Required<Pick<SwitchProps, keyof typeof Switch.defaultProps>>;
+
+    constructor(props: SwitchProps) {
+        super(props);
+
+        const checked = props.checked || props.defaultChecked!;
+        this.onChange = this.onChange.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
+        this.state = {
+            checked,
+        };
+    }
+
+    onChange(ev: MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>) {
         const checked = !this.state.checked;
 
         if (!('checked' in this.props)) {
@@ -134,7 +80,7 @@ class Switch extends React.Component {
         this.props.onClick && this.props.onClick(ev);
     }
 
-    onKeyDown(e) {
+    onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
         if (e.keyCode === KEYCODE.ENTER || e.keyCode === KEYCODE.SPACE) {
             this.onChange(e);
         }
@@ -158,6 +104,7 @@ class Switch extends React.Component {
             locale,
             ...others
         } = this.props;
+        const domOtherProps = obj.pickOthers(Switch.propTypes, others);
         const { checked } = this.state;
         const status = checked ? 'on' : 'off';
         const children = checked ? checkedChildren : unCheckedChildren;
@@ -167,15 +114,17 @@ class Switch extends React.Component {
             _size = 'medium';
         }
 
-        const classes = classNames({
-            [`${prefix}switch`]: true,
-            [`${prefix}switch-loading`]: loading,
-            [`${prefix}switch-${status}`]: true,
-            [`${prefix}switch-${_size}`]: true,
-            [`${prefix}switch-auto-width`]: autoWidth,
-            [className]: className,
-        });
-        let attrs;
+        const classes = classNames(
+            {
+                [`${prefix}switch`]: true,
+                [`${prefix}switch-loading`]: loading,
+                [`${prefix}switch-${status}`]: true,
+                [`${prefix}switch-${_size}`]: true,
+                [`${prefix}switch-auto-width`]: autoWidth,
+            },
+            className
+        );
+        let attrs: HTMLAttributes<HTMLDivElement> & { disabled: boolean };
         const isDisabled = disabled || readOnly;
 
         if (!isDisabled) {
@@ -197,16 +146,16 @@ class Switch extends React.Component {
                 [`${prefix}form-preview`]: true,
             });
 
-            if ('renderPreview' in this.props) {
+            if (typeof renderPreview === 'function') {
                 return (
-                    <div className={previewCls} {...others}>
+                    <div className={previewCls} {...domOtherProps}>
                         {renderPreview(checked, this.props)}
                     </div>
                 );
             }
 
             return (
-                <p className={previewCls} {...others}>
+                <p className={previewCls} {...domOtherProps}>
                     {children || locale[status]}
                 </p>
             );
@@ -216,8 +165,8 @@ class Switch extends React.Component {
             <div
                 role="switch"
                 dir={rtl ? 'rtl' : undefined}
-                tabIndex="0"
-                {...others}
+                tabIndex={0}
+                {...domOtherProps}
                 className={classes}
                 {...attrs}
                 aria-checked={checked}
@@ -230,5 +179,7 @@ class Switch extends React.Component {
         );
     }
 }
+
+export type { SwitchProps, SwitchLocale } from './types';
 
 export default ConfigProvider.config(polyfill(Switch));
