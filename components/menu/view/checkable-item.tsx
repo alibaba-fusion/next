@@ -69,7 +69,8 @@ export default class CheckableItem extends Component {
     }
 
     renderCheck() {
-        const { root, checked, indeterminate, disabled, checkType, checkDisabled, onChange } = this.props;
+        const { root, checked, indeterminate, disabled, checkType, checkDisabled, onChange } =
+            this.props;
         const { labelToggleChecked } = root.props;
         const Check = checkType === 'radio' ? Radio : Checkbox;
 

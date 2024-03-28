@@ -85,17 +85,18 @@ export default class PopupItem extends Component {
 
     handlePopupOpen() {
         const { root, level, align, autoWidth } = this.props;
-        const { popupAutoWidth: rootPopupAutoWidth, popupAlign: rootPopupAlign, direction } = root.props;
+        const {
+            popupAutoWidth: rootPopupAutoWidth,
+            popupAlign: rootPopupAlign,
+            direction,
+        } = root.props;
         const popupAlign = align || rootPopupAlign;
         const popupAutoWidth = 'autoWidth' in this.props ? autoWidth : rootPopupAutoWidth;
         try {
             // avoid errors while dom removed and js executing
             const itemNode = findDOMNode(this);
             const menuNode = itemNode.parentNode;
-            this.popupNode = this.popup
-                .getInstance()
-                .overlay.getInstance()
-                .getContentNode();
+            this.popupNode = this.popup.getInstance().overlay.getInstance().getContentNode();
             root.popupNodes.push(this.popupNode);
 
             if (popupAutoWidth) {
@@ -107,7 +108,8 @@ export default class PopupItem extends Component {
             }
             if (popupAlign === 'outside' && !(direction === 'hoz' && level === 1)) {
                 setStyle(this.popupNode, 'height', `${menuNode.offsetHeight}px`);
-                this.popupNode.firstElementChild && setStyle(this.popupNode.firstElementChild, 'overflow-y', 'auto');
+                this.popupNode.firstElementChild &&
+                    setStyle(this.popupNode.firstElementChild, 'overflow-y', 'auto');
             }
             // removeClass(this.popupNode, `${prefix}hide`);
 
@@ -211,7 +213,13 @@ export default class PopupItem extends Component {
             rtl,
         } = this.props;
         const others = obj.pickOthers(Object.keys(PopupItem.propTypes), this.props);
-        const { prefix, selectMode, direction, popupAlign: rootPopupAlign, triggerType: rootTriggerType } = root.props;
+        const {
+            prefix,
+            selectMode,
+            direction,
+            popupAlign: rootPopupAlign,
+            triggerType: rootTriggerType,
+        } = root.props;
         const popupAlign = align || rootPopupAlign;
         const newTriggerType = triggerType || (hasSubMenu ? rootTriggerType : 'hover');
         const newChildren = Array.isArray(children) ? children[0] : children;
@@ -266,7 +274,9 @@ export default class PopupItem extends Component {
         }
 
         const arrow = <Icon {...arrowProps} />;
-        const trigger = triggerIsIcon ? arrow : this.renderItem(selectable, noIcon ? null : arrow, others);
+        const trigger = triggerIsIcon
+            ? arrow
+            : this.renderItem(selectable, noIcon ? null : arrow, others);
         const popup = this.renderPopup(trigger, newTriggerType, positionProps, newChildren);
         return triggerIsIcon ? this.renderItem(selectable, popup, others) : popup;
     }

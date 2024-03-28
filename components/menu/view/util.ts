@@ -1,5 +1,8 @@
 export const getWidth = elem => {
-    let width = elem && typeof elem.getBoundingClientRect === 'function' && elem.getBoundingClientRect().width;
+    let width =
+        elem &&
+        typeof elem.getBoundingClientRect === 'function' &&
+        elem.getBoundingClientRect().width;
     if (width) {
         width = +width.toFixed(6);
     }
@@ -69,5 +72,7 @@ export const getChildSelected = ({ selectMode, selectedKeys, _k2n, _key }) => {
 
     const _keyPos = `${_k2n[_key] && _k2n[_key].pos}-`;
 
-    return !!selectMode && selectedKeys.some(key => _k2n[key] && _k2n[key].pos.indexOf(_keyPos) === 0);
+    return (
+        !!selectMode && selectedKeys.some(key => _k2n[key] && _k2n[key].pos.indexOf(_keyPos) === 0)
+    );
 };

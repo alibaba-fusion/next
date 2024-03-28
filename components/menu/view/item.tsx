@@ -174,7 +174,9 @@ export default class Item extends Component {
             const paddingProp = rtl ? 'paddingRight' : 'paddingLeft';
             others.style = {
                 ...(others.style || {}),
-                [paddingProp]: `${inlineLevel * inlineIndent - (groupIndent || 0) * 0.4 * inlineIndent}px`,
+                [paddingProp]: `${
+                    inlineLevel * inlineIndent - (groupIndent || 0) * 0.4 * inlineIndent
+                }px`,
             };
         }
         const TagName = component;

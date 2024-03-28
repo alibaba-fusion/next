@@ -85,8 +85,14 @@ export default class SelectableItem extends Component {
     }
 
     renderSelectedIcon(selected) {
-        const { root, inlineIndent, needIndent, hasSelectedIcon, isSelectIconRight, type } = this.props;
-        const { prefix, hasSelectedIcon: rootSelectedIcon, isSelectIconRight: rootSelectIconRight, icons } = root.props;
+        const { root, inlineIndent, needIndent, hasSelectedIcon, isSelectIconRight, type } =
+            this.props;
+        const {
+            prefix,
+            hasSelectedIcon: rootSelectedIcon,
+            isSelectIconRight: rootSelectIconRight,
+            icons,
+        } = root.props;
 
         let iconsSelect = icons.select;
 
@@ -98,7 +104,8 @@ export default class SelectableItem extends Component {
             [`${prefix}menu-icon-selected`]: true,
             [`${prefix}menu-symbol-icon-selected`]: !iconsSelect,
             [`${prefix}menu-icon-right`]:
-                ('isSelectIconRight' in this.props ? isSelectIconRight : rootSelectIconRight) && type !== 'submenu',
+                ('isSelectIconRight' in this.props ? isSelectIconRight : rootSelectIconRight) &&
+                type !== 'submenu',
         });
 
         return ('hasSelectedIcon' in this.props ? hasSelectedIcon : rootSelectedIcon) && selected

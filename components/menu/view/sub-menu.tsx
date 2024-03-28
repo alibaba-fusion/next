@@ -65,7 +65,13 @@ export default class SubMenu extends Component {
     constructor(props) {
         super(props);
 
-        bindCtx(this, ['handleMouseEnter', 'handleMouseLeave', 'handleClick', 'handleOpen', 'afterLeave']);
+        bindCtx(this, [
+            'handleMouseEnter',
+            'handleMouseLeave',
+            'handleClick',
+            'handleOpen',
+            'afterLeave',
+        ]);
     }
 
     componentDidMount() {
@@ -228,7 +234,11 @@ export default class SubMenu extends Component {
         }
 
         const subMenu = open ? (
-            <ul role={roleMenu} dir={rtl ? 'rtl' : undefined} className={newSubMenuContentClassName}>
+            <ul
+                role={roleMenu}
+                dir={rtl ? 'rtl' : undefined}
+                className={newSubMenuContentClassName}
+            >
                 {this.passParentToChildren(children)}
             </ul>
         ) : null;
@@ -266,7 +276,12 @@ export default class SubMenu extends Component {
 
         return (
             <PopupItem {...others} noIcon={noIcon} hasSubMenu>
-                <ul role="menu" dir={rtl ? 'rtl' : undefined} className={newClassName} style={popupStyle}>
+                <ul
+                    role="menu"
+                    dir={rtl ? 'rtl' : undefined}
+                    className={newClassName}
+                    style={popupStyle}
+                >
                     {this.passParentToChildren(children)}
                 </ul>
             </PopupItem>
