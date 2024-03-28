@@ -1,16 +1,27 @@
-import React, { Component, Children } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import { Component, Children } from 'react';
+import * as PropTypes from 'prop-types';
 import Overlay from '../overlay';
 import { func } from '../util';
+import type { DropdownProps } from './types';
 
 const { noop, makeChain, bindCtx } = func;
 const Popup = Overlay.Popup;
 
+interface ReactElementNextMenuType {
+    isNextMenu: boolean;
+}
+
+interface DropdownState {
+    visible?: unknown;
+    autoFocus?: boolean | undefined;
+}
+
 /**
  * Dropdown
- * @description 继承 Popup 的 API，除非特别说明
+ * @remarks 继承 Popup 的 API，除非特别说明
  */
-export default class Dropdown extends Component {
+export default class Dropdown extends Component<DropdownProps, DropdownState> {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -30,8 +41,8 @@ export default class Dropdown extends Component {
         defaultVisible: PropTypes.bool,
         /**
          * 弹层显示或隐藏时触发的回调函数
-         * @param {Boolean} visible 弹层是否显示
-         * @param {String} type 触发弹层显示或隐藏的来源 fromContent 表示由Dropdown内容触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
+         * \@param \{Boolean\} visible 弹层是否显示
+         * \@param \{String\} type 触发弹层显示或隐藏的来源 fromContent 表示由Dropdown内容触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -77,8 +88,8 @@ export default class Dropdown extends Component {
          */
         cache: PropTypes.bool,
         /**
-         * 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画
-         * @default { in: 'expandInDown', out: 'expandOutUp' }
+         * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画
+         * \@default \{ in: 'expandInDown', out: 'expandOutUp' \}
          */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     };
@@ -98,7 +109,7 @@ export default class Dropdown extends Component {
         onPosition: noop,
     };
 
-    constructor(props) {
+    constructor(props: DropdownProps) {
         super(props);
 
         this.state = {
@@ -109,8 +120,8 @@ export default class Dropdown extends Component {
         bindCtx(this, ['onTriggerKeyDown', 'onMenuClick', 'onVisibleChange']);
     }
 
-    static getDerivedStateFromProps(nextProps) {
-        const state = {};
+    static getDerivedStateFromProps(nextProps: DropdownProps) {
+        const state: DropdownState = {};
 
         if ('visible' in nextProps) {
             state.visible = nextProps.visible;
@@ -134,17 +145,17 @@ export default class Dropdown extends Component {
         this.onVisibleChange(false, 'fromContent');
     }
 
-    onVisibleChange(visible, from) {
+    onVisibleChange(visible: boolean, from: string) {
         this.setState({ visible });
 
-        this.props.onVisibleChange(visible, from);
+        this.props.onVisibleChange?.(visible, from);
     }
 
     onTriggerKeyDown() {
         let autoFocus = true;
 
         if ('autoFocus' in this.props) {
-            autoFocus = this.props.autoFocus;
+            autoFocus = !!this.props.autoFocus;
         }
 
         this.setState({
@@ -153,11 +164,15 @@ export default class Dropdown extends Component {
     }
 
     render() {
-        const { trigger, rtl, autoClose } = this.props;
+        const { rtl, autoClose } = this.props;
+        const trigger = this.props.trigger;
 
         const child = Children.only(this.props.children);
         let content = child;
-        if (typeof child.type === 'function' && child.type.isNextMenu) {
+        if (
+            typeof child.type === 'function' &&
+            (child.type as unknown as ReactElementNextMenuType).isNextMenu
+        ) {
             content = React.cloneElement(child, {
                 onItemClick: makeChain(this.onMenuClick, child.props.onItemClick),
             });
@@ -177,7 +192,7 @@ export default class Dropdown extends Component {
                 rtl={rtl}
                 autoFocus={this.state.autoFocus}
                 trigger={newTrigger}
-                visible={this.getVisible()}
+                visible={this.getVisible() as boolean}
                 onVisibleChange={this.onVisibleChange}
                 canCloseByOutSideClick
             >

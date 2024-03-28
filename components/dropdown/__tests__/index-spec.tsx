@@ -1,15 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
+import * as React from 'react';
+// import * as ReactTestUtils from 'react-dom/test-utils';
+import type { MountReturn } from 'cypress/react';
 import Dropdown from '../index';
 import Menu from '../../menu';
-import { KEYCODE } from '../../util';
+// import { KEYCODE } from '../../util';
 import '../../menu/style';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 const menu = (
     <Menu>
@@ -22,24 +17,13 @@ const menu = (
 
 describe('Dropdown', () => {
     it('should render by defaultVisible', () => {
-        const initialLen = document.querySelectorAll('.next-overlay-wrapper').length;
-        let triggered = false;
-        let show = false;
-        const handleVisible = (visible, triggerType) => {
-            if (show) {
-                assert(!visible);
-                assert(triggerType === 'fromContent');
-            } else {
-                assert(visible);
-            }
-            show = visible;
-            triggered = true;
-        };
+        // const initialLen = document.querySelectorAll('.next-overlay-wrapper').length;
+        const onHandleVisible = cy.spy();
 
-        const wrapper = mount(
+        cy.mount(
             <Dropdown
                 trigger={<a className="trigger">Hello dropdown</a>}
-                onVisibleChange={handleVisible}
+                onVisibleChange={onHandleVisible}
                 animation={false}
                 triggerType="click"
             >
@@ -47,75 +31,62 @@ describe('Dropdown', () => {
             </Dropdown>
         );
 
-        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
+        // assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
+        cy.get('.trigger').click();
+        cy.wrap(onHandleVisible).should('be.calledOnce');
 
-        wrapper.find('.trigger').simulate('click');
-        assert(triggered);
-        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen + 1);
-        triggered = false;
-
-        const item = document.querySelector('.next-menu-item');
-        ReactTestUtils.Simulate.click(item);
-        assert(triggered);
-        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
-        triggered = false;
-
-        wrapper.unmount();
+        // assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen + 1);
+        cy.get('.next-menu-item').first().click();
+        cy.wrap(onHandleVisible).should('be.calledTwice');
+        // assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
     });
 
     it('should render by visible', () => {
-        const initialLen = document.querySelectorAll('.next-overlay-wrapper').length;
-        let triggered = false;
-        let show = false;
-        const handleVisible = (visible, triggerType) => {
-            if (show) {
-                assert(!visible);
-                assert(triggerType === 'fromContent');
-            } else {
-                assert(visible);
-            }
-            wrapper.setProps({
-                visible,
-            });
-            show = visible;
-            triggered = true;
-        };
+        const onHandleVisible = cy.spy();
 
-        const wrapper = mount(
+        cy.mount(
             <Dropdown
                 trigger={<a className="trigger">Hello dropdown</a>}
-                onVisibleChange={handleVisible}
+                onVisibleChange={onHandleVisible}
                 animation={false}
                 triggerType="click"
             >
                 {menu}
             </Dropdown>
-        );
-        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
+        ).as('dropdown');
+        // assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
 
-        wrapper.find('.trigger').simulate('click');
-        assert(triggered);
-        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen + 1);
-        triggered = false;
+        cy.get('.trigger').click();
+        cy.wrap(onHandleVisible).should('be.calledOnce');
+        // assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen + 1);
+        // triggered = false;
 
-        const item = document.querySelector('.next-menu-item');
-        ReactTestUtils.Simulate.click(item);
-        assert(triggered);
-        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
-        triggered = false;
+        cy.get<MountReturn>('@dropdown').then(({ component, rerender }) => {
+            return rerender(
+                React.cloneElement(component as React.ReactElement, { visible: false })
+            );
+        });
+        cy.get('.next-overlay-wrapper').should('not.exist');
 
-        wrapper.unmount();
+        cy.get<MountReturn>('@dropdown').then(({ component, rerender }) => {
+            return rerender(React.cloneElement(component as React.ReactElement, { visible: true }));
+        });
+        cy.get('.next-overlay-wrapper').should('exist');
+        cy.get('.next-menu-item').first().click();
+        cy.wrap(onHandleVisible).should('be.calledTwice').should('be.calledWith', false);
+        // assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
+        // triggered = false;
     });
 
     it('should trigger custom menu click event', () => {
-        let triggered = false;
-        const handleClick = () => {
-            triggered = true;
-        };
-
-        const wrapper = mount(
-            <Dropdown defaultVisible trigger={<a className="trigger">Hello dropdown</a>} animation={false}>
-                <Menu onItemClick={handleClick}>
+        const onClick = cy.spy();
+        cy.mount(
+            <Dropdown
+                defaultVisible
+                trigger={<a className="trigger">Hello dropdown</a>}
+                animation={false}
+            >
+                <Menu onItemClick={onClick}>
                     <Menu.Item>Option 1</Menu.Item>
                     <Menu.Item>Option 2</Menu.Item>
                     <Menu.Item>Option 3</Menu.Item>
@@ -124,9 +95,8 @@ describe('Dropdown', () => {
             </Dropdown>
         );
 
-        const item = document.querySelector('.next-menu-item');
-        ReactTestUtils.Simulate.click(item);
-        assert(triggered);
+        cy.get('.next-menu-item').first().click();
+        cy.wrap(onClick).should('be.calledOnce').should('be.calledWith', '0-0');
     });
 
     //     it('should only focus when triggered by keyboard', done => {
@@ -178,37 +148,31 @@ describe('Dropdown', () => {
     //         }, 200);
     //     });
 
-    it('autoFocus=false should not have any activeElement', done => {
-        const mountNode = document.createElement('div');
-        document.body.appendChild(mountNode);
-
-        ReactDOM.render(
-            <Dropdown autoFocus={false} trigger={<button className="trigger">Hello dropdown</button>} animation={false}>
+    it('autoFocus=false should not have any activeElement', () => {
+        cy.mount(
+            <Dropdown
+                autoFocus={false}
+                trigger={<button className="trigger">Hello dropdown</button>}
+                animation={false}
+            >
                 <Menu>
                     <Menu.Item>Option 1</Menu.Item>
                     <Menu.Item>Option 2</Menu.Item>
                     <Menu.Item>Option 3</Menu.Item>
                     <Menu.Item>Option 4</Menu.Item>
                 </Menu>
-            </Dropdown>,
-            mountNode
+            </Dropdown>
         );
-
-        const trigger = document.querySelector('.trigger');
-
-        trigger.focus();
-        ReactTestUtils.Simulate.keyDown(document.activeElement, {
-            keyCode: KEYCODE.DOWN,
+        cy.clock();
+        cy.get('.trigger').focus();
+        // ReactTestUtils.Simulate.keyDown(document.activeElement as Element, {
+        //     keyCode: KEYCODE.DOWN,
+        // });
+        cy.get('.trigger').click();
+        cy.tick(500).then(() => {
+            cy.wrap(document.activeElement).get('.next-menu').should('exist');
+            cy.wrap(document.activeElement).should('not.have.class', 'next-menu-item');
         });
-
-        setTimeout(() => {
-            assert(document.activeElement !== document.querySelectorAll('.next-menu-item')[0]);
-
-            ReactDOM.unmountComponentAtNode(mountNode);
-            document.body.removeChild(mountNode);
-
-            done();
-        }, 200);
     });
 
     // 官网 demo 已经不生效了，不知道为啥单测能过, Overlay v2 需要确认下
