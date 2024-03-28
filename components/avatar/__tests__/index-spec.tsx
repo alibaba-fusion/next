@@ -51,4 +51,10 @@ describe('Avatar', () => {
         cy.get('.next-avatar').should('have.css', 'width', '24px');
         cy.get('.next-avatar').should('have.css', 'height', '24px');
     });
+    // feature: imgProps referrerPolicy
+    it('should set src referrerPolicy', () => {
+        const link = 'https://img.alicdn.com/tfs/TB1EHhicAH0gK0jSZPiXXavapXa-904-826.png';
+        cy.mount(<Avatar src={link} imgProps={{ referrerPolicy: 'no-referrer' }} />);
+        cy.get('img').should('have.attr', 'referrerPolicy', 'no-referrer');
+    });
 });
