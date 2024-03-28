@@ -33,8 +33,8 @@ const App = () => {
                 v2
                 cache
                 triggerType="click"
-                overlay={<div style={style}>position: {JSON.stringify(position)}</div>}
-                onPosition={result => {
+                overlay={!(<div style={style}>position: {JSON.stringify(position)}</div>)}
+                onPosition={(result: HTMLElement) => {
                     const { style } = result;
                     console.log(result);
                     setPosition(style);
@@ -46,9 +46,9 @@ const App = () => {
                 v2
                 cache
                 triggerType="click"
-                overlay={<div style={style}>position: {JSON.stringify(position12)}</div>}
-                container={trigger => trigger.parentNode}
-                onPosition={result => {
+                overlay={!(<div style={style}>position: {JSON.stringify(position12)}</div>)}
+                container={(trigger: HTMLElement) => trigger.parentNode}
+                onPosition={(result: HTMLElement) => {
                     const { style } = result;
                     console.log(result);
                     setPosition12(style);
@@ -60,9 +60,9 @@ const App = () => {
                 v2
                 cache
                 triggerType="click"
-                overlay={<div style={style}>position: {JSON.stringify(position13)}</div>}
+                overlay={!(<div style={style}>position: {JSON.stringify(position13)}</div>)}
                 followTrigger
-                onPosition={result => {
+                onPosition={(result: HTMLElement) => {
                     const { style } = result;
                     console.log(result);
                     setPosition13(style);
@@ -74,8 +74,8 @@ const App = () => {
             <Popup
                 v2
                 triggerType="click"
-                overlay={<div style={style}>position: {JSON.stringify(position2)}</div>}
-                onPosition={({ style }) => {
+                overlay={!(<div style={style}>position: {JSON.stringify(position2)}</div>)}
+                onPosition={({ style }: HTMLElement) => {
                     setPosition2(style);
                 }}
             >

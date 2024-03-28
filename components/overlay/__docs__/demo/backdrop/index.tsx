@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Overlay, Button } from '@alifd/next';
+import { OverlayProps, OverlayState } from '../../../types';
+import { ButtonProps } from '@alifd/meet-react/lib/button';
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<OverlayProps, OverlayState> {
+    btn: ButtonProps;
+    constructor(props: OverlayProps) {
         super(props);
 
         this.state = {
@@ -29,7 +32,7 @@ class Demo extends React.Component {
                 <Button
                     onClick={this.onClick}
                     ref={ref => {
-                        this.btn = ref;
+                        this.btn = ref as ButtonProps;
                     }}
                 >
                     Open

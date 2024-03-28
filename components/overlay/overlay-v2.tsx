@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import React, { useState, useRef, useEffect, cloneElement } from 'react';
+import React, { useState, useRef, useEffect, cloneElement, ReactElement } from 'react';
 import classNames from 'classnames';
 import Overlay from '@alifd/overlay';
 
@@ -7,7 +7,9 @@ import Animate from '../animate';
 
 import { log } from '../util';
 
-const Overlay2 = props => {
+import { OverlayProps } from './types';
+
+const Overlay2 = (props: OverlayProps) => {
     if (!useState || !useRef || !useEffect) {
         log.warning('need react version > 16.8.0');
         return null;
@@ -19,7 +21,7 @@ const Overlay2 = props => {
         visible,
         hasMask, // 仅兼容，Dialog/Drawer 后续会自己提供mask
         align,
-        points = align ? align.split(' ') : undefined,
+        points = align ? (align as string).split(' ') : undefined,
         onPosition,
         children,
         className,
@@ -63,7 +65,7 @@ const Overlay2 = props => {
     const childrenNode = (
         <Animate.OverlayAnimate
             visible={visible}
-            animation={animation}
+            animation={animation as { in: 'expandInDown'; out: 'expandOutUp' }}
             onEnter={handleEnter}
             onEntering={handleEntering}
             onEntered={handleEntered}
@@ -89,18 +91,18 @@ const Overlay2 = props => {
 
     const wraperCls = classNames({
         [`${prefix}overlay-wrapper v2`]: true,
-        [wrapperClassName]: wrapperClassName,
+        [wrapperClassName as string]: wrapperClassName,
         opened: visible,
     });
 
-    const handlePosition = result => {
+    const handlePosition = (result: { config: { points: string[] } }) => {
         // 兼容 1.x, 2.x 可去除这段逻辑
         Object.assign(result, { align: result.config.points });
 
         typeof onPosition === 'function' && onPosition(result);
     };
 
-    const maskRender = node => (
+    const maskRender = (node: ReactElement) => (
         <Animate.OverlayAnimate
             visible={visible}
             animation={animation ? { in: 'fadeIn', out: 'fadeOut' } : false}
@@ -112,6 +114,7 @@ const Overlay2 = props => {
     );
 
     return (
+        // @ts-ignore
         <Overlay
             {...others}
             visible={visible}

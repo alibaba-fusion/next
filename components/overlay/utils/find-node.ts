@@ -1,6 +1,9 @@
 import { findDOMNode } from 'react-dom';
 
-export default function findNode(target, param) {
+export default function findNode(
+    target?: Element | string | ((param: Element | undefined) => Element) | null,
+    param?: Element
+): Element | null | Text {
     if (!target) {
         return null;
     }

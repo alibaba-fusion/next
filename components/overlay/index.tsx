@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { LegacyRef } from 'react';
 import ConfigProvider from '../config-provider';
 
 import Overlay1 from './overlay';
@@ -10,14 +10,34 @@ import Position from './position';
 import Popup1 from './popup';
 import Popup2 from './popup-v2';
 import { log } from '../util';
+import { OverlayProps, PopupProps } from './types';
 
-class Overlay extends React.Component {
-    constructor(props) {
+class Overlay extends React.Component<OverlayProps> {
+    overlayRef: HTMLElement | { getContent: () => void; getContentNode: () => void } | null;
+    static Gateway: typeof Gateway;
+    static Position: typeof Position;
+    static Popup: {
+        new (
+            props: PopupProps &
+                import('/Users/eamon/fusion-contributing/next/components/config-provider/types').ComponentCommonProps,
+            context?: unknown
+        ): import('/Users/eamon/fusion-contributing/next/components/config-provider/types').ConfiguredComponent<
+            PopupProps &
+                import('/Users/eamon/fusion-contributing/next/components/config-provider/types').ComponentCommonProps,
+            Popup
+        >;
+        prototype: import('/Users/eamon/fusion-contributing/next/components/config-provider/types').ConfiguredComponent<
+            any,
+            any
+        >;
+        contextType?: React.Context<any> | undefined;
+    } & {};
+    constructor(props: OverlayProps) {
         super(props);
         this.overlayRef = null;
         this.saveRef = this.saveRef.bind(this);
     }
-    saveRef(ref) {
+    saveRef(ref: Overlay) {
         this.overlayRef = ref;
     }
     /**
@@ -25,7 +45,9 @@ class Overlay extends React.Component {
      */
     getContent() {
         if (this.overlayRef) {
-            return this.overlayRef.getContent();
+            return (
+                this.overlayRef as { getContent: () => void; getContentNode: () => void }
+            ).getContent();
         }
         return null;
     }
@@ -34,7 +56,9 @@ class Overlay extends React.Component {
      */
     getContentNode() {
         if (this.overlayRef) {
-            return this.overlayRef.getContentNode();
+            return (
+                this.overlayRef as { getContent: () => void; getContentNode: () => void }
+            ).getContentNode();
         }
         return null;
     }
@@ -48,18 +72,19 @@ class Overlay extends React.Component {
             }
             return <Overlay2 {...others} />;
         } else {
-            return <Overlay1 {...others} ref={this.saveRef} />;
+            return <Overlay1 {...others} ref={this.saveRef as () => void} />;
         }
     }
 }
 // eslint-disable-next-line
-class Popup extends React.Component {
-    constructor(props) {
+class Popup extends React.Component<PopupProps> {
+    overlay: HTMLDivElement | null;
+    constructor(props: PopupProps) {
         super(props);
         this.overlay = null;
         this.saveRef = this.saveRef.bind(this);
     }
-    saveRef(ref) {
+    saveRef(ref: Popup) {
         if (ref) {
             this.overlay = ref.overlay;
         }
@@ -79,7 +104,7 @@ class Popup extends React.Component {
 
             return <Popup2 {...others} />;
         } else {
-            return <Popup1 {...others} ref={this.saveRef} />;
+            return <Popup1 {...others} ref={this.saveRef as () => void} />;
         }
     }
 }
@@ -93,3 +118,5 @@ Overlay.Popup = ConfigProvider.config(Popup, {
 export default ConfigProvider.config(Overlay, {
     exportNames: ['getContent', 'getContentNode'],
 });
+
+export type { OverlayProps };
