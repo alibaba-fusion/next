@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Message, Icon } from '@alifd/next';
-
-import CopyToClipboard from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const types = [
     'smile',
@@ -63,11 +62,11 @@ const types = [
     'dashboard',
 ];
 
-let customTypes = [];
+let customTypes: string[] = [];
 
 // The code here is for fusion dev display custom Icon components only
-if (window.customIcons) {
-    customTypes = window.customIcons;
+if ((window as any).customIcons) {
+    customTypes = (window as any).customIcons;
 }
 
 const handleCopy = () => Message.success('Copied!');
@@ -89,7 +88,7 @@ ReactDOM.render(
             <div>
                 <div className="icon-list-custom-title">Custom Icon</div>
                 <ul className="icon-list">
-                    {customTypes.map((type, index) => (
+                    {customTypes.map((type: string, index: number) => (
                         <CopyToClipboard
                             key={index}
                             text={`<Icon type="${type}" />`}
