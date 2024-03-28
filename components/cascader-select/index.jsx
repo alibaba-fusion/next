@@ -2,6 +2,7 @@ import ConfigProvider from '../config-provider';
 import CascaderSelect from './cascader-select';
 
 export default ConfigProvider.config(CascaderSelect, {
+    exportNames: ['focus'],
     transform: /* istanbul ignore next */ (props, deprecated) => {
         if ('shape' in props) {
             deprecated('shape', 'hasBorder', 'CascaderSelect');
