@@ -225,6 +225,10 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
     isPreview?: boolean;
 
     renderPreview?: (value: string | Array<string>) => React.ReactNode;
+    /**
+     * 查询选中后清除查询条件
+     */
+    clearSearchOnSelect?: boolean;
 }
 
 export default class CascaderSelect extends React.Component<CascaderSelectProps, any> {}

@@ -241,6 +241,10 @@ class CascaderSelect extends Component {
          * @version 1.23
          */
         immutable: PropTypes.bool,
+        /**
+         * 查询选中后清除查询条件
+         */
+        clearSearchOnSelect:PropTypes.bool,
     };
 
     static defaultProps = {
@@ -298,6 +302,7 @@ class CascaderSelect extends Component {
         popupProps: {},
         immutable: false,
         locale: zhCN.Select,
+        clearSearchOnSelect:false,
     };
 
     constructor(props) {
@@ -646,7 +651,7 @@ class CascaderSelect extends Component {
     };
 
     handleChange(value, data, extra) {
-        const { multiple, onChange } = this.props;
+        const { multiple, onChange,clearSearchOnSelect } = this.props;
         const { searchValue, value: stateValue } = this.state;
 
         const st = {};
@@ -670,6 +675,9 @@ class CascaderSelect extends Component {
             );
             // 更新缓存
             this.refreshValueDataCache(value);
+            if(clearSearchOnSelect && searchValue){
+              this.handleSearch(null)
+            }
         }
 
         if (!('value' in this.props)) {

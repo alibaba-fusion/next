@@ -108,6 +108,32 @@ describe('CascaderSelect issues', function() {
         assert(isExpanded('乌鲁木齐', 1, 0, root));
         assert(isSelected('乌鲁木齐市', 2, 0, root));
     });
+
+    it('should support empty search value after selection , close #3008', () => {
+        wrapper = mount(
+            <CascaderSelect
+                showSearch
+                style={{ width: '240px' }}
+                dataSource={ChinaAreaData}
+                placeholder="搜索名字"
+                onChange={this.handleChange}
+                clearSearchOnSelect={true}
+                multiple={true}
+            />,
+            {
+                attachTo: root,
+            }
+        );
+        wrapper
+            .find('.next-select-trigger-search input')
+            .simulate('change', { target: { value: '西安' } });
+        wrapper.update();
+        assert(document.querySelectorAll('.next-cascader-filtered-list').length === 1);
+        document.querySelector('.next-menu-item').click();
+        assert(document.querySelectorAll('.next-cascader-filtered-list').length === 0);
+        assert(document.querySelectorAll('.next-cascader > .next-cascader-inner').length !== 0);
+        assert(wrapper.find('span.next-select-inner').text().trim() === '西安');
+    });
 });
 
 function findItem(menuIndex, itemIndex, root = document) {
