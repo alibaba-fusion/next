@@ -43,34 +43,13 @@ describe('Rating', () => {
         });
     });
 
-    describe.only('action', () => {
-        // let ret, hval, parent, rect, onChange, onHoverChange;
-
-        // beforeEach(() => {
-        //     ret = -1;
-        //     hval = -1;
-        //     parent = document.createElement('div');
-        //     document.body.appendChild(parent);
-        //     onChange = function (val) {
-        //         return (ret = val);
-        //     };
-        //     onHoverChange = function (val) {
-        //         return (hval = val);
-        //     };
-        // });
-
-        // afterEach(() => {
-        //     document.body.removeChild(parent);
-        //     parent = null;
-        //     rect = null;
-        //     onChange = null;
-        //     onHoverChange = null;
-        // });
-
+    describe('action', () => {
         it('should be controlled ', () => {
-            cy.mount(<Rating value={3} />);
+            const onChange = cy.spy();
+            cy.mount(<Rating value={3} onChange={onChange} />);
             cy.get('.next-rating-overlay').should('have.css', 'width', '64px');
             triggerPosition(8, 8, 'click');
+            cy.wrap(onChange).should('be.calledOnceWith', 1);
             cy.get('.next-rating-overlay').should('have.css', 'width', '64px');
         });
 
