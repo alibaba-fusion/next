@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactElement } from 'react';
+import React, { useState, useRef, type ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
 import { type SelectProps } from '@alifd/next/lib/select';

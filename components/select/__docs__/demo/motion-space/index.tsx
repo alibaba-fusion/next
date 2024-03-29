@@ -284,7 +284,7 @@ class Demo extends React.Component {
         });
     };
 
-    onClose: DrawerProps['onClose'] = reason => {
+    onClose: DrawerProps['onClose'] = () => {
         this.setState({
             visible: false,
         });

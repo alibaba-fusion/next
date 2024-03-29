@@ -1,14 +1,8 @@
 import React from 'react';
-import { CommonProps } from '../util';
-import { PopupProps } from '../overlay';
-import { ButtonProps } from '../button';
-import { AutoCompleteProps, SelectProps } from '../select';
-
-type Item = {
-    value?: string | number;
-    label?: React.ReactNode;
-    [propName: string]: unknown;
-};
+import type { CommonProps } from '../util';
+import type { PopupProps } from '../overlay';
+import type { ButtonProps } from '../button';
+import type { AutoCompleteProps, SelectProps } from '../select';
 
 type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'defaultValue' | 'onChange'>;
 
@@ -137,7 +131,7 @@ export interface SearchProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 渲染 MenuItem 内容的方法
      */
-    itemRender?: (item: Item) => React.ReactNode;
+    itemRender?: AutoCompleteProps['itemRender'];
 
     /**
      * 输入关键字时的回掉

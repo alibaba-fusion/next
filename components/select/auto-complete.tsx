@@ -365,7 +365,7 @@ class AutoComplete extends Base<AutoCompleteProps, AutoCompleteState> {
                     role="combobox"
                     aria-autocomplete="list"
                     aria-disabled={disabled}
-                    aria-expanded={this.state.visible}
+                    aria-expanded={this.state.visible ? 'true' : 'false'}
                     {..._inputProps}
                 />
                 <span className={`${prefix}sr-only`} aria-live="polite">

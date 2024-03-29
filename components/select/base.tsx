@@ -538,7 +538,7 @@ export default class Base<
                 };
 
                 if ('title' in item) {
-                    itemProps.title = item.title;
+                    itemProps.title = item.title!;
                 }
 
                 return (
