@@ -7,9 +7,6 @@ import type { OptionGroupProps } from './types';
  */
 export default class OptionGroup extends React.Component<OptionGroupProps> {
     static propTypes = {
-        /**
-         * 设置分组的文案
-         */
         label: PropTypes.node,
         children: PropTypes.any,
     };

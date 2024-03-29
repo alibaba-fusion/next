@@ -6,6 +6,7 @@
 -   type: 表单
 
 ---
+
 ## Guide
 
 ### When to use
@@ -37,7 +38,7 @@ Note: 1. Select uses `value` as the `key` value of the rendered menu item by def
     <Select.Option value="option1">option1</Select.Option>
     <Select.Option value="option2">option2</Select.Option>
     <Select.Option disabled>disabled</Select.Option>
-</Select>;
+</Select>
 ```
 
 2. The way `props`
@@ -59,110 +60,171 @@ This is because the layer's animation of the overlay is implemented by `classNam
 ## API
 
 ### Select
-| Param | Descripiton  | Type  | Default Value |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ---------------------------------- |
-|Size | selector size<br><br>**optional values**:<br>'small', 'medium', 'large' | Enum | 'medium' |
-| value | Current value for controlled mode | any | - |
-| defaultValue | initial default | any | - |
-| onChange | Callback that fires when Select changes <br><br> **Signature**:<br>Function(value: mixed, actionType: String) => void<br>**Parameters**:<br> _value_: {mixed} Selected value <br>_actionType_: {String} Triggered, 'itemClick', 'enter', 'tag' <br> _item_: {mixed} value in dataSource(only useDetailValue=false) | Function | func.noop |
-| placeholder | placeholder when there is no value | ReactNode | - |
-| autoWidth | Drop-down menu to align with selector | Boolean | true |
-| label | custom inline label | ReactNode | - |
-| hasClear | Clear button | Boolean | - |
-| state | validate state<br><br>**Optional**:<br>'error', 'loading' | Enum | - |
-| readOnly | Is read-only, can be expanded in read-only mode but cannot be selected | Boolean | - |
-| disabled | Disable selectors | Boolean | - |
-| visible | The current shell is displayed | Boolean | - |
-| defaultVisible | Does the layer initialization show | Boolean | - |
-| onVisibleChange | Callback triggered when the layer is displayed or hidden <br><br> **Signature**:<br>Function(visible: Boolean) => void<br>**Parameters**:<br>_visible_: {Boolean} Does the shell display | Function | func.noop |
-| popupContainer | shell container node | String/Function | - |
-| popupClassName | className of the shell | any | - |
-| popupStyle | Inline style of the shell | Object | - |
-| popupProps | Attributes added to the shell | Object | {} |
-| followTrigger         | follow Trigger or not                                                                                                                                                                                                                             | Boolean                 | -         |
-| popupContent | Content of custom shell | ReactNode | - |
-| filterLocal | Whether to use local filtering, turn this off when the data source is remote | Boolean | true |
-| filter | A local filter method that returns a Boolean value to determine whether to keep <br><br>**Signature**:<br>Function() => void | Function | filter |
-| dataSource | The incoming data source that can dynamically render children, as described in [DataSource Usage] (Use of #dataSource) | Array<Object/Boolean/Number/String> | - |
-| itemRender | How to render MenuItem content <br><br><br><br><br><br><br>Function(item: Object, searchValue: String) => ReactNode<br>**Parameters:<br>_item_: {Object} Item for render node<br>_searchValue_: {String} Search keyword (if search is enabled) <br>**Return value:<br>{ReactNode} item node<br> | Function | - |
-| mode | Selector mode <br><br>** Optional **:<br>'single', 'multiple', 'tag' | Enum | 'single' |
-| notFoundContent | Empty copy of the shell content | ReactNode | 'No options' |
-|hasBorder | Whether there is a border | Boolean | - |
-| showSearch | Can search after expansion (fixed to true in tag mode) | Boolean | false |
-| onSearch | Callback when the search box value changes <br><br> **Signature**:<br>Function(value: String) => void<br>**Parameters**:<br>_value_: {String } Data | Function | func.noop |
-| onSearchClear | Callback when the search box value is cleared <br><br> **Signature**:<br>Function(value: String) => void<br>**Parameters**:<br/>_actionType_: {String} triggered method, 'itemClick', 'popupClose'  | Function | func.noop |
-|hasSelectAll | Is there a Select All Function in Multiselect Mode | Boolean/String | - |
-|fillProps | key to fill the value of the select box key?? | String | - |
-|useDetailValue | value returned by onChange object using dataSource | Boolean | - |
-|cacheValue | dataSource keeps the selected content | Boolean | true |
-|valueRender | Methods for rendering Select to display content <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>** Parameters**:<br>_item_: {Object} Render node's item<br>**return value **:<br>{ReactNode} show content <br> | Function | item => item.label \|\| item.value |
-| searchValue | Controlled search value, generally not set | String | - |
-| tagInline               | show in one line or not                                                                                                                                                                                                                                                    | Boolean                                | false                                             |
-| adjustTagSize               |  Set if the size of tag should be the same as select, only takes effect when mode is `multiple` or `tag`                                                                                                                                                                                                                                                    | Boolean | false |
-| maxTagCount           | max count of tag can be show                                                                                                                                                                                                                                               | Number                                 | -                                             |
-| maxTagPlaceholder      | if selected tags' length is over maxTagCount, what to show<br><br>**Signature**:<br>Function(selectedValues: object, totalValues: object) => void<br>**参数**:<br>_selectedValues_: {object} selected values<br>_totalValues_: {object} all values                                                   | Function                               | (selected, total) => `${selected} / ${total}`                                  |
-| onRemove | tag Delete callback <br><br><br>**Signature**:<br>Function(item: object) => void<br>**Parameters**:<br>_item_: {object} Render node's Item | Function | func.noop |
-| onFocus         | focus event<br><br>**Signature**:<br>Function() => void | Function | func.noop |
-| onBlur          | blur event<br><br>**Signature**:<br>Function() => void | Function | func.noop |
-| onToggleHighlightItem | callback func while highlight item changed <br><br>**Signature**:<br>Function() => void | Function| func.noop |
-| hiddenSelected | hide menu after selected (only mode="multiple" or "tag") | Boolean                                | -                                  |
-| popupAutoFocus        | whether autofocus to popup                                                                                                                        | Boolean                                | false                              |
+
+| Param                  | Description                                                                                                                                                                  | Type                                                                                                                             | Default Value                         | Required | Supported Version |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | -------- | ----------------- |
+| size                   | Size                                                                                                                                                                         | 'small' \| 'medium' \| 'large'                                                                                                   | 'medium'                              |          | -                 |
+| children               | Child elements, reference the demo for details                                                                                                                               | ReactElementWithTypeMark \| ReactElementWithTypeMark[]                                                                           | -                                     |          | -                 |
+| name                   | Name                                                                                                                                                                         | string                                                                                                                           | -                                     |          | -                 |
+| value                  | Current value, for controlled mode                                                                                                                                           | DataSourceItem \| DataSourceItem[]                                                                                               | -                                     |          | -                 |
+| defaultValue           | Initial default value                                                                                                                                                        | DataSourceItem \| DataSourceItem[]                                                                                               | -                                     |          | -                 |
+| placeholder            | Placeholder when no value                                                                                                                                                    | string                                                                                                                           | -                                     |          | -                 |
+| autoWidth              | Whether the width of the drop                                                                                                                                                | boolean                                                                                                                          | true                                  |          | -                 |
+| label                  | Custom inline label                                                                                                                                                          | React.ReactNode                                                                                                                  | -                                     |          | -                 |
+| hasClear               | Whether to have a clear button (valid in single mode)                                                                                                                        | boolean                                                                                                                          | -                                     |          | -                 |
+| state                  | Validation status                                                                                                                                                            | 'error' \| 'loading' \| 'success' \| 'warning'                                                                                   | -                                     |          | -                 |
+| readOnly               | Whether it is read-only, read-only mode can expand the pop                                                                                                                   | boolean                                                                                                                          | -                                     |          | -                 |
+| disabled               | Whether to disable the selector                                                                                                                                              | boolean                                                                                                                          | -                                     |          | -                 |
+| visible                | Whether the pop                                                                                                                                                              | boolean                                                                                                                          | -                                     |          | -                 |
+| defaultVisible         | Whether the pop                                                                                                                                                              | boolean                                                                                                                          | -                                     |          | -                 |
+| onVisibleChange        | Callback when the pop                                                                                                                                                        | (visible: boolean, type?: VisibleChangeType) => void                                                                             | -                                     |          | -                 |
+| popupContainer         | Popup mounting container                                                                                                                                                     | string \| HTMLElement \| ((target: HTMLElement) => HTMLElement)                                                                  | -                                     |          | -                 |
+| popupClassName         | Popup class name                                                                                                                                                             | string                                                                                                                           | -                                     |          | -                 |
+| popupStyle             | Popup inline style                                                                                                                                                           | React.CSSProperties                                                                                                              | -                                     |          | -                 |
+| popupProps             | Props added to the popup                                                                                                                                                     | PopupProps                                                                                                                       | -                                     |          | -                 |
+| followTrigger          | Whether to follow the trigger scroll                                                                                                                                         | boolean                                                                                                                          | -                                     |          | -                 |
+| popupContent           | Custom popup content                                                                                                                                                         | React.ReactNode                                                                                                                  | -                                     |          | -                 |
+| menuProps              | Menu property                                                                                                                                                                | MenuProps                                                                                                                        | -                                     |          | 1.18              |
+| filterLocal            | Use local filtering, when the data source is remote, you need to close this item                                                                                             | boolean                                                                                                                          | true                                  |          | -                 |
+| filter                 | Local filtering method, return a Boolean value to determine whether to retain<br/><br/>**signature**:<br/>**params**:<br/>_key_: Search keyword<br/>_item_: Render node item | (key: string \| number, item: ObjectItem) => boolean                                                                             | -                                     |          | -                 |
+| onToggleHighlightItem  | Callback when pressing keyboard up and down keys to switch the menu highlight option                                                                                         | (highlightKey?: unknown, type?: HighlightChangeType) => void                                                                     | -                                     |          | -                 |
+| useVirtual             | Whether to enable virtual scrolling mode                                                                                                                                     | boolean                                                                                                                          | -                                     |          | -                 |
+| dataSource             | Data source, can dynamically render child items                                                                                                                              | Array\<DataSourceItem>                                                                                                           | -                                     |          | -                 |
+| itemRender             | Render MenuItem content method<br/><br/>**signature**:<br/>**params**:<br/>_item_: item<br/>_searchValue_: searchValue                                                       | (item: ObjectItem, searchValue: string \| undefined) => React.ReactNode                                                          | -                                     |          | -                 |
+| mode                   | Select mode                                                                                                                                                                  | 'single' \| 'multiple' \| 'tag'                                                                                                  | 'single'                              |          | -                 |
+| notFoundContent        | Popup content is empty text                                                                                                                                                  | React.ReactNode                                                                                                                  | -                                     |          | -                 |
+| onChange               | Callback when Select changes<br/><br/>**signature**:<br/>**params**:<br/>_value_: value<br/>_actionType_: actionType<br/>_item_: item                                        | (<br/> value: DataSourceItem \| DataSourceItem[],<br/> actionType: string,<br/> item?: ObjectItem \| ObjectItem[]<br/> ) => void | -                                     |          | -                 |
+| hasBorder              | Whether there is a border                                                                                                                                                    | boolean                                                                                                                          | -                                     |          | -                 |
+| hasArrow               | Whether there is a drop                                                                                                                                                      | boolean                                                                                                                          | true                                  |          | -                 |
+| showSearch             | Whether it can be searched after expansion (fixed in tag mode)                                                                                                               | boolean                                                                                                                          | false                                 |          | -                 |
+| onSearch               | Callback when the search box value changes                                                                                                                                   | (value: string, e: React.ChangeEvent\<HTMLInputElement>) => void                                                                 | -                                     |          | -                 |
+| onSearchClear          | Callback when the search box value is cleared                                                                                                                                | (actionType?: string) => void                                                                                                    | -                                     |          | -                 |
+| hasSelectAll           | Whether there is a full selection function in multi                                                                                                                          | boolean \| string                                                                                                                | -                                     |          | -                 |
+| fillProps              | The key to fill in the value of the selection box                                                                                                                            | string                                                                                                                           | -                                     |          | -                 |
+| useDetailValue         | OnChange returns the value using the object of dataSource                                                                                                                    | boolean                                                                                                                          | -                                     |          | -                 |
+| cacheValue             | Whether to retain the selected content when the dataSource changes                                                                                                           | boolean                                                                                                                          | true                                  |          | -                 |
+| valueRender            | Custom rendering Select selected value effects                                                                                                                               | (item: ObjectItem, props?: SelectProps) => React.ReactNode                                                                       | item =\> `item.label \|\| item.value` |          | -                 |
+| searchValue            | Controlled search value, generally does not need to set                                                                                                                      | string                                                                                                                           | -                                     |          | -                 |
+| tagInline              | Whether it is displayed on one line, only in mode multiple                                                                                                                   | boolean                                                                                                                          | false                                 |          | -                 |
+| maxTagCount            | Maximum number of tags to display                                                                                                                                            | number                                                                                                                           | -                                     |          | -                 |
+| adjustTagSize          | Whether the tag size is consistent with the select size, only in multiple/tag mode                                                                                           | boolean                                                                                                                          | false                                 |          | 1.24              |
+| maxTagPlaceholder      | Content to display when hidden excess tags<br/><br/>**signature**:<br/>**params**:<br/>_selectedValues_: Selected Value<br/>_totalValues_: Total Value                       | (<br/> selectedValues: ObjectItem[],<br/> totalValues: ObjectItem[]<br/> ) => React.ReactNode \| HTMLElement                     | -                                     |          | -                 |
+| hiddenSelected         | Whether to hide the menu immediately after selection (effective in mode multiple/tag)                                                                                        | boolean                                                                                                                          | -                                     |          | -                 |
+| showDataSourceChildren | Whether to show children in dataSource                                                                                                                                       | boolean                                                                                                                          | true                                  |          | -                 |
+| onRemove               | Callback when tag is deleted                                                                                                                                                 | (item: ObjectItem) => void                                                                                                       | -                                     |          | -                 |
+| onFocus                | Callback when Select gets focus                                                                                                                                              | (e: React.FocusEvent\<HTMLInputElement>) => void                                                                                 | -                                     |          | -                 |
+| onBlur                 | Callback when Select loses focus                                                                                                                                             | (e: React.FocusEvent\<HTMLInputElement>) => void                                                                                 | -                                     |          | -                 |
+| onKeyDown              | Callback when Select triggers keyboard events                                                                                                                                | (e: React.KeyboardEvent\<HTMLElement>) => void                                                                                   | -                                     |          | -                 |
+| isPreview              | Whether it is a preview state                                                                                                                                                | boolean                                                                                                                          | -                                     |          | -                 |
+| renderPreview          | Render preview content<br/><br/>**signature**:<br/>**params**:<br/>_values_: Value<br/>_props_: Props                                                                        | (<br/> values: DataSourceItem \| DataSourceItem[],<br/> props?: SelectProps<br/> ) => React.ReactNode                            | -                                     |          | -                 |
+| autoHighlightFirstItem | Automatically highlight the first option                                                                                                                                     | boolean                                                                                                                          | true                                  |          | -                 |
+| highlightKey           | Highlight key                                                                                                                                                                | string                                                                                                                           | -                                     |          | -                 |
+| defaultHighlightKey    | Default highlight key                                                                                                                                                        | string \| null                                                                                                                   | -                                     |          | -                 |
+| popupAutoFocus         | Whether to automatically focus to the popup when expanding the drop                                                                                                          | boolean                                                                                                                          | false                                 |          | -                 |
+| popupComponent         | Component used to render the popup                                                                                                                                           | React.FunctionComponent \| React.ComponentClass \| string                                                                        | -                                     |          | -                 |
+| tagClosable            | Whether tag can be closed                                                                                                                                                    | boolean                                                                                                                          | true                                  |          | 1.20              |
 
 ### Select.AutoComplete
-| Param | Descripiton  | Type  | Default Value |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | --------- |
-| size | selector size<br><br>**optional values**:<br>'small', 'medium', 'large' | Enum | 'medium' |
-| value | current value for controlled mode | String/Number | - |
-| defaultValue | Initialization Default | String/Number | - |
-| onChange | Callback that fires when Select changes <br><br> **Signature**:<br>Function(value: mixed, actionType: String) => void<br>**Parameters**:<br> _value_: {mixed} selected value<br>_actionType_: {String} triggered method, 'itemClick', 'enter', 'change' | Function | - |
-| placeholder | placeholder when there is no value | ReactNode | - |
-| autoWidth | Drop-down menu to align with selector | Boolean | true |
-| label | custom inline label | ReactNode | - |
-| hasClear | Clear button | Boolean | - |
-| state | validate state<br><br>**Optional**:<br>'error', 'loading' | Enum | - |
-|readOnly | Is read-only, can be expanded in read-only mode but cannot be selected | Boolean | - |
-|disabled | Disable selectors | Boolean | - |
-| visible | The current shell is displayed | Boolean | - |
-| defaultVisible | Does the layer initialization show | Boolean | - |
-| popupContainer | shell container node | String/Function | - |
-| popupClassName | className of the shell | any | - |
-| popupStyle | Inline style of the shell | Object | - |
-|popupProps | Attributes added to the shell | Object | {} |
-| followTrigger         | follow Trigger or not                                                                                                                                                                                                                             | Boolean                 | -         |
-| popupContent | Content of custom shell | ReactNode | - |
-| filterLocal | Whether to use local filtering, turn this off when the data source is remote | Boolean | true |
-| filter | Local filter method, returning a Boolean value to determine whether to keep <br><br>**Signature**:<br>Function() => void | Function | filter |
-| dataSource | Incoming data source that can dynamically render children | Array&lt;Object/String> | - |
-|itemRender | How to render MenuItem content <br><br>**Signature**:<br>Function(item: Object) => ReactNode<br>**Parameters**:<br>_item_: {Object} Rendering The node's item<br>**return value**:<br>{ReactNode} item node<br> | Function | - |
-|fillProps | key?? of the value filled into the selection box, default value | String | 'value' |
-| onToggleHighlightItem | callback func while highlight item changed <br><br>**Signature**:<br>Function() => void | Function| func.noop |
+
+| Param                  | Description                                                                          | Type                                                            | Default Value | Required |
+| ---------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------- | ------------- | -------- |
+| size                   | Size                                                                                 | 'small' \| 'medium' \| 'large'                                  | 'medium'      |          |
+| value                  | Current value, for controlled mode                                                   | string \| number \| null                                        | -             |          |
+| defaultValue           | Initial default value                                                                | string \| number                                                | -             |          |
+| placeholder            | Placeholder when no value                                                            | string                                                          | -             |          |
+| autoWidth              | Whether the width of the drop                                                        | boolean                                                         | true          |          |
+| label                  | Custom inline label                                                                  | React.ReactNode                                                 | -             |          |
+| hasClear               | Whether to have a clear button (valid in single mode)                                | boolean                                                         | -             |          |
+| state                  | Validation status                                                                    | 'error' \| 'loading' \| 'success' \| 'warning'                  | -             |          |
+| readOnly               | Read                                                                                 | boolean                                                         | -             |          |
+| disabled               | Whether to disable the selector                                                      | boolean                                                         | -             |          |
+| visible                | Whether the pop                                                                      | boolean                                                         | -             |          |
+| defaultVisible         | Whether the pop                                                                      | boolean                                                         | -             |          |
+| onVisibleChange        | Callback when the pop                                                                | (visible: boolean, type?: VisibleChangeType) => void            | -             |          |
+| popupContainer         | Popup mounting container                                                             | string \| HTMLElement \| ((target: HTMLElement) => HTMLElement) | -             |          |
+| popupClassName         | Popup class name                                                                     | string                                                          | -             |          |
+| popupStyle             | Popup inline style                                                                   | React.CSSProperties                                             | -             |          |
+| popupProps             | Props added to the popup                                                             | PopupProps                                                      | -             |          |
+| popupContent           | Custom popup content                                                                 | React.ReactNode                                                 | -             |          |
+| followTrigger          | Whether to follow the trigger scroll                                                 | boolean                                                         | -             |          |
+| filterLocal            | Use local filtering, when the data source is remote, you need to close this item     | boolean                                                         | true          |          |
+| filter                 | Local filtering method, return a Boolean value to determine whether to retain        | (key: string \| number, item: ObjectItem) => boolean            | -             |          |
+| onToggleHighlightItem  | Callback when pressing keyboard up and down keys to switch the menu highlight option | (highlightKey: unknown, ...args: unknown[]) => void             | -             |          |
+| useVirtual             | Whether to enable virtual scrolling mode                                             | boolean                                                         | -             |          |
+| dataSource             | Data source, can dynamically render child items                                      | Array\<DataSourceItem>                                          | -             |          |
+| itemRender             | Render MenuItem content                                                              | (item: ObjectItem) => React.ReactNode                           | -             |          |
+| onChange               | Callback when AutoComplete changes                                                   | (value: string, actionType: string, item?: ObjectItem) => void  | -             |          |
+| onKeyDown              | -                                                                                    | (e: React.KeyboardEvent\<HTMLElement>) => void                  | -             |          |
+| fillProps              | The key to fill in the value of the selection box                                    | string                                                          | 'value'       |          |
+| autoHighlightFirstItem | Automatically highlight the first option                                             | boolean                                                         | true          |          |
+| highlightKey           | Highlight key                                                                        | string                                                          | -             |          |
+| defaultHighlightKey    | Default highlight key                                                                | string                                                          | -             |          |
+| onFocus                | Callback when AutoComplete gets focus                                                | InputProps['onFocus']                                           | -             |          |
+| children               | Child elements, reference the demo for details                                       | ReactElementWithTypeMark \| ReactElementWithTypeMark[]          | -             |          |
+| highlightHolder        | Whether to display the current highlighted option as a placeholder                   | boolean                                                         | -             |          |
 
 ### Select.OptionGroup
 
-| Param | Descripiton  | Type  | Default Value |
-| ----- | ------- | --------- | --- |
-| label | Grouping text | ReactNode | - |
+| Param | Description               | Type            | Default Value | Required |
+| ----- | ------------------------- | --------------- | ------------- | -------- |
+| label | Set the text of the group | React.ReactNode | -             |          |
 
 ### Select.Option
 
-| Param | Descripiton  | Type  | Default Value |
-| -------- | ---- | ------- | --- |
-| value | option value | any | - |
-| disabled | disabled | Boolean | - |
+| Param    | Description        | Type                                             | Default Value | Required |
+| -------- | ------------------ | ------------------------------------------------ | ------------- | -------- |
+| value    | Option value       | string \| number \| boolean \| null \| undefined | -             | yes      |
+| disabled | Whether to disable | boolean                                          | -             |          |
 
+### ObjectItem
+
+| Param       | Description | Type                                             | Default Value | Required |
+| ----------- | ----------- | ------------------------------------------------ | ------------- | -------- |
+| value       | -           | string \| number \| boolean \| null \| undefined | -             |          |
+| label       | -           | string \| number \| boolean                      | -             |          |
+| color       | -           | string                                           | -             |          |
+| disabled    | -           | boolean                                          | -             |          |
+| children    | -           | DataSourceItem[]                                 | -             |          |
+| title       | -           | string                                           | -             |          |
+| \_\_isAddon | -           | boolean                                          | -             |          |
+
+### DataSourceItem
+
+```typescript
+export type DataSourceItem = ObjectItem | string | boolean | number | null | undefined;
+```
+
+### VisibleChangeType
+
+```typescript
+export type VisibleChangeType =
+    | 'itemClick'
+    | 'enter'
+    | 'esc'
+    | 'keyDown'
+    | 'selectAll'
+    | 'update'
+    | 'change'
+    | 'tag';
+```
+
+### HighlightChangeType
+
+```typescript
+export type HighlightChangeType = 'up' | 'down' | 'autoFirstItem' | 'highlightKeyToNull';
+```
 
 ## Select/AutoComplete Inner Methods(Got by refs)
 
-| Param | Descripiton  | Type  | Default Value |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------ | -------- | --- |
-| focus        | get foucs<br><br>**signature**:<br> Function(start:Number, end: Number)<br>**params**:<br>_start_: {Number} cursor postion<br>_end_: {Number} select end postion | Function |     |
+| Param | Descripiton                                                                                                                                                      | Type     | Default Value |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------- |
+| focus | get foucs<br><br>**signature**:<br> Function(start:Number, end: Number)<br>**params**:<br>_start_: {Number} cursor postion<br>_end_: {Number} select end postion | Function |               |
 
 ## ARIA and KeyBoard
 
-| 按键          | 说明                              |
-| :---------- | :------------------------------ |
-| Up Arrow    | Get the previous item focus of the current item |
-| Down Arrow  | Get the next item focus of the current item |
-| Enter       | Open the list or select current item    |
-| Esc         | Close the list   |
-
+| 按键       | 说明                                            |
+| :--------- | :---------------------------------------------- |
+| Up Arrow   | Get the previous item focus of the current item |
+| Down Arrow | Get the next item focus of the current item     |
+| Enter      | Open the list or select current item            |
+| Esc        | Close the list                                  |

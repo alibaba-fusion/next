@@ -48,28 +48,10 @@ interface SelectState extends BaseState {
 class Select extends Base<SelectProps, SelectState> {
     static propTypes = {
         ...Base.propTypes,
-        /**
-         * 选择器模式
-         */
         mode: PropTypes.oneOf(['single', 'multiple', 'tag']),
-        /**
-         * 当前值，用于受控模式
-         */
         value: PropTypes.any,
-        /**
-         * 初始的默认值
-         */
         defaultValue: PropTypes.any,
-        /**
-         * Select 发生改变时触发的回调
-         * @param value - 选中的值
-         * @param actionType - 触发的方式，'itemClick', 'enter', 'tag'
-         * @param item - 选中的值的对象数据 (useDetailValue=false 有效)
-         */
         onChange: PropTypes.func,
-        /**
-         * 传入的数据源，可以动态渲染子项，详见 [dataSource 的使用](#dataSource 的使用)
-         */
         dataSource: PropTypes.arrayOf(
             PropTypes.oneOfType([
                 PropTypes.shape({
@@ -83,126 +65,34 @@ class Select extends Base<SelectProps, SelectState> {
                 PropTypes.string,
             ])
         ),
-        /**
-         * 是否有边框
-         */
         hasBorder: PropTypes.bool,
-        /**
-         * 是否有下拉箭头
-         */
         hasArrow: PropTypes.bool,
-        /**
-         * 展开后是否能搜索（tag 模式下固定为 true）
-         */
         showSearch: PropTypes.bool,
-        /**
-         * 当搜索框值变化时回调
-         * @param value - 数据
-         */
         onSearch: PropTypes.func,
-        /**
-         * 当搜索框值被 (选择、弹窗关闭) 导致清空时候的回调
-         * @param actionType - 触发的方式，'select'(选择清空), 'popupClose'(弹窗关闭清空)
-         */
         onSearchClear: PropTypes.func,
-        /**
-         * 多选模式下是否有全选功能
-         */
         hasSelectAll: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-        /**
-         * 填充到选择框里的值的 key
-         */
         fillProps: PropTypes.string,
-        /**
-         * value 使用对象类型 `{value, label}`, 同时 onChange 第一个参数返回也修改为 dataSource 中的对象
-         */
         useDetailValue: PropTypes.bool,
-        /**
-         * dataSource 变化的时是否保留已选的内容
-         */
         cacheValue: PropTypes.bool,
-        /**
-         * 渲染 Select 展现内容的方法
-         * @param item - 渲染节点的 item
-         * @returns 展现内容
-         * @defaultValue item =\> `item.label || item.value`
-         */
         valueRender: PropTypes.func,
-        /**
-         * 渲染 MenuItem 内容的方法
-         * @param item - 渲染节点的 item
-         * @param searchValue - 搜索关键字（如果开启搜索）
-         * @returns item node
-         */
         itemRender: PropTypes.func,
-        /**
-         * 弹层内容为空的文案
-         */
         notFoundContent: PropTypes.node,
         style: PropTypes.object,
-        /**
-         * 受控搜索值，一般不需要设置
-         */
         searchValue: PropTypes.string,
-        /**
-         * 是否一行显示，仅在 mode 为 multiple 的时候生效
-         * @version 1.15
-         */
         tagInline: PropTypes.bool,
-        /**
-         * tag 是否可关闭
-         * @version 1.20
-         */
         tagClosable: PropTypes.bool,
-        /**
-         * tag 尺寸是否和 select 保持一致 (mode=multiple/tag 模式生效），默认 false
-         * @version 1.24
-         */
         adjustTagSize: PropTypes.bool,
-        /**
-         * 最多显示多少个 tag
-         * @version 1.15
-         */
         maxTagCount: PropTypes.number,
-        /**
-         * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
-         * @param selectedValues - 当前已选中的元素
-         * @param totalValues - 总待选元素
-         * @version 1.15
-         */
         maxTagPlaceholder: PropTypes.func,
-        /**
-         * 选择后是否立即隐藏菜单 (mode=multiple/tag 模式生效)
-         */
         hiddenSelected: PropTypes.bool,
-        /**
-         * tag 删除回调
-         * @param item - 渲染节点的 item
-         */
         onRemove: PropTypes.func,
-        /**
-         * 焦点事件
-         */
         onFocus: PropTypes.func,
-        /**
-         * 是否自动高亮第一个选项
-         */
-        // highlightFirstItem: PropTypes.bool,
-        /**
-         * 失去焦点事件
-         */
         onBlur: PropTypes.func,
         onMouseEnter: PropTypes.func,
         onMouseLeave: PropTypes.func,
         onKeyDown: PropTypes.func,
         locale: PropTypes.object,
-        /**
-         * 展开下拉菜单时是否自动焦点到弹层
-         */
         popupAutoFocus: PropTypes.bool,
-        /**
-         * 是否展示 dataSource 中 children
-         */
         showDataSourceChildren: PropTypes.bool,
     };
 
