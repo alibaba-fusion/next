@@ -1,5 +1,6 @@
 import { Children } from 'react';
 import type {
+    BaseProps,
     DataSourceItem,
     NormalizedObjectItem,
     ObjectItem,
@@ -285,7 +286,7 @@ function getKeyItemByValue(value: DataSourceItem, valueMap: Record<string, Objec
  * @returns value: [value]; valueDS: [\{value,label\}]; mapValueDS: \{value: \{value,label\}\}
  */
 export function getValueDataSource(
-    value: DataSourceItem | DataSourceItem[],
+    value: BaseProps['value'],
     mapValueDS: Record<string, ObjectItem>,
     mapMenuDS: Record<string, ObjectItem>
 ): {

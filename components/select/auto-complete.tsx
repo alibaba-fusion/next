@@ -21,24 +21,9 @@ interface AutoCompleteState extends BaseState {
 class AutoComplete extends Base<AutoCompleteProps, AutoCompleteState> {
     static propTypes = {
         ...Base.propTypes,
-        /**
-         * 当前值，用于受控模式
-         */
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        /**
-         * 初始化的默认值
-         */
         defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        /**
-         * Select 发生改变时触发的回调
-         * @param value - 选中的值
-         * @param actionType - 触发的方式，'itemClick', 'enter', 'change'
-         * @param item - 选中的值的对象数据
-         */
         onChange: PropTypes.func,
-        /**
-         * 传入的数据源，可以动态渲染子项
-         */
         dataSource: PropTypes.arrayOf(
             PropTypes.oneOfType([
                 PropTypes.shape({
@@ -50,19 +35,9 @@ class AutoComplete extends Base<AutoCompleteProps, AutoCompleteState> {
                 PropTypes.string,
             ])
         ),
-        /**
-         * 填充到选择框里的值的 key，默认是 value
-         */
         fillProps: PropTypes.string,
-        /**
-         * 渲染 MenuItem 内容的方法
-         * @param item - 渲染节点的 item
-         * @returns item node
-         */
         itemRender: PropTypes.func,
-        // input keydown
         onKeyDown: PropTypes.func,
-        // 是否将当前高亮的选项作为 placeholder
         highlightHolder: PropTypes.bool,
         style: PropTypes.object,
     };
