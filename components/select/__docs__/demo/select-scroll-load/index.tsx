@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
 import { type SelectProps } from '@alifd/next/lib/select';
 
-const Option = Select.Option;
-
 function generateItem(start: number, end: number) {
     const arr = [];
     for (let i = start; i < end; i++) {

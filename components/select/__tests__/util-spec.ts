@@ -1,24 +1,23 @@
-import assert from 'power-assert';
 import { isSingle, isNull } from '../util';
 
 /**
  * util spec test
- * @create 2017/11
+ * created at 2017/11
  */
 
 describe('util.js', () => {
     it('#isSingle should works correct', () => {
-        assert(isSingle());
-        assert(isSingle('single'));
-        assert(!isSingle('tag'));
-        assert(!isSingle('multiple'));
+        expect(isSingle()).to.be.true;
+        expect(isSingle('single')).to.be.true;
+        expect(!isSingle('tag')).to.be.true;
+        expect(!isSingle('multiple')).to.be.true;
     });
 
     it('#isNull should works correct', () => {
-        assert(isNull());
-        assert(isNull(null));
-        assert(!isNull(0));
-        assert(!isNull(''));
-        assert(!isNull(false));
+        expect(isNull()).to.be.true;
+        expect(isNull(null)).to.be.true;
+        expect(!isNull(0)).to.be.true;
+        expect(!isNull('')).to.be.true;
+        expect(!isNull(false)).to.be.true;
     });
 });

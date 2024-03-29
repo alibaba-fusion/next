@@ -1,10 +1,5 @@
-import type {
-    DataSourceItem,
-    DataStoreOptions,
-    NormalizedObjectItem,
-    ObjectItem,
-    ReactElementWithTypeMark,
-} from './types';
+import { type ReactNode } from 'react';
+import type { DataSourceItem, DataStoreOptions, NormalizedObjectItem, ObjectItem } from './types';
 import {
     filter,
     parseDataSourceFromChildren,
@@ -48,14 +43,9 @@ class DataStore {
         Object.assign(this.options, options);
     }
 
-    updateByDS(
-        dataSource: ReactElementWithTypeMark | ReactElementWithTypeMark[] | DataSourceItem[],
-        isChildren = false
-    ) {
+    updateByDS(dataSource: ReactNode | DataSourceItem[], isChildren = false) {
         this.dataSource = isChildren
-            ? parseDataSourceFromChildren(
-                  dataSource as ReactElementWithTypeMark | ReactElementWithTypeMark[]
-              )
+            ? parseDataSourceFromChildren(dataSource as ReactNode)
             : normalizeDataSource(
                   dataSource as DataSourceItem[],
                   0,

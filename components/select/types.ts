@@ -19,11 +19,11 @@ interface HTMLAttributesWeak
  */
 export interface ObjectItem {
     value?: string | number | boolean | null | undefined;
-    label?: string | number | boolean;
+    label?: string | number | boolean | null | React.ReactElement;
     color?: string;
     disabled?: boolean;
     children?: DataSourceItem[];
-    title?: string;
+    title?: string | null;
     __isAddon?: boolean;
     [propName: string]: unknown;
 }
@@ -263,7 +263,7 @@ export interface AutoCompleteProps
      * 子元素，详细使用方法参考 demo
      * @en Child elements, reference the demo for details
      */
-    children?: ReactElementWithTypeMark | ReactElementWithTypeMark[];
+    children?: React.ReactNode;
     /**
      * 是否将当前高亮的选项作为 placeholder
      * @en Whether to display the current highlighted option as a placeholder
@@ -320,7 +320,7 @@ export interface SelectProps
      * 子元素，详细使用方法参考 demo
      * @en Child elements, reference the demo for details
      */
-    children?: ReactElementWithTypeMark | ReactElementWithTypeMark[];
+    children?: React.ReactNode;
 
     /**
      * name

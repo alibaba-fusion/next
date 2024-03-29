@@ -1,8 +1,8 @@
-import React, { type UIEvent, type MouseEvent, HTMLAttributes } from 'react';
+import React, { type UIEvent, type MouseEvent, type HTMLAttributes } from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
 import classNames from 'classnames';
-import { SelectProps } from '@alifd/meet-react/lib/select';
+import { type SelectProps } from '@alifd/meet-react/lib/select';
 
 function preventDefault(e: UIEvent<HTMLElement>) {
     e.preventDefault();

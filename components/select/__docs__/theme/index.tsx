@@ -1,17 +1,13 @@
-import '../../../demo-helper/style';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Demo, DemoGroup, DemoHead, initDemo, type DemoProps } from '../../../demo-helper';
+import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import Select, { type SelectProps } from '../../index';
 import '../../style';
+import '../../../demo-helper/style';
 import Field from '../../../field';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
-
-// import demo helper
-
-// import select
 
 const i18nMaps = {
     'en-us': {
