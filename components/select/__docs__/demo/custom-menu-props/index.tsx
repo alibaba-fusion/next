@@ -20,13 +20,13 @@ class App extends React.Component {
     state = {
         dataSource,
     };
+    inputRef: Input | null;
     loadMore = () => {
         const ds = this.state.dataSource;
         this.setState({
             dataSource: [...ds, ...generateData(ds.length, 5)],
         });
     };
-    inputRef: Input | null;
 
     render() {
         const menuProps = {
@@ -37,9 +37,9 @@ class App extends React.Component {
                         <Input
                             style={{ width: '100%' }}
                             ref={ref => (this.inputRef = ref)}
-                            onClick={e => console.log(/onclick/)}
+                            onClick={e => console.log(/onclick/, e)}
                             onMouseDown={e => {
-                                console.log(/onMouseDown/);
+                                console.log(/onMouseDown/, e);
                                 //@ts-expect-error 待 Input ts 改造
                                 this.inputRef!.focus();
                             }}

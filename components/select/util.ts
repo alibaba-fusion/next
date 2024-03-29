@@ -1,4 +1,4 @@
-import { Children } from 'react';
+import { Children, type ReactNode } from 'react';
 import type {
     BaseProps,
     DataSourceItem,
@@ -25,7 +25,7 @@ export function isSingle(mode?: string | null) {
  * @param n - any object
  * @returns n is null or undefined
  */
-export function isNull(n: unknown): n is null | undefined {
+export function isNull(n?: unknown): n is null | undefined {
     return n === null || n === undefined;
 }
 
@@ -81,17 +81,14 @@ export function loopMap(
  * @param children - children
  * @param deep - recursion deep level
  */
-export function parseDataSourceFromChildren(
-    children: ReactElementWithTypeMark | ReactElementWithTypeMark[],
-    deep = 0
-): NormalizedObjectItem[] {
+export function parseDataSourceFromChildren(children: ReactNode, deep = 0): NormalizedObjectItem[] {
     const source: NormalizedObjectItem[] = [];
 
     Children.forEach(children, (child, index) => {
         if (!child) {
             return;
         }
-        const { type, props: childProps } = child;
+        const { type, props: childProps } = child as ReactElementWithTypeMark;
         const item2: NormalizedObjectItem & { deep: number } = { deep };
 
         let isOption = false;

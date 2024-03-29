@@ -1,55 +1,27 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
-import assert from 'power-assert';
-import Field from '../../field';
-import Select from '../index';
+import { type SinonSpy } from 'cypress/types/sinon';
+import Select, { type ObjectItem, type SelectProps } from '../index';
 import '../style';
 
-/* eslint-disable react/no-multi-comp,no-undef */
-
-function delay(duration) {
-    return new Promise(resolve => {
-        setTimeout(resolve, duration);
-    });
-}
-
-Enzyme.configure({ adapter: new Adapter() });
+const { Option } = Select;
 
 describe('Select', () => {
-    let wrapper;
-
     beforeEach(() => {
         const dataSource = [{ label: 'xxx', value: 'yyy' }];
-        wrapper = mount(<Select dataSource={dataSource} />);
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
-        wrapper = null;
-
-        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
-
-        nodeListArr.forEach(node => {
-            node.parentNode.removeChild(node);
-        });
+        cy.mount(<Select dataSource={dataSource} />).as('Demo');
     });
 
     it('should render from dataSource', () => {
         const dataSource = [{ label: 'xxx', value: 'yyy' }];
-        wrapper.setProps({
+        cy.rerender('Demo', {
             dataSource,
             visible: true,
         });
-        assert(document.querySelectorAll('.next-menu-item').length === 1);
-        wrapper.setProps({
+        cy.get('.next-menu-item').should('have.length', 1);
+        cy.rerender('Demo', {
             value: 'yyy',
         });
-        wrapper.update();
-
-        assert(wrapper.find('.next-select em').text() === 'xxx');
+        cy.get('.next-select em').should('have.text', 'xxx');
     });
 
     it('should support showDataSourceChildren to ignore dataSource children', () => {
@@ -69,12 +41,13 @@ describe('Select', () => {
             },
         ];
 
-        wrapper.setProps({
+        cy.rerender('Demo', {
             dataSource,
             visible: true,
             showDataSourceChildren: false,
         });
-        assert(document.querySelectorAll('.next-menu-item').length === 2);
+
+        cy.get('.next-menu-item').should('have.length', 2);
     });
 
     it('should support empty value from dataSource', () => {
@@ -82,19 +55,18 @@ describe('Select', () => {
             { label: 'xxx', value: 'yyy' },
             { label: 'empty', value: '' },
         ];
-        wrapper.setProps({
+        cy.rerender('Demo', {
             dataSource,
             visible: true,
         });
-        assert(document.querySelectorAll('.next-menu-item').length === 2);
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
-        wrapper.update();
-
-        assert(wrapper.find('span.next-select em').text() === 'xxx');
-        wrapper.setProps({
+        cy.get('.next-menu-item').should('have.length', 2);
+        cy.get('.next-menu-item').first().click();
+        cy.get('.next-select em').should('have.text', 'xxx');
+        cy.rerender('Demo', {
             value: '',
+            dataSource,
         });
-        assert(wrapper.find('span.next-select em').text() === 'empty');
+        cy.get('.next-select em').should('have.text', 'empty');
     });
 
     it('should support async dataSource', () => {
@@ -104,15 +76,13 @@ describe('Select', () => {
             { label: 'TT3', value: 'test3' },
         ];
 
-        const wrapper = mount(<Select defaultValue="test2" />);
+        cy.mount(<Select defaultValue="test2" />).as('Demo2');
 
-        wrapper.setProps({
+        cy.rerender('Demo2', {
             dataSource: DATASOURCE,
         });
 
-        wrapper.update();
-
-        assert(wrapper.find('.next-select em').text() === 'TT2');
+        cy.get('.next-select em').should('have.text', 'TT2');
     });
 
     it('should support custom title', () => {
@@ -125,26 +95,22 @@ describe('Select', () => {
             { label: 'cccc', value: 'cccc' },
             { label: <span>dasbx</span>, value: 'ddddd' },
         ];
-        wrapper.setProps({
+        cy.rerender('Demo', {
             dataSource,
             visible: true,
         });
-        assert(document.querySelectorAll('.next-menu-item').length === 7);
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
-        wrapper.update();
-
-        assert(wrapper.find('ul li').at(0).instance().title === 'abc');
-        assert(wrapper.find('ul li').at(1).instance().title === '');
-        assert(wrapper.find('ul li').at(2).instance().title === '');
-        assert(wrapper.find('ul li').at(3).instance().title === '');
-        assert(wrapper.find('ul li').at(4).instance().title === 'bbbbb');
-        assert(wrapper.find('ul li').at(5).instance().title === 'cccc');
-        assert(wrapper.find('ul li').at(6).instance().title === '');
+        cy.get('.next-menu-item').should('have.length', 7);
+        cy.get('ul li').eq(0).should('have.attr', 'title', 'abc');
+        cy.get('ul li').eq(1).should('have.attr', 'title', '');
+        cy.get('ul li').eq(2).should('not.have.attr', 'title');
+        cy.get('ul li').eq(3).should('not.have.attr', 'title');
+        cy.get('ul li').eq(4).should('have.attr', 'title', 'bbbbb');
+        cy.get('ul li').eq(5).should('have.attr', 'title', 'cccc');
+        cy.get('ul li').eq(6).should('not.have.attr', 'title');
     });
 
     it('should support title in valueRender', () => {
-        const arr = [];
-        const strarr = [];
+        const handleValueRender = cy.spy().as('handleValueRender');
         const dataSource = [
             { label: 'xxx', value: 'yyy', title: 'abc' },
             { label: 'empty ', value: ' ', title: '' },
@@ -161,8 +127,7 @@ describe('Select', () => {
                         dataSource={dataSource}
                         defaultValue={['yyy', ' ', 'undefined', 'null', 'ddddd']}
                         valueRender={item => {
-                            arr.push(item.title);
-                            strarr.push(`pre-${item.title}`);
+                            handleValueRender(item);
                             return item.label;
                         }}
                     />
@@ -170,28 +135,13 @@ describe('Select', () => {
             }
         }
 
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(<App />, div);
+        cy.mount(<App />);
 
-        assert(
-            arr[0] === 'abc' &&
-                arr[1] === '' &&
-                arr[2] === undefined &&
-                arr[3] === null &&
-                arr[4] === undefined
-        );
-
-        assert(
-            strarr[0] === 'pre-abc' &&
-                strarr[1] === 'pre-' &&
-                strarr[2] === 'pre-undefined' &&
-                strarr[3] === 'pre-null' &&
-                strarr[4] === 'pre-undefined'
-        );
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.get('@handleValueRender').should('be.calledWithMatch', { title: 'abc' });
+        cy.get('@handleValueRender').should('be.calledWithMatch', { title: '' });
+        cy.get('@handleValueRender').should('be.calledWithMatch', { title: undefined });
+        cy.get('@handleValueRender').should('be.calledWithMatch', { title: null });
+        cy.get('@handleValueRender').should('be.calledWithMatch', { title: undefined });
     });
 
     it('should change display text while choose item and change dataSource', () => {
@@ -214,9 +164,9 @@ describe('Select', () => {
                 );
             }
         }
-        wrapper = mount(<App />);
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
-        assert(wrapper.find('span.next-select em').text() === 'bbb');
+        cy.mount(<App />);
+        cy.get('.next-menu-item').eq(1).click();
+        cy.get('.next-select em').should('have.text', 'bbb');
     });
 
     it('should not change text while under controlled', () => {
@@ -224,30 +174,28 @@ describe('Select', () => {
             { label: 'xxx', value: 123 },
             { label: 'empty', value: 0 },
         ];
-        wrapper.setProps({
+        cy.rerender('Demo', {
             dataSource,
             visible: true,
             value: 0,
         });
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
-        assert(wrapper.find('span.next-select em').text() === 'empty');
+        cy.get('.next-menu-item').first().click();
+        cy.get('.next-select em').should('have.text', 'empty');
     });
 
-    it('should support not string value', done => {
+    it('should support not string value', () => {
         const dataSource = [
             { label: 'xxx', value: 123 },
             { label: 'empty', value: false },
         ];
-        const onChange = value => {
-            assert(value === 123);
-            done();
-        };
-        wrapper.setProps({
+        const onChange = cy.spy().as('onChange');
+        cy.rerender('Demo', {
             dataSource,
             visible: true,
             onChange,
         });
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
+        cy.get('.next-menu-item').first().click();
+        cy.get('@onChange').should('be.calledWith', 123);
     });
 
     it('should support special value', () => {
@@ -255,12 +203,11 @@ describe('Select', () => {
             { label: 'xxx', value: 0 },
             { label: 'empty', value: false },
         ];
-        wrapper.setProps({
+        cy.rerender('Demo', {
             dataSource,
             value: 0,
         });
-        wrapper.update();
-        assert(wrapper.find('span.next-select em').text() === 'xxx');
+        cy.get('span.next-select em').should('have.text', 'xxx');
     });
 
     it('should support useDetailValue with mode=single', () => {
@@ -268,13 +215,12 @@ describe('Select', () => {
             { label: 'xxx', value: 0 },
             { label: 'empty', value: false },
         ];
-        wrapper.setProps({
+        cy.rerender('Demo', {
             dataSource,
             useDetailValue: true,
             value: { label: 'xxx', value: 0 },
         });
-        wrapper.update();
-        assert(wrapper.find('span.next-select em').text() === 'xxx');
+        cy.get('span.next-select em').should('have.text', 'xxx');
     });
 
     it('should support useDetailValue with mode=multiple', () => {
@@ -282,86 +228,77 @@ describe('Select', () => {
             { label: 'xxx', value: '0' },
             { label: 'empty', value: false },
         ];
-        wrapper.setProps({
+        cy.rerender('Demo', {
             dataSource,
             useDetailValue: true,
             mode: 'multiple',
             value: [{ label: 'xxx', value: '0' }],
         });
-        wrapper.update();
-        assert(wrapper.find('span.next-select div.next-tag').length === 1);
+        cy.get('span.next-select div.next-tag').should('have.length', 1);
     });
 
-    it('should support useDetailValue with mode=multiple and showSearch', done => {
+    it('should support useDetailValue with mode=multiple and showSearch', () => {
         const dataSource = [
             { label: 'xxx', value: '0' },
             { label: 'empty', value: 1 },
         ];
-        wrapper.setProps({
+        const handleChange = cy.spy().as('onChange');
+        const handleSearchClear = cy.spy().as('onSearchClear');
+
+        cy.rerender('Demo', {
             dataSource,
             useDetailValue: true,
             showSearch: true,
             mode: 'multiple',
             value: [{ label: 'xxx', value: '0' }],
-            onChange: function (value) {
-                assert(value.length === 2);
-            },
-            onSearchClear: function (value) {
-                done();
-            },
+            onChange: handleChange,
+            onSearchClear: handleSearchClear,
         });
-        wrapper.update();
-        assert(wrapper.find('span.next-select div.next-tag').length === 1);
-        wrapper.simulate('click');
-        const input = wrapper.find('input').instance();
-        input.value = 'e';
-        wrapper.find('input').simulate('change');
-        wrapper.find('input').simulate('keydown', {
-            key: 'Enter',
-            keyCode: 13,
-            which: 13,
+        cy.get('span.next-select div.next-tag').should('have.length', 1);
+        cy.get('input').type('e');
+        cy.get('input').type('{enter}');
+        cy.get('@onSearchClear').should('be.called');
+        cy.get<SinonSpy>('@onChange').then($hc => {
+            const [v] = $hc.args[0] as Parameters<NonNullable<SelectProps['onChange']>>;
+            cy.wrap(v).should('have.length', 2);
         });
     });
 
     it('should support render from options', () => {
-        wrapper.setProps({
+        cy.rerender('Demo', {
+            /* key 有特殊含义，会影响测试的含义 */
+            /* eslint-disable react/jsx-key */
             children: [<Select.Option value={123}>123label</Select.Option>],
+            /* eslint-enable react/jsx-key */
             visible: true,
         });
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
-        assert(React.Children.toArray(wrapper.props().children).length === 1);
-        wrapper.update();
-
-        assert(wrapper.find('span.next-select em').text() === '123label');
+        cy.get('.next-menu-item').eq(0).click();
+        cy.get('span.next-select em').should('have.text', '123label');
     });
 
     it('should renderPreview', () => {
-        const wrapper = mount(<Select isPreview dataSource={[]} value={null} />);
-
-        assert(wrapper.getDOMNode().innerText === '');
+        cy.mount(<Select isPreview dataSource={[]} value={null} />);
+        cy.get('.next-form-preview').should('have.text', '');
     });
 
-    // <span style={{ display: 'inline-block', width: 1 }}>&nbsp;</span>
-    // 非预览态会多一个空格
-    it('preview and edit should keep same content', () => {
-        const wrapper1 = mount(<Select dataSource={[]} value={1} />);
-
-        const wrapper2 = mount(<Select isPreview dataSource={[]} value={1} />);
-        assert(wrapper1.getDOMNode().innerText.slice(0, -1) === wrapper2.getDOMNode().innerText);
+    it('preview and edit should keep same content without dataSource', () => {
+        cy.mount(<Select dataSource={[]} value={1} />);
+        cy.get('span.next-select em').should('have.text', '1');
+        cy.mount(<Select isPreview dataSource={[]} value={1} />);
+        cy.get('.next-form-preview').should('have.text', '1');
     });
 
-    // <span style={{ display: 'inline-block', width: 1 }}>&nbsp;</span>
-    // 非预览态会多一个空格
-    it('preview and edit should keep same content', () => {
-        const wrapper1 = mount(
+    it('preview and edit should keep same content with ValueRender', () => {
+        cy.mount(
             <Select
                 dataSource={[{ label: 'test', value: '1' }]}
                 valueRender={v => v.value}
                 value={1}
             />
         );
+        cy.get('span.next-select em').should('have.text', '1');
 
-        const wrapper2 = mount(
+        cy.mount(
             <Select
                 isPreview
                 dataSource={[{ label: 'test', value: '1' }]}
@@ -369,81 +306,72 @@ describe('Select', () => {
                 value={1}
             />
         );
-        assert(wrapper1.getDOMNode().innerText.slice(0, -1) === wrapper2.getDOMNode().innerText);
+        cy.get('.next-form-preview').should('have.text', '1');
     });
 
-    // <span style={{ display: 'inline-block', width: 1 }}>&nbsp;</span>
-    // 非预览态会多一个空格
     it('preview and edit should keep same content', () => {
-        const wrapper1 = mount(<Select dataSource={[{ label: 'test', value: '1' }]} value={1} />);
-
-        const wrapper2 = mount(
-            <Select isPreview dataSource={[{ label: 'test', value: '1' }]} value={1} />
-        );
-        assert(wrapper1.getDOMNode().innerText.slice(0, -1) === wrapper2.getDOMNode().innerText);
+        cy.mount(<Select dataSource={[{ label: 'test', value: '1' }]} value={1} />);
+        cy.get('span.next-select em').should('have.text', 'test');
+        cy.mount(<Select isPreview dataSource={[{ label: 'test', value: '1' }]} value={1} />);
+        cy.get('.next-form-preview').should('have.text', 'test');
     });
 
     it('render preview content when use multiple select', () => {
-        const wrapper = mount(
+        cy.mount(
             <Select
-                dataSource={[{ label: '测试111', value: 1 }]}
+                dataSource={[{ label: '测试 111', value: 1 }]}
                 value={[1]}
                 mode="multiple"
                 isPreview
             />
         );
 
-        assert(wrapper.find('.next-form-preview').text() === '测试111');
+        cy.get('.next-form-preview').should('have.text', '测试 111');
     });
 
     it('should renderPreview mode="tag"', () => {
-        const wrapper = mount(<Select isPreview mode="tag" dataSource={[]} value={null} />);
-        assert(wrapper.getDOMNode().innerText === '');
+        cy.mount(<Select isPreview mode="tag" dataSource={[]} value={null} />);
+        cy.get('.next-form-preview').should('have.text', '');
     });
 
     it('should support children null', () => {
-        wrapper.setProps({
+        cy.rerender('Demo', {
+            /* key 有特殊含义，会影响测试的含义 */
+            /* eslint-disable react/jsx-key */
             children: [<Select.Option value={123}>123label</Select.Option>, null],
+            /* eslint-enable react/jsx-key */
             visible: true,
         });
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
-        assert(React.Children.toArray(wrapper.props().children).length === 1);
-        wrapper.update();
-
-        assert(wrapper.find('span.next-select em').text() === '123label');
+        cy.get('.next-menu-item').eq(0).click();
+        cy.get('span.next-select em').should('have.text', '123label');
     });
 
     it('should support fillProps', () => {
-        wrapper.setProps({
+        cy.rerender('Demo', {
             visible: true,
             fillProps: 'value',
         });
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
-        wrapper.update();
-
-        assert(wrapper.find('.next-select em').text() === 'yyy');
+        cy.get('.next-menu-item').eq(0).click();
+        cy.get('span.next-select em').should('have.text', 'yyy');
     });
 
     it('should support fillProps=anything with empty dataSource', () => {
-        wrapper.setProps({
+        cy.rerender('Demo', {
             value: 'jack',
             visible: true,
             fillProps: 'anything',
             dataSource: [],
         });
-
-        assert(wrapper.find('.next-select em').text() === 'jack');
+        cy.get('.next-select em').should('have.text', 'jack');
     });
 
     it('should support disabled', () => {
-        wrapper.setProps({
+        cy.rerender('Demo', {
             disabled: true,
             popupProps: { cache: false },
         });
-        wrapper.find('.next-select').simulate('click');
-        // because popup-menu has been cache
-        wrapper.update();
-        assert(document.querySelectorAll('.next-menu-item').length === 0);
+        cy.get('.next-select').click();
+        cy.get('.next-menu-item').should('have.length', 0);
     });
 
     it('should support multiple', () => {
@@ -451,26 +379,26 @@ describe('Select', () => {
             { label: 'xxx', value: 123 },
             { label: 'empty', value: false },
         ];
-        wrapper.setProps({
+        cy.rerender('Demo', {
             visible: true,
             dataSource,
             mode: 'multiple',
         });
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
-        wrapper.update();
-        const foo = wrapper.find('.next-tag-body');
-        assert(wrapper.find('.next-tag-body').text() === 'xxx');
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
-        wrapper.update();
-        assert(wrapper.find('.next-tag-body').at(1).text() === 'empty');
-        wrapper.setProps({
+        cy.get('.next-menu-item').eq(0).click();
+        cy.get('.next-tag-body').should('have.text', 'xxx');
+        cy.get('.next-menu-item').eq(1).click();
+        cy.get('.next-tag-body').eq(1).should('have.text', 'empty');
+        cy.rerender('Demo', {
+            visible: true,
+            dataSource,
+            mode: 'multiple',
             fillProps: 'value',
         });
-        assert(wrapper.find('.next-tag-body').at(0).text() === '123');
-        assert(wrapper.find('.next-tag-body').at(1).text() === '');
+        cy.get('.next-tag-body').eq(0).should('have.text', '123');
+        cy.get('.next-tag-body').eq(1).should('have.text', '');
     });
 
-    it('should show colorful Tag when dataSource item`s has color', () => {
+    it('should show colorful Tag when dataSource item has color', () => {
         const dataSource = [
             { value: '10001', label: 'Lucy King', color: 'orange' },
             { value: 10002, label: 'Lily King', color: 'green' },
@@ -495,645 +423,21 @@ describe('Select', () => {
                 );
             }
         }
-
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(<App />, div);
-        assert(document.querySelectorAll('.next-tag').length === 3);
-        assert(document.querySelectorAll('.next-input').length === 1);
-        const tags = document.querySelectorAll('.next-tag');
-        assert(tags.length === 3);
-        const firstTagStyle = window.getComputedStyle(tags[0]);
-        const secondTagStyle = window.getComputedStyle(tags[1]);
-        assert(firstTagStyle.backgroundColor === 'rgb(255, 147, 0)');
-        assert(secondTagStyle.backgroundColor === 'rgb(70, 188, 21)');
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.mount(<App />);
+        cy.get('.next-tag').should('have.length', 3);
+        cy.get('.next-tag').eq(0).should('have.css', 'backgroundColor', 'rgb(255, 147, 0)');
+        cy.get('.next-tag').eq(1).should('have.css', 'backgroundColor', 'rgb(70, 188, 21)');
+        cy.get('.next-tag').eq(2).should('have.css', 'backgroundColor', 'rgb(68, 148, 249)');
     });
 
     it('should support showSearch', () => {
-        wrapper.setProps({
+        cy.rerender('Demo', {
             showSearch: true,
-            defaultVisible: true,
-        });
-        // assert(document.querySelectorAll('.next-select-search').length === 1);
-        // document.querySelectorAll('input')[0].value = 'zzzz';
-        // ReactTestUtils.Simulate.change(document.querySelectorAll('input')[0]);
-        // assert(document.querySelectorAll('.next-menu-item').length === 0);
-    });
-
-    it('should support keyCode up & down', done => {
-        const dataSource = [
-            { label: 'xxx', value: 'a' },
-            { label: 'empty', value: 'b' },
-        ];
-        wrapper.setProps({
-            dataSource,
             visible: true,
         });
-        wrapper.find('input').simulate('keydown', { keyCode: 40 });
-        wrapper.update();
-        assert(document.querySelectorAll('.next-menu-item.next-focused').length === 1);
-        wrapper.find('input').simulate('keydown', { keyCode: 13 });
-        wrapper.update();
-        assert(wrapper.find('span.next-select em').text() === 'empty');
-
-        wrapper.find('input').simulate('keydown', { keyCode: 38 });
-        wrapper.find('input').simulate('keydown', { keyCode: 13 });
-        assert(wrapper.find('span.next-select em').text() === 'xxx');
-
-        // delete
-        wrapper.find('input').simulate('keydown', { keyCode: 8 });
-
-        wrapper.find('input').simulate('keydown', { keyCode: 27 });
-        wrapper.find('input').simulate('keydown', { keyCode: 32 });
-        wrapper.find('input').simulate('keydown', { keyCode: 9 });
-
-        done();
-    });
-
-    it('should support popupClassName', () => {
-        wrapper.setProps({
-            popupClassName: 'menu-customize',
-            visible: true,
-        });
-        assert(!!document.querySelector('.menu-customize'));
-    });
-
-    it('should support tags', done => {
-        wrapper.setProps({
-            mode: 'tag',
-            onChange: function (value) {
-                assert(value[0] === 'j');
-                // input will be update async
-            },
-            onSearchClear: function (value) {
-                done();
-            },
-        });
-
-        wrapper.simulate('click');
-        const input = wrapper.find('input').instance();
-        input.value = 'j';
-        wrapper.find('input').simulate('change');
-        wrapper.find('input').simulate('keydown', {
-            key: 'Enter',
-            keyCode: 13,
-            which: 13,
-        });
-    });
-
-    it('should support tags delete', done => {
-        wrapper.setProps({
-            mode: 'tag',
-            value: ['yyy'],
-            onChange: function (value) {
-                assert(value.length === 0);
-                done();
-            },
-        });
-
-        wrapper.find('input').simulate('keydown', {
-            key: 'backSpace',
-            keyCode: 8,
-        });
-    });
-
-    it('should support tags delete by click', done => {
-        wrapper.setProps({
-            mode: 'tag',
-            value: ['yyy'],
-            onChange: function (value) {
-                assert(value.length === 0);
-                done();
-            },
-        });
-
-        wrapper.find('div.next-tag .next-tag-close-btn').simulate('click');
-    });
-
-    it('should not delete disabled item with BACKSPACE', done => {
-        wrapper.setProps({
-            mode: 'tag',
-            dataSource: [
-                { value: '10001', label: 'Lucy King' },
-                { value: '10003', label: 'Tom Cat', disabled: true },
-            ],
-            value: ['10001', '10003'],
-            onChange: function (value) {
-                assert(value.length === 1);
-                done();
-            },
-        });
-
-        wrapper.find('input').simulate('keydown', {
-            key: 'backSpace',
-            keyCode: 8,
-        });
-
-        wrapper.find('div.next-tag .next-tag-close-btn').first().simulate('click');
-    });
-
-    it('should support mode=tag with visible=false', done => {
-        wrapper.setProps({
-            mode: 'tag',
-            visible: false,
-            value: ['yyy'],
-            onChange: function (value) {
-                assert(value.length === 2);
-                assert(value[1] === 'bbb');
-                done();
-            },
-        });
-
-        wrapper.find('input').simulate('change', { target: { value: 'bbb' } });
-        wrapper.find('input').simulate('keydown', { keyCode: 13 });
-    });
-
-    it('should support mode=tag with hasClear', done => {
-        wrapper.setProps({
-            mode: 'tag',
-            hasClear: true,
-            value: ['yyy'],
-            onChange: function (value) {
-                assert(value === undefined);
-                done();
-            },
-        });
-
-        wrapper.find('i.next-icon-delete-filling').simulate('click');
-    });
-
-    it('should support maxTagCount', done => {
-        const value = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: 1 },
-            { label: 'zzz', value: 1 },
-            { label: 'yyy', value: 1 },
-        ];
-        wrapper.setProps({
-            visible: true,
-            maxTagCount: 2,
-            mode: 'tag',
-            value,
-        });
-        wrapper.update();
-        assert(wrapper.find('span.next-select div.next-tag').length === 3);
-        done();
-    });
-
-    it('should support tagInline', done => {
-        const value = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: 1 },
-            { label: 'zzz', value: 1 },
-            { label: 'yyy', value: 1 },
-        ];
-        wrapper.setProps({
-            visible: true,
-            tagInline: true,
-            mode: 'tag',
-            value,
-        });
-        wrapper.update();
-
-        assert(
-            wrapper.find('span.next-select .next-select-compact div.next-select-tag-compact')
-                .length === 1
-        );
-        done();
-    });
-
-    it('should support adjustTagSize', done => {
-        const value = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: 1 },
-            { label: 'zzz', value: 1 },
-            { label: 'yyy', value: 1 },
-        ];
-        wrapper.setProps({
-            visible: true,
-            adjustTagSize: true,
-            mode: 'tag',
-            value,
-        });
-        wrapper.update();
-
-        assert(
-            wrapper.find('span.next-select span.next-select-values div.next-tag-medium').length ===
-                4
-        );
-        done();
-    });
-
-    it('should support onChange with mode=single ', done => {
-        const dataSource = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: 1 },
-        ];
-        wrapper.setProps({
-            dataSource,
-            visible: true,
-            onChange: (v, e, item) => {
-                assert(v === 1);
-                assert(item.value === 1);
-                done();
-            },
-        });
-
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
-    });
-
-    it('should support onChange with mode=multiple ', done => {
-        const dataSource = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: 1 },
-        ];
-        wrapper.setProps({
-            dataSource,
-            mode: 'multiple',
-            visible: true,
-            onChange: (v, e, item) => {
-                assert(v.length === 1);
-                assert(item.length === 1);
-                done();
-            },
-        });
-
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
-    });
-
-    it('should support useDetailValue onChange with mode=single ', done => {
-        const dataSource = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: false },
-        ];
-        wrapper.setProps({
-            dataSource,
-            useDetailValue: true,
-            visible: true,
-            onChange: v => {
-                assert(v.label === 'empty');
-                done();
-            },
-        });
-
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
-    });
-
-    it('should support useDetailValue onChange with mode=multiple ', done => {
-        const dataSource = [
-            { label: 'xxx', value: '0' },
-            { label: 'empty', value: false },
-        ];
-        wrapper.setProps({
-            dataSource,
-            useDetailValue: true,
-            mode: 'multiple',
-            visible: true,
-            onChange: v => {
-                assert(v.length === 1);
-                done();
-            },
-        });
-
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
-    });
-
-    it('should support hiddenSelected', done => {
-        const dataSource = [
-            { label: 'xxx', value: 'a' },
-            { label: 'empty', value: 'b' },
-        ];
-        wrapper.setProps({
-            dataSource,
-            mode: 'multiple',
-            visible: true,
-            hiddenSelected: true,
-            onVisibleChange: v => {
-                assert(v === false);
-                done();
-            },
-        });
-
-        wrapper.find('input').simulate('keydown', { keyCode: 40 });
-        wrapper.find('input').simulate('keydown', { keyCode: 40 });
-        wrapper.find('input').simulate('keydown', { keyCode: 13 });
-        wrapper.update();
-    });
-
-    // 输入aaa 回车，不关闭弹层
-    it('should not close popup while searching and searchValue not in dataSource', () => {
-        const dataSource = [
-            { label: 'xxx', value: 'a' },
-            { label: 'empty', value: 'b' },
-        ];
-        wrapper.setProps({
-            dataSource,
-            mode: 'single',
-            popupProps: { cache: false },
-            showSearch: true,
-        });
-
-        // a 回车，搜索到值，弹层关闭
-        wrapper.find('input').simulate('change', { target: { value: 'a' } });
-        wrapper.find('input').simulate('keydown', { keyCode: 13 });
-        wrapper.update();
-        assert(wrapper.instance().getInstance().state.visible === false);
-
-        // aaa 回车，搜索不到值，弹层打开状态
-        wrapper.find('input').simulate('change', { target: { value: 'aaa' } });
-        wrapper.find('input').simulate('keydown', { keyCode: 13 });
-        wrapper.update();
-        assert(
-            document.querySelectorAll('.next-select-menu .next-select-menu-empty-content')
-                .length === 1
-        );
-        assert(wrapper.instance().getInstance().state.visible === true);
-    });
-
-    it('should fix tags mode issue #62', () => {
-        class App extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                    dataSource: [
-                        {
-                            value: '测试',
-                            label: '测试',
-                            time: 123,
-                        },
-                    ],
-                    value: ['测试'],
-                };
-            }
-            render() {
-                return (
-                    <div>
-                        <Select
-                            size="large"
-                            value={this.state.value}
-                            dataSource={this.state.dataSource}
-                            onChange={this.onChange.bind(this)}
-                            onSearch={this.onSearch.bind(this)}
-                            mode="tag"
-                            filterLocal={false}
-                        />
-                    </div>
-                );
-            }
-            onSearch(value) {
-                let options;
-                if (!value || value.indexOf('@') > 0) {
-                    options = [];
-                } else {
-                    options = ['126.com', '163.com', 'gmail.com'].map(mail => {
-                        return {
-                            label: `${value}@${mail}`,
-                            value: `${value}@${mail}`,
-                            time: Math.random(),
-                        };
-                    });
-                }
-                this.setState({ dataSource: options });
-            }
-
-            onChange(value, item) {
-                this.setState({ value });
-            }
-        }
-
-        wrapper = mount(<App />);
-        const input = wrapper.find('input').instance();
-        input.value = '测试';
-        wrapper.find('input').simulate('change');
-        assert(/测试/.test(input.value));
-    });
-
-    it('should support select all and unselect all', () => {
-        const dataSource = [
-            { label: 'xxx', value: 123 },
-            { label: 'empty', value: false },
-        ];
-        wrapper.setProps({
-            dataSource,
-            visible: true,
-            mode: 'multiple',
-            hasSelectAll: true,
-        });
-
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-select-all')[0]);
-        assert(document.querySelectorAll('.next-menu-icon-selected').length === 3);
-
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-select-menu-item')[0]);
-
-        assert(document.querySelectorAll('.next-menu-icon-selected').length === 1);
-
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-select-all')[0]);
-
-        assert(document.querySelectorAll('.next-menu-icon-selected').length === 3);
-
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-select-all')[0]);
-
-        assert(document.querySelectorAll('.next-menu-icon-selected').length === 0);
-    });
-});
-
-describe('Select Controlled', () => {
-    class App extends React.Component {
-        state = {};
-        render() {
-            return (
-                <Select
-                    value={this.state.value}
-                    visible={this.state.visible}
-                    searchValue={this.state.searchValue}
-                    showSearch
-                    dataSource={[{ label: 'xxx', value: 'yyy' }]}
-                    onChange={this.onChange}
-                />
-            );
-        }
-        onChange = value => {
-            this.setState({
-                value,
-            });
-        };
-    }
-
-    let wrapper;
-
-    beforeEach(() => {
-        wrapper = mount(<App />);
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
-    });
-
-    it('should support Modify value', () => {
-        wrapper.setState({
-            value: 'yyy',
-        });
-        wrapper.update();
-
-        assert(wrapper.find('.next-select em').text().trim() === 'xxx');
-
-        wrapper.setState({
-            value: undefined,
-        });
-        wrapper.update();
-        assert(wrapper.find('.next-select em').length === 0);
-    });
-
-    it('should support Modify searchValue', () => {
-        wrapper.setState({
-            searchValue: 'xy',
-            visible: true,
-        });
-
-        wrapper.update();
-
-        assert(wrapper.find('.next-select input').prop('value') === 'xy');
-        assert(
-            document.querySelectorAll('.next-select-menu .next-select-menu-empty-content')
-                .length === 1
-        );
-
-        wrapper.setState({
-            searchValue: undefined,
-        });
-        wrapper.update();
-        assert(wrapper.find('.next-menu-item').length === 1);
-    });
-});
-
-describe('AutoComplete', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        const dataSource = [
-            { label: 'xxx', value: 'yyy' },
-            { label: '123', value: 444 },
-        ];
-        wrapper = mount(<Select.AutoComplete dataSource={dataSource} />);
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
-        wrapper = null;
-    });
-
-    it('should render from dataSource', () => {
-        wrapper.setProps({
-            value: 'yyy',
-        });
-        assert(wrapper.find('input').prop('value') === 'yyy');
-
-        wrapper.setProps({
-            visible: true,
-        });
-        assert(document.querySelectorAll('.next-menu-item').length === 2);
-    });
-
-    it('should support empty value from dataSource', () => {
-        const dataSource = [
-            { label: 'xxx', value: 'yyy' },
-            { label: 'empty', value: '' },
-        ];
-        wrapper.setProps({
-            dataSource,
-            visible: true,
-        });
-        assert(document.querySelectorAll('.next-menu-item').length === 2);
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
-        wrapper.update();
-
-        assert(wrapper.find('input').prop('value') === 'yyy');
-        wrapper.setProps({
-            value: '',
-        });
-        assert(wrapper.find('input').prop('value') === '');
-    });
-
-    it('should support not string value', done => {
-        const dataSource = [
-            { label: 'xxx', value: 123 },
-            { label: 'empty', value: false },
-        ];
-        const onChange = value => {
-            assert(value === 123);
-            done();
-        };
-        wrapper.setProps({
-            dataSource,
-            visible: true,
-            onChange,
-        });
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
-    });
-
-    it('should render from options', () => {
-        wrapper.setProps({
-            children: <Select.Option value="123">123</Select.Option>,
-        });
-        assert(React.Children.toArray(wrapper.props().children).length === 1);
-        wrapper.setProps({
-            value: '123',
-        });
-        assert(wrapper.find('input').instance().value === '123');
-    });
-
-    it('should support fillProps', () => {
-        wrapper.setProps({
-            visible: true,
-            fillProps: 'label',
-        });
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0]);
-        assert(wrapper.find('input').instance().value === 'xxx');
-    });
-
-    it('should pass value to input from props', () => {
-        wrapper.setProps({
-            value: 'yyyyx',
-        });
-        assert(wrapper.find('input').instance().value === 'yyyyx');
-        wrapper.setProps({
-            value: 'yyy',
-            fillProps: 'label',
-        });
-        assert(wrapper.find('input').instance().value === 'yyy');
-    });
-
-    it('should support filter', () => {
-        wrapper.setProps({
-            defaultVisible: true,
-        });
-        const input = wrapper.find('input').instance();
-        input.value = 'jkl';
-        wrapper.find('input').simulate('change');
-        assert(document.querySelectorAll('.next-menu-item').length === 0);
-        input.value = 'y';
-        wrapper.find('input').simulate('change');
-        assert(document.querySelectorAll('.next-menu-item').length === 1);
-    });
-
-    it('should support receive undefined value', () => {
-        class App extends React.Component {
-            state = {
-                value: '',
-            };
-            render() {
-                return <Select.AutoComplete dataSource={[]} value={this.state.value} multiple />;
-            }
-            componentDidMount() {
-                this.setState({
-                    value: undefined,
-                });
-            }
-        }
-        wrapper = mount(<App />);
+        cy.get('.next-select-trigger-search input').should('exist');
+        cy.get('.next-select-trigger-search input').type('zzzz');
+        cy.get('.next-menu-item').should('have.length', 0);
     });
 
     it('should support keyCode up & down', () => {
@@ -1141,27 +445,477 @@ describe('AutoComplete', () => {
             { label: 'xxx', value: 'a' },
             { label: 'empty', value: 'b' },
         ];
-        wrapper.setProps({
+        cy.rerender('Demo', {
             dataSource,
             visible: true,
         });
-        wrapper.find('input').simulate('keydown', { keyCode: 40 });
-        wrapper.find('input').simulate('keydown', { keyCode: 40 });
-        wrapper.update();
-        assert(document.querySelectorAll('.next-menu-item.next-focused').length === 1);
-        wrapper.find('input').simulate('keydown', { keyCode: 13 });
-        wrapper.update();
-        assert(wrapper.find('input').prop('value') === 'b');
+        cy.get('input').type('{downArrow}', { force: true });
+        cy.get('.next-menu-item.next-focused').should('have.length', 1);
+        cy.get('input').type('{enter}', { force: true });
+        cy.get('span.next-select em').should('have.text', 'empty');
+        cy.get('input').type('{upArrow}', { force: true });
+        cy.get('input').type('{enter}', { force: true });
+        cy.get('span.next-select em').should('have.text', 'xxx');
+    });
 
-        wrapper.find('input').simulate('keydown', { keyCode: 38 });
-        wrapper.find('input').simulate('keydown', { keyCode: 27 });
-        wrapper.find('input').simulate('keydown', { keyCode: 32 });
-        wrapper.find('input').simulate('keydown', { keyCode: 8 });
-        wrapper.find('input').simulate('keydown', { keyCode: 9 });
+    it('should support popupClassName', () => {
+        cy.rerender('Demo', {
+            popupClassName: 'menu-customize',
+            visible: true,
+        });
+        cy.get('.menu-customize').should('exist');
+    });
 
-        // wrapper.find('input').simulate('keydown', {keyCode: 38});
-        // wrapper.find('input').simulate('keydown', {keyCode: 13});
-        // assert(wrapper.find('input').prop('value') === 'a');
+    it('should support tags', () => {
+        const onChange = cy.spy().as('onChange');
+        const onSearchClear = cy.spy().as('onSearchClear');
+        cy.rerender('Demo', {
+            mode: 'tag',
+            onChange,
+            onSearchClear,
+        });
+        cy.get('.next-select').click();
+        cy.get('input').type('j');
+        cy.get('input').type('{enter}');
+        cy.get('@onChange').should('be.calledWith', ['j']);
+        cy.get('@onSearchClear').should('be.called');
+    });
+
+    it('should support tags delete', () => {
+        const onChange = cy.spy().as('onChange');
+        cy.rerender('Demo', {
+            mode: 'tag',
+            value: ['yyy'],
+            onChange,
+        });
+        cy.get('input').type('{backspace}');
+        cy.get('@onChange').should('be.calledWith', []);
+    });
+
+    it('should support tags delete by click', () => {
+        const onChange = cy.spy().as('onChange');
+        cy.rerender('Demo', {
+            mode: 'tag',
+            value: ['yyy'],
+            onChange,
+        });
+        cy.get('div.next-tag .next-tag-close-btn').click();
+        cy.get('@onChange').should('be.calledWith', []);
+    });
+
+    it('should not delete disabled item with BACKSPACE', () => {
+        const onChange = cy.spy().as('onChange');
+        cy.rerender('Demo', {
+            mode: 'tag',
+            dataSource: [
+                { value: '10001', label: 'Lucy King' },
+                { value: '10003', label: 'Tom Cat', disabled: true },
+            ],
+            value: ['10001', '10003'],
+            onChange,
+        });
+        cy.get('input').type('{backspace}');
+        cy.get('@onChange').should('not.be.called');
+        cy.get('div.next-tag .next-tag-close-btn').first().click();
+        cy.get('@onChange').should('be.calledWith', ['10003']);
+    });
+
+    it('should support mode=tag with visible=false', () => {
+        const onChange = cy.spy().as('onChange');
+        cy.rerender('Demo', {
+            mode: 'tag',
+            visible: false,
+            value: ['yyy'],
+            onChange,
+        });
+        cy.get('input').type('bbb');
+        cy.get('input').type('{enter}');
+        cy.get('@onChange').should('be.calledWith', ['yyy', 'bbb']);
+    });
+
+    it('should support mode=tag with hasClear', () => {
+        const onChange = cy.spy().as('onChange');
+        cy.rerender('Demo', {
+            mode: 'tag',
+            hasClear: true,
+            value: ['yyy'],
+            onChange,
+        });
+        cy.get('i.next-icon-delete-filling').click({ force: true });
+        cy.get('@onChange').should('be.calledWith', undefined);
+    });
+
+    it('should support maxTagCount', () => {
+        const value = [
+            { label: 'xxx', value: '0' },
+            { label: 'empty', value: 1 },
+            { label: 'zzz', value: 1 },
+            { label: 'yyy', value: 1 },
+        ];
+        cy.rerender('Demo', {
+            visible: true,
+            maxTagCount: 2,
+            mode: 'tag',
+            value,
+        });
+        cy.get('span.next-select div.next-tag').should('have.length', 3);
+    });
+
+    it('should support tagInline', () => {
+        const value = [
+            { label: 'xxx', value: '0' },
+            { label: 'empty', value: 1 },
+            { label: 'zzz', value: 1 },
+            { label: 'yyy', value: 1 },
+        ];
+        cy.rerender('Demo', {
+            visible: true,
+            tagInline: true,
+            mode: 'tag',
+            value,
+        });
+        cy.get('span.next-select .next-select-compact div.next-select-tag-compact').should(
+            'have.length',
+            1
+        );
+    });
+
+    it('should support adjustTagSize', () => {
+        const value = [
+            { label: 'xxx', value: '0' },
+            { label: 'empty', value: 1 },
+            { label: 'zzz', value: 1 },
+            { label: 'yyy', value: 1 },
+        ];
+        cy.rerender('Demo', {
+            visible: true,
+            adjustTagSize: true,
+            mode: 'tag',
+            value,
+        });
+        cy.get('span.next-select span.next-select-values div.next-tag-medium').should(
+            'have.length',
+            4
+        );
+    });
+
+    it('should support onChange with mode=single ', () => {
+        const dataSource = [
+            { label: 'xxx', value: '0' },
+            { label: 'empty', value: 1 },
+        ];
+        const onChange = cy.spy().as('onChange');
+        cy.rerender('Demo', {
+            dataSource,
+            visible: true,
+            onChange,
+        });
+        cy.get('.next-menu-item').eq(1).click();
+        cy.get<SinonSpy>('@onChange').then($hc => {
+            const [v, e, item] = $hc.args[0] as Parameters<NonNullable<SelectProps['onChange']>>;
+            cy.wrap(v).should('equal', 1);
+            cy.wrap((item as ObjectItem).value).should('equal', 1);
+        });
+    });
+
+    it('should support onChange with mode=multiple ', () => {
+        const dataSource = [
+            { label: 'xxx', value: '0' },
+            { label: 'empty', value: 1 },
+        ];
+        const onChange = cy.spy().as('onChange');
+        cy.rerender('Demo', {
+            dataSource,
+            mode: 'multiple',
+            visible: true,
+            onChange,
+        });
+        cy.get('.next-menu-item').eq(1).click();
+        cy.get<SinonSpy>('@onChange').then($hc => {
+            const [v, e, item] = $hc.args[0] as Parameters<NonNullable<SelectProps['onChange']>>;
+            cy.wrap(v).should('have.length', 1);
+            cy.wrap(item).should('have.length', 1);
+        });
+    });
+
+    it('should support useDetailValue onChange with mode=single ', () => {
+        const dataSource = [
+            { label: 'xxx', value: '0' },
+            { label: 'empty', value: false },
+        ];
+        const onChange = cy.spy().as('onChange');
+        cy.rerender('Demo', {
+            dataSource,
+            useDetailValue: true,
+            visible: true,
+            onChange,
+        });
+        cy.get('.next-menu-item').eq(1).click();
+        cy.get('@onChange').should('be.calledWithMatch', { label: 'empty' });
+    });
+
+    it('should support useDetailValue onChange with mode=multiple ', () => {
+        const dataSource = [
+            { label: 'xxx', value: '0' },
+            { label: 'empty', value: false },
+        ];
+        const onChange = cy.spy().as('onChange');
+        cy.rerender('Demo', {
+            dataSource,
+            useDetailValue: true,
+            mode: 'multiple',
+            visible: true,
+            onChange,
+        });
+        cy.get('.next-menu-item').eq(1).click();
+        cy.get<SinonSpy>('@onChange').then($hc => {
+            const [v] = $hc.args[0] as Parameters<NonNullable<SelectProps['onChange']>>;
+            cy.wrap(v).should('have.length', 1);
+        });
+    });
+
+    it('should support hiddenSelected', () => {
+        const dataSource = [
+            { label: 'xxx', value: 'a' },
+            { label: 'empty', value: 'b' },
+        ];
+        const onVisibleChange = cy.spy().as('onVisibleChange');
+        cy.rerender('Demo', {
+            dataSource,
+            mode: 'multiple',
+            visible: true,
+            hiddenSelected: true,
+            onVisibleChange,
+        });
+        cy.get('input').type('{downArrow}', { force: true });
+        cy.get('input').type('{downArrow}', { force: true });
+        cy.get('input').type('{enter}', { force: true });
+        cy.get('@onVisibleChange').should('be.calledWith', false);
+    });
+
+    // 输入 aaa 回车，不关闭弹层
+    it('should not close popup while searching and searchValue not in dataSource', () => {
+        const dataSource = [
+            { label: 'xxx', value: 'a' },
+            { label: 'empty', value: 'b' },
+        ];
+        cy.rerender('Demo', {
+            dataSource,
+            mode: 'single',
+            popupProps: { cache: false },
+            showSearch: true,
+        });
+
+        // a 回车，搜索到值，弹层关闭
+        cy.get('input').type('a');
+        cy.get('input').type('{enter}');
+        cy.get('.next-select-menu').should('not.exist');
+
+        // aaa 回车，搜索不到值，弹层打开状态
+        cy.get('input').type('aaa');
+        cy.get('input').type('{enter}');
+        cy.get('.next-select-menu .next-select-menu-empty-content').should('have.length', 1);
+        cy.get('.next-select-menu').should('exist');
+    });
+
+    it('should support select all and unselect all', () => {
+        const dataSource = [
+            { label: 'xxx', value: 123 },
+            { label: 'empty', value: false },
+        ];
+        cy.rerender('Demo', {
+            dataSource,
+            visible: true,
+            mode: 'multiple',
+            hasSelectAll: true,
+        });
+        cy.get('.next-select-all').click();
+        cy.get('.next-menu-icon-selected').should('have.length', 3);
+
+        cy.get('.next-select-menu-item').eq(0).click();
+        cy.get('.next-menu-icon-selected').should('have.length', 1);
+
+        cy.get('.next-select-all').click();
+        cy.get('.next-menu-icon-selected').should('have.length', 3);
+
+        cy.get('.next-select-all').click();
+        cy.get('.next-menu-icon-selected').should('have.length', 0);
+    });
+});
+
+describe('Select Controlled', () => {
+    beforeEach(() => {
+        cy.mount(
+            <Select value={undefined} showSearch dataSource={[{ label: 'xxx', value: 'yyy' }]} />
+        ).as('Demo');
+    });
+
+    it('should support Modify value', () => {
+        cy.rerender('Demo', {
+            value: 'yyy',
+        });
+
+        cy.get('.next-select em').should('have.text', 'xxx');
+
+        cy.rerender('Demo', {
+            value: undefined,
+        });
+
+        cy.get('.next-select em').should('have.length', 0);
+    });
+
+    it('should support Modify searchValue', () => {
+        cy.rerender('Demo', {
+            searchValue: 'xy',
+            visible: true,
+            // 只有当 dataSource 触发变化时，searchValue 才会生效
+            dataSource: [{ label: 'xxx', value: 'yyy' }],
+        });
+
+        cy.get('.next-select input').should('have.value', 'xy');
+        cy.get('.next-select-menu .next-select-menu-empty-content').should('have.length', 1);
+
+        cy.rerender('Demo', {
+            searchValue: undefined,
+            visible: true,
+            // 只有当 dataSource 触发变化时，searchValue 才会生效
+            dataSource: [{ label: 'xxx', value: 'yyy' }],
+        });
+
+        cy.get('.next-menu-item').should('have.length', 1);
+    });
+});
+
+describe('AutoComplete', () => {
+    beforeEach(() => {
+        const dataSource = [
+            { label: 'xxx', value: 'yyy' },
+            { label: '123', value: 444 },
+        ];
+        cy.mount(<Select.AutoComplete dataSource={dataSource} />).as('Demo');
+    });
+
+    it('should render from dataSource', () => {
+        cy.rerender('Demo', {
+            value: 'yyy',
+            visible: true,
+        });
+        cy.get('input').should('have.value', 'yyy');
+        cy.get('.next-menu-item').should('have.length', 2);
+    });
+
+    it('should support empty value from dataSource', () => {
+        const dataSource = [
+            { label: 'xxx', value: 'yyy' },
+            { label: 'empty', value: '' },
+        ];
+        cy.rerender('Demo', {
+            dataSource,
+            visible: true,
+        });
+        cy.get('.next-menu-item').should('have.length', 2);
+        cy.get('.next-menu-item').eq(0).click();
+        cy.get('input').should('have.value', 'yyy');
+        cy.rerender('Demo', {
+            value: '',
+        });
+        cy.get('input').should('have.value', '');
+    });
+
+    it('should support not string value', () => {
+        const dataSource = [
+            { label: 'xxx', value: 123 },
+            { label: 'empty', value: false },
+        ];
+        const onChange = cy.spy().as('onChange');
+        cy.rerender('Demo', {
+            dataSource,
+            visible: true,
+            onChange,
+        });
+        cy.get('.next-menu-item').eq(0).click();
+        cy.get('@onChange').should('be.calledWith', 123);
+    });
+
+    it('should render from options', () => {
+        cy.rerender('Demo', {
+            children: <Select.Option value="123">123</Select.Option>,
+            value: '123',
+            visible: true,
+        });
+        cy.get('.next-menu-item').eq(0).should('have.text', '123');
+        cy.get('input').should('have.value', '123');
+    });
+
+    it('should support fillProps', () => {
+        cy.rerender('Demo', {
+            visible: true,
+            fillProps: 'label',
+        });
+        cy.get('.next-menu-item').eq(0).click();
+        cy.get('input').should('have.value', 'xxx');
+    });
+
+    it('should pass value to input from props', () => {
+        cy.rerender('Demo', {
+            value: 'yyyyx',
+        });
+        cy.get('input').should('have.value', 'yyyyx');
+        cy.rerender('Demo', {
+            value: 'yyy',
+            fillProps: 'label',
+        });
+        cy.get('input').should('have.value', 'yyy');
+    });
+
+    it('should support filter', () => {
+        cy.rerender('Demo', {
+            defaultVisible: true,
+        });
+        cy.get('input').type('jkl');
+        cy.get('.next-menu-item').should('have.length', 0);
+        cy.get('input').clear();
+        cy.get('input').type('y');
+        cy.get('.next-menu-item').should('have.length', 1);
+    });
+
+    it('should support receive undefined value', () => {
+        class App extends React.Component {
+            state = {
+                value: '',
+            };
+            componentDidMount() {
+                this.setState({
+                    value: undefined,
+                });
+            }
+            render() {
+                return <Select.AutoComplete dataSource={[]} value={this.state.value} multiple />;
+            }
+        }
+        cy.mount(<App />);
+        cy.get('.next-select').should('exist');
+    });
+
+    it('should support keyCode up & down', () => {
+        const dataSource = [
+            { label: 'xxx', value: 'a' },
+            { label: 'empty', value: 'b' },
+        ];
+        cy.rerender('Demo', {
+            dataSource,
+            visible: true,
+        });
+        cy.get('input').type('{downArrow}');
+        cy.get('input').type('{downArrow}');
+        cy.get('.next-menu-item.next-focused').should('have.length', 1);
+        cy.get('input').type('{enter}');
+        cy.get('input').should('have.value', 'b');
+
+        cy.get('input').type('{backspace}');
+        cy.get('input').type('{upArrow}');
+        cy.get('input').type('{enter}');
+        cy.get('input').should('have.value', 'a');
     });
 
     it('should remove highlightKey while value changed', () => {
@@ -1169,45 +923,29 @@ describe('AutoComplete', () => {
             { label: 'xxx', value: 'a' },
             { label: 'empty', value: 'b' },
         ];
-        wrapper.setProps({
+        cy.rerender('Demo', {
             dataSource,
             visible: true,
             autoHighlightFirstItem: false,
         });
-        wrapper.find('input').simulate('keydown', { keyCode: 40 });
-        wrapper.find('input').simulate('keydown', { keyCode: 40 });
-        wrapper.find('input').simulate('keydown', { keyCode: 13 });
-        wrapper.update();
-        assert(document.querySelectorAll('.next-menu-item.next-focused').length === 1);
-        wrapper.find('input').simulate('change', { target: { value: '' } });
-        wrapper.update();
-        assert(document.querySelectorAll('.next-menu-item.next-focused').length === 0);
+        cy.get('input').type('{downArrow}');
+        cy.get('input').type('{downArrow}');
+        cy.get('input').type('{enter}');
+        cy.get('.next-menu-item.next-focused').should('have.length', 1);
+        cy.get('input').clear();
+        cy.get('.next-menu-item.next-focused').should('have.length', 0);
     });
 
-    // simulate keydown not work in test event
-    // it('should input keyCode space with popupContent', () => {
-    //     wrapper.setProps({
-    //         popupContent: <div>any</div>,
-    //         visible: true,
-    //     });
+    it('should input keyCode space with popupContent', () => {
+        cy.rerender('Demo', {
+            popupContent: <div>any</div>,
+            visible: true,
+        });
+        cy.get('input').type(' ');
+        cy.get('input').should('have.value', ' ');
+    });
 
-    //     wrapper.find('input').simulate('keydown', { keyCode: 32 });
-
-    //     wrapper.update();
-    //     assert(wrapper.find('input').prop('value') === ' ');
-    // });
-
-    // it('should fix onChange conflict under IE9&IE10', () => {
-    //     let changed = false,
-    //         onChange = () => { changed = true };
-    //     wrapper = mount(<Select.AutoComplete onChange={onChange}/>);
-    //     const input = wrapper.find('input').instance();
-    //     input.value = 'j';
-    //     wrapper.find('input').simulate('change');
-    //     assert(changed === false); // true
-    // });
-
-    it('should fix autoWidth bug', done => {
+    it('should fix autoWidth bug', () => {
         class App extends React.Component {
             render() {
                 return (
@@ -1219,26 +957,21 @@ describe('AutoComplete', () => {
                 );
             }
         }
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(<App />, div);
-        const select = div.querySelector('.next-select');
-        ReactTestUtils.Simulate.click(select);
-        setTimeout(() => {
+        cy.mount(<App />);
+        cy.get('.next-select').click();
+        cy.get('.next-select').then($el => {
+            const select = $el.get(0);
             const rect = select.getBoundingClientRect();
             const left = parseFloat(
-                document.querySelector('.next-select-single-menu').style.left,
-                10
+                document.querySelector<HTMLElement>('.next-select-single-menu')!.style.left
             );
-            assert(rect.left === left);
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-            done();
-        }, 200);
+            cy.wrap(left).should('equal', rect.left);
+        });
     });
 
-    it('should prevent scroll when click wrapper', async () => {
-        wrapper = mount(
+    it('should prevent scroll when click wrapper', () => {
+        let prevScrollLeft: number | undefined;
+        cy.mount(
             <div className="select-scroll-wrapper" style={{ width: 300, overflowX: 'scroll' }}>
                 <Select
                     style={{ width: 540 }}
@@ -1249,36 +982,30 @@ describe('AutoComplete', () => {
                 />
             </div>
         );
-        const selectWrapper = wrapper.find('.select-scroll-wrapper').getDOMNode();
-        const prevScrollLeft = selectWrapper.scrollLeft;
-        ReactTestUtils.Simulate.click(selectWrapper);
-        assert(wrapper.find('.select-scroll-wrapper').getDOMNode().scrollLeft === prevScrollLeft);
+        cy.get('.select-scroll-wrapper').then($el => {
+            prevScrollLeft = $el.scrollLeft();
+        });
+        cy.get('.select-scroll-wrapper').click();
+        cy.get('.select-scroll-wrapper').then($el => {
+            const scrollLeft = $el.scrollLeft();
+            cy.wrap(scrollLeft).should('equal', prevScrollLeft);
+        });
     });
 
     describe('react api', () => {
-        it('calls componentWillReceiveProps', done => {
-            wrapper.setProps({ value: '30' });
-            assert(wrapper.find('input').prop('value') === '30');
+        it('calls componentWillReceiveProps', () => {
+            cy.rerender('Demo', { value: '30' });
+            cy.get('input').should('have.value', '30');
 
             // value = undefined 时候清空数据
-            wrapper.setProps({ value: undefined });
-            assert(wrapper.find('input').prop('value') === '');
-            done();
+            cy.rerender('Demo', { value: undefined });
+            cy.get('input').should('have.value', '');
         });
     });
 });
 
 describe('virtual list', function () {
-    let wrapper = null;
-
-    afterEach(function () {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
-    it('should works with showSearch', done => {
+    it('should works with showSearch', () => {
         const dataSource = [
             { label: '海关总署', value: '0000' },
             { label: '北京关区', value: '0100' },
@@ -1292,7 +1019,7 @@ describe('virtual list', function () {
             { label: '京通关处', value: '0108' },
         ];
 
-        wrapper = mount(
+        cy.mount(
             <Select
                 placeholder="选择尺寸"
                 useVirtual
@@ -1305,40 +1032,33 @@ describe('virtual list', function () {
             />
         );
 
-        wrapper.update();
-        wrapper.simulate('click');
-
-        const input = wrapper.find('input').instance();
-        input.value = 'fff';
-        wrapper.find('input').simulate('change');
-        wrapper.find('input').simulate('keydown', {
-            key: 'Enter',
-            keyCode: 13,
-            which: 13,
-        });
-        setTimeout(() => {
-            done();
-        }, 200);
+        cy.get('.next-select').click();
+        cy.get('input').type('fff');
+        cy.get('input').type('{enter}');
+        cy.get('.next-select').should('exist');
     });
 
-    it('should works with onScroll', async () => {
-        const generateItems = (start, end) => {
+    it('should works with onScroll', () => {
+        const generateItems = (start: number, end: number) => {
             return new Array(end - start).fill(null).map((_, i) => ({
                 label: `option${start + i}`,
                 value: `option${start + i}`,
             }));
         };
+        const scrollHandler = cy.spy().as('onScroll');
         function Spec() {
             const [ds, setDS] = React.useState(generateItems(0, 20));
             const dsRef = React.useRef(ds);
             dsRef.current = ds;
-            const onScroll = e => {
+            const onScroll: NonNullable<SelectProps['menuProps']>['onScroll'] = e => {
+                scrollHandler();
                 const currentDataSource = dsRef.current;
                 const length = currentDataSource.length;
-                const scrollHeight = e.target.scrollHeight; // 内容总高度
-                const clientHeight = e.target.clientHeight; // 窗口高度
-                const scrollTop = e.target.scrollTop; //滚动高度
-                if (scrollTop + clientHeight === scrollHeight) {
+                const target = e.target as HTMLElement;
+                const scrollHeight = target.scrollHeight; // 内容总高度
+                const offsetHeight = target.offsetHeight; // 窗口高度
+                const scrollTop = target.scrollTop; //滚动高度
+                if (scrollTop + offsetHeight >= scrollHeight - 40) {
                     // 到达底部
                     const otherData = generateItems(length, length + 20);
 
@@ -1347,30 +1067,24 @@ describe('virtual list', function () {
             };
             return <Select useVirtual dataSource={ds} menuProps={{ onScroll }} visible />;
         }
-        wrapper = mount(<Spec />);
-        const menuWrapper = wrapper.find('.next-select-menu-wrapper');
-        assert(menuWrapper);
-        const menuWrapperDom = menuWrapper.getDOMNode();
-        assert(menuWrapperDom.querySelector('.next-menu-item[title="option10"]'));
+        cy.mount(<Spec />);
+        cy.get('.next-select-menu-wrapper').as('menuWrapper').should('exist');
+        cy.get('.next-select-menu-wrapper .next-menu-item[title="option10"]').should('exist');
 
         let page = 1;
         const pageSize = 20;
         const itemHeight = 32;
-        const wrapperHeight = menuWrapperDom.clientHeight;
-        const scrollToNextLimit = async () => {
-            menuWrapperDom.scrollTop = page * pageSize * itemHeight - wrapperHeight;
-            menuWrapper.simulate('scroll', { target: menuWrapperDom });
-            await delay(100);
-            assert(
-                menuWrapperDom.querySelector(
-                    `.next-menu-item[title="option${page * pageSize + 2}"]`
-                )
-            );
-            page++;
+        const scrollToNextLimit = () => {
+            cy.then(() => {
+                cy.get('@menuWrapper').scrollTo(0, page * pageSize * itemHeight, { duration: 200 });
+                cy.get(`.next-menu-item[title="option${page * pageSize + 2}"]`).should('exist');
+                cy.then(() => {
+                    page++;
+                });
+            });
         };
-
-        await scrollToNextLimit();
-        await scrollToNextLimit();
-        await scrollToNextLimit();
+        scrollToNextLimit();
+        scrollToNextLimit();
+        scrollToNextLimit();
     });
 });

@@ -977,9 +977,6 @@ class Select extends Base<SelectProps, SelectState> {
             }
         );
 
-        const valuetext = this.valueDataSource.valueDS
-            ? ((this.valueDataSource.valueDS as ObjectItem).label as string)
-            : '';
         return (
             <span
                 {...othersData}
@@ -993,11 +990,10 @@ class Select extends Base<SelectProps, SelectState> {
                 onMouseDown={this.handleWrapClick}
             >
                 <Input
-                    aria-valuetext={valuetext}
                     {...obj.pickOthers(othersData, others)}
                     role="combobox"
                     tabIndex={0}
-                    aria-expanded={this.state.visible}
+                    aria-expanded={this.state.visible ? 'true' : 'false'}
                     aria-disabled={disabled}
                     state={state}
                     label={label}
