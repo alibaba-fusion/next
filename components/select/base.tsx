@@ -50,117 +50,33 @@ export default class Base<
 > extends React.Component<P, S> {
     static propTypes = {
         prefix: PropTypes.string,
-        /**
-         * 选择器尺寸
-         */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
-        // 当前值，用于受控模式
-        value: PropTypes.any, // to be override
-        // 初始化的默认值
-        defaultValue: PropTypes.any, // to be override
-        /**
-         * 没有值的时候的占位符
-         */
+        value: PropTypes.any,
+        defaultValue: PropTypes.any,
         placeholder: PropTypes.string,
-        /**
-         * 下拉菜单是否与选择器对齐
-         */
         autoWidth: PropTypes.bool,
-        /**
-         * 自定义内联 label
-         */
         label: PropTypes.node,
-        /**
-         * 是否有清除按钮（单选模式有效）
-         */
         hasClear: PropTypes.bool,
-        /**
-         * 校验状态
-         */
         state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
-        /**
-         * 是否只读，只读模式下可以展开弹层但不能选
-         */
         readOnly: PropTypes.bool,
-        /**
-         * 是否禁用选择器
-         */
         disabled: PropTypes.bool,
-        /**
-         * 当前弹层是否显示
-         */
         visible: PropTypes.bool,
-        /**
-         * 弹层初始化是否显示
-         */
         defaultVisible: PropTypes.bool,
-        /**
-         * 弹层显示或隐藏时触发的回调
-         * @param visible - 弹层是否显示
-         * @param type - 触发弹层显示或隐藏的来源 fromContent 表示由 Dropdown 内容触发；fromTrigger 表示由 trigger 的点击触发；docClick 表示由 document 的点击触发
-         */
         onVisibleChange: PropTypes.func,
-        /**
-         * 弹层挂载的容器节点
-         */
         popupContainer: PropTypes.any,
-        /**
-         * 弹层的 className
-         */
         popupClassName: PropTypes.any,
-        /**
-         * 弹层的内联样式
-         */
         popupStyle: PropTypes.object,
-        /**
-         * 添加到弹层上的属性
-         */
         popupProps: PropTypes.object,
-        /**
-         * 是否跟随滚动
-         */
         followTrigger: PropTypes.bool,
-        /**
-         * 自定义弹层的内容
-         */
         popupContent: PropTypes.node,
-        /**
-         * 添加到菜单上的属性
-         * @version 1.18
-         */
         menuProps: PropTypes.object,
-        /**
-         * 是否使用本地过滤，在数据源为远程的时候需要关闭此项
-         */
         filterLocal: PropTypes.bool,
-        /**
-         * 本地过滤方法，返回一个 Boolean 值确定是否保留
-         * @param key - 搜索关键字
-         * @param item - 渲染节点的 item
-         * @returns 是否匹配
-         */
         filter: PropTypes.func,
-        /**
-         * 默认高亮的 key，不要和 autoHighlightFirstItem 同时使用
-         */
         defaultHighlightKey: PropTypes.string,
-        /**
-         * 高亮 key，不要和 autoHighlightFirstItem 同时使用，用于受控模式
-         */
         highlightKey: PropTypes.string,
-        /**
-         * 键盘上下键切换菜单高亮选项的回调
-         */
         onToggleHighlightItem: PropTypes.func,
-        /**
-         * 自动高亮第一个元素
-         */
         autoHighlightFirstItem: PropTypes.bool,
-        /**
-         * 是否开启虚拟滚动模式
-         */
         useVirtual: PropTypes.bool,
-        // 自定义类名
         className: PropTypes.any,
         children: PropTypes.any,
         dataSource: PropTypes.array,
@@ -170,14 +86,7 @@ export default class Base<
         locale: PropTypes.object,
         rtl: PropTypes.bool,
         popupComponent: PropTypes.any,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param value - 评分值
-         */
         renderPreview: PropTypes.func,
         showDataSourceChildren: PropTypes.bool,
     };

@@ -7,13 +7,7 @@ import type { OptionProps } from './types';
  */
 export default class Option extends React.Component<OptionProps> {
     static propTypes = {
-        /**
-         * 选项值
-         */
         value: PropTypes.any.isRequired,
-        /**
-         * 是否禁用
-         */
         disabled: PropTypes.bool,
         children: PropTypes.any,
     };
