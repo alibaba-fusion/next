@@ -4,6 +4,8 @@ import type {
     DataSourceItem,
     NormalizedObjectItem,
     ObjectItem,
+    OptionGroupProps,
+    OptionProps,
     ReactElementWithTypeMark,
 } from './types';
 
@@ -88,8 +90,10 @@ export function parseDataSourceFromChildren(children: ReactNode, deep = 0): Norm
         if (!child) {
             return;
         }
-        const { type, props: childProps } = child as ReactElementWithTypeMark;
-        const item2: NormalizedObjectItem & { deep: number } = { deep };
+        const { type, props: childProps } = child as ReactElementWithTypeMark<
+            OptionProps | OptionGroupProps
+        >;
+        const item2: NormalizedObjectItem = { deep };
 
         let isOption = false;
         let isOptionGroup = false;
@@ -114,24 +118,26 @@ export function parseDataSourceFromChildren(children: ReactNode, deep = 0): Norm
         if (isOption) {
             // option
             // If children is a string, it can be used as value
-            const isStrChild = typeof childProps.children === 'string';
+            const optionTypeChildProps = childProps as OptionProps;
+            const isStrChild = typeof optionTypeChildProps.children === 'string';
             // value > key > string children > index
             item2.value =
-                'value' in childProps
-                    ? childProps.value
-                    : 'key' in childProps
-                      ? childProps.key
+                'value' in optionTypeChildProps
+                    ? optionTypeChildProps.value
+                    : 'key' in optionTypeChildProps
+                      ? optionTypeChildProps.key
                       : isStrChild
-                        ? childProps.children
+                        ? (optionTypeChildProps.children as string)
                         : `${index}`;
 
-            item2.label = childProps.label || childProps.children || `${item2.value}`;
-            if ('title' in childProps) {
-                item2.title = childProps.title;
+            item2.label =
+                optionTypeChildProps.label || optionTypeChildProps.children || `${item2.value}`;
+            if ('title' in optionTypeChildProps) {
+                item2.title = optionTypeChildProps.title;
             }
-            childProps.disabled === true && (item2.disabled = true);
+            optionTypeChildProps.disabled === true && (item2.disabled = true);
             // You can put your extra data here, and use it in `itemRender` or `labelRender`
-            Object.assign(item2, childProps['data-extra'] || {});
+            Object.assign(item2, optionTypeChildProps['data-extra' as keyof OptionProps] || {});
         } else if (isOptionGroup && deep < 1) {
             // option group
             item2.label = childProps.label || 'Group';
@@ -176,7 +182,7 @@ export function normalizeDataSource(
             return;
         }
 
-        const item2: NormalizedObjectItem & { deep: number } = { deep };
+        const item2: NormalizedObjectItem = { deep };
         // deep < 1: only 2 level allowed
         if (Array.isArray(item.children) && deep < 1 && showDataSourceChildren) {
             // handle group
@@ -284,8 +290,8 @@ function getKeyItemByValue(value: DataSourceItem, valueMap: Record<string, Objec
  */
 export function getValueDataSource(
     value: BaseProps['value'],
-    mapValueDS: Record<string, ObjectItem>,
-    mapMenuDS: Record<string, ObjectItem>
+    mapValueDS?: Record<string, ObjectItem>,
+    mapMenuDS?: Record<string, ObjectItem>
 ): {
     value?: ObjectItem['value'][] | ObjectItem['value'];
     valueDS?: ObjectItem | ObjectItem[];

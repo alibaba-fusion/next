@@ -4,6 +4,7 @@ import AutoComplete from './auto-complete';
 import Option from './option';
 import OptionGroup from './option-group';
 import { assignSubComponent } from '../util/component';
+import type { SelectProps } from './types';
 
 export type {
     SelectProps,
@@ -15,7 +16,7 @@ export type {
 } from './types';
 
 // compatible with 0.x version
-function transform(props: Record<string, unknown>, deprecated: PropsDeprecatedPrinter) {
+function transform(props: SelectProps, deprecated: PropsDeprecatedPrinter) {
     const { shape, container, multiple, filterBy, overlay, safeNode, noFoundContent, ...others } =
         props;
 
@@ -65,7 +66,7 @@ const SelectWithSub = assignSubComponent(Select, {
     OptionGroup: OptionGroup,
     // compatible with 0.x version: Select.Combobox
     Combobox: ConfigProvider.config(Select, {
-        transform: /* istanbul ignore next */ (props, deprecated) => {
+        transform: (props, deprecated) => {
             deprecated('Select.Combobox', '<Select showSearch={true}/>', 'Select');
 
             const newprops = transform(props, deprecated);

@@ -10,7 +10,7 @@ import type { AutoCompleteProps, ObjectItem, VisibleChangeType } from './types';
 
 const { bindCtx, noop } = func;
 
-interface AutoCompleteState extends BaseState {
+export interface AutoCompleteState extends BaseState {
     value: string;
     highlightKey: string;
 }
@@ -328,9 +328,7 @@ class AutoComplete extends Base<AutoCompleteProps, AutoCompleteState> {
         // highlightKey into placeholder
         // compatible with selectPlaceHolder. TODO: removed in 2.0 version
         let _placeholder =
-            placeholder ||
-            (locale!.autoCompletePlaceholder as string) ||
-            (locale!.autoCompletePlaceHolder as string);
+            placeholder || locale!.autoCompletePlaceholder || locale!.autoCompletePlaceHolder;
         if (highlightHolder && visible) {
             _placeholder = this.state.highlightKey || _placeholder;
         }
