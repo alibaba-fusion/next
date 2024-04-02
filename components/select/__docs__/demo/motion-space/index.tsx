@@ -256,7 +256,7 @@ const TreeNode = TreeSelect.Node;
 
 const Option = Select.Option;
 
-const onChange: GroupProps['onChange'] = function (value) {
+const onChange: SelectProps['onChange'] = function (value) {
     console.log(value);
 };
 

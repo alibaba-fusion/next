@@ -364,6 +364,7 @@ class Search extends React.Component<SearchProps, SearchState> {
                     {...othersAttributes}
                     followTrigger={followTrigger}
                     role="searchbox"
+                    aria-expanded={undefined}
                     hasClear={hasClear}
                     className={`${prefix}search-input`}
                     size={size}

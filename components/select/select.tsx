@@ -38,7 +38,7 @@ const isIE9 = env.ieVersion === 9;
 
 // 自定义弹层：1. 不需要关心 Menu 的点击事件 2. 不需要关心 dataSource 变化
 
-interface SelectState extends BaseState {
+export interface SelectState extends BaseState {
     fixWidth?: boolean;
 }
 
@@ -149,7 +149,7 @@ class Select extends Base<SelectProps, SelectState> {
         if (typeof this.state.value !== 'undefined') {
             this.valueDataSource = getValueDataSource(
                 this.state.value,
-                this.valueDataSource.mapValueDS!,
+                this.valueDataSource.mapValueDS,
                 this.dataStore.getMapDS()
             );
         }
@@ -248,7 +248,7 @@ class Select extends Base<SelectProps, SelectState> {
         if ('value' in props) {
             this.valueDataSource = getValueDataSource(
                 props.value,
-                this.valueDataSource.mapValueDS!,
+                this.valueDataSource.mapValueDS,
                 this.dataStore.getMapDS()
             );
             this.updateSelectAllYet(this.valueDataSource.value);
@@ -261,7 +261,7 @@ class Select extends Base<SelectProps, SelectState> {
             // fix: set defaultValue first, then update dataSource.
             this.valueDataSource = getValueDataSource(
                 props.defaultValue,
-                this.valueDataSource.mapValueDS!,
+                this.valueDataSource.mapValueDS,
                 this.dataStore.getMapDS()
             );
         }
@@ -354,7 +354,7 @@ class Select extends Base<SelectProps, SelectState> {
         // get data only from dataStore while cacheValue=false
         const itemObj = getValueDataSource(
             key,
-            cacheValue ? this.valueDataSource.mapValueDS! : {},
+            cacheValue ? this.valueDataSource.mapValueDS : {},
             this.dataStore.getMapDS()
         );
         this.valueDataSource = itemObj;
@@ -389,7 +389,7 @@ class Select extends Base<SelectProps, SelectState> {
     ) {
         const itemObj = getValueDataSource(
             keys,
-            this.valueDataSource.mapValueDS!,
+            this.valueDataSource.mapValueDS,
             this.dataStore.getMapDS()
         );
 
@@ -741,7 +741,7 @@ class Select extends Base<SelectProps, SelectState> {
             } else {
                 value = getValueDataSource(
                     value,
-                    this.valueDataSource.mapValueDS!,
+                    this.valueDataSource.mapValueDS,
                     this.dataStore.getMapDS()
                 ).valueDS;
             }
@@ -785,7 +785,7 @@ class Select extends Base<SelectProps, SelectState> {
 
             detailedValueArr = limitedCountValue;
             if (!Array.isArray(detailedValueArr)) {
-                value = [detailedValueArr];
+                detailedValueArr = [detailedValueArr];
             }
 
             const selectedValueNodes = detailedValueArr.map(v => {
@@ -906,7 +906,6 @@ class Select extends Base<SelectProps, SelectState> {
     /**
      * 选择器
      * @override
-     * @param props -
      */
     renderSelect() {
         const {
@@ -943,9 +942,7 @@ class Select extends Base<SelectProps, SelectState> {
 
         // compatible with selectPlaceHolder. TODO: removed in 2.0 version
         let _placeholder: string | undefined =
-            placeholder ||
-            (locale!.selectPlaceholder as string) ||
-            (locale!.selectPlaceHolder as string);
+            placeholder || locale!.selectPlaceholder || locale!.selectPlaceHolder;
         if (valueNodes && (valueNodes as ReactElement[]).length) {
             _placeholder = undefined;
         }
@@ -1071,7 +1068,6 @@ class Select extends Base<SelectProps, SelectState> {
     /**
      * 渲染弹层的 header 内容
      * @override
-     * @param props -
      */
     renderMenuHeader() {
         const { prefix, hasSelectAll, mode, locale, menuProps } = this.props;

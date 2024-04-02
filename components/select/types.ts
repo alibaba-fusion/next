@@ -3,10 +3,13 @@ import type { CommonProps } from '../util';
 import type { PopupProps } from '../overlay';
 import type { MenuProps } from '../menu';
 import type { InputProps } from '../input';
+import type { TagProps } from '../tag';
+import type { Locale } from '../locale/types';
 
-export interface ReactElementWithTypeMark extends React.ReactElement {
-    type: React.ReactElement['type'] & { _typeMark?: string };
-}
+export type ReactElementWithTypeMark<P = unknown> = React.ReactElement<
+    P,
+    React.ReactElement['type'] & { _typeMark?: string }
+>;
 
 interface HTMLAttributesWeak
     extends Omit<
@@ -18,18 +21,47 @@ interface HTMLAttributesWeak
  * @api
  */
 export interface ObjectItem {
+    /**
+     * 选项值
+     * @en Option value
+     */
     value?: string | number | boolean | null | undefined;
-    label?: string | number | boolean | null | React.ReactElement;
-    color?: string;
+    /**
+     * 选项标签
+     * @en Option label
+     */
+    label?: React.ReactNode;
+    /**
+     * 选项背景色，可选值同 Tag
+     * @en Option background color, optional values are the same as Tag
+     */
+    color?: TagProps['color'];
+    /**
+     * 选项是否禁用
+     * @en Option is disabled
+     */
     disabled?: boolean;
+    /**
+     * 子选项
+     * @en Sub-options
+     */
     children?: DataSourceItem[];
+    /**
+     * 选项标题
+     * @en Option title
+     */
     title?: string | null;
+    /**
+     * 是否是 addon
+     * @skip
+     */
     __isAddon?: boolean;
     [propName: string]: unknown;
 }
 
 export interface NormalizedObjectItem extends ObjectItem {
     children?: NormalizedObjectItem[];
+    deep?: number;
 }
 
 /**
@@ -201,7 +233,10 @@ export interface AutoCompleteProps
      * 键盘上下键切换菜单高亮选项的回调
      * @en Callback when pressing keyboard up and down keys to switch the menu highlight option
      */
-    onToggleHighlightItem?: (highlightKey: unknown, ...args: unknown[]) => void;
+    onToggleHighlightItem?: (
+        highlightKey?: string | boolean | NormalizedObjectItem | null,
+        type?: HighlightChangeType
+    ) => void;
 
     /**
      * 是否开启虚拟滚动模式
@@ -269,6 +304,12 @@ export interface AutoCompleteProps
      * @en Whether to display the current highlighted option as a placeholder
      */
     highlightHolder?: boolean;
+    /**
+     * 多语言文案
+     * @en Language text
+     * @skip
+     */
+    locale?: Locale['Select'];
 }
 
 /**
@@ -292,13 +333,31 @@ export interface OptionProps extends React.HTMLAttributes<HTMLElement>, CommonPr
      * 选项值
      * @en Option value
      */
-    value: string | number | boolean | null | undefined;
+    value?: string | number | boolean | null | undefined;
+
+    /**
+     * 选项值，优先级低于 value
+     * @en Option value, priority is lower than value
+     */
+    key?: React.Key;
 
     /**
      * 是否禁用
      * @en Whether to disable
      */
     disabled?: boolean;
+
+    /**
+     * 选项标签，优先级高于 children
+     * @en Option label, priority is higher than children
+     */
+    label?: React.ReactNode;
+
+    /**
+     * 选项标签
+     * @en Option label
+     */
+    children?: React.ReactNode;
 }
 
 /**
@@ -462,7 +521,10 @@ export interface SelectProps
      * 键盘上下键切换菜单高亮选项的回调
      * @en Callback when pressing keyboard up and down keys to switch the menu highlight option
      */
-    onToggleHighlightItem?: (highlightKey?: unknown, type?: HighlightChangeType) => void;
+    onToggleHighlightItem?: (
+        highlightKey?: string | boolean | NormalizedObjectItem | null,
+        type?: HighlightChangeType
+    ) => void;
 
     /**
      * 是否开启虚拟滚动模式
@@ -695,16 +757,64 @@ export interface SelectProps
      */
     tagClosable?: boolean;
     /**
+     * 多语言文案
+     * @en Language text
+     * @skip
+     */
+    locale?: Locale['Select'];
+    /**
      * 输入框值变化时的回调
      * @en Callback when the value of the input box changes
      * @skip
      * @deprecated use onSearch & showSearch instead
      */
     onInputUpdate?: SelectProps['onSearch'];
+
+    /**
+     * @deprecated use hasBorder=false instead
+     * @skip
+     */
+    shape?: string;
+
+    /**
+     * @deprecated use popupContainer instead
+     * @skip
+     */
+    container?: SelectProps['popupContainer'];
+
+    /**
+     * @deprecated use filter instead
+     * @skip
+     */
+    filterBy?: SelectProps['filter'];
+
+    /**
+     * @deprecated use popupContent instead
+     * @skip
+     */
+    overlay?: SelectProps['popupContent'];
+
+    /**
+     * @deprecated use notFoundContent instead
+     * @skip
+     */
+    noFoundContent?: SelectProps['notFoundContent'];
+
+    /**
+     * @deprecated use popupProps.safeNode instead
+     * @skip
+     */
+    safeNode?: NonNullable<SelectProps['popupProps']>['safeNode'];
+
+    /**
+     * @deprecated use mode=multiple instead
+     * @skip
+     */
+    multiple?: boolean;
 }
 
 export interface BaseProps
-    extends CommonProps,
+    extends Omit<CommonProps, 'locale'>,
         Pick<
             SelectProps,
             | 'size'
@@ -744,6 +854,7 @@ export interface BaseProps
             | 'className'
             | 'valueRender'
             | 'fillProps'
+            | 'locale'
         > {
     canCloseByTrigger?: boolean;
     cache?: boolean;

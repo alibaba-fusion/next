@@ -92,6 +92,14 @@ export interface Locale extends LocaleConfig {
         notFoundContent: string;
         maxTagPlaceholder: string;
         selectAll: string;
+        /**
+         * @deprecated use selectPlaceholder instead
+         */
+        selectPlaceHolder?: string;
+        /**
+         * @deprecated use autoCompletePlaceholder instead
+         */
+        autoCompletePlaceHolder?: string;
     };
     TreeSelect: {
         maxTagPlaceholder: string;

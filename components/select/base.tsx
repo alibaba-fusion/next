@@ -648,7 +648,7 @@ export default class Base<
                     } else {
                         valueDS = getValueDataSource(
                             value,
-                            this.valueDataSource.mapValueDS!,
+                            this.valueDataSource.mapValueDS,
                             this.dataStore.getMapDS()
                         ).valueDS;
                     }

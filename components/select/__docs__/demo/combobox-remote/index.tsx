@@ -16,7 +16,6 @@ class Demo extends React.Component {
     handleChange: AutoCompleteProps['onChange'] = value => {
         clearTimeout(this.searchTimeout);
         this.searchTimeout = window.setTimeout(() => {
-            // eslint-disable-next-line handle-callback-err
             jsonp(`https://suggest.taobao.com/sug?code=utf-8&q=${value}`, (err, data) => {
                 const dataSource = data.result.map((item: unknown[]) => item[0]);
                 this.setState({ dataSource });
