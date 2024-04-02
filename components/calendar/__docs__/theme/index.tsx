@@ -32,7 +32,7 @@ const i18nMap = {
         year: 'Year',
 
         normal: 'Normal',
-    }
+    },
 };
 
 const wrappedCalendarStyle = {
@@ -42,10 +42,10 @@ const wrappedCalendarStyle = {
 
 const wrappedRangeCalendarStyle = {
     width: '600px',
-    overflow: 'hidden'
+    overflow: 'hidden',
 };
 
-window.renderDemo = function(lang = 'en-us') {
+window.renderDemo = function (lang = 'en-us') {
     moment.locale(lang);
     render(i18nMap[lang], lang);
 };
@@ -65,12 +65,20 @@ function render(i18n, lang) {
                 <Demo title={i18n.dateFullscreenCalendar}>
                     <Demo title={i18n.date}>
                         <DemoGroup label={i18n.normal}>
-                            <Calendar disabledDate={disabledDate} value={calendarValue} mode="date" />
+                            <Calendar
+                                disabledDate={disabledDate}
+                                value={calendarValue}
+                                mode="date"
+                            />
                         </DemoGroup>
                     </Demo>
                     <Demo title={i18n.month}>
                         <DemoGroup label={i18n.normal}>
-                            <Calendar disabledDate={disabledDate} value={calendarValue.clone().add(-1, 'months')} mode="month" />
+                            <Calendar
+                                disabledDate={disabledDate}
+                                value={calendarValue.clone().add(-1, 'months')}
+                                mode="month"
+                            />
                         </DemoGroup>
                     </Demo>
                 </Demo>
@@ -79,14 +87,24 @@ function render(i18n, lang) {
                     <Demo title={i18n.date}>
                         <DemoGroup label={i18n.normal}>
                             <div style={wrappedCalendarStyle}>
-                                <Calendar shape="card" disabledDate={disabledDate} value={calendarValue} mode="date" />
+                                <Calendar
+                                    shape="card"
+                                    disabledDate={disabledDate}
+                                    value={calendarValue}
+                                    mode="date"
+                                />
                             </div>
                         </DemoGroup>
                     </Demo>
                     <Demo title={i18n.month}>
                         <DemoGroup label={i18n.normal}>
                             <div style={wrappedCalendarStyle}>
-                                <Calendar shape="card" disabledDate={disabledDate} value={calendarValue.clone().add(-1, 'months')} mode="month" />
+                                <Calendar
+                                    shape="card"
+                                    disabledDate={disabledDate}
+                                    value={calendarValue.clone().add(-1, 'months')}
+                                    mode="month"
+                                />
                             </div>
                         </DemoGroup>
                     </Demo>
@@ -94,17 +112,27 @@ function render(i18n, lang) {
 
                 <Demo title={i18n.panelCalendar}>
                     <Demo title={i18n.date}>
-                    <DemoGroup label={i18n.normal}>
-                        <div style={wrappedCalendarStyle}>
-                            <Calendar shape="panel" disabledDate={disabledDate} value={calendarValue} mode="date" />
-                        </div>
-                    </DemoGroup>
+                        <DemoGroup label={i18n.normal}>
+                            <div style={wrappedCalendarStyle}>
+                                <Calendar
+                                    shape="panel"
+                                    disabledDate={disabledDate}
+                                    value={calendarValue}
+                                    mode="date"
+                                />
+                            </div>
+                        </DemoGroup>
                     </Demo>
 
                     <Demo title={i18n.month}>
                         <DemoGroup label={i18n.normal}>
                             <div style={wrappedCalendarStyle}>
-                                <Calendar shape="panel" disabledDate={disabledDate} value={calendarValue.clone().add(-1, 'months')} mode="month" />
+                                <Calendar
+                                    shape="panel"
+                                    disabledDate={disabledDate}
+                                    value={calendarValue.clone().add(-1, 'months')}
+                                    mode="month"
+                                />
                             </div>
                         </DemoGroup>
                     </Demo>
@@ -112,7 +140,12 @@ function render(i18n, lang) {
                     <Demo title={i18n.year}>
                         <DemoGroup label={i18n.normal}>
                             <div style={wrappedCalendarStyle}>
-                                <Calendar shape="panel" disabledDate={disabledDate} value={calendarValue.clone().add(-1, 'years')} mode="year" />
+                                <Calendar
+                                    shape="panel"
+                                    disabledDate={disabledDate}
+                                    value={calendarValue.clone().add(-1, 'years')}
+                                    mode="year"
+                                />
                             </div>
                         </DemoGroup>
                     </Demo>
@@ -122,13 +155,19 @@ function render(i18n, lang) {
                     <Demo title={i18n.date}>
                         <DemoGroup label={i18n.normal}>
                             <div style={wrappedRangeCalendarStyle}>
-                                <RangeCalendar showOtherMonth startValue={calendarValue} endValue={calendarValue.clone().add(1, 'months')} />
+                                <RangeCalendar
+                                    showOtherMonth
+                                    startValue={calendarValue}
+                                    endValue={calendarValue.clone().add(1, 'months')}
+                                />
                             </div>
                         </DemoGroup>
                     </Demo>
                 </Demo>
             </div>
-        </ConfigProvider>, document.getElementById('container'));
+        </ConfigProvider>,
+        document.getElementById('container')
+    );
 }
 
 renderDemo();

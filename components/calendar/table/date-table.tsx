@@ -1,7 +1,12 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import DateTableHead from './date-table-head';
-import { isDisabledDate, DAYS_OF_WEEK, CALENDAR_TABLE_COL_COUNT, CALENDAR_TABLE_ROW_COUNT } from '../utils';
+import {
+    isDisabledDate,
+    DAYS_OF_WEEK,
+    CALENDAR_TABLE_COL_COUNT,
+    CALENDAR_TABLE_ROW_COUNT,
+} from '../utils';
 
 function isSameDay(a, b) {
     return a && b && a.isSame(b, 'day');
@@ -51,7 +56,8 @@ class DateTable extends PureComponent {
 
         const firstDayOfWeek = momentLocale.firstDayOfWeek();
 
-        const datesOfLastMonthCount = (firstDayOfMonthInWeek + DAYS_OF_WEEK - firstDayOfWeek) % DAYS_OF_WEEK;
+        const datesOfLastMonthCount =
+            (firstDayOfMonthInWeek + DAYS_OF_WEEK - firstDayOfWeek) % DAYS_OF_WEEK;
 
         const lastMonthDate = firstDayOfMonth.clone();
         lastMonthDate.add(0 - datesOfLastMonthCount, 'days');
@@ -80,11 +86,13 @@ class DateTable extends PureComponent {
                 currentDate = dateList[counter];
                 if (j === 0) {
                     // currentDate 的month 是否等于当前月 firstDayOfMonth
-                    firstDayOfWeekInCurrentMonth = currentDate.format('M') === firstDayOfMonth.format('M');
+                    firstDayOfWeekInCurrentMonth =
+                        currentDate.format('M') === firstDayOfMonth.format('M');
                 }
                 if (j === CALENDAR_TABLE_COL_COUNT - 1) {
                     // currentDate 的month 是否等于当前月 firstDayOfMonth
-                    lastDayOfWeekInCurrentMonth = currentDate.format('M') === firstDayOfMonth.format('M');
+                    lastDayOfWeekInCurrentMonth =
+                        currentDate.format('M') === firstDayOfMonth.format('M');
                 }
                 const isLastMonth = isLastMonthDate(currentDate, visibleMonth);
                 const isNextMonth = isNextMonthDate(currentDate, visibleMonth);
@@ -103,7 +111,8 @@ class DateTable extends PureComponent {
                     isRangeDate(currentDate, startValue, endValue) &&
                     isCurrentMonth;
 
-                const cellContent = !showOtherMonth && !isCurrentMonth ? null : dateCellRender(currentDate);
+                const cellContent =
+                    !showOtherMonth && !isCurrentMonth ? null : dateCellRender(currentDate);
 
                 const elementCls = classNames({
                     [`${prefix}calendar-cell`]: true,

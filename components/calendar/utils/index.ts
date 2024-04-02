@@ -31,7 +31,9 @@ export function isDisabledDate(date, fn, view) {
 
 export function checkMomentObj(props, propName, componentName) {
     if (props[propName] && !moment.isMoment(props[propName])) {
-        return new Error(`Invalid prop ${propName} supplied to ${componentName}. Required a moment object`);
+        return new Error(
+            `Invalid prop ${propName} supplied to ${componentName}. Required a moment object`
+        );
     }
 }
 
