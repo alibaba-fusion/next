@@ -1,53 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import ReactTestUtils from 'react-dom/test-utils';
-import { setTimeout } from 'timers';
-import Checkbox from '../../checkbox';
-import Radio from '../../radio';
-import { KEYCODE, env } from '../../util';
+import React from 'react';
+import { KEYCODE } from '../../util';
 import Menu from '../index';
 import '../style';
 
-/* eslint-disable react/jsx-filename-extension */
-/* global describe it afterEach */
-
-Enzyme.configure({ adapter: new Adapter() });
 const { Item, Divider, Group, SubMenu, CheckboxItem, RadioItem } = Menu;
 
+function assertInlineSubMenuOpen(index: number) {
+    cy.get('.next-menu-sub-menu-wrapper').eq(index).find('.next-menu-sub-menu').should('exist');
+    cy.get('.next-menu-sub-menu-wrapper')
+        .eq(index)
+        .find('.next-menu-icon-arrow')
+        .should('have.class', 'next-open');
+}
+
+function assertInlineSubMenuClose(index: number) {
+    cy.get('.next-menu-sub-menu-wrapper').eq(index).find('.next-menu-sub-menu').should('not.exist');
+    cy.get('.next-menu-sub-menu-wrapper')
+        .eq(index)
+        .find('.next-menu-icon-arrow')
+        .should('not.have.class', 'next-open');
+}
+
+function assertSelected(chain: Cypress.Chainable<JQuery<HTMLElement>>) {
+    chain.should('have.class', 'next-selected').find('.next-menu-icon-selected').should('exist');
+}
+
+function assertUnselected(chain: Cypress.Chainable<JQuery<HTMLElement>>) {
+    chain
+        .should('not.have.class', 'next-selected')
+        .find('.next-menu-icon-selected')
+        .should('not.exist');
+}
+
 describe('Menu', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        const overlay = document.querySelectorAll('.next-overlay-wrapper');
-        overlay.forEach(dom => {
-            document.body.removeChild(dom);
-        });
-    });
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('should render menu', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu className="custom" style={{ color: 'red' }}>
                 <Item>item</Item>
             </Menu>
         );
-        const menu = wrapper.find('.next-menu');
-        assert(menu.prop('role') === 'menu');
-        assert(menu.hasClass('custom'));
-        assert(menu.prop('style').color === 'red');
+        cy.get('.next-menu').should('have.attr', 'role', 'menu');
+        cy.get('.next-menu').should('have.class', 'custom');
+        cy.get('.next-menu').should('have.css', 'color', 'rgb(255, 0, 0)');
     });
 
     it('should support isSelectIconRight', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu isSelectIconRight selectMode="multiple" selectedKeys={['1', '2', '3']}>
                 <Item key="1">item</Item>
                 <Item key="2">item</Item>
@@ -56,40 +54,38 @@ describe('Menu', () => {
                 </Item>
             </Menu>
         );
-        assert(wrapper.find('i.next-menu-icon-right').length === 2);
+        cy.get('i.next-menu-icon-right').should('have.length', 2);
     });
 
     it('should render menu item', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu>
                 <Item helper="helper" className="custom" style={{ color: 'red' }}>
                     item
                 </Item>
             </Menu>
         );
-        const item = wrapper.find('.next-menu-item');
-        assert(item.find('.next-menu-item-text').text() === 'item');
-        assert(item.prop('title') === 'item');
-        assert(item.prop('role') === 'menuitem');
-        assert(item.hasClass('custom'));
-        assert(item.prop('style').color === 'red');
-        assert(item.find('.next-menu-item-helper').text() === 'helper');
+        cy.get('.next-menu-item .next-menu-item-text').should('have.text', 'item');
+        cy.get('.next-menu-item').should('have.attr', 'title', 'item');
+        cy.get('.next-menu-item').should('have.attr', 'role', 'menuitem');
+        cy.get('.next-menu-item').should('have.class', 'custom');
+        cy.get('.next-menu-item').should('have.css', 'color', 'rgb(255, 0, 0)');
+        cy.get('.next-menu-item .next-menu-item-helper').should('have.text', 'helper');
     });
 
     it('should render menu item with mode=popup && only 1 item', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu hozInLine direction="hoz" mode="popup">
                 <Item key="1" className="popup-menu-item">
                     First
                 </Item>
             </Menu>
         );
-        const item = wrapper.find('.next-menu-item');
-        assert(item.find('.popup-menu-item').length === 1);
+        cy.get('.next-menu-item.popup-menu-item').should('have.length', 1);
     });
 
     it('Group/SubMenu should accepct string/number/node', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu defaultOpenKeys={['sub-menu']}>
                 <Group label="Group">
                     test-group-string
@@ -105,13 +101,12 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
-        const innerHTML = wrapper.find('.next-menu').at(0).instance().innerHTML;
-        assert(innerHTML.match('test-group-string'));
-        assert(innerHTML.match('test-submenu-string'));
+        cy.get('.next-menu').contains('test-group-string');
+        cy.get('.next-menu-sub-menu').contains('test-submenu-string');
     });
 
     it('Group/SubMenu robotness', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu openKeys={['no-exist']} mode="popup">
                 <SubMenu key="sub-menu" label="Sub menu">
                     <Item className="custom-className" key="sub-1">
@@ -120,11 +115,10 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
-        assert(wrapper);
     });
 
     it('should filter duplicate keys', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu>
                 <Item key="1">item1</Item>
                 <Item key="2">item2</Item>
@@ -133,15 +127,14 @@ describe('Menu', () => {
                 <Item>item</Item>
             </Menu>
         );
-        const item = wrapper.find('.next-menu-item');
-        assert(item.length === 3);
-        assert(item.at(0).props().title === 'item1');
-        assert(item.at(1).props().title === 'item2');
-        assert(item.at(2).props().title === 'item');
+        cy.get('.next-menu-item').should('have.length', 3);
+        cy.get('.next-menu-item').eq(0).should('have.attr', 'title', 'item1');
+        cy.get('.next-menu-item').eq(1).should('have.attr', 'title', 'item2');
+        cy.get('.next-menu-item').eq(2).should('have.attr', 'title', 'item');
     });
 
     it('should pass className', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu defaultOpenKeys="sub-menu" className="custom" style={{ color: 'red' }}>
                 <Item className="custom-className">item</Item>
                 <Group label="Group">
@@ -156,50 +149,39 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
-        const menu = wrapper.find('.next-menu li.custom-className');
-
-        assert(menu.length === 3);
+        cy.get('.next-menu li.custom-className').should('have.length', 3);
     });
 
     it('should support onItemClick', () => {
-        let called = false,
-            key,
-            item,
-            event;
-        const handleItemClick = (k, i, e) => {
-            called = true;
-            key = k;
-            item = i;
-            event = e;
-        };
-
-        wrapper = mount(
-            <Menu onItemClick={handleItemClick}>
+        const onItemClick = cy.spy();
+        cy.mount(
+            <Menu
+                onItemClick={(key, item, event) => {
+                    onItemClick(key, item.props._key, event.target);
+                }}
+            >
                 <Item key="0">item</Item>
             </Menu>
         );
-
-        wrapper.find('.next-menu-item').simulate('click');
-
-        assert(called);
-        assert(key === '0');
-        assert(item.props._key === '0');
-        assert('target' in event);
+        cy.get('.next-menu-item').click();
+        cy.wrap(onItemClick).should('be.calledOnceWith', '0', '0');
+        cy.then(() => {
+            cy.wrap(onItemClick.firstCall.args[2]).should('have.class', 'next-menu-item-inner');
+        });
     });
 
     it('should render disabled menu item', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu>
                 <Item disabled>disabled item</Item>
             </Menu>
         );
-        const item = wrapper.find('.next-menu-item');
-        assert(item.hasClass('next-disabled'));
-        assert(item.prop('aria-disabled'));
+        cy.get('.next-menu-item').should('have.class', 'next-disabled');
+        cy.get('.next-menu-item').should('have.attr', 'aria-disabled');
     });
 
     it('paddingleft should only be related to inline mode', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu
                 direction="hoz"
                 mode="popup"
@@ -225,15 +207,12 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
-        const item1Level = wrapper.find('#sub2-item').at(0).props().inlineLevel;
-        const item2Level = wrapper.find('#suba2-item').at(0).props().inlineLevel;
-
-        assert(item1Level === 3);
-        assert(item2Level === 2);
+        cy.get('#sub2-item').should('have.css', 'padding-left', '60px');
+        cy.get('#suba2-item').should('have.css', 'padding-left', '40px');
     });
 
     it('should render menu divider', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu>
                 <Item key="1">1</Item>
                 <Divider className="custom" style={{ color: 'red' }} />
@@ -241,15 +220,14 @@ describe('Menu', () => {
             </Menu>
         );
 
-        const divider = wrapper.find('.next-menu-divider');
-        assert(!!divider);
-        assert(divider.prop('role') === 'separator');
-        assert(divider.hasClass('custom'));
-        assert(divider.prop('style').color === 'red');
+        cy.get('.next-menu-divider').should('exist');
+        cy.get('.next-menu-divider').should('have.attr', 'role', 'separator');
+        cy.get('.next-menu-divider').should('have.class', 'custom');
+        cy.get('.next-menu-divider').should('have.css', 'color', 'rgb(255, 0, 0)');
     });
 
     it('should render menu group', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu>
                 <Group label="Group" className="custom" style={{ color: 'red' }}>
                     <Item key="1">1</Item>
@@ -257,16 +235,13 @@ describe('Menu', () => {
                 </Group>
             </Menu>
         );
-
-        const label = wrapper.find('.next-menu-group-label').at(0);
-
-        assert(label.text() === 'Group');
-        assert(label.hasClass('custom'));
-        assert(label.prop('style').color === 'red');
+        cy.get('.next-menu-group-label').should('have.text', 'Group');
+        cy.get('.next-menu-group-label').should('have.class', 'custom');
+        cy.get('.next-menu-group-label').should('have.css', 'color', 'rgb(255, 0, 0)');
     });
 
     it('should render inline sub menu', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu defaultOpenKeys={['sub']}>
                 <SubMenu key="sub" label="Sub Menu" className="custom" style={{ color: 'red' }}>
                     <Item key="1">1</Item>
@@ -274,53 +249,31 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
-        const subMenuWrapper = wrapper.find(SubMenu);
-        assert(subMenuWrapper.hasClass('custom'));
-        assert(subMenuWrapper.prop('style').color === 'red');
-
-        const parentItem = wrapper.find('.next-menu-item.next-opened');
-        assert(parentItem.text() === 'Sub Menu');
-
-        const subItems = wrapper.find('.next-menu-sub-menu .next-menu-item');
-        assert(subItems.length === 2);
+        cy.get('.next-menu-sub-menu-wrapper').should('have.class', 'custom');
+        cy.get('.next-menu-sub-menu-wrapper').should('have.css', 'color', 'rgb(255, 0, 0)');
+        cy.get('.next-menu-item.next-opened').should('have.text', 'Sub Menu');
+        cy.get('.next-menu-sub-menu .next-menu-item').should('have.length', 2);
     });
 
     it('should support triggerType under inline mode', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
+        cy.mount(
             <Menu triggerType="hover" expandAnimation={false}>
                 <SubMenu key="sub" label="Sub Menu">
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </SubMenu>
-            </Menu>,
-            div
+            </Menu>
         );
-
-        ReactTestUtils.Simulate.mouseEnter(document.querySelector('.next-menu-sub-menu-wrapper'));
-        assert(document.querySelector('.next-menu-sub-menu'));
-
-        ReactTestUtils.Simulate.mouseLeave(document.querySelector('.next-menu-sub-menu-wrapper'));
-        assert(!document.querySelector('.next-menu-sub-menu'));
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.get('.next-menu-sub-menu-wrapper').trigger('mouseover');
+        cy.get('.next-menu-sub-menu').should('exist');
+        cy.get('.next-menu-sub-menu-wrapper').trigger('mouseout');
+        cy.get('.next-menu-sub-menu').should('not.exist');
     });
 
     it('should support openKeys and onOpen under inline mode', () => {
-        let called = false,
-            openKeys,
-            extra;
-        const handleOpen = (keys, ex) => {
-            called = true;
-            openKeys = keys;
-            extra = ex;
-        };
-
-        wrapper = mount(
-            <Menu expandAnimation={false} openKeys={['0']} onOpen={handleOpen}>
+        const onOpen = cy.spy();
+        cy.mount(
+            <Menu expandAnimation={false} openKeys={['0']} onOpen={onOpen}>
                 <SubMenu key="0" label="0">
                     <Item key="0-0">0-0</Item>
                     <Item key="0-1">0-1</Item>
@@ -330,35 +283,18 @@ describe('Menu', () => {
                     <Item key="1-1">1-1</Item>
                 </SubMenu>
             </Menu>
-        );
+        ).as('menu');
+        assertInlineSubMenuOpen(0);
 
-        const subMenuWrapper = wrapper.find('.next-menu-sub-menu-wrapper');
-        const firstWrapper = subMenuWrapper.at(0);
-        const secondWrapper = subMenuWrapper.at(1);
-        assertInlineSubMenuOpen(firstWrapper);
-        assertInlineSubMenuClose(secondWrapper);
-
-        const firstParentItem = firstWrapper.find('.next-menu-item.next-opened');
-        firstParentItem.simulate('click');
-
-        assert(called);
-        assert.deepEqual(openKeys, []);
-        assert.deepEqual(extra, {
-            open: false,
-            key: '0',
-        });
-
-        wrapper.setProps({
-            openKeys: [],
-        });
-
-        const newsubMenuWrapper = wrapper.find('.next-menu-sub-menu-wrapper');
-        assertInlineSubMenuClose(newsubMenuWrapper.at(0));
-        assertInlineSubMenuClose(newsubMenuWrapper.at(1));
+        cy.get('.next-menu-sub-menu-wrapper').eq(0).find('.next-menu-item.next-opened').click();
+        cy.wrap(onOpen).should('be.calledOnceWith', [], { open: false, key: '0' });
+        cy.rerender('menu', { openKeys: [] });
+        assertInlineSubMenuClose(0);
+        assertInlineSubMenuClose(1);
     });
 
     it('should support setting openMode to single under inline mode', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu openMode="single" expandAnimation={false} defaultOpenKeys={['0']}>
                 <SubMenu key="0" label="0">
                     <Item key="0-0">0-0</Item>
@@ -371,21 +307,13 @@ describe('Menu', () => {
             </Menu>
         );
 
-        const subMenuWrapper = wrapper.find('.next-menu-sub-menu-wrapper');
-        const secondParentItem = subMenuWrapper.at(1).find('.next-menu-item');
-        secondParentItem.simulate('click');
-
-        const newsubMenuWrapper = wrapper.find('.next-menu-sub-menu-wrapper');
-        assertInlineSubMenuClose(newsubMenuWrapper.at(0));
-        assertInlineSubMenuOpen(newsubMenuWrapper.at(1));
+        cy.get('.next-menu-sub-menu-wrapper').eq(1).find('.next-menu-item').click();
+        assertInlineSubMenuClose(0);
+        assertInlineSubMenuOpen(1);
     });
 
     it('should render popup sub menu', () => {
-        if (env.ieVersion === 9) {
-            return;
-        }
-
-        wrapper = mount(
+        cy.mount(
             <Menu mode="popup" defaultOpenKeys={['sub']}>
                 <SubMenu key="sub" label="Sub Menu" className="custom" style={{ color: 'red' }}>
                     <Item key="1">1</Item>
@@ -393,23 +321,16 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
-        const parentItem = wrapper.find('.next-menu-item.next-opened');
-        assert(parentItem.text() === 'Sub Menu');
-        assert(parentItem.hasClass('custom'));
-        assert(parentItem.prop('style').color === 'red');
+        cy.get('.next-menu-item.next-opened').should('have.text', 'Sub Menu');
+        cy.get('.next-menu-item.next-opened').should('have.class', 'custom');
+        cy.get('.next-menu-item.next-opened').should('have.css', 'color', 'rgb(255, 0, 0)');
 
-        const overlay = wrapper.find('.next-overlay-wrapper');
-        assert(overlay.length === 1);
-        const subItems = overlay.find('.next-menu-item');
-        assert(subItems.length === 2);
+        cy.get('.next-overlay-wrapper').should('have.length', 1);
+        cy.get('.next-overlay-wrapper .next-menu-item').should('have.length', 2);
     });
 
     it('should render popup sub menu with no animation', () => {
-        if (env.ieVersion === 9) {
-            return;
-        }
-
-        wrapper = mount(
+        cy.mount(
             <Menu mode="popup" popupProps={{ animation: false }} defaultOpenKeys={['sub-1']}>
                 <SubMenu key="sub-1" label="Popup menu 1">
                     <Item key="popup-1-2">Popup option 2</Item>
@@ -419,93 +340,74 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
-
-        const overlay = wrapper.find('.next-overlay-wrapper');
-        assert(overlay.length === 1);
+        cy.get('.next-overlay-wrapper').should('have.length', 1);
     });
 
     it('can not select item if not set selectMode', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu defaultSelectedKeys={['0']}>
                 <Item key="0">0</Item>
                 <Item key="1">1</Item>
             </Menu>
         );
 
-        let items = wrapper.find('.next-menu-item');
-        assertUnselected(items.at(0));
-        assertUnselected(items.at(1));
-        items.at(1).simulate('click');
-
-        items = wrapper.find('.next-menu-item');
-        assertUnselected(items.at(0));
-        assertUnselected(items.at(1));
+        assertUnselected(cy.get('.next-menu-item').eq(0));
+        assertUnselected(cy.get('.next-menu-item').eq(1));
+        cy.get('.next-menu-item').eq(1).click();
+        assertUnselected(cy.get('.next-menu-item').eq(0));
+        assertUnselected(cy.get('.next-menu-item').eq(1));
     });
 
     it('should support single select', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu selectMode="single" defaultSelectedKeys={['0']}>
                 <Item key="0">0</Item>
                 <Item key="1">1</Item>
             </Menu>
         );
 
-        let items = wrapper.find('.next-menu-item');
-        assertSelected(items.at(0));
-        assertUnselected(items.at(1));
-        items.at(0).simulate('click');
+        assertSelected(cy.get('.next-menu-item').eq(0));
+        assertUnselected(cy.get('.next-menu-item').eq(1));
+        cy.get('.next-menu-item').eq(0).click();
 
-        items = wrapper.find('.next-menu-item');
-        assertSelected(items.at(0));
-        assertUnselected(items.at(1));
-        items.at(1).simulate('click');
+        assertSelected(cy.get('.next-menu-item').eq(0));
+        assertUnselected(cy.get('.next-menu-item').eq(1));
+        cy.get('.next-menu-item').eq(1).click();
 
-        items = wrapper.find('.next-menu-item');
-        assertSelected(items.at(1));
-        assertUnselected(items.at(0));
+        assertSelected(cy.get('.next-menu-item').eq(1));
+        assertUnselected(cy.get('.next-menu-item').eq(0));
     });
 
     it('should support multiple select', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu selectMode="multiple" defaultSelectedKeys={['0']}>
                 <Item key="0">0</Item>
                 <Item key="1">1</Item>
             </Menu>
         );
 
-        let items = wrapper.find('.next-menu-item');
-        assertSelected(items.at(0));
-        assertUnselected(items.at(1));
-        items.at(0).simulate('click');
+        assertSelected(cy.get('.next-menu-item').eq(0));
+        assertUnselected(cy.get('.next-menu-item').eq(1));
+        cy.get('.next-menu-item').eq(0).click();
 
-        items = wrapper.find('.next-menu-item');
-        assertUnselected(items.at(0));
-        assertUnselected(items.at(1));
-        items.at(1).simulate('click');
+        assertUnselected(cy.get('.next-menu-item').eq(0));
+        assertUnselected(cy.get('.next-menu-item').eq(1));
+        cy.get('.next-menu-item').eq(1).click();
 
-        items = wrapper.find('.next-menu-item');
-        assertSelected(items.at(1));
-        assertUnselected(items.at(0));
+        assertSelected(cy.get('.next-menu-item').eq(1));
+        assertUnselected(cy.get('.next-menu-item').eq(0));
     });
 
     it('should support selectedKeys and onSelect under inline mode', () => {
-        let called = false,
-            selectedKeys,
-            item,
-            extra;
-        const handleSelect = (keys, it, ex) => {
-            called = true;
-            selectedKeys = keys;
-            item = it;
-            extra = ex;
-        };
-
-        wrapper = mount(
+        const onSelect = cy.spy();
+        cy.mount(
             <Menu
                 selectMode="multiple"
                 selectedKeys={['0']}
                 defaultOpenKeys={['sub-menu']}
-                onSelect={handleSelect}
+                onSelect={(keys, item, extra) => {
+                    onSelect(keys, item.props._key, extra);
+                }}
             >
                 <Item key="0">0</Item>
                 <Item key="1">1</Item>
@@ -514,34 +416,27 @@ describe('Menu', () => {
                     <Item key="3">3</Item>
                 </SubMenu>
             </Menu>
-        );
-
-        wrapper.find('.next-menu-sub-menu .next-menu-item').at(0).simulate('click');
-        assert(called);
-        assert.deepEqual(selectedKeys, ['0', '2']);
-        assert(item.props._key === '2');
-        assert.deepEqual(extra, {
+        ).as('menu');
+        cy.get('.next-menu-sub-menu .next-menu-item').eq(0).click();
+        cy.wrap(onSelect).should('be.calledOnceWith', ['0', '2'], '2', {
             select: true,
             key: '2',
             label: '2',
             keyPath: ['sub-menu'],
             labelPath: ['Sub menu'],
         });
-
-        wrapper.setProps({
-            selectedKeys: ['0', '2'],
-        });
-        wrapper.find('.next-menu-item').forEach(item => {
-            if (['0', '2'].indexOf(item.text()) > -1) {
-                assertSelected(item);
+        cy.rerender('menu', { selectedKeys: ['0', '2'] });
+        cy.get('.next-menu-item').each(el => {
+            if (['0', '2'].includes(el.text())) {
+                assertSelected(cy.wrap(el));
             } else {
-                assertUnselected(item);
+                assertUnselected(cy.wrap(el));
             }
         });
     });
 
     it('should select sub menu label if set selectable of SubMenu to true', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu selectMode="multiple" defaultSelectedKeys={['sub-1', 'sub-2']}>
                 <SubMenu key="sub-1" selectable>
                     <Item key="0">0</Item>
@@ -554,19 +449,17 @@ describe('Menu', () => {
             </Menu>
         );
 
-        let items = wrapper.find('div.next-menu-item');
-        assertSelected(items.at(0));
-        assertUnselected(items.at(1));
-        items.at(0).simulate('click');
-        items.at(1).simulate('click');
+        assertSelected(cy.get('div.next-menu-item').eq(0));
+        assertUnselected(cy.get('div.next-menu-item').eq(1));
+        cy.get('div.next-menu-item').eq(0).click();
+        cy.get('div.next-menu-item').eq(1).click();
 
-        items = wrapper.find('div.next-menu-item');
-        assertUnselected(items.at(0));
-        assertUnselected(items.at(1));
+        assertUnselected(cy.get('div.next-menu-item').eq(0));
+        assertUnselected(cy.get('div.next-menu-item').eq(1));
     });
 
     it('can not select sub menu item if set shallowSelect to true', () => {
-        wrapper = mount(
+        cy.mount(
             <Menu selectMode="multiple" defaultOpenKeys={['sub-menu']} shallowSelect>
                 <SubMenu key="sub-menu">
                     <Item key="2">2</Item>
@@ -575,67 +468,43 @@ describe('Menu', () => {
             </Menu>
         );
 
-        wrapper.find('.next-menu-sub-menu .next-menu-item').at(0).simulate('click');
-        assertUnselected(wrapper.find('.next-menu-sub-menu .next-menu-item').at(0));
+        cy.get('.next-menu-sub-menu .next-menu-item').eq(0).click();
+        assertUnselected(cy.get('.next-menu-sub-menu .next-menu-item').eq(0));
     });
 
     it('should support pressing space to select item', () => {
-        let called = false,
-            selectedKeys;
-        const handleSelect = keys => {
-            called = true;
-            selectedKeys = keys;
-        };
-
-        wrapper = mount(
-            <Menu selectMode="single" onSelect={handleSelect}>
+        const onSelect = cy.spy();
+        cy.mount(
+            <Menu selectMode="single" onSelect={onSelect}>
                 <Item key="0">item</Item>
             </Menu>
         );
-
-        const item = wrapper.find('.next-menu-item');
-        item.simulate('keyDown', { keyCode: KEYCODE.SPACE });
-        assert(called);
-        assert(selectedKeys[0] === '0');
+        cy.get('.next-menu-item').trigger('keydown', { keyCode: KEYCODE.SPACE });
+        cy.wrap(onSelect).should('be.calledOnceWith', ['0']);
     });
 
     it('should calling onSelect if you pass it to the item', () => {
-        let called = false,
-            select;
-        const handleSelect = s => {
-            called = true;
-            select = s;
-        };
-
-        wrapper = mount(
+        const onSelect = cy.spy();
+        cy.mount(
             <Menu>
-                <Item key="0" onSelect={handleSelect}>
+                <Item key="0" onSelect={onSelect}>
                     item
                 </Item>
             </Menu>
         );
-
-        const item = wrapper.find('.next-menu-item');
-        item.simulate('click');
-        assert(called);
-        assert(select);
+        cy.get('.next-menu-item').click();
+        cy.wrap(onSelect).should('be.calledOnceWith', true);
     });
 
     it('should render checkbox menu item', () => {
-        let called = false,
-            checked,
-            event;
-        const handleChange = (c, e) => {
-            called = true;
-            checked = c;
-            event = e;
-        };
-
-        wrapper = mount(
+        const onChange = cy.spy();
+        cy.mount(
             <Menu>
                 <CheckboxItem
                     checked
-                    onChange={handleChange}
+                    onChange={(checked, event) => {
+                        onChange(checked, (event.target as HTMLElement).className);
+                    }}
                     className="custom"
                     style={{ color: 'red' }}
                     helper="helper"
@@ -643,140 +512,92 @@ describe('Menu', () => {
                     checkbox
                 </CheckboxItem>
             </Menu>
-        );
-        const item = wrapper.find('.next-menu-item');
-        assert(item.prop('role') === 'menuitemcheckbox');
-        assert(item.hasClass('custom'));
-        assert(item.prop('style').color === 'red');
-        assert(item.find('.next-menu-item-helper').text() === 'helper');
-        assert(item.find(Checkbox).prop('checked'));
+        ).as('menu');
+        cy.get('.next-menu-item').should('have.attr', 'role', 'menuitemcheckbox');
+        cy.get('.next-menu-item').should('have.class', 'custom');
+        cy.get('.next-menu-item').should('have.css', 'color', 'rgb(255, 0, 0)');
+        cy.get('.next-menu-item-helper').should('have.text', 'helper');
+        cy.get('.next-checkbox-input').should('have.attr', 'checked');
 
-        item.simulate('click');
-        assert(called);
-        called = false;
-        assert(!checked);
-        assert('target' in event);
+        cy.get('.next-menu-item').click();
+        cy.wrap(onChange).should('be.calledOnceWith', false, 'next-menu-item-inner');
 
-        wrapper.setProps({
-            labelToggleChecked: false,
-        });
+        cy.rerender('menu', { labelToggleChecked: false });
+        cy.get('.next-menu-item .next-menu-item-text').click();
+        cy.wrap(onChange).should('be.calledOnce');
 
-        const itemText = wrapper.find('.next-menu-item .next-menu-item-text');
-        itemText.simulate('click');
-        assert(!called);
-
-        const checkbox = wrapper.find(Checkbox).find('input');
-        checkbox.simulate('change');
-        assert(called);
+        cy.get<HTMLInputElement>('.next-checkbox-input').uncheck();
+        cy.wrap(onChange).should('be.calledTwice');
     });
 
     it('should support pressing space to check item', () => {
-        let called = false,
-            checked,
-            event;
-        const handleChange = (c, e) => {
-            called = true;
-            checked = c;
-            event = e;
-        };
-
-        wrapper = mount(
+        const onChange = cy.spy();
+        cy.mount(
             <Menu>
-                <CheckboxItem onChange={handleChange}>checkbox</CheckboxItem>
+                <CheckboxItem
+                    onChange={(checked, event) => {
+                        onChange(checked, (event.target as HTMLElement).className);
+                    }}
+                >
+                    checkbox
+                </CheckboxItem>
             </Menu>
         );
 
-        const item = wrapper.find('.next-menu-item');
-        item.simulate('keyDown', { keyCode: KEYCODE.SPACE });
-        assert(called);
-        assert(checked);
-        assert('target' in event);
+        cy.get('.next-menu-item').trigger('keydown', { keyCode: KEYCODE.SPACE });
+        cy.wrap(onChange).should('be.calledOnceWith', true, 'next-menu-item-inner');
     });
 
     it('should render radio menu item', () => {
-        let called = false,
-            key,
-            checked,
-            event;
-        const handleChange = (k, c, e) => {
-            called = true;
-            key = k;
-            checked = c;
-            event = e;
-        };
-
-        wrapper = mount(
+        const onChange = cy.spy();
+        cy.mount(
             <Menu>
                 <RadioItem
                     key="1"
                     checked
-                    onChange={handleChange.bind(null, '1')}
+                    onChange={() => {
+                        onChange('1');
+                    }}
                     className="custom"
                     style={{ color: 'red' }}
                 >
                     1
                 </RadioItem>
-                <RadioItem key="2" onChange={handleChange.bind(null, '2')}>
+                <RadioItem
+                    key="2"
+                    onChange={(checked, event) => {
+                        onChange('2', checked, (event.target as HTMLElement).className);
+                    }}
+                >
                     2
                 </RadioItem>
             </Menu>
         );
-        const items = wrapper.find('.next-menu-item');
-        const item0 = items.at(0);
-        const item1 = items.at(1);
-        assert(item0.prop('role') === 'menuitemradio');
-        assert(item0.hasClass('custom'));
-        assert(item0.prop('style').color === 'red');
-        assert(item0.find(Radio).prop('checked'));
-        assert(!item1.find(Radio).prop('checked'));
+        cy.get('.next-menu-item').eq(0).should('have.attr', 'role', 'menuitemradio');
+        cy.get('.next-menu-item').eq(0).should('have.class', 'custom');
+        cy.get('.next-menu-item').eq(0).should('have.css', 'color', 'rgb(255, 0, 0)');
+        cy.get('.next-menu-item').eq(0).find('input').should('have.attr', 'checked');
+        cy.get('.next-menu-item').eq(1).find('input').should('not.have.attr', 'checked');
 
-        item1.simulate('click');
-
-        assert(called);
-        assert(key === '2');
-        assert(checked);
-        assert('target' in event);
+        cy.get('.next-menu-item').eq(1).click();
+        cy.wrap(onChange).should('be.calledOnceWith', '2', true, 'next-menu-item-inner');
     });
 
-    it('should support triggerType under popup mode', done => {
-        if (env.ieVersion === 9) {
-            return done();
-        }
-
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
+    it('should support triggerType under popup mode', () => {
+        cy.mount(
             <Menu mode="popup" triggerType="hover">
                 <SubMenu key="sub" label="Sub Menu">
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </SubMenu>
-            </Menu>,
-            div
+            </Menu>
         );
-
-        ReactTestUtils.Simulate.mouseEnter(document.querySelector('.next-menu-item'));
-
-        setTimeout(() => {
-            const subMenu = document.querySelector('.next-overlay-inner .next-menu');
-            assert(subMenu);
-
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-            done();
-        }, 500);
+        cy.get('.next-menu-item').trigger('mouseover');
+        cy.get('.next-overlay-inner .next-menu').should('exist');
     });
 
-    it('should support popupAutoWidth and popupAlign', done => {
-        if (env.ieVersion === 9) {
-            return done();
-        }
-
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
+    it('should support popupAutoWidth and popupAlign', () => {
+        cy.mount(
             <Menu
                 mode="popup"
                 popupAutoWidth
@@ -788,27 +609,14 @@ describe('Menu', () => {
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </SubMenu>
-            </Menu>,
-            div
+            </Menu>
         );
-
-        setTimeout(() => {
-            const subMenu = document.querySelector('.next-overlay-inner');
-
-            assert(subMenu.style.width === '300px');
-            assert(subMenu.style.height === '300px');
-
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-            done();
-        }, 500);
+        cy.get('.next-overlay-inner').should('have.css', 'width', '300px');
+        cy.get('.next-overlay-inner').should('have.css', 'height', '300px');
     });
 
     it('should support keyboard', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
+        cy.mount(
             <Menu id="menu-id" autoFocus expandAnimation={false}>
                 <Item disabled key="0">
                     0
@@ -827,37 +635,28 @@ describe('Menu', () => {
                 <Item className="i3" key="3">
                     3
                 </Item>
-            </Menu>,
-            div
+            </Menu>
         );
+        cy.get('#menu-id .i1').should('be.focused');
+        cy.get('#menu-id .i1').trigger('keydown', { keyCode: KEYCODE.DOWN });
+        cy.get('.i2 .next-menu-item')
+            .should('be.focused')
+            .trigger('keydown', { keyCode: KEYCODE.ENTER });
 
-        const menu = document.querySelector('#menu-id');
-        try {
-            assert(document.activeElement === menu.querySelector('.i1'));
-            const assertAE = assertActiveElement();
-            assertAE(KEYCODE.DOWN, menu.querySelector('.i2 .next-menu-item'));
-            assertAE(KEYCODE.ENTER, () => menu.querySelector('.i2-0'));
-            assertAE(KEYCODE.ESC, menu.querySelector('.i2 .next-menu-item'));
-            assertAE(KEYCODE.RIGHT, () => menu.querySelector('.i2-0'));
-            assertAE(KEYCODE.LEFT, menu.querySelector('.i2 .next-menu-item'));
-            assert(!menu.querySelector('.next-menu-sub-menu'));
-            assertAE(KEYCODE.UP, menu.querySelector('.i1'));
-            assertAE(KEYCODE.UP, menu.querySelector('.i3'));
-
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-        } catch (err) {
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-            throw new Error(err);
-        }
+        cy.get('.i2-0').should('be.focused').trigger('keydown', { keyCode: KEYCODE.ESC });
+        cy.get('.i2 .next-menu-item')
+            .should('be.focused')
+            .trigger('keydown', { keyCode: KEYCODE.RIGHT });
+        cy.get('.i2-0').should('be.focused').trigger('keydown', { keyCode: KEYCODE.LEFT });
+        cy.get('.i2 .next-menu-item').should('be.focused');
+        cy.get('.next-menu-sub-menu').should('not.exist');
+        cy.get('.i2 .next-menu-item').trigger('keydown', { keyCode: KEYCODE.UP });
+        cy.get('.i1').should('be.focused').trigger('keydown', { keyCode: KEYCODE.UP });
+        cy.get('.i3').should('be.focused');
     });
 
     it('should support keyboard if direction is hoz', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
+        cy.mount(
             <Menu autoFocus direction="hoz">
                 <Item className="i0" key="0">
                     0
@@ -868,30 +667,15 @@ describe('Menu', () => {
                 <Item className="i2" key="2">
                     2
                 </Item>
-            </Menu>,
-            div
+            </Menu>
         );
-
-        const menu = document.querySelector('.next-menu.next-hoz');
-        const assertAE = assertActiveElement();
-        try {
-            assertAE(KEYCODE.RIGHT, menu.querySelector('.i1'));
-            assertAE(KEYCODE.LEFT, menu.querySelector('.i0'));
-
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-        } catch (err) {
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-            throw new Error(err);
-        }
+        cy.get('.i0').should('be.focused').trigger('keydown', { keyCode: KEYCODE.RIGHT });
+        cy.get('.i1').should('be.focused').trigger('keydown', { keyCode: KEYCODE.LEFT });
+        cy.get('.i0').should('be.focused');
     });
 
     it('should support hozInLine in hoz', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
+        cy.mount(
             <Menu direction="hoz" style={{ width: 300 }} mode="popup" hozInLine>
                 <Item key="0" style={{ width: 60 }}>
                     0
@@ -908,44 +692,22 @@ describe('Menu', () => {
                 </Item>
                 <Item key="5">5</Item>
                 <Item key="6">6</Item>
-            </Menu>,
-            div
+            </Menu>
         );
-
-        const menu = document.querySelector('.next-menu.next-hoz');
-        try {
-            assert(menu.querySelectorAll('li.next-menu-more').length === 2);
-
-            const indicator = menu
-                .querySelectorAll('li.next-menu-more')[0]
-                .querySelector('.next-menu-item-inner');
-            indicator.click();
-            const overlay = document.querySelector('.next-overlay-wrapper');
-
-            assert(overlay);
-            assert(overlay.querySelectorAll('li').length === 2);
-
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-        } catch (err) {
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-            throw new Error(err);
-        }
+        cy.get('.next-menu.next-hoz li.next-menu-more').should('have.length', 2);
+        cy.get('.next-menu.next-hoz li.next-menu-more').eq(0).find('.next-menu-item-inner').click();
+        cy.get('.next-overlay-wrapper li').should('have.length', 2);
     });
 
     it('should support hozInLine with renderMore', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
+        cy.mount(
             <Menu
                 direction="hoz"
                 style={{ width: 300 }}
                 mode="popup"
                 hozInLine
                 renderMore={() => {
-                    return <div className="rendermore-class">test</div>;
+                    return <li className="rendermore-class">test</li>;
                 }}
             >
                 <Item key="0" style={{ width: 60 }}>
@@ -963,57 +725,29 @@ describe('Menu', () => {
                 </Item>
                 <Item key="5">5</Item>
                 <Item key="6">6</Item>
-            </Menu>,
-            div
+            </Menu>
         );
-
-        const menu = document.querySelector('.next-menu.next-hoz');
-        assert(menu.querySelectorAll('li.next-menu-more.rendermore-class'));
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.get('.next-menu.next-hoz li.next-menu-more.rendermore-class').should('exist');
     });
 
-    it('should show renderMore when hozInLine & async load more items ', done => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        const items = [];
-        for (let i = 0; i < 50; i++) {
-            items.push(i);
-        }
-        function App() {
-            const [categoryList, setCategoryList] = useState([]);
-            useEffect(() => {
-                setCategoryList(items);
-            }, []);
-
-            return (
-                <Menu hozInLine direction="hoz" triggerType="hover" mode="popup" popupAutoWidth>
-                    {categoryList.map((index, v) => (
-                        <SubMenu label="Sub Nav" key={index}>
-                            <Item key="sub-12">Sub option 1</Item>
-                            <Item key="sub-22">Sub option 2</Item>
-                        </SubMenu>
-                    ))}
-                </Menu>
-            );
-        }
-        ReactDOM.render(<App />, div);
-        const menu = document.querySelector('.next-menu');
-        assert(menu.querySelectorAll('li.next-menu-item').length === 52);
-        assert(menu.querySelectorAll('li.next-menu-item.next-menu-more').length === 2);
-        assert(menu.querySelectorAll('li.menuitem-overflowed').length > 1);
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
-        done();
+    it('should show renderMore when hozInLine & async load more items ', () => {
+        cy.mount(
+            <Menu hozInLine direction="hoz" triggerType="hover" mode="popup" popupAutoWidth>
+                {new Array(50).fill(0).map((_, index) => (
+                    <SubMenu label="Sub Nav" key={index}>
+                        <Item key="sub-12">Sub option 1</Item>
+                        <Item key="sub-22">Sub option 2</Item>
+                    </SubMenu>
+                ))}
+            </Menu>
+        );
+        cy.get('.next-menu li.next-menu-item').should('have.length', 52);
+        cy.get('.next-menu li.next-menu-item.next-menu-more').should('have.length', 2);
+        cy.get('.next-menu li.menuitem-overflowed').should('have.length.greaterThan', 1);
     });
 
     it('should support hozInLine with header&footer in hoz', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
+        cy.mount(
             <Menu
                 direction="hoz"
                 style={{ width: 300 }}
@@ -1037,24 +771,11 @@ describe('Menu', () => {
                 </Item>
                 <Item key="5">5</Item>
                 <Item key="6">6</Item>
-            </Menu>,
-            div
+            </Menu>
         );
-
-        const menu = document.querySelector('.next-menu.next-hoz');
-        assert(menu.querySelectorAll('li.next-menu-more').length === 2);
-
-        const indicator = menu
-            .querySelectorAll('li.next-menu-more')[0]
-            .querySelector('.next-menu-item-inner');
-        indicator.click();
-        const overlay = document.querySelector('.next-overlay-wrapper');
-
-        assert(overlay);
-        assert(overlay.querySelectorAll('li').length === 4);
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.get('.next-menu.next-hoz li.next-menu-more').should('have.length', 2);
+        cy.get('.next-menu.next-hoz li.next-menu-more').eq(0).find('.next-menu-item-inner').click();
+        cy.get('.next-overlay-wrapper li').should('have.length', 4);
     });
 });
 
@@ -1074,52 +795,8 @@ describe('Menu.create', () => {
             ],
             triggerType: 'click',
         });
-
-        const menu = document.querySelector('#menu-create-id');
-        assert(menu);
-
-        const parentItem = menu.querySelector('.parent-item');
-        ReactTestUtils.Simulate.click(parentItem);
-
-        const overlays = document.querySelectorAll('.next-overlay-wrapper');
-        assert(overlays.length === 2);
-
-        document.body.removeChild(overlays[0]);
-        document.body.removeChild(overlays[1]);
+        cy.get('#menu-create-id').should('exist');
+        cy.get('#menu-create-id .parent-item').click();
+        cy.get('.next-overlay-wrapper').should('have.length', 2);
     });
 });
-
-function assertInlineSubMenuOpen(subMenuWrapper) {
-    assert(subMenuWrapper.find('.next-menu-sub-menu').length);
-
-    const arrow = subMenuWrapper.find('.next-menu-icon-arrow').first();
-    assert(arrow.hasClass('next-open'));
-}
-
-function assertInlineSubMenuClose(subMenuWrapper) {
-    assert(!subMenuWrapper.find('.next-menu-sub-menu').length);
-
-    const arrow = subMenuWrapper.find('.next-menu-icon-arrow').first();
-    assert(!arrow.hasClass('next-open'));
-}
-
-function assertSelected(item) {
-    assert(item.hasClass('next-selected'));
-    assert(item.find('.next-menu-icon-selected').length);
-}
-
-function assertUnselected(item) {
-    assert(!item.hasClass('next-selected'));
-    assert(!item.find('.next-menu-icon-selected').length);
-}
-
-function assertActiveElement() {
-    let activeElement = document.activeElement;
-
-    return (keyCode, next) => {
-        ReactTestUtils.Simulate.keyDown(activeElement, { keyCode });
-        next = typeof next === 'function' ? next() : next;
-        assert(document.activeElement === next);
-        activeElement = next;
-    };
-}

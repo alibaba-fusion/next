@@ -15,5 +15,8 @@ export type RequiredSome<Props extends object, HasDefaultKeys extends keyof Prop
 
 export type ClassPropsWithDefault<
     Props extends object,
-    HasDefaultKeys extends keyof Props,
-> = Readonly<RequiredSome<Props, HasDefaultKeys>> & Readonly<{ children?: ReactNode | undefined }>;
+    DefaultProps extends { [k in keyof Props]?: unknown },
+> = Readonly<RequiredSome<Props, Extract<keyof DefaultProps, keyof Props>>> &
+    Readonly<Pick<DefaultProps, Exclude<keyof DefaultProps, keyof Props>>> &
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    (Props extends { children: infer C } ? { children: C } : {});

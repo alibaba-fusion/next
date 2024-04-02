@@ -760,7 +760,7 @@ class Cascader extends Component<CascaderProps, CascaderState> {
                 onChange: this.handleCheck.bind(this, lastItem.value),
             };
         } else {
-            Item = Menu.Item;
+            Item = Menu.Item as ComponentType<ItemProps>;
             props = {
                 ...props,
                 selected: value[0] === lastItem.value,

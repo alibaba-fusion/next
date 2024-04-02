@@ -1,20 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Radio, Checkbox, Menu, Divider, Box } from '@alifd/next';
+import { Radio, Checkbox, Menu } from '@alifd/next';
+import type { MenuProps } from '../../../types';
 
 const { SubMenu, Item } = Menu;
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            selectMode: undefined,
-            multiple: false,
-            isSelectIconRight: false,
-            selectedKeys: ['1'],
-        };
-    }
+    state = {
+        selectMode: undefined as 'single' | 'multiple' | undefined,
+        multiple: false,
+        isSelectIconRight: false,
+        selectedKeys: ['1'],
+    };
 
     handleIconDirectionChange = () => {
         this.setState({
@@ -22,14 +19,14 @@ class Demo extends React.Component {
         });
     };
 
-    onSelectModeChange = selectMode => {
+    onSelectModeChange = (selectMode: string) => {
         console.log(selectMode, '=======');
         this.setState({
             selectMode,
         });
     };
 
-    handleSelect = (selectedKeys, ...others) => {
+    handleSelect: MenuProps['onSelect'] = (selectedKeys, ...others) => {
         this.setState({
             selectedKeys,
         });
@@ -44,7 +41,7 @@ class Demo extends React.Component {
             <div>
                 <Radio.Group value={selectMode} onChange={this.onSelectModeChange}>
                     <Radio value="single">单选带符号</Radio>
-                    <Radio value={undefined}>单选不带符号(默认)</Radio>
+                    <Radio value={undefined}>单选不带符号 (默认)</Radio>
                     <Radio value="multiple">多选</Radio>
                 </Radio.Group>
                 <br />

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { type ReactChild, type ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
 import '../../style';
 import '../../../icon/style';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
-import Menu from '../../index';
+import { Demo, DemoGroup, initDemo, type DemoFunctionDefineForObject } from '../../../demo-helper';
+import Menu, { type CheckboxItemProps, type RadioItemProps } from '../../index';
 import Icon from '../../../icon';
 
 const i18nMaps = {
@@ -16,8 +16,18 @@ const i18nMaps = {
     },
 };
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
+type I18n = (typeof i18nMaps)[keyof typeof i18nMaps];
+
+interface FunctionDemoProps {
+    i18n: I18n;
+}
+
+interface FunctionDemoState {
+    demoFunction: Record<string, DemoFunctionDefineForObject>;
+}
+
+class FunctionDemo extends React.Component<FunctionDemoProps, FunctionDemoState> {
+    constructor(props: FunctionDemoProps) {
         super(props);
         this.state = {
             demoFunction: {
@@ -77,13 +87,13 @@ class FunctionDemo extends React.Component {
         this.onFunctionChange = this.onFunctionChange.bind(this);
     }
 
-    onFunctionChange(demoFunction) {
+    onFunctionChange(demoFunction: Record<string, DemoFunctionDefineForObject>) {
         this.setState({
             demoFunction,
         });
     }
 
-    renderGroup(key, children) {
+    renderGroup(key: string, children: ReactChild[]) {
         const hasGroup = this.state.demoFunction.hasGroup.value === 'true';
 
         if (hasGroup) {
@@ -93,13 +103,12 @@ class FunctionDemo extends React.Component {
         return children;
     }
 
-    renderItem(key, others = {}) {
+    renderItem(key: string, others: CheckboxItemProps & RadioItemProps = {}) {
         const hasIcon = this.state.demoFunction.hasIcon.value === 'true';
         const checkType = this.state.demoFunction.checkType.value;
 
-        // eslint-disable-next-line
         const { i18n } = this.props;
-        let children = `${i18n.option}${key}`;
+        let children: ReactNode = `${i18n.option}${key}`;
         if (hasIcon) {
             children = [
                 <Icon key="icon" type="picture" size="small" style={{ marginRight: '4px' }} />,
@@ -107,7 +116,7 @@ class FunctionDemo extends React.Component {
             ];
         }
 
-        let Item = Menu.Item;
+        let Item: any = Menu.Item;
         let isSelectIconRight = false;
         switch (checkType) {
             case 'checkbox':
@@ -193,7 +202,7 @@ class FunctionDemoNormal extends FunctionDemo {
 }
 
 class FunctionDemoNest extends FunctionDemo {
-    constructor(props) {
+    constructor(props: FunctionDemoProps) {
         super(props);
         this.state = {
             demoFunction: {
@@ -242,7 +251,6 @@ class FunctionDemoNest extends FunctionDemo {
     render() {
         const { i18n } = this.props;
         const { demoFunction } = this.state;
-
         return (
             <Demo title="Nest" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <Demo title="Normal">
@@ -266,6 +274,7 @@ class FunctionDemoNest extends FunctionDemo {
                                 {this.renderItem('2-4')}
                                 {/* --------- this is for config platform ----------- */}
                                 <div style={{ display: 'none' }}>
+                                    {/* @ts-expect-error type cant pass to div */}
                                     <div type="arrow-right" className="next-menu-unfold-icon" />
                                 </div>
                                 {/* --------- this is for config platform ----------- */}
@@ -325,7 +334,7 @@ class FunctionDemoNest extends FunctionDemo {
     }
 }
 
-const render = i18n => {
+const render = (i18n: I18n) => {
     ReactDOM.render(
         <div className="demo-container">
             <FunctionDemoNormal i18n={i18n} />
@@ -335,7 +344,7 @@ const render = i18n => {
     );
 };
 
-window.renderDemo = function (lang) {
+window.renderDemo = function (lang = 'zh-cn') {
     render(i18nMaps[lang]);
 };
 window.renderDemo('en-us');

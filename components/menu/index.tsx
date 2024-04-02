@@ -8,45 +8,57 @@ import PopupItem from './view/popup-item';
 import Group from './view/group';
 import Divider from './view/divider';
 import create from './view/create';
+import { assignSubComponent } from '../util/component';
+import type { MenuProps } from './types';
 
-Menu.SubMenu = SubMenu;
-Menu.Item = SelectableItem;
-Menu.CheckboxItem = CheckboxItem;
-Menu.RadioItem = RadioItem;
-Menu.PopupItem = PopupItem;
-Menu.Group = Group;
-Menu.Divider = Divider;
-Menu.create = create;
+const MenuWithSub = assignSubComponent(Menu, {
+    SubMenu,
+    Item: SelectableItem,
+    CheckboxItem,
+    RadioItem,
+    PopupItem,
+    Group,
+    Divider,
+    create,
+});
 
-/* istanbul ignore next */
-const transform = (props, deprecated) => {
-    if ('indentSize' in props) {
-        deprecated('indentSize', 'inlineIndent', 'Menu');
+export type {
+    MenuProps,
+    SubMenuProps,
+    ItemProps,
+    CheckboxItemProps,
+    RadioItemProps,
+    PopupItemProps,
+    GroupProps,
+    DividerProps,
+} from './types';
 
-        const { indentSize, ...others } = props;
-        props = { inlineIndent: indentSize, ...others };
-    }
+export default ConfigProvider.config(MenuWithSub, {
+    transform: (props, deprecated) => {
+        if ('indentSize' in props) {
+            deprecated('indentSize', 'inlineIndent', 'Menu');
 
-    if ('onDeselect' in props) {
-        deprecated('onDeselect', 'onSelect', 'Menu');
-        if (props.onDeselect) {
-            const { onDeselect, onSelect, ...others } = props;
-            const newOnSelect = (selectedKeys, item, extra) => {
-                if (!extra.select) {
-                    onDeselect(extra.key);
-                }
-                if (onSelect) {
-                    onSelect(selectedKeys, item, extra);
-                }
-            };
-
-            props = { onSelect: newOnSelect, ...others };
+            const { indentSize, ...others } = props;
+            props = { inlineIndent: indentSize, ...others };
         }
-    }
 
-    return props;
-};
+        if ('onDeselect' in props) {
+            deprecated('onDeselect', 'onSelect', 'Menu');
+            if (props.onDeselect) {
+                const { onDeselect, onSelect, ...others } = props;
+                const newOnSelect: MenuProps['onSelect'] = (selectedKeys, item, extra) => {
+                    if (!extra.select) {
+                        onDeselect(extra.key);
+                    }
+                    if (onSelect) {
+                        onSelect(selectedKeys, item, extra);
+                    }
+                };
 
-export default ConfigProvider.config(Menu, {
-    transform,
+                props = { onSelect: newOnSelect, ...others };
+            }
+        }
+
+        return props;
+    },
 });

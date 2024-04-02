@@ -1,39 +1,33 @@
-import React, { Component, cloneElement } from 'react';
+import React, { Component, cloneElement, type ReactChild } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Item from './item';
+import type { ChildPropsInMenu, GroupProps } from '../types';
 
-/**
- * Menu.Group
- * @order 5
- */
-export default class Group extends Component {
+export default class Group extends Component<GroupProps> {
     static menuChildType = 'group';
 
     static propTypes = {
         root: PropTypes.object,
         className: PropTypes.string,
-        /**
-         * 标签内容
-         */
         label: PropTypes.node,
-        /**
-         * 菜单项
-         */
         children: PropTypes.node,
         parentMode: PropTypes.oneOf(['inline', 'popup']),
     };
 
     render() {
-        const { root, className, label, children, parentMode, ...others } = this.props;
+        const { root, className, label, children, parentMode, ...others } = this
+            .props as ChildPropsInMenu<GroupProps>;
         const { prefix } = root.props;
 
-        const newClassName = cx({
-            [`${prefix}menu-group-label`]: true,
-            [className]: !!className,
-        });
+        const newClassName = cx(
+            {
+                [`${prefix}menu-group-label`]: true,
+            },
+            className
+        );
 
-        const newChildren = children.map(child => {
+        const newChildren = (children as ReactChild[]).map(child => {
             // to fix https://github.com/alibaba-fusion/next/issues/952
             if (typeof child !== 'function' && typeof child !== 'object') {
                 return child;

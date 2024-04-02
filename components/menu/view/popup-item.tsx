@@ -1,23 +1,32 @@
-import React, { Component } from 'react';
+import React, {
+    Component,
+    type ComponentProps,
+    type ComponentRef,
+    type ReactElement,
+    type ReactNode,
+} from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Icon from '../../icon';
-import Overlay from '../../overlay';
-import { func, obj, dom } from '../../util';
+import Overlay, { type PopupProps } from '../../overlay';
+import { func, obj, dom, type ClassPropsWithDefault } from '../../util';
 import Item from './item';
 import SelectableItem from './selectable-item';
 import { getChildSelected } from './util';
+import type { ChildItemPropsInMenu, ItemProps, PopupItemProps } from '../types';
 
 const { bindCtx } = func;
 const { setStyle } = dom;
 const Popup = Overlay.Popup;
 
-/**
- * Menu.PopupItem
- * @order 2
- */
-export default class PopupItem extends Component {
+export type PopupItemWithDefaultsProps = ClassPropsWithDefault<
+    PopupItemProps,
+    typeof PopupItem.defaultProps
+>;
+export type PopupItemInMenuProps = ChildItemPropsInMenu<PopupItemWithDefaultsProps>;
+
+export default class PopupItem extends Component<PopupItemProps> {
     static menuChildType = 'submenu';
 
     static propTypes = {
@@ -50,41 +59,47 @@ export default class PopupItem extends Component {
         noIcon: false,
     };
 
-    constructor(props) {
+    popup: ComponentRef<typeof Popup> | null;
+    popupProps: PopupProps;
+    popupNode: HTMLElement;
+    readonly props: PopupItemWithDefaultsProps;
+
+    constructor(props: PopupItemProps) {
         super(props);
 
         bindCtx(this, ['handleOpen', 'handlePopupOpen', 'handlePopupClose', 'getPopup']);
     }
 
-    getPopup(ref) {
+    getPopup(ref: ComponentRef<typeof Popup> | null) {
         this.popup = ref;
     }
 
     getOpen() {
-        const { _key, root } = this.props;
+        const { _key, root } = this.props as PopupItemInMenuProps;
         const { openKeys } = root.state;
 
         return openKeys.indexOf(_key) > -1;
     }
 
     getPopupProps() {
-        let { popupProps } = this.props.root.props;
+        let { popupProps } = (this.props as PopupItemInMenuProps).root.props;
         if (typeof popupProps === 'function') {
             popupProps = popupProps(this.props);
         }
         return popupProps;
     }
 
-    handleOpen(open, triggerType, e) {
-        const { _key, root } = this.props;
+    handleOpen: NonNullable<PopupProps['onVisibleChange']> = (open, triggerType, e) => {
+        const { _key, root } = this.props as PopupItemInMenuProps;
+        // @ts-expect-error FIXME: PopupProps 里 triggerType 不正确，待其修复后可删除该行
         root.handleOpen(_key, open, triggerType, e);
 
         const popupProps = this.popupProps;
         popupProps.onVisibleChange && popupProps.onVisibleChange(open, triggerType, e);
-    }
+    };
 
     handlePopupOpen() {
-        const { root, level, align, autoWidth } = this.props;
+        const { root, level, align, autoWidth } = this.props as PopupItemInMenuProps;
         const {
             popupAutoWidth: rootPopupAutoWidth,
             popupAlign: rootPopupAlign,
@@ -94,9 +109,10 @@ export default class PopupItem extends Component {
         const popupAutoWidth = 'autoWidth' in this.props ? autoWidth : rootPopupAutoWidth;
         try {
             // avoid errors while dom removed and js executing
-            const itemNode = findDOMNode(this);
-            const menuNode = itemNode.parentNode;
-            this.popupNode = this.popup.getInstance().overlay.getInstance().getContentNode();
+            const itemNode = findDOMNode(this) as HTMLElement;
+            const menuNode = itemNode.parentNode as HTMLElement;
+            // @ts-expect-error FIXME: popup 类型改造完成后可删除该行
+            this.popupNode = this.popup!.getInstance().overlay.getInstance().getContentNode();
             root.popupNodes.push(this.popupNode);
 
             if (popupAutoWidth) {
@@ -109,7 +125,7 @@ export default class PopupItem extends Component {
             if (popupAlign === 'outside' && !(direction === 'hoz' && level === 1)) {
                 setStyle(this.popupNode, 'height', `${menuNode.offsetHeight}px`);
                 this.popupNode.firstElementChild &&
-                    setStyle(this.popupNode.firstElementChild, 'overflow-y', 'auto');
+                    setStyle(this.popupNode.firstElementChild as HTMLElement, 'overflow-y', 'auto');
             }
             // removeClass(this.popupNode, `${prefix}hide`);
 
@@ -121,7 +137,7 @@ export default class PopupItem extends Component {
     }
 
     handlePopupClose() {
-        const { root } = this.props;
+        const { root } = this.props as PopupItemInMenuProps;
         const popupNodes = root.popupNodes;
         const index = popupNodes.indexOf(this.popupNode);
         index > -1 && popupNodes.splice(index, 1);
@@ -130,10 +146,11 @@ export default class PopupItem extends Component {
         popupProps.onClose && popupProps.onClose();
     }
 
-    renderItem(selectable, children, others) {
-        const { _key, root, level, inlineLevel, label, className } = this.props;
+    renderItem(selectable: boolean | undefined, children: ReactNode, others: ItemProps) {
+        const { _key, root, level, inlineLevel, label, className } = this
+            .props as PopupItemInMenuProps;
         const { prefix, selectMode } = root.props;
-        const NewItem = selectable ? SelectableItem : Item;
+        const NewItem = (selectable ? SelectableItem : Item) as typeof SelectableItem;
         const open = this.getOpen();
 
         const { selectedKeys, _k2n } = root.state;
@@ -144,7 +161,7 @@ export default class PopupItem extends Component {
             selectedKeys,
         });
 
-        const itemProps = {
+        const itemProps: ComponentProps<typeof NewItem> = {
             'aria-haspopup': true,
             'aria-expanded': open,
             _key,
@@ -154,11 +171,13 @@ export default class PopupItem extends Component {
             type: 'submenu',
         };
 
-        itemProps.className = cx({
-            [`${prefix}opened`]: open,
-            [`${prefix}child-selected`]: isChildSelected,
-            [className]: !!className,
-        });
+        itemProps.className = cx(
+            {
+                [`${prefix}opened`]: open,
+                [`${prefix}child-selected`]: isChildSelected,
+            },
+            className
+        );
 
         return (
             <NewItem {...itemProps} {...others}>
@@ -168,8 +187,13 @@ export default class PopupItem extends Component {
         );
     }
 
-    renderPopup(trigger, triggerType, positionProps, children) {
-        const { root, level, selectable, className: propCls } = this.props;
+    renderPopup(
+        trigger: ReactElement,
+        triggerType: PopupProps['triggerType'],
+        positionProps: PopupProps,
+        children: ReactNode
+    ) {
+        const { root, level, selectable, className: propCls } = this.props as PopupItemInMenuProps;
         const { direction } = root.props;
         this.popupProps = this.getPopupProps();
         const open = this.getOpen();
@@ -210,9 +234,8 @@ export default class PopupItem extends Component {
             triggerType,
             align,
             noIcon,
-            rtl,
-        } = this.props;
-        const others = obj.pickOthers(Object.keys(PopupItem.propTypes), this.props);
+        } = this.props as PopupItemInMenuProps;
+        const others = obj.pickOthers(PopupItem.propTypes, this.props);
         const {
             prefix,
             selectMode,
@@ -235,7 +258,7 @@ export default class PopupItem extends Component {
         const triggerIsIcon = selectable && newTriggerType === 'click';
         const open = this.getOpen();
 
-        const positionProps = {};
+        const positionProps: PopupProps = {};
         let arrowProps;
 
         if (direction === 'hoz' && level === 1) {

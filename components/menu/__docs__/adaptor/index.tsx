@@ -1,18 +1,31 @@
-/* eslint-disable no-use-before-define */
 import React from 'react';
 import { Types, parseData, ContentType } from '@alifd/adaptor-helper';
 import { Menu, Icon } from '@alifd/next';
 
-const createDataSouce = (list, keys = { selected: [], expanded: [] }, level = 0, prefix = '') => {
-    const array = [];
-    let group = [];
+interface DataItem {
+    key: string;
+    type: 'node' | 'comment' | 'divider' | 'group';
+    children?: DataItem[];
+    state?: string;
+    value?: unknown;
+}
+
+type SelectType = 'checkbox' | 'radio';
+
+const createDataSouce = (
+    list: DataItem[],
+    keys: { selected: string[]; expanded: string[] } = { selected: [], expanded: [] },
+    level = 0,
+    prefix = ''
+) => {
+    const array: DataItem[] = [];
+    let group: DataItem[] = [];
     let grouping = false;
     let index = 0;
 
     list.forEach(item => {
         switch (item.type) {
-            // eslint-disable-next-line no-case-declarations
-            case 'node':
+            case 'node': {
                 const key = `${prefix || level}-${index++}`;
 
                 if (item.children && item.children.length > 0) {
@@ -40,7 +53,8 @@ const createDataSouce = (list, keys = { selected: [], expanded: [] }, level = 0,
                 }
 
                 return;
-            case 'comment':
+            }
+            case 'comment': {
                 if (group.length > 0) {
                     array.push({
                         type: 'group',
@@ -50,9 +64,10 @@ const createDataSouce = (list, keys = { selected: [], expanded: [] }, level = 0,
                     });
                     group = [];
                 }
-                grouping = item.value;
+                grouping = item.value as boolean;
                 return;
-            case 'divider':
+            }
+            case 'divider': {
                 if (group.length > 0) {
                     array.push({
                         type: 'group',
@@ -68,8 +83,10 @@ const createDataSouce = (list, keys = { selected: [], expanded: [] }, level = 0,
                     key: `${prefix || level}-${index++}`,
                 });
                 return;
-            default:
+            }
+            default: {
                 return;
+            }
         }
     });
 
@@ -86,27 +103,30 @@ const createDataSouce = (list, keys = { selected: [], expanded: [] }, level = 0,
     return array;
 };
 
-const createMenuItem = (item, selectType) => {
-    if (item.children.length > 0) {
+const createMenuItem = (item: DataItem, selectType?: SelectType) => {
+    if (item.children!.length > 0) {
         return (
             <Menu.SubMenu
                 key={item.key}
                 disabled={item.state === 'disabled'}
                 label={
                     item.value
-                        ? item.value
+                        ? (item.value as Array<{ type: string; value: unknown }>)
                               .filter(({ type }) => type === ContentType.text)
                               .map(({ value }) => value)
                               .join('')
                         : ''
                 }
             >
-                {createContents(item.children, selectType)}
+                {
+                    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                    createContents(item.children, selectType)
+                }
             </Menu.SubMenu>
         );
     }
 
-    let Item = Menu.Item;
+    let Item: any = Menu.Item;
 
     if (selectType === 'checkbox') {
         Item = Menu.CheckboxItem;
@@ -119,28 +139,29 @@ const createMenuItem = (item, selectType) => {
             key={item.key}
             checked={item.state === 'active'}
             disabled={item.state === 'disabled'}
-            children={item.value.map(({ type, value }, index) =>
-                type === 'icon' ? (
-                    <Icon
-                        key={`icon_${index}`}
-                        type={value}
-                        size="small"
-                        style={{ marginRight: '4px' }}
-                    />
-                ) : (
-                    value
-                )
+            children={(item.value as Array<{ type: string; value: string }>).map(
+                ({ type, value }, index) =>
+                    type === 'icon' ? (
+                        <Icon
+                            key={`icon_${index}`}
+                            type={value}
+                            size="small"
+                            style={{ marginRight: '4px' }}
+                        />
+                    ) : (
+                        value
+                    )
             )}
         />
     );
 };
 
-const createContents = (array = [], selectType) => {
+const createContents = (array: DataItem[] = [], selectType?: SelectType) => {
     return array.map(item => {
-        if (item.type === 'group' && item.children.length > 0) {
+        if (item.type === 'group' && item.children!.length > 0) {
             return (
                 <Menu.Group key={item.key} label={item.value}>
-                    {item.children.map(it => createMenuItem(it, selectType))}
+                    {item.children!.map(it => createMenuItem(it, selectType))}
                 </Menu.Group>
             );
         }
@@ -186,7 +207,7 @@ export default {
                 '#Group1\noption1\n*option2\n\tsub option3\n\t-sub option4\n\tsub option5\n---\n#Group2\noption1\n*option2',
         },
     }),
-    adaptor: ({ selectType, nestMode, width, style, data, ...others }) => {
+    adaptor: ({ selectType, nestMode, width, style, data, ...others }: any) => {
         const list = parseData(data, { parseContent: true });
         const keys = { selected: [], expanded: [] };
         const array = createDataSouce(list, keys);
@@ -195,7 +216,7 @@ export default {
             <Menu
                 {...others}
                 selectMode="multiple"
-                popupProps={{ needAdjust: false, container: node => node }}
+                popupProps={{ needAdjust: false, container: (node: any) => node }}
                 isSelectIconRight={selectType === 'checkRight'}
                 openKeys={keys.expanded}
                 selectedKeys={keys.selected}
@@ -224,7 +245,7 @@ export default {
                 default: 'checkLeft',
             },
         ],
-        transform: (props, { group, icon, selectType }) => {
+        transform: (props: any, { group, icon, selectType }: any) => {
             const iconStr = icon === 'yes' ? '[picture]' : '';
             const prefix =
                 (props.data || '').indexOf('*') !== -1
