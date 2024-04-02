@@ -182,7 +182,8 @@ class RangeCalendar extends React.Component {
     changeVisibleMonth = (date, reason) => {
         const { lastPanelType } = this.state;
         if (!isSameYearMonth(date, this.state.startVisibleMonth)) {
-            const startVisibleMonth = lastPanelType === 'end' ? date.clone().add(-1, 'month') : date;
+            const startVisibleMonth =
+                lastPanelType === 'end' ? date.clone().add(-1, 'month') : date;
             this.setState({ startVisibleMonth });
             this.props.onVisibleMonthChange(startVisibleMonth, reason);
         }
@@ -328,7 +329,13 @@ class RangeCalendar extends React.Component {
                 break;
             }
             case CALENDAR_MODE_MONTH: {
-                table = <MonthTable {...tableProps} visibleMonth={visibleMonth} onSelectMonth={this.onSelectCell} />;
+                table = (
+                    <MonthTable
+                        {...tableProps}
+                        visibleMonth={visibleMonth}
+                        onSelectMonth={this.onSelectCell}
+                    />
+                );
                 header = (
                     <MonthPanelHeader
                         {...headerProps}

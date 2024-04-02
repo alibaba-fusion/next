@@ -126,7 +126,10 @@ class DatePanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-prev-year`}
                     onClick={goPrevYear}
                 >
-                    <Icon type="arrow-double-left" className={`${prefix}calendar-symbol-prev-super`} />
+                    <Icon
+                        type="arrow-double-left"
+                        className={`${prefix}calendar-symbol-prev-super`}
+                    />
                 </button>
                 <button
                     role="button"
@@ -157,7 +160,10 @@ class DatePanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-next-year`}
                     onClick={goNextYear}
                 >
-                    <Icon type="arrow-double-right" className={`${prefix}calendar-symbol-next-super`} />
+                    <Icon
+                        type="arrow-double-right"
+                        className={`${prefix}calendar-symbol-next-super`}
+                    />
                 </button>
             </div>
         );

@@ -38,7 +38,9 @@ describe('Calendar', () => {
         });
 
         it('should render with default value', () => {
-            wrapper = mount(<Calendar defaultVisibleMonth={() => defaultVal} defaultValue={defaultVal} />);
+            wrapper = mount(
+                <Calendar defaultVisibleMonth={() => defaultVal} defaultValue={defaultVal} />
+            );
             assert(wrapper.find('td[title="2017-10-01"]').hasClass('next-selected'));
         });
 
@@ -78,7 +80,9 @@ describe('Calendar', () => {
                 assert(view === 'date');
                 return date.valueOf() > defaultVal.valueOf();
             };
-            wrapper = mount(<Calendar defaultVisibleMonth={() => defaultVal} disabledDate={disabledDate} />);
+            wrapper = mount(
+                <Calendar defaultVisibleMonth={() => defaultVal} disabledDate={disabledDate} />
+            );
             assert(wrapper.find('td[title="2017-10-02"]').hasClass('next-disabled'));
         });
 
@@ -93,7 +97,9 @@ describe('Calendar', () => {
                     return <div className="test">hello world</div>;
                 }
             };
-            wrapper = mount(<Calendar defaultVisibleMonth={() => defaultVal} dateCellRender={dateCellRender} />);
+            wrapper = mount(
+                <Calendar defaultVisibleMonth={() => defaultVal} dateCellRender={dateCellRender} />
+            );
             assert(wrapper.find('td[title="2017-10-01"] div.test').length === 1);
         });
 
@@ -128,7 +134,15 @@ describe('Calendar', () => {
                         '十一月',
                         '十二月',
                     ],
-                    weekdays: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+                    weekdays: [
+                        '星期天',
+                        '星期一',
+                        '星期二',
+                        '星期三',
+                        '星期四',
+                        '星期五',
+                        '星期六',
+                    ],
                     shortWeekdays: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
                     veryShortWeekdays: ['日', '一', '二', '三', '四', '五', '六'],
                     ampms: ['上午', '下午'],
@@ -139,26 +153,14 @@ describe('Calendar', () => {
             const localeData = getLocaleData(locale.format, moment().localeData());
             assert(localeData.monthsShort() === locale.format.shortMonths);
             assert(localeData.months() === locale.format.months);
-            assert(
-                localeData.firstDayOfWeek() ===
-                    moment()
-                        .localeData()
-                        .firstDayOfWeek()
-            );
+            assert(localeData.firstDayOfWeek() === moment().localeData().firstDayOfWeek());
             assert(localeData.weekdays() === locale.format.weekdays);
             assert(localeData.weekdaysShort() === locale.format.shortWeekdays);
             assert(localeData.weekdaysMin() === locale.format.veryShortWeekdays);
 
             assert(
-                wrapper
-                    .find('.next-calendar-th')
-                    .at(0)
-                    .text() ===
-                    locale.format.shortWeekdays[
-                        moment()
-                            .localeData()
-                            .firstDayOfWeek()
-                    ]
+                wrapper.find('.next-calendar-th').at(0).text() ===
+                    locale.format.shortWeekdays[moment().localeData().firstDayOfWeek()]
             );
         });
     });
@@ -179,24 +181,17 @@ describe('Calendar', () => {
 
         it('should change panel mode to month', () => {
             wrapper = mount(<Calendar shape="panel" defaultVisibleMonth={() => defaultVal} />);
-            wrapper
-                .find('.next-calendar-btn')
-                .at(2)
-                .simulate('click');
+            wrapper.find('.next-calendar-btn').at(2).simulate('click');
             assert(wrapper.find('.next-calendar-month').length === 12);
-            wrapper
-                .find('.next-calendar-btn')
-                .at(1)
-                .simulate('click');
-            assert(wrapper.find('.next-calendar-panel-header button[title="2010-2019"]').length === 1);
+            wrapper.find('.next-calendar-btn').at(1).simulate('click');
+            assert(
+                wrapper.find('.next-calendar-panel-header button[title="2010-2019"]').length === 1
+            );
         });
 
         it('should change panel mode to year', () => {
             wrapper = mount(<Calendar shape="panel" />);
-            wrapper
-                .find('.next-calendar-btn')
-                .at(3)
-                .simulate('click');
+            wrapper.find('.next-calendar-btn').at(3).simulate('click');
             assert(wrapper.find('.next-calendar-year').length === 12);
         });
 
@@ -212,27 +207,34 @@ describe('Calendar', () => {
             wrapper = mount(<Calendar shape="panel" defaultVisibleMonth={() => defaultVal} />);
             wrapper.find('.next-calendar-btn-prev-year').simulate('click');
             wrapper.find('.next-calendar-btn-next-year').simulate('click');
-            assert(
-                wrapper
-                    .find('.next-calendar-btn')
-                    .at(3)
-                    .instance().title === '2017'
-            );
+            assert(wrapper.find('.next-calendar-btn').at(3).instance().title === '2017');
         });
 
         it('should change decade', () => {
-            wrapper = mount(<Calendar shape="panel" mode="year" defaultVisibleMonth={() => defaultVal} />);
+            wrapper = mount(
+                <Calendar shape="panel" mode="year" defaultVisibleMonth={() => defaultVal} />
+            );
             wrapper.find('.next-calendar-btn-prev-decade').simulate('click');
-            assert(wrapper.find('.next-calendar-panel-header button[title="2000-2009"]').length === 1);
+            assert(
+                wrapper.find('.next-calendar-panel-header button[title="2000-2009"]').length === 1
+            );
             wrapper.find('.next-calendar-btn-next-decade').simulate('click');
-            assert(wrapper.find('.next-calendar-panel-header button[title="2010-2019"]').length === 1);
+            assert(
+                wrapper.find('.next-calendar-panel-header button[title="2010-2019"]').length === 1
+            );
         });
 
         it('should select date', () => {
             const onSelect = val => {
                 assert(val.format('YYYY-MM-DD') === '2017-10-02');
             };
-            wrapper = mount(<Calendar shape="panel" defaultVisibleMonth={() => defaultVal} onSelect={onSelect} />);
+            wrapper = mount(
+                <Calendar
+                    shape="panel"
+                    defaultVisibleMonth={() => defaultVal}
+                    onSelect={onSelect}
+                />
+            );
             wrapper.find('td[title="2017-10-02"]').simulate('click');
         });
 
@@ -244,11 +246,17 @@ describe('Calendar', () => {
                 isClicked = true;
             };
             wrapper = mount(
-                <Calendar showOtherMonth={false} defaultVisibleMonth={() => defaultVal} onSelect={onSelect} />
+                <Calendar
+                    showOtherMonth={false}
+                    defaultVisibleMonth={() => defaultVal}
+                    onSelect={onSelect}
+                />
             );
 
             // hide cell for other month
-            assert(wrapper.find('.next-calendar-cell-next-month[title="2017-11-01"]').text() === '');
+            assert(
+                wrapper.find('.next-calendar-cell-next-month[title="2017-11-01"]').text() === ''
+            );
             wrapper.find('td[title="2017-10-02"]').simulate('click');
             assert(isClicked === true);
         });
@@ -297,12 +305,7 @@ describe('RangeCalendar', () => {
             );
             assert(wrapper.find('td[title="2017-10-01"]').hasClass('next-selected'));
             assert(wrapper.find('td[title="2017-10-15"]').hasClass('next-inrange'));
-            assert(
-                wrapper
-                    .find('td[title="2017-11-01"]')
-                    .at(1)
-                    .hasClass('next-selected')
-            );
+            assert(wrapper.find('td[title="2017-11-01"]').at(1).hasClass('next-selected'));
         });
 
         it('should render with controlled value', () => {
@@ -319,12 +322,7 @@ describe('RangeCalendar', () => {
             });
             assert(wrapper.find('td[title="2017-10-03"]').hasClass('next-selected'));
             assert(wrapper.find('td[title="2017-10-15"]').hasClass('next-inrange'));
-            assert(
-                wrapper
-                    .find('td[title="2017-11-01"]')
-                    .at(1)
-                    .hasClass('next-selected')
-            );
+            assert(wrapper.find('td[title="2017-11-01"]').at(1).hasClass('next-selected'));
         });
 
         it('should render custom format 0.x', () => {
@@ -358,7 +356,15 @@ describe('RangeCalendar', () => {
                         '十一月',
                         '十二月',
                     ],
-                    weekdays: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+                    weekdays: [
+                        '星期天',
+                        '星期一',
+                        '星期二',
+                        '星期三',
+                        '星期四',
+                        '星期五',
+                        '星期六',
+                    ],
                     shortWeekdays: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
                     veryShortWeekdays: ['日', '一', '二', '三', '四', '五', '六'],
                     ampms: ['上午', '下午'],
@@ -367,15 +373,8 @@ describe('RangeCalendar', () => {
             wrapper = mount(<RangeCalendar locale={locale} />);
 
             assert(
-                wrapper
-                    .find('.next-calendar-th')
-                    .at(0)
-                    .text() ===
-                    locale.format.shortWeekdays[
-                        moment()
-                            .localeData()
-                            .firstDayOfWeek()
-                    ]
+                wrapper.find('.next-calendar-th').at(0).text() ===
+                    locale.format.shortWeekdays[moment().localeData().firstDayOfWeek()]
             );
         });
     });
@@ -389,16 +388,10 @@ describe('RangeCalendar', () => {
                     defaultEndValue={defaultVal.clone().add(1, 'months')}
                 />
             );
-            wrapper
-                .find('.next-calendar-btn')
-                .at(2)
-                .simulate('click');
+            wrapper.find('.next-calendar-btn').at(2).simulate('click');
             assert(wrapper.find('td[title="10月"]').hasClass('next-selected'));
             wrapper.find('td[title="10月"]').simulate('click');
-            wrapper
-                .find('.next-calendar-btn')
-                .at(4)
-                .simulate('click');
+            wrapper.find('.next-calendar-btn').at(4).simulate('click');
             assert(wrapper.find('td[title="10月"]').hasClass('next-selected'));
         });
 
@@ -410,11 +403,10 @@ describe('RangeCalendar', () => {
                     defaultEndValue={defaultVal.clone().add(1, 'months')}
                 />
             );
-            wrapper
-                .find('.next-calendar-btn')
-                .at(3)
-                .simulate('click');
-            assert(wrapper.find('.next-calendar-panel-header button[title="2010-2019"]').length === 1);
+            wrapper.find('.next-calendar-btn').at(3).simulate('click');
+            assert(
+                wrapper.find('.next-calendar-panel-header button[title="2010-2019"]').length === 1
+            );
         });
 
         it('should change visible month', () => {
@@ -429,24 +421,20 @@ describe('RangeCalendar', () => {
             wrapper = mount(<RangeCalendar shape="panel" defaultVisibleMonth={() => defaultVal} />);
             wrapper.find('.next-calendar-btn-prev-year').simulate('click');
             wrapper.find('.next-calendar-btn-next-year').simulate('click');
-            assert(
-                wrapper
-                    .find('.next-calendar-btn')
-                    .at(3)
-                    .instance().title === '2017'
-            );
+            assert(wrapper.find('.next-calendar-btn').at(3).instance().title === '2017');
         });
 
         it('should change decade', () => {
             wrapper = mount(<RangeCalendar shape="panel" defaultVisibleMonth={() => defaultVal} />);
-            wrapper
-                .find('.next-calendar-btn')
-                .at(3)
-                .simulate('click');
+            wrapper.find('.next-calendar-btn').at(3).simulate('click');
             wrapper.find('.next-calendar-btn-prev-decade').simulate('click');
-            assert(wrapper.find('.next-calendar-panel-header button[title="2000-2009"]').length === 1);
+            assert(
+                wrapper.find('.next-calendar-panel-header button[title="2000-2009"]').length === 1
+            );
             wrapper.find('.next-calendar-btn-next-decade').simulate('click');
-            assert(wrapper.find('.next-calendar-panel-header button[title="2010-2019"]').length === 1);
+            assert(
+                wrapper.find('.next-calendar-panel-header button[title="2010-2019"]').length === 1
+            );
         });
     });
 });
