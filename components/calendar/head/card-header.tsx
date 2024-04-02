@@ -98,7 +98,12 @@ class CardHeader extends React.Component {
         const yearSelect = this.getYearSelect(visibleMonth.year());
         const monthSelect = mode === 'month' ? null : this.getMonthSelect(visibleMonth.month());
         const panelSelect = (
-            <Radio.Group shape="button" size="medium" value={mode} onChange={this.onModePanelChange}>
+            <Radio.Group
+                shape="button"
+                size="medium"
+                value={mode}
+                onChange={this.onModePanelChange}
+            >
                 <Radio value="date">{locale.month}</Radio>
                 <Radio value="month">{locale.year}</Radio>
             </Radio.Group>

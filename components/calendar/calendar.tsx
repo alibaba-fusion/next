@@ -328,9 +328,13 @@ class Calendar extends Component {
         };
 
         const tables = {
-            [CALENDAR_MODE_DATE]: <DateTable format={format} {...tableProps} onSelectDate={this.onSelectCell} />,
+            [CALENDAR_MODE_DATE]: (
+                <DateTable format={format} {...tableProps} onSelectDate={this.onSelectCell} />
+            ),
             [CALENDAR_MODE_MONTH]: <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />,
-            [CALENDAR_MODE_YEAR]: <YearTable {...tableProps} rtl={rtl} onSelectYear={this.onSelectCell} />,
+            [CALENDAR_MODE_YEAR]: (
+                <YearTable {...tableProps} rtl={rtl} onSelectYear={this.onSelectCell} />
+            ),
         };
 
         const panelHeaders = {

@@ -3,7 +3,11 @@ import classnames from 'classnames';
 import { isDisabledDate, MONTH_TABLE_ROW_COUNT, MONTH_TABLE_COL_COUNT } from '../utils';
 
 function isSameMonth(currentDate, selectedDate) {
-    return selectedDate && currentDate.year() === selectedDate.year() && currentDate.month() === selectedDate.month();
+    return (
+        selectedDate &&
+        currentDate.year() === selectedDate.year() &&
+        currentDate.month() === selectedDate.month()
+    );
 }
 
 class MonthTable extends PureComponent {
@@ -12,7 +16,8 @@ class MonthTable extends PureComponent {
     }
 
     render() {
-        const { prefix, value, visibleMonth, disabledDate, today, momentLocale, monthCellRender } = this.props;
+        const { prefix, value, visibleMonth, disabledDate, today, momentLocale, monthCellRender } =
+            this.props;
 
         const monthLocale = momentLocale.monthsShort();
 
@@ -32,12 +37,16 @@ class MonthTable extends PureComponent {
                     [`${prefix}disabled`]: isDisabled,
                 });
                 const localedMonth = monthLocale[counter];
-                const monthCellContent = monthCellRender ? monthCellRender(monthDate) : localedMonth;
+                const monthCellContent = monthCellRender
+                    ? monthCellRender(monthDate)
+                    : localedMonth;
                 rowList.push(
                     <td
                         key={counter}
                         title={localedMonth}
-                        onClick={isDisabled ? undefined : this.onMonthCellClick.bind(this, monthDate)}
+                        onClick={
+                            isDisabled ? undefined : this.onMonthCellClick.bind(this, monthDate)
+                        }
                         className={elementCls}
                         role="cell"
                         aria-disabled={isDisabled ? 'true' : 'false'}

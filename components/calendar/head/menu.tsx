@@ -33,7 +33,8 @@ export default class SelectMenu extends Component {
         if (targetItem) {
             menu.scrollTop =
                 targetItem.offsetTop -
-                Math.floor((menu.clientHeight / targetItem.clientHeight - 1) / 2) * targetItem.clientHeight;
+                Math.floor((menu.clientHeight / targetItem.clientHeight - 1) / 2) *
+                    targetItem.clientHeight;
         }
     }
 
