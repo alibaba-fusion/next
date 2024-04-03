@@ -891,7 +891,7 @@ export class Tree extends Component<TreeProps, TreeState> {
 
         return {
             prefix,
-            root: this,
+            root: this as Tree,
             eventKey: key,
             pos,
             isLeaf,
