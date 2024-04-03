@@ -1,5 +1,5 @@
-import React from 'react';
-import { CommonProps } from '../util';
+import type React from 'react';
+import type { CommonProps } from '../util';
 
 /**
  * @api Avatar
@@ -38,6 +38,14 @@ export interface AvatarProps extends React.HTMLAttributes<HTMLElement>, CommonPr
      * @en The event of the image loading failure, returning false will close the component's default fallback behavior
      */
     onError?: () => boolean;
+    /**
+     * 图片的其他属性
+     * @en The other properties of the image
+     */
+    imgProps?: Omit<
+        React.ImgHTMLAttributes<HTMLImageElement>,
+        'src' | 'srcSet' | 'onError' | 'alt'
+    >;
     /**
      * 图像无法显示时的 alt 替代文本
      * @en The alt replacement text when the image cannot be displayed
