@@ -7,7 +7,7 @@ import Icon from '../../icon';
 import Progress from '../../progress';
 import ConfigProvider from '../../config-provider';
 import { support, events, dom, obj } from '../../util';
-import type { ItemProps, StepStatus } from '../types';
+import type { DeprecatedStepProps, ItemProps, StepStatus } from '../types';
 
 const getWidth = (el: HTMLElement) => dom.getStyle(el, 'width') as number;
 const getHeight = (el: HTMLElement) => dom.getStyle(el, 'height') as number;
@@ -366,4 +366,28 @@ class StepItem extends Component<ItemProps> {
         return shape === 'arrow' ? arrowElement : otherElement;
     }
 }
-export default ConfigProvider.config(StepItem);
+export default ConfigProvider.config(StepItem, {
+    transform(props, deprecated) {
+        const { direction, labelPlacement } = props as Pick<
+            DeprecatedStepProps,
+            'direction' | 'labelPlacement'
+        >;
+        if (direction === 'vertical') {
+            deprecated('direction="vertical"', 'direction="ver"', 'Step.Item');
+            props = { ...props, direction: 'ver' };
+        }
+        if (direction === 'horizontal') {
+            deprecated('direction="horizontal"', 'direction="hoz"', 'Step.Item');
+            props = { ...props, direction: 'hoz' };
+        }
+        if (labelPlacement === 'vertical') {
+            deprecated('labelPlacement="vertical"', 'labelPlacement="ver"', 'Step.Item');
+            props = { ...props, labelPlacement: 'ver' };
+        }
+        if (labelPlacement === 'horizontal') {
+            deprecated('labelPlacement="horizontal"', 'labelPlacement="hoz"', 'Step.Item');
+            props = { ...props, labelPlacement: 'hoz' };
+        }
+        return props;
+    },
+});
