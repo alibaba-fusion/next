@@ -4,6 +4,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
 # Runtime data
 pids
 *.pid
@@ -58,32 +59,19 @@ typings/
 
 # next.js build output
 .next
-next/
 
-.history
 
-# special demo file for locally reappear issue
-docs/**/demo/issues.md
-
-*.DS_Store
 precss.css
 .sass-cache/
-scripts/server-remote
-__html/
-dist/
-es/
-lib/
-types/
 test/coverage/
 test/**/coverage/
-compiled_docs/
-demos/
 platform-docs/
 coverage/
 docs-lang/
 gemini-report/
 .idea/
+.vscode/
 *.iml
 *.log
 .DS_Store
-src/core-temp
+
