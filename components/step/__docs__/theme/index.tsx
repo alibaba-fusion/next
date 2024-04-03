@@ -1,6 +1,6 @@
 import React, { type ReactNode } from 'react';
 import ReactDOM from 'react-dom';
-import { Demo, DemoGroup, initDemo, DemoFunctionDefineForObject } from '../../../demo-helper';
+import { Demo, DemoGroup, initDemo, type DemoFunctionDefineForObject } from '../../../demo-helper';
 import Step from '../../index';
 import type { StepDirection, ItemProps, StepShape } from '../../types';
 import '../../style';
