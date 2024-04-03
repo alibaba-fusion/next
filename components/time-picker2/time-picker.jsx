@@ -402,11 +402,12 @@ class TimePicker2 extends Component {
 
     checkValue = (value, strictly) => {
         const { inputType } = this.state;
-        const formatter = v => (typeof v === 'string' ? datejs(v, 'HH:mm:ss') : v);
+        const { format, type, disabled } = this.props;
+        const formatter = v => (typeof v === 'string' ? datejs(v, format) : v);
         const formattedValue = Array.isArray(value) ? value.map(v => formatter(v)) : formatter(value);
 
-        return this.props.type === TIME_PICKER_TYPE.RANGE
-            ? checkRangeDate(formattedValue, inputType, this.props.disabled, strictly)
+        return type === TIME_PICKER_TYPE.RANGE
+            ? checkRangeDate(formattedValue, inputType, disabled, strictly)
             : checkDate(formattedValue);
     };
 
