@@ -607,6 +607,9 @@ describe('Overlay', () => {
                 </div>
             );
         }
+        cy.get('body').then(b => {
+            b[0].style.margin = '0';
+        });
         cy.mount(
             <div>
                 <Demo align="tl tr" />
@@ -630,7 +633,7 @@ describe('Overlay', () => {
                 </svg>
             </div>
         );
-        cy.get('.overlay-btn').should('have.css', 'left', '81.5px');
+        cy.get('.overlay-btn').should('have.css', 'left', '73.5px');
     });
 
     it('should set overflow hidden to container', () => {
