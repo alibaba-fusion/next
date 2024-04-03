@@ -18,7 +18,7 @@ const { makeChain } = func;
 const { focusRef } = focus;
 const { pickOthers } = obj;
 
-interface GroupState {
+export interface GroupState {
     value: RadioValue | undefined;
 }
 
@@ -125,7 +125,7 @@ class RadioGroup extends Component<GroupProps, GroupState> {
             }) as WrappedRadio[];
             const radioRef = availableRef.find(ref => {
                 if (ref) {
-                    return (ref as WrappedRadio).props.checked;
+                    return ref.props.checked;
                 }
                 return false;
             });
@@ -229,14 +229,6 @@ class RadioGroup extends Component<GroupProps, GroupState> {
                 );
             });
         }
-        // Useless code
-        // Reset the ref if children is unavailable.
-        // if (children.length === 0) {
-        //     this.firstRef = null;
-        // }
-        // if (!previewed.value) {
-        //     this.selectedRef = null;
-        // }
         if (isPreview) {
             const previewCls = classnames(className, `${prefix}form-preview`);
 
