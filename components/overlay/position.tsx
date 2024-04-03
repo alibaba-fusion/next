@@ -2,12 +2,13 @@ import { Component, Children } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import ResizeObserver from 'resize-observer-polyfill';
+
 import { func, dom, events } from '../util';
 import position from './utils/position';
 import findNode from './utils/find-node';
 import { warning } from '../util/log';
+import type { PositionProps } from './types';
 
-import { PositionProps } from './types';
 const { noop, bindCtx } = func;
 const { getStyle } = dom;
 const place = position.place;
@@ -103,7 +104,7 @@ export default class Position extends Component<PositionProps> {
     };
 
     shouldIgnorePosition = () => {
-        const node = this.getContentNode();
+        const node = this.getContentNode() as HTMLElement;
         if (!node) {
             return true;
         }

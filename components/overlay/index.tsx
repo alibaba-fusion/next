@@ -10,7 +10,7 @@ import Position from './position';
 import Popup1 from './popup';
 import Popup2 from './popup-v2';
 import { log } from '../util';
-import { OverlayProps, PopupProps } from './types';
+import type { OverlayProps, PopupProps } from './types';
 
 class Overlay extends React.Component<OverlayProps> {
     overlayRef: HTMLElement | { getContent: () => void; getContentNode: () => void } | null;
@@ -27,11 +27,13 @@ class Overlay extends React.Component<OverlayProps> {
             Popup
         >;
         prototype: import('/Users/eamon/fusion-contributing/next/components/config-provider/types').ConfiguredComponent<
-            any,
-            any
+            PopupProps &
+                import('/Users/eamon/fusion-contributing/next/components/config-provider/types').ComponentCommonProps,
+            Popup
         >;
+        // eslint-disable-next-line
         contextType?: React.Context<any> | undefined;
-    } & {};
+    } & object;
     constructor(props: OverlayProps) {
         super(props);
         this.overlayRef = null;

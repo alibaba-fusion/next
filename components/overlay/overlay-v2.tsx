@@ -7,7 +7,7 @@ import Animate from '../animate';
 
 import { log } from '../util';
 
-import { OverlayProps } from './types';
+import type { OverlayProps } from './types';
 
 const Overlay2 = (props: OverlayProps) => {
     if (!useState || !useRef || !useEffect) {
@@ -114,7 +114,7 @@ const Overlay2 = (props: OverlayProps) => {
     );
 
     return (
-        // @ts-ignore
+        // @ts-expect-error overlay
         <Overlay
             {...others}
             visible={visible}

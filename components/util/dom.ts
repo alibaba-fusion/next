@@ -214,7 +214,7 @@ export function getStyle(
     );
 }
 
-export function setStyle(node: undefined | null, name: unknown): false;
+export function setStyle(node: undefined | null | HTMLElement, name: unknown): false;
 export function setStyle<K extends Record<string, unknown>>(
     node: HTMLElement,
     name: K & LikeCustomCSSStyle<K>

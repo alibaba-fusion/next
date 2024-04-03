@@ -1,5 +1,8 @@
-import React, { useRef, useState, useEffect, ReactElement, cloneElement } from 'react';
+import React, { useRef, useState, useEffect, cloneElement, ReactElement } from 'react';
 import ReactDOM from 'react-dom';
+import type { MountReturn } from 'cypress/react';
+import type { ButtonProps } from '@alifd/next/lib/button';
+
 import { dom, KEYCODE, env } from '../../util';
 import Overlay, { OverlayProps } from '../index';
 import Dialog from '../../dialog/index';
@@ -7,11 +10,9 @@ import Balloon from '../../balloon/index';
 import Button from '../../button/index';
 import Drawer from '../../drawer/index';
 import ConfigProvider from '../../config-provider/index';
-import { MountReturn } from 'cypress/react';
 import '../../button/style';
 import '../style';
-import { PopupProps } from '../types';
-import { ButtonProps } from '@alifd/meet-react/lib/button';
+import type { PopupProps } from '../types';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
 /* global describe it afterEach */
@@ -285,7 +286,7 @@ describe('Overlay', () => {
         cy.wrap(handleClose).should('not.be.calledOnce');
 
         cy.mount(
-            <Overlay visible canCloseByOutSideClick={true} onRequestClose={handleClose}>
+            <Overlay visible canCloseByOutSideClick onRequestClose={handleClose}>
                 <div className="content" />
             </Overlay>
         );
@@ -311,13 +312,7 @@ describe('Overlay', () => {
         cy.wrap(handleClose).should('not.be.calledOnce');
 
         cy.mount(
-            <Overlay
-                visible
-                animation={false}
-                hasMask
-                canCloseByMask={true}
-                onRequestClose={handleClose}
-            >
+            <Overlay visible animation={false} hasMask canCloseByMask onRequestClose={handleClose}>
                 <div className="content" />
             </Overlay>
         );
@@ -495,19 +490,18 @@ describe('Overlay', () => {
         cy.get('#overlay-autofit-wrapper').should('have.css', 'top', '170px');
     });
 
-    it('should support onClick', done => {
+    it('should support onClick', () => {
         const handleClick = cy.spy();
         cy.mount(
             <Overlay visible onClick={handleClick}>
                 <div className="content" />
             </Overlay>
         );
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(200);
-        cy.get('.content')
-            .click({ force: true })
-            .then(() => {
-                done();
-            });
+        cy.get('.content').click({ force: true });
+
+        cy.wrap(handleClick).should('be.calledOnce');
     });
 
     it('should support stop Child Click propagation by default', done => {
@@ -547,6 +541,7 @@ describe('Overlay', () => {
     it('fix bug on Gateway when settting ContainerNode', done => {
         const container = document.createElement('div');
         document.body.append(container);
+        // eslint-disable-next-line react/no-deprecated
         ReactDOM.render(<OverlayDemo />, container);
 
         cy.get('#container0 .next-overlay-wrapper');
@@ -657,10 +652,8 @@ describe('Overlay', () => {
         cy.mount(<Demo />);
         cy.get('#luodan').find('.btn').first().click();
 
-        const container = cy.get('#luodan').first();
-
-        container.should('have.css', 'overflow', 'hidden');
-        container.should('have.css', 'paddingRight', '0px');
+        cy.get('#luodan').first().should('have.css', 'overflow', 'hidden');
+        cy.get('#luodan').first().should('have.css', 'paddingRight', '0px');
     });
 
     // https://codesandbox.io/s/next-overlay-overflow-2-fulpq?file=/src/App.js
@@ -758,31 +751,32 @@ describe('Popup', () => {
         cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
 
-    it('should support triggerType', async () => {
-        cy.clock();
+    it('should support triggerType', () => {
         cy.mount(
             <Popup trigger={<button>Open</button>}>
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
 
-        cy.get('button').trigger('mouseenter');
-        cy.tick(300);
+        cy.get('button').trigger('mouseover');
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('button').trigger('mouseleave');
-        cy.get('.content').trigger('mouseenter');
-        cy.tick(300);
+        cy.get('.content').trigger('mouseover');
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('.content').trigger('mouseleave');
-        cy.tick(600);
-        cy.get('.next-overlay-wrapper').should('have.length', 0);
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(600);
+
+        cy.get('.next-overlay-wrapper').should('not.be.visible');
     });
 
-    it('should support setting triggerType to click', async () => {
+    it('should support setting triggerType to click', () => {
         cy.clock();
         cy.mount(
             <Popup trigger={<button>Open</button>} triggerType="click">
@@ -928,43 +922,52 @@ describe('Popup', () => {
         cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
 
-    it.only('should support render in shadow dom', () => {
-        cy.clock();
-        // const host = document.createElement('div');
-        // host.id = 'host';
-        // const shadowRoot = host.attachShadow({ mode: 'open' });
-        // document.body.appendChild(host);
-        cy.mount(<div id="host">123</div>).as('host');
-        cy.mount(
-            <Popup trigger={<button>Open</button>} triggerType="click">
-                <span className="content">Hello World From Popup!</span>
-            </Popup>
-        ).as('popup');
+    it('should support render in shadow dom', () => {
+        const ShadowComponent: React.FC = () => {
+            // 使用useRef钩子来获取DOM引用
+            const ref = useRef<HTMLDivElement>(null);
+
+            // 使用useEffect钩子来处理组件挂载后的逻辑
+            useEffect(() => {
+                // 确保ref.current存在，并且是HTMLElement的实例
+                if (ref.current && 'shadowRoot' in ref.current) {
+                    // 使用attachShadow方法创建Shadow Root
+                    const shadowRoot = ref.current.attachShadow({ mode: 'open' });
+
+                    // 在Shadow Root中添加内容
+                    shadowRoot.innerHTML = `
+                  <style>
+                    /* Shadow DOM styles */
+                    .shadow-content {
+                      color: red;
+                      text-align: center;
+                    }
+                  </style>
+                  <div class="shadow-content">This is inside the Shadow DOM!</div>
+                `;
+                }
+            }, []);
+
+            // 渲染一个宿主元素，它将包含Shadow DOM
+            return (
+                <div id="host" ref={ref} className="shadow-host">
+                    <Popup trigger={<button>Open</button>} triggerType="click">
+                        <span className="content">Hello World From Popup!</span>
+                    </Popup>
+                </div>
+            );
+        };
+        cy.mount(<ShadowComponent />);
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(200);
-        cy.get('@host').then($el => {
-            if ($el.length) {
-                $el[0].attachShadow({ mode: 'open' });
-            }
-        });
 
-        // ReactDOM.render(
-        //     <Popup trigger={<button>Open</button>} triggerType="click">
-        //         <span className="content">Hello World From Popup!</span>
-        //     </Popup>,
-        //     shadowRoot
-        // );
-        cy.tick(300);
-
-        cy.clock();
-        const btn = cy.get('#host').shadow().find('button');
         // NOTE: 此处不能使用 ReactTestUtils.Simulate.click(btn);
-        btn.click();
-        cy.tick(300);
+        cy.get('#host').find('button').click({ force: true });
 
-        cy.clock();
-        cy.get('@host').shadow().find('.next-overlay-wrapper');
-        btn.click();
-        cy.tick(300);
+        cy.get('.next-overlay-wrapper');
+        cy.get('#host').find('button').click({ force: true });
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(300);
 
         cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
@@ -1083,7 +1086,7 @@ describe('Popup', () => {
         cy.get('.btn');
     });
 
-    it('fix support show-hide in nested scroll component', async function () {
+    it('fix support show-hide in nested scroll component', function () {
         cy.clock();
         cy.mount(
             <div

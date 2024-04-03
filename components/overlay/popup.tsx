@@ -2,15 +2,17 @@ import React, { Component, Children } from 'react';
 import { findDOMNode } from 'react-dom';
 import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
+
 import { func, KEYCODE } from '../util';
 import Overlay from './overlay';
-import { OverlayProps, PopupProps, PopupState } from './types';
-import { AnyFunction } from '../util/func';
+import type { OverlayProps, PopupProps, PopupState } from './types';
+import type { AnyFunction } from '../util/func';
+
 const { noop, makeChain, bindCtx } = func;
 
 /**
  * Overlay.Popup
- * @description 继承 Overlay 的 API，除非特别说明
+ * 继承 Overlay 的 API，除非特别说明
  * */
 class Popup extends Component<PopupProps, PopupState> {
     static propTypes = {
@@ -40,9 +42,6 @@ class Popup extends Component<PopupProps, PopupState> {
         defaultVisible: PropTypes.bool,
         /**
          * 弹层显示或隐藏时触发的回调函数
-         * @param {Boolean} visible 弹层是否显示
-         * @param {String} type 触发弹层显示或隐藏的来源 fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
-         * @param {Object} e DOM事件
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -60,7 +59,6 @@ class Popup extends Component<PopupProps, PopupState> {
         canCloseByTrigger: PropTypes.bool,
         /**
          * 弹层定位的参照元素
-         * @default target 属性，即触发元素
          */
         target: PropTypes.element,
         safeNode: PropTypes.element,
@@ -104,7 +102,7 @@ class Popup extends Component<PopupProps, PopupState> {
         rtl: false,
     };
     _mouseNotFirstOnMask: boolean;
-    _isForwardContent: any;
+    _isForwardContent: boolean | null;
     overlay: OverlayProps | null;
     _timer: NodeJS.Timeout | null;
     _hideTimer: NodeJS.Timeout | null;
@@ -152,7 +150,7 @@ class Popup extends Component<PopupProps, PopupState> {
         );
     }
 
-    handleVisibleChange(visible: boolean, type: string | object, e?: {}) {
+    handleVisibleChange(visible: boolean, type: string | object, e?: object) {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
@@ -162,7 +160,7 @@ class Popup extends Component<PopupProps, PopupState> {
         this.props.onVisibleChange!(visible, type, e);
     }
 
-    handleTriggerClick(e: {}) {
+    handleTriggerClick(e: object) {
         if (this.state.visible && !this.props.canCloseByTrigger) {
             return;
         }
@@ -181,7 +179,7 @@ class Popup extends Component<PopupProps, PopupState> {
         }
     }
 
-    handleTriggerMouseEnter(e: {}) {
+    handleTriggerMouseEnter(e: object) {
         this._mouseNotFirstOnMask = false;
 
         if (this._hideTimer) {
@@ -199,7 +197,7 @@ class Popup extends Component<PopupProps, PopupState> {
         }
     }
 
-    handleTriggerMouseLeave(e: {}, type: string | object) {
+    handleTriggerMouseLeave(e: object, type: string | object) {
         if (this._showTimer) {
             clearTimeout(this._showTimer);
             this._showTimer = null;
@@ -211,11 +209,11 @@ class Popup extends Component<PopupProps, PopupState> {
         }
     }
 
-    handleTriggerFocus(e: {}) {
+    handleTriggerFocus(e: object) {
         this.handleVisibleChange(true, 'fromTrigger', e);
     }
 
-    handleTriggerBlur(e: {}) {
+    handleTriggerBlur(e: object) {
         if (!this._isForwardContent) {
             this.handleVisibleChange(false, 'fromTrigger', e);
         }
@@ -230,7 +228,7 @@ class Popup extends Component<PopupProps, PopupState> {
         clearTimeout(this._hideTimer as NodeJS.Timeout);
     }
 
-    handleContentMouseLeave(e: {}) {
+    handleContentMouseLeave(e: object) {
         this.handleTriggerMouseLeave(e, 'fromContent');
     }
 
@@ -246,7 +244,7 @@ class Popup extends Component<PopupProps, PopupState> {
         this._mouseNotFirstOnMask = true;
     }
 
-    handleRequestClose(type: string | object, e: {}) {
+    handleRequestClose(type: string | object, e: object) {
         this.handleVisibleChange(false, type, e);
     }
 

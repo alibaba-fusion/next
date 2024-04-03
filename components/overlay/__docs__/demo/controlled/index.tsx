@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Overlay, Button } from '@alifd/next';
-import { PopupProps, PopupState } from '../../../types';
-import { ButtonProps } from '@alifd/meet-react/lib/button';
+import type { PopupProps } from '@alifd/next/lib/overlay/types';
+import type { ButtonProps } from '@alifd/next/lib/button';
 
 const { Popup } = Overlay;
 

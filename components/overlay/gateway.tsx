@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import { func } from '../util';
 import findNode from './utils/find-node';
-import { AnyFunction } from '../util/func';
+import type { AnyFunction } from '../util/func';
 
-interface GatewayProps {
+export interface GatewayProps {
     children?: React.ReactNode;
     container?: HTMLElement;
     target?: HTMLElement;

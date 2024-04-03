@@ -1,4 +1,5 @@
-import Overlay from './types';
+import type Overlay from './types';
+
 const overlayManager = {
     allOverlays: [],
 

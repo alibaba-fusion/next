@@ -8,7 +8,7 @@ import overlayManager from './manager';
 import Gateway from './gateway';
 import Position from './position';
 import findNode from './utils/find-node';
-import { OverlayProps, OverlayState } from './types';
+import type { OverlayProps, OverlayState } from './types';
 
 const { saveLastFocusNode, getFocusNodeList, backLastFocusNode } = focus;
 const { makeChain, noop, bindCtx } = func;
@@ -56,8 +56,6 @@ class Overlay extends Component<OverlayProps, OverlayState> {
         visible: PropTypes.bool,
         /**
          * 弹层请求关闭时触发事件的回调函数
-         * @param {String} type 弹层关闭的来源
-         * @param {Object} e DOM 事件
          */
         onRequestClose: PropTypes.func,
         /**
@@ -123,11 +121,6 @@ class Overlay extends Component<OverlayProps, OverlayState> {
         beforePosition: PropTypes.func,
         /**
          * 弹层定位完成时触发的事件
-         * @param {Object} config 定位的参数
-         * @param {Array} config.align 对齐方式，如 ['cc', 'cc']（如果开启 autoAdjust，可能和预先设置的 align 不同）
-         * @param {Number} config.top 距离视口顶部距离
-         * @param {Number} config.left 距离视口左侧距离
-         * @param {Object} node 定位参照的容器节点
          */
         onPosition: PropTypes.func,
         shouldUpdatePosition: PropTypes.bool,
@@ -162,8 +155,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
          */
         wrapperStyle: PropTypes.object,
         /**
-         * 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
-         * @default { in: 'expandInDown', out: 'expandOutUp' }
+         * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
          */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         onMaskMouseEnter: PropTypes.func,
@@ -791,7 +783,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
     saveContentRef = (ref: HTMLDivElement) => {
         this.contentRef = ref;
     };
-
+    // eslint-disable-next-line
     saveGatewayRef: React.LegacyRef<any> | undefined = ref => {
         this.gatewayRef = ref;
     };
@@ -838,8 +830,18 @@ class Overlay extends Component<OverlayProps, OverlayState> {
             }
             const childClazz = classnames({
                 [`${prefix}overlay-inner`]: true,
-                [animation.in]: status === 'entering' || status === 'mounting',
-                [animation.out]: status === 'leaving',
+                [(
+                    animation as {
+                        in: string;
+                        out: string;
+                    }
+                ).in]: status === 'entering' || status === 'mounting',
+                [(
+                    animation as {
+                        in: string;
+                        out: string;
+                    }
+                ).out]: status === 'leaving',
                 [child.props.className]: !!child.props.className,
                 [className as string]: !!className,
             });
@@ -913,6 +915,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
         return (
             <Gateway
                 {...{ container, target, children }}
+                // eslint-disable-next-line
                 ref={this.saveGatewayRef as React.LegacyRef<any>}
             />
         );

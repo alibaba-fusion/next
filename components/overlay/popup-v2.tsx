@@ -2,12 +2,12 @@
 import React, { useState, useRef, useEffect, cloneElement } from 'react';
 import classNames from 'classnames';
 import Overlay from '@alifd/overlay';
+import { string } from 'yargs';
 
 import Animate from '../animate';
 
 import { log } from '../util';
-import { PopupProps } from './types';
-import { string } from 'yargs';
+import type { PopupProps } from './types';
 
 const Popup = (props: PopupProps) => {
     if (!useState || !useRef || !useEffect) {
@@ -92,7 +92,7 @@ const Popup = (props: PopupProps) => {
     overlayNode = (
         <Animate.OverlayAnimate
             visible={visible}
-            animation={animation}
+            animation={animation as { in: string; out: string }}
             timeout={200}
             onEnter={handleEnter}
             onEntering={handleEntering}
@@ -125,8 +125,8 @@ const Popup = (props: PopupProps) => {
         const placement = result.config.placement;
         if (placement && typeof placement === 'string') {
             if (
-                animation.in === 'expandInDown' &&
-                animation.out === 'expandOutUp' &&
+                (animation as { in: string; out: string }).in === 'expandInDown' &&
+                (animation as { in: string; out: string }).out === 'expandOutUp' &&
                 placement.match(/t/)
             ) {
                 setAnimation({
@@ -134,8 +134,8 @@ const Popup = (props: PopupProps) => {
                     out: 'expandOutDown',
                 });
             } else if (
-                animation.in === 'expandInUp' &&
-                animation.out === 'expandOutDown' &&
+                (animation as { in: string; out: string }).in === 'expandInUp' &&
+                (animation as { in: string; out: string }).out === 'expandOutDown' &&
                 placement.match(/b/)
             ) {
                 setAnimation({
@@ -161,6 +161,7 @@ const Popup = (props: PopupProps) => {
     }
 
     const maskRender = (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         node: React.ReactElement<any, string | React.JSXElementConstructor<any>>
     ) => (
         <Animate.OverlayAnimate

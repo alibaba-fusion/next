@@ -1,7 +1,6 @@
 import { dom } from '../../util';
 import findNode from './find-node';
-import { PositionProps, PointsType } from '../types';
-import { pointsType } from '@alifd/overlay/lib/placement';
+import type { PositionProps, PointsType } from '../types';
 
 const VIEWPORT = 'viewport';
 
@@ -10,9 +9,7 @@ const getPageX = () => window.pageXOffset || document.documentElement.scrollLeft
 const getPageY = () => window.pageYOffset || document.documentElement.scrollTop;
 
 /**
- * @private get element size
- * @param       {Element} element
- * @return      {Object}
+ * @internal get element size
  */
 function _getSize(element: HTMLElement) {
     // element like `svg` do not have offsetWidth and offsetHeight prop
@@ -33,9 +30,7 @@ function _getSize(element: HTMLElement) {
 }
 
 /**
- * @private get element rect
- * @param       {Element} elem
- * @return      {Object}
+ * @internal get element rect
  */
 function _getElementRect(elem: HTMLElement, container?: HTMLElement) {
     let offsetTop = 0,
@@ -83,8 +78,8 @@ function _getElementRect(elem: HTMLElement, container?: HTMLElement) {
 }
 
 /**
- * @private get viewport size
- * @return {Object}
+ * @internal get viewport size
+ * @returns \{Object\}
  */
 function _getViewportSize(container: HTMLElement) {
     if (!container || container === document.body) {
@@ -131,7 +126,7 @@ export default class Position {
     container: HTMLElement;
     autoFit: boolean;
     align: string | boolean;
-    offset: Array<number>;
+    offset: Array<number | string>;
     needAdjust: boolean;
     isRtl: boolean;
     constructor(props: PositionProps) {
@@ -148,17 +143,6 @@ export default class Position {
 
     static VIEWPORT = VIEWPORT;
 
-    /**
-     * @public static place method
-     * @param  {Object}       props
-     *     @param  {DOM}      props.pinElement
-     *     @param  {DOM}      props.baseElement
-     *     @param  {String}   props.align
-     *     @param  {Number}   props.offset
-     *     @param  {Boolean}  props.needAdjust
-     *     @param  {Boolean}  props.isRtl
-     * @return {Position}
-     */
     static place = (props: PositionProps) => new Position(props).setPosition();
 
     setPosition() {
@@ -227,14 +211,26 @@ export default class Position {
 
             // 此处若真实改变元素位置可能为导致布局发生变化，从而导致 container 发生 resize，进而重复触发 postion 和 componentUpdate，导致崩溃
             // 需要根据新的 left、top 进行模拟计算 isInViewport
-            const xOffset = Math.round(left + this.offset[0] - dom.getStyle(pinElement, 'left'));
-            const yOffset = Math.round(top + this.offset[1] - dom.getStyle(pinElement, 'top'));
+            const xOffset = Math.round(
+                left +
+                    (this.offset[0] as number) -
+                    (dom.getStyle(pinElement as HTMLElement, 'left') as number)
+            );
+            const yOffset = Math.round(
+                top +
+                    (this.offset[1] as number) -
+                    (dom.getStyle(pinElement as HTMLElement, 'top') as number)
+            );
 
             if (
                 this._isInViewport(pinElement as HTMLElement, align as string, [xOffset, yOffset])
             ) {
                 // 如果在视区内，则设置 pin 位置，并中断 postion 返回设置的位置
-                this._setPinElementPostion(pinElement as HTMLElement, { left, top }, this.offset);
+                this._setPinElementPostion(
+                    pinElement as HTMLElement,
+                    { left, top },
+                    this.offset as [number, number]
+                );
                 return align;
             } else if (!firstPositionResult) {
                 if (this.needAdjust && !this.autoFit) {
@@ -269,7 +265,7 @@ export default class Position {
         this._setPinElementPostion(
             pinElement as HTMLElement,
             { left: inViewportLeft, top: inViewportTop },
-            this._calPinOffset(expectedAlign[0] as string)
+            this._calPinOffset(expectedAlign[0]) as number[]
         );
 
         return expectedAlign[0];
@@ -315,17 +311,11 @@ export default class Position {
         }
 
         offset.top += (parseFloat as unknown as (string: string, radix?: number) => number)(
-            dom.getStyle(
-                parent as HTMLElement,
-                'border-top-width' as keyof CSSStyleDeclaration
-            ) as string,
+            dom.getStyle(parent as HTMLElement, 'border-top-width') as string,
             10
         );
         offset.left += (parseFloat as unknown as (string: string, radix?: number) => number)(
-            dom.getStyle(
-                parent as HTMLElement,
-                'border-left-width' as keyof CSSStyleDeclaration
-            ) as string,
+            dom.getStyle(parent as HTMLElement, 'border-left-width') as string,
             10
         );
         offset.offsetParent = parent;
