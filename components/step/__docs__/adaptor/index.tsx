@@ -96,8 +96,8 @@ export default {
     propsValue: _propsValue,
     adaptor: ({ shape, level, state, location, width, height, data, style, ...others }: any) => {
         const list = parseData(data, { parseContent: true }).filter(
-            ({ type }) => type === NodeType.node
-        );
+            ({ type }: any) => type === NodeType.node
+        ) as any[];
         const dataSouce: (ItemProps & { key: number })[] = [];
         let current = 0;
         list.forEach((item, index) => {
