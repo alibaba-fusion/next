@@ -206,7 +206,7 @@ const _isInObj = <O extends ObjectOrArray>(key: PropertyKey, obj: O, isArray?: b
  * object.pickOthers(FooComponent.propTypes, this.props);
  * object.pickOthers(['className', 'onChange'], this.props);
  */
-export function pickOthers<T extends string, P extends object>(
+export function pickOthers<T extends string, P extends Record<string, unknown>>(
     holdProps: T[] | Record<T, any>,
     props: P
 ): Writable<Omit<P, T>> {

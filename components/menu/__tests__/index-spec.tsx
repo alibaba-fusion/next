@@ -5,7 +5,7 @@ import '../style';
 
 const { Item, Divider, Group, SubMenu, CheckboxItem, RadioItem } = Menu;
 
-function assertInlineSubMenuOpen(index: number) {
+function shouldInlineSubMenuOpen(index: number) {
     cy.get('.next-menu-sub-menu-wrapper').eq(index).find('.next-menu-sub-menu').should('exist');
     cy.get('.next-menu-sub-menu-wrapper')
         .eq(index)
@@ -13,7 +13,7 @@ function assertInlineSubMenuOpen(index: number) {
         .should('have.class', 'next-open');
 }
 
-function assertInlineSubMenuClose(index: number) {
+function shouldInlineSubMenuClose(index: number) {
     cy.get('.next-menu-sub-menu-wrapper').eq(index).find('.next-menu-sub-menu').should('not.exist');
     cy.get('.next-menu-sub-menu-wrapper')
         .eq(index)
@@ -21,11 +21,11 @@ function assertInlineSubMenuClose(index: number) {
         .should('not.have.class', 'next-open');
 }
 
-function assertSelected(chain: Cypress.Chainable<JQuery<HTMLElement>>) {
+function shouldSelected(chain: Cypress.Chainable<JQuery<HTMLElement>>) {
     chain.should('have.class', 'next-selected').find('.next-menu-icon-selected').should('exist');
 }
 
-function assertUnselected(chain: Cypress.Chainable<JQuery<HTMLElement>>) {
+function shouldUnselected(chain: Cypress.Chainable<JQuery<HTMLElement>>) {
     chain
         .should('not.have.class', 'next-selected')
         .find('.next-menu-icon-selected')
@@ -115,6 +115,7 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         );
+        cy.get('.next-menu').should('exist');
     });
 
     it('should filter duplicate keys', () => {
@@ -284,13 +285,13 @@ describe('Menu', () => {
                 </SubMenu>
             </Menu>
         ).as('menu');
-        assertInlineSubMenuOpen(0);
+        shouldInlineSubMenuOpen(0);
 
         cy.get('.next-menu-sub-menu-wrapper').eq(0).find('.next-menu-item.next-opened').click();
         cy.wrap(onOpen).should('be.calledOnceWith', [], { open: false, key: '0' });
         cy.rerender('menu', { openKeys: [] });
-        assertInlineSubMenuClose(0);
-        assertInlineSubMenuClose(1);
+        shouldInlineSubMenuClose(0);
+        shouldInlineSubMenuClose(1);
     });
 
     it('should support setting openMode to single under inline mode', () => {
@@ -308,8 +309,8 @@ describe('Menu', () => {
         );
 
         cy.get('.next-menu-sub-menu-wrapper').eq(1).find('.next-menu-item').click();
-        assertInlineSubMenuClose(0);
-        assertInlineSubMenuOpen(1);
+        shouldInlineSubMenuClose(0);
+        shouldInlineSubMenuOpen(1);
     });
 
     it('should render popup sub menu', () => {
@@ -351,11 +352,11 @@ describe('Menu', () => {
             </Menu>
         );
 
-        assertUnselected(cy.get('.next-menu-item').eq(0));
-        assertUnselected(cy.get('.next-menu-item').eq(1));
+        shouldUnselected(cy.get('.next-menu-item').eq(0));
+        shouldUnselected(cy.get('.next-menu-item').eq(1));
         cy.get('.next-menu-item').eq(1).click();
-        assertUnselected(cy.get('.next-menu-item').eq(0));
-        assertUnselected(cy.get('.next-menu-item').eq(1));
+        shouldUnselected(cy.get('.next-menu-item').eq(0));
+        shouldUnselected(cy.get('.next-menu-item').eq(1));
     });
 
     it('should support single select', () => {
@@ -366,16 +367,16 @@ describe('Menu', () => {
             </Menu>
         );
 
-        assertSelected(cy.get('.next-menu-item').eq(0));
-        assertUnselected(cy.get('.next-menu-item').eq(1));
+        shouldSelected(cy.get('.next-menu-item').eq(0));
+        shouldUnselected(cy.get('.next-menu-item').eq(1));
         cy.get('.next-menu-item').eq(0).click();
 
-        assertSelected(cy.get('.next-menu-item').eq(0));
-        assertUnselected(cy.get('.next-menu-item').eq(1));
+        shouldSelected(cy.get('.next-menu-item').eq(0));
+        shouldUnselected(cy.get('.next-menu-item').eq(1));
         cy.get('.next-menu-item').eq(1).click();
 
-        assertSelected(cy.get('.next-menu-item').eq(1));
-        assertUnselected(cy.get('.next-menu-item').eq(0));
+        shouldSelected(cy.get('.next-menu-item').eq(1));
+        shouldUnselected(cy.get('.next-menu-item').eq(0));
     });
 
     it('should support multiple select', () => {
@@ -386,16 +387,16 @@ describe('Menu', () => {
             </Menu>
         );
 
-        assertSelected(cy.get('.next-menu-item').eq(0));
-        assertUnselected(cy.get('.next-menu-item').eq(1));
+        shouldSelected(cy.get('.next-menu-item').eq(0));
+        shouldUnselected(cy.get('.next-menu-item').eq(1));
         cy.get('.next-menu-item').eq(0).click();
 
-        assertUnselected(cy.get('.next-menu-item').eq(0));
-        assertUnselected(cy.get('.next-menu-item').eq(1));
+        shouldUnselected(cy.get('.next-menu-item').eq(0));
+        shouldUnselected(cy.get('.next-menu-item').eq(1));
         cy.get('.next-menu-item').eq(1).click();
 
-        assertSelected(cy.get('.next-menu-item').eq(1));
-        assertUnselected(cy.get('.next-menu-item').eq(0));
+        shouldSelected(cy.get('.next-menu-item').eq(1));
+        shouldUnselected(cy.get('.next-menu-item').eq(0));
     });
 
     it('should support selectedKeys and onSelect under inline mode', () => {
@@ -428,9 +429,9 @@ describe('Menu', () => {
         cy.rerender('menu', { selectedKeys: ['0', '2'] });
         cy.get('.next-menu-item').each(el => {
             if (['0', '2'].includes(el.text())) {
-                assertSelected(cy.wrap(el));
+                shouldSelected(cy.wrap(el));
             } else {
-                assertUnselected(cy.wrap(el));
+                shouldUnselected(cy.wrap(el));
             }
         });
     });
@@ -449,13 +450,13 @@ describe('Menu', () => {
             </Menu>
         );
 
-        assertSelected(cy.get('div.next-menu-item').eq(0));
-        assertUnselected(cy.get('div.next-menu-item').eq(1));
+        shouldSelected(cy.get('div.next-menu-item').eq(0));
+        shouldUnselected(cy.get('div.next-menu-item').eq(1));
         cy.get('div.next-menu-item').eq(0).click();
         cy.get('div.next-menu-item').eq(1).click();
 
-        assertUnselected(cy.get('div.next-menu-item').eq(0));
-        assertUnselected(cy.get('div.next-menu-item').eq(1));
+        shouldUnselected(cy.get('div.next-menu-item').eq(0));
+        shouldUnselected(cy.get('div.next-menu-item').eq(1));
     });
 
     it('can not select sub menu item if set shallowSelect to true', () => {
@@ -469,7 +470,7 @@ describe('Menu', () => {
         );
 
         cy.get('.next-menu-sub-menu .next-menu-item').eq(0).click();
-        assertUnselected(cy.get('.next-menu-sub-menu .next-menu-item').eq(0));
+        shouldUnselected(cy.get('.next-menu-sub-menu .next-menu-item').eq(0));
     });
 
     it('should support pressing space to select item', () => {

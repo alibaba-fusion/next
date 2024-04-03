@@ -232,7 +232,7 @@ export interface ItemProps
 }
 
 /**
- * Menu.SubMenu
+ * @api Menu.SubMenu
  * @order 1
  */
 export interface SubMenuProps extends PopupItemProps {
@@ -802,9 +802,6 @@ export interface MenuProps
     flatenContent?: boolean;
 }
 
-/**
- * @api Menu.create
- */
 export interface CreateMenuProps
     extends Pick<OverlayProps, 'target' | 'align' | 'offset' | 'afterClose'>,
         MenuProps {

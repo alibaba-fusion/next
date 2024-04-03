@@ -61,6 +61,17 @@
 | itemClassName          | 菜单项的类型                                                                                                                                                                  | string                                                                                                                 | -          |          |
 | flatenContent          | 将菜单项 DOM 结构平铺在容器内                                                                                                                                                 | boolean                                                                                                                | -          |          |
 
+### Menu.SubMenu
+
+| 参数                    | 说明                                                     | 类型            | 默认值 | 是否必填 |
+| ----------------------- | -------------------------------------------------------- | --------------- | ------ | -------- |
+| label                   | 标签内容                                                 | React.ReactNode | -      |          |
+| selectable              | 是否可选，该属性仅在设置 Menu 组件 selectMode 属性后生效 | boolean         | false  |          |
+| mode                    | 子菜单打开方式，如果设置会覆盖 Menu 上的同名属性         | Mode            | -      |          |
+| children                | 菜单项或下一级子菜单                                     | React.ReactNode | -      |          |
+| noIcon                  | 是否没有图标                                             | boolean         | false  |          |
+| subMenuContentClassName | 子菜单内容节点的类名                                     | string          | -      |          |
+
 ### Menu.PopupItem
 
 | 参数        | 说明                                                     | 类型                  | 默认值 | 是否必填 |
@@ -120,14 +131,6 @@
 | label     | 菜单的标签                  | React.ReactNode   | -      | 是       |
 | keyPath   | 被操作菜单项的 key 全路径   | string[]          | -      | 是       |
 | labelPath | 被操作菜单项的 label 全路径 | React.ReactNode[] | -      | 是       |
-
-### Menu.create
-
-| 参数           | 说明 | 类型         | 默认值 | 是否必填 |
-| -------------- | ---- | ------------ | ------ | -------- |
-| overlayProps   | -    | OverlayProps | -      |          |
-| className      | -    | string       | -      |          |
-| popupClassName | -    | string       | -      |          |
 
 ### Mode
 

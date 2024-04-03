@@ -171,7 +171,7 @@ export default class SubMenu extends Component<SubMenuProps> {
             selectedKeys,
         });
 
-        const others = obj.pickOthers(Object.keys(SubMenu.propTypes), this.props);
+        const others = obj.pickOthers(SubMenu.propTypes, this.props);
 
         const liProps: HTMLAttributes<HTMLLIElement> = {
             className: cx(
@@ -248,6 +248,7 @@ export default class SubMenu extends Component<SubMenuProps> {
         ) : null;
 
         return (
+            // @ts-expect-error others.onSelect 签名不匹配
             <li role={roleItem} {...others} {...liProps}>
                 <NewItem {...itemProps}>
                     <span className={`${prefix}menu-item-text`}>{label}</span>

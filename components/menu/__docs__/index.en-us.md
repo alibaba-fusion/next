@@ -55,6 +55,17 @@
 | itemClassName          | ClassName of menu items                                                                                                                                                                                                 | string                                                                                                                 | -             |          |
 | flatenContent          | Flaten item doms inside the menu container                                                                                                                                                                              | boolean                                                                                                                | -             |          |
 
+### Menu.SubMenu
+
+| Param                   | Description                                                                    | Type            | Default Value | Required |
+| ----------------------- | ------------------------------------------------------------------------------ | --------------- | ------------- | -------- |
+| label                   | Label of submenu                                                               | React.ReactNode | -             |          |
+| selectable              | Whether is selectable, it only works when set selectMode of Menu               | boolean         | false         |          |
+| mode                    | Open mode of submenu, it will override the property with the same name on Menu | Mode            | -             |          |
+| children                | Menu item or submenu                                                           | React.ReactNode | -             |          |
+| noIcon                  | No icon                                                                        | boolean         | false         |          |
+| subMenuContentClassName | ClassName of the content node                                                  | string          | -             |          |
+
 ### Menu.PopupItem
 
 | Param       | Description                                                               | Type                  | Default Value | Required |
@@ -114,14 +125,6 @@ The extra info when trigger select
 | label     | The label of menu item                      | React.ReactNode   | -             | yes      |
 | keyPath   | Full key paths of the operating menu item   | string[]          | -             | yes      |
 | labelPath | Full label paths of the operating menu item | React.ReactNode[] | -             | yes      |
-
-### Menu.create
-
-| Param          | Description | Type         | Default Value | Required |
-| -------------- | ----------- | ------------ | ------------- | -------- |
-| overlayProps   | -           | OverlayProps | -             |          |
-| className      | -           | string       | -             |          |
-| popupClassName | -           | string       | -             |          |
 
 ### Mode
 
