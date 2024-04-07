@@ -454,11 +454,9 @@ describe('Overlay v2', async () => {
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(200);
         // 空间不够了弹窗顶开页面宽度
-        cy.get('.next-overlay-inner').should(
-            'have.css',
-            'left',
-            `${document.documentElement.clientWidth}px`
-        );
+        cy.get('.next-overlay-inner')
+            .click({ scrollBehavior: false, force: true })
+            .should('have.css', 'left', `${document.documentElement.clientWidth}px`);
     });
 
     it('fix bug on position when target is a svg element', () => {

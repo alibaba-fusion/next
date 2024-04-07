@@ -615,11 +615,9 @@ describe('Overlay', () => {
                 <Demo align="tl tr" />
             </div>
         );
-        cy.get('.next-overlay-inner').should(
-            'have.css',
-            'left',
-            `${document.documentElement.clientWidth - 200 - 1}px`
-        ); // Reason to subtract 1, see: Overly._isInViewport
+        cy.get('.next-overlay-inner')
+            .click({ scrollBehavior: false })
+            .should('have.css', 'left', `${document.documentElement.clientWidth - 200 - 1}px`); // Reason to subtract 1, see: Overly._isInViewport
     });
 
     it('fix bug on position when target is a svg element', () => {
