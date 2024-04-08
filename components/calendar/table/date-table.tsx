@@ -132,7 +132,7 @@ class DateTable extends PureComponent<DateTableProps> {
                         title={currentDate.format(format)}
                         onClick={isDisabled ? undefined : onSelectDate.bind(null, currentDate)}
                         className={elementCls}
-                        role="cell"
+                        role="gridcell"
                         aria-disabled={isDisabled ? 'true' : 'false'}
                         aria-selected={isSelected ? 'true' : 'false'}
                     >

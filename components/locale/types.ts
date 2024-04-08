@@ -209,7 +209,7 @@ export interface BaseLocale extends LocaleConfig {
 
 export type Locale = {
     [key in keyof BaseLocale]: BaseLocale[key] extends ComponentLocaleObject
-        ? BaseLocale[key] & {
+        ? Partial<BaseLocale[key]> & {
               momentLocale?: string;
           }
         : BaseLocale[key];
