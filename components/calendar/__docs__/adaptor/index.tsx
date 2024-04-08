@@ -2,13 +2,14 @@ import React from 'react';
 import moment from 'moment';
 import { Calendar } from '@alifd/next';
 import { Types } from '@alifd/adaptor-helper';
+import { type CalendarProps } from '@alifd/next/lib/calendar';
 
 const now = new Date();
 
 export default {
     name: 'Calendar',
     shape: ['fullscreen', 'card', 'panel', 'rangePanel'],
-    editor: shape => {
+    editor: (shape: string) => {
         return {
             props: [
                 {
@@ -36,7 +37,20 @@ export default {
             ],
         };
     },
-    adaptor: ({ shape, level, width, date = '', style = {}, ...others }) => {
+    adaptor: ({
+        shape,
+        level,
+        width,
+        date = '',
+        style = {},
+        ...others
+    }: {
+        shape: string;
+        width: number;
+        level: string;
+        date: string;
+        style: any;
+    }) => {
         const arr = date.split('-').map(number => Number(number) || 0);
 
         const d = moment();
@@ -77,8 +91,8 @@ export default {
             <Calendar
                 {...others}
                 value={d}
-                shape={shape}
-                mode={level === 'day' ? 'date' : level}
+                shape={shape as CalendarProps['shape']}
+                mode={(level === 'day' ? 'date' : level) as CalendarProps['mode']}
                 style={{
                     width,
                     ...style,

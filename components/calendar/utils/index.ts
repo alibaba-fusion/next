@@ -1,4 +1,10 @@
-import moment from 'moment';
+import moment, {
+    type MomentInput,
+    type Moment,
+    type MomentFormatSpecification,
+    type Locale as MomentLocale,
+} from 'moment';
+import { type CalendarMode, type MomentLocaleLike } from '../types';
 
 export const DAYS_OF_WEEK = 7;
 
@@ -20,16 +26,24 @@ export const CALENDAR_MODE_MONTH = 'month';
 
 export const CALENDAR_MODE_DATE = 'date';
 
-export const CALENDAR_MODES = [CALENDAR_MODE_DATE, CALENDAR_MODE_MONTH, CALENDAR_MODE_YEAR];
+export const CALENDAR_MODES = [
+    CALENDAR_MODE_DATE,
+    CALENDAR_MODE_MONTH,
+    CALENDAR_MODE_YEAR,
+] as CalendarMode[];
 
-export function isDisabledDate(date, fn, view) {
+export function isDisabledDate(date: unknown, fn: unknown, view: unknown) {
     if (typeof fn === 'function' && fn(date, view)) {
         return true;
     }
     return false;
 }
 
-export function checkMomentObj(props, propName, componentName) {
+export function checkMomentObj(
+    props: Record<string, unknown>,
+    propName: string,
+    componentName: string
+) {
     if (props[propName] && !moment.isMoment(props[propName])) {
         return new Error(
             `Invalid prop ${propName} supplied to ${componentName}. Required a moment object`
@@ -37,14 +51,19 @@ export function checkMomentObj(props, propName, componentName) {
     }
 }
 
-export function formatDateValue(value, reservedValue = null) {
+export function formatDateValue(value: unknown, reservedValue = null) {
     if (value && moment.isMoment(value)) {
         return value;
     }
     return reservedValue;
 }
 
-export function getVisibleMonth(defaultVisibleMonth, value) {
+export function getVisibleMonth(defaultVisibleMonth: () => Moment, value: unknown): Moment;
+export function getVisibleMonth<V>(defaultVisibleMonth: unknown, value: V): Moment | NonNullable<V>;
+export function getVisibleMonth<V>(
+    defaultVisibleMonth: unknown,
+    value: V
+): Moment | NonNullable<V> {
     let getVM = defaultVisibleMonth;
     if (typeof getVM !== 'function' || !moment.isMoment(getVM())) {
         getVM = () => {
@@ -54,14 +73,14 @@ export function getVisibleMonth(defaultVisibleMonth, value) {
             return moment();
         };
     }
-    return getVM();
+    return (getVM as () => Moment | NonNullable<V>)();
 }
 
-export function isSameYearMonth(dateA, dateB) {
+export function isSameYearMonth(dateA: Moment, dateB: Moment) {
     return dateA.month() === dateB.month() && dateA.year() === dateB.year();
 }
 
-export function preFormatDateValue(value, format) {
+export function preFormatDateValue(value: MomentInput | Moment, format: MomentFormatSpecification) {
     const val = typeof value === 'string' ? moment(value, format, false) : value;
     if (val && moment.isMoment(val) && val.isValid()) {
         return val;
@@ -71,22 +90,35 @@ export function preFormatDateValue(value, format) {
 }
 
 export function getLocaleData(
-    { months, shortMonths, firstDayOfWeek, weekdays, shortWeekdays, veryShortWeekdays },
-    localeData
-) {
+    {
+        months,
+        shortMonths,
+        firstDayOfWeek,
+        weekdays,
+        shortWeekdays,
+        veryShortWeekdays,
+    }: {
+        months?: string[];
+        shortMonths?: string[];
+        firstDayOfWeek?: number;
+        weekdays?: string[];
+        shortWeekdays?: string[];
+        veryShortWeekdays?: string[];
+    },
+    localeData: MomentLocale
+): MomentLocaleLike {
     return {
         ...localeData,
         monthsShort: () => shortMonths || localeData.monthsShort(),
         months: () => months || localeData.months(),
         firstDayOfWeek: () => firstDayOfWeek || localeData.firstDayOfWeek(),
-        weekdays: () => weekdays || localeData.weekdays,
+        weekdays: () => weekdays || localeData.weekdays(),
         weekdaysShort: () => shortWeekdays || localeData.weekdaysShort(),
         weekdaysMin: () => veryShortWeekdays || localeData.weekdaysMin(),
     };
 }
 
-/* istanbul ignore next */
-export function getYears(yearRange, yearRangeOffset, year) {
+export function getYears(yearRange: [number?, number?], yearRangeOffset: number, year: number) {
     const options = [];
     let [startYear, endYear] = yearRange;
     if (!startYear || !endYear) {
@@ -103,8 +135,7 @@ export function getYears(yearRange, yearRangeOffset, year) {
     return options;
 }
 
-/* istanbul ignore next */
-export function getMonths(momentLocale) {
+export function getMonths(momentLocale: MomentLocaleLike) {
     const localeMonths = momentLocale.monthsShort();
     const options = [];
     for (let i = 0; i < 12; i++) {

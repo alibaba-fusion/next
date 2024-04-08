@@ -18,6 +18,7 @@ declare module 'markdown-it';
 declare module 'markdown-it-anchor';
 declare module 'remark';
 declare module '@alifd/adaptor-helper';
+declare module 'solarlunar';
 
 declare const mountNode: HTMLDivElement;
 

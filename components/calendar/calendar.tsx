@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, type MouseEvent } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
-import moment from 'moment';
+import moment, { type MomentInput, type Moment } from 'moment';
 import classnames from 'classnames';
 import ConfigProvider from '../config-provider';
 import nextLocale from '../locale/zh-cn';
-import { func, obj } from '../util';
+import { type ClassPropsWithDefault, func, obj } from '../util';
 import CardHeader from './head/card-header';
 import DatePanelHeader from './head/date-panel-header';
 import MonthPanelHeader from './head/month-panel-header';
@@ -24,23 +24,26 @@ import {
     CALENDAR_MODE_YEAR,
     getLocaleData,
 } from './utils';
+import type { CalendarMode, CalendarProps, CalendarState, VisibleMonthChangeType } from './types';
 
-const isValueChanged = (value, oldVlaue) => {
-    if (value && oldVlaue) {
+const isValueChanged = (value: MomentInput, oldValue: MomentInput) => {
+    if (value && oldValue) {
         if (!moment.isMoment(value)) {
             value = moment(value);
         }
-        if (!moment.isMoment(oldVlaue)) {
-            oldVlaue = moment(oldVlaue);
+        if (!moment.isMoment(oldValue)) {
+            oldValue = moment(oldValue);
         }
-        return value.valueOf() !== oldVlaue.valueOf();
+        return value.valueOf() !== oldValue.valueOf();
     } else {
-        return value !== oldVlaue;
+        return value !== oldValue;
     }
 };
 
+type InnerCalendarProps = ClassPropsWithDefault<CalendarProps, keyof typeof Calendar.defaultProps>;
+
 /** Calendar */
-class Calendar extends Component {
+class Calendar extends Component<CalendarProps, CalendarState> {
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -61,7 +64,7 @@ class Calendar extends Component {
         modes: PropTypes.array,
         // 禁用更改面板模式，采用 dropdown 的方式切换显示日期 (暂不正式对外透出)
         disableChangeMode: PropTypes.bool,
-        // 日期值的格式（用于日期title显示的格式）
+        // 日期值的格式（用于日期 title 显示的格式）
         format: PropTypes.string,
         /**
          * 是否展示非本月的日期
@@ -77,18 +80,18 @@ class Calendar extends Component {
         shape: PropTypes.oneOf(['card', 'fullscreen', 'panel']),
         /**
          * 选择日期单元格时的回调
-         * @param {Object} value 对应的日期值 (moment 对象)
+         * @param value - 对应的日期值 (moment 对象)
          */
         onSelect: PropTypes.func,
         /**
          * 面板模式变化时的回调
-         * @param {String} mode 对应面板模式 date month year
+         * @param mode - 对应面板模式 date month year
          */
         onModeChange: PropTypes.func,
         /**
          * 展现的月份变化时的回调
-         * @param {Object} value 显示的月份 (moment 对象)
-         * @param {String} reason 触发月份改变原因
+         * @param value - 显示的月份 (moment 对象)
+         * @param reason - 触发月份改变原因
          */
         onVisibleMonthChange: PropTypes.func,
         /**
@@ -97,35 +100,33 @@ class Calendar extends Component {
         className: PropTypes.string,
         /**
          * 自定义日期渲染函数
-         * @param {Object} value 日期值（moment对象）
-         * @returns {ReactNode}
+         * @param value - 日期值（moment 对象）
          */
         dateCellRender: PropTypes.func,
         /**
          * 自定义月份渲染函数
-         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
-         * @returns {ReactNode}
+         * @param calendarDate - 对应 Calendar 返回的自定义日期对象
          */
         monthCellRender: PropTypes.func,
         yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         /**
-         * 年份范围，[START_YEAR, END_YEAR] (只在shape 为 ‘card’, 'fullscreen' 下生效)
+         * 年份范围，[START_YEAR, END_YEAR] (只在 shape 为‘card’, 'fullscreen' 下生效)
          */
         yearRange: PropTypes.arrayOf(PropTypes.number),
         /**
          * 不可选择的日期
-         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
-         * @param {String} view 当前视图类型，year: 年， month: 月, date: 日
-         * @returns {Boolean}
+         * @param calendarDate - 对应 Calendar 返回的自定义日期对象
+         * @param view - 当前视图类型，year: 年，month: 月，date: 日
          */
         disabledDate: PropTypes.func,
         /**
          * 国际化配置
          */
         locale: PropTypes.object,
+        onChange: PropTypes.func,
     };
 
-    static defaultProps = {
+    static defaultProps: CalendarProps = {
         prefix: 'next-',
         rtl: false,
         shape: 'fullscreen',
@@ -139,24 +140,28 @@ class Calendar extends Component {
         locale: nextLocale.Calendar,
         showOtherMonth: true,
     };
+    MODES: CalendarMode[];
+    today: Moment;
 
-    constructor(props, context) {
-        super(props, context);
+    readonly props: InnerCalendarProps;
+
+    constructor(props: CalendarProps) {
+        super(props);
         const value = formatDateValue(props.value || props.defaultValue);
         const visibleMonth = getVisibleMonth(props.defaultVisibleMonth, value);
 
-        this.MODES = props.modes;
+        this.MODES = props.modes!;
         this.today = moment();
         this.state = {
             value,
-            mode: props.mode || this.MODES[0],
+            mode: props.mode || this.MODES![0],
             MODES: this.MODES,
             visibleMonth,
         };
     }
 
-    static getDerivedStateFromProps(props, state) {
-        const st = {};
+    static getDerivedStateFromProps(props: CalendarProps, state: CalendarState) {
+        const st: Partial<CalendarState> = {};
         if ('value' in props) {
             const value = formatDateValue(props.value);
             if (value && isValueChanged(props.value, state.value)) {
@@ -172,7 +177,7 @@ class Calendar extends Component {
         return st;
     }
 
-    onSelectCell = (date, nextMode) => {
+    onSelectCell = (date: Moment, nextMode: CalendarMode | MouseEvent<HTMLElement>) => {
         const { visibleMonth } = this.state;
         const { shape, showOtherMonth } = this.props;
 
@@ -184,7 +189,7 @@ class Calendar extends Component {
         this.changeVisibleMonth(date, 'cellClick');
 
         if (!('value' in this.props)) {
-            // 非受控模式，直接修改当前state
+            // 非受控模式，直接修改当前 state
             this.setState({
                 value: date,
             });
@@ -196,18 +201,18 @@ class Calendar extends Component {
         }
 
         if (shape === 'panel') {
-            this.changeMode(nextMode);
+            this.changeMode(nextMode as CalendarMode);
         }
     };
 
-    changeMode = nextMode => {
+    changeMode = (nextMode: CalendarMode) => {
         if (nextMode && this.MODES.indexOf(nextMode) > -1 && nextMode !== this.state.mode) {
             this.setState({ mode: nextMode });
             this.props.onModeChange(nextMode);
         }
     };
 
-    changeVisibleMonth = (date, reason) => {
+    changeVisibleMonth = (date: Moment, reason: VisibleMonthChangeType) => {
         if (!isSameYearMonth(date, this.state.visibleMonth)) {
             this.setState({ visibleMonth: date });
             this.props.onVisibleMonthChange(date, reason);
@@ -216,10 +221,10 @@ class Calendar extends Component {
 
     /**
      * 根据日期偏移量设置当前展示的月份
-     * @param {Number} offset 日期偏移的数量
-     * @param {String} type 日期偏移的类型 days, months, years
+     * @param offset - 日期偏移的数量
+     * @param type - 日期偏移的类型 days, months, years
      */
-    changeVisibleMonthByOffset(offset, type) {
+    changeVisibleMonthByOffset(offset: number, type: 'days' | 'months' | 'years') {
         const cloneValue = this.state.visibleMonth.clone();
         cloneValue.add(offset, type);
         this.changeVisibleMonth(cloneValue, 'buttonClick');

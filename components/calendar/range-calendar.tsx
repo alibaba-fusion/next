@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { type MouseEvent } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
 import ConfigProvider from '../config-provider';
 import nextLocale from '../locale/zh-cn';
-import { obj, func } from '../util';
+import { obj, func, type ClassPropsWithDefault } from '../util';
 import RangePanelHeader from './head/range-panel-header';
 import MonthPanelHeader from './head/month-panel-header';
 import YearPanelHeader from './head/year-panel-header';
@@ -23,8 +23,19 @@ import {
     CALENDAR_MODE_YEAR,
     getLocaleData,
 } from './utils';
+import type {
+    CalendarMode,
+    RangeCalendarProps,
+    RangeCalendarState,
+    VisibleMonthChangeType,
+} from './types';
 
-class RangeCalendar extends React.Component {
+type InnerRangeCalendarProps = ClassPropsWithDefault<
+    RangeCalendarProps,
+    keyof typeof RangeCalendar.defaultProps
+>;
+
+class RangeCalendar extends React.Component<RangeCalendarProps, RangeCalendarState> {
     static propTypes = {
         ...ConfigProvider.propTypes,
         /**
@@ -52,7 +63,7 @@ class RangeCalendar extends React.Component {
         mode: PropTypes.oneOf(CALENDAR_MODES),
         // 禁用更改面板模式，采用 dropdown 的方式切换显示日期 (暂不正式对外透出)
         disableChangeMode: PropTypes.bool,
-        // 日期值的格式（用于日期title显示的格式）
+        // 日期值的格式（用于日期 title 显示的格式）
         format: PropTypes.string,
         yearRange: PropTypes.arrayOf(PropTypes.number),
         /**
@@ -65,20 +76,19 @@ class RangeCalendar extends React.Component {
         defaultVisibleMonth: PropTypes.func,
         /**
          * 展现的月份变化时的回调
-         * @param {Object} value 显示的月份 (moment 对象)
-         * @param {String} reason 触发月份改变原因
+         * @param value - 显示的月份 (moment 对象)
+         * @param reason - 触发月份改变原因
          */
         onVisibleMonthChange: PropTypes.func,
         /**
          * 不可选择的日期
-         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
-         * @param {String} view 当前视图类型，year: 年， month: 月, date: 日
-         * @returns {Boolean}
+         * @param calendarDate - 对应 Calendar 返回的自定义日期对象
+         * @param view - 当前视图类型，year: 年，month: 月，date: 日
          */
         disabledDate: PropTypes.func,
         /**
          * 选择日期单元格时的回调
-         * @param {Object} value 对应的日期值 (moment 对象)
+         * @param value - 对应的日期值 (moment 对象)
          */
         onSelect: PropTypes.func,
         /**
@@ -87,8 +97,7 @@ class RangeCalendar extends React.Component {
         dateCellRender: PropTypes.func,
         /**
          * 自定义月份渲染函数
-         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
-         * @returns {ReactNode}
+         * @param calendarDate - 对应 Calendar 返回的自定义日期对象
          */
         monthCellRender: PropTypes.func,
         yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
@@ -96,7 +105,7 @@ class RangeCalendar extends React.Component {
         className: PropTypes.string,
     };
 
-    static defaultProps = {
+    static defaultProps: RangeCalendarProps = {
         prefix: 'next-',
         rtl: false,
         mode: CALENDAR_MODE_DATE,
@@ -109,8 +118,11 @@ class RangeCalendar extends React.Component {
         showOtherMonth: false,
     };
 
-    constructor(props, context) {
-        super(props, context);
+    readonly props: InnerRangeCalendarProps;
+    today: Moment;
+
+    constructor(props: RangeCalendarProps) {
+        super(props);
 
         const startValue = formatDateValue(props.startValue || props.defaultStartValue);
         const endValue = formatDateValue(props.endValue || props.defaultEndValue);
@@ -120,7 +132,7 @@ class RangeCalendar extends React.Component {
             startValue,
             endValue,
             mode: props.mode,
-            prevMode: props.mode,
+            prevMode: props.mode!,
             startVisibleMonth: visibleMonth,
             activePanel: undefined,
             lastMode: undefined,
@@ -129,8 +141,8 @@ class RangeCalendar extends React.Component {
         this.today = moment();
     }
 
-    static getDerivedStateFromProps(props, state) {
-        const st = {};
+    static getDerivedStateFromProps(props: InnerRangeCalendarProps, state: RangeCalendarState) {
+        const st: Partial<RangeCalendarState> = {};
         if ('startValue' in props) {
             const startValue = formatDateValue(props.startValue);
             st.startValue = startValue;
@@ -151,24 +163,24 @@ class RangeCalendar extends React.Component {
         return st;
     }
 
-    onSelectCell = (date, nextMode) => {
+    onSelectCell = (date: Moment, nextMode: CalendarMode | MouseEvent<HTMLElement>) => {
         if (this.state.mode === CALENDAR_MODE_DATE) {
             this.props.onSelect(date);
         } else {
             this.changeVisibleMonth(date, 'cellClick');
         }
 
-        this.changeMode(nextMode);
+        this.changeMode(nextMode as CalendarMode);
     };
 
-    changeMode = (mode, activePanel) => {
+    changeMode = (mode: CalendarMode, activePanel?: 'start' | 'end') => {
         const { lastMode, lastPanelType } = this.state;
 
         const state = {
             lastMode: mode,
-            // rangePicker的panel下，选 year -> month ，从当前函数的activePanel传来的数据已经拿不到 start end panel的状态了，需要根据 lastMode 来判断
+            // rangePicker 的 panel 下，选 year -> month，从当前函数的 activePanel 传来的数据已经拿不到 start end panel 的状态了，需要根据 lastMode 来判断
             lastPanelType: lastMode === 'year' ? lastPanelType : activePanel,
-        };
+        } as RangeCalendarState;
         if (typeof mode === 'string' && mode !== this.state.mode) {
             state.mode = mode;
         }
@@ -179,7 +191,7 @@ class RangeCalendar extends React.Component {
         this.setState(state);
     };
 
-    changeVisibleMonth = (date, reason) => {
+    changeVisibleMonth = (date: Moment, reason: VisibleMonthChangeType) => {
         const { lastPanelType } = this.state;
         if (!isSameYearMonth(date, this.state.startVisibleMonth)) {
             const startVisibleMonth =
@@ -191,10 +203,10 @@ class RangeCalendar extends React.Component {
 
     /**
      * 根据日期偏移量设置当前展示的月份
-     * @param {Number} offset 日期偏移量
-     * @param {String} type 日期偏移类型 days, months, years
+     * @param offset - 日期偏移量
+     * @param type - 日期偏移类型 days, months, years
      */
-    changeVisibleMonthByOffset = (offset, type) => {
+    changeVisibleMonthByOffset = (offset: number, type: 'days' | 'months' | 'years') => {
         const offsetDate = this.state.startVisibleMonth.clone().add(offset, type);
         this.changeVisibleMonth(offsetDate, 'buttonClick');
     };
@@ -292,7 +304,7 @@ class RangeCalendar extends React.Component {
             end: endVisibleMonth,
         };
 
-        const visibleMonth = visibleMonths[activePanel];
+        const visibleMonth = visibleMonths[activePanel!];
 
         let header;
         let table;

@@ -1,11 +1,16 @@
+import { type Moment } from 'moment';
 import ConfigProvider from '../config-provider';
 import { preFormatDateValue } from './utils';
 import Calendar from './calendar';
 import RangeCalendar from './range-calendar';
+import { assignSubComponent } from '../util/component';
+import type { CalendarProps } from './types';
+import type { log } from '../util';
 
-/* istanbul ignore next */
-const transform = (props, deprecated) => {
-    const { type, onChange, base, disabledMonth, disabledYear, ...others } = props;
+export type { CalendarProps, RangeCalendarProps, CalendarMode } from './types';
+
+const transform = (props: CalendarProps, deprecated: typeof log.deprecated) => {
+    const { type, onChange, base, disabledMonth, disabledYear, yearCellRender, ...others } = props;
     const newProps = others;
 
     if ('type' in props) {
@@ -26,7 +31,7 @@ const transform = (props, deprecated) => {
         };
 
         if ('defaultVisibleMonth' in props) {
-            newDefaultVisibleMonth = props.defaultVisibleMonth;
+            newDefaultVisibleMonth = props.defaultVisibleMonth!;
         }
 
         newProps.defaultVisibleMonth = newDefaultVisibleMonth;
@@ -35,11 +40,11 @@ const transform = (props, deprecated) => {
     if ('onChange' in props && typeof onChange === 'function') {
         deprecated('onChange', 'onSelect', 'Calendar');
 
-        const newOnSelect = date => {
-            onChange({ mode: others.mode, value: date });
+        const newOnSelect = (date: Moment) => {
+            onChange({ mode: others.mode!, value: date });
 
             if ('onSelect' in props) {
-                props.onSelect(date);
+                props.onSelect!(date);
             }
         };
 
@@ -65,7 +70,8 @@ const transform = (props, deprecated) => {
     return newProps;
 };
 
-Calendar.RangeCalendar = RangeCalendar;
-export default ConfigProvider.config(Calendar, {
+const CalendarWithSub = assignSubComponent(Calendar, { RangeCalendar });
+
+export default ConfigProvider.config(CalendarWithSub, {
     transform,
 });

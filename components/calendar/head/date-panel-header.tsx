@@ -1,26 +1,25 @@
-/* istanbul ignore file */
 import React from 'react';
 import Icon from '../../icon';
 import Dropdown from '../../dropdown';
 import SelectMenu from './menu';
 import { getMonths, getYears } from '../utils';
+import { type DatePanelHeaderProps } from '../types';
 
-/* eslint-disable */
-class DatePanelHeader extends React.PureComponent {
+class DatePanelHeader extends React.PureComponent<DatePanelHeaderProps> {
     static defaultProps = {
         yearRangeOffset: 10,
     };
 
-    selectContainerHandler = target => {
+    selectContainerHandler = (target: HTMLElement) => {
         return target.parentNode;
     };
 
-    onYearChange = year => {
+    onYearChange = (year: number) => {
         const { visibleMonth, changeVisibleMonth } = this.props;
         changeVisibleMonth(visibleMonth.clone().year(year), 'yearSelect');
     };
 
-    changeVisibleMonth = month => {
+    changeVisibleMonth = (month: number) => {
         const { visibleMonth, changeVisibleMonth } = this.props;
         changeVisibleMonth(visibleMonth.clone().month(month), 'monthSelect');
     };
@@ -48,7 +47,6 @@ class DatePanelHeader extends React.PureComponent {
 
         let monthButton = (
             <button
-                role="button"
                 type="button"
                 className={btnCls}
                 title={monthLabel}
@@ -60,9 +58,9 @@ class DatePanelHeader extends React.PureComponent {
 
         let yearButton = (
             <button
-                role="button"
                 type="button"
                 className={btnCls}
+                // @ts-expect-error yearLabel 应转为 string
                 title={yearLabel}
                 onClick={() => changeMode('year', 'start')}
             >
@@ -79,7 +77,7 @@ class DatePanelHeader extends React.PureComponent {
                     align="tc bc"
                     container={this.selectContainerHandler}
                     trigger={
-                        <button role="button" type="button" className={btnCls} title={monthLabel}>
+                        <button type="button" className={btnCls} title={monthLabel}>
                             {monthLabel}
                             <Icon type="arrow-down" />
                         </button>
@@ -100,7 +98,12 @@ class DatePanelHeader extends React.PureComponent {
                     align="tc bc"
                     container={this.selectContainerHandler}
                     trigger={
-                        <button role="button" type="button" className={btnCls} title={yearLabel}>
+                        <button
+                            type="button"
+                            className={btnCls}
+                            // @ts-expect-error yearLabel 应转为 string
+                            title={yearLabel}
+                        >
                             {yearLabel}
                             <Icon type="arrow-down" />
                         </button>
@@ -120,7 +123,6 @@ class DatePanelHeader extends React.PureComponent {
         return (
             <div className={`${prefix}calendar-panel-header`}>
                 <button
-                    role="button"
                     type="button"
                     title={locale.prevYear}
                     className={`${btnCls} ${btnCls}-prev-year`}
@@ -132,7 +134,6 @@ class DatePanelHeader extends React.PureComponent {
                     />
                 </button>
                 <button
-                    role="button"
                     type="button"
                     title={locale.prevMonth}
                     className={`${btnCls} ${btnCls}-prev-month`}
@@ -145,7 +146,6 @@ class DatePanelHeader extends React.PureComponent {
                     {yearButton}
                 </div>
                 <button
-                    role="button"
                     type="button"
                     title={locale.nextMonth}
                     className={`${btnCls} ${btnCls}-next-month`}
@@ -154,7 +154,6 @@ class DatePanelHeader extends React.PureComponent {
                     <Icon type="arrow-right" className={`${prefix}calendar-symbol-next`} />
                 </button>
                 <button
-                    role="button"
                     type="button"
                     title={locale.nextYear}
                     className={`${btnCls} ${btnCls}-next-year`}
