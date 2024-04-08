@@ -27,18 +27,52 @@ moment.locale('zh-cn');
 
 ### Calendar
 
-| 参数                   | 说明                                                                                                                                                                                                                                               | 类型               | 默认值                   |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------- | --------------------- |
-| defaultValue         | 默认选中的日期（moment 对象）                                                                                                                                                                                                                               | custom           | -                     |
-| shape                | 展现形态<br/><br/>**可选值**:<br/>'card', 'fullscreen', 'panel'                                                                                                                                                                                         | Enum             | 'fullscreen'          |
-| value                | 选中的日期值 (moment 对象)                                                                                                                                                                                                                               | custom           | -                     |
-| mode                 | 面板模式                                                                                                                                                                                                                                             | Enum             | -                     |
-| showOtherMonth       | 是否展示非本月的日期                                                                                                                                                                                                                                       | Boolean          | true                  |
-| defaultVisibleMonth  | 默认展示的月份<br/><br/>**签名**:<br/>Function() => void                                                                                                                                                                                                  | Function         | -                     |
-| onSelect             | 选择日期单元格时的回调<br/><br/>**签名**:<br/>Function(value: Object) => void<br/>**参数**:<br/>_value_: {Object} 对应的日期值 (moment 对象)                                                                                                                            | Function         | func.noop             |
-| onModeChange         | 面板模式变化时的回调<br/><br/>**签名**:<br/>Function(mode: String) => void<br/>**参数**:<br/>_mode_: {String} 对应面板模式 date month year                                                                                                                           | Function         | func.noop             |
-| onVisibleMonthChange | 展现的月份变化时的回调<br/><br/>**签名**:<br/>Function(value: Object, reason: String) => void<br/>**参数**:<br/>_value_: {Object} 显示的月份 (moment 对象)<br/>_reason_: {String} 触发月份改变原因                                                                             | Function         | func.noop             |
-| dateCellRender       | 自定义日期渲染函数<br/><br/>**签名**:<br/>Function(value: Object) => ReactNode<br/>**参数**:<br/>_value_: {Object} 日期值（moment对象）<br/>**返回值**:<br/>{ReactNode} null<br/>                                                                                       | Function         | value => value.date() |
-| monthCellRender      | 自定义月份渲染函数<br/><br/>**签名**:<br/>Function(calendarDate: Object) => ReactNode<br/>**参数**:<br/>_calendarDate_: {Object} 对应 Calendar 返回的自定义日期对象<br/>**返回值**:<br/>{ReactNode} null<br/>                                                                | Function         | -                     |
-| yearRange            | 年份范围，[START_YEAR, END_YEAR] \(只在shape 为 ‘card’, 'fullscreen' 下生效)                                                                                                                                                                                | Array&lt;Number> | -                     |
-| disabledDate         | 不可选择的日期<br/><br/>**签名**:<br/>Function(calendarDate: Object, view: String) => Boolean<br/>**参数**:<br/>_calendarDate_: {Object} 对应 Calendar 返回的自定义日期对象<br/>_view_: {String} 当前视图类型，year: 年， month: 月, date: 日<br/>**返回值**:<br/>{Boolean} null<br/> | Function         | -                     |
+| 参数                 | 说明                                                                                             | 类型                                                    | 默认值                    | 是否必填 |
+| -------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------- | ------------------------- | -------- |
+| defaultValue         | 默认选中的日期（moment 对象）                                                                    | Moment \| null                                          | -                         |          |
+| shape                | 展现形态                                                                                         | 'card' \| 'fullscreen' \| 'panel'                       | 'fullscreen'              |          |
+| value                | 选中的日期值 (moment 对象)                                                                       | Moment \| null                                          | -                         |          |
+| mode                 | 面板模式                                                                                         | CalendarMode                                            | -                         |          |
+| showOtherMonth       | 是否展示非本月的日期                                                                             | boolean                                                 | true                      |          |
+| defaultVisibleMonth  | 默认展示的月份                                                                                   | () => void                                              | -                         |          |
+| onModeChange         | 面板模式变化时的回调<br/><br/>**签名**:<br/>**参数**:<br/>_mode_: 对应面板模式 date, month, year | (mode: string) => void                                  | -                         |          |
+| onSelect             | 选择日期单元格时的回调                                                                           | (value: Moment) => void                                 | -                         |          |
+| onVisibleMonthChange | 展现的月份变化时的回调                                                                           | (value: Moment, reason: VisibleMonthChangeType) => void | -                         |          |
+| dateCellRender       | 自定义日期渲染函数                                                                               | (value: Moment) => React.ReactNode                      | value =\> value.date()    |          |
+| monthCellRender      | 自定义月份渲染函数                                                                               | (calendarDate: Moment) => React.ReactNode               | -                         |          |
+| disabledDate         | 不可选择的日期                                                                                   | (calendarDate: Moment, view: string) => boolean         | -                         |          |
+| className            | 自定义样式类                                                                                     | string                                                  | -                         |          |
+| modes                | 面板可变化的模式列表，仅初始化时接收一次                                                         | CalendarMode[]                                          | ['date', 'month', 'year'] |          |
+| format               | 日期值的格式（用于日期 title 显示的格式）                                                        | string                                                  | 'YYYY-MM                  |          |
+| yearRange            | 年份范围，[START_YEAR, END_YEAR] (只在 shape 为‘card’, 'fullscreen' 下生效)                      | [number, number]                                        | -                         |          |
+
+### Calendar.RangeCalendar
+
+| 参数                 | 说明                                                                        | 类型                                                    | 默认值                 | 是否必填 |
+| -------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------- | ---------------------- | -------- |
+| mode                 | 面板模式                                                                    | CalendarMode                                            | 'date'                 |          |
+| format               | 日期值的格式（用于日期 title 显示的格式）                                   | string                                                  | 'YYYY-MM               |          |
+| dateCellRender       | 自定义日期渲染函数                                                          | (value: Moment) => React.ReactNode                      | value =\> value.date() |          |
+| onSelect             | 选择日期单元格时的回调                                                      | (value: Moment) => void                                 | -                      |          |
+| onVisibleMonthChange | 展现的月份变化时的回调                                                      | (value: Moment, reason: VisibleMonthChangeType) => void | -                      |          |
+| showOtherMonth       | 是否展示非本月的日期                                                        | boolean                                                 | true                   |          |
+| startValue           | 开始日期（moment 对象）                                                     | Moment \| null                                          | -                      |          |
+| endValue             | 结束日期（moment 对象）                                                     | Moment \| null                                          | -                      |          |
+| defaultStartValue    | 默认的开始日期（moment 对象）                                               | Moment \| null                                          | -                      |          |
+| defaultEndValue      | 默认的结束日期（moment 对象）                                               | Moment \| null                                          | -                      |          |
+| monthCellRender      | 自定义月份渲染函数                                                          | (calendarDate: Moment) => React.ReactNode               | -                      |          |
+| defaultVisibleMonth  | 默认展示的月份                                                              | () => void                                              | -                      |          |
+| disabledDate         | 不可选择的日期                                                              | (calendarDate: Moment, view: string) => boolean         | -                      |          |
+| yearRange            | 年份范围，[START_YEAR, END_YEAR] (只在 shape 为‘card’, 'fullscreen' 下生效) | [number, number]                                        | -                      |          |
+
+### CalendarMode
+
+```typescript
+export type CalendarMode = 'date' | 'month' | 'year';
+```
+
+### VisibleMonthChangeType
+
+```typescript
+export type VisibleMonthChangeType = 'cellClick' | 'buttonClick' | 'yearSelect' | 'monthSelect';
+```
