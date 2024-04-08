@@ -38,67 +38,22 @@ type InnerRangeCalendarProps = ClassPropsWithDefault<
 class RangeCalendar extends React.Component<RangeCalendarProps, RangeCalendarState> {
     static propTypes = {
         ...ConfigProvider.propTypes,
-        /**
-         * 样式前缀
-         */
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 默认的开始日期
-         */
         defaultStartValue: checkMomentObj,
-        /**
-         * 默认的结束日期
-         */
         defaultEndValue: checkMomentObj,
-        /**
-         * 开始日期（moment 对象）
-         */
         startValue: checkMomentObj,
-        /**
-         * 结束日期（moment 对象）
-         */
         endValue: checkMomentObj,
-        // 面板模式
         mode: PropTypes.oneOf(CALENDAR_MODES),
-        // 禁用更改面板模式，采用 dropdown 的方式切换显示日期 (暂不正式对外透出)
         disableChangeMode: PropTypes.bool,
-        // 日期值的格式（用于日期 title 显示的格式）
         format: PropTypes.string,
         yearRange: PropTypes.arrayOf(PropTypes.number),
-        /**
-         * 是否显示非本月的日期
-         */
         showOtherMonth: PropTypes.bool,
-        /**
-         * 模板展示的月份（起始月份）
-         */
         defaultVisibleMonth: PropTypes.func,
-        /**
-         * 展现的月份变化时的回调
-         * @param value - 显示的月份 (moment 对象)
-         * @param reason - 触发月份改变原因
-         */
         onVisibleMonthChange: PropTypes.func,
-        /**
-         * 不可选择的日期
-         * @param calendarDate - 对应 Calendar 返回的自定义日期对象
-         * @param view - 当前视图类型，year: 年，month: 月，date: 日
-         */
         disabledDate: PropTypes.func,
-        /**
-         * 选择日期单元格时的回调
-         * @param value - 对应的日期值 (moment 对象)
-         */
         onSelect: PropTypes.func,
-        /**
-         * 自定义日期单元格渲染
-         */
         dateCellRender: PropTypes.func,
-        /**
-         * 自定义月份渲染函数
-         * @param calendarDate - 对应 Calendar 返回的自定义日期对象
-         */
         monthCellRender: PropTypes.func,
         yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         locale: PropTypes.object,
