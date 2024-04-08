@@ -1,4 +1,6 @@
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import Calendar from '../../index';
 import RangeCalendar from '../../range-calendar';
@@ -45,21 +47,15 @@ const wrappedRangeCalendarStyle = {
     overflow: 'hidden',
 };
 
-window.renderDemo = function (lang = 'en-us') {
-    moment.locale(lang);
-    render(i18nMap[lang], lang);
-};
-
-/* eslint-disable */
-function render(i18n, lang) {
+function render(i18n: any, lang: string) {
     const currentDate = moment();
     const calendarValue = currentDate.clone().add(1, 'days');
 
-    const disabledDate = function (date) {
+    const disabledDate = function (date: Moment) {
         return date.valueOf() > currentDate.clone().add(3, 'days').valueOf();
     };
 
-    return ReactDOM.render(
+    ReactDOM.render(
         <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">
                 <Demo title={i18n.dateFullscreenCalendar}>
@@ -169,6 +165,11 @@ function render(i18n, lang) {
         document.getElementById('container')
     );
 }
+
+window.renderDemo = function (lang = 'en-us') {
+    moment.locale(lang);
+    render(i18nMap[lang], lang);
+};
 
 renderDemo();
 

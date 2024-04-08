@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import { Calendar } from '@alifd/next';
 import moment from 'moment';
 import solarLunar from 'solarlunar';
+import { type CalendarProps } from '@alifd/next/lib/calendar';
 
-function onDateChange(value) {
+const onDateChange: CalendarProps['onSelect'] = value => {
     console.log(value.format('L'));
-}
+};
 
-function dateCellRender(value) {
+const dateCellRender: CalendarProps['dateCellRender'] = value => {
     const solar2lunarData = solarLunar.solar2lunar(value.year(), value.month(), value.date());
 
     return (
@@ -19,7 +20,7 @@ function dateCellRender(value) {
             </span>
         </div>
     );
-}
+};
 
 ReactDOM.render(
     <div>

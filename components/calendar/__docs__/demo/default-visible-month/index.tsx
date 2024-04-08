@@ -2,14 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Calendar } from '@alifd/next';
 import moment from 'moment';
+import { type CalendarProps } from '@alifd/next/lib/calendar';
 
-function onSelect(value) {
+const onSelect: CalendarProps['onSelect'] = value => {
     console.log(value.format('L'));
-}
+};
 
-function onVisibleMonthChange(value, reason) {
+const onVisibleMonthChange: CalendarProps['onVisibleMonthChange'] = (value, reason) => {
     console.log('Visible month changed to %s from <%s>', value.format('YYYY-MM'), reason);
-}
+};
 
 ReactDOM.render(
     <Calendar

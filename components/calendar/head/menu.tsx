@@ -1,10 +1,10 @@
-/* istanbul ignore file */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import Menu from '../../menu';
+import type { SelectMenuProps } from '../types';
 
-export default class SelectMenu extends Component {
+export default class SelectMenu extends Component<SelectMenuProps> {
     static isNextMenu = true;
     static propTypes = {
         dataSource: PropTypes.arrayOf(PropTypes.object),
@@ -13,6 +13,7 @@ export default class SelectMenu extends Component {
         onChange: PropTypes.func,
         children: PropTypes.node,
     };
+    menuEl: Menu | null;
 
     componentDidMount() {
         this.scrollToSelectedItem();
@@ -28,8 +29,8 @@ export default class SelectMenu extends Component {
         }
 
         const itemSelector = `.${prefix}menu-item`;
-        const menu = findDOMNode(this.menuEl);
-        const targetItem = menu.querySelectorAll(itemSelector)[selectedIndex];
+        const menu = findDOMNode(this.menuEl) as HTMLElement;
+        const targetItem = menu!.querySelectorAll(itemSelector)[selectedIndex] as HTMLElement;
         if (targetItem) {
             menu.scrollTop =
                 targetItem.offsetTop -
@@ -38,7 +39,7 @@ export default class SelectMenu extends Component {
         }
     }
 
-    saveRef = ref => {
+    saveRef = (ref: Menu | null) => {
         this.menuEl = ref;
     };
 

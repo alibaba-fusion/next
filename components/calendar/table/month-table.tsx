@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
+import { type Moment } from 'moment';
 import { isDisabledDate, MONTH_TABLE_ROW_COUNT, MONTH_TABLE_COL_COUNT } from '../utils';
+import { type MonthTableProps } from '../types';
 
-function isSameMonth(currentDate, selectedDate) {
+function isSameMonth(currentDate: Moment, selectedDate: Moment) {
     return (
         selectedDate &&
         currentDate.year() === selectedDate.year() &&
@@ -10,8 +12,8 @@ function isSameMonth(currentDate, selectedDate) {
     );
 }
 
-class MonthTable extends PureComponent {
-    onMonthCellClick(date) {
+class MonthTable extends PureComponent<MonthTableProps> {
+    onMonthCellClick(date: Moment) {
         this.props.onSelectMonth(date, 'date');
     }
 
@@ -28,7 +30,7 @@ class MonthTable extends PureComponent {
             for (let j = 0; j < MONTH_TABLE_COL_COUNT; j++) {
                 const monthDate = visibleMonth.clone().month(counter);
                 const isDisabled = isDisabledDate(monthDate, disabledDate, 'month');
-                const isSelected = isSameMonth(monthDate, value);
+                const isSelected = isSameMonth(monthDate, value!);
                 const isThisMonth = isSameMonth(monthDate, today);
                 const elementCls = classnames({
                     [`${prefix}calendar-cell`]: true,

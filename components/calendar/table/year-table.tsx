@@ -1,10 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
+import { type Moment } from 'moment';
 import Icon from '../../icon';
 import { isDisabledDate, YEAR_TABLE_COL_COUNT, YEAR_TABLE_ROW_COUNT } from '../utils';
+import { type YearTableProps } from '../types';
 
-class YearTable extends React.PureComponent {
-    onYearCellClick(date) {
+class YearTable extends React.PureComponent<YearTableProps> {
+    onYearCellClick(date: Moment) {
         this.props.onSelectYear(date, 'month');
     }
 
@@ -73,7 +75,7 @@ class YearTable extends React.PureComponent {
                         <div
                             className={`${prefix}calendar-year`}
                             onClick={onClick}
-                            title={title}
+                            title={title as string}
                             aria-disabled={isDisabled ? 'true' : 'false'}
                             aria-selected={isSelected ? 'true' : 'false'}
                         >

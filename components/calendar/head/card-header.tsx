@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import Select from '../../select';
 import Radio from '../../radio';
 import ConfigProvider from '../../config-provider';
+import type { CalendarMode, CardHeaderProps } from '../types';
 
-class CardHeader extends React.Component {
+class CardHeader extends React.Component<CardHeaderProps> {
     static propTypes = {
         yearRange: PropTypes.arrayOf(PropTypes.number),
         yearRangeOffset: PropTypes.number,
@@ -15,21 +16,21 @@ class CardHeader extends React.Component {
         yearRangeOffset: 10,
     };
 
-    selectContainerHandler = target => {
+    selectContainerHandler = (target: HTMLElement) => {
         const { device } = this.props;
         if (device === 'phone') {
             return document.body;
         }
-        return target.parentNode;
+        return target.parentNode as HTMLElement;
     };
 
-    getYearSelect(year) {
+    getYearSelect(year: number) {
         const { prefix, yearRangeOffset, yearRange = [], locale } = this.props;
 
         let [startYear, endYear] = yearRange;
         if (!startYear || !endYear) {
-            startYear = year - yearRangeOffset;
-            endYear = year + yearRangeOffset;
+            startYear = year - yearRangeOffset!;
+            endYear = year + yearRangeOffset!;
         }
 
         const options = [];
@@ -54,7 +55,7 @@ class CardHeader extends React.Component {
         );
     }
 
-    getMonthSelect(month) {
+    getMonthSelect(month: number) {
         const { prefix, momentLocale, locale } = this.props;
         const localeMonths = momentLocale.monthsShort();
         const options = [];
@@ -78,17 +79,17 @@ class CardHeader extends React.Component {
         );
     }
 
-    onYearChange = year => {
+    onYearChange = (year: number) => {
         const { visibleMonth, changeVisibleMonth } = this.props;
         changeVisibleMonth(visibleMonth.clone().year(year), 'yearSelect');
     };
 
-    changeVisibleMonth = month => {
+    changeVisibleMonth = (month: number) => {
         const { visibleMonth, changeVisibleMonth } = this.props;
         changeVisibleMonth(visibleMonth.clone().month(month), 'monthSelect');
     };
 
-    onModePanelChange = mode => {
+    onModePanelChange = (mode: CalendarMode) => {
         this.props.changeMode(mode);
     };
 

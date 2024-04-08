@@ -1,18 +1,18 @@
 import React, {
-    ComponentType,
-    ForwardRefExoticComponent,
-    ComponentProps,
-    ComponentRef,
-    StaticLifecycle,
-    JSXElementConstructor,
-    ComponentPropsWithoutRef,
+    type ComponentType,
+    type ForwardRefExoticComponent,
+    type ComponentProps,
+    type ComponentRef,
+    type StaticLifecycle,
+    type JSXElementConstructor,
+    type ComponentPropsWithoutRef,
 } from 'react';
 import PropTypes from 'prop-types';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import { obj, log } from '../util';
 import getContextProps from './get-context-props';
 import ErrorBoundary from './error-boundary';
-import { Locale } from '../locale/types';
+import { type Locale } from '../locale/types';
 import type {
     ConfigOptions,
     PropsDeprecatedPrinter,
