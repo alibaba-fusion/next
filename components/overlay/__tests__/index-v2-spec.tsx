@@ -442,8 +442,8 @@ describe('Overlay v2', async () => {
 
         cy.get('body').then(b => {
             b[0].style.margin = '0';
+            b[0].style.overflow = 'hidden';
         });
-        cy.wait(200);
         cy.mount(
             <div>
                 <Demo align="tl tr" />
@@ -452,7 +452,6 @@ describe('Overlay v2', async () => {
         // visible 直接为true，会自动delay 100ms渲染
 
         // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(200);
         // 空间不够了弹窗顶开页面宽度
         cy.get('.next-overlay-inner')
             .click({ scrollBehavior: false, force: true })
