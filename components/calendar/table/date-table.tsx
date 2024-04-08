@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
+import { type Moment } from 'moment';
 import DateTableHead from './date-table-head';
 import {
     isDisabledDate,
@@ -7,12 +8,13 @@ import {
     CALENDAR_TABLE_COL_COUNT,
     CALENDAR_TABLE_ROW_COUNT,
 } from '../utils';
+import type { DateTableProps } from '../types';
 
-function isSameDay(a, b) {
+function isSameDay(a: Moment, b: Moment) {
     return a && b && a.isSame(b, 'day');
 }
 
-function isRangeDate(date, startDate, endDate) {
+function isRangeDate(date: Moment, startDate: Moment, endDate: Moment) {
     return (
         date.format('L') !== startDate.format('L') &&
         date.format('L') !== endDate.format('L') &&
@@ -21,21 +23,21 @@ function isRangeDate(date, startDate, endDate) {
     );
 }
 
-function isLastMonthDate(date, target) {
+function isLastMonthDate(date: Moment, target: Moment) {
     if (date.year() < target.year()) {
         return 1;
     }
     return date.year() === target.year() && date.month() < target.month();
 }
 
-function isNextMonthDate(date, target) {
+function isNextMonthDate(date: Moment, target: Moment) {
     if (date.year() > target.year()) {
         return 1;
     }
     return date.year() === target.year() && date.month() > target.month();
 }
 
-class DateTable extends PureComponent {
+class DateTable extends PureComponent<DateTableProps> {
     render() {
         const {
             prefix,
@@ -102,7 +104,7 @@ class DateTable extends PureComponent {
                 const isToday = !isDisabled && isSameDay(currentDate, today) && isCurrentMonth;
                 const isSelected =
                     !isDisabled &&
-                    (isSameDay(currentDate, startValue) || isSameDay(currentDate, endValue)) &&
+                    (isSameDay(currentDate, startValue!) || isSameDay(currentDate, endValue!)) &&
                     isCurrentMonth;
                 const isInRange =
                     !isDisabled &&
@@ -154,9 +156,7 @@ class DateTable extends PureComponent {
         return (
             <table className={`${prefix}calendar-table`} role="grid">
                 <DateTableHead {...this.props} momentLocale={momentLocale} />
-                <tbody className={`${prefix}calendar-tbody`} role="rowgroup">
-                    {monthElements}
-                </tbody>
+                <tbody className={`${prefix}calendar-tbody`}>{monthElements}</tbody>
             </table>
         );
     }

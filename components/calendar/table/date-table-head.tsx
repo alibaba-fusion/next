@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import { DAYS_OF_WEEK } from '../utils';
+import { type DateTableHeadProps } from '../types';
 
-class DateTableHead extends PureComponent {
+class DateTableHead extends PureComponent<DateTableHeadProps> {
     render() {
         const { prefix, momentLocale } = this.props;
         const firstDayOfWeek = momentLocale.firstDayOfWeek();

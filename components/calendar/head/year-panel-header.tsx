@@ -1,10 +1,12 @@
 import React from 'react';
+import { type Moment } from 'moment';
 import Icon from '../../icon';
+import { type YearPanelHeaderProps } from '../types';
 
-class YearPanelHeader extends React.PureComponent {
-    getDecadeLabel = date => {
+class YearPanelHeader extends React.PureComponent<YearPanelHeaderProps> {
+    getDecadeLabel = (date: Moment) => {
         const year = date.year();
-        const start = parseInt(year / 10, 10) * 10;
+        const start = parseInt((year / 10).toString(), 10) * 10;
         const end = start + 9;
         return `${start}-${end}`;
     };
@@ -17,7 +19,6 @@ class YearPanelHeader extends React.PureComponent {
         return (
             <div className={`${prefix}calendar-panel-header`}>
                 <button
-                    role="button"
                     type="button"
                     title={locale.prevDecade}
                     className={`${btnCls} ${btnCls}-prev-decade`}
@@ -29,12 +30,11 @@ class YearPanelHeader extends React.PureComponent {
                     />
                 </button>
                 <div className={`${prefix}calendar-panel-header-full`}>
-                    <button role="button" type="button" title={decadeLable} className={btnCls}>
+                    <button type="button" title={decadeLable} className={btnCls}>
                         {decadeLable}
                     </button>
                 </div>
                 <button
-                    role="button"
                     type="button"
                     title={locale.nextDecade}
                     className={`${btnCls} ${btnCls}-next-decade`}

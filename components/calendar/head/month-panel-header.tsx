@@ -1,7 +1,8 @@
 import React from 'react';
 import Icon from '../../icon';
+import { type MonthPanelHeaderProps } from '../types';
 
-class MonthPanelHeader extends React.PureComponent {
+class MonthPanelHeader extends React.PureComponent<MonthPanelHeaderProps> {
     render() {
         const { prefix, visibleMonth, locale, changeMode, goPrevYear, goNextYear } = this.props;
         const yearLabel = visibleMonth.year();
@@ -10,7 +11,6 @@ class MonthPanelHeader extends React.PureComponent {
         return (
             <div className={`${prefix}calendar-panel-header`}>
                 <button
-                    role="button"
                     type="button"
                     title={locale.prevYear}
                     className={`${btnCls} ${btnCls}-prev-year`}
@@ -23,8 +23,8 @@ class MonthPanelHeader extends React.PureComponent {
                 </button>
                 <div className={`${prefix}calendar-panel-header-full`}>
                     <button
-                        role="button"
                         type="button"
+                        // @ts-expect-error yearLabel 应转为 string
                         title={yearLabel}
                         className={`${btnCls}`}
                         onClick={() => changeMode('year')}
@@ -33,7 +33,6 @@ class MonthPanelHeader extends React.PureComponent {
                     </button>
                 </div>
                 <button
-                    role="button"
                     type="button"
                     title={locale.nextYear}
                     className={`${btnCls} ${btnCls}-next-year`}

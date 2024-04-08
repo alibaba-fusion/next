@@ -1,4 +1,4 @@
-import React, {
+import type {
     ErrorInfo,
     JSXElementConstructor,
     Component,
@@ -6,7 +6,8 @@ import React, {
     WeakValidationMap,
     ValidationMap,
 } from 'react';
-import { ComponentLocaleObject, Locale } from '../locale/types';
+import type * as React from 'react';
+import type { ComponentLocaleObject, Locale } from '../locale/types';
 
 export interface PropsDeprecatedPrinter {
     (props: string, instead: string, component: string): void;

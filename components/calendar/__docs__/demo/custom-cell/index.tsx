@@ -2,18 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Calendar } from '@alifd/next';
 import moment from 'moment';
+import { type CalendarProps } from '@alifd/next/lib/calendar';
 
 const currentDate = moment();
 const localeData = currentDate.clone().localeData();
 const monthLocale = localeData.monthsShort();
 
-function dateCellRender(date) {
+const dateCellRender: CalendarProps['dateCellRender'] = date => {
     const dateNum = date.date();
     if (currentDate.month() !== date.month()) {
         return dateNum;
     }
 
-    let eventList;
+    let eventList: { type: 'primary' | 'normal'; content: string }[];
     switch (dateNum) {
         case 1:
             eventList = [
@@ -51,9 +52,9 @@ function dateCellRender(date) {
             </div>
         </div>
     );
-}
+};
 
-function monthCellRender(date) {
+const monthCellRender: CalendarProps['monthCellRender'] = date => {
     if (currentDate.month() === date.month()) {
         return (
             <div>
@@ -63,7 +64,7 @@ function monthCellRender(date) {
         );
     }
     return monthLocale[date.month()];
-}
+};
 
 ReactDOM.render(
     <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} />,
