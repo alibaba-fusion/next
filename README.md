@@ -17,6 +17,7 @@ English | [简体中文](./README.zh-cn.md)
   <a href="https://travis-ci.com/alibaba-fusion/next"><img src="https://travis-ci.com/alibaba-fusion/next.svg?token=KAYresHL1UPaaLzUYyx6&branch=master"></a>
   <a href="http://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
   <a href="https://github.com/alibaba-fusion/next/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg"></a>
+  <a href="https://opensumi.run/ide/alibaba-fusion/next"><img src="https://custom-icon-badges.demolab.com/badge/opensumi-run-blue.svg?logo=opensumi"></a>
 </p>
 
 You can customize your own DesignSystem via [Collaboration Platform](https://fusion.design).💖 Designers will receive design materials by [Fusion Cool](https://fusion.design/tool?from=github) - an easy to use plugin on sketch. Developers will get code fragment on [IceWorks](https://fusion.design/tool?from=github). At the same time, the consistency between code and visual manuscript is guaranteed. 😍
