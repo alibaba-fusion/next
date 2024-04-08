@@ -27,7 +27,7 @@ const transform = (props: CalendarProps, deprecated: typeof log.deprecated) => {
         deprecated('base', 'defaultVisibleMonth', 'Calendar');
 
         let newDefaultVisibleMonth = () => {
-            preFormatDateValue(base, 'YYYY-MM-DD');
+            return preFormatDateValue(base, 'YYYY-MM-DD');
         };
 
         if ('defaultVisibleMonth' in props) {
