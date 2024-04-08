@@ -50,7 +50,7 @@ class MonthTable extends PureComponent<MonthTableProps> {
                             isDisabled ? undefined : this.onMonthCellClick.bind(this, monthDate)
                         }
                         className={elementCls}
-                        role="cell"
+                        role="gridcell"
                         aria-disabled={isDisabled ? 'true' : 'false'}
                         aria-selected={isSelected ? 'true' : 'false'}
                     >

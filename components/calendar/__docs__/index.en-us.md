@@ -36,7 +36,7 @@ moment.locale('zh-cn');
 | value                | Selected date value (moment object)                                                           | Moment \| null                                          | -                         |          |
 | mode                 | Panel mode                                                                                    | CalendarMode                                            | -                         |          |
 | showOtherMonth       | Whether to show dates outside the current month                                               | boolean                                                 | true                      |          |
-| defaultVisibleMonth  | Default displayed month                                                                       | () => void                                              | -                         |          |
+| defaultVisibleMonth  | Default displayed month                                                                       | () => Moment                                            | -                         |          |
 | onModeChange         | Callback when the panel mode changes<br/><br/>**signature**:<br/>**params**:<br/>_mode_: mode | (mode: string) => void                                  | -                         |          |
 | onSelect             | Callback when selecting a date cell                                                           | (value: Moment) => void                                 | -                         |          |
 | onVisibleMonthChange | Callback when the displayed month changes                                                     | (value: Moment, reason: VisibleMonthChangeType) => void | -                         |          |
@@ -63,8 +63,9 @@ moment.locale('zh-cn');
 | defaultStartValue    | Default start date (moment object)                                                     | Moment \| null                                          | -                      |          |
 | defaultEndValue      | Default end date (moment object)                                                       | Moment \| null                                          | -                      |          |
 | monthCellRender      | Customize month rendering function                                                     | (calendarDate: Moment) => React.ReactNode               | -                      |          |
-| defaultVisibleMonth  | Default displayed month                                                                | () => void                                              | -                      |          |
+| defaultVisibleMonth  | Default displayed month                                                                | () => Moment                                            | -                      |          |
 | disabledDate         | Disabled date                                                                          | (calendarDate: Moment, view: string) => boolean         | -                      |          |
+| shape                | Display shape                                                                          | 'card' \| 'fullscreen' \| 'panel'                       | -                      |          |
 | yearRange            | Year range, [START_YEAR, END_YEAR] (only effective when shape is 'card', 'fullscreen') | [number, number]                                        | -                      |          |
 
 ### CalendarMode

@@ -54,7 +54,7 @@ export interface CalendarProps
      * 默认展示的月份
      * @en Default displayed month
      */
-    defaultVisibleMonth?: () => void;
+    defaultVisibleMonth?: () => Moment | null;
     /**
      * 面板模式变化时的回调
      * @en Callback when the panel mode changes
@@ -246,7 +246,7 @@ export interface RangeCalendarProps extends HTMLAttributesWeak, Omit<CommonProps
      * 默认展示的月份
      * @en Default displayed month
      */
-    defaultVisibleMonth?: () => void;
+    defaultVisibleMonth?: () => Moment | null;
     /**
      * 兼容 0.x yearCellRender
      * @deprecated use monthCellRender/dateCellRender instead
@@ -258,6 +258,11 @@ export interface RangeCalendarProps extends HTMLAttributesWeak, Omit<CommonProps
      * @en Disabled date
      */
     disabledDate?: (calendarDate: Moment, view: string) => boolean;
+    /**
+     * 展现形态
+     * @en Display shape
+     */
+    shape?: 'card' | 'fullscreen' | 'panel';
     /**
      * 年份范围，[START_YEAR, END_YEAR] (只在 shape 为‘card’, 'fullscreen' 下生效)
      * @en Year range, [START_YEAR, END_YEAR] (only effective when shape is 'card', 'fullscreen')
