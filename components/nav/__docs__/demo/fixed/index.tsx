@@ -1,13 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const header = <span className="fusion">FUSION</span>;
-const footer = (
-    <a className="login-in" href="javascript:;">
-        Login in
-    </a>
-);
-
 ReactDOM.render(
     <div>
         请查看{' '}
