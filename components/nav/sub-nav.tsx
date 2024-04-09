@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Menu from '../menu';
 import Icon from '../icon';
-import { SubNavProps } from './types';
+import type { SubNavProps } from './types';
 
 /**
  * Nav.SubNav
@@ -39,7 +39,7 @@ class SubNav extends Component<SubNavProps> {
         const cls = classNames({
             [`${prefix}nav-sub-nav-item`]: true,
             [`${prefix}nav-popup`]: mode === 'popup',
-            [className as string]: !!className,
+            [className!]: !!className,
         });
         let iconEl =
             typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;

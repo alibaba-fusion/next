@@ -1,12 +1,8 @@
-/** disable-eslint react/no-multi-comp */
-import React from 'react';
-import { CommonProps } from '../util';
-import { PopupProps } from '../overlay';
+import type { CommonProps } from '../util';
+import type { PopupProps } from '../overlay';
 
 /**
  * @api SelectEventExtraOptions
- *
- * @en Options for {@link NavProps.onSelect}
  */
 type SelectEventExtraOptions = {
     /**
@@ -31,7 +27,7 @@ type SelectEventExtraOptions = {
     label: string;
 };
 /**
- * @en Options for {@link NavProps.onOpen}
+ * @api OpenEventExtraOptions
  */
 type OpenEventExtraOptions = {
     /**
@@ -49,7 +45,6 @@ type OpenEventExtraOptions = {
 /**
  * @api Nav.Group
  * @order 2
- * @reference 继承自 `Menu.Group` 的能力请查看 `Menu.Group` 文档 - The API inherits from `Menu.Group`, please look at the `Menu.Group` document
  */
 export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -68,7 +63,6 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
 /**
  * @api Nav.Item
  * @order 3
- * @reference 继承自 `Menu.Item` 的能力请查看 `Menu.Item` 文档 - The API inherits from `Menu.Item`, please look at the `Menu.Item` document
  */
 export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -109,7 +103,6 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
 /**
  * @api Nav.PopupItem
  * @order 4
- * @reference 继承自 `Menu.PopupItem` 的能力请查看 `Menu.PopupItem` 文档 - The API inherits from `Menu.PopupItem`, please look at the `Menu.PopupItem` document
  */
 export interface PopupItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -135,7 +128,6 @@ export interface PopupItemProps extends React.HTMLAttributes<HTMLElement>, Commo
 /**
  * @api Nav.SubNav
  * @order 5
- * @reference 继承自 `Menu.SubMenu` 的能力请查看 `Menu.SubMenu` 文档 - The API inherits from `Menu.SubMenu`, please look at the `Menu.SubMenu` document
  */
 export interface SubNavProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -184,7 +176,6 @@ export interface NavRef extends React.RefObject<NavProps> {}
 /**
  * @api Nav
  * @order 1
- * @reference 继承自 `Menu` 的能力请查看 `Menu` 文档 - The API inherits from `Menu`, please look at the `Menu` document
  */
 export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
@@ -237,7 +228,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 子导航打开的模式
      * @en Sub navigation open mode (horizontal navigation only supports pop up)
-     * @defaultValue inline
+     * @defaultValue 'inline'
      * @remarks 水平导航只支持弹出
      */
     mode?: 'inline' | 'popup';
@@ -245,14 +236,14 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 子导航打开的触发方式
      * @en Sub navigation open trigger
-     * @defaultValue click
+     * @defaultValue 'click'
      */
     triggerType?: 'click' | 'hover';
 
     /**
      * 内联子导航的展开模式，同时可以展开一个同级子导航还是多个同级子导航
      * @en The open mode of inline sub navigation, expand a peer navigation or multiple navigations at the same level at same time, it only works in inline mode
-     * @defaultValue multiple
+     * @defaultValue 'multiple'
      * @remarks 仅在 mode 为 inline 时生效
      */
     openMode?: 'single' | 'multiple';
@@ -275,7 +266,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹出子导航的对齐方式
      * @en Pop up sub navigation alignment (horizontal navigation only supports follow)
-     * @defaultValue follow
+     * @defaultValue 'follow'
      * @remarks 水平导航只支持 follow
      */
     popupAlign?: 'follow' | 'outside';
@@ -311,7 +302,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * @en Keys of selected nav item in default
      * @defaultValue []
      */
-    defaultSelectedKeys?: string | Array<string>;
+    defaultSelectedKeys?: string | Array<string> | null;
 
     /**
      * 选中或取消选中导航项触发的回调函数
@@ -319,7 +310,6 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * @param selectedKeys - 选中的导航项的 key 值 - Keys of selected nav item
      * @param item - 选中的导航项 - Current operation nav item
      * @param extra - 扩展参数 - Extra parameters
-
      */
     onSelect?: (
         selectedKeys: Array<string>,
@@ -361,14 +351,14 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 导航布局
      * @en Layout of navigation
-     * @defaultValue ver
+     * @defaultValue 'ver'
      */
     direction?: 'hoz' | 'ver';
 
     /**
      * 横向导航条 items 和 footer 的对齐方向
      * @en Alignment of items in the horizontal nav bar, only works when direction is set to 'hoz' and the header exists
-     * @defaultValue left
+     * @defaultValue 'left'
      * @remarks 在 direction 设置为 'hoz' 并且 header 存在时生效
      */
     hozAlign?: 'left' | 'right';
@@ -411,7 +401,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 导航类型
      * @en Type of navigation
-     * @defaultValue normal
+     * @defaultValue 'normal'
      */
     type?: 'normal' | 'primary' | 'secondary' | 'line';
 
@@ -431,14 +421,14 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
      * iconOnly模式下是否展示文字
      * @en Whether to show text in iconOnly mode (only works when iconOnly=true)
-     * @remarks 仅在 iconOnly =t rue 时生效
+     * @remarks 仅在 iconOnly = true 时生效
      */
     iconTextOnly?: boolean;
 
     /**
      * iconOnly 模式下的宽度
      * @en iconOnly mode width (only works when iconOnly=true)
-     * @remarks 仅在 iconOnly =t rue 时生效
+     * @remarks 仅在 iconOnly = true 时生效
      */
     iconOnlyWidth?: number | string;
 
@@ -446,7 +436,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * 是否显示右侧的箭头
      * @en Whether to show arrow (only works when iconOnly=true)
      * @defaultValue true
-     * @remarks 仅在 iconOnly =t rue 时生效
+     * @remarks 仅在 iconOnly = true 时生效
      */
     hasArrow?: boolean;
 
