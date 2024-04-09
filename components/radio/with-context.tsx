@@ -1,10 +1,9 @@
-import React, { type ComponentRef, type ComponentType } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import type { RadioContext, RadioProps, WrappedRadio } from './types';
+import type { RadioContext, RadioProps, WrappedRadio, Radio as RadioClass } from './types';
 
-export default function withContext<C extends ComponentType>(Radio: C) {
-    type Ref = ComponentRef<C> & { focus: () => void };
-    class WrappedComp extends React.Component<RadioProps> {
+export default function withContext(Radio: typeof RadioClass) {
+    class WrappedComp extends React.Component<RadioProps> implements WrappedRadio {
         static displayName = 'Radio';
         static contextTypes = {
             onChange: PropTypes.func,
@@ -18,7 +17,7 @@ export default function withContext<C extends ComponentType>(Radio: C) {
             disabled: PropTypes.bool,
         };
 
-        radioRef: Ref | null;
+        radioRef: RadioClass | null;
 
         constructor(props: RadioProps) {
             super(props);
@@ -34,16 +33,15 @@ export default function withContext<C extends ComponentType>(Radio: C) {
         render() {
             return (
                 <Radio
-                    ref={(el: Ref | null) => {
+                    ref={el => {
                         this.radioRef = el;
                     }}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    {...(this.props as any)}
+                    {...this.props}
                     context={this.context as RadioContext}
                 />
             );
         }
     }
 
-    return WrappedComp as unknown as typeof WrappedRadio;
+    return WrappedComp as typeof WrappedRadio;
 }

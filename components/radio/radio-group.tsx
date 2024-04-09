@@ -284,4 +284,6 @@ class RadioGroup extends Component<GroupProps, GroupState> {
     }
 }
 
+export type { RadioGroup };
+
 export default polyfill(RadioGroup);

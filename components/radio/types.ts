@@ -2,6 +2,8 @@ import React, { type RefAttributes } from 'react';
 import type { CommonProps } from '../util';
 import type { Radio } from './radio';
 
+export type { Radio };
+
 export type HTMLAttributesWeak = Omit<
     React.HTMLAttributes<HTMLElement>,
     'defaultValue' | 'onChange' | 'onMouseEnter' | 'onMouseLeave'
