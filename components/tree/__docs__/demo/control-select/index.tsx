@@ -37,8 +37,14 @@ const data = [
     },
 ];
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<
+    any,
+    {
+        multiple: boolean;
+        selectedKeys: string[];
+    }
+> {
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -49,7 +55,7 @@ class Demo extends React.Component {
         this.handleCheck = this.handleCheck.bind(this);
     }
 
-    handleSelect(keys, info) {
+    handleSelect(keys: string[], info: any) {
         console.log(keys, info);
 
         this.setState({

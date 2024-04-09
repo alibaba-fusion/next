@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Step, Button } from '@alifd/next';
-import { StepProps } from '@alifd/meet-react/lib/step';
+import type { StepProps } from '@alifd/next/lib/step';
 
 const StepItem = Step.Item,
     ButtonGroup = Button.Group;

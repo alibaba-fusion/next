@@ -340,6 +340,14 @@ class CascaderSelect extends Component {
         return st;
     }
 
+    /**
+     * 使组件获得焦点
+     * @public
+     */
+    focus() {
+        this.select && this.select.focusInput();
+    }
+
     updateCache(dataSource) {
         this._v2n = {};
         this._p2n = {};
@@ -573,6 +581,15 @@ class CascaderSelect extends Component {
         }
 
         if (!visible) {
+            switch (e.keyCode) {
+                case KEYCODE.UP:
+                case KEYCODE.DOWN: {
+                    e.preventDefault();
+                    this.handleVisibleChange(true, 'keyboard');
+                    break;
+                }
+                // no default
+            }
             return;
         }
 

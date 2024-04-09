@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { Tree } from '@alifd/next';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Checkbox, Tree } from '@alifd/next';
 
 const data = [
     {

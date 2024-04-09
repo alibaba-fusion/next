@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Tree } from '@alifd/next';
+import type { DataNode } from '@alifd/next/lib/tree';
 
-const TreeNode = Tree.Node;
-
-const formatDataSource = data => {
+const formatDataSource = (data: any[]): DataNode[] => {
     return data.map(it => {
         return {
             ...it,
@@ -14,8 +13,13 @@ const formatDataSource = data => {
     });
 };
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<
+    any,
+    {
+        data: any[];
+    }
+> {
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -35,7 +39,7 @@ class Demo extends React.Component {
             <Tree
                 checkable
                 renderChildNodes={nodes => {
-                    if (nodes.find(node => node.props.children && node.props.children.length)) {
+                    if (nodes.find(node => node.props.children)) {
                         <ul role="group" className={`next-tree-child-tree`}>
                             {nodes}
                         </ul>;

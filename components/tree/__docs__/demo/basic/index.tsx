@@ -1,25 +1,26 @@
+import { Tree } from '@alifd/next';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Tree, Button, Icon } from '@alifd/next';
+import type { TreeProps } from '@alifd/next/lib/tree';
 
 const TreeNode = Tree.Node;
 
 class Demo extends React.Component {
-    onSelect(keys, info) {
+    onSelect: TreeProps['onSelect'] = (keys, info) => {
         console.log('onSelect', keys, info);
-    }
+    };
 
-    onCheck(keys, info) {
+    onCheck: TreeProps['onCheck'] = (keys, info) => {
         console.log('onCheck', keys, info);
-    }
+    };
 
-    onEditFinish(key, label, node) {
+    onEditFinish: TreeProps['onEditFinish'] = (key, label, node) => {
         console.log('onEditFinish', key, label, node);
-    }
+    };
 
-    onRightClick(info) {
+    onRightClick: TreeProps['onRightClick'] = info => {
         console.log('onRightClick', info);
-    }
+    };
 
     render() {
         return (

@@ -100,6 +100,25 @@ describe('Step', () => {
             cy.get('.next-step-vertical').should('have.length', 0);
         });
 
+        it('should support legacy directions', () => {
+            cy.mount(
+                <Step current={1} direction={'vertical' as 'ver'}>
+                    <StepItem title="步骤1" />
+                    <StepItem title="步骤2" />
+                    <StepItem title="步骤3" />
+                </Step>
+            );
+            cy.get('.next-step-vertical').should('have.length', 1);
+            cy.mount(
+                <Step current={1} shape="dot" direction={'horizontal' as 'hoz'}>
+                    <StepItem title="步骤1" />
+                    <StepItem title="步骤2" />
+                    <StepItem title="步骤3" />
+                </Step>
+            );
+            cy.get('.next-step-horizontal').should('have.length', 1);
+        });
+
         it('should render with labelPlacement', () => {
             cy.mount(
                 <Step current={1} labelPlacement="ver">
@@ -111,6 +130,25 @@ describe('Step', () => {
             cy.get('.next-step-label-vertical').should('have.length', 1);
             cy.mount(
                 <Step current={1} shape="dot" labelPlacement="hoz">
+                    <StepItem title="步骤1" />
+                    <StepItem title="步骤2" />
+                    <StepItem title="步骤3" />
+                </Step>
+            );
+            cy.get('.next-step-label-horizontal').should('have.length', 1);
+        });
+
+        it('should support legacy labelPlacement', () => {
+            cy.mount(
+                <Step current={1} labelPlacement={'vertical' as 'ver'}>
+                    <StepItem title="步骤1" />
+                    <StepItem title="步骤2" />
+                    <StepItem title="步骤3" />
+                </Step>
+            );
+            cy.get('.next-step-label-vertical').should('have.length', 1);
+            cy.mount(
+                <Step current={1} shape="dot" labelPlacement={'horizontal' as 'hoz'}>
                     <StepItem title="步骤1" />
                     <StepItem title="步骤2" />
                     <StepItem title="步骤3" />
