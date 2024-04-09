@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Radio } from '@alifd/next';
-import { NavProps } from '@alifd/next/es/nav';
+import type { NavProps } from '@alifd/next/es/nav';
+import type { GroupProps } from '@alifd/next/es/radio';
 
 type AppState = Pick<NavProps, 'type'>;
 const { Item, SubNav } = Nav;
@@ -11,11 +12,11 @@ class App extends React.Component {
         type: 'normal',
     };
 
-    changeType(type: AppState['type']) {
+    changeType: GroupProps['onChange'] = type => {
         this.setState({
             type,
         });
-    }
+    };
 
     render() {
         const { type } = this.state;
@@ -27,7 +28,7 @@ class App extends React.Component {
                         shape="button"
                         size="medium"
                         value={type}
-                        onChange={this.changeType.bind(this)}
+                        onChange={this.changeType}
                     >
                         <Radio value="normal">type="normal"</Radio>
                         <Radio value="primary">type="primary"</Radio>

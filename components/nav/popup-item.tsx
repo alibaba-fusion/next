@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Menu from '../menu';
 import Icon from '../icon';
-import { PopupItemProps } from './types';
+import type { PopupItemProps } from './types';
 
 /**
  * Nav.PopupItem
@@ -31,7 +31,7 @@ class PopupItem extends Component<PopupItemProps> {
         const { className, icon, label, children, ...others } = this.props;
         const cls = classNames({
             [`${prefix}nav-popup-item`]: true,
-            [className as string]: !!className,
+            [className!]: !!className,
         });
 
         let iconEl =

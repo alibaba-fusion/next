@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Radio } from '@alifd/next';
-import { NavProps } from '@alifd/next/es/nav';
+import type { NavProps } from '@alifd/next/es/nav';
 
 type AppState = Pick<NavProps, 'openMode'>;
 

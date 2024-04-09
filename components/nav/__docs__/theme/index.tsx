@@ -4,16 +4,19 @@ import '../../../demo-helper/style';
 import '../../style';
 import {
     Demo,
-    DemoFunctionDefineForObject,
     DemoGroup,
     DemoHead,
     initDemo,
+    type DemoFunctionDefineForObject,
 } from '../../../demo-helper';
 import Nav from '../../index';
-import { NavProps } from '../../types';
+import type { NavProps } from '../../types';
 
 interface FuncDemoProps {
     i18n: Record<string, string>;
+}
+interface FuncDemoState {
+    demoFunction: Record<string, DemoFunctionDefineForObject>;
 }
 const { Item, Group, SubNav } = Nav;
 
@@ -30,17 +33,12 @@ const i18nMaps = {
     },
 };
 
-class FuncDemo extends React.Component<
-    FuncDemoProps,
-    {
-        demoFunction: Record<string, DemoFunctionDefineForObject>;
-    }
-> {
-    onFunctionChange(demoFunction: Record<string, DemoFunctionDefineForObject>) {
+class FuncDemo extends React.Component<FuncDemoProps, FuncDemoState> {
+    onFunctionChange = (demoFunction: Record<string, DemoFunctionDefineForObject>) => {
         this.setState({
             demoFunction,
         });
-    }
+    };
 
     renderNav(
         direction: NavProps['direction'],
@@ -48,12 +46,11 @@ class FuncDemo extends React.Component<
         selectedKeys?: NavProps['defaultSelectedKeys'] | null,
         className?: string
     ) {
-        // eslint-disable-next-line
         const { i18n } = this.props;
         const { demoFunction } = this.state;
         const activeDirection =
             demoFunction.activeDirection && demoFunction.activeDirection.value !== 'false'
-                ? demoFunction.activeDirection.value
+                ? (demoFunction.activeDirection.value as NavProps['activeDirection'])
                 : null;
         const iconOnly = demoFunction.iconOnly && demoFunction.iconOnly.value === 'true';
         const hasGroup = demoFunction.hasGroup && demoFunction.hasGroup.value === 'true';
@@ -102,9 +99,9 @@ class FuncDemo extends React.Component<
                 defaultOpenAll
                 type={type}
                 direction={direction}
-                activeDirection={activeDirection as NavProps['activeDirection']}
+                activeDirection={activeDirection}
                 iconOnly={iconOnly}
-                defaultSelectedKeys={selectedKeys as NavProps['defaultSelectedKeys']}
+                defaultSelectedKeys={selectedKeys}
             >
                 {hasGroup ? <Group label={i18n.group}>{items}</Group> : items}
                 <SubNav key="5" icon={hasIcons && 'account'} label={`${i18n.item}5`}>
@@ -155,8 +152,6 @@ class FuncDemoHoz extends FuncDemo {
                 },
             },
         };
-
-        this.onFunctionChange = this.onFunctionChange.bind(this);
     }
 
     renderHozType(title: string, type: NavProps['type']) {
@@ -243,8 +238,6 @@ class FuncDemoVer extends FuncDemo {
                 },
             },
         };
-
-        this.onFunctionChange = this.onFunctionChange.bind(this);
     }
 
     renderVerType(title: string, type: NavProps['type']) {

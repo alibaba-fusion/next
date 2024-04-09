@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import Menu from '../menu';
 import Icon from '../icon';
 import Balloon from '../balloon';
-import { ItemProps } from './types';
+import type { ItemProps } from './types';
 
 const { Tooltip } = Balloon;
 
@@ -50,7 +50,7 @@ class Item extends Component<ItemProps> {
         const showChildren = !iconOnly || (iconOnly && !iconOnlyWidth) || iconTextOnly;
         const cls = classNames({
             [`${prefix}nav-with-title`]: iconOnly && iconTextOnly,
-            [className as string]: !!className,
+            [className!]: !!className,
         });
 
         const newChildren = showChildren ? (
