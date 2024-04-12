@@ -9,6 +9,7 @@ import zhCN from '../locale/zh-cn';
 import type { SwitchProps, SwitchState } from './types';
 
 class Switch extends React.Component<SwitchProps, SwitchState> {
+    static displayName = 'Switch';
     static propTypes = {
         ...ConfigProvider.propTypes,
         name: PropTypes.string,
