@@ -1,0 +1,20 @@
+:root {
+--rating-small-text-margin-left: 8px;
+--rating-small-icon-size: 12px;
+--rating-small-font-size: 12px;
+--rating-medium-text-margin-left: 12px;
+--rating-medium-icon-size: 16px;
+--rating-medium-font-size: 12px;
+--rating-large-text-margin-left: 16px;
+--rating-large-icon-size: 20px;
+--rating-large-font-size: 16px;
+--rating-normal-underlay-color: #E2E4E8;
+--rating-normal-overlay-color: #5584FF;
+--rating-normal-overlay-hover-color: #5584FF;
+--rating-grade-low-overlay-color: #666666;
+--rating-grade-low-overlay-hover-color: #999999;
+--rating-grade-high-overlay-color: #5584FF;
+--rating-grade-high-overlay-hover-color: #5584FF;
+--rating-grade-icon-content: "\e60e";
+--rating-grade-background: #FFFFFF;
+}
