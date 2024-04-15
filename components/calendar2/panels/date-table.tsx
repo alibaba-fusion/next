@@ -145,7 +145,8 @@ class DateTable extends React.Component {
                 const hoverState = hoverValue && hoveredState && hoveredState(hoverValue);
                 const className = classnames(cellCls, {
                     [`${cellCls}-current`]: isCurrent, // 是否属于当前面板值
-                    [`${cellCls}-today`]: mode === WEEK ? this.isSame(value, now, DATE) : this.isSame(v, now, mode),
+                    [`${cellCls}-today`]:
+                        mode === WEEK ? this.isSame(value, now, DATE) : this.isSame(v, now, mode),
                     [`${cellCls}-selected`]: this.isSame(v, props.value, mode),
                     [`${cellCls}-disabled`]: isDisabled,
                     [`${cellCls}-range-hover`]: hoverState,
@@ -179,7 +180,11 @@ class DateTable extends React.Component {
                 children.push(
                     <td key={key} title={key} {...onEvents} className={className}>
                         <div className={`${cellCls}-inner`}>
-                            {renderNode(customRender, <div className={`${cellCls}-value`}>{label}</div>, [v])}
+                            {renderNode(
+                                customRender,
+                                <div className={`${cellCls}-value`}>{label}</div>,
+                                [v]
+                            )}
                         </div>
                     </td>
                 );
@@ -187,7 +192,9 @@ class DateTable extends React.Component {
 
             let className;
             if (mode === WEEK) {
-                className = classnames(`${this.prefixCls}-week`, { [`${this.prefixCls}-week-current`]: isCurrentWeek });
+                className = classnames(`${this.prefixCls}-week`, {
+                    [`${this.prefixCls}-week-current`]: isCurrentWeek,
+                });
             }
 
             cellContent.push(
@@ -207,14 +214,18 @@ class DateTable extends React.Component {
 
         // 默认一周的第一天是周日，否则需要调整
         if (firstDayOfWeek !== 0) {
-            weekdaysMin = weekdaysMin.slice(firstDayOfWeek).concat(weekdaysMin.slice(0, firstDayOfWeek));
+            weekdaysMin = weekdaysMin
+                .slice(firstDayOfWeek)
+                .concat(weekdaysMin.slice(0, firstDayOfWeek));
         }
 
         return (
             <thead>
                 <tr>
                     {/* 占位 */}
-                    {this.props.mode === WEEK ? <th className={`${this.prefixCls}-cell-week`} /> : null}
+                    {this.props.mode === WEEK ? (
+                        <th className={`${this.prefixCls}-cell-week`} />
+                    ) : null}
                     {weekdaysMin.map(d => {
                         return <th key={d}>{d}</th>;
                     })}
