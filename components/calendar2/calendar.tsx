@@ -105,7 +105,9 @@ class Calendar extends React.Component {
 
         const { defaultValue, mode, defaultPanelValue = datejs() } = props;
         const value = 'value' in props ? props.value : defaultValue;
-        const panelValue = datejs('panelValue' in props ? props.panelValue : value || defaultPanelValue);
+        const panelValue = datejs(
+            'panelValue' in props ? props.panelValue : value || defaultPanelValue
+        );
         const panelMode = props.panelMode || getPanelMode(mode) || DATE_PANEL_MODE.DATE;
 
         this.state = {
@@ -170,7 +172,11 @@ class Calendar extends React.Component {
         const unit = panelMode === 'date' ? 'day' : panelMode;
 
         if (this.shouldSwitchPanelMode()) {
-            this.onPanelChange(value, this.switchPanelMode(panelMode), 'DATESELECT_VALUE_SWITCH_MODE');
+            this.onPanelChange(
+                value,
+                this.switchPanelMode(panelMode),
+                'DATESELECT_VALUE_SWITCH_MODE'
+            );
         } else {
             isCurrent || this.onPanelValueChange(value, 'DATESELECT');
             value.isSame(this.state.value, unit) || this.onChange(value);
@@ -247,10 +253,18 @@ class Calendar extends React.Component {
             onSelect: this.onDateSelect,
         };
 
-        const classNames = classnames([`${prefix}calendar2`, `${prefix}calendar2-${shape}`, className]);
+        const classNames = classnames([
+            `${prefix}calendar2`,
+            `${prefix}calendar2-${shape}`,
+            className,
+        ]);
 
         return (
-            <div {...pickOthers(Calendar.propTypes, restProps)} dir={rtl ? 'rtl' : undefined} className={classNames}>
+            <div
+                {...pickOthers(Calendar.propTypes, restProps)}
+                dir={rtl ? 'rtl' : undefined}
+                className={classNames}
+            >
                 <HeaderPanel {...headerPanelProps} />
                 <div className={`${prefix}calendar2-body`}>
                     <DateTable {...dateTableProps} />

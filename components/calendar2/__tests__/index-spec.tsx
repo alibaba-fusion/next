@@ -24,7 +24,9 @@ describe('Calendar2', () => {
 
     describe('render', () => {
         it('should render fullscreen calendar with header', () => {
-            wrapper = mount(<Calendar2 shape="fullscreen" showTitle defaultValue={defaultVal} mode="month" />);
+            wrapper = mount(
+                <Calendar2 shape="fullscreen" showTitle defaultValue={defaultVal} mode="month" />
+            );
 
             assert(wrapper.find('.next-calendar2-header-title'));
         });
