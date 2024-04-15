@@ -1,52 +1,20 @@
 import type { CommonProps } from '../util';
 import type { PopupProps } from '../overlay';
-
-/**
- * @api SelectEventExtraOptions
- */
-type SelectEventExtraOptions = {
-    /**
-     * 是否被选中
-     * @en Whether is selected
-     */
-    select: boolean;
-    /**
-     * 导航项 key 的路径
-     * @en Key path of current operation nav item
-     */
-    keyPath: string[];
-    /**
-     * 导航项的 key
-     * @en Key of current operation nav item
-     */
-    key: string[];
-    /**
-     * 导航项的文本
-     * @en Label of current operation nav item
-     */
-    label: string;
-};
-/**
- * @api OpenEventExtraOptions
- */
-type OpenEventExtraOptions = {
-    /**
-     * 是否打开
-     * @en Whether opened
-     */
-    open: boolean;
-    /**
-     * 打开或关闭的子菜单的 key 值
-     * @en Key value of opened or closed submenu
-     */
-    key: string;
-};
+import type {
+    GroupProps as MenuGroupProps,
+    ItemProps as MenuItemProps,
+    PopupItemProps as MenuPopupItemProps,
+    SelectableItem,
+    SelectExtra,
+    MenuItem,
+    SubMenuProps,
+} from '../menu';
 
 /**
  * @api Nav.Group
  * @order 2
  */
-export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+export interface GroupProps extends MenuGroupProps {
     /**
      * 标签内容
      * @en Content of label
@@ -57,14 +25,14 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 导航项和子导航
      * @en Navigation item and sub navigation
      */
-    children?: React.ReactNode;
+    children: React.ReactChild | React.ReactChild[];
 }
 
 /**
  * @api Nav.Item
  * @order 3
  */
-export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+export interface ItemProps extends MenuItemProps {
     /**
      * 是否禁用
      * @en whether is disabled
@@ -104,7 +72,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
  * @api Nav.PopupItem
  * @order 4
  */
-export interface PopupItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+export interface PopupItemProps extends MenuPopupItemProps {
     /**
      * 标签内容
      * @en Content of label
@@ -129,7 +97,7 @@ export interface PopupItemProps extends React.HTMLAttributes<HTMLElement>, Commo
  * @api Nav.SubNav
  * @order 5
  */
-export interface SubNavProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+export interface SubNavProps extends SubMenuProps {
     /**
      * 自定义图标
      * @en Custom icon, can use Icon's type or `<Icon type="your type" />`
@@ -192,7 +160,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * @param event - 点击事件 - Click event
      * @skip
      */
-    onItemClick?: (key: string, item: Record<string, unknown>, event: React.MouseEvent) => void;
+    onItemClick?: (key: string, item: MenuItem, event: React.MouseEvent) => void;
 
     /**
      * 当前展开的子菜单的 key 值
@@ -223,7 +191,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * @param extra - 扩展参数 - Extra parameters
      * @skip
      */
-    onOpen?: (key: string[], extra: OpenEventExtraOptions) => void;
+    onOpen?: (key: string[], extra: { key: string; open: boolean }) => void;
 
     /**
      * 子导航打开的模式
@@ -302,7 +270,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * @en Keys of selected nav item in default
      * @defaultValue []
      */
-    defaultSelectedKeys?: string | Array<string> | null;
+    defaultSelectedKeys?: string | Array<string>;
 
     /**
      * 选中或取消选中导航项触发的回调函数
@@ -311,11 +279,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * @param item - 选中的导航项 - Current operation nav item
      * @param extra - 扩展参数 - Extra parameters
      */
-    onSelect?: (
-        selectedKeys: Array<string>,
-        item?: React.ReactNode,
-        extra?: SelectEventExtraOptions
-    ) => void;
+    onSelect?: (selectedKeys: string[], item: SelectableItem, extra: SelectExtra) => void;
 
     /**
      * 选中模式，单选还是多选，默认无值，不可选
@@ -341,9 +305,9 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     hasSelectedIcon?: boolean;
 
     /**
-     * 是否将选中图标居右，仅当 hasSelectedIcon 为true 时生效。
+     * 是否将选中图标居右，仅当 hasSelectedIcon 为 true 时生效。
      * @en Whether to set the selected icon on right side of menu, this only works when hasSelectedIcon is true. Attention：select icon on SubMenu always lie on left of menu
-     * @remarks 注意：SubMenu 上的选中图标一直居左，不受此API控制
+     * @remarks 注意：SubMenu 上的选中图标一直居左，不受此 API 控制
      * @skip
      */
     isSelectIconRight?: boolean;
@@ -393,7 +357,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * 是否开启嵌入式模式
      * @en Whether to enable embedded mode
      * @defaultValue false
-     * @remarks 一般用于Layout的布局中，开启后没有默认背景、外层border、box-shadow，可以配合`<Nav style={{lineHeight: '100px'}}>` 自定义高度
+     * @remarks 一般用于 Layout 的布局中，开启后没有默认背景、外层 border、box-shadow，可以配合`<Nav style={{lineHeight: '100px'}}>` 自定义高度
      * @version 1.18
      */
     embeddable?: boolean;
@@ -419,7 +383,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     iconOnly?: boolean;
 
     /**
-     * iconOnly模式下是否展示文字
+     * iconOnly 模式下是否展示文字
      * @en Whether to show text in iconOnly mode (only works when iconOnly=true)
      * @remarks 仅在 iconOnly = true 时生效
      */

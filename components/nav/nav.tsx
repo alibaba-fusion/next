@@ -5,6 +5,7 @@ import ConfigProvider from '../config-provider';
 import Menu from '../menu';
 import type { NavProps } from './types';
 
+type MenuInstance = InstanceType<typeof Menu>;
 type MenuProps = React.ComponentProps<typeof Menu>;
 
 /**
@@ -77,7 +78,7 @@ class Nav extends Component<NavProps> {
         isCollapse: PropTypes.bool,
     };
 
-    menu: Menu | null;
+    menu: MenuInstance | null;
 
     getChildContext() {
         const {
@@ -104,7 +105,7 @@ class Nav extends Component<NavProps> {
         };
     }
 
-    getMenuRef: React.LegacyRef<Menu> = ref => {
+    getMenuRef: React.LegacyRef<MenuInstance> = ref => {
         this.menu = ref;
     };
 

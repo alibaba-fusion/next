@@ -179,13 +179,7 @@ const getNewChildren = ({
                 let newChild: ReactElement<MenuChildProps>;
 
                 let pos: string | undefined;
-                const props: {
-                    root: Menu;
-                    level?: number;
-                    inlineLevel?: number;
-                    _key?: string;
-                    groupIndent?: 0 | 1;
-                } = { root };
+                const props: MenuChildProps = { root };
 
                 if (['item', 'submenu', 'group'].indexOf(child.type.menuChildType) > -1) {
                     pos = `${posPrefix}-${indexWrapper.index++}`;
@@ -224,20 +218,20 @@ const getNewChildren = ({
                     case 'submenu':
                         newChild = cloneElement(
                             child,
-                            props as MenuChildProps,
+                            props,
                             loop(child.props.children, pos!, undefined, childLevel)
                         );
                         break;
                     case 'group':
                         newChild = cloneElement(
                             child,
-                            props as MenuChildProps,
+                            props,
                             loop(child.props.children, posPrefix, indexWrapper, props.level)
                         );
                         break;
                     case 'item':
                     case 'divider':
-                        newChild = cloneElement(child, props as MenuChildProps);
+                        newChild = cloneElement(child, props);
                         break;
                     default:
                         newChild = child;

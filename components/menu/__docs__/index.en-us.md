@@ -63,6 +63,7 @@
 | selectable              | Whether is selectable, it only works when set selectMode of Menu               | boolean         | false         |          |
 | mode                    | Open mode of submenu, it will override the property with the same name on Menu | Mode            | -             |          |
 | children                | Menu item or submenu                                                           | React.ReactNode | -             |          |
+| level                   | -                                                                              | number          | -             |          |
 | noIcon                  | No icon                                                                        | boolean         | false         |          |
 | subMenuContentClassName | ClassName of the content node                                                  | string          | -             |          |
 
@@ -82,14 +83,14 @@
 
 This subcomponent selection is not controlled by defaultSelectedKeys/selectedKeys. Please control the selected yourself.
 
-| Param         | Description                                                                                                                                             | Type                                                                       | Default Value | Required |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------- | -------- |
-| checked       | Whether is checked                                                                                                                                      | boolean                                                                    | false         |          |
-| indeterminate | Whether is indeterminate                                                                                                                                | boolean                                                                    | false         |          |
-| disabled      | Whether is disabled                                                                                                                                     | boolean                                                                    | false         |          |
-| onChange      | Callback function triggered when check or uncheck menu item<br/><br/>**signature**:<br/>**params**:<br/>_checked_: Is checked<br/>_event_: Event object | (checked: boolean, event: React.MouseEvent \| React.KeyboardEvent) => void | -             |          |
-| helper        | Help text                                                                                                                                               | React.ReactNode                                                            | -             |          |
-| children      | Content of menu check item                                                                                                                              | React.ReactNode                                                            | -             |          |
+| Param         | Description                                                                                                                                             | Type                                                                                                             | Default Value | Required |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
+| checked       | Whether is checked                                                                                                                                      | boolean                                                                                                          | false         |          |
+| indeterminate | Whether is indeterminate                                                                                                                                | boolean                                                                                                          | false         |          |
+| disabled      | Whether is disabled                                                                                                                                     | boolean                                                                                                          | false         |          |
+| onChange      | Callback function triggered when check or uncheck menu item<br/><br/>**signature**:<br/>**params**:<br/>_checked_: Is checked<br/>_event_: Event object | (<br/> checked: boolean,<br/> event: React.MouseEvent \| React.KeyboardEvent \| React.ChangeEvent<br/> ) => void | -             |          |
+| helper        | Help text                                                                                                                                               | React.ReactNode                                                                                                  | -             |          |
+| children      | Content of menu check item                                                                                                                              | React.ReactNode                                                                                                  | -             |          |
 
 ### Menu.RadioItem
 

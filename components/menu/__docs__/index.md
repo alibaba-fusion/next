@@ -69,6 +69,7 @@
 | selectable              | 是否可选，该属性仅在设置 Menu 组件 selectMode 属性后生效 | boolean         | false  |          |
 | mode                    | 子菜单打开方式，如果设置会覆盖 Menu 上的同名属性         | Mode            | -      |          |
 | children                | 菜单项或下一级子菜单                                     | React.ReactNode | -      |          |
+| level                   | 菜单层级                                                 | number          | -      |          |
 | noIcon                  | 是否没有图标                                             | boolean         | false  |          |
 | subMenuContentClassName | 子菜单内容节点的类名                                     | string          | -      |          |
 
@@ -88,14 +89,14 @@
 
 该子组件选中情况不受 defaultSelectedKeys/selectedKeys 控制，请自行控制选中逻辑
 
-| 参数          | 说明                                                                                                        | 类型                                                                       | 默认值 | 是否必填 |
-| ------------- | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------ | -------- |
-| checked       | 是否选中                                                                                                    | boolean                                                                    | false  |          |
-| indeterminate | 是否半选中                                                                                                  | boolean                                                                    | false  |          |
-| disabled      | 是否禁用                                                                                                    | boolean                                                                    | false  |          |
-| onChange      | 选中或取消选中触发的回调函数<br/><br/>**签名**:<br/>**参数**:<br/>_checked_: 是否选中<br/>_event_: 事件对象 | (checked: boolean, event: React.MouseEvent \| React.KeyboardEvent) => void | -      |          |
-| helper        | 帮助文本                                                                                                    | React.ReactNode                                                            | -      |          |
-| children      | 标签内容                                                                                                    | React.ReactNode                                                            | -      |          |
+| 参数          | 说明                                                                                                        | 类型                                                                                                             | 默认值 | 是否必填 |
+| ------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------ | -------- |
+| checked       | 是否选中                                                                                                    | boolean                                                                                                          | false  |          |
+| indeterminate | 是否半选中                                                                                                  | boolean                                                                                                          | false  |          |
+| disabled      | 是否禁用                                                                                                    | boolean                                                                                                          | false  |          |
+| onChange      | 选中或取消选中触发的回调函数<br/><br/>**签名**:<br/>**参数**:<br/>_checked_: 是否选中<br/>_event_: 事件对象 | (<br/> checked: boolean,<br/> event: React.MouseEvent \| React.KeyboardEvent \| React.ChangeEvent<br/> ) => void | -      |          |
+| helper        | 帮助文本                                                                                                    | React.ReactNode                                                                                                  | -      |          |
+| children      | 标签内容                                                                                                    | React.ReactNode                                                                                                  | -      |          |
 
 ### Menu.RadioItem
 

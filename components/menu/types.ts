@@ -263,11 +263,6 @@ export interface SubMenuProps extends PopupItemProps {
     children?: React.ReactNode;
 
     /**
-     * 菜单层级
-     */
-    level?: number;
-
-    /**
      * 是否没有图标
      * @en No icon
      * @defaultValue false
@@ -369,7 +364,10 @@ export interface CheckboxItemProps extends ItemProps {
      * @param checked - 是否选中 - Is checked
      * @param event - 事件对象 - Event object
      */
-    onChange?: (checked: boolean, event: React.MouseEvent | React.KeyboardEvent) => void;
+    onChange?: (
+        checked: boolean,
+        event: React.MouseEvent | React.KeyboardEvent | React.ChangeEvent
+    ) => void;
 
     /**
      * 帮助文本
