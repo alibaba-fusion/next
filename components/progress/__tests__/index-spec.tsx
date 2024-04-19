@@ -42,7 +42,10 @@ describe('Line', () => {
         it('should render a line progress with custom background color', () => {
             wrapper = mount(<Progress percent={66} backgroundColor={'blue'} />);
 
-            assert(wrapper.find('.next-progress-line-underlay').prop('style').backgroundColor === 'blue');
+            assert(
+                wrapper.find('.next-progress-line-underlay').prop('style').backgroundColor ===
+                    'blue'
+            );
         });
     });
 
@@ -88,19 +91,27 @@ describe('Circle', () => {
         });
 
         it('should render a circle progress without text', () => {
-            const wrapper = mount(<Progress shape="circle" percent={30} textRender={() => false} />);
+            const wrapper = mount(
+                <Progress shape="circle" percent={30} textRender={() => false} />
+            );
             assert(wrapper.find('.next-progress-circle-text').length === 0);
         });
 
         it('should render a circle progress use custom text', () => {
-            const wrapper = mount(<Progress shape="circle" percent={66} textRender={percent => percent / 10} />);
+            const wrapper = mount(
+                <Progress shape="circle" percent={66} textRender={percent => percent / 10} />
+            );
             assert(wrapper.find('.next-progress-circle-text').text() === '6.6');
         });
 
         it('should render a circle progress with custom background color', () => {
-            const wrapper = mount(<Progress shape="circle" percent={66} backgroundColor={'#ff0000'} />);
+            const wrapper = mount(
+                <Progress shape="circle" percent={66} backgroundColor={'#ff0000'} />
+            );
 
-            assert(wrapper.find('.next-progress-circle-underlay').prop('style').stroke === '#ff0000');
+            assert(
+                wrapper.find('.next-progress-circle-underlay').prop('style').stroke === '#ff0000'
+            );
         });
     });
 
