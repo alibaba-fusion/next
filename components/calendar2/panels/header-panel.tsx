@@ -72,6 +72,7 @@ class HeaderPanel extends React.PureComponent<HeaderPanelProps> {
 
         return [
             <Button
+                aria-label="prev-btn"
                 text
                 className={`${prefixCls}-btn  ${prefixCls}-left-btn`}
                 onClick={() => this.handleClick(value, { num, unit, isSuper, isNext: false })}
@@ -81,6 +82,7 @@ class HeaderPanel extends React.PureComponent<HeaderPanelProps> {
             </Button>,
             <Button
                 text
+                aria-label="next-btn"
                 className={`${prefixCls}-btn ${prefixCls}-right-btn`}
                 onClick={() => this.handleClick(value, { num, unit, isSuper, isNext: true })}
                 key={`next-btn-${unit}`}
