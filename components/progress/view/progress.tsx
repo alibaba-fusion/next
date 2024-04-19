@@ -69,6 +69,10 @@ export default class Progress extends Component {
 
     render() {
         const { shape, hasBorder, ...others } = this.props;
-        return shape === 'circle' ? <Circle {...others} /> : <Line {...others} hasBorder={hasBorder} />;
+        return shape === 'circle' ? (
+            <Circle {...others} />
+        ) : (
+            <Line {...others} hasBorder={hasBorder} />
+        );
     }
 }
