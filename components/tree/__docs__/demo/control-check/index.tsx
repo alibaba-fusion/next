@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Checkbox, Tree } from '@alifd/next';
-import type { TreeProps } from '@alifd/next/lib/tree';
+import type { TreeProps } from '@alifd/next/types/tree';
 
 const data = [
     {

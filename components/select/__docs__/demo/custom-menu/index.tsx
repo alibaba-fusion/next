@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select, Icon } from '@alifd/next';
-import { type SelectProps } from '@alifd/next/lib/select';
+import { type SelectProps } from '@alifd/next/types/select';
 
 const dataSource = [
     { value: '#FF0000', label: 'red', title: 'red' },

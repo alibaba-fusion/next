@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Radio } from '@alifd/next';
-import type { NavProps } from '@alifd/next/es/nav';
+import type { NavProps } from '@alifd/next/types/nav';
 
 type AppState = Pick<NavProps, 'type' | 'mode' | 'direction' | 'activeDirection' | 'triggerType'>;
 

@@ -17,11 +17,11 @@ import {
     CascaderSelect,
 } from '@alifd/next';
 import 'whatwg-fetch';
-import { type GroupProps } from '@alifd/next/lib/radio';
-import { type SelectProps } from '@alifd/next/lib/select';
-import { type DrawerProps } from '@alifd/next/lib/drawer';
-import { type CascaderSelectProps } from '@alifd/next/lib/cascader-select';
-import { type TreeSelectProps } from '@alifd/next/lib/tree-select';
+import { type GroupProps } from '@alifd/next/types/radio';
+import { type SelectProps } from '@alifd/next/types/select';
+import { type DrawerProps } from '@alifd/next/types/drawer';
+import { type CascaderSelectProps } from '@alifd/next/types/cascader-select';
+import { type TreeSelectProps } from '@alifd/next/types/tree-select';
 
 const Tooltip = Balloon.Tooltip;
 const menubuttonMenu = ['Undo', 'Redo', 'Cut', 'Copy', 'Paste'].map(item => (

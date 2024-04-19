@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Search, Tree } from '@alifd/next';
-import type { DataNode, NodeInstance } from '@alifd/next/lib/tree';
+import type { DataNode, NodeInstance } from '@alifd/next/types/tree';
 
 const data: DataNode[] = [
     {

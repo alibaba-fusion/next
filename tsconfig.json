@@ -19,7 +19,8 @@
         "paths": {
             "@alifd/next": ["./components/index.ts"],
             "@alifd/next/es/*": ["./components/*"],
-            "@alifd/next/lib/*": ["./components/*"]
+            "@alifd/next/lib/*": ["./components/*"],
+            "@alifd/next/types/*": ["./components/*"]
         }
     },
     "include": ["global.d.ts", "cypress/**/*.ts", "./components/**/*.ts", "./components/**/*.tsx", "tools"]

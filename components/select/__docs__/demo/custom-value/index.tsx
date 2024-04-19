@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select, Radio } from '@alifd/next';
-import { type GroupProps } from '@alifd/next/lib/radio';
-import { type SelectProps } from '@alifd/next/lib/select';
+import { type GroupProps } from '@alifd/next/types/radio';
+import { type SelectProps } from '@alifd/next/types/select';
 
 class DemoWithFillProps extends React.Component {
     state = {

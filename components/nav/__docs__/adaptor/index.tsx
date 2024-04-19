@@ -1,7 +1,7 @@
 import React from 'react';
 import { Types, parseData } from '@alifd/adaptor-helper';
 import { Nav } from '@alifd/next';
-import type { NavProps } from '@alifd/next/es/nav';
+import type { NavProps } from '@alifd/next/types/nav';
 import { createContents } from './createContents';
 import type { DataSourceOption } from './types';
 
@@ -146,7 +146,9 @@ export default {
             hover: true,
             group: true,
             icon: true,
-            default: `[account]Nav Item 1\n[account]Nav Item 2\n[account]Nav Item 3\n${shape === 'ver' ? '*' : ''}[account]Nav Item 4\n\t[account]Option 1\n\t[account]Option 2\n\t[account]Option 3\n\t[account]Option 4`,
+            default: `[account]Nav Item 1\n[account]Nav Item 2\n[account]Nav Item 3\n${
+                shape === 'ver' ? '*' : ''
+            }[account]Nav Item 4\n\t[account]Option 1\n\t[account]Option 2\n\t[account]Option 3\n\t[account]Option 4`,
         },
     }),
     adaptor: ({

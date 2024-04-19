@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Switch, Radio } from '@alifd/next';
-import type { NavProps } from '@alifd/next/es/nav';
+import type { NavProps } from '@alifd/next/types/nav';
 
 const { Item, SubNav } = Nav;
 
