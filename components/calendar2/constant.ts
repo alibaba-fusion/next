@@ -1,4 +1,6 @@
-// 日历shape
+import type { CalendarPanelMode } from './types';
+
+// 日历 shape
 export const CALENDAR_SHAPE = {
     FULLSCREEN: 'fullscreen',
     CARD: 'card',
@@ -12,7 +14,7 @@ export const CALENDAR_MODE = {
 };
 
 // 日期面板的模式
-export const DATE_PANEL_MODE = {
+export const DATE_PANEL_MODE: Record<string, CalendarPanelMode> = {
     DATE: 'date',
     WEEK: 'week',
     MONTH: 'month',

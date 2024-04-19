@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { type KeyboardEvent, type MouseEvent } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import PT from 'prop-types';
+import { type WeekdayNames, type Dayjs, type ConfigType } from 'dayjs';
 import SharedPT from '../prop-types';
 import { DATE_PANEL_MODE } from '../constant';
 import { func, datejs, KEYCODE } from '../../util';
+import type { CalendarPanelMode, CellData, DateTableProps, DateTableState } from '../types';
 
 const { bindCtx, renderNode } = func;
 const { DATE, WEEK, MONTH, QUARTER, YEAR, DECADE } = DATE_PANEL_MODE;
@@ -19,7 +21,7 @@ const mode2Rows = {
     [DECADE]: 3,
 };
 
-class DateTable extends React.Component {
+class DateTable extends React.Component<DateTableProps, DateTableState> {
     static propTypes = {
         mode: SharedPT.panelMode,
         value: SharedPT.date,
@@ -29,17 +31,15 @@ class DateTable extends React.Component {
         monthCellRender: PT.func,
         yearCellRender: PT.func,
         disabledDate: PT.func,
-        selectedState: PT.func,
         hoveredState: PT.func,
         onSelect: PT.func,
-        onDateSelect: PT.func,
-        startOnSunday: PT.bool,
         cellClassName: PT.oneOfType([PT.func, PT.string]),
         colNum: PT.number,
         cellProps: PT.object,
     };
+    prefixCls: string;
 
-    constructor(props) {
+    constructor(props: DateTableProps) {
         super(props);
 
         this.prefixCls = `${props.prefix}calendar2`;
@@ -61,11 +61,19 @@ class DateTable extends React.Component {
         };
     }
 
-    handleSelect(v, e, args) {
+    handleSelect(
+        v: Dayjs,
+        e: KeyboardEvent<HTMLElement> | MouseEvent<HTMLElement>,
+        args: Pick<CellData, 'isCurrent' | 'label'>
+    ) {
         func.invoke(this.props, 'onSelect', [v, e, args]);
     }
 
-    handleKeyDown(v, e, args) {
+    handleKeyDown(
+        v: Dayjs,
+        e: KeyboardEvent<HTMLElement>,
+        args: Pick<CellData, 'isCurrent' | 'label'>
+    ) {
         switch (e.keyCode) {
             case KEYCODE.ENTER:
                 this.handleSelect(v, e, args);
@@ -76,15 +84,23 @@ class DateTable extends React.Component {
         // e.preventDefault();
     }
 
-    handleMouseEnter(v, e, args) {
+    handleMouseEnter(
+        v: Dayjs,
+        e: MouseEvent<HTMLElement>,
+        args: Pick<CellData, 'isCurrent' | 'label'>
+    ) {
         func.invoke(this.props.cellProps, 'onMouseEnter', [v, e, args]);
     }
 
-    handleMouseLeave(v, e, args) {
+    handleMouseLeave(
+        v: Dayjs,
+        e: MouseEvent<HTMLElement>,
+        args: Pick<CellData, 'isCurrent' | 'label'>
+    ) {
         func.invoke(this.props.cellProps, 'onMouseLeave', [v, e, args]);
     }
 
-    isSame(curDate, date, mode) {
+    isSame(curDate: Dayjs, date: ConfigType, mode: CalendarPanelMode) {
         switch (mode) {
             case DATE:
                 return curDate.isSame(date, 'day');
@@ -98,14 +114,18 @@ class DateTable extends React.Component {
                 return curDate.isSame(date, 'year');
             case DECADE: {
                 const curYear = curDate.year();
+                // @ts-expect-error mode 为 decade 时要求 date 为 dayjs
                 const targetYear = date.year();
                 return curYear <= targetYear && targetYear < curYear + 10;
             }
         }
     }
 
-    getCustomRender = mode => {
-        const mode2RenderName = {
+    getCustomRender = (mode: CalendarPanelMode) => {
+        const mode2RenderName: Record<
+            string,
+            'dateCellRender' | 'monthCellRender' | 'quarterCellRender' | 'yearCellRender'
+        > = {
             [DATE]: 'dateCellRender',
             [QUARTER]: 'quarterCellRender',
             [MONTH]: 'monthCellRender',
@@ -117,12 +137,9 @@ class DateTable extends React.Component {
 
     /**
      * 渲染日期面板
-     * @param {Object[]} cellData - 单元格数据
-     * @param {String}   cellData[].label - 单元格显示文本
-     * @param {Object}   cellData[].value - 日期对象
-     * @param {Boolean}  cellData[].isCurrent - 是否是当前面板时间范围内的值
+     * @param cellData - 单元格数据
      */
-    renderCellContent(cellData) {
+    renderCellContent(cellData: CellData[]) {
         const { props } = this;
         const { mode, hoveredState, cellClassName } = props;
         const { hoverValue } = this.state;
@@ -139,7 +156,7 @@ class DateTable extends React.Component {
             let isCurrentWeek;
             for (let j = 0; j < rowLen; j++) {
                 const { label, value, key, isCurrent } = cellData[i++];
-                const v = value.startOf(mode);
+                const v = value.startOf(mode as Exclude<CalendarPanelMode, 'quarter' | 'decade'>);
 
                 const isDisabled = props.disabledDate && props.disabledDate(v, mode);
                 const hoverState = hoverValue && hoveredState && hoveredState(hoverValue);
@@ -157,10 +174,14 @@ class DateTable extends React.Component {
 
                 if (!isDisabled) {
                     onEvents = {
-                        onClick: e => this.handleSelect(v, e, { isCurrent, label }),
-                        onKeyDown: e => this.handleKeyDown(v, e, { isCurrent, label }),
-                        onMouseEnter: e => this.handleMouseEnter(v, e, { isCurrent, label }),
-                        onMouseLeave: e => this.handleMouseLeave(v, e, { isCurrent, label }),
+                        onClick: (e: MouseEvent<HTMLElement>) =>
+                            this.handleSelect(v, e, { isCurrent, label }),
+                        onKeyDown: (e: KeyboardEvent<HTMLElement>) =>
+                            this.handleKeyDown(v, e, { isCurrent, label }),
+                        onMouseEnter: (e: MouseEvent<HTMLElement>) =>
+                            this.handleMouseEnter(v, e, { isCurrent, label }),
+                        onMouseLeave: (e: MouseEvent<HTMLElement>) =>
+                            this.handleMouseLeave(v, e, { isCurrent, label }),
                     };
                 }
 
@@ -178,7 +199,7 @@ class DateTable extends React.Component {
                 const customRender = this.getCustomRender(mode);
 
                 children.push(
-                    <td key={key} title={key} {...onEvents} className={className}>
+                    <td key={key} title={key as string} {...onEvents} className={className}>
                         <div className={`${cellCls}-inner`}>
                             {renderNode(
                                 customRender,
@@ -216,7 +237,7 @@ class DateTable extends React.Component {
         if (firstDayOfWeek !== 0) {
             weekdaysMin = weekdaysMin
                 .slice(firstDayOfWeek)
-                .concat(weekdaysMin.slice(0, firstDayOfWeek));
+                .concat(weekdaysMin.slice(0, firstDayOfWeek)) as WeekdayNames;
         }
 
         return (
@@ -242,7 +263,7 @@ class DateTable extends React.Component {
         const daysOfCurMonth = panelValue.endOf('month').date(); // 当月天数
         const firstDayOfWeek = datejs.localeData().firstDayOfWeek(); // 一周的第一天是星期几
 
-        const cellData = [];
+        const cellData: Dayjs[] = [];
         const preDays = (weekOfFirstDay - firstDayOfWeek + 7) % 7;
         const nextDays = colNum
             ? colNum * mode2Rows[DATE] - preDays - daysOfCurMonth
