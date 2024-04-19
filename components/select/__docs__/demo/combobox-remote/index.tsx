@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
 import jsonp from 'jsonp';
-import { type AutoCompleteProps } from '@alifd/next/lib/select';
+import { type AutoCompleteProps } from '@alifd/next/types/select';
 
 const { AutoComplete } = Select;
 
