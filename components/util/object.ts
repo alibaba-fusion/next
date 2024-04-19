@@ -1,8 +1,8 @@
 import React, {
-    ReactElement,
-    JSXElementConstructor,
-    ComponentClass,
-    ForwardRefExoticComponent,
+    type ReactElement,
+    type JSXElementConstructor,
+    type ComponentClass,
+    type ForwardRefExoticComponent,
 } from 'react';
 
 export type ObjectOrArray<T = unknown> = Record<PropertyKey, T> | ArrayLike<T>;
@@ -193,14 +193,15 @@ export function each(
     return obj;
 }
 
-type KeyOf<T> = T extends Array<infer U> ? U : keyof T;
+type KeyOf<T extends ObjectOrArray> = T extends Array<infer U> ? U : keyof T;
 
 // @private 判断 key 是否在数组或对象中
 const _isInObj = <O extends ObjectOrArray>(
-    key: PropertyKey,
+    key: unknown,
     obj: O,
     isArray?: boolean
-): key is KeyOf<O> => (isArray ? (obj as Array<unknown>).indexOf(key) > -1 : key in obj);
+): key is KeyOf<O> =>
+    isArray ? (obj as Array<unknown>).indexOf(key) > -1 : (key as PropertyKey) in obj;
 
 /**
  * 过滤出其它属性

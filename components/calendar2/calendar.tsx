@@ -1,27 +1,40 @@
-import React from 'react';
+import React, { type UIEvent } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PT from 'prop-types';
 import classnames from 'classnames';
+import { type Dayjs, type ConfigType } from 'dayjs';
 import defaultLocale from '../locale/zh-cn';
-import { func, datejs, obj } from '../util';
+import { func, datejs, obj, type ClassPropsWithDefault } from '../util';
 import SharedPT from './prop-types';
 
 import { CALENDAR_MODE, CALENDAR_SHAPE, DATE_PANEL_MODE } from './constant';
 import HeaderPanel from './panels/header-panel';
 import DateTable from './panels/date-table';
+import type {
+    CalendarMode,
+    CalendarPanelMode,
+    CalendarProps,
+    CalendarState,
+    CellData,
+} from './types';
 
 const { pickProps, pickOthers } = obj;
 
 // CALENDAR_MODE => DATE_PANEL_MODE
-function getPanelMode(mode) {
+function getPanelMode(mode: CalendarMode | CalendarPanelMode) {
     return mode && (mode === CALENDAR_MODE.YEAR ? DATE_PANEL_MODE.MONTH : DATE_PANEL_MODE.DATE);
 }
 
-function isValueChanged(newVal, oldVal) {
+function isValueChanged(newVal: ConfigType, oldVal: ConfigType) {
     return newVal !== oldVal && !datejs(newVal).isSame(datejs(oldVal));
 }
 
-class Calendar extends React.Component {
+type CalendarPropsWithDefault = ClassPropsWithDefault<
+    CalendarProps,
+    keyof typeof Calendar.defaultProps
+>;
+
+class Calendar extends React.Component<CalendarProps, CalendarState> {
     static propTypes = {
         rtl: PT.bool,
         name: PT.string,
@@ -32,7 +45,7 @@ class Calendar extends React.Component {
          */
         shape: SharedPT.shape,
         /*
-         * 日期模式: month | year
+         * 日期模式：month | year
          */
         mode: SharedPT.mode,
         /**
@@ -100,7 +113,9 @@ class Calendar extends React.Component {
         mode: CALENDAR_MODE.MONTH,
     };
 
-    constructor(props) {
+    readonly props: CalendarPropsWithDefault;
+
+    constructor(props: CalendarProps) {
         super(props);
 
         const { defaultValue, mode, defaultPanelValue = datejs() } = props;
@@ -108,18 +123,18 @@ class Calendar extends React.Component {
         const panelValue = datejs(
             'panelValue' in props ? props.panelValue : value || defaultPanelValue
         );
-        const panelMode = props.panelMode || getPanelMode(mode) || DATE_PANEL_MODE.DATE;
+        const panelMode = props.panelMode || getPanelMode(mode!) || DATE_PANEL_MODE.DATE;
 
         this.state = {
-            mode,
+            mode: mode!,
             value,
             panelMode,
             panelValue: panelValue.isValid() ? panelValue : datejs(),
         };
     }
 
-    static getDerivedStateFromProps(props, state) {
-        let newState = null;
+    static getDerivedStateFromProps(props: CalendarPropsWithDefault, state: CalendarState) {
+        let newState: Partial<CalendarState> = {};
         let value;
         let panelValue;
 
@@ -132,7 +147,7 @@ class Calendar extends React.Component {
             panelValue = datejs(props.panelValue);
         }
 
-        // panelValue不能是无效值
+        // panelValue 不能是无效值
         if (panelValue) {
             panelValue = panelValue.isValid() ? panelValue : datejs();
             newState = {
@@ -146,7 +161,7 @@ class Calendar extends React.Component {
         return newState;
     }
 
-    switchPanelMode = mode => {
+    switchPanelMode = (mode: CalendarPanelMode) => {
         const { MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
         const originalPanelMode = this.props.panelMode || getPanelMode(mode);
 
@@ -167,7 +182,7 @@ class Calendar extends React.Component {
         return shape === CALENDAR_SHAPE.PANEL && panelMode !== originalPanelMode;
     };
 
-    onDateSelect = (value, _, { isCurrent }) => {
+    onDateSelect = (value: Dayjs, _: UIEvent, { isCurrent }: Pick<CellData, 'isCurrent'>) => {
         const { panelMode } = this.state;
         const unit = panelMode === 'date' ? 'day' : panelMode;
 
@@ -179,13 +194,14 @@ class Calendar extends React.Component {
             );
         } else {
             isCurrent || this.onPanelValueChange(value, 'DATESELECT');
+            // @ts-expect-error unit 在这里不能是 quarter 和 week
             value.isSame(this.state.value, unit) || this.onChange(value);
 
             func.invoke(this.props, 'onSelect', [value]);
         }
     };
 
-    onModeChange = (mode, reason) => {
+    onModeChange = (mode: CalendarMode, reason?: string) => {
         this.setState({
             mode,
         });
@@ -196,15 +212,15 @@ class Calendar extends React.Component {
         }
     };
 
-    onPanelValueChange = (panelValue, reason) => {
+    onPanelValueChange = (panelValue: Dayjs, reason?: string) => {
         this.onPanelChange(panelValue, this.state.panelMode, reason);
     };
 
-    onPanelModeChange = (panelMode, reason) => {
+    onPanelModeChange = (panelMode: CalendarPanelMode, reason?: string) => {
         this.onPanelChange(this.state.panelValue, panelMode, reason);
     };
 
-    onPanelChange = (value, mode, reason) => {
+    onPanelChange = (value: Dayjs, mode: CalendarPanelMode, reason?: string) => {
         this.setState({
             panelMode: mode,
             panelValue: value,
@@ -213,7 +229,7 @@ class Calendar extends React.Component {
         func.invoke(this.props, 'onPanelChange', [value, mode, reason]);
     };
 
-    onChange = value => {
+    onChange = (value: Dayjs) => {
         this.setState({
             value,
             panelValue: value,

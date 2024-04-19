@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Calendar2 } from '@alifd/next';
 import dayjs from 'dayjs';
+import type { CalendarProps } from '@alifd/next/lib/calendar2';
 
 const currentDate = dayjs();
-const disabledDate = function (date) {
+const disabledDate: CalendarProps['disabledDate'] = function (date) {
     return date.valueOf() > currentDate.valueOf();
 };
 
