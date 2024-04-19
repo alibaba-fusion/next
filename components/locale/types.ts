@@ -35,6 +35,7 @@ export interface Locale extends LocaleConfig {
         nextDecade: string;
         yearSelectAriaLabel: string;
         monthSelectAriaLabel: string;
+        monthBeforeYear?: boolean;
     };
     DatePicker: {
         placeholder: string;

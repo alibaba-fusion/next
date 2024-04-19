@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { type ReactElement } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PT from 'prop-types';
+import type { Dayjs, ManipulateType } from 'dayjs';
 import { func, datejs } from '../../util';
 
 import { CALENDAR_MODE, DATE_PANEL_MODE, CALENDAR_SHAPE } from '../constant';
@@ -8,11 +9,12 @@ import Radio from '../../radio';
 import Select from '../../select';
 import Button from '../../button';
 import Icon from '../../icon';
+import type { HeaderPanelProps } from '../types';
 
 const { renderNode } = func;
 const { DATE, WEEK, QUARTER, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
 
-class HeaderPanel extends React.PureComponent {
+class HeaderPanel extends React.PureComponent<HeaderPanelProps> {
     static propTypes = {
         rtl: PT.bool,
         prefix: PT.string,
@@ -46,13 +48,22 @@ class HeaderPanel extends React.PureComponent {
     static defaultProps = {
         showTitle: false,
     };
+    prefixCls: string;
 
-    constructor(props) {
+    constructor(props: HeaderPanelProps) {
         super(props);
         this.prefixCls = `${props.prefix}calendar2-header`;
     }
 
-    createPanelBtns = ({ unit, num = 1, isSuper = true }) => {
+    createPanelBtns = ({
+        unit,
+        num = 1,
+        isSuper = true,
+    }: {
+        unit: ManipulateType;
+        num?: number;
+        isSuper?: boolean;
+    }) => {
         const value = this.props.panelValue.clone();
         const { prefixCls } = this;
         const iconTypes = isSuper
@@ -79,7 +90,15 @@ class HeaderPanel extends React.PureComponent {
         ];
     };
 
-    handleClick(value, { unit, num, isSuper, isNext }) {
+    handleClick(
+        value: Dayjs,
+        {
+            unit,
+            num,
+            isSuper,
+            isNext,
+        }: { unit: ManipulateType; num: number; isSuper?: boolean; isNext?: boolean }
+    ) {
         const { onPanelValueChange, onPrev, onSuperPrev, onNext, onSuperNext } = this.props;
 
         let handler;
@@ -127,7 +146,7 @@ class HeaderPanel extends React.PureComponent {
                 popupClassName={`${prefixCls}-select-month-popup`}
                 value={curMonth}
                 dataSource={dataSource}
-                onChange={v => onPanelValueChange(panelValue.month(v))}
+                onChange={v => onPanelValueChange(panelValue.month(v as number))}
             />
         );
     };
@@ -137,8 +156,8 @@ class HeaderPanel extends React.PureComponent {
         const { validValue, panelValue, onPanelValueChange } = this.props;
         const curYear = panelValue.year();
 
-        let beginYear;
-        let endYear;
+        let beginYear: number;
+        let endYear: number;
 
         // TODO 有效区间
         if (validValue) {
@@ -152,7 +171,7 @@ class HeaderPanel extends React.PureComponent {
             }
         }
         const dataSource = [];
-        for (let i = beginYear; i < endYear; i++) {
+        for (let i = beginYear!; i < endYear!; i++) {
             dataSource.push({ label: i, value: i });
         }
 
@@ -163,7 +182,7 @@ class HeaderPanel extends React.PureComponent {
                 popupClassName={`${prefixCls}-select-year-popup`}
                 value={curYear}
                 dataSource={dataSource}
-                onChange={v => onPanelValueChange(panelValue.year(v))}
+                onChange={v => onPanelValueChange(panelValue.year(v as number))}
             />
         );
     }
@@ -254,7 +273,7 @@ class HeaderPanel extends React.PureComponent {
         const { createPanelBtns } = this;
         const { panelMode } = this.props;
 
-        let nodes = [];
+        let nodes: ReactElement[] = [];
 
         const textFieldNode = this.renderTextField();
 
@@ -308,7 +327,7 @@ class HeaderPanel extends React.PureComponent {
         const { prefixCls } = this;
         const { shape, showTitle, value, mode, showModeSwitch } = this.props;
 
-        const nodes = [];
+        const nodes: ReactElement[] = [];
 
         if (shape === CALENDAR_SHAPE.PANEL) {
             return this.renderPanelHeader();
@@ -316,7 +335,8 @@ class HeaderPanel extends React.PureComponent {
             if (showTitle) {
                 nodes.push(
                     <div key="title" className={`${prefixCls}-title`}>
-                        {renderNode(this.props.titleRender, value.format(), [value])}
+                        {/* @ts-expect-error value 可能不是 Dayjs 形式 */}
+                        {renderNode(this.props.titleRender, value!.format(), [value])}
                     </div>
                 );
             }

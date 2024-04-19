@@ -2,16 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Calendar2 } from '@alifd/next';
 import dayjs from 'dayjs';
+import type { CalendarProps } from '@alifd/next/lib/calendar2';
 
 const currentDate = dayjs();
 
-function dateCellRender(date) {
+const dateCellRender: CalendarProps['dateCellRender'] = date => {
     const dateNum = date.date();
     if (currentDate.month() !== date.month()) {
         return dateNum;
     }
 
-    let eventList;
+    let eventList: { type: 'primary' | 'normal'; content: string }[] = [];
     switch (dateNum) {
         case 1:
             eventList = [
@@ -49,9 +50,9 @@ function dateCellRender(date) {
             </div>
         </div>
     );
-}
+};
 
-function monthCellRender(date) {
+const monthCellRender: CalendarProps['monthCellRender'] = date => {
     if (currentDate.month() === date.month()) {
         return (
             <div>
@@ -61,7 +62,7 @@ function monthCellRender(date) {
         );
     }
     return date.month();
-}
+};
 
 ReactDOM.render(
     <Calendar2 dateCellRender={dateCellRender} monthCellRender={monthCellRender} />,
