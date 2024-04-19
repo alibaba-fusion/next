@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Radio } from '@alifd/next';
-import type { NavProps } from '@alifd/next/es/nav';
-import type { GroupProps } from '@alifd/next/es/radio';
+import type { NavProps } from '@alifd/next/types/nav';
+import type { GroupProps } from '@alifd/next/types/radio';
 
 type AppState = Pick<NavProps, 'type'>;
 const { Item, SubNav } = Nav;

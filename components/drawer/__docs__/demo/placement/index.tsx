@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Radio, Button, Drawer } from '@alifd/next';
-import type { RadioProps } from '@alifd/next/lib/radio';
+import type { RadioProps } from '@alifd/next/types/radio';
 
 class Demo extends React.Component {
     state = {

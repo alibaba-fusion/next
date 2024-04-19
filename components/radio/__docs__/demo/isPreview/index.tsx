@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Radio, Switch } from '@alifd/next';
-import type { RadioProps, GroupProps } from '@alifd/next/lib/radio';
+import type { RadioProps, GroupProps } from '@alifd/next/types/radio';
 
 class App extends React.Component {
     state = {

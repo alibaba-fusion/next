@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
 import jsonp from 'jsonp';
-import { type SelectProps } from '@alifd/next/lib/select';
+import { type SelectProps } from '@alifd/next/types/select';
 
 let timestamp = Date.now();
 

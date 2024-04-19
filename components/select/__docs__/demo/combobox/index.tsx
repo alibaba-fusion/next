@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
-import { type SelectProps } from '@alifd/next/lib/select';
+import { type SelectProps } from '@alifd/next/types/select';
 
 const dataSource: SelectProps['dataSource'] = [
     'Lucy King',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Types, parseData, NodeType } from '@alifd/adaptor-helper';
 import { Select } from '@alifd/next';
-import { type SelectProps } from '@alifd/next/lib/select';
+import { type SelectProps } from '@alifd/next/types/select';
 
 export default {
     name: 'Select',

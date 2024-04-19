@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Radio, Drawer, Select } from '@alifd/next';
-import type { SelectProps } from '@alifd/next/lib/select';
-import type { RadioProps } from '@alifd/next/lib/radio';
+import type { SelectProps } from '@alifd/next/types/select';
+import type { RadioProps } from '@alifd/next/types/radio';
 
 interface onToggleHighlightItemProps {
     deep: number;

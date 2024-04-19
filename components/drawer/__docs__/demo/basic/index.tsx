@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Drawer } from '@alifd/next';
-import type { DrawerProps } from '@alifd/next/lib/drawer';
+import type { DrawerProps } from '@alifd/next/types/drawer';
 
 class Demo extends React.Component {
     state = {

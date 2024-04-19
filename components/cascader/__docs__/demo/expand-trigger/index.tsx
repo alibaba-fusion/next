@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Radio, Cascader } from '@alifd/next';
-import type { CascaderProps } from '@alifd/next/lib/cascader';
-import type { GroupProps } from '@alifd/next/lib/radio';
+import type { CascaderProps } from '@alifd/next/types/cascader';
+import type { GroupProps } from '@alifd/next/types/radio';
 import 'whatwg-fetch';
 
 const RadioGroup = Radio.Group;
