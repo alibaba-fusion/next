@@ -40,60 +40,20 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
         name: PT.string,
         prefix: PT.string,
         locale: PT.object,
-        /**
-         * 展现形态
-         */
         shape: SharedPT.shape,
-        /*
-         * 日期模式：month | year
-         */
         mode: SharedPT.mode,
-        /**
-         * 默认选中的日期（受控）
-         */
         value: SharedPT.date,
-        /**
-         * 默认选中的日期
-         */
         defaultValue: SharedPT.date,
-        /**
-         * 面板显示的日期（受控）
-         */
         panelValue: SharedPT.date,
-        /**
-         * 面板默认显示的日期
-         */
         defaultPanelValue: SharedPT.date,
-        /**
-         * 不可选择的日期
-         */
         disabledDate: PT.func,
-        /**
-         * 可显示的日期范围
-         */
-        validRange: PT.arrayOf(SharedPT.date),
-        /**
-         * 自定义日期渲染
-         */
         dateCellRender: PT.func,
         quarterCellRender: PT.func,
         monthCellRender: PT.func,
         yearCellRender: PT.func,
-        /**
-         * 自定义头部渲染
-         */
         headerRender: PT.func,
-        /**
-         * 日期变化回调
-         */
         onChange: PT.func,
-        /**
-         * 点击选择日期回调
-         */
         onSelect: PT.func,
-        /**
-         * 日期面板变化回调
-         */
         onPanelChange: PT.func,
         cellProps: PT.object,
         cellClassName: PT.oneOfType([PT.func, PT.string]),
