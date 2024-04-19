@@ -987,6 +987,7 @@ class Select extends Base<SelectProps, SelectState> {
                 onMouseDown={this.handleWrapClick}
             >
                 <Input
+                    aria-label="select"
                     {...obj.pickOthers(othersData, others)}
                     role="combobox"
                     tabIndex={0}
