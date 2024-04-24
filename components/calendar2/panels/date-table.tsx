@@ -156,7 +156,8 @@ class DateTable extends React.Component<DateTableProps, DateTableState> {
             let isCurrentWeek;
             for (let j = 0; j < rowLen; j++) {
                 const { label, value, key, isCurrent } = cellData[i++];
-                const v = value.startOf(mode as Exclude<CalendarPanelMode, 'quarter' | 'decade'>);
+                // @ts-expect-error decade/quarter 不能作为 startOf 的参数
+                const v = value.startOf(mode);
 
                 const isDisabled = props.disabledDate && props.disabledDate(v, mode);
                 const hoverState = hoverValue && hoveredState && hoveredState(hoverValue);
