@@ -296,6 +296,7 @@
   },
   "peerDependencies": {
     "@alifd/meet-react": "^2.0.0",
+    "dayjs": "^1.9.6",
     "moment": "^2.22.1",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
