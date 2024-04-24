@@ -111,7 +111,7 @@
 
         #{$input-prefix}-textarea-control {
             display: flex;
-            justify-content: end;
+            justify-content: flex-end;
             padding: 0 $input-l-icon-padding-right 4px;
         }
 
