@@ -11,8 +11,8 @@ interface HTMLAttributesWeak
  */
 export interface CalendarProps extends HTMLAttributesWeak, Omit<CommonProps, 'locale'> {
     /**
+     * @deprecated use Form.Item name instead
      * @skip
-     * @remarks 这个属性貌似没有什么用处，先保留
      */
     name?: string;
     /**
