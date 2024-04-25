@@ -2,13 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Progress, Button, Icon } from '@alifd/next';
 
-class CustomProgress extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            percent: 0,
-        };
-    }
+class CustomProgress extends React.Component<unknown, { percent: number }> {
+    state = { percent: 0 };
 
     addProgress = () => {
         this.setState(prevState => {

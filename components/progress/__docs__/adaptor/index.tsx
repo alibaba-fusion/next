@@ -2,7 +2,28 @@ import React from 'react';
 import { Types } from '@alifd/adaptor-helper';
 import { Progress } from '@alifd/next';
 
-const _propsValue = ({ shape, level, size, mode, border, width, style, ...others }) => {
+interface AdaptorProps {
+    shape?: 'line' | 'circle';
+    level?: 'normal' | 'success' | 'error';
+    size?: 'small' | 'medium' | 'large';
+    mode?: 'basic' | 'staging';
+    border?: boolean;
+    width?: number;
+    style?: React.CSSProperties;
+    text?: boolean;
+    percent?: number;
+}
+
+const _propsValue = ({
+    shape,
+    level,
+    size,
+    mode,
+    border,
+    width,
+    style,
+    ...others
+}: AdaptorProps) => {
     return {
         ...others,
         style: {
@@ -70,7 +91,18 @@ export default {
             ],
         };
     },
-    adaptor: ({ shape, level, size, mode, text, border, width, percent, style, ...others }) => {
+    adaptor: ({
+        shape,
+        level,
+        size,
+        mode,
+        text,
+        border,
+        width,
+        percent,
+        style,
+        ...others
+    }: AdaptorProps) => {
         const props = _propsValue({ shape, level, size, mode, border, width, style, ...others });
         return (
             <Progress
@@ -98,7 +130,10 @@ export default {
                 default: 'hide',
             },
         ].filter(({ name }) => name !== 'border' || shape === 'line'),
-        transform: (props, { staging, text, border }) => {
+        transform: (
+            props: AdaptorProps,
+            { staging, text, border }: { staging: string; text: string; border: string }
+        ) => {
             switch (staging) {
                 case 'started':
                     props = {
