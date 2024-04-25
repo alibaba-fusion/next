@@ -1,4 +1,13 @@
-import { Demo, DemoHead, DemoGroup, initDemo } from '../../../demo-helper';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {
+    Demo,
+    DemoHead,
+    DemoGroup,
+    initDemo,
+    type DemoProps,
+    type DemoFunctionDefineForObject,
+} from '../../../demo-helper';
 import Progress from '../../index';
 import ConfigProvider from '../../../config-provider';
 import zhCN from '../../../locale/zh-cn';
@@ -6,7 +15,6 @@ import enUS from '../../../locale/en-us';
 import '../../../demo-helper/style';
 import '../../style';
 
-/* eslint-disable */
 const i18nMap = {
     'zh-cn': {
         lineBasic: '线型基本',
@@ -43,7 +51,23 @@ const i18nMap = {
     },
 };
 
-function renderLineProgress(i18n, props) {
+type I18N = (typeof i18nMap)[keyof typeof i18nMap];
+
+interface progressRenderProps {
+    textRender?: (percent: number) => React.ReactNode;
+    hasBorder?: boolean;
+}
+interface IProps {
+    title: DemoProps['title'];
+    circle?: boolean;
+    locale: I18N;
+    progressRender: (i18n: I18N, props: progressRenderProps) => React.ReactNode;
+}
+interface IState {
+    demoFunction: Record<string, DemoFunctionDefineForObject>;
+}
+
+function renderLineProgress(i18n: I18N, props: progressRenderProps) {
     return (
         <Demo title={i18n.lineBasic} block>
             <DemoHead cols={['L', 'M', 'S']} />
@@ -66,7 +90,7 @@ function renderLineProgress(i18n, props) {
     );
 }
 
-function renderLineProgressive(i18n, props) {
+function renderLineProgressive(i18n: I18N, props: progressRenderProps) {
     return (
         <Demo title={i18n.lineProgressive} block>
             <DemoHead cols={['L', 'M', 'S']} />
@@ -89,7 +113,7 @@ function renderLineProgressive(i18n, props) {
     );
 }
 
-function renderCircleProgress(i18n, props) {
+function renderCircleProgress(i18n: I18N, props: progressRenderProps) {
     return (
         <Demo title={i18n.circleBasic} block>
             <DemoHead cols={['L', 'M', 'S']} />
@@ -112,7 +136,7 @@ function renderCircleProgress(i18n, props) {
     );
 }
 
-function renderCircleProgressive(i18n, props) {
+function renderCircleProgressive(i18n: I18N, props: progressRenderProps) {
     return (
         <Demo title={i18n.circleProgressive} block>
             <DemoHead cols={['L', 'M', 'S']} />
@@ -135,8 +159,8 @@ function renderCircleProgressive(i18n, props) {
     );
 }
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
+class FunctionDemo extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
         super(props);
         this.state = {
             demoFunction: {
@@ -160,7 +184,7 @@ class FunctionDemo extends React.Component {
         };
     }
 
-    onFunctionChange = ret => {
+    onFunctionChange = (ret: IState['demoFunction']) => {
         this.setState({
             demoFunction: ret,
         });
@@ -172,7 +196,7 @@ class FunctionDemo extends React.Component {
 
         const withText = demoFunction.showText.value === 'true' || circle;
 
-        const props = {};
+        const props: progressRenderProps = {};
 
         if (!withText) {
             props.textRender = () => false;
@@ -196,9 +220,9 @@ class FunctionDemo extends React.Component {
     }
 }
 
-function render(i18n, lang) {
-    return ReactDOM.render(
-        <ConfigProvider lang={lang === 'en-us' ? enUS : zhCN}>
+function render(i18n: I18N, lang: string) {
+    ReactDOM.render(
+        <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">
                 <FunctionDemo
                     title={i18n.lineBasic}

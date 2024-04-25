@@ -31,3 +31,5 @@ export default ConfigProvider.config(Progress, {
         return props;
     },
 });
+
+export type { ProgressProps } from './types';

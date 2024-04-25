@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Progress, Icon } from '@alifd/next';
 
-const textRender = percent => {
+const textRender = (percent: number) => {
     if (percent === 100) {
         return <Icon type="select" size="medium" />;
     }

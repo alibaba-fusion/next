@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { type ProgressWithDefaultProps } from './progress';
 
-export default class Line extends React.PureComponent {
+type ProgressLineProps = Omit<ProgressWithDefaultProps, 'shape'>;
+export default class Line extends React.PureComponent<ProgressLineProps> {
     static propTypes = {
         size: PropTypes.oneOf(['small', 'medium', 'large']),
         percent: PropTypes.number,
@@ -40,7 +42,7 @@ export default class Line extends React.PureComponent {
             [`${prefix}progress-line-show-info`]: suffixText,
             [`${prefix}progress-line-show-border`]: hasBorder,
             [`${prefix + size}`]: size,
-            [className]: className,
+            [className!]: className,
         });
         const lineCls = classNames({
             [`${prefix}progress-line-overlay`]: true,
@@ -62,8 +64,8 @@ export default class Line extends React.PureComponent {
                 dir={rtl ? 'rtl' : undefined}
                 role="progressbar"
                 aria-valuenow={percent}
-                aria-valuemin="0"
-                aria-valuemax="100"
+                aria-valuemin={0}
+                aria-valuemax={100}
                 className={wrapCls}
                 {...others}
             >

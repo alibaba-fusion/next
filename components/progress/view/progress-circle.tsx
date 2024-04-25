@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import type { ProgressCircleState } from '../types';
+import { type ProgressWithDefaultProps } from './progress';
+
+export type ProgressCircleProps = Omit<ProgressWithDefaultProps, 'shape' | 'hasBorder'>;
 
 const VIEWBOX_WIDTH = 100; // width of viewBox
 const HALF_VIEWBOX_WIDTH = VIEWBOX_WIDTH / 2;
@@ -8,7 +12,7 @@ const DEFAULT_STROKE_WIDTH = 8;
 
 const viewBox = `0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_WIDTH}`;
 
-export default class Circle extends Component {
+export default class Circle extends Component<ProgressCircleProps, ProgressCircleState> {
     static propTypes = {
         size: PropTypes.oneOf(['small', 'medium', 'large']),
         percent: PropTypes.number,
@@ -21,8 +25,10 @@ export default class Circle extends Component {
         backgroundColor: PropTypes.string,
         rtl: PropTypes.bool,
     };
+    underlay: SVGPathElement | null;
+    overlay: SVGPathElement | null;
 
-    constructor(props) {
+    constructor(props: ProgressCircleProps) {
         super(props);
 
         this.state = {
@@ -43,7 +49,7 @@ export default class Circle extends Component {
         }
     }
 
-    _getCssValue(dom, name) {
+    _getCssValue(dom: SVGPathElement, name: string) {
         const css = window.getComputedStyle(dom).getPropertyValue(name);
         const regExp = /(\d*)px/g;
         const result = regExp.exec(css);
@@ -51,11 +57,11 @@ export default class Circle extends Component {
         return Array.isArray(result) ? Number(result[1]) : 0;
     }
 
-    _underlayRefHandler = ref => {
+    _underlayRefHandler = (ref: SVGPathElement) => {
         this.underlay = ref;
     };
 
-    _overlayRefHandler = ref => {
+    _overlayRefHandler = (ref: SVGPathElement) => {
         this.overlay = ref;
     };
 
@@ -69,7 +75,7 @@ export default class Circle extends Component {
         return ((VIEWBOX_WIDTH - this.props.percent) / VIEWBOX_WIDTH) * overlayLen;
     }
 
-    _getPath(radius) {
+    _getPath(radius: number) {
         return `M ${HALF_VIEWBOX_WIDTH},${HALF_VIEWBOX_WIDTH} m 0,-${radius} a ${radius},${radius} 0 1 1 0,${
             2 * radius
         } a ${radius},${radius} 0 1 1 0,-${2 * radius}`;
@@ -111,7 +117,7 @@ export default class Circle extends Component {
             [`${prefix}progress-circle`]: true,
             [`${prefix}progress-circle-show-info`]: suffixText,
             [`${prefix + size}`]: size,
-            [className]: className,
+            [className!]: className,
         });
 
         const pathCls = classNames({
@@ -131,8 +137,8 @@ export default class Circle extends Component {
                 dir={rtl ? 'rtl' : undefined}
                 role="progressbar"
                 aria-valuenow={percent}
-                aria-valuemin="0"
-                aria-valuemax="100"
+                aria-valuemin={0}
+                aria-valuemax={100}
                 {...others}
             >
                 <svg className={`${prefix}progress-circle-container`} viewBox={viewBox}>
