@@ -79,7 +79,13 @@ class Group extends React.Component {
         const after = addonAfter ? <span className={afterCls}>{addonAfter}</span> : null;
 
         return (
-            <span {...others} disabled={disabled} dir={rtl ? 'rtl' : undefined} className={cls} style={style}>
+            <span
+                {...others}
+                disabled={disabled}
+                dir={rtl ? 'rtl' : undefined}
+                className={cls}
+                style={style}
+            >
                 {before}
                 {children}
                 {after}

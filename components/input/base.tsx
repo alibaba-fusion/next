@@ -6,7 +6,6 @@ import ConfigProvider from '../config-provider';
 import { func } from '../util';
 import zhCN from '../locale/zh-cn';
 
-
 class Base extends React.Component {
     static propTypes = {
         ...ConfigProvider.propTypes,
@@ -219,7 +218,9 @@ class Base extends React.Component {
         if (
             maxLength > 0 &&
             (len > maxLength + 1 ||
-                ((len === maxLength || len === maxLength + 1) && e.keyCode !== 8 && e.keyCode !== 46))
+                ((len === maxLength || len === maxLength + 1) &&
+                    e.keyCode !== 8 &&
+                    e.keyCode !== 46))
         ) {
             opts.overMaxLength = true;
         }
@@ -240,7 +241,7 @@ class Base extends React.Component {
         });
         this.props.onBlur(e);
     }
-    
+
     handleKeyDownFromClear = e => {
         if (e.keyCode === 13) {
             this.onClear(e);
@@ -271,10 +272,10 @@ class Base extends React.Component {
 
         const content = rtl ? `${maxLength}/${len}` : `${len}/${maxLength}`;
 
-        return maxLength && showLimitHint ? <span className={classesLenWrap}>{content}</span> : null
+        return maxLength && showLimitHint ? (
+            <span className={classesLenWrap}>{content}</span>
+        ) : null;
     }
-
-
 
     getClass() {
         const { disabled, state, prefix } = this.props;
