@@ -44,7 +44,9 @@ export default class Password extends Input {
         const { showToggle, ...others } = this.props;
         const { hint, htmlType } = this.state;
 
-        const extra = showToggle ? <Icon type={hint} onClick={this.toggleEye} onMouseDown={preventDefault} /> : null;
+        const extra = showToggle ? (
+            <Icon type={hint} onClick={this.toggleEye} onMouseDown={preventDefault} />
+        ) : null;
 
         return <Input {...others} extra={extra} htmlType={htmlType} />;
     }
