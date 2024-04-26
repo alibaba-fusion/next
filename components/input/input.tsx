@@ -137,7 +137,8 @@ class Input extends Base {
     }
 
     renderControl() {
-        const { hasClear, readOnly, state, prefix, hint, extra, locale, disabled, hoverShowClear } = this.props;
+        const { hasClear, readOnly, state, prefix, hint, extra, locale, disabled, hoverShowClear } =
+            this.props;
 
         const lenWrap = this.renderLength();
 
@@ -346,7 +347,12 @@ class Input extends Base {
         );
 
         const inputWrap = (
-            <span {...dataProps} dir={rtl ? 'rtl' : undefined} className={cls} style={hasAddon ? undefined : style}>
+            <span
+                {...dataProps}
+                dir={rtl ? 'rtl' : undefined}
+                className={cls}
+                style={hasAddon ? undefined : style}
+            >
                 {this.renderLabel()}
                 {this.renderInner(innerBefore, innerBeforeCls)}
                 {inputRender(inputEl)}

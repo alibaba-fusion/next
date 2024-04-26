@@ -33,7 +33,12 @@ describe('input', () => {
 
         it('should renderPreview', () => {
             ReactDOM.render(
-                <Input id="renderpreview-input" isPreview defaultValue="abc" renderPreview={() => 'ddd'} />,
+                <Input
+                    id="renderpreview-input"
+                    isPreview
+                    defaultValue="abc"
+                    renderPreview={() => 'ddd'}
+                />,
                 parent
             );
 
@@ -63,7 +68,12 @@ describe('input', () => {
             const onBlur = sinon.spy();
             const onPressEnter = sinon.spy();
             const wrapper = mount(
-                <Input onChange={onChange} onFocus={onFocus} onBlur={onBlur} onPressEnter={onPressEnter} />
+                <Input
+                    onChange={onChange}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    onPressEnter={onPressEnter}
+                />
             );
             wrapper.find('input').simulate('change', { target: { value: '20' } });
             assert(onChange.calledOnce);
@@ -250,12 +260,22 @@ describe('input', () => {
                     return 1;
                 },
                 wrapper = mount(
-                    <Input defaultValue="abcdef" maxLength={10} hasLimitHint getValueLength={getValueLength2} />
+                    <Input
+                        defaultValue="abcdef"
+                        maxLength={10}
+                        hasLimitHint
+                        getValueLength={getValueLength2}
+                    />
                 );
             assert(wrapper.find('.next-input-len').text() === '1/10');
 
             const wrapper2 = mount(
-                <Input.TextArea defaultValue="abcdef" maxLength={10} hasLimitHint getValueLength={getValueLength2} />
+                <Input.TextArea
+                    defaultValue="abcdef"
+                    maxLength={10}
+                    hasLimitHint
+                    getValueLength={getValueLength2}
+                />
             );
             assert(wrapper2.find('.next-input-len').text() === '1/10');
 
@@ -286,7 +306,9 @@ describe('input', () => {
                     assert(value === 20);
                     done();
                 },
-                wrapper = mount(<Input defaultValue="abcdef" htmlType="number" onChange={onChange} />);
+                wrapper = mount(
+                    <Input defaultValue="abcdef" htmlType="number" onChange={onChange} />
+                );
 
             wrapper.find('input').simulate('change', { target: { value: '20' } });
         });
@@ -296,7 +318,9 @@ describe('input', () => {
                     assert(value === '');
                     done();
                 },
-                wrapper = mount(<Input defaultValue="abcdef" htmlType="number" onChange={onChange} />);
+                wrapper = mount(
+                    <Input defaultValue="abcdef" htmlType="number" onChange={onChange} />
+                );
 
             wrapper.find('input').simulate('change', { target: { value: '' } });
         });

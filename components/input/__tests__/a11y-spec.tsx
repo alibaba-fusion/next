@@ -62,7 +62,11 @@ describe('Input A11y', () => {
 
     it('should not have any violations when using addons', async () => {
         wrapper = await testReact(
-            <Input addonTextAfter=".com" addonBefore={<span>before</span>} aria-label="a11y input" />
+            <Input
+                addonTextAfter=".com"
+                addonBefore={<span>before</span>}
+                aria-label="a11y input"
+            />
         );
         return wrapper;
     });
