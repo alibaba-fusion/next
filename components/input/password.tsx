@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { MouseEvent, type UIEvent } from 'react';
 import PropTypes from 'prop-types';
 
 import Input from './input';
 import Icon from '../icon/index';
+import type { PasswordProps } from './types';
 
-function preventDefault(e) {
+function preventDefault(e: UIEvent) {
     e.preventDefault();
 }
-export default class Password extends Input {
+export default class Password extends Input<PasswordProps> {
     state = {
         hint: 'eye-close',
         htmlType: 'password',
@@ -29,7 +30,7 @@ export default class Password extends Input {
         showToggle: true,
     };
 
-    toggleEye = e => {
+    toggleEye = (e: MouseEvent<HTMLElement>) => {
         e.preventDefault();
         if (this.props.disabled) return;
         const eyeClose = this.state.hint === 'eye';

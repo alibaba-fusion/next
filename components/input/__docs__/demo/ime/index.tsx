@@ -2,13 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Input } from '@alifd/next';
 
-function onChange(v) {
-    console.log(v);
-}
-
-function Demo(props) {
+function Demo() {
     const [value, setValue] = React.useState('');
-    const handleChange = value => {
+    const handleChange = (value: string) => {
         console.log(value);
         setValue(value);
     };

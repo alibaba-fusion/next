@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
+import type { GroupProps } from './types';
 
 /**
  * Input.Group
  */
-class Group extends React.Component {
+class Group extends React.Component<GroupProps> {
     static displayName = 'Group';
 
     static propTypes = {
@@ -22,7 +23,7 @@ class Group extends React.Component {
          */
         addonBefore: PropTypes.node,
         /**
-         * 输入框前附加内容css
+         * 输入框前附加内容 css
          */
         addonBeforeClassName: PropTypes.string,
         /**
@@ -30,7 +31,7 @@ class Group extends React.Component {
          */
         addonAfter: PropTypes.node,
         /**
-         * 输入框后额外css
+         * 输入框后额外 css
          */
         addonAfterClassName: PropTypes.string,
         /**
@@ -61,17 +62,17 @@ class Group extends React.Component {
         const cls = classNames({
             [`${prefix}input-group`]: true,
             [`${prefix}disabled`]: disabled,
-            [className]: !!className,
+            [className!]: !!className,
         });
 
         const addonCls = `${prefix}input-group-addon`;
         const beforeCls = classNames(addonCls, {
             [`${prefix}before`]: true,
-            [addonBeforeClassName]: addonBeforeClassName,
+            [addonBeforeClassName!]: addonBeforeClassName,
         });
         const afterCls = classNames(addonCls, {
             [`${prefix}after`]: true,
-            [addonAfterClassName]: addonAfterClassName,
+            [addonAfterClassName!]: addonAfterClassName,
         });
 
         const before = addonBefore ? <span className={beforeCls}>{addonBefore}</span> : null;
@@ -81,6 +82,7 @@ class Group extends React.Component {
         return (
             <span
                 {...others}
+                // @ts-expect-error span 上没有 disabled
                 disabled={disabled}
                 dir={rtl ? 'rtl' : undefined}
                 className={cls}

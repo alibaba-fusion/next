@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Input } from '@alifd/next';
+import type { InputProps } from '@alifd/next/lib/input';
 
-const onChange = value => {
+const onChange = (value: string) => {
     console.log(value);
 };
-const onBlur = e => {
+const onBlur: InputProps['onBlur'] = e => {
     console.log(e);
 };
 
