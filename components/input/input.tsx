@@ -26,83 +26,28 @@ class Input<P extends InputProps = InputProps> extends Base<P> {
     static getDerivedStateFromProps = Base.getDerivedStateFromProps;
     static propTypes = {
         ...Base.propTypes,
-        /**
-         * label
-         */
         label: PropTypes.node,
-        /**
-         * 是否出现 clear 按钮
-         */
         hasClear: PropTypes.bool,
-        /**
-         * 是否有边框
-         */
         hasBorder: PropTypes.bool,
-        /**
-         * 状态
-         */
         state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
-        /**
-         * 按下回车的回调
-         */
         onPressEnter: PropTypes.func,
-        /**
-         * 原生 type
-         */
         htmlType: PropTypes.string,
         htmlSize: PropTypes.string,
-        /**
-         * 水印 (Icon 的 type 类型，和 hasClear 占用一个地方)
-         */
         hint: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-        /**
-         * 文字前附加内容
-         */
         innerBefore: PropTypes.node,
-        /**
-         * 文字后附加内容
-         */
         innerAfter: PropTypes.node,
-        /**
-         * 输入框前附加内容
-         */
         addonBefore: PropTypes.node,
-        /**
-         * 输入框后附加内容
-         */
         addonAfter: PropTypes.node,
-        /**
-         * 输入框前附加文字
-         */
         addonTextBefore: PropTypes.node,
-        /**
-         * 输入框后附加文字
-         */
         addonTextAfter: PropTypes.node,
-        /**
-         * (原生 input 支持)
-         */
         autoComplete: PropTypes.string,
-        /**
-         * 自动聚焦 (原生 input 支持)
-         */
         autoFocus: PropTypes.bool,
         inputRender: PropTypes.func,
         extra: PropTypes.node,
         innerBeforeClassName: PropTypes.string,
         innerAfterClassName: PropTypes.string,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         */
         renderPreview: PropTypes.func,
-        /**
-         * hover 展示 clear (配合 hasClear=true 使用)
-         * @version 1.24
-         */
         hoverShowClear: PropTypes.bool,
     };
 
