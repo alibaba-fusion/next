@@ -18,7 +18,7 @@ const _propsValue = ({
     className = '',
     data,
     ...others
-}) => {
+}: any) => {
     const props = {
         ...others,
         label,
@@ -178,7 +178,7 @@ export default {
         };
     },
     propsValue: _propsValue,
-    adaptor: args => {
+    adaptor: (args: any) => {
         const props = _propsValue(args);
         if (args.shape === 'textarea') {
             return <Input.TextArea {...props} />;
@@ -186,7 +186,7 @@ export default {
 
         return <Input {...props} />;
     },
-    content: shape => {
+    content: (shape: string) => {
         if (shape === 'textfield') {
             return {
                 options: [
@@ -196,7 +196,7 @@ export default {
                         default: 'hide',
                     },
                 ],
-                transform: (props, { clear }) => {
+                transform: (props: any, { clear }: { clear: string }) => {
                     return {
                         ...props,
                         widget: clear === 'show' ? 'clear' : 'none',
@@ -208,7 +208,7 @@ export default {
 
         return {
             options: [],
-            transform: p => p,
+            transform: (p: unknown) => p,
         };
     },
 };

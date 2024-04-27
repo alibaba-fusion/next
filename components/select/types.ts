@@ -98,7 +98,7 @@ export type HighlightChangeType = 'up' | 'down' | 'autoFirstItem' | 'highlightKe
  */
 export interface AutoCompleteProps
     extends HTMLAttributesWeak,
-        Omit<InputProps, 'onChange' | 'value'>,
+        Omit<InputProps, 'onChange' | 'value' | 'locale'>,
         CommonProps {
     /**
      * 选择器尺寸
@@ -366,7 +366,7 @@ export interface OptionProps extends React.HTMLAttributes<HTMLElement>, CommonPr
  */
 export interface SelectProps
     extends HTMLAttributesWeak,
-        Omit<InputProps, 'value' | 'defaultValue' | 'renderPreview' | 'onChange'>,
+        Omit<InputProps, 'value' | 'defaultValue' | 'renderPreview' | 'onChange' | 'locale'>,
         CommonProps {
     /**
      * 选择器尺寸
@@ -862,7 +862,7 @@ export interface BaseProps
     renderPreview?: (
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         values: any,
-        props?: SelectProps
+        props?: SelectProps | InputProps
     ) => React.ReactNode;
 }
 

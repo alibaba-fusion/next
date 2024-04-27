@@ -1,16 +1,15 @@
-/// <reference types="react" />
+import type React from 'react';
+import type { CommonProps } from '../util';
+import type { Locale } from '../locale/types';
 
-import React from 'react';
-import { CommonProps } from '../util';
+interface HTMLAttributesWeak
+    extends Omit<
+        React.InputHTMLAttributes<HTMLElement>,
+        'defaultValue' | 'onChange' | 'onKeyDown' | 'size' | 'maxLength'
+    > {}
+interface CommonPropsWithoutLocale extends Omit<CommonProps, 'locale'> {}
 
-interface HTMLAttributesWeak extends React.InputHTMLAttributes<HTMLElement> {
-    defaultValue?: any;
-    onChange?: any;
-    onKeyDown?: any;
-    size?: any;
-}
-
-export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
+export interface TextAreaProps extends HTMLAttributesWeak, CommonPropsWithoutLocale {
     /**
      * 当前值
      */
@@ -29,7 +28,10 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 键盘按下的时候触发的回调
      */
-    onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>, opts: {}) => void;
+    onKeyDown?: (
+        e: React.KeyboardEvent<HTMLTextAreaElement>,
+        opts: { beTrimed?: boolean; overMaxLength?: boolean }
+    ) => void;
 
     /**
      * 禁用状态
@@ -48,7 +50,7 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     showLimitHint?: boolean;
 
     /**
-     * 当设置了maxLength时，是否截断超出字符串
+     * 当设置了 maxLength 时，是否截断超出字符串
      */
     cutString?: boolean;
 
@@ -58,7 +60,7 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     readOnly?: boolean;
 
     /**
-     * onChange返回会自动去除头尾空字符
+     * onChange 返回会自动去除头尾空字符
      */
     trim?: boolean;
 
@@ -80,10 +82,10 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义字符串计算长度方式
      */
-    getValueLength?: (value: string) => number;
+    getValueLength?: (value: string) => number | void;
 
     /**
-     * 自定义class
+     * 自定义 class
      */
     className?: string;
 
@@ -93,7 +95,7 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     style?: React.CSSProperties;
 
     /**
-     * 原生type
+     * 原生 type
      */
     htmlType?: string;
 
@@ -105,7 +107,7 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 状态
      */
-    state?: 'error' | 'warning';
+    state?: 'error' | 'warning' | 'loading';
 
     /**
      * 是否有边框
@@ -113,12 +115,12 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     hasBorder?: boolean;
 
     /**
-     * 自动高度 true / {minRows: 2, maxRows: 4}
+     * 自动高度 true / \{minRows: 2, maxRows: 4\}
      */
-    autoHeight?: boolean | {};
+    autoHeight?: boolean | { minRows?: number | string; maxRows?: number | string };
 
     /**
-     * 多行文本框高度 <br />(不要直接用height设置多行文本框的高度, ie9 10会有兼容性问题)
+     * 多行文本框高度 <br />(不要直接用 height 设置多行文本框的高度，ie9 10 会有兼容性问题)
      */
     rows?: number;
 
@@ -127,19 +129,19 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
      */
     isPreview?: boolean;
 
-    renderPreview?: (value: string | number) => React.ReactNode;
+    renderPreview?: (value: string | number | undefined, props: TextAreaProps) => React.ReactNode;
 
     /**
      * 开启后会过滤输入法中间字母状态，文字输入完成后才会触发 onChange
      */
     composition?: boolean;
     /**
-     * 是否出现clear按钮
+     * 是否出现 clear 按钮
      */
     hasClear?: boolean;
+    locale?: Locale['TextArea'];
+    size?: 'small' | 'medium' | 'large';
 }
-
-export class TextArea extends React.Component<TextAreaProps, any> {}
 
 export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -153,7 +155,7 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     addonBefore?: React.ReactNode;
 
     /**
-     * 输入框前附加内容css
+     * 输入框前附加内容 css
      */
     addonBeforeClassName?: string;
 
@@ -163,7 +165,7 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     addonAfter?: React.ReactNode;
 
     /**
-     * 输入框后额外css
+     * 输入框后额外 css
      */
     addonAfterClassName?: string;
 
@@ -171,11 +173,10 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * rtl
      */
     rtl?: boolean;
+    disabled?: boolean;
 }
 
-export class Group extends React.Component<GroupProps, any> {}
-
-export interface InputProps extends HTMLAttributesWeak, CommonProps {
+export interface InputProps extends HTMLAttributesWeak, CommonPropsWithoutLocale {
     /**
      * 当前值
      */
@@ -189,12 +190,22 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 发生改变的时候触发的回调
      */
-    onChange?: (value: string, e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (
+        value: string | number,
+        e:
+            | React.ChangeEvent<HTMLInputElement>
+            | React.CompositionEvent<HTMLInputElement>
+            | React.KeyboardEvent<HTMLInputElement>,
+        reason?: string
+    ) => void;
 
     /**
      * 键盘按下的时候触发的回调
      */
-    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>, opts: {}) => void;
+    onKeyDown?: (
+        e: React.KeyboardEvent<HTMLInputElement>,
+        opts: { beTrimed?: boolean; overMaxLength?: boolean }
+    ) => void;
 
     /**
      * 禁用状态
@@ -213,7 +224,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     showLimitHint?: boolean;
 
     /**
-     * 当设置了maxLength时，是否截断超出字符串
+     * 当设置了 maxLength 时，是否截断超出字符串
      */
     cutString?: boolean;
 
@@ -223,7 +234,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     readOnly?: boolean;
 
     /**
-     * onChange返回会自动去除头尾空字符
+     * onChange 返回会自动去除头尾空字符
      */
     trim?: boolean;
 
@@ -245,10 +256,10 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义字符串计算长度方式
      */
-    getValueLength?: (value: string) => number;
+    getValueLength?: (value: string) => number | void;
 
     /**
-     * 自定义class
+     * 自定义 class
      */
     className?: string;
 
@@ -258,7 +269,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     style?: React.CSSProperties;
 
     /**
-     * 原生type
+     * 原生 type
      */
     htmlType?: string;
 
@@ -278,7 +289,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     label?: React.ReactNode;
 
     /**
-     * 是否出现clear按钮
+     * 是否出现 clear 按钮
      */
     hasClear?: boolean;
 
@@ -298,7 +309,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     onPressEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 
     /**
-     * 水印 (Icon的type类型，和hasClear占用一个地方)
+     * 水印 (Icon 的 type 类型，和 hasClear 占用一个地方)
      */
     hint?: string | React.ReactNode;
 
@@ -333,12 +344,12 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     addonTextAfter?: React.ReactNode;
 
     /**
-     * (原生input支持)
+     * (原生 input 支持)
      */
     autoComplete?: string;
 
     /**
-     * 自动聚焦(原生input支持)
+     * 自动聚焦 (原生 input 支持)
      */
     autoFocus?: boolean;
 
@@ -347,7 +358,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
      */
     isPreview?: boolean;
 
-    renderPreview?: (value: string | number) => React.ReactNode;
+    renderPreview?: (value: string | number | undefined, props: InputProps) => React.ReactNode;
 
     /**
      * 开启后会过滤输入法中间字母状态，文字输入完成后才会触发 onChange
@@ -356,13 +367,17 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     composition?: boolean;
 
     /**
-     * hover展示clear (配合 hasClear=true使用)
+     * hover 展示 clear (配合 hasClear=true 使用)
      * @version 1.24
      */
     hoverShowClear?: boolean;
     extra?: unknown;
     htmlSize?: string;
     inputRender?: (input: React.ReactElement) => React.ReactNode;
+    inputStyle?: React.CSSProperties;
+    locale?: Locale['Input'];
+    innerBeforeClassName?: string;
+    innerAfterClassName?: string;
 }
 export interface PasswordProps extends InputProps {
     /**
@@ -370,11 +385,40 @@ export interface PasswordProps extends InputProps {
      */
     showToggle?: boolean;
 }
-export class Password extends React.Component<PasswordProps, any> {}
 
-export default class Input extends React.Component<InputProps, any> {
-    static TextArea: typeof TextArea;
-    static Group: typeof Group;
-    static Password: typeof Password;
-    getInputNode: () => HTMLInputElement;
+export type GeneralHTMLInputElement = HTMLInputElement | HTMLTextAreaElement;
+
+export interface BaseProps
+    extends Omit<InputProps, 'onChange' | 'onKeyDown' | 'onFocus' | 'state' | 'renderPreview'> {
+    onChange?: (
+        value: string | number,
+        e:
+            | React.ChangeEvent<GeneralHTMLInputElement>
+            | React.CompositionEvent<GeneralHTMLInputElement>
+            | React.KeyboardEvent<GeneralHTMLInputElement>,
+        reason?: string
+    ) => void;
+    onKeyDown?: (
+        e: React.KeyboardEvent<GeneralHTMLInputElement>,
+        opts: { beTrimed?: boolean; overMaxLength?: boolean }
+    ) => void;
+    onFocus?: (e: React.FocusEvent<GeneralHTMLInputElement>) => void;
+    onBlur?: (e: React.FocusEvent<GeneralHTMLInputElement>) => void;
+    state?: string;
+    renderPreview?: (
+        value: string | number | undefined,
+        props: InputProps | TextAreaProps
+    ) => React.ReactNode;
+}
+
+export interface BaseState {
+    value?: BaseProps['value'] | string;
+    composition?: boolean;
+    focus?: boolean;
+    hint?: string;
+    htmlType?: string;
+    height?: number;
+    overflowY?: 'hidden';
+    minHeight?: number;
+    maxHeight?: number;
 }

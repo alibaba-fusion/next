@@ -1,3 +1,5 @@
+import ReactDOM from 'react-dom';
+import React from 'react';
 import '../../../demo-helper/style';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import Input from '../../index';
@@ -25,7 +27,7 @@ const i18nMap = {
         multiple: '多行',
         long: '比较长的字符串！',
         alibaba: '阿里巴巴',
-        label: '标签:',
+        label: '标签：',
     },
     'en-us': {
         large: 'large',
@@ -48,13 +50,13 @@ const i18nMap = {
 };
 
 // 渲染实际的组件 Demo, 切换中英文
-function render(i18n) {
-    return ReactDOM.render(
+function render(i18n: (typeof i18nMap)['en-us']) {
+    ReactDOM.render(
         <div style={{ minWidth: 702, overflow: 'hidden' }}>
             <Demo title="Textfield" block>
                 <DemoHead cols={['L', 'M', 'S']} />
 
-                <DemoGroup label="Normal" id="test">
+                <DemoGroup label="Normal">
                     <Input
                         placeholder={i18n.large}
                         size="large"
@@ -177,7 +179,7 @@ function render(i18n) {
     );
 }
 
-// 给配置平台调用, 切换中英文
+// 给配置平台调用，切换中英文
 window.renderDemo = function (lang) {
     lang = lang || 'en-us';
 

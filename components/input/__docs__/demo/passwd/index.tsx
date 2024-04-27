@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Input } from '@alifd/next';
 
-function onChange(v) {
+function onChange(v: string) {
     console.log(v);
 }
 
