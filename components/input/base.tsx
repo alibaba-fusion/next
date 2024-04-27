@@ -1,5 +1,5 @@
 import React, {
-    CSSProperties,
+    type CSSProperties,
     type ChangeEvent,
     type CompositionEvent,
     type FocusEvent,
@@ -19,107 +19,31 @@ class Base<
 > extends React.Component<P, S> {
     static propTypes = {
         ...ConfigProvider.propTypes,
-        /**
-         * 当前值
-         */
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        /**
-         * 初始化值
-         */
         defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        /**
-         * 发生改变的时候触发的回调
-         * @param value - 数据
-         * @param e - DOM 事件对象
-         */
         onChange: PropTypes.func,
-        /**
-         * 键盘按下的时候触发的回调
-         * @param e - DOM 事件对象
-         * @param opts - 可扩展的附加信息：<br> - opts.overMaxLength: \{Boolean\} 已超出最大长度<br> - opts.beTrimed: \{Boolean\} 输入的空格被清理
-         */
         onKeyDown: PropTypes.func,
-        /**
-         * 禁用状态
-         */
         disabled: PropTypes.bool,
-        /**
-         * 最大长度
-         */
         maxLength: PropTypes.number,
-        /**
-         * 是否展现最大长度样式（旧版本为 hasLimitHint，目前仍兼容旧用法，将在 2.x 直接废弃）
-         */
         showLimitHint: PropTypes.bool,
-        /**
-         * 当设置了 maxLength 时，是否截断超出字符串
-         */
         cutString: PropTypes.bool,
-        /**
-         * 只读
-         */
         readOnly: PropTypes.bool,
-        /**
-         * onChange 返回会自动去除头尾空字符
-         */
         trim: PropTypes.bool,
-        /**
-         * 输入提示
-         */
         placeholder: PropTypes.string,
-        /**
-         * 获取焦点时候触发的回调
-         * @param e - DOM 事件对象
-         */
         onFocus: PropTypes.func,
-        /**
-         * 失去焦点时候触发的回调
-         * @param e - DOM 事件对象
-         */
         onBlur: PropTypes.func,
-        /**
-         * 自定义字符串计算长度方式
-         * @param value - 数据
-         * @returns 自定义长度
-         */
         getValueLength: PropTypes.func,
         inputStyle: PropTypes.object,
-        /**
-         * 自定义 class
-         */
         className: PropTypes.string,
-        /**
-         * 自定义内联样式
-         */
         style: PropTypes.object,
-        /**
-         * 原生 type
-         */
         htmlType: PropTypes.string,
-        /**
-         * name
-         */
         name: PropTypes.string,
         rtl: PropTypes.bool,
         state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
         locale: PropTypes.object,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param value - 评分值
-         */
         renderPreview: PropTypes.func,
-        /**
-         * 尺寸
-         */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
-        /**
-         * 开启后会过滤输入法中间字母状态，文字输入完成后才会触发 onChange
-         * @version 1.23
-         */
         composition: PropTypes.bool,
         onCompositionStart: PropTypes.func,
         onCompositionEnd: PropTypes.func,

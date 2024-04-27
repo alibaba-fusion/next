@@ -47,33 +47,12 @@ export default class TextArea extends Base<TextAreaProps> {
     static getDerivedStateFromProps = Base.getDerivedStateFromProps;
     static propTypes = {
         ...Base.propTypes,
-        /**
-         * 是否有边框
-         */
         hasBorder: PropTypes.bool,
-        /**
-         * 状态
-         */
         state: PropTypes.oneOf(['error', 'warning']),
-        /**
-         * 自动高度 true / \{minRows: 2, maxRows: 4\}
-         */
         autoHeight: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-        /**
-         * 多行文本框高度 <br />(不要直接用 height 设置多行文本框的高度，ie9 10 会有兼容性问题)
-         */
         rows: PropTypes.number,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         */
         renderPreview: PropTypes.func,
-        /**
-         * 国际化配置
-         */
         locale: PropTypes.object,
     };
 

@@ -5,7 +5,7 @@ import TextArea from './textarea';
 import Group from './group';
 import { assignSubComponent } from '../util/component';
 
-export type { InputProps, PasswordProps, TextAreaProps, GroupProps } from './types';
+export type { InputProps, PasswordProps, TextAreaProps, GroupProps, OnKeyDownOpts } from './types';
 
 const InputWithSub = assignSubComponent(Input, {
     Password: ConfigProvider.config(Password, {
