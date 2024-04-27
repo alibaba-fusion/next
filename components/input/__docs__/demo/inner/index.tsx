@@ -7,7 +7,7 @@ class App extends React.Component {
         v: '',
     };
 
-    onChange = v => {
+    onChange = (v: string) => {
         this.setState({
             v,
         });

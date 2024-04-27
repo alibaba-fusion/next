@@ -1,22 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Input } from '@alifd/next';
+import type { InputProps } from '@alifd/next/lib/input';
 
 class App extends React.Component {
     state = {
         value: '',
     };
 
-    onChange(value) {
+    onChange(value: string) {
         console.log('onChange', value);
         this.setState({
             value,
         });
     }
 
-    onKeyDown(e, opts) {
+    onKeyDown: NonNullable<InputProps['onKeyDown']> = (e, opts) => {
         console.log('onKeyDown', opts);
-    }
+    };
 
     render() {
         return (

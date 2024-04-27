@@ -1,12 +1,22 @@
-import React from 'react';
+import React, {
+    CSSProperties,
+    type ChangeEvent,
+    type CompositionEvent,
+    type FocusEvent,
+    type KeyboardEvent,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
 import { func } from '../util';
 import zhCN from '../locale/zh-cn';
+import type { BaseProps, BaseState, GeneralHTMLInputElement } from './types';
 
-class Base extends React.Component {
+class Base<
+    P extends BaseProps = BaseProps,
+    S extends BaseState = BaseState,
+> extends React.Component<P, S> {
     static propTypes = {
         ...ConfigProvider.propTypes,
         /**
@@ -19,14 +29,14 @@ class Base extends React.Component {
         defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         /**
          * 发生改变的时候触发的回调
-         * @param {String} value 数据
-         * @param {Event} e DOM事件对象
+         * @param value - 数据
+         * @param e - DOM 事件对象
          */
         onChange: PropTypes.func,
         /**
          * 键盘按下的时候触发的回调
-         * @param {Event} e DOM事件对象
-         * @param {Object} opts 可扩展的附加信息：<br> - opts.overMaxLength: {Boolean} 已超出最大长度<br> - opts.beTrimed: {Boolean} 输入的空格被清理
+         * @param e - DOM 事件对象
+         * @param opts - 可扩展的附加信息：<br> - opts.overMaxLength: \{Boolean\} 已超出最大长度<br> - opts.beTrimed: \{Boolean\} 输入的空格被清理
          */
         onKeyDown: PropTypes.func,
         /**
@@ -38,11 +48,11 @@ class Base extends React.Component {
          */
         maxLength: PropTypes.number,
         /**
-         * 是否展现最大长度样式（旧版本为 hasLimitHint，目前仍兼容旧用法，将在2.x直接废弃）
+         * 是否展现最大长度样式（旧版本为 hasLimitHint，目前仍兼容旧用法，将在 2.x 直接废弃）
          */
         showLimitHint: PropTypes.bool,
         /**
-         * 当设置了maxLength时，是否截断超出字符串
+         * 当设置了 maxLength 时，是否截断超出字符串
          */
         cutString: PropTypes.bool,
         /**
@@ -50,7 +60,7 @@ class Base extends React.Component {
          */
         readOnly: PropTypes.bool,
         /**
-         * onChange返回会自动去除头尾空字符
+         * onChange 返回会自动去除头尾空字符
          */
         trim: PropTypes.bool,
         /**
@@ -59,23 +69,23 @@ class Base extends React.Component {
         placeholder: PropTypes.string,
         /**
          * 获取焦点时候触发的回调
-         * @param {Event} e DOM事件对象
+         * @param e - DOM 事件对象
          */
         onFocus: PropTypes.func,
         /**
          * 失去焦点时候触发的回调
-         * @param {Event} e DOM事件对象
+         * @param e - DOM 事件对象
          */
         onBlur: PropTypes.func,
         /**
          * 自定义字符串计算长度方式
-         * @param {String} value 数据
-         * @returns {Number} 自定义长度
+         * @param value - 数据
+         * @returns 自定义长度
          */
         getValueLength: PropTypes.func,
         inputStyle: PropTypes.object,
         /**
-         * 自定义class
+         * 自定义 class
          */
         className: PropTypes.string,
         /**
@@ -83,7 +93,7 @@ class Base extends React.Component {
          */
         style: PropTypes.object,
         /**
-         * 原生type
+         * 原生 type
          */
         htmlType: PropTypes.string,
         /**
@@ -99,12 +109,11 @@ class Base extends React.Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {number} value 评分值
+         * @param value - 评分值
          */
         renderPreview: PropTypes.func,
         /**
          * 尺寸
-         * @enumdesc 小, 中, 大
          */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
         /**
@@ -116,11 +125,11 @@ class Base extends React.Component {
         onCompositionEnd: PropTypes.func,
     };
 
-    static defaultProps = {
+    static defaultProps: Omit<BaseProps, 'state'> = {
         disabled: false,
         prefix: 'next-',
-        size: 'medium',
-        maxLength: null,
+        size: 'medium' as const,
+        maxLength: undefined,
         showLimitHint: false,
         cutString: true,
         readOnly: false,
@@ -136,8 +145,9 @@ class Base extends React.Component {
         onCompositionEnd: func.noop,
         locale: zhCN.Input,
     };
+    inputRef: HTMLInputElement | HTMLTextAreaElement;
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: BaseProps, prevState: BaseState) {
         if ('value' in nextProps && nextProps.value !== prevState.value && !prevState.composition) {
             const value = nextProps.value;
             return {
@@ -148,35 +158,36 @@ class Base extends React.Component {
         return null;
     }
 
-    ieHack(value) {
+    ieHack(value: number | string): number | string {
         return value;
     }
 
-    handleCompositionStart = e => {
+    handleCompositionStart = (e: CompositionEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         this.setState({
             composition: true,
         });
-        this.props.onCompositionStart(e);
+        this.props.onCompositionStart!(e);
     };
 
-    handleCompositionEnd = e => {
+    handleCompositionEnd = (e: CompositionEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         this.setState({
             composition: false,
         });
-        this.props.onCompositionEnd(e);
+        this.props.onCompositionEnd!(e);
 
-        const value = e.target.value;
-        this.props.onChange(value, e);
+        const value = (e.target as HTMLInputElement).value;
+        this.props.onChange!(value, e);
     };
 
-    onChange(e) {
+    onChange(e: ChangeEvent<HTMLInputElement>) {
         if ('stopPropagation' in e) {
             e.stopPropagation();
         } else if ('cancelBubble' in e) {
+            // @ts-expect-error 兼容 IE
             e.cancelBubble();
         }
 
-        let value = e.target.value;
+        let value: string | number = e.target.value;
 
         if (this.props.trim) {
             value = value.trim();
@@ -200,14 +211,21 @@ class Base extends React.Component {
             value = Number(value);
         }
 
-        this.props.onChange(value, e);
+        this.props.onChange!(value, e);
     }
 
-    onKeyDown(e) {
-        const value = e.target.value;
+    /**
+     * abstract
+     */
+    getValueLength(...rest: unknown[]) {
+        return 0;
+    }
+
+    onKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+        const value = (e.target as HTMLInputElement).value;
         const { maxLength } = this.props;
-        const len = maxLength > 0 && value ? this.getValueLength(value) : 0;
-        const opts = {};
+        const len = maxLength! > 0 && value ? this.getValueLength(value) : 0;
+        const opts: { beTrimed?: boolean; overMaxLength?: boolean } = {};
 
         // has enable trim and has input whitespace
         if (this.props.trim && e.keyCode === 32) {
@@ -216,39 +234,39 @@ class Base extends React.Component {
 
         // has defined maxLength and has over max length and has not input backspace and delete
         if (
-            maxLength > 0 &&
-            (len > maxLength + 1 ||
-                ((len === maxLength || len === maxLength + 1) &&
+            maxLength! > 0 &&
+            (len > maxLength! + 1 ||
+                ((len === maxLength || len === maxLength! + 1) &&
                     e.keyCode !== 8 &&
                     e.keyCode !== 46))
         ) {
             opts.overMaxLength = true;
         }
 
-        this.props.onKeyDown(e, opts);
+        this.props.onKeyDown!(e, opts);
     }
 
-    onFocus(e) {
+    onFocus(e: FocusEvent<HTMLInputElement>) {
         this.setState({
             focus: true,
         });
-        this.props.onFocus(e);
+        this.props.onFocus!(e);
     }
 
-    onBlur(e) {
+    onBlur(e: FocusEvent<HTMLInputElement>) {
         this.setState({
             focus: false,
         });
-        this.props.onBlur(e);
+        this.props.onBlur!(e);
     }
 
-    handleKeyDownFromClear = e => {
+    handleKeyDownFromClear = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.keyCode === 13) {
             this.onClear(e);
         }
     };
 
-    onClear(e) {
+    onClear(e: KeyboardEvent<HTMLInputElement>) {
         if (this.props.disabled) {
             return;
         }
@@ -258,16 +276,16 @@ class Base extends React.Component {
                 value: '',
             });
         }
-        this.props.onChange('', e, 'clear');
+        this.props.onChange!('', e, 'clear');
         this.focus();
     }
     renderLength() {
         const { maxLength, showLimitHint, prefix, rtl } = this.props;
-        const len = maxLength > 0 && this.state.value ? this.getValueLength(this.state.value) : 0;
+        const len = maxLength! > 0 && this.state.value ? this.getValueLength(this.state.value) : 0;
 
         const classesLenWrap = classNames({
             [`${prefix}input-len`]: true,
-            [`${prefix}error`]: len > maxLength,
+            [`${prefix}error`]: len > maxLength!,
         });
 
         const content = rtl ? `${maxLength}/${len}` : `${len}/${maxLength}`;
@@ -301,7 +319,23 @@ class Base extends React.Component {
             onCompositionStart,
             onCompositionEnd,
         } = this.props;
-        const props = {
+        const props: {
+            style?: CSSProperties;
+            onChange?: (e: ChangeEvent<GeneralHTMLInputElement>) => void;
+            onBlur?: (e: FocusEvent<GeneralHTMLInputElement>) => void;
+            onFocus?: (e: FocusEvent<GeneralHTMLInputElement>) => void;
+            ['aria-disabled']?: boolean;
+        } & Pick<
+            BaseProps,
+            | 'placeholder'
+            | 'disabled'
+            | 'readOnly'
+            | 'name'
+            | 'maxLength'
+            | 'value'
+            | 'onCompositionStart'
+            | 'onCompositionEnd'
+        > = {
             style: inputStyle,
             placeholder,
             disabled,
@@ -324,7 +358,7 @@ class Base extends React.Component {
         return props;
     }
 
-    saveRef = input => {
+    saveRef = (input: HTMLInputElement) => {
         this.inputRef = input;
     };
 
@@ -332,7 +366,7 @@ class Base extends React.Component {
         return this.inputRef;
     }
 
-    focus(start, end, preventScroll = false) {
+    focus(start?: unknown, end?: unknown, preventScroll = false) {
         this.inputRef.focus({ preventScroll });
         if (typeof start === 'number') {
             this.inputRef.selectionStart = start;

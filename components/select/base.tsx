@@ -117,7 +117,7 @@ export default class Base<
     highlightTimer: number | undefined;
     menuRef: InstanceType<typeof Menu> | null;
     isAutoComplete: boolean;
-    inputRef: Input;
+    inputRef: ReturnType<InstanceType<typeof Input>['getInstance']>;
     valueDataSource: ReturnType<typeof getValueDataSource>;
 
     constructor(props: P) {
@@ -553,10 +553,8 @@ export default class Base<
         this.selectDOM = findDOMNode(ref) as HTMLElement;
     };
 
-    saveInputRef = (ref: Input) => {
-        // @ts-expect-error 待 Input 修正
+    saveInputRef = (ref: InstanceType<typeof Input>) => {
         if (ref && ref.getInstance()) {
-            // @ts-expect-error 待 Input 修正
             this.inputRef = ref.getInstance();
         }
     };
@@ -566,12 +564,10 @@ export default class Base<
      * @override
      */
     focusInput() {
-        // @ts-expect-error 待 Input 修正
         this.inputRef.focus(undefined, undefined, true);
     }
 
     focus(...args: unknown[]) {
-        // @ts-expect-error 待 Input 修正
         this.inputRef.focus(...args);
     }
 

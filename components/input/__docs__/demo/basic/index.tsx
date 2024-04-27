@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Input } from '@alifd/next';
+import type { InputProps } from '@alifd/next/lib/input';
 
-function onChange(v) {
+const onChange: InputProps['onChange'] = v => {
     console.log(v);
-}
+};
 
 ReactDOM.render(
     <div>

@@ -1,18 +1,27 @@
-import React, { isValidElement, cloneElement } from 'react';
+import React, {
+    isValidElement,
+    cloneElement,
+    type UIEvent,
+    type ReactElement,
+    type ReactNode,
+    type KeyboardEvent,
+    type DOMAttributes,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
 import { obj, func } from '../util';
 import Base from './base';
 import Group from './group';
+import type { InputProps } from './types';
 
 // preventDefault here can stop onBlur to keep focus state
-function preventDefault(e) {
+function preventDefault(e: UIEvent) {
     e.preventDefault();
 }
 
 /** Input */
-class Input extends Base {
+class Input<P extends InputProps = InputProps> extends Base<P> {
     static displayName = 'Input';
     static getDerivedStateFromProps = Base.getDerivedStateFromProps;
     static propTypes = {
@@ -22,7 +31,7 @@ class Input extends Base {
          */
         label: PropTypes.node,
         /**
-         * 是否出现clear按钮
+         * 是否出现 clear 按钮
          */
         hasClear: PropTypes.bool,
         /**
@@ -31,7 +40,6 @@ class Input extends Base {
         hasBorder: PropTypes.bool,
         /**
          * 状态
-         * @enumdesc 错误, 校验中, 成功, 警告
          */
         state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
         /**
@@ -39,12 +47,12 @@ class Input extends Base {
          */
         onPressEnter: PropTypes.func,
         /**
-         * 原生type
+         * 原生 type
          */
         htmlType: PropTypes.string,
         htmlSize: PropTypes.string,
         /**
-         * 水印 (Icon的type类型，和hasClear占用一个地方)
+         * 水印 (Icon 的 type 类型，和 hasClear 占用一个地方)
          */
         hint: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
         /**
@@ -72,11 +80,11 @@ class Input extends Base {
          */
         addonTextAfter: PropTypes.node,
         /**
-         * (原生input支持)
+         * (原生 input 支持)
          */
         autoComplete: PropTypes.string,
         /**
-         * 自动聚焦(原生input支持)
+         * 自动聚焦 (原生 input 支持)
          */
         autoFocus: PropTypes.bool,
         inputRender: PropTypes.func,
@@ -89,17 +97,16 @@ class Input extends Base {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
         /**
-         * hover展示clear (配合 hasClear=true使用)
+         * hover 展示 clear (配合 hasClear=true 使用)
          * @version 1.24
          */
         hoverShowClear: PropTypes.bool,
     };
 
-    static defaultProps = {
+    static defaultProps: InputProps = {
         ...Base.defaultProps,
         autoComplete: 'off',
         hasBorder: true,
@@ -109,7 +116,7 @@ class Input extends Base {
         inputRender: el => el,
     };
 
-    constructor(props) {
+    constructor(props: P) {
         super(props);
 
         let value;
@@ -126,9 +133,9 @@ class Input extends Base {
 
     // `Enter` was considered to be two chars in chrome , but one char in ie.
     // so we make all `Enter` to be two chars
-    getValueLength(value) {
+    getValueLength(value: unknown) {
         const nv = `${value}`;
-        let strLen = this.props.getValueLength(nv);
+        let strLen = this.props.getValueLength!(nv);
         if (typeof strLen !== 'number') {
             strLen = nv.length;
         }
@@ -152,7 +159,7 @@ class Input extends Base {
         }
 
         let clearWrap = null;
-        // showClear属性应该与disable属性为互斥状态
+        // showClear 属性应该与 disable 属性为互斥状态
         const showClear = hasClear && !readOnly && !!`${this.state.value}` && !disabled;
 
         if (hint || showClear) {
@@ -161,7 +168,7 @@ class Input extends Base {
                 if (typeof hint === 'string') {
                     hintIcon = <Icon type={hint} className={`${prefix}input-hint`} />;
                 } else if (isValidElement(hint)) {
-                    hintIcon = cloneElement(hint, {
+                    hintIcon = cloneElement(hint as ReactElement<{ className: string }>, {
                         className: classNames(hint.props.className, `${prefix}input-hint`),
                     });
                 } else {
@@ -177,9 +184,9 @@ class Input extends Base {
                     <Icon
                         type="delete-filling"
                         role="button"
-                        tabIndex="0"
+                        tabIndex={0}
                         className={cls}
-                        aria-label={locale.clear}
+                        aria-label={locale!.clear}
                         onClick={this.onClear.bind(this)}
                         onMouseDown={preventDefault}
                         onKeyDown={this.handleKeyDownFromClear}
@@ -193,9 +200,9 @@ class Input extends Base {
                         <Icon
                             type="delete-filling"
                             role="button"
-                            tabIndex="0"
+                            tabIndex={0}
                             className={`${prefix}input-clear ${prefix}input-clear-icon`}
-                            aria-label={locale.clear}
+                            aria-label={locale!.clear}
                             onClick={this.onClear.bind(this)}
                             onMouseDown={preventDefault}
                             onKeyDown={this.handleKeyDownFromClear}
@@ -229,13 +236,13 @@ class Input extends Base {
         ) : null;
     }
 
-    renderInner(inner, cls) {
+    renderInner(inner: ReactNode, cls: string) {
         return inner ? <span className={cls}>{inner}</span> : null;
     }
 
-    handleKeyDown = e => {
+    handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.keyCode === 13) {
-            this.props.onPressEnter(e);
+            this.props.onPressEnter!(e);
         }
 
         this.onKeyDown(e);
@@ -275,32 +282,35 @@ class Input extends Base {
             [`${prefix}noborder`]: !hasBorder || this.props.htmlType === 'file',
             [`${prefix}input-group-auto-width`]: hasAddon,
             [`${prefix}disabled`]: disabled,
-            [className]: !!className && !hasAddon,
+            [className!]: !!className && !hasAddon,
         });
 
         const innerCls = `${prefix}input-inner`;
         const innerBeforeCls = classNames({
             [innerCls]: true,
             [`${prefix}before`]: true,
-            [innerBeforeClassName]: innerBeforeClassName,
+            [innerBeforeClassName!]: innerBeforeClassName,
         });
         const innerAfterCls = classNames({
             [innerCls]: true,
             [`${prefix}after`]: true,
             [`${prefix}input-inner-text`]: typeof innerAfter === 'string',
-            [innerAfterClassName]: innerAfterClassName,
+            [innerAfterClassName!]: innerAfterClassName,
         });
         const previewCls = classNames({
             [`${prefix}form-preview`]: true,
-            [className]: !!className,
+            [className!]: !!className,
         });
 
         const props = this.getProps();
         // custom data attributes are assigned to the top parent node
-        // data-类自定义数据属性分配到顶层node节点
-        const dataProps = obj.pickAttrsWith(this.props, 'data-');
+        // data-类自定义数据属性分配到顶层 node 节点
+        const dataProps = obj.pickAttrsWith(this.props, 'data-') as Record<
+            `data-${string}`,
+            unknown
+        >;
         // Custom props are transparently transmitted to the core input node by default
-        // 自定义属性默认透传到核心node节点：input
+        // 自定义属性默认透传到核心 node 节点：input
         const others = obj.pickOthers(Object.assign({}, dataProps, Input.propTypes), this.props);
 
         if (isPreview) {
@@ -325,7 +335,7 @@ class Input extends Base {
             );
         }
 
-        const compositionProps = {};
+        const compositionProps: DOMAttributes<HTMLInputElement> = {};
         if (composition) {
             compositionProps.onCompositionStart = this.handleCompositionStart;
             compositionProps.onCompositionEnd = this.handleCompositionEnd;
@@ -338,6 +348,7 @@ class Input extends Base {
                 {...compositionProps}
                 height="100%"
                 type={htmlType}
+                // @ts-expect-error size 应为 number
                 size={htmlSize}
                 autoFocus={autoFocus}
                 autoComplete={autoComplete}
@@ -355,7 +366,7 @@ class Input extends Base {
             >
                 {this.renderLabel()}
                 {this.renderInner(innerBefore, innerBeforeCls)}
-                {inputRender(inputEl)}
+                {inputRender!(inputEl)}
                 {this.renderInner(innerAfter, innerAfterCls)}
                 {this.renderControl()}
             </span>

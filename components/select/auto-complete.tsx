@@ -346,7 +346,10 @@ class AutoComplete extends Base<AutoCompleteProps, AutoCompleteState> {
             placeholder: _placeholder,
             label,
             // extra: arrowNode,
-            onChange: this.handleChange,
+            onChange: this.handleChange as (
+                value: string,
+                e: ChangeEvent<HTMLInputElement>
+            ) => void,
             onKeyDown: this.handleTriggerKeyDown,
         };
 

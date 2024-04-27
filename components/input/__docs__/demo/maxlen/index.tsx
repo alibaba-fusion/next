@@ -1,26 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Input } from '@alifd/next';
+import type { InputProps } from '@alifd/next/lib/input';
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            maxLength: 10,
-            control: 'maxLen control',
-        };
-    }
+    state = {
+        maxLength: 10,
+        control: 'maxLen control',
+    };
 
-    onChange(v) {
+    onChange(v: string) {
         console.log(v);
         this.setState({
             control: v,
         });
     }
 
-    onKeyDown(e, opts) {
+    onKeyDown: NonNullable<InputProps['onKeyDown']> = (e, opts) => {
         console.log('onKeyDown', opts);
-    }
+    };
 
     render() {
         return (
