@@ -20,9 +20,6 @@ export default class Password extends Input<PasswordProps> {
 
     static propTypes = {
         ...Input.propTypes,
-        /**
-         * 是否展示切换按钮
-         */
         showToggle: PropTypes.bool,
     };
     static defaultProps = {

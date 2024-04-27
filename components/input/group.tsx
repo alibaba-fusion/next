@@ -11,32 +11,14 @@ class Group extends React.Component<GroupProps> {
     static displayName = 'Group';
 
     static propTypes = {
-        /**
-         * 样式前缀
-         */
         prefix: PropTypes.string,
         className: PropTypes.string,
         style: PropTypes.object,
         children: PropTypes.node,
-        /**
-         * 输入框前附加内容
-         */
         addonBefore: PropTypes.node,
-        /**
-         * 输入框前附加内容 css
-         */
         addonBeforeClassName: PropTypes.string,
-        /**
-         * 输入框后附加内容
-         */
         addonAfter: PropTypes.node,
-        /**
-         * 输入框后额外 css
-         */
         addonAfterClassName: PropTypes.string,
-        /**
-         * rtl
-         */
         rtl: PropTypes.bool,
     };
 
