@@ -107,7 +107,7 @@ export default class TextArea extends Base<TextAreaProps> {
 
     _getMinMaxHeight(
         { minRows, maxRows }: { minRows?: string | number; maxRows?: string | number },
-        value?: string | number
+        value?: string | number | null
     ) {
         const node = ReactDOM.findDOMNode(this.helpRef) as HTMLTextAreaElement;
         if (!node) {
@@ -273,7 +273,9 @@ export default class TextArea extends Base<TextAreaProps> {
             [className!]: !!className,
         });
 
-        const props = this.getProps();
+        const props = this.getProps() as Omit<ReturnType<typeof this.getProps>, 'value'> & {
+            value: string | number;
+        };
         // custom data attributes are assigned to the top parent node
         // data-类自定义数据属性分配到顶层 node 节点
         const dataProps = obj.pickAttrsWith(this.props, 'data-') as Record<

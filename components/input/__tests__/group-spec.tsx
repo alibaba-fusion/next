@@ -1,13 +1,7 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import sinon from 'sinon';
-import assert from 'power-assert';
 import Select from '../../select';
 import Button from '../../button';
 import Input from '../index';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 const select = (
     <Select>
@@ -19,25 +13,25 @@ const button = <Button>search</Button>;
 describe('input-group', () => {
     describe('render', () => {
         it('should accept addonBefore', () => {
-            let wrapper = mount(
+            cy.mount(
                 <Input.Group addonBefore={select}>
                     <Input hasClear defaultValue="abc" style={{ width: '100%' }} />
                 </Input.Group>
             );
-            assert(wrapper.find('span.next-input-group-addon').length === 1);
-            assert(wrapper.find('span.next-input-group-addon.next-before').length === 1);
-            assert(wrapper.find('span.next-input-group-addon.next-after').length === 0);
+            cy.get('span.next-input-group-addon').should('exist');
+            cy.get('span.next-input-group-addon.next-before').should('exist');
+            cy.get('span.next-input-group-addon.next-after').should('not.exist');
         });
 
         it('should accept addonAfter', () => {
-            let wrapper = mount(
+            cy.mount(
                 <Input.Group addonAfter={button}>
                     <Input hasClear defaultValue="abc" style={{ width: '100%' }} />
                 </Input.Group>
             );
-            assert(wrapper.find('span.next-input-group-addon').length === 1);
-            assert(wrapper.find('span.next-input-group-addon.next-before').length === 0);
-            assert(wrapper.find('span.next-input-group-addon.next-after').length === 1);
+            cy.get('span.next-input-group-addon').should('exist');
+            cy.get('span.next-input-group-addon.next-before').should('not.exist');
+            cy.get('span.next-input-group-addon.next-after').should('exist');
         });
     });
 });
