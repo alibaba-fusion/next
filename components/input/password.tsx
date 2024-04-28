@@ -1,4 +1,4 @@
-import React, { MouseEvent, type UIEvent } from 'react';
+import React, { type MouseEvent, type UIEvent } from 'react';
 import PropTypes from 'prop-types';
 
 import Input from './input';

@@ -256,10 +256,10 @@ class Base<
             | 'readOnly'
             | 'name'
             | 'maxLength'
-            | 'value'
             | 'onCompositionStart'
             | 'onCompositionEnd'
-        > = {
+        > &
+            Pick<BaseState, 'value'> = {
             style: inputStyle,
             placeholder,
             disabled,

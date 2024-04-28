@@ -1,73 +1,52 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import sinon from 'sinon';
-import assert from 'power-assert';
 import Input from '../index';
 import Icon from '../../icon/index';
 import ConfigProvider from '../../config-provider';
-
-Enzyme.configure({ adapter: new Adapter() });
-
-/* eslint-disable no-undef, react/jsx-filename-extension */
+import '../style';
 
 describe('input', () => {
     describe('render', () => {
-        let parent;
-
-        beforeEach(() => {
-            parent = document.createElement('div');
-            document.body.appendChild(parent);
-        });
-
-        afterEach(() => {
-            document.body.removeChild(parent);
-            parent = null;
-        });
-
         it('should isPreview', () => {
-            ReactDOM.render(<Input id="ispreview-input" isPreview defaultValue="abc" />, parent);
-            assert(document.querySelectorAll('#ispreview-input')[0].innerText === 'abc');
+            cy.mount(<Input id="ispreview-input" isPreview defaultValue="abc" />);
+            cy.get('#ispreview-input').should('have.text', 'abc');
         });
 
         it('should renderPreview', () => {
-            ReactDOM.render(
+            cy.mount(
                 <Input
                     id="renderpreview-input"
                     isPreview
                     defaultValue="abc"
                     renderPreview={() => 'ddd'}
-                />,
-                parent
+                />
             );
-
-            assert(document.querySelectorAll('#renderpreview-input')[0].innerText === 'ddd');
+            cy.get('#renderpreview-input').should('have.text', 'ddd');
         });
     });
 
     describe('render', () => {
         it('should accept defaultValue & value', () => {
-            let wrapper = mount(<Input defaultValue="123" />),
-                wrapper2 = mount(<Input value="123" />);
-            assert(wrapper.props().defaultValue === '123');
-            assert(wrapper2.props().value === '123');
+            cy.mount(<Input defaultValue="123" />);
+            cy.get('.next-input input').should('have.value', '123');
+            cy.mount(<Input value="456" />);
+            cy.get('.next-input input').should('have.value', '456');
         });
         it('should accept addonBefore & addonAfter', () => {
-            const wrapper = mount(<Input addonBefore="test" addonAfter="test2" />);
-            assert(wrapper.find('span.next-input-group-addon').length === 2);
-            assert(wrapper.props().addonAfter === 'test2');
+            cy.mount(<Input addonBefore="test" addonAfter="test2" />);
+            cy.get('span.next-input-group-addon').should('have.length', 2);
+            cy.get('span.next-input-group-addon').eq(0).should('have.text', 'test');
+            cy.get('span.next-input-group-addon').eq(1).should('have.text', 'test2');
         });
     });
 
     describe('behavior', () => {
         // 判断事件是否执行
         it('simulates onChange/onFocus/onBlur/onPressEnter events', () => {
-            const onChange = sinon.spy();
-            const onFocus = sinon.spy();
-            const onBlur = sinon.spy();
-            const onPressEnter = sinon.spy();
-            const wrapper = mount(
+            const onChange = cy.spy();
+            const onFocus = cy.spy();
+            const onBlur = cy.spy();
+            const onPressEnter = cy.spy();
+            cy.mount(
                 <Input
                     onChange={onChange}
                     onFocus={onFocus}
@@ -75,22 +54,21 @@ describe('input', () => {
                     onPressEnter={onPressEnter}
                 />
             );
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
-            assert(onChange.calledOnce);
-            wrapper.find('input').simulate('focus');
-            assert(onFocus.calledOnce);
-            wrapper.find('input').simulate('blur');
-            assert(onBlur.calledOnce);
-            wrapper.find('input').simulate('keydown', { keyCode: 13 });
-            assert(onPressEnter.calledOnce);
+            cy.get('input').type('20');
+            cy.wrap(onChange).should('be.calledTwice');
+            cy.wrap(onFocus).should('be.called');
+            cy.get('input').blur();
+            cy.wrap(onBlur).should('be.calledOnce');
+            cy.get('input').type('{enter}');
+            cy.wrap(onPressEnter).should('be.calledOnce');
         });
 
         it('simulates onCompositionStart/onCompositionUpdate/onCompositionEnd events', () => {
-            const onCompositionStart = sinon.spy();
-            const onCompositionUpdate = sinon.spy();
-            const onCompositionEnd = sinon.spy();
-            const onChange = sinon.spy();
-            const wrapper = mount(
+            const onCompositionStart = cy.spy();
+            const onCompositionUpdate = cy.spy();
+            const onCompositionEnd = cy.spy();
+            const onChange = cy.spy();
+            cy.mount(
                 <Input
                     composition
                     onCompositionStart={onCompositionStart}
@@ -99,177 +77,168 @@ describe('input', () => {
                     onChange={onChange}
                 />
             );
-            wrapper.find('input').simulate('compositionstart', { target: { value: 'zh' } });
-            assert(onCompositionStart.calledOnce);
-            wrapper.find('input').simulate('compositionupdate', { target: { value: 'zhon' } });
-            assert(onCompositionUpdate.calledOnce);
-            wrapper.find('input').simulate('compositionend', { target: { value: '中' } });
-            assert(onCompositionEnd.calledOnce);
-            assert(onChange.calledOnce);
+            cy.get('input').invoke('val', 'zh').trigger('compositionstart');
+            cy.wrap(onCompositionStart).should('be.calledOnce');
+            cy.get('input').invoke('val', 'zhon').trigger('compositionupdate');
+            cy.wrap(onCompositionUpdate).should('be.calledOnce');
+            cy.get('input').invoke('val', '中').trigger('compositionend');
+            cy.wrap(onCompositionEnd).should('be.calledOnce');
+            cy.wrap(onChange).should('be.calledWithMatch', '中');
         });
 
-        it('Navitve onCompositionStart/onCompositionUpdate/onCompositionEnd events', () => {
-            const onCompositionStart = sinon.spy();
-            const onCompositionUpdate = sinon.spy();
-            const onCompositionEnd = sinon.spy();
-            const wrapper = mount(
+        it('Native onCompositionStart/onCompositionUpdate/onCompositionEnd events', () => {
+            const onCompositionStart = cy.spy();
+            const onCompositionUpdate = cy.spy();
+            const onCompositionEnd = cy.spy();
+            cy.mount(
                 <Input
                     onCompositionStart={onCompositionStart}
                     onCompositionUpdate={onCompositionUpdate}
                     onCompositionEnd={onCompositionEnd}
                 />
             );
-            wrapper.find('input').simulate('compositionstart', { target: { value: 'zh' } });
-            assert(onCompositionStart.calledOnce);
-            wrapper.find('input').simulate('compositionupdate', { target: { value: 'zhon' } });
-            assert(onCompositionUpdate.calledOnce);
-            wrapper.find('input').simulate('compositionend', { target: { value: '中' } });
-            assert(onCompositionEnd.calledOnce);
+            cy.get('input').invoke('val', 'zh').trigger('compositionstart');
+            cy.wrap(onCompositionStart).should('be.calledOnce');
+            cy.get('input').invoke('val', 'zhon').trigger('compositionupdate');
+            cy.wrap(onCompositionUpdate).should('be.calledOnce');
+            cy.get('input').invoke('val', '中').trigger('compositionend');
+            cy.wrap(onCompositionEnd).should('be.calledOnce');
         });
 
-        it('should support onChange', done => {
-            let onChange = value => {
-                    assert(value === '20');
-                },
-                wrapper = mount(<Input defaultValue={123} onChange={onChange} />);
+        it('should support onChange', () => {
+            const onChange = cy.spy();
+            cy.mount(<Input defaultValue={123} onChange={onChange} />);
 
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
-            assert(wrapper.find('input').prop('value') === '20');
+            cy.get('input').type('2');
 
-            done();
+            cy.wrap(onChange).should('be.calledWithMatch', '2');
         });
 
-        it('should support trim', done => {
-            let onChange = value => {
-                    assert(value === '20');
-                },
-                wrapper = mount(<Input trim onChange={onChange} />);
-
-            wrapper.find('input').simulate('change', { target: { value: ' 20 ' } });
-            assert(wrapper.find('input').prop('value') === '20');
-
-            done();
+        it('should support trim', () => {
+            const onChange = cy.spy();
+            cy.mount(<Input trim onChange={onChange} />);
+            cy.get('input').type(' ');
+            cy.get('input').type('20');
+            cy.get('input').type(' ');
+            cy.get('input').type('2');
+            cy.wrap(onChange).should('be.calledWithMatch', '');
+            cy.wrap(onChange).should('be.calledWithMatch', '2');
+            cy.wrap(onChange).should('be.calledWithMatch', '20');
+            cy.wrap(onChange).should('be.calledWithMatch', '202');
         });
 
-        it('should support placeholder', done => {
-            const wrapper = mount(<Input placeholder="holder" />);
-
-            assert(wrapper.props().placeholder === 'holder');
-            done();
+        it('should support placeholder', () => {
+            cy.mount(<Input placeholder="holder" />);
+            cy.get('input').should('have.attr', 'placeholder', 'holder');
         });
 
-        it('should support dsiabled', done => {
-            const wrapper = mount(<Input disabled />);
-
-            assert(wrapper.find('input').prop('disabled'));
-            done();
+        it('should support dsiabled', () => {
+            cy.mount(<Input disabled />);
+            cy.get('input').should('have.attr', 'disabled', 'disabled');
         });
 
-        it('should support string hint', done => {
-            const wrapper = mount(<Input hint="calendar" />);
-            assert(wrapper.find('input .next-icon-calendar'));
-
-            done();
+        it('should support string hint', () => {
+            cy.mount(<Input hint="calendar" />);
+            cy.get('.next-input .next-icon-calendar').should('exist');
         });
 
-        it('should support node hint', done => {
-            const wrapper = mount(<Input hint={<Icon type="smile" />} />);
-            assert(wrapper.find('input .next-icon-smile'));
-
-            done();
+        it('should support node hint', () => {
+            cy.mount(<Input hint={<Icon type="smile" />} />);
+            cy.get('.next-input .next-icon-smile').should('exist');
         });
 
-        it('should support maxLength & hasLimitHint', done => {
-            const wrapper = mount(<Input defaultValue={'abcd'} maxLength={10} hasLimitHint />);
-            assert(!wrapper.find('.next-input-len').hasClass('next-error'));
+        it('should support maxLength & hasLimitHint', () => {
+            cy.mount(<Input defaultValue={'abcd'} maxLength={10} hasLimitHint />);
+            cy.get('.next-input-len').should('not.have.class', 'next-error');
+            cy.mount(<Input defaultValue={'12345678901'} maxLength={10} hasLimitHint />);
+            cy.get('.next-input-len').should('have.class', 'next-error');
 
-            wrapper.find('input').simulate('change', { target: { value: '12345678901' } });
-            assert(wrapper.find('.next-input-len').hasClass('next-error'));
-
-            const wrapper2 = mount(<Input.TextArea maxLength={10} hasLimitHint />);
-            wrapper2.find('textarea').simulate('change', { target: { value: 'abc\nabc\n' } });
-
-            //ie 浏览器下面认为\n是两个字符串所以展示各有不同，这里不做校验了
-            // expect(wrapper2.find('.next-input-len').text()).to.be.equal('8/10');
-
-            done();
+            cy.mount(<Input.TextArea defaultValue={'abc\nabc\n'} maxLength={10} hasLimitHint />);
+            cy.get('.next-input-len').should('not.have.class', 'next-error');
+            cy.mount(
+                <Input.TextArea defaultValue={'abc\nabc\nabc\n'} maxLength={10} hasLimitHint />
+            );
+            cy.get('.next-input-len').should('have.class', 'next-error');
         });
 
-        it('should support state', done => {
-            const wrapper = mount(<Input state="error" />);
-            assert(wrapper.find('.next-input').hasClass('next-error'));
-
-            const wrapper2 = mount(<Input state="success" />);
-            assert(wrapper2.find('i.next-input-success-icon').length === 1);
-
-            const wrapper3 = mount(<Input state="loading" />);
-            assert(wrapper3.find('i.next-input-loading-icon').length === 1);
-
-            done();
+        it('should support state', () => {
+            cy.mount(<Input state="error" />);
+            cy.get('.next-input').should('have.class', 'next-error');
+            cy.mount(<Input state="success" />);
+            cy.get('i.next-input-success-icon').should('exist');
+            cy.mount(<Input state="loading" />);
+            cy.get('i.next-input-loading-icon').should('exist');
         });
 
-        it('should support onPressEnter & onFocus & onBlur', done => {
-            let onPressEnter = e => {
-                    assert(e.target.value === '123');
-                },
-                wrapper = mount(<Input defaultValue={'123'} onPressEnter={onPressEnter} />);
-            wrapper.find('input').simulate('keydown', { keyCode: 13 });
+        it('should support onPressEnter & onFocus & onBlur', () => {
+            const onPressEnter = cy.spy();
+            cy.mount(
+                <Input
+                    defaultValue={'123'}
+                    onPressEnter={e => {
+                        onPressEnter((e.target as HTMLInputElement).value);
+                    }}
+                />
+            );
+            cy.get('input').type('{enter}');
+            cy.wrap(onPressEnter).should('be.calledWith', '123');
 
-            const wrapper2 = mount(
+            const onFocus = cy.spy();
+            cy.mount(
                 <Input
                     defaultValue={'123'}
                     onFocus={e => {
-                        assert(e.target.value === '123');
+                        onFocus((e.target as HTMLInputElement).value);
                     }}
                 />
             );
-            wrapper2.find('input').simulate('focus');
+            cy.get('input').focus();
+            cy.wrap(onFocus).should('be.calledWith', '123');
 
-            const wrapper3 = mount(
+            const onBlur = cy.spy();
+            cy.mount(
                 <Input
                     defaultValue={'123'}
                     onBlur={e => {
-                        assert(e.target.value === '123');
+                        onBlur((e.target as HTMLInputElement).value);
                     }}
                 />
             );
-            wrapper3.find('input').simulate('blur');
-
-            done();
+            cy.get('input').focus();
+            cy.get('input').blur();
+            cy.wrap(onBlur).should('be.calledWith', '123');
         });
 
-        it('should support hasClear', done => {
-            let onChange = value => {
-                    assert(value === '');
-                },
-                wrapper = mount(<Input defaultValue="abcdef" hasClear onChange={onChange} />);
-
-            assert(wrapper.find('.next-icon').hasClass('next-input-clear-icon'));
-            wrapper.find('.next-icon').simulate('click');
-            assert(wrapper.find('input').prop('value') === '');
-
-            done();
+        it('should support hasClear', () => {
+            const onChange = cy.spy();
+            cy.mount(<Input defaultValue="abcdef" hasClear onChange={onChange} />);
+            cy.get('.next-input-clear-icon').should('exist');
+            cy.get('.next-input-clear-icon').click();
+            cy.get('input').should('have.value', '');
+            cy.wrap(onChange).should('be.calledWithMatch', '');
         });
 
-        it('should support getValueLength', done => {
-            const getValueLength = sinon.spy();
-            mount(<Input defaultValue="abcdef" maxLength={10} getValueLength={getValueLength} />);
-            assert(getValueLength.calledOnce);
+        it('should support getValueLength', () => {
+            const getValueLength = cy.spy();
+            cy.mount(
+                <Input defaultValue="abcdef" maxLength={10} getValueLength={getValueLength} />
+            );
+            cy.wrap(getValueLength).should('be.calledOnce');
 
-            let getValueLength2 = value => {
-                    return 1;
-                },
-                wrapper = mount(
-                    <Input
-                        defaultValue="abcdef"
-                        maxLength={10}
-                        hasLimitHint
-                        getValueLength={getValueLength2}
-                    />
-                );
-            assert(wrapper.find('.next-input-len').text() === '1/10');
+            const getValueLength2 = () => {
+                return 1;
+            };
+            cy.mount(
+                <Input
+                    defaultValue="abcdef"
+                    maxLength={10}
+                    hasLimitHint
+                    getValueLength={getValueLength2}
+                />
+            );
+            cy.get('.next-input-len').should('have.text', '1/10');
 
-            const wrapper2 = mount(
+            cy.mount(
                 <Input.TextArea
                     defaultValue="abcdef"
                     maxLength={10}
@@ -277,52 +246,44 @@ describe('input', () => {
                     getValueLength={getValueLength2}
                 />
             );
-            assert(wrapper2.find('.next-input-len').text() === '1/10');
-
-            done();
+            cy.get('.next-input-len').should('have.text', '1/10');
         });
 
-        it('should support getInputNode', done => {
+        it('should support getInputNode', () => {
+            const onFocus = cy.spy();
             class App extends React.Component {
+                input: InstanceType<typeof Input> | null;
                 render() {
                     return (
                         <Input
-                            ref="input"
-                            onFocus={e => {
-                                assert(this.refs.input.getInstance().getInputNode() !== undefined);
-                                done();
+                            ref={input => {
+                                this.input = input;
+                            }}
+                            onFocus={() => {
+                                onFocus(this.input?.getInputNode() === undefined);
                             }}
                         />
                     );
                 }
             }
-            const wrapper = mount(<App />);
-
-            wrapper.find('input').simulate('focus');
+            cy.mount(<App />);
+            cy.get('input').focus();
+            cy.wrap(onFocus).should('be.calledWith', false);
         });
 
-        it('should support htmlType=number', done => {
-            let onChange = value => {
-                    assert(value === 20);
-                    done();
-                },
-                wrapper = mount(
-                    <Input defaultValue="abcdef" htmlType="number" onChange={onChange} />
-                );
-
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
+        it('should support htmlType=number', () => {
+            const onChange = cy.spy();
+            cy.mount(<Input defaultValue="abcdef" htmlType="number" onChange={onChange} />);
+            cy.get('input').type('20');
+            cy.wrap(onChange).should('be.calledWith', 20);
         });
 
-        it('should support htmlType=number value="" ', done => {
-            let onChange = value => {
-                    assert(value === '');
-                    done();
-                },
-                wrapper = mount(
-                    <Input defaultValue="abcdef" htmlType="number" onChange={onChange} />
-                );
-
-            wrapper.find('input').simulate('change', { target: { value: '' } });
+        it('should support htmlType=number value="" ', () => {
+            const onChange = cy.spy();
+            cy.mount(<Input defaultValue="abcdef" htmlType="number" onChange={onChange} />);
+            cy.get('input').type('1{backspace}');
+            cy.wrap(onChange).should('be.calledWith', 1);
+            cy.wrap(onChange).should('be.calledWith', '');
         });
 
         it('should support ConfigProvider defaultProps', () => {
@@ -331,34 +292,32 @@ describe('input', () => {
                     disabled: true,
                 },
             };
-            const wrapper = mount(
+            cy.mount(
                 <ConfigProvider defaultPropsConfig={config}>
                     <Input />
                 </ConfigProvider>
             );
 
-            assert(wrapper.find('input').prop('disabled') === true);
+            cy.get('input').should('have.attr', 'disabled', 'disabled');
         });
     });
     describe('react api', () => {
-        it('calls componentWillReceiveProps', done => {
-            const wrapper = mount(<Input defaultValue={19} />);
-            wrapper.setProps({ value: '30' });
-            assert(wrapper.find('input').prop('value') === '30');
+        it('calls componentWillReceiveProps', () => {
+            cy.mount(<Input defaultValue={19} />).as('Demo');
+            cy.rerender('Demo', { value: '30' });
+            cy.get('input').should('have.value', '30');
 
             // value = undefined 时候清空数据
-            wrapper.setProps({ value: undefined });
-            assert(wrapper.find('input').prop('value') === '');
-            done();
+            cy.rerender('Demo', { value: undefined });
+            cy.get('input').should('have.value', '');
         });
 
-        it('support null to reset', done => {
-            const wrapper = mount(<Input defaultValue={19} />);
+        it('support null to reset', () => {
+            cy.mount(<Input defaultValue={19} />).as('Demo');
 
             // value = null 时候清空数据
-            wrapper.setProps({ value: null });
-            assert(wrapper.find('input').prop('value') === '');
-            done();
+            cy.rerender('Demo', { value: null });
+            cy.get('input').should('have.value', '');
         });
     });
 });
