@@ -5,7 +5,7 @@ import type { Locale } from '../locale/types';
 interface HTMLAttributesWeak
     extends Omit<
         React.InputHTMLAttributes<HTMLElement>,
-        'defaultValue' | 'onChange' | 'onKeyDown' | 'size' | 'maxLength'
+        'defaultValue' | 'onChange' | 'onKeyDown' | 'size' | 'maxLength' | 'value'
     > {}
 interface CommonPropsWithoutLocale extends Omit<CommonProps, 'locale'> {}
 
@@ -34,13 +34,13 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonPropsWithoutLoc
      * 当前值（受控）
      * @en Current value (controlled)
      */
-    value?: string | number;
+    value?: string | number | null;
 
     /**
      * 默认值（非受控）
      * @en Default value (uncontrolled)
      */
-    defaultValue?: string | number;
+    defaultValue?: string | number | null;
 
     /**
      * 发生改变的时候触发的回调
@@ -188,7 +188,10 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonPropsWithoutLoc
      * 自定义预览态内容
      * @en Custom preview content
      */
-    renderPreview?: (value: string | number | undefined, props: TextAreaProps) => React.ReactNode;
+    renderPreview?: (
+        value: string | number | undefined | null,
+        props: TextAreaProps
+    ) => React.ReactNode;
 
     /**
      * 开启后会过滤输入法中间字母状态，文字输入完成后才会触发 onChange
@@ -267,13 +270,13 @@ export interface InputProps extends HTMLAttributesWeak, CommonPropsWithoutLocale
      * 当前值（受控）
      * @en Current value (controlled)
      */
-    value?: string | number;
+    value?: string | number | null;
 
     /**
      * 默认值（非受控）
      * @en Default value (uncontrolled)
      */
-    defaultValue?: string | number;
+    defaultValue?: string | number | null;
 
     /**
      * 发生改变的时候触发的回调
@@ -495,7 +498,10 @@ export interface InputProps extends HTMLAttributesWeak, CommonPropsWithoutLocale
      * 自定义预览态内容
      * @en Custom preview content
      */
-    renderPreview?: (value: string | number | undefined, props: InputProps) => React.ReactNode;
+    renderPreview?: (
+        value: string | number | undefined | null,
+        props: InputProps
+    ) => React.ReactNode;
 
     /**
      * 开启后会过滤输入法中间字母状态，文字输入完成后才会触发 onChange
@@ -594,7 +600,7 @@ export interface BaseProps
 }
 
 export interface BaseState {
-    value?: BaseProps['value'] | string;
+    value?: Exclude<BaseProps['value'], undefined> | string;
     composition?: boolean;
     focus?: boolean;
     hint?: string;
