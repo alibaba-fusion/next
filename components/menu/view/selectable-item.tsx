@@ -1,18 +1,29 @@
-import React, { Component, isValidElement } from 'react';
+import React, {
+    Component,
+    isValidElement,
+    type HTMLAttributes,
+    type KeyboardEvent,
+    type MouseEvent,
+    type ReactElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Icon from '../../icon';
-import { func, obj, KEYCODE } from '../../util';
+import { func, obj, KEYCODE, type ClassPropsWithDefault } from '../../util';
 import Item from './item';
+import type { ChildItemPropsInMenu, ItemProps } from '../types';
 
 const { bindCtx } = func;
 const { pickOthers } = obj;
 
-/**
- * Menu.Item
- * @order 0
- */
-export default class SelectableItem extends Component {
+export type ItemWithDefaultsProps = ClassPropsWithDefault<
+    ItemProps,
+    typeof SelectableItem.defaultProps
+>;
+
+export type ItemInMenuProps = ChildItemPropsInMenu<ItemWithDefaultsProps>;
+
+export default class SelectableItem extends Component<ItemProps> {
     static menuChildType = 'item';
 
     static propTypes = {
@@ -21,17 +32,8 @@ export default class SelectableItem extends Component {
         selected: PropTypes.bool,
         onSelect: PropTypes.func,
         inlineIndent: PropTypes.number,
-        /**
-         * 是否禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * 帮助文本
-         */
         helper: PropTypes.node,
-        /**
-         * 菜单项标签内容
-         */
         children: PropTypes.node,
         className: PropTypes.string,
         onKeyDown: PropTypes.func,
@@ -48,21 +50,23 @@ export default class SelectableItem extends Component {
         icons: {},
     };
 
-    constructor(props) {
+    readonly props: ItemWithDefaultsProps;
+
+    constructor(props: ItemProps) {
         super(props);
 
         bindCtx(this, ['handleKeyDown', 'handleClick']);
     }
 
     getSelected() {
-        const { _key, root, selected } = this.props;
+        const { _key, root, selected } = this.props as ItemInMenuProps;
         const { selectMode } = root.props;
         const { selectedKeys } = root.state;
         return selected || (!!selectMode && selectedKeys.indexOf(_key) > -1);
     }
 
-    handleSelect(e) {
-        const { _key, root, onSelect } = this.props;
+    handleSelect(e: MouseEvent | KeyboardEvent) {
+        const { _key, root, onSelect } = this.props as ItemInMenuProps;
         if (onSelect) {
             onSelect(!this.getSelected(), this, e);
         } else {
@@ -70,7 +74,7 @@ export default class SelectableItem extends Component {
         }
     }
 
-    handleKeyDown(e) {
+    handleKeyDown(e: KeyboardEvent) {
         if (e.keyCode === KEYCODE.SPACE && !this.props.disabled) {
             this.handleSelect(e);
         }
@@ -78,17 +82,23 @@ export default class SelectableItem extends Component {
         this.props.onKeyDown && this.props.onKeyDown(e);
     }
 
-    handleClick(e) {
+    handleClick(e: MouseEvent) {
         this.handleSelect(e);
 
         this.props.onClick && this.props.onClick(e);
     }
 
-    renderSelectedIcon(selected) {
-        const { root, inlineIndent, needIndent, hasSelectedIcon, isSelectIconRight, type } = this.props;
-        const { prefix, hasSelectedIcon: rootSelectedIcon, isSelectIconRight: rootSelectIconRight, icons } = root.props;
+    renderSelectedIcon(selected: boolean) {
+        const { root, inlineIndent, needIndent, hasSelectedIcon, isSelectIconRight, type } = this
+            .props as ItemInMenuProps;
+        const {
+            prefix,
+            hasSelectedIcon: rootSelectedIcon,
+            isSelectIconRight: rootSelectIconRight,
+            icons,
+        } = root.props;
 
-        let iconsSelect = icons.select;
+        let iconsSelect = icons.select as ReactElement;
 
         if (!isValidElement(icons.select) && icons.select) {
             iconsSelect = <span>{icons.select}</span>;
@@ -98,11 +108,13 @@ export default class SelectableItem extends Component {
             [`${prefix}menu-icon-selected`]: true,
             [`${prefix}menu-symbol-icon-selected`]: !iconsSelect,
             [`${prefix}menu-icon-right`]:
-                ('isSelectIconRight' in this.props ? isSelectIconRight : rootSelectIconRight) && type !== 'submenu',
+                ('isSelectIconRight' in this.props ? isSelectIconRight : rootSelectIconRight) &&
+                type !== 'submenu',
         });
 
         return ('hasSelectedIcon' in this.props ? hasSelectedIcon : rootSelectedIcon) && selected
             ? React.cloneElement(iconsSelect || <Icon type="select" />, {
+                  // @ts-expect-error FIXME: inlineIndent 可能为 undefined，此时表达式恒为 false，这里需要明确这个逻辑
                   style: needIndent && inlineIndent > 0 ? { left: `${inlineIndent}px` } : null,
                   className: cls,
               })
@@ -110,20 +122,23 @@ export default class SelectableItem extends Component {
     }
 
     render() {
-        const { _key, root, className, disabled, helper, children, needIndent } = this.props;
+        const { _key, root, className, disabled, helper, children, needIndent } = this
+            .props as ItemInMenuProps;
         const { prefix } = root.props;
-        const others = pickOthers(Object.keys(SelectableItem.propTypes), this.props);
+        const others = pickOthers(SelectableItem.propTypes, this.props);
         const selected = this.getSelected();
 
-        const newProps = {
+        const newProps: Partial<ItemProps> = {
             _key,
             root,
             disabled,
             type: 'item',
-            className: cx({
-                [`${prefix}selected`]: selected,
-                [className]: !!className,
-            }),
+            className: cx(
+                {
+                    [`${prefix}selected`]: selected,
+                },
+                className
+            ),
             onKeyDown: this.handleKeyDown,
             onClick: !disabled ? this.handleClick : this.props.onClick,
             needIndent,
@@ -134,7 +149,7 @@ export default class SelectableItem extends Component {
             newProps.title = children;
         }
 
-        const textProps = {};
+        const textProps: HTMLAttributes<HTMLSpanElement> = {};
 
         if ('selectMode' in root.props) {
             textProps['aria-selected'] = selected;

@@ -1,13 +1,18 @@
-import React, { Component, Children, isValidElement } from 'react';
+import React, { Component, type MouseEvent, type KeyboardEvent, type ReactNode } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { func, obj, KEYCODE } from '../../util';
+import { func, obj, KEYCODE, type ClassPropsWithDefault } from '../../util';
+import type { ChildItemPropsInMenu, ItemProps as NormalItemProps } from '../types';
 
 const { bindCtx } = func;
 const { pickOthers } = obj;
 
-export default class Item extends Component {
+export type ItemProps = Omit<NormalItemProps, 'onSelect' | 'inlineIndent'>;
+export type ItemWithDefaultsProps = ClassPropsWithDefault<ItemProps, typeof Item.defaultProps>;
+export type ItemInMenuProps = ChildItemPropsInMenu<ItemWithDefaultsProps>;
+
+export default class Item extends Component<ItemProps> {
     static propTypes = {
         _key: PropTypes.string,
         level: PropTypes.number,
@@ -34,51 +39,56 @@ export default class Item extends Component {
         needIndent: true,
     };
 
-    constructor(props) {
+    readonly props: ItemWithDefaultsProps;
+    itemNode: HTMLElement;
+    menuNode: HTMLElement | undefined | null;
+    lastFocusedKey: string | undefined | null;
+
+    constructor(props: ItemProps) {
         super(props);
 
         bindCtx(this, ['handleClick', 'handleKeyDown']);
     }
 
     componentDidMount() {
-        this.itemNode = findDOMNode(this);
+        this.itemNode = findDOMNode(this) as HTMLElement;
 
-        const { parentMode, root, menu } = this.props;
+        const { parentMode, root, menu } = this.props as ItemInMenuProps;
         if (menu) {
-            this.menuNode = findDOMNode(menu);
+            this.menuNode = findDOMNode(menu) as HTMLElement;
         } else if (parentMode === 'popup') {
-            this.menuNode = this.itemNode.parentNode;
+            this.menuNode = this.itemNode.parentNode as HTMLElement;
         } else {
-            this.menuNode = findDOMNode(root);
+            this.menuNode = findDOMNode(root) as HTMLElement;
             const { prefix, header, footer } = root.props;
             if (header || footer) {
-                this.menuNode = this.menuNode.querySelector(`.${prefix}menu-content`);
+                this.menuNode = this.menuNode.querySelector<HTMLElement>(`.${prefix}menu-content`);
             }
         }
 
         this.setFocus();
     }
     componentDidUpdate() {
-        const { root } = this.props;
+        const { root } = this.props as ItemInMenuProps;
         if (root.props.focusable && root.state.focusedKey !== this.lastFocusedKey) {
             this.setFocus();
         }
     }
     focusable() {
-        const { root, type, disabled } = this.props;
+        const { root, type, disabled } = this.props as ItemInMenuProps;
         const { focusable } = root.props;
         return focusable && (type === 'submenu' || !disabled);
     }
 
     getFocused() {
-        const { _key, root } = this.props;
+        const { _key, root } = this.props as ItemInMenuProps;
         const { focusedKey } = root.state;
         return focusedKey === _key;
     }
 
     setFocus() {
         const focused = this.getFocused();
-        this.lastFocusedKey = this.props.root.state.focusedKey;
+        this.lastFocusedKey = this.props.root!.state.focusedKey;
         if (focused) {
             if (this.focusable()) {
                 this.itemNode.focus({ preventScroll: true });
@@ -95,10 +105,10 @@ export default class Item extends Component {
         }
     }
 
-    handleClick(e) {
+    handleClick(e: MouseEvent | KeyboardEvent) {
         e.stopPropagation();
 
-        const { _key, root, disabled } = this.props;
+        const { _key, root, disabled } = this.props as ItemInMenuProps;
 
         if (!disabled) {
             root.handleItemClick(_key, this, e);
@@ -109,8 +119,8 @@ export default class Item extends Component {
         }
     }
 
-    handleKeyDown(e) {
-        const { _key, root, type } = this.props;
+    handleKeyDown(e: KeyboardEvent) {
+        const { _key, root, type } = this.props as ItemInMenuProps;
 
         if (this.focusable()) {
             root.handleItemKeyDown(_key, type, this, e);
@@ -128,7 +138,7 @@ export default class Item extends Component {
         this.props.onKeyDown && this.props.onKeyDown(e);
     }
 
-    getTitle(children) {
+    getTitle(children: ReactNode) {
         if (typeof children === 'string') {
             return children;
         }
@@ -148,33 +158,37 @@ export default class Item extends Component {
             needIndent,
             parentMode,
             _key,
-        } = this.props;
-        const others = pickOthers(Object.keys(Item.propTypes), this.props);
+        } = this.props as ItemInMenuProps;
+        const others = pickOthers(Item.propTypes, this.props);
 
         const { prefix, focusable, inlineIndent, itemClassName, rtl } = root.props;
         const focused = this.getFocused();
 
         const newClassName = replaceClassName
             ? className
-            : cx({
-                  [`${prefix}menu-item`]: true,
-                  [`${prefix}disabled`]: disabled,
-                  [`${prefix}focused`]: !focusable && focused,
-                  [itemClassName]: !!itemClassName,
-                  [className]: !!className,
-              });
+            : cx(
+                  {
+                      [`${prefix}menu-item`]: true,
+                      [`${prefix}disabled`]: disabled,
+                      [`${prefix}focused`]: !focusable && focused,
+                  },
+                  itemClassName,
+                  className
+              );
         if (disabled) {
             others['aria-disabled'] = true;
             others['aria-hidden'] = true;
         }
 
-        others.tabIndex = root.state.tabbableKey === _key ? '0' : '-1';
+        others.tabIndex = root.state.tabbableKey === _key ? 0 : -1;
 
         if (parentMode === 'inline' && inlineLevel > 1 && inlineIndent > 0 && needIndent) {
             const paddingProp = rtl ? 'paddingRight' : 'paddingLeft';
             others.style = {
                 ...(others.style || {}),
-                [paddingProp]: `${inlineLevel * inlineIndent - (groupIndent || 0) * 0.4 * inlineIndent}px`,
+                [paddingProp]: `${
+                    inlineLevel * inlineIndent - (groupIndent || 0) * 0.4 * inlineIndent
+                }px`,
             };
         }
         const TagName = component;

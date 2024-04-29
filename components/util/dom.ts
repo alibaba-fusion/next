@@ -169,8 +169,11 @@ export type CustomCSSStyle = {
     [key in CustomCSSStyleKey]: unknown;
 };
 
-type LikeCustomCSSStyle<T extends Record<string, unknown>> =
-    LikeCustomCSSStyleKey<Exclude<keyof T, number | symbol>> extends never ? never : T;
+type LikeCustomCSSStyle<T extends Record<string, unknown>> = LikeCustomCSSStyleKey<
+    Exclude<keyof T, number | symbol>
+> extends never
+    ? never
+    : T;
 
 export function getStyle<N extends undefined | null>(node: N, name?: unknown): N;
 export function getStyle(node: HTMLElement): CustomCSSStyle;
@@ -214,16 +217,15 @@ export function getStyle(
     );
 }
 
-export function setStyle(node: undefined | null, name: unknown): false;
 export function setStyle<K extends Record<string, unknown>>(
-    node: HTMLElement,
+    node: HTMLElement | undefined | null,
     name: K & LikeCustomCSSStyle<K>
-): void;
+): false | void;
 export function setStyle<K extends string>(
-    node: HTMLElement,
+    node: HTMLElement | undefined | null,
     name: LikeCustomCSSStyleKey<K>,
     value: unknown
-): void;
+): false | void;
 /**
  * 设置元素的样式
  * @param node - DOM 节点

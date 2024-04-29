@@ -94,7 +94,7 @@ class Rating extends Component<RatingProps, RatingState> {
 
     timer: ReturnType<typeof setTimeout> | null;
     underlayNode: HTMLDivElement | null = null;
-    readonly props: ClassPropsWithDefault<RatingProps, keyof typeof Rating.defaultProps>;
+    readonly props: ClassPropsWithDefault<RatingProps, typeof Rating.defaultProps>;
 
     constructor(props: RatingProps) {
         super(props);

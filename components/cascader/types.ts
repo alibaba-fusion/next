@@ -73,8 +73,7 @@ export interface CascaderState {
 }
 
 export interface ItemProps
-    extends Omit<HTMLAttributesWeak, 'onSelect'>,
-        CommonProps,
+    extends CommonProps,
         Omit<CheckboxItemProps, 'onSelect' | 'onChange'>,
         MenuItemProps {
     onExpand?: (focusedFirstChild: boolean) => void | undefined | Promise<unknown>;

@@ -1,11 +1,24 @@
-import React, { Component, Children, cloneElement } from 'react';
+import React, {
+    Component,
+    Children,
+    cloneElement,
+    type ReactElement,
+    type CSSProperties,
+    type ReactChild,
+    type ReactFragment,
+    type ReactPortal,
+    type ReactNode,
+    type FocusEvent,
+    type MouseEvent,
+    type KeyboardEvent,
+} from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import SubMenu from './sub-menu';
 import ConfigProvider from '../../config-provider';
-import { func, obj, dom, events, KEYCODE } from '../../util';
+import { func, obj, dom, events, KEYCODE, type ClassPropsWithDefault } from '../../util';
 import {
     getWidth,
     normalizeToArray,
@@ -14,18 +27,33 @@ import {
     isAvailablePos,
     getFirstAvaliablelChildKey,
 } from './util';
+import type {
+    ItemProps,
+    K2N,
+    MenuChildElement,
+    MenuChildProps,
+    MenuItem,
+    MenuProps,
+    P2N,
+    SelectableItem,
+} from '../types';
 
 const { bindCtx } = func;
 const { pickOthers, isNil } = obj;
 const noop = () => {};
 const MENUITEM_OVERFLOWED_CLASSNAME = 'menuitem-overflowed';
 
-const getIndicatorsItem = (items, isPlaceholder, prefix = '', renderMore) => {
+const getIndicatorsItem = (
+    items: ReactElement[],
+    isPlaceholder: boolean,
+    prefix = '',
+    renderMore: MenuProps['renderMore']
+) => {
     const moreCls = cx({
         [`${prefix}menu-more`]: true,
     });
 
-    const style = {};
+    const style: CSSProperties = {};
     // keep placehold to get width
     if (isPlaceholder) {
         style.visibility = 'hidden';
@@ -55,31 +83,47 @@ const getIndicatorsItem = (items, isPlaceholder, prefix = '', renderMore) => {
     );
 };
 
-const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
-    const arr = [];
+const addIndicators = ({
+    children,
+    lastVisibleIndex,
+    prefix,
+    renderMore,
+}: { lastVisibleIndex?: number } & Pick<
+    MenuPropsWithDefaults,
+    'children' | 'prefix' | 'renderMore'
+>) => {
+    const arr: Array<ReactChild | ReactFragment | ReactPortal | true> = [];
 
     React.Children.forEach(children, (child, index) => {
         if (!child) {
             return;
         }
-        let overflowedItems = [];
-
-        if (index > lastVisibleIndex) {
-            child = React.cloneElement(child, {
-                // 别折叠不显示的 item，不占用真实的用户传入的 key
-                key: `more-${index}`,
-                style: { display: 'none' },
-                className: `${(child && child.className) || ''} ${MENUITEM_OVERFLOWED_CLASSNAME}`,
-            });
-        }
-
-        if (index === lastVisibleIndex + 1) {
-            overflowedItems = children.slice(lastVisibleIndex + 1).map((c, i) => {
-                return React.cloneElement(c, {
-                    key: c.key || `more-${index}-${i}`,
+        let overflowedItems: ReactElement[] = [];
+        // lastVisibleIndex 为 undefined 时，下面两个 if 条件始终为 false, 所以这里直接先行判断一下，避免类型错误
+        if (typeof lastVisibleIndex !== 'undefined') {
+            if (index > lastVisibleIndex) {
+                // @ts-expect-error FIXME: child 可能不是 ReactElement, cloneElement 会报错
+                child = React.cloneElement(child, {
+                    // 别折叠不显示的 item，不占用真实的用户传入的 key
+                    key: `more-${index}`,
+                    style: { display: 'none' },
+                    className: `${
+                        // @ts-expect-error FIXME: should be `child.props.className`
+                        (child && child.className) || ''
+                    } ${MENUITEM_OVERFLOWED_CLASSNAME}`,
                 });
-            });
-            arr.push(getIndicatorsItem(overflowedItems, false, prefix, renderMore));
+            }
+
+            if (index === lastVisibleIndex + 1) {
+                overflowedItems = (children as ReactElement[])
+                    .slice(lastVisibleIndex + 1)
+                    .map((c, i) => {
+                        return React.cloneElement(c, {
+                            key: c.key || `more-${index}-${i}`,
+                        });
+                    });
+                arr.push(getIndicatorsItem(overflowedItems, false, prefix, renderMore));
+            }
         }
 
         arr.push(child);
@@ -98,9 +142,12 @@ const getNewChildren = ({
     hozInLine,
     prefix,
     renderMore,
-}) => {
-    const k2n = {};
-    const p2n = {};
+}: { root: Menu; lastVisibleIndex?: number } & Pick<
+    MenuPropsWithDefaults,
+    'children' | 'mode' | 'hozInLine' | 'prefix' | 'renderMore'
+>) => {
+    const k2n: K2N = {};
+    const p2n: P2N = {};
 
     const arr = hozInLine
         ? addIndicators({
@@ -111,9 +158,14 @@ const getNewChildren = ({
           })
         : children;
 
-    const loop = (children, posPrefix, indexWrapper = { index: 0 }, inlineLevel = 1) => {
-        const keyArray = [];
-        return Children.map(children, child => {
+    const loop = (
+        children: ReactNode,
+        posPrefix: string,
+        indexWrapper = { index: 0 },
+        inlineLevel = 1
+    ) => {
+        const keyArray: string[] = [];
+        return Children.map(children, (child: MenuChildElement) => {
             if (
                 child &&
                 (typeof child.type === 'function' ||
@@ -124,10 +176,10 @@ const getNewChildren = ({
                     typeof child.type === 'object') &&
                 'menuChildType' in child.type
             ) {
-                let newChild;
+                let newChild: ReactElement<MenuChildProps>;
 
-                let pos;
-                const props = { root };
+                let pos: string | undefined;
+                const props: MenuChildProps = { root };
 
                 if (['item', 'submenu', 'group'].indexOf(child.type.menuChildType) > -1) {
                     pos = `${posPrefix}-${indexWrapper.index++}`;
@@ -167,7 +219,7 @@ const getNewChildren = ({
                         newChild = cloneElement(
                             child,
                             props,
-                            loop(child.props.children, pos, undefined, childLevel)
+                            loop(child.props.children, pos!, undefined, childLevel)
                         );
                         break;
                     case 'group':
@@ -193,7 +245,7 @@ const getNewChildren = ({
         });
     };
 
-    const newChildren = loop(arr, '0');
+    const newChildren = loop(arr, '0') as ReactNode[];
 
     return {
         newChildren,
@@ -202,10 +254,22 @@ const getNewChildren = ({
     };
 };
 
-/**
- * Menu
- */
-class Menu extends Component {
+export interface MenuState {
+    lastVisibleIndex: number | undefined;
+    root: Menu;
+    newChildren: ReactNode[];
+    _k2n: K2N;
+    _p2n: P2N;
+    tabbableKey: string | undefined | null;
+    openKeys: string[];
+    selectedKeys: string[];
+    focusedKey: string | null | undefined;
+    lastMode?: MenuProps['mode'];
+}
+
+export type MenuPropsWithDefaults = ClassPropsWithDefault<MenuProps, typeof Menu.defaultProps>;
+
+export class Menu extends Component<MenuProps, MenuState> {
     static isNextMenu = true;
 
     static propTypes = {
@@ -214,160 +278,47 @@ class Menu extends Component {
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
         className: PropTypes.string,
-        /**
-         * 菜单项和子菜单
-         */
         children: PropTypes.node,
-        /**
-         * 点击菜单项触发的回调函数
-         * @param {String} key 点击的菜单项的 key 值
-         * @param {Object} item 点击的菜单项对象
-         * @param {Object} event 点击的事件对象
-         */
         onItemClick: PropTypes.func,
-        /**
-         * 当前打开的子菜单的 key 值
-         */
         openKeys: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-        /**
-         * 初始打开的子菜单的 key 值
-         */
         defaultOpenKeys: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-        /**
-         * 初始展开所有的子菜单，只在 mode 设置为 'inline' 以及 openMode 设置为 'multiple' 下生效，优先级高于 defaultOpenKeys
-         */
         defaultOpenAll: PropTypes.bool,
-        /**
-         * 打开或关闭子菜单触发的回调函数
-         * @param {Array} key 打开的所有子菜单的 key 值
-         * @param {Object} extra 额外参数
-         * @param {String} extra.key 当前操作子菜单的 key 值
-         * @param {Boolean} extra.open 是否是打开
-         */
         onOpen: PropTypes.func,
-        /**
-         * 子菜单打开的模式
-         */
         mode: PropTypes.oneOf(['inline', 'popup']),
-        /**
-         * 子菜单打开的触发行为
-         */
         triggerType: PropTypes.oneOf(['click', 'hover']),
-        /**
-         * 展开内连子菜单的模式，同时可以展开一个子菜单还是多个子菜单，该属性仅在 mode 为 inline 时生效
-         */
         openMode: PropTypes.oneOf(['single', 'multiple']),
-        /**
-         * 内连子菜单缩进距离
-         */
         inlineIndent: PropTypes.number,
         inlineArrowDirection: PropTypes.oneOf(['down', 'right']),
-        /**
-         * 是否自动让弹层的宽度和菜单项保持一致，如果弹层的宽度比菜单项小则和菜单项保持一致，如果宽度大于菜单项则不做处理
-         */
         popupAutoWidth: PropTypes.bool,
-        /**
-         * 弹层的对齐方式
-         */
         popupAlign: PropTypes.oneOf(['follow', 'outside']),
-        /**
-         * 弹层自定义 props
-         */
         popupProps: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-        /**
-         * 弹出子菜单自定义 className
-         */
         popupClassName: PropTypes.string,
-        /**
-         * 弹出子菜单自定义 style
-         */
         popupStyle: PropTypes.object,
-        /**
-         * 当前选中菜单项的 key 值
-         */
         selectedKeys: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-        /**
-         * 初始选中菜单项的 key 值
-         */
         defaultSelectedKeys: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-        /**
-         * 选中或取消选中菜单项触发的回调函数
-         * @param {Array} selectedKeys 选中的所有菜单项的值
-         * @param {Object} item 选中或取消选中的菜单项
-         * @param {Object} extra 额外参数
-         * @param {Boolean} extra.select 是否是选中
-         * @param {Array} extra.key 菜单项的 key
-         * @param {Object} extra.label 菜单项的文本
-         * @param {Array} extra.keyPath 菜单项 key 的路径
-         */
         onSelect: PropTypes.func,
-        /**
-         * 选中模式，单选还是多选，默认无值，不可选
-         */
         selectMode: PropTypes.oneOf(['single', 'multiple']),
-        /**
-         * 是否只能选择第一层菜单项（不能选择子菜单中的菜单项）
-         */
         shallowSelect: PropTypes.bool,
-        /**
-         * 是否显示选中图标，如果设置为 false 需配合配置平台设置选中时的背景色以示区分
-         */
         hasSelectedIcon: PropTypes.bool,
         labelToggleChecked: PropTypes.bool,
-        /**
-         * 是否将选中图标居右，仅当 hasSelectedIcon 为true 时生效。
-         * 注意：SubMenu 上的选中图标一直居左，不受此API控制
-         */
         isSelectIconRight: PropTypes.bool,
-        /**
-         * 菜单第一层展示方向
-         */
         direction: PropTypes.oneOf(['ver', 'hoz']),
-        /**
-         * 横向菜单条 item 和 footer 的对齐方向，在 direction 设置为 'hoz' 并且 header 存在时生效
-         */
         hozAlign: PropTypes.oneOf(['left', 'right']),
-        /**
-         * 横向菜单模式下，是否维持在一行，即超出一行折叠成 SubMenu 显示， 仅在 direction='hoz' mode='popup' 时生效
-         */
         hozInLine: PropTypes.bool,
         renderMore: PropTypes.func,
-        /**
-         * 自定义菜单头部
-         */
         header: PropTypes.node,
-        /**
-         * 自定义菜单尾部
-         */
         footer: PropTypes.node,
-        /**
-         * 自定义菜单尾部容器的 className
-         */
         footerWrapperClassName: PropTypes.string,
-        /**
-         * 是否自动获得焦点
-         */
         autoFocus: PropTypes.bool,
-        /**
-         * 当前获得焦点的子菜单或菜单项 key 值
-         */
         focusedKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
         focusable: PropTypes.bool,
         onItemFocus: PropTypes.func,
         onBlur: PropTypes.func,
-        /**
-         * 是否开启嵌入式模式，一般用于Layout的布局中，开启后没有默认背景、外层border、box-shadow，可以配合`<Menu style={{lineHeight: '100px'}}>` 自定义高度
-         * @version 1.18
-         */
         embeddable: PropTypes.bool,
         onItemKeyDown: PropTypes.func,
         expandAnimation: PropTypes.bool,
         itemClassName: PropTypes.string,
-        /**
-         * 可配置的icons，包括 select 等
-         */
         icons: PropTypes.object,
-        // content 是否为单层模式，目前主要在有 header 或 footer 的时候有意义
         flatenContent: PropTypes.bool,
     };
 
@@ -404,62 +355,8 @@ class Menu extends Component {
         icons: {},
     };
 
-    constructor(props) {
-        super(props);
-
-        const {
-            prefix,
-            children,
-            selectedKeys,
-            defaultSelectedKeys,
-            focusedKey,
-            focusable,
-            autoFocus,
-            hozInLine,
-            renderMore,
-        } = this.props;
-
-        this.state = {
-            lastVisibleIndex: undefined,
-        };
-
-        const { newChildren, _k2n, _p2n } = getNewChildren({
-            root: this,
-            ...this.props,
-        });
-
-        const tabbableKey = focusable ? getFirstAvaliablelChildKey('0', _p2n) : undefined;
-
-        this.state = {
-            root: this,
-            lastVisibleIndex: undefined,
-            newChildren,
-            _k2n,
-            _p2n,
-            tabbableKey,
-            openKeys: this.getInitOpenKeys(props, _k2n, _p2n),
-            selectedKeys: normalizeToArray(selectedKeys || defaultSelectedKeys),
-            focusedKey: !isNil(this.props.focusedKey)
-                ? focusedKey
-                : focusable && autoFocus
-                  ? tabbableKey
-                  : null,
-        };
-
-        bindCtx(this, [
-            'handleOpen',
-            'handleSelect',
-            'handleItemClick',
-            'handleItemKeyDown',
-            'onBlur',
-            'adjustChildrenWidth',
-        ]);
-
-        this.popupNodes = [];
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const state = {};
+    static getDerivedStateFromProps(nextProps: MenuPropsWithDefaults, prevState: MenuState) {
+        const state: Partial<MenuState> = {};
 
         if ('openKeys' in nextProps) {
             state.openKeys = normalizeToArray(nextProps.openKeys);
@@ -492,6 +389,7 @@ class Menu extends Component {
         state._p2n = _p2n;
 
         if (nextProps.focusable) {
+            // @ts-expect-error undefined in object throw types error but ok at runtime
             if (prevState.tabbableKey in _k2n) {
                 if (prevState.focusedKey) {
                     state.tabbableKey = prevState.focusedKey;
@@ -504,8 +402,56 @@ class Menu extends Component {
         return state;
     }
 
+    readonly props: MenuPropsWithDefaults;
+    popupNodes: HTMLElement[];
+    menuNode: HTMLUListElement;
+    menuContent: HTMLUListElement | null;
+    menuHeader: HTMLLIElement | null;
+    menuFooter: HTMLLIElement | null;
+    menuItemSizes: number[];
+
+    constructor(props: MenuProps) {
+        super(props);
+
+        const { selectedKeys, defaultSelectedKeys, focusedKey, focusable, autoFocus } = this.props;
+
+        const { newChildren, _k2n, _p2n } = getNewChildren({
+            root: this,
+            ...this.props,
+        });
+
+        const tabbableKey = focusable ? getFirstAvaliablelChildKey('0', _p2n) : undefined;
+
+        this.state = {
+            root: this,
+            lastVisibleIndex: undefined,
+            newChildren,
+            _k2n,
+            _p2n,
+            tabbableKey,
+            openKeys: this.getInitOpenKeys(props as MenuPropsWithDefaults, _k2n),
+            selectedKeys: normalizeToArray(selectedKeys || defaultSelectedKeys),
+            focusedKey: !isNil(this.props.focusedKey)
+                ? focusedKey
+                : focusable && autoFocus
+                  ? tabbableKey
+                  : null,
+        };
+
+        bindCtx(this, [
+            'handleOpen',
+            'handleSelect',
+            'handleItemClick',
+            'handleItemKeyDown',
+            'onBlur',
+            'adjustChildrenWidth',
+        ]);
+
+        this.popupNodes = [];
+    }
+
     componentDidMount() {
-        this.menuNode = findDOMNode(this);
+        this.menuNode = findDOMNode(this) as HTMLUListElement;
         this.adjustChildrenWidth();
 
         if (this.props.hozInLine) {
@@ -513,7 +459,7 @@ class Menu extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps: MenuProps, prevState: MenuState) {
         if (
             prevState.lastVisibleIndex !== this.state.lastVisibleIndex ||
             React.Children.toArray(this.props.children).length !==
@@ -537,11 +483,11 @@ class Menu extends Component {
             return;
         }
 
-        let children = [],
-            spaceWidth;
+        let children: [] | HTMLCollection = [],
+            spaceWidth: number;
 
         if (header || footer) {
-            children = this.menuContent.children;
+            children = this.menuContent!.children;
             spaceWidth =
                 getWidth(this.menuNode) - getWidth(this.menuHeader) - getWidth(this.menuFooter);
         } else {
@@ -556,9 +502,9 @@ class Menu extends Component {
         let currentSumWidth = 0,
             lastVisibleIndex = -1;
 
-        let moreNode = '';
+        let moreNode: HTMLElement | undefined;
 
-        const menuItemNodes = [].slice.call(children).filter(node => {
+        const menuItemNodes = ([].slice.call(children) as HTMLElement[]).filter(node => {
             if (node.className.split(' ').indexOf(`${prefix}menu-more`) < 0) {
                 return true;
             } else {
@@ -604,7 +550,7 @@ class Menu extends Component {
             ...this.getUpdateChildren(),
         });
     }
-    onBlur(e) {
+    onBlur(e: FocusEvent<HTMLUListElement>) {
         this.setState({
             focusedKey: undefined,
         });
@@ -612,8 +558,8 @@ class Menu extends Component {
         this.props.onBlur && this.props.onBlur(e);
     }
 
-    getInitOpenKeys(props, _k2n, _p2n) {
-        let initOpenKeys;
+    getInitOpenKeys(props: MenuPropsWithDefaults, _k2n: K2N) {
+        let initOpenKeys: string | string[];
 
         const { openKeys, defaultOpenKeys, defaultOpenAll, mode, openMode } = props;
         if (openKeys) {
@@ -639,8 +585,8 @@ class Menu extends Component {
         });
     };
 
-    handleOpen(key, open, triggerType, e) {
-        let newOpenKeys;
+    handleOpen(key: string, open: boolean, triggerType?: string, e?: Event) {
+        let newOpenKeys: string[] | undefined;
 
         const { mode, openMode } = this.props;
         const { openKeys, _k2n } = this.state;
@@ -665,7 +611,11 @@ class Menu extends Component {
             if (mode === 'inline') {
                 newOpenKeys = [...openKeys.slice(0, index), ...openKeys.slice(index + 1)];
             } else if (triggerType === 'docClick') {
-                if (!this.popupNodes.concat(this.menuNode).some(node => node.contains(e.target))) {
+                if (
+                    !this.popupNodes
+                        .concat(this.menuNode)
+                        .some(node => node.contains(e!.target as Node))
+                ) {
                     newOpenKeys = [];
                 }
             } else {
@@ -690,7 +640,7 @@ class Menu extends Component {
         }
     }
 
-    getPath(key, _k2n, _p2n) {
+    getPath(key: string, _k2n: K2N, _p2n: P2N) {
         const keyPath = [];
         const labelPath = [];
 
@@ -710,7 +660,7 @@ class Menu extends Component {
         };
     }
 
-    handleSelect(key, select, menuItem) {
+    handleSelect(key: string, select: boolean, menuItem: SelectableItem) {
         const { _k2n, _p2n } = this.state;
         const pos = _k2n[key].pos;
         const level = pos.split('-').length - 1;
@@ -749,7 +699,7 @@ class Menu extends Component {
         }
     }
 
-    handleItemClick(key, item, e) {
+    handleItemClick(key: string, item: MenuItem, e: MouseEvent | KeyboardEvent) {
         const { _k2n } = this.state;
         if (this.props.focusable) {
             if (isNil(this.props.focusedKey)) {
@@ -783,7 +733,7 @@ class Menu extends Component {
         }
     }
 
-    getAvailableKey(pos, prev) {
+    getAvailableKey(pos: string, prev: boolean) {
         const { _p2n } = this.state;
         const ps = Object.keys(_p2n).filter(p => isAvailablePos(pos, p, _p2n));
         if (ps.length > 1) {
@@ -801,11 +751,11 @@ class Menu extends Component {
         return null;
     }
 
-    getParentKey(pos) {
+    getParentKey(pos: string) {
         return this.state._p2n[pos.slice(0, pos.length - 2)].key;
     }
 
-    handleItemKeyDown(key, type, item, e) {
+    handleItemKeyDown(key: string, type: ItemProps['type'], item: MenuItem, e: KeyboardEvent) {
         if (
             [
                 KEYCODE.UP,
@@ -907,19 +857,20 @@ class Menu extends Component {
             }
 
             this.props.onItemKeyDown(focusedKey, item, e);
+            // @ts-expect-error FIXME: onItemFocus 在组件里有两种不同的调用方式，这里先标记，后面修复
             this.props.onItemFocus(focusedKey, e);
         }
     }
 
-    menuContentRef = ref => {
+    menuContentRef = (ref: HTMLUListElement | null) => {
         this.menuContent = ref;
     };
 
-    menuHeaderRef = ref => {
+    menuHeaderRef = (ref: HTMLLIElement | null) => {
         this.menuHeader = ref;
     };
 
-    menuFooterRef = ref => {
+    menuFooterRef = (ref: HTMLLIElement | null) => {
         this.menuFooter = ref;
     };
 
@@ -939,17 +890,19 @@ class Menu extends Component {
             flatenContent,
         } = this.props;
         const { newChildren } = this.state;
-        const others = pickOthers(Object.keys(Menu.propTypes), this.props);
+        const others = pickOthers(Menu.propTypes, this.props);
 
-        const newClassName = cx({
-            [`${prefix}menu`]: true,
-            [`${prefix}ver`]: direction === 'ver',
-            [`${prefix}hoz`]: direction === 'hoz',
-            [`${prefix}menu-embeddable`]: embeddable,
-            [`${prefix}menu-nowrap`]: hozInLine,
-            [`${prefix}menu-selectable-${selectMode}`]: selectMode,
-            [className]: !!className,
-        });
+        const newClassName = cx(
+            {
+                [`${prefix}menu`]: true,
+                [`${prefix}ver`]: direction === 'ver',
+                [`${prefix}hoz`]: direction === 'hoz',
+                [`${prefix}menu-embeddable`]: embeddable,
+                [`${prefix}menu-nowrap`]: hozInLine,
+                [`${prefix}menu-selectable-${selectMode}`]: selectMode,
+            },
+            className
+        );
 
         let role = direction === 'hoz' ? 'menubar' : 'menu';
         let ariaMultiselectable;
@@ -973,10 +926,7 @@ class Menu extends Component {
             );
         const footerElement = footer ? (
             <li
-                className={cx({
-                    [`${prefix}menu-footer`]: true,
-                    [footerWrapperClassName]: !!footerWrapperClassName,
-                })}
+                className={cx(`${prefix}menu-footer`, footerWrapperClassName)}
                 ref={this.menuFooterRef}
             >
                 {footer}
@@ -993,6 +943,7 @@ class Menu extends Component {
                 role={role}
                 onBlur={this.onBlur}
                 className={newClassName}
+                // @ts-expect-error FIXME: handleEnter 未定义，可移除
                 onKeyDown={this.handleEnter}
                 aria-multiselectable={ariaMultiselectable}
                 {...others}

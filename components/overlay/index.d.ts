@@ -200,6 +200,8 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 快捷位置
      */
     placement?: string;
+
+    pinFollowBaseElementWhenFixed?: boolean;
 }
 
 export class Popup extends React.Component<PopupProps, any> {}
@@ -356,6 +358,8 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 是否在捕获阶段监听，适配 react 17 事件模型变更
      */
     useCapture?: boolean;
+
+    pinFollowBaseElementWhenFixed?: boolean;
 }
 
 export default class Overlay extends React.Component<OverlayProps, any> {

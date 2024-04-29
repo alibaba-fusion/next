@@ -1,102 +1,122 @@
-import React from 'react';
+import React, { type ReactChild, type ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
 import '../../style';
 import '../../../icon/style';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
-import Menu from '../../index';
+import { Demo, DemoGroup, initDemo, type DemoFunctionDefineForObject } from '../../../demo-helper';
+import Menu, { type CheckboxItemProps, type RadioItemProps } from '../../index';
 import Icon from '../../../icon';
 
 const i18nMaps = {
     'en-us': {
-        option: 'Option '
+        option: 'Option ',
     },
     'zh-cn': {
-        option: '选项'
-    }
+        option: '选项',
+    },
 };
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
+type I18n = (typeof i18nMaps)[keyof typeof i18nMaps];
+
+interface FunctionDemoProps {
+    i18n: I18n;
+}
+
+interface FunctionDemoState {
+    demoFunction: Record<string, DemoFunctionDefineForObject>;
+}
+
+class FunctionDemo extends React.Component<FunctionDemoProps, FunctionDemoState> {
+    constructor(props: FunctionDemoProps) {
         super(props);
         this.state = {
             demoFunction: {
                 hasGroup: {
                     label: '有无分组',
                     value: 'false',
-                    enum: [{
-                        label: '有',
-                        value: 'true'
-                    }, {
-                        label: '无',
-                        value: 'false'
-                    }]
+                    enum: [
+                        {
+                            label: '有',
+                            value: 'true',
+                        },
+                        {
+                            label: '无',
+                            value: 'false',
+                        },
+                    ],
                 },
                 hasIcon: {
                     label: '有无图标',
                     value: 'false',
-                    enum: [{
-                        label: '有',
-                        value: 'true'
-                    }, {
-                        label: '无',
-                        value: 'false'
-                    }]
+                    enum: [
+                        {
+                            label: '有',
+                            value: 'true',
+                        },
+                        {
+                            label: '无',
+                            value: 'false',
+                        },
+                    ],
                 },
                 checkType: {
                     label: '有无 checkbox 或 radio',
                     value: 'checkLeft',
-                    enum: [{
-                        label: 'checkbox',
-                        value: 'checkbox'
-                    }, {
-                        label: 'radio',
-                        value: 'radio'
-                    }, {
-                        label: 'check on left',
-                        value: 'checkLeft'
-                    }, {
-                        label: 'check on right',
-                        value: 'checkRight'
-                    }]
-                }
-            }
+                    enum: [
+                        {
+                            label: 'checkbox',
+                            value: 'checkbox',
+                        },
+                        {
+                            label: 'radio',
+                            value: 'radio',
+                        },
+                        {
+                            label: 'check on left',
+                            value: 'checkLeft',
+                        },
+                        {
+                            label: 'check on right',
+                            value: 'checkRight',
+                        },
+                    ],
+                },
+            },
         };
 
         this.onFunctionChange = this.onFunctionChange.bind(this);
     }
 
-    onFunctionChange(demoFunction) {
+    onFunctionChange(demoFunction: Record<string, DemoFunctionDefineForObject>) {
         this.setState({
-            demoFunction
+            demoFunction,
         });
     }
 
-    renderGroup(key, children) {
+    renderGroup(key: string, children: ReactChild[]) {
         const hasGroup = this.state.demoFunction.hasGroup.value === 'true';
 
         if (hasGroup) {
-            return <Menu.Group label={key} >{children}</Menu.Group>;
+            return <Menu.Group label={key}>{children}</Menu.Group>;
         }
 
         return children;
     }
 
-    renderItem(key, others = {}) {
+    renderItem(key: string, others: CheckboxItemProps & RadioItemProps = {}) {
         const hasIcon = this.state.demoFunction.hasIcon.value === 'true';
         const checkType = this.state.demoFunction.checkType.value;
 
-        // eslint-disable-next-line
         const { i18n } = this.props;
-        let children = `${i18n.option}${key}`;
+        let children: ReactNode = `${i18n.option}${key}`;
         if (hasIcon) {
             children = [
                 <Icon key="icon" type="picture" size="small" style={{ marginRight: '4px' }} />,
-                children
+                children,
             ];
         }
 
-        let Item = Menu.Item;
+        let Item: any = Menu.Item;
         let isSelectIconRight = false;
         switch (checkType) {
             case 'checkbox':
@@ -114,10 +134,13 @@ class FunctionDemo extends React.Component {
                 break;
             default:
                 break;
-
         }
 
-        return <Item key={key} isSelectIconRight={isSelectIconRight} {...others}>{children}</Item>;
+        return (
+            <Item key={key} isSelectIconRight={isSelectIconRight} {...others}>
+                {children}
+            </Item>
+        );
     }
 }
 
@@ -127,7 +150,11 @@ class FunctionDemoNormal extends FunctionDemo {
         const hasGroup = demoFunction.hasGroup.value === 'true';
 
         return (
-            <Demo title="Normal" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
+            <Demo
+                title="Normal"
+                demoFunction={demoFunction}
+                onFunctionChange={this.onFunctionChange}
+            >
                 <Demo title="Normal">
                     <DemoGroup label="Normal">
                         <Menu>
@@ -175,39 +202,47 @@ class FunctionDemoNormal extends FunctionDemo {
 }
 
 class FunctionDemoNest extends FunctionDemo {
-    constructor(props) {
+    constructor(props: FunctionDemoProps) {
         super(props);
         this.state = {
             demoFunction: {
                 hasIcon: {
                     label: '有无图标',
                     value: 'false',
-                    enum: [{
-                        label: '有',
-                        value: 'true'
-                    }, {
-                        label: '无',
-                        value: 'false'
-                    }]
+                    enum: [
+                        {
+                            label: '有',
+                            value: 'true',
+                        },
+                        {
+                            label: '无',
+                            value: 'false',
+                        },
+                    ],
                 },
                 checkType: {
                     label: '有无 checkbox 或 radio',
                     value: 'false',
-                    enum: [{
-                        label: 'checkbox',
-                        value: 'checkbox'
-                    }, {
-                        label: 'radio',
-                        value: 'radio'
-                    }, {
-                        label: 'check on left',
-                        value: 'checkLeft'
-                    }, {
-                        label: 'check on right',
-                        value: 'checkRight'
-                    }]
-                }
-            }
+                    enum: [
+                        {
+                            label: 'checkbox',
+                            value: 'checkbox',
+                        },
+                        {
+                            label: 'radio',
+                            value: 'radio',
+                        },
+                        {
+                            label: 'check on left',
+                            value: 'checkLeft',
+                        },
+                        {
+                            label: 'check on right',
+                            value: 'checkRight',
+                        },
+                    ],
+                },
+            },
         };
 
         this.onFunctionChange = this.onFunctionChange.bind(this);
@@ -216,12 +251,16 @@ class FunctionDemoNest extends FunctionDemo {
     render() {
         const { i18n } = this.props;
         const { demoFunction } = this.state;
-
         return (
             <Demo title="Nest" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <Demo title="Normal">
                     <DemoGroup label="Inline">
-                        <Menu selectMode="single" openKeys={['2']} selectedKeys={['2-1']} style={{ width: '150px' }}>
+                        <Menu
+                            selectMode="single"
+                            openKeys={['2']}
+                            selectedKeys={['2-1']}
+                            style={{ width: '150px' }}
+                        >
                             <Menu.SubMenu key="1" label="Sub 1">
                                 <Menu.Item key="1-1">{`${i18n.option}1`}</Menu.Item>
                                 <Menu.Item key="1-2">{`${i18n.option}2`}</Menu.Item>
@@ -234,8 +273,9 @@ class FunctionDemoNest extends FunctionDemo {
                                 {this.renderItem('2-3')}
                                 {this.renderItem('2-4')}
                                 {/* --------- this is for config platform ----------- */}
-                                <div style={{display: "none"}}>
-                                    <div type="arrow-right" className='next-menu-unfold-icon'/>
+                                <div style={{ display: 'none' }}>
+                                    {/* @ts-expect-error type cant pass to div */}
+                                    <div type="arrow-right" className="next-menu-unfold-icon" />
                                 </div>
                                 {/* --------- this is for config platform ----------- */}
                             </Menu.SubMenu>
@@ -254,7 +294,14 @@ class FunctionDemoNest extends FunctionDemo {
                         </Menu>
                     </DemoGroup>
                     <DemoGroup label="Popup">
-                        <Menu style={{ marginBottom: '50px' }} popupProps={{ needAdjust: false }} selectMode="single" mode="popup" openKeys={['2']} selectedKeys={['2-1']}>
+                        <Menu
+                            style={{ marginBottom: '50px' }}
+                            popupProps={{ needAdjust: false }}
+                            selectMode="single"
+                            mode="popup"
+                            openKeys={['2']}
+                            selectedKeys={['2-1']}
+                        >
                             <Menu.SubMenu key="1" label="Sub 1">
                                 <Menu.Item key="1-1">{`${i18n.option}1`}</Menu.Item>
                                 <Menu.Item key="1-2">{`${i18n.option}2`}</Menu.Item>
@@ -287,16 +334,17 @@ class FunctionDemoNest extends FunctionDemo {
     }
 }
 
-const render = i18n => {
-    ReactDOM.render((
+const render = (i18n: I18n) => {
+    ReactDOM.render(
         <div className="demo-container">
             <FunctionDemoNormal i18n={i18n} />
             <FunctionDemoNest i18n={i18n} />
-        </div>
-    ), document.getElementById('container'));
+        </div>,
+        document.getElementById('container')
+    );
 };
 
-window.renderDemo = function(lang) {
+window.renderDemo = function (lang = 'zh-cn') {
     render(i18nMaps[lang]);
 };
 window.renderDemo('en-us');
