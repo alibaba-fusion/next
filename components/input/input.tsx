@@ -78,7 +78,7 @@ class Input<P extends InputProps = InputProps> extends Base<P> {
 
     // `Enter` was considered to be two chars in chrome , but one char in ie.
     // so we make all `Enter` to be two chars
-    getValueLength(value: unknown) {
+    getValueLength(value: string | number) {
         const nv = `${value}`;
         let strLen = this.props.getValueLength!(nv);
         if (typeof strLen !== 'number') {
@@ -250,10 +250,8 @@ class Input<P extends InputProps = InputProps> extends Base<P> {
         const props = this.getProps();
         // custom data attributes are assigned to the top parent node
         // data-类自定义数据属性分配到顶层 node 节点
-        const dataProps = obj.pickAttrsWith(this.props, 'data-') as Record<
-            `data-${string}`,
-            unknown
-        >;
+        const dataProps = obj.pickAttrsWith(this.props, 'data-');
+
         // Custom props are transparently transmitted to the core input node by default
         // 自定义属性默认透传到核心 node 节点：input
         const others = obj.pickOthers(Object.assign({}, dataProps, Input.propTypes), this.props);

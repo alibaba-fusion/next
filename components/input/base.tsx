@@ -141,7 +141,7 @@ class Base<
     /**
      * abstract
      */
-    getValueLength(...rest: unknown[]) {
+    getValueLength(value: string | number | null) {
         return 0;
     }
 
@@ -290,7 +290,7 @@ class Base<
         return this.inputRef;
     }
 
-    focus(start?: unknown, end?: unknown, preventScroll = false) {
+    focus(start?: number, end?: number, preventScroll = false) {
         this.inputRef.focus({ preventScroll });
         if (typeof start === 'number') {
             this.inputRef.selectionStart = start;

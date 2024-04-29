@@ -214,8 +214,8 @@ class Search extends React.Component<SearchProps, SearchState> {
         }
     };
 
-    focus: NonNullable<InputProps['onFocus']> = (...args) => {
-        this.inputRef!.focus(...args);
+    focus = (start?: number, end?: number, preventScroll = false) => {
+        this.inputRef!.focus(start, end, preventScroll);
     };
 
     handleFocus(...args: [React.FocusEvent<HTMLInputElement>]) {
@@ -351,7 +351,7 @@ class Search extends React.Component<SearchProps, SearchState> {
             // 受控属性 visible 不能直接写在组件上
             othersAttributes.visible = Boolean(visible);
         }
-        const dataAttr = obj.pickAttrsWith<Record<string, unknown>>(others, 'data-');
+        const dataAttr = obj.pickAttrsWith(others, 'data-');
 
         const left = (
             <Group

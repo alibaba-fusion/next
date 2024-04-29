@@ -273,15 +273,13 @@ export default class TextArea extends Base<TextAreaProps> {
             [className!]: !!className,
         });
 
+        // FIXME textarea 里还可以是 null，导致这里需要对类型做特殊处理，实际上 null 并不能传给原生的 textarea
         const props = this.getProps() as Omit<ReturnType<typeof this.getProps>, 'value'> & {
             value: string | number;
         };
         // custom data attributes are assigned to the top parent node
         // data-类自定义数据属性分配到顶层 node 节点
-        const dataProps = obj.pickAttrsWith(this.props, 'data-') as Record<
-            `data-${string}`,
-            unknown
-        >;
+        const dataProps = obj.pickAttrsWith(this.props, 'data-');
         // Custom props are transparently transmitted to the core input node by default
         // 自定义属性默认透传到核心 node 节点：input
         const others = obj.pickOthers(Object.assign({}, dataProps, TextArea.propTypes), this.props);
