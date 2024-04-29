@@ -29,10 +29,7 @@ function isValueChanged(newVal: ConfigType, oldVal: ConfigType) {
     return newVal !== oldVal && !datejs(newVal).isSame(datejs(oldVal));
 }
 
-type CalendarPropsWithDefault = ClassPropsWithDefault<
-    CalendarProps,
-    keyof typeof Calendar.defaultProps
->;
+type CalendarPropsWithDefault = ClassPropsWithDefault<CalendarProps, typeof Calendar.defaultProps>;
 
 class Calendar extends React.Component<CalendarProps, CalendarState> {
     static propTypes = {

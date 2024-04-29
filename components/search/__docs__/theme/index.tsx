@@ -63,8 +63,8 @@ class FunctionDemo extends React.Component<DemoProps> {
     render() {
         const { i18n } = this.props;
         const { init, getValue } = this.field;
-        const newValue: FieldValue = getValue('demo');
-        const hasMenu = newValue.hasMenu.value === 'true';
+        const newValue: FieldValue | undefined = getValue('demo');
+        const hasMenu = newValue?.hasMenu.value === 'true';
         const filter = hasMenu
             ? [
                   {
@@ -78,7 +78,7 @@ class FunctionDemo extends React.Component<DemoProps> {
               ]
             : [];
 
-        const buttonText = newValue.buttonText.value === 'true';
+        const buttonText = newValue?.buttonText.value === 'true';
 
         const title = buttonText ? i18n.title : '';
 
