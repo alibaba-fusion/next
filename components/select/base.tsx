@@ -567,8 +567,8 @@ export default class Base<
         this.inputRef.focus(undefined, undefined, true);
     }
 
-    focus(...args: unknown[]) {
-        this.inputRef.focus(...args);
+    focus(start?: number, end?: number, preventScroll = false) {
+        this.inputRef.focus(start, end, preventScroll);
     }
 
     beforeOpen() {

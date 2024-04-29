@@ -179,7 +179,9 @@ class Checkbox extends UIState<PrivateCheckboxProps, CheckboxState> {
         const prefix = context.prefix || this.props.prefix;
 
         const others = obj.pickOthers(Checkbox.propTypes, otherProps);
-        const othersData = obj.pickAttrsWith(others, 'data-');
+        const othersData = obj.pickAttrsWith(others, 'data-') as ReturnType<
+            typeof obj.pickAttrsWith<typeof others, 'data-'>
+        > & { title?: string };
         if (otherProps.title) {
             othersData.title = otherProps.title;
         }

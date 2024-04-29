@@ -261,10 +261,10 @@ export function pickProps<T extends string, P extends Record<string, unknown>>(
  * @example
  * object.pickAttrsWith(FooComponent.propTypes, 'data-');
  */
-export function pickAttrsWith<P extends Record<string, unknown>>(
+export function pickAttrsWith<P extends Record<string, unknown>, S extends string = string>(
     holdProps: P,
-    prefix: string
-): Partial<P> {
+    prefix: S
+): Pick<P, Extract<keyof P, `${string}${S}${string}`>> {
     const others: Partial<P> = {};
 
     for (const key in holdProps) {
@@ -273,7 +273,7 @@ export function pickAttrsWith<P extends Record<string, unknown>>(
         }
     }
 
-    return others;
+    return others as Pick<P, Extract<keyof P, `${string}${S}${string}`>>;
 }
 
 /**
