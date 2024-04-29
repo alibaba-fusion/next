@@ -2,11 +2,14 @@ import type React from 'react';
 import type { CommonProps } from '../util';
 import type { Locale } from '../locale/types';
 
-interface HTMLAttributesWeak
+interface InputCommonHTMLAttributes
     extends Omit<
         React.InputHTMLAttributes<HTMLElement>,
         'defaultValue' | 'onChange' | 'onKeyDown' | 'size' | 'maxLength' | 'value'
-    > {}
+    > {
+    [key: `data-${string}`]: string;
+}
+
 interface CommonPropsWithoutLocale extends Omit<CommonProps, 'locale'> {}
 
 /**
@@ -29,7 +32,7 @@ export interface OnKeyDownOpts {
  * @api Input.TextArea
  * @order 2
  */
-export interface TextAreaProps extends HTMLAttributesWeak, CommonPropsWithoutLocale {
+export interface TextAreaProps extends InputCommonHTMLAttributes, CommonPropsWithoutLocale {
     /**
      * 当前值（受控）
      * @en Current value (controlled)
@@ -265,7 +268,7 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
  * @api Input
  * @order 1
  */
-export interface InputProps extends HTMLAttributesWeak, CommonPropsWithoutLocale {
+export interface InputProps extends InputCommonHTMLAttributes, CommonPropsWithoutLocale {
     /**
      * 当前值（受控）
      * @en Current value (controlled)

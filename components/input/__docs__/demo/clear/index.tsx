@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Input } from '@alifd/next';
-import type { InputProps } from '@alifd/next/lib/input';
+import type { InputProps } from '@alifd/next/types/input';
 
 const onChange = (value: string) => {
     console.log(value);

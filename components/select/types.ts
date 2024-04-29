@@ -855,6 +855,7 @@ export interface BaseProps
             | 'valueRender'
             | 'fillProps'
             | 'locale'
+            | `data-${string}`
         > {
     canCloseByTrigger?: boolean;
     cache?: boolean;
