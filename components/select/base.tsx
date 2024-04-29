@@ -115,7 +115,7 @@ export default class Base<
     popupRef: HTMLDivElement;
     resizeTimeout: number;
     highlightTimer: number | undefined;
-    menuRef: Menu | null;
+    menuRef: InstanceType<typeof Menu> | null;
     isAutoComplete: boolean;
     inputRef: Input;
     valueDataSource: ReturnType<typeof getValueDataSource>;
@@ -431,16 +431,16 @@ export default class Base<
         const { prefix, mode, locale, notFoundContent, useVirtual, menuProps } = this.props;
         const { dataSource, highlightKey } = this.state;
         const value = this.state.value;
-        let selectedKeys: unknown[];
+        let selectedKeys: string[];
 
         if (isNull(value) || (value as DataSourceItem[]).length === 0 || this.isAutoComplete) {
             selectedKeys = [];
         } else if (isSingle(mode)) {
-            selectedKeys = [valueToSelectKey(value as DataSourceItem)];
+            selectedKeys = [valueToSelectKey(value as DataSourceItem) as string];
         } else {
             selectedKeys = ([] as DataSourceItem[])
                 .concat(value as DataSourceItem[])
-                .map(n => valueToSelectKey(n));
+                .map(n => valueToSelectKey(n) as string);
         }
 
         let children: ReactElement | (ReactElement | null)[] = this.renderMenuItem(dataSource!);
@@ -489,7 +489,6 @@ export default class Base<
                                     ref(c);
                                     this.menuRef = c;
                                 }}
-                                // @ts-expect-error 待 MenuProps 修正
                                 flatenContent
                                 {...obj.pickOthers(['onScroll'], customProps)}
                             >
@@ -509,7 +508,7 @@ export default class Base<
     /**
      * render menu item
      */
-    renderMenuItem(dataSource: NormalizedObjectItem[]): (ReactElement | null)[] {
+    renderMenuItem(dataSource: NormalizedObjectItem[]): ReactElement[] {
         const { prefix, itemRender, showDataSourceChildren } = this.props;
         // If it has.
         let searchKey: string | undefined;
@@ -547,7 +546,7 @@ export default class Base<
                     </MenuItem>
                 );
             }
-        });
+        }) as ReactElement[];
     }
 
     saveSelectRef = (ref: HTMLElement | null) => {
@@ -648,7 +647,7 @@ export default class Base<
                     } else {
                         valueDS = getValueDataSource(
                             value,
-                            this.valueDataSource.mapValueDS,
+                            this.valueDataSource.mapValueDS!,
                             this.dataStore.getMapDS()
                         ).valueDS;
                     }
