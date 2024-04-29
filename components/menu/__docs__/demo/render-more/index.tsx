@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import ReactDOM from 'react-dom';
-import { Menu, Box, Typography } from '@alifd/next';
+import { Menu, Box } from '@alifd/next';
 
-const { SubMenu, Item, PopupItem, Divider } = Menu;
+const { PopupItem, Divider } = Menu;
 const popupProps = {
     align: 'tc bc',
     triggerType: 'click',
@@ -61,7 +61,7 @@ const ds = [
     },
 ];
 
-const Panel = props => {
+const Panel = (props: { dataSource: Array<{ title: ReactNode; dataSource: typeof ds }> }) => {
     const { dataSource, ...others } = props;
 
     return (
@@ -99,7 +99,7 @@ const Panel = props => {
     );
 };
 
-const SubPanel = props => {
+const SubPanel = (props: { dataSource: typeof ds }) => {
     const { dataSource, ...others } = props;
 
     return (
@@ -132,7 +132,7 @@ ReactDOM.render(
         popupClassName="my-hoz-menu"
         popupProps={popupProps}
         renderMore={more => {
-            const newDs = more.map((item, i) => {
+            const newDs = more!.map(item => {
                 const data = item.props.children.props;
                 return {
                     title: item.props.label,

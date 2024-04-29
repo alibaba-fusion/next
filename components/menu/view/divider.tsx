@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import type { DividerProps, ChildItemPropsInMenu } from '../types';
 
-/**
- * Menu.Divider
- * @order 6
- */
-export default class Divider extends Component {
+export default class Divider extends Component<DividerProps> {
     static menuChildType = 'divider';
 
     static propTypes = {
@@ -15,13 +12,11 @@ export default class Divider extends Component {
     };
 
     render() {
-        const { root, className, parentMode, parent, ...others } = this.props;
+        const { root, className, parentMode, parent, ...others } = this
+            .props as ChildItemPropsInMenu<DividerProps>;
         const { prefix } = root.props;
 
-        const newClassName = cx({
-            [`${prefix}menu-divider`]: true,
-            [className]: !!className,
-        });
+        const newClassName = cx(`${prefix}menu-divider`, className);
 
         return <li role="separator" className={newClassName} {...others} />;
     }

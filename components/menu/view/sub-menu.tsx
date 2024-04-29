@@ -1,23 +1,35 @@
-import React, { Component, Children, cloneElement } from 'react';
+import React, {
+    Component,
+    Children,
+    cloneElement,
+    type MouseEvent,
+    type KeyboardEvent,
+    type ReactNode,
+    type HTMLAttributes,
+} from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Animate from '../../animate';
-import Icon from '../../icon';
-import { func, obj } from '../../util';
+import Icon, { type IconProps } from '../../icon';
+import { func, obj, type ClassPropsWithDefault } from '../../util';
 import Item from './item';
 import SelectabelItem from './selectable-item';
 import PopupItem from './popup-item';
 import { getChildSelected } from './util';
+import type { ChildPropsInMenu, ItemProps, SubMenuProps } from '../types';
 
 const { Expand } = Animate;
 const { bindCtx } = func;
 
-/**
- * Menu.SubMenu
- * @order 1
- */
-export default class SubMenu extends Component {
+export type SubMenuWithDefaultsProps = ClassPropsWithDefault<
+    SubMenuProps,
+    typeof SubMenu.defaultProps
+>;
+
+export type SubMenuInMenuProps = ChildPropsInMenu<SubMenuWithDefaultsProps>;
+
+export default class SubMenu extends Component<SubMenuProps> {
     static menuChildType = 'submenu';
 
     static propTypes = {
@@ -26,26 +38,10 @@ export default class SubMenu extends Component {
         level: PropTypes.number,
         inlineLevel: PropTypes.number,
         groupIndent: PropTypes.number,
-        /**
-         * 标签内容
-         */
         label: PropTypes.node,
-        /**
-         * 是否可选，该属性仅在设置 Menu 组件 selectMode 属性后生效
-         */
         selectable: PropTypes.bool,
-        /**
-         * 子菜单打开方式，如果设置会覆盖 Menu 上的同名属性
-         * @default Menu 的 mode 属性值
-         */
         mode: PropTypes.oneOf(['inline', 'popup']),
-        /**
-         * 是否需要提示当前项可展开的 icon，默认是有的
-         */
         noIcon: PropTypes.bool,
-        /**
-         * 菜单项或下一级子菜单
-         */
         children: PropTypes.node,
         onMouseEnter: PropTypes.func,
         onMouseLeave: PropTypes.func,
@@ -62,18 +58,27 @@ export default class SubMenu extends Component {
         selectable: false,
     };
 
-    constructor(props) {
+    readonly props: SubMenuWithDefaultsProps;
+    itemNode: HTMLElement;
+
+    constructor(props: SubMenuProps) {
         super(props);
 
-        bindCtx(this, ['handleMouseEnter', 'handleMouseLeave', 'handleClick', 'handleOpen', 'afterLeave']);
+        bindCtx(this, [
+            'handleMouseEnter',
+            'handleMouseLeave',
+            'handleClick',
+            'handleOpen',
+            'afterLeave',
+        ]);
     }
 
     componentDidMount() {
-        this.itemNode = findDOMNode(this);
+        this.itemNode = findDOMNode(this) as HTMLElement;
     }
 
     afterLeave() {
-        const { focused, root } = this.props;
+        const { focused, root } = this.props as SubMenuInMenuProps;
         const { focusable } = root.props;
         if (focusable && focused) {
             this.itemNode.focus();
@@ -81,26 +86,26 @@ export default class SubMenu extends Component {
     }
 
     getOpen() {
-        const { _key, root } = this.props;
+        const { _key, root } = this.props as SubMenuInMenuProps;
         const { openKeys } = root.state;
 
         return openKeys.indexOf(_key) > -1;
     }
 
-    handleMouseEnter(e) {
+    handleMouseEnter(e: MouseEvent) {
         this.handleOpen(true);
 
         this.props.onMouseEnter && this.props.onMouseEnter(e);
     }
 
-    handleMouseLeave(e) {
+    handleMouseLeave(e: MouseEvent) {
         this.handleOpen(false);
 
         this.props.onMouseLeave && this.props.onMouseLeave(e);
     }
 
-    handleClick(e) {
-        const { root, selectable } = this.props;
+    handleClick(e: MouseEvent | KeyboardEvent) {
+        const { root, selectable } = this.props as SubMenuInMenuProps;
         const { selectMode } = root.props;
         if (selectMode && selectable) {
             e.stopPropagation();
@@ -110,13 +115,13 @@ export default class SubMenu extends Component {
         this.handleOpen(!open);
     }
 
-    handleOpen(open, triggerType, e) {
-        const { _key, root } = this.props;
+    handleOpen(open: boolean, triggerType?: string, e?: Event) {
+        const { _key, root } = this.props as SubMenuInMenuProps;
         root.handleOpen(_key, open, triggerType, e);
     }
 
-    passParentToChildren(children) {
-        const { mode, root } = this.props;
+    passParentToChildren(children: ReactNode) {
+        const { mode, root } = this.props as SubMenuInMenuProps;
 
         return Children.map(children, child => {
             // to fix https://github.com/alibaba-fusion/next/issues/952
@@ -124,6 +129,7 @@ export default class SubMenu extends Component {
                 return child;
             }
 
+            // @ts-expect-error FIXME: 上面的类型判断不正确，应该使用 React.isValidElement，这里先注释暴露问题
             return cloneElement(child, {
                 parent: this,
                 parentMode: mode || root.props.mode,
@@ -145,7 +151,7 @@ export default class SubMenu extends Component {
             subMenuContentClassName,
             triggerType: propsTriggerType,
             parentMode,
-        } = this.props;
+        } = this.props as SubMenuInMenuProps;
         const {
             prefix,
             selectMode,
@@ -165,15 +171,17 @@ export default class SubMenu extends Component {
             selectedKeys,
         });
 
-        const others = obj.pickOthers(Object.keys(SubMenu.propTypes), this.props);
+        const others = obj.pickOthers(SubMenu.propTypes, this.props);
 
-        const liProps = {
-            className: cx({
-                [`${prefix}menu-sub-menu-wrapper`]: true,
-                [className]: !!className,
-            }),
+        const liProps: HTMLAttributes<HTMLLIElement> = {
+            className: cx(
+                {
+                    [`${prefix}menu-sub-menu-wrapper`]: true,
+                },
+                className
+            ),
         };
-        const itemProps = {
+        const itemProps: ItemProps = {
             'aria-expanded': open,
             _key,
             level,
@@ -193,7 +201,7 @@ export default class SubMenu extends Component {
             itemProps.title = label;
         }
 
-        const arrorProps = {
+        const arrorProps: IconProps = {
             type: inlineArrowDirection === 'right' ? 'arrow-right' : 'arrow-down',
             className: cx({
                 [`${prefix}menu-icon-arrow`]: true,
@@ -204,7 +212,7 @@ export default class SubMenu extends Component {
         };
 
         const selectable = !!selectMode && selectableFromProps;
-        const NewItem = selectable ? SelectabelItem : Item;
+        const NewItem = (selectable ? SelectabelItem : Item) as typeof SelectabelItem;
 
         if (triggerType === 'hover') {
             liProps.onMouseEnter = this.handleMouseEnter;
@@ -215,10 +223,12 @@ export default class SubMenu extends Component {
             itemProps.onClick = this.handleClick;
         }
 
-        const newSubMenuContentClassName = cx({
-            [`${prefix}menu-sub-menu`]: true,
-            [subMenuContentClassName]: !!subMenuContentClassName,
-        });
+        const newSubMenuContentClassName = cx(
+            {
+                [`${prefix}menu-sub-menu`]: true,
+            },
+            subMenuContentClassName
+        );
 
         let roleMenu = 'menu',
             roleItem = 'menuitem';
@@ -228,12 +238,17 @@ export default class SubMenu extends Component {
         }
 
         const subMenu = open ? (
-            <ul role={roleMenu} dir={rtl ? 'rtl' : undefined} className={newSubMenuContentClassName}>
+            <ul
+                role={roleMenu}
+                dir={rtl ? 'rtl' : undefined}
+                className={newSubMenuContentClassName}
+            >
                 {this.passParentToChildren(children)}
             </ul>
         ) : null;
 
         return (
+            // @ts-expect-error others.onSelect 签名不匹配
             <li role={roleItem} {...others} {...liProps}>
                 <NewItem {...itemProps}>
                     <span className={`${prefix}menu-item-text`}>{label}</span>
@@ -251,22 +266,31 @@ export default class SubMenu extends Component {
     }
 
     renderPopup() {
-        const { children, subMenuContentClassName, noIcon, ...others } = this.props;
-        const root = this.props.root;
+        const { children, subMenuContentClassName, noIcon, ...others } = this
+            .props as SubMenuInMenuProps;
+        const root = this.props.root!;
         const { prefix, popupClassName, popupStyle, rtl } = root.props;
 
-        const newClassName = cx({
-            [`${prefix}menu`]: true,
-            [`${prefix}ver`]: true,
-            [popupClassName]: !!popupClassName,
-            [subMenuContentClassName]: !!subMenuContentClassName,
-        });
+        const newClassName = cx(
+            {
+                [`${prefix}menu`]: true,
+                [`${prefix}ver`]: true,
+            },
+            popupClassName,
+            subMenuContentClassName
+        );
 
+        // @ts-expect-error FIXME: PopupItem 并没有使用 rtl 参数，这里可以移除
         others.rtl = rtl;
 
         return (
             <PopupItem {...others} noIcon={noIcon} hasSubMenu>
-                <ul role="menu" dir={rtl ? 'rtl' : undefined} className={newClassName} style={popupStyle}>
+                <ul
+                    role="menu"
+                    dir={rtl ? 'rtl' : undefined}
+                    className={newClassName}
+                    style={popupStyle}
+                >
                     {this.passParentToChildren(children)}
                 </ul>
             </PopupItem>
@@ -274,7 +298,7 @@ export default class SubMenu extends Component {
     }
 
     render() {
-        const { mode, root } = this.props;
+        const { mode, root } = this.props as SubMenuInMenuProps;
         const newMode = mode || root.props.mode;
 
         return newMode === 'popup' ? this.renderPopup() : this.renderInline();

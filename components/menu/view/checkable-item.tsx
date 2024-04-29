@@ -1,15 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component, type ComponentProps, type KeyboardEvent, type MouseEvent } from 'react';
 import PropTypes from 'prop-types';
 import Checkbox from '../../checkbox';
 import Radio from '../../radio';
-import { func, obj, KEYCODE, htmlId } from '../../util';
+import { func, obj, KEYCODE, htmlId, type ClassPropsWithDefault } from '../../util';
 import Item from './item';
+import type { CheckableItemProps, ChildItemPropsInMenu } from '../types';
 
 const noop = {};
 const { bindCtx } = func;
 const { pickOthers } = obj;
 
-export default class CheckableItem extends Component {
+export type CheckableItemWithDefaultsProps = ClassPropsWithDefault<
+    CheckableItemProps,
+    typeof CheckableItem.defaultProps
+>;
+
+export type CheckableItemInMenuProps = ChildItemPropsInMenu<CheckableItemWithDefaultsProps>;
+
+export default class CheckableItem extends Component<CheckableItemProps> {
     static propTypes = {
         _key: PropTypes.string,
         root: PropTypes.object,
@@ -36,25 +44,28 @@ export default class CheckableItem extends Component {
         onChange: noop,
     };
 
-    constructor(props) {
+    readonly props: CheckableItemWithDefaultsProps;
+    id: string;
+
+    constructor(props: CheckableItemProps) {
         super(props);
 
         bindCtx(this, ['stopPropagation', 'handleKeyDown', 'handleClick']);
         this.id = htmlId.escapeForId(`checkable-item-${props.id || props._key}`);
     }
 
-    stopPropagation(e) {
+    stopPropagation(e: MouseEvent) {
         e.stopPropagation();
     }
 
-    handleCheck(e) {
+    handleCheck(e: MouseEvent | KeyboardEvent) {
         const { checkType, checked, onChange } = this.props;
         if (!(checkType === 'radio' && checked)) {
             onChange(!checked, e);
         }
     }
 
-    handleKeyDown(e) {
+    handleKeyDown(e: KeyboardEvent) {
         if (e.keyCode === KEYCODE.SPACE && !this.props.checkDisabled) {
             this.handleCheck(e);
         }
@@ -62,24 +73,25 @@ export default class CheckableItem extends Component {
         this.props.onKeyDown && this.props.onKeyDown(e);
     }
 
-    handleClick(e) {
+    handleClick(e: MouseEvent | KeyboardEvent) {
         this.handleCheck(e);
 
         this.props.onClick && this.props.onClick(e);
     }
 
     renderCheck() {
-        const { root, checked, indeterminate, disabled, checkType, checkDisabled, onChange } = this.props;
+        const { root, checked, indeterminate, disabled, checkType, checkDisabled, onChange } = this
+            .props as CheckableItemInMenuProps;
         const { labelToggleChecked } = root.props;
         const Check = checkType === 'radio' ? Radio : Checkbox;
 
-        const checkProps = {
-            tabIndex: '-1',
+        const checkProps: ComponentProps<typeof Check> = {
+            tabIndex: -1,
             checked,
             disabled: disabled || checkDisabled,
         };
         if (checkType === 'checkbox') {
-            checkProps.indeterminate = indeterminate;
+            (checkProps as ComponentProps<typeof Checkbox>).indeterminate = indeterminate;
         }
         if (!labelToggleChecked) {
             checkProps.onChange = onChange;
@@ -90,15 +102,16 @@ export default class CheckableItem extends Component {
     }
 
     render() {
-        const { _key, root, checked, disabled, onClick, helper, children } = this.props;
+        const { _key, root, checked, disabled, onClick, helper, children } = this
+            .props as CheckableItemInMenuProps;
         const { prefix, labelToggleChecked } = root.props;
-        const others = pickOthers(Object.keys(CheckableItem.propTypes), this.props);
+        const others = pickOthers(CheckableItem.propTypes, this.props);
 
         const newProps = {
             _key,
             root,
             disabled,
-            type: 'item',
+            type: 'item' as const,
             onClick,
             onKeyDown: this.handleKeyDown,
             ...others,

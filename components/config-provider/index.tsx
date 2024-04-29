@@ -147,7 +147,7 @@ class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderP
      * @param displayName - 组件的 displayName
      * @returns 新的 context props
      */
-    static getContextProps = <P extends ComponentCommonProps>(props: P, displayName: string) => {
+    static getContextProps = <P extends ComponentCommonProps>(props: P, displayName?: string) => {
         return getContextProps(props, childContextCache.root() || {}, displayName);
     };
 

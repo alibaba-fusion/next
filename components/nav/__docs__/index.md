@@ -20,38 +20,38 @@ Nav 继承自 Menu，除特殊说明外，可使用 Menu 的 API。
 
 ### Nav
 
-| 参数                | 说明                                                                                                                                                         | 类型                                                                                                                  | 默认值     | 是否必填 | 支持版本 |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ---------- | -------- | -------- |
-| children            | 导航项和子导航                                                                                                                                               | React.ReactNode                                                                                                       | -          |          | -        |
-| defaultOpenAll      | 初始展开所有的子导航                                                                                                                                         | boolean                                                                                                               | false      |          | -        |
-| mode                | 子导航打开的模式                                                                                                                                             | 'inline' \| 'popup'                                                                                                   | 'inline'   |          | -        |
-| triggerType         | 子导航打开的触发方式                                                                                                                                         | 'click' \| 'hover'                                                                                                    | 'click'    |          | -        |
-| openMode            | 内联子导航的展开模式，同时可以展开一个同级子导航还是多个同级子导航                                                                                           | 'single' \| 'multiple'                                                                                                | 'multiple' |          | -        |
-| inlineIndent        | 内联子导航缩进距离                                                                                                                                           | number                                                                                                                | 20         |          | -        |
-| popupAlign          | 弹出子导航的对齐方式                                                                                                                                         | 'follow' \| 'outside'                                                                                                 | 'follow'   |          | -        |
-| popupClassName      | 弹出子导航的自定义类名                                                                                                                                       | string                                                                                                                | -          |          | -        |
-| selectedKeys        | 当前选中导航项的 key 值                                                                                                                                      | string \| Array\<string>                                                                                              | -          |          | -        |
-| defaultSelectedKeys | 初始选中导航项的 key 值                                                                                                                                      | string \| Array\<string> \| null                                                                                      | []         |          | -        |
-| onSelect            | 选中或取消选中导航项触发的回调函数<br/><br/>**签名**:<br/>**参数**:<br/>_selectedKeys_: 选中的导航项的 key 值<br/>_item_: 选中的导航项<br/>_extra_: 扩展参数 | (<br/> selectedKeys: Array\<string>,<br/> item?: React.ReactNode,<br/> extra?: SelectEventExtraOptions<br/> ) => void | -          |          | -        |
-| direction           | 导航布局                                                                                                                                                     | 'hoz' \| 'ver'                                                                                                        | 'ver'      |          | -        |
-| hozAlign            | 横向导航条 items 和 footer 的对齐方向                                                                                                                        | 'left' \| 'right'                                                                                                     | 'left'     |          | -        |
-| header              | 自定义导航头部                                                                                                                                               | React.ReactNode                                                                                                       | -          |          | -        |
-| footer              | 自定义导航尾部                                                                                                                                               | React.ReactNode                                                                                                       | -          |          | -        |
-| embeddable          | 是否开启嵌入式模式                                                                                                                                           | boolean                                                                                                               | false      |          | 1.18     |
-| type                | 导航类型                                                                                                                                                     | 'normal' \| 'primary' \| 'secondary' \| 'line'                                                                        | 'normal'   |          | -        |
-| activeDirection     | 设置组件选中状态的 active 边方向                                                                                                                             | null \| 'top' \| 'bottom' \| 'left' \| 'right'                                                                        | -          |          | -        |
-| iconOnly            | 是否只显示图标                                                                                                                                               | boolean                                                                                                               | -          |          | -        |
-| iconTextOnly        | iconOnly模式下是否展示文字                                                                                                                                   | boolean                                                                                                               | -          |          | -        |
-| iconOnlyWidth       | iconOnly 模式下的宽度                                                                                                                                        | number \| string                                                                                                      | -          |          | -        |
-| hasArrow            | 是否显示右侧的箭头                                                                                                                                           | boolean                                                                                                               | true       |          | -        |
-| hasTooltip          | 是否有 ToolTips                                                                                                                                              | boolean                                                                                                               | false      |          | -        |
+| 参数                | 说明                                                                                                                                                         | 类型                                                                       | 默认值     | 是否必填 | 支持版本 |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ---------- | -------- | -------- |
+| children            | 导航项和子导航                                                                                                                                               | React.ReactNode                                                            | -          |          | -        |
+| defaultOpenAll      | 初始展开所有的子导航                                                                                                                                         | boolean                                                                    | false      |          | -        |
+| mode                | 子导航打开的模式                                                                                                                                             | 'inline' \| 'popup'                                                        | 'inline'   |          | -        |
+| triggerType         | 子导航打开的触发方式                                                                                                                                         | 'click' \| 'hover'                                                         | 'click'    |          | -        |
+| openMode            | 内联子导航的展开模式，同时可以展开一个同级子导航还是多个同级子导航                                                                                           | 'single' \| 'multiple'                                                     | 'multiple' |          | -        |
+| inlineIndent        | 内联子导航缩进距离                                                                                                                                           | number                                                                     | 20         |          | -        |
+| popupAlign          | 弹出子导航的对齐方式                                                                                                                                         | 'follow' \| 'outside'                                                      | 'follow'   |          | -        |
+| popupClassName      | 弹出子导航的自定义类名                                                                                                                                       | string                                                                     | -          |          | -        |
+| selectedKeys        | 当前选中导航项的 key 值                                                                                                                                      | string \| Array\<string>                                                   | -          |          | -        |
+| defaultSelectedKeys | 初始选中导航项的 key 值                                                                                                                                      | string \| Array\<string>                                                   | []         |          | -        |
+| onSelect            | 选中或取消选中导航项触发的回调函数<br/><br/>**签名**:<br/>**参数**:<br/>_selectedKeys_: 选中的导航项的 key 值<br/>_item_: 选中的导航项<br/>_extra_: 扩展参数 | (selectedKeys: string[], item: SelectableItem, extra: SelectExtra) => void | -          |          | -        |
+| direction           | 导航布局                                                                                                                                                     | 'hoz' \| 'ver'                                                             | 'ver'      |          | -        |
+| hozAlign            | 横向导航条 items 和 footer 的对齐方向                                                                                                                        | 'left' \| 'right'                                                          | 'left'     |          | -        |
+| header              | 自定义导航头部                                                                                                                                               | React.ReactNode                                                            | -          |          | -        |
+| footer              | 自定义导航尾部                                                                                                                                               | React.ReactNode                                                            | -          |          | -        |
+| embeddable          | 是否开启嵌入式模式                                                                                                                                           | boolean                                                                    | false      |          | 1.18     |
+| type                | 导航类型                                                                                                                                                     | 'normal' \| 'primary' \| 'secondary' \| 'line'                             | 'normal'   |          | -        |
+| activeDirection     | 设置组件选中状态的 active 边方向                                                                                                                             | null \| 'top' \| 'bottom' \| 'left' \| 'right'                             | -          |          | -        |
+| iconOnly            | 是否只显示图标                                                                                                                                               | boolean                                                                    | -          |          | -        |
+| iconTextOnly        | iconOnly 模式下是否展示文字                                                                                                                                  | boolean                                                                    | -          |          | -        |
+| iconOnlyWidth       | iconOnly 模式下的宽度                                                                                                                                        | number \| string                                                           | -          |          | -        |
+| hasArrow            | 是否显示右侧的箭头                                                                                                                                           | boolean                                                                    | true       |          | -        |
+| hasTooltip          | 是否有 ToolTips                                                                                                                                              | boolean                                                                    | false      |          | -        |
 
 ### Nav.Group
 
-| 参数     | 说明           | 类型            | 默认值 | 是否必填 |
-| -------- | -------------- | --------------- | ------ | -------- |
-| label    | 标签内容       | React.ReactNode | -      |          |
-| children | 导航项和子导航 | React.ReactNode | -      |          |
+| 参数     | 说明           | 类型                                   | 默认值 | 是否必填 |
+| -------- | -------------- | -------------------------------------- | ------ | -------- |
+| label    | 标签内容       | React.ReactNode                        | -      |          |
+| children | 导航项和子导航 | React.ReactChild \| React.ReactChild[] | -      | 是       |
 
 ### Nav.Item
 
@@ -77,50 +77,6 @@ Nav 继承自 Menu，除特殊说明外，可使用 Menu 的 API。
 | selectable | 是否可选                                    | boolean                   | false  |          |
 | children   | 导航项和子导航                              | React.ReactNode           | -      |          |
 | noIcon     | 是否需要提示当前项可展开的 icon，默认是有的 | boolean                   | -      |          |
-
-### SelectEventExtraOptions
-
-```typescript
-type SelectEventExtraOptions = {
-    /**
-     * 是否被选中
-     * @en Whether is selected
-     */
-    select: boolean;
-    /**
-     * 导航项 key 的路径
-     * @en Key path of current operation nav item
-     */
-    keyPath: string[];
-    /**
-     * 导航项的 key
-     * @en Key of current operation nav item
-     */
-    key: string[];
-    /**
-     * 导航项的文本
-     * @en Label of current operation nav item
-     */
-    label: string;
-};
-```
-
-### OpenEventExtraOptions
-
-```typescript
-type OpenEventExtraOptions = {
-    /**
-     * 是否打开
-     * @en Whether opened
-     */
-    open: boolean;
-    /**
-     * 打开或关闭的子菜单的 key 值
-     * @en Key value of opened or closed submenu
-     */
-    key: string;
-};
-```
 
 ## 无障碍键盘操作指南
 

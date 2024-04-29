@@ -1,46 +1,23 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import Menu from '../index';
 import '../style';
-import { unmount, test, testReact, mountReact } from '../../util/__tests__/legacy/a11y/validate';
+import { test, testReact } from '../../util/__tests__/a11y/validate';
 
 const { SubMenu, Item, Group, Divider, CheckboxItem, RadioItem } = Menu;
-Enzyme.configure({ adapter: new Adapter() });
 
-const portalContainerId = 'a11y-portal-id';
-let portalContainer;
-
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Menu A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-
-        if (portalContainer) {
-            portalContainer.remove();
-        }
-
-        unmount();
-    });
-
     it('should not have any violations for Item', async () => {
-        wrapper = await mountReact(
+        await testReact(
             <Menu>
                 <Item id="item" key="1">
                     Option 1
                 </Item>
             </Menu>
         );
-        return test('#item');
     });
 
     it('should not have any violations for `selectMode: single`', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Menu selectMode="single">
                 <Item id="item1" key="1">
                     Option 1
@@ -50,11 +27,10 @@ describe('Menu A11y', () => {
                 </Item>
             </Menu>
         );
-        return wrapper;
     });
 
     it('should not have any violations for `selectMode: multiple`', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Menu selectMode="multiple">
                 <Item id="item1" key="1">
                     Option 1
@@ -64,13 +40,11 @@ describe('Menu A11y', () => {
                 </Item>
             </Menu>
         );
-
-        return wrapper;
     });
 
     // Fix issue with Item
     it('should not have any violations for simple example', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Menu>
                 <Item key="1">Option 1</Item>
                 <Divider />
@@ -79,12 +53,11 @@ describe('Menu A11y', () => {
                 </Item>
             </Menu>
         );
-        return wrapper;
     });
 
     // Fix issue with Item
     it('should not have any violations for Group', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Menu>
                 <Group id="group" label="Group">
                     <Item key="group-1">Group option 1</Item>
@@ -92,11 +65,10 @@ describe('Menu A11y', () => {
                 </Group>
             </Menu>
         );
-        return wrapper;
     });
 
     it('should not have any violations for SubMenu', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Menu className="my-menu" defaultOpenKeys="sub-menu">
                 <SubMenu id="submenu" key="sub-menu" label="Sub menu">
                     <Item key="sub-1">Sub option 1</Item>
@@ -104,11 +76,10 @@ describe('Menu A11y', () => {
                 </SubMenu>
             </Menu>
         );
-        return wrapper;
     });
 
     it('should not have any violations for popup', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Menu className="my-menu" mode="popup" defaultOpenKeys={['sub-1']}>
                 <Item key="1">Option 1</Item>
                 <Item key="2">Option 2</Item>
@@ -128,18 +99,17 @@ describe('Menu A11y', () => {
     });
 
     it('should not have any violations for Checkbox Item', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Menu className="my-menu">
                 <CheckboxItem checked className="custom" style={{ color: 'red' }} helper="helper">
                     checkbox
                 </CheckboxItem>
             </Menu>
         );
-        return wrapper;
     });
 
     it('should not have any violations for Radio Item', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Menu className="my-menu">
                 <RadioItem key="1" checked className="custom" style={{ color: 'red' }}>
                     1
@@ -147,6 +117,5 @@ describe('Menu A11y', () => {
                 <RadioItem key="2">2</RadioItem>
             </Menu>
         );
-        return wrapper;
     });
 });

@@ -142,7 +142,7 @@ export default class CascaderMenuItem extends Component<ItemProps, ItemState> {
             (itemProps as CheckboxItemProps).checkboxDisabled = checkboxDisabled;
             (itemProps as CheckboxItemProps).onChange = onCheck;
         } else {
-            Item = Menu.Item;
+            Item = Menu.Item as ComponentType<MenuItemProps>;
             itemProps.selected = selected;
             itemProps.onSelect = onSelect;
         }

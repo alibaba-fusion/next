@@ -1,19 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, type ComponentRef } from 'react';
+// eslint-disable-next-line react/no-deprecated
 import { render, unmountComponentAtNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import Overlay from '../../overlay';
-import { func } from '../../util';
+import Overlay, { type OverlayProps } from '../../overlay';
+import { func, type ClassPropsWithDefault } from '../../util';
 import ConfigProvider from '../../config-provider';
 import menu from './menu';
+import type { CreateMenuProps, MenuProps } from '../types';
 
 const { bindCtx } = func;
 const { getContextProps } = ConfigProvider;
 const Menu = ConfigProvider.config(menu);
 
-let menuInstance;
+let menuInstance:
+    | {
+          destroy(): void;
+      }
+    | null
+    | undefined;
 
-class ContextMenu extends Component {
+class ContextMenu extends Component<CreateMenuProps, { visible: boolean }> {
     static propTypes = {
         className: PropTypes.string,
         popupClassName: PropTypes.string,
@@ -33,7 +40,11 @@ class ContextMenu extends Component {
         mode: 'popup',
     };
 
-    constructor(props) {
+    overlay: ComponentRef<typeof Overlay> | null | undefined;
+    popupNodes: HTMLElement[];
+    readonly props: ClassPropsWithDefault<CreateMenuProps, typeof ContextMenu.defaultProps>;
+
+    constructor(props: CreateMenuProps) {
         super(props);
 
         this.state = {
@@ -43,7 +54,7 @@ class ContextMenu extends Component {
         bindCtx(this, ['handleOverlayClose', 'handleOverlayOpen', 'handleItemClick', 'getOverlay']);
     }
 
-    getOverlay(ref) {
+    getOverlay(ref: ComponentRef<typeof Overlay> | null) {
         this.overlay = ref;
     }
 
@@ -54,8 +65,10 @@ class ContextMenu extends Component {
         menuInstance = null;
     }
 
-    handleOverlayClose(triggerType, e, ...others) {
-        const clickedPopupMenu = triggerType === 'docClick' && this.popupNodes.some(node => node.contains(e.target));
+    handleOverlayClose: OverlayProps['onRequestClose'] = (triggerType, e, ...others) => {
+        const clickedPopupMenu =
+            triggerType === 'docClick' &&
+            this.popupNodes.some(node => node.contains(e.target as Node));
         if (!clickedPopupMenu) {
             this.close();
             const { overlayProps } = this.props;
@@ -63,24 +76,22 @@ class ContextMenu extends Component {
                 overlayProps.onRequestClose(triggerType, e, ...others);
             }
         }
-    }
+    };
 
     handleOverlayOpen() {
-        this.popupNodes = this.overlay
-            .getInstance()
-            .getContent()
-            .getInstance().popupNodes;
+        // @ts-expect-error 此处 overlay 类型不对，Overlay 完成改造后可去除该注释
+        this.popupNodes = this.overlay!.getInstance().getContent().getInstance().popupNodes;
         const { overlayProps } = this.props;
         if (overlayProps && overlayProps.onOpen) {
             overlayProps.onOpen();
         }
     }
 
-    handleItemClick(...args) {
+    handleItemClick: NonNullable<CreateMenuProps['onItemClick']> = (...args) => {
         this.close();
 
         this.props.onItemClick && this.props.onItemClick(...args);
-    }
+    };
 
     render() {
         const {
@@ -109,18 +120,12 @@ class ContextMenu extends Component {
             onOpen: this.handleOverlayOpen,
             ref: this.getOverlay,
         };
-        const menuProps = {
+        const menuProps: MenuProps = {
             ...contextProps,
             triggerType: 'hover',
             ...others,
-            className: cx({
-                [`${prefix}context`]: true,
-                [className]: !!className,
-            }),
-            popupClassName: cx({
-                [`${prefix}context`]: true,
-                [popupClassName]: !!popupClassName,
-            }),
+            className: cx(`${prefix}context`, className),
+            popupClassName: cx(`${prefix}context`, popupClassName),
             onItemClick: this.handleItemClick,
         };
 
@@ -136,10 +141,8 @@ class ContextMenu extends Component {
 
 /**
  * 创建上下文菜单
- * @exportName create
- * @param {Object} props 属性对象
  */
-export default function create(props) {
+export default function create(props: CreateMenuProps) {
     if (menuInstance) {
         menuInstance.destroy();
     }
@@ -160,7 +163,7 @@ export default function create(props) {
 
     const newContext = ConfigProvider.getContext();
 
-    let menu;
+    let menu: ContextMenu | null;
     render(
         <ConfigProvider {...newContext}>
             <ContextMenu
