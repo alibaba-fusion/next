@@ -1142,6 +1142,32 @@ describe('Picker', () => {
                 assert(typeof inputProps.onInputTypeChange === 'function');
                 return <div>test</div>
             }} />);
+        });
+
+        // fix https://github.com/alibaba-fusion/next/issues/4775
+        it('RangePicker disabledDate method should return the correct panel mode', () => {
+            let panelMode = 'date';
+            const disabledDate = function (date, mode) {
+                assert(panelMode === mode, `current panelMode is "${panelMode}", but got "${mode}"`);
+                return false;
+            };
+
+            wrapper = mount(<RangePicker disabled={[true, false]} disabledDate={disabledDate} mode="date" defaultPanelValue={defaultVal} />);
+            findInput(1).simulate('click');
+            assert(wrapper.find('.next-calendar2-table-date').length);
+            findDate('2021-01-31').simulate('mousemove');
+
+            panelMode = 'month';
+            wrapper.find('.next-range-picker-left .next-calendar2-header-text-field button').at(1).simulate('click');
+            assert(wrapper.find('.next-calendar2-table-month').length);
+
+            panelMode = 'year';
+            wrapper.find('.next-range-picker-left .next-calendar2-header-text-field button').simulate('click');
+            assert(wrapper.find('.next-calendar2-table-year').length);
+
+            panelMode = 'decade';
+            wrapper.find('.next-range-picker-left .next-calendar2-header-text-field button').simulate('click');
+            assert(wrapper.find('.next-calendar2-table-decade').length);
         })
     });
 });

@@ -140,12 +140,12 @@ class RangePanel extends React.Component {
 
     disabledDate = v => {
         const {
-            mode,
             inputType,
             disabledDate,
             value: [begin, end],
         } = this.props;
-
+        const { mode } = this.state;
+        
         const unit = mode2unit(mode);
 
         return (
