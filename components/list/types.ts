@@ -1,14 +1,12 @@
-import { ReactElement, ReactNode } from 'react';
-import { LoadingProps } from '../loading';
-import { CommonProps } from '../util';
+import type { ReactElement, ReactNode } from 'react';
+import type { LoadingProps } from '../loading';
+import type { CommonProps } from '../util';
 
 type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'title'>;
 /**
  * @api List
  */
-export interface ListProps<DataItem = unknown>
-    extends React.HTMLAttributes<HTMLElement>,
-        CommonProps {
+export interface ListProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 列表头部
      * @en List header
@@ -39,14 +37,14 @@ export interface ListProps<DataItem = unknown>
      * 列表项数据源
      * @en List item data source
      */
-    dataSource?: DataItem[];
+    dataSource?: unknown[];
     /**
      * 当使用 dataSource 时，可以用 renderItem 自定义渲染列表项
      * @param current - 当前遍历的项 - The current item
      * @param index - 当前遍历的项的索引 - The index of the current item
      * @returns - 自定义渲染的 ReactElement - The ReactElement be customized
      */
-    renderItem?: (current: DataItem, index: number) => ReactElement;
+    renderItem?: (current: unknown, index: number) => ReactElement;
     /**
      * loading 状态控制
      * @en Loading state control
@@ -58,7 +56,7 @@ export interface ListProps<DataItem = unknown>
      * @en Custom Loading component
      * @param props - 透传 props - Pass through props
      * @returns - 自定义的 Loading 组件 - Custom Loading component
-     * @remarks 请务必透传 props, 使用方式： loadingComponent=\{props =\> \<Loading \{...props\}/\>\}
+     * @remarks 请务必透传 props, 使用方式：loadingComponent=\{props =\> \<Loading \{...props\}/\>\}
      */
     loadingComponent?: (props: LoadingProps) => ReactElement;
     /**

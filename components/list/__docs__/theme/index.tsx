@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
-import { Demo, DemoFunctionDefineForObject, DemoGroup, initDemo } from '../../../demo-helper';
+import { Demo, type DemoFunctionDefineForObject, DemoGroup, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import Box from '../../../box';
 import Button from '../../../button';
