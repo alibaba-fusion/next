@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
-import { ListItemProps } from './types';
+import type { ListItemProps } from './types';
 
 /**
  * List.Item
