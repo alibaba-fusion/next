@@ -22,6 +22,7 @@ class Demo extends React.Component {
                     onChange={this.handleDeviceChange}
                 >
                     <Radio value="desktop">desktop</Radio>
+                    <Radio value="tablet">tablet</Radio>
                     <Radio value="phone">phone</Radio>
                 </Radio.Group>
                 <hr />
