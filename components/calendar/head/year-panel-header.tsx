@@ -6,7 +6,8 @@ import { type YearPanelHeaderProps } from '../types';
 class YearPanelHeader extends React.PureComponent<YearPanelHeaderProps> {
     getDecadeLabel = (date: Moment) => {
         const year = date.year();
-        const start = parseInt((year / 10).toString(), 10) * 10;
+        // @ts-expect-error parseInt 接收的参数类型是 string
+        const start = parseInt(year / 10, 10) * 10;
         const end = start + 9;
         return `${start}-${end}`;
     };

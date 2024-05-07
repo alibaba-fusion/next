@@ -10,7 +10,7 @@ import {
 } from '../utils';
 import type { DateTableProps } from '../types';
 
-function isSameDay(a: Moment, b: Moment) {
+function isSameDay(a: Moment | null | undefined, b: Moment | null | undefined) {
     return a && b && a.isSame(b, 'day');
 }
 
@@ -104,7 +104,7 @@ class DateTable extends PureComponent<DateTableProps> {
                 const isToday = !isDisabled && isSameDay(currentDate, today) && isCurrentMonth;
                 const isSelected =
                     !isDisabled &&
-                    (isSameDay(currentDate, startValue!) || isSameDay(currentDate, endValue!)) &&
+                    (isSameDay(currentDate, startValue) || isSameDay(currentDate, endValue)) &&
                     isCurrentMonth;
                 const isInRange =
                     !isDisabled &&

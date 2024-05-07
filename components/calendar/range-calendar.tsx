@@ -87,7 +87,7 @@ class RangeCalendar extends React.Component<RangeCalendarProps, RangeCalendarSta
             startValue,
             endValue,
             mode: props.mode,
-            prevMode: props.mode!,
+            prevMode: props.mode,
             startVisibleMonth: visibleMonth,
             activePanel: undefined,
             lastMode: undefined,
