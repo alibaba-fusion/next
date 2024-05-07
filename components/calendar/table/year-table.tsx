@@ -75,7 +75,8 @@ class YearTable extends React.PureComponent<YearTableProps> {
                         <div
                             className={`${prefix}calendar-year`}
                             onClick={onClick}
-                            title={title as string}
+                            // @ts-expect-error title 应转为 string
+                            title={title}
                             aria-disabled={isDisabled ? 'true' : 'false'}
                             aria-selected={isSelected ? 'true' : 'false'}
                         >

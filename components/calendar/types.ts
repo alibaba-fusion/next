@@ -60,7 +60,7 @@ export interface CalendarProps
      * @en Callback when the panel mode changes
      * @param mode - 对应面板模式 date, month, year
      */
-    onModeChange?: (mode: string) => void;
+    onModeChange?: (mode: CalendarMode) => void;
 
     /**
      * 选择日期单元格时的回调
@@ -98,13 +98,7 @@ export interface CalendarProps
      * 不可选择的日期
      * @en Disabled date
      */
-    disabledDate?: (calendarDate: Moment, view: string) => boolean;
-
-    /**
-     * 自定义样式类
-     * @en Customize style class
-     */
-    className?: string;
+    disabledDate?: (calendarDate: Moment, view: CalendarMode) => boolean;
 
     /**
      * 面板可变化的模式列表，仅初始化时接收一次
@@ -135,7 +129,7 @@ export interface CalendarProps
      * 年份范围，[START_YEAR, END_YEAR] (只在 shape 为‘card’, 'fullscreen' 下生效)
      * @en Year range, [START_YEAR, END_YEAR] (only effective when shape is 'card', 'fullscreen')
      */
-    yearRange?: [number, number];
+    yearRange?: [start: number, end: number];
 
     /**
      * @deprecated use disabledDate instead
@@ -257,7 +251,7 @@ export interface RangeCalendarProps extends HTMLAttributesWeak, Omit<CommonProps
      * 不可选择的日期
      * @en Disabled date
      */
-    disabledDate?: (calendarDate: Moment, view: string) => boolean;
+    disabledDate?: (calendarDate: Moment, view: CalendarMode) => boolean;
     /**
      * 展现形态
      * @en Display shape
@@ -399,7 +393,7 @@ export interface RangeCalendarState {
     startValue: Moment | null;
     startVisibleMonth: Moment;
     endValue: Moment | null;
-    prevMode: CalendarMode;
+    prevMode?: CalendarMode;
     mode?: CalendarMode;
     lastMode?: CalendarMode;
     activePanel?: 'start' | 'end';
