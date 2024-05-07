@@ -541,7 +541,7 @@ class NumberPicker extends React.Component {
             alwaysShowTrigger,
         } = this.props;
         const { max, min } = this.state;
-        const type = device === 'phone' || this.props.type === 'inline' ? 'inline' : 'normal';
+        const type = device === 'phone' || device === 'tablet' || this.props.type === 'inline' ? 'inline' : 'normal';
 
         const prefixCls = `${prefix}number-picker`;
 
