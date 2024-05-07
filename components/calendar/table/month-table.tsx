@@ -4,7 +4,7 @@ import { type Moment } from 'moment';
 import { isDisabledDate, MONTH_TABLE_ROW_COUNT, MONTH_TABLE_COL_COUNT } from '../utils';
 import { type MonthTableProps } from '../types';
 
-function isSameMonth(currentDate: Moment, selectedDate: Moment) {
+function isSameMonth(currentDate: Moment, selectedDate: Moment | null | undefined) {
     return (
         selectedDate &&
         currentDate.year() === selectedDate.year() &&
@@ -30,7 +30,7 @@ class MonthTable extends PureComponent<MonthTableProps> {
             for (let j = 0; j < MONTH_TABLE_COL_COUNT; j++) {
                 const monthDate = visibleMonth.clone().month(counter);
                 const isDisabled = isDisabledDate(monthDate, disabledDate, 'month');
-                const isSelected = isSameMonth(monthDate, value!);
+                const isSelected = isSameMonth(monthDate, value);
                 const isThisMonth = isSameMonth(monthDate, today);
                 const elementCls = classnames({
                     [`${prefix}calendar-cell`]: true,
