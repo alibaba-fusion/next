@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Menu from '../../menu';
 import { func, obj, dom } from '../../util';
+import type { DragGapType, TransferItemProps, TransferItemState } from '../types';
 
 const { Item, CheckboxItem } = Menu;
 const { bindCtx } = func;
 const { pickOthers } = obj;
 const { getOffset } = dom;
 
-export default class TransferItem extends Component {
+type CheckboxItemProps = React.ComponentPropsWithRef<typeof CheckboxItem>;
+type MenuItemProps = React.ComponentPropsWithRef<typeof Item>;
+type ItemRef = React.ComponentRef<typeof CheckboxItem> | React.ComponentRef<typeof Item> | null;
+
+export default class TransferItem extends Component<TransferItemProps, TransferItemState> {
     static menuChildType = CheckboxItem.menuChildType;
 
     static propTypes = {
@@ -33,7 +38,12 @@ export default class TransferItem extends Component {
         panelPosition: PropTypes.oneOf(['left', 'right']),
     };
 
-    constructor(props) {
+    addHighlightTimer: ReturnType<typeof setTimeout>;
+    removeHighlightTimer: ReturnType<typeof setTimeout>;
+    item: ItemRef;
+    dragGap: DragGapType;
+
+    constructor(props: TransferItemProps) {
         super(props);
 
         this.state = {
@@ -70,7 +80,7 @@ export default class TransferItem extends Component {
         clearTimeout(this.removeHighlightTimer);
     }
 
-    getItemDOM(ref) {
+    getItemDOM(ref: ItemRef) {
         this.item = ref;
     }
 
@@ -79,22 +89,22 @@ export default class TransferItem extends Component {
         onClick(panelPosition === 'left' ? 'right' : 'left', item.value);
     }
 
-    handleDragStart(ev) {
+    handleDragStart(ev: React.DragEvent) {
         ev &&
             ev.dataTransfer &&
             typeof ev.dataTransfer.setData === 'function' &&
-            ev.dataTransfer.setData('text/plain', ev.target.id);
+            ev.dataTransfer.setData('text/plain', (ev.target as HTMLElement).id);
         const { onDragStart, panelPosition, item } = this.props;
         onDragStart(panelPosition, item.value);
     }
 
-    getDragGap(e) {
+    getDragGap(e: React.DragEvent<HTMLElement>) {
         const referenceTop = getOffset(e.currentTarget).top;
         const referenceHeight = e.currentTarget.offsetHeight;
         return e.pageY <= referenceTop + referenceHeight / 2 ? 'before' : 'after';
     }
 
-    handleDragOver(e) {
+    handleDragOver(e: React.DragEvent<HTMLElement>) {
         const { panelPosition, dragPosition, onDragOver, item } = this.props;
         if (panelPosition === dragPosition) {
             e.preventDefault();
@@ -112,7 +122,7 @@ export default class TransferItem extends Component {
         onDragEnd();
     }
 
-    handleDrop(e) {
+    handleDrop(e: React.DragEvent) {
         e.preventDefault();
 
         const { onDrop, item, panelPosition, dragValue } = this.props;
@@ -145,8 +155,8 @@ export default class TransferItem extends Component {
             [`${prefix}simple`]: isSimple,
         });
 
-        const children = itemRender(item);
-        const itemProps = {
+        const children = itemRender!(item);
+        const itemProps: CheckboxItemProps | MenuItemProps = {
             ref: this.getItemDOM,
             className: classNames,
             children,
@@ -167,7 +177,7 @@ export default class TransferItem extends Component {
                 itemProps.onClick = this.handleClick;
             }
 
-            return <Item title={title} {...itemProps} />;
+            return <Item title={title} {...(itemProps as MenuItemProps)} />;
         }
 
         return (
@@ -175,7 +185,7 @@ export default class TransferItem extends Component {
                 checked={checked}
                 onChange={onCheck.bind(this, item.value)}
                 title={title}
-                {...itemProps}
+                {...(itemProps as CheckboxItemProps)}
             />
         );
     }

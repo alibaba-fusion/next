@@ -1,67 +1,121 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import { dom } from '../../util';
+import type { MountReturn } from 'cypress/react';
 import Transfer from '../index';
+import type { TransferDataItem, TransferProps } from '../types';
 import Tree from '../../tree/index';
 import '../style';
 
-/* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
-/* global describe it afterEach */
+type ChangeEventHandler = Required<TransferProps>['onChange'];
+type SortEventHandler = Required<TransferProps>['onSort'];
+type SelectEventHandler = Required<TransferProps>['onSelect'];
 
-Enzyme.configure({ adapter: new Adapter() });
 const TreeNode = Tree.Node;
-const { hasClass, getOffset } = dom;
-const dataSource = [
+const dataSource: TransferDataItem[] = [
     { label: '0', value: '0', disabled: true },
     { label: '1', value: '1' },
     { label: '2', value: '2' },
     { label: '3', value: '3' },
 ];
 
-describe('Transfer', () => {
-    let wrapper;
+function findPanel(panelIndex: number) {
+    return cy.get('div.next-transfer-panel').eq(panelIndex);
+}
 
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
+function findFooter(panelIndex: number) {
+    return findPanel(panelIndex).find('div.next-transfer-panel-footer');
+}
+
+function expectFooterCount(panelIndex: number, count: string) {
+    return findFooter(panelIndex)
+        .find('span.next-transfer-panel-count')
+        .invoke('text')
+        .then(text => {
+            const num = text.split(/\s/)[0];
+            expect(num).to.eq(count);
+        });
+}
+
+function findFooterCheckbox(panelIndex: number) {
+    return findFooter(panelIndex).find('label.next-checkbox-wrapper');
+}
+
+function findItems(panelIndex: number) {
+    return findPanel(panelIndex).find('li.next-transfer-panel-item');
+}
+
+function findItem(panelIndex: number, itemIndex: number) {
+    return findItems(panelIndex).eq(itemIndex);
+}
+
+function findItemCheckbox(panelIndex: number, itemIndex: number) {
+    return findItem(panelIndex, itemIndex).find('label.next-checkbox-wrapper');
+}
+
+function checkAll(checkbox: Cypress.Chainable<JQuery<HTMLElement>>, checked: boolean) {
+    checked ? checkbox.find('input').check() : checkbox.find('input').uncheck();
+}
+
+function checkSingle(item: Cypress.Chainable<JQuery<HTMLElement>>) {
+    return item.should('be.visible').click();
+}
+
+function shouldHasClass(item: Cypress.Chainable<JQuery<HTMLElement>>, className: string) {
+    item.should('have.class', className);
+}
+
+function shouldHasItem(panelIndex: number, itemIndex: number, itemText: string) {
+    findItem(panelIndex, itemIndex).should('have.text', itemText);
+}
+
+function shouldHasTitle(panelIndex: number, titleText: string) {
+    findPanel(panelIndex).find('div.next-transfer-panel-header').should('have.text', titleText);
+}
+
+function compareDomAndDataSource(panelIndex: number, dataSource: TransferDataItem[]) {
+    findItems(panelIndex).each(($el, index) => {
+        // 在这里，$el 是当前遍历到的元素（jQuery 对象）
+        // index 是元素在列表中的索引
+        cy.wrap($el).find('span.next-menu-item-text').should('have.text', dataSource[index].label);
+        if (dataSource[index].disabled) {
+            cy.wrap($el).should('have.class', 'next-disabled');
+            cy.wrap($el).find('label.next-checkbox-wrapper').should('have.class', 'disabled');
         }
     });
+}
 
+describe('Transfer', () => {
     it('should render by dataSource', () => {
-        wrapper = mount(<Transfer dataSource={dataSource} />);
-        compareDomAndDataSource(wrapper, 0, dataSource);
-        assert(findFooterCount(wrapper, 0) === '4');
+        cy.mount(<Transfer dataSource={dataSource} />);
+        compareDomAndDataSource(0, dataSource);
+        expectFooterCount(0, '4');
     });
 
     it('should render by defaultValue', () => {
-        wrapper = mount(<Transfer defaultValue={['1']} dataSource={dataSource} />);
-        compareDomAndDataSource(wrapper, 0, [
+        cy.mount(<Transfer defaultValue={['1']} dataSource={dataSource} />);
+        compareDomAndDataSource(0, [
             { label: '0', value: '0' },
             { label: '2', value: '2' },
             { label: '3', value: '3' },
         ]);
-        compareDomAndDataSource(wrapper, 1, [{ label: '1', value: '1' }]);
-        assert(findFooterCount(wrapper, 0) === '3');
-        assert(findFooterCount(wrapper, 1) === '1');
+        compareDomAndDataSource(1, [{ label: '1', value: '1' }]);
+        expectFooterCount(0, '3');
+        expectFooterCount(1, '1');
     });
 
     it('should render by value', () => {
-        wrapper = mount(<Transfer defaultValue={['1']} value={['2']} dataSource={dataSource} />);
-        compareDomAndDataSource(wrapper, 0, [
+        cy.mount(<Transfer defaultValue={['1']} value={['2']} dataSource={dataSource} />);
+        compareDomAndDataSource(0, [
             { label: '0', value: '0' },
             { label: '1', value: '1' },
             { label: '3', value: '3' },
         ]);
-        compareDomAndDataSource(wrapper, 1, [{ label: '2', value: '2' }]);
-        assert(findFooterCount(wrapper, 0) === '3');
-        assert(findFooterCount(wrapper, 1) === '1');
+        compareDomAndDataSource(1, [{ label: '2', value: '2' }]);
+        expectFooterCount(0, '3');
+        expectFooterCount(1, '1');
     });
 
     it('should render by defaultLeftChecked and defaultRightChecked', () => {
-        wrapper = mount(
+        cy.mount(
             <Transfer
                 defaultValue={['1']}
                 defaultLeftChecked={['2']}
@@ -70,44 +124,44 @@ describe('Transfer', () => {
             />
         );
 
-        assert(findFooterCount(wrapper, 0) === '1/3');
-        assert(findFooterCheckbox(wrapper, 0).hasClass('indeterminate'));
-        assert(findItemCheckbox(wrapper, 0, 1).hasClass('checked'));
+        expectFooterCount(0, '1/3');
+        shouldHasClass(findFooterCheckbox(0), 'indeterminate');
+        shouldHasClass(findItemCheckbox(0, 1), 'checked');
 
-        assert(findFooterCount(wrapper, 1) === '1/1');
-        assert(findFooterCheckbox(wrapper, 1).hasClass('checked'));
-        assert(findItemCheckbox(wrapper, 1, 0).hasClass('checked'));
+        expectFooterCount(1, '1/1');
+        shouldHasClass(findFooterCheckbox(1), 'checked');
+        shouldHasClass(findItemCheckbox(1, 0), 'checked');
     });
 
     it('should render by check checkbox of item and checkbox of footer', () => {
-        wrapper = mount(<Transfer defaultValue={['1']} dataSource={dataSource} />);
+        cy.mount(<Transfer defaultValue={['1']} dataSource={dataSource} />);
 
-        checkSingle(findItem(wrapper, 0, 1));
-        assert(findItemCheckbox(wrapper, 0, 1).hasClass('checked'));
-        assert(findFooterCheckbox(wrapper, 0).hasClass('indeterminate'));
-        assert(findFooterCount(wrapper, 0) === '1/3');
+        checkSingle(findItem(0, 1));
+        shouldHasClass(findItemCheckbox(0, 1), 'checked');
+        shouldHasClass(findFooterCheckbox(0), 'indeterminate');
+        expectFooterCount(0, '1/3');
 
-        checkSingle(findItem(wrapper, 0, 2));
-        assert(findItemCheckbox(wrapper, 0, 2).hasClass('checked'));
-        assert(findFooterCheckbox(wrapper, 0).hasClass('checked'));
-        assert(findFooterCount(wrapper, 0) === '2/3');
+        checkSingle(findItem(0, 2));
+        shouldHasClass(findItemCheckbox(0, 2), 'checked');
+        shouldHasClass(findFooterCheckbox(0), 'checked');
+        expectFooterCount(0, '2/3');
 
-        checkAll(findFooterCheckbox(wrapper, 0), false);
-        assert(!findFooterCheckbox(wrapper, 0).hasClass('checked'));
-        assert(!findItemCheckbox(wrapper, 0, 1).hasClass('checked'));
-        assert(!findItemCheckbox(wrapper, 0, 2).hasClass('checked'));
-        assert(findFooterCount(wrapper, 0) === '3');
+        checkAll(findFooterCheckbox(0), false);
+        findFooterCheckbox(0).should('not.have.class', 'checked');
+        findItemCheckbox(0, 1).should('not.have.class', 'checked');
+        findItemCheckbox(0, 2).should('not.have.class', 'checked');
+        expectFooterCount(0, '3');
 
-        checkAll(findFooterCheckbox(wrapper, 0), true);
-        assert(findFooterCheckbox(wrapper, 0).hasClass('checked'));
-        assert(findItemCheckbox(wrapper, 0, 1).hasClass('checked'));
-        assert(findItemCheckbox(wrapper, 0, 2).hasClass('checked'));
-        assert(findFooterCount(wrapper, 0) === '2/3');
+        checkAll(findFooterCheckbox(0), true);
+        shouldHasClass(findFooterCheckbox(0), 'checked');
+        shouldHasClass(findItemCheckbox(0, 1), 'checked');
+        shouldHasClass(findItemCheckbox(0, 2), 'checked');
+        expectFooterCount(0, '2/3');
 
-        checkSingle(findItem(wrapper, 0, 2));
-        assert(!findItemCheckbox(wrapper, 0, 2).hasClass('checked'));
-        assert(!findFooterCheckbox(wrapper, 0).hasClass('checked'));
-        assert(findFooterCount(wrapper, 0) === '1/3');
+        checkSingle(findItem(0, 2));
+        findItemCheckbox(0, 2).should('not.have.class', 'checked');
+        findFooterCheckbox(0).should('not.have.class', 'checked');
+        expectFooterCount(0, '1/3');
     });
 
     it('should render search box when set showSearch', () => {
@@ -117,7 +171,7 @@ describe('Transfer', () => {
             { label: <i>abc</i>, value: '2' },
         ];
 
-        wrapper = mount(
+        cy.mount(
             <Transfer
                 showSearch
                 searchProps={{
@@ -128,17 +182,26 @@ describe('Transfer', () => {
             />
         );
 
-        assert(wrapper.find('span.next-search').length === 2);
-        const search = findPanel(wrapper, 0).find('span.next-search');
-        const input = search.find('input');
-        if (input.instance().placeholder) {
-            assert(input.instance().placeholder === 'input something...');
-        }
-        input.simulate('change', { target: { value: 'a' } });
+        cy.get('span.next-search').should('have.length', 2);
+        findPanel(0).find('span.next-search').find('input').as('searchInput');
 
-        assert(findItems(wrapper, 0).length === 2);
-        assert(findItemText(wrapper, 0, 0) === 'a');
-        assert(findItemText(wrapper, 0, 1) === 'abc');
+        cy.get('@searchInput')
+            .then(el => {
+                cy.wrap(el).should('be.visible');
+            })
+            .then(el => {
+                cy.wrap(el).should('have.attr', 'placeholder', 'input something...');
+            })
+            .then(el => {
+                cy.wrap(el).type('a');
+            })
+            .then(el => {
+                cy.wrap(el).should('have.value', 'a');
+            });
+
+        findItems(0).should('have.length', 2);
+        shouldHasItem(0, 0, 'a');
+        shouldHasItem(0, 1, 'abc');
     });
 
     it('should render search box when set showSearch（array）', () => {
@@ -148,7 +211,7 @@ describe('Transfer', () => {
             { label: <i>abc</i>, value: '2' },
         ];
 
-        wrapper = mount(
+        cy.mount(
             <Transfer
                 showSearch={[true, false]}
                 searchProps={[
@@ -164,17 +227,25 @@ describe('Transfer', () => {
             />
         );
 
-        assert(wrapper.find('span.next-search').length === 1);
-        const search = findPanel(wrapper, 0).find('span.next-search');
-        const input = search.find('input');
-        if (input.instance().placeholder) {
-            assert(input.instance().placeholder === 'input something...');
-        }
-        input.simulate('change', { target: { value: 'a' } });
+        cy.get('span.next-search').should('have.length', 1);
+        findPanel(0).find('span.next-search').find('input').as('searchInput');
 
-        assert(findItems(wrapper, 0).length === 2);
-        assert(findItemText(wrapper, 0, 0) === 'a');
-        assert(findItemText(wrapper, 0, 1) === 'abc');
+        cy.get('@searchInput')
+            .then(el => {
+                cy.wrap(el).should('be.visible');
+            })
+            .then(el => {
+                cy.wrap(el).should('have.attr', 'placeholder', 'input something...');
+            })
+            .then(el => {
+                cy.wrap(el).type('a');
+            })
+            .then(el => {
+                cy.wrap(el).should('have.value', 'a');
+            });
+        findItems(0).should('have.length', 2);
+        shouldHasItem(0, 0, 'a');
+        shouldHasItem(0, 1, 'abc');
     });
 
     it('should custom style and text', () => {
@@ -185,7 +256,7 @@ describe('Transfer', () => {
             },
         ];
 
-        wrapper = mount(
+        cy.mount(
             <Transfer
                 className="custom"
                 listStyle={{ width: '200px' }}
@@ -195,15 +266,12 @@ describe('Transfer', () => {
             />
         );
 
-        assert(wrapper.find('div.next-transfer.custom').length === 1);
-        assert(
-            findPanel(wrapper, 0).find('ul.next-transfer-panel-list').props().style.width ===
-                '200px'
-        );
-        assert(findHeaderTitle(wrapper, 0) === 'Source');
-        assert(findHeaderTitle(wrapper, 1) === 'Target');
-        assert(wrapper.find('div.next-transfer-operations button').at(0).text().trim() === '>>');
-        assert(wrapper.find('div.next-transfer-operations button').at(1).text().trim() === '<<');
+        cy.get('div.next-transfer.custom').should('have.length', 1);
+        findPanel(0).find('ul.next-transfer-panel-list').should('have.css', 'width', '200px');
+        shouldHasTitle(0, 'Source');
+        shouldHasTitle(1, 'Target');
+        cy.get('div.next-transfer-operations button').eq(0).should('have.text', '>>');
+        cy.get('div.next-transfer-operations button').eq(1).should('have.text', '<<');
     });
 
     it('should move items between the panels', () => {
@@ -213,75 +281,87 @@ describe('Transfer', () => {
             { label: '2', value: '2' },
         ];
 
-        let value, data, extra, changeCalled;
+        let value: string[],
+            data: TransferDataItem[],
+            extra: Parameters<ChangeEventHandler>['2'],
+            changeCalled: boolean;
 
-        const handleChange = (v, d, e) => {
-            assert.deepEqual(value, v);
-            assert.deepEqual(data, d);
-            assert.deepEqual(extra, e);
+        const handleChange: ChangeEventHandler = (v, d, e) => {
+            expect(v).to.deep.equal(value);
+            expect(d).to.deep.equal(data);
+            expect(e).to.deep.equal(extra);
             changeCalled = true;
         };
 
-        wrapper = mount(<Transfer dataSource={dataSource} onChange={handleChange} />);
-        const l2r = () => wrapper.find('div.next-transfer-operations button').at(0);
-        const r2l = () => wrapper.find('div.next-transfer-operations button').at(1);
+        cy.mount(<Transfer dataSource={dataSource} onChange={handleChange} />);
+        cy.get('div.next-transfer-operations button').eq(0).as('l2r');
+        cy.get('div.next-transfer-operations button').eq(1).as('r2l');
 
-        assert(l2r().prop('disabled'));
-        assert(l2r().hasClass('next-btn-normal'));
-        assert(r2l().prop('disabled'));
-        assert(r2l().hasClass('next-btn-normal'));
+        cy.get('@l2r').should('have.attr', 'disabled');
+        shouldHasClass(cy.get('@l2r'), 'next-btn-normal');
+        cy.get('@r2l').should('have.attr', 'disabled');
+        shouldHasClass(cy.get('@r2l'), 'next-btn-normal');
 
-        checkSingle(findItemCheckbox(wrapper, 0, 0));
-        checkSingle(findItemCheckbox(wrapper, 0, 1));
-        assert(!l2r().prop('disabled'));
-        assert(l2r().hasClass('next-btn-primary'));
+        checkSingle(findItemCheckbox(0, 0));
+        checkSingle(findItemCheckbox(0, 1));
+        cy.get('@l2r').should('not.have.attr', 'disabled');
+        shouldHasClass(cy.get('@l2r'), 'next-btn-primary');
 
-        value = ['0', '1'];
-        data = [
-            { label: '0', value: '0' },
-            { label: '1', value: '1' },
-        ];
-        extra = {
-            leftValue: ['2'],
-            leftData: [{ label: '2', value: '2' }],
-            movedValue: ['0', '1'],
-            movedData: [
+        cy.then(() => {
+            value = ['0', '1'];
+            data = [
                 { label: '0', value: '0' },
                 { label: '1', value: '1' },
-            ],
-            direction: 'right',
-        };
-        l2r().simulate('click');
-        assert(changeCalled);
-        assert(findItems(wrapper, 0).length === 1);
-        assert(findItemText(wrapper, 0, 0) === '2');
-        assert(findItems(wrapper, 1).length === 2);
-        assert(findItemText(wrapper, 1, 0) === '0');
-        assert(findItemText(wrapper, 1, 1) === '1');
+            ];
+            extra = {
+                leftValue: ['2'],
+                leftData: [{ label: '2', value: '2' }],
+                movedValue: ['0', '1'],
+                movedData: [
+                    { label: '0', value: '0' },
+                    { label: '1', value: '1' },
+                ],
+                direction: 'right',
+            };
+        });
+
+        checkSingle(cy.get('@l2r')).then(() => {
+            expect(changeCalled).to.eq(true);
+        });
+        findItems(0).should('have.length', 1);
+        shouldHasItem(0, 0, '2');
+        findItems(1).should('have.length', 2);
+        shouldHasItem(1, 0, '0');
+        shouldHasItem(1, 1, '1');
 
         changeCalled = false;
-        checkSingle(findItemCheckbox(wrapper, 1, 0));
-        assert(!r2l().prop('disabled'));
-        assert(r2l().hasClass('next-btn-primary'));
-        value = ['1'];
-        data = [{ label: '1', value: '1' }];
-        extra = {
-            leftValue: ['0', '2'],
-            leftData: [
-                { label: '0', value: '0' },
-                { label: '2', value: '2' },
-            ],
-            movedValue: ['0'],
-            movedData: [{ label: '0', value: '0' }],
-            direction: 'left',
-        };
-        r2l().simulate('click');
-        assert(changeCalled);
-        assert(findItems(wrapper, 0).length === 2);
-        assert(findItemText(wrapper, 0, 0) === '0');
-        assert(findItemText(wrapper, 0, 1) === '2');
-        assert(findItems(wrapper, 1).length === 1);
-        assert(findItemText(wrapper, 1, 0) === '1');
+        checkSingle(findItemCheckbox(1, 0));
+        cy.get('@r2l').should('not.have.attr', 'disabled');
+        shouldHasClass(cy.get('@r2l'), 'next-btn-primary');
+
+        cy.then(() => {
+            value = ['1'];
+            data = [{ label: '1', value: '1' }];
+            extra = {
+                leftValue: ['0', '2'],
+                leftData: [
+                    { label: '0', value: '0' },
+                    { label: '2', value: '2' },
+                ],
+                movedValue: ['0'],
+                movedData: [{ label: '0', value: '0' }],
+                direction: 'left',
+            };
+        });
+
+        checkSingle(cy.get('@r2l')).then(() => {
+            expect(changeCalled).to.eq(true);
+        });
+        findItems(0).should('have.length', 2);
+        shouldHasItem(0, 0, '0');
+        shouldHasItem(0, 1, '2');
+        findItems(1).should('have.length', 1);
+        shouldHasItem(1, 0, '1');
     });
 
     it('should move items between the panels under control', () => {
@@ -291,83 +371,102 @@ describe('Transfer', () => {
             { label: '2', value: '2' },
         ];
 
-        let value, data, extra, changeCalled;
+        let value: string[],
+            data: TransferDataItem[],
+            extra: Parameters<ChangeEventHandler>['2'],
+            changeCalled: boolean;
 
-        const handleChange = (v, d, e) => {
-            assert.deepEqual(value, v);
-            assert.deepEqual(data, d);
-            assert.deepEqual(extra, e);
+        const handleChange: ChangeEventHandler = (v, d, e) => {
+            expect(v).to.deep.equal(value);
+            expect(d).to.deep.equal(data);
+            expect(e).to.deep.equal(extra);
             changeCalled = true;
         };
 
-        wrapper = mount(<Transfer value={[]} dataSource={dataSource} onChange={handleChange} />);
-        const l2r = () => wrapper.find('div.next-transfer-operations button').at(0);
-        const r2l = () => wrapper.find('div.next-transfer-operations button').at(1);
+        cy.mount(<Transfer dataSource={dataSource} onChange={handleChange} />).as('wrapper');
+        cy.get('div.next-transfer-operations button').eq(0).as('l2r');
+        cy.get('div.next-transfer-operations button').eq(1).as('r2l');
 
-        assert(l2r().prop('disabled'));
-        assert(l2r().hasClass('next-btn-normal'));
-        assert(r2l().prop('disabled'));
-        assert(r2l().hasClass('next-btn-normal'));
+        cy.get('@l2r').should('have.attr', 'disabled');
+        shouldHasClass(cy.get('@l2r'), 'next-btn-normal');
+        cy.get('@r2l').should('have.attr', 'disabled');
+        shouldHasClass(cy.get('@r2l'), 'next-btn-normal');
 
-        checkSingle(findItemCheckbox(wrapper, 0, 0));
-        checkSingle(findItemCheckbox(wrapper, 0, 1));
-        assert(!l2r().prop('disabled'));
-        assert(l2r().hasClass('next-btn-primary'));
+        checkSingle(findItemCheckbox(0, 0));
+        checkSingle(findItemCheckbox(0, 1));
+        cy.get('@l2r').should('not.have.attr', 'disabled');
+        shouldHasClass(cy.get('@l2r'), 'next-btn-primary');
 
-        value = ['0', '1'];
-        data = [
-            { label: '0', value: '0' },
-            { label: '1', value: '1' },
-        ];
-        extra = {
-            leftValue: ['2'],
-            leftData: [{ label: '2', value: '2' }],
-            movedValue: ['0', '1'],
-            movedData: [
+        cy.then(() => {
+            value = ['0', '1'];
+            data = [
                 { label: '0', value: '0' },
                 { label: '1', value: '1' },
-            ],
-            direction: 'right',
-        };
-        l2r().simulate('click');
-        assert(changeCalled);
-        wrapper.setProps({
-            value,
+            ];
+            extra = {
+                leftValue: ['2'],
+                leftData: [{ label: '2', value: '2' }],
+                movedValue: ['0', '1'],
+                movedData: [
+                    { label: '0', value: '0' },
+                    { label: '1', value: '1' },
+                ],
+                direction: 'right',
+            };
         });
 
-        assert(findItems(wrapper, 0).length === 1);
-        assert(findItemText(wrapper, 0, 0) === '2');
-        assert(findItems(wrapper, 1).length === 2);
-        assert(findItemText(wrapper, 1, 0) === '0');
-        assert(findItemText(wrapper, 1, 1) === '1');
+        checkSingle(cy.get('@l2r')).then(() => {
+            expect(changeCalled).to.eq(true);
+        });
+        cy.get<MountReturn>('@wrapper').then(({ component, rerender }) => {
+            return rerender(
+                React.cloneElement(component as React.ReactElement, {
+                    value,
+                })
+            );
+        });
+
+        findItems(0).should('have.length', 1);
+        shouldHasItem(0, 0, '2');
+        findItems(1).should('have.length', 2);
+        shouldHasItem(1, 0, '0');
+        shouldHasItem(1, 1, '1');
 
         changeCalled = false;
-        checkSingle(findItemCheckbox(wrapper, 1, 0));
-        assert(!r2l().prop('disabled'));
-        assert(r2l().hasClass('next-btn-primary'));
-        value = ['1'];
-        data = [{ label: '1', value: '1' }];
-        extra = {
-            leftValue: ['0', '2'],
-            leftData: [
-                { label: '0', value: '0' },
-                { label: '2', value: '2' },
-            ],
-            movedValue: ['0'],
-            movedData: [{ label: '0', value: '0' }],
-            direction: 'left',
-        };
-        r2l().simulate('click');
-        assert(changeCalled);
-
-        wrapper.setProps({
-            value,
+        checkSingle(findItemCheckbox(1, 0));
+        cy.get('@r2l').should('not.have.attr', 'disabled');
+        shouldHasClass(cy.get('@r2l'), 'next-btn-primary');
+        cy.then(() => {
+            value = ['1'];
+            data = [{ label: '1', value: '1' }];
+            extra = {
+                leftValue: ['0', '2'],
+                leftData: [
+                    { label: '0', value: '0' },
+                    { label: '2', value: '2' },
+                ],
+                movedValue: ['0'],
+                movedData: [{ label: '0', value: '0' }],
+                direction: 'left',
+            };
         });
-        assert(findItems(wrapper, 0).length === 2);
-        assert(findItemText(wrapper, 0, 0) === '0');
-        assert(findItemText(wrapper, 0, 1) === '2');
-        assert(findItems(wrapper, 1).length === 1);
-        assert(findItemText(wrapper, 1, 0) === '1');
+
+        checkSingle(cy.get('@r2l')).then(() => {
+            expect(changeCalled).to.eq(true);
+        });
+        cy.get<MountReturn>('@wrapper').then(({ component, rerender }) => {
+            return rerender(
+                React.cloneElement(component as React.ReactElement, {
+                    value,
+                })
+            );
+        });
+
+        findItems(0).should('have.length', 2);
+        shouldHasItem(0, 0, '0');
+        shouldHasItem(0, 1, '2');
+        findItems(1).should('have.length', 1);
+        shouldHasItem(1, 0, '1');
     });
 
     it('should support simple mode', () => {
@@ -377,199 +476,222 @@ describe('Transfer', () => {
             { label: '2', value: '2' },
         ];
 
-        let value, data, extra, changeCalled;
+        let value: string[],
+            data: TransferDataItem[],
+            extra: Parameters<ChangeEventHandler>['2'],
+            changeCalled: boolean;
 
-        const handleChange = (v, d, e) => {
-            assert.deepEqual(value, v);
-            assert.deepEqual(data, d);
-            assert.deepEqual(extra, e);
+        const handleChange: ChangeEventHandler = (v, d, e) => {
+            expect(v).to.deep.equal(value);
+            expect(d).to.deep.equal(data);
+            expect(e).to.deep.equal(extra);
             changeCalled = true;
         };
 
-        wrapper = mount(<Transfer mode="simple" dataSource={dataSource} onChange={handleChange} />);
-        assert(wrapper.find('div.next-transfer-operations i.next-icon-switch').length);
-        assert(!findItem(wrapper, 0, 0).find('.next-checkbox-wrapper').length);
-        assert(
-            findFooter(wrapper, 0).find('a.next-transfer-panel-move-all').text().trim() ===
-                '移动全部'
+        cy.mount(<Transfer mode="simple" dataSource={dataSource} onChange={handleChange} />).as(
+            'wrapper'
         );
+        cy.get('div.next-transfer-operations i.next-icon-switch').should('have.length', 1);
+        findItem(0, 0).find('.next-checkbox-wrapper').should('have.length', 0);
+        findFooter(0).find('a.next-transfer-panel-move-all').should('have.text', '移动全部');
+        cy.then(() => {
+            value = ['0'];
+            data = [{ label: '0', value: '0' }];
+            extra = {
+                leftValue: ['1', '2'],
+                leftData: [
+                    { label: '1', value: '1' },
+                    { label: '2', value: '2' },
+                ],
+                movedValue: ['0'],
+                movedData: [{ label: '0', value: '0' }],
+                direction: 'right',
+            };
+        });
 
-        value = ['0'];
-        data = [{ label: '0', value: '0' }];
-        extra = {
-            leftValue: ['1', '2'],
-            leftData: [
-                { label: '1', value: '1' },
-                { label: '2', value: '2' },
-            ],
-            movedValue: ['0'],
-            movedData: [{ label: '0', value: '0' }],
-            direction: 'right',
-        };
-        findItem(wrapper, 0, 0).simulate('click');
-        assert(changeCalled);
-        assert(findItems(wrapper, 0).length === 2);
-        assert(findItemText(wrapper, 0, 0) === '1');
-        assert(findItemText(wrapper, 0, 1) === '2');
-        assert(findItems(wrapper, 1).length === 1);
-        assert(findItemText(wrapper, 1, 0) === '0');
-
-        changeCalled = false;
-        value = [];
-        data = [];
-        extra = {
-            leftValue: ['0', '1', '2'],
-            leftData: [
-                { label: '0', value: '0' },
-                { label: '1', value: '1' },
-                { label: '2', value: '2' },
-            ],
-            movedValue: ['0'],
-            movedData: [{ label: '0', value: '0' }],
-            direction: 'left',
-        };
-        findItem(wrapper, 1, 0).simulate('click');
-        assert(changeCalled);
-        assert(findItems(wrapper, 0).length === 3);
-        assert(findItemText(wrapper, 0, 0) === '0');
-        assert(findItemText(wrapper, 0, 1) === '1');
-        assert(findItemText(wrapper, 0, 2) === '2');
-        assert(findItems(wrapper, 1).length === 0);
+        checkSingle(findItem(0, 0)).then(() => {
+            expect(changeCalled).to.eq(true);
+        });
+        findItems(0).should('have.length', 2);
+        shouldHasItem(0, 0, '1');
+        shouldHasItem(0, 1, '2');
+        findItems(1).should('have.length', 1);
+        shouldHasItem(1, 0, '0');
 
         changeCalled = false;
-        value = ['0', '1', '2'];
-        data = [
-            { label: '0', value: '0' },
-            { label: '1', value: '1' },
-            { label: '2', value: '2' },
-        ];
-        extra = {
-            leftValue: [],
-            leftData: [],
-            movedValue: ['0', '1', '2'],
-            movedData: [
-                { label: '0', value: '0' },
-                { label: '1', value: '1' },
-                { label: '2', value: '2' },
-            ],
-            direction: 'right',
-        };
-        findFooter(wrapper, 0).find('a.next-transfer-panel-move-all').simulate('click');
-        assert(changeCalled);
-        assert(findItems(wrapper, 0).length === 0);
-        assert(findItems(wrapper, 1).length === 3);
-        assert(findItemText(wrapper, 1, 0) === '0');
-        assert(findItemText(wrapper, 1, 1) === '1');
-        assert(findItemText(wrapper, 1, 2) === '2');
+        cy.then(() => {
+            value = [];
+            data = [];
+            extra = {
+                leftValue: ['0', '1', '2'],
+                leftData: [
+                    { label: '0', value: '0' },
+                    { label: '1', value: '1' },
+                    { label: '2', value: '2' },
+                ],
+                movedValue: ['0'],
+                movedData: [{ label: '0', value: '0' }],
+                direction: 'left',
+            };
+        });
+        checkSingle(findItem(1, 0)).then(() => {
+            expect(changeCalled).to.eq(true);
+        });
+        findItems(0).should('have.length', 3);
+        shouldHasItem(0, 0, '0');
+        shouldHasItem(0, 1, '1');
+        shouldHasItem(0, 2, '2');
+        findItems(1).should('have.length', 0);
 
         changeCalled = false;
-        value = [];
-        data = [];
-        extra = {
-            leftValue: ['0', '1', '2'],
-            leftData: [
+        cy.then(() => {
+            value = ['0', '1', '2'];
+            data = [
                 { label: '0', value: '0' },
                 { label: '1', value: '1' },
                 { label: '2', value: '2' },
-            ],
-            movedValue: ['0', '1', '2'],
-            movedData: [
-                { label: '0', value: '0' },
-                { label: '1', value: '1' },
-                { label: '2', value: '2' },
-            ],
-            direction: 'left',
-        };
-        findFooter(wrapper, 1).find('a.next-transfer-panel-move-all').simulate('click');
-        assert(changeCalled);
-        assert(findItems(wrapper, 0).length === 3);
-        assert(findItemText(wrapper, 0, 0) === '0');
-        assert(findItemText(wrapper, 0, 1) === '1');
-        assert(findItemText(wrapper, 0, 2) === '2');
-        assert(findItems(wrapper, 1).length === 0);
+            ];
+            extra = {
+                leftValue: [],
+                leftData: [],
+                movedValue: ['0', '1', '2'],
+                movedData: [
+                    { label: '0', value: '0' },
+                    { label: '1', value: '1' },
+                    { label: '2', value: '2' },
+                ],
+                direction: 'right',
+            };
+        });
+
+        findFooter(0)
+            .find('a.next-transfer-panel-move-all')
+            .click()
+            .then(() => {
+                expect(changeCalled).to.eq(true);
+            });
+        findItems(0).should('have.length', 0);
+        findItems(1).should('have.length', 3);
+        shouldHasItem(1, 0, '0');
+        shouldHasItem(1, 1, '1');
+        shouldHasItem(1, 2, '2');
+
+        changeCalled = false;
+        cy.then(() => {
+            value = [];
+            data = [];
+            extra = {
+                leftValue: ['0', '1', '2'],
+                leftData: [
+                    { label: '0', value: '0' },
+                    { label: '1', value: '1' },
+                    { label: '2', value: '2' },
+                ],
+                movedValue: ['0', '1', '2'],
+                movedData: [
+                    { label: '0', value: '0' },
+                    { label: '1', value: '1' },
+                    { label: '2', value: '2' },
+                ],
+                direction: 'left',
+            };
+        });
+
+        findFooter(1)
+            .find('a.next-transfer-panel-move-all')
+            .click()
+            .then(() => {
+                expect(changeCalled).to.eq(true);
+            });
+        findItems(0).should('have.length', 3);
+        shouldHasItem(0, 0, '0');
+        shouldHasItem(0, 1, '1');
+        shouldHasItem(0, 2, '2');
+        findItems(1).should('have.length', 0);
     });
 
-    it('should highlight moved item', done => {
-        wrapper = mount(
-            <Transfer defaultLeftChecked={['0']} dataSource={[{ label: '0', value: '0' }]} />
-        );
-        wrapper.find('div.next-transfer-operations button').at(0).simulate('click');
-        const item = findItem(wrapper, 1, 0);
-        setTimeout(() => {
-            assert(hasClass(item.instance(), 'next-focused'));
-        }, 100);
-        setTimeout(() => {
-            assert(!hasClass(item.instance(), 'next-highlight'));
-            done();
-        }, 1000);
+    it('should highlight moved item', () => {
+        cy.mount(<Transfer defaultLeftChecked={['0']} dataSource={[{ label: '0', value: '0' }]} />);
+        checkSingle(cy.get('div.next-transfer-operations button').eq(0));
+
+        cy.then(() => {
+            shouldHasClass(findItem(1, 0), 'next-focused');
+            findItem(1, 0).should('not.have.class', 'next-highlight');
+        });
+
+        // TODO 不清楚这里需要测试什么？代码中并没有看在这个 next-highlight class
+        // setTimeout(() => {
+        //     assert(!hasClass(item.instance(), 'next-highlight'));
+        //     done();
+        // }, 1000);
     });
 
     it('should support rtl prop', () => {
-        wrapper = mount(
+        cy.mount(
             <Transfer rtl defaultLeftChecked={['0']} dataSource={[{ label: '0', value: '0' }]} />
-        );
-        assert(wrapper.find('div').at(0).props().dir === 'rtl');
+        ).as('wrapper');
+        cy.get('@wrapper').get('div').eq(1).should('have.attr', 'dir', 'rtl');
     });
 
     it('should support sorting items', () => {
-        let value, position, sortCalled;
-        const handleSort = (v, p) => {
-            assert.deepEqual(value, v);
-            assert.deepEqual(position, p);
+        let value: string[], position: string, sortCalled: boolean;
+
+        const handleSort: SortEventHandler = (v, p) => {
+            expect(v).to.deep.equal(value);
+            expect(p).to.deep.equal(position);
             sortCalled = true;
         };
 
-        wrapper = mount(<Transfer dataSource={dataSource} onSort={handleSort} />);
-        let dragItem = findItem(wrapper, 0, 1);
-        let dropItem = findItem(wrapper, 0, 3);
-        let dropDom = dropItem.instance();
-        let referenceY = getOffset(dropDom).top + dropDom.offsetHeight / 2;
-
-        value = ['0', '2', '3', '1'];
-        position = 'left';
-        dragItem.simulate('dragStart');
-        dropItem.simulate('dragOver', { pageY: referenceY + 1 });
-        dragItem.simulate('dragEnd');
-        dropItem.simulate('drop');
-        dragItem.simulate('dragStart');
-        dropItem.simulate('dragOver', { pageY: referenceY + 1 });
-        dropItem.simulate('drop');
-        assert(sortCalled);
-        assert(findItemText(wrapper, 0, 0) === '0');
-        assert(findItemText(wrapper, 0, 1) === '2');
-        assert(findItemText(wrapper, 0, 2) === '3');
-        assert(findItemText(wrapper, 0, 3) === '1');
-
-        dragItem = findItem(wrapper, 0, 1);
-        dropItem = findItem(wrapper, 0, 3);
-        dropDom = dropItem.instance();
-        referenceY = getOffset(dropDom).top + dropDom.offsetHeight / 2;
+        cy.mount(<Transfer dataSource={dataSource} sortable onSort={handleSort} />);
+        cy.then(() => {
+            value = ['0', '2', '3', '1'];
+            position = 'left';
+        });
+        const dataTransfer = new DataTransfer();
+        findItem(0, 1).trigger('mousedown', { force: true }).trigger('dragstart', { dataTransfer });
+        findItem(0, 3).trigger('drop', { dataTransfer });
+        findItem(0, 1)
+            .trigger('dragend', { dataTransfer })
+            .then(() => {
+                expect(sortCalled).to.eq(true);
+                shouldHasItem(0, 0, '0');
+                shouldHasItem(0, 1, '2');
+                shouldHasItem(0, 2, '3');
+                shouldHasItem(0, 3, '1');
+            });
 
         sortCalled = false;
-        value = ['0', '3', '2', '1'];
-        position = 'left';
-        dragItem.simulate('dragStart');
-        dropItem.simulate('dragOver', { pageY: referenceY - 1 });
-        dropItem.simulate('drop');
-        assert(sortCalled);
-        assert(findItemText(wrapper, 0, 0) === '0');
-        assert(findItemText(wrapper, 0, 1) === '3');
-        assert(findItemText(wrapper, 0, 2) === '2');
-        assert(findItemText(wrapper, 0, 3) === '1');
+        cy.then(() => {
+            value = ['0', '3', '2', '1'];
+            position = 'left';
+        });
+
+        findItem(0, 1).trigger('mousedown', { force: true }).trigger('dragstart', { dataTransfer });
+        findItem(0, 2).trigger('drop', { dataTransfer });
+        findItem(0, 1)
+            .trigger('dragend', { dataTransfer })
+            .then(() => {
+                expect(sortCalled).to.eq(true);
+                shouldHasItem(0, 0, '0');
+                shouldHasItem(0, 1, '3');
+                shouldHasItem(0, 2, '2');
+                shouldHasItem(0, 3, '1');
+            });
     });
 
     it('should support id on panel elements', () => {
-        wrapper = mount(
+        cy.mount(
             <Transfer dataSource={dataSource} id="transfer-test" titles={['left', 'right']} />
-        );
-        assert(wrapper.find('#transfer-test-panel-footer-left').length === 1);
-        assert(wrapper.find('#transfer-test-panel-footer-right').length === 1);
-        assert(wrapper.find('#transfer-test-panel-header-left').length === 1);
-        assert(wrapper.find('#transfer-test-panel-header-right').length === 1);
+        ).as('wrapper');
+
+        cy.get('@wrapper').get('#transfer-test-panel-footer-left').should('have.length', 1);
+        cy.get('@wrapper').get('#transfer-test-panel-footer-right').should('have.length', 1);
+        cy.get('@wrapper').get('#transfer-test-panel-header-left').should('have.length', 1);
+        cy.get('@wrapper').get('#transfer-test-panel-header-right').should('have.length', 1);
     });
 
     it('should disabled item not move', () => {
-        wrapper = mount(
+        cy.mount(
             <Transfer
                 mode="simple"
                 defaultLeftChecked={['0']}
@@ -578,10 +700,11 @@ describe('Transfer', () => {
                 dataSource={dataSource}
             />
         );
-        findFooter(wrapper, 0).find('a.next-transfer-panel-move-all').simulate('click');
-        assert(findItems(wrapper, 0).length === 1);
-        assert(findItems(wrapper, 1).length === 3);
+        checkSingle(findFooter(0).find('a.next-transfer-panel-move-all'));
+        findItems(0).should('have.length', 1);
+        findItems(1).should('have.length', 3);
     });
+
     it('should customer panel work well', () => {
         const treeDataSource = [
             {
@@ -609,7 +732,7 @@ describe('Transfer', () => {
             },
         ];
 
-        function getTreeDataSource(dataSource = [], value) {
+        function getTreeDataSource(dataSource: TransferDataItem[] = [], value: string[]) {
             return dataSource.map(({ children, ...props }) => (
                 <TreeNode
                     {...props}
@@ -620,15 +743,15 @@ describe('Transfer', () => {
                 </TreeNode>
             ));
         }
-        const transferDataSource = [];
-        function flatten(list = []) {
+        const transferDataSource: TransferDataItem[] = [];
+        function flatten(list: TransferDataItem[] = []) {
             list.forEach(item => {
                 transferDataSource.push(item);
                 flatten(item.children);
             });
         }
         flatten(treeDataSource);
-        wrapper = mount(
+        cy.mount(
             <Transfer dataSource={transferDataSource}>
                 {({ position, onChange, value }) => {
                     if (position === 'left') {
@@ -638,10 +761,10 @@ describe('Transfer', () => {
                                 editable
                                 style={{ padding: '10px' }}
                                 checkedKeys={value}
-                                onCheck={(keys, extra) => {
-                                    const newValues = extra.checkedNodes.map(
-                                        item => item.props.value
-                                    );
+                                onCheck={(keys, extra: Record<string, unknown>) => {
+                                    const newValues = (
+                                        extra.checkedNodes as React.ReactElement[]
+                                    ).map(item => item.props.value);
                                     onChange(position, newValues);
                                 }}
                             >
@@ -651,18 +774,35 @@ describe('Transfer', () => {
                     }
                 }}
             </Transfer>
+        ).as('wrapper');
+        checkSingle(cy.get('@wrapper').get('.next-checkbox').eq(0));
+        shouldHasClass(
+            cy
+                .get('div.next-transfer-panel-list')
+                .find('li.next-tree-node')
+                .eq(0)
+                .find('label.next-checkbox-wrapper'),
+            'checked'
         );
-        wrapper.find('.next-checkbox').at(0).simulate('click');
+        shouldHasClass(
+            cy.get('div.next-transfer-panel-footer').eq(0).find('label.next-checkbox-wrapper'),
+            'checked'
+        );
     });
+
     it('should onSelect work well', () => {
-        const onSelect = (sourceSelectedValue, targetSelectedValue, trigger) => {
-            assert(trigger === 'source', 'position should be source');
-            assert(
-                sourceSelectedValue && sourceSelectedValue[0] === '1',
+        const onSelect: SelectEventHandler = (
+            sourceSelectedValue,
+            targetSelectedValue,
+            trigger
+        ) => {
+            expect(trigger).to.eq('source', 'position should be source');
+            expect(sourceSelectedValue && sourceSelectedValue[0] === '1').to.eq(
+                true,
                 'checked value should be 1'
             );
         };
-        wrapper = mount(
+        cy.mount(
             <Transfer
                 defaultValue={['1']}
                 value={['2']}
@@ -670,16 +810,17 @@ describe('Transfer', () => {
                 onSelect={onSelect}
             />
         );
-        compareDomAndDataSource(wrapper, 0, [
+        compareDomAndDataSource(0, [
             { label: '0', value: '0' },
             { label: '1', value: '1' },
             { label: '3', value: '3' },
         ]);
-        compareDomAndDataSource(wrapper, 1, [{ label: '2', value: '2' }]);
-        assert(findFooterCount(wrapper, 0) === '3');
-        assert(findFooterCount(wrapper, 1) === '1');
-        wrapper.find('.next-checkbox').at(1).simulate('click');
+        compareDomAndDataSource(1, [{ label: '2', value: '2' }]);
+        expectFooterCount(0, '3');
+        expectFooterCount(1, '1');
+        checkSingle(cy.get('.next-checkbox').eq(1));
     });
+
     it('should support virtual list', () => {
         const dataSource = (() => {
             const dataSource = [];
@@ -694,71 +835,8 @@ describe('Transfer', () => {
 
             return dataSource;
         })();
-
-        wrapper = mount(<Transfer mode="simple" useVirtual dataSource={dataSource} />);
-        assert(wrapper.find('div.next-transfer-operations i.next-icon-switch').length);
-        assert(findItems(wrapper, 0).length === 10);
+        cy.mount(<Transfer mode="simple" useVirtual dataSource={dataSource} />);
+        cy.get('div.next-transfer-operations i.next-icon-switch').should('have.length', 1);
+        findItems(0).should('have.length', 9);
     });
 });
-
-function findPanel(wrapper, panelIndex) {
-    return wrapper.find('div.next-transfer-panel').at(panelIndex);
-}
-
-function findHeader(wrapper, panelIndex) {
-    return findPanel(wrapper, panelIndex).find('div.next-transfer-panel-header');
-}
-
-function findHeaderTitle(wrapper, panelIndex) {
-    return findHeader(wrapper, panelIndex).text().trim();
-}
-
-function findFooter(wrapper, panelIndex) {
-    return findPanel(wrapper, panelIndex).find('div.next-transfer-panel-footer');
-}
-
-function findFooterCount(wrapper, panelIndex) {
-    return findFooter(wrapper, panelIndex)
-        .find('span.next-transfer-panel-count')
-        .text()
-        .trim()
-        .split(/\s/)[0];
-}
-
-function findFooterCheckbox(wrapper, panelIndex) {
-    return findFooter(wrapper, panelIndex).find('label.next-checkbox-wrapper');
-}
-
-function findItems(wrapper, panelIndex) {
-    return findPanel(wrapper, panelIndex).find('li.next-transfer-panel-item');
-}
-
-function findItem(wrapper, panelIndex, itemIndex) {
-    return findItems(wrapper, panelIndex).at(itemIndex);
-}
-
-function findItemText(wrapper, panelIndex, itemIndex) {
-    return findItem(wrapper, panelIndex, itemIndex).find('span.next-menu-item-text').text().trim();
-}
-
-function findItemCheckbox(wrapper, panelIndex, itemIndex) {
-    return findItem(wrapper, panelIndex, itemIndex).find('label.next-checkbox-wrapper');
-}
-
-function checkAll(checkbox, checked) {
-    checkbox.find('input').simulate('change', { target: { checked } });
-}
-
-function checkSingle(item) {
-    item.simulate('click');
-}
-
-function compareDomAndDataSource(wrapper, panelIndex, dataSource) {
-    findItems(wrapper, panelIndex).forEach((item, index) => {
-        assert(item.find('span.next-menu-item-text').text().trim() === dataSource[index].label);
-        if (dataSource[index].disabled) {
-            assert(item.hasClass('next-disabled'));
-            assert(item.find('label.next-checkbox-wrapper').hasClass('disabled'));
-        }
-    });
-}

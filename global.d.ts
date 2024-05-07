@@ -20,6 +20,10 @@ declare module 'remark';
 declare module '@alifd/adaptor-helper';
 declare module 'solarlunar';
 
+declare module 'lodash.clonedeep' {
+    export { cloneDeep as default } from 'lodash';
+}
+
 declare const mountNode: HTMLDivElement;
 
 declare module 'react-lifecycles-compat' {

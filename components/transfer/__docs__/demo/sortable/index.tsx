@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Transfer } from '@alifd/next';
+import type { TransferProps } from '../../../types';
 
 const dataSource = (() => {
     const dataSource = [];
@@ -17,15 +18,9 @@ const dataSource = (() => {
 })();
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.handleSort = this.handleSort.bind(this);
-    }
-
-    handleSort(value, position) {
+    handleSort: TransferProps['onSort'] = (value, position) => {
         console.log(value, position);
-    }
+    };
 
     render() {
         return (
