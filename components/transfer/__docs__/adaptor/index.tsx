@@ -2,6 +2,7 @@ import React from 'react';
 import { Types, parseData, NodeType } from '@alifd/adaptor-helper';
 import { Transfer } from '@alifd/next';
 import locale from '../../../locale/en-us';
+import type { TransferProps } from '../../types';
 
 export default {
     name: 'Transfer',
@@ -38,10 +39,25 @@ export default {
             default: `Content1\nContent2\n*Content3\n*Content4\n*Content5\nContent6\nContent7\nContent8\nContent9\nContent10`,
         },
     }),
-    adaptor: ({ level, search, sourcePanelTitle, targetPanelTitle, data, ...others }) => {
-        const list = parseData(data).filter(({ type }) => type === NodeType.node);
-        const keys = [];
-        const dataSource = list.map((item, i) => {
+    adaptor: ({
+        level,
+        search,
+        sourcePanelTitle,
+        targetPanelTitle,
+        data,
+        ...others
+    }: TransferProps & {
+        data: string;
+        level: TransferProps['mode'];
+        search: TransferProps['showSearch'];
+        sourcePanelTitle: string;
+        targetPanelTitle: string;
+    }) => {
+        const list = parseData(data).filter(
+            ({ type }: { type: typeof NodeType.node }) => type === NodeType.node
+        );
+        const keys: string[] = [];
+        const dataSource = list.map((item: any, i: any) => {
             if (item.state === 'active') {
                 keys.push(`${i}`);
             }

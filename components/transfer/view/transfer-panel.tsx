@@ -7,10 +7,25 @@ import Menu from '../../menu';
 import { func, htmlId } from '../../util';
 import TransferItem from './transfer-item';
 import VirtualList from '../../virtual-list';
+import type {
+    PositionType,
+    TransferDataItem,
+    TransferPanelProps,
+    TransferPanelState,
+} from '../types';
 
 const { bindCtx } = func;
 
-export default class TransferPanel extends Component {
+type ListRef = HTMLDivElement | React.ComponentRef<typeof Menu> | null;
+
+export default class TransferPanel extends Component<TransferPanelProps, TransferPanelState> {
+    footerId: string;
+    headerId: string;
+    firstRender: boolean;
+    searched: boolean;
+    list: ListRef;
+    enabledDatasource: TransferDataItem[];
+
     static propTypes = {
         prefix: PropTypes.string,
         position: PropTypes.oneOf(['left', 'right']),
@@ -40,7 +55,7 @@ export default class TransferPanel extends Component {
         showCheckAll: PropTypes.bool,
     };
 
-    constructor(props, context) {
+    constructor(props: TransferPanelProps, context: unknown) {
         super(props, context);
 
         this.state = {
@@ -72,9 +87,11 @@ export default class TransferPanel extends Component {
         this.firstRender = false;
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: TransferPanelProps) {
         if (prevProps.dataSource.length !== this.props.dataSource.length && this.list) {
+            // @ts-expect-error("Property 'scrollTop' does not exist on type 'Menu'.")
             if (this.list.scrollTop > 0) {
+                // @ts-expect-error("Property 'scrollTop' does not exist on type 'Menu'.")
                 this.list.scrollTop = 0;
             }
         }
@@ -82,11 +99,11 @@ export default class TransferPanel extends Component {
         this.searched = false;
     }
 
-    getListDOM(ref) {
+    getListDOM(ref: ListRef) {
         this.list = ref;
     }
 
-    getListData(dataSource, disableHighlight) {
+    getListData(dataSource: TransferDataItem[], disableHighlight?: boolean) {
         const { prefix, position, mode, value, onMove, disabled, itemRender, sortable } =
             this.props;
         const { dragPosition, dragValue, dragOverValue } = this.state;
@@ -125,15 +142,15 @@ export default class TransferPanel extends Component {
         });
     }
 
-    handleAllCheck(allChecked) {
+    handleAllCheck(allChecked: boolean) {
         const { position, onChange, filter } = this.props;
         const { searchedValue } = this.state;
 
-        let newValue;
+        let newValue: string[];
         if (allChecked) {
             if (searchedValue) {
                 newValue = this.enabledDatasource
-                    .filter(item => filter(searchedValue, item))
+                    .filter(item => filter!(searchedValue, item))
                     .map(item => item.value);
             } else {
                 newValue = this.enabledDatasource.map(item => item.value);
@@ -145,7 +162,7 @@ export default class TransferPanel extends Component {
         onChange && onChange(position, newValue);
     }
 
-    handleCheck(itemValue, checked) {
+    handleCheck(itemValue: string, checked: boolean) {
         const { position, value, onChange } = this.props;
 
         const newValue = [...value];
@@ -159,24 +176,24 @@ export default class TransferPanel extends Component {
         onChange && onChange(position, newValue);
     }
 
-    handleSearch(searchedValue) {
+    handleSearch(searchedValue: string) {
         this.setState({
             searchedValue,
         });
         this.searched = true;
 
         const { onSearch, position } = this.props;
-        onSearch(searchedValue, position);
+        onSearch!(searchedValue, position);
     }
 
-    handleItemDragStart(position, value) {
+    handleItemDragStart(position: PositionType, value: string) {
         this.setState({
             dragPosition: position,
             dragValue: value,
         });
     }
 
-    handleItemDragOver(value) {
+    handleItemDragOver(value: string) {
         this.setState({
             dragOverValue: value,
         });
@@ -188,12 +205,12 @@ export default class TransferPanel extends Component {
         });
     }
 
-    handleItemDrop(...args) {
+    handleItemDrop(...args: Parameters<Required<TransferPanelProps>['onSort']>) {
         this.setState({
             dragOverValue: null,
         });
 
-        this.props.onSort(...args);
+        this.props.onSort!(...args);
     }
 
     renderHeader() {
@@ -214,17 +231,17 @@ export default class TransferPanel extends Component {
                 shape="simple"
                 {...searchProps}
                 className={`${prefix}transfer-panel-search`}
-                placeholder={searchPlaceholder || locale.searchPlaceholder}
+                placeholder={searchPlaceholder || locale!.searchPlaceholder}
                 onChange={this.handleSearch}
             />
         );
     }
 
-    renderList(dataSource) {
+    renderList(dataSource: TransferDataItem[]) {
         const { prefix, listClassName, listStyle, customerList, useVirtual } = this.props;
         const newClassName = cx({
             [`${prefix}transfer-panel-list`]: true,
-            [listClassName]: !!listClassName,
+            [listClassName!]: !!listClassName,
         });
 
         const customerPanel = customerList && customerList(this.props);
@@ -291,7 +308,7 @@ export default class TransferPanel extends Component {
                         className={classNames}
                         onClick={onMoveAll.bind(this, position === 'left' ? 'right' : 'left')}
                     >
-                        {locale.moveAll}
+                        {locale!.moveAll}
                     </a>
                 </div>
             );
@@ -304,7 +321,7 @@ export default class TransferPanel extends Component {
         const checkedCount = value.length;
         let _checkedCount = checkedCount;
         if (showSearch && searchedValue) {
-            _dataSource = dataSource.filter(item => filter(searchedValue, item));
+            _dataSource = dataSource.filter(item => filter!(searchedValue, item));
             totalCount = _dataSource.length;
             _checkedCount = _dataSource.filter(item => value.includes(item.value)).length;
         }
@@ -312,7 +329,7 @@ export default class TransferPanel extends Component {
         const checked = checkedCount > 0 && checkedCount >= totalEnabledCount;
         const indeterminate =
             checkedCount > 0 && _checkedCount >= 0 && _checkedCount < totalEnabledCount;
-        const items = totalCount > 1 ? locale.items : locale.item;
+        const items = totalCount > 1 ? locale!.items : locale!.item;
         const countLabel =
             checkedCount === 0
                 ? `${totalCount} ${items}`
@@ -342,7 +359,7 @@ export default class TransferPanel extends Component {
         let _dataSource = this.props.dataSource;
         this.enabledDatasource = dataSource.filter(item => !item.disabled);
         if (showSearch && searchedValue) {
-            _dataSource = dataSource.filter(item => filter(searchedValue, item));
+            _dataSource = dataSource.filter(item => filter!(searchedValue, item));
         }
 
         return (
