@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Transfer, Button, Tree } from '@alifd/next';
+import type { TransferProps } from '../../../types';
 
 const TreeNode = Tree.Node;
+type DataSourceType = TransferProps['dataSource'];
 
-const treeDataSource = [
+const treeDataSource: DataSourceType = [
     {
         label: 'Form',
         key: '2',
@@ -46,32 +48,36 @@ const treeDataSource = [
     },
 ];
 
-const transferDataSource = [];
-function flatten(list = []) {
+const transferDataSource: DataSourceType = [];
+function flatten(list: DataSourceType = []) {
     list.forEach(item => {
-        transferDataSource.push(item);
+        transferDataSource!.push(item);
         flatten(item.children);
     });
 }
 flatten(treeDataSource);
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<
+    TransferProps,
+    {
+        selected: string[];
+    }
+> {
+    constructor(props: TransferProps) {
         super(props);
 
-        this.handleChange = this.handleChange.bind(this);
         this.state = {
             selected: [],
         };
     }
 
-    handleChange(value, data, extra) {
+    handleChange: TransferProps['onChange'] = value => {
         this.setState({ selected: value });
-    }
+    };
 
-    onCheck(keys, info) {}
+    // onCheck(keys, info) {}
 
-    getTreeDataSource(dataSource = [], value) {
+    getTreeDataSource(dataSource: DataSourceType = [], value: string[] = []) {
         return dataSource.map(({ children, ...props }) => (
             <TreeNode
                 {...props}
@@ -84,7 +90,6 @@ class Demo extends React.Component {
     }
 
     render() {
-        const { onChange } = this.props;
         const { selected } = this.state;
 
         return (
@@ -107,11 +112,8 @@ class Demo extends React.Component {
                                 editable
                                 style={{ padding: '10px' }}
                                 checkedKeys={value}
-                                onCheck={(keys, extra) => {
-                                    const newValues = extra.checkedNodes.map(
-                                        item => item.props.value
-                                    );
-                                    onChange(position, newValues);
+                                onCheck={keys => {
+                                    onChange(position, keys);
                                 }}
                             >
                                 {this.getTreeDataSource(treeDataSource, selected)}

@@ -2,15 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
 import '../../style';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import { Demo, DemoGroup, initDemo, type DemoFunctionDefineForObject } from '../../../demo-helper';
 import Transfer from '../../index';
+import type { TransferProps } from '../../types';
 import ConfigProvider from '../../../config-provider';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
 
-/* eslint-disable react/react-in-jsx-scope */
-
-const createDatasource = lang => {
+const createDatasource = (lang: string) => {
     const dataSource = [];
 
     for (let i = 0; i < 10; i++) {
@@ -45,8 +44,19 @@ const i18nMap = {
     },
 };
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
+class FunctionDemo extends React.Component<
+    TransferProps & {
+        i18n: Record<string, any>;
+    },
+    {
+        demoFunction: Record<string, DemoFunctionDefineForObject>;
+    }
+> {
+    constructor(
+        props: TransferProps & {
+            i18n: Record<string, string>;
+        }
+    ) {
         super(props);
         this.state = {
             demoFunction: {
@@ -70,7 +80,7 @@ class FunctionDemo extends React.Component {
         this.onFunctionChange = this.onFunctionChange.bind(this);
     }
 
-    onFunctionChange(demoFunction) {
+    onFunctionChange(demoFunction: Record<string, DemoFunctionDefineForObject>) {
         this.setState({
             demoFunction,
         });
@@ -82,7 +92,7 @@ class NormalDemo extends FunctionDemo {
         const { i18n } = this.props;
         const { title, dataSource } = i18n;
         const { demoFunction } = this.state;
-        const showSearch = demoFunction.showSearch.value === 'true';
+        const showSearch = demoFunction!.showSearch.value === 'true';
 
         return (
             <Demo
@@ -109,7 +119,7 @@ class SimpleDemo extends FunctionDemo {
         const { i18n } = this.props;
         const { title, dataSource } = i18n;
         const { demoFunction } = this.state;
-        const showSearch = demoFunction.showSearch.value === 'true';
+        const showSearch = demoFunction!.showSearch.value === 'true';
 
         return (
             <Demo

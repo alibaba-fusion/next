@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Transfer } from '@alifd/next';
+import type { TransferProps } from '../../../types';
 
 const dataSource = (() => {
     const dataSource = [];
@@ -17,21 +18,19 @@ const dataSource = (() => {
 })();
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(value, data, extra) {
+    handleChange: TransferProps['onChange'] = (value, data, extra) => {
         console.log(value, data, extra);
-    }
+    };
 
-    handleSelect(sourceSelectedValue, targetSelectedValue, trigger) {
+    handleSelect: TransferProps['onSelect'] = (
+        sourceSelectedValue,
+        targetSelectedValue,
+        trigger
+    ) => {
         console.log('in panel: ', trigger);
         console.log('sourceSelectedValue are: ', sourceSelectedValue);
         console.log('targetSelectedValue are: ', targetSelectedValue);
-    }
+    };
 
     render() {
         return (

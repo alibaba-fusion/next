@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Transfer } from '@alifd/next';
+import type { TransferProps } from '../../../types';
 
 const dataSource = (() => {
     const dataSource = [];
@@ -16,24 +17,27 @@ const dataSource = (() => {
     return dataSource;
 })();
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<
+    TransferProps,
+    {
+        value: TransferProps['value'];
+    }
+> {
+    constructor(props: TransferProps) {
         super(props);
 
         this.state = {
             value: ['3'],
         };
-
-        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(value, data, extra) {
+    handleChange: TransferProps['onChange'] = (value, data, extra) => {
         console.log(value, data, extra);
 
         this.setState({
             value,
         });
-    }
+    };
 
     render() {
         return (

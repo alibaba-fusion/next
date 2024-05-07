@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Transfer, Table } from '@alifd/next';
+import type { TransferDataItem, TransferProps } from '../../../types';
 
 // 生成 transfer 数据源
-const generateTransferDataSource = (i, j) => {
+const generateTransferDataSource = (i: number, j: number) => {
     const result = [];
     for (let a = i; a < j; a++) {
         result.push({
@@ -17,7 +18,7 @@ const generateTransferDataSource = (i, j) => {
 const TransferDataSource = generateTransferDataSource(0, 3);
 
 // datasource 转换
-const transferToTable = dataSource => {
+const transferToTable = (dataSource: TransferDataItem[]) => {
     const newTableDataSource = dataSource.map(v => ({
         label: v.label,
         id: v.value,
@@ -28,7 +29,7 @@ const transferToTable = dataSource => {
 
 const TableDataSource = transferToTable(TransferDataSource);
 
-const render = (value, index, record) => {
+const render = (value: any, index: number, record: any) => {
     return <a href="javascript:;">Remove({record.id})</a>;
 };
 
@@ -41,7 +42,7 @@ class Demo extends React.Component {
         lselectedRowKeys: [],
     };
 
-    handleChange = (value, data, extra) => {
+    handleChange: TransferProps['onChange'] = (value, data, extra) => {
         console.log('handleChange', value, data, extra);
         this.setState({
             leftTableDataSource: transferToTable(extra.leftData),
@@ -52,13 +53,8 @@ class Demo extends React.Component {
     };
 
     render() {
-        const {
-            selectedValue,
-            leftTableDataSource,
-            rightTableDataSource,
-            rselectedRowKeys,
-            lselectedRowKeys,
-        } = this.state;
+        const { leftTableDataSource, rightTableDataSource, rselectedRowKeys, lselectedRowKeys } =
+            this.state;
         return (
             <Transfer
                 dataSource={TransferDataSource}
@@ -67,7 +63,7 @@ class Demo extends React.Component {
                 showCheckAll={false}
                 className="table-transfer-demo"
             >
-                {({ position, onChange, value, dataSource }) => {
+                {({ position, onChange }) => {
                     // console.log(position, onChange, value, dataSource);
                     if (position === 'left') {
                         return (
