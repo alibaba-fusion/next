@@ -655,7 +655,7 @@ class TreeSelect extends Component<TreeSelectProps, TreeSelectState> {
             const retainedNodes: NodeElement[] = [];
 
             data!.forEach((item, index) => {
-                const { children, value, ...others } = item as ObjectItem;
+                const { children, ...others } = item as ObjectItem;
                 const pos = `${prefix}-${index}`;
                 const key = this.state._p2n[pos].key as string;
                 const addNode = (isParentMatched?: boolean, hide?: boolean) => {

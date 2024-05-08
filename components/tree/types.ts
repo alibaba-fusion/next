@@ -3,7 +3,7 @@ import type { CommonProps } from '../util';
 import type { VirtualListProps } from '../virtual-list';
 import type { Tree } from './view/tree';
 import type { TreeNode } from './view/tree-node';
-import type { ObjectItem } from '../select';
+import type { DataSourceItem } from '../select';
 
 export type Key = string;
 export type KeyEntities = Record<Key, DataNode>;
@@ -259,7 +259,7 @@ export interface NodeProps extends CommonProps {
      * @en value
      * @skip
      */
-    value?: ObjectItem['value'];
+    value?: DataSourceItem;
 }
 
 export type NodeElement = React.ReactElement<NodeProps>;
