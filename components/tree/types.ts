@@ -259,7 +259,7 @@ export interface NodeProps extends CommonProps {
      * @en value
      * @skip
      */
-    value?: ObjectItem;
+    value?: ObjectItem['value'];
 }
 
 export type NodeElement = React.ReactElement<NodeProps>;
