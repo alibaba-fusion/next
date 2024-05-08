@@ -472,6 +472,16 @@ describe('Tab', () => {
             await delay(1000);
             assert(isInScrollBoxViewport(scroller, leftEdgeItem));
         });
+        it('extra content should not be obscured', () => {
+            const extraContentStyle = { width: '50px' };
+            const wrapper = mount(
+                <Tab extra={<div style={extraContentStyle}>hello world</div>} style={boxStyle}>
+                    {panes}
+                </Tab>
+            );
+            const extraContent = wrapper.find('.next-tabs-nav-extra').getDOMNode().children[0];
+            assert.equal(extraContentStyle.width, extraContent.style.width);
+        });
     });
     describe('animation sensitive tests', () => {
         let target;

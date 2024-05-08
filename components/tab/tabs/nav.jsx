@@ -66,6 +66,7 @@ class Nav extends React.Component {
             this.initialSettings();
         }
 
+        this.computeExtraWidth();
         events.on(window, 'resize', this.onWindowResized);
     }
 
@@ -83,6 +84,7 @@ class Nav extends React.Component {
                 this.getDropdownItems(this.props);
             }
         }
+        this.computeExtraWidth();
     }
 
     componentWillUnmount() {
@@ -362,6 +364,12 @@ class Nav extends React.Component {
             );
         }
         return rst;
+    }
+
+    computeExtraWidth() {
+        if (this.navbar && this.navbar.childNodes.length === 2) {
+            this.navbar.childNodes[1].style.marginRight = window.getComputedStyle(this.navbar.childNodes[0]).width;
+        }
     }
 
     scrollToActiveTab = () => {
