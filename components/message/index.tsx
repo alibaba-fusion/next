@@ -2,22 +2,26 @@ import ConfigProvider from '../config-provider';
 import Message from './message';
 import toast, { withContext } from './toast';
 import message from './toast2';
+import { assignSubComponent } from '../util/component';
 
-Message.show = toast.show;
-Message.success = toast.success;
-Message.warning = toast.warning;
-Message.error = toast.error;
-Message.notice = toast.notice;
-Message.help = toast.help;
-Message.loading = toast.loading;
-Message.hide = toast.hide;
-Message.withContext = withContext;
-
-const MessageProvider = ConfigProvider.config(Message, {
+const WithSubMessage = assignSubComponent(Message, {
+    show: toast.show,
+    success: toast.success,
+    warning: toast.warning,
+    error: toast.error,
+    notice: toast.notice,
+    help: toast.help,
+    loading: toast.loading,
+    hide: toast.hide,
+    withContext,
+});
+const MessageProvider = ConfigProvider.config(WithSubMessage, {
     componentName: 'Message',
 });
 
 export default MessageProvider;
+export type { MessageProps, MessageQuickProps } from './types';
+export type { ContextMessage } from './toast';
 
 let openV2 = false;
 // 调用 config 开启 v2 版本的 message
