@@ -1,5 +1,5 @@
 export interface ComponentLocaleObject {
-    [key: string]: string | ComponentLocaleObject | undefined | boolean;
+    [key: string]: string | ComponentLocaleObject | undefined | boolean | string[] | number;
 }
 
 export interface LocaleConfig {
@@ -8,7 +8,7 @@ export interface LocaleConfig {
     dateLocale?: string;
 }
 
-export interface Locale extends LocaleConfig {
+export interface BaseLocale extends LocaleConfig {
     Timeline: {
         expand: string;
         fold: string;
@@ -35,6 +35,15 @@ export interface Locale extends LocaleConfig {
         nextDecade: string;
         yearSelectAriaLabel: string;
         monthSelectAriaLabel: string;
+        monthBeforeYear?: boolean;
+        format?: {
+            months?: string[];
+            shortMonths?: string[];
+            firstDayOfWeek?: number;
+            weekdays?: string[];
+            shortWeekdays?: string[];
+            veryShortWeekdays?: string[];
+        };
     };
     DatePicker: {
         placeholder: string;
@@ -92,6 +101,14 @@ export interface Locale extends LocaleConfig {
         notFoundContent: string;
         maxTagPlaceholder: string;
         selectAll: string;
+        /**
+         * @deprecated use selectPlaceholder instead
+         */
+        selectPlaceHolder?: string;
+        /**
+         * @deprecated use autoCompletePlaceholder instead
+         */
+        autoCompletePlaceHolder?: string;
     };
     TreeSelect: {
         maxTagPlaceholder: string;
@@ -189,6 +206,14 @@ export interface Locale extends LocaleConfig {
     };
     [key: string]: ComponentLocaleObject | boolean | string | undefined;
 }
+
+export type Locale = {
+    [key in keyof BaseLocale]: BaseLocale[key] extends ComponentLocaleObject
+        ? Partial<BaseLocale[key]> & {
+              momentLocale?: string;
+          }
+        : BaseLocale[key];
+};
 
 /**
  * @deprecated type locale is deprecated, use Locale instead

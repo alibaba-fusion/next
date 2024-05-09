@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Cascader } from '@alifd/next';
-import type { CascaderDataItem } from '@alifd/next/lib/cascader';
+import type { CascaderDataItem } from '@alifd/next/types/cascader';
 
 const dataSource = [
     {

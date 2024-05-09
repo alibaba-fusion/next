@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import { SearchProps } from './types';
 import Input, { InputProps } from '../input';
-import Select, { AutoCompleteProps, AutoComplete as AutoCompleteType } from '../select';
+import Select, { type AutoCompleteProps } from '../select';
 import Button from '../button';
 import Icon from '../icon';
 import { obj, func, KEYCODE } from '../util';
@@ -126,7 +126,7 @@ class Search extends React.Component<SearchProps, SearchState> {
     }
 
     highlightKey: unknown;
-    inputRef: AutoCompleteType | null = null;
+    inputRef: ReturnType<InstanceType<typeof AutoComplete>['getInstance']> | null = null;
 
     constructor(props: SearchProps) {
         super(props);
@@ -209,15 +209,13 @@ class Search extends React.Component<SearchProps, SearchState> {
     };
 
     saveInputRef = (ref: React.ComponentRef<typeof AutoComplete>) => {
-        // @ts-expect-error wait for AutoComplete types complete
         if (ref && ref.getInstance()) {
-            // @ts-expect-error wait for AutoComplete types complete
             this.inputRef = ref.getInstance();
         }
     };
 
-    focus: NonNullable<InputProps['onFocus']> = (...args) => {
-        this.inputRef!.focus(...args);
+    focus = (start?: number, end?: number, preventScroll = false) => {
+        this.inputRef!.focus(start, end, preventScroll);
     };
 
     handleFocus(...args: [React.FocusEvent<HTMLInputElement>]) {
@@ -353,7 +351,7 @@ class Search extends React.Component<SearchProps, SearchState> {
             // 受控属性 visible 不能直接写在组件上
             othersAttributes.visible = Boolean(visible);
         }
-        const dataAttr = obj.pickAttrsWith<Record<string, unknown>>(others, 'data-');
+        const dataAttr = obj.pickAttrsWith(others, 'data-');
 
         const left = (
             <Group
@@ -366,6 +364,7 @@ class Search extends React.Component<SearchProps, SearchState> {
                     {...othersAttributes}
                     followTrigger={followTrigger}
                     role="searchbox"
+                    aria-expanded={undefined}
                     hasClear={hasClear}
                     className={`${prefix}search-input`}
                     size={size}

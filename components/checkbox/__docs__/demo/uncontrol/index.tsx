@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Checkbox } from '@alifd/next';
-import { type GroupProps } from '@alifd/next/lib/checkbox';
+import { type GroupProps } from '@alifd/next/types/checkbox';
 
 const { Group: CheckboxGroup } = Checkbox;
 const list = [

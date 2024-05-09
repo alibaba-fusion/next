@@ -18,13 +18,14 @@
 
 ### Avatar
 
-| 参数     | 说明                                                           | 类型                                     | 默认值   | 是否必填 |
-| -------- | -------------------------------------------------------------- | ---------------------------------------- | -------- | -------- |
-| children | 孩子节点列表                                                   | React.ReactNode                          | -        |          |
-| size     | 头像的大小                                                     | 'small' \| 'medium' \| 'large' \| number | 'medium' |          |
-| shape    | 头像的形状                                                     | 'circle' \| 'square'                     | 'circle' |          |
-| icon     | icon 类头像的图标类型，可设为 Icon 的 `type` 或 `ReactElement` | React.ReactElement \| string             | -        |          |
-| src      | 图片类头像的资源地址                                           | string                                   | -        |          |
-| onError  | 图片加载失败的事件，返回 false 会关闭组件默认的 fallback 行为  | () => boolean                            | -        |          |
-| alt      | 图像无法显示时的 alt 替代文本                                  | string                                   | -        |          |
-| srcSet   | 图片类头像响应式资源地址                                       | string                                   | -        |          |
+| 参数     | 说明                                                           | 类型                                                                                                        | 默认值   | 是否必填 |
+| -------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | -------- | -------- |
+| children | 孩子节点列表                                                   | React.ReactNode                                                                                             | -        |          |
+| size     | 头像的大小                                                     | 'small' \| 'medium' \| 'large' \| number                                                                    | 'medium' |          |
+| shape    | 头像的形状                                                     | 'circle' \| 'square'                                                                                        | 'circle' |          |
+| icon     | icon 类头像的图标类型，可设为 Icon 的 `type` 或 `ReactElement` | React.ReactElement \| string                                                                                | -        |          |
+| src      | 图片类头像的资源地址                                           | string                                                                                                      | -        |          |
+| onError  | 图片加载失败的事件，返回 false 会关闭组件默认的 fallback 行为  | () => boolean                                                                                               | -        |          |
+| imgProps | 图片的其他属性                                                 | Omit\<<br/> React.ImgHTMLAttributes\<HTMLImageElement>,<br/> 'src' \| 'srcSet' \| 'onError' \| 'alt'<br/> > | -        |          |
+| alt      | 图像无法显示时的 alt 替代文本                                  | string                                                                                                      | -        |          |
+| srcSet   | 图片类头像响应式资源地址                                       | string                                                                                                      | -        |          |

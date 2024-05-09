@@ -18,37 +18,55 @@ Radio buttons allow the user to select a single option from data-set. User can u
 
 ### Radio
 
-| Param | Descripiton  | Type  | Default Value |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------- | --------- |
-| id             | Input`s id in component            | String   | -         |
-| checked        | To set radio button is checked                                                                                                                               | Boolean  | -         |
-| defaultChecked | To set radio button default to be checked                                                                                                                 | Boolean  | -         |
-| label          | To set the radio label                                                                                                                                | String   | -         |
-| onChange       | Callback on state change<br><br>**signatures**:<br>Function(checked: Boolean, e: Event) => void<br>**params**:<br>_checked_: {Boolean} Is checked<br>_e_: {Event} Dom Event | Function | func.noop |
-| onMouseEnter   | Callback on mouse enter<br><br>**signatures**:<br>Function(e: Event) => void<br>**params**:<br>_e_: {Event} Dom Event                                               | Function | func.noop |
-| onMouseLeave   | Callback on mouse leave<br><br>**signatures**:<br>Function(e: Event) => void<br>**params**:<br>_e_: {Event} Dom Event                                                    | Function | func.noop |
-| disabled       | Set radio button disabel to be used                                                                                                                                 | Boolean  | -         |
-| value          | value                                                                                                                               | String/Number/Boolean | -         |
-| name           | name                                                                                                                                       | String                | -         |
+| Param          | Description                                                                                                                                                                                         | Type                                                                    | Default Value | Required |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------- | -------- |
+| id             | Id of the input                                                                                                                                                                                     | string                                                                  | -             |          |
+| checked        | To set radio button is checked                                                                                                                                                                      | boolean                                                                 | -             |          |
+| defaultChecked | To set radio button default to be checked                                                                                                                                                           | boolean                                                                 | -             |          |
+| label          | To set the radio label                                                                                                                                                                              | React.ReactNode                                                         | -             |          |
+| onChange       | Callback on check state change<br/><br/>**signature**:<br/>**params**:<br/>_checked_: Is checked<br/>_event_: DOM event                                                                             | (checked: boolean, event: React.ChangeEvent\<HTMLInputElement>) => void | -             |          |
+| onMouseEnter   | Callback on mouse enter                                                                                                                                                                             | (e: React.MouseEvent\<HTMLInputElement>) => void                        | -             |          |
+| onMouseLeave   | Callback on mouse leave                                                                                                                                                                             | (e: React.MouseEvent\<HTMLInputElement>) => void                        | -             |          |
+| disabled       | Set radio button disable to be used                                                                                                                                                                 | boolean                                                                 | -             |          |
+| value          | Value of radio                                                                                                                                                                                      | RadioValue                                                              | -             |          |
+| name           | Form item name                                                                                                                                                                                      | string                                                                  | -             |          |
+| isPreview      | Set radio to preview state                                                                                                                                                                          | boolean                                                                 | -             |          |
+| renderPreview  | Customized rendering content function in preview mode<br/><br/>**signature**:<br/>**params**:<br/>_checked_: Is checked<br/>_props_: The props of the radio<br/>**return**:<br/>The content of item | (checked: boolean, props: RadioProps) => React.ReactNode                | -             |          |
 
 ### Radio.Group
 
-| Param | Descripiton  | Type  | Default Value |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | --------- |
-| name         | name                                                                                                                                               | String                              | -         |
-| value        | The value of the Item witch is selected in radio group                  | String/Number/Boolean               | -         |
-| size         | Used with `shape` prop，valid when shape is set to button<br><br>**option**:<br>'large'<br>'medium'<br>'small'              | Enum                                | 'medium'  |
-| shape        | Make radio shape like button, when it set value to 'button'<br><br>**option**:<br>'button'                                                                                                 | Enum                                | -         |
-| defaultValue | The value of the Item witch is default selected in radio group                                                                                                                            | String/Number/Boolean               | -         |
-| onChange     | Callback on state change<br><br>**signatures**:<br>Function(value: String/Number, e: Event) => void<br>**params**:<br>_value_: {String/Number} The selected value <br>_e_: {Event} Dom Event | Function                            | () => { } |
-| disabled     | All the radios in group are  disable to be used                        | Boolean                             | -         |
-| dataSource   | The data of radio buttons, it can be a String or a Object. For example: `['apple', 'pear', 'orange']`                                                                                     | Array&lt;any>                       | \[]       |
-| children     | To set radio button by setting children components                   | Array&lt;ReactElement>/ReactElement | -         |
-| direction    | The direction of item's aligning<br>- hoz: horizonal (default)<br>- ver: vertical<br><br>**Allowed values**:<br>'hoz', 'ver'                                                 | Enum                                | 'hoz' |
+| Param         | Description                                                                                                                                                                                                               | Type                                                                        | Default Value | Required |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------- | -------- |
+| name          | Form name                                                                                                                                                                                                                 | string                                                                      | -             |          |
+| value         | The value of the Item witch is selected in radio group (controlled)                                                                                                                                                       | RadioValue                                                                  | -             |          |
+| defaultValue  | The value of the Item witch is default selected in radio group (uncontrolled)                                                                                                                                             | RadioValue                                                                  | -             |          |
+| component     | Specify jsx tag name                                                                                                                                                                                                      | React.ElementType                                                           | 'div'         |          |
+| onChange      | Callback on value change<br/><br/>**signature**:<br/>**params**:<br/>_value_: The selected value<br/>_event_: Dom Event                                                                                                   | (value: RadioValue, event: React.ChangeEvent\<HTMLInputElement>) => void    | -             |          |
+| disabled      | All the radios in group are disable to be used                                                                                                                                                                            | boolean                                                                     | -             |          |
+| shape         | Shape type                                                                                                                                                                                                                | 'normal' \| 'button'                                                        | -             |          |
+| size          | Used with `shape` prop，valid when shape is set to button                                                                                                                                                                 | 'large' \| 'medium' \| 'small'                                              | 'medium'      |          |
+| dataSource    | List of options                                                                                                                                                                                                           | Array\<RadioValue> \| Array\<RadioValueItem>                                | -             |          |
+| children      | To set radio button by setting children components                                                                                                                                                                        | React.ReactNode                                                             | -             |          |
+| direction     | How items are arranged                                                                                                                                                                                                    | 'hoz' \| 'ver'                                                              | -             |          |
+| isPreview     | -                                                                                                                                                                                                                         | boolean                                                                     | -             |          |
+| renderPreview | Customized rendering content function in preview mode<br/><br/>**signature**:<br/>**params**:<br/>_previewed_: Previewed item data，<br/>_props_: The props of the previewed item<br/>**return**:<br/>The content of item | (previewed: RadioValueItem \| object, props: GroupProps) => React.ReactNode | -             |          |
 
+### RadioValueItem
+
+| Param    | Description | Type            | Default Value | Required |
+| -------- | ----------- | --------------- | ------------- | -------- |
+| label    | -           | React.ReactNode | -             |          |
+| value    | -           | RadioValue      | -             | yes      |
+| disabled | -           | boolean         | -             |          |
+
+### RadioValue
+
+```typescript
+export type RadioValue = string | number | boolean;
+```
 
 ## ARIA and KeyBoard
 
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-| Tab       | Get the focus, if there is no selection, it is the first one, then you can select it with a space. If it is selected, it will focus on the selected item, and then left-right will navigate and select radio.    |
+| KeyBoard | Descripiton                                                                                                                                                                                                   |
+| :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Tab      | Get the focus, if there is no selection, it is the first one, then you can select it with a space. If it is selected, it will focus on the selected item, and then left-right will navigate and select radio. |

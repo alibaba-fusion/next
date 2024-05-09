@@ -214,16 +214,15 @@ export function getStyle(
     );
 }
 
-export function setStyle(node: undefined | null | HTMLElement, name: unknown): false;
 export function setStyle<K extends Record<string, unknown>>(
-    node: HTMLElement,
+    node: HTMLElement | undefined | null,
     name: K & LikeCustomCSSStyle<K>
-): void;
+): false | void;
 export function setStyle<K extends string>(
-    node: HTMLElement,
+    node: HTMLElement | undefined | null,
     name: LikeCustomCSSStyleKey<K>,
     value: unknown
-): void;
+): false | void;
 /**
  * 设置元素的样式
  * @param node - DOM 节点

@@ -1,8 +1,8 @@
 import React, {
-    ReactElement,
-    JSXElementConstructor,
-    ComponentClass,
-    ForwardRefExoticComponent,
+    type ReactElement,
+    type JSXElementConstructor,
+    type ComponentClass,
+    type ForwardRefExoticComponent,
 } from 'react';
 
 export type ObjectOrArray<T = unknown> = Record<PropertyKey, T> | ArrayLike<T>;
@@ -193,9 +193,15 @@ export function each(
     return obj;
 }
 
+type KeyOf<T extends ObjectOrArray> = T extends Array<infer U> ? U : keyof T;
+
 // @private 判断 key 是否在数组或对象中
-const _isInObj = <O extends ObjectOrArray>(key: PropertyKey, obj: O, isArray?: boolean): boolean =>
-    isArray ? (obj as Array<unknown>).indexOf(key) > -1 : key in obj;
+const _isInObj = <O extends ObjectOrArray>(
+    key: unknown,
+    obj: O,
+    isArray?: boolean
+): key is KeyOf<O> =>
+    isArray ? (obj as Array<unknown>).indexOf(key) > -1 : (key as PropertyKey) in obj;
 
 /**
  * 过滤出其它属性
@@ -207,10 +213,10 @@ const _isInObj = <O extends ObjectOrArray>(key: PropertyKey, obj: O, isArray?: b
  * object.pickOthers(['className', 'onChange'], this.props);
  */
 export function pickOthers<T extends string, P extends Record<string, unknown>>(
-    holdProps: T[] | Record<T, any>,
+    holdProps: T[] | Partial<Record<T, any>>,
     props: P
 ): Writable<Omit<P, T>> {
-    const others: any = {};
+    const others: Partial<P> = {};
     const isArray = typeOf(holdProps) === 'Array';
 
     for (const key in props) {
@@ -219,7 +225,7 @@ export function pickOthers<T extends string, P extends Record<string, unknown>>(
         }
     }
 
-    return others;
+    return others as Writable<Omit<P, T>>;
 }
 
 /**
@@ -231,10 +237,10 @@ export function pickOthers<T extends string, P extends Record<string, unknown>>(
  * object.pickProps(FooComponent.propTypes, this.props);
  * object.pickProps(['className', 'onChange'], this.props);
  */
-export function pickProps<P extends Record<string, unknown>>(
-    holdProps: ObjectOrArray,
+export function pickProps<T extends string, P extends Record<string, unknown>>(
+    holdProps: T[] | Record<T, unknown>,
     props: P
-): Partial<P> {
+): Writable<Pick<P, T>> {
     const others: Partial<P> = {};
     const isArray = typeOf(holdProps) === 'Array';
 
@@ -244,7 +250,7 @@ export function pickProps<P extends Record<string, unknown>>(
         }
     }
 
-    return others;
+    return others as Writable<Pick<P, T>>;
 }
 
 /**
@@ -255,10 +261,10 @@ export function pickProps<P extends Record<string, unknown>>(
  * @example
  * object.pickAttrsWith(FooComponent.propTypes, 'data-');
  */
-export function pickAttrsWith<P extends Record<string, unknown>>(
+export function pickAttrsWith<P extends Record<string, unknown>, S extends string = string>(
     holdProps: P,
-    prefix: string
-): Partial<P> {
+    prefix: S
+): Pick<P, Extract<keyof P, `${string}${S}${string}`>> {
     const others: Partial<P> = {};
 
     for (const key in holdProps) {
@@ -267,7 +273,7 @@ export function pickAttrsWith<P extends Record<string, unknown>>(
         }
     }
 
-    return others;
+    return others as Pick<P, Extract<keyof P, `${string}${S}${string}`>>;
 }
 
 /**

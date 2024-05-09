@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Select } from '@alifd/next';
 import jsonp from 'jsonp';
+import { type AutoCompleteProps } from '@alifd/next/types/select';
 
 const { AutoComplete } = Select;
 
@@ -10,12 +11,13 @@ class Demo extends React.Component {
         dataSource: [],
     };
 
-    handleChange = value => {
+    searchTimeout: number;
+
+    handleChange: AutoCompleteProps['onChange'] = value => {
         clearTimeout(this.searchTimeout);
-        this.searchTimeout = setTimeout(() => {
-            // eslint-disable-next-line handle-callback-err
+        this.searchTimeout = window.setTimeout(() => {
             jsonp(`https://suggest.taobao.com/sug?code=utf-8&q=${value}`, (err, data) => {
-                const dataSource = data.result.map(item => item[0]);
+                const dataSource = data.result.map((item: unknown[]) => item[0]);
                 this.setState({ dataSource });
             });
         }, 100);

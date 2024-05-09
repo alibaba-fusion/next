@@ -15,25 +15,28 @@ Rating component is usually used for customer feedback.
 
 ### Rating
 
-| Param | Descripiton  | Type  | Default Value |
-| ------------ | -------------------------------------------------------------------------------------------------- | -------- | --------- |
-| defaultValue | default value                                                                                                | Number   | 0         |
-| size         | size<br><br>**options**:<br>'small', 'medium', 'large'                                                   | Enum     | 'medium'  |
-| value        | value                                                                                                  | Number   | -         |
-| count        | full mark of rating                                                                                              | Number   | 5         |
-| showGrade    | display grade or not                                                                                         | Boolean  | false     |
-| allowHalf    | allow half start or not                                                                                         | Boolean  | false     |
-| allowClear    | Whether to allow clear when click again                                                                                                | Boolean  | false       |
-| onChange     | callback function on click star<br><br>**signatures**:<br>Function(value: String) => void<br>**params**:<br>_value_: {String} score | Function | func.noop |
-| onHoverChange     | callback function on hover star<br><br>**signatures**:<br>Function(value: String) => void<br>**params**:<br>_value_: {String} score | Function | func.noop |
-| disabled     | disabled rate or not                                                                                               | Boolean  | false     |
-| readAs        | custom display of grade<br><br>**signatures**:<br>Function() => void                                                | Function | val => val |
+| Param         | Description                                                                                                                                                                                                         | Type                                                   | Default Value | Required |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ------------- | -------- |
+| defaultValue  | Default value                                                                                                                                                                                                       | number                                                 | -             |          |
+| value         | Value（controlled mode）                                                                                                                                                                                            | number                                                 | -             |          |
+| size          | Size                                                                                                                                                                                                                | 'small' \| 'medium' \| 'large'                         | 'medium'      |          |
+| count         | Full mark of rating                                                                                                                                                                                                 | number                                                 | 5             |          |
+| showGrade     | Display grade or not                                                                                                                                                                                                | boolean                                                | false         |          |
+| allowHalf     | Allow half star or not                                                                                                                                                                                              | boolean                                                | -             |          |
+| allowClear    | Whether to allow clear when click again                                                                                                                                                                             | boolean                                                | false         |          |
+| onChange      | Callback function on click star                                                                                                                                                                                     | (value: number) => void                                | -             |          |
+| onHoverChange | Callback function on hover star                                                                                                                                                                                     | (value?: number) => void                               | -             |          |
+| disabled      | Disabled or not                                                                                                                                                                                                     | boolean                                                | false         |          |
+| isPreview     | Is preview mode or not                                                                                                                                                                                              | boolean                                                | false         |          |
+| renderPreview | Render method when is preview mode.（Required when isPreview=true）<br/><br/>**signature**:<br/>**params**:<br/>_value_: Score<br/>_props_: The props of rating<br/>**return**:<br/>The render content when preview | (value: number, props: RatingProps) => React.ReactNode | -             |          |
+| readAs        | Custom display of grade<br/><br/>**signature**:<br/>**params**:<br/>_val_: Score value<br/>**return**:<br/>Score label                                                                                              | (val: number) => React.ReactNode                       | -             |          |
+| type          | -                                                                                                                                                                                                                   | string                                                 | -             |          |
 
 ## ARIA and KeyBoard
 
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-| Up Arrow    | increase star rating                          |
-| Down Arrow  | decrease star rating                          |
+| KeyBoard    | Descripiton          |
+| :---------- | :------------------- |
+| Up Arrow    | increase star rating |
+| Down Arrow  | decrease star rating |
 | Right Arrow | increase star rating |
 | Left Arrow  | decrease star rating |

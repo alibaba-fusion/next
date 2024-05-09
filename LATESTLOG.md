@@ -1,15 +1,15 @@
 # Latest Log 
 
-## [1.27.9](https://github.com/alibaba-fusion/next/compare/1.27.8...1.27.9) (2024-03-26)
+## [1.27.11](https://github.com/alibaba-fusion/next/compare/1.27.10...1.27.11) (2024-04-12)
 
 
 ### Bug Fixes
 
-* **Overlay:** fix maximum loop update error ([f6a71fd](https://github.com/alibaba-fusion/next/commit/f6a71fd01e5635888140e5a87042ca9ad88a5afd))
+* **Switch:** form fail to pass checked to Switch by wrong displayName, close [#4819](https://github.com/alibaba-fusion/next/issues/4819) ([c178333](https://github.com/alibaba-fusion/next/commit/c178333e6bd513ea26b355583eaeabe727725c46))
 
 
 ### Code Refactoring
 
-* **SplitButton:** convert to TypeScript, impove docs and tests, close [#4609](https://github.com/alibaba-fusion/next/issues/4609) ([cc68da8](https://github.com/alibaba-fusion/next/commit/cc68da8b3233b4e29e47275ba92f5e57f0e3f106))
-* **Tag:** convert to TypeScript, impove docs and tests, close [#4614](https://github.com/alibaba-fusion/next/issues/4614) ([df9fd5e](https://github.com/alibaba-fusion/next/commit/df9fd5e4b342ecdb7ed82adec7e79f0b0f020f2f))
+* **Nav:** rename to ts & upgrade document &  refactor unit testing ([2073475](https://github.com/alibaba-fusion/next/commit/2073475af57f437bd0f6054805d95fb9a514f528))
+* **Radio:** convert to TypeScript, impove docs and tests, close [#4556](https://github.com/alibaba-fusion/next/issues/4556) ([f39cffc](https://github.com/alibaba-fusion/next/commit/f39cffc232ad4a1cc7f930c45fac035784656993))
 

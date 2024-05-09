@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Checkbox, Switch } from '@alifd/next';
-import { type CheckboxProps, type GroupProps } from '@alifd/next/lib/checkbox';
+import { type CheckboxProps, type GroupProps } from '@alifd/next/types/checkbox';
 
 class App extends React.Component {
     state = {

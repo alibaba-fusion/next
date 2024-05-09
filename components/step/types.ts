@@ -1,5 +1,5 @@
-import React, { type ReactNode } from 'react';
-import { CommonProps } from '../util';
+import type React from 'react';
+import type { CommonProps } from '../util';
 
 type HTMLAttributesWeak<T> = Omit<
     React.HTMLAttributes<T>,
@@ -167,8 +167,8 @@ export interface StepProps
     itemRender?: (
         index: number,
         status: StepStatus,
-        title?: ReactNode,
-        content?: ReactNode
+        title?: React.ReactNode,
+        content?: React.ReactNode
     ) => React.ReactNode;
 
     /**

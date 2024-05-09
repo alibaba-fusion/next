@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Drawer } from '@alifd/next';
-import type { QuickShowRet } from '@alifd/next/lib/drawer';
+import type { QuickShowRet } from '@alifd/next/types/drawer';
 
 let instance: QuickShowRet | null = null;
 const show = () => {

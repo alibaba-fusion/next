@@ -132,16 +132,16 @@ export function invoke<Result = unknown>(
 }
 
 export function renderNode<Result = unknown>(
-    render: AnyFunction<Result> | undefined,
-    defaultRender: AnyFunction<Result> | undefined,
-    renderProps: unknown[] = []
+    render: AnyFunction<Result> | Result | undefined,
+    defaultRender: AnyFunction<Result> | Result | undefined,
+    renderProps: unknown = []
 ): Result | undefined {
     const r = render !== undefined ? render : defaultRender;
 
     if (renderProps && !Array.isArray(renderProps)) {
         renderProps = [renderProps];
     }
-    return typeof r === 'function' ? r(...renderProps) : r;
+    return typeof r === 'function' ? (r as AnyFunction<Result>)(...(renderProps as unknown[])) : r;
 }
 
 /**

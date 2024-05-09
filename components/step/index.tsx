@@ -12,21 +12,29 @@ export default ConfigProvider.config(WithStepItem, {
     transform: (props, deprecated) => {
         if ('type' in props) {
             deprecated('type', 'shape', 'Step');
-            const { type, direction, labelPlacement, ...others } = props as DeprecatedStepProps;
-            const resolvedDirection =
-                direction === 'vertical' ? 'ver' : direction === 'horizontal' ? 'hoz' : direction;
-            const resolvedLabelPlacement =
-                labelPlacement === 'vertical'
-                    ? 'ver'
-                    : labelPlacement === 'horizontal'
-                      ? 'hoz'
-                      : labelPlacement;
+            const { type, ...others } = props as DeprecatedStepProps;
             props = {
                 shape: type,
-                direction: resolvedDirection,
-                labelPlacement: resolvedLabelPlacement,
                 ...others,
-            };
+            } as StepProps;
+        }
+
+        const { direction, labelPlacement } = props as DeprecatedStepProps;
+        if (direction === 'vertical') {
+            deprecated('direction="vertical"', 'direction="ver"', 'Step');
+            props = { ...props, direction: 'ver' };
+        }
+        if (direction === 'horizontal') {
+            deprecated('direction="horizontal"', 'direction="hoz"', 'Step');
+            props = { ...props, direction: 'hoz' };
+        }
+        if (labelPlacement === 'vertical') {
+            deprecated('labelPlacement="vertical"', 'labelPlacement="ver"', 'Step');
+            props = { ...props, labelPlacement: 'ver' };
+        }
+        if (labelPlacement === 'horizontal') {
+            deprecated('labelPlacement="horizontal"', 'labelPlacement="hoz"', 'Step');
+            props = { ...props, labelPlacement: 'hoz' };
         }
 
         return props;

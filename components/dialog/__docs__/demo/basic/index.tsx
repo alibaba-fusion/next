@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Dialog } from '@alifd/next';
-import type { DialogProps } from '@alifd/next/lib/dialog';
+import type { DialogProps } from '@alifd/next/types/dialog';
 
 class Demo extends React.Component {
     state = {

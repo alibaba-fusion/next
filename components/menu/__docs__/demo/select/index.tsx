@@ -1,67 +1,54 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Switch, Menu } from '@alifd/next';
+import type { MenuProps } from '../../../types';
 
 const { SubMenu, Item } = Menu;
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        multiple: false,
+        subMenuSelectable: false,
+        shallowSelect: false,
+        isSelectIconRight: false,
+        selectedKeys: ['1'],
+    };
 
-        this.state = {
-            multiple: false,
-            subMenuSelectable: false,
-            shallowSelect: false,
-            isSelectIconRight: false,
-            selectedKeys: ['1'],
-        };
-
-        [
-            'handleMultipleChange',
-            'handleSubMenuSelectableChange',
-            'handleShallowSelectChange',
-            'handleSelect',
-            'handleIconDirectionChange',
-        ].forEach(method => {
-            this[method] = this[method].bind(this);
-        });
-    }
-
-    handleMultipleChange() {
+    handleMultipleChange = () => {
         this.setState({
             multiple: !this.state.multiple,
             selectedKeys: [],
         });
-    }
+    };
 
-    handleIconDirectionChange() {
+    handleIconDirectionChange = () => {
         this.setState({
             isSelectIconRight: !this.state.isSelectIconRight,
             selectedKeys: [],
         });
-    }
+    };
 
-    handleSubMenuSelectableChange() {
+    handleSubMenuSelectableChange = () => {
         this.setState({
             subMenuSelectable: !this.state.subMenuSelectable,
             selectedKeys: [],
         });
-    }
+    };
 
-    handleShallowSelectChange() {
+    handleShallowSelectChange = () => {
         this.setState({
             shallowSelect: !this.state.shallowSelect,
             selectedKeys: [],
         });
-    }
+    };
 
-    handleSelect(selectedKeys, ...others) {
+    handleSelect: MenuProps['onSelect'] = (selectedKeys, ...others) => {
         this.setState({
             selectedKeys,
         });
 
         console.log(selectedKeys, ...others);
-    }
+    };
 
     render() {
         const { multiple, subMenuSelectable, shallowSelect, selectedKeys, isSelectIconRight } =
@@ -72,19 +59,19 @@ class Demo extends React.Component {
             <div>
                 <div>
                     <span className="my-switch-label">Multiple </span>
-                    <Switch value={multiple} onChange={this.handleMultipleChange} />
+                    <Switch checked={multiple} onChange={this.handleMultipleChange} />
                 </div>
                 <div>
                     <span className="my-switch-label">isSelectIconRight </span>
-                    <Switch value={multiple} onChange={this.handleIconDirectionChange} />
+                    <Switch checked={multiple} onChange={this.handleIconDirectionChange} />
                 </div>
                 <div>
                     <span className="my-switch-label">Label of submenu selectable </span>
-                    <Switch value={multiple} onChange={this.handleSubMenuSelectableChange} />
+                    <Switch checked={multiple} onChange={this.handleSubMenuSelectableChange} />
                 </div>
                 <div>
                     <span className="my-switch-label">Only first level selectable </span>
-                    <Switch value={multiple} onChange={this.handleShallowSelectChange} />
+                    <Switch checked={multiple} onChange={this.handleShallowSelectChange} />
                 </div>
                 <Menu
                     isSelectIconRight={isSelectIconRight}

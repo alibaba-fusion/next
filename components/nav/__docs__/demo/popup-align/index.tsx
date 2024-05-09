@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Radio } from '@alifd/next';
+import type { NavProps } from '@alifd/next/types/nav';
 
+type AppState = Pick<NavProps, 'popupAlign'>;
 const { Item, SubNav } = Nav;
 
 class App extends React.Component {
-    state = {
+    state: AppState = {
         popupAlign: 'outside',
     };
 
-    setValue(popupAlign) {
+    setValue(popupAlign: AppState['popupAlign']) {
         this.setState({
             popupAlign,
         });

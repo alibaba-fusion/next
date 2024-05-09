@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Radio, Dialog } from '@alifd/next';
-import type { DialogProps } from '@alifd/next/lib/dialog';
+import type { DialogProps } from '@alifd/next/types/dialog';
 
 interface DemoState {
     visible?: boolean;

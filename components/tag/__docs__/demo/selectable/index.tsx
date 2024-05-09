@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Tag } from '@alifd/next';
-import type { SelectableProps } from '@alifd/next/lib/tag';
+import type { SelectableProps } from '@alifd/next/types/tag';
 
 const { Group: TagGroup, Selectable: SelectableTag } = Tag;
 const dataSource = ['tag 1', 'tag 2', 'tag 3', 'disabled', 'disabled & checked'];

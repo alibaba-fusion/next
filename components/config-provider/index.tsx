@@ -1,4 +1,4 @@
-import { Component, Children, ReactNode } from 'react';
+import { Component, Children, type ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import getContextProps from './get-context-props';
@@ -16,7 +16,12 @@ import Consumer from './consumer';
 import ErrorBoundary from './error-boundary';
 import Cache from './cache';
 import datejs from '../util/date';
-import type { ConfigProviderProps, ComponentCommonProps, ContextState } from './types';
+import type {
+    ConfigProviderProps,
+    ComponentCommonProps,
+    ContextState,
+    PropsDeprecatedPrinter,
+} from './types';
 
 const childContextCache = new Cache();
 
@@ -142,7 +147,7 @@ class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderP
      * @param displayName - 组件的 displayName
      * @returns 新的 context props
      */
-    static getContextProps = <P extends ComponentCommonProps>(props: P, displayName: string) => {
+    static getContextProps = <P extends ComponentCommonProps>(props: P, displayName?: string) => {
         return getContextProps(props, childContextCache.root() || {}, displayName);
     };
 
@@ -261,6 +266,6 @@ class ConfigProvider extends Component<ConfigProviderProps, Pick<ConfigProviderP
     }
 }
 
-export type { ConfigProviderProps };
+export type { ConfigProviderProps, PropsDeprecatedPrinter };
 
 export default polyfill(ConfigProvider);

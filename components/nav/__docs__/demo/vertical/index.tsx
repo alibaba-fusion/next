@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Radio } from '@alifd/next';
+import type { NavProps } from '@alifd/next/types/nav';
+import type { GroupProps } from '@alifd/next/types/radio';
 
+type AppState = Pick<NavProps, 'type'>;
 const { Item, SubNav } = Nav;
 
 class App extends React.Component {
-    state = {
+    state: AppState = {
         type: 'normal',
     };
 
-    changeType = type => {
+    changeType: GroupProps['onChange'] = type => {
         this.setState({
             type,
         });
@@ -41,7 +44,7 @@ class App extends React.Component {
                     </Item>
                     <Item icon="account">Navigation Four</Item>
                     <Item icon="account">Navigation Five</Item>
-                    <SubNav disabled icon="account" label="Sub Nav">
+                    <SubNav icon="account" label="Sub Nav">
                         <Item icon="account">Item 1</Item>
                         <Item icon="account">Item 2</Item>
                         <Item icon="account">Item 3</Item>

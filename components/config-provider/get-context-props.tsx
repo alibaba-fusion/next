@@ -30,7 +30,7 @@ function parseBoundary(input?: ErrorBoundaryType): ParsedErrorBoundary {
 export default function getContextProps<P extends Omit<OverlayCommonProps, 'defaultPropsConfig'>>(
     props: P,
     context: ContextState,
-    displayName: string
+    displayName?: string
 ): ParsedContextConfig {
     const { prefix, locale, pure, rtl, device, popupContainer, errorBoundary } = props;
     const {
@@ -48,7 +48,7 @@ export default function getContextProps<P extends Omit<OverlayCommonProps, 'defa
     const newPrefix = prefix || nextPrefix;
 
     let localeFromContext: ComponentLocaleObject | undefined;
-    let newDisplayName = displayName;
+    let newDisplayName = displayName!;
 
     switch (displayName) {
         case 'DatePicker2':

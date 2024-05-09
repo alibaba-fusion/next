@@ -56,7 +56,8 @@ class Avatar extends Component<AvatarProps> {
     };
 
     render() {
-        const { prefix, className, style, size, icon, alt, srcSet, shape, src } = this.props;
+        const { prefix, className, style, size, icon, alt, srcSet, shape, src, imgProps } =
+            this.props;
         const { isImgExist } = this.state;
         let { children } = this.props;
 
@@ -85,7 +86,13 @@ class Avatar extends Component<AvatarProps> {
         if (src) {
             if (isImgExist) {
                 children = (
-                    <img src={src} srcSet={srcSet} onError={this.handleImgLoadError} alt={alt} />
+                    <img
+                        {...imgProps}
+                        src={src}
+                        srcSet={srcSet}
+                        onError={this.handleImgLoadError}
+                        alt={alt}
+                    />
                 );
             } else {
                 children = <Icon type={'picture'} size={iconSize} />;

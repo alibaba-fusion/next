@@ -4,6 +4,7 @@ import React, {
     type LegacyRef,
     type ReactNodeArray,
     type ComponentElement,
+    type ComponentRef,
 } from 'react';
 import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
@@ -57,7 +58,11 @@ export default class CascaderMenu extends Component<CascaderMenuProps> {
         }
     }
 
-    renderMenu(items: ReactNodeArray, ref: LegacyRef<Menu> | undefined, props: MenuProps) {
+    renderMenu(
+        items: ReactNodeArray,
+        ref: LegacyRef<ComponentRef<typeof Menu>> | undefined,
+        props: MenuProps
+    ) {
         function isItem(node: ReactNode): node is ComponentElement<ItemProps, CascaderMenuItem> {
             // FIXME 这里的判断很容易报错，node.type 可以是 string 或者函数组件
             return (

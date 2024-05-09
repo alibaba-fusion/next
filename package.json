@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.27.9",
+  "version": "1.27.11",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -148,6 +148,7 @@
     "@types/fs-extra": "^5.1.0",
     "@types/glob": "^7.2.0",
     "@types/inquirer": "^6.5.0",
+    "@types/jsonp": "^0.2.3",
     "@types/lodash": "^4.14.202",
     "@types/lodash.clonedeep": "^4.5.9",
     "@types/md5": "^2.3.5",

@@ -5,29 +5,23 @@ import { Menu } from '@alifd/next';
 const { SubMenu, Item, Divider } = Menu;
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        selectedKeys: [] as string[],
+    };
 
-        this.state = {
-            selectedKeys: [],
-        };
-
-        this.handleSelect = this.handleSelect.bind(this);
-    }
-
-    handleSelect(selectedKeys) {
+    handleSelect = (selectedKeys: string[]) => {
         selectedKeys = selectedKeys.filter(key => {
             return ['sub-1', 'sub-2'].indexOf(key) > -1;
         });
         this.setState({
             selectedKeys,
         });
-    }
+    };
 
-    createContextMenu = e => {
+    createContextMenu = (e: React.MouseEvent) => {
         e.preventDefault();
 
-        const target = e.target;
+        const target = e.target as HTMLElement;
         const { top, left } = target.getBoundingClientRect();
 
         Menu.create({

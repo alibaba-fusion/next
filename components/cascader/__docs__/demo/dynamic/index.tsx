@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Cascader } from '@alifd/next';
-import type { CascaderProps } from '@alifd/next/lib/cascader';
+import type { CascaderProps } from '@alifd/next/types/cascader';
 import 'whatwg-fetch';
 
 const dataSource = [

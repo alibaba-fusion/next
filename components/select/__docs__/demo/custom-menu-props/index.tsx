@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Select, Divider, Icon, Button, Input } from '@alifd/next';
-
-const Option = Select.Option;
+import { Select, Divider, Button, Input } from '@alifd/next';
 
 const dataSource = [
     { value: '10001', label: 'Lucy King' },
@@ -10,7 +8,7 @@ const dataSource = [
     { value: 10003, label: 'Tom Cat', disabled: true },
 ];
 
-const generateData = (base, total) => {
+const generateData = (base: number, total: number) => {
     const arr = [];
     for (let i = 0; i < total; i++) {
         arr.push(`extra-${base + i}`);
@@ -22,6 +20,7 @@ class App extends React.Component {
     state = {
         dataSource,
     };
+    inputRef: Input | null;
     loadMore = () => {
         const ds = this.state.dataSource;
         this.setState({
@@ -38,10 +37,11 @@ class App extends React.Component {
                         <Input
                             style={{ width: '100%' }}
                             ref={ref => (this.inputRef = ref)}
-                            onClick={e => console.log(/onclick/)}
+                            onClick={e => console.log(/onclick/, e)}
                             onMouseDown={e => {
-                                console.log(/onMouseDown/);
-                                this.inputRef.focus();
+                                console.log(/onMouseDown/, e);
+                                //@ts-expect-error 待 Input ts 改造
+                                this.inputRef!.focus();
                             }}
                         />
                     </div>

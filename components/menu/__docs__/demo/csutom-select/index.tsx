@@ -8,25 +8,18 @@ const sexs = ['male', 'female'];
 const balls = ['football', 'basketball', 'volleyball'];
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        sex: 'male',
+        balls: [] as string[],
+    };
 
-        this.state = {
-            sex: 'male',
-            balls: [],
-        };
-
-        this.handleSexCheck = this.handleSexCheck.bind(this);
-        this.handleBallCheck = this.handleBallCheck.bind(this);
-    }
-
-    handleSexCheck(key) {
+    handleSexCheck = (key: string) => {
         this.setState({
             sex: key,
         });
-    }
+    };
 
-    handleBallCheck(key, check) {
+    handleBallCheck = (key: string, check: boolean) => {
         let newKeys;
         const index = this.state.balls.indexOf(key);
         if (check && index === -1) {
@@ -40,7 +33,7 @@ class Demo extends React.Component {
                 balls: newKeys,
             });
         }
-    }
+    };
 
     render() {
         return (
