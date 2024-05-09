@@ -9,6 +9,8 @@ import Gateway from './gateway';
 import Position from './position';
 import findNode from './utils/find-node';
 import type { OverlayProps, OverlayState } from './types';
+import type { ListenerCallback } from '../util/events';
+import type { CustomCSSStyle } from '../util/dom';
 
 const { saveLastFocusNode, getFocusNodeList, backLastFocusNode } = focus;
 const { makeChain, noop, bindCtx } = func;
@@ -33,7 +35,7 @@ const getStyleProperty = (node: HTMLElement, name: string) => {
 
 // 存 containerNode 信息
 const containerNodeList = [] as Array<
-    HTMLElement | { [key: string]: string } | { containerNode: HTMLElement } | CSSPropertyRule
+    HTMLElement | { [key: string]: string } | { containerNode: Element } | CSSPropertyRule
 >;
 
 /**
@@ -454,7 +456,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
             if ((cnInfo as { count: number }).count === 0 && overflow !== 'hidden') {
                 const style = {
                     overflow: 'hidden',
-                } as CSSStyleDeclaration;
+                } as CustomCSSStyle;
 
                 (cnInfo as { overflow: string }).overflow = overflow;
 
@@ -477,7 +479,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
     beforeClose() {
         if (this.props.disableScroll) {
             const idx = containerNodeList.findIndex(
-                (cn: { containerNode: HTMLElement }) => cn.containerNode === this._containerNode
+                cn => (cn as { containerNode: HTMLElement }).containerNode === this._containerNode
             );
 
             if (idx !== -1) {
@@ -498,7 +500,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
                 ) {
                     const style = {
                         overflow,
-                    } as CSSStyleDeclaration;
+                    } as CustomCSSStyle;
 
                     if (paddingRight !== undefined) {
                         style.paddingRight = paddingRight;
@@ -576,17 +578,22 @@ class Overlay extends Component<OverlayProps, OverlayState> {
             this._keydownEvents = events.on(
                 document,
                 'keydown',
-                this.handleDocumentKeyDown,
+                this.handleDocumentKeyDown as ListenerCallback,
                 useCapture
             );
         }
 
         if (this.props.canCloseByOutSideClick) {
-            this._clickEvents = events.on(document, 'click', this.handleDocumentClick, useCapture);
+            this._clickEvents = events.on(
+                document,
+                'click',
+                this.handleDocumentClick as ListenerCallback,
+                useCapture
+            );
             this._touchEvents = events.on(
                 document,
                 'touchend',
-                this.handleDocumentClick,
+                this.handleDocumentClick as ListenerCallback,
                 useCapture
             );
         }
@@ -631,7 +638,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
     }
 
     composedPath(el: HTMLElement | null) {
-        const path = [];
+        const path = [] as Array<HTMLElement | Document | Window>;
         while (el) {
             path.push(el);
             if (el.tagName === 'HTML') {
@@ -760,10 +767,10 @@ class Overlay extends Component<OverlayProps, OverlayState> {
             children = React.cloneElement(child, {
                 className: childClazz,
                 style: { ...child.props.style, ...style },
-                ref: makeChain(this.saveContentRef, child.ref),
+                ref: makeChain(this.saveContentRef as Function, child.ref),
                 'aria-hidden': !stateVisible && cache && this._isMounted,
-                onClick: makeChain(this.props.onClick, child.props.onClick),
-                onTouchEnd: makeChain(this.props.onTouchEnd, child.props.onTouchEnd),
+                onClick: makeChain(this.props.onClick as Function, child.props.onClick),
+                onTouchEnd: makeChain(this.props.onTouchEnd as Function, child.props.onTouchEnd),
             });
 
             if (align) {
@@ -780,7 +787,10 @@ class Overlay extends Component<OverlayProps, OverlayState> {
                             needAdjust,
                             pinFollowBaseElementWhenFixed,
                             beforePosition,
-                            onPosition: makeChain(this.handlePosition, onPosition),
+                            onPosition: makeChain(
+                                this.handlePosition as Function,
+                                onPosition as Function
+                            ),
                             shouldUpdatePosition,
                             rtl,
                         }}

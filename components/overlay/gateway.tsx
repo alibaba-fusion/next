@@ -12,8 +12,8 @@ export type { GatewayProps, GatewayState };
 const { makeChain } = func;
 
 const getContainerNode = (props: GatewayProps) => {
-    const targetNode = findNode(props.target);
-    return findNode(props.container, targetNode as Element);
+    const targetNode = findNode(props.target as Element);
+    return findNode(props.container as Element, targetNode as Element);
 };
 
 class Gateway extends Component<GatewayProps, GatewayState> {

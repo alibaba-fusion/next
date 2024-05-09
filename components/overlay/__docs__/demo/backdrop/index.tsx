@@ -4,7 +4,7 @@ import { Overlay, Button } from '@alifd/next';
 import type { OverlayProps } from '@alifd/next/lib/overlay';
 import type { ButtonProps } from '@alifd/next/lib/button';
 
-class Demo extends React.Component<OverlayProps, OverlayState> {
+class Demo extends React.Component<OverlayProps, { visible: boolean }> {
     btn: ButtonProps;
     constructor(props: OverlayProps) {
         super(props);

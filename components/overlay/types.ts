@@ -246,7 +246,9 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 触发弹层显示或隐藏的元素
      * @en trigger the overlay to show or hide elements
      */
-    trigger?: React.ReactElement<React.ReactNode>;
+    // children 类型不好定义，之前也是any，先保持一致
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    trigger?: any;
 
     /**
      * 触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，'focus'，或者它们组成的数组，如 ['hover', 'focus']
@@ -588,7 +590,7 @@ export interface OverlayState {
 }
 
 export default class Overlay extends React.Component<OverlayProps, OverlayState> {
-    static Popup: typeof Popup;
+    static Popup: typeof React.Component<PopupProps, PopupState>;
 }
 
 export interface PopupState {
@@ -631,7 +633,7 @@ export interface PointsType {
 export interface GatewayProps {
     children?: React.ReactNode;
     container?: React.ReactNode;
-    target?: React.ReactNode;
+    target?: React.ReactNode | Element;
 }
 
 export interface GatewayState {
