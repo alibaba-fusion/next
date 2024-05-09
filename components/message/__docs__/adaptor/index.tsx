@@ -2,6 +2,17 @@ import React from 'react';
 import { Message } from '@alifd/next';
 import { Types } from '@alifd/adaptor-helper';
 
+interface AdaptorProps {
+    level: 'inline' | 'toast' | 'addon';
+    size: 'large' | 'medium';
+    state: 'success' | 'warning' | 'error' | 'notice' | 'help' | 'loading';
+    closable: boolean;
+    width: number;
+    title: string;
+    data: string;
+    style: React.CSSProperties;
+}
+
 export default {
     name: 'Message',
     editor: () => ({
@@ -47,7 +58,17 @@ export default {
             default: 'This item already has the label "travel", you can add a new label.',
         },
     }),
-    adaptor: ({ level, size, state, closable, width, title, data, style, ...others }) => {
+    adaptor: ({
+        level,
+        size,
+        state,
+        closable,
+        width,
+        title,
+        data,
+        style,
+        ...others
+    }: AdaptorProps) => {
         return (
             <Message
                 {...others}

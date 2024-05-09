@@ -1,241 +1,157 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import Icon from '../../icon';
 import Button from '../../button';
 import ConfigProvider from '../../config-provider';
 import { env } from '../../util';
 import Message from '../index';
 import '../style';
 
-/* eslint-disable react/jsx-filename-extension */
-/* global describe it afterEach */
-Enzyme.configure({ adapter: new Adapter() });
-
-const render = element => {
-    let inc;
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    ReactDOM.render(element, container, function () {
-        inc = this;
-    });
-    return {
-        setProps: props => {
-            const clonedElement = React.cloneElement(element, props);
-            ReactDOM.render(clonedElement, container);
-        },
-        unmount: () => {
-            ReactDOM.unmountComponentAtNode(container);
-            document.body.removeChild(container);
-        },
-        instance: () => {
-            return inc;
-        },
-        find: selector => {
-            return container.querySelectorAll(selector);
-        },
-    };
-};
-
 describe('Message', () => {
     it('should receive className prop', () => {
-        const wrapper = mount(<Message className="custom" />);
-        assert(wrapper.find('.next-message.custom').length === 1);
-        wrapper.unmount();
+        cy.mount(<Message className="custom" />);
+        cy.get('.next-message.custom').should('have.length', 1);
     });
 
     it('should receive style prop', () => {
-        const wrapper = mount(<Message style={{ color: 'red' }} />);
-        assert(wrapper.prop('style').color === 'red');
-        wrapper.unmount();
+        cy.mount(<Message style={{ color: 'red' }} />);
+        cy.get('.next-message').should('have.css', 'color', 'rgb(255, 0, 0)');
     });
 
     it('should have type class', () => {
-        const types = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
+        const types = ['success', 'warning', 'error', 'notice', 'help', 'loading'] as const;
         types.forEach(type => {
-            const wrapper = mount(<Message type={type} />);
-            assert(wrapper.find(`.next-message.next-message-${type}`).length === 1);
-            assert(wrapper.find(Icon).hasClass('next-message-symbol-icon'));
-            wrapper.unmount();
+            cy.mount(<Message type={type} />);
+            cy.get(`.next-message.next-message-${type}`).should('have.length', 1);
+            cy.get('.next-icon').should('have.class', 'next-message-symbol-icon');
         });
     });
 
     it('should have shape class', () => {
-        const shapes = ['inline', 'addon', 'toast'];
+        const shapes = ['inline', 'addon', 'toast'] as const;
         shapes.forEach(shape => {
-            const wrapper = mount(<Message shape={shape} />);
-            assert(wrapper.find(`.next-message.next-${shape}`).length === 1);
-            wrapper.unmount();
+            cy.mount(<Message shape={shape} />);
+            cy.get(`.next-message.next-${shape}`).should('have.length', 1);
         });
     });
 
     it('should have size class', () => {
-        const sizes = ['medium', 'large'];
+        const sizes = ['medium', 'large'] as const;
         sizes.forEach(size => {
-            const wrapper = mount(<Message size={size} />);
-            assert(wrapper.find(`.next-message.next-${size}`).length === 1);
-            wrapper.unmount();
+            cy.mount(<Message size={size} />);
+            cy.get(`.next-message.next-${size}`).should('have.length', 1);
         });
     });
 
     it('should show title if you pass it', () => {
-        const wrapper = mount(<Message title="title" />);
-        assert(wrapper.find('.next-message-title').text() === 'title');
-        wrapper.unmount();
+        cy.mount(<Message title="title" />);
+        cy.get('.next-message-title').should('have.text', 'title');
     });
 
     it('should show content if you pass it', () => {
-        const wrapper = mount(<Message>content</Message>);
-        assert(wrapper.find('.next-message-content').text() === 'content');
-        wrapper.unmount();
+        cy.mount(<Message>content</Message>);
+        cy.get('.next-message-content').should('have.text', 'content');
     });
 
     it('should not show icon if set iconType to false', () => {
-        const wrapper = mount(<Message iconType={false} />);
-        assert(wrapper.find(Icon).length === 0);
-        wrapper.unmount();
+        cy.mount(<Message iconType={false} />);
+        cy.get('.next-icon').should('have.length', 0);
     });
 
     it('should custom icon type', () => {
-        const wrapper = mount(<Message iconType="smile" />);
-        assert(wrapper.find(Icon).prop('type') === 'smile');
-        wrapper.unmount();
+        cy.mount(<Message iconType="smile" />);
+        cy.get('.next-icon').should('have.class', 'next-icon-smile');
     });
 
-    it('should show close link if set closeable to true', done => {
-        const wrapper = mount(<Message animation={false} title="title" closeable />);
-        const closeLink = wrapper.find('.next-message-close');
-        assert(closeLink.length === 1);
-        closeLink.simulate('click');
-        setTimeout(() => {
-            assert(wrapper.find('.next-message').length === 0);
-            wrapper.unmount();
-            done();
-        }, 500);
+    it('should show close link if set closeable to true', () => {
+        cy.mount(<Message animation={false} title="title" closeable />);
+        cy.get('.next-message-close').should('have.length', 1);
+        cy.get('.next-message-close').click();
+        cy.get('.next-message').should('have.length', 0);
     });
 
     it('should show or hide under control', () => {
-        const wrapper = mount(
-            <Message defaultVisible visible={false} animation={false} title="title" />
+        cy.mount(<Message defaultVisible visible={false} animation={false} title="title" />).as(
+            'Message'
         );
-        assert(wrapper.find('.next-message').length === 0);
-        wrapper.setProps({
-            visible: true,
-        });
-        assert(wrapper.find('.next-message').length === 1);
-        wrapper.unmount();
+        cy.get('.next-message').should('have.length', 0);
+        cy.rerender('Message', { visible: true });
+        cy.get('.next-message').should('have.length', 1);
     });
 });
-describe('toast', done => {
-    it('should render nowrap message when content too long[Overlay case]', done => {
+describe('toast', () => {
+    it('should render nowrap message when content too long[Overlay case]', () => {
         const content =
             'content content content content content content content content content content content content content content content content content content content content';
         Message.show(content);
-
-        const dom = document.querySelector('.next-overlay-wrapper .next-message');
-
-        assert(dom.innerText.trim() === content);
-        assert(dom.offsetWidth > 200);
-
+        cy.get('.next-overlay-wrapper').find('.next-message').should('have.text', content);
+        cy.get('.next-overlay-wrapper')
+            .find('.next-message')
+            .should($toast => {
+                // access the native DOM element
+                expect($toast.get(0).innerText.trim()).to.eq(content);
+                expect($toast.get(0).offsetWidth).to.be.greaterThan(200);
+            });
         Message.hide();
-
-        setTimeout(done, 500);
     });
 
-    it('should render message when only pass content string', done => {
+    it('should render message when only pass content string', () => {
         Message.show('content');
-        assert(
-            document.querySelector('.next-overlay-wrapper .next-message').innerText.trim() ===
-                'content'
-        );
-
+        cy.get('.next-overlay-wrapper .next-message').should('have.text', 'content');
         Message.hide();
-        setTimeout(done, 500);
     });
 
-    it('should render message when only pass content react element', done => {
+    it('should render message when only pass content react element', () => {
         Message.show(<i>content</i>);
-        assert(
-            document
-                .querySelector('.next-overlay-wrapper .next-message-title i')
-                .innerText.trim() === 'content'
-        );
-
+        cy.get('.next-overlay-wrapper .next-message-title i').should('have.text', 'content');
         Message.hide();
-
-        setTimeout(done, 500);
     });
 
-    it('should render message when pass config object', done => {
+    it('should render message when pass config object', () => {
         Message.show({
             type: 'warning',
             content: 'content',
         });
-        assert(
-            document
-                .querySelector('.next-overlay-wrapper .next-message.next-message-warning')
-                .innerText.trim() === 'content'
+        cy.get('.next-overlay-wrapper .next-message.next-message-warning').should(
+            'have.text',
+            'content'
         );
-
         Message.hide();
-        setTimeout(done, 500);
     });
 
-    it('should close message after duration and call afterClose method', done => {
-        let called = false;
-
+    it('should close message after duration and call afterClose method', () => {
+        const afterClose = cy.spy();
         Message.show({
             content: 'content',
             duration: 100,
-            afterClose: () => {
-                called = true;
-            },
+            afterClose,
         });
-        setTimeout(() => {
-            assert(document.querySelector('.next-overlay-wrapper .next-message') === null);
-            assert(called);
-            done();
-        }, 1000);
+        cy.get('.next-overlay-wrapper .next-message', { timeout: 500 }).should('not.exist');
+        cy.wrap(afterClose).should('be.calledOnce');
     });
 
-    it('should show message all the time when set duration to 0', done => {
+    it('should show message all the time when set duration to 0', () => {
+        cy.clock();
         Message.show({
             content: 'content',
             duration: 0,
         });
-
-        setTimeout(() => {
-            assert(
-                document.querySelector('.next-overlay-wrapper .next-message.next-message') !== null
-            );
-            Message.hide();
-        }, 500);
-
-        setTimeout(done, 1000);
+        // 验证duration为0的配置是否生效，若不生效则3000ms后会自动消失
+        cy.tick(3500);
+        cy.get('.next-overlay-wrapper .next-message')
+            .should('exist')
+            .then(() => {
+                Message.hide();
+            });
     });
 
-    it('should hide message when call hide method', done => {
-        let called = false;
-
+    it('should hide message when call hide method', () => {
+        const afterClose = cy.spy();
         Message.show({
             content: 'content',
-            duration: 100,
-            afterClose: () => {
-                called = true;
-            },
+            afterClose,
         });
-
-        setTimeout(() => {
-            Message.hide();
-        }, 500);
-
-        setTimeout(() => {
-            assert(document.querySelector('.next-overlay-wrapper .next-message') === null);
-            assert(called);
-            done();
-        }, 1000);
+        Message.hide();
+        cy.get('.next-overlay-wrapper .next-message').should('not.exist');
+        cy.wrap(afterClose).should('be.calledOnce');
     });
 
     it('should hide message when click this close link', done => {
@@ -244,49 +160,23 @@ describe('toast', done => {
         if (env.ieVersion === 9 || env.ieVersion === 10) {
             return done();
         }
-
         Message.show({
             content: 'content',
             duration: 0,
             closeable: true,
         });
-
-        setTimeout(() => {
-            const closeLink = document.querySelector('.next-message-close');
-            closeLink.click();
-        }, 500);
-
-        setTimeout(() => {
-            assert(document.querySelector('.next-overlay-wrapper .next-message') === null);
-            done();
-        }, 1000);
+        cy.get('.next-message-close').click();
+        cy.get('.next-overlay-wrapper .next-message').should('not.exist');
+        done();
     });
 });
 
 describe('should support configProvider', () => {
-    it('normal should obey: self.locale > nearest ConfigProvider.locale > further ConfigProvider.locale', () => {
-        const methods = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
-        const wrapper = render(
-            <ConfigProvider
-                prefix="far-"
-                locale={{
-                    momentLocale: 'en',
-                    Dialog: {
-                        ok: 'far ok',
-                        cancel: 'far cancel',
-                    },
-                }}
-            >
-                <ConfigProvider
-                    prefix="near-"
-                    locale={{
-                        momentLocale: 'en',
-                        Dialog: {
-                            ok: 'near ok',
-                            cancel: 'near cancel',
-                        },
-                    }}
-                >
+    it('normal should obey: self.prefix > nearest ConfigProvider.prefix > further ConfigProvider.prefix', () => {
+        const methods = ['success', 'warning', 'error', 'notice', 'help', 'loading'] as const;
+        cy.mount(
+            <ConfigProvider prefix="far-">
+                <ConfigProvider prefix="near-">
                     <div>
                         {methods.map(method => (
                             <Message key={method} title="title" type={method} shape="inline">
@@ -297,91 +187,89 @@ describe('should support configProvider', () => {
                 </ConfigProvider>
             </ConfigProvider>
         );
-        const innerBtn = document.querySelectorAll(
-            '.near-message .near-message-content .near-btn-primary'
+        cy.get('.near-message .near-message-content .near-btn-primary').should(
+            'have.length',
+            methods.length
         );
-        assert(innerBtn.length === methods.length);
-        wrapper.unmount();
     });
 
-    // it('quick-calling should use root context\'s state if its exists', () => {
+    it('Message.withContext should use nearest context instead of root context', () => {
+        // 清除缓存, 防止其他包含configProvider测试case影响
+        ConfigProvider.clearCache();
+        const BeforeFix = () => {
+            return (
+                <Button
+                    onClick={() => {
+                        Message.notice({
+                            title: 'Message.notice 命令式弹窗',
+                            duration: 10000,
+                        });
+                    }}
+                    type="primary"
+                >
+                    使用 Message.notice
+                </Button>
+            );
+        };
+        const AfterFix = Message.withContext(({ contextMessage }) => {
+            return (
+                <div>
+                    <Button
+                        onClick={() => {
+                            contextMessage.notice({
+                                title: 'Message.withContext 命令式弹窗',
+                                duration: 10000,
+                            });
+                        }}
+                    >
+                        使用 Message.withContext
+                    </Button>
+                </div>
+            );
+        });
+        cy.mount(
+            <ConfigProvider prefix="root-">
+                <ConfigProvider prefix="next-">
+                    <div>
+                        <BeforeFix />
+                        <AfterFix />
+                    </div>
+                </ConfigProvider>
+            </ConfigProvider>
+        );
+        cy.get('.next-btn-primary').click();
+        cy.get('.root-message');
+        cy.get('.next-message').should('not.exist');
+        Message.hide();
 
-    //     ConfigProvider.initLocales({
-    //         'zh-cn': zhCN
-    //     });
-    //     ConfigProvider.setLanguage('zh-cn');
-
-    //     const methods = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
-    //     methods.forEach(method => {
-    //         const wrapper = render(
-    //             <ConfigProvider prefix="far-" locale={{
-    //                 momentLocale: 'en',
-    //                 Dialog: {
-    //                     ok: 'far ok',
-    //                     cancel: 'far cancel'
-    //                 }
-    //             }}>
-    //                 <ConfigProvider prefix="near-" locale={{
-    //                     momentLocale: 'en',
-    //                     Dialog: {
-    //                         ok: 'near ok',
-    //                         cancel: 'near cancel'
-    //                     }
-    //                 }}>
-    //                     <Button
-    //                         type="primary"
-    //                         onClick={() => {
-    //                             Message[method]({
-    //                                 type: method,
-    //                                 title: method,
-    //                                 animation: false,
-    //                                 content: <Button type="primary">请联系相关人员反馈！</Button>,
-    //                                 hasMask: true
-    //                             });
-    //                         }}>
-    //                         OK
-    //                     </Button>
-    //                 </ConfigProvider>
-    //             </ConfigProvider>
-    //         );
-
-    //         const btn = document.querySelector('button');
-    //         ReactTestUtils.Simulate.click(btn);
-    //         const icon = document.querySelector('.far-icon.far-message-symbol');
-    //         const innerBtn = document.querySelector('.far-message-content .far-btn-primary');
-
-    //         assert(icon);
-    //         assert(innerBtn);
-
-    //         wrapper.unmount();
-    //     });
-    // });
+        cy.get('.next-btn-normal').click();
+        cy.get('.next-message');
+        cy.get('.root-message').should('not.exist');
+        Message.hide();
+    });
 });
 
 describe('toast quick-calling', () => {
-    const avaliableMethods = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
+    const avaliableMethods = ['success', 'warning', 'error', 'notice', 'help', 'loading'] as const;
 
     for (const method of avaliableMethods) {
         it(`render ${method}`, done => {
-            Message.show('content');
-            assert(
-                document.querySelector('.next-overlay-wrapper .next-message').innerText.trim() ===
-                    'content'
-            );
-            setTimeout(() => {
-                Message.hide();
-                done();
-            }, 500);
+            Message[method]('content');
+            cy.get('.next-overlay-wrapper .next-message').should('have.text', 'content');
+            Message.hide();
+            done();
         });
     }
 });
 describe('Message v2', () => {
-    it('should support config to open multiple instance', done => {
+    it('should support config to open multiple instance', () => {
         Message.config({});
-        const instance1 = Message.show('content');
-        const instance2 = Message.success('content');
-        assert(document.querySelectorAll('.next-message-wrapper-v2 .next-message').length === 2);
-        Message.destory();
-        setTimeout(done, 500);
+        Message.show('content');
+        Message.success('content');
+        cy.get('.next-message-wrapper-v2 .next-message')
+            .should('have.length', 2)
+            .then(() => {
+                Message.destory();
+            });
     });
 });

@@ -2,7 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
 import '../../style';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import {
+    Demo,
+    DemoGroup,
+    DemoHead,
+    initDemo,
+    type DemoFunctionDefineForObject,
+} from '../../../demo-helper';
 import Message from '../../index';
 
 const i18nMap = {
@@ -16,13 +22,21 @@ const i18nMap = {
     },
 };
 
-const shapes = ['inline', 'addon', 'toast'];
-const types = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
+const shapes = ['inline', 'addon', 'toast'] as const;
+const types = ['success', 'warning', 'error', 'notice', 'help', 'loading'] as const;
 
-const toFirstUpperCase = str => str && str.substring(0, 1).toUpperCase() + str.substring(1);
+const toFirstUpperCase = (str: string) =>
+    str && str.substring(0, 1).toUpperCase() + str.substring(1);
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
+type I18N = (typeof i18nMap)[keyof typeof i18nMap];
+interface Props {
+    i18n: I18N;
+}
+interface State {
+    demoFunction: Record<string, DemoFunctionDefineForObject>;
+}
+class FunctionDemo extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             demoFunction: {
@@ -60,27 +74,21 @@ class FunctionDemo extends React.Component {
         this.onFunctionChange = this.onFunctionChange.bind(this);
     }
 
-    onFunctionChange(demoFunction) {
+    onFunctionChange(demoFunction: State['demoFunction']) {
         this.setState({
             demoFunction,
         });
     }
 
     render() {
-        // eslint-disable-next-line
         const { i18n } = this.props;
         const { demoFunction } = this.state;
         const title = demoFunction.hasTitle.value === 'true' ? i18n.title : null;
         const closeable = demoFunction.closeable.value === 'true';
 
-        const style = {
-            lineHeight: 1.7,
-            margin: 0,
-        };
-
         const newChildren = shapes.map(shape => {
             const content = types.map(type => {
-                const children = ['large', 'medium'].map(size => (
+                const children = (['large', 'medium'] as const).map(size => (
                     <Message
                         type={type}
                         title={title}
@@ -118,7 +126,7 @@ class FunctionDemo extends React.Component {
     }
 }
 
-function render(i18n) {
+function render(i18n: I18N) {
     ReactDOM.render(
         <div className="demo-container">
             <FunctionDemo i18n={i18n} />

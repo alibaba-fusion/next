@@ -7,69 +7,42 @@ import Icon from '../icon';
 import Animate from '../animate';
 import ConfigProvider from '../config-provider';
 import { obj } from '../util';
+import type { MessageProps } from './types';
+import type * as toast2 from './toast2';
+
+type Toast2 = typeof toast2.default;
 
 const noop = () => {};
 
 /**
  * Message
  */
-class Message extends Component {
+class Message extends Component<MessageProps> {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         className: PropTypes.string,
         style: PropTypes.object,
-        /**
-         * 反馈类型
-         */
         type: PropTypes.oneOf(['success', 'warning', 'error', 'notice', 'help', 'loading']),
-        /**
-         * 反馈外观
-         */
         shape: PropTypes.oneOf(['inline', 'addon', 'toast']),
-        /**
-         * 反馈大小
-         */
         size: PropTypes.oneOf(['medium', 'large']),
-        /**
-         * 标题
-         */
         title: PropTypes.node,
-        /**
-         * 内容
-         */
         children: PropTypes.node,
-        /**
-         * 默认是否显示
-         */
         defaultVisible: PropTypes.bool,
-        /**
-         * 当前是否显示
-         */
         visible: PropTypes.bool,
-        /**
-         * 显示的图标类型，会覆盖内部设置的IconType，传false不显示图标
-         */
         iconType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-        /**
-         * 显示关闭按钮
-         */
         closeable: PropTypes.bool,
-        /**
-         * 关闭按钮的回调
-         */
         onClose: PropTypes.func,
-        /**
-         * 关闭之后调用的函数
-         */
         afterClose: PropTypes.func,
-        /**
-         * 是否开启展开收起动画
-         */
         animation: PropTypes.bool,
         locale: PropTypes.object,
         rtl: PropTypes.bool,
     };
+    // config 方法被调用后，Message组件才会挂上 open、close、destory方法
+    static config: (config: toast2.MessageConfig) => void;
+    static open: Toast2['open'];
+    static close: Toast2['close'];
+    static destory: Toast2['destory'];
 
     static defaultProps = {
         prefix: 'next-',
@@ -92,7 +65,7 @@ class Message extends Component {
                 : this.props.visible,
     };
 
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(props: MessageProps) {
         if ('visible' in props) {
             return {
                 visible: props.visible,
@@ -108,14 +81,12 @@ class Message extends Component {
                 visible: false,
             });
         }
-        this.props.onClose(false);
+        this.props.onClose!();
     };
 
     render() {
-        /* eslint-disable no-unused-vars */
         const {
             prefix,
-            pure,
             className,
             style,
             type,
@@ -123,11 +94,8 @@ class Message extends Component {
             size,
             title,
             children,
-            defaultVisible,
-            visible: propsVisible,
             iconType: icon,
             closeable,
-            onClose,
             afterClose,
             animation,
             rtl,
@@ -136,7 +104,6 @@ class Message extends Component {
         const others = {
             ...obj.pickOthers(Object.keys(Message.propTypes), this.props),
         };
-        /* eslint-enable */
         const { visible } = this.state;
         const messagePrefix = `${prefix}message`;
 
@@ -147,7 +114,7 @@ class Message extends Component {
             [`${prefix}${size}`]: size,
             [`${prefix}title-content`]: !!title,
             [`${prefix}only-content`]: !title && !!children,
-            [className]: className,
+            [className!]: className,
         });
 
         const newChildren = visible ? (
@@ -161,7 +128,7 @@ class Message extends Component {
                 {closeable ? (
                     <a
                         role="button"
-                        aria-label={locale.closeAriaLabel}
+                        aria-label={locale!.closeAriaLabel}
                         className={`${messagePrefix}-close`}
                         onClick={this.onClose}
                     >
