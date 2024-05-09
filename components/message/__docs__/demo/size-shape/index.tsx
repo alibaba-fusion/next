@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Message, Radio } from '@alifd/next';
 
-const types = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
+const types = ['success', 'warning', 'error', 'notice', 'help', 'loading'] as const;
 const sizeList = [
     {
         value: 'medium',
@@ -27,21 +27,21 @@ const shapeList = [
         label: 'toast',
     },
 ];
-
+interface State {
+    size: 'medium' | 'large';
+    shape: 'inline' | 'addon' | 'toast';
+}
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            size: 'medium',
-            shape: 'inline',
-        };
-    }
+    state: State = {
+        size: 'medium',
+        shape: 'inline',
+    };
 
-    handleSize = size => {
+    handleSize = (size: State['size']) => {
         this.setState({ size });
     };
 
-    handleShape = shape => {
+    handleShape = (shape: State['shape']) => {
         this.setState({ shape });
     };
 

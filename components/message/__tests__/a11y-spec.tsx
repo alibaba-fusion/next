@@ -1,26 +1,11 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import Message from '../index';
 import '../style';
-import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
+import { testReact } from '../../util/__tests__/a11y/validate';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Message A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
     it('should not have any violations when various types', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Message title="Success" type="success">
                     Content Content Content Content
@@ -42,11 +27,10 @@ describe('Message A11y', () => {
                 </Message>
             </div>
         );
-        return wrapper;
     });
 
     it('should not have any violations when various shapes', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Message title="inline" shape="inline">
                     Content Content Content Content
@@ -59,11 +43,10 @@ describe('Message A11y', () => {
                 </Message>
             </div>
         );
-        return wrapper;
     });
 
     it('should not have any violations when various sizes', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Message title="medium" size="medium">
                     Content Content Content Content
@@ -73,18 +56,15 @@ describe('Message A11y', () => {
                 </Message>
             </div>
         );
-        return wrapper;
     });
 
     it('should not have any violations when closable', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Message title="closable" closeable>
                     Content Content Content Content
                 </Message>
             </div>
         );
-
-        return wrapper;
     });
 });

@@ -4,17 +4,23 @@ import ConfigProvider from '../config-provider';
 import Animate from '../animate';
 import Message from './message';
 import { obj, log, guid } from '../util';
+import type {
+    OpenProps,
+    MessageQuickProps,
+    MessageWrapperProps,
+    MessageWrapperItem,
+} from './types';
 
 const config = {
     top: 8,
     maxCount: 0,
     duration: 3000,
 };
+export type MessageConfig = Partial<typeof config>;
 
-const MessageWrapper = props => {
-    // eslint-disable-next-line
+const MessageWrapper = (props: MessageWrapperProps) => {
     const { prefix = 'next-', dataSource = [] } = props;
-    const [, forceUpdate] = useState();
+    const [, forceUpdate] = useState<Record<string, never>>();
 
     dataSource.forEach(i => {
         if (!i.timer) {
@@ -67,10 +73,10 @@ const MessageWrapper = props => {
 
 const ConfigedMessages = ConfigProvider.config(MessageWrapper);
 
-let messageRootNode;
-let messageList = [];
+let messageRootNode: HTMLDivElement | null;
+let messageList: MessageWrapperProps['dataSource'] = [];
 
-const createMessage = props => {
+const createMessage = (props: MessageQuickProps & { key?: string }) => {
     const { key = guid('message-'), ...others } = props;
     if (!messageRootNode) {
         messageRootNode = document.createElement('div');
@@ -79,7 +85,7 @@ const createMessage = props => {
 
     const { maxCount, duration } = config;
 
-    const item = {
+    const item: MessageWrapperItem = {
         key,
         duration,
         ...others,
@@ -91,6 +97,7 @@ const createMessage = props => {
         messageList.shift();
     }
 
+    // eslint-disable-next-line react/no-deprecated
     ReactDOM.render(
         <ConfigProvider {...ConfigProvider.getContext()}>
             <ConfigedMessages dataSource={messageList} />
@@ -109,6 +116,7 @@ const createMessage = props => {
                 typeof item.onClose === 'function' && item.onClose();
                 messageList.splice(idx, 1);
 
+                // eslint-disable-next-line react/no-deprecated
                 ReactDOM.render(
                     <ConfigProvider {...ConfigProvider.getContext()}>
                         <ConfigedMessages dataSource={messageList} />
@@ -120,7 +128,7 @@ const createMessage = props => {
     };
 };
 
-function close(key) {
+function close(key?: string) {
     if (key) {
         const index = messageList.findIndex(item => item.key === key);
         messageList.splice(index, 1);
@@ -129,6 +137,7 @@ function close(key) {
     }
 
     if (messageRootNode) {
+        // eslint-disable-next-line react/no-deprecated
         ReactDOM.render(
             <ConfigProvider {...ConfigProvider.getContext()}>
                 <ConfigedMessages dataSource={messageList} />
@@ -138,13 +147,13 @@ function close(key) {
     }
 }
 
-function handleConfig(config, type) {
-    let newConfig = {};
+function handleConfig(config: OpenProps, type?: MessageQuickProps['type']) {
+    let newConfig: MessageQuickProps = {};
 
     if (typeof config === 'string' || React.isValidElement(config)) {
         newConfig.title = config;
     } else if (obj.typeOf(config) === 'Object') {
-        newConfig = { ...config };
+        newConfig = { ...config } as MessageQuickProps;
     }
 
     if (type) {
@@ -154,8 +163,8 @@ function handleConfig(config, type) {
     return newConfig;
 }
 
-function open(type) {
-    return config => {
+function open(type?: MessageQuickProps['type']) {
+    return (config: OpenProps) => {
         config = handleConfig(config, type);
         return createMessage(config);
     };
@@ -164,8 +173,9 @@ function open(type) {
 function destory() {
     if (!messageRootNode) return;
     if (messageRootNode) {
+        // eslint-disable-next-line react/no-deprecated
         ReactDOM.unmountComponentAtNode(messageRootNode);
-        messageRootNode.parentNode.removeChild(messageRootNode);
+        messageRootNode.parentNode!.removeChild(messageRootNode);
         messageRootNode = null;
     }
 }
@@ -180,7 +190,7 @@ export default {
     notice: open('notice'),
     close,
     destory,
-    config(...args) {
+    config(...args: MessageConfig[]) {
         if (!useState) {
             log.warning('need react version > 16.8.0');
             return;
