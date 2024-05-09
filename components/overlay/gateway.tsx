@@ -5,16 +5,9 @@ import { polyfill } from 'react-lifecycles-compat';
 import { func } from '../util';
 import findNode from './utils/find-node';
 import type { AnyFunction } from '../util/func';
+import type { GatewayProps, GatewayState } from './types';
 
-export interface GatewayProps {
-    children?: React.ReactNode;
-    container?: HTMLElement;
-    target?: HTMLElement;
-}
-
-interface GatewayState {
-    containerNode: Element | Text | null;
-}
+export type { GatewayProps, GatewayState };
 
 const { makeChain } = func;
 
@@ -26,8 +19,8 @@ const getContainerNode = (props: GatewayProps) => {
 class Gateway extends Component<GatewayProps, GatewayState> {
     static propTypes = {
         children: PropTypes.node,
-        container: PropTypes.element,
-        target: PropTypes.element,
+        container: PropTypes.any,
+        target: PropTypes.any,
     };
 
     static defaultProps = {

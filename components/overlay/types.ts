@@ -21,7 +21,7 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * @skip
      */
-    overlay?: boolean | Element;
+    overlay?: boolean | Element | React.ReactNode;
     /**
      * 弹层内容
      * @en content of overlay
@@ -42,6 +42,8 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
 
     /**
      * 弹层请求关闭时触发事件的回调函数
+     * @en Callback function that triggers an event when the overlay request closed
+     * @defaultValue func.noop
      * @skip
      */
     onRequestClose?: (type: string, e: React.MouseEvent) => void;
@@ -50,168 +52,201 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 弹层定位的参照元素
      * @en reference element for overlay positioning
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    target?: any;
+    target?: React.ReactNode;
 
     /**
      * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
+     * @en Alignment of the overlay relative to the reference element, see [Alignment](#Alignment)
+     * @defaultValue 'tl bl'
      * @skip
      */
     align?: string | boolean;
 
     /**
      * 弹层相对于参照元素定位的微调
+     * @en Extra adjustment for trigger element. e.g. [hoz, ver] means move to right
+     * @defaultValue [0, 0]
      * @skip
      */
     offset?: Array<number | string>;
 
     /**
      * 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点
+     * @en Container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
      * @skip
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    container?: any;
+    container?: React.ReactNode;
 
     /**
      * 是否显示遮罩
+     * @en Whether to show the mask
+     * @defaultValue false
      * @skip
      */
     hasMask?: boolean;
 
     /**
      * 是否支持 esc 按键关闭弹层
+     * @en Whether to support pressing esc to close the overlay
+     * @defaultValue true
      * @skip
      */
     canCloseByEsc?: boolean;
 
     /**
      * 点击弹层外的区域是否关闭弹层，不显示遮罩时生效
+     * @en Whether to support clicking the outside to close the overlay when the mask is hidden
+     * @defaultValue true
      * @skip
      */
     canCloseByOutSideClick?: boolean;
 
     /**
      * 点击遮罩区域是否关闭弹层，显示遮罩时生效
+     * @en Whether to support clicking the mask to close the overlay when the mask is visible
+     * @defaultValue true
      * @skip
      */
     canCloseByMask?: boolean;
 
     /**
      * 弹层打开前触发事件的回调函数
+     * @en Callback function that triggers the event before the overlay opens
+     * @defaultValue func.noop
      * @skip
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    beforeOpen?: (target?: any) => void;
+    beforeOpen?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层打开时触发事件的回调函数
+     * @en Callback function that triggers the event when the overlay opens
+     * @defaultValue func.noop
      * @skip
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onOpen?: (target?: any) => void;
+    onOpen?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发
+     * @en Callback function that triggers the event after the overlay opens, if enable animations, trigger after the animation ends
+     * @defaultValue func.noop
      * @skip
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    afterOpen?: (target?: any) => void;
+    afterOpen?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层关闭前触发事件的回调函数
+     * @en Callback function that triggers the event before the overlay closes
+     * @defaultValue func.noop
      * @skip
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    beforeClose?: (target?: any) => void;
+    beforeClose?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层关闭时触发事件的回调函数
+     * @en Callback function that triggers the event when the overlay closes
+     * @defaultValue func.noop
      * @skip
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onClose?: (target?: any) => void;
+    onClose?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发
+     * @en Callback function that triggers the event after the overlay closes, if enable animations, trigger after the animation ends
+     * @defaultValue func.noop
      * @skip
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    afterClose?: (target?: any) => void;
+    afterClose?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层定位完成前触发的事件
+     * @en Callback function that triggers the event before the overlay posiitons
+     * @defaultValue func.noop
      * @skip
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    beforePosition?: (target?: any) => void;
+    beforePosition?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层定位完成时触发的事件
+     * @en Callback function that triggers the event when the overlay posiitons
+     * @defaultValue func.noop
      * @skip
      */
     onPosition?: (config: object, node?: object) => void;
 
     /**
      * 是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式
+     * @en Whether to force the update of positioning after each rerendered, which is generally used to maintain the original positioning when the size of the content area changes.
+     * @defaultValue false
      * @skip
      */
     shouldUpdatePosition?: boolean;
 
     /**
      * 弹层打开时是否让其中的元素自动获取焦点
+     * @en Whether to focus the element in the overlay automatically when the overlay is opened
+     * @defaultValue false
      * @skip
      */
     autoFocus?: boolean;
 
     /**
      * 当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域
+     * @en When the overlay is not visible due to scrolling of the page, does it automatically adjust the position to appear in the visible area? in v2
+     * @defaultValue true
      * @skip
      */
     needAdjust?: boolean;
 
     /**
      * 是否禁用页面滚动
+     * @en Whether to disable page scrolling
+     * @defaultValue false
      * @skip
      */
     disableScroll?: boolean;
 
     /**
      * 隐藏时是否保留子节点
+     * @en Whether to keep dom nodes when hidden
+     * @defaultValue false
      * @skip
      */
     cache?: boolean;
 
     /**
      * 安全节点，当点击 document 的时候，如果包含该节点则不会关闭弹层，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组
+     * @en When clicking on the document, does not close the overlay if the node is included. If it is a function, it should return ref, if it is a string, it should be the id of the DOM element, it can also be directly passed to the DOM element, or the above values Array
      * @skip
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    safeNode?: any;
+    safeNode?: React.ReactNode;
 
     /**
      * 弹层的根节点的样式类
+     * @en Class name of the overlay's wrapper node
      * @skip
      */
     wrapperClassName?: string;
 
     /**
      * 弹层的根节点的内联样式
+     * @en Inline stylesheet of the overlay's wrapper node
      * @skip
      */
     wrapperStyle?: React.CSSProperties;
 
     /**
      * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
+     * @en configure animation, support the \{in: 'enter-class', out: 'leave-class' \} object parameters, if set to false, do not play the animation. Refer to Animate component documentation for available animations.
+     * @defaultValue \{ in: 'expandInDown', out: 'expandOutUp' \}
      * @skip
      */
-    animation?: { in: string; out: string } | boolean;
+    animation?: string | false | Record<'in' | 'out', string> | undefined;
 
     /**
      * 触发弹层显示或隐藏的元素
      * @en trigger the overlay to show or hide elements
      */
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    trigger?: React.ReactElement<any>;
+    trigger?: React.ReactElement<React.ReactNode>;
 
     /**
      * 触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，'focus'，或者它们组成的数组，如 ['hover', 'focus']
@@ -288,16 +323,17 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     placement?: string;
 }
 
-export class Popup extends React.Component<PopupProps, PopupState> {}
-
 /**
  * @api Overlay
  */
 export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
+     * 触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，'focus'，或者它们组成的数组，如 ['hover', 'focus']
+     * @en trigger the overlay to show or hide operations, either 'click', 'hover', 'focus', or an array of them, such as ['hover', 'focus']
+     * @defaultValue 'hover'
      * @skip
      */
-    triggerType?: string;
+    triggerType?: string | Array<string>;
     /**
      * @skip
      */
@@ -319,6 +355,9 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      */
     onMaskMouseEnter?: (e: React.MouseEvent) => void;
     /**
+     * 弹层是否自适应内容
+     * @en whether the overlay is automatically adapted to the content
+     * @defaultValue false
      * @skip
      */
     autoFit?: boolean;
@@ -326,6 +365,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 弹层内容
      * @en conent of overlay
      */
+    // children 类型不好定义，之前也是any，先保持一致
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     children?: any;
 
@@ -348,8 +388,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * @en reference element for overlay positioning
      * @defaultValue Position.VIEWPORT
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    target?: any;
+    target?: React.ReactNode;
 
     /**
      * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
@@ -359,9 +398,8 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
     align?: string | boolean;
 
     /**
-     * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量
-     * e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
-     * @en extra adjustment for trigger element. e.g. [hoz, ver] means move to right
+     * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量 e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
+     * @en Fine-tuning the positioning of the elastic layer relative to the trigger, receiving array [hoz, ver], indicating the increment of the elastic layer on the left / top e.g. [100, 100] means moving to the right (to the left in RTL mode) and downward distribution Move 100px
      * @defaultValue [0, 0]
      */
     offset?: Array<number | string>;
@@ -370,8 +408,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点
      * @en container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    container?: any;
+    container?: React.ReactNode;
 
     /**
      * 是否显示遮罩
@@ -406,48 +443,42 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * @en callback function that triggers the event before the overlay opens
      * @defaultValue func.noop
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    beforeOpen?: (target?: any) => void;
+    beforeOpen?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层打开时触发事件的回调函数
      * @en callback function that triggers the event when the overlay opens
      * @defaultValue func.noop
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onOpen?: (target?: any) => void;
+    onOpen?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发
      * @en callback function that triggers the event after the overlay opens, if enable animations, trigger after the animation ends
      * @defaultValue func.noop
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    afterOpen?: (target?: any) => void;
+    afterOpen?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层关闭前触发事件的回调函数
      * @en callback function that triggers the event before the overlay closes
      * @defaultValue func.noop
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    beforeClose?: (target?: any) => void;
+    beforeClose?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层关闭时触发事件的回调函数
      * @en callback function that triggers the event when the overlay closes
      * @defaultValue func.noop
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onClose?: (target?: any) => void;
+    onClose?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发
      * @en callback function that triggers the event after the overlay closes, if enable animations, trigger after the animation ends
      * @defaultValue func.noop
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    afterClose?: (target?: any) => void;
+    afterClose?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层定位完成前触发的事件
@@ -486,6 +517,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
 
     /**
      * 浮窗被遮挡时是否自动调整位置
+     * @en whether to adjust the position automatically when the overlay is covered
      * @skip
      */
     autoAdjust?: boolean;
@@ -508,8 +540,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 安全节点，当点击 document 的时候，如果包含该节点则不会关闭弹层，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组
      * @en when clicking on the document, does not close the overlay if the node is included. If it is a function, it should return ref, if it is a string, it should be the id of the DOM element, it can also be directly passed to the DOM element, or the above values Array
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    safeNode?: any;
+    safeNode?: React.ReactNode;
 
     /**
      * 弹层的根节点的样式类
@@ -527,7 +558,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * @en configure animation, support the \{in: 'enter-class', out: 'leave-class' \} object parameters, if set to false, do not play the animation. Refer to Animate component documentation for available animations.
      * @defaultValue \{ in: 'expandInDown', out: 'expandOutUp' \}
      */
-    animation?: { in: string; out: string } | boolean;
+    animation?: string | false | Record<'in' | 'out', string> | undefined;
     /**
      * 开启 v2 版本
      * @en enable v2
@@ -551,12 +582,11 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
 export interface OverlayState {
     visible?: boolean;
     status?: string;
-    animation?: { in: string; out: string } | boolean;
+    animation?: string | false | Record<'in' | 'out', string> | undefined;
     willOpen?: boolean;
     willClose?: boolean;
 }
 
-// eslint-disable-next-line react/no-multi-comp
 export default class Overlay extends React.Component<OverlayProps, OverlayState> {
     static Popup: typeof Popup;
 }
@@ -567,10 +597,8 @@ export interface PopupState {
 
 export interface PositionProps {
     children?: React.ReactNode;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    target?: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    container?: any;
+    target?: React.ReactNode;
+    container?: React.ReactNode;
     align?: string | boolean;
     offset: Array<number | string>;
     beforePosition: () => void;
@@ -598,4 +626,14 @@ export interface PointsType {
         left: number;
         top: number;
     };
+}
+
+export interface GatewayProps {
+    children?: React.ReactNode;
+    container?: React.ReactNode;
+    target?: React.ReactNode;
+}
+
+export interface GatewayState {
+    containerNode: Element | Text | null;
 }

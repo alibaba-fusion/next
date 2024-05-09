@@ -1,55 +1,17 @@
 import React, { useRef, useState, useEffect, cloneElement, ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import type { MountReturn } from 'cypress/react';
-import type { ButtonProps } from '@alifd/next/lib/button';
 
 import { dom, KEYCODE, env } from '../../util';
 import Overlay, { OverlayProps } from '../index';
 import Dialog from '../../dialog/index';
 import Balloon from '../../balloon/index';
-import Button from '../../button/index';
+import Button, { type ButtonProps } from '../../button/index';
 import Drawer from '../../drawer/index';
 import ConfigProvider from '../../config-provider/index';
 import '../../button/style';
 import '../style';
 import type { PopupProps } from '../types';
-
-/* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
-/* global describe it afterEach */
-/* global describe it beforeEach */
-/**
- * 仅在渲染多个组件时使用，单一组件请使用cy.mount
- */
-export function render<P = unknown>(element: ReactElement<P>) {
-    let inc: any;
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    // eslint-disable-next-line react/no-deprecated
-    ReactDOM.render(element, container, function () {
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        inc = this;
-    });
-    return {
-        setProps: (props: Partial<P>) => {
-            const clonedElement = React.cloneElement(element, props);
-            // eslint-disable-next-line react/no-deprecated
-            ReactDOM.render(clonedElement, container);
-        },
-        unmount: () => {
-            // eslint-disable-next-line react/no-deprecated
-            ReactDOM.unmountComponentAtNode(container);
-            if (document.body.contains(container)) {
-                document.body.removeChild(container);
-            }
-        },
-        instance: () => {
-            return inc;
-        },
-        find: (selector: string) => {
-            return container.querySelectorAll(selector);
-        },
-    };
-}
 
 const { Popup } = Overlay;
 
@@ -77,7 +39,6 @@ class OverlayControlDemo extends React.Component<OverlayProps, { visible: boolea
     };
 
     render() {
-        // eslint-disable-next-line
         const { children, ...others } = this.props;
 
         return (
@@ -159,68 +120,40 @@ class OverlayDemo extends React.Component {
 }
 
 describe('Overlay', () => {
-    let wrapper: ReturnType<typeof render> | null = null;
-
-    beforeEach(() => {
-        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
-
-        nodeListArr.forEach((node: HTMLElement) => {
-            (node.parentNode as HTMLElement).removeChild(node);
-        });
-    });
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('should support rendering overlay', () => {
-        cy.clock();
         cy.mount(
             <Overlay visible>
                 <div className="content" />
             </Overlay>
         ).as('overlay');
-        cy.tick(500);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper.opened');
         cy.get('.next-overlay-inner.content');
 
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(cloneElement(component as ReactElement, { visible: false }));
         });
-        cy.tick(500);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper').should('have.length', 0);
 
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(cloneElement(component as ReactElement, { visible: true }));
         });
-        cy.tick(500);
 
         cy.get('.next-overlay-wrapper.opened');
         cy.get('.next-overlay-inner.content');
     });
 
     it('should support rendering overlay and mask', () => {
-        cy.clock();
         cy.mount(
             <Overlay>
                 <div className="content" />
             </Overlay>
         ).as('overlay');
-        cy.tick(500);
-        cy.clock();
         cy.get('.next-overlay-wrapper').should('have.length', 0);
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(cloneElement(component as ReactElement, { visible: true }));
         });
-        cy.tick(500);
-        cy.clock();
         cy.get('.next-overlay-wrapper.opened');
         cy.get('.next-overlay-inner.content');
         cy.get('.next-overlay-backdrop').should('have.length', 0);
@@ -229,7 +162,6 @@ describe('Overlay', () => {
                 cloneElement(component as ReactElement, { visible: true, hasMask: true })
             );
         });
-        cy.tick(500);
         cy.get('.next-overlay-backdrop');
     });
 
@@ -321,24 +253,18 @@ describe('Overlay', () => {
     });
 
     it('should support safeNode', () => {
-        cy.clock();
         cy.mount(
             <OverlayControlDemo>
                 <span id="inner">123</span>
             </OverlayControlDemo>
         ).as('OverlayControlDemo');
         cy.get('button').click();
-        cy.tick(500);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('#inner').click();
-        cy.tick(500);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('button').click();
-        cy.tick(500);
 
         cy.get('.next-overlay-wrapper').should('have.length', 0);
         cy.get<MountReturn>('@OverlayControlDemo').then(({ component, rerender }) => {
@@ -351,12 +277,10 @@ describe('Overlay', () => {
     });
 
     it('should support disableScroll', () => {
-        cy.clock();
         cy.mount(<OverlayControlDemo disableScroll />).as('OverlayControlDemo');
         cy.get('button').click();
         cy.get('body').should('have.css', 'overflowY', 'hidden');
         cy.get('button').click({ force: true });
-        cy.tick(500);
 
         cy.get('body').should('have.css', 'overflowY', 'visible');
         cy.get('body').should('have.css', 'paddingRight', '0px');
@@ -376,7 +300,6 @@ describe('Overlay', () => {
         cy.get('button').click();
         cy.tick(500);
 
-        cy.clock();
         // cy.get('activeElement').should('have.value', document.querySelector('#inner'))
         cy.document().then(doc => {
             // 获取当前焦点元素
@@ -386,7 +309,6 @@ describe('Overlay', () => {
             expect(activeElement).to.equal(document.querySelector('#inner'));
         });
         cy.get('button').click();
-        cy.tick(500);
         // ie9/ie10 document.activeElement === document.body
         if ((env.ieVersion as number) > 10) {
             cy.document().then(doc => {
@@ -401,16 +323,12 @@ describe('Overlay', () => {
     });
 
     it('should not destory overlay node if set cache to true', () => {
-        cy.clock();
         cy.mount(<OverlayControlDemo cache wrapperClassName="overlay-cache-test" />).as(
             'OverlayControlDemo'
         );
         cy.get('button').click();
-        cy.tick(500);
 
-        cy.clock();
         cy.get('button').click();
-        cy.tick(500);
         cy.get('.overlay-cache-test.next-overlay-wrapper').should('have.css', 'display', 'none');
     });
 
@@ -498,7 +416,6 @@ describe('Overlay', () => {
             </Overlay>
         );
         // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(200);
         cy.get('.content').click({ force: true });
 
         cy.wrap(handleClick).should('be.calledOnce');
@@ -729,29 +646,16 @@ describe('Overlay', () => {
 });
 
 describe('Popup', () => {
-    let wrapper: ReturnType<typeof render> | null = null;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('should support rendering trigger and overlay', () => {
-        cy.clock();
         cy.mount(
             <Popup defaultVisible trigger={<button>Open</button>} triggerType="click">
                 <span>Hello World From Popup!</span>
             </Popup>
         );
         cy.get('button');
-        cy.tick(500);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('body').click();
-        cy.tick(500);
         cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
 
@@ -763,25 +667,18 @@ describe('Popup', () => {
         );
 
         cy.get('button').trigger('mouseover');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(300);
 
         cy.get('.next-overlay-wrapper');
         cy.get('button').trigger('mouseleave');
         cy.get('.content').trigger('mouseover');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(300);
 
         cy.get('.next-overlay-wrapper');
         cy.get('.content').trigger('mouseleave');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(600);
 
         cy.get('.next-overlay-wrapper').should('not.be.visible');
     });
 
     it('should support setting triggerType to click', () => {
-        cy.clock();
         cy.mount(
             <Popup trigger={<button>Open</button>} triggerType="click">
                 <span className="content">Hello World From Popup!</span>
@@ -789,107 +686,77 @@ describe('Popup', () => {
         );
 
         cy.get('button').click();
-        cy.tick(300);
 
-        cy.clock();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('button').click();
-        cy.tick(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper').should('have.length', 0);
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.SPACE });
-        cy.tick(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.ENTER });
-        cy.tick(300);
         cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
 
     it('should support setting triggerType to focus', () => {
-        cy.clock();
         cy.mount(
             <Popup trigger={<button>Open</button>} triggerType="focus">
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
         cy.get('button').focus();
-        cy.tick(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('.content').trigger('mousedown');
         cy.get('button').blur();
-        cy.tick(300);
 
-        cy.clock();
         cy.get('button').focus();
         cy.get('.next-overlay-wrapper');
         cy.get('button').blur();
-        cy.tick(300);
         cy.get('.next-overlay-wrapper').should('not.be.visible');
     });
 
     it('should support setting triggerType to click with custom triggerClickKeycode', () => {
-        cy.clock();
         cy.mount(
             <Popup trigger={<button>Open</button>} triggerType="click" triggerClickKeycode={40}>
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
         cy.get('button').click();
-        cy.tick(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('button').click();
-        cy.tick(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper').should('have.length', 0);
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.DOWN_ARROW });
-        cy.tick(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.DOWN_ARROW });
-        cy.tick(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper').should('have.length', 0);
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.ENTER });
-        cy.tick(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper').should('have.length', 0);
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.SPACE });
-        cy.tick(300);
 
         cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
 
     it('should support setting canCloseByTrigger to false', () => {
-        cy.clock();
         cy.mount(
             <Popup trigger={<button>Open</button>} triggerType="click" canCloseByTrigger={false}>
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
         cy.get('button').click();
-        cy.tick(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('button').click();
-        cy.tick(300);
 
         cy.get('.next-overlay-wrapper');
     });
 
     it('should support setting custom container', () => {
-        cy.clock();
         cy.mount(
             <div id="myContainer">
                 <Popup
@@ -903,25 +770,18 @@ describe('Popup', () => {
             </div>
         );
         cy.get('button').click();
-        cy.tick(300);
 
-        cy.clock();
         cy.get('#myContainer .next-overlay-wrapper');
         cy.get('button').click();
-        cy.tick(300);
         cy.get('.next-overlay-wrapper');
     });
 
     it('should support controling', () => {
-        cy.clock();
         cy.mount(<PopupControlDemo />);
         cy.get('button').click();
-        cy.tick(300);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('button').click();
-        cy.tick(300);
 
         cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
@@ -963,7 +823,6 @@ describe('Popup', () => {
         };
         cy.mount(<ShadowComponent />);
         // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(200);
 
         // NOTE: 此处不能使用 ReactTestUtils.Simulate.click(btn);
         cy.get('#host').find('button').click({ force: true });
@@ -971,7 +830,6 @@ describe('Popup', () => {
         cy.get('.next-overlay-wrapper');
         cy.get('#host').find('button').click({ force: true });
         // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(300);
 
         cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
@@ -1091,7 +949,6 @@ describe('Popup', () => {
     });
 
     it('fix support show-hide in nested scroll component', function () {
-        cy.clock();
         cy.mount(
             <div
                 className="root-container"
@@ -1124,42 +981,33 @@ describe('Popup', () => {
             </div>
         );
         cy.get('button').click();
-        cy.tick(200);
 
-        cy.clock();
         cy.get('.root-container').then($el => {
             if ($el.length) {
                 $el[0].scrollTop = 300;
             }
         });
-        cy.tick(200);
 
-        cy.clock();
         cy.get('.next-overlay-inner').should('have.css', 'display', 'none');
         cy.get('.root-container').then($el => {
             if ($el.length) {
                 $el[0].scrollTop = 0;
             }
         });
-        cy.tick(200);
 
-        cy.clock();
         cy.get('.next-overlay-inner').should('have.css', 'display', 'block');
         cy.get('.parent-container').then($el => {
             if ($el.length) {
                 $el[0].scrollTop = 200;
             }
         });
-        cy.tick(200);
 
-        cy.clock();
         cy.get('.next-overlay-inner').should('have.css', 'display', 'none');
         cy.get('.parent-container').then($el => {
             if ($el.length) {
                 $el[0].scrollTop = 0;
             }
         });
-        cy.tick(200);
 
         cy.get('.next-overlay-inner').should('have.css', 'display', 'block');
     });

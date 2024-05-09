@@ -1,18 +1,18 @@
-import type Overlay from './types';
+import type { OverlayProps } from '@alifd/next/lib/overlay';
 
 const overlayManager = {
     allOverlays: [],
 
-    addOverlay(overlay: Overlay) {
+    addOverlay(overlay: OverlayProps) {
         this.removeOverlay(overlay);
         this.allOverlays.unshift(overlay);
     },
 
-    isCurrentOverlay(overlay: Overlay) {
+    isCurrentOverlay(overlay: OverlayProps) {
         return overlay && this.allOverlays[0] === overlay;
     },
 
-    removeOverlay(overlay: Overlay) {
+    removeOverlay(overlay: OverlayProps) {
         const i = this.allOverlays.indexOf(overlay);
         if (i > -1) {
             this.allOverlays.splice(i, 1);

@@ -11,7 +11,7 @@ const getPageY = () => window.pageYOffset || document.documentElement.scrollTop;
 /**
  * @internal get element size
  */
-function _getSize(element: HTMLElement) {
+function _getSize(element: SVGElement | HTMLElement) {
     // element like `svg` do not have offsetWidth and offsetHeight prop
     // then getBoundingClientRect
     if ('offsetWidth' in element && 'offsetHeight' in element) {
@@ -20,7 +20,7 @@ function _getSize(element: HTMLElement) {
             height: element.offsetHeight,
         };
     } else {
-        const { width, height } = (element as HTMLElement).getBoundingClientRect();
+        const { width, height } = element.getBoundingClientRect();
 
         return {
             width,
@@ -32,7 +32,7 @@ function _getSize(element: HTMLElement) {
 /**
  * @internal get element rect
  */
-function _getElementRect(elem: HTMLElement, container?: HTMLElement) {
+function _getElementRect(elem: HTMLElement, container?: HTMLElement | React.ReactNode) {
     let offsetTop = 0,
         offsetLeft = 0,
         scrollTop = 0,
@@ -79,9 +79,8 @@ function _getElementRect(elem: HTMLElement, container?: HTMLElement) {
 
 /**
  * @internal get viewport size
- * @returns \{Object\}
  */
-function _getViewportSize(container: HTMLElement) {
+function _getViewportSize(container: HTMLElement | React.ReactNode | SVGElement) {
     if (!container || container === document.body) {
         return {
             width: document.documentElement.clientWidth,
@@ -89,7 +88,7 @@ function _getViewportSize(container: HTMLElement) {
         };
     }
 
-    const { width, height } = container.getBoundingClientRect();
+    const { width, height } = (container as SVGElement).getBoundingClientRect();
 
     return {
         width,
@@ -103,7 +102,7 @@ const getContainer = ({ container, baseElement }: PositionProps) => {
         return container;
     }
 
-    let calcContainer = findNode(container, baseElement) as HTMLElement;
+    let calcContainer = findNode(container as Element, baseElement) as HTMLElement;
 
     if (!calcContainer) {
         calcContainer = document.body;
@@ -123,7 +122,7 @@ export default class Position {
     pinElement: HTMLElement | 'viewport' | undefined;
     baseElement: HTMLElement | 'viewport' | undefined;
     pinFollowBaseElementWhenFixed: boolean | undefined;
-    container: HTMLElement;
+    container: React.ReactNode;
     autoFit: boolean;
     align: string | boolean;
     offset: Array<number | string>;

@@ -14,14 +14,14 @@ const style = {
 };
 
 function TableDemo() {
-    const columns = [1, 2, 3].map(v => {
-        return { dataIndex: `data${v}`, title: `Data${v}`, width: 200 } as {
-            dataIndex?: string;
-            title: string;
-            width: number;
-            lock?: 'left' | 'right';
-            cell?: any;
-        };
+    const columns: Array<{
+        dataIndex?: string;
+        title: string;
+        width: number;
+        lock?: 'left' | 'right';
+        cell?: any;
+    }> = [1, 2, 3].map(v => {
+        return { dataIndex: `data${v}`, title: `Data${v}`, width: 200 };
     });
     columns.unshift({
         dataIndex: 'id',

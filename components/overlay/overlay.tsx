@@ -1,4 +1,4 @@
-import React, { Children, Component, ReactNode } from 'react';
+import React, { Children, Component, type ReactNode } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -14,8 +14,8 @@ const { saveLastFocusNode, getFocusNodeList, backLastFocusNode } = focus;
 const { makeChain, noop, bindCtx } = func;
 
 const getContainerNode = (props: OverlayProps) => {
-    const targetNode = findNode(props.target);
-    return findNode(props.container, targetNode as HTMLElement);
+    const targetNode = findNode(props.target as Element);
+    return findNode(props.container as Element, targetNode as HTMLElement);
 };
 
 const prefixes = ['-webkit-', '-moz-', '-o-', 'ms-', ''];
@@ -46,135 +46,42 @@ class Overlay extends Component<OverlayProps, OverlayState> {
         rtl: PropTypes.bool,
         className: PropTypes.string,
         style: PropTypes.object,
-        /**
-         * 弹层内容
-         */
-        children: PropTypes.element,
-        /**
-         * 是否显示弹层
-         */
+        children: PropTypes.any,
         visible: PropTypes.bool,
-        /**
-         * 弹层请求关闭时触发事件的回调函数
-         */
         onRequestClose: PropTypes.func,
-        /**
-         * 弹层定位的参照元素
-         */
-        target: PropTypes.element,
-        /**
-         * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
-         */
+        target: PropTypes.any,
         align: PropTypes.string,
-        /**
-         * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量
-         * e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
-         */
         offset: PropTypes.array,
-        /**
-         * 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点
-         */
-        container: PropTypes.element,
-        /**
-         * 是否显示遮罩
-         */
+        container: PropTypes.any,
         hasMask: PropTypes.bool,
-        /**
-         * 是否支持 esc 按键关闭弹层
-         */
         canCloseByEsc: PropTypes.bool,
-        /**
-         * 点击弹层外的区域是否关闭弹层，不显示遮罩时生效
-         */
         canCloseByOutSideClick: PropTypes.bool,
-        /**
-         * 点击遮罩区域是否关闭弹层，显示遮罩时生效
-         */
         canCloseByMask: PropTypes.bool,
-        /**
-         * 弹层打开前触发事件的回调函数
-         */
         beforeOpen: PropTypes.func,
-        /**
-         * 弹层打开时触发事件的回调函数
-         */
         onOpen: PropTypes.func,
-        /**
-         * 弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发
-         */
         afterOpen: PropTypes.func,
-        /**
-         * 弹层关闭前触发事件的回调函数
-         */
         beforeClose: PropTypes.func,
-        /**
-         * 弹层关闭时触发事件的回调函数
-         */
         onClose: PropTypes.func,
-        /**
-         * 弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发
-         */
         afterClose: PropTypes.func,
-        /**
-         * 弹层定位完成前触发的事件
-         */
         beforePosition: PropTypes.func,
-        /**
-         * 弹层定位完成时触发的事件
-         */
         onPosition: PropTypes.func,
         shouldUpdatePosition: PropTypes.bool,
-        /**
-         * 弹层打开时是否让其中的元素自动获取焦点
-         */
         autoFocus: PropTypes.bool,
         needAdjust: PropTypes.bool,
-        /**
-         * 是否禁用页面滚动
-         */
         disableScroll: PropTypes.bool,
-        /**
-         * 是否在捕获阶段监听，适配 react 17 事件模型变更
-         * @version 1.25
-         */
         useCapture: PropTypes.bool,
-        /**
-         * 隐藏时是否保留子节点
-         */
         cache: PropTypes.bool,
-        /**
-         * 安全节点，当点击 document 的时候，如果包含该节点则不会关闭弹层，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组
-         */
         safeNode: PropTypes.array,
-        /**
-         * 弹层的根节点的样式类
-         */
         wrapperClassName: PropTypes.string,
-        /**
-         * 弹层的根节点的内联样式
-         */
         wrapperStyle: PropTypes.object,
-        /**
-         * 配置动画的播放方式，支持 \{ in: 'enter-class', out: 'leave-class' \} 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
-         */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         onMaskMouseEnter: PropTypes.func,
         onMaskMouseLeave: PropTypes.func,
         onClick: PropTypes.func,
         maskClass: PropTypes.string,
         isChildrenInMask: PropTypes.bool,
-        // 当 pin 元素（一般是弹层）是 fixed 布局的时候，pin 元素是否要跟随 base 元素（一般是trigger）
-        // 举例来说，dialog/drawer 这类组件弹层是不跟随trigger的，而 fixed 布局下的subNav是跟随trigger的
         pinFollowBaseElementWhenFixed: PropTypes.bool,
-        /**
-         * 开启 v2 版本
-         * @version 1.25
-         */
         v2: PropTypes.bool,
-        /**
-         * [v2] align 的数组形式，不能和 align 同时使用
-         * @version 1.25
-         */
         points: PropTypes.array,
     };
     static defaultProps = {
@@ -205,15 +112,15 @@ class Overlay extends Component<OverlayProps, OverlayState> {
         disableScroll: false,
         cache: false,
         isChildrenInMask: false,
-        onTouchEnd: (event: Event) => {
+        onTouchEnd: (event: UIEvent) => {
             event.stopPropagation();
         },
-        onClick: (event: Event) => event.stopPropagation(),
+        onClick: (event: UIEvent) => event.stopPropagation(),
         maskClass: '',
         useCapture: true,
     };
     lastAlign: string | boolean | undefined;
-    timeoutMap: { [key: string]: NodeJS.Timeout };
+    timeoutMap: { [key: string]: number };
     _isMounted: boolean;
     _isDestroyed: boolean;
     focusTimeout: NodeJS.Timeout;
@@ -221,7 +128,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
     _containerNode: HTMLElement | undefined;
     _hasFocused: boolean;
     contentRef: HTMLElement;
-    gatewayRef: HTMLElement | HTMLDivElement | React.ReactNode | null;
+    gatewayRef: HTMLElement | HTMLDivElement | ReactNode | null;
     _keydownEvents: {
         /**
          * 弹层内容
@@ -240,6 +147,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
          */
         off: () => void;
     } | null;
+    overlay: Overlay | null;
 
     constructor(props: OverlayProps) {
         super(props);
@@ -270,10 +178,10 @@ class Overlay extends Component<OverlayProps, OverlayState> {
         const willOpen = !prevState.visible && nextProps.visible;
         const willClose = prevState.visible && !nextProps.visible;
 
-        const nextState = {
+        const nextState: Partial<OverlayState> = {
             willOpen,
             willClose,
-        } as OverlayState;
+        };
 
         if (willOpen) {
             nextProps.beforeOpen && nextProps.beforeOpen();
@@ -295,7 +203,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
                 nextState.status = 'leaving';
             }
         } else if ('visible' in nextProps && nextProps.visible !== prevState.visible) {
-            nextState.visible = nextProps.visible as boolean;
+            nextState.visible = nextProps.visible!;
         }
 
         return nextState;
@@ -336,7 +244,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
         const willOpen = !prevProps.visible && this.props.visible;
         const willClose = prevProps.visible && !this.props.visible;
 
-        (willOpen || willClose) && this.doAnimation(willOpen as boolean, willClose as boolean);
+        (willOpen || willClose) && this.doAnimation(willOpen!, willClose!);
     }
 
     componentWillUnmount() {
@@ -433,7 +341,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
                     parseFloat(getStyleProperty(node, 'animation-duration')) || 0;
                 const time = animationDelay + animationDuration;
                 if (time) {
-                    this.timeoutMap[id] = setTimeout(
+                    this.timeoutMap[id] = window.setTimeout(
                         () => {
                             this.handleAnimateEnd(id);
                         },
@@ -755,7 +663,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
             safeNodes.unshift(() => this.getWrapperNode());
 
             for (let i = 0; i < safeNodes.length; i++) {
-                const node = findNode(safeNodes[i], this.props as Element);
+                const node = findNode(safeNodes[i], this.props);
                 // HACK: 如果触发点击的节点是弹层内部的节点，并且在被点击后立即销毁，那么此时无法使用 node.contains(e.target)
                 // 来判断此时点击的节点是否是弹层内部的节点，额外判断
                 if (

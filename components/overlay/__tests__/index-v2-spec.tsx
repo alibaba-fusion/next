@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect, cloneElement, ReactElement } from 'react';
-import ReactDOM from 'react-dom';
 import type { MountReturn } from 'cypress/react';
-import type { ButtonProps } from '@alifd/next/lib/button';
+import type { ButtonProps } from '../../button/index';
 
 import { KEYCODE, env } from '../../util';
 import Overlay, { OverlayProps } from '../index';
@@ -13,44 +12,6 @@ import '../../animate/style';
 import '../style';
 
 ``;
-
-/* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
-/* global describe it afterEach */
-/* global describe it beforeEach */
-
-/**
- * 仅在渲染多个组件时使用，单一组件请使用cy.mount
- */
-export function render<P = unknown>(element: ReactElement<P>) {
-    let inc: any;
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    // eslint-disable-next-line react/no-deprecated
-    ReactDOM.render(element, container, function () {
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        inc = this;
-    });
-    return {
-        setProps: (props: Partial<P>) => {
-            const clonedElement = React.cloneElement(element, props);
-            // eslint-disable-next-line react/no-deprecated
-            ReactDOM.render(clonedElement, container);
-        },
-        unmount: () => {
-            // eslint-disable-next-line react/no-deprecated
-            ReactDOM.unmountComponentAtNode(container);
-            if (document.body.contains(container)) {
-                document.body.removeChild(container);
-            }
-        },
-        instance: () => {
-            return inc;
-        },
-        find: (selector: string) => {
-            return container.querySelectorAll(selector);
-        },
-    };
-}
 
 const { Popup } = Overlay;
 
@@ -82,7 +43,6 @@ class OverlayControlDemo extends React.Component<OverlayProps, OverlayControlDem
     };
 
     render() {
-        // eslint-disable-next-line
         const { children, ...others } = this.props;
 
         return (
@@ -112,56 +72,22 @@ class OverlayControlDemo extends React.Component<OverlayProps, OverlayControlDem
 }
 
 describe('Overlay v2', async () => {
-    let wrapper: ReturnType<typeof render> | null = null;
-
-    const onerror = window.onerror;
-    before(() => {
-        // 捕获，否则进行不下去 ResizeObserver loop limit exceeded
-        window.onerror = null;
-    });
-    after(() => {
-        window.onerror = onerror;
-    });
-
-    beforeEach(() => {
-        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
-
-        nodeListArr.forEach((node: HTMLElement) => {
-            (node.parentNode as HTMLElement).removeChild(node);
-        });
-    });
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        (document.body as any).style = '';
-    });
-
     it('should support rendering overlay', () => {
         cy.mount(
             <Overlay v2 visible>
                 <div className="content" />
             </Overlay>
         ).as('overlay');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
-
         cy.get('.next-overlay-wrapper.opened');
         cy.get('.next-overlay-inner.content');
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(cloneElement(component as ReactElement, { visible: false }));
         });
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
         cy.get('.next-overlay-wrapper').should('not.be.visible');
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(cloneElement(component as ReactElement, { visible: true }));
         });
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
         cy.get('.next-overlay-wrapper.opened');
         cy.get('.next-overlay-inner.content');
@@ -177,10 +103,7 @@ describe('Overlay v2', async () => {
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(cloneElement(component as ReactElement, { visible: true }));
         });
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
-        cy.clock();
         cy.get('.next-overlay-wrapper');
         cy.get('.next-overlay-inner').should('have.class', 'content');
         cy.get('.next-overlay-backdrop').should('not.exist');
@@ -189,8 +112,6 @@ describe('Overlay v2', async () => {
                 cloneElement(component as ReactElement, { visible: true, hasMask: true })
             );
         });
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
         cy.get('.next-overlay-backdrop');
     });
@@ -202,18 +123,13 @@ describe('Overlay v2', async () => {
                 <div className="content" />
             </Overlay>
         ).as('overlay');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
-        cy.clock();
         cy.get('html').trigger('keydown', { keyCode: KEYCODE.ESC });
         cy.wrap(handleClose).should('not.be.calledOnce');
 
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(cloneElement(component as ReactElement, { canCloseByEsc: true }));
         });
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
         cy.get('html').trigger('keydown', { keyCode: KEYCODE.ESC });
         cy.wrap(handleClose).should('be.calledOnce');
@@ -226,8 +142,6 @@ describe('Overlay v2', async () => {
                 <div className="content" />
             </Overlay>
         ).as('overlay');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
         cy.get('html').trigger('mousedown');
         cy.wrap(handleClose).should('not.be.calledOnce');
@@ -236,8 +150,6 @@ describe('Overlay v2', async () => {
                 cloneElement(component as ReactElement, { canCloseByOutSideClick: true })
             );
         });
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
         cy.get('html').trigger('mousedown');
         cy.wrap(handleClose).should('be.calledOnce');
@@ -257,8 +169,6 @@ describe('Overlay v2', async () => {
                 <div className="content" />
             </Overlay>
         );
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
         cy.get('.next-overlay-backdrop').trigger('mousedown');
         cy.wrap(handleClose).should('not.be.calledOnce');
@@ -275,8 +185,6 @@ describe('Overlay v2', async () => {
                 <div className="content" />
             </Overlay>
         );
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
         cy.get('.next-overlay-backdrop').trigger('mousedown', { force: true });
         cy.wrap(handleClose).should('be.calledOnce');
@@ -292,18 +200,12 @@ describe('Overlay v2', async () => {
         );
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper');
 
         cy.get('#inner').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper');
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper').should('not.exist');
     });
 
@@ -311,13 +213,9 @@ describe('Overlay v2', async () => {
         cy.mount(<OverlayControlDemo disableScroll hasMask />);
 
         cy.get('button').click({ force: true });
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('body').should('have.css', 'overflowY', 'hidden');
 
         cy.get('button').click({ force: true });
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('body').should('not.have.css', 'overflowY', 'hidden');
         cy.get('body').should('not.have.css', 'paddingRight', '0');
     });
@@ -331,13 +229,9 @@ describe('Overlay v2', async () => {
         ).as('OverlayControlDemo');
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(200);
         cy.get('#inner').should('be.focused');
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(200);
         // ie9/ie10 document.activeElement === document.body
         if ((env.ieVersion as number) > 10) {
             cy.get('@outerInput').should('be.focused');
@@ -348,12 +242,8 @@ describe('Overlay v2', async () => {
         cy.mount(<OverlayControlDemo cache wrapperClassName="overlay-cache-test" />);
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(200);
 
         cy.get('.overlay-cache-test.next-overlay-wrapper').should('have.css', 'display', 'none');
     });
@@ -367,8 +257,6 @@ describe('Overlay v2', async () => {
                 </Overlay>
             </div>
         );
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.content').click({ force: true });
         cy.wrap(clickHandler).should('be.calledOnce');
     });
@@ -406,13 +294,9 @@ describe('Overlay v2', async () => {
                 <OverlayDemo />
             </div>
         );
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('#container0 .next-overlay-wrapper');
 
         cy.get('#btn').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('#container1 .next-overlay-wrapper');
     });
 
@@ -450,12 +334,13 @@ describe('Overlay v2', async () => {
             </div>
         );
         // visible 直接为true，会自动delay 100ms渲染
-
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
         // 空间不够了弹窗顶开页面宽度
-        cy.get('.next-overlay-inner')
-            .click({ scrollBehavior: false, force: true })
-            .should('have.css', 'left', `${document.documentElement.clientWidth}px`);
+        cy.get('.next-overlay-inner').click({ scrollBehavior: false, force: true });
+        cy.get('.next-overlay-inner').should(
+            'have.css',
+            'left',
+            `${document.documentElement.clientWidth}px`
+        );
     });
 
     it('fix bug on position when target is a svg element', () => {
@@ -471,29 +356,11 @@ describe('Overlay v2', async () => {
                 </svg>
             </div>
         );
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(200);
-        cy.get('.overlay-btn').should('have.css', 'left', `${(200 - 50) / 2 + 8}px`);
+        cy.get('.overlay-btn').should('have.css', 'left', `${(200 - 50) / 2}px`);
     });
 });
 
 describe('Popup v2', async () => {
-    let wrapper: ReturnType<typeof render> | null = null;
-    const onerror = window.onerror;
-    before(() => {
-        // 捕获，否则进行不下去 ResizeObserver loop limit exceeded
-        window.onerror = null;
-    });
-    after(() => {
-        window.onerror = onerror;
-    });
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('should support rendering trigger and overlay', () => {
         cy.mount(
             <Popup
@@ -506,14 +373,10 @@ describe('Popup v2', async () => {
                 <span>Hello World From Popup!</span>
             </Popup>
         );
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('button');
         cy.get('.next-overlay-wrapper');
 
         cy.get('html').trigger('mousedown');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper').should('not.exist');
     });
 
@@ -523,27 +386,17 @@ describe('Popup v2', async () => {
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('button').trigger('mouseover');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(220);
         cy.get('.next-overlay-wrapper');
         cy.get('button').trigger('mouseleave');
         cy.get('.content').trigger('mouseover');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(220); // hover 触发时长是 200
         cy.get('.next-overlay-wrapper');
 
         cy.get('button').trigger('mouseleave');
         cy.get('.content').trigger('mouseenter');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(220);
         cy.get('.next-overlay-wrapper');
 
         cy.get('.content').trigger('mouseleave');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(220);
         cy.get('.next-overlay-wrapper').should('not.be.visible');
     });
 
@@ -553,22 +406,14 @@ describe('Popup v2', async () => {
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('button').trigger('focus');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper');
 
         cy.get('.content').trigger('mousedown');
         cy.get('button').focus();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper');
 
         cy.get('button').blur();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper').should('not.be.visible');
     });
 
@@ -578,17 +423,11 @@ describe('Popup v2', async () => {
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('button').should('be.visible');
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper');
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper').should('not.exist');
     });
 
@@ -606,24 +445,16 @@ describe('Popup v2', async () => {
         );
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper');
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper').should('not.exist');
 
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.DOWN_ARROW });
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper');
 
         // triggerClickKeycode 具备开/关功能
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.DOWN_ARROW });
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper').should('not.exist');
     });
 
@@ -639,18 +470,12 @@ describe('Popup v2', async () => {
                 <span className="content">Hello World From Popup!</span>
             </Popup>
         );
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('button').should('be.visible');
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.wrap(onClick).should('be.calledOnce');
         cy.get('.next-overlay-wrapper');
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.wrap(onClick).should('be.calledTwice');
         cy.get('.next-overlay-wrapper').should('not.exist');
     });
@@ -739,13 +564,9 @@ describe('Popup v2', async () => {
         }
 
         cy.mount(<SafeNodeDemo />);
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
         cy.get('#btn1').click();
 
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.overlay-demo1');
 
         cy.get('.overlay-demo2').click();
@@ -766,13 +587,9 @@ describe('Popup v2', async () => {
             </Popup>
         );
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper');
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper');
     });
 
@@ -791,13 +608,9 @@ describe('Popup v2', async () => {
             </div>
         );
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
 
         cy.get('.next-overlay-wrapper').parent().should('have.attr', 'id', 'myContainer');
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(200);
 
         cy.get('.next-overlay-wrapper').should('not.exist');
     });
@@ -836,36 +649,56 @@ describe('Popup v2', async () => {
         cy.mount(<PopupControlDemo />);
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(20);
         cy.get('.next-overlay-wrapper');
 
         cy.get('button').click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(200);
         cy.get('.next-overlay-wrapper').should('not.exist');
     });
 
     it('should support render in shadow dom', () => {
-        // const host = document.createElement('div');
-        // const shadowRoot = host.attachShadow({ mode: 'open' });
-        // document.body.appendChild(host);
-        // ReactDOM.render(
-        //     <Popup v2 animation={false} trigger={<button>Open</button>} triggerType="click">
-        //         <span className="content">Hello World From Popup!</span>
-        //     </Popup>,
-        //     shadowRoot
-        // );
-        // await delay(20);
-        // const btn = shadowRoot.querySelector('button');
-        // ReactTestUtils.Simulate.click(btn);
-        // await delay(20);
-        // assert(document.querySelector('.next-overlay-wrapper'));
-        // btn.click();
-        // await delay(20);
-        // assert(!document.querySelector('.next-overlay-wrapper'));
-        // ReactDOM.unmountComponentAtNode(shadowRoot);
-        // document.body.removeChild(host);
+        const ShadowComponent: React.FC = () => {
+            // 使用useRef钩子来获取DOM引用
+            const ref = useRef<HTMLDivElement>(null);
+
+            // 使用useEffect钩子来处理组件挂载后的逻辑
+            useEffect(() => {
+                // 确保ref.current存在，并且是HTMLElement的实例
+                if (ref.current && 'shadowRoot' in ref.current) {
+                    // 使用attachShadow方法创建Shadow Root
+                    const shadowRoot = ref.current.attachShadow({ mode: 'open' });
+
+                    // 在Shadow Root中添加内容
+                    shadowRoot.innerHTML = `
+                  <style>
+                    /* Shadow DOM styles */
+                    .shadow-content {
+                      color: red;
+                      text-align: center;
+                    }
+                  </style>
+                  <div class="shadow-content">This is inside the Shadow DOM!</div>
+                `;
+                }
+            }, []);
+
+            // 渲染一个宿主元素，它将包含Shadow DOM
+            return (
+                <div id="host" ref={ref} className="shadow-host">
+                    <Popup v2 animation={false} trigger={<button>Open</button>} triggerType="click">
+                        <span className="content">Hello World From Popup!</span>
+                    </Popup>
+                </div>
+            );
+        };
+        cy.mount(<ShadowComponent />);
+
+        // NOTE: 此处不能使用 ReactTestUtils.Simulate.click(btn);
+        cy.get('#host').find('button').click({ force: true });
+
+        cy.get('.next-overlay-wrapper');
+        cy.get('#host').find('button').click({ force: true });
+
+        cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
 
     // https://github.com/alibaba-fusion/next/issues/3233

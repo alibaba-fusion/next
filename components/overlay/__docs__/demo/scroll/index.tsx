@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Overlay, Button } from '@alifd/next';
+import { Overlay } from '@alifd/next';
 
 const { Popup } = Overlay;
 
@@ -33,7 +33,7 @@ const App = () => {
                 v2
                 cache
                 triggerType="click"
-                overlay={!(<div style={style}>position: {JSON.stringify(position)}</div>)}
+                overlay={<div style={style}>position: {JSON.stringify(position)}</div>}
                 onPosition={(result: HTMLElement) => {
                     const { style } = result;
                     console.log(result);
@@ -46,7 +46,7 @@ const App = () => {
                 v2
                 cache
                 triggerType="click"
-                overlay={!(<div style={style}>position: {JSON.stringify(position12)}</div>)}
+                overlay={<div style={style}>position: {JSON.stringify(position12)}</div>}
                 container={(trigger: HTMLElement) => trigger.parentNode}
                 onPosition={(result: HTMLElement) => {
                     const { style } = result;
@@ -60,7 +60,7 @@ const App = () => {
                 v2
                 cache
                 triggerType="click"
-                overlay={!(<div style={style}>position: {JSON.stringify(position13)}</div>)}
+                overlay={<div style={style}>position: {JSON.stringify(position13)}</div>}
                 followTrigger
                 onPosition={(result: HTMLElement) => {
                     const { style } = result;
@@ -74,7 +74,7 @@ const App = () => {
             <Popup
                 v2
                 triggerType="click"
-                overlay={!(<div style={style}>position: {JSON.stringify(position2)}</div>)}
+                overlay={<div style={style}>position: {JSON.stringify(position2)}</div>}
                 onPosition={({ style }: HTMLElement) => {
                     setPosition2(style);
                 }}

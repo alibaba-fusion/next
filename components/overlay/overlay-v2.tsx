@@ -1,5 +1,4 @@
-/* istanbul ignore file */
-import React, { useState, useRef, useEffect, cloneElement, ReactElement } from 'react';
+import React, { useState, useRef, useEffect, cloneElement, type ReactElement } from 'react';
 import classNames from 'classnames';
 import Overlay from '@alifd/overlay';
 
@@ -21,7 +20,8 @@ const Overlay2 = (props: OverlayProps) => {
         visible,
         hasMask, // 仅兼容，Dialog/Drawer 后续会自己提供mask
         align,
-        points = align ? (align as string).split(' ') : undefined,
+        // @ts-expect-error align遗留存在boolean类型，先expect error
+        points = align ? align.split(' ') : undefined,
         onPosition,
         children,
         className,
@@ -65,7 +65,7 @@ const Overlay2 = (props: OverlayProps) => {
     const childrenNode = (
         <Animate.OverlayAnimate
             visible={visible}
-            animation={animation as { in: 'expandInDown'; out: 'expandOutUp' }}
+            animation={animation}
             onEnter={handleEnter}
             onEntering={handleEntering}
             onEntered={handleEntered}
@@ -91,7 +91,7 @@ const Overlay2 = (props: OverlayProps) => {
 
     const wraperCls = classNames({
         [`${prefix}overlay-wrapper v2`]: true,
-        [wrapperClassName as string]: wrapperClassName,
+        [wrapperClassName!]: wrapperClassName,
         opened: visible,
     });
 
@@ -114,7 +114,7 @@ const Overlay2 = (props: OverlayProps) => {
     );
 
     return (
-        // @ts-expect-error overlay
+        // @ts-expect-error overlay类型导出有问题
         <Overlay
             {...others}
             visible={visible}

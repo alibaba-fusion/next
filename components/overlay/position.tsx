@@ -49,6 +49,7 @@ export default class Position extends Component<PositionProps> {
     shouldUpdatePosition: boolean;
 
     updateCount = 0;
+    resizeTimeout: NodeJS.Timeout;
 
     constructor(props: PositionProps) {
         super(props);
@@ -75,14 +76,11 @@ export default class Position extends Component<PositionProps> {
         }
 
         if (this.shouldUpdatePosition) {
-            clearTimeout(this.resizeTimeout as unknown as number);
+            clearTimeout(this.resizeTimeout);
 
             this.setPosition();
             this.shouldUpdatePosition = false;
         }
-    }
-    resizeTimeout(resizeTimeout: number): void {
-        throw new Error('Method not implemented.');
     }
 
     componentWillUnmount() {
@@ -91,11 +89,11 @@ export default class Position extends Component<PositionProps> {
             this.unobserve();
         }
 
-        clearTimeout(this.resizeTimeout as unknown as number);
+        clearTimeout(this.resizeTimeout);
     }
 
     observe = () => {
-        const contentNode = this.getContentNode() as HTMLElement;
+        const contentNode = this.getContentNode();
         contentNode && this.resizeObserver.observe(contentNode);
     };
 
@@ -104,7 +102,7 @@ export default class Position extends Component<PositionProps> {
     };
 
     shouldIgnorePosition = () => {
-        const node = this.getContentNode() as HTMLElement;
+        const node = this.getContentNode();
         if (!node) {
             return true;
         }
@@ -154,8 +152,8 @@ export default class Position extends Component<PositionProps> {
 
         beforePosition();
 
-        const contentNode = this.getContentNode() as HTMLElement;
-        const targetNode = this.getTargetNode() as HTMLElement;
+        const contentNode = this.getContentNode();
+        const targetNode = this.getTargetNode();
 
         if (contentNode && targetNode) {
             const resultAlign = place({
@@ -174,7 +172,7 @@ export default class Position extends Component<PositionProps> {
 
             onPosition(
                 {
-                    align: (resultAlign as string).split(' '),
+                    align: resultAlign!.split(' '),
                     top,
                     left,
                 },
@@ -183,28 +181,28 @@ export default class Position extends Component<PositionProps> {
         }
     }
 
-    getContentNode() {
+    getContentNode(): null | HTMLElement {
         try {
-            return findDOMNode(this);
+            return findDOMNode(this) as HTMLElement;
         } catch (err) {
             return null;
         }
     }
 
-    getTargetNode() {
+    getTargetNode(): Element | null | Text | string {
         const { target } = this.props;
 
         return target === position.VIEWPORT
             ? position.VIEWPORT
-            : findNode(target, this.props as unknown as Element);
+            : findNode(target as Element, this.props);
     }
 
     handleResize() {
-        clearTimeout(this.resizeTimeout as unknown as number);
+        clearTimeout(this.resizeTimeout);
 
         this.resizeTimeout = setTimeout(() => {
             this.setPosition();
-        }, 200) as unknown as (resizeTimeout: number) => void;
+        }, 200);
     }
 
     render() {

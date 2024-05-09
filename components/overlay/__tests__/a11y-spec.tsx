@@ -8,7 +8,6 @@ const { Popup } = Overlay;
 
 let portalContainer: HTMLElement;
 
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Overlay A11y', () => {
     it('should not have any violations', async function () {
         await testReact(

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Overlay, Button } from '@alifd/next';
-import type { OverlayProps, OverlayState } from '@alifd/next/lib/overlay/types';
+import type { OverlayProps } from '@alifd/next/lib/overlay';
 import type { ButtonProps } from '@alifd/next/lib/button';
 
 class Demo extends React.Component<OverlayProps, OverlayState> {
