@@ -286,8 +286,9 @@ interface CommonTableProps {
 export interface DateTableProps
     extends Pick<
             Required<CalendarProps>,
-            'dateCellRender' | 'showOtherMonth' | 'format' | 'disabledDate' | 'value' | 'locale'
+            'dateCellRender' | 'showOtherMonth' | 'format' | 'value' | 'locale'
         >,
+        Pick<CalendarProps, 'disabledDate'>,
         Pick<RangeCalendarProps, 'startValue' | 'endValue'>,
         Omit<CommonProps, 'locale'>,
         CommonTableProps {
@@ -299,14 +300,16 @@ export interface DateTableHeadProps extends CommonProps {
 }
 
 export interface MonthTableProps
-    extends Pick<Required<CalendarProps>, 'value' | 'locale' | 'disabledDate' | 'monthCellRender'>,
+    extends Pick<Required<CalendarProps>, 'value' | 'locale'>,
+        Pick<CalendarProps, 'disabledDate' | 'monthCellRender'>,
         Omit<CommonProps, 'locale'>,
         CommonTableProps {
     onSelectMonth: (value: Moment, mode: 'date') => void;
 }
 
 export interface YearTableProps
-    extends Pick<Required<CalendarProps>, 'value' | 'locale' | 'disabledDate' | 'yearCellRender'>,
+    extends Pick<Required<CalendarProps>, 'value' | 'locale'>,
+        Pick<CalendarProps, 'yearCellRender' | 'disabledDate'>,
         Omit<CommonProps, 'locale'>,
         CommonTableProps {
     onSelectYear: (value: Moment, mode: 'month') => void;
@@ -325,7 +328,8 @@ export interface CardHeaderProps
 }
 
 export interface RangePanelHeaderProps
-    extends Pick<Required<RangeCalendarProps>, 'locale' | 'yearRange' | 'disableChangeMode'>,
+    extends Pick<Required<RangeCalendarProps>, 'locale' | 'disableChangeMode'>,
+        Pick<RangeCalendarProps, 'yearRange'>,
         Omit<CommonProps, 'locale'> {
     startVisibleMonth: Moment;
     endVisibleMonth: Moment;
