@@ -13,7 +13,7 @@ export default class SelectMenu extends Component<SelectMenuProps> {
         onChange: PropTypes.func,
         children: PropTypes.node,
     };
-    menuEl: Menu | null;
+    menuEl: InstanceType<typeof Menu> | null;
 
     componentDidMount() {
         this.scrollToSelectedItem();
@@ -39,7 +39,7 @@ export default class SelectMenu extends Component<SelectMenuProps> {
         }
     }
 
-    saveRef = (ref: Menu | null) => {
+    saveRef = (ref: InstanceType<typeof Menu> | null) => {
         this.menuEl = ref;
     };
 
