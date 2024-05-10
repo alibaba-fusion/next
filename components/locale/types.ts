@@ -53,6 +53,7 @@ export interface Locale extends LocaleConfig {
         hour: string;
         minute: string;
         second: string;
+        monthBeforeYear?: boolean;
     };
     Dialog: Partial<{
         close: string;
