@@ -37,6 +37,9 @@ function App() {
             <div>
                 <DatePicker2 defaultValue={defaultVal} format={customizeFormatter} />
             </div>
+            <div>
+                <DatePicker2 defaultValue={defaultVal} format="MMM D, YYYY" />
+            </div>
         </div>
     );
 }
