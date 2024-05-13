@@ -45,6 +45,7 @@ const locale: Locale = {
         hour: 'H',
         minute: 'M',
         second: 'S',
+        monthBeforeYear: true,
     },
     Dialog: {
         close: 'Close',

@@ -40,7 +40,7 @@ const isValueChanged = (value: MomentInput, oldValue: MomentInput) => {
     }
 };
 
-type InnerCalendarProps = ClassPropsWithDefault<CalendarProps, keyof typeof Calendar.defaultProps>;
+type InnerCalendarProps = ClassPropsWithDefault<CalendarProps, typeof Calendar.defaultProps>;
 
 /** Calendar */
 class Calendar extends Component<CalendarProps, CalendarState> {

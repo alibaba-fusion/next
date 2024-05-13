@@ -32,7 +32,7 @@ import type {
 
 type InnerRangeCalendarProps = ClassPropsWithDefault<
     RangeCalendarProps,
-    keyof typeof RangeCalendar.defaultProps
+    typeof RangeCalendar.defaultProps
 >;
 
 class RangeCalendar extends React.Component<RangeCalendarProps, RangeCalendarState> {
@@ -60,13 +60,13 @@ class RangeCalendar extends React.Component<RangeCalendarProps, RangeCalendarSta
         className: PropTypes.string,
     };
 
-    static defaultProps: RangeCalendarProps = {
+    static defaultProps = {
         prefix: 'next-',
         rtl: false,
         mode: CALENDAR_MODE_DATE,
         disableChangeMode: false,
         format: 'YYYY-MM-DD',
-        dateCellRender: value => value.date(),
+        dateCellRender: (value: Moment) => value.date(),
         onSelect: func.noop,
         onVisibleMonthChange: func.noop,
         locale: nextLocale.Calendar,

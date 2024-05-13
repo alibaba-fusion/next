@@ -8,6 +8,8 @@ import dayjs from 'dayjs';
 import co from 'co';
 import moment from 'moment';
 import DatePicker from '../index';
+import { ConfigProvider } from '@alifd/next';
+import en from '@alifd/next/lib/locale/en-us';
 import Form from '../../form/index';
 import Field from '../../field/index';
 import { DATE_PICKER_MODE } from '../constant';
@@ -1142,6 +1144,43 @@ describe('Picker', () => {
                 assert(typeof inputProps.onInputTypeChange === 'function');
                 return <div>test</div>
             }} />);
+        });
+
+        // fix https://github.com/alibaba-fusion/next/issues/4775
+        it('RangePicker disabledDate method should return the correct panel mode', () => {
+            let panelMode = 'date';
+            const disabledDate = function (date, mode) {
+                assert(panelMode === mode, `current panelMode is "${panelMode}", but got "${mode}"`);
+                return false;
+            };
+
+            wrapper = mount(<RangePicker disabled={[true, false]} disabledDate={disabledDate} mode="date" defaultPanelValue={defaultVal} />);
+            findInput(1).simulate('click');
+            assert(wrapper.find('.next-calendar2-table-date').length);
+            findDate('2021-01-31').simulate('mousemove');
+
+            panelMode = 'month';
+            wrapper.find('.next-range-picker-left .next-calendar2-header-text-field button').at(1).simulate('click');
+            assert(wrapper.find('.next-calendar2-table-month').length);
+
+            panelMode = 'year';
+            wrapper.find('.next-range-picker-left .next-calendar2-header-text-field button').simulate('click');
+            assert(wrapper.find('.next-calendar2-table-year').length);
+
+            panelMode = 'decade';
+            wrapper.find('.next-range-picker-left .next-calendar2-header-text-field button').simulate('click');
+            assert(wrapper.find('.next-calendar2-table-decade').length);
+        })
+
+        // fix https://github.com/alibaba-fusion/next/issues/4788
+        it('The English translation does not comply with international standards', () => {
+            wrapper = mount(
+                <ConfigProvider locale={en}>
+                    <DatePicker defaultValue="2020-02-02" format="MMM D, YYYY" defaultVisible />
+                </ConfigProvider>
+            );
+            assert(getStrValue() === 'Feb 2, 2020');
+            assert(wrapper.find(`.next-calendar2-header-text-field`).text() === `Feb2020`);
         })
     });
 });

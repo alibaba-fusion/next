@@ -5,12 +5,12 @@ import { polyfill } from 'react-lifecycles-compat';
 import Loading from '../loading';
 import zhCN from '../locale/zh-cn';
 import ConfigProvider from '../config-provider';
-import { ListProps } from './types';
+import type { ListProps } from './types';
 
 /**
  * List
  */
-class List<DataItem = unknown> extends Component<ListProps<DataItem>> {
+class List extends Component<ListProps> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -104,7 +104,5 @@ class List<DataItem = unknown> extends Component<ListProps<DataItem>> {
         return content;
     }
 }
-
-export type { List };
 
 export default ConfigProvider.config(polyfill(List));
