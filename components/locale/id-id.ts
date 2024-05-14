@@ -46,6 +46,7 @@ const locale: Locale = {
         hour: 'Jam',
         minute: 'Menit',
         second: 'Detik',
+        monthBeforeYear: false,
     },
     Dialog: {
         close: 'Tutup',
