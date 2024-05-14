@@ -102,7 +102,7 @@ const getContainer = ({ container, baseElement }: PositionProps) => {
         return container;
     }
 
-    let calcContainer = findNode(container as Element, baseElement) as HTMLElement;
+    let calcContainer = findNode(container, baseElement) as HTMLElement;
 
     if (!calcContainer) {
         calcContainer = document.body;

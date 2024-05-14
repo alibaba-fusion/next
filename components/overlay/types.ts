@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { type ReactNode, type ReactElement } from 'react';
 import type { CommonProps } from '../util';
-
 /**
  * @api Overlay.Popup
+ * @order 2
  */
 export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -21,12 +21,12 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * @skip
      */
-    overlay?: boolean | Element | React.ReactNode;
+    overlay?: boolean | Element | ReactElement;
     /**
      * 弹层内容
      * @en content of overlay
      */
-    children?: React.ReactNode;
+    children?: ReactElement;
     /**
      * 弹层是否自适应内容
      * @en whether the overlay is automatically adapted to the content
@@ -43,7 +43,6 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 弹层请求关闭时触发事件的回调函数
      * @en Callback function that triggers an event when the overlay request closed
-     * @defaultValue func.noop
      * @skip
      */
     onRequestClose?: (type: string, e: React.MouseEvent) => void;
@@ -52,7 +51,7 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 弹层定位的参照元素
      * @en reference element for overlay positioning
      */
-    target?: React.ReactNode;
+    target?: ReactElement;
 
     /**
      * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
@@ -75,7 +74,7 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * @en Container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
      * @skip
      */
-    container?: React.ReactNode;
+    container?: ReactElement | HTMLElement | ReactNode;
 
     /**
      * 是否显示遮罩
@@ -112,7 +111,6 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 弹层打开前触发事件的回调函数
      * @en Callback function that triggers the event before the overlay opens
-     * @defaultValue func.noop
      * @skip
      */
     beforeOpen?: (target?: React.ReactNode) => void;
@@ -120,7 +118,6 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 弹层打开时触发事件的回调函数
      * @en Callback function that triggers the event when the overlay opens
-     * @defaultValue func.noop
      * @skip
      */
     onOpen?: (target?: React.ReactNode) => void;
@@ -128,7 +125,6 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发
      * @en Callback function that triggers the event after the overlay opens, if enable animations, trigger after the animation ends
-     * @defaultValue func.noop
      * @skip
      */
     afterOpen?: (target?: React.ReactNode) => void;
@@ -136,7 +132,6 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 弹层关闭前触发事件的回调函数
      * @en Callback function that triggers the event before the overlay closes
-     * @defaultValue func.noop
      * @skip
      */
     beforeClose?: (target?: React.ReactNode) => void;
@@ -144,7 +139,6 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 弹层关闭时触发事件的回调函数
      * @en Callback function that triggers the event when the overlay closes
-     * @defaultValue func.noop
      * @skip
      */
     onClose?: (target?: React.ReactNode) => void;
@@ -152,23 +146,20 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发
      * @en Callback function that triggers the event after the overlay closes, if enable animations, trigger after the animation ends
-     * @defaultValue func.noop
      * @skip
      */
     afterClose?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层定位完成前触发的事件
-     * @en Callback function that triggers the event before the overlay posiitons
-     * @defaultValue func.noop
+     * @en Callback function that triggers the event before the overlay positions
      * @skip
      */
     beforePosition?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层定位完成时触发的事件
-     * @en Callback function that triggers the event when the overlay posiitons
-     * @defaultValue func.noop
+     * @en Callback function that triggers the event when the overlay positions
      * @skip
      */
     onPosition?: (config: object, node?: object) => void;
@@ -246,9 +237,7 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 触发弹层显示或隐藏的元素
      * @en trigger the overlay to show or hide elements
      */
-    // children 类型不好定义，之前也是any，先保持一致
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    trigger?: any;
+    trigger?: ReactElement;
 
     /**
      * 触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，'focus'，或者它们组成的数组，如 ['hover', 'focus']
@@ -327,6 +316,7 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
 
 /**
  * @api Overlay
+ * @order 1
  */
 export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -367,9 +357,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 弹层内容
      * @en conent of overlay
      */
-    // children 类型不好定义，之前也是any，先保持一致
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    children?: any;
+    children?: ReactElement;
 
     /**
      * 是否显示弹层
@@ -381,7 +369,6 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 弹层请求关闭时触发事件的回调函数, v2 版本第一个参数是 event
      * @en callback function that triggers an event when the overlay request closed
-     * @defaultValue func.noop
      */
     onRequestClose?: (type: string | object, e: Event | React.MouseEvent<Element>) => void;
 
@@ -390,7 +377,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * @en reference element for overlay positioning
      * @defaultValue Position.VIEWPORT
      */
-    target?: React.ReactNode;
+    target?: ReactElement | HTMLElement | ReactNode;
 
     /**
      * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
@@ -410,7 +397,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点
      * @en container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
      */
-    container?: React.ReactNode;
+    container?: ReactElement | HTMLElement | ReactNode;
 
     /**
      * 是否显示遮罩
@@ -443,56 +430,49 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 弹层打开前触发事件的回调函数
      * @en callback function that triggers the event before the overlay opens
-     * @defaultValue func.noop
      */
     beforeOpen?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层打开时触发事件的回调函数
      * @en callback function that triggers the event when the overlay opens
-     * @defaultValue func.noop
      */
     onOpen?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发
      * @en callback function that triggers the event after the overlay opens, if enable animations, trigger after the animation ends
-     * @defaultValue func.noop
      */
     afterOpen?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层关闭前触发事件的回调函数
      * @en callback function that triggers the event before the overlay closes
-     * @defaultValue func.noop
      */
     beforeClose?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层关闭时触发事件的回调函数
      * @en callback function that triggers the event when the overlay closes
-     * @defaultValue func.noop
      */
     onClose?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发
      * @en callback function that triggers the event after the overlay closes, if enable animations, trigger after the animation ends
-     * @defaultValue func.noop
      */
     afterClose?: (target?: React.ReactNode) => void;
 
     /**
      * 弹层定位完成前触发的事件
-     * @en callback function that triggers the event before the overlay posiitons
-     * @defaultValue func.noop
+     * @en callback function that triggers the event before the overlay positions
+
      */
     beforePosition?: () => void;
 
     /**
      * 弹层定位完成时触发的事件
-     * @en callback function that triggers the event when the overlay posiitons
-     * @defaultValue func.noop
+     * @en callback function that triggers the event when the overlay positions
      */
     onPosition?: (config: object, node?: object) => void;
 
@@ -589,25 +569,78 @@ export interface OverlayState {
     willClose?: boolean;
 }
 
-export default class Overlay extends React.Component<OverlayProps, OverlayState> {
-    static Popup: typeof React.Component<PopupProps, PopupState>;
-}
-
 export interface PopupState {
     visible?: boolean;
 }
 
+/**
+ * @api Overlay.Position
+ * @order 3
+ */
 export interface PositionProps {
-    children?: React.ReactNode;
-    target?: React.ReactNode;
-    container?: React.ReactNode;
+    /**
+     * 弹层内容
+     * @en content of overlay
+     */
+    children?: ReactElement;
+    /**
+     * 弹层定位的参照元素
+     * @en reference element for overlay positioning
+     */
+    target?: ReactElement | HTMLElement | ReactNode;
+    /**
+     * 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点
+     * @en Container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
+     * @skip
+     */
+    container?: ReactElement;
+    /**
+     * 弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)
+     * @en Alignment of the overlay relative to the reference element, see [Alignment](#Alignment)
+     * @defaultValue 'tl bl'
+     * @skip
+     */
     align?: string | boolean;
+    /**
+     * 弹层相对于参照元素定位的微调
+     * @en Extra adjustment for trigger element. e.g. [hoz, ver] means move to right
+     * @defaultValue [0, 0]
+     * @skip
+     */
     offset: Array<number | string>;
+    /**
+     * 弹层定位完成前触发的事件
+     * @en Callback function that triggers the event before the overlay positions
+     * @skip
+     */
     beforePosition: () => void;
+    /**
+     * 弹层定位完成时触发的事件
+     * @en Callback function that triggers the event when the overlay positions
+     * @skip
+     */
     onPosition: (config: object, node?: object) => void;
+    /**
+     * 当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域
+     * @en When the overlay is not visible due to scrolling of the page, does it automatically adjust the position to appear in the visible area? in v2
+     * @defaultValue true
+     * @skip
+     */
     needAdjust?: boolean;
+    /**
+     * 弹层是否自适应内容
+     * @en whether the overlay is automatically adapted to the content
+     * @defaultValue false
+     * @skip
+     */
     autoFit?: boolean;
     needListenResize?: boolean;
+    /**
+     * 是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式
+     * @en Whether to force the update of positioning after each rerendered, which is generally used to maintain the original positioning when the size of the content area changes.
+     * @defaultValue false
+     * @skip
+     */
     shouldUpdatePosition?: boolean;
     rtl?: boolean;
     pinElement?: HTMLElement;
@@ -630,12 +663,29 @@ export interface PointsType {
     };
 }
 
+/**
+ * @api Overlay.Gateway
+ * @order 4
+ */
 export interface GatewayProps {
-    children?: React.ReactNode;
+    /**
+     * 弹层内容
+     * @en content of overlay
+     */
+    children?: ReactElement | ReactNode;
+    /**
+     * 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点
+     * @en Container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
+     * @skip
+     */
     container?: React.ReactNode;
+    /**
+     * 弹层定位的参照元素
+     * @en reference element for overlay positioning
+     */
     target?: React.ReactNode | Element;
 }
 
 export interface GatewayState {
-    containerNode: Element | Text | null;
+    containerNode: ReactElement | Element | Text | null;
 }

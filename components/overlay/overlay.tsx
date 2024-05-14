@@ -1,4 +1,13 @@
-import React, { Children, Component, type ReactNode } from 'react';
+import React, {
+    Children,
+    Component,
+    type MouseEventHandler,
+    type TouchEventHandler,
+    type ReactNode,
+    type UIEvent,
+    type ReactElement,
+    type RefCallback,
+} from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -16,12 +25,12 @@ const { saveLastFocusNode, getFocusNodeList, backLastFocusNode } = focus;
 const { makeChain, noop, bindCtx } = func;
 
 const getContainerNode = (props: OverlayProps) => {
-    const targetNode = findNode(props.target as Element);
-    return findNode(props.container as Element, targetNode as HTMLElement);
+    const targetNode = findNode(props.target);
+    return findNode(props.container, targetNode as HTMLElement);
 };
 
 const prefixes = ['-webkit-', '-moz-', '-o-', 'ms-', ''];
-const getStyleProperty = (node: HTMLElement, name: string) => {
+const getStyleProperty = (node: Element, name: string) => {
     const style = window.getComputedStyle(node);
     let ret = '';
     for (let i = 0; i < prefixes.length; i++) {
@@ -73,7 +82,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
         disableScroll: PropTypes.bool,
         useCapture: PropTypes.bool,
         cache: PropTypes.bool,
-        safeNode: PropTypes.array,
+        safeNode: PropTypes.any,
         wrapperClassName: PropTypes.string,
         wrapperStyle: PropTypes.object,
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
@@ -125,28 +134,19 @@ class Overlay extends Component<OverlayProps, OverlayState> {
     timeoutMap: { [key: string]: number };
     _isMounted: boolean;
     _isDestroyed: boolean;
-    focusTimeout: NodeJS.Timeout;
+    focusTimeout: number;
     _animation: { off: () => void } | null;
     _containerNode: HTMLElement | undefined;
     _hasFocused: boolean;
     contentRef: HTMLElement;
     gatewayRef: HTMLElement | HTMLDivElement | ReactNode | null;
     _keydownEvents: {
-        /**
-         * 弹层内容
-         */
         off: () => void;
     } | null;
     _clickEvents: {
-        /**
-         * 弹层内容
-         */
         off: () => void;
     } | null;
     _touchEvents: {
-        /**
-         * 弹层内容
-         */
         off: () => void;
     } | null;
     overlay: Overlay | null;
@@ -328,7 +328,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
 
     addAnimationEvents() {
         setTimeout(() => {
-            const node = this.getContentNode() as HTMLElement;
+            const node = this.getContentNode();
             if (node) {
                 const id = guid();
 
@@ -528,7 +528,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
             saveLastFocusNode();
             // 这个时候很可能上一个弹层的关闭事件还未触发，导致焦点已经回到触发的元素
             // 这里延时处理一下，延时的时间为 document.click 捕获触发的延时时间
-            this.focusTimeout = setTimeout(() => {
+            this.focusTimeout = window.setTimeout(() => {
                 const node = this.getContentNode() as HTMLElement;
                 if (node) {
                     const focusNodeList = getFocusNodeList(node) as HTMLElement[];
@@ -550,7 +550,7 @@ class Overlay extends Component<OverlayProps, OverlayState> {
 
     getContentNode() {
         try {
-            return findDOMNode(this.contentRef);
+            return findDOMNode(this.contentRef) as HTMLElement;
         } catch (err) {
             return null;
         }
@@ -670,14 +670,14 @@ class Overlay extends Component<OverlayProps, OverlayState> {
             safeNodes.unshift(() => this.getWrapperNode());
 
             for (let i = 0; i < safeNodes.length; i++) {
-                const node = findNode(safeNodes[i], this.props);
+                const node = findNode(safeNodes[i], this.props) as HTMLElement;
                 // HACK: 如果触发点击的节点是弹层内部的节点，并且在被点击后立即销毁，那么此时无法使用 node.contains(e.target)
                 // 来判断此时点击的节点是否是弹层内部的节点，额外判断
                 if (
                     node &&
                     (node === e.target ||
                         node.contains(e.target as HTMLElement) ||
-                        this.matchInShadowDOM(node as HTMLElement, e) ||
+                        this.matchInShadowDOM(node, e) ||
                         (e.target !== document &&
                             !document.documentElement.contains(e.target as HTMLElement)))
                 ) {
@@ -760,17 +760,26 @@ class Overlay extends Component<OverlayProps, OverlayState> {
                 [child.props.className]: !!child.props.className,
                 [className as string]: !!className,
             });
-            if (typeof child.ref === 'string') {
+            if (typeof (child as unknown as { ref: string }).ref === 'string') {
                 throw new Error('Can not set ref by string in Overlay, use function instead.');
             }
 
             children = React.cloneElement(child, {
                 className: childClazz,
                 style: { ...child.props.style, ...style },
-                ref: makeChain(this.saveContentRef as Function, child.ref),
+                ref: makeChain(
+                    this.saveContentRef as (ref: HTMLDivElement) => void,
+                    (child as unknown as { ref: RefCallback<HTMLElement> }).ref
+                ),
                 'aria-hidden': !stateVisible && cache && this._isMounted,
-                onClick: makeChain(this.props.onClick as Function, child.props.onClick),
-                onTouchEnd: makeChain(this.props.onTouchEnd as Function, child.props.onTouchEnd),
+                onClick: makeChain(
+                    this.props.onClick as MouseEventHandler<Element>,
+                    child.props.onClick
+                ),
+                onTouchEnd: makeChain(
+                    this.props.onTouchEnd as TouchEventHandler<Element>,
+                    child.props.onTouchEnd
+                ),
             });
 
             if (align) {
@@ -783,13 +792,13 @@ class Overlay extends Component<OverlayProps, OverlayState> {
                             align,
                             offset,
                             autoFit,
-                            container,
+                            container: container as ReactElement,
                             needAdjust,
                             pinFollowBaseElementWhenFixed,
                             beforePosition,
                             onPosition: makeChain(
-                                this.handlePosition as Function,
-                                onPosition as Function
+                                this.handlePosition as (config: { align: Array<string> }) => void,
+                                onPosition as (config: object, node?: object) => void
                             ),
                             shouldUpdatePosition,
                             rtl,

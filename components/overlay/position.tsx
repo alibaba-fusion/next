@@ -20,8 +20,8 @@ export default class Position extends Component<PositionProps> {
 
     static propTypes = {
         children: PropTypes.node,
-        target: PropTypes.element,
-        container: PropTypes.element,
+        target: PropTypes.any,
+        container: PropTypes.any,
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         offset: PropTypes.array,
         beforePosition: PropTypes.func,
@@ -49,7 +49,7 @@ export default class Position extends Component<PositionProps> {
     shouldUpdatePosition: boolean;
 
     updateCount = 0;
-    resizeTimeout: NodeJS.Timeout;
+    resizeTimeout: number;
 
     constructor(props: PositionProps) {
         super(props);
@@ -189,18 +189,16 @@ export default class Position extends Component<PositionProps> {
         }
     }
 
-    getTargetNode(): Element | null | Text | string {
+    getTargetNode() {
         const { target } = this.props;
 
-        return target === position.VIEWPORT
-            ? position.VIEWPORT
-            : findNode(target as Element, this.props);
+        return target === position.VIEWPORT ? position.VIEWPORT : findNode(target, this.props);
     }
 
     handleResize() {
         clearTimeout(this.resizeTimeout);
 
-        this.resizeTimeout = setTimeout(() => {
+        this.resizeTimeout = window.setTimeout(() => {
             this.setPosition();
         }, 200);
     }

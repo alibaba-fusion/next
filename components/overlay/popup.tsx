@@ -254,9 +254,7 @@ class Popup extends Component<PopupProps, PopupState> {
             key: 'trigger',
             'aria-haspopup': true,
             'aria-expanded': this.state.visible,
-        } as {
-            [key: string]: string | boolean | AnyFunction<unknown> | undefined;
-        };
+        } as PopupProps;
 
         if (!this.state.visible) {
             props['aria-describedby'] = undefined;
@@ -352,7 +350,7 @@ class Popup extends Component<PopupProps, PopupState> {
                 hasMask={hasMask}
                 onRequestClose={this.handleRequestClose}
             >
-                {(this.props.children as HTMLElement) && this.renderContent()}
+                {this.props.children && this.renderContent()}
             </Overlay>
         );
     }

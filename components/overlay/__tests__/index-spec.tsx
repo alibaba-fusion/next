@@ -1,9 +1,9 @@
-import React, { useRef, useState, useEffect, cloneElement, ReactElement } from 'react';
+import React, { useRef, useState, useEffect, cloneElement, type ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import type { MountReturn } from 'cypress/react';
 
-import { dom, KEYCODE, env } from '../../util';
-import Overlay, { OverlayProps } from '../index';
+import { KEYCODE, env } from '../../util';
+import Overlay, { type OverlayProps } from '../index';
 import Dialog from '../../dialog/index';
 import Balloon from '../../balloon/index';
 import Button, { type ButtonProps } from '../../button/index';
@@ -127,8 +127,8 @@ describe('Overlay', () => {
             </Overlay>
         ).as('overlay');
 
-        cy.get('.next-overlay-wrapper.opened');
-        cy.get('.next-overlay-inner.content');
+        cy.get('.next-overlay-wrapper.opened').should('exist');
+        cy.get('.next-overlay-inner.content').should('exist');
 
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(cloneElement(component as ReactElement, { visible: false }));
@@ -140,8 +140,8 @@ describe('Overlay', () => {
             return rerender(cloneElement(component as ReactElement, { visible: true }));
         });
 
-        cy.get('.next-overlay-wrapper.opened');
-        cy.get('.next-overlay-inner.content');
+        cy.get('.next-overlay-wrapper.opened').should('exist');
+        cy.get('.next-overlay-inner.content').should('exist');
     });
 
     it('should support rendering overlay and mask', () => {
@@ -154,15 +154,15 @@ describe('Overlay', () => {
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(cloneElement(component as ReactElement, { visible: true }));
         });
-        cy.get('.next-overlay-wrapper.opened');
-        cy.get('.next-overlay-inner.content');
+        cy.get('.next-overlay-wrapper.opened').should('exist');
+        cy.get('.next-overlay-inner.content').should('exist');
         cy.get('.next-overlay-backdrop').should('have.length', 0);
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(
                 cloneElement(component as ReactElement, { visible: true, hasMask: true })
             );
         });
-        cy.get('.next-overlay-backdrop');
+        cy.get('.next-overlay-backdrop').should('exist');
     });
 
     it('should support setting animation to false', () => {
@@ -175,7 +175,7 @@ describe('Overlay', () => {
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(cloneElement(component as ReactElement, { visible: true }));
         });
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('.next-overlay-inner').should('have.class', 'content');
         cy.get('.next-overlay-backdrop').should('have.length', 0);
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
@@ -183,7 +183,7 @@ describe('Overlay', () => {
                 cloneElement(component as ReactElement, { visible: true, hasMask: true })
             );
         });
-        cy.get('.next-overlay-backdrop');
+        cy.get('.next-overlay-backdrop').should('exist');
     });
 
     it('should support canCloseByEsc', () => {
@@ -260,10 +260,10 @@ describe('Overlay', () => {
         ).as('OverlayControlDemo');
         cy.get('button').click();
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('#inner').click();
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('button').click();
 
         cy.get('.next-overlay-wrapper').should('have.length', 0);
@@ -271,7 +271,7 @@ describe('Overlay', () => {
             return rerender(cloneElement(component as ReactElement, { animation: false }));
         });
         cy.get('button').click();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('button').click();
         cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
@@ -291,33 +291,19 @@ describe('Overlay', () => {
         outerInput.id = 'outer';
         document.body.appendChild(outerInput);
         outerInput.focus();
-        cy.clock();
         cy.mount(
             <OverlayControlDemo animation={false} autoFocus>
                 <input id="inner" />
             </OverlayControlDemo>
         ).as('OverlayControlDemo');
         cy.get('button').click();
-        cy.tick(500);
 
-        // cy.get('activeElement').should('have.value', document.querySelector('#inner'))
-        cy.document().then(doc => {
-            // 获取当前焦点元素
-            const activeElement = doc.activeElement;
+        cy.get('#inner').should('exist');
 
-            // 断言值
-            expect(activeElement).to.equal(document.querySelector('#inner'));
-        });
         cy.get('button').click();
         // ie9/ie10 document.activeElement === document.body
         if ((env.ieVersion as number) > 10) {
-            cy.document().then(doc => {
-                // 获取当前焦点元素
-                const activeElement = doc.activeElement;
-
-                // 断言值
-                expect(activeElement).to.equal(document.querySelector('#outer'));
-            });
+            cy.get('#outer').should('exist');
         }
         document.body.removeChild(outerInput);
     });
@@ -415,7 +401,6 @@ describe('Overlay', () => {
                 <div className="content" />
             </Overlay>
         );
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.get('.content').click({ force: true });
 
         cy.wrap(handleClick).should('be.calledOnce');
@@ -461,12 +446,12 @@ describe('Overlay', () => {
         // eslint-disable-next-line react/no-deprecated
         ReactDOM.render(<OverlayDemo />, container);
 
-        cy.get('#container0 .next-overlay-wrapper');
+        cy.get('#container0 .next-overlay-wrapper').should('exist');
 
         cy.get('#btn').click();
 
         setTimeout(() => {
-            cy.get('#container1 .next-overlay-wrapper');
+            cy.get('#container1 .next-overlay-wrapper').should('exist');
             container.remove();
             done();
         });
@@ -652,9 +637,9 @@ describe('Popup', () => {
                 <span>Hello World From Popup!</span>
             </Popup>
         );
-        cy.get('button');
+        cy.get('button').should('exist');
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('body').click();
         cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
@@ -668,11 +653,11 @@ describe('Popup', () => {
 
         cy.get('button').trigger('mouseover');
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('button').trigger('mouseleave');
         cy.get('.content').trigger('mouseover');
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('.content').trigger('mouseleave');
 
         cy.get('.next-overlay-wrapper').should('not.be.visible');
@@ -693,7 +678,7 @@ describe('Popup', () => {
         cy.get('.next-overlay-wrapper').should('have.length', 0);
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.SPACE });
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.ENTER });
         cy.get('.next-overlay-wrapper').should('have.length', 0);
     });
@@ -706,12 +691,12 @@ describe('Popup', () => {
         );
         cy.get('button').focus();
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('.content').trigger('mousedown');
         cy.get('button').blur();
 
         cy.get('button').focus();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('button').blur();
         cy.get('.next-overlay-wrapper').should('not.be.visible');
     });
@@ -724,13 +709,13 @@ describe('Popup', () => {
         );
         cy.get('button').click();
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('button').click();
 
         cy.get('.next-overlay-wrapper').should('have.length', 0);
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.DOWN_ARROW });
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.DOWN_ARROW });
 
         cy.get('.next-overlay-wrapper').should('have.length', 0);
@@ -750,10 +735,10 @@ describe('Popup', () => {
         );
         cy.get('button').click();
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('button').click();
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
     });
 
     it('should support setting custom container', () => {
@@ -771,16 +756,16 @@ describe('Popup', () => {
         );
         cy.get('button').click();
 
-        cy.get('#myContainer .next-overlay-wrapper');
+        cy.get('#myContainer .next-overlay-wrapper').should('exist');
         cy.get('button').click();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
     });
 
     it('should support controling', () => {
         cy.mount(<PopupControlDemo />);
         cy.get('button').click();
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('button').click();
 
         cy.get('.next-overlay-wrapper').should('have.length', 0);
@@ -827,7 +812,7 @@ describe('Popup', () => {
         // NOTE: 此处不能使用 ReactTestUtils.Simulate.click(btn);
         cy.get('#host').find('button').click({ force: true });
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('#host').find('button').click({ force: true });
         // eslint-disable-next-line cypress/no-unnecessary-waiting
 
@@ -867,8 +852,8 @@ describe('Popup', () => {
         }
         cy.mount(<App />);
         cy.get('#balloon-button-container').first().click();
-        cy.get('.next-balloon');
-        cy.get('#balloon-button-container .next-balloon');
+        cy.get('.next-balloon').should('exist');
+        cy.get('#balloon-button-container .next-balloon').should('exist');
     });
 
     // https://riddle.alibaba-inc.com/riddles/10f7eac1

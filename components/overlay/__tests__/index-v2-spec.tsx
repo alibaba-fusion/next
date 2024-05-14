@@ -1,17 +1,15 @@
-import React, { useRef, useState, useEffect, cloneElement, ReactElement } from 'react';
+import React, { useRef, useEffect, cloneElement, type ReactElement } from 'react';
 import type { MountReturn } from 'cypress/react';
 import type { ButtonProps } from '../../button/index';
 
 import { KEYCODE, env } from '../../util';
-import Overlay, { OverlayProps } from '../index';
+import Overlay, { type OverlayProps } from '../index';
 import type { PopupProps } from '../types';
 import Button from '../../button/view/button';
 
 import '../../button/style';
 import '../../animate/style';
 import '../style';
-
-``;
 
 const { Popup } = Overlay;
 
@@ -78,8 +76,8 @@ describe('Overlay v2', async () => {
                 <div className="content" />
             </Overlay>
         ).as('overlay');
-        cy.get('.next-overlay-wrapper.opened');
-        cy.get('.next-overlay-inner.content');
+        cy.get('.next-overlay-wrapper.opened').should('exist');
+        cy.get('.next-overlay-inner.content').should('exist');
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
             return rerender(cloneElement(component as ReactElement, { visible: false }));
         });
@@ -89,8 +87,8 @@ describe('Overlay v2', async () => {
             return rerender(cloneElement(component as ReactElement, { visible: true }));
         });
 
-        cy.get('.next-overlay-wrapper.opened');
-        cy.get('.next-overlay-inner.content');
+        cy.get('.next-overlay-wrapper.opened').should('exist');
+        cy.get('.next-overlay-inner.content').should('exist');
     });
 
     it('should support setting animation to false', () => {
@@ -104,7 +102,7 @@ describe('Overlay v2', async () => {
             return rerender(cloneElement(component as ReactElement, { visible: true }));
         });
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('.next-overlay-inner').should('have.class', 'content');
         cy.get('.next-overlay-backdrop').should('not.exist');
         cy.get<MountReturn>('@overlay').then(({ component, rerender }) => {
@@ -113,7 +111,7 @@ describe('Overlay v2', async () => {
             );
         });
 
-        cy.get('.next-overlay-backdrop');
+        cy.get('.next-overlay-backdrop').should('exist');
     });
 
     it('should support canCloseByEsc', () => {
@@ -200,10 +198,10 @@ describe('Overlay v2', async () => {
         );
 
         cy.get('button').click();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('#inner').click();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('button').click();
         cy.get('.next-overlay-wrapper').should('not.exist');
@@ -294,10 +292,10 @@ describe('Overlay v2', async () => {
                 <OverlayDemo />
             </div>
         );
-        cy.get('#container0 .next-overlay-wrapper');
+        cy.get('#container0 .next-overlay-wrapper').should('exist');
 
         cy.get('#btn').click();
-        cy.get('#container1 .next-overlay-wrapper');
+        cy.get('#container1 .next-overlay-wrapper').should('exist');
     });
 
     it('should on right of body', () => {
@@ -373,8 +371,8 @@ describe('Popup v2', async () => {
                 <span>Hello World From Popup!</span>
             </Popup>
         );
-        cy.get('button');
-        cy.get('.next-overlay-wrapper');
+        cy.get('button').should('exist');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('html').trigger('mousedown');
         cy.get('.next-overlay-wrapper').should('not.exist');
@@ -387,14 +385,14 @@ describe('Popup v2', async () => {
             </Popup>
         );
         cy.get('button').trigger('mouseover');
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('button').trigger('mouseleave');
         cy.get('.content').trigger('mouseover');
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('button').trigger('mouseleave');
         cy.get('.content').trigger('mouseenter');
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('.content').trigger('mouseleave');
         cy.get('.next-overlay-wrapper').should('not.be.visible');
@@ -407,11 +405,11 @@ describe('Popup v2', async () => {
             </Popup>
         );
         cy.get('button').trigger('focus');
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('.content').trigger('mousedown');
         cy.get('button').focus();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('button').blur();
         cy.get('.next-overlay-wrapper').should('not.be.visible');
@@ -425,7 +423,7 @@ describe('Popup v2', async () => {
         );
         cy.get('button').should('be.visible');
         cy.get('button').click();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('button').click();
         cy.get('.next-overlay-wrapper').should('not.exist');
@@ -445,13 +443,13 @@ describe('Popup v2', async () => {
         );
 
         cy.get('button').click();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('button').click();
         cy.get('.next-overlay-wrapper').should('not.exist');
 
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.DOWN_ARROW });
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         // triggerClickKeycode 具备开/关功能
         cy.get('button').trigger('keydown', { keyCode: KEYCODE.DOWN_ARROW });
@@ -473,7 +471,7 @@ describe('Popup v2', async () => {
         cy.get('button').should('be.visible');
         cy.get('button').click();
         cy.wrap(onClick).should('be.calledOnce');
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('button').click();
         cy.wrap(onClick).should('be.calledTwice');
@@ -567,11 +565,11 @@ describe('Popup v2', async () => {
 
         cy.get('#btn1').click();
 
-        cy.get('.overlay-demo1');
+        cy.get('.overlay-demo1').should('exist');
 
         cy.get('.overlay-demo2').click();
-        cy.get('.overlay-demo2');
-        cy.get('.overlay-demo1');
+        cy.get('.overlay-demo2').should('exist');
+        cy.get('.overlay-demo1').should('exist');
     });
 
     it('should support setting canCloseByTrigger to false', () => {
@@ -587,10 +585,10 @@ describe('Popup v2', async () => {
             </Popup>
         );
         cy.get('button').click();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('button').click();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
     });
 
     it('should support setting custom container', () => {
@@ -649,7 +647,7 @@ describe('Popup v2', async () => {
         cy.mount(<PopupControlDemo />);
 
         cy.get('button').click();
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
 
         cy.get('button').click();
         cy.get('.next-overlay-wrapper').should('not.exist');
@@ -695,7 +693,7 @@ describe('Popup v2', async () => {
         // NOTE: 此处不能使用 ReactTestUtils.Simulate.click(btn);
         cy.get('#host').find('button').click({ force: true });
 
-        cy.get('.next-overlay-wrapper');
+        cy.get('.next-overlay-wrapper').should('exist');
         cy.get('#host').find('button').click({ force: true });
 
         cy.get('.next-overlay-wrapper').should('have.length', 0);
@@ -709,6 +707,6 @@ describe('Popup v2', async () => {
                 <br />
             </div>
         );
-        cy.get('.btn');
+        cy.get('.btn').should('exist');
     });
 });

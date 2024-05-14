@@ -1,10 +1,17 @@
 import { findDOMNode } from 'react-dom';
-import { OverlayProps, PositionProps } from '../types';
+import type { ReactElement, ReactNode } from 'react';
+import type { OverlayProps, PositionProps } from '../types';
 
 export default function findNode(
-    target?: Element | string | ((param: Element | undefined) => Element) | null,
+    target?:
+        | ReactElement
+        | ReactNode
+        | Element
+        | string
+        | ((param: Element | undefined) => Element)
+        | null,
     param?: Element | PositionProps | OverlayProps
-): Element | null | Text {
+): ReactNode | ReactElement | Element | null | Text | HTMLElement {
     if (!target) {
         return null;
     }
@@ -26,7 +33,7 @@ export default function findNode(
     }
 
     try {
-        return findDOMNode(target);
+        return findDOMNode(target as Element);
     } catch (err) {
         return target;
     }

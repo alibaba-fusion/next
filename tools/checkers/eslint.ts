@@ -20,7 +20,6 @@ function checkEslint() {
 
     const args: string[] = ['--no-error-on-unmatched-pattern'];
     const { fix, quiet } = ARGV;
-    console.log('fix: ', fix);
     if (fix) {
         args.push('--fix');
     }

@@ -1,19 +1,16 @@
-import React, { Component, Children } from 'react';
+import React, { Component, Children, type RefCallback } from 'react';
 import { findDOMNode, createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import { func } from '../util';
 import findNode from './utils/find-node';
-import type { AnyFunction } from '../util/func';
 import type { GatewayProps, GatewayState } from './types';
-
-export type { GatewayProps, GatewayState };
 
 const { makeChain } = func;
 
 const getContainerNode = (props: GatewayProps) => {
     const targetNode = findNode(props.target as Element);
-    return findNode(props.container as Element, targetNode as Element);
+    return findNode(props.container as Element, targetNode as Element) as HTMLElement;
 };
 
 class Gateway extends Component<GatewayProps, GatewayState> {
@@ -85,7 +82,7 @@ class Gateway extends Component<GatewayProps, GatewayState> {
             throw new Error('Can not set ref by string in Gateway, use function instead.');
         }
         child = React.cloneElement(child as React.ReactElement, {
-            ref: makeChain(this.saveChildRef, (child as { ref: AnyFunction<unknown> }).ref),
+            ref: makeChain(this.saveChildRef, (child as { ref: RefCallback<HTMLElement> }).ref),
         });
 
         return createPortal(child, containerNode as HTMLElement);

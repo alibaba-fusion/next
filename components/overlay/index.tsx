@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 import React from 'react';
 import ConfigProvider from '../config-provider';
 import { assignSubComponent } from '../util/component';
@@ -11,7 +12,7 @@ import Position from './position';
 import Popup1 from './popup';
 import Popup2 from './popup-v2';
 import { log } from '../util';
-import type { OverlayProps, PopupProps } from './types';
+import type { GatewayProps, GatewayState, OverlayProps, PopupProps, PositionProps } from './types';
 
 class Overlay extends React.Component<OverlayProps> {
     overlayRef: InstanceType<typeof Overlay1> | null;
@@ -57,8 +58,6 @@ class Overlay extends React.Component<OverlayProps> {
     }
 }
 
-// Eslint error Declare only one React component per file  react/no-multi-comp
-// eslint-disable-next-line
 class Popup extends React.Component<PopupProps> {
     overlay: InstanceType<typeof Popup1> | null;
     constructor(props: PopupProps) {
@@ -103,4 +102,4 @@ export default ConfigProvider.config(WithSubOverlay, {
     exportNames: ['getContent', 'getContentNode'],
 });
 
-export type { OverlayProps, PopupProps };
+export type { OverlayProps, PopupProps, GatewayProps, GatewayState, PositionProps };

@@ -2,7 +2,6 @@
 import React, { useState, useRef, useEffect, cloneElement } from 'react';
 import classNames from 'classnames';
 import Overlay from '@alifd/overlay';
-import { string } from 'yargs';
 
 import Animate from '../animate';
 
