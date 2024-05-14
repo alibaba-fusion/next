@@ -45,6 +45,7 @@ const locale: Locale = {
         hour: 'Masa',
         minute: 'Minit',
         second: 'kedua',
+        monthBeforeYear: false,
     },
     Dialog: {
         close: 'menutup',

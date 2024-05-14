@@ -45,6 +45,7 @@ const locale: Locale = {
         hour: '时',
         minute: '分',
         second: '秒',
+        monthBeforeYear: false,
     },
     Dialog: {
         close: '关闭',

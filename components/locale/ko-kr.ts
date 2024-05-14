@@ -45,6 +45,7 @@ const locale: Locale = {
         hour: '시',
         minute: '분',
         second: '초',
+        monthBeforeYear: false,
     },
     Dialog: {
         close: '종료',

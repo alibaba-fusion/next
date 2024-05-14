@@ -45,6 +45,7 @@ const locale: Locale = {
         hour: 'เวลา',
         minute: 'นาที',
         second: 'ครั้งที่สอง',
+        monthBeforeYear: false,
     },
     Dialog: {
         close: 'ปิดตัวลง',

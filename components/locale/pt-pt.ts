@@ -45,6 +45,7 @@ const locale = {
         hour: 'H',
         minute: 'M',
         second: 'S',
+        monthBeforeYear: false,
     },
     Dialog: {
         close: 'Fechar',
