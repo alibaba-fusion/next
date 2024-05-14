@@ -46,6 +46,7 @@ const locale: Locale = {
         hour: 'Giờ',
         minute: 'Phút',
         second: 'Giây',
+        monthBeforeYear: false,
     },
     Dialog: {
         close: 'Đóng',

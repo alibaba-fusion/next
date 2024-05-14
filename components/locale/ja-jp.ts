@@ -45,6 +45,7 @@ const locale: Locale = {
         hour: '時',
         minute: '分',
         second: '秒',
+        monthBeforeYear: false,
     },
     Dialog: {
         close: '閉鎖する',
