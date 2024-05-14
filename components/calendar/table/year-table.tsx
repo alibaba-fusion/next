@@ -4,6 +4,7 @@ import { type Moment } from 'moment';
 import Icon from '../../icon';
 import { isDisabledDate, YEAR_TABLE_COL_COUNT, YEAR_TABLE_ROW_COUNT } from '../utils';
 import { type YearTableProps } from '../types';
+import { func } from '../../util';
 
 class YearTable extends React.PureComponent<YearTableProps> {
     onYearCellClick(date: Moment) {
@@ -21,6 +22,7 @@ class YearTable extends React.PureComponent<YearTableProps> {
             goPrevDecade,
             goNextDecade,
             yearCellRender,
+            showOtherMonth,
         } = this.props;
         const currentYear = today.year();
         const selectedYear = value ? value.year() : null;
@@ -44,11 +46,11 @@ class YearTable extends React.PureComponent<YearTableProps> {
 
                 if (i === 0 && j === 0) {
                     title = locale.prevDecade;
-                    onClick = goPrevDecade;
+                    onClick = showOtherMonth ? goPrevDecade : func.noop;
                     content = <Icon type="arrow-left" size="xs" />;
                 } else if (i === lastRowIndex && j === lastColIndex) {
                     title = locale.nextDecade;
-                    onClick = goNextDecade;
+                    onClick = showOtherMonth ? goNextDecade : func.noop;
                     content = <Icon type="arrow-right" size="xs" />;
                 } else {
                     year = startYear + counter++;

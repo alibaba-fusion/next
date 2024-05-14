@@ -309,6 +309,7 @@ class RangeCalendar extends React.Component<RangeCalendarProps, RangeCalendarSta
                         visibleMonth={visibleMonth}
                         goPrevYear={this.goPrevYear}
                         goNextYear={this.goNextYear}
+                        showOtherMonth={showOtherMonth}
                     />
                 );
                 break;
@@ -330,6 +331,7 @@ class RangeCalendar extends React.Component<RangeCalendarProps, RangeCalendarSta
                         visibleMonth={visibleMonth}
                         goPrevDecade={this.goPrevDecade}
                         goNextDecade={this.goNextDecade}
+                        showOtherMonth={showOtherMonth}
                     />
                 );
                 break;

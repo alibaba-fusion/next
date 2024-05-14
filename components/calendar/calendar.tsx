@@ -246,6 +246,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
             disableChangeMode,
             yearRange,
             locale,
+            showOtherMonth,
             rtl,
             visibleMonth,
             momentLocale: localeData,

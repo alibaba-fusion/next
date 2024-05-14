@@ -30,6 +30,7 @@ class DatePanelHeader extends React.PureComponent<DatePanelHeaderProps> {
             visibleMonth,
             momentLocale,
             locale,
+            showOtherMonth,
             changeMode,
             goNextMonth,
             goNextYear,
@@ -50,7 +51,7 @@ class DatePanelHeader extends React.PureComponent<DatePanelHeaderProps> {
                 type="button"
                 className={btnCls}
                 title={monthLabel}
-                onClick={() => changeMode('month', 'start')}
+                onClick={() => showOtherMonth && changeMode('month', 'start')}
             >
                 {monthLabel}
             </button>
@@ -62,7 +63,7 @@ class DatePanelHeader extends React.PureComponent<DatePanelHeaderProps> {
                 className={btnCls}
                 // @ts-expect-error yearLabel 应转为 string
                 title={yearLabel}
-                onClick={() => changeMode('year', 'start')}
+                onClick={() => showOtherMonth && changeMode('year', 'start')}
             >
                 {yearLabel}
             </button>
@@ -122,48 +123,56 @@ class DatePanelHeader extends React.PureComponent<DatePanelHeaderProps> {
 
         return (
             <div className={`${prefix}calendar-panel-header`}>
-                <button
-                    type="button"
-                    title={locale.prevYear}
-                    className={`${btnCls} ${btnCls}-prev-year`}
-                    onClick={goPrevYear}
-                >
-                    <Icon
-                        type="arrow-double-left"
-                        className={`${prefix}calendar-symbol-prev-super`}
-                    />
-                </button>
-                <button
-                    type="button"
-                    title={locale.prevMonth}
-                    className={`${btnCls} ${btnCls}-prev-month`}
-                    onClick={goPrevMonth}
-                >
-                    <Icon type="arrow-left" className={`${prefix}calendar-symbol-prev`} />
-                </button>
+                {showOtherMonth && (
+                    <>
+                        <button
+                            type="button"
+                            title={locale.prevYear}
+                            className={`${btnCls} ${btnCls}-prev-year`}
+                            onClick={goPrevYear}
+                        >
+                            <Icon
+                                type="arrow-double-left"
+                                className={`${prefix}calendar-symbol-prev-super`}
+                            />
+                        </button>
+                        <button
+                            type="button"
+                            title={locale.prevMonth}
+                            className={`${btnCls} ${btnCls}-prev-month`}
+                            onClick={goPrevMonth}
+                        >
+                            <Icon type="arrow-left" className={`${prefix}calendar-symbol-prev`} />
+                        </button>
+                    </>
+                )}
                 <div className={`${prefix}calendar-panel-header-full`}>
                     {monthButton}
                     {yearButton}
                 </div>
-                <button
-                    type="button"
-                    title={locale.nextMonth}
-                    className={`${btnCls} ${btnCls}-next-month`}
-                    onClick={goNextMonth}
-                >
-                    <Icon type="arrow-right" className={`${prefix}calendar-symbol-next`} />
-                </button>
-                <button
-                    type="button"
-                    title={locale.nextYear}
-                    className={`${btnCls} ${btnCls}-next-year`}
-                    onClick={goNextYear}
-                >
-                    <Icon
-                        type="arrow-double-right"
-                        className={`${prefix}calendar-symbol-next-super`}
-                    />
-                </button>
+                {showOtherMonth && (
+                    <>
+                        <button
+                            type="button"
+                            title={locale.nextMonth}
+                            className={`${btnCls} ${btnCls}-next-month`}
+                            onClick={goNextMonth}
+                        >
+                            <Icon type="arrow-right" className={`${prefix}calendar-symbol-next`} />
+                        </button>
+                        <button
+                            type="button"
+                            title={locale.nextYear}
+                            className={`${btnCls} ${btnCls}-next-year`}
+                            onClick={goNextYear}
+                        >
+                            <Icon
+                                type="arrow-double-right"
+                                className={`${prefix}calendar-symbol-next-super`}
+                            />
+                        </button>
+                    </>
+                )}
             </div>
         );
     }
