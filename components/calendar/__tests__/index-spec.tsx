@@ -380,7 +380,7 @@ describe('RangeCalendar', () => {
             cy.get('.next-calendar-panel-header button[title="十月"]').should('have.length', 1);
         });
 
-        it.only('should change visible month by year', () => {
+        it('should change visible month by year', () => {
             cy.mount(<RangeCalendar shape="panel" defaultVisibleMonth={() => defaultVal} />);
             cy.get('.next-calendar-btn-prev-year').click();
             cy.get('.next-calendar-btn').eq(3).should('have.attr', 'title', '2016');
@@ -388,7 +388,7 @@ describe('RangeCalendar', () => {
             cy.get('.next-calendar-btn').eq(3).should('have.attr', 'title', '2017');
         });
 
-        it.only('should change decade', () => {
+        it('should change decade', () => {
             cy.mount(<RangeCalendar shape="panel" defaultVisibleMonth={() => defaultVal} />);
             cy.get('.next-calendar-btn').eq(3).click();
             cy.get('.next-calendar-btn-prev-decade').click();
