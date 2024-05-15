@@ -1,9 +1,9 @@
-// import { prefix } from 'inline-style-prefixer';
 import { filterUndefinedValue, stripObject } from './util';
 import { env } from '../util';
+import type { ResponsiveGridProps, Spacing, ObjectType } from './types';
 
 const { ieVersion } = env;
-const getPadding = padding => {
+const getPadding = (padding: Spacing) => {
     if (!Array.isArray(padding)) {
         return {
             padding,
@@ -11,7 +11,7 @@ const getPadding = padding => {
     }
 
     const attrs = ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'];
-    const paddings = {};
+    const paddings: { [key: string]: number | string } = {};
     let value;
 
     attrs.forEach((attr, index) => {
@@ -36,12 +36,12 @@ const getPadding = padding => {
     return paddings;
 };
 
-const getMargin = (size, { isNegative, half } = { isNegative: false, half: false }) => {
+const getMargin = (size: Spacing, { isNegative, half } = { isNegative: false, half: false }) => {
     if (!size) {
         return {};
     }
     const attrs = ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'];
-    const margins = {};
+    const margins: { [key: string]: number | string } = {};
     const param = 1 * (isNegative ? -1 : 1) * (half ? 0.5 : 1);
     let value;
 
@@ -72,19 +72,19 @@ const getMargin = (size, { isNegative, half } = { isNegative: false, half: false
     return margins;
 };
 
-const getChildMargin = spacing => {
-    return getMargin(spacing, { half: true });
+const getChildMargin = (spacing: Spacing) => {
+    return getMargin(spacing, { isNegative: false, half: true });
 };
 
-const getSpacingMargin = spacing => {
-    return getMargin(spacing, { half: true });
+const getSpacingMargin = (spacing: Spacing) => {
+    return getMargin(spacing, { isNegative: false, half: true });
 };
 
-const getSpacingHelperMargin = spacing => {
+const getSpacingHelperMargin = (spacing: Spacing) => {
     return getMargin(spacing, { isNegative: true, half: true });
 };
 
-const getFlexs = flex => {
+const getFlexs = (flex: ResponsiveGridProps['flex']) => {
     if (!Array.isArray(flex)) {
         return {
             flex,
@@ -92,7 +92,7 @@ const getFlexs = flex => {
     }
 
     const attrs = ['flexGrow', 'flexShrink', 'flexBasis'];
-    const flexs = {};
+    const flexs: { [key: string]: string | number } = {};
 
     flex.forEach((val, index) => {
         flexs[attrs[index]] = val;
@@ -101,7 +101,7 @@ const getFlexs = flex => {
     return flexs;
 };
 
-const getGridGap = gap => {
+const getGridGap = (gap: number | Array<number>) => {
     if (!Array.isArray(gap)) {
         return {
             gap,
@@ -109,7 +109,7 @@ const getGridGap = gap => {
     }
 
     const attrs = ['rowGap', 'columnGap'];
-    const gaps = {};
+    const gaps: { [key: string]: number } = {};
 
     gap.forEach((val, index) => {
         gaps[attrs[index]] = val;
@@ -118,29 +118,20 @@ const getGridGap = gap => {
     return gaps;
 };
 
-const getTemplateCount = counts => {
-    if (!isNaN(counts) || typeof counts === 'string') {
+const getTemplateCount = (counts: number | string) => {
+    if (!isNaN(counts as number) || typeof counts === 'string') {
         return `repeat(${counts}, minmax(0,1fr))`;
     }
 
     return counts;
 };
 
-// const outerProps = ['alignSelf', 'flexGrow', 'flexShrink', 'flexBasis', 'backgroundColor', 'boxShadow', 'borderRadius', 'borderWidth', 'borderStyle', 'borderColor', 'padding', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom'];
-
 const helperProps = ['margin', 'marginTop', 'marginLeft', 'marginRight', 'marginBottom'];
 
-const innerProps = [
-    'flexDirection',
-    'flexWrap',
-    // 'justifyContent',
-    'alignContent',
-    'alignItems',
-    'display',
-];
+const innerProps = ['flexDirection', 'flexWrap', 'alignContent', 'alignItems', 'display'];
 
-const filterOuterStyle = style => {
-    const props = {};
+const filterOuterStyle = (style: ObjectType) => {
+    const props: ObjectType = {};
 
     [...innerProps].forEach(key => {
         props[key] = style[key];
@@ -149,8 +140,8 @@ const filterOuterStyle = style => {
     return filterUndefinedValue(stripObject(style, props));
 };
 
-const filterHelperStyle = style => {
-    const props = {};
+const filterHelperStyle = (style: ObjectType) => {
+    const props: ObjectType = {};
     helperProps.forEach(key => {
         props[key] = style[key];
     });
@@ -161,8 +152,8 @@ const filterHelperStyle = style => {
     });
 };
 
-const filterInnerStyle = style => {
-    const props = {};
+const filterInnerStyle = (style: ObjectType) => {
+    const props: ObjectType = {};
 
     innerProps.forEach(key => {
         props[key] = style[key];
@@ -171,19 +162,16 @@ const filterInnerStyle = style => {
     return filterUndefinedValue(props);
 };
 
-const getGridChildProps = (props, device, gap) => {
-    const {
-        row = 'initial',
-        col = 'initial',
-        rowSpan = 1,
-        colSpan = 1,
-        // justifySelf,
-        // alignSelf,
-    } = props;
+const getGridChildProps = (
+    props: ResponsiveGridProps,
+    device: ResponsiveGridProps['device'],
+    gap?: ResponsiveGridProps['gap']
+) => {
+    const { row = 'initial', col = 'initial', rowSpan = 1, colSpan = 1 } = props;
 
     let totalSpan = 12;
-    let newColSpan = typeof colSpan === 'object' && 'desktop' in colSpan ? colSpan.desktop : colSpan;
-
+    let newColSpan =
+        typeof colSpan === 'object' && 'desktop' in colSpan ? colSpan.desktop : colSpan;
     ['tablet', 'phone'].forEach(deviceKey => {
         if (deviceKey === device) {
             if (typeof colSpan === 'object' && device in colSpan) {
@@ -192,11 +180,11 @@ const getGridChildProps = (props, device, gap) => {
                 switch (deviceKey) {
                     case 'tablet':
                         totalSpan = 8;
-                        newColSpan = colSpan > 5 ? 8 : colSpan > 2 ? 4 : 2;
+                        newColSpan = (colSpan as number) > 5 ? 8 : (colSpan as number) > 2 ? 4 : 2;
                         break;
                     case 'phone':
                         totalSpan = 4;
-                        newColSpan = colSpan > 2 ? 4 : 2;
+                        newColSpan = (colSpan as number) > 2 ? 4 : 2;
                         break;
                 }
             }
@@ -213,8 +201,8 @@ const getGridChildProps = (props, device, gap) => {
             ? {
                   display: 'inline-block',
                   width: gapLeft
-                      ? `calc(${(newColSpan / totalSpan) * 100}% - ${gapLeft}px)`
-                      : `${(newColSpan / totalSpan) * 100}%`,
+                      ? `calc(${((newColSpan as number) / totalSpan) * 100}% - ${gapLeft}px)`
+                      : `${((newColSpan as number) / totalSpan) * 100}%`,
               }
             : {};
 
@@ -223,15 +211,11 @@ const getGridChildProps = (props, device, gap) => {
         gridRowEnd: `span ${rowSpan}`,
         gridColumnStart: col,
         gridColumnEnd: `span ${newColSpan}`,
-        // gridRow: `${row} / span ${rowSpan}`,
-        // gridColumn: `${col} / span ${colSpan}`,
-        // justifySelf,
-        // alignSelf,
         ...ieChildFix,
     });
 };
 
-const getBoxChildProps = props => {
+const getBoxChildProps = (props: ResponsiveGridProps) => {
     const { alignSelf, flex } = props;
 
     return filterUndefinedValue({
@@ -253,19 +237,18 @@ export default ({
     rows,
     columns,
     justify,
-    // justifySelf,
     align,
     alignSelf,
     wrap,
     flex,
     padding,
     margin,
-}) => {
+}: ResponsiveGridProps) => {
     let style = {
-        ...getPadding(padding),
+        ...getPadding(padding!),
     };
 
-    let deviceColumns = 'auto';
+    let deviceColumns: number | string = 'auto';
 
     switch (device) {
         case 'phone':
@@ -280,27 +263,22 @@ export default ({
         default:
             break;
     }
-    const newColumns = !isNaN(columns) || typeof columns === 'string' ? columns : deviceColumns;
+    const newColumns =
+        !isNaN(columns as number) || typeof columns === 'string' ? columns : deviceColumns;
 
     switch (display) {
         case 'grid':
             style = {
-                // parent
-                ...getGridGap(gap),
-                gridTemplateRows: getTemplateCount(rows),
-                gridTemplateColumns: getTemplateCount(newColumns),
+                ...getGridGap(gap!),
+                gridTemplateRows: getTemplateCount(rows!),
+                gridTemplateColumns: getTemplateCount(newColumns!),
                 gridAutoFlow: `${direction || ''}${dense && ` dense`}`,
-                // justifyItems: justify,
-                // alignItems: align,
-                // child
                 ...getGridChildProps(
                     {
                         row,
                         rowSpan,
                         col,
                         colSpan,
-                        // justifySelf,
-                        // alignSelf,
                     },
                     device
                 ),
@@ -309,17 +287,15 @@ export default ({
             break;
         case 'flex':
             style = {
-                // parent
-                msFlexDirection: direction,
-                flexDirection: direction,
+                msFlexDirection: direction!,
+                flexDirection: direction!,
                 msFlexWrap: wrap ? 'wrap' : 'none',
                 flexWrap: wrap ? 'wrap' : 'nowrap',
-                msFlexPack: justify,
-                justifyContent: justify,
-                msFlexAlign: align,
-                alignItems: align,
-                ...getMargin(margin),
-                // child
+                msFlexPack: justify!,
+                justifyContent: justify!,
+                msFlexAlign: align!,
+                alignItems: align!,
+                ...getMargin(margin!),
                 ...getBoxChildProps({
                     alignSelf,
                     flex,
@@ -331,7 +307,6 @@ export default ({
             break;
     }
 
-    // return prefix(style);
     return filterUndefinedValue(style);
 };
 
@@ -344,5 +319,4 @@ export {
     filterOuterStyle,
     filterHelperStyle,
     getGridChildProps,
-    // getBoxChildProps,
 };

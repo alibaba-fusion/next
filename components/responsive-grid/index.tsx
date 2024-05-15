@@ -1,4 +1,9 @@
-import React, { Component } from 'react';
+import React, {
+    Component,
+    type CSSProperties,
+    type JSXElementConstructor,
+    type ReactNodeArray,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -6,25 +11,34 @@ import Box from '../box';
 import { obj, env } from '../util';
 import createStyle, { getGridChildProps } from './create-style';
 import Cell from './cell';
+import type { ResponsiveGridProps, CellProps } from './types';
 
 const { ieVersion } = env;
-const { pickOthers, isReactFragment } = obj;
+const { pickOthers, isReactFragmentElement } = obj;
 
-const createChildren = (children, device, gap) => {
+type WithTypeMarkComponent = JSXElementConstructor<unknown> & { _typeMark: string };
+
+const createChildren = (
+    children: React.ReactNode,
+    device: ResponsiveGridProps['device'],
+    gap: ResponsiveGridProps['gap']
+): ReactNodeArray | null => {
     const array = React.Children.toArray(children);
     if (!children) {
         return null;
     }
 
     return array.map(child => {
-        if (isReactFragment(child)) {
-            return createChildren(child.props.children, device, gap);
+        if (isReactFragmentElement(child)) {
+            return createChildren((child as React.ReactElement).props.children, device, gap);
         }
 
         if (
-            React.isValidElement(child) &&
+            React.isValidElement<{ style?: CSSProperties }>(child) &&
             ['function', 'object'].indexOf(typeof child.type) > -1 &&
-            ['form_item', 'responsive_grid_cell'].indexOf(child.type._typeMark) > -1
+            ['form_item', 'responsive_grid_cell'].indexOf(
+                (child.type as WithTypeMarkComponent)._typeMark
+            ) > -1
         ) {
             return React.cloneElement(child, {
                 style: {
@@ -38,7 +52,7 @@ const createChildren = (children, device, gap) => {
     });
 };
 
-const getStyle = (style = {}, props) => {
+const getStyle = (style = {}, props: ResponsiveGridProps) => {
     return {
         ...createStyle({ display: 'grid', ...props }),
         ...style,
@@ -48,32 +62,17 @@ const getStyle = (style = {}, props) => {
 /**
  * ResponsiveGrid
  */
-class ResponsiveGrid extends Component {
+class ResponsiveGrid extends Component<ResponsiveGridProps> {
     static _typeMark = 'responsive_grid';
+    static Cell = Cell;
     static propTypes = {
         prefix: PropTypes.string,
         className: PropTypes.any,
-        /**
-         * 设备，用来做自适应，默认为 PC
-         * @enumdesc 手机, 平板, PC
-         */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
         rows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        /**
-         * 分为几列， 默认是 12 列
-         */
         columns: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        /**
-         * 每个 cell 之间的间距， [bottom&top, right&left]
-         */
         gap: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number]),
-        /**
-         * 设置标签类型
-         */
         component: PropTypes.elementType,
-        /**
-         * 是否开启紧密模式，开启后尽可能能紧密填满，尽量不出现空格
-         */
         dense: PropTypes.bool,
         style: PropTypes.object,
     };
@@ -88,7 +87,6 @@ class ResponsiveGrid extends Component {
     render() {
         const {
             prefix,
-            component: View,
             style,
             className,
             children,
@@ -111,6 +109,7 @@ class ResponsiveGrid extends Component {
             component,
             dense,
         };
+        const View = component!;
 
         const others = pickOthers(Object.keys(ResponsiveGrid.propTypes), this.props);
 
@@ -125,7 +124,13 @@ class ResponsiveGrid extends Component {
         );
 
         return ieVersion ? (
-            <Box {...this.props} direction="row" wrap spacing={gap} children={createChildren(children, device, gap)} />
+            <Box
+                {...this.props}
+                direction="row"
+                wrap
+                spacing={gap}
+                children={createChildren(children, device, gap)}
+            />
         ) : (
             <View style={styleSheet} className={cls} {...others}>
                 {createChildren(children, device, gap)}
@@ -135,5 +140,7 @@ class ResponsiveGrid extends Component {
 }
 
 ResponsiveGrid.Cell = Cell;
+
+export type { ResponsiveGridProps, CellProps };
 
 export default ConfigProvider.config(ResponsiveGrid);

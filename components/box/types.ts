@@ -7,10 +7,12 @@ import { CommonProps } from '../util';
  */
 export type Spacing =
     | number
+    | [topAndRightAndBottomAndLeft: number]
     | [topAndBottom: number, rightAndLeft: number]
     | [top: number, rightAndLeft: number, bottom: number]
-    | [top: number, right: number, bottom: number, left: number];
-
+    | [top: number, right: number, bottom: number, left: number]
+    | undefined
+    | null;
 /**
  * @api Box
  */

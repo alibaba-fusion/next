@@ -1,18 +1,16 @@
 import { obj } from '../util';
+import type { ObjectType } from './types';
 
 const { isPlainObject } = obj;
-
 /**
  * 过滤 undefined 类型的值
- * @param  {*}  obj
- * @return {Object}
  */
-export function filterUndefinedValue(object) {
+export function filterUndefinedValue(object: ObjectType) {
     if (!isPlainObject(object)) {
         return object;
     }
 
-    const obj = {};
+    const obj: ObjectType = {};
 
     Object.keys(object).forEach(key => {
         const value = object[key];
@@ -27,12 +25,9 @@ export function filterUndefinedValue(object) {
 
 /**
  * 从 obj 中去除 subObj
- * @param  {*}  obj
- * @param  {*}  subObj
- * @return {Object}
  */
-export function stripObject(obj, subObj) {
-    const newObject = {};
+export function stripObject(obj: ObjectType, subObj: ObjectType) {
+    const newObject: ObjectType = {};
 
     Object.keys(obj).forEach(key => {
         if (!(key in subObj)) {
