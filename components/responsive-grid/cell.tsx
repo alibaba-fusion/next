@@ -2,26 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ConfigProvider from '../config-provider';
 import { obj } from '../util';
+import type { CellProps } from './types';
 
 const { pickOthers } = obj;
+
 /**
  * ResponsiveGrid.Cell
  */
-class Cell extends Component {
+class Cell extends Component<CellProps> {
     static _typeMark = 'responsive_grid_cell';
     static propTypes = {
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
-        /**
-         * 横向，占据几列
-         */
         colSpan: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
-        /**
-         * 纵向，占据几行
-         */
         rowSpan: PropTypes.number,
-        /**
-         * 设置标签类型
-         */
         component: PropTypes.elementType,
     };
 
@@ -31,7 +24,8 @@ class Cell extends Component {
     };
 
     render() {
-        const { component: View, children } = this.props;
+        const { component, children } = this.props;
+        const View = component!;
 
         const others = pickOthers(Object.keys(Cell.propTypes), this.props);
 
