@@ -528,6 +528,7 @@ class Upload extends Base {
             fileNameRender,
             actionRender,
             previewOnFileName,
+            itemRender,
             ...others
         } = this.props;
 
@@ -608,6 +609,7 @@ class Upload extends Base {
                     onSuccess={this.onSuccess}
                     onError={this.onError}
                     ref={this.saveUploaderRef}
+                    itemRender={itemRender}
                 >
                     {children}
                 </Uploader>
@@ -627,6 +629,7 @@ class Upload extends Base {
                         extraRender={extraRender}
                         rtl={rtl}
                         previewOnFileName={previewOnFileName}
+                        itemRender={itemRender}
                     />
                 ) : null}
             </div>
