@@ -22,7 +22,7 @@ const getNewChildren = (children, props) => {
     const { size, device, labelAlign, labelTextAlign, labelCol, wrapperCol, responsive, colon } = props;
 
     return React.Children.map(children, child => {
-        if (obj.isReactFragment(child)) {
+        if (obj.isReactFragmentElement(child)) {
             return getNewChildren(child.props.children, props);
         }
 

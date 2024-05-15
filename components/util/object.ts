@@ -361,23 +361,17 @@ export function isForwardRefComponent(
     return (!!$$typeof && $$typeof.toString().includes('react.forward_ref')) || $$typeof === 0xead0;
 }
 
-export function isReactFragment(component?: null): false;
-export function isReactFragment(component: { type: typeof React.Fragment }): true;
-export function isReactFragment(component: typeof React.Fragment): true;
-export function isReactFragment(component: unknown): boolean;
 /**
- * 判断是否为 ReactFragment
+ * 判断是否为 isReactFragmentElement
  * @param component - 传入的组件
  */
-export function isReactFragment(component?: unknown): boolean {
+export function isReactFragmentElement(component?: unknown): boolean {
     if (isNil(component)) {
         return false;
     }
 
-    if ((component as ReactElement).type) {
-        return (component as ReactElement).type === React.Fragment;
-    }
-    return component === React.Fragment;
+    const type = (component as ReactElement).type;
+    return type === React.Fragment;
 }
 
 /**
