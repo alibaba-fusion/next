@@ -20,7 +20,7 @@ class App extends React.Component {
     state = {
         dataSource,
     };
-    inputRef: Input | null;
+    inputRef: InstanceType<typeof Input> | null;
     loadMore = () => {
         const ds = this.state.dataSource;
         this.setState({
@@ -40,7 +40,6 @@ class App extends React.Component {
                             onClick={e => console.log(/onclick/, e)}
                             onMouseDown={e => {
                                 console.log(/onMouseDown/, e);
-                                //@ts-expect-error 待 Input ts 改造
                                 this.inputRef!.focus();
                             }}
                         />
