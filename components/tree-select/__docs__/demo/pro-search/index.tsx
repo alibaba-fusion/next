@@ -27,7 +27,7 @@ class Demo extends React.Component {
         clearTimeout(this.timeId);
 
         if (searchVal) {
-            this.timeId = setTimeout(() => {
+            this.timeId = window.setTimeout(() => {
                 this.setState({
                     treeData: [
                         {
@@ -36,7 +36,7 @@ class Demo extends React.Component {
                         },
                     ],
                 });
-            }, 500) as unknown as number;
+            }, 500);
         } else {
             this.setState({
                 treeData: defaultTreeData,

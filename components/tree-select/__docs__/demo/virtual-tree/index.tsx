@@ -9,7 +9,7 @@ function createDataSource(level = 3, count = 5) {
     let num = 0;
 
     const drill = (children: DataNode[], _level: number, _count: number) => {
-        children.forEach((child, i) => {
+        children.forEach(child => {
             child.children = new Array(_count).fill(null).map((item, k) => {
                 const key = `${child.key}-${k}`;
                 num++;

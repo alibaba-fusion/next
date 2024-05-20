@@ -4,9 +4,12 @@ import type { PopupProps } from '../overlay';
 import type { TreeProps } from '../tree';
 import type { ObjectItem } from '../select';
 import type { DataSourceItem, BaseProps as SelectProps } from '../select/types';
-import type { normalizeToArray } from '../tree/view/util';
 
 export type Key = string;
+export type KeyEntities = Record<
+    string,
+    ObjectItem & { pos?: string; key?: Key; checkboxDisabled?: boolean }
+>;
 
 type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'defaultValue' | 'onChange'>;
 
@@ -344,16 +347,16 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
 
 export interface TreeSelectState {
     visible: TreeSelectProps['visible'];
-    value: ReturnType<typeof normalizeToArray<DataSourceItem>>;
+    value: ObjectItem['value'][];
     searchedValue: string;
     expandedKeys: Key[];
     searchedKeys: Key[];
     retainedKeys: Key[];
     autoExpandParent: boolean;
     mapValueDS: Record<string, ObjectItem>;
-    _k2n: Record<Key, ObjectItem>;
-    _p2n: Record<Key, ObjectItem>;
-    _v2n: Record<Key, ObjectItem>;
+    _k2n: KeyEntities;
+    _p2n: KeyEntities;
+    _v2n: KeyEntities;
 }
 
 export interface DeprecatedTreeSelectProps extends TreeSelectProps {
