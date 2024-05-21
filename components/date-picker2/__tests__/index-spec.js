@@ -1215,6 +1215,22 @@ describe('Picker', () => {
             assert(getStrValue() === 'Feb 2, 2020');
             assert(wrapper.find(`.next-calendar2-header-text-field`).text() === `Feb2020`);
         })
+
+        // fix https://github.com/alibaba-fusion/next/issues/4790
+        it('Unable to enter space to enter time', () => {
+            wrapper = mount(
+                <DatePicker showTime />
+            );
+            changeInput('2020-11-11');
+            findInput().simulate('keydown', { keyCode: KEYCODE.SPACE });
+            assert(getStrValue(wrapper) === '2020-11-11 00:00:00');
+            wrapper = mount(
+                <RangePicker showTime />
+            );
+            changeInput('2021-01-12', 0);
+            findInput(0).simulate('keydown', { keyCode: KEYCODE.SPACE });
+            assert(getStrValue(wrapper).join(',') === '2021-01-12 00:00:00,');
+        })
     });
 });
 
