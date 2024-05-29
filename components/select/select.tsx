@@ -678,12 +678,15 @@ class Select extends Base<SelectProps, SelectState> {
      */
     handleSelectAll(e: UIEvent<HTMLElement>) {
         e && e.preventDefault();
-        let nextValues: ObjectItem['value'][];
+        let nextValues: DataSourceItem[];
 
         if (this.selectAllYet) {
             nextValues = [];
         } else {
-            nextValues = this.dataStore.getEnableDS().map(item => item.value);
+            nextValues = [
+                ...((this.state.value as DataSourceItem[]) || []),
+                ...this.dataStore.getEnableDS().map(item => item.value),
+            ];
         }
 
         // 直接传 values，减少 toString 操作
