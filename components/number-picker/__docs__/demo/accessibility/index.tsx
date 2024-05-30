@@ -8,7 +8,7 @@ class App extends React.Component {
         tip: '',
     };
 
-    onChange(value: number) {
+    onChange = (value: number) => {
         let num: string | number = '';
         if (value >= 0) {
             num = value;
@@ -19,7 +19,7 @@ class App extends React.Component {
             value: value,
             tip: `${num}`,
         });
-    }
+    };
     render() {
         const { value, tip } = this.state;
         return (
@@ -28,7 +28,7 @@ class App extends React.Component {
                 <NumberPicker
                     type="inline"
                     value={value}
-                    onChange={this.onChange.bind(this)}
+                    onChange={this.onChange}
                     upBtnProps={{ 'aria-label': 'increasing button' }}
                     downBtnProps={{ 'aria-label': 'decreasing button' }}
                     aria-labelledby="a11y-number-picker"

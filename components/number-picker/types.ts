@@ -1,12 +1,12 @@
-import React from 'react';
-import { CommonProps } from '../util';
-import { ButtonProps } from '../button';
+import type React from 'react';
+import type { CommonProps } from '../util';
+import type { ButtonProps } from '../button';
 import type { InputProps } from '../input';
 
-interface HTMLAttributesWeak extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
-    defaultValue?: number | string;
-    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>, ...args: any[]) => void;
-}
+type HTMLAttributesWeak = Omit<
+    React.HTMLAttributes<HTMLElement>,
+    'onChange' | 'defaultValue' | 'onKeyDown'
+>;
 
 /**
  * @api NumberPicker
@@ -89,7 +89,13 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
      */
     onChange?: (
         value: number | string | undefined,
-        e: (React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) & {
+        e: (
+            | React.ChangeEvent<HTMLInputElement>
+            | React.CompositionEvent<HTMLInputElement>
+            | React.KeyboardEvent<HTMLInputElement>
+            | React.FocusEvent<HTMLInputElement>
+            | React.KeyboardEvent<HTMLInputElement>
+        ) & {
             triggerType: 'up' | 'down' | undefined;
         }
     ) => void;
