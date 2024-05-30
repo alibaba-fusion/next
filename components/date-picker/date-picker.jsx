@@ -248,7 +248,12 @@ class DatePicker extends Component {
 
         if ('value' in props) {
             states.value = formatDateValue(props.value, formatStates.dateTimeFormat);
-            states.inputAsString = typeof props.value === 'string';
+            if (typeof props.value === 'string') {
+                states.inputAsString = true;
+            }
+            if (moment.isMoment(props.value)) {
+                states.inputAsString = false;
+            }
         }
 
         if ('visible' in props) {
