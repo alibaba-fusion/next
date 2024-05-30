@@ -279,8 +279,18 @@ class RangePicker extends Component {
             const values = getFormatValues(props.value, formatStates.dateTimeFormat);
             states.startValue = values[0];
             states.endValue = values[1];
-            states.inputAsString =
-                props.value && (typeof props.value[0] === 'string' || typeof props.value[1] === 'string');
+            if (
+                props.value &&
+                (typeof props.value[0] === 'string' || typeof props.value[1] === 'string')
+            ) {
+                states.inputAsString = true;
+            }
+            if (
+                props.value &&
+                (moment.isMoment(props.value[0]) || moment.isMoment(props.value[1]))
+            ) {
+                states.inputAsString = false;
+            }
         }
 
         if ('visible' in props) {

@@ -173,7 +173,12 @@ class YearPicker extends Component {
         const states = {};
         if ('value' in props) {
             states.value = formatDateValue(props.value, props.format);
-            states.inputAsString = typeof props.value === 'string';
+            if (typeof props.value === 'string') {
+                states.inputAsString = true;
+            }
+            if (moment.isMoment(props.value)) {
+                states.inputAsString = false;
+            }
         }
 
         if ('visible' in props) {
