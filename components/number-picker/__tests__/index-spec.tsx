@@ -95,12 +95,14 @@ describe('number-picker', () => {
             cy.get('@down').click();
             cy.get('@input').should('have.attr', 'value', 10);
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cy.get('@numberPicker').then(({ component, rerender }: any) => {
                 return rerender(React.cloneElement(component, { max: undefined }));
             });
             cy.get('@up').click();
             cy.get('@input').should('have.attr', 'value', 11);
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cy.get('@numberPicker').then(({ component, rerender }: any) => {
                 return rerender(React.cloneElement(component, { min: undefined }));
             });
@@ -513,6 +515,7 @@ describe('number-picker', () => {
         });
 
         it('should not correct "" as 0 when blur', () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const onChange = (value: any) => {
                 assert(value === undefined);
             };
@@ -550,6 +553,7 @@ describe('number-picker', () => {
         });
 
         it('should support input with -.x or .x or -0.0x', () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const onChange: any = (value: number) => {
                 assert(value === -0.2 || value === undefined);
             };
@@ -642,6 +646,7 @@ describe('number-picker', () => {
         });
 
         it('should support input with -0 ', () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const onChange: any = (value: number) => {
                 assert(value === -0 || value === undefined);
             };
@@ -1070,6 +1075,7 @@ describe('number-picker', () => {
             cy.mount(<NumberPicker value={undefined} />).as('NumberPicker3');
             cy.get('@NumberPicker3').document().find('input').should('have.value', '');
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const value: any = null;
             cy.mount(<NumberPicker value={value} />).as('NumberPicker4');
             cy.get('@NumberPicker4').document().find('input').should('have.value', '');
