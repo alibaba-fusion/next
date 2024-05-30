@@ -8,7 +8,7 @@ import Icon from '../icon';
 import Button from '../button';
 import Input from '../input';
 import { func, obj } from '../util';
-import { NumberPickerProps, NumberPickerState } from './types';
+import type { NumberPickerProps, NumberPickerState } from './types';
 
 const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
 const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER || -Math.pow(2, 53) + 1;
@@ -71,7 +71,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
         alwaysShowTrigger: false,
         stringMode: false,
     };
-    inputRef: HTMLInputElement | null;
+    inputRef: React.ComponentRef<typeof Input> | null;
 
     constructor(props: NumberPickerProps) {
         super(props);
@@ -178,7 +178,8 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
         // 展示值非法时，回退前一个有效值
         if (
             editable === true &&
-            !isNaN(displayValue as unknown as number) &&
+            // @ts-expect-error 使用 isNaN 检查字符串形式的数字在类型上可能不是最佳实践
+            !isNaN(displayValue) &&
             !this.withinMinMax(displayValue)
         ) {
             let valueCorrected = this.correctValue(displayValue);
@@ -200,7 +201,8 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
     withinMinMax(value: number | string) {
         const { max, min } = this.state;
         if (
-            isNaN(value as unknown as number) ||
+            // @ts-expect-error 使用 isNaN 检查字符串形式的数字在类型上可能不是最佳实践
+            isNaN(value) ||
             this.isGreaterThan(value, max) ||
             this.isGreaterThan(min, value)
         )
@@ -210,7 +212,8 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
 
     withinMin(value: number | string) {
         const { min } = this.state;
-        if (isNaN(value as unknown as number) || this.isGreaterThan(min, value)) return false;
+        // @ts-expect-error 使用 isNaN 检查字符串形式的数字在类型上可能不是最佳实践
+        if (isNaN(value) || this.isGreaterThan(min, value)) return false;
         return true;
     }
 
@@ -242,13 +245,20 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
      * 不触发: 1. 非数字（eg: - ）, 2. 小于最小值(输入需要过程由小变大)
      */
     shouldFireOnChange(value: string) {
-        if (isNaN(value as unknown as number) || !this.withinMin(value)) {
+        // @ts-expect-error 使用 isNaN 检查字符串形式的数字在类型上可能不是最佳实践
+        if (isNaN(value) || !this.withinMin(value)) {
             return false;
         }
         return true;
     }
 
-    onChange(value: string, e: React.FocusEvent<HTMLInputElement>) {
+    onChange(
+        value: string,
+        e:
+            | React.ChangeEvent<HTMLInputElement>
+            | React.CompositionEvent<HTMLInputElement>
+            | React.KeyboardEvent<HTMLInputElement>
+    ) {
         // ignore space & Compatible Chinese Input Method
         value = value.replace('。', '.').trim();
         // 过滤非数字
@@ -295,17 +305,16 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
             val = this.props.stringMode ? Big(val).toFixed() : Number(val);
         }
 
-        if (isNaN(val as unknown as number)) val = this.state.value;
+        // @ts-expect-error 使用 isNaN 检查字符串形式的数字在类型上可能不是最佳实践
+        if (isNaN(val)) val = this.state.value;
 
         if (`${val}` !== `${value}`) {
             // .0* 到 .x0* 不该触发onCorrect
             if (!/\.[0-9]*0+$/g.test(value)) {
-                const { onCorrect } = this.props;
-                onCorrect &&
-                    onCorrect({
-                        currentValue: val,
-                        oldValue: value,
-                    });
+                this.props.onCorrect!({
+                    currentValue: val,
+                    oldValue: value,
+                });
             }
         }
 
@@ -318,7 +327,10 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
         triggerType,
     }: {
         value: string | number;
-        e: React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>;
+        e:
+            | React.ChangeEvent<HTMLInputElement>
+            | React.CompositionEvent<HTMLInputElement>
+            | React.KeyboardEvent<HTMLInputElement>;
         triggerType?: 'up' | 'down';
     }) {
         if (!('value' in this.props) || value === this.props.value) {
@@ -326,17 +338,16 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
                 value,
             });
         }
-        const { onChange } = this.props;
-        onChange &&
-            onChange(isNaN(value as unknown as number) || value === '' ? undefined : value, {
-                ...e,
-                triggerType,
-            });
+
+        // @ts-expect-error 使用 isNaN 检查字符串形式的数字在类型上可能不是最佳实践
+        this.props.onChange!(isNaN(value) || value === '' ? undefined : value, {
+            ...e,
+            triggerType,
+        });
     }
 
     getPrecision() {
-        const { step } = this.props;
-        const stepString = step ? step.toString() : '';
+        const stepString = this.props.step!.toString();
         if (stepString.indexOf('e-') >= 0) {
             return parseInt(stepString.slice(stepString.indexOf('e-')), 10);
         }
@@ -345,7 +356,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
             precision = stepString.length - stepString.indexOf('.') - 1;
         }
 
-        return Math.max(precision, this.props.precision ?? 0);
+        return Math.max(precision, this.props.precision!);
     }
 
     getPrecisionFactor() {
@@ -383,7 +394,8 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
 
         let value = this.state.value;
         // 受控下，可能强制回填非法值
-        if (isNaN(value as unknown as number)) {
+        // @ts-expect-error 使用 isNaN 检查字符串形式的数字在类型上可能不是最佳实践
+        if (isNaN(value)) {
             return;
         }
 
@@ -410,7 +422,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
             return this.hackChrome(result);
         }
         return Big(val || '0')
-            .plus(step as string | number)
+            .plus(step!)
             .toFixed(this.getPrecision());
     }
 
@@ -423,7 +435,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
             return this.hackChrome(result);
         }
         return Big(val || '0')
-            .minus(step as string | number)
+            .minus(step!)
             .toFixed(this.getPrecision());
     }
 
@@ -441,12 +453,11 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
         return value;
     }
 
-    // 未被使用 ？？
-    // focus() {
-    //     this.inputRef && this.inputRef.getInstance().focus();
-    // }
+    focus() {
+        this.inputRef && this.inputRef.getInstance().focus();
+    }
 
-    saveInputRef(ref: HTMLInputElement) {
+    saveInputRef(ref: React.ComponentRef<typeof Input> | null) {
         this.inputRef = ref;
     }
 
@@ -480,24 +491,30 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
             alwaysShowTrigger,
         } = this.props;
         const { max, min } = this.state;
-        const type = device === 'phone' || device === 'tablet' || this.props.type === 'inline' ? 'inline' : 'normal';
+        const type =
+            device === 'phone' || device === 'tablet' || this.props.type === 'inline'
+                ? 'inline'
+                : 'normal';
 
         const prefixCls = `${prefix}number-picker`;
 
-        const cls = classNames({
-            [prefixCls]: true,
-            [`${prefixCls}-${type}`]: type,
-            [`${prefix}${size}`]: true,
-            [`${prefixCls}-show-trigger`]: alwaysShowTrigger,
-            [`${prefixCls}-no-trigger`]: !hasTrigger,
-            [`${prefix}disabled`]: disabled,
-            [className ?? '']: className,
-        });
+        const cls = classNames(
+            {
+                [prefixCls]: true,
+                [`${prefixCls}-${type}`]: type,
+                [`${prefix}${size}`]: true,
+                [`${prefixCls}-show-trigger`]: alwaysShowTrigger,
+                [`${prefixCls}-no-trigger`]: !hasTrigger,
+                [`${prefix}disabled`]: disabled,
+            },
+            className
+        );
 
         let upDisabled = false;
         let downDisabled = false;
         const value = this.state.value;
-        if (!isNaN(value as number)) {
+        // @ts-expect-error 使用 isNaN 检查字符串形式的数字在类型上可能不是最佳实践
+        if (!isNaN(value)) {
             if (!this.isGreaterThan(max, value)) {
                 upDisabled = true;
             }
@@ -522,11 +539,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
                         tabIndex={-1}
                         aria-label="icon-up"
                     >
-                        <Icon
-                            type="arrow-up"
-                            aria-hidden="true"
-                            className={`${prefixCls}-up-icon`}
-                        />
+                        <Icon type="arrow-up" className={`${prefixCls}-up-icon`} />
                     </Button>
                     <Button
                         {...downBtnProps}
@@ -539,11 +552,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
                         tabIndex={-1}
                         aria-label="icon-down"
                     >
-                        <Icon
-                            type="arrow-down"
-                            aria-hidden="true"
-                            className={`${prefixCls}-down-icon`}
-                        />
+                        <Icon type="arrow-down" className={`${prefixCls}-down-icon`} />
                     </Button>
                 </span>
             );
@@ -558,7 +567,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
                     tabIndex={-1}
                     aria-label="icon-minus"
                 >
-                    <Icon type="minus" aria-hidden="true" className={`${prefixCls}-minus-icon`} />
+                    <Icon type="minus" className={`${prefixCls}-minus-icon`} />
                 </Button>
             );
             addonAfter = (
@@ -571,7 +580,7 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
                     tabIndex={-1}
                     aria-label="icon-add"
                 >
-                    <Icon type="add" aria-hidden="true" className={`${prefixCls}-add-icon`} />
+                    <Icon type="add" className={`${prefixCls}-add-icon`} />
                 </Button>
             );
         }
@@ -579,10 +588,12 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
         const others = obj.pickOthers(NumberPicker.propTypes, this.props);
         const dataAttrs: object = obj.pickAttrsWith(this.props, 'data-');
 
-        const previewCls = classNames({
-            [`${prefix}form-preview`]: true,
-            [className ?? '']: !!className,
-        });
+        const previewCls = classNames(
+            {
+                [`${prefix}form-preview`]: true,
+            },
+            className
+        );
 
         if (isPreview) {
             if (typeof renderPreview === 'function') {
@@ -605,8 +616,8 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
                 <Input
                     {...others}
                     hasClear={false}
-                    max={max as number | undefined}
-                    min={min as number | undefined}
+                    max={max as number}
+                    min={min as number}
                     aria-label={'number picker'}
                     state={state === 'error' ? 'error' : undefined}
                     onBlur={this.onBlur}

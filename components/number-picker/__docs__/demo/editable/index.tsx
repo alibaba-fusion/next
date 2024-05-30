@@ -8,30 +8,30 @@ class App extends React.Component {
         value: 0,
     };
 
-    toogle() {
+    toogle = () => {
         this.setState({
             editable: !this.state.editable,
         });
-    }
+    };
 
-    onChange(value: number) {
+    onChange = (value: number) => {
         console.log('changed', value);
         this.setState({
             value: value,
         });
-    }
+    };
 
     render() {
         return (
             <div>
                 <NumberPicker
-                    onChange={this.onChange.bind(this)}
+                    onChange={this.onChange}
                     value={this.state.value}
                     editable={this.state.editable}
                 />
                 <br />
                 <br />
-                <Button onClick={this.toogle.bind(this)}>
+                <Button onClick={this.toogle}>
                     {!this.state.editable ? 'Toggle to editable' : 'Toggle to uneditable'}
                 </Button>
             </div>
