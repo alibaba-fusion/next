@@ -14,8 +14,15 @@ import {
 import { func, obj, KEYCODE, str } from '../util';
 import zhCN from '../locale/zh-cn';
 import { getValueDataSource, valueToSelectKey } from '../select/util';
-import type { Key, TreeSelectProps, TreeSelectState, KeyEntities } from './types';
-import type { KeyEntities as TreeKeyEntities, NodeElement } from '../tree/types';
+import type {
+    Key,
+    TreeSelectProps,
+    TreeSelectState,
+    KeyEntities,
+    TreeSelectDataType,
+    DataNode,
+} from './types';
+import type { NodeElement } from '../tree/types';
 
 const noop = () => {};
 const { Node: TreeNode } = Tree;
@@ -28,13 +35,13 @@ const flatDataSource = (props: TreeSelectProps) => {
     const _v2n: KeyEntities = {};
 
     if ('dataSource' in props) {
-        const loop = (data: DataSourceItem[], prefix = '0') =>
-            data.map((item: ObjectItem, index) => {
+        const loop = (data: TreeSelectDataType[], prefix = '0') =>
+            data.map((item: TreeSelectDataType, index) => {
                 const { value, children } = item;
                 const pos = `${prefix}-${index}`;
                 const key = (item.key as Key) || pos;
 
-                const newItem = { ...item, key, pos };
+                const newItem = { ...item, key, pos } as DataNode;
                 if (children && children.length) {
                     newItem.children = loop(children, pos);
                 }
@@ -229,7 +236,9 @@ class TreeSelect extends Component<TreeSelectProps, TreeSelectState> {
 
         this.state = {
             visible: typeof visible === 'undefined' ? defaultVisible : visible,
-            value: normalizeToArray(typeof value === 'undefined' ? defaultValue : value),
+            value: normalizeToArray(
+                typeof value === 'undefined' ? defaultValue : value
+            ) as TreeSelectState['value'],
             searchedValue: '',
             expandedKeys: [],
             searchedKeys: [],
@@ -238,16 +247,16 @@ class TreeSelect extends Component<TreeSelectProps, TreeSelectState> {
             // map of value => item, includes value not exist in dataSource
             mapValueDS: {},
             ...flatDataSource(props),
-        } as TreeSelectState;
+        };
 
         // init value/mapValueDS when defaultValue is not undefined
         if (this.state.value !== undefined) {
-            // @ts-expect-error should change logic
+            // @ts-expect-error Since `this.state` cannot be reassigned, use `@ts-expect-error` temporarily
             this.state.mapValueDS = getValueDataSource(
                 this.state.value,
                 this.state.mapValueDS
             ).mapValueDS;
-            // @ts-expect-error should change logic
+            // @ts-expect-error Since `this.state` cannot be reassigned, use `@ts-expect-error` temporarily
             this.state.value = this.state.value.map(v => {
                 return valueToSelectKey(v);
             });
@@ -336,26 +345,14 @@ class TreeSelect extends Component<TreeSelectProps, TreeSelectState> {
 
         let keys = this.getKeysByValue(value);
 
-        keys = getAllCheckedKeys(
-            keys,
-            this.state._k2n as unknown as TreeKeyEntities,
-            this.state._p2n as unknown as TreeKeyEntities
-        );
+        keys = getAllCheckedKeys(keys, this.state._k2n, this.state._p2n);
 
         switch (treeCheckedStrategy) {
             case 'parent':
-                keys = filterChildKey(
-                    keys,
-                    this.state._k2n as unknown as TreeKeyEntities,
-                    this.state._p2n as unknown as TreeKeyEntities
-                );
+                keys = filterChildKey(keys, this.state._k2n, this.state._p2n);
                 break;
             case 'child':
-                keys = filterParentKey(
-                    keys,
-                    this.state._k2n as unknown as TreeKeyEntities,
-                    this.state._p2n
-                );
+                keys = filterParentKey(keys, this.state._k2n, this.state._p2n);
                 break;
             default:
                 break;
@@ -653,7 +650,7 @@ class TreeSelect extends Component<TreeSelectProps, TreeSelectState> {
             const retainedNodes: NodeElement[] = [];
 
             data!.forEach((item, index) => {
-                const { children, ...others } = item as ObjectItem;
+                const { children, ...others } = item as TreeSelectDataType;
                 const pos = `${prefix}-${index}`;
                 const key = this.state._p2n[pos].key;
                 const addNode = (isParentMatched?: boolean, hide?: boolean) => {

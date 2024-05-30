@@ -4,12 +4,21 @@ import type { PopupProps } from '../overlay';
 import type { TreeProps } from '../tree';
 import type { ObjectItem } from '../select';
 import type { DataSourceItem, BaseProps as SelectProps } from '../select/types';
+import type { BasicDataNode } from '../tree/types';
 
 export type Key = string;
-export type KeyEntities = Record<
-    string,
-    ObjectItem & { pos?: string; key?: Key; checkboxDisabled?: boolean }
->;
+export interface DataNode extends ObjectItem, BasicDataNode {
+    key: Key;
+    pos: string;
+    children?: DataNode[];
+}
+export interface TreeSelectDataType extends ObjectItem, BasicDataNode {
+    children?: TreeSelectDataType[];
+}
+
+type A<T> = ObjectItem & BasicDataNode & T;
+
+export type KeyEntities = Record<string, DataNode>;
 
 type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'defaultValue' | 'onChange'>;
 
@@ -87,7 +96,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      * 数据源，该属性优先级高于 children
      * @en Data source (higher priority than children)
      */
-    dataSource?: DataSourceItem[];
+    dataSource?: TreeSelectDataType[];
 
     /**
      * （受控）当前值

@@ -1,4 +1,5 @@
 import type { DataNode, FieldDataNode, Key, KeyEntities, NodeElement } from '../types';
+import type { KeyEntities as TreeSelectKeyEntities } from '../../tree-select/types';
 import TreeNode from './tree-node';
 
 // export function normalizeToArray(keys: undefined | null): [];
