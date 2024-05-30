@@ -5,11 +5,13 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import moment from 'moment';
 import DatePicker from '../index';
+import Form from '../../form/index';
 import { KEYCODE } from '../../util';
 import '../style';
 
 Enzyme.configure({ adapter: new Adapter() });
 const { RangePicker, MonthPicker, YearPicker, WeekPicker } = DatePicker;
+const { FormItem } = Form;
 
 const delay = duration => new Promise(r => setTimeout(r, duration));
 const startValue = moment('2017-11-20', 'YYYY-MM-DD', true);
@@ -399,6 +401,29 @@ describe('DatePicker', () => {
             assert(ret.format('YYYY-MM-DD HH:mm:ss') === '2017-11-11 09:00:00');
         });
     });
+
+    describe('issue', () => {
+        it('handle value type consistency with Form components #2895', () => {
+            let ret;
+            const onChange = val => {
+                ret = val;
+            };
+            const wrapperA = mount(
+                <Form>
+                    <Form.Item>
+                        <DatePicker name="date" defaultValue="" onChange={onChange} />
+                    </Form.Item>
+                </Form>
+            );
+            wrapperA.find('.next-date-picker-input input').simulate('click');
+            wrapperA.find('td[title="2024-05-02"] .next-calendar-date').simulate('click');
+            assert(typeof ret === 'string');
+            wrapperA.find('i.next-input-clear-icon').simulate('click');
+            wrapperA.find('.next-date-picker-input input').simulate('click');
+            wrapperA.find('td[title="2024-05-02"] .next-calendar-date').simulate('click');
+            assert(typeof ret === 'string');
+        });
+    });
 });
 
 describe('YearPicker', () => {
@@ -555,6 +580,29 @@ describe('YearPicker', () => {
             assert(wrapper.find('.next-year-picker-input input').instance().value === '2018');
             wrapper.setProps({ value: '2019' });
             assert(wrapper.find('.next-year-picker-input input').instance().value === '2019');
+        });
+    });
+
+    describe('issue', () => {
+        it('handle value type consistency with Form components #2895', () => {
+            let ret;
+            const onChange = val => {
+                ret = val;
+            };
+            const wrapperA = mount(
+                <Form>
+                    <Form.Item>
+                        <YearPicker name="date" defaultValue="" onChange={onChange} />
+                    </Form.Item>
+                </Form>
+            );
+            wrapperA.find('.next-year-picker-input input').simulate('click');
+            wrapperA.find('.next-calendar-year').at(3).simulate('click');
+            assert(typeof ret === 'string');
+            wrapperA.find('i.next-input-clear-icon').simulate('click');
+            wrapperA.find('.next-year-picker-input input').simulate('click');
+            wrapperA.find('.next-calendar-year').at(3).simulate('click');
+            assert(typeof ret === 'string');
         });
     });
 });
@@ -735,6 +783,29 @@ describe('MonthPicker', () => {
             assert(wrapper.find('.next-month-picker-input input').instance().value === '2018-01');
             wrapper.setProps({ value: '2019-01-23' });
             assert(wrapper.find('.next-month-picker-input input').instance().value === '2019-01');
+        });
+    });
+
+    describe('issue', () => {
+        it('handle value type consistency with Form components #2895', () => {
+            let ret;
+            const onChange = val => {
+                ret = val;
+            };
+            const wrapperA = mount(
+                <Form>
+                    <Form.Item>
+                        <MonthPicker name="date" defaultValue="" onChange={onChange} />
+                    </Form.Item>
+                </Form>
+            );
+            wrapperA.find('.next-month-picker-input input').simulate('click');
+            wrapperA.find('td[title="Feb"] .next-calendar-month').simulate('click');
+            assert(typeof ret === 'string');
+            wrapperA.find('i.next-input-clear-icon').simulate('click');
+            wrapperA.find('.next-month-picker-input input').simulate('click');
+            wrapperA.find('td[title="Feb"] .next-calendar-month').simulate('click');
+            assert(typeof ret === 'string');
         });
     });
 });
@@ -1748,6 +1819,28 @@ describe('RangePicker', () => {
             assertPanelInputHasFocusClass(0);
 
             wrapper.unmount();
+        });
+
+        it('handle value type consistency with Form components #2895', () => {
+            let ret;
+            const onChange = val => {
+                ret = val;
+            };
+            const wrapperA = mount(
+                <Form>
+                    <Form.Item>
+                        <RangePicker name="date" defaultValue={['', '']} onChange={onChange} />
+                    </Form.Item>
+                </Form>
+            );
+            wrapperA.find('.next-range-picker-trigger-input input').at(0).simulate('click');
+            wrapperA.find('td[title="2024-05-01"] .next-calendar-date').at(0).simulate('click');
+            wrapperA.find('td[title="2024-05-06"] .next-calendar-date').at(0).simulate('click');
+            assert(typeof ret[0] === 'string' && typeof ret[1] === 'string');
+            wrapperA.find('i.next-input-clear-icon').simulate('click');
+            wrapperA.find('td[title="2024-05-01"] .next-calendar-date').at(0).simulate('click');
+            wrapperA.find('td[title="2024-05-06"] .next-calendar-date').at(0).simulate('click');
+            assert(typeof ret[0] === 'string' && typeof ret[1] === 'string');
         });
     });
 });
