@@ -397,6 +397,10 @@ class Range extends React.Component {
         }
     }
 
+    _onContextMenu(e) {
+        pauseEvent(e);
+    }
+
     _start(position) {
         this.setState({
             hasMovingClass: true,
@@ -509,6 +513,11 @@ class Range extends React.Component {
     _addDocumentMouseEvents() {
         this._onMouseMoveListener = events.on(document, 'mousemove', this._move.bind(this));
         this._onMouseUpListener = events.on(document, 'mouseup', this._end.bind(this));
+        this._onContextMenuListener = events.on(
+            document,
+            'contextmenu',
+            this._onContextMenu.bind(this)
+        );
     }
 
     _addDocumentTouchEvents() {
@@ -535,6 +544,11 @@ class Range extends React.Component {
         if (this._onTouchEndListener) {
             this._onTouchEndListener.off();
             this._onTouchEndListener = null;
+        }
+
+        if (this._onContextMenuListener) {
+            this._onContextMenuListener.off();
+            this._onContextMenuListener = null;
         }
     }
 
