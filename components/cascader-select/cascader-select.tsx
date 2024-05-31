@@ -264,9 +264,7 @@ class CascaderSelect extends Component {
         filter: (searchValue, path) => {
             return path.some(
                 item =>
-                    String(item.label)
-                        .toLowerCase()
-                        .indexOf(String(searchValue).toLowerCase()) > -1
+                    String(item.label).toLowerCase().indexOf(String(searchValue).toLowerCase()) > -1
             );
         },
         resultRender: (searchValue, path) => {
@@ -379,7 +377,10 @@ class CascaderSelect extends Component {
 
         for (let i = 0; i < newValue.length; i++) {
             for (let j = 0; j < newValue.length; j++) {
-                if (i !== j && this.isDescendantOrSelf(this.getPos(newValue[i]), this.getPos(newValue[j]))) {
+                if (
+                    i !== j &&
+                    this.isDescendantOrSelf(this.getPos(newValue[i]), this.getPos(newValue[j]))
+                ) {
                     newValue.splice(j, 1);
                     j--;
                 }
@@ -547,7 +548,10 @@ class CascaderSelect extends Component {
     }
 
     isLeaf(data) {
-        return !((data.children && data.children.length) || (!!this.props.loadData && !data.isLeaf));
+        return !(
+            (data.children && data.children.length) ||
+            (!!this.props.loadData && !data.isLeaf)
+        );
     }
 
     handleVisibleChange(visible, type) {
@@ -619,10 +623,7 @@ class CascaderSelect extends Component {
         const { prefix, popupProps } = this.props;
         const { v2 = false } = popupProps;
         if (!v2) {
-            const dropDownNode = this.popup
-                .getInstance()
-                .overlay.getInstance()
-                .getContentNode();
+            const dropDownNode = this.popup.getInstance().overlay.getInstance().getContentNode();
             const cascaderNode = dropDownNode.querySelector(`.${prefix}cascader`);
             if (cascaderNode) {
                 this.cascaderHeight = getStyle(cascaderNode, 'height');
@@ -680,11 +681,12 @@ class CascaderSelect extends Component {
             value = [...noExistedValues, ...value];
             // onChange 中的 data 参数也应该保留不存在的 value 的数据
             // 在 dataSource 异步加载的情况下，会出现value重复的现象，需要去重
-            data = [...noExistedValues.map(v => this._valueDataCache[v]).filter(v => v), ...data].filter(
-                (current, index, arr) => {
-                    return index === arr.indexOf(current);
-                }
-            );
+            data = [
+                ...noExistedValues.map(v => this._valueDataCache[v]).filter(v => v),
+                ...data,
+            ].filter((current, index, arr) => {
+                return index === arr.indexOf(current);
+            });
             // 更新缓存
             this.refreshValueDataCache(value);
         }

@@ -17,12 +17,18 @@ const ChinaArea = [
             {
                 value: '2974',
                 label: '西安',
-                children: [{ value: '2975', label: '西安市' }, { value: '2976', label: '高陵县' }],
+                children: [
+                    { value: '2975', label: '西安市' },
+                    { value: '2976', label: '高陵县' },
+                ],
             },
             {
                 value: '2980',
                 label: '铜川',
-                children: [{ value: '2981', label: '铜川市' }, { value: '2982', label: '宜君县' }],
+                children: [
+                    { value: '2981', label: '铜川市' },
+                    { value: '2982', label: '宜君县' },
+                ],
             },
         ],
     },
@@ -46,7 +52,9 @@ describe('CascaderSelect A11y', () => {
 
     // TODO Select support a11y
     it.skip('should not have any violations when empty', async () => {
-        wrapper = await testReact(<CascaderSelect aria-label="级联选择" dataSource={ChinaArea} defaultVisible />);
+        wrapper = await testReact(
+            <CascaderSelect aria-label="级联选择" dataSource={ChinaArea} defaultVisible />
+        );
         return wrapper;
     });
 });
