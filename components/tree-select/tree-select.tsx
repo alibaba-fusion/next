@@ -19,7 +19,7 @@ import type {
     TreeSelectProps,
     TreeSelectState,
     KeyEntities,
-    TreeSelectDataType,
+    TreeSelectDataItem,
     DataNode,
 } from './types';
 import type { NodeElement } from '../tree/types';
@@ -35,8 +35,8 @@ const flatDataSource = (props: TreeSelectProps) => {
     const _v2n: KeyEntities = {};
 
     if ('dataSource' in props) {
-        const loop = (data: TreeSelectDataType[], prefix = '0') =>
-            data.map((item: TreeSelectDataType, index) => {
+        const loop = (data: TreeSelectDataItem[], prefix = '0') =>
+            data.map((item: TreeSelectDataItem, index) => {
                 const { value, children } = item;
                 const pos = `${prefix}-${index}`;
                 const key = (item.key as Key) || pos;
@@ -650,7 +650,7 @@ class TreeSelect extends Component<TreeSelectProps, TreeSelectState> {
             const retainedNodes: NodeElement[] = [];
 
             data!.forEach((item, index) => {
-                const { children, ...others } = item as TreeSelectDataType;
+                const { children, ...others } = item as TreeSelectDataItem;
                 const pos = `${prefix}-${index}`;
                 const key = this.state._p2n[pos].key;
                 const addNode = (isParentMatched?: boolean, hide?: boolean) => {

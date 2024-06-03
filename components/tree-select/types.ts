@@ -12,11 +12,9 @@ export interface DataNode extends ObjectItem, BasicDataNode {
     pos: string;
     children?: DataNode[];
 }
-export interface TreeSelectDataType extends ObjectItem, BasicDataNode {
-    children?: TreeSelectDataType[];
+export interface TreeSelectDataItem extends ObjectItem, BasicDataNode {
+    children?: TreeSelectDataItem[];
 }
-
-type A<T> = ObjectItem & BasicDataNode & T;
 
 export type KeyEntities = Record<string, DataNode>;
 
@@ -96,7 +94,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
      * 数据源，该属性优先级高于 children
      * @en Data source (higher priority than children)
      */
-    dataSource?: TreeSelectDataType[];
+    dataSource?: TreeSelectDataItem[];
 
     /**
      * （受控）当前值

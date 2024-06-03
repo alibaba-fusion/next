@@ -4,11 +4,11 @@ import { KEYCODE } from '../../util';
 import TreeSelect from '../index';
 import '../style';
 import type { DataSourceItem, ObjectItem } from '../../select';
-import type { TreeSelectDataType } from '../types';
+import type { TreeSelectDataItem } from '../types';
 
 const TreeNode = TreeSelect.Node;
 
-const dataSource: TreeSelectDataType[] = [
+const dataSource: TreeSelectDataItem[] = [
     {
         label: '服装',
         className: 'k-1',
@@ -48,21 +48,21 @@ const dataSource: TreeSelectDataType[] = [
     },
 ];
 
-function freeze(dataSource: TreeSelectDataType[]) {
+function freeze(dataSource: TreeSelectDataItem[]) {
     return Object.freeze([
         ...dataSource.map(item => {
             const { children } = item;
             item.children =
-                children && (freeze(children as TreeSelectDataType[]) as TreeSelectDataType[]);
+                children && (freeze(children as TreeSelectDataItem[]) as TreeSelectDataItem[]);
             return Object.freeze({ ...item });
         }),
-    ]) as TreeSelectDataType[];
+    ]) as TreeSelectDataItem[];
 }
 
-function cloneData(data: TreeSelectDataType[], valueMap: Record<string, TreeSelectDataType> = {}) {
-    const loop = (data: TreeSelectDataType[]) =>
+function cloneData(data: TreeSelectDataItem[], valueMap: Record<string, TreeSelectDataItem> = {}) {
+    const loop = (data: TreeSelectDataItem[]) =>
         data.map(item => {
-            let newItem: TreeSelectDataType;
+            let newItem: TreeSelectDataItem;
 
             if ((item.value as string) in valueMap) {
                 newItem = { ...item, ...valueMap[item.value as string] };
@@ -70,7 +70,7 @@ function cloneData(data: TreeSelectDataType[], valueMap: Record<string, TreeSele
                 newItem = { ...item };
             }
             if (newItem.children) {
-                newItem.children = loop(newItem.children as TreeSelectDataType[]);
+                newItem.children = loop(newItem.children as TreeSelectDataItem[]);
             }
 
             return newItem;
@@ -788,7 +788,7 @@ describe('TreeSelect', () => {
     it('should support search well when use virtual', () => {
         const data = cloneData(dataSource);
 
-        data[0].children = (data[0].children as TreeSelectDataType[]).concat(
+        data[0].children = (data[0].children as TreeSelectDataItem[]).concat(
             new Array(100).fill(null).map((__, index) => {
                 return {
                     value: String(index),
@@ -830,7 +830,7 @@ describe('TreeSelect', () => {
     it('fix search bug when useVirtual', () => {
         const data = cloneData(dataSource);
 
-        data[0].children = (data[0].children as TreeSelectDataType[]).concat(
+        data[0].children = (data[0].children as TreeSelectDataItem[]).concat(
             new Array(100).fill(null).map((__, index) => {
                 return {
                     value: String(index),
