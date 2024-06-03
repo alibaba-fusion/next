@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TreeSelect } from '@alifd/next';
+import type { TreeSelectProps } from '@alifd/next/lib/tree-select';
 
 const treeData = [
     {
@@ -36,15 +37,9 @@ const treeData = [
     },
 ];
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(value, data) {
+    handleChange: TreeSelectProps['onChange'] = (value, data) => {
         console.log(value, data);
-    }
+    };
 
     render() {
         return (
