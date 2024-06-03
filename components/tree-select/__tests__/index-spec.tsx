@@ -1,22 +1,14 @@
 import React, { useState } from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import { dom, KEYCODE } from '../../util';
+import { debounce } from 'lodash';
+import { KEYCODE } from '../../util';
 import TreeSelect from '../index';
 import '../style';
-
-/* eslint-disable react/jsx-filename-extension */
-/* global describe it afterEach */
-/* global describe it beforeEach */
-
-Enzyme.configure({ adapter: new Adapter() });
+import type { DataSourceItem, ObjectItem } from '../../select';
+import type { TreeSelectDataItem } from '../types';
 
 const TreeNode = TreeSelect.Node;
-const { hasClass } = dom;
 
-const dataSource = [
+const dataSource: TreeSelectDataItem[] = [
     {
         label: '服装',
         className: 'k-1',
@@ -56,28 +48,29 @@ const dataSource = [
     },
 ];
 
-function freeze(dataSource) {
+function freeze(dataSource: TreeSelectDataItem[]) {
     return Object.freeze([
         ...dataSource.map(item => {
             const { children } = item;
-            item.children = children && freeze(children);
+            item.children =
+                children && (freeze(children as TreeSelectDataItem[]) as TreeSelectDataItem[]);
             return Object.freeze({ ...item });
         }),
-    ]);
+    ]) as TreeSelectDataItem[];
 }
 
-function cloneData(data, valueMap = {}) {
-    const loop = data =>
+function cloneData(data: TreeSelectDataItem[], valueMap: Record<string, TreeSelectDataItem> = {}) {
+    const loop = (data: TreeSelectDataItem[]) =>
         data.map(item => {
-            let newItem;
+            let newItem: TreeSelectDataItem;
 
-            if (item.value in valueMap) {
-                newItem = { ...item, ...valueMap[item.value] };
+            if ((item.value as string) in valueMap) {
+                newItem = { ...item, ...valueMap[item.value as string] };
             } else {
                 newItem = { ...item };
             }
             if (newItem.children) {
-                newItem.children = loop(newItem.children);
+                newItem.children = loop(newItem.children as TreeSelectDataItem[]);
             }
 
             return newItem;
@@ -86,13 +79,13 @@ function cloneData(data, valueMap = {}) {
     return loop(data);
 }
 
-function flattenData(dataSource) {
-    const flattenList = [];
-    const drill = data => {
+function flattenData(dataSource: ObjectItem[]) {
+    const flattenList: ObjectItem[] = [];
+    const drill = (data: ObjectItem[]) => {
         data.forEach(item => {
             const { children, ...newItem } = item;
             flattenList.push(newItem);
-            children && children.length && drill(children);
+            children && children.length && drill(children as ObjectItem[]);
         });
     };
 
@@ -101,162 +94,180 @@ function flattenData(dataSource) {
     return flattenList;
 }
 
-function assertDataAndNodes(dataSource) {
-    const labels = Array.prototype.map.call(
-        document.querySelectorAll('li.next-tree-node .next-tree-node-label'),
-        item => item.textContent
-    );
-
-    assert(flattenData(dataSource).every((item, index) => item.label === labels[index]));
+function shouldDataAndNodes(dataSource: ObjectItem[]) {
+    cy.get('li.next-tree-node .next-tree-node-label').then($el => {
+        flattenData(dataSource).every((item, index) =>
+            expect(item.label).to.equal($el[index].textContent?.trim())
+        );
+    });
 }
 
-function findTreeNodeByValue(value, container = document) {
-    return container.querySelector(`.k-${value}`);
+function findTreeNodeByValue(value: string) {
+    return cy.get(`.k-${value}`);
 }
 
-function createMap(data) {
-    const map = {};
+function createMap(data: ObjectItem[]) {
+    const map: Record<string, ObjectItem> = {};
 
-    const loop = (data, prefix = '0') => {
+    const loop = (data: ObjectItem[], prefix = '0') => {
         data.forEach((item, index) => {
             const { value, label, children, ...rests } = item;
             const pos = `${prefix}-${index}`;
-            map[value] = { ...rests, value, label, pos, key: pos };
+            map[value as string] = { ...rests, value, label, pos, key: pos };
             if (children && children.length) {
-                loop(children, pos);
+                loop(children as ObjectItem[], pos);
             }
-        })
-    }
+        });
+    };
     loop(data);
 
     return map;
 }
 
-function selectTreeNode(value, container) {
-    ReactTestUtils.Simulate.click(findTreeNodeByValue(value, container).querySelector('.next-tree-node-label'));
+function selectTreeNode(value: string) {
+    findTreeNodeByValue(value).find('.next-tree-node-label').first().click();
 }
 
-function checkTreeNode(value) {
-    const input = findTreeNodeByValue(value).querySelector('.next-checkbox input');
-    ReactTestUtils.Simulate.click(input);
+function checkTreeNode(value: string) {
+    findTreeNodeByValue(value).find('.next-checkbox input').click();
 }
 
-function assertSelected(value, selected, container) {
-    assert(hasClass(findTreeNodeByValue(value, container).querySelector('.next-tree-node-inner'), 'next-selected') === selected);
+function shouldSelected(value: string, selected: boolean) {
+    findTreeNodeByValue(value)
+        .find('.next-tree-node-inner')
+        .should(selected ? 'have.class' : 'not.have.class', 'next-selected');
 }
 
-function assertChecked(value, checked) {
-    assert(hasClass(findTreeNodeByValue(value).querySelector('.next-checkbox-wrapper'), 'checked') === checked);
+function shouldChecked(value: string, checked: boolean) {
+    findTreeNodeByValue(value)
+        .find('.next-checkbox-wrapper')
+        .should(checked ? 'have.class' : 'not.have.class', 'checked');
 }
 
-function getLabels(wrapper) {
-    return wrapper.find('span.next-tag-body').map(node => node.text().trim());
+function getLabels() {
+    return cy.get('span.next-tag-body').then($el => {
+        return $el.map((index, el) => {
+            return Cypress.$(el).text().trim();
+        });
+    });
 }
 
+function shouldHideElement() {
+    cy.document().then(document => {
+        const overlay = document.querySelector('.next-overlay-wrapper');
+        if (overlay) {
+            cy.wrap(overlay).should($el => {
+                expect($el).to.have.css('display', 'none');
+            });
+        } else {
+            expect(overlay).to.be.null;
+        }
+    });
+}
+
+function shouldShowElement() {
+    cy.document().then(document => {
+        const overlay = document.querySelector('.next-overlay-wrapper');
+        expect(overlay).to.not.be.null;
+        cy.wrap(overlay).should($el => {
+            expect($el).to.not.have.css('display', 'none');
+        });
+    });
+}
 
 const _v2n = createMap(dataSource);
 
 describe('TreeSelect', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
-
-        nodeListArr.forEach(node => {
-            node.parentNode.removeChild(node);
-        });
-    });
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
-    it('should show dropdown when click select box', done => {
-        wrapper = mount(<TreeSelect dataSource={dataSource} />);
-        wrapper.find('.next-select').simulate('click');
-        setTimeout(() => {
-            assert(document.querySelector('.next-tree-select-dropdown'));
-            done();
-        }, 1000);
+    it('should show dropdown when click select box', () => {
+        cy.mount(<TreeSelect dataSource={dataSource} />);
+        cy.get('.next-select').trigger('click');
+        cy.get('.next-tree-select-dropdown').should('exist');
     });
 
     it('should show dropdown when set defaultVisible to true', () => {
-        wrapper = mount(<TreeSelect defaultVisible />);
-        assert(document.querySelector('.next-tree-select-dropdown'));
+        cy.mount(<TreeSelect defaultVisible />);
+        cy.get('.next-tree-select-dropdown').should('exist');
     });
 
     it('should render by loop TreeNode', () => {
-        const loop = data =>
+        const loop = (data: ObjectItem[]) =>
             data.map(item => {
                 return (
-                    <TreeNode key={item.value} {...item}>
-                        {item.children ? loop(item.children) : null}
+                    <TreeNode key={item.value as string} {...item}>
+                        {item.children ? loop(item.children as ObjectItem[]) : null}
                     </TreeNode>
                 );
             });
-        wrapper = mount(
+        cy.mount(
             <TreeSelect defaultVisible treeDefaultExpandAll>
                 {loop(dataSource)}
             </TreeSelect>
-        );
-        assertDataAndNodes(dataSource);
+        ).as('Demo');
+        shouldDataAndNodes(dataSource);
 
         const newDataSource = [...dataSource];
         newDataSource.push({
             label: '鞋',
             value: '7',
         });
-        wrapper.setProps({
+
+        cy.rerender('Demo', {
             children: loop(newDataSource),
         });
-        assertDataAndNodes(newDataSource);
+        shouldDataAndNodes(newDataSource);
     });
 
     it('should render by dataSource', () => {
-        wrapper = mount(<TreeSelect defaultVisible treeDefaultExpandAll dataSource={dataSource} />);
-        assertDataAndNodes(dataSource);
+        cy.mount(<TreeSelect defaultVisible treeDefaultExpandAll dataSource={dataSource} />).as(
+            'Demo'
+        );
+        shouldDataAndNodes(dataSource);
 
         const newDataSource = [...dataSource];
         newDataSource.push({
             label: '鞋',
             value: '7',
         });
-        wrapper.setProps({
-            dataSource: newDataSource,
-        });
-        assertDataAndNodes(newDataSource);
+        cy.rerender('Demo', { dataSource: newDataSource });
+        shouldDataAndNodes(newDataSource);
     });
 
     it('should render by defaultValue', () => {
-        wrapper = mount(<TreeSelect defaultValue="4" defaultVisible treeDefaultExpandAll dataSource={dataSource} />);
-        assertSelected('4', true);
+        cy.mount(
+            <TreeSelect
+                defaultValue="4"
+                defaultVisible
+                treeDefaultExpandAll
+                dataSource={dataSource}
+            />
+        ).as('Demo');
+        shouldSelected('4', true);
 
-        wrapper.setProps({ defaultValue: '6' });
-        wrapper.update();
-        assertSelected('6', false);
+        cy.rerender('Demo', {
+            defaultValue: '6',
+        });
+        shouldSelected('6', false);
     });
 
     it('should render by detail defaultValue', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultValue={{ label: '外套', value: '4' }}
                 defaultVisible
                 treeDefaultExpandAll
                 dataSource={dataSource}
             />
-        );
-        assertSelected('4', true);
+        ).as('Demo');
+        shouldSelected('4', true);
 
-        wrapper.setProps({ defaultValue: { label: '裙子', value: '6' } });
-        wrapper.update();
-        assertSelected('6', false);
+        cy.rerender('Demo', {
+            defaultValue: { label: '裙子', value: '6' },
+        });
+        shouldSelected('6', false);
     });
 
     it('should render by value', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultValue="4"
                 value="6"
@@ -265,19 +276,20 @@ describe('TreeSelect', () => {
                 treeDefaultExpandAll
                 dataSource={dataSource}
             />
-        );
-        assertSelected('4', false);
-        assertSelected('6', true);
+        ).as('Demo');
+        shouldSelected('4', false);
+        shouldSelected('6', true);
 
         const newValue = ['4', '6'];
-        wrapper.setProps({ value: newValue });
-        wrapper.update();
-        assertSelected('4', true);
-        assertSelected('6', true);
+        cy.rerender('Demo', {
+            value: newValue,
+        });
+        shouldSelected('4', true);
+        shouldSelected('6', true);
     });
 
     it('should render by detail value', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultValue={{ label: '外套', value: '4' }}
                 value={{ label: '裙子', value: '6' }}
@@ -286,33 +298,39 @@ describe('TreeSelect', () => {
                 treeDefaultExpandAll
                 dataSource={dataSource}
             />
-        );
-        assertSelected('4', false);
-        assertSelected('6', true);
-
+        ).as('Demo');
+        shouldSelected('4', false);
+        shouldSelected('6', true);
         const newValue = [
             { label: '外套', value: '4' },
             { label: '裙子', value: '6' },
         ];
-        wrapper.setProps({ value: newValue });
-        wrapper.update();
-        assertSelected('4', true);
-        assertSelected('6', true);
+        cy.rerender('Demo', {
+            value: newValue,
+        });
+        shouldSelected('4', true);
+        shouldSelected('6', true);
     });
 
     it('should render by defaultValue when enable treeCheckable', () => {
-        wrapper = mount(
-            <TreeSelect defaultValue="4" defaultVisible treeCheckable treeDefaultExpandAll dataSource={dataSource} />
-        );
-        assertChecked('4', true);
-
-        wrapper.setProps({ defaultValue: '6' });
-        wrapper.update();
-        assertChecked('6', false);
+        cy.mount(
+            <TreeSelect
+                defaultValue="4"
+                defaultVisible
+                treeCheckable
+                treeDefaultExpandAll
+                dataSource={dataSource}
+            />
+        ).as('Demo');
+        shouldChecked('4', true);
+        cy.rerender('Demo', {
+            defaultValue: '6',
+        });
+        shouldChecked('6', false);
     });
 
     it('should render by value when enable treeCheckable', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultValue="4"
                 value="6"
@@ -321,51 +339,52 @@ describe('TreeSelect', () => {
                 treeDefaultExpandAll
                 dataSource={dataSource}
             />
-        );
-        assertChecked('4', false);
-        assertChecked('6', true);
-
+        ).as('Demo');
+        shouldChecked('4', false);
+        shouldChecked('6', true);
         const newValue = ['4', '6'];
-        wrapper.setProps({ value: newValue });
-        wrapper.update();
-        assertChecked('4', true);
-        assertChecked('6', true);
+        cy.rerender('Demo', {
+            value: newValue,
+        });
+        shouldChecked('4', true);
+        shouldChecked('6', true);
     });
 
-    it('should trigger onChange and close dropdown when select tree node', done => {
-        let triggered = false;
+    it('should trigger onChange and close dropdown when select tree node', () => {
+        const onClick = cy.spy();
+
         const expectValue = '4';
         const expectItem = _v2n[expectValue];
-        const handleChange = (value, data) => {
-            triggered = true;
-            assert(value === expectValue);
-            assert.deepEqual(data, expectItem);
+        const handleChange = (
+            value: DataSourceItem | DataSourceItem[],
+            data: ObjectItem | ObjectItem[] | null
+        ) => {
+            onClick();
+            expect(value).to.equal(expectValue);
+            expect(data).to.deep.equal(expectItem);
         };
 
-        wrapper = mount(
-            <TreeSelect defaultVisible treeDefaultExpandAll dataSource={dataSource} onChange={handleChange} />
+        cy.mount(
+            <TreeSelect
+                defaultVisible
+                treeDefaultExpandAll
+                dataSource={dataSource}
+                onChange={handleChange}
+            />
         );
         selectTreeNode(expectValue);
-        wrapper.update();
-        assert(triggered);
-
-        setTimeout(() => {
-            assert(
-                !document.querySelector('.next-overlay-wrapper') ||
-                    document.querySelector('.next-overlay-wrapper').style.display === 'none'
-            );
-            done();
-        }, 1000);
+        cy.wrap(onClick).should('be.calledOnce');
+        shouldHideElement();
     });
 
-    it('should not trigger onChange but close dropdown when select selected node', done => {
-        let triggered = false;
+    it('should not trigger onChange but close dropdown when select selected node', () => {
+        const onClick = cy.spy();
         const value = '4';
         const handleChange = () => {
-            triggered = true;
+            onClick();
         };
 
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultVisible
                 treeDefaultExpandAll
@@ -375,30 +394,25 @@ describe('TreeSelect', () => {
             />
         );
         selectTreeNode(value);
-        wrapper.update();
-        assert(!triggered);
-
-        setTimeout(() => {
-            assert(
-                !document.querySelector('.next-overlay-wrapper') ||
-                    document.querySelector('.next-overlay-wrapper').style.display === 'none'
-            );
-            done();
-        }, 1000);
+        cy.wrap(onClick).should('not.be.called');
+        shouldHideElement();
     });
 
-    it('should trigger onChange but not close dropdown when select node and enable multiple', done => {
-        let triggered = false;
+    it('should trigger onChange but not close dropdown when select node and enable multiple', () => {
+        const onClick = cy.spy();
         const initValue = '4';
         const appendValue = '6';
         const expectValue = [initValue, appendValue];
-        const handleChange = (value, data) => {
-            triggered = true;
-            assert.deepEqual(value, expectValue);
-            assert.deepEqual(data, expectValue.map(v => _v2n[v]));
+        const handleChange = (
+            value: DataSourceItem | DataSourceItem[],
+            data: ObjectItem | ObjectItem[] | null
+        ) => {
+            onClick();
+            expect(value).to.deep.equal(expectValue);
+            expect(data).to.deep.equal(expectValue.map(v => _v2n[v]));
         };
 
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultVisible
                 multiple
@@ -409,29 +423,24 @@ describe('TreeSelect', () => {
             />
         );
         selectTreeNode(appendValue);
-        wrapper.update();
-        assert(triggered);
-
-        setTimeout(() => {
-            assert(
-                document.querySelector('.next-overlay-wrapper') &&
-                    document.querySelector('.next-overlay-wrapper').style.display !== 'none'
-            );
-            done();
-        }, 1000);
+        cy.wrap(onClick).should('be.calledOnce');
+        shouldShowElement();
     });
 
     it('should trigger onChange when check node', () => {
-        let triggered = false;
+        const onClick = cy.spy();
         const initValue = '4';
         const appendValue = '6';
         const expectValue = ['4', '3'];
-        const handleChange = (value, data) => {
-            triggered = true;
-            assert.deepEqual(value, expectValue);
-            assert.deepEqual(data, expectValue.map(v => _v2n[v]));
+        const handleChange = (
+            value: DataSourceItem | DataSourceItem[],
+            data: ObjectItem | ObjectItem[] | null
+        ) => {
+            onClick();
+            expect(value).to.deep.equal(expectValue);
+            expect(data).to.deep.equal(expectValue.map(v => _v2n[v]));
         };
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultVisible
                 treeCheckable
@@ -442,23 +451,26 @@ describe('TreeSelect', () => {
                 value={initValue}
                 onChange={handleChange}
             />
-        );
-        checkTreeNode(appendValue);
-        wrapper.update();
-        assert(triggered);
+        ).then(() => {
+            checkTreeNode(appendValue);
+            cy.wrap(onClick).should('be.calledOnce');
+        });
     });
 
     it('should trigger onChange when check node and enable treeCheckStrictly', () => {
-        let triggered = false;
+        const onClick = cy.spy();
         const appendValue = '6';
         const expectValue = [appendValue];
-        const handleChange = (value, data) => {
-            triggered = true;
-            assert.deepEqual(value, expectValue);
-            assert.deepEqual(data, expectValue.map(v => _v2n[v]));
+        const handleChange = (
+            value: DataSourceItem | DataSourceItem[],
+            data: ObjectItem | ObjectItem[] | null
+        ) => {
+            onClick();
+            expect(value).to.deep.equal(expectValue);
+            expect(data).to.deep.equal(expectValue.map(v => _v2n[v]));
         };
 
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultVisible
                 treeCheckable
@@ -467,14 +479,14 @@ describe('TreeSelect', () => {
                 dataSource={dataSource}
                 onChange={handleChange}
             />
-        );
-        checkTreeNode(appendValue);
-        wrapper.update();
-        assert(triggered);
+        ).then(() => {
+            checkTreeNode(appendValue);
+            cy.wrap(onClick).should('be.calledOnce');
+        });
     });
 
     it('should render tag when defaultValue [{ label, value}]', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultValue={[{ label: 'test1', value: '123' }]}
                 treeDefaultExpandAll
@@ -484,11 +496,13 @@ describe('TreeSelect', () => {
             />
         );
 
-        assert.deepEqual(getLabels(wrapper), ['test1']);
+        getLabels().then($labels => {
+            expect($labels.get()).to.deep.equal(['test1']);
+        });
     });
 
     it('should set parent node checked if all child nodes is checked even treeCheckedStrategy is "child"', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultVisible
                 treeCheckable
@@ -500,11 +514,11 @@ describe('TreeSelect', () => {
             />
         );
 
-        assertChecked('3', true);
+        shouldChecked('3', true);
     });
 
     it('should render parent tag when set treeCheckedStrategy to all', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 treeCheckable
                 dataSource={cloneData(dataSource, {
@@ -514,18 +528,27 @@ describe('TreeSelect', () => {
                 treeCheckedStrategy="parent"
             />
         );
-        assert.deepEqual(getLabels(wrapper), ['女装']);
+        getLabels().then($labels => {
+            expect($labels.get()).to.deep.equal(['女装']);
+        });
     });
 
     it('should render child tag when set treeCheckedStrategy to all', () => {
-        wrapper = mount(
-            <TreeSelect treeCheckable dataSource={dataSource} defaultValue={['6']} treeCheckedStrategy="child" />
+        cy.mount(
+            <TreeSelect
+                treeCheckable
+                dataSource={dataSource}
+                defaultValue={['6']}
+                treeCheckedStrategy="child"
+            />
         );
-        assert.deepEqual(getLabels(wrapper), ['裙子']);
+        getLabels().then($labels => {
+            expect($labels.get()).to.deep.equal(['裙子']);
+        });
     });
 
     it('should render all tag when set treeCheckedStrategy to all', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultVisible
                 treeDefaultExpandAll
@@ -537,15 +560,13 @@ describe('TreeSelect', () => {
                 treeCheckedStrategy="all"
             />
         );
-        assert.deepEqual(getLabels(wrapper), ['女装', '裙子']);
 
-        wrapper
-            .find('div.next-tag')
-            .at(0)
-            .find('.next-icon-close')
-            .simulate('click');
-        wrapper.update();
-        assert.deepEqual(getLabels(wrapper), []);
+        getLabels().then($labels => {
+            expect($labels.get()).to.deep.equal(['女装', '裙子']);
+        });
+
+        cy.get('div.next-tag').eq(0).find('.next-icon-close').click();
+        cy.get('span.next-tag-body').should('not.exist');
     });
 
     it('should support preview mode render', () => {
@@ -576,29 +597,38 @@ describe('TreeSelect', () => {
             },
         ];
 
-        wrapper = mount(<TreeSelect dataSource={dataSource} isPreview defaultValue={'2975'} />);
-        assert(wrapper.find('.next-form-preview').length > 0);
-        assert(wrapper.find('.next-form-preview').text() === '西安市');
-        wrapper.setProps({
-            renderPreview: items => {
-                assert(items.length === 1);
-                assert(items[0].label === '西安市');
+        cy.mount(<TreeSelect dataSource={dataSource} isPreview defaultValue={'2975'} />).as('Demo');
+        cy.get('.next-form-preview')
+            .should('exist')
+            .and($el => {
+                expect($el.text()).to.equal('西安市');
+            });
+
+        cy.rerender('Demo', {
+            renderPreview: (items: ObjectItem[]) => {
+                expect(items.length).to.equal(1);
+                expect(items[0].label).to.equal('西安市');
                 return 'Hello World';
             },
         });
-        assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        cy.get('.next-form-preview').then($el => {
+            expect($el.text()).to.equal('Hello World');
+        });
     });
 
     it('should trigger onChange when remove tag', () => {
-        let triggered = false;
+        const onClick = cy.spy();
         const value = ['6'];
-        const handleChange = (value, data) => {
-            triggered = true;
-            assert.deepEqual(value, []);
-            assert.deepEqual(data, []);
+        const handleChange = (
+            value: ObjectItem | ObjectItem[],
+            data: ObjectItem | ObjectItem[]
+        ) => {
+            onClick();
+            expect(value).to.deep.equal([]);
+            expect(data).to.deep.equal([]);
         };
 
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultVisible
                 multiple
@@ -608,52 +638,48 @@ describe('TreeSelect', () => {
                 onChange={handleChange}
             />
         );
-        wrapper.find('.next-icon-close').simulate('click');
-        wrapper.update();
-        assert(triggered);
+        cy.get('.next-icon-close').click();
+        cy.wrap(onClick).should('be.called');
     });
 
-    it('should support multiple with hasClear', done => {
-        wrapper = mount(
+    it('should support multiple with hasClear', () => {
+        cy.mount(
             <TreeSelect
                 multiple
                 hasClear
                 dataSource={dataSource}
                 value={['yyy', 'abcd']}
                 onChange={value => {
-                    assert(value === null);
-                    done();
+                    expect(value).to.equal(null);
                 }}
             />
         );
-
-        wrapper.find('i.next-icon-delete-filling').simulate('click');
+        cy.get('i.next-icon-delete-filling').click({ force: true });
     });
 
     it('should trigger onSearch when search some keyword', () => {
-        let triggered = false;
+        const onClick = cy.spy();
         const searchedValue = '外套';
-        const handleSearch = value => {
-            triggered = true;
-            assert(value === searchedValue);
+        const handleSearch = (value: string) => {
+            onClick();
+            expect(value).to.equal(searchedValue);
         };
 
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultVisible
                 treeDefaultExpandAll
                 dataSource={dataSource}
                 showSearch
-                onSearch={handleSearch}
+                onSearch={debounce(handleSearch, 20)} // Debounce for simulate Cypress action type below
             />
         );
-        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
-        wrapper.update();
-        assert(triggered);
+        cy.get('.next-select-trigger-search input').type('外套');
+        cy.wrap(onClick).should('be.calledOnce');
     });
 
     it('should hightlight matched node when search some keyword', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect defaultVisible treeDefaultExpandAll showSearch>
                 <TreeNode label="string" value="string" key="string">
                     <TreeNode
@@ -666,10 +692,8 @@ describe('TreeSelect', () => {
             </TreeSelect>
         );
 
-        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 'element' } });
-        wrapper.update();
-        const node = document.querySelector('.react-element');
-        assert(hasClass(node, 'next-filtered'));
+        cy.get('.next-select-trigger-search input').type('element');
+        cy.get('.react-element').should('have.class', 'next-filtered');
     });
 
     it('should ignore case when search', () => {
@@ -692,43 +716,51 @@ describe('TreeSelect', () => {
                 ],
             },
         ];
-        wrapper = mount(<TreeSelect defaultVisible dataSource={treeData} treeDefaultExpandAll showSearch />);
+        cy.mount(
+            <TreeSelect defaultVisible dataSource={treeData} treeDefaultExpandAll showSearch />
+        );
 
         ['INPUT', 'input'].forEach(kw => {
-            wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: kw } });
-            wrapper.update();
+            cy.get('.next-select-trigger-search input').clear(); // Need to clear first
+            cy.get('.next-select-trigger-search input').type(kw);
 
-            const node = document.querySelector('.next-filtered');
-            assert(node && node.querySelector('.next-tree-node-label') !== 'Input');
+            cy.get('.next-filtered').find('.next-tree-node-label').should('have.text', 'Input');
         });
     });
 
     // https://github.com/alibaba-fusion/next/issues/2029
     it('fix bug after setState onSearch', () => {
         function Demo() {
-            const [data, setData] = useState([{ label: 'element', key: '0', className: 'react-element' }]);
+            const [data, setData] = useState([
+                { label: 'element', key: '0', className: 'react-element' },
+            ]);
 
             function handleChange() {
                 setData([{ label: 'react-element-new', key: '1', className: 'react-element-new' }]);
             }
             return (
-                <TreeSelect defaultVisible treeDefaultExpandAll showSearch dataSource={data} onSearch={handleChange} />
+                <TreeSelect
+                    defaultVisible
+                    treeDefaultExpandAll
+                    showSearch
+                    dataSource={data}
+                    onSearch={debounce(handleChange, 20)}
+                />
             );
         }
 
-        wrapper = mount(<Demo />);
+        cy.mount(<Demo />);
 
-        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 'element' } });
-        wrapper.update();
-
-        assert(!hasClass(document.querySelector('.react-element'), 'next-filtered'));
-        assert(hasClass(document.querySelector('.react-element-new'), 'next-filtered'));
+        cy.get('.next-select-trigger-search input').type('element');
+        cy.get('.react-element').should('not.exist');
+        cy.get('.react-element-new').should('have.class', 'next-filtered');
     });
 
     it('should only show matched node and its parent node when search some keyword', () => {
-        wrapper = mount(<TreeSelect defaultVisible treeDefaultExpandAll dataSource={dataSource} showSearch />);
-        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
-        wrapper.update();
+        cy.mount(
+            <TreeSelect defaultVisible treeDefaultExpandAll dataSource={dataSource} showSearch />
+        );
+        cy.get('.next-select-trigger-search input').type('外套');
 
         const expectTreeData = [
             {
@@ -748,24 +780,23 @@ describe('TreeSelect', () => {
                 ],
             },
         ];
-        assertDataAndNodes(expectTreeData);
+        shouldDataAndNodes(expectTreeData);
 
-        ['3', '5'].forEach(v => assert(findTreeNodeByValue(v).style.display === 'none'));
+        ['3', '5'].forEach(v => findTreeNodeByValue(v).should('have.css', { display: 'none' }));
     });
 
     it('should support search well when use virtual', () => {
         const data = cloneData(dataSource);
 
-        data[0].children = data[0].children.concat(
-            new Array(100).fill().map((__, index) => {
-                index = String(index);
+        data[0].children = (data[0].children as TreeSelectDataItem[]).concat(
+            new Array(100).fill(null).map((__, index) => {
                 return {
-                    value: index,
-                    label: index,
+                    value: String(index),
+                    label: String(index),
                 };
             })
         );
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultVisible
                 treeDefaultExpandAll
@@ -778,8 +809,7 @@ describe('TreeSelect', () => {
                 }}
             />
         );
-        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 77 } });
-        wrapper.update();
+        cy.get('.next-select-trigger-search input').type('77');
 
         const expectTreeData = [
             {
@@ -793,23 +823,22 @@ describe('TreeSelect', () => {
                 ],
             },
         ];
-        assertDataAndNodes(expectTreeData);
+        shouldDataAndNodes(expectTreeData);
     });
 
     // https://github.com/alibaba-fusion/next/issues/2271
     it('fix search bug when useVirtual', () => {
         const data = cloneData(dataSource);
 
-        data[0].children = data[0].children.concat(
-            new Array(100).fill().map((__, index) => {
-                index = String(index);
+        data[0].children = (data[0].children as TreeSelectDataItem[]).concat(
+            new Array(100).fill(null).map((__, index) => {
                 return {
-                    value: index,
-                    label: index,
+                    value: String(index),
+                    label: String(index),
                 };
             })
         );
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultVisible
                 useVirtual
@@ -823,29 +852,25 @@ describe('TreeSelect', () => {
                 }}
             />
         );
-        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 77 } });
+        cy.get('.next-select-trigger-search input').type('77');
 
-        wrapper.find('.next-tree-node[value="77"] input').simulate('click');
-        wrapper.update();
+        cy.get('.next-tree-node[value="77"] input').click();
 
-        assert(wrapper.find('.next-tree-node[value="1"] .indeterminate').length);
+        cy.get('.next-tree-node[value="1"] .indeterminate').should('exist');
     });
 
     it('should render not found if dataSource is empty or there is no search result', () => {
-        wrapper = mount(<TreeSelect showSearch defaultVisible dataSource={[]} />);
-        assert(document.querySelector('.next-tree-select-not-found').textContent.trim() === 'Not Found');
+        cy.mount(<TreeSelect showSearch defaultVisible dataSource={[]} />).as('Demo');
+        cy.get('.next-tree-select-not-found').should('have.text', 'Not Found');
+        cy.rerender('Demo', { dataSource });
+        cy.get('.next-tree').should('exist');
 
-        wrapper.setProps({ dataSource });
-        wrapper.update();
-        assert(document.querySelector('.next-tree'));
-
-        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '哈哈' } });
-        wrapper.update();
-        assert(document.querySelector('.next-tree-select-not-found').textContent.trim() === 'Not Found');
+        cy.get('.next-select-trigger-search input').type('哈哈');
+        cy.get('.next-tree-select-not-found').should('have.text', 'Not Found');
     });
 
     it('should turn off local search when filterLocal is false', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 defaultVisible
                 filterLocal={false}
@@ -860,36 +885,41 @@ describe('TreeSelect', () => {
             />
         );
 
-        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
-        wrapper.update();
+        cy.get('.next-select-trigger-search input').type('外套');
 
-        assertDataAndNodes(dataSource);
+        shouldDataAndNodes(dataSource);
     });
 
     it('should not clear search value when autoClearSearch is false', () => {
-        wrapper = mount(
-            <TreeSelect dataSource={dataSource} showSearch autoClearSearch={false} style={{ width: 200 }} />
+        cy.mount(
+            <TreeSelect
+                dataSource={dataSource}
+                showSearch
+                autoClearSearch={false}
+                style={{ width: 200 }}
+            />
         );
 
-        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
-        wrapper.find('.next-tree-node[value="4"]').simulate('click');
-        wrapper.update();
+        cy.get('.next-select-trigger-search input').type('外套');
+        cy.get('.next-tree-node[value="4"]').click();
 
-        assert(wrapper.find('.next-select-trigger-search input').prop('value') === '外套');
+        cy.get('.next-select-trigger-search input').should('have.value', '外套');
     });
 
     it('fix issues use isPreview when value is empty', () => {
-        wrapper = mount(<TreeSelect isPreview dataSource={dataSource} />);
-        assert(wrapper.find('.next-form-preview').instance().textContent === '');
+        cy.mount(<TreeSelect isPreview dataSource={dataSource} />);
+        cy.get('.next-form-preview').should('have.text', '');
     });
 
     it('should support immutable ', () => {
-        wrapper = mount(<TreeSelect defaultVisible treeDefaultExpandAll dataSource={freeze(dataSource)} />);
-        assertDataAndNodes(dataSource);
+        cy.mount(
+            <TreeSelect defaultVisible treeDefaultExpandAll dataSource={freeze(dataSource)} />
+        );
+        shouldDataAndNodes(dataSource);
     });
 
-    it('should support keyboard', done => {
-        wrapper = mount(
+    it('should support keyboard', () => {
+        cy.mount(
             <TreeSelect
                 dataSource={cloneData(dataSource, {
                     2: {
@@ -898,23 +928,19 @@ describe('TreeSelect', () => {
                 })}
             />
         );
-        wrapper.find('.next-select').simulate('click');
+        cy.get('.next-select').click();
 
-        setTimeout(() => {
-            assert(document.querySelector('.next-tree'));
-            wrapper.find('.next-select-trigger-search input').simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(
-                document.activeElement ===
-                    document.querySelectorAll(
-                        '.next-tree  > .next-tree-node > .next-tree-node-inner > .next-tree-node-label-wrapper'
-                    )[0]
-            );
-            done();
-        }, 2000);
+        cy.get('.next-tree').should('exist');
+        cy.get('.next-select-trigger-search input').trigger('keydown', { keyCode: KEYCODE.DOWN });
+        cy.get(
+            '.next-tree > .next-tree-node > .next-tree-node-inner > .next-tree-node-label-wrapper'
+        ).then($el => {
+            cy.document().its('activeElement').should('eq', $el[0]);
+        });
     });
 
     it('should support single line display', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 dataSource={dataSource}
                 treeCheckable
@@ -925,17 +951,12 @@ describe('TreeSelect', () => {
             />
         );
 
-        assert(wrapper.find('.next-select-tag-compact').length > 0);
-        assert(
-            wrapper
-                .find('.next-select-tag-compact')
-                .text()
-                .includes('3/6')
-        );
+        cy.get('.next-select-tag-compact').should('exist');
+        cy.get('.next-select-tag-compact').should('include.text', '3/6');
     });
 
     it('should support valueRender', () => {
-        wrapper = mount(
+        cy.mount(
             <TreeSelect
                 dataSource={dataSource}
                 value={['2']}
@@ -944,24 +965,17 @@ describe('TreeSelect', () => {
                 }}
             />
         );
-        assert(wrapper.find('.next-select-values').length > 0);
-        assert(
-            wrapper
-                .find('.next-select-values')
-                .text()
-                .trim() === '服装/男装'
-        );
+        cy.get('.next-select-values').should('exist');
+        cy.contains('.next-select-values', '服装/男装');
     });
 
     describe('should support useDetailValue', () => {
         it('Support dataSource mode', () => {
-            const div = document.createElement('div');
-            document.body.appendChild(div);
-            const handleChange = value => {
-                assert(typeof value === 'object');
-                assert(value.value === '1');
+            const handleChange = (value: ObjectItem) => {
+                expect(typeof value).to.equal('object');
+                expect(value.value).to.equal('1');
             };
-            const wrapper = mount(
+            cy.mount(
                 <TreeSelect
                     followTrigger
                     useDetailValue
@@ -969,20 +983,16 @@ describe('TreeSelect', () => {
                     treeDefaultExpandAll
                     dataSource={dataSource}
                     onChange={handleChange}
-                />,
-                { attachTo: div }
+                />
             );
-            selectTreeNode('1', div);
-            wrapper.unmount();
+            selectTreeNode('1');
         });
         it('Support children mode', () => {
-            const div = document.createElement('div');
-            document.body.appendChild(div);
-            const handleChange = value => {
-                assert(typeof value === 'object');
-                assert(value.value === '1');
+            const handleChange = (value: ObjectItem) => {
+                expect(typeof value).to.equal('object');
+                expect(value.value).to.equal('1');
             };
-            const wrapper = mount(
+            cy.mount(
                 <TreeSelect
                     followTrigger
                     useDetailValue
@@ -999,18 +1009,16 @@ describe('TreeSelect', () => {
                             <TreeNode key="6" value="6" label="Table" />
                         </TreeNode>
                     </TreeNode>
-                </TreeSelect>,
-                { attachTo: div }
+                </TreeSelect>
             );
-            selectTreeNode('1', div);
-            wrapper.unmount();
+            selectTreeNode('1');
         });
         it('Control mode available', () => {
-            const div = document.createElement('div');
-            document.body.appendChild(div);
-
             function App() {
-                const [value, setValue] = useState({ label: 'Component', value: '1' });
+                const [value, setValue] = useState({
+                    label: 'Component',
+                    value: '1',
+                } as ObjectItem);
 
                 return (
                     <TreeSelect
@@ -1019,8 +1027,10 @@ describe('TreeSelect', () => {
                         visible
                         treeDefaultExpandAll
                         value={value}
-                        onChange={v => {
-                            assert(v && typeof v === 'object' && v.value);
+                        onChange={(v: ObjectItem) => {
+                            expect(v).to.exist;
+                            expect(typeof v).to.equal('object');
+                            expect(v.value).to.exist;
                             setValue(v);
                         }}
                     >
@@ -1037,13 +1047,11 @@ describe('TreeSelect', () => {
                 );
             }
 
-            const wrapper = mount(<App />, { attachTo: div });
-            assert(wrapper.find('.next-select-values').text().trim() === 'Component');
-            selectTreeNode('2', div);
-            assert(wrapper.find('.next-select-values').text().trim() === 'Form');
-            assertSelected('2', true, div);
-            wrapper.unmount();
+            cy.mount(<App />);
+            cy.get('.next-select-values').should('include.text', 'Component');
+            selectTreeNode('2');
+            cy.get('.next-select-values').should('include.text', 'Form');
+            shouldSelected('2', true);
         });
     });
-
 });

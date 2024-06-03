@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TreeSelect } from '@alifd/next';
+import type { DataNode } from '@alifd/next/es/tree/types';
+import type { TreeSelectProps } from '@alifd/next/lib/tree-select';
 
 function createDataSource(level = 3, count = 5) {
     const dataSource = [];
     let num = 0;
 
-    const drill = (children, _level, _count) => {
-        children.forEach((child, i) => {
+    const drill = (children: DataNode[], _level: number, _count: number) => {
+        children.forEach(child => {
             child.children = new Array(_count).fill(null).map((item, k) => {
                 const key = `${child.key}-${k}`;
                 num++;
@@ -32,23 +34,19 @@ function createDataSource(level = 3, count = 5) {
 }
 
 class Demo extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            dataSource: [],
-        };
-    }
-
-    onChange(keys, info) {
-        console.log('onSelect', keys, info);
-    }
+    state = {
+        dataSource: [],
+    };
 
     componentDidMount() {
         this.setState({
             dataSource: createDataSource(),
         });
     }
+
+    onChange: TreeSelectProps['onChange'] = (keys, info) => {
+        console.log('onSelect', keys, info);
+    };
 
     render() {
         const dataSource = this.state.dataSource;
