@@ -2,21 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Radio, CascaderSelect } from '@alifd/next';
 import 'whatwg-fetch';
+import type { CascaderSelectProps } from '@alifd/next/types/cascader-select';
+import type { RadioProps } from '@alifd/next/types/radio';
 
 const RadioGroup = Radio.Group;
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            triggerType: 'click',
-            data: [],
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleTriggerTypeChange = this.handleTriggerTypeChange.bind(this);
-    }
+    state = {
+        triggerType: 'click' as const,
+        data: [],
+    };
 
     componentDidMount() {
         fetch('https://os.alipayobjects.com/rmsportal/ODDwqcDFTLAguOvWEolX.json')
@@ -25,15 +20,15 @@ class Demo extends React.Component {
             .catch(e => console.log(e));
     }
 
-    handleChange(value, data, extra) {
+    handleChange: CascaderSelectProps['onChange'] = (value, data, extra) => {
         console.log(value, data, extra);
-    }
+    };
 
-    handleTriggerTypeChange(triggerType) {
+    handleTriggerTypeChange: RadioProps['onChange'] = triggerType => {
         this.setState({
             triggerType,
         });
-    }
+    };
 
     render() {
         return (

@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
 import '../../style';
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
-import CascaderSelect from '../../index';
+import { Demo, DemoGroup, DemoHead, type DemoProps, initDemo } from '../../../demo-helper';
+import CascaderSelect, { type CascaderSelectProps } from '../../index';
 import ConfigProvider from '../../../config-provider';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
+import { type CascaderDataItem } from '../../../cascader';
 
 const i18nMap = {
     'en-us': {
@@ -15,31 +16,31 @@ const i18nMap = {
     'zh-cn': {
         label: '标签：',
     },
-};
+} as const;
 
 const createDataSource = () => {
-    const dataSource = [];
+    const dataSource: CascaderSelectProps['dataSource'] = [];
 
     for (let i = 0; i < 10; i++) {
-        const level1 = {
+        const level1: CascaderDataItem = {
             label: `${i}`,
             value: `${i}`,
             children: [],
         };
         dataSource.push(level1);
         for (let j = 0; j < 10; j++) {
-            const level2 = {
+            const level2: CascaderDataItem = {
                 label: `${i}-${j}`,
                 value: `${i}-${j}`,
                 children: [],
             };
-            level1.children.push(level2);
+            level1.children!.push(level2);
             for (let k = 0; k < 10; k++) {
                 const level3 = {
                     label: `${i}-${j}-${k}`,
                     value: `${i}-${j}-${k}`,
                 };
-                level2.children.push(level3);
+                level2.children!.push(level3);
             }
         }
     }
@@ -49,59 +50,56 @@ const createDataSource = () => {
     return dataSource;
 };
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            demoFunction: {
-                hasBorder: {
-                    label: '有无边框',
-                    value: 'true',
-                    enum: [
-                        {
-                            label: '有',
-                            value: 'true',
-                        },
-                        {
-                            label: '无',
-                            value: 'false',
-                        },
-                    ],
-                },
-                inlineLabel: {
-                    label: '是否内置标签',
-                    value: 'false',
-                    enum: [
-                        {
-                            label: '有',
-                            value: 'true',
-                        },
-                        {
-                            label: '无',
-                            value: 'false',
-                        },
-                    ],
-                },
+class FunctionDemo extends React.Component<{
+    multiple?: CascaderSelectProps['multiple'];
+    i18n: (typeof i18nMap)[keyof typeof i18nMap];
+}> {
+    state = {
+        demoFunction: {
+            hasBorder: {
+                label: '有无边框',
+                value: 'true',
+                enum: [
+                    {
+                        label: '有',
+                        value: 'true',
+                    },
+                    {
+                        label: '无',
+                        value: 'false',
+                    },
+                ],
             },
-        };
+            inlineLabel: {
+                label: '是否内置标签',
+                value: 'false',
+                enum: [
+                    {
+                        label: '有',
+                        value: 'true',
+                    },
+                    {
+                        label: '无',
+                        value: 'false',
+                    },
+                ],
+            },
+        },
+    };
 
-        this.onFunctionChange = this.onFunctionChange.bind(this);
-    }
-
-    onFunctionChange(demoFunction) {
+    onFunctionChange: DemoProps['onFunctionChange'] = demoFunction => {
         this.setState({
             demoFunction,
         });
-    }
+    };
 
     render() {
         const dataSource = createDataSource();
-        // eslint-disable-next-line
         const { multiple, i18n } = this.props;
         const { demoFunction } = this.state;
         const hasBorder = demoFunction.hasBorder.value === 'true';
         const inlineLabel = demoFunction.inlineLabel.value === 'true';
-        const cascaderSelectProps = {
+        const cascaderSelectProps: CascaderSelectProps = {
             multiple,
             dataSource,
             hasBorder,
@@ -177,7 +175,7 @@ class FunctionDemo extends React.Component {
 }
 
 function render(lang = 'en-us') {
-    const i18n = i18nMap[lang];
+    const i18n = i18nMap[lang as keyof typeof i18nMap];
 
     ReactDOM.render(
         <ConfigProvider locale={lang === 'zh-cn' ? zhCN : enUS}>

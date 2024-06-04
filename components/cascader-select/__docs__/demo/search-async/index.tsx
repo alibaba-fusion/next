@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { CascaderSelect, Icon } from '@alifd/next';
+import { CascaderSelect } from '@alifd/next';
+import type { CascaderSelectProps } from '@alifd/next/types/cascader-select';
 
 function Demo() {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<NonNullable<CascaderSelectProps['dataSource']>>([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -15,21 +16,21 @@ function Demo() {
             .catch(e => console.log(e));
     }, []);
 
-    let timeId;
+    let timeId: number | undefined;
     const duration = 1000;
-    function handleSearch(searchVal) {
+    const handleSearch: CascaderSelectProps['onSearch'] = searchVal => {
         setLoading(true);
 
         if (timeId) {
             clearTimeout(timeId);
         }
-        timeId = setTimeout(() => {
+        timeId = window.setTimeout(() => {
             if (searchVal) {
-                const item = { ...data[0].children[0].children[0] };
+                const item = { ...data[0].children![0].children![0] };
                 item.label = `${searchVal}_${item.label}`;
                 item.value = `${Date.now()}`;
 
-                data[0].children[0].children[0] = item;
+                data[0].children![0].children![0] = item;
 
                 setData([...data]);
             }
@@ -37,7 +38,7 @@ function Demo() {
             timeId = undefined;
             setLoading(false);
         }, duration);
-    }
+    };
 
     return (
         <CascaderSelect

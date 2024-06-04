@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CascaderSelect } from '@alifd/next';
 import 'whatwg-fetch';
+import type { CascaderSelectProps } from '@alifd/next/types/cascader-select';
 
 const dataSource = [
     {
@@ -11,20 +12,14 @@ const dataSource = [
 ];
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        dataSource,
+    };
 
-        this.state = {
-            dataSource,
-        };
-
-        this.onLoadData = this.onLoadData.bind(this);
-    }
-
-    onLoadData(data) {
+    onLoadData: CascaderSelectProps['loadData'] = data => {
         console.log(data);
 
-        return new Promise(resolve => {
+        return new Promise<void>(resolve => {
             setTimeout(() => {
                 this.setState(
                     {
@@ -57,7 +52,7 @@ class Demo extends React.Component {
                 );
             }, 500);
         });
-    }
+    };
 
     render() {
         return <CascaderSelect dataSource={this.state.dataSource} loadData={this.onLoadData} />;

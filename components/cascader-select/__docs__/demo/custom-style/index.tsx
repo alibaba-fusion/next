@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CascaderSelect, Icon } from '@alifd/next';
+import type { CascaderSelectProps } from '@alifd/next/types/cascader-select';
 
 const dataSource = [
     {
@@ -41,7 +42,7 @@ const dataSource = [
     },
 ];
 
-const itemRender = item => {
+const itemRender: CascaderSelectProps['itemRender'] = item => {
     return (
         <span>
             <Icon type="account" size="xs" /> {item.label}

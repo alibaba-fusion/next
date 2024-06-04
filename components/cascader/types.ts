@@ -1,5 +1,5 @@
-import React, { type ReactElement } from 'react';
-import { CommonProps } from '../util';
+import type React from 'react';
+import type { CommonProps } from '../util';
 import type { CheckboxItemProps, MenuProps, ItemProps as MenuItemProps } from '../menu';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {}
@@ -9,7 +9,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {}
  */
 export type CascaderDataItem = {
     value: string;
-    label?: string;
+    label?: React.ReactNode;
     disabled?: boolean;
     checkboxDisabled?: boolean;
     children?: Array<CascaderDataItem>;
@@ -25,7 +25,7 @@ export type CascaderDataItemWithPosInfo = CascaderDataItem & {
      * 位置信息
      */
     pos: string;
-    _source: CascaderDataItem;
+    _source?: CascaderDataItem;
 };
 
 export type V2n = Record<string, CascaderDataItemWithPosInfo>;
@@ -94,7 +94,7 @@ export interface ItemState {
 
 export interface CascaderMenuProps extends CommonProps, MenuProps {
     useVirtual?: boolean;
-    children: Array<ReactElement>;
+    children: Array<React.ReactElement>;
 }
 
 /**

@@ -485,7 +485,7 @@ class Select extends Base<SelectProps, SelectState> {
         this.props.onSearch!(value, e);
     }
 
-    handleSearchClear(triggerType: string) {
+    handleSearchClear(triggerType?: string) {
         this.handleSearchValue('');
         this.props.onSearchClear!(triggerType);
     }
