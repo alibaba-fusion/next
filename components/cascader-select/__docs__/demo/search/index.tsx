@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Checkbox, CascaderSelect } from '@alifd/next';
+import { CascaderSelect } from '@alifd/next';
 import 'whatwg-fetch';
+import type { CascaderSelectProps } from '@alifd/next/types/cascader-select';
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: [],
-        };
-    }
+    state = {
+        data: [],
+        multiple: false,
+    };
 
     componentDidMount() {
         fetch('https://os.alipayobjects.com/rmsportal/ODDwqcDFTLAguOvWEolX.json')
@@ -19,19 +17,19 @@ class Demo extends React.Component {
             .catch(e => console.log(e));
     }
 
-    handleChange = (value, data, extra) => {
+    handleChange: CascaderSelectProps['onChange'] = (value, data, extra) => {
         console.log(value, data, extra);
     };
 
-    filter(searchValue, path) {
-        return (
+    filter: CascaderSelectProps['filter'] = (searchValue, path) => {
+        return !!(
             searchValue === '' ||
             path
                 .map(({ value, label }) => `${value}${label}`)
                 .join('')
                 .match(searchValue)
         );
-    }
+    };
 
     render() {
         return (

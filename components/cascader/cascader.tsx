@@ -495,7 +495,7 @@ class Cascader extends Component<CascaderProps, CascaderState> {
             const { loadData } = this.props;
             if (canExpand && loadData) {
                 const data = this.state._v2n[value];
-                return loadData(data, data._source).then(callback);
+                return loadData(data, data._source!).then(callback);
             } else {
                 return callback();
             }

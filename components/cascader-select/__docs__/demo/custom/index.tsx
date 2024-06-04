@@ -1,18 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import { CascaderSelect } from '@alifd/next';
+import type { CascaderSelectProps } from '@alifd/next/types/cascader-select';
 import 'whatwg-fetch';
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: [],
-        };
-        this.handleChange = this.handleChange.bind(this);
-    }
+    state = {
+        data: [],
+    };
 
     componentDidMount() {
         fetch('https://os.alipayobjects.com/rmsportal/ODDwqcDFTLAguOvWEolX.json')
@@ -24,16 +19,16 @@ class Demo extends React.Component {
             .catch(e => console.log(e));
     }
 
-    handleChange(value, data, extra) {
+    handleChange: CascaderSelectProps['onChange'] = (value, data, extra) => {
         console.log(value, data, extra);
-    }
+    };
 
-    valueRender = item => {
+    valueRender: CascaderSelectProps['valueRender'] = item => {
         if (item.label) {
-            return item.label; // 正常的item
+            return item.label; // 正常的 item
         }
 
-        // value在 dataSouce里不存在时渲染。
+        // value 在 dataSouce 里不存在时渲染。
         return item.value === '432988' ? '不存在的值' : item.value;
     };
 
