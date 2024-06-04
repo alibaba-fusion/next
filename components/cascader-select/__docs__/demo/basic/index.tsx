@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CascaderSelect } from '@alifd/next';
+import type { CascaderSelectProps } from '@alifd/next/types/cascader-select';
 import 'whatwg-fetch';
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: [],
-        };
-    }
+    state = {
+        data: [],
+    };
 
     componentDidMount() {
         fetch('https://os.alipayobjects.com/rmsportal/ODDwqcDFTLAguOvWEolX.json')
@@ -21,7 +18,7 @@ class Demo extends React.Component {
             .catch(e => console.log(e));
     }
 
-    handleChange = (value, data, extra) => {
+    handleChange: CascaderSelectProps['onChange'] = (value, data, extra) => {
         console.log(value, data, extra);
     };
 

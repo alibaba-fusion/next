@@ -3,7 +3,10 @@ import { Types, parseData, NodeType } from '@alifd/adaptor-helper';
 import { CascaderSelect } from '@alifd/next';
 
 let index = 1000;
-const createDataSource = (list, map = {}) => {
+const createDataSource = (
+    list: Array<any>,
+    map: { selecteds: string[]; expandeds: string[] }
+): Array<any> => {
     if (!list) return [];
     return list
         .filter(item => item.type === NodeType.node)
@@ -82,7 +85,7 @@ export default {
         data,
         style = {},
         ...others
-    }) => {
+    }: any) => {
         const list = parseData(data);
         const map = { selecteds: [], expandeds: [] };
         const dataSource = createDataSource(list, map);
@@ -125,7 +128,7 @@ export default {
                 default: 'no',
             },
         ],
-        transform: (props, { checkbox, border, label }) => {
+        transform: (props: any, { checkbox, border, label }: any) => {
             return {
                 ...props,
                 checkbox: checkbox === 'yes',
@@ -134,7 +137,7 @@ export default {
             };
         },
     }),
-    demoOptions: demo => {
+    demoOptions: (demo: any) => {
         const { node } = demo;
         const { props = {} } = node;
         if (props.state === 'expanded') {

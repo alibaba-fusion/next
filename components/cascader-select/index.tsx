@@ -1,13 +1,15 @@
 import ConfigProvider from '../config-provider';
-import CascaderSelect from './cascader-select';
+import CascaderSelect, { type CascaderSelectPropsWithDefault } from './cascader-select';
+
+export type { CascaderSelectProps, CascaderSelectDataItem } from './types';
 
 export default ConfigProvider.config(CascaderSelect, {
     exportNames: ['focus'],
-    transform: /* istanbul ignore next */ (props, deprecated) => {
+    transform: (props, deprecated) => {
         if ('shape' in props) {
             deprecated('shape', 'hasBorder', 'CascaderSelect');
-            const { shape, ...others } = props;
-            props = { hasBorder: shape !== 'arrow-only', ...others };
+            const { shape, hasBorder, ...others } = props;
+            props = { hasBorder: hasBorder ?? shape !== 'arrow-only', ...others };
         }
 
         if ('container' in props) {
@@ -18,8 +20,8 @@ export default ConfigProvider.config(CascaderSelect, {
 
         if ('expandTrigger' in props) {
             deprecated('expandTrigger', 'expandTriggerType', 'CascaderSelect');
-            const { expandTrigger, ...others } = props;
-            props = { expandTriggerType: expandTrigger, ...others };
+            const { expandTrigger, expandTriggerType, ...others } = props;
+            props = { expandTriggerType: expandTriggerType ?? expandTrigger, ...others };
         }
 
         if ('showItemCount' in props) {
@@ -29,6 +31,6 @@ export default ConfigProvider.config(CascaderSelect, {
             deprecated('labelWidth', 'listStyle | listClassName', 'CascaderSelect');
         }
 
-        return props;
+        return props as CascaderSelectPropsWithDefault;
     },
 });

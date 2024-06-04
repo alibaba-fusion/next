@@ -1,33 +1,58 @@
-import React, { Component } from 'react';
+import React, {
+    Component,
+    type ReactNode,
+    type KeyboardEvent,
+    type DetailedHTMLProps,
+    type HTMLAttributes,
+    type ComponentPropsWithRef,
+} from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import classNames from 'classnames';
 import Select from '../select';
-import Cascader from '../cascader';
+import Cascader, { type CascaderDataItem, type Extra } from '../cascader';
 import Menu from '../menu';
-import { func, obj, dom, KEYCODE } from '../util';
+import { func, obj, dom, KEYCODE, type ClassPropsWithDefault } from '../util';
 import zhCN from '../locale/zh-cn';
+import type {
+    CascaderSelectDataItem,
+    CascaderSelectProps,
+    CascaderSelectState,
+    CascaderSelectVisibleChangeType,
+} from './types';
+import type { Popup } from '../overlay';
 
 const { bindCtx } = func;
 const { pickOthers } = obj;
 const { getStyle } = dom;
 
-const normalizeValue = value => {
+type normalizeValueResult<T> = T extends NonNullable<T>
+    ? T extends unknown[]
+        ? NonNullable<T>
+        : [NonNullable<T>]
+    : [];
+
+const normalizeValue = <T,>(value: T): normalizeValueResult<T> => {
     if (value) {
         if (Array.isArray(value)) {
-            return value;
+            return value as normalizeValueResult<T>;
         }
 
-        return [value];
+        return [value] as normalizeValueResult<T>;
     }
 
-    return [];
+    return [] as normalizeValueResult<T>;
 };
+
+export type CascaderSelectPropsWithDefault = ClassPropsWithDefault<
+    CascaderSelectProps,
+    typeof CascaderSelect.defaultProps
+>;
 
 /**
  * CascaderSelect
  */
-class CascaderSelect extends Component {
+class CascaderSelect extends Component<CascaderSelectProps, CascaderSelectState> {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -78,14 +103,9 @@ class CascaderSelect extends Component {
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
         /**
          * 选中值改变时触发的回调函数
-         * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
-         * @param {Object|Array} data 选中的数据，包括 value 和 label，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点
-         * @param {Object} extra 额外参数
-         * @param {Array} extra.selectedPath 单选时选中的数据的路径
-         * @param {Boolean} extra.checked 多选时当前的操作是选中还是取消选中
-         * @param {Object} extra.currentData 多选时当前操作的数据
-         * @param {Array} extra.checkedData 多选时所有被选中的数据
-         * @param {Array} extra.indeterminateData 多选时半选的数据
+         * @param value - 选中的值，单选时返回单个值，多选时返回数组
+         * @param data - 选中的数据，包括 value 和 label，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点
+         * @param extra - 额外参数
          */
         onChange: PropTypes.func,
         /**
@@ -110,11 +130,11 @@ class CascaderSelect extends Component {
          */
         multiple: PropTypes.bool,
         /**
-         * 是否选中即发生改变, 该属性仅在单选模式下有效
+         * 是否选中即发生改变，该属性仅在单选模式下有效
          */
         changeOnSelect: PropTypes.bool,
         /**
-         * 是否只能勾选叶子项的checkbox，该属性仅在多选模式下有效
+         * 是否只能勾选叶子项的 checkbox，该属性仅在多选模式下有效
          */
         canOnlyCheckLeaf: PropTypes.bool,
         /**
@@ -131,15 +151,14 @@ class CascaderSelect extends Component {
         listClassName: PropTypes.string,
         /**
          * 选择框单选时展示结果的自定义渲染函数
-         * @param {Array} label 选中路径的文本数组
-         * @return {ReactNode} 渲染在选择框中的内容
-         * @default 单选时：labelPath => labelPath.join(' / ')；多选时：labelPath => labelPath[labelPath.length - 1]
+         * @param label - 选中路径的文本数组
+         * @returns 渲染在选择框中的内容
          */
         displayRender: PropTypes.func,
         /**
          * 渲染 item 内容的方法
-         * @param {Object} item 渲染节点的item
-         * @return {ReactNode} item node
+         * @param item - 渲染节点的 item
+         * @returns item node
          */
         itemRender: PropTypes.func,
         /**
@@ -148,24 +167,22 @@ class CascaderSelect extends Component {
         showSearch: PropTypes.bool,
         /**
          * 自定义搜索函数
-         * @param {String} searchValue 搜索的关键字
-         * @param {Array} path 节点路径
-         * @return {Boolean} 是否匹配
-         * @default 根据路径所有节点的文本值模糊匹配
+         * @param searchValue - 搜索的关键字
+         * @param path - 节点路径
+         * @returns 是否匹配
          */
         filter: PropTypes.func,
         /**
          * 当搜索框值变化时回调
-         * @param {String} value 数据
+         * @param value - 数据
          * @version 1.23
          */
         onSearch: PropTypes.func,
         /**
          * 搜索结果自定义渲染函数
-         * @param {String} searchValue 搜索的关键字
-         * @param {Array} path 匹配到的节点路径
-         * @return {ReactNode} 渲染的内容
-         * @default 按照节点文本 a / b / c 的模式渲染
+         * @param searchValue - 搜索的关键字
+         * @param path - 匹配到的节点路径
+         * @returns 渲染的内容
          */
         resultRender: PropTypes.func,
         /**
@@ -182,7 +199,7 @@ class CascaderSelect extends Component {
         locale: PropTypes.object,
         /**
          * 异步加载数据函数
-         * @param {Object} data 当前点击异步加载的数据
+         * @param data - 当前点击异步加载的数据
          */
         loadData: PropTypes.func,
         /**
@@ -203,8 +220,8 @@ class CascaderSelect extends Component {
         visible: PropTypes.bool,
         /**
          * 下拉框显示或关闭时触发事件的回调函数
-         * @param {Boolean} visible 是否显示
-         * @param {String} type 触发显示关闭的操作类型, fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
+         * @param visible - 是否显示
+         * @param type - 触发显示关闭的操作类型，fromTrigger 表示由 trigger 的点击触发；docClick 表示由 document 的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -233,7 +250,7 @@ class CascaderSelect extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {Array<data>} value 选择值 { label: , value:}
+         * @param value - 选择值 \{ label: , value:\}
          */
         renderPreview: PropTypes.func,
         /**
@@ -261,14 +278,14 @@ class CascaderSelect extends Component {
         canOnlyCheckLeaf: false,
         checkStrictly: false,
         showSearch: false,
-        filter: (searchValue, path) => {
+        filter: (searchValue: string, path: Array<{ label: string; value: string }>) => {
             return path.some(
                 item =>
                     String(item.label).toLowerCase().indexOf(String(searchValue).toLowerCase()) > -1
             );
         },
-        resultRender: (searchValue, path) => {
-            const parts = [];
+        resultRender: (searchValue: string, path: Array<{ label: string; value: string }>) => {
+            const parts: ReactNode[] = [];
             path.forEach((item, i) => {
                 const reExp = searchValue.replace(/[-.+*?^$()[\]{}|\\]/g, v => `\\${v}`);
 
@@ -281,7 +298,7 @@ class CascaderSelect extends Component {
                         parts.push(other);
                     }
                     if (j < others.length - 1) {
-                        parts.push(<em key={`${i}-${j}`}>{matches[j]}</em>);
+                        parts.push(<em key={`${i}-${j}`}>{matches![j]}</em>);
                     }
                 });
                 if (i < path.length - 1) {
@@ -298,13 +315,22 @@ class CascaderSelect extends Component {
         locale: zhCN.Select,
     };
 
-    constructor(props) {
+    readonly props: CascaderSelectPropsWithDefault;
+    select: InstanceType<typeof Select>;
+    cascader: InstanceType<typeof Cascader>;
+    popup: InstanceType<typeof Popup>;
+    private _valueDataCache: Record<string, CascaderSelectDataItem>;
+    private _v2n: Record<string, CascaderSelectDataItem>;
+    private _p2n: Record<string, CascaderSelectDataItem>;
+    cascaderHeight: string | number;
+
+    constructor(props: CascaderSelectProps) {
         super(props);
 
         this.state = {
             value: normalizeValue('value' in props ? props.value : props.defaultValue),
             searchValue: '',
-            visible: typeof props.visible === 'undefined' ? props.defaultVisible : props.visible,
+            visible: typeof props.visible === 'undefined' ? props.defaultVisible! : props.visible,
         };
 
         // 缓存选中值数据
@@ -325,8 +351,8 @@ class CascaderSelect extends Component {
         ]);
     }
 
-    static getDerivedStateFromProps(props) {
-        const st = {};
+    static getDerivedStateFromProps(props: CascaderSelectPropsWithDefault) {
+        const st: Partial<CascaderSelectState> = {};
 
         if ('value' in props) {
             st.value = normalizeValue(props.value);
@@ -346,10 +372,10 @@ class CascaderSelect extends Component {
         this.select && this.select.focusInput();
     }
 
-    updateCache(dataSource) {
+    updateCache(dataSource: CascaderDataItem[]) {
         this._v2n = {};
         this._p2n = {};
-        const loop = (data, prefix = '0') =>
+        const loop = (data: CascaderDataItem[], prefix = '0') =>
             data.forEach((item, index) => {
                 const { value, children } = item;
                 const pos = `${prefix}-${index}`;
@@ -363,8 +389,8 @@ class CascaderSelect extends Component {
         loop(dataSource);
     }
 
-    flatValue(value) {
-        const getDepth = v => {
+    flatValue(value: string[]) {
+        const getDepth = (v: string) => {
             const pos = this.getPos(v);
             if (!pos) {
                 return 0;
@@ -390,7 +416,10 @@ class CascaderSelect extends Component {
         return newValue;
     }
 
-    isDescendantOrSelf(currentPos, targetPos) {
+    isDescendantOrSelf(
+        currentPos: string | undefined | null,
+        targetPos: string | undefined | null
+    ) {
         if (!currentPos || !targetPos) {
             return false;
         }
@@ -406,28 +435,31 @@ class CascaderSelect extends Component {
         );
     }
 
-    getValue(pos) {
+    getValue(pos: string) {
         return this._p2n[pos] ? this._p2n[pos].value : null;
     }
 
-    getPos(value) {
+    getPos(value: string) {
         return this._v2n[value] ? this._v2n[value].pos : null;
     }
 
-    getData(value) {
+    getData(value: string[]) {
         return value.map(v => this._v2n[v] || this._valueDataCache[v]);
     }
 
-    getLabelPath(data) {
+    getLabelPath(data: CascaderSelectDataItem) {
         const nums = data.pos.split('-');
-        return nums.slice(1).reduce((ret, num, index) => {
-            const p = nums.slice(0, index + 2).join('-');
-            ret.push(this._p2n[p].label);
-            return ret;
-        }, []);
+        return nums.slice(1).reduce(
+            (ret, num, index) => {
+                const p = nums.slice(0, index + 2).join('-');
+                ret.push(this._p2n[p].label);
+                return ret;
+            },
+            [] as CascaderSelectDataItem['label'][]
+        );
     }
 
-    getSingleData(value) {
+    getSingleData(value: string | string[]) {
         if (!value.length) {
             return null;
         }
@@ -458,7 +490,7 @@ class CascaderSelect extends Component {
         );
     }
 
-    getMultipleData(value) {
+    getMultipleData(value: string[]) {
         if (!value.length) {
             return null;
         }
@@ -498,10 +530,10 @@ class CascaderSelect extends Component {
         return data;
     }
 
-    getIndeterminate(value) {
-        const indeterminate = [];
+    getIndeterminate(value: string[]) {
+        const indeterminate: Array<string> = [];
 
-        const positions = value.map(this.getPos.bind(this));
+        const positions: string[] = value.map(this.getPos.bind(this));
         positions.forEach(pos => {
             if (!pos) {
                 return false;
@@ -509,7 +541,7 @@ class CascaderSelect extends Component {
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {
                 const parentPos = nums.slice(0, i - 1).join('-');
-                const parentValue = this.getValue(parentPos);
+                const parentValue = this.getValue(parentPos) as string;
                 if (indeterminate.indexOf(parentValue) === -1) {
                     indeterminate.push(parentValue);
                 }
@@ -519,15 +551,15 @@ class CascaderSelect extends Component {
         return indeterminate;
     }
 
-    saveSelectRef(ref) {
+    saveSelectRef(ref: InstanceType<typeof Select>) {
         this.select = ref;
     }
 
-    saveCascaderRef(ref) {
+    saveCascaderRef(ref: InstanceType<typeof Cascader>) {
         this.cascader = ref;
     }
 
-    completeValue(value) {
+    completeValue(value: string[]) {
         const newValue = [];
 
         const flatValue = this.flatValue(value).reverse();
@@ -536,7 +568,7 @@ class CascaderSelect extends Component {
             for (let j = 0; j < flatValue.length; j++) {
                 const v = flatValue[j];
                 if (this.isDescendantOrSelf(this.getPos(v), ps[i])) {
-                    newValue.push(this.getValue(ps[i]));
+                    newValue.push(this.getValue(ps[i]) as string);
                     ps.splice(i, 1);
                     i--;
                     break;
@@ -547,14 +579,14 @@ class CascaderSelect extends Component {
         return newValue;
     }
 
-    isLeaf(data) {
+    isLeaf(data: CascaderSelectDataItem) {
         return !(
             (data.children && data.children.length) ||
             (!!this.props.loadData && !data.isLeaf)
         );
     }
 
-    handleVisibleChange(visible, type) {
+    handleVisibleChange(visible: boolean, type?: CascaderSelectVisibleChangeType) {
         const { searchValue } = this.state;
         if (!('visible' in this.props)) {
             this.setState({
@@ -568,7 +600,7 @@ class CascaderSelect extends Component {
             });
         }
 
-        if (['fromCascader', 'keyboard'].indexOf(type) !== -1 && !visible) {
+        if (['fromCascader', 'keyboard'].indexOf(type!) !== -1 && !visible) {
             // 这里需要延迟下，showSearch 的情况下通过手动设置 menuProps={{focusable: true}} 回车 focus 会有延迟
             setTimeout(() => this.select.focusInput(), 0);
         }
@@ -576,7 +608,7 @@ class CascaderSelect extends Component {
         this.props.onVisibleChange(visible, type);
     }
 
-    handleKeyDown(e) {
+    handleKeyDown(e: KeyboardEvent<HTMLElement>) {
         const { onKeyDown } = this.props;
         const { visible } = this.state;
 
@@ -608,7 +640,7 @@ class CascaderSelect extends Component {
         }
     }
 
-    getPopup(ref) {
+    getPopup(ref: InstanceType<typeof Popup>) {
         this.popup = ref;
         if (typeof this.props.popupProps.ref === 'function') {
             this.props.popupProps.ref(ref);
@@ -623,8 +655,9 @@ class CascaderSelect extends Component {
         const { prefix, popupProps } = this.props;
         const { v2 = false } = popupProps;
         if (!v2) {
+            // @ts-expect-error 待 overlay 技术升级完成
             const dropDownNode = this.popup.getInstance().overlay.getInstance().getContentNode();
-            const cascaderNode = dropDownNode.querySelector(`.${prefix}cascader`);
+            const cascaderNode = dropDownNode.querySelector(`.${prefix}cascader`) as HTMLElement;
             if (cascaderNode) {
                 this.cascaderHeight = getStyle(cascaderNode, 'height');
             }
@@ -635,7 +668,7 @@ class CascaderSelect extends Component {
         }
     }
 
-    handleSelect(value, data) {
+    handleSelect(value: unknown, data: CascaderSelectDataItem) {
         const { multiple, changeOnSelect } = this.props;
         const { visible, searchValue } = this.state;
 
@@ -646,9 +679,9 @@ class CascaderSelect extends Component {
 
     /**
      * 刷新值数据缓存，删除无效值
-     * @param {Arrary | String} curValue 当前值
+     * @param curValue - 当前值
      */
-    refreshValueDataCache = curValue => {
+    refreshValueDataCache = (curValue: string | string[]) => {
         if (curValue) {
             const valueArr = Array.isArray(curValue) ? curValue : [curValue];
 
@@ -663,11 +696,11 @@ class CascaderSelect extends Component {
         }
     };
 
-    handleChange(value, data, extra) {
+    handleChange(value: string[], data: CascaderSelectDataItem[], extra: Extra) {
         const { multiple, onChange } = this.props;
         const { searchValue, value: stateValue } = this.state;
 
-        const st = {};
+        const st = {} as CascaderSelectState;
 
         if (multiple && stateValue && Array.isArray(stateValue)) {
             const noExistedValues = stateValue.filter(v => !this._v2n[v]);
@@ -680,7 +713,7 @@ class CascaderSelect extends Component {
 
             value = [...noExistedValues, ...value];
             // onChange 中的 data 参数也应该保留不存在的 value 的数据
-            // 在 dataSource 异步加载的情况下，会出现value重复的现象，需要去重
+            // 在 dataSource 异步加载的情况下，会出现 value 重复的现象，需要去重
             data = [
                 ...noExistedValues.map(v => this._valueDataCache[v]).filter(v => v),
                 ...data,
@@ -720,13 +753,13 @@ class CascaderSelect extends Component {
                 });
             }
 
-            this.props.onChange(null, null);
+            this.props.onChange!(null, null);
         }
     }
 
-    handleRemove(currentData) {
+    handleRemove(currentData: CascaderSelectDataItem) {
         const { value: currentValue } = currentData;
-        let value;
+        let value: string[];
 
         const { multiple, checkStrictly, onChange } = this.props;
         if (multiple) {
@@ -758,7 +791,7 @@ class CascaderSelect extends Component {
             }
         } else {
             value = [];
-            onChange(null, null);
+            onChange!(null, null);
         }
 
         if (!('value' in this.props)) {
@@ -770,7 +803,7 @@ class CascaderSelect extends Component {
         this.refreshValueDataCache(value);
     }
 
-    handleSearch(searchValue) {
+    handleSearch(searchValue: string) {
         this.setState({
             searchValue,
         });
@@ -778,10 +811,11 @@ class CascaderSelect extends Component {
         this.props.onSearch && this.props.onSearch(searchValue);
     }
 
-    getPath(pos) {
+    getPath(pos: string) {
         const items = [];
 
         const nums = pos.split('-');
+        // @ts-expect-error nums 应该是一个数组，这里可能是想表达 nums 的长度为 2？
         if (nums === 2) {
             items.push(this._p2n[pos]);
         } else {
@@ -821,7 +855,7 @@ class CascaderSelect extends Component {
         }
 
         const { searchValue } = this.state;
-        let filteredPaths = [];
+        let filteredPaths: CascaderSelectDataItem[][] = [];
 
         if (searchValue) {
             filteredPaths = this.filterItems();
@@ -851,7 +885,7 @@ class CascaderSelect extends Component {
         } = this.props;
         const { value } = this.state;
 
-        const props = {
+        const props: ComponentPropsWithRef<typeof Cascader> = {
             dataSource,
             value,
             multiple,
@@ -899,7 +933,7 @@ class CascaderSelect extends Component {
         );
     }
 
-    renderPreview(others) {
+    renderPreview(others: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
         const { prefix, multiple, className, renderPreview } = this.props;
         const { value } = this.state;
         const previewCls = classNames(className, `${prefix}form-preview`);
@@ -948,8 +982,8 @@ class CascaderSelect extends Component {
             resultAutoWidth,
         } = this.props;
         const { value, searchValue, visible } = this.state;
-        const others = pickOthers(Object.keys(CascaderSelect.propTypes), this.props);
-        // mode应与multiple api保持一致
+        const others = pickOthers(CascaderSelect.propTypes, this.props);
+        // mode 应与 multiple api 保持一致
         if (multiple && 'mode' in others && others.mode !== 'multiple') {
             delete others.mode;
         }
@@ -962,7 +996,7 @@ class CascaderSelect extends Component {
 
         const popupContent = this.renderPopupContent();
 
-        const props = {
+        const props: ComponentPropsWithRef<typeof Select> = {
             prefix,
             className,
             size,
@@ -993,8 +1027,8 @@ class CascaderSelect extends Component {
         };
 
         if (!multiple) {
-            // 单选模式 select 会强制cache=true，会导致菜单展开状态的初始化不执行
-            // 若用户没有手动设置cache true，这里重置为false
+            // 单选模式 select 会强制 cache=true，会导致菜单展开状态的初始化不执行
+            // 若用户没有手动设置 cache true，这里重置为 false
             if (!popupProps || !popupProps.cache) {
                 props.popupProps = {
                     ...popupProps,

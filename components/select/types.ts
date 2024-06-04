@@ -1,6 +1,6 @@
 import type React from 'react';
 import type { CommonProps } from '../util';
-import type { PopupProps } from '../overlay';
+import type { Popup } from '../overlay';
 import type { MenuProps } from '../menu';
 import type { InputProps } from '../input';
 import type { TagProps } from '../tag';
@@ -202,7 +202,7 @@ export interface AutoCompleteProps
      * 添加到弹层上的属性
      * @en Props added to the popup
      */
-    popupProps?: PopupProps;
+    popupProps?: React.ComponentPropsWithRef<typeof Popup>;
 
     /**
      * 自定义弹层的内容
@@ -482,7 +482,7 @@ export interface SelectProps
      * 添加到弹层上的属性
      * @en Props added to the popup
      */
-    popupProps?: PopupProps;
+    popupProps?: React.ComponentPropsWithRef<typeof Popup>;
 
     /**
      * 是否跟随 trigger 滚动
