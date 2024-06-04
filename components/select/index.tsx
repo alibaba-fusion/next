@@ -13,6 +13,7 @@ export type {
     AutoCompleteProps,
     DataSourceItem,
     ObjectItem,
+    VisibleChangeType,
 } from './types';
 
 // compatible with 0.x version
