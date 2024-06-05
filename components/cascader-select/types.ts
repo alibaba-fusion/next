@@ -148,7 +148,7 @@ export interface CascaderSelectProps
      */
     displayRender?: (
         label: Array<React.ReactNode>,
-        data?: CascaderSelectDataItem
+        data: CascaderSelectDataItem
     ) => React.ReactNode;
 
     /**
@@ -167,6 +167,7 @@ export interface CascaderSelectProps
     /**
      * 当搜索框值变化时回调
      * @en callback when search value changes
+     * @version 1.23
      */
     onSearch?: (value: string) => void;
 
