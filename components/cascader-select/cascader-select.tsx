@@ -57,206 +57,51 @@ class CascaderSelect extends Component<CascaderSelectProps, CascaderSelectState>
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         className: PropTypes.string,
-        /**
-         * 选择框大小
-         */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
-        /**
-         * 选择框占位符
-         */
         placeholder: PropTypes.string,
-        /**
-         * 是否禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * 是否有下拉箭头
-         */
         hasArrow: PropTypes.bool,
-        /**
-         * 是否有边框
-         */
         hasBorder: PropTypes.bool,
-        /**
-         * 是否有清除按钮
-         */
         hasClear: PropTypes.bool,
-        /**
-         * 自定义内联 label
-         */
         label: PropTypes.node,
-        /**
-         * 是否只读，只读模式下可以展开弹层但不能选
-         */
         readOnly: PropTypes.bool,
-        /**
-         * 数据源，结构可参考下方说明
-         */
         dataSource: PropTypes.arrayOf(PropTypes.object),
-        /**
-         * （非受控）默认值
-         */
         defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-        /**
-         * （受控）当前值
-         */
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-        /**
-         * 选中值改变时触发的回调函数
-         * @param value - 选中的值，单选时返回单个值，多选时返回数组
-         * @param data - 选中的数据，包括 value 和 label，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点
-         * @param extra - 额外参数
-         */
         onChange: PropTypes.func,
-        /**
-         * 默认展开值，如果不设置，组件内部会根据 defaultValue/value 进行自动设置
-         */
         defaultExpandedValue: PropTypes.arrayOf(PropTypes.string),
-        /**
-         * （受控）当前展开值
-         */
         expandedValue: PropTypes.arrayOf(PropTypes.string),
-        /**
-         * 展开触发的方式
-         */
         expandTriggerType: PropTypes.oneOf(['click', 'hover']),
         onExpand: PropTypes.func,
-        /**
-         * 是否开启虚拟滚动
-         */
         useVirtual: PropTypes.bool,
-        /**
-         * 是否多选
-         */
         multiple: PropTypes.bool,
-        /**
-         * 是否选中即发生改变，该属性仅在单选模式下有效
-         */
         changeOnSelect: PropTypes.bool,
-        /**
-         * 是否只能勾选叶子项的 checkbox，该属性仅在多选模式下有效
-         */
         canOnlyCheckLeaf: PropTypes.bool,
-        /**
-         * 父子节点是否选中不关联
-         */
         checkStrictly: PropTypes.bool,
-        /**
-         * 每列列表样式对象
-         */
         listStyle: PropTypes.object,
-        /**
-         * 每列列表类名
-         */
         listClassName: PropTypes.string,
-        /**
-         * 选择框单选时展示结果的自定义渲染函数
-         * @param label - 选中路径的文本数组
-         * @returns 渲染在选择框中的内容
-         */
         displayRender: PropTypes.func,
-        /**
-         * 渲染 item 内容的方法
-         * @param item - 渲染节点的 item
-         * @returns item node
-         */
         itemRender: PropTypes.func,
-        /**
-         * 是否显示搜索框
-         */
         showSearch: PropTypes.bool,
-        /**
-         * 自定义搜索函数
-         * @param searchValue - 搜索的关键字
-         * @param path - 节点路径
-         * @returns 是否匹配
-         */
         filter: PropTypes.func,
-        /**
-         * 当搜索框值变化时回调
-         * @param value - 数据
-         * @version 1.23
-         */
         onSearch: PropTypes.func,
-        /**
-         * 搜索结果自定义渲染函数
-         * @param searchValue - 搜索的关键字
-         * @param path - 匹配到的节点路径
-         * @returns 渲染的内容
-         */
         resultRender: PropTypes.func,
-        /**
-         * 搜索结果列表是否和选择框等宽
-         */
         resultAutoWidth: PropTypes.bool,
-        /**
-         * 无数据时显示内容
-         */
         notFoundContent: PropTypes.node,
-        /**
-         * 国际化
-         */
         locale: PropTypes.object,
-        /**
-         * 异步加载数据函数
-         * @param data - 当前点击异步加载的数据
-         */
         loadData: PropTypes.func,
-        /**
-         * 自定义下拉框头部
-         */
         header: PropTypes.node,
-        /**
-         * 自定义下拉框底部
-         */
         footer: PropTypes.node,
-        /**
-         * 初始下拉框是否显示
-         */
         defaultVisible: PropTypes.bool,
-        /**
-         * 当前下拉框是否显示
-         */
         visible: PropTypes.bool,
-        /**
-         * 下拉框显示或关闭时触发事件的回调函数
-         * @param visible - 是否显示
-         * @param type - 触发显示关闭的操作类型，fromTrigger 表示由 trigger 的点击触发；docClick 表示由 document 的点击触发
-         */
         onVisibleChange: PropTypes.func,
-        /**
-         * 下拉框自定义样式对象
-         */
         popupStyle: PropTypes.object,
-        /**
-         * 下拉框样式自定义类名
-         */
         popupClassName: PropTypes.string,
-        /**
-         * 下拉框挂载的容器节点
-         */
         popupContainer: PropTypes.any,
-        /**
-         * 透传到 Popup 的属性对象
-         */
         popupProps: PropTypes.object,
-        /**
-         * 是否跟随滚动
-         */
         followTrigger: PropTypes.bool,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param value - 选择值 \{ label: , value:\}
-         */
         renderPreview: PropTypes.func,
-        /**
-         * 是否是不可变数据
-         * @version 1.23
-         */
         immutable: PropTypes.bool,
     };
 
@@ -316,12 +161,12 @@ class CascaderSelect extends Component<CascaderSelectProps, CascaderSelectState>
     };
 
     readonly props: CascaderSelectPropsWithDefault;
-    select: InstanceType<typeof Select>;
-    cascader: InstanceType<typeof Cascader>;
-    popup: InstanceType<typeof Popup>;
     private _valueDataCache: Record<string, CascaderSelectDataItem>;
     private _v2n: Record<string, CascaderSelectDataItem>;
     private _p2n: Record<string, CascaderSelectDataItem>;
+    select: InstanceType<typeof Select>;
+    cascader: InstanceType<typeof Cascader>;
+    popup: InstanceType<typeof Popup>;
     cascaderHeight: string | number;
 
     constructor(props: CascaderSelectProps) {
