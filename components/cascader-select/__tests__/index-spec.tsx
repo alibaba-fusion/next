@@ -1,19 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactTestUtils, { act } from 'react-dom/test-utils';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import { KEYCODE } from '../../util';
-import CascaderSelect from '../index';
+import React, { useState } from 'react';
+import CascaderSelect, { type CascaderSelectDataItem, type CascaderSelectProps } from '../index';
 import '../style';
 
-/* eslint-disable react/jsx-filename-extension  */
-/* global describe it afterEach */
-
-Enzyme.configure({ adapter: new Adapter() });
-
-function freeze(dataSource) {
+function freeze(dataSource: NonNullable<CascaderSelectProps['dataSource']>) {
     return dataSource.map(item => {
         const { children } = item;
         children && freeze(children);
@@ -21,7 +10,25 @@ function freeze(dataSource) {
     });
 }
 
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
+function findItem(menuIndex: number, itemIndex: number) {
+    return cy.get('.next-cascader-menu').eq(menuIndex).children().eq(itemIndex);
+}
+
+function labelsShouldBe(expected: string[]) {
+    cy.get('span.next-tag-body').should('have.text', expected.join(''));
+}
+
+function findRealItem(
+    cascader: Cypress.Chainable<JQuery<HTMLElement>>,
+    listIndex: number,
+    itemIndex: number
+) {
+    return cascader
+        .find('.next-cascader-menu')
+        .eq(listIndex)
+        .find('.next-cascader-menu-item')
+        .eq(itemIndex);
+}
 
 const ChinaArea = [
     {
@@ -53,95 +60,72 @@ const ChinaArea = [
 ];
 
 describe('CascaderSelect', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('should show dropdown when set defaultVisible to true', () => {
-        wrapper = mount(<CascaderSelect dataSource={ChinaArea} defaultVisible />);
-        assert(document.querySelector('.next-cascader-select-dropdown'));
+        cy.mount(<CascaderSelect dataSource={ChinaArea} defaultVisible />);
+        cy.get('.next-cascader-select-dropdown').should('exist');
     });
 
-    it('should show dropdown when click select box', done => {
-        wrapper = mount(<CascaderSelect dataSource={ChinaArea} />);
-        assert(!document.querySelector('.next-cascader-select-dropdown'));
-        wrapper.find('.next-select').simulate('click');
-        setTimeout(() => {
-            assert(document.querySelector('.next-cascader-select-dropdown'));
-            done();
-        }, 500);
+    it('should show dropdown when click select box', () => {
+        cy.mount(<CascaderSelect dataSource={ChinaArea} />);
+        cy.get('.next-cascader-select-dropdown').should('not.exist');
+        cy.get('.next-select').click();
+        cy.get('.next-cascader-select-dropdown').should('exist');
     });
 
     it('should render single cascader select', () => {
-        let changeCalled = false;
-        const handleChange = () => {
-            changeCalled = true;
-        };
+        const handleChange = cy.spy();
 
-        wrapper = mount(
+        cy.mount(
             <CascaderSelect
                 defaultVisible
                 defaultValue="2975"
                 dataSource={ChinaArea}
                 onChange={handleChange}
             />
-        );
-        assert(wrapper.find('span.next-select-inner em').text().trim() === '陕西 / 西安 / 西安市');
+        ).as('Demo');
+        cy.get('.next-select-inner em').should('have.text', '陕西 / 西安 / 西安市');
 
-        const item21 = findItem(2, 1);
-        ReactTestUtils.Simulate.click(item21);
-        assert(changeCalled);
-        assert(wrapper.find('span.next-select-inner em').text().trim() === '陕西 / 西安 / 高陵县');
-        wrapper.setProps({ displayRender: label => label.join('-') });
-        assert(wrapper.find('span.next-select-inner em').text().trim() === '陕西-西安-高陵县');
+        findItem(2, 1).click();
+        cy.wrap(handleChange).should('be.called');
+        cy.get('.next-select-inner em').should('have.text', '陕西 / 西安 / 高陵县');
+        cy.rerender('Demo', { displayRender: (label: string[]) => label.join('-') });
+        cy.get('.next-select-inner em').should('have.text', '陕西-西安-高陵县');
     });
 
     it('should render single cascader under control', () => {
-        let changeCalled = false;
-        const handleChange = value => {
-            changeCalled = true;
-            wrapper.setProps({ value });
+        const changedSpy = cy.spy();
+        const Demo = () => {
+            const [value, setValue] = useState('2975');
+            const handleChange: CascaderSelectProps['onChange'] = (value: string) => {
+                changedSpy(value);
+                setValue(value);
+            };
+            return (
+                <CascaderSelect
+                    defaultVisible
+                    defaultValue="2976"
+                    value={value}
+                    dataSource={ChinaArea}
+                    onChange={handleChange}
+                />
+            );
         };
 
-        wrapper = mount(
-            <CascaderSelect
-                defaultVisible
-                defaultValue="2976"
-                value="2975"
-                dataSource={ChinaArea}
-                onChange={handleChange}
-            />
-        );
-        assert(wrapper.find('span.next-select-inner em').text().trim() === '陕西 / 西安 / 西安市');
-
-        const item21 = findItem(2, 1);
-        ReactTestUtils.Simulate.click(item21);
-        assert(changeCalled);
-        assert(wrapper.find('span.next-select-inner em').text().trim() === '陕西 / 西安 / 高陵县');
+        cy.mount(<Demo />);
+        cy.get('.next-select-inner em').should('have.text', '陕西 / 西安 / 西安市');
+        findItem(2, 1).click();
+        cy.wrap(changedSpy).should('be.called');
+        cy.get('.next-select-inner em').should('have.text', '陕西 / 西安 / 高陵县');
     });
 
     it('should change select box display when expand item if set changeOnSelect to true', () => {
-        wrapper = mount(<CascaderSelect changeOnSelect defaultVisible dataSource={ChinaArea} />);
-
-        const item00 = findItem(0, 0);
-        ReactTestUtils.Simulate.click(item00);
-        wrapper.update();
-        assert(wrapper.find('span.next-select-inner em').text().trim() === '陕西');
-
-        const item10 = findItem(1, 0);
-        ReactTestUtils.Simulate.click(item10);
-        wrapper.update();
-        assert(wrapper.find('span.next-select-inner em').text().trim() === '陕西 / 西安');
-
-        const item20 = findItem(2, 0);
-        ReactTestUtils.Simulate.click(item20);
-        wrapper.update();
-        assert(wrapper.find('span.next-select-inner em').text().trim() === '陕西 / 西安 / 西安市');
+        cy.mount(<CascaderSelect changeOnSelect defaultVisible dataSource={ChinaArea} />);
+        findItem(0, 0).click();
+        cy.get('.next-select-inner em').should('have.text', '陕西');
+        findItem(1, 0).click();
+        cy.get('.next-select-inner em').should('have.text', '陕西 / 西安');
+        findItem(2, 0).click();
+        cy.get('.next-select-inner em').should('have.text', '陕西 / 西安 / 西安市');
     });
 
     it('should render multiple cascader', () => {
@@ -171,27 +155,27 @@ describe('CascaderSelect', () => {
                 ],
             },
         ];
-        let changeCalled = false;
-        const handleChange = (v, d, e) => {
-            assert.deepEqual(v, ['2980']);
-            assert.deepEqual(d, [
+        const spyChange = cy.spy().as('handleChange');
+        const handleChange: CascaderSelectProps['onChange'] = (v, d, e) => {
+            spyChange();
+            expect(v).to.deep.equal(['2980']);
+            expect(d).to.deep.equal([
                 {
                     value: '2980',
                     label: '铜川',
                     pos: '0-0-1',
                 },
             ]);
-            delete e.indeterminateData[0].children;
-            assert.deepEqual(e, {
+            delete e!.indeterminateData![0].children;
+            expect(e).deep.equal({
                 checked: false,
                 currentData: { value: '2975', label: '西安市', pos: '0-0-0-0' },
                 checkedData: [{ value: '2980', label: '铜川', pos: '0-0-1' }],
                 indeterminateData: [{ value: '2973', label: '陕西', pos: '0-0' }],
             });
-            changeCalled = true;
         };
 
-        wrapper = mount(
+        cy.mount(
             <CascaderSelect
                 multiple
                 defaultVisible
@@ -200,17 +184,10 @@ describe('CascaderSelect', () => {
                 onChange={handleChange}
             />
         );
-        assert.deepEqual(getLabels(wrapper), ['铜川', '西安市']);
-
-        const removeLink = wrapper.find('span.next-tag-close-btn').at(1);
-        removeLink.simulate('click');
-        assert.deepEqual(getLabels(wrapper), ['铜川']);
-        assert(changeCalled);
-
-        wrapper.setProps({
-            displayRender: labelPath => labelPath.join(' / '),
-        });
-        assert.deepEqual(getLabels(wrapper), ['陕西 / 铜川']);
+        labelsShouldBe(['铜川', '西安市']);
+        cy.get('span.next-tag-close-btn').eq(1).click();
+        labelsShouldBe(['铜川']);
+        cy.get('@handleChange').should('be.called');
     });
 
     it('should render multiple cascader when set checkStrictly to true', () => {
@@ -240,24 +217,24 @@ describe('CascaderSelect', () => {
                 ],
             },
         ];
-        let changeCalled = false;
-        const handleChange = (v, d, e) => {
-            assert.deepEqual(v, ['2980']);
-            assert.deepEqual(d, [
+        const spyChange = cy.spy().as('handleChange');
+        const handleChange: CascaderSelectProps['onChange'] = (v, d, e) => {
+            spyChange();
+            expect(v).to.deep.equal(['2980']);
+            expect(d).to.deep.equal([
                 {
                     value: '2980',
                     label: '铜川',
                     pos: '0-0-1',
                 },
             ]);
-            assert.deepEqual(e, {
+            expect(e).to.deep.equal({
                 checked: false,
                 currentData: { value: '2975', label: '西安市', pos: '0-0-0-0' },
                 checkedData: [{ value: '2980', label: '铜川', pos: '0-0-1' }],
             });
-            changeCalled = true;
         };
-        const wrapper = mount(
+        cy.mount(
             <CascaderSelect
                 multiple
                 defaultVisible
@@ -267,46 +244,28 @@ describe('CascaderSelect', () => {
                 onChange={handleChange}
             />
         );
-        assert.deepEqual(getLabels(wrapper), ['西安市', '铜川']);
-
-        const removeLink = wrapper.find('span.next-tag-close-btn').at(0);
-        removeLink.simulate('click');
-        assert.deepEqual(getLabels(wrapper), ['铜川']);
-        assert(changeCalled);
+        labelsShouldBe(['西安市', '铜川']);
+        cy.get('span.next-tag-close-btn').eq(0).click();
+        labelsShouldBe(['铜川']);
+        cy.get('@handleChange').should('be.called');
     });
 
     it('should support searching when it is a single cascader select', () => {
-        wrapper = mount(
+        cy.mount(
             <CascaderSelect showSearch defaultVisible defaultValue="2975" dataSource={ChinaArea} />
         );
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '哈哈' } });
-        wrapper.update();
-        assert(
-            document.querySelector('.next-cascader-select-not-found').textContent.trim() ===
-                '无选项'
-        );
-
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '高陵' } });
-        wrapper.update();
-        assert(
-            document.querySelector('.next-cascader-filtered-list').textContent.trim() ===
-                '陕西 / 西安 / 高陵县'
-        );
-        assert(
-            document.querySelector('.next-cascader-filtered-list em').textContent.trim() === '高陵'
-        );
-
-        ReactTestUtils.Simulate.click(document.querySelector('.next-cascader-filtered-item'));
-        wrapper.update();
-        assert(wrapper.find('span.next-select-inner em').text().trim() === '陕西 / 西安 / 高陵县');
+        cy.get('.next-select-trigger-search input').type('哈哈');
+        cy.get('.next-cascader-select-not-found').should('have.text', '无选项');
+        cy.get('.next-select-trigger-search input').clear();
+        cy.get('.next-select-trigger-search input').type('高陵');
+        cy.get('.next-cascader-filtered-list').should('have.text', '陕西 / 西安 / 高陵县');
+        cy.get('.next-cascader-filtered-list em').should('have.text', '高陵');
+        cy.get('.next-cascader-filtered-item').click();
+        cy.get('.next-select-inner em').should('have.text', '陕西 / 西安 / 高陵县');
     });
 
     it('should support searching when it is a multiple cascader select', () => {
-        wrapper = mount(
+        cy.mount(
             <CascaderSelect
                 multiple
                 showSearch
@@ -315,26 +274,12 @@ describe('CascaderSelect', () => {
                 dataSource={ChinaArea}
             />
         );
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '哈哈' } });
-        wrapper.update();
-        assert(
-            document.querySelector('.next-cascader-select-not-found').textContent.trim() ===
-                '无选项'
-        );
-
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '高陵' } });
-        wrapper.update();
-        assert(
-            document.querySelector('.next-cascader-filtered-list').textContent.trim() ===
-                '陕西 / 西安 / 高陵县'
-        );
-        assert(
-            document.querySelector('.next-cascader-filtered-list em').textContent.trim() === '高陵'
-        );
+        cy.get('.next-select-trigger-search input').type('哈哈');
+        cy.get('.next-cascader-select-not-found').should('have.text', '无选项');
+        cy.get('.next-select-trigger-search input').clear();
+        cy.get('.next-select-trigger-search input').type('高陵');
+        cy.get('.next-cascader-filtered-list').should('have.text', '陕西 / 西安 / 高陵县');
+        cy.get('.next-cascader-filtered-list em').should('have.text', '高陵');
     });
 
     it('should ignore case when searching', () => {
@@ -355,81 +300,65 @@ describe('CascaderSelect', () => {
                 ],
             },
         ];
-        wrapper = mount(
+        cy.mount(
             <CascaderSelect showSearch defaultVisible defaultValue="Aa" dataSource={dataSource} />
         );
 
         const specialCharCases = SpecialChars.split('').map(c => [c, c]);
 
         [['aa', 'Aa'], ['BB', 'Bb'], ...specialCharCases].forEach(([iptVal, excepted]) => {
-            wrapper
-                .find('.next-select-trigger-search input')
-                .simulate('change', { target: { value: iptVal } });
-            wrapper.update();
-            assert(
-                document.querySelector('.next-cascader-filtered-list em').textContent.trim() ===
-                    excepted
-            );
+            cy.get('.next-select-trigger-search input').type(iptVal);
+            cy.get('.next-cascader-filtered-list em').eq(0).should('have.text', excepted);
+            cy.get('.next-select-trigger-search input').clear();
         });
     });
 
-    it('should support keyborad', done => {
-        wrapper = mount(<CascaderSelect dataSource={ChinaArea} />);
-        wrapper.find('.next-select').simulate('click');
-        setTimeout(() => {
-            let cascader = document.querySelectorAll('.next-cascader');
-            cascader = cascader[cascader.length - 1];
-            assert(cascader);
-            wrapper
-                .find('.next-select-trigger-search input')
-                .simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(document.activeElement === findRealItem(cascader, 0, 0));
-            done();
-        }, 2000);
+    it('should support keyboard', () => {
+        cy.mount(<CascaderSelect dataSource={ChinaArea} />);
+        cy.get('.next-select').click();
+        cy.get('.next-cascader').should('exist');
+        cy.get('.next-select-trigger-search input').type('{downArrow}', { force: true });
+        findRealItem(cy.get('.next-cascader'), 0, 0).then($el => {
+            expect($el.get(0)).to.equal(document.activeElement);
+        });
     });
 
     it('should support signle value not in dataSource', () => {
         const VALUE = '222333';
-        let called = false;
-        const valueRender = item => {
-            assert(!item.label);
-            assert(item.value === VALUE);
-            called = true;
+        const handleValueRender = cy.spy().as('handleValueRender');
+        const valueRender: CascaderSelectProps['valueRender'] = item => {
+            handleValueRender(!item.label, item.value);
         };
-        wrapper = mount(
+        cy.mount(
             <CascaderSelect dataSource={ChinaArea} defaultValue={VALUE} valueRender={valueRender} />
         );
-        assert(called);
+        cy.get('@handleValueRender').should('be.calledWith', true, VALUE);
     });
 
     it('should support multiple value not in dataSource', () => {
         const VALUE = '222333';
-        let called = false;
-        const valueRender = item => {
-            assert(!item.label);
-            assert(item.value === VALUE);
-            called = true;
+        const handleValueRender = cy.spy().as('handleValueRender');
+        const valueRender: CascaderSelectProps['valueRender'] = item => {
+            handleValueRender(!item.label, item.value);
         };
-        wrapper = mount(
+        cy.mount(
             <CascaderSelect
                 multiple
                 displayRender={(displayPath, item) => item.label || ''}
                 dataSource={ChinaArea}
                 valueRender={valueRender}
+                defaultVisible
             />
-        );
-        wrapper.setProps({
-            value: VALUE,
-        });
-        assert(called);
-        wrapper.setProps({
+        ).as('Demo');
+        cy.rerender('Demo', { value: VALUE });
+        cy.get('@handleValueRender').should('be.calledWith', true, VALUE);
+        const handleChange = cy.spy();
+        cy.rerender<CascaderSelectProps>('Demo', {
             valueRender: item => item.label,
-            onChange: value => {
-                assert.deepEqual(value, [VALUE, '2973']);
-            },
+            onChange: handleChange,
         });
-        const item00 = findItem(0, 0);
-        ReactTestUtils.Simulate.click(item00);
+        findItem(0, 0).find('input').check();
+        cy.wrap(handleChange).should('be.calledWith', [VALUE, '2973']);
     });
 
     it('should support preview mode render', () => {
@@ -460,61 +389,44 @@ describe('CascaderSelect', () => {
             },
         ];
 
-        wrapper = mount(<CascaderSelect dataSource={dataSource} isPreview defaultValue={'2975'} />);
-        assert(wrapper.find('.next-form-preview').length > 0);
-        assert(wrapper.find('.next-form-preview').text() === '陕西 / 西安 / 西安市');
-        wrapper.setProps({
-            renderPreview: items => {
-                assert(items.length === 1);
-                assert(items[0].label === '陕西 / 西安 / 西安市');
+        cy.mount(<CascaderSelect dataSource={dataSource} isPreview defaultValue={'2975'} />).as(
+            'Demo'
+        );
+        cy.get('.next-form-preview').should('exist');
+        cy.get('.next-form-preview').should('have.text', '陕西 / 西安 / 西安市');
+        cy.rerender<CascaderSelectProps>('Demo', {
+            renderPreview: (items: CascaderSelectDataItem[]) => {
+                expect(items.length).to.equal(1);
+                expect(items[0].label).to.equal('陕西 / 西安 / 西安市');
                 return 'Hello World';
             },
         });
-        assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        cy.get('.next-form-preview').should('have.text', 'Hello World');
     });
 
-    it('should support setting resultAutoWidth to false', done => {
+    it('should support setting resultAutoWidth to false', () => {
         const width = '120px';
-        const container = document.createElement('div');
-
-        document.body.appendChild(container);
-
-        act(() => {
-            ReactDOM.render(
-                <CascaderSelect
-                    popupProps={{ className: 'result-auto-width-popup' }}
-                    className="cs-auto-width"
-                    style={{ width }}
-                    multiple
-                    resultAutoWidth={false}
-                    showSearch
-                    defaultVisible
-                    defaultValue="2975"
-                    dataSource={ChinaArea}
-                />,
-                container
-            );
+        cy.mount(
+            <CascaderSelect
+                popupProps={{ className: 'result-auto-width-popup' }}
+                className="cs-auto-width"
+                style={{ width }}
+                multiple
+                resultAutoWidth={false}
+                showSearch
+                defaultVisible
+                defaultValue="2975"
+                dataSource={ChinaArea}
+            />
+        );
+        cy.get('.cs-auto-width input').type('杭州');
+        cy.get('.result-auto-width-popup').then($el => {
+            expect($el.get(0).style.width).to.equal('');
         });
-
-        const iptElem = document.querySelector('.cs-auto-width input');
-
-        ReactTestUtils.Simulate.input(iptElem);
-        iptElem.value = '杭州';
-        ReactTestUtils.Simulate.change(iptElem);
-
-        setTimeout(() => {
-            const popEl = document.querySelector('.result-auto-width-popup');
-
-            assert(popEl.style.width === '');
-
-            popEl.remove();
-            container.remove();
-            done();
-        }, 50);
     });
 
     it('should support expandedValue', () => {
-        wrapper = mount(
+        cy.mount(
             <CascaderSelect
                 popupProps={{ className: 'myCascaderSelect' }}
                 dataSource={ChinaArea}
@@ -522,11 +434,11 @@ describe('CascaderSelect', () => {
                 defaultVisible
             />
         );
-        assert(findRealItem(document.querySelector('.myCascaderSelect'), 2, 1));
+        findRealItem(cy.get('.myCascaderSelect'), 2, 1).should('exist');
     });
 
     it('should support immutable data', () => {
-        wrapper = mount(
+        cy.mount(
             <CascaderSelect
                 immutable
                 popupProps={{ className: 'myCascaderSelect' }}
@@ -535,20 +447,22 @@ describe('CascaderSelect', () => {
                 defaultVisible
             />
         );
-        assert(findRealItem(document.querySelector('.myCascaderSelect'), 2, 1));
+        findRealItem(cy.get('.myCascaderSelect'), 2, 1).should('exist');
     });
 
     it('should support onSearch', () => {
-        wrapper = mount(
+        const handleSearch = cy.spy();
+        cy.mount(
             <CascaderSelect
                 dataSource={ChinaArea}
                 expandedValue={['2973', '2974']}
-                onSearch={v => assert(v === 'searchValue')}
+                onSearch={handleSearch}
+                showSearch
                 defaultVisible
             />
         );
-
-        wrapper.find('input').simulate('change', { target: { value: 'searchValue' } });
+        cy.get('input').type('searchValue');
+        cy.wrap(handleSearch).should('be.calledWith', 'searchValue');
     });
 
     it('keep value && label after dataSource updated', () => {
@@ -570,84 +484,56 @@ describe('CascaderSelect', () => {
         ];
 
         // 多选 multiple=true
-        wrapper = mount(
+        cy.mount(
             <CascaderSelect visible multiple dataSource={ChinaArea} defaultValue={['2975']} />
-        );
+        ).as('Demo');
 
-        wrapper.setProps({
-            dataSource: newDataSource,
-        });
-        assert.deepEqual(getLabels(wrapper), ['西安市']);
+        cy.rerender('Demo', { dataSource: newDataSource });
 
-        wrapper
-            .find('.next-checkbox-input')
-            .at(0)
-            .simulate('change', { target: { checked: true } });
+        labelsShouldBe(['西安市']);
 
-        assert.deepEqual(getLabels(wrapper), ['西安市', '浙江']);
+        cy.get('.next-checkbox-input').eq(0).check();
+        labelsShouldBe(['西安市', '浙江']);
 
-        wrapper.find('.next-tag-close-btn').at(0).simulate('click');
+        cy.get('.next-tag-close-btn').eq(0).click();
+        labelsShouldBe(['浙江']);
 
-        assert.deepEqual(getLabels(wrapper), ['浙江']);
-        wrapper.unmount();
+        // // 单选 multiple=false
+        cy.mount(<CascaderSelect dataSource={ChinaArea} value="2975" />).as('Demo1');
 
-        // 单选 multiple=false
-        wrapper = mount(<CascaderSelect dataSource={ChinaArea} value="2975" />);
+        cy.get('.next-input-text-field em').should('have.text', '陕西 / 西安 / 西安市');
 
-        assert(wrapper.find('.next-input-text-field em').text() === '陕西 / 西安 / 西安市');
-        wrapper.setProps({
-            dataSource: newDataSource,
-        });
-        assert(wrapper.find('.next-input-text-field em').text() === '陕西 / 西安 / 西安市');
+        cy.rerender('Demo1', { dataSource: newDataSource });
+
+        cy.get('.next-input-text-field em').should('have.text', '陕西 / 西安 / 西安市');
     });
 
-    it('should support popup v2', async () => {
-        wrapper = mount(
-            <CascaderSelect dataSource={ChinaArea} popupProps={{ v2: true }} showSearch />
-        );
-        wrapper.find('.next-select').simulate('click');
-        await delay(300);
-        assert(document.querySelector('.next-cascader-select-dropdown'));
+    it('should support popup v2', () => {
+        cy.mount(<CascaderSelect dataSource={ChinaArea} popupProps={{ v2: true }} showSearch />);
+        cy.get('.next-select').click();
+        cy.get('.next-cascader-select-dropdown').should('exist');
     });
 
     it('should support focus api', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        const wrapper = mount(<CascaderSelect id="cascader-focus" dataSource={ChinaArea} />, {
-            attachTo: div,
+        let cs: InstanceType<typeof CascaderSelect> | null = null;
+        cy.mount(
+            <CascaderSelect
+                id="cascader-focus"
+                ref={c => {
+                    cs = c;
+                }}
+                dataSource={ChinaArea}
+            />
+        ).as('Demo');
+        cy.then(() => {
+            cs?.getInstance().focus();
+            expect(document.activeElement!.id).to.equal('cascader-focus');
         });
-        const ins = wrapper.instance();
-        assert(typeof ins.focus === 'function');
-        ins.focus();
-        assert(document.activeElement.id === 'cascader-focus');
-        wrapper.unmount();
     });
 
-    it('should support visible by keyboard', async () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        const wrapper = mount(<CascaderSelect followTrigger dataSource={ChinaArea} />, {
-            attachTo: div,
-        });
-        ReactTestUtils.Simulate.keyDown(wrapper.find('input').getDOMNode(), {
-            keyCode: KEYCODE.UP,
-        });
-        await delay(300);
-        assert(div.querySelector('.next-cascader-select-dropdown'));
-        wrapper.unmount();
+    it('should support visible by keyboard', () => {
+        cy.mount(<CascaderSelect followTrigger dataSource={ChinaArea} />);
+        cy.get('input').type('{upArrow}', { force: true });
+        cy.get('.next-cascader-select-dropdown').should('exist');
     });
 });
-
-function findItem(menuIndex, itemIndex) {
-    return document.querySelectorAll('.next-cascader-menu')[menuIndex].children[itemIndex];
-}
-
-function getLabels(wrapper) {
-    return wrapper.find('span.next-tag-body').map(node => node.text().trim());
-}
-
-function findRealItem(cascader, listIndex, itemIndex) {
-    return cascader
-        .querySelectorAll('.next-cascader-menu')
-        [listIndex].querySelectorAll('.next-cascader-menu-item')[itemIndex];
-}

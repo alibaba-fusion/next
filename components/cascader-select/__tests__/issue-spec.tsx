@@ -1,19 +1,6 @@
-import React, { createRef, useState } from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
+import React, { forwardRef, useEffect, useState } from 'react';
 import CascaderSelect from '../index';
 import '../style';
-
-/* eslint-disable react/jsx-filename-extension  */
-/* global describe it beforeEach */
-/* global describe it afterEach */
-
-Enzyme.configure({ adapter: new Adapter() });
-
-function delay(duration) {
-    return new Promise(resolve => setTimeout(resolve, duration));
-}
 
 const ChinaAreaData = [
     {
@@ -64,74 +51,53 @@ const ChinaAreaData = [
     },
 ];
 
+function findItem(menuIndex: number, itemIndex: number) {
+    return cy.get('.next-cascader-menu').eq(menuIndex).children().eq(itemIndex);
+}
+
+function shouldExpanded(text: string, menuIndex: number, itemIndex: number) {
+    const item = findItem(menuIndex, itemIndex);
+    item.should('have.text', text);
+    item.should('have.class', 'next-expanded');
+}
+
+function shouldSelected(text: string, menuIndex: number, itemIndex: number) {
+    const item = findItem(menuIndex, itemIndex);
+    item.should('exist');
+    item.should('have.text', text);
+    item.should('have.class', 'next-selected');
+}
+
 describe('CascaderSelect issues', function () {
-    this.timeout(1000000);
-    let wrapper, root;
-    beforeEach(() => {
-        root = document.createElement('div');
-        document.body.appendChild(root);
-    });
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
-    it('should sync expandedValue when visible=false and props.value changed ', async () => {
-        const ref = createRef();
-
-        function Demo() {
-            const [value, setValue] = useState('2975');
-            const [visible, setVisible] = useState(false);
-            ref.current = { setValue, setVisible };
+    it('should sync expandedValue when visible=false and props.value changed ', () => {
+        const Demo = forwardRef<unknown, { value?: string; visible?: boolean }>(props => {
+            const { value: propsValue = '2975', visible = false } = props;
+            const [value, setValue] = useState(propsValue);
+            useEffect(() => {
+                setValue(propsValue);
+            }, [propsValue]);
             return (
                 <CascaderSelect
                     followTrigger
                     value={value}
                     visible={visible}
                     dataSource={ChinaAreaData}
-                    onChange={v => setValue(v)}
+                    onChange={(v: string) => setValue(v)}
                 />
             );
-        }
-        wrapper = mount(<Demo />, {
-            attachTo: root,
         });
-        assert(
-            root.querySelector('span.next-select-inner em').textContent.trim() ===
-                '陕西 / 西安 / 西安市'
-        );
-        ref.current.setVisible(true);
-        await delay(100);
-        assert(isExpanded('陕西', 0, 0, root));
-        assert(isExpanded('西安', 1, 0, root));
-        assert(isSelected('西安市', 2, 0, root));
-        ref.current.setVisible(false);
-        await delay(500);
-        ref.current.setValue('3373');
-        assert(
-            root.querySelector('span.next-select-inner em').textContent.trim() ===
-                '新疆 / 乌鲁木齐 / 乌鲁木齐市'
-        );
-        ref.current.setVisible(true);
-        await delay(100);
-        assert(isExpanded('新疆', 0, 2, root));
-        assert(isExpanded('乌鲁木齐', 1, 0, root));
-        assert(isSelected('乌鲁木齐市', 2, 0, root));
+        cy.mount(<Demo />).as('Demo');
+        cy.get('span.next-select-inner em').should('have.text', '陕西 / 西安 / 西安市');
+        cy.rerender('Demo', { visible: true });
+        shouldExpanded('陕西', 0, 0);
+        shouldExpanded('西安', 1, 0);
+        shouldSelected('西安市', 2, 0);
+        cy.rerender('Demo', { value: '3373', visible: false }).as('Demo1');
+        cy.get('span.next-select-inner em').should('have.text', '新疆 / 乌鲁木齐 / 乌鲁木齐市');
+        cy.get('.next-cascader-menu').should('not.exist');
+        cy.rerender('Demo', { value: '3373', visible: true });
+        shouldExpanded('新疆', 0, 2);
+        shouldExpanded('乌鲁木齐', 1, 0);
+        shouldSelected('乌鲁木齐市', 2, 0);
     });
 });
-
-function findItem(menuIndex, itemIndex, root = document) {
-    return root.querySelectorAll('.next-cascader-menu')[menuIndex].children[itemIndex];
-}
-
-function isExpanded(text, menuIndex, itemIndex, root = document) {
-    const item = findItem(menuIndex, itemIndex, root);
-    return !!item && item.textContent.trim() === text && item.classList.contains('next-expanded');
-}
-
-function isSelected(text, menuIndex, itemIndex, root = document) {
-    const item = findItem(menuIndex, itemIndex, root);
-    return !!item && item.textContent.trim() === text && item.classList.contains('next-selected');
-}
