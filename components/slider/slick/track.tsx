@@ -23,11 +23,16 @@ const getSlideClasses = specProps => {
     if (specProps.centerMode) {
         centerOffset = Math.floor(specProps.slidesToShow / 2);
         slickCenter = (index - specProps.currentSlide) % specProps.slideCount === 0;
-        if (index > specProps.currentSlide - centerOffset - 1 && index <= specProps.currentSlide + centerOffset) {
+        if (
+            index > specProps.currentSlide - centerOffset - 1 &&
+            index <= specProps.currentSlide + centerOffset
+        ) {
             slickActive = true;
         }
     } else {
-        slickActive = specProps.currentSlide <= index && index < specProps.currentSlide + specProps.slidesToShow;
+        slickActive =
+            specProps.currentSlide <= index &&
+            index < specProps.currentSlide + specProps.slidesToShow;
     }
 
     return classNames(`${prefix}slick-slide`, {
@@ -37,7 +42,7 @@ const getSlideClasses = specProps => {
     });
 };
 
-const getSlideStyle = function(specProps) {
+const getSlideStyle = function (specProps) {
     const style = {};
 
     if (specProps.variableWidth === undefined || specProps.variableWidth === false) {
@@ -89,7 +94,10 @@ const renderSlides = specProps => {
             currentSlide: specProps.currentSlide,
         };
 
-        if (!specProps.lazyLoad | (specProps.lazyLoad && specProps.lazyLoadedList.indexOf(index) >= 0)) {
+        if (
+            !specProps.lazyLoad |
+            (specProps.lazyLoad && specProps.lazyLoadedList.indexOf(index) >= 0)
+        ) {
             child = elem;
         } else {
             child = elem.key ? <div key={elem.key} /> : <div />;
@@ -107,7 +115,7 @@ const renderSlides = specProps => {
             cssClasses = slickClasses;
         }
 
-        const onClick = function(e) {
+        const onClick = function (e) {
             // only child === elem, it will has .props.onClick;
             child.props && child.props.onClick && elem.props.onClick(e);
             if (specProps.focusOnSelect) {
@@ -135,7 +143,9 @@ const renderSlides = specProps => {
 
         // variableWidth doesn't wrap properly.
         if (specProps.infinite && specProps.animation !== 'fade') {
-            const infiniteCount = specProps.variableWidth ? specProps.slidesToShow + 1 : specProps.slidesToShow;
+            const infiniteCount = specProps.variableWidth
+                ? specProps.slidesToShow + 1
+                : specProps.slidesToShow;
 
             if (index >= count - infiniteCount) {
                 key = -(count - index);
@@ -164,7 +174,10 @@ const renderSlides = specProps => {
     });
     // To support server-side rendering
     if (!dom.hasDOM) {
-        return slides.slice(specProps.currentSlide, specProps.currentSlide + specProps.slidesToShow);
+        return slides.slice(
+            specProps.currentSlide,
+            specProps.currentSlide + specProps.slidesToShow
+        );
     }
     if (specProps.rtl) {
         return preCloneSlides.concat(slides, postCloneSlides).reverse();
@@ -186,7 +199,11 @@ export default class Track extends Component {
     render() {
         const slides = renderSlides(this.props);
         return (
-            <div role="list" className={`${this.props.prefix}slick-track`} style={this.props.trackStyle}>
+            <div
+                role="list"
+                className={`${this.props.prefix}slick-track`}
+                style={this.props.trackStyle}
+            >
                 {slides}
             </div>
         );
