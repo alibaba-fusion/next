@@ -14,7 +14,7 @@ import ConfigProvider from '../../config-provider';
 Enzyme.configure({ adapter: new Adapter() });
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
-describe('slider', function() {
+describe('slider', function () {
     this.timeout(0);
 
     describe('render', () => {
@@ -120,16 +120,11 @@ describe('slider', function() {
             );
             wrapper.setProps({ activeIndex: 2 });
             wrapper.update();
-            assert(
-                wrapper
-                    .find('.next-slick-slide')
-                    .at(2)
-                    .hasClass('next-slick-active')
-            );
+            assert(wrapper.find('.next-slick-slide').at(2).hasClass('next-slick-active'));
         });
 
         it('should autoplay', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(
                     <Slider infinite={false} autoplay autoplaySpeed={200}>
                         {slides}
@@ -137,17 +132,12 @@ describe('slider', function() {
                 );
                 yield delay(300);
                 wrapper.update();
-                assert(
-                    wrapper
-                        .find('.next-slick-slide')
-                        .at(1)
-                        .hasClass('next-slick-active')
-                );
+                assert(wrapper.find('.next-slick-slide').at(1).hasClass('next-slick-active'));
             });
         });
 
         it('should fade', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(
                     <Slider infinite={false} animation="fade" autoplay autoplaySpeed={200}>
                         {slides}
@@ -155,12 +145,7 @@ describe('slider', function() {
                 );
                 yield delay(300);
                 wrapper.update();
-                assert(
-                    wrapper
-                        .find('.next-slick-slide')
-                        .at(1)
-                        .hasClass('next-slick-active')
-                );
+                assert(wrapper.find('.next-slick-slide').at(1).hasClass('next-slick-active'));
             });
         });
 
@@ -203,12 +188,7 @@ describe('slider', function() {
                     {slides}
                 </Slider>
             );
-            assert(
-                wrapper
-                    .find('.next-slick-slide')
-                    .at(3)
-                    .hasClass('next-slick-active')
-            );
+            assert(wrapper.find('.next-slick-slide').at(3).hasClass('next-slick-active'));
         });
     });
 
@@ -267,7 +247,7 @@ describe('slider', function() {
         });
 
         it('too more slidesToShow ', () => {
-            return co(function*() {
+            return co(function* () {
                 const settings = {
                     slidesToShow: 5,
                     slidesToScroll: 10,
@@ -332,29 +312,19 @@ describe('slider', function() {
         });
 
         it('should click next/prev arrow', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
                 yield delay(100);
-                assert(
-                    wrapper
-                        .find('.next-slick-slide')
-                        .at(0)
-                        .hasClass('next-slick-active')
-                );
+                assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
                 wrapper.find('.next-slick-arrow.next-slick-next').simulate('click');
                 yield delay(300);
-                assert(
-                    wrapper
-                        .find('.next-slick-slide')
-                        .at(1)
-                        .hasClass('next-slick-active')
-                );
+                assert(wrapper.find('.next-slick-slide').at(1).hasClass('next-slick-active'));
                 wrapper.find('.next-slick-prev').simulate('click');
             });
         });
 
         it('should have correct disabled class for next/prev arrow', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(
                     <Slider infinite={false} defaultActiveIndex={2} slidesToShow={5}>
                         {slides}
@@ -362,22 +332,16 @@ describe('slider', function() {
                 );
                 yield delay(100);
                 assert(
-                    wrapper
-                        .find('.next-slick-arrow.next-slick-next')
-                        .at(0)
-                        .hasClass('disabled')
+                    wrapper.find('.next-slick-arrow.next-slick-next').at(0).hasClass('disabled')
                 );
                 assert(
-                    !wrapper
-                        .find('.next-slick-arrow.next-slick-prev')
-                        .at(0)
-                        .hasClass('disabled')
+                    !wrapper.find('.next-slick-arrow.next-slick-prev').at(0).hasClass('disabled')
                 );
             });
         });
 
         it('should hover next/prev arrow', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
 
                 wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseEnter');
@@ -388,41 +352,18 @@ describe('slider', function() {
                 yield delay(300);
                 wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseLeave');
 
-                assert(
-                    wrapper
-                        .find('.next-slick-slide')
-                        .at(0)
-                        .hasClass('next-slick-active')
-                );
+                assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
             });
         });
 
         it('should click dots', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
-                assert(
-                    wrapper
-                        .find('.next-slick-slide')
-                        .at(0)
-                        .hasClass('next-slick-active')
-                );
-                wrapper
-                    .find('.next-slick-dots-item button')
-                    .at(2)
-                    .simulate('click');
+                assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
+                wrapper.find('.next-slick-dots-item button').at(2).simulate('click');
                 yield delay(300);
-                assert(
-                    wrapper
-                        .find('.next-slick-dots-item')
-                        .at(2)
-                        .hasClass('active')
-                );
-                assert(
-                    wrapper
-                        .find('.next-slick-slide')
-                        .at(2)
-                        .hasClass('next-slick-active')
-                );
+                assert(wrapper.find('.next-slick-dots-item').at(2).hasClass('active'));
+                assert(wrapper.find('.next-slick-slide').at(2).hasClass('next-slick-active'));
             });
         });
 
@@ -460,18 +401,9 @@ describe('slider', function() {
             );
             wrapper.setProps({ activeIndex: 2 });
             wrapper.update();
-            const height1 = wrapper
-                .find('.next-slick-slide')
-                .at(0)
-                .instance().style.height;
-            const height2 = wrapper
-                .find('.next-slick-slide')
-                .at(1)
-                .instance().style.height;
-            const height3 = wrapper
-                .find('.next-slick-slide')
-                .at(3)
-                .instance().style.height;
+            const height1 = wrapper.find('.next-slick-slide').at(0).instance().style.height;
+            const height2 = wrapper.find('.next-slick-slide').at(1).instance().style.height;
+            const height3 = wrapper.find('.next-slick-slide').at(3).instance().style.height;
             const newHeight = height1 + height2 + height3;
             assert(
                 wrapper.find('.next-slick-track').instance().style.transform ===
@@ -497,7 +429,7 @@ describe('slider', function() {
         });
 
         it('should click next/prev arrow', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(
                     <Slider rtl infinite={false}>
                         {slides}
@@ -525,7 +457,7 @@ describe('slider', function() {
         });
 
         it('should hover next/prev arrow', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(
                     <Slider rtl infinite={false}>
                         {slides}
@@ -551,31 +483,13 @@ describe('slider', function() {
         });
 
         it('should click dots', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
-                assert(
-                    wrapper
-                        .find('.next-slick-slide')
-                        .at(0)
-                        .hasClass('next-slick-active')
-                );
-                wrapper
-                    .find('.next-slick-dots-item button')
-                    .at(2)
-                    .simulate('click');
+                assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
+                wrapper.find('.next-slick-dots-item button').at(2).simulate('click');
                 yield delay(300);
-                assert(
-                    wrapper
-                        .find('.next-slick-dots-item')
-                        .at(2)
-                        .hasClass('active')
-                );
-                assert(
-                    wrapper
-                        .find('.next-slick-slide')
-                        .at(2)
-                        .hasClass('next-slick-active')
-                );
+                assert(wrapper.find('.next-slick-dots-item').at(2).hasClass('active'));
+                assert(wrapper.find('.next-slick-slide').at(2).hasClass('next-slick-active'));
             });
         });
 
@@ -596,7 +510,7 @@ describe('slider', function() {
         });
 
         it('should autoplay', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(
                     <Slider rtl autoplay infinite={false} autoplaySpeed={200}>
                         {slides}
@@ -626,7 +540,7 @@ describe('slider', function() {
         });
 
         it('too more slidesToShow ', () => {
-            return co(function*() {
+            return co(function* () {
                 const settings = {
                     rtl: true,
                     slidesToShow: 2,

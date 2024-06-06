@@ -13,7 +13,10 @@ Enzyme.configure({ adapter: new Adapter() });
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 describe('Issue', () => {
-    let dataSource = [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }],
+    let dataSource = [
+            { id: '1', name: 'test' },
+            { id: '2', name: 'test2' },
+        ],
         table,
         timeout,
         wrapper;
@@ -60,7 +63,7 @@ describe('Issue', () => {
             }
         }
 
-        ReactDOM.render(<App />, container, function() {
+        ReactDOM.render(<App />, container, function () {
             setTimeout(() => {
                 const sliderList = container.querySelectorAll('.next-slick-list');
                 assert(sliderList[0].style.height === `${sliderList[0].clientHeight}px`);
@@ -89,7 +92,7 @@ describe('Issue', () => {
                 speed: 500,
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                onChange: function(index) {
+                onChange: function (index) {
                     setIdx(index);
                 },
             };

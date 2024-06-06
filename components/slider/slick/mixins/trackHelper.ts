@@ -36,7 +36,9 @@ export const getTrackCSS = spec => {
         WebkitTransform: !spec.vertical
             ? `translate3d(${spec.left}px, 0px, 0px)`
             : `translate3d(0px, ${spec.left}px, 0px)`,
-        transform: !spec.vertical ? `translate3d(${spec.left}px, 0px, 0px)` : `translate3d(0px, ${spec.left}px, 0px)`,
+        transform: !spec.vertical
+            ? `translate3d(${spec.left}px, 0px, 0px)`
+            : `translate3d(0px, ${spec.left}px, 0px)`,
         transition: '',
         WebkitTransition: '',
         msTransform: !spec.vertical ? `translateX(${spec.left}px)` : `translateY(${spec.left}px)`,
@@ -58,7 +60,15 @@ export const getTrackCSS = spec => {
 };
 
 export const getTrackAnimateCSS = spec => {
-    checkSpecKeys(spec, ['left', 'variableWidth', 'slideCount', 'slidesToShow', 'slideWidth', 'speed', 'cssEase']);
+    checkSpecKeys(spec, [
+        'left',
+        'variableWidth',
+        'slideCount',
+        'slidesToShow',
+        'slideWidth',
+        'speed',
+        'cssEase',
+    ]);
 
     const style = getTrackCSS(spec);
     // useCSS is true by default so it can be undefined
@@ -67,7 +77,7 @@ export const getTrackAnimateCSS = spec => {
     return style;
 };
 
-export const getTrackLeft = function(spec) {
+export const getTrackLeft = function (spec) {
     checkSpecKeys(spec, [
         'slideIndex',
         'trackRef',
@@ -98,27 +108,42 @@ export const getTrackLeft = function(spec) {
         }
         if (spec.slideCount % spec.slidesToScroll !== 0) {
             let condition =
-                spec.slideIndex + spec.slidesToScroll > spec.slideCount && spec.slideCount > spec.slidesToShow;
+                spec.slideIndex + spec.slidesToScroll > spec.slideCount &&
+                spec.slideCount > spec.slidesToShow;
 
             if (spec.rtl) {
                 const slideIndex =
-                    spec.slideIndex >= spec.slideCount ? spec.slideCount - spec.slideIndex : spec.slideIndex;
-                condition = slideIndex + spec.slidesToScroll > spec.slideCount && spec.slideCount > spec.slidesToShow;
+                    spec.slideIndex >= spec.slideCount
+                        ? spec.slideCount - spec.slideIndex
+                        : spec.slideIndex;
+                condition =
+                    slideIndex + spec.slidesToScroll > spec.slideCount &&
+                    spec.slideCount > spec.slidesToShow;
             }
             if (condition) {
                 if (spec.slideIndex > spec.slideCount) {
-                    slideOffset = (spec.slidesToShow - (spec.slideIndex - spec.slideCount)) * spec.slideWidth * -1;
-                    verticalOffset = (spec.slidesToShow - (spec.slideIndex - spec.slideCount)) * spec.slideHeight * -1;
+                    slideOffset =
+                        (spec.slidesToShow - (spec.slideIndex - spec.slideCount)) *
+                        spec.slideWidth *
+                        -1;
+                    verticalOffset =
+                        (spec.slidesToShow - (spec.slideIndex - spec.slideCount)) *
+                        spec.slideHeight *
+                        -1;
                 } else {
                     slideOffset = (spec.slideCount % spec.slidesToScroll) * spec.slideWidth * -1;
-                    verticalOffset = (spec.slideCount % spec.slidesToScroll) * spec.slideHeight * -1;
+                    verticalOffset =
+                        (spec.slideCount % spec.slidesToScroll) * spec.slideHeight * -1;
                 }
             }
         }
     } else {
         /* eslint-disable no-lonely-if */
         if (spec.slideCount % spec.slidesToScroll !== 0) {
-            if (spec.slideIndex + spec.slidesToScroll > spec.slideCount && spec.slideCount > spec.slidesToShow) {
+            if (
+                spec.slideIndex + spec.slidesToScroll > spec.slideCount &&
+                spec.slideCount > spec.slidesToShow
+            ) {
                 const slidesToOffset = spec.slidesToShow - (spec.slideCount % spec.slidesToScroll);
                 slideOffset = slidesToOffset * spec.slideWidth;
             }
@@ -159,11 +184,14 @@ export const getTrackLeft = function(spec) {
             if (spec.infinite === false) {
                 targetSlide = ReactDOM.findDOMNode(spec.trackRef).children[spec.slideIndex];
             } else {
-                targetSlide = ReactDOM.findDOMNode(spec.trackRef).children[spec.slideIndex + spec.slidesToShow + 1];
+                targetSlide = ReactDOM.findDOMNode(spec.trackRef).children[
+                    spec.slideIndex + spec.slidesToShow + 1
+                ];
             }
 
             if (targetSlide) {
-                targetLeft = targetSlide.offsetLeft * -1 + (spec.listWidth - targetSlide.offsetWidth) / 2;
+                targetLeft =
+                    targetSlide.offsetLeft * -1 + (spec.listWidth - targetSlide.offsetWidth) / 2;
             }
         }
     }
