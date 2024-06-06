@@ -12,7 +12,10 @@ const EventHandlers = {
             : (this.state.slideCount - this.state.currentSlide) % this.props.slidesToScroll;
 
         if (options.message === 'previous') {
-            slideOffset = indexOffset === 0 ? this.props.slidesToScroll : this.props.slidesToShow - indexOffset;
+            slideOffset =
+                indexOffset === 0
+                    ? this.props.slidesToScroll
+                    : this.props.slidesToShow - indexOffset;
             targetSlide = this.state.currentSlide - slideOffset;
         } else if (options.message === 'next') {
             slideOffset = indexOffset === 0 ? this.props.slidesToScroll : indexOffset;
@@ -54,7 +57,10 @@ const EventHandlers = {
     },
 
     swipeStart(e) {
-        if (this.props.swipe === false || ('ontouchend' in document && this.props.swipe === false)) {
+        if (
+            this.props.swipe === false ||
+            ('ontouchend' in document && this.props.swipe === false)
+        ) {
             return;
         } else if (this.props.draggable === false && e.type.indexOf('mouse') !== -1) {
             return;
@@ -90,12 +96,17 @@ const EventHandlers = {
 
         touchObject.curX = e.touches ? e.touches[0].pageX : e.clientX;
         touchObject.curY = e.touches ? e.touches[0].pageY : e.clientY;
-        touchObject.swipeLength = Math.round(Math.sqrt(Math.pow(touchObject.curX - touchObject.startX, 2)));
+        touchObject.swipeLength = Math.round(
+            Math.sqrt(Math.pow(touchObject.curX - touchObject.startX, 2))
+        );
 
-        let positionOffset = (this.props.rtl === false ? 1 : -1) * (touchObject.curX > touchObject.startX ? 1 : -1);
+        let positionOffset =
+            (this.props.rtl === false ? 1 : -1) * (touchObject.curX > touchObject.startX ? 1 : -1);
 
         if (this.props.verticalSwiping === true) {
-            touchObject.swipeLength = Math.round(Math.sqrt(Math.pow(touchObject.curY - touchObject.startY, 2)));
+            touchObject.swipeLength = Math.round(
+                Math.sqrt(Math.pow(touchObject.curY - touchObject.startY, 2))
+            );
             positionOffset = touchObject.curY > touchObject.startY ? 1 : -1;
         }
 
@@ -134,7 +145,10 @@ const EventHandlers = {
             }),
         });
 
-        if (Math.abs(touchObject.curX - touchObject.startX) < Math.abs(touchObject.curY - touchObject.startY) * 0.8) {
+        if (
+            Math.abs(touchObject.curX - touchObject.startX) <
+            Math.abs(touchObject.curY - touchObject.startY) * 0.8
+        ) {
             return;
         }
         if (touchObject.swipeLength > 4) {
@@ -201,18 +215,25 @@ const EventHandlers = {
 
             Array.from(slides).every(slide => {
                 if (!this.props.vertical) {
-                    if (slide.offsetLeft - centerOffset + (this.getWidth(slide) || 0) / 2 > this.state.swipeLeft * -1) {
+                    if (
+                        slide.offsetLeft - centerOffset + (this.getWidth(slide) || 0) / 2 >
+                        this.state.swipeLeft * -1
+                    ) {
                         swipedSlide = slide;
                         return false;
                     }
-                } else if (slide.offsetTop + (this.getHeight(slide) || 0) / 2 > this.state.swipeLeft * -1) {
+                } else if (
+                    slide.offsetTop + (this.getHeight(slide) || 0) / 2 >
+                    this.state.swipeLeft * -1
+                ) {
                     swipedSlide = slide;
                     return false;
                 }
 
                 return true;
             });
-            const slidesTraversed = Math.abs(swipedSlide.dataset.index - this.state.currentSlide) || 1;
+            const slidesTraversed =
+                Math.abs(swipedSlide.dataset.index - this.state.currentSlide) || 1;
             return slidesTraversed;
         } else {
             return this.props.slidesToScroll;
