@@ -225,7 +225,11 @@ export default class Slider extends Component {
         }
 
         const clazz = classNames(
-            [`${prefix}slick`, `${prefix}slick-${arrowPosition}`, `${prefix}slick-${slideDirection}`],
+            [
+                `${prefix}slick`,
+                `${prefix}slick-${arrowPosition}`,
+                `${prefix}slick-${slideDirection}`,
+            ],
             className
         );
 
@@ -241,9 +245,15 @@ export default class Slider extends Component {
                     dir="ltr"
                     className={clazz}
                     style={style}
-                    {...obj.pickOthers({ ...Slider.propTypes, ...InnerSlider.propTypes }, sliderProps)}
+                    {...obj.pickOthers(
+                        { ...Slider.propTypes, ...InnerSlider.propTypes },
+                        sliderProps
+                    )}
                 >
-                    <InnerSlider ref={InnerSlider => (this.innerSlider = InnerSlider)} {...sliderProps} />
+                    <InnerSlider
+                        ref={InnerSlider => (this.innerSlider = InnerSlider)}
+                        {...sliderProps}
+                    />
                 </div>
             </ConfigProvider>
         );
