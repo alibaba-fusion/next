@@ -97,7 +97,13 @@ export default class Arrow extends Component {
         const disabled = Arrow.isDisabled(this.props);
 
         const arrowClazz = classNames(
-            [`${prefix}slick-arrow`, `${prefix}slick-${type}`, arrowPosition, arrowSize, arrowDirection],
+            [
+                `${prefix}slick-arrow`,
+                `${prefix}slick-${type}`,
+                arrowPosition,
+                arrowSize,
+                arrowDirection,
+            ],
             { disabled }
         );
 

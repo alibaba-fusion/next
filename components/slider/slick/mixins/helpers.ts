@@ -20,7 +20,9 @@ const helpers = {
         const slideHeight = this.getHeight(slickList.querySelector('[data-index="0"]')) || 0;
         const listHeight = slideHeight * props.slidesToShow;
         const slideHeightList = [];
-        const newSlickList = Array.from(slickList.querySelectorAll(`.${props.prefix}slick-slide`) || []);
+        const newSlickList = Array.from(
+            slickList.querySelectorAll(`.${props.prefix}slick-slide`) || []
+        );
         for (const item of newSlickList) {
             const height = this.getHeight(item);
             slideHeightList.push(height);
@@ -28,7 +30,9 @@ const helpers = {
         const slidesToShow = props.slidesToShow || 1;
 
         const activeIndex = 'activeIndex' in props ? props.activeIndex : props.defaultActiveIndex;
-        const currentSlide = props.rtl ? slideCount - 1 - (slidesToShow - 1) - activeIndex : activeIndex;
+        const currentSlide = props.rtl
+            ? slideCount - 1 - (slidesToShow - 1) - activeIndex
+            : activeIndex;
 
         this.setState(
             {
@@ -158,7 +162,7 @@ const helpers = {
                     animating: true,
                     currentSlide: targetSlide,
                 },
-                function() {
+                function () {
                     this.animationEndCallback = setTimeout(callback, this.props.speed + 20);
                 }
             );
@@ -199,7 +203,8 @@ const helpers = {
             if (this.props.infinite === false) {
                 currentSlide = 0;
             } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
-                currentSlide = this.state.slideCount - (this.state.slideCount % this.props.slidesToScroll);
+                currentSlide =
+                    this.state.slideCount - (this.state.slideCount % this.props.slidesToScroll);
             } else {
                 currentSlide = this.state.slideCount + targetSlide;
             }
@@ -316,7 +321,7 @@ const helpers = {
                         ...this.state,
                     }),
                 },
-                function() {
+                function () {
                     this.animationEndCallback = setTimeout(callback, this.props.speed + 20);
                 }
             );

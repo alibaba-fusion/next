@@ -171,7 +171,9 @@ class InnerSlider extends React.Component {
                 }
             });
             // children 每次都会不同，所以不需要检测
-            if (diffKeys.every(key => key === 'children' || typeof this.props[key] === 'function')) {
+            if (
+                diffKeys.every(key => key === 'children' || typeof this.props[key] === 'function')
+            ) {
                 // do nothing;
             } else {
                 const update = !obj.shallowEqual(prevProps, this.props);
@@ -363,7 +365,9 @@ class InnerSlider extends React.Component {
 
         let centerPaddingStyle;
         if (centerMode) {
-            centerPaddingStyle = vertical ? { padding: `${centerPadding} 0px` } : { padding: `0px ${centerPadding}` };
+            centerPaddingStyle = vertical
+                ? { padding: `${centerPadding} 0px` }
+                : { padding: `0px ${centerPadding}` };
         }
 
         return (
