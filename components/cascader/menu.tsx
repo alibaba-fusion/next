@@ -104,7 +104,10 @@ export default class CascaderMenu extends Component<CascaderMenuProps> {
             <div
                 ref={this.saveMenuRef}
                 className={`${prefix}cascader-menu-wrapper ${className ? className : ''}`}
-                style={style}
+                style={{
+                    ...style,
+                    backgroundColor: style?.backgroundColor ?? (useVirtual ? '#fff' : undefined),
+                }}
             >
                 {useVirtual ? (
                     <VirtualList

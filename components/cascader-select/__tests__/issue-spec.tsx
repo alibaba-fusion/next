@@ -100,4 +100,23 @@ describe('CascaderSelect issues', function () {
         shouldExpanded('乌鲁木齐', 1, 0);
         shouldSelected('乌鲁木齐市', 2, 0);
     });
+
+    // Fix https://github.com/alibaba-fusion/next/issues/3704
+    it('When using virtual scrolling, the background color should be white', () => {
+        cy.mount(
+            <div style={{ background: '#ccc', height: '300px' }}>
+                <CascaderSelect
+                    useVirtual
+                    defaultVisible
+                    defaultValue={['3078']}
+                    dataSource={ChinaAreaData}
+                />
+            </div>
+        );
+        cy.get('.next-cascader-menu-wrapper').should(
+            'have.css',
+            'background-color',
+            'rgb(255, 255, 255)'
+        );
+    });
 });
