@@ -53,6 +53,7 @@ export type CascaderSelectPropsWithDefault = ClassPropsWithDefault<
  * CascaderSelect
  */
 class CascaderSelect extends Component<CascaderSelectProps, CascaderSelectState> {
+    static displayName = 'CascaderSelect';
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -161,9 +162,9 @@ class CascaderSelect extends Component<CascaderSelectProps, CascaderSelectState>
     };
 
     readonly props: CascaderSelectPropsWithDefault;
-    private _valueDataCache: Record<string, CascaderSelectDataItem>;
-    private _v2n: Record<string, CascaderSelectDataItem>;
-    private _p2n: Record<string, CascaderSelectDataItem>;
+    _valueDataCache: Record<string, CascaderSelectDataItem>;
+    _v2n: Record<string, CascaderSelectDataItem>;
+    _p2n: Record<string, CascaderSelectDataItem>;
     select: InstanceType<typeof Select>;
     cascader: InstanceType<typeof Cascader>;
     popup: InstanceType<typeof Popup>;

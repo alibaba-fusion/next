@@ -4,12 +4,6 @@ import { Radio, Drawer, Select } from '@alifd/next';
 import type { SelectProps } from '@alifd/next/types/select';
 import type { RadioProps } from '@alifd/next/types/radio';
 
-interface onToggleHighlightItemProps {
-    deep: number;
-    value: string;
-    label: string;
-}
-
 const Option = Select.Option;
 
 const onChange: SelectProps['onChange'] = value => {
@@ -20,7 +14,7 @@ const onBlur: SelectProps['onBlur'] = e => {
     console.log(/onblur/, e);
 };
 
-const onToggleHighlightItem = (item: onToggleHighlightItemProps, type: 'up' | 'down') => {
+const onToggleHighlightItem: SelectProps['onToggleHighlightItem'] = (item, type) => {
     console.log(item, type);
 };
 

@@ -62,7 +62,7 @@ describe('field', () => {
         it('should support React.createRef in Form', () => {
             class Demo extends React.Component {
                 field = new Field(this);
-                ref = createRef<Input>();
+                ref = createRef<InstanceType<typeof Input>>();
                 render() {
                     return (
                         <Form field={this.field}>
