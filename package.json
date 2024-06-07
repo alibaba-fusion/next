@@ -104,7 +104,7 @@
     ]
   },
   "dependencies": {
-    "@alifd/field": "~2.0.0",
+    "@alifd/field": "~2.0.2",
     "@alifd/overlay": "^0.3.3",
     "@alifd/validate": "~2.0.3",
     "@types/react-transition-group": "^4.4.6",
@@ -307,11 +307,11 @@
     "registry": "https://registry.npmjs.org"
   },
   "overrides": {
-    "@alifd/field": "~2.0.0",
+    "@alifd/field": "~2.0.2",
     "cheerio": "1.0.0-rc.3"
   },
   "resolutions": {
-    "@alifd/field": "~2.0.0",
+    "@alifd/field": "~2.0.2",
     "cheerio": "1.0.0-rc.3"
   }
 }

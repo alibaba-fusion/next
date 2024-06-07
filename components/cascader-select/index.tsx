@@ -1,5 +1,5 @@
 import ConfigProvider from '../config-provider';
-import CascaderSelect, { type CascaderSelectPropsWithDefault } from './cascader-select';
+import CascaderSelect from './cascader-select';
 
 export type { CascaderSelectProps, CascaderSelectDataItem } from './types';
 
@@ -31,6 +31,6 @@ export default ConfigProvider.config(CascaderSelect, {
             deprecated('labelWidth', 'listStyle | listClassName', 'CascaderSelect');
         }
 
-        return props as CascaderSelectPropsWithDefault;
+        return props;
     },
 });
