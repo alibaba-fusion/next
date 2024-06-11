@@ -485,7 +485,7 @@ class Select extends Base<SelectProps, SelectState> {
         this.props.onSearch!(value, e);
     }
 
-    handleSearchClear(triggerType: string) {
+    handleSearchClear(triggerType?: string) {
         this.handleSearchValue('');
         this.props.onSearchClear!(triggerType);
     }
@@ -678,16 +678,24 @@ class Select extends Base<SelectProps, SelectState> {
      */
     handleSelectAll(e: UIEvent<HTMLElement>) {
         e && e.preventDefault();
-        let nextValues: DataSourceItem[];
+        let nextValues: Exclude<DataSourceItem, ObjectItem>[];
 
         if (this.selectAllYet) {
             nextValues = [];
         } else {
             nextValues = [
-                ...((this.state.value as DataSourceItem[]) || []),
+                ...((this.state.value as DataSourceItem[]) || []).map(item => {
+                    if (typeof item === 'object' && item !== null) {
+                        return item.value;
+                    }
+                    return item;
+                }),
                 ...this.dataStore.getEnableDS().map(item => item.value),
             ];
         }
+
+        // 去重
+        nextValues = Array.from(new Set(nextValues));
 
         // 直接传 values，减少 toString 操作
         this.handleMultipleSelect(nextValues, 'selectAll');

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CascaderSelect } from '@alifd/next';
+import type { CascaderSelectProps } from '@alifd/next/types/cascader-select';
 import 'whatwg-fetch';
 
 const data = [
@@ -48,19 +49,15 @@ const data = [
 ];
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: [],
-        };
-        this.handleChange = this.handleChange.bind(this);
-    }
+    state = {
+        data: [],
+    };
     componentDidMount() {
         this.setState({ data });
     }
-    handleChange(value, data, extra) {
+    handleChange: CascaderSelectProps['onChange'] = (value, data, extra) => {
         console.log(value, data, extra);
-    }
+    };
     render() {
         return (
             <CascaderSelect

@@ -110,7 +110,6 @@ const createMenuItem = (item: MenuItem) => {
         return (
             <Menu.SubMenu
                 key={item.key}
-                // @ts-expect-error disabled is not defined on Menu.SubMenu
                 disabled={item.state === 'disabled'}
                 label={
                     item.value

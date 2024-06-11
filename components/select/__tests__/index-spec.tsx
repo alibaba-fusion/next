@@ -789,6 +789,50 @@ describe('Select', () => {
         cy.get('.next-select-all').click();
         cy.get('.next-tag-closable').should('have.length', 3);
     });
+
+    it('should not have duplicated value when selecting all', () => {
+        const dataSource = [
+            { value: '10001', label: 'Lucy King' },
+            { value: 10002, label: 'Lily King' },
+            { value: 10003, label: 'Tom Cat' },
+            {
+                label: 'Special Group',
+                children: [
+                    { value: -1, label: 'FALSE' },
+                    { value: 0, label: 'ZERO' },
+                ],
+            },
+        ];
+        cy.rerender('Demo', {
+            dataSource,
+            visible: true,
+            mode: 'multiple',
+            hasSelectAll: true,
+            showSearch: true,
+            filterLocal: true,
+        });
+        cy.get('input').type('a');
+        cy.get('.next-select-menu-item').eq(0).click();
+        cy.get('.next-tag-closable').should('have.length', 1);
+        cy.get('.next-select-all').click();
+        cy.get('.next-tag-closable').should('have.length', 5);
+        // 测试 useDetailValue 情况
+        cy.mount(
+            <Select
+                dataSource={dataSource}
+                visible
+                mode={'multiple'}
+                hasSelectAll
+                showSearch
+                filterLocal
+                useDetailValue
+                defaultValue={{ value: 10002, label: 'Lily King' }}
+            />
+        );
+        cy.get('.next-selected .next-menu-item-text').eq(0).should('have.text', 'Lily King');
+        cy.get('.next-select-all').click();
+        cy.get('.next-tag-closable').should('have.length', 5);
+    });
 });
 
 describe('Select Controlled', () => {

@@ -8,8 +8,7 @@
 
 ## 分支管理
 
-* 日常 bug 修复，向 master 提交 pull request
-* 每月新开一个如 feature/1.10.0 分支，新增功能向该分支提交 pull request
+* 日常 bug 修复、新增功能，向 master 提交 pull request
 
 ## 创建 Issue
 
@@ -27,16 +26,16 @@
 
 2. 在项目根目录执行 `npm install`，安装所有开发依赖
 
-3. 如果你想修改 Button 组件的代码，在项目根目录执行 `npm run dev button`，会自动为你启动浏览器并打开 demo 页面
+3. 如果你想修改 Button 组件的代码，在项目根目录执行 `npm start button`，会自动为你启动浏览器并打开 demo 页面
 
-4. 如果你修复了一个 bug 或者新增了一个功能，请确保写了相应的测试，可以通过在根目录执行 `npm run test` 来启动所有组件的测试，在开发过程中可以用 `npm run test -- button` 来运行指定组件的测试。
+4. 如果你修复了一个 bug 或者新增了一个功能，请确保写了相应的测试，可以通过在根目录执行 `npm test` 来启动所有组件的测试，在开发过程中可以用 `npm test button` 来运行指定组件的测试。
 
 5. 请确保你修改的代码通过了 eslint 和 stylelint 检查，我们会在 precommit 阶段中对你加入到 git 缓存区的代码文件自动执行 lint。
 
 6. 请确保你的 git 提交信息格式符合我们的以下要求：格式为 `<type>(<scope>): <subject>`，`type` 必填，可选值包括: build|
 chore|ci|docs|feat|fix|perf|refactor|revert|style|test|temp；`scope` 必填，填写具体修改的组件名，如 `feat(Menu)`，如进行批量修改或其他改动，可写为 `*`，如 `chore(*)`；`subject` 必填，使用英文，小写开头，如若关闭 issue，可写为，如 `fix(Menu): resolve xxx issue, close #12`，我们会在 commit message 阶段对提交信息进行检查
 
-7. 如果一次 pull request 涉及到多次提交，请对提交记录进行 rebase 操作，缩减为一条提交记录
+1. 如果一次 pull request 涉及到多次提交，请对提交记录进行 rebase 操作，缩减为一条提交记录
 
 ## 开发流程
 
@@ -45,8 +44,7 @@ chore|ci|docs|feat|fix|perf|refactor|revert|style|test|temp；`scope` 必填，�
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/alibaba-fusion/next)
 
-或者下载代码到本地:
-   你可以在 https://github.com/[your account]/next 找到刚 fork 的代码
+或者下载代码到本地：你可以在 https://github.com/[your account]/next 找到刚 fork 的代码
 ```
 git clone git@github.com:[your account]/next.git
 ```
@@ -56,55 +54,55 @@ git clone git@github.com:[your account]/next.git
 cd next
 git remote add upstream git@github.com:alibaba-fusion/next.git
 ```
-4. 开发时不要直接在fork库的master上进行开发，fork库的master应当仅用来同步主库的master。将主库主干代码同步至fork库：
+4. 开发时不要直接在 fork 库的 master 上进行开发，fork 库的 master 应当仅用来同步主库的 master。将主库主干代码同步至 fork 库：
 ```
 git pull upstream master
 git push
 ```
-5. 基于更新后的fork库master，创建分支进行开发
+5. 基于更新后的 fork 库 master，创建分支进行开发
 ```
 git checkout -b fix-issue-100
 ```
 
-其中4、5是每提交一个pr就需要执行的操作。
+其中 4、5 是每提交一个 pr 就需要执行的操作。
 
 
 在完成上述操作并且使用 `npm install` 安装完依赖后，你还可以运行下面几个常用的命令：
 
-* `npm run dev date-picker` 启动指定组件的调试页面
+* `npm start date-picker` 启动指定组件的调试页面
 
-* `npm run dev date-picker mode=css` 启动指定组件 css-var 的调试页面（默认是scss）
+* `npm start date-picker mode=css` 启动指定组件 css-var 的调试页面（默认是 scss））
 
-* `npm run dev date-picker dir=rtl` 启动指定组件在rtl模式下的调试页面
+* `npm start date-picker dir=rtl` 启动指定组件在 rtl 模式下的调试页面面
 
-* `npm run test date-picker` 启动指定组件的测试
+* `npm test date-picker` 启动指定组件的测试
 
 * `npm run api date-picker` 根据代码和注释，自动更新指定组件的中文 API 文档
 
-* `npm run test` 启动所有组件的测试
+* `npm test` 启动所有组件的测试
+  
+* `npm run test:head` 启动有头浏览器的组件测试
 
 * `npm run build` 编译 es2015+ 代码生成 lib 和 es 目录
 
-* `npm run pack` 打包文件，生成 dist 目录
+1. 开发完成后按照要求补充单元测试、运行单元测试、编写语义化的 commit 信息后，进入 https://github.com/[your account]/next 找到 `New pull request`按钮提交 PR
 
-1. 开发完成后按照要求补充单元测试、运行单元测试、编写语义化的commit信息后，进入 https://github.com/[your account]/next 找到 `New pull request` 按钮提交PR
-
-2. 维护者可能会有一些修改建议，开发者可能需要根据修改建议反复修改代码。最终由组件库维护者合并PR，在下次发布时本次修改的功能生效。
+2. 维护者可能会有一些修改建议，开发者可能需要根据修改建议反复修改代码。最终由组件库维护者合并 PR，在下次发布时本次修改的功能生效。
 
 ## 开发注意事项
 
 1. Fusion Next 作为前端组件库支持 SSR 因此需要做到：
     - 尽量避免在 `constructor` `getDerivedStateFromProps` `componentWillMount (deprecated)` 这些生命周期中，使用 `window` `localStorage` `sessionStorage` `document` `navigator` 等客户端变量；
-    - 必须使用的话，客户端端对象的判断用typeof
+    - 必须使用的话，客户端端对象的判断用 typeof
         ```
         if(window && window.autoScroll)
         =>
         if(typeof window != undefined && window.autoScroll) )
         ```
-    - 避免往window等全局对象挂载定时器
-    - 避免random()等不确定性输出(输出结果可预期，不依赖于环境等)
-2. sass 颜色变量计算的结果，需要以 `$color-calcualte-` 开头，写到组件的 variable.scss 中(不能写到main.scss中)，参考`Search`组件，[#1029](https://github.com/alibaba-fusion/next/issues/1029)
-3. 所有sass计算需要被calc包裹
+    - 避免往 window 等全局对象挂载定时器
+    - 避免 random() 等不确定性输出 (输出结果可预期，不依赖于环境等)
+2. sass 颜色变量计算的结果，需要以 `$color-calcualte-`开头，写到组件的 variable.scss 中 (不能写到 main.scss 中)，参考考`Search`组件，[#1029](https://github.com/alibaba-fusion/next/issues/1029)
+3. 所有 sass 计算需要被 calc 包裹
 
 > 《Tips for server-side rendering with React》 https://itnext.io/tips-for-server-side-rendering-with-react-e42b1b7acd57
 
