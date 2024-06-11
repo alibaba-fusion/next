@@ -8,8 +8,7 @@ All development work takes place on Github, and whether it's a core team member 
 
 ## Branch Organization
 
-* Bug fix, please pull request to master.
-* A new branch like feature/1.10.0 is opened every month, and new feature should be pull request to the branch.
+* Bug fix/new feature, please pull request to master.
 
 ## Create Issue
 
@@ -27,7 +26,7 @@ Before you send a Pull Request, please make sure you follow the steps below:
 
 2. Run `npm install` in the project root directory to install all development dependencies.
 
-3. If you want to update the code of the Button component, run `npm run dev button` in the project root directory, it will automatically launch the browser for you and open the demo page.
+3. If you want to update the code of the Button component, run `npm start button` in the project root directory, it will automatically launch the browser for you and open the demo page.
 
 4. If you fix a bug or add a new feature, be sure to write the test case. You can start all the components test case by running `npm run test` in the root directory, and you can also use `npm run test button` to run the test case for the specified component during development.
 
@@ -60,17 +59,17 @@ git checkout -b fix-issue-100
 
 After doing all the stuff above and install the dependencies with `npm install`, you can also run the following commands:
 
-* `npm run dev component` start the debug page of the specified component
+* `npm start component` start the debug page of the specified component
 
-* `npm run test component` start the test case of the specified component
+* `npm test component` start the test case of the specified component
 
 * `npm run api component` update the Chinese API documentation for the specified component automatically based on the code and comments
 
 * `npm run test` start test case of all components
+  
+* `npm run test:head` start test case of all components with browser, used for debugging
 
 * `npm run build` compile es2015+ code to es5 and generate lib and es directories
-
-* `npm run pack` package the file and generate the dist directory
 
 ## Notes
 
