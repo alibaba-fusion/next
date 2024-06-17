@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import ConfigProvider from '../config-provider';
 
-/**
- * Form.Error
- * @description 自定义错误展示
- * @order 4
- */
-class Error extends React.Component {
+import ConfigProvider from '../config-provider';
+import type { ErrorProps } from './types';
+import type NextField from '../field';
+
+class Error extends React.Component<ErrorProps> {
     static propTypes = {
         /**
          * 表单名
@@ -39,7 +37,7 @@ class Error extends React.Component {
 
     static _typeMark = 'form_error';
 
-    itemRender = errors => {
+    itemRender = (errors: unknown[]) => {
         return errors.length ? errors : null;
     };
 
@@ -59,12 +57,14 @@ class Error extends React.Component {
             return (
                 <div className={`${prefix}form-item-help`}>
                     {children}
-                    {!!preferMarginToDisplayHelp && <div className={`${prefix}form-item-help-margin-offset`} />}
+                    {!!preferMarginToDisplayHelp && (
+                        <div className={`${prefix}form-item-help-margin-offset`} />
+                    )}
                 </div>
             );
         }
 
-        const field = this.context._formField || _field;
+        const field: NextField = this.context._formField || _field;
 
         if (!field || !name) {
             return null;
@@ -73,7 +73,7 @@ class Error extends React.Component {
         const isSingle = typeof name === 'string';
 
         const names = isSingle ? [name] : name;
-        const errorArr = [];
+        const errorArr: unknown[] = [];
 
         if (names.length) {
             const errors = field.getErrors(names);
@@ -97,13 +97,15 @@ class Error extends React.Component {
 
         const cls = classNames({
             [`${prefix}form-item-help`]: true,
-            [className]: className,
+            [className as string]: className,
         });
 
         return (
             <div {...others} className={cls} style={style}>
                 {result}
-                {!!preferMarginToDisplayHelp && <div className={`${prefix}form-item-help-margin-offset`} />}
+                {!!preferMarginToDisplayHelp && (
+                    <div className={`${prefix}form-item-help-margin-offset`} />
+                )}
             </div>
         );
     }

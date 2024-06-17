@@ -1,20 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Input, Select, Radio, NumberPicker, DatePicker, Switch, Button } from '@alifd/next';
+import { Form, Input, Select, Radio, NumberPicker, DatePicker, Switch } from '@alifd/next';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
 const formItemLayout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
 };
 
 class Demo extends React.Component {
-    state = {
+    state: {
+        size: 'medium' | 'small' | 'large';
+    } = {
         size: 'medium',
     };
 
-    handleChange = v => {
+    handleChange = (v: 'small' | 'medium' | 'large') => {
         this.setState({
             size: v,
         });

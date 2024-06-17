@@ -1,26 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-    Form,
-    Input,
-    Switch,
-    Grid,
-    Button,
-    Icon,
-    Balloon,
-    ResponsiveGrid,
-    ConfigProvider,
-    Box,
-} from '@alifd/next';
+import { Form, Input, Switch, Button, Icon, Balloon, ConfigProvider } from '@alifd/next';
 
 const FormItem = Form.Item;
-const { Row, Col } = Grid;
 
 const style = {
     padding: '20px',
     background: '#F7F8FA',
     margin: '20px',
 };
+
 const formItemLayout = {
     labelWidth: 100,
     colSpan: 4,
@@ -36,16 +25,19 @@ const label = (
 );
 
 class Demo extends React.Component {
-    state = {
+    state: {
+        labelAlign: 'top' | 'left';
+        device: 'desktop' | 'tablet' | 'phone';
+    } = {
         labelAlign: 'top',
         device: 'desktop',
     };
-    handleChange = v => {
+    handleChange = (v: boolean) => {
         this.setState({
             labelAlign: v ? 'left' : 'top',
         });
     };
-    btn = device => {
+    btn = (device: string) => {
         this.setState({
             device,
         });
