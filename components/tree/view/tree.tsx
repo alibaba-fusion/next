@@ -614,7 +614,7 @@ export class Tree extends Component<TreeProps, TreeState> {
 
         let focusedKey = this.state.focusedKey;
 
-        const node = this.state._k2n[key];
+        const node = item;
         const pos = this.state._k2n[key].pos;
         const level = pos!.split('-').length - 1;
         switch (e.keyCode) {
@@ -696,7 +696,7 @@ export class Tree extends Component<TreeProps, TreeState> {
         this.props.onBlur && this.props.onBlur(e);
     }
 
-    handleExpand(expand: boolean, key: string, node: NodeInstance | DataNode) {
+    handleExpand(expand: boolean, key: string, node: NodeInstance) {
         const { onExpand, loadData } = this.props;
         const expandedKeys = this.state.expandedKeys; // 由于setState 是异步操作，所以去掉 [...this.state.expandedKeys]
         this.processKey(expandedKeys, key, expand);
@@ -704,12 +704,10 @@ export class Tree extends Component<TreeProps, TreeState> {
             if (!('expandedKeys' in this.props)) {
                 this.setState({ expandedKeys });
             }
-            // @ts-expect-error must be NodeInstance type, but it's maybe DataNode type.
-            onExpand(expandedKeys, { expanded: expand, node });
+            onExpand!(expandedKeys, { expanded: expand, node });
         };
 
         if (expand && loadData) {
-            // @ts-expect-error must be NodeInstance type, but it's maybe DataNode type.
             return loadData(node).then(setExpandedState);
         } else {
             setExpandedState();
@@ -719,7 +717,7 @@ export class Tree extends Component<TreeProps, TreeState> {
     handleSelect(
         select: boolean,
         key: string,
-        node: NodeInstance | DataNode,
+        node: NodeInstance,
         e: React.KeyboardEvent | React.MouseEvent
     ) {
         const { multiple, onSelect } = this.props;
@@ -736,7 +734,6 @@ export class Tree extends Component<TreeProps, TreeState> {
         onSelect!(selectedKeys, {
             // @ts-expect-error must be NodeInstance type, but it's maybe be DataNode type.
             selectedNodes: this.getNodes(selectedKeys),
-            // @ts-expect-error must be NodeInstance type, but it's maybe be DataNode type.
             node,
             selected: select,
             event: e,
@@ -744,7 +741,7 @@ export class Tree extends Component<TreeProps, TreeState> {
     }
 
     // eslint-disable-next-line max-statements
-    handleCheck(check: boolean, key: string, node: NodeInstance | DataNode) {
+    handleCheck(check: boolean, key: string, node: NodeInstance) {
         const { checkStrictly, checkedStrategy, onCheck } = this.props;
         const { _k2n, _p2n } = this.state;
         const checkedKeys = [...this.state.checkedKeys];
@@ -868,7 +865,6 @@ export class Tree extends Component<TreeProps, TreeState> {
                     return { node, pos };
                 })
                 .filter(v => !!v),
-            // @ts-expect-error must be NodeInstance type, but it's maybe be DataNode type.
             node,
             indeterminateKeys,
             checked: check,
