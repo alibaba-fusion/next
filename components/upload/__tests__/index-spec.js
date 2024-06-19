@@ -134,6 +134,55 @@ describe('Upload', () => {
             );
         });
 
+        it('should support upload again, when an upload fails', () => {
+            let uploaderRef;
+            const saveUploaderRef = sinon.spy(ref => {
+                if (!ref) return;
+                uploaderRef = ref.getInstance();
+            });
+
+            const onSubmit = sinon.spy(() => {
+                uploaderRef.startUpload();
+            });
+
+            const beforeUpload = sinon.spy((info, options) => {
+                console.log('beforeUpload callback : ', info, options);
+                return options;
+            });
+
+            const wrapper = mount(
+                <div>
+                    <Upload
+                        action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
+                        autoUpload={false}
+                        ref={saveUploaderRef}
+                        listType="image"
+                        beforeUpload={beforeUpload}
+                        useDataURL
+                    >
+                        <button className="upload-btn" style={{ marginBottom: 8 }}>
+                            Select File
+                        </button>
+                    </Upload>
+                    <br />
+                    <button className="submit-btn" type="primary" onClick={onSubmit}>
+                        Upload
+                    </button>
+                </div>
+            );
+
+            const file = buildFile();
+            wrapper.find('input').simulate('change', { target: { files: [file] } });
+
+            wrapper.find('.submit-btn').simulate('click');
+            assert.equal(beforeUpload.callCount, 1);
+
+            wrapper.find('.submit-btn').simulate('click');
+            assert.equal(onSubmit.callCount, 2);
+
+            assert.equal(beforeUpload.callCount, 2);
+        });
+
         it('should support onPreview events when listType is set to card and isPreview is set to true', done => {
             const onPreview = sinon.spy();
             const wrapper = mount(
@@ -191,29 +240,29 @@ describe('Upload', () => {
             const drag = document.createElement('div');
             document.body.appendChild(drag);
             mount(
-                 <Upload.Dragger
-                     listType="image"
-                     limit={1}
-                     defaultValue={[
-                         {
-                             uid: '0',
-                             name: 'IMG.png',
-                             state: 'done',
-                             url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                             downloadURL:
-                                 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                             imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                         },
-                     ]}
-                 />,
+                <Upload.Dragger
+                    listType="image"
+                    limit={1}
+                    defaultValue={[
+                        {
+                            uid: '0',
+                            name: 'IMG.png',
+                            state: 'done',
+                            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        },
+                    ]}
+                />,
                  {attachTo: drag}
-             );
-             assert(document.querySelectorAll('.next-upload-drag').length === 1);
-             const uploadInner = document.querySelectorAll('.next-upload-inner');
+            );
+            assert(document.querySelectorAll('.next-upload-drag').length === 1);
+            const uploadInner = document.querySelectorAll('.next-upload-inner');
              assert(uploadInner.length === 1 )
-             assert(uploadInner[0].offsetHeight === 0);
-             done();
-         });
+            assert(uploadInner[0].offsetHeight === 0);
+            done();
+        });
     });
 
     describe('[behavior] Upload Request', () => {
