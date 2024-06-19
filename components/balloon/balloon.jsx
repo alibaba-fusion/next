@@ -115,6 +115,14 @@ class Balloon extends React.Component {
          */
         delay: PropTypes.number,
         /**
+         * 鼠标放置后的延时显示, 单位毫秒 ms
+         */
+        mouseEnterDelay: PropTypes.number,
+        /**
+         * 鼠标离开后的延时显示, 单位毫秒 ms
+         */
+        mouseLeaveDelay: PropTypes.number,
+        /**
          * 浮层关闭后触发的事件, 如果有动画，则在动画结束后触发
          */
         afterClose: PropTypes.func,
@@ -327,6 +335,8 @@ class Balloon extends React.Component {
             closable,
             shouldUpdatePosition,
             delay,
+            mouseEnterDelay,
+            mouseLeaveDelay,
             needAdjust,
             autoAdjust,
             safeId,
@@ -401,6 +411,8 @@ class Balloon extends React.Component {
 
         const otherProps = {
             delay: delay,
+            mouseEnterDelay: mouseEnterDelay,
+            mouseLeaveDelay: mouseLeaveDelay,
             shouldUpdatePosition: shouldUpdatePosition,
             needAdjust: needAdjust,
             align: alignMap[align].align,
