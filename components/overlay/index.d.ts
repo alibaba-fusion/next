@@ -181,6 +181,16 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     delay?: number;
 
     /**
+     * 鼠标放置后的延时显示, 单位毫秒 ms
+     */
+    mouseEnterDelay: number;
+
+    /**
+     * 鼠标离开后的延时显示, 单位毫秒 ms
+     */
+    mouseLeaveDelay: number;
+
+    /**
      * trigger 是否可以关闭弹层
      */
     canCloseByTrigger?: boolean;

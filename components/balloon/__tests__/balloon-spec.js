@@ -321,3 +321,29 @@ describe('Balloon onClose ComponentWillReceiveProps closeIcon', () => {
         assert(document.querySelector('.next-balloon') === null);
     });
 });
+
+describe('balloon delay', () => {
+    it('add mouseEnterDelay and mouseLeaveDelay, with higher priority than delay.', async () => {
+        const wrapper = mount(
+            <Balloon trigger={<div>trigger1111111</div>} delay={500} mouseEnterDelay={1000} mouseLeaveDelay={1000} triggerType="hover">
+                trigger
+            </Balloon>
+        );
+
+        wrapper.find('div').simulate('mouseenter');
+        await delay(500);
+        assert(document.querySelector('.next-balloon') === null);
+
+        await delay(550);
+        assert(document.querySelector('.next-balloon') !== null);
+
+        wrapper.find('div').simulate('mouseleave');
+
+        await delay(550);
+        assert(document.querySelector('.next-balloon') !== null);
+
+        await delay(1000);
+        assert(document.querySelector('.next-balloon') === null);
+
+    });
+})
