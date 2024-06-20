@@ -32,7 +32,7 @@ class Search extends React.Component<SearchProps, SearchState> {
 
         type: PropTypes.oneOf(['primary', 'secondary', 'normal', 'dark']),
 
-        size: PropTypes.oneOf(['large', 'medium']),
+        size: PropTypes.oneOf(['large', 'medium', 'small']),
 
         defaultValue: PropTypes.string,
 
