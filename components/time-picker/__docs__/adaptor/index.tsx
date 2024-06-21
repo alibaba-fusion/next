@@ -6,51 +6,59 @@ import moment from 'moment';
 export default {
     name: 'TimePicker',
     editor: () => ({
-        props: [{
-            name: 'size',
-            type: Types.enum,
-            options: ['large', 'medium', 'small'],
-            default: 'medium'
-        }, {
-            name: 'state',
-            label: 'Status',
-            type: Types.enum,
-            options: ['normal', 'expanded', 'selected', 'disabled'],
-            default: 'normal'
-        }, {
-            name: 'type',
-            type: Types.enum,
-            options: ['HMS', 'HM', 'MS'],
-            default: 'HMS'
-        }, {
-            name: 'width',
-            type: Types.number,
-            default: 200
-        }, {
-            name: 'label',
-            type: Types.string,
-            default: ''
-        }, {
-            name: 'placeholder',
-            type: Types.string,
-            default: 'Please Select Time'
-        }, {
-            name: 'value',
-            type: Types.string,
-            default: '06:06:06'
-        }],
+        props: [
+            {
+                name: 'size',
+                type: Types.enum,
+                options: ['large', 'medium', 'small'],
+                default: 'medium',
+            },
+            {
+                name: 'state',
+                label: 'Status',
+                type: Types.enum,
+                options: ['normal', 'expanded', 'selected', 'disabled'],
+                default: 'normal',
+            },
+            {
+                name: 'type',
+                type: Types.enum,
+                options: ['HMS', 'HM', 'MS'],
+                default: 'HMS',
+            },
+            {
+                name: 'width',
+                type: Types.number,
+                default: 200,
+            },
+            {
+                name: 'label',
+                type: Types.string,
+                default: '',
+            },
+            {
+                name: 'placeholder',
+                type: Types.string,
+                default: 'Please Select Time',
+            },
+            {
+                name: 'value',
+                type: Types.string,
+                default: '06:06:06',
+            },
+        ],
     }),
     adaptor: ({ size, state, type, width, label, placeholder, value = '', style, ...others }) => {
         const time = moment();
         const arr = value.split(':');
 
-        for(let i = 0; i < type.length; i++) {
+        for (let i = 0; i < type.length; i++) {
             const char = type.charAt(i);
             const v = arr[i];
 
             if (v === undefined) break;
 
-            switch(char) {
+            switch (char) {
                 case 'H':
                     time.hours(v);
                     break;
@@ -79,10 +87,10 @@ export default {
             />
         );
     },
-    demoOptions: (demo) => {
+    demoOptions: demo => {
         if (demo.node.props.state === 'expanded') {
             demo.height = 300;
         }
         return demo;
-    }
+    },
 };
