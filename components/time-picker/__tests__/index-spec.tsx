@@ -43,16 +43,19 @@ describe('TimePicker', () => {
         it('should render with defaultVisible', () => {
             wrapper = mount(<TimePicker defaultValue={defaultValue} defaultVisible />);
             assert(
-                wrapper.find('.next-time-picker-menu-hour .next-time-picker-menu-item.next-selected').instance()
-                    .title === '11'
+                wrapper
+                    .find('.next-time-picker-menu-hour .next-time-picker-menu-item.next-selected')
+                    .instance().title === '11'
             );
             assert(
-                wrapper.find('.next-time-picker-menu-minute .next-time-picker-menu-item.next-selected').instance()
-                    .title === '12'
+                wrapper
+                    .find('.next-time-picker-menu-minute .next-time-picker-menu-item.next-selected')
+                    .instance().title === '12'
             );
             assert(
-                wrapper.find('.next-time-picker-menu-second .next-time-picker-menu-item.next-selected').instance()
-                    .title === '13'
+                wrapper
+                    .find('.next-time-picker-menu-second .next-time-picker-menu-item.next-selected')
+                    .instance().title === '13'
             );
         });
 
@@ -72,7 +75,10 @@ describe('TimePicker', () => {
 
         it('should render with step', () => {
             wrapper = mount(<TimePicker defaultVisible secondStep={5} />);
-            assert(wrapper.find('.next-time-picker-menu-second .next-time-picker-menu-item').length === 12);
+            assert(
+                wrapper.find('.next-time-picker-menu-second .next-time-picker-menu-item').length ===
+                    12
+            );
         });
 
         it('should render menu items', () => {
@@ -84,7 +90,9 @@ describe('TimePicker', () => {
                     };
                 });
             };
-            wrapper = mount(<TimePicker defaultVisible renderTimeMenuItems={renderTimeMenuItems} />);
+            wrapper = mount(
+                <TimePicker defaultVisible renderTimeMenuItems={renderTimeMenuItems} />
+            );
 
             assert(
                 wrapper
@@ -165,7 +173,9 @@ describe('TimePicker', () => {
                     }}
                 />
             );
-            wrapper.find('.next-time-picker-input input').simulate('change', { target: { value: '20:00:00' } });
+            wrapper
+                .find('.next-time-picker-input input')
+                .simulate('change', { target: { value: '20:00:00' } });
             wrapper.find('.next-time-picker-input input').simulate('blur');
             assert(wrapper.find('.next-time-picker-input input').instance().value === '20:00:00');
             assert(ret === '20:00:00');
@@ -178,7 +188,9 @@ describe('TimePicker', () => {
                 const panelInputSelector = '.next-time-picker-panel-input input';
 
                 wrapper.find(inputSelector).simulate('click');
-                wrapper.find(panelInputSelector).simulate('change', { target: { value: inputVal } });
+                wrapper
+                    .find(panelInputSelector)
+                    .simulate('change', { target: { value: inputVal } });
                 wrapper.find(panelInputSelector).simulate('blur');
                 assert(wrapper.find(inputSelector).instance().value === (retVal || ''));
                 assert(wrapper.find(panelInputSelector).instance().value === (retVal || ''));
