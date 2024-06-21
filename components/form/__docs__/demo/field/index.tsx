@@ -17,8 +17,8 @@ const formItemLayout = {
 class BasicDemo extends React.Component {
     field = new Field(this);
 
-    userExists(rule, value) {
-        return new Promise((resolve, reject) => {
+    userExists(rule: any, value: any) {
+        return new Promise<void>((resolve, reject) => {
             if (!value) {
                 resolve();
             } else {
@@ -33,7 +33,7 @@ class BasicDemo extends React.Component {
         });
     }
 
-    checkPass(rule, value, callback) {
+    checkPass(rule: any, value: any, callback: any) {
         const { validate } = this.field;
         if (value) {
             validate(['rePasswd']);
@@ -41,7 +41,7 @@ class BasicDemo extends React.Component {
         callback();
     }
 
-    checkPass2(rule, value, callback) {
+    checkPass2(rule: any, value: any, callback: any) {
         const { getValue } = this.field;
         if (value && value !== getValue('passwd')) {
             return callback('Inconsistent password input twice!');

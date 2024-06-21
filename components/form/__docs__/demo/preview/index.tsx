@@ -5,7 +5,6 @@ import {
     Input,
     Switch,
     Rating,
-    Field,
     Icon,
     Radio,
     Range,
@@ -56,18 +55,18 @@ class Demo extends React.Component {
     state = {
         preview: false,
     };
-    submitHandler = e => {
+    submitHandler = (e: React.FormEvent) => {
         console.log(e);
     };
-    onPreviewChange = checked => {
+    onPreviewChange = (checked: boolean) => {
         this.setState({
             preview: checked,
         });
     };
-    ratingPreview = value => {
+    ratingPreview = (value: React.ReactNode) => {
         return (
             <p>
-                {value} {value > 2.5 ? <Icon type="smile" /> : <Icon type="cry" />}
+                {value} {(value as number) > 2.5 ? <Icon type="smile" /> : <Icon type="cry" />}
             </p>
         );
     };
@@ -80,6 +79,7 @@ class Demo extends React.Component {
                     style={{ maxWidth: '800px' }}
                 >
                     <FormItem label="preview: " isPreview={false} style={{ marginBottom: 0 }}>
+                        {/* @ts-expect-error large size is not in type */}
                         <Switch size="large" onChange={this.onPreviewChange} />
                     </FormItem>
                     <div style={{ height: 1, width: '100%', margin: '20px 0' }} />

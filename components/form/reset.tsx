@@ -2,13 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../button';
 import { func, obj } from '../util';
+import type { ResetProps } from './types';
 
-/**
- * Form.Reset
- * @description 继承 Button API
- * @order 3
- */
-class Reset extends React.Component {
+class Reset extends React.Component<ResetProps> {
     static propTypes = {
         /**
          * 自定义重置的字段
@@ -42,7 +38,7 @@ class Reset extends React.Component {
         const field = this.context._formField || this.props.field;
 
         if (!field) {
-            onClick();
+            onClick?.();
             return;
         }
 
@@ -52,7 +48,7 @@ class Reset extends React.Component {
             field.reset(names);
         }
 
-        onClick();
+        onClick?.();
     };
 
     render() {

@@ -5,7 +5,7 @@ import { Form, Input } from '@alifd/next';
 const FormItem = Form.Item;
 
 class Demo extends React.Component {
-    onSubmit(e) {
+    onSubmit(e: React.FormEvent) {
         e.preventDefault(); // form will auto submit if remove this line
         console.log('onsubmit');
     }
