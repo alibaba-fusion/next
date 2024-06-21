@@ -124,12 +124,18 @@ class TimeMenu extends React.Component {
             }
         }
 
-        const menuTitle = title ? <div className={`${prefix}time-picker-menu-title`}>{title}</div> : null;
+        const menuTitle = title ? (
+            <div className={`${prefix}time-picker-menu-title`}>{title}</div>
+        ) : null;
 
         return (
             <div className={`${prefix}time-picker-menu`}>
                 {menuTitle}
-                <ul role="listbox" className={`${prefix}time-picker-menu-${mode}`} ref={this._menuRefHandler}>
+                <ul
+                    role="listbox"
+                    className={`${prefix}time-picker-menu-${mode}`}
+                    ref={this._menuRefHandler}
+                >
                     {this.createMenuItems(list)}
                 </ul>
             </div>

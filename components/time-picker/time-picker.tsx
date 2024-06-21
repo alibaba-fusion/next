@@ -261,7 +261,14 @@ class TimePicker extends Component {
 
     onKeyown = e => {
         const { value, inputStr } = this.state;
-        const { format, hourStep = 1, minuteStep = 1, secondStep = 1, disabledMinutes, disabledSeconds } = this.props;
+        const {
+            format,
+            hourStep = 1,
+            minuteStep = 1,
+            secondStep = 1,
+            disabledMinutes,
+            disabledSeconds,
+        } = this.props;
 
         let unit = 'second';
 
