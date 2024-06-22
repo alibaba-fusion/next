@@ -528,6 +528,7 @@ class Upload extends Base {
             fileNameRender,
             actionRender,
             previewOnFileName,
+            itemRender,
             ...others
         } = this.props;
 
@@ -627,6 +628,7 @@ class Upload extends Base {
                         extraRender={extraRender}
                         rtl={rtl}
                         previewOnFileName={previewOnFileName}
+                        itemRender={itemRender}
                     />
                 ) : null}
             </div>

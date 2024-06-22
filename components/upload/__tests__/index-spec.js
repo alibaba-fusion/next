@@ -214,6 +214,29 @@ describe('Upload', () => {
              assert(uploadInner[0].offsetHeight === 0);
              done();
          });
+
+        it('should support itemRender on Dragger', () => {
+            const itemRender = () => <div className="test">test</div>;
+            const drag = mount(
+                <Upload.Dragger
+                    itemRender={itemRender}
+                    listType="card"
+                    accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+                    defaultValue={[
+                        {
+                            uid: '0',
+                            name: 'IMG.png',
+                            state: 'done',
+                            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        },
+                    ]}
+                />
+            );
+            assert(drag.find('.test').length === 1);
+        });
     });
 
     describe('[behavior] Upload Request', () => {
