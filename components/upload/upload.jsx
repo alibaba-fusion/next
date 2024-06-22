@@ -310,7 +310,7 @@ class Upload extends Base {
         this.state.uploading = true;
         const fileList = files
             .filter(file => {
-                if (file.state === 'selected') {
+                if (file.state === 'selected' || file.state === 'error' || file.state === 'uploading') {
                     file.state = 'uploading';
                     return true;
                 }
