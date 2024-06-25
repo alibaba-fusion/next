@@ -104,6 +104,10 @@ class CascaderSelect extends Component<CascaderSelectProps, CascaderSelectState>
         isPreview: PropTypes.bool,
         renderPreview: PropTypes.func,
         immutable: PropTypes.bool,
+        /**
+         * 查询选中后清除查询条件
+         */
+        autoClearSearchValue: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -159,6 +163,7 @@ class CascaderSelect extends Component<CascaderSelectProps, CascaderSelectState>
         popupProps: {},
         immutable: false,
         locale: zhCN.Select,
+        autoClearSearchValue: false,
     };
 
     readonly props: CascaderSelectPropsWithDefault;
@@ -543,7 +548,7 @@ class CascaderSelect extends Component<CascaderSelectProps, CascaderSelectState>
     };
 
     handleChange(value: string[], data: CascaderSelectDataItem[], extra: Extra) {
-        const { multiple, onChange } = this.props;
+        const { multiple, onChange, autoClearSearchValue } = this.props;
         const { searchValue, value: stateValue } = this.state;
 
         const st = {} as CascaderSelectState;
@@ -573,7 +578,7 @@ class CascaderSelect extends Component<CascaderSelectProps, CascaderSelectState>
         if (!('value' in this.props)) {
             st.value = value;
         }
-        if (!multiple && searchValue) {
+        if (searchValue && ((multiple && autoClearSearchValue) || !multiple)) {
             st.searchValue = '';
         }
         if (Object.keys(st).length) {

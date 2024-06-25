@@ -246,6 +246,12 @@ export interface CascaderSelectProps
      * @en props object passed to Cascader
      */
     menuProps?: Omit<CascaderProps, 'onSelect' | 'onChange'>;
+    /**
+     * 是否在选中项后清空搜索框，只在 multiple 为 true 时有效
+     * @en Whether the current search will be cleared on selecting an item. Only applies when multiple is true
+     * @defaultValue false
+     */
+    autoClearSearchValue?: boolean;
 }
 
 export interface CascaderSelectState {
