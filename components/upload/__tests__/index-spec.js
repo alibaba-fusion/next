@@ -72,6 +72,24 @@ describe('Upload', () => {
             // remove item
             assert(wrapper.find('.next-upload-list-item').length === 1);
         });
+
+        it('should support itemRender', (done) => {
+            const wrapper = mount(
+                <Upload
+                    listType="card"
+                    defaultValue={defaultValue}
+                    itemRender={(file, obj) => {
+                        return (
+                            <div className="upload-card-itemRender" onClick={() => obj.remove()}>
+                                {file.name}
+                            </div>
+                        );
+                    }}
+                />
+            );
+            assert(wrapper.find('.upload-card-itemRender').length === 1);
+            assert(wrapper.find('.upload-card-itemRender').at(0).text() === 'IMG.png');
+        });
     });
 
     describe('behavior', () => {
