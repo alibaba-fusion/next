@@ -536,4 +536,26 @@ describe('CascaderSelect', () => {
         cy.get('input').type('{upArrow}', { force: true });
         cy.get('.next-cascader-select-dropdown').should('exist');
     });
+
+    it('should support empty search value after selection , close #3008', () => {
+        const handleChange = cy.spy();
+        cy.mount(
+            <CascaderSelect
+                showSearch
+                style={{ width: '240px' }}
+                dataSource={ChinaArea}
+                placeholder="搜索名字"
+                onChange={handleChange}
+                autoClearSearchValue
+                multiple
+            />
+        );
+        cy.get('.next-select-trigger-search input').type('西安');
+        cy.get('.next-cascader-filtered-list').should('have.length', 1);
+        cy.get('.next-menu-item').first().click();
+        cy.get('.next-cascader-filtered-list').should('have.length', 0);
+        cy.get('.next-cascader > .next-cascader-inner').should('not.be.empty');
+        cy.get('.next-tag').invoke('text').should('eq', '西安');
+        cy.get('.next-select-trigger-search input').should('have.text', '');
+    });
 });
