@@ -313,6 +313,7 @@ export interface TreeProps<
     /**
      * 数据源，该属性优先级高于 children
      * @en Data source of the tree component
+     * @remarks item 中多余的属性会传递给 tree node 内的 <li></li> 节点 - extra attributes in item are passed to the <li></li> node in the tree node.
      */
     dataSource?: TreeDataType[];
 
