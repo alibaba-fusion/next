@@ -1,16 +1,18 @@
+import type { OverlayProps } from './types';
+
 const overlayManager = {
     allOverlays: [],
 
-    addOverlay(overlay) {
+    addOverlay(overlay: OverlayProps) {
         this.removeOverlay(overlay);
         this.allOverlays.unshift(overlay);
     },
 
-    isCurrentOverlay(overlay) {
+    isCurrentOverlay(overlay: OverlayProps) {
         return overlay && this.allOverlays[0] === overlay;
     },
 
-    removeOverlay(overlay) {
+    removeOverlay(overlay: OverlayProps) {
         const i = this.allOverlays.indexOf(overlay);
         if (i > -1) {
             this.allOverlays.splice(i, 1);

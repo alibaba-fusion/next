@@ -1,20 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { Overlay, Button, Table, Select } from '@alifd/next';
-
-const { Popup } = Overlay;
-
-const style = {
-    width: 400,
-    height: 100,
-    padding: 10,
-    background: '#fff',
-    borderRadius: 2,
-    boxShadow: '2px 2px 20px rgba(0, 0, 0, 0.15)',
-};
+import { Table, Select } from '@alifd/next';
 
 function TableDemo() {
-    const columns = [1, 2, 3].map(v => {
+    const columns: Array<{
+        dataIndex?: string;
+        title: string;
+        width: number;
+        lock?: 'left' | 'right';
+        cell?: any;
+    }> = [1, 2, 3].map(v => {
         return { dataIndex: `data${v}`, title: `Data${v}`, width: 200 };
     });
     columns.unshift({

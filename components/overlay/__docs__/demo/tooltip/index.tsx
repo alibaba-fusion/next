@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Overlay, Button } from '@alifd/next';
 
 const { Popup } = Overlay;
-const style = { marginLeft: 10 };
 
 const top = (
     <Button style={{ margin: '5px' }} id="top" className="btrigger">

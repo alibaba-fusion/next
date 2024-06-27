@@ -1,8 +1,8 @@
 import type React from 'react';
 import type { CommonProps } from '../util';
-import type { OverlayProps } from '../overlay';
 import type { ConsumerState } from '../config-provider/consumer';
 import type { Locale } from '../locale/types';
+import type { OverlayV1Props } from '../overlay/types';
 
 type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'title'>;
 
@@ -207,7 +207,7 @@ export interface MessageQuickProps extends Omit<HTMLAttributesWeak, 'content'>, 
      * 透传到弹层组件的属性对象
      * @en props of Overlay
      */
-    overlayProps?: OverlayProps;
+    overlayProps?: OverlayV1Props;
     /**
      * @skip
      */

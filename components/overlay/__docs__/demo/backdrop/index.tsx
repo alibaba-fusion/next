@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Overlay, Button } from '@alifd/next';
+import type { OverlayProps } from '@alifd/next/types/overlay';
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends Component<OverlayProps, { visible: boolean }> {
+    btn: InstanceType<typeof Button> | null;
+    constructor(props: OverlayProps) {
         super(props);
 
         this.state = {

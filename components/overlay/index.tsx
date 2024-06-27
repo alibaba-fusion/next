@@ -1,5 +1,7 @@
-import React from 'react';
+/* eslint-disable react/no-multi-comp */
+import React, { Component } from 'react';
 import ConfigProvider from '../config-provider';
+import { assignSubComponent } from '../util/component';
 
 import Overlay1 from './overlay';
 import Overlay2 from './overlay-v2';
@@ -10,14 +12,17 @@ import Position from './position';
 import Popup1 from './popup';
 import Popup2 from './popup-v2';
 import { log } from '../util';
+import type { GatewayProps, OverlayProps, PopupProps, PositionProps } from './types';
 
-class Overlay extends React.Component {
-    constructor(props) {
+class Overlay extends Component<OverlayProps> {
+    overlayRef: InstanceType<typeof Overlay1> | null;
+
+    constructor(props: OverlayProps) {
         super(props);
         this.overlayRef = null;
         this.saveRef = this.saveRef.bind(this);
     }
-    saveRef(ref) {
+    saveRef(ref: InstanceType<typeof Overlay1> | null) {
         this.overlayRef = ref;
     }
     /**
@@ -39,27 +44,28 @@ class Overlay extends React.Component {
         return null;
     }
     render() {
-        const { v2, ...others } = this.props;
+        const { v2, align, animation, ...others } = this.props;
         if (v2) {
             if ('needAdjust' in others) {
                 log.deprecated('needAdjust', 'autoAdjust', 'Overlay v2');
                 others.autoAdjust = others.needAdjust;
                 delete others.needAdjust;
             }
-            return <Overlay2 {...others} />;
+            return <Overlay2 animation={animation} align={align} {...others} />;
         } else {
-            return <Overlay1 {...others} ref={this.saveRef} />;
+            return <Overlay1 animation={animation} align={align} {...others} ref={this.saveRef} />;
         }
     }
 }
-// eslint-disable-next-line
-class Popup extends React.Component {
-    constructor(props) {
+
+class Popup extends Component<PopupProps> {
+    overlay: InstanceType<typeof Overlay1> | null;
+    constructor(props: PopupProps) {
         super(props);
         this.overlay = null;
         this.saveRef = this.saveRef.bind(this);
     }
-    saveRef(ref) {
+    saveRef(ref: InstanceType<typeof Popup1> | null) {
         if (ref) {
             this.overlay = ref.overlay;
         }
@@ -84,12 +90,16 @@ class Popup extends React.Component {
     }
 }
 
-Overlay.Gateway = Gateway;
-Overlay.Position = Position;
-Overlay.Popup = ConfigProvider.config(Popup, {
-    exportNames: ['overlay'],
+const WithSubOverlay = assignSubComponent(Overlay, {
+    Gateway: Gateway,
+    Position: Position,
+    Popup: ConfigProvider.config(Popup, {
+        exportNames: ['overlay'],
+    }),
 });
 
-export default ConfigProvider.config(Overlay, {
+export default ConfigProvider.config(WithSubOverlay, {
     exportNames: ['getContent', 'getContentNode'],
 });
+
+export type { OverlayProps, PopupProps, GatewayProps, PositionProps };

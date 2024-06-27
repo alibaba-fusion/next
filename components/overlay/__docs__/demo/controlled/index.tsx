@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Overlay, Button } from '@alifd/next';
+import type { PopupProps } from '@alifd/next/types/overlay';
 
 const { Popup } = Overlay;
 
-class Demo extends React.Component {
-    constructor(props) {
+interface DemoState {
+    visible?: boolean;
+    groupVisible?: boolean;
+}
+
+class Demo extends Component<PopupProps, DemoState> {
+    btn1: InstanceType<typeof Button> | null;
+    btn2: InstanceType<typeof Button> | null;
+    overlay1: HTMLElement | null;
+    overlay2: HTMLElement | null;
+
+    constructor(props: PopupProps) {
         super(props);
 
         this.state = {
@@ -13,13 +24,13 @@ class Demo extends React.Component {
         };
     }
 
-    onVisibleChange = visible => {
+    onVisibleChange = (visible: boolean) => {
         this.setState({
             visible,
         });
     };
 
-    onGroupVisibleChange = groupVisible => {
+    onGroupVisibleChange = (groupVisible: boolean) => {
         this.setState({
             groupVisible,
         });

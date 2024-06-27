@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Overlay, Button } from '@alifd/next';
 
-const { Popup } = Overlay;
-
 ReactDOM.render(
     <div id="containerId" className="overlay-container">
         <Overlay v2 target="containerId" visible align="br tl">

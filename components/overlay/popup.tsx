@@ -1,17 +1,26 @@
-import React, { Component, Children } from 'react';
+import React, {
+    Component,
+    Children,
+    cloneElement,
+    type ReactElement,
+    type MouseEventHandler,
+    type KeyboardEventHandler,
+} from 'react';
 import { findDOMNode } from 'react-dom';
 import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
+
 import { func, KEYCODE } from '../util';
 import Overlay from './overlay';
+import type { PopupProps, PopupState } from './types';
 
 const { noop, makeChain, bindCtx } = func;
 
 /**
  * Overlay.Popup
- * @description 继承 Overlay 的 API，除非特别说明
+ * 继承 Overlay 的 API，除非特别说明
  * */
-class Popup extends Component {
+class Popup extends Component<PopupProps, PopupState> {
     static propTypes = {
         /**
          * 弹层内容
@@ -39,9 +48,6 @@ class Popup extends Component {
         defaultVisible: PropTypes.bool,
         /**
          * 弹层显示或隐藏时触发的回调函数
-         * @param {Boolean} visible 弹层是否显示
-         * @param {String} type 触发弹层显示或隐藏的来源 fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
-         * @param {Object} e DOM事件
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -59,7 +65,6 @@ class Popup extends Component {
         canCloseByTrigger: PropTypes.bool,
         /**
          * 弹层定位的参照元素
-         * @default target 属性，即触发元素
          */
         target: PropTypes.any,
         safeNode: PropTypes.any,
@@ -102,8 +107,14 @@ class Popup extends Component {
         container: () => document.body,
         rtl: false,
     };
+    _mouseNotFirstOnMask: boolean;
+    _isForwardContent: boolean | null;
+    overlay: InstanceType<typeof Overlay> | null;
+    _timer: number | null;
+    _hideTimer: number | null;
+    _showTimer: number | null;
 
-    constructor(props) {
+    constructor(props: PopupProps) {
         super(props);
 
         this.state = {
@@ -126,7 +137,7 @@ class Popup extends Component {
         ]);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: PopupProps, prevState: PopupState) {
         if ('visible' in nextProps) {
             return {
                 ...prevState,
@@ -138,22 +149,22 @@ class Popup extends Component {
     }
 
     componentWillUnmount() {
-        ['_timer', '_hideTimer', '_showTimer'].forEach(time => {
-            this[time] && clearTimeout(this[time]);
+        (['_timer', '_hideTimer', '_showTimer'] as const).forEach(time => {
+            this[time] && clearTimeout(this[time]!);
         });
     }
 
-    handleVisibleChange(visible, type, e) {
+    handleVisibleChange(visible: boolean, type: string | object, e?: MouseEvent | KeyboardEvent) {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
             });
         }
 
-        this.props.onVisibleChange(visible, type, e);
+        this.props.onVisibleChange!(visible, type, e);
     }
 
-    handleTriggerClick(e) {
+    handleTriggerClick(e: MouseEvent | KeyboardEvent) {
         if (this.state.visible && !this.props.canCloseByTrigger) {
             return;
         }
@@ -161,16 +172,18 @@ class Popup extends Component {
         this.handleVisibleChange(!this.state.visible, 'fromTrigger', e);
     }
 
-    handleTriggerKeyDown(e) {
+    handleTriggerKeyDown(e: KeyboardEvent) {
         const { triggerClickKeycode } = this.props;
-        const keycodes = Array.isArray(triggerClickKeycode) ? triggerClickKeycode : [triggerClickKeycode];
+        const keycodes = Array.isArray(triggerClickKeycode)
+            ? triggerClickKeycode
+            : [triggerClickKeycode];
         if (keycodes.includes(e.keyCode)) {
             e.preventDefault();
             this.handleTriggerClick(e);
         }
     }
 
-    handleTriggerMouseEnter(e) {
+    handleTriggerMouseEnter(e: MouseEvent) {
         this._mouseNotFirstOnMask = false;
 
         if (this._hideTimer) {
@@ -182,29 +195,29 @@ class Popup extends Component {
             this._showTimer = null;
         }
         if (!this.state.visible) {
-            this._showTimer = setTimeout(() => {
+            this._showTimer = window.setTimeout(() => {
                 this.handleVisibleChange(true, 'fromTrigger', e);
             }, this.props.delay);
         }
     }
 
-    handleTriggerMouseLeave(e, type) {
+    handleTriggerMouseLeave(e: MouseEvent, type: string | object) {
         if (this._showTimer) {
             clearTimeout(this._showTimer);
             this._showTimer = null;
         }
         if (this.state.visible) {
-            this._hideTimer = setTimeout(() => {
+            this._hideTimer = window.setTimeout(() => {
                 this.handleVisibleChange(false, type || 'fromTrigger', e);
             }, this.props.delay);
         }
     }
 
-    handleTriggerFocus(e) {
+    handleTriggerFocus(e: MouseEvent) {
         this.handleVisibleChange(true, 'fromTrigger', e);
     }
 
-    handleTriggerBlur(e) {
+    handleTriggerBlur(e: MouseEvent) {
         if (!this._isForwardContent) {
             this.handleVisibleChange(false, 'fromTrigger', e);
         }
@@ -216,16 +229,16 @@ class Popup extends Component {
     }
 
     handleContentMouseEnter() {
-        clearTimeout(this._hideTimer);
+        clearTimeout(this._hideTimer!);
     }
 
-    handleContentMouseLeave(e) {
+    handleContentMouseLeave(e: MouseEvent) {
         this.handleTriggerMouseLeave(e, 'fromContent');
     }
 
     handleMaskMouseEnter() {
         if (!this._mouseNotFirstOnMask) {
-            clearTimeout(this._hideTimer);
+            clearTimeout(this._hideTimer!);
             this._hideTimer = null;
             this._mouseNotFirstOnMask = false;
         }
@@ -235,7 +248,7 @@ class Popup extends Component {
         this._mouseNotFirstOnMask = true;
     }
 
-    handleRequestClose(type, e) {
+    handleRequestClose(type: string | object, e: MouseEvent) {
         this.handleVisibleChange(false, type, e);
     }
 
@@ -245,6 +258,17 @@ class Popup extends Component {
             key: 'trigger',
             'aria-haspopup': true,
             'aria-expanded': this.state.visible,
+        } as {
+            key: string;
+            'aria-haspopup': boolean;
+            'aria-expanded': boolean;
+            'aria-describedby': string | undefined;
+            onClick: MouseEventHandler;
+            onKeyDown: KeyboardEventHandler;
+            onMouseEnter: MouseEventHandler;
+            onMouseLeave: MouseEventHandler;
+            onFocus: MouseEventHandler;
+            onBlur: MouseEventHandler;
         };
 
         if (!this.state.visible) {
@@ -276,16 +300,20 @@ class Popup extends Component {
             });
         }
 
-        return trigger && React.cloneElement(trigger, props);
+        return trigger && cloneElement(trigger, props);
     }
 
     renderContent() {
         const { children, triggerType } = this.props;
         const triggerTypes = Array.isArray(triggerType) ? triggerType : [triggerType];
-        const content = Children.only(children);
+        const content = Children.only(children) as ReactElement;
         const { onMouseDown, onMouseEnter, onMouseLeave } = content.props;
         const props = {
             key: 'portal',
+        } as {
+            onMouseDown?: MouseEventHandler;
+            onMouseEnter?: MouseEventHandler;
+            onMouseLeave?: MouseEventHandler;
         };
 
         triggerTypes.forEach(triggerType => {
@@ -302,11 +330,20 @@ class Popup extends Component {
             }
         });
 
-        return React.cloneElement(content, props);
+        return cloneElement(content, props);
     }
 
     renderPortal() {
-        const { target, safeNode, followTrigger, triggerType, hasMask, wrapperStyle, ...others } = this.props;
+        const {
+            target,
+            safeNode,
+            followTrigger,
+            triggerType,
+            hasMask,
+            wrapperStyle,
+            v2,
+            ...others
+        } = this.props;
         let { container } = this.props;
         const findTriggerNode = () => findDOMNode(this);
         const safeNodes = Array.isArray(safeNode) ? [...safeNode] : [safeNode];
@@ -315,7 +352,7 @@ class Popup extends Component {
         const newWrapperStyle = wrapperStyle || {};
 
         if (followTrigger) {
-            container = trigger => (trigger && trigger.parentNode) || trigger;
+            container = (trigger: HTMLElement) => (trigger && trigger.parentNode) || trigger;
             newWrapperStyle.position = 'relative';
         }
 
@@ -338,7 +375,7 @@ class Popup extends Component {
                 hasMask={hasMask}
                 onRequestClose={this.handleRequestClose}
             >
-                {this.props.children && this.renderContent()}
+                {(this.props.children as ReactElement) && this.renderContent()}
             </Overlay>
         );
     }

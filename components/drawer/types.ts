@@ -3,7 +3,7 @@ import type { PopupProps } from '../overlay';
 import type { CommonProps } from '../util';
 import type { ComponentLocaleObject } from '../locale/types';
 
-interface HTMLAttributesWeak extends PopupProps {}
+type HTMLAttributesWeak = PopupProps;
 
 /**
  * @api
