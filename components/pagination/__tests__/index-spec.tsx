@@ -90,20 +90,14 @@ describe('Pagination', () => {
             wrapper.update();
             assert(wrapper.find('.next-pagination').hasClass(`next-${shape}`));
 
-            const prevText = wrapper
-                .find('.next-pagination-item.next-prev')
-                .hostNodes()
-                .text();
+            const prevText = wrapper.find('.next-pagination-item.next-prev').hostNodes().text();
             if (shape === 'normal') {
                 assert(prevText === '上一页');
             } else {
                 assert(prevText === '');
             }
 
-            const nextText = wrapper
-                .find('.next-pagination-item.next-next')
-                .hostNodes()
-                .text();
+            const nextText = wrapper.find('.next-pagination-item.next-next').hostNodes().text();
             if (shape === 'normal' || shape === 'arrow-prev-only') {
                 assert(nextText === '下一页');
             } else {
@@ -134,7 +128,10 @@ describe('Pagination', () => {
 
         const currentTest = () => {
             wrapper.update();
-            assert(wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes().length === 1);
+            assert(
+                wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes()
+                    .length === 1
+            );
             assert(
                 wrapper
                     .find('.next-pagination-list .next-pagination-item.next-current')
@@ -145,18 +142,12 @@ describe('Pagination', () => {
 
         currentTest();
         current = initCurrent - 1;
-        wrapper
-            .find('.next-pagination-item.next-prev')
-            .hostNodes()
-            .simulate('click');
+        wrapper.find('.next-pagination-item.next-prev').hostNodes().simulate('click');
         currentTest();
 
         current = initCurrent + 1;
 
-        wrapper
-            .find('.next-pagination-item.next-next')
-            .hostNodes()
-            .simulate('click');
+        wrapper.find('.next-pagination-item.next-next').hostNodes().simulate('click');
         currentTest();
 
         wrapper
@@ -172,12 +163,9 @@ describe('Pagination', () => {
             .simulate('change', {
                 target: { value: current },
             });
-        wrapper
-            .find('.next-pagination-jump-input')
-            .hostNodes()
-            .simulate('keydown', {
-                keyCode: 13,
-            });
+        wrapper.find('.next-pagination-jump-input').hostNodes().simulate('keydown', {
+            keyCode: 13,
+        });
         currentTest();
 
         wrapper
@@ -186,10 +174,7 @@ describe('Pagination', () => {
             .simulate('change', {
                 target: { value: current },
             });
-        wrapper
-            .find('.next-pagination-jump-go')
-            .hostNodes()
-            .simulate('click');
+        wrapper.find('.next-pagination-jump-go').hostNodes().simulate('click');
         currentTest();
     });
 
@@ -207,7 +192,10 @@ describe('Pagination', () => {
 
         const defaultCurrentTest = () => {
             wrapper.update();
-            assert(wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes().length === 1);
+            assert(
+                wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes()
+                    .length === 1
+            );
             assert(
                 wrapper
                     .find('.next-pagination-list .next-pagination-item.next-current')
@@ -219,17 +207,11 @@ describe('Pagination', () => {
         defaultCurrentTest();
 
         current -= 1;
-        wrapper
-            .find('.next-pagination-item.next-prev')
-            .hostNodes()
-            .simulate('click');
+        wrapper.find('.next-pagination-item.next-prev').hostNodes().simulate('click');
         defaultCurrentTest();
 
         current += 1;
-        wrapper
-            .find('.next-pagination-item.next-next')
-            .hostNodes()
-            .simulate('click');
+        wrapper.find('.next-pagination-item.next-next').hostNodes().simulate('click');
         defaultCurrentTest();
 
         current += 1;
@@ -247,12 +229,9 @@ describe('Pagination', () => {
             .simulate('change', {
                 target: { value: current },
             });
-        wrapper
-            .find('.next-pagination-jump-input input')
-            .hostNodes()
-            .simulate('keydown', {
-                keyCode: 13,
-            });
+        wrapper.find('.next-pagination-jump-input input').hostNodes().simulate('keydown', {
+            keyCode: 13,
+        });
         defaultCurrentTest();
 
         current += 1;
@@ -262,10 +241,7 @@ describe('Pagination', () => {
             .simulate('change', {
                 target: { value: current },
             });
-        wrapper
-            .find('.next-pagination-jump-go')
-            .hostNodes()
-            .simulate('click');
+        wrapper.find('.next-pagination-jump-go').hostNodes().simulate('click');
         defaultCurrentTest();
 
         current = 1;
@@ -313,12 +289,7 @@ describe('Pagination', () => {
         wrapper.setProps({
             current: 1,
         });
-        assert(
-            wrapper
-                .find('.next-pagination-item.next-prev')
-                .hostNodes()
-                .get(0).props.disabled
-        );
+        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().get(0).props.disabled);
     });
 
     it('should disable the next button when current is the last page', () => {
@@ -326,12 +297,7 @@ describe('Pagination', () => {
             current: 10,
             total: 100,
         });
-        assert(
-            wrapper
-                .find('.next-pagination-item.next-next')
-                .hostNodes()
-                .get(0).props.disabled
-        );
+        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().get(0).props.disabled);
     });
 
     it('should update when current is illegal', () => {
@@ -353,14 +319,13 @@ describe('Pagination', () => {
                 .simulate('change', {
                     target: { value: current },
                 });
-            wrapper
-                .find('.next-pagination-jump-input input')
-                .hostNodes()
-                .simulate('keydown', {
-                    keyCode: 13,
-                });
+            wrapper.find('.next-pagination-jump-input input').hostNodes().simulate('keydown', {
+                keyCode: 13,
+            });
 
-            console.log(wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes());
+            console.log(
+                wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes()
+            );
         };
 
         // 实际上当输入不合法时，进入不了onChange逻辑
@@ -380,14 +345,18 @@ describe('Pagination', () => {
             total: 0,
         });
         assert(!wrapper.find('.next-pagination').hasClass('next-hide'));
-        assert(wrapper.find('.next-pagination-list .next-pagination-item').hostNodes().length === 1);
+        assert(
+            wrapper.find('.next-pagination-list .next-pagination-item').hostNodes().length === 1
+        );
 
         wrapper.setProps({
             total: 0,
             hideOnlyOnePage: true,
         });
         assert(wrapper.find('.next-pagination').hasClass('next-hide'));
-        assert(wrapper.find('.next-pagination-list .next-pagination-item').hostNodes().length === 1);
+        assert(
+            wrapper.find('.next-pagination-list .next-pagination-item').hostNodes().length === 1
+        );
 
         wrapper.setProps({
             total: 50,
@@ -486,8 +455,9 @@ describe('Pagination', () => {
             onPageSizeChange: size => assert(size === currentPageSize),
         });
         assert(
-            wrapper.find('.next-pagination-size-selector .next-pagination-size-selector-filter').hostNodes().length ===
-                1
+            wrapper
+                .find('.next-pagination-size-selector .next-pagination-size-selector-filter')
+                .hostNodes().length === 1
         );
 
         const btnsWrapper = wrapper.find('.next-pagination-size-selector-btn').hostNodes();
@@ -516,8 +486,9 @@ describe('Pagination', () => {
             onPageSizeChange: size => assert(size === currentPageSize),
         });
         assert(
-            wrapper.find('.next-pagination-size-selector .next-pagination-size-selector-filter').hostNodes().length ===
-                1
+            wrapper
+                .find('.next-pagination-size-selector .next-pagination-size-selector-filter')
+                .hostNodes().length === 1
         );
 
         const btnsWrapper = wrapper.find('.next-pagination-size-selector-btn').hostNodes();
@@ -549,14 +520,12 @@ describe('Pagination', () => {
         });
         setTimeout(() => {
             assert(
-                wrapper.find('.next-pagination-size-selector .next-pagination-size-selector-dropdown').hostNodes()
-                    .length === 1
+                wrapper
+                    .find('.next-pagination-size-selector .next-pagination-size-selector-dropdown')
+                    .hostNodes().length === 1
             );
 
-            wrapper
-                .find('.next-pagination-size-selector-dropdown')
-                .hostNodes()
-                .simulate('click');
+            wrapper.find('.next-pagination-size-selector-dropdown').hostNodes().simulate('click');
             const lis = document.querySelectorAll('.next-menu li');
             pageSizeList.forEach((size, index) => {
                 assert(lis[index].textContent.trim() === size.toString());
@@ -569,10 +538,7 @@ describe('Pagination', () => {
             wrapper.setProps({
                 current: 20,
             });
-            wrapper
-                .find('.next-pagination-size-selector-dropdown')
-                .hostNodes()
-                .simulate('click');
+            wrapper.find('.next-pagination-size-selector-dropdown').hostNodes().simulate('click');
             const newLis = document.querySelectorAll('.next-menu li');
             currentPageSize = 50;
             newLis[2].click();
@@ -590,10 +556,8 @@ describe('Pagination', () => {
             link: 'https://www.taobao.com/{page}',
         });
         assert(
-            wrapper
-                .find('.next-pagination-list a.next-pagination-item')
-                .at(0)
-                .prop('href') === 'https://www.taobao.com/1'
+            wrapper.find('.next-pagination-list a.next-pagination-item').at(0).prop('href') ===
+                'https://www.taobao.com/1'
         );
     });
 
