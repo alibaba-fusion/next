@@ -59,16 +59,16 @@
     border-color: $borderColor;
     box-shadow: $shadow;
 
-    .#{$css-prefix}message-title {
+    > .#{$css-prefix}message-title {
         color: $titleColor;
     }
-    .#{$css-prefix}message-content {
+    > .#{$css-prefix}message-content {
         color: $contentColor;
     }
-    .#{$css-prefix}message-symbol {
+    > .#{$css-prefix}message-symbol {
         color: $iconColor;
     }
-    .#{$css-prefix}message-symbol-icon::before {
+    > .#{$css-prefix}message-symbol-icon::before {
         vertical-align: top;
         content: $icon;
         @if (get-compiling-value($icon) == get-compiling-value($message-loading-icon-content)) {
