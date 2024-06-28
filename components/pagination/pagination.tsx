@@ -293,7 +293,9 @@ class Pagination extends Component {
         return (
             <Button {...props} aria-label={str.template(locale.labelPrev, { current })}>
                 {icon}
-                {shape === 'arrow-only' || shape === 'arrow-prev-only' || shape === 'no-border' ? '' : locale.prev}
+                {shape === 'arrow-only' || shape === 'arrow-prev-only' || shape === 'no-border'
+                    ? ''
+                    : locale.prev}
             </Button>
         );
     }
@@ -416,7 +418,9 @@ class Pagination extends Component {
 
     renderPageSizeSelector() {
         const { prefix, pageSizeSelector, locale } = this.props;
-        const pageSizeSpan = <span className={`${prefix}pagination-size-selector-title`}>{locale.pageSize}</span>;
+        const pageSizeSpan = (
+            <span className={`${prefix}pagination-size-selector-title`}>{locale.pageSize}</span>
+        );
 
         switch (pageSizeSelector) {
             case 'filter':
@@ -466,7 +470,11 @@ class Pagination extends Component {
                             text
                             size={size}
                             className={classes}
-                            onClick={pageSize !== currentPageSize ? this.onSelectSize.bind(this, pageSize) : null}
+                            onClick={
+                                pageSize !== currentPageSize
+                                    ? this.onSelectSize.bind(this, pageSize)
+                                    : null
+                            }
                         >
                             {label}
                         </Button>
@@ -599,7 +607,9 @@ class Pagination extends Component {
                         ? this.renderPageDisplay(currentPage, totalPage)
                         : null;
                 const pageJump =
-                    showJump && total > pageSize * pageShowCount ? this.renderPageJump(currentPage, totalPage) : [];
+                    showJump && total > pageSize * pageShowCount
+                        ? this.renderPageJump(currentPage, totalPage)
+                        : [];
                 return buildComponent(pageFirst, pageList, pageLast, pageDisplay, ...pageJump);
             }
             default:
