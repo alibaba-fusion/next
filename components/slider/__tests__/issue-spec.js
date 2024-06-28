@@ -13,11 +13,20 @@ Enzyme.configure({ adapter: new Adapter() });
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 describe('Issue', () => {
-    let dataSource = [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }],
+    let dataSource = [
+            { id: '1', name: 'test' },
+            { id: '2', name: 'test2' },
+        ],
         table,
         timeout,
         wrapper;
 
+    afterEach(() => {
+        if (wrapper) {
+            wrapper.unmount();
+            wrapper = null;
+        }
+    });
     it('should support scale', done => {
         const container = document.createElement('div');
         document.body.appendChild(container);
@@ -60,7 +69,7 @@ describe('Issue', () => {
             }
         }
 
-        ReactDOM.render(<App />, container, function() {
+        ReactDOM.render(<App />, container, function () {
             setTimeout(() => {
                 const sliderList = container.querySelectorAll('.next-slick-list');
                 assert(sliderList[0].style.height === `${sliderList[0].clientHeight}px`);
@@ -89,7 +98,7 @@ describe('Issue', () => {
                 speed: 500,
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                onChange: function(index) {
+                onChange: function (index) {
                     setIdx(index);
                 },
             };
@@ -98,7 +107,7 @@ describe('Issue', () => {
         }
         const root = document.createElement('div');
         document.body.appendChild(root);
-        const wrapper = mount(<DemoSlider />, { attachTo: root });
+        wrapper = mount(<DemoSlider />, { attachTo: root });
 
         const isIndexActive = index => {
             const el = root.querySelector(`.next-slick-slide[data-index="${index}"]`);
@@ -112,5 +121,51 @@ describe('Issue', () => {
         ReactTestUtils.Simulate.click(root.querySelector('.next-slick-next'));
         await delay(800);
         assert(isIndexActive(2));
+    });
+
+    it('The last element covers on top when the Slider component is set to fade effect,close #4710', async () => {
+        const settings = {
+            arrowPosition: 'outer',
+            dots: false,
+            animation: 'fade',
+            infinite: true,
+            speed: 500,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            className: 'custom-slide',
+        };
+        let i = 1;
+        const root = document.createElement('div');
+        document.body.appendChild(root);
+        wrapper = mount(
+            <Slider {...settings} >
+                {[1, 2, 3, 4, 5, 6].map(function (d) {
+                    return (
+                        <div key={d}>
+                            <h3
+                                onClick={(e) => {
+                                    assert(d === i);
+                                }}
+                            >
+                                {d}
+                            </h3>
+                        </div>
+                    );
+                })}
+            </Slider>,
+            { attachTo: root }
+        );
+        ReactTestUtils.Simulate.click(root.querySelector('.next-slick-next'));
+        await delay(800);
+        i = 2;
+        const element = root.querySelector('.next-slick-list');
+        element.scrollIntoView()
+        const boundingRect = element.getBoundingClientRect();
+        const clientX = boundingRect.left + boundingRect.width / 2;
+        const clientY = boundingRect.top + boundingRect.height / 2;
+
+        const clickedElement = document.elementFromPoint(clientX, clientY);
+        clickedElement.click();
+
     });
 });
