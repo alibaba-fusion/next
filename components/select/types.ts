@@ -593,6 +593,13 @@ export interface SelectProps
     showSearch?: boolean;
 
     /**
+     * 是否在选中项后清空搜索框，只在 mode 为 multiple 或 tags 时有效
+     * @en Whether to clear the search box after selecting the selected item, only in mode multiple or tags is valid
+     * @defaultValue true
+     */
+    autoClearSearchValue?: boolean;
+
+    /**
      * 当搜索框值变化时回调
      * @en Callback when the search box value changes
      */
