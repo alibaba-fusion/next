@@ -114,11 +114,11 @@ class FunctionDemo extends React.Component<{ lang: keyof typeof i18nMaps }> {
             <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
                 <div className="demo-container">
                     <Demo
-                        title="Select"
                         {...init('demo', {
                             valueName: 'demoFunction',
                             trigger: 'onFunctionChange',
                         })}
+                        title="Select"
                     >
                         <Demo title="Single">
                             <Demo title="With Border">

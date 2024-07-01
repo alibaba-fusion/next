@@ -64,12 +64,12 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 鼠标放置后的延时显示, 单位毫秒 ms
      */
-    mouseEnterDelay: number;
+    mouseEnterDelay?: number;
 
     /**
      * 鼠标离开后的延时显示, 单位毫秒 ms
      */
-    mouseLeaveDelay: number;
+    mouseLeaveDelay?: number;
 
     /**
      * 是否pure render
@@ -188,12 +188,12 @@ export interface BalloonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 鼠标放置后的延时显示, 单位毫秒 ms
      */
-    mouseEnterDelay: number;
+    mouseEnterDelay?: number;
 
     /**
      * 鼠标离开后的延时显示, 单位毫秒 ms
      */
-    mouseLeaveDelay: number;
+    mouseLeaveDelay?: number;
 
     /**
      * 浮层关闭后触发的事件, 如果有动画，则在动画结束后触发

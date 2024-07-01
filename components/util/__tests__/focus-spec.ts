@@ -64,7 +64,7 @@ describe('src/focus.js', function () {
             assert(document.activeElement!.className === 'foo-select');
 
             focus.limitTabRange(wrapper, tabEvent);
-            assert(document.activeElement!.className === 'foo-btn');
+            assert((document.activeElement!.className as string) === 'foo-btn');
 
             focus.limitTabRange(wrapper, tabEventWithShift);
             assert(document.activeElement!.className === 'foo-select');
