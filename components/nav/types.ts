@@ -263,14 +263,14 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * 当前选中导航项的 key 值
      * @en Keys of selected nav item currently
      */
-    selectedKeys?: string | Array<string>;
+    selectedKeys?: string | Array<string> | null;
 
     /**
      * 初始选中导航项的 key 值
      * @en Keys of selected nav item in default
      * @defaultValue []
      */
-    defaultSelectedKeys?: string | Array<string>;
+    defaultSelectedKeys?: string | Array<string> | null;
 
     /**
      * 选中或取消选中导航项触发的回调函数
