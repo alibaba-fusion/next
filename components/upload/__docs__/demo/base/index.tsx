@@ -1,8 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Button, Icon } from '@alifd/next';
+import { type UploadProps } from '@alifd/next/types/upload';
 
 const style = { display: 'inline-block', marginRight: 10 };
+
+const beforeUpload: UploadProps['beforeUpload'] = info => {
+    console.log('beforeUpload : ', info);
+};
+
+const onChange: UploadProps['onChange'] = info => {
+    console.log('onChange : ', info);
+};
+
+const onSuccess: UploadProps['onSuccess'] = info => {
+    console.log('onSuccess : ', info);
+};
+
 ReactDOM.render(
     <div style={{ display: 'flex' }}>
         <Upload
@@ -28,11 +42,9 @@ ReactDOM.render(
                 Upload File
             </Button>
         </Upload>
-
         <Upload shape="card" style={style}>
             Upload File
         </Upload>
-
         <Upload style={style}>
             <div className="next-upload-card">
                 <Icon type="attachment" size="large" />
@@ -42,15 +54,3 @@ ReactDOM.render(
     </div>,
     mountNode
 );
-
-function beforeUpload(info) {
-    console.log('beforeUpload : ', info);
-}
-
-function onChange(info) {
-    console.log('onChange : ', info);
-}
-
-function onSuccess(info) {
-    console.log('onSuccess : ', info);
-}

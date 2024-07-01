@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Button } from '@alifd/next';
+import { type UploadProps } from '@alifd/next/types/upload';
+
+const beforeUpload: UploadProps['beforeUpload'] = info => {
+    console.log('beforeUpload callback : ', info);
+};
+
+const onChange: UploadProps['onChange'] = info => {
+    console.log('onChange callback : ', info);
+};
 
 ReactDOM.render(
     <Upload
@@ -26,11 +35,3 @@ ReactDOM.render(
     </Upload>,
     mountNode
 );
-
-function beforeUpload(info) {
-    console.log('beforeUpload callback : ', info);
-}
-
-function onChange(info) {
-    console.log('onChange callback : ', info);
-}

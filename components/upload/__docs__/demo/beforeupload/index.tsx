@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Button } from '@alifd/next';
+import { type UploadProps } from '@alifd/next/types/upload';
 
 const requestOpts = {
     action: 'https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload',
@@ -8,23 +9,23 @@ const requestOpts = {
     headers: { 'X-Requested-With': 12345 },
 };
 
-function beforeUpload(file, options) {
+const beforeUpload: UploadProps['beforeUpload'] = (file, options) => {
     console.log('beforeUpload callback : ', file, options);
     return requestOpts;
-}
+};
 
-async function asyncBeforeUpload(file, options) {
+const asyncBeforeUpload: UploadProps['beforeUpload'] = async (file, options) => {
     console.log('beforeUpload callback : ', file, options);
     return await new Promise(resolve => {
         setTimeout(() => {
             resolve(requestOpts);
         }, 1e3);
     });
-}
+};
 
-function onChange(file) {
+const onChange: UploadProps['onChange'] = file => {
     console.log('onChange callback : ', file);
-}
+};
 
 ReactDOM.render(
     [

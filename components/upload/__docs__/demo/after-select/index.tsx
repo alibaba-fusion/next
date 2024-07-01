@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Button, Dialog } from '@alifd/next';
+import { type UploadProps, type UploadFile } from '@alifd/next/types/upload';
 
-const afterSelect = file => {
-    return new Promise((resolve, reject) => {
+const afterSelect: UploadProps['afterSelect'] = (file: UploadFile) => {
+    return new Promise<void>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
             const img = new Image();
@@ -13,15 +14,14 @@ const afterSelect = file => {
                 } else {
                     Dialog.alert({
                         content: `Image width must be 1200px now ${img.width}px！`,
-                        closable: false,
                         title: 'Warning',
                     });
                     reject();
                 }
             };
-            img.src = reader.result;
+            img.src = reader.result as string;
         };
-        reader.readAsDataURL(file.originFileObj);
+        reader.readAsDataURL(file.originFileObj!);
     });
 };
 

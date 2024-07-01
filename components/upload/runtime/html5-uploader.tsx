@@ -3,56 +3,22 @@ import PropTypes from 'prop-types';
 import { func } from '../../util';
 import Uploader from './uploader';
 import Selecter from './selecter';
+import type { Html5Props, UploadFile } from '../types';
 
-export default class Html5Uploader extends Component {
+export default class Html5Uploader extends Component<Html5Props> {
     static propTypes = {
         ...Selecter.propTypes,
-        /**
-         * 上传的地址
-         */
         action: PropTypes.string,
-        /**
-         * 接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)
-         */
         accept: PropTypes.string,
-        /**
-         * 上传额外传参
-         */
         data: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-        /**
-         * 设置上传的请求头部
-         */
         headers: PropTypes.object,
-        /**
-         * 是否允许请求携带 cookie
-         */
         withCredentials: PropTypes.bool,
-        /**
-         * 上传文件之前
-         * @param {Object} file 文件对象
-         * @return {Boolean} `false` 停止上传
-         */
         beforeUpload: PropTypes.func,
-        /**
-         * 正在上传文件的钩子，参数为上传的事件以及文件
-         */
         onProgress: PropTypes.func,
-        /**
-         * 上传成功回调函数，参数为请求下响应信息以及文件
-         */
         onSuccess: PropTypes.func,
-        /**
-         * 上传失败回调函数，参数为上传失败的信息、响应信息以及文件
-         */
         onError: PropTypes.func,
         children: PropTypes.node,
-        /**
-         * 上传超时,单位ms
-         */
         timeout: PropTypes.number,
-        /**
-         * 上传方法
-         */
         method: PropTypes.oneOf(['post', 'put']),
         request: PropTypes.func,
     };
@@ -73,6 +39,7 @@ export default class Html5Uploader extends Component {
         onAbort: func.noop,
         method: 'post',
     };
+    uploader: Uploader;
 
     componentDidMount() {
         const { props } = this;
@@ -80,7 +47,7 @@ export default class Html5Uploader extends Component {
         this.uploader = new Uploader(options);
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: Html5Props) {
         const preOptions = this.getUploadOptions(prevProps);
         const options = this.getUploadOptions(this.props);
 
@@ -99,15 +66,15 @@ export default class Html5Uploader extends Component {
         this.abort();
     }
 
-    abort(file) {
+    abort(file?: UploadFile) {
         this.uploader.abort(file);
     }
 
-    startUpload(fileList) {
+    startUpload(fileList: UploadFile[]) {
         this.uploader.startUpload(fileList);
     }
 
-    getUploadOptions = props => ({
+    getUploadOptions = (props: Html5Props): Record<string, unknown> => ({
         action: props.action,
         name: props.name,
         timeout: props.timeout,

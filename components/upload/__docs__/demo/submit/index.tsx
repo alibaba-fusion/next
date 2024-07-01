@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Button, Icon } from '@alifd/next';
+import { type UploadProps } from '@alifd/next/types/upload';
 
 class App extends React.Component {
-    saveUploaderRef = ref => {
+    uploaderRef: ReturnType<InstanceType<typeof Upload>['getInstance']>;
+
+    saveUploaderRef = (ref: InstanceType<typeof Upload> | null) => {
         if (!ref) return;
         this.uploaderRef = ref.getInstance();
     };
@@ -11,10 +14,12 @@ class App extends React.Component {
     onSubmit = () => {
         this.uploaderRef.startUpload();
     };
-    beforeUpload(info, options) {
+
+    beforeUpload: UploadProps['beforeUpload'] = (info, options) => {
         console.log('beforeUpload callback : ', info, options);
         return options;
-    }
+    };
+
     render() {
         return (
             <div>

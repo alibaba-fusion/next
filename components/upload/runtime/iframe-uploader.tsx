@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { log, func, obj } from '../../util';
 import { uid } from '../util';
+import type { IframeUploaderProps, ObjectFile, RequestOption, UploadFile } from '../types';
 
-const INPUT_STYLE = {
+const INPUT_STYLE: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     right: 0,
@@ -16,7 +17,7 @@ const INPUT_STYLE = {
     cursor: 'pointer',
 };
 
-class IframeUploader extends React.Component {
+class IframeUploader extends React.Component<IframeUploaderProps> {
     static propTypes = {
         style: PropTypes.object,
         action: PropTypes.string.isRequired,
@@ -44,8 +45,15 @@ class IframeUploader extends React.Component {
         onError: func.noop,
         onAbort: func.noop,
     };
+    domain: string;
+    iFrameEl: HTMLIFrameElement;
+    inputEl: HTMLInputElement;
+    formEl: HTMLFormElement;
+    dataEl: HTMLSpanElement;
+    file: UploadFile | object = {};
+    uid = '';
 
-    constructor(props) {
+    constructor(props: IframeUploaderProps) {
         super(props);
         this.domain = typeof document !== 'undefined' && document.domain ? document.domain : '';
         this.uid = uid();
@@ -63,9 +71,6 @@ class IframeUploader extends React.Component {
         this.updateInputWH();
     }
 
-    file = {};
-
-    uid = '';
     onLoad = () => {
         if (!this.state.uploading) {
             return;
@@ -74,33 +79,35 @@ class IframeUploader extends React.Component {
         let response;
         try {
             const doc = this.iFrameEl.contentDocument;
-            const script = doc.getElementsByTagName('script')[0];
-            if (script && script.parentNode === doc.body) {
-                doc.body.removeChild(script);
+            const script = doc!.getElementsByTagName('script')[0];
+            if (script && script.parentNode === doc!.body) {
+                doc!.body.removeChild(script);
             }
-            response = doc.body.innerHTML;
-            props.onSuccess(response, file);
+            response = doc!.body.innerHTML;
+            props.onSuccess!(response, file as ObjectFile);
         } catch (err) {
-            log.warning('cross domain error for Upload. Maybe server should return document.domain script.');
+            log.warning(
+                'cross domain error for Upload. Maybe server should return document.domain script.'
+            );
             response = 'cross-domain';
-            props.onError(err, null, file);
+            props.onError!(err, null, file as ObjectFile);
         }
         this.endUpload();
     };
 
-    onSelect = e => {
+    onSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.file = {
             uid: uid(),
-            name: e.target.value,
+            name: (e.target as HTMLInputElement)!.value,
         };
-        this.props.onSelect([this.file]);
+        this.props.onSelect!([this.file]);
     };
 
     startUpload() {
-        this.upload(this.file);
+        this.upload(this.file as UploadFile);
     }
 
-    upload(file) {
+    upload(file: UploadFile) {
         if (!this.state.uploading) {
             // eslint-disable-next-line
             this.state.uploading = true;
@@ -117,9 +124,9 @@ class IframeUploader extends React.Component {
             data,
         };
         const before = beforeUpload(file, requestData);
-        if (before && before.then) {
-            before.then(
-                data => {
+        if (before && (before as Promise<object>).then) {
+            (before as Promise<object>).then(
+                (data: object) => {
                     this.post(file, data);
                 },
                 () => {
@@ -143,19 +150,19 @@ class IframeUploader extends React.Component {
     }
 
     updateInputWH() {
-        const rootNode = ReactDOM.findDOMNode(this);
+        const rootNode = ReactDOM.findDOMNode(this) as HTMLElement;
         const inputNode = this.inputEl;
         inputNode.style.height = `${rootNode.offsetHeight}px`;
         inputNode.style.width = `${rootNode.offsetWidth}px`;
     }
 
-    abort(file) {
+    abort(file: UploadFile) {
         if (file) {
-            let uid = file;
+            let uid: UploadFile | string | number = file;
             if (file && file.uid) {
                 uid = file.uid;
             }
-            if (uid === this.file.uid) {
+            if (uid === (this.file as UploadFile).uid) {
                 this.endUpload();
             }
         } else {
@@ -163,7 +170,7 @@ class IframeUploader extends React.Component {
         }
     }
 
-    post(file, requestOption = {}) {
+    post(file: UploadFile, requestOption: RequestOption = {}) {
         const formNode = this.formEl;
         const dataSpan = this.dataEl;
         const fileInput = this.inputEl;
@@ -188,32 +195,32 @@ class IframeUploader extends React.Component {
 
         const inputs = document.createDocumentFragment();
         for (const key in propsData) {
-            if (data.hasOwnProperty(key)) {
+            if (data!.hasOwnProperty(key)) {
                 const input = document.createElement('input');
                 input.setAttribute('name', key);
-                input.value = propsData[key];
+                input.value = (propsData as Record<string, string>)[key];
                 inputs.appendChild(input);
             }
         }
         dataSpan.appendChild(inputs);
         formNode.submit();
         dataSpan.innerHTML = '';
-        this.props.onStart(file);
+        this.props.onStart!(file);
     }
 
-    saveIFrameRef = ref => {
+    saveIFrameRef = (ref: HTMLIFrameElement) => {
         this.iFrameEl = ref;
     };
 
-    saveFormRef = ref => {
+    saveFormRef = (ref: HTMLFormElement) => {
         this.formEl = ref;
     };
 
-    saveDataRef = ref => {
+    saveDataRef = (ref: HTMLSpanElement) => {
         this.dataEl = ref;
     };
 
-    saveInputRef = ref => {
+    saveInputRef = (ref: HTMLInputElement) => {
         this.inputEl = ref;
     };
 

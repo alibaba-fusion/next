@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Dialog, Button } from '@alifd/next';
+import { type UploadProps } from '@alifd/next/types/upload';
 
-const beforeUpload = file => {
-    return new Promise((resolve, reject) => {
+const beforeUpload: UploadProps['beforeUpload'] = file => {
+    return new Promise<void>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = e => {
             if (e.total > 2 * 1024 * 1024) {
                 Dialog.alert({
                     content: `File size must be < 2M`,
-                    closable: false,
                     title: 'Warning',
                 });
                 reject();
@@ -22,15 +22,14 @@ const beforeUpload = file => {
                 } else {
                     Dialog.alert({
                         content: `Image width ${img.width}px, Exceed limits！`,
-                        closable: false,
                         title: 'Warning',
                     });
                     reject();
                 }
             };
-            img.src = reader.result;
+            img.src = reader.result as string;
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(file as File);
     });
 };
 

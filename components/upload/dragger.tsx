@@ -1,20 +1,18 @@
-import React from 'react';
+import React, { type DragEvent, Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
 import { func } from '../util';
 import zhCN from '../locale/zh-cn';
 import Upload from './upload';
+import type { DraggerProps } from './types';
 
 /**
  * Upload.Dragger
- * @description IE10+ 支持。继承 Upload 的 API，除非特别说明
+ * IE10+ 支持。继承 Upload 的 API，除非特别说明
  */
-class Dragger extends React.Component {
+class Dragger extends Component<DraggerProps> {
     static propTypes = {
-        /**
-         * 样式前缀
-         */
         prefix: PropTypes.string,
         locale: PropTypes.object,
         shape: PropTypes.string,
@@ -38,51 +36,57 @@ class Dragger extends React.Component {
         locale: zhCN.Upload,
     };
 
+    uploaderRef: InstanceType<typeof Upload>;
+
     state = {
         dragOver: false,
     };
 
-    onDragOver = e => {
+    onDragOver = (e: DragEvent<HTMLElement>) => {
         if (!this.state.dragOver) {
             this.setState({
                 dragOver: true,
             });
         }
 
-        this.props.onDragOver(e);
+        this.props.onDragOver!(e);
     };
 
-    onDragLeave = e => {
+    onDragLeave = (e: DragEvent<HTMLElement>) => {
         this.setState({
             dragOver: false,
         });
-        this.props.onDragLeave(e);
+        this.props.onDragLeave!(e);
     };
 
-    onDrop = e => {
+    onDrop = (e: File[]) => {
         this.setState({
             dragOver: false,
         });
-        this.props.onDrop(e);
+        this.props.onDrop!(e);
     };
 
-    /* istanbul ignore next */
-    abort(file) {
-        /* istanbul ignore next */
+    abort(file: File) {
         this.uploaderRef.abort(file);
     }
-    /* istanbul ignore next */
+
     startUpload() {
-        /* istanbul ignore next */
         this.uploaderRef.startUpload();
     }
 
-    saveUploaderRef = ref => {
-        /* istanbul ignore if */
-        if (ref && typeof ref.getInstance === 'function') {
-            this.uploaderRef = ref.getInstance();
+    saveUploaderRef = (
+        ref: InstanceType<typeof Upload> | { getInstance: () => InstanceType<typeof Upload> } | null
+    ) => {
+        if (
+            ref &&
+            typeof (ref as { getInstance: () => InstanceType<typeof Upload> }).getInstance ===
+                'function'
+        ) {
+            this.uploaderRef = (
+                ref as { getInstance: () => InstanceType<typeof Upload> }
+            ).getInstance();
         } else {
-            this.uploaderRef = ref;
+            this.uploaderRef = ref as InstanceType<typeof Upload>;
         }
     };
 
@@ -92,7 +96,7 @@ class Dragger extends React.Component {
         const cls = classNames({
             [`${prefixCls}`]: true,
             [`${prefixCls}-over`]: this.state.dragOver,
-            [className]: !!className,
+            [className!]: !!className,
         });
 
         const children = this.props.children || (
@@ -100,8 +104,8 @@ class Dragger extends React.Component {
                 <p className={`${prefixCls}-icon`}>
                     <Icon size="large" className={`${prefixCls}-upload-icon`} />
                 </p>
-                <p className={`${prefixCls}-text`}>{locale.drag.text}</p>
-                <p className={`${prefixCls}-hint`}>{locale.drag.hint}</p>
+                <p className={`${prefixCls}-text`}>{locale!.drag!.text}</p>
+                <p className={`${prefixCls}-hint`}>{locale!.drag!.hint}</p>
             </div>
         );
 

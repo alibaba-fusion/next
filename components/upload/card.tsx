@@ -8,12 +8,13 @@ import { func, obj } from '../util';
 import Base from './base';
 import List from './list';
 import Upload from './upload';
+import type { CardProps, CardState, ObjectFile, UploadFile } from './types';
 
 /**
  * Upload.Card
- * @description 继承 Upload 的 API，除非特别说明
+ * 继承 Upload 的 API，除非特别说明
  */
-class Card extends Base {
+class Card extends Base<CardProps, CardState> {
     static displayName = 'Card';
 
     static propTypes = {
@@ -22,43 +23,13 @@ class Card extends Base {
         children: PropTypes.object,
         value: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
         defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-        /**
-         * 点击图片回调
-         */
         onPreview: PropTypes.func,
-        /**
-         * 改变时候的回调
-         */
         onChange: PropTypes.func,
-        /**
-         * 点击移除的回调
-         */
         onRemove: PropTypes.func,
-        /**
-         * 取消上传的回调
-         */
         onCancel: PropTypes.func,
-        /**
-         * 自定义成功和失败的列表渲染方式
-         * @param {File} file 文件对象
-         * @param {Object} obj {remove: 删除回调}
-         * @retuns {ReactNode} React元素
-         * @version 1.21
-         */
         itemRender: PropTypes.func,
-        /**
-         * 选择新文件上传并替换
-         * @version 1.24
-         */
         reUpload: PropTypes.bool,
-        /**
-         * 展示下载按钮
-         * @version 1.24
-         */
         showDownload: PropTypes.bool,
-        /**
-         * 上传中
-         */
         onProgress: PropTypes.func,
         isPreview: PropTypes.bool,
         renderPreview: PropTypes.func,
@@ -73,11 +44,10 @@ class Card extends Base {
         onProgress: func.noop,
     };
 
-    constructor(props) {
+    constructor(props: CardProps) {
         super(props);
 
         let value;
-        /* istanbul ignore else */
         if ('value' in props) {
             value = props.value;
         } else {
@@ -90,6 +60,8 @@ class Card extends Base {
         };
     }
 
+    uploaderRef: InstanceType<typeof Upload>;
+
     componentDidMount() {
         this.updateUploaderRef(this.uploaderRef);
     }
@@ -101,43 +73,45 @@ class Card extends Base {
         }
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: CardProps, prevState: CardState) {
         const isUploading = prevState.uploaderRef && prevState.uploaderRef.isUploading();
         if ('value' in nextProps && nextProps.value !== prevState.value && !isUploading) {
             return {
-                value: !Array.isArray(nextProps.value) ? [] : [].concat(nextProps.value),
+                value: !Array.isArray(nextProps.value)
+                    ? []
+                    : ([] as ObjectFile[]).concat(nextProps.value),
             };
         }
 
         return null;
     }
 
-    onProgress = (value, targetItem) => {
+    onProgress = (value: UploadFile[], targetItem: UploadFile) => {
         this.setState({
             value,
         });
 
-        this.props.onProgress(value, targetItem);
+        this.props.onProgress!(value, targetItem);
     };
 
-    onChange = (value, file) => {
+    onChange = (value: Array<UploadFile>, file: UploadFile) => {
         if (!('value' in this.props)) {
             this.setState({
                 value,
             });
         }
-        this.props.onChange(value, file);
+        this.props.onChange!(value, file);
     };
 
     isUploading() {
         return this.uploaderRef.isUploading();
     }
 
-    saveRef(ref) {
+    saveRef(ref: InstanceType<typeof Upload> | null) {
         this.saveUploaderRef(ref);
     }
 
-    updateUploaderRef(uploaderRef) {
+    updateUploaderRef(uploaderRef: InstanceType<typeof Upload>) {
         this.setState({ uploaderRef });
     }
 
@@ -161,23 +135,23 @@ class Card extends Base {
             showDownload,
         } = this.props;
 
-        const isExceedLimit = this.state.value.length >= limit;
+        const isExceedLimit = this.state.value.length >= limit!;
         const uploadButtonCls = classNames({
             [`${prefix}upload-list-item`]: true,
             [`${prefix}hidden`]: isExceedLimit,
         });
 
-        const children = this.props.children || locale.card.addPhoto;
+        const children = this.props.children || locale!.card!.addPhoto;
 
         const onRemoveFunc = disabled ? func.prevent : onRemove;
         const othersForList = obj.pickOthers(Card.propTypes, this.props);
-        const othersForUpload = obj.pickOthers(List.propTypes, othersForList);
+        const othersForUpload = obj.pickOthers(List.propTypes!, othersForList);
 
         if (isPreview) {
             if (typeof renderPreview === 'function') {
                 const previewCls = classNames({
                     [`${prefix}form-preview`]: true,
-                    [className]: !!className,
+                    [className!]: !!className,
                 });
                 return (
                     <div style={style} className={previewCls}>
@@ -194,7 +168,7 @@ class Card extends Base {
                 listType="card"
                 closable
                 locale={locale}
-                value={this.state.value}
+                value={this.state.value as UploadFile[]}
                 onRemove={onRemoveFunc}
                 onCancel={onCancel}
                 onPreview={onPreview}

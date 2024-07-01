@@ -1,6 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload } from '@alifd/next';
+import { type UploadProps } from '@alifd/next/types/upload';
+
+const onPreview: UploadProps['onPreview'] = info => {
+    console.log('onPreview callback : ', info);
+};
+
+const onChange: UploadProps['onChange'] = info => {
+    console.log('onChange callback : ', info);
+};
+
+const onSuccess: UploadProps['onSuccess'] = (res, file) => {
+    console.log('onSuccess callback : ', res, file);
+};
+
+const onError: UploadProps['onError'] = file => {
+    console.log('onError callback : ', file);
+};
 
 ReactDOM.render(
     <Upload.Card
@@ -58,19 +75,3 @@ ReactDOM.render(
     />,
     mountNode
 );
-
-function onPreview(info) {
-    console.log('onPreview callback : ', info);
-}
-
-function onChange(info) {
-    console.log('onChange callback : ', info);
-}
-
-function onSuccess(res, file) {
-    console.log('onSuccess callback : ', res, file);
-}
-
-function onError(file) {
-    console.log('onError callback : ', file);
-}

@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Button } from '@alifd/next';
+import type { UploadProps, UploadError } from '@alifd/next/types/upload';
 
-const onError = (file, fileList) => {
+const onError: UploadProps['onError'] = (file: UploadError, fileList: File[]) => {
     console.log('Exceed limit', file, fileList);
 };
 

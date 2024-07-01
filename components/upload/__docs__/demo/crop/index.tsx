@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Button, Dialog } from '@alifd/next';
+// @ts-expect-error Cropper 这个包的types包没有安装，暂不处理
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
+import { type UploadOptions } from '@alifd/next/types/upload';
 
 // plan 1: [not work in IE/Edge] IE don't support File Constructor
 // function dataURL2File(dataURL, filename) {
@@ -20,9 +22,9 @@ import 'cropperjs/dist/cropper.css';
 // }
 
 // plan 2: base64 -> Blob -> File, IE9+
-function dataURL2Blob2File(dataURL, fileName) {
+const dataURL2Blob2File = (dataURL: string, fileName: string) => {
     const arr = dataURL.split(','),
-        mime = arr[0].match(/:(.*?);/)[1],
+        mime = arr![0]!.match(/:(.*?);/)![1],
         bstr = atob(arr[1]),
         u8arr = new Uint8Array(bstr.length);
     let n = bstr.length;
@@ -32,13 +34,24 @@ function dataURL2Blob2File(dataURL, fileName) {
     const blob = new Blob([u8arr], { type: mime });
     // Blob to File
     // set lastModifiedDate and name
+    // @ts-expect-error Bolb没有lastModifiedDate属性，此处是强制转换
     blob.lastModifiedDate = new Date();
+    // @ts-expect-error Bolb没有name属性，此处是强制转换
     blob.name = fileName;
-    return blob;
-}
+    return blob as File;
+};
 
-class App extends React.Component {
-    constructor(props) {
+class App extends Component<
+    object,
+    {
+        img: string;
+        visible: boolean;
+        src: string | null | ArrayBuffer;
+    }
+> {
+    uploader;
+    cropperRef: InstanceType<typeof Cropper>;
+    constructor(props: object) {
         super(props);
         this.uploader = new Upload.Uploader({
             action: 'http://127.0.0.1:6001/upload.do',
@@ -48,19 +61,19 @@ class App extends React.Component {
     }
 
     state = {
-        src: null,
+        src: '',
         visible: false,
-        img: null,
+        img: '',
     };
 
-    onSuccess = value => {
+    onSuccess: UploadOptions['onSuccess'] = (value: { url: string }) => {
         console.log(value);
         this.setState({
             img: value.url,
         });
     };
 
-    onSelect = files => {
+    onSelect = (files: File[]) => {
         const reader = new FileReader();
         reader.onload = () => {
             this.setState({
@@ -79,7 +92,7 @@ class App extends React.Component {
 
     onOk = () => {
         const data = this.cropperRef.getCroppedCanvas().toDataURL();
-        const file = dataURL2Blob2File(data, 'test.png');
+        const file: File = dataURL2Blob2File(data, 'test.png');
 
         // start upload
         this.uploader.startUpload(file);
@@ -89,7 +102,7 @@ class App extends React.Component {
         });
     };
 
-    saveCropperrRef = ref => {
+    saveCropperrRef = (ref: InstanceType<typeof Cropper>) => {
         this.cropperRef = ref;
     };
 

@@ -1,11 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Icon, Button } from '@alifd/next';
+import { type DraggerProps } from '@alifd/next/types/upload';
+import { type ButtonProps } from '@alifd/next/types/button';
 
-function handleClick(e) {
+const handleClick: ButtonProps['onClick'] = e => {
     e.stopPropagation();
     // download template
-}
+};
+
+const onDragOver: DraggerProps['onDragOver'] = () => {
+    console.log('dragover callback');
+};
+
+const onDrop: DraggerProps['onDrop'] = fileList => {
+    console.log('drop callback : ', fileList);
+};
+
 ReactDOM.render(
     <div>
         <Upload.Dragger
@@ -41,11 +52,3 @@ ReactDOM.render(
 
     mountNode
 );
-
-function onDragOver() {
-    console.log('dragover callback');
-}
-
-function onDrop(fileList) {
-    console.log('drop callback : ', fileList);
-}

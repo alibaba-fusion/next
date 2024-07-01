@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Button } from '@alifd/next';
+import { type UploadProps } from '@alifd/next/types/upload';
 
 const defaultValue = [
     {
@@ -40,6 +41,18 @@ const defaultValue = [
     },
 ];
 
+const beforeUpload: UploadProps['beforeUpload'] = info => {
+    console.log('beforeUpload : ', info);
+};
+
+const onChange: UploadProps['onChange'] = info => {
+    console.log('onChange : ', info);
+};
+
+const onSuccess: UploadProps['onSuccess'] = info => {
+    console.log('onSuccess : ', info);
+};
+
 ReactDOM.render(
     <Upload
         action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
@@ -55,15 +68,3 @@ ReactDOM.render(
     </Upload>,
     mountNode
 );
-
-function beforeUpload(info) {
-    console.log('beforeUpload : ', info);
-}
-
-function onChange(info) {
-    console.log('onChange : ', info);
-}
-
-function onSuccess(info) {
-    console.log('onSuccess : ', info);
-}

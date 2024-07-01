@@ -156,6 +156,12 @@ export interface BaseLocale extends LocaleConfig {
         upload: {
             delete: string;
         };
+        image: {
+            cancel: string;
+            addPhoto: string;
+            download: string;
+            delete: string;
+        };
     };
     Search: {
         buttonText: string;

@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Button, Icon } from '@alifd/next';
+import { type UploadProps } from '@alifd/next/types/upload';
+
+const onChange: UploadProps['onChange'] = info => {
+    console.log('onChange : ', info);
+};
+
+const onSuccess: UploadProps['onSuccess'] = info => {
+    console.log('onSuccess : ', info);
+};
 
 ReactDOM.render(
     <Upload
@@ -17,11 +26,3 @@ ReactDOM.render(
     </Upload>,
     mountNode
 );
-
-function onChange(info) {
-    console.log('onChange : ', info);
-}
-
-function onSuccess(info) {
-    console.log('onSuccess : ', info);
-}
