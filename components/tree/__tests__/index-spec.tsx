@@ -721,6 +721,34 @@ describe('Tree', () => {
         shouldSelected('4', false);
     });
 
+    it('should keep click and key events consistent', () => {
+        const node: NodeInstance[] = [];
+        const handleSelect = (
+            selectedKeys: Key[],
+            extra: {
+                selectedNodes: Array<NodeInstance>;
+                node: NodeInstance;
+                selected: boolean;
+                event: React.KeyboardEvent;
+            }
+        ) => {
+            node.push(extra.node);
+        };
+        cy.mount(<Tree defaultExpandAll dataSource={dataSource} onSelect={handleSelect} />);
+        selectTreeNode('1');
+        shouldSelected('1', true);
+        selectTreeNode('1');
+        shouldSelected('1', false);
+        findTreeNodeByKey('1').find('.next-tree-node-label').first().trigger('keydown', {
+            keyCode: KEYCODE.ENTER,
+        });
+        shouldSelected('1', true);
+        cy.then(() => {
+            expect(node.length).equal(3);
+            expect(node[0]).to.deep.equal(node[2]);
+        });
+    });
+
     it('should support defaultCheckedKeys and onCheck', () => {
         const onClick = cy.spy();
         const handleCheck = (
