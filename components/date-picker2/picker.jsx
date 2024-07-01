@@ -390,7 +390,13 @@ class Picker extends React.Component {
             return false;
         }
 
-        return values.some(value => {
+        const valuesFiltered = values.filter(value => !!value);
+
+        if (!valuesFiltered.length) {
+            return false;
+        }
+
+        return valuesFiltered.some(value => {
             return disabledDate(value, panelMode);
         });
     };
@@ -680,7 +686,7 @@ class Picker extends React.Component {
         );
 
         // 底部节点
-        const oKable = !!(isRange ? inputValue && inputValue[inputType] : inputValue);
+        const oKable = !!(!this.checkValueDisabled(inputValue) && (isRange ? inputValue && inputValue[inputType] : inputValue));
         const shouldShowFooter = showOk || preset || extraFooterRender;
 
         const footerNode = shouldShowFooter ? (

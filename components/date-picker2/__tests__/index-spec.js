@@ -139,6 +139,39 @@ describe('Picker', () => {
             assert.deepEqual(getStrValue(), ['', '2020-01-01 00:00:00']);
         });
 
+        it('disable ok when input disabledDate', () => {
+            wrapper = mount(
+                <DatePicker
+                    showOk
+                    showTime
+                    disabledDate={v => v.isBefore(dayjs('2024-06-22 00:00:00'))}
+                    defaultVisible
+                />
+            );
+
+            changeInput('2024-06-19 11:12:13');
+            assert.deepEqual(
+                wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'),
+                true
+            );
+            wrapper.unmount();
+
+            wrapper = mount(
+                <RangePicker
+                    showOk
+                    showTime
+                    disabledDate={v => v.isBefore(dayjs('2024-06-22 00:00:00'))}
+                    defaultVisible
+                />
+            );
+
+            changeInput('2024-06-19 11:12:13', 1);
+            assert.deepEqual(
+                wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'),
+                true
+            );
+        });
+
         it('showTime', () => {
             [DatePicker, RangePicker].forEach(Picker => {
                 const defaultValue =
