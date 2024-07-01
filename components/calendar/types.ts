@@ -308,7 +308,7 @@ export interface MonthTableProps
 }
 
 export interface YearTableProps
-    extends Pick<Required<CalendarProps>, 'value' | 'locale'>,
+    extends Pick<Required<CalendarProps>, 'value' | 'locale' | 'showOtherMonth'>,
         Pick<CalendarProps, 'yearCellRender' | 'disabledDate'>,
         Omit<CommonProps, 'locale'>,
         CommonTableProps {
@@ -344,7 +344,10 @@ export interface RangePanelHeaderProps
 }
 
 export interface DatePanelHeaderProps
-    extends Pick<Required<CalendarProps>, 'locale' | 'disableChangeMode' | 'yearRange'>,
+    extends Pick<
+            Required<CalendarProps>,
+            'locale' | 'disableChangeMode' | 'yearRange' | 'showOtherMonth'
+        >,
         Omit<CommonProps, 'locale'> {
     goNextMonth: () => void;
     goNextYear: () => void;
@@ -365,7 +368,7 @@ export interface SelectMenuProps extends CommonProps {
 }
 
 export interface MonthPanelHeaderProps
-    extends Pick<Required<CalendarProps>, 'locale'>,
+    extends Pick<Required<CalendarProps>, 'locale' | 'showOtherMonth'>,
         Omit<CommonProps, 'locale'> {
     goNextYear: () => void;
     goPrevYear: () => void;
@@ -374,7 +377,7 @@ export interface MonthPanelHeaderProps
 }
 
 export interface YearPanelHeaderProps
-    extends Pick<Required<CalendarProps>, 'locale'>,
+    extends Pick<Required<CalendarProps>, 'locale' | 'showOtherMonth'>,
         Omit<CommonProps, 'locale'> {
     goPrevDecade: () => void;
     goNextDecade: () => void;
