@@ -1,10 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Pagination } from '@alifd/next';
-import { hashHistory } from 'react-router';
+import { BrowserRouter, useHistory } from 'react-router-dom';
+import Pagination from '../../../pagination';
 
-function handleChange(page) {
-    hashHistory.push(page.toString());
+function App() {
+    const history = useHistory();
+
+    function handleChange(page: number) {
+        history.push(page.toString());
+    }
+
+    return <Pagination defaultCurrent={2} onChange={handleChange} />;
 }
 
-ReactDOM.render(<Pagination defaultCurrent={2} onChange={handleChange} />, mountNode);
+ReactDOM.render(
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>,
+    mountNode
+);

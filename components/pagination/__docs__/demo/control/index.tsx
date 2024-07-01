@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Pagination } from '@alifd/next';
+import Pagination from '../../../pagination';
 
-class Demo extends React.Component {
-    constructor(props) {
+class Demo extends React.Component<any, { current: number }> {
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -13,7 +13,7 @@ class Demo extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(current) {
+    handleChange(current: number) {
         this.setState({
             current,
         });

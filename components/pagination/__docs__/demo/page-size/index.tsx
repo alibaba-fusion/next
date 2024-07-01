@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Pagination } from '@alifd/next';
+import Pagination from '../../../pagination';
 
 class Demo extends React.Component {
     state = {
         pageSize: 20,
     };
 
-    handleChange = pageSize => {
+    handleChange = (pageSize: any) => {
         this.setState({ pageSize });
     };
 

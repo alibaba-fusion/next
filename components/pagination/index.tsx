@@ -1,3 +1,7 @@
 import Pagination from './pagination';
+import ConfigProvider from '../config-provider';
+import type { PaginationProps } from './types';
 
-export default Pagination;
+export default ConfigProvider.config(Pagination);
+
+export type { PaginationProps };

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Pagination } from '@alifd/next';
+import Pagination from '../../../pagination';
 
-const change = function (value) {
+const change = function (value: number) {
     console.log(value);
 };
 
