@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Pagination from '../../../pagination';
+import { Pagination } from '@alifd/next';
 
 class Demo extends React.Component {
     state = {

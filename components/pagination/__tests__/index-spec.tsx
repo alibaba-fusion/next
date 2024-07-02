@@ -69,7 +69,7 @@ describe('Pagination', () => {
             .get('.next-pagination-jump-input')
             .should('have.length', 0);
 
-        // @ts-ignore-next
+        // @ts-expect-error-next
         cy.mount(<Pagination type="others" total={40} />)
             .get('.next-pagination-item.next-prev')
             .should('have.length', 0)
@@ -273,38 +273,33 @@ describe('Pagination', () => {
 
     it('should update when current is illegal', () => {
         const initialValue = 5;
-        cy.mount(<Pagination current={initialValue} total={100} />)
-            .get('.next-pagination-jump-input input')
-            .clear()
-            .type('text')
-            .type('{enter}');
+        cy.mount(<Pagination current={initialValue} total={100} />);
+        cy.get('.next-pagination-jump-input input').clear();
+        cy.get('.next-pagination-jump-input input').type('text');
+        cy.get('.next-pagination-jump-input input').type('{enter}');
         // 由于输入不合法，无法触发 onChange，因此无法断言
         // 这里可以改成断言页面显示的数字，但是需要改写 Pagination 组件
         // 才能在输入不合法的情况下正确显示当前页码
 
-        cy.mount(<Pagination current={initialValue} total={100} />)
-            .get('.next-pagination-jump-input input')
-            .clear()
-            .type('-1')
-            .type('{enter}');
+        cy.mount(<Pagination current={initialValue} total={100} />);
+        cy.get('.next-pagination-jump-input input').clear();
+        cy.get('.next-pagination-jump-input input').type('-1');
+        cy.get('.next-pagination-jump-input input').type('{enter}');
 
-        cy.mount(<Pagination current={initialValue} total={100} />)
-            .get('.next-pagination-jump-input input')
-            .clear()
-            .type('0')
-            .type('{enter}');
+        cy.mount(<Pagination current={initialValue} total={100} />);
+        cy.get('.next-pagination-jump-input input').clear();
+        cy.get('.next-pagination-jump-input input').type('0');
+        cy.get('.next-pagination-jump-input input').type('{enter}');
 
-        cy.mount(<Pagination current={initialValue} total={100} />)
-            .get('.next-pagination-jump-input input')
-            .clear()
-            .type('3')
-            .type('{enter}');
+        cy.mount(<Pagination current={initialValue} total={100} />);
+        cy.get('.next-pagination-jump-input input').clear();
+        cy.get('.next-pagination-jump-input input').type('3');
+        cy.get('.next-pagination-jump-input input').type('{enter}');
 
-        cy.mount(<Pagination current={initialValue} total={100} />)
-            .get('.next-pagination-jump-input input')
-            .clear()
-            .type('44444')
-            .type('{enter}');
+        cy.mount(<Pagination current={initialValue} total={100} />);
+        cy.get('.next-pagination-jump-input input').clear();
+        cy.get('.next-pagination-jump-input input').type('44444');
+        cy.get('.next-pagination-jump-input input').type('{enter}');
     });
 
     it('should render by total, pageSize, showCount and hideOnlyOnePage', () => {
@@ -314,7 +309,7 @@ describe('Pagination', () => {
             .get('.next-pagination-list .next-pagination-item')
             .should('have.length', 1);
 
-        cy.mount(<Pagination total={0} hideOnlyOnePage={true} />)
+        cy.mount(<Pagination total={0} hideOnlyOnePage />)
             .get('.next-pagination')
             .should('have.class', 'next-hide')
             .get('.next-pagination-list .next-pagination-item')
@@ -415,16 +410,15 @@ describe('Pagination', () => {
                     expect(size).to.equal(currentPageSize);
                 }}
             />
-        )
-            .get('.next-pagination-size-selector .next-pagination-size-selector-filter')
-            .should('have.length', 1)
-            .get('.next-pagination-size-selector-btn')
-            .each((item, index) => {
-                expect(item.text()).to.equal(pageSizeList[index].toString());
-            })
-            .get('.next-pagination-size-selector-btn')
-            .eq(2)
-            .should('have.class', 'next-current');
+        );
+        cy.get('.next-pagination-size-selector .next-pagination-size-selector-filter').should(
+            'have.length',
+            1
+        );
+        cy.get('.next-pagination-size-selector-btn').each((item, index) => {
+            expect(item.text()).to.equal(pageSizeList[index].toString());
+        });
+        cy.get('.next-pagination-size-selector-btn').eq(2).should('have.class', 'next-current');
 
         currentPageSize = 20;
         cy.get('.next-pagination-size-selector-btn').eq(1).click();
@@ -449,14 +443,11 @@ describe('Pagination', () => {
             />
         )
             .get('.next-pagination-size-selector .next-pagination-size-selector-filter')
-            .should('have.length', 1)
-            .get('.next-pagination-size-selector-btn')
-            .each((item, index) => {
-                expect(item.text()).to.equal(pageSizeList[index].label);
-            })
-            .get('.next-pagination-size-selector-btn')
-            .eq(2)
-            .should('have.class', 'next-current');
+            .should('have.length', 1);
+        cy.get('.next-pagination-size-selector-btn').each((item, index) => {
+            expect(item.text()).to.equal(pageSizeList[index].label);
+        });
+        cy.get('.next-pagination-size-selector-btn').eq(2).should('have.class', 'next-current');
 
         currentPageSize = 20;
         cy.get('.next-pagination-size-selector-btn').eq(1).click();
@@ -516,11 +507,11 @@ describe('Pagination', () => {
     });
 
     it('should render page numder by cust render fuction, by pageNumberRender', () => {
-        cy.mount(<Pagination total={10} pageNumberRender={index => index + 'test'} />)
+        cy.mount(<Pagination total={10} pageNumberRender={index => `${index}test`} />)
             .get('.next-pagination-list')
             .children()
             .each((item, index) => {
-                expect(item.text()).to.equal((index + 1).toString() + 'test');
+                expect(item.text()).to.equal(`${(index + 1).toString()}test`);
             });
     });
 

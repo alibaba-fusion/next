@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, useHistory } from 'react-router-dom';
-import Pagination from '../../../pagination';
+import { Pagination } from '@alifd/next';
 
 function App() {
     const history = useHistory();

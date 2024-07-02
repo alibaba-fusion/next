@@ -1,4 +1,5 @@
 import React, { Component, type ReactNode, type KeyboardEvent, type MouseEvent } from 'react';
+import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -6,22 +7,21 @@ import Icon from '../icon';
 import Button, { type ButtonProps } from '../button';
 import Input from '../input';
 import Select from '../select';
-import { KEYCODE, str, obj, ClassPropsWithDefault } from '../util';
+import { KEYCODE, str, obj, type ClassPropsWithDefault } from '../util';
 import zhCN from '../locale/zh-cn';
-import { PaginationProps, PaginationState } from './types';
-import { polyfill } from 'react-lifecycles-compat';
+import type { PaginationProps, PaginationState } from './types';
 
 const { Option } = Select;
 const noop = () => {};
 
-function correctCurrent(currentPage: number, total: number, currentPageSize: number) {
-    const totalPage = getTotalPage(total, currentPageSize);
-    return currentPage > totalPage ? totalPage : currentPage;
-}
-
 function getTotalPage(total: number, currentPageSize: number) {
     const totalPage = Math.ceil(total / currentPageSize);
     return totalPage <= 0 ? 1 : totalPage;
+}
+
+function correctCurrent(currentPage: number, total: number, currentPageSize: number) {
+    const totalPage = getTotalPage(total, currentPageSize);
+    return currentPage > totalPage ? totalPage : currentPage;
 }
 
 type PaginationPropsWithDefault = ClassPropsWithDefault<
@@ -97,8 +97,8 @@ class Pagination extends Component<PaginationProps, PaginationState> {
 
     readonly props: PaginationPropsWithDefault;
 
-    constructor(props: PaginationProps, context: unknown) {
-        super(props, context);
+    constructor(props: PaginationProps) {
+        super(props);
         this.state = {
             current: props.defaultCurrent || 1,
             currentPageSize: 0,
@@ -389,7 +389,7 @@ class Pagination extends Component<PaginationProps, PaginationState> {
                 {pageSizeList.map((item, index: number) => {
                     let label;
                     let pageSize;
-                    if (item.value) {
+                    if (typeof item === 'object') {
                         // {label: '', value: 5}
                         label = item.label;
                         pageSize = item.value;
@@ -441,7 +441,7 @@ class Pagination extends Component<PaginationProps, PaginationState> {
                 {pageSizeList.map((item, index: number) => {
                     let label;
                     let pageSize;
-                    if (item.value) {
+                    if (typeof item === 'object') {
                         // {label: '', value: 5}
                         label = item.label;
                         pageSize = item.value;

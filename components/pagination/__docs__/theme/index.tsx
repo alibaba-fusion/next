@@ -1,14 +1,14 @@
+import React from 'react';
 import ReactDOM from 'react-dom';
+import { Pagination } from '@alifd/next';
+import type { PaginationProps } from '@alifd/next/types/pagination';
 import '../../../demo-helper/style';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import '../../style';
-import Pagination from '../../pagination';
-import type { PaginationProps } from '../../types';
 import Field from '../../../field';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
-import React from 'react';
 
 // import demo helper
 // import component

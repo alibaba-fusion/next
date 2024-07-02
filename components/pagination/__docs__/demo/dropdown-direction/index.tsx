@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Pagination from '../../../pagination';
+import { Pagination } from '@alifd/next';
 
-const handlePageSizeChange = (size: any) => console.log(size);
+const handlePageSizeChange = (size: number) => console.log(size);
 
 const containerStyle = {
     height: '300px',

@@ -1,11 +1,11 @@
-/// <reference types="react" />
-
+/* eslint-disable tsdoc/syntax */
 import React from 'react';
-import { CommonProps } from '../util';
-import { PopupProps } from '../overlay';
-import { SelectProps } from '../select';
+import type { CommonProps } from '../util';
+import type { PopupProps } from '../overlay';
+import type { SelectProps } from '../select';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChange?: any;
 }
 
@@ -49,7 +49,7 @@ export interface PaginationProps extends HTMLAttributesWeak, CommonProps {
      * 页码发生改变时的回调函数
      * @en Callback function when page number changes
      */
-    onChange?: (current: number, e: {}) => void;
+    onChange?: (current: number, e: object) => void;
 
     /**
      * 总记录数
@@ -62,7 +62,7 @@ export interface PaginationProps extends HTMLAttributesWeak, CommonProps {
      * 总数的渲染函数
      * @en The rendering functions of total number
      */
-    totalRender?: (total: number, range: Array<any>) => void;
+    totalRender?: (total: number, range: number[]) => void;
 
     /**
      * 页码显示的数量，更多的使用...代替
@@ -90,7 +90,7 @@ export interface PaginationProps extends HTMLAttributesWeak, CommonProps {
      * @en Display selector selectable records-number per page
      * @defaultValue [5, 10, 20]
      */
-    pageSizeList?: Array<any> | Array<any>;
+    pageSizeList?: Array<number> | Array<{ label: string; value: number }>;
 
     /**
      * 自定义页码渲染函数，函数作用于页码button以及当前页/总页数的数字渲染
@@ -157,4 +157,4 @@ export interface PaginationState {
     inputValue: string;
 }
 
-export default class Pagination extends React.Component<PaginationProps, any> {}
+export default class Pagination extends React.Component<PaginationProps, PaginationState> {}
