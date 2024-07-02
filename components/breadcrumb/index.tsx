@@ -226,7 +226,9 @@ class Breadcrumb extends Component {
                                     ? `${prefix}breadcrumb-text-ellipsis-clickable`
                                     : `${prefix}breadcrumb-text-ellipsis`,
                             },
-                            showHiddenItems ? this.renderEllipsisNodeWithMenu(children, breakpointer) : '...'
+                            showHiddenItems
+                                ? this.renderEllipsisNodeWithMenu(children, breakpointer)
+                                : '...'
                         )
                     );
                 } else if (!i || i > breakpointer) {

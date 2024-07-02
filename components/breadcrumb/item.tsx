@@ -37,7 +37,8 @@ class Item extends Component {
     }
 
     render() {
-        const { prefix, rtl, className, children, link, activated, separator, onClick, ...others } = this.props;
+        const { prefix, rtl, className, children, link, activated, separator, onClick, ...others } =
+            this.props;
         const clazz = classNames(`${prefix}breadcrumb-text`, className, {
             activated,
         });
