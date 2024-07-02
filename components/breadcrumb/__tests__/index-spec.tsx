@@ -111,7 +111,9 @@ describe('Breadcrumb', () => {
             </Breadcrumb>,
             mountNode
         );
-        const ellipsisItem = mountNode.querySelectorAll('.next-breadcrumb-text-ellipsis-clickable span')[0];
+        const ellipsisItem = mountNode.querySelectorAll(
+            '.next-breadcrumb-text-ellipsis-clickable span'
+        )[0];
         assert.equal(ellipsisItem.textContent, '...');
 
         ellipsisItem.click();
@@ -134,10 +136,8 @@ describe('Breadcrumb', () => {
             </Breadcrumb>
         );
         assert(
-            wrapper
-                .find('.next-breadcrumb-item')
-                .at(2)
-                .find('.next-breadcrumb-separator').length === 0
+            wrapper.find('.next-breadcrumb-item').at(2).find('.next-breadcrumb-separator')
+                .length === 0
         );
         wrapper.unmount();
     });
@@ -152,10 +152,8 @@ describe('Breadcrumb', () => {
             </Breadcrumb>
         );
         assert(
-            wrapper
-                .find('.next-breadcrumb-item')
-                .at(2)
-                .find('.next-breadcrumb-separator').length === 0
+            wrapper.find('.next-breadcrumb-item').at(2).find('.next-breadcrumb-separator')
+                .length === 0
         );
         wrapper.unmount();
     });
@@ -189,18 +187,17 @@ describe('Breadcrumb', () => {
         );
 
         assert(wrapper.find('nav').props().dir === 'rtl');
-        assert(
-            wrapper
-                .find('.next-breadcrumb-item')
-                .at(0)
-                .props().dir === 'rtl'
-        );
+        assert(wrapper.find('.next-breadcrumb-item').at(0).props().dir === 'rtl');
         wrapper.unmount();
     });
     it('should support onClick', () => {
         let isClicked = {};
         const wrapper = mount(
-            <Breadcrumb maxNode={2} showHiddenItems popupProps={{ triggerType: 'click', visible: true }}>
+            <Breadcrumb
+                maxNode={2}
+                showHiddenItems
+                popupProps={{ triggerType: 'click', visible: true }}
+            >
                 <Breadcrumb.Item link="javascript:void(0);">Home 1</Breadcrumb.Item>
                 <Breadcrumb.Item
                     link="javascript:void(0);"
@@ -213,10 +210,7 @@ describe('Breadcrumb', () => {
                 <Breadcrumb.Item link="javascript:void(0);">All Categories 3</Breadcrumb.Item>
             </Breadcrumb>
         );
-        wrapper
-            .find('.next-menu-item')
-            .at(0)
-            .simulate('click');
+        wrapper.find('.next-menu-item').at(0).simulate('click');
         assert(isClicked === true);
     });
 });
