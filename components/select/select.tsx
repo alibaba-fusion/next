@@ -685,10 +685,20 @@ class Select extends Base<SelectProps, SelectState> {
      */
     handleSelectAll(e: UIEvent<HTMLElement>) {
         e && e.preventDefault();
+        const { value } = this.state;
         let nextValues: Exclude<DataSourceItem, ObjectItem>[];
 
+        let defaultDisabledValue: ObjectItem['value'][] = [];
+
+        const allValues = this.dataStore.getEnableDS().map(item => String(item.value));
+
+        defaultDisabledValue =
+            (value as Array<string | number | boolean>)?.filter(
+                item => !allValues.includes(String(item))
+            ) || [];
+
         if (this.selectAllYet) {
-            nextValues = [];
+            nextValues = [...defaultDisabledValue];
         } else {
             nextValues = [
                 ...((this.state.value as DataSourceItem[]) || []).map(item => {
