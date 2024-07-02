@@ -1,4 +1,5 @@
 import React, { Component, Children, cloneElement, createRef } from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import { cloneDeep } from 'lodash';
 import { polyfill } from 'react-lifecycles-compat';
@@ -415,6 +416,7 @@ export class Tree extends Component<TreeProps, TreeState> {
     dragNode: NodeInstance | null;
     dragNodesKeys: Key[];
 
+    normalListRef: React.MutableRefObject<HTMLUListElement | null>;
     virtualListRef: React.RefObject<VirtualList>;
 
     constructor(props: TreeProps) {
@@ -466,8 +468,9 @@ export class Tree extends Component<TreeProps, TreeState> {
             this.tabbableKey = this.getFirstAvaliablelChildKey('0');
         }
 
-        bindCtx(this, ['handleExpand', 'handleSelect', 'handleCheck', 'handleBlur']);
+        bindCtx(this, ['handleExpand', 'handleSelect', 'handleCheck', 'handleBlur', 'setListRef']);
 
+        this.normalListRef = createRef();
         this.virtualListRef = createRef();
     }
 
@@ -529,6 +532,21 @@ export class Tree extends Component<TreeProps, TreeState> {
             _k2n: k2n,
             _p2n: p2n,
         };
+    }
+
+    scrollFilterNodeIntoView(arg?: boolean | ScrollIntoViewOptions | undefined) {
+        const { prefix } = this.props;
+
+        try {
+            const treeNode = findDOMNode(this.normalListRef.current) as HTMLElement;
+            const itemNode = treeNode.querySelector<HTMLLIElement>(
+                `.${prefix}tree-node.${prefix}filtered`
+            );
+            if (!itemNode) return;
+            itemNode.scrollIntoView?.(arg);
+        } catch (ex) {
+            // I don't care...
+        }
     }
 
     setFocusKey() {
@@ -1200,6 +1218,16 @@ export class Tree extends Component<TreeProps, TreeState> {
         return loop(this.props.children);
     }
 
+    setListRef(ref?: React.RefCallback<HTMLUListElement>): React.RefCallback<HTMLUListElement> {
+        return c => {
+            if (typeof ref === 'function') {
+                ref(c);
+            }
+            this.normalListRef.current = c;
+            return c;
+        };
+    }
+
     render() {
         const {
             prefix,
@@ -1234,12 +1262,12 @@ export class Tree extends Component<TreeProps, TreeState> {
 
         const treeRender = (
             items: (React.ReactElement | React.ReactElement[])[],
-            ref?: React.RefObject<HTMLUListElement>
+            ref?: React.RefCallback<HTMLUListElement>
         ) => {
             return (
                 <ul
                     role="tree"
-                    ref={ref}
+                    ref={this.setListRef(ref)}
                     aria-multiselectable={multiple}
                     onBlur={this.handleBlur}
                     className={newClassName}
@@ -1259,7 +1287,7 @@ export class Tree extends Component<TreeProps, TreeState> {
                         ref={this.virtualListRef}
                         itemsRenderer={(
                             items: React.ReactElement[],
-                            ref: React.RefObject<HTMLUListElement>
+                            ref: React.RefCallback<HTMLUListElement>
                         ) => treeRender(items, ref)}
                         {...virtualListProps}
                     >
