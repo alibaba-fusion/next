@@ -1,0 +1,18 @@
+:root {
+--breadcrumb-height: 16px;
+--breadcrumb-text-min-width: 16px;
+--breadcrumb-size-m-font-size: 12px;
+--breadcrumb-size-ellipsis-font-size: 12px;
+--breadcrumb-size-m-icon-size: 8px;
+--breadcrumb-size-m-icon-margin: 8px;
+--breadcrumb-text-color: #666666;
+--breadcrumb-text-current-color: #333333;
+--breadcrumb-text-current-weight: normal;
+--breadcrumb-text-ellipsis-color: #666666;
+--breadcrumb-text-keyword-color: #5584FF;
+--breadcrumb-icon-color: #A0A2AD;
+--breadcrumb-icon-sep-content: "\e619";
+--breadcrumb-text-color-hover: #5584FF;
+--breadcrumb-text-current-color-hover: #5584FF;
+--breadcrumb-text-keyword-color-hover: #5584FF;
+}
