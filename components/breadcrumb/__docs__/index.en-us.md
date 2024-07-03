@@ -17,21 +17,26 @@ It is used to inform the user of the current position and the position of the cu
 
 ### Breadcrumb
 
-| Param           | Description                                                                                                                  | Type       | Default Value          |
-| --------- | -------------------------- | --------- | ------------------------------ |
-| children  | Children components, hsould be an Breadcrumb.Item | custom    | -                              |
-| maxNode   | The maximum number of breadcrumbs is displayed and the excess is hidden, can set auto compute  maximum number         | Number    | 100, 'auto'                        |
-| separator | Separator, can be text or Icon            | ReactNode | &lt;Icon type="arrow-right" /> |
-| component | Set Element type                     | String/Function | 'nav'                          |
-  
+| Param           | Description                                                                                                           | Type                                       | Default Value | Required | Supported Version |
+| --------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ------------- | -------- | ----------------- |
+| children        | Children components, hsould be an Breadcrumb.Item                                                                     | Array\<React.ReactNode> \| React.ReactNode | -             |          | -                 |
+| maxNode         | The maximum number of breadcrumbs is displayed and the excess is hidden, can set auto compute maximum number          | number \| 'auto'                           | 100           |          | -                 |
+| showHiddenItems | When the hidden items are exceeded, is it possible to click the ellipsis to display the menu (including hidden items) | boolean                                    | false         |          | 1.23              |
+| popupContainer  | The container node that the popup mounts (meaningful only when showHiddenItems is true)                               | DropdownProps['container']                 | -             |          | 1.23              |
+| followTrigger   | Whether to scroll with the trigger (meaningful only when showHiddenItems is true)                                     | boolean                                    | -             |          | 1.23              |
+| popupProps      | The attributes added to the popup (meaningful only when showHiddenItems is true)                                      | PopupProps                                 | -             |          | 1.23              |
+| separator       | Separator, can be text or Icon                                                                                        | string \| React.ReactNode                  | -             |          | -                 |
+| component       | Set Element type                                                                                                      | string \| (() => void)                     | 'nav'         |          | -                 |
+
 ### Breadcrumb.Item
 
-| Param           | Description                                                                                                                  | Type       | Default Value          |
-| ---- | -------------------------------------------- | ------ | --- |
-| link | The breadcrumb item link, if this property is set, the node is `<a />`, otherwise it is `<span />` | String | -   |
-| onClick   | Click event | Function (event: MouseEvent) => void 
+| Param   | Description                                                                                        | Type                                  | Default Value | Required |
+| ------- | -------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------- | -------- |
+| link    | The breadcrumb item link, if this property is set, the node is `<a />`, otherwise it is `<span />` | string                                | -             |          |
+| onClick | Click event<br/><br/>**signature**:<br/>**params**:<br/>_e_: e                                     | React.MouseEventHandler\<HTMLElement> | -             |          |
+
 ## ARIA and KeyBoard
 
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-| Tab    | switch to next item                          |
+| KeyBoard | Descripiton         |
+| :------- | :------------------ |
+| Tab      | switch to next item |

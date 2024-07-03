@@ -1,60 +1,91 @@
-/// <reference types="react" />
-
 import React from 'react';
-import { PopupProps } from '../overlay';
+import type Item from './item';
+import type { PopupProps } from '../overlay';
+import type { DropdownProps } from '../dropdown';
+import type { CommonProps } from '../util';
 
-export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
+/**
+ * @api Breadcrumb.Item
+ */
+export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />`
+     * @en The breadcrumb item link, if this property is set, the node is `<a />`, otherwise it is `<span />`
      */
     link?: string;
-    onClick?: React.MouseEventHandler<HTMLLIElement>;
-}
-
-export class Item extends React.Component<ItemProps, any> {}
-export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
     /**
-     * 样式类名的品牌前缀
+     * 元素点击事件
+     * @en Click event
+     * @param e - Click Mouse Event
      */
-    prefix?: string;
-
+    onClick?: React.MouseEventHandler<HTMLElement>;
     /**
-     * 面包屑子节点，需传入 Breadcrumb.Item
+     * 是否激活
+     * @en Is it activated
+     * @skip
      */
-    children?: any;
-
-    /**
-     * 面包屑最多显示个数，超出部分会被隐藏
-     */
-    maxNode?: number | 'auto';
-
+    activated?: boolean;
     /**
      * 分隔符，可以是文本或 Icon
+     * @en Separator, can be text or Icon
+     * @skip
      */
     separator?: string | React.ReactNode;
+}
 
+/**
+ * @api Breadcrumb
+ */
+export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
-     * 设置标签类型
+     * 面包屑子节点，需传入 Breadcrumb.Item
+     * @en Children components, hsould be an Breadcrumb.Item
      */
-    component?: string | (() => void);
+    children?: Array<React.ReactNode> | React.ReactNode;
+    /**
+     * 面包屑最多显示个数，超出部分会被隐藏
+     * @en The maximum number of breadcrumbs is displayed and the excess is hidden, can set auto compute maximum number
+     * @defaultValue 100
+     */
+    maxNode?: number | 'auto';
     /**
      * 当超过的项被隐藏时，是否可通过点击省略号展示菜单（包含被隐藏的项）
+     * @en When the hidden items are exceeded, is it possible to click the ellipsis to display the menu (including hidden items)
+     * @defaultValue false
+     * @version 1.23
      */
     showHiddenItems?: boolean;
     /**
      * 弹层挂载的容器节点（在showHiddenItems为true时才有意义）
+     * @en The container node that the popup mounts (meaningful only when showHiddenItems is true)
+     * @version 1.23
      */
-    popupContainer?: any;
+    popupContainer?: DropdownProps['container'];
     /**
      * 是否跟随trigger滚动（在showHiddenItems为true时才有意义）
+     * @en Whether to scroll with the trigger (meaningful only when showHiddenItems is true)
+     * @version 1.23
      */
     followTrigger?: boolean;
     /**
      * 添加到弹层上的属性（在showHiddenItems为true时才有意义）
+     * @en The attributes added to the popup (meaningful only when showHiddenItems is true)
+     * @version 1.23
      */
     popupProps?: PopupProps;
+    /**
+     * 分隔符，可以是文本或 Icon
+     * @en Separator, can be text or Icon
+     */
+    separator?: string | React.ReactNode;
+    /**
+     * 设置标签类型
+     * @en Set Element type
+     * @defaultValue 'nav'
+     */
+    component?: string | (() => void);
 }
 
-export default class Breadcrumb extends React.Component<BreadcrumbProps, any> {
+export default class Breadcrumb extends React.Component<BreadcrumbProps> {
     static Item: typeof Item;
 }
