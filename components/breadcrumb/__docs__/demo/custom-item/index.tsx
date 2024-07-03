@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Breadcrumb } from '@alifd/next';
-import { HashRouter, Route, Switch, Link, withRouter } from 'react-router-dom';
+import { HashRouter, Route, Switch, Link } from 'react-router-dom';
 
 ReactDOM.render(
     <HashRouter>
