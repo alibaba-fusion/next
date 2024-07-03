@@ -197,7 +197,6 @@ class Upload extends Base<UploadProps, UploadState> {
             .map(file => {
                 return file.originFileObj;
             });
-        // @ts-expect-error this.uploaderRef.startUpload 继承自Base，Base中的startUpload没有入参，所以这里调用会有TS问题
         fileList.length && this.uploaderRef.startUpload(fileList);
     }
 
@@ -429,8 +428,7 @@ class Upload extends Base<UploadProps, UploadState> {
             children = (
                 <div className={cardCls}>
                     <Icon size="large" type="add" className={`${prefix}upload-add-icon`} />
-                    {/* @ts-expect-error  tabIndex 不能将类型“string”分配给类型“number”。 */}
-                    <div tabIndex="0" role="button" className={`${prefix}upload-text`}>
+                    <div tabIndex={0} role="button" className={`${prefix}upload-text`}>
                         {children}
                     </div>
                 </div>
@@ -483,7 +481,6 @@ class Upload extends Base<UploadProps, UploadState> {
                     onProgress={this.onProgress}
                     onSuccess={this.onSuccess}
                     onError={this.onError}
-                    // @ts-expect-error 此处的Ref类型不正确，不知道如何处理，需要评审一下
                     ref={this.saveUploaderRef}
                 >
                     {children}

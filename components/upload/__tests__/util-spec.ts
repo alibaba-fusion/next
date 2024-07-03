@@ -35,7 +35,10 @@ describe('util function test', () => {
     });
     it('removeFileItem not find one to remove', () => {
         const file = { uid: 1, 1: 1 };
-        const files = [{ uid: 3 }, { uid: 2 }];
+        const files: { uid: number; [key: number]: number }[] = [
+            { uid: 3, 3: 3 },
+            { uid: 2, 2: 2 },
+        ];
         assert(removeFileItem(file, files) === null);
     });
 

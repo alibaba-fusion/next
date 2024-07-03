@@ -795,8 +795,9 @@ export type Wrapper = ReactWrapper | ShallowWrapper; // 根据wrapper的实际�
 
 export type UploaderRef = {
     abort: (file: File) => void;
-    startUpload: () => void;
-    isUploading: () => boolean;
+    startUpload: (fileList?: (UploadFile | File | undefined)[]) => void;
+    isUploading?: () => boolean;
+    [key: string]: unknown;
 };
 
 export type BeforeUploadOption = {
