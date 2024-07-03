@@ -2,26 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
+import type { ItemProps } from './types';
 
 /**
  * Breadcrumb.Item
  */
-class Item extends Component {
+class Item extends Component<ItemProps> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />`
-         */
         link: PropTypes.string,
         activated: PropTypes.bool,
         separator: PropTypes.node,
         className: PropTypes.any,
         children: PropTypes.node,
-        /**
-         * 元素点击事件
-         * @param {MouseEvent} e Click Mouse Event
-         */
         onClick: PropTypes.func,
     };
 
@@ -32,7 +26,7 @@ class Item extends Component {
     static _typeMark = 'breadcrumb_item';
 
     // stateless separator component
-    static Separator({ prefix, children }) {
+    static Separator({ prefix, children }: { prefix?: string; children: React.ReactNode }) {
         return <span className={`${prefix}breadcrumb-separator`}>{children}</span>;
     }
 
@@ -44,7 +38,11 @@ class Item extends Component {
         });
 
         return (
-            <li dir={rtl ? 'rtl' : null} className={`${prefix}breadcrumb-item`} onClick={onClick}>
+            <li
+                dir={rtl ? 'rtl' : undefined}
+                className={`${prefix}breadcrumb-item`}
+                onClick={onClick}
+            >
                 {link ? (
                     <a href={link} className={clazz} {...others}>
                         {children}

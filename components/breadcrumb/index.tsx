@@ -1,74 +1,56 @@
-import React, { Component, Children, isValidElement } from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import Icon from '../icon';
 import ConfigProvider from '../config-provider';
-import Dropdown from '../dropdown';
+import Dropdown, { type DropdownProps } from '../dropdown';
 import Menu from '../menu';
 import Item from './item';
 import { events } from '../util';
+import type { BreadcrumbProps } from './types';
+
+export type { BreadcrumbProps } from './types';
+
+interface Child {
+    type: {
+        _typeMark: string;
+    };
+}
 
 /**
  * Breadcrumb
  */
-class Breadcrumb extends Component {
+class Breadcrumb extends Component<
+    BreadcrumbProps,
+    {
+        maxNode: BreadcrumbProps['maxNode'];
+        prevMaxNode?: BreadcrumbProps['maxNode'];
+    }
+> {
     static Item = Item;
 
     static propTypes = {
-        /**
-         * 样式类名的品牌前缀
-         */
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /*eslint-disable*/
-        /**
-         * 面包屑子节点，需传入 Breadcrumb.Item
-         */
-        children: (props, propName) => {
-            Children.forEach(props[propName], child => {
+        children: (props: Record<string, unknown>, propName: string) => {
+            Children.forEach(props[propName], (child: Child) => {
                 if (
                     !(
                         child &&
                         ['function', 'object'].indexOf(typeof child.type) > -1 &&
-                        child.type._typeMark === 'breadcrumb_item'
+                        child.type?._typeMark === 'breadcrumb_item'
                     )
                 ) {
                     throw new Error("Breadcrumb's children must be Breadcrumb.Item!");
                 }
             });
         },
-        /*eslint-enable*/
-        /**
-         * 面包屑最多显示个数，超出部分会被隐藏, 设置为 auto 会自动根据父元素的宽度适配。
-         */
         maxNode: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['auto'])]),
-        /**
-         * 当超过的项被隐藏时，是否可通过点击省略号展示菜单（包含被隐藏的项）
-         * @version 1.23
-         */
         showHiddenItems: PropTypes.bool,
-        /**
-         * 弹层挂载的容器节点（在showHiddenItems为true时才有意义）
-         * @version 1.23
-         */
         popupContainer: PropTypes.any,
-        /**
-         * 是否跟随trigger滚动（在showHiddenItems为true时才有意义）
-         * @version 1.23
-         */
         followTrigger: PropTypes.bool,
-        /**
-         * 添加到弹层上的属性（在showHiddenItems为true时才有意义）
-         * @version 1.23
-         */
         popupProps: PropTypes.object,
-        /**
-         * 分隔符，可以是文本或 Icon
-         */
         separator: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-        /**
-         * 设置标签类型
-         */
         component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         className: PropTypes.any,
         onClick: PropTypes.func,
@@ -81,14 +63,19 @@ class Breadcrumb extends Component {
         component: 'nav',
     };
 
-    constructor(props) {
+    breadcrumbEl: HTMLUListElement;
+
+    constructor(props: BreadcrumbProps) {
         super(props);
         this.state = {
             maxNode: props.maxNode === 'auto' ? 100 : props.maxNode,
         };
     }
 
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(
+        props: { maxNode: BreadcrumbProps['maxNode'] },
+        state: { prevMaxNode: BreadcrumbProps['maxNode'] }
+    ) {
         if (state.prevMaxNode === props.maxNode) {
             return {};
         }
@@ -142,14 +129,14 @@ class Breadcrumb extends Component {
         }
     };
 
-    saveBreadcrumbRef = ref => {
+    saveBreadcrumbRef = (ref: HTMLUListElement) => {
         this.breadcrumbEl = ref;
     };
 
-    renderEllipsisNodeWithMenu(children, breakpointer) {
+    renderEllipsisNodeWithMenu(children: React.ReactNode, breakpointer: number) {
         // 拿到被隐藏的项
-        const hiddenItems = [];
-        Children.forEach(children, (item, i) => {
+        const hiddenItems: React.ReactNode[] = [];
+        Children.forEach(children, (item: React.ReactElement, i) => {
             const { link, children: itemChildren, onClick } = item.props;
             if (i > 0 && i <= breakpointer) {
                 hiddenItems.push(
@@ -165,7 +152,7 @@ class Breadcrumb extends Component {
         return (
             <Dropdown
                 trigger={<span>...</span>}
-                {...popupProps}
+                {...(popupProps as DropdownProps)}
                 container={popupContainer}
                 followTrigger={followTrigger}
             >
@@ -192,17 +179,17 @@ class Breadcrumb extends Component {
             <Icon type="arrow-right" className={`${prefix}breadcrumb-icon-sep`} />
         );
 
-        const { maxNode } = this.state;
+        const maxNode = this.state.maxNode as number;
 
         let items;
-        const length = Children.count(children);
+        const length: number = Children.count(children);
 
         if (maxNode > 1 && length > maxNode) {
             const breakpointer = length - maxNode + 1;
             items = [];
 
-            Children.forEach(children, (item, i) => {
-                const ariaProps = {};
+            Children.forEach(children, (item: React.ReactElement, i) => {
+                const ariaProps: Record<string, string> = {};
 
                 // 增加空值判断
                 if (!item) {
@@ -244,8 +231,8 @@ class Breadcrumb extends Component {
                 }
             });
         } else {
-            items = Children.map(children, (item, i) => {
-                const ariaProps = {};
+            items = Children.map(children, (item: React.ReactElement, i) => {
+                const ariaProps: Record<string, string> = {};
                 // 增加空值判断
                 if (!item) {
                     return;
@@ -268,9 +255,11 @@ class Breadcrumb extends Component {
             others.dir = 'rtl';
         }
 
-        const BreadcrumbComponent = component;
+        const BreadcrumbComponent = component as unknown as React.FC<BreadcrumbProps>;
 
-        delete others.maxNode;
+        if ('maxNode' in others) {
+            delete others.maxNode;
+        }
 
         return (
             <BreadcrumbComponent
@@ -292,7 +281,7 @@ class Breadcrumb extends Component {
                         ref={this.saveBreadcrumbRef}
                         className={`${prefix}breadcrumb`}
                     >
-                        {Children.map(children, (item, i) => {
+                        {Children.map(children, (item: React.ReactElement, i) => {
                             return React.cloneElement(item, {
                                 separator,
                                 prefix,
