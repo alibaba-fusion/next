@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Button, Dialog } from '@alifd/next';
-import { type UploadProps, type UploadFile } from '@alifd/next/types/upload';
+import { type UploadProps } from '@alifd/next/types/upload';
 
-const afterSelect: UploadProps['afterSelect'] = (file: UploadFile) => {
+const afterSelect: UploadProps['afterSelect'] = file => {
     return new Promise<void>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {

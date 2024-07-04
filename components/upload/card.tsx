@@ -74,7 +74,7 @@ class Card extends Base<CardProps, CardState> {
     }
 
     static getDerivedStateFromProps(nextProps: CardProps, prevState: CardState) {
-        const isUploading = prevState.uploaderRef && prevState.uploaderRef.isUploading();
+        const isUploading = prevState.uploaderRef && prevState.uploaderRef.isUploading!();
         if ('value' in nextProps && nextProps.value !== prevState.value && !isUploading) {
             return {
                 value: !Array.isArray(nextProps.value)
@@ -168,7 +168,7 @@ class Card extends Base<CardProps, CardState> {
                 listType="card"
                 closable
                 locale={locale}
-                value={this.state.value as UploadFile[]}
+                value={this.state.value}
                 onRemove={onRemoveFunc}
                 onCancel={onCancel}
                 onPreview={onPreview}
