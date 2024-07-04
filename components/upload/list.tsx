@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, type KeyboardEvent, type MouseEvent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+
 import ConfigProvider from '../config-provider';
 import Progress from '../progress';
 import Icon from '../icon';
@@ -9,72 +10,30 @@ import { func, obj, KEYCODE, env } from '../util';
 import zhCN from '../locale/zh-cn';
 import { previewFile } from './util';
 import transform from './transform';
-import Item from '../menu/view/item';
 import Selecter from './runtime/selecter';
+import type { ListProps, UploadFile, ImageError } from './types';
 
 const isIE9 = env.ieVersion === 9;
 
-class List extends Component {
+class List extends Component<ListProps> {
     static propTypes = {
         prefix: PropTypes.string,
-        /**
-         * 多语言
-         */
         locale: PropTypes.object,
-        /**
-         * 文件列表，数据格式请参考 文件对象
-         */
         listType: PropTypes.oneOf(['text', 'image', 'card']),
-        /**
-         * 文件列表
-         */
         value: PropTypes.array,
         closable: PropTypes.bool,
-        /**
-         * 删除文件回调(支持Promise)
-         */
         onRemove: PropTypes.func,
-        /**
-         * 取消上传回调(支持Promise)
-         */
         onCancel: PropTypes.func,
-        /**
-         * 头像加载出错回调
-         */
         onImageError: PropTypes.func,
-        /**
-         * 点击图片回调
-         */
         onPreview: PropTypes.func,
-        /**
-         * 点击文件名时触发 onPreview
-         */
         previewOnFileName: PropTypes.bool,
-        /**
-         * 自定义额外渲染
-         */
         extraRender: PropTypes.func,
-        /**
-         * 自定义操作渲染
-         */
         actionRender: PropTypes.func,
-        /**
-         * 卡片自定义渲染（目前只支持 Card)
-         * @param {Object} file 文件对象
-         * @param {Object} {remove} remove:删除回调
-         * @retuns {ReactNode} React元素
-         */
         itemRender: PropTypes.func,
-        /**
-         * 透传给Progress props
-         */
         progressProps: PropTypes.object,
         children: PropTypes.node,
         uploader: PropTypes.any,
         showDownload: PropTypes.bool,
-        /**
-         * 可选参数，是否本地预览
-         */
         useDataURL: PropTypes.bool,
         rtl: PropTypes.bool,
         isPreview: PropTypes.bool,
@@ -94,7 +53,7 @@ class List extends Component {
         actionRender: func.noop,
         onImageError: func.noop,
         progressProps: {},
-        fileNameRender: file => file.name,
+        fileNameRender: (file: File) => file.name,
         previewOnFileName: false,
     };
 
@@ -118,37 +77,37 @@ class List extends Component {
                 }
                 file.imgURL = '';
                 previewFile(file.originFileObj, previewDataUrl => {
-                    file.imgURL = previewDataUrl;
+                    file.imgURL = previewDataUrl as string;
                     this.forceUpdate();
                 });
             });
     }
 
-    handleClose = file => {
+    handleClose = (file: UploadFile) => {
         const { onRemove, uploader } = this.props;
 
-        const remove = onRemove(file);
+        const remove = onRemove!(file);
 
         func.promiseCall(remove, () => {
             uploader && uploader.removeFile(file);
         });
     };
 
-    handleCancel = file => {
+    handleCancel = (file: UploadFile) => {
         const { onCancel, uploader } = this.props;
-        const cancel = onCancel(file);
+        const cancel = onCancel!(file);
 
         func.promiseCall(cancel, () => {
             uploader && uploader.abort(file);
         });
     };
 
-    onImageError = (file, obj) => {
+    onImageError = (file: UploadFile, obj: ImageError) => {
         obj.onerror = null;
-        this.props.onImageError(obj, file);
+        this.props.onImageError!(obj, file);
     };
 
-    onPreview(file, e) {
+    onPreview(file: UploadFile, e: MouseEvent<HTMLElement>) {
         const { onPreview } = this.props;
 
         if (!onPreview) {
@@ -158,11 +117,11 @@ class List extends Component {
         return onPreview(file, e);
     }
 
-    getInfo(file) {
+    getInfo(file: UploadFile) {
         const prefixCls = `${this.props.prefix}upload`;
         const downloadURL = file.downloadURL || file.url;
         const imgURL = file.imgURL || file.url;
-        const size = this.sizeCaculator(file.size);
+        const size = this.sizeCaculator(file.size as unknown as string);
         const itemCls = classNames({
             [`${prefixCls}-list-item`]: true,
             [`${prefixCls}-list-item-${file.state}`]: file.state,
@@ -172,8 +131,8 @@ class List extends Component {
         return { prefixCls, downloadURL, imgURL, size, itemCls, alt };
     }
     // transfer size from number to xx K/ XxxM / xxG
-    sizeCaculator(size) {
-        let fileSize = parseFloat(size, 10);
+    sizeCaculator(size: string) {
+        let fileSize = parseFloat(size);
         // fileSize为浮点数 用 < 0.000001 替代 === 0
         if (isNaN(fileSize) || fileSize < 0.0000001) {
             return 0;
@@ -190,16 +149,25 @@ class List extends Component {
         }
 
         const suffix = SIZE_SUFFIX[suffixIndex];
-        fileSize = fileSize.toFixed(2);
+        fileSize = fileSize.toFixed(2) as unknown as number;
 
         return `${fileSize}${suffix}`;
     }
-    getTextList(file) {
-        const { locale, extraRender, actionRender, progressProps, rtl, fileNameRender, previewOnFileName } = this.props;
+    getTextList(file: UploadFile) {
+        const {
+            locale,
+            extraRender,
+            actionRender,
+            progressProps,
+            rtl,
+            fileNameRender,
+            previewOnFileName,
+        } = this.props;
 
         const { prefixCls, downloadURL, size, itemCls } = this.getInfo(file);
-        const onClick = () => (file.state === 'uploading' ? this.handleCancel(file) : this.handleClose(file));
-        const onKeyDown = e => {
+        const onClick = () =>
+            file.state === 'uploading' ? this.handleCancel(file) : this.handleClose(file);
+        const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
             if (e.keyCode === KEYCODE.ENTER) {
                 onClick();
             }
@@ -211,16 +179,19 @@ class List extends Component {
                         onClick={previewOnFileName ? this.onPreview.bind(this, file) : func.noop}
                         href={downloadURL}
                         target="_blank"
-                        style={{ pointerEvents: downloadURL ? '' : 'none' }}
+                        style={{ pointerEvents: (downloadURL ? '' : 'none') as 'auto' | 'none' }}
                         className={`${prefixCls}-list-item-name`}
                     >
-                        <span>{fileNameRender(file)}</span>
+                        <span>{fileNameRender!(file)}</span>
                         {!!size && (
-                            <span className={`${prefixCls}-list-item-size`} dir={rtl ? 'rtl' : undefined}>
+                            <span
+                                className={`${prefixCls}-list-item-size`}
+                                dir={rtl ? 'rtl' : undefined}
+                            >
                                 ({size})
                             </span>
                         )}
-                        <span className={`${prefixCls}-extra`}>{extraRender(file)}</span>
+                        <span className={`${prefixCls}-extra`}>{extraRender!(file)}</span>
                     </a>
                 </div>
                 {file.state === 'uploading' ? (
@@ -238,14 +209,14 @@ class List extends Component {
                     <div className={`${prefixCls}-list-item-error-msg`}>{file.errorMsg}</div>
                 ) : null}
                 <span className={`${prefixCls}-list-item-op`}>
-                    {actionRender(file)}
+                    {actionRender!(file)}
                     {this.props.closable ? (
                         <Icon
                             type="close"
                             size="large"
                             role="button"
-                            aria-label={locale.upload.delete}
-                            tabIndex="0"
+                            aria-label={locale!.upload!.delete}
+                            tabIndex={0}
                             onClick={onClick}
                             onKeyDown={onKeyDown}
                         />
@@ -255,15 +226,17 @@ class List extends Component {
         );
     }
 
-    getImageList(file) {
-        const { extraRender, actionRender, progressProps, rtl, fileNameRender, previewOnFileName } = this.props;
+    getImageList(file: UploadFile) {
+        const { extraRender, actionRender, progressProps, rtl, fileNameRender, previewOnFileName } =
+            this.props;
 
         const { prefixCls, downloadURL, imgURL, size, itemCls, alt } = this.getInfo(file);
 
         let img = null;
 
-        const onClick = () => (file.state === 'uploading' ? this.handleCancel(file) : this.handleClose(file));
-        const onKeyDown = e => {
+        const onClick = () =>
+            file.state === 'uploading' ? this.handleCancel(file) : this.handleClose(file);
+        const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
             if (e.keyCode === KEYCODE.ENTER) {
                 onClick();
             }
@@ -278,7 +251,7 @@ class List extends Component {
                 <img
                     src={imgURL}
                     onError={this.onImageError.bind(this, file)}
-                    tabIndex="0"
+                    tabIndex={0}
                     alt={alt}
                     onClick={this.onPreview.bind(this, file)}
                 />
@@ -289,12 +262,12 @@ class List extends Component {
             <div className={itemCls} key={file.uid || file.name}>
                 <div className={`${prefixCls}-list-item-thumbnail`}>{img}</div>
                 <span className={`${prefixCls}-list-item-op`}>
-                    {actionRender(file)}
+                    {actionRender!(file)}
                     {this.props.closable ? (
                         <Icon
                             type="close"
                             size="large"
-                            tabIndex="0"
+                            tabIndex={0}
                             role="button"
                             onClick={onClick}
                             onKeyDown={onKeyDown}
@@ -305,20 +278,28 @@ class List extends Component {
                     onClick={previewOnFileName ? this.onPreview.bind(this, file) : func.noop}
                     href={downloadURL}
                     target="_blank"
-                    style={{ pointerEvents: downloadURL ? '' : 'none' }}
+                    style={{ pointerEvents: (downloadURL ? '' : 'none') as 'auto' | 'none' }}
                     className={`${prefixCls}-list-item-name`}
                 >
-                    <span>{fileNameRender(file)}</span>
+                    <span>{fileNameRender!(file)}</span>
                     {!!size && (
-                        <span className={`${prefixCls}-list-item-size`} dir={rtl ? 'rtl' : undefined}>
+                        <span
+                            className={`${prefixCls}-list-item-size`}
+                            dir={rtl ? 'rtl' : undefined}
+                        >
                             ({size})
                         </span>
                     )}
-                    <span className={`${prefixCls}-extra`}>{extraRender(file)}</span>
+                    <span className={`${prefixCls}-extra`}>{extraRender!(file)}</span>
                 </a>
                 {file.state === 'uploading' ? (
                     <div className={`${prefixCls}-list-item-progress`}>
-                        <Progress size="medium" percent={file.percent} textRender={func.noop} {...progressProps} />
+                        <Progress
+                            size="medium"
+                            percent={file.percent}
+                            textRender={func.noop}
+                            {...progressProps}
+                        />
                     </div>
                 ) : null}
                 {file.state === 'error' && file.errorMsg ? (
@@ -328,12 +309,12 @@ class List extends Component {
         );
     }
 
-    onSelect = (oldfile, files) => {
+    onSelect = (oldfile: UploadFile, files: UploadFile[]) => {
         const uploader = this.props.uploader;
         uploader && files.length && uploader.replaceWithNewFile(oldfile, files[0]);
     };
 
-    getPictureCardList(file, isPreview) {
+    getPictureCardList(file: UploadFile, isPreview?: boolean) {
         const { locale, progressProps, fileNameRender, itemRender, showDownload } = this.props;
 
         const { prefixCls, downloadURL, imgURL, itemCls, alt } = this.getInfo(file);
@@ -346,7 +327,7 @@ class List extends Component {
                 <div className={`${prefixCls}-list-item-handler`}>
                     <Icon type="picture" />
                     <Button text onClick={() => this.handleCancel(file)}>
-                        {locale.card.cancel}
+                        {locale!.card!.cancel}
                     </Button>
                 </div>
             );
@@ -360,7 +341,7 @@ class List extends Component {
             img = (
                 <img
                     src={imgURL}
-                    tabIndex="0"
+                    tabIndex={0}
                     alt={alt}
                     onError={this.onImageError.bind(this, file)}
                     onClick={this.onPreview.bind(this, file)}
@@ -369,7 +350,7 @@ class List extends Component {
         }
 
         const onClose = () => this.handleClose(file);
-        const onKeyDownClose = e => {
+        const onKeyDownClose = (e: KeyboardEvent<HTMLElement>) => {
             if (e.keyCode === KEYCODE.ENTER) {
                 onClose();
             }
@@ -382,7 +363,12 @@ class List extends Component {
                     {img}
                 </div>,
                 <div className={`${prefixCls}-list-item-progress`} key="progress">
-                    <Progress size="medium" percent={file.percent} textRender={func.noop} {...progressProps} />
+                    <Progress
+                        size="medium"
+                        percent={file.percent}
+                        textRender={func.noop}
+                        {...progressProps}
+                    />
                 </div>,
             ];
         } else {
@@ -392,7 +378,10 @@ class List extends Component {
                 item = itemRender(file, { remove: onClose });
             } else {
                 const Uploader = this.props.uploader || { props: {} };
-                const UploaderProps = Uploader.props;
+                const UploaderProps = Uploader.props as {
+                    accept: string | undefined;
+                    fileKeyName: string | undefined;
+                };
 
                 // TODO: 2.x 中逻辑会修改为，只要有showDownload，那就有下载按钮（不管有没有downloadURL）
                 item = [
@@ -408,7 +397,7 @@ class List extends Component {
                             >
                                 <Icon
                                     type="download"
-                                    aria-label={locale.card.download}
+                                    aria-label={locale!.card!.download}
                                     className={`${prefixCls}-tool-download-icon`}
                                 />
                             </a>
@@ -417,8 +406,8 @@ class List extends Component {
                         {this.props.reUpload && !isPreview && !isIE9 ? (
                             <Selecter
                                 className={`${prefixCls}-tool-item ${prefixCls}-tool-reupload`}
-                                accept={UploaderProps.accept}
-                                name={UploaderProps.fileKeyName}
+                                accept={UploaderProps!.accept}
+                                name={UploaderProps!.fileKeyName}
                                 onSelect={this.onSelect.bind(this, file)}
                             >
                                 <Icon type="edit" className={`${prefixCls}-tool-reupload-icon`} />
@@ -429,8 +418,8 @@ class List extends Component {
                             <span className={`${prefixCls}-tool-item ${prefixCls}-tool-close`}>
                                 <Icon
                                     type="ashbin"
-                                    aria-label={locale.card.delete}
-                                    tabIndex="0"
+                                    aria-label={locale!.card!.delete}
+                                    tabIndex={0}
                                     role="button"
                                     onClick={onClose}
                                     onKeyDown={onKeyDownClose}
@@ -446,7 +435,7 @@ class List extends Component {
             <div className={itemCls} key={file.uid || file.name}>
                 <div className={`${prefixCls}-list-item-wrapper`}>{item}</div>
 
-                <span className={`${prefixCls}-list-item-name`}>{fileNameRender(file)}</span>
+                <span className={`${prefixCls}-list-item-name`}>{fileNameRender!(file)}</span>
             </div>
         );
     }
@@ -459,17 +448,17 @@ class List extends Component {
         if (isPreview) {
             const previewCls = classNames({
                 [`${prefix}form-preview`]: true,
-                [className]: !!className,
+                [className as string]: !!className,
             });
-            list = this.props.value.map(file => {
+            list = this.props.value.map((file, index) => {
                 if (!file) {
                     return null;
                 }
 
-                const { downloadURL, imgURL, name } = file;
+                const { downloadURL, name } = file;
                 if (listType === 'text') {
                     return (
-                        <div className={previewCls}>
+                        <div className={previewCls} key={index}>
                             <a href={downloadURL} target="_blank">
                                 {name}
                             </a>
@@ -525,5 +514,6 @@ class List extends Component {
 // https://github.com/alibaba-fusion/next/blob/build/1.13.9/src/upload/upload.jsx#L521
 export default ConfigProvider.config(List, {
     componentName: 'Upload',
+    // @ts-expect-error 类型不匹配
     transform,
 });
