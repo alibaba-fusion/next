@@ -1,58 +1,29 @@
-import React from 'react';
+import React, { type ChangeEvent, Component, type KeyboardEvent, type DragEvent } from 'react';
 import PropTypes from 'prop-types';
 import { func } from '../../util';
 import { uid } from '../util';
+import type { UploadFile, SelecterProps } from '../types';
 
 const { noop } = func;
 
 /**
  * Upload.Selecter
- * @description [底层能力] 可自定义样式的文件选择器
+ * [底层能力] 可自定义样式的文件选择器
  */
-export default class Selecter extends React.Component {
+export default class Selecter extends Component<SelecterProps> {
     static propTypes = {
         id: PropTypes.string,
         style: PropTypes.object,
         className: PropTypes.string,
-        /**
-         * 是否禁用上传功能
-         */
         disabled: PropTypes.bool,
-        /**
-         * 是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件
-         */
         multiple: PropTypes.bool,
-        /**
-         * 是否支持上传文件夹，仅在 chorme 下生效
-         */
         webkitdirectory: PropTypes.bool,
-        /**
-         * 调用系统设备媒体
-         */
         capture: PropTypes.string,
-        /**
-         * 是否支持拖拽上传，`ie10+` 支持。
-         */
         dragable: PropTypes.bool,
-        /**
-         * 接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)
-         */
         accept: PropTypes.string,
-        /**
-         * 文件选择回调
-         */
         onSelect: PropTypes.func,
-        /**
-         * 拖拽经过回调
-         */
         onDragOver: PropTypes.func,
-        /**
-         * 拖拽离开回调
-         */
         onDragLeave: PropTypes.func,
-        /**
-         * 拖拽完成回调
-         */
         onDrop: PropTypes.func,
         children: PropTypes.node,
         name: PropTypes.string,
@@ -67,20 +38,22 @@ export default class Selecter extends React.Component {
         onDrop: noop,
     };
 
-    onSelect = e => {
-        const files = e.target.files;
-        const filesArr = files.length ? Array.prototype.slice.call(files) : [files];
+    fileRef: HTMLInputElement;
 
-        filesArr.forEach(file => {
+    onSelect = (e: ChangeEvent<HTMLInputElement>) => {
+        const files = e.target!.files;
+        const filesArr = files!.length ? Array.prototype.slice.call(files) : [files];
+
+        filesArr.forEach((file: UploadFile) => {
             file.uid = uid();
         });
 
-        this.props.onSelect(filesArr);
+        this.props.onSelect!(filesArr);
     };
 
     /**
      * 点击上传按钮
-     * @return {void}
+     *
      */
     onClick = () => {
         const el = this.fileRef;
@@ -94,10 +67,10 @@ export default class Selecter extends React.Component {
 
     /**
      * 键盘事件
-     * @param  {SyntheticEvent} e
-     * @return {void}
+     *  e
+     *
      */
-    onKeyDown = e => {
+    onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             this.onClick();
         }
@@ -105,24 +78,24 @@ export default class Selecter extends React.Component {
 
     /**
      * 拖拽
-     * @param  {SyntheticEvent} e
-     * @return {void}
+     *  e
+     *
      */
-    onDrop = e => {
+    onDrop = (e: DragEvent<HTMLInputElement>) => {
         e.preventDefault();
 
         const files = e.dataTransfer.files;
         const filesArr = Array.prototype.slice.call(files);
 
-        this.props.onDrop(filesArr);
+        this.props.onDrop!(filesArr);
     };
 
-    onDragOver = e => {
+    onDragOver = (e: DragEvent<HTMLInputElement>) => {
         e.preventDefault();
-        this.props.onDragOver(e);
+        this.props.onDragOver!(e);
     };
 
-    saveFileRef = ref => {
+    saveFileRef = (ref: HTMLInputElement) => {
         this.fileRef = ref;
     };
 
@@ -159,7 +132,10 @@ export default class Selecter extends React.Component {
             );
         }
 
-        const otherProps = {};
+        const otherProps: {
+            webkitdirectory?: boolean | string;
+            capture?: string;
+        } = {};
         if (webkitdirectory) {
             otherProps.webkitdirectory = '';
         }
