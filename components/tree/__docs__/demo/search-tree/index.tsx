@@ -3,32 +3,56 @@ import ReactDOM from 'react-dom';
 import { Search, Tree } from '@alifd/next';
 import type { DataNode, NodeInstance } from '@alifd/next/types/tree';
 
+function generateDataSource(count = 100) {
+    return new Array(count).fill(null).map((__, i) => {
+        return {
+            label: '服装',
+            key: `${i}`,
+            className: `k-${i}`,
+            children: [
+                {
+                    label: '男装',
+                    key: `${i}_${i}`,
+                    className: `k-${i}-${i}`,
+                    children: [
+                        {
+                            label: '外套',
+                            key: `${i}_${i}_${i}`,
+                            className: `k-${i}-${i}-${i}`,
+                        },
+                        {
+                            label: '夹克',
+                            key: `${i}_${i}_${i}_${i}`,
+                            className: `k-${i}-${i}-${i}-${i}`,
+                        },
+                    ],
+                },
+            ],
+        };
+    });
+}
+
 const data: DataNode[] = [
+    ...generateDataSource(),
     {
-        label: 'Component',
-        key: '1',
+        label: '服装',
+        key: '100',
+        className: 'k-100',
         children: [
             {
-                label: 'Form',
-                key: '2',
+                label: '女装',
+                key: '100_100',
+                className: 'k-100-100',
                 children: [
                     {
-                        label: 'Input',
-                        key: '4',
+                        label: '裙子',
+                        key: '100_100_100',
+                        className: 'k-100-100-100',
                     },
                     {
-                        label: 'Select',
-                        key: '5',
-                    },
-                ],
-            },
-            {
-                label: 'Display',
-                key: '3',
-                children: [
-                    {
-                        label: 'Table',
-                        key: '6',
+                        label: '毛衣',
+                        key: '100_100_100_100',
+                        className: 'k-100-100-100-100',
                     },
                 ],
             },
@@ -44,6 +68,7 @@ class Demo extends React.Component<
     }
 > {
     matchedKeys: string[] | null;
+    treeRef: React.MutableRefObject<InstanceType<typeof Tree> | null>;
     constructor(props: any) {
         super(props);
 
@@ -56,6 +81,7 @@ class Demo extends React.Component<
 
         this.handleSearch = this.handleSearch.bind(this);
         this.handleExpand = this.handleExpand.bind(this);
+        this.treeRef = React.createRef();
     }
 
     handleSearch(value: string) {
@@ -77,10 +103,15 @@ class Demo extends React.Component<
             });
         loop(data);
 
-        this.setState({
-            expandedKeys: [...matchedKeys],
-            autoExpandParent: true,
-        });
+        this.setState(
+            {
+                expandedKeys: [...matchedKeys],
+                autoExpandParent: true,
+            },
+            () => {
+                this.treeRef.current?.getInstance?.().scrollFilterNodeIntoView();
+            }
+        );
         this.matchedKeys = matchedKeys;
     }
 
@@ -106,8 +137,10 @@ class Demo extends React.Component<
                     onChange={this.handleSearch}
                 />
                 <Tree
+                    ref={this.treeRef}
                     expandedKeys={expandedKeys}
                     autoExpandParent={autoExpandParent}
+                    style={{ maxHeight: '300px', overflow: 'auto' }}
                     filterTreeNode={filterTreeNode}
                     onExpand={this.handleExpand}
                     dataSource={data}

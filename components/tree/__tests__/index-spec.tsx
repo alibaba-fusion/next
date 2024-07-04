@@ -1,5 +1,6 @@
 import React, { Component, createRef, useState } from 'react';
 import propTypes from 'prop-types';
+import type { MountReturn } from 'cypress/react';
 import { KEYCODE } from '../../util';
 import Tree from '../index';
 import Button from '../../button/index';
@@ -51,6 +52,35 @@ const dataSource: DataNode[] = [
         ],
     },
 ];
+
+function generateDataSource(count = 100) {
+    return new Array(count).fill(null).map((__, i) => {
+        return {
+            label: '服装',
+            key: `${i}`,
+            className: `k-${i}`,
+            children: [
+                {
+                    label: '男装',
+                    key: `${i}_${i}`,
+                    className: `k-${i}-${i}`,
+                    children: [
+                        {
+                            label: '外套',
+                            key: `${i}_${i}_${i}`,
+                            className: `k-${i}-${i}-${i}`,
+                        },
+                        {
+                            label: '夹克',
+                            key: `${i}_${i}_${i}_${i}`,
+                            className: `k-${i}-${i}-${i}-${i}`,
+                        },
+                    ],
+                },
+            ],
+        };
+    });
+}
 
 function createMap(data: DataNode[]) {
     const map: Record<Key, DataNode> = {};
@@ -276,6 +306,30 @@ function renderTreeNodeWithData(dataSource: DataNode[]) {
         }
     };
     return drill(dataSource);
+}
+
+function shouldTreeNodeInViewport(targetSelector: string, targetIndex = 0) {
+    return cy.window().then(win => {
+        const { innerWidth: width, innerHeight: height } = win;
+        cy.get(targetSelector).its('length').should('be.at.least', 1);
+        return cy
+            .get(targetSelector)
+            .then($el => {
+                const itemNode = $el.get(targetIndex);
+                const elementRect = itemNode.getBoundingClientRect();
+                const isTopVisible = elementRect.top >= 0 && elementRect.top <= height;
+                const isBottomVisible = elementRect.bottom >= 0 && elementRect.bottom <= height;
+
+                if (isTopVisible || isBottomVisible) {
+                    const isLeftVisible = elementRect.left >= 0 && elementRect.left <= width;
+                    const isRightVisible = elementRect.right >= 0 && elementRect.right <= width;
+                    return isTopVisible && isLeftVisible && isBottomVisible && isRightVisible;
+                }
+
+                return false;
+            })
+            .should('be.true');
+    });
 }
 
 class ExpandDemo extends Component {
@@ -1456,6 +1510,88 @@ describe('Tree', () => {
             const { jumpIndex, itemSizeGetter } = instance.virtualListRef.current!.props;
             expect(jumpIndex).to.equal(40);
             expect(itemSizeGetter).to.equal(itemSizeGetter);
+        });
+    });
+
+    // fix: https://github.com/alibaba-fusion/next/issues/2930
+    it('The Tree component provides the scrollFilterNodeIntoView API, which scrolls the first matched node of a search into view', () => {
+        const dataSource = generateDataSource();
+        dataSource.push({
+            label: '服装',
+            key: '100',
+            className: 'k-100',
+            children: [
+                {
+                    label: '女装',
+                    key: '100_100',
+                    className: 'k-100-100',
+                    children: [
+                        {
+                            label: '裙子',
+                            key: '100_100_100',
+                            className: 'k-100-100-100',
+                        },
+                        {
+                            label: '毛衣',
+                            key: '100_100_100_100',
+                            className: 'k-100-100-100-100',
+                        },
+                    ],
+                },
+            ],
+        });
+        let expandedKeys = ['100_100_100_100'];
+        let treeRef: InstanceType<typeof Tree> | null = null;
+
+        cy.mount(
+            <Tree
+                ref={ref => {
+                    treeRef = ref;
+                }}
+                expandedKeys={expandedKeys}
+                autoExpandParent
+                dataSource={dataSource}
+                filterTreeNode={node => expandedKeys.indexOf(node.props.eventKey!) > -1}
+            />
+        ).as('wrapper');
+        // 1. 模拟搜索 "毛衣(.k-100-100-100-100)" 节点
+        findTreeNodeByKey('100-100-100-100').first().should('has.class', 'next-filtered');
+        cy.then(() => {
+            treeRef?.getInstance().scrollFilterNodeIntoView();
+            shouldTreeNodeInViewport('.k-100-100-100-100');
+        });
+
+        // 2. 清空搜索
+        cy.then(() => {
+            expandedKeys = [];
+        });
+        cy.get<MountReturn>('@wrapper').then(({ component, rerender }) => {
+            return rerender(
+                React.cloneElement(component as React.ReactElement, {
+                    expandedKeys,
+                })
+            );
+        });
+        cy.get('.next-filtered').should('not.exist');
+        cy.then(() => {
+            treeRef?.getInstance().scrollFilterNodeIntoView();
+            shouldTreeNodeInViewport('.k-100');
+        });
+
+        // 3. 模拟搜索 "男装(.k-i-i)" 节点
+        cy.then(() => {
+            expandedKeys = new Array(100).fill(null).map((_, i) => `${i}_${i}`);
+        });
+        cy.get<MountReturn>('@wrapper').then(({ component, rerender }) => {
+            return rerender(
+                React.cloneElement(component as React.ReactElement, {
+                    expandedKeys,
+                })
+            );
+        });
+        cy.then(() => {
+            treeRef?.getInstance().scrollFilterNodeIntoView();
+            shouldTreeNodeInViewport('.k-0-0');
         });
     });
 });
