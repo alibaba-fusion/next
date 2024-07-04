@@ -1,20 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Input } from '@alifd/next';
+import { type UploadProps } from '@alifd/next/types/upload';
+import { type InputProps } from '@alifd/next/types/input';
 
 class App extends React.Component {
-    onPaste = e => {
+    uploaderRef: ReturnType<InstanceType<typeof Upload>['getInstance']>;
+    onPaste: InputProps['onPaste'] = e => {
         e.preventDefault();
-        const files = e.clipboardData.files;
-        files.length && this.uploaderRef.selectFiles(files);
+        const files = Array.from(e.clipboardData!.files);
+        files!.length && this.uploaderRef!.selectFiles!(files);
     };
 
-    saveUploaderRef = ref => {
+    saveUploaderRef = (ref: InstanceType<typeof Upload>) => {
         if (!ref) return;
         this.uploaderRef = ref.getInstance();
     };
 
-    onChange = value => {
+    onChange: UploadProps['onChange'] = value => {
         console.log(value);
     };
 

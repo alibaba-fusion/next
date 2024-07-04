@@ -10,184 +10,61 @@ import Uploader from './runtime/index';
 import html5Uploader from './runtime/html5-uploader';
 import List from './list';
 import { fileToObject, getFileItem, errorCode } from './util';
+import type {
+    ObjectFile,
+    UploadError,
+    UploadFile,
+    UploadProgressEvent,
+    UploadProps,
+    UploadResponse,
+    UploadState,
+} from './types';
 
 const noop = func.noop;
 
-/**
- * Upload
- */
-class Upload extends Base {
+class Upload extends Base<UploadProps, UploadState> {
     static displayName = 'Upload';
 
     static propTypes = {
         ...html5Uploader.propTypes,
         ...List.propTypes,
-        /**
-         * 样式前缀
-         */
         prefix: PropTypes.string.isRequired,
-        /**
-         * 上传的地址
-         */
         action: PropTypes.string,
-        /**
-         * 文件列表
-         */
         value: PropTypes.array,
-        /**
-         * 默认文件列表
-         */
         defaultValue: PropTypes.array,
-        /**
-         * 上传按钮形状
-         */
         shape: PropTypes.oneOf(['card']),
-        /**
-         * 上传列表的样式
-         * @enumdesc 文字, 图文, 卡片
-         */
         listType: PropTypes.oneOf(['text', 'image', 'card', 'none']),
         list: PropTypes.any,
-        /**
-         * 文件名字段
-         */
         name: PropTypes.string,
-        /**
-         * 上传额外传参
-         */
         data: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-        /**
-         * 数据格式化函数，配合自定义 action 使用，参数为服务器的响应数据，详见 [formatter](#formater)
-         * @param {Object} response 返回
-         * @param {File} file 文件对象
-         */
         formatter: PropTypes.func,
-        /**
-         * 最大文件上传个数
-         */
         limit: PropTypes.number,
-        /**
-         * 设置上传超时,单位ms
-         */
         timeout: PropTypes.number,
-        /**
-         * 可选参数，是否支持拖拽上传，`ie10+` 支持。
-         */
         dragable: PropTypes.bool,
         closable: PropTypes.bool,
-        /**
-         * 可选参数，是否本地预览
-         */
         useDataURL: PropTypes.bool,
-        /**
-         * 可选参数，是否禁用上传功能
-         */
         disabled: PropTypes.bool,
-        /**
-         * 选择文件回调
-         */
         onSelect: PropTypes.func,
-        /**
-         * 上传中
-         */
         onProgress: PropTypes.func,
-        /**
-         * 上传文件改变时的状态
-         * @param {Object} info 文件事件对象
-         */
         onChange: PropTypes.func,
-        /**
-         * 可选参数，上传成功回调函数，参数为请求下响应信息以及文件
-         * @param {Object} file 文件
-         * @param {Array<Object>} value 值
-         */
         onSuccess: PropTypes.func,
-        /**
-         * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
-         * @param {Object} file
-         * @returns {Boolean} 返回false会阻止上传,其他则表示正常
-         */
         afterSelect: PropTypes.func,
-        /**
-         * 移除文件回调函数
-         * @param {Object} file 文件
-         * @returns {Boolean|Promise} 返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件删除
-         */
         onRemove: PropTypes.func,
-        /**
-         * 可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件
-         * @param {Object} file 出错的文件
-         * @param {Array} value 当前值
-         */
         onError: PropTypes.func,
-        /**
-         * 可选参数, 详见 [beforeUpload](#beforeUpload)
-         * @param {Object} file 所有文件
-         * @param {Object} options 参数
-         * @returns {Boolean|Object|Promise} 返回值作用见demo
-         */
         beforeUpload: PropTypes.func,
-        /**
-         * 放文件
-         */
         onDrop: PropTypes.func,
-        /**
-         * 自定义class
-         */
         className: PropTypes.string,
-        /**
-         * 自定义内联样式
-         */
         style: PropTypes.object,
-        /**
-         * 子元素
-         */
         children: PropTypes.node,
-        /**
-         * 自动上传
-         */
         autoUpload: PropTypes.bool,
-        /**
-         * 自定义上传方法
-         * @param {Object} option
-         * @return {Object} object with abort method
-         */
         request: PropTypes.func,
-        /**
-         * 透传给Progress props
-         */
         progressProps: PropTypes.object,
         rtl: PropTypes.bool,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param {number} value 评分值
-         */
         renderPreview: PropTypes.func,
-        /**
-         * 文件对象的 key name
-         * @version 1.21
-         */
         fileKeyName: PropTypes.string,
-        /**
-         * list 的自定义文件名渲染
-         * @param {Object} file 文件
-         * @return {Node} react node
-         */
         fileNameRender: PropTypes.func,
-        /**
-         * 操作区域额外渲染
-         * @param {Object} file 文件
-         * @return {Node} react node
-         */
         actionRender: PropTypes.func,
-        /**
-         * 点击文件名时触发 onPreview
-         * @version 1.24
-         */
         previewOnFileName: PropTypes.bool,
     };
 
@@ -209,7 +86,7 @@ class Upload extends Base {
         previewOnFileName: false,
     };
 
-    constructor(props) {
+    constructor(props: UploadProps) {
         super(props);
 
         let value;
@@ -225,7 +102,7 @@ class Upload extends Base {
         };
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: UploadProps, prevState: UploadState) {
         // 上传中不允许做受控修改
         if ('value' in nextProps && nextProps.value !== prevState.value && !prevState.uploading) {
             return {
@@ -236,12 +113,12 @@ class Upload extends Base {
         return null;
     }
 
-    onSelect = files => {
+    onSelect = (files: Array<UploadFile>) => {
         const { autoUpload, afterSelect, onSelect, limit } = this.props;
         // 总数
         const total = this.state.value.length + files.length;
         // 差额
-        const less = limit - this.state.value.length;
+        const less = limit! - this.state.value.length;
         if (less <= 0) {
             // 差额不足 则不上传
             return;
@@ -255,8 +132,8 @@ class Upload extends Base {
 
         // 默认全量上传
         let uploadFiles = fileList;
-        let discardFiles = [];
-        if (total > limit) {
+        let discardFiles: Array<ObjectFile> = [];
+        if (total > limit!) {
             // 全量上传总数会超过limit 但是 还有差额
             uploadFiles = fileList.slice(0, less);
             discardFiles = fileList.slice(less);
@@ -265,48 +142,49 @@ class Upload extends Base {
         const value = this.state.value.concat(fileList);
 
         /* eslint-disable-next */
+        // @ts-expect-error 无法为“value”赋值，因为它是只读属性。
         this.state.value = value;
 
         if (autoUpload) {
             this.uploadFiles(uploadFiles);
         }
 
-        onSelect(uploadFiles, value);
+        onSelect!(uploadFiles, value);
         discardFiles.forEach(file => {
             // 丢弃的文件
-            const err = new Error(errorCode.EXCEED_LIMIT);
+            const err: UploadError = new Error(errorCode.EXCEED_LIMIT);
             err.code = errorCode.EXCEED_LIMIT;
             this.onError(err, null, file);
         });
 
         if (!autoUpload) {
             uploadFiles.forEach(file => {
-                const isPassed = afterSelect(file);
-                func.promiseCall(isPassed, func.noop, error => {
-                    this.onError(error, null, file); // TODO: handle error message
+                const isPassed = afterSelect!(file);
+                func.promiseCall(isPassed, func.noop, (error: UploadError) => {
+                    this.onError(error, null, file);
                 });
             });
             this.onChange(value, uploadFiles);
         }
     };
 
-    onDrop = files => {
+    onDrop = (files: UploadFile[]) => {
         this.onSelect(files);
-        this.props.onDrop(files);
+        this.props.onDrop!(files);
     };
 
     /**
      * 对外暴露API, 添加文件
-     * @param files
      */
-    selectFiles(files) {
+    selectFiles(files: File[]) {
         const filesArr = files.length ? Array.prototype.slice.call(files) : [files];
 
         this.onSelect(filesArr);
     }
 
-    uploadFiles(files) {
+    uploadFiles(files: (UploadFile | ObjectFile)[]) {
         // NOTE: drag上传，当鼠标松开的时候回执行 onDrop，但此时onChange还没出发所以 value=[], 必须提前标识上传中
+        // @ts-expect-error 无法为“uploading”赋值，因为它是只读属性。
         this.state.uploading = true;
         const fileList = files
             .filter(file => {
@@ -319,7 +197,6 @@ class Upload extends Base {
             .map(file => {
                 return file.originFileObj;
             });
-
         fileList.length && this.uploaderRef.startUpload(fileList);
     }
 
@@ -330,7 +207,7 @@ class Upload extends Base {
         this.uploadFiles(this.state.value);
     }
 
-    replaceFiles(old, current) {
+    replaceFiles(old: ObjectFile, current: UploadFile) {
         const targetItem = getFileItem(old, this.state.value);
         if (!targetItem) {
             return;
@@ -341,7 +218,7 @@ class Upload extends Base {
     }
 
     // 替换掉队列里面的文件
-    replaceWithNewFile = (old, current) => {
+    replaceWithNewFile = (old: ObjectFile, current: UploadFile) => {
         const newFile = fileToObject(current);
         newFile.state = 'selected';
 
@@ -364,7 +241,8 @@ class Upload extends Base {
         return this.state.uploading;
     }
 
-    onProgress = (e, file) => {
+    onProgress = (e: UploadProgressEvent, file: UploadFile) => {
+        //@ts-expect-error 无法为“uploading”赋值，因为它是只读属性。
         this.state.uploading = true;
 
         const value = this.state.value;
@@ -383,10 +261,10 @@ class Upload extends Base {
             value,
         });
 
-        this.props.onProgress(value, targetItem);
+        this.props.onProgress!(value, targetItem);
     };
 
-    onSuccess = (response, file) => {
+    onSuccess = (response: UploadResponse, file: ObjectFile) => {
         const { formatter } = this.props;
 
         if (formatter) {
@@ -403,7 +281,7 @@ class Upload extends Base {
         }
 
         if (response.success === false) {
-            const err = new Error(response.message || errorCode.RESPONSE_FAIL);
+            const err: UploadError = new Error(response.message || errorCode.RESPONSE_FAIL);
             err.code = errorCode.RESPONSE_FAIL;
             return this.onError(err, response, file);
         }
@@ -429,10 +307,10 @@ class Upload extends Base {
         this.updateUploadingState();
 
         this.onChange(value, targetItem);
-        this.props.onSuccess(targetItem, value);
+        this.props.onSuccess!(targetItem, value);
     };
 
-    onError = (err, response, file) => {
+    onError = (err: UploadError, response: UploadResponse | null, file: ObjectFile) => {
         const value = this.state.value;
         const targetItem = getFileItem(file, value);
 
@@ -449,15 +327,13 @@ class Upload extends Base {
         this.updateUploadingState();
 
         this.onChange(value, targetItem);
-        this.props.onError(targetItem, value);
+        this.props.onError!(targetItem as UploadError, value);
     };
 
     /**
      * 删除文件
-     * @param {File} file
-     * @return {void}
      */
-    removeFile = file => {
+    removeFile = (file: UploadFile) => {
         file.state = 'removed';
         this.uploaderRef.abort(file); // 删除组件时调用组件的 `abort` 方法中断上传
 
@@ -473,16 +349,15 @@ class Upload extends Base {
     updateUploadingState = () => {
         const inProgress = this.state.value.some(i => i.state === 'uploading');
         if (!inProgress) {
+            // @ts-expect-error 无法为“uploading”赋值，因为它是只读属性。
             this.state.uploading = false;
         }
     };
 
     /**
      * 取消上传
-     * @param {File} file
-     * @return {void}
      */
-    abort = file => {
+    abort = (file: File) => {
         const fileList = this.state.value;
         const targetItem = getFileItem(file, fileList);
         const index = fileList.indexOf(targetItem);
@@ -493,11 +368,11 @@ class Upload extends Base {
         this.uploaderRef.abort(file); // 取消上传时调用组件的 `abort` 方法中断上传
     };
 
-    onChange = (value, file) => {
+    onChange = (value: Array<ObjectFile>, file: ObjectFile | Array<ObjectFile>) => {
         this.setState({
             value,
         });
-        this.props.onChange(value, file);
+        this.props.onChange!(value, file);
     };
 
     render() {
@@ -536,10 +411,9 @@ class Upload extends Base {
             [`${prefix}upload-dragable`]: dragable,
             [`${prefix}disabled`]: disabled,
             [`${prefix}readonly`]: readonly,
-            [className]: className,
+            [className!]: className,
         });
-
-        const isExceedLimit = this.state.value.length >= limit;
+        const isExceedLimit = this.state.value.length >= limit!;
         const innerCls = classNames({
             [`${prefix}upload-inner`]: true,
             [`${prefix}hidden`]: isExceedLimit,
@@ -554,7 +428,7 @@ class Upload extends Base {
             children = (
                 <div className={cardCls}>
                     <Icon size="large" type="add" className={`${prefix}upload-add-icon`} />
-                    <div tabIndex="0" role="button" className={`${prefix}upload-text`}>
+                    <div tabIndex={0} role="button" className={`${prefix}upload-text`}>
                         {children}
                     </div>
                 </div>
@@ -565,7 +439,7 @@ class Upload extends Base {
             if (typeof renderPreview === 'function') {
                 const previewCls = classNames({
                     [`${prefix}form-preview`]: true,
-                    [className]: !!className,
+                    [className!]: !!className,
                 });
                 return (
                     <div style={style} className={previewCls}>
@@ -581,7 +455,7 @@ class Upload extends Base {
                         listType={listType}
                         style={style}
                         className={className}
-                        value={this.state.value}
+                        value={this.state.value as UploadFile[]}
                         onPreview={onPreview}
                     />
                 );
@@ -618,7 +492,7 @@ class Upload extends Base {
                         actionRender={actionRender}
                         uploader={this}
                         listType={listType}
-                        value={this.state.value}
+                        value={this.state.value as UploadFile[]}
                         closable={closable}
                         onRemove={onRemoveFunc}
                         progressProps={progressProps}
