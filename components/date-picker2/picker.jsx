@@ -415,9 +415,17 @@ class Picker extends React.Component {
                 break;
             }
             case KEYCODE.SPACE: {
-                const { inputValue } = this.state;
+                const { inputValue, isRange, inputType } = this.state;
                 this.onClick();
-                this.handleChange(inputValue, 'KEYDOWN_SPACE');
+                if (isRange) {
+                    const updatedInputValue = [...inputValue];
+                    updatedInputValue[inputType] = updatedInputValue[inputType] + ' ';
+                    this.setState({ inputValue: updatedInputValue })
+                } else {
+                    this.setState({
+                        inputValue: inputValue + ' '
+                    })
+                }
                 break;
             }
             default:
@@ -449,19 +457,14 @@ class Picker extends React.Component {
                     // 1. 非 Range 选择
                     // 2. 非 选择预设时间、面板收起、清空输入 操作
                     // 3. 不需要切换输入框
-                    const shouldHidePanel = (
+                    const shouldHidePanel =
                         !isRange ||
                         ['CLICK_PRESET', 'VISIBLE_CHANGE', 'INPUT_CLEAR'].includes(eventType) ||
-                        !this.shouldSwitchInput(v)
-                    ) && eventType !== 'KEYDOWN_SPACE';
+                        !this.shouldSwitchInput(v);
                     if (shouldHidePanel) {
                         this.onVisibleChange(false);
 
                         if (isValueChanged(v, preValue)) {
-                            this.onChange();
-                        }
-                    } else {
-                        if (eventType === 'KEYDOWN_SPACE' && isValueChanged(v, preValue)) {
                             this.onChange();
                         }
                     }
