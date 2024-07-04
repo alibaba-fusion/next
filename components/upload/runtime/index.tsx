@@ -1,10 +1,10 @@
 import React from 'react';
 import Html5Uploader from './html5-uploader';
 import IframeUploader from './iframe-uploader';
-import type { UploadFile } from '../types';
+import type { Html5Props, UploadFile } from '../types';
 
 export default class Uploader extends React.Component<
-    unknown,
+    Html5Props,
     { Component: typeof Html5Uploader | typeof IframeUploader }
 > {
     state = {

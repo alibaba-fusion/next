@@ -24,12 +24,17 @@ export function fileToObject(file: UploadFile): ObjectFile {
     };
 }
 
+type GetFileItemReturn<T, U> = T extends null ? null : T extends undefined ? null : U;
+
 export function getFileItem<
-    T extends { uid?: unknown; name?: unknown },
+    T extends { uid?: unknown; name?: unknown } | undefined | null,
     U extends { uid?: unknown; name?: unknown },
->(file: T, fileList: U[]): U {
+>(file: T, fileList: U[]): GetFileItemReturn<T, U> {
+    if (!file) {
+        return null as GetFileItemReturn<T, U>;
+    }
     const matchKey = file.uid !== undefined ? 'uid' : 'name';
-    return fileList.filter(item => item[matchKey] === file[matchKey])[0];
+    return fileList.filter(item => item[matchKey] === file[matchKey])[0] as GetFileItemReturn<T, U>;
 }
 
 export function removeFileItem<T extends { uid?: string | number; name?: string }>(
