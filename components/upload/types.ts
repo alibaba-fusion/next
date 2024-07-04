@@ -31,7 +31,9 @@ export interface UploadProps extends UploadCommonProps {
      * 上传额外传参
      * @en Upload extra parameters
      */
-    data?: object | (() => void);
+    data?:
+        | { [key: string]: string | Blob }
+        | ((file: UploadFile) => { [key: string]: string | Blob });
 
     /**
      * 设置上传的请求头部
@@ -57,13 +59,13 @@ export interface UploadProps extends UploadCommonProps {
     webkitdirectory?: boolean;
 
     /**
-     * 可选参数, 详见 [beforeUpload](#beforeUpload)
+     * 可选参数，详见 [beforeUpload](#beforeUpload)
      * @en Optional parameters, see [beforeUpload](#beforeUpload)
      * @param file - 所有文件 - all file
      * @param options - 参数 -  parameters
      * @defaultValue func.noop
      */
-    beforeUpload?: (file: ObjectFile, options: BeforeUploadOption) => boolean | object | unknown;
+    beforeUpload?: (file: UploadFile, options: BeforeUploadOption) => boolean | object | unknown;
 
     /**
      * 上传中
@@ -88,7 +90,7 @@ export interface UploadProps extends UploadCommonProps {
      * @param value - 当前值 - current value
      * @defaultValue func.noop
      */
-    onError?: (file: UploadError, value: ObjectFile[]) => void;
+    onError?: (file: ObjectFile, value: ObjectFile[]) => void;
 
     /**
      * 子元素
@@ -97,7 +99,7 @@ export interface UploadProps extends UploadCommonProps {
     children?: ReactNode;
 
     /**
-     * 设置上传超时,单位ms
+     * 设置上传超时，单位 ms
      * @en Upload timeout, unit ms
      */
     timeout?: number;
@@ -161,7 +163,7 @@ export interface UploadProps extends UploadCommonProps {
      * @param response - 返回 - return
      * @param file - 文件对象 - file object
      */
-    formatter?: (response: UploadResponse, file: ObjectFile) => UploadResponse;
+    formatter?: (response: UploadResponse, file: UploadFile) => UploadResponse;
 
     /**
      * 最大文件上传个数
@@ -198,19 +200,19 @@ export interface UploadProps extends UploadCommonProps {
     onChange?: (value: ObjectFile[], file: ObjectFile | ObjectFile[]) => void;
 
     /**
-     * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
+     * 可选参数，用于校验文件，afterSelect 仅在 autoUpload=false 的时候生效，autoUpload=true 时，可以使用 beforeUpload 完全可以替代该功能。
      * @en Optional parameters, used to validate files, afterSelect only takes effect when autoUpload=false, autoUpload=true can be used to replace this function
      * @param file - 文件 - file
-     * @returns -  返回false会阻止上传,其他则表示正常 - return false will block upload, other means normal
+     * @returns -  返回 false 会阻止上传，其他则表示正常 - return false will block upload, other means normal
      * @defaultValue func.noop
      */
-    afterSelect?: (file: object) => boolean | Promise<void>;
+    afterSelect?: (file: ObjectFile) => boolean | Promise<void>;
 
     /**
      * 移除文件回调函数
      * @en Remove file callback function
      * @param file - 文件 - file
-     * @returns - 返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件删除 - return false、Promise.resolve(false)、 Promise.reject() will block file deletion
+     * @returns - 返回 false、Promise.resolve(false)、Promise.reject() 将阻止文件删除 - return false、Promise.resolve(false)、Promise.reject() will block file deletion
      * @defaultValue func.noop
      */
     onRemove?: (file: object) => void;
@@ -223,7 +225,7 @@ export interface UploadProps extends UploadCommonProps {
     autoUpload?: boolean;
 
     /**
-     * 透传给Progress props
+     * 透传给 Progress props
      * @en Pass to Progress props
      */
     progressProps?: ProgressProps;
@@ -262,7 +264,7 @@ export interface UploadProps extends UploadCommonProps {
      * @param file - 文件 - file
      * @returns - react node - react node
      */
-    actionRender?: (file: UploadFile) => ReactNode;
+    actionRender?: (file: ObjectFile) => ReactNode;
 
     /**
      * 自定义额外渲染
@@ -270,7 +272,7 @@ export interface UploadProps extends UploadCommonProps {
      */
     extraRender?: (file: File) => unknown;
     /**
-     * 自定义class
+     * 自定义 class
      * @skip
      */
     className?: string;
@@ -359,7 +361,7 @@ export interface CardProps extends UploadProps {
      * @en Click image callback
      * @defaultValue func.noop
      */
-    onPreview?: (file: UploadFile, e?: MouseEvent<HTMLElement>) => void;
+    onPreview?: (file: ObjectFile, e?: MouseEvent<HTMLElement>) => void;
 
     /**
      * 改变时候的回调
@@ -384,10 +386,10 @@ export interface CardProps extends UploadProps {
      * 自定义成功和失败的列表渲染方式
      * @en Customize success and failure list rendering
      * @param file - 文件对象 - file object
-     * @param obj - 包含属性remove: 删除回调 - contains properties remove: delete callback
+     * @param obj - 包含属性 remove: 删除回调 - contains properties remove: delete callback
      * @version 1.21
      */
-    itemRender?: (file: UploadFile, obj: { remove?: () => void }) => ReactNode;
+    itemRender?: (file: ObjectFile, obj: { remove?: () => void }) => ReactNode;
 
     /**
      * 选择新文件上传并替换
@@ -439,7 +441,7 @@ export interface CardState {
  * @api Upload.Selecter
  * [底层能力] 可自定义样式的文件选择器
  */
-export interface SelecterProps extends UploadProps {
+export interface SelecterProps {
     /**
      * 是否禁用上传功能
      * @en Whether to disable upload
@@ -504,6 +506,10 @@ export interface SelecterProps extends UploadProps {
      * @defaultValue func.noop
      */
     onDrop?: (fiels: File[]) => void;
+    id?: string;
+    style?: CSSProperties;
+    className?: string;
+    name?: string;
 }
 
 export interface UploadState {
@@ -521,16 +527,16 @@ export interface ListProps extends UploadCommonProps {
     /**
      * 文件列表
      */
-    value: Array<UploadFile>;
+    value: Array<ObjectFile>;
     closable?: boolean;
     /**
-     * 删除文件回调(支持Promise)
+     * 删除文件回调 (支持 Promise)
      */
     onRemove?: (file: unknown) => boolean | unknown;
     /**
-     * 取消上传回调(支持Promise)
+     * 取消上传回调 (支持 Promise)
      */
-    onCancel?: (file?: UploadFile) => void;
+    onCancel?: (file?: ObjectFile) => void;
     /**
      * 头像加载出错回调
      */
@@ -546,20 +552,20 @@ export interface ListProps extends UploadCommonProps {
     /**
      * 自定义额外渲染
      */
-    extraRender?: (file: UploadFile) => void;
+    extraRender?: (file: ObjectFile) => void;
     /**
      * 自定义操作渲染
      */
-    actionRender?: (file: UploadFile) => void;
+    actionRender?: (file: ObjectFile) => void;
     /**
      * 卡片自定义渲染（目前只支持 Card)
      * Object file 文件对象
      * Object remove remove:删除回调
-     * ReactNode React元素
+     * ReactNode React 元素
      */
-    itemRender?: (file: UploadFile, { remove }: { remove: () => void }) => void;
+    itemRender?: (file: ObjectFile, { remove }: { remove: () => void }) => void;
     /**
-     * 透传给Progress props
+     * 透传给 Progress props
      */
     progressProps?: object;
     children?: ReactNode;
@@ -570,10 +576,10 @@ export interface ListProps extends UploadCommonProps {
     useDataURL?: boolean;
     rtl?: boolean;
     isPreview?: boolean;
-    fileNameRender?: (file: UploadFile) => void;
+    fileNameRender?: (file: ObjectFile) => void;
     uploader?: {
-        removeFile: (file: UploadFile) => void;
-        abort: (file: UploadFile) => void;
+        removeFile: (file: ObjectFile) => void;
+        abort: (file: ObjectFile) => void;
         replaceWithNewFile: (oldfile: UploadFile, newfile: UploadFile) => void;
         props: {
             accept?: string;
@@ -582,7 +588,22 @@ export interface ListProps extends UploadCommonProps {
     };
 }
 
-export interface Html5Props extends SelecterProps {}
+export interface Html5Props
+    extends SelecterProps,
+        Pick<
+            UploadOptions,
+            | 'action'
+            | 'timeout'
+            | 'method'
+            | 'beforeUpload'
+            | 'onProgress'
+            | 'onSuccess'
+            | 'onError'
+            | 'withCredentials'
+            | 'headers'
+            | 'data'
+            | 'request'
+        > {}
 
 export interface CoreProps extends UploadOptions {}
 
@@ -590,10 +611,8 @@ export interface UploadOptions {
     beforeUpload?: (file: UploadFile, data: unknown) => boolean | object | unknown;
     onProgress?: (e: UploadProgressEvent, file?: UploadFile) => void;
     onSuccess?: (ret: unknown, xhr?: XMLHttpRequest | UploadFile) => void;
-    onError?: (err: ProgressEvent | UploadError, param?: unknown, file?: UploadFile) => void;
-    data?:
-        | { [key: string]: string | Blob }
-        | ((file: UploadFile) => { [key: string]: string | Blob });
+    onError?: (err: ProgressEvent | UploadError, param: unknown, file?: UploadFile) => void;
+    data?: UploadProps['data'];
     name?: string;
     method?: 'post' | 'put' | 'POST' | 'PUT';
     action?: string;
@@ -618,19 +637,21 @@ export enum ErrorCode {
     RESPONSE_FAIL = 'RESPONSE_FAIL',
 }
 
-export interface UploadFile extends OriginalFile, File {
-    filename?: string;
-    lastModifiedDate?: Date;
-    originFileObj?: File;
-    imgURL?: string;
-    downloadURL?: string;
-    url?: string;
-    state?: string;
-    errorMsg?: string;
-    alt?: string;
-}
+export interface UploadFile extends CommonModifiedFile, File {}
 
-export interface ObjectFile extends OriginalFile {
+// export interface UploadFile extends OriginalFile, File {
+//     filename?: string;
+//     lastModifiedDate?: Date;
+//     originFileObj?: File;
+//     imgURL?: string;
+//     downloadURL?: string;
+//     url?: string;
+//     state?: string;
+//     errorMsg?: string;
+//     alt?: string;
+// }
+
+export interface ObjectFile extends CommonModifiedFile {
     lastModified?: number;
     lastModifiedDate?: Date;
     size?: number;
@@ -643,13 +664,16 @@ export interface ObjectFile extends OriginalFile {
     errorText?: string;
     fileURL?: string;
     tempUrl?: string;
+    alt?: string;
 }
 
-export interface OriginalFile {
+export interface CommonModifiedFile {
     uid?: string | number;
     error?: unknown;
     percent?: number;
     state?: string;
+    lastModifiedDate?: Date;
+    filename?: string;
     readonly name: string;
 }
 
@@ -698,7 +722,7 @@ export interface IframeUploaderProps {
      */
     withCredentials?: boolean;
     /**
-     * 可选参数, 详见 [beforeUpload](#beforeUpload)
+     * 可选参数，详见 [beforeUpload](#beforeUpload)
      */
     beforeUpload?: (file: unknown, options: unknown) => boolean | object | Promise<object>;
     /**
@@ -727,7 +751,7 @@ export interface RequestOption {
 }
 
 /**
- * iframe 组件使用的file类型
+ * iframe 组件使用的 file 类型
  */
 export interface IframeFile {
     uid?: string;
@@ -791,13 +815,12 @@ export type ListType =
     | 'picture-card'
     | 'none';
 
-export type Wrapper = ReactWrapper | ShallowWrapper; // 根据wrapper的实际类型调整
+export type Wrapper = ReactWrapper | ShallowWrapper; // 根据 wrapper 的实际类型调整
 
 export type UploaderRef = {
     abort: (file: File) => void;
-    startUpload: (fileList?: (UploadFile | File | undefined)[]) => void;
+    startUpload: (fileList?: ObjectFile[]) => void;
     isUploading?: () => boolean;
-    [key: string]: unknown;
 };
 
 export type BeforeUploadOption = {

@@ -134,7 +134,7 @@ class Upload extends Base<UploadProps, UploadState> {
         let uploadFiles = fileList;
         let discardFiles: Array<ObjectFile> = [];
         if (total > limit!) {
-            // 全量上传总数会超过limit 但是 还有差额
+            // 全量上传总数会超过 limit 但是 还有差额
             uploadFiles = fileList.slice(0, less);
             discardFiles = fileList.slice(less);
         }
@@ -174,7 +174,7 @@ class Upload extends Base<UploadProps, UploadState> {
     };
 
     /**
-     * 对外暴露API, 添加文件
+     * 对外暴露 API, 添加文件
      */
     selectFiles(files: File[]) {
         const filesArr = files.length ? Array.prototype.slice.call(files) : [files];
@@ -182,8 +182,8 @@ class Upload extends Base<UploadProps, UploadState> {
         this.onSelect(filesArr);
     }
 
-    uploadFiles(files: (UploadFile | ObjectFile)[]) {
-        // NOTE: drag上传，当鼠标松开的时候回执行 onDrop，但此时onChange还没出发所以 value=[], 必须提前标识上传中
+    uploadFiles(files: ObjectFile[]) {
+        // NOTE: drag 上传，当鼠标松开的时候回执行 onDrop，但此时 onChange 还没出发所以 value=[], 必须提前标识上传中
         // @ts-expect-error 无法为“uploading”赋值，因为它是只读属性。
         this.state.uploading = true;
         const fileList = files
@@ -195,13 +195,13 @@ class Upload extends Base<UploadProps, UploadState> {
                 return false;
             })
             .map(file => {
-                return file.originFileObj;
+                return file.originFileObj!;
             });
         fileList.length && this.uploaderRef.startUpload(fileList);
     }
 
     /**
-     * 对外暴露api，控制文件上传
+     * 对外暴露 api，控制文件上传
      */
     startUpload() {
         this.uploadFiles(this.state.value);
@@ -264,7 +264,7 @@ class Upload extends Base<UploadProps, UploadState> {
         this.props.onProgress!(value, targetItem);
     };
 
-    onSuccess = (response: UploadResponse, file: ObjectFile) => {
+    onSuccess = (response: UploadResponse, file: UploadFile) => {
         const { formatter } = this.props;
 
         if (formatter) {
@@ -297,11 +297,11 @@ class Upload extends Base<UploadProps, UploadState> {
             state: 'done',
             response,
             url: response.url,
-            downloadURL: response.downloadURL || response.url, // 下载地址(可选)
+            downloadURL: response.downloadURL || response.url, // 下载地址 (可选)
         });
 
         if (!this.props.useDataURL) {
-            targetItem.imgURL = response.imgURL || response.url; // 缩略图地址(可选)
+            targetItem.imgURL = response.imgURL || response.url; // 缩略图地址 (可选)
         }
 
         this.updateUploadingState();
@@ -310,7 +310,7 @@ class Upload extends Base<UploadProps, UploadState> {
         this.props.onSuccess!(targetItem, value);
     };
 
-    onError = (err: UploadError, response: UploadResponse | null, file: ObjectFile) => {
+    onError = (err: UploadError, response: UploadResponse | null, file?: ObjectFile) => {
         const value = this.state.value;
         const targetItem = getFileItem(file, value);
 
@@ -327,7 +327,7 @@ class Upload extends Base<UploadProps, UploadState> {
         this.updateUploadingState();
 
         this.onChange(value, targetItem);
-        this.props.onError!(targetItem as UploadError, value);
+        this.props.onError!(targetItem, value);
     };
 
     /**
@@ -455,7 +455,7 @@ class Upload extends Base<UploadProps, UploadState> {
                         listType={listType}
                         style={style}
                         className={className}
-                        value={this.state.value as UploadFile[]}
+                        value={this.state.value}
                         onPreview={onPreview}
                     />
                 );
@@ -464,7 +464,7 @@ class Upload extends Base<UploadProps, UploadState> {
             return null;
         }
 
-        // disabled 状态下把 remove函数替换成禁止 remove的函数
+        // disabled 状态下把 remove 函数替换成禁止 remove 的函数
         const onRemoveFunc = disabled ? func.prevent : onRemove;
         const otherAttributes = obj.pickAttrsWith(this.props, 'data-');
         return (
@@ -492,7 +492,7 @@ class Upload extends Base<UploadProps, UploadState> {
                         actionRender={actionRender}
                         uploader={this}
                         listType={listType}
-                        value={this.state.value as UploadFile[]}
+                        value={this.state.value}
                         closable={closable}
                         onRemove={onRemoveFunc}
                         progressProps={progressProps}

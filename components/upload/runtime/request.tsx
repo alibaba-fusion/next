@@ -65,7 +65,8 @@ export default function upload(option: UploadOptions) {
         formData.append(option.filename!, option.file!);
     }
 
-    xhr.onerror = function error(e: ProgressEvent) {
+    xhr.onerror = function error(e) {
+        // @ts-expect-error 这里应该传入 UploadError，但实际传入的是 onerror 的 event
         option.onError!(e);
     };
 
