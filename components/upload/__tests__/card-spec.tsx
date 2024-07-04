@@ -1,6 +1,6 @@
 import React from 'react';
 import Upload from '../index';
-import { type UploadFile } from '../types';
+import { type ObjectFile } from '../types';
 
 const CardUpload = Upload.Card;
 
@@ -143,7 +143,7 @@ describe('CardUpload', () => {
                                     'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                                 imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                             },
-                        ] as UploadFile[]
+                        ] as ObjectFile[]
                     }
                     onChange={onChange}
                     onRemove={onRemove}
@@ -193,7 +193,7 @@ describe('CardUpload', () => {
                                     'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                                 imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                             },
-                        ] as UploadFile[]
+                        ] as ObjectFile[]
                     }
                     onChange={onChange}
                     onCancel={onCancel}

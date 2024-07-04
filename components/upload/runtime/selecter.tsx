@@ -42,7 +42,7 @@ export default class Selecter extends Component<SelecterProps> {
 
     onSelect = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target!.files;
-        const filesArr = files!.length ? Array.prototype.slice.call(files) : [files];
+        const filesArr: File[] = files!.length ? Array.prototype.slice.call(files) : [files];
 
         filesArr.forEach((file: UploadFile) => {
             file.uid = uid();

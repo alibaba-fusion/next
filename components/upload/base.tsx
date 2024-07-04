@@ -21,6 +21,6 @@ export default class Base<P, S> extends Component<P, S> {
     };
 
     isUploading() {
-        return this.uploaderRef.isUploading();
+        return this.uploaderRef.isUploading!();
     }
 }
