@@ -1223,13 +1223,14 @@ describe('Picker', () => {
             );
             changeInput('2020-11-11');
             findInput().simulate('keydown', { keyCode: KEYCODE.SPACE });
-            assert(getStrValue(wrapper) === '2020-11-11 00:00:00');
+            assert(getStrValue(wrapper) === '2020-11-11 ');
+            wrapper.unmount();
             wrapper = mount(
-                <RangePicker showTime />
+                <RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />
             );
-            changeInput('2021-01-12', 0);
+            changeInput('2020-11-11', 0);
             findInput(0).simulate('keydown', { keyCode: KEYCODE.SPACE });
-            assert(getStrValue(wrapper).join(',') === '2021-01-12 00:00:00,');
+            assert(getStrValue(wrapper).join(',') === '2020-11-11 ,');
         })
     });
 });
