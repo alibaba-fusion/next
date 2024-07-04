@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload } from '@alifd/next';
-import { type UploadProps } from '@alifd/next/types/upload';
+import { type UploadProps, type UploadFile } from '@alifd/next/types/upload';
+
+type ModifiedUploadFile = UploadFile & {
+    tempUrl?: string;
+};
 
 class App extends React.Component {
     beforeUpload: UploadProps['beforeUpload'] = (file, options) => {
@@ -31,7 +35,7 @@ class App extends React.Component {
                 };
 
                 // save url to file object
-                file.tempUrl = `//${domain}/${key}`;
+                (file as ModifiedUploadFile).tempUrl = `//${domain}/${key}`;
 
                 resolve(options);
             }, 300);
@@ -44,7 +48,7 @@ class App extends React.Component {
 
     formatter: UploadProps['formatter'] = (res, file) => ({
         success: true,
-        url: file.tempUrl,
+        url: (file as ModifiedUploadFile).tempUrl,
     });
 
     render() {

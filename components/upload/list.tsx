@@ -11,7 +11,7 @@ import zhCN from '../locale/zh-cn';
 import { previewFile } from './util';
 import transform from './transform';
 import Selecter from './runtime/selecter';
-import type { ListProps, UploadFile, ImageError } from './types';
+import type { ListProps, UploadFile, ImageError, ObjectFile } from './types';
 
 const isIE9 = env.ieVersion === 9;
 
@@ -83,7 +83,7 @@ class List extends Component<ListProps> {
             });
     }
 
-    handleClose = (file: UploadFile) => {
+    handleClose = (file: ObjectFile) => {
         const { onRemove, uploader } = this.props;
 
         const remove = onRemove!(file);
@@ -93,7 +93,7 @@ class List extends Component<ListProps> {
         });
     };
 
-    handleCancel = (file: UploadFile) => {
+    handleCancel = (file: ObjectFile) => {
         const { onCancel, uploader } = this.props;
         const cancel = onCancel!(file);
 
@@ -117,7 +117,7 @@ class List extends Component<ListProps> {
         return onPreview(file, e);
     }
 
-    getInfo(file: UploadFile) {
+    getInfo(file: ObjectFile) {
         const prefixCls = `${this.props.prefix}upload`;
         const downloadURL = file.downloadURL || file.url;
         const imgURL = file.imgURL || file.url;
@@ -153,7 +153,7 @@ class List extends Component<ListProps> {
 
         return `${fileSize}${suffix}`;
     }
-    getTextList(file: UploadFile) {
+    getTextList(file: ObjectFile) {
         const {
             locale,
             extraRender,
@@ -226,7 +226,7 @@ class List extends Component<ListProps> {
         );
     }
 
-    getImageList(file: UploadFile) {
+    getImageList(file: ObjectFile) {
         const { extraRender, actionRender, progressProps, rtl, fileNameRender, previewOnFileName } =
             this.props;
 
@@ -314,7 +314,7 @@ class List extends Component<ListProps> {
         uploader && files.length && uploader.replaceWithNewFile(oldfile, files[0]);
     };
 
-    getPictureCardList(file: UploadFile, isPreview?: boolean) {
+    getPictureCardList(file: ObjectFile, isPreview?: boolean) {
         const { locale, progressProps, fileNameRender, itemRender, showDownload } = this.props;
 
         const { prefixCls, downloadURL, imgURL, itemCls, alt } = this.getInfo(file);
