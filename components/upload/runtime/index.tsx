@@ -1,11 +1,16 @@
 import React from 'react';
 import Html5Uploader from './html5-uploader';
 import IframeUploader from './iframe-uploader';
+import type { UploadFile } from '../types';
 
-export default class Uploader extends React.Component {
+export default class Uploader extends React.Component<
+    unknown,
+    { Component: typeof Html5Uploader | typeof IframeUploader }
+> {
     state = {
         Component: Html5Uploader,
     };
+    uploaderRef: InstanceType<typeof Html5Uploader> | InstanceType<typeof IframeUploader>;
 
     componentDidMount() {
         if (typeof File === 'undefined') {
@@ -16,15 +21,15 @@ export default class Uploader extends React.Component {
         }
     }
 
-    abort(file) {
+    abort(file: UploadFile) {
         this.uploaderRef.abort(file);
     }
 
-    startUpload(files) {
+    startUpload(files: UploadFile[]) {
         this.uploaderRef.startUpload(files);
     }
 
-    saveUploaderRef = ref => {
+    saveUploaderRef = (ref: InstanceType<typeof Html5Uploader>) => {
         this.uploaderRef = ref;
     };
 

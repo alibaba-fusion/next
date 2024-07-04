@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Button, Icon, Dialog } from '@alifd/next';
+import { type UploadProps, type CardProps } from '@alifd/next/types/upload';
 
-const showImg = url => {
+const showImg = (url: string) => {
     Dialog.show({
         title: 'img preview',
         content: <img src={url} style={{ width: 400, height: 400 }} />,
@@ -10,7 +11,7 @@ const showImg = url => {
     });
 };
 
-const actionRender = file => {
+const actionRender: UploadProps['actionRender'] = file => {
     console.log(file);
     return (
         <span style={{ position: 'absolute', right: 50 }}>
@@ -18,7 +19,7 @@ const actionRender = file => {
                 text
                 onClick={e => {
                     e.preventDefault();
-                    showImg(file.url);
+                    showImg(file.url!);
                 }}
                 size="large"
             >
@@ -31,7 +32,7 @@ const actionRender = file => {
     );
 };
 
-const itemRender = (file, { remove }) => {
+const itemRender: CardProps['itemRender'] = (file, { remove }) => {
     console.log(file);
     return (
         <div>
@@ -53,7 +54,7 @@ const itemRender = (file, { remove }) => {
                 <Icon
                     type="eye"
                     style={{ marginTop: 40, cursor: 'pointer' }}
-                    onClick={() => showImg(file.url)}
+                    onClick={() => showImg(file.url!)}
                 />
                 <span style={{ marginTop: 10, fontSize: 12 }}>06:08</span>
             </div>
@@ -76,6 +77,14 @@ const data = [
     },
 ];
 
+const beforeUpload: UploadProps['beforeUpload'] = info => {
+    console.log('beforeUpload callback : ', info);
+};
+
+const onChange: UploadProps['onChange'] = info => {
+    console.log('onChange callback : ', info);
+};
+
 ReactDOM.render(
     <div>
         <Upload
@@ -84,7 +93,7 @@ ReactDOM.render(
             accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
             beforeUpload={beforeUpload}
             onChange={onChange}
-            fileNameRender={file => (
+            fileNameRender={(file: File) => (
                 <span>
                     <Icon type="attachment" size="xs" style={{ marginRight: 8 }} />
                     {file.name}
@@ -112,11 +121,3 @@ ReactDOM.render(
     </div>,
     mountNode
 );
-
-function beforeUpload(info) {
-    console.log('beforeUpload callback : ', info);
-}
-
-function onChange(info) {
-    console.log('onChange callback : ', info);
-}
