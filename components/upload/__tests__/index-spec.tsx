@@ -143,6 +143,24 @@ describe('Upload', () => {
             cy.get('@onChangeSpy').should('have.been.calledOnce');
             cy.get('@onRemoveSpy').should('have.been.calledOnce');
         });
+
+        it('should support itemRender', () => {
+            cy.mount(
+                <Upload
+                    listType="card"
+                    defaultValue={defaultValue}
+                    itemRender={(file, obj) => {
+                        return (
+                            <div className="upload-card-itemRender" onClick={() => obj.remove?.()}>
+                                {file.name}
+                            </div>
+                        );
+                    }}
+                />
+            );
+            cy.get('.upload-card-itemRender').should('have.length', 1);
+            cy.get('.upload-card-itemRender').should('contain', 'IMG.png');
+        });
     });
 
     describe('[render] drag', () => {
