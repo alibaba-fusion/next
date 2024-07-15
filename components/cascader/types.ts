@@ -179,8 +179,8 @@ export interface CascaderProps
     onExpand?: (expandedValue: Array<string>) => void;
 
     /**
-     * 是否开启虚拟滚动
-     * @en use virtual scroll
+     * 是否开启虚拟滚动，开启后建议设置 listStyle 固定列宽
+     * @en use virtual scroll, recommend set listStyle fixed width when enable
      * @defaultValue false
      */
     useVirtual?: boolean;
