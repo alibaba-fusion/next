@@ -4,13 +4,13 @@ import { Slider } from '@alifd/next';
 
 const settings = {
     className: 'custom-slide',
-    arrowPosition: 'outer',
+    arrowPosition: 'outer' as const,
     dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    onChange: function (index) {
+    onChange: function (index: number) {
         console.log('change Slide index', index);
     },
 };

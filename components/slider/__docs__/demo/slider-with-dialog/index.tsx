@@ -26,12 +26,19 @@ const dialogStyle = {
     width: '800px',
 };
 
-class FlappySlider extends React.Component {
+interface FlappySliderProps {
+    slides: Array<any>;
+}
+interface FlappySliderState {
+    visible: boolean;
+}
+
+class FlappySlider extends React.Component<FlappySliderProps, FlappySliderState> {
     static propTypes = {
         slides: PropTypes.array,
     };
 
-    constructor(props) {
+    constructor(props: FlappySliderProps) {
         super(props);
 
         this.state = {

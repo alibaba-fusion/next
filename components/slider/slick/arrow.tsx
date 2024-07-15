@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../../icon';
 import { obj, func } from '../../util';
+import type { OptionProps, ArrowProps } from '../types';
 
 /**
  * slider arrow
@@ -11,7 +12,7 @@ import { obj, func } from '../../util';
 
 const { noop } = func;
 
-export default class Arrow extends Component {
+export default class Arrow extends Component<ArrowProps> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -36,7 +37,12 @@ export default class Arrow extends Component {
         onMouseLeave: noop,
     };
 
-    static isDisabled(props) {
+    static ARROW_ICON_TYPES = {
+        hoz: { prev: 'arrow-left', next: 'arrow-right' },
+        ver: { prev: 'arrow-up', next: 'arrow-down' },
+    };
+
+    static isDisabled(props: ArrowProps) {
         const { infinite, type, centerMode, currentSlide, slideCount, slidesToShow } = props;
 
         if (infinite) {
@@ -50,13 +56,13 @@ export default class Arrow extends Component {
 
         // 向前箭头：当前是第 0 个
         if (type === 'prev') {
-            return currentSlide <= 0;
+            return currentSlide! <= 0;
         }
 
-        if (centerMode && currentSlide >= slideCount - 1) {
+        if (centerMode && currentSlide! >= slideCount! - 1) {
             // 向后箭头：居中模式，当前 index 大于最大 index
             return true;
-        } else if (currentSlide >= slideCount - slidesToShow) {
+        } else if (currentSlide! >= slideCount! - slidesToShow!) {
             // 向后箭头：普通模式，当前 index 大于 总数 - 下一个 index ？？？
             return true;
         }
@@ -64,12 +70,7 @@ export default class Arrow extends Component {
         return false;
     }
 
-    static ARROW_ICON_TYPES = {
-        hoz: { prev: 'arrow-left', next: 'arrow-right' },
-        ver: { prev: 'arrow-up', next: 'arrow-down' },
-    };
-
-    handleClick(options, e) {
+    handleClick(options: OptionProps, e: React.MouseEvent<HTMLElement>) {
         e && e.preventDefault();
 
         // TODO hack
@@ -77,7 +78,7 @@ export default class Arrow extends Component {
             options.message = 'previous';
         }
 
-        this.props.clickHandler(options, e);
+        this.props.clickHandler?.(options, e);
     }
 
     render() {
@@ -93,7 +94,7 @@ export default class Arrow extends Component {
         } = this.props;
 
         const others = obj.pickOthers(Arrow.propTypes, this.props);
-        const iconType = Arrow.ARROW_ICON_TYPES[arrowDirection][type];
+        const iconType = Arrow.ARROW_ICON_TYPES[arrowDirection!][type!];
         const disabled = Arrow.isDisabled(this.props);
 
         const arrowClazz = classNames(
@@ -114,15 +115,15 @@ export default class Arrow extends Component {
             className: arrowClazz,
             style: { display: 'block' },
             onClick: disabled ? null : this.handleClick.bind(this, { message: type }),
-            onMouseEnter: disabled ? null : onMouseEnter,
-            onMouseLeave: disabled ? null : onMouseLeave,
+            onMouseEnter: disabled ? undefined : onMouseEnter,
+            onMouseLeave: disabled ? undefined : onMouseLeave,
         };
 
         if (children) {
             return React.cloneElement(React.Children.only(children), arrowProps);
         } else {
             return (
-                <button type="button" role="button" {...arrowProps}>
+                <button {...arrowProps}>
                     <Icon type={iconType} />
                 </button>
             );
