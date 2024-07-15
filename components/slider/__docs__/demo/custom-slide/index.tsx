@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { type HTMLAttributes } from 'react';
 import ReactDOM from 'react-dom';
 import { Slider } from '@alifd/next';
 import PropTypes from 'prop-types';
 
 const pages = [1, 2, 3, 4];
 
-function Inner({ children, ...others }) {
+function Inner({ children, ...others }: HTMLAttributes<HTMLDivElement>) {
     // Note that to transparently pass other attributes to the lower node, the Slider needs to perform the element's clone operation.
     return <div {...others}>{children}</div>;
 }

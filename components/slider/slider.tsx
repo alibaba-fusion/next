@@ -1,142 +1,52 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { obj } from '../util';
-import InnerSlider from './slick/inner-slider';
+import InnerSlider, { type ThisType } from './slick/inner-slider';
 import ConfigProvider from '../config-provider';
+import type { SliderProps } from './types';
 
 /**
  * Slider
  */
-export default class Slider extends Component {
+export default class Slider extends React.Component<SliderProps> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 自定义传入的样式
-         */
         className: PropTypes.any,
-        /**
-         * 是否使用自适应高度
-         */
         adaptiveHeight: PropTypes.bool,
-        /**
-         * 动效类型，默认是'slide'
-         */
         animation: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-        /**
-         * 是否显示箭头
-         */
         arrows: PropTypes.bool,
-        /**
-         * 导航箭头大小 可选值: 'medium', 'large'
-         */
         arrowSize: PropTypes.oneOf(['medium', 'large']),
-        /**
-         * 导航箭头位置 可选值: 'inner', 'outer'
-         */
         arrowPosition: PropTypes.oneOf(['inner', 'outer']),
-        /**
-         * 导航箭头的方向 可选值: 'hoz', 'ver'
-         */
         arrowDirection: PropTypes.oneOf(['hoz', 'ver']),
-        /**
-         * 是否自动播放
-         */
         autoplay: PropTypes.bool,
-        /**
-         * 自动播放的速度
-         */
         autoplaySpeed: PropTypes.number,
-        /**
-         * 向后箭头
-         */
         nextArrow: PropTypes.element,
-        /**
-         * 向前箭头
-         */
         prevArrow: PropTypes.element,
-        /**
-         * 是否启用居中模式
-         */
         centerMode: PropTypes.bool,
-        /**
-         * 是否显示导航锚点
-         */
         dots: PropTypes.bool,
-        /**
-         * 导航锚点位置
-         */
         dotsDirection: PropTypes.oneOf(['hoz', 'ver']),
         dotsClass: PropTypes.string,
-        /**
-         * 自定义导航锚点
-         */
         dotsRender: PropTypes.func,
-        /**
-         * 是否可拖拽
-         */
         draggable: PropTypes.bool,
-        /**
-         * 是否使用无穷循环模式
-         */
         infinite: PropTypes.bool,
-        /**
-         * 初始被激活的轮播图
-         */
         defaultActiveIndex: PropTypes.number,
-        /**
-         * 是否启用懒加载
-         */
         lazyLoad: PropTypes.bool,
         slide: PropTypes.string,
-        /**
-         * 轮播方向
-         */
         slideDirection: PropTypes.oneOf(['hoz', 'ver']),
-        /**
-         * 同时展示的图片数量
-         */
         slidesToShow: PropTypes.number,
-        /**
-         * 同时滑动的图片数量
-         */
         slidesToScroll: PropTypes.number,
-        /**
-         * 轮播速度
-         */
         speed: PropTypes.number,
-        /**
-         * 跳转到指定的轮播图（受控）
-         */
         activeIndex: PropTypes.number,
-        /**
-         * 锚点导航触发方式
-         */
         triggerType: PropTypes.oneOf(['click', 'hover']),
-        /**
-         * 轮播切换的回调函数
-         * @param {Number} index 幻灯片的索引
-         */
         onChange: PropTypes.func,
         onBeforeChange: PropTypes.func, // 兼容 0.x onBeforeChange
         children: PropTypes.any,
-        /**
-         * 自定义传入的class
-         */
         style: PropTypes.object,
-        /**
-         * Side padding when in center mode (px or %); 展示部分为center，pading会产生前后预览
-         */
         centerPadding: PropTypes.string,
-        /**
-         * CSS3 Animation Easing,默认‘ease’
-         */
         cssEase: PropTypes.string, // used
         edgeFriction: PropTypes.number, // 非无限轮播滑动到边缘时的阻力
-        /**
-         * 多图轮播时，点击选中后自动居中
-         */
         focusOnSelect: PropTypes.bool,
         pauseOnHover: PropTypes.bool, // 鼠标经过时停止播放
         swipe: PropTypes.bool,
@@ -198,17 +108,20 @@ export default class Slider extends Component {
         triggerType: 'click',
     };
 
+    innerSlider: ThisType | null;
+
     resize = () => {
         // export api
-        this.innerSlider.onWindowResized();
+        this.innerSlider?.onWindowResized();
     };
 
     render() {
         const { prefix, arrowPosition, slideDirection, style, className, children } = this.props;
 
-        const globalProps = {};
+        const globalProps: Partial<SliderProps> = {};
         Object.keys(ConfigProvider.propTypes).forEach(key => {
-            globalProps[key] = this.props[key];
+            globalProps[key as keyof Partial<SliderProps>] =
+                this.props[key as keyof typeof this.props];
         });
 
         const sliderProps = obj.pickOthers(['className', 'style', 'slideDirection'], this.props);
@@ -251,7 +164,7 @@ export default class Slider extends Component {
                     )}
                 >
                     <InnerSlider
-                        ref={InnerSlider => (this.innerSlider = InnerSlider)}
+                        ref={InnerSlider => (this.innerSlider = InnerSlider as ThisType | null)}
                         {...sliderProps}
                     />
                 </div>

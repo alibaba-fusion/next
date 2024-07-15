@@ -1,10 +1,11 @@
 import { findDOMNode } from 'react-dom';
 import { getTrackCSS, getTrackLeft, getTrackAnimateCSS } from './trackHelper';
+import type { OptionProps } from '../../types';
 
 /* istanbul ignore next */
 const EventHandlers = {
     // Event handler for previous and next
-    changeSlide(options) {
+    changeSlide(options: OptionProps) {
         let slideOffset, targetSlide;
         const unevenOffset = this.state.slideCount % this.props.slidesToScroll !== 0;
         const indexOffset = unevenOffset
@@ -22,7 +23,7 @@ const EventHandlers = {
             targetSlide = this.state.currentSlide + slideOffset;
         } else if (options.message === 'dots' || options.message === 'children') {
             // Click on dots
-            targetSlide = options.index * options.slidesToScroll;
+            targetSlide = options.index! * options.slidesToScroll!;
             if (targetSlide === options.currentSlide) {
                 return;
             }
@@ -36,9 +37,9 @@ const EventHandlers = {
     },
 
     // Accessiblity handler for previous and next
-    keyHandler(e) {
+    keyHandler(e: KeyboardEvent) {
         //Dont slide if the cursor is inside the form fields and arrow keys are pressed
-        if (!e.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
+        if (!(e.target as HTMLElement).tagName.match('TEXTAREA|INPUT|SELECT')) {
             if (e.keyCode === 37 && this.props.accessibility === true) {
                 this.changeSlide({
                     message: this.props.rtl === true ? 'next' : 'previous',
@@ -52,11 +53,11 @@ const EventHandlers = {
     },
 
     // Focus on selecting a slide (click handler on track)
-    selectHandler(options) {
+    selectHandler(options: OptionProps) {
         this.changeSlide(options);
     },
 
-    swipeStart(e) {
+    swipeStart(e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) {
         if (
             this.props.swipe === false ||
             ('ontouchend' in document && this.props.swipe === false)
@@ -65,8 +66,8 @@ const EventHandlers = {
         } else if (this.props.draggable === false && e.type.indexOf('mouse') !== -1) {
             return;
         }
-        const posX = e.touches !== undefined ? e.touches[0].pageX : e.clientX;
-        const posY = e.touches !== undefined ? e.touches[0].pageY : e.clientY;
+        const posX = 'touches' in e ? e.touches[0].pageX : e.clientX;
+        const posY = 'touches' in e ? e.touches[0].pageY : e.clientY;
         this.setState({
             dragging: true,
             touchObject: {
@@ -78,7 +79,7 @@ const EventHandlers = {
         });
     },
 
-    swipeMove(e) {
+    swipeMove(e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) {
         if (!this.state.dragging) {
             return;
         }
@@ -94,8 +95,8 @@ const EventHandlers = {
             ...this.state,
         });
 
-        touchObject.curX = e.touches ? e.touches[0].pageX : e.clientX;
-        touchObject.curY = e.touches ? e.touches[0].pageY : e.clientY;
+        touchObject.curX = 'touches' in e ? e.touches[0].pageX : e.clientX;
+        touchObject.curY = 'touches' in e ? e.touches[0].pageY : e.clientY;
         touchObject.swipeLength = Math.round(
             Math.sqrt(Math.pow(touchObject.curX - touchObject.startX, 2))
         );
@@ -183,7 +184,7 @@ const EventHandlers = {
         return indexes;
     },
 
-    checkNavigable(index) {
+    checkNavigable(index: number) {
         const navigables = this.getNavigableIndexes();
         let prevNavigable = 0;
 
@@ -191,12 +192,14 @@ const EventHandlers = {
             index = navigables[navigables.length - 1];
         } else {
             for (const n in navigables) {
-                if (index < navigables[n]) {
-                    index = prevNavigable;
-                    break;
-                }
+                if (Object.prototype.hasOwnProperty.call(navigables, n)) {
+                    if (index < navigables[n]) {
+                        index = prevNavigable;
+                        break;
+                    }
 
-                prevNavigable = navigables[n];
+                    prevNavigable = navigables[n];
+                }
             }
         }
 
@@ -208,12 +211,14 @@ const EventHandlers = {
             ? this.state.slideWidth * Math.floor(this.props.slidesToShow / 2)
             : 0;
         if (this.props.swipeToSlide) {
-            let swipedSlide;
+            let swipedSlide: HTMLElement | undefined;
             const slickList = findDOMNode(this.list);
 
-            const slides = slickList.querySelectorAll(`${this.props.prefix}slick-slide`);
+            const slides = (slickList as Element).querySelectorAll(
+                `${this.props.prefix}slick-slide`
+            );
 
-            Array.from(slides).every(slide => {
+            Array.from(slides as unknown as HTMLElement[]).every(slide => {
                 if (!this.props.vertical) {
                     if (
                         slide.offsetLeft - centerOffset + (this.getWidth(slide) || 0) / 2 >
@@ -233,14 +238,14 @@ const EventHandlers = {
                 return true;
             });
             const slidesTraversed =
-                Math.abs(swipedSlide.dataset.index - this.state.currentSlide) || 1;
+                Math.abs(parseInt(swipedSlide!.dataset!.index!) - this.state.currentSlide) || 1;
             return slidesTraversed;
         } else {
             return this.props.slidesToScroll;
         }
     },
 
-    swipeEnd(e) {
+    swipeEnd(e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) {
         if (!this.state.dragging) {
             if (this.props.swipe) {
                 e.preventDefault();
