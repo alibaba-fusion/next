@@ -580,13 +580,13 @@ export interface MenuProps
      * 当前选中菜单项的 key 值（受控）
      * @en keys of selected menu item currently（controlled）
      */
-    selectedKeys?: string | string[];
+    selectedKeys?: string | string[] | null;
 
     /**
      * 初始选中菜单项的 key 值（非受控）
      * @en keys of selected menu item in default（uncontrolled）
      */
-    defaultSelectedKeys?: string | string[];
+    defaultSelectedKeys?: string | string[] | null;
 
     /**
      * 选中或取消选中菜单项触发的回调函数

@@ -59,4 +59,46 @@ describe('issue in AutoComplete', () => {
         cy.get('.next-select input').type('t');
         cy.get('.next-menu-item').should('have.length', 1);
     });
+
+    it('should be able to select multiple options while enable option filtering with keyword input in multi-select mode', () => {
+        const dataSource = [
+            { value: '10001', label: 'Lucy King' },
+            { value: '10002', label: 'Ami Lucky' },
+            { value: '10003', label: 'Tom Cat' },
+            { value: '10003', label: 'Serge Cat' },
+        ];
+
+        cy.mount(
+            <Select
+                dataSource={dataSource}
+                filterLocal
+                hiddenSelected={false}
+                mode="multiple"
+                showSearch
+                style={{ width: '300px' }}
+                autoClearSearchValue={false}
+            />
+        );
+        cy.get('.next-select input').type('l');
+        cy.get('.next-menu-item').should('have.length', 2);
+        cy.get('.next-menu-item').eq(1).click();
+        cy.get('.next-menu-item').should('have.length', 2);
+
+        // Tag mode 时，也应该支持
+        cy.mount(
+            <Select
+                dataSource={dataSource}
+                filterLocal
+                hiddenSelected={false}
+                mode="tag"
+                showSearch
+                style={{ width: '300px' }}
+                autoClearSearchValue={false}
+            />
+        );
+        cy.get('.next-select input').type('l');
+        cy.get('.next-menu-item').should('have.length', 3);
+        cy.get('.next-menu-item').eq(1).click();
+        cy.get('.next-menu-item').should('have.length', 3);
+    });
 });

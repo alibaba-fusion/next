@@ -390,7 +390,13 @@ class Picker extends React.Component {
             return false;
         }
 
-        return values.some(value => {
+        const valuesFiltered = values.filter(value => !!value);
+
+        if (!valuesFiltered.length) {
+            return false;
+        }
+
+        return valuesFiltered.some(value => {
             return disabledDate(value, panelMode);
         });
     };
@@ -406,6 +412,20 @@ class Picker extends React.Component {
                     return;
                 }
                 this.handleChange(inputValue, 'KEYDOWN_ENTER');
+                break;
+            }
+            case KEYCODE.SPACE: {
+                const { inputValue, isRange, inputType } = this.state;
+                this.onClick();
+                if (isRange) {
+                    const updatedInputValue = [...inputValue];
+                    updatedInputValue[inputType] = updatedInputValue[inputType] + ' ';
+                    this.setState({ inputValue: updatedInputValue })
+                } else {
+                    this.setState({
+                        inputValue: inputValue + ' '
+                    })
+                }
                 break;
             }
             default:
@@ -441,7 +461,6 @@ class Picker extends React.Component {
                         !isRange ||
                         ['CLICK_PRESET', 'VISIBLE_CHANGE', 'INPUT_CLEAR'].includes(eventType) ||
                         !this.shouldSwitchInput(v);
-
                     if (shouldHidePanel) {
                         this.onVisibleChange(false);
 
@@ -680,7 +699,7 @@ class Picker extends React.Component {
         );
 
         // 底部节点
-        const oKable = !!(isRange ? inputValue && inputValue[inputType] : inputValue);
+        const oKable = !!(!this.checkValueDisabled(inputValue) && (isRange ? inputValue && inputValue[inputType] : inputValue));
         const shouldShowFooter = showOk || preset || extraFooterRender;
 
         const footerNode = shouldShowFooter ? (

@@ -54,6 +54,8 @@ const getSlideStyle = function (specProps) {
 
         style.opacity = specProps.currentSlide === specProps.activeIndex ? 1 : 0;
         style.visibility = 'visible';
+        style.zIndex = specProps.currentSlide === specProps.activeIndex ? 1 : 0;
+        
         style.transition = `opacity ${specProps.speed}ms ${specProps.cssEase}`;
         style.WebkitTransition = `opacity ${specProps.speed}ms ${specProps.cssEase}`;
 

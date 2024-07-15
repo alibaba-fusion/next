@@ -16,6 +16,8 @@ const trigger = (
         xiachi
     </span>
 );
+const delay = time => new Promise(resolve => setTimeout(resolve, time));
+
 describe('Tooltip', () => {
     let defaultWrapper = {};
 
@@ -98,5 +100,25 @@ describe('Tooltip', () => {
             assert(document.querySelector('.next-balloon-tooltip') !== null);
             done();
         }, 300);
+    });
+
+    it('add mouseEnterDelay and mouseLeaveDelay, with higher priority than delay.', async () => {
+        const wrapper = mount(<Tooltip trigger={<div>trigger1111111</div>} delay={500} mouseEnterDelay={1000} mouseLeaveDelay={1000}>test</Tooltip>);
+
+        wrapper.find('div').simulate('mouseenter');
+
+        await delay(500);
+        assert(document.querySelector('.next-balloon-tooltip') === null);
+
+        await delay(550);
+        assert(document.querySelector('.next-balloon-tooltip') !== null);
+
+        wrapper.find('div').simulate('mouseleave');
+
+        await delay(500);
+        assert(document.querySelector('.next-balloon-tooltip') !== null);
+
+        await delay(1000);
+        assert(document.querySelector('.next-balloon-tooltip') === null);
     });
 });

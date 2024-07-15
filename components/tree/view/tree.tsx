@@ -1,4 +1,5 @@
 import React, { Component, Children, cloneElement, createRef } from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import { cloneDeep } from 'lodash';
 import { polyfill } from 'react-lifecycles-compat';
@@ -415,6 +416,7 @@ export class Tree extends Component<TreeProps, TreeState> {
     dragNode: NodeInstance | null;
     dragNodesKeys: Key[];
 
+    normalListRef: React.MutableRefObject<HTMLUListElement | null>;
     virtualListRef: React.RefObject<VirtualList>;
 
     constructor(props: TreeProps) {
@@ -466,8 +468,9 @@ export class Tree extends Component<TreeProps, TreeState> {
             this.tabbableKey = this.getFirstAvaliablelChildKey('0');
         }
 
-        bindCtx(this, ['handleExpand', 'handleSelect', 'handleCheck', 'handleBlur']);
+        bindCtx(this, ['handleExpand', 'handleSelect', 'handleCheck', 'handleBlur', 'setListRef']);
 
+        this.normalListRef = createRef();
         this.virtualListRef = createRef();
     }
 
@@ -529,6 +532,23 @@ export class Tree extends Component<TreeProps, TreeState> {
             _k2n: k2n,
             _p2n: p2n,
         };
+    }
+
+    scrollFilterNodeIntoView(arg?: boolean) {
+        const { prefix } = this.props;
+        try {
+            const treeNode = findDOMNode(this.normalListRef.current) as HTMLElement;
+            const itemNode = treeNode.querySelector<
+                HTMLLIElement & { scrollIntoViewIfNeeded: (centerIfNeeded?: boolean) => void }
+            >(`.${prefix}tree-node.${prefix}filtered`);
+            if (!itemNode) return;
+            itemNode.scrollIntoViewIfNeeded
+                ? itemNode.scrollIntoViewIfNeeded(arg)
+                : itemNode.scrollIntoView?.(arg);
+        } catch (ex) {
+            // eslint-disable-next-line no-console
+            console.warn(ex);
+        }
     }
 
     setFocusKey() {
@@ -614,7 +634,7 @@ export class Tree extends Component<TreeProps, TreeState> {
 
         let focusedKey = this.state.focusedKey;
 
-        const node = this.state._k2n[key];
+        const node = item;
         const pos = this.state._k2n[key].pos;
         const level = pos!.split('-').length - 1;
         switch (e.keyCode) {
@@ -696,7 +716,7 @@ export class Tree extends Component<TreeProps, TreeState> {
         this.props.onBlur && this.props.onBlur(e);
     }
 
-    handleExpand(expand: boolean, key: string, node: NodeInstance | DataNode) {
+    handleExpand(expand: boolean, key: string, node: NodeInstance) {
         const { onExpand, loadData } = this.props;
         const expandedKeys = this.state.expandedKeys; // 由于setState 是异步操作，所以去掉 [...this.state.expandedKeys]
         this.processKey(expandedKeys, key, expand);
@@ -704,12 +724,10 @@ export class Tree extends Component<TreeProps, TreeState> {
             if (!('expandedKeys' in this.props)) {
                 this.setState({ expandedKeys });
             }
-            // @ts-expect-error must be NodeInstance type, but it's maybe DataNode type.
-            onExpand(expandedKeys, { expanded: expand, node });
+            onExpand!(expandedKeys, { expanded: expand, node });
         };
 
         if (expand && loadData) {
-            // @ts-expect-error must be NodeInstance type, but it's maybe DataNode type.
             return loadData(node).then(setExpandedState);
         } else {
             setExpandedState();
@@ -719,7 +737,7 @@ export class Tree extends Component<TreeProps, TreeState> {
     handleSelect(
         select: boolean,
         key: string,
-        node: NodeInstance | DataNode,
+        node: NodeInstance,
         e: React.KeyboardEvent | React.MouseEvent
     ) {
         const { multiple, onSelect } = this.props;
@@ -736,7 +754,6 @@ export class Tree extends Component<TreeProps, TreeState> {
         onSelect!(selectedKeys, {
             // @ts-expect-error must be NodeInstance type, but it's maybe be DataNode type.
             selectedNodes: this.getNodes(selectedKeys),
-            // @ts-expect-error must be NodeInstance type, but it's maybe be DataNode type.
             node,
             selected: select,
             event: e,
@@ -744,7 +761,7 @@ export class Tree extends Component<TreeProps, TreeState> {
     }
 
     // eslint-disable-next-line max-statements
-    handleCheck(check: boolean, key: string, node: NodeInstance | DataNode) {
+    handleCheck(check: boolean, key: string, node: NodeInstance) {
         const { checkStrictly, checkedStrategy, onCheck } = this.props;
         const { _k2n, _p2n } = this.state;
         const checkedKeys = [...this.state.checkedKeys];
@@ -868,7 +885,6 @@ export class Tree extends Component<TreeProps, TreeState> {
                     return { node, pos };
                 })
                 .filter(v => !!v),
-            // @ts-expect-error must be NodeInstance type, but it's maybe be DataNode type.
             node,
             indeterminateKeys,
             checked: check,
@@ -1200,6 +1216,15 @@ export class Tree extends Component<TreeProps, TreeState> {
         return loop(this.props.children);
     }
 
+    setListRef(ref?: React.RefCallback<HTMLUListElement>): React.RefCallback<HTMLUListElement> {
+        return c => {
+            if (typeof ref === 'function') {
+                ref(c);
+            }
+            this.normalListRef.current = c;
+        };
+    }
+
     render() {
         const {
             prefix,
@@ -1234,12 +1259,12 @@ export class Tree extends Component<TreeProps, TreeState> {
 
         const treeRender = (
             items: (React.ReactElement | React.ReactElement[])[],
-            ref?: React.RefObject<HTMLUListElement>
+            ref?: React.RefCallback<HTMLUListElement>
         ) => {
             return (
                 <ul
                     role="tree"
-                    ref={ref}
+                    ref={this.setListRef(ref)}
                     aria-multiselectable={multiple}
                     onBlur={this.handleBlur}
                     className={newClassName}
@@ -1259,7 +1284,7 @@ export class Tree extends Component<TreeProps, TreeState> {
                         ref={this.virtualListRef}
                         itemsRenderer={(
                             items: React.ReactElement[],
-                            ref: React.RefObject<HTMLUListElement>
+                            ref: React.RefCallback<HTMLUListElement>
                         ) => treeRender(items, ref)}
                         {...virtualListProps}
                     >

@@ -54,6 +54,14 @@ class Popup extends Component {
          */
         delay: PropTypes.number,
         /**
+         * 鼠标放置后的延时显示, 单位毫秒 ms
+         */
+        mouseEnterDelay: PropTypes.number,
+        /**
+         * 鼠标离开后的延时显示, 单位毫秒 ms
+         */
+        mouseLeaveDelay: PropTypes.number,
+        /**
          * trigger 是否可以关闭弹层
          */
         canCloseByTrigger: PropTypes.bool,
@@ -184,7 +192,7 @@ class Popup extends Component {
         if (!this.state.visible) {
             this._showTimer = setTimeout(() => {
                 this.handleVisibleChange(true, 'fromTrigger', e);
-            }, this.props.delay);
+            }, (this.props.mouseEnterDelay === null || this.props.mouseEnterDelay === undefined) ? this.props.delay : this.props.mouseEnterDelay);
         }
     }
 
@@ -196,7 +204,7 @@ class Popup extends Component {
         if (this.state.visible) {
             this._hideTimer = setTimeout(() => {
                 this.handleVisibleChange(false, type || 'fromTrigger', e);
-            }, this.props.delay);
+            }, (this.props.mouseLeaveDelay === null || this.props.mouseLeaveDelay === undefined) ? this.props.delay : this.props.mouseLeaveDelay);
         }
     }
 

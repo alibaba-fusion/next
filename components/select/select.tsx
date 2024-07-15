@@ -94,6 +94,7 @@ class Select extends Base<SelectProps, SelectState> {
         locale: PropTypes.object,
         popupAutoFocus: PropTypes.bool,
         showDataSourceChildren: PropTypes.bool,
+        autoClearSearchValue: PropTypes.bool,
     };
 
     static defaultProps: SelectProps = {
@@ -119,6 +120,7 @@ class Select extends Base<SelectProps, SelectState> {
         onMouseLeave: noop,
         popupAutoFocus: false,
         tagClosable: true,
+        autoClearSearchValue: true,
     };
 
     static displayName = 'Select';
@@ -393,7 +395,7 @@ class Select extends Base<SelectProps, SelectState> {
             this.dataStore.getMapDS()
         );
 
-        const { cacheValue, mode, hiddenSelected } = this.props;
+        const { cacheValue, mode, hiddenSelected, autoClearSearchValue } = this.props;
 
         // cache those value maybe not exists in dataSource
         if (cacheValue || mode === 'tag') {
@@ -421,7 +423,12 @@ class Select extends Base<SelectProps, SelectState> {
         this.updateSelectAllYet(itemObj.value);
 
         // 清空搜索
-        if (!('searchValue' in this.props) && this.state.searchValue && !keepSearchValue) {
+        if (
+            !('searchValue' in this.props) &&
+            this.state.searchValue &&
+            !keepSearchValue &&
+            !(mode && ['multiple', 'tag'].includes(mode) && !autoClearSearchValue)
+        ) {
             // 因为 SearchValue 被 clear 后会重新渲染 Menu，所以在 Overlay 检测 safeNode 的时候 e.target 可能会找不到导致弹窗关闭
             setTimeout(() => {
                 this.handleSearchClear(triggerType);

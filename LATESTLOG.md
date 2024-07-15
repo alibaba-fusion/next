@@ -1,9 +1,14 @@
 # Latest Log 
 
-## [1.27.13](https://github.com/alibaba-fusion/next/compare/1.27.12...1.27.13) (2024-06-11)
+## [1.27.15](https://github.com/alibaba-fusion/next/compare/1.27.14...1.27.15) (2024-07-05)
+
+
+### Features
+
+* **Tree:** the Tree component provides the scrollFilterNodeIntoView API ([#4860](https://github.com/alibaba-fusion/next/issues/4860)) ([9df35fe](https://github.com/alibaba-fusion/next/commit/9df35fea5efdd7b2b87926f308eb7e4f7eefafd0))
 
 
 ### Bug Fixes
 
-* **Select:** remove duplicate values when selecting all options in multiple mode ([aed4c97](https://github.com/alibaba-fusion/next/commit/aed4c9721ab7108fe90fadb325a718f760e1fd5d))
+* **DatePicker2:** unable to enter space to enter time ([65faba2](https://github.com/alibaba-fusion/next/commit/65faba254b349ead3642b3efafab67023ed98a07))
 

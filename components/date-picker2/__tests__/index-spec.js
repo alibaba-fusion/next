@@ -139,6 +139,39 @@ describe('Picker', () => {
             assert.deepEqual(getStrValue(), ['', '2020-01-01 00:00:00']);
         });
 
+        it('disable ok when input disabledDate', () => {
+            wrapper = mount(
+                <DatePicker
+                    showOk
+                    showTime
+                    disabledDate={v => v.isBefore(dayjs('2024-06-22 00:00:00'))}
+                    defaultVisible
+                />
+            );
+
+            changeInput('2024-06-19 11:12:13');
+            assert.deepEqual(
+                wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'),
+                true
+            );
+            wrapper.unmount();
+
+            wrapper = mount(
+                <RangePicker
+                    showOk
+                    showTime
+                    disabledDate={v => v.isBefore(dayjs('2024-06-22 00:00:00'))}
+                    defaultVisible
+                />
+            );
+
+            changeInput('2024-06-19 11:12:13', 1);
+            assert.deepEqual(
+                wrapper.find('button.next-date-picker2-footer-ok').prop('disabled'),
+                true
+            );
+        });
+
         it('showTime', () => {
             [DatePicker, RangePicker].forEach(Picker => {
                 const defaultValue =
@@ -1181,6 +1214,23 @@ describe('Picker', () => {
             );
             assert(getStrValue() === 'Feb 2, 2020');
             assert(wrapper.find(`.next-calendar2-header-text-field`).text() === `Feb2020`);
+        })
+
+        // fix https://github.com/alibaba-fusion/next/issues/4790
+        it('Unable to enter space to enter time', () => {
+            wrapper = mount(
+                <DatePicker showTime />
+            );
+            changeInput('2020-11-11');
+            findInput().simulate('keydown', { keyCode: KEYCODE.SPACE });
+            assert(getStrValue(wrapper) === '2020-11-11 ');
+            wrapper.unmount();
+            wrapper = mount(
+                <RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+            );
+            changeInput('2020-11-11', 0);
+            findInput(0).simulate('keydown', { keyCode: KEYCODE.SPACE });
+            assert(getStrValue(wrapper).join(',') === '2020-11-11 ,');
         })
     });
 });
