@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ChangeEvent } from 'react';
 import ReactDOM from 'react-dom';
 import { Slider } from '@alifd/next';
 
@@ -21,17 +21,25 @@ const slides = [
     },
 ];
 
-class SlickGoTo extends React.Component {
-    constructor(props) {
+interface SlickGoToProps {
+    // Define any props if needed
+}
+
+interface SlickGoToState {
+    index: number;
+}
+
+class SlickGoTo extends React.Component<SlickGoToProps, SlickGoToState> {
+    constructor(props: SlickGoToProps) {
         super(props);
         this.state = {
             index: 0, // The initial value here need to be set to 0 for `activeIndex`. If you want the initial as 0 , you can use the `defaultActiveIndex` property to set.
         };
         this.changeHandler = this.changeHandler.bind(this);
     }
-    changeHandler(e) {
+    changeHandler(e: ChangeEvent<HTMLInputElement>) {
         this.setState({
-            index: parseInt(e.target.value),
+            index: parseInt(e.target?.value),
         });
     }
     render() {

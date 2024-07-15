@@ -7,7 +7,7 @@ const settings = {
     centerMode: true,
     infinite: true,
     dots: false,
-    arrowPosition: 'outer',
+    arrowPosition: 'outer' as const,
     centerPadding: '60px',
     slidesToShow: 3,
     speed: 500,

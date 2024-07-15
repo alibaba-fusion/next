@@ -1,33 +1,9 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import Promise from 'promise-polyfill';
 import Slider from '../index';
-import ReactTestUtils from 'react-dom/test-utils';
 import '../style';
 
-/* eslint-disable */
-Enzyme.configure({ adapter: new Adapter() });
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
-
 describe('Issue', () => {
-    let dataSource = [
-            { id: '1', name: 'test' },
-            { id: '2', name: 'test2' },
-        ],
-        table,
-        timeout,
-        wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-    it('should support scale', done => {
+    it('should support scale', () => {
         const container = document.createElement('div');
         document.body.appendChild(container);
 
@@ -68,21 +44,15 @@ describe('Issue', () => {
                 );
             }
         }
-
-        ReactDOM.render(<App />, container, function () {
-            setTimeout(() => {
-                const sliderList = container.querySelectorAll('.next-slick-list');
-                assert(sliderList[0].style.height === `${sliderList[0].clientHeight}px`);
-
-                ReactDOM.unmountComponentAtNode(container);
-                document.body.removeChild(container);
-                done();
-            }, 100);
+        cy.mount(<App />);
+        cy.then(() => {
+            const sliderList = document.querySelectorAll<HTMLElement>('.next-slick-list');
+            expect(sliderList[0].style.height).to.equal(`${sliderList[0].clientHeight}px`);
         });
     });
 
     // https://github.com/alibaba-fusion/next/issues/4533
-    it('should not affect index after calling onChange hook', async () => {
+    it('should not affect index after calling onChange hook', () => {
         const slides = [1, 2, 3, 4].map((item, index) => (
             <div key={index} className="custom-slick-item" style={{ width: '500px' }}>
                 <h3>{item}</h3>
@@ -92,40 +62,36 @@ describe('Issue', () => {
             const [idx, setIdx] = useState(0);
             const settings = {
                 infinite: false,
-                arrowPosition: 'outer',
+                arrowPosition: 'outer' as const,
                 dots: false,
-                infinite: false,
                 speed: 500,
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                onChange: function (index) {
+                waitForAnimate: false,
+                onChange: function (index: number) {
                     setIdx(index);
                 },
             };
 
             return <Slider {...settings}>{slides}</Slider>;
         }
-        const root = document.createElement('div');
-        document.body.appendChild(root);
-        wrapper = mount(<DemoSlider />, { attachTo: root });
-
-        const isIndexActive = index => {
-            const el = root.querySelector(`.next-slick-slide[data-index="${index}"]`);
-            return el && el.classList.contains('next-slick-active');
-        };
-        assert(isIndexActive(0));
-        ReactTestUtils.Simulate.click(root.querySelector('.next-slick-next'));
-        await delay(800);
-        assert(isIndexActive(1));
-
-        ReactTestUtils.Simulate.click(root.querySelector('.next-slick-next'));
-        await delay(800);
-        assert(isIndexActive(2));
+        cy.mount(<DemoSlider />);
+        cy.get('.next-slick-slide[data-index="0"]').should('have.class', 'next-slick-active');
+        cy.get('.next-slick-next').click({ force: true });
+        cy.get('.next-slick-slide[data-index="1"]', { timeout: 800 }).should(
+            'have.class',
+            'next-slick-active'
+        );
+        cy.get('.next-slick-next').click({ force: true });
+        cy.get('.next-slick-slide[data-index="2"]', { timeout: 800 }).should(
+            'have.class',
+            'next-slick-active'
+        );
     });
 
-    it('The last element covers on top when the Slider component is set to fade effect,close #4710', async () => {
+    it('The last element covers on top when the Slider component is set to fade effect,close #4710', () => {
         const settings = {
-            arrowPosition: 'outer',
+            arrowPosition: 'outer' as const,
             dots: false,
             animation: 'fade',
             infinite: true,
@@ -134,38 +100,30 @@ describe('Issue', () => {
             slidesToScroll: 1,
             className: 'custom-slide',
         };
-        let i = 1;
-        const root = document.createElement('div');
-        document.body.appendChild(root);
-        wrapper = mount(
-            <Slider {...settings} >
+        const clickSpy = cy.spy().as('onClick');
+        cy.mount(
+            <Slider {...settings}>
                 {[1, 2, 3, 4, 5, 6].map(function (d) {
                     return (
                         <div key={d}>
-                            <h3
-                                onClick={(e) => {
-                                    assert(d === i);
-                                }}
-                            >
-                                {d}
-                            </h3>
+                            <h3 onClick={clickSpy}>{d}</h3>
                         </div>
                     );
                 })}
-            </Slider>,
-            { attachTo: root }
+            </Slider>
         );
-        ReactTestUtils.Simulate.click(root.querySelector('.next-slick-next'));
-        await delay(800);
-        i = 2;
-        const element = root.querySelector('.next-slick-list');
-        element.scrollIntoView()
-        const boundingRect = element.getBoundingClientRect();
-        const clientX = boundingRect.left + boundingRect.width / 2;
-        const clientY = boundingRect.top + boundingRect.height / 2;
+        cy.get('.next-slick-next').click({ force: true });
+        cy.get('.next-slick-list', { timeout: 800 }).then($element => {
+            const element = $element[0];
+            element.scrollIntoView();
+            const boundingRect = element.getBoundingClientRect();
+            const clientX = boundingRect.left + boundingRect.width / 2;
+            const clientY = boundingRect.top + boundingRect.height / 2;
 
-        const clickedElement = document.elementFromPoint(clientX, clientY);
-        clickedElement.click();
-
+            const clickedElement = document.elementFromPoint(clientX, clientY);
+            cy.wrap(clickedElement).click({ force: true });
+            cy.wrap(clickedElement).should('have.text', '2');
+            cy.get('@onClick').should('have.been.called');
+        });
     });
 });

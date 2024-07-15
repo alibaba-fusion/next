@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type HTMLAttributes } from 'react';
 import ReactDOM from 'react-dom';
 import { Slider, Icon } from '@alifd/next';
 
@@ -28,7 +28,7 @@ const arrowStyle = {
     margin: '0 20px',
 };
 
-const CustomNextArrow = props => {
+const CustomNextArrow = (props: HTMLAttributes<HTMLDivElement>) => {
     return (
         <div {...props} style={arrowStyle}>
             <Icon type="arrow-double-right" />
@@ -36,7 +36,7 @@ const CustomNextArrow = props => {
     );
 };
 
-const CustomPrevArrow = props => {
+const CustomPrevArrow = (props: HTMLAttributes<HTMLDivElement>) => {
     return (
         <div {...props} style={arrowStyle}>
             <Icon type="arrow-double-left" />
