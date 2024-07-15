@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import { events, func, obj } from '../../util';
@@ -7,6 +7,7 @@ import HelpersMixin from './mixins/helpers';
 import Arrow from './arrow';
 import Track from './track';
 import Dots from './dots';
+import type { InnerSliderProps, InnerSliderState } from '../types';
 
 /**
  * Slider inner
@@ -14,7 +15,11 @@ import Dots from './dots';
 
 const { noop } = func;
 
-class InnerSlider extends React.Component {
+export type ThisType = InstanceType<typeof InnerSlider> &
+    typeof HelpersMixin &
+    typeof EventHandlersMixin;
+
+class InnerSlider extends React.Component<InnerSliderProps, InnerSliderState> {
     static propTypes = {
         prefix: PropTypes.string,
         animation: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
@@ -53,7 +58,14 @@ class InnerSlider extends React.Component {
         triggerType: 'click',
     };
 
-    constructor(props) {
+    private hasMounted: boolean = false;
+    private animationEndCallback: NodeJS.Timeout | undefined;
+    private pArrow?: HTMLDivElement;
+    private nArrow?: HTMLDivElement;
+    private list?: HTMLDivElement;
+    private track?: HTMLDivElement;
+
+    constructor(props: InnerSliderProps) {
         super(props);
 
         this.state = {
@@ -102,10 +114,10 @@ class InnerSlider extends React.Component {
         ]);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const state = {};
+    static getDerivedStateFromProps(nextProps: InnerSliderProps, prevState: InnerSliderState) {
+        const state: InnerSliderState = {};
 
-        const { lazyLoad, children, slidesToShow, activeIndex } = nextProps;
+        const { lazyLoad, children, slidesToShow } = nextProps;
         const { currentSlide } = prevState;
         const lazyLoadedList = [];
 
@@ -116,7 +128,7 @@ class InnerSlider extends React.Component {
 
         if (lazyLoad) {
             for (let i = 0, j = React.Children.count(children); i < j; i++) {
-                if (i >= currentSlide && i < currentSlide + slidesToShow) {
+                if (i >= currentSlide! && i < currentSlide! + slidesToShow!) {
                     lazyLoadedList.push(i);
 
                     const pre = i - 1 < 0 ? j - 1 : i - 1;
@@ -127,7 +139,7 @@ class InnerSlider extends React.Component {
                 }
             }
 
-            if (prevState.lazyLoadedList.length === 0) {
+            if (prevState.lazyLoadedList!.length === 0) {
                 state.lazyLoadedList = lazyLoadedList;
             }
         }
@@ -135,7 +147,7 @@ class InnerSlider extends React.Component {
         return state;
     }
 
-    componentDidMount() {
+    componentDidMount(this: ThisType) {
         this.hasMounted = true;
 
         // TODO Hack for autoplay -- Inspect Later
@@ -153,26 +165,29 @@ class InnerSlider extends React.Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(this: ThisType, prevProps: InnerSliderProps, prevState: InnerSliderState) {
         if (prevProps.activeIndex !== this.props.activeIndex) {
-            this.slickGoTo(this.props.activeIndex);
-        } else if (prevState.currentSlide >= this.props.children.length) {
+            this.slickGoTo(this.props.activeIndex!);
+        } else if (prevState.currentSlide! >= (this.props.children as ReactElement[]).length) {
             this.update(this.props);
             this.changeSlide({
                 message: 'index',
-                index: this.props.children.length - this.props.slidesToShow,
+                index: (this.props.children as ReactElement[]).length - this.props.slidesToShow!,
                 currentSlide: this.state.currentSlide,
             });
         } else {
-            const diffKeys = [];
-            Object.keys(prevProps).forEach(key => {
+            const diffKeys: string[] = [];
+            Object.keys(prevProps).forEach((key: keyof InnerSliderProps) => {
                 if (key in this.props && prevProps[key] !== this.props[key]) {
                     diffKeys.push(key);
                 }
             });
             // children 每次都会不同，所以不需要检测
             if (
-                diffKeys.every(key => key === 'children' || typeof this.props[key] === 'function')
+                diffKeys.every(
+                    (key: keyof InnerSliderProps) =>
+                        key === 'children' || typeof this.props[key] === 'function'
+                )
             ) {
                 // do nothing;
             } else {
@@ -186,7 +201,7 @@ class InnerSlider extends React.Component {
         this.adaptHeight();
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(this: ThisType) {
         if (this.animationEndCallback) {
             clearTimeout(this.animationEndCallback);
         }
@@ -198,7 +213,7 @@ class InnerSlider extends React.Component {
         }
     }
 
-    onWindowResized() {
+    onWindowResized(this: ThisType) {
         this.update(this.props);
         // animating state should be cleared while resizing, otherwise autoplay stops working
         this.setState({ animating: false });
@@ -206,7 +221,7 @@ class InnerSlider extends React.Component {
         delete this.animationEndCallback;
     }
 
-    slickGoTo(slide) {
+    slickGoTo(this: ThisType, slide: number) {
         typeof slide === 'number' &&
             this.changeSlide({
                 message: 'index',
@@ -215,19 +230,19 @@ class InnerSlider extends React.Component {
             });
     }
 
-    onEnterArrow(msg) {
+    onEnterArrow(this: ThisType, msg: string) {
         this.arrowHoverHandler(msg);
     }
 
-    onLeaveArrow() {
+    onLeaveArrow(this: ThisType) {
         this.arrowHoverHandler();
     }
 
-    _instanceRefHandler(attr, ref) {
+    _instanceRefHandler(attr: 'pArrow' | 'nArrow' | 'list' | 'track', ref: HTMLDivElement) {
         this[attr] = ref;
     }
 
-    render() {
+    render(this: ThisType) {
         const {
             prefix,
             animation,
@@ -275,16 +290,16 @@ class InnerSlider extends React.Component {
             speed,
             infinite,
             centerMode,
-            focusOnSelect: focusOnSelect ? this.selectHandler : null,
+            focusOnSelect: focusOnSelect ? this.selectHandler : undefined,
             currentSlide,
             lazyLoad,
             lazyLoadedList,
             rtl,
-            slideWidth,
-            slideHeight,
+            slideWidth: slideWidth!,
+            slideHeight: slideHeight!,
             slidesToShow,
             slidesToScroll,
-            slideCount,
+            slideCount: slideCount!,
             trackStyle,
             variableWidth,
             vertical,
@@ -295,12 +310,12 @@ class InnerSlider extends React.Component {
 
         let dotsEle;
 
-        if (dots === true && slideCount > slidesToShow) {
+        if (dots === true && slideCount! > slidesToShow!) {
             const dotProps = {
                 prefix,
                 rtl,
                 dotsClass,
-                slideCount,
+                slideCount: slideCount!,
                 slidesToShow,
                 currentSlide,
                 slidesToScroll,
@@ -324,7 +339,7 @@ class InnerSlider extends React.Component {
             infinite,
             centerMode,
             currentSlide,
-            slideCount,
+            slideCount: slideCount!,
             slidesToShow,
             clickHandler: this.changeSlide,
         };
@@ -359,7 +374,7 @@ class InnerSlider extends React.Component {
 
         const verticalHeightStyle = vertical
             ? {
-                  height: listHeight,
+                  height: listHeight!,
               }
             : null;
 
@@ -384,10 +399,10 @@ class InnerSlider extends React.Component {
                     onMouseUp={this.swipeEnd}
                     onTouchStart={this.swipeStart}
                     onTouchEnd={this.swipeEnd}
-                    onMouseMove={dragging ? this.swipeMove : null}
-                    onMouseLeave={dragging ? this.swipeEnd : null}
-                    onTouchMove={dragging ? this.swipeMove : null}
-                    onTouchCancel={dragging ? this.swipeEnd : null}
+                    onMouseMove={dragging ? this.swipeMove : undefined}
+                    onMouseLeave={dragging ? this.swipeEnd : undefined}
+                    onTouchMove={dragging ? this.swipeMove : undefined}
+                    onTouchCancel={dragging ? this.swipeEnd : undefined}
                 >
                     <Track ref={this._instanceRefHandler.bind(this, 'track')} {...trackProps}>
                         {children}

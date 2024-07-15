@@ -7,7 +7,7 @@ const colors = ['#7732bb', '#047cc0', '#00884b', '#e3bc13', '#db7c00', '#aa231f'
 export default {
     name: 'Slider',
     shape: ['banner', 'card'],
-    editor: shape => ({
+    editor: (shape: string) => ({
         props: [
             ...(shape === 'card'
                 ? [
@@ -67,7 +67,7 @@ export default {
         imageNumber,
         style,
         ...others
-    }) => {
+    }: any) => {
         const slides = [];
 
         for (let i = 0; i < imageNumber; i++) {
@@ -114,7 +114,7 @@ export default {
             </Slider>
         );
     },
-    demoOptions: demo => {
+    demoOptions: (demo: any) => {
         if (demo.node.props.level === 'ver') {
             demo.node.props.height = 600;
             demo.node.props.width = 150;

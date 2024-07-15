@@ -23,17 +23,17 @@ export default ConfigProvider.config(Slider, {
                 deprecated('arrowPos', 'arrowPosition', 'Slider');
             }
             const { arrowPos, ...others } = props;
-            props = { arrowPosition: arrowPos, ...others };
+            props = { arrowPosition: arrowPos as 'inner' | 'outer' | undefined, ...others };
         }
         ['arrowDirection', 'dotsDirection', 'slideDirection'].forEach(propName => {
-            if (props[propName] === 'horizontal') {
+            if (props[propName as keyof typeof props] === 'horizontal') {
                 deprecated(`${propName}=horizontal`, `${propName}=hoz`, 'Slider');
 
-                props[propName] = 'hoz';
-            } else if (props[propName] === 'vertical') {
+                props[propName as keyof typeof props] = 'hoz';
+            } else if (props[propName as keyof typeof props] === 'vertical') {
                 deprecated(`${propName}=vertical`, `${propName}=ver`, 'Slider');
 
-                props[propName] = 'ver';
+                props[propName as keyof typeof props] = 'ver';
             }
         });
         if ('initialSlide' in props) {

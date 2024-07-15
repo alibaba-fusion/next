@@ -11,7 +11,7 @@
 The Slider component is a slide show that displays many components of the content horizontally on the page.
 The Slider are independent of each other and there is no logical relationship between content and data.
 
-###  When To Use
+### When To Use
 
 -   **single picture**：This style is usually used to carry operational banners. It is a relatively fixed module.
 -   **multiple picture**：browse multiple unit message
@@ -26,36 +26,37 @@ The Slider are independent of each other and there is no logical relationship be
 
 ### Slider
 
-| Param | Descripiton  | Type  | Default Value |
-| ------------------ | ------------------------------------------------------ | -------------- | -------- |
-| adaptiveHeight     | Whether to use adaptive height                         | Boolean        | false    |
-| animation          | Animation type, default is 'slide'                     | String/Boolean | 'slide'  |
-| arrows             | Whether to show arrows                                 | Boolean        | true     |
-| arrowSize          | Navigation arrow size , option has: 'medium', 'large'<br><br>**option**:<br>'medium', 'large'                                                                                    | Enum           | 'medium' |
-| arrowPosition      | Position of navigation arrow, option: 'inner', 'outer'<br><br>**option**:<br>'inner', 'outer'                                                                                    | Enum           | 'inner'  |
-| arrowDirection     | Direction of the arrow, option: 'hoz', 'ver'<br><br>**option**:<br>'hoz', 'ver'                                                                                                  | Enum           | 'hoz'    |
-| autoplay           | Whether to play automatically                          | Boolean        | false    |
-| autoplaySpeed      | Autoplay speed                                         | Number         | 3000     |
-| nextArrow          | Backward arrow                                         | ReactElement   | null     |
-| prevArrow          | Forward arrow                                          | ReactElement   | null     |
-| centerMode         | Is centering mode enabled?                             | Boolean        | false    |
-| dots               | Whether to display navigation anchor                   | Boolean        | true     |
-| dotsDirection      | Navigation anchor position<br><br>**option**:<br>'hoz', 'ver'                                                                                                                    | Enum           | 'hoz'    |
-| dotRender          | Custom navigation anchor, such as your custom components.<br><br>**signatures**:<br>Function() => void                                                                          | Function       | -        |
-| draggable          | Can it be dragged                                      | Boolean        | true     |
-| infinite           | Whether to use infinite circulation mode               | Boolean        | true     |
-| defaultActiveIndex | Initially activated rotation map                       | Number         | 0        |
-| lazyLoad           | Whether to enable lazy loading                         | Boolean        | false    |
-| slideDirection     | Slide direction<br><br>**option**:<br>'hoz', 'ver'     | Enum           | 'hoz'    |
-| slidesToShow       | Number of pictures displayed at the same time          | Number         | 1        |
-| slidesToScroll     | Swiping number of pictures at the same time                     | Number         | 1        |
-| speed              | Slide speed                                            | Number         | 500      |
-| activeIndex        | Slide to the specified carousel (controlled)                                                                                      | Number         | -        |
-| triggerType        | Anchor navigation trigger <br><br>**option**:<br>'click', 'hover'                                                                                                                | Enum           | 'click'  |
-| onChange           | Slider switching callback function<br><br>**signatures**:<br>Function(index: Number) => void<br>**params**:<br>_index_: {Number} Slide index | Function       | () => {} |
-| centerPadding      | Side padding when in center mode (px or %); The display part is center, padding will produce a preview before and after                             | String         | '50px'   |
-| cssEase            | CSS3 Animation Easing, default is ‘ease’                                                                     | String         | 'ease'   |
-| focusOnSelect      | Multi-mode swiping, click to automatically center       | Boolean        | false    |
+| Param              | Description                                                                                              | Type                                     | Default Value | Required |
+| ------------------ | -------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ------------- | -------- |
+| locale             | Locale object for components                                                                             | Partial\<Locale>                         | -             |          |
+| adaptiveHeight     | Whether to use adaptive height                                                                           | boolean                                  | -             |          |
+| animation          | Animation type, default value is 'slide'                                                                 | string \| boolean                        | 'slide'       |          |
+| arrows             | Whether to display arrows                                                                                | boolean                                  | -             |          |
+| arrowSize          | Size of the arrow                                                                                        | 'medium' \| 'large'                      | -             |          |
+| arrowPosition      | Position of the arrow                                                                                    | 'inner' \| 'outer'                       | -             |          |
+| arrowDirection     | Direction of the arrow                                                                                   | 'hoz' \| 'ver'                           | -             |          |
+| autoplay           | Whether to play automatically                                                                            | boolean                                  | -             |          |
+| autoplaySpeed      | Autoplay speed                                                                                           | number                                   | -             |          |
+| prevArrow          | Prev arrow                                                                                               | React.ReactElement                       | -             |          |
+| nextArrow          | Next arrow                                                                                               | React.ReactElement                       | -             |          |
+| centerMode         | Whether to use center mode                                                                               | boolean                                  | -             |          |
+| dots               | Whether to display dots                                                                                  | boolean                                  | -             |          |
+| dotsDirection      | Direction for navigation dots                                                                            | 'hoz' \| 'ver'                           | -             |          |
+| dotsRender         | Render navigation dots<br/><br/>**signature**:<br/>**params**:<br/>_index_: index<br/>_current_: current | (index: number, current: number) => void | -             |          |
+| draggable          | Whether it can be dragged                                                                                | boolean                                  | -             |          |
+| infinite           | Whether to use infinite loop mode                                                                        | boolean                                  | -             |          |
+| defaultActiveIndex | The default activated slide index                                                                        | number                                   | -             |          |
+| lazyLoad           | Whether to enable lazy load                                                                              | boolean                                  | -             |          |
+| slideDirection     | Slide direction                                                                                          | 'hoz' \| 'ver'                           | -             |          |
+| slidesToShow       | Number of slides showed at the same time                                                                 | number                                   | -             |          |
+| slidesToScroll     | Number of slides scrolled at the same time                                                               | number                                   | -             |          |
+| speed              | Carousel speed                                                                                           | number                                   | -             |          |
+| activeIndex        | Jump to the specified carousel image (controlled)                                                        | number                                   | -             |          |
+| triggerType        | Triggering method for navigation dots                                                                    | 'click' \| 'hover'                       | -             |          |
+| onChange           | Callback function for slides switching                                                                   | (index: number) => void                  | -             |          |
+| centerPadding      | Side padding when in center mode (px or %);                                                              | string                                   | -             |          |
+| cssEase            | CSS3 Animation Easing, default value is 'ease'                                                           | string                                   | -             |          |
+| focusOnSelect      | When multiple slides are rotated, whether to be automatically centered after clicking to select them.    | boolean                                  | -             |          |
 
 ## Other
 
