@@ -32,8 +32,6 @@ export type {
     GroupProps,
     DividerProps,
     SelectExtra,
-    SelectableItem,
-    MenuItem,
 } from './types';
 
 export default ConfigProvider.config(MenuWithSub, {

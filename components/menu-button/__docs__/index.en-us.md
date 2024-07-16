@@ -15,22 +15,22 @@ MenuButton is a button which, when clicked or pressed, will show a context menu.
 
 ### MenuButton
 
-| Param | Descripiton  | Type  | Default Value |
-| ---------------- | ----------------------------------------------------- | --------- | --------- |
-| label            | The text in button     | ReactNode | -         |
-| autoWidth        | If popup width equals to button width        | Boolean   | true      |
-| popupTriggerType | Trigger type of popup<br><br>**option**:<br>'click', 'hover'            | Enum      | 'click'   |
-| popupContainer   | Container of popup<br><br>**signature**:<br>Function() => void             | Function  | -         |
-| visible          | Visible state of popup    | Boolean   | -         |
-| defaultVisible   | Default visible state of popup | Boolean   | -         |
-| onVisibleChange  | Callback when visible state changes <br><br>**signature**:<br>Function() => void    | Function  | func.noop |
-| popupStyle       | Custom style of popup | Object    | -         |
-| popupClassName   | Custom className of popup | String    | -         |
-| popupProps       | Props of popup | Object    | -         |
-| followTrigger        | follow Trigger or not                                                                                                                                                      | Boolean         | -                                         |
-| defaultSelectedKeys | Default selected items, as Menu                                | Array     | \[]       |
-| selectedKeys        | Selected items, as Menu                                   | Array     | -         |
-| selectMode       | Select mode of menu, see Menu                                        | String    | -         |
-| onItemClick      | Callback when click the menu item, see Menu<br><br>**signature**:<br>Function() => void | Function  | func.noop |
-| onSelect         | Callback when select the menu, see Menu<br><br>**signature**:<br>Function() => void  | Function  | func.noop |
-| menuProps        | Props of menu  | Object    | {}         |
+| Param               | Description                                                                                                                                                                                       | Type                                                            | Default Value | Required |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------- | -------- |
+| label               | The text in button                                                                                                                                                                                | React.ReactNode                                                 | -             |          |
+| autoWidth           | If popup width equals to button width                                                                                                                                                             | boolean                                                         | true          |          |
+| popupTriggerType    | Trigger type of popup                                                                                                                                                                             | 'click' \| 'hover'                                              | 'click'       |          |
+| popupContainer      | Container of popup                                                                                                                                                                                | string \| HTMLElement \| ((target: HTMLElement) => HTMLElement) | -             |          |
+| visible             | Visible state of popup                                                                                                                                                                            | boolean                                                         | -             |          |
+| defaultVisible      | Default visible state of popup                                                                                                                                                                    | boolean                                                         | -             |          |
+| onVisibleChange     | Callback when visible state changes                                                                                                                                                               | (visible: boolean, type: string) => void                        | -             |          |
+| popupStyle          | Custom style of popup                                                                                                                                                                             | React.CSSProperties                                             | -             |          |
+| popupClassName      | Custom className of popup                                                                                                                                                                         | string                                                          | -             |          |
+| popupProps          | Props of popup                                                                                                                                                                                    | PopupProps                                                      | -             |          |
+| followTrigger       | Follow Trigger or not                                                                                                                                                                             | boolean                                                         | -             |          |
+| defaultSelectedKeys | Default selected items, as Menu                                                                                                                                                                   | Array\<string>                                                  | []            |          |
+| selectedKeys        | Selected items, as Menu                                                                                                                                                                           | string \| Array\<string>                                        | -             |          |
+| selectMode          | Select mode of menu, see Menu                                                                                                                                                                     | 'single' \| 'multiple'                                          | -             |          |
+| onItemClick         | Callback when click the menu item, see Menu<br/><br/>**signature**:<br/>**params**:<br/>_key_: Key of clicked menu item<br/>_item_: Clicked menu item instance<br/>_event_: Event object          | MenuProps['onItemClick']                                        | -             |          |
+| onSelect            | Callback when select the menu, see Menu<br/><br/>**signature**:<br/>**params**:<br/>_selectedKeys_: Keys of selected menu items<br/>_item_: Current operation menu item<br/>_extra_: Extra params | MenuProps['onSelect']                                           | -             |          |
+| menuProps           | Props of menu                                                                                                                                                                                     | MenuProps                                                       | -             |          |

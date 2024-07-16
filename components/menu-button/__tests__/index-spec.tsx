@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { MountReturn } from 'cypress/react';
 import '../style';
 import MenuButton from '../index';
 
@@ -18,35 +17,29 @@ describe('MenuButton', () => {
                     {menu}
                 </MenuButton>
             ).as('menu-btn');
-            cy.get<MountReturn>('@menu-btn').then(({ component, rerender }) => {
-                return rerender(React.cloneElement(component, { selectedKeys: ['b'] }));
-            });
+            cy.rerender('menu-btn', { selectedKeys: ['b'] });
             cy.get('li[title="b"][role="option"]').should('have.class', 'next-selected');
         });
 
         it('should controlled popup visible', () => {
             cy.mount(<MenuButton label="hello world">{menu}</MenuButton>).as('menu-btn');
             cy.get('.next-menu').should('have.length', 0);
-            cy.get<MountReturn>('@menu-btn').then(({ component, rerender }) => {
-                return rerender(React.cloneElement(component, { visible: true }));
-            });
+            cy.rerender('menu-btn', { visible: true });
             cy.get('.next-menu').should('have.length', 1);
         });
     });
 
     describe('action', () => {
         it('should click trigger to open the popup', () => {
-            let visible: boolean;
+            const handleVisibleChange = cy.spy();
             cy.mount(
-                <MenuButton label="hello world" onVisibleChange={vis => (visible = vis)}>
+                <MenuButton label="hello world" onVisibleChange={handleVisibleChange}>
                     {menu}
                 </MenuButton>
             );
             cy.get('button.next-menu-btn').click();
-            cy.then(() => {
-                cy.get('.next-menu').should('have.length', 1);
-                cy.wrap(visible).should('be.true');
-            });
+            cy.get('.next-menu').should('have.length', 1);
+            cy.wrap(handleVisibleChange).should('be.calledWith', true);
         });
 
         it('should select in uncontrolled mode', () => {
@@ -69,7 +62,7 @@ describe('MenuButton', () => {
             cy.get('li[title="a"][role="option"]').should('have.class', 'next-selected');
         });
 
-        it('should mulitple select can`t close', () => {
+        it('should multiple select can`t close', () => {
             const onVisibleChange = cy.spy();
             const onItemClick = cy.spy();
             cy.mount(
