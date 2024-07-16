@@ -1,11 +1,7 @@
-import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import * as React from 'react';
 import MenuButton from '../index';
 import '../style';
-import { unmount, test, mountReact } from '../../util/__tests__/legacy/a11y/validate';
-
-Enzyme.configure({ adapter: new Adapter() });
+import { testReact } from '../../util/__tests__/a11y/validate';
 
 const wrapperClassName = 'js-a11y-test';
 const popupProps = { wrapperClassName };
@@ -15,27 +11,16 @@ const menu = ['a', 'b'].map(item => <MenuButton.Item key={item}>{item}</MenuButt
 
 // TODO: fix `aria-allowed-attr` violation
 describe.skip('MenuButton A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
     it('should not have any violations', async () => {
-        wrapper = await mountReact(
+        await testReact(
             <MenuButton label="default" visible popupProps={popupProps}>
                 {menu}
             </MenuButton>
         );
-        return test(`.${wrapperClassName}`);
     });
 
     it('should not have any violations when text button', async () => {
-        wrapper = await mountReact(
+        await testReact(
             <div>
                 <MenuButton text label="Document Edit" visible popupProps={popupProps}>
                     {menu}
@@ -43,6 +28,5 @@ describe.skip('MenuButton A11y', () => {
                 &nbsp;&nbsp;
             </div>
         );
-        return test(`.${wrapperClassName}`);
     });
 });
