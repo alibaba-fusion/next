@@ -6,8 +6,6 @@ import type MenuItem from './view/item';
 import { type Menu } from './view/menu';
 import type SubMenu from './view/sub-menu';
 
-export type { SelectableItem, MenuItem };
-
 /**
  * 子菜单打开的模式
  * @en open mode of submenu

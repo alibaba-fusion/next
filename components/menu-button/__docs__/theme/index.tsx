@@ -5,8 +5,8 @@ import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import '../../../demo-helper/style';
 import '../../style';
+import type { MenuButtonProps } from '../../types';
 
-/* eslint-disable */
 const i18nMap = {
     'zh-cn': {
         menuButton: '菜单按钮',
@@ -44,8 +44,12 @@ const i18nMap = {
     },
 };
 
-function renderButton(type: string, locale: any, props: any = {}) {
-    const menu = ['undo', 'redo', 'cut', 'copy', 'paste'].map(item => (
+function renderButton(
+    type: string,
+    locale: (typeof i18nMap)['en-us'],
+    props: MenuButtonProps = {}
+) {
+    const menu = (['undo', 'redo', 'cut', 'copy', 'paste'] as const).map(item => (
         <MenuButton.Item key={item}>{locale[item]}</MenuButton.Item>
     ));
     const cols = [locale.large, locale.medium, locale.small];
@@ -62,7 +66,7 @@ function renderButton(type: string, locale: any, props: any = {}) {
 
     const commonProps = {
         ...props,
-        type: type.toLowerCase(),
+        type: type.toLowerCase() as MenuButtonProps['type'],
         label: newLabel,
     };
 
@@ -101,7 +105,7 @@ function renderButton(type: string, locale: any, props: any = {}) {
             </DemoGroup>
             <DemoGroup label={locale.expand} height="260px">
                 <MenuButton
-                    visible={true}
+                    visible
                     size="large"
                     popupProps={{ needAdjust: false }}
                     {...commonProps}
@@ -109,7 +113,7 @@ function renderButton(type: string, locale: any, props: any = {}) {
                     {menu}
                 </MenuButton>
                 <MenuButton
-                    visible={true}
+                    visible
                     size="medium"
                     popupProps={{ needAdjust: false }}
                     {...commonProps}
@@ -117,7 +121,7 @@ function renderButton(type: string, locale: any, props: any = {}) {
                     {menu}
                 </MenuButton>
                 <MenuButton
-                    visible={true}
+                    visible
                     size="small"
                     popupProps={{ needAdjust: false }}
                     {...commonProps}
@@ -140,8 +144,8 @@ function renderButton(type: string, locale: any, props: any = {}) {
     );
 }
 
-function render(locale: any, lang: string) {
-    return ReactDOM.render(
+function render(locale: (typeof i18nMap)['en-us']) {
+    ReactDOM.render(
         <ConfigProvider>
             <div className="demo-container">
                 <Demo title={locale.menuButton}>
@@ -164,7 +168,7 @@ function render(locale: any, lang: string) {
 }
 
 window.renderDemo = function (lang = 'en-us') {
-    render(i18nMap[lang], lang);
+    render(i18nMap[lang]);
 };
 
 renderDemo();
