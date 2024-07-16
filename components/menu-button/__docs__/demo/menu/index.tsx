@@ -4,7 +4,7 @@ import { MenuButton } from '@alifd/next';
 
 const { Item, Group, Divider } = MenuButton;
 
-function selectItem(id) {
+function selectItem(id: any) {
     console.log(id);
 }
 
