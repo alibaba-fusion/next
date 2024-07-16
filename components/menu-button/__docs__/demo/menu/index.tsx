@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MenuButton } from '@alifd/next';
+import type { MenuButtonProps } from '@alifd/next/types/menu-button';
 
 const { Item, Group, Divider } = MenuButton;
 
-function selectItem(id: any) {
+const selectItem: MenuButtonProps['onItemClick'] = id => {
     console.log(id);
-}
+};
 
 ReactDOM.render(
     <MenuButton type="primary" label="Document Edit" onItemClick={selectItem}>

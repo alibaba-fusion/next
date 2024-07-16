@@ -1,8 +1,10 @@
-import * as React from 'react';
-import { MenuProps } from '../menu';
-import { CommonProps } from '../util';
-import { ButtonProps } from '../button';
-import { PopupProps } from '../overlay';
+import type * as React from 'react';
+import type Menu from '../menu';
+import type { CommonProps } from '../util';
+import type { ButtonProps } from '../button';
+import type { PopupProps } from '../overlay';
+
+type MenuProps = React.ComponentPropsWithRef<typeof Menu>;
 
 /**
  * @api MenuButton
@@ -43,7 +45,6 @@ export interface MenuButtonProps extends Omit<ButtonProps, 'onSelect'>, CommonPr
     /**
      * 弹层在显示和隐藏触发的事件
      * @en Callback when visible state changes
-     * @defaultValue function.noop
      */
     onVisibleChange?: (visible: boolean, type: string) => void;
     /**
@@ -85,24 +86,27 @@ export interface MenuButtonProps extends Omit<ButtonProps, 'onSelect'>, CommonPr
     /**
      * 点击菜单项后的回调，同 Menu
      * @en Callback when click the menu item, see Menu
-     * @defaultValue function.noop
+     * @param key - 点击的菜单项的 key 值 - key of clicked menu item
+     * @param item - 点击的菜单项对象 - clicked menu item instance
+     * @param event - 事件对象 - Event object
      */
-    onItemClick?: (key: string, item: object, event: React.MouseEvent) => void;
+    onItemClick?: MenuProps['onItemClick'];
     /**
      * 选择菜单后的回调，同 Menu
      * @en Callback when select the menu, see Menu
-     * @defaultValue function.noop
+     * @param selectedKeys - 选中的所有菜单项的值 - keys of selected menu items
+     * @param item - 选中或取消选中的菜单项 - current operation menu item
+     * @param extra - 选中时的额外参数 - extra params
      */
-    onSelect?: (selectedKeys: Array<string>, item: object, extra: object) => void;
+    onSelect?: MenuProps['onSelect'];
     /**
      * 菜单属性透传
      * @en Props of menu
-     * @defaultValue
      */
     menuProps?: MenuProps;
 }
 
 export interface MenuButtonState {
-    selectedKeys?: Array<string>;
-    visible?: boolean;
+    selectedKeys: MenuButtonProps['selectedKeys'];
+    visible: boolean | undefined;
 }

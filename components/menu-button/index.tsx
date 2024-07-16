@@ -2,10 +2,10 @@ import * as React from 'react';
 import { findDOMNode } from 'react-dom';
 import * as PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
-import * as classnames from 'classnames';
+import classnames from 'classnames';
 import Button from '../button';
 import Icon from '../icon';
-import Menu, { MenuProps } from '../menu';
+import Menu, { type MenuProps } from '../menu';
 import Overlay from '../overlay';
 import ConfigProvider from '../config-provider';
 import { obj, func } from '../util';
@@ -56,8 +56,10 @@ class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
         menuProps: {},
     };
 
-    constructor(props: MenuButtonProps, context?: unknown) {
-        super(props, context);
+    menu: HTMLElement | undefined;
+
+    constructor(props: MenuButtonProps) {
+        super(props);
         this.state = {
             selectedKeys: props.defaultSelectedKeys,
             visible: props.defaultVisible,
@@ -65,7 +67,7 @@ class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
     }
 
     static getDerivedStateFromProps(props: MenuButtonProps) {
-        const st: MenuButtonProps = {};
+        const st: Partial<MenuButtonState> = {};
 
         if ('visible' in props) {
             st.visible = props.visible;
@@ -77,17 +79,11 @@ class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
 
         return st;
     }
-    menu: HTMLElement | undefined;
 
     clickMenuItem: MenuProps['onItemClick'] = (key, item, event) => {
         const { selectMode } = this.props;
 
-        if (typeof this.props.onItemClick === 'function') {
-            this.props.onItemClick(key, item, event);
-        }
-        if (selectMode === 'single') {
-            this.onPopupVisibleChange(false, 'menuSelect');
-        }
+        this.props.onItemClick!(key, item, event);
 
         if (selectMode === 'multiple') {
             return;
@@ -102,15 +98,13 @@ class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
                 selectedKeys: keys,
             });
         }
-        if (typeof this.props.onSelect === 'function') {
-            this.props.onSelect(keys, ...others);
-        }
+        this.props.onSelect!(keys, ...others);
     };
 
     onPopupOpen = () => {
         const button = findDOMNode(this) as HTMLElement;
-        if (this.props.autoWidth && button && this?.menu) {
-            this.menu.style.width = `${button?.offsetWidth}px`;
+        if (this.props.autoWidth && button && this.menu) {
+            this.menu.style.width = `${button.offsetWidth}px`;
         }
     };
 
@@ -120,16 +114,13 @@ class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
                 visible,
             });
         }
-        if (typeof this.props.onVisibleChange === 'function') {
-            this.props.onVisibleChange(visible, type);
-        }
+        this.props.onVisibleChange!(visible, type);
     };
 
     _menuRefHandler = (ref: React.ComponentRef<typeof Menu> | null) => {
         this.menu = findDOMNode(ref) as HTMLElement;
 
-        //@ts-expect-error  menuProps 缺少 ref 类型 React.ComponentRef<typeof Menu> | null
-        const refFn = this.props?.menuProps?.ref;
+        const refFn = this.props.menuProps?.ref;
         if (typeof refFn === 'function') {
             refFn(ref);
         }

@@ -2,18 +2,26 @@ import * as React from 'react';
 import { MenuButton, Menu, Icon } from '@alifd/next';
 import { Types, parseData, ContentType } from '@alifd/adaptor-helper';
 
+type ListItem = {
+    type: 'node' | 'comment' | 'divider' | 'group';
+    children?: ListItem[];
+    state?: string;
+    value?: boolean | { value: string; type: string }[];
+    key?: string;
+};
+
 const createDataSource = (
-    list: any = [],
+    list: Array<ListItem> = [],
     keys = { selected: [] as string[], expanded: [] as string[] },
     level = 0,
     prefix = ''
 ) => {
-    const array = [];
-    let group: any = [];
+    const array: Array<ListItem> = [];
+    let group: Array<ListItem> = [];
     let grouping = false;
     let index = 0;
 
-    list.forEach((item: any) => {
+    list.forEach(item => {
         let key;
         switch (item.type) {
             case 'node':
@@ -54,7 +62,7 @@ const createDataSource = (
                     });
                     group = [];
                 }
-                grouping = item.value;
+                grouping = !!item.value;
                 return;
             case 'divider':
                 if (group.length > 0) {
@@ -90,46 +98,46 @@ const createDataSource = (
     return array;
 };
 
-const createChildMenuItem = (childItem: any) => {
+const createChildMenuItem = (childItem: ListItem) => {
     return (
         <Menu.Item
             key={childItem.key}
             // @ts-expect-error：checked属性在others中
             checked={childItem.state === 'active'}
             disabled={childItem.state === 'disabled'}
-            children={childItem.value.map(({ type, value }: any, index: number) =>
-                type === 'icon' ? (
-                    <Icon
-                        key={`icon_${index}`}
-                        type={value}
-                        size="small"
-                        style={{ marginRight: '4px' }}
-                    />
-                ) : (
-                    value
-                )
+            children={(childItem.value as Exclude<ListItem['value'], boolean | undefined>).map(
+                ({ type, value }, index: number) =>
+                    type === 'icon' ? (
+                        <Icon
+                            key={`icon_${index}`}
+                            type={value}
+                            size="small"
+                            style={{ marginRight: '4px' }}
+                        />
+                    ) : (
+                        value
+                    )
             )}
         />
     );
 };
 
-const createMenuItem = (item: any) => {
+const createMenuItem = (item: ListItem) => {
     if (item.children && item.children.length > 0) {
         return (
             <Menu.SubMenu
                 key={item.key}
-                // @ts-expect-error：disabled属性在others中
                 disabled={item.state === 'disabled'}
                 label={
                     item.value
-                        ? item.value
-                              .filter(({ type }: any) => type === ContentType.text)
-                              .map(({ value }: any) => value)
+                        ? (item.value as Exclude<ListItem['value'], boolean | undefined>)
+                              .filter(({ type }) => type === ContentType.text)
+                              .map(({ value }) => value)
                               .join('')
                         : ''
                 }
             >
-                {item.children.map((childItem: any) => createChildMenuItem(childItem))}
+                {item.children.map(childItem => createChildMenuItem(childItem))}
             </Menu.SubMenu>
         );
     }
@@ -139,28 +147,29 @@ const createMenuItem = (item: any) => {
             // @ts-expect-error：checked属性在others中
             checked={item.state === 'active'}
             disabled={item.state === 'disabled'}
-            children={item.value.map(({ type, value }: any, index: number) =>
-                type === 'icon' ? (
-                    <Icon
-                        key={`icon_${index}`}
-                        type={value}
-                        size="small"
-                        style={{ marginRight: '4px' }}
-                    />
-                ) : (
-                    value
-                )
+            children={(item.value as Exclude<ListItem['value'], boolean | undefined>).map(
+                ({ type, value }, index: number) =>
+                    type === 'icon' ? (
+                        <Icon
+                            key={`icon_${index}`}
+                            type={value}
+                            size="small"
+                            style={{ marginRight: '4px' }}
+                        />
+                    ) : (
+                        value
+                    )
             )}
         />
     );
 };
 
-const createContents = (items: any) => {
-    return items.map((item: any) => {
-        if (item.type === 'group' && item.children.length > 0) {
+const createContents = (items: ListItem[]) => {
+    return items.map(item => {
+        if (item.type === 'group' && item.children!.length > 0) {
             return (
                 <Menu.Group key={item.key} label={item.value}>
-                    {item.children.map(createChildMenuItem)}
+                    {item.children!.map(createChildMenuItem)}
                 </Menu.Group>
             );
         }
@@ -173,7 +182,7 @@ const createContents = (items: any) => {
 
 const _propsValue = ({ shape, level, size, data, ...others }: any) => {
     const list = parseData(data, { parseContent: true });
-    const buttonItem = list[0] ? list[0] : ({ value: [] } as any);
+    const buttonItem = list[0] ? list[0] : { value: [] };
 
     return {
         ...others,
@@ -183,7 +192,7 @@ const _propsValue = ({ shape, level, size, data, ...others }: any) => {
         type: shape === 'ghost' ? 'normal' : level,
         popupProps: { needAdjust: false },
         ghost: shape === 'ghost' ? level : false,
-        selectMode: 'multiple',
+        selectMode: 'multiple' as const,
     };
 };
 
@@ -218,9 +227,20 @@ export default {
             default: 'Edit Document\n\tUndo\n\t*Redo\n\tCut\n\tCopy\n\tPaste',
         },
     }),
-    adaptor: ({ shape, level, size, data, ...others }: any) => {
+    adaptor: ({
+        shape,
+        level,
+        size,
+        data,
+        ...others
+    }: {
+        shape?: string;
+        level: 'normal' | 'primary' | 'secondary' | 'light' | 'dark';
+        size: 'large' | 'medium' | 'small';
+        data: unknown;
+    }) => {
         const list = parseData(data, { parseContent: true });
-        const buttonItem = list[0] ? list[0] : ({ value: [] } as any);
+        const buttonItem = list[0] ? list[0] : { value: [] };
 
         if (buttonItem.type !== 'node') return null;
 

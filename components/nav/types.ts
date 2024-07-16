@@ -1,13 +1,11 @@
 import type { CommonProps } from '../util';
 import type { PopupProps } from '../overlay';
-import type {
-    GroupProps as MenuGroupProps,
-    ItemProps as MenuItemProps,
-    PopupItemProps as MenuPopupItemProps,
-    SelectableItem,
-    SelectExtra,
-    MenuItem,
-    SubMenuProps,
+import {
+    type GroupProps as MenuGroupProps,
+    type ItemProps as MenuItemProps,
+    type PopupItemProps as MenuPopupItemProps,
+    type SubMenuProps,
+    type MenuProps,
 } from '../menu';
 
 /**
@@ -160,7 +158,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * @param event - 点击事件 - Click event
      * @skip
      */
-    onItemClick?: (key: string, item: MenuItem, event: React.MouseEvent) => void;
+    onItemClick?: MenuProps['onItemClick'];
 
     /**
      * 当前展开的子菜单的 key 值
@@ -279,7 +277,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
      * @param item - 选中的导航项 - Current operation nav item
      * @param extra - 扩展参数 - Extra parameters
      */
-    onSelect?: (selectedKeys: string[], item: SelectableItem, extra: SelectExtra) => void;
+    onSelect?: MenuProps['onSelect'];
 
     /**
      * 选中模式，单选还是多选，默认无值，不可选
