@@ -102,3 +102,54 @@ describe('issue in AutoComplete', () => {
         cy.get('.next-menu-item').should('have.length', 3);
     });
 });
+
+describe('issue in Select', () => {
+    it('Selecting all does not affect options that are already disabled, close #4802', () => {
+        const onChange = cy.spy().as('onChange');
+        const dataSource = [
+            { value: '10001', label: 'Lucy King' },
+            { value: '10002', label: 'Lily King' },
+            { value: '10003', label: 'Tom Cat', disabled: true },
+            {
+                label: 'Special Group',
+                children: [
+                    { value: '-1', label: 'FALSE' },
+                    { value: '0', label: 'ZERO' },
+                ],
+            },
+        ];
+        cy.mount(
+            <Select
+                placeholder="select all"
+                hasSelectAll
+                mode="multiple"
+                onChange={onChange}
+                dataSource={dataSource}
+                defaultValue={['10003']}
+            />
+        );
+        cy.get('.next-select input').eq(0).click();
+        cy.get('.next-select-all').eq(0).click();
+        cy.get('.next-tag-closable').should('have.length', 5);
+        cy.get('.next-select input').eq(0).click();
+        cy.get('.next-select-all').eq(0).click();
+        cy.get('.next-tag-closable').should('have.length', 1);
+
+        cy.mount(
+            <Select
+                placeholder="select all"
+                hasSelectAll
+                mode="multiple"
+                onChange={onChange}
+                dataSource={dataSource}
+            />
+        );
+        cy.get('.next-select input').eq(0).click();
+        cy.get('.next-select-all').eq(0).click();
+        cy.get('.next-tag-closable').should('have.length', 4);
+
+        cy.get('.next-select input').eq(0).click();
+        cy.get('.next-select-all').eq(0).click();
+        cy.get('.next-tag-closable').should('have.length', 0);
+    });
+});
