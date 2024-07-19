@@ -109,7 +109,9 @@ class Demo extends React.Component<
                 autoExpandParent: true,
             },
             () => {
-                this.treeRef.current?.getInstance?.().scrollFilterNodeIntoView();
+                if (this.treeRef.current && this.treeRef.current.getInstance) {
+                    this.treeRef.current.getInstance().scrollFilterNodeIntoView();
+                }
             }
         );
         this.matchedKeys = matchedKeys;
