@@ -389,7 +389,13 @@ describe('RangeCalendar', () => {
         });
 
         it('should change decade', () => {
-            cy.mount(<RangeCalendar shape="panel" defaultVisibleMonth={() => defaultVal} />);
+            cy.mount(
+                <RangeCalendar
+                    shape="panel"
+                    showOtherMonth
+                    defaultVisibleMonth={() => defaultVal}
+                />
+            );
             cy.get('.next-calendar-btn').eq(3).click();
             cy.get('.next-calendar-btn-prev-decade').click();
             cy.get('.next-calendar-panel-header button[title="2000-2009"]').should(

@@ -25,7 +25,14 @@ class CardHeader extends React.Component<CardHeaderProps> {
     };
 
     getYearSelect(year: number) {
-        const { prefix, yearRangeOffset, yearRange = [], locale } = this.props;
+        const {
+            prefix,
+            yearRangeOffset,
+            yearRange = [],
+            locale,
+            showOtherMonth,
+            mode,
+        } = this.props;
 
         let [startYear, endYear] = yearRange;
         if (!startYear || !endYear) {
@@ -49,6 +56,7 @@ class CardHeader extends React.Component<CardHeaderProps> {
                 aria-label={locale.yearSelectAriaLabel}
                 onChange={this.onYearChange}
                 popupContainer={this.selectContainerHandler}
+                disabled={!showOtherMonth && mode === 'date'}
             >
                 {options}
             </Select>
@@ -56,7 +64,7 @@ class CardHeader extends React.Component<CardHeaderProps> {
     }
 
     getMonthSelect(month: number) {
-        const { prefix, momentLocale, locale } = this.props;
+        const { prefix, momentLocale, locale, showOtherMonth, mode } = this.props;
         const localeMonths = momentLocale.monthsShort();
         const options = [];
         for (let i = 0; i < 12; i++) {
@@ -73,6 +81,7 @@ class CardHeader extends React.Component<CardHeaderProps> {
                 value={month}
                 onChange={this.changeVisibleMonth}
                 popupContainer={this.selectContainerHandler}
+                disabled={!showOtherMonth && mode === 'date'}
             >
                 {options}
             </Select>
@@ -94,21 +103,22 @@ class CardHeader extends React.Component<CardHeaderProps> {
     };
 
     render() {
-        const { prefix, mode, locale, visibleMonth } = this.props;
+        const { prefix, mode, locale, visibleMonth, showOtherMonth } = this.props;
 
         const yearSelect = this.getYearSelect(visibleMonth.year());
         const monthSelect = mode === 'month' ? null : this.getMonthSelect(visibleMonth.month());
-        const panelSelect = (
-            <Radio.Group
-                shape="button"
-                size="medium"
-                value={mode}
-                onChange={this.onModePanelChange}
-            >
-                <Radio value="date">{locale.month}</Radio>
-                <Radio value="month">{locale.year}</Radio>
-            </Radio.Group>
-        );
+        const panelSelect =
+            !showOtherMonth && mode === 'date' ? null : (
+                <Radio.Group
+                    shape="button"
+                    size="medium"
+                    value={mode}
+                    onChange={this.onModePanelChange}
+                >
+                    <Radio value="date">{locale.month}</Radio>
+                    <Radio value="month">{locale.year}</Radio>
+                </Radio.Group>
+            );
 
         return (
             <div className={`${prefix}calendar-header`}>
