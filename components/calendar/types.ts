@@ -318,7 +318,7 @@ export interface YearTableProps
 }
 
 export interface CardHeaderProps
-    extends Pick<Required<CalendarProps>, 'yearRange' | 'locale' | 'mode'>,
+    extends Pick<Required<CalendarProps>, 'yearRange' | 'locale' | 'mode' | 'showOtherMonth'>,
         Omit<CommonProps, 'locale'> {
     yearRangeOffset?: number;
     momentLocale: MomentLocaleLike;
@@ -344,7 +344,10 @@ export interface RangePanelHeaderProps
 }
 
 export interface DatePanelHeaderProps
-    extends Pick<Required<CalendarProps>, 'locale' | 'disableChangeMode' | 'yearRange'>,
+    extends Pick<
+            Required<CalendarProps>,
+            'locale' | 'disableChangeMode' | 'yearRange' | 'showOtherMonth'
+        >,
         Omit<CommonProps, 'locale'> {
     goNextMonth: () => void;
     goNextYear: () => void;

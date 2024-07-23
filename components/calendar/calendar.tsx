@@ -287,14 +287,20 @@ class Calendar extends Component<CalendarProps, CalendarState> {
         };
 
         const panelHeaders = {
-            [CALENDAR_MODE_DATE]: <DatePanelHeader {...headerProps} />,
+            [CALENDAR_MODE_DATE]: (
+                <DatePanelHeader {...headerProps} showOtherMonth={showOtherMonth} />
+            ),
             [CALENDAR_MODE_MONTH]: <MonthPanelHeader {...headerProps} />,
             [CALENDAR_MODE_YEAR]: <YearPanelHeader {...headerProps} />,
         };
 
         return (
             <div {...obj.pickOthers(Calendar.propTypes, others)} className={classNames}>
-                {shape === 'panel' ? panelHeaders[state.mode] : <CardHeader {...headerProps} />}
+                {shape === 'panel' ? (
+                    panelHeaders[state.mode]
+                ) : (
+                    <CardHeader {...headerProps} showOtherMonth={showOtherMonth} />
+                )}
                 {tables[state.mode]}
             </div>
         );
