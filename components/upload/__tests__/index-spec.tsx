@@ -73,7 +73,7 @@ describe('Upload', () => {
         });
 
         it('should support limit', () => {
-            // limit = 2 上传4个文件 结果应该是 2个成功 2个失败
+            // limit = 2 上传 4 个文件 结果应该是 2 个成功 2 个失败
             if (
                 !(
                     typeof atob === 'function' &&
@@ -111,6 +111,55 @@ describe('Upload', () => {
                 />
             );
             cy.get('input').trigger('change', { target: { files: files }, force: true });
+        });
+
+        it('should support upload again, when an upload fails', () => {
+            cy.intercept('POST', '/upload-endpoint', {
+                statusCode: 200,
+                body: '{"success": false}',
+            }).as('uploadRequest');
+
+            let uploaderRef: ReturnType<InstanceType<typeof Upload>['getInstance']>;
+            const saveUploaderRef = (ref: InstanceType<typeof Upload> | null) => {
+                if (!ref) return;
+                uploaderRef = ref.getInstance();
+            };
+
+            const onSubmit = () => {
+                uploaderRef.startUpload();
+            };
+
+            const beforeUpload = cy.spy().as('beforeUpload');
+            cy.mount(
+                <div>
+                    <Upload
+                        action="/upload-endpoint"
+                        autoUpload={false}
+                        ref={saveUploaderRef}
+                        listType="image"
+                        beforeUpload={beforeUpload}
+                        useDataURL
+                    >
+                        <button className="upload-btn" style={{ marginBottom: 8 }}>
+                            Select File
+                        </button>
+                    </Upload>
+                    <br />
+                    <button className="submit-btn" onClick={onSubmit}>
+                        Upload
+                    </button>
+                </div>
+            );
+
+            cy.get('input[type="file"]').trigger('change', {
+                target: { files: [buildFile()] },
+                force: true,
+            });
+
+            cy.get('.submit-btn').trigger('click');
+            cy.get('@beforeUpload').should('have.been.calledOnce');
+            cy.get('.submit-btn').trigger('click');
+            cy.get('@beforeUpload').should('have.been.calledTwice');
         });
 
         it('should support onPreview events when listType is set to card and isPreview is set to true', () => {
