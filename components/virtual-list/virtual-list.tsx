@@ -216,7 +216,9 @@ class VirtualList extends Component {
         const { scrollParent } = this;
         const { body, documentElement } = document;
         const key = 'scrollHeight';
-        return scrollParent === window ? Math.max(body[key], documentElement[key]) : scrollParent[key];
+        return scrollParent === window
+            ? Math.max(body[key], documentElement[key])
+            : scrollParent[key];
     }
 
     getStartAndEnd(threshold = this.props.threshold) {
