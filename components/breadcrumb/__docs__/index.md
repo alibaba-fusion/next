@@ -18,16 +18,16 @@
 
 ### Breadcrumb
 
-| 参数            | 说明                                                               | 类型                                       | 默认值 | 是否必填 | 支持版本 |
-| --------------- | ------------------------------------------------------------------ | ------------------------------------------ | ------ | -------- | -------- |
-| children        | 面包屑子节点，需传入 Breadcrumb.Item                               | Array\<React.ReactNode> \| React.ReactNode | -      |          | -        |
-| maxNode         | 面包屑最多显示个数，超出部分会被隐藏                               | number \| 'auto'                           | 100    |          | -        |
-| showHiddenItems | 当超过的项被隐藏时，是否可通过点击省略号展示菜单（包含被隐藏的项） | boolean                                    | false  |          | 1.23     |
-| popupContainer  | 弹层挂载的容器节点（在showHiddenItems为true时才有意义）            | DropdownProps['container']                 | -      |          | 1.23     |
-| followTrigger   | 是否跟随trigger滚动（在showHiddenItems为true时才有意义）           | boolean                                    | -      |          | 1.23     |
-| popupProps      | 添加到弹层上的属性（在showHiddenItems为true时才有意义）            | PopupProps                                 | -      |          | 1.23     |
-| separator       | 分隔符，可以是文本或 Icon                                          | string \| React.ReactNode                  | -      |          | -        |
-| component       | 设置标签类型                                                       | string \| (() => void)                     | 'nav'  |          | -        |
+| 参数            | 说明                                                               | 类型                                                                                                | 默认值 | 是否必填 | 支持版本 |
+| --------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- | ------ | -------- | -------- |
+| children        | 面包屑子节点，需传入 Breadcrumb.Item                               | \| Array\<React.ReactElement\<ItemProps> \| boolean \| null><br/> \| React.ReactElement\<ItemProps> | -      |          | -        |
+| maxNode         | 面包屑最多显示个数，超出部分会被隐藏                               | number \| 'auto'                                                                                    | 100    |          | -        |
+| showHiddenItems | 当超过的项被隐藏时，是否可通过点击省略号展示菜单（包含被隐藏的项） | boolean                                                                                             | false  |          | 1.23     |
+| popupContainer  | 弹层挂载的容器节点（在showHiddenItems为true时才有意义）            | DropdownProps['container']                                                                          | -      |          | 1.23     |
+| followTrigger   | 是否跟随trigger滚动（在showHiddenItems为true时才有意义）           | boolean                                                                                             | -      |          | 1.23     |
+| popupProps      | 添加到弹层上的属性（在showHiddenItems为true时才有意义）            | DropdownProps                                                                                       | -      |          | 1.23     |
+| separator       | 分隔符，可以是文本或 Icon                                          | string \| React.ReactNode                                                                           | -      |          | -        |
+| component       | 设置标签类型                                                       | React.ComponentType\<BreadcrumbProps> \| string                                                     | 'nav'  |          | -        |
 
 ### Breadcrumb.Item
 
