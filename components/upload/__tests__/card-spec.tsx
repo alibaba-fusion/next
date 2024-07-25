@@ -46,7 +46,7 @@ describe('CardUpload', () => {
 
             cy.get('div.next-upload-list-item').should('have.length', 2);
         });
-        it.only('should support showDownload', () => {
+        it('should support showDownload', () => {
             const files = [
                 {
                     name: 'IMG_20140109_121958.jpg',
