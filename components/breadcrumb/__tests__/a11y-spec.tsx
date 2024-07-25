@@ -3,7 +3,6 @@ import Breadcrumb from '../index';
 import '../style';
 import { testReact } from '../../util/__tests__/a11y/validate';
 
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Breadcrumb A11y', () => {
     it('should not have any violations when empty', async () => {
         await testReact(<Breadcrumb />);
