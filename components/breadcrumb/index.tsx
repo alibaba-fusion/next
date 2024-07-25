@@ -1,15 +1,15 @@
-import React, { Component, Children } from 'react';
+import React, { type ReactNode, type ReactElement, Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import Icon from '../icon';
 import ConfigProvider from '../config-provider';
-import Dropdown, { type DropdownProps } from '../dropdown';
+import Dropdown from '../dropdown';
 import Menu from '../menu';
 import Item from './item';
 import { events } from '../util';
 import type { BreadcrumbProps } from './types';
 
-export type { BreadcrumbProps } from './types';
+export type { BreadcrumbProps, ItemProps } from './types';
 
 interface Child {
     type: {
@@ -17,16 +17,15 @@ interface Child {
     };
 }
 
+interface BreadcrumbState {
+    maxNode: number;
+    prevMaxNode?: BreadcrumbProps['maxNode'];
+}
+
 /**
  * Breadcrumb
  */
-class Breadcrumb extends Component<
-    BreadcrumbProps,
-    {
-        maxNode: BreadcrumbProps['maxNode'];
-        prevMaxNode?: BreadcrumbProps['maxNode'];
-    }
-> {
+class Breadcrumb extends Component<BreadcrumbProps, BreadcrumbState> {
     static Item = Item;
 
     static propTypes = {
@@ -68,14 +67,11 @@ class Breadcrumb extends Component<
     constructor(props: BreadcrumbProps) {
         super(props);
         this.state = {
-            maxNode: props.maxNode === 'auto' ? 100 : props.maxNode,
+            maxNode: props.maxNode === 'auto' ? 100 : props.maxNode!,
         };
     }
 
-    static getDerivedStateFromProps(
-        props: { maxNode: BreadcrumbProps['maxNode'] },
-        state: { prevMaxNode: BreadcrumbProps['maxNode'] }
-    ) {
+    static getDerivedStateFromProps(props: BreadcrumbProps, state: BreadcrumbState) {
         if (state.prevMaxNode === props.maxNode) {
             return {};
         }
@@ -133,10 +129,10 @@ class Breadcrumb extends Component<
         this.breadcrumbEl = ref;
     };
 
-    renderEllipsisNodeWithMenu(children: React.ReactNode, breakpointer: number) {
+    renderEllipsisNodeWithMenu(children: ReactNode, breakpointer: number) {
         // 拿到被隐藏的项
-        const hiddenItems: React.ReactNode[] = [];
-        Children.forEach(children, (item: React.ReactElement, i) => {
+        const hiddenItems: ReactNode[] = [];
+        Children.forEach(children, (item: ReactElement, i) => {
             const { link, children: itemChildren, onClick } = item.props;
             if (i > 0 && i <= breakpointer) {
                 hiddenItems.push(
@@ -152,7 +148,7 @@ class Breadcrumb extends Component<
         return (
             <Dropdown
                 trigger={<span>...</span>}
-                {...(popupProps as DropdownProps)}
+                {...popupProps}
                 container={popupContainer}
                 followTrigger={followTrigger}
             >
@@ -179,16 +175,16 @@ class Breadcrumb extends Component<
             <Icon type="arrow-right" className={`${prefix}breadcrumb-icon-sep`} />
         );
 
-        const maxNode = this.state.maxNode as number;
+        const maxNode = this.state.maxNode;
 
         let items;
-        const length: number = Children.count(children);
+        const length = Children.count(children);
 
         if (maxNode > 1 && length > maxNode) {
             const breakpointer = length - maxNode + 1;
             items = [];
 
-            Children.forEach(children, (item: React.ReactElement, i) => {
+            Children.forEach(children, (item: ReactElement, i) => {
                 const ariaProps: Record<string, string> = {};
 
                 // 增加空值判断
@@ -231,7 +227,7 @@ class Breadcrumb extends Component<
                 }
             });
         } else {
-            items = Children.map(children, (item: React.ReactElement, i) => {
+            items = Children.map(children, (item: ReactElement, i) => {
                 const ariaProps: Record<string, string> = {};
                 // 增加空值判断
                 if (!item) {
@@ -255,11 +251,10 @@ class Breadcrumb extends Component<
             others.dir = 'rtl';
         }
 
-        const BreadcrumbComponent = component as unknown as React.FC<BreadcrumbProps>;
+        const BreadcrumbComponent = component!;
 
-        if ('maxNode' in others) {
-            delete others.maxNode;
-        }
+        // @ts-expect-error 属性 maxNode 不存在于类型 others 上
+        delete others.maxNode;
 
         return (
             <BreadcrumbComponent
@@ -281,7 +276,7 @@ class Breadcrumb extends Component<
                         ref={this.saveBreadcrumbRef}
                         className={`${prefix}breadcrumb`}
                     >
-                        {Children.map(children, (item: React.ReactElement, i) => {
+                        {Children.map(children, (item: ReactElement, i) => {
                             return React.cloneElement(item, {
                                 separator,
                                 prefix,

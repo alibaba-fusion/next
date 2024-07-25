@@ -1,6 +1,4 @@
-import React from 'react';
-import type Item from './item';
-import type { PopupProps } from '../overlay';
+import type React from 'react';
 import type { DropdownProps } from '../dropdown';
 import type { CommonProps } from '../util';
 
@@ -39,9 +37,11 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
 export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 面包屑子节点，需传入 Breadcrumb.Item
-     * @en Children components, hsould be an Breadcrumb.Item
+     * @en Children components, should be an Breadcrumb.Item
      */
-    children?: Array<React.ReactNode> | React.ReactNode;
+    children?:
+        | Array<React.ReactElement<ItemProps> | boolean | null>
+        | React.ReactElement<ItemProps>;
     /**
      * 面包屑最多显示个数，超出部分会被隐藏
      * @en The maximum number of breadcrumbs is displayed and the excess is hidden, can set auto compute maximum number
@@ -72,7 +72,7 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement>, Comm
      * @en The attributes added to the popup (meaningful only when showHiddenItems is true)
      * @version 1.23
      */
-    popupProps?: PopupProps;
+    popupProps?: DropdownProps;
     /**
      * 分隔符，可以是文本或 Icon
      * @en Separator, can be text or Icon
@@ -83,9 +83,5 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement>, Comm
      * @en Set Element type
      * @defaultValue 'nav'
      */
-    component?: string | (() => void);
-}
-
-export default class Breadcrumb extends React.Component<BreadcrumbProps> {
-    static Item: typeof Item;
+    component?: React.ComponentType<BreadcrumbProps> | string;
 }

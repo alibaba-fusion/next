@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { type ReactNode, Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -26,7 +26,7 @@ class Item extends Component<ItemProps> {
     static _typeMark = 'breadcrumb_item';
 
     // stateless separator component
-    static Separator({ prefix, children }: { prefix?: string; children: React.ReactNode }) {
+    static Separator({ prefix, children }: { prefix?: string; children: ReactNode }) {
         return <span className={`${prefix}breadcrumb-separator`}>{children}</span>;
     }
 

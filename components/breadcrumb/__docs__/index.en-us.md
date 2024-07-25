@@ -17,16 +17,16 @@ It is used to inform the user of the current position and the position of the cu
 
 ### Breadcrumb
 
-| Param           | Description                                                                                                           | Type                                       | Default Value | Required | Supported Version |
-| --------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ------------- | -------- | ----------------- |
-| children        | Children components, hsould be an Breadcrumb.Item                                                                     | Array\<React.ReactNode> \| React.ReactNode | -             |          | -                 |
-| maxNode         | The maximum number of breadcrumbs is displayed and the excess is hidden, can set auto compute maximum number          | number \| 'auto'                           | 100           |          | -                 |
-| showHiddenItems | When the hidden items are exceeded, is it possible to click the ellipsis to display the menu (including hidden items) | boolean                                    | false         |          | 1.23              |
-| popupContainer  | The container node that the popup mounts (meaningful only when showHiddenItems is true)                               | DropdownProps['container']                 | -             |          | 1.23              |
-| followTrigger   | Whether to scroll with the trigger (meaningful only when showHiddenItems is true)                                     | boolean                                    | -             |          | 1.23              |
-| popupProps      | The attributes added to the popup (meaningful only when showHiddenItems is true)                                      | PopupProps                                 | -             |          | 1.23              |
-| separator       | Separator, can be text or Icon                                                                                        | string \| React.ReactNode                  | -             |          | -                 |
-| component       | Set Element type                                                                                                      | string \| (() => void)                     | 'nav'         |          | -                 |
+| Param           | Description                                                                                                           | Type                                                                                                | Default Value | Required | Supported Version |
+| --------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------- | -------- | ----------------- |
+| children        | Children components, should be an Breadcrumb.Item                                                                     | \| Array\<React.ReactElement\<ItemProps> \| boolean \| null><br/> \| React.ReactElement\<ItemProps> | -             |          | -                 |
+| maxNode         | The maximum number of breadcrumbs is displayed and the excess is hidden, can set auto compute maximum number          | number \| 'auto'                                                                                    | 100           |          | -                 |
+| showHiddenItems | When the hidden items are exceeded, is it possible to click the ellipsis to display the menu (including hidden items) | boolean                                                                                             | false         |          | 1.23              |
+| popupContainer  | The container node that the popup mounts (meaningful only when showHiddenItems is true)                               | DropdownProps['container']                                                                          | -             |          | 1.23              |
+| followTrigger   | Whether to scroll with the trigger (meaningful only when showHiddenItems is true)                                     | boolean                                                                                             | -             |          | 1.23              |
+| popupProps      | The attributes added to the popup (meaningful only when showHiddenItems is true)                                      | DropdownProps                                                                                       | -             |          | 1.23              |
+| separator       | Separator, can be text or Icon                                                                                        | string \| React.ReactNode                                                                           | -             |          | -                 |
+| component       | Set Element type                                                                                                      | React.ComponentType\<BreadcrumbProps> \| string                                                     | 'nav'         |          | -                 |
 
 ### Breadcrumb.Item
 
