@@ -33,142 +33,34 @@ class TimePicker extends Component<TimePickerProps, TimePickerState> {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 按钮的文案
-         */
         label: PropTypes.node,
-        /**
-         * 输入框状态
-         */
         state: PropTypes.oneOf(['error', 'success']),
-        /**
-         * 输入框提示
-         */
         placeholder: PropTypes.string,
-        /**
-         * 时间值（moment 对象或时间字符串，受控状态使用）
-         */
         value: checkDateValue,
-        /**
-         * 时间初值（moment 对象或时间字符串，非受控状态使用）
-         */
         defaultValue: checkDateValue,
-        /**
-         * 时间选择框的尺寸
-         */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
-        /**
-         * 是否允许清空时间
-         */
         hasClear: PropTypes.bool,
-        /**
-         * 时间的格式
-         * https://momentjs.com/docs/#/parsing/string-format/
-         */
         format: PropTypes.string,
-        /**
-         * 小时选项步长
-         */
         hourStep: PropTypes.number,
-        /**
-         * 分钟选项步长
-         */
         minuteStep: PropTypes.number,
-        /**
-         * 秒钟选项步长
-         */
         secondStep: PropTypes.number,
-        /**
-         * 禁用小时函数
-         * @param index - 时 0 - 23
-         * @returns 是否禁用
-         */
         disabledHours: PropTypes.func,
-        /**
-         * 禁用分钟函数
-         * @param index - 分 0 - 59
-         * @returns 是否禁用
-         */
         disabledMinutes: PropTypes.func,
-        /**
-         * 禁用秒钟函数
-         * @param index - 秒 0 - 59
-         * @returns 是否禁用
-         */
         disabledSeconds: PropTypes.func,
-        /**
-         * 渲染的可选择时间列表
-         * [\{
-         *  label: '01',
-         *  value: 1
-         * \}]
-         * @param list - 默认渲染的列表
-         * @param mode - 渲染的菜单 hour, minute, second
-         * @param value - 当前时间，可能为 null
-         * @returns 返回需要渲染的数据
-         */
         renderTimeMenuItems: PropTypes.func,
-        /**
-         * 弹层是否显示（受控）
-         */
         visible: PropTypes.bool,
-        /**
-         * 弹层默认是否显示（非受控）
-         */
         defaultVisible: PropTypes.bool,
-        /**
-         * 弹层容器
-         * @param target - 目标节点
-         * @returns 容器节点
-         */
         popupContainer: PropTypes.any,
-        /**
-         * 弹层对齐方式，详情见 Overlay 文档
-         */
         popupAlign: PropTypes.string,
-        /**
-         * 弹层触发方式
-         */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
-        /**
-         * 弹层展示状态变化时的回调
-         * @param visible - 弹层是否隐藏和显示
-         * @param type - 触发弹层显示和隐藏的来源 fromTrigger 表示由 trigger 的点击触发；docClick 表示由 document 的点击触发
-         */
         onVisibleChange: PropTypes.func,
-        /**
-         * 弹层自定义样式
-         */
         popupStyle: PropTypes.object,
-        /**
-         * 弹层自定义样式类
-         */
         popupClassName: PropTypes.string,
-        /**
-         * 弹层属性
-         */
         popupProps: PropTypes.object,
-        /**
-         * 是否跟随滚动
-         */
         followTrigger: PropTypes.bool,
-        /**
-         * 是否禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param value - 时间
-         */
         renderPreview: PropTypes.func,
-        /**
-         * 时间值改变时的回调
-         * @param value - 时间对象或时间字符串
-         */
         onChange: PropTypes.func,
         className: PropTypes.string,
         name: PropTypes.string,
