@@ -2,6 +2,7 @@ import React from 'react';
 import { Types } from '@alifd/adaptor-helper';
 import { TimePicker } from '@alifd/next';
 import moment from 'moment';
+import type { TimePickerProps } from '../../types';
 
 export default {
     name: 'TimePicker',
@@ -48,7 +49,26 @@ export default {
             },
         ],
     }),
-    adaptor: ({ size, state, type, width, label, placeholder, value = '', style, ...others }) => {
+    adaptor: ({
+        size,
+        state,
+        type,
+        width,
+        label,
+        placeholder,
+        value = '',
+        style,
+        ...others
+    }: {
+        size: TimePickerProps['size'];
+        state: 'normal' | 'expanded' | 'selected' | 'disabled';
+        type: 'HMS' | 'HM' | 'MS';
+        width: number;
+        label: string;
+        placeholder: string;
+        value: string;
+        style: React.CSSProperties;
+    }) => {
         const time = moment();
         const arr = value.split(':');
 
@@ -60,12 +80,15 @@ export default {
 
             switch (char) {
                 case 'H':
+                    /* @ts-expect-error v 应转为 number */
                     time.hours(v);
                     break;
                 case 'M':
+                    /* @ts-expect-error v 应转为 number */
                     time.minutes(v);
                     break;
                 case 'S':
+                    /* @ts-expect-error v 应转为 number */
                     time.seconds(v);
                     break;
             }
@@ -87,7 +110,7 @@ export default {
             />
         );
     },
-    demoOptions: demo => {
+    demoOptions: (demo: any) => {
         if (demo.node.props.state === 'expanded') {
             demo.height = 300;
         }

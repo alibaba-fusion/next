@@ -1,26 +1,34 @@
-import React, { Component } from 'react';
+import React, {
+    Component,
+    type HTMLAttributes,
+    type SyntheticEvent,
+    type KeyboardEvent,
+} from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
 import ConfigProvider from '../config-provider';
-import Input from '../input';
+import Input, { type InputProps } from '../input';
 import Icon from '../icon';
 import Overlay from '../overlay';
 import nextLocale from '../locale/zh-cn';
-import { func, obj } from '../util';
+import { type ClassPropsWithDefault, func, obj } from '../util';
 import TimePickerPanel from './panel';
 import { checkDateValue, formatDateValue } from './utils';
 import { onTimeKeydown } from '../date-picker/util';
+import type { TimePickerProps, TimePickerState } from './types';
 
 const { Popup } = Overlay;
 const { noop } = func;
 const timePickerLocale = nextLocale.TimePicker;
 
+type InnerTimePickerProps = ClassPropsWithDefault<TimePickerProps, typeof TimePicker.defaultProps>;
+
 /**
  * TimePicker
  */
-class TimePicker extends Component {
+class TimePicker extends Component<TimePickerProps, TimePickerState> {
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -72,32 +80,32 @@ class TimePicker extends Component {
         secondStep: PropTypes.number,
         /**
          * 禁用小时函数
-         * @param {Number} index 时 0 - 23
-         * @return {Boolean} 是否禁用
+         * @param index - 时 0 - 23
+         * @returns 是否禁用
          */
         disabledHours: PropTypes.func,
         /**
          * 禁用分钟函数
-         * @param {Number} index 分 0 - 59
-         * @return {Boolean} 是否禁用
+         * @param index - 分 0 - 59
+         * @returns 是否禁用
          */
         disabledMinutes: PropTypes.func,
         /**
          * 禁用秒钟函数
-         * @param {Number} index 秒 0 - 59
-         * @return {Boolean} 是否禁用
+         * @param index - 秒 0 - 59
+         * @returns 是否禁用
          */
         disabledSeconds: PropTypes.func,
         /**
          * 渲染的可选择时间列表
-         * [{
+         * [\{
          *  label: '01',
          *  value: 1
-         * }]
-         * @param {Array} list 默认渲染的列表
-         * @param {String} mode 渲染的菜单 hour, minute, second
-         * @param {moment} value 当前时间，可能为 null
-         * @return {Array} 返回需要渲染的数据
+         * \}]
+         * @param list - 默认渲染的列表
+         * @param mode - 渲染的菜单 hour, minute, second
+         * @param value - 当前时间，可能为 null
+         * @returns 返回需要渲染的数据
          */
         renderTimeMenuItems: PropTypes.func,
         /**
@@ -110,12 +118,12 @@ class TimePicker extends Component {
         defaultVisible: PropTypes.bool,
         /**
          * 弹层容器
-         * @param {Object} target 目标节点
-         * @return {ReactNode} 容器节点
+         * @param target - 目标节点
+         * @returns 容器节点
          */
         popupContainer: PropTypes.any,
         /**
-         * 弹层对齐方式, 详情见Overlay 文档
+         * 弹层对齐方式，详情见 Overlay 文档
          */
         popupAlign: PropTypes.string,
         /**
@@ -124,8 +132,8 @@ class TimePicker extends Component {
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
          * 弹层展示状态变化时的回调
-         * @param {Boolean} visible 弹层是否隐藏和显示
-         * @param {String} type 触发弹层显示和隐藏的来源 fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
+         * @param visible - 弹层是否隐藏和显示
+         * @param type - 触发弹层显示和隐藏的来源 fromTrigger 表示由 trigger 的点击触发；docClick 表示由 document 的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -154,12 +162,12 @@ class TimePicker extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {MomentObject|null} value 时间
+         * @param value - 时间
          */
         renderPreview: PropTypes.func,
         /**
          * 时间值改变时的回调
-         * @param {Object|String} value 时间对象或时间字符串
+         * @param value - 时间对象或时间字符串
          */
         onChange: PropTypes.func,
         className: PropTypes.string,
@@ -182,10 +190,13 @@ class TimePicker extends Component {
         onChange: noop,
         onVisibleChange: noop,
     };
+    inputAsString: boolean;
 
-    constructor(props, context) {
-        super(props, context);
-        const value = formatDateValue(props.value || props.defaultValue, props.format);
+    readonly props: InnerTimePickerProps;
+
+    constructor(props: TimePickerProps) {
+        super(props);
+        const value = formatDateValue(props.value || props.defaultValue, props.format!);
         this.inputAsString = typeof (props.value || props.defaultValue) === 'string';
         this.state = {
             value,
@@ -195,8 +206,8 @@ class TimePicker extends Component {
         };
     }
 
-    static getDerivedStateFromProps(props) {
-        const state = {};
+    static getDerivedStateFromProps(props: InnerTimePickerProps) {
+        const state: Partial<TimePickerState> = {};
 
         if ('value' in props) {
             state.value = formatDateValue(props.value, props.format);
@@ -209,7 +220,7 @@ class TimePicker extends Component {
         return state;
     }
 
-    onValueChange(newValue) {
+    onValueChange(newValue: Moment | null) {
         const ret = this.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
         this.props.onChange(ret);
     }
@@ -223,10 +234,10 @@ class TimePicker extends Component {
         }
     };
 
-    onInputChange = (inputValue, e, eventType) => {
+    onInputChange = (inputValue: string, e?: SyntheticEvent, eventType?: string) => {
         if (!('value' in this.props)) {
             if (eventType === 'clear' || !inputValue) {
-                e.stopPropagation();
+                e!.stopPropagation();
                 this.onClearValue();
             }
 
@@ -236,7 +247,7 @@ class TimePicker extends Component {
             });
         } else if (eventType === 'clear') {
             // 受控状态下用户点击 clear
-            e.stopPropagation();
+            e!.stopPropagation();
             this.onValueChange(null);
         }
     };
@@ -259,7 +270,7 @@ class TimePicker extends Component {
         }
     };
 
-    onKeyown = e => {
+    onKeyown = (e: KeyboardEvent<HTMLInputElement>) => {
         const { value, inputStr } = this.state;
         const {
             format,
@@ -295,7 +306,7 @@ class TimePicker extends Component {
         this.onInputChange(timeStr);
     };
 
-    onTimePanelSelect = value => {
+    onTimePanelSelect = (value: Moment) => {
         if (!('value' in this.props)) {
             this.setState({
                 value,
@@ -307,7 +318,7 @@ class TimePicker extends Component {
         }
     };
 
-    onVisibleChange = (visible, type) => {
+    onVisibleChange = (visible: boolean, type: string) => {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
@@ -316,7 +327,7 @@ class TimePicker extends Component {
         this.props.onVisibleChange(visible, type);
     };
 
-    renderPreview(others) {
+    renderPreview(others: HTMLAttributes<HTMLDivElement>) {
         const { prefix, format, className, renderPreview } = this.props;
         const { value } = this.state;
         const previewCls = classnames(className, `${prefix}form-preview`);
@@ -383,15 +394,17 @@ class TimePicker extends Component {
         }
 
         if (isPreview) {
+            // @ts-expect-error TimePicker 上没有 PropTypes，应该是 propTypes
             return this.renderPreview(obj.pickOthers(others, TimePicker.PropTypes));
         }
 
         const inputValue = inputing ? inputStr : (value && value.format(format)) || '';
-        const sharedInputProps = {
+        const sharedInputProps: InputProps = {
             ...inputProps,
             size,
             disabled,
             value: inputValue,
+            // @ts-expect-error value 应该先做 bool 转化
             hasClear: value && hasClear,
             onChange: this.onInputChange,
             onBlur: this.onInputBlur,

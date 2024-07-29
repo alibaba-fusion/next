@@ -118,7 +118,7 @@ export function onDateKeydown(e, { format, dateInputStr, value }, type) {
 
 /**
  * 监听键盘事件，操作时间
- * @param {KeyboardEvent} e
+ * @param {KeyboardEvent<HTMLInputElement>} e
  * @param {Object} param1
  * @param {String} type second hour minute
  */
