@@ -76,7 +76,7 @@ export interface UploadProps extends UploadCommonProps {
 
     /**
      * 可选参数，上传成功回调函数，参数为请求下响应信息以及文件
-     *  @en Optional parameters, upload success callback function, the parameter is the response information and file
+     * @en Optional parameters, upload success callback function, the parameter is the response information and file
      * @param file - 文件 - file
      * @param value - 值 - value
      * @defaultValue func.noop
@@ -268,22 +268,28 @@ export interface UploadProps extends UploadCommonProps {
 
     /**
      * 自定义额外渲染
+     * @en Custom extra rendering
      * @skip
      */
     extraRender?: (file: File) => unknown;
+
     /**
      * 自定义 class
+     * @en Custom class
      * @skip
      */
     className?: string;
 
     /**
      * 自定义内联样式
+     * @en Custom inline style
      * @skip
      */
     style?: CSSProperties;
 
     /**
+     * 点击图片回调
+     * @en Click image callback
      * @skip
      */
     onPreview?: (file: UploadFile, e?: MouseEvent<HTMLElement>) => void;
@@ -296,64 +302,78 @@ export interface UploadProps extends UploadCommonProps {
     previewOnFileName?: boolean;
 
     /**
-     * 自定义成功和失败的列表渲染方式
+     * 自定义成功和失败的列表渲染方式，仅在 listType 是 card/image 时生效
+     * @en Customize success and failure list rendering, only in listType is card or image
      */
-    itemRender?: (file: UploadFile, obj: { remove?: () => void }) => ReactNode;
+    itemRender?: (file: UploadFile, action?: { remove?: () => void }) => ReactNode;
 
     /**
      * 选择新文件上传并替换
+     * @en Select new file upload and replace
      */
     reUpload?: boolean;
 
     /**
      * 是否自动上传
+     * @en Automatic upload
      * @skip
      */
     autoUplod?: boolean;
 
     /**
      * 是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件
+     * @en Whether to support multiple file selection, `ie10+` supports
      * @skip
      */
     multiple?: boolean;
 
     /**
      * 是否可以关闭
+     * @en Whether to close
      * @skip
      */
     closable?: boolean;
 
     /**
      * 是否只读
+     * @en Whether to read only
      * @skip
      */
     readonly?: boolean;
 
     /**
      * list 值
+     * @en List value
      * @skip
      */
     list?: unknown;
+
     /**
-     *
+     * 文本方向
+     * @en Text direction
      * @skip
      */
     rtl?: boolean;
+
     /**
      * 取消事件
+     * @en Cancel event
      * @skip
      */
     onCancel?: (file: UploadFile) => void;
 
     /**
      * 样式前缀
+     * @en Style prefix
      * @skip
      */
     prefix?: string;
 }
+
 /**
  * @api Upload.Card
  * 继承 Upload 的 API，除非特别说明
+ * @en Inheritance Upload API, unless otherwise specified
  */
 export interface CardProps extends UploadProps {
     /**
@@ -383,13 +403,13 @@ export interface CardProps extends UploadProps {
     onCancel?: () => void;
 
     /**
-     * 自定义成功和失败的列表渲染方式
-     * @en Customize success and failure list rendering
+     * 自定义成功和失败的列表渲染方式，仅在 listType 是 card/image 时生效
+     * @en Customize success and failure list rendering，only in listType is card or image
      * @param file - 文件对象 - file object
-     * @param obj - 包含属性 remove: 删除回调 - contains properties remove: delete callback
+     * @param action - 包含属性 remove: 删除回调 - contains properties remove: delete callback
      * @version 1.21
      */
-    itemRender?: (file: ObjectFile, obj: { remove?: () => void }) => ReactNode;
+    itemRender?: (file: ObjectFile, action?: { remove?: () => void }) => ReactNode;
 
     /**
      * 选择新文件上传并替换
@@ -417,16 +437,19 @@ export interface CardProps extends UploadProps {
 /**
  * @api Upload.Dragger
  * IE10+ 支持。继承 Upload 的 API，除非特别说明
+ * @en IE10+ supports. Inheritance Upload API, unless otherwise specified
  */
 export interface DraggerProps extends UploadProps {
     /**
      * 拖拽进入回调
+     * @en Drag over callback
      * @skip
      */
     onDragOver?: (e: DragEvent<HTMLElement>) => void;
 
     /**
      * 拖拽离开回调
+     * @en Drag leave callback
      * @skip
      */
     onDragLeave?: (e: DragEvent<HTMLElement>) => void;
@@ -440,6 +463,7 @@ export interface CardState {
 /**
  * @api Upload.Selecter
  * [底层能力] 可自定义样式的文件选择器
+ * @en [Underlying capabilities] Customizable file selector
  */
 export interface SelecterProps {
     /**
@@ -506,9 +530,33 @@ export interface SelecterProps {
      * @defaultValue func.noop
      */
     onDrop?: (fiels: File[]) => void;
+
+    /**
+     * 样式 ID
+     * @en Style ID
+     * @skip
+     */
     id?: string;
+
+    /**
+     * 样式
+     * @en Style
+     * @skip
+     */
     style?: CSSProperties;
+
+    /**
+     * 样式 calss
+     * @en Style class
+     * @skip
+     */
     className?: string;
+
+    /**
+     * name
+     * @en name
+     * @skip
+     */
     name?: string;
 }
 
@@ -519,60 +567,21 @@ export interface UploadState {
 
 export interface ListProps extends UploadCommonProps {
     prefix?: string;
-    /**
-     * 文件列表，数据格式请参考 文件对象
-     */
     listType?: ListType;
     reUpload?: boolean;
-    /**
-     * 文件列表
-     */
     value: Array<ObjectFile>;
     closable?: boolean;
-    /**
-     * 删除文件回调 (支持 Promise)
-     */
     onRemove?: (file: unknown) => boolean | unknown;
-    /**
-     * 取消上传回调 (支持 Promise)
-     */
     onCancel?: (file?: ObjectFile) => void;
-    /**
-     * 头像加载出错回调
-     */
     onImageError?: (obj: object, file: UploadFile) => void;
-    /**
-     * 点击图片回调
-     */
     onPreview?: (file: UploadFile, e?: MouseEvent<HTMLElement>) => void;
-    /**
-     * 点击文件名时触发 onPreview
-     */
     previewOnFileName?: boolean;
-    /**
-     * 自定义额外渲染
-     */
     extraRender?: (file: ObjectFile) => void;
-    /**
-     * 自定义操作渲染
-     */
     actionRender?: (file: ObjectFile) => void;
-    /**
-     * 卡片自定义渲染（目前只支持 Card)
-     * Object file 文件对象
-     * Object remove remove:删除回调
-     * ReactNode React 元素
-     */
-    itemRender?: (file: ObjectFile, { remove }: { remove: () => void }) => void;
-    /**
-     * 透传给 Progress props
-     */
+    itemRender?: (file: ObjectFile, action?: { remove: () => void }) => void;
     progressProps?: object;
     children?: ReactNode;
     showDownload?: boolean;
-    /**
-     * 可选参数，是否本地预览
-     */
     useDataURL?: boolean;
     rtl?: boolean;
     isPreview?: boolean;
@@ -694,51 +703,18 @@ export interface NObject {
 
 export interface IframeUploaderProps {
     name?: string;
-    /**
-     * 上传的地址
-     */
     action?: string;
-    /**
-     * 接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)
-     */
     accept?: string;
-    /**
-     * 上传额外传参
-     */
     data?: object | ((file: unknown) => void);
     disabled?: boolean;
     className?: string;
     style?: CSSProperties;
-    /**
-     * 是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件
-     */
     multiple?: boolean;
-    /**
-     * 设置上传的请求头部
-     */
     headers?: { [key: string]: unknown; 'X-Requested-With'?: string | undefined };
-    /**
-     * 是否允许请求携带 cookie
-     */
     withCredentials?: boolean;
-    /**
-     * 可选参数，详见 [beforeUpload](#beforeUpload)
-     */
     beforeUpload?: (file: unknown, options: unknown) => boolean | object | Promise<object>;
-    /**
-     * 上传中
-     */
     onProgress?: () => void;
-    /**
-     * 可选参数，上传成功回调函数，参数为请求下响应信息以及文件
-     */
     onSuccess?: (param: unknown, file: ObjectFile | UploadFile) => void;
-    /**
-     * 可选参数，上传失败回调函数
-     * err
-     * params
-     * file
-     */
     onError?: (err: UploadError, params: unknown, file: ObjectFile) => void;
     onSelect?: (file: IframeFile[]) => void;
     onStart?: (file: UploadFile) => void;

@@ -133,7 +133,7 @@ class List extends Component<ListProps> {
     // transfer size from number to xx K/ XxxM / xxG
     sizeCaculator(size: string) {
         let fileSize = parseFloat(size);
-        // fileSize为浮点数 用 < 0.000001 替代 === 0
+        // fileSize 为浮点数 用 < 0.000001 替代 === 0
         if (isNaN(fileSize) || fileSize < 0.0000001) {
             return 0;
         }
@@ -227,8 +227,15 @@ class List extends Component<ListProps> {
     }
 
     getImageList(file: ObjectFile) {
-        const { extraRender, actionRender, progressProps, rtl, fileNameRender, previewOnFileName } =
-            this.props;
+        const {
+            extraRender,
+            actionRender,
+            progressProps,
+            rtl,
+            fileNameRender,
+            previewOnFileName,
+            itemRender,
+        } = this.props;
 
         const { prefixCls, downloadURL, imgURL, size, itemCls, alt } = this.getInfo(file);
 
@@ -247,15 +254,20 @@ class List extends Component<ListProps> {
         } else if (file.state === 'error') {
             img = <Icon type="cry" />;
         } else {
-            img = (
-                <img
-                    src={imgURL}
-                    onError={this.onImageError.bind(this, file)}
-                    tabIndex={0}
-                    alt={alt}
-                    onClick={this.onPreview.bind(this, file)}
-                />
-            );
+            /* eslint-disable no-lonely-if */
+            if (typeof itemRender === 'function') {
+                img = itemRender(file);
+            } else {
+                img = (
+                    <img
+                        src={imgURL}
+                        onError={this.onImageError.bind(this, file)}
+                        tabIndex={0}
+                        alt={alt}
+                        onClick={this.onPreview.bind(this, file)}
+                    />
+                );
+            }
         }
 
         return (
@@ -383,7 +395,7 @@ class List extends Component<ListProps> {
                     fileKeyName: string | undefined;
                 };
 
-                // TODO: 2.x 中逻辑会修改为，只要有showDownload，那就有下载按钮（不管有没有downloadURL）
+                // TODO: 2.x 中逻辑会修改为，只要有 showDownload，那就有下载按钮（不管有没有 downloadURL）
                 item = [
                     <div className={`${prefixCls}-list-item-thumbnail`} key="img">
                         {img}

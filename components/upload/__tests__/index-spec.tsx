@@ -239,6 +239,58 @@ describe('Upload', () => {
             cy.get('.next-upload-inner').should('have.length', 1);
             cy.get('.next-upload-inner').should('have.class', 'next-hidden');
         });
+
+        it('should support itemRender', () => {
+            const itemRender = () => <div className="test">test</div>;
+            cy.mount(
+                <Upload
+                    itemRender={itemRender}
+                    listType="card"
+                    accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+                    defaultValue={[
+                        {
+                            uid: '0',
+                            name: 'IMG.png',
+                            state: 'done',
+                            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        },
+                    ]}
+                />
+            ).as('upload');
+            cy.get('.test').should('have.length', 1);
+
+            cy.rerender('upload', {
+                itemRender,
+                listType: 'image',
+            });
+            cy.get('.test').should('have.length', 1);
+        });
+
+        it('should support itemRender on Dragger', () => {
+            const itemRender = () => <div className="test">test</div>;
+            cy.mount(
+                <Upload.Dragger
+                    itemRender={itemRender}
+                    listType="card"
+                    accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+                    defaultValue={[
+                        {
+                            uid: '0',
+                            name: 'IMG.png',
+                            state: 'done',
+                            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        },
+                    ]}
+                />
+            );
+            cy.get('.test').should('have.length', 1);
+        });
     });
 
     describe('[behavior] Upload Request', () => {
