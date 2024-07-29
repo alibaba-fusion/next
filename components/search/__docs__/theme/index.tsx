@@ -87,12 +87,12 @@ class FunctionDemo extends React.Component<DemoProps> {
                 <h2>{i18n.title}</h2>
 
                 <Demo
-                    title="Basic"
                     {...init('demo', {
                         initValue: demo,
                         valueName: 'demoFunction',
                         trigger: 'onFunctionChange',
                     })}
+                    title="Basic"
                 >
                     <Demo title="Primary" block={false}>
                         <DemoHead cols={['L', 'M']} />

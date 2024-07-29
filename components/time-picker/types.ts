@@ -1,14 +1,12 @@
-/// <reference types="react" />
+import type React from 'react';
+import type { Moment } from 'moment';
+import type { CommonProps } from '../util';
+import type { PopupProps } from '../overlay';
+import type { InputProps } from '../input';
+import type { Locale } from '../locale/types';
 
-import React from 'react';
-import { CommonProps } from '../util';
-import { PopupProps } from '../overlay';
-import { Moment } from 'moment';
-
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    defaultValue?: any;
-    onChange?: any;
-}
+interface HTMLAttributesWeak
+    extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange' | 'defaultValue'> {}
 
 export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
@@ -30,12 +28,12 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 时间值（moment 对象或时间字符串，受控状态使用）
      */
-    value?: any;
+    value?: string | Moment | null;
 
     /**
      * 时间初值（moment 对象或时间字符串，非受控状态使用）
      */
-    defaultValue?: any;
+    defaultValue?: string | Moment;
 
     /**
      * 时间选择框的尺寸
@@ -99,7 +97,7 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
-     * 弹层对齐方式, 详情见Overlay 文档
+     * 弹层对齐方式，详情见 Overlay 文档
      */
     popupAlign?: string;
 
@@ -140,14 +138,83 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
 
     /**
      * 预览态模式下渲染的内容
-     * @param value 时间
      */
-    renderPreview?: (value: Moment | null) => React.ReactNode;
+    renderPreview?: (value: Moment | null, props: TimePickerProps) => React.ReactNode;
 
     /**
      * 时间值改变时的回调
      */
-    onChange?: (value: any | string) => void;
+    onChange?: (value: Moment | string | null) => void;
+    renderTimeMenuItems?: (
+        list: Array<TimeMenuListItem>,
+        mode: TimeMenuProps['mode'],
+        value: TimeMenuProps['value']
+    ) => Array<TimeMenuListItem>;
+    inputProps?: InputProps;
+    locale?: Locale['TimePicker'];
+    popupComponent?: React.JSXElementConstructor<PopupProps>;
+    popupContent?: React.ReactNode;
+    followTrigger?: boolean;
+    /**
+     * @deprecated use `defaultVisible` instead
+     * @skip
+     */
+    defaultOpen?: TimePickerProps['defaultVisible'];
+    /**
+     * @deprecated use `visible` instead
+     * @skip
+     */
+    open?: TimePickerProps['visible'];
+    /**
+     * @deprecated use `onVisibleChange` instead
+     * @skip
+     */
+    onOpenChange?: TimePickerProps['onVisibleChange'];
 }
 
-export default class TimePicker extends React.Component<TimePickerProps, any> {}
+export interface TimePickerPanelProps
+    extends Omit<CommonProps, 'locale'>,
+        Pick<
+            TimePickerProps,
+            | 'prefix'
+            | 'locale'
+            | 'disabled'
+            | 'hourStep'
+            | 'minuteStep'
+            | 'secondStep'
+            | 'disabledHours'
+            | 'disabledMinutes'
+            | 'disabledSeconds'
+            | 'renderTimeMenuItems'
+            | 'locale'
+        > {
+    showHour: boolean;
+    showSecond: boolean;
+    showMinute: boolean;
+    value: Moment | null;
+    onSelect: (value: Moment) => void;
+    className?: string;
+}
+
+export interface TimeMenuListItem {
+    label: React.ReactNode;
+    value: number;
+}
+
+export interface TimeMenuProps
+    extends Omit<CommonProps, 'locale'>,
+        Pick<TimePickerPanelProps, 'disabled' | 'value' | 'renderTimeMenuItems'> {
+    activeIndex?: number;
+    step?: number;
+    mode?: 'hour' | 'minute' | 'second';
+    disabledItems?: (index: number) => boolean;
+    onSelect?: (value: TimeMenuListItem['value'], mode: TimeMenuProps['mode']) => void;
+    title?: string;
+}
+
+export interface TimePickerState {
+    value: Moment | null;
+    visible: boolean | undefined;
+    inputStr: string;
+    inputing: boolean;
+}
