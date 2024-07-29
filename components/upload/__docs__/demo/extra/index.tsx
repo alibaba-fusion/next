@@ -32,7 +32,7 @@ const actionRender: UploadProps['actionRender'] = file => {
     );
 };
 
-const itemRender: CardProps['itemRender'] = (file, { remove }) => {
+const itemRender: CardProps['itemRender'] = (file, action) => {
     console.log(file);
     return (
         <div>
@@ -62,7 +62,7 @@ const itemRender: CardProps['itemRender'] = (file, { remove }) => {
                 type="ashbin"
                 size="xs"
                 style={{ position: 'absolute', right: 2, top: 2, color: '#fff', cursor: 'pointer' }}
-                onClick={remove}
+                onClick={action?.remove}
             />
         </div>
     );
