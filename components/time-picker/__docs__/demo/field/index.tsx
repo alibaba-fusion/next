@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TimePicker, Field, Button } from '@alifd/next';
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
 
 class Demo extends React.Component {
     field = new Field(this);
 
     onClick = () => {
-        const value = this.field.getValue('time-picker');
-        console.log(value.format('HH:mm:ss'));
+        const value = this.field.getValue<Moment>('time-picker');
+        console.log(value!.format('HH:mm:ss'));
     };
 
     render() {

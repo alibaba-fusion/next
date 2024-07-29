@@ -1,8 +1,10 @@
 import ConfigProvider from '../config-provider';
 import TimePicker from './time-picker';
 
+export type { TimePickerProps } from './types';
+
 export default ConfigProvider.config(TimePicker, {
-    transform: /* istanbul ignore next */ (props, deprecated) => {
+    transform: (props, deprecated) => {
         if ('defaultOpen' in props) {
             deprecated('defaultOpen', 'defaultVisible', 'TimePicker');
             const { defaultOpen, ...others } = props;

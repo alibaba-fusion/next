@@ -1,7 +1,8 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import moment from 'moment';
 import { Demo, DemoHead, DemoGroup, initDemo } from '../../../demo-helper';
-import TimePicker from '../../index';
+import TimePicker, { type TimePickerProps } from '../../index';
 import ConfigProvider from '../../../config-provider';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
@@ -32,14 +33,14 @@ const i18nMap = {
     },
 };
 
-function disabledItems(index) {
-    if ((index > 7) & (index < 10)) {
+function disabledItems(index: number) {
+    if (index > 7 && index < 10) {
         return true;
     }
+    return false;
 }
 
-/* eslint-disable react/prop-types */
-class FunctionDemo extends React.Component {
+class FunctionDemo extends React.Component<{ title: string; locale: (typeof i18nMap)['en-us'] }> {
     state = {
         demoFunction: {
             label: {
@@ -53,7 +54,7 @@ class FunctionDemo extends React.Component {
         },
     };
 
-    onFunctionChange = val => {
+    onFunctionChange = (val: unknown) => {
         this.setState({
             demoFunction: val,
         });
@@ -70,9 +71,9 @@ class FunctionDemo extends React.Component {
             disabledSeconds: disabledItems,
         };
 
-        const otherProps = {
+        const otherProps: TimePickerProps = {
             hasClear: true,
-            popupContainer: node => node,
+            popupContainer: (node: HTMLElement) => node,
         };
 
         if (hasLabel) {
@@ -133,9 +134,8 @@ class FunctionDemo extends React.Component {
     }
 }
 
-/* eslint-disable */
-function render(i18n, lang) {
-    return ReactDOM.render(
+function render(i18n: (typeof i18nMap)['en-us'], lang: string) {
+    ReactDOM.render(
         <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">
                 <FunctionDemo title={i18n.title} locale={i18n} />
