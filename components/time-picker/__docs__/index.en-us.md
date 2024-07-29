@@ -13,11 +13,11 @@
 
 A TimePicker is used to input a time by displaying an interface the user can interact with. The TimePicker panel only support 24h clock. Setting `format` with:
 
-| Format     | Example      | Description       |
-| ------ | ------- | -------- |
-| `H HH` | `0..23` | Hour，24h |
-| `m mm` | `0..59` | Minute        |
-| `s ss` | `0..59` | Second        |
+| Format | Example | Description |
+| ------ | ------- | ----------- |
+| `H HH` | `0..23` | Hour，24h   |
+| `m mm` | `0..59` | Minute      |
+| `s ss` | `0..59` | Second      |
 
 By default, TimePicker using moment instance as input value, which is the suggestion way. In addition, input value as string is also supported, e.g. "12:00:00". The type of the first parameter in the callback of `onChange` is based on the input value.
 
@@ -25,45 +25,49 @@ By default, TimePicker using moment instance as input value, which is the sugges
 
 ### TimePicker
 
-| Param | Descripiton  | Type  | Default Value |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ---------- |
-| label            | Inset label of input | ReactNode | -          |
-| size             | Size of input <br><br>**option**:<br>'small', 'medium', 'large'                                                                                                            | Enum      | 'medium'   |
-| state            | State of input <br><br>**option**:<br>'error', 'success'                                                                                                                       | Enum      | -          |
-| placeholder      | Placeholder of input | String    | -          |
-| value            | Time value  | custom    | -          |
-| defaultValue     | Defualt time value | custom    | -          |
-| hasClear         | Has clear icon | Boolean   | true       |
-| format           | time format<br><https://momentjs.com/docs/#/parsing/string-format/>                                                                                                     | String    | 'HH:mm:ss' |
-| hourStep         | Step of hour  | Number    | -          |
-| minuteStep       | Step of minute | Number    | -          |
-| secondStep       | Step of second | Number    | -          |
-| disabledHours    | Function to disable hours <br><br>**signature**:<br>Function(index: Number) => Boolean<br>**paramter**:<br>_index_: {Number} hour 0 - 23<br>**return**:<br>{Boolean} if disabled<br>                            | Function  | -          |
-| disabledMinutes  | Function to disable minutes <br><br>**signature**:<br>Function(index: Number) => Boolean<br>**paramter**:<br>_index_: {Number} minute 0 - 59<br>**return**:<br>{Boolean} if disabled<br>                            | Function  | -          |
-| disabledSeconds  | Function to disable seconds <br><br>**signature**:<br>Function(index: Number) => Boolean<br>**paramter**:<br>_index_: {Number} second 0 - 59<br>**return**:<br>{Boolean} if disabled<br>                            | Function  | -          |
-| renderTimeMenuItems | Render time menu<br>[{<br> label: '01',<br> value: 1<br>}]<br><br>**签名**:<br>Function(list: Array, mode: String, value: moment) => Array<br>**参数**:<br>_list_: {Array} default time menu list<br>_mode_: {String} menu type: hour, minute, second<br>_value_: {moment} value <br>**返回值**:<br>{Array}<br>
-| visible          | Visible state of popup | Boolean   | -          |
-| defaultVisible   | Default visible state of popup  | Boolean   | -          |
-| popupContainer   | Container of popup<br><br>**signature**:<br>Function(target: Object) => ReactNode<br>**paramter**:<br>_target_: {Object} target container<br>**return**:<br>{ReactNode} container element<br>                            | Function  | -          |
-| popupAlign       | Align of popup, @see Overylay doc for detail  | String    | 'tl tl'    |
-| popupTriggerType | Trigger type of popup<br><br>**option**:<br>'click', 'hover'                                                                                                                        | Enum      | 'click'    |
-| onVisibleChange  | Callback when visible changes<br><br>**signature**:<br>Function(visible: Boolean, reason: String) => void<br>**paramter**:<br>_visible_: {Boolean} visible of popup<br>_reason_: {String} reason to change visible | Function  | func.noop  |
-| popupStyle       | Custom style of popup | Object    | -          |
-| popupClassName   | Custom className of popup  | String    | -          |
-| popupProps       | Props of popup  | Object    | -          |
-| followTrigger    | follow Trigger or not                | Boolean         | -                                         |
-| disabled         | Disable the picker  | Boolean   | false      |
-| onChange         | Callback when date changes<br><br>**signature**:<br>Function(value: Object/String) => void<br>**paramter**:<br>_value_: {Object/String} date value                                                                  | Function  | func.noop  |
+| Param               | Description                                                                                                                  | Type                                                                                                                                           | Default Value | Required |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
+| label               | Button text                                                                                                                  | React.ReactNode                                                                                                                                | -             |          |
+| state               | Input state                                                                                                                  | 'error' \| 'success'                                                                                                                           | -             |          |
+| placeholder         | Input hint                                                                                                                   | string                                                                                                                                         | -             |          |
+| value               | Time value (moment object or time string, controlled state use)                                                              | string \| Moment \| null                                                                                                                       | -             |          |
+| defaultValue        | Time init value (moment object or time string, uncontrolled state use)                                                       | string \| Moment                                                                                                                               | -             |          |
+| size                | Size of time picker                                                                                                          | 'small' \| 'medium' \| 'large'                                                                                                                 | -             |          |
+| hasClear            | Whether to allow clearing time                                                                                               | boolean                                                                                                                                        | -             |          |
+| format              | Time format                                                                                                                  | string                                                                                                                                         | -             |          |
+| hourStep            | Hour option step                                                                                                             | number                                                                                                                                         | -             |          |
+| minuteStep          | Minute option step                                                                                                           | number                                                                                                                                         | -             |          |
+| secondStep          | Second option step                                                                                                           | number                                                                                                                                         | -             |          |
+| disabledHours       | Disable hour function                                                                                                        | (index: number) => boolean                                                                                                                     | -             |          |
+| disabledMinutes     | Disable minute function                                                                                                      | (index: number) => boolean                                                                                                                     | -             |          |
+| disabledSeconds     | Disable second function                                                                                                      | (index: number) => boolean                                                                                                                     | -             |          |
+| visible             | Popup layer display status (controlled)                                                                                      | boolean                                                                                                                                        | -             |          |
+| defaultVisible      | Popup layer default display status (uncontrolled)                                                                            | boolean                                                                                                                                        | -             |          |
+| popupContainer      | Popup layer container                                                                                                        | string \| HTMLElement \| ((target: HTMLElement) => HTMLElement)                                                                                | -             |          |
+| popupAlign          | Popup layer alignment, see Overlay documentation                                                                             | string                                                                                                                                         | -             |          |
+| popupTriggerType    | Popup layer trigger type                                                                                                     | 'click' \| 'hover'                                                                                                                             | -             |          |
+| onVisibleChange     | Callback when the popup layer display status changes                                                                         | (visible: boolean, reason: string) => void                                                                                                     | -             |          |
+| popupStyle          | Popup layer custom style                                                                                                     | React.CSSProperties                                                                                                                            | -             |          |
+| popupClassName      | Popup layer custom style class                                                                                               | string                                                                                                                                         | -             |          |
+| popupProps          | Popup layer property                                                                                                         | PopupProps                                                                                                                                     | -             |          |
+| disabled            | Disabled                                                                                                                     | boolean                                                                                                                                        | -             |          |
+| isPreview           | Is preview                                                                                                                   | boolean                                                                                                                                        | -             |          |
+| renderPreview       | Content of preview mode                                                                                                      | (value: Moment \| null, props: TimePickerProps) => React.ReactNode                                                                             | -             |          |
+| onChange            | Callback when the time value changes                                                                                         | (value: Moment \| string \| null) => void                                                                                                      | -             |          |
+| renderTimeMenuItems | Render the selectable time list<br/><br/>**signature**:<br/>**params**:<br/>_list_: list<br/>_mode_: mode<br/>_value_: value | (<br/> list: Array\<TimeMenuListItem>,<br/> mode: TimeMenuProps['mode'],<br/> value: TimeMenuProps['value']<br/> ) => Array\<TimeMenuListItem> | -             |          |
+| inputProps          | Custom input property                                                                                                        | InputProps                                                                                                                                     | -             |          |
+| popupContent        | Popup content                                                                                                                | React.ReactNode                                                                                                                                | -             |          |
+| followTrigger       | Follow trigger element                                                                                                       | boolean                                                                                                                                        | -             |          |
 
 ## ARIA and KeyBoard
 
-| 按键    | 说明               |
-| :---- | :--------------- |
-| Enter | Open time select popup    |
-| Esc   | Close time select popup |
-| Up | Input previous seconds （if `disabledMinutes={true}` is previous minutes or previous hours） |
-| Down | Input next seconds （if `disabledMinutes={true}`  is next minutes or next hours） |
-| Page Up | Input previous minutes |
-| Page Down |  Input next minutes |
-| Alt + Page Up | Input previous hours |
-| Alt + Page Down | Input next hours |
+| 按键            | 说明                                                                                         |
+| :-------------- | :------------------------------------------------------------------------------------------- |
+| Enter           | Open time select popup                                                                       |
+| Esc             | Close time select popup                                                                      |
+| Up              | Input previous seconds （if `disabledMinutes={true}` is previous minutes or previous hours） |
+| Down            | Input next seconds （if `disabledMinutes={true}` is next minutes or next hours）             |
+| Page Up         | Input previous minutes                                                                       |
+| Page Down       | Input next minutes                                                                           |
+| Alt + Page Up   | Input previous hours                                                                         |
+| Alt + Page Down | Input next hours                                                                             |
