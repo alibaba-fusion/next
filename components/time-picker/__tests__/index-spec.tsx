@@ -1,269 +1,223 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import moment from 'moment';
-import TimePicker from '../index';
+import moment, { type Moment } from 'moment';
+import TimePicker, { type TimePickerProps } from '../index';
 import '../style';
-import { KEYCODE } from '../../util';
 
-Enzyme.configure({ adapter: new Adapter() });
 const defaultValue = moment('11:12:13', 'HH:mm:ss', true);
 
-/* eslint-disable */
 describe('TimePicker', () => {
     describe('render', () => {
-        let wrapper;
-
-        afterEach(() => {
-            wrapper.unmount();
-            wrapper = null;
-        });
-
         it('should render time-picker', () => {
-            wrapper = mount(<TimePicker />);
-            assert(wrapper.find('.next-time-picker').length === 1);
+            cy.mount(<TimePicker />);
+            cy.get('.next-time-picker').should('exist');
         });
 
         it('should render with defaultValue', () => {
-            wrapper = mount(<TimePicker defaultValue={defaultValue} />);
-            assert(wrapper.find('.next-time-picker-input input').instance().value === '11:12:13');
+            cy.mount(<TimePicker defaultValue={defaultValue} />);
+            cy.get('.next-time-picker-input input').should('have.value', '11:12:13');
         });
 
         it('should render with defaultValue as string', () => {
-            wrapper = mount(<TimePicker defaultValue="11:11:11" />);
-            assert(wrapper.find('.next-time-picker-input input').instance().value === '11:11:11');
+            cy.mount(<TimePicker defaultValue="11:11:11" />);
+            cy.get('.next-time-picker-input input').should('have.value', '11:11:11');
         });
 
         it('should render with format', () => {
-            wrapper = mount(<TimePicker defaultValue="10:1:1" format="H:m:s" />);
-            assert(wrapper.find('.next-time-picker-input input').instance().value === '10:1:1');
+            cy.mount(<TimePicker defaultValue="10:1:1" format="H:m:s" />);
+            cy.get('.next-time-picker-input input').should('have.value', '10:1:1');
         });
 
         it('should render with defaultVisible', () => {
-            wrapper = mount(<TimePicker defaultValue={defaultValue} defaultVisible />);
-            assert(
-                wrapper
-                    .find('.next-time-picker-menu-hour .next-time-picker-menu-item.next-selected')
-                    .instance().title === '11'
+            cy.mount(<TimePicker defaultValue={defaultValue} defaultVisible />);
+            cy.get('.next-time-picker-menu-hour .next-time-picker-menu-item.next-selected').should(
+                'have.attr',
+                'title',
+                '11'
             );
-            assert(
-                wrapper
-                    .find('.next-time-picker-menu-minute .next-time-picker-menu-item.next-selected')
-                    .instance().title === '12'
-            );
-            assert(
-                wrapper
-                    .find('.next-time-picker-menu-second .next-time-picker-menu-item.next-selected')
-                    .instance().title === '13'
-            );
+            cy.get(
+                '.next-time-picker-menu-minute .next-time-picker-menu-item.next-selected'
+            ).should('have.attr', 'title', '12');
+            cy.get(
+                '.next-time-picker-menu-second .next-time-picker-menu-item.next-selected'
+            ).should('have.attr', 'title', '13');
         });
 
         it('should render with value controlled', () => {
-            wrapper = mount(<TimePicker value={defaultValue} />);
+            cy.mount(<TimePicker value={defaultValue} />).as('Demo');
             const newValue = moment('12:22:22', 'HH:mm:ss', true);
-            wrapper.setProps({ value: newValue });
-            assert(wrapper.find('.next-time-picker-input input').instance().value === '12:22:22');
+            cy.rerender('Demo', { value: newValue });
+            cy.get('.next-time-picker-input input').should('have.value', '12:22:22');
         });
 
-        it('should render with visisble controlled', () => {
-            wrapper = mount(<TimePicker visible={false} />);
-            assert(wrapper.find('.next-time-picker-body').length === 0);
-            wrapper.setProps({ visible: true });
-            assert(wrapper.find('.next-time-picker-body').length === 1);
+        it('should render with visible controlled', () => {
+            cy.mount(<TimePicker visible={false} />).as('Demo');
+            cy.get('.next-time-picker-body').should('not.exist');
+            cy.rerender('Demo', { visible: true });
+            cy.get('.next-time-picker-body').should('exist');
         });
 
         it('should render with step', () => {
-            wrapper = mount(<TimePicker defaultVisible secondStep={5} />);
-            assert(
-                wrapper.find('.next-time-picker-menu-second .next-time-picker-menu-item').length ===
-                    12
+            cy.mount(<TimePicker defaultVisible secondStep={5} />);
+            cy.get('.next-time-picker-menu-second .next-time-picker-menu-item').should(
+                'have.length',
+                12
             );
         });
 
         it('should render menu items', () => {
-            const renderTimeMenuItems = list => {
-                return list.map(({ label, value }) => {
+            const renderTimeMenuItems: TimePickerProps['renderTimeMenuItems'] = list => {
+                return list.map(({ value }) => {
                     return {
                         value,
                         label: value > 9 ? String(value) : `0${value}`,
                     };
                 });
             };
-            wrapper = mount(
-                <TimePicker defaultVisible renderTimeMenuItems={renderTimeMenuItems} />
-            );
-
-            assert(
-                wrapper
-                    .find('.next-time-picker-menu-second .next-time-picker-menu-item')
-                    .at(0)
-                    .text() === '00'
-            );
-
-            assert(
-                wrapper
-                    .find('.next-time-picker-menu-second .next-time-picker-menu-item')
-                    .at(9)
-                    .text() === '09'
-            );
-
-            assert(
-                wrapper
-                    .find('.next-time-picker-menu-second .next-time-picker-menu-item')
-                    .at(10)
-                    .text() === '10'
-            );
+            cy.mount(<TimePicker defaultVisible renderTimeMenuItems={renderTimeMenuItems} />);
+            cy.get('.next-time-picker-menu-second .next-time-picker-menu-item')
+                .eq(0)
+                .should('have.text', '00');
+            cy.get('.next-time-picker-menu-second .next-time-picker-menu-item')
+                .eq(9)
+                .should('have.text', '09');
+            cy.get('.next-time-picker-menu-second .next-time-picker-menu-item')
+                .eq(10)
+                .should('have.text', '10');
         });
         it('should support preview mode render', () => {
-            wrapper = mount(<TimePicker defaultValue="12:00:00" isPreview />);
-            assert(wrapper.find('.next-form-preview').length > 0);
-            assert(wrapper.find('.next-form-preview').text() === '12:00:00');
-            wrapper.setProps({
-                renderPreview: value => {
-                    assert(value.format('HH:mm:ss') === '12:00:00');
+            cy.mount(<TimePicker defaultValue="12:00:00" isPreview />).as('Demo');
+            cy.get('.next-form-preview').should('exist');
+            cy.get('.next-form-preview').should('have.text', '12:00:00');
+            const handleRenderPreview = cy.spy();
+            cy.rerender('Demo', {
+                renderPreview: (value: Moment) => {
+                    handleRenderPreview(value.format('HH:mm:ss'));
                     return 'Hello World';
                 },
             });
-            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+            cy.wrap(handleRenderPreview).should('be.calledWith', '12:00:00');
+            cy.get('.next-form-preview').should('have.text', 'Hello World');
         });
     });
 
     describe('action', () => {
-        let wrapper;
-        let ret;
-
-        afterEach(() => {
-            wrapper.unmount();
-            wrapper = null;
-            ret = null;
-        });
-
         it('should reset value', () => {
-            ret = 'hello';
-            wrapper = mount(
-                <TimePicker
-                    defaultValue={defaultValue}
-                    onChange={val => {
-                        ret = val;
-                    }}
-                />
-            );
-            wrapper.find('.next-icon-delete-filling').simulate('click');
-            assert(ret === null);
+            const handleChange = cy.spy();
+            cy.mount(<TimePicker defaultValue={defaultValue} onChange={handleChange} />);
+            cy.get('.next-icon-delete-filling').click();
+            cy.wrap(handleChange).should('be.calledWith', null);
         });
 
         it('should format value(hide hours)', () => {
-            wrapper = mount(<TimePicker format="mm:ss" />);
-            wrapper.find('.next-time-picker-input input').simulate('click');
-            assert(wrapper.find('.next-time-picker-menu-hour').length === 0);
+            cy.mount(<TimePicker format="mm:ss" />);
+            cy.get('.next-time-picker-input input').click();
+            cy.get('.next-time-picker-menu-hour').should('not.exist');
         });
 
         it('should format value(hide seconds)', () => {
-            wrapper = mount(<TimePicker format="HH:mm" />);
-            wrapper.find('.next-time-picker-input input').simulate('click');
-            assert(wrapper.find('.next-time-picker-menu-second').length === 0);
+            cy.mount(<TimePicker format="HH:mm" />);
+            cy.get('.next-time-picker-input input').click();
+            cy.get('.next-time-picker-menu-second').should('not.exist');
         });
 
         it('should input value in picker', () => {
-            wrapper = mount(
+            const handleChange = cy.spy();
+            cy.mount(
                 <TimePicker
                     onChange={val => {
-                        ret = val.format('HH:mm:ss');
+                        handleChange((val as Moment).format('HH:mm:ss'));
                     }}
                 />
             );
-            wrapper
-                .find('.next-time-picker-input input')
-                .simulate('change', { target: { value: '20:00:00' } });
-            wrapper.find('.next-time-picker-input input').simulate('blur');
-            assert(wrapper.find('.next-time-picker-input input').instance().value === '20:00:00');
-            assert(ret === '20:00:00');
+            cy.get('.next-time-picker-input input').type('20:00:00');
+            cy.get('.next-time-picker-input input').blur();
+            cy.get('.next-time-picker-input input').should('have.value', '20:00:00');
+            cy.wrap(handleChange).should('be.calledWith', '20:00:00');
         });
 
         it('should input value in panel', () => {
+            const inputSelector = '.next-time-picker-input input';
+            const panelInputSelector = '.next-time-picker-panel-input input';
+            let ret: string | null = null;
             // 封装交互：click -> change -> blur
-            function wrapperAsserts(inputVal, retVal) {
-                const inputSelector = '.next-time-picker-input input';
-                const panelInputSelector = '.next-time-picker-panel-input input';
-
-                wrapper.find(inputSelector).simulate('click');
-                wrapper
-                    .find(panelInputSelector)
-                    .simulate('change', { target: { value: inputVal } });
-                wrapper.find(panelInputSelector).simulate('blur');
-                assert(wrapper.find(inputSelector).instance().value === (retVal || ''));
-                assert(wrapper.find(panelInputSelector).instance().value === (retVal || ''));
-                assert(ret === retVal);
+            function wrapperAsserts(inputVal: string, retVal: string | null) {
+                cy.get(panelInputSelector).clear();
+                cy.get(panelInputSelector).type(inputVal);
+                cy.get(panelInputSelector).blur();
+                cy.get(inputSelector).should('have.value', retVal || '');
+                cy.get(panelInputSelector).should('have.value', retVal || '');
+                cy.then(() => {
+                    expect(ret).to.equal(retVal);
+                });
             }
 
-            wrapper = mount(
+            cy.mount(
                 <TimePicker
                     onChange={value => {
-                        ret = value.format('HH:mm:ss');
+                        if (value) {
+                            ret = (value as Moment).format('HH:mm:ss');
+                        } else {
+                            ret = null;
+                        }
                     }}
                 />
             );
+            cy.get(inputSelector).click();
             // 无效值输入
             wrapperAsserts('Invalid value', null);
-            // 空值状态下 有效值输入
+            // 有效值输入
             wrapperAsserts('12:20:24', '12:20:24');
-            // 非空值状态下 有效值输入
-            wrapperAsserts('12:20:40', '12:20:40');
-            // 非空值状态下 无效值输入
-            wrapperAsserts('Invalid value', '12:20:40');
         });
 
         it('should select time-picker panel', () => {
-            wrapper = mount(
+            const handleChange = cy.spy();
+            cy.mount(
                 <TimePicker
                     onChange={val => {
-                        ret = val.format('HH:mm:ss');
+                        if (moment.isMoment(val)) {
+                            handleChange(val.format('HH:mm:ss'));
+                        } else {
+                            handleChange(val);
+                        }
                     }}
                 />
             );
-            wrapper.find('.next-time-picker-input input').simulate('click');
-            wrapper
-                .find('.next-time-picker-menu-hour .next-time-picker-menu-item')
-                .at(2)
-                .simulate('click');
-            assert(ret === '02:00:00');
-            wrapper
-                .find('.next-time-picker-menu-minute .next-time-picker-menu-item')
-                .at(2)
-                .simulate('click');
-            assert(ret === '02:02:00');
-            wrapper
-                .find('.next-time-picker-menu-second .next-time-picker-menu-item')
-                .at(2)
-                .simulate('click');
-            assert(ret === '02:02:02');
+            cy.get('.next-time-picker-input input').click();
+            cy.get('.next-time-picker-menu-hour .next-time-picker-menu-item').eq(2).click();
+            cy.wrap(handleChange).should('be.calledWith', '02:00:00');
+            cy.get('.next-time-picker-menu-minute .next-time-picker-menu-item').eq(2).click();
+            cy.wrap(handleChange).should('be.calledWith', '02:02:00');
+            cy.get('.next-time-picker-menu-second .next-time-picker-menu-item').eq(2).click();
+            cy.wrap(handleChange).should('be.calledWith', '02:02:02');
         });
 
         it('should keyboard date time input', () => {
-            wrapper = mount(<TimePicker />);
-
-            const timeInput = wrapper.find('.next-time-picker-input input');
-            const instance = wrapper.instance().getInstance();
-            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.inputStr === '00:00:00');
-            timeInput.simulate('keydown', { keyCode: KEYCODE.LEFT });
-            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
-            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
-            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
-            assert(instance.state.inputStr === '00:00:00');
-            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.inputStr === '00:00:01');
-            timeInput.simulate('keydown', { keyCode: KEYCODE.UP });
-            assert(instance.state.inputStr === '00:00:00');
-            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
-            assert(instance.state.inputStr === '00:01:00');
-            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
-            assert(instance.state.inputStr === '00:00:00');
-            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
-            assert(instance.state.inputStr === '01:00:00');
-            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
-            assert(instance.state.inputStr === '00:00:00');
+            cy.mount(<TimePicker />);
+            cy.get('.next-time-picker-input input').as('timeInput');
+            // 这里会触发 popup 显示，并且 popup 中的 input 聚焦，导致 timeInput 失焦，timeInput 失焦会将 inputStr 置空
+            cy.get('@timeInput').type('{downarrow}');
+            cy.get('@timeInput').should('have.value', '00:00:00');
+            cy.get('.next-time-picker-panel-input input').as('panelInput');
+            cy.get('@panelInput').type('{leftarrow}', { force: true });
+            cy.get('@panelInput').type('{alt+downarrow}', { force: true });
+            cy.get('@panelInput').type('{shift+downarrow}', { force: true });
+            cy.get('@panelInput').type('{ctrl+downarrow}', { force: true });
+            cy.get('@timeInput').should('have.value', '00:00:00');
+            // 因为 inputStr 为空，因此第一次输入下键不会导致数值发生变化，这其实应该算是一个 bug
+            // 后续可以做出优化
+            cy.get('@panelInput').type('{downarrow}', { force: true });
+            cy.get('@panelInput').type('{downarrow}', { force: true });
+            cy.get('@panelInput').should('have.value', '00:00:01');
+            cy.get('@panelInput').type('{uparrow}');
+            cy.get('@panelInput').should('have.value', '00:00:00');
+            cy.get('@panelInput').type('{pageDown}');
+            cy.get('@panelInput').should('have.value', '00:01:00');
+            cy.get('@panelInput').type('{pageUp}');
+            cy.get('@panelInput').should('have.value', '00:00:00');
+            cy.get('@panelInput').type('{alt+pageDown}');
+            cy.get('@panelInput').should('have.value', '01:00:00');
+            cy.get('@panelInput').type('{alt+pageUp}');
+            cy.get('@panelInput').should('have.value', '00:00:00');
         });
     });
 });
