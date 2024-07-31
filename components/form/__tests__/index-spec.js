@@ -277,6 +277,20 @@ describe('form', () => {
             assert(wrapper.find('.next-form-responsive-grid'));
         });
 
+        it('enabled responsive form should maintain alignment between label and input', () => {
+            const wrapper = mount(
+                <Form responsive>
+                    <FormItem colSpan={4} labelWidth={80} label="test">
+                        <Input />
+                    </FormItem>
+                </Form>,
+                { attachTo: document.body }
+            );
+            const labelHeight = wrapper.find('.next-form-item-label').getDOMNode().offsetHeight;
+            const contentHeight = wrapper.find('.next-form-item-control').getDOMNode().offsetHeight;
+            assert(labelHeight === contentHeight);
+        });
+
         it('should supoort responsive with react fragment', () => {
             const wrapper = mount(
                 <Form responsive>

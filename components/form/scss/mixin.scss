@@ -33,8 +33,6 @@
     }
 
     #{$form-prefix}-item.#{$css-prefix}left #{$form-prefix}-item-label {
-        line-height: 1.4;
-        margin-top: calc((#{$element-height} - #{$font-size}) / 2);
-        margin-bottom: calc((#{$element-height} - #{$font-size}) / 2);
+        line-height: $element-height;
     }
 }
