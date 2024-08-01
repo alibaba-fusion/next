@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, type LegacyRef, type CSSProperties, type ReactInstance } from 'react';
 import cx from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import { findDOMNode } from 'react-dom';
 import { events } from '../util';
+import { type VirtualListProps, type VirtualListState } from './types';
 
 const NOOP = () => {};
 const MAX_SYNC_UPDATES = 40;
 
-const isEqualSubset = (a, b) => {
+const isEqualSubset = <T extends object>(a: T, b: Partial<T>): boolean => {
     for (const key in b) {
         if (a[key] !== b[key]) {
             return false;
@@ -18,75 +19,67 @@ const isEqualSubset = (a, b) => {
     return true;
 };
 
-const getOffset = el => {
+const getOffset = (el: HTMLElement) => {
     let offset = el.clientLeft || 0;
     do {
         offset += el.offsetTop || 0;
-        el = el.offsetParent;
+        el = el.offsetParent as HTMLElement;
     } while (el);
     return offset;
 };
 
-const constrain = (from, size, { children, minSize }) => {
+const constrain = (from: number, size: number, { children, minSize }: VirtualListProps) => {
+    // @ts-expect-error children 未考虑非数组是单个 ReactElement 的情况
     const length = children && children.length;
-    size = Math.max(size, minSize);
-    if (size > length) {
-        size = length;
+    size = Math.max(size, minSize!);
+    if (size > length!) {
+        size = length!;
     }
-    from = from ? Math.max(Math.min(from, length - size), 0) : 0;
+    from = from ? Math.max(Math.min(from, length! - size!), 0) : 0;
 
     return { from, size };
 };
 /** VirtualList */
-class VirtualList extends Component {
+class VirtualList extends Component<VirtualListProps, VirtualListState> {
     static displayName = 'VirtualList';
 
     static propTypes = {
         prefix: PropTypes.string,
-        /**
-         * 渲染的子节点
-         */
         children: PropTypes.any,
-        /**
-         * 最小加载数量
-         */
         minSize: PropTypes.number,
-        /**
-         * 一屏数量
-         */
         pageSize: PropTypes.number,
-        /**
-         * 父渲染函数，默认为 (items, ref) => <ul ref={ref}>{items}</ul>
-         */
         itemsRenderer: PropTypes.func,
-        /**
-         * 缓冲区高度
-         */
         threshold: PropTypes.number,
-        /**
-         * 获取item高度的函数
-         */
         itemSizeGetter: PropTypes.func,
-        /**
-         * 设置跳转位置，需要设置 itemSizeGetter 才能生效, 不设置认为元素等高并取第一个元素高度作为默认高
-         */
         jumpIndex: PropTypes.number,
         className: PropTypes.string,
     };
 
     static defaultProps = {
         prefix: 'next-',
-        itemsRenderer: (items, ref) => <ul ref={ref}>{items}</ul>,
+        itemsRenderer: (items: ReactInstance, ref: LegacyRef<HTMLUListElement>) => (
+            <ul ref={ref}>{items}</ul>
+        ),
         minSize: 1,
         pageSize: 10,
         jumpIndex: 0,
         threshold: 100,
     };
+    cache: { [key: number]: number };
+    cacheAdd: { [key: number]: number };
+    cachedScroll: null | number;
+    unstable: boolean;
+    updateCounter: number;
+    updateCounterTimeoutId?: number;
+    el: HTMLElement | null;
+    items: ReactInstance | null;
+    defaultItemHeight: number;
+    scrollParent: HTMLElement | Window;
 
-    constructor(props) {
+    constructor(props: VirtualListProps) {
         super(props);
         const { jumpIndex } = props;
-        const { from, size } = constrain(jumpIndex, 0, props);
+        const { from, size } = constrain(jumpIndex!, 0, props);
         this.state = { from, size };
         this.cache = {};
         this.cacheAdd = {};
@@ -96,7 +89,7 @@ class VirtualList extends Component {
         this.updateCounter = 0;
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: VirtualListProps, prevState: VirtualListState) {
         const { from, size } = prevState;
 
         return constrain(from, size, nextProps);
@@ -112,7 +105,7 @@ class VirtualList extends Component {
         this.updateFrame(this.scrollTo.bind(this, jumpIndex));
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: VirtualListProps) {
         const oldIndex = prevProps.jumpIndex;
         const newIndex = this.props.jumpIndex;
 
@@ -130,7 +123,7 @@ class VirtualList extends Component {
         }
 
         if (!this.updateCounterTimeoutId) {
-            this.updateCounterTimeoutId = setTimeout(() => {
+            this.updateCounterTimeoutId = window.setTimeout(() => {
                 this.updateCounter = 0;
                 delete this.updateCounterTimeoutId;
             }, 0);
@@ -146,7 +139,7 @@ class VirtualList extends Component {
         events.off(this.scrollParent, 'mousewheel', NOOP);
     }
 
-    maybeSetState(b, cb) {
+    maybeSetState(b: VirtualListState, cb: () => void) {
         if (isEqualSubset(this.state, b)) {
             return cb();
         }
@@ -159,8 +152,8 @@ class VirtualList extends Component {
     }
 
     getScrollParent() {
-        let el = this.getEl();
-        el = el.parentElement;
+        let el = this.getEl() as HTMLElement;
+        el = el.parentElement!;
 
         switch (window.getComputedStyle(el).overflowY) {
             case 'auto':
@@ -186,30 +179,32 @@ class VirtualList extends Component {
                   // always return document.documentElement[scrollKey] as 0, so take
                   // whichever has a value.
                   document.body[scrollKey] || document.documentElement[scrollKey]
-                : scrollParent[scrollKey];
+                : (scrollParent as HTMLElement)[scrollKey];
         const max = this.getScrollSize() - this.getViewportSize();
 
         const scroll = Math.max(0, Math.min(actual, max));
-        const el = this.getEl();
-        this.cachedScroll = getOffset(scrollParent) + scroll - getOffset(el);
+        const el = this.getEl() as HTMLElement;
+        this.cachedScroll = getOffset(scrollParent as HTMLElement) + scroll - getOffset(el);
 
         return this.cachedScroll;
     }
 
-    setScroll(offset) {
+    setScroll(offset: number) {
         const { scrollParent } = this;
-        offset += getOffset(this.getEl());
+        offset += getOffset(this.getEl() as HTMLElement);
         if (scrollParent === window) {
             return window.scrollTo(0, offset);
         }
 
-        offset -= getOffset(this.scrollParent);
-        scrollParent.scrollTop = offset;
+        offset -= getOffset(this.scrollParent as HTMLElement);
+        (scrollParent as HTMLElement).scrollTop = offset;
     }
 
     getViewportSize() {
         const { scrollParent } = this;
-        return scrollParent === window ? window.innerHeight : scrollParent.clientHeight;
+        return scrollParent === window
+            ? window.innerHeight
+            : (scrollParent as HTMLElement).clientHeight;
     }
 
     getScrollSize() {
@@ -218,26 +213,26 @@ class VirtualList extends Component {
         const key = 'scrollHeight';
         return scrollParent === window
             ? Math.max(body[key], documentElement[key])
-            : scrollParent[key];
+            : (scrollParent as HTMLElement)[key];
     }
 
     getStartAndEnd(threshold = this.props.threshold) {
         const scroll = this.getScroll();
 
         const trueScroll = scroll;
-        const start = Math.max(0, trueScroll - threshold);
-        const end = trueScroll + this.getViewportSize() + threshold;
+        const start = Math.max(0, trueScroll! - threshold!);
+        const end = trueScroll! + this.getViewportSize() + threshold!;
 
         return { start, end };
     }
 
     // Called by 'scroll' and 'resize' events, clears scroll position cache.
-    updateFrameAndClearCache(cb) {
+    updateFrameAndClearCache(cb: () => void) {
         this.cachedScroll = null;
         return this.updateFrame(cb);
     }
 
-    updateFrame(cb) {
+    updateFrame(cb?: () => void) {
         this.updateScrollParent();
 
         if (typeof cb !== 'function') {
@@ -266,13 +261,14 @@ class VirtualList extends Component {
         // Just an empty listener. After that onscroll events will be fired synchronously.
     }
 
-    updateVariableFrame(cb) {
+    updateVariableFrame(cb: () => void) {
         if (!this.props.itemSizeGetter) {
             this.cacheSizes();
         }
 
         const { start, end } = this.getStartAndEnd();
         const { pageSize, children } = this.props;
+        // @ts-expect-error children 未考虑非数组是单个 ReactElement 的情况
         const length = children.length;
         let space = 0;
         let from = 0;
@@ -293,7 +289,7 @@ class VirtualList extends Component {
         while (size < maxSize && space < end) {
             const itemSize = this.getSizeOf(from + size);
             if (itemSize === null || itemSize === undefined) {
-                size = Math.min(size + pageSize, maxSize);
+                size = Math.min(size + pageSize!, maxSize);
                 break;
             }
             space += itemSize;
@@ -303,7 +299,7 @@ class VirtualList extends Component {
         this.maybeSetState({ from, size }, cb);
     }
 
-    getSpaceBefore(index, cache = {}) {
+    getSpaceBefore(index: number, cache = {} as { [key: number]: number }) {
         if (!index) {
             return 0;
         }
@@ -336,14 +332,15 @@ class VirtualList extends Component {
     cacheSizes() {
         const { cache } = this;
         const { from } = this.state;
-        const { children, props = {} } = this.items;
+        // @ts-expect-error items是ReactInstance，但是通过解构同时获取children和props会报错，后续用 in 做类型判断
+        const { children, props = {} } = this.items!;
         const itemEls = children || props.children || [];
 
         try {
             // <Select useVirtual /> 模式下，在快速点击切换Tab的情况下（Select实例快速出现、消失） 有时会出现this.items不存在，导致页面报错。怀疑是Select的异步timer渲染逻辑引起的
             for (let i = 0, l = itemEls.length; i < l; ++i) {
-                const ulRef = findDOMNode(this.items);
-                const height = ulRef.children[i].offsetHeight;
+                const ulRef = findDOMNode(this.items) as HTMLElement;
+                const height = (ulRef.children[i] as HTMLElement).offsetHeight;
                 if (height > 0) {
                     cache[from + i] = height;
                 }
@@ -353,7 +350,7 @@ class VirtualList extends Component {
         }
     }
 
-    getSizeOf(index) {
+    getSizeOf(index: number) {
         const { cache } = this;
         const { itemSizeGetter, jumpIndex } = this.props;
 
@@ -365,7 +362,7 @@ class VirtualList extends Component {
             return itemSizeGetter(index);
         }
 
-        if (!this.defaultItemHeight && jumpIndex > -1) {
+        if (!this.defaultItemHeight && jumpIndex! > -1) {
             const keysList = Object.keys(this.cache);
             const len = keysList.length;
             const height = this.cache[len - 1];
@@ -377,7 +374,7 @@ class VirtualList extends Component {
         }
     }
 
-    scrollTo(index) {
+    scrollTo(index: number) {
         this.setScroll(this.getSpaceBefore(index, this.cacheAdd));
     }
 
@@ -386,11 +383,12 @@ class VirtualList extends Component {
         const { from, size } = this.state;
         const items = [];
 
-        for (let i = 0; i < size; ++i) {
-            items.push(children[from + i]);
+        for (let i = 0; i < size!; ++i) {
+            // @ts-expect-error children 未考虑非数组是单个 ReactElement 的情况
+            items.push(children![from + i]);
         }
 
-        return itemsRenderer(items, c => {
+        return itemsRenderer!(items, c => {
             this.items = c;
             return this.items;
         });
@@ -398,11 +396,12 @@ class VirtualList extends Component {
 
     render() {
         const { children = [], prefix, className } = this.props;
+        // @ts-expect-error children 未考虑非数组是单个 ReactElement 的情况
         const length = children.length;
         const { from } = this.state;
         const items = this.renderMenuItems();
 
-        const style = { position: 'relative' };
+        const style: CSSProperties = { position: 'relative' };
 
         const size = this.getSpaceBefore(length, {});
 
@@ -419,7 +418,7 @@ class VirtualList extends Component {
 
         const cls = cx({
             [`${prefix}virtual-list-wrapper`]: true,
-            [className]: !!className,
+            [className!]: !!className,
         });
 
         return (
