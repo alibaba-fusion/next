@@ -4,8 +4,7 @@ import { VirtualList } from '@alifd/next';
 
 const dataSource = [];
 
-const generateLi = (index = 'index') => {
-    const data = [];
+const generateLi = (index: number) => {
     if (index % 3 === 0) {
         return (
             <li
