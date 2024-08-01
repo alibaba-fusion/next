@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { type ReactElement, createRef } from 'react';
 import ReactDOM from 'react-dom';
 import { VirtualList } from '@alifd/next';
 
-const dataSource = [];
+const dataSource: Array<ReactElement> = [];
 
-function generateLi(index) {
+function generateLi(index: number) {
     if (index % 3 === 0) {
         return (
             <li
@@ -22,13 +22,15 @@ function generateLi(index) {
         );
     }
 }
-function generateData(len) {
+function generateData(len: number) {
     for (let i = 0; i < len; i++) {
         dataSource.push(generateLi(i));
     }
 }
 
 class App extends React.Component {
+    virtualListRef: React.RefObject<InstanceType<typeof VirtualList>> = createRef();
+
     state = {
         initial: 20,
         dataSource: generateData(1000),
@@ -36,12 +38,13 @@ class App extends React.Component {
 
     componentDidMount() {
         setTimeout(() => {
-            const instance = this.refs.virtual.getInstance();
-            instance.scrollTo(50);
+            const instance =
+                this.virtualListRef.current && this.virtualListRef.current.getInstance();
+            instance && instance.scrollTo(50);
         }, 200);
     }
 
-    getHeight(index) {
+    getHeight(index: number) {
         return index % 3 === 0 ? 30 : 20;
     }
 
@@ -59,7 +62,7 @@ class App extends React.Component {
                 <br />
                 <div className={'virtual-box'}>
                     <VirtualList
-                        ref="virtual"
+                        ref={this.virtualListRef}
                         jumpIndex={this.state.initial}
                         itemSizeGetter={this.getHeight.bind(this)}
                     >
