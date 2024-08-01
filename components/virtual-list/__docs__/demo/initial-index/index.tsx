@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { type ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import { VirtualList } from '@alifd/next';
 
-const dataSource = [];
+const dataSource: Array<ReactElement> = [];
 
-function generateLi(index) {
+function generateLi(index: number) {
     return (
         <li key={`key-${index}`} style={{ lineHeight: '20px' }}>
             key-{index}
         </li>
     );
 }
-function generateData(len) {
+function generateData(len: number) {
     for (let i = 0; i < len; i++) {
         dataSource.push(generateLi(i));
     }
