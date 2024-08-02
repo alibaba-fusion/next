@@ -7,7 +7,7 @@ import type { CommonProps } from '../util';
  */
 export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
-     * 面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />`
+     * 面包屑节点链接，如果设置这个属性，则该节点为`<a />`，否则是`<span />`
      * @en The breadcrumb item link, if this property is set, the node is `<a />`, otherwise it is `<span />`
      */
     link?: string;
@@ -56,23 +56,23 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement>, Comm
      */
     showHiddenItems?: boolean;
     /**
-     * 弹层挂载的容器节点（在showHiddenItems为true时才有意义）
+     * 弹层挂载的容器节点（在 showHiddenItems 为 true 时才有意义）
      * @en The container node that the popup mounts (meaningful only when showHiddenItems is true)
      * @version 1.23
      */
     popupContainer?: DropdownProps['container'];
     /**
-     * 是否跟随trigger滚动（在showHiddenItems为true时才有意义）
+     * 是否跟随 trigger 滚动（在 showHiddenItems 为 true 时才有意义）
      * @en Whether to scroll with the trigger (meaningful only when showHiddenItems is true)
      * @version 1.23
      */
     followTrigger?: boolean;
     /**
-     * 添加到弹层上的属性（在showHiddenItems为true时才有意义）
+     * 添加到弹层上的属性（在 showHiddenItems 为 true 时才有意义）
      * @en The attributes added to the popup (meaningful only when showHiddenItems is true)
      * @version 1.23
      */
-    popupProps?: DropdownProps;
+    popupProps?: Partial<DropdownProps>;
     /**
      * 分隔符，可以是文本或 Icon
      * @en Separator, can be text or Icon

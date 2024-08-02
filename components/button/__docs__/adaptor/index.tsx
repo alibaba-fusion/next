@@ -62,7 +62,7 @@ export default {
     },
     propsValue: _propsValue,
     adaptor: ({ shape, level, size, data, ...others }: any) => {
-        const list = parseData(data, { parseContent: true });
+        const list = parseData(data, { parseContent: true }) as { state: string; value: unknown }[];
 
         const buttonProps = _propsValue({ shape, level, size, data, ...others });
 
