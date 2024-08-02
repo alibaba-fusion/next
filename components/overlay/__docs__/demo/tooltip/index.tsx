@@ -69,7 +69,7 @@ const popupProps = {
         in: 'zoomIn',
         out: 'zoomOut',
     },
-    triggerType: 'hover',
+    triggerType: 'hover' as const,
     placementOffset: 4,
 };
 

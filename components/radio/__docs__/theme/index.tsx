@@ -106,11 +106,11 @@ class RadioDefaultDemo extends React.Component<DemoProps> {
                 : null;
         return (
             <Demo
-                title="Radio Default"
                 {...init('demo', {
                     valueName: 'demoFunction',
                     trigger: 'onFunctionChange',
                 })}
+                title="Radio Default"
             >
                 <Demo title="Basic">
                     <DemoGroup label="Normal">
