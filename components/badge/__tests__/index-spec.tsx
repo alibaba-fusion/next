@@ -60,7 +60,7 @@ describe('Badge', () => {
         if (support.animation) {
             const expectTransition = () => {
                 if (removeTransition) {
-                    cy.get('@number').should('have.css', 'transition', 'none 0s ease 0s');
+                    cy.get('@number').should('have.css', 'transition', 'none');
                 } else {
                     cy.get('@number').should(
                         'have.css',
