@@ -1,26 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { getTrackCSS, getTrackLeft, getTrackAnimateCSS } from './trackHelper';
+import type { InnerSliderProps } from '../../types';
 
 const helpers = {
-    initialize(props) {
-        const slickList = ReactDOM.findDOMNode(this.list);
+    initialize(props: InnerSliderProps) {
+        const slickList = ReactDOM.findDOMNode(this.list) as Element;
         const slideCount = React.Children.count(props.children);
         const listWidth = this.getWidth(slickList) || 0;
         const trackWidth = this.getWidth(ReactDOM.findDOMNode(this.track)) || 0;
         let slideWidth;
 
         if (!props.vertical) {
-            const centerPaddingAdj = props.centerMode && parseInt(props.centerPadding) * 2;
-            slideWidth = (listWidth - centerPaddingAdj) / props.slidesToShow;
+            const centerPaddingAdj = (props.centerMode &&
+                parseInt(props.centerPadding!) * 2) as number;
+            slideWidth = (listWidth - centerPaddingAdj) / props.slidesToShow!;
         } else {
             slideWidth = listWidth;
         }
 
         const slideHeight = this.getHeight(slickList.querySelector('[data-index="0"]')) || 0;
-        const listHeight = slideHeight * props.slidesToShow;
+        const listHeight = slideHeight * props.slidesToShow!;
         const slideHeightList = [];
-        const newSlickList = Array.from(slickList.querySelectorAll(`.${props.prefix}slick-slide`) || []);
+        const newSlickList = Array.from(
+            slickList.querySelectorAll(`.${props.prefix}slick-slide`) || []
+        );
         for (const item of newSlickList) {
             const height = this.getHeight(item);
             slideHeightList.push(height);
@@ -28,7 +32,9 @@ const helpers = {
         const slidesToShow = props.slidesToShow || 1;
 
         const activeIndex = 'activeIndex' in props ? props.activeIndex : props.defaultActiveIndex;
-        const currentSlide = props.rtl ? slideCount - 1 - (slidesToShow - 1) - activeIndex : activeIndex;
+        const currentSlide = props.rtl
+            ? slideCount - 1 - (slidesToShow - 1) - activeIndex!
+            : activeIndex;
 
         this.setState(
             {
@@ -62,45 +68,46 @@ const helpers = {
         );
     },
 
-    update(props) {
+    update(props: InnerSliderProps) {
         this.initialize(props);
     },
 
-    getWidth(elem) {
-        if ('clientWidth' in elem) {
+    getWidth(elem: Element) {
+        if ('clientWidth' in elem!) {
             return elem.clientWidth;
         }
-        return elem && elem.getBoundingClientRect().width;
+        return elem && (elem as Element).getBoundingClientRect().width;
     },
 
-    getHeight(elem) {
-        if ('clientHeight' in elem) {
+    getHeight(elem: Element) {
+        if ('clientHeight' in elem!) {
             return elem.clientHeight;
         }
-        return elem && elem.getBoundingClientRect().height;
+        return elem && (elem as Element).getBoundingClientRect().height;
     },
 
     adaptHeight() {
         if (this.props.adaptiveHeight) {
             const selector = `[data-index="${this.state.currentSlide}"]`;
             if (this.list) {
-                const slickList = ReactDOM.findDOMNode(this.list);
-                const listHeight = slickList.querySelector(selector).offsetHeight;
+                const slickList = ReactDOM.findDOMNode(this.list) as HTMLElement;
+                const slickElement = slickList.querySelector<HTMLElement>(selector);
+                const listHeight = slickElement!.offsetHeight;
                 slickList.style.height = `${listHeight}px`;
             }
         }
     },
 
-    canGoNext(opts) {
+    canGoNext(opts: InnerSliderProps) {
         let canGo = true;
         if (!opts.infinite) {
             if (opts.centerMode) {
-                if (opts.currentSlide >= opts.slideCount - 1) {
+                if (opts.currentSlide! >= opts.slideCount! - 1) {
                     canGo = false;
                 }
             } else if (
-                opts.slideCount <= opts.slidesToShow ||
-                opts.currentSlide >= opts.slideCount - opts.slidesToShow
+                opts.slideCount! <= opts.slidesToShow! ||
+                opts.currentSlide! >= opts.slideCount! - opts.slidesToShow!
             ) {
                 // check if all slides are shown in slider
                 canGo = false;
@@ -109,12 +116,12 @@ const helpers = {
         return canGo;
     },
 
-    slideHandler(index) {
+    slideHandler(index: number) {
         const { rtl } = this.props;
 
         // Functionality of animateSlide and postSlide is merged into this function
-        let targetSlide, currentSlide;
-        let callback;
+        let targetSlide: number, currentSlide: number;
+        let callback: () => void;
 
         if (this.props.waitForAnimate && this.state.animating) {
             return;
@@ -158,7 +165,7 @@ const helpers = {
                     animating: true,
                     currentSlide: targetSlide,
                 },
-                function() {
+                function () {
                     this.animationEndCallback = setTimeout(callback, this.props.speed + 20);
                 }
             );
@@ -181,7 +188,6 @@ const helpers = {
                         currentSlide = targetSlide = 0;
                     }
                 } else {
-                    // this.state.slideCount % this.props.slidesToScroll
                     currentSlide = this.state.slideCount + targetSlide;
                 }
             } else if (targetSlide >= this.state.slideCount) {
@@ -199,7 +205,8 @@ const helpers = {
             if (this.props.infinite === false) {
                 currentSlide = 0;
             } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
-                currentSlide = this.state.slideCount - (this.state.slideCount % this.props.slidesToScroll);
+                currentSlide =
+                    this.state.slideCount - (this.state.slideCount % this.props.slidesToScroll);
             } else {
                 currentSlide = this.state.slideCount + targetSlide;
             }
@@ -273,7 +280,6 @@ const helpers = {
         // animated transition happens to target Slide and
         // non - animated transition happens to current Slide
         // If CSS transitions are false, directly go the current slide.
-        /* istanbul ignore if */
         if (this.props.useCSS === false) {
             this.setState(
                 {
@@ -316,7 +322,7 @@ const helpers = {
                         ...this.state,
                     }),
                 },
-                function() {
+                function () {
                     this.animationEndCallback = setTimeout(callback, this.props.speed + 20);
                 }
             );
@@ -326,7 +332,7 @@ const helpers = {
     },
 
     // 鼠标悬浮在 arrow 上时作出动画反馈
-    arrowHoverHandler(msg) {
+    arrowHoverHandler(msg?: string) {
         const offset = 30; // slide 的位置偏移量
         const targetLeft = getTrackLeft({
             slideIndex: this.state.currentSlide,
@@ -354,30 +360,21 @@ const helpers = {
         });
     },
 
-    swipeDirection(touchObject) {
-        /* istanbul ignore next */
+    swipeDirection(touchObject: { startX: number; startY: number; curX: number; curY: number }) {
         let swipeAngle;
-        /* istanbul ignore next */
         const xDist = touchObject.startX - touchObject.curX;
-        /* istanbul ignore next */
         const yDist = touchObject.startY - touchObject.curY;
-        /* istanbul ignore next */
         const r = Math.atan2(yDist, xDist);
-        /* istanbul ignore next */
         swipeAngle = Math.round((r * 180) / Math.PI);
-        /* istanbul ignore next */
         if (swipeAngle < 0) {
             swipeAngle = 360 - Math.abs(swipeAngle);
         }
-        /* istanbul ignore next */
         if ((swipeAngle <= 45 && swipeAngle >= 0) || (swipeAngle <= 360 && swipeAngle >= 315)) {
             return this.props.rtl === false ? 'left' : 'right';
         }
-        /* istanbul ignore next */
         if (swipeAngle >= 135 && swipeAngle <= 225) {
             return this.props.rtl === false ? 'right' : 'left';
         }
-        /* istanbul ignore next */
         if (this.props.verticalSwiping === true) {
             if (swipeAngle >= 35 && swipeAngle <= 135) {
                 return 'down';
@@ -385,15 +382,12 @@ const helpers = {
                 return 'up';
             }
         }
-
-        /* istanbul ignore next */
         return 'vertical';
     },
 
     play() {
         let nextIndex;
         if (!this.hasMounted) {
-            /* istanbul ignore next */
             return false;
         }
         if (this.props.rtl) {
@@ -418,7 +412,6 @@ const helpers = {
     },
 
     pause() {
-        /* istanbul ignore next */
         if (this.state.autoPlayTimer) {
             clearTimeout(this.state.autoPlayTimer);
             this.setState({

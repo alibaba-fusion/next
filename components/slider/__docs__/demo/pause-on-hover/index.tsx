@@ -4,7 +4,7 @@ import { Slider } from '@alifd/next';
 
 const settings = {
     className: 'custom-slide',
-    arrowPosition: 'outer',
+    arrowPosition: 'outer' as const,
     dots: false,
     infinite: true,
     slidesToShow: 3,

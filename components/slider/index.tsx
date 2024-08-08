@@ -3,7 +3,7 @@ import Slider from './slider';
 
 export default ConfigProvider.config(Slider, {
     exportNames: ['resize'],
-    transform: /* istanbul ignore next */ (props, deprecated) => {
+    transform: (props, deprecated) => {
         if ('fade' in props) {
             deprecated('fade', 'animation', 'Slider');
 
@@ -25,14 +25,14 @@ export default ConfigProvider.config(Slider, {
             const { arrowPos, ...others } = props;
             props = { arrowPosition: arrowPos, ...others };
         }
-        ['arrowDirection', 'dotsDirection', 'slideDirection'].forEach(propName => {
+        (['arrowDirection', 'dotsDirection', 'slideDirection'] as const).forEach(propName => {
+            // @ts-expect-error horizontal 已被废弃，此处为兼容逻辑
             if (props[propName] === 'horizontal') {
                 deprecated(`${propName}=horizontal`, `${propName}=hoz`, 'Slider');
-
                 props[propName] = 'hoz';
+                // @ts-expect-error vertical 已被废弃，此处为兼容逻辑
             } else if (props[propName] === 'vertical') {
                 deprecated(`${propName}=vertical`, `${propName}=ver`, 'Slider');
-
                 props[propName] = 'ver';
             }
         });

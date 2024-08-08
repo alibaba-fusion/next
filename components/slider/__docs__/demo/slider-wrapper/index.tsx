@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Slider, Select, Switch } from '@alifd/next';
+import { Slider, Select } from '@alifd/next';
 
 const { Option } = Select;
 
 const Demo = () => {
-    const [autoplay, onSelectAutoplay] = useState(false);
-    const [autoplaySpeed, onSelectAutoplaySpeed] = useState(1000);
+    const [autoplay, setAutoplay] = useState(false);
+    const [autoplaySpeed, setAutoplaySpeed] = useState(1000);
+
+    const onSelectAutoplay = (value: boolean) => {
+        setAutoplay(value);
+    };
+    const onSelectAutoplaySpeed = (value: number) => {
+        setAutoplaySpeed(value);
+    };
 
     return (
         <div>

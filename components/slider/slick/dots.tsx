@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { type MouseEvent, Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { func } from '../../util';
+import type { DotsProps, OptionProps } from '../types';
 
 /**
  * slider dots
@@ -10,7 +11,7 @@ import { func } from '../../util';
 
 const { noop } = func;
 
-export default class Dots extends React.Component {
+export default class Dots extends Component<DotsProps> {
     static propTypes = {
         prefix: PropTypes.string,
         currentSlide: PropTypes.number,
@@ -27,10 +28,10 @@ export default class Dots extends React.Component {
         changeSlide: noop,
     };
 
-    handleChangeSlide(options, e) {
+    handleChangeSlide(options: OptionProps, e: MouseEvent<HTMLElement>) {
         e.preventDefault();
 
-        this.props.changeSlide(options);
+        this.props.changeSlide!(options);
     }
 
     render() {
@@ -47,14 +48,14 @@ export default class Dots extends React.Component {
         } = this.props;
 
         const dotsClazz = classNames(`${prefix}slick-dots`, dotsDirection, dotsClass);
-        const dotCount = Math.ceil(slideCount / slidesToScroll);
+        const dotCount = Math.ceil(slideCount! / slidesToScroll!);
         const children = [];
 
         for (let i = 0; i < dotCount; i++) {
-            const leftBound = i * slidesToScroll;
-            const rightBound = leftBound + slidesToScroll - 1;
+            const leftBound = i * slidesToScroll!;
+            const rightBound = leftBound + slidesToScroll! - 1;
             const itemClazz = classNames(`${prefix}slick-dots-item`, {
-                active: currentSlide >= leftBound && currentSlide <= rightBound,
+                active: currentSlide! >= leftBound && currentSlide! <= rightBound,
             });
             const dotOptions = {
                 message: 'dots',
@@ -62,28 +63,25 @@ export default class Dots extends React.Component {
                 slidesToScroll,
                 currentSlide,
             };
-            // 除非设置为hover，默认使用click触发
             const handleProp = {
-                [triggerType.toLowerCase() === 'hover' ? 'onMouseEnter' : 'onClick']: this.handleChangeSlide.bind(
-                    this,
-                    dotOptions
-                ),
+                [triggerType?.toLowerCase() === 'hover' ? 'onMouseEnter' : 'onClick']:
+                    this.handleChangeSlide.bind(this, dotOptions),
             };
 
             let docIndex = i;
             let currentSlideIndex = currentSlide;
             if (rtl) {
                 docIndex = dotCount - 1 - i;
-                currentSlideIndex = dotCount - 1 - currentSlide;
+                currentSlideIndex = dotCount - 1 - currentSlide!;
             }
 
             children.push(
                 <li key={i} className={itemClazz} {...handleProp}>
                     {dotsRender instanceof Function ? (
-                        <span>{dotsRender(docIndex, currentSlideIndex)}</span>
+                        <span>{dotsRender(docIndex, currentSlideIndex!)}</span>
                     ) : (
                         // Slider is navigated by right and left arrow buttons so the dots are not required functionality
-                        <button tabIndex="-1" />
+                        <button tabIndex={-1} />
                     )}
                 </li>
             );

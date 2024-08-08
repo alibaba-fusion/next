@@ -1,10 +1,11 @@
+import type { TouchEvent, MouseEvent } from 'react';
 import { findDOMNode } from 'react-dom';
 import { getTrackCSS, getTrackLeft, getTrackAnimateCSS } from './trackHelper';
+import type { OptionProps } from '../../types';
 
-/* istanbul ignore next */
 const EventHandlers = {
     // Event handler for previous and next
-    changeSlide(options) {
+    changeSlide(options: OptionProps) {
         let slideOffset, targetSlide;
         const unevenOffset = this.state.slideCount % this.props.slidesToScroll !== 0;
         const indexOffset = unevenOffset
@@ -12,14 +13,17 @@ const EventHandlers = {
             : (this.state.slideCount - this.state.currentSlide) % this.props.slidesToScroll;
 
         if (options.message === 'previous') {
-            slideOffset = indexOffset === 0 ? this.props.slidesToScroll : this.props.slidesToShow - indexOffset;
+            slideOffset =
+                indexOffset === 0
+                    ? this.props.slidesToScroll
+                    : this.props.slidesToShow - indexOffset;
             targetSlide = this.state.currentSlide - slideOffset;
         } else if (options.message === 'next') {
             slideOffset = indexOffset === 0 ? this.props.slidesToScroll : indexOffset;
             targetSlide = this.state.currentSlide + slideOffset;
         } else if (options.message === 'dots' || options.message === 'children') {
             // Click on dots
-            targetSlide = options.index * options.slidesToScroll;
+            targetSlide = options.index! * options.slidesToScroll!;
             if (targetSlide === options.currentSlide) {
                 return;
             }
@@ -33,9 +37,9 @@ const EventHandlers = {
     },
 
     // Accessiblity handler for previous and next
-    keyHandler(e) {
+    keyHandler(e: KeyboardEvent) {
         //Dont slide if the cursor is inside the form fields and arrow keys are pressed
-        if (!e.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
+        if (!(e.target as HTMLElement).tagName.match('TEXTAREA|INPUT|SELECT')) {
             if (e.keyCode === 37 && this.props.accessibility === true) {
                 this.changeSlide({
                     message: this.props.rtl === true ? 'next' : 'previous',
@@ -49,18 +53,25 @@ const EventHandlers = {
     },
 
     // Focus on selecting a slide (click handler on track)
-    selectHandler(options) {
+    selectHandler(options: OptionProps) {
         this.changeSlide(options);
     },
 
-    swipeStart(e) {
-        if (this.props.swipe === false || ('ontouchend' in document && this.props.swipe === false)) {
+    swipeStart(e: MouseEvent | TouchEvent) {
+        if (
+            this.props.swipe === false ||
+            ('ontouchend' in document && this.props.swipe === false)
+        ) {
             return;
         } else if (this.props.draggable === false && e.type.indexOf('mouse') !== -1) {
             return;
         }
-        const posX = e.touches !== undefined ? e.touches[0].pageX : e.clientX;
-        const posY = e.touches !== undefined ? e.touches[0].pageY : e.clientY;
+        const posX = (e as TouchEvent).touches
+            ? (e as TouchEvent).touches[0].pageX
+            : (e as MouseEvent).clientX;
+        const posY = (e as TouchEvent).touches
+            ? (e as TouchEvent).touches[0].pageY
+            : (e as MouseEvent).clientY;
         this.setState({
             dragging: true,
             touchObject: {
@@ -72,7 +83,7 @@ const EventHandlers = {
         });
     },
 
-    swipeMove(e) {
+    swipeMove(e: MouseEvent | TouchEvent) {
         if (!this.state.dragging) {
             return;
         }
@@ -88,14 +99,23 @@ const EventHandlers = {
             ...this.state,
         });
 
-        touchObject.curX = e.touches ? e.touches[0].pageX : e.clientX;
-        touchObject.curY = e.touches ? e.touches[0].pageY : e.clientY;
-        touchObject.swipeLength = Math.round(Math.sqrt(Math.pow(touchObject.curX - touchObject.startX, 2)));
+        touchObject.curX = (e as TouchEvent).touches
+            ? (e as TouchEvent).touches[0].pageX
+            : (e as MouseEvent).clientX;
+        touchObject.curY = (e as TouchEvent).touches
+            ? (e as TouchEvent).touches[0].pageY
+            : (e as MouseEvent).clientY;
+        touchObject.swipeLength = Math.round(
+            Math.sqrt(Math.pow(touchObject.curX - touchObject.startX, 2))
+        );
 
-        let positionOffset = (this.props.rtl === false ? 1 : -1) * (touchObject.curX > touchObject.startX ? 1 : -1);
+        let positionOffset =
+            (this.props.rtl === false ? 1 : -1) * (touchObject.curX > touchObject.startX ? 1 : -1);
 
         if (this.props.verticalSwiping === true) {
-            touchObject.swipeLength = Math.round(Math.sqrt(Math.pow(touchObject.curY - touchObject.startY, 2)));
+            touchObject.swipeLength = Math.round(
+                Math.sqrt(Math.pow(touchObject.curY - touchObject.startY, 2))
+            );
             positionOffset = touchObject.curY > touchObject.startY ? 1 : -1;
         }
 
@@ -134,7 +154,10 @@ const EventHandlers = {
             }),
         });
 
-        if (Math.abs(touchObject.curX - touchObject.startX) < Math.abs(touchObject.curY - touchObject.startY) * 0.8) {
+        if (
+            Math.abs(touchObject.curX - touchObject.startX) <
+            Math.abs(touchObject.curY - touchObject.startY) * 0.8
+        ) {
             return;
         }
         if (touchObject.swipeLength > 4) {
@@ -169,7 +192,7 @@ const EventHandlers = {
         return indexes;
     },
 
-    checkNavigable(index) {
+    checkNavigable(index: number) {
         const navigables = this.getNavigableIndexes();
         let prevNavigable = 0;
 
@@ -181,7 +204,6 @@ const EventHandlers = {
                     index = prevNavigable;
                     break;
                 }
-
                 prevNavigable = navigables[n];
             }
         }
@@ -194,32 +216,42 @@ const EventHandlers = {
             ? this.state.slideWidth * Math.floor(this.props.slidesToShow / 2)
             : 0;
         if (this.props.swipeToSlide) {
-            let swipedSlide;
-            const slickList = findDOMNode(this.list);
+            let swipedSlide: HTMLElement | undefined;
+            const slickList = findDOMNode(this.list) as Element;
 
-            const slides = slickList.querySelectorAll(`${this.props.prefix}slick-slide`);
+            const slides = slickList.querySelectorAll<HTMLElement>(
+                `${this.props.prefix}slick-slide`
+            );
 
             Array.from(slides).every(slide => {
                 if (!this.props.vertical) {
-                    if (slide.offsetLeft - centerOffset + (this.getWidth(slide) || 0) / 2 > this.state.swipeLeft * -1) {
+                    if (
+                        slide.offsetLeft - centerOffset + (this.getWidth(slide) || 0) / 2 >
+                        this.state.swipeLeft * -1
+                    ) {
                         swipedSlide = slide;
                         return false;
                     }
-                } else if (slide.offsetTop + (this.getHeight(slide) || 0) / 2 > this.state.swipeLeft * -1) {
+                } else if (
+                    slide.offsetTop + (this.getHeight(slide) || 0) / 2 >
+                    this.state.swipeLeft * -1
+                ) {
                     swipedSlide = slide;
                     return false;
                 }
 
                 return true;
             });
-            const slidesTraversed = Math.abs(swipedSlide.dataset.index - this.state.currentSlide) || 1;
+            const slidesTraversed =
+                // @ts-expect-error 此处应被转换为 number 类型
+                Math.abs(swipedSlide!.dataset!.index! - this.state.currentSlide) || 1;
             return slidesTraversed;
         } else {
             return this.props.slidesToScroll;
         }
     },
 
-    swipeEnd(e) {
+    swipeEnd(e: MouseEvent | TouchEvent) {
         if (!this.state.dragging) {
             if (this.props.swipe) {
                 e.preventDefault();

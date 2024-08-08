@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Slider } from '@alifd/next';
 
 const settings = {
-    arrowPosition: 'outer',
+    arrowPosition: 'outer' as const,
     dots: false,
     animation: 'fade',
     infinite: true,
@@ -11,7 +11,7 @@ const settings = {
     slidesToShow: 1,
     slidesToScroll: 1,
     className: 'custom-slide',
-    onChange: function (index) {
+    onChange: function (index: number) {
         console.log('change Slide index', index);
     },
 };
