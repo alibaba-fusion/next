@@ -350,4 +350,6 @@ const Drawer = (props: DrawerV2Props) => {
     );
 };
 
+Drawer.displayName = 'Drawer';
+
 export default Drawer;

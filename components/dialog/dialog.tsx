@@ -111,6 +111,8 @@ export default class Dialog extends Component<DialogV1Props> {
         locale: zhCN.Dialog,
         noPadding: false,
     };
+
+    static displayName = 'Dialog';
     overlay: InstanceType<typeof Overlay> | null;
     private _lastDialogHeight: string | number;
     dialogBodyStyleMaxHeight: string;

@@ -84,6 +84,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
         locale: nextLocale.Calendar,
         showOtherMonth: true,
     };
+    static displayName = 'Calendar';
     MODES: CalendarMode[];
     today: Moment;
 

@@ -230,6 +230,8 @@ class Transfer extends Component<TransferProps, TransferState> {
         locale: zhCN.Transfer,
     };
 
+    static displayName = 'Transfer';
+
     static normalizeValue(value?: string | Array<string>) {
         if (value) {
             if (Array.isArray(value)) {

@@ -226,6 +226,8 @@ class TreeSelect extends Component<TreeSelectProps, TreeSelectState> {
         clickToCheck: false,
     };
 
+    static displayName = 'TreeSelect';
+
     tree: InstanceType<typeof Tree>;
     select: InstanceType<typeof Select>;
 

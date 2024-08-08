@@ -135,7 +135,10 @@ const Dialog = (props: DialogV2Props) => {
             if (dom.hasScroll(document.body)) {
                 const scrollWidth = dom.scrollbar().width;
                 if (scrollWidth) {
-                    style.paddingRight = `${(dom.getStyle(document.body, 'paddingRight') as number) + dom.scrollbar().width}px`;
+                    style.paddingRight = `${
+                        (dom.getStyle(document.body, 'paddingRight') as number) +
+                        dom.scrollbar().width
+                    }px`;
                 }
             }
             locker.current = scrollLocker.lock(document.body, style);
@@ -375,5 +378,7 @@ const Dialog = (props: DialogV2Props) => {
         </OverlayContext.Provider>
     );
 };
+
+Dialog.displayName = 'Dialog';
 
 export default Dialog;

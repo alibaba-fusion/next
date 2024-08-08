@@ -38,7 +38,8 @@ class Message extends Component<MessageProps> {
         locale: PropTypes.object,
         rtl: PropTypes.bool,
     };
-    // config 方法被调用后，Message组件才会挂上 open、close、destory方法
+    static displayName = 'Message';
+    // config 方法被调用后，Message 组件才会挂上 open、close、destory 方法
     static config: (config: toast2.MessageConfig) => void;
     static open: Toast2['open'];
     static close: Toast2['close'];
@@ -137,7 +138,9 @@ class Message extends Component<MessageProps> {
                 ) : null}
                 {icon !== false ? (
                     <Icon
-                        className={`${messagePrefix}-symbol ${!icon && `${messagePrefix}-symbol-icon`}`}
+                        className={`${messagePrefix}-symbol ${
+                            !icon && `${messagePrefix}-symbol-icon`
+                        }`}
                         type={icon}
                     />
                 ) : null}

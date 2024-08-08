@@ -2,8 +2,8 @@ import React, { isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-import { SearchProps } from './types';
-import Input, { InputProps } from '../input';
+import { type SearchProps } from './types';
+import Input from '../input';
 import Select, { type AutoCompleteProps } from '../select';
 import Button from '../button';
 import Icon from '../icon';
@@ -22,7 +22,7 @@ export interface SearchState {
 
 /**
  * Search
- *  输入框部分继承 Select.AutoComplete 的能力，可以直接用AutoComplete 的 api
+ *  输入框部分继承 Select.AutoComplete 的能力，可以直接用 AutoComplete 的 api
  */
 class Search extends React.Component<SearchProps, SearchState> {
     static propTypes = {
@@ -106,6 +106,8 @@ class Search extends React.Component<SearchProps, SearchState> {
         autoHighlightFirstItem: true,
     };
 
+    static displayName = 'Search';
+
     static getDerivedStateFromProps(nextProps: SearchProps, prevState: SearchState) {
         const nextState: Partial<SearchState> = {};
         if ('value' in nextProps && nextProps.value !== prevState.value) {
@@ -159,7 +161,7 @@ class Search extends React.Component<SearchProps, SearchState> {
             const highlightKey = this.highlightKey;
             // 重置
             this.highlightKey = '';
-            // 若有匹配项，执行onSearch
+            // 若有匹配项，执行 onSearch
             if (highlightKey) {
                 this.props.onSearch!(value, this.state.filterValue);
             }
@@ -167,7 +169,7 @@ class Search extends React.Component<SearchProps, SearchState> {
     };
 
     onPressEnter = () => {
-        // 有匹配项情况，enter会触发 onChange，由那里执行onSearch
+        // 有匹配项情况，enter 会触发 onChange，由那里执行 onSearch
         if (this.highlightKey) {
             return;
         }

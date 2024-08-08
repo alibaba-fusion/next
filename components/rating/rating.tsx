@@ -62,6 +62,8 @@ class Rating extends Component<RatingProps, RatingState> {
         locale: zhCN.Rating,
     };
 
+    static displayName = 'Rating';
+
     static currentValue(min: number, max: number, hoverValue: number, stateValue: number) {
         let value = hoverValue ? hoverValue : stateValue;
 

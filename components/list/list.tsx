@@ -38,6 +38,8 @@ class List extends Component<ListProps> {
         loading: false,
     };
 
+    static displayName = 'List';
+
     render() {
         const {
             prefix,

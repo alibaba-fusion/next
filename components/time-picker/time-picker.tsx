@@ -82,6 +82,9 @@ class TimePicker extends Component<TimePickerProps, TimePickerState> {
         onChange: noop,
         onVisibleChange: noop,
     };
+
+    static displayName = 'TimePicker';
+
     inputAsString: boolean;
 
     readonly props: InnerTimePickerProps;
