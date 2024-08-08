@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { obj } from '../util';
-import InnerSlider, { type ThisType } from './slick/inner-slider';
+import InnerSlider, { type ThisType as InnerSliderType } from './slick/inner-slider';
 import ConfigProvider from '../config-provider';
 import type { SliderProps } from './types';
+
+type CommonKeys = keyof SliderProps & keyof typeof ConfigProvider.propTypes;
+type ObjWithCommonProps = Pick<SliderProps, CommonKeys>;
 
 /**
  * Slider
  */
-export default class Slider extends React.Component<SliderProps> {
+export default class Slider extends Component<SliderProps> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -77,7 +80,7 @@ export default class Slider extends React.Component<SliderProps> {
         speed: 600,
         adaptiveHeight: false,
         centerMode: false,
-        centerPadding: '50px', // Side padding when in center mode (px or %); 展示部分为center，pading会产生前后预览
+        centerPadding: '50px', // Side padding when in center mode (px or %); 展示部分为 center，pading 会产生前后预览
         cssEase: 'ease',
         draggable: true,
         edgeFriction: 0.35,
@@ -92,7 +95,7 @@ export default class Slider extends React.Component<SliderProps> {
         slidesToScroll: 1,
         swipe: true,
         swipeToSlide: false, // Allow users to drag or swipe directly to a slide irrespective of slidesToScroll
-        touchMove: true, // 移动端touch
+        touchMove: true, // 移动端 touch
         touchThreshold: 5,
         useCSS: true,
         variableWidth: false,
@@ -108,7 +111,7 @@ export default class Slider extends React.Component<SliderProps> {
         triggerType: 'click',
     };
 
-    innerSlider: ThisType | null;
+    innerSlider: InnerSliderType | null;
 
     resize = () => {
         // export api
@@ -118,10 +121,10 @@ export default class Slider extends React.Component<SliderProps> {
     render() {
         const { prefix, arrowPosition, slideDirection, style, className, children } = this.props;
 
-        const globalProps: Partial<SliderProps> = {};
-        Object.keys(ConfigProvider.propTypes).forEach(key => {
-            globalProps[key as keyof Partial<SliderProps>] =
-                this.props[key as keyof typeof this.props];
+        const globalProps: ObjWithCommonProps = {};
+        Object.keys(ConfigProvider.propTypes).forEach((key: CommonKeys) => {
+            // @ts-expect-error 类型错误
+            globalProps[key] = this.props[key];
         });
 
         const sliderProps = obj.pickOthers(['className', 'style', 'slideDirection'], this.props);
@@ -164,7 +167,9 @@ export default class Slider extends React.Component<SliderProps> {
                     )}
                 >
                     <InnerSlider
-                        ref={InnerSlider => (this.innerSlider = InnerSlider as ThisType | null)}
+                        ref={(InnerSlider: InnerSliderType | null) =>
+                            (this.innerSlider = InnerSlider)
+                        }
                         {...sliderProps}
                     />
                 </div>
