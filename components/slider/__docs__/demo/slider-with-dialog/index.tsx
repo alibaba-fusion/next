@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Slider, Dialog, Button } from '@alifd/next';
 import PropTypes from 'prop-types';
@@ -27,34 +27,28 @@ const dialogStyle = {
 };
 
 interface FlappySliderProps {
-    slides: Array<any>;
+    slides: Array<{ url: string; text: string }>;
 }
 interface FlappySliderState {
     visible: boolean;
 }
 
-class FlappySlider extends React.Component<FlappySliderProps, FlappySliderState> {
+class FlappySlider extends Component<FlappySliderProps, FlappySliderState> {
     static propTypes = {
         slides: PropTypes.array,
     };
 
-    constructor(props: FlappySliderProps) {
-        super(props);
+    state = {
+        visible: false,
+    };
 
-        this.state = {
-            visible: false,
-        };
-
-        this.setVisible = this.setVisible.bind(this);
-    }
-
-    setVisible() {
+    setVisible = () => {
         this.setState(prevState => {
             return {
                 visible: !prevState.visible,
             };
         });
-    }
+    };
 
     render() {
         return (

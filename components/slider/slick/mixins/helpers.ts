@@ -5,25 +5,25 @@ import type { InnerSliderProps } from '../../types';
 
 const helpers = {
     initialize(props: InnerSliderProps) {
-        const slickList = ReactDOM.findDOMNode(this.list);
+        const slickList = ReactDOM.findDOMNode(this.list) as Element;
         const slideCount = React.Children.count(props.children);
         const listWidth = this.getWidth(slickList) || 0;
         const trackWidth = this.getWidth(ReactDOM.findDOMNode(this.track)) || 0;
         let slideWidth;
 
         if (!props.vertical) {
-            const centerPaddingAdj = props.centerMode && parseInt(props.centerPadding!) * 2;
-            slideWidth = (listWidth - (centerPaddingAdj as number)) / props.slidesToShow!;
+            const centerPaddingAdj = (props.centerMode &&
+                parseInt(props.centerPadding!) * 2) as number;
+            slideWidth = (listWidth - centerPaddingAdj) / props.slidesToShow!;
         } else {
             slideWidth = listWidth;
         }
 
-        const slideHeight =
-            this.getHeight((slickList as Element).querySelector('[data-index="0"]')) || 0;
+        const slideHeight = this.getHeight(slickList.querySelector('[data-index="0"]')) || 0;
         const listHeight = slideHeight * props.slidesToShow!;
         const slideHeightList = [];
         const newSlickList = Array.from(
-            (slickList as Element).querySelectorAll(`.${props.prefix}slick-slide`) || []
+            slickList.querySelectorAll(`.${props.prefix}slick-slide`) || []
         );
         for (const item of newSlickList) {
             const height = this.getHeight(item);
@@ -72,18 +72,18 @@ const helpers = {
         this.initialize(props);
     },
 
-    getWidth(elem: Element | Text | null) {
-        if (elem && 'clientWidth' in elem) {
+    getWidth(elem: Element) {
+        if ('clientWidth' in elem!) {
             return elem.clientWidth;
         }
-        return elem && elem instanceof Element && elem.getBoundingClientRect().width;
+        return elem && (elem as Element).getBoundingClientRect().width;
     },
 
-    getHeight(elem: Element | Text | null) {
-        if (elem && 'clientHeight' in elem) {
+    getHeight(elem: Element) {
+        if ('clientHeight' in elem!) {
             return elem.clientHeight;
         }
-        return elem && elem instanceof Element && elem.getBoundingClientRect().height;
+        return elem && (elem as Element).getBoundingClientRect().height;
     },
 
     adaptHeight() {
@@ -91,8 +91,8 @@ const helpers = {
             const selector = `[data-index="${this.state.currentSlide}"]`;
             if (this.list) {
                 const slickList = ReactDOM.findDOMNode(this.list) as HTMLElement;
-                const slickElement = slickList.querySelector(selector) as HTMLElement;
-                const listHeight = slickElement.offsetHeight;
+                const slickElement = slickList.querySelector<HTMLElement>(selector);
+                const listHeight = slickElement!.offsetHeight;
                 slickList.style.height = `${listHeight}px`;
             }
         }
@@ -188,7 +188,6 @@ const helpers = {
                         currentSlide = targetSlide = 0;
                     }
                 } else {
-                    // this.state.slideCount % this.props.slidesToScroll
                     currentSlide = this.state.slideCount + targetSlide;
                 }
             } else if (targetSlide >= this.state.slideCount) {
@@ -281,7 +280,6 @@ const helpers = {
         // animated transition happens to target Slide and
         // non - animated transition happens to current Slide
         // If CSS transitions are false, directly go the current slide.
-        /* istanbul ignore if */
         if (this.props.useCSS === false) {
             this.setState(
                 {
@@ -363,29 +361,20 @@ const helpers = {
     },
 
     swipeDirection(touchObject: { startX: number; startY: number; curX: number; curY: number }) {
-        /* istanbul ignore next */
         let swipeAngle;
-        /* istanbul ignore next */
         const xDist = touchObject.startX - touchObject.curX;
-        /* istanbul ignore next */
         const yDist = touchObject.startY - touchObject.curY;
-        /* istanbul ignore next */
         const r = Math.atan2(yDist, xDist);
-        /* istanbul ignore next */
         swipeAngle = Math.round((r * 180) / Math.PI);
-        /* istanbul ignore next */
         if (swipeAngle < 0) {
             swipeAngle = 360 - Math.abs(swipeAngle);
         }
-        /* istanbul ignore next */
         if ((swipeAngle <= 45 && swipeAngle >= 0) || (swipeAngle <= 360 && swipeAngle >= 315)) {
             return this.props.rtl === false ? 'left' : 'right';
         }
-        /* istanbul ignore next */
         if (swipeAngle >= 135 && swipeAngle <= 225) {
             return this.props.rtl === false ? 'right' : 'left';
         }
-        /* istanbul ignore next */
         if (this.props.verticalSwiping === true) {
             if (swipeAngle >= 35 && swipeAngle <= 135) {
                 return 'down';
@@ -393,15 +382,12 @@ const helpers = {
                 return 'up';
             }
         }
-
-        /* istanbul ignore next */
         return 'vertical';
     },
 
     play() {
         let nextIndex;
         if (!this.hasMounted) {
-            /* istanbul ignore next */
             return false;
         }
         if (this.props.rtl) {
@@ -426,7 +412,6 @@ const helpers = {
     },
 
     pause() {
-        /* istanbul ignore next */
         if (this.state.autoPlayTimer) {
             clearTimeout(this.state.autoPlayTimer);
             this.setState({

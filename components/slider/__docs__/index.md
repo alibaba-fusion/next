@@ -25,37 +25,39 @@
 
 ### Slider
 
-| 参数               | 说明                                                                                                | 类型                                     | 默认值  | 是否必填 |
-| ------------------ | --------------------------------------------------------------------------------------------------- | ---------------------------------------- | ------- | -------- |
-| locale             | 各组件的国际化文案对象，属性为组件的 displayName                                                    | Partial\<Locale>                         | -       |          |
-| adaptiveHeight     | 是否使用自适应高度                                                                                  | boolean                                  | -       |          |
-| animation          | 动效类型，默认是'slide'                                                                             | string \| boolean                        | 'slide' |          |
-| arrows             | 是否显示箭头                                                                                        | boolean                                  | -       |          |
-| arrowSize          | 导航箭头大小                                                                                        | 'medium' \| 'large'                      | -       |          |
-| arrowPosition      | 导航箭头位置                                                                                        | 'inner' \| 'outer'                       | -       |          |
-| arrowDirection     | 导航箭头方向                                                                                        | 'hoz' \| 'ver'                           | -       |          |
-| autoplay           | 是否自动播放                                                                                        | boolean                                  | -       |          |
-| autoplaySpeed      | 自动播放的速度                                                                                      | number                                   | -       |          |
-| prevArrow          | 前向箭头节点                                                                                        | React.ReactElement                       | -       |          |
-| nextArrow          | 后向箭头节点                                                                                        | React.ReactElement                       | -       |          |
-| centerMode         | 是否启用居中模式                                                                                    | boolean                                  | -       |          |
-| dots               | 是否显示导航锚点                                                                                    | boolean                                  | -       |          |
-| dotsDirection      | 导航锚点方向                                                                                        | 'hoz' \| 'ver'                           | -       |          |
-| dotsRender         | 自定义导航锚点<br/><br/>**签名**:<br/>**参数**:<br/>_index_: 锚点编号<br/>_current_: 当前幻灯片编号 | (index: number, current: number) => void | -       |          |
-| draggable          | 是否可拖拽                                                                                          | boolean                                  | -       |          |
-| infinite           | 是否使用无穷循环模式                                                                                | boolean                                  | -       |          |
-| defaultActiveIndex | 初始被激活的轮播图                                                                                  | number                                   | -       |          |
-| lazyLoad           | 是否启用懒加载                                                                                      | boolean                                  | -       |          |
-| slideDirection     | 轮播方向                                                                                            | 'hoz' \| 'ver'                           | -       |          |
-| slidesToShow       | 同时展示的图片数量                                                                                  | number                                   | -       |          |
-| slidesToScroll     | 同时滑动的图片数量                                                                                  | number                                   | -       |          |
-| speed              | 轮播速度                                                                                            | number                                   | -       |          |
-| activeIndex        | 跳转到指定的轮播图（受控）                                                                          | number                                   | -       |          |
-| triggerType        | 导航锚点触发方式                                                                                    | 'click' \| 'hover'                       | -       |          |
-| onChange           | 轮播切换的回调函数                                                                                  | (index: number) => void                  | -       |          |
-| centerPadding      | center模式下的边缘padding值 (px or %);                                                              | string                                   | -       |          |
-| cssEase            | CSS3 Animation Easing,默认‘ease’                                                                    | string                                   | -       |          |
-| focusOnSelect      | 多图轮播时，是否在点击选中后自动居中                                                                | boolean                                  | -       |          |
+| 参数               | 说明                                                                                                | 类型                                     | 默认值   | 是否必填 |
+| ------------------ | --------------------------------------------------------------------------------------------------- | ---------------------------------------- | -------- | -------- |
+| className          | 自定义传入的样式                                                                                    | string                                   | -        |          |
+| adaptiveHeight     | 是否使用自适应高度                                                                                  | boolean                                  | false    |          |
+| animation          | 动效类型，默认是'slide'                                                                             | string \| boolean                        | 'slide'  |          |
+| arrows             | 是否显示箭头                                                                                        | boolean                                  | true     |          |
+| arrowSize          | 导航箭头大小                                                                                        | 'medium' \| 'large'                      | 'medium' |          |
+| arrowPosition      | 导航箭头位置                                                                                        | 'inner' \| 'outer'                       | 'inner'  |          |
+| arrowDirection     | 导航箭头方向                                                                                        | 'hoz' \| 'ver'                           | 'hoz'    |          |
+| autoplay           | 是否自动播放                                                                                        | boolean                                  | false    |          |
+| autoplaySpeed      | 自动播放的速度                                                                                      | number                                   | 3000     |          |
+| prevArrow          | 前向箭头节点                                                                                        | ReactElement                             | -        |          |
+| nextArrow          | 后向箭头节点                                                                                        | ReactElement                             | -        |          |
+| centerMode         | 是否启用居中模式                                                                                    | boolean                                  | false    |          |
+| dots               | 是否显示导航锚点                                                                                    | boolean                                  | true     |          |
+| dotsDirection      | 导航锚点方向                                                                                        | 'hoz' \| 'ver'                           | 'hoz'    |          |
+| dotsRender         | 自定义导航锚点<br/><br/>**签名**:<br/>**参数**:<br/>_index_: 锚点编号<br/>_current_: 当前幻灯片编号 | (index: number, current: number) => void | -        |          |
+| draggable          | 是否可拖拽                                                                                          | boolean                                  | true     |          |
+| infinite           | 是否使用无穷循环模式                                                                                | boolean                                  | true     |          |
+| defaultActiveIndex | 初始被激活的轮播图                                                                                  | number                                   | 0        |          |
+| lazyLoad           | 是否启用懒加载                                                                                      | boolean                                  | false    |          |
+| slideDirection     | 轮播方向                                                                                            | 'hoz' \| 'ver'                           | 'hoz'    |          |
+| slidesToShow       | 同时展示的图片数量                                                                                  | number                                   | 1        |          |
+| slidesToScroll     | 同时滑动的图片数量                                                                                  | number                                   | 1        |          |
+| speed              | 轮播速度                                                                                            | number                                   | 600      |          |
+| activeIndex        | 跳转到指定的轮播图（受控）                                                                          | number                                   | -        |          |
+| triggerType        | 导航锚点触发方式                                                                                    | 'click' \| 'hover'                       | 'click'  |          |
+| onChange           | 轮播切换的回调函数                                                                                  | (index: number) => void                  | -        |          |
+| centerPadding      | center 模式下的边缘 padding 值 (px or %);                                                           | string                                   | '50px'   |          |
+| cssEase            | CSS3 Animation Easing，默认‘ease’                                                                   | string                                   | 'ease'   |          |
+| focusOnSelect      | 多图轮播时，是否在点击选中后自动居中                                                                | boolean                                  | 'false'  |          |
+| style              | 自定义样式                                                                                          | CSSProperties                            | -        |          |
+| waitForAnimate     | 是否等待动画结束后再执行动作                                                                        | boolean                                  | true     |          |
 
 ## 说明
 

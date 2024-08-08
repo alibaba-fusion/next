@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, type MouseEvent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../../icon';
@@ -49,36 +49,27 @@ export default class Arrow extends Component<ArrowProps> {
             return false;
         }
 
-        // 下一个 index 大于总数？？
-        // if (slideCount <= slidesToShow) {
-        //     return true;
-        // }
-
-        // 向前箭头：当前是第 0 个
         if (type === 'prev') {
             return currentSlide! <= 0;
         }
 
         if (centerMode && currentSlide! >= slideCount! - 1) {
-            // 向后箭头：居中模式，当前 index 大于最大 index
             return true;
         } else if (currentSlide! >= slideCount! - slidesToShow!) {
-            // 向后箭头：普通模式，当前 index 大于 总数 - 下一个 index ？？？
             return true;
         }
 
         return false;
     }
 
-    handleClick(options: OptionProps, e: React.MouseEvent<HTMLElement>) {
+    handleClick(options: OptionProps, e: MouseEvent<HTMLElement>) {
         e && e.preventDefault();
 
-        // TODO hack
         if (options.message === 'prev') {
             options.message = 'previous';
         }
 
-        this.props.clickHandler?.(options, e);
+        this.props.clickHandler!(options, e);
     }
 
     render() {
@@ -123,7 +114,7 @@ export default class Arrow extends Component<ArrowProps> {
             return React.cloneElement(React.Children.only(children), arrowProps);
         } else {
             return (
-                <button {...arrowProps}>
+                <button type="button" role="button" {...arrowProps}>
                     <Icon type={iconType} />
                 </button>
             );

@@ -1,25 +1,17 @@
+import { type CSSProperties } from 'react';
 import ReactDOM from 'react-dom';
-import type { InnerSliderProps, InnerSliderState } from './../../types';
+import type { TrackCSSProps, TrackLeftProps } from './../../types';
 
-interface TrackCSSProps
-    extends Omit<InnerSliderProps, 'slideCount' | 'slideWidth' | 'slideHeight'>,
-        InnerSliderState {
-    left: number;
-}
-
-interface TrackLeftProps
-    extends Omit<InnerSliderProps, 'slideCount' | 'slideWidth' | 'slideHeight'>,
-        InnerSliderState {
-    slideIndex: number;
-    trackRef: HTMLDivElement;
-}
-
-const checkSpecKeys = (spec: object, keysArray: string[]) => {
+const checkSpecKeys = <K extends string | number | symbol, V>(
+    spec: Partial<Record<K, V>>,
+    keysArray: string[]
+) => {
     return keysArray.reduce((value, key) => {
         return value && spec.hasOwnProperty(key);
     }, true)
         ? null
-        : console.error('Keys Missing', spec); /*eslint no-console:0*/
+        : // eslint-disable-next-line no-console
+          console.error('Keys Missing', spec);
 };
 
 export const getTrackCSS = (spec: TrackCSSProps) => {
@@ -40,7 +32,7 @@ export const getTrackCSS = (spec: TrackCSSProps) => {
         trackHeight = trackChildren * spec.slideHeight!;
     }
 
-    let style: React.CSSProperties = {
+    let style: CSSProperties = {
         opacity: 1,
     };
 

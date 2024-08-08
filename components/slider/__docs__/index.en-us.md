@@ -28,35 +28,37 @@ The Slider are independent of each other and there is no logical relationship be
 
 | Param              | Description                                                                                              | Type                                     | Default Value | Required |
 | ------------------ | -------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ------------- | -------- |
-| locale             | Locale object for components                                                                             | Partial\<Locale>                         | -             |          |
-| adaptiveHeight     | Whether to use adaptive height                                                                           | boolean                                  | -             |          |
+| className          | Custom className                                                                                         | string                                   | -             |          |
+| adaptiveHeight     | Whether to use adaptive height                                                                           | boolean                                  | false         |          |
 | animation          | Animation type, default value is 'slide'                                                                 | string \| boolean                        | 'slide'       |          |
-| arrows             | Whether to display arrows                                                                                | boolean                                  | -             |          |
-| arrowSize          | Size of the arrow                                                                                        | 'medium' \| 'large'                      | -             |          |
-| arrowPosition      | Position of the arrow                                                                                    | 'inner' \| 'outer'                       | -             |          |
-| arrowDirection     | Direction of the arrow                                                                                   | 'hoz' \| 'ver'                           | -             |          |
-| autoplay           | Whether to play automatically                                                                            | boolean                                  | -             |          |
-| autoplaySpeed      | Autoplay speed                                                                                           | number                                   | -             |          |
-| prevArrow          | Prev arrow                                                                                               | React.ReactElement                       | -             |          |
-| nextArrow          | Next arrow                                                                                               | React.ReactElement                       | -             |          |
-| centerMode         | Whether to use center mode                                                                               | boolean                                  | -             |          |
-| dots               | Whether to display dots                                                                                  | boolean                                  | -             |          |
-| dotsDirection      | Direction for navigation dots                                                                            | 'hoz' \| 'ver'                           | -             |          |
+| arrows             | Whether to display arrows                                                                                | boolean                                  | true          |          |
+| arrowSize          | Size of the arrow                                                                                        | 'medium' \| 'large'                      | 'medium'      |          |
+| arrowPosition      | Position of the arrow                                                                                    | 'inner' \| 'outer'                       | 'inner'       |          |
+| arrowDirection     | Direction of the arrow                                                                                   | 'hoz' \| 'ver'                           | 'hoz'         |          |
+| autoplay           | Whether to play automatically                                                                            | boolean                                  | false         |          |
+| autoplaySpeed      | Autoplay speed                                                                                           | number                                   | 3000          |          |
+| prevArrow          | Prev arrow                                                                                               | ReactElement                             | -             |          |
+| nextArrow          | Next arrow                                                                                               | ReactElement                             | -             |          |
+| centerMode         | Whether to use center mode                                                                               | boolean                                  | false         |          |
+| dots               | Whether to display dots                                                                                  | boolean                                  | true          |          |
+| dotsDirection      | Direction for navigation dots                                                                            | 'hoz' \| 'ver'                           | 'hoz'         |          |
 | dotsRender         | Render navigation dots<br/><br/>**signature**:<br/>**params**:<br/>_index_: index<br/>_current_: current | (index: number, current: number) => void | -             |          |
-| draggable          | Whether it can be dragged                                                                                | boolean                                  | -             |          |
-| infinite           | Whether to use infinite loop mode                                                                        | boolean                                  | -             |          |
-| defaultActiveIndex | The default activated slide index                                                                        | number                                   | -             |          |
-| lazyLoad           | Whether to enable lazy load                                                                              | boolean                                  | -             |          |
-| slideDirection     | Slide direction                                                                                          | 'hoz' \| 'ver'                           | -             |          |
-| slidesToShow       | Number of slides showed at the same time                                                                 | number                                   | -             |          |
-| slidesToScroll     | Number of slides scrolled at the same time                                                               | number                                   | -             |          |
-| speed              | Carousel speed                                                                                           | number                                   | -             |          |
+| draggable          | Whether it can be dragged                                                                                | boolean                                  | true          |          |
+| infinite           | Whether to use infinite loop mode                                                                        | boolean                                  | true          |          |
+| defaultActiveIndex | The default activated slide index                                                                        | number                                   | 0             |          |
+| lazyLoad           | Whether to enable lazy load                                                                              | boolean                                  | false         |          |
+| slideDirection     | Slide direction                                                                                          | 'hoz' \| 'ver'                           | 'hoz'         |          |
+| slidesToShow       | Number of slides showed at the same time                                                                 | number                                   | 1             |          |
+| slidesToScroll     | Number of slides scrolled at the same time                                                               | number                                   | 1             |          |
+| speed              | Carousel speed                                                                                           | number                                   | 600           |          |
 | activeIndex        | Jump to the specified carousel image (controlled)                                                        | number                                   | -             |          |
-| triggerType        | Triggering method for navigation dots                                                                    | 'click' \| 'hover'                       | -             |          |
+| triggerType        | Triggering method for navigation dots                                                                    | 'click' \| 'hover'                       | 'click'       |          |
 | onChange           | Callback function for slides switching                                                                   | (index: number) => void                  | -             |          |
-| centerPadding      | Side padding when in center mode (px or %);                                                              | string                                   | -             |          |
-| cssEase            | CSS3 Animation Easing, default value is 'ease'                                                           | string                                   | -             |          |
-| focusOnSelect      | When multiple slides are rotated, whether to be automatically centered after clicking to select them.    | boolean                                  | -             |          |
+| centerPadding      | Side padding when in center mode (px or %);                                                              | string                                   | '50px'        |          |
+| cssEase            | CSS3 Animation Easing, default value is 'ease'                                                           | string                                   | 'ease'        |          |
+| focusOnSelect      | When multiple slides are rotated, whether to be automatically centered after clicking to select them.    | boolean                                  | 'false'       |          |
+| style              | Custom style                                                                                             | CSSProperties                            | -             |          |
+| waitForAnimate     | Whether to wait for the animation to end before executing the action                                     | boolean                                  | true          |          |
 
 ## Other
 
