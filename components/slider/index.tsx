@@ -3,7 +3,7 @@ import Slider from './slider';
 
 export default ConfigProvider.config(Slider, {
     exportNames: ['resize'],
-    transform: /* istanbul ignore next */ (props, deprecated) => {
+    transform: (props, deprecated) => {
         if ('fade' in props) {
             deprecated('fade', 'animation', 'Slider');
 
@@ -23,17 +23,17 @@ export default ConfigProvider.config(Slider, {
                 deprecated('arrowPos', 'arrowPosition', 'Slider');
             }
             const { arrowPos, ...others } = props;
-            props = { arrowPosition: arrowPos as 'inner' | 'outer' | undefined, ...others };
+            props = { arrowPosition: arrowPos, ...others };
         }
-        ['arrowDirection', 'dotsDirection', 'slideDirection'].forEach(propName => {
-            if (props[propName as keyof typeof props] === 'horizontal') {
+        (['arrowDirection', 'dotsDirection', 'slideDirection'] as const).forEach(propName => {
+            // @ts-expect-error horizontal 已被废弃，此处为兼容逻辑
+            if (props[propName] === 'horizontal') {
                 deprecated(`${propName}=horizontal`, `${propName}=hoz`, 'Slider');
-
-                props[propName as keyof typeof props] = 'hoz';
-            } else if (props[propName as keyof typeof props] === 'vertical') {
+                props[propName] = 'hoz';
+                // @ts-expect-error vertical 已被废弃，此处为兼容逻辑
+            } else if (props[propName] === 'vertical') {
                 deprecated(`${propName}=vertical`, `${propName}=ver`, 'Slider');
-
-                props[propName as keyof typeof props] = 'ver';
+                props[propName] = 'ver';
             }
         });
         if ('initialSlide' in props) {

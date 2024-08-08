@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import ConfigProvider from '../../../config-provider';
@@ -9,10 +9,6 @@ import '../../../demo-helper/style';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import Slider from '../../index';
 import '../../style';
-
-// import demo helper
-
-// import slider
 
 const i18nMap = {
     'zh-cn': {
@@ -46,7 +42,7 @@ const bigSlides = [
     {
         url: 'https://img.alicdn.com/tps/TB1xuUcNVXXXXcRXXXXXXXXXXXX-1000-300.jpg',
         text: {
-            'zh-cn': '阿里公益T恤设计大赛',
+            'zh-cn': '阿里公益 T 恤设计大赛',
             'en-us': 'T-shirt design competition of Alibaba public welfare',
         },
     },
@@ -136,14 +132,13 @@ interface SliderCardDemoProps {
     i18n: any;
 }
 
-class SliderBannerDemo extends React.Component<SliderBannerDemoProps> {
+class SliderBannerDemo extends Component<SliderBannerDemoProps> {
     static propTypes = {
         i18n: PropTypes.object,
     };
     private field: any;
     constructor(props: SliderBannerDemoProps) {
         super(props);
-        // const { i18n } = props;
         this.setField();
     }
     setField() {
@@ -173,7 +168,6 @@ class SliderBannerDemo extends React.Component<SliderBannerDemoProps> {
         });
     }
     render() {
-        // const { demoFunction } = this.state;
         const { init, getValue } = this.field;
         const { i18n } = this.props;
         const { medium, large } = i18n;
@@ -193,7 +187,7 @@ class SliderBannerDemo extends React.Component<SliderBannerDemoProps> {
                             <Slider infinite={false} arrows={widthArrow} dots={widthDots}>
                                 {bigSlides.map((item, index) => (
                                     <div key={index}>
-                                        {/* @ts-expect-error item数据结构类型不正确*/}
+                                        {/* @ts-expect-error item 数据结构类型不正确 */}
                                         <img style={bigSlideStyle} src={item.url} alt={item.text} />
                                     </div>
                                 ))}
@@ -211,7 +205,7 @@ class SliderBannerDemo extends React.Component<SliderBannerDemoProps> {
                             >
                                 {bigSlides.map((item, index) => (
                                     <div key={index}>
-                                        {/* @ts-expect-error item数据结构类型不正确*/}
+                                        {/* @ts-expect-error item 数据结构类型不正确 */}
                                         <img style={bigSlideStyle} src={item.url} alt={item.text} />
                                     </div>
                                 ))}
@@ -223,8 +217,7 @@ class SliderBannerDemo extends React.Component<SliderBannerDemoProps> {
         );
     }
 }
-/* eslint-disable */
-class SliderCardDemo extends React.Component<SliderCardDemoProps> {
+class SliderCardDemo extends Component<SliderCardDemoProps> {
     static propTypes = {
         i18n: PropTypes.object,
     };
@@ -247,7 +240,7 @@ class SliderCardDemo extends React.Component<SliderCardDemoProps> {
                                         <img
                                             key={index}
                                             src={item.url}
-                                            // @ts-expect-error item数据结构类型不正确
+                                            // @ts-expect-error item 数据结构类型不正确
                                             alt={item.text}
                                             style={smallSizeImg}
                                         />
@@ -267,7 +260,7 @@ class SliderCardDemo extends React.Component<SliderCardDemoProps> {
                             >
                                 {smallSlides.map((item, index) => (
                                     <div style={smallSlideStyle} key={index}>
-                                        {/* @ts-expect-error item数据结构类型不正确*/}
+                                        {/* @ts-expect-error item 数据结构类型不正确*/}
                                         <img src={item.url} alt={item.text} style={smallImgStyle} />
                                     </div>
                                 ))}
@@ -293,7 +286,7 @@ class SliderCardDemo extends React.Component<SliderCardDemoProps> {
                                             style={smallSizeImg}
                                             key={index}
                                             src={item.url}
-                                            // @ts-expect-error item数据结构类型不正确
+                                            // @ts-expect-error item 数据结构类型不正确
                                             alt={item.text}
                                         />
                                     </div>
@@ -315,7 +308,7 @@ class SliderCardDemo extends React.Component<SliderCardDemoProps> {
                             >
                                 {smallSlides.map((item, index) => (
                                     <div style={smallVerticalSlideStyle} key={index}>
-                                        {/* @ts-expect-error item数据结构类型不正确*/}
+                                        {/* @ts-expect-error item 数据结构类型不正确*/}
                                         <img src={item.url} alt={item.text} />
                                     </div>
                                 ))}

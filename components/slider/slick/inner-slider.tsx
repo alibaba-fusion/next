@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import React, { type ReactElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import { events, func, obj } from '../../util';
@@ -19,7 +19,7 @@ export type ThisType = InstanceType<typeof InnerSlider> &
     typeof HelpersMixin &
     typeof EventHandlersMixin;
 
-class InnerSlider extends React.Component<InnerSliderProps, InnerSliderState> {
+class InnerSlider extends Component<InnerSliderProps, InnerSliderState> {
     static propTypes = {
         prefix: PropTypes.string,
         animation: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
@@ -59,7 +59,7 @@ class InnerSlider extends React.Component<InnerSliderProps, InnerSliderState> {
     };
 
     private hasMounted: boolean = false;
-    private animationEndCallback: NodeJS.Timeout | undefined;
+    private animationEndCallback: number | undefined;
     private pArrow?: HTMLDivElement;
     private nArrow?: HTMLDivElement;
     private list?: HTMLDivElement;
@@ -99,8 +99,6 @@ class InnerSlider extends React.Component<InnerSliderProps, InnerSliderState> {
             trackStyle: {},
             trackWidth: 0,
         };
-
-        // this.filterProps = Object.assign({}, sliderPropTypes, InnerSlider.propTypes);
 
         func.bindCtx(this, [
             'onWindowResized',
@@ -157,8 +155,6 @@ class InnerSlider extends React.Component<InnerSliderProps, InnerSliderState> {
         if (this.props.activeIndex) {
             this.slickGoTo(this.props.activeIndex);
         }
-
-        /* istanbul ignore if  */
         if (window) {
             // To support server-side rendering
             events.on(window, 'resize', this.onWindowResized);
@@ -290,22 +286,21 @@ class InnerSlider extends React.Component<InnerSliderProps, InnerSliderState> {
             speed,
             infinite,
             centerMode,
-            focusOnSelect: focusOnSelect ? this.selectHandler : undefined,
+            focusOnSelect: focusOnSelect ? this.selectHandler : null,
             currentSlide,
             lazyLoad,
             lazyLoadedList,
             rtl,
-            slideWidth: slideWidth!,
-            slideHeight: slideHeight!,
+            slideWidth,
+            slideHeight,
             slidesToShow,
             slidesToScroll,
-            slideCount: slideCount!,
+            slideCount,
             trackStyle,
             variableWidth,
             vertical,
             verticalSwiping,
             triggerType,
-            // clickHandler: this.changeSlide, unused
         };
 
         let dotsEle;
@@ -315,7 +310,7 @@ class InnerSlider extends React.Component<InnerSliderProps, InnerSliderState> {
                 prefix,
                 rtl,
                 dotsClass,
-                slideCount: slideCount!,
+                slideCount,
                 slidesToShow,
                 currentSlide,
                 slidesToScroll,

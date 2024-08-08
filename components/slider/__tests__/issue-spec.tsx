@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import Slider from '../index';
 import '../style';
 
@@ -7,7 +7,7 @@ describe('Issue', () => {
         const container = document.createElement('div');
         document.body.appendChild(container);
 
-        class App extends React.Component {
+        class App extends Component {
             render() {
                 return (
                     <div className="App2" style={{ transform: 'scale(0.5)' }}>
@@ -51,7 +51,6 @@ describe('Issue', () => {
         });
     });
 
-    // https://github.com/alibaba-fusion/next/issues/4533
     it('should not affect index after calling onChange hook', () => {
         const slides = [1, 2, 3, 4].map((item, index) => (
             <div key={index} className="custom-slick-item" style={{ width: '500px' }}>
@@ -59,7 +58,6 @@ describe('Issue', () => {
             </div>
         ));
         function DemoSlider() {
-            const [idx, setIdx] = useState(0);
             const settings = {
                 infinite: false,
                 arrowPosition: 'outer' as const,
@@ -68,9 +66,6 @@ describe('Issue', () => {
                 slidesToShow: 1,
                 slidesToScroll: 1,
                 waitForAnimate: false,
-                onChange: function (index: number) {
-                    setIdx(index);
-                },
             };
 
             return <Slider {...settings}>{slides}</Slider>;

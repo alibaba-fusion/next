@@ -26,6 +26,7 @@ describe('slider', function () {
                     <div>single slider</div>
                 </Slider>
             );
+            cy.get('.next-slick-slide').should('exist');
             cy.get('.next-slick-arrow').should('have.length', 0);
             cy.get('.next-slick-dots').should('have.length', 0);
         });
@@ -265,9 +266,7 @@ describe('slider', function () {
                     {slides}
                 </Slider>
             );
-            cy.get('.next-slick-slide', { timeout: 100 })
-                .eq(0)
-                .should('have.class', 'next-slick-active');
+            cy.get('.next-slick-slide').eq(0).should('have.class', 'next-slick-active');
             cy.get('.next-slick-arrow.next-slick-next').click({ force: true });
             cy.get('.next-slick-slide', { timeout: 300 })
                 .eq(1)
@@ -284,9 +283,7 @@ describe('slider', function () {
                     {slides}
                 </Slider>
             );
-            cy.get('.next-slick-arrow.next-slick-next', { timeout: 100 })
-                .eq(0)
-                .should('have.class', 'disabled');
+            cy.get('.next-slick-arrow.next-slick-next').eq(0).should('have.class', 'disabled');
             cy.get('.next-slick-arrow.next-slick-prev').eq(0).should('not.have.class', 'disabled');
         });
 
@@ -330,7 +327,20 @@ describe('slider', function () {
                         111111
                     </div>
                     <div className="slider-item" key={2}>
-                        公告：22222222222222222222领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问1111史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问。工从引然所国引极二间响他两周消广放济候办片提广起两有动书断化管千积争擦到了传达了查看；
+                        公告：22222222222222222222
+                        领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问
+                        1111
+                        史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问
+                        1111
+                        史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问
+                        1111
+                        史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问
+                        1111
+                        史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问
+                        1111
+                        史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问
+                        1111
+                        史区领量小压海两五车她第满何感手变反称类际般一还提电要根已构议我较适术次业提九的本消除权作反一分展里较济选体被能住问。工从引然所国引极二间响他两周消广放济候办片提广起两有动书断化管千积争擦到了传达了查看；
                     </div>
                     <div className="slider-item" key={3}>
                         3333
@@ -369,7 +379,7 @@ describe('slider', function () {
                     {slides}
                 </Slider>
             );
-            cy.get('.next-slick-slide', { timeout: 100 })
+            cy.get('.next-slick-slide')
                 .its('length')
                 .then(length => {
                     cy.get('.next-slick-slide')

@@ -1,4 +1,4 @@
-import React, { Component, type ReactElement } from 'react';
+import React, { Component, type ReactElement, type MouseEvent, type CSSProperties } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { dom } from '../../util';
@@ -44,10 +44,10 @@ const getSlideClasses = (specProps: TrackProps) => {
 };
 
 const getSlideStyle = function (specProps: TrackProps) {
-    const style: React.CSSProperties = {};
+    const style: CSSProperties = {};
 
     if (specProps.variableWidth === undefined || specProps.variableWidth === false) {
-        style.width = specProps.slideWidth;
+        style.width = specProps.slideWidth!;
     }
 
     if (specProps.animation === 'fade') {
@@ -116,7 +116,7 @@ const renderSlides = (specProps: TrackProps) => {
             cssClasses = slickClasses;
         }
 
-        const onClick = function (e: React.MouseEvent<HTMLElement>) {
+        const onClick = function (e: MouseEvent<HTMLElement>) {
             // only child === elem, it will has .props.onClick;
             child.props && child.props.onClick && elem!.props.onClick(e);
             if (specProps.focusOnSelect) {

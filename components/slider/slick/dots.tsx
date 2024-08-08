@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type MouseEvent, Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { func } from '../../util';
@@ -11,7 +11,7 @@ import type { DotsProps, OptionProps } from '../types';
 
 const { noop } = func;
 
-export default class Dots extends React.Component<DotsProps> {
+export default class Dots extends Component<DotsProps> {
     static propTypes = {
         prefix: PropTypes.string,
         currentSlide: PropTypes.number,
@@ -28,10 +28,10 @@ export default class Dots extends React.Component<DotsProps> {
         changeSlide: noop,
     };
 
-    handleChangeSlide(options: OptionProps, e: React.MouseEvent<HTMLElement>) {
+    handleChangeSlide(options: OptionProps, e: MouseEvent<HTMLElement>) {
         e.preventDefault();
 
-        this.props.changeSlide?.(options);
+        this.props.changeSlide!(options);
     }
 
     render() {
@@ -63,7 +63,6 @@ export default class Dots extends React.Component<DotsProps> {
                 slidesToScroll,
                 currentSlide,
             };
-            // 除非设置为hover，默认使用click触发
             const handleProp = {
                 [triggerType?.toLowerCase() === 'hover' ? 'onMouseEnter' : 'onClick']:
                     this.handleChangeSlide.bind(this, dotOptions),
