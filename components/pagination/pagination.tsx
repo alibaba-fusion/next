@@ -1,32 +1,45 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, {
+    Component,
+    cloneElement,
+    type ReactNode,
+    type ReactElement,
+    type KeyboardEvent,
+    type MouseEvent,
+} from 'react';
 import { polyfill } from 'react-lifecycles-compat';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
-import Button from '../button';
+import Button, { type ButtonProps } from '../button';
 import Input from '../input';
 import Select from '../select';
-import { KEYCODE, str, obj } from '../util';
+import { KEYCODE, str, obj, type ClassPropsWithDefault } from '../util';
 import zhCN from '../locale/zh-cn';
+import type { PaginationProps, PaginationState } from './types';
 
 const { Option } = Select;
 const noop = () => {};
 
-function correctCurrent(currentPage, total, currentPageSize) {
-    const totalPage = getTotalPage(total, currentPageSize);
-    return currentPage > totalPage ? totalPage : currentPage;
-}
-
-function getTotalPage(total, currentPageSize) {
+function getTotalPage(total: number, currentPageSize: number) {
     const totalPage = Math.ceil(total / currentPageSize);
     return totalPage <= 0 ? 1 : totalPage;
 }
 
+function correctCurrent(currentPage: number, total: number, currentPageSize: number) {
+    const totalPage = getTotalPage(total, currentPageSize);
+    return currentPage > totalPage ? totalPage : currentPage;
+}
+
+type PaginationPropsWithDefault = ClassPropsWithDefault<
+    PaginationProps,
+    typeof Pagination.defaultProps
+>;
+
 /**
  * Pagination
  */
-class Pagination extends Component {
+class Pagination extends Component<PaginationProps, PaginationState> {
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -34,61 +47,18 @@ class Pagination extends Component {
         rtl: PropTypes.bool,
         device: PropTypes.oneOf(['desktop', 'tablet', 'phone']),
         className: PropTypes.string,
-        /**
-         * 自定义国际化文案对象
-         */
         locale: PropTypes.object,
-        /**
-         * 分页组件类型
-         */
         type: PropTypes.oneOf(['normal', 'simple', 'mini']),
-        /**
-         * 前进后退按钮样式
-         */
         shape: PropTypes.oneOf(['normal', 'arrow-only', 'arrow-prev-only', 'no-border']),
-        /**
-         * 分页组件大小
-         */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
-        /**
-         * （受控）当前页码
-         */
         current: PropTypes.number,
-        /**
-         * （非受控）初始页码
-         */
         defaultCurrent: PropTypes.number,
-        /**
-         * 页码发生改变时的回调函数
-         * @param {Number} current 改变后的页码数
-         * @param {Object} e 点击事件对象
-         */
         onChange: PropTypes.func,
-        /**
-         * 总记录数
-         */
         total: PropTypes.number,
-        /**
-         * 总数的渲染函数
-         * @param {Number} total 总数
-         * @param {Array} range 当前数据在总数中的区间
-         */
         totalRender: PropTypes.func,
-        /**
-         * 页码显示的数量，更多的使用...代替
-         */
         pageShowCount: PropTypes.number,
-        /**
-         * 一页中的记录数
-         */
         pageSize: PropTypes.number,
-        /**
-         * 每页显示选择器类型
-         */
         pageSizeSelector: PropTypes.oneOf([false, 'filter', 'dropdown']),
-        /**
-         * 每页显示选择器可选值
-         */
         pageSizeList: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.number),
             PropTypes.arrayOf(
@@ -98,40 +68,13 @@ class Pagination extends Component {
                 })
             ),
         ]),
-        /**
-         * 自定义页码渲染函数，函数作用于页码button以及当前页/总页数的数字渲染
-         * @param {Number} index 分页的页码，从1开始
-         * @return {ReactNode} 返回渲染结果
-         */
         pageNumberRender: PropTypes.func,
-        /**
-         * 每页显示选择器在组件中的位置
-         */
         pageSizePosition: PropTypes.oneOf(['start', 'end']),
-        /**
-         * 存在每页显示选择器时是否使用浮动布局
-         */
         useFloatLayout: PropTypes.bool,
-        /**
-         * 每页显示记录数量改变时的回调函数
-         * @param {Number} pageSize 改变后的每页显示记录数
-         */
         onPageSizeChange: PropTypes.func,
-        /**
-         * 当分页数为1时，是否隐藏分页器
-         */
         hideOnlyOnePage: PropTypes.bool,
-        /**
-         * type 设置为 normal 时，在页码数超过5页后，会显示跳转输入框与按钮，当设置 showJump 为 false 时，不再显示该跳转区域
-         */
         showJump: PropTypes.bool,
-        /**
-         * 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：https://www.taobao.com/{page}
-         */
         link: PropTypes.string,
-        /**
-         * 弹层组件属性，透传给Popup
-         */
         popupProps: PropTypes.object,
         selectProps: PropTypes.object,
     };
@@ -156,11 +99,13 @@ class Pagination extends Component {
         pageShowCount: 5,
         hideOnlyOnePage: false,
         showJump: true,
-        pageNumberRender: index => index,
+        pageNumberRender: (index: number): ReactNode => index,
     };
 
-    constructor(props, context) {
-        super(props, context);
+    readonly props: PaginationPropsWithDefault;
+
+    constructor(props: PaginationProps) {
+        super(props);
         this.state = {
             current: props.defaultCurrent || 1,
             currentPageSize: 0,
@@ -168,9 +113,9 @@ class Pagination extends Component {
         };
     }
 
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props: PaginationPropsWithDefault, state: PaginationState) {
         const { current, total, pageSize } = props;
-        const st = {};
+        const st: Partial<PaginationState> = {};
         const newCurrent = correctCurrent(current || state.current, total, pageSize);
         if (state.current !== newCurrent) {
             st.current = newCurrent;
@@ -182,14 +127,14 @@ class Pagination extends Component {
         return st;
     }
 
-    handleJump = e => {
+    handleJump = (e: KeyboardEvent<Element> | MouseEvent<Element>) => {
         const { total } = this.props;
         const { current, currentPageSize, inputValue } = this.state;
         const totalPage = getTotalPage(total, currentPageSize);
         let value = parseInt(inputValue, 10);
 
         if (isNaN(value)) {
-            value = '';
+            value = 0;
         } else if (value < 1) {
             value = 1;
         } else if (value > totalPage) {
@@ -204,7 +149,7 @@ class Pagination extends Component {
             inputValue: '',
         });
     };
-    onPageItemClick(page, e) {
+    onPageItemClick(page: number, e: KeyboardEvent<Element> | MouseEvent<Element>) {
         if (!('current' in this.props)) {
             this.setState({
                 current: page,
@@ -213,14 +158,14 @@ class Pagination extends Component {
         this.props.onChange(page, e);
     }
 
-    onInputChange(value) {
+    onInputChange(value: string) {
         this.setState({
             inputValue: value,
         });
     }
 
-    onSelectSize(pageSize) {
-        const newState = {
+    onSelectSize(pageSize: number) {
+        const newState: Partial<PaginationState> = {
             currentPageSize: pageSize,
         };
 
@@ -229,7 +174,7 @@ class Pagination extends Component {
             newState.current = totalPage;
         }
 
-        this.setState(newState);
+        this.setState(newState as PaginationState);
         this.props.onPageSizeChange(pageSize);
     }
 
@@ -238,16 +183,17 @@ class Pagination extends Component {
         const { currentPageSize, current } = this.state;
         const range = [(current - 1) * currentPageSize + 1, current * currentPageSize];
 
-        return <div className={`${prefix}pagination-total`}>{totalRender(total, range)}</div>;
+        return <div className={`${prefix}pagination-total`}>{totalRender?.(total, range)}</div>;
     }
 
-    renderPageItem(index) {
+    renderPageItem(index: number) {
         const { prefix, size, link, pageNumberRender, total, pageSize, locale } = this.props;
         const { current } = this.state;
 
         const totalPage = getTotalPage(total, pageSize);
+        // @ts-expect-error be compatible with old logic
         const isCurrent = parseInt(index, 10) === current;
-        const props = {
+        const props: ButtonProps = {
             size,
             className: cx({
                 [`${prefix}pagination-item`]: true,
@@ -257,6 +203,7 @@ class Pagination extends Component {
         };
         if (link) {
             props.component = 'a';
+            // @ts-expect-error be compatible with old logic
             props.href = link.replace('{page}', index);
         }
 
@@ -274,7 +221,7 @@ class Pagination extends Component {
         );
     }
 
-    renderPageFirst(current) {
+    renderPageFirst(current: number) {
         const { prefix, size, shape, locale } = this.props;
 
         const isFirst = current <= 1;
@@ -293,12 +240,14 @@ class Pagination extends Component {
         return (
             <Button {...props} aria-label={str.template(locale.labelPrev, { current })}>
                 {icon}
-                {shape === 'arrow-only' || shape === 'arrow-prev-only' || shape === 'no-border' ? '' : locale.prev}
+                {shape === 'arrow-only' || shape === 'arrow-prev-only' || shape === 'no-border'
+                    ? ''
+                    : locale.prev}
             </Button>
         );
     }
 
-    renderPageLast(current, totalPage) {
+    renderPageLast(current: number, totalPage: number) {
         const { prefix, size, shape, locale } = this.props;
 
         const isLast = current >= totalPage;
@@ -322,7 +271,7 @@ class Pagination extends Component {
         );
     }
 
-    renderPageEllipsis(idx) {
+    renderPageEllipsis(idx: number) {
         const { prefix } = this.props;
 
         return (
@@ -359,10 +308,9 @@ class Pagination extends Component {
                 {locale.go}
             </Button>,
         ];
-        /* eslint-enable react/jsx-key */
     }
 
-    renderPageDisplay(current, totalPage) {
+    renderPageDisplay(current: number, totalPage: number) {
         const { prefix, pageNumberRender } = this.props;
 
         return (
@@ -372,7 +320,7 @@ class Pagination extends Component {
         );
     }
 
-    renderPageList(current, totalPage) {
+    renderPageList(current: number, totalPage: number) {
         const { prefix, pageShowCount } = this.props;
         const pages = [];
 
@@ -383,6 +331,7 @@ class Pagination extends Component {
         } else {
             // 除去第一页，最后一页以及当前页，剩下的页数
             const othersCount = pageShowCount - 3;
+            // @ts-expect-error be compatible with old logic
             const halfCount = parseInt(othersCount / 2, 10);
             let start, end;
 
@@ -416,7 +365,9 @@ class Pagination extends Component {
 
     renderPageSizeSelector() {
         const { prefix, pageSizeSelector, locale } = this.props;
-        const pageSizeSpan = <span className={`${prefix}pagination-size-selector-title`}>{locale.pageSize}</span>;
+        const pageSizeSpan = (
+            <span className={`${prefix}pagination-size-selector-title`}>{locale.pageSize}</span>
+        );
 
         switch (pageSizeSelector) {
             case 'filter':
@@ -444,12 +395,15 @@ class Pagination extends Component {
 
         return (
             <div className={`${prefix}pagination-size-selector-filter`}>
-                {pageSizeList.map((item, index) => {
+                {pageSizeList.map((item, index: number) => {
                     let label;
                     let pageSize;
+                    // @ts-expect-error be compatible with old logic
                     if (item.value) {
                         // {label: '', value: 5}
+                        // @ts-expect-error be compatible with old logic
                         label = item.label;
+                        // @ts-expect-error be compatible with old logic
                         pageSize = item.value;
                     } else {
                         // number
@@ -466,7 +420,11 @@ class Pagination extends Component {
                             text
                             size={size}
                             className={classes}
-                            onClick={pageSize !== currentPageSize ? this.onSelectSize.bind(this, pageSize) : null}
+                            onClick={
+                                pageSize !== currentPageSize
+                                    ? this.onSelectSize.bind(this, pageSize)
+                                    : null
+                            }
                         >
                             {label}
                         </Button>
@@ -485,17 +443,17 @@ class Pagination extends Component {
                 className={`${prefix}pagination-size-selector-dropdown`}
                 popupClassName={`${prefix}pagination-size-selector-popup`}
                 popupProps={popupProps}
-                aria-label={locale.selectAriaLabel}
+                aria-label={locale.selectAriaLabel as string}
                 autoWidth={false}
                 size={size}
                 value={currentPageSize}
                 onChange={this.onSelectSize.bind(this)}
                 {...selectProps}
             >
-                {pageSizeList.map((item, index) => {
+                {pageSizeList.map((item, index: number) => {
                     let label;
                     let pageSize;
-                    if (item.value) {
+                    if (typeof item === 'object') {
                         // {label: '', value: 5}
                         label = item.label;
                         pageSize = item.value;
@@ -514,7 +472,6 @@ class Pagination extends Component {
     }
 
     render() {
-        /* eslint-disable no-unused-vars */
         const {
             prefix,
             pure,
@@ -545,7 +502,6 @@ class Pagination extends Component {
             selectProps,
             ...others
         } = this.props;
-        /* eslint-enable */
         const { current: currentPage, currentPageSize } = this.state;
         const totalPage = getTotalPage(total, currentPageSize);
         const pageFirst = this.renderPageFirst(currentPage);
@@ -567,19 +523,19 @@ class Pagination extends Component {
             [`${prefix}start`]: !!pageSizeSelector && isStart && useFloatLayout,
             [`${prefix}end`]: !!pageSizeSelector && !isStart && useFloatLayout,
             [`${prefix}hide`]: totalPage <= 1 && hideOnlyOnePage,
-            [className]: !!className,
+            [className!]: !!className,
         });
 
         if (rtl) {
             others.dir = 'rtl';
         }
 
-        const buildComponent = (...coms) => (
+        const buildComponent = (...coms: (ReactElement | null)[]) => (
             <div className={classes} {...obj.pickOthers(Object.keys(Pagination.propTypes), others)}>
                 {isStart && sizeSelector}
                 {totalRender ? this.renderPageTotal() : null}
                 <div className={`${prefix}pagination-pages`}>
-                    {coms.map((com, index) => com && React.cloneElement(com, { key: index }))}
+                    {coms.map((com, index) => com && cloneElement(com, { key: index }))}
                 </div>
                 {!isStart && sizeSelector}
             </div>
@@ -599,7 +555,7 @@ class Pagination extends Component {
                         ? this.renderPageDisplay(currentPage, totalPage)
                         : null;
                 const pageJump =
-                    showJump && total > pageSize * pageShowCount ? this.renderPageJump(currentPage, totalPage) : [];
+                    showJump && total > pageSize * pageShowCount ? this.renderPageJump() : [];
                 return buildComponent(pageFirst, pageList, pageLast, pageDisplay, ...pageJump);
             }
             default:
