@@ -1,9 +1,11 @@
+import React from 'react';
 import ReactDOM from 'react-dom';
+import { Pagination } from '@alifd/next';
+import type { PaginationProps } from '@alifd/next/types/pagination';
 import '../../../demo-helper/style';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import '../../style';
-import Pagination from '../../index';
 import Field from '../../../field';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
@@ -22,8 +24,8 @@ const demo = {
         ],
     },
 };
-/* eslint-disable */
-class NormalFunctionDemo extends React.Component {
+
+class NormalFunctionDemo extends React.Component<{ locale?: PaginationProps['locale'] }> {
     field = new Field(this, {
         values: {
             demo: Object.assign({}, demo),
@@ -31,8 +33,8 @@ class NormalFunctionDemo extends React.Component {
     });
     render() {
         const { init, getValue } = this.field;
-        let shape = '';
-        let functionVal = getValue('demo').pagButton.value;
+        let shape: PaginationProps['shape'];
+        const functionVal = (getValue('demo') as any).pagButton.value;
         if (functionVal === 'showAll') {
             shape = 'normal';
         } else if (functionVal === 'iconOnly') {
@@ -44,11 +46,11 @@ class NormalFunctionDemo extends React.Component {
         const { locale } = this.props;
         return (
             <Demo
-                title="Normal"
                 {...init('demo', {
                     valueName: 'demoFunction',
                     trigger: 'onFunctionChange',
                 })}
+                title="Normal"
             >
                 <Demo title="Basic">
                     <DemoGroup label="Normal(L)">
@@ -128,7 +130,7 @@ class NormalFunctionDemo extends React.Component {
     }
 }
 
-class SimpleFunctionDemo extends React.Component {
+class SimpleFunctionDemo extends React.Component<{ locale?: PaginationProps['locale'] }> {
     field = new Field(this, {
         values: {
             demo: Object.assign({}, demo),
@@ -136,8 +138,8 @@ class SimpleFunctionDemo extends React.Component {
     });
     render() {
         const { init, getValue } = this.field;
-        let shape = '';
-        let functionVal = getValue('demo').pagButton.value;
+        let shape: PaginationProps['shape'];
+        const functionVal = (getValue('demo') as any).pagButton.value;
         if (functionVal === 'showAll') {
             shape = 'normal';
         } else if (functionVal === 'iconOnly') {
@@ -148,11 +150,11 @@ class SimpleFunctionDemo extends React.Component {
         const { locale } = this.props;
         return (
             <Demo
-                title="Simple"
                 {...init('demo', {
                     valueName: 'demoFunction',
                     trigger: 'onFunctionChange',
                 })}
+                title="Simple"
             >
                 <Demo title="Basic">
                     <DemoGroup label="Normal(L)">
@@ -188,7 +190,7 @@ class SimpleFunctionDemo extends React.Component {
     }
 }
 
-class MiniFunctionDemo extends React.Component {
+class MiniFunctionDemo extends React.Component<{ locale?: PaginationProps['locale'] }> {
     field = new Field(this, {
         values: {
             demo: Object.assign({}, demo),
@@ -196,8 +198,8 @@ class MiniFunctionDemo extends React.Component {
     });
     render() {
         const { init, getValue } = this.field;
-        let shape = '';
-        let functionVal = getValue('demo').pagButton.value;
+        let shape: PaginationProps['shape'];
+        const functionVal = (getValue('demo') as any).pagButton.value;
         if (functionVal === 'showAll') {
             shape = 'normal';
         } else if (functionVal === 'iconOnly') {
@@ -208,11 +210,11 @@ class MiniFunctionDemo extends React.Component {
         const { locale } = this.props;
         return (
             <Demo
-                title="Mini"
                 {...init('demo', {
                     valueName: 'demoFunction',
                     trigger: 'onFunctionChange',
                 })}
+                title="Mini"
             >
                 <Demo title="Basic">
                     <DemoGroup label="Normal(L)">

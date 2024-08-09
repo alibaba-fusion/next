@@ -3,17 +3,11 @@ import ReactDOM from 'react-dom';
 import { Pagination } from '@alifd/next';
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        current: 2,
+    };
 
-        this.state = {
-            current: 2,
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(current) {
+    handleChange(current: number) {
         this.setState({
             current,
         });
