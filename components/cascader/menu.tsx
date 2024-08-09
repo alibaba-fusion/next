@@ -20,7 +20,7 @@ export default class CascaderMenu extends Component<CascaderMenuProps> {
         useVirtual: PropTypes.bool,
         children: PropTypes.node,
     };
-    virtualEl: VirtualList | null;
+    virtualEl: InstanceType<typeof VirtualList> | null;
     menuEl: HTMLDivElement;
 
     componentDidMount() {
@@ -42,7 +42,6 @@ export default class CascaderMenu extends Component<CascaderMenuProps> {
         }
 
         if (useVirtual) {
-            // @ts-expect-error VirtualList 尚未做优化，因此无法取得 getInstance
             const instance = this.virtualEl!.getInstance();
             setTimeout(() => instance.scrollTo(selectedIndex), 0);
         } else {
@@ -89,7 +88,7 @@ export default class CascaderMenu extends Component<CascaderMenuProps> {
         this.menuEl = ref;
     };
 
-    saveVirtualRef = (ref: VirtualList) => {
+    saveVirtualRef = (ref: InstanceType<typeof VirtualList>) => {
         this.virtualEl = ref;
     };
 
