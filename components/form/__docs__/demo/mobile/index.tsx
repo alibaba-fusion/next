@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Input, Checkbox, Switch, Radio } from '@alifd/next';
+import { Form, Input, Checkbox, Radio } from '@alifd/next';
 
 const FormItem = Form.Item;
 
@@ -14,11 +14,13 @@ const formItemLayout = {
 };
 
 class Demo extends React.Component {
-    state = {
+    state: {
+        device: 'desktop' | 'tablet' | 'desktop' | 'phone';
+    } = {
         device: 'desktop',
     };
 
-    handleDeviceChange = device => {
+    handleDeviceChange = (device: string) => {
         this.setState({
             device,
         });

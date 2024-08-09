@@ -1,70 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Input, Checkbox } from '@alifd/next';
+import { Form, Input, Message } from '@alifd/next';
+
+const Reset = Form.Reset;
 
 const FormItem = Form.Item;
 
-const formItemLayout = {
-    labelCol: {
-        fixedSpan: 8,
-    },
-    wrapperCol: {
-        span: 14,
-    },
-};
-
 class Demo extends React.Component {
-    handleSubmit = (values, errors) => {
+    handleSubmit = (values: { first?: string; second?: string }, errors: unknown) => {
         console.log('value & errors', values, errors);
+        Message.success('values');
     };
 
     render() {
         return (
-            <Form style={{ width: '60%' }} {...formItemLayout} colon>
-                <FormItem
-                    name="baseUser"
-                    label="Username"
-                    required
-                    requiredMessage="Please input your username!"
-                >
-                    <Input />
+            <Form>
+                <FormItem>
+                    <Input name="first" defaultValue="test" />
                 </FormItem>
-                <FormItem
-                    name="basePass"
-                    label="Password"
-                    required
-                    requiredMessage="Please input your password!"
-                >
-                    <Input.Password placeholder="Please Enter Password" />
+                <FormItem>
+                    <Input name="second" />
                 </FormItem>
-                <FormItem
-                    name="email"
-                    label="Email"
-                    format="email"
-                    requiredMessage="Please input your email!"
-                >
-                    <Input placeholder="Please Enter Email" />
-                </FormItem>
-                <FormItem name="phone" label="Phone Number" format="tel">
-                    <Input placeholder="Please Enter phone number" />
-                </FormItem>
-                <FormItem name="homepage" label="Homepage" format="url">
-                    <Input defaultValue="https://" placeholder="e.g. https://www.taobao.com" />
-                </FormItem>
-                <FormItem name="agreement" label=" " colon={false}>
-                    <Checkbox defaultChecked>Agree</Checkbox>
-                </FormItem>
-                <FormItem label=" " colon={false}>
-                    <Form.Submit
-                        type="primary"
-                        validate
-                        onClick={this.handleSubmit}
-                        style={{ marginRight: 8 }}
-                    >
-                        Submit
-                    </Form.Submit>
-                    <Form.Reset>Reset</Form.Reset>
-                </FormItem>
+                <Reset toDefault names={['first']}>
+                    click
+                </Reset>
             </Form>
         );
     }

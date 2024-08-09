@@ -5,8 +5,6 @@ import {
     Input,
     Switch,
     Rating,
-    Field,
-    Icon,
     Radio,
     Range,
     Checkbox,
@@ -57,7 +55,7 @@ class Demo extends React.Component {
         disabled: false,
     };
 
-    onDisabledChange = checked => {
+    onDisabledChange = (checked: boolean) => {
         this.setState({
             disabled: checked,
         });
@@ -72,7 +70,7 @@ class Demo extends React.Component {
                     style={{ maxWidth: '800px' }}
                 >
                     <FormItem label="disabled: " disabled={false} style={{ marginBottom: 0 }}>
-                        <Switch size="large" onChange={this.onDisabledChange} />
+                        <Switch onChange={this.onDisabledChange} />
                     </FormItem>
                     <div style={{ height: 1, width: '100%', margin: '20px 0' }} />
                     <FormItem name="username" required label="Username:">

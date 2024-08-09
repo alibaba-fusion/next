@@ -1,12 +1,14 @@
-function getCfgFromProps(props, type) {
+import type { ItemProps } from './types';
+
+function getCfgFromProps(props: ItemProps, type: string) {
     if (type in props) {
-        return props[type];
+        return props[type as keyof ItemProps];
     }
 
     return undefined;
 }
 
-function getRule(ruleName, props) {
+function getRule(ruleName: 'required' | 'pattern' | 'format' | 'length', props: ItemProps) {
     return {
         [ruleName]: props[ruleName],
         message: getCfgFromProps(props, `${ruleName}Message`),
@@ -14,7 +16,7 @@ function getRule(ruleName, props) {
     };
 }
 
-function getValueName(props, displayName) {
+function getValueName(props: ItemProps, displayName: string) {
     if (props.valueName) {
         return props.valueName;
     }
@@ -30,8 +32,17 @@ function getValueName(props, displayName) {
     return 'value';
 }
 
-export function getRules(props, labelForErrorMessage) {
-    const result = [];
+export function getRules(props: ItemProps, labelForErrorMessage: string | null) {
+    const result: {
+        minLength?: number;
+        maxLength?: number;
+        message?: unknown;
+        trigger?: unknown;
+        min?: number;
+        max?: number;
+        validator?: (rule: unknown, value: unknown, callback: unknown) => void;
+        aliasName?: string;
+    }[] = [];
 
     // required
     if (props.required) {
@@ -67,7 +78,7 @@ export function getRules(props, labelForErrorMessage) {
     }
 
     // format
-    if (['number', 'tel', 'url', 'email'].indexOf(props.format) > -1) {
+    if (['number', 'tel', 'url', 'email'].indexOf(props.format!) > -1) {
         result.push(getRule('format', props));
     }
 
@@ -106,7 +117,11 @@ export function getRules(props, labelForErrorMessage) {
     return result;
 }
 
-export function getFieldInitCfg(props, displayName, labelForErrorMessage) {
+export function getFieldInitCfg(
+    props: ItemProps,
+    displayName: string,
+    labelForErrorMessage: string | null
+) {
     return {
         valueName: getValueName(props, displayName),
         trigger: props.trigger ? props.trigger : 'onChange',

@@ -15,8 +15,8 @@ const formItemLayout = {
 };
 
 class BasicDemo extends React.Component {
-    userExists(rule, value) {
-        return new Promise((resolve, reject) => {
+    userExists(rule: unknown, value: unknown) {
+        return new Promise<void>((resolve, reject) => {
             if (!value) {
                 resolve();
             } else {
@@ -43,7 +43,7 @@ class BasicDemo extends React.Component {
                 >
                     <Input placeholder="Input frank" />
                     <Form.Error name="valUsername">
-                        {(errors, state) => {
+                        {(errors: unknown, state: unknown) => {
                             if (state === 'loading') {
                                 return 'loading...';
                             } else {
