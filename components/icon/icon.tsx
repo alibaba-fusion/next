@@ -37,6 +37,8 @@ class Icon extends Component<IconProps> {
         size: 'medium',
     };
 
+    static displayName = 'Icon';
+
     static _typeMark = 'icon';
 
     render() {

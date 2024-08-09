@@ -38,6 +38,8 @@ export default class Progress extends Component<ProgressProps> {
         textRender: (percent: number) => `${Math.floor(percent)}%`,
     };
 
+    static displayName = 'Progress';
+
     static contextTypes = {
         prefix: PropTypes.string,
     };

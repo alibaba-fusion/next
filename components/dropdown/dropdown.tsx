@@ -44,6 +44,7 @@ export default class Dropdown extends Component<DropdownProps, DropdownState> {
         cache: false,
         onPosition: noop,
     };
+    static displayName = 'Dropdown';
 
     constructor(props: DropdownProps) {
         super(props);

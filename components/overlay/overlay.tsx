@@ -130,6 +130,7 @@ class Overlay extends Component<OverlayV1Props, OverlayState> {
         maskClass: '',
         useCapture: true,
     };
+    static displayName = 'Overlay';
     lastAlign: string | boolean | undefined;
     timeoutMap: { [key: string]: number };
     _isMounted: boolean;

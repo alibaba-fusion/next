@@ -20,6 +20,7 @@ class MenuButton extends React.Component<MenuButtonProps, MenuButtonState> {
     static Item = Menu.Item;
     static Group = Menu.Group;
     static Divider = Menu.Divider;
+    static displayName = 'MenuButton';
 
     static propTypes = {
         prefix: PropTypes.string,

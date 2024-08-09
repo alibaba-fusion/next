@@ -185,4 +185,6 @@ const Popup = (props: PopupProps) => {
     );
 };
 
+Popup.displayName = 'Popup';
+
 export default Popup;

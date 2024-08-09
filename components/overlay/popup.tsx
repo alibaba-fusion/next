@@ -114,6 +114,8 @@ class Popup extends Component<PopupProps, PopupState> {
         container: () => document.body,
         rtl: false,
     };
+
+    static displayName = 'Popup';
     _mouseNotFirstOnMask: boolean;
     _isForwardContent: boolean | null;
     overlay: InstanceType<typeof Overlay> | null;

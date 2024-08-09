@@ -64,6 +64,8 @@ class RadioGroup extends Component<GroupProps, GroupState> {
         disabled: PropTypes.bool,
     };
 
+    static displayName = 'RadioGroup';
+
     radioRefs: unknown[];
     hasFocus: boolean;
 

@@ -348,6 +348,8 @@ export class Menu extends Component<MenuProps, MenuState> {
         icons: {},
     };
 
+    static displayName = 'Menu';
+
     static getDerivedStateFromProps(nextProps: MenuPropsWithDefaults, prevState: MenuState) {
         const state: Partial<MenuState> = {};
 

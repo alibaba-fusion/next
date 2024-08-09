@@ -71,6 +71,9 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
         alwaysShowTrigger: false,
         stringMode: false,
     };
+
+    static displayName = 'NumberPicker';
+
     inputRef: React.ComponentRef<typeof Input> | null;
 
     constructor(props: NumberPickerProps) {

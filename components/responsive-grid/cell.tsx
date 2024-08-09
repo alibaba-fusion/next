@@ -23,6 +23,8 @@ class Cell extends Component<CellProps> {
         device: 'desktop',
     };
 
+    static displayName = 'Cell';
+
     render() {
         const { component, children } = this.props;
         const View = component!;

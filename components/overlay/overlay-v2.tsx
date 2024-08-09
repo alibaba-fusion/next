@@ -131,4 +131,6 @@ const Overlay2 = (props: OverlayV2Props) => {
     );
 };
 
+Overlay2.displayName = 'Overlay';
+
 export default Overlay2;

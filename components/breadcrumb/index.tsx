@@ -62,6 +62,8 @@ class Breadcrumb extends Component<BreadcrumbProps, BreadcrumbState> {
         component: 'nav',
     };
 
+    static displayName = 'Breadcrumb';
+
     breadcrumbEl: HTMLUListElement;
 
     constructor(props: BreadcrumbProps) {

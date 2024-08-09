@@ -84,6 +84,8 @@ class ResponsiveGrid extends Component<ResponsiveGridProps> {
         dense: false,
     };
 
+    static displayName = 'ResponsiveGrid';
+
     render() {
         const {
             prefix,

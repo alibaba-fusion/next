@@ -70,6 +70,8 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
         mode: CALENDAR_MODE.MONTH,
     };
 
+    static displayName = 'Calendar';
+
     readonly props: CalendarPropsWithDefault;
 
     constructor(props: CalendarProps) {

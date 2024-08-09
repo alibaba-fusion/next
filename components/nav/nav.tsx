@@ -78,6 +78,8 @@ class Nav extends Component<NavProps> {
         isCollapse: PropTypes.bool,
     };
 
+    static displayName = 'Nav';
+
     menu: MenuInstance | null;
 
     getChildContext() {
