@@ -15,6 +15,7 @@ const place = position.place;
 const MAX_UPDATE_COUNT = 50;
 
 export default class Position extends Component<PositionProps> {
+    static displayName = 'Position';
     static VIEWPORT = position.VIEWPORT;
 
     static propTypes = {

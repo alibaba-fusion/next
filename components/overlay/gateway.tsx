@@ -14,6 +14,7 @@ const getContainerNode = (props: GatewayProps) => {
 };
 
 class Gateway extends Component<GatewayProps, GatewayState> {
+    static displayName = 'Gateway';
     static propTypes = {
         children: PropTypes.node,
         container: PropTypes.any,

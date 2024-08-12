@@ -70,6 +70,7 @@ function processProps(props: Record<string, unknown>, deprecated: typeof log.dep
 }
 
 class Dialog extends React.Component<DialogProps> {
+    static displayName = 'Dialog';
     static Inner = Inner;
     static withContext = withContext;
     static show = (config: ShowConfig) => {

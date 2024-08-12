@@ -15,6 +15,8 @@ import { log } from '../util';
 import type { GatewayProps, OverlayProps, PopupProps, PositionProps } from './types';
 
 class Overlay extends Component<OverlayProps> {
+    static displayName = 'Overlay';
+
     overlayRef: InstanceType<typeof Overlay1> | null;
 
     constructor(props: OverlayProps) {
@@ -59,6 +61,7 @@ class Overlay extends Component<OverlayProps> {
 }
 
 class Popup extends Component<PopupProps> {
+    static displayName = 'Popup';
     overlay: InstanceType<typeof Overlay1> | null;
     constructor(props: PopupProps) {
         super(props);

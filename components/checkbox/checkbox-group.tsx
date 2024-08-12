@@ -10,6 +10,8 @@ const { pickOthers } = obj;
 
 /** Checkbox.Group */
 class CheckboxGroup extends React.Component<GroupProps, GroupState> {
+    static displayName = 'CheckboxGroup';
+
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
