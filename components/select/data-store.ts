@@ -54,7 +54,7 @@ class DataStore {
         return this.updateAll();
     }
 
-    updateByKey(key: string) {
+    updateByKey(key?: string | number | null) {
         if (key === this.options.key) {
             return this.getMenuDS();
         }
