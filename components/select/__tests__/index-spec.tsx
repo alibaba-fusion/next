@@ -893,7 +893,7 @@ describe('AutoComplete', () => {
             visible: true,
         });
         cy.get('input').should('have.value', 'yyy');
-        cy.get('.next-menu-item').should('have.length', 2);
+        cy.get('.next-menu-item').should('have.length', 1);
     });
 
     it('should support empty value from dataSource', () => {
@@ -1082,6 +1082,21 @@ describe('AutoComplete', () => {
             const scrollLeft = $el.scrollLeft();
             cy.wrap(scrollLeft).should('equal', prevScrollLeft);
         });
+    });
+
+    it('should render currect dataSource when value changed', () => {
+        cy.rerender('Demo', {
+            value: 'xxx',
+            visible: true,
+        });
+        cy.get('input').should('have.value', 'xxx');
+        cy.get('.next-menu-item').should('have.length', 1);
+        cy.rerender('Demo', {
+            value: undefined,
+            visible: true,
+        });
+        cy.get('input').should('have.value', '');
+        cy.get('.next-menu-item').should('have.length', 2);
     });
 
     describe('react api', () => {

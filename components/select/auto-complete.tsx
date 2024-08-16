@@ -88,10 +88,6 @@ class AutoComplete extends Base<AutoCompleteProps, AutoCompleteState> {
     componentDidUpdate(prevProps: AutoCompleteProps) {
         const props = this.props;
 
-        if ('value' in props) {
-            this.dataStore.setOptions({ key: props.value });
-        }
-
         if (props.filter !== prevProps.filter) {
             this.dataStore.setOptions({
                 filter: props.filter,
@@ -103,9 +99,19 @@ class AutoComplete extends Base<AutoCompleteProps, AutoCompleteState> {
             });
         }
 
+        let dataSource;
+
         if (prevProps.children !== props.children || prevProps.dataSource !== props.dataSource) {
+            dataSource = this.setDataSource(props);
+        }
+        if ('value' in props) {
+            if (prevProps.value !== props.value) {
+                dataSource = this.dataStore.updateByKey(props.value);
+            }
+        }
+        if (dataSource) {
             this.setState({
-                dataSource: this.setDataSource(props),
+                dataSource,
             });
 
             // remote dataSource and focused
