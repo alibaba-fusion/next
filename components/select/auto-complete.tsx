@@ -89,7 +89,11 @@ class AutoComplete extends Base<AutoCompleteProps, AutoCompleteState> {
         const props = this.props;
 
         if ('value' in props) {
-            this.dataStore.setOptions({ key: props.value });
+            if (prevProps.value !== props.value) {
+                this.setState({
+                    dataSource: this.dataStore.updateByKey(props.value),
+                });
+            }
         }
 
         if (props.filter !== prevProps.filter) {
