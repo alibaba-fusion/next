@@ -7,7 +7,7 @@ const generateData = (len: number) => {
 
     for (let i = 0; i < len; i++) {
         dataSource.push(
-            <li key={`${i}-test`} style={{ lineHeight: '20px' }}>
+            <li key={`${i}-test`} data-key={`${i}-test`} style={{ lineHeight: '20px' }}>
                 {i}
             </li>
         );
@@ -55,29 +55,37 @@ describe('VirtualList', () => {
         cy.get('li').should('have.length.at.most', 20);
     });
 
-    it('should support jumpIndex', () => {
-        function App() {
-            return (
-                <div
-                    style={{
-                        height: '200px',
-                        width: '200px',
-                        overflow: 'auto',
-                    }}
-                >
-                    <VirtualList
-                        jumpIndex={50}
-                        itemSizeGetter={() => {
-                            return 20;
-                        }}
-                    >
-                        {generateData(100)}
-                    </VirtualList>
-                </div>
-            );
-        }
+    it('should support scroll', () => {
+        cy.mount(
+            <div
+                className="scrollBox"
+                style={{
+                    height: '200px',
+                    width: '200px',
+                    overflow: 'auto',
+                }}
+            >
+                <VirtualList>{generateData(100)}</VirtualList>
+            </div>
+        );
+        cy.get('.scrollBox').scrollTo(0, 500);
+        cy.get('[data-key="25-test"]').should('be.visible');
+        cy.get('.scrollBox').scrollTo(0, 1000);
+        cy.get('[data-key="50-test"]').should('be.visible');
+    });
 
-        cy.mount(<App />);
+    it('should support jumpIndex', () => {
+        cy.mount(
+            <div
+                style={{
+                    height: '200px',
+                    width: '200px',
+                    overflow: 'auto',
+                }}
+            >
+                <VirtualList jumpIndex={50}>{generateData(100)}</VirtualList>
+            </div>
+        );
 
         cy.get('li')
             .should('be.visible')
@@ -88,9 +96,57 @@ describe('VirtualList', () => {
             });
     });
 
+    it('should support jumpIndex with itemSizeGetter', () => {
+        cy.mount(
+            <div
+                style={{
+                    height: '200px',
+                    width: '200px',
+                    overflow: 'auto',
+                }}
+            >
+                <VirtualList
+                    jumpIndex={50}
+                    itemSizeGetter={() => {
+                        return 20;
+                    }}
+                >
+                    {generateData(100)}
+                </VirtualList>
+            </div>
+        );
+
+        cy.get('li')
+            .should('be.visible')
+            .first()
+            .invoke('text')
+            .then(text => {
+                expect(parseInt(text, 10)).to.be.above(40);
+            });
+    });
+
+    it('should support scroll with jumpIndex', () => {
+        cy.mount(
+            <div
+                className="scrollBox"
+                style={{
+                    height: '200px',
+                    width: '200px',
+                    overflow: 'auto',
+                }}
+            >
+                <VirtualList jumpIndex={50}>{generateData(100)}</VirtualList>
+            </div>
+        );
+        cy.get('.scrollBox').scrollTo(0, 0);
+        cy.get('[data-key="0-test"]').should('be.visible');
+        cy.get('.scrollBox').scrollTo(0, 1000);
+        cy.get('[data-key="50-test"]').should('be.visible');
+    });
+
     it('should render single item', () => {
         const singleItem = (
-            <li key={`${0}-test`} style={{ lineHeight: '20px' }}>
+            <li className="test" key="test" style={{ lineHeight: '20px' }}>
                 {0}
             </li>
         );
@@ -103,18 +159,36 @@ describe('VirtualList', () => {
                         overflow: 'auto',
                     }}
                 >
-                    <VirtualList
-                        jumpIndex={50}
-                        itemSizeGetter={() => {
-                            return 20;
-                        }}
-                    >
-                        {singleItem}
-                    </VirtualList>
+                    <VirtualList>{singleItem}</VirtualList>
                 </div>
             );
         }
 
         cy.mount(<App />);
+        cy.get('.test').should('exist');
+    });
+
+    it('should render single item with abnormal jumpIndex', () => {
+        const singleItem = (
+            <li className="test" key="test" style={{ lineHeight: '20px' }}>
+                {0}
+            </li>
+        );
+        function App() {
+            return (
+                <div
+                    style={{
+                        height: '200px',
+                        width: '200px',
+                        overflow: 'auto',
+                    }}
+                >
+                    <VirtualList jumpIndex={100}>{singleItem}</VirtualList>
+                </div>
+            );
+        }
+
+        cy.mount(<App />);
+        cy.get('.test').should('exist');
     });
 });
