@@ -1,5 +1,11 @@
 import PropTypes from 'prop-types';
-import React, { Component, type LegacyRef, type CSSProperties, type ReactInstance } from 'react';
+import React, {
+    Component,
+    Children,
+    type LegacyRef,
+    type CSSProperties,
+    type ReactInstance,
+} from 'react';
 import cx from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 import { findDOMNode } from 'react-dom';
@@ -29,8 +35,7 @@ const getOffset = (el: HTMLElement) => {
 };
 
 const constrain = (from: number, size: number, { children, minSize }: VirtualListProps) => {
-    // @ts-expect-error children 未考虑非数组是单个 ReactElement 的情况
-    const length = children && children.length;
+    const length = Children.count(children);
     size = Math.max(size, minSize!);
     if (size > length!) {
         size = length!;
@@ -268,8 +273,7 @@ class VirtualList extends Component<VirtualListProps, VirtualListState> {
 
         const { start, end } = this.getStartAndEnd();
         const { pageSize, children } = this.props;
-        // @ts-expect-error children 未考虑非数组是单个 ReactElement 的情况
-        const length = children.length;
+        const length = Children.count(children);
         let space = 0;
         let from = 0;
         let size = 0;
@@ -303,13 +307,16 @@ class VirtualList extends Component<VirtualListProps, VirtualListState> {
         if (!index) {
             return 0;
         }
-        if (cache[index] !== null && cache[index] !== undefined) {
-            return cache[index] || 0;
+        if (cache[index] !== null && cache[index] !== undefined && cache[index] > 0) {
+            return cache[index];
         }
 
         // Find the closest space to index there is a cached value for.
         let from = index;
-        while (from > 0 && (cache[from] === null || cache[from] === undefined)) {
+        while (
+            from > 0 &&
+            (cache[from] === null || cache[from] === undefined || cache[from] === 0)
+        ) {
             from--;
         }
 
@@ -332,13 +339,18 @@ class VirtualList extends Component<VirtualListProps, VirtualListState> {
     cacheSizes() {
         const { cache } = this;
         const { from } = this.state;
-        // @ts-expect-error items是ReactInstance，但是通过解构同时获取children和props会报错，后续用 in 做类型判断
-        const { children, props = {} } = this.items!;
-        const itemEls = children || props.children || [];
+        let childrenLength = 0;
+        if ('children' in this.items! && this.items!.children) {
+            const itemEls = this.items!.children;
+            childrenLength = itemEls.length;
+        } else if ('props' in this.items! && this.items!.props.children) {
+            const itemEls = this.items!.props.children;
+            childrenLength = Children.count(itemEls);
+        }
 
         try {
             // <Select useVirtual /> 模式下，在快速点击切换Tab的情况下（Select实例快速出现、消失） 有时会出现this.items不存在，导致页面报错。怀疑是Select的异步timer渲染逻辑引起的
-            for (let i = 0, l = itemEls.length; i < l; ++i) {
+            for (let i = 0, l = childrenLength; i < l; ++i) {
                 const ulRef = findDOMNode(this.items) as HTMLElement;
                 const height = (ulRef.children[i] as HTMLElement).offsetHeight;
                 if (height > 0) {
@@ -365,7 +377,7 @@ class VirtualList extends Component<VirtualListProps, VirtualListState> {
         if (!this.defaultItemHeight && jumpIndex! > -1) {
             const keysList = Object.keys(this.cache);
             const len = keysList.length;
-            const height = this.cache[len - 1];
+            const height = this.cache[Number(keysList[len - 1])];
             this.defaultItemHeight = height;
         }
 
@@ -383,9 +395,10 @@ class VirtualList extends Component<VirtualListProps, VirtualListState> {
         const { from, size } = this.state;
         const items = [];
 
+        const childrenArray = Children.toArray(children);
+
         for (let i = 0; i < size!; ++i) {
-            // @ts-expect-error children 未考虑非数组是单个 ReactElement 的情况
-            items.push(children![from + i]);
+            items.push(childrenArray![from + i]);
         }
 
         return itemsRenderer!(items, c => {
@@ -396,8 +409,7 @@ class VirtualList extends Component<VirtualListProps, VirtualListState> {
 
     render() {
         const { children = [], prefix, className } = this.props;
-        // @ts-expect-error children 未考虑非数组是单个 ReactElement 的情况
-        const length = children.length;
+        const length = Children.count(children);
         const { from } = this.state;
         const items = this.renderMenuItems();
 

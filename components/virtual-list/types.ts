@@ -48,13 +48,13 @@ export interface VirtualListProps extends React.HTMLAttributes<HTMLElement>, Com
     threshold?: number;
 
     /**
-     * 获取item高度的函数
+     * 获取 item 高度的函数
      * @en the function to get the height of the item
      */
     itemSizeGetter?: (index?: number) => void;
 
     /**
-     * 设置跳转位置，需要设置 itemSizeGetter 才能生效, 不设置认为元素等高并取第一个元素高度作为默认高
+     * 设置跳转位置，需要设置 itemSizeGetter 才能生效，不设置认为元素等高并取第一个元素高度作为默认高
      * @en set the jump position, need to set itemSizeGetter to take effect, if not set, the element is assumed to be of equal height and the height of the first element is taken as the default height
      * @defaultValue 0
      */
