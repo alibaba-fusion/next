@@ -8,6 +8,7 @@ import ConfigProvider from '../../config-provider';
  * Button.Group
  */
 class ButtonGroup extends Component<GroupProps> {
+    static displayName = 'ButtonGroup';
     static propTypes = {
         ...ConfigProvider.propTypes,
         rtl: PropTypes.bool,

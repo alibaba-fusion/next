@@ -14,6 +14,7 @@ function mapIconSize(size: NonNullable<ButtonProps['size']>): ButtonProps['iconS
 }
 
 export default class Button extends Component<ButtonProps> {
+    static displayName = 'Button';
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
