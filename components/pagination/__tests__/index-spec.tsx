@@ -1,334 +1,301 @@
-import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import Button from '../../button';
-import Pagination from '../index';
-
-/* eslint-disable */
-
-Enzyme.configure({ adapter: new Adapter() });
+import React, { useState } from 'react';
+import Pagination from '../pagination';
 
 describe('Pagination', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        wrapper = mount(<Pagination />);
-    });
-
-    afterEach(() => {
-        wrapper && wrapper.unmount();
-        wrapper = null;
-    });
-
     it('should receive className prop', () => {
-        wrapper.setProps({
-            className: 'custom',
-        });
-        assert(wrapper.find('.next-pagination').hasClass('custom'));
+        cy.mount(<Pagination className="custom" />)
+            .get('.next-pagination')
+            .should('have.class', 'custom');
     });
 
     it('should receive style prop', () => {
-        wrapper.setProps({
-            style: {
-                color: 'red',
-            },
-        });
-        assert(wrapper.find('.next-pagination').prop('style').color === 'red');
+        cy.mount(<Pagination style={{ color: 'rgb(255, 0, 0)' }} />)
+            .get('.next-pagination')
+            .should('have.css', 'color', 'rgb(255, 0, 0)');
     });
 
     it('should render by type', () => {
-        wrapper.setProps({ type: 'mini' });
-        wrapper.update();
-        assert(wrapper.find('.next-pagination').hasClass('next-mini'));
-        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-list').hostNodes().length === 0);
-        assert(wrapper.find('.next-pagination-display').hostNodes().length === 0);
-        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 0);
+        cy.mount(<Pagination type="mini" />)
+            .get('.next-pagination')
+            .should('have.class', 'next-mini')
+            .get('.next-pagination-item.next-prev')
+            .should('have.length', 1)
+            .get('.next-pagination-item.next-next')
+            .should('have.length', 1)
+            .get('.next-pagination-list')
+            .should('have.length', 0)
+            .get('.next-pagination-display')
+            .should('have.length', 0)
+            .get('.next-pagination-jump-input')
+            .should('have.length', 0);
 
-        wrapper.setProps({ type: 'simple' });
-        wrapper.update();
-        assert(wrapper.find('.next-pagination').hasClass('next-simple'));
-        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-list').hostNodes().length === 0);
-        assert(wrapper.find('.next-pagination-display').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 0);
+        cy.mount(<Pagination type="simple" />)
+            .get('.next-pagination')
+            .should('have.class', 'next-simple')
+            .get('.next-pagination-item.next-prev')
+            .should('have.length', 1)
+            .get('.next-pagination-item.next-next')
+            .should('have.length', 1)
+            .get('.next-pagination-list')
+            .should('have.length', 0)
+            .get('.next-pagination-display')
+            .should('have.length', 1)
+            .get('.next-pagination-jump-input')
+            .should('have.length', 0);
 
-        wrapper.setProps({ type: 'normal' });
-        wrapper.update();
-        assert(wrapper.find('.next-pagination').hasClass('next-normal'));
-        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-list').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-display').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 1);
+        cy.mount(<Pagination type="normal" />)
+            .get('.next-pagination')
+            .should('have.class', 'next-normal')
+            .get('.next-pagination-item.next-prev')
+            .should('have.length', 1)
+            .get('.next-pagination-item.next-next')
+            .should('have.length', 1)
+            .get('.next-pagination-list')
+            .should('have.length', 1)
+            .get('.next-pagination-display')
+            .should('have.length', 1)
+            .get('.next-pagination-jump-input')
+            .should('have.length', 1);
 
-        wrapper.setProps({ type: 'normal', total: 40 });
-        wrapper.update();
-        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-list').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-display').hostNodes().length === 0);
-        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 0);
+        cy.mount(<Pagination type="normal" total={40} />)
+            .get('.next-pagination-item.next-prev')
+            .should('have.length', 1)
+            .get('.next-pagination-item.next-next')
+            .should('have.length', 1)
+            .get('.next-pagination-list')
+            .should('have.length', 1)
+            .get('.next-pagination-display')
+            .should('have.length', 0)
+            .get('.next-pagination-jump-input')
+            .should('have.length', 0);
 
-        wrapper.setProps({ type: 'others', total: 40 });
-        wrapper.update();
-        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().length === 0);
-        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().length === 0);
-        assert(wrapper.find('.next-pagination-list').hostNodes().length === 0);
-        assert(wrapper.find('.next-pagination-display').hostNodes().length === 0);
-        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 0);
+        // @ts-expect-error-next for invalid prop type test
+        cy.mount(<Pagination type="others" total={40} />)
+            .get('.next-pagination-item.next-prev')
+            .should('have.length', 0)
+            .get('.next-pagination-item.next-next')
+            .should('have.length', 0)
+            .get('.next-pagination-list')
+            .should('have.length', 0)
+            .get('.next-pagination-display')
+            .should('have.length', 0)
+            .get('.next-pagination-jump-input')
+            .should('have.length', 0);
     });
 
     it('should render by shape', () => {
-        const shapes = ['normal', 'arrow-only', 'arrow-prev-only', 'no-border'];
-
-        shapes.forEach(shape => {
-            wrapper.setProps({ shape });
-            wrapper.update();
-            assert(wrapper.find('.next-pagination').hasClass(`next-${shape}`));
-
-            const prevText = wrapper.find('.next-pagination-item.next-prev').hostNodes().text();
-            if (shape === 'normal') {
-                assert(prevText === '上一页');
-            } else {
-                assert(prevText === '');
-            }
-
-            const nextText = wrapper.find('.next-pagination-item.next-next').hostNodes().text();
-            if (shape === 'normal' || shape === 'arrow-prev-only') {
-                assert(nextText === '下一页');
-            } else {
-                assert(nextText === '');
-            }
+        (['normal', 'arrow-only', 'arrow-prev-only', 'no-border'] as const).forEach(shape => {
+            cy.mount(<Pagination shape={shape} />)
+                .get('.next-pagination')
+                .should('have.class', `next-${shape}`);
+            cy.mount(<Pagination shape={shape} />)
+                .get('.next-pagination-item.next-prev')
+                .should('have.text', shape === 'normal' ? '上一页' : '');
+            cy.mount(<Pagination shape={shape} />)
+                .get('.next-pagination-item.next-next')
+                .should(
+                    'have.text',
+                    shape === 'normal' || shape === 'arrow-prev-only' ? '下一页' : ''
+                );
         });
     });
 
     it('should render by size', () => {
-        const sizes = ['medium', 'large'];
-
-        sizes.forEach(size => {
-            wrapper.setProps({ size });
-            wrapper.update();
-            assert(wrapper.find('.next-pagination').hasClass(`next-${size}`));
+        (['medium', 'large'] as const).forEach(size => {
+            cy.mount(<Pagination size={size} />)
+                .get('.next-pagination')
+                .should('have.class', `next-${size}`);
         });
     });
 
     it('should render by current', () => {
         const initCurrent = 2;
-        let current;
-        wrapper = mount(<Pagination />);
+        let current = initCurrent;
+        const onChangeCalledSpy = cy.spy();
 
-        wrapper.setProps({
-            current: initCurrent,
-            onChange: index => assert(index === current),
-        });
-
-        const currentTest = () => {
-            wrapper.update();
-            assert(
-                wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes()
-                    .length === 1
-            );
-            assert(
-                wrapper
-                    .find('.next-pagination-list .next-pagination-item.next-current')
-                    .hostNodes()
-                    .text() === initCurrent.toString()
+        const PaginationWrapper = () => {
+            const [currentProp, setCurrentProp] = useState(initCurrent);
+            return (
+                <Pagination
+                    current={currentProp}
+                    onChange={index => {
+                        expect(index).to.equal(current);
+                        setCurrentProp(index);
+                        onChangeCalledSpy(index);
+                    }}
+                />
             );
         };
 
-        currentTest();
-        current = initCurrent - 1;
-        wrapper.find('.next-pagination-item.next-prev').hostNodes().simulate('click');
-        currentTest();
-
-        current = initCurrent + 1;
-
-        wrapper.find('.next-pagination-item.next-next').hostNodes().simulate('click');
-        currentTest();
-
-        wrapper
-            .find('.next-pagination-list .next-pagination-item')
-            .hostNodes()
-            .at(current - 1)
-            .simulate('click');
-        currentTest();
-
-        wrapper
-            .find('.next-pagination-jump-input')
-            .hostNodes()
-            .simulate('change', {
-                target: { value: current },
+        cy.mount(<PaginationWrapper />)
+            .get('.next-pagination-list .next-pagination-item.next-current')
+            .then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
             });
-        wrapper.find('.next-pagination-jump-input').hostNodes().simulate('keydown', {
-            keyCode: 13,
+
+        cy.then(() => {
+            current = initCurrent - 1;
+            cy.get('.next-pagination-item.next-prev').click();
+            cy.get('.next-pagination-list .next-pagination-item.next-current').then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
+            });
+            cy.wrap(onChangeCalledSpy).should('be.calledWith', 1);
         });
-        currentTest();
 
-        wrapper
-            .find('.next-pagination-jump-input')
-            .hostNodes()
-            .simulate('change', {
-                target: { value: current },
+        cy.then(() => {
+            current = initCurrent;
+            cy.get('.next-pagination-item.next-next').click();
+            cy.get('.next-pagination-list .next-pagination-item.next-current').then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
             });
-        wrapper.find('.next-pagination-jump-go').hostNodes().simulate('click');
-        currentTest();
+            cy.wrap(onChangeCalledSpy).should('be.calledWith', 2);
+        });
+
+        cy.then(() => {
+            current = 3;
+            cy.get('.next-pagination-list .next-pagination-item')
+                .eq(current - 1)
+                .click();
+            cy.get('.next-pagination-list .next-pagination-item.next-current').then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
+            });
+            cy.wrap(onChangeCalledSpy).should('be.calledWith', 3);
+        });
+
+        cy.then(() => {
+            cy.get('.next-pagination-jump-input').children('input').type(`${current}`);
+            cy.get('.next-pagination-jump-input').children('input').type('{enter}');
+            cy.get('.next-pagination-list .next-pagination-item.next-current').then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
+            });
+            cy.wrap(onChangeCalledSpy).should('be.calledWith', 3);
+        });
+
+        cy.then(() => {
+            cy.get('.next-pagination-jump-input').children('input').clear();
+            cy.get('.next-pagination-jump-input').children('input').type(`${current}`);
+            cy.get('.next-pagination-jump-go').click();
+            cy.get('.next-pagination-list .next-pagination-item.next-current').then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
+            });
+            cy.wrap(onChangeCalledSpy).should('be.calledWith', 3);
+        });
     });
 
     it('should render by defaultCurrent', () => {
         let current = 2;
-
-        wrapper = mount(
-            <Pagination
-                defaultCurrent={current}
-                onChange={index => {
-                    assert(index === current);
-                }}
-            />
-        );
-
-        const defaultCurrentTest = () => {
-            wrapper.update();
-            assert(
-                wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes()
-                    .length === 1
-            );
-            assert(
-                wrapper
-                    .find('.next-pagination-list .next-pagination-item.next-current')
-                    .hostNodes()
-                    .text() === current.toString()
-            );
-        };
-
-        defaultCurrentTest();
-
-        current -= 1;
-        wrapper.find('.next-pagination-item.next-prev').hostNodes().simulate('click');
-        defaultCurrentTest();
-
-        current += 1;
-        wrapper.find('.next-pagination-item.next-next').hostNodes().simulate('click');
-        defaultCurrentTest();
-
-        current += 1;
-        wrapper
-            .find('.next-pagination-list .next-pagination-item')
-            .hostNodes()
-            .at(current - 1)
-            .simulate('click');
-        defaultCurrentTest();
-
-        current += 1;
-        wrapper
-            .find('.next-pagination-jump-input input')
-            .hostNodes()
-            .simulate('change', {
-                target: { value: current },
+        const onChangeSpy = cy.spy();
+        cy.mount(<Pagination defaultCurrent={current} onChange={onChangeSpy} />)
+            .get('.next-pagination-list .next-pagination-item.next-current')
+            .then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
             });
-        wrapper.find('.next-pagination-jump-input input').hostNodes().simulate('keydown', {
-            keyCode: 13,
+
+        cy.then(() => {
+            current -= 1;
+            cy.get('.next-pagination-item.next-prev').click();
+            cy.get('.next-pagination-list .next-pagination-item.next-current').then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
+            });
+            cy.wrap(onChangeSpy).should('be.calledWith', 1);
         });
-        defaultCurrentTest();
 
-        current += 1;
-        wrapper
-            .find('.next-pagination-jump-input input')
-            .hostNodes()
-            .simulate('change', {
-                target: { value: current },
+        cy.then(() => {
+            current += 1;
+            cy.get('.next-pagination-item.next-next').click();
+            cy.get('.next-pagination-list .next-pagination-item.next-current').then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
             });
-        wrapper.find('.next-pagination-jump-go').hostNodes().simulate('click');
-        defaultCurrentTest();
+            cy.wrap(onChangeSpy).should('be.calledWith', 2);
+        });
 
-        current = 1;
-        wrapper.setProps({ total: 1 });
-        defaultCurrentTest();
+        cy.then(() => {
+            current += 1;
+            cy.get('.next-pagination-list .next-pagination-item')
+                .eq(current - 1)
+                .click();
+            cy.get('.next-pagination-list .next-pagination-item.next-current').then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
+            });
+            cy.wrap(onChangeSpy).should('be.calledWith', 3);
+        });
+
+        cy.then(() => {
+            current += 1;
+            cy.get('.next-pagination-jump-input').children('input').type(`${current}`);
+            cy.get('.next-pagination-jump-input input').type('{enter}');
+            cy.get('.next-pagination-list .next-pagination-item.next-current').then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
+            });
+            cy.wrap(onChangeSpy).should('be.calledWith', 4);
+        });
+
+        cy.then(() => {
+            current += 1;
+            cy.get('.next-pagination-jump-input input').clear();
+            cy.get('.next-pagination-jump-input input').type(`${current}`);
+            cy.get('.next-pagination-jump-go').click();
+            cy.get('.next-pagination-list .next-pagination-item.next-current').then($current => {
+                expect($current).to.have.length(1);
+                expect($current).to.have.text(current.toString());
+            });
+            cy.wrap(onChangeSpy).should('be.calledWith', 5);
+        });
     });
 
     it('should not trigger onChange callback when click current page button', () => {
-        wrapper.setProps({
-            onChange: () => assert(false),
-        });
+        const onChangeSpy = cy.spy();
+        cy.mount(<Pagination onChange={onChangeSpy} />)
+            .get('.next-pagination-list .next-pagination-item')
+            .eq(0)
+            .click();
 
-        wrapper
-            .find('.next-pagination-list .next-pagination-item')
-            .hostNodes()
-            .at(0)
-            .simulate('click');
-    });
-
-    it('should not trigger onChange callback when input some text that can not conver to positive integer or current page', () => {
-        // wrapper.setProps({
-        //     onChange: () => assert(false),
-        // });
-        // const testCase = value => {
-        //     wrapper
-        //         .find('.next-pagination-jump-input input')
-        //         .hostNodes()
-        //         .simulate('change', {
-        //             target: { value },
-        //         });
-        //     wrapper
-        //         .find('.next-pagination-jump-input input')
-        //         .hostNodes()
-        //         .simulate('keydown', {
-        //             keyCode: 13,
-        //         });
-        // };
-        // testCase('text');
-        // testCase('0');
-        // testCase('1');
-        // testCase('11');
+        cy.wrap(onChangeSpy).should('not.be.called');
     });
 
     it('should disable the previous button when current is the first page ', () => {
-        wrapper.setProps({
-            current: 1,
-        });
-        assert(wrapper.find('.next-pagination-item.next-prev').hostNodes().get(0).props.disabled);
+        cy.mount(<Pagination current={1} />)
+            .get('.next-pagination-item.next-prev')
+            .then($current => {
+                expect($current).to.be.disabled;
+            });
     });
 
     it('should disable the next button when current is the last page', () => {
-        wrapper.setProps({
-            current: 10,
-            total: 100,
-        });
-        assert(wrapper.find('.next-pagination-item.next-next').hostNodes().get(0).props.disabled);
+        cy.mount(<Pagination current={10} total={100} />)
+            .get('.next-pagination-item.next-next')
+            .then($current => {
+                expect($current).to.have.disabled;
+            });
     });
 
     it('should update when current is illegal', () => {
-        const initalValue = 5;
-        wrapper.setProps({
-            current: initalValue,
-            total: 100,
-        });
-        const testCase = (current, rightValue) => {
-            wrapper.setProps({
-                current,
-                total: 100,
-                onChange: index => assert(index === rightValue),
-            });
+        const initalValue = 1;
+        // 设置初始值
+        cy.mount(<Pagination total={100} />);
 
-            wrapper
-                .find('.next-pagination-jump-input input')
-                .hostNodes()
-                .simulate('change', {
-                    target: { value: current },
-                });
-            wrapper.find('.next-pagination-jump-input input').hostNodes().simulate('keydown', {
-                keyCode: 13,
-            });
+        const testCase = (current: number | string, rightValue: number) => {
+            cy.get('.next-pagination-jump-input input').clear();
+            cy.get('.next-pagination-jump-input input').type(`${current}`);
 
-            console.log(
-                wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes()
-            );
+            cy.get('.next-pagination-jump-input input').type('{enter}');
+            cy.get('.next-pagination-list .next-pagination-item.next-current').should(
+                'contain',
+                rightValue
+            ); // 验证显示的当前页应是预期值
         };
 
-        // 实际上当输入不合法时，进入不了onChange逻辑
         testCase('text', initalValue);
         testCase('-1', 1);
         testCase('0', 1);
@@ -341,253 +308,219 @@ describe('Pagination', () => {
     });
 
     it('should render by total, pageSize, showCount and hideOnlyOnePage', () => {
-        wrapper.setProps({
-            total: 0,
-        });
-        assert(!wrapper.find('.next-pagination').hasClass('next-hide'));
-        assert(
-            wrapper.find('.next-pagination-list .next-pagination-item').hostNodes().length === 1
-        );
-
-        wrapper.setProps({
-            total: 0,
-            hideOnlyOnePage: true,
-        });
-        assert(wrapper.find('.next-pagination').hasClass('next-hide'));
-        assert(
-            wrapper.find('.next-pagination-list .next-pagination-item').hostNodes().length === 1
-        );
-
-        wrapper.setProps({
-            total: 50,
-        });
-        assert(wrapper.find('.next-pagination-list').children().length === 5);
-        assert(
-            wrapper
-                .find('.next-pagination-list')
-                .children()
-                .everyWhere((item, index) => item.text() === (index + 1).toString())
-        );
-
-        wrapper.unmount();
-        wrapper = mount(<Pagination total={101} pageSize={5} pageShowCount={9} current={11} />);
-        assert(wrapper.find('.next-pagination-list').children().length === 11);
-        wrapper
-            .find('.next-pagination-list')
-            .children()
-            .forEach((item, index) => {
-                if (index === 0) {
-                    assert(item.is(Button));
-                    assert(item.prop('children') === 1);
-                } else if (index === 10) {
-                    assert(item.is(Button));
-                    assert(item.prop('children') === 21);
-                } else if (index === 1 || index === 9) {
-                    assert(item.is('.next-pagination-ellipsis'));
-                } else {
-                    assert(item.is(Button));
-                    assert(item.prop('children') === index + 6);
-                }
+        cy.mount(<Pagination total={0} />)
+            .get('.next-pagination')
+            .should('not.have.class', 'next-hide')
+            .get('.next-pagination-list .next-pagination-item')
+            .then($current => {
+                expect($current).to.have.length(1);
             });
 
-        wrapper.setProps({
-            total: 101,
-            pageSize: 5,
-            pageShowCount: 9,
-            current: 1,
-        });
-        assert(wrapper.find('.next-pagination-list').children().length === 10);
-        wrapper
-            .find('.next-pagination-list')
+        cy.mount(<Pagination total={0} hideOnlyOnePage />)
+            .get('.next-pagination')
+            .should('have.class', 'next-hide')
+            .get('.next-pagination-list .next-pagination-item')
+            .then($current => {
+                expect($current).to.have.length(1);
+            });
+
+        cy.mount(<Pagination total={50} />)
+            .get('.next-pagination-list')
             .children()
-            .forEach((item, index) => {
+            .then($current => {
+                expect($current).to.have.length(5);
+                $current.children().each((index, item) => {
+                    expect(item.textContent).to.equal((index + 1).toString());
+                });
+            });
+
+        cy.mount(<Pagination total={101} pageSize={5} pageShowCount={9} current={11} />)
+            .get('.next-pagination-list')
+            .children()
+            .then($current => {
+                expect($current).to.have.length(11);
+                $current.each((index, item) => {
+                    if (index === 0) {
+                        expect(item).to.have.class('next-btn');
+                        expect(item.textContent).to.equal('1');
+                    } else if (index === 10) {
+                        expect(item).to.have.class('next-btn');
+                        expect(item.textContent).to.equal('21');
+                    } else if (index === 1 || index === 9) {
+                        expect(item).to.have.class('next-pagination-ellipsis');
+                    } else {
+                        expect(item).to.have.class('next-btn');
+                        expect(item.textContent).to.equal((index + 6).toString());
+                    }
+                });
+            });
+
+        cy.mount(<Pagination total={101} pageSize={5} pageShowCount={9} current={1} />);
+        cy.get('.next-pagination-list')
+            .children()
+            .should('have.length', 10)
+            .get('.next-pagination-list')
+            .children()
+            .each((item, index) => {
                 if (index === 9) {
-                    assert(item.is(Button));
-                    assert(item.prop('children') === 21);
+                    expect(item).to.have.class('next-btn');
+                    expect(item.text()).to.equal('21');
                 } else if (index === 8) {
-                    assert(item.is('.next-pagination-ellipsis'));
+                    expect(item).to.have.class('next-pagination-ellipsis');
                 } else {
-                    assert(item.is(Button));
-                    assert(item.prop('children') === index + 1);
+                    expect(item).to.have.class('next-btn');
+                    expect(item.text()).to.equal((index + 1).toString());
                 }
             });
 
-        wrapper.setProps({
-            total: 101,
-            pageSize: 5,
-            pageShowCount: 9,
-            current: 21,
-        });
-        assert(wrapper.find('.next-pagination-list').children().length === 10);
-        wrapper
-            .find('.next-pagination-list')
+        cy.mount(<Pagination total={101} pageSize={5} pageShowCount={9} current={21} />)
+            .get('.next-pagination-list')
             .children()
-            .forEach((item, index) => {
+            .should('have.length', 10)
+            .get('.next-pagination-list')
+            .children()
+            .each((item, index) => {
                 if (index === 0) {
-                    assert(item.is(Button));
-                    assert(item.prop('children') === 1);
+                    expect(item).to.have.class('next-btn');
+                    expect(item.text()).to.equal('1');
                 } else if (index === 1) {
-                    assert(item.is('.next-pagination-ellipsis'));
+                    expect(item).to.have.class('next-pagination-ellipsis');
                 } else {
-                    assert(item.is(Button));
-                    assert(item.prop('children') === index + 12);
+                    expect(item).to.have.class('next-btn');
+                    expect(item.text()).to.equal((index + 12).toString());
                 }
             });
     });
 
     it('should next- jump and display parts if the type is normal when set showJump to false ', () => {
-        assert(wrapper.find('.next-pagination-jump-input').hostNodes().length === 1);
-        assert(wrapper.find('.next-pagination-display').length === 1);
-        wrapper.setProps({ showJump: false });
-        assert(wrapper.find('.next-pagination-jump-input').length === 0);
-        assert(wrapper.find('.next-pagination-display').length === 0);
+        cy.mount(<Pagination />)
+            .get('.next-pagination-jump-input')
+            .should('have.length', 1)
+            .get('.next-pagination-display')
+            .should('have.length', 1);
+
+        cy.mount(<Pagination showJump={false} />)
+            .get('.next-pagination-jump-input')
+            .should('have.length', 0)
+            .get('.next-pagination-display')
+            .should('have.length', 0);
     });
 
     it('should render page size selector when set pageSizeSelector to filter', () => {
         let currentPageSize = 50;
         const pageSizeList = [10, 20, 50];
-
-        wrapper.setProps({
-            total: 500,
-            pageSize: currentPageSize,
-            pageSizeSelector: 'filter',
-            pageSizeList,
-            onPageSizeChange: size => assert(size === currentPageSize),
-        });
-        assert(
-            wrapper
-                .find('.next-pagination-size-selector .next-pagination-size-selector-filter')
-                .hostNodes().length === 1
+        const onPageSizeChangeSpy = cy.spy();
+        cy.mount(
+            <Pagination
+                total={500}
+                pageSize={currentPageSize}
+                pageSizeSelector="filter"
+                pageSizeList={pageSizeList}
+                onPageSizeChange={onPageSizeChangeSpy}
+            />
         );
-
-        const btnsWrapper = wrapper.find('.next-pagination-size-selector-btn').hostNodes();
-        pageSizeList.forEach((size, index) => {
-            assert(btnsWrapper.at(index).text() === size.toString());
+        cy.get('.next-pagination-size-selector .next-pagination-size-selector-filter').should(
+            'have.length',
+            1
+        );
+        cy.get('.next-pagination-size-selector-btn').each((item, index) => {
+            expect(item.text()).to.equal(pageSizeList[index].toString());
         });
-        assert(btnsWrapper.at(2).hasClass('next-current'));
+        cy.get('.next-pagination-size-selector-btn').eq(2).should('have.class', 'next-current');
 
         currentPageSize = 20;
-        btnsWrapper.at(1).simulate('click');
+        cy.get('.next-pagination-size-selector-btn').eq(1).click();
+
+        cy.wrap(onPageSizeChangeSpy).should('be.calledWith', 20);
     });
 
     it('should render page size selector when set pageSizeSelector to filter with object', () => {
         let currentPageSize = 50;
         const pageSizeList = [
             { label: '10/页', value: 10 },
-            { label: '10/页', value: 20 },
-            { label: '10/页', value: 50 },
+            { label: '20/页', value: 20 },
+            { label: '50/页', value: 50 },
         ];
-
-        wrapper.setProps({
-            total: 500,
-            pageSize: currentPageSize,
-            pageSizeSelector: 'filter',
-            pageSizeList,
-            onPageSizeChange: size => assert(size === currentPageSize),
+        const onPageSizeChangeSpy = cy.spy();
+        cy.mount(
+            <Pagination
+                total={500}
+                pageSize={currentPageSize}
+                pageSizeSelector="filter"
+                pageSizeList={pageSizeList}
+                onPageSizeChange={onPageSizeChangeSpy}
+            />
+        )
+            .get('.next-pagination-size-selector .next-pagination-size-selector-filter')
+            .should('have.length', 1);
+        cy.get('.next-pagination-size-selector-btn').each((item, index) => {
+            expect(item.text()).to.equal(pageSizeList[index].label);
         });
-        assert(
-            wrapper
-                .find('.next-pagination-size-selector .next-pagination-size-selector-filter')
-                .hostNodes().length === 1
-        );
-
-        const btnsWrapper = wrapper.find('.next-pagination-size-selector-btn').hostNodes();
-        pageSizeList.forEach((size, index) => {
-            assert(btnsWrapper.at(index).text() === size.label.toString());
-        });
-        assert(btnsWrapper.at(2).hasClass('next-current'));
+        cy.get('.next-pagination-size-selector-btn').eq(2).should('have.class', 'next-current');
 
         currentPageSize = 20;
-        btnsWrapper.at(1).simulate('click');
+        cy.get('.next-pagination-size-selector-btn').eq(1).click();
+
+        cy.wrap(onPageSizeChangeSpy).should('be.calledWith', 20);
     });
 
     it('should render page size selector when set pageSizeSelector to dropdown', () => {
-        let currentPageSize = 50;
         const pageSizeList = [10, 20, 50];
+        const onPageSizeChangeSpy = cy.spy();
+        cy.mount(
+            <Pagination
+                total={500}
+                pageSizeSelector="dropdown"
+                pageSizeList={pageSizeList}
+                pageSizePosition="end"
+                onPageSizeChange={onPageSizeChangeSpy}
+            />
+        );
+        cy.get('.next-pagination-size-selector .next-pagination-size-selector-dropdown').should(
+            'have.length',
+            1
+        );
+        cy.get('.next-pagination-size-selector-dropdown').click();
 
-        wrapper.setProps({
-            total: 500,
-            pageSize: currentPageSize,
-            pageSizeSelector: 'dropdown',
-            pageSizeList,
-            pageSizePosition: 'end',
-            onPageSizeChange: size => {
-                assert(size === currentPageSize);
-                wrapper.setProps({
-                    pageSize: size,
-                });
-            },
+        cy.get('.next-menu li').each((item, index) => {
+            expect(item.text().trim()).to.equal(pageSizeList[index].toString());
         });
-        setTimeout(() => {
-            assert(
-                wrapper
-                    .find('.next-pagination-size-selector .next-pagination-size-selector-dropdown')
-                    .hostNodes().length === 1
-            );
+        cy.get('.next-menu li').eq(0).should('have.class', 'next-selected');
 
-            wrapper.find('.next-pagination-size-selector-dropdown').hostNodes().simulate('click');
-            const lis = document.querySelectorAll('.next-menu li');
-            pageSizeList.forEach((size, index) => {
-                assert(lis[index].textContent.trim() === size.toString());
-            });
-            assert(lis[2].className.indexOf('selected') > -1);
+        cy.get('.next-menu li').eq(1).click();
+        cy.wrap(onPageSizeChangeSpy).should('be.calledWith', 20);
 
-            currentPageSize = 20;
-            lis[1].click();
-
-            wrapper.setProps({
-                current: 20,
-            });
-            wrapper.find('.next-pagination-size-selector-dropdown').hostNodes().simulate('click');
-            const newLis = document.querySelectorAll('.next-menu li');
-            currentPageSize = 50;
-            newLis[2].click();
-            assert(
-                wrapper
-                    .find('.next-pagination-list .next-pagination-item.next-current')
-                    .hostNodes()
-                    .text() === '10'
-            );
-        }, 300);
+        cy.get('.next-menu li').eq(2).click();
+        cy.wrap(onPageSizeChangeSpy).should('be.calledWith', 50);
     });
 
     it('should render a tag with the specified href when set link', () => {
-        wrapper.setProps({
-            link: 'https://www.taobao.com/{page}',
-        });
-        assert(
-            wrapper.find('.next-pagination-list a.next-pagination-item').at(0).prop('href') ===
-                'https://www.taobao.com/1'
-        );
+        cy.mount(<Pagination link="https://www.taobao.com/{page}" />)
+            .get('.next-pagination-list a.next-pagination-item')
+            .eq(0)
+            .should('have.attr', 'href', 'https://www.taobao.com/1');
     });
 
     it('should render page total number', () => {
-        wrapper.setProps({
-            total: 500,
-            totalRender: () => <div className="test-totalRender" />,
-        });
-        assert(wrapper.find('.test-totalRender').length === 1);
+        cy.mount(
+            <Pagination total={500} totalRender={() => <div className="test-totalRender" />} />
+        )
+            .get('.test-totalRender')
+            .should('have.length', 1);
     });
 
     it('should render page numder by cust render fuction, by pageNumberRender', () => {
-        wrapper.setProps({
-            total: 10,
-            pageNumberRender: index => index + 'test',
-        });
-        assert(
-            wrapper
-                .find('.next-pagination-list')
-                .children()
-                .everyWhere((item, index) => item.text() === (index + 1).toString() + 'test')
-        );
+        cy.mount(<Pagination total={10} pageNumberRender={index => `${index}test`} />)
+            .get('.next-pagination-list')
+            .children()
+            .each((item, index) => {
+                expect(item.text()).to.equal(`${(index + 1).toString()}test`);
+            });
     });
 
     it('should support device transfer type to simple', () => {
-        wrapper.setProps({
-            device: 'phone',
-            type: 'normal',
-        });
-
-        assert(wrapper.find('.next-simple').length > 0);
+        cy.mount(<Pagination device="phone" type="normal" />)
+            .get('.next-simple')
+            .should('have.length.greaterThan', 0);
     });
 });
