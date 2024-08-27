@@ -1,7 +1,8 @@
 import React from 'react';
-import { Pagination } from '@alifd/next';
 import { Types } from '@alifd/adaptor-helper';
 import enUS from '../../../locale/en-us';
+import type { PaginationProps } from '../../types';
+import Pagination from '../../pagination';
 
 export default {
     name: 'Pagination',
@@ -30,7 +31,18 @@ export default {
             },
         ],
     }),
-    adaptor: ({ shape, size, sizeSelector, control, ...others }) => {
+    adaptor: ({
+        shape,
+        size,
+        sizeSelector,
+        control,
+        ...others
+    }: {
+        shape: PaginationProps['type'];
+        size: PaginationProps['size'];
+        sizeSelector: PaginationProps['pageSizeSelector'] | 'none';
+        control: 'textAndIcon' | 'onlyIcon' | 'noBorder';
+    }) => {
         return (
             <Pagination
                 {...others}
@@ -38,11 +50,13 @@ export default {
                 size={size}
                 current={4}
                 shape={
-                    {
-                        textAndIcon: 'normal',
-                        onlyIcon: 'arrow-only',
-                        noBorder: 'no-border',
-                    }[control]
+                    (
+                        {
+                            textAndIcon: 'normal',
+                            onlyIcon: 'arrow-only',
+                            noBorder: 'no-border',
+                        } as const
+                    )[control]
                 }
                 locale={enUS.Pagination}
                 pageSizeSelector={sizeSelector === 'none' ? false : sizeSelector}
@@ -57,7 +71,7 @@ export default {
                 default: 'textAndIcon',
             },
         ],
-        transform: (props, { control }) => {
+        transform: (props: any, { control }: any) => {
             return {
                 ...props,
                 control,
