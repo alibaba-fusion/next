@@ -7,7 +7,7 @@ class Demo extends React.Component {
         pageSize: 20,
     };
 
-    handleChange = pageSize => {
+    handleChange = (pageSize: number) => {
         this.setState({ pageSize });
     };
 
