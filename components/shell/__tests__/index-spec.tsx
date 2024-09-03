@@ -21,7 +21,7 @@ const render = element => {
     let inc;
     const container = document.createElement('div');
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function() {
+    ReactDOM.render(element, container, function () {
         inc = this;
     });
     return {
@@ -84,13 +84,23 @@ class App extends React.Component {
                     <Radio value="tablet">tablet</Radio>
                     <Radio value="desktop">desktop</Radio>
                 </Radio.Group>
-                <Shell className={'iframe-hack'} device={this.state.device} style={{ border: '1px solid #eee' }}>
+                <Shell
+                    className={'iframe-hack'}
+                    device={this.state.device}
+                    style={{ border: '1px solid #eee' }}
+                >
                     <Shell.Branding>
                         <div className="rectangular" />
                         <span style={{ marginLeft: 10 }}>App Name</span>
                     </Shell.Branding>
                     <Shell.Navigation direction="hoz">
-                        <Search key="2" shape="simple" type="dark" placeholder="Search" style={{ width: '200px' }} />
+                        <Search
+                            key="2"
+                            shape="simple"
+                            type="dark"
+                            placeholder="Search"
+                            style={{ width: '200px' }}
+                        />
                     </Shell.Navigation>
                     <Shell.Action>
                         <img
@@ -101,7 +111,10 @@ class App extends React.Component {
                         <span style={{ marginLeft: 10 }}>MyName</span>
                     </Shell.Action>
 
-                    <Shell.Navigation collapse={this.state.navcollapse} onCollapseChange={this.onCollapseChange}>
+                    <Shell.Navigation
+                        collapse={this.state.navcollapse}
+                        onCollapseChange={this.onCollapseChange}
+                    >
                         <Nav embeddable aria-label="global navigation">
                             <Item icon="account">Nav Item 1</Item>
                             <Item icon="calendar">Nav Item 2</Item>
@@ -192,7 +205,13 @@ describe('Shell', () => {
                         <span style={{ marginLeft: 10 }}>App Name</span>
                     </Shell.Branding>
                     <Shell.Navigation direction="hoz">
-                        <Search key="2" shape="simple" type="dark" placeholder="Search" style={{ width: '200px' }} />
+                        <Search
+                            key="2"
+                            shape="simple"
+                            type="dark"
+                            placeholder="Search"
+                            style={{ width: '200px' }}
+                        />
                     </Shell.Navigation>
                     <Shell.Action>
                         <img
@@ -426,7 +445,7 @@ describe('Shell', () => {
                         </Shell.ToolDockItem>
                     </Shell.ToolDock>
                 </Shell>,
-                {attachTo: div}
+                { attachTo: div }
             );
             const element = wrapper.find('.next-aside-navigation').at(0).instance();
             assert(element.offsetWidth === 0);
