@@ -73,7 +73,8 @@ export default function Base(props) {
                 [`${prefix}shell-${componentName.toLowerCase()}`]: true,
                 [`${prefix}shell-collapse`]: !!collapse,
                 [`${prefix}shell-mini`]: miniable,
-                [`${prefix}shell-nav-${align}`]: componentName === 'Navigation' && direction === 'hoz' && align,
+                [`${prefix}shell-nav-${align}`]:
+                    componentName === 'Navigation' && direction === 'hoz' && align,
                 [className]: !!className,
             });
 
