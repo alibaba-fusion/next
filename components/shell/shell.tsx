@@ -176,7 +176,9 @@ export default function ShellBase(props) {
                     )
                     .pop();
             } else {
-                com = children.filter(child => child && child.type._typeMark.replace('Shell_', '') === mark).pop();
+                com = children
+                    .filter(child => child && child.type._typeMark.replace('Shell_', '') === mark)
+                    .pop();
             }
 
             const { triggerProps = {} } = com.props;
@@ -399,7 +401,10 @@ export default function ShellBase(props) {
                 if (!branding) {
                     trigger && (layout.header.Branding = trigger);
                 } else {
-                    layout.header.Branding = React.cloneElement(branding, {}, [trigger, branding.props.children]);
+                    layout.header.Branding = React.cloneElement(branding, {}, [
+                        trigger,
+                        branding.props.children,
+                    ]);
                 }
             }
 
@@ -436,7 +441,10 @@ export default function ShellBase(props) {
                 if (!action) {
                     layout.header.Action = trigger;
                 } else {
-                    layout.header.Action = React.cloneElement(action, {}, [action.props.children, trigger]);
+                    layout.header.Action = React.cloneElement(action, {}, [
+                        action.props.children,
+                        trigger,
+                    ]);
                 }
             }
 
