@@ -202,19 +202,15 @@ class MonthPicker extends Component {
     }
 
     onValueChange = newValue => {
-        const ret = this.state.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
+        const ret =
+            this.state.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
         this.props.onChange(ret);
     };
 
     onSelectCalendarPanel = value => {
         // const { format } = this.props;
         const prevSelectedMonth = this.state.value;
-        const selectedMonth = value
-            .clone()
-            .date(1)
-            .hour(0)
-            .minute(0)
-            .second(0);
+        const selectedMonth = value.clone().date(1).hour(0).minute(0).second(0);
 
         this.handleChange(selectedMonth, prevSelectedMonth, { inputing: false }, () => {
             this.onVisibleChange(false, 'calendarSelect');
@@ -433,7 +429,12 @@ class MonthPicker extends Component {
                     readOnly
                     value={triggerInputValue}
                     placeholder={placeholder || locale.monthPlaceholder}
-                    hint={<Icon type="calendar" className={`${prefix}date-picker-symbol-calendar-icon`} />}
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}date-picker-symbol-calendar-icon`}
+                        />
+                    }
                     hasClear={allowClear}
                     className={triggerInputCls}
                 />
