@@ -21,11 +21,7 @@ export function resetValueTime(source, target) {
     if (!moment.isMoment(source) || !moment.isMoment(target)) {
         return source;
     }
-    return source
-        .clone()
-        .hour(target.hour())
-        .minute(target.minute())
-        .second(target.second());
+    return source.clone().hour(target.hour()).minute(target.minute()).second(target.second());
 }
 
 export function formatDateValue(value, format) {
@@ -39,7 +35,11 @@ export function formatDateValue(value, format) {
 
 export function checkDateValue(props, propName, componentName) {
     // 支持传入 moment 对象或字符串，字符串不检测是否为日期字符串
-    if (props[propName] && !moment.isMoment(props[propName]) && typeof props[propName] !== 'string') {
+    if (
+        props[propName] &&
+        !moment.isMoment(props[propName]) &&
+        typeof props[propName] !== 'string'
+    ) {
         return new Error(
             `Invalid prop ${propName} supplied to ${componentName}. Required a moment object or format date string!`
         );
@@ -84,7 +84,11 @@ export function onDateKeydown(e, { format, dateInputStr, value }, type) {
         return;
     }
 
-    if ((e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) || e.controlKey || e.shiftKey) {
+    if (
+        (e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
+        e.controlKey ||
+        e.shiftKey
+    ) {
         return;
     }
 
@@ -123,8 +127,13 @@ export function onDateKeydown(e, { format, dateInputStr, value }, type) {
  * @param {String} type second hour minute
  */
 export function onTimeKeydown(e, { format, timeInputStr, steps, value }, type) {
-    if ([KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) return;
-    if ((e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) || e.ctrlKey || e.shiftKey)
+    if ([KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1)
+        return;
+    if (
+        (e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
+        e.ctrlKey ||
+        e.shiftKey
+    )
         return;
 
     let time = moment(timeInputStr, format, true);
@@ -148,10 +157,7 @@ export function onTimeKeydown(e, { format, timeInputStr, steps, value }, type) {
     } else if (value) {
         time = value.clone();
     } else {
-        time = moment()
-            .hours(0)
-            .minutes(0)
-            .seconds(0);
+        time = moment().hours(0).minutes(0).seconds(0);
     }
 
     e.preventDefault();

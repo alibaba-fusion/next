@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import moment from 'moment';
+import { polyfill } from 'react-lifecycles-compat';
 import Overlay from '../overlay';
 import Input from '../input';
 import Icon from '../icon';
 import Calendar from '../calendar';
+import ConfigProvider from '../config-provider';
 import nextLocale from '../locale/zh-cn';
-import { func, obj } from '../util';
-import { checkDateValue, formatDateValue, onDateKeydown } from './util';
+import { func, obj, KEYCODE } from '../util';
+import { checkDateValue, formatDateValue } from './util';
 
 const { Popup } = Overlay;
 
 /**
- * DatePicker.YearPicker
+ * DatePicker.WeekPicker
  */
-class YearPicker extends Component {
+class WeekPicker extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -32,6 +34,12 @@ class YearPicker extends Component {
          * 输入提示
          */
         placeholder: PropTypes.string,
+        /**
+         * 默认展现的月
+         * @return {MomentObject} 返回包含指定月份的 moment 对象实例
+         */
+        defaultVisibleMonth: PropTypes.func,
+        onVisibleMonthChange: PropTypes.func,
         /**
          * 日期值（受控）moment 对象
          */
@@ -84,7 +92,7 @@ class YearPicker extends Component {
         /**
          * 弹层展示状态变化时的回调
          * @param {Boolean} visible 弹层是否显示
-         * @param {String} reason 触发弹层显示和隐藏的来源 calendarSelect 表示由日期表盘的选择触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
+         * @param {String} type 触发弹层显示和隐藏的来源 calendarSelect 表示由日期表盘的选择触发； okBtnClick 表示由确认按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -92,7 +100,7 @@ class YearPicker extends Component {
          */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
-         * 弹层对齐方式, 具体含义见 OverLay文档
+         * 弹层对齐方式,具体含义见 OverLay文档
          */
         popupAlign: PropTypes.string,
         /**
@@ -121,11 +129,18 @@ class YearPicker extends Component {
          * 输入框其他属性
          */
         inputProps: PropTypes.object,
-        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         /**
-         * 日期输入框的 aria-label 属性
+         * 自定义日期渲染函数
+         * @param {Object} value 日期值（moment对象）
+         * @returns {ReactNode}
          */
-        dateInputAriaLabel: PropTypes.string,
+        dateCellRender: PropTypes.func,
+        /**
+         * 自定义月份渲染函数
+         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
+        monthCellRender: PropTypes.func,
         /**
          * 是否为预览态
          */
@@ -135,6 +150,7 @@ class YearPicker extends Component {
          * @param {MomentObject} value 年份
          */
         renderPreview: PropTypes.func,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
@@ -145,7 +161,7 @@ class YearPicker extends Component {
     static defaultProps = {
         prefix: 'next-',
         rtl: false,
-        format: 'YYYY',
+        format: 'GGGG-Wo',
         size: 'medium',
         disabledDate: () => false,
         footerRender: () => null,
@@ -153,6 +169,7 @@ class YearPicker extends Component {
         popupTriggerType: 'click',
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
+        defaultVisible: false,
         onChange: func.noop,
         onVisibleChange: func.noop,
     };
@@ -160,132 +177,103 @@ class YearPicker extends Component {
     constructor(props, context) {
         super(props, context);
 
+        const value = formatDateValue(props.value || props.defaultValue, props.format);
+
         this.state = {
-            value: formatDateValue(props.defaultValue, props.format),
-            dateInputStr: '',
-            inputing: false,
-            visible: props.defaultVisible,
-            inputAsString: typeof props.defaultValue === 'string', // 判断用户输入是否是字符串
+            value,
+            visible: props.visible || props.defaultVisible,
         };
     }
 
     static getDerivedStateFromProps(props) {
-        const states = {};
+        const st = {};
         if ('value' in props) {
-            states.value = formatDateValue(props.value, props.format);
-            if (typeof props.value === 'string') {
-                states.inputAsString = true;
-            }
-            if (moment.isMoment(props.value)) {
-                states.inputAsString = false;
-            }
+            st.value = formatDateValue(props.value, props.format);
         }
 
         if ('visible' in props) {
-            states.visible = props.visible;
+            st.visible = props.visible;
         }
 
-        return states;
+        return st;
     }
 
-    onValueChange = newValue => {
-        const ret = this.state.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
-        this.props.onChange(ret);
-    };
-
-    onSelectCalendarPanel = value => {
-        // const { format } = this.props;
-        const prevSelectedMonth = this.state.value;
-        const selectedMonth = value
-            .clone()
-            .month(0)
-            .date(1)
-            .hour(0)
-            .minute(0)
-            .second(0);
-
-        this.handleChange(selectedMonth, prevSelectedMonth, { inputing: false }, () => {
-            this.onVisibleChange(false, 'calendarSelect');
-        });
-    };
-
-    clearValue = () => {
-        this.setState({
-            dateInputStr: '',
-        });
-
-        this.handleChange(null, this.state.value);
-    };
-
-    onDateInputChange = (inputStr, e, eventType) => {
-        if (eventType === 'clear' || !inputStr) {
-            e.stopPropagation();
-            this.clearValue();
-        } else {
+    handleChange = (newValue, prevValue) => {
+        if (!('value' in this.props)) {
             this.setState({
-                dateInputStr: inputStr,
-                inputing: true,
+                value: newValue,
             });
+        }
+
+        const newValueOf = newValue ? newValue.valueOf() : null;
+        const preValueOf = prevValue ? prevValue.valueOf() : null;
+
+        if (newValueOf !== preValueOf) {
+            this.props.onChange(newValue);
         }
     };
 
-    onDateInputBlur = () => {
-        const { dateInputStr } = this.state;
-        if (dateInputStr) {
-            const { disabledDate, format } = this.props;
-            const parsed = moment(dateInputStr, format, true);
-
-            this.setState({
-                dateInputStr: '',
-                inputing: false,
-            });
-
-            if (parsed.isValid() && !disabledDate(parsed, 'year')) {
-                this.handleChange(parsed, this.state.value);
-            }
+    onDateInputChange = (value, e, eventType) => {
+        if (eventType === 'clear' || !value) {
+            e.stopPropagation();
+            this.handleChange(null, this.state.value);
         }
     };
 
     onKeyDown = e => {
-        const { format } = this.props;
-        const { dateInputStr, value } = this.state;
-        const dateStr = onDateKeydown(e, { format, dateInputStr, value }, 'year');
-        if (!dateStr) return;
-        this.onDateInputChange(dateStr);
-    };
-
-    handleChange = (newValue, prevValue, others = {}, callback) => {
-        if (!('value' in this.props)) {
-            this.setState({
-                value: newValue,
-                ...others,
-            });
-        } else {
-            this.setState({
-                ...others,
-            });
+        if (
+            [KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1
+        ) {
+            return;
         }
 
-        const { format } = this.props;
+        if (
+            (e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
+            e.controlKey ||
+            e.shiftKey
+        ) {
+            return;
+        }
 
-        const newValueOf = newValue ? newValue.format(format) : null;
-        const preValueOf = prevValue ? prevValue.format(format) : null;
+        let date = this.state.value;
 
-        if (newValueOf !== preValueOf) {
-            this.onValueChange(newValue);
-            if (typeof callback === 'function') {
-                return callback();
+        if (date && date.isValid()) {
+            const stepUnit = e.altKey ? 'year' : 'month';
+            switch (e.keyCode) {
+                case KEYCODE.UP:
+                    date.subtract(1, 'w');
+                    break;
+                case KEYCODE.DOWN:
+                    date.add(1, 'w');
+                    break;
+                case KEYCODE.PAGE_UP:
+                    date.subtract(1, stepUnit);
+                    break;
+                case KEYCODE.PAGE_DOWN:
+                    date.add(1, stepUnit);
+                    break;
             }
+        } else {
+            date = moment();
         }
+
+        e.preventDefault();
+
+        this.handleChange(date, this.state.value);
     };
 
-    onVisibleChange = (visible, reason) => {
+    onVisibleChange = (visible, type) => {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
             });
         }
-        this.props.onVisibleChange(visible, reason);
+        this.props.onVisibleChange(visible, type);
+    };
+
+    onSelectCalendarPanel = value => {
+        this.handleChange(value, this.state.value);
+        this.onVisibleChange(false, 'calendarSelect');
     };
 
     renderPreview(others) {
@@ -310,6 +298,36 @@ class YearPicker extends Component {
         );
     }
 
+    dateRender = value => {
+        const { prefix, dateCellRender } = this.props;
+        const selectedValue = this.state.value;
+        const content =
+            dateCellRender && typeof dateCellRender === 'function'
+                ? dateCellRender(value)
+                : value.dates();
+        if (
+            selectedValue &&
+            selectedValue.years() === value.years() &&
+            selectedValue.weeks() === value.weeks()
+        ) {
+            const firstDay = moment.localeData().firstDayOfWeek();
+            const endDay = firstDay - 1 < 0 ? 6 : firstDay - 1;
+            return (
+                <div
+                    className={classnames(`${prefix}calendar-week-active-date`, {
+                        [`${prefix}calendar-week-active-start`]:
+                            value.days() === moment.localeData().firstDayOfWeek(),
+                        [`${prefix}calendar-week-active-end`]: value.days() === endDay,
+                    })}
+                >
+                    <span>{content}</span>
+                </div>
+            );
+        }
+
+        return content;
+    };
+
     render() {
         const {
             prefix,
@@ -318,6 +336,8 @@ class YearPicker extends Component {
             label,
             state,
             format,
+            defaultVisibleMonth,
+            onVisibleMonthChange,
             disabledDate,
             footerRender,
             placeholder,
@@ -335,92 +355,48 @@ class YearPicker extends Component {
             followTrigger,
             className,
             inputProps,
-            dateInputAriaLabel,
+            monthCellRender,
             yearCellRender,
             isPreview,
             ...others
         } = this.props;
-
-        const { visible, value, dateInputStr, inputing } = this.state;
-
-        const yearPickerCls = classnames(
-            {
-                [`${prefix}year-picker`]: true,
-            },
-            className
-        );
-
-        const triggerInputCls = classnames({
-            [`${prefix}year-picker-input`]: true,
-            [`${prefix}error`]: false,
-        });
-
-        const panelBodyClassName = classnames({
-            [`${prefix}year-picker-body`]: true,
-        });
-
-        if (rtl) {
-            others.dir = 'rtl';
-        }
-
-        if (isPreview) {
-            return this.renderPreview(obj.pickOthers(others, YearPicker.PropTypes));
-        }
-
-        const panelInputCls = `${prefix}year-picker-panel-input`;
+        const { visible, value } = this.state;
 
         const sharedInputProps = {
             ...inputProps,
             size,
             disabled,
             onChange: this.onDateInputChange,
-            onBlur: this.onDateInputBlur,
-            onPressEnter: this.onDateInputBlur,
             onKeyDown: this.onKeyDown,
         };
 
-        const dateInputValue = inputing ? dateInputStr : (value && value.format(format)) || '';
-        const triggerInputValue = dateInputValue;
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
-        const dateInput = (
-            <Input
-                {...sharedInputProps}
-                aria-label={dateInputAriaLabel}
-                value={dateInputValue}
-                placeholder={format}
-                className={panelInputCls}
-            />
-        );
+        if (isPreview) {
+            return this.renderPreview(obj.pickOthers(others, WeekPicker.PropTypes));
+        }
 
-        const datePanel = (
-            <Calendar
-                shape="panel"
-                modes={['year']}
-                value={value}
-                yearCellRender={yearCellRender}
-                onSelect={this.onSelectCalendarPanel}
-                disabledDate={disabledDate}
-            />
-        );
-
-        const panelBody = datePanel;
-        const panelFooter = footerRender();
-
-        const allowClear = value && hasClear;
         const trigger = (
-            <div className={`${prefix}year-picker-trigger`}>
+            <div className={`${prefix}week-picker-trigger`}>
                 <Input
                     {...sharedInputProps}
                     label={label}
                     state={state}
-                    value={triggerInputValue}
+                    value={value ? value.format(format) : ''}
                     role="combobox"
                     aria-expanded={visible}
                     readOnly
-                    placeholder={placeholder || locale.yearPlaceholder}
-                    hint={<Icon type="calendar" className={`${prefix}date-picker-symbol-calendar-icon`} />}
-                    hasClear={allowClear}
-                    className={triggerInputCls}
+                    placeholder={placeholder || locale.weekPlaceholder}
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}date-picker-symbol-calendar-icon`}
+                        />
+                    }
+                    hasClear={value && hasClear}
+                    className={`${prefix}week-picker-input`}
                 />
             </div>
         );
@@ -428,9 +404,11 @@ class YearPicker extends Component {
         const PopupComponent = popupComponent ? popupComponent : Popup;
 
         return (
-            <div {...obj.pickOthers(YearPicker.propTypes, others)} className={yearPickerCls}>
+            <div
+                {...obj.pickOthers(WeekPicker.propTypes, others)}
+                className={classnames(`${prefix}week-picker`, className)}
+            >
                 <PopupComponent
-                    autoFocus
                     align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
@@ -446,10 +424,21 @@ class YearPicker extends Component {
                     {popupContent ? (
                         popupContent
                     ) : (
-                        <div dir={others.dir} className={panelBodyClassName}>
-                            <div className={`${prefix}year-picker-panel-header`}>{dateInput}</div>
-                            {panelBody}
-                            {panelFooter}
+                        <div dir={others.dir} className={`${prefix}week-picker-body`}>
+                            <Calendar
+                                shape="panel"
+                                value={value}
+                                format={format}
+                                className={`${prefix}calendar-week`}
+                                dateCellRender={this.dateRender}
+                                monthCellRender={monthCellRender}
+                                yearCellRender={yearCellRender}
+                                onSelect={this.onSelectCalendarPanel}
+                                defaultVisibleMonth={defaultVisibleMonth}
+                                onVisibleMonthChange={onVisibleMonthChange}
+                                disabledDate={disabledDate}
+                            />
+                            {footerRender()}
                         </div>
                     )}
                 </PopupComponent>
@@ -458,4 +447,4 @@ class YearPicker extends Component {
     }
 }
 
-export default polyfill(YearPicker);
+export default polyfill(WeekPicker);
