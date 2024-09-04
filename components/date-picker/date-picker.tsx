@@ -226,7 +226,10 @@ class DatePicker extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(props.format, props.showTime);
+        const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(
+            props.format,
+            props.showTime
+        );
 
         this.state = {
             value: formatDateValue(props.defaultValue, dateTimeFormat),
@@ -267,7 +270,10 @@ class DatePicker extends Component {
     }
 
     onValueChange = (newValue, handler = 'onChange') => {
-        const ret = this.state.inputAsString && newValue ? newValue.format(this.state.dateTimeFormat) : newValue;
+        const ret =
+            this.state.inputAsString && newValue
+                ? newValue.format(this.state.dateTimeFormat)
+                : newValue;
         this.props[handler](ret);
     };
 
@@ -280,7 +286,10 @@ class DatePicker extends Component {
             if (!prevValue) {
                 // 第一次选择日期值时，如果设置了默认时间，则使用该默认时间
                 if (showTime.defaultValue) {
-                    const defaultTimeValue = formatDateValue(showTime.defaultValue, this.state.timeFormat);
+                    const defaultTimeValue = formatDateValue(
+                        showTime.defaultValue,
+                        this.state.timeFormat
+                    );
                     newValue = resetValueTime(value, defaultTimeValue);
                 }
             } else if (!resetTime) {
@@ -361,11 +370,7 @@ class DatePicker extends Component {
                 const hour = parsed.hour();
                 const minute = parsed.minute();
                 const second = parsed.second();
-                const newValue = value
-                    .clone()
-                    .hour(hour)
-                    .minute(minute)
-                    .second(second);
+                const newValue = value.clone().hour(hour).minute(minute).second(second);
 
                 this.handleChange(newValue, this.state.value);
             }
@@ -383,8 +388,13 @@ class DatePicker extends Component {
     onTimeKeyDown = e => {
         const { showTime } = this.props;
         const { timeInputStr, timeFormat, value } = this.state;
-        const { disabledMinutes, disabledSeconds, hourStep = 1, minuteStep = 1, secondStep = 1 } =
-            typeof showTime === 'object' ? showTime : {};
+        const {
+            disabledMinutes,
+            disabledSeconds,
+            hourStep = 1,
+            minuteStep = 1,
+            secondStep = 1,
+        } = typeof showTime === 'object' ? showTime : {};
         let unit = 'second';
 
         if (disabledSeconds) {
@@ -579,7 +589,8 @@ class DatePicker extends Component {
             onKeyDown: this.onKeyDown,
         };
 
-        const dateInputValue = inputing === 'date' ? dateInputStr : (value && value.format(format)) || '';
+        const dateInputValue =
+            inputing === 'date' ? dateInputStr : (value && value.format(format)) || '';
         let triggerInputValue = dateInputValue;
 
         const dateInput = (
@@ -616,7 +627,8 @@ class DatePicker extends Component {
         let timePanel = null;
 
         if (showTime) {
-            const timeInputValue = inputing === 'time' ? timeInputStr : (value && value.format(timeFormat)) || '';
+            const timeInputValue =
+                inputing === 'time' ? timeInputStr : (value && value.format(timeFormat)) || '';
             triggerInputValue = (value && value.format(dateTimeFormat)) || '';
 
             const timePanelProps = typeof showTime === 'object' ? showTime : {};
@@ -687,8 +699,15 @@ class DatePicker extends Component {
                     role="combobox"
                     aria-expanded={visible}
                     readOnly
-                    placeholder={placeholder || (showTime ? locale.datetimePlaceholder : locale.placeholder)}
-                    hint={<Icon type="calendar" className={`${prefix}date-picker-symbol-calendar-icon`} />}
+                    placeholder={
+                        placeholder || (showTime ? locale.datetimePlaceholder : locale.placeholder)
+                    }
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}date-picker-symbol-calendar-icon`}
+                        />
+                    }
                     hasClear={allowClear}
                     className={triggerInputCls}
                 />
