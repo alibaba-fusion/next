@@ -18,11 +18,26 @@ const Shell = ShellBase({
     'Ancillary',
     'ToolDock',
     'ToolDockItem',
-].forEach(key => {
-    Shell[key] = Base({
-        componentName: key,
-    });
-});
+].forEach(
+    (
+        key:
+            | 'Branding'
+            | 'Navigation'
+            | 'Action'
+            | 'MultiTask'
+            | 'LocalNavigation'
+            | 'AppBar'
+            | 'Content'
+            | 'Footer'
+            | 'Ancillary'
+            | 'ToolDock'
+            | 'ToolDockItem'
+    ) => {
+        Shell[key] = Base({
+            componentName: key,
+        });
+    }
+);
 
 Shell.Page = ConfigProvider.config(
     ShellBase({
@@ -31,7 +46,7 @@ Shell.Page = ConfigProvider.config(
 );
 
 export default ConfigProvider.config(Shell, {
-    transform: /* istanbul ignore next */ (props, deprecated) => {
+    transform: (props, deprecated) => {
         if ('Component' in props) {
             deprecated('Component', 'component', 'Shell');
             const { Component, component, ...others } = props;
