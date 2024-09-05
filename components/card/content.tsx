@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
+import type { CardContentProps } from './types';
 
-/**
- * Card.Actions
- * @order 5
- */
-class CardActions extends Component {
+class CardContent extends Component<CardContentProps> {
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -23,9 +20,15 @@ class CardActions extends Component {
     };
 
     render() {
-        const { prefix, component: Component, className, ...others } = this.props;
-        return <Component {...others} className={classNames(`${prefix}card-actions`, className)} />;
+        const { prefix, className, component, ...others } = this.props;
+        const Component = component as React.ElementType;
+        return (
+            <Component
+                {...others}
+                className={classNames(`${prefix}card-content-container`, className)}
+            />
+        );
     }
 }
 
-export default ConfigProvider.config(CardActions);
+export default ConfigProvider.config(CardContent);

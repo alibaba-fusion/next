@@ -3,16 +3,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
 import { log } from '../util';
+import type { CardMediaProps } from './types';
 
 const { warning } = log;
 
 const MEDIA_COMPONENTS = ['video', 'audio', 'picture', 'iframe', 'img'];
 
-/**
- * Card.Media
- * @order 1
- */
-class CardMedia extends Component {
+class CardMedia extends Component<CardMediaProps> {
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -38,14 +35,15 @@ class CardMedia extends Component {
     };
 
     render() {
-        const { prefix, style, className, component: Component, image, src, ...others } = this.props;
-
+        const { prefix, style, className, component, image, src, ...others } = this.props;
+        const Component = component as React.ElementType;
         if (!('children' in others || Boolean(image || src))) {
             warning('either `children`, `image` or `src` prop must be specified.');
         }
 
-        const isMediaComponent = MEDIA_COMPONENTS.indexOf(Component) !== -1;
-        const composedStyle = !isMediaComponent && image ? { backgroundImage: `url("${image}")`, ...style } : style;
+        const isMediaComponent = MEDIA_COMPONENTS.indexOf(component as string) !== -1;
+        const composedStyle =
+            !isMediaComponent && image ? { backgroundImage: `url("${image}")`, ...style } : style;
 
         return (
             <Component

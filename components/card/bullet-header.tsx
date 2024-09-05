@@ -2,29 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
+import type { CardBulletHeaderProps } from './types';
 
-/**
- * Card.BulletHeader
- * @order 2
- */
-class CardBulletHeader extends Component {
+class CardBulletHeader extends Component<CardBulletHeaderProps> {
     static propTypes = {
         prefix: PropTypes.string,
-        /**
-         * 卡片的标题
-         */
         title: PropTypes.node,
-        /**
-         * 卡片的副标题
-         */
         subTitle: PropTypes.node,
-        /**
-         * 是否显示标题的项目符号
-         */
         showTitleBullet: PropTypes.bool,
-        /**
-         * 标题区域的用户自定义内容
-         */
         extra: PropTypes.node,
     };
 
@@ -50,7 +35,9 @@ class CardBulletHeader extends Component {
                 <div className={`${prefix}card-head-main`}>
                     <div className={`${prefix}card-title`}>
                         {title}
-                        {subTitle ? <span className={`${prefix}card-subtitle`}>{subTitle}</span> : null}
+                        {subTitle ? (
+                            <span className={`${prefix}card-subtitle`}>{subTitle}</span>
+                        ) : null}
                     </div>
                     {headExtra}
                 </div>
