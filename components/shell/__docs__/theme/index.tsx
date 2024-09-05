@@ -1,4 +1,6 @@
-import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Demo, DemoGroup, initDemo, type DemoProps } from '../../../demo-helper';
 import Shell from '../../index';
 import Nav from '../../../nav';
 import Search from '../../../search';
@@ -10,6 +12,86 @@ import '../../../demo-helper/style';
 import '../../style';
 import '../../../search/style';
 import '../../../nav/style';
+
+interface ShellThemeProps {
+    type: 'light' | 'dark' | 'brand';
+    i18n: {
+        [key: string]: string;
+    };
+    demoFunction: {
+        device: {
+            value: 'phone' | 'tablet' | 'desktop';
+            label: string;
+            enum: Array<{ label: string; value: string }>;
+        };
+        navigation: {
+            value?: 'hoz' | 'ver';
+            label: string;
+            enum: Array<{ label: string; value: string }>;
+        };
+        navigationType: {
+            value?: 'normal' | 'primary' | 'secondary' | 'line';
+            label: string;
+            enum: Array<{ label: string; value: string }>;
+        };
+        localNav: {
+            value: string;
+            label: string;
+            enum: Array<{ label: string; value: string }>;
+        };
+        localNavType?: {
+            value?: 'normal' | 'primary' | 'secondary' | 'line';
+            label: string;
+            enum: Array<{ label: string; value: string }>;
+        };
+        branding: {
+            value: string;
+            label: string;
+            enum: Array<{ label: string; value: string }>;
+        };
+        actions: {
+            value: string;
+            label: string;
+            enum: Array<{ label: string; value: string }>;
+        };
+        appbar: {
+            value: string;
+            label: string;
+            enum: Array<{ label: string; value: string }>;
+        };
+        ancillary: {
+            value: string;
+            label: string;
+            enum: Array<{ label: string; value: string }>;
+        };
+        tooldock: {
+            value: string;
+            label: string;
+            enum: Array<{ label: string; value: string }>;
+        };
+        footer: {
+            value: string;
+            label: string;
+            enum: Array<{ label: string; value: string }>;
+        };
+    };
+}
+
+interface FunctionDemoProps {
+    title: DemoProps['title'];
+    type: ShellThemeProps['type'];
+    locale: ShellThemeProps['i18n'];
+    shellRender: (
+        type: ShellThemeProps['type'],
+        locale: ShellThemeProps['i18n'],
+        demoFunction: ShellThemeProps['demoFunction']
+    ) => React.ReactNode;
+}
+
+interface FunctionDemoState {
+    // demoFunction: DemoProps['demoFunction']
+    demoFunction: ShellThemeProps['demoFunction'];
+}
 
 /* eslint-disable */
 const i18nMap = {
@@ -26,7 +108,7 @@ const i18nMap = {
         brand: 'Template 3 - brand',
     },
 };
-class RenderShell extends React.Component {
+class RenderShell extends React.Component<ShellThemeProps> {
     render() {
         const { type, i18n, demoFunction } = this.props;
         const device = demoFunction.device.value;
@@ -34,7 +116,7 @@ class RenderShell extends React.Component {
         let globalNavType = demoFunction.navigationType.value,
             //     localNavType = demoFunction.localNavType.value,
             // globalHozNavType = 'normal',
-            localNavType = 'normal',
+            localNavType: 'normal' | 'primary' | 'secondary' | 'line' = 'normal',
             logoStyle = {},
             shellStyle = {};
 
@@ -78,7 +160,7 @@ class RenderShell extends React.Component {
                                 <span style={{ marginLeft: 10 }}>App Name</span>
                             </Shell.Branding>
                         ) : null}
-
+                        {/* @ts-expect-error navigation.value 不会为'false'，此判断无意义 */}
                         {demoFunction.navigation.value !== 'false' ? (
                             <Shell.Navigation direction={globalDir}>
                                 <Nav
@@ -180,12 +262,16 @@ class RenderShell extends React.Component {
     }
 }
 
-const renderShell = (type, i18n, demoFunction) => {
+const renderShell = (
+    type: ShellThemeProps['type'],
+    i18n: ShellThemeProps['i18n'],
+    demoFunction: ShellThemeProps['demoFunction']
+) => {
     return <RenderShell type={type} i18n={i18n} demoFunction={demoFunction} />;
 };
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
+class FunctionDemo extends React.Component<FunctionDemoProps, FunctionDemoState> {
+    constructor(props: FunctionDemoProps) {
         super(props);
         const navigationType = props.type === 'dark' ? 'primary' : 'normal';
 
@@ -368,7 +454,7 @@ class FunctionDemo extends React.Component {
         };
     }
 
-    onFunctionChange = ret => {
+    onFunctionChange = (ret: FunctionDemoState['demoFunction']) => {
         this.setState({
             demoFunction: ret,
         });
@@ -381,8 +467,8 @@ class FunctionDemo extends React.Component {
         return (
             <Demo
                 title={title}
-                demoFunction={demoFunction}
-                onFunctionChange={this.onFunctionChange}
+                demoFunction={demoFunction as unknown as DemoProps['demoFunction']}
+                onFunctionChange={this.onFunctionChange as unknown as DemoProps['onFunctionChange']}
             >
                 {shellRender(type, locale, demoFunction)}
             </Demo>
@@ -390,11 +476,12 @@ class FunctionDemo extends React.Component {
     }
 }
 
-function render(i18n, lang) {
+function render(i18n: FunctionDemoProps['locale'], lang: string) {
     return ReactDOM.render(
+        // @ts-expect-error ConfigProvider 不存在 lang 属性
         <ConfigProvider lang={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">
-                {['light', 'dark', 'brand'].map(type => {
+                {['light', 'dark', 'brand'].map((type: 'light' | 'dark' | 'brand') => {
                     return (
                         <FunctionDemo
                             key={type}

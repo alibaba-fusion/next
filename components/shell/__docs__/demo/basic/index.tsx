@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Search, Icon, Nav, Shell } from '@alifd/next';
-
-const { SubNav, Item, Group, Divider } = Nav;
+import { Search, Icon, Shell } from '@alifd/next';
 
 class App extends React.Component {
     render() {

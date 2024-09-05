@@ -1,11 +1,24 @@
 import React from 'react';
 import { Types } from '@alifd/adaptor-helper';
-import { Shell, Icon } from '@alifd/next';
+import { Shell, Icon, Nav, Search } from '@alifd/next';
+
+interface AdaptorProps {
+    level: 'light' | 'dark' | 'brand';
+    device: 'desktop' | 'tablet' | 'phone';
+    branding?: boolean;
+    actions: boolean;
+    localNav: boolean;
+    appbar: boolean;
+    footer: boolean;
+    tooldock: boolean;
+    ancillary: boolean;
+    navigation: 'ver' | 'hoz';
+}
 
 export default {
     name: 'Shell',
     shape: ['normal'],
-    editor: shape => {
+    editor: (shape: string) => {
         return {
             props: [
                 {
@@ -86,8 +99,7 @@ export default {
         tooldock,
         ancillary,
         navigation,
-        ...others
-    }) => {
+    }: AdaptorProps) => {
         let logoStyle = {},
             shellStyle = {};
 
@@ -188,12 +200,12 @@ export default {
                         </Nav>
                     </Shell.LocalNavigation>
                 ) : null}
-                {appbar ? <Shell.AppBar></Shell.AppBar> : null}
+                {appbar ? <Shell.AppBar /> : null}
                 <Shell.Content>
                     <div style={{ minHeight: 1200, background: '#fff' }}></div>
                 </Shell.Content>
 
-                {ancillary ? <Shell.Ancillary></Shell.Ancillary> : null}
+                {ancillary ? <Shell.Ancillary /> : null}
                 {tooldock ? (
                     <Shell.ToolDock>
                         <Shell.ToolDockItem>

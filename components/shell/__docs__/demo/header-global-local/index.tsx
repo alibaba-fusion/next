@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Menu, Search, Nav, Shell, Radio } from '@alifd/next';
+import { Search, Nav, Shell, Radio } from '@alifd/next';
 
-const { SubNav, Item, Group, Divider } = Nav;
+const { Item } = Nav;
+type deviceType = 'tablet' | 'desktop' | 'phone';
 
 class App extends React.Component {
-    state = {
+    state: { device: deviceType } = {
         device: 'desktop',
     };
-    onChange = device => {
+    onChange = (device: deviceType) => {
         this.setState({
             device,
         });
