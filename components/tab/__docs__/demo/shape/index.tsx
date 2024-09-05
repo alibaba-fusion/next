@@ -1,18 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Tab, Radio } from '@alifd/next';
+import { instanceOf } from 'prop-types';
 
-function onChange(key) {
+function onChange(key: string) {
     console.log(key);
 }
-
+type ShapeType = 'text' | 'pure' | 'wrapped' | 'capsule';
 const Demo = () => {
-    const [shape, setShape] = React.useState('pure');
+    const [shape, setShape] = React.useState<ShapeType>('pure');
 
     return (
         <div>
             shape:{' '}
-            <Radio.Group shape="button" value={shape} onChange={setShape}>
+            <Radio.Group
+                shape="button"
+                value={shape}
+                onChange={value => setShape(value as ShapeType)}
+            >
                 <Radio value="pure">pure</Radio>
                 <Radio value="wrapped">wrapped</Radio>
                 <Radio value="text">text</Radio>

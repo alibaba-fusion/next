@@ -2,7 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Tab } from '@alifd/next';
 
-function CustomTabItem({ title, desc, img }) {
+interface Pane {
+    key: string;
+    title: string;
+    desc: string;
+    img: string;
+}
+
+function CustomTabItem({ title, desc, img }: { title: string; desc: string; img: string }) {
     return (
         <div className="custom-tab-item">
             <div className="tab-title">
@@ -14,7 +21,7 @@ function CustomTabItem({ title, desc, img }) {
     );
 }
 
-const panes = [
+const panes: Pane[] = [
     {
         key: 'e-checking',
         title: 'Alipay',
@@ -32,7 +39,7 @@ const panes = [
 ReactDOM.render(
     <Tab shape="wrapped" tabRender={(key, props) => <CustomTabItem key={key} {...props} />}>
         {panes.map(pane => (
-            <Tab.Item key={pane.key} {...pane} tabStyle={{ height: '60px' }}>
+            <Tab.Item {...pane} tabStyle={{ height: '60px' }}>
                 {pane.desc}
             </Tab.Item>
         ))}

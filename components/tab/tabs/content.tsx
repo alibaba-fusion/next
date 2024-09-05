@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
-class TabContent extends PureComponent {
+import { TabContentProps, TabItemProps } from '../types';
+class TabContent extends PureComponent<TabContentProps> {
     static propTypes = {
         prefix: PropTypes.string,
         activeKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -13,18 +13,20 @@ class TabContent extends PureComponent {
     render() {
         const { prefix, activeKey, lazyLoad, unmountInactiveTabs, children, className, ...others } =
             this.props;
-        const formatChildren = [];
+        const formatChildren: React.ReactNode[] = [];
         React.Children.forEach(children, child => {
             /* eslint-disable eqeqeq */
-            const active = activeKey == child.key;
-            formatChildren.push(
-                React.cloneElement(child, {
-                    prefix,
-                    active,
-                    lazyLoad,
-                    unmountInactiveTabs,
-                })
-            );
+            if (React.isValidElement<TabItemProps>(child)) {
+                const active = activeKey == child.key;
+                formatChildren.push(
+                    React.cloneElement(child, {
+                        prefix,
+                        active,
+                        lazyLoad,
+                        unmountInactiveTabs,
+                    })
+                );
+            }
         });
 
         const classNames = classnames(

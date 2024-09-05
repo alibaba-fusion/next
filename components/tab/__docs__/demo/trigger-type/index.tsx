@@ -8,19 +8,19 @@ const tabs = [
     { tab: 'API', key: 2, content: 'This is api page' },
 ];
 
-function onChange(key) {
+function onChange(key: number | string) {
     console.log('change', key);
 }
 
-function handleClick(key) {
+function handleClick(key: number | string) {
     console.log('click', key);
 }
 
-function onMouseEnter(key, e) {
+function onMouseEnter(key: number | string, e: React.MouseEvent<HTMLElement>) {
     console.log('enter', e.target, key);
 }
 
-function onMouseLeave(key, e) {
+function onMouseLeave(key: number | string, e: React.MouseEvent<HTMLElement>) {
     console.log('leave', e.target, key);
 }
 
@@ -40,9 +40,9 @@ ReactDOM.render(
                 <Tab.Item
                     key={item.key}
                     title={item.tab}
-                    onClick={handleClick}
-                    onMouseEnter={onMouseEnter}
-                    onMouseLeave={onMouseLeave}
+                    onClick={() => handleClick(item.key)}
+                    onMouseEnter={e => onMouseEnter(item.key, e)}
+                    onMouseLeave={e => onMouseLeave(item.key, e)}
                 >
                     {item.content}
                 </Tab.Item>

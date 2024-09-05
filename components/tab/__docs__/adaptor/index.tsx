@@ -2,11 +2,29 @@ import React from 'react';
 import { Types, parseData } from '@alifd/adaptor-helper';
 import { Tab, Icon } from '@alifd/next';
 
+// 定义属性接口
+interface AdaptorProps {
+    shape: 'pure' | 'wrapped' | 'text' | 'capsule';
+    size: 'medium' | 'small';
+    closable: boolean;
+    overflow?: 'slide' | 'dropdown';
+    width?: number;
+    position?: 'top' | 'left' | 'right';
+    style?: React.CSSProperties;
+    data: any;
+}
+
 export default {
     name: 'Tab',
     shape: ['pure', 'wrapped', 'text', 'capsule'],
     editor: (shape = 'pure') => {
-        const props = [
+        const props: Array<{
+            name: string;
+            type: any;
+            options?: string[];
+            default: any;
+            label?: string;
+        }> = [
             {
                 name: 'size',
                 type: Types.enum,
@@ -63,9 +81,9 @@ export default {
         style = {},
         data,
         ...others
-    }) => {
+    }: AdaptorProps) => {
         const list = parseData(data, { parseContent: true });
-        const activeKey = list.findIndex(item => item.state === 'active');
+        const activeKey = list.findIndex((item: any) => item.state === 'active');
 
         return (
             <Tab
@@ -77,11 +95,12 @@ export default {
                 excessMode={overflow}
                 tabPosition={position}
             >
-                {list.map((item, index) => (
+                {list.map((item: any, index: number) => (
                     <Tab.Item
                         key={index}
-                        title={item.value.map(({ type, value }, i) =>
-                            type === 'icon' ? <Icon key={`icon_${i}`} type={value} /> : value
+                        title={item.value.map(
+                            ({ type, value }: { type: string; value: string }, i: number) =>
+                                type === 'icon' ? <Icon key={`icon_${i}`} type={value} /> : value
                         )}
                         closeable={closable}
                         disabled={item.state === 'disabled'}

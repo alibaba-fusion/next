@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
@@ -7,11 +7,16 @@ import TabNav from './tabs/nav';
 import TabContent from './tabs/content';
 import { toArray } from './tabs/utils';
 import zhCN from '../locale/zh-cn';
+import { TabProps, ItemProps } from './types';
+import Item from './tabs/tab-item';
 
 const noop = () => {};
+interface TabState {
+    activeKey?: string;
+}
 
 /** Tab */
-class Tab extends Component {
+class Tab extends Component<TabProps, TabState> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -130,6 +135,9 @@ class Tab extends Component {
         addIcon: PropTypes.node,
     };
 
+    static Item: typeof Item;
+    static TabPane: typeof Item;
+
     static defaultProps = {
         prefix: 'next-',
         shape: 'pure',
@@ -148,14 +156,14 @@ class Tab extends Component {
         icons: {},
     };
 
-    constructor(props, context) {
+    constructor(props: TabProps, context?: unknown) {
         super(props, context);
         this.state = {
             activeKey: this.getDefaultActiveKey(props),
         };
     }
 
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props: TabProps, state: { activeKey?: string }) {
         if (props.activeKey !== undefined && state.activeKey !== `${props.activeKey}`) {
             return {
                 activeKey: `${props.activeKey}`,
@@ -165,13 +173,15 @@ class Tab extends Component {
         return {};
     }
 
-    componentDidUpdate(prevProps) {
-        const preChildLen = (prevProps.children && prevProps.children.length) || 0;
-        const curChildLen = (this.props.children && this.props.children.length) || 0;
+    componentDidUpdate(prevProps: TabProps) {
+        const preChildLen = (prevProps.children && React.Children.count(prevProps.children)) || 0;
+        const curChildLen = (this.props.children && React.Children.count(this.props.children)) || 0;
         if (
             preChildLen !== 0 &&
             curChildLen !== 0 &&
-            !('activeKey' in this.props) & !this.isActiveKeyExist(this.state.activeKey)
+            !('activeKey' in this.props) &&
+            this.state.activeKey &&
+            !this.isActiveKeyExist(this.state.activeKey)
         ) {
             const activeKey = this.getDefaultActiveKey(this.props);
             if (activeKey) {
@@ -183,7 +193,7 @@ class Tab extends Component {
         }
     }
 
-    getDefaultActiveKey(props) {
+    getDefaultActiveKey(props: TabProps) {
         let activeKey = props.activeKey === undefined ? props.defaultActiveKey : props.activeKey;
 
         if (activeKey === undefined) {
@@ -191,7 +201,7 @@ class Tab extends Component {
                 if (activeKey !== undefined) return;
                 if (React.isValidElement(child)) {
                     if (!child.props.disabled) {
-                        activeKey = child.key || index;
+                        activeKey = child.key || index.toString();
                     }
                 }
             });
@@ -200,10 +210,10 @@ class Tab extends Component {
         return activeKey !== undefined ? `${activeKey}` : undefined;
     }
 
-    getNextActiveKey(isNext) {
-        const children = [];
+    getNextActiveKey(isNext: boolean) {
+        const children: ReactElement<ItemProps>[] = [];
         React.Children.forEach(this.props.children, child => {
-            if (React.isValidElement(child)) {
+            if (React.isValidElement<ItemProps>(child)) {
                 if (!child.props.disabled) {
                     if (isNext) {
                         children.push(child);
@@ -215,7 +225,7 @@ class Tab extends Component {
         });
 
         const length = children.length;
-        let key = length && children[0].key;
+        let key = length.toString() && children[0].key;
         children.forEach((child, i) => {
             if (child.key === this.state.activeKey) {
                 if (i === length - 1) {
@@ -228,7 +238,7 @@ class Tab extends Component {
         return key;
     }
 
-    isActiveKeyExist(activeKey) {
+    isActiveKeyExist(activeKey: string) {
         let exist = false;
         React.Children.forEach(this.props.children, (child, index) => {
             if (exist) return;
@@ -244,7 +254,7 @@ class Tab extends Component {
         return exist;
     }
 
-    setActiveKey(key) {
+    setActiveKey(key: string) {
         const { activeKey } = this.state;
 
         // 如果 key 没变，或者受控状态下，则跳过
@@ -256,18 +266,20 @@ class Tab extends Component {
         });
     }
 
-    handleTriggerEvent = (eventType, key) => {
+    handleTriggerEvent = (eventType: string, key: string) => {
         const { triggerType, onClick, onChange } = this.props;
         if (triggerType === eventType) {
-            onClick(key);
+            if (typeof onClick === 'function') {
+                onClick(key);
+            }
             this.setActiveKey(key);
-            if (this.state.activeKey !== key) {
+            if (this.state.activeKey !== key && typeof onChange === 'function') {
                 onChange(key);
             }
         }
     };
 
-    onNavKeyDown = e => {
+    onNavKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         const keyCode = e.keyCode;
         const { disableKeyboard } = this.props;
 
@@ -282,10 +294,14 @@ class Tab extends Component {
         let newKey;
         if (keyCode === KEYCODE.RIGHT || keyCode === KEYCODE.DOWN) {
             newKey = this.getNextActiveKey(true);
-            this.handleTriggerEvent(this.props.triggerType, newKey);
+            if (newKey) {
+                this.handleTriggerEvent(this.props.triggerType!, newKey);
+            }
         } else if (keyCode === KEYCODE.LEFT || keyCode === KEYCODE.UP) {
             newKey = this.getNextActiveKey(false);
-            this.handleTriggerEvent(this.props.triggerType, newKey);
+            if (newKey) {
+                this.handleTriggerEvent(this.props.triggerType!, newKey);
+            }
         }
     };
 
@@ -323,7 +339,7 @@ class Tab extends Component {
 
         const tabs = toArray(children);
         let newPosition = tabPosition;
-        if (rtl && ['left', 'right'].indexOf(tabPosition) >= 0) {
+        if (rtl && ['left', 'right'].indexOf(tabPosition!) >= 0) {
             newPosition = tabPosition === 'left' ? 'right' : 'left';
         }
         const classNames = classnames(
@@ -331,10 +347,11 @@ class Tab extends Component {
                 [`${prefix}tabs`]: true,
                 [`${prefix}tabs-${shape}`]: shape,
                 [`${prefix}tabs-vertical`]:
-                    shape === 'wrapped' && ['left', 'right'].indexOf(tabPosition) >= 0,
+                    shape === 'wrapped' &&
+                    ['left', 'right'].indexOf(tabPosition ? tabPosition : 'top') >= 0,
                 [`${prefix}tabs-scrollable`]: true,
                 [`${prefix}tabs-${newPosition}`]: shape === 'wrapped',
-                [`${prefix + size}`]: size,
+                [`${prefix}${size}`]: size,
             },
             className
         );
@@ -394,5 +411,4 @@ class Tab extends Component {
         );
     }
 }
-
 export default polyfill(Tab);

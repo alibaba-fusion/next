@@ -1,35 +1,31 @@
 import React from 'react';
-import Enzyme, { mount, render } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount } from 'cypress/react';
 import Tab from '../index';
 import '../style';
-import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 describe('Tab a11y', () => {
-    let wrapper;
-
     afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
+        cy.document().then(doc => {
+            doc.body.innerHTML = '';
+        });
     });
-    it('should not have any violations for tab with children', async () => {
-        wrapper = await testReact(
+
+    it('should not have any violations for tab with children', () => {
+        mount(
             <Tab>
                 <Tab.Item title="foo" />
             </Tab>
         );
-        return wrapper;
+        cy.get('.next-tabs-tab').should('exist');
+        cy.get('.next-tabs-tabpane').should('exist');
     });
-    it('should not have any violations for tab with datasource', async () => {
+
+    it('should not have any violations for tab with datasource', () => {
         const panes = [1, 2, 3, 4, 5].map((item, index) => (
             <Tab.Item title={`item ${item}`} key={index} />
         ));
-        wrapper = await testReact(<Tab animation={false}>{panes}</Tab>);
-        return wrapper;
+        mount(<Tab animation={false}>{panes}</Tab>);
+        cy.get('.next-tabs-tab').should('have.length', 5);
+        cy.get('.next-tabs-tabpane').should('exist');
     });
 });
