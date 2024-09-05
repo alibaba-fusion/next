@@ -1,4 +1,6 @@
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Demo, DemoGroup, initDemo, type DemoFunctionDefineForObject } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import Card from '../../index';
 import Button from '../../../button';
@@ -26,7 +28,7 @@ const i18nMap = {
         link: 'Link',
         noUnderline: 'No Header Line',
         bullet: 'Bullet',
-    }
+    },
 };
 
 const cardStyle = {
@@ -36,18 +38,47 @@ const cardStyle = {
 const placeholderStyle = {
     textAlign: 'left',
     fontSize: '14px',
-    color: '#666'
+    color: '#666',
 };
 
 const extendPlaceholderStyle = {
     height: '120px',
-    textAlign: 'center'
+    textAlign: 'center',
 };
+interface RenderCardState {
+    demoFunction: Record<string, DemoFunctionDefineForObject>;
+}
 
-function CardDemo({ locale, divider, noSubtitle, noLink, demoFunction, onFunctionChange }) {
+interface RenderCardProps {
+    i18n?: Record<string, string>;
+    locale: Record<string, string>;
+    title?: string;
+}
+interface RenderCardDemoProps {
+    locale: Record<string, string>;
+    divider: string | unknown;
+    noSubtitle: boolean;
+    noLink: boolean;
+    demoFunction: Record<string, DemoFunctionDefineForObject>;
+    onFunctionChange: (ret: Record<string, DemoFunctionDefineForObject>) => void;
+}
+function CardDemo({
+    locale,
+    divider,
+    noSubtitle,
+    noLink,
+    demoFunction,
+    onFunctionChange,
+}: RenderCardDemoProps) {
     const commonProps = {
         subTitle: noSubtitle ? '' : locale.subTile,
-        extra: noLink ? '' : <Button text type="primary">{locale.link}</Button>,
+        extra: noLink ? (
+            ''
+        ) : (
+            <Button text type="primary">
+                {locale.link}
+            </Button>
+        ),
     };
 
     return (
@@ -57,21 +88,27 @@ function CardDemo({ locale, divider, noSubtitle, noLink, demoFunction, onFunctio
                     <Card.Header title={locale.title} {...commonProps} />
                     {divider && <Card.Divider inset={divider === 'inset'} />}
                     <Card.Content>
-                        Lorem ipsum dolor sit amet, est viderer iuvaret perfecto et. Ne petentium quaerendum nec, eos ex recteque mediocritatem, ex usu assum legendos temporibus. Ius feugiat pertinacia an, cu verterem praesent quo.
+                        Lorem ipsum dolor sit amet, est viderer iuvaret perfecto et. Ne petentium
+                        quaerendum nec, eos ex recteque mediocritatem, ex usu assum legendos
+                        temporibus. Ius feugiat pertinacia an, cu verterem praesent quo.
                     </Card.Content>
                     {divider && <Card.Divider inset={divider === 'inset'} />}
                     <Card.Actions>
-                        <Button text type="primary">Action 1</Button>
-                        <Button text type="primary">Action 2</Button>
+                        <Button text type="primary">
+                            Action 1
+                        </Button>
+                        <Button text type="primary">
+                            Action 2
+                        </Button>
                     </Card.Actions>
                 </Card>
             </DemoGroup>
         </Demo>
-    )
+    );
 }
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
+class FunctionDemo extends React.Component<RenderCardProps, RenderCardState> {
+    constructor(props: RenderCardProps) {
         super(props);
         this.state = {
             demoFunction: {
@@ -81,7 +118,7 @@ class FunctionDemo extends React.Component {
                     enum: [
                         { label: '显示', value: 'true' },
                         { label: '隐藏', value: 'false' },
-                        { label: '内嵌', value: 'inset' }
+                        { label: '内嵌', value: 'inset' },
                     ],
                 },
                 showSubTitle: {
@@ -89,7 +126,7 @@ class FunctionDemo extends React.Component {
                     value: 'false',
                     enum: [
                         { label: '显示', value: 'true' },
-                        { label: '隐藏', value: 'false' }
+                        { label: '隐藏', value: 'false' },
                     ],
                 },
                 showLink: {
@@ -97,21 +134,21 @@ class FunctionDemo extends React.Component {
                     value: 'false',
                     enum: [
                         { label: '显示', value: 'true' },
-                        { label: '隐藏', value: 'false' }
+                        { label: '隐藏', value: 'false' },
                     ],
                 },
             },
         };
     }
 
-    onFunctionChange = (ret) => {
+    onFunctionChange = (ret: Record<string, DemoFunctionDefineForObject>) => {
         this.setState({
             demoFunction: ret,
         });
-    }
+    };
 
     render() {
-        const { title, locale } = this.props;
+        const { locale } = this.props;
         const { demoFunction } = this.state;
 
         const divider = demoFunction.divider.value === 'false' ? '' : demoFunction.divider.value;
@@ -126,17 +163,22 @@ class FunctionDemo extends React.Component {
             onFunctionChange: this.onFunctionChange,
         };
 
-        return (<CardDemo {...cardDemoProps} />);
+        return <CardDemo {...cardDemoProps} />;
     }
 }
 
-function render(i18n, lang) {
-    return ReactDOM.render(<ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}><div className="demo-container">
-        <FunctionDemo title={i18n.card} locale={i18n} />
-    </div></ConfigProvider>, document.getElementById('container'));
+function render(i18n: Record<string, string>, lang: string) {
+    return ReactDOM.render(
+        <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
+            <div className="demo-container">
+                <FunctionDemo title={i18n.card} locale={i18n} />
+            </div>
+        </ConfigProvider>,
+        document.getElementById('container')
+    );
 }
 
-window.renderDemo = function(lang = 'en-us') {
+window.renderDemo = function (lang = 'en-us') {
     render(i18nMap[lang], lang);
 };
 

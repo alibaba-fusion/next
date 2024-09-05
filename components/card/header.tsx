@@ -1,13 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, type ElementType } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
+import type { CardHeaderProps } from './types';
 
-/**
- * Card.Header
- * @order 2
- */
-class CardHeader extends Component {
+class CardHeader extends Component<CardHeaderProps> {
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -35,8 +32,8 @@ class CardHeader extends Component {
     };
 
     render() {
-        const { prefix, title, subTitle, extra, className, component: Component, ...others } = this.props;
-
+        const { prefix, title, subTitle, extra, className, component, ...others } = this.props;
+        const Component = component as ElementType;
         return (
             <Component {...others} className={classNames(`${prefix}card-header`, className)}>
                 {extra && <div className={`${prefix}card-header-extra`}>{extra}</div>}

@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
+import type { CardDividerProps } from './types';
 
-/**
- * Card.Divider
- * @order 4
- */
-class CardDivider extends Component {
+class CardDivider extends Component<CardDividerProps> {
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -27,8 +24,8 @@ class CardDivider extends Component {
     };
 
     render() {
-        const { prefix, component: Component, inset, className, ...others } = this.props;
-
+        const { prefix, component, inset, className, ...others } = this.props;
+        const Component = component as React.ElementType;
         const dividerClassName = classNames(
             `${prefix}card-divider`,
             {
