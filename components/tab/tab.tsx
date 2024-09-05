@@ -330,7 +330,8 @@ class Tab extends Component {
             {
                 [`${prefix}tabs`]: true,
                 [`${prefix}tabs-${shape}`]: shape,
-                [`${prefix}tabs-vertical`]: shape === 'wrapped' && ['left', 'right'].indexOf(tabPosition) >= 0,
+                [`${prefix}tabs-vertical`]:
+                    shape === 'wrapped' && ['left', 'right'].indexOf(tabPosition) >= 0,
                 [`${prefix}tabs-scrollable`]: true,
                 [`${prefix}tabs-${newPosition}`]: shape === 'wrapped',
                 [`${prefix + size}`]: size,
@@ -383,7 +384,11 @@ class Tab extends Component {
         }
 
         return (
-            <div dir={rtl ? 'rtl' : undefined} className={classNames} {...obj.pickOthers(Tab.propTypes, others)}>
+            <div
+                dir={rtl ? 'rtl' : undefined}
+                className={classNames}
+                {...obj.pickOthers(Tab.propTypes, others)}
+            >
                 {tabChildren}
             </div>
         );
