@@ -312,8 +312,8 @@ class Overlay extends Component<OverlayV1Props, OverlayState> {
         switch ((align as Array<string>)[0]) {
             case 't':
                 return {
-                    // 为了防止有的用户 js升级了而css没升级，所以把两个动画都保留了。
-                    // 动画不会叠加，会替代，顺序根据 src/animate/main.scss 中的样式先后顺序遵循css覆盖原则
+                    // 为了防止有的用户 js 升级了而 css 没升级，所以把两个动画都保留了。
+                    // 动画不会叠加，会替代，顺序根据 src/animate/main.scss 中的样式先后顺序遵循 css 覆盖原则
                     // fadeInDownSmall fadeOutUpSmall 优先级更高
                     in: 'expandInDown fadeInDownSmall',
                     out: 'expandOutUp fadeOutUpSmall',
@@ -332,6 +332,9 @@ class Overlay extends Component<OverlayV1Props, OverlayState> {
     }
 
     addAnimationEvents() {
+        if (typeof window === 'undefined') {
+            return;
+        }
         setTimeout(() => {
             const node = this.getContentNode();
             if (node) {
@@ -400,8 +403,8 @@ class Overlay extends Component<OverlayV1Props, OverlayState> {
             });
 
             this.onLeaved();
-            // dom结构首次出现 触发的是entering
-            // dom结构已经存在（例如设置了cache），触发的是mounting
+            // dom 结构首次出现 触发的是 entering
+            // dom 结构已经存在（例如设置了 cache），触发的是 mounting
         } else if (this.state.status === 'entering' || this.state.status === 'mounting') {
             this.setState({
                 status: 'none',
@@ -563,10 +566,11 @@ class Overlay extends Component<OverlayV1Props, OverlayState> {
      * document global event
      */
     addDocumentEvents() {
-        // FIXME: canCloseByEsc、canCloseByOutSideClick、canCloseByMask仅在didMount时生效，update时不生效
+        // FIXME: canCloseByEsc、canCloseByOutSideClick、canCloseByMask 仅在 didMount 时生效，update 时不生效
         const { useCapture } = this.props;
         // use capture phase listener to be compatible with react17
         // https://reactjs.org/blog/2020/08/10/react-v17-rc.html#fixing-potential-issues
+        if (typeof document === 'undefined') return;
         if (this.props.canCloseByEsc) {
             this._keydownEvents = events.on(
                 document,
@@ -691,7 +695,7 @@ class Overlay extends Component<OverlayV1Props, OverlayState> {
         this.gatewayRef = ref;
     };
 
-    // 兼容过去的用法: this.popupRef.getInstance().overlay.getInstance().getContentNode()
+    // 兼容过去的用法：this.popupRef.getInstance().overlay.getInstance().getContentNode()
     getInstance() {
         return this;
     }
