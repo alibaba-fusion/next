@@ -121,15 +121,13 @@ class FunctionDemo extends React.Component {
                         valueName: 'demoFunction',
                         trigger: 'onFunctionChange',
                     })}
+                    title="File Upload"
                 >
                     <DemoGroup label="Uploading">
                         <Upload
                             limit={1}
                             listType="text"
-                            closable={
-                                (getValue('demo1') as { closeable: { value: string } })!.closeable!
-                                    .value === 'true'
-                            }
+                            closable={getValue<typeof demo1>('demo1')!.closeable.value === 'true'}
                             value={[Object.assign({}, list, { state: 'uploading' })]}
                             style={style}
                         />
@@ -138,16 +136,12 @@ class FunctionDemo extends React.Component {
                         <Upload
                             limit={1}
                             listType="text"
-                            closable={
-                                (getValue!('demo1') as { closeable: { value: string } })!.closeable!
-                                    .value === 'true'
-                            }
+                            closable={getValue<typeof demo1>('demo1')!.closeable.value === 'true'}
                             value={[
                                 Object.assign({}, list, {
                                     state: 'done',
                                     size:
-                                        (getValue!('demo1') as { size: { value: string } })!.size!
-                                            .value === 'true'
+                                        getValue<typeof demo1>('demo1')!.size.value === 'true'
                                             ? 1000
                                             : 0,
                                 }),
@@ -159,16 +153,12 @@ class FunctionDemo extends React.Component {
                         <Upload
                             limit={1}
                             listType="text"
-                            closable={
-                                (getValue!('demo1') as { closeable: { value: string } })!.closeable!
-                                    .value === 'true'
-                            }
+                            closable={getValue<typeof demo1>('demo1')!.closeable.value === 'true'}
                             value={[
                                 Object.assign({}, list, {
                                     state: 'error',
                                     errorMsg:
-                                        (getValue!('demo1') as { errMsg: { value: string } })!
-                                            .errMsg.value === 'true'
+                                        getValue<typeof demo1>('demo1')!.errMsg.value === 'true'
                                             ? 'Error Messgae'
                                             : undefined,
                                 }),
@@ -185,6 +175,7 @@ class FunctionDemo extends React.Component {
                         valueName: 'demoFunction',
                         trigger: 'onFunctionChange',
                     })}
+                    title="Image Upload"
                 >
                     <Demo title="Image">
                         <DemoGroup label="Uploading">
@@ -192,8 +183,7 @@ class FunctionDemo extends React.Component {
                                 listType="image"
                                 limit={1}
                                 closable={
-                                    (getValue!('demo2') as { closeable: { value: string } })!
-                                        .closeable.value === 'true'
+                                    getValue<typeof demo2>('demo2')!.closeable.value === 'true'
                                 }
                                 defaultValue={[
                                     {
@@ -212,16 +202,14 @@ class FunctionDemo extends React.Component {
                                 listType="image"
                                 limit={1}
                                 closable={
-                                    (getValue!('demo2') as { closeable: { value: string } })!
-                                        .closeable.value === 'true'
+                                    getValue<typeof demo2>('demo2')!.closeable.value === 'true'
                                 }
                                 value={[
                                     {
                                         name: 'IMG_20140109_121958.jpg',
                                         state: 'done',
                                         size:
-                                            (getValue!('demo2') as { size: { value: string } })!
-                                                .size.value === 'true'
+                                            getValue<typeof demo2>('demo2')!.size.value === 'true'
                                                 ? 12345
                                                 : 0,
                                         url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
@@ -235,8 +223,7 @@ class FunctionDemo extends React.Component {
                                 listType="image"
                                 limit={1}
                                 closable={
-                                    (getValue!('demo2') as { closeable: { value: string } })!
-                                        .closeable.value === 'true'
+                                    getValue<typeof demo2>('demo2')!.closeable.value === 'true'
                                 }
                                 value={[
                                     {
@@ -244,8 +231,7 @@ class FunctionDemo extends React.Component {
                                         state: 'error',
                                         url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
                                         errorMsg:
-                                            (getValue!('demo2') as { errMsg: { value: string } })!
-                                                .errMsg.value === 'true'
+                                            getValue<typeof demo2>('demo2')!.errMsg.value === 'true'
                                                 ? 'Error Messgae'
                                                 : undefined,
                                     },
@@ -311,6 +297,7 @@ class FunctionDemo extends React.Component {
                         valueName: 'demoFunction',
                         trigger: 'onFunctionChange',
                     })}
+                    title="Drag to upload"
                 >
                     <DemoGroup label="Normal">
                         <Dragger style={style} />
@@ -325,8 +312,7 @@ class FunctionDemo extends React.Component {
                         <Dragger
                             style={style}
                             listType={
-                                (getValue('demo3') as { listType: { value: string } })!.listType
-                                    .value === 'true'
+                                getValue<typeof demo3>('demo3')!.listType.value === 'true'
                                     ? 'text'
                                     : undefined
                             }
@@ -343,8 +329,7 @@ class FunctionDemo extends React.Component {
                         <Dragger
                             style={style}
                             listType={
-                                (getValue('demo3') as { listType: { value: string } })!.listType
-                                    .value === 'true'
+                                getValue<typeof demo3>('demo3')!.listType.value === 'true'
                                     ? 'text'
                                     : undefined
                             }
@@ -368,8 +353,7 @@ class FunctionDemo extends React.Component {
                         <Dragger
                             style={style}
                             listType={
-                                (getValue('demo3') as { listType: { value: string } })!.listType
-                                    .value === 'true'
+                                getValue<typeof demo3>('demo3')!.listType.value === 'true'
                                     ? 'text'
                                     : undefined
                             }
@@ -378,8 +362,7 @@ class FunctionDemo extends React.Component {
                                     name: 'xxx.png',
                                     state: 'error',
                                     errorMsg:
-                                        (getValue('demo3') as { errMsg: { value: string } })!.errMsg
-                                            .value === 'true'
+                                        getValue<typeof demo1>('demo1')!.errMsg.value === 'true'
                                             ? 'Error Messgae'
                                             : undefined,
                                 },
