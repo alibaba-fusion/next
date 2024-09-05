@@ -8,7 +8,13 @@ import Menu from '../../menu';
 import Button from '../../button';
 import Animate from '../../animate';
 import { events, KEYCODE, dom, obj } from '../../util';
-import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported, tabsArrayShallowEqual } from './utils';
+import {
+    triggerEvents,
+    getOffsetLT,
+    getOffsetWH,
+    isTransformSupported,
+    tabsArrayShallowEqual,
+} from './utils';
 
 const floatRight = { float: 'right', zIndex: 1 };
 const floatLeft = { float: 'left', zIndex: 1 };
@@ -358,8 +364,15 @@ class Nav extends React.Component {
 
         if (!hideAdd && showAdd) {
             rst.push(
-                <li role="button" className={`${prefix}tabs-tab ${prefix}tabs-add`} onClick={onAdd} key="add">
-                    <div className={`${prefix}tabs-tab-inner`}>{addIcon ? addIcon : <Icon type="add" />}</div>
+                <li
+                    role="button"
+                    className={`${prefix}tabs-tab ${prefix}tabs-add`}
+                    onClick={onAdd}
+                    key="add"
+                >
+                    <div className={`${prefix}tabs-tab-inner`}>
+                        {addIcon ? addIcon : <Icon type="add" />}
+                    </div>
                 </li>
             );
         }
@@ -368,7 +381,9 @@ class Nav extends React.Component {
 
     computeExtraWidth() {
         if (this.navbar && this.navbar.childNodes.length === 2) {
-            this.navbar.childNodes[1].style.marginRight = window.getComputedStyle(this.navbar.childNodes[0]).width;
+            this.navbar.childNodes[1].style.marginRight = window.getComputedStyle(
+                this.navbar.childNodes[0]
+            ).width;
         }
     }
 
@@ -380,7 +395,10 @@ class Nav extends React.Component {
             const wrapperOffset = getOffsetLT(this.wrapper);
             const target = this.offset;
 
-            if (activeTabOffset + activeTabWH > wrapperOffset + wrapperWH + 1 || activeTabOffset < wrapperOffset) {
+            if (
+                activeTabOffset + activeTabWH > wrapperOffset + wrapperWH + 1 ||
+                activeTabOffset < wrapperOffset
+            ) {
                 this.setOffset(this.offset + wrapperOffset - activeTabOffset, true, true);
                 return;
             }
@@ -439,7 +457,12 @@ class Nav extends React.Component {
         const iconType = iconTypeMap[type];
         let icon = <Icon type={iconType} rtl={rtl} className={`${prefix}tab-icon-${type}`} />;
         if (icons[type]) {
-            icon = typeof icons[type] === 'string' ? <Icon rtl={rtl} type={icons[type]} /> : icons[type];
+            icon =
+                typeof icons[type] === 'string' ? (
+                    <Icon rtl={rtl} type={icons[type]} />
+                ) : (
+                    icons[type]
+                );
         }
 
         return icon;
@@ -465,15 +488,28 @@ class Nav extends React.Component {
                 className={`${prefix}tabs-bar-popup`}
                 {...popupProps}
             >
-                <Menu rtl={rtl} selectedKeys={[activeKey]} onSelect={this.onSelectMenuItem} selectMode="single">
+                <Menu
+                    rtl={rtl}
+                    selectedKeys={[activeKey]}
+                    onSelect={this.onSelectMenuItem}
+                    selectMode="single"
+                >
                     {tabs.map(tab => {
                         const { disabled, onClick, onMouseEnter, onMouseLeave } = tab.props;
                         let events = {};
                         if (!disabled) {
                             events = {
                                 onClick: this.onNavItemClick.bind(this, tab.key, onClick),
-                                onMouseEnter: this.onNavItemMouseEnter.bind(this, tab.key, onMouseEnter),
-                                onMouseLeave: this.onNavItemMouseLeave.bind(this, tab.key, onMouseLeave),
+                                onMouseEnter: this.onNavItemMouseEnter.bind(
+                                    this,
+                                    tab.key,
+                                    onMouseEnter
+                                ),
+                                onMouseLeave: this.onNavItemMouseLeave.bind(
+                                    this,
+                                    tab.key,
+                                    onMouseLeave
+                                ),
                             };
                         }
                         return (
@@ -592,7 +628,11 @@ class Nav extends React.Component {
         const container = (
             <div className={containerCls} onKeyDown={onKeyDown} key="nav-container">
                 <div className={`${prefix}tabs-nav-wrap`} ref={this.wrapperRefHandler}>
-                    <div className={`${prefix}tabs-nav-scroll`} ref={this.scrollerRefHandler} onScroll={this.onScroll}>
+                    <div
+                        className={`${prefix}tabs-nav-scroll`}
+                        ref={this.scrollerRefHandler}
+                        onScroll={this.onScroll}
+                    >
                         {animation ? (
                             <Animate
                                 role="tablist"
@@ -622,8 +662,14 @@ class Nav extends React.Component {
                         {prevButton}
                         {nextButton}
                         {restButton}
-                        <li className={`${prefix}tabs-tab ${prefix}tabs-add`} onClick={onAdd} key="add">
-                            <div className={`${prefix}tabs-tab-inner`}>{addIcon ? addIcon : <Icon type="add" />}</div>
+                        <li
+                            className={`${prefix}tabs-tab ${prefix}tabs-add`}
+                            onClick={onAdd}
+                            key="add"
+                        >
+                            <div className={`${prefix}tabs-tab-inner`}>
+                                {addIcon ? addIcon : <Icon type="add" />}
+                            </div>
                         </li>
                     </div>
                 ) : (

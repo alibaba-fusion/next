@@ -69,29 +69,14 @@ describe('Tab', () => {
 
         it('should render with defaultActiveKey', () => {
             wrapper = mount(<Tab defaultActiveKey="3">{panes}</Tab>);
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(3)
-                    .hasClass('active')
-            );
+            assert(wrapper.find('.next-tabs-tab').at(3).hasClass('active'));
         });
 
         it('should render with activeKey (controlled)', () => {
             wrapper = mount(<Tab activeKey="2">{panes}</Tab>);
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(2)
-                    .hasClass('active')
-            );
+            assert(wrapper.find('.next-tabs-tab').at(2).hasClass('active'));
             wrapper.setProps({ activeKey: '3' });
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(3)
-                    .hasClass('active')
-            );
+            assert(wrapper.find('.next-tabs-tab').at(3).hasClass('active'));
         });
 
         it('should render with tabPosition (wrapped)', () => {
@@ -129,7 +114,11 @@ describe('Tab', () => {
 
         it('should render extra in left side', () => {
             wrapper = mount(
-                <Tab shape="wrapped" tabPosition="left" extra={<button className="test-extra">hello world</button>}>
+                <Tab
+                    shape="wrapped"
+                    tabPosition="left"
+                    extra={<button className="test-extra">hello world</button>}
+                >
                     {panes}
                 </Tab>
             );
@@ -157,12 +146,19 @@ describe('Tab', () => {
             );
             assert(wrapper.find('.next-tabs-content').hasClass('custom-content'));
             const tabContent = wrapper.find('.next-tabs-content').instance();
-            assert(tabContent.style.background === 'red' || tabContent.style.background.startsWith('red'));
+            assert(
+                tabContent.style.background === 'red' ||
+                    tabContent.style.background.startsWith('red')
+            );
         });
 
         it('should render with tabRender', () => {
             wrapper = mount(
-                <Tab tabRender={(key, props) => <div className="custom-tab-item">{props.title}</div>}>{panes}</Tab>
+                <Tab
+                    tabRender={(key, props) => <div className="custom-tab-item">{props.title}</div>}
+                >
+                    {panes}
+                </Tab>
             );
             assert(wrapper.find('.custom-tab-item').length === 4);
         });
@@ -196,7 +192,9 @@ describe('Tab', () => {
 
     describe('with action', () => {
         let wrapper;
-        const panes = [1, 2, 3, 4].map((item, index) => <Tab.Item title={`item ${item}`} key={index} />);
+        const panes = [1, 2, 3, 4].map((item, index) => (
+            <Tab.Item title={`item ${item}`} key={index} />
+        ));
 
         afterEach(() => {
             wrapper.unmount();
@@ -211,20 +209,9 @@ describe('Tab', () => {
                     {panes}
                 </Tab>
             );
-            wrapper
-                .find('.next-tabs-tab')
-                .at(2)
-                .simulate('click');
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(2)
-                    .hasClass('active')
-            );
-            wrapper
-                .find('.next-tabs-tab')
-                .at(2)
-                .simulate('click');
+            wrapper.find('.next-tabs-tab').at(2).simulate('click');
+            assert(wrapper.find('.next-tabs-tab').at(2).hasClass('active'));
+            wrapper.find('.next-tabs-tab').at(2).simulate('click');
             assert(clickCounter === 2);
             assert(changeCounter === 1);
         });
@@ -236,74 +223,30 @@ describe('Tab', () => {
                     {panes}
                 </Tab>
             );
-            wrapper
-                .find('.next-tabs-tab')
-                .at(3)
-                .simulate('mouseEnter');
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(3)
-                    .hasClass('active')
-            );
-            wrapper
-                .find('.next-tabs-tab')
-                .at(2)
-                .simulate('mouseEnter');
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(2)
-                    .hasClass('active')
-            );
-            wrapper
-                .find('.next-tabs-tab')
-                .at(2)
-                .simulate('mouseLeave');
+            wrapper.find('.next-tabs-tab').at(3).simulate('mouseEnter');
+            assert(wrapper.find('.next-tabs-tab').at(3).hasClass('active'));
+            wrapper.find('.next-tabs-tab').at(2).simulate('mouseEnter');
+            assert(wrapper.find('.next-tabs-tab').at(2).hasClass('active'));
+            wrapper.find('.next-tabs-tab').at(2).simulate('mouseLeave');
             assert(changeCounter === 2);
         });
 
         it('should change tabs with keyDown', () => {
             wrapper = mount(<Tab>{panes}</Tab>);
             wrapper.find('.next-tabs-tab.active').simulate('keyDown', { keyCode: KEYCODE.RIGHT });
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(1)
-                    .hasClass('active')
-            );
+            assert(wrapper.find('.next-tabs-tab').at(1).hasClass('active'));
             wrapper.find('.next-tabs-tab.active').simulate('keyDown', { keyCode: KEYCODE.DOWN });
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(2)
-                    .hasClass('active')
-            );
+            assert(wrapper.find('.next-tabs-tab').at(2).hasClass('active'));
             wrapper.find('.next-tabs-tab.active').simulate('keyDown', { keyCode: KEYCODE.UP });
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(1)
-                    .hasClass('active')
-            );
+            assert(wrapper.find('.next-tabs-tab').at(1).hasClass('active'));
             wrapper.find('.next-tabs-tab.active').simulate('keyDown', { keyCode: KEYCODE.LEFT });
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(0)
-                    .hasClass('active')
-            );
+            assert(wrapper.find('.next-tabs-tab').at(0).hasClass('active'));
         });
 
         it('should not change tabs with keyboard when keyboard event is disabled', () => {
             wrapper = mount(<Tab disableKeyboard>{panes}</Tab>);
             wrapper.find('.next-tabs-tab.active').simulate('keyDown', { keyCode: KEYCODE.RIGHT });
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(0)
-                    .hasClass('active')
-            );
+            assert(wrapper.find('.next-tabs-tab').at(0).hasClass('active'));
         });
 
         it('should render with closeable tabs', () => {
@@ -337,14 +280,8 @@ describe('Tab', () => {
 
         it('should unmountInactiveTabs', () => {
             wrapper = mount(<Tab unmountInactiveTabs>{panes}</Tab>);
-            wrapper
-                .find('.next-tabs-tab')
-                .at(3)
-                .simulate('click');
-            wrapper
-                .find('.next-tabs-tab')
-                .at(2)
-                .simulate('click');
+            wrapper.find('.next-tabs-tab').at(3).simulate('click');
+            wrapper.find('.next-tabs-tab').at(2).simulate('click');
             assert(wrapper.find('.next-tabs-tabpane').length === 1);
         });
 
@@ -386,7 +323,9 @@ describe('Tab', () => {
                 { attachTo: target }
             );
             await delay(600);
-            assert(dom.hasClass(wrapper.getDOMNode().querySelector('.next-tabs-btn-prev'), 'disabled'));
+            assert(
+                dom.hasClass(wrapper.getDOMNode().querySelector('.next-tabs-btn-prev'), 'disabled')
+            );
             assert(wrapper.getDOMNode().querySelector('.next-tabs-btn-next'));
         });
 
@@ -438,16 +377,8 @@ describe('Tab', () => {
                     <Tab defaultActiveKey="9">{panes}</Tab>
                 </div>
             );
-            wrapper
-                .find('.next-tabs-tab')
-                .at(3)
-                .simulate('click');
-            assert(
-                wrapper
-                    .find('.next-tabs-tab')
-                    .at(3)
-                    .hasClass('active')
-            );
+            wrapper.find('.next-tabs-tab').at(3).simulate('click');
+            assert(wrapper.find('.next-tabs-tab').at(3).hasClass('active'));
         });
 
         it('should scroll into the viewport while click the edge item', async () => {
@@ -515,7 +446,9 @@ describe('Tab', () => {
             assert(target.querySelectorAll('.next-overlay-wrapper').length === 1);
             target.querySelector('.next-menu-item').click();
             await delay(800);
-            assert(target.querySelectorAll('.next-menu-item')[0].classList.contains('next-selected'));
+            assert(
+                target.querySelectorAll('.next-menu-item')[0].classList.contains('next-selected')
+            );
         });
         it('should show slide buttons', async () => {
             ReactDOM.render(
@@ -573,7 +506,13 @@ describe('Tab', () => {
             ));
             ReactDOM.render(
                 <div style={{ width: '520px' }}>
-                    <Tab excessMode="slide" lazyLoad={false} defaultActiveKey={4} shape="wrapped" rtl>
+                    <Tab
+                        excessMode="slide"
+                        lazyLoad={false}
+                        defaultActiveKey={4}
+                        shape="wrapped"
+                        rtl
+                    >
                         {newpanes}
                     </Tab>
                 </div>,
