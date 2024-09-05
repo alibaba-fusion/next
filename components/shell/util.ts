@@ -1,13 +1,18 @@
 /**
  * 判断是否为布尔类型
- * @param  {any} val 例：'str' / undefined / null / true / false / 0
- * @return {bool}     例： false / false / false / true / false / false
+ * @param val - 要判断的值，例如 'str', undefined, null, true, false, 0 等
+ * @returns boolean
  */
-export function isBoolean(val) {
+export function isBoolean(val?: string | boolean | 0 | null) {
     return typeof val === 'boolean';
 }
 
-export function getCollapseMap(device) {
+export function getCollapseMap(device?: string): {
+    Navigation: boolean;
+    LocalNavigation: boolean;
+    Ancillary: boolean;
+    ToolDock: boolean;
+} {
     // by default all of them are collapsed
     const origin = {
         Navigation: true,
@@ -16,7 +21,7 @@ export function getCollapseMap(device) {
         ToolDock: true,
     };
 
-    let map = [];
+    let map: string[] = [];
 
     switch (device) {
         case 'phone':
@@ -32,11 +37,13 @@ export function getCollapseMap(device) {
             break;
     }
 
-    Object.keys(origin).forEach(key => {
-        if (map.indexOf(key) > -1) {
-            origin[key] = false;
+    Object.keys(origin).forEach(
+        (key: 'Navigation' | 'LocalNavigation' | 'Ancillary' | 'ToolDock') => {
+            if (map.indexOf(key) > -1) {
+                origin[key] = false;
+            }
         }
-    });
+    );
 
     return origin;
 }

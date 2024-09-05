@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import ConfigProvider from '../config-provider';
+import type { ShellBaseProps } from './types';
 
-export default function Base(props) {
+interface BaseShellProps extends Omit<ShellBaseProps, 'children'> {
+    children?: Array<React.ReactElement | null> | React.ReactElement;
+}
+
+export default function Base(props: { componentName?: string }) {
     const { componentName } = props;
-    class Shell extends Component {
+    class Shell extends Component<BaseShellProps> {
         static displayName = componentName;
 
         static _typeMark = `Shell_${componentName}`;
@@ -20,14 +25,7 @@ export default function Base(props) {
             triggerProps: PropTypes.object,
             direction: PropTypes.oneOf(['hoz', 'ver']),
             align: PropTypes.oneOf(['left', 'right', 'center']),
-            /**
-             * 弹层显示或隐藏时触发的回调函数
-             * @param {Boolean} collapse 弹层是否显示
-             */
             onCollapseChange: PropTypes.func,
-            /**
-             * 是否固定，仅对 Shell.Navigation Shell.ToolDock 生效，且需要在在 Shell fixedHeader时生效
-             */
             fixed: PropTypes.bool,
         };
 
@@ -70,12 +68,12 @@ export default function Base(props) {
             const Tag = component;
 
             const cls = classnames({
-                [`${prefix}shell-${componentName.toLowerCase()}`]: true,
+                [`${prefix}shell-${componentName!.toLowerCase()}`]: true,
                 [`${prefix}shell-collapse`]: !!collapse,
                 [`${prefix}shell-mini`]: miniable,
                 [`${prefix}shell-nav-${align}`]:
                     componentName === 'Navigation' && direction === 'hoz' && align,
-                [className]: !!className,
+                [className!]: !!className,
             });
 
             let newChildren = children;
@@ -88,6 +86,7 @@ export default function Base(props) {
             }
 
             return (
+                // @ts-expect-error Tag 不具有构造签名
                 <Tag className={cls} {...others}>
                     {newChildren}
                 </Tag>
