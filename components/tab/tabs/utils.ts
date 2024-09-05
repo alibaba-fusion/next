@@ -56,7 +56,12 @@ export function tabsArrayShallowEqual(arrA, arrB) {
     }
 
     // 判断：调用的值/是否为数组/数组的长度
-    if (!arrA || !arrB || typeof arrA + typeof arrB !== 'objectobject' || arrA.length !== arrB.length) {
+    if (
+        !arrA ||
+        !arrB ||
+        typeof arrA + typeof arrB !== 'objectobject' ||
+        arrA.length !== arrB.length
+    ) {
         return false;
     }
 

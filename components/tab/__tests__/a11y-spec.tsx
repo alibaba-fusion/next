@@ -26,7 +26,9 @@ describe('Tab a11y', () => {
         return wrapper;
     });
     it('should not have any violations for tab with datasource', async () => {
-        const panes = [1, 2, 3, 4, 5].map((item, index) => <Tab.Item title={`item ${item}`} key={index} />);
+        const panes = [1, 2, 3, 4, 5].map((item, index) => (
+            <Tab.Item title={`item ${item}`} key={index} />
+        ));
         wrapper = await testReact(<Tab animation={false}>{panes}</Tab>);
         return wrapper;
     });
