@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-
+import { TabItemProps } from '../types';
 /** Tab.Item */
-class TabItem extends React.Component {
+class TabItem extends React.Component<TabItemProps> {
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -30,10 +30,12 @@ class TabItem extends React.Component {
         closeable: false,
     };
 
+    _actived: boolean;
+
     render() {
         const { prefix, active, lazyLoad, unmountInactiveTabs, children } = this.props;
 
-        this._actived = this._actived || active;
+        this._actived = this._actived || (active !== undefined ? active : false);
         if (lazyLoad && !this._actived) {
             return null;
         }

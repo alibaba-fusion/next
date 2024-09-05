@@ -21,7 +21,7 @@ const tabs = [
     { tab: 'More 11', key: 16 },
 ];
 
-function onClick(key) {
+function onClick(key: string) {
     console.log(key);
 }
 

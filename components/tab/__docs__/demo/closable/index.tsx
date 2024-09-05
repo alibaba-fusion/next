@@ -3,14 +3,25 @@ import ReactDOM from 'react-dom';
 import { Tab, Button, Icon } from '@alifd/next';
 
 const panes = [
-    { tab: 'Mail', key: 1, closeable: false },
-    { tab: 'Message', key: 2, closeable: true },
-    { tab: 'Setting', key: 3, closeable: true },
-    { tab: 'Unread', key: 4, closeable: true },
+    { tab: 'Mail', key: '1', closeable: false },
+    { tab: 'Message', key: '2', closeable: true },
+    { tab: 'Setting', key: '3', closeable: true },
+    { tab: 'Unread', key: '4', closeable: true },
 ];
 
-class CloseableTab extends React.Component {
-    constructor(props) {
+interface Pane {
+    tab: string;
+    key: string;
+    closeable: boolean;
+}
+
+interface CloseableTabState {
+    panes: Pane[];
+    activeKey: string;
+}
+
+class CloseableTab extends React.Component<{}, CloseableTabState> {
+    constructor(props: {}) {
         super(props);
         this.state = {
             panes: panes,
@@ -19,9 +30,9 @@ class CloseableTab extends React.Component {
     }
 
     /*eslint-disable eqeqeq */
-    remove(targetKey) {
+    remove(targetKey: string) {
         let activeKey = this.state.activeKey;
-        const panes = [];
+        const panes: Pane[] = [];
         this.state.panes.forEach(pane => {
             if (pane.key != targetKey) {
                 panes.push(pane);
@@ -34,17 +45,17 @@ class CloseableTab extends React.Component {
         this.setState({ panes, activeKey });
     }
 
-    onClose = targetKey => {
+    onClose = (targetKey: string) => {
         this.remove(targetKey);
     };
 
-    onChange = activeKey => {
+    onChange = (activeKey: string) => {
         this.setState({ activeKey });
     };
 
     addTabpane = () => {
         const panes = this.state.panes;
-        const newItem = { tab: 'new tab', key: Math.random(), closeable: true };
+        const newItem = { tab: 'new tab', key: Math.random().toString(), closeable: true };
         panes.push(newItem);
 
         this.setState({
