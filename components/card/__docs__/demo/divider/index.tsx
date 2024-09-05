@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Card, Button, Box } from '@alifd/next';
 
 const commonProps = {
-    title: 'Title',
+    title: 'Simple Card',
     style: { width: 300 },
     subTitle: 'Sub-title',
     extra: (
@@ -16,7 +16,7 @@ const commonProps = {
 ReactDOM.render(
     <Box direction="row" spacing={20}>
         <Card free style={{ width: 300 }}>
-            <Card.Header title="Simple Card" {...commonProps} />
+            <Card.Header {...commonProps} />
             <Card.Divider />
             <Card.Content>
                 Lorem ipsum dolor sit amet, est viderer iuvaret perfecto et. Ne petentium quaerendum
@@ -34,7 +34,7 @@ ReactDOM.render(
             </Card.Actions>
         </Card>
         <Card free style={{ width: 300 }}>
-            <Card.Header title="Simple Card" {...commonProps} />
+            <Card.Header {...commonProps} />
             <Card.Divider inset />
             <Card.Content>
                 Lorem ipsum dolor sit amet, est viderer iuvaret perfecto et. Ne petentium quaerendum

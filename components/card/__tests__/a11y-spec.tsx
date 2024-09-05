@@ -1,44 +1,30 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import Card from '../index';
 import '../style';
-import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
+import { testReact } from '../../util/__tests__/a11y/validate';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Card A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
-
     it('should not have any violations when default', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Card title="Simple Card">
                 <div className="card-placeholder" />
             </Card>
         );
-        return wrapper;
     });
 
     it('should not have any violations when displaying images', async () => {
-        wrapper = await testReact(
+        await testReact(
             <Card className="image-card" contentHeight="auto">
-                <img src="https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png" alt="father day" />
+                <img
+                    src="https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png"
+                    alt="father day"
+                />
                 <div className="custom-card">
                     <h3>Father's Day</h3>
                     <p>Thank you, papa</p>
                 </div>
             </Card>
         );
-        return wrapper;
     });
 
     it('should not have any violations when setting height', async () => {
@@ -48,7 +34,7 @@ describe('Card A11y', () => {
             subTitle: 'Sub-title',
         };
 
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Card {...commonProps} contentHeight="auto">
                     <div className="custom-content">
@@ -65,7 +51,6 @@ describe('Card A11y', () => {
                 </Card>
             </div>
         );
-        return wrapper;
     });
 
     it('should not have any violations when setting title off', async () => {
@@ -74,11 +59,10 @@ describe('Card A11y', () => {
             title: 'Title',
         };
 
-        wrapper = await testReact(
+        await testReact(
             <Card {...commonProps} showTitleBullet={false}>
                 Card Content
             </Card>
         );
-        return wrapper;
     });
 });
