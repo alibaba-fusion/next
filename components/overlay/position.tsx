@@ -62,7 +62,9 @@ export default class Position extends Component<PositionProps> {
         this.setPosition();
 
         if (this.props.needListenResize) {
-            events.on(window, 'resize', this.handleResize);
+            if (typeof window !== 'undefined') {
+                events.on(window, 'resize', this.handleResize);
+            }
             this.observe();
         }
     }
@@ -102,6 +104,9 @@ export default class Position extends Component<PositionProps> {
 
     shouldIgnorePosition = () => {
         const node = this.getContentNode();
+        if (typeof window === 'undefined') {
+            return true;
+        }
         if (!node) {
             return true;
         }
