@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
@@ -8,6 +8,7 @@ import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
 import '../../style';
 import '../../../demo-helper/style';
+import PropTypes from 'prop-types';
 
 const i18nMap = {
     'zh-cn': {
@@ -85,9 +86,34 @@ const tab12 = [
     { tab: 'twelve', key: 12 },
 ];
 
+interface DemoFunction {
+    [key: string]: {
+        label: string;
+        value: string;
+        enum: { label: string; value: string }[];
+    };
+}
+
+interface FunctionDemoState {
+    demoFunction: DemoFunction;
+}
+
+interface FunctionDemoProps {
+    title: string;
+    locale: any;
+    tabRender: (
+        title: string,
+        locale: any,
+        props: any,
+        demoFunction: DemoFunction,
+        onFunctionChange: (ret: DemoFunction) => void
+    ) => ReactNode;
+    showTabPosition?: boolean;
+}
+
 /* eslint-disable */
-class FunctionDemo extends React.Component {
-    constructor(props) {
+class FunctionDemo extends React.Component<FunctionDemoProps, FunctionDemoState> {
+    constructor(props: FunctionDemoProps) {
         super(props);
         this.state = {
             demoFunction: {
@@ -128,13 +154,13 @@ class FunctionDemo extends React.Component {
         };
     }
 
-    onFunctionChange = ret => {
+    onFunctionChange = (ret: DemoFunction) => {
         this.setState({
             demoFunction: ret,
         });
     };
 
-    renderTabItemTitle = (text, showIcon = false) => {
+    renderTabItemTitle = (text: string, showIcon = false): PropTypes.ReactNodeLike => {
         if (!showIcon) {
             return text;
         }
@@ -182,7 +208,19 @@ class FunctionDemo extends React.Component {
     }
 }
 
-function renderSimpleTab(title, locale, props, demoFunction, onFunctionChange) {
+interface RenderProps {
+    children4: ReactNode[];
+    children12: ReactNode[];
+    tabPosition?: 'top' | 'bottom' | 'left' | 'right';
+}
+
+function renderSimpleTab(
+    title: string,
+    locale: any,
+    props: RenderProps,
+    demoFunction: DemoFunction,
+    onFunctionChange: (ret: DemoFunction) => void
+) {
     const { children4, children12 } = props;
     return (
         <Demo title={title} block demoFunction={demoFunction} onFunctionChange={onFunctionChange}>
@@ -207,7 +245,13 @@ function renderSimpleTab(title, locale, props, demoFunction, onFunctionChange) {
     );
 }
 
-function renderWrappedTab(title, locale, props, demoFunction, onFunctionChange) {
+function renderWrappedTab(
+    title: string,
+    locale: any,
+    props: RenderProps,
+    demoFunction: DemoFunction,
+    onFunctionChange: (ret: DemoFunction) => void
+) {
     const { children4, children12, tabPosition } = props;
     return (
         <Demo title={title} block demoFunction={demoFunction} onFunctionChange={onFunctionChange}>
@@ -216,9 +260,7 @@ function renderWrappedTab(title, locale, props, demoFunction, onFunctionChange) 
                 <Tab
                     shape="wrapped"
                     contentStyle={
-                        tabPosition === 'left' || tabPosition === 'right'
-                            ? { minHeight: 150 }
-                            : null
+                        tabPosition === 'left' || tabPosition === 'right' ? { minHeight: 150 } : {}
                     }
                     tabPosition={tabPosition}
                     size="medium"
@@ -228,9 +270,7 @@ function renderWrappedTab(title, locale, props, demoFunction, onFunctionChange) 
                 <Tab
                     shape="wrapped"
                     contentStyle={
-                        tabPosition === 'left' || tabPosition === 'right'
-                            ? { minHeight: 150 }
-                            : null
+                        tabPosition === 'left' || tabPosition === 'right' ? { minHeight: 150 } : {}
                     }
                     tabPosition={tabPosition}
                     size="small"
@@ -242,9 +282,7 @@ function renderWrappedTab(title, locale, props, demoFunction, onFunctionChange) 
                 <Tab
                     shape="wrapped"
                     contentStyle={
-                        tabPosition === 'left' || tabPosition === 'right'
-                            ? { minHeight: 150 }
-                            : null
+                        tabPosition === 'left' || tabPosition === 'right' ? { minHeight: 150 } : {}
                     }
                     tabPosition={tabPosition}
                     size="medium"
@@ -254,9 +292,7 @@ function renderWrappedTab(title, locale, props, demoFunction, onFunctionChange) 
                 <Tab
                     shape="wrapped"
                     contentStyle={
-                        tabPosition === 'left' || tabPosition === 'right'
-                            ? { minHeight: 150 }
-                            : null
+                        tabPosition === 'left' || tabPosition === 'right' ? { minHeight: 150 } : {}
                     }
                     tabPosition={tabPosition}
                     size="small"
@@ -268,9 +304,7 @@ function renderWrappedTab(title, locale, props, demoFunction, onFunctionChange) 
                 <Tab
                     shape="wrapped"
                     contentStyle={
-                        tabPosition === 'left' || tabPosition === 'right'
-                            ? { minHeight: 150 }
-                            : null
+                        tabPosition === 'left' || tabPosition === 'right' ? { minHeight: 150 } : {}
                     }
                     tabPosition={tabPosition}
                     size="medium"
@@ -281,9 +315,7 @@ function renderWrappedTab(title, locale, props, demoFunction, onFunctionChange) 
                 <Tab
                     shape="wrapped"
                     contentStyle={
-                        tabPosition === 'left' || tabPosition === 'right'
-                            ? { minHeight: 150 }
-                            : null
+                        tabPosition === 'left' || tabPosition === 'right' ? { minHeight: 150 } : {}
                     }
                     tabPosition={tabPosition}
                     size="small"
@@ -296,11 +328,17 @@ function renderWrappedTab(title, locale, props, demoFunction, onFunctionChange) 
     );
 }
 
-function renderTextTab(title, locale, props, demoFunction, onFunctionChange) {
+function renderTextTab(
+    title: string,
+    locale: any,
+    props: RenderProps,
+    demoFunction: DemoFunction,
+    onFunctionChange: (ret: DemoFunction) => void
+) {
     const { children4, children12, tabPosition } = props;
     return (
         <Demo
-            Demo
+            // Demo
             title={title}
             block
             demoFunction={demoFunction}
@@ -335,11 +373,17 @@ function renderTextTab(title, locale, props, demoFunction, onFunctionChange) {
     );
 }
 
-function renderCapsuleTab(title, locale, props, demoFunction, onFunctionChange) {
+function renderCapsuleTab(
+    title: string,
+    locale: any,
+    props: RenderProps,
+    demoFunction: DemoFunction,
+    onFunctionChange: (ret: DemoFunction) => void
+) {
     const { children4, children12, tabPosition } = props;
     return (
         <Demo
-            Demo
+            // Demo
             title={title}
             block
             demoFunction={demoFunction}
@@ -358,7 +402,7 @@ function renderCapsuleTab(title, locale, props, demoFunction, onFunctionChange) 
     );
 }
 
-function render(i18n, lang) {
+function render(i18n: any, lang: string) {
     const tab4List = tab4.map(item => (
         <Tab.Item title={i18n[item.tab]} key={item.key} disabled={item.disabled} />
     ));

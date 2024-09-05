@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Tab } from '@alifd/next';
 
-function callback(key) {
+function callback(key: string) {
     console.log(key);
 }
 

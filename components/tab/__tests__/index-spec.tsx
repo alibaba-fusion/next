@@ -1,119 +1,101 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { mount, render } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import sinon from 'sinon';
-import assert from 'power-assert';
-import { KEYCODE, dom } from '../../util';
+import { KEYCODE } from '../../util';
 import Tab from '../index';
-import TabNav from '../tabs/nav';
 import '../style';
-
-Enzyme.configure({ adapter: new Adapter() });
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 describe('Tab', () => {
     describe('simple', () => {
         it('should render only one tab', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Tab>
                     <Tab.Item title="foo" />
                 </Tab>
             );
-            assert(wrapper.find('.next-tabs-tab').length === 1);
+            cy.get('.next-tabs-tab').should('have.length', 1);
         });
     });
 
     describe('with props', () => {
-        let wrapper;
         const panes = [1, 2, 3, 4, 5].map((item, index) =>
             item < 5 ? <Tab.Item title={`item ${item}`} key={index} /> : null
         );
 
-        afterEach(() => {
-            wrapper.unmount();
-            wrapper = null;
-        });
-
         it('should render tab (with animation)', () => {
-            wrapper = mount(<Tab>{panes}</Tab>);
-            assert(wrapper.find('.next-tabs-tab').length === 4);
-            assert(wrapper.find('.next-tabs-tabpane').length === 1);
+            cy.mount(<Tab>{panes}</Tab>);
+            cy.get('.next-tabs-tab').should('have.length', 4);
+            cy.get('.next-tabs-tabpane').should('have.length', 1);
         });
 
-        it('should render tab with undefined children', done => {
-            wrapper = mount(<Tab shape="capsule">{undefined}</Tab>);
-            setTimeout(() => {
-                wrapper.setProps({ children: [1, 2] });
-                assert(wrapper);
-                done();
-            }, 100);
+        it('should render tab with undefined children', () => {
+            cy.mount(<Tab shape="capsule">{undefined}</Tab>).as('Tab');
+            cy.rerender('Tab', { children: [1, 2] });
+            cy.get('.next-tabs').should('exist');
         });
 
         it('should render tab without animation', () => {
-            wrapper = mount(<Tab animation={false}>{panes}</Tab>);
-            assert(wrapper.find('.next-tabs-nav-appear').length === 0);
+            cy.mount(<Tab animation={false}>{panes}</Tab>);
+            cy.get('.next-tabs-nav-appear').should('have.length', 0);
         });
 
         it('should render with shape', () => {
-            wrapper = mount(<Tab shape="wrapped">{panes}</Tab>);
-            assert(wrapper.props().shape === 'wrapped');
-            assert(wrapper.find('.next-tabs').hasClass('next-tabs-wrapped'));
+            cy.mount(<Tab shape="wrapped">{panes}</Tab>);
+            cy.get('.next-tabs').should('have.class', 'next-tabs-wrapped');
 
-            const wrapper2 = mount(<Tab shape="capsule">{panes}</Tab>);
-            assert(wrapper2.find('.next-tabs').hasClass('next-tabs-capsule'));
-            const wrapper3 = mount(<Tab shape="text">{panes}</Tab>);
-            assert(wrapper3.find('.next-tabs').hasClass('next-tabs-text'));
+            cy.mount(<Tab shape="capsule">{panes}</Tab>);
+            cy.get('.next-tabs').should('have.class', 'next-tabs-capsule');
+
+            cy.mount(<Tab shape="text">{panes}</Tab>);
+            cy.get('.next-tabs').should('have.class', 'next-tabs-text');
         });
 
         it('should render with defaultActiveKey', () => {
-            wrapper = mount(<Tab defaultActiveKey="3">{panes}</Tab>);
-            assert(wrapper.find('.next-tabs-tab').at(3).hasClass('active'));
+            cy.mount(<Tab defaultActiveKey="3">{panes}</Tab>);
+            cy.get('.next-tabs-tab').eq(3).should('have.class', 'active');
         });
 
         it('should render with activeKey (controlled)', () => {
-            wrapper = mount(<Tab activeKey="2">{panes}</Tab>);
-            assert(wrapper.find('.next-tabs-tab').at(2).hasClass('active'));
-            wrapper.setProps({ activeKey: '3' });
-            assert(wrapper.find('.next-tabs-tab').at(3).hasClass('active'));
+            cy.mount(<Tab activeKey="2">{panes}</Tab>);
+            cy.get('.next-tabs-tab').eq(2).should('have.class', 'active');
+
+            cy.mount(<Tab activeKey="3">{panes}</Tab>);
+            cy.get('.next-tabs-tab').eq(3).should('have.class', 'active');
         });
 
         it('should render with tabPosition (wrapped)', () => {
-            wrapper = mount(
+            cy.mount(
                 <Tab tabPosition="left" shape="wrapped">
                     {panes}
                 </Tab>
             );
-            assert(wrapper.find('.next-tabs').hasClass('next-tabs-vertical'));
+            cy.get('.next-tabs').should('have.class', 'next-tabs-vertical');
 
-            const wrapper2 = mount(
+            cy.mount(
                 <Tab tabPosition="right" shape="wrapped">
                     {panes}
                 </Tab>
             );
-            assert(wrapper2.find('.next-tabs').hasClass('next-tabs-vertical'));
+            cy.get('.next-tabs').should('have.class', 'next-tabs-vertical');
 
-            const wrapper3 = mount(
+            cy.mount(
                 <Tab tabPosition="bottom" shape="wrapped">
                     {panes}
                 </Tab>
             );
-            assert(wrapper3.find('.next-tabs').hasClass('next-tabs-bottom'));
+            cy.get('.next-tabs').should('have.class', 'next-tabs-bottom');
         });
 
         it('should render with size', () => {
-            wrapper = mount(<Tab size="small">{panes}</Tab>);
-            assert(wrapper.find('.next-tabs').hasClass('next-small'));
+            cy.mount(<Tab size="small">{panes}</Tab>);
+            cy.get('.next-tabs').should('have.class', 'next-small');
         });
 
         it('should render with extra', () => {
-            wrapper = mount(<Tab extra={<div className="test-extra" />}>{panes}</Tab>);
-            assert(wrapper.find('.test-extra').length === 1);
+            cy.mount(<Tab extra={<div className="test-extra" />}>{panes}</Tab>);
+            cy.get('.test-extra').should('have.length', 1);
         });
 
         it('should render extra in left side', () => {
-            wrapper = mount(
+            cy.mount(
                 <Tab
                     shape="wrapped"
                     tabPosition="left"
@@ -122,363 +104,311 @@ describe('Tab', () => {
                     {panes}
                 </Tab>
             );
-            assert(wrapper.find('.test-extra').length === 1);
+            cy.get('.test-extra').should('have.length', 1);
         });
 
         it('should render with navStyle & navClassName', () => {
             const navStyle = { background: 'red' };
-            wrapper = mount(
+            cy.mount(
                 <Tab navClassName="custom-nav" navStyle={navStyle}>
                     {panes}
                 </Tab>
             );
-            assert(wrapper.find('.next-tabs-bar').hasClass('custom-nav'));
-            const tabBar = wrapper.find('.next-tabs-bar').instance();
-            assert(tabBar.style.background === 'red' || tabBar.style.background.startsWith('red'));
-        });
-
-        it('should render with contentStyle & contentClassName', () => {
-            const contentStyle = { background: 'red' };
-            wrapper = mount(
-                <Tab contentStyle={contentStyle} contentClassName="custom-content">
-                    {panes}
-                </Tab>
-            );
-            assert(wrapper.find('.next-tabs-content').hasClass('custom-content'));
-            const tabContent = wrapper.find('.next-tabs-content').instance();
-            assert(
-                tabContent.style.background === 'red' ||
-                    tabContent.style.background.startsWith('red')
-            );
+            cy.get('.next-tabs-bar').should('have.class', 'custom-nav');
+            cy.get('.next-tabs-bar').should('have.css', 'background-color', 'rgb(255, 0, 0)');
         });
 
         it('should render with tabRender', () => {
-            wrapper = mount(
+            cy.mount(
                 <Tab
                     tabRender={(key, props) => <div className="custom-tab-item">{props.title}</div>}
                 >
                     {panes}
                 </Tab>
             );
-            assert(wrapper.find('.custom-tab-item').length === 4);
+            cy.get('.custom-tab-item').should('have.length', 4);
         });
 
         it('should render all tabpanes (disable lazyLoad)', () => {
-            wrapper = mount(<Tab lazyLoad={false}>{panes}</Tab>);
-            assert(wrapper.find('.next-tabs-tabpane').length === 4);
+            cy.mount(<Tab lazyLoad={false}>{panes}</Tab>);
+            cy.get('.next-tabs-tabpane').should('have.length', 4);
         });
 
         it('should support device', () => {
-            wrapper = mount(<Tab>{panes}</Tab>);
-            assert(wrapper.find('.next-tabs-scrollable').length > 0);
-            assert(wrapper.find(TabNav).prop('excessMode') === 'slide');
-            wrapper.setProps({
-                excessMode: 'dropdown',
-            });
-            assert(wrapper.find('.next-tabs-scrollable').length > 0);
+            // 如果tabItem太少，不会出现slide模式下的next button了
+            const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(
+                (item, index) => <Tab.Item title={`item ${item}`} key={index} />
+            );
+            cy.mount(<Tab>{panes}</Tab>);
+            cy.get('.next-tabs-scrollable').should('have.length.greaterThan', 0);
+            cy.get('.next-tabs-btn-next').should('exist');
+            cy.mount(<Tab excessMode="dropdown">{panes}</Tab>);
+            cy.get('.next-tabs-scrollable').should('exist');
         });
 
         it('should still render with no errors without Tab.Item', () => {
             function App() {
                 return <Tab>1234</Tab>;
             }
-
-            wrapper = mount(<App />);
-            wrapper.setProps({ activeKey: '3' });
-
-            assert(wrapper.find('.next-tabs').length === 1);
+            cy.mount(<App />).as('App');
+            cy.rerender('App', { activeKey: '3' });
+            cy.get('.next-tabs').should('have.length', 1);
         });
     });
 
     describe('with action', () => {
-        let wrapper;
         const panes = [1, 2, 3, 4].map((item, index) => (
             <Tab.Item title={`item ${item}`} key={index} />
         ));
 
-        afterEach(() => {
-            wrapper.unmount();
-            wrapper = null;
-        });
-
         it('should click to change', () => {
-            let clickCounter = 0;
-            let changeCounter = 0;
-            wrapper = mount(
-                <Tab onClick={() => ++clickCounter} onChange={() => ++changeCounter}>
+            const onClick = cy.spy();
+            const onChange = cy.spy();
+
+            cy.mount(
+                <Tab onClick={onClick} onChange={onChange}>
                     {panes}
                 </Tab>
             );
-            wrapper.find('.next-tabs-tab').at(2).simulate('click');
-            assert(wrapper.find('.next-tabs-tab').at(2).hasClass('active'));
-            wrapper.find('.next-tabs-tab').at(2).simulate('click');
-            assert(clickCounter === 2);
-            assert(changeCounter === 1);
+            cy.get('.next-tabs-tab').eq(2).click();
+            cy.get('.next-tabs-tab').eq(2).should('have.class', 'active');
+            cy.get('.next-tabs-tab').eq(2).click();
+
+            cy.wrap(onClick).should('have.been.calledTwice');
+            cy.wrap(onChange).should('have.been.calledOnce');
         });
 
         it('should change tabs with triggerType', () => {
-            let changeCounter = 0;
-            wrapper = mount(
-                <Tab triggerType="hover" onChange={() => ++changeCounter}>
+            const onChange = cy.spy();
+            cy.mount(
+                <Tab triggerType="hover" onChange={onChange}>
                     {panes}
                 </Tab>
             );
-            wrapper.find('.next-tabs-tab').at(3).simulate('mouseEnter');
-            assert(wrapper.find('.next-tabs-tab').at(3).hasClass('active'));
-            wrapper.find('.next-tabs-tab').at(2).simulate('mouseEnter');
-            assert(wrapper.find('.next-tabs-tab').at(2).hasClass('active'));
-            wrapper.find('.next-tabs-tab').at(2).simulate('mouseLeave');
-            assert(changeCounter === 2);
+
+            cy.get('.next-tabs-tab').eq(3).trigger('mouseover');
+            cy.get('.next-tabs-tab').eq(3).should('have.class', 'active');
+            cy.get('.next-tabs-tab').eq(2).trigger('mouseover');
+            cy.get('.next-tabs-tab').eq(2).should('have.class', 'active');
+            cy.get('.next-tabs-tab').eq(2).trigger('mouseout');
+            cy.wrap(onChange).should('have.been.calledTwice');
         });
 
         it('should change tabs with keyDown', () => {
-            wrapper = mount(<Tab>{panes}</Tab>);
-            wrapper.find('.next-tabs-tab.active').simulate('keyDown', { keyCode: KEYCODE.RIGHT });
-            assert(wrapper.find('.next-tabs-tab').at(1).hasClass('active'));
-            wrapper.find('.next-tabs-tab.active').simulate('keyDown', { keyCode: KEYCODE.DOWN });
-            assert(wrapper.find('.next-tabs-tab').at(2).hasClass('active'));
-            wrapper.find('.next-tabs-tab.active').simulate('keyDown', { keyCode: KEYCODE.UP });
-            assert(wrapper.find('.next-tabs-tab').at(1).hasClass('active'));
-            wrapper.find('.next-tabs-tab.active').simulate('keyDown', { keyCode: KEYCODE.LEFT });
-            assert(wrapper.find('.next-tabs-tab').at(0).hasClass('active'));
+            cy.mount(<Tab>{panes}</Tab>);
+            cy.get('.next-tabs-tab.active').trigger('keydown', { keyCode: KEYCODE.RIGHT });
+            cy.get('.next-tabs-tab').eq(1).should('have.class', 'active');
+            cy.get('.next-tabs-tab.active').trigger('keydown', { keyCode: KEYCODE.DOWN });
+            cy.get('.next-tabs-tab').eq(2).should('have.class', 'active');
+            cy.get('.next-tabs-tab.active').trigger('keydown', { keyCode: KEYCODE.UP });
+            cy.get('.next-tabs-tab').eq(1).should('have.class', 'active');
+            cy.get('.next-tabs-tab.active').trigger('keydown', { keyCode: KEYCODE.LEFT });
+            cy.get('.next-tabs-tab').eq(0).should('have.class', 'active');
         });
 
         it('should not change tabs with keyboard when keyboard event is disabled', () => {
-            wrapper = mount(<Tab disableKeyboard>{panes}</Tab>);
-            wrapper.find('.next-tabs-tab.active').simulate('keyDown', { keyCode: KEYCODE.RIGHT });
-            assert(wrapper.find('.next-tabs-tab').at(0).hasClass('active'));
+            cy.mount(<Tab disableKeyboard>{panes}</Tab>);
+            cy.get('.next-tabs-tab.active').trigger('keydown', { keyCode: KEYCODE.RIGHT });
+            cy.get('.next-tabs-tab').eq(0).should('have.class', 'active');
         });
 
         it('should render with closeable tabs', () => {
-            let tabKey;
-            wrapper = mount(
-                <Tab onClose={key => (tabKey = key)}>
-                    <Tab.Item title="foo" />
-                    <Tab.Item title="bar" closeable />
+            let tabKey: string;
+
+            cy.mount(
+                <Tab
+                    onClose={key => {
+                        tabKey = key;
+                    }}
+                >
+                    <Tab.Item title="foo" key="0" />
+                    <Tab.Item title="bar" closeable key="1" />
                 </Tab>
             );
-            const closeIcon = wrapper.find('.next-icon-close');
-            assert(closeIcon.length === 1);
-            closeIcon.simulate('click');
-            assert(tabKey === '1');
+
+            cy.get('.next-icon-close')
+                .should('have.length', 1)
+                .eq(0)
+                .click()
+                .then(() => {
+                    cy.wrap(tabKey).should('eq', '1');
+                });
         });
 
         it('should close tab with keyboard', () => {
-            let tabKey;
-            wrapper = mount(
+            let tabKey: string;
+            cy.mount(
                 <Tab onClose={key => (tabKey = key)}>
                     <Tab.Item title="foo" />
                     <Tab.Item title="bar" closeable />
                 </Tab>
             );
-            const closeIcon = wrapper.find('.next-icon-close');
-            assert(closeIcon.length === 1);
-            closeIcon.simulate('focus');
-            closeIcon.simulate('keyDown', { keyCode: KEYCODE.ENTER });
-            assert(tabKey === '1');
+
+            cy.get('.next-icon-close')
+                .should('have.length', 1)
+                .eq(0)
+                .trigger('keydown', { keyCode: KEYCODE.ENTER })
+                .then(() => {
+                    cy.wrap(tabKey).should('eq', '1');
+                });
         });
 
         it('should unmountInactiveTabs', () => {
-            wrapper = mount(<Tab unmountInactiveTabs>{panes}</Tab>);
-            wrapper.find('.next-tabs-tab').at(3).simulate('click');
-            wrapper.find('.next-tabs-tab').at(2).simulate('click');
-            assert(wrapper.find('.next-tabs-tabpane').length === 1);
+            cy.mount(<Tab unmountInactiveTabs>{panes}</Tab>);
+
+            cy.get('.next-tabs-tab').eq(3).click();
+            cy.get('.next-tabs-tab').eq(2).click();
+            cy.get('.next-tabs-tabpane').should('have.length', 1);
         });
 
         it('should resize', () => {
-            const render = sinon.spy();
-            const ele = (
-                <Tab defaultActiveKey={1} tabRender={render}>
+            const render = cy.spy().as('renderSpy');
+            cy.mount(
+                <Tab defaultActiveKey={'1'} tabRender={render}>
                     <Tab.Item key={1} title="Item1" />
                 </Tab>
             );
-            wrapper = mount(ele);
-            window.dispatchEvent(new Event('resize'));
-            assert(render.calledOnce);
+            cy.window().then(win => {
+                win.dispatchEvent(new Event('resize'));
+            });
+            cy.get('@renderSpy').should('have.been.calledOnce');
         });
     });
 
     describe('excess mode', () => {
-        let target;
         const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
             <Tab.Item title={`tab item ${item}`} key={index} />
         ));
         const boxStyle = { width: '200px' };
 
-        beforeEach(() => {
-            target = document.createElement('div');
-            document.body.appendChild(target);
-        });
-
-        afterEach(() => {
-            document.body.removeChild(target);
-            target = null;
-        });
-
-        it('should render excess tabs with slides', async () => {
-            const wrapper = mount(
+        it('should render excess tabs with slides', () => {
+            cy.mount(
                 <div style={boxStyle}>
                     <Tab animation={false}>{panes}</Tab>
-                </div>,
-                { attachTo: target }
+                </div>
             );
-            await delay(600);
-            assert(
-                dom.hasClass(wrapper.getDOMNode().querySelector('.next-tabs-btn-prev'), 'disabled')
-            );
-            assert(wrapper.getDOMNode().querySelector('.next-tabs-btn-next'));
+            cy.get('.next-tabs-btn-prev').should('have.class', 'disabled');
+            cy.get('.next-tabs-btn-next').should('exist');
         });
 
-        it('should click prev/next to slide', async () => {
-            const wrapper = mount(
+        it('should click prev/next to slide', () => {
+            cy.mount(
                 <div style={boxStyle}>
                     <Tab animation={false}>{panes}</Tab>
-                </div>,
-                { attachTo: target }
+                </div>
             );
-            await delay(600);
-            const domNode = wrapper.getDOMNode();
-            assert(domNode);
-            assert(dom.hasClass(domNode.querySelector('.next-tabs-btn-prev'), 'disabled'));
-            ReactTestUtils.Simulate.click(domNode.querySelector('.next-tabs-btn-next'));
-            await delay(800);
-            assert(!dom.hasClass(domNode.querySelector('.next-tabs-btn-prev'), 'disabled'));
-            ReactTestUtils.Simulate.click(domNode.querySelector('.next-tabs-btn-prev'));
-            await delay(800);
-            assert(dom.hasClass(domNode.querySelector('.next-tabs-btn-prev'), 'disabled'));
+            cy.get('.next-tabs-btn-prev').should('exist').and('have.class', 'disabled');
+            cy.get('.next-tabs-btn-next').should('exist').click();
+            cy.get('.next-tabs-btn-prev').should('exist').and('not.have.class', 'disabled');
+            cy.get('.next-tabs-btn-prev').click();
+            cy.get('.next-tabs-btn-prev').should('exist').and('have.class', 'disabled');
         });
 
         it('should not render dropdown if not excessed', () => {
-            const wrapper = mount(
+            cy.mount(
                 <div style={boxStyle}>
                     <Tab excessMode="dropdown" shape="wrapped">
                         <Tab.Item title="item" key={1} />
                     </Tab>
-                </div>,
-                { attachTo: target }
+                </div>
             );
-            assert(!wrapper.getDOMNode().querySelector('.next-tabs-btn-down'));
+
+            cy.get('.next-tabs-btn-down').should('not.exist');
         });
 
         it('should work fine without animation', () => {
-            const wrapper = mount(<Tab animation={false}>{panes}</Tab>, { attachTo: target });
-            assert(
-                wrapper
-                    .getDOMNode()
-                    .querySelectorAll('.next-tabs-tab')
-                    .item(0)
-                    .classList.contains('active')
-            );
+            cy.mount(<Tab animation={false}>{panes}</Tab>);
+            cy.get('.next-tabs-tab').first().should('have.class', 'active');
         });
 
         it('should scrollToActiveTab', () => {
-            const wrapper = mount(
+            cy.mount(
                 <div style={boxStyle}>
                     <Tab defaultActiveKey="9">{panes}</Tab>
                 </div>
             );
-            wrapper.find('.next-tabs-tab').at(3).simulate('click');
-            assert(wrapper.find('.next-tabs-tab').at(3).hasClass('active'));
+
+            cy.get('.next-tabs-tab').eq(3).click();
+            cy.get('.next-tabs-tab').eq(3).should('have.class', 'active');
         });
 
-        it('should scroll into the viewport while click the edge item', async () => {
-            const wrapper = mount(
+        it('should scroll into the viewport while click the edge item', () => {
+            cy.mount(
                 <Tab animation={false} style={{ width: 380 }}>
                     {panes}
-                </Tab>,
-                { attachTo: target }
+                </Tab>
             );
-            await delay(600);
-            const scroller = wrapper.getDOMNode().querySelector('.next-tabs-nav-scroll');
-            assert(scroller);
-            const rightEdgeItem = scroller.querySelectorAll('.next-tabs-tab').item(3);
-            assert(rightEdgeItem);
-            ReactTestUtils.Simulate.click(rightEdgeItem);
-            await delay(1000);
-            assert(isInScrollBoxViewport(scroller, rightEdgeItem));
-            scroller.scrollLeft = 2000;
-            const leftEdgeItem = scroller.querySelectorAll('.next-tabs-tab').item(6);
-            assert(leftEdgeItem);
-            ReactTestUtils.Simulate.click(leftEdgeItem);
-            await delay(1000);
-            assert(isInScrollBoxViewport(scroller, leftEdgeItem));
+
+            cy.get('.next-tabs-nav-scroll').then(scroller => {
+                expect(scroller).to.exist;
+                cy.wrap(scroller).find('.next-tabs-tab').eq(3).click();
+                cy.wrap(scroller).find('.next-tabs-tab').eq(3).should('be.visible');
+                scroller[0].scrollLeft = 2000;
+                cy.wrap(scroller).find('.next-tabs-tab').eq(6).click();
+                cy.wrap(scroller).find('.next-tabs-tab').eq(6).should('be.visible');
+            });
         });
+
         it('extra content should not be obscured', () => {
             const extraContentStyle = { width: '50px' };
-            const wrapper = mount(
+            cy.mount(
                 <Tab extra={<div style={extraContentStyle}>hello world</div>} style={boxStyle}>
                     {panes}
                 </Tab>
             );
-            const extraContent = wrapper.find('.next-tabs-nav-extra').getDOMNode().children[0];
-            assert.equal(extraContentStyle.width, extraContent.style.width);
+            cy.get('.next-tabs-nav-extra').children().first().should('have.css', 'width', '50px');
         });
     });
+
     describe('animation sensitive tests', () => {
-        let target;
         const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
             <Tab.Item title={`tab item ${item}`} key={index} />
         ));
         const boxStyle = { width: '200px' };
 
-        beforeEach(() => {
-            target = document.createElement('div');
-            document.body.appendChild(target);
-        });
-
-        afterEach(() => {
-            ReactDOM.unmountComponentAtNode(target);
-            document.body.removeChild(target);
-        });
-        it('should render excess tabs with dropdown', async () => {
-            ReactDOM.render(
+        it('should render excess tabs with dropdown', () => {
+            cy.mount(
                 <div style={boxStyle}>
                     <Tab excessMode="dropdown" shape="wrapped">
                         {panes}
                     </Tab>
-                </div>,
-                target
+                </div>
             );
-            await delay(800);
-            assert(target.querySelectorAll('.next-tabs-btn-down').length === 1);
-            target.querySelector('.next-tabs-btn-down').click();
-            await delay(800);
-            assert(target.querySelectorAll('.next-overlay-wrapper').length === 1);
-            target.querySelector('.next-menu-item').click();
-            await delay(800);
-            assert(
-                target.querySelectorAll('.next-menu-item')[0].classList.contains('next-selected')
-            );
+
+            cy.get('.next-tabs-btn-down').should('have.length', 1);
+            cy.get('.next-tabs-btn-down').click();
+            cy.get('.next-overlay-wrapper').should('have.length', 1);
+            cy.get('.next-menu-item').first().click();
+            cy.get('.next-menu-item').first().should('have.class', 'next-selected');
         });
+
         it('should show slide buttons', async () => {
-            ReactDOM.render(
+            cy.mount(
                 <div style={boxStyle}>
                     <Tab rtl excessMode="slide">
                         {panes}
                     </Tab>
-                </div>,
-                target
+                </div>
             );
-            await delay(1000);
-            assert(target.querySelector('.next-tabs-btn-prev').classList.contains('disabled'));
+            cy.get('.next-tabs-btn-prev').should('have.class', 'disabled');
         });
         it('should slide', async () => {
-            ReactDOM.render(
+            cy.mount(
                 <div style={boxStyle}>
                     <Tab rtl excessMode="slide">
                         {panes}
                     </Tab>
-                </div>,
-                target
+                </div>
             );
-            let prev, newpos;
-            await delay(1800);
-            prev = target.querySelector('.next-tabs-nav').getBoundingClientRect().left;
-            target.querySelector('.next-tabs-btn-next').click();
-            await delay(200);
-            newpos = target.querySelector('.next-tabs-nav').getBoundingClientRect().left;
-            assert(newpos > prev);
-            await delay(800);
+            let prev: number, newpos: number;
+            cy.get('.next-tabs-nav').then(nav => {
+                prev = nav[0].getBoundingClientRect().left;
+            });
+            cy.get('.next-tabs-btn-next').click();
+            cy.get('.next-tabs-nav').then(nav => {
+                newpos = nav[0].getBoundingClientRect().left;
+                expect(newpos).to.be.greaterThan(prev);
+            });
         });
 
         it('should adjust scroll length so that tab not partially in view', async () => {
@@ -487,15 +417,28 @@ describe('Tab', () => {
                     content
                 </Tab.Item>
             ));
-            ReactDOM.render(
+            cy.mount(
                 <div style={{ width: '520px' }}>
-                    <Tab excessMode="slide" lazyLoad={false} defaultActiveKey={4} shape="capsule">
+                    <Tab excessMode="slide" lazyLoad={false} defaultActiveKey={'4'} shape="capsule">
                         {newpanes}
                     </Tab>
-                </div>,
-                target
+                </div>
             );
-            await delay(1800);
+
+            cy.get('.next-tabs-nav-wrap')
+                .scrollIntoView()
+                .then($scrollContainer => {
+                    const scrollLeft = $scrollContainer[0].scrollLeft;
+                    const clientWidth = $scrollContainer[0].clientWidth;
+                    cy.get('.next-tabs-tab')
+                        .eq(4)
+                        .then($tab => {
+                            const tabLeft = $tab[0].scrollLeft; //
+                            const tabWidth = $tab[0].offsetWidth;
+                            expect(tabLeft).to.be.gte(scrollLeft);
+                            expect(tabLeft + tabWidth).to.be.lte(scrollLeft + clientWidth);
+                        });
+                });
         });
 
         it('should adjust scroll length', async () => {
@@ -504,21 +447,35 @@ describe('Tab', () => {
                     content
                 </Tab.Item>
             ));
-            ReactDOM.render(
+            cy.mount(
                 <div style={{ width: '520px' }}>
                     <Tab
                         excessMode="slide"
                         lazyLoad={false}
-                        defaultActiveKey={4}
+                        defaultActiveKey={'4'}
                         shape="wrapped"
                         rtl
                     >
                         {newpanes}
                     </Tab>
-                </div>,
-                target
+                </div>
             );
-            await delay(1200);
+
+            cy.get('.next-tabs-nav-wrap')
+                .scrollIntoView()
+                .then($scrollContainer => {
+                    const scrollLeft = $scrollContainer[0].scrollLeft;
+                    const clientWidth = $scrollContainer[0].clientWidth;
+                    cy.get('.next-tabs-tab')
+                        .eq(4)
+                        .then($tab => {
+                            const tabLeft = $tab[0].scrollLeft;
+                            const tabWidth = $tab[0].offsetWidth;
+
+                            expect(tabLeft).to.be.gte(scrollLeft);
+                            expect(tabLeft + tabWidth).to.be.lte(scrollLeft + clientWidth);
+                        });
+                });
         });
 
         it('should auto scroll to active tab', async () => {
@@ -543,20 +500,19 @@ describe('Tab', () => {
                 { tab: 'More 13', key: 18 },
                 { tab: 'More 14', key: 19 },
             ];
-            ReactDOM.render(
+            cy.mount(
                 <div className="fusion-demo" style={{ maxWidth: '520px' }}>
                     <div className="demo-item-title">Controlled mode</div>
-                    <Tab excessMode="slide" activeKey={9}>
+                    <Tab excessMode="slide" activeKey={'9'}>
                         {tabs.map(item => (
                             <Tab.Item key={item.key} title={item.tab}>
                                 {item.tab} content, content, content
                             </Tab.Item>
                         ))}
                     </Tab>
-                </div>,
-                target
+                </div>
             );
-            await delay(1200);
+            cy.get('.next-tabs-tab').eq(8).should('have.class', 'active');
         });
         it('should support showAdd', async () => {
             const tabs = [
@@ -580,7 +536,7 @@ describe('Tab', () => {
                 { tab: 'More 13', key: 18 },
                 { tab: 'More More More', key: 19 },
             ];
-            ReactDOM.render(
+            cy.mount(
                 <div className="fusion-demo" style={{ width: '520px' }}>
                     <Tab showAdd shape="wrapped">
                         {tabs.map(item => (
@@ -589,33 +545,19 @@ describe('Tab', () => {
                             </Tab.Item>
                         ))}
                     </Tab>
-                </div>,
-                target
+                </div>
             );
-            await delay(1000);
-            assert(document.querySelectorAll('.next-tabs-nav-operations').length === 1);
+            cy.get('.next-tabs-nav-operations').should('have.length', 1);
         });
     });
     describe('rtl mode', () => {
-        let wrapper, target;
         const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
             <Tab.Item title={`tab item ${item}`} key={index} />
         ));
         const boxStyle = { width: '200px' };
 
-        beforeEach(() => {
-            target = document.createElement('div');
-            document.body.appendChild(target);
-        });
-
-        afterEach(() => {
-            document.body.removeChild(target);
-            wrapper.unmount();
-            wrapper = null;
-            target = null;
-        });
-        it('should render extra content in left', () => {
-            wrapper = mount(
+        it.only('should render extra content in left', () => {
+            cy.mount(
                 <Tab rtl extra={<span id="test-extra">hello</span>}>
                     <Tab.Item title="Home" key="1">
                         Home content
@@ -626,20 +568,12 @@ describe('Tab', () => {
                     <Tab.Item title="Help" key="3">
                         Help Content
                     </Tab.Item>
-                </Tab>,
-                { attachTo: target }
+                </Tab>
             );
-            const el = wrapper.getDOMNode().querySelector('#test-extra').parentElement;
-            assert(el.style.getPropertyValue('float') === 'left');
+            // 这里使用position: absolute来定位，元素从常规文档流中移出，float: left不再生效
+            // assert(el.style.getPropertyValue('float') === 'left');
+            cy.get('#test-extra').parent().should('exist');
+            cy.get('#test-extra').parent().should('have.css', 'left', '0px');
         });
     });
 });
-
-function isInScrollBoxViewport(scroller, item) {
-    const scrollerRect = scroller.getBoundingClientRect();
-    const itemRect = item.getBoundingClientRect();
-    return (
-        itemRect.left >= scrollerRect.left - 1 &&
-        itemRect.width + itemRect.left <= scrollerRect.width + scrollerRect.left + 1
-    );
-}

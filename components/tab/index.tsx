@@ -9,19 +9,21 @@ Tab.TabPane = ConfigProvider.config(Item, {
         deprecated('Tab.TabPane', 'Tab.Item', 'Tab');
         return props;
     },
-});
+}) as unknown as typeof Item;
+
+type ShapeType = 'text' | 'pure' | 'wrapped' | 'capsule';
 
 export default ConfigProvider.config(Tab, {
     transform: /* istanbul ignore next */ (props, deprecated) => {
         if ('type' in props) {
             deprecated('type', 'shape', 'Tab');
             const { type, ...others } = props;
-            props = { shape: type, ...others };
+            props = { shape: type as ShapeType, ...others };
         }
         if ('resDirection' in props) {
             const { resDirection, ...others } = props;
 
-            let excessMode;
+            let excessMode: 'slide' | 'dropdown' | undefined;
             if (resDirection === 'horizontal') {
                 deprecated('resDirection=horizontal', 'excessMode=slide', 'Tab');
 

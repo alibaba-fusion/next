@@ -2,13 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Tab, Radio } from '@alifd/next';
 
+type TabPosition = 'top' | 'bottom' | 'left' | 'right';
+
 const Demo = () => {
-    const [tabPosition, setTabPosition] = React.useState('top');
+    const [tabPosition, setTabPosition] = React.useState<TabPosition>('top');
 
     return (
         <div>
             Position:{' '}
-            <Radio.Group shape="button" value={tabPosition} onChange={setTabPosition}>
+            <Radio.Group
+                shape="button"
+                value={tabPosition}
+                onChange={value => setTabPosition(value as TabPosition)}
+            >
                 <Radio value="top">top</Radio>
                 <Radio value="bottom">bottom</Radio>
                 <Radio value="left">left</Radio>
