@@ -237,7 +237,6 @@ class Select extends Base<SelectProps, SelectState> {
         }
 
         if (prevProps.children !== props.children || prevProps.dataSource !== props.dataSource) {
-            /* eslint-disable react/no-did-update-set-state */
             this.setState({
                 dataSource: this.setDataSource(props),
             });

@@ -9,11 +9,11 @@ interface Pane {
     img: string;
 }
 
-function CustomTabItem({ title, desc, img }: { title: string; desc: string; img: string }) {
+function CustomTabItem({ title, desc, img }: Record<string, string>) {
     return (
         <div className="custom-tab-item">
             <div className="tab-title">
-                <img className="tab-img" src={img} />
+                <img className="tab-img" src={img} alt={title} />
                 {title}
             </div>
             <div className="tab-desc">{desc}</div>
@@ -37,9 +37,9 @@ const panes: Pane[] = [
 ];
 
 ReactDOM.render(
-    <Tab shape="wrapped" tabRender={(key, props) => <CustomTabItem key={key} {...props} />}>
-        {panes.map(pane => (
-            <Tab.Item {...pane} tabStyle={{ height: '60px' }}>
+    <Tab shape="wrapped" tabRender={(key, props) => <CustomTabItem {...props} key={key} />}>
+        {panes.map(({ key, ...pane }) => (
+            <Tab.Item key={key} {...pane}>
                 {pane.desc}
             </Tab.Item>
         ))}

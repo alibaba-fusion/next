@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement } from 'react';
+import React, { type ReactNode, type ReactElement } from 'react';
 
 export const triggerEvents = {
     CLICK: 'click',
@@ -6,25 +6,19 @@ export const triggerEvents = {
 };
 
 export function getOffsetWH(node: HTMLElement, tabPosition?: string) {
-    // let prop = 'width';
-    // if (tabPosition === 'left' || tabPosition === 'right') {
-    //     prop = 'height';
-    // }
-    // return node ? node.getBoundingClientRect()[prop] : 0;
-    if (!node) return 0;
-    const rect = node.getBoundingClientRect();
-    return tabPosition === 'left' || tabPosition === 'right' ? rect.height : rect.width;
+    let prop: 'width' | 'height' = 'width';
+    if (tabPosition === 'left' || tabPosition === 'right') {
+        prop = 'height';
+    }
+    return node ? node.getBoundingClientRect()[prop] : 0;
 }
 
 export function getOffsetLT(node: HTMLElement, tabPosition?: string) {
-    // let prop = 'left';
-    // if (tabPosition === 'left' || tabPosition === 'right') {
-    //     prop = 'top';
-    // }
-    // return node.getBoundingClientRect()[prop];
-    if (!node) return 0;
-    const rect = node.getBoundingClientRect();
-    return tabPosition === 'left' || tabPosition === 'right' ? rect.top : rect.left;
+    let prop: 'left' | 'top' = 'left';
+    if (tabPosition === 'left' || tabPosition === 'right') {
+        prop = 'top';
+    }
+    return node.getBoundingClientRect()[prop];
 }
 
 export function isTransformSupported(style: CSSStyleDeclaration) {
@@ -47,9 +41,9 @@ export function toArray(children: ReactNode) {
 
 /**
  * tab数组浅比较
- * @param  {Array} arrA   更新后的数组
- * @param  {Array} arrB   原数组
- * @return {Boolean}      数组浅比较是否相等
+ * @param arrA - 更新后的数组
+ * @param arrB - 原数组
+ * @returns 数组浅比较是否相等
  * @example
  * arr.tabsArrayShallowEqual(['2','3','4'], ['2','5','4']); // false
  */
