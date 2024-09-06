@@ -1,37 +1,36 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, {
+    type MouseEvent,
+    type KeyboardEvent,
+    type CSSProperties,
+    type ReactElement,
+} from 'react';
 import { findDOMNode } from 'react-dom';
-import PropTypes, { ReactElementLike } from 'prop-types';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Icon from '../../icon';
 import Overlay from '../../overlay';
 import Menu from '../../menu';
-import Button from '../../button';
 import Animate from '../../animate';
 import { events, KEYCODE, dom, obj } from '../../util';
-import {
-    triggerEvents,
-    getOffsetLT,
-    getOffsetWH,
-    isTransformSupported,
-    tabsArrayShallowEqual,
-} from './utils';
-import { NavProps } from '../types';
-const floatLeft: React.CSSProperties = { float: 'left', zIndex: 1 };
-const floatRight: React.CSSProperties = { float: 'right', zIndex: 1 };
-type IconType = 'dropdown' | 'prev' | 'next';
-const iconTypeMap: Record<IconType, string> = {
+import { triggerEvents, getOffsetLT, getOffsetWH, tabsArrayShallowEqual } from './utils';
+import type { ItemProps, NavProps } from '../types';
+
+const floatLeft: CSSProperties = { float: 'left', zIndex: 1 };
+const floatRight: CSSProperties = { float: 'right', zIndex: 1 };
+const iconTypeMap = {
     dropdown: 'arrow-down',
     prev: 'arrow-left',
     next: 'arrow-right',
-};
+} as const;
 const { Popup } = Overlay;
 interface NavState {
     showBtn: boolean;
-    dropdownTabs: any[];
+    dropdownTabs: ReactElement[];
 }
 
 type AnimateInstanceType = InstanceType<typeof Animate>;
 class Nav extends React.Component<NavProps, NavState> {
+    static displayName = 'Nav';
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -54,22 +53,52 @@ class Nav extends React.Component<NavProps, NavState> {
     };
 
     scroller: HTMLElement;
-    scrollTimer: NodeJS.Timeout;
+    scrollTimer: number;
     nav: HTMLUListElement;
     wrapper: HTMLDivElement;
     navbar: HTMLElement;
     activeTab: HTMLLIElement | null;
     prevBtn: HTMLButtonElement | null;
     nextBtn: HTMLButtonElement | null;
-    slideTimer: NodeJS.Timeout;
-    updateTimer: NodeJS.Timeout;
+    slideTimer: number;
+    updateTimer: number;
 
-    constructor(props: NavProps, context?: unknown) {
-        super(props, context);
+    constructor(props: NavProps) {
+        super(props);
         this.state = {
             showBtn: false,
             dropdownTabs: [],
         };
+    }
+
+    componentDidMount() {
+        if (!this.props.animation) {
+            this.initialSettings();
+        }
+
+        this.computeExtraWidth();
+        events.on(window, 'resize', this.onWindowResized);
+    }
+
+    componentDidUpdate(prevProps: NavProps) {
+        // 此处通过延时处理，屏蔽动画带来的定位不准确问题（由于要支持 ie9，因此无法使用 transitionend）
+        clearTimeout(this.scrollTimer);
+        this.scrollTimer = window.setTimeout(() => {
+            this.scrollToActiveTab();
+            this.setSlideBtn();
+        }, 410); // transition-duration is set to be .4s, wait for the transition finishes before re-calc
+
+        // 更改 tabs 后如果有 dropdown 属性，应该重新执行 getDropdownItems 函数更新 dropdown 数据
+        if (this.props.excessMode === 'dropdown') {
+            if (!tabsArrayShallowEqual(this.props.tabs, prevProps.tabs)) {
+                this.getDropdownItems(this.props);
+            }
+        }
+        this.computeExtraWidth();
+    }
+
+    componentWillUnmount() {
+        events.off(window, 'resize', this.onWindowResized);
     }
 
     /**
@@ -84,36 +113,6 @@ class Nav extends React.Component<NavProps, NavState> {
         return scrollLeft > 0 ? -scrollLeft : scrollLeft;
     }
 
-    componentDidMount() {
-        if (!this.props.animation) {
-            this.initialSettings();
-        }
-
-        this.computeExtraWidth();
-        events.on(window, 'resize', this.onWindowResized);
-    }
-
-    componentDidUpdate(prevProps: NavProps) {
-        // 此处通过延时处理，屏蔽动画带来的定位不准确问题（由于要支持ie9，因此无法使用transitionend）
-        clearTimeout(this.scrollTimer);
-        this.scrollTimer = setTimeout(() => {
-            this.scrollToActiveTab();
-            this.setSlideBtn();
-        }, 410); // transition-duration is set to be .4s, wait for the transition finishes before re-calc
-
-        // 更改tabs后如果有dropdown属性，应该重新执行getDropdownItems函数更新dropdown数据
-        if (this.props.excessMode === 'dropdown') {
-            if (!tabsArrayShallowEqual(this.props.tabs, prevProps.tabs)) {
-                this.getDropdownItems(this.props);
-            }
-        }
-        this.computeExtraWidth();
-    }
-
-    componentWillUnmount() {
-        events.off(window, 'resize', this.onWindowResized);
-    }
-
     initialSettings() {
         this.setSlideBtn();
         this.getDropdownItems(this.props);
@@ -121,9 +120,9 @@ class Nav extends React.Component<NavProps, NavState> {
 
     /**
      * The key method about move
-     * @param {number} target position to slide to
-     * @param {bool} checkSlideBtn need to check the slide button status or not
-     * @param {bool} setActive need to check the active status or not
+     * @param target - Position to slide to
+     * @param checkSlideBtn - Need to check the slide button status or not
+     * @param setActive - Need to check the active status or not
      */
     setOffset(target: number, checkSlideBtn = true, setActive = true) {
         const { tabPosition, rtl } = this.props;
@@ -163,11 +162,11 @@ class Nav extends React.Component<NavProps, NavState> {
             const divScroll = this.nav.parentElement;
 
             if (tabPosition === 'left' || tabPosition === 'right') {
-                divScroll?.scrollTo({ top: -offsetValue, left: 0, behavior: 'smooth' });
+                divScroll!.scrollTo({ top: -offsetValue, left: 0, behavior: 'smooth' });
             } else if (!this.props.rtl) {
-                divScroll?.scrollTo({ top: 0, left: -offsetValue, behavior: 'smooth' });
+                divScroll!.scrollTo({ top: 0, left: -offsetValue, behavior: 'smooth' });
             } else {
-                divScroll?.scrollTo({ top: 0, left: offsetValue, behavior: 'smooth' });
+                divScroll!.scrollTo({ top: 0, left: offsetValue, behavior: 'smooth' });
             }
 
             if (checkSlideBtn) {
@@ -278,18 +277,14 @@ class Nav extends React.Component<NavProps, NavState> {
         }
 
         const wrapperWidth = this.wrapper.offsetWidth;
-        const childNodes = this.nav.childNodes;
+        const childNodes = this.nav.childNodes as NodeListOf<HTMLElement>;
 
         let index;
         let tabsWidth = 0;
         for (index = 0; index < tabs.length; index++) {
-            const childNode = childNodes[index];
-            if (childNode instanceof HTMLElement) {
-                // 使用类型保护
-                tabsWidth += childNode.offsetWidth;
-                if (tabsWidth > wrapperWidth) {
-                    break;
-                }
+            tabsWidth += childNodes[index].offsetWidth;
+            if (tabsWidth > wrapperWidth) {
+                break;
             }
         }
 
@@ -304,28 +299,28 @@ class Nav extends React.Component<NavProps, NavState> {
         }
     }
 
-    removeTab = (key: string, e: React.MouseEvent<HTMLElement>) => {
+    removeTab = (key: string, e: MouseEvent<HTMLElement>) => {
         e && e.stopPropagation(); // stop bubble, so that it won't trigger upstream listener
-        this.props.onClose?.(key);
+        this.props.onClose!(key);
     };
 
     debounceSetSideBtn = () => {
         clearTimeout(this.slideTimer);
-        this.slideTimer = setTimeout(() => {
+        this.slideTimer = window.setTimeout(() => {
             this.setSlideBtn();
         }, 100);
     };
 
     onScroll = () => {
-        // 每次滚动时更新btn状态
+        // 每次滚动时更新 btn 状态
         this.debounceSetSideBtn();
     };
 
-    onCloseKeyDown = (key: string, e: React.KeyboardEvent<HTMLElement>) => {
+    onCloseKeyDown = (key: string, e: KeyboardEvent<HTMLElement>) => {
         if (e.keyCode === KEYCODE.ENTER) {
             e.stopPropagation();
             e.preventDefault();
-            this.props.onClose?.(key);
+            this.props.onClose!(key);
         }
     };
 
@@ -336,9 +331,7 @@ class Nav extends React.Component<NavProps, NavState> {
         const { locale, prefix } = this.props;
         const tail = closeable ? (
             <Icon
-                aria-label={
-                    typeof locale?.closeAriaLabel === 'string' ? locale.closeAriaLabel : undefined
-                }
+                aria-label={locale!.closeAriaLabel}
                 type="close"
                 tabIndex={0}
                 onKeyDown={e => this.onCloseKeyDown(key, e)}
@@ -360,7 +353,8 @@ class Nav extends React.Component<NavProps, NavState> {
 
         const rst = [];
         React.Children.forEach(tabs, child => {
-            const { disabled, className, onClick, onMouseEnter, onMouseLeave, style } = child.props;
+            const { disabled, className, onClick, onMouseEnter, onMouseLeave, style } =
+                child.props as ItemProps;
 
             const active = activeKey === child.key;
             const cls = classnames(
@@ -397,7 +391,7 @@ class Nav extends React.Component<NavProps, NavState> {
                     style={style}
                     {...events}
                 >
-                    {child.key ? tabTemplateFn(child.key, child.props) : null}
+                    {tabTemplateFn(child.key!, child.props)}
                 </li>
             );
         });
@@ -420,10 +414,10 @@ class Nav extends React.Component<NavProps, NavState> {
     }
 
     computeExtraWidth() {
-        if (this.navbar && this.navbar.childNodes.length === 2) {
-            const firstChild = this.navbar.childNodes[0] as HTMLElement;
-            const secondChild = this.navbar.childNodes[1] as HTMLElement;
-            secondChild.style.marginRight = window.getComputedStyle(firstChild).width;
+        if (this.navbar && this.navbar!.childNodes.length === 2) {
+            (this.navbar.childNodes[1] as HTMLElement).style.marginRight = window.getComputedStyle(
+                this.navbar.childNodes[0] as HTMLElement
+            ).width;
         }
     }
 
@@ -462,8 +456,8 @@ class Nav extends React.Component<NavProps, NavState> {
 
     onNavItemClick(
         key: string,
-        callback: (key: string, e: React.MouseEvent<HTMLElement>) => any,
-        e: React.MouseEvent<HTMLElement>
+        callback: (key: string, e: MouseEvent<HTMLElement>) => void,
+        e: MouseEvent<HTMLElement>
     ) {
         this.props.onTriggerEvent(triggerEvents.CLICK, key);
         if (callback) {
@@ -480,8 +474,8 @@ class Nav extends React.Component<NavProps, NavState> {
 
     onNavItemMouseEnter(
         key: string,
-        callback: (key: string, e: React.MouseEvent<HTMLElement>) => any,
-        e: React.MouseEvent<HTMLElement>
+        callback: (key: string, e: MouseEvent<HTMLElement>) => void,
+        e: MouseEvent<HTMLElement>
     ) {
         this.props.onTriggerEvent(triggerEvents.HOVER, key);
         if (callback) {
@@ -491,8 +485,8 @@ class Nav extends React.Component<NavProps, NavState> {
 
     onNavItemMouseLeave(
         key: string,
-        callback: (key: string, e: React.MouseEvent<HTMLElement>) => any,
-        e: React.MouseEvent<HTMLElement>
+        callback: (key: string, e: MouseEvent<HTMLElement>) => void,
+        e: MouseEvent<HTMLElement>
     ) {
         if (callback) {
             return callback(key, e);
@@ -504,13 +498,13 @@ class Nav extends React.Component<NavProps, NavState> {
             clearTimeout(this.updateTimer);
         }
 
-        this.updateTimer = setTimeout(() => {
+        this.updateTimer = window.setTimeout(() => {
             this.setSlideBtn();
             this.getDropdownItems(this.props);
         }, 100);
     };
 
-    getIcon(type: IconType) {
+    getIcon(type: keyof typeof iconTypeMap) {
         const { prefix, icons, rtl } = this.props;
         const iconType = iconTypeMap[type];
         let icon = <Icon type={iconType} rtl={rtl} className={`${prefix}tab-icon-${type}`} />;
@@ -526,7 +520,7 @@ class Nav extends React.Component<NavProps, NavState> {
         return icon;
     }
 
-    renderDropdownTabs(tabs: React.ReactElement[] = []) {
+    renderDropdownTabs(tabs: ReactElement[] = []) {
         if (!tabs.length) {
             return null;
         }
@@ -548,7 +542,7 @@ class Nav extends React.Component<NavProps, NavState> {
             >
                 <Menu
                     rtl={rtl}
-                    selectedKeys={activeKey ? [activeKey] : []}
+                    selectedKeys={[activeKey!]}
                     onSelect={this.onSelectMenuItem}
                     selectMode="single"
                 >
@@ -687,10 +681,6 @@ class Nav extends React.Component<NavProps, NavState> {
         const hasExtra = !!restButton || !!prevButton || !!nextButton; //  !! 将**转换为 boolean 类型
         const navCls = `${prefix}tabs-nav`;
         const tabList = this.renderTabList(this.props, hasExtra);
-        const wrapCls = classnames({
-            [`${prefix}tabs-nav-wrap`]: true,
-            [`${prefix}tabs-nav-has-add`]: showAdd,
-        });
 
         const container = (
             <div className={containerCls} onKeyDown={onKeyDown} key="nav-container">

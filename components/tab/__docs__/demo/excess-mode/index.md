@@ -2,7 +2,7 @@
 
 # 超出时滑动
 
-当 Tab 标签非常多时，组件会自动增加滑动支持(可以左右、上下滑动)。可以用过 `excessMode` 属性切换滑动模式，该属性仅在`tabPosition`为`top`或者`bottom`时生效。
+当 Tab 标签非常多时，组件会自动增加滑动支持 (可以左右、上下滑动)。可以用过 `excessMode` 属性切换滑动模式，该属性仅在`tabPosition`为`top`或者`bottom`时生效。
 
 # en-US order=5
 

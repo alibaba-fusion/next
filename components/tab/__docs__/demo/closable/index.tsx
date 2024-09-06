@@ -20,8 +20,10 @@ interface CloseableTabState {
     activeKey: string;
 }
 
-class CloseableTab extends React.Component<{}, CloseableTabState> {
-    constructor(props: {}) {
+interface CloseableTabProps {}
+
+class CloseableTab extends React.Component<CloseableTabProps, CloseableTabState> {
+    constructor(props: CloseableTabProps) {
         super(props);
         this.state = {
             panes: panes,
@@ -29,17 +31,16 @@ class CloseableTab extends React.Component<{}, CloseableTabState> {
         };
     }
 
-    /*eslint-disable eqeqeq */
     remove(targetKey: string) {
         let activeKey = this.state.activeKey;
         const panes: Pane[] = [];
         this.state.panes.forEach(pane => {
-            if (pane.key != targetKey) {
+            if (pane.key !== targetKey) {
                 panes.push(pane);
             }
         });
 
-        if (targetKey == activeKey) {
+        if (targetKey === activeKey) {
             activeKey = panes[0].key;
         }
         this.setState({ panes, activeKey });

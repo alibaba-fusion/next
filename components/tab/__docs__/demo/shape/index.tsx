@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Tab, Radio } from '@alifd/next';
-import { instanceOf } from 'prop-types';
 
 function onChange(key: string) {
     console.log(key);
 }
 type ShapeType = 'text' | 'pure' | 'wrapped' | 'capsule';
 const Demo = () => {
-    const [shape, setShape] = React.useState<ShapeType>('pure');
+    const [shape, setShape] = useState<ShapeType>('pure');
 
     return (
         <div>

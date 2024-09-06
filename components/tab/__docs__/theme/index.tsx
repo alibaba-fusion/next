@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import ReactDOM from 'react-dom';
+import type PropTypes from 'prop-types';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import Tab from '../../index';
@@ -8,7 +9,6 @@ import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
 import '../../style';
 import '../../../demo-helper/style';
-import PropTypes from 'prop-types';
 
 const i18nMap = {
     'zh-cn': {
@@ -201,10 +201,6 @@ class FunctionDemo extends React.Component<FunctionDemoProps, FunctionDemoState>
             delete demoFunction.showPosition;
         }
         return tabRender(title, locale, props, demoFunction, this.onFunctionChange);
-
-        // return (<Demo title={title} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
-        //     {tabRender(locale, props)}
-        // </Demo>);
     }
 }
 
@@ -337,13 +333,7 @@ function renderTextTab(
 ) {
     const { children4, children12, tabPosition } = props;
     return (
-        <Demo
-            // Demo
-            title={title}
-            block
-            demoFunction={demoFunction}
-            onFunctionChange={onFunctionChange}
-        >
+        <Demo title={title} block demoFunction={demoFunction} onFunctionChange={onFunctionChange}>
             <DemoHead cols={['M', 'S']} />
             <DemoGroup label={locale.normal}>
                 <Tab shape="text" size="medium">
@@ -382,13 +372,7 @@ function renderCapsuleTab(
 ) {
     const { children4, children12, tabPosition } = props;
     return (
-        <Demo
-            // Demo
-            title={title}
-            block
-            demoFunction={demoFunction}
-            onFunctionChange={onFunctionChange}
-        >
+        <Demo title={title} block demoFunction={demoFunction} onFunctionChange={onFunctionChange}>
             <DemoHead cols={['M', 'S']} />
             <DemoGroup label={locale.normal}>
                 <Tab shape="capsule" size="medium">
