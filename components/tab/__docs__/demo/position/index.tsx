@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Tab, Radio } from '@alifd/next';
 
 type TabPosition = 'top' | 'bottom' | 'left' | 'right';
 
 const Demo = () => {
-    const [tabPosition, setTabPosition] = React.useState<TabPosition>('top');
+    const [tabPosition, setTabPosition] = useState<TabPosition>('top');
 
     return (
         <div>

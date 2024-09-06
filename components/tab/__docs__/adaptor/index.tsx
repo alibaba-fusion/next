@@ -2,7 +2,6 @@ import React from 'react';
 import { Types, parseData } from '@alifd/adaptor-helper';
 import { Tab, Icon } from '@alifd/next';
 
-// 定义属性接口
 interface AdaptorProps {
     shape: 'pure' | 'wrapped' | 'text' | 'capsule';
     size: 'medium' | 'small';

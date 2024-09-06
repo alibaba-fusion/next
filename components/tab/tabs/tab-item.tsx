@@ -2,22 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
-import { TabItemProps } from '../types';
+import type { TabItemProps, ItemProps } from '../types';
+
 /** Tab.Item */
-class TabItem extends React.Component<TabItemProps> {
+class TabItem extends React.Component<ItemProps> {
+    static displayName = 'TabItem';
     static propTypes = {
         prefix: PropTypes.string,
-        /**
-         * 选项卡标题
-         */
         title: PropTypes.node,
-        /**
-         * 单个选项卡是否可关闭
-         */
         closeable: PropTypes.bool,
-        /**
-         * 选项卡是否被禁用
-         */
         disabled: PropTypes.bool,
         active: PropTypes.bool,
         lazyLoad: PropTypes.bool,
@@ -31,11 +24,12 @@ class TabItem extends React.Component<TabItemProps> {
     };
 
     _actived: boolean;
+    readonly props: TabItemProps;
 
     render() {
         const { prefix, active, lazyLoad, unmountInactiveTabs, children } = this.props;
 
-        this._actived = this._actived || (active !== undefined ? active : false);
+        this._actived = this._actived || active!;
         if (lazyLoad && !this._actived) {
             return null;
         }

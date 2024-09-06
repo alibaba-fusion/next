@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { type MouseEvent } from 'react';
 import ReactDOM from 'react-dom';
 import { Tab } from '@alifd/next';
+import type { ItemProps, TabProps } from '@alifd/next/types/tab';
 
 const tabs = [
     { tab: 'Home', key: 0, content: 'This is home page' },
@@ -8,21 +9,21 @@ const tabs = [
     { tab: 'API', key: 2, content: 'This is api page' },
 ];
 
-function onChange(key: number | string) {
+const onChange: TabProps['onChange'] = key => {
     console.log('change', key);
-}
+};
 
-function handleClick(key: number | string) {
+const handleClick: ItemProps['onClick'] = key => {
     console.log('click', key);
-}
+};
 
-function onMouseEnter(key: number | string, e: React.MouseEvent<HTMLElement>) {
+const onMouseEnter: ItemProps['onMouseEnter'] = (key, e) => {
     console.log('enter', e.target, key);
-}
+};
 
-function onMouseLeave(key: number | string, e: React.MouseEvent<HTMLElement>) {
+const onMouseLeave: ItemProps['onMouseLeave'] = (key, e) => {
     console.log('leave', e.target, key);
-}
+};
 
 ReactDOM.render(
     <div className="fusion-demo">
@@ -40,9 +41,9 @@ ReactDOM.render(
                 <Tab.Item
                     key={item.key}
                     title={item.tab}
-                    onClick={() => handleClick(item.key)}
-                    onMouseEnter={e => onMouseEnter(item.key, e)}
-                    onMouseLeave={e => onMouseLeave(item.key, e)}
+                    onClick={handleClick}
+                    onMouseEnter={onMouseEnter}
+                    onMouseLeave={onMouseLeave}
                 >
                     {item.content}
                 </Tab.Item>

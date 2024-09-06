@@ -1,50 +1,25 @@
-/// <reference types="react" />
-import PropTypes from 'prop-types';
-import React from 'react';
-import { CommonProps } from '../util';
-import { PopupProps } from '../overlay';
+import type {
+    HTMLAttributes,
+    ReactNode,
+    CSSProperties,
+    ReactElement,
+    ComponentPropsWithRef,
+} from 'react';
+import type PropTypes from 'prop-types';
+import type { CommonProps } from '../util';
+import Overlay from '../overlay';
+import type { Locale } from '../locale/types';
 
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    title?: any;
-}
-
-/**
- * @api ItemProps
- */
-export interface ItemProps extends HTMLAttributesWeak, CommonProps {
-    /**
-     * 选项卡标题
-     * @en Title of tab.
-     */
-    title?: React.ReactNode;
-
-    /**
-     * 单个选项卡是否可关闭
-     * @en If tab is closeable.
-     * @defaultValue false
-     */
-    closeable?: boolean;
-
-    /**
-     * 选项卡是否被禁用
-     * @en If tab is disabled.
-     * @defaultValue false
-     */
-    disabled?: boolean;
-}
-
-export class Item extends React.Component<ItemProps, any> {}
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    onClick?: any;
-    onChange?: any;
-}
+const { Popup } = Overlay;
 
 /**
- * @api TabProps
+ * @api Tab
  */
-export interface TabProps extends HTMLAttributesWeak, CommonProps {
+export interface TabProps
+    extends Omit<HTMLAttributes<HTMLElement>, 'onClick' | 'onChange' | 'title'>,
+        CommonProps {
     /**
-     * 被激活的选项卡的 key, 赋值则tab为受控组件, 用户无法切换
+     * 被激活的选项卡的 key, 赋值则 tab 为受控组件，用户无法切换
      * @en Key of the current active tab. This prop will make tab a 'controlled component', end user will be unable to change tabs.
      */
     activeKey?: string;
@@ -98,7 +73,7 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
     triggerType?: 'hover' | 'click';
 
     /**
-     * 是否延迟加载 TabPane 的内容, 默认开启, 即不提前渲染
+     * 是否延迟加载 TabPane 的内容，默认开启，即不提前渲染
      * @en Lazy mount tabs.
      * @defaultValue true
      */
@@ -115,7 +90,7 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
      * 导航条的自定义样式
      * @en Custom style of navigation.
      */
-    navStyle?: React.CSSProperties;
+    navStyle?: CSSProperties;
 
     /**
      * 导航条的自定义样式类
@@ -127,7 +102,7 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
      * 内容区容器的自定义样式
      * @en Custom style of content.
      */
-    contentStyle?: React.CSSProperties;
+    contentStyle?: CSSProperties;
 
     /**
      * 内容区容器的自定义样式类
@@ -139,7 +114,7 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
      * 导航栏附加内容
      * @en Extra content of tab, ensure the item won't excess when using this.
      */
-    extra?: React.ReactNode;
+    extra?: ReactNode;
 
     /**
      * 禁用键盘事件
@@ -175,22 +150,22 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
      * @param props - 传给 Tab.Item 的所有属性键值对返回值 - Props of TabItem
      * @returns - 返回自定义组件 - The rendered tab item.
      */
-    tabRender?: (key: string, props: any) => React.ReactNode;
+    tabRender?: (key: string, props: Record<string, unknown>) => ReactNode;
 
     /**
-     * 弹层属性透传, 只有当 excessMode 为 dropdown 时生效
+     * 弹层属性透传，只有当 excessMode 为 dropdown 时生效
      * @en Properties pass down to Popup Menu in dropdown excess mode.
      */
-    popupProps?: PopupProps;
+    popupProps?: ComponentPropsWithRef<typeof Popup>;
 
     /**
      * 自定义 icon
      * @en Customize icons used in tab navigation.
      */
     icons?: {
-        dropdown?: string | React.ReactNode;
-        prev?: string | React.ReactNode;
-        next?: string | React.ReactNode;
+        dropdown?: string | ReactNode;
+        prev?: string | ReactNode;
+        next?: string | ReactNode;
     };
     /**
      * 展示新增按钮
@@ -207,30 +182,89 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
      * 自定义添加按钮
      * @en Custom 'Add' button.
      */
-    addIcon?: React.ReactNode;
+    addIcon?: ReactNode;
+
+    /**
+     * @deprecated Use `shape` instead.
+     * @skip
+     */
+    type?: 'pure' | 'wrapped' | 'text' | 'capsule';
+}
+
+/**
+ * @api Tab.Item
+ */
+export interface ItemProps {
+    /**
+     * 选项卡标题
+     * @en Title of tab.
+     */
+    title?: ReactNode;
+    /**
+     * 单个选项卡是否可关闭
+     * @en If tab is closeable.
+     * @defaultValue false
+     */
+    closeable?: boolean;
+    /**
+     * 选项卡是否被禁用
+     * @en If tab is disabled.
+     * @defaultValue false
+     */
+    disabled?: boolean;
+    /**
+     * 导航栏单个选项卡样式
+     * @en Style of tab in navigation.
+     */
+    style?: CSSProperties;
+    /**
+     * 导航栏单个选项卡样式类
+     * @en ClassName of tab in navigation.
+     */
+    className?: string;
+    /**
+     * 导航栏单个选项卡点击时的回调
+     * @en Callback when tab in navigation is clicked.
+     */
+    onClick?: (key: string, e: React.MouseEvent<HTMLElement>) => void;
+    /**
+     * 导航栏单个选项卡鼠标移入时的回调
+     * @en Callback when mouse enter tab in navigation.
+     */
+    onMouseEnter?: (key: string, e: React.MouseEvent<HTMLElement>) => void;
+    /**
+     * 导航栏单个选项卡鼠标移出时的回调
+     * @en Callback when mouse leave tab in navigation.
+     */
+    onMouseLeave?: (key: string, e: React.MouseEvent<HTMLElement>) => void;
+    /**
+     * 子元素
+     * @en Child elements.
+     */
+    children?: React.ReactNode;
 }
 
 export interface TabContentProps extends CommonProps {
     prefix?: string;
-    activeKey?: string | number;
+    activeKey?: string;
     lazyLoad?: boolean;
     className?: string;
     unmountInactiveTabs?: boolean;
 }
 
-export interface TabItemProps extends CommonProps, TabProps {
+/**
+ * 有些属性是父组件传给 TabItem 的，而非用户可以自定义的
+ */
+export interface TabItemProps extends ItemProps, Pick<CommonProps, 'prefix'> {
     active?: boolean;
-    tabStyle?: React.CSSProperties;
-    tab?: string;
     key?: number | string;
-    content?: string;
     title?: PropTypes.ReactNodeLike;
+    lazyLoad?: boolean;
+    unmountInactiveTabs?: boolean;
 }
 
 export interface NavProps extends CommonProps, TabProps {
-    tabs: React.ReactElement[];
+    tabs: ReactElement[];
+    locale?: Locale['Tab'];
     onTriggerEvent: (triggerType: string, key: string) => void; // TypeFunc could be defined
-}
-export default class Tab extends React.Component<TabProps, any> {
-    static Item: typeof Item;
 }

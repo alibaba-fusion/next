@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { type KeyboardEvent, type FocusEvent } from 'react';
+
 import ReactDOM from 'react-dom';
 import { Tab, Input } from '@alifd/next';
 
@@ -26,7 +27,7 @@ class EditableTabPane extends React.Component<EditableTabPaneProps, EditableTabP
         }
     }
 
-    onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         const { keyCode } = e;
         // Stop bubble up the events of keyUp, keyDown, keyLeft, and keyRight
         if (keyCode > 36 && keyCode < 41) {
@@ -34,7 +35,7 @@ class EditableTabPane extends React.Component<EditableTabPaneProps, EditableTabP
         }
     };
 
-    onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    onBlur = (e: FocusEvent<HTMLInputElement>) => {
         this.setState({
             editable: false,
             tabTitle: e.target.value,

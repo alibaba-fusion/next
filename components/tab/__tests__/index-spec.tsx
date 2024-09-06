@@ -34,17 +34,17 @@ describe('Tab', () => {
 
         it('should render tab without animation', () => {
             cy.mount(<Tab animation={false}>{panes}</Tab>);
-            cy.get('.next-tabs-nav-appear').should('have.length', 0);
+            cy.get('.next-tabs-nav-appear').should('not.exist');
         });
 
         it('should render with shape', () => {
-            cy.mount(<Tab shape="wrapped">{panes}</Tab>);
+            cy.mount(<Tab shape="wrapped">{panes}</Tab>).as('Tab');
             cy.get('.next-tabs').should('have.class', 'next-tabs-wrapped');
 
-            cy.mount(<Tab shape="capsule">{panes}</Tab>);
+            cy.rerender('Tab', { shape: 'capsule' });
             cy.get('.next-tabs').should('have.class', 'next-tabs-capsule');
 
-            cy.mount(<Tab shape="text">{panes}</Tab>);
+            cy.rerender('Tab', { shape: 'text' });
             cy.get('.next-tabs').should('have.class', 'next-tabs-text');
         });
 
@@ -54,10 +54,12 @@ describe('Tab', () => {
         });
 
         it('should render with activeKey (controlled)', () => {
-            cy.mount(<Tab activeKey="2">{panes}</Tab>);
+            cy.mount(<Tab activeKey="2">{panes}</Tab>).as('Tab');
             cy.get('.next-tabs-tab').eq(2).should('have.class', 'active');
 
-            cy.mount(<Tab activeKey="3">{panes}</Tab>);
+            cy.rerender('Tab', {
+                activeKey: '3',
+            });
             cy.get('.next-tabs-tab').eq(3).should('have.class', 'active');
         });
 
@@ -121,7 +123,9 @@ describe('Tab', () => {
         it('should render with tabRender', () => {
             cy.mount(
                 <Tab
-                    tabRender={(key, props) => <div className="custom-tab-item">{props.title}</div>}
+                    tabRender={(key, props: { title: string }) => (
+                        <div className="custom-tab-item">{props.title}</div>
+                    )}
                 >
                     {panes}
                 </Tab>
@@ -134,15 +138,15 @@ describe('Tab', () => {
             cy.get('.next-tabs-tabpane').should('have.length', 4);
         });
 
-        it('should support device', () => {
-            // 如果tabItem太少，不会出现slide模式下的next button了
+        it('should render correctly when switching between different excessMode settings', () => {
+            // If there are too few tab items, the next button will not appear in slide mode.
             const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(
                 (item, index) => <Tab.Item title={`item ${item}`} key={index} />
             );
-            cy.mount(<Tab>{panes}</Tab>);
+            cy.mount(<Tab>{panes}</Tab>).as('Tab');
             cy.get('.next-tabs-scrollable').should('have.length.greaterThan', 0);
             cy.get('.next-tabs-btn-next').should('exist');
-            cy.mount(<Tab excessMode="dropdown">{panes}</Tab>);
+            cy.rerender('Tab', { excessMode: 'dropdown' });
             cy.get('.next-tabs-scrollable').should('exist');
         });
 
@@ -214,7 +218,6 @@ describe('Tab', () => {
 
         it('should render with closeable tabs', () => {
             let tabKey: string;
-
             cy.mount(
                 <Tab
                     onClose={key => {
@@ -225,14 +228,11 @@ describe('Tab', () => {
                     <Tab.Item title="bar" closeable key="1" />
                 </Tab>
             );
-
-            cy.get('.next-icon-close')
-                .should('have.length', 1)
-                .eq(0)
-                .click()
-                .then(() => {
-                    cy.wrap(tabKey).should('eq', '1');
-                });
+            cy.get('.next-icon-close').should('have.length', 1);
+            cy.get('.next-icon-close').eq(0).click();
+            cy.should(() => {
+                expect(tabKey).to.equal('1');
+            });
         });
 
         it('should close tab with keyboard', () => {
@@ -244,13 +244,11 @@ describe('Tab', () => {
                 </Tab>
             );
 
-            cy.get('.next-icon-close')
-                .should('have.length', 1)
-                .eq(0)
-                .trigger('keydown', { keyCode: KEYCODE.ENTER })
-                .then(() => {
-                    cy.wrap(tabKey).should('eq', '1');
-                });
+            cy.get('.next-icon-close').should('have.length', 1);
+            cy.get('.next-icon-close').eq(0).trigger('keydown', { keyCode: KEYCODE.ENTER });
+            cy.should(() => {
+                expect(tabKey).to.equal('1');
+            });
         });
 
         it('should unmountInactiveTabs', () => {
@@ -382,7 +380,7 @@ describe('Tab', () => {
             cy.get('.next-menu-item').first().should('have.class', 'next-selected');
         });
 
-        it('should show slide buttons', async () => {
+        it('should show slide buttons', () => {
             cy.mount(
                 <div style={boxStyle}>
                     <Tab rtl excessMode="slide">
@@ -392,7 +390,8 @@ describe('Tab', () => {
             );
             cy.get('.next-tabs-btn-prev').should('have.class', 'disabled');
         });
-        it('should slide', async () => {
+
+        it('should slide', () => {
             cy.mount(
                 <div style={boxStyle}>
                     <Tab rtl excessMode="slide">
@@ -411,7 +410,7 @@ describe('Tab', () => {
             });
         });
 
-        it('should adjust scroll length so that tab not partially in view', async () => {
+        it('should adjust scroll length so that tab not partially in view', () => {
             const newpanes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((item, index) => (
                 <Tab.Item title={`tabsss item ${item}`} key={index}>
                     content
@@ -425,23 +424,22 @@ describe('Tab', () => {
                 </div>
             );
 
-            cy.get('.next-tabs-nav-wrap')
-                .scrollIntoView()
-                .then($scrollContainer => {
-                    const scrollLeft = $scrollContainer[0].scrollLeft;
-                    const clientWidth = $scrollContainer[0].clientWidth;
-                    cy.get('.next-tabs-tab')
-                        .eq(4)
-                        .then($tab => {
-                            const tabLeft = $tab[0].scrollLeft; //
-                            const tabWidth = $tab[0].offsetWidth;
-                            expect(tabLeft).to.be.gte(scrollLeft);
-                            expect(tabLeft + tabWidth).to.be.lte(scrollLeft + clientWidth);
-                        });
-                });
+            cy.get('.next-tabs-nav-wrap').scrollIntoView();
+            cy.get('.next-tabs-nav-wrap').then($scrollContainer => {
+                const scrollLeft = $scrollContainer[0].scrollLeft;
+                const clientWidth = $scrollContainer[0].clientWidth;
+                cy.get('.next-tabs-tab')
+                    .eq(4)
+                    .then($tab => {
+                        const tabLeft = $tab[0].scrollLeft; //
+                        const tabWidth = $tab[0].offsetWidth;
+                        expect(tabLeft).to.be.gte(scrollLeft);
+                        expect(tabLeft + tabWidth).to.be.lte(scrollLeft + clientWidth);
+                    });
+            });
         });
 
-        it('should adjust scroll length', async () => {
+        it('should adjust scroll length', () => {
             const newpanes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((item, index) => (
                 <Tab.Item title={`tabsss item ${item}`} key={index}>
                     content
@@ -461,24 +459,23 @@ describe('Tab', () => {
                 </div>
             );
 
-            cy.get('.next-tabs-nav-wrap')
-                .scrollIntoView()
-                .then($scrollContainer => {
-                    const scrollLeft = $scrollContainer[0].scrollLeft;
-                    const clientWidth = $scrollContainer[0].clientWidth;
-                    cy.get('.next-tabs-tab')
-                        .eq(4)
-                        .then($tab => {
-                            const tabLeft = $tab[0].scrollLeft;
-                            const tabWidth = $tab[0].offsetWidth;
+            cy.get('.next-tabs-nav-wrap').scrollIntoView();
+            cy.get('.next-tabs-nav-wrap').then($scrollContainer => {
+                const scrollLeft = $scrollContainer[0].scrollLeft;
+                const clientWidth = $scrollContainer[0].clientWidth;
+                cy.get('.next-tabs-tab')
+                    .eq(4)
+                    .then($tab => {
+                        const tabLeft = $tab[0].scrollLeft;
+                        const tabWidth = $tab[0].offsetWidth;
 
-                            expect(tabLeft).to.be.gte(scrollLeft);
-                            expect(tabLeft + tabWidth).to.be.lte(scrollLeft + clientWidth);
-                        });
-                });
+                        expect(tabLeft).to.be.gte(scrollLeft);
+                        expect(tabLeft + tabWidth).to.be.lte(scrollLeft + clientWidth);
+                    });
+            });
         });
 
-        it('should auto scroll to active tab', async () => {
+        it('should auto scroll to active tab', () => {
             const tabs = [
                 { tab: 'Home', key: 1 },
                 { tab: 'Documnet', key: 2 },
@@ -514,7 +511,7 @@ describe('Tab', () => {
             );
             cy.get('.next-tabs-tab').eq(8).should('have.class', 'active');
         });
-        it('should support showAdd', async () => {
+        it('should support showAdd', () => {
             const tabs = [
                 { tab: 'Home', key: 1 },
                 { tab: 'Documnet', key: 2 },
@@ -551,12 +548,7 @@ describe('Tab', () => {
         });
     });
     describe('rtl mode', () => {
-        const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
-            <Tab.Item title={`tab item ${item}`} key={index} />
-        ));
-        const boxStyle = { width: '200px' };
-
-        it.only('should render extra content in left', () => {
+        it('should render extra content in left', () => {
             cy.mount(
                 <Tab rtl extra={<span id="test-extra">hello</span>}>
                     <Tab.Item title="Home" key="1">
@@ -570,8 +562,7 @@ describe('Tab', () => {
                     </Tab.Item>
                 </Tab>
             );
-            // 这里使用position: absolute来定位，元素从常规文档流中移出，float: left不再生效
-            // assert(el.style.getPropertyValue('float') === 'left');
+            //Using position: absolute for positioning, the element is removed from the normal document flow, and float: left no longer takes effect.
             cy.get('#test-extra').parent().should('exist');
             cy.get('#test-extra').parent().should('have.css', 'left', '0px');
         });
