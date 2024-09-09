@@ -58,7 +58,8 @@ export default class Mark extends React.Component {
 
     render() {
         const { prefix, marksPosition } = this.props;
-        const className = marksPosition === 'above' ? `${prefix}range-mark-above` : `${prefix}range-mark-below`;
+        const className =
+            marksPosition === 'above' ? `${prefix}range-mark-above` : `${prefix}range-mark-below`;
         const classes = classNames(className, {
             [`${prefix}range-mark`]: true,
         });
