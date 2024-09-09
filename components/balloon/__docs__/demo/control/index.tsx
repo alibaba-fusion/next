@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Balloon } from '@alifd/next';
 
-class App extends React.Component {
-    constructor(props) {
+interface AppProps {}
+class App extends React.Component<AppProps, { visible: boolean }> {
+    constructor(props: AppProps) {
         super(props);
         this.state = {
             visible: false,
@@ -19,7 +20,7 @@ class App extends React.Component {
     // onVisibleChange callback will be triggered when visible changes.
     // For example, for click type, it'll be triggered when clicking the button and later the other areas;
     // for hover type, it'll be triggered when mouse enter and mouse leave
-    handleVisibleChange(visible) {
+    handleVisibleChange(visible: boolean) {
         this.setState({ visible });
     }
 

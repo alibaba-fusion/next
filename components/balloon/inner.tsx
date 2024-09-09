@@ -5,14 +5,14 @@ import { func, obj } from '../util';
 import Icon from '../icon';
 import zhCN from '../locale/zh-cn';
 import { normalMap, edgeMap } from './alignMap';
-
+import type { BalloonInnerProps } from './types';
 /**
  * Created by xiachi on 17/2/10.
  */
 
 const { noop } = func;
 
-class BalloonInner extends React.Component {
+class BalloonInner extends React.Component<BalloonInnerProps> {
     static contextTypes = {
         prefix: PropTypes.string,
     };
@@ -79,9 +79,9 @@ class BalloonInner extends React.Component {
             [`${_prefix}`]: true,
             [`${_prefix}-${type}`]: type,
             [`${_prefix}-medium`]: true,
-            [`${_prefix}-${alignMap[align].arrow}`]: alignMap[align],
+            [`${_prefix}-${alignMap[align!].arrow}`]: alignMap[align!],
             [`${_prefix}-closable`]: closableInContent,
-            [className]: className,
+            [className!]: className,
             [`${_prefix}-v2`]: v2,
         });
 
@@ -91,7 +91,13 @@ class BalloonInner extends React.Component {
         });
 
         const closeIcon = (
-            <a role="button" aria-label={locale.close} tabIndex="0" className={`${_prefix}-close`} onClick={onClose}>
+            <a
+                role="button"
+                aria-label={locale.close}
+                tabIndex={0}
+                className={`${_prefix}-close`}
+                onClick={onClose}
+            >
                 <Icon type="close" size="small" />
             </a>
         );

@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { type ReactElement } from 'react';
 
-export function getDisabledCompatibleTrigger(element) {
+export function getDisabledCompatibleTrigger(
+    element: ReactElement & { type: { displayName: string } }
+) {
     if (element.type.displayName === 'Config(Button)' && element.props.disabled) {
         const displayStyle =
-            element.props.style && element.props.style.display ? element.props.style.display : 'inline-block';
+            element.props.style && element.props.style.display
+                ? element.props.style.display
+                : 'inline-block';
         const child = React.cloneElement(element, {
             style: {
                 ...element.props.style,
