@@ -21,7 +21,15 @@ function _isMultiple(slider, isFixedWidth) {
 }
 
 function LowerSlider(props) {
-    const { hasTip, value, tipRender, slider, tooltipVisible, onTooltipVisibleChange, tooltipAnimation } = props;
+    const {
+        hasTip,
+        value,
+        tipRender,
+        slider,
+        tooltipVisible,
+        onTooltipVisibleChange,
+        tooltipAnimation,
+    } = props;
 
     if (_isMultiple(slider)) {
         return hasTip ? (
@@ -57,7 +65,15 @@ LowerSlider.propTypes = {
 
 function UpperSlider(props) {
     const newprop = Object.assign({}, props);
-    const { hasTip, value, tipRender, slider, tooltipVisible, onTooltipVisibleChange, tooltipAnimation } = newprop;
+    const {
+        hasTip,
+        value,
+        tipRender,
+        slider,
+        tooltipVisible,
+        onTooltipVisibleChange,
+        tooltipAnimation,
+    } = newprop;
     if (_isMultiple(slider)) {
         delete newprop.onKeyDown;
         return hasTip ? (
@@ -266,7 +282,11 @@ class Range extends React.Component {
             tooltipAnimation: true,
         };
 
-        bindCtx(this, ['handleLowerTooltipVisibleChange', 'handleUpperTooltipVisibleChange', 'onKeyDown']);
+        bindCtx(this, [
+            'handleLowerTooltipVisibleChange',
+            'handleUpperTooltipVisibleChange',
+            'onKeyDown',
+        ]);
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -499,7 +519,12 @@ class Range extends React.Component {
 
         this.oldDragging = this._moving.dragging;
 
-        const nextValue = this._currentToValue(current, tempValue, this.lastPosition, this.isFixedWidth); //计算range的新value,可能是数组,可能是单个值
+        const nextValue = this._currentToValue(
+            current,
+            tempValue,
+            this.lastPosition,
+            this.isFixedWidth
+        ); //计算range的新value,可能是数组,可能是单个值
         this.lastPosition = current;
 
         if (!isEqual(nextValue, tempValue)) {
@@ -696,7 +721,8 @@ class Range extends React.Component {
         };
 
         this.isFixedWidth =
-            fixedWidth && (value ? Array.isArray(value) : defaultValue ? Array.isArray(defaultValue) : false);
+            fixedWidth &&
+            (value ? Array.isArray(value) : defaultValue ? Array.isArray(defaultValue) : false);
 
         if (isPreview) {
             const previewCls = classNames(className, `${prefix}form-preview`);
@@ -743,7 +769,9 @@ class Range extends React.Component {
                             <LowerSlider
                                 {...commonProps}
                                 hasMovingClass={
-                                    this.state.hasMovingClass && this._moving && this._moving.dragging === 'lower'
+                                    this.state.hasMovingClass &&
+                                    this._moving &&
+                                    this._moving.dragging === 'lower'
                                 }
                                 tooltipVisible={tooltipVisible || this.state.lowerTooltipVisible}
                                 onTooltipVisibleChange={this.handleLowerTooltipVisibleChange}
@@ -760,7 +788,9 @@ class Range extends React.Component {
                                 {...commonProps}
                                 onKeyDown={this.onKeyDown}
                                 hasMovingClass={
-                                    this.state.hasMovingClass && this._moving && this._moving.dragging === 'upper'
+                                    this.state.hasMovingClass &&
+                                    this._moving &&
+                                    this._moving.dragging === 'upper'
                                 }
                                 tooltipVisible={tooltipVisible || this.state.upperTooltipVisible}
                                 onTooltipVisibleChange={this.handleUpperTooltipVisibleChange}
