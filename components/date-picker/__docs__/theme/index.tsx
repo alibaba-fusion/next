@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
-import DatePicker from '../../index';
+import DatePicker, { type RangePickerProps, type DatePickerProps } from '../../index';
 import ConfigProvider from '../../../config-provider';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
@@ -34,11 +34,18 @@ const i18nMap = {
     },
 };
 
-let startValue;
-let endValue;
+let startValue: Moment;
+let endValue: Moment;
 
-/* eslint-disable react/prop-types */
-class FunctionDemo extends React.Component {
+class FunctionDemo extends React.Component<{
+    locale: (typeof i18nMap)['en-us'];
+    pickerRender: (
+        locale: (typeof i18nMap)['en-us'],
+        demoFunction: any,
+        onFunctionChange: any,
+        otherProps: any
+    ) => React.ReactNode;
+}> {
     state = {
         demoFunction: {
             label: {
@@ -52,7 +59,7 @@ class FunctionDemo extends React.Component {
         },
     };
 
-    onFunctionChange = val => {
+    onFunctionChange = (val: unknown) => {
         this.setState({
             demoFunction: val,
         });
@@ -63,8 +70,8 @@ class FunctionDemo extends React.Component {
         const { demoFunction } = this.state;
         const hasLabel = demoFunction.label.value === 'true';
 
-        const otherProps = {
-            popupContainer: target => target.parentNode,
+        const otherProps: Record<string, unknown> = {
+            popupContainer: (target: HTMLElement) => target.parentNode,
         };
 
         if (hasLabel) {
@@ -75,7 +82,12 @@ class FunctionDemo extends React.Component {
     }
 }
 
-function renderDatePicker(locale, demoFunction, onFunctionChange, otherProps) {
+function renderDatePicker(
+    locale: (typeof i18nMap)['en-us'],
+    demoFunction: any,
+    onFunctionChange: any,
+    otherProps: DatePickerProps
+) {
     return (
         <Demo
             title={locale.datepicker}
@@ -117,7 +129,12 @@ function renderDatePicker(locale, demoFunction, onFunctionChange, otherProps) {
     );
 }
 
-function renderRangePicker(locale, demoFunction, onFunctionChange, otherProps) {
+function renderRangePicker(
+    locale: (typeof i18nMap)['en-us'],
+    demoFunction: any,
+    onFunctionChange: any,
+    otherProps: RangePickerProps
+) {
     return (
         <Demo
             title={locale.rangepicker}
@@ -158,9 +175,8 @@ function renderRangePicker(locale, demoFunction, onFunctionChange, otherProps) {
     );
 }
 
-/* eslint-disable */
-function render(i18n, lang) {
-    return ReactDOM.render(
+function render(i18n: (typeof i18nMap)['en-us'], lang: string) {
+    ReactDOM.render(
         <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">
                 <FunctionDemo locale={i18n} pickerRender={renderDatePicker} />

@@ -1,7 +1,12 @@
-import React, { Component } from 'react';
+import React, {
+    Component,
+    type HTMLAttributes,
+    type KeyboardEvent,
+    type SyntheticEvent,
+} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
 import { polyfill } from 'react-lifecycles-compat';
 import Overlay from '../overlay';
 import Input from '../input';
@@ -9,15 +14,18 @@ import Icon from '../icon';
 import Calendar from '../calendar';
 import ConfigProvider from '../config-provider';
 import nextLocale from '../locale/zh-cn';
-import { func, obj, KEYCODE } from '../util';
+import { func, obj, KEYCODE, type ClassPropsWithDefault } from '../util';
 import { checkDateValue, formatDateValue } from './util';
+import type { WeekPickerProps, WeekPickerState } from './types';
 
 const { Popup } = Overlay;
+
+type InnerWeekPickerProps = ClassPropsWithDefault<WeekPickerProps, typeof WeekPicker.defaultProps>;
 
 /**
  * DatePicker.WeekPicker
  */
-class WeekPicker extends Component {
+class WeekPicker extends Component<WeekPickerProps, WeekPickerState> {
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -36,7 +44,6 @@ class WeekPicker extends Component {
         placeholder: PropTypes.string,
         /**
          * 默认展现的月
-         * @return {MomentObject} 返回包含指定月份的 moment 对象实例
          */
         defaultVisibleMonth: PropTypes.func,
         onVisibleMonthChange: PropTypes.func,
@@ -54,19 +61,14 @@ class WeekPicker extends Component {
         format: PropTypes.string,
         /**
          * 禁用日期函数
-         * @param {MomentObject} 日期值
-         * @param {String} view 当前视图类型，year: 年， month: 月, date: 日
-         * @return {Boolean} 是否禁用
          */
         disabledDate: PropTypes.func,
         /**
          * 自定义面板页脚
-         * @return {Node} 自定义的面板页脚组件
          */
         footerRender: PropTypes.func,
         /**
          * 日期值改变时的回调
-         * @param {MomentObject|String} value 日期值
          */
         onChange: PropTypes.func,
         /**
@@ -91,8 +93,6 @@ class WeekPicker extends Component {
         defaultVisible: PropTypes.bool,
         /**
          * 弹层展示状态变化时的回调
-         * @param {Boolean} visible 弹层是否显示
-         * @param {String} type 触发弹层显示和隐藏的来源 calendarSelect 表示由日期表盘的选择触发； okBtnClick 表示由确认按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -100,13 +100,11 @@ class WeekPicker extends Component {
          */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
-         * 弹层对齐方式,具体含义见 OverLay文档
+         * 弹层对齐方式，具体含义见 OverLay 文档
          */
         popupAlign: PropTypes.string,
         /**
          * 弹层容器
-         * @param {Element} target 目标元素
-         * @return {Element} 弹层的容器元素
          */
         popupContainer: PropTypes.any,
         /**
@@ -131,14 +129,10 @@ class WeekPicker extends Component {
         inputProps: PropTypes.object,
         /**
          * 自定义日期渲染函数
-         * @param {Object} value 日期值（moment对象）
-         * @returns {ReactNode}
          */
         dateCellRender: PropTypes.func,
         /**
          * 自定义月份渲染函数
-         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
-         * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
         /**
@@ -147,7 +141,6 @@ class WeekPicker extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {MomentObject} value 年份
          */
         renderPreview: PropTypes.func,
         yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
@@ -174,8 +167,10 @@ class WeekPicker extends Component {
         onVisibleChange: func.noop,
     };
 
-    constructor(props, context) {
-        super(props, context);
+    readonly props: InnerWeekPickerProps;
+
+    constructor(props: WeekPickerProps) {
+        super(props);
 
         const value = formatDateValue(props.value || props.defaultValue, props.format);
 
@@ -185,8 +180,8 @@ class WeekPicker extends Component {
         };
     }
 
-    static getDerivedStateFromProps(props) {
-        const st = {};
+    static getDerivedStateFromProps(props: InnerWeekPickerProps) {
+        const st: Partial<WeekPickerState> = {};
         if ('value' in props) {
             st.value = formatDateValue(props.value, props.format);
         }
@@ -198,7 +193,7 @@ class WeekPicker extends Component {
         return st;
     }
 
-    handleChange = (newValue, prevValue) => {
+    handleChange = (newValue: Moment | null, prevValue: Moment | null) => {
         if (!('value' in this.props)) {
             this.setState({
                 value: newValue,
@@ -213,14 +208,14 @@ class WeekPicker extends Component {
         }
     };
 
-    onDateInputChange = (value, e, eventType) => {
+    onDateInputChange = (value: Moment | null, e: SyntheticEvent, eventType: string) => {
         if (eventType === 'clear' || !value) {
             e.stopPropagation();
             this.handleChange(null, this.state.value);
         }
     };
 
-    onKeyDown = e => {
+    onKeyDown = (e: KeyboardEvent) => {
         if (
             [KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1
         ) {
@@ -229,6 +224,7 @@ class WeekPicker extends Component {
 
         if (
             (e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
+            // @ts-expect-error 没有 controlKey，应该是 ctrlKey
             e.controlKey ||
             e.shiftKey
         ) {
@@ -262,7 +258,7 @@ class WeekPicker extends Component {
         this.handleChange(date, this.state.value);
     };
 
-    onVisibleChange = (visible, type) => {
+    onVisibleChange = (visible: boolean, type: string) => {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
@@ -271,12 +267,12 @@ class WeekPicker extends Component {
         this.props.onVisibleChange(visible, type);
     };
 
-    onSelectCalendarPanel = value => {
+    onSelectCalendarPanel = (value: Moment | null) => {
         this.handleChange(value, this.state.value);
         this.onVisibleChange(false, 'calendarSelect');
     };
 
-    renderPreview(others) {
+    renderPreview(others: HTMLAttributes<HTMLDivElement>) {
         const { prefix, format, className, renderPreview } = this.props;
         const { value } = this.state;
         const previewCls = classnames(className, `${prefix}form-preview`);
@@ -298,7 +294,7 @@ class WeekPicker extends Component {
         );
     }
 
-    dateRender = value => {
+    dateRender = (value: Moment) => {
         const { prefix, dateCellRender } = this.props;
         const selectedValue = this.state.value;
         const content =
@@ -375,6 +371,7 @@ class WeekPicker extends Component {
         }
 
         if (isPreview) {
+            // @ts-expect-error 应是 propTypes
             return this.renderPreview(obj.pickOthers(others, WeekPicker.PropTypes));
         }
 
@@ -395,6 +392,7 @@ class WeekPicker extends Component {
                             className={`${prefix}date-picker-symbol-calendar-icon`}
                         />
                     }
+                    // @ts-expect-error allowClear 应该先做 boolean 化处理
                     hasClear={value && hasClear}
                     className={`${prefix}week-picker-input`}
                 />

@@ -1,18 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { DatePicker } from '@alifd/next';
+import { type Moment } from 'moment';
+import type { DatePickerProps } from '@alifd/next/types/date-picker';
 
 class CustomRangePicker extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            startValue: null,
-            endValue: null,
-            endOpen: false,
-        };
-    }
+    state: {
+        startValue: Moment | null;
+        endValue: Moment | null;
+        endOpen: boolean;
+    } = {
+        startValue: null,
+        endValue: null,
+        endOpen: false,
+    };
 
-    disabledStartDate = startValue => {
+    disabledStartDate: DatePickerProps['disabledDate'] = startValue => {
         const { endValue } = this.state;
         if (!startValue || !endValue) {
             return false;
@@ -20,7 +23,7 @@ class CustomRangePicker extends React.Component {
         return startValue.valueOf() > endValue.valueOf();
     };
 
-    disabledEndDate = endValue => {
+    disabledEndDate: DatePickerProps['disabledDate'] = endValue => {
         const { startValue } = this.state;
         if (!endValue || !startValue) {
             return false;
@@ -28,27 +31,27 @@ class CustomRangePicker extends React.Component {
         return endValue.valueOf() <= startValue.valueOf();
     };
 
-    onChange = (stateName, value) => {
+    onChange = (stateName: 'startValue' | 'endValue', value: string | Moment | null) => {
         this.setState({
             [stateName]: value,
         });
     };
 
-    onStartChange = value => {
+    onStartChange: DatePickerProps['onChange'] = value => {
         this.onChange('startValue', value);
     };
 
-    onEndChange = value => {
+    onEndChange: DatePickerProps['onChange'] = value => {
         this.onChange('endValue', value);
     };
 
-    handleStartOpenChange = open => {
+    handleStartOpenChange: DatePickerProps['onVisibleChange'] = open => {
         if (!open) {
             this.setState({ endOpen: true });
         }
     };
 
-    handleEndOpenChange = open => {
+    handleEndOpenChange: DatePickerProps['onVisibleChange'] = open => {
         this.setState({ endOpen: open });
     };
 

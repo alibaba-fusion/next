@@ -3,10 +3,10 @@ import moment from 'moment';
 import Button from '../../button';
 import { func } from '../../util';
 import { PANEL } from '../util';
+import type { PanelFooterProps } from '../types';
 
-class PanelFooter extends React.PureComponent {
+class PanelFooter extends React.PureComponent<PanelFooterProps> {
     static defaultProps = {
-        // onPanelChange: func.noop,
         onOk: func.noop,
     };
 
@@ -15,10 +15,10 @@ class PanelFooter extends React.PureComponent {
             [PANEL.DATE]: PANEL.TIME,
             [PANEL.TIME]: PANEL.DATE,
         }[this.props.panel];
-        this.props.onPanelChange(targetPanel);
+        this.props.onPanelChange!(targetPanel);
     };
 
-    createRanges = ranges => {
+    createRanges = (ranges: PanelFooterProps['ranges']) => {
         if (!ranges || ranges.length === 0) return null;
         const { onOk, prefix } = this.props;
 
@@ -47,7 +47,7 @@ class PanelFooter extends React.PureComponent {
             locale,
             panel,
             value,
-            ranges, // 兼容0.x range 属性
+            ranges, // 兼容 0.x range 属性
             disabledOk,
             onPanelChange,
             onOk,
@@ -61,7 +61,7 @@ class PanelFooter extends React.PureComponent {
             size: 'small',
             type: 'primary',
             disabled: !value,
-        };
+        } as const;
         const onClick = () => onOk();
 
         return (
@@ -73,7 +73,7 @@ class PanelFooter extends React.PureComponent {
                     </Button>
                 ) : null}
                 <Button {...sharedBtnProps} disabled={disabledOk || !value} onClick={onClick}>
-                    {locale.ok}
+                    {locale!.ok}
                 </Button>
             </div>
         );

@@ -176,7 +176,7 @@ class TimePicker extends Component<TimePickerProps, TimePickerState> {
             disabledSeconds,
         } = this.props;
 
-        let unit = 'second';
+        let unit: 'hour' | 'minute' | 'second' = 'second';
 
         if (disabledSeconds) {
             unit = disabledMinutes ? 'hour' : 'minute';
