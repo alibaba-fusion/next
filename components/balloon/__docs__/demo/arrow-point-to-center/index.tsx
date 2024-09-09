@@ -14,11 +14,6 @@ const pointCenterTrigger = (
         Arrow Point To Center / 箭头指向中心
     </Button>
 );
-const primary = (
-    <Button className="btrigger" style={{ margin: '5px' }}>
-        primary style
-    </Button>
-);
 
 const Demo = () => (
     <div className="container">

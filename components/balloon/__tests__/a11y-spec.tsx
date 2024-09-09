@@ -1,34 +1,20 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import Balloon from '../index';
 import '../style';
-import { unmount, test, testReact, createContainer } from '../../util/__tests__/legacy/a11y/validate';
-
-Enzyme.configure({ adapter: new Adapter() });
+import { test, testReact, createContainer } from '../../util/__tests__/a11y/validate';
 
 const portalContainerId = 'a11y-portal-id';
-let portalContainer;
+let portalContainer: HTMLDivElement;
 
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Balloon A11y', () => {
-    let wrapper;
-
     afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-
         if (portalContainer) {
             portalContainer.remove();
         }
-        unmount();
     });
-
     it('should not have any violations', async () => {
         portalContainer = createContainer(portalContainerId);
-        wrapper = await testReact(
+        await testReact(
             <Balloon id="balloon-1" visible popupContainer={portalContainerId}>
                 I am balloon content
             </Balloon>
@@ -38,7 +24,7 @@ describe('Balloon A11y', () => {
 
     it('should not have any violations when not closable', async () => {
         portalContainer = createContainer(portalContainerId);
-        wrapper = await testReact(
+        await testReact(
             <Balloon id="balloon-2" visible closable={false} popupContainer={portalContainerId}>
                 I am balloon content
             </Balloon>
@@ -50,7 +36,7 @@ describe('Balloon A11y', () => {
     it('should not have any violations when Tooltip', async () => {
         portalContainer = createContainer(portalContainerId);
 
-        wrapper = await testReact(
+        await testReact(
             <Balloon.Tooltip id="tooltip-1" visible popupContainer={portalContainerId}>
                 I am balloon content
             </Balloon.Tooltip>

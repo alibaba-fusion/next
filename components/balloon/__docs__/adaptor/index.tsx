@@ -1,6 +1,7 @@
 import React from 'react';
 import { Balloon } from '@alifd/next';
 import { Types } from '@alifd/adaptor-helper';
+import type { AlignType } from '../../types';
 
 const ALIGN_LIST = [
     { label: 'Top', value: 'b' }, // (上)
@@ -17,17 +18,19 @@ const ALIGN_LIST = [
     { label: 'Right Bottom', value: 'lb' }, // (右下 及其 两两组合)
 ];
 
-
 export default {
     name: 'Balloon',
-    shape: [{
-        label: 'Balloon',
-        value: 'balloon'
-    }, {
-        label: 'Tooltip',
-        value: 'tooltip'
-    }],
-    editor: (shape) => {
+    shape: [
+        {
+            label: 'Balloon',
+            value: 'balloon',
+        },
+        {
+            label: 'Tooltip',
+            value: 'tooltip',
+        },
+    ],
+    editor: (shape: string) => {
         return {
             props: [
                 shape === 'balloon' && {
@@ -43,45 +46,72 @@ export default {
                     options: ALIGN_LIST,
                     default: 'b',
                 },
-                shape === 'balloon' ?
-                    {
-                        name: 'closable',
-                        type: Types.bool,
-                        default: true
-                    } :
-                    null
+                shape === 'balloon'
+                    ? {
+                          name: 'closable',
+                          type: Types.bool,
+                          default: true,
+                      }
+                    : null,
             ].filter(v => !!v),
             data: {
-                default: `${shape.substring(0, 1).toUpperCase() + shape.substring(1)} content replace holder.`
-            }
+                default: `${
+                    shape.substring(0, 1).toUpperCase() + shape.substring(1)
+                } content replace holder.`,
+            },
         };
     },
-    adaptor: ({ shape, level, direction, closable, data, style, ...others }) => {
+    adaptor: ({
+        shape,
+        level,
+        direction,
+        closable,
+        data,
+        style,
+        ...others
+    }: {
+        shape: string;
+        level: string;
+        direction: AlignType;
+        closable: boolean;
+        data: string;
+        style: React.CSSProperties;
+    }) => {
         return (
-            <Balloon.Inner {...others} type={level} style={{position: 'relative', ...style }} isTooltip={shape === 'tooltip'} align={direction} closable={shape === 'balloon' && closable}>
+            <Balloon.Inner
+                {...others}
+                type={level}
+                style={{ position: 'relative', ...style }}
+                isTooltip={shape === 'tooltip'}
+                align={direction}
+                closable={shape === 'balloon' && closable}
+            >
                 {data}
             </Balloon.Inner>
         );
     },
-    content: (shape) => ({
+    content: (shape: string) => ({
         options: [
             {
                 name: 'direction',
                 options: ALIGN_LIST,
-                default: 'b'
+                default: 'b',
             },
             shape === 'balloon' && {
                 name: 'closable',
                 options: ['yes', 'no'],
-                default: 'yes'
-            }
+                default: 'yes',
+            },
         ].filter(v => !!v),
-        transform: (props, { direction, closable }) => {
+        transform: (
+            props: any,
+            { direction, closable }: { direction: AlignType; closable: string }
+        ) => {
             return {
                 ...props,
                 direction,
                 closable: closable === 'yes',
-            }
-        }
-    })
+            };
+        },
+    }),
 };
