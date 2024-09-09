@@ -21,7 +21,8 @@ function _getStyle(min, max, value, rtl) {
 }
 
 function sliderFrag(props) {
-    const { prefix, min, max, value, disabled, onMouseEnter, onMouseLeave, onMouseDown, rtl } = props;
+    const { prefix, min, max, value, disabled, onMouseEnter, onMouseLeave, onMouseDown, rtl } =
+        props;
 
     const activeClass = !disabled && props.hasMovingClass ? `${prefix}range-active` : '';
 
@@ -152,7 +153,9 @@ export default class FixedSlider extends React.Component {
                 popupContainer={target => target.parentNode}
                 popupProps={{
                     visible: tooltipVisible || hasMovingClass,
-                    animation: this.state.tooltipAnimation ? { in: 'expandInUp', out: 'expandOutDown' } : false,
+                    animation: this.state.tooltipAnimation
+                        ? { in: 'expandInUp', out: 'expandOutDown' }
+                        : false,
                 }}
                 trigger={sliderFrag({ ...this.props, ...addedProps })}
                 align="t"

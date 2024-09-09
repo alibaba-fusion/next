@@ -22,7 +22,13 @@ function Slider({ prefix, hasMovingClass, min, max, value, onKeyDown, rtl }) {
         [`${prefix}range-slider-moving`]: hasMovingClass,
     });
     return (
-        <div className={classes} onKeyDown={onKeyDown} role="slider" tabIndex={0} {..._getProps(min, max, value, rtl)}>
+        <div
+            className={classes}
+            onKeyDown={onKeyDown}
+            role="slider"
+            tabIndex={0}
+            {..._getProps(min, max, value, rtl)}
+        >
             <div className={`${prefix}range-slider-inner`} />
         </div>
     );
