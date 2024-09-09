@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Balloon } from '@alifd/next';
 
-class App extends React.Component {
-    constructor(props) {
+interface AppProps {}
+class App extends React.Component<AppProps, { visible: boolean }> {
+    constructor(props: AppProps) {
         super(props);
         this.state = {
             visible: false,

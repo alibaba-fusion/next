@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Button, Balloon, Input } from '@alifd/next';
-import moment from 'moment';
 
 const { Tooltip } = Balloon;
 const innerButton = <Button className="btrigger">Fill in form</Button>;
@@ -15,7 +14,7 @@ const App = () => (
             id="inner-a11y-balloon-1"
             autoFocus
             trigger={<Button type="primary">Fill in sub-form</Button>}
-            popupContainer={trigger => trigger.parentNode}
+            popupContainer={(trigger: HTMLElement) => trigger.parentNode}
             triggerType="click"
         >
             please input your age:
@@ -39,7 +38,7 @@ const App = () => (
                 id="inner-a11y-balloon"
                 autoFocus
                 trigger={<Button type="primary">Fill in sub-form</Button>}
-                popupContainer={trigger => trigger.parentNode}
+                popupContainer={(trigger: HTMLElement) => trigger.parentNode}
                 triggerType="click"
             >
                 please input your age:
