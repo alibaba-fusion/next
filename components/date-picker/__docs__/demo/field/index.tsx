@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { DatePicker, Field, Button } from '@alifd/next';
+import { type Moment } from 'moment';
 
 const { RangePicker, YearPicker, MonthPicker } = DatePicker;
 
@@ -8,27 +9,32 @@ class App extends React.Component {
     field = new Field(this);
 
     printData = () => {
-        this.field.validate((err, values) => {
-            if (err) {
-                console.error('Error: ', err);
-                return;
-            }
+        this.field.validate(
+            (
+                err,
+                values: { date: Moment; month: Moment; year: Moment; range: [Moment, Moment] }
+            ) => {
+                if (err) {
+                    console.error('Error: ', err);
+                    return;
+                }
 
-            console.log('datepicker: %s', values.date.format('YYYY-MM-DD'));
-            console.log('monthpicker: %s', values.month.format('YYYY-MM'));
-            console.log('yearpicker: %s', values.year.format('YYYY'));
-            const range = values.range;
-            console.log(
-                'rangepicker: [%s, %s]',
-                range[0] && range[0].format('YYYY-MM-DD'),
-                range[1] && range[1].format('YYYY-MM-DD')
-            );
-        });
+                console.log('datepicker: %s', values.date.format('YYYY-MM-DD'));
+                console.log('monthpicker: %s', values.month.format('YYYY-MM'));
+                console.log('yearpicker: %s', values.year.format('YYYY'));
+                const range = values.range;
+                console.log(
+                    'rangepicker: [%s, %s]',
+                    range[0] && range[0].format('YYYY-MM-DD'),
+                    range[1] && range[1].format('YYYY-MM-DD')
+                );
+            }
+        );
     };
 
-    printError = name => {
+    printError = (name: string) => {
         if (this.field.getError(name)) {
-            return <span className="error-msg">{this.field.getError(name).join(',')}</span>;
+            return <span className="error-msg">{this.field.getError(name)!.join(',')}</span>;
         }
     };
 

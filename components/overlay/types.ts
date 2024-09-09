@@ -7,7 +7,7 @@ import type { CommonProps } from '../util';
 export type AnimationObjectType = Record<'in' | 'out', string>;
 
 /**
- * @api Target
+ * @api PropTarget
  */
 export type Target<T = unknown> =
     | React.ReactInstance
@@ -19,6 +19,9 @@ export type Target<T = unknown> =
     | null
     | false
     | undefined;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type PropTarget = Target<any>;
 
 /**
  * @api Overlay.Popup
@@ -77,7 +80,7 @@ export interface PopupV1Props extends React.HTMLAttributes<HTMLElement>, CommonP
      * 弹层定位的参照元素
      * @en reference element for overlay positioning
      */
-    target?: Target;
+    target?: PropTarget;
 
     /**
      * 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)
@@ -100,7 +103,7 @@ export interface PopupV1Props extends React.HTMLAttributes<HTMLElement>, CommonP
      * @en Container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
      * @skip
      */
-    container?: Target;
+    container?: PropTarget;
     /**
      * 是否显示遮罩
      * @en Whether to show the mask
@@ -412,7 +415,7 @@ export interface PopupV2Props extends React.HTMLAttributes<HTMLElement>, CommonP
      * 弹层定位的参照元素
      * @en reference element for overlay positioning
      */
-    target?: Target;
+    target?: PropTarget;
 
     /**
      * 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)
@@ -435,7 +438,7 @@ export interface PopupV2Props extends React.HTMLAttributes<HTMLElement>, CommonP
      * @en Container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
      * @skip
      */
-    container?: Target;
+    container?: PropTarget;
     /**
      * 是否显示遮罩
      * @en Whether to show the mask
@@ -763,7 +766,7 @@ export interface OverlayV1Props extends React.HTMLAttributes<HTMLElement>, Commo
      * @en reference element for overlay positioning
      * @defaultValue Position.VIEWPORT
      */
-    target?: Target;
+    target?: PropTarget;
     /**
      * 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)
      * @en alignment of the overlay relative to the reference element, see [Alignment](#Alignment)
@@ -782,7 +785,7 @@ export interface OverlayV1Props extends React.HTMLAttributes<HTMLElement>, Commo
      * 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点
      * @en container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
      */
-    container?: Target;
+    container?: PropTarget;
 
     /**
      * 是否显示遮罩
@@ -1020,7 +1023,7 @@ export interface OverlayV2Props extends React.HTMLAttributes<HTMLElement>, Commo
      * @en reference element for overlay positioning
      * @defaultValue Position.VIEWPORT
      */
-    target?: Target;
+    target?: PropTarget;
     /**
      * 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)
      * @en alignment of the overlay relative to the reference element, see [Alignment](#Alignment)
@@ -1039,7 +1042,7 @@ export interface OverlayV2Props extends React.HTMLAttributes<HTMLElement>, Commo
      * 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点
      * @en container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
      */
-    container?: Target;
+    container?: PropTarget;
 
     /**
      * 是否显示遮罩
@@ -1236,13 +1239,13 @@ export interface PositionProps {
      * 弹层定位的参照元素
      * @en reference element for overlay positioning
      */
-    target?: Target | 'viewport';
+    target?: PropTarget | 'viewport';
     /**
      * 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点
      * @en Container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
      * @skip
      */
-    container?: Target;
+    container?: PropTarget;
     /**
      * 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)
      * @en Alignment of the overlay relative to the reference element, see [Alignment](#Alignment)
@@ -1359,12 +1362,12 @@ export interface GatewayProps {
      * @en Container of the overlay, if it is a function, it should return ref, if it is a string, it is should be the id of the DOM element, it can also be passed the DOM element directly.
      * @skip
      */
-    container?: Target;
+    container?: PropTarget;
     /**
      * 弹层定位的参照元素
      * @en reference element for overlay positioning
      */
-    target?: Target;
+    target?: PropTarget;
 }
 
 export interface GatewayState {

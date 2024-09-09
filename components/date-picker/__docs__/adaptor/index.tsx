@@ -2,6 +2,7 @@ import React from 'react';
 import { DatePicker } from '@alifd/next';
 import { Types } from '@alifd/adaptor-helper';
 import moment from 'moment';
+import type { DatePickerProps } from '../../types';
 
 export default {
     name: 'DatePicker',
@@ -12,7 +13,7 @@ export default {
             label: 'Range Picker',
         },
     ],
-    editor: shape => {
+    editor: (shape: 'normal' | 'range') => {
         return {
             props: [
                 {
@@ -63,7 +64,7 @@ export default {
         placeholder = '',
         style = {},
         ...others
-    }) => {
+    }: any) => {
         const now = moment();
         style = {
             width,
@@ -113,7 +114,7 @@ export default {
             />
         );
     },
-    content: shape => ({
+    content: (shape: 'normal' | 'range') => ({
         options: [
             {
                 name: 'type',
@@ -126,7 +127,7 @@ export default {
                 default: 'hide',
             },
         ],
-        transform: (props, { type, label }) => {
+        transform: (props: DatePickerProps, { type, label }: { type: string; label: string }) => {
             return {
                 ...props,
                 type,
@@ -134,7 +135,7 @@ export default {
             };
         },
     }),
-    demoOptions: demo => {
+    demoOptions: (demo: any) => {
         const { node } = demo;
         const { props = {} } = node;
         if (props.state === 'expanded') {

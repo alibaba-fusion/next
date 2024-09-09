@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, type HTMLAttributes, type KeyboardEvent, type UIEvent } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
 import ConfigProvider from '../config-provider';
 import Overlay from '../overlay';
-import Input from '../input';
+import Input, { type InputProps } from '../input';
 import Icon from '../icon';
 import Calendar from '../calendar';
 import TimePickerPanel from '../time-picker/panel';
 import nextLocale from '../locale/zh-cn';
-import { func, obj } from '../util';
+import { type ClassPropsWithDefault, func, obj } from '../util';
 import {
     PANEL,
     resetValueTime,
@@ -21,13 +21,17 @@ import {
     onTimeKeydown,
 } from './util';
 import PanelFooter from './module/panel-footer';
+import type { DatePickerProps, DatePickerState } from './types';
+import { type TimePickerProps } from '../time-picker';
 
 const { Popup } = Overlay;
+
+type InnerDatePickerProps = ClassPropsWithDefault<DatePickerProps, typeof DatePicker.defaultProps>;
 
 /**
  * DatePicker
  */
-class DatePicker extends Component {
+class DatePicker extends Component<DatePickerProps, DatePickerState> {
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -46,7 +50,7 @@ class DatePicker extends Component {
         placeholder: PropTypes.string,
         /**
          * 默认展现的月
-         * @return {MomentObject} 返回包含指定月份的 moment 对象实例
+         * @returns \{MomentObject\} 返回包含指定月份的 moment 对象实例
          */
         defaultVisibleMonth: PropTypes.func,
         onVisibleMonthChange: PropTypes.func,
@@ -63,7 +67,7 @@ class DatePicker extends Component {
          */
         format: PropTypes.string,
         /**
-         * 是否使用时间控件，传入 TimePicker 的属性 { defaultValue, format, ... }
+         * 是否使用时间控件，传入 TimePicker 的属性 \{ defaultValue, format, ... \}
          */
         showTime: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         /**
@@ -72,24 +76,18 @@ class DatePicker extends Component {
         resetTime: PropTypes.bool,
         /**
          * 禁用日期函数
-         * @param {MomentObject} 日期值
-         * @param {String} view 当前视图类型，year: 年， month: 月, date: 日
-         * @return {Boolean} 是否禁用
          */
         disabledDate: PropTypes.func,
         /**
          * 自定义面板页脚
-         * @return {Node} 自定义的面板页脚组件
          */
         footerRender: PropTypes.func,
         /**
          * 日期值改变时的回调
-         * @param {MomentObject|String} value 日期值
          */
         onChange: PropTypes.func,
         /**
          * 点击确认按钮时的回调
-         * @param {MomentObject|String} value 日期值
          */
         onOk: PropTypes.func,
         /**
@@ -114,8 +112,6 @@ class DatePicker extends Component {
         defaultVisible: PropTypes.bool,
         /**
          * 弹层展示状态变化时的回调
-         * @param {Boolean} visible 弹层是否显示
-         * @param {String} type 触发弹层显示和隐藏的来源 calendarSelect 表示由日期表盘的选择触发； okBtnClick 表示由确认按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -123,13 +119,11 @@ class DatePicker extends Component {
          */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
-         * 弹层对齐方式,具体含义见 OverLay文档
+         * 弹层对齐方式，具体含义见 OverLay 文档
          */
         popupAlign: PropTypes.string,
         /**
          * 弹层容器
-         * @param {Element} target 目标元素
-         * @return {Element} 弹层的容器元素
          */
         popupContainer: PropTypes.any,
         /**
@@ -154,20 +148,14 @@ class DatePicker extends Component {
         inputProps: PropTypes.object,
         /**
          * 自定义日期渲染函数
-         * @param {Moment} calendarDate 日期值（moment对象）
-         * @returns {ReactNode}
          */
         dateCellRender: PropTypes.func,
         /**
          * 自定义月份渲染函数
-         * @param {Moment} calendarDate 对应 Calendar 返回的自定义日期对象
-         * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
         /**
          * 自定义年份渲染函数
-         * @param {Moment} calendarDate 对应 Calendar 返回的自定义日期对象
-         * @returns {ReactNode}
          */
         yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         /**
@@ -184,7 +172,6 @@ class DatePicker extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {MomentObject} value 日期
          */
         renderPreview: PropTypes.func,
         locale: PropTypes.object,
@@ -224,11 +211,13 @@ class DatePicker extends Component {
         onOk: func.noop,
     };
 
-    constructor(props, context) {
-        super(props, context);
+    readonly props: InnerDatePickerProps;
+
+    constructor(props: DatePickerProps) {
+        super(props);
         const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(
             props.format,
-            props.showTime
+            props.showTime!
         );
 
         this.state = {
@@ -236,18 +225,18 @@ class DatePicker extends Component {
             dateInputStr: '',
             timeInputStr: '',
             inputing: false, // 当前是否处于输入状态
-            visible: props.defaultVisible,
+            visible: props.defaultVisible!,
             inputAsString: typeof props.defaultValue === 'string',
             panel: PANEL.DATE,
-            format,
+            format: format!,
             timeFormat,
-            dateTimeFormat,
+            dateTimeFormat: dateTimeFormat!,
         };
     }
 
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(props: InnerDatePickerProps) {
         const formatStates = getDateTimeFormat(props.format, props.showTime);
-        const states = {};
+        const states: Partial<DatePickerState> = {};
 
         if ('value' in props) {
             states.value = formatDateValue(props.value, formatStates.dateTimeFormat);
@@ -269,7 +258,7 @@ class DatePicker extends Component {
         };
     }
 
-    onValueChange = (newValue, handler = 'onChange') => {
+    onValueChange = (newValue: Moment | null, handler: 'onOk' | 'onChange' = 'onChange') => {
         const ret =
             this.state.inputAsString && newValue
                 ? newValue.format(this.state.dateTimeFormat)
@@ -277,7 +266,7 @@ class DatePicker extends Component {
         this.props[handler](ret);
     };
 
-    onSelectCalendarPanel = value => {
+    onSelectCalendarPanel = (value: Moment) => {
         const { showTime, resetTime } = this.props;
 
         const prevValue = this.state.value;
@@ -285,9 +274,9 @@ class DatePicker extends Component {
         if (showTime) {
             if (!prevValue) {
                 // 第一次选择日期值时，如果设置了默认时间，则使用该默认时间
-                if (showTime.defaultValue) {
+                if ((showTime as TimePickerProps).defaultValue) {
                     const defaultTimeValue = formatDateValue(
-                        showTime.defaultValue,
+                        (showTime as TimePickerProps).defaultValue,
                         this.state.timeFormat
                     );
                     newValue = resetValueTime(value, defaultTimeValue);
@@ -305,7 +294,7 @@ class DatePicker extends Component {
         }
     };
 
-    onSelectTimePanel = value => {
+    onSelectTimePanel = (value: Moment) => {
         this.handleChange(value, this.state.value, { inputing: false });
     };
 
@@ -318,7 +307,7 @@ class DatePicker extends Component {
         this.handleChange(null, this.state.value, { inputing: false });
     };
 
-    onDateInputChange = (inputStr, e, eventType) => {
+    onDateInputChange = (inputStr: string | null | undefined, e: UIEvent, eventType?: string) => {
         if (eventType === 'clear' || !inputStr) {
             e.stopPropagation();
             this.clearValue();
@@ -330,7 +319,7 @@ class DatePicker extends Component {
         }
     };
 
-    onTimeInputChange = inputStr => {
+    onTimeInputChange = (inputStr: string) => {
         this.setState({
             timeInputStr: inputStr,
             inputing: 'time',
@@ -370,6 +359,7 @@ class DatePicker extends Component {
                 const hour = parsed.hour();
                 const minute = parsed.minute();
                 const second = parsed.second();
+                // @ts-expect-error 没有考虑 value 为 null 的情况
                 const newValue = value.clone().hour(hour).minute(minute).second(second);
 
                 this.handleChange(newValue, this.state.value);
@@ -377,15 +367,15 @@ class DatePicker extends Component {
         }
     };
 
-    onKeyDown = e => {
+    onKeyDown = (e: KeyboardEvent) => {
         const { format } = this.props;
         const { dateInputStr, value } = this.state;
         const dateStr = onDateKeydown(e, { format, dateInputStr, value }, 'day');
         if (!dateStr) return;
-        this.onDateInputChange(dateStr);
+        this.onDateInputChange(dateStr, e);
     };
 
-    onTimeKeyDown = e => {
+    onTimeKeyDown = (e: KeyboardEvent) => {
         const { showTime } = this.props;
         const { timeInputStr, timeFormat, value } = this.state;
         const {
@@ -394,8 +384,8 @@ class DatePicker extends Component {
             hourStep = 1,
             minuteStep = 1,
             secondStep = 1,
-        } = typeof showTime === 'object' ? showTime : {};
-        let unit = 'second';
+        } = typeof showTime === 'object' ? showTime : ({} as TimePickerProps);
+        let unit: 'second' | 'minute' | 'hour' = 'second';
 
         if (disabledSeconds) {
             unit = disabledMinutes ? 'hour' : 'minute';
@@ -421,7 +411,7 @@ class DatePicker extends Component {
         this.onTimeInputChange(timeStr);
     };
 
-    handleChange = (newValue, prevValue, others = {}) => {
+    handleChange = (newValue: Moment | null, prevValue: Moment | null, others = {}) => {
         if (!('value' in this.props)) {
             this.setState({
                 value: newValue,
@@ -457,7 +447,7 @@ class DatePicker extends Component {
         }
     };
 
-    onVisibleChange = (visible, type) => {
+    onVisibleChange = (visible: boolean, type: string) => {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
@@ -466,18 +456,18 @@ class DatePicker extends Component {
         this.props.onVisibleChange(visible, type);
     };
 
-    changePanel = panel => {
+    changePanel = (panel: DatePickerState['panel']) => {
         this.setState({
             panel,
         });
     };
 
-    onOk = value => {
+    onOk = (value: undefined) => {
         this.onVisibleChange(false, 'okBtnClick');
         this.onValueChange(value || this.state.value, 'onOk');
     };
 
-    renderPreview(others) {
+    renderPreview(others: HTMLAttributes<HTMLDivElement>) {
         const { prefix, className, renderPreview } = this.props;
         const { value, dateTimeFormat } = this.state;
         const previewCls = classnames(className, `${prefix}form-preview`);
@@ -576,6 +566,7 @@ class DatePicker extends Component {
         }
 
         if (isPreview) {
+            // @ts-expect-error 应该使用 propTypes
             return this.renderPreview(obj.pickOthers(others, DatePicker.PropTypes));
         }
 
@@ -583,7 +574,7 @@ class DatePicker extends Component {
             ...inputProps,
             size,
             disabled,
-            onChange: this.onDateInputChange,
+            onChange: this.onDateInputChange as InputProps['onChange'],
             onBlur: this.onDateInputBlur,
             onPressEnter: this.onDateInputBlur,
             onKeyDown: this.onKeyDown,
@@ -708,6 +699,7 @@ class DatePicker extends Component {
                             className={`${prefix}date-picker-symbol-calendar-icon`}
                         />
                     }
+                    // @ts-expect-error allowClear 应该先做 boolean 化处理
                     hasClear={allowClear}
                     className={triggerInputCls}
                 />

@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { DatePicker } from '@alifd/next';
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
 
 const { RangePicker } = DatePicker;
-const onChange = value => console.log(value);
-const onOk = value => console.log('onOK:', value.format('YYYY-MM-DD HH:mm:ss'));
-const onRangeOk = value =>
+const onChange = (value: unknown) => console.log(value);
+const onOk = (value: Moment) => console.log('onOK:', value.format('YYYY-MM-DD HH:mm:ss'));
+const onRangeOk = (value: Moment[]) =>
     console.log(
         'onOk: [%s, %s]',
         value[0].format('YYYY-MM-DD HH:mm:ss'),
@@ -26,8 +26,7 @@ ReactDOM.render(
         </div>
         <div>
             <DatePicker
-                showTime
-                timePanelProps={{ defaultValue: defaultTimeValue, secondStep: 10 }}
+                showTime={{ defaultValue: defaultTimeValue, secondStep: 10 }}
                 onChange={onChange}
                 onOk={onOk}
             />
@@ -37,8 +36,7 @@ ReactDOM.render(
         </div>
         <div>
             <RangePicker
-                showTime
-                timePanelProps={{
+                showTime={{
                     defaultValue: defaultTimeValues,
                     format: 'HH:mm',
                     minuteStep: 15,

@@ -1,23 +1,34 @@
-import React, { Component } from 'react';
+import React, {
+    Component,
+    type HTMLAttributes,
+    type SyntheticEvent,
+    type KeyboardEvent,
+} from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
 import ConfigProvider from '../config-provider';
 import Overlay from '../overlay';
 import Input from '../input';
 import Icon from '../icon';
 import Calendar from '../calendar';
 import nextLocale from '../locale/zh-cn';
-import { func, obj } from '../util';
+import { type ClassPropsWithDefault, func, obj } from '../util';
 import { checkDateValue, formatDateValue, onDateKeydown } from './util';
+import type { MonthPickerProps, MonthPickerState } from './types';
 
 const { Popup } = Overlay;
+
+type InnerMonthPickerProps = ClassPropsWithDefault<
+    MonthPickerProps,
+    typeof MonthPicker.defaultProps
+>;
 
 /**
  * DatePicker.MonthPicker
  */
-class MonthPicker extends Component {
+class MonthPicker extends Component<MonthPickerProps, MonthPickerState> {
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -36,7 +47,6 @@ class MonthPicker extends Component {
         placeholder: PropTypes.string,
         /**
          * 默认展现的年
-         * @return {MomentObject} 返回包含指定年份的 moment 对象实例
          */
         defaultVisibleYear: PropTypes.func,
         /**
@@ -53,19 +63,14 @@ class MonthPicker extends Component {
         format: PropTypes.string,
         /**
          * 禁用日期函数
-         * @param {MomentObject} 日期值
-         * @param {String} view 当前视图类型，year: 年， month: 月, date: 日
-         * @return {Boolean} 是否禁用
          */
         disabledDate: PropTypes.func,
         /**
          * 自定义面板页脚
-         * @return {Node} 自定义的面板页脚组件
          */
         footerRender: PropTypes.func,
         /**
          * 日期值改变时的回调
-         * @param {MomentObject|String} value 日期值
          */
         onChange: PropTypes.func,
         /**
@@ -90,8 +95,6 @@ class MonthPicker extends Component {
         defaultVisible: PropTypes.bool,
         /**
          * 弹层展示状态变化时的回调
-         * @param {Boolean} visible 弹层是否显示
-         * @param {String} type 触发弹层显示和隐藏的来源 calendarSelect 表示由日期表盘的选择触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -99,13 +102,11 @@ class MonthPicker extends Component {
          */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
-         * 弹层对齐方式, 具体含义见 OverLay文档
+         * 弹层对齐方式，具体含义见 OverLay 文档
          */
         popupAlign: PropTypes.string,
         /**
          * 弹层容器
-         * @param {Element} target 目标元素
-         * @return {Element} 弹层的容器元素
          */
         popupContainer: PropTypes.any,
         /**
@@ -130,8 +131,6 @@ class MonthPicker extends Component {
         inputProps: PropTypes.object,
         /**
          * 自定义月份渲染函数
-         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
-         * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
         yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
@@ -145,7 +144,6 @@ class MonthPicker extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {MomentObject} value 月份
          */
         renderPreview: PropTypes.func,
         locale: PropTypes.object,
@@ -170,8 +168,10 @@ class MonthPicker extends Component {
         onVisibleChange: func.noop,
     };
 
-    constructor(props, context) {
-        super(props, context);
+    readonly props: InnerMonthPickerProps;
+
+    constructor(props: MonthPickerProps) {
+        super(props);
 
         this.state = {
             value: formatDateValue(props.defaultValue, props.format),
@@ -182,8 +182,8 @@ class MonthPicker extends Component {
         };
     }
 
-    static getDerivedStateFromProps(props) {
-        const states = {};
+    static getDerivedStateFromProps(props: InnerMonthPickerProps) {
+        const states: Partial<MonthPickerState> = {};
         if ('value' in props) {
             states.value = formatDateValue(props.value, props.format);
             if (typeof props.value === 'string') {
@@ -201,14 +201,13 @@ class MonthPicker extends Component {
         return states;
     }
 
-    onValueChange = newValue => {
+    onValueChange = (newValue: Moment | null) => {
         const ret =
             this.state.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
         this.props.onChange(ret);
     };
 
-    onSelectCalendarPanel = value => {
-        // const { format } = this.props;
+    onSelectCalendarPanel = (value: Moment) => {
         const prevSelectedMonth = this.state.value;
         const selectedMonth = value.clone().date(1).hour(0).minute(0).second(0);
 
@@ -225,7 +224,11 @@ class MonthPicker extends Component {
         this.handleChange(null, this.state.value);
     };
 
-    onDateInputChange = (inputStr, e, eventType) => {
+    onDateInputChange = (
+        inputStr: string,
+        e: SyntheticEvent<HTMLInputElement>,
+        eventType?: string
+    ) => {
         if (eventType === 'clear' || !inputStr) {
             e.stopPropagation();
             this.clearValue();
@@ -254,15 +257,21 @@ class MonthPicker extends Component {
         }
     };
 
-    onKeyDown = e => {
+    onKeyDown = (e: KeyboardEvent) => {
         const { format } = this.props;
         const { dateInputStr, value } = this.state;
         const dateStr = onDateKeydown(e, { format, dateInputStr, value }, 'month');
         if (!dateStr) return;
+        // @ts-expect-error 应传入 e
         this.onDateInputChange(dateStr);
     };
 
-    handleChange = (newValue, prevValue, others = {}, callback) => {
+    handleChange = (
+        newValue: Moment | null,
+        prevValue: Moment | null,
+        others = {},
+        callback?: () => void
+    ) => {
         if (!('value' in this.props)) {
             this.setState({
                 value: newValue,
@@ -287,7 +296,7 @@ class MonthPicker extends Component {
         }
     };
 
-    onVisibleChange = (visible, type) => {
+    onVisibleChange = (visible: boolean, type: string) => {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
@@ -296,7 +305,7 @@ class MonthPicker extends Component {
         this.props.onVisibleChange(visible, type);
     };
 
-    renderPreview(others) {
+    renderPreview(others: HTMLAttributes<HTMLDivElement>) {
         const { prefix, format, className, renderPreview } = this.props;
         const { value } = this.state;
         const previewCls = classnames(className, `${prefix}form-preview`);
@@ -374,6 +383,7 @@ class MonthPicker extends Component {
         }
 
         if (isPreview) {
+            // @ts-expect-error 应是 propTypes
             return this.renderPreview(obj.pickOthers(others, MonthPicker.PropTypes));
         }
 
@@ -397,6 +407,7 @@ class MonthPicker extends Component {
                 {...sharedInputProps}
                 value={dateInputValue}
                 aria-label={dateInputAriaLabel}
+                // @ts-expect-error 没有 this.onFoucsDateInput
                 onFocus={this.onFoucsDateInput}
                 placeholder={format}
                 className={panelInputCls}
@@ -435,6 +446,7 @@ class MonthPicker extends Component {
                             className={`${prefix}date-picker-symbol-calendar-icon`}
                         />
                     }
+                    // @ts-expect-error allowClear 应该先做 boolean 化处理
                     hasClear={allowClear}
                     className={triggerInputCls}
                 />
