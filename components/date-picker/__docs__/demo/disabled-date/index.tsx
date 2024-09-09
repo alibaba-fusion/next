@@ -2,12 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DatePicker } from '@alifd/next';
 import moment from 'moment';
+import type { DatePickerProps } from '@alifd/next/types/date-picker';
 
 const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 const currentDate = moment();
 
 // Disable all dates before today
-const disabledDate = function (date, view) {
+const disabledDate: DatePickerProps['disabledDate'] = function (date, view) {
     switch (view) {
         case 'date':
             return date.valueOf() <= currentDate.valueOf();

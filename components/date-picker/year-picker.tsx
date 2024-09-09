@@ -1,22 +1,30 @@
-import React, { Component } from 'react';
+import React, {
+    Component,
+    type HTMLAttributes,
+    type KeyboardEvent,
+    type SyntheticEvent,
+} from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
 import Overlay from '../overlay';
 import Input from '../input';
 import Icon from '../icon';
 import Calendar from '../calendar';
 import nextLocale from '../locale/zh-cn';
-import { func, obj } from '../util';
+import { type ClassPropsWithDefault, func, obj } from '../util';
 import { checkDateValue, formatDateValue, onDateKeydown } from './util';
+import type { YearPickerProps, YearPickerState } from './types';
 
 const { Popup } = Overlay;
+
+type InnerYearPickerProps = ClassPropsWithDefault<YearPickerProps, typeof YearPicker.defaultProps>;
 
 /**
  * DatePicker.YearPicker
  */
-class YearPicker extends Component {
+class YearPicker extends Component<YearPickerProps, YearPickerState> {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -46,19 +54,14 @@ class YearPicker extends Component {
         format: PropTypes.string,
         /**
          * 禁用日期函数
-         * @param {MomentObject} 日期值
-         * @param {String} view 当前视图类型，year: 年， month: 月, date: 日
-         * @return {Boolean} 是否禁用
          */
         disabledDate: PropTypes.func,
         /**
          * 自定义面板页脚
-         * @return {Node} 自定义的面板页脚组件
          */
         footerRender: PropTypes.func,
         /**
          * 日期值改变时的回调
-         * @param {MomentObject|String} value 日期值
          */
         onChange: PropTypes.func,
         /**
@@ -83,8 +86,6 @@ class YearPicker extends Component {
         defaultVisible: PropTypes.bool,
         /**
          * 弹层展示状态变化时的回调
-         * @param {Boolean} visible 弹层是否显示
-         * @param {String} reason 触发弹层显示和隐藏的来源 calendarSelect 表示由日期表盘的选择触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -92,13 +93,11 @@ class YearPicker extends Component {
          */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
-         * 弹层对齐方式, 具体含义见 OverLay文档
+         * 弹层对齐方式，具体含义见 OverLay 文档
          */
         popupAlign: PropTypes.string,
         /**
          * 弹层容器
-         * @param {Element} target 目标元素
-         * @return {Element} 弹层的容器元素
          */
         popupContainer: PropTypes.any,
         /**
@@ -132,7 +131,6 @@ class YearPicker extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {MomentObject} value 年份
          */
         renderPreview: PropTypes.func,
         locale: PropTypes.object,
@@ -157,8 +155,10 @@ class YearPicker extends Component {
         onVisibleChange: func.noop,
     };
 
-    constructor(props, context) {
-        super(props, context);
+    readonly props: InnerYearPickerProps;
+
+    constructor(props: YearPickerProps) {
+        super(props);
 
         this.state = {
             value: formatDateValue(props.defaultValue, props.format),
@@ -169,8 +169,8 @@ class YearPicker extends Component {
         };
     }
 
-    static getDerivedStateFromProps(props) {
-        const states = {};
+    static getDerivedStateFromProps(props: InnerYearPickerProps) {
+        const states: Partial<YearPickerState> = {};
         if ('value' in props) {
             states.value = formatDateValue(props.value, props.format);
             if (typeof props.value === 'string') {
@@ -188,14 +188,13 @@ class YearPicker extends Component {
         return states;
     }
 
-    onValueChange = newValue => {
+    onValueChange = (newValue: Moment | null) => {
         const ret =
             this.state.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
         this.props.onChange(ret);
     };
 
-    onSelectCalendarPanel = value => {
-        // const { format } = this.props;
+    onSelectCalendarPanel = (value: Moment) => {
         const prevSelectedMonth = this.state.value;
         const selectedMonth = value.clone().month(0).date(1).hour(0).minute(0).second(0);
 
@@ -212,7 +211,7 @@ class YearPicker extends Component {
         this.handleChange(null, this.state.value);
     };
 
-    onDateInputChange = (inputStr, e, eventType) => {
+    onDateInputChange = (inputStr: string, e: SyntheticEvent, eventType?: string) => {
         if (eventType === 'clear' || !inputStr) {
             e.stopPropagation();
             this.clearValue();
@@ -241,15 +240,21 @@ class YearPicker extends Component {
         }
     };
 
-    onKeyDown = e => {
+    onKeyDown = (e: KeyboardEvent) => {
         const { format } = this.props;
         const { dateInputStr, value } = this.state;
         const dateStr = onDateKeydown(e, { format, dateInputStr, value }, 'year');
         if (!dateStr) return;
+        // @ts-expect-error 应该传入 e
         this.onDateInputChange(dateStr);
     };
 
-    handleChange = (newValue, prevValue, others = {}, callback) => {
+    handleChange = (
+        newValue: Moment | null,
+        prevValue: Moment | null,
+        others = {},
+        callback?: () => void
+    ) => {
         if (!('value' in this.props)) {
             this.setState({
                 value: newValue,
@@ -274,7 +279,7 @@ class YearPicker extends Component {
         }
     };
 
-    onVisibleChange = (visible, reason) => {
+    onVisibleChange = (visible: boolean, reason: string) => {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
@@ -283,7 +288,7 @@ class YearPicker extends Component {
         this.props.onVisibleChange(visible, reason);
     };
 
-    renderPreview(others) {
+    renderPreview(others: HTMLAttributes<HTMLDivElement>) {
         const { prefix, format, className, renderPreview } = this.props;
         const { value } = this.state;
         const previewCls = classnames(className, `${prefix}form-preview`);
@@ -359,6 +364,7 @@ class YearPicker extends Component {
         }
 
         if (isPreview) {
+            // @ts-expect-error 应是 propTypes
             return this.renderPreview(obj.pickOthers(others, YearPicker.PropTypes));
         }
 
@@ -419,6 +425,7 @@ class YearPicker extends Component {
                             className={`${prefix}date-picker-symbol-calendar-icon`}
                         />
                     }
+                    // @ts-expect-error allowClear 应该先做 boolean 化处理
                     hasClear={allowClear}
                     className={triggerInputCls}
                 />

@@ -4,9 +4,12 @@ import RangePicker from './range-picker';
 import MonthPicker from './month-picker';
 import YearPicker from './year-picker';
 import WeekPicker from './week-picker';
+import { assignSubComponent } from '../util/component';
+import type { log } from '../util';
 
-/* istanbul ignore next */
-const transform = (props, deprecated) => {
+export type { DatePickerProps, RangePickerProps, MonthPickerProps, YearPickerProps } from './types';
+
+const transform = (props: Record<string, unknown>, deprecated: typeof log.deprecated) => {
     const { open, defaultOpen, onOpenChange, ...others } = props;
     const newProps = others;
 
@@ -57,23 +60,24 @@ const transform = (props, deprecated) => {
     return newProps;
 };
 
-DatePicker.RangePicker = ConfigProvider.config(RangePicker, {
-    componentName: 'DatePicker',
-    transform,
-});
-DatePicker.MonthPicker = ConfigProvider.config(MonthPicker, {
-    componentName: 'DatePicker',
-    transform,
-});
-DatePicker.YearPicker = ConfigProvider.config(YearPicker, {
-    componentName: 'DatePicker',
-    transform,
+const DatePickerWithSub = assignSubComponent(DatePicker, {
+    RangePicker: ConfigProvider.config(RangePicker, {
+        componentName: 'DatePicker',
+        transform,
+    }),
+    MonthPicker: ConfigProvider.config(MonthPicker, {
+        componentName: 'DatePicker',
+        transform,
+    }),
+    YearPicker: ConfigProvider.config(YearPicker, {
+        componentName: 'DatePicker',
+        transform,
+    }),
+    WeekPicker: ConfigProvider.config(WeekPicker, {
+        componentName: 'DatePicker',
+    }),
 });
 
-DatePicker.WeekPicker = ConfigProvider.config(WeekPicker, {
-    componentName: 'DatePicker',
-});
-
-export default ConfigProvider.config(DatePicker, {
+export default ConfigProvider.config(DatePickerWithSub, {
     transform,
 });
