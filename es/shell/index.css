@@ -1,0 +1,712 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-shell {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+  transition: all 0.2s var(--motion-ease, ease);
+}
+.next-shell *,
+.next-shell *:before,
+.next-shell *:after {
+  box-sizing: border-box;
+}
+.next-shell-content-wrapper {
+  overflow: auto;
+}
+.next-shell-header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 9;
+}
+.next-shell-header .dock-trigger,
+.next-shell-header .nav-trigger {
+  outline: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+}
+.next-shell-header .nav-trigger {
+  margin-right: 10px;
+}
+.next-shell-header .dock-trigger {
+  margin-left: 10px;
+}
+.next-shell-header.next-shell-fixed-header {
+  position: sticky;
+  top: 0;
+}
+.next-shell-header .next-shell-navigation {
+  flex: 1 1;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.next-shell-header .next-shell-branding {
+  display: flex;
+  align-items: center;
+}
+.next-shell-header .next-shell-action {
+  display: flex;
+  align-items: center;
+}
+.next-shell-sub-main {
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+  outline: 0;
+}
+.next-shell-main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+  position: relative;
+  height: 100%;
+  box-sizing: content-box;
+  overflow: auto;
+  transition: all 0.2s ease;
+  transition: all 0.2s var(--motion-ease, ease);
+}
+.next-shell-main .next-shell-content {
+  flex: 1 1 auto;
+}
+.next-shell-main .next-shell-content-inner {
+  margin: 0 auto;
+}
+.next-shell-main .next-shell-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.next-shell .next-aside-navigation,
+.next-shell .next-aside-tooldock {
+  display: flex;
+}
+.next-shell .next-aside-navigation.fixed,
+.next-shell .next-aside-tooldock.fixed {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+}
+.next-shell .next-aside-navigation.fixed {
+  left: 0;
+}
+.next-shell .next-aside-tooldock.fixed {
+  right: 0;
+}
+.next-shell-aside {
+  transition: all 0.2s ease;
+  transition: all 0.2s var(--motion-ease, ease);
+}
+.next-shell-aside .aside-trigger {
+  cursor: pointer;
+  outline: 0;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 20px;
+  height: 48px;
+  display: flex;
+  border: 1px solid #DDD;
+  align-items: center;
+  justify-content: center;
+}
+.next-shell-aside .local-nav-trigger {
+  outline: 0;
+  border-left: none;
+  transform: translate(100%, -50%);
+  right: 0;
+}
+.next-shell-aside .ancillary-trigger {
+  outline: 0;
+  transform: translate(-100%, -50%);
+  border-right: 0;
+  left: 1px;
+}
+.next-shell-aside.next-aside-localnavigation {
+  position: relative;
+}
+.next-shell-aside.next-aside-ancillary {
+  position: relative;
+}
+.next-shell-aside.next-shell-navigation {
+  display: flex;
+  flex-direction: column;
+  justify-self: flex-start;
+  transition: all 0.2s ease;
+  transition: all 0.2s var(--motion-ease, ease);
+}
+.next-shell-aside.next-shell-tooldock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.next-shell-aside .next-shell-tooldockitem {
+  width: 100%;
+  text-align: center;
+}
+.next-shell-aside .next-shell-localnavigation {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-self: flex-start;
+  transition: all 0.2s ease;
+  transition: all 0.2s var(--motion-ease, ease);
+}
+.next-shell-aside .next-shell-ancillary {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-self: flex-start;
+  transition: all 0.2s ease;
+  transition: all 0.2s var(--motion-ease, ease);
+}
+.next-shell-light .next-shell-header .dock-trigger,
+.next-shell-light .next-shell-header .nav-trigger {
+  background: #FFFFFF;
+  background: var(--shell-light-header-background, #FFFFFF);
+}
+.next-shell-light .next-shell-aside .local-nav-trigger {
+  background: #E2E4E8;
+  background: var(--shell-light-local-navigation-background, #E2E4E8);
+}
+.next-shell-light .next-shell-aside .ancillary-trigger {
+  background: #FFFFFF;
+  background: var(--shell-light-ancillary-background, #FFFFFF);
+}
+.next-shell-light .next-shell-header {
+  color: #000000;
+  color: var(--shell-light-header-color, #000000);
+  height: 52px;
+  height: var(--shell-light-header-height, 52px);
+  background: #FFFFFF;
+  background: var(--shell-light-header-background, #FFFFFF);
+  border-bottom: 1px solid #E6E7EB;
+  border-bottom: var(--shell-light-header-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-light-header-shadow, none);
+  padding: 0 16px;
+  padding: 0 var(--shell-light-header-paddingLeft, 16px);
+}
+.next-shell-light .next-shell-header .next-shell-navigation {
+  justify-content: flex-end;
+  justify-content: var(--shell-light-navigation-hoz-align, flex-end);
+  height: 52px;
+  height: var(--shell-light-header-height, 52px);
+  line-height: 52px;
+  line-height: var(--shell-light-header-height, 52px);
+  margin: 0 48px;
+  margin: 0 var(--shell-light-navigation-hoz-marginLeft, 48px);
+}
+.next-shell-light .next-shell-task-header {
+  width: 100%;
+  min-height: 40px;
+  min-height: var(--shell-light-multitask-min-height, 40px);
+  background: #FFFFFF;
+  background: var(--shell-light-multitask-background, #FFFFFF);
+  border-bottom: 1px solid #E6E7EB;
+  border-bottom: var(--shell-light-multitask-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-light-multitask-shadow, none);
+  padding: 0 0px;
+  padding: 0 var(--shell-light-multitask-paddingLeft, 0px);
+  overflow: auto;
+}
+.next-shell-light .next-shell-main {
+  background: #EBECF0;
+  background: var(--shell-light-content-background, #EBECF0);
+}
+.next-shell-light .next-shell-main .next-shell-appbar {
+  min-height: 48px;
+  min-height: var(--shell-light-appbar-min-height, 48px);
+  background: #FFFFFF;
+  background: var(--shell-light-appbar-background, #FFFFFF);
+  border-bottom: 1px solid #E6E7EB;
+  border-bottom: var(--shell-light-appbar-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-light-appbar-shadow, none);
+  padding: 0 24px;
+  padding: 0 var(--shell-light-appbar-paddingLeft, 24px);
+}
+.next-shell-light .next-shell-main .next-shell-content {
+  padding: 20px 20px;
+  padding: var(--shell-light-content-paddingTop, 20px) var(--shell-light-content-paddingLeft, 20px);
+}
+.next-shell-light .next-shell-main .next-shell-footer {
+  background: transparent;
+  background: var(--shell-light-footer-background, transparent);
+  min-height: 56px;
+  min-height: var(--shell-light-footer-min-height, 56px);
+  color: #CCCCCC;
+  color: var(--shell-light-footer-color, #CCCCCC);
+  font-size: 14px;
+  font-size: var(--shell-light-footer-font-size, 14px);
+}
+.next-shell-light .next-shell-aside.next-shell-navigation {
+  width: 168px;
+  width: var(--shell-light-navigation-ver-width, 168px);
+  background: #FFFFFF;
+  background: var(--shell-light-navigation-ver-background, #FFFFFF);
+  border-right: 1px solid #E6E7EB;
+  border-right: var(--shell-light-navigation-ver-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-light-navigation-ver-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-light-navigation-ver-paddingTop, 8px) 0 var(--shell-light-navigation-ver-paddingBottom, 8px);
+}
+.next-shell-light .next-shell-aside.next-shell-navigation.next-shell-collapse.next-shell-mini {
+  width: 60px;
+  width: var(--shell-light-navigation-ver-width-mini, 60px);
+}
+.next-shell-light .next-shell-aside.next-shell-navigation.next-shell-collapse {
+  width: 0;
+}
+.next-shell-light .next-shell-aside.next-shell-tooldock {
+  width: 52px;
+  width: var(--shell-light-tooldock-width, 52px);
+  background: #E2E4E8;
+  background: var(--shell-light-tooldock-background, #E2E4E8);
+  border-left: 1px solid #E6E7EB;
+  border-left: var(--shell-light-tooldock-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-light-tooldock-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-light-tooldock-paddingTop, 8px) 0 var(--shell-light-tooldock-paddingBottom, 8px);
+}
+.next-shell-light .next-shell-aside .next-shell-tooldockitem {
+  padding: 8px 0;
+  padding: var(--shell-light-tooldock-item-paddingTop, 8px) 0;
+  color: #666666;
+  color: var(--shell-light-tooldock-item-color, #666666);
+  background: transparent;
+  background: var(--shell-light-tooldock-item-background, transparent);
+}
+.next-shell-light .next-shell-aside .next-shell-tooldockitem:hover {
+  color: #333333;
+  color: var(--shell-light-tooldock-item-color-hover, #333333);
+  background: #EBECF0;
+  background: var(--shell-light-tooldock-item-background-hover, #EBECF0);
+}
+.next-shell-light .next-shell-aside .next-shell-localnavigation {
+  width: 168px;
+  width: var(--shell-light-local-navigation-width, 168px);
+  background: #E2E4E8;
+  background: var(--shell-light-local-navigation-background, #E2E4E8);
+  border-right: 1px solid #E6E7EB;
+  border-right: var(--shell-light-local-navigation-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-light-local-navigation-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-light-local-navigation-paddingTop, 8px) 0 var(--shell-light-local-navigation-paddingBottom, 8px);
+}
+.next-shell-light .next-shell-aside .next-shell-localnavigation.next-shell-collapse {
+  width: 0;
+}
+.next-shell-light .next-shell-aside .next-shell-ancillary {
+  width: 168px;
+  width: var(--shell-light-ancillary-width, 168px);
+  background: #FFFFFF;
+  background: var(--shell-light-ancillary-background, #FFFFFF);
+  border-left: 1px solid #E6E7EB;
+  border-left: var(--shell-light-ancillary-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-light-ancillary-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-light-ancillary-paddingTop, 8px) 0 var(--shell-light-ancillary-paddingBottom, 8px);
+}
+.next-shell-light .next-shell-aside .next-shell-ancillary.next-shell-collapse {
+  width: 0;
+}
+.next-shell-dark .next-shell-header .dock-trigger,
+.next-shell-dark .next-shell-header .nav-trigger {
+  background: #000000;
+  background: var(--shell-dark-header-background, #000000);
+}
+.next-shell-dark .next-shell-aside .local-nav-trigger {
+  background: #E2E4E8;
+  background: var(--shell-dark-local-navigation-background, #E2E4E8);
+}
+.next-shell-dark .next-shell-aside .ancillary-trigger {
+  background: #FFFFFF;
+  background: var(--shell-dark-ancillary-background, #FFFFFF);
+}
+.next-shell-dark .next-shell-header {
+  color: #FFFFFF;
+  color: var(--shell-dark-header-color, #FFFFFF);
+  height: 52px;
+  height: var(--shell-dark-header-height, 52px);
+  background: #000000;
+  background: var(--shell-dark-header-background, #000000);
+  border-bottom: 1px solid #1F1F1F;
+  border-bottom: var(--shell-dark-header-divider, 1px solid #1F1F1F);
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shell-dark-header-shadow, 0px 1px 3px 0px rgba(0, 0, 0, 0.12));
+  padding: 0 16px;
+  padding: 0 var(--shell-dark-header-paddingLeft, 16px);
+}
+.next-shell-dark .next-shell-header .next-shell-navigation {
+  justify-content: flex-end;
+  justify-content: var(--shell-dark-navigation-hoz-align, flex-end);
+  height: 52px;
+  height: var(--shell-dark-header-height, 52px);
+  line-height: 52px;
+  line-height: var(--shell-dark-header-height, 52px);
+  margin: 0 48px;
+  margin: 0 var(--shell-dark-navigation-hoz-marginLeft, 48px);
+}
+.next-shell-dark .next-shell-task-header {
+  width: 100%;
+  min-height: 40px;
+  min-height: var(--shell-dark-multitask-min-height, 40px);
+  background: #FFFFFF;
+  background: var(--shell-dark-multitask-background, #FFFFFF);
+  border-bottom: 1px solid #E6E7EB;
+  border-bottom: var(--shell-dark-multitask-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-dark-multitask-shadow, none);
+  padding: 0 0px;
+  padding: 0 var(--shell-dark-multitask-paddingLeft, 0px);
+  overflow: auto;
+}
+.next-shell-dark .next-shell-main {
+  background: #EBECF0;
+  background: var(--shell-dark-content-background, #EBECF0);
+}
+.next-shell-dark .next-shell-main .next-shell-appbar {
+  min-height: 48px;
+  min-height: var(--shell-dark-appbar-min-height, 48px);
+  background: #FFFFFF;
+  background: var(--shell-dark-appbar-background, #FFFFFF);
+  border-bottom: 1px solid #E6E7EB;
+  border-bottom: var(--shell-dark-appbar-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-dark-appbar-shadow, none);
+  padding: 0 24px;
+  padding: 0 var(--shell-dark-appbar-paddingLeft, 24px);
+}
+.next-shell-dark .next-shell-main .next-shell-content {
+  padding: 20px 20px;
+  padding: var(--shell-dark-content-paddingTop, 20px) var(--shell-dark-content-paddingLeft, 20px);
+}
+.next-shell-dark .next-shell-main .next-shell-footer {
+  background: transparent;
+  background: var(--shell-dark-footer-background, transparent);
+  min-height: 56px;
+  min-height: var(--shell-dark-footer-min-height, 56px);
+  color: #CCCCCC;
+  color: var(--shell-dark-footer-color, #CCCCCC);
+  font-size: 14px;
+  font-size: var(--shell-dark-footer-font-size, 14px);
+}
+.next-shell-dark .next-shell-aside.next-shell-navigation {
+  width: 168px;
+  width: var(--shell-dark-navigation-ver-width, 168px);
+  background: #333333;
+  background: var(--shell-dark-navigation-ver-background, #333333);
+  border-right: 1px solid #E6E7EB;
+  border-right: var(--shell-dark-navigation-ver-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-dark-navigation-ver-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-dark-navigation-ver-paddingTop, 8px) 0 var(--shell-dark-navigation-ver-paddingBottom, 8px);
+}
+.next-shell-dark .next-shell-aside.next-shell-navigation.next-shell-collapse.next-shell-mini {
+  width: 60px;
+  width: var(--shell-dark-navigation-ver-width-mini, 60px);
+}
+.next-shell-dark .next-shell-aside.next-shell-navigation.next-shell-collapse {
+  width: 0;
+}
+.next-shell-dark .next-shell-aside.next-shell-tooldock {
+  width: 52px;
+  width: var(--shell-dark-tooldock-width, 52px);
+  background: #E2E4E8;
+  background: var(--shell-dark-tooldock-background, #E2E4E8);
+  border-left: 1px solid #E6E7EB;
+  border-left: var(--shell-dark-tooldock-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-dark-tooldock-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-dark-tooldock-paddingTop, 8px) 0 var(--shell-dark-tooldock-paddingBottom, 8px);
+}
+.next-shell-dark .next-shell-aside .next-shell-tooldockitem {
+  padding: 8px 0;
+  padding: var(--shell-dark-tooldock-item-paddingTop, 8px) 0;
+  color: #666666;
+  color: var(--shell-dark-tooldock-item-color, #666666);
+  background: transparent;
+  background: var(--shell-dark-tooldock-item-background, transparent);
+}
+.next-shell-dark .next-shell-aside .next-shell-tooldockitem:hover {
+  color: #333333;
+  color: var(--shell-dark-tooldock-item-color-hover, #333333);
+  background: #EBECF0;
+  background: var(--shell-dark-tooldock-item-background-hover, #EBECF0);
+}
+.next-shell-dark .next-shell-aside .next-shell-localnavigation {
+  width: 168px;
+  width: var(--shell-dark-local-navigation-width, 168px);
+  background: #E2E4E8;
+  background: var(--shell-dark-local-navigation-background, #E2E4E8);
+  border-right: 1px solid #E6E7EB;
+  border-right: var(--shell-dark-local-navigation-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-dark-local-navigation-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-dark-local-navigation-paddingTop, 8px) 0 var(--shell-dark-local-navigation-paddingBottom, 8px);
+}
+.next-shell-dark .next-shell-aside .next-shell-localnavigation.next-shell-collapse {
+  width: 0;
+}
+.next-shell-dark .next-shell-aside .next-shell-ancillary {
+  width: 168px;
+  width: var(--shell-dark-ancillary-width, 168px);
+  background: #FFFFFF;
+  background: var(--shell-dark-ancillary-background, #FFFFFF);
+  border-left: 1px solid #E6E7EB;
+  border-left: var(--shell-dark-ancillary-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-dark-ancillary-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-dark-ancillary-paddingTop, 8px) 0 var(--shell-dark-ancillary-paddingBottom, 8px);
+}
+.next-shell-dark .next-shell-aside .next-shell-ancillary.next-shell-collapse {
+  width: 0;
+}
+.next-shell-brand .next-shell-header .dock-trigger,
+.next-shell-brand .next-shell-header .nav-trigger {
+  background: #5584FF;
+  background: var(--shell-brand-header-background, #5584FF);
+}
+.next-shell-brand .next-shell-aside .local-nav-trigger {
+  background: #E2E4E8;
+  background: var(--shell-brand-local-navigation-background, #E2E4E8);
+}
+.next-shell-brand .next-shell-aside .ancillary-trigger {
+  background: #FFFFFF;
+  background: var(--shell-brand-ancillary-background, #FFFFFF);
+}
+.next-shell-brand .next-shell-header {
+  color: #FFFFFF;
+  color: var(--shell-brand-header-color, #FFFFFF);
+  height: 52px;
+  height: var(--shell-brand-header-height, 52px);
+  background: #5584FF;
+  background: var(--shell-brand-header-background, #5584FF);
+  border-bottom: 1px solid #E6E7EB;
+  border-bottom: var(--shell-brand-header-divider, 1px solid #E6E7EB);
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shell-brand-header-shadow, 0px 1px 3px 0px rgba(0, 0, 0, 0.12));
+  padding: 0 16px;
+  padding: 0 var(--shell-brand-header-paddingLeft, 16px);
+}
+.next-shell-brand .next-shell-header .next-shell-navigation {
+  justify-content: flex-end;
+  justify-content: var(--shell-brand-navigation-hoz-align, flex-end);
+  height: 52px;
+  height: var(--shell-brand-header-height, 52px);
+  line-height: 52px;
+  line-height: var(--shell-brand-header-height, 52px);
+  margin: 0 48px;
+  margin: 0 var(--shell-brand-navigation-hoz-marginLeft, 48px);
+}
+.next-shell-brand .next-shell-task-header {
+  width: 100%;
+  min-height: 40px;
+  min-height: var(--shell-brand-multitask-min-height, 40px);
+  background: #FFFFFF;
+  background: var(--shell-brand-multitask-background, #FFFFFF);
+  border-bottom: 1px solid #E6E7EB;
+  border-bottom: var(--shell-brand-multitask-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-brand-multitask-shadow, none);
+  padding: 0 0px;
+  padding: 0 var(--shell-brand-multitask-paddingLeft, 0px);
+  overflow: auto;
+}
+.next-shell-brand .next-shell-main {
+  background: #EBECF0;
+  background: var(--shell-brand-content-background, #EBECF0);
+}
+.next-shell-brand .next-shell-main .next-shell-appbar {
+  min-height: 48px;
+  min-height: var(--shell-brand-appbar-min-height, 48px);
+  background: #FFFFFF;
+  background: var(--shell-brand-appbar-background, #FFFFFF);
+  border-bottom: 1px solid #E6E7EB;
+  border-bottom: var(--shell-brand-appbar-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-brand-appbar-shadow, none);
+  padding: 0 24px;
+  padding: 0 var(--shell-brand-appbar-paddingLeft, 24px);
+}
+.next-shell-brand .next-shell-main .next-shell-content {
+  padding: 20px 20px;
+  padding: var(--shell-brand-content-paddingTop, 20px) var(--shell-brand-content-paddingLeft, 20px);
+}
+.next-shell-brand .next-shell-main .next-shell-footer {
+  background: transparent;
+  background: var(--shell-brand-footer-background, transparent);
+  min-height: 56px;
+  min-height: var(--shell-brand-footer-min-height, 56px);
+  color: #CCCCCC;
+  color: var(--shell-brand-footer-color, #CCCCCC);
+  font-size: 14px;
+  font-size: var(--shell-brand-footer-font-size, 14px);
+}
+.next-shell-brand .next-shell-aside.next-shell-navigation {
+  width: 168px;
+  width: var(--shell-brand-navigation-ver-width, 168px);
+  background: #FFFFFF;
+  background: var(--shell-brand-navigation-ver-background, #FFFFFF);
+  border-right: 1px solid #E6E7EB;
+  border-right: var(--shell-brand-navigation-ver-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-brand-navigation-ver-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-brand-navigation-ver-paddingTop, 8px) 0 var(--shell-brand-navigation-ver-paddingBottom, 8px);
+}
+.next-shell-brand .next-shell-aside.next-shell-navigation.next-shell-collapse.next-shell-mini {
+  width: 60px;
+  width: var(--shell-brand-navigation-ver-width-mini, 60px);
+}
+.next-shell-brand .next-shell-aside.next-shell-navigation.next-shell-collapse {
+  width: 0;
+}
+.next-shell-brand .next-shell-aside.next-shell-tooldock {
+  width: 52px;
+  width: var(--shell-brand-tooldock-width, 52px);
+  background: #E2E4E8;
+  background: var(--shell-brand-tooldock-background, #E2E4E8);
+  border-left: 1px solid #E6E7EB;
+  border-left: var(--shell-brand-tooldock-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-brand-tooldock-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-brand-tooldock-paddingTop, 8px) 0 var(--shell-brand-tooldock-paddingBottom, 8px);
+}
+.next-shell-brand .next-shell-aside .next-shell-tooldockitem {
+  padding: 8px 0;
+  padding: var(--shell-brand-tooldock-item-paddingTop, 8px) 0;
+  color: #666666;
+  color: var(--shell-brand-tooldock-item-color, #666666);
+  background: transparent;
+  background: var(--shell-brand-tooldock-item-background, transparent);
+}
+.next-shell-brand .next-shell-aside .next-shell-tooldockitem:hover {
+  color: #333333;
+  color: var(--shell-brand-tooldock-item-color-hover, #333333);
+  background: #EBECF0;
+  background: var(--shell-brand-tooldock-item-background-hover, #EBECF0);
+}
+.next-shell-brand .next-shell-aside .next-shell-localnavigation {
+  width: 168px;
+  width: var(--shell-brand-local-navigation-width, 168px);
+  background: #E2E4E8;
+  background: var(--shell-brand-local-navigation-background, #E2E4E8);
+  border-right: 1px solid #E6E7EB;
+  border-right: var(--shell-brand-local-navigation-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-brand-local-navigation-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-brand-local-navigation-paddingTop, 8px) 0 var(--shell-brand-local-navigation-paddingBottom, 8px);
+}
+.next-shell-brand .next-shell-aside .next-shell-localnavigation.next-shell-collapse {
+  width: 0;
+}
+.next-shell-brand .next-shell-aside .next-shell-ancillary {
+  width: 168px;
+  width: var(--shell-brand-ancillary-width, 168px);
+  background: #FFFFFF;
+  background: var(--shell-brand-ancillary-background, #FFFFFF);
+  border-left: 1px solid #E6E7EB;
+  border-left: var(--shell-brand-ancillary-divider, 1px solid #E6E7EB);
+  box-shadow: none;
+  box-shadow: var(--shell-brand-ancillary-shadow, none);
+  padding: 8px 0 8px;
+  padding: var(--shell-brand-ancillary-paddingTop, 8px) 0 var(--shell-brand-ancillary-paddingBottom, 8px);
+}
+.next-shell-brand .next-shell-aside .next-shell-ancillary.next-shell-collapse {
+  width: 0;
+}
+.next-shell-header .next-shell-navigation.next-shell-nav-left {
+  justify-content: flex-start;
+}
+.next-shell-header .next-shell-navigation.next-shell-nav-right {
+  justify-content: flex-end;
+}
+.next-shell-header .next-shell-navigation.next-shell-nav-center {
+  justify-content: center;
+}
+.next-shell.next-shell-phone .next-aside-navigation {
+  width: 100%;
+}
+.next-shell.next-shell-phone .next-aside-navigation.next-shell-collapse {
+  width: 0;
+  overflow: hidden;
+}
+.next-shell.next-shell-phone .next-shell-header .next-shell-navigation {
+  display: none;
+}
+.next-shell.next-shell-phone .next-shell-navigation {
+  width: 100%;
+  height: 100%;
+  transition: height 0.2s ease;
+  transition: height 0.2s var(--motion-ease, ease);
+}
+.next-shell.next-shell-phone .next-shell-navigation.next-shell-collapse {
+  padding: 0;
+  height: 0;
+  transition: height 0.2s ease;
+  transition: height 0.2s var(--motion-ease, ease);
+}
+.next-shell.next-shell-phone .next-shell-tooldock {
+  height: 52px;
+  height: var(--shell-dark-tooldock-height, 52px);
+  left: 0;
+  right: 0;
+  position: absolute;
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+}
+.next-shell.next-shell-phone .next-shell-tooldock.next-shell-collapse {
+  display: none;
+  height: 0;
+  padding: 0;
+  transition: all 0.2s ease;
+  transition: all 0.2s var(--motion-ease, ease);
+}
+.next-shell.next-shell-tablet .next-shell-aside.next-aside-ancillary, .next-shell.next-shell-phone .next-shell-aside.next-aside-ancillary {
+  width: 0;
+}
+.next-shell.next-shell-tablet .next-shell-ancillary, .next-shell.next-shell-phone .next-shell-ancillary {
+  transform: translateX(-100%);
+}
+.next-shell.next-shell-tablet .next-shell-aside.next-aside-localnavigation, .next-shell.next-shell-phone .next-shell-aside.next-aside-localnavigation {
+  width: 0;
+}
