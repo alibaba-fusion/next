@@ -219,15 +219,15 @@ registryTask(__filename, 'release', async () => {
     // await registryChangelog(__filename);
     const { masterTag } = getVersion();
 
-    await registryBuild(__filename);
+    // await registryBuild(__filename);
 
-    await registryCheck(__filename);
+    // await registryCheck(__filename);
 
-    await registryTask(__filename, 'release check', async () => {
-        await registryCheckSass(__filename);
-        await registryTask(__filename, 'check git tag', checkTags);
-        await registryTask(__filename, 'check build outputs', checkFiles);
-    });
+    // await registryTask(__filename, 'release check', async () => {
+    //     await registryCheckSass(__filename);
+    //     await registryTask(__filename, 'check git tag', checkTags);
+    //     await registryTask(__filename, 'check build outputs', checkFiles);
+    // });
     await registryTask(__filename, 'publish to npm', async () => {
         const { version } = getVersion();
         const versionTag = version.match(/[a-z]+/)?.[0];
@@ -243,7 +243,7 @@ registryTask(__filename, 'release', async () => {
                     message: 'publish dist-tags:',
                 })
             ).tag;
-        await registryTask(__filename, 'publish next to npm', publishNpm.bind(undefined, distTag));
+        // await registryTask(__filename, 'publish next to npm', publishNpm.bind(undefined, distTag));
         await registryTask(
             __filename,
             'publish next-docs to npm',

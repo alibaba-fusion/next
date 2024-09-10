@@ -5,6 +5,7 @@ import ConfigProvider from '../config-provider';
 import type { CardDividerProps } from './types';
 
 class CardDivider extends Component<CardDividerProps> {
+    static displayName = 'CardDivider';
     static propTypes = {
         prefix: PropTypes.string,
         /**

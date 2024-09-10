@@ -275,22 +275,6 @@ export interface CardBulletHeaderProps extends HTMLAttributesWeak, CommonProps {
     extra?: ReactNode;
 }
 
-export interface CardCollaspeContentProps extends HTMLAttributesWeak, CommonProps {
-    /**
-     * 设置类名前缀
-     * @en The prefix of class
-     * @defaultValue 'next-'
-     * @skip
-     */
-    prefix?: string;
-    /**
-     * 设置内容区域的固定高度
-     * @en Height of content
-     * @defaultValue 120
-     */
-    contentHeight?: string | number;
-}
-
 export interface CardCollapseContentProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 设置类名前缀
@@ -306,3 +290,9 @@ export interface CardCollapseContentProps extends HTMLAttributesWeak, CommonProp
      */
     contentHeight?: string | number;
 }
+
+/**
+ * typo of CardCollapseContentProps
+ * @deprecated use CardCollapseContentProps instead
+ */
+export type CardCollaspeContentProps = CardCollapseContentProps;

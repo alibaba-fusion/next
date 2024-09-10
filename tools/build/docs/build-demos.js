@@ -54,7 +54,7 @@ module.exports = function*(options) {
             if (err) {
                 reject(err);
             } else if (stats.hasErrors()) {
-                logger.info(
+                logger.error(
                     stats.toString({
                         colors: true,
                         profile: true,
@@ -66,6 +66,9 @@ module.exports = function*(options) {
                 resolve();
             }
         });
+    }).catch((err) => {
+        logger.error(err);
+        throw err;
     });
 };
 

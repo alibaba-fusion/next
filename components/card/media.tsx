@@ -10,6 +10,7 @@ const { warning } = log;
 const MEDIA_COMPONENTS = ['video', 'audio', 'picture', 'iframe', 'img'];
 
 class CardMedia extends Component<CardMediaProps> {
+    static displayName = 'CardMedia';
     static propTypes = {
         prefix: PropTypes.string,
         /**

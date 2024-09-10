@@ -5,6 +5,7 @@ import ConfigProvider from '../config-provider';
 import type { CardBulletHeaderProps } from './types';
 
 class CardBulletHeader extends Component<CardBulletHeaderProps> {
+    static displayName = 'CardBulletHeader';
     static propTypes = {
         prefix: PropTypes.string,
         title: PropTypes.node,

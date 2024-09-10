@@ -5,6 +5,7 @@ import ConfigProvider from '../config-provider';
 import type { CardContentProps } from './types';
 
 class CardContent extends Component<CardContentProps> {
+    static displayName = 'CardContent';
     static propTypes = {
         prefix: PropTypes.string,
         /**

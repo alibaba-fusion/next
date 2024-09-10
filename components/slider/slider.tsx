@@ -13,6 +13,7 @@ type ObjWithCommonProps = Pick<SliderProps, CommonKeys>;
  * Slider
  */
 export default class Slider extends Component<SliderProps> {
+    static displayName = 'Slider';
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,

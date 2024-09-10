@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Pagination } from '@alifd/next';
-import type { PaginationProps } from '@alifd/next/types/pagination';
+import Pagination, { type PaginationProps } from '../../index';
 import '../../../demo-helper/style';
 import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';

@@ -14,6 +14,7 @@ export interface CardCollapseContentState {
 }
 
 class CardCollapseContent extends Component<CardCollapseContentProps, CardCollapseContentState> {
+    static displayName = 'CardCollapseContent';
     static propTypes = {
         prefix: PropTypes.string,
         /**

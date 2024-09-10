@@ -51,10 +51,10 @@ describe('Tooltip v2', () => {
                 i am tooltip content
             </Tooltip>
         );
-        cy.get('span').trigger('mouseover');
+        cy.get('span').eq(0).trigger('mouseover');
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(300);
-        cy.get('.next-balloon-tooltip').should('not.exist');
+        cy.get('.next-balloon-tooltip').should('exist');
     });
 
     it('trigger can be string', () => {

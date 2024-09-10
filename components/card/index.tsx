@@ -6,7 +6,7 @@ import CardBulletHeader from './bullet-header';
 import CardMedia from './media';
 import CardDivider from './divider';
 import CardContent from './content';
-import CollaspeContent from './collapse-content';
+import CollapseContent from './collapse-content';
 import CardActions from './actions';
 
 export type {
@@ -28,8 +28,12 @@ const WithSubCard = assignSubComponent(Card, {
     Content: CardContent,
     Actions: CardActions,
     BulletHeader: CardBulletHeader,
-    CollaspeContent: CollaspeContent,
-    CollapseContent: CollaspeContent,
+    /**
+     * typo of CollapseContent
+     * @deprecated Use CollapseContent instead
+     */
+    CollaspeContent: CollapseContent,
+    CollapseContent: CollapseContent,
 });
 
 export default ConfigProvider.config(WithSubCard, {
