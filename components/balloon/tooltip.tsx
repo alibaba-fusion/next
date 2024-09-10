@@ -17,7 +17,8 @@ const { Popup } = Overlay;
 let alignMap = normalMap;
 /** Balloon.Tooltip */
 export default class Tooltip extends Component<TooltipProps, TooltipState> {
-    readonly props: TooltipV1Props & TooltipV2Props;
+    static displayName = 'Tooltip';
+
     static propTypes = {
         prefix: PropTypes.string,
         className: PropTypes.string,
@@ -52,6 +53,7 @@ export default class Tooltip extends Component<TooltipProps, TooltipState> {
         v2: PropTypes.bool,
         arrowPointToCenter: PropTypes.bool,
     };
+
     static defaultProps = {
         triggerType: 'hover',
         prefix: 'next-',
@@ -60,6 +62,8 @@ export default class Tooltip extends Component<TooltipProps, TooltipState> {
         trigger: <span />,
         arrowPointToCenter: false,
     };
+
+    readonly props: TooltipV1Props & TooltipV2Props;
 
     constructor(props: TooltipProps) {
         super(props);

@@ -19,6 +19,12 @@ interface HTMLAttributesWeak extends Omit<React.HTMLAttributes<HTMLElement>, 'ti
  */
 export interface BalloonV2Props extends HTMLAttributesWeak, CommonProps {
     /**
+     * 开启 v2 版本
+     * @en Enable v2
+     * @version 1.25
+     */
+    v2?: true;
+    /**
      * 是否 pure render
      * @en Whether to pure render
      * @skip
@@ -95,13 +101,6 @@ export interface BalloonV2Props extends HTMLAttributesWeak, CommonProps {
      * @param type - 触发弹层显示或隐藏的来源，closeClick 表示由自带的关闭按钮触发；fromTrigger 表示由 trigger 的点击触发；docClick 表示由 document 的点击触发 - source of trigger popup display or hide, closeClick means triggered by the close button; fromTrigger means triggered by the trigger click; docClick means triggered by the document click
      */
     onVisibleChange?: (visible: boolean, type: string) => void;
-
-    /**
-     * 开启 v2 版本
-     * @en Enable v2
-     * @version 1.25
-     */
-    v2?: true;
 
     /**
      * [v2] 箭头是否指向目标元素的中心
@@ -320,6 +319,12 @@ export type BalloonProps = BalloonV1Props | BalloonV2Props;
  */
 export interface BalloonV1Props extends HTMLAttributesWeak, CommonProps {
     /**
+     * 开启 v2 版本
+     * @en Enable v2
+     * @version 1.25
+     */
+    v2?: false | undefined;
+    /**
      * 是否 pure render
      * @en Whether to pure render
      * @skip
@@ -396,13 +401,6 @@ export interface BalloonV1Props extends HTMLAttributesWeak, CommonProps {
      * @param type - 触发弹层显示或隐藏的来源，closeClick 表示由自带的关闭按钮触发；fromTrigger 表示由 trigger 的点击触发；docClick 表示由 document 的点击触发 - source of trigger popup display or hide, closeClick means triggered by the close button; fromTrigger means triggered by the trigger click; docClick means triggered by the document click
      */
     onVisibleChange?: (visible: boolean, type: string) => void;
-
-    /**
-     * 开启 v2 版本
-     * @en Enable v2
-     * @version 1.25
-     */
-    v2?: false | undefined;
 
     /**
      * 弹出层对齐方式
@@ -600,6 +598,12 @@ export interface BalloonV1Props extends HTMLAttributesWeak, CommonProps {
  */
 export interface TooltipV2Props extends HTMLAttributesWeak, CommonProps {
     /**
+     * 开启 v2
+     * @en Enable v2
+     */
+    v2?: true;
+
+    /**
      * 自定义内联样式
      * @en Custom inline style
      * @skip
@@ -689,12 +693,6 @@ export interface TooltipV2Props extends HTMLAttributesWeak, CommonProps {
      * @defaultValue 50
      */
     delay?: number;
-
-    /**
-     * 开启 v2
-     * @en Enable v2
-     */
-    v2?: true;
 
     /**
      * 鼠标放置后的延时显示，单位毫秒 ms
@@ -767,6 +765,12 @@ export interface TooltipV2Props extends HTMLAttributesWeak, CommonProps {
  */
 export interface TooltipV1Props extends HTMLAttributesWeak, CommonProps {
     /**
+     * 开启 v2
+     * @en Enable v2
+     */
+    v2?: false | undefined;
+
+    /**
      * 自定义内联样式
      * @en Custom inline style
      * @skip
@@ -856,12 +860,6 @@ export interface TooltipV1Props extends HTMLAttributesWeak, CommonProps {
      * @defaultValue 50
      */
     delay?: number;
-
-    /**
-     * 开启 v2
-     * @en Enable v2
-     */
-    v2?: false | undefined;
 
     /**
      * 鼠标放置后的延时显示，单位毫秒 ms

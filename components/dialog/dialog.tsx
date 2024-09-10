@@ -5,7 +5,7 @@ import zhCN from '../locale/zh-cn';
 import { focus, obj, func, events, dom, env } from '../util';
 import Inner from './inner';
 import { type CustomCSSStyleKey } from '../util/dom';
-import { DialogV1Props } from './types';
+import type { DialogV1Props } from './types';
 
 const noop = () => {};
 const { limitTabRange } = focus;

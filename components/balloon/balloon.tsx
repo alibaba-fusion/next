@@ -24,6 +24,7 @@ let alignMap = normalMap;
 
 class Balloon extends React.Component<BalloonProps, BalloonState> {
     readonly props: BalloonV1Props & BalloonV2Props;
+    static displayName = 'Balloon';
     static contextTypes = {
         prefix: PropTypes.string,
     };

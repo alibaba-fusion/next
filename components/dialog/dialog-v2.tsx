@@ -52,7 +52,7 @@ const Dialog = (props: DialogV2Props) => {
         animation = { in: 'fadeInUp', out: 'fadeOutUp' },
         cache,
         wrapperStyle,
-        popupContainer = document.body,
+        popupContainer = typeof document !== 'undefined' ? document.body : null,
         dialogRender,
         centered,
         top = centered ? 40 : 100,
