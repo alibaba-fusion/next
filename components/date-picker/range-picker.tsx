@@ -73,151 +73,46 @@ class RangePicker extends Component<RangePickerProps, RangePickerState> {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 日期范围类型
-         */
         type: PropTypes.oneOf(['date', 'month', 'year']),
-        /**
-         * 默认展示的起始月份
-         */
         defaultVisibleMonth: PropTypes.func,
         onVisibleMonthChange: PropTypes.func,
-        /**
-         * 日期范围值数组 [moment, moment]
-         */
         value: PropTypes.array,
-        /**
-         * 初始的日期范围值数组 [moment, moment]
-         */
         defaultValue: PropTypes.array,
-        /**
-         * 日期格式
-         */
         format: PropTypes.string,
-        /**
-         * 是否使用时间控件，支持传入 TimePicker 的属性
-         */
         showTime: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-        /**
-         * 每次选择是否重置时间（仅在 showTime 开启时有效）
-         */
         resetTime: PropTypes.bool,
-        /**
-         * 禁用日期函数
-         */
         disabledDate: PropTypes.func,
-        /**
-         * 自定义面板页脚
-         */
         footerRender: PropTypes.func,
-        /**
-         * 日期范围值改变时的回调 [ MomentObject|String, MomentObject|String ]
-         */
         onChange: PropTypes.func,
-        /**
-         * 点击确认按钮时的回调 返回开始时间和结束时间`[ MomentObject|String, MomentObject|String ]`
-         */
         onOk: PropTypes.func,
-        /**
-         * 输入框内置标签
-         */
         label: PropTypes.node,
-        /**
-         * 输入框状态
-         */
         state: PropTypes.oneOf(['error', 'loading', 'success']),
-        /**
-         * 输入框尺寸
-         */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
-        /**
-         * 是否禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * 是否显示清空按钮
-         */
         hasClear: PropTypes.bool,
-        /**
-         * 弹层显示状态
-         */
         visible: PropTypes.bool,
-        /**
-         * 弹层默认是否显示
-         */
         defaultVisible: PropTypes.bool,
-        /**
-         * 弹层展示状态变化时的回调
-         */
         onVisibleChange: PropTypes.func,
-        /**
-         * 弹层触发方式
-         */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
-        /**
-         * 弹层对齐方式，具体含义见 OverLay 文档
-         */
         popupAlign: PropTypes.string,
-        /**
-         * 弹层容器
-         */
         popupContainer: PropTypes.any,
-        /**
-         * 弹层自定义样式
-         */
         popupStyle: PropTypes.object,
-        /**
-         * 弹层自定义样式类
-         */
         popupClassName: PropTypes.string,
-        /**
-         * 弹层其他属性
-         */
         popupProps: PropTypes.object,
-        /**
-         * 是否跟随滚动
-         */
         followTrigger: PropTypes.bool,
-        /**
-         * 输入框其他属性
-         */
         inputProps: PropTypes.object,
-        /**
-         * 自定义日期单元格渲染
-         */
         dateCellRender: PropTypes.func,
-        /**
-         * 自定义月份渲染函数
-         */
         monthCellRender: PropTypes.func,
-        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
-        /**
-         * 开始日期输入框的 aria-label 属性
-         */
+        yearCellRender: PropTypes.func,
         startDateInputAriaLabel: PropTypes.string,
-        /**
-         * 开始时间输入框的 aria-label 属性
-         */
         startTimeInputAriaLabel: PropTypes.string,
-        /**
-         * 结束日期输入框的 aria-label 属性
-         */
         endDateInputAriaLabel: PropTypes.string,
-        /**
-         * 结束时间输入框的 aria-label 属性
-         */
         endTimeInputAriaLabel: PropTypes.string,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         */
         renderPreview: PropTypes.func,
         disableChangeMode: PropTypes.bool,
         yearRange: PropTypes.arrayOf(PropTypes.number),
-        ranges: PropTypes.object, // 兼容 0.x 版本
+        ranges: PropTypes.object,
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
