@@ -36,158 +36,46 @@ class DatePicker extends Component<DatePickerProps, DatePickerState> {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
-        /**
-         * 输入框内置标签
-         */
         label: PropTypes.node,
-        /**
-         * 输入框状态
-         */
         state: PropTypes.oneOf(['success', 'loading', 'error']),
-        /**
-         * 输入提示
-         */
         placeholder: PropTypes.string,
-        /**
-         * 默认展现的月
-         * @returns \{MomentObject\} 返回包含指定月份的 moment 对象实例
-         */
         defaultVisibleMonth: PropTypes.func,
         onVisibleMonthChange: PropTypes.func,
-        /**
-         * 日期值（受控）moment 对象
-         */
         value: checkDateValue,
-        /**
-         * 初始日期值，moment 对象
-         */
         defaultValue: checkDateValue,
-        /**
-         * 日期值的格式（用于限定用户输入和展示）
-         */
         format: PropTypes.string,
-        /**
-         * 是否使用时间控件，传入 TimePicker 的属性 \{ defaultValue, format, ... \}
-         */
         showTime: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-        /**
-         * 每次选择日期时是否重置时间（仅在 showTime 开启时有效）
-         */
         resetTime: PropTypes.bool,
-        /**
-         * 禁用日期函数
-         */
         disabledDate: PropTypes.func,
-        /**
-         * 自定义面板页脚
-         */
         footerRender: PropTypes.func,
-        /**
-         * 日期值改变时的回调
-         */
         onChange: PropTypes.func,
-        /**
-         * 点击确认按钮时的回调
-         */
         onOk: PropTypes.func,
-        /**
-         * 输入框尺寸
-         */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
-        /**
-         * 是否禁用
-         */
         disabled: PropTypes.bool,
-        /**
-         * 是否显示清空按钮
-         */
         hasClear: PropTypes.bool,
-        /**
-         * 弹层显示状态
-         */
         visible: PropTypes.bool,
-        /**
-         * 弹层默认是否显示
-         */
         defaultVisible: PropTypes.bool,
-        /**
-         * 弹层展示状态变化时的回调
-         */
         onVisibleChange: PropTypes.func,
-        /**
-         * 弹层触发方式
-         */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
-        /**
-         * 弹层对齐方式，具体含义见 OverLay 文档
-         */
         popupAlign: PropTypes.string,
-        /**
-         * 弹层容器
-         */
         popupContainer: PropTypes.any,
-        /**
-         * 弹层自定义样式
-         */
         popupStyle: PropTypes.object,
-        /**
-         * 弹层自定义样式类
-         */
         popupClassName: PropTypes.string,
-        /**
-         * 弹层其他属性
-         */
         popupProps: PropTypes.object,
-        /**
-         * 是否跟随滚动
-         */
         followTrigger: PropTypes.bool,
-        /**
-         * 输入框其他属性
-         */
         inputProps: PropTypes.object,
-        /**
-         * 自定义日期渲染函数
-         */
         dateCellRender: PropTypes.func,
-        /**
-         * 自定义月份渲染函数
-         */
         monthCellRender: PropTypes.func,
-        /**
-         * 自定义年份渲染函数
-         */
-        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
-        /**
-         * 日期输入框的 aria-label 属性
-         */
+        yearCellRender: PropTypes.func,
         dateInputAriaLabel: PropTypes.string,
-        /**
-         * 时间输入框的 aria-label 属性
-         */
         timeInputAriaLabel: PropTypes.string,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         */
         renderPreview: PropTypes.func,
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
-        /**
-         * 自定义弹层组件
-         */
         popupComponent: PropTypes.elementType,
-        /**
-         * 自定义弹层内容
-         */
         popupContent: PropTypes.node,
-        /**
-         * 禁用日期选择器的日期模式切换
-         */
         disableChangeMode: PropTypes.bool,
         yearRange: PropTypes.arrayOf(PropTypes.number),
     };
@@ -210,6 +98,8 @@ class DatePicker extends Component<DatePickerProps, DatePickerState> {
         onVisibleChange: func.noop,
         onOk: func.noop,
     };
+
+    static displayName = 'DatePicker';
 
     readonly props: InnerDatePickerProps;
 
