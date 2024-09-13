@@ -26,6 +26,7 @@ type InnerWeekPickerProps = ClassPropsWithDefault<WeekPickerProps, typeof WeekPi
  * DatePicker.WeekPicker
  */
 class WeekPicker extends Component<WeekPickerProps, WeekPickerState> {
+    static displayName = 'WeekPicker';
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -140,8 +141,7 @@ class WeekPicker extends Component<WeekPickerProps, WeekPickerState> {
 
         if (
             (e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
-            // @ts-expect-error 没有 controlKey，应该是 ctrlKey
-            e.controlKey ||
+            e.ctrlKey ||
             e.shiftKey
         ) {
             return;

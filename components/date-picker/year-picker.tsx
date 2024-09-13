@@ -25,6 +25,7 @@ type InnerYearPickerProps = ClassPropsWithDefault<YearPickerProps, typeof YearPi
  * DatePicker.YearPicker
  */
 class YearPicker extends Component<YearPickerProps, YearPickerState> {
+    static displayName = 'YearPicker';
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
