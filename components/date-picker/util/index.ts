@@ -118,8 +118,7 @@ export function onDateKeydown(
 
     if (
         (e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
-        // @ts-expect-error 没有 controlKey，应该是 ctrlKey
-        e.controlKey ||
+        e.ctrlKey ||
         e.shiftKey
     ) {
         return;

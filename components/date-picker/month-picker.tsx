@@ -29,6 +29,7 @@ type InnerMonthPickerProps = ClassPropsWithDefault<
  * DatePicker.MonthPicker
  */
 class MonthPicker extends Component<MonthPickerProps, MonthPickerState> {
+    static displayName = 'MonthPicker';
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,

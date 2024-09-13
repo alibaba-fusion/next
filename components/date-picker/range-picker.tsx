@@ -69,6 +69,7 @@ type InnerRangePickerProps = ClassPropsWithDefault<
  * DatePicker.RangePicker
  */
 class RangePicker extends Component<RangePickerProps, RangePickerState> {
+    static displayName = 'RangePicker';
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,

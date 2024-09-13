@@ -6,10 +6,20 @@ import YearPicker from './year-picker';
 import WeekPicker from './week-picker';
 import { assignSubComponent } from '../util/component';
 import type { log } from '../util';
+import type { DeprecatedProps } from './types';
 
-export type { DatePickerProps, RangePickerProps, MonthPickerProps, YearPickerProps } from './types';
+export type {
+    DatePickerProps,
+    RangePickerProps,
+    MonthPickerProps,
+    YearPickerProps,
+    WeekPickerProps,
+} from './types';
 
-const transform = (props: Record<string, unknown>, deprecated: typeof log.deprecated) => {
+const transform = (
+    props: Record<string, unknown> & DeprecatedProps,
+    deprecated: typeof log.deprecated
+) => {
     const { open, defaultOpen, onOpenChange, ...others } = props;
     const newProps = others;
 
