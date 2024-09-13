@@ -6,6 +6,7 @@ import { PANEL } from '../util';
 import type { PanelFooterProps } from '../types';
 
 class PanelFooter extends React.PureComponent<PanelFooterProps> {
+    static displayName = 'PanelFooter';
     static defaultProps = {
         onOk: func.noop,
     };

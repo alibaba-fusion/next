@@ -15,7 +15,8 @@ export type PanelType = 'time-panel' | 'date-panel';
  */
 export interface DatePickerProps
     extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange' | 'defaultValue'>,
-        CommonProps {
+        CommonProps,
+        DeprecatedProps {
     /**
      * @deprecated use Form.Item name instead
      * @skip
@@ -294,7 +295,8 @@ export interface DatePickerState {
  */
 export interface MonthPickerProps
     extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange' | 'defaultValue'>,
-        CommonProps {
+        CommonProps,
+        DeprecatedProps {
     /**
      * @deprecated use Form.Item name instead
      * @skip
@@ -507,7 +509,8 @@ export interface MonthPickerState {
  */
 export interface RangePickerProps
     extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange' | 'defaultValue' | 'placeholder'>,
-        CommonProps {
+        CommonProps,
+        DeprecatedProps {
     /**
      * @deprecated use Form.Item name instead
      * @skip
@@ -777,6 +780,7 @@ export interface RangePickerProps
      * @skip
      * 兼容 0.x ranges 属性，用于显示一些快捷选择的入口
      * @en Compatible with 0.x ranges attribute, used to display some shortcut entry points
+     * @deprecated use footerRender instead
      */
     ranges?: {
         [key: string]: MomentInput[];
@@ -814,7 +818,8 @@ export interface RangePickerState {
  */
 export interface YearPickerProps
     extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange' | 'defaultValue'>,
-        CommonProps {
+        CommonProps,
+        DeprecatedProps {
     /**
      * @deprecated use Form.Item name instead
      * @skip
@@ -1205,4 +1210,23 @@ export interface WeekPickerProps
 export interface WeekPickerState {
     value: Moment | null;
     visible: boolean | undefined;
+}
+
+export interface DeprecatedProps {
+    /**
+     * @deprecated use visible instead
+     */
+    open?: boolean;
+    /**
+     * @deprecated use defaultVisible instead
+     */
+    defaultOpen?: boolean;
+    /**
+     * @deprecated use onVisibleChange instead
+     */
+    onOpenChange?: (open: boolean) => void;
+    /**
+     * @deprecated use format/showTime.format instead
+     */
+    formater?: unknown;
 }
