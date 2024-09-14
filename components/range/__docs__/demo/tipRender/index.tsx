@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Range } from '@alifd/next';
+import type { RangeProps, RangeValueType } from '@alifd/next/lib/range';
 
-class App extends React.Component {
-    constructor(props) {
+class App extends React.Component<RangeProps, { value: RangeValueType }> {
+    constructor(props: RangeProps) {
         super(props);
         this.state = {
             value: 128,
@@ -11,17 +12,17 @@ class App extends React.Component {
     }
 
     // This callback will be triggered when startValue and endValue aren't equal after moving.
-    onChange(value) {
+    onChange(value: RangeValueType) {
         console.log('onChange value:', value);
     }
 
     // This callback will be triggered when startValue and endValue aren't equal after mousedown/mousemove. You can call setState here when using a controlled component.
-    onProcess(value) {
+    onProcess(value: RangeValueType) {
         console.log('onProcess');
         this.setState({ value });
     }
 
-    formatter(value) {
+    formatter(value: RangeValueType) {
         return `0 ~ ${value}`;
     }
     render() {

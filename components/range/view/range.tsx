@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
-import { events, func, KEYCODE, dom, obj } from '../../util';
+import { events, func, KEYCODE, dom, obj, type ClassPropsWithDefault } from '../../util';
 import Balloon from '../../balloon';
 import { getPercent, getPrecision, isEqual, getDragging } from '../utils';
 import Scale from './scale';
@@ -11,16 +11,21 @@ import Selected from './selected';
 import Mark from './mark';
 import Slider from './slider';
 import FixedSlider from './fixedSlider';
+import type { RangeProps, RangeState, RangeValueType, RangeSliderProps } from '../types';
+
+type RangePropsWithDefault = ClassPropsWithDefault<RangeProps, typeof Range.defaultProps>;
+type EventOnReturnType = ReturnType<typeof events.on>;
+type LowerAndUpperSliderProps = Omit<RangeSliderProps, 'value'> & { value?: RangeValueType };
 
 const Tooltip = Balloon.Tooltip;
 const { noop, bindCtx } = func;
 const { pickOthers } = obj;
 
-function _isMultiple(slider, isFixedWidth) {
+function _isMultiple(slider: RangeProps['slider'], isFixedWidth?: boolean) {
     return isFixedWidth || slider === 'double';
 }
 
-function LowerSlider(props) {
+function LowerSlider(props: LowerAndUpperSliderProps) {
     const {
         hasTip,
         value,
@@ -34,19 +39,22 @@ function LowerSlider(props) {
     if (_isMultiple(slider)) {
         return hasTip ? (
             <Tooltip
-                popupContainer={target => target.parentNode}
+                popupContainer={(target: HTMLElement) => target.parentNode}
                 popupProps={{
                     visible: tooltipVisible,
                     onVisibleChange: onTooltipVisibleChange,
                     animation: tooltipAnimation,
                     needAdjust: false,
                 }}
+                // @ts-expect-error value is undefined, number or array
                 trigger={Slider({ ...props, value: value[0] })}
                 align="t"
             >
+                {/* @ts-expect-error value is undefined, number or array */}
                 {tipRender(`${value[0]}`)}
             </Tooltip>
         ) : (
+            // @ts-expect-error value is undefined, number or array
             Slider({ ...props, value: value[0] })
         );
     }
@@ -63,8 +71,8 @@ LowerSlider.propTypes = {
     slider: PropTypes.oneOf(['single', 'double']),
 };
 
-function UpperSlider(props) {
-    const newprop = Object.assign({}, props);
+function UpperSlider(props: LowerAndUpperSliderProps) {
+    const newprop = Object.assign({}, props) as RangeSliderProps;
     const {
         hasTip,
         value,
@@ -78,31 +86,35 @@ function UpperSlider(props) {
         delete newprop.onKeyDown;
         return hasTip ? (
             <Tooltip
-                popupContainer={target => target.parentNode}
+                popupContainer={(target: HTMLElement) => target.parentNode}
                 popupProps={{
                     visible: tooltipVisible,
                     onVisibleChange: onTooltipVisibleChange,
                     animation: tooltipAnimation,
                     needAdjust: false,
                 }}
+                // @ts-expect-error value is undefined, number or array
                 trigger={Slider({ ...newprop, value: value[1] })}
                 align="t"
             >
+                {/* @ts-expect-error value is undefined, number or array */}
                 {tipRender(value[1])}
             </Tooltip>
         ) : (
+            // @ts-expect-error value is undefined, number or array
             Slider({ ...newprop, value: value[1] })
         );
     }
     return hasTip ? (
         <Tooltip
-            popupContainer={target => target.parentNode}
+            popupContainer={(target: HTMLElement) => target.parentNode}
             popupProps={{
                 visible: tooltipVisible,
                 onVisibleChange: onTooltipVisibleChange,
                 animation: tooltipAnimation,
                 needAdjust: false,
             }}
+            // @ts-expect-error Tooltip 组件不存在 animation 属性
             animation={{
                 in: 'fadeInUp',
                 out: 'fadeOutDown',
@@ -127,121 +139,45 @@ UpperSlider.propTypes = {
     slider: PropTypes.oneOf(['single', 'double']),
 };
 
-function pauseEvent(e) {
+function pauseEvent<T extends React.SyntheticEvent>(e: T) {
     e.stopPropagation();
     e.preventDefault();
 }
 
-/** Range */
-class Range extends React.Component {
+class Range extends React.Component<RangeProps, RangeState> {
     static contextTypes = {
         prefix: PropTypes.string,
     };
     static propTypes = {
-        /**
-         * 样式类名的品牌前缀
-         */
         prefix: PropTypes.string,
-        /**
-         * 自定义类名
-         */
         className: PropTypes.string,
-        /**
-         * 自定义内敛样式
-         */
         style: PropTypes.object,
-        /**
-         * 滑块个数
-         * @enumdesc 单个, 两个
-         */
         slider: PropTypes.oneOf(['single', 'double']),
-        /**
-         * 最小值
-         */
         min: PropTypes.number,
-        /**
-         * 最大值
-         */
         max: PropTypes.number,
-        /**
-         * 步长，取值必须大于 0，并且可被 (max - min) 整除。
-         */
         step: PropTypes.number,
-        /**
-         * 设置当前取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`
-         */
         value: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
         tempValue: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
-        /**
-         * 设置初始取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`
-         */
         defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
-        /**
-         * 刻度数值显示逻辑（false 代表不显示，array 枚举显示的值，number 代表按 number 平分，object 表示按 key 划分，value 值显示）
-         */
         marks: PropTypes.oneOfType([
             PropTypes.bool,
             PropTypes.number,
             PropTypes.arrayOf(PropTypes.number),
             PropTypes.object,
         ]),
-        /**
-         * marks显示在上方('above')or下方('below')
-         */
         marksPosition: PropTypes.oneOf(['above', 'below']),
-        /**
-         * 值为 `true` 时，滑块为禁用状态
-         */
         disabled: PropTypes.bool,
-        /**
-         * 当 Range 的值发生改变后，会触发 onChange 事件，并把改变后的值作为参数传入, 如果设置了value, 要配合此函数做受控使用
-         * @param {String/number} value
-         */
         onChange: PropTypes.func,
-        /**
-         * 滑块拖动的时候触发的事件,不建议在这里setState, 一般情况下不需要用, 滑动时有特殊需求时使用
-         * @param {String/number} value
-         */
         onProcess: PropTypes.func,
-        /**
-         * 是否显示 tip
-         */
         hasTip: PropTypes.bool,
-        /**
-         * 自定义 tip 显示内容
-         * @param {Number|String} value 值
-         * @return {ReactNode} 显示内容
-         */
         tipRender: PropTypes.func,
         id: PropTypes.string,
-        /**
-         * 选中态反转
-         */
         reverse: PropTypes.bool,
-        /**
-         * 是否pure render
-         */
         pure: PropTypes.bool,
-        /**
-         * 是否为拖动线段类型,默认slider为double, defaultValue必传且指定区间
-         */
         fixedWidth: PropTypes.bool,
-        /**
-         * tooltip是否默认展示
-         */
         tooltipVisible: PropTypes.bool,
-        /**
-         * 是否已rtl模式展示
-         */
         rtl: PropTypes.bool,
-        /**
-         * 是否为预览态
-         */
         isPreview: PropTypes.bool,
-        /**
-         * 预览态模式下渲染的内容
-         * @param {number} value 评分值
-         */
         renderPreview: PropTypes.func,
     };
 
@@ -258,18 +194,35 @@ class Range extends React.Component {
         hasTip: true,
         onChange: noop,
         onProcess: noop,
-        tipRender: value => value,
+        tipRender: (value: RangeValueType) => value,
         reverse: false,
         pure: false,
         marksPosition: 'above',
         rtl: false,
         isPreview: false,
     };
+    _moving: {
+        start: number;
+        end: number;
+        startValue: RangeState['tempValue'];
+        dragging?: 'lower' | 'upper';
+    } | null;
+    dom: HTMLDivElement;
+    isFixedWidth: boolean;
+    lastPosition: number;
+    oldDragging?: 'lower' | 'upper';
+    _onMouseMoveListener: EventOnReturnType | null;
+    _onMouseUpListener: EventOnReturnType | null;
+    _onContextMenuListener: EventOnReturnType | null;
+    _onTouchMoveListener: EventOnReturnType | null;
+    _onTouchEndListener: EventOnReturnType | null;
 
-    constructor(props) {
+    readonly props: RangePropsWithDefault;
+
+    constructor(props: RangeProps) {
         super(props);
         const { min } = props;
-        const initialValue = _isMultiple(props.slider) ? [min, min] : min;
+        const initialValue = _isMultiple(props.slider) ? ([min, min] as [number, number]) : min;
         const defaultValue = 'defaultValue' in props ? props.defaultValue : initialValue;
         const value = props.value !== undefined ? props.value : defaultValue;
 
@@ -289,11 +242,11 @@ class Range extends React.Component {
         ]);
     }
 
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props: RangePropsWithDefault, state: RangeState) {
         if ('value' in props) {
             const { min, slider, value } = props;
             const { hasMovingClass } = state;
-            const newState = {
+            const newState: Partial<RangeState> = {
                 value,
             };
 
@@ -310,15 +263,16 @@ class Range extends React.Component {
         return null;
     }
 
-    _marksToScales(marks) {
-        let result = [];
+    _marksToScales(marks: RangePropsWithDefault['marks']) {
+        let result: number | number[] | false = [];
         if (Object.prototype.toString.call(marks) === '[object Object]') {
-            for (const key in marks) {
+            for (const key in marks as Record<number, string>) {
                 if (Object.hasOwnProperty.call(marks, key)) {
                     result.push(parseInt(key));
                 }
             }
         } else {
+            // @ts-expect-error 采用类型保护后，不需要对 marks 做断言
             result = marks;
         }
         return result;
@@ -350,7 +304,7 @@ class Range extends React.Component {
     _calcMarks() {
         const { min, max, marks } = this.props;
 
-        let result = {};
+        let result: Record<number, string> = {};
 
         if (Array.isArray(marks)) {
             marks.forEach(m => {
@@ -358,25 +312,28 @@ class Range extends React.Component {
             });
         } else if (typeof marks === 'number') {
             const pace = (max - min) / marks;
-
+            // @ts-expect-error result 对象的 value 为 string 类型
             result[min] = min;
             for (let i = 1; i < marks; i++) {
-                let mark = min + i * pace;
+                let mark: number = min + i * pace;
                 let precision = getPrecision(mark);
                 if (precision > 2) {
                     precision = 2;
                 }
+                // @ts-expect-error result 对象的 key 为 number 类型
                 mark = mark.toFixed(precision);
+                // @ts-expect-error result 对象的 key 为 number 类型
                 result[mark] = mark;
             }
+            // @ts-expect-error result 对象的 value 为 string 类型
             result[max] = max;
         } else {
-            result = marks;
+            result = marks as Record<number, string>;
         }
         return result;
     }
 
-    _onMouseDown(e) {
+    _onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
         if (e.button === 0) {
             this._start(e.pageX);
             this._addDocumentMouseEvents();
@@ -384,13 +341,13 @@ class Range extends React.Component {
         }
     }
 
-    _onTouchStart(e) {
+    _onTouchStart(e: React.TouchEvent<HTMLDivElement>) {
         this._start(e.targetTouches[0].pageX);
         this._addDocumentTouchEvents();
         e.stopPropagation(); // preventDefault() will be ignored: https://www.chromestatus.com/features/5093566007214080
     }
 
-    onKeyDown(e) {
+    onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
         if (this.props.disabled) return;
 
         if (e.keyCode === KEYCODE.LEFT_ARROW || e.keyCode === KEYCODE.RIGHT_ARROW) {
@@ -398,8 +355,10 @@ class Range extends React.Component {
             e.preventDefault();
             let newValue;
             if (e.keyCode === KEYCODE.LEFT_ARROW) {
+                // @ts-expect-error 认为需要对 value 做前置判断，即使从 UpperSlider 逻辑上看确实是 number
                 newValue = this.state.value - this.props.step;
             } else {
+                // @ts-expect-error 认为需要对 value 做前置判断，即使从 UpperSlider 逻辑上看确实是 number
                 newValue = this.state.value + this.props.step;
             }
             if (newValue > this.props.max) {
@@ -417,11 +376,11 @@ class Range extends React.Component {
         }
     }
 
-    _onContextMenu(e) {
+    _onContextMenu(e: React.MouseEvent<HTMLDivElement>) {
         pauseEvent(e);
     }
 
-    _start(position) {
+    _start(position: number) {
         this.setState({
             hasMovingClass: true,
         });
@@ -451,7 +410,7 @@ class Range extends React.Component {
     }
 
     _end() {
-        const { startValue } = this._moving;
+        const { startValue } = this._moving!;
         const { tempValue, value } = this.state;
         this._moving = null;
         this._removeDocumentEvents();
@@ -462,7 +421,7 @@ class Range extends React.Component {
             tooltipAnimation: true,
         });
 
-        if (!isEqual(tempValue, startValue)) {
+        if (!isEqual(tempValue!, startValue!)) {
             // Not Controlled
             if (!('value' in this.props)) {
                 this.setState({
@@ -475,16 +434,16 @@ class Range extends React.Component {
                     value,
                 });
             }
-            this.props.onChange(tempValue);
+            this.props.onChange(tempValue!);
         }
     }
 
-    _move(e) {
+    _move(e: React.MouseEvent<Element> & React.TouchEvent<Element>) {
         const position = e.type === 'mousemove' ? e.pageX : e.targetTouches[0].pageX;
         this._onProcess(position);
     }
 
-    _onProcess(position, start) {
+    _onProcess(position: number, start?: boolean) {
         const { tempValue } = this.state;
         const current = this._positionToCurrent(position); //current 为当前click的value
 
@@ -495,43 +454,44 @@ class Range extends React.Component {
         } else if (start) {
             this.lastPosition = current;
             if (_isMultiple(this.props.slider)) {
-                this._moving.dragging = getDragging(current, tempValue);
+                this._moving!.dragging = getDragging(current, tempValue as [number, number]);
             } else {
-                this._moving.dragging = 'upper';
+                this._moving!.dragging = 'upper';
             }
 
             this.setState({
-                lowerTooltipVisible: this._moving.dragging === 'lower',
-                upperTooltipVisible: this._moving.dragging === 'upper',
+                lowerTooltipVisible: this._moving!.dragging === 'lower',
+                upperTooltipVisible: this._moving!.dragging === 'upper',
                 tooltipAnimation: false,
             });
-        } else if (this.oldDragging === 'lower' && this._moving.dragging === 'upper') {
+        } else if (this.oldDragging === 'lower' && this._moving!.dragging === 'upper') {
             this.setState({
                 upperTooltipVisible: true,
                 lowerTooltipVisible: false,
             });
-        } else if (this.oldDragging === 'upper' && this._moving.dragging === 'lower') {
+        } else if (this.oldDragging === 'upper' && this._moving!.dragging === 'lower') {
             this.setState({
                 upperTooltipVisible: false,
                 lowerTooltipVisible: true,
             });
         }
 
-        this.oldDragging = this._moving.dragging;
+        this.oldDragging = this._moving!.dragging;
 
         const nextValue = this._currentToValue(
             current,
-            tempValue,
+            // @ts-expect-error _currentToValue 的 preValue 被迫设定为交叉类型，原因是函数内部没有对 preValue 做类型保护
+            tempValue!,
             this.lastPosition,
             this.isFixedWidth
         ); //计算range的新value,可能是数组,可能是单个值
         this.lastPosition = current;
 
-        if (!isEqual(nextValue, tempValue)) {
+        if (!isEqual(nextValue!, tempValue!)) {
             this.setState({
                 tempValue: nextValue,
             });
-            this.props.onProcess(nextValue);
+            this.props.onProcess(nextValue!);
         }
     }
 
@@ -578,8 +538,8 @@ class Range extends React.Component {
     }
 
     // position => current (value type)
-    _positionToCurrent(position) {
-        const { start, end } = this._moving;
+    _positionToCurrent(position: number) {
+        const { start, end } = this._moving!;
         const { step, min, max, rtl } = this.props;
 
         if (position < start) {
@@ -598,14 +558,19 @@ class Range extends React.Component {
         return Number(currentValue);
     }
 
-    _currentToValue(current, preValue, lastPosition, isFixedWidth) {
-        const { dragging } = this._moving;
+    _currentToValue(
+        current: number,
+        preValue: number & [number, number],
+        lastPosition: number,
+        isFixedWidth: boolean
+    ) {
+        const { dragging } = this._moving!;
         const { min, max } = this.props;
 
         if (!_isMultiple(this.props.slider, isFixedWidth)) {
             return current;
         } else {
-            let result;
+            let result: RangeValueType | undefined;
 
             const precision = getPrecision(this.props.step);
             const diff = current - lastPosition;
@@ -626,14 +591,14 @@ class Range extends React.Component {
             } else if (dragging === 'lower') {
                 if (current > preValue[1]) {
                     result = [preValue[1], current];
-                    this._moving.dragging = 'upper';
+                    this._moving!.dragging = 'upper';
                 } else {
                     result = [current, preValue[1]];
                 }
             } else if (dragging === 'upper') {
                 if (current < preValue[0]) {
                     result = [current, preValue[0]];
-                    this._moving.dragging = 'lower';
+                    this._moving!.dragging = 'lower';
                 } else {
                     result = [preValue[0], current];
                 }
@@ -643,7 +608,7 @@ class Range extends React.Component {
         }
     }
 
-    handleLowerTooltipVisibleChange(visible) {
+    handleLowerTooltipVisibleChange(visible: boolean) {
         if (this.state.hasMovingClass) {
             return;
         }
@@ -652,7 +617,7 @@ class Range extends React.Component {
         });
     }
 
-    handleUpperTooltipVisibleChange(visible) {
+    handleUpperTooltipVisibleChange(visible: boolean) {
         if (this.state.hasMovingClass) {
             return;
         }
@@ -691,15 +656,16 @@ class Range extends React.Component {
         const classes = classNames({
             [`${prefix}range`]: true,
             disabled: disabled,
-            [className]: className,
+            [className!]: className,
         });
 
         if (Array.isArray(value)) {
             value.forEach((item, index) => {
                 if (item > max) {
-                    value[index] = max;
+                    (value as [number, number])[index] = max;
                 }
             });
+            // @ts-expect-error value 存在 undefined 情况
         } else if (value > max) {
             value = max;
         }
@@ -730,6 +696,7 @@ class Range extends React.Component {
             if ('renderPreview' in this.props) {
                 return (
                     <div id={id} dir={rtl ? 'rtl' : 'ltr'} {...others} className={previewCls}>
+                        {/* @ts-expect-error renderPreview 存在 undefined 情况，可以设置默认值 */}
                         {renderPreview(value, this.props)}
                     </div>
                 );
@@ -743,9 +710,11 @@ class Range extends React.Component {
         }
 
         return (
+            // div 需要补充 role="slider", tabIndex, aria-valuenow, aria-valuemin, aria-valuemax, aria-disabled等属性
+            // eslint-disable-next-line jsx-a11y/no-static-element-interactions
             <div
                 ref={dom => {
-                    this.dom = dom;
+                    this.dom = dom!;
                 }}
                 {...others}
                 style={style}
@@ -762,6 +731,7 @@ class Range extends React.Component {
                     <Scale {...commonProps} scales={this._calcScales()} />
                     <Track {...commonProps} />
                     {this.isFixedWidth ? (
+                        // @ts-expect-error value 存在 undefined 情况
                         <FixedSlider {...commonProps} />
                     ) : (
                         <div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Range } from '@alifd/next';
+import type { RangeProps, RangeValueType } from '@alifd/next/lib/range';
 
 const style = {
     marginBottom: '15px',
@@ -10,8 +11,8 @@ const styleX3 = {
     marginBottom: '45px',
 };
 
-class App extends React.Component {
-    constructor(props) {
+class App extends React.Component<RangeProps, { value: RangeValueType }> {
+    constructor(props: RangeProps) {
         super(props);
         this.state = {
             value: [10, 300],
@@ -19,13 +20,13 @@ class App extends React.Component {
     }
 
     //Controlled. onChange will be triggered when startValue isn't equal to endValue after sliding
-    onChange(value) {
+    onChange(value: RangeValueType) {
         console.log('onChange value:', value);
         this.setState({ value });
     }
 
     // This callback will be triggered when startValue and endValue aren't equal after mousedown/mousemove. You shouldn't call setState here.
-    onProcess(value) {
+    onProcess(value: RangeValueType) {
         // this.setState({value});
         console.log('onProcess: ', value);
     }
@@ -33,7 +34,7 @@ class App extends React.Component {
     render() {
         return (
             <div style={{ width: '400px', margin: '50px' }}>
-                <Range fixedWidth defaultValue={[20, 40]} style={style} />
+                <Range fixedWidth defaultValue={[20, 40]} slider="double" style={style} />
                 <h4>with tooltipVisible</h4>
                 <Range tooltipVisible fixedWidth defaultValue={[70, 90]} style={styleX3} />
                 <h4>with marks</h4>

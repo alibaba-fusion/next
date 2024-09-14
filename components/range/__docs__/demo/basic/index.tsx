@@ -13,7 +13,7 @@ const Demo = () => {
         <div style={{ width: 400 }}>
             <Range defaultValue={30} disabled={disabled} style={style} />
             <Range slider="double" defaultValue={[20, 70]} disabled={disabled} style={style} />
-
+            <Range fixedWidth defaultValue={[20, 40]} />
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 Disabled: <Switch checked={disabled} onChange={setDisabled} />
             </div>

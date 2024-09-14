@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { events, func } from '../../util';
 import Balloon from '../../balloon';
 import { getPercent } from '../utils';
+import type { RangeFixedSliderProps, RangeFixedSliderState } from '../types';
 
 const Tooltip = Balloon.Tooltip;
 const { noop } = func;
 
-function _getStyle(min, max, value, rtl) {
+function _getStyle(min: number, max: number, value: [number, number], rtl: boolean) {
     if (rtl) {
         return {
             left: `${getPercent(min, max, max + min - value[1])}%`,
@@ -20,13 +21,21 @@ function _getStyle(min, max, value, rtl) {
     };
 }
 
-function sliderFrag(props) {
+function sliderFrag(
+    props: RangeFixedSliderProps & {
+        onMouseEnter: () => void;
+        onMouseLeave: () => void;
+        onMouseDown: () => void;
+    }
+) {
     const { prefix, min, max, value, disabled, onMouseEnter, onMouseLeave, onMouseDown, rtl } =
         props;
 
     const activeClass = !disabled && props.hasMovingClass ? `${prefix}range-active` : '';
 
     return (
+        // div 需要补充 role="slider", tabIndex, aria-valuenow, aria-valuemin, aria-valuemax, aria-disabled等属性
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
         <div
             className={`${prefix}range-frag ${activeClass}`}
             style={_getStyle(min, max, value, rtl)}
@@ -59,7 +68,10 @@ sliderFrag.propTypes = {
     rtl: PropTypes.bool,
 };
 
-export default class FixedSlider extends React.Component {
+export default class FixedSlider extends React.Component<
+    RangeFixedSliderProps,
+    RangeFixedSliderState
+> {
     static propTypes = {
         hasTip: PropTypes.bool,
         tooltipVisible: PropTypes.bool,
@@ -77,12 +89,15 @@ export default class FixedSlider extends React.Component {
         hasTip: true,
         onChange: noop,
         onProcess: noop,
-        tipRender: value => value,
+        tipRender: (value: number | string) => value,
         reverse: false,
         rtl: false,
     };
 
-    constructor(props) {
+    keyState: 'down' | 'enter' | '';
+    _onMouseUpListener: ReturnType<typeof events.on> | null;
+
+    constructor(props: RangeFixedSliderProps) {
         super(props);
 
         this.state = {
@@ -150,7 +165,7 @@ export default class FixedSlider extends React.Component {
 
         return hasTip ? (
             <Tooltip
-                popupContainer={target => target.parentNode}
+                popupContainer={(target: HTMLElement) => target.parentNode}
                 popupProps={{
                     visible: tooltipVisible || hasMovingClass,
                     animation: this.state.tooltipAnimation
