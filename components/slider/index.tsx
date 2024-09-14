@@ -1,6 +1,8 @@
 import ConfigProvider from '../config-provider';
 import Slider from './slider';
 
+export type { SliderProps } from './types';
+
 export default ConfigProvider.config(Slider, {
     exportNames: ['resize'],
     transform: (props, deprecated) => {
