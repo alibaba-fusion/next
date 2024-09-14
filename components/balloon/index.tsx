@@ -4,6 +4,16 @@ import Tooltip from './tooltip';
 import Inner from './inner';
 import { assignSubComponent } from '../util/component';
 
+export type {
+    BalloonProps,
+    BalloonV1Props,
+    BalloonV2Props,
+    TooltipProps,
+    TooltipV1Props,
+    TooltipV2Props,
+    AlignType,
+} from './types';
+
 const BalloonWithSub = assignSubComponent(Balloon, {
     Tooltip: ConfigProvider.config(Tooltip, {
         transform: (props, deprecated) => {
