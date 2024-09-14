@@ -47,6 +47,7 @@ export async function transform(code: string, jsx: 'transform' | 'preserve' = 't
         const result = await esbuildTransform(code, {
             format,
             loader: 'tsx',
+            target: 'es2018',
             jsx,
             tsconfigRaw: JSON.stringify({ compilerOptions: tsconfig.compilerOptions }),
         });
