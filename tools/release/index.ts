@@ -217,77 +217,77 @@ async function publishNpmForDocs(distTag = 'latest') {
 registryTask(__filename, 'release', async () => {
     // 暂时手动生成 changelog
     // await registryChangelog(__filename);
-    const { masterTag } = getVersion();
+    // const { masterTag } = getVersion();
 
-    await registryBuild(__filename);
+    // await registryBuild(__filename);
 
-    await registryCheck(__filename);
+    // await registryCheck(__filename);
 
-    await registryTask(__filename, 'release check', async () => {
-        await registryCheckSass(__filename);
-        await registryTask(__filename, 'check git tag', checkTags);
-        await registryTask(__filename, 'check build outputs', checkFiles);
-    });
-    await registryTask(__filename, 'publish to npm', async () => {
-        const { version } = getVersion();
-        const versionTag = version.match(/[a-z]+/)?.[0];
-        const distTag: string =
-            ARGV.tag ||
-            versionTag ||
-            (
-                await inquirer.prompt({
-                    name: 'tag',
-                    type: 'list',
-                    choices: ['latest', 'next', 'beta'],
-                    default: 0,
-                    message: 'publish dist-tags:',
-                })
-            ).tag;
-        await registryTask(__filename, 'publish next to npm', publishNpm.bind(undefined, distTag));
-        await registryTask(
-            __filename,
-            'publish next-docs to npm',
-            publishNpmForDocs.bind(undefined, distTag),
-            () => {
-                fs.removeSync(NEXT_DOCS_PATH);
-            }
-        );
-        await registryTask(__filename, 'tnpm sync', () => {
-            execSync('tnpm', ['sync', '@alifd/next', NEXT_DOCS_NAME]);
-        });
-    });
+    // await registryTask(__filename, 'release check', async () => {
+    //     await registryCheckSass(__filename);
+    //     await registryTask(__filename, 'check git tag', checkTags);
+    //     await registryTask(__filename, 'check build outputs', checkFiles);
+    // });
+    // await registryTask(__filename, 'publish to npm', async () => {
+    //     const { version } = getVersion();
+    //     const versionTag = version.match(/[a-z]+/)?.[0];
+    //     const distTag: string =
+    //         ARGV.tag ||
+    //         versionTag ||
+    //         (
+    //             await inquirer.prompt({
+    //                 name: 'tag',
+    //                 type: 'list',
+    //                 choices: ['latest', 'next', 'beta'],
+    //                 default: 0,
+    //                 message: 'publish dist-tags:',
+    //             })
+    //         ).tag;
+    //     await registryTask(__filename, 'publish next to npm', publishNpm.bind(undefined, distTag));
+    //     await registryTask(
+    //         __filename,
+    //         'publish next-docs to npm',
+    //         publishNpmForDocs.bind(undefined, distTag),
+    //         () => {
+    //             fs.removeSync(NEXT_DOCS_PATH);
+    //         }
+    //     );
+    //     await registryTask(__filename, 'tnpm sync', () => {
+    //         execSync('tnpm', ['sync', '@alifd/next', NEXT_DOCS_NAME]);
+    //     });
+    // });
 
-    const commitRollbackFns = new Set<() => unknown>();
-    await registryTask(
-        __filename,
-        'commit & tag',
-        async () => {
-            execSync('git', ['add', '.']);
-            commitRollbackFns.add(() => {
-                execSync('git', ['restore', '--staged', '.']);
-            });
-            execSync('git', ['commit', '-m', `chore(*): Release-${masterTag}`]);
-            commitRollbackFns.add(() => {
-                execSync('git', ['reset', '--mixed', 'HEAD^']);
-            });
-            execSync('git', ['tag', masterTag]);
-            commitRollbackFns.add(() => {
-                execSync('git', ['tag', '-d', masterTag]);
-            });
-        },
-        () => {
-            commitRollbackFns.forEach(f => f());
-        }
-    );
+    // const commitRollbackFns = new Set<() => unknown>();
+    // await registryTask(
+    //     __filename,
+    //     'commit & tag',
+    //     async () => {
+    //         execSync('git', ['add', '.']);
+    //         commitRollbackFns.add(() => {
+    //             execSync('git', ['restore', '--staged', '.']);
+    //         });
+    //         execSync('git', ['commit', '-m', `chore(*): Release-${masterTag}`]);
+    //         commitRollbackFns.add(() => {
+    //             execSync('git', ['reset', '--mixed', 'HEAD^']);
+    //         });
+    //         execSync('git', ['tag', masterTag]);
+    //         commitRollbackFns.add(() => {
+    //             execSync('git', ['tag', '-d', masterTag]);
+    //         });
+    //     },
+    //     () => {
+    //         commitRollbackFns.forEach(f => f());
+    //     }
+    // );
 
     await registryTask(__filename, 'push code', async () => {
-        execSync('git', ['fetch', REMOTE_NAME]);
-        await registryTask(
-            __filename,
-            `push to ${REMOTE_NAME}`,
-            pushOrigin.run,
-            pushOrigin.rollback
-        );
+        // execSync('git', ['fetch', REMOTE_NAME]);
+        // await registryTask(
+        //     __filename,
+        //     `push to ${REMOTE_NAME}`,
+        //     pushOrigin.run,
+        //     pushOrigin.rollback
+        // );
 
         await registryTask(
             __filename,

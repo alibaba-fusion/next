@@ -1,0 +1,119 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-thin.eot");
+  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-thin.eot?#iefix") format("embedded-opentype"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-thin.woff2") format("woff2"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-thin.woff") format("woff"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-thin.ttf") format("truetype");
+  font-weight: 200;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-light.eot");
+  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-light.eot?#iefix") format("embedded-opentype"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-light.woff2") format("woff2"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-light.woff") format("woff"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-regular.eot");
+  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-regular.eot?#iefix") format("embedded-opentype"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-regular.woff2") format("woff2"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-regular.woff") format("woff"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-medium.eot");
+  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-medium.eot?#iefix") format("embedded-opentype"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-medium.woff2") format("woff2"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-medium.woff") format("woff"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-bold.eot");
+  src: url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-bold.eot?#iefix") format("embedded-opentype"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-bold.woff2") format("woff2"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-bold.woff") format("woff"), url("//i.alicdn.com/artascope-font/20160419204543/font/roboto-bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+html {
+  font-size: 100%;
+}
+
+body {
+  font-family: Roboto, "Helvetica Neue", Helvetica, Tahoma, Arial, "PingFang SC", "Microsoft YaHei";
+  font-size: var(--font-size-body-1, 12px);
+  line-height: var(--font-lineheight-base, 1.2857142);
+  color: var(--color-text1-4, #333333);
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+  font-weight: inherit;
+}
+
+h1 {
+  margin-bottom: calc(var(--font-size-headline, 24px)*var(--typo-margin-bottom, 0.5));
+  font-size: var(--font-size-headline, 24px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: 36px;
+}
+
+h2 {
+  margin-bottom: calc(var(--font-size-title, 20px)*var(--typo-margin-bottom, 0.5));
+  font-size: var(--font-size-title, 20px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: 30px;
+}
+
+h3 {
+  margin-bottom: calc(var(--font-size-subhead, 16px)*var(--typo-margin-bottom, 0.5));
+  font-size: var(--font-size-subhead, 16px);
+  font-weight: var(--font-weight-2, normal);
+  line-height: 24px;
+}
+
+h4 {
+  margin-bottom: calc(var(--font-size-subhead, 16px)*var(--typo-margin-bottom, 0.5));
+  font-size: var(--font-size-subhead, 16px);
+  font-weight: var(--font-weight-2, normal);
+  line-height: 24px;
+}
+
+h5 {
+  margin-bottom: calc(var(--font-size-body-1, 12px)*var(--typo-margin-bottom, 0.5));
+  font-size: var(--font-size-body-2, 14px);
+  font-weight: var(--font-weight-2, normal);
+  line-height: 24px;
+}
+
+h6 {
+  margin-bottom: calc(var(--font-size-body-2, 14px)*var(--typo-margin-bottom, 0.5));
+  font-size: var(--font-size-body-1, 12px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: 20px;
+}
+
+p {
+  margin-bottom: calc(var(--font-size-body-1, 12px)*var(--typo-margin-bottom, 0.5));
+  font-size: var(--font-size-body-1, 12px);
+  font-weight: var(--font-weight-2, normal);
+  line-height: 20px;
+}
+
+strong {
+  font-weight: 500;
+}
+
+small {
+  font-size: 75%;
+}
