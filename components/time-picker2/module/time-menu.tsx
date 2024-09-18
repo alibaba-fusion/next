@@ -133,7 +133,11 @@ class TimeMenu extends React.Component {
         return (
             <div className={`${this.prefixCls}-menu`} ref={this._menuWrapperRefHandler}>
                 {/* {menuTitle} */}
-                <ul role="listbox" className={`${this.prefixCls}-menu-${mode}`} ref={this._menuRefHandler}>
+                <ul
+                    role="listbox"
+                    className={`${this.prefixCls}-menu-${mode}`}
+                    ref={this._menuRefHandler}
+                >
                     {this.createMenuItems(list)}
                 </ul>
             </div>

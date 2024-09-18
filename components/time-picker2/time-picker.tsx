@@ -304,7 +304,14 @@ class TimePicker2 extends Component {
         }
 
         const { value, inputStr, inputType, isRange } = this.state;
-        const { format, hourStep = 1, minuteStep = 1, secondStep = 1, disabledMinutes, disabledSeconds } = this.props;
+        const {
+            format,
+            hourStep = 1,
+            minuteStep = 1,
+            secondStep = 1,
+            disabledMinutes,
+            disabledSeconds,
+        } = this.props;
 
         let unit = 'second';
 
@@ -404,7 +411,9 @@ class TimePicker2 extends Component {
         const { inputType } = this.state;
         const { format, type, disabled } = this.props;
         const formatter = v => (typeof v === 'string' ? datejs(v, format) : v);
-        const formattedValue = Array.isArray(value) ? value.map(v => formatter(v)) : formatter(value);
+        const formattedValue = Array.isArray(value)
+            ? value.map(v => formatter(v))
+            : formatter(value);
 
         return type === TIME_PICKER_TYPE.RANGE
             ? checkRangeDate(formattedValue, inputType, disabled, strictly)
@@ -455,7 +464,13 @@ class TimePicker2 extends Component {
     handleChange = (v, eventType) => {
         const { format } = this.props;
         const { isRange, value, preValue } = this.state;
-        const forceEvents = ['KEYDOWN_ENTER', 'CLICK_PRESET', 'CLICK_OK', 'INPUT_CLEAR', 'VISIBLE_CHANGE'];
+        const forceEvents = [
+            'KEYDOWN_ENTER',
+            'CLICK_PRESET',
+            'CLICK_OK',
+            'INPUT_CLEAR',
+            'VISIBLE_CHANGE',
+        ];
         const isTemporary = isRange && !forceEvents.includes(eventType);
 
         // 面板收起时候，将值设置为确认值
@@ -482,9 +497,13 @@ class TimePicker2 extends Component {
                     // 2. 非 选择预设时间、面板收起、清空输入 操作
                     // 3. 不需要切换输入框
                     const shouldHidePanel =
-                        ['CLICK_PRESET', 'VISIBLE_CHANGE', 'KEYDOWN_ENTER', 'INPUT_CLEAR', 'CLICK_OK'].includes(
-                            eventType
-                        ) ||
+                        [
+                            'CLICK_PRESET',
+                            'VISIBLE_CHANGE',
+                            'KEYDOWN_ENTER',
+                            'INPUT_CLEAR',
+                            'CLICK_OK',
+                        ].includes(eventType) ||
                         (isRange && !this.shouldSwitchInput(v));
                     if (shouldHidePanel) {
                         this.onVisibleChange(false);
@@ -607,7 +626,8 @@ class TimePicker2 extends Component {
             ...others
         } = this.props;
 
-        const { value, inputStr, inputValue, curValue, inputing, visible, isRange, inputType } = this.state;
+        const { value, inputStr, inputValue, curValue, inputing, visible, isRange, inputType } =
+            this.state;
         const triggerCls = classnames({
             [`${this.prefixCls}-trigger`]: true,
         });

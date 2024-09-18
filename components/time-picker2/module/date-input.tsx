@@ -192,12 +192,15 @@ class DateInput extends React.Component {
             {
                 [`${prefixCls}-focus`]: focus,
                 [`${prefixCls}-noborder`]: !hasBorder,
-                [`${prefixCls}-disabled`]: isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled,
+                [`${prefixCls}-disabled`]:
+                    isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled,
                 [`${prefixCls}-error`]: state === 'error',
             }
         );
 
-        const calendarIcon = <Icon type="clock" className={`${this.prefixCls}-symbol-clock-icon`} />;
+        const calendarIcon = (
+            <Icon type="clock" className={`${this.prefixCls}-symbol-clock-icon`} />
+        );
 
         return (
             <div className={className}>

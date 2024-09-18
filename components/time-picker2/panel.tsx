@@ -157,15 +157,20 @@ class TimePickerPanel extends Component {
         const v1 = value[1];
 
         const hoursEqual = () => v0 && v1 && v0.hour() === v1.hour();
-        const minutesEqual = () => v0 && v1 && v0.hour() === v1.hour() && v0.minute() === v1.minute();
+        const minutesEqual = () =>
+            v0 && v1 && v0.hour() === v1.hour() && v0.minute() === v1.minute();
 
         disableds.newDisabledHours[0] = h => (v1 && h > v1.hour()) || dHours.indexOf(h) > -1;
-        disableds.newDisabledMinutes[0] = m => (v1 && (hoursEqual() && m > v1.minute())) || dMinutes.indexOf(m) > -1;
-        disableds.newDisabledSeconds[0] = s => (v1 && (minutesEqual() && s > v1.second())) || dSeconds.indexOf(s) > -1;
+        disableds.newDisabledMinutes[0] = m =>
+            (v1 && hoursEqual() && m > v1.minute()) || dMinutes.indexOf(m) > -1;
+        disableds.newDisabledSeconds[0] = s =>
+            (v1 && minutesEqual() && s > v1.second()) || dSeconds.indexOf(s) > -1;
 
         disableds.newDisabledHours[1] = h => (v0 && h < v0.hour()) || dHours.indexOf(h) > -1;
-        disableds.newDisabledMinutes[1] = m => (v0 && m < (hoursEqual() && v0.minute())) || dMinutes.indexOf(m) > -1;
-        disableds.newDisabledSeconds[1] = s => (v0 && (minutesEqual() && s < v0.second())) || dSeconds.indexOf(s) > -1;
+        disableds.newDisabledMinutes[1] = m =>
+            (v0 && m < (hoursEqual() && v0.minute())) || dMinutes.indexOf(m) > -1;
+        disableds.newDisabledSeconds[1] = s =>
+            (v0 && minutesEqual() && s < v0.second()) || dSeconds.indexOf(s) > -1;
 
         return disableds;
     };
@@ -217,7 +222,8 @@ class TimePickerPanel extends Component {
             renderTimeMenuItems,
         };
 
-        const { newDisabledHours, newDisabledMinutes, newDisabledSeconds } = this.getDisabledItems();
+        const { newDisabledHours, newDisabledMinutes, newDisabledSeconds } =
+            this.getDisabledItems();
 
         const generatePanel = index => (
             <React.Fragment>
@@ -229,7 +235,10 @@ class TimePickerPanel extends Component {
                         title={locale.hour}
                         mode="hour"
                         step={hourStep}
-                        onSelect={this.onSelectMenuItem.bind(this, `${index === 0 ? 'start' : 'end'}`)}
+                        onSelect={this.onSelectMenuItem.bind(
+                            this,
+                            `${index === 0 ? 'start' : 'end'}`
+                        )}
                         disabledItems={newDisabledHours[index]}
                     />
                 ) : null}
@@ -241,7 +250,10 @@ class TimePickerPanel extends Component {
                         title={locale.minute}
                         mode="minute"
                         step={minuteStep}
-                        onSelect={this.onSelectMenuItem.bind(this, `${index === 0 ? 'start' : 'end'}`)}
+                        onSelect={this.onSelectMenuItem.bind(
+                            this,
+                            `${index === 0 ? 'start' : 'end'}`
+                        )}
                         disabledItems={newDisabledMinutes[index]}
                     />
                 ) : null}
@@ -253,7 +265,10 @@ class TimePickerPanel extends Component {
                         title={locale.second}
                         step={secondStep}
                         mode="second"
-                        onSelect={this.onSelectMenuItem.bind(this, `${index === 0 ? 'start' : 'end'}`)}
+                        onSelect={this.onSelectMenuItem.bind(
+                            this,
+                            `${index === 0 ? 'start' : 'end'}`
+                        )}
                         disabledItems={newDisabledSeconds[index]}
                     />
                 ) : null}
@@ -262,7 +277,10 @@ class TimePickerPanel extends Component {
 
         const singlePanel = generatePanel(0);
 
-        const panelClassNames = classnames(`${this.prefixCls}-panel-col-${colLen}`, `${this.prefixCls}-panel-list`);
+        const panelClassNames = classnames(
+            `${this.prefixCls}-panel-col-${colLen}`,
+            `${this.prefixCls}-panel-list`
+        );
 
         const doublePanel = (
             <React.Fragment>
