@@ -53,7 +53,7 @@ function mapTimeToValue(name: string) {
     )[name];
 }
 
-function getFormatValues(values: RangePickerProps['value'] | null | undefined, format?: string) {
+function getFormatValues(values: RangePickerProps['value'] | null, format?: string) {
     if (!Array.isArray(values)) {
         return [null, null];
     }
@@ -152,7 +152,7 @@ class RangePicker extends Component<RangePickerProps, RangePickerState> {
         super(props);
         const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(
             props.format,
-            props.showTime!,
+            props.showTime,
             props.type
         );
 
@@ -209,10 +209,10 @@ class RangePicker extends Component<RangePickerProps, RangePickerState> {
     }
 
     onValueChange = (
-        values: [start?: Moment | null, end?: Moment | null],
+        values: (Moment | undefined | null)[],
         handler: 'onOk' | 'onChange' = 'onChange'
     ) => {
-        let ret: [start?: Moment | string | null, end?: Moment | string | null];
+        let ret: (Moment | string | undefined | null)[];
         if (!values.length || !this.state.inputAsString) {
             ret = values;
         } else {
@@ -583,7 +583,7 @@ class RangePicker extends Component<RangePickerProps, RangePickerState> {
         });
     };
 
-    onOk = (value?: [start?: Moment | null, end?: Moment | null]) => {
+    onOk = (value?: (Moment | null | undefined)[]) => {
         this.onVisibleChange(false, 'okBtnClick');
         this.onValueChange(value || [this.state.startValue, this.state.endValue], 'onOk');
     };
@@ -986,7 +986,7 @@ class RangePicker extends Component<RangePickerProps, RangePickerState> {
         }
 
         panelFooter = panelFooter || (
-            <PanelFooter
+            <PanelFooter<true>
                 prefix={prefix}
                 value={state.startValue || state.endValue}
                 ranges={Object.keys(ranges).map(key => ({
@@ -1008,7 +1008,7 @@ class RangePicker extends Component<RangePickerProps, RangePickerState> {
                 locale={locale}
                 panel={state.panel!}
                 onPanelChange={showTime ? this.changePanel : null}
-                onOk={this.onOk as PanelFooterProps['onOk']}
+                onOk={this.onOk}
             />
         );
 

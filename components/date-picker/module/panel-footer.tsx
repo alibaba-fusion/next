@@ -5,7 +5,9 @@ import { func } from '../../util';
 import { PANEL } from '../util';
 import type { PanelFooterProps } from '../types';
 
-class PanelFooter extends React.PureComponent<PanelFooterProps> {
+class PanelFooter<isRange extends boolean = false> extends React.PureComponent<
+    isRange extends true ? PanelFooterProps : Omit<PanelFooterProps, 'onOk'> & { onOk: () => void }
+> {
     static displayName = 'PanelFooter';
     static defaultProps = {
         onOk: func.noop,
