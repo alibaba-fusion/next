@@ -107,7 +107,7 @@ class DatePicker extends Component<DatePickerProps, DatePickerState> {
         super(props);
         const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(
             props.format,
-            props.showTime!
+            props.showTime
         );
 
         this.state = {
@@ -352,7 +352,7 @@ class DatePicker extends Component<DatePickerProps, DatePickerState> {
         });
     };
 
-    onOk = (value: undefined) => {
+    onOk = (value?: Moment | null) => {
         this.onVisibleChange(false, 'okBtnClick');
         this.onValueChange(value || this.state.value, 'onOk');
     };

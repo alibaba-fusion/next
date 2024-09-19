@@ -71,7 +71,6 @@ describe('DatePicker', () => {
 
         it('should hide seconds', () => {
             cy.mount(<DatePicker defaultVisible showTime={{ format: 'HH:mm' }} />);
-            // assert(!wrapper.find('.next-time-picker-menu-hour').length);
             cy.get('.next-time-picker-menu-hour').should('not.exist');
         });
 
@@ -143,7 +142,9 @@ describe('DatePicker', () => {
             cy.mount(
                 <DatePicker
                     onChange={val => {
-                        handleChange((val as Moment).format('YYYY-MM-DD HH:mm:ss'));
+                        handleChange(
+                            moment.isMoment(val) ? val.format('YYYY-MM-DD HH:mm:ss') : null
+                        );
                     }}
                     showTime
                     defaultVisible
@@ -152,8 +153,8 @@ describe('DatePicker', () => {
             cy.get('.next-date-picker-panel-input input').eq(0).type('2017-11-11');
             cy.get('.next-date-picker-panel-input input').eq(0).blur();
             cy.wrap(handleChange).should('be.calledWith', '2017-11-11 00:00:00');
-            cy.get('.next-date-picker-panel-input input').eq(1).clear();
-            cy.get('.next-date-picker-panel-input input').eq(1).type('11:11:11');
+            cy.get('.next-date-picker-panel-input input').eq(1).focus();
+            cy.get('.next-date-picker-panel-input input').eq(1).triggerInputChange('11:11:11');
             cy.get('.next-date-picker-panel-input input').eq(1).blur();
             cy.wrap(handleChange).should('be.calledWith', '2017-11-11 11:11:11');
         });
@@ -295,7 +296,7 @@ describe('DatePicker', () => {
                     showTime={{ format: 'HH:mm:ss' }}
                     defaultVisible
                     defaultValue={moment().hours(0).minutes(0).seconds(0)}
-                    popupProps={{ animation: false }}
+                    popupProps={{ animation: false, autoFocus: false }}
                 />
             );
 
@@ -326,10 +327,7 @@ describe('DatePicker', () => {
     describe('with date string', () => {
         it('should defaultValue as string', () => {
             cy.mount(<DatePicker defaultValue="2018-01-23" />);
-
-            // assert(wrapper.find('.next-date-picker-input input').instance().value === '2018-01-23');
             cy.get('.next-date-picker-input input').should('have.value', '2018-01-23');
-            // assert(wrapper.find('i.next-input-clear-icon').length === 1);
             cy.get('i.next-input-clear-icon').should('exist');
         });
 
@@ -341,7 +339,6 @@ describe('DatePicker', () => {
         });
 
         it('should set defaultValue as string for TimePicker', () => {
-            // const onChange = cy.spy();
             const handleChange = cy.spy();
             cy.mount(
                 <DatePicker
@@ -400,7 +397,6 @@ describe('YearPicker', () => {
 
         it('should set hasClear to false', () => {
             cy.mount(<YearPicker defaultValue={startYear} hasClear={false} />);
-            // assert(!wrapper.find('i.next-input-clear-icon').length);
             cy.get('i.next-input-clear-icon').should('not.exist');
         });
 
@@ -582,7 +578,6 @@ describe('MonthPicker', () => {
 
         it('should set hasClear to false', () => {
             cy.mount(<MonthPicker defaultValue={startMonth} hasClear={false} />);
-            // assert(!wrapper.find('i.next-input-clear-icon').length);
             cy.get('i.next-input-clear-icon').should('not.exist');
         });
 
@@ -672,7 +667,6 @@ describe('MonthPicker', () => {
         });
 
         it('should input disabled date in picker', () => {
-            // const onChange = cy.spy();
             const onChange = cy.spy();
             cy.mount(
                 <MonthPicker onChange={onChange} disabledDate={disabledDate} defaultVisible />
@@ -770,6 +764,7 @@ describe('WeekPicker', () => {
         it('should render with defaultValue', () => {
             cy.mount(<WeekPicker defaultValue={startWeek} />);
             cy.get('.next-week-picker-input input').should('have.value', '2018-2nd');
+            cy.get('i.next-input-clear-icon').should('exist');
         });
 
         it('should set hasClear to false', () => {
@@ -809,7 +804,6 @@ describe('WeekPicker', () => {
 
     describe('action', () => {
         it('should select', () => {
-            // const onChange = cy.spy();
             const onChange = cy.spy();
             cy.mount(
                 <WeekPicker
@@ -1263,7 +1257,6 @@ describe('RangePicker', () => {
 
             cy.get('.next-calendar-cell[title="2017-11-09"] .next-calendar-date').click();
             cy.get('.next-calendar-cell[title="2017-12-09"] .next-calendar-date').eq(1).click();
-            // assert(ret[1].format('YYYY-MM-DD HH:mm:ss') === '2017-12-09 09:00:00');
             cy.wrap(onChange).should('be.calledWith', [
                 '2017-11-09 09:00:00',
                 '2017-12-09 09:00:00',
@@ -1288,7 +1281,6 @@ describe('RangePicker', () => {
             );
             cy.get('.next-calendar-cell[title="2017-11-09"] .next-calendar-date').click();
             cy.get('.next-calendar-cell[title="2017-12-09"] .next-calendar-date').eq(1).click();
-            // assert(ret[1].format('YYYY-MM-DD HH:mm:ss') === '2017-12-09 23:59:59');
         });
 
         it('should resetTime', () => {
@@ -1551,6 +1543,7 @@ describe('RangePicker', () => {
                     ]}
                     popupProps={{
                         animation: false,
+                        autoFocus: false,
                     }}
                 />
             );
