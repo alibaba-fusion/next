@@ -25,101 +25,123 @@ Form layout, validation, data submission operations used.
 
 ### Form
 
-| Param | Descripiton  | Type  | Default Value |
-| ------------------ | ------------------------------------------- | ---------- | ------------ |
-| inline             | Inline form                                 | Boolean    | -           |
-| size               | Customization of a single Item's size takes precedence over Form's size, and when the component is used with Item, the component itself sets the size attribute to be invalid. <br><br>**option**:<br>'large'<br>'medium'<br>'small' | Enum     | 'medium'                                               |
-| fullWidth           | Set a single Item's is full width                                                                                                 | Boolean            | -     |
-| labelAlign     | To set the position align of label. If labelcol and wrappercol are not set, the value is 'top' by default<br><br>**option**:<br>'top'<br>'left'<br>'inset'  | Enum     | 'left'           |
-| labelTextAlign | To set the position align of text in label<br><br>**option**:<br>'left'<br>'right'                  | Enum     | -                   |
-| field          | By the initialization of `new Field(this)`, set to Form right. Do not ignore specify this, when use validation on form.             | any      | -             |
-| saveField      | save field which create by Form<br><br>**签名**:<br>Function() => void | Function | func.noop |
-| labelCol       | Controls the labelCol of the first-level Item     | Object   | -             |
-| wrapperCol     | Controls the wrapperCol of the first-level Item   | Object   | -             |
-| onSubmit       | Trigget when submit with `htmlType="submit"` in the form <br><br>**signatures**:<br>Function() => void                                                     | Function | function preventDefault(e) {     e.preventDefault(); } |
-| children       | Children components                | any      | -       |
-| value          | The value data of then form               | Object   | -    |
-| onChange       | Callback fuction trigget on form changed<br><br>**signatures**:<br>Function() => void | Function | func.noop |
-| component      | The html tag to be rendered | String   | 'form' |
-| responsive     | use ResponsiveGrid                                                                                                                                                                                                         | Boolean         | -                                                      |
+| Param                     | Description                                                                                                                                                                                                                                                                              | Type                                                                                                                         | Default Value                                        | Required | Supported Version |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | -------- | ----------------- |
+| inline                    | Inline                                                                                                                                                                                                                                                                                   | boolean                                                                                                                      | -                                                    |          | -                 |
+| size                      | When an Item within a Form has a specific size configuration, that customization overrides the general size setting of the Form. Additionally, if a component is integrated with an Item, the component's individual size property does not apply                                        | 'large' \| 'medium' \| 'small'                                                                                               | medium                                               |          | -                 |
+| fullWidth                 | Is the width of form                                                                                                                                                                                                                                                                     | boolean                                                                                                                      | -                                                    |          | -                 |
+| labelAlign                | The position of the label, if labelCol and wrapperCol are not set, defaults to having the label positioned above.                                                                                                                                                                        | 'top' \| 'left' \| 'inset'                                                                                                   | left                                                 |          | -                 |
+| labelTextAlign            | The alignment of the label on the left and right                                                                                                                                                                                                                                         | 'left' \| 'right'                                                                                                            | -                                                    |          | -                 |
+| field                     | Field instance, pass false to disable                                                                                                                                                                                                                                                    | false \| NextField \| null                                                                                                   | -                                                    |          | -                 |
+| saveField                 | Save the Form automatically generated field object                                                                                                                                                                                                                                       | (field?: NextField \| null) => void                                                                                          | func.noop                                            |          | -                 |
+| labelCol                  | Control the labelCol of the first level Item                                                                                                                                                                                                                                             | ColProps                                                                                                                     | -                                                    |          | -                 |
+| wrapperCol                | Control the wrapperCol of the first level Item                                                                                                                                                                                                                                           | ColProps                                                                                                                     | -                                                    |          | -                 |
+| onSubmit                  | Triggered when there is an element with `htmlType="submit"` in the form                                                                                                                                                                                                                  | FormEventHandler\<HTMLFormElement>                                                                                           | function preventDefault(e) \{ e.preventDefault(); \} |          | -                 |
+| children                  | Child elements                                                                                                                                                                                                                                                                           | ReactNode                                                                                                                    | -                                                    |          | -                 |
+| value                     | Form value                                                                                                                                                                                                                                                                               | FieldValues                                                                                                                  | -                                                    |          | -                 |
+| onChange                  | Form change callback<br/><br/>**signature**:<br/>**params**:<br/>_values_: Form values<br/>_item_: Form item, item.name: The name of the component that changed, item.value: The new data of the changed component, item.field: The field instance associated with the changed component | (<br/> values: FieldValues \| undefined,<br/> item: { name: string; value: string; field: NextField \| null }<br/> ) => void | func.noop                                            |          | -                 |
+| component                 | Set the tag type                                                                                                                                                                                                                                                                         | ElementType                                                                                                                  | 'form'                                               |          | -                 |
+| fieldOptions              | -                                                                                                                                                                                                                                                                                        | FieldOption                                                                                                                  | -                                                    |          | -                 |
+| device                    | Preset screen width                                                                                                                                                                                                                                                                      | 'desktop' \| 'phone' \| 'tablet'                                                                                             | 'desktop'                                            |          | -                 |
+| responsive                | Whether to enable the built                                                                                                                                                                                                                                                              | boolean                                                                                                                      | -                                                    |          | 1.19              |
+| isPreview                 | Whether to enable preview                                                                                                                                                                                                                                                                | boolean                                                                                                                      | -                                                    |          | 1.19              |
+| useLabelForErrorMessage   | Whether to use the label to replace the name of the error message                                                                                                                                                                                                                        | boolean                                                                                                                      | -                                                    |          | 1.20              |
+| preferMarginToDisplayHelp | Prefer to display help with margin                                                                                                                                                                                                                                                       | boolean                                                                                                                      | false                                                |          | 1.26.37           |
+| colon                     | Indicates whether to display a colon after the label                                                                                                                                                                                                                                     | boolean                                                                                                                      | false                                                |          | 1.22              |
+| disabled                  | Whether to disable                                                                                                                                                                                                                                                                       | boolean                                                                                                                      | false                                                |          | -                 |
 
 ### Form.Item
 
-> Passing the wrapCol labelCol will use the Grid auxiliary layout; `labelAlign = 'top'` will force the Grid to be disabled
+手动传递了 wrapCol labelCol 会使用 Grid 辅助布局; labelAlign='top' 会强制禁用 Grid
 
-| Param | Descripiton  | Type  | Default Value |
-| ------------------ | ------------------------------------------- | --------- | ----- |
-| label          | To set the label of item                                        | ReactNode | -     |
-| size           | Customization of Item's own size takes precedence over Form's size. when Form and Item both set the size, the component itself sets the size attribute to be invalid。<br><br>**option**:<br>'large', 'small', 'medium' | Enum      | -     |
-| fullWidth           |  Set Input item is full width                                                                                                 | Boolean            | -     |
-| labelCol       | To set label's layout same as `<Col>` setting the span offset, such as {span:8,offset:16}. It only valid in vertical forms.      | Object    | -     |
-| wrapperCol     | When you need to set the layout style for the input control, use this property, use the same with the labelCol                            | Object    | -     |
-| help           | Custom prompt information, if not set, it will be automatically generated according to the check rule.                                       | ReactNode | -     |
-| validateState  | Set the validation state, if not set, it will be automatically generated according to the check rule<br><br>**option**:<br>'error'<br>'success'<br>'loading'             | Enum      | -     |
-| hasFeedback    | Used with the validateState property, whether to display the success/loading check status icon. Currently only Input support                                                  | Boolean   | false |
-| extra          | Additional prompt information, similar to help, can be used when error messages and prompts are required to appear at the same time. Behind the error message                                                                       | ReactNode | -     |
-| labelAlign     | Position align of label. If labelcol and wrappercol are not set, the value is 'top' by default<br><br>**option**:<br>'top'<br>'left'<br>'inset'                                                     | Enum      | -     |
-| labelTextAlign | Position align of label's text<br><br>**option**:<br>'left'<br>'right'                                                       | Enum      | -     |
-| required | [validation] cannot be empty | Boolean | - |
-| asterisk | required asterisk is displayed | Boolean | true |
-| requiredMessage | required custom error message | String | - |
-| requiredTrigger | required Custom Trigger | String/Array | - |
-| min | [validation] Minimum | Number | - |
-| minMessage | custom error message for `min`| String | - |
-| minTrigger | Custom trigger mode for `min` | String/Array | - |
-| max | [validation] Maximum | Number | - |
-| maxMessage | custom error message for `max` | String | - |
-| maxTrigger | Custom Trigger for `max` | String/Array | - |
-| minLength | [validation] Minimum string length / Minimum number of arrays | Number | - |
-| minLengthMessage | custom error message for `minLength`| String | - |
-| minLengthTrigger | Custom Trigger for `minLength` | String/Array | - |
-| maxLength | [validation] Max Length of String/Maximum Number of Arrays | Number | - |
-| maxLengthMessage | custom error message for `maxLength` | String | - |
-| maxLengthTrigger | Custom Trigger for `maxLength` | String/Array | - |
-| length | [validation] exact length of string / exact number of arrays | Number | - |
-| lengthMessage | custom error message for `length` | String | - |
-| lengthTrigger | custom trigger method for `length` | String/Array | - |
-| pattern | custom pattern yourself | pattern | -     |
-| format | [validation] four common patterns<br><br>**optional values**:<br>'number', 'email', 'url', 'tel' | Enum | - |
-| formatMessage | custom error message for `format` | String | - |
-| formatTrigger | custom trigger mode for `format` | String/Array | - |
-| validator | [validation] custom validation function <br><br> **signature **:<br>Function() => void | Function | - |
-| autoValidate | validate while value changed | Boolean            | -     |
-| colSpan             | when responsive，how many columns it takes                                                                                                       | Number             | -     |
-| labelWidth          | when responsiv and label is left, what's the label's width                                                                                          | String/Number      | -     |
+Manual passing of wrapCol labelCol will use Grid auxiliary layout; labelAlign='top' will force disable Grid
 
-
-### Form.Reset
-
-> Inherit the Button API
-
-| Param | Descripiton  | Type  | Default Value |
-| --------- | -------------------------------------------- | -------- | --------- |
-| names     | Specify the reset field                                     | Array    | -         |
-| onClick   | Callback function trigget after click Reset-Button<br><br>**signatures**:<br>Function() => void | Function | func.noop |
-| toDefault | Reset to default value                                        | Boolean  | -         |
-| field     | Specify field (No need in Form )                    | Object   | -         |
+| Param                     | Description                                                                                                                                                  | Type                                           | Default Value | Required | Supported Version |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------- | ------------- | -------- | ----------------- |
+| labelCol                  | Label label layout, same as `<Col>` component, set span offset value, like \{span: 8, offset: 16\}, only works in vertical forms                             | ColProps                                       | -             |          | -                 |
+| wrapperCol                | Customized layout for input controls, usage same as labelCol                                                                                                 | ColProps                                       | -             |          | -                 |
+| help                      | Customized prompt information, if not set, will be automatically generated according to the validation rules                                                 | ReactNode                                      | -             |          | -                 |
+| name                      | Field name, default assigned to the first child                                                                                                              | string                                         | -             |          | -                 |
+| extra                     | Extra prompt information, similar to help, when both error information and prompt text are required, use this                                                | ReactNode                                      | -             |          | -                 |
+| validateState             | Validate state, if not set, will be automatically generated according to the validation rules                                                                | 'error' \| 'success' \| 'loading' \| 'warning' | -             |          | -                 |
+| hasFeedback               | Used with validateState property, whether to display the success/loading icon of the success/loading state, currently only the Input component supports this | boolean                                        | false         |          | -                 |
+| children                  | Node or function(values)                                                                                                                                     | ReactNode \| ((values: FieldValues) => void)   | -             |          | -                 |
+| fullWidth                 | Whether the form component width of the single Item is 100%                                                                                                  | boolean                                        | -             |          | -                 |
+| labelAlign                | Label position, if not set labelCol and wrapperCol, the default is label on top                                                                              | 'top' \| 'left' \| 'inset'                     | -             |          | -                 |
+| labelTextAlign            | Label left right alignment                                                                                                                                   | 'left' \| 'right'                              | -             |          | -                 |
+| required                  | [Form Validation] Cannot be empty                                                                                                                            | boolean                                        | -             |          | -                 |
+| asterisk                  | Whether to display the star of required                                                                                                                      | boolean                                        | -             |          | -                 |
+| requiredMessage           | Required custom error information                                                                                                                            | string                                         | -             |          | -                 |
+| requiredTrigger           | Required custom trigger mode, the default value is onChange, native events can also use onChange/onBlur/onFocus/...                                          | string \| Array\<string>                       | -             |          | -                 |
+| min                       | [Form Validation] Minimum value                                                                                                                              | number                                         | -             |          | -                 |
+| max                       | [Form Validation] Maximum value                                                                                                                              | number                                         | -             |          | -                 |
+| minmaxMessage             | Min/max custom error information                                                                                                                             | string                                         | -             |          | -                 |
+| minmaxTrigger             | Min/max custom trigger mode                                                                                                                                  | string \| Array\<string>                       | -             |          | -                 |
+| minLength                 | [Form Validation] String minimum length / Array minimum number                                                                                               | number                                         | -             |          | -                 |
+| maxLength                 | [Form Validation] String maximum length / Array maximum number                                                                                               | number                                         | -             |          | -                 |
+| minmaxLengthMessage       | MinLength/maxLength custom error information                                                                                                                 | string                                         | -             |          | -                 |
+| minmaxLengthTrigger       | MinLength/maxLength custom trigger mode                                                                                                                      | string \| Array\<string>                       | -             |          | -                 |
+| length                    | [Form Validation] String exact length / Array exact number                                                                                                   | number                                         | -             |          | -                 |
+| lengthMessage             | Length custom error information                                                                                                                              | string                                         | -             |          | -                 |
+| lengthTrigger             | Length custom trigger mode                                                                                                                                   | string \| Array\<string>                       | -             |          | -                 |
+| pattern                   | Regular expression                                                                                                                                           | unknown                                        | -             |          | -                 |
+| patternMessage            | Pattern custom error information                                                                                                                             | string                                         | -             |          | -                 |
+| patternTrigger            | Pattern validate when triggered, the default value is onChange, native events can also use onChange/onBlur/onFocus/...                                       | string \| Array\<string>                       | -             |          | -                 |
+| format                    | [Form Validation] four common patterns                                                                                                                       | 'number' \| 'email' \| 'url' \| 'tel'          | -             |          | -                 |
+| formatMessage             | Format custom error information                                                                                                                              | string                                         | -             |          | -                 |
+| formatTrigger             | Format validate when triggered, the default value is onChange, native events can also use onChange/onBlur/onFocus/...                                        | string \| Array\<string>                       | -             |          | -                 |
+| validator                 | Custom validation function                                                                                                                                   | Validator                                      | -             |          | -                 |
+| validatorTrigger          | Validator custom trigger mode, the default value is onChange, native events can also use onChange/onBlur/onFocus/...                                         | string \| Array\<string>                       | -             |          | -                 |
+| autoValidate              | Whether to automatically trigger validation when data is modified                                                                                            | boolean                                        | -             |          | -                 |
+| device                    | Preset screen width                                                                                                                                          | 'desktop' \| 'phone' \| 'tablet'               | -             |          | -                 |
+| colSpan                   | In response layout mode, how many columns does the form item occupy                                                                                          | number                                         | -             |          | -                 |
+| labelWidth                | In response layout mode, and the label is on the left, how wide is the label                                                                                 | number \| string                               | 100           |          | -                 |
+| isPreview                 | Whether to open preview                                                                                                                                      | boolean                                        | -             |          | -                 |
+| renderPreview             | Preview mode rendering content<br/><br/>**signature**:<br/>**params**:<br/>_value_: Based on the value type of the wrapped component                         | (values: unknown) => unknown                   | -             |          | -                 |
+| errorMessageName          | Replacement of the name field of the check information, useLabelForErrorMessage is enabled when the label priority is higher                                 | string                                         | -             |          | -                 |
+| useLabelForErrorMessage   | Whether to use label to replace the name field of the check information                                                                                      | boolean                                        | -             |          | -                 |
+| preferMarginToDisplayHelp | Prefer margin space to display help                                                                                                                          | boolean                                        | false         |          | 1.26.37           |
+| colon                     | Indicates whether to display the colon after the label                                                                                                       | boolean                                        | -             |          | -                 |
+| disabled                  | Is the form disabled                                                                                                                                         | boolean                                        | -             |          | -                 |
+| valueName                 | Child element value name                                                                                                                                     | string                                         | -             |          | -                 |
+| type                      | -                                                                                                                                                            | string                                         | -             |          | -                 |
 
 ### Form.Submit
 
-> Inherit the Button API
+继承 Button API
 
-| Param | Descripiton  | Type  | Default Value |
-| -------- | -------------------------------------------- | ------------- | --------- |
-| onClick  | Callback function trigget after click Submit-Button <br><br>**signatures**:<br>Function(value: Object, errors: Object) => void<br>**params**:<br>_value_: {Object} values<br>_errors_: {Object} errors<br>_field_: {class} Field instance | Function      | func.noop |
-| validate | Specify the field, whitch need validate.            | Boolean/Array | -         |
-| field    | Specify field (No need in Form )                    | Object        | -         |
+Inherit Button API
+
+| Param    | Description                                                                                                                               | Type                                                           | Default Value | Required |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ------------- | -------- |
+| onClick  | Triggered after clicking submit<br/><br/>**signature**:<br/>**params**:<br/>_value_: Data<br/>_errors_: Errors data<br/>_field_: Instance | (value?: unknown, errors?: unknown, field?: NextField) => void | func.noop     |          |
+| validate | Is the name array of the check/need to check                                                                                              | boolean \| Array\<string>                                      | -             |          |
+| field    | Custom field (in Forms, you do not need to set)                                                                                           | NextField                                                      | -             |          |
+
+### Form.Reset
+
+继承 Button API
+
+Inherit Button API
+
+| Param     | Description                                     | Type           | Default Value | Required |
+| --------- | ----------------------------------------------- | -------------- | ------------- | -------- |
+| names     | Custom reset field                              | Array\<string> | -             |          |
+| onClick   | Triggered after clicking submit                 | () => void     | func.noop     |          |
+| toDefault | Return default value                            | boolean        | -             |          |
+| field     | Custom field (in Forms, you do not need to set) | NextField      | -             |          |
 
 ### Form.Error
 
-> custom error message
+自定义错误展示
 
-| Param | Descripiton  | Type  | Default Value |
-| -------- | ------------------------- | ------------------ | --- |
-| name     | Specify the reset field                         | String/Array       | -   |
-| field    | Specify field (No need in Form )   | Object             | -   |
-| children | can be a ReactNode or a function(errors, state)                   | ReactNode/Function | -   |
+Custom error display
 
+| Param    | Description                                                      | Type                                                                  | Default Value | Required |
+| -------- | ---------------------------------------------------------------- | --------------------------------------------------------------------- | ------------- | -------- |
+| name     | Form name                                                        | string \| Array\<string>                                              | -             |          |
+| field    | Custom field (in Forms, you do not need to set)                  | NextField                                                             | -             |          |
+| children | Custom error rendering, can be a node or function(errors, state) | ReactNode \| ((errors: errorsGroup, state?: FieldState) => ReactNode) | -             |          |
 
 ## About Validation
 

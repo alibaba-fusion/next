@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Field, Input, Radio, Switch } from '@alifd/next';
 
-function handleSubmit(v) {
+function handleSubmit(v: unknown) {
     console.log(v);
 }
 
@@ -16,8 +16,10 @@ const App = () => {
         autoUnmount: false,
         values: { inline: false, labelAlign: 'left' },
     });
-    const inline = field.getValue('inline');
-    const labelAlign = inline ? 'left' : field.getValue('labelAlign');
+    const inline: boolean | undefined = field.getValue('inline');
+    const labelAlign: 'left' | 'top' | 'inset' | undefined = inline
+        ? 'left'
+        : field.getValue('labelAlign');
     const layout = inline ? {} : formItemLayout;
 
     return (

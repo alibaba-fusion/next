@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { type FormEvent, Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input } from '@alifd/next';
 
 const FormItem = Form.Item;
 
-class Demo extends React.Component {
-    onSubmit(e) {
+class Demo extends Component {
+    onSubmit(e: FormEvent) {
         e.preventDefault(); // form will auto submit if remove this line
         console.log('onsubmit');
     }

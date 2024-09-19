@@ -1,17 +1,14 @@
-import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import sinon from 'sinon';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
+import React, { type ReactNode } from 'react';
+
 import Input from '../../input';
 import Field from '../../field';
 import Select from '../../select';
 import Radio from '../../radio';
 import Checkbox from '../../checkbox';
 import Form from '../index';
+import '../style';
 
 const FormItem = Form.Item;
-Enzyme.configure({ adapter: new Adapter() });
 
 const formItemLayout = {
     labelCol: {
@@ -25,12 +22,18 @@ const formItemLayout = {
 describe('form', () => {
     describe('render', () => {
         it('Form ', () => {
-            const wrapper = mount(<Form labelAlign="top" />);
-            assert(wrapper.props().labelAlign === 'top');
+            cy.mount(
+                <Form labelAlign="top">
+                    <FormItem>
+                        <Input />
+                    </FormItem>
+                </Form>
+            );
+            cy.get('.next-form-item').should('exist');
         });
 
         it('FormItem', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Form>
                     <FormItem>
                         <Input />
@@ -41,11 +44,11 @@ describe('form', () => {
                     <FormItem>test</FormItem>
                 </Form>
             );
-            assert(wrapper.props().children.length === 3);
+            cy.get('.next-form-item').should('have.length', 3);
         });
 
         it('FormItem fullwidth', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Form>
                     <FormItem>
                         <Input />
@@ -56,12 +59,15 @@ describe('form', () => {
                     <FormItem>test</FormItem>
                 </Form>
             );
-            assert(wrapper.find('.next-form-item-fullwidth').exists());
+            cy.get('.next-form-item-fullwidth').should('exist');
         });
 
         it('should supoort Field', () => {
-            class Demo extends React.Component {
-                constructor(props) {
+            interface AppProps {}
+            class Demo extends React.Component<AppProps> {
+                field: Field;
+
+                constructor(props: AppProps) {
                     super(props);
                     this.field = new Field(this);
                 }
@@ -83,18 +89,18 @@ describe('form', () => {
                 }
             }
 
-            const wrapper = mount(<Demo />);
-            wrapper.find('input#input2').simulate('change', { target: { value: '' } });
-            assert(
-                wrapper
-                    .find('.next-form-item-help')
-                    .hostNodes()
-                    .text() === 'cant be null'
-            );
+            cy.mount(<Demo />);
+            cy.get('input#input2').type('123');
+            cy.get('input#input2').clear();
+            cy.get('.next-form-item-help').should('have.text', 'cant be null');
         });
+
         it('should supoort Field With name on FormItem', () => {
-            class Demo extends React.Component {
-                constructor(props) {
+            interface DemoProps {}
+            class Demo extends React.Component<DemoProps> {
+                field: Field;
+
+                constructor(props: DemoProps) {
                     super(props);
                     this.field = new Field(this);
                 }
@@ -116,19 +122,15 @@ describe('form', () => {
                 }
             }
 
-            const wrapper = mount(<Demo />);
-            wrapper.find('input#input2').simulate('change', { target: { value: '' } });
-            assert(
-                wrapper
-                    .find('.next-form-item-help')
-                    .hostNodes()
-                    .text() === 'cant be null'
-            );
+            cy.mount(<Demo />);
+            cy.get('input#input2').type('123');
+            cy.get('input#input2').clear();
+            cy.get('.next-form-item-help').should('have.text', 'cant be null');
         });
     });
     describe('Form', () => {
         it('should supoort labelAlign', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Form labelAlign="inset">
                     <FormItem {...formItemLayout} label="test">
                         <Input />
@@ -136,89 +138,124 @@ describe('form', () => {
                     <Form.Submit>submit</Form.Submit>
                 </Form>
             );
-            assert(wrapper.find('.next-inset').length !== 0);
-            wrapper.find('form').simulate('submit');
+            cy.get('.next-inset').should('exist');
         });
-        it('should supoort onSubmit', done => {
-            const onSubmit = sinon.spy();
-            const wrapper = mount(
-                <Form onSubmit={onSubmit}>
+
+        it('should supoort onSubmit', () => {
+            const onSubmit = cy.spy().as('onSubmit');
+            cy.mount(
+                <Form
+                    onSubmit={event => {
+                        onSubmit();
+                        event.preventDefault();
+                    }}
+                >
                     <Input name="input" />
                     <button type="submit">submit</button>
                 </Form>
             );
-            wrapper.find('form').simulate('submit');
-            assert(onSubmit.calledOnce);
-            done();
+            cy.get('form').submit();
+            cy.get('@onSubmit').should('be.calledOnce');
         });
-        it('should deprecated direction', () => {
-            const wrapper1 = mount(<Form />);
-            const wrapper2 = mount(<Form direction={'hoz'} />);
 
-            assert(!wrapper1.instance()._instance.props.inline);
-            assert(wrapper2.instance()._instance.props.inline);
+        it('should deprecated direction', () => {
+            cy.mount(
+                <Form>
+                    <FormItem label="test">
+                        <Input />
+                    </FormItem>
+                </Form>
+            );
+            cy.get('form').should('not.have.class', 'next-inline');
+            cy.mount(
+                <Form direction="hoz">
+                    <FormItem label="test">
+                        <Input />
+                    </FormItem>
+                </Form>
+            );
+
+            cy.get('form').should('have.class', 'next-inline');
         });
     });
     describe('FormItem', () => {
         it('should supoort props', () => {
-            const wrapper = mount(
+            const onClick = cy.spy().as('onClick');
+
+            cy.mount(
                 <Form>
-                    <FormItem onClick={() => {}}>
+                    <FormItem onClick={onClick}>
                         <Input />
                     </FormItem>
                 </Form>
             );
-            assert(typeof wrapper.find('.next-form-item').props().onClick === 'function');
+            cy.get('.next-form-item').should('exist');
+            cy.get('.next-form-item').click();
+            cy.get('@onClick').should('be.calledOnce');
         });
 
         it('should supoort component', () => {
-            let wrapper = mount(
+            cy.mount(
                 <Form component="div">
                     <FormItem required type="email" format="email" label="email:" help="help msg">
                         <Input name="email" />
                     </FormItem>
                 </Form>
             );
-            assert(wrapper.find('div.next-form'));
+            cy.get('div.next-form').should('exist');
 
-            const Tag = props => {
+            const Tag = (props: { children: ReactNode }) => {
                 return <div className="func-tag">{props.children}</div>;
             };
-            wrapper = mount(
+            cy.mount(
                 <Form component={Tag}>
                     <FormItem required type="email" format="email" label="email:" help="help msg">
                         <Input name="email" />
                     </FormItem>
                 </Form>
             );
-            assert(wrapper.find('div.func-tag'));
+            cy.get('div.func-tag').should('exist');
         });
 
         it('should supoort component with name on FormItem', () => {
-            let wrapper = mount(
+            cy.mount(
                 <Form component="div">
-                    <FormItem name="email" required type="email" format="email" label="email:" help="help msg">
+                    <FormItem
+                        name="email"
+                        required
+                        type="email"
+                        format="email"
+                        label="email:"
+                        help="help msg"
+                    >
                         <Input />
                     </FormItem>
                 </Form>
             );
-            assert(wrapper.find('div.next-form'));
+            cy.get('div.next-form').should('exist');
 
-            const Tag = props => {
+            const Tag = (props: { children: ReactNode }) => {
                 return <div className="func-tag">{props.children}</div>;
             };
-            wrapper = mount(
+            cy.mount(
                 <Form component={Tag}>
-                    <FormItem name="email" required type="email" format="email" label="email:" help="help msg">
+                    <FormItem
+                        name="email"
+                        required
+                        type="email"
+                        format="email"
+                        label="email:"
+                        help="help msg"
+                    >
                         <Input />
                     </FormItem>
                 </Form>
             );
-            assert(wrapper.find('div.func-tag'));
+            cy.get('div.func-tag').should('exist');
         });
 
         it('should supoort wrapperCol & labelCol', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Form>
                     <FormItem {...formItemLayout} label="email:">
                         <Input />
@@ -226,11 +263,11 @@ describe('form', () => {
                 </Form>
             );
 
-            assert(wrapper.find('div.next-form-item-label').hasClass('next-col-6'));
+            cy.get('div.next-form-item-label').eq(0).should('have.class', 'next-col-6');
         });
 
         it('should supoort help', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Form>
                     <FormItem required type="email" format="email" label="email:" help="help msg">
                         <Input name="email" />
@@ -238,11 +275,11 @@ describe('form', () => {
                 </Form>
             );
 
-            assert(wrapper.find('.next-form-item-help').text() === 'help msg');
+            cy.get('.next-form-item-help').should('have.text', 'help msg');
         });
 
         it('should supoort validateState', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Form>
                     <FormItem validateState="success" hasFeedback>
                         <Input />
@@ -253,16 +290,11 @@ describe('form', () => {
                 </Form>
             );
 
-            assert(
-                wrapper
-                    .find('.next-form-item')
-                    .first()
-                    .hasClass('has-success')
-            );
+            cy.get('.next-form-item').eq(0).should('have.class', 'has-success');
         });
 
         it('should supoort responsive', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Form responsive>
                     <FormItem colSpan={6} labelWidth={80}>
                         <Input />
@@ -273,30 +305,37 @@ describe('form', () => {
                 </Form>
             );
 
-            assert(wrapper.find('.next-responsive-grid'));
-            assert(wrapper.find('.next-form-responsive-grid'));
+            cy.get('.next-responsive-grid').should('exist');
+            cy.get('.next-form-responsive-grid').should('exist');
         });
 
         it('enabled responsive form should maintain alignment between label and input', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Form responsive>
                     <FormItem colSpan={4} labelWidth={80} label="test">
                         <Input />
                     </FormItem>
-                </Form>,
-                { attachTo: document.body }
+                </Form>
             );
-            const labelElement = wrapper.find('.next-form-item-label').getDOMNode();
-            const contentElement = wrapper.find('.next-form-item-control').getDOMNode();
-            const labelFontSize = parseInt(window.getComputedStyle(labelElement).fontSize);
-            const labelBorderAndPadding = parseInt(window.getComputedStyle(labelElement).paddingTop) + parseInt(window.getComputedStyle(labelElement).paddingBottom) + parseInt(window.getComputedStyle(labelElement).borderTopWidth) + parseInt(window.getComputedStyle(labelElement).borderBottomWidth);
-            const labelTextTopSpace = (labelElement.offsetHeight - labelFontSize - labelBorderAndPadding) / 2;
-            const isVerticallyAligned = labelTextTopSpace + labelFontSize / 2 === contentElement.offsetHeight / 2;
-            assert(isVerticallyAligned);
+            cy.get('.next-form-item-label').then(labelElement => {
+                const labelFontSize = parseInt(window.getComputedStyle(labelElement[0]).fontSize);
+                const labelBorderAndPadding =
+                    parseInt(window.getComputedStyle(labelElement[0]).paddingTop) +
+                    parseInt(window.getComputedStyle(labelElement[0]).paddingBottom) +
+                    parseInt(window.getComputedStyle(labelElement[0]).borderTopWidth) +
+                    parseInt(window.getComputedStyle(labelElement[0]).borderBottomWidth);
+                const labelTextTopSpace =
+                    (labelElement[0].clientHeight - labelFontSize - labelBorderAndPadding) / 2;
+
+                const contentElement = window.document.querySelector('.next-form-item-control');
+                const isVerticallyAligned =
+                    labelTextTopSpace + labelFontSize / 2 === contentElement!.clientHeight / 2;
+                expect(isVerticallyAligned).to.be.true;
+            });
         });
 
         it('should supoort responsive with react fragment', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Form responsive>
                     <FormItem colSpan={4} labelWidth={80}>
                         <Input />
@@ -315,12 +354,12 @@ describe('form', () => {
                 </Form>
             );
 
-            assert(wrapper.find('.next-responsive-grid'));
-            assert(wrapper.find('.next-form-responsive-grid'));
+            cy.get('.next-responsive-grid').should('exist');
+            cy.get('.next-form-responsive-grid').should('exist');
         });
 
         it('should supoort required', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Form>
                     <FormItem required label="test">
                         <Input />
@@ -328,18 +367,19 @@ describe('form', () => {
                 </Form>
             );
 
-            assert(wrapper.find('.next-form-item-label label').prop('required'));
+            cy.get('.next-form-item-label label').should('have.attr', 'required');
         });
+
         it('should supoort ref', () => {
-            const saveRef = sinon.spy();
-            const wrapper = mount(
+            const saveRef = cy.spy().as('saveRef');
+            cy.mount(
                 <Form>
                     <FormItem required label="test">
                         <Input name="testref" ref={saveRef} />
                     </FormItem>
                 </Form>
             );
-            assert(saveRef.calledOnce);
+            cy.get('@saveRef').should('be.calledOnce');
         });
 
         it('should supoort defaultvalue', () => {
@@ -347,22 +387,22 @@ describe('form', () => {
                 'checkbox-1': true,
                 'radio-1': true,
             };
-            const wrapper = mount(
+            cy.mount(
                 <Form value={value}>
                     <FormItem label="不支持购物车下单:">
-                        <Checkbox name="checkbox-1">（商品标签[6658]）</Checkbox>
+                        <Checkbox name="checkbox-1">（商品标签 [6658]）</Checkbox>
                     </FormItem>
                     <FormItem label="不支持购物车下单:">
-                        <Radio name="radio-1">（商品标签[6658]）</Radio>
+                        <Radio name="radio-1">（商品标签 [6658]）</Radio>
                     </FormItem>
                 </Form>
             );
-            assert(wrapper.find('input#checkbox-1').props().checked);
-            assert(wrapper.find('input#radio-1').props().checked);
+            cy.get('input#checkbox-1').should('be.checked');
+            cy.get('input#radio-1').should('be.checked');
         });
 
         it('should supoort function children', () => {
-            const wrapper = mount(
+            cy.mount(
                 <Form>
                     <FormItem required label="test">
                         <Input name="name" defaultValue="frank" />
@@ -379,12 +419,15 @@ describe('form', () => {
                 </Form>
             );
 
-            assert(wrapper.find('input[id="unknow"]').length === 0);
-            assert(wrapper.find('input[id="frank"]').prop('value') === 'frankqian');
+            cy.get('input[id="unknow"]').should('not.exist');
+            cy.get('input[id="frank"]').should('have.value', 'frankqian');
 
-            wrapper.find('input[id="name"]').simulate('change', { target: { value: '' } });
-            assert(wrapper.find('input[id="frank"]').length === 0);
-            assert(wrapper.find('input[id="unknow"]').prop('value') === 'unknow');
+            cy.get('input[id="name"]').clear();
+
+            cy.get('input[id="frank"]').should('not.exist');
+
+            // 验证 unknow 输入框出现且值正确
+            cy.get('input[id="unknow"').should('exist').and('have.value', 'unknow');
         });
     });
 });

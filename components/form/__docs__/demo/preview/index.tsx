@@ -5,7 +5,6 @@ import {
     Input,
     Switch,
     Rating,
-    Field,
     Icon,
     Radio,
     Range,
@@ -14,6 +13,9 @@ import {
     Select,
     Upload,
 } from '@alifd/next';
+
+import type { ItemProps, SubmitProps } from '@alifd/next/types/form';
+import type { SwitchProps } from '@alifd/next/types/switch';
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -56,18 +58,18 @@ class Demo extends React.Component {
     state = {
         preview: false,
     };
-    submitHandler = e => {
+    submitHandler: SubmitProps['onClick'] = e => {
         console.log(e);
     };
-    onPreviewChange = checked => {
+    onPreviewChange: SwitchProps['onChange'] = checked => {
         this.setState({
             preview: checked,
         });
     };
-    ratingPreview = value => {
+    ratingPreview: ItemProps['renderPreview'] = (value?: number) => {
         return (
             <p>
-                {value} {value > 2.5 ? <Icon type="smile" /> : <Icon type="cry" />}
+                {value} {value! > 2.5 ? <Icon type="smile" /> : <Icon type="cry" />}
             </p>
         );
     };
@@ -80,7 +82,7 @@ class Demo extends React.Component {
                     style={{ maxWidth: '800px' }}
                 >
                     <FormItem label="preview: " isPreview={false} style={{ marginBottom: 0 }}>
-                        <Switch size="large" onChange={this.onPreviewChange} />
+                        <Switch onChange={this.onPreviewChange} />
                     </FormItem>
                     <div style={{ height: 1, width: '100%', margin: '20px 0' }} />
                     <FormItem name="username" required label="Username:">

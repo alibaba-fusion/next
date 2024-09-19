@@ -1,20 +1,23 @@
-function getCfgFromProps(props, type) {
+import type { ItemProps, FormRule } from './types';
+
+type GetCfgFromPropsReturn<T> = T extends keyof ItemProps ? ItemProps[T] : undefined;
+function getCfgFromProps<T extends string>(props: ItemProps, type: T): GetCfgFromPropsReturn<T> {
     if (type in props) {
-        return props[type];
+        return props[type as keyof ItemProps];
     }
 
-    return undefined;
+    return undefined as GetCfgFromPropsReturn<T>;
 }
 
-function getRule(ruleName, props) {
+function getRule(ruleName: keyof ItemProps, props: ItemProps) {
     return {
         [ruleName]: props[ruleName],
         message: getCfgFromProps(props, `${ruleName}Message`),
         trigger: getCfgFromProps(props, `${ruleName}Trigger`),
-    };
+    } as FormRule;
 }
 
-function getValueName(props, displayName) {
+function getValueName(props: ItemProps, displayName?: string) {
     if (props.valueName) {
         return props.valueName;
     }
@@ -30,8 +33,8 @@ function getValueName(props, displayName) {
     return 'value';
 }
 
-export function getRules(props, labelForErrorMessage) {
-    const result = [];
+export function getRules(props: ItemProps, labelForErrorMessage: string | null) {
+    const result: FormRule[] = [];
 
     // required
     if (props.required) {
@@ -67,7 +70,7 @@ export function getRules(props, labelForErrorMessage) {
     }
 
     // format
-    if (['number', 'tel', 'url', 'email'].indexOf(props.format) > -1) {
+    if (['number', 'tel', 'url', 'email'].indexOf(props.format!) > -1) {
         result.push(getRule('format', props));
     }
 
@@ -106,7 +109,11 @@ export function getRules(props, labelForErrorMessage) {
     return result;
 }
 
-export function getFieldInitCfg(props, displayName, labelForErrorMessage) {
+export function getFieldInitCfg(
+    props: ItemProps,
+    displayName: string,
+    labelForErrorMessage: string | null
+) {
     return {
         valueName: getValueName(props, displayName),
         trigger: props.trigger ? props.trigger : 'onChange',
