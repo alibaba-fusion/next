@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input, Radio } from '@alifd/next';
+import type { ItemProps } from '@alifd/next/types/form';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -15,8 +16,8 @@ const formItemLayout = {
 };
 
 class BasicDemo extends React.Component {
-    userExists(rule, value) {
-        return new Promise((resolve, reject) => {
+    userExists: NonNullable<ItemProps['validator']> = function (rule, value) {
+        return new Promise<void>((resolve, reject) => {
             if (!value) {
                 resolve();
             } else {
@@ -29,7 +30,7 @@ class BasicDemo extends React.Component {
                 }, 500);
             }
         });
-    }
+    };
 
     render() {
         return (

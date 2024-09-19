@@ -1,22 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-    Form,
-    Input,
-    Select,
-    Radio,
-    Checkbox,
-    DatePicker,
-    Switch,
-    Upload,
-    Grid,
-    Field,
-} from '@alifd/next';
+import { Form, Input, Radio, Checkbox, DatePicker, Switch, Upload } from '@alifd/next';
+import type { FormProps } from '@alifd/next/types/form';
 
 const RadioGroup = Radio.Group;
-const { Row, Col } = Grid;
 const FormItem = Form.Item;
-const Option = Select.Option;
 const formItemLayout = {
     labelCol: {
         span: 7,
@@ -27,10 +15,10 @@ const formItemLayout = {
 };
 class Demo extends React.Component {
     state = {
-        size: 'medium',
+        size: 'medium' as const,
     };
-    submitHandle = e => {
-        console.log(e);
+    submitHandle: FormProps['onSubmit'] = values => {
+        console.log(values);
     };
     render() {
         return (

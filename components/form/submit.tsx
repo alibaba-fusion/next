@@ -2,28 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../button';
 import { func, obj } from '../util';
+import type { SubmitProps } from './types';
 
-/**
- * Form.Submit
- * @description 继承 Button API
- * @order 2
- */
-class Submit extends React.Component {
+class Submit extends React.Component<SubmitProps> {
     static propTypes = {
-        /**
-         * 点击提交后触发
-         * @param {Object} value 数据
-         * @param {Object} errors 错误数据
-         * @param {class} field 实例
-         */
         onClick: PropTypes.func,
-        /**
-         * 是否校验/需要校验的 name 数组
-         */
         validate: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
-        /**
-         * 自定义 field (在 Form 内不需要设置)
-         */
         field: PropTypes.object,
         children: PropTypes.node,
     };
@@ -41,20 +25,20 @@ class Submit extends React.Component {
         const field = this.context._formField || this.props.field;
 
         if (!field) {
-            onClick();
+            onClick!();
             return;
         }
 
         if (validate === true) {
-            field.validate(errors => {
-                onClick(field.getValues(), errors, field);
+            field.validate((errors: unknown[]) => {
+                onClick!(field.getValues(), errors, field);
             });
         } else if (Array.isArray(validate)) {
-            field.validate(validate, errors => {
-                onClick(field.getValues(), errors, field);
+            field.validate(validate, (errors: unknown[]) => {
+                onClick!(field.getValues(), errors, field);
             });
         } else {
-            onClick(field.getValues(), null, field);
+            onClick!(field.getValues(), null, field);
         }
     };
 

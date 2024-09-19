@@ -1,20 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Input, Select, Radio, NumberPicker, DatePicker, Switch, Button } from '@alifd/next';
+import { Form, Input, Select, Radio, NumberPicker, DatePicker, Switch } from '@alifd/next';
+import type { GroupProps } from '@alifd/next/types/radio';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
 const formItemLayout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
 };
 
 class Demo extends React.Component {
-    state = {
+    state: {
+        size: 'medium' | 'small' | 'large';
+    } = {
         size: 'medium',
     };
 
-    handleChange = v => {
+    handleChange: GroupProps['onChange'] = v => {
         this.setState({
             size: v,
         });
