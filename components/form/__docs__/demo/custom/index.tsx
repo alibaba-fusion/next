@@ -23,10 +23,12 @@ const label = (
 );
 
 class Demo extends React.Component {
-    state = {
+    state: {
+        labelAlign: 'top' | 'left';
+    } = {
         labelAlign: 'top',
     };
-    handleChange = v => {
+    handleChange = (v: boolean) => {
         this.setState({
             labelAlign: v ? 'left' : 'top',
         });
