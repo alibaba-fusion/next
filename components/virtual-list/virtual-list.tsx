@@ -5,6 +5,7 @@ import React, {
     type LegacyRef,
     type CSSProperties,
     type ReactInstance,
+    type ReactElement,
 } from 'react';
 import cx from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
@@ -395,10 +396,14 @@ class VirtualList extends Component<VirtualListProps, VirtualListState> {
         const { from, size } = this.state;
         const items = [];
 
-        const childrenArray = Children.toArray(children);
+        const childrenArray: Array<ReactElement | undefined | null> = [];
+
+        Children.forEach(children, (child: ReactElement | undefined | null) => {
+            childrenArray.push(child);
+        });
 
         for (let i = 0; i < size!; ++i) {
-            items.push(childrenArray![from + i]);
+            items.push(childrenArray[from + i]);
         }
 
         return itemsRenderer!(items, c => {
