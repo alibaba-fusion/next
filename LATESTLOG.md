@@ -1,10 +1,9 @@
 # Latest Log 
 
-## [1.27.25](https://github.com/alibaba-fusion/next/compare/1.27.24...1.27.25) (2024-09-14)
+## [1.27.26](https://github.com/alibaba-fusion/next/compare/1.27.25...1.27.26) (2024-09-20)
 
 
 ### Bug Fixes
 
-* **Balloon:** export balloon props types ([eecc4dd](https://github.com/alibaba-fusion/next/commit/eecc4dda8acc5ddef9b08e26127613f83dca9d9a))
-* **Slider:** export SliderProps types ([813448d](https://github.com/alibaba-fusion/next/commit/813448de7a049679283e4d0f4f9e4a8ccbfad4d8))
+* **VirtualList:** stabilize children keys in virtual list ([f3d1d81](https://github.com/alibaba-fusion/next/commit/f3d1d81af3bf7b491919797bef3aec22984e5f0d))
 
