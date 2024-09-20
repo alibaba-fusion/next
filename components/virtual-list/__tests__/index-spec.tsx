@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactElement } from 'react';
 import VirtualList from '../index';
 import '../style';
 
@@ -190,5 +190,31 @@ describe('VirtualList', () => {
 
         cy.mount(<App />);
         cy.get('.test').should('exist');
+    });
+    describe('issue', () => {
+        it('should not change children key, issue #4942', () => {
+            const handleItemsRender = cy.spy();
+            cy.mount(
+                <div
+                    className="scrollBox"
+                    style={{
+                        height: '200px',
+                        width: '200px',
+                        overflow: 'auto',
+                    }}
+                >
+                    <VirtualList
+                        itemsRenderer={(items, ref) => {
+                            handleItemsRender((items[0] as ReactElement).key);
+                            return <ul ref={ref}>{items}</ul>;
+                        }}
+                        jumpIndex={50}
+                    >
+                        {generateData(100)}
+                    </VirtualList>
+                </div>
+            );
+            cy.wrap(handleItemsRender).should('be.calledWith', '0-test');
+        });
     });
 });
