@@ -1,0 +1,397 @@
+@import "../core/index-noreset.scss";
+@import "../calendar2/scss/variable.scss";
+@import "../calendar2/scss/mixin.scss";
+@import "../input/scss/variable.scss";
+@import "../input/scss/mixin.scss";
+@import "./scss/variable";
+
+@import "./scss/footer.scss";
+@import "./rtl.scss";
+
+#{$date-picker2-prefix} {
+    outline: none;
+    display: inline-table;
+    position: relative;
+    width: inherit;
+
+    &-overlay {
+        vertical-align: top;
+        padding: 4px 0px;
+    }
+
+    &-overlay-range {
+        padding: 12px 0px;
+    }
+
+    &-wrapper {
+        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .12);
+        background-color: $color-white;
+        border: 1px solid $color-line1-1;
+        border-radius: $corner-1;
+
+        #{$calendar2-prefix} {
+            &-panel {
+                border-radius: $corner-1;
+            }
+            &-body {
+                width: 272px;
+            }
+            &-cell::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: 0px;
+                left: 0px;
+                z-index: 1;
+                height: 24px;
+                transform: translateY(-50%);
+            }
+            &-cell:last-child::before {
+                border-top-right-radius: 2px;
+                border-bottom-right-radius: 2px;
+                right: 8px;
+            }
+            &-cell:first-child::before {
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
+                left: 8px;
+            }
+        }
+    }
+
+    &-input {
+        display: inline-flex;
+        align-items: center;
+        outline: none;
+        box-sizing: border-box;
+        border: $input-border-width solid $input-border-color;
+        vertical-align: middle;
+        width: inherit;
+        background-color: $input-bg-color;
+
+        #{$input-prefix} {
+            border: none;
+            // use flex-basis instead width to be compiable with safari
+            flex-basis: 100%;
+            height: 100%;
+            width: 100%;
+            input {
+                height: 100%;
+                width: auto;
+            }
+        }
+
+        &#{$date-picker2-prefix}-input-small {
+            @include input-size(
+                $form-element-small-height,
+                $input-s-padding,
+                $form-element-small-font-size,
+                $input-s-label-padding-left,
+                $input-s-icon-padding-right
+            );
+            @include input-icon-size($form-element-small-icon-size);
+            @include input-border-radius($form-element-small-corner);
+        }
+
+        &#{$date-picker2-prefix}-input-medium {
+            @include input-size(
+                $form-element-medium-height,
+                $input-m-padding,
+                $form-element-medium-font-size,
+                $input-m-label-padding-left,
+                $input-m-icon-padding-right
+            );
+            @include input-icon-size($form-element-medium-icon-size);
+            @include input-border-radius($form-element-medium-corner);
+        }
+
+        &#{$date-picker2-prefix}-input-large {
+            @include input-size(
+                $form-element-large-height,
+                $input-l-padding,
+                $form-element-large-font-size,
+                $input-l-label-padding-left,
+                $input-l-icon-padding-right
+            );
+            @include input-icon-size($form-element-large-icon-size);
+            @include input-border-radius($form-element-large-corner);
+        }
+
+        &:hover {
+            border-color: $input-hover-border-color;
+            background-color: $input-hover-bg-color;
+        }
+
+        &#{$date-picker2-prefix}-input-focus {
+            border-color: $input-focus-border-color;
+            background-color: $input-focus-bg-color;
+            box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-focus-shadow;
+        }
+
+        &#{$date-picker2-prefix}-input-noborder {
+            border-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        &#{$date-picker2-prefix}-input-disabled {
+            @include input-disabled();
+        }
+
+        &#{$date-picker2-prefix}-input-error {
+            border-color: $input-feedback-error-border-color;
+        }
+    }
+
+    &-input-separator {
+        color: $input-border-color;
+        font-size: 12px;
+        line-height: 12px;
+        display: inline-block;
+        min-width: 16px;
+        text-align: center;
+    }
+}
+
+.#{$css-prefix} {
+    &range-picker2-panel,
+    &date-picker2-panel {
+        display: inline-flex;
+    }
+
+    &range-picker2-panel:not(.#{$css-prefix}range-picker2-panel-single) {
+        .#{$css-prefix}range-picker-right .#{$css-prefix}calendar2-header-left-btn,
+        .#{$css-prefix}range-picker-left .#{$css-prefix}calendar2-header-right-btn {
+            visibility: hidden;
+        }
+    }
+}
+
+#{$range-picker2-prefix}-arrow {
+    display: block;
+    transform: translate(0, -50%) rotate(-45deg);
+    position: absolute;
+    z-index: 1;
+    width: 10px;
+    height: 10px;
+    margin-left: 16.5px;
+    border-color: $color-line1-1 $color-line1-1 transparent transparent;
+    border-style: solid;
+    border-width: 1px;
+    transition: left .3s ease-out;
+    background: $color-white;
+}
+
+#{$date-picker2-prefix}-tl-bl {
+    #{$range-picker2-prefix}-arrow {
+        top: 12.5px;
+    }
+}
+#{$date-picker2-prefix}-bl-tl {
+    #{$range-picker2-prefix}-arrow {
+        bottom: 13px;
+        transform: translate(0, 50%) rotate(135deg);
+    }
+}
+
+.#{$css-prefix}date-time-picker-wrapper {
+    border-left: 1px solid $color-line1-1;
+    #{$calendar2-prefix}-body {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+}
+
+#{$range-picker2-prefix}-panel:not(#{$range-picker2-prefix}-panel-single) {
+    #{$calendar2-prefix}-cell-disabled {
+        #{$calendar2-cell-inner} {
+            @include calendar-disabled;
+        }
+    }
+
+    #{$calendar2-prefix}-cell-current {
+        &#{$calendar2-prefix}-cell-selected {
+            &::before {
+                color: $color-text1-3;
+                background: $color-brand1-1;
+            }
+            #{$calendar2-cell-inner} {
+                color: $color-text1-3;
+                background: transparent;
+            }
+
+            &#{$calendar2-prefix}-cell-range-begin,
+            &#{$calendar2-prefix}-cell-range-end {
+                #{$calendar2-cell-inner} {
+                    z-index: 10;
+                    @include calendar-selected;
+                }
+            }
+
+            &#{$calendar2-prefix}-cell-range-begin::before {
+                left: 50%;
+            }
+            &#{$calendar2-prefix}-cell-range-end::before {
+                right: 50%;
+            }
+            &#{$calendar2-prefix}-cell-range-begin-single::before,
+            &#{$calendar2-prefix}-cell-range-end-single::before {
+                display: none;
+            }
+        }
+
+        &#{$calendar2-prefix}-cell-hover {
+            &::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: 0;
+                left: 0;
+                z-index: 2;
+                height: 24px;
+                transform: translateY(-50%);
+                border-color: $color-brand1-9 transparent;
+                border-style: dashed;
+                border-width: 1px;
+            }
+
+            &#{$calendar2-prefix}-cell-hover-begin::after,
+            &:first-child::after {
+                left: 8px;
+            }
+
+            &#{$calendar2-prefix}-cell-hover-end::after,
+            &:last-child::after {
+                right: 8px;
+            }
+
+            &#{$calendar2-prefix}-cell-selected {
+                &#{$calendar2-prefix}-cell-hover-begin::after {
+                    left: 8px;
+                }
+                &#{$calendar2-prefix}-cell-hover-end::after {
+                    right: 8px;
+                }
+            }
+
+
+            &:first-of-type::after {
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
+                border-left: 1px dashed $color-brand1-9;
+            }
+            &:last-of-type::after {
+                border-top-right-radius: 2px;
+                border-bottom-right-radius: 2px;
+                border-right: 1px dashed $color-brand1-9;
+            }
+        }
+
+        &#{$calendar2-prefix}-cell-edge-end {
+            &::before {
+                right: 8px;
+            }
+            &::after {
+                right: 8px;
+            }
+            &#{$calendar2-prefix}-cell-hover {
+                &::after {
+                    border-top-right-radius: 2px;
+                    border-bottom-right-radius: 2px;
+                    border-right: 1px dashed $color-brand1-9;
+                }
+            }
+        }
+
+        &#{$calendar2-prefix}-cell-hover-begin::after {
+            border-top: 1px dashed $color-brand1-9;
+            border-left: 1px dashed $color-brand1-9;
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
+        }
+        &#{$calendar2-prefix}-cell-hover-end::after {
+            border-top: 1px dashed $color-brand1-9;
+            border-right: 1px dashed $color-brand1-9;
+            border-top-right-radius: 2px;
+            border-bottom-right-radius: 2px;
+        }
+    }
+
+    #{$calendar2-prefix}-cell-edge-end + #{$calendar2-prefix}-cell-current:not(#{$calendar2-prefix}-cell-disabled) {
+        &::before,
+        &::after {
+            left: 8px;
+        }
+
+        &#{$calendar2-prefix}-cell-hover {
+            &::after {
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
+                border-left: 1px dashed $color-brand1-9;
+            }
+        }
+    }
+}
+
+#{$calendar2-prefix}-table-week {
+    #{$calendar2-prefix}-cell-hover::after {
+        display: none;
+    }
+
+    tr:hover #{$calendar2-prefix}-cell:not(#{$calendar2-prefix}-cell-disabled):not(#{$calendar2-prefix}-cell-selected)::before {
+        @include calendar-hover;
+    }
+
+    #{$calendar2-prefix}-week-current {
+        #{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected {
+            &::before,
+            #{$calendar2-cell-inner} {
+                color: $color-text1-3;
+                background-color: $color-brand1-1;
+            }
+
+            &:last-child,
+            &:nth-child(2) {
+                #{$calendar2-cell-inner} {
+                    @include calendar-selected;
+                }
+            }
+            &:nth-child(2)::before {
+                left: 50%;
+            }
+            &:last-child::before {
+                right: 50%;
+            }
+        }
+    }
+
+    tr:not(#{$calendar2-prefix}-week-current) {
+        td#{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
+            &::before,
+            #{$calendar2-cell-inner} {
+                background-color: transparent;
+                color: $color-text1-1;
+            }
+        }
+    }
+}
+
+#{$range-picker2-prefix}-panel #{$calendar2-prefix}-week-current {
+    #{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
+        &:last-child,
+        &:nth-child(2) {
+            #{$calendar2-cell-inner} {
+                background-color: $color-brand1-1;
+                color: $color-text1-3;
+            }
+        }
+        &#{$calendar2-prefix}-cell-week-range-begin,
+        &#{$calendar2-prefix}-cell-week-range-end {
+            &:last-child,
+            &:nth-child(2) {
+                #{$calendar2-cell-inner} {
+                    @include calendar-selected;
+                }
+            }
+        }
+    }
+}
