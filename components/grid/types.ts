@@ -1,5 +1,7 @@
-import React, { type FunctionComponent, type ComponentClass } from 'react';
-import { CommonProps } from '../util';
+import type React from 'react';
+// eslint-disable-next-line no-duplicate-imports
+import type { FunctionComponent, ComponentClass } from 'react';
+import type { CommonProps } from '../util';
 
 type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'hidden'>;
 
