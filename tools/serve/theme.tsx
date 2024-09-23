@@ -1,5 +1,5 @@
 import React from 'react';
-// @ts-expect-error next compoennt theme
+// @ts-expect-error next component theme
 import theme from '__theme';
 
 export default function Theme() {
