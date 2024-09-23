@@ -564,6 +564,10 @@ export interface FormProps extends CommonProps, HTMLAttributesWeak {
      */
     component?: ElementType;
 
+    /**
+     * field 配置项，在 Form 初始化 field 实例时会用到
+     * @en Field configuration, will be used when initializing the field instance in Form
+     */
     fieldOptions?: FieldOption;
 
     /**
@@ -674,7 +678,6 @@ export type RemoveUndefined<T extends Record<string, unknown>> = {
     [K in keyof T as T[K] extends undefined ? never : K]: T[K];
 };
 
-export interface FormRule extends Omit<Rule, 'trigger'> {
+export interface FormRule extends Rule {
     aliasName?: string;
-    trigger?: string | string[];
 }
