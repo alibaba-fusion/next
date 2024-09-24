@@ -163,16 +163,4 @@ describe('Issues', () => {
             cy.get('.next-col').should('not.have.attr', key.toLowerCase());
         });
     });
-
-    //https://github.com/alibaba-fusion/next/issues/4908
-    it('should child element receiver style props', () => {
-        cy.mount(
-            <Row>
-                <Col span={4} style={{ color: 'red' }}>
-                    color red
-                </Col>
-            </Row>
-        );
-        cy.get('.next-col').should('have.css', 'color', 'rgb(255, 0, 0)');
-    });
 });

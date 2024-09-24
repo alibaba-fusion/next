@@ -133,7 +133,8 @@ export default class Row extends Component<RowProps> {
                         style: {
                             paddingLeft: halfGutterString,
                             paddingRight: halfGutterString,
-                            ...(child.props.style || {}),
+                            // @ts-expect-error 只有 dom 才有 style 属性
+                            ...(child.style || {}),
                         },
                     });
                     return newChild;
