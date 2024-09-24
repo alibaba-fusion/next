@@ -1,4 +1,4 @@
-import React, { Component, type ComponentClass, type FunctionComponent } from 'react';
+import React, { Component, ComponentClass, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import ConfigProvider from '../config-provider';

@@ -2,7 +2,7 @@ import React, {
     Component,
     Children,
     cloneElement,
-    type ReactElement,
+    ReactElement,
     type FunctionComponent,
     type ComponentClass,
 } from 'react';
@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import ConfigProvider from '../config-provider';
 import { type RowProps, type TypeRecord } from './types';
-import type Col from './col';
+import Col from './col';
 import { obj } from '../util';
 
 type BooleanRecord = TypeRecord<boolean>;

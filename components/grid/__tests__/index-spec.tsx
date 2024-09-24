@@ -165,7 +165,7 @@ describe('Issues', () => {
     });
 
     //https://github.com/alibaba-fusion/next/issues/4908
-    it('The style prop of Col in the Row should take effect', () => {
+    it('should child element receiver style props', () => {
         cy.mount(
             <Row>
                 <Col span={4} style={{ color: 'red' }}>
