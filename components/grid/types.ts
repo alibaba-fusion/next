@@ -1,4 +1,6 @@
 import type React from 'react';
+// eslint-disable-next-line no-duplicate-imports
+import type { FunctionComponent, ComponentClass } from 'react';
 import type { CommonProps } from '../util';
 
 type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'hidden'>;
@@ -73,7 +75,7 @@ export interface RowProps extends HTMLAttributesWeak, CommonProps {
      * @en Specifies the element with which to render the node
      * @defaultValue 'div'
      */
-    component?: string | React.FunctionComponent<unknown> | React.ComponentClass<unknown>;
+    component?: string | FunctionComponent<unknown> | ComponentClass<unknown>;
 }
 
 /**
