@@ -1,53 +1,26 @@
-import React, {
-    Component,
-    type MouseEvent,
-    type KeyboardEvent,
-    type ComponentType,
-    type HTMLAttributes,
-    type ReactElement,
-} from 'react';
+import React, { Component, type MouseEvent, type KeyboardEvent, type ReactElement } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
 import Affix from '../affix';
 import Icon from '../icon';
-import { KEYCODE, dom, env, type CommonProps } from '../util';
+import { KEYCODE, dom, env } from '../util';
 import { isBoolean, getCollapseMap } from './util';
 import type {
     ShellBaseProps,
     ShellState,
-    LayoutItem,
     ShellNavigationProps,
-    ShellLocalNavigationProps,
-    ShellAncillaryProps,
-    ShellToolDockProps,
+    CollapseMap,
+    LayoutProps,
+    ChildElement,
 } from './types';
-
-type CollapseKey = 'Navigation' | 'LocalNavigation' | 'Ancillary' | 'ToolDock';
-type CommonAttributes = HTMLAttributes<HTMLElement> & CommonProps;
-type LayoutItemAttribute = Omit<LayoutItem, 'header'>;
-type LayoutProps = LayoutItemAttribute & {
-    header?: LayoutItem;
-};
+import type { CustomCSSStyle } from '../util/dom';
 
 /** Shell */
 export default function ShellBase(props: { componentName?: string }) {
     const { componentName } = props;
     class Shell extends Component<ShellBaseProps, ShellState> {
-        static Branding: ComponentType<CommonAttributes>;
-        static Action: ComponentType<CommonAttributes>;
-        static MultiTask: ComponentType<CommonAttributes>;
-        static AppBar: ComponentType<CommonAttributes>;
-        static Content: ComponentType<CommonAttributes>;
-        static Footer: ComponentType<CommonAttributes>;
-        static ToolDockItem: ComponentType<CommonAttributes>;
-        static Page: ComponentType<CommonAttributes>;
-        static Navigation: ComponentType<ShellNavigationProps>;
-        static LocalNavigation: ComponentType<ShellLocalNavigationProps>;
-        static Ancillary: ComponentType<ShellAncillaryProps>;
-        static ToolDock: ComponentType<ShellToolDockProps>;
-
         static displayName = componentName;
 
         static _typeMark = componentName;
@@ -67,14 +40,14 @@ export default function ShellBase(props: { componentName?: string }) {
             fixedHeader: false,
         };
 
-        public layout: LayoutProps;
-        public headerRef: HTMLDivElement;
-        public navigationFixed: boolean;
-        public toolDockFixed: boolean;
-        public navRef: HTMLDivElement;
-        public localNavRef: HTMLDivElement;
-        public submainRef: HTMLDivElement;
-        public toolDockRef: HTMLDivElement;
+        layout: LayoutProps;
+        headerRef: HTMLDivElement;
+        navigationFixed: boolean;
+        toolDockFixed: boolean;
+        navRef: HTMLDivElement;
+        localNavRef: HTMLDivElement;
+        submainRef: HTMLDivElement;
+        toolDockRef: HTMLDivElement;
 
         constructor(props: ShellBaseProps) {
             super(props);
@@ -116,8 +89,8 @@ export default function ShellBase(props: { componentName?: string }) {
                 const deviceMapBefore = getCollapseMap(prevProps.device);
                 const deviceMapAfter = getCollapseMap(this.props.device);
 
-                Object.keys(deviceMapAfter).forEach((block: CollapseKey) => {
-                    const { props } = (this.layout[block] as ReactElement) || {};
+                Object.keys(deviceMapAfter).forEach((block: keyof CollapseMap) => {
+                    const { props } = this.layout[block] || {};
                     if (deviceMapBefore[block] !== deviceMapAfter[block]) {
                         if (props && typeof props.onCollapseChange === 'function') {
                             props.onCollapseChange(deviceMapAfter[block]);
@@ -145,7 +118,7 @@ export default function ShellBase(props: { componentName?: string }) {
             }
 
             if (this.navigationFixed) {
-                const style: { marginLeft?: string | number } = {};
+                const style: Partial<CustomCSSStyle> = {};
                 style.marginLeft = dom.getStyle(this.navRef, 'width');
                 dom.addClass(this.navRef, 'fixed');
                 headerHeight && dom.setStyle(this.navRef, { top: headerHeight });
@@ -153,7 +126,7 @@ export default function ShellBase(props: { componentName?: string }) {
             }
 
             if (this.toolDockFixed) {
-                const style: { marginRight?: string | number } = {};
+                const style: Partial<CustomCSSStyle> = {};
                 style.marginRight = dom.getStyle(this.toolDockRef, 'width');
                 dom.addClass(this.toolDockRef, 'fixed');
                 headerHeight && dom.setStyle(this.toolDockRef, { top: headerHeight });
@@ -161,7 +134,7 @@ export default function ShellBase(props: { componentName?: string }) {
             }
         };
 
-        setChildCollapse = (child: ReactElement, mark: CollapseKey) => {
+        setChildCollapse = (child: ReactElement, mark: keyof CollapseMap) => {
             const { device, collapseMap, controll } = this.state;
             const { collapse } = child.props;
             const deviceMap = getCollapseMap(device);
@@ -181,7 +154,7 @@ export default function ShellBase(props: { componentName?: string }) {
         };
 
         toggleAside = (
-            mark: CollapseKey,
+            mark: keyof CollapseMap,
             props: {
                 onCollapseChange?: (collapse?: boolean) => void;
                 collapse?: boolean;
@@ -213,10 +186,7 @@ export default function ShellBase(props: { componentName?: string }) {
                     .filter(
                         (child: ReactElement<ShellNavigationProps>) =>
                             child &&
-                            (child.type as unknown as { _typeMark: string })._typeMark.replace(
-                                'Shell_',
-                                ''
-                            ) === mark &&
+                            (child as ChildElement).type._typeMark.replace('Shell_', '') === mark &&
                             child.props.direction !== 'hoz'
                     )
                     .pop();
@@ -225,21 +195,12 @@ export default function ShellBase(props: { componentName?: string }) {
                     .filter(
                         child =>
                             child &&
-                            (child.type as unknown as { _typeMark: string })._typeMark.replace(
-                                'Shell_',
-                                ''
-                            ) === mark
+                            (child as ChildElement).type._typeMark.replace('Shell_', '') === mark
                     )
                     .pop();
             }
 
-            const {
-                triggerProps = {},
-            }: {
-                triggerProps?: {
-                    onClick?: (e: KeyboardEvent | MouseEvent, collapsed: boolean) => void;
-                };
-            } = com!.props;
+            const { triggerProps = {} } = com!.props;
 
             if (typeof triggerProps.onClick === 'function') {
                 triggerProps.onClick(e, this.state.collapseMap[mark]);
@@ -248,7 +209,7 @@ export default function ShellBase(props: { componentName?: string }) {
 
         toggleNavigation = (e: KeyboardEvent | MouseEvent) => {
             const mark = 'Navigation';
-            const { props } = this.layout[mark] as ReactElement;
+            const { props } = this.layout[mark]!;
 
             if ('keyCode' in e && e.keyCode !== KEYCODE.ENTER) {
                 return;
@@ -259,7 +220,7 @@ export default function ShellBase(props: { componentName?: string }) {
 
         toggleLocalNavigation = (e: KeyboardEvent | MouseEvent) => {
             const mark = 'LocalNavigation';
-            const { props } = this.layout[mark] as ReactElement;
+            const { props } = this.layout[mark]!;
 
             if ('keyCode' in e && e.keyCode !== KEYCODE.ENTER) {
                 return;
@@ -270,7 +231,7 @@ export default function ShellBase(props: { componentName?: string }) {
 
         toggleAncillary = (e: KeyboardEvent | MouseEvent) => {
             const mark = 'Ancillary';
-            const { props } = this.layout[mark] as ReactElement;
+            const { props } = this.layout[mark]!;
 
             if ('keyCode' in e && e.keyCode !== KEYCODE.ENTER) {
                 return;
@@ -281,7 +242,7 @@ export default function ShellBase(props: { componentName?: string }) {
 
         toggleToolDock = (e: KeyboardEvent | MouseEvent) => {
             const mark = 'ToolDock';
-            const { props } = this.layout[mark] as ReactElement;
+            const { props } = this.layout[mark]!;
 
             if ('keyCode' in e && e.keyCode !== KEYCODE.ENTER) {
                 return;
@@ -322,10 +283,7 @@ export default function ShellBase(props: { componentName?: string }) {
 
             React.Children.map(children, child => {
                 if (child && typeof child.type === 'function') {
-                    const mark = (child.type as unknown as { _typeMark: string })._typeMark.replace(
-                        'Shell_',
-                        ''
-                    );
+                    const mark = (child as ChildElement).type._typeMark.replace('Shell_', '');
                     switch (mark) {
                         case 'Branding':
                         case 'Action':
@@ -336,12 +294,14 @@ export default function ShellBase(props: { componentName?: string }) {
                             break;
                         case 'LocalNavigation':
                             if (!layout[mark]) {
+                                // @ts-expect-error 不应该是[], LocalNavigation 应该是 ReactElement
                                 layout[mark] = [];
                             }
                             layout[mark] = this.setChildCollapse(child, mark);
                             break;
                         case 'Ancillary':
                             if (!layout[mark]) {
+                                // @ts-expect-error 不应该是[], Ancillary 应该是 ReactElement
                                 layout[mark] = [];
                             }
 
@@ -351,18 +311,20 @@ export default function ShellBase(props: { componentName?: string }) {
                             hasToolDock = true;
 
                             if (!layout[mark]) {
+                                // @ts-expect-error 不应该是[], ToolDock 应该是 ReactElement
                                 layout[mark] = [];
                             }
 
                             this.toolDockFixed = child.props.fixed!;
-                            layout[mark] = this.setChildCollapse(child, mark);
+                            const childT = this.setChildCollapse(child, mark);
+                            layout[mark] = childT;
 
                             break;
                         case 'AppBar':
                         case 'Content':
                         case 'Footer':
                             layout.content || (layout.content = []);
-                            (layout.content as Array<ReactElement>).push(child);
+                            layout.content.push(child);
                             break;
                         case 'Page':
                             layout.page || (layout.page = []);
@@ -373,11 +335,12 @@ export default function ShellBase(props: { componentName?: string }) {
                                 layout.header![mark] = child;
                             } else {
                                 if (!layout[mark]) {
+                                    // @ts-expect-error 不应该是[], Navigation 应该是 ReactElement
                                     layout[mark] = [];
                                 }
 
                                 needNavigationTrigger = true;
-                                this.navigationFixed = child.props.fixed!;
+                                this.navigationFixed = child.props.fixed;
                                 const childN = this.setChildCollapse(child, mark);
                                 layout[mark] = childN;
                             }
@@ -415,8 +378,7 @@ export default function ShellBase(props: { componentName?: string }) {
 
             const navigationCls = classnames({
                 [`${prefix}aside-navigation`]: true,
-                [`${prefix}shell-collapse`]:
-                    layout.Navigation && (layout.Navigation as ReactElement)!.props.collapse,
+                [`${prefix}shell-collapse`]: layout.Navigation && layout.Navigation.props.collapse,
             });
 
             if (hasToolDock) {
@@ -427,11 +389,11 @@ export default function ShellBase(props: { componentName?: string }) {
 
             // 如果存在垂直模式的 Navigation, 则需要在 Branding 上出现 trigger
             if (needNavigationTrigger) {
-                const branding = layout.header.Branding as ReactElement;
-                const collapse = (layout.Navigation as ReactElement)!.props.collapse;
-                let trigger = (layout.Navigation as ReactElement)!.props.trigger;
+                const branding = layout.header.Branding;
+                const collapse = layout.Navigation!.props.collapse;
+                let trigger = layout.Navigation!.props.trigger;
 
-                if ('trigger' in (layout.Navigation as ReactElement)!.props) {
+                if ('trigger' in layout.Navigation!.props) {
                     trigger =
                         (trigger &&
                             React.cloneElement(trigger, {
@@ -440,16 +402,13 @@ export default function ShellBase(props: { componentName?: string }) {
                             })) ||
                         trigger;
                 } else {
-                    const aria = {
-                        'aria-expanded': !collapse,
-                        'aria-label': 'toggle',
-                    };
                     trigger = (
                         <div
                             key="nav-trigger"
                             role="button"
                             tabIndex={0}
-                            {...aria}
+                            aria-expanded={!collapse}
+                            aria-label="toggle"
                             className="nav-trigger"
                             onClick={this.toggleNavigation}
                             onKeyDown={this.toggleNavigation}
@@ -475,11 +434,11 @@ export default function ShellBase(props: { componentName?: string }) {
 
             // 如果存在 toolDock, 则需要在 Action 上出现 trigger
             if (needDockTrigger) {
-                const action = layout.header.Action as ReactElement;
-                const collapse = (layout.ToolDock as ReactElement).props.collapse;
-                let trigger = (layout.ToolDock as ReactElement).props.trigger;
+                const action = layout.header.Action;
+                const collapse = layout.ToolDock!.props.collapse;
+                let trigger = layout.ToolDock!.props.trigger;
 
-                if ('trigger' in (layout.ToolDock as ReactElement).props) {
+                if ('trigger' in layout.ToolDock!.props) {
                     trigger =
                         (trigger &&
                             React.cloneElement(trigger, {
@@ -488,16 +447,13 @@ export default function ShellBase(props: { componentName?: string }) {
                             })) ||
                         trigger;
                 } else {
-                    const aria = {
-                        'aria-expanded': !collapse,
-                        'aria-label': 'toggle',
-                    };
                     trigger = (
                         <div
                             key="dock-trigger"
                             tabIndex={0}
                             role="button"
-                            {...aria}
+                            aria-expanded={!collapse}
+                            aria-label="toggle"
                             className="dock-trigger"
                             onClick={this.toggleToolDock}
                             onKeyDown={this.toggleToolDock}
@@ -536,10 +492,10 @@ export default function ShellBase(props: { componentName?: string }) {
 
             // 按照dom结构，innerArr 包括 LocalNavigation content Ancillary
             if (layout.LocalNavigation) {
-                const collapse = (layout.LocalNavigation as ReactElement).props.collapse;
-                let trigger = (layout.LocalNavigation as ReactElement).props.trigger;
+                const collapse = layout.LocalNavigation.props.collapse;
+                let trigger = layout.LocalNavigation.props.trigger;
 
-                if ('trigger' in (layout.LocalNavigation as ReactElement).props) {
+                if ('trigger' in layout.LocalNavigation.props) {
                     trigger =
                         (trigger &&
                             React.cloneElement(trigger, {
@@ -548,16 +504,13 @@ export default function ShellBase(props: { componentName?: string }) {
                             })) ||
                         trigger;
                 } else {
-                    const aria = {
-                        'aria-expanded': !collapse,
-                        'aria-label': 'toggle',
-                    };
                     trigger = (
                         <div
                             key="local-nav-trigger"
                             role="button"
                             tabIndex={0}
-                            {...aria}
+                            aria-expanded={!collapse}
+                            aria-label="toggle"
                             className="local-nav-trigger aside-trigger"
                             onClick={this.toggleLocalNavigation}
                             onKeyDown={this.toggleLocalNavigation}
@@ -577,9 +530,9 @@ export default function ShellBase(props: { componentName?: string }) {
 
                 innerArr.push(
                     <aside key="localnavigation" className={localNavCls} ref={this.saveLocalNavRef}>
-                        {React.cloneElement(layout.LocalNavigation as ReactElement, {}, [
+                        {React.cloneElement(layout.LocalNavigation, {}, [
                             <div key="wrapper" className={`${prefix}shell-content-wrapper`}>
-                                {(layout.LocalNavigation as ReactElement).props.children}
+                                {layout.LocalNavigation.props.children}
                             </div>,
                             trigger,
                         ])}
@@ -596,10 +549,10 @@ export default function ShellBase(props: { componentName?: string }) {
             }
 
             if (layout.Ancillary) {
-                const collapse = (layout.Ancillary as ReactElement).props.collapse;
-                let trigger = (layout.Ancillary as ReactElement).props.trigger;
+                const collapse = layout.Ancillary.props.collapse;
+                let trigger = layout.Ancillary.props.trigger;
 
-                if ('trigger' in (layout.Ancillary as ReactElement).props) {
+                if ('trigger' in layout.Ancillary.props) {
                     trigger =
                         (trigger &&
                             React.cloneElement(trigger, {
@@ -608,16 +561,13 @@ export default function ShellBase(props: { componentName?: string }) {
                             })) ||
                         trigger;
                 } else {
-                    const aria = {
-                        'aria-expanded': !collapse,
-                        'aria-label': 'toggle',
-                    };
                     trigger = (
                         <div
                             key="ancillary-trigger"
                             role="button"
                             tabIndex={0}
-                            {...aria}
+                            aria-expanded={!collapse}
+                            aria-label="toggle"
                             className="ancillary-trigger aside-trigger"
                             onClick={this.toggleAncillary}
                             onKeyDown={this.toggleAncillary}
@@ -637,9 +587,9 @@ export default function ShellBase(props: { componentName?: string }) {
 
                 innerArr.push(
                     <aside key="ancillary" className={ancillaryCls}>
-                        {React.cloneElement(layout.Ancillary as ReactElement, {}, [
+                        {React.cloneElement(layout.Ancillary, {}, [
                             <div key="wrapper" className={`${prefix}shell-content-wrapper`}>
-                                {(layout.Ancillary as ReactElement).props.children}
+                                {layout.Ancillary.props.children}
                             </div>,
                             trigger,
                         ])}
@@ -666,11 +616,8 @@ export default function ShellBase(props: { componentName?: string }) {
             layout.Navigation &&
                 contentArr.push(
                     <aside key="navigation" className={navigationCls} ref={this.saveNavRef}>
-                        {React.cloneElement(layout.Navigation as ReactElement, {
-                            className: classnames(
-                                asideCls,
-                                (layout.Navigation as ReactElement).props.className
-                            ),
+                        {React.cloneElement(layout.Navigation, {
+                            className: classnames(asideCls, layout.Navigation.props.className),
                         })}
                     </aside>
                 );
@@ -693,11 +640,8 @@ export default function ShellBase(props: { componentName?: string }) {
             layout.ToolDock &&
                 contentArr.push(
                     <aside key="tooldock" className={toolDockCls} ref={this.saveToolDockRef}>
-                        {React.cloneElement(layout.ToolDock as ReactElement, {
-                            className: classnames(
-                                asideCls,
-                                (layout.ToolDock as ReactElement).props.className
-                            ),
+                        {React.cloneElement(layout.ToolDock, {
+                            className: classnames(asideCls, layout.ToolDock.props.className),
                             key: 'tooldock',
                         })}
                     </aside>

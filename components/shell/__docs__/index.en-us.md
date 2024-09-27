@@ -44,11 +44,11 @@ Shell is the infrastructure framework of the whole application. It embodies the 
 
 ### Shell
 
-| Param       | Description                                                                                      | Type                             | Default Value | Required |
-| ----------- | ------------------------------------------------------------------------------------------------ | -------------------------------- | ------------- | -------- |
-| device      | Preset screen width, tt determines whether Navigation LocalNavigation Ancillarytake space or not | 'tablet' \| 'desktop' \| 'phone' | 'desktop'     |          |
-| type        | Type of Shell                                                                                    | 'light' \| 'dark' \| 'brand'     | 'light'       |          |
-| fixedHeader | Fixed header or not. Doesn't work under IE11                                                     | boolean                          | false         |          |
+| Param       | Description                                                                                                | Type                             | Default Value | Required |
+| ----------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------- | ------------- | -------- |
+| device      | Preset screen width, which determines whether `Navigation` `LocalNavigation` `Ancillary` take space or not | 'tablet' \| 'desktop' \| 'phone' | 'desktop'     |          |
+| type        | Type of Shell                                                                                              | 'light' \| 'dark' \| 'brand'     | 'light'       |          |
+| fixedHeader | Fixed header or not. Doesn't work under IE11                                                               | boolean                          | false         |          |
 
 ### Shell.Navigation
 

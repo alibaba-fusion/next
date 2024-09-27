@@ -1,11 +1,7 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
-// import Enzyme, { mount } from 'enzyme';
-// import Adapter from 'enzyme-adapter-react-16';
-// import assert from 'power-assert';
-import Shell from '../index';
+import Shell, { type ShellProps } from '../index';
 import Search from '../../search/index';
-import Radio from '../../radio/index';
+import Radio, { type GroupProps } from '../../radio/index';
 import Icon from '../../icon/index';
 import Nav from '../../nav/index';
 import '../style';
@@ -15,9 +11,7 @@ import '../../icon/style';
 import './index.scss';
 
 const { Item } = Nav;
-// Enzyme.configure({ adapter: new Adapter() });
 
-/* eslint-disable */
 describe('Shell', () => {
     describe('render', () => {
         it('default should work', () => {
@@ -65,47 +59,42 @@ describe('Shell', () => {
             cy.contains('@ 2019 Alibaba Piecework 版权所有').should('exist');
         });
 
-        it('default collapse should work', async () => {
-            type Device = 'phone' | 'tablet' | 'desktop';
+        it('default collapse should work', () => {
             interface AppProps {
                 onCollapseNavigationChange: (visible: boolean) => void;
                 onCollapseLocalNavChange: (visible: boolean) => void;
                 onCollapseAncilleryChange: (visible: boolean) => void;
             }
+            interface AppState {
+                device: ShellProps['device'];
+                navcollapse: boolean;
+            }
+
             class App extends React.Component<AppProps> {
-                state: {
-                    device: Device;
-                    navcollapse: boolean;
-                } = {
+                state: AppState = {
                     device: 'desktop',
                     navcollapse: false,
                 };
-                onChange = (device: Device) => {
-                    this.setState({
-                        device,
-                    });
+
+                onChange: GroupProps['onChange'] = device => {
+                    this.setState({ device });
                 };
 
                 btnClick = () => {
-                    this.setState({
-                        navcollapse: !this.state.navcollapse,
-                    });
+                    this.setState({ navcollapse: !this.state.navcollapse });
+                    const { onCollapseNavigationChange } = this.props;
+                    onCollapseNavigationChange(!this.state.navcollapse);
                 };
 
                 onCollapseChange = (visible: boolean) => {
                     console.log('onCollapseChange:', visible);
                     const { onCollapseNavigationChange } = this.props;
-
-                    this.setState({
-                        navcollapse: visible,
-                    });
-
+                    this.setState({ navcollapse: visible });
                     onCollapseNavigationChange(visible);
                 };
 
                 render() {
                     const { onCollapseLocalNavChange, onCollapseAncilleryChange } = this.props;
-                    // eslint-disable-next-line react/jsx-filename-extension
                     return (
                         <div>
                             <Radio.Group
@@ -221,45 +210,36 @@ describe('Shell', () => {
                     );
                 }
             }
-            let navCollapseCount = 0;
-            let localCollapseCount = 0;
-            let anciCollapseCount = 0;
-            let navCollapse = false;
-            let localCollapse = false;
-            let anciCollapse = false;
+
+            // 使用 Cypress spy 来模拟回调函数
+            const navCollapseSpy = cy.spy().as('navCollapseSpy');
+            const localCollapseSpy = cy.spy().as('localCollapseSpy');
+            const ancillaryCollapseSpy = cy.spy().as('ancillaryCollapseSpy');
+
             cy.mount(
                 <App
-                    onCollapseNavigationChange={visible => {
-                        navCollapseCount++;
-                        navCollapse = visible;
-                        console.log('global nav:', navCollapseCount, navCollapse);
-                    }}
-                    onCollapseLocalNavChange={visible => {
-                        localCollapseCount++;
-                        localCollapse = visible;
-                        console.log('local nav:', localCollapseCount, localCollapse);
-                    }}
-                    onCollapseAncilleryChange={visible => {
-                        anciCollapseCount++;
-                        anciCollapse = visible;
-                        console.log('ancillery nav:', anciCollapseCount, anciCollapse);
-                    }}
+                    onCollapseNavigationChange={navCollapseSpy}
+                    onCollapseLocalNavChange={localCollapseSpy}
+                    onCollapseAncilleryChange={ancillaryCollapseSpy}
                 />
             );
+
             cy.get('.local-nav-trigger').click();
             cy.get('.ancillary-trigger').click();
             cy.get('.nav-trigger').click();
             cy.get('.nav-trigger').click();
-            await new Promise(resolve => setTimeout(resolve, 500));
-            expect(navCollapse).to.be.false;
-            expect(localCollapse).to.be.true;
-            expect(anciCollapse).to.be.true;
-            expect(navCollapseCount).to.be.equal(2);
-            expect(localCollapseCount).to.be.equal(1);
-            expect(anciCollapseCount).to.be.equal(1);
-
             cy.get('#custom-nav-trigger').click();
-            cy.get('.next-shell-navigation.next-shell-collapse').should('not.exist');
+
+            cy.get('@navCollapseSpy').should('have.property', 'callCount', 3);
+            cy.get('@localCollapseSpy').should('have.property', 'callCount', 1);
+            cy.get('@ancillaryCollapseSpy').should('have.property', 'callCount', 1);
+
+            cy.get('@navCollapseSpy').its('lastCall').its('args').should('deep.equal', [true]);
+            cy.get('@localCollapseSpy').its('lastCall').its('args').should('deep.equal', [true]);
+            cy.get('@ancillaryCollapseSpy')
+                .its('lastCall')
+                .its('args')
+                .should('deep.equal', [true]);
         });
 
         it('should support no header', () => {
@@ -347,7 +327,7 @@ describe('Shell', () => {
         });
 
         it('only tooldock, show header only in phone', () => {
-            const testDevice = (device: 'phone' | 'tablet' | 'desktop', shouldExist: boolean) => {
+            const testDevice = (device: ShellProps['device'], shouldExist: boolean) => {
                 // 创建一个通用的测试用例
                 cy.mount(
                     <Shell
@@ -424,9 +404,9 @@ describe('Shell', () => {
             // 获取 .next-aside-navigation 元素并检查其样式
             cy.get('.next-aside-navigation').as('navigationElement');
             // 检查宽度是否为零
-            cy.get('@navigationElement').invoke('width').should('eq', 0);
+            cy.get('@navigationElement').should('have.css', 'width', '0px');
             // 检查 overflow 样式是否为 hidden
-            cy.get('@navigationElement').invoke('css', 'overflow').should('eq', 'hidden');
+            cy.get('@navigationElement').should('have.css', 'overflow', 'hidden');
         });
     });
 });

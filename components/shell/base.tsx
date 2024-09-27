@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import ConfigProvider from '../config-provider';
-import type { ShellBaseProps } from './types';
-
-interface BaseShellProps extends Omit<ShellBaseProps, 'children'> {
-    children?: Array<React.ReactElement | null> | React.ReactElement;
-}
+import type { BaseProps } from './types';
 
 export default function Base(props: { componentName?: string }) {
     const { componentName } = props;
-    class Shell extends Component<BaseShellProps> {
+    class Shell extends Component<BaseProps> {
         static displayName = componentName;
 
         static _typeMark = `Shell_${componentName}`;
@@ -65,7 +61,7 @@ export default function Base(props: { componentName?: string }) {
                 ...others
             } = this.props;
 
-            const Tag = component;
+            const Tag = component as React.ElementType;
 
             const cls = classnames({
                 [`${prefix}shell-${componentName!.toLowerCase()}`]: true,
@@ -86,7 +82,6 @@ export default function Base(props: { componentName?: string }) {
             }
 
             return (
-                // @ts-expect-error Tag 不具有构造签名
                 <Tag className={cls} {...others}>
                     {newChildren}
                 </Tag>
