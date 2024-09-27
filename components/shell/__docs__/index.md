@@ -23,11 +23,11 @@
 
 ### Shell
 
-| 参数        | 说明                                                                   | 类型                             | 默认值    | 是否必填 |
-| ----------- | ---------------------------------------------------------------------- | -------------------------------- | --------- | -------- |
-| device      | 预设屏幕宽度，会影响Navigation LocalNavigation Ancillary等是否占据空间 | 'tablet' \| 'desktop' \| 'phone' | 'desktop' |          |
-| type        | 样式类型，分浅色主题、深色主题、主题色主题                             | 'light' \| 'dark' \| 'brand'     | 'light'   |          |
-| fixedHeader | 是否固定Header，采用sticky布局，不支持 IE11                            | boolean                          | false     |          |
+| 参数        | 说明                                                                             | 类型                             | 默认值    | 是否必填 |
+| ----------- | -------------------------------------------------------------------------------- | -------------------------------- | --------- | -------- |
+| device      | 预设屏幕宽度，会影响 `Navigation`、`LocalNavigation`、`Ancillary` 等是否占据空间 | 'tablet' \| 'desktop' \| 'phone' | 'desktop' |          |
+| type        | 样式类型，分浅色主题、深色主题、主题色主题                                       | 'light' \| 'dark' \| 'brand'     | 'light'   |          |
+| fixedHeader | 是否固定Header，采用sticky布局，不支持 IE11                                      | boolean                          | false     |          |
 
 ### Shell.Navigation
 
@@ -49,11 +49,11 @@
 
 ### Shell.ToolDock
 
-| 参数             | 说明                                         | 类型                         | 默认值    | 是否必填 |
-| ---------------- | -------------------------------------------- | ---------------------------- | --------- | -------- |
-| collapse         | 是否折叠（完全收起）                         | boolean                      | false     |          |
-| onCollapseChange | 默认按钮触发的展开收起状态                   | (collapse?: boolean) => void | func.noop |          |
-| fixed            | 是否固定，且需要在在 Shell fixedHeader时生效 | boolean                      | false     |          |
+| 参数             | 说明                                          | 类型                         | 默认值    | 是否必填 |
+| ---------------- | --------------------------------------------- | ---------------------------- | --------- | -------- |
+| collapse         | 是否折叠（完全收起）                          | boolean                      | false     |          |
+| onCollapseChange | 默认按钮触发的展开收起状态                    | (collapse?: boolean) => void | func.noop |          |
+| fixed            | 是否固定，且需要在在 Shell fixedHeader 时生效 | boolean                      | false     |          |
 
 ### Shell.Ancillary
 

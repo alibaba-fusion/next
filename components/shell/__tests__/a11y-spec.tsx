@@ -6,7 +6,6 @@ import '../../search/style';
 import './index.scss';
 import { testReact } from '../../util/__tests__/a11y/validate';
 
-/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Shell A11y', () => {
     it('should not have any violations', async () => {
         await testReact(
