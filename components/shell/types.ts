@@ -6,34 +6,14 @@ import type { CommonProps } from '../util';
  */
 export interface ShellProps extends HTMLAttributes<HTMLElement>, CommonProps {
     /**
-     * 预设屏幕宽度，会影响Navigation LocalNavigation Ancillary等是否占据空间
-     * @en Preset screen width, tt determines whether Navigation LocalNavigation Ancillarytake space or not
+     * 预设屏幕宽度，会影响 `Navigation`、`LocalNavigation`、`Ancillary` 等是否占据空间
+     * @en Preset screen width, which determines whether `Navigation` `LocalNavigation` `Ancillary` take space or not
      * @defaultValue 'desktop'
-     * @remarks
-     * 可选值：
-     * **phone** 手机，
-     * **tablet** 平板，
-     * **desktop** PC电脑。
-     * -
-     * options:
-     * **phone** phone,
-     * **tablet** tablet,
-     * **desktop** desktop.
      */
     device?: 'tablet' | 'desktop' | 'phone';
     /**
      * 样式类型，分浅色主题、深色主题、主题色主题
      * @en type of Shell
-     * @remarks
-     * 可选值：
-     * **light** 浅色，
-     * **dark** 深色，
-     * **brand** 主题色。
-     * -
-     * options:
-     * **light** light,
-     * **dark** dark,
-     * **brand** brand.
      * @defaultValue 'light'
      */
     type?: 'light' | 'dark' | 'brand';
@@ -52,14 +32,6 @@ export interface ShellNavigationProps extends HTMLAttributes<HTMLElement>, Commo
     /**
      * 方向
      * @en header or asider
-     * @remarks
-     * 可选值：
-     * **hoz** hoz，
-     * **ver** ver。
-     * -
-     * options:
-     * **hoz** hoz,
-     * **ver** ver.
      * @defaultValue 'hoz'
      */
     direction?: 'hoz' | 'ver';
@@ -72,27 +44,17 @@ export interface ShellNavigationProps extends HTMLAttributes<HTMLElement>, Commo
     /**
      * 横向模式下，导航排布的位置
      * @en Arrangement of Navigation when direction is hoz
-     * @remarks
-     * 可选值：
-     * **left** left，
-     * **right** right，
-     * **center** center。
-     * -
-     * options:
-     * **left** left,
-     * **right** right,
-     * **center** center.
      * @defaultValue 'right'
      */
     align?: 'left' | 'right' | 'center';
     /**
-     * 	默认按钮触发的展开收起状态
+     * 默认按钮触发的展开收起状态
      * @en this will be triggered when collapse changed by inner icon
      * @defaultValue func.noop
      */
     onCollapseChange?: (collapse?: boolean) => void;
     /**
-     * 	菜单展开、收起的触发元素，默认在左上角，不想要可以设置 null 来去掉
+     * 菜单展开、收起的触发元素，默认在左上角，不想要可以设置 null 来去掉
      * @en trigger of Shell.Navigation, it placed on top and left of the page, you can set null to remove it
      */
     trigger?: ReactNode;
@@ -115,7 +77,7 @@ export interface ShellLocalNavigationProps extends HTMLAttributes<HTMLElement>, 
      */
     collapse?: boolean;
     /**
-     * 	默认按钮触发的展开收起状态
+     * 默认按钮触发的展开收起状态
      * @en this will be triggered when collapse changed by inner icon
      * @defaultValue func.noop
      */
@@ -133,13 +95,13 @@ export interface ShellToolDockProps extends HTMLAttributes<HTMLElement>, CommonP
      */
     collapse?: boolean;
     /**
-     * 	默认按钮触发的展开收起状态
+     * 默认按钮触发的展开收起状态
      * @en this will be triggered when collapse changed by inner icon
      * @defaultValue func.noop
      */
     onCollapseChange?: (collapse?: boolean) => void;
     /**
-     * 是否固定，且需要在在 Shell fixedHeader时生效
+     * 是否固定，且需要在在 Shell fixedHeader 时生效
      * @en fixed or not, only worked when Shell fixedHeader is true
      * @defaultValue false
      */
@@ -157,37 +119,62 @@ export interface ShellAncillaryProps extends HTMLAttributes<HTMLElement>, Common
      */
     collapse?: boolean;
     /**
-     * 	默认按钮触发的展开收起状态
+     * 默认按钮触发的展开收起状态
      * @en this will be triggered when collapse changed by inner icon
      * @defaultValue func.noop
      */
     onCollapseChange?: (collapse?: boolean) => void;
 }
 
+export type CommonAttributes = HTMLAttributes<HTMLElement> & CommonProps;
+
+export type CollapseMap = {
+    Navigation: boolean;
+    LocalNavigation: boolean;
+    Ancillary: boolean;
+    ToolDock: boolean;
+};
+
+export type LayoutProps = {
+    header?: {
+        Action?: ReactElement;
+        Branding?: ReactElement;
+        Navigation?: ReactElement;
+    };
+    Navigation?: ReactElement;
+    LocalNavigation?: ReactElement;
+    MultiTask?: ReactElement;
+    Ancillary?: ReactElement;
+    ToolDock?: ReactElement;
+    taskHeader?: ReactElement;
+    content?: Array<ReactElement>;
+    page?: ReactElement | [];
+};
+
 export interface ShellBaseProps extends ShellProps {
-    componentName?: string;
-    triggerProps?: object;
-    fixed?: boolean;
     component?: ReactElement | unknown;
     children?: Array<ReactElement | null>;
-    collapse?: boolean;
-    miniable?: boolean;
-    onCollapseChange?: (collapsed: boolean) => void;
-    direction?: 'hoz' | 'ver';
-    align?: 'left' | 'right' | 'center';
 }
 
-export interface LayoutItem {
-    [key: string]: ReactElement | Array<ReactElement>;
+export interface BaseProps
+    extends HTMLAttributes<HTMLElement>,
+        CommonProps,
+        ShellNavigationProps,
+        ShellLocalNavigationProps,
+        ShellToolDockProps,
+        ShellAncillaryProps {
+    triggerProps?: object;
+    miniable?: boolean;
+    component?: ReactElement | unknown;
 }
 
 export interface ShellState {
     controll: boolean;
-    collapseMap: {
-        Navigation: boolean;
-        LocalNavigation: boolean;
-        Ancillary: boolean;
-        ToolDock: boolean;
-    };
+    collapseMap: CollapseMap;
     device?: 'tablet' | 'desktop' | 'phone';
 }
+
+export type ChildElement = React.ReactElement<
+    ShellProps,
+    (string | React.JSXElementConstructor<ShellProps>) & { _typeMark: string }
+>;

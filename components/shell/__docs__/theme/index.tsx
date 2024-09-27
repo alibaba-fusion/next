@@ -89,11 +89,9 @@ interface FunctionDemoProps {
 }
 
 interface FunctionDemoState {
-    // demoFunction: DemoProps['demoFunction']
     demoFunction: ShellThemeProps['demoFunction'];
 }
 
-/* eslint-disable */
 const i18nMap = {
     'zh-cn': {
         shell: '布局框架',
@@ -110,28 +108,23 @@ const i18nMap = {
 };
 class RenderShell extends React.Component<ShellThemeProps> {
     render() {
-        const { type, i18n, demoFunction } = this.props;
+        const { type, demoFunction } = this.props;
         const device = demoFunction.device.value;
         const globalDir = demoFunction.navigation.value;
-        let globalNavType = demoFunction.navigationType.value,
-            //     localNavType = demoFunction.localNavType.value,
-            // globalHozNavType = 'normal',
-            localNavType: 'normal' | 'primary' | 'secondary' | 'line' = 'normal',
-            logoStyle = {},
+        const globalNavType = demoFunction.navigationType.value,
+            localNavType = demoFunction.localNavType?.value || 'normal';
+        let logoStyle = {},
             shellStyle = {};
 
         switch (type) {
             case 'light':
                 logoStyle = { width: 32, height: 32, background: '#000', opacity: '0.04' };
-                // globalHozNavType = 'normal';
                 break;
             case 'dark':
                 logoStyle = { width: 32, height: 32, background: '#FFF', opacity: '0.2' };
-                // globalHozNavType = globalDir === 'hoz' ? 'primary' : 'normal';
                 break;
             case 'brand':
                 logoStyle = { width: 32, height: 32, background: '#000', opacity: '0.04' };
-                // globalHozNavType = globalDir === 'hoz' ? 'secondary' : 'normal';
                 break;
             default:
                 break;
@@ -226,16 +219,12 @@ class RenderShell extends React.Component<ShellThemeProps> {
                                 </Nav>
                             </Shell.LocalNavigation>
                         ) : null}
-                        {demoFunction.appbar.value === 'true' ? (
-                            <Shell.AppBar></Shell.AppBar>
-                        ) : null}
+                        {demoFunction.appbar.value === 'true' ? <Shell.AppBar /> : null}
                         <Shell.Content>
                             <div style={{ minHeight: 1200, background: '#fff' }}></div>
                         </Shell.Content>
 
-                        {demoFunction.ancillary.value === 'true' ? (
-                            <Shell.Ancillary></Shell.Ancillary>
-                        ) : null}
+                        {demoFunction.ancillary.value === 'true' ? <Shell.Ancillary /> : null}
                         {demoFunction.tooldock.value === 'true' ? (
                             <Shell.ToolDock>
                                 <Shell.ToolDockItem>
@@ -377,23 +366,28 @@ class FunctionDemo extends React.Component<FunctionDemoProps, FunctionDemoState>
                         },
                     ],
                 },
-                // 'localNavType': {
-                //     label: 'Local Nav Type',
-                //     value: 'normal',
-                //     enum: [{
-                //         label: 'normal',
-                //         value: 'normal'
-                //     }, {
-                //         label: 'primary',
-                //         value: 'primary'
-                //     }, {
-                //         label: 'secondary',
-                //         value: 'secondary'
-                //     }, {
-                //         label: 'line',
-                //         value: 'line'
-                //     }]
-                // },
+                localNavType: {
+                    label: 'Local Nav Type',
+                    value: 'normal',
+                    enum: [
+                        {
+                            label: 'normal',
+                            value: 'normal',
+                        },
+                        {
+                            label: 'primary',
+                            value: 'primary',
+                        },
+                        {
+                            label: 'secondary',
+                            value: 'secondary',
+                        },
+                        {
+                            label: 'line',
+                            value: 'line',
+                        },
+                    ],
+                },
                 appbar: {
                     label: 'Appbar',
                     value: 'false',
@@ -477,7 +471,7 @@ class FunctionDemo extends React.Component<FunctionDemoProps, FunctionDemoState>
 }
 
 function render(i18n: FunctionDemoProps['locale'], lang: string) {
-    return ReactDOM.render(
+    ReactDOM.render(
         // @ts-expect-error ConfigProvider 不存在 lang 属性
         <ConfigProvider lang={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">

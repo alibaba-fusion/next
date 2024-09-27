@@ -1,20 +1,17 @@
+import type { CollapseMap } from './types';
+
 /**
  * 判断是否为布尔类型
  * @param val - 要判断的值，例如 'str', undefined, null, true, false, 0 等
  * @returns boolean
  */
-export function isBoolean(val?: string | boolean | 0 | null) {
+export function isBoolean(val?: unknown): val is boolean {
     return typeof val === 'boolean';
 }
 
-export function getCollapseMap(device?: string): {
-    Navigation: boolean;
-    LocalNavigation: boolean;
-    Ancillary: boolean;
-    ToolDock: boolean;
-} {
+export function getCollapseMap(device?: string) {
     // by default all of them are collapsed
-    const origin = {
+    const origin: CollapseMap = {
         Navigation: true,
         LocalNavigation: true,
         Ancillary: true,
@@ -37,13 +34,11 @@ export function getCollapseMap(device?: string): {
             break;
     }
 
-    Object.keys(origin).forEach(
-        (key: 'Navigation' | 'LocalNavigation' | 'Ancillary' | 'ToolDock') => {
-            if (map.indexOf(key) > -1) {
-                origin[key] = false;
-            }
+    Object.keys(origin).forEach((key: keyof CollapseMap) => {
+        if (map.indexOf(key) > -1) {
+            origin[key] = false;
         }
-    );
+    });
 
     return origin;
 }
