@@ -56,10 +56,10 @@ Popup 是对 Overlay 的封装，它接收某个节点作为触发节点，弹�
 | children               | 弹层内容                                                                                                                                                            | React.ReactElement & { ref?: React.RefCallback\<HTMLElement> } | -                                            |          | -        |
 | visible                | 是否显示弹层                                                                                                                                                        | boolean                                                        | false                                        |          | -        |
 | onRequestClose         | 弹层请求关闭时触发事件的回调函数，v2 版本第一个参数是 event                                                                                                         | (type: string, e: Event \| React.MouseEvent\<Element>) => void | -                                            |          | -        |
-| target                 | 弹层定位的参照元素                                                                                                                                                  | Target                                                         | Position.VIEWPORT                            |          | -        |
+| target                 | 弹层定位的参照元素                                                                                                                                                  | PropTarget                                                     | Position.VIEWPORT                            |          | -        |
 | align                  | 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)                                                                                                          | string \| boolean                                              | 'tl bl'                                      |          | -        |
 | offset                 | 弹层相对于 trigger 的定位的微调，接收数组 [hoz, ver], 表示弹层在 left / top 上的增量 e.g. [100, 100] 表示往右 (RTL 模式下是往左) 、下分布偏移 100px                 | Array\<number>                                                 | [0, 0]                                       |          | -        |
-| container              | 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点                                                                       | Target                                                         | -                                            |          | -        |
+| container              | 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点                                                                       | PropTarget                                                     | -                                            |          | -        |
 | hasMask                | 是否显示遮罩                                                                                                                                                        | boolean                                                        | false                                        |          | -        |
 | canCloseByEsc          | 是否支持 esc 按键关闭弹层                                                                                                                                           | boolean                                                        | true                                         |          | -        |
 | canCloseByOutSideClick | 点击弹层外的区域是否关闭弹层，不显示遮罩时生效                                                                                                                      | boolean                                                        | true                                         |          | -        |
@@ -92,10 +92,10 @@ Popup 是对 Overlay 的封装，它接收某个节点作为触发节点，弹�
 | children               | 弹层内容                                                                                                                                                            | React.ReactElement & { ref?: React.RefCallback\<HTMLElement> } | -                                            |          | -        |
 | visible                | 是否显示弹层                                                                                                                                                        | boolean                                                        | false                                        |          | -        |
 | onRequestClose         | 弹层请求关闭时触发事件的回调函数，v2 版本第一个参数是 event                                                                                                         | (type: string, e: Event \| React.MouseEvent\<Element>) => void | -                                            |          | -        |
-| target                 | 弹层定位的参照元素                                                                                                                                                  | Target                                                         | Position.VIEWPORT                            |          | -        |
+| target                 | 弹层定位的参照元素                                                                                                                                                  | PropTarget                                                     | Position.VIEWPORT                            |          | -        |
 | align                  | 弹层相对于参照元素的定位，详见开发指南的 [定位部分](#定位)                                                                                                          | string                                                         | 'tl bl'                                      |          | -        |
 | offset                 | 弹层相对于 trigger 的定位的微调，接收数组 [hoz, ver], 表示弹层在 left / top 上的增量 e.g. [100, 100] 表示往右 (RTL 模式下是往左) 、下分布偏移 100px                 | Array\<number>                                                 | [0, 0]                                       |          | -        |
-| container              | 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点                                                                       | Target                                                         | -                                            |          | -        |
+| container              | 渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点                                                                       | PropTarget                                                     | -                                            |          | -        |
 | hasMask                | 是否显示遮罩                                                                                                                                                        | boolean                                                        | false                                        |          | -        |
 | canCloseByEsc          | 是否支持 esc 按键关闭弹层                                                                                                                                           | boolean                                                        | true                                         |          | -        |
 | canCloseByOutSideClick | 点击弹层外的区域是否关闭弹层，不显示遮罩时生效                                                                                                                      | boolean                                                        | true                                         |          | -        |
@@ -128,7 +128,7 @@ Popup 是对 Overlay 的封装，它接收某个节点作为触发节点，弹�
 | children            | 弹层内容                                                                                                  | React.ReactElement                                                     | -                              |          |
 | autoFit             | 弹层是否自适应内容                                                                                        | boolean                                                                | false                          |          |
 | visible             | 弹层当前是否显示                                                                                          | boolean                                                                | false                          |          |
-| target              | 弹层定位的参照元素                                                                                        | Target                                                                 | -                              |          |
+| target              | 弹层定位的参照元素                                                                                        | PropTarget                                                             | -                              |          |
 | trigger             | 触发弹层显示或隐藏的元素                                                                                  | React.ReactElement                                                     | -                              |          |
 | triggerType         | 触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，'focus'，或者它们组成的数组，如 ['hover', 'focus'] | 'click' \| 'hover' \| 'focus' \| Array\<'click' \| 'hover' \| 'focus'> | 'hover'                        |          |
 | triggerClickKeycode | 当 triggerType 为 click 时才生效，可自定义触发弹层显示的键盘码                                            | number \| Array\<number>                                               | [KEYCODE.SPACE, KEYCODE.ENTER] |          |
@@ -151,7 +151,7 @@ Popup 是对 Overlay 的封装，它接收某个节点作为触发节点，弹�
 | children            | 弹层内容                                                                                                  | React.ReactElement                                                     | -                              |          |
 | autoFit             | 弹层是否自适应内容                                                                                        | boolean                                                                | false                          |          |
 | visible             | 弹层当前是否显示                                                                                          | boolean                                                                | false                          |          |
-| target              | 弹层定位的参照元素                                                                                        | Target                                                                 | -                              |          |
+| target              | 弹层定位的参照元素                                                                                        | PropTarget                                                             | -                              |          |
 | trigger             | 触发弹层显示或隐藏的元素                                                                                  | React.ReactElement                                                     | -                              |          |
 | triggerType         | 触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，'focus'，或者它们组成的数组，如 ['hover', 'focus'] | 'click' \| 'hover' \| 'focus' \| Array\<'click' \| 'hover' \| 'focus'> | 'hover'                        |          |
 | triggerClickKeycode | 当 triggerType 为 click 时才生效，可自定义触发弹层显示的键盘码                                            | number \| Array\<number>                                               | [KEYCODE.SPACE, KEYCODE.ENTER] |          |
@@ -168,17 +168,17 @@ Popup 是对 Overlay 的封装，它接收某个节点作为触发节点，弹�
 
 ### Overlay.Position
 
-| 参数     | 说明               | 类型                 | 默认值 | 是否必填 |
-| -------- | ------------------ | -------------------- | ------ | -------- |
-| children | 弹层内容           | React.ReactElement   | -      |          |
-| target   | 弹层定位的参照元素 | Target \| 'viewport' | -      |          |
+| 参数     | 说明               | 类型                     | 默认值 | 是否必填 |
+| -------- | ------------------ | ------------------------ | ------ | -------- |
+| children | 弹层内容           | React.ReactElement       | -      |          |
+| target   | 弹层定位的参照元素 | PropTarget \| 'viewport' | -      |          |
 
 ### Overlay.Gateway
 
 | 参数     | 说明               | 类型                                                                               | 默认值 | 是否必填 |
 | -------- | ------------------ | ---------------------------------------------------------------------------------- | ------ | -------- |
 | children | 弹层内容           | null \| (React.ReactElement & { ref?: React.RefCallback\<HTMLElement> \| string }) | -      |          |
-| target   | 弹层定位的参照元素 | Target                                                                             | -      |          |
+| target   | 弹层定位的参照元素 | PropTarget                                                                         | -      |          |
 
 ### AnimationObjectType
 
@@ -186,7 +186,7 @@ Popup 是对 Overlay 的封装，它接收某个节点作为触发节点，弹�
 export type AnimationObjectType = Record<'in' | 'out', string>;
 ```
 
-### Target
+### PropTarget
 
 ```typescript
 export type Target<T = unknown> =

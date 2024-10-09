@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input, Checkbox } from '@alifd/next';
+import type { SubmitProps } from '@alifd/next/types/form';
 
 const FormItem = Form.Item;
 
@@ -14,7 +15,7 @@ const formItemLayout = {
 };
 
 class Demo extends React.Component {
-    handleSubmit = (values, errors) => {
+    handleSubmit: SubmitProps['onClick'] = (values, errors) => {
         console.log('value & errors', values, errors);
     };
 

@@ -169,6 +169,7 @@
             }
             p {
                 word-break: break-word;
+                font-size: $timeline-item-left-body-font-size;
             }
         }
         & > #{$timeline-prefix}-item-timeline {
