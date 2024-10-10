@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Range } from '@alifd/next';
+import type { RangeValueType } from '@alifd/next/types/range';
 
 const style = {
     marginBottom: '15px',
@@ -10,8 +11,9 @@ const styleX3 = {
     marginBottom: '45px',
 };
 
-class App extends React.Component {
-    constructor(props) {
+interface AppProps {}
+class App extends React.Component<AppProps, { value: RangeValueType }> {
+    constructor(props: AppProps) {
         super(props);
         this.state = {
             value: [10, 300],
@@ -19,13 +21,13 @@ class App extends React.Component {
     }
 
     //Controlled. onChange will be triggered when startValue isn't equal to endValue after sliding
-    onChange(value) {
+    onChange(value: RangeValueType) {
         console.log('onChange value:', value);
         this.setState({ value });
     }
 
     // This callback will be triggered when startValue and endValue aren't equal after mousedown/mousemove. You shouldn't call setState here.
-    onProcess(value) {
+    onProcess(value: RangeValueType) {
         // this.setState({value});
         console.log('onProcess: ', value);
     }

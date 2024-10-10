@@ -1,5 +1,8 @@
 import ConfigProvider from '../config-provider';
 import Range from './view/range';
+import type { RangeProps, RangeValueType } from './types';
+
+export type { RangeProps, RangeValueType };
 
 export default ConfigProvider.config(Range, {
     transform: /* istanbul ignore next */ (props, deprecated) => {

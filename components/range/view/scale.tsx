@@ -2,8 +2,9 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { inRange, getPercent } from '../utils';
+import type { RangeScaleProps } from '../types';
 
-export default class Scale extends React.Component {
+export default class Scale extends React.Component<RangeScaleProps> {
     static propTypes = {
         min: PropTypes.number,
         max: PropTypes.number,
@@ -23,7 +24,7 @@ export default class Scale extends React.Component {
 
     _renderItems() {
         const { min, max, value, prefix, scales, rtl } = this.props;
-        const items = [];
+        const items: React.ReactNode[] = [];
 
         scales.forEach((scale, i) => {
             const classes = classNames({

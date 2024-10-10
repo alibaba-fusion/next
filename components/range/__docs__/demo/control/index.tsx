@@ -3,9 +3,8 @@ import ReactDOM from 'react-dom';
 import { Range, NumberPicker, Icon } from '@alifd/next';
 
 const Demo = () => {
-    const [valueInc, setValueInc] = React.useState(30);
+    const [valueInc, setValueInc] = React.useState<any>(30);
 
-    const colorCry = ``;
     return (
         <div style={{ width: 400 }}>
             <div style={{ display: 'flex' }}>
@@ -22,7 +21,10 @@ const Demo = () => {
             <div style={{ display: 'flex', marginTop: 20 }}>
                 <Icon
                     type="cry"
-                    style={{ marginRight: 10, color: `rgba(50,50,50, ${(100 - valueInc) / 100})` }}
+                    style={{
+                        marginRight: 10,
+                        color: `rgba(50,50,50, ${(100 - valueInc) / 100})`,
+                    }}
                 />
                 <Range
                     value={valueInc}

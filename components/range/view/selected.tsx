@@ -2,8 +2,9 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getPercent } from '../utils';
+import type { RangeSelectedProps } from '../types';
 
-export default class Selected extends React.Component {
+export default class Selected extends React.Component<RangeSelectedProps> {
     static propTypes = {
         min: PropTypes.number,
         max: PropTypes.number,
@@ -106,7 +107,7 @@ export default class Selected extends React.Component {
     }
 
     render() {
-        const { prefix, slider, reverse, rtl } = this.props;
+        const { prefix, slider, reverse } = this.props;
         const classes = classNames({
             [`${prefix}range-selected`]: true,
         });

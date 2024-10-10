@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Track = ({ prefix }) => {
+const Track = ({ prefix }: { prefix: string }) => {
     const classes = classNames({
         [`${prefix}range-track`]: true,
     });
