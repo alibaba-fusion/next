@@ -1,7 +1,12 @@
+import type { Dayjs } from 'dayjs';
 import { datejs, KEYCODE } from '../../util';
 
 // 检查传入值是否为 dayjs 对象
-export function checkDayjsObj(props, propName, componentName) {
+export function checkDayjsObj(
+    props: Record<string, unknown>,
+    propName: string,
+    componentName: string
+) {
     if (props[propName] && !datejs.isSelf(props[propName])) {
         return new Error(
             `Invalid prop ${propName} supplied to ${componentName}. Required a dayjs object.`
@@ -10,7 +15,11 @@ export function checkDayjsObj(props, propName, componentName) {
 }
 
 // 检查传入值是否为 dayjs 对象
-export function checkDateValue(props, propName, componentName) {
+export function checkDateValue(
+    props: Record<string, unknown>,
+    propName: string,
+    componentName: string
+) {
     if (props[propName] && !datejs.isSelf(props[propName]) && typeof props[propName] !== 'string') {
         return new Error(
             `Invalid prop ${propName} supplied to ${componentName}. Required a dayjs object or format date string.`
@@ -20,15 +29,25 @@ export function checkDateValue(props, propName, componentName) {
 
 /**
  * 监听键盘事件，操作时间
- * @param {KeyboardEvent} e
- * @param {Object} param1
- * @param {String} type second hour minute
+ * @param e - 键盘事件
+ * @param param1 - Object
+ * @param type - second hour minute
  */
-export function onTimeKeydown(e, { format, timeInputStr, steps, value }, type) {
+export function onTimeKeydown(
+    e: KeyboardEvent,
+    {
+        format,
+        timeInputStr,
+        steps,
+        value,
+    }: { format: string; timeInputStr: string; steps: Record<string, number>; value: Dayjs },
+    type: 'second' | 'hour' | 'minute'
+) {
     if ([KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1)
         return;
     if (
         (e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
+        // @ts-expect-error e.controlKey 是旧标准的用法，新标准使用 e.ctrlKey 来代表 Control 键是否被按下
         e.controlKey ||
         e.shiftKey
     )

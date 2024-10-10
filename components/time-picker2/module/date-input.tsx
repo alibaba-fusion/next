@@ -2,15 +2,17 @@ import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PT from 'prop-types';
 import classnames from 'classnames';
+import { type Dayjs } from 'dayjs';
+
 import SharedPT from '../prop-types';
 import { TIME_INPUT_TYPE } from '../constant';
 import { func, datejs, obj } from '../../util';
 import { fmtValue } from '../../date-picker2/util';
-
 import Input from '../../input';
 import Icon from '../../icon';
+import type { DateInputProps } from '../types';
 
-class DateInput extends React.Component {
+class DateInput extends React.Component<DateInputProps> {
     static propTypes = {
         prefix: PT.string,
         rtl: PT.bool,
@@ -44,43 +46,50 @@ class DateInput extends React.Component {
         size: 'medium',
     };
 
-    constructor(props) {
+    prefixCls: string;
+    input: InstanceType<typeof Input> | InstanceType<typeof Input>[] | null = null;
+
+    constructor(props: DateInputProps) {
         super(props);
 
         this.prefixCls = `${props.prefix}time-picker2-input`;
     }
 
-    setInputRef = (el, index) => {
+    setInputRef = (el: InstanceType<typeof Input> | null, index?: number) => {
         if (this.props.isRange) {
             if (!this.input) {
                 this.input = [];
             }
-            this.input[index] = el;
+            (this.input as (InstanceType<typeof Input> | null)[])[index!] = el;
         } else {
             this.input = el;
         }
     };
 
-    setValue = v => {
+    setValue = (v: string | number | null) => {
         const { isRange, inputType, value } = this.props;
 
-        let newVal = v;
+        let newVal: string | number | null | Array<string | number | null> = v;
 
         if (isRange) {
-            newVal = [...value];
-            newVal[inputType] = v;
+            newVal = [...value!];
+            newVal[inputType!] = v;
         }
 
         return newVal;
     };
 
-    formatter = v => {
+    formatter = (v: Dayjs) => {
         const { format } = this.props;
         return typeof format === 'function' ? format(v) : v.format(format);
     };
 
-    onInput = (v, e, eventType) => {
-        v = this.setValue(v);
+    onInput = (
+        v: string | number | null | (string | number | null)[],
+        e: Event,
+        eventType?: string
+    ) => {
+        v = this.setValue(v as string | number | null);
 
         if (eventType === 'clear') {
             v = null;
@@ -90,7 +99,7 @@ class DateInput extends React.Component {
         func.invoke(this.props, 'onInput', [v, eventType]);
     };
 
-    handleTypeChange = inputType => {
+    handleTypeChange = (inputType: number) => {
         if (inputType !== this.props.inputType) {
             func.invoke(this.props, 'onInputTypeChange', [inputType]);
         }
@@ -98,7 +107,7 @@ class DateInput extends React.Component {
 
     getPlaceholder = () => {
         const { isRange } = this.props;
-        let holder = this.props.placeholder;
+        let holder: string | string[] | undefined = this.props.placeholder;
 
         if (isRange && !Array.isArray(holder)) {
             holder = Array(2).fill(holder);
@@ -117,7 +126,7 @@ class DateInput extends React.Component {
 
         if (isRange) {
             const fmtStr = fmtValue([value, value].map(datejs), format);
-            size = Math.max(...fmtStr.map(s => (s && s.length) || 0));
+            size = Math.max(...(fmtStr as string[]).map(s => (s && s.length) || 0));
         } else {
             const fmtStr = fmtValue(datejs(value), format);
             size = (fmtStr && fmtStr.length) || 0;
@@ -154,6 +163,7 @@ class DateInput extends React.Component {
         const htmlSize = this.getHtmlSize();
 
         const sharedProps = {
+            // @ts-expect-error  restProps 与 Input 类型不匹配
             ...obj.pickProps(restProps, Input),
             ...inputProps,
             size,
@@ -175,10 +185,10 @@ class DateInput extends React.Component {
                 return {
                     ...sharedProps,
                     autoFocus,
-                    placeholder: placeholder[idx],
-                    value: value[idx] || '',
+                    placeholder: placeholder![idx],
+                    value: value![idx] || '',
                     disabled: _disabled,
-                    ref: ref => setInputRef(ref, idx),
+                    ref: (ref: InstanceType<typeof Input> | null) => setInputRef(ref, idx),
                     onFocus: _disabled ? undefined : () => handleTypeChange(idx),
                     className: classnames({
                         [`${prefixCls}-active`]: inputType === idx,
@@ -206,32 +216,35 @@ class DateInput extends React.Component {
             <div className={className}>
                 {isRange ? (
                     <React.Fragment>
+                        {/* @ts-expect-error 因为 sharedProps 类型不匹配，导致 rangeProps 类型不匹配 */}
                         <Input
-                            {...rangeProps[0]}
+                            {...rangeProps![0]}
                             label={label}
                             hasBorder={false}
                             autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus
                         />
                         <div className={`${prefixCls}-separator`}>{separator}</div>
+                        {/* @ts-expect-error 因为 sharedProps 类型不匹配，导致 rangeProps 类型不匹配 */}
                         <Input
-                            {...rangeProps[1]}
+                            {...rangeProps![1]}
                             state={state}
                             hasBorder={false}
-                            hasClear={!state && hasClear}
+                            hasClear={!state && hasClear!}
                             hint={state ? null : calendarIcon}
                         />
                     </React.Fragment>
                 ) : (
+                    // @ts-expect-error 因为 sharedProps 类型不匹配，导致 rangeProps 类型不匹配 */}
                     <Input
                         {...sharedProps}
                         label={label}
                         state={state}
-                        disabled={disabled}
-                        hasClear={!state && hasClear}
-                        placeholder={placeholder}
+                        disabled={disabled as boolean}
+                        hasClear={!state && hasClear!}
+                        placeholder={placeholder as string}
                         autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus
                         ref={setInputRef}
-                        value={value || ''}
+                        value={(value as string) || ''}
                         hint={state ? null : calendarIcon}
                     />
                 )}

@@ -1,206 +1,426 @@
-/// <reference types="react" />
+import type {
+    CSSProperties,
+    HTMLAttributes,
+    InputHTMLAttributes,
+    JSXElementConstructor,
+    ReactNode,
+} from 'react';
+import type { Dayjs, ConfigType } from 'dayjs';
 
-import React from 'react';
-import { CommonProps } from '../util';
-import { PopupProps } from '../overlay';
-import { InputProps } from '../input';
-import { ButtonProps } from '../button';
-import { Dayjs, ConfigType } from 'dayjs';
+import type { CommonProps } from '../util';
+import type { PopupProps } from '../overlay';
+import type { InputProps } from '../input';
+import type { ButtonProps } from '../button';
+import type { Locale } from '../locale/types';
+import type { TIME_INPUT_TYPE } from './constant';
 
-interface IPresetType {
+export interface DateInputProps extends CommonProps, TimeMenuPropsCommonHTMLAttributes {
+    prefix?: string;
+    rtl?: boolean;
+    locale?: Locale['Input'];
+    value?: string | string[];
+    inputType?: InputType;
+    format?: string | ((v: Dayjs) => Dayjs);
+    isRange?: boolean;
+    hasClear?: boolean | null;
+    onInput?: (v: string | number | null | (string | number | null)[], evetType?: string) => void;
+    onInputTypeChange?: (v: number) => void;
+    autoFocus?: boolean;
+    readOnly?: boolean;
+    placeholder?: string;
+    size?: 'small' | 'medium' | 'large';
+    focus?: boolean;
+    hasBorder?: boolean;
+    onKeyDown?: (e: KeyboardEvent) => void;
+    onClick?: InputProps['onClick'];
+    separator?: ReactNode;
+    disabled?: boolean | boolean[];
+    inputProps?: object;
+    label?: ReactNode;
+    state?: InputProps['state'];
+}
+type InputType = (typeof TIME_INPUT_TYPE)[keyof typeof TIME_INPUT_TYPE];
+
+export interface PresetType extends Omit<ButtonProps, 'value' | 'label'> {
     label?: string;
-    value?: ConfigType | (() => ConfigType);
+    value?: ConfigType | ConfigType[] | (() => ConfigType | ConfigType[]);
 }
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    defaultValue?: any;
-    onChange?: any;
+interface HTMLAttributesWeak
+    extends Omit<HTMLAttributes<HTMLElement>, 'onChange' | 'defaultValue'> {}
+
+interface TimeMenuPropsCommonHTMLAttributes
+    extends Omit<
+        InputHTMLAttributes<HTMLElement>,
+        'value' | 'onKeyDown' | 'size' | 'onInput' | 'disabled'
+    > {}
+
+export interface TimeMenuProps
+    extends CommonProps,
+        Omit<TimeMenuPropsCommonHTMLAttributes, 'title' | 'onSelect'> {
+    prefix?: string;
+    title?: ReactNode;
+    mode?: 'hour' | 'minute' | 'second';
+    step?: number;
+    activeIndex: number;
+    value?: Dayjs | null;
+    disabledItems?: (index: number) => boolean;
+    renderTimeMenuItems?: (
+        list: Array<TimeMenuListItem>,
+        mode: TimeMenuProps['mode'],
+        value: TimeMenuProps['value']
+    ) => Array<TimeMenuListItem>;
+    onSelect?: (value: TimeMenuListItem['value'], mode: TimeMenuProps['mode']) => void;
+    disabled?: boolean;
+}
+export interface TimeMenuListItem {
+    label: ReactNode;
+    value: number;
 }
 
-export interface DatePreset extends ButtonProps {
-    label: string;
-    // 时间值（dayjs 对象或时间字符串）或者返回时间值的函数
-    value: any;
+export interface PanelProps
+    extends Omit<CommonProps, 'locale'>,
+        Pick<
+            TimePickerProps,
+            | 'prefix'
+            | 'locale'
+            | 'hourStep'
+            | 'minuteStep'
+            | 'secondStep'
+            | 'disabledHours'
+            | 'disabledMinutes'
+            | 'disabledSeconds'
+            | 'renderTimeMenuItems'
+            | 'locale'
+        > {
+    /**
+     * 是否显示小时
+     */
+    showHour: boolean;
+
+    /**
+     * 是否显示分钟
+     */
+    showSecond: boolean;
+
+    /**
+     * 是否显示秒
+     */
+    showMinute: boolean;
+    value?: ValueType;
+
+    /**
+     * 选择某个日期值时的回调
+     */
+    onSelect: (value: Dayjs | Dayjs[], type: PannelType) => void;
+    className?: string;
+    isRange: boolean;
+    disabled: boolean;
 }
 
-export interface RangePreset {
-    [propName: string]: Dayjs[];
-}
+export type PannelType = 'start' | 'end' | 'panel';
 
-export type StateValue = Dayjs | null;
-
-export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
+/**
+ * @api 公共 API
+ */
+export interface TimePickerCommonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮的文案
+     * @en Button text
      */
-    label?: React.ReactNode;
+    label?: ReactNode;
+
+    /**
+     * @deprecated use Form.Item name instead
+     * @skip
+     */
     name?: string;
 
     /**
-     * 输入框状态
-     */
-    state?: 'error' | 'success';
-
-    /**
-     * 输入框提示
-     */
-    placeholder?: string;
-
-    /**
-     * 时间值（dayjs 对象或时间字符串，受控状态使用）
-     */
-    value?: ConfigType;
-
-    /**
-     * 时间初值（dayjs 对象或时间字符串，非受控状态使用）
-     */
-    defaultValue?: ConfigType;
-
-    /**
      * 时间选择框的尺寸
+     * @en size of time picker
+     * @defaultValue 'medium'
      */
     size?: 'small' | 'medium' | 'large';
 
     /**
+     * 输入框状态
+     * @en input state
+     */
+    state?: 'error' | 'success';
+
+    /**
      * 是否允许清空时间
+     * @en whether to allow clearing time
+     * @defaultValue true
      */
     hasClear?: boolean;
 
     /**
      * 时间的格式
-     * https://dayjs.gitee.io/docs/zh-CN/display/format
+     * @en time format
+     * @remarks see https://Dayjsjs.com/docs/#/parsing/string-format/
+     * @defaultValue 'HH:mm:ss'
      */
     format?: string;
 
     /**
      * 小时选项步长
+     * @en hour option step
      */
     hourStep?: number;
 
     /**
      * 分钟选项步长
+     * @en minute option step
      */
     minuteStep?: number;
 
     /**
      * 秒钟选项步长
+     * @en second option step
      */
     secondStep?: number;
 
     /**
-     * 禁用小时函数
+     * 渲染的可选择时间列表 [\{ label: '01', value: 1 \}]
+     * @en render the selectable time list
+     * @param list - 默认渲染的列表
+     * @param mode - 渲染的菜单 hour, minute, second
+     * @param value - 当前时间，可能为 null
+     * @returns 返回需要渲染的数据
      */
-    disabledHours?: (index: number) => boolean;
-
-    /**
-     * 禁用分钟函数
-     */
-    disabledMinutes?: (index: number) => boolean;
-
-    /**
-     * 禁用秒钟函数
-     */
-    disabledSeconds?: (index: number) => boolean;
+    renderTimeMenuItems?: (
+        list: Array<TimeMenuListItem>,
+        mode: TimeMenuProps['mode'],
+        value: TimeMenuProps['value']
+    ) => Array<TimeMenuListItem>;
 
     /**
      * 弹层是否显示（受控）
+     * @en popup layer display status (controlled)
      */
     visible?: boolean;
 
     /**
      * 弹层默认是否显示（非受控）
+     * @en popup layer default display status (uncontrolled)
      */
     defaultVisible?: boolean;
 
     /**
      * 弹层容器
+     * @en popup layer container
      */
     popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
-     * 弹层对齐方式, 详情见Overlay 文档
+     * 弹层对齐方式，详情见 Overlay 文档
+     * @en popup layer alignment, see Overlay documentation
+     * @defaultValue 'tl bl'
      */
     popupAlign?: string;
 
     /**
      * 弹层触发方式
+     * @en popup layer trigger type
+     * @defaultValue 'click'
      */
     popupTriggerType?: 'click' | 'hover';
 
     /**
      * 弹层展示状态变化时的回调
+     * @en callback when the popup layer display status changes
      */
-    onVisibleChange?: (visible: boolean, reason: string) => void;
+    onVisibleChange?: (visible: boolean, reason?: string) => void;
 
     /**
      * 弹层自定义样式
+     * @en popup layer custom style
      */
-    popupStyle?: React.CSSProperties;
+    popupStyle?: CSSProperties;
 
     /**
      * 弹层自定义样式类
+     * @en popup layer custom style class
      */
     popupClassName?: string;
 
     /**
      * 弹层属性
+     * @en popup layer property
      */
     popupProps?: PopupProps;
 
     /**
-     * 是否禁用
+     * 跟随触发元素
+     * @en follow trigger element
      */
-    disabled?: boolean;
+    followTrigger?: boolean;
 
     /**
-     * 输入框是否有边框
+     * 是否有边框
+     * @en has border
+     * @defaultValue true
      */
     hasBorder?: boolean;
 
     /**
-     * 透传给 Input 的属性
-     */
-    inputProps?: InputProps;
-
-    /**
      * 是否为预览态
+     * @en is preview
      */
     isPreview?: boolean;
 
     /**
      * 预览态模式下渲染的内容
-     * @param value 时间
+     * @en content of preview mode
      */
-    renderPreview?: (value: StateValue | [StateValue, StateValue]) => React.ReactNode;
+    renderPreview?: (value: ValueType, props: TimePickerProps) => ReactNode;
 
     /**
-     * 预设值，会显示在时间面板下面
+     * 自定义输入框属性
+     * @en custom input property
      */
-    ranges?: RangePreset | DatePreset[];
+    inputProps?: InputProps;
+
+    /**
+     * 国际化
+     * @en internationalization
+     * @skip
+     */
+    locale?: Locale['TimePicker'];
+
+    /**
+     * 弹层组件
+     * @en popup component
+     * @skip
+     */
+    popupComponent?: JSXElementConstructor<PopupProps>;
+}
+
+/**
+ * @api Time Picker 2
+ */
+export interface TimePickerProps extends TimePickerCommonProps {
+    /**
+     * 输入框提示
+     * @en input hint
+     */
+    placeholder?: string;
+
+    /**
+     * 时间值（Dayjs 对象或时间字符串，受控状态使用）
+     * @en time value (Dayjs object or time string, controlled state use)
+     */
+    value?: string | Dayjs | null | (Dayjs | null | string)[];
+
+    /**
+     * 时间初值（Dayjs 对象或时间字符串，非受控状态使用）
+     * @en time init value (Dayjs object or time string, uncontrolled state use)
+     */
+    defaultValue?: string | Dayjs | (Dayjs | null)[];
+
+    /**
+     * 禁用小时的函数
+     * @en disable hour function
+     */
+    disabledHours?: (index?: number) => boolean | number[];
+
+    /**
+     * 禁用分钟函数
+     * @en disable minute function
+     */
+    disabledMinutes?: (index?: number) => boolean | number[];
+
+    /**
+     * 禁用秒钟函数
+     * @en disable second function
+     */
+    disabledSeconds?: (index?: number) => boolean | number[];
 
     /**
      * 时间值改变时的回调
+     * @en callback when the time value changes
      */
-    onChange?: (date: Dayjs, dateString: string) => void;
+    onChange?: (value: ValueType) => void;
+
+    /**
+     * 时间类型
+     * @en time type
+     * @skip
+     * @defaultValue 'time'
+     */
+    type?: 'time' | 'range';
+
+    /**
+     * 预设值，会显示在时间面板下面
+     * @en preset value, will be displayed below the time panel
+     */
+    preset?: PresetType | PresetType[];
+
+    /**
+     * 禁用
+     * @en disable
+     * @defaultValue false
+     */
+    disabled?: boolean | boolean[];
 }
 
+export interface TimePickerState {
+    value?: ValueType;
+    visible?: boolean | undefined;
+    inputStr?: string | string[];
+    inputing?: boolean;
+    isRange?: boolean;
+    inputValue?: string | string[];
+    curValue?: ValueType;
+    preValue?: ValueType;
+    selecting?: boolean;
+    inputType?: number;
+    justBeginInput?: boolean;
+}
+
+export type ValueType = Dayjs | (Dayjs | null)[] | null;
+/**
+ * @api Time Picker RangePicker
+ */
 export interface RangePickerProps
     extends Omit<
         TimePickerProps,
         'value' | 'placeholder' | 'defaultValue' | 'onOk' | 'disabled' | 'onChange' | 'preset'
     > {
+    /**
+     * 输入框提示
+     * @en input hint
+     */
+    placeholder?: string | string[];
+
+    /**
+     * 时间值（Dayjs 对象或时间字符串，受控状态使用）
+     * @en time value (Dayjs object or time string, controlled state use)
+     */
     value?: Array<ConfigType>;
+
+    /**
+     * 时间初值（Dayjs 对象或时间字符串，非受控状态使用）
+     * @en time init value (Dayjs object or time string, uncontrolled state use)
+     */
     defaultValue?: Array<ConfigType>;
-    onOk?: (value: Array<Dayjs>, strVal: Array<string>) => void;
-    onChange?: (value: Array<Dayjs>, strVal: Array<string>) => void;
-    placeholder?: string | Array<string>;
-    disabled?: boolean | boolean[];
-    preset?: IPresetType | IPresetType[];
-}
 
-export class RangePicker extends React.Component<RangePickerProps, any> {
-    type: 'range';
-}
+    /**
+     * 时间值改变时的回调
+     * @en callback when the time value changes
+     */
+    onChange?: (value: Array<Dayjs>) => void;
 
-export default class TimePicker extends React.Component<TimePickerProps, any> {
-    static RangePicker: typeof RangePicker;
+    /**
+     * 确定按钮点击时的回调
+     * @en callback when the ok button is clicked
+     */
+    onOk?: (value: Array<Dayjs>) => void;
+
+    /**
+     * 预设值，会显示在时间面板下面
+     * @en preset value, will be displayed below the time panel
+     */
+    preset?: PresetType[];
 }
