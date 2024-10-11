@@ -2,9 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import { Demo, DemoGroup, initDemo, type DemoFunctionDefineForObject } from '../../../demo-helper';
 import '../../style';
 import Range from '../../index';
+import type { RangeProps } from '../../types';
+
+interface FuncDemoProps {
+    i18n: Record<string, string>;
+}
+interface FuncDemoState {
+    demoFunction: Record<string, DemoFunctionDefineForObject>;
+}
 
 const i18nMap = {
     'zh-cn': {
@@ -15,7 +23,11 @@ const i18nMap = {
     },
 };
 
-function ItemDemo({ title, marksPosition, ...others }) {
+function ItemDemo({
+    title,
+    marksPosition,
+    ...others
+}: RangeProps & { title: string; scales?: number }) {
     return (
         <Demo title={title}>
             <DemoGroup label="Normal">
@@ -47,8 +59,8 @@ ItemDemo.propTypes = {
     marksPosition: PropTypes.bool,
 };
 
-class OriginalDemo extends Component {
-    constructor(props) {
+class OriginalDemo extends Component<FuncDemoProps, FuncDemoState> {
+    constructor(props: FuncDemoProps) {
         super(props);
         this.state = {
             demoFunction: {
@@ -66,7 +78,7 @@ class OriginalDemo extends Component {
         this.onFunctionChange = this.onFunctionChange.bind(this);
     }
 
-    onFunctionChange(demoFunction) {
+    onFunctionChange(demoFunction: Record<string, DemoFunctionDefineForObject>) {
         this.setState({
             demoFunction,
         });
@@ -74,7 +86,7 @@ class OriginalDemo extends Component {
 
     render() {
         const { demoFunction } = this.state;
-        const marksPosition = demoFunction.marksPosition.value;
+        const marksPosition = demoFunction.marksPosition.value as RangeProps['marksPosition'];
 
         return (
             <Demo
@@ -127,11 +139,11 @@ function NormalRange() {
     );
 }
 
-const render = i18n => {
+const render = (i18n: Record<string, string>) => {
     ReactDOM.render(
         <div className="demo-container">
             <NormalRange />
-            <OriginalDemo />
+            <OriginalDemo i18n={i18n} />
         </div>,
         document.getElementById('container')
     );
