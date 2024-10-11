@@ -1,34 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { mount, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import simulateEvent from 'simulate-event';
-import assert from 'power-assert';
-import sinon from 'sinon';
 import Range from '../index';
-import { unmount, testReact } from '../../util/__tests__/legacy/a11y/validate';
-
-/* eslint-disable react/no-multi-comp */
-Enzyme.configure({ adapter: new Adapter() });
+import { testReact } from '../../util/__tests__/a11y/validate';
 
 describe('Range A11y', () => {
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-        unmount();
-    });
     it('should not have any violations for range without tips', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Range defaultValue={10} hasTip={false} tooltipVisible={false} />
             </div>
         );
-        return wrapper;
     });
 
     /**
@@ -36,12 +16,12 @@ describe('Range A11y', () => {
      * To fix this will require structural change, ignore temporarily.
      */
     it.skip('should not have any violations for range with tips', async () => {
-        wrapper = await testReact(
+        await testReact(
             <div>
                 <Range
                     defaultValue={512}
-                    hasTip={true}
-                    tooltipVisible={true}
+                    hasTip
+                    tooltipVisible
                     min={0}
                     max={1024}
                     step={128}
@@ -49,6 +29,5 @@ describe('Range A11y', () => {
                 />
             </div>
         );
-        return wrapper;
     });
 });

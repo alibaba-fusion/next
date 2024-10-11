@@ -1,8 +1,10 @@
 import ConfigProvider from '../config-provider';
 import Range from './view/range';
 
+export type { RangeProps, RangeValueType } from './types';
+
 export default ConfigProvider.config(Range, {
-    transform: /* istanbul ignore next */ (props, deprecated) => {
+    transform: (props, deprecated) => {
         if ('hasTips' in props) {
             deprecated('hasTips', 'hasTip', 'Range');
 

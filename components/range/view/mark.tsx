@@ -1,9 +1,10 @@
-import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { inRange, getPercent } from '../utils';
+import type { RangeMarkProps } from '../types';
 
-export default class Mark extends React.Component {
+export default class Mark extends React.Component<RangeMarkProps> {
     static propTypes = {
         min: PropTypes.number,
         max: PropTypes.number,
@@ -25,21 +26,24 @@ export default class Mark extends React.Component {
 
     _renderItems() {
         const { min, max, value, prefix, marks, rtl } = this.props;
-        const items = [];
+        const items: React.ReactNode[] = [];
 
         Object.keys(marks).forEach((mark, i) => {
             const classes = classNames({
                 [`${prefix}range-mark-text`]: true,
+                // @ts-expect-error mark 为 string 类型，应该转换为 number
                 activated: inRange(mark, value, min),
             });
             let style;
             if (rtl) {
                 style = {
+                    // @ts-expect-error mark 为 string 类型，应该转换为 number
                     right: `${getPercent(min, max, mark)}%`,
                     left: 'auto',
                 };
             } else {
                 style = {
+                    // @ts-expect-error mark 为 string 类型，应该转换为 number
                     left: `${getPercent(min, max, mark)}%`,
                     right: 'auto',
                 };
@@ -48,6 +52,7 @@ export default class Mark extends React.Component {
             items.push(
                 // "key" is for https://fb.me/react-warning-keys
                 <span className={classes} style={style} key={i}>
+                    {/* @ts-expect-error mark 为 string 类型，应该转换为 number */}
                     {marks[mark]}
                 </span>
             );

@@ -1,474 +1,410 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { mount, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import simulateEvent from 'simulate-event';
-import assert from 'power-assert';
-import sinon from 'sinon';
 import Range from '../index';
+import '../style';
 
-/* eslint-disable react/no-multi-comp */
-
-Enzyme.configure({ adapter: new Adapter() });
+const checkRangeSelectedDomWidthAndLeft = (width: string, left: string) => {
+    cy.get('.next-range-selected')
+        .should('exist')
+        .then($el => {
+            expect({
+                width: $el[0].style.width,
+                left: $el[0].style.left,
+            }).deep.equal({
+                width,
+                left,
+            });
+        });
+};
 
 describe('Range ', () => {
-    afterEach(() => {
-        //清楚所有浮层
-        const nodeListArr = [].slice.call(document.querySelectorAll('.next-balloon-tooltip'));
-        nodeListArr.forEach((node, index) => {
-            node.parentNode.removeChild(node);
-        });
+    beforeEach(() => {
+        // 在模拟鼠标选中滑动的用例中由于 body 可能存在 margin 样式，使用例中 pageX 设值偏移，从而无法选中
+        document.body.style.marginLeft = '0px';
     });
-
+    afterEach(() => {
+        document.body.style.marginLeft = '';
+    });
     it('defaultValue', () => {
-        const wrapperSingle = mount(<Range defaultValue={10} />);
-        const wrapperDouble = mount(<Range slider="double" defaultValue={[10, 30]} />);
+        cy.mount(<Range defaultValue={10} />).as('el');
+        checkRangeSelectedDomWidthAndLeft('10%', '0%');
 
-        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, {
-            width: '10%',
-            left: '0%',
-        });
-        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, {
-            width: '20%',
-            left: '10%',
-        });
-        wrapperSingle.setProps({
-            defaultValue: 20,
-        });
-        wrapperDouble.setProps({
-            defaultValue: [30, 40],
-        });
-        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, {
-            width: '10%',
-            left: '0%',
-        });
-        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, {
-            width: '20%',
-            left: '10%',
-        });
+        cy.rerender('el', { defaultValue: 20 });
+        checkRangeSelectedDomWidthAndLeft('10%', '0%');
+
+        cy.mount(<Range defaultValue={[10, 30]} slider="double" />).as('el');
+        checkRangeSelectedDomWidthAndLeft('20%', '10%');
+
+        cy.rerender('el', { defaultValue: [30, 40] });
+        checkRangeSelectedDomWidthAndLeft('20%', '10%');
     });
     it('value', () => {
-        const wrapperSingle = mount(<Range value={10} />);
-        const wrapperDouble = mount(<Range value={[10, 30]} />);
+        cy.mount(<Range value={10} />).as('el');
+        checkRangeSelectedDomWidthAndLeft('10%', '0%');
 
-        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, {
-            width: '10%',
-            left: '0%',
-        });
-        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, {
-            width: '20%',
-            left: '10%',
-        });
-        wrapperSingle.setProps({
-            value: 20,
-        });
-        wrapperDouble.setProps({
-            value: [30, 40],
-        });
-        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, {
-            width: '20%',
-            left: '0%',
-        });
-        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, {
-            width: '10%',
-            left: '30%',
-        });
+        cy.rerender('el', { value: 20 });
+        checkRangeSelectedDomWidthAndLeft('20%', '0%');
+
+        cy.mount(<Range value={[10, 30]} slider="double" />).as('el');
+        checkRangeSelectedDomWidthAndLeft('20%', '10%');
+
+        cy.rerender('el', { value: [30, 40] });
+        checkRangeSelectedDomWidthAndLeft('10%', '30%');
     });
     it('min max', () => {
-        const wrapper = mount(<Range min={10} value={20} max={30} />);
-        assert.deepEqual(wrapper.find('.next-range-selected').props().style, {
-            width: '50%',
-            left: '0%',
-        });
+        cy.mount(<Range min={10} value={20} max={30} />);
+        checkRangeSelectedDomWidthAndLeft('50%', '0%');
     });
     it('disabled', () => {
-        const wrapper = mount(<Range disabled value={20} />);
-        assert(wrapper.find('.next-range.disabled').length === 1);
+        cy.mount(<Range disabled value={20} />);
+        cy.get('.next-range.disabled').should('have.length', 1);
     });
     it('step', () => {
-        const wrapper1 = mount(<Range value={20} step={10} />);
-        const wrapper2 = mount(<Range min={0} max={1} step={0.01} />);
-        wrapper2.find('.next-range').simulate('mousedown', { pageX: 1 });
-
-        // 这里模拟的pageX 无效
-        simulateEvent.simulate(document, 'mousemove', { pageX: 2 });
-        simulateEvent.simulate(document, 'mouseup');
-        //TODO
-        assert(wrapper1.props().step === 10);
-        assert(wrapper2.props().step === 0.01);
+        cy.mount(<Range min={0} max={1} step={0.03} />);
+        cy.get('.next-range-slider').trigger('mousedown', {
+            button: 0,
+            pageX: 0,
+            pageY: 0,
+        });
+        cy.get('.next-range-slider').trigger('mousemove', {
+            pageX: 30,
+            pageY: 0,
+            type: 'mousemove',
+        });
+        cy.get('.next-range-slider').trigger('mouseup', {
+            pageX: 30,
+            pageY: 0,
+        });
+        checkRangeSelectedDomWidthAndLeft('3%', '0%');
     });
 
     it('hasTip === true and tipRender', () => {
-        const tipRender = sinon.spy();
-        const wrapper = mount(<Range value={20} hasTip tipRender={tipRender} />);
-
-        wrapper.find('.next-range-slider').simulate('mouseenter');
-
-        assert(tipRender.called);
+        const tipRender = (value: number) => {
+            expect(value).equal(20);
+            return <div className="custom-tip">{value}</div>;
+        };
+        cy.mount(<Range value={20} hasTip tipRender={tipRender} />);
+        cy.get('.next-range-slider').trigger('mouseover', {
+            pageX: 0,
+            pageY: 0,
+        });
+        cy.then(() => {
+            cy.get('.custom-tip').should('exist');
+        });
     });
 
-    it('hasTip === false', done => {
-        const wrapper1 = mount(<Range disabled value={20} hasTip={false} />);
-
-        wrapper1.find('.next-range-slider').simulate('mouseenter');
-
-        assert(document.querySelector('.next-balloon-tooltip') === null);
-        done();
+    it('hasTip === false', () => {
+        const tipRender = (value: number) => {
+            expect(value).equal(20);
+            return <div className="custom-tip">{value}</div>;
+        };
+        cy.mount(<Range value={20} hasTip={false} tipRender={tipRender} />);
+        cy.get('.next-range-slider').trigger('mouseover', {
+            pageX: 0,
+            pageY: 0,
+        });
+        cy.then(() => {
+            cy.get('.custom-tip').should('not.exist');
+        });
     });
     it('marks', () => {
-        const wrapper = mount(<Range defaultValue={30} marks={[3, 26, 37, 100]} />);
-        const wrapper2 = mount(<Range defaultValue={30} marks={10} />);
+        cy.mount(<Range defaultValue={30} marks={[3, 26, 37, 100]} />).as('el');
+        cy.get('.next-range-scale-item').should('have.length', 4);
+        cy.get('.next-range-scale-item.activated').should('have.length', 2);
+        cy.get('.next-range-scale-item')
+            .first()
+            .should('have.attr', 'style', 'left: 3%; right: auto;');
+        cy.get('.next-range-scale-item')
+            .eq(1)
+            .should('have.attr', 'style', 'left: 26%; right: auto;');
+        cy.get('.next-range-scale-item')
+            .eq(2)
+            .should('have.attr', 'style', 'left: 37%; right: auto;');
 
-        const wrapper3 = mount(
-            <Range defaultValue={26} marks={{ 0: '0°C', 26: '26°C', 37: '37°C', 100: '100°C' }} />
-        );
+        cy.rerender('el', { marks: 10 });
+        cy.get('.next-range-scale-item').should('have.length', 11);
 
-        assert(wrapper.find('.next-range-scale-item').length === 4);
-        assert(wrapper.find('.next-range-scale-item.activated').length === 2);
-        assert(wrapper.find('.next-range-scale-item').first().props().style.left === '3%');
-        assert(wrapper.find('.next-range-scale-item').at(1).props().style.left === '26%');
-        assert(wrapper.find('.next-range-scale-item').at(2).props().style.left === '37%');
-        assert(wrapper2.find('.next-range-scale-item').length === 11);
-        assert(wrapper3.find('.next-range-scale-item').length === 4);
-        assert(wrapper3.find('.next-range-mark-text').first().text() === '0°C');
+        cy.rerender('el', { marks: { 0: '0°C', 26: '26°C', 37: '37°C', 100: '100°C' } });
+        cy.get('.next-range-scale-item').should('have.length', 4);
+        cy.get('.next-range-mark-text').first().should('have.text', '0°C');
     });
 
-    it('laptop dragging onChange onProcess', done => {
-        let changeValue = 0;
-        let processValue = 0;
-        let onChangeCall = 0;
-        let processCall = 0;
-        const wrapper = mount(
+    it('laptop dragging onChange onProcess', () => {
+        const handleChange = cy.spy().as('onChange');
+        const handleProcess = cy.spy().as('onProcess');
+        cy.mount(
             <Range
                 defaultValue={10}
                 style={{ width: 100 }}
                 marks={[0, 26, 37, 100]}
-                onChange={function (value) {
-                    // console.log('onChange', value);
-                    changeValue = value;
-                    onChangeCall++;
-                }}
-                onProcess={function (value) {
-                    // console.log('onProcess', value);
-                    processValue = value;
-                    processCall++;
-                }}
+                onChange={handleChange}
+                onProcess={handleProcess}
                 min={0}
                 max={100}
             />
-        );
-
-        const RangeInstance = wrapper.find('Range').at(0).instance();
-        RangeInstance._onMouseDown({
-            button: 0,
-            pageX: 10,
-            stopPropagation: () => {},
-            preventDefault: () => {},
-        });
-        RangeInstance._move({
-            pageX: 20,
-            type: 'mousemove',
-            stopPropagation: () => {},
-            preventDefault: () => {},
-        });
-        RangeInstance._end();
-
-        assert(processValue === 20);
-        assert(processCall === 1);
-        assert(onChangeCall === 1);
-        done();
+        )
+            .get('.next-range-slider')
+            .trigger('mousedown', { button: 0, pageX: 10 });
+        cy.get('.next-range-slider').trigger('mousemove', { type: 'mousemove', pageX: 20 });
+        cy.get('.next-range-slider').trigger('mouseup', { pageX: 20 });
+        cy.get('@onChange').should('be.calledOnce');
+        cy.get('@onChange').should('be.calledWith', 20);
+        cy.get('@onProcess').should('be.calledOnce');
+        cy.get('@onProcess').should('be.calledWith', 20);
     });
 
-    it('mobile dragging onChange onProcess', done => {
-        let changeValue = 0;
-        let processValue = 0;
-        let onChangeCall = 0;
-        let processCall = 0;
-        const wrapper = mount(
+    it('mobile dragging onChange onProcess', () => {
+        const handleChange = cy.spy().as('onChange');
+        const handleProcess = cy.spy().as('onProcess');
+        cy.mount(
             <Range
                 defaultValue={10}
                 style={{ width: 100 }}
                 marks={[0, 26, 37, 100]}
-                onChange={function (value) {
-                    // console.log('onChange', value);
-                    changeValue = value;
-                    onChangeCall++;
-                }}
-                onProcess={function (value) {
-                    // console.log('onProcess', value);
-                    processValue = value;
-                    processCall++;
-                }}
+                onChange={handleChange}
+                onProcess={handleProcess}
                 min={0}
                 max={100}
             />
-        );
-
-        const RangeInstance = wrapper.find('Range').at(0).instance();
-        RangeInstance._onTouchStart({
-            targetTouches: [{ pageX: 10 }],
-            stopPropagation: () => {},
-            preventDefault: () => {},
-        });
-        RangeInstance._move({
-            targetTouches: [{ pageX: 20 }],
+        )
+            .get('.next-range-slider')
+            .trigger('touchstart', { button: 0, targetTouches: [{ pageX: 10 }] });
+        cy.get('.next-range-slider').trigger('touchmove', {
             type: 'touchmove',
-            stopPropagation: () => {},
-            preventDefault: () => {},
+            targetTouches: [{ pageX: 20 }],
         });
-        RangeInstance._end();
-
-        assert(processValue === 20);
-        assert(processCall === 1);
-        assert(onChangeCall === 1);
-        done();
+        cy.get('.next-range-slider').trigger('touchend', { targetTouches: [{ pageX: 20 }] });
+        cy.get('@onChange').should('be.calledOnce');
+        cy.get('@onChange').should('be.calledWith', 20);
+        cy.get('@onProcess').should('be.calledOnce');
+        cy.get('@onProcess').should('be.calledWith', 20);
     });
 
-    it('exchange upper and lower', done => {
-        let changeValue = 0;
-
-        const wrapper = mount(
+    it('exchange upper and lower', () => {
+        const handleChange = cy.spy().as('onChange');
+        cy.mount(
             <Range
                 slider="double"
                 defaultValue={[10, 20]}
                 style={{ width: 100 }}
                 marks={[0, 100]}
-                onChange={function (value) {
-                    // console.log('onChange', value);
-                    changeValue = value;
-                }}
+                onChange={handleChange}
                 min={0}
                 max={100}
             />
-        );
+        )
+            .get('.next-range-slider')
+            .eq(1)
+            .trigger('mousedown', { button: 0, pageX: 20 });
+        cy.get('.next-range-slider').eq(1).trigger('mousemove', { type: 'mousemove', pageX: 30 });
+        cy.get('.next-range-slider').eq(1).trigger('mouseup', { pageX: 30 });
+        cy.get('.next-range-slider').eq(0).trigger('mousedown', { button: 0, pageX: 10 });
+        cy.get('.next-range-slider').eq(0).trigger('mousemove', { type: 'mousemove', pageX: 20 });
+        cy.get('.next-range-slider').eq(0).trigger('mouseup', { pageX: 30 });
+        cy.get('@onChange').should('be.calledWith', [20, 30]);
 
-        const RangeInstance = wrapper.find('Range').at(0).instance();
-        RangeInstance._onMouseDown({
-            button: 0,
-            pageX: 10,
-            stopPropagation: () => {},
-            preventDefault: () => {},
-        });
-        RangeInstance._move({
-            pageX: 30,
-            type: 'mousemove',
-            stopPropagation: () => {},
-            preventDefault: () => {},
-        });
-        RangeInstance._end();
-
-        assert(changeValue[0] === 20);
-        assert(changeValue[1] === 30);
-
-        RangeInstance._onMouseDown({
-            button: 0,
-            pageX: 30,
-            stopPropagation: () => {},
-            preventDefault: () => {},
-        });
-        RangeInstance._move({
-            pageX: 0,
-            type: 'mousemove',
-            stopPropagation: () => {},
-            preventDefault: () => {},
-        });
-        RangeInstance._end();
-
-        assert(changeValue[0] === 0);
-        assert(changeValue[1] === 20);
-        done();
+        cy.get('.next-range-slider').eq(0).trigger('mousedown', { button: 0, pageX: 20 });
+        cy.get('.next-range-slider').eq(0).trigger('mousemove', { type: 'mousemove', pageX: 0 });
+        cy.get('.next-range-slider').eq(0).trigger('mouseup', { pageX: 0 });
+        cy.get('.next-range-slider').eq(1).trigger('mousedown', { button: 0, pageX: 30 });
+        cy.get('.next-range-slider').eq(1).trigger('mousemove', { type: 'mousemove', pageX: 20 });
+        cy.get('.next-range-slider').eq(1).trigger('mouseup', { pageX: 20 });
+        cy.get('@onChange').should('be.calledWith', [0, 20]);
     });
 
     it('value bigger max', () => {
-        const wrapperSingle = mount(<Range value={100} max={10} min={1} />);
-        const wrapperDouble = mount(<Range slider="double" value={[100, 200]} max={10} min={1} />);
+        cy.mount(<Range value={100} max={10} min={1} />);
+        cy.get('.next-range-slider')
+            .should('exist')
+            .then($el => {
+                expect({
+                    zIndex: $el[0].style.zIndex,
+                    left: $el[0].style.left,
+                }).deep.equal({
+                    zIndex: '100',
+                    left: '100%',
+                });
+            });
 
-        assert.deepEqual(wrapperSingle.find('.next-range-slider').props().style, {
-            zIndex: 100,
-            left: '100%',
-        });
-        assert.deepEqual(wrapperDouble.find('.next-range-slider').at(0).props().style, {
-            zIndex: 100,
-            left: '100%',
-        });
-        assert.deepEqual(wrapperDouble.find('.next-range-slider').at(1).props().style, {
-            zIndex: 100,
-            left: '100%',
-        });
+        cy.mount(<Range slider="double" value={[100, 200]} max={10} min={1} />);
+        cy.get('.next-range-slider')
+            .eq(0)
+            .should('exist')
+            .then($el => {
+                expect({
+                    zIndex: $el[0].style.zIndex,
+                    left: $el[0].style.left,
+                }).deep.equal({
+                    zIndex: '100',
+                    left: '100%',
+                });
+            });
+        cy.get('.next-range-slider')
+            .eq(1)
+            .should('exist')
+            .then($el => {
+                expect({
+                    zIndex: $el[0].style.zIndex,
+                    left: $el[0].style.left,
+                }).deep.equal({
+                    zIndex: '100',
+                    left: '100%',
+                });
+            });
     });
 
-    it('set value === undefined for reset ', () => {
-        const wrapperSingle = mount(<Range value={10} min={2} />);
-        const wrapperDouble = mount(<Range value={[10, 30]} />);
+    it('set value === undefined for reset', () => {
+        cy.mount(<Range min={2} value={10} />).as('el');
+        checkRangeSelectedDomWidthAndLeft('8.16327%', '0%');
+        cy.rerender('@el', { value: undefined });
+        checkRangeSelectedDomWidthAndLeft('0%', '0%');
 
-        wrapperSingle.setProps({
-            value: undefined,
-        });
-        wrapperDouble.setProps({
-            value: undefined,
-        });
-        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, {
-            width: '0%',
-            left: '0%',
-        });
-        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, {
-            width: '0%',
-            left: '0%',
-        });
+        cy.mount(<Range slider="double" value={[10, 30]} />).as('el');
+        checkRangeSelectedDomWidthAndLeft('20%', '10%');
+        cy.rerender('@el', { value: undefined });
+        checkRangeSelectedDomWidthAndLeft('0%', '0%');
     });
-    it('reverse  ', () => {
-        const wrapperSingle = mount(<Range defaultValue={10} reverse />);
-        const wrapperDouble = mount(<Range slider="double" defaultValue={[10, 30]} reverse />);
+    it('reverse', () => {
+        cy.mount(<Range defaultValue={10} reverse />);
+        checkRangeSelectedDomWidthAndLeft('90%', '10%');
 
-        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, {
-            width: '90%',
-            left: '10%',
-        });
-        assert(wrapperDouble.find('.next-range-selected').length === 2);
+        cy.mount(<Range slider="double" defaultValue={[10, 30]} reverse />);
+        cy.get('.next-range-selected').should('have.length', 2);
+        cy.get('.next-range-selected')
+            .eq(0)
+            .then($el => {
+                expect({
+                    width: $el[0].style.width,
+                    left: $el[0].style.left,
+                }).deep.equal({
+                    width: '10%',
+                    left: '0px',
+                });
+            });
+        cy.get('.next-range-selected')
+            .eq(1)
+            .then($el => {
+                expect({
+                    width: $el[0].style.width,
+                    left: $el[0].style.left,
+                }).deep.equal({
+                    width: '70%',
+                    left: '30%',
+                });
+            });
     });
 
-    it('fixedWidth ', () => {
-        const wrapperSingle = mount(<Range fixedWidth defaultValue={[20, 40]} />);
-
-        assert.deepEqual(wrapperSingle.find('.next-range-frag').props().style, {
-            left: '20%',
-            right: '60%',
-        });
+    it('fixedWidth', () => {
+        cy.mount(<Range fixedWidth defaultValue={[20, 40]} />)
+            .get('.next-range-frag')
+            .then($el => {
+                expect({
+                    right: $el[0].style.right,
+                    left: $el[0].style.left,
+                }).deep.equal({
+                    right: '60%',
+                    left: '20%',
+                });
+            });
     });
 
     it('fixedWidth no tip', () => {
-        const wrapper = mount(<Range fixedWidth hasTip={false} defaultValue={[20, 40]} />);
-
-        const RangeInstance = wrapper.find('Range').at(0).instance();
-
-        assert(RangeInstance.dom.querySelector('.next-balloon-tooltip') === null);
+        cy.mount(<Range fixedWidth hasTip={false} defaultValue={[20, 40]} />);
+        cy.get('.next-balloon-tooltip').should('not.exist');
     });
 
     it('fixedWidth dragging should have active class', () => {
-        const wrapper = mount(
+        cy.mount(
             <Range marks={[0, 100]} marksPosition="below" fixedWidth defaultValue={[20, 40]} />
-        );
-
-        const RangeInstance = wrapper.find('Range').at(0).instance();
-
-        RangeInstance._onMouseDown({
-            button: 0,
-            pageX: 10,
-            stopPropagation: () => {},
-            preventDefault: () => {},
-        });
-        assert(RangeInstance.dom.querySelector('.next-range-active') !== null);
+        )
+            .get('.next-range-slider')
+            .eq(0)
+            .trigger('mousedown', { button: 0, pageX: 20, pageY: 0 });
+        cy.get('.next-range-active').should('exist');
     });
 
-    it(' fixedWidth tooltip enter+down+leave+up', () => {
-        const wrapper = mount(<Range fixedWidth defaultValue={[20, 40]} />);
-        let parent = document.createElement('div');
-        document.body.appendChild(parent);
-
-        ReactDOM.render(<Range fixedWidth defaultValue={[20, 40]} />, parent);
-
-        assert(document.querySelector('.next-balloon-tooltip') === null);
-        // wrapper.find('.next-range-frag').simulate('mousedown');
-        ReactTestUtils.Simulate.mouseDown(document.querySelectorAll('.next-range-frag')[0], {
-            button: 0,
+    it('fixedWidth tooltip enter+down+leave+up', () => {
+        cy.mount(<Range fixedWidth defaultValue={[20, 40]} />);
+        cy.get('.next-balloon-tooltip').should('not.exist');
+        cy.get('.next-range-frag').trigger('mousedown', { button: 0, pageX: 0, pageY: 0 });
+        cy.get('.next-range-frag').trigger('mousemove', {
+            type: 'mousemove',
+            pageX: 100,
+            pageY: 0,
         });
-        assert(document.querySelector('.next-balloon-tooltip') !== null);
-        simulateEvent.simulate(document, 'mouseup');
-
-        // enzyme simulate 不支持 addEventListener 添加的事件冒泡(an anti-pattern in React),导致 mouseup 的case很难测
-        // https://github.com/airbnb/enzyme/issues/426
-        // assert(document.querySelector('.next-balloon-tooltip') === null);
-
-        wrapper.unmount();
-
-        document.body.removeChild(parent);
-        parent = null;
+        cy.get('.next-balloon-tooltip').should('exist');
+        cy.get('.next-range-frag').trigger('mouseleave', { pageX: 200, pageY: 100 });
+        cy.get('.next-balloon-tooltip').should('exist');
+        cy.get('.next-range-frag').trigger('mouseup', { pageX: 100, pageY: 0 });
+        cy.get('.next-balloon-tooltip').should('not.exist');
     });
 
-    it(' fixedWidth tooltipVisible === true, always has tooltip', () => {
-        const wrapper = mount(<Range tooltipVisible fixedWidth defaultValue={[20, 40]} />);
-
-        const RangeInstance = wrapper.find('Range').at(0).instance();
-        assert(RangeInstance.dom.querySelector('.next-balloon-tooltip') !== null);
-
-        wrapper.find('.next-range-frag').simulate('mouseenter');
-        wrapper.find('.next-range-frag').simulate('mouseleave');
-        wrapper.find('.next-range-frag').simulate('mousedown');
-        wrapper.find('.next-range-frag').simulate('mouseenter');
-        wrapper.find('.next-range-frag').simulate('mouseleave');
-        wrapper.find('.next-range-frag').simulate('mouseup');
-
-        assert(RangeInstance.dom.querySelector('.next-balloon-tooltip') !== null);
+    it('fixedWidth tooltipVisible === true, always has tooltip', () => {
+        cy.mount(<Range tooltipVisible fixedWidth defaultValue={[20, 40]} />);
+        cy.get('.next-balloon-tooltip').should('exist');
+        cy.get('.next-range-frag').trigger('mousedown', { button: 0, pageX: 0, pageY: 0 });
+        cy.get('.next-range-frag').trigger('mousemove', {
+            type: 'mousemove',
+            pageX: 100,
+            pageY: 0,
+        });
+        cy.get('.next-balloon-tooltip').should('exist');
+        cy.get('.next-range-frag').trigger('mouseleave', { pageX: 200, pageY: 100 });
+        cy.get('.next-balloon-tooltip').should('exist');
+        cy.get('.next-range-frag').trigger('mouseup', { pageX: 100, pageY: 0 });
+        cy.get('.next-balloon-tooltip').should('exist');
     });
 
     it('keymove right', () => {
-        const aSpy = sinon.spy();
-        const wrapper = mount(<Range defaultValue={2} hasTip onChange={aSpy} />);
-
-        wrapper.find('.next-range-slider').simulate('keyDown', { keyCode: 39 });
-        assert(aSpy.called);
+        const onChange = cy.spy().as('onChange');
+        cy.mount(<Range defaultValue={2} hasTip onChange={onChange} />);
+        cy.get('.next-range-slider').trigger('keydown', { keyCode: 39 });
+        cy.get('@onChange').should('be.calledOnce');
+        cy.get('@onChange').should('be.calledWith', 3);
     });
 
     it('keymove left', () => {
-        const aSpy = sinon.spy();
-        const wrapper = mount(<Range defaultValue={2} hasTip onChange={aSpy} />);
-
-        wrapper.find('.next-range-slider').simulate('keyDown', { keyCode: 37 });
-        assert(aSpy.called);
+        const onChange = cy.spy().as('onChange');
+        cy.mount(<Range defaultValue={2} hasTip onChange={onChange} />);
+        cy.get('.next-range-slider').trigger('keydown', { keyCode: 37 });
+        cy.get('@onChange').should('be.calledOnce');
+        cy.get('@onChange').should('be.calledWith', 1);
     });
 
     it('keymove right at rightmost', () => {
-        const aSpy = sinon.spy();
-        const wrapper = mount(
-            <Range defaultValue={100} min={1} max={100} hasTip onChange={aSpy} />
-        );
-
-        wrapper.find('.next-range-slider').simulate('keyDown', { keyCode: 39 });
-        assert(!aSpy.called);
+        const onChange = cy.spy().as('onChange');
+        cy.mount(<Range defaultValue={100} min={1} max={100} hasTip onChange={onChange} />);
+        cy.get('.next-range-slider').trigger('keydown', { keyCode: 39 });
+        cy.get('@onChange').should('not.be.called');
+        checkRangeSelectedDomWidthAndLeft('100%', '0%');
     });
 
     it('rtl', () => {
-        const wrapperSingle = mount(<Range rtl value={10} />);
-        const wrapperDouble = mount(<Range rtl value={[10, 30]} />);
-        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, {
-            width: '10%',
-            left: '90%',
-        });
-        assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, {
-            width: '20%',
-            left: '70%',
-        });
+        cy.mount(<Range rtl value={10} />);
+        checkRangeSelectedDomWidthAndLeft('10%', '90%');
+
+        cy.mount(<Range rtl slider="double" value={[10, 30]} />);
+        checkRangeSelectedDomWidthAndLeft('20%', '70%');
     });
 
     it('rtl & reverse', () => {
-        const wrapperSingle = mount(<Range rtl reverse value={10} />);
-        const wrapperDouble = mount(<Range rtl reverse slider="double" value={[10, 30]} />);
-        assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, {
-            width: '90%',
-            left: '0%',
-        });
-        assert.deepEqual(wrapperDouble.find('.next-range-selected').at(0).props().style, {
-            width: '70%',
-            left: 0,
-        });
+        cy.mount(<Range rtl reverse value={10} />);
+        checkRangeSelectedDomWidthAndLeft('90%', '0%');
+
+        cy.mount(<Range rtl reverse slider="double" value={[10, 30]} />);
+        checkRangeSelectedDomWidthAndLeft('70%', '0px');
     });
 
     it('should isPreview', () => {
-        const wrapperSingle = mount(<Range isPreview value={30} />);
-        const wrapperDouble = mount(<Range isPreview value={[10, 40]} />);
-
-        assert(wrapperSingle.getDOMNode().innerText === '30');
-        assert(wrapperDouble.getDOMNode().innerText === '10~40');
+        cy.mount(<Range isPreview value={30} />);
+        cy.get('.next-form-preview').should('have.text', '30');
+        cy.mount(<Range isPreview value={[10, 40]} />);
+        cy.get('.next-form-preview').should('have.text', '10~40');
     });
 
     it('should renderPreview', () => {
-        const wrapperSingle = mount(<Range isPreview renderPreview={() => 'single'} value={30} />);
-        const wrapperDouble = mount(
-            <Range isPreview renderPreview={() => 'double'} value={[10, 40]} />
-        );
-
-        assert(wrapperSingle.getDOMNode().innerText === 'single');
-        assert(wrapperDouble.getDOMNode().innerText === 'double');
+        cy.mount(<Range isPreview renderPreview={() => 'single'} value={30} />);
+        cy.get('.next-form-preview').should('have.text', 'single');
+        cy.mount(<Range isPreview renderPreview={() => 'double'} value={[10, 40]} />);
+        cy.get('.next-form-preview').should('have.text', 'double');
     });
 });
