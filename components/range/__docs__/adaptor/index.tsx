@@ -1,6 +1,7 @@
 import React from 'react';
 import { Types } from '@alifd/adaptor-helper';
 import { Range } from '@alifd/next';
+import type { RangeProps } from '@alifd/next/types/range';
 
 export default {
     name: 'Range',
@@ -70,6 +71,16 @@ export default {
         end,
         style,
         ...others
+    }: {
+        shape: 'basic' | 'scale';
+        level: RangeProps['slider'];
+        type: 'basic' | 'scale';
+        scalePosition: RangeProps['marksPosition'];
+        state: 'normal' | 'hover' | 'clicked' | 'disabled';
+        width: number;
+        start: number;
+        end: number;
+        style: React.CSSProperties;
     }) => {
         return (
             <div {...others} style={{ width, ...style }}>
@@ -90,7 +101,7 @@ export default {
             </div>
         );
     },
-    demoOptions: demo => {
+    demoOptions: (demo: any) => {
         const { node } = demo;
         const { props } = node;
         if (props.level === 'double') {
