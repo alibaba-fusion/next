@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { type KeyboardEvent, type FocusEvent } from 'react';
+
 import ReactDOM from 'react-dom';
 import { Tab, Input } from '@alifd/next';
 
-class EditableTabPane extends React.Component {
-    constructor(props) {
+interface EditableTabPaneProps {
+    defaultTitle: string;
+}
+interface EditableTabPaneState {
+    tabTitle: string;
+    editable: boolean;
+}
+class EditableTabPane extends React.Component<EditableTabPaneProps, EditableTabPaneState> {
+    constructor(props: EditableTabPaneProps) {
         super(props);
         this.state = {
             tabTitle: props.defaultTitle,
@@ -11,7 +19,7 @@ class EditableTabPane extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: EditableTabPaneProps) {
         if (nextProps.defaultTitle !== this.state.tabTitle) {
             this.setState({
                 tabTitle: nextProps.defaultTitle,
@@ -19,7 +27,7 @@ class EditableTabPane extends React.Component {
         }
     }
 
-    onKeyDown = e => {
+    onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         const { keyCode } = e;
         // Stop bubble up the events of keyUp, keyDown, keyLeft, and keyRight
         if (keyCode > 36 && keyCode < 41) {
@@ -27,7 +35,7 @@ class EditableTabPane extends React.Component {
         }
     };
 
-    onBlur = e => {
+    onBlur = (e: FocusEvent<HTMLInputElement>) => {
         this.setState({
             editable: false,
             tabTitle: e.target.value,
@@ -51,7 +59,7 @@ class EditableTabPane extends React.Component {
     }
 }
 
-const tabRender = (key, { title }) => (
+const tabRender = (key: string, { title }: { title: string }) => (
     <div key={key} className="editable-tab-wrapper">
         <EditableTabPane defaultTitle={title} />
     </div>

@@ -2,7 +2,7 @@ import React, {
     Component,
     Children,
     cloneElement,
-    ReactElement,
+    type ReactElement,
     type FunctionComponent,
     type ComponentClass,
 } from 'react';
@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import ConfigProvider from '../config-provider';
 import { type RowProps, type TypeRecord } from './types';
-import Col from './col';
+import type Col from './col';
 import { obj } from '../util';
 
 type BooleanRecord = TypeRecord<boolean>;
@@ -133,8 +133,7 @@ export default class Row extends Component<RowProps> {
                         style: {
                             paddingLeft: halfGutterString,
                             paddingRight: halfGutterString,
-                            // @ts-expect-error 只有 dom 才有 style 属性
-                            ...(child.style || {}),
+                            ...(child.props.style || {}),
                         },
                     });
                     return newChild;

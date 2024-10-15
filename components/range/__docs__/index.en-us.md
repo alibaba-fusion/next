@@ -23,30 +23,38 @@ Range Component is used to select a value in a range by dragging slider. Normall
 
 ### Range
 
-| Param | Descripiton  | Type  | Default Value |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | -------------- |
-| slider        | number of sliders<br><br>**option**:<br>'single'<br>'double'                                                                                                                       | Enum                                   | 'single'       |
-| min           | minimal value                                                                                                                                                                         | Number                                 | 0              |
-| max           | maximal value                                                                                                                                                                         | Number                                 | 100            |
-| step          | step of the range, which is positive integer and (max - min) can be divided by it                                                                                                                                       | Number                                 | 1              |
-| value         | current value. It's in the form of `Number` when `slider` is `single` otherwise `[Number, Number]`                                                                   | Number/[Number, Number]               | -              |
-| defaultValue  | default value. It's in the form of `Number` when `slider` is `single` otherwise `[Number, Number]`                                                                                         | Number/[Number, Number]                | -              |
-| marks         | way to show the scale. (`false` means nothing, `array` means enum, `number` means equal division, and `object` means `key` as the mark with `value` as the value)                                                                                        | Boolean/Number/Array&lt;Number>/Object | false          |
-| marksPosition | position for the scale<br><br>**option**:<br>'above', 'below'                                                                                                        | Enum                                   | 'above'        |
-| disabled      | disabled                                                                                                                                                         | Boolean                                | false          |
-| onChange      | callback triggered when value changes | Function(value: Number/[Number, Number]) => void                               | func.noop      |
-| onProcess     | callback triggered when slider being dragged, and used only for special need                   | Function(value: Number/[Number, Number]) => void                               | func.noop      |
-| hasTip        | whether to show tip                                                                                                                                                               | Boolean                                | true           |
-| tipRender     | custom tip content<br><br>**signature**:<br>Function(value?: Number/String) => ReactNode<br>**signature**:<br>_value_: {Number/String} value<br>**returns**:<br>{ReactNode} content<br>                     | Function                               | value => value |
-| reverse       | reverse the selected part                                                                                                                                                                       | Boolean                                | false          |
-| pure          | pure render or not                                                                                                                                                             | Boolean                                | false          |
-| fixedWidth    | drag a line with fixed width. It considers `slider` as `double`, and `defaultValue` must be a interval.                                                                                                                                                                 | Boolean                                | false          |
-| tooltipVisible| tooltip always be visible or not                                                                                                                                                              | Boolean                                | false          |
+| Param          | Description                                                                                                                                                       | Type                                                                       | Default Value     | Required |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------- | -------- |
+| slider         | Number of sliders<br><br>**option**:<br>'single'<br>'double'                                                                                                      | 'single' \| 'double'                                                       | 'single'          |          |
+| min            | Minimal value                                                                                                                                                     | number                                                                     | 0                 |          |
+| max            | Maximal value                                                                                                                                                     | number                                                                     | 100               |          |
+| step           | Step of the range, which is positive integer and (max \- min) can be divided by it                                                                                | number                                                                     | 1                 |          |
+| value          | Current value. It's in the form of `Number` when `slider` is `single` otherwise `[Number, Number]`                                                                | RangeValueType                                                             | -                 |          |
+| defaultValue   | Default value. It's in the form of `Number` when `slider` is `single` otherwise `[Number, Number]`                                                                | RangeValueType                                                             | -                 |          |
+| marks          | Way to show the scale. (`false` means nothing, `array` means enum, `number` means equal division, and `object` means `key` as the mark with `value` as the value) | false \| number \| Array\<number> \| Record\<number, string>               | false             |          |
+| marksPosition  | Position for the scale<br><br>**option**:<br>'above', 'below'                                                                                                     | 'above' \| 'below'                                                         | 'above'           |          |
+| disabled       | Disabled                                                                                                                                                          | boolean                                                                    | false             |          |
+| onChange       | Callback triggered when value changes<br/><br/>**signature**:<br/>**params**:<br/>_value_: The changed value                                                      | (value: RangeValueType) => void                                            | () =\> void       |          |
+| onProcess      | Callback triggered when slider being dragged, and used only for special need<br/><br/>**signature**:<br/>**params**:<br/>_value_: The changed value               | (value: RangeValueType) => void                                            | () =\> void       |          |
+| hasTip         | Whether to show tip                                                                                                                                               | boolean                                                                    | true              |          |
+| tipRender      | Custom tip content<br/><br/>**signature**:<br/>**params**:<br/>_value_: The changed value<br/>**return**:<br/>React.ReactNode                                     | (value: number \| string) => React.ReactNode                               | (value) =\> value |          |
+| reverse        | Reverse the selected part                                                                                                                                         | boolean                                                                    | false             |          |
+| pure           | Pure render or not                                                                                                                                                | boolean                                                                    | false             |          |
+| fixedWidth     | Drag a line with fixed width. It considers `slider` as `double`, and `defaultValue` must be a interval.                                                           | boolean                                                                    | false             |          |
+| tooltipVisible | Tooltip always be visible or not                                                                                                                                  | boolean                                                                    | false             |          |
+| isPreview      | Is preview or not                                                                                                                                                 | boolean                                                                    | false             |          |
+| renderPreview  | Custom preview content<br/><br/>**signature**:<br/>**params**:<br/>_value_: The changed value<br/>_props_: RangeProps<br/>**return**:<br/>React.ReactNode         | (value: RangeValueType \| undefined, props: RangeProps) => React.ReactNode | -                 |          |
+
+### RangeValueType
+
+```typescript
+export type RangeValueType = number | [number, number];
+```
 
 ## ARIA and KeyBoard
 
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-| Right Arrow    | control the slider to move to the right                         |
-| Left Arrow    | control the slider to move to the left                         |
-| Tab       | switch to other slider                 |
+| KeyBoard    | Descripiton                             |
+| :---------- | :-------------------------------------- |
+| Right Arrow | control the slider to move to the right |
+| Left Arrow  | control the slider to move to the left  |
+| Tab         | switch to other slider                  |

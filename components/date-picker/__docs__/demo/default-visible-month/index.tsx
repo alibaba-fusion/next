@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { DatePicker } from '@alifd/next';
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
 
 const { RangePicker, MonthPicker } = DatePicker;
 
-function onVisibleMonthChange(val, reason) {
+function onVisibleMonthChange(val: Moment, reason: string) {
     console.log(val.format('L'), reason);
 }
 

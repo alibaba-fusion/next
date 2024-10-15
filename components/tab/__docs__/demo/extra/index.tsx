@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Tab, Button } from '@alifd/next';
 
-function handleChange(key) {
+function handleChange(key: string) {
     console.log(key);
 }
 

@@ -1,5 +1,5 @@
-import React, { type FunctionComponent, type ComponentClass } from 'react';
-import { CommonProps } from '../util';
+import type React from 'react';
+import type { CommonProps } from '../util';
 
 type HTMLAttributesWeak = Omit<React.HTMLAttributes<HTMLElement>, 'hidden'>;
 
@@ -73,7 +73,7 @@ export interface RowProps extends HTMLAttributesWeak, CommonProps {
      * @en Specifies the element with which to render the node
      * @defaultValue 'div'
      */
-    component?: string | FunctionComponent<unknown> | ComponentClass<unknown>;
+    component?: string | React.FunctionComponent<unknown> | React.ComponentClass<unknown>;
 }
 
 /**

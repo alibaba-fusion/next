@@ -75,7 +75,7 @@ module.exports = function (config) {
     };
 
     if (process.env.CI) {
-        options.browsers = ['ChromeHeadless'];
+        options.browsers = ['ChromeTravis'];
     }
     config.set(options);
 };

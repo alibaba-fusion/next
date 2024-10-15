@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { DatePicker } from '@alifd/next';
 
 const { RangePicker, MonthPicker, YearPicker, WeekPicker } = DatePicker;
-const onChange = val => console.log(val);
+const onChange = (val: unknown) => console.log(val);
 
 ReactDOM.render(
     <div>

@@ -7,7 +7,7 @@ const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 const startValue = moment('2017-11-20', 'YYYY-MM-DD', true);
 const endValue = moment('2017-12-15', 'YYYY-MM-DD', true);
 const timeStamp = moment(1581938105000);
-const onChange = val => console.log(val);
+const onChange = (val: unknown) => console.log(val);
 
 ReactDOM.render(
     <div>

@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Menu, Search, Nav, Shell, Radio } from '@alifd/next';
+import { Search, Nav, Shell, Radio } from '@alifd/next';
+import type { ShellProps } from '@alifd/next/types/shell';
+import type { GroupProps } from '@alifd/next/types/radio';
 
-const { SubNav, Item, Group, Divider } = Nav;
+const { Item } = Nav;
 
 class App extends React.Component {
-    state = {
+    state: { device: ShellProps['device'] } = {
         device: 'desktop',
     };
-    onChange = device => {
+    onChange: GroupProps['onChange'] = device => {
         this.setState({
             device,
         });

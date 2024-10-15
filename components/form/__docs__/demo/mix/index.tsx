@@ -31,7 +31,7 @@ const formItemLayout = {
 class Demo extends React.Component {
     field = new Field(this);
 
-    handleSubmit(value) {
+    handleSubmit(value: unknown) {
         console.log('Form values：', value);
     }
 
@@ -70,7 +70,7 @@ class Demo extends React.Component {
                 </FormItem>
 
                 <FormItem label="Range:" required name="range">
-                    <Range defaultValue={30} scales={[0, 100]} marks={[0, 100]} />
+                    <Range defaultValue={30} marks={[0, 100]} />
                 </FormItem>
 
                 <FormItem label="Select:" required name="select">

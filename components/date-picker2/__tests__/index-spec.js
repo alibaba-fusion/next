@@ -1232,6 +1232,31 @@ describe('Picker', () => {
             findInput(0).simulate('keydown', { keyCode: KEYCODE.SPACE });
             assert(getStrValue(wrapper).join(',') === '2020-11-11 ,');
         })
+
+        // fix https://github.com/alibaba-fusion/next/issues/4896
+        it('After entering a customized date format and pressing Enter, the value should not change', () => {
+            function App() {
+                const [value, setValue] = useState('');
+                return (
+                    <DatePicker
+                        defaultVisible
+                        value={value}
+                        format={'DD/MM/YYYY'}
+                        outputFormat="YYYY-MM-DD"
+                        onChange={v => {
+                            setValue(v),
+                                assert(
+                                    v === dayjs('12/02/2020', 'DD/MM/YYYY').format('YYYY-MM-DD')
+                                );
+                        }}
+                    />
+                );
+            }
+            wrapper = mount(<App />);
+            changeInput('12/02/2020');
+            findInput().simulate('keydown', { keyCode: KEYCODE.ENTER });
+            assert(getStrValue(wrapper) === '12/02/2020');
+        });
     });
 });
 

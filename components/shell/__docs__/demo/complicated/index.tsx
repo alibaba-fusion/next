@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Search, Icon, Nav, Shell, Radio } from '@alifd/next';
+import type { ShellProps } from '@alifd/next/types/shell';
+import type { GroupProps } from '@alifd/next/types/radio';
 
-const { SubNav, Item, Group, Divider } = Nav;
+const { Item } = Nav;
 
 class App extends React.Component {
-    state = {
+    state: { device: ShellProps['device']; navcollapse: boolean } = {
         device: 'desktop',
+        navcollapse: false,
     };
-    onChange = device => {
+    onChange: GroupProps['onChange'] = device => {
         this.setState({
             device,
         });
@@ -20,8 +23,8 @@ class App extends React.Component {
         });
     };
 
-    onCollapseChange = (visible, e) => {
-        console.log('onCollapseChange:', visible, e);
+    onCollapseChange = (visible: boolean) => {
+        console.log('onCollapseChange:', visible);
 
         this.setState({
             navcollapse: visible,
@@ -124,7 +127,7 @@ class App extends React.Component {
                         <span>@ 2019 Alibaba Piecework 版权所有</span>
                     </Shell.Footer>
 
-                    <Shell.Ancillary></Shell.Ancillary>
+                    <Shell.Ancillary />
 
                     <Shell.ToolDock>
                         <Shell.ToolDockItem>

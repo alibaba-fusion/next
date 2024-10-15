@@ -15,14 +15,14 @@ class Demo extends React.Component {
         second: 60,
     };
 
-    handleSubmit = (values, errors) => {
+    handleSubmit = (values: unknown, errors: unknown) => {
         if (errors) {
             return;
         }
         console.log('Get form value:', values);
     };
 
-    sendCode = (values, errors) => {
+    sendCode = (values: unknown, errors: unknown) => {
         if (errors) {
             return;
         }
@@ -32,7 +32,7 @@ class Demo extends React.Component {
 
         setInterval(() => {
             this.setState({
-                second: --this.state.second,
+                second: this.state.second - 1,
             });
         }, 1000);
     };

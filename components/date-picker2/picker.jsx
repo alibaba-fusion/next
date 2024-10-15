@@ -440,7 +440,7 @@ class Picker extends React.Component {
         const isTemporary = showOk && !forceEvents.includes(eventType);
 
         // 面板收起时候，将值设置为确认值
-        v = eventType === 'VISIBLE_CHANGE' ? value : this.checkValue(v, !isTemporary);
+        v = eventType === 'VISIBLE_CHANGE' ? value : this.checkValue(v, !isTemporary, format);
 
         this.setState({
             curValue: v,
