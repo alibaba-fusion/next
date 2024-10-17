@@ -2,15 +2,17 @@ import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PT from 'prop-types';
 import classnames from 'classnames';
+import { type Dayjs } from 'dayjs';
+
 import SharedPT from '../prop-types';
 import { TIME_INPUT_TYPE } from '../constant';
 import { func, datejs, obj } from '../../util';
 import { fmtValue } from '../../date-picker2/util';
-
-import Input from '../../input';
+import Input, { type InputProps } from '../../input';
 import Icon from '../../icon';
+import type { DateInputProps } from '../types';
 
-class DateInput extends React.Component {
+class DateInput extends React.Component<DateInputProps> {
     static propTypes = {
         prefix: PT.string,
         rtl: PT.bool,
@@ -44,45 +46,50 @@ class DateInput extends React.Component {
         size: 'medium',
     };
 
-    constructor(props) {
+    prefixCls: string;
+    input?: InstanceType<typeof Input> | InstanceType<typeof Input>[];
+
+    constructor(props: DateInputProps) {
         super(props);
 
         this.prefixCls = `${props.prefix}time-picker2-input`;
     }
 
-    setInputRef = (el, index) => {
+    setInputRef = (el: InstanceType<typeof Input>, index?: number) => {
         if (this.props.isRange) {
             if (!this.input) {
                 this.input = [];
             }
-            this.input[index] = el;
+            (this.input as (InstanceType<typeof Input> | undefined)[])[index!] = el;
         } else {
             this.input = el;
         }
     };
 
-    setValue = v => {
+    setValue = (v: string | number | null) => {
         const { isRange, inputType, value } = this.props;
 
-        let newVal = v;
+        let newVal: string | number | null | Array<string | number | null> = v;
 
         if (isRange) {
-            newVal = [...value];
-            newVal[inputType] = v;
+            newVal = [...value!];
+            newVal[inputType!] = v;
         }
 
         return newVal;
     };
 
-    formatter = v => {
+    formatter = (v: Dayjs) => {
         const { format } = this.props;
         return typeof format === 'function' ? format(v) : v.format(format);
     };
 
-    onInput = (v, e, eventType) => {
+    onInput: InputProps['onChange'] = (v, e, eventType) => {
+        // @ts-expect-error v 的类型是 string | number，this.setValue(v) 返回类型是 string | number | null，此处不应该重新赋值，应该定一个新的变量处理
         v = this.setValue(v);
 
         if (eventType === 'clear') {
+            // @ts-expect-error v 的类型是 string | number，this.setValue(v) 返回类型是 string | number | null，此处不应该重新赋值，应该定一个新的变量处理
             v = null;
             e.stopPropagation();
         }
@@ -90,7 +97,7 @@ class DateInput extends React.Component {
         func.invoke(this.props, 'onInput', [v, eventType]);
     };
 
-    handleTypeChange = inputType => {
+    handleTypeChange = (inputType: number) => {
         if (inputType !== this.props.inputType) {
             func.invoke(this.props, 'onInputTypeChange', [inputType]);
         }
@@ -98,7 +105,7 @@ class DateInput extends React.Component {
 
     getPlaceholder = () => {
         const { isRange } = this.props;
-        let holder = this.props.placeholder;
+        let holder: string | string[] | undefined = this.props.placeholder;
 
         if (isRange && !Array.isArray(holder)) {
             holder = Array(2).fill(holder);
@@ -116,7 +123,7 @@ class DateInput extends React.Component {
         let size = 0;
 
         if (isRange) {
-            const fmtStr = fmtValue([value, value].map(datejs), format);
+            const fmtStr = fmtValue([value, value].map(datejs), format) as string[];
             size = Math.max(...fmtStr.map(s => (s && s.length) || 0));
         } else {
             const fmtStr = fmtValue(datejs(value), format);
@@ -153,7 +160,9 @@ class DateInput extends React.Component {
         const placeholder = this.getPlaceholder();
         const htmlSize = this.getHtmlSize();
 
-        const sharedProps = {
+        // @ts-expect-error 下面 pickProps 使用错误，导致报错
+        const sharedProps: InputProps = {
+            // @ts-expect-error 正确写法应该是 obj.pickProps(Input.propTypes, restProps)
             ...obj.pickProps(restProps, Input),
             ...inputProps,
             size,
@@ -167,7 +176,7 @@ class DateInput extends React.Component {
             onKeyDown: onKeyDown,
         };
 
-        let rangeProps;
+        let rangeProps: InputProps[];
         if (isRange) {
             rangeProps = [TIME_INPUT_TYPE.BEGIN, TIME_INPUT_TYPE.END].map(idx => {
                 const _disabled = Array.isArray(disabled) ? disabled[idx] : disabled;
@@ -175,10 +184,10 @@ class DateInput extends React.Component {
                 return {
                     ...sharedProps,
                     autoFocus,
-                    placeholder: placeholder[idx],
-                    value: value[idx] || '',
+                    placeholder: placeholder![idx],
+                    value: value![idx] || '',
                     disabled: _disabled,
-                    ref: ref => setInputRef(ref, idx),
+                    ref: (ref: InstanceType<typeof Input>) => setInputRef(ref, idx),
                     onFocus: _disabled ? undefined : () => handleTypeChange(idx),
                     className: classnames({
                         [`${prefixCls}-active`]: inputType === idx,
@@ -192,29 +201,32 @@ class DateInput extends React.Component {
             {
                 [`${prefixCls}-focus`]: focus,
                 [`${prefixCls}-noborder`]: !hasBorder,
-                [`${prefixCls}-disabled`]: isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled,
+                [`${prefixCls}-disabled`]:
+                    isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled,
                 [`${prefixCls}-error`]: state === 'error',
             }
         );
 
-        const calendarIcon = <Icon type="clock" className={`${this.prefixCls}-symbol-clock-icon`} />;
+        const calendarIcon = (
+            <Icon type="clock" className={`${this.prefixCls}-symbol-clock-icon`} />
+        );
 
         return (
             <div className={className}>
                 {isRange ? (
                     <React.Fragment>
                         <Input
-                            {...rangeProps[0]}
+                            {...rangeProps![0]}
                             label={label}
                             hasBorder={false}
-                            autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus
+                            autoFocus={autoFocus}
                         />
                         <div className={`${prefixCls}-separator`}>{separator}</div>
                         <Input
-                            {...rangeProps[1]}
+                            {...rangeProps![1]}
                             state={state}
                             hasBorder={false}
-                            hasClear={!state && hasClear}
+                            hasClear={!state && hasClear!}
                             hint={state ? null : calendarIcon}
                         />
                     </React.Fragment>
@@ -223,12 +235,12 @@ class DateInput extends React.Component {
                         {...sharedProps}
                         label={label}
                         state={state}
-                        disabled={disabled}
-                        hasClear={!state && hasClear}
-                        placeholder={placeholder}
+                        disabled={disabled as boolean}
+                        hasClear={!state && hasClear!}
+                        placeholder={placeholder as string}
                         autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus
                         ref={setInputRef}
-                        value={value || ''}
+                        value={(value as string) || ''}
                         hint={state ? null : calendarIcon}
                     />
                 )}
