@@ -2,7 +2,7 @@ import React, { type HTMLAttributes, type KeyboardEvent, type MouseEvent } from 
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
-import { KEYCODE, obj } from '../util';
+import { KEYCODE } from '../util';
 import Icon from '../icon';
 import ConfigProvider from '../config-provider';
 import zhCN from '../locale/zh-cn';
@@ -103,9 +103,9 @@ class Switch extends React.Component<SwitchProps, SwitchState> {
             isPreview,
             renderPreview,
             locale,
+            onChange,
             ...others
         } = this.props;
-        const domOtherProps = obj.pickOthers(Switch.propTypes, others);
         const { checked } = this.state;
         const status = checked ? 'on' : 'off';
         const children = checked ? checkedChildren : unCheckedChildren;
@@ -149,14 +149,14 @@ class Switch extends React.Component<SwitchProps, SwitchState> {
 
             if (typeof renderPreview === 'function') {
                 return (
-                    <div className={previewCls} {...domOtherProps}>
+                    <div className={previewCls} {...others}>
                         {renderPreview(checked, this.props)}
                     </div>
                 );
             }
 
             return (
-                <p className={previewCls} {...domOtherProps}>
+                <p className={previewCls} {...others}>
                     {children || locale[status]}
                 </p>
             );
@@ -167,7 +167,7 @@ class Switch extends React.Component<SwitchProps, SwitchState> {
                 role="switch"
                 dir={rtl ? 'rtl' : undefined}
                 tabIndex={0}
-                {...domOtherProps}
+                {...others}
                 className={classes}
                 {...attrs}
                 aria-checked={checked}

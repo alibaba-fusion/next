@@ -91,4 +91,8 @@ describe('Switch', () => {
         cy.mount(<Switch isPreview checked={false} unCheckedChildren="✕" />);
         cy.get('.next-form-preview').should('have.text', '✕');
     });
+    it('should support prop style', () => {
+        cy.mount(<Switch style={{ color: 'red' }} />);
+        cy.get('.next-switch').should('have.css', 'color', 'rgb(255, 0, 0)');
+    });
 });
