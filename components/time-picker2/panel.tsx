@@ -1,78 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import type { Dayjs } from 'dayjs';
+
 import nextLocale from '../locale/zh-cn';
 import { func, datejs, pickAttrs } from '../util';
 import TimeMenu from './module/time-menu';
 import SharedPT from './prop-types';
+import type { PannelType, PanelProps, DisabledItems } from './types';
 
 const { noop } = func;
 
-class TimePickerPanel extends Component {
+class TimePickerPanel extends Component<PanelProps> {
     static propTypes = {
         prefix: PropTypes.string,
-        /**
-         * 时间值（dayjs 对象）
-         */
         value: SharedPT.value,
-        /**
-         * 是否显示小时
-         */
         showHour: PropTypes.bool,
-        /**
-         * 是否显示分钟
-         */
         showMinute: PropTypes.bool,
-        /**
-         * 是否显示秒
-         */
         showSecond: PropTypes.bool,
-        /**
-         * 小时选项步长
-         */
         hourStep: PropTypes.number,
-        /**
-         * 分钟选项步长
-         */
         minuteStep: PropTypes.number,
-        /**
-         * 秒钟选项步长
-         */
         secondStep: PropTypes.number,
-        /**
-         * 禁用小时函数
-         * @param {Number} index 时 0 - 23
-         * @return {Boolean} 是否禁用
-         */
         disabledHours: PropTypes.func,
-        /**
-         * 禁用分钟函数
-         * @param {Number} index 分 0 - 59
-         * @return {Boolean} 是否禁用
-         */
         disabledMinutes: PropTypes.func,
-        /**
-         * 禁用秒函数
-         * @param {Number} index 秒 0 - 59
-         * @return {Boolean} 是否禁用
-         */
         disabledSeconds: PropTypes.func,
-        /**
-         * 渲染的可选择时间列表
-         * [{
-         *  label: '01',
-         *  value: 1
-         * }]
-         * @param {Array} list 默认渲染的列表
-         * @param {String} mode 渲染的菜单 hour, minute, second
-         * @param {dayjs} value 当前时间，可能为 null
-         * @return {Array} 返回需要渲染的数据
-         */
         renderTimeMenuItems: PropTypes.func,
-        /**
-         * 选择某个日期值时的回调
-         * @param {Object} 选中后的日期值
-         */
         onSelect: PropTypes.func,
         isRange: PropTypes.bool,
         locale: PropTypes.object,
@@ -98,11 +50,15 @@ class TimePickerPanel extends Component {
 
     /**
      *
-     * @param {enum} panelType 'start' | 'end' | 'panel'
-     * @param {*} index
-     * @param {*} type 'hour' | 'minute' | 'second'
+     * @param panelType - 'start' | 'end' | 'panel'
+     * @param index - number
+     * @param type - 'hour' | 'minute' | 'second'
      */
-    onSelectMenuItem = (panelType, index, type) => {
+    onSelectMenuItem = (
+        panelType: PannelType,
+        index: number,
+        type: 'hour' | 'minute' | 'second'
+    ) => {
         const { value, isRange } = this.props;
         const valueArr = Array.isArray(value) ? value : [value];
         const val = panelType === 'end' ? valueArr[1] : valueArr[0];
@@ -125,9 +81,9 @@ class TimePickerPanel extends Component {
             const nextValueArray = [];
             if (panelType === 'start') {
                 nextValueArray[0] = newValue;
-                nextValueArray[1] = value[1];
+                nextValueArray[1] = (value as Dayjs[])[1];
             } else if (panelType === 'end') {
-                nextValueArray[0] = value[0];
+                nextValueArray[0] = (value as Dayjs[])[0];
                 nextValueArray[1] = newValue;
             }
 
@@ -137,7 +93,7 @@ class TimePickerPanel extends Component {
         }
     };
 
-    getDisabledItems = () => {
+    getDisabledItems: () => DisabledItems = () => {
         const { disabledHours, disabledMinutes, disabledSeconds, value, isRange } = this.props;
 
         const disableds = {
@@ -146,28 +102,36 @@ class TimePickerPanel extends Component {
             newDisabledSeconds: [disabledSeconds],
         };
         if (!isRange) {
-            return disableds;
+            return disableds as DisabledItems;
         }
 
-        const dHours = disabledHours() || [];
-        const dMinutes = disabledMinutes() || [];
-        const dSeconds = disabledSeconds() || [];
+        const dHours = (disabledHours!() || []) as number[];
+        const dMinutes = (disabledMinutes!() || []) as number[];
+        const dSeconds = (disabledSeconds!() || []) as number[];
 
-        const v0 = value[0];
-        const v1 = value[1];
+        // fixme: value 可以换为 valueArr
+        const v0 = (value as Dayjs[])[0];
+        const v1 = (value as Dayjs[])[1];
 
         const hoursEqual = () => v0 && v1 && v0.hour() === v1.hour();
-        const minutesEqual = () => v0 && v1 && v0.hour() === v1.hour() && v0.minute() === v1.minute();
+        const minutesEqual = () =>
+            v0 && v1 && v0.hour() === v1.hour() && v0.minute() === v1.minute();
 
-        disableds.newDisabledHours[0] = h => (v1 && h > v1.hour()) || dHours.indexOf(h) > -1;
-        disableds.newDisabledMinutes[0] = m => (v1 && (hoursEqual() && m > v1.minute())) || dMinutes.indexOf(m) > -1;
-        disableds.newDisabledSeconds[0] = s => (v1 && (minutesEqual() && s > v1.second())) || dSeconds.indexOf(s) > -1;
+        disableds.newDisabledHours[0] = (h: number) =>
+            (v1 && h > v1.hour()) || dHours.indexOf(h) > -1;
+        disableds.newDisabledMinutes[0] = (m: number) =>
+            (v1 && hoursEqual() && m > v1.minute()) || dMinutes.indexOf(m) > -1;
+        disableds.newDisabledSeconds[0] = (s: number) =>
+            (v1 && minutesEqual() && s > v1.second()) || dSeconds.indexOf(s) > -1;
 
-        disableds.newDisabledHours[1] = h => (v0 && h < v0.hour()) || dHours.indexOf(h) > -1;
-        disableds.newDisabledMinutes[1] = m => (v0 && m < (hoursEqual() && v0.minute())) || dMinutes.indexOf(m) > -1;
-        disableds.newDisabledSeconds[1] = s => (v0 && (minutesEqual() && s < v0.second())) || dSeconds.indexOf(s) > -1;
+        disableds.newDisabledHours[1] = (h: number) =>
+            (v0 && h < v0.hour()) || dHours.indexOf(h) > -1;
+        disableds.newDisabledMinutes[1] = (m: number) =>
+            (v0 && m < ((hoursEqual() && v0.minute()) as number)) || dMinutes.indexOf(m) > -1;
+        disableds.newDisabledSeconds[1] = (s: number) =>
+            (v0 && minutesEqual() && s < v0.second()) || dSeconds.indexOf(s) > -1;
 
-        return disableds;
+        return disableds as DisabledItems;
     };
 
     render() {
@@ -198,9 +162,9 @@ class TimePickerPanel extends Component {
             className
         );
 
-        const activeHour = [];
-        const activeMinute = [];
-        const activeSecond = [];
+        const activeHour: number[] = [];
+        const activeMinute: number[] = [];
+        const activeSecond: number[] = [];
 
         const valueArr = Array.isArray(value) ? value : [value];
         valueArr.forEach((val, i) => {
@@ -217,19 +181,23 @@ class TimePickerPanel extends Component {
             renderTimeMenuItems,
         };
 
-        const { newDisabledHours, newDisabledMinutes, newDisabledSeconds } = this.getDisabledItems();
+        const { newDisabledHours, newDisabledMinutes, newDisabledSeconds } =
+            this.getDisabledItems();
 
-        const generatePanel = index => (
+        const generatePanel = (index: number) => (
             <React.Fragment>
                 {showHour ? (
                     <TimeMenu
                         {...commonProps}
                         value={valueArr[index]}
                         activeIndex={activeHour[index]}
-                        title={locale.hour}
+                        title={locale!.hour}
                         mode="hour"
                         step={hourStep}
-                        onSelect={this.onSelectMenuItem.bind(this, `${index === 0 ? 'start' : 'end'}`)}
+                        onSelect={this.onSelectMenuItem.bind(
+                            this,
+                            `${index === 0 ? 'start' : 'end'}`
+                        )}
                         disabledItems={newDisabledHours[index]}
                     />
                 ) : null}
@@ -238,10 +206,13 @@ class TimePickerPanel extends Component {
                         {...commonProps}
                         value={valueArr[index]}
                         activeIndex={activeMinute[index]}
-                        title={locale.minute}
+                        title={locale!.minute}
                         mode="minute"
                         step={minuteStep}
-                        onSelect={this.onSelectMenuItem.bind(this, `${index === 0 ? 'start' : 'end'}`)}
+                        onSelect={this.onSelectMenuItem.bind(
+                            this,
+                            `${index === 0 ? 'start' : 'end'}`
+                        )}
                         disabledItems={newDisabledMinutes[index]}
                     />
                 ) : null}
@@ -250,10 +221,13 @@ class TimePickerPanel extends Component {
                         {...commonProps}
                         value={valueArr[index]}
                         activeIndex={activeSecond[index]}
-                        title={locale.second}
+                        title={locale!.second}
                         step={secondStep}
                         mode="second"
-                        onSelect={this.onSelectMenuItem.bind(this, `${index === 0 ? 'start' : 'end'}`)}
+                        onSelect={this.onSelectMenuItem.bind(
+                            this,
+                            `${index === 0 ? 'start' : 'end'}`
+                        )}
                         disabledItems={newDisabledSeconds[index]}
                     />
                 ) : null}
@@ -262,7 +236,10 @@ class TimePickerPanel extends Component {
 
         const singlePanel = generatePanel(0);
 
-        const panelClassNames = classnames(`${this.prefixCls}-panel-col-${colLen}`, `${this.prefixCls}-panel-list`);
+        const panelClassNames = classnames(
+            `${this.prefixCls}-panel-col-${colLen}`,
+            `${this.prefixCls}-panel-list`
+        );
 
         const doublePanel = (
             <React.Fragment>

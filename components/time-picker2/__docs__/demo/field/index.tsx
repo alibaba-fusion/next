@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TimePicker2, Field, Button } from '@alifd/next';
-import dayjs from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 
 class Demo extends React.Component {
     field = new Field(this);
 
     onClick = () => {
-        const value = this.field.getValue('time-picker');
-        console.log(value.format('HH:mm:ss'));
+        const value: Dayjs | undefined = this.field.getValue('time-picker');
+        console.log(value!.format('HH:mm:ss'));
     };
 
     render() {

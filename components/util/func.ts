@@ -168,9 +168,9 @@ export function checkDate(value: ConfigType, format?: OptionType): Dayjs | null 
  * @param strictly - 是否严格校验：严格模式下不允许开始时间大于结束时间，在显示确认按键的，用户输入过程可不严格校验
  */
 export function checkRangeDate(
-    value: ConfigType,
+    value: ConfigType | ConfigType[],
     inputType: number,
-    disabled?: boolean,
+    disabled?: boolean | boolean[],
     strictly: boolean = true,
     format?: OptionType
 ): [Dayjs | null, Dayjs | null] {
