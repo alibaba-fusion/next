@@ -351,18 +351,9 @@ describe('TreeSelect', () => {
     });
 
     it('should trigger onChange and close dropdown when select tree node', () => {
-        const onClick = cy.spy();
-
         const expectValue = '4';
         const expectItem = _v2n[expectValue];
-        const handleChange = (
-            value: DataSourceItem | DataSourceItem[],
-            data: ObjectItem | ObjectItem[] | null
-        ) => {
-            onClick();
-            expect(value).to.equal(expectValue);
-            expect(data).to.deep.equal(expectItem);
-        };
+        const handleChange = cy.spy();
 
         cy.mount(
             <TreeSelect
@@ -373,7 +364,7 @@ describe('TreeSelect', () => {
             />
         );
         selectTreeNode(expectValue);
-        cy.wrap(onClick).should('be.calledOnce');
+        cy.wrap(handleChange).should('be.calledWith', expectValue, expectItem);
         shouldHideElement();
     });
 
@@ -399,18 +390,10 @@ describe('TreeSelect', () => {
     });
 
     it('should trigger onChange but not close dropdown when select node and enable multiple', () => {
-        const onClick = cy.spy();
         const initValue = '4';
         const appendValue = '6';
         const expectValue = [initValue, appendValue];
-        const handleChange = (
-            value: DataSourceItem | DataSourceItem[],
-            data: ObjectItem | ObjectItem[] | null
-        ) => {
-            onClick();
-            expect(value).to.deep.equal(expectValue);
-            expect(data).to.deep.equal(expectValue.map(v => _v2n[v]));
-        };
+        const handleChange = cy.spy();
 
         cy.mount(
             <TreeSelect
@@ -423,23 +406,19 @@ describe('TreeSelect', () => {
             />
         );
         selectTreeNode(appendValue);
-        cy.wrap(onClick).should('be.calledOnce');
+        cy.wrap(handleChange).should(
+            'be.calledWith',
+            expectValue,
+            expectValue.map(v => _v2n[v])
+        );
         shouldShowElement();
     });
 
     it('should trigger onChange when check node', () => {
-        const onClick = cy.spy();
         const initValue = '4';
         const appendValue = '6';
         const expectValue = ['4', '3'];
-        const handleChange = (
-            value: DataSourceItem | DataSourceItem[],
-            data: ObjectItem | ObjectItem[] | null
-        ) => {
-            onClick();
-            expect(value).to.deep.equal(expectValue);
-            expect(data).to.deep.equal(expectValue.map(v => _v2n[v]));
-        };
+        const handleChange = cy.spy();
         cy.mount(
             <TreeSelect
                 defaultVisible
@@ -451,24 +430,19 @@ describe('TreeSelect', () => {
                 value={initValue}
                 onChange={handleChange}
             />
-        ).then(() => {
-            checkTreeNode(appendValue);
-            cy.wrap(onClick).should('be.calledOnce');
-        });
+        );
+        checkTreeNode(appendValue);
+        cy.wrap(handleChange).should(
+            'be.calledWith',
+            expectValue,
+            expectValue.map(v => _v2n[v])
+        );
     });
 
     it('should trigger onChange when check node and enable treeCheckStrictly', () => {
-        const onClick = cy.spy();
         const appendValue = '6';
         const expectValue = [appendValue];
-        const handleChange = (
-            value: DataSourceItem | DataSourceItem[],
-            data: ObjectItem | ObjectItem[] | null
-        ) => {
-            onClick();
-            expect(value).to.deep.equal(expectValue);
-            expect(data).to.deep.equal(expectValue.map(v => _v2n[v]));
-        };
+        const handleChange = cy.spy();
 
         cy.mount(
             <TreeSelect
@@ -479,10 +453,13 @@ describe('TreeSelect', () => {
                 dataSource={dataSource}
                 onChange={handleChange}
             />
-        ).then(() => {
-            checkTreeNode(appendValue);
-            cy.wrap(onClick).should('be.calledOnce');
-        });
+        );
+        checkTreeNode(appendValue);
+        cy.wrap(handleChange).should(
+            'be.calledWith',
+            expectValue,
+            expectValue.map(v => _v2n[v])
+        );
     });
 
     it('should render tag when defaultValue [{ label, value}]', () => {
@@ -598,35 +575,23 @@ describe('TreeSelect', () => {
         ];
 
         cy.mount(<TreeSelect dataSource={dataSource} isPreview defaultValue={'2975'} />).as('Demo');
-        cy.get('.next-form-preview')
-            .should('exist')
-            .and($el => {
-                expect($el.text()).to.equal('西安市');
-            });
+        cy.get('.next-form-preview').should('have.text', '西安市');
+
+        const handleRenderPreview = cy.spy();
 
         cy.rerender('Demo', {
             renderPreview: (items: ObjectItem[]) => {
-                expect(items.length).to.equal(1);
-                expect(items[0].label).to.equal('西安市');
+                handleRenderPreview(items.length, items[0].label);
                 return 'Hello World';
             },
         });
-        cy.get('.next-form-preview').then($el => {
-            expect($el.text()).to.equal('Hello World');
-        });
+        cy.wrap(handleRenderPreview).should('be.calledWith', 1, '西安市');
+        cy.get('.next-form-preview').should('have.text', 'Hello World');
     });
 
     it('should trigger onChange when remove tag', () => {
-        const onClick = cy.spy();
         const value = ['6'];
-        const handleChange = (
-            value: ObjectItem | ObjectItem[],
-            data: ObjectItem | ObjectItem[]
-        ) => {
-            onClick();
-            expect(value).to.deep.equal([]);
-            expect(data).to.deep.equal([]);
-        };
+        const handleChange = cy.spy();
 
         cy.mount(
             <TreeSelect
@@ -639,31 +604,27 @@ describe('TreeSelect', () => {
             />
         );
         cy.get('.next-icon-close').click();
-        cy.wrap(onClick).should('be.called');
+        cy.wrap(handleChange).should('be.calledWith', [], []);
     });
 
     it('should support multiple with hasClear', () => {
+        const handleChange = cy.spy();
         cy.mount(
             <TreeSelect
                 multiple
                 hasClear
                 dataSource={dataSource}
                 value={['yyy', 'abcd']}
-                onChange={value => {
-                    expect(value).to.equal(null);
-                }}
+                onChange={handleChange}
             />
         );
         cy.get('i.next-icon-delete-filling').click({ force: true });
+        cy.wrap(handleChange).should('be.calledWith', null);
     });
 
     it('should trigger onSearch when search some keyword', () => {
-        const onClick = cy.spy();
         const searchedValue = '外套';
-        const handleSearch = (value: string) => {
-            onClick();
-            expect(value).to.equal(searchedValue);
-        };
+        const handleSearch = cy.spy();
 
         cy.mount(
             <TreeSelect
@@ -675,7 +636,7 @@ describe('TreeSelect', () => {
             />
         );
         cy.get('.next-select-trigger-search input').type('外套');
-        cy.wrap(onClick).should('be.calledOnce');
+        cy.wrap(handleSearch).should('be.calledWith', searchedValue);
     });
 
     it('should hightlight matched node when search some keyword', () => {
@@ -723,7 +684,6 @@ describe('TreeSelect', () => {
         ['INPUT', 'input'].forEach(kw => {
             cy.get('.next-select-trigger-search input').clear(); // Need to clear first
             cy.get('.next-select-trigger-search input').type(kw);
-
             cy.get('.next-filtered').find('.next-tree-node-label').should('have.text', 'Input');
         });
     });
@@ -971,10 +931,7 @@ describe('TreeSelect', () => {
 
     describe('should support useDetailValue', () => {
         it('Support dataSource mode', () => {
-            const handleChange = (value: ObjectItem) => {
-                expect(typeof value).to.equal('object');
-                expect(value.value).to.equal('1');
-            };
+            const handleChange = cy.spy();
             cy.mount(
                 <TreeSelect
                     followTrigger
@@ -982,23 +939,21 @@ describe('TreeSelect', () => {
                     defaultVisible
                     treeDefaultExpandAll
                     dataSource={dataSource}
-                    onChange={handleChange}
+                    onChange={(value: ObjectItem) => handleChange(value.value)}
                 />
             );
             selectTreeNode('1');
+            cy.wrap(handleChange).should('be.calledWith', '1');
         });
         it('Support children mode', () => {
-            const handleChange = (value: ObjectItem) => {
-                expect(typeof value).to.equal('object');
-                expect(value.value).to.equal('1');
-            };
+            const handleChange = cy.spy();
             cy.mount(
                 <TreeSelect
                     followTrigger
                     useDetailValue
                     defaultVisible
                     treeDefaultExpandAll
-                    onChange={handleChange}
+                    onChange={(value: ObjectItem) => handleChange(value.value)}
                 >
                     <TreeNode key="1" className="k-1" value="1" label="Component">
                         <TreeNode key="2" value="2" label="Form">
@@ -1012,6 +967,7 @@ describe('TreeSelect', () => {
                 </TreeSelect>
             );
             selectTreeNode('1');
+            cy.wrap(handleChange).should('be.calledWith', '1');
         });
         it('Control mode available', () => {
             function App() {
