@@ -1,23 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TimePicker2 } from '@alifd/next';
-import dayjs from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
+import type { TimePickerProps, ValueType } from '@alifd/next/types/time-picker2';
 
-class ControlledTimePicker2 extends React.Component {
-    constructor(props, context) {
-        super(props, context);
+interface ControlledTimePicker2Props {
+    onChange: (value: ValueType) => void;
+}
+class ControlledTimePicker2 extends React.Component<
+    ControlledTimePicker2Props,
+    {
+        value: Dayjs | null;
+        rangeValue: (Dayjs | null)[] | null;
+    }
+> {
+    constructor(props: ControlledTimePicker2Props) {
+        super(props);
         this.state = {
             value: dayjs('12:00:00', 'HH:mm:ss', true),
             rangeValue: [dayjs('14:00:00', 'HH:mm:ss'), dayjs('16:00:00', 'HH:mm:ss')],
         };
     }
 
-    onSelect = value => {
+    onSelect: TimePickerProps['onChange'] = (value: Dayjs | null) => {
         this.setState({ value });
         this.props.onChange(value);
     };
 
-    onRangeSelect = rangeValue => {
+    onRangeSelect: TimePickerProps['onChange'] = (rangeValue: (Dayjs | null)[] | null) => {
         this.setState({ rangeValue });
         this.props.onChange(rangeValue);
     };
