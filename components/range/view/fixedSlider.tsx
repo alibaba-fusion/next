@@ -70,6 +70,7 @@ export default class FixedSlider extends React.Component<
     RangeFixedSliderProps,
     RangeFixedSliderState
 > {
+    static displayName = 'FixedSlider';
     static propTypes = {
         hasTip: PropTypes.bool,
         tooltipVisible: PropTypes.bool,

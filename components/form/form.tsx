@@ -63,6 +63,7 @@ const getNewChildren: (children: ReactNode, props: FormProps) => ReactNode = (
 
 /** Form */
 export default class Form extends Component<FormProps> {
+    static displayName = 'Form';
     static propTypes = {
         prefix: PropTypes.string,
         inline: PropTypes.bool,

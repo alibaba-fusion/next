@@ -54,4 +54,6 @@ Slider.defaultProps = {
     rtl: false,
 };
 
+Slider.displayName = 'Slider';
+
 export default Slider;

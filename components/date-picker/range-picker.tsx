@@ -28,7 +28,7 @@ import {
     onTimeKeydown,
 } from './util';
 import PanelFooter from './module/panel-footer';
-import type { PanelFooterProps, PanelType, RangePickerProps, RangePickerState } from './types';
+import type { PanelType, RangePickerProps, RangePickerState } from './types';
 import { type TimePickerProps } from '../time-picker';
 
 const { Popup } = Overlay;

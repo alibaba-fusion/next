@@ -47,7 +47,7 @@ export function getRules(props: ItemProps, labelForErrorMessage: string | null) 
         result.push({
             minLength,
             maxLength,
-            // minLengthMessage maxLengthMessage had been deprected, please use minmaxLength. TODO: removed in 2.0
+            // minLengthMessage maxLengthMessage had been deprecated, please use minmaxLength. TODO: removed in 2.0
             message:
                 getCfgFromProps(props, 'minmaxLengthMessage') ||
                 getCfgFromProps(props, 'minLengthMessage') ||

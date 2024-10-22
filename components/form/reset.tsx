@@ -5,6 +5,7 @@ import { func, obj } from '../util';
 import type { ResetProps } from './types';
 
 class Reset extends React.Component<ResetProps> {
+    static displayName = 'Reset';
     static propTypes = {
         names: PropTypes.array,
         onClick: PropTypes.func,

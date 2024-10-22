@@ -15,6 +15,7 @@ const { Cell } = RGrid;
 const { isNil } = obj;
 
 export default class Item extends Component<ItemProps> {
+    static displayName = 'Item';
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
