@@ -137,12 +137,15 @@ UpperSlider.propTypes = {
     slider: PropTypes.oneOf(['single', 'double']),
 };
 
+UpperSlider.displayName = 'UpperSlider';
+
 function pauseEvent(e: React.SyntheticEvent) {
     e.stopPropagation();
     e.preventDefault();
 }
 
 class Range extends React.Component<RangeProps, RangeState> {
+    static displayName = 'Range';
     static contextTypes = {
         prefix: PropTypes.string,
     };

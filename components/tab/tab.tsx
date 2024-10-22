@@ -10,7 +10,7 @@ import zhCN from '../locale/zh-cn';
 import type { TabProps, ItemProps } from './types';
 
 const noop = () => {};
-interface TabState {
+export interface TabState {
     activeKey?: string;
 }
 

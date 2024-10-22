@@ -17,4 +17,6 @@ Track.defaultProps = {
     prefix: 'next-',
 };
 
+Track.displayName = 'Track';
+
 export default Track;

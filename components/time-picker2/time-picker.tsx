@@ -39,6 +39,7 @@ type SharedInputProps = DateInputProps & {
     ref: (el: InstanceType<typeof DateInput>) => void;
 };
 class TimePicker2 extends Component<TimePickerProps, TimePickerState> {
+    static displayName = 'TimePicker2';
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
