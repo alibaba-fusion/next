@@ -5,6 +5,7 @@ import { getPercent } from '../utils';
 import type { RangeSelectedProps } from '../types';
 
 export default class Selected extends React.Component<RangeSelectedProps> {
+    static displayName = 'Selected';
     static propTypes = {
         min: PropTypes.number,
         max: PropTypes.number,

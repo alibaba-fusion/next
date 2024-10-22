@@ -5,6 +5,7 @@ import { inRange, getPercent } from '../utils';
 import type { RangeMarkProps } from '../types';
 
 export default class Mark extends React.Component<RangeMarkProps> {
+    static displayName = 'Mark';
     static propTypes = {
         min: PropTypes.number,
         max: PropTypes.number,

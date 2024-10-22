@@ -5,6 +5,7 @@ import { func, obj } from '../util';
 import type { SubmitProps } from './types';
 
 class Submit extends React.Component<SubmitProps> {
+    static displayName = 'Submit';
     static propTypes = {
         onClick: PropTypes.func,
         validate: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),

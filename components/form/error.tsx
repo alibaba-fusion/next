@@ -7,6 +7,7 @@ import type { ErrorProps } from './types';
 import type NextField from '../field';
 
 class Error extends Component<ErrorProps> {
+    static displayName = 'Error';
     static propTypes = {
         name: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         field: PropTypes.object,
