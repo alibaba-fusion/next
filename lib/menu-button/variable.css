@@ -1,0 +1,14 @@
+:root {
+--menu-btn-disabled-icon-color: #CCCCCC;
+--menu-btn-ghost-light-disabled-icon-color: rgba(0, 0, 0, 0.1);
+--menu-btn-ghost-dark-disabled-icon-color: rgba(255, 255, 255, 0.4);
+--menu-btn-pure-text-normal-icon-color: #999999;
+--menu-btn-pure-text-primary-icon-color: #FFFFFF;
+--menu-btn-pure-text-secondary-icon-color: #5584FF;
+--menu-btn-text-text-normal-icon-color: #333333;
+--menu-btn-text-text-primary-icon-color: #5584FF;
+--menu-btn-ghost-light-icon-color: #333333;
+--menu-btn-ghost-dark-icon-color: #FFFFFF;
+--menu-btn-fold-icon-content: "\e63d";
+--menu-btn-unfold-icon-content: "";
+}
