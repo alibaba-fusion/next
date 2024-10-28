@@ -425,11 +425,11 @@ class Picker extends React.Component {
                 if (isRange) {
                     const updatedInputValue = [...inputValue];
                     updatedInputValue[inputType] = updatedInputValue[inputType] + ' ';
-                    this.setState({ inputValue: updatedInputValue })
+                    this.setState({ inputValue: updatedInputValue });
                 } else {
                     this.setState({
-                        inputValue: inputValue + ' '
-                    })
+                        inputValue: inputValue + ' ',
+                    });
                 }
                 break;
             }
@@ -441,7 +441,13 @@ class Picker extends React.Component {
     handleChange = (v, eventType) => {
         const { format } = this.props;
         const { isRange, showOk, value, preValue } = this.state;
-        const forceEvents = ['KEYDOWN_ENTER', 'CLICK_PRESET', 'CLICK_OK', 'INPUT_CLEAR', 'VISIBLE_CHANGE'];
+        const forceEvents = [
+            'KEYDOWN_ENTER',
+            'CLICK_PRESET',
+            'CLICK_OK',
+            'INPUT_CLEAR',
+            'VISIBLE_CHANGE',
+        ];
         const isTemporary = showOk && !forceEvents.includes(eventType);
 
         // 面板收起时候，将值设置为确认值
@@ -587,7 +593,13 @@ class Picker extends React.Component {
     };
 
     renderArrow = left => {
-        return <div key="arrow" className={`${this.props.prefix}range-picker2-arrow`} style={{ left }} />;
+        return (
+            <div
+                key="arrow"
+                className={`${this.props.prefix}range-picker2-arrow`}
+                style={{ left }}
+            />
+        );
     };
 
     render() {
@@ -641,7 +653,10 @@ class Picker extends React.Component {
 
             return (
                 <div className={previewCls}>
-                    {renderNode(renderPreview, isRange ? inputValue.join('-') : inputValue, [curValue, this.props])}
+                    {renderNode(renderPreview, isRange ? inputValue.join('-') : inputValue, [
+                        curValue,
+                        this.props,
+                    ])}
                 </div>
             );
         }
@@ -698,13 +713,20 @@ class Picker extends React.Component {
         };
 
         const DateNode = isRange ? (
-            <RangePanel justBeginInput={justBeginInput} onCalendarChange={onCalendarChange} {...panelProps} />
+            <RangePanel
+                justBeginInput={justBeginInput}
+                onCalendarChange={onCalendarChange}
+                {...panelProps}
+            />
         ) : (
             <DatePanel {...panelProps} />
         );
 
         // 底部节点
-        const oKable = !!(!this.checkValueDisabled(inputValue) && (isRange ? inputValue && inputValue[inputType] : inputValue));
+        const oKable = !!(
+            !this.checkValueDisabled(inputValue) &&
+            (isRange ? inputValue && inputValue[inputType] : inputValue)
+        );
         const shouldShowFooter = showOk || preset || extraFooterRender;
 
         const footerNode = shouldShowFooter ? (
@@ -774,7 +796,11 @@ class Picker extends React.Component {
                 >
                     {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                     <div onMouseDown={handleMouseDown} style={{ marginLeft: panelLeft }}>
-                        <div dir={rtl ? 'rtl' : undefined} className={`${prefixCls}-wrapper`} ref={this.popupRef}>
+                        <div
+                            dir={rtl ? 'rtl' : undefined}
+                            className={`${prefixCls}-wrapper`}
+                            ref={this.popupRef}
+                        >
                             {isRange ? this.renderArrow(arrowLeft) : null}
                             {DateNode}
                             {this.state.panelMode !== this.props.mode ? null : footerNode}

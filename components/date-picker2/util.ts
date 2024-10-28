@@ -49,6 +49,7 @@ export function fmtValue(value, fmt) {
  */
 export function isValueChanged(newValue, oldValue) {
     return Array.isArray(newValue)
-        ? isValueChanged(newValue[0], oldValue && oldValue[0]) || isValueChanged(newValue[1], oldValue && oldValue[1])
+        ? isValueChanged(newValue[0], oldValue && oldValue[0]) ||
+              isValueChanged(newValue[1], oldValue && oldValue[1])
         : newValue !== oldValue && !datejs(newValue).isSame(oldValue);
 }

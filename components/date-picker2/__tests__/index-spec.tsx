@@ -69,7 +69,12 @@ describe('Picker', () => {
         });
 
         it('type of value', () => {
-            [new Date(2020, 11, 12), 1607753163910, dayjs('2020-12-12'), moment('2020-12-12')].forEach(v => {
+            [
+                new Date(2020, 11, 12),
+                1607753163910,
+                dayjs('2020-12-12'),
+                moment('2020-12-12'),
+            ].forEach(v => {
                 wrapper = mount(<DatePicker defaultValue={v} />);
                 assert(getStrValue(wrapper) === '2020-12-12');
                 wrapper.unmount();
@@ -83,7 +88,11 @@ describe('Picker', () => {
                     wrapper = mount(<DatePicker defaultVisible type={type} mode={mode} />);
 
                     assert(wrapper.find(`.next-${type}-picker2-panel`).length === 1);
-                    assert((wrapper.find(`.next-calendar2-table-${mode}`).length === type) === 'range' ? 2 : 1);
+                    assert(
+                        (wrapper.find(`.next-calendar2-table-${mode}`).length === type) === 'range'
+                            ? 2
+                            : 1
+                    );
 
                     wrapper.unmount();
                     wrapper = null;
@@ -94,34 +103,41 @@ describe('Picker', () => {
         it('disabled', () => {
             // DatePicker
             wrapper = mount(<DatePicker disabled />);
-            assert(wrapper.find('.next-date-picker2-input-date').hasClass('next-date-picker2-input-disabled'));
+            assert(
+                wrapper
+                    .find('.next-date-picker2-input-date')
+                    .hasClass('next-date-picker2-input-disabled')
+            );
             wrapper.unmount();
 
             // Range
             wrapper = mount(<RangePicker disabled />);
-            assert(wrapper.find('.next-date-picker2-input-range').hasClass('next-date-picker2-input-disabled'));
+            assert(
+                wrapper
+                    .find('.next-date-picker2-input-range')
+                    .hasClass('next-date-picker2-input-disabled')
+            );
             wrapper.unmount();
 
             // half disabled
             wrapper = mount(<RangePicker disabled={[true, false]} />);
-            assert(!wrapper.find('.next-date-picker2-input-range').hasClass('next-date-picker2-input-disabled'));
-            assert(
-                wrapper
-                    .find('.next-input')
-                    .at(0)
-                    .hasClass('next-disabled')
-            );
             assert(
                 !wrapper
-                    .find('.next-input')
-                    .at(1)
-                    .hasClass('next-disabled')
+                    .find('.next-date-picker2-input-range')
+                    .hasClass('next-date-picker2-input-disabled')
             );
+            assert(wrapper.find('.next-input').at(0).hasClass('next-disabled'));
+            assert(!wrapper.find('.next-input').at(1).hasClass('next-disabled'));
             wrapper.unmount();
 
             // half disabled with showTime
             wrapper = mount(
-                <RangePicker showTime disabled={[false, true]} defaultValue={['2022', '2020']} defaultVisible />
+                <RangePicker
+                    showTime
+                    disabled={[false, true]}
+                    defaultValue={['2022', '2020']}
+                    defaultVisible
+                />
             );
             // keep end time
             assert.deepEqual(getStrValue(), ['', '2020-01-01 00:00:00']);
@@ -132,10 +148,7 @@ describe('Picker', () => {
             assert.deepEqual(getStrValue(), ['2020-01-01 05:00:00', '2020-01-01 00:00:00']);
 
             // check value after clicking ok
-            wrapper
-                .find('.next-date-picker2-footer-ok')
-                .hostNodes()
-                .simulate('click');
+            wrapper.find('.next-date-picker2-footer-ok').hostNodes().simulate('click');
             assert.deepEqual(getStrValue(), ['', '2020-01-01 00:00:00']);
         });
 
@@ -175,7 +188,9 @@ describe('Picker', () => {
         it('showTime', () => {
             [DatePicker, RangePicker].forEach(Picker => {
                 const defaultValue =
-                    Picker === DatePicker ? '2020-12-12 12:12:12' : ['2020-12-12 12:12:12', '2020-12-13 13:13:12'];
+                    Picker === DatePicker
+                        ? '2020-12-12 12:12:12'
+                        : ['2020-12-12 12:12:12', '2020-12-13 13:13:12'];
 
                 wrapper = mount(<Picker defaultValue={defaultValue} showTime defaultVisible />);
 
@@ -194,8 +209,11 @@ describe('Picker', () => {
                 const props = {
                     [key]: { format: 'HH:mm' },
                 };
-                wrapper = mount(<DatePicker defaultValue={defaultValue} showTime defaultVisible {...props} />);
-                const timeTextSltor = '.next-date-time-picker-wrapper .next-calendar2-header-text-field';
+                wrapper = mount(
+                    <DatePicker defaultValue={defaultValue} showTime defaultVisible {...props} />
+                );
+                const timeTextSltor =
+                    '.next-date-time-picker-wrapper .next-calendar2-header-text-field';
                 assert(wrapper.find('.next-time-picker2-menu').length === 2);
                 assert(wrapper.find(timeTextSltor).instance().textContent === '12:12');
                 wrapper.unmount();
@@ -220,12 +238,16 @@ describe('Picker', () => {
 
         it('ignore showTime && timePanelProps', () => {
             const callback = (Picker, mode) => {
-                wrapper = mount(<Picker mode={mode} showTime timePanelProps={{ format: 'HH:mm' }} />);
+                wrapper = mount(
+                    <Picker mode={mode} showTime timePanelProps={{ format: 'HH:mm' }} />
+                );
                 assert(!showTimePanel());
                 wrapper.unmount();
             };
 
-            [MonthPicker, YearPicker, WeekPicker, QuarterPicker].forEach(Picker => callback(Picker));
+            [MonthPicker, YearPicker, WeekPicker, QuarterPicker].forEach(Picker =>
+                callback(Picker)
+            );
             [WEEK, MONTH, QUARTER, YEAR].forEach(mode => {
                 [DatePicker, RangePicker].forEach(Picker => callback(Picker, mode));
             });
@@ -250,22 +272,30 @@ describe('Picker', () => {
                 ['hour', 'second'].forEach(u => {
                     assert(
                         wrapper
-                            .find(`.next-time-picker2-menu-${u} .next-time-picker2-menu-item[title=19]`)
+                            .find(
+                                `.next-time-picker2-menu-${u} .next-time-picker2-menu-item[title=19]`
+                            )
                             .hasClass('next-disabled')
                     );
                     assert(
                         !wrapper
-                            .find(`.next-time-picker2-menu-${u} .next-time-picker2-menu-item[title=18]`)
+                            .find(
+                                `.next-time-picker2-menu-${u} .next-time-picker2-menu-item[title=18]`
+                            )
                             .hasClass('next-disabled')
                     );
                 });
 
                 assert(
-                    !wrapper.find('.next-calendar2-cell[title="2020-12-12"]').hasClass('next-calendar2-cell-disabled')
+                    !wrapper
+                        .find('.next-calendar2-cell[title="2020-12-12"]')
+                        .hasClass('next-calendar2-cell-disabled')
                 );
 
                 assert(
-                    wrapper.find('.next-calendar2-cell[title="2020-12-13"]').hasClass('next-calendar2-cell-disabled')
+                    wrapper
+                        .find('.next-calendar2-cell[title="2020-12-13"]')
+                        .hasClass('next-calendar2-cell-disabled')
                 );
 
                 wrapper.unmount();
@@ -305,17 +335,18 @@ describe('Picker', () => {
             clickOk();
             clickDate('2020-12-13');
             clickOk();
-            assert.deepEqual(getStrValue(), [`2020-12-12 ${defaultTime}`, `2020-12-13 ${defaultTime}`]);
+            assert.deepEqual(getStrValue(), [
+                `2020-12-12 ${defaultTime}`,
+                `2020-12-13 ${defaultTime}`,
+            ]);
         });
 
         it('placeholder', () => {
             // DatePicker
             wrapper = mount(<DatePicker placeholder="placeholder" />);
             assert(
-                wrapper
-                    .find('.next-input input')
-                    .instance()
-                    .getAttribute('placeholder') === 'placeholder'
+                wrapper.find('.next-input input').instance().getAttribute('placeholder') ===
+                    'placeholder'
             );
             wrapper.unmount();
 
@@ -323,14 +354,18 @@ describe('Picker', () => {
             wrapper = mount(<RangePicker placeholder="placeholder" />);
 
             assert.deepEqual(
-                wrapper.find('.next-input input').map(node => node.instance().getAttribute('placeholder')),
+                wrapper
+                    .find('.next-input input')
+                    .map(node => node.instance().getAttribute('placeholder')),
                 ['placeholder', 'placeholder']
             );
             wrapper.unmount();
 
             wrapper = mount(<RangePicker placeholder={['begin', 'end']} />);
             assert.deepEqual(
-                wrapper.find('.next-input input').map(node => node.instance().getAttribute('placeholder')),
+                wrapper
+                    .find('.next-input input')
+                    .map(node => node.instance().getAttribute('placeholder')),
                 ['begin', 'end']
             );
         });
@@ -356,7 +391,10 @@ describe('Picker', () => {
                 [QUARTER, 'YYYY-[Q]Q'],
             ].forEach(([mode, fmt]) => {
                 wrapper = mount(<RangePicker mode={mode} defaultValue={defaultRangeVal} />);
-                assert.deepEqual(getStrValue(), defaultRangeVal.map(v => dayjs(v).format(fmt)));
+                assert.deepEqual(
+                    getStrValue(),
+                    defaultRangeVal.map(v => dayjs(v).format(fmt))
+                );
                 wrapper.unmount();
             });
         });
@@ -369,7 +407,10 @@ describe('Picker', () => {
 
             // Range
             wrapper = mount(<RangePicker defaultValue={defaultRangeVal} isPreview />);
-            assert.equal(wrapper.find('.next-form-preview').prop('children'), '2020-12-12-2020-12-13');
+            assert.equal(
+                wrapper.find('.next-form-preview').prop('children'),
+                '2020-12-12-2020-12-13'
+            );
             wrapper.unmount();
 
             // renderPreview
@@ -390,7 +431,10 @@ describe('Picker', () => {
                     defaultValue={defaultRangeVal}
                     isPreview
                     renderPreview={(v, props) => {
-                        assert.deepEqual(v.map(i => i.format('YYYY-MM-DD')), defaultRangeVal);
+                        assert.deepEqual(
+                            v.map(i => i.format('YYYY-MM-DD')),
+                            defaultRangeVal
+                        );
                         assert(props);
                     }}
                 />
@@ -434,10 +478,7 @@ describe('Picker', () => {
                         .find('.next-calendar2-cell-current')
                         .at(0)
                         .getDOMNode()
-                        .getAttribute('title') ===
-                    dayjs()
-                        .startOf('month')
-                        .format('YYYY-MM-DD')
+                        .getAttribute('title') === dayjs().startOf('month').format('YYYY-MM-DD')
                 );
                 wrapper.unmount();
             });
@@ -456,7 +497,10 @@ describe('Picker', () => {
             });
 
             // set Value
-            [[DatePicker, defaultVal], [RangePicker, defaultRangeVal]].forEach(([Picker, val]) => {
+            [
+                [DatePicker, defaultVal],
+                [RangePicker, defaultRangeVal],
+            ].forEach(([Picker, val]) => {
                 wrapper = mount(<Picker defaultVisible defaultValue={val} />);
                 assert(
                     wrapper
@@ -500,13 +544,19 @@ describe('Picker', () => {
                     defaultVisible
                     format="x"
                     onChange={(v, strVal) =>
-                        assert.deepEqual(strVal, [dayjs('2020-12-12').format('x'), dayjs('2020-12-14').format('x')])
+                        assert.deepEqual(strVal, [
+                            dayjs('2020-12-12').format('x'),
+                            dayjs('2020-12-14').format('x'),
+                        ])
                     }
                 />
             );
             clickDate('2020-12-12');
             clickDate('2020-12-14');
-            assert.deepEqual(getStrValue(), [dayjs('2020-12-12').format('x'), dayjs('2020-12-14').format('x')]);
+            assert.deepEqual(getStrValue(), [
+                dayjs('2020-12-12').format('x'),
+                dayjs('2020-12-14').format('x'),
+            ]);
             wrapper.unmount();
 
             // RangePicker outputFormat array
@@ -517,7 +567,10 @@ describe('Picker', () => {
                     defaultVisible
                     format={['YYYY', v => v.valueOf()]}
                     onChange={(v, strVal) =>
-                        assert.deepEqual(strVal, [dayjs('2020-12-12').format('YYYY'), dayjs('2020-12-14').format('x')])
+                        assert.deepEqual(strVal, [
+                            dayjs('2020-12-12').format('YYYY'),
+                            dayjs('2020-12-14').format('x'),
+                        ])
                     }
                 />
             );
@@ -559,7 +612,10 @@ describe('Picker', () => {
                     defaultVisible
                     outputFormat="x"
                     onChange={v =>
-                        assert.deepEqual(v, [dayjs('2020-12-12').format('x'), dayjs('2020-12-14').format('x')])
+                        assert.deepEqual(v, [
+                            dayjs('2020-12-12').format('x'),
+                            dayjs('2020-12-14').format('x'),
+                        ])
                     }
                 />
             );
@@ -575,7 +631,10 @@ describe('Picker', () => {
                     defaultVisible
                     outputFormat={['YYYY', v => v.valueOf()]}
                     onChange={v =>
-                        assert.deepEqual(v, [dayjs('2020-12-12').format('YYYY'), dayjs('2020-12-14').format('x')])
+                        assert.deepEqual(v, [
+                            dayjs('2020-12-12').format('YYYY'),
+                            dayjs('2020-12-14').format('x'),
+                        ])
                     }
                 />
             );
@@ -623,7 +682,9 @@ describe('Picker', () => {
 
     describe('actions', () => {
         it('dateSelect && TimeSelect', () => {
-            wrapper = mount(<DatePicker defaultValue={defaultVal} showTime defaultVisible onChange={onChange} />);
+            wrapper = mount(
+                <DatePicker defaultValue={defaultVal} showTime defaultVisible onChange={onChange} />
+            );
             clickDate('2020-12-13');
             assert(getStrValue() === '2020-12-13 00:00:00');
             clickTime('12');
@@ -697,7 +758,9 @@ describe('Picker', () => {
         });
 
         it('RangePicker panelValue', () => {
-            wrapper = mount(<RangePicker defaultValue={['2020-12-12', '2021-02-13']} defaultVisible />);
+            wrapper = mount(
+                <RangePicker defaultValue={['2020-12-12', '2021-02-13']} defaultVisible />
+            );
             assert(findDate('2020-12-12').length);
             assert(findDate('2021-01-12').length);
             findInput(1).simulate('focus');
@@ -734,26 +797,17 @@ describe('Picker', () => {
             rightBtns.at(1).simulate('click');
 
             mode = 'month';
-            wrapper
-                .find('.next-calendar2-header-text-field button')
-                .at(1)
-                .simulate('click');
+            wrapper.find('.next-calendar2-header-text-field button').at(1).simulate('click');
 
             mode = 'date';
             panelValue = '2020-11-01';
             clickDate('2020-11', 'month');
 
             mode = 'year';
-            wrapper
-                .find('.next-calendar2-header-text-field button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('.next-calendar2-header-text-field button').at(0).simulate('click');
 
             mode = 'decade';
-            wrapper
-                .find('.next-calendar2-header-text-field button')
-                .at(0)
-                .simulate('click');
+            wrapper.find('.next-calendar2-header-text-field button').at(0).simulate('click');
             wrapper.unmount();
 
             // RangePicker
@@ -818,10 +872,7 @@ describe('Picker', () => {
             findInput(0).simulate('click');
             clickDate('2020-12-12');
             clickDate('2020-12-14');
-            wrapper
-                .find('.next-input-clear-icon')
-                .hostNodes()
-                .simulate('click');
+            wrapper.find('.next-input-clear-icon').hostNodes().simulate('click');
             assert.deepEqual(getStrValue(), ['', '']);
 
             // clear 之后 focus 第一个 input 元素
@@ -835,7 +886,11 @@ describe('Picker', () => {
             wrapper = mount(<RangePicker value={['', '']} />);
             assert.deepEqual(getStrValue(), ['', '']);
 
-            [[null, null], ['', ''], [undefined, undefined]].map(value => {
+            [
+                [null, null],
+                ['', ''],
+                [undefined, undefined],
+            ].map(value => {
                 wrapper.setProps({ value });
                 assert.deepEqual(getStrValue(), ['', '']);
             });
@@ -848,7 +903,11 @@ describe('Picker', () => {
             wrapper.setProps({ value: ['2021', '2020'], disabled: [false, true] });
             assert.deepEqual(getStrValue(), ['', '2020-01-01']);
 
-            wrapper.setProps({ value: ['2020-01-01', '2020-01-02'], disabled: false, visible: true });
+            wrapper.setProps({
+                value: ['2020-01-01', '2020-01-02'],
+                disabled: false,
+                visible: true,
+            });
             clickDate('2020-01-03');
             assert.deepEqual(getStrValue(), ['2020-01-03', '']);
 
@@ -864,7 +923,9 @@ describe('Picker', () => {
     describe('event', () => {
         it('onChange', () => {
             let changeCount = 0;
-            wrapper = mount(<DatePicker defaultValue={defaultVal} visible onChange={() => ++changeCount} />);
+            wrapper = mount(
+                <DatePicker defaultValue={defaultVal} visible onChange={() => ++changeCount} />
+            );
 
             clickDate(defaultVal);
             assert(changeCount === 0);
@@ -973,13 +1034,23 @@ describe('Picker', () => {
             clickTime('16', 'minute');
             clickTime('35', 'second');
             clickOk();
-            assert.deepEqual(getStrValue(), [`${currentDateStr} 12:12:12`, `${currentDateStr} 16:16:35`]);
+            assert.deepEqual(getStrValue(), [
+                `${currentDateStr} 12:12:12`,
+                `${currentDateStr} 16:16:35`,
+            ]);
         });
         // https://github.com/alibaba-fusion/next/issues/2641
         it('value controlled issue', () => {
             function App() {
                 const [value, setVal] = useState();
-                return <DatePicker visible defaultPanelValue={defaultVal} value={value} onChange={setVal} />;
+                return (
+                    <DatePicker
+                        visible
+                        defaultPanelValue={defaultVal}
+                        value={value}
+                        onChange={setVal}
+                    />
+                );
             }
             wrapper = mount(<App />);
             clickDate('2020-12-13');
@@ -992,7 +1063,9 @@ describe('Picker', () => {
                 const [value, setValue] = React.useState(['2021-05', '2021-08']);
                 return (
                     <div className="app">
-                        <button onClick={() => setValue([dayjs('2021-02-03'), dayjs('2021-02-03')])} />
+                        <button
+                            onClick={() => setValue([dayjs('2021-02-03'), dayjs('2021-02-03')])}
+                        />
                         <RangePicker value={value} />
                     </div>
                 );
@@ -1000,16 +1073,10 @@ describe('Picker', () => {
             wrapper = mount(<App />);
             wrapper.find('button').simulate('click');
             assert.deepEqual(getStrValue(), ['2021-02-03', '2021-02-03']);
-            wrapper
-                .find('input')
-                .at(0)
-                .simulate('click');
+            wrapper.find('input').at(0).simulate('click');
             assert.deepEqual(getStrValue(), ['2021-02-03', '2021-02-03']);
             clickDate('2021-02-04');
-            wrapper
-                .find('input')
-                .at(1)
-                .simulate('click');
+            wrapper.find('input').at(1).simulate('click');
             clickDate('2021-02-05');
             assert.deepEqual(getStrValue(), ['2021-02-03', '2021-02-03']);
         });
@@ -1069,10 +1136,7 @@ describe('Picker', () => {
                 );
             };
             wrapper = mount(<App />);
-            wrapper
-                .find('input')
-                .at(0)
-                .simulate('click');
+            wrapper.find('input').at(0).simulate('click');
 
             clickDate('2020-12-12');
 
@@ -1146,7 +1210,10 @@ describe('Picker', () => {
                     case 'year':
                         return date.year() < currentDate.year();
                     case 'month':
-                        return date.year() * 100 + date.month() < currentDate.year() * 100 + currentDate.month();
+                        return (
+                            date.year() * 100 + date.month() <
+                            currentDate.year() * 100 + currentDate.month()
+                        );
                     default:
                         return false;
                 }
@@ -1165,45 +1232,66 @@ describe('Picker', () => {
         });
 
         it('WeekPicker should format value correctly when date is 01-01', () => {
-            wrapper = mount(<WeekPicker defaultValue="2022-01-01" />)
+            wrapper = mount(<WeekPicker defaultValue="2022-01-01" />);
             assert(getStrValue() === '2021-52周');
-            wrapper = mount(<WeekPicker defaultValue="2022-01-01" format="YYYY-wo" />)
+            wrapper = mount(<WeekPicker defaultValue="2022-01-01" format="YYYY-wo" />);
             assert(getStrValue() === '2021-52周');
         });
 
         // fix https://github.com/alibaba-fusion/next/issues/4767
         it('should pass inputProps to trigger', () => {
-            mount(<DatePicker trigger={(inputProps) => {
-                assert(typeof inputProps.onInputTypeChange === 'function');
-                return <div>test</div>
-            }} />);
+            mount(
+                <DatePicker
+                    trigger={inputProps => {
+                        assert(typeof inputProps.onInputTypeChange === 'function');
+                        return <div>test</div>;
+                    }}
+                />
+            );
         });
 
         // fix https://github.com/alibaba-fusion/next/issues/4775
         it('RangePicker disabledDate method should return the correct panel mode', () => {
             let panelMode = 'date';
             const disabledDate = function (date, mode) {
-                assert(panelMode === mode, `current panelMode is "${panelMode}", but got "${mode}"`);
+                assert(
+                    panelMode === mode,
+                    `current panelMode is "${panelMode}", but got "${mode}"`
+                );
                 return false;
             };
 
-            wrapper = mount(<RangePicker disabled={[true, false]} disabledDate={disabledDate} mode="date" defaultPanelValue={defaultVal} />);
+            wrapper = mount(
+                <RangePicker
+                    disabled={[true, false]}
+                    disabledDate={disabledDate}
+                    mode="date"
+                    defaultPanelValue={defaultVal}
+                />
+            );
             findInput(1).simulate('click');
             assert(wrapper.find('.next-calendar2-table-date').length);
             findDate('2021-01-31').simulate('mousemove');
 
             panelMode = 'month';
-            wrapper.find('.next-range-picker-left .next-calendar2-header-text-field button').at(1).simulate('click');
+            wrapper
+                .find('.next-range-picker-left .next-calendar2-header-text-field button')
+                .at(1)
+                .simulate('click');
             assert(wrapper.find('.next-calendar2-table-month').length);
 
             panelMode = 'year';
-            wrapper.find('.next-range-picker-left .next-calendar2-header-text-field button').simulate('click');
+            wrapper
+                .find('.next-range-picker-left .next-calendar2-header-text-field button')
+                .simulate('click');
             assert(wrapper.find('.next-calendar2-table-year').length);
 
             panelMode = 'decade';
-            wrapper.find('.next-range-picker-left .next-calendar2-header-text-field button').simulate('click');
+            wrapper
+                .find('.next-range-picker-left .next-calendar2-header-text-field button')
+                .simulate('click');
             assert(wrapper.find('.next-calendar2-table-decade').length);
-        })
+        });
 
         // fix https://github.com/alibaba-fusion/next/issues/4788
         it('The English translation does not comply with international standards', () => {
@@ -1214,24 +1302,20 @@ describe('Picker', () => {
             );
             assert(getStrValue() === 'Feb 2, 2020');
             assert(wrapper.find(`.next-calendar2-header-text-field`).text() === `Feb2020`);
-        })
+        });
 
         // fix https://github.com/alibaba-fusion/next/issues/4790
         it('Unable to enter space to enter time', () => {
-            wrapper = mount(
-                <DatePicker showTime />
-            );
+            wrapper = mount(<DatePicker showTime />);
             changeInput('2020-11-11');
             findInput().simulate('keydown', { keyCode: KEYCODE.SPACE });
             assert(getStrValue(wrapper) === '2020-11-11 ');
             wrapper.unmount();
-            wrapper = mount(
-                <RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-            );
+            wrapper = mount(<RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />);
             changeInput('2020-11-11', 0);
             findInput(0).simulate('keydown', { keyCode: KEYCODE.SPACE });
             assert(getStrValue(wrapper).join(',') === '2020-11-11 ,');
-        })
+        });
 
         // fix https://github.com/alibaba-fusion/next/issues/4896
         it('After entering a customized date format and pressing Enter, the value should not change', () => {

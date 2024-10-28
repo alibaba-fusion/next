@@ -47,10 +47,14 @@ const transform = (props, deprecated) => {
 
     if (!newProps.format) {
         newProps.format = MODE2FORMAT[mode] + (newProps.showTime ? ' HH:mm:ss' : '');
-    } else if (mode === WEEK && typeof newProps.format === 'string' && newProps.format.includes('YYYY')) {
+    } else if (
+        mode === WEEK &&
+        typeof newProps.format === 'string' &&
+        newProps.format.includes('YYYY')
+    ) {
         // see https://github.com/alibaba-fusion/next/issues/3727
         newProps.format = newProps.format.replace('YYYY', 'gggg');
-    } 
+    }
 
     return newProps;
 };
@@ -59,7 +63,8 @@ const ConfigPicker = ConfigProvider.config(Picker, {
     componentName: 'DatePicker2',
     transform,
 });
-const generatePicker = mode => React.forwardRef((props, ref) => <ConfigPicker ref={ref} {...props} mode={mode} />);
+const generatePicker = mode =>
+    React.forwardRef((props, ref) => <ConfigPicker ref={ref} {...props} mode={mode} />);
 
 const DatePicker2 = generatePicker();
 DatePicker2.displayName = 'DatePicker2';
@@ -76,7 +81,9 @@ DatePicker2.WeekPicker.displayName = 'WeekPicker2';
 DatePicker2.QuarterPicker = generatePicker(QUARTER);
 DatePicker2.QuarterPicker.displayName = 'QuarterPicker2';
 
-DatePicker2.RangePicker = React.forwardRef((props, ref) => <ConfigPicker ref={ref} {...props} type="range" />);
+DatePicker2.RangePicker = React.forwardRef((props, ref) => (
+    <ConfigPicker ref={ref} {...props} type="range" />
+));
 DatePicker2.RangePicker.displayName = 'RangePicker2';
 
 export default DatePicker2;

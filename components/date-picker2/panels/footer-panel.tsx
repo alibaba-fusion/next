@@ -93,7 +93,13 @@ class FooterPanel extends React.PureComponent {
         const extraNode = renderNode(extraRender);
         const rangeNode = this.renderRanges();
         const actionsNode = (
-            <Button size="small" disabled={!oKable} onClick={onOk} className={`${prefixCls}-ok`} type="primary">
+            <Button
+                size="small"
+                disabled={!oKable}
+                onClick={onOk}
+                className={`${prefixCls}-ok`}
+                type="primary"
+            >
                 {locale.ok}
             </Button>
         );

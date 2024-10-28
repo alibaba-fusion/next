@@ -68,9 +68,14 @@ class TimePanel extends React.PureComponent {
         const { showHour, showMinute, showSecond } = this.getShow();
 
         return (
-            <div dir={rtl ? 'rtl' : undefined} className={`${prefix}date-time-picker-wrapper ${prefix}calendar2-panel`}>
+            <div
+                dir={rtl ? 'rtl' : undefined}
+                className={`${prefix}date-time-picker-wrapper ${prefix}calendar2-panel`}
+            >
                 <div className={`${prefix}calendar2-header`}>
-                    <div className={`${prefix}calendar2-header-text-field`}>{value ? this.formater(value) : null}</div>
+                    <div className={`${prefix}calendar2-header-text-field`}>
+                        {value ? this.formater(value) : null}
+                    </div>
                 </div>
                 <TimePickerPanel
                     prefix={prefix}

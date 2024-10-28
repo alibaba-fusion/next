@@ -61,7 +61,12 @@ const getPanelValue = ({ mode, value, inputType, showTime }, defaultValue) => {
     let panelValue = value[_inputType] || datejs(defaultValue);
 
     // https://github.com/alibaba-fusion/next/issues/3186
-    if (!showTime && _inputType === END && end && ((begin && !isSamePanel(begin, end, mode)) || !begin)) {
+    if (
+        !showTime &&
+        _inputType === END &&
+        end &&
+        ((begin && !isSamePanel(begin, end, mode)) || !begin)
+    ) {
         panelValue = operate(mode, panelValue, 'subtract');
     }
 
@@ -145,7 +150,7 @@ class RangePanel extends React.Component {
             value: [begin, end],
         } = this.props;
         const { mode } = this.state;
-        
+
         const unit = mode2unit(mode);
 
         return (
@@ -162,11 +167,7 @@ class RangePanel extends React.Component {
         let curDateVal = value[inputType];
         if (!curDateVal) {
             curDateVal =
-                inputType === BEGIN && end
-                    ? end
-                    : inputType === END && begin
-                    ? begin
-                    : datejs();
+                inputType === BEGIN && end ? end : inputType === END && begin ? begin : datejs();
         }
         curDateVal = setTime(curDateVal, v);
 
@@ -233,10 +234,10 @@ class RangePanel extends React.Component {
         return begin && begin.isSame(v, unit)
             ? SELECTED_BEGIN
             : end && end.isSame(v, unit)
-            ? SELECTED_END
-            : begin && end && v.isAfter(begin, unit) && v.isBefore(end, unit)
-            ? SELECTED
-            : UN_SELECTED;
+              ? SELECTED_END
+              : begin && end && v.isAfter(begin, unit) && v.isBefore(end, unit)
+                ? SELECTED
+                : UN_SELECTED;
     }
 
     getUnitByMode(mode) {
@@ -329,7 +330,14 @@ class RangePanel extends React.Component {
     };
 
     renderRangeTime = sharedProps => {
-        const { value, prefix, showTime, inputType, timePanelProps = {}, disabledTime } = this.props;
+        const {
+            value,
+            prefix,
+            showTime,
+            inputType,
+            timePanelProps = {},
+            disabledTime,
+        } = this.props;
 
         const className = classnames(`${prefix}range-picker2-panel`, {
             [`${prefix}range-picker2-panel-single`]: this.hasModeChanged,
@@ -338,7 +346,8 @@ class RangePanel extends React.Component {
         // 禁用时间
         let _disabledTime;
         if (showTime && !this.hasModeChanged && disabledTime) {
-            _disabledTime = typeof disabledTime === 'function' ? disabledTime(value, inputType) : disabledTime;
+            _disabledTime =
+                typeof disabledTime === 'function' ? disabledTime(value, inputType) : disabledTime;
         }
 
         return (
@@ -378,7 +387,11 @@ class RangePanel extends React.Component {
         };
 
         const calendarNodes = [
-            <Calendar {...calendarProps(0)} className={`${prefix}range-picker-left`} key="range-panel-calendar-left" />,
+            <Calendar
+                {...calendarProps(0)}
+                className={`${prefix}range-picker-left`}
+                key="range-panel-calendar-left"
+            />,
             <Calendar
                 {...calendarProps(1)}
                 className={`${prefix}range-picker-right`}
@@ -432,7 +445,9 @@ class RangePanel extends React.Component {
             };
         }
 
-        return this.props.showTime ? this.renderRangeTime(sharedProps) : this.renderRange(sharedProps);
+        return this.props.showTime
+            ? this.renderRangeTime(sharedProps)
+            : this.renderRange(sharedProps);
     }
 }
 

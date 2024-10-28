@@ -119,7 +119,9 @@ class DateInput extends React.Component {
 
         let holder = this.props.placeholder;
 
-        holder = holder || (isRange ? [startPlaceholder, endPlaceholder] : mode2placeholder[mode] || placeholder);
+        holder =
+            holder ||
+            (isRange ? [startPlaceholder, endPlaceholder] : mode2placeholder[mode] || placeholder);
 
         if (isRange && !Array.isArray(holder)) {
             holder = Array(2).fill(holder);
@@ -193,7 +195,9 @@ class DateInput extends React.Component {
                     autoFocus,
                     placeholder: placeholder[idx],
                     value: value[idx] || '',
-                    'aria-label': Array.isArray(dateInputAriaLabel) ? dateInputAriaLabel[idx] : dateInputAriaLabel,
+                    'aria-label': Array.isArray(dateInputAriaLabel)
+                        ? dateInputAriaLabel[idx]
+                        : dateInputAriaLabel,
                     disabled: _disabled,
                     ref: ref => setInputRef(ref, idx),
                     onFocus: _disabled ? undefined : () => handleTypeChange(idx),
@@ -209,12 +213,15 @@ class DateInput extends React.Component {
             {
                 [`${prefixCls}-focus`]: focus,
                 [`${prefixCls}-noborder`]: !hasBorder,
-                [`${prefixCls}-disabled`]: isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled,
+                [`${prefixCls}-disabled`]:
+                    isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled,
                 [`${prefixCls}-error`]: state === 'error',
             }
         );
 
-        const calendarIcon = <Icon type="calendar" className={`${prefix}date-picker2-symbol-calendar-icon`} />;
+        const calendarIcon = (
+            <Icon type="calendar" className={`${prefix}date-picker2-symbol-calendar-icon`} />
+        );
 
         return (
             <div className={className}>
