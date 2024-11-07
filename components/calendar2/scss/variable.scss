@@ -1,5 +1,219 @@
 ////
+/// @module calendar2: 日历 2
+/// @tag Calendar2
+/// @category component
+/// @family data-display
+/// @varPrefix $calendar2-
+/// @classPrefix {prefix}-calendar2
+/// @order {"size/cell":10,"statement/normal/header":100,"statement/normal":10,"statement/normal/table":101,"statement/normal/cell":102,"statement/card/cell":110,"statement/card":11,"statement/card/table":111,"statement/card/header":112,"statement/panel/header":120,"statement/panel":12,"statement/disabled/cell":130,"statement/disabled":13}
 ////
 
-$calendar2-prefix: "." + $css-prefix + "calendar2";
-$calendar2-cell-inner: "." + $css-prefix + "calendar2" + '-cell-inner';
+$calendar2-prefix: '.' + $css-prefix + 'calendar2';
+$calendar2-cell-inner: '.' + $css-prefix + 'calendar2' + '-cell-inner';
+/// font size
+/// @namespace size
+$calendar2-font-size: $font-size-body-1 !default;
+/// background
+/// @namespace size
+$calendar2-background: $color-white !default;
+/// color
+/// @namespace size/cell
+$calendar2-cell-inner-color: $color-text1-1 !default;
+/// min width
+/// @namespace size/cell
+$calendar2-cell-inner-min-width: $s-6 !default;
+/// line width
+/// @namespace size/cell
+$calendar2-cell-inner-border-line-width: $line-1 !default;
+/// line style
+/// @namespace size/cell
+$calendar2-cell-inner-border-line-style: $line-solid !default;
+/// line color
+/// @namespace size/cell
+$calendar2-cell-inner-border-color: $color-transparent !default;
+/// margin (l)
+/// @namespace statement/normal/header
+$calendar2-fullscreen-header-ranges-margin-left: $s-2 !default;
+/// min width
+/// @namespace statement/normal/header
+$calendar2-fullscreen-header-select-year-min-width: $s-22 !default;
+/// padding (t,b)
+/// @namespace statement/normal
+$calendar2-fullscreen-body-padding-tb: $s-2 !default;
+/// padding (l,r)
+/// @namespace statement/normal
+$calendar2-fullscreen-body-padding-lr: $s-zero !default;
+/// height
+/// @namespace statement/card/cell
+$calendar2-card-cell-inner-height: $s-6 !default;
+/// thead height
+/// @namespace statement/card/table
+$calendar2-card-table-thead-height: $s-6 !default;
+/// color
+/// @namespace statement/card/table
+$calendar2-card-table-thead-color: $color-text1-2 !default;
+/// font weight
+/// @namespace statement/card/table
+$calendar2-card-table-th-font-weight: $font-weight-2 !default;
+/// padding (t,b)
+/// @namespace statement/card/table
+$calendar2-card-table-th-padding-tb: $s-1 !default;
+/// padding (l,r)
+/// @namespace statement/card/table
+$calendar2-card-table-th-padding-lr: $s-zero !default;
+/// th height
+/// @namespace statement/card/table
+$calendar2-card-table-th-height: $s-8 !default;
+/// month min width
+/// @namespace statement/card/table
+$calendar2-card-table-month-cell-inner-min-width: $s-14 !default;
+/// quarter min width
+/// @namespace statement/card/table
+$calendar2-card-table-quarter-cell-inner-min-width: $s-14 !default;
+/// decade min width
+/// @namespace statement/card/table
+$calendar2-card-table-decade-cell-inner-min-width: $s-20 !default;
+/// today color
+/// @namespace statement/card/cell
+$calendar2-card-current-today-not-disabled-cell-inner-color: $color-brand1-6 !default;
+/// padding (t)
+/// @namespace statement/normal/table
+$calendar2-fullscreen-table-padding-t: $s-zero !default;
+/// padding (r)
+/// @namespace statement/normal/table
+$calendar2-fullscreen-table-padding-r: $s-3 !default;
+/// padding (b)
+/// @namespace statement/normal/table
+$calendar2-fullscreen-table-padding-b: 5 !default;
+/// padding (l)
+/// @namespace statement/normal/table
+$calendar2-fullscreen-table-padding-l: $s-zero !default;
+/// height
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-inner-height: $s-20 !default;
+/// line width
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-inner-border-top-line-width: $line-2 !default;
+/// line style
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-inner-border-top-line-style: $line-solid !default;
+/// border top color
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-inner-border-top-color: $color-line1-1 !default;
+/// margin (t,b)
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-inner-margin-tb: $s-zero !default;
+/// margin (l,r)
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-inner-margin-lr: $s-1 !default;
+/// padding (t)
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-inner-padding-t: $s-1 !default;
+/// padding (l,r)
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-inner-padding-lr: $s-2 !default;
+/// padding (b)
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-inner-padding-b: $s-zero !default;
+/// height
+/// @namespace statement/normal
+$calendar2-fullscreen-td-height: $s-20 !default;
+/// line width
+/// @namespace statement/normal
+$calendar2-fullscreen-td-border-top-line-width: $line-2 !default;
+/// line style
+/// @namespace statement/normal
+$calendar2-fullscreen-td-border-top-line-style: $line-solid !default;
+/// color
+/// @namespace statement/normal
+$calendar2-fullscreen-td-border-top-color: $color-line1-1 !default;
+/// today color
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-current-today-cell-inner-color: $color-brand1-6 !default;
+/// background color
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-current-cell-inner-background-color: $color-white !default;
+/// padding (t,b)
+/// @namespace statement/card/header
+$calendar2-card-header-padding-tb: $s-2 !default;
+/// padding (l,r)
+/// @namespace statement/card/header
+$calendar2-card-header-padding-lr: $s-2 !default;
+/// line width
+/// @namespace statement/card/header
+$calendar2-card-header-border-bottom-line-width: $line-1 !default;
+/// line style
+/// @namespace statement/card/header
+$calendar2-card-header-border-bottom-line-style: $line-solid !default;
+/// color
+/// @namespace statement/card/header
+$calendar2-card-header-border-bottom-color: $color-line1-1 !default;
+/// padding (t,b)
+/// @namespace statement/panel/header
+$calendar2-panel-header-padding-tb: $s-zero !default;
+/// padding (l,r)
+/// @namespace statement/panel/header
+$calendar2-panel-header-padding-lr: $s-2 !default;
+/// line width
+/// @namespace statement/panel/header
+$calendar2-panel-header-border-bottom-line-width: $line-1 !default;
+/// line style
+/// @namespace statement/panel/header
+$calendar2-panel-header-border-bottom-line-style: $line-solid !default;
+/// border bottom color
+/// @namespace statement/panel/header
+$calendar2-panel-header-border-bottom-color: $color-line1-1 !default;
+/// min width
+/// @namespace statement/panel/header
+$calendar2-panel-header-btn-min-width: $s-5 !default;
+/// btn color
+/// @namespace statement/panel/header
+$calendar2-panel-header-btn-color: $color-text1-3 !default;
+/// font size
+/// @namespace statement/panel/header
+$calendar2-panel-header-btn-font-size: $font-size-body-2 !default;
+/// hover btn color
+/// @namespace statement/panel/header
+$calendar2-panel-header-hover-btn-color: $color-brand1-6 !default;
+/// color
+/// @namespace statement/disabled/cell
+$calendar2-cell-disabled-color: $color-text1-1 !default;
+/// background
+/// @namespace statement/disabled/cell
+$calendar2-cell-disabled-background: $color-fill1-1 !default;
+/// color
+/// @namespace statement/card/cell
+$calendar2-card-current-cell-inner-color: $color-text1-3 !default;
+/// background
+/// @namespace statement/card/cell
+$calendar2-card-cell-current-background: $color-fill1-2 !default;
+/// selected color
+/// @namespace statement/card/cell
+$calendar2-card-current-selected-not-disabled-cell-inner-color: $color-white !default;
+/// selected background
+/// @namespace statement/card/cell
+$calendar2-card-current-selected-not-disabled-cell-inner-background: $color-brand1-6 !default;
+/// disabled color
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-disabled-color: $color-text1-1 !default;
+/// disabled background
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-disabled-background: $color-fill1-1 !default;
+/// color
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-current-cell-inner-color: $color-text1-3 !default;
+/// hover background color
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-cell-current-hover-background-color: $color-fill1-2 !default;
+/// border top color
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-current-selected-not-disabled-cell-inner-border-top-color: $color-brand1-6 !default;
+/// selected color
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-current-selected-not-disabled-cell-inner-color: $color-brand1-6 !default;
+/// selected background
+/// @namespace statement/normal/cell
+$calendar2-fullscreen-current-selected-not-disabled-cell-inner-background: $color-brand1-1 !default;
+/// hover right btn background
+/// @namespace statement/panel/header
+$calendar2-panel-header-hover-right-btn-background: $color-fill1-2 !default;

@@ -1,43 +1,43 @@
 // mixin
-@mixin calendar-hover {
-    background: $color-fill1-2;
+@mixin calendar-hover($background) {
+  background: $background;
 }
 
-@mixin calendar-current {
-    color: $color-text1-3;
+@mixin calendar-current($color) {
+  color: $color;
 }
 
-@mixin calendar-initial {
-    background-color: $color-transparent;
-    color: $color-text1-3;
+@mixin calendar-initial($background-color, $color) {
+  background-color: $background-color;
+  color: $color;
 }
 
-@mixin calendar-disabled {
-    color: $color-text1-1;
-    background: $color-fill1-1;
+@mixin calendar-disabled($color, $background) {
+  color: $color;
+  background: $background;
 }
 
-@mixin calendar-selected {
-    color: $color-white;
-    background: $color-brand1-6;
+@mixin calendar-selected($color, $background) {
+  color: $color;
+  background: $background;
 }
 
-@mixin calendar-hover-fullscreen {
-    background-color: $color-fill1-2;
+@mixin calendar-hover-fullscreen($background-color) {
+  background-color: $background-color;
 }
 
-@mixin calendar-current-fullscreen {
-    color: $color-text1-3;
+@mixin calendar-current-fullscreen($color) {
+  color: $color;
 }
 
-@mixin calendar-selected-fullscreen {
-    border-top-color: $color-brand1-6;
-    font-weight: bold;
-    color: $color-brand1-6;
-    background: $color-brand1-1;
+@mixin calendar-selected-fullscreen($border-top-color, $color, $background) {
+  border-top-color: $border-top-color;
+  font-weight: bold;
+  color: $color;
+  background: $background;
 }
 
-@mixin calendar-disabled-fullscreen {
-    color: $color-text1-1;
-    background: $color-fill1-1;
+@mixin calendar-disabled-fullscreen($color, $background) {
+  color: $color;
+  background: $background;
 }

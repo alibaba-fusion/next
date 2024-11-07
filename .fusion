@@ -79,6 +79,7 @@
     "input": "lib/input/scss/variable.scss",
     "select": "lib/select/scss/variable.scss",
     "calendar": "lib/calendar/scss/variable.scss",
+    "calendar2": "lib/calendar2/scss/variable.scss",
     "card": "lib/card/scss/variable.scss",
     "cascader": "lib/cascader/scss/variable.scss",
     "cascader-select": "lib/cascader-select/scss/variable.scss",

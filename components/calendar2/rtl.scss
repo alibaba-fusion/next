@@ -1,32 +1,32 @@
-div[dir="rtl"]#{$calendar2-prefix} {
-    &-fullscreen,
-    &-panel,
-    &-card {
-        #{$calendar2-prefix}-header {
-            &-actions {
-                margin-right: auto;
-                margin-left: 0;
-            }
+div[dir='rtl']#{$calendar2-prefix} {
+  &-fullscreen,
+  &-panel,
+  &-card {
+    #{$calendar2-prefix}-header {
+      &-actions {
+        margin-right: auto;
+        margin-left: $s-zero;
+      }
 
-            &-ranges,
-            &-actions {
-                & > *:not(:first-child) {
-                    margin-right: 8px;
-                    margin-left: 0;
-                }
-            }
+      &-ranges,
+      &-actions {
+        & > *:not(:first-child) {
+          margin-right: $calendar2-fullscreen-header-ranges-margin-left;
+          margin-left: $s-zero;
         }
+      }
+    }
+  }
+
+  &-fullscreen #{$calendar2-prefix} {
+    &-cell-value,
+    &-table th {
+      text-align: left;
     }
 
-    &-fullscreen #{$calendar2-prefix} {
-        &-cell-value,
-        &-table th {
-            text-align: left;
-        }
-
-        &-table th {
-            padding: 0 0 5px 12px;
-        }
+    &-table th {
+      padding: $calendar2-fullscreen-table-padding-t $calendar2-fullscreen-table-padding-l
+        $calendar2-fullscreen-table-padding-b $calendar2-fullscreen-table-padding-r;
     }
+  }
 }
-
