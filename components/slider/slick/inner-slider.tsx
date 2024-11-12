@@ -58,12 +58,12 @@ class InnerSlider extends Component<InnerSliderProps, InnerSliderState> {
         triggerType: 'click',
     };
 
-    private hasMounted: boolean = false;
-    private animationEndCallback: number | undefined;
-    private pArrow?: HTMLDivElement;
-    private nArrow?: HTMLDivElement;
-    private list?: HTMLDivElement;
-    private track?: HTMLDivElement;
+    hasMounted: boolean = false;
+    animationEndCallback: number | undefined;
+    pArrow?: HTMLDivElement;
+    nArrow?: HTMLDivElement;
+    list?: HTMLDivElement;
+    track?: HTMLDivElement;
 
     constructor(props: InnerSliderProps) {
         super(props);
