@@ -1,14 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { getTrackCSS, getTrackLeft, getTrackAnimateCSS } from './trackHelper';
-import type { InnerSliderProps } from '../../types';
+import type { InnerSliderProps, InnerSliderState } from '../../types';
+
+export type MixinThisType = {
+    props: InnerSliderProps;
+    state: InnerSliderState;
+    list?: HTMLDivElement;
+    track?: HTMLDivElement;
+    animationEndCallback: number | undefined;
+    hasMounted: boolean;
+    getWidth(elem: Element): number;
+    getHeight(elem: Element): number;
+    setState(state: InnerSliderState, cb?: () => void): void;
+    autoPlay(): void;
+    initialize(props: InnerSliderProps): void;
+    canGoNext(opts: InnerSliderProps): boolean;
+    slideHandler(index: number): void;
+    play(): false | void;
+    pause(): void;
+    swipeDirection(
+        touchObject: InnerSliderState['touchObject']
+    ): 'left' | 'right' | 'vertical' | 'down' | 'up';
+};
 
 const helpers = {
-    initialize(props: InnerSliderProps) {
+    initialize(this: MixinThisType, props: InnerSliderProps) {
         const slickList = ReactDOM.findDOMNode(this.list) as Element;
         const slideCount = React.Children.count(props.children);
         const listWidth = this.getWidth(slickList) || 0;
-        const trackWidth = this.getWidth(ReactDOM.findDOMNode(this.track)) || 0;
+        const trackWidth = this.getWidth(ReactDOM.findDOMNode(this.track) as Element) || 0;
         let slideWidth;
 
         if (!props.vertical) {
@@ -19,7 +40,7 @@ const helpers = {
             slideWidth = listWidth;
         }
 
-        const slideHeight = this.getHeight(slickList.querySelector('[data-index="0"]')) || 0;
+        const slideHeight = this.getHeight(slickList.querySelector('[data-index="0"]')!) || 0;
         const listHeight = slideHeight * props.slidesToShow!;
         const slideHeightList = [];
         const newSlickList = Array.from(
@@ -49,8 +70,8 @@ const helpers = {
             },
             () => {
                 const targetLeft = getTrackLeft({
-                    slideIndex: this.state.currentSlide,
-                    trackRef: this.track,
+                    slideIndex: this.state.currentSlide!,
+                    trackRef: this.track!,
                     ...props,
                     ...this.state,
                 });
@@ -68,7 +89,7 @@ const helpers = {
         );
     },
 
-    update(props: InnerSliderProps) {
+    update(this: MixinThisType, props: InnerSliderProps) {
         this.initialize(props);
     },
 
@@ -86,7 +107,7 @@ const helpers = {
         return elem && (elem as Element).getBoundingClientRect().height;
     },
 
-    adaptHeight() {
+    adaptHeight(this: MixinThisType) {
         if (this.props.adaptiveHeight) {
             const selector = `[data-index="${this.state.currentSlide}"]`;
             if (this.list) {
@@ -98,7 +119,7 @@ const helpers = {
         }
     },
 
-    canGoNext(opts: InnerSliderProps) {
+    canGoNext(opts: InnerSliderProps & InnerSliderState) {
         let canGo = true;
         if (!opts.infinite) {
             if (opts.centerMode) {
@@ -116,7 +137,7 @@ const helpers = {
         return canGo;
     },
 
-    slideHandler(index: number) {
+    slideHandler(this: MixinThisType, index: number) {
         const { rtl } = this.props;
 
         // Functionality of animateSlide and postSlide is merged into this function
@@ -128,25 +149,25 @@ const helpers = {
         }
 
         if (this.props.animation === 'fade') {
-            currentSlide = this.state.currentSlide;
+            currentSlide = this.state.currentSlide!;
 
             // don't change slide if it's not infinite and current slide is the first or last slide'
-            if (this.props.infinite === false && (index < 0 || index >= this.state.slideCount)) {
+            if (this.props.infinite === false && (index < 0 || index >= this.state.slideCount!)) {
                 return;
             }
 
             //  Shifting targetSlide back into the range
             if (index < 0) {
-                targetSlide = index + this.state.slideCount;
-            } else if (index >= this.state.slideCount) {
-                targetSlide = index - this.state.slideCount;
+                targetSlide = index + this.state.slideCount!;
+            } else if (index >= this.state.slideCount!) {
+                targetSlide = index - this.state.slideCount!;
             } else {
                 targetSlide = index;
             }
 
-            if (this.props.lazyLoad && this.state.lazyLoadedList.indexOf(targetSlide) < 0) {
+            if (this.props.lazyLoad && this.state.lazyLoadedList!.indexOf(targetSlide) < 0) {
                 this.setState({
-                    lazyLoadedList: this.state.lazyLoadedList.concat(targetSlide),
+                    lazyLoadedList: this.state.lazyLoadedList!.concat(targetSlide),
                 });
             }
 
@@ -154,11 +175,11 @@ const helpers = {
                 this.setState({
                     animating: false,
                 });
-                this.props.onChange(targetSlide);
+                this.props.onChange!(targetSlide);
                 delete this.animationEndCallback;
             };
 
-            this.props.onBeforeChange(this.state.currentSlide, targetSlide);
+            this.props.onBeforeChange!(this.state.currentSlide!, targetSlide);
 
             this.setState(
                 {
@@ -180,23 +201,23 @@ const helpers = {
             if (targetSlide < 0) {
                 if (this.props.infinite === false) {
                     currentSlide = 0;
-                } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
-                    if (targetSlide + this.props.slidesToScroll <= 0) {
-                        currentSlide = this.state.slideCount + targetSlide;
-                        targetSlide = this.state.slideCount - this.props.slidesToScroll;
+                } else if (this.state.slideCount! % this.props.slidesToScroll! !== 0) {
+                    if (targetSlide + this.props.slidesToScroll! <= 0) {
+                        currentSlide = this.state.slideCount! + targetSlide;
+                        targetSlide = this.state.slideCount! - this.props.slidesToScroll!;
                     } else {
                         currentSlide = targetSlide = 0;
                     }
                 } else {
-                    currentSlide = this.state.slideCount + targetSlide;
+                    currentSlide = this.state.slideCount! + targetSlide;
                 }
-            } else if (targetSlide >= this.state.slideCount) {
+            } else if (targetSlide >= this.state.slideCount!) {
                 if (this.props.infinite === false) {
-                    currentSlide = this.state.slideCount - this.props.slidesToShow;
-                } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
+                    currentSlide = this.state.slideCount! - this.props.slidesToShow!;
+                } else if (this.state.slideCount! % this.props.slidesToScroll! !== 0) {
                     currentSlide = 0;
                 } else {
-                    currentSlide = targetSlide - this.state.slideCount;
+                    currentSlide = targetSlide - this.state.slideCount!;
                 }
             } else {
                 currentSlide = targetSlide;
@@ -204,19 +225,19 @@ const helpers = {
         } else if (targetSlide < 0) {
             if (this.props.infinite === false) {
                 currentSlide = 0;
-            } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
+            } else if (this.state.slideCount! % this.props.slidesToScroll! !== 0) {
                 currentSlide =
-                    this.state.slideCount - (this.state.slideCount % this.props.slidesToScroll);
+                    this.state.slideCount! - (this.state.slideCount! % this.props.slidesToScroll!);
             } else {
-                currentSlide = this.state.slideCount + targetSlide;
+                currentSlide = this.state.slideCount! + targetSlide;
             }
-        } else if (targetSlide >= this.state.slideCount) {
+        } else if (targetSlide >= this.state.slideCount!) {
             if (this.props.infinite === false) {
-                currentSlide = this.state.slideCount - this.props.slidesToShow;
-            } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
+                currentSlide = this.state.slideCount! - this.props.slidesToShow!;
+            } else if (this.state.slideCount! % this.props.slidesToScroll! !== 0) {
                 currentSlide = 0;
             } else {
-                currentSlide = targetSlide - this.state.slideCount;
+                currentSlide = targetSlide - this.state.slideCount!;
             }
         } else {
             currentSlide = targetSlide;
@@ -224,14 +245,14 @@ const helpers = {
 
         let targetLeft = getTrackLeft({
             slideIndex: targetSlide,
-            trackRef: this.track,
+            trackRef: this.track!,
             ...this.props,
             ...this.state,
         });
 
         const currentLeft = getTrackLeft({
             slideIndex: currentSlide,
-            trackRef: this.track,
+            trackRef: this.track!,
             ...this.props,
             ...this.state,
         });
@@ -243,11 +264,11 @@ const helpers = {
         if (this.props.lazyLoad) {
             let loaded = true;
             const slidesToLoad = [];
-            const slidesLen = this.state.slideCount;
+            const slidesLen = this.state.slideCount!;
 
             const sliderIndex = targetSlide < 0 ? slidesLen + targetSlide : currentSlide;
 
-            for (let i = sliderIndex; i < sliderIndex + this.props.slidesToShow; i++) {
+            for (let i = sliderIndex; i < sliderIndex + this.props.slidesToShow!; i++) {
                 let k = i;
                 if (rtl) {
                     k = i >= slidesLen ? slidesLen * 2 - i - 1 : slidesLen - i - 1;
@@ -256,25 +277,25 @@ const helpers = {
                 const pre = k - 1 < 0 ? slidesLen - 1 : k - 1;
                 const next = k + 1 >= slidesLen ? 0 : k + 1;
 
-                this.state.lazyLoadedList.indexOf(k) < 0 && slidesToLoad.push(k);
-                this.state.lazyLoadedList.indexOf(pre) < 0 && slidesToLoad.push(pre);
-                this.state.lazyLoadedList.indexOf(next) < 0 && slidesToLoad.push(next);
+                this.state.lazyLoadedList!.indexOf(k) < 0 && slidesToLoad.push(k);
+                this.state.lazyLoadedList!.indexOf(pre) < 0 && slidesToLoad.push(pre);
+                this.state.lazyLoadedList!.indexOf(next) < 0 && slidesToLoad.push(next);
             }
 
             slidesToLoad.forEach(i => {
-                if (this.state.lazyLoadedList.indexOf(i) < 0) {
+                if (this.state.lazyLoadedList!.indexOf(i) < 0) {
                     loaded = false;
                 }
             });
 
             if (!loaded) {
                 this.setState({
-                    lazyLoadedList: this.state.lazyLoadedList.concat(slidesToLoad),
+                    lazyLoadedList: this.state.lazyLoadedList!.concat(slidesToLoad),
                 });
             }
         }
 
-        this.props.onBeforeChange(this.state.currentSlide, currentSlide);
+        this.props.onBeforeChange!(this.state.currentSlide!, currentSlide);
 
         // Slide Transition happens here.
         // animated transition happens to target Slide and
@@ -291,7 +312,7 @@ const helpers = {
                     }),
                 },
                 () => {
-                    this.props.onChange(currentSlide);
+                    this.props.onChange!(currentSlide);
                 }
             );
         } else {
@@ -308,7 +329,7 @@ const helpers = {
 
             callback = () => {
                 this.setState(nextStateChanges);
-                this.props.onChange(currentSlide);
+                this.props.onChange!(currentSlide);
                 delete this.animationEndCallback;
             };
 
@@ -332,11 +353,11 @@ const helpers = {
     },
 
     // 鼠标悬浮在 arrow 上时作出动画反馈
-    arrowHoverHandler(msg?: string) {
+    arrowHoverHandler(this: MixinThisType, msg?: string) {
         const offset = 30; // slide 的位置偏移量
         const targetLeft = getTrackLeft({
-            slideIndex: this.state.currentSlide,
-            trackRef: this.track,
+            slideIndex: this.state.currentSlide!,
+            trackRef: this.track!,
             ...this.props,
             ...this.state,
         });
@@ -360,10 +381,15 @@ const helpers = {
         });
     },
 
-    swipeDirection(touchObject: { startX: number; startY: number; curX: number; curY: number }) {
+    swipeDirection(touchObject: {
+        startX?: number;
+        startY?: number;
+        curX?: number;
+        curY?: number;
+    }) {
         let swipeAngle;
-        const xDist = touchObject.startX - touchObject.curX;
-        const yDist = touchObject.startY - touchObject.curY;
+        const xDist = touchObject.startX! - touchObject.curX!;
+        const yDist = touchObject.startY! - touchObject.curY!;
         const r = Math.atan2(yDist, xDist);
         swipeAngle = Math.round((r * 180) / Math.PI);
         if (swipeAngle < 0) {
@@ -385,22 +411,22 @@ const helpers = {
         return 'vertical';
     },
 
-    play() {
+    play(this: MixinThisType) {
         let nextIndex;
         if (!this.hasMounted) {
             return false;
         }
         if (this.props.rtl) {
-            nextIndex = this.state.currentSlide - this.props.slidesToScroll;
+            nextIndex = this.state.currentSlide! - this.props.slidesToScroll!;
         } else if (this.canGoNext({ ...this.props, ...this.state })) {
-            nextIndex = this.state.currentSlide + this.props.slidesToScroll;
+            nextIndex = this.state.currentSlide! + this.props.slidesToScroll!;
         } else {
             return false;
         }
         this.slideHandler(nextIndex);
     },
 
-    autoPlay() {
+    autoPlay(this: MixinThisType) {
         if (this.state.autoPlayTimer) {
             clearTimeout(this.state.autoPlayTimer);
         }
@@ -411,7 +437,7 @@ const helpers = {
         }
     },
 
-    pause() {
+    pause(this: MixinThisType) {
         if (this.state.autoPlayTimer) {
             clearTimeout(this.state.autoPlayTimer);
             this.setState({
