@@ -1,26 +1,39 @@
 import type { TouchEvent, MouseEvent } from 'react';
 import { findDOMNode } from 'react-dom';
 import { getTrackCSS, getTrackLeft, getTrackAnimateCSS } from './trackHelper';
-import type { OptionProps } from '../../types';
+import type { InnerSliderProps, InnerSliderState, OptionProps } from '../../types';
+import type { MixinThisType as HelpersMixinThisType } from './helpers';
+
+type MixinThisType = {
+    props: InnerSliderProps;
+    state: InnerSliderState;
+    list?: HTMLDivElement;
+    track?: HTMLDivElement;
+    changeSlide(options: OptionProps): void;
+    setState(state: InnerSliderState): void;
+    getNavigableIndexes(): number[];
+    getSlideCount(): number;
+    checkNavigable(index: number): number;
+} & HelpersMixinThisType;
 
 const EventHandlers = {
     // Event handler for previous and next
-    changeSlide(options: OptionProps) {
+    changeSlide(this: MixinThisType, options: OptionProps) {
         let slideOffset, targetSlide;
-        const unevenOffset = this.state.slideCount % this.props.slidesToScroll !== 0;
+        const unevenOffset = this.state.slideCount! % this.props.slidesToScroll! !== 0;
         const indexOffset = unevenOffset
             ? 0
-            : (this.state.slideCount - this.state.currentSlide) % this.props.slidesToScroll;
+            : (this.state.slideCount! - this.state.currentSlide!) % this.props.slidesToScroll!;
 
         if (options.message === 'previous') {
             slideOffset =
                 indexOffset === 0
                     ? this.props.slidesToScroll
-                    : this.props.slidesToShow - indexOffset;
-            targetSlide = this.state.currentSlide - slideOffset;
+                    : this.props.slidesToShow! - indexOffset;
+            targetSlide = this.state.currentSlide! - slideOffset!;
         } else if (options.message === 'next') {
             slideOffset = indexOffset === 0 ? this.props.slidesToScroll : indexOffset;
-            targetSlide = this.state.currentSlide + slideOffset;
+            targetSlide = this.state.currentSlide! + slideOffset!;
         } else if (options.message === 'dots' || options.message === 'children') {
             // Click on dots
             targetSlide = options.index! * options.slidesToScroll!;
@@ -33,12 +46,12 @@ const EventHandlers = {
                 return;
             }
         }
-        this.slideHandler(targetSlide);
+        this.slideHandler(targetSlide!);
     },
 
-    // Accessiblity handler for previous and next
-    keyHandler(e: KeyboardEvent) {
-        //Dont slide if the cursor is inside the form fields and arrow keys are pressed
+    // Accessibility handler for previous and next
+    keyHandler(this: MixinThisType, e: KeyboardEvent) {
+        //Don't slide if the cursor is inside the form fields and arrow keys are pressed
         if (!(e.target as HTMLElement).tagName.match('TEXTAREA|INPUT|SELECT')) {
             if (e.keyCode === 37 && this.props.accessibility === true) {
                 this.changeSlide({
@@ -53,13 +66,14 @@ const EventHandlers = {
     },
 
     // Focus on selecting a slide (click handler on track)
-    selectHandler(options: OptionProps) {
+    selectHandler(this: MixinThisType, options: OptionProps) {
         this.changeSlide(options);
     },
 
-    swipeStart(e: MouseEvent | TouchEvent) {
+    swipeStart(this: MixinThisType, e: MouseEvent | TouchEvent) {
         if (
             this.props.swipe === false ||
+            // @ts-expect-error 这里逻辑上存在重复
             ('ontouchend' in document && this.props.swipe === false)
         ) {
             return;
@@ -83,17 +97,18 @@ const EventHandlers = {
         });
     },
 
-    swipeMove(e: MouseEvent | TouchEvent) {
+    swipeMove(this: MixinThisType, e: MouseEvent | TouchEvent) {
         if (!this.state.dragging) {
             return;
         }
         if (this.state.animating) {
             return;
         }
-        const touchObject = this.state.touchObject;
+        const touchObject = this.state.touchObject!;
 
         const curLeft = getTrackLeft({
-            slideIndex: this.state.currentSlide,
+            slideIndex: this.state.currentSlide!,
+            // @ts-expect-error 这里拿 ref 的方式是不正确的，应该是 this.track
             trackRef: this.refs.track,
             ...this.props,
             ...this.state,
@@ -106,30 +121,30 @@ const EventHandlers = {
             ? (e as TouchEvent).touches[0].pageY
             : (e as MouseEvent).clientY;
         touchObject.swipeLength = Math.round(
-            Math.sqrt(Math.pow(touchObject.curX - touchObject.startX, 2))
+            Math.sqrt(Math.pow(touchObject.curX - touchObject.startX!, 2))
         );
 
         let positionOffset =
-            (this.props.rtl === false ? 1 : -1) * (touchObject.curX > touchObject.startX ? 1 : -1);
+            (this.props.rtl === false ? 1 : -1) * (touchObject.curX > touchObject.startX! ? 1 : -1);
 
         if (this.props.verticalSwiping === true) {
             touchObject.swipeLength = Math.round(
-                Math.sqrt(Math.pow(touchObject.curY - touchObject.startY, 2))
+                Math.sqrt(Math.pow(touchObject.curY - touchObject.startY!, 2))
             );
-            positionOffset = touchObject.curY > touchObject.startY ? 1 : -1;
+            positionOffset = touchObject.curY > touchObject.startY! ? 1 : -1;
         }
 
         const currentSlide = this.state.currentSlide;
-        const dotCount = Math.ceil(this.state.slideCount / this.props.slidesToScroll);
-        const swipeDirection = this.swipeDirection(this.state.touchObject);
+        const dotCount = Math.ceil(this.state.slideCount! / this.props.slidesToScroll!);
+        const swipeDirection = this.swipeDirection(this.state.touchObject!);
         let touchSwipeLength = touchObject.swipeLength;
 
         if (this.props.infinite === false) {
             if (
                 (currentSlide === 0 && swipeDirection === 'right') ||
-                (currentSlide + 1 >= dotCount && swipeDirection === 'left')
+                (currentSlide! + 1 >= dotCount && swipeDirection === 'left')
             ) {
-                touchSwipeLength = touchObject.swipeLength * this.props.edgeFriction;
+                touchSwipeLength = touchObject.swipeLength * this.props.edgeFriction!;
 
                 if (this.state.edgeDragged === false && this.props.edgeEvent) {
                     this.props.edgeEvent(swipeDirection);
@@ -155,8 +170,8 @@ const EventHandlers = {
         });
 
         if (
-            Math.abs(touchObject.curX - touchObject.startX) <
-            Math.abs(touchObject.curY - touchObject.startY) * 0.8
+            Math.abs(touchObject.curX - touchObject.startX!) <
+            Math.abs(touchObject.curY - touchObject.startY!) * 0.8
         ) {
             return;
         }
@@ -165,7 +180,7 @@ const EventHandlers = {
         }
     },
 
-    getNavigableIndexes() {
+    getNavigableIndexes(this: MixinThisType) {
         let max;
         let breakPoint = 0;
         let counter = 0;
@@ -174,25 +189,25 @@ const EventHandlers = {
         if (!this.props.infinite) {
             max = this.state.slideCount;
         } else {
-            breakPoint = this.props.slidesToShow * -1;
-            counter = this.props.slidesToShow * -1;
-            max = this.state.slideCount * 2;
+            breakPoint = this.props.slidesToShow! * -1;
+            counter = this.props.slidesToShow! * -1;
+            max = this.state.slideCount! * 2;
         }
 
-        while (breakPoint < max) {
+        while (breakPoint < max!) {
             indexes.push(breakPoint);
-            breakPoint = counter + this.props.slidesToScroll;
+            breakPoint = counter + this.props.slidesToScroll!;
 
             counter +=
-                this.props.slidesToScroll <= this.props.slidesToShow
-                    ? this.props.slidesToScroll
-                    : this.props.slidesToShow;
+                this.props.slidesToScroll! <= this.props.slidesToShow!
+                    ? this.props.slidesToScroll!
+                    : this.props.slidesToShow!;
         }
 
         return indexes;
     },
 
-    checkNavigable(index: number) {
+    checkNavigable(this: MixinThisType, index: number) {
         const navigables = this.getNavigableIndexes();
         let prevNavigable = 0;
 
@@ -211,9 +226,9 @@ const EventHandlers = {
         return index;
     },
 
-    getSlideCount() {
+    getSlideCount(this: MixinThisType) {
         const centerOffset = this.props.centerMode
-            ? this.state.slideWidth * Math.floor(this.props.slidesToShow / 2)
+            ? this.state.slideWidth! * Math.floor(this.props.slidesToShow! / 2)
             : 0;
         if (this.props.swipeToSlide) {
             let swipedSlide: HTMLElement | undefined;
@@ -227,14 +242,14 @@ const EventHandlers = {
                 if (!this.props.vertical) {
                     if (
                         slide.offsetLeft - centerOffset + (this.getWidth(slide) || 0) / 2 >
-                        this.state.swipeLeft * -1
+                        this.state.swipeLeft! * -1
                     ) {
                         swipedSlide = slide;
                         return false;
                     }
                 } else if (
                     slide.offsetTop + (this.getHeight(slide) || 0) / 2 >
-                    this.state.swipeLeft * -1
+                    this.state.swipeLeft! * -1
                 ) {
                     swipedSlide = slide;
                     return false;
@@ -247,23 +262,23 @@ const EventHandlers = {
                 Math.abs(swipedSlide!.dataset!.index! - this.state.currentSlide) || 1;
             return slidesTraversed;
         } else {
-            return this.props.slidesToScroll;
+            return this.props.slidesToScroll!;
         }
     },
 
-    swipeEnd(e: MouseEvent | TouchEvent) {
+    swipeEnd(this: MixinThisType, e: MouseEvent | TouchEvent) {
         if (!this.state.dragging) {
             if (this.props.swipe) {
                 e.preventDefault();
             }
             return;
         }
-        const touchObject = this.state.touchObject;
-        let minSwipe = this.state.listWidth / this.props.touchThreshold;
+        const touchObject = this.state.touchObject!;
+        let minSwipe = this.state.listWidth! / this.props.touchThreshold!;
         const swipeDirection = this.swipeDirection(touchObject);
 
         if (this.props.verticalSwiping) {
-            minSwipe = this.state.listHeight / this.props.touchThreshold;
+            minSwipe = this.state.listHeight! / this.props.touchThreshold!;
         }
 
         // reset the state of touch related state variables.
@@ -288,25 +303,25 @@ const EventHandlers = {
             switch (swipeDirection) {
                 case 'left':
                 case 'down':
-                    newSlide = this.state.currentSlide + this.getSlideCount();
+                    newSlide = this.state.currentSlide! + this.getSlideCount();
                     slideCount = this.props.swipeToSlide ? this.checkNavigable(newSlide) : newSlide;
                     this.setState({ currentDirection: 0 });
                     break;
                 case 'right':
                 case 'up':
-                    newSlide = this.state.currentSlide - this.getSlideCount();
+                    newSlide = this.state.currentSlide! - this.getSlideCount();
                     slideCount = this.props.swipeToSlide ? this.checkNavigable(newSlide) : newSlide;
                     this.setState({ currentDirection: 1 });
                     break;
                 default:
                     slideCount = this.state.currentSlide;
             }
-            this.slideHandler(slideCount);
+            this.slideHandler(slideCount!);
         } else {
             // Adjust the track back to it's original position.
             const currentLeft = getTrackLeft({
-                slideIndex: this.state.currentSlide,
-                trackRef: this.track,
+                slideIndex: this.state.currentSlide!,
+                trackRef: this.track!,
                 ...this.props,
                 ...this.state,
             });
@@ -321,13 +336,13 @@ const EventHandlers = {
         }
     },
 
-    onInnerSliderEnter() {
+    onInnerSliderEnter(this: MixinThisType) {
         if (this.props.autoplay && this.props.pauseOnHover) {
             this.pause();
         }
     },
 
-    onInnerSliderLeave() {
+    onInnerSliderLeave(this: MixinThisType) {
         if (this.props.autoplay && this.props.pauseOnHover) {
             this.autoPlay();
         }
