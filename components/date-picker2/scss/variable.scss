@@ -1,7 +1,251 @@
+////
+/// @module date-picker2: 日期选择 2
+/// @tag DatePicker2
+/// @category component
+/// @family data-entry
+/// @varPrefix $date-picker2
+/// @classPrefix {prefix}-date-picker2
+/// @order {"size/footer":10,"size/overlay":11,"size/wrapper":12,"size/input":13,"statement/range/overlay":100,"statement/range":10,"statement/range/selected":101,"statement/range/hover":102,"statement/range/disabled":103,"statement/panel/wrapper":110,"statement/panel":11,"statement/table/selected":120,"statement/table":12,"statement/table/hover":121}
+////
+
 //
 // $date-picker2-prefix: '.' + $css-prefix + 'picker';
 // --------------------------------------------------
 
-$date-picker2-prefix: "." + $css-prefix + "date-picker2";
-$range-picker2-prefix: "." + $css-prefix + "range-picker2";
-$calendar2-prefix: "." + $css-prefix + "calendar2";
+$date-picker2-prefix: '.' + $css-prefix + 'date-picker2';
+$range-picker2-prefix: '.' + $css-prefix + 'range-picker2';
+$calendar2-prefix: '.' + $css-prefix + 'calendar2';
+/// line width
+/// @namespace size/footer
+$date-picker2-footer-border-top-width: $line-1 !default;
+/// line style
+/// @namespace size/footer
+$date-picker2-footer-border-top-style: $line-solid !default;
+/// color
+/// @namespace size/footer
+$date-picker2-footer-border-top-color: $color-line1-1 !default;
+/// padding (t,b)
+/// @namespace size/footer
+$date-picker2-footer-padding-tb: $s-1 !default;
+/// padding (l,r)
+/// @namespace size/footer
+$date-picker2-footer-padding-lr: $s-3 !default;
+/// min height
+/// @namespace size/footer
+$date-picker2-footer-min-height: $s-10 !default;
+/// margin (r)
+/// @namespace size/footer
+$date-picker2-footer-preset-btn-margin-right: $s-2 !default;
+/// padding (t,b)
+/// @namespace size/overlay
+$date-picker2-overlay-padding-tb: $s-1 !default;
+/// padding (l,r)
+/// @namespace size/overlay
+$date-picker2-overlay-padding-lr: $s-zero !default;
+/// padding (t,b)
+/// @namespace statement/range/overlay
+$date-picker2-range-overlay-padding-tb: $s-3 !default;
+/// padding (l,r)
+/// @namespace statement/range/overlay
+$date-picker2-range-overlay-padding-lr: $s-zero !default;
+/// background color
+/// @namespace size/wrapper
+$date-picker2-wrapper-background-color: $color-white !default;
+/// line width
+/// @namespace size/wrapper
+$date-picker2-wrapper-border-width: $line-1 !default;
+/// line style
+/// @namespace size/wrapper
+$date-picker2-wrapper-border-style: $line-solid !default;
+/// color
+/// @namespace size/wrapper
+$date-picker2-wrapper-border-color: $color-line1-1 !default;
+/// border radius
+/// @namespace size/wrapper
+$date-picker2-wrapper-border-radius: $corner-1 !default;
+/// border radius
+/// @namespace statement/panel/wrapper
+$date-picker2-wrapper-calendar2-panel-border-radius: $corner-1 !default;
+/// height
+/// @namespace size/wrapper
+$date-picker2-wrapper-calendar2-cell-before-height: $s-6 !default;
+/// line style
+/// @namespace size/input
+$date-picker2-input-border-style: $line-solid !default;
+/// border color
+/// @namespace size/input
+$date-picker2-input-noborder-border-color: $color-transparent !default;
+/// font size
+/// @namespace size/input
+$date-picker2-separator-input-font-size: $font-size-body-1 !default;
+/// min width
+/// @namespace size/input
+$date-picker2-separator-input-min-width: $s-4 !default;
+/// border color (t)
+/// @namespace statement/range
+$date-picker2-range-arrow-border-color-t: $color-line1-1 !default;
+/// border color (r)
+/// @namespace statement/range
+$date-picker2-range-arrow-border-color-r: $color-line1-1 !default;
+/// border color (b)
+/// @namespace statement/range
+$date-picker2-range-arrow-border-color-b: $color-transparent !default;
+/// border color (l)
+/// @namespace statement/range
+$date-picker2-range-arrow-border-color-l: $color-transparent !default;
+/// background
+/// @namespace statement/range
+$date-picker2-range-arrow-background: $color-white !default;
+/// time line width
+/// @namespace size/wrapper
+$date-picker2-wrapper-picker-time-border-left-width: $line-1 !default;
+/// time line style
+/// @namespace size/wrapper
+$date-picker2-wrapper-picker-time-border-left-style: $line-solid !default;
+/// time color
+/// @namespace size/wrapper
+$date-picker2-wrapper-picker-time-border-left-color: $color-line1-1 !default;
+/// time padding (r)
+/// @namespace size/wrapper
+$date-picker2-wrapper-picker-time-calendar2-body-padding-right: $s-zero !default;
+/// time padding (l)
+/// @namespace size/wrapper
+$date-picker2-wrapper-picker-time-calendar2-body-padding-left: $s-zero !default;
+/// current color
+/// @namespace statement/range/selected
+$date-picker2-range-calendar2-current-cell-selected-color: $color-text1-3 !default;
+/// current background
+/// @namespace statement/range/selected
+$date-picker2-range-calendar2-current-cell-selected-background: $color-brand1-1 !default;
+/// current inner color
+/// @namespace statement/range/selected
+$date-picker2-range-calendar2-current-cell-selected-inner-color: $color-text1-3 !default;
+/// current inner background
+/// @namespace statement/range/selected
+$date-picker2-range-calendar2-current-cell-selected-inner-background: $color-transparent !default;
+/// current height
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-hover-height: $s-6 !default;
+/// border color (tb)
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-hover-border-color-tb: $color-brand1-9 !default;
+/// border color (lr)
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-hover-border-color-lr: $color-transparent !default;
+/// border left line width
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-hover-border-left-width: $line-1 !default;
+/// border left line style
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-hover-border-left-style: $line-dashed !default;
+/// border left color
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-hover-border-left-color: $color-brand1-9 !default;
+/// border right line width
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-hover-border-right-width: $line-1 !default;
+/// border right line style
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-hover-border-right-style: $line-dashed !default;
+/// border right color
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-hover-border-right-color: $color-brand1-9 !default;
+/// end edge border right line width
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-end-edge-hover-border-right-width: $line-1 !default;
+/// end edge border right line style
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-end-edge-hover-border-right-style: $line-dashed !default;
+/// end edge border right color
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-end-edge-hover-border-right-color: $color-brand1-9 !default;
+/// begin border top line width
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-begin-hover-after-border-top-width: $line-1 !default;
+/// begin border top line style
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-begin-hover-after-border-top-style: $line-dashed !default;
+/// begin border top color
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-begin-hover-after-border-top-color: $color-brand1-9 !default;
+/// begin border left line width
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-begin-hover-after-border-left-width: $line-1 !default;
+/// begin border left line style
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-begin-hover-after-border-left-style: $line-dashed !default;
+/// begin border left color
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-begin-hover-after-border-left-color: $color-brand1-9 !default;
+/// end border top line width
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-end-hover-after-border-top-width: $line-1 !default;
+/// end border top line style
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-end-hover-after-border-top-style: $line-dashed !default;
+/// end border top color
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-end-hover-after-border-top-color: $color-brand1-9 !default;
+/// end border right line width
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-end-hover-after-border-right-width: $line-1 !default;
+/// end border right line style
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-end-hover-after-border-right-style: $line-dashed !default;
+/// end border right color
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-current-cell-end-hover-after-border-right-color: $color-brand1-9 !default;
+/// enf edge border left line width
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-end-edge-cell-hover-border-left-width: $line-1 !default;
+/// enf edge border left line style
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-end-edge-cell-hover-border-left-style: $line-dashed !default;
+/// enf edge border left color
+/// @namespace statement/range/hover
+$date-picker2-range-calendar2-end-edge-cell-hover-border-left-color: $color-brand1-9 !default;
+/// week current color
+/// @namespace statement/table/selected
+$date-picker2-calendar2-week-table-current-cell-selected-color: $color-text1-3 !default;
+/// week current background color
+/// @namespace statement/table/selected
+$date-picker2-calendar2-week-table-current-cell-selected-background-color: $color-brand1-1 !default;
+/// week background color
+/// @namespace statement/table/selected
+$date-picker2-calendar2-week-table-tr-td-cell-selected-background-color: $color-transparent !default;
+/// week color
+/// @namespace statement/table/selected
+$date-picker2-calendar2-week-table-tr-td-cell-selected-color: $color-text1-1 !default;
+/// inner background color
+/// @namespace statement/range/selected
+$date-picker2-range-calendar2-selected-cell-inner-background-color: $color-brand1-1 !default;
+/// inner color
+/// @namespace statement/range/selected
+$date-picker2-range-calendar2-selected-cell-inner-color: $color-text1-3 !default;
+/// color
+/// @namespace statement/range/disabled
+$date-picker2-range-calendar2-disabled-cell-inner-color: $color-text1-1 !default;
+/// background
+/// @namespace statement/range/disabled
+$date-picker2-range-calendar2-disabled-cell-inner-background: $color-fill1-1 !default;
+/// current begin color
+/// @namespace statement/range/selected
+$date-picker2-range-calendar2-current-cell-selected-begin-inner-color: $color-white !default;
+/// current begin background
+/// @namespace statement/range/selected
+$date-picker2-range-calendar2-current-cell-selected-begin-inner-background: $color-brand1-6 !default;
+/// background
+/// @namespace statement/table/hover
+$date-picker2-calendar2-week-table-tr-hover-background: $color-fill1-2 !default;
+/// week inner color
+/// @namespace statement/table/selected
+$date-picker2-calendar2-week-table-current-cell-selected-inner-color: $color-white !default;
+/// week inner background
+/// @namespace statement/table/selected
+$date-picker2-calendar2-week-table-current-cell-selected-inner-background: $color-brand1-6 !default;
+/// begin week color
+/// @namespace statement/range/selected
+$date-picker2-range-calendar2-selected-cell-begin-week-inner-color: $color-white !default;
+/// begin week background
+/// @namespace statement/range/selected
+$date-picker2-range-calendar2-selected-cell-begin-week-inner-background: $color-brand1-6 !default;
