@@ -356,7 +356,7 @@ class Balloon extends React.Component<BalloonProps, BalloonState> {
 
             Object.assign(otherProps, {
                 placement: align,
-                placementOffset: placementOffset + 12,
+                placementOffset: placementOffset,
                 v2: true,
                 beforePosition: this.beforePosition,
                 autoAdjust,
