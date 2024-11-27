@@ -407,5 +407,51 @@ describe('Balloon v2', () => {
             );
             cy.get('span').should('have.length', 1);
         });
+
+        it('default offset should be 12px', () => {
+            const trigger = (
+                <div className="trigger" style={{ margin: '200px', display: 'inline-block' }}>
+                    trigger
+                </div>
+            );
+            cy.mount(
+                <Balloon v2 visible trigger={trigger}>
+                    trigger
+                </Balloon>
+            ).as('Demo');
+            cy.get('.trigger').then($el => {
+                const triggerRect = $el[0].getBoundingClientRect();
+                expect(Math.round(triggerRect.bottom + 12)).to.equal(
+                    Math.round(document.querySelector('.next-balloon')!.getBoundingClientRect().top)
+                );
+            });
+            cy.rerender('Demo', { align: 't' });
+            cy.get('.trigger').then($el => {
+                const triggerRect = $el[0].getBoundingClientRect();
+                expect(Math.round(triggerRect.top - 12)).to.equal(
+                    Math.round(
+                        document.querySelector('.next-balloon')!.getBoundingClientRect().bottom
+                    )
+                );
+            });
+            cy.rerender('Demo', { align: 'l' });
+            cy.get('.trigger').then($el => {
+                const triggerRect = $el[0].getBoundingClientRect();
+                expect(Math.round(triggerRect.left - 12)).to.equal(
+                    Math.round(
+                        document.querySelector('.next-balloon')!.getBoundingClientRect().right
+                    )
+                );
+            });
+            cy.rerender('Demo', { align: 'r' });
+            cy.get('.trigger').then($el => {
+                const triggerRect = $el[0].getBoundingClientRect();
+                expect(Math.round(triggerRect.right + 12)).to.equal(
+                    Math.round(
+                        document.querySelector('.next-balloon')!.getBoundingClientRect().left
+                    )
+                );
+            });
+        });
     });
 });
