@@ -60,6 +60,21 @@ describe('Collapse', () => {
             cy.get('.next-collapse').should('have.length', 1);
             cy.get('.next-collapse-panel').should('have.length', 2);
         });
+
+        it('should render with proper border-radius and overflow hidden', () => {
+            cy.mount(
+                <Collapse style={{ borderRadius: '50px' }}>
+                    <Panel title="Pannel Title">Pannel Content</Panel>
+                    <Panel title="Pannel Title">Pannel Content</Panel>
+                </Collapse>
+            );
+
+            cy.get('.next-collapse')
+                .should('have.length', 1)
+                .and('have.css', 'border-radius', '50px') // 检查 border-radius
+                .and('have.css', 'overflow', 'hidden'); // 检查 overflow 属性
+            cy.get('.next-collapse-panel').should('have.length', 2);
+        });
     });
 
     describe('defaultExpandedKeys', () => {

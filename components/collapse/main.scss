@@ -10,6 +10,7 @@
 
     border: $collapse-border-width solid $collapse-border-color;
     border-radius: $collapse-border-corner;
+    overflow: hidden;
     &:focus,
     & *:focus {
         outline: 0;
