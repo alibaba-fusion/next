@@ -20,16 +20,20 @@
             border-top: $collapse-title-border-width solid $collapse-panel-border-color;
         }
     }
+    & &-panel {
 
-    #{$collapse-prefix}-panel-icon {
-        position: absolute;
-        color: $collapse-icon-color;
-        transition: transform $motion-duration-immediately $motion-linear;
-        left: $collapse-icon-margin-l;
-        margin-top: -2px;
+        #{$collapse-prefix}-panel-icon {
+            position: absolute;
+            color: $collapse-icon-color;
+            transition: transform $motion-duration-immediately $motion-linear;
+            left: $collapse-icon-margin-l;
+            margin-top: -2px;
 
-        @include icon-size($collapse-icon-size, 0px, 0px);
+            @include icon-size($collapse-icon-size, 0px, 0px);
+        }
+
     }
+
 
     &-panel-title {
         position: relative;
