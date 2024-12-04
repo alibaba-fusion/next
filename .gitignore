@@ -87,3 +87,6 @@ gemini-report/
 *.log
 .DS_Store
 src/core-temp
+
+# tests snapshots diff
+components/**/__tests__/snapshots/__diff__/**
