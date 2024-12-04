@@ -1,15 +1,17 @@
 import { defineConfig } from 'cypress';
+import { addMatchImageSnapshotPlugin } from 'cypress-image-snapshot/plugin';
 
 export default defineConfig({
     component: {
-        setupNodeEvents(on) {
+        setupNodeEvents(on, config) {
             on('task', {
-                'log': (message: string) => {
+                log: (message: string) => {
                     // eslint-disable-next-line no-console
                     console.log(message);
                     return null;
                 },
-            })
+            });
+            addMatchImageSnapshotPlugin(on, config);
         },
         devServer: {
             framework: 'react',
