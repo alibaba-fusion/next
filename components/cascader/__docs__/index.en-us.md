@@ -47,7 +47,7 @@
 ```typescript
 export type CascaderDataItem = {
     value: string;
-    label?: string;
+    label?: React.ReactNode;
     disabled?: boolean;
     checkboxDisabled?: boolean;
     children?: Array<CascaderDataItem>;
@@ -64,7 +64,7 @@ export type CascaderDataItemWithPosInfo = CascaderDataItem & {
      * 位置信息
      */
     pos: string;
-    _source: CascaderDataItem;
+    _source?: CascaderDataItem;
 };
 ```
 

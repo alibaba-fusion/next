@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import cloneDeep from 'lodash.clonedeep';
 import cx from 'classnames';
-import Menu, { type ItemProps, type CheckboxItemProps } from '../menu';
+import Menu, { type ItemProps, type CheckboxItemProps, type MenuProps } from '../menu';
 import { func, obj, dom } from '../util';
 import CascaderMenu from './menu';
 import CascaderMenuItem from './item';
@@ -25,9 +25,11 @@ import type {
     P2n,
     V2n,
 } from './types';
+import { Menu as ViewMenu } from '../menu/view/menu';
+import ConfigProvider from '../config-provider';
 
 const { bindCtx } = func;
-const { pickOthers } = obj;
+const { pickOthers, pickProps } = obj;
 const { addClass, removeClass, setStyle, getStyle } = dom;
 
 // 数据打平
@@ -107,6 +109,27 @@ const normalizeValue = <T,>(value: T): NormalizeValueReturns<T> => {
     }
 
     return [] as NormalizeValueReturns<T>;
+};
+
+const getFormatMenuProps = (others: Record<string, unknown>) => {
+    const targetProps = pickProps(ViewMenu.propTypes, others);
+    const targetMenuProps = pickOthers(
+        {
+            value: false,
+            onChange: false,
+            defaultValue: false,
+            focusedKey: false,
+            onItemFocus: false,
+            focusable: false,
+            onBlur: false,
+            ...ConfigProvider.propTypes,
+        },
+        targetProps
+    );
+    return {
+        ...targetMenuProps,
+        isSelectIconRight: false,
+    } as MenuProps;
 };
 
 /**
@@ -631,11 +654,13 @@ class Cascader extends Component<CascaderProps, CascaderState> {
             listClassName,
             listStyle,
             itemRender,
+            ...others
         } = this.props;
         const { value, expandedValue, focusedValue } = this.state;
 
         return (
             <CascaderMenu
+                {...getFormatMenuProps(others)}
                 key={level}
                 prefix={prefix}
                 useVirtual={useVirtual}
@@ -771,10 +796,18 @@ class Cascader extends Component<CascaderProps, CascaderState> {
     }
 
     renderFilteredList() {
-        const { prefix, filteredListStyle, filteredPaths, focusable = false } = this.props;
+        const {
+            prefix,
+            filteredListStyle,
+            filteredPaths,
+            focusable = false,
+            ...others
+        } = this.props;
         const { focusedValue } = this.state;
+
         return (
             <Menu
+                {...getFormatMenuProps(others)}
                 // 如果不设置为false， CascaderSelect 开启 showSearch后，弹窗展开时，光标无法到input上去，也无法输入.
                 // TODO: set focusable=true in 2.x
                 focusable={focusable}
@@ -801,7 +834,7 @@ class Cascader extends Component<CascaderProps, CascaderState> {
             searchValue,
         } = this.props;
         // FIXME 这样做风险比较大，propTypes 如果不全，就会出现一些 div 接收不了的参数传导到 div
-        const others = pickOthers(Cascader.propTypes, this.props);
+        const others = pickOthers({ ...Cascader.propTypes, ...ViewMenu.propTypes }, this.props);
         const { value } = this.state;
 
         if (rtl) {
