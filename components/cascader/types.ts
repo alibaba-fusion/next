@@ -102,7 +102,20 @@ export interface CascaderMenuProps extends CommonProps, MenuProps {
  */
 export interface CascaderProps
     extends Omit<HTMLAttributesWeak, 'onChange' | 'onSelect' | 'defaultValue'>,
-        CommonProps {
+        CommonProps,
+        Omit<
+            MenuProps,
+            | 'value'
+            | 'onChange'
+            | 'onSelect'
+            | 'defaultValue'
+            | 'focusedKey'
+            | 'onItemFocus'
+            | 'focusable'
+            | 'isSelectIconRight'
+            | 'onBlur'
+            | keyof CommonProps
+        > {
     /**
      * 数据源
      * @en data source

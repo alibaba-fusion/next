@@ -1,9 +1,9 @@
 # Cascader
 
--   category: Components
--   family: DataDisplay
--   chinese: 级联
--   type: Baisc
+- category: Components
+- family: DataDisplay
+- chinese: 级联
+- type: Baisc
 
 ---
 
@@ -11,10 +11,10 @@
 
 ### When To Use
 
--   Applies to the interactive way of selecting from a set of related data sets.
--   Cascading is an effective method of saving screen space due to the hidden subset directory.
--   The number of levels depends on the business needs, and it is not recommended to exceed 5 levels.
--   Cascading is used for form scenes. It can be used independently on the page or in combination with other elements, such as cascading options.
+- Applies to the interactive way of selecting from a set of related data sets.
+- Cascading is an effective method of saving screen space due to the hidden subset directory.
+- The number of levels depends on the business needs, and it is not recommended to exceed 5 levels.
+- Cascading is used for form scenes. It can be used independently on the page or in combination with other elements, such as cascading options.
 
 ## API
 
@@ -47,7 +47,7 @@
 ```typescript
 export type CascaderDataItem = {
     value: string;
-    label?: string;
+    label?: React.ReactNode;
     disabled?: boolean;
     checkboxDisabled?: boolean;
     children?: Array<CascaderDataItem>;
@@ -64,7 +64,7 @@ export type CascaderDataItemWithPosInfo = CascaderDataItem & {
      * 位置信息
      */
     pos: string;
-    _source: CascaderDataItem;
+    _source?: CascaderDataItem;
 };
 ```
 

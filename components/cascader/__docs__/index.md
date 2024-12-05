@@ -1,9 +1,9 @@
 # Cascader
 
--   category: Components
--   family: DataDisplay
--   chinese: 级联
--   type: 基本
+- category: Components
+- family: DataDisplay
+- chinese: 级联
+- type: 基本
 
 ---
 
@@ -11,10 +11,10 @@
 
 ## 何时使用
 
--   适用于从一组具有关联性的数据集合中进行选择的交互方式。
--   由于子集目录隐藏，级联是一种节约屏幕空间的有效方法。
--   级别数因业务需求而定，建议不超过5级。
--   级联多用于表单场景，可以独立在页面中使用，也可以与其他元素组合使用，如级联选择。
+- 适用于从一组具有关联性的数据集合中进行选择的交互方式。
+- 由于子集目录隐藏，级联是一种节约屏幕空间的有效方法。
+- 级别数因业务需求而定，建议不超过5级。
+- 级联多用于表单场景，可以独立在页面中使用，也可以与其他元素组合使用，如级联选择。
 
 ## API
 
@@ -47,7 +47,7 @@
 ```typescript
 export type CascaderDataItem = {
     value: string;
-    label?: string;
+    label?: React.ReactNode;
     disabled?: boolean;
     checkboxDisabled?: boolean;
     children?: Array<CascaderDataItem>;
@@ -64,7 +64,7 @@ export type CascaderDataItemWithPosInfo = CascaderDataItem & {
      * 位置信息
      */
     pos: string;
-    _source: CascaderDataItem;
+    _source?: CascaderDataItem;
 };
 ```
 

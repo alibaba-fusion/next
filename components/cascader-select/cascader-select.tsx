@@ -27,11 +27,8 @@ const { bindCtx } = func;
 const { pickOthers } = obj;
 const { getStyle } = dom;
 
-type normalizeValueResult<T> = T extends NonNullable<T>
-    ? T extends unknown[]
-        ? NonNullable<T>
-        : [NonNullable<T>]
-    : [];
+type normalizeValueResult<T> =
+    T extends NonNullable<T> ? (T extends unknown[] ? NonNullable<T> : [NonNullable<T>]) : [];
 
 const normalizeValue = <T,>(value: T): normalizeValueResult<T> => {
     if (value) {

@@ -558,4 +558,12 @@ describe('CascaderSelect', () => {
         cy.get('.next-tag').invoke('text').should('eq', '西安');
         cy.get('.next-select-trigger-search input').should('have.text', '');
     });
+
+    it('should support The value of the menuProps attribute is passed by props, close #3852', () => {
+        cy.mount(
+            <CascaderSelect dataSource={ChinaArea} menuProps={{ itemClassName: 'test-list-cls' }} />
+        );
+        cy.get('.next-select').click();
+        cy.get('.next-menu-item').first().should('have.class', 'test-list-cls');
+    });
 });
