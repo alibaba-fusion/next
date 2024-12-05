@@ -244,8 +244,8 @@ export interface CascaderSelectProps
      */
     treeCheckable?: boolean;
     /**
-     * 透传到 Cascader 的属性对象
-     * @en props object passed to Cascader
+     * 透传到 Cascader 的属性对象；focusedKey、onItemFocus、className、style、focusable、isSelectIconRight 传入无效，其中 onBlur 在 filter 下传入无效
+     * @en props object passed to Cascader：The parameters focusedKey, onItemFocus, className, style, focusable, and isSelectIconRight are invalid. Additionally, onBlur is invalid when passed under the filter
      */
     menuProps?: Omit<CascaderProps, 'onSelect' | 'onChange'>;
     /**
