@@ -99,10 +99,26 @@ export interface CascaderMenuProps extends CommonProps, MenuProps {
 
 /**
  * @api Cascader
+ * @remarks
+ * Cascader 支持除 onSelect、value、onChange、defaultValue、focusedKey、onItemFocus、focusable、isSelectIconRight、onBlur 等和 Cascader 同名的属性透传给 Menu
+ * -
+ * Cascader supports passing through properties with the same names to Menu, such as onSelect, value, onChange, defaultValue, focusedKey, onItemFocus, focusable, isSelectIconRight, onBlur, etc.
  */
 export interface CascaderProps
     extends Omit<HTMLAttributesWeak, 'onChange' | 'onSelect' | 'defaultValue'>,
-        CommonProps {
+        CommonProps,
+        Omit<
+            MenuProps,
+            | 'value'
+            | 'onChange'
+            | 'onSelect'
+            | 'defaultValue'
+            | 'focusedKey'
+            | 'onItemFocus'
+            | 'focusable'
+            | 'isSelectIconRight'
+            | 'onBlur'
+        > {
     /**
      * 数据源
      * @en data source

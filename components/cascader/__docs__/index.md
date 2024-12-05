@@ -20,6 +20,8 @@
 
 ### Cascader
 
+Cascader 支持属性透传给 Menu，但会忽略 onSelect、value、onChange、defaultValue、focusedKey、onItemFocus、focusable、isSelectIconRight、onBlur 等和 Cascader 同名的属性
+
 | 参数                 | 说明                                                                                                                                                                                                                                                                | 类型                                                                                                                              | 默认值                                  | 是否必填 | 支持版本 |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | -------- | -------- |
 | dataSource           | 数据源                                                                                                                                                                                                                                                              | Array\<CascaderDataItem>                                                                                                          | []                                      |          | -        |
@@ -47,7 +49,7 @@
 ```typescript
 export type CascaderDataItem = {
     value: string;
-    label?: string;
+    label?: React.ReactNode;
     disabled?: boolean;
     checkboxDisabled?: boolean;
     children?: Array<CascaderDataItem>;
@@ -64,7 +66,7 @@ export type CascaderDataItemWithPosInfo = CascaderDataItem & {
      * 位置信息
      */
     pos: string;
-    _source: CascaderDataItem;
+    _source?: CascaderDataItem;
 };
 ```
 
