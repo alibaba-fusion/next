@@ -77,6 +77,8 @@
             z-index: 10;
             overflow: hidden;
             transform-origin: left center;
+            transform: translateX(50%);
+            right: 0;
         }
 
         &-scroll-number-only {
