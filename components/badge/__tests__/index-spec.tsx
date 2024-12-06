@@ -116,4 +116,37 @@ describe('Badge', () => {
         cy.mount(<Badge count={0} showZero />);
         cy.get('.next-badge-count.next-badge-scroll-number');
     });
+
+    it('should on right when children is block', () => {
+        cy.mount(
+            <Badge count={1}>
+                <div
+                    style={{
+                        width: '200px',
+                        height: '40px',
+                        display: 'block',
+                        background: 'blue',
+                    }}
+                ></div>
+            </Badge>
+        );
+        cy.get('.next-badge-count').then($el => {
+            $el.css({
+                transition: 'none',
+                animation: 'none',
+            });
+        });
+        cy.get('.next-badge-count').then($el => {
+            const targetRect = $el[0].getBoundingClientRect();
+            const badgeRect = document.querySelector('.next-badge')!.getBoundingClientRect();
+            const position = {
+                left: Math.round(targetRect.left),
+                top: Math.round(targetRect.top),
+            };
+            expect(position).to.deep.equal({
+                left: Math.round(badgeRect.left + badgeRect.width - targetRect.width / 2),
+                top: Math.round(badgeRect.top - 4),
+            });
+        });
+    });
 });
