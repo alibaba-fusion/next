@@ -14,6 +14,7 @@ import DateInput from './panels/date-input';
 import DatePanel from './panels/date-panel';
 import RangePanel from './panels/range-panel';
 import FooterPanel from './panels/footer-panel';
+import { getValueWithDayjs } from '../util/func';
 
 const { Popup } = Overlay;
 const { pickProps, pickOthers } = obj;
@@ -175,7 +176,9 @@ class Picker extends React.Component {
         }
 
         if ('value' in props) {
-            const value = isRange ? checkRangeDate(props.value, state.inputType, disabled) : checkDate(props.value);
+            let value = getValueWithDayjs(props.value, format);
+
+            value = isRange ? checkRangeDate(value, state.inputType, disabled) : checkDate(value);
 
             if (isValueChanged(value, state.preValue)) {
                 newState = {
@@ -220,11 +223,13 @@ class Picker extends React.Component {
      */
     getInitValue = () => {
         const { props } = this;
-        const { type, value, defaultValue } = props;
+        const { type, value, defaultValue, format } = props;
 
         let val = type === DATE_PICKER_TYPE.RANGE ? [null, null] : null;
 
         val = 'value' in props ? value : 'defaultValue' in props ? defaultValue : val;
+
+        val = getValueWithDayjs(val, format);
 
         return this.checkValue(val);
     };
