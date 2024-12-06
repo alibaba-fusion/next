@@ -1,0 +1,120 @@
+@import "../core/index-noreset.scss";
+@import "../button/scss/variable.scss";
+@import "./scss/mixin";
+@import "./scss/variable";
+
+#{$menu-btn-prefix} {
+    display: inline-block;
+    box-shadow: none;
+
+    &-spacing-tb {
+        padding: $popup-spacing-tb 0;
+    }
+
+    .#{$css-prefix}icon {
+        transition: transform $motion-duration-immediately $motion-linear;
+    }
+
+    .#{$css-prefix}menu-btn-arrow::before {
+        content: $menu-btn-fold-icon-content;
+    }
+
+    &.#{$css-prefix}expand .#{$css-prefix}menu-btn-arrow {
+        @if get-compiling-value($menu-btn-unfold-icon-content) != get-compiling-value($icon-reset) {
+            &::before {
+                content: $menu-btn-unfold-icon-content;
+            }
+        } @else {
+            transform: rotate(180deg);
+        }
+    }
+    // --------- this is for config platform
+    &-symbol-unfold::before {
+        content: $menu-btn-unfold-icon-content;
+    }
+    // --------- this is for config platform
+
+    &.#{$css-prefix}btn-normal {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-pure-text-normal-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-pure-normal-color-hover;
+        }
+    }
+
+    &.#{$css-prefix}btn-secondary {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-pure-text-secondary-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-pure-secondary-color-hover;
+        }
+        &.#{$css-prefix}btn-text:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-text-secondary-color-hover;
+        }
+    }
+
+    &.#{$css-prefix}btn-primary {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-pure-text-primary-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-pure-primary-color-hover;
+        }
+    }
+
+    &.#{$css-prefix}btn-text.#{$css-prefix}btn-normal {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-text-text-normal-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-text-normal-color-hover;
+        }
+    }
+
+    &.#{$css-prefix}btn-text.#{$css-prefix}btn-primary {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-text-text-primary-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-text-primary-color-hover;
+        }
+    }
+
+    &.#{$css-prefix}btn-ghost.#{$css-prefix}btn-light {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-ghost-light-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-ghost-light-color-hover;
+        }
+    }
+
+    &.#{$css-prefix}btn-ghost.#{$css-prefix}btn-dark {
+        .#{$css-prefix}menu-btn-arrow {
+            color: $menu-btn-ghost-dark-icon-color;
+        }
+        &:hover .#{$css-prefix}menu-btn-arrow {
+            color: $btn-ghost-dark-color-hover;
+        }
+    }
+
+    &.disabled .#{$css-prefix}menu-btn-arrow,
+    &[disabled] .#{$css-prefix}menu-btn-arrow {
+        color: $menu-btn-disabled-icon-color;
+    }
+
+    &.#{$css-prefix}btn-text.disabled .#{$css-prefix}menu-btn-arrow,
+    &.#{$css-prefix}btn-text[disabled] .#{$css-prefix}menu-btn-arrow {
+        color: $menu-btn-disabled-icon-color;
+    }
+
+    &[disabled].#{$css-prefix}btn-ghost.#{$css-prefix}btn-dark .#{$css-prefix}menu-btn-arrow {
+        color: $menu-btn-ghost-dark-disabled-icon-color;
+    }
+
+    &[disabled].#{$css-prefix}btn-ghost.#{$css-prefix}btn-light .#{$css-prefix}menu-btn-arrow {
+        color: $menu-btn-ghost-light-disabled-icon-color;
+    }
+}

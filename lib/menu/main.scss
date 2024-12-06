@@ -1,0 +1,318 @@
+@import "../core/index-noreset.scss";
+@import "./scss/variable";
+@import "./scss/mixin";
+@import "./rtl.scss";
+
+#{$menu-prefix} {
+    @include box-sizing;
+
+    &:focus,
+    & *:focus {
+        outline: 0;
+    }
+
+    position: relative;
+    min-width: $s-25;
+    margin: 0;
+    list-style: none;
+    border: $popup-local-border-width $popup-local-border-style $popup-local-border-color;
+    border-radius: $popup-local-corner;
+    box-shadow: $popup-local-shadow;
+    background: $menu-background;
+    line-height: $menu-line-height;
+    font-size: $menu-font-size;
+    animation-duration: $motion-duration-standard;
+    animation-timing-function: $motion-ease;
+
+    &-spacing-lr {
+        padding: 0 $popup-spacing-lr;
+        &#{$menu-prefix}-outside > #{$menu-prefix} {
+            height: 100%;
+            overflow-y: auto;
+        }
+    }
+
+    &-spacing-tb {
+        padding: $popup-spacing-tb 0;
+    }
+
+    &.#{$css-prefix}ver {
+        padding: $menu-padding-ver-padding-tb $menu-padding-ver-padding-lr;
+        #{$menu-prefix}-item {
+            padding: 0 $menu-item-padding-ver-padding-r 0 $menu-item-padding-ver-padding-l;
+        }
+    }
+    &.#{$css-prefix}hoz {
+        padding: $menu-padding-hoz-padding-tb $menu-padding-hoz-padding-lr;
+        #{$menu-prefix}-item {
+            padding: 0 $menu-item-padding-hoz-padding-lr;
+        }
+    }
+    &-embeddable,
+    &-embeddable &-item.#{$css-prefix}disabled,
+    &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
+        background: transparent;
+        border: none;
+    }
+
+    &-embeddable {
+        box-shadow: none;
+    }
+
+    &-embeddable &-item-inner {
+        height: 100%;
+    }
+
+    &-content {
+        position: relative;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    &-sub-menu {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+
+        &.#{$css-prefix} {
+            &expand-enter {
+                overflow: hidden;
+            }
+
+            &expand-enter-active {
+                transition: height $motion-duration-standard $motion-ease;
+            }
+
+            &expand-leave {
+                overflow: hidden;
+            }
+
+            &expand-leave-active {
+                transition: height $motion-duration-standard $motion-ease;
+            }
+        }
+    }
+
+    &-item {
+        position: relative;
+        transition: background $motion-duration-immediately $motion-linear;
+        color: $menu-color;
+        cursor: pointer;
+
+        &-helper {
+            float: right;
+            color: $color-text1-2;
+            font-style: normal;
+            font-size: $menu-font-size;
+        }
+
+        .#{$css-prefix}checkbox,
+        .#{$css-prefix}radio {
+            margin-right: $menu-icon-margin;
+        }
+
+        &.#{$css-prefix}selected {
+            @include menu-item-state(
+                $menu-color-selected,
+                $menu-background-selected,
+                $menu-arrow-color,
+                $menu-icon-selected-color,
+                $menu-item-border-radius
+            );
+        }
+
+        &.#{$css-prefix}disabled,
+        &.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
+            @include menu-item-state(
+                $menu-color-disabled,
+                $menu-background,
+                $menu-color-disabled,
+                $menu-color-disabled,
+                $menu-item-border-radius,
+            );
+            cursor: not-allowed;
+        }
+
+        &:not(.#{$css-prefix}disabled):hover,
+        &:not(.#{$css-prefix}disabled).#{$css-prefix}selected:hover,
+        &:not(.#{$css-prefix}disabled).#{$css-prefix}selected.#{$css-prefix}focused:hover,
+        &:not(.#{$css-prefix}disabled).#{$css-prefix}selected:focus:hover,
+        &:not(.#{$css-prefix}disabled).#{$css-prefix}focused,
+        &:not(.#{$css-prefix}disabled).#{$css-prefix}selected.#{$css-prefix}focused,
+        &:not(.#{$css-prefix}disabled).#{$css-prefix}selected:focus {
+            @include menu-item-state(
+                $menu-color-hover,
+                $menu-background-hover,
+                $menu-arrow-color-hover,
+                $menu-icon-selected-hover-color,
+                $menu-item-border-radius,
+            );
+        }
+    }
+
+    &-item-inner {
+        height: $menu-line-height;
+        font-size: $menu-font-size;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-wrap: normal;
+    }
+
+    &-item &-item-text {
+        vertical-align: middle;
+
+        & > a {
+            display: inline-block;
+            text-decoration: none;
+            color: $menu-color;
+            &::before {
+                position: absolute;
+                background-color: transparent;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                content: '';
+            }
+        }
+    }
+
+    &.#{$css-prefix}hoz {
+        padding: 0;
+
+        &#{$menu-prefix}-nowrap {
+            overflow: hidden;
+            white-space: nowrap;
+
+            #{$menu-prefix}-more {
+                text-align: center;
+            }
+        }
+
+        > #{$menu-prefix}-item,
+        > #{$menu-prefix}-sub-menu-wrapper,
+        #{$menu-prefix}-content > #{$menu-prefix}-item {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        #{$menu-prefix}-header,
+        #{$menu-prefix}-content,
+        #{$menu-prefix}-footer {
+            display: inline-block;
+        }
+    }
+
+    &-hoz-right {
+        float: right;
+    }
+
+    &-group-label {
+        padding: 0 $menu-padding-title-horizontal;
+        color: $color-text1-2;
+    }
+
+    &-divider {
+        margin: $menu-divider-margin-ver $menu-divider-margin-hoz;
+        border-bottom: $menu-divider-width $menu-divider-style $menu-divider-color;
+    }
+
+    & &-icon-selected.#{$css-prefix}icon {
+        position: absolute;
+        top: 0;
+
+        @include icon-size($menu-icon-selected-size, calc(0px - (#{$menu-item-padding-ver-padding-l} - #{$menu-icon-selected-right})));
+
+        &#{$menu-prefix}-icon-right {
+            right: $menu-icon-selected-right;
+        }
+    }
+    & &-symbol-icon-selected#{$menu-prefix}-icon-selected::before {
+        content: $menu-select-icon-content;
+    }
+
+    & &-icon-arrow.#{$css-prefix}icon {
+        position: absolute;
+        top: 0;
+        right: $menu-arrow-right;
+        @include icon-size($menu-icon-size);
+        color: $menu-arrow-color;
+        transition: all $motion-duration-immediately $motion-linear;
+    }
+
+    & &-icon-arrow-down::before {
+        content: $menu-fold-icon-content;
+    }
+
+    & &-icon-arrow-down.#{$css-prefix}open {
+        @if get-compiling-value($menu-unfold-icon-content) != get-compiling-value($icon-reset) {
+            &::before {
+                content: $menu-unfold-icon-content;
+            }
+        } @else {
+            @include icon-size(
+                $size: $menu-icon-size,
+                $transform: rotate(180deg)
+            );
+        }
+    }
+
+    & &-symbol-popupfold::before {
+        content: $menu-popupfold-icon-content;
+    }
+
+    & &-icon-arrow-right.#{$css-prefix}open {
+        @include icon-size(
+            $size: $menu-icon-size,
+            $transform: rotate(-90deg)
+        );
+    }
+
+    & &-hoz-icon-arrow.#{$css-prefix}icon {
+        position: absolute;
+        top: 0;
+        right: 6px;
+        @include icon-size($menu-hoz-icon-size);
+        color: $menu-arrow-color;
+        transition: all $motion-duration-immediately $motion-linear;
+
+        @if get-compiling-value($menu-fold-icon-content) != get-compiling-value($icon-reset) {
+            &::before {
+                content: $menu-fold-icon-content;
+            }
+        }
+    }
+
+    // --------- this is for config platform
+    &-unfold-icon::before {
+        content: $menu-unfold-icon-content;
+    }
+    // --------- this is for config platform
+
+    & &-hoz-icon-arrow.#{$css-prefix}open {
+        @if get-compiling-value($menu-unfold-icon-content) != get-compiling-value($icon-reset) {
+            &::before {
+                content: $menu-unfold-icon-content;
+            }
+        } @else {
+            @include icon-size(
+                $size: $menu-hoz-icon-size,
+                $transform: rotate(180deg)
+            );
+        }
+    }
+
+    &.#{$css-prefix}context {
+        line-height: $s-6;
+
+        #{$menu-prefix}-item-inner {
+            height: $s-6;
+        }
+    }
+
+    /* &-popup-content.#{$css-prefix}hide { */
+    /*     display: none; */
+    /* } */
+}

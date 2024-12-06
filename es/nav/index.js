@@ -1,0 +1,10 @@
+import { assignSubComponent } from '../util/component';
+import Menu from '../menu';
+import Item from './item';
+import Group from './group';
+import SubNav from './sub-nav';
+import PopupItem from './popup-item';
+import Nav from './nav';
+var Divider = Menu.Divider;
+var NavWithSubComponent = assignSubComponent(Nav, { Item: Item, Group: Group, SubNav: SubNav, PopupItem: PopupItem, Divider: Divider });
+export default NavWithSubComponent;

@@ -1,0 +1,87 @@
+{
+  "name": "VirtualList",
+  "props": {
+    "children": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "渲染的子节点",
+      "docblock": "渲染的子节点"
+    },
+    "minSize": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "最小加载数量",
+      "defaultValue": {
+        "value": "1",
+        "computed": false
+      },
+      "docblock": "最小加载数量"
+    },
+    "pageSize": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "一屏数量",
+      "defaultValue": {
+        "value": "10",
+        "computed": false
+      },
+      "docblock": "一屏数量"
+    },
+    "itemsRenderer": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "父渲染函数，默认为 (items, ref) => <ul ref={ref}>{items}</ul>",
+      "defaultValue": {
+        "value": "(items, ref) => <ul ref={ref}>{items}</ul>",
+        "computed": false
+      },
+      "docblock": "父渲染函数，默认为 (items, ref) => <ul ref={ref}>{items}</ul>",
+      "params": [],
+      "returns": null
+    },
+    "threshold": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "缓冲区高度",
+      "defaultValue": {
+        "value": "100",
+        "computed": false
+      },
+      "docblock": "缓冲区高度"
+    },
+    "itemSizeGetter": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "获取item高度的函数",
+      "docblock": "获取item高度的函数",
+      "params": [],
+      "returns": null
+    },
+    "jumpIndex": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "设置跳转位置，需要设置 itemSizeGetter 才能生效, 不设置认为元素等高并取第一个元素高度作为默认高",
+      "defaultValue": {
+        "value": "0",
+        "computed": false
+      },
+      "docblock": "设置跳转位置，需要设置 itemSizeGetter 才能生效, 不设置认为元素等高并取第一个元素高度作为默认高"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
