@@ -452,6 +452,8 @@ class NumberPicker extends React.Component<NumberPickerProps, NumberPickerState>
         const precision = this.getPrecision();
         if (precision > 0) {
             return Number(Number(value).toFixed(precision));
+        } else if (precision === 0) {
+            return Math.floor(value);
         }
         return value;
     }
